@@ -15,9 +15,6 @@ It has some differences in internal service call, security, pipelining, multiple
 - Free, automate and floating to lease new GP address!
 - Make GP routers as coordinator in network along side be a gateway!
 
-## Still considering
-- How and when to allow new XP register in XP networks!
-
 ## Packet Architecture
 | bits          | Length(byte-Octet)| data              |
 | :---:         | :---:             | :---:             |
@@ -44,18 +41,17 @@ It introduces an internal service call instead of data in each header!
 Unlike existing Internet Protocol as IP, we don't offer any versioning for this protocol as we believe if we need fundamentally change any part of a protocol after the official release, we will already make new protocol! So we respect data link layers protocols like Ethernet and use their solution like [Ethertype](https://en.wikipedia.org/wiki/Ethertype) in [Ethernet frame](https://en.wikipedia.org/wiki/Ethernet_frame) header and don't reinvent other solution!
 
 ## GP Address
-GP address lengths is 128 bit(16 byte) that contain 32+32+32+16+16bit as XPs + GP Routers + OSs + Apps + Protocols!
-This protocol unlike IPv6 regard each bit of a GP address. We suggest use below rules but just XP part must always respect these rules and each XP network can have own rules about routing protocol in their networks!
-- **XP(Exchange Points)**: *0 to 31 bit* >> *32bit length* >> Each civilization like exiting country can tell others and get a 4 byte unique immutable identifier. We know some considering exist and we must have some rules to allow new members in XPs!
-- **Routers**: *32 to 63 bit* >> *32bit length* >> Each XP must delegate its range to some routers to do routing for improve performance & consistency of its own network. So each Router always have 4 byte unique mutable identifier.
-- **Users**: *64 to 96 bit* >> *32bit length* >> Each user on each device can get 4 byte unique mutable identifier from router. This range usually get by OS and route them to register app by user in OS. So an OS can host one or more users!
-- **Apps**: *97 to 112 bit* >> *16bit length* >> Each user app can get 2 byte unique mutable identifier from OS. Same app but for different user always get dedicate unique range.
-- **Protocol**: *113 to 128 bit* >> *16bit length* >> Each App have 2 byte address range that usually use to detect payload data structure some thing like TCP||UDP port number purpose!
+GP address lengths is 128 bit(16 byte) that contain 32+32+32+16+16bit as below describe! This protocol unlike IPv6 regard each bit of a GP address. We suggest use below rules but just SocietyID must always respect these rules and each society network can have own rules about routing protocol in their networks!
+- **Society ID**: *0 to 31 bit* >> *32bit length* >> Each society civilization like exiting country can tell others and get a 4 byte unique immutable identifier.
+- **Router ID**: *32 to 63 bit* >> *32bit length* >> Each society must delegate its range to some routers to do routing for improve performance & consistency of its own network. So each Router always have 4 byte unique mutable identifier.
+- **User ID**: *64 to 96 bit* >> *32bit length* >> Each user on each device can get 4 byte unique mutable identifier from router. This range usually get by OS and route them to register app by user in OS. So an OS can host one or more users!
+- **App ID**: *97 to 112 bit* >> *16bit length* >> Each user app can get 2 byte unique mutable identifier from OS. Same app but for different user always get dedicate unique range.
+- **Protocol ID**: *113 to 128 bit* >> *16bit length* >> Each App have 2 byte address range that usually use to detect payload data structure some thing like TCP||UDP port number purpose!
 
 ## Routing Architecture
 
 ### Mobile GP
-The [Mobile GP](https://en.wikipedia.org/wiki/Mobile_IP) allows for location-independent routing of the GP packet on the Internet! We don't have rules for mobility implementation in this spec! You can achieve mobility just by have proper topology in your XP and data link layer!
+The [Mobile GP](https://en.wikipedia.org/wiki/Mobile_IP) allows for location-independent routing of the GP packet on the Internet! We don't have rules for mobility implementation in this spec! You can achieve mobility just by have proper topology in your society network and data link layer!
 
 ### Quality of Service
 It must be handled in routers, not protocol packet!
