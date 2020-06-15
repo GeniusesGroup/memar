@@ -25,11 +25,11 @@ Syllab convert dynamically size data to this simple structure of fixed size data
 
 You can see each language implementation that how complex type like slice, map, matrix ... encode/decode structure work! Any [hierarchical tree structure](https://en.wikipedia.org/wiki/Tree_(data_structure)) will inline in encode phase as flat structure!
 
-## Supported Programming Languages
-It is so simple protocol that can easily encode and decode in any programming language! We implement it on some language like [C](), [Go](https://github.com/SabzCity/libgo/blob/master/syllab), [JavaScript]() and more in progress ...
+## Code Generations
+Like our other RFCs, We suggest do logics in compile time not runtime to improve performance and efficiency. Syllab architecture is so simple that can easily implement by code generation not marshalling or un-marshalling in runtime!
 
-## Supported Code-Generations
-It is so simple protocol that can easily implement in any code-generation apps! We implement it on some one like [Achaemenid](https://github.com/SabzCity/libgo/blob/master/Achaemenid-generator) and more in progress ...
+## Supported Programming Languages
+It is so simple protocol that can easily encode, decode & generate code in any programming language! We implement it on some language like [C](), [Go](https://github.com/SabzCity/libgo/blob/master/syllab), [JavaScript]() and more in progress ...
 
 ## Inspired of
 - https://github.com/alecthomas/go_serialization_benchmarks
