@@ -6,6 +6,16 @@ We choose .kh for files that have Khayyam language codes!
 
 ## Top Level Keyword
 
+### include
+Khayyam use `include {addr}` keyword e.g. `include "../error"` to include all types, vars, funcs, ... without need indicate name e.g. `func test() error {}` that `error` can be type, ... indicate in included file!
+
+Khayyam allow developers to import multi file by use `include ()`, so use `include` more than once in a file is not legal!
+
+### import
+Khayyam use `import {name} {addr}` keyword e.g. `import json "../json"`  to import other code file to local one. import desire file and use needed logic by this way e.g. `json.Marshal()`
+
+Khayyam allow developers to import multi file by use `import ()`, so use `import` more than once in a file is not legal!
+
 ### type -> data-types
 Khayyam force you naming a type with one of below type as `type {Name} {Type}`
 - [Digital computing]()
@@ -23,7 +33,7 @@ Khayyam force you naming a type with one of below type as `type {Name} {Type}`
         - R as [Real](https://en.wikipedia.org/wiki/Real_number)  also know as Irrational, Fractional
         - C as [Complex](https://en.wikipedia.org/wiki/Complex_number)
 - Array indicate by this syntax `[x][x]...T` and it is fixed size! e.g. `type testArray [256][1]N`
-- structure indicate by `struct{...}` that has some other types inside themself!
+- structure indicate by `struct{...}` that has some other types inside itself!
 
 ### const -> Constant
 const, unlike other languages, is not very hard immutable data! Dev can change in runtime but unlike var, it will change binary code and don't need to get it by memory call! Compiler and runtime just let to change the value with the same memory size!
@@ -38,7 +48,6 @@ Two type function supported:
 
 ## Operators
 https://en.wikipedia.org/wiki/Operators_in_C_and_C%2B%2B
-https://maxbase.org/my-programming-language/et-operator-precedence-en/
 ### Arithmetic
 Arithmetic can just be done on bool, Numerical and array type! In Numerical if either operand is not the same number system, It always converts to a higher system range e.g. if one of the operands is [1]N and the other is [2]W, the result type is [2]W!
 ### Comparison or Relational
@@ -104,10 +113,10 @@ We don't offer any version control for your codes, So we must not offer any depe
 ## Inspired of
 ### Languages
 These languages inspirations don't mean just about get good idea but mean drop bad idea from these and not implement them!
-- [C]()
+- [C](https://en.wikipedia.org/wiki/C_(programming_language))
 - [D](https://dlang.org)
-- [Go]()
-- [Rust]()
+- [Go](https://golang.org/)
+- [Rust](https://www.rust-lang.org/)
 - [Spiral](https://github.com/mrakgr/The-Spiral-Language)
 ### Articles
 - https://pingcap.com/blog/early-impressions-of-go-from-a-rust-programmer/
