@@ -1,23 +1,27 @@
 # Chapar - Data Link Protocol
-Chapar is a switching protocol that store switch state in frames as [stateless protocol](https://en.wikipedia.org/wiki/Stateless_protocol) instead of devices unlike other protocols that use and store [MAC](https://en.wikipedia.org/wiki/MAC_address) in frames that must translate to some data in each switch devices like [Ethernet(layer two)](https://en.wikipedia.org/wiki/Ethernet) to switch frames in the real [stateless manner](https://en.wikipedia.org/wiki/Connectionless_communication)! Chapar is introduced to improve [layer 2 of OSI](https://en.wikipedia.org/wiki/Data_link_layer) that can transmit frames in almost speed of physical layer (Computing & Networking) limiting!
+Chapar is a switching protocol that store switch state in frames as [stateless protocol](https://en.wikipedia.org/wiki/Stateless_protocol) instead of devices unlike other protocols that use and store [MAC](https://en.wikipedia.org/wiki/MAC_address) in frames that must translate to some data in each switch devices like [Ethernet](https://en.wikipedia.org/wiki/Ethernet) in [layer two]((https://en.wikipedia.org/wiki/Ethernet_frame#Frame_%E2%80%93_data_link_layer)) to switch frames in the real [stateless manner](https://en.wikipedia.org/wiki/Connectionless_communication)! Chapar is introduced to improve [layer 2 of OSI](https://en.wikipedia.org/wiki/Data_link_layer) that can transmit frames in almost speed of physical layer (Computing & Networking) limiting!
 
-## Ethernet disadvantages
+## Why (Ethernet disadvantages)
 - High price & have limit to make layer 2 network without get help from layer 3! The best switch have up to 512000 CAM record limit for query MAC to the port!
 - High power usage and limit speed in CAM tables(CAM, TACM, ...)!
 - Close source complicated hardware and switching algorithms!
 
 ## Goals
-- Decrease switch products & network price
-- Improve network bandwidth & latency without increase networking price!
-- Make big layer 2 network approximately 256^128(2^1024) node without need upper layer!!
-- Make networking greener by reduce direct(switch devices) and indirect(cooling) power usage!
+- **Decrease** switch products & network **price**
+- **Improve** network **bandwidth** & **latency** without increase networking price!
+- **Make big layer 2** network approximately 256^128(2^1024) node **without need upper layer**!!
+- **Make networking greener** by reduce direct(switch devices) and indirect(cooling) power usage!
+- **Bandwidth management** or [Quality of service](https://en.wikipedia.org/wiki/Quality_of_service) is complicated feature that can handle on layer one and layer three too! But it is easy to control endpoint devices bandwidth on the connection point to help [ChaparKhane](./ChaparKhane.Md) to coordinate network better, but in this layer you can't distinguish between inbound and outbound traffics!
 
-## Not Goals
-- Security : Layer 2 is more related to physical layer network that need physical security to eliminate access a device from desire network! So security of a network must handle in upper layer than layer 2.
-- Error detection : Due to simplicity of protocol and quality of todays hardwares it is better to check healthy of data just in destination not in every switch device!
+## Not Goals or Considering
+- **Security**: Layer 2 is more related to physical layer network that need physical security to eliminate access a device from desire network! So security of a network must handle in upper layer than layer 2.
+- **Error detection**: Due to simplicity of protocol and quality of todays hardwares it is better to check healthy of data just in destination not in every switch device!
+- **Fragmentation**: MTU is not enough to send all type of data on a network, but layer two is not where it must handle!
+- **Switching loop**: Due to suggested structure that a frame can switch just up to 255 hop, so this problem is not exist in Chapar.
+- **Backup links** or have more than one physical link between two node to providing fault tolerance if an active link fails not consider or handle by Chapar switches and Endpoints must handle multiple path to each other with help of network coordinator if exist!
 
 ## Still considering
-- Still need cache on ports! Frames congestion that force use cache on ports interfaces can drop up to 50% efficiency!
+- **Frames congestion** on any ports force still use cache on ports interfaces that can drop up to 50% efficiency!
 
 ## Frame architecture
 - StartDelimiter, EndDelimiter & CheckSequence may add to this structure due to physical layer rules!
@@ -41,11 +45,12 @@ Chapar is a switching protocol that store switch state in frames as [stateless p
 - Payload : Can be any upper layer packet data that type indicate by next header!
 
 ## Frame Types
-Chapar support UniCast and BroadCast frame not MultiCast one!   
-Due to frame must have at least one hop, Use unused HopCount==0 for broadCast frames to all ports! So both HopCount==0x00 & HopCount==0xff have 255 hop port number space in frame header! BroadCast frame must have all hop port number space with 0 byte data in header otherwise frame payload rewrite by switches devices!
+Chapar support **UniCast** and **BroadCast** frame and not support **MultiCast**!
 
 ## Rules
 - Frame size can be up to 8192 Byte or 8KB. Enough to stream 1.5Mbps video call in each 40ms frames (1.5/8*1024/1000*40=7.68KB).
+- Due to frame must have at least one hop, Use unused HopCount==0 for broadCast frames to all ports! So both HopCount==0x00 & HopCount==0xff have 255 hop port number space in frame header!
+- BroadCast frame must have all hop port number space with 0 byte data in header otherwise frame payload rewrite by switches devices!
 - In each hop, Switch must rewrite received port number on the frame! The reasons are:
     - BroadcastFrame : To improve performance, previous switch just send frame without declare next port!
     - UnicastFrame : To be sure receive port is same with declaration one in frame!
