@@ -16,19 +16,19 @@ It has some differences in internal service call, security, pipelining, multiple
 - Make GP routers as coordinator in network along side be a gateway!
 
 ## Packet Architecture
-| bits          | Length(byte-Octet)| data              |
-| :---:         | :---:             | :---:             |
-| 1 ... 128     | 16                | Destination GP    |
-| 129 ... 256   | 16                | Source GP         |
-| 257 ... 272   | 2                 | Payload Length    |
-| 273 ... 304   | 4                 | Stream ID         |
-| 305 ... 336   | 4                 | Packet ID         |
-| 337 ... __    | __                | Payload           |
-| __            | __                | Padding           |
-| __            | __                | Checksum          |
+| bits          | Length(byte-Octet)| data                  |
+| :---:         | :---:             | :---:                 |
+| 1 ... 112     | 14                | Destination GP        |
+| 113 ... 224   | 14                | Source GP             |
+| 225 ... 240   | 2                 | Payload Length        |
+| 241 ... 256   | 2                 | Stream ID             |
+| 357 ... 272   | 2                 | Packet ID             |
+| 273 ... __    | __                | Payload               |
+| __            | __                | Signature (Checksum)  |
+| __            | __                | Padding (optional)    |
 
 - **Payload Length** : Always encrypted and must respect data-link protocol due to not Fragmentation supported. Better not over of 8192 Byte(octets) or 8KB! Not include headers, padding or checksum!!
-- **Stream ID** : Always encrypted. Use even number for client(who start connection) to start a stream e.g. 0,2,4,6,8,10,... . Use odd number for server(who receive connection) to start a stream e.g. 1,3,5,7,9,11,... 
+- **Stream ID** : Always encrypted. Use even number for client(who start connection) to start a stream e.g. 0,2,4,6,... . Use odd number for server(who receive connection) to start a stream e.g. 1,3,5,7,... . Separation of the stream identifiers ensures that client and server are able to open streams without the latency imposed by negotiating for an identifier.
 - **Packet ID** : Always encrypted. Max 4.72TB can transmit in single stream with 1.18KB payload Length as limit to 1.5KB of ethernet frames! 
 - **Payload** : Always encrypted, Payload can be any application protocol e.g. HTTP, sRPC, ... . It must store in order by PacketID to make whole a stream data
 - **Padding** : If block cipher use, add some random data to have fix size packet!
@@ -41,12 +41,11 @@ It introduces an internal service call instead of data in each header!
 Unlike existing Internet Protocol as IP, we don't offer any versioning for this protocol as we believe if we need fundamentally change any part of a protocol after the official release, we will already make new protocol! So we respect data link layers protocols like Ethernet and use their solution like [Ethertype](https://en.wikipedia.org/wiki/Ethertype) in [Ethernet frame](https://en.wikipedia.org/wiki/Ethernet_frame) header and don't reinvent other solution!
 
 ## GP Address
-GP address lengths is 128 bit(16 byte) that contain 32+32+32+16+16bit as below describe! This protocol unlike IPv6 regard each bit of a GP address. We suggest use below rules but just SocietyID must always respect these rules and each society network can have own rules about routing protocol in their networks!
-- **Society ID**: *0 to 31 bit* >> *32bit length* >> Each society civilization like exiting country can tell others and get a 4 byte unique immutable identifier.
-- **Router ID**: *32 to 63 bit* >> *32bit length* >> Each society must delegate its range to some routers to do routing for improve performance & consistency of its own network. So each Router always have 4 byte unique mutable identifier.
-- **User ID**: *64 to 96 bit* >> *32bit length* >> Each user on each device can get 4 byte unique mutable identifier from router. This range usually get by OS and route them to register app by user in OS. So an OS can host one or more users!
-- **App ID**: *97 to 112 bit* >> *16bit length* >> Each user app can get 2 byte unique mutable identifier from OS. Same app but for different user always get dedicate unique range.
-- **Protocol ID**: *113 to 128 bit* >> *16bit length* >> Each App have 2 byte address range that usually use to detect payload data structure some thing like TCP||UDP port number purpose!
+GP address lengths is 112 bit(14 byte) that contain 32+32+32+16bit as below describe! This protocol unlike IPv6 regard each bit of a GP address. We suggest use below rules but just SocietyID must always respect these rules and each society network can have own rules about routing protocol in their networks! **All IDs are temp IDs** and each Society, Router(thing), User & App actually own 32byte unique identifier!
+- **Society ID**: *0 to 31 bit* >> *32bit length* >> Each society civilization like exiting country can tell others and get a 4 byte unique immutable identifier until exist.
+- **Router ID**: *32 to 63 bit* >> *32bit length* >> Each society must delegate its range to some routers to do routing for improve performance & consistency of its own network. So each Router always have 4 byte unique mutable identifier until exist.
+- **User ID**: *64 to 96 bit* >> *32bit length* >> Each user on each device can get 4 byte unique mutable identifier from router. This range usually get by OS and route them to register app by user in OS. So an OS can host one or more users until exist!
+- **App ID**: *97 to 112 bit* >> *16bit length* >> Each user app can get 2 byte unique mutable identifier from OS. Same app but for different user always get dedicate unique range until exist.
 
 ## Routing Architecture
 
@@ -62,11 +61,14 @@ When no GP router exists in a network, Nodes can set the first 64bit of GP to ze
 ### Multi-cast & Any-cast
 Due to the nature of this spec that must be decentralized, and we believe this type of requirement must handle at the app layer to protect user privacy, So we don't offer any way to multi-cast or any-cast a packet in Giti networks!
 
+### ProtocolID usage
+Suggest to indicate protocolID in making each stream process. Also suggest to use even ProtocolID as port number to listen||receive||response||server and odd numbers for send||request||client.
+
 ## Supported programming languages
 It is so simple protocol that can easily encode and decode in any programming language! We implement it on some language like [C](), [Go](https://github.com/SabzCity/libgo/blob/master/GP), [JavaScript]() and more in progress ...
 
 ## Inspired of
-- [QUIC](https://en.wikipedia.org/wiki/QUIC)
-- [IPv6](https://en.wikipedia.org/wiki/IPv6)
-- https://www.semanticscholar.org/paper/Blockchain-models-for-universal-connectivity-Navarro-Castro/788b7a634b369d98e72ed37c5fdf71f7fd62ef0b
-- https://pdfs.semanticscholar.org/788b/7a634b369d98e72ed37c5fdf71f7fd62ef0b.pdf?_ga=2.260489549.1562006812.1569054619-1995410782.1569054619
+- [QUIC](https://en.wikipedia.org/wiki/QUIC) - [RFC](https://tools.ietf.org/html/draft-ietf-quic-transport-31) 
+- [HTTP2]() - [RFC](https://tools.ietf.org/html/rfc7540)
+- [IPv6](https://en.wikipedia.org/wiki/IPv6) - [RFC]()
+- [Blockchain models for universal connectivity](https://www.semanticscholar.org/paper/Blockchain-models-for-universal-connectivity-Navarro-Castro/788b7a634b369d98e72ed37c5fdf71f7fd62ef0b) - [PDF](https://pdfs.semanticscholar.org/788b/7a634b369d98e72ed37c5fdf71f7fd62ef0b.pdf?_ga=2.260489549.1562006812.1569054619-1995410782.1569054619)
