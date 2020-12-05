@@ -10,7 +10,7 @@ Don't think about old IPv4 or IPv6 idea protocols like UDP or TCP you don't need
 Read more in its [Readme here](./Chapar.md)
 
 ## Network Protocol
-Read more in its [Readme here](./Giti-protocol.md)
+Read more in its [Readme here](./GP.md)
 
 ## Routers
 Read more in its [Readme here](./ChaparKhane.md)
@@ -24,7 +24,19 @@ Read more in its [Readme here](./Achaemenid.md)
 ## Security
 
 ### Attack
-Routers in XP or OS or App level can request from (report to) each other to block attackers or take action about it! If XP routers don't respect reported node or router whole XP can block by other XP. AI must add to router apps to detect infected or bad software XP router that doesn't respect rules!
+Routers or OS or App can request from (report to) each other to block attackers or take action about it! If routers don't respect reported node or router whole society can block by other society. AI must add to router apps to detect infected or bad router that doesn't respect rules!
+
+## Societies
+
+### Register new society
+- Each society in Giti must pick a primary name that combination of at least three unicode character and use hash (SHA3-512/256) of it as UUID of society. Picked name also use as TLD and let society to register any domain under its name. e.g. society name is "persia" and "athenafarm.persia" is domain belong to this society.
+- Each society register one unique 32-bit unsigned integer by specific algorithm for routing in its database and tell all adjacent physical connected societies about existence! 
+
+### Standard services
+Each Societies must implement below standard services that all first users(==0) as primary society name register in any routers in the society must response to this services.
+
+## Transition from Internet Network
+Every PersiaOS transition app that access to internet network must listen to UDP:80 port for incoming packets that carry on GP packets and route whole internet packet to registered app GP if exists and request to listen on internet network!
 
 ## etc.
 
@@ -43,6 +55,10 @@ Routers in XP or OS or App level can request from (report to) each other to bloc
 ### Some resource
 - https://github.com/gdamdam/awesome-decentralized-web
 - https://book.systemsapproach.org
+
+### Articles
+- https://apenwarr.ca/log/20170810
+- https://apenwarr.ca/log/20200708
 
 ### Some idea get from these protocols:
 - https://github.com/alecthomas/go_serialization_benchmarks
