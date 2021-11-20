@@ -1,8 +1,10 @@
 # Chapar - Data Link Protocol
-Chapar is a switching protocol that store switch state in frames as [stateless protocol](https://en.wikipedia.org/wiki/Stateless_protocol) instead of devices unlike other protocols that use and store [MAC](https://en.wikipedia.org/wiki/MAC_address) in frames and each switching device in the network that must translate to some data in each switch devices like [Ethernet](https://en.wikipedia.org/wiki/Ethernet) in [layer two]((https://en.wikipedia.org/wiki/Ethernet_frame#Frame_%E2%80%93_data_link_layer)) to switch frames in the real [stateless manner](https://en.wikipedia.org/wiki/Connectionless_communication). Chapar is introduced to improve [layer 2 of OSI](https://en.wikipedia.org/wiki/Data_link_layer) that can transmit frames in almost speed of the physical layer (Computing & Networking) limiting.
+Chapar is introduced to improve [layer 2 of OSI](https://en.wikipedia.org/wiki/Data_link_layer) that can transmit frames at or near speed of the physical layer (Computing & Networking) limiting.   
+Chapar is a switching protocol that store switch state in frames as [stateless protocol](https://en.wikipedia.org/wiki/Stateless_protocol) instead of devices unlike other protocols that use and store [MAC](https://en.wikipedia.org/wiki/MAC_address) in frames and each switching device in the network that must translate to some data in each switch devices like [Ethernet](https://en.wikipedia.org/wiki/Ethernet) in [layer two]((https://en.wikipedia.org/wiki/Ethernet_frame#Frame_%E2%80%93_data_link_layer)) to switch frames in the real [stateless manner](https://en.wikipedia.org/wiki/Connectionless_communication).
 
 ## Why (Ethernet disadvantages)
-- High price & have limits to make layer 2 networks without getting help from layer 3. The best switch has up to 512000 CAM record limit for query MAC to the port.
+- High price. Bandwidth is important, but cost per bit transferred is more important
+- Limits to make layer 2 networks without getting help from layer 3. The best switch has up to 512000 CAM record limit for query MAC to the port.
 - High power usage and limit speed in CAM tables(CAM, TACM, ...).
 - Close source complicated hardware and switching algorithms.
 
@@ -24,6 +26,11 @@ Chapar is a switching protocol that store switch state in frames as [stateless p
 ## Still considering
 - **Frames congestion** on any ports force still use cache on ports interfaces that can drop up to 50% efficiency. Suggest use computer hardware studies e.g. PCI-Express(PCIe), ...  to handle this consideration in best effort.
 
+## Topology Example
+- Two-tier network with core/edge. With just 1 core chapar switch and 256 edge chapar switches can connect 65280(65536-256) host to the network of course with just one connection between core and edge switches. If we want two core switches can connect 65024(65536-256-256) host to the network.
+- Three-tier network with core/distribution/access. With just 1 core chapar switch and 256 distribution chapar switches and 65280 access switches can connect 16,646,400(65280\*255) host to the network of course with just one connection between core/distribution/access switches. If we want 2 core switch and each access switch connect to two distribution switches can connect 16,516,096(65024\*254) host to the network.    
+A Chaparkhane device (router) with 32GB of ram easily handle all connections if one router outer network capacity satisfy the network nodes. Beware nodes just need Chaparkhane for outer network routing without support for anything bad like [NAT](https://en.wikipedia.org/wiki/Network_address_translation) and inner network connections just use Chaparkhane as coordinator with high secure connection by help of GP or IPsec.
+- Three-tier network with core/distribution/[wireless-access](#Wireless). With just 1 core chapar switch and 256 distribution chapar switches and 65280 wireless-access switches can connect 4,261,478,400(65280\*65280) host to the network of course with just one connection between core/distribution/wireless-access switches. If we want 2 core switches and each wireless-access switch connect to two distribution switches can connect 4,228,120,576(65024\*65024) host to the network.
 ## Frame architecture
 - This Frame structure will transport by physical layer so it is payload of desire frame and that frame have its header and structure like StartDelimiter, EndDelimiter, CheckSequence, ...
 - Ports number can be mutable due to physical link limits. The endpoint must beware of this aspect.
@@ -71,22 +78,27 @@ A situation might be occur that a port available when a frame queued but when th
 - 1 : [GP - Giti Protocol](./Giti-Network.md)
 - 2 : [IPv4 - Internet Protocol v4](https://en.wikipedia.org/wiki/IPv4)
 - 3 : [IPv6 - Internet Protocol v6](https://en.wikipedia.org/wiki/IPv6)
-- 4 : [ICMP -Internet Control Message Protocol](https://en.wikipedia.org/wiki/Internet_Control_Message_Protocol)
-- 5 : [NTP - Network_Time_Protocol](https://en.wikipedia.org/wiki/Network_Time_Protocol)
+- 4 : [NTP - Network_Time_Protocol](https://en.wikipedia.org/wiki/Network_Time_Protocol)
 
 ### Non supported [EtherType](https://en.wikipedia.org/wiki/EtherType)
 - [ARP - Address Resolution Protocol](https://en.wikipedia.org/wiki/Address_Resolution_Protocol)
 - [NDP - Neighbor Discovery Protocol](https://en.wikipedia.org/wiki/Neighbor_Discovery_Protocol)
 - [VLANs](https://en.wikipedia.org/wiki/IEEE_802.1Q)
 
-## WireLess
+## Hardwares
+Chapar functions can add by switching fabric unit (SFU) in any devices by any interfaces like PCIe, .... It can have 1 to 256 wired port or 2^16(65536) wireless port. Each Chapar wireless switch device handles two hops of the frame instead of regular one hop in each switching hop. It means each wireless hot-spot can serve  2^16(65536) devices.
+
+### Layer 1 Ports Interfaces
+offer diverse wired and wireless interfaces, for example, Ethernet(Layer1), [Power-line Communication](https://en.wikipedia.org/wiki/Power-line_communication), radio frequency(RF), RS485, RS232, ...   
+The line processing unit (LPU) provides physical interfaces connecting the SFU to external networks. The LPU processes and forwards service data. In addition, the LPU maintains and manages link protocols and forwarding information base (FIB) tables and frames congestions.
+
+### Wireless
 Like other wireless technology, We must provide some dedicate channel:
 - Broadcast control channel (BCCH) to manage broadcasting for all user equipment
 - Paging control channel (PCCH) to manage paging messages --- why not page device by DTCH?????
 - Common control channel (CCCH) and dedicated control channel (DCCH) for common messages for all user equipment in the same cell
 - Dedicated traffic channel (DTCH) to send data to the specific user equipment in a cell
 
-Each Chapar wireless switch device handles two hops of the frame instead of regular one hop in each switching hop. It means each wireless hot-spot can serve more than 2^16(65536) devices.
 Use channel 49 (694-790 MHz) in [UHF](https://en.wikipedia.org/wiki/Ultra_high_frequency) frequency range to broadcast available 
 
 ## Inspired of
