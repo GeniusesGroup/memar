@@ -22,6 +22,7 @@ Chapar is a switching protocol that store switch state in frames as [stateless p
 - **Switching loop**: Due to the suggested structure that a frame can switch just up to 255 hop, so this problem does not exist in Chapar.
 - **Backup links** or have more than one physical link between two nodes to providing fault tolerance if an active link fails not to consider or handle by Chapar switches and Endpoints must handle multiple paths to each other with help of network coordinator if exist. We have good reason that layer 2 is not good for this requirements is that this logic need state and why we store states in all path.
 - **Bandwidth management** or [Quality of service](https://en.wikipedia.org/wiki/Quality_of_service) is a complicated feature that we decide to handle on layer one and layer three. It is easy to control endpoint devices layer one bandwidth on the connection point to help [ChaparKhane](./ChaparKhane.md) to coordinate network better, but in layer one, you can't distinguish between inbound and outbound traffics.
+- **VLAN** or [Virtual Local Area Network](https://en.wikipedia.org/wiki/Virtual_LAN) like "bandwidth management" need state to switch each frame, so it is break our goal to have a very simple switching mechanism. Network segmentation can handle on layer three by help from [ChaparKhane](./ChaparKhane.md) to coordinate local network better.
 
 ## Still considering
 - **Frames congestion** on any ports force still use cache on ports interfaces that can drop up to 50% efficiency. Suggest use computer hardware studies e.g. PCI-Express(PCIe), ...  to handle this consideration in best effort.
@@ -53,7 +54,7 @@ A Chaparkhane device (router) with 32GB of ram easily handle all connections if 
 - Payload: Can be any upper-layer packet data that type indicates by the next header.
 
 ## Frame Types
-Chapar support **UniCast** and **BroadCast** frame and not support **MultiCast**
+Chapar support **UniCast** and **BroadCast** frame and not support **MultiCast**. We strongly suggest use broadcast frames just in network discoverable mechanism like find GP network coordinators. Also to broadcast emergency messages service.
 
 ## Frame Switch
 
