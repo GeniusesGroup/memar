@@ -1,13 +1,14 @@
 # GP - Giti Network Protocol
 In the IoE (the Internet of Everything or IoT as the Internet of Things) era, we need connecting Applications as the main goal of computer networks, instead of connecting OSs and devices. IP(v6) is a good protocol but it is designed to connect devices in a very manual manner. GP has some differences in internal services call, security, pipelining, multiplexing, ... . GP will introduce a huge advantage and improve app network performance. We will implement this protocol in [PersiaOS](./PersiaOS.md) but it can use by any other device and OSs due to its very simple specs.
 
-## IP disadvantages
+## IP (Internet Protocol) disadvantages
 - IP Routers can just be a gateway or can't be as network coordinator
 - Registering system is centralized and manual human base
 - IP leases fee is high
 - IP addresses can't (or very hard to) register by end-user and usually register by ISPs
 - IP addresses can't prove their ownership to use in the authentication process due to the above problem
 - IP addresses can easily be spoofed. Spoofing can be used as part of a DoS attack and Can't determine the source of an attack
+- IP packets want to be multi frame carrier, but almost always carry just one main frame by each packet indicate by [Next Header](https://en.wikipedia.org/wiki/IPv6_packet#Fixed_header) and use extension headers just for some internal protocol mechanism, not all connecting applications requirements. And unfortunately frames introduce by previous frame instead introduce by itself. 
 
 ## Goals
 - Connect users by applications instead of OSs
@@ -28,13 +29,15 @@ In the IoE (the Internet of Everything or IoT as the Internet of Things) era, we
 
 - **Packet Number** : Always encrypted. Incremental number use to detect failed packet, ... Use even number e.g. 0,2,4,6,... for client(who start connection) and Use odd number e.g. 1,3,5,7,... for server(who receive connection). Separation of the packet identifiers ensures that peer are able to send packets without the latency imposed by negotiating for an identifier.
 - **Frames** : Always encrypted. one or more frame in [sRPC format](./sRPC.md)
-- **Signature** : (or Checksum, MAC, Tag, ...) depend on crypto mode it use to authenticate data transmitted and check packet healthy in any network hop, But usually just first router and receiver check packet signature.
+- **Signature** : (MAC, Tag, ...) depend on crypto mode it use to authenticate data transmitted and check packet healthy in any network hop, But usually just first router and receiver check packet signature.
 
-### Extended header
-GP uses frames instead of data in the payload and extended headers.
-
-### Versioning
-Unlike existing Internet Protocol as IP, GP don't offer any versioning for the protocol as we believe if we need fundamentally change any part of a protocol after the official release, we will already make new protocol. So we respect data link layers protocols like Ethernet and use their solution like [Ethertype](https://en.wikipedia.org/wiki/Ethertype) in [Ethernet frame](https://en.wikipedia.org/wiki/Ethernet_frame) header and don't reinvent other solution.
+### Compare with IPv6 packet
+- **Versioning**: Unlike IP, GP don't offer any versioning for the protocol as we believe if we need fundamentally change any part of a protocol after the official release, we will already make new protocol. So we respect data link layers protocols like Ethernet and use their solution like [Ethertype](https://en.wikipedia.org/wiki/Ethertype) in [Ethernet frame](https://en.wikipedia.org/wiki/Ethernet_frame) header and don't reinvent other solution.
+- **Flow Label**: Almost same as Packet Number in GP.
+- **Payload Length**: Due to a GP packet isn't chain of related frames and haven't primary frame, Each frame has its own length if need it.
+- **Next Header**: Due to a GP packet isn't chain of related frames and haven't primary frame, Each frame has its own *Type* to introduce itself.
+- **Extended header**: GP uses standalone frames instead of chain of frames as primary frame and extended headers.
+- **Hop Limit**: GP suggest some mechanism in [ChaparKhane](./ChaparKhane.md) as its network router||coordinator to reach this requirement.
 
 ## GP Address
 | bit    | Length(byte-Octet)| Data            |
@@ -53,7 +56,7 @@ GP address lengths is 128 bit(16 bytes) as below describe. This protocol unlike 
 - **App ID**: Each app get unique mutable identifier from OS. It means same app but for different user has same ID.
 
 ### Compare with IPv6 addr
-IPv6 and GP addresses are interchangeable, e.g. [Persia Society](persia.giti) register its block address range by [RIPE NCC](https://www.ripe.net/publications/docs/ripe-744).
+IPv6 and GP addresses are interchangeable, but need some contract with IANA to register /16 range for at least earth planet.
 
 - **Routing Prefix** with 48bit length has very common with GP addr. Same as IPv6 first 48bit of addr that is site prefix (global unicast address) in GP addr we have 48bit (PlanetID+SocietyID) to route packets to any global society.
 - **SubNet ID** with 16bit length can be same in some way to RouterID but with 32bit length
