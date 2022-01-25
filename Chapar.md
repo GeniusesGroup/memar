@@ -60,15 +60,18 @@ A Chaparkhane device (router) with 32GB of ram easily handle all connections if 
 - Payload: Can be any upper-layer packet data that type indicates by the next header.
 
 ## Frame Types
-Chapar support **UniCast** and **BroadCast** frame and not support **MultiCast**. We strongly suggest use broadcast frames just in network discoverable mechanism like find GP network coordinators. Also to broadcast emergency messages service.
+Chapar support **UniCast** and **BroadCast** frame and not support **MultiCast**. We strongly suggest use broadcast frames just in network discoverable mechanism like find GP network coordinators. Also to broadcast emergency messages service, not to use to broadcast video channels, ...
 
-## Frame Switch
+## Switching
 
-### Blocking
-transmitting will block sender until frame transmitted successfully. Sender can be sure frame transmitted.
+### Adaptor
+When two peer connect by two different port number, one of them must be as switching adaptor. That means **usually higher hop** must add virtual switch hop to switching road. It will add one more hop port number in each chapar frame. Suggest to be addable port protocol like [SFP](https://en.wikipedia.org/wiki/Small_form-factor_pluggable_transceiver).
 
-### Non blocking
-transmitting will not block caller to be non blocking and queue frames for congestion situations.
+### Blocking Switch
+Transmitting will block sender until frame transmitted successfully. Sender can be sure frame transmitted.
+
+### Non blocking Switch
+Transmitting will not block caller to be non blocking and queue frames for congestion situations.
 A situation might be occur that a port available when a frame queued but when the time to send is come, the port broken and sender don't know about this.
 
 ## Rules
@@ -83,23 +86,36 @@ A situation might be occur that a port available when a frame queued but when th
 ## Next-Header Standard Supported Protocols
 - 0 : [sRPC - sRPC Protocol](./sRPC.md)
 - 1 : [GP - Giti Protocol](./Giti-Network.md)
-- 2 : [IPv4 - Internet Protocol v4](https://en.wikipedia.org/wiki/IPv4)
-- 3 : [IPv6 - Internet Protocol v6](https://en.wikipedia.org/wiki/IPv6)
-- 4 : [NTP - Network_Time_Protocol](https://en.wikipedia.org/wiki/Network_Time_Protocol)
+- 2 : [IPv6 - Internet Protocol v6](https://en.wikipedia.org/wiki/IPv6)
+- 3 : [NTP - Network_Time_Protocol](https://en.wikipedia.org/wiki/Network_Time_Protocol)
 
 ### Non supported [EtherType](https://en.wikipedia.org/wiki/EtherType)
 - [ARP - Address Resolution Protocol](https://en.wikipedia.org/wiki/Address_Resolution_Protocol)
+- [IPv4 - Internet Protocol v4](https://en.wikipedia.org/wiki/IPv4)
 - [NDP - Neighbor Discovery Protocol](https://en.wikipedia.org/wiki/Neighbor_Discovery_Protocol)
 - [VLANs](https://en.wikipedia.org/wiki/IEEE_802.1Q)
 
 ## Hardwares
-Chapar functions can add by switching fabric unit (SFU) in any devices by any interfaces like PCIe, .... It can have 1 to 256 wired port or 2^16(65536) wireless port. Each Chapar wireless switch device handles two hops of the frame instead of regular one hop in each switching hop. It means each wireless hot-spot can serve  2^16(65536) devices.
+Chapar functions can add by switching fabric unit (SFU) in any devices by any interfaces like PCIe, .... It can have 1 to 256 wired port or 2^16(65536) wireless port. 
 
-### Layer 1 Ports Interfaces
-offer diverse wired and wireless interfaces, for example, Ethernet(Layer1), [Power-line Communication](https://en.wikipedia.org/wiki/Power-line_communication), radio frequency(RF), RS485, RS232, ...   
-The line processing unit (LPU) provides physical interfaces connecting the SFU to external networks. The LPU processes and forwards service data. In addition, the LPU maintains and manages link protocols and forwarding information base (FIB) tables and frames congestions.
+### Core
+The line processing unit (LPU) provides physical interfaces connecting the SFU(switching fabric unit) to external networks. The LPU processes and forwards service data. In addition, the LPU maintains and manages link protocols and frames congestions.
 
-### Wireless
+### Port Types
+- RJ45 Port. RJ45 port (on 100/1000BASE Ethernet layer one) can be used in most cases.
+- SFP Port
+- SFP+ Port
+- SFP28 Port
+- QSFP+ Port
+- QSFP28 Port
+- Combo Port
+- Stack Port
+
+### Port Interfaces
+offer diverse wired and wireless interfaces, for example, Ethernet(Layer1), [Power-line Communication](https://en.wikipedia.org/wiki/Power-line_communication), radio frequency(RF), RS485, RS232, ...
+
+### Wireless Access Point
+Each Chapar wireless ap device handles two hops of the frame instead of regular one hop in each switching hop. It means each wireless ap can serve 2^16(65536) devices.
 Like other wireless technology, We must provide some dedicate channel:
 - Broadcast control channel (BCCH) to manage broadcasting for all user equipment
 - Paging control channel (PCCH) to manage paging messages --- why not page device by DTCH?????
