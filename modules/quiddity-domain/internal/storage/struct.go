@@ -1,13 +1,10 @@
 /* For license and copyright information please see LEGAL file in repository */
 
-package quiddity
+package storage
 
 import (
-	"time"
-
-	"../../libgo/json"
-	"../../libgo/protocol"
-	"../../libgo/time/utc"
+	"github.com/GeniusesGroup/libgo/protocol"
+	"github.com/GeniusesGroup/libgo/time/utc"
 )
 
 type Quiddity struct {

@@ -1,15 +1,15 @@
 /* For license and copyright information please see LEGAL file in repository */
 
-package quiddity
+package services
 
 import (
-	"../../libgo/json"
-	"../../libgo/protocol"
-	"../../libgo/syllab"
+	"github.com/GeniusesGroup/libgo/json"
+	"github.com/GeniusesGroup/libgo/protocol"
+	"github.com/GeniusesGroup/libgo/syllab"
 )
 
 /*
-	Service response structure
+	Service request structure
 */
 
 type GetRequest struct {
@@ -76,7 +76,7 @@ func (req *GetRequest) LenAsJSON() (ln int) {
 }
 
 /*
-	Service response as Syllab
+	Service request as Syllab
 */
 
 type getRequest_Syllab []byte

@@ -1,17 +1,17 @@
 /* For license and copyright information please see LEGAL file in repository */
 
-package quiddity
+package storage
 
 import (
-	"../../libgo/mediatype"
-	"../../libgo/protocol"
+	"github.com/GeniusesGroup/libgo/mediatype"
+	"github.com/GeniusesGroup/libgo/protocol"
 )
 
 var MediaType mediatype.MediaType
 
 func init() {
 	// maintype "/" [tree "."] subtype ["+" suffix]* [";" parameters]
-	MediaType.Init("domain/org.protocol.storage+syllab; name=quiddity")
+	MediaType.Init("domain/dp.protocol.storage+syllab; name=quiddity")
 	MediaType.SetInfo(protocol.Software_PreAlpha, 1599455751, "")
 	MediaType.SetDetail(protocol.LanguageEnglish, "Quiddity",
 		`Quiddity is the essence of an object and with name or title of it in human languages and recently in machine languages`,
@@ -25,4 +25,6 @@ func init() {
 		"",
 		"",
 		[]string{})
+
+	protocol.OS.RegisterMediaType(&MediaType)
 }

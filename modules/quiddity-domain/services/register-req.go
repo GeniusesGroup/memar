@@ -1,28 +1,29 @@
 /* For license and copyright information please see LEGAL file in repository */
 
-package quiddity
+package services
 
 import (
-	"../../libgo/json"
-	"../../libgo/protocol"
-	"../../libgo/syllab"
+	"github.com/GeniusesGroup/libgo/json"
+	"github.com/GeniusesGroup/libgo/protocol"
+	"github.com/GeniusesGroup/libgo/syllab"
 )
 
 /*
 	Service response structure
 */
 
+// json:notstrict
 type RegisterRequest struct {
-	quiddityID [16]byte
-	domainID   [16]byte
+	quiddityID [16]byte `json:",arrayNumber"`
+	domainID   uint64   `json:",string"` // 48
 }
 
 func (req *RegisterRequest) QuiddityID() [16]byte       { return req.quiddityID }
-func (req *RegisterRequest) DomainID() [16]byte         { return req.domainID }
+func (req *RegisterRequest) DomainID() uint64           { return req.domainID }
 func (req *RegisterRequest) SetQuiddityID(qid [16]byte) { req.quiddityID = qid }
-func (req *RegisterRequest) SetDomainID(did [16]byte)   { req.domainID = did }
+func (req *RegisterRequest) SetDomainID(did uint64)     { req.domainID = did }
 
-// Syallb codec
+// Syllab codec
 func (req *RegisterRequest) FromSyllab(payload []byte, stackIndex uint32) {
 	if uint32(len(payload)) < req.LenOfSyllabStack() {
 		err = syllab.ErrShortArrayDecode
@@ -53,19 +54,16 @@ func (req *RegisterRequest) LenAsSyllab() uint64 {
 }
 
 // JSON codec
+// "{"QuiddityID":"ABCDEFG123456789_+","Domain":"test","other":"test"}"
 func (req *RegisterRequest) FromJSON(payload []byte) (err protocol.Error) {
 	var decoder = json.DecoderUnsafeMinified{Buf: payload}
 	for err == nil {
 		var keyName = decoder.DecodeKey()
 		switch keyName {
-		case "Language":
-			var num uint32
-			num, err = decoder.DecodeUInt32()
-			req.Language = protocol.Language(num)
-		case "URI":
+		case "QuiddityID":
+			err = decoder.DecodeByteArrayAsBase64(req.quiddityID[:])
+		case "Domain":
 			req.URI, err = decoder.DecodeString()
-		case "Title":
-			req.Title, err = decoder.DecodeString()
 		default:
 			err = decoder.NotFoundKeyStrict()
 		}
@@ -103,8 +101,7 @@ func (req *RegisterRequest) LenAsJSON() (ln int) {
 
 type registerRequest_Syllab []byte
 
-/*
-	Service response as FlatBuffer
-*/
-
-type registerRequest_FlatBuffer []byte
+func (req *registerRequest_Syllab) QuiddityID() [16]byte       { return req.quiddityID }
+func (req *registerRequest_Syllab) DomainID() uint64           { return req.domainID }
+func (req *registerRequest_Syllab) SetQuiddityID(qid [16]byte) { req.quiddityID = qid }
+func (req *registerRequest_Syllab) SetDomainID(did uint64)     { req.domainID = did }
