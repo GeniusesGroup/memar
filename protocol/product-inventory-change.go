@@ -1,9 +1,9 @@
-/* For license and copyright information please see LEGAL file in repository */
+/* For license and copyright information please see the LEGAL file in the code repository */
 
 package org
 
 import (
-	"../libgo/protocol"
+	"github.com/GeniusesGroup/libgo/protocol"
 )
 
 // ProductInventoryChange indicate the domain record data fields.
@@ -15,15 +15,14 @@ type ProductInventoryChange interface {
 	Amount() int64                      // this transaction
 	Priority() uint64                   //
 	Time() protocol.Time                // save time
-	RequestID() [16]byte                // user-request domain
+	RequestID() UserRequestUUID         // user-request domain
 }
 
 type ProductInventoryChange_StorageServices interface {
-	Save(pi ProductInventoryChange) protocol.Error
+	Save(pi ProductInventoryChange) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(productID [16]byte) (numbers uint64, err protocol.Error)
-	Get(productID [16]byte, versionOffset uint64) (pi ProductInventoryChange, err protocol.Error)
-	Last(productID [16]byte) (pi ProductInventoryChange, numbers uint64, err protocol.Error)
+	Count(productID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(productID [16]byte, vo protocol.VersionOffset) (pi ProductInventoryChange, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FindByProduct(productID [16]byte, offset, limit uint64) (productIDs [][16]byte, numbers uint64, err protocol.Error)
+	FindByProduct(productID [16]byte, offset, limit uint64) (productIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
 }

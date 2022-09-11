@@ -1,23 +1,24 @@
-/* For license and copyright information please see LEGAL file in repository */
+/* For license and copyright information please see the LEGAL file in the code repository */
 
 package org
 
 import (
-	"../libgo/protocol"
+	"github.com/GeniusesGroup/libgo/protocol"
 )
 
-// CommentText indicate the comment-text domain record data fields.
+// CommentText indicate the domain record data fields.
 type CommentText interface {
-	CommentID() [16]byte // comment domain
-	Text() string        // Text With Style. HTML & CSS (No JS) is more expressive than markdown, suggest use them in article text to style text.
-	Time() protocol.Time // Save time
-	RequestID() [16]byte // user-request domain
+	CommentID() CommentUUID     // comment domain
+	Text() string               // Text With Style. HTML & CSS (No JS) is more expressive than markdown, suggest use them in article text to style text.
+	Time() protocol.Time        // save time
+	RequestID() UserRequestUUID // user-request domain
 }
 
-type CommentTextStorageServices interface {
-	Save(c CommentText) protocol.Error
+type CommentText_StorageServices interface {
+	Save(c CommentText) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(commentID [16]byte) (numbers uint64, err protocol.Error)
-	Get(commentID [16]byte, versionOffset uint64) (c CommentText, err protocol.Error)
-	Last(commentID [16]byte) (c CommentText, numbers uint64, err protocol.Error)
+	Count(commentID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(commentID [16]byte, vo protocol.VersionOffset) (c CommentText, nv protocol.NumberOfVersion, err protocol.Error)
+
+	FindByText(text string, offset, limit uint64) (commentIDs [16]byte, nv protocol.NumberOfVersion, err protocol.Error)
 }

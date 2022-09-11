@@ -1,18 +1,18 @@
-/* For license and copyright information please see LEGAL file in repository */
+/* For license and copyright information please see the LEGAL file in the code repository */
 
-package protocol
+package org
 
 import (
-	"../libgo/protocol"
-	"../libgo/time/earth"
-	"../libgo/time/utc"
+	"github.com/GeniusesGroup/libgo/protocol"
+	"github.com/GeniusesGroup/libgo/time/earth"
+	"github.com/GeniusesGroup/libgo/time/utc"
 )
 
 type OrgShiftUTC interface {
-	ShiftID() [16]byte        // quiddity domain
-	Weekdays() utc.Weekdays   // what days in weekday in utc time week this role active to provide services
-	DayHours() earth.DayHours // what hours in day in utc time week this role active to provide services
-	Type() OrgShift_Type      //
-	Time() protocol.Time      // Save time
-	RequestID() [16]byte      // user-request domain
+	ShiftID() [16]byte          // quiddity domain
+	Weekdays() utc.Weekdays     // what days in weekday in utc time week this org active to provide services
+	DayHours() earth.DayHours   // what hours in day in utc time week this org active to provide services
+	Type() OrgShift_Type        //
+	Time() protocol.Time        // save time
+	RequestID() UserRequestUUID // user-request domain
 }

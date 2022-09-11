@@ -1,22 +1,22 @@
-/* For license and copyright information please see LEGAL file in repository */
+/* For license and copyright information please see the LEGAL file in the code repository */
 
 package org
 
 import (
-	"../libgo/protocol"
+	"github.com/GeniusesGroup/libgo/protocol"
 )
 
 // DiscountUsage indicate the domain record data fields.
 type DiscountUsage interface {
-	DiscountID() [16]byte   // product domain
-	MaximumInvoice() uint64 //
-	Time() protocol.Time    // save time
-	RequestID() [16]byte    // user-request domain
+	DiscountID() [16]byte       // product domain
+	MaximumInvoice() uint64     //
+	Time() protocol.Time        // save time
+	RequestID() UserRequestUUID // user-request domain
 }
 
 type DiscountUsage_StorageServices interface {
-	Save(du DiscountUsage) (numbers uint64, err protocol.Error)
+	Save(du DiscountUsage) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(discountID [16]byte) (numbers uint64, err protocol.Error)
-	Get(discountID [16]byte, versionOffset uint64) (du DiscountUsage, numbers uint64, err protocol.Error)
+	Count(discountID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(discountID [16]byte, vo protocol.VersionOffset) (du DiscountUsage, nv protocol.NumberOfVersion, err protocol.Error)
 }

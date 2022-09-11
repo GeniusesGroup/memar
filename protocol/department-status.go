@@ -1,31 +1,30 @@
-/* For license and copyright information please see LEGAL file in repository */
+/* For license and copyright information please see the LEGAL file in the code repository */
 
 package org
 
 import (
-	"../libgo/protocol"
+	"github.com/GeniusesGroup/libgo/protocol"
 )
 
 type DepartmentStatus interface {
-	DepartmentID() [16]byte    // department domain
-	Status() Department_Status //
-	Time() protocol.Time       // Save time
-	RequestID() [16]byte       // user-request domain
+	DepartmentID() [16]byte     // department domain
+	Status() Department_Status  //
+	Time() protocol.Time        // save time
+	RequestID() UserRequestUUID // user-request domain
 }
 
 type DepartmentStatus_StorageServices interface {
-	Save(ds DepartmentStatus) (err protocol.Error)
+	Save(ds DepartmentStatus) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(departmentID [16]byte) (numbers uint64, err protocol.Error)
-	Get(departmentID [16]byte, versionOffset uint64) (ds DepartmentStatus, err protocol.Error)
-	Last(departmentID [16]byte) (ds DepartmentStatus, numbers uint64, err protocol.Error)
+	Count(departmentID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(departmentID [16]byte, vo protocol.VersionOffset) (ds DepartmentStatus, nv protocol.NumberOfVersion, err protocol.Error)
+
+	// FilterByStatus(status Department_Status, offset, limit uint64) (departmentIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
+	// protocol.EventTarget
 }
 
-type Department_Status uint8
+type Department_Status Quiddity_Status
 
 const (
-	Department_Status_Unset           Department_Status = 0
-	Department_Status_PermanentClosed Department_Status = (1 << iota)
-	Department_Status_TemporaryClosed
-	Department_Status_Blocked
+// Department_Status_ Department_Status = (Quiddity_Status_FreeFlag << iota)
 )

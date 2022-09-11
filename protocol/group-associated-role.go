@@ -1,16 +1,16 @@
-/* For license and copyright information please see LEGAL file in repository */
+/* For license and copyright information please see the LEGAL file in the code repository */
 
 package org
 
 import (
-	"../libgo/protocol"
+	"github.com/GeniusesGroup/libgo/protocol"
 )
 
 // GroupAssociatedRole indicate the domain record data fields.
 type GroupAssociatedRole interface {
-	GroupID() [16]byte     // group-status domain
-	UserID() [16]byte      // user-status domain
-	GroupRoleID() [16]byte // group-role domain
-	Time() protocol.Time   // Save time
-	RequestID() [16]byte   // user-request domain
+	GroupID() [16]byte          // group domain
+	UserID() protocol.UserID    // user domain
+	RoleID() [16]byte           // role domain
+	Time() protocol.Time        // save time
+	RequestID() UserRequestUUID // user-request domain
 }

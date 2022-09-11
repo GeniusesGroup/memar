@@ -1,9 +1,9 @@
-/* For license and copyright information please see LEGAL file in repository */
+/* For license and copyright information please see the LEGAL file in the code repository */
 
 package org
 
 import (
-	"../libgo/protocol"
+	"github.com/GeniusesGroup/libgo/protocol"
 )
 
 // FinancialTransaction indicate the domain record data fields.
@@ -13,20 +13,21 @@ type FinancialTransaction interface {
 	AccountSideID() [16]byte                // financial-account domain. or AccountPartyID
 	Reference() [16]byte                    // Any ID that user can assign to track for any purpose. It can't be nil.
 	ReferenceType() FinancialTransaction_RT //
-	Amount() protocol.AmountOfMoney         // This transaction
-	Balance() protocol.AmountOfMoney        // Account balance with this transaction
+	Amount() protocol.MoneyAmount           // This transaction
+	Balance() protocol.MoneyAmount          // Account balance with this transaction
 	Time() protocol.Time                    // save time
-	RequestID() [16]byte                    // user-request domain
+	RequestID() UserRequestUUID             // user-request domain
 }
 
+// libgo: ganjine --ShardConsistency=strict
 type FinancialTransaction_StorageServices interface {
-	Save(ft FinancialTransaction) (numbers uint64, err protocol.Error)
+	Save(ft FinancialTransaction) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(accountID [16]byte) (numbers uint64, err protocol.Error)
-	Get(accountID [16]byte, versionOffset uint64) (ft FinancialTransaction, numbers uint64, err protocol.Error)
+	Count(accountID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(accountID [16]byte, vo protocol.VersionOffset) (ft FinancialTransaction, nv protocol.NumberOfVersion, err protocol.Error)
 
 	// TODO::: is it worth to uncomment below service?
-	// FindByAccountSideID(accountID, accountSideID [16]byte, offset, limit uint64) (versionOffsets []uint64, numbers uint64, err protocol.Error)
+	// FindByAccountSideID(accountID, accountSideID [16]byte, offset, limit uint64) (versionOffsets []uint64, nv protocol.NumberOfVersion, err protocol.Error)
 }
 
 // FinancialTransaction_RT indicate FinancialTransaction record reference type
@@ -64,3 +65,15 @@ const (
 	FinancialTransaction_RT_Installment
 	FinancialTransaction_RT_Compensation
 )
+
+type FinancialTransaction_Service_Transfer_Request interface{}
+
+type (
+	FinancialTransaction_Service_Get_Request interface {
+		AccountID() [16]byte //
+	}
+)
+
+type FinancialTransaction_Service_GetByTime_Request interface{}
+
+type FinancialTransaction_Service_Find_Request interface{}

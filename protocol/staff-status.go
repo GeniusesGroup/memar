@@ -1,36 +1,35 @@
-/* For license and copyright information please see LEGAL file in repository */
+/* For license and copyright information please see the LEGAL file in the code repository */
 
 package org
 
-import "../libgo/protocol"
+import (
+	"github.com/GeniusesGroup/libgo/protocol"
+)
 
 type StaffStatus interface {
-	ID() [16]byte         // user-status domain
-	Status() Staff_Status //
-	Time() protocol.Time  // Save time
-	RequestID() [16]byte  // user-request domain
+	StaffID() [16]byte          // user domain
+	Status() Staff_Status       //
+	Time() protocol.Time        // save time
+	RequestID() UserRequestUUID // user-request domain
 }
 
-type Staff_Status uint8
+type StaffStatus_StorageServices interface {
+	Save(ss StaffStatus) (nv protocol.NumberOfVersion, err protocol.Error)
+
+	Count(staffID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(staffID [16]byte, vo protocol.VersionOffset) (ss StaffStatus, nv protocol.NumberOfVersion, err protocol.Error)
+
+	FilterByStatus(status Staff_Status, offset, limit uint64) (staffIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
+
+	// protocol.EventTarget
+}
+
+type Staff_Status Quiddity_Status
 
 const (
-	Staff_Status_Unset Staff_Status = iota
-
-	Staff_Status_Talent
-	Staff_Status_NeedHRInterview
-	Staff_Status_ApproveForHRInterview
-	Staff_Status_NeedTechnicalInterview
-	Staff_Status_ApproveForTechnicalInterview
-	Staff_Status_NeedForManagerInterview
-	Staff_Status_ApproveForManagerInterview
-	Staff_Status_NeedForChiefInterview
-	Staff_Status_ApproveForChiefInterview
-	Staff_Status_Designation
-
-	Staff_Status_Hire
+	Staff_Status_Hire = Staff_Status(Quiddity_Status_FreeFlag << iota)
 	Staff_Status_Fire
 	Staff_Status_End // death, end of contract, ...
-
-	Staff_Status_Active   // Shift
-	Staff_Status_Inactive // Shift
+	// Staff_Status_Active   // Shift
+	// Staff_Status_Inactive // Shift
 )

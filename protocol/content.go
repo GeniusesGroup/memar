@@ -1,49 +1,29 @@
-/* For license and copyright information please see LEGAL file in repository */
+/* For license and copyright information please see the LEGAL file in the code repository */
 
 package org
 
 import (
-	"../libgo/protocol"
+	"github.com/GeniusesGroup/libgo/protocol"
 )
 
+// Content indicate the comment domain record data fields.
 type Content interface {
-	QuiddityID() [16]byte       // quiddity domain. As content UUID
-	UserID() [16]byte           // user-status domain
-	Content_Type() Content_Type //
-	Time() protocol.Time        // Save time
-	RequestID() [16]byte        // user-request domain
+	ContentID() [16]byte        // quiddity domain
+	UserID() protocol.UserID    // user domain
+	ContentTypeID() [16]byte    // content-type domain
+	Time() protocol.Time        // save time
+	RequestID() UserRequestUUID // user-request domain
 }
 
 type Content_StorageServices interface {
-	Save(c Content) protocol.Error
+	Save(c Content) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(quiddityID [16]byte) (numbers uint64, err protocol.Error)
-	Get(quiddityID [16]byte, versionOffset uint64) (c Content, err protocol.Error)
-	Last(quiddityID [16]byte) (c Content, numbers uint64, err protocol.Error)
+	Count(contentID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(contentID [16]byte, vo protocol.VersionOffset) (c Content, nv protocol.NumberOfVersion, err protocol.Error)
 
-	GetIDs(offset, limit uint64) (quiddityIDs [][16]byte, numbers uint64, err protocol.Error)
-	// GetIDsByDateTime(time protocol.Time, offset, limit uint64) (quiddityIDs [][16]byte, numbers uint64, err protocol.Error)
+	GetIDs(offset, limit uint64) (contentIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
+	// GetIDsByDateTime(time protocol.Time, offset, limit uint64) (contentIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FindByUserID(userID [16]byte, offset, limit uint64) (quiddityIDs [][16]byte, numbers uint64, err protocol.Error)
+	FindByUserID(userID [16]byte, offset, limit uint64) (contentIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
+	FindByType(contentTypeID [16]byte, offset, limit uint64) (contentIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
 }
-
-type Content_Type uint16
-
-const (
-	Content_Type_Unset Content_Type = iota
-
-	Content_Type_Article
-	Content_Type_BlogPost
-
-	Content_Type_Book
-	Content_Type_Course
-	Content_Type_Tutorial
-
-	Content_Type_Album
-	Content_Type_Music
-	Content_Type_MusicVideo
-
-	Content_Type_Movie
-	Content_Type_Serial
-	Content_Type_SerialEpisode
-)

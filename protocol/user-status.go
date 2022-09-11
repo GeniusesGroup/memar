@@ -1,36 +1,33 @@
-/* For license and copyright information please see LEGAL file in repository */
+/* For license and copyright information please see the LEGAL file in the code repository */
 
 package org
 
 import (
-	"../libgo/protocol"
+	"github.com/GeniusesGroup/libgo/protocol"
 )
 
 type UserStatus interface {
-	UserID() [16]byte    // Generated unique ID for the user
-	Status() User_Status //
-	Time() protocol.Time // Save time
-	RequestID() [16]byte // user-request domain
+	UserID() protocol.UserID    // Generated unique ID for the user
+	Status() User_Status        //
+	Time() protocol.Time        // save time
+	RequestID() UserRequestUUID // user-request domain
 }
 
 type UserStatus_StorageServices interface {
-	Save(us UserStatus) protocol.Error
+	Save(us UserStatus) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(userID [16]byte) (numbers uint64, err protocol.Error)
-	Get(userID [16]byte, versionOffset uint64) (us UserStatus, err protocol.Error)
-	Last(userID [16]byte) (us UserStatus, numbers uint64, err protocol.Error)
+	Count(userID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(userID [16]byte, vo protocol.VersionOffset) (us UserStatus, nv protocol.NumberOfVersion, err protocol.Error)
 
-	GetIDs(offset, limit uint64) (userIDs [][16]byte, numbers uint64, err protocol.Error)
-	// GetIDsByDateTime(time protocol.Time, offset, limit uint64) (userIDs [][16]byte, numbers uint64, err protocol.Error)
+	GetIDs(offset, limit uint64) (userIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
+
+	// FindByTime(day utc.DayElapsed, offset, limit uint64) (userIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
+
+	// protocol.EventTarget
 }
 
-// User_Status indicate UserStatus record status
-type User_Status uint8
+type User_Status Quiddity_Status
 
-// User status
 const (
-	User_Status_Unset User_Status = iota
-	User_Status_Active
-	User_Status_Inactive
-	User_Status_Blocked
+// User_Status_ = User_Status(Quiddity_Status_FreeFlag << iota)
 )

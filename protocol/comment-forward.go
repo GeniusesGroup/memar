@@ -1,23 +1,23 @@
-/* For license and copyright information please see LEGAL file in repository */
+/* For license and copyright information please see the LEGAL file in the code repository */
 
 package org
 
 import (
-	"../libgo/protocol"
+	"github.com/GeniusesGroup/libgo/protocol"
 )
 
 // CommentForward indicate the domain record data fields.
 type CommentForward interface {
-	CommentID() [16]byte   // comment domain
-	ForwardedID() [16]byte // comment domain. or ForwardedCommentID
-	Time() protocol.Time   // Save time
-	RequestID() [16]byte   // user-request domain
+	CommentID() CommentUUID     // comment domain
+	ForwardedID() CommentUUID   // ForwardedCommentID
+	Time() protocol.Time        // save time
+	RequestID() UserRequestUUID // user-request domain
 }
 
 type CommentForward_StorageServices interface {
-	Save(cf CommentForward) protocol.Error
+	Save(cf CommentForward) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Get(commentID [16]byte) (cf CommentForward, err protocol.Error)
 
-	FindByForwardedID(forwardedID [16]byte, offset, limit uint64) (commentIDs [][16]byte, numbers uint64, err protocol.Error)
+	FindByForwardedID(forwardedID [16]byte, offset, limit uint64) (commentIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
 }

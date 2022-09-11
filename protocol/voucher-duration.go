@@ -1,9 +1,9 @@
-/* For license and copyright information please see LEGAL file in repository */
+/* For license and copyright information please see the LEGAL file in the code repository */
 
 package org
 
 import (
-	"../libgo/protocol"
+	"github.com/GeniusesGroup/libgo/protocol"
 )
 
 // VoucherDuration indicate the domain record data fields.
@@ -13,14 +13,14 @@ type VoucherDuration interface {
 	Epoch() VoucherDuration_Epoch //
 	Duration() protocol.Duration  // from Epoch()
 	Time() protocol.Time          // save time
-	RequestID() [16]byte          // user-request domain
+	RequestID() UserRequestUUID   // user-request domain
 }
 
 type VoucherDuration_StorageServices interface {
-	Save(vd VoucherDuration) (numbers uint64, err protocol.Error)
+	Save(vd VoucherDuration) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(voucherID [16]byte) (numbers uint64, err protocol.Error)
-	Get(voucherID [16]byte, versionOffset uint64) (vd VoucherDuration, numbers uint64, err protocol.Error)
+	Count(voucherID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(voucherID [16]byte, vo protocol.VersionOffset) (vd VoucherDuration, nv protocol.NumberOfVersion, err protocol.Error)
 }
 
 type VoucherDuration_Epoch uint8

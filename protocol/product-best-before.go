@@ -1,9 +1,9 @@
-/* For license and copyright information please see LEGAL file in repository */
+/* For license and copyright information please see the LEGAL file in the code repository */
 
 package org
 
 import (
-	"../libgo/protocol"
+	"github.com/GeniusesGroup/libgo/protocol"
 )
 
 // ProductBestBefore indicate the domain record data fields.
@@ -12,13 +12,12 @@ type ProductBestBefore interface {
 	ProductID() [16]byte         // product domain
 	Duration() protocol.Duration // from production time
 	Time() protocol.Time         // save time
-	RequestID() [16]byte         // user-request domain
+	RequestID() UserRequestUUID  // user-request domain
 }
 
 type ProductBestBefore_StorageServices interface {
-	Save(pb ProductBestBefore) protocol.Error
+	Save(pb ProductBestBefore) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(productID [16]byte) (numbers uint64, err protocol.Error)
-	Get(productID [16]byte, versionOffset uint64) (pb ProductBestBefore, err protocol.Error)
-	Last(productID [16]byte) (pb ProductBestBefore, numbers uint64, err protocol.Error)
+	Count(productID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(productID [16]byte, vo protocol.VersionOffset) (pb ProductBestBefore, nv protocol.NumberOfVersion, err protocol.Error)
 }

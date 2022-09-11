@@ -1,25 +1,25 @@
-/* For license and copyright information please see LEGAL file in repository */
+/* For license and copyright information please see the LEGAL file in the code repository */
 
 package org
 
 import (
-	"../libgo/protocol"
+	"github.com/GeniusesGroup/libgo/protocol"
 )
 
+// InvoiceDiscount indicate the domain record data fields.
 type InvoiceDiscount interface {
-	InvoiceID() [16]byte                // invoice-status domain
-	DiscountID() [16]byte               // discount domain
-	Discounted() protocol.AmountOfMoney //
-	Time() protocol.Time                // Save time
-	RequestID() [16]byte                // user-request domain
+	InvoiceID() [16]byte              // invoice domain
+	DiscountID() [16]byte             // discount domain
+	Discounted() protocol.MoneyAmount //
+	Time() protocol.Time              // save time
+	RequestID() UserRequestUUID       // user-request domain
 }
 
 type InvoiceDiscount_StorageServices interface {
-	Save(iv InvoiceDiscount) (err protocol.Error)
+	Save(iv InvoiceDiscount) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(invoiceID [16]byte) (numbers uint64, err protocol.Error)
-	Get(invoiceID [16]byte, versionOffset uint64) (iv InvoiceDiscount, err protocol.Error)
-	Last(invoiceID [16]byte) (iv InvoiceDiscount, numbers uint64, err protocol.Error)
+	Count(invoiceID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(invoiceID [16]byte, vo protocol.VersionOffset) (iv InvoiceDiscount, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FindByDiscountID(discountID [16]byte, offset, limit uint64) (invoiceIDs [][16]byte, numbers uint64, err protocol.Error)
+	FindByDiscountID(discountID [16]byte, offset, limit uint64) (invoiceIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
 }

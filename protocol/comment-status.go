@@ -1,37 +1,44 @@
-/* For license and copyright information please see LEGAL file in repository */
+/* For license and copyright information please see the LEGAL file in the code repository */
 
 package org
 
 import (
-	"../libgo/protocol"
+	"github.com/GeniusesGroup/libgo/protocol"
 )
 
 // CommentStatus indicate the domain record data fields.
 type CommentStatus interface {
-	CommentID() [16]byte    // comment domain
-	Status() Comment_Status //
-	Time() protocol.Time    // Save time
-	RequestID() [16]byte    // user-request domain
+	CommentID() CommentUUID     // comment domain
+	Status() Comment_Status     //
+	Time() protocol.Time        // save time
+	RequestID() UserRequestUUID // user-request domain
 }
 
 type CommentStatus_StorageServices interface {
-	Save(cs CommentStatus) protocol.Error
+	Save(cs CommentStatus) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(commentID [16]byte) (numbers uint64, err protocol.Error)
-	Get(commentID [16]byte, versionOffset uint64) (cs CommentStatus, err protocol.Error)
-	Last(commentID [16]byte) (cs CommentStatus, numbers uint64, err protocol.Error)
+	Count(commentID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(commentID [16]byte, vo protocol.VersionOffset) (cs CommentStatus, nv protocol.NumberOfVersion, err protocol.Error)
+
+	// FilterByStatus(status Comment_Status, offset, limit uint64) (commentIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
 
 	protocol.EventTarget
 }
 
-type Comment_Status uint8
+type Comment_Status Quiddity_Status
 
 const (
-	Comment_Status_Unset   Comment_Status = 0
-	Comment_Status_Created Comment_Status = (1 << iota)
-	Comment_Status_Edited
-	Comment_Status_Locked
-	Comment_Status_Hidden // use also for unpin a comment
-	Comment_Status_Deleted
-	Comment_Status_Blocked
+// Comment_Status_ = Comment_Status(Quiddity_Status_FreeFlag << iota)
+)
+
+type (
+	CommentStatus_Service_Register_Request interface {
+		CommentID() CommentUUID
+		Status() Comment_Status
+	}
+	CommentStatus_Service_Register_Response interface {
+		// OldStatus() Comment_Status
+		// NewStatus() Comment_Status
+		NumberOfVersion() protocol.NumberOfVersion
+	}
 )

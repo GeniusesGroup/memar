@@ -1,32 +1,32 @@
-/* For license and copyright information please see LEGAL file in repository */
+/* For license and copyright information please see the LEGAL file in the code repository */
 
 package org
 
 import (
-	"../libgo/protocol"
+	"github.com/GeniusesGroup/libgo/protocol"
 )
 
 // GroupStatus indicate the domain record data fields.
 type GroupStatus interface {
-	GroupID() [16]byte    // group-status domain
-	Status() Group_Status //
-	Time() protocol.Time  // Save time
-	RequestID() [16]byte  // user-request domain
+	GroupID() [16]byte          // group-status domain
+	Status() Group_Status       //
+	Time() protocol.Time        // save time
+	RequestID() UserRequestUUID // user-request domain
 }
 
 type GroupStatus_StorageServices interface {
-	Save(ur GroupStatus) protocol.Error
+	Save(gs GroupStatus) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(groupID [16]byte) (numbers uint64, err protocol.Error)
-	Get(groupID [16]byte, versionOffset uint64) (ur GroupStatus, err protocol.Error)
-	Last(groupID [16]byte) (ur GroupStatus, err protocol.Error)
+	Count(groupID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(groupID [16]byte, vo protocol.VersionOffset) (gs GroupStatus, nv protocol.NumberOfVersion, err protocol.Error)
+
+	// FilterByStatus(status Picture_Status, offset, limit uint64) (groupIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
+
+	// protocol.EventTarget
 }
 
-type Group_Status uint
+type Group_Status = Quiddity_Status
 
 const (
-	Group_Status_Unset Group_Status = iota
-	Group_Status_Registered
-	Group_Status_Removed
-	Group_Status_Blocked
+// Group_Status_ = Group_Status(Quiddity_Status_FreeFlag << iota)
 )

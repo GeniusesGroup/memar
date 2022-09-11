@@ -1,25 +1,28 @@
-/* For license and copyright information please see LEGAL file in repository */
+/* For license and copyright information please see the LEGAL file in the code repository */
 
 package org
 
 import (
-	"../libgo/protocol"
+	"github.com/GeniusesGroup/libgo/protocol"
 )
 
+// InvoiceVoucher indicate the domain record data fields.
+// This domain will let users redeem their vouchers and track vouchers rules.
 type InvoiceVoucher interface {
-	InvoiceID() [16]byte                // invoice-status domain
-	VoucherID() [16]byte                // voucher domain
-	Discounted() protocol.AmountOfMoney //
-	Time() protocol.Time                // Save time
-	RequestID() [16]byte                // user-request domain
+	InvoiceID() [16]byte              // invoice domain
+	VoucherID() [16]byte              // voucher domain
+	Discounted() protocol.MoneyAmount //
+	Time() protocol.Time              // save time
+	RequestID() UserRequestUUID       // user-request domain
 }
 
 type InvoiceVoucher_StorageServices interface {
-	Save(iv InvoiceVoucher) (err protocol.Error)
+	Save(iv InvoiceVoucher) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(invoiceID [16]byte) (numbers uint64, err protocol.Error)
-	Get(invoiceID [16]byte, versionOffset uint64) (iv InvoiceVoucher, err protocol.Error)
-	Last(invoiceID [16]byte) (iv InvoiceVoucher, numbers uint64, err protocol.Error)
+	Count(invoiceID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(invoiceID [16]byte, vo protocol.VersionOffset) (iv InvoiceVoucher, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FindByVoucherID(voucherID [16]byte, offset, limit uint64) (invoiceIDs [][16]byte, numbers uint64, err protocol.Error)
+	FindByVoucherID(voucherID [16]byte, offset, limit uint64) (invoiceIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
+
+	// protocol.EventTarget
 }

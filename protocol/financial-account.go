@@ -1,29 +1,33 @@
-/* For license and copyright information please see LEGAL file in repository */
+/* For license and copyright information please see the LEGAL file in the code repository */
 
 package org
 
 import (
-	"../libgo/protocol"
+	"github.com/GeniusesGroup/libgo/protocol"
 )
+
+type FinancialAccountUUID = protocol.UUID
 
 // FinancialAccount indicate the domain record data fields.
 type FinancialAccount interface {
-	AccountID() [16]byte                // quiddity domain?
-	Currency() [16]byte                 // financial-currency
-	UserID() [16]byte                   // user domain
-	MoneySettlementReference() [16]byte // user domain. can be any org or society user.
-	Time() protocol.Time                // save time
-	RequestID() [16]byte                // user-request domain
+	AccountID() FinancialAccountUUID //
+	Currency() [16]byte              // financial-currency
+	UserID() protocol.UserID         // user domain
+	SettlementAccount() [16]byte     // financial-account domain.
+	SettlementReference() [16]byte   // user domain. MoneySettlementReference can be any org or society user.
+	Time() protocol.Time             // save time
+	RequestID() UserRequestUUID      // user-request domain
 }
 
 type FinancialAccount_StorageServices interface {
-	Save(fa FinancialAccount) (numbers uint64, err protocol.Error)
+	Save(fa FinancialAccount) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(accountID [16]byte) (numbers uint64, err protocol.Error)
-	Get(accountID [16]byte, versionOffset uint64) (fa FinancialAccount, numbers uint64, err protocol.Error)
+	Count(accountID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(accountID [16]byte, vo protocol.VersionOffset) (fa FinancialAccount, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FindByUserID(userID [16]byte, offset, limit uint64) (accountIDs [][16]byte, numbers uint64, err protocol.Error)
+	FindByUser(userID [16]byte, offset, limit uint64) (accountIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
+	FindBySettlementAccount(SettlementAccount [16]byte, offset, limit uint64) (accountIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
 
-	ListUserCurrencies(userID [16]byte, offset, limit uint64) (currency [][16]byte, numbers uint64, err protocol.Error)
-	ListUserSettlementReferences(userID [16]byte, offset, limit uint64) (moneySettlementReferences [][16]byte, numbers uint64, err protocol.Error)
+	ListUserCurrencies(userID [16]byte, offset, limit uint64) (currency [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
+	ListUserSettlementReferences(userID [16]byte, offset, limit uint64) (moneySettlementReferences [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
 }

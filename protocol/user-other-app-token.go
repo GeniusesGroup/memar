@@ -1,14 +1,15 @@
-/* For license and copyright information please see LEGAL file in repository */
+/* For license and copyright information please see the LEGAL file in the code repository */
 
 package org
 
 import (
-	"../libgo/protocol"
+	"github.com/GeniusesGroup/libgo/protocol"
 )
 
 type UserOtherAppToken interface {
-	UserOtherAppID() [16]byte // user-other-app domain
-	Token() string            // DelegateToken , AccessToken
-	Time() protocol.Time      // Save time
-	RequestID() [16]byte      // user-request domain
+	UserID() protocol.UserID    // user domain
+	OrgID() protocol.UserID     // user domain
+	Token() []byte              // DelegateToken, AccessToken
+	Time() protocol.Time        // save time
+	RequestID() UserRequestUUID // user-request domain
 }

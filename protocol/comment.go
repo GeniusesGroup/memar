@@ -1,37 +1,31 @@
-/* For license and copyright information please see LEGAL file in repository */
+/* For license and copyright information please see the LEGAL file in the code repository */
 
 package org
 
 import (
-	"../libgo/protocol"
+	"github.com/GeniusesGroup/libgo/protocol"
 )
 
+type CommentUUID = protocol.UUID
+
 // Comment indicate the comment domain record data fields.
-// each comment is immutable record and so use version mechanism to chain comments in a group.
 type Comment interface {
-	GroupID() [16]byte          // group domain
-	CommentID() [16]byte        //
-	ReplyTo() [16]byte          // other CommentID. Comment can be reply to other comment in the same group.
-	UserID() [16]byte           // user-status domain
+	CommentID() CommentUUID     //
+	ReplyTo() CommentUUID       // Comment can be reply to other comment in the same group.
+	UserID() protocol.UserID    // user domain
+	Priority() uint64           //
 	Type() Comment_Type         //
-	Settings() Comment_Settings //
-	Time() protocol.Time        // Save time
-	RequestID() [16]byte        // user-request domain
+	Time() protocol.Time        // save time
+	RequestID() UserRequestUUID // user-request domain
 }
 
 type Comment_StorageServices interface {
-	Save(c Comment) protocol.Error
+	Save(c Comment) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(groupID [16]byte) (numbers uint64, err protocol.Error)
-	Get(groupID [16]byte, versionOffset uint64) (c Comment, err protocol.Error)
-	Last(groupID [16]byte) (c Comment, numbers uint64, err protocol.Error)
+	Count(commentID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(commentID [16]byte, vo protocol.VersionOffset) (c Comment, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FindByReplyTo(groupID [16]byte, commentID [16]byte, offset, limit uint64) (versionOffsets []uint64, numbers uint64, err protocol.Error)
-	FindByUserID(groupID [16]byte, userID [16]byte, offset, limit uint64) (versionOffsets []uint64, numbers uint64, err protocol.Error)
-
-	ListUserGroups(userID [16]byte, offset, limit uint64) (ids [][16]byte, numbers uint64, err protocol.Error)
-
-	protocol.EventTarget
+	FindByReplyTo(replyTo [16]byte, offset, limit uint64) (commentIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
 }
 
 type Comment_Type uint32
@@ -40,8 +34,10 @@ const (
 	Comment_Type_Unset Comment_Type = 0
 	Comment_Type_Text  Comment_Type = (1 << iota)
 	Comment_Type_Voice
-	Comment_Type_Call
 	Comment_Type_File
+
+	Comment_Type_Call
+	Comment_Type_Email
 
 	Comment_Type_Image
 	Comment_Type_Video
@@ -59,10 +55,24 @@ const (
 	Comment_Type_Forward // Retweet, Share, ...
 )
 
-type Comment_Settings uint32
+/*
+	Business Services
+*/
 
-const (
-	Comment_Settings_Unset        Comment_Settings = 0
-	Comment_Settings_PreviewLinks Comment_Settings = (1 << iota) // Render web links as small widget or not
-	Comment_Settings_Forwardable                                 // Allow to forward it
+type (
+	Comment_Service_Register_Request interface {
+		GroupID() [16]byte
+		ReplyTo() [16]byte
+		UserID() protocol.UserID
+		Type() Comment_Type
+		Settings() Comment_Settings
+	}
+	Comment_Service_Register_Response interface {
+		CommentID() CommentUUID
+		NumberOfVersion() protocol.NumberOfVersion
+	}
 )
+
+/*
+	Errors
+*/

@@ -1,26 +1,26 @@
-/* For license and copyright information please see LEGAL file in repository */
+/* For license and copyright information please see the LEGAL file in the code repository */
 
 package org
 
 import (
-	"../libgo/protocol"
+	"github.com/GeniusesGroup/libgo/protocol"
 )
 
 // VoucherStatus indicate the domain record data fields.
 type VoucherStatus interface {
-	VoucherID() [16]byte    //
-	Status() Voucher_Status //
-	Time() protocol.Time    // save time
-	RequestID() [16]byte    // user-request domain
+	VoucherID() [16]byte        //
+	Status() Voucher_Status     //
+	Time() protocol.Time        // save time
+	RequestID() UserRequestUUID // user-request domain
 }
 
 type VoucherStatus_StorageServices interface {
-	Save(vs VoucherStatus) (numbers uint64, err protocol.Error)
+	Save(vs VoucherStatus) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(voucherID [16]byte) (numbers uint64, err protocol.Error)
-	Get(voucherID [16]byte, versionOffset uint64) (vs VoucherStatus, numbers uint64, err protocol.Error)
+	Count(voucherID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(voucherID [16]byte, vo protocol.VersionOffset) (vs VoucherStatus, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FilterByStatus(status Voucher_Status, offset, limit uint64) (voucherIDs [][16]byte, numbers uint64, err protocol.Error)
+	FilterByStatus(status Voucher_Status, offset, limit uint64) (voucherIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
 }
 
 type Voucher_Status Quiddity_Status

@@ -1,21 +1,55 @@
-/* For license and copyright information please see LEGAL file in repository */
+/* For license and copyright information please see the LEGAL file in the code repository */
 
 package org
 
-// PersonPassword indicate the person-password domain record data fields.
+import (
+	"github.com/GeniusesGroup/libgo/protocol"
+)
+
+// PersonPassword indicate the domain record data fields.
+// A person can decide to don't register password and deny authenticate by password.
 type PersonPassword interface {
-	PersonID() [16]byte // user-status domain
-	PasswordHash() []byte
-	Status() PersonPasswordStatus
-	RequestID() [16]byte // user-request domain
+	PersonID() protocol.UserID     // user domain
+	PasswordHash() []byte          //
+	Status() PersonPassword_Status //
+	RequestID() UserRequestUUID    // user-request domain
 }
 
-// PersonPasswordStatus indicate PersonPassword record status
-type PersonPasswordStatus uint8
+type PersonPassword_StorageServices interface {
+	Save(pp PersonPassword) (nv protocol.NumberOfVersion, err protocol.Error)
 
-// PersonPasswordStatus status
+	Count(personID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(personID [16]byte, vo protocol.VersionOffset) (pp PersonPassword, nv protocol.NumberOfVersion, err protocol.Error)
+}
+
+// PersonPassword_Status indicate PersonPassword record status
+type PersonPassword_Status Quiddity_Status
+
+// PersonPassword statuses
 const (
-	PersonPasswordStatus_Unset              PersonPasswordStatus = 0
-	PersonPasswordStatus_ForceUse2Factor    PersonPasswordStatus = (1 << iota) // authenticate person with Password + OTP
-	PersonPasswordStatus_MustChangePassword                                    // user must change password and otp key(if enabled) for some reason
+	// authenticate person with Password + OTP
+	PersonPassword_Status_ForceUse2Factor = PersonPassword_Status(Quiddity_Status_FreeFlag << iota)
+	// user must change password and otp key(if enabled) for some reason
+	PersonPassword_Status_MustChangePassword
+	// user can't use or decide to prevent authenticate via password with or without OTP.
+	PersonPassword_Status_DenyPasswordAuthentication
 )
+
+type PersonPassword_Service_SendResetToken_Request interface {
+	How() uint8 // sms, email, ...
+}
+type PersonPassword_Service_SendResetToken_Response interface {
+	Token() []byte // include Token&ExpireIn with signature by domain key.
+}
+
+type PersonPassword_Service_Register_Request interface {
+	PasswordHash() []byte
+}
+
+type PersonPassword_Service_Confirm_Request interface {
+	PersonID() protocol.UserID
+	PasswordHash() []byte
+}
+type PersonPassword_Service_Confirm_Response interface {
+	Status() PersonPassword_Status
+}

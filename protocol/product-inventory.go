@@ -1,36 +1,36 @@
-/* For license and copyright information please see LEGAL file in repository */
+/* For license and copyright information please see the LEGAL file in the code repository */
 
 package org
 
 import (
-	"../libgo/protocol"
+	"github.com/GeniusesGroup/libgo/protocol"
 )
 
 // ProductInventory indicate the domain record data fields.
 // ProductInventory or good stock
 type ProductInventory interface {
 	ProductID() [16]byte                // product domain
+	OrgID() protocol.UserID             // OwnerID
 	BuildingLocationID() [16]byte       // building-location domain
 	ReferenceID() [16]byte              // Depend on ReferenceType()
 	ReferenceType() ProductInventory_RT //
 	Amount() int64                      // this transaction
 	Stock() int64                       // overall in each location
 	Time() protocol.Time                // save time
-	RequestID() [16]byte                // user-request domain
+	RequestID() UserRequestUUID         // user-request domain
 }
 
 type ProductInventory_StorageService interface {
-	Save(p ProductInventory) (err protocol.Error)
+	Save(p ProductInventory) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Lock(productID, buildingLocationID [16]byte) (p ProductInventory, err protocol.Error)
-	Unlock(p ProductInventory) (err protocol.Error)
+	Unlock(p ProductInventory) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(productID, buildingLocationID [16]byte) (numbers uint64, err protocol.Error)
-	Get(productID, buildingLocationID [16]byte, versionOffset uint64) (p ProductInventory, err protocol.Error)
-	Last(productID, buildingLocationID [16]byte) (p ProductInventory, numbers uint64, err protocol.Error)
+	Count(productID, buildingLocationID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(productID, buildingLocationID [16]byte, vo protocol.VersionOffset) (p ProductInventory, nv protocol.NumberOfVersion, err protocol.Error)
 
-	ListProductIDs(buildingLocationID [16]byte, offset, limit uint64) (productIDs [][16]byte, numbers uint64, err protocol.Error)
-	ListBuildingLocationIDs(productID [16]byte, offset, limit uint64) (buildingLocationIDs [][16]byte, numbers uint64, err protocol.Error)
+	ListProductIDs(buildingLocationID [16]byte, offset, limit uint64) (productIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
+	ListBuildingLocationIDs(productID [16]byte, offset, limit uint64) (buildingLocationIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
 }
 
 type ProductInventory_RT uint8

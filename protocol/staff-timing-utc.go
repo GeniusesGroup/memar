@@ -1,18 +1,25 @@
-/* For license and copyright information please see LEGAL file in repository */
+/* For license and copyright information please see the LEGAL file in the code repository */
 
-package protocol
+package org
 
 import (
-	"../libgo/protocol"
-	"../libgo/time/earth"
-	"../libgo/time/utc"
+	"github.com/GeniusesGroup/libgo/protocol"
+	"github.com/GeniusesGroup/libgo/time/earth"
+	"github.com/GeniusesGroup/libgo/time/utc"
 )
 
 type StaffTimingUTC interface {
-	StaffID() [16]byte        // staff-status domain
-	Week() utc.WeekElapsed    //
-	Weekdays() utc.Weekdays   // what days in weekday in utc time week allow to use this product
-	DayHours() earth.DayHours // what hours in a day this role active to provide services
-	Time() protocol.Time      // Save time
-	RequestID() [16]byte      // user-request domain
+	StaffID() [16]byte          // staff domain
+	ShiftID() [16]byte          // org-shift domain
+	Day() utc.DayElapsed        //
+	DayHours() earth.DayHours   // what hours in a day this staff must active to provide services or do projects
+	Time() protocol.Time        // save time
+	RequestID() UserRequestUUID // user-request domain
+}
+
+type StaffTimingUTC_StorageServices interface {
+	Save(st StaffTimingUTC) (nv protocol.NumberOfVersion, err protocol.Error)
+
+	Count(staffID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(staffID [16]byte, vo protocol.VersionOffset) (st StaffTimingUTC, nv protocol.NumberOfVersion, err protocol.Error)
 }

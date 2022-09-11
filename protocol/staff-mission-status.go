@@ -1,25 +1,34 @@
-/* For license and copyright information please see LEGAL file in repository */
+/* For license and copyright information please see the LEGAL file in the code repository */
 
-package protocol
+package org
 
 import (
-	"../libgo/protocol"
-	"../libgo/time/utc"
+	"github.com/GeniusesGroup/libgo/protocol"
+	"github.com/GeniusesGroup/libgo/time/utc"
 )
 
 type StaffMissionStatus interface {
-	StaffID() [16]byte           // staff-status domain
+	StaffID() [16]byte           // staff domain
 	Day() utc.DayElapsed         //
 	Status() StaffMission_Status //
-	Time() protocol.Time         // Save time
-	RequestID() [16]byte         // user-request domain
+	Time() protocol.Time         // save time
+	RequestID() UserRequestUUID  // user-request domain
 }
 
-type StaffMission_Status uint8
+type StaffMissionStatus_StorageServices interface {
+	Save(gs StaffMissionStatus) (nv protocol.NumberOfVersion, err protocol.Error)
+
+	Count(staffID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(staffID [16]byte, vo protocol.VersionOffset) (gs StaffMissionStatus, nv protocol.NumberOfVersion, err protocol.Error)
+
+	// FilterByStatus(status StaffMission_Status, offset, limit uint64) (staffIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
+
+	// protocol.EventTarget
+}
+
+type StaffMission_Status Quiddity_Status
 
 const (
-	StaffMission_Status_Unset StaffMission_Status = iota
-	StaffMission_Status_Changed
-	StaffMission_Status_NeedManagerAprove
+	StaffMission_Status_NeedManagerApprove = StaffMission_Status(Quiddity_Status_FreeFlag << iota)
 	StaffMission_Status_ManagerApproved
 )

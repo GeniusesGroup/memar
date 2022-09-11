@@ -1,24 +1,24 @@
-/* For license and copyright information please see LEGAL file in repository */
+/* For license and copyright information please see the LEGAL file in the code repository */
 
 package org
 
 import (
-	"../libgo/protocol"
+	"github.com/GeniusesGroup/libgo/protocol"
 )
 
 // VoucherCategory indicate the domain record data fields.
 // Use to restrict the voucher on specific category.
 type VoucherCategory interface {
-	VoucherID() [16]byte  // voucher domain
-	Each() uint8          // Each time use
-	CategoryID() [16]byte // category domain
-	Time() protocol.Time  // save time
-	RequestID() [16]byte  // user-request domain
+	VoucherID() [16]byte        // voucher domain
+	Each() uint8                // Each time use
+	CategoryID() [16]byte       // category domain
+	Time() protocol.Time        // save time
+	RequestID() UserRequestUUID // user-request domain
 }
 
 type VoucherCategory_StorageServices interface {
-	Save(vc VoucherCategory) (numbers uint64, err protocol.Error)
+	Save(vc VoucherCategory) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(voucherID [16]byte) (numbers uint64, err protocol.Error)
-	Get(voucherID [16]byte, versionOffset uint64) (vc VoucherCategory, numbers uint64, err protocol.Error)
+	Count(voucherID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(voucherID [16]byte, vo protocol.VersionOffset) (vc VoucherCategory, nv protocol.NumberOfVersion, err protocol.Error)
 }

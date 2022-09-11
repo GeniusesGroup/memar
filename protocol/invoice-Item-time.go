@@ -1,9 +1,9 @@
-/* For license and copyright information please see LEGAL file in repository */
+/* For license and copyright information please see the LEGAL file in the code repository */
 
 package org
 
 import (
-	"../libgo/protocol"
+	"github.com/GeniusesGroup/libgo/protocol"
 )
 
 // InvoiceItemTime indicate the domain record data fields.
@@ -12,14 +12,14 @@ type InvoiceItemTime interface {
 	ProductID() [16]byte        // product domain
 	Type() InvoiceItemTime_Type //
 	Time() protocol.Time        // save time
-	RequestID() [16]byte        // user-request domain
+	RequestID() UserRequestUUID // user-request domain
 }
 
 type InvoiceItemTime_StorageServices interface {
-	Save(iit InvoiceItemTime) (err protocol.Error)
+	Save(iit InvoiceItemTime) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(invoiceID [16]byte) (numbers uint64, err protocol.Error)
-	Get(invoiceID [16]byte, versionOffset uint64) (iit InvoiceItemTime, err protocol.Error)
+	Count(invoiceID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(invoiceID [16]byte, vo protocol.VersionOffset) (iit InvoiceItemTime, err protocol.Error)
 }
 
 type InvoiceItemTime_Type uint8

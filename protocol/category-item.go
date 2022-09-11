@@ -1,29 +1,29 @@
-/* For license and copyright information please see LEGAL file in repository */
+/* For license and copyright information please see the LEGAL file in the code repository */
 
 package org
 
 import (
-	"../libgo/protocol"
+	"github.com/GeniusesGroup/libgo/protocol"
 )
 
 type CategoryItem interface {
-	ItemID() [16]byte     // any domain usually product, content, ... domain
-	ItemDomainID() uint64 // Domain MediatypeID
-	CategoryID() [16]byte // category domain
-	Time() protocol.Time  // Save time
-	RequestID() [16]byte  // user-request domain
+	CategoryID() [16]byte       // category domain
+	Priority() uint64           //
+	ItemID() [16]byte           // any domain usually product, content, ... domain
+	Time() protocol.Time        // save time
+	RequestID() UserRequestUUID // user-request domain
 }
 
 type CategoryItem_StorageServices interface {
-	Save(ci CategoryItem) (err protocol.Error)
+	Save(ci CategoryItem) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(itemID [16]byte) (numbers uint64, err protocol.Error)
-	Get(itemID [16]byte, versionOffset uint64) (ci CategoryItem, err protocol.Error)
-	Last(itemID [16]byte) (ci CategoryItem, numbers uint64, err protocol.Error)
+	Count(categoryID [16]byte, priority uint64) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(categoryID [16]byte, priority uint64, vo protocol.VersionOffset) (ci CategoryItem, nv protocol.NumberOfVersion, err protocol.Error)
 
-	// TODO::: bad scenario: one admin made 90% discount for a product category, other admin assign a product to that category,
-	// after buy a lot of categorized product, it will delete the product category.
-	Delete(itemID [16]byte) (err protocol.Error)
-
-	FindByCategoryID(categoryID [16]byte, offset, limit uint64) (itemIDs [][16]byte, numbers uint64, err protocol.Error)
+	ListCategories(itemID [16]byte, offset, limit uint64) (categoryIDs [16]byte, nv protocol.NumberOfVersion, err protocol.Error)
+	ListPriorities(itemID [16]byte, categoryID [16]byte, offset, limit uint64) (priorities []uint64, nv protocol.NumberOfVersion, err protocol.Error)
 }
+
+// services:
+// Last(categoryID [16]byte, priority uint64) (ci CategoryItem, nv protocol.NumberOfVersion, err protocol.Error)
+// ListItems(categoryID [16]byte, offset, limit uint64) (items [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)

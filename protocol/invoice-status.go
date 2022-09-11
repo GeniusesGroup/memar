@@ -1,32 +1,31 @@
-/* For license and copyright information please see LEGAL file in repository */
+/* For license and copyright information please see the LEGAL file in the code repository */
 
 package org
 
 import (
-	"../libgo/protocol"
+	"github.com/GeniusesGroup/libgo/protocol"
 )
 
 // InvoiceStatus indicate the domain record data fields.
 type InvoiceStatus interface {
-	InvoiceID() [16]byte    // invoice-status domain
-	Status() Invoice_Status //
-	Time() protocol.Time    // save time
-	RequestID() [16]byte    // user-request domain
+	InvoiceID() [16]byte        // invoice-status domain
+	Status() Invoice_Status     //
+	Time() protocol.Time        // save time
+	RequestID() UserRequestUUID // user-request domain
 }
 
 type InvoiceStatus_StorageServices interface {
-	Save(is InvoiceStatus) (err protocol.Error)
+	Save(is InvoiceStatus) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(invoiceID [16]byte) (numbers uint64, err protocol.Error)
-	Get(invoiceID [16]byte, versionOffset uint64) (is InvoiceStatus, err protocol.Error)
-	Last(invoiceID [16]byte) (is InvoiceStatus, numbers uint64, err protocol.Error)
+	Count(invoiceID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(invoiceID [16]byte, vo protocol.VersionOffset) (is InvoiceStatus, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FindByStatus(status Invoice_Status, offset, limit uint64) (invoiceIDs [][16]byte, numbers uint64, err protocol.Error)
+	FindByStatus(status Invoice_Status, offset, limit uint64) (invoiceIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
 
 	protocol.EventTarget
 }
 
-type Invoice_Status Quiddity_Status
+type Invoice_Status = Quiddity_Status
 
 const (
 	// cancelled : Indicates that you have cancelled the invoice. Though you can view the cancelled invoice,

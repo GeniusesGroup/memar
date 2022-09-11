@@ -1,19 +1,19 @@
-/* For license and copyright information please see LEGAL file in repository */
+/* For license and copyright information please see the LEGAL file in the code repository */
 
 package org
 
 import (
-	"../libgo/protocol"
+	"github.com/GeniusesGroup/libgo/protocol"
 )
 
 // UserPublicKey indicate the domain record data fields.
 type UserPublicKey interface {
-	UserID() [16]byte             // user-status domain
+	UserID() protocol.UserID      // user domain
 	PublicKey() []byte            // suggest use DER format
-	Issuer() [16]byte             // user-status domain. Use to get notify about status of the PK e.g. revoked notification, ...
+	Issuer() [16]byte             // user domain. Use to get notify about status of the PK e.g. revoked notification, ...
 	Status() UserPublicKey_Status //
-	Time() protocol.Time          // Save time
-	RequestID() [16]byte          // user-request domain
+	Time() protocol.Time          // save time
+	RequestID() UserRequestUUID   // user-request domain
 }
 
 // UserPublicKey_Status use to indicate UserPublicKey record status

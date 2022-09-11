@@ -1,25 +1,24 @@
-/* For license and copyright information please see LEGAL file in repository */
+/* For license and copyright information please see the LEGAL file in the code repository */
 
 package org
 
 import (
-	"../libgo/math"
-	"../libgo/protocol"
+	"github.com/GeniusesGroup/libgo/protocol"
 )
 
 // VoucherValue indicate the domain record data fields.
 type VoucherValue interface {
-	VoucherID() [16]byte           // voucher domain
-	Each() uint8                   // Each time use
-	Percentage() math.PerMyriad    // Max discount percentage per use
-	Price() protocol.AmountOfMoney // Max discount price per use
-	Time() protocol.Time           // save time
-	RequestID() [16]byte           // user-request domain
+	VoucherID() [16]byte            // voucher domain
+	Each() uint8                    // Each time use
+	Percentage() protocol.PerMyriad // Max discount percentage per use
+	Price() protocol.MoneyAmount    // Max discount price per use
+	Time() protocol.Time            // save time
+	RequestID() UserRequestUUID     // user-request domain
 }
 
 type VoucherValue_StorageServices interface {
-	Save(vv VoucherValue) (numbers uint64, err protocol.Error)
+	Save(vv VoucherValue) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(voucherID [16]byte) (numbers uint64, err protocol.Error)
-	Get(voucherID [16]byte, versionOffset uint64) (vv VoucherValue, numbers uint64, err protocol.Error)
+	Count(voucherID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(voucherID [16]byte, vo protocol.VersionOffset) (vv VoucherValue, nv protocol.NumberOfVersion, err protocol.Error)
 }

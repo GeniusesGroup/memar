@@ -1,27 +1,26 @@
-/* For license and copyright information please see LEGAL file in repository */
+/* For license and copyright information please see the LEGAL file in the code repository */
 
 package org
 
 import (
-	"../libgo/protocol"
+	"github.com/GeniusesGroup/libgo/protocol"
 )
 
 // ProductProvider indicate the domain record data fields.
 type ProductProviderStaff interface {
-	ProductID() [16]byte // product domain
-	StaffID() [16]byte   // staff domain
-	Time() protocol.Time // save time
-	RequestID() [16]byte // user-request domain
+	ProductID() [16]byte        // product domain
+	StaffID() [16]byte          // staff domain
+	Time() protocol.Time        // save time
+	RequestID() UserRequestUUID // user-request domain
 }
 
 type ProductProviderStaff_StorageServices interface {
-	Save(pp ProductProviderStaff) protocol.Error
+	Save(pp ProductProviderStaff) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(productID [16]byte) (numbers uint64, err protocol.Error)
-	Get(productID [16]byte, versionOffset uint64) (pp ProductProviderStaff, err protocol.Error)
-	Last(productID [16]byte) (pp ProductProviderStaff, numbers uint64, err protocol.Error)
+	Count(productID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(productID [16]byte, vo protocol.VersionOffset) (pp ProductProviderStaff, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FindByStaff(staffID [16]byte, offset, limit uint64) (productIDs [][16]byte, numbers uint64, err protocol.Error)
+	FindByStaff(staffID [16]byte, offset, limit uint64) (productIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
 }
 
 // related UserIDs by StaffID use to get Coordinate(domain)

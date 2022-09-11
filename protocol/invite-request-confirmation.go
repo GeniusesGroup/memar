@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+package org
+
+import (
+	"github.com/GeniusesGroup/libgo/protocol"
+)
+
+// InviteRequestConfirmation indicate the domain record data fields.
+type InviteRequestConfirmation interface {
+	InviteID() InviteUUID                     //
+	AccepterID() protocol.UserID              // user domain
+	Status() InviteRequestConfirmation_Status //
+	Time() protocol.Time                      // save time
+	RequestID() UserRequestUUID               // user-request domain
+}
+
+type InviteRequestConfirmation_Status uint8
+
+const (
+	InviteRequestConfirmation_Status_Unset    InviteRequestConfirmation_Status = iota
+	InviteRequestConfirmation_Status_OnHold                                    // GUI base
+	InviteRequestConfirmation_Status_Accepted                                  //
+	InviteRequestConfirmation_Status_Rejected                                  //
+	InviteRequestConfirmation_Status_Expired                                   // GUI base
+)

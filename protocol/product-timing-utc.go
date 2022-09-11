@@ -1,25 +1,24 @@
-/* For license and copyright information please see LEGAL file in repository */
+/* For license and copyright information please see the LEGAL file in the code repository */
 
 package org
 
 import (
-	"../libgo/protocol"
-	"../libgo/time/earth"
-	"../libgo/time/utc"
+	"github.com/GeniusesGroup/libgo/protocol"
+	"github.com/GeniusesGroup/libgo/time/earth"
+	"github.com/GeniusesGroup/libgo/time/utc"
 )
 
 type ProductTimingUTC interface {
-	ProductID() [16]byte      // product domain
-	Day() utc.DayElapsed      //
-	DayHours() earth.DayHours // what hours in a day this service active to provide services
-	Time() protocol.Time      // save time
-	RequestID() [16]byte      // user-request domain
+	ProductID() ProductUUID     //
+	Day() utc.DayElapsed        //
+	DayHours() earth.DayHours   // what hours in a day this service active to provide services
+	Time() protocol.Time        // save time
+	RequestID() UserRequestUUID // user-request domain
 }
 
 type ProductTimingUTC_StorageServices interface {
-	Save(pt ProductTimingUTC) protocol.Error
+	Save(pt ProductTimingUTC) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(productID [16]byte) (numbers uint64, err protocol.Error)
-	Get(productID [16]byte, versionOffset uint64) (pt ProductTimingUTC, err protocol.Error)
-	Last(productID [16]byte) (pt ProductTimingUTC, numbers uint64, err protocol.Error)
+	Count(productID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(productID [16]byte, vo protocol.VersionOffset) (pt ProductTimingUTC, nv protocol.NumberOfVersion, err protocol.Error)
 }

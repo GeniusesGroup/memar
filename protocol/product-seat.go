@@ -1,27 +1,26 @@
-/* For license and copyright information please see LEGAL file in repository */
+/* For license and copyright information please see the LEGAL file in the code repository */
 
 package org
 
 import (
-	"../libgo/protocol"
+	"github.com/GeniusesGroup/libgo/protocol"
 )
 
 // ProductSeat indicate the domain record data fields.
 type ProductSeat interface {
-	ProductID() [16]byte    // product domain
-	SeatCapacity() uint64   // max seat number
-	Type() ProductSeat_Type //
-	MapID() [16]byte        // object domain. to show background and rows and seats. suggest use SVG format
-	Time() protocol.Time    // save time
-	RequestID() [16]byte    // user-request domain
+	ProductID() [16]byte        // product domain
+	SeatCapacity() uint64       // max seat number
+	Type() ProductSeat_Type     //
+	MapID() [16]byte            // object domain. to show background and rows and seats. suggest use SVG format
+	Time() protocol.Time        // save time
+	RequestID() UserRequestUUID // user-request domain
 }
 
 type ProductSeat_StorageServices interface {
-	Save(ps ProductSeat) protocol.Error
+	Save(ps ProductSeat) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(productID [16]byte) (numbers uint64, err protocol.Error)
-	Get(productID [16]byte, versionOffset uint64) (ps ProductSeat, err protocol.Error)
-	Last(productID [16]byte) (ps ProductSeat, numbers uint64, err protocol.Error)
+	Count(productID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(productID [16]byte, vo protocol.VersionOffset) (ps ProductSeat, nv protocol.NumberOfVersion, err protocol.Error)
 }
 
 type ProductSeat_Type uint8

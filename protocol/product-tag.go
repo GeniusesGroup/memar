@@ -1,25 +1,34 @@
-/* For license and copyright information please see LEGAL file in repository */
+/* For license and copyright information please see the LEGAL file in the code repository */
 
 package org
 
 import (
-	"../libgo/protocol"
+	"github.com/GeniusesGroup/libgo/protocol"
 )
 
 // ProductTag indicate the domain record data fields.
 type ProductTag interface {
-	Tag() string         //
-	ProductID() [16]byte // product domain
-	Time() protocol.Time // save time
-	RequestID() [16]byte // user-request domain
+	ProductID() [16]byte        // product domain
+	Tag() string                //
+	Status() ProductTag_Status  //
+	Time() protocol.Time        // save time
+	RequestID() UserRequestUUID // user-request domain
 }
 
 type ProductTag_StorageServices interface {
-	Save(pt ProductTag) protocol.Error
+	Save(pt ProductTag) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(productID [16]byte) (numbers uint64, err protocol.Error)
-	Get(productID [16]byte, versionOffset uint64) (pt ProductTag, err protocol.Error)
-	Last(productID [16]byte) (pt ProductTag, numbers uint64, err protocol.Error)
+	Count(productID [16]byte, tag string) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(productID [16]byte, tag string, vo protocol.VersionOffset) (pt ProductTag, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FindByProduct(productID [16]byte, offset, limit uint64) (tags []string, numbers uint64, err protocol.Error)
+	ListTags(productID [16]byte, offset, limit uint64) (tags []string, nv protocol.NumberOfVersion, err protocol.Error)
+	ListProducts(tag string, offset, limit uint64) (productIDs [16]byte, nv protocol.NumberOfVersion, err protocol.Error)
+
+	FilterByStatus(productID [16]byte, status UserRelation_Status, offset, limit uint64) (tags []string, nv protocol.NumberOfVersion, err protocol.Error)
 }
+
+type ProductTag_Status Quiddity_Status
+
+const (
+// ProductTag_Status_ = ProductTag_Status(Quiddity_Status_FreeFlag << iota)
+)

@@ -1,9 +1,9 @@
-/* For license and copyright information please see LEGAL file in repository */
+/* For license and copyright information please see the LEGAL file in the code repository */
 
 package org
 
 import (
-	"../libgo/protocol"
+	"github.com/GeniusesGroup/libgo/protocol"
 )
 
 // FinancialTransactionReference indicate the domain record data fields.
@@ -19,8 +19,8 @@ type FinancialTransactionReference interface {
 }
 
 type FinancialTransactionReference_StorageServices interface {
-	Save(ftr FinancialTransactionReference) (numbers uint64, err protocol.Error)
+	Save(ftr FinancialTransactionReference) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(referenceID [16]byte) (numbers uint64, err protocol.Error)
-	Get(referenceID [16]byte, versionOffset uint64) (ftr FinancialTransactionReference, numbers uint64, err protocol.Error)
+	Count(referenceID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(referenceID [16]byte, vo protocol.VersionOffset) (ftr FinancialTransactionReference, nv protocol.NumberOfVersion, err protocol.Error)
 }

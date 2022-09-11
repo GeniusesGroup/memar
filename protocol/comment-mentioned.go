@@ -1,22 +1,23 @@
-/* For license and copyright information please see LEGAL file in repository */
+/* For license and copyright information please see the LEGAL file in the code repository */
 
 package org
 
 import (
-	"../libgo/protocol"
+	"github.com/GeniusesGroup/libgo/protocol"
 )
 
 // CommentMentioned indicate the domain record data fields.
 type CommentMentioned interface {
-	UserID() [16]byte    // user-status domain
-	CommentID() [16]byte // comment domain
-	Time() protocol.Time // Save time
+	UserID() protocol.UserID // user domain
+	CommentID() CommentUUID  // comment domain
+	Time() protocol.Time     // save time
 }
 
 type CommentMentioned_StorageServices interface {
-	Save(cm CommentMentioned) protocol.Error
+	Save(cm CommentMentioned) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(userID [16]byte) (numbers uint64, err protocol.Error)
-	Get(userID [16]byte, versionOffset uint64) (cm CommentMentioned, err protocol.Error)
-	Last(userID [16]byte) (cm CommentMentioned, numbers uint64, err protocol.Error)
+	Count(userID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(userID [16]byte, vo protocol.VersionOffset) (cm CommentMentioned, nv protocol.NumberOfVersion, err protocol.Error)
+
+	protocol.EventTarget
 }

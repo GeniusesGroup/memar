@@ -1,27 +1,26 @@
-/* For license and copyright information please see LEGAL file in repository */
+/* For license and copyright information please see the LEGAL file in the code repository */
 
 package org
 
 import (
-	"../libgo/protocol"
+	"github.com/GeniusesGroup/libgo/protocol"
 )
 
 // QuiddityOwner indicate the domain record data fields.
 type QuiddityOwner interface {
-	QuiddityID() [16]byte // Unique content ID
-	UserID() [16]byte     // user domain. Owner of the quiddity
-	Time() protocol.Time  // save time
-	RequestID() [16]byte  // user-request domain
+	QuiddityID() [16]byte       // Unique content ID
+	UserID() protocol.UserID    // user domain. Owner of the quiddity
+	Time() protocol.Time        // save time
+	RequestID() UserRequestUUID // user-request domain
 }
 
 type QuiddityOwner_StorageServices interface {
-	Save(qo QuiddityOwner) (err protocol.Error)
+	Save(qo QuiddityOwner) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(quiddityID [16]byte) (numbers uint64, err protocol.Error)
-	Get(quiddityID [16]byte, versionOffset uint64) (qo QuiddityOwner, err protocol.Error)
-	Last(quiddityID [16]byte) (qo QuiddityOwner, numbers uint64, err protocol.Error)
+	Count(quiddityID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(quiddityID [16]byte, vo protocol.VersionOffset) (qo QuiddityOwner, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FindByOwnerID(userID [16]byte, offset, limit uint64) (quiddityIDs [][16]byte, numbers uint64, err protocol.Error)
+	FindByOwnerID(userID [16]byte, offset, limit uint64) (quiddityIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
 }
 
 type QuiddityOwner_Service_FindByUserID_Request interface {

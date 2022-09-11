@@ -1,14 +1,15 @@
-/* For license and copyright information please see LEGAL file in repository */
+/* For license and copyright information please see the LEGAL file in the code repository */
 
 package org
 
 import (
-	"../libgo/protocol"
+	"github.com/GeniusesGroup/libgo/protocol"
 )
 
+// Individual and General score
 type FinancialScore interface {
-	UserID() [16]byte    // user-status domain
-	Score() int32        //
-	Time() protocol.Time // Save time
-	RequestID() [16]byte // user-request domain
+	UserID() protocol.UserID    // user domain
+	Score() int64               //
+	Time() protocol.Time        // save time
+	RequestID() UserRequestUUID // user-request domain
 }

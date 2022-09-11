@@ -1,24 +1,25 @@
-/* For license and copyright information please see LEGAL file in repository */
+/* For license and copyright information please see the LEGAL file in the code repository */
 
 package org
 
 import (
-	"../libgo/protocol"
+	"github.com/GeniusesGroup/libgo/protocol"
 )
 
+// Category indicate the domain record data fields.
 // Category or Topic
 type Category interface {
-	QuiddityID() [16]byte // CategoryID
-	ParentID() [16]byte   // CategoryID, Exist if it isn't top category.
-	Time() protocol.Time  // Save time
-	RequestID() [16]byte  // user-request domain
+	CategoryID() [16]byte       // quiddity domain
+	ParentID() [16]byte         // CategoryID, Exist if it isn't top category.
+	Time() protocol.Time        // save time
+	RequestID() UserRequestUUID // user-request domain
 }
 
-// TODO::: cache strategy?? 1 day or what?
 type Category_StorageServices interface {
-	Save(c Category) (err protocol.Error)
+	Save(c Category) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	GetIDs(offset, limit uint64) (quiddityIDs [][16]byte, numbers uint64, err protocol.Error)
+	Count(categoryID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(categoryID [16]byte, vo protocol.VersionOffset) (gs CategoryStatus, nv protocol.NumberOfVersion, err protocol.Error)
 
-	Delete(quiddityID [16]byte) (err protocol.Error)
+	GetIDs(offset, limit uint64) (categoryIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
 }

@@ -1,23 +1,23 @@
-/* For license and copyright information please see LEGAL file in repository */
+/* For license and copyright information please see the LEGAL file in the code repository */
 
 package org
 
 import (
-	"../libgo/protocol"
+	"github.com/GeniusesGroup/libgo/protocol"
 )
 
 // FinancialAccountMain indicate the domain record data fields.
 type FinancialAccountMain interface {
-	UserID() [16]byte    // user domain
-	Currency() [16]byte  // financial-currency
-	AccountID() [16]byte // financial-account domain
-	Time() protocol.Time // save time
-	RequestID() [16]byte // user-request domain
+	UserID() protocol.UserID    // user domain
+	Currency() [16]byte         // financial-currency
+	AccountID() [16]byte        // financial-account domain
+	Time() protocol.Time        // save time
+	RequestID() UserRequestUUID // user-request domain
 }
 
 type FinancialAccountMain_StorageServices interface {
-	Save(fa FinancialAccountMain) (numbers uint64, err protocol.Error)
+	Save(fa FinancialAccountMain) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(userID, currency [16]byte) (numbers uint64, err protocol.Error)
-	Get(userID, currency [16]byte, versionOffset uint64) (fa FinancialAccountMain, numbers uint64, err protocol.Error)
+	Count(userID, currency [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(userID, currency [16]byte, vo protocol.VersionOffset) (fa FinancialAccountMain, nv protocol.NumberOfVersion, err protocol.Error)
 }

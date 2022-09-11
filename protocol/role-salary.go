@@ -1,15 +1,15 @@
-/* For license and copyright information please see LEGAL file in repository */
+/* For license and copyright information please see the LEGAL file in the code repository */
 
 package org
 
 import (
-	"../libgo/protocol"
+	"github.com/GeniusesGroup/libgo/protocol"
 )
 
 // RoleSalary is fixed negotiated salary that don't follow org||department||role salary rules.
 type RoleSalary interface {
-	RoleID() [16]byte                     // role domain
-	WeeklySalary() protocol.AmountOfMoney //
-	Time() protocol.Time                  // Save time
-	RequestID() [16]byte                  // user-request domain
+	RoleID() [16]byte                   // role domain
+	WeeklySalary() protocol.MoneyAmount //
+	Time() protocol.Time                // save time
+	RequestID() UserRequestUUID         // user-request domain
 }

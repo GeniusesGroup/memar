@@ -1,36 +1,59 @@
-/* For license and copyright information please see LEGAL file in repository */
+/* For license and copyright information please see the LEGAL file in the code repository */
 
 package org
 
-// HomeTimeline indicate the timeline-home domain record data fields.
+import (
+	"github.com/GeniusesGroup/libgo/protocol"
+)
+
+// HomeTimeline indicate the domain record data fields.
+// home timeline feed
 type HomeTimeline interface {
-	UserID() [16]byte       // user-status domain
-	CommentID() [16]byte    // comment domain
-	ReasonUserID() [16]byte // it can be the owner of comment or any other user base on reason
-	Reason() HomeTimelineReason
+	UserID() protocol.UserID       // user domain
+	CommentID() CommentUUID        // comment domain
+	ReasonUserID() protocol.UserID // it can be the owner of comment or any other user base on reason
+	Reason() HomeTimeline_Reason   //
+	Time() protocol.Time           // save time
+	// TODO::: node details??
 }
 
-type HomeTimelineReason uint8
+type HomeTimeline_StorageServices interface {
+	Save(ht HomeTimeline) (nv protocol.NumberOfVersion, err protocol.Error)
+
+	Count(userID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(userID [16]byte, vo protocol.VersionOffset) (ht HomeTimeline, nv protocol.NumberOfVersion, err protocol.Error)
+
+	protocol.EventTarget
+}
+
+type HomeTimeline_Reason uint8
 
 const (
-	HomeTimelineReason_Unset HomeTimeline = iota
-	HomeTimelineReason_UserMentioned
+	HomeTimeline_Reason_Unset HomeTimeline_Reason = iota
+	HomeTimeline_Reason_UserMentioned
 
-	HomeTimelineReason_1stFriendshipCycle // new comment from friend of user
-	HomeTimelineReason_2stFriendshipCycle
-	HomeTimelineReason_3stFriendshipCycle
-	HomeTimelineReason_4stFriendshipCycle
-	HomeTimelineReason_5stFriendshipCycle
-	HomeTimelineReason_6stFriendshipCycle
-	HomeTimelineReason_UserFollow // just user follow other, not any friend relationship
+	HomeTimeline_Reason_1stFriendshipCycle // new comment from friend of user
+	HomeTimeline_Reason_2stFriendshipCycle
+	HomeTimeline_Reason_3stFriendshipCycle
+	HomeTimeline_Reason_4stFriendshipCycle
+	HomeTimeline_Reason_5stFriendshipCycle
+	HomeTimeline_Reason_6stFriendshipCycle
+	HomeTimeline_Reason_UserFollow // just user follow other, not any friend relationship
 
-	HomeTimelineReason_FriendForward        // retweet or forward other comment to the user timeline
-	HomeTimelineReason_FriendReaction       // interest domain:  Liked, ...
-	HomeTimelineReason_FriendReplied        // new comment to a user comment
-	HomeTimelineReason_FriendReceivedAReply // a friend of user received a reply
-	HomeTimelineReason_FollowByFriend       // usually 1stFriendshipCycle
+	HomeTimeline_Reason_FriendForward        // retweet or forward other comment to the user timeline
+	HomeTimeline_Reason_FriendReaction       // interest domain:  Liked, ...
+	HomeTimeline_Reason_FriendReplied        // new comment to a user comment
+	HomeTimeline_Reason_FriendReceivedAReply // a friend of user received a reply
+	HomeTimeline_Reason_FollowByFriend       // usually 1stFriendshipCycle
 
-	HomeTimelineReason_BaseOnUserReaction
-	HomeTimelineReason_BaseOnUserFollow
-	HomeTimelineReason_BaseOnUserTopics
+	HomeTimeline_Reason_BaseOnUserReaction
+	HomeTimeline_Reason_BaseOnUserFollow
+	HomeTimeline_Reason_BaseOnUserTopics
+	HomeTimeline_Reason_BaseOnUserFeedback
+	HomeTimeline_Reason_UserMightLike
+)
+
+type  (
+	HomeTimeline_Services_Register_Request interface {}
+	HomeTimeline_Services_Register_Response interface {}
 )

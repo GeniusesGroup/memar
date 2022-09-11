@@ -1,24 +1,22 @@
-/* For license and copyright information please see LEGAL file in repository */
+/* For license and copyright information please see the LEGAL file in the code repository */
 
 package org
 
 import (
-	"../libgo/protocol"
+	"github.com/GeniusesGroup/libgo/protocol"
 )
 
 // ProductMultipleUse indicate the domain record data fields.
 type ProductMultipleUse interface {
 	ProductID() [16]byte        // product domain
 	Maximum() uint64            // Maximum time this service can be served to buyer
-	Timeout() protocol.Duration // from first use
 	Time() protocol.Time        // save time
-	RequestID() [16]byte        // user-request domain
+	RequestID() UserRequestUUID // user-request domain
 }
 
 type ProductMultipleUse_StorageServices interface {
-	Save(pm ProductMultipleUse) protocol.Error
+	Save(pm ProductMultipleUse) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(productID [16]byte) (numbers uint64, err protocol.Error)
-	Get(productID [16]byte, versionOffset uint64) (pm ProductMultipleUse, err protocol.Error)
-	Last(productID [16]byte) (pm ProductMultipleUse, numbers uint64, err protocol.Error)
+	Count(productID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(productID [16]byte, vo protocol.VersionOffset) (pm ProductMultipleUse, nv protocol.NumberOfVersion, err protocol.Error)
 }

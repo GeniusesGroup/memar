@@ -1,15 +1,17 @@
-/* For license and copyright information please see LEGAL file in repository */
+/* For license and copyright information please see the LEGAL file in the code repository */
 
 package org
 
 import (
-	"../libgo/protocol"
+	"github.com/GeniusesGroup/libgo/protocol"
 )
 
+// FinancialCredit indicate the domain record data fields.
 type FinancialCredit interface {
-	UserID() [16]byte                // user-status domain
-	Amount() protocol.AmountOfMoney  //
-	Balance() protocol.AmountOfMoney //
-	Time() protocol.Time             // Save time
-	RequestID() [16]byte             // user-request domain
+	UserID() protocol.UserID       // user domain
+	Currency() [16]byte            // financial-currency
+	Amount() protocol.MoneyAmount  //
+	Balance() protocol.MoneyAmount //
+	Time() protocol.Time           // save time
+	RequestID() UserRequestUUID    // user-request domain
 }

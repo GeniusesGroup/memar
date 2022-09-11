@@ -1,27 +1,28 @@
-/* For license and copyright information please see LEGAL file in repository */
+/* For license and copyright information please see the LEGAL file in the code repository */
 
 package org
 
 import (
-	"../libgo/protocol"
+	"github.com/GeniusesGroup/libgo/protocol"
 )
+
+type ProductUUID = protocol.UUID
 
 // Product indicate the domain record data fields.
 type Product interface {
-	ProductID() [16]byte // quiddity domain
-	Type() Product_Type  //
-	Time() protocol.Time // save time
-	RequestID() [16]byte // user-request domain
+	ProductID() ProductUUID     //
+	Type() Product_Type         //
+	Time() protocol.Time        // save time
+	RequestID() UserRequestUUID // user-request domain
 }
 
 type Product_StorageServices interface {
-	Save(p Product) protocol.Error
+	Save(p Product) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(productID [16]byte) (numbers uint64, err protocol.Error)
-	Get(productID [16]byte, versionOffset uint64) (p Product, err protocol.Error)
-	Last(productID [16]byte) (p Product, numbers uint64, err protocol.Error)
+	Count(productID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(productID [16]byte, vo protocol.VersionOffset) (p Product, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FilterByType(typ Product_Type, offset, limit uint64) (productIDs [][16]byte, numbers uint64, err protocol.Error)
+	FilterByType(typ Product_Type, offset, limit uint64) (productIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
 }
 
 // Cinema, Rent, Therapy, Consulting, Coaching, Mentoring, FixingService, the transportation of goods and passenger,  ...
@@ -32,15 +33,16 @@ const (
 	Product_Type_Unset Product_Type = 0           // usually for good kind
 	Product_Type_Good  Product_Type = (1 << iota) // if flag not set means product is service
 	Product_Type_ReserveValidity
+	Product_Type_ReserveQuantity  // max product can reserve by one person before pay them
+	Product_Type_PreSale          // ??
+	Product_Type_NeedApprove      //
+	Product_Type_NeedPrescription // Medical good. can't add by users to invoice
+
 	Product_Type_InvoiceSell
 	Product_Type_OrderSell
-	Product_Type_PreSale
-	Product_Type_NeedApprove
-	Product_Type_NeedPrescription // Medical good. can't add by users to invoice
-	_
-	_
-	_
-	_
+	Product_Type_Role  // role limit sell
+	Product_Type_Group // group limit sell
+
 	_
 	_
 	_
@@ -53,7 +55,7 @@ const (
 // Good flags
 const (
 	Product_Type_Inventory  Product_Type = (Product_Type_StartSpecific << iota) // usually capital good must track owner. Book, Mobile, Car, ...
-	Product_Type_Custom                                                         // made on buyer requirements
+	Product_Type_Custom                                                         // made on buyer requirements, product-ingredient
 	Product_Type_BestBefore                                                     // Consumption good. any Good usually use daily to satisfy human wants.
 	Product_Type_Commodity                                                      // a product of agriculture or mining
 )

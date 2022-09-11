@@ -1,28 +1,27 @@
-/* For license and copyright information please see LEGAL file in repository */
+/* For license and copyright information please see the LEGAL file in the code repository */
 
 package org
 
 import (
-	"../libgo/math"
-	"../libgo/protocol"
+	"github.com/GeniusesGroup/libgo/protocol"
 )
 
 type RoleSalaryCoefficients interface {
 	RoleID() [16]byte // role domain
 
-	Importance() math.PerMyriad         // importance coefficient of the role
-	Accompanying() math.PerMyriad       //
-	ExpertiseAllowance() math.PerMyriad //
-	HardshipAllowance() math.PerMyriad  //
+	Importance() protocol.PerMyriad         // importance coefficient of the role
+	Accompanying() protocol.PerMyriad       //
+	ExpertiseAllowance() protocol.PerMyriad //
+	HardshipAllowance() protocol.PerMyriad  //
 
-	OvertimeWorking() math.PerMyriad //
-	WorkingHolidays() math.PerMyriad //
-	RotationShift() math.PerMyriad   //
-	NightShift() math.PerMyriad      //
+	OvertimeWorking() protocol.PerMyriad //
+	WorkingHolidays() protocol.PerMyriad //
+	RotationShift() protocol.PerMyriad   //
+	NightShift() protocol.PerMyriad      //
 
-	Income() math.PerMyriad          // whole organization income
-	DepartmenIncome() math.PerMyriad //
+	Income() protocol.PerMyriad          // whole organization income
+	DepartmenIncome() protocol.PerMyriad //
 
-	Time() protocol.Time // Save time
-	RequestID() [16]byte // user-request domain
+	Time() protocol.Time        // save time
+	RequestID() UserRequestUUID // user-request domain
 }

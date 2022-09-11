@@ -1,24 +1,23 @@
-/* For license and copyright information please see LEGAL file in repository */
+/* For license and copyright information please see the LEGAL file in the code repository */
 
 package org
 
 import (
-	"../libgo/protocol"
+	"github.com/GeniusesGroup/libgo/protocol"
 )
 
 // RoleLocation indicate the domain record data fields.
 // Let staffs register enter and exit time by their mobiles in specific location.
 type RoleLocation interface {
-	RoleID() [16]byte     // role domain
-	LocationID() [16]byte // location domain
-	Time() protocol.Time  // Save time
-	RequestID() [16]byte  // user-request domain
+	RoleID() [16]byte             // role domain
+	BuildingLocationID() [16]byte // building-location domain
+	Time() protocol.Time          // save time
+	RequestID() UserRequestUUID   // user-request domain
 }
 
 type RoleLocation_StorageServices interface {
-	Save(rl RoleLocation) protocol.Error
+	Save(rl RoleLocation) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(roleID [16]byte) (numbers uint64, err protocol.Error)
-	Get(roleID [16]byte, versionOffset uint64) (rl RoleLocation, err protocol.Error)
-	Last(roleID [16]byte) (rl RoleLocation, err protocol.Error)
+	Count(roleID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(roleID [16]byte, vo protocol.VersionOffset) (rl RoleLocation, nv protocol.NumberOfVersion, err protocol.Error)
 }
