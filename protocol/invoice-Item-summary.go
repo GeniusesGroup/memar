@@ -3,7 +3,7 @@
 package org
 
 import (
-	"github.com/GeniusesGroup/libgo/protocol"
+	"libgo/protocol"
 )
 
 // InvoiceItemSummary indicate the domain record data fields.

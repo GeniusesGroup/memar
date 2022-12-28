@@ -3,12 +3,12 @@
 package org
 
 import (
-	"github.com/GeniusesGroup/libgo/protocol"
+	"libgo/protocol"
 )
 
 // InviteGroup indicate the domain record data fields.
 type InviteGroup interface {
-	InviteID() InviteUUID //
+	InviteID() InviteUUID       //
 	GroupID() GroupUUID         // group domain
 	Time() protocol.Time        // save time
 	RequestID() UserRequestUUID // user-request domain

@@ -3,7 +3,7 @@
 package org
 
 import (
-	"github.com/GeniusesGroup/libgo/protocol"
+	"libgo/protocol"
 )
 
 // InvoiceDiscount indicate the domain record data fields.
@@ -23,3 +23,5 @@ type InvoiceDiscount_StorageServices interface {
 
 	FindByDiscountID(discountID [16]byte, offset, limit uint64) (invoiceIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
 }
+
+// TODO::: discount status???

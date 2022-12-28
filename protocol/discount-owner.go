@@ -3,13 +3,13 @@
 package org
 
 import (
-	"github.com/GeniusesGroup/libgo/protocol"
+	"libgo/protocol"
 )
 
 // DiscountOwner indicate the domain record data fields.
 type DiscountOwner interface {
 	DiscountID() [16]byte       // discount domain
-	OrgID() protocol.UserID     // user domain
+	OrgID() OrgUUID             //
 	Time() protocol.Time        // save time
 	RequestID() UserRequestUUID // user-request domain
 }

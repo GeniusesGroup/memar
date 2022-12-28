@@ -3,7 +3,7 @@
 package org
 
 import (
-	"github.com/GeniusesGroup/libgo/protocol"
+	"libgo/protocol"
 )
 
 type OrderDuration interface {
@@ -26,5 +26,6 @@ type OrderDuration_Epoch uint8
 const (
 	OrderDuration_Epoch_Unset OrderDuration_Epoch = iota
 	OrderDuration_Epoch_IssueDate
+	OrderDuration_Epoch_LastSuggest
 	OrderDuration_Epoch_LastDeal
 )

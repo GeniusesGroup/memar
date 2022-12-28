@@ -3,7 +3,7 @@
 package org
 
 import (
-	"github.com/GeniusesGroup/libgo/protocol"
+	"libgo/protocol"
 )
 
 // QuiddityURI indicate the domain record data fields.
@@ -12,7 +12,7 @@ import (
 // https://en.wikipedia.org/wiki/Electronic_Product_Code
 type QuiddityURI interface {
 	URI() []byte                // Locale name in the Computer world.
-	QuiddityID() [16]byte       // quiddity domain
+	QuiddityID() QuiddityUUID       //
 	Time() protocol.Time        // save time
 	RequestID() UserRequestUUID // user-request domain
 }

@@ -3,12 +3,12 @@
 package org
 
 import (
-	"github.com/GeniusesGroup/libgo/protocol"
+	"libgo/protocol"
 )
 
 // Task indicate the comment record data fields.
 type TaskParticipant interface {
-	TaskID() [16]byte           // quiddity domain. use to get and show locale title.
+	TaskID() TaskUUID           // quiddity domain. use to get and show locale title.
 	UserID() protocol.UserID    // user-status domain
 	Type() TaskParticipant_Type //
 	Time() protocol.Time        // Save time

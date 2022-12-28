@@ -3,12 +3,12 @@
 package org
 
 import (
-	"github.com/GeniusesGroup/libgo/protocol"
+	"libgo/protocol"
 )
 
 type CommentClassify interface {
-	ID() [16]byte
-	Label() Comment_Classify
+	CommentID() CommentUUID     //
+	Label() Comment_Classify    //
 	Time() protocol.Time        // save time
 	RequestID() UserRequestUUID //
 }

@@ -3,7 +3,7 @@
 package org
 
 import (
-	"github.com/GeniusesGroup/libgo/protocol"
+	"libgo/protocol"
 )
 
 // OrgSalaryUTC is fixed salary that use in roles salary rules to calculate each staff salary.

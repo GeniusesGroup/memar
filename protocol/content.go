@@ -3,12 +3,14 @@
 package org
 
 import (
-	"github.com/GeniusesGroup/libgo/protocol"
+	"libgo/protocol"
 )
+
+type ContentUUID = protocol.UUID
 
 // Content indicate the comment domain record data fields.
 type Content interface {
-	ContentID() [16]byte        // quiddity domain
+	ContentID() ContentUUID        // quiddity domain
 	UserID() protocol.UserID    // user domain
 	ContentTypeID() [16]byte    // content-type domain
 	Time() protocol.Time        // save time

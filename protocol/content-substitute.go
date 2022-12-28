@@ -3,12 +3,12 @@
 package org
 
 import (
-	"github.com/GeniusesGroup/libgo/protocol"
+	"libgo/protocol"
 )
 
 type ContentSubstitute interface {
 	ContentID() [16]byte        // content domain
-	Priority() int32            // substitute priority
+	Priority() uint64           // substitute priority
 	SubstituteID() [16]byte     // content domain
 	Time() protocol.Time        // save time
 	RequestID() UserRequestUUID // user-request domain

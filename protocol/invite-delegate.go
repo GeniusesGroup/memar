@@ -3,7 +3,7 @@
 package org
 
 import (
-	"github.com/GeniusesGroup/libgo/protocol"
+	"libgo/protocol"
 )
 
 // InviteDelegate indicate the domain record data fields.
@@ -17,8 +17,8 @@ type InviteDelegate interface {
 type InviteDelegate_Type uint32
 
 const (
-	InviteDelegate_Type_Unset  InviteDelegate_Type = 0
-	InviteDelegate_Type_1st_Friend  InviteDelegate_Type = (1 << iota)
+	InviteDelegate_Type_Unset      InviteDelegate_Type = 0
+	InviteDelegate_Type_1st_Friend InviteDelegate_Type = (1 << iota)
 	InviteDelegate_Type_2st_Friend
 	InviteDelegate_Type_3st_Friend
 	InviteDelegate_Type_4st_Friend

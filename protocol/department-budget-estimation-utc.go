@@ -3,8 +3,8 @@
 package org
 
 import (
-	"github.com/GeniusesGroup/libgo/protocol"
-	"github.com/GeniusesGroup/libgo/time/utc"
+	"libgo/protocol"
+	"libgo/time/utc"
 )
 
 // OrgBudgetEstimationUTC is weekly budget domain

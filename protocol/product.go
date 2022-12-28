@@ -3,7 +3,7 @@
 package org
 
 import (
-	"github.com/GeniusesGroup/libgo/protocol"
+	"libgo/protocol"
 )
 
 type ProductUUID = protocol.UUID
@@ -42,8 +42,8 @@ const (
 	Product_Type_OrderSell
 	Product_Type_Role  // role limit sell
 	Product_Type_Group // group limit sell
+	Product_Type_User  // user limit sell
 
-	_
 	_
 	_
 	_
@@ -58,6 +58,7 @@ const (
 	Product_Type_Custom                                                         // made on buyer requirements, product-ingredient
 	Product_Type_BestBefore                                                     // Consumption good. any Good usually use daily to satisfy human wants.
 	Product_Type_Commodity                                                      // a product of agriculture or mining
+	Product_Type_CustomIngredient //
 )
 
 // Services flags
@@ -74,6 +75,7 @@ const (
 	Product_Type_Timing                      // the time service will provide
 	Product_Type_TimingInterval              //
 	Product_Type_MultipleUse                 // gym, ...
+	Product_Type_Duration                    //
 	Product_Type_Number                      // cinema, concert, transport, ...
 	Product_Type_Area                        // transport, ...
 	Product_Type_Place                       // limit to get service on specific place like doctor-room, gym, station(bus, train, airport, ...)

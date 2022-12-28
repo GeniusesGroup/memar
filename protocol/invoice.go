@@ -2,6 +2,12 @@
 
 package org
 
+import (
+	"libgo/protocol"
+)
+
+type InvoiceUUID = protocol.UUID
+
 // Also usually known as shopping-cart, ... in GUI part of applications
 
 // New invoice service

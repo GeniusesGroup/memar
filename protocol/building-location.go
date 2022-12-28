@@ -1,7 +1,7 @@
 package org
 
 import (
-	"github.com/GeniusesGroup/libgo/protocol"
+	"libgo/protocol"
 )
 
 // BuildingLocation can use to indicate any part of a building like warehouses, zones, halls, ...

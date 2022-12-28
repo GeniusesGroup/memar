@@ -3,12 +3,12 @@
 package org
 
 import (
-	"github.com/GeniusesGroup/libgo/protocol"
+	"libgo/protocol"
 )
 
 // InviteOwner indicate the domain record data fields.
 type InviteOwner interface {
-	InviteID() InviteUUID //
+	InviteID() InviteUUID       //
 	IssuerID() protocol.UserID  // user domain
 	Time() protocol.Time        // save time
 	RequestID() UserRequestUUID // user-request domain

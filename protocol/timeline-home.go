@@ -3,7 +3,7 @@
 package org
 
 import (
-	"github.com/GeniusesGroup/libgo/protocol"
+	"libgo/protocol"
 )
 
 // HomeTimeline indicate the domain record data fields.
@@ -53,7 +53,7 @@ const (
 	HomeTimeline_Reason_UserMightLike
 )
 
-type  (
-	HomeTimeline_Services_Register_Request interface {}
-	HomeTimeline_Services_Register_Response interface {}
+type (
+	HomeTimeline_Services_Register_Request  interface{}
+	HomeTimeline_Services_Register_Response interface{}
 )

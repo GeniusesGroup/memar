@@ -3,12 +3,12 @@
 package org
 
 import (
-	"github.com/GeniusesGroup/libgo/protocol"
+	"libgo/protocol"
 )
 
 // ProjectTaskTime indicate the domain record data fields.
 type ProjectTaskTime interface {
-	TaskID() [16]byte           // project-task domain
+	TaskID() TaskUUID           // project-task domain
 	Type() ProjectTaskTime_Type //
 	Time() protocol.Time        // Save time
 	RequestID() UserRequestUUID // user-request domain

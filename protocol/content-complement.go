@@ -3,12 +3,12 @@
 package org
 
 import (
-	"github.com/GeniusesGroup/libgo/protocol"
+	"libgo/protocol"
 )
 
 type ContentComplement interface {
 	ContentID() [16]byte        // content domain
-	Priority() int32            // complement priority
+	Priority() uint64            // complement priority
 	ComplementID() [16]byte     // content domain
 	Time() protocol.Time        // save time
 	RequestID() UserRequestUUID // user-request domain

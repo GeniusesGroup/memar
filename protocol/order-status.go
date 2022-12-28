@@ -3,7 +3,7 @@
 package org
 
 import (
-	"github.com/GeniusesGroup/libgo/protocol"
+	"libgo/protocol"
 )
 
 // OrderStatus indicate the order-status domain record data fields.
@@ -28,6 +28,8 @@ type Order_Status Quiddity_Status
 
 const (
 	Order_Status_Pending = Order_Status(Quiddity_Status_FreeFlag << iota) // Wait to approve
+	Order_Status_NeedApprovement
+	Order_Status_Approved
 	Order_Status_PartiallyDeal
 	Order_Status_FullyDeal
 	Order_Status_Expired

@@ -3,7 +3,7 @@
 package org
 
 import (
-	"github.com/GeniusesGroup/libgo/protocol"
+	"libgo/protocol"
 )
 
 type CommentUUID = protocol.UUID
@@ -35,6 +35,8 @@ const (
 	Comment_Type_Text  Comment_Type = (1 << iota)
 	Comment_Type_Voice
 	Comment_Type_File
+
+	Comment_Type_MultiParticipant
 
 	Comment_Type_Call
 	Comment_Type_Email

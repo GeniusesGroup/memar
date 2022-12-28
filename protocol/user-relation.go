@@ -2,7 +2,7 @@
 
 package org
 
-import "github.com/GeniusesGroup/libgo/protocol"
+import "libgo/protocol"
 
 // UserRelation indicate the domain record data fields.
 type UserRelation interface {

@@ -3,24 +3,24 @@
 package org
 
 import (
-	"github.com/GeniusesGroup/libgo/protocol"
+	"libgo/protocol"
 )
 
-// ProductSubstitute indicate the domain record data fields.
+// QuidditySubstitute indicate the domain record data fields.
 // or similar product
-type ProductSubstitute interface {
-	ProductID() [16]byte        // product domain
+type QuidditySubstitute interface {
+	QuiddityID() QuiddityUUID   //
 	Priority() uint64           // Substitute priority
-	SubstituteID() [16]byte     // product domain
+	SubstituteID() QuiddityUUID //
 	Time() protocol.Time        // save time
 	RequestID() UserRequestUUID // user-request domain
 }
 
-type ProductSubstitute_StorageServices interface {
-	Save(ps ProductSubstitute) (nv protocol.NumberOfVersion, err protocol.Error)
+type QuidditySubstitute_StorageServices interface {
+	Save(ps QuidditySubstitute) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(productID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(productID [16]byte, vo protocol.VersionOffset) (ps ProductSubstitute, nv protocol.NumberOfVersion, err protocol.Error)
+	Get(productID [16]byte, vo protocol.VersionOffset) (ps QuidditySubstitute, nv protocol.NumberOfVersion, err protocol.Error)
 
 	FindBySubstitute(substituteID [16]byte, offset, limit uint64) (productIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
 }

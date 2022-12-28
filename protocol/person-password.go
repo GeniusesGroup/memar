@@ -3,7 +3,7 @@
 package org
 
 import (
-	"github.com/GeniusesGroup/libgo/protocol"
+	"libgo/protocol"
 )
 
 // PersonPassword indicate the domain record data fields.
@@ -51,5 +51,6 @@ type PersonPassword_Service_Confirm_Request interface {
 	PasswordHash() []byte
 }
 type PersonPassword_Service_Confirm_Response interface {
+	// Token() []byte
 	Status() PersonPassword_Status
 }

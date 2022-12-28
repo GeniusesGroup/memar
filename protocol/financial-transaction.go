@@ -3,14 +3,14 @@
 package org
 
 import (
-	"github.com/GeniusesGroup/libgo/protocol"
+	"libgo/protocol"
 )
 
 // FinancialTransaction indicate the domain record data fields.
 // each FinancialTransaction is an immutable record and so use version mechanism to chain FinancialTransactions in AccountID way.
 type FinancialTransaction interface {
-	AccountID() [16]byte                    // financial-account domain
-	AccountSideID() [16]byte                // financial-account domain. or AccountPartyID
+	AccountID() FinancialAccountUUID        //
+	AccountSideID() FinancialAccountUUID    // or AccountPartyID
 	Reference() [16]byte                    // Any ID that user can assign to track for any purpose. It can't be nil.
 	ReferenceType() FinancialTransaction_RT //
 	Amount() protocol.MoneyAmount           // This transaction
@@ -64,9 +64,12 @@ const (
 	FinancialTransaction_RT_BadDebt // Debt default
 	FinancialTransaction_RT_Installment
 	FinancialTransaction_RT_Compensation
+	FinancialTransaction_RT_Order
 )
 
-type FinancialTransaction_Service_Transfer_Request interface{}
+type (
+	FinancialTransaction_Service_Transfer_Request interface{}
+)
 
 type (
 	FinancialTransaction_Service_Get_Request interface {
@@ -74,6 +77,10 @@ type (
 	}
 )
 
-type FinancialTransaction_Service_GetByTime_Request interface{}
+type (
+	FinancialTransaction_Service_GetByTime_Request interface{}
+)
 
-type FinancialTransaction_Service_Find_Request interface{}
+type (
+	FinancialTransaction_Service_Find_Request interface{}
+)

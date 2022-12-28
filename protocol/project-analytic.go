@@ -3,14 +3,14 @@
 package org
 
 import (
-	"github.com/GeniusesGroup/libgo/protocol"
-	"github.com/GeniusesGroup/libgo/time/utc"
+	"libgo/protocol"
+	"libgo/time/utc"
 )
 
-// ProjectBudget indicate the domain record data fields.
+// ProjectAnalytic indicate the domain record data fields.
 type ProjectAnalytic interface {
-	ProjectID() [16]byte // project domain
-	Day() utc.DayElapsed
+	ProjectID() ProjectUUID // project domain
+	Day() utc.DayElapsed    //
 
 	TotalTasks() uint64      //
 	CompletedTasks() uint64  //

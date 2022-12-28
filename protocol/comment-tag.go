@@ -3,7 +3,7 @@
 package org
 
 import (
-	"github.com/GeniusesGroup/libgo/protocol"
+	"libgo/protocol"
 )
 
 // CommentTag indicate the domain record data fields.
@@ -19,4 +19,6 @@ type CommentTag_StorageServices interface {
 
 	Count(tag string) (nv protocol.NumberOfVersion, err protocol.Error)
 	Get(tag string, vo protocol.VersionOffset) (ct CommentTag, nv protocol.NumberOfVersion, err protocol.Error)
+
+	// TODO:::
 }

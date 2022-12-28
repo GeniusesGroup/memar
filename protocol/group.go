@@ -2,7 +2,7 @@
 
 package org
 
-import "github.com/GeniusesGroup/libgo/protocol"
+import "libgo/protocol"
 
 type GroupUUID = protocol.UUID
 

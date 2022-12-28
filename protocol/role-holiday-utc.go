@@ -3,9 +3,9 @@
 package org
 
 import (
-	"github.com/GeniusesGroup/libgo/protocol"
-	"github.com/GeniusesGroup/libgo/time/earth"
-	"github.com/GeniusesGroup/libgo/time/utc"
+	"libgo/protocol"
+	"libgo/time/earth"
+	"libgo/time/utc"
 )
 
 type RoleHolidayUTC interface {

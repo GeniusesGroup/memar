@@ -3,8 +3,8 @@
 package org
 
 import (
-	"github.com/GeniusesGroup/libgo/iso"
-	"github.com/GeniusesGroup/libgo/protocol"
+	"libgo/iso"
+	"libgo/protocol"
 )
 
 // FinancialAccountIBAN indicate the domain record data fields.

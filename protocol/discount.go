@@ -3,13 +3,15 @@
 package org
 
 import (
-	"github.com/GeniusesGroup/libgo/protocol"
+	"libgo/protocol"
 )
+
+type DiscountUUID = protocol.UUID
 
 // Discount indicate the domain record data fields.
 // Discount or product-auction to reduce invoices price automatically by some rules know also as sales, ...
 type Discount interface {
-	DiscountID() [16]byte       //
+	DiscountID() DiscountUUID       //
 	Type() Discount_Type        //
 	Time() protocol.Time        // save time
 	RequestID() UserRequestUUID // user-request domain

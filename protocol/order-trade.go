@@ -3,7 +3,7 @@
 package org
 
 import (
-	"github.com/GeniusesGroup/libgo/protocol"
+	"libgo/protocol"
 )
 
 // OrderTrade indicate the invoice order-trade record data fields.
@@ -12,7 +12,7 @@ type OrderTrade interface {
 	OrderID() [16]byte               // order domain
 	Level() uint8                    // usually 3 level trade order
 	HighPrice() protocol.MoneyAmount // SaveProfit	e.g. 45$ , -102$
-	LowPrice() protocol.MoneyAmount  // StopLoss		e.g. 43$ , -95$
+	LowPrice() protocol.MoneyAmount  // StopLoss	e.g. 43$ , -95$
 	Type() OrderTrade_Type           //
 	Time() protocol.Time             // save time
 	RequestID() UserRequestUUID      // user-request domain

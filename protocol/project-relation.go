@@ -3,13 +3,14 @@
 package org
 
 import (
-	"github.com/GeniusesGroup/libgo/protocol"
+	"libgo/protocol"
 )
 
-// ProjectTask indicate the domain record data fields.
-type ProjectTask interface {
-	TaskID() [16]byte           //
-	ProjectID() [16]byte        // project domain
+// ProjectRelation indicate the domain record data fields.
+type ProjectRelation interface {
+	ProjectID() ProjectUUID //
+	OtherID() ProjectUUID   //
+	// TODO::: type or label??
 	Time() protocol.Time        // Save time
 	RequestID() UserRequestUUID // user-request domain
 }

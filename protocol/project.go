@@ -3,13 +3,17 @@
 package org
 
 import (
-	"github.com/GeniusesGroup/libgo/protocol"
+	"libgo/protocol"
 )
+
+type ProjectUUID = protocol.UUID
 
 // Project indicate the domain record data fields.
 type Project interface {
-	ProjectID() [16]byte // group domain. use to get and show locale title.
-
+	ProjectID() ProjectUUID     // group domain. use to get and show locale title.
+	Type() Project_Type         //
 	Time() protocol.Time        // Save time
 	RequestID() UserRequestUUID // user-request domain
 }
+
+type Project_Type uint64

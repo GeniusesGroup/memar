@@ -3,7 +3,7 @@
 package org
 
 import (
-	"github.com/GeniusesGroup/libgo/protocol"
+	"libgo/protocol"
 )
 
 // each metrics for a thing is immutable record and so use version mechanism to chain metrics for a device.

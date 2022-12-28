@@ -3,7 +3,7 @@
 package org
 
 import (
-	"github.com/GeniusesGroup/libgo/protocol"
+	"libgo/protocol"
 )
 
 // MoneySettlementReference: https://www.federalreserve.gov/paymentsystems/fedfunds_about.htm

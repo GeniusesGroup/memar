@@ -3,14 +3,14 @@
 package org
 
 import (
-	"github.com/GeniusesGroup/libgo/protocol"
+	"libgo/protocol"
 )
 
 type ContentRelated interface {
-	ContentID() [16]byte        // content domain
-	Priority() int32            // substitute priority
+	ContentID() ContentUUID     // content domain
+	Priority() uint64           // substitute priority
 	PriorityType() [16]byte     // type domain
-	RelatedID() [16]byte        // content domain
+	RelatedID() ContentUUID     // content domain
 	UserID() protocol.UserID    // user domain
 	Time() protocol.Time        // save time
 	RequestID() UserRequestUUID // user-request domain
