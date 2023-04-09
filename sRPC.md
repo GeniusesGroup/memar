@@ -11,7 +11,17 @@ We combine OSI layer 4 to layer 6 requirements as Transport+Session+Presentation
 - Easy to understand by human
 
 ## Frames - Internal Services
-Each packet can carry many frames until respect network MTU. All frames have fixed first field name `Type` with `8bit` length that is same as [ServiceID](./Service.md) but not use 64bit unsigned integer and standard here as a byte to minimize packet unnecessary overhead. frame numbers will be the same as appear in below order e.g. padding=0, ping=1, ...
+Each packet can carry many frames until respect network MTU. All frames have fixed first field name `Type` with `signed 8bit` length that is same as [MediaTypeID](./media-type.md) but not use 64bit unsigned integer and standard here as a byte to minimize packet unnecessary overhead. frame numbers will be the same as appear in below order e.g. PacketSequenceNumber=0, padding=1, ping=2, ...
+
+Negative frame type reserved and use to extend types to int16 (or int64) length.
+
+### Packet Sequence Number Frame
+Incremental number use to detect failed packet, ... Use even number e.g. 0,2,4,6,... for client(who start connection) and Use odd number e.g. 1,3,5,7,... for server(who receive connection). Separation of the packet identifiers ensures that peer are able to send packets without the latency imposed by negotiating for an identifier.
+```go
+type PacketSequenceNumber struct {
+    SequenceNumber uint64
+}
+```
 
 ### Padding Frame
 ```go
@@ -42,16 +52,18 @@ type Service struct {
 ### Open-Stream
 ```go
 type OpenStream struct {
-    ProtocolID     uint16
+    ProtocolID     uint64
     ServiceID      uint64
     CompressTypeID uint64
     DataLength     uint64
+    Weight         protocol.Weight
 }
 ```
 
 ### Close-Stream Frame
 ```go
 type CloseStream struct {
+    Reason   uint64 // ErrorID??
 }
 ```
 
@@ -59,8 +71,8 @@ type CloseStream struct {
 ```go
 type Data struct {
     Length   uint16
-    StreamID uint32
-    Offset   uint32
+    StreamID uint64
+    Offset   uint64
     Payload  []byte
 }
 ```
@@ -73,12 +85,22 @@ type Error struct {
 }
 ```
 
-### Signature Frame
+### Data Signature Frame
 ```go
-type Signature struct {
+type DataSignature struct {
 	Length    uint16
-	StreamID  uint32
+	StreamID  uint64
 	Signature []byte
+}
+```
+
+## Special Signature Frame (MAC, Tag, ...)
+This is special frame that don't need `Type` field and always appear in the end of a packet(or a frame). Due to carry on end of each packet(or frame) it must be in reverse to read its fields. Depend on crypto mode it use to authenticate data transmitted and check packet(or frame) healthy in any network hop, But usually just first router and receiver check packet(or frame) signature.
+```go
+type PacketSignature struct {
+    Signature       []byte
+    SignatureScheme uint16 // SignatureScheme identifies a signature algorithm supported by TLS. See RFC 8446, Section 4.2.3.
+    Length          uint16 // including the header fields
 }
 ```
 
@@ -93,6 +115,7 @@ If block cipher use, add some random data to have fix size packet
 
 ### Stream ID
 Use even number for client(who start connection) to start a stream e.g. 0,2,4,6,... . Use odd number for server(who receive connection) to start a stream e.g. 1,3,5,7,... . Separation of the stream identifiers ensures that client and server are able to open streams without the latency imposed by negotiating for an identifier.
+
 ### Offset
 Max 4.72TB can transmit in single stream with 1.18KB payload Length as limit to 1.5KB of ethernet frames
 
@@ -101,12 +124,12 @@ Suggest to indicate protocolID in making each stream process. Also suggest to us
 
 ### Service ID
 - Use to route service and call the handler.
-- Read more about [ServiceID](./Service.md)
+- Same as [MediaTypeID](./media-type.md) of service media type.
 - Can use by other protocols e.g. http-uri: "/m?{{.ServiceID}}" that m use to be short and abbreviation for multiplexer(mux).
 
 ### Error ID
 - Use to show if calling service occur an error.
-- Read more about [ErrorID](./Error.md)
+- Same as [MediaTypeID](./media-type.md) of error media type.
 - Can transfer by other protocols e.g. http-header: "Error-ID: {{.ErrorID}}"
 
 ### Payload (Request or Response)
