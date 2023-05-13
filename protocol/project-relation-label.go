@@ -4,14 +4,16 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // ProjectLabel indicate the domain record data fields.
 type ProjectLabel interface {
-	ProjectID() ProjectUUID     // Project domain
-	LabelID() LabelUUID         //
-	Time() protocol.Time        // Save time
-	RequestID() UserRequestUUID // user-request domain
+	ProjectID() ProjectUUID         //
+	LabelID() LabelUUID             //
+	Time() protocol.Time            // Save time
+	RequestID() urp.UserRequestUUID // user-request domain
 }
 
 type ProjectLabel_StorageServices interface {

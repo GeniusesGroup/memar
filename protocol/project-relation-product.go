@@ -4,6 +4,8 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // ProjectProductRelation indicate the domain record data fields.
@@ -11,6 +13,6 @@ type ProjectProductRelation interface {
 	ProjectID() ProjectUUID // group domain. use to get and show locale title.
 	ProductID() ProductUUID //
 	// TODO::: type or label??
-	Time() protocol.Time        // Save time
-	RequestID() UserRequestUUID // user-request domain
+	Time() protocol.Time            // Save time
+	RequestID() urp.UserRequestUUID // user-request domain
 }

@@ -4,13 +4,15 @@ package org
 
 import (
 	"libgo/protocol"
+	
+	urp "org/modules/user-request/protocol"
 )
 
 // ProjectTiming indicate the domain record data fields.
 type ProjectTiming interface {
-	ProjectID() [16]byte         // project domain
-	ExpectedTime() protocol.Time //
-	Deadline() protocol.Time     //
-	Time() protocol.Time         // save time
-	RequestID() UserRequestUUID  // user-request domain
+	ProjectID() ProjectUUID         //
+	ExpectedTime() protocol.Time    //
+	Deadline() protocol.Time        //
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID // user-request domain
 }

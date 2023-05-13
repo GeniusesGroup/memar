@@ -5,11 +5,13 @@ package org
 import (
 	"libgo/protocol"
 	"libgo/time/utc"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // ProjectAnalytic indicate the domain record data fields.
 type ProjectAnalytic interface {
-	ProjectID() ProjectUUID // project domain
+	ProjectID() ProjectUUID //
 	Day() utc.DayElapsed    //
 
 	TotalTasks() uint64      //
@@ -18,6 +20,6 @@ type ProjectAnalytic interface {
 	Progress() uint64        //
 	TaskOverDueTime() uint64 // due time
 
-	Time() protocol.Time        // Save time
-	RequestID() UserRequestUUID // user-request domain
+	Time() protocol.Time            // Save time
+	RequestID() urp.UserRequestUUID // user-request domain
 }
