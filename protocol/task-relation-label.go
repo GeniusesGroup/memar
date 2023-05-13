@@ -4,11 +4,14 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // TaskLabel indicate the domain record data fields.
 type TaskLabel interface {
-	TaskID() TaskUUID    //
-	Label() LabelUUID    //
-	Time() protocol.Time // Save time
+	TaskID() TaskUUID               //
+	Label() LabelUUID               //
+	Time() protocol.Time            // Save time
+	RequestID() urp.UserRequestUUID // user-request domain
 }

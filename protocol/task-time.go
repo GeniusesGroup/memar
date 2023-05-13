@@ -4,14 +4,16 @@ package org
 
 import (
 	"libgo/protocol"
+	
+	urp "org/modules/user-request/protocol"
 )
 
 // ProjectTaskTime indicate the domain record data fields.
 type ProjectTaskTime interface {
-	TaskID() TaskUUID           // project-task domain
-	Type() ProjectTaskTime_Type //
-	Time() protocol.Time        // Save time
-	RequestID() UserRequestUUID // user-request domain
+	TaskID() TaskUUID               // project-task domain
+	Type() ProjectTaskTime_Type     //
+	Time() protocol.Time            // Save time
+	RequestID() urp.UserRequestUUID // user-request domain
 }
 
 type ProjectTaskTime_Type uint8

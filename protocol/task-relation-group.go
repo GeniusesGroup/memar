@@ -1,0 +1,27 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+package org
+
+import (
+	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
+)
+
+// TaskRelationGroup indicate the Task-Relation-Group record data fields.
+// Group here can treated as a team work on a task.
+type TaskRelationGroup interface {
+	TaskID() TaskUUID                     //
+	GroupID() GroupUUID                   //
+	RelationType() TaskRelationGroup_Type //
+	Time() protocol.Time                  // Save time
+	RequestID() urp.UserRequestUUID       // user-request domain
+}
+
+type TaskRelationGroup_Type uint8
+
+const (
+	TaskRelationGroup_Type_Unset TaskRelationGroup_Type = iota
+	TaskRelationGroup_Type_Assigned
+	TaskRelationGroup_Type_Reviewer
+)

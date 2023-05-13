@@ -4,13 +4,15 @@ package org
 
 import (
 	"libgo/protocol"
+	
+	urp "org/modules/user-request/protocol"
 )
 
 // TaskTiming indicate the domain record data fields.
 type TaskTiming interface {
-	TaskID() TaskUUID            //s
-	ExpectedTime() protocol.Time //
-	Deadline() protocol.Time     //
-	Time() protocol.Time         // Save time
-	RequestID() UserRequestUUID  // user-request domain
+	TaskID() TaskUUID               //
+	ExpectedTime() protocol.Time    //
+	Deadline() protocol.Time        //
+	Time() protocol.Time            // Save time
+	RequestID() urp.UserRequestUUID // user-request domain
 }
