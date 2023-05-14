@@ -25,6 +25,7 @@ const (
 	Questionnaire_Type_Quiz  Questionnaire_Type = (1 << iota)
 	Questionnaire_Type_Anonymous
 	Questionnaire_Type_Duration
+	Questionnaire_Type_StartPoint
 	Questionnaire_Type_AllowToEdit
 )
 
