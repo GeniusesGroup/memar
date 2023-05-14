@@ -40,5 +40,4 @@ const (
 
 	QuestionDescriptive_Type_Number
 	QuestionDescriptive_Type_NumberRange
-	QuestionDescriptive_Type_StarRating
 )

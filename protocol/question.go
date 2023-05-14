@@ -29,9 +29,11 @@ const (
 	Question_Type_ForceToAnswer
 	Question_Type_AllowToEdit
 
+	// Multiple below flags can be turned on.
 	Question_Type_YesNo // True/False
 	Question_Type_SingleChoice
 	Question_Type_MultipleChoice
 	Question_Type_FillInTheBlank
 	Question_Type_Descriptive
+	Question_Type_Rating
 )

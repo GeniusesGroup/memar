@@ -4,17 +4,15 @@ package org
 
 import (
 	"libgo/protocol"
-	
+
 	urp "org/modules/user-request/protocol"
 )
 
-// QuestionAnswerOptions indicate the domain record data fields.
-type QuestionAnswerOptions interface {
+// QuestionAnswerOptionMultiple indicate the domain record data fields.
+type QuestionAnswerOptionMultiple interface {
 	QuestionID() QuestionUUID       //
-	UserID() protocol.UserID        //
+	AnswerBy() protocol.UserID      //
 	Answer() []uint8                //
 	Time() protocol.Time            // Save time
 	RequestID() urp.UserRequestUUID // user-request domain
 }
-
-// QuestionAnswerOptions_Type_Anonymous

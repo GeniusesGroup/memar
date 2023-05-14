@@ -14,6 +14,8 @@ type QuestionOptionUUID protocol.UUID
 type QuestionOption interface {
 	QuestionOptionID() QuestionOptionUUID //
 	Type() QuestionOption_Type            //
+	Significance_Positive() uint64        //
+	Significance_Negative() uint64        //
 	Time() protocol.Time                  // Save time
 	RequestID() urp.UserRequestUUID       // user-request domain
 }
