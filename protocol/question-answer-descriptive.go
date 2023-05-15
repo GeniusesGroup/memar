@@ -10,8 +10,7 @@ import (
 
 // QuestionAnswerDescriptive indicate the domain record data fields.
 type QuestionAnswerDescriptive interface {
-	QuestionID() QuestionUUID       //
-	AnswerBy() protocol.UserID      //
+	AnswerID() AnswerUUID           //
 	Answer() string                 //
 	Time() protocol.Time            // Save time
 	RequestID() urp.UserRequestUUID // user-request domain

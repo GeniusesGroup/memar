@@ -10,7 +10,10 @@ import (
 
 type QuestionUUID protocol.UUID
 
+// TODO::: dynamic data in question?? text substitution, text piping
+
 // Question indicate the domain record data fields.
+// Question text, videos, images, ... save in Comment domains.
 type Question interface {
 	QuestionID() QuestionUUID       //
 	Type() Question_Type            //
@@ -33,7 +36,9 @@ const (
 	Question_Type_YesNo // True/False
 	Question_Type_SingleChoice
 	Question_Type_MultipleChoice
+	Question_Type_Ordering // options, options-ordering
 	Question_Type_FillInTheBlank
 	Question_Type_Descriptive
 	Question_Type_Rating
+	Question_Type_Object
 )

@@ -39,5 +39,6 @@ const (
 	QuestionDescriptive_Type_File
 
 	QuestionDescriptive_Type_Number
+	QuestionDescriptive_Type_Number_Decimal
 	QuestionDescriptive_Type_NumberRange
 )

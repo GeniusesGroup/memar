@@ -10,8 +10,7 @@ import (
 
 // QuestionAnswerFillInTheBlank indicate the domain record data fields.
 type QuestionAnswerFillInTheBlank interface {
-	QuestionID() QuestionUUID       //
-	AnswerBy() protocol.UserID      //
+	AnswerID() AnswerUUID           //
 	Answer() []string               //
 	Time() protocol.Time            // Save time
 	RequestID() urp.UserRequestUUID // user-request domain

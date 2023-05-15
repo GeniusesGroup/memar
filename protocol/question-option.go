@@ -31,10 +31,10 @@ const (
 	// Without need to be an option to prevent impact on overall result
 	QuestionOption_Type_Neutral
 
-	QuestionOption_Type_ForceToFillOther
-	QuestionOption_Type_ForceToContinueInOther
-	QuestionOption_Type_Question
-	QuestionOption_Type_Questionnaire
+	QuestionOption_Type_ForceToFill_Question
+	QuestionOption_Type_ForceToFill_Questionnaire
+	QuestionOption_Type_ForceToContinue_Question
+	QuestionOption_Type_ForceToContinue_Questionnaire
 
 	QuestionOption_Type_DropList
 )

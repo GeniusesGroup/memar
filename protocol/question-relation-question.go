@@ -22,4 +22,6 @@ type QuestionQuestionRelation_Type uint8
 const (
 	QuestionQuestionRelation_Type_Unset QuestionQuestionRelation_Type = iota
 	QuestionQuestionRelation_Type_SubQuestion
+	QuestionQuestionRelation_Type_Translated
+	QuestionQuestionRelation_Type_Complement
 )

@@ -8,8 +8,8 @@ import (
 	urp "org/modules/user-request/protocol"
 )
 
-// QuestionLabel indicate the domain record data fields.
-type QuestionLabel interface {
+// QuestionLabelRelation indicate the domain record data fields.
+type QuestionLabelRelation interface {
 	QuestionID() QuestionUUID       //
 	Label() LabelUUID               //
 	Time() protocol.Time            // Save time

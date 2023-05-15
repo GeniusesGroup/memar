@@ -10,8 +10,7 @@ import (
 
 // QuestionAnswerRating indicate the domain record data fields.
 type QuestionAnswerRating interface {
-	QuestionID() QuestionUUID       //
-	AnswerBy() protocol.UserID      //
+	AnswerID() AnswerUUID           //
 	Answer() uint8                  //
 	Time() protocol.Time            // Save time
 	RequestID() urp.UserRequestUUID // user-request domain
