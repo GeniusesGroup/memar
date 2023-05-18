@@ -31,6 +31,7 @@ const (
 	Question_Type_Duration
 	Question_Type_ForceToAnswer
 	Question_Type_AllowToEdit
+	Question_Type_MaxAttempt
 
 	// Multiple below flags can be turned on.
 	Question_Type_YesNo // True/False

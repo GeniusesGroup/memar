@@ -23,6 +23,7 @@ type QuestionDescriptive_Type uint8
 const (
 	QuestionDescriptive_Type_Unset QuestionDescriptive_Type = iota
 	QuestionDescriptive_Type_Text
+	QuestionDescriptive_Type_Textarea
 
 	QuestionDescriptive_Type_Color
 

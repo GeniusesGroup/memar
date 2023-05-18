@@ -35,6 +35,4 @@ const (
 	QuestionOption_Type_ForceToFill_Questionnaire
 	QuestionOption_Type_ForceToContinue_Question
 	QuestionOption_Type_ForceToContinue_Questionnaire
-
-	QuestionOption_Type_DropList
 )

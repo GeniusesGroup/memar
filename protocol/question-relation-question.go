@@ -24,4 +24,5 @@ const (
 	QuestionQuestionRelation_Type_SubQuestion
 	QuestionQuestionRelation_Type_Translated
 	QuestionQuestionRelation_Type_Complement
+	QuestionQuestionRelation_Type_Hint // use for options not descriptive type.
 )

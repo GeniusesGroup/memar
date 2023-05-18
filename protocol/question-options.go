@@ -10,11 +10,12 @@ import (
 
 // QuestionOptions indicate the domain record data fields.
 type QuestionOptions interface {
-	QuestionID() QuestionUUID      //
-	Options() []QuestionOptionUUID //
-	AlgorithmType() QuestionOptions_AlgorithmType
-	Time() protocol.Time            // Save time
-	RequestID() urp.UserRequestUUID // user-request domain
+	QuestionID() QuestionUUID                     //
+	Options() []QuestionOptionUUID                //
+	Type() QuestionOptions_Type                   //
+	AlgorithmType() QuestionOptions_AlgorithmType //
+	Time() protocol.Time                          // Save time
+	RequestID() urp.UserRequestUUID               // user-request domain
 }
 
 type QuestionOptions_AlgorithmType uint8
@@ -24,4 +25,11 @@ const (
 	QuestionOptions_AlgorithmType_UserID
 	QuestionOptions_AlgorithmType_StaffID
 	QuestionOptions_AlgorithmType_RegisteredTime
+)
+
+type QuestionOptions_Type uint16
+
+const (
+	QuestionOptions_Type_Unset    QuestionOptions_Type = 0
+	QuestionOptions_Type_DropList QuestionOptions_Type = (1 << iota)
 )
