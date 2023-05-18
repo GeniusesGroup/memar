@@ -27,6 +27,10 @@ const (
 	Questionnaire_Type_Duration
 	Questionnaire_Type_StartPoint
 	Questionnaire_Type_AllowToEdit
+	Questionnaire_Type_Form
+	Questionnaire_Type_MaxAttempt
+
+	// TODO::: Template for forms?
 )
 
 // link to group
