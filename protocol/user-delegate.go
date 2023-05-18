@@ -4,31 +4,35 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
+
+// UserDelegate means transfer power to someone. power is role access in softwares.
 
 // UserDelegate indicate the domain record data fields.
 type UserDelegate interface {
-	GivenUserID() protocol.UserID  // user domain
-	GottenUserID() protocol.UserID // user domain
-	OrgID() protocol.UserID        // user domain
-	RoleID() [16]byte              // role domain
-	Status() UserDelegate_Status   //
-	Time() protocol.Time           // save time
-	RequestID() UserRequestUUID    // user-request domain
+	GivenUserID() protocol.UserID   // user domain
+	GottenUserID() protocol.UserID  // user domain
+	RoleID() RoleUUID               //
+	Status() UserDelegate_Status    //
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID // user-request domain
 }
 
 type UserDelegate_StorageServices interface {
 	Save(ud UserDelegate) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(givenUserID, gottenUserID, roleID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(givenUserID, gottenUserID, roleID [16]byte, vo protocol.VersionOffset) (ud UserDelegate, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(givenUserID, gottenUserID [16]byte, roleID RoleUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(givenUserID, gottenUserID [16]byte, roleID RoleUUID, vo protocol.VersionOffset) (ud UserDelegate, nv protocol.NumberOfVersion, err protocol.Error)
 
-	ListOrgs(givenUserID [16]byte, offset, limit uint64) (orgIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
 	ListRoles(givenUserID, gottenUserID [16]byte, offset, limit uint64) (roles [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
-	ListUsers(roleID [16]byte, offset, limit uint64) (gottenUserIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
-	ListGottenDelegate(gottenUserID [16]byte, offset, limit uint64) (givenUserIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
+	ListGottenUsers(roleID [16]byte, offset, limit uint64) (gottenUserIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
+	ListGivenUsers(roleID [16]byte, offset, limit uint64) (givenUserIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
+	ListGottenDelegateUsers(gottenUserID [16]byte, offset, limit uint64) (givenUserIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
+	ListGivenDelegateUsers(givenUserID [16]byte, offset, limit uint64) (gottenUserID [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
 
-	protocol.EventTarget
+	// protocol.EventTarget
 }
 
 type UserDelegate_Status Quiddity_Status
