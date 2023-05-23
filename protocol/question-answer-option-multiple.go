@@ -11,7 +11,7 @@ import (
 // QuestionAnswerOptionMultiple indicate the domain record data fields.
 type QuestionAnswerOptionMultiple interface {
 	AnswerID() AnswerUUID           //
-	Answer() []uint8                //
+	Answer() []QuestionOptionUUID   //
 	Time() protocol.Time            // Save time
 	RequestID() urp.UserRequestUUID // user-request domain
 }
