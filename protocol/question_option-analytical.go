@@ -16,3 +16,10 @@ type QuestionOptionAnalytical interface {
 	Time() protocol.Time                  // Save time
 	RequestID() urp.UserRequestUUID       // user-request domain
 }
+
+type QuestionOptionAnalytical_StorageServices interface {
+	Save(f QuestionOptionAnalytical) (nv protocol.NumberOfVersion, err protocol.Error)
+
+	Count(questionID QuestionUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(questionID QuestionUUID, vo protocol.VersionOffset) (f QuestionOptionAnalytical, nv protocol.NumberOfVersion, err protocol.Error)
+}

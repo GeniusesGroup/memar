@@ -16,3 +16,11 @@ type QuestionOptionMultipleChoice interface {
 	Time() protocol.Time                  // Save time
 	RequestID() urp.UserRequestUUID       // user-request domain
 }
+
+type  QuestionOptionMultipleChoice_StorageServices interface {
+	Save(f QuestionOptionMultipleChoice) (nv protocol.NumberOfVersion, err protocol.Error)
+
+	Count(questionOptionID QuestionOptionUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(questionOptionID QuestionOptionUUID, vo protocol.VersionOffset) (f QuestionOptionMultipleChoice, nv protocol.NumberOfVersion, err protocol.Error)
+
+}

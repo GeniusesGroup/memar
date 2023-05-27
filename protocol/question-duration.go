@@ -17,6 +17,14 @@ type QuestionDuration interface {
 	RequestID() urp.UserRequestUUID // user-request domain
 }
 
+type  QuestionDuration_StorageServices interface {
+	Save(f QuestionDuration) (nv protocol.NumberOfVersion, err protocol.Error)
+
+	Count(questionID QuestionUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(questionID QuestionUUID, vo protocol.VersionOffset) (f QuestionDuration, nv protocol.NumberOfVersion, err protocol.Error)
+
+}
+
 type QuestionDuration_Epoch uint8
 
 const (

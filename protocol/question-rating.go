@@ -17,6 +17,15 @@ type QuestionRating interface {
 	RequestID() urp.UserRequestUUID // user-request domain
 }
 
+type QuestionRating_StorageServices interface {
+	Save(f QuestionRating) (nv protocol.NumberOfVersion, err protocol.Error)
+
+	Count(questionID QuestionUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(questionID QuestionUUID, vo protocol.VersionOffset) (f QuestionRating, nv protocol.NumberOfVersion, err protocol.Error)
+
+	FilterByType(t QuestionRating_Type, offset, limit uint64) (questionIDs []QuestionUUID, nv protocol.NumberOfVersion, err protocol.Error)
+}
+
 type QuestionRating_Type uint16
 
 const (

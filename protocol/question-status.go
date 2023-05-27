@@ -4,7 +4,7 @@ package org
 
 import (
 	"libgo/protocol"
-	
+
 	urp "org/modules/user-request/protocol"
 )
 
@@ -14,6 +14,16 @@ type QuestionStatus interface {
 	Status() Question_Status        //
 	Time() protocol.Time            // Save time
 	RequestID() urp.UserRequestUUID // user-request domain
+}
+
+type QuestionStatus_StorageServices interface {
+	Save(f QuestionStatus) (nv protocol.NumberOfVersion, err protocol.Error)
+
+	Count(questionID QuestionUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(questionID QuestionUUID, vo protocol.VersionOffset) (f QuestionStatus, nv protocol.NumberOfVersion, err protocol.Error)
+
+	FilterByStatus(status Question_Status, offset, limit uint64) (questionID []QuestionUUID, nv protocol.NumberOfVersion, err protocol.Error)
+
 }
 
 type Question_Status Quiddity_Status

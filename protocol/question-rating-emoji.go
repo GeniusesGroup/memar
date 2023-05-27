@@ -15,3 +15,11 @@ type QuestionRatingEmoji interface {
 	Time() protocol.Time            // Save time
 	RequestID() urp.UserRequestUUID // user-request domain
 }
+
+type  QuestionRatingEmoji_StorageServices interface {
+	Save(f QuestionRatingEmoji) (nv protocol.NumberOfVersion, err protocol.Error)
+
+	Count(questionID QuestionUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(questionID QuestionUUID, vo protocol.VersionOffset) (f QuestionRatingEmoji, nv protocol.NumberOfVersion, err protocol.Error)
+
+}
