@@ -4,14 +4,16 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
-// Comment indicate the comment-settings domain record data fields.
+// Comment indicate the domain record data fields.
 type CommentSettings interface {
-	CommentID() CommentUUID     //
-	Settings() Comment_Settings //
-	Time() protocol.Time        // save time
-	RequestID() UserRequestUUID // user-request domain
+	CommentID() CommentUUID         //
+	Settings() Comment_Settings     //
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }
 
 type CommentSettings_StorageServices interface {
@@ -21,7 +23,7 @@ type CommentSettings_StorageServices interface {
 	Get(commentID [16]byte, vo protocol.VersionOffset) (c CommentSettings, nv protocol.NumberOfVersion, err protocol.Error)
 }
 
-type Comment_Settings uint32
+type Comment_Settings uint64
 
 const (
 	Comment_Settings_Unset        Comment_Settings = 0
@@ -30,4 +32,12 @@ const (
 	Comment_Settings_Forwardable       // Allow to forward it
 	Comment_Settings_SilentForwardable // Don't add comment detail like user created
 	Comment_Settings_NoReply
+	Comment_Settings_Mute
+
+	Comment_Settings_Thread
+
+	Comment_Settings_Toxic
+	Comment_Settings_Spam
+	Comment_Settings_Sensitivity
+	Comment_Settings_Confidential // if not set mean normal message
 )

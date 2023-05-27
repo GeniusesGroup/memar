@@ -8,16 +8,16 @@ import (
 
 // CommentMentioned indicate the domain record data fields.
 type CommentMentioned interface {
-	UserID() protocol.UserID // user domain
-	CommentID() CommentUUID  // comment domain
-	Time() protocol.Time     // save time
+	UserID() UserUUID       //
+	CommentID() CommentUUID //
+	Time() protocol.Time    // save time
 }
 
 type CommentMentioned_StorageServices interface {
 	Save(cm CommentMentioned) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(userID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(userID [16]byte, vo protocol.VersionOffset) (cm CommentMentioned, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(userID UserUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(userID UserUUID, vo protocol.VersionOffset) (cm CommentMentioned, nv protocol.NumberOfVersion, err protocol.Error)
 
 	protocol.EventTarget
 }

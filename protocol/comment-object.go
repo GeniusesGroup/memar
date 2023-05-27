@@ -4,15 +4,17 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // CommentObject indicate the domain record data fields.
 // Object can be any such as image, video, voice, ...
 type CommentObject interface {
-	CommentID() CommentUUID     // comment domain
-	ObjectID() [16]byte         // object domain
-	Time() protocol.Time        // save time
-	RequestID() UserRequestUUID // user-request domain
+	CommentID() CommentUUID         //
+	ObjectID() ObjectUUID           //
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }
 
 type CommentObject_StorageServices interface {

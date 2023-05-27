@@ -4,20 +4,23 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
-// CommentForward indicate the domain record data fields.
-type CommentForward interface {
-	CommentID() CommentUUID     // comment domain
-	ForwardedID() CommentUUID   // ForwardedCommentID
-	Time() protocol.Time        // save time
-	RequestID() UserRequestUUID // user-request domain
+// CommentCommentRelation indicate the domain record data fields.
+type CommentCommentRelation interface {
+	CommentID() CommentUUID     //
+	SideCommentID() CommentUUID //
+	// Type()
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }
 
-type CommentForward_StorageServices interface {
-	Save(cf CommentForward) (nv protocol.NumberOfVersion, err protocol.Error)
+type CommentCommentRelation_StorageServices interface {
+	Save(sf CommentCommentRelation) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Get(commentID [16]byte) (cf CommentForward, err protocol.Error)
+	Get(commentID CommentUUID) (sf CommentCommentRelation, err protocol.Error)
 
-	FindByForwardedID(forwardedID [16]byte, offset, limit uint64) (commentIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
+	FindBySideCommentID(sideCommentID CommentUUID, offset, limit uint64) (commentIDs []CommentUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }

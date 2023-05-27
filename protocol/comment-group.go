@@ -4,16 +4,18 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
-// CommentGroup indicate the comment domain record data fields.
+// CommentGroup indicate the domain record data fields.
 // each comment is immutable record and so use version mechanism to chain comments in a group.
 type CommentGroup interface {
-	GroupID() [16]byte          // group domain
-	CommentID() CommentUUID     //
-	UserID() protocol.UserID    // user domain
-	Time() protocol.Time        // save time
-	RequestID() UserRequestUUID // user-request domain
+	GroupID() GroupUUID             //
+	CommentID() CommentUUID         //
+	UserID() UserUUID               //
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }
 
 type CommentGroup_StorageServices interface {
@@ -23,9 +25,10 @@ type CommentGroup_StorageServices interface {
 	Get(groupID [16]byte, vo protocol.VersionOffset) (cg CommentGroup, nv protocol.NumberOfVersion, err protocol.Error)
 
 	FindByComment(commentID [16]byte) (groupID [16]byte, err protocol.Error)
-	FindByUser(groupID [16]byte, userID [16]byte, offset, limit uint64) (commentIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
+	FindByUser(groupID [16]byte, userID UserUUID, offset, limit uint64) (commentIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
 
-	ListUserGroups(userID [16]byte, offset, limit uint64) (groupIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
+	ListUserGroups(userID UserUUID, offset, limit uint64) (groupIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
+	// ListThreads(groupID [16]byte, offset, limit uint64) (commentIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
 
 	protocol.EventTarget
 }
@@ -36,7 +39,7 @@ type CommentGroup_StorageServices interface {
 
 type (
 	CommentGroup_Service_Register_Request interface {
-		GroupID() [16]byte
+		GroupID() GroupUUID
 		CommentID() CommentUUID
 	}
 )

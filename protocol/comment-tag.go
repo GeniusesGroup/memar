@@ -10,7 +10,7 @@ import (
 // It must just use to index hashtag words from comment-text domain
 type CommentTag interface {
 	Tag() string            //
-	CommentID() CommentUUID // comment domain
+	CommentID() CommentUUID //
 	Time() protocol.Time    // save time
 }
 

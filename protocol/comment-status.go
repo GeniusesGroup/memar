@@ -4,14 +4,16 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // CommentStatus indicate the domain record data fields.
 type CommentStatus interface {
-	CommentID() CommentUUID     // comment domain
-	Status() Comment_Status     //
-	Time() protocol.Time        // save time
-	RequestID() UserRequestUUID // user-request domain
+	CommentID() CommentUUID         //
+	Status() Comment_Status         //
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }
 
 type CommentStatus_StorageServices interface {

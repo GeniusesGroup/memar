@@ -4,14 +4,16 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // CommentText indicate the domain record data fields.
 type CommentText interface {
-	CommentID() CommentUUID     // comment domain
-	Text() string               // Text With Style. HTML & CSS (No JS) is more expressive than markdown, suggest use them in article text to style text.
-	Time() protocol.Time        // save time
-	RequestID() UserRequestUUID // user-request domain
+	CommentID() CommentUUID         //
+	Text() string                   // Text With Style. HTML & CSS (No JS) is more expressive than markdown, suggest use them in article text to style text.
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }
 
 type CommentText_StorageServices interface {

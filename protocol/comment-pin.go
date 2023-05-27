@@ -4,15 +4,17 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // CommentPin indicate the domain record data fields.
 type CommentPin interface {
-	CommentID() CommentUUID      // comment domain
-	GroupID() [16]byte           // group domain
-	CommentPinedID() CommentUUID // comment domain
-	Time() protocol.Time         // save time
-	RequestID() UserRequestUUID  // user-request domain
+	CommentID() CommentUUID         //
+	GroupID() GroupUUID             //
+	CommentPinedID() CommentUUID    //
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }
 
 type CommentPin_StorageServices interface {

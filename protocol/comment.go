@@ -4,19 +4,19 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 type CommentUUID = protocol.UUID
 
-// Comment indicate the comment domain record data fields.
+// Comment indicate the domain record data fields.
 type Comment interface {
-	CommentID() CommentUUID     //
-	ReplyTo() CommentUUID       // Comment can be reply to other comment in the same group.
-	UserID() protocol.UserID    // user domain
-	Priority() uint64           //
-	Type() Comment_Type         //
-	Time() protocol.Time        // save time
-	RequestID() UserRequestUUID // user-request domain
+	CommentID() CommentUUID         //
+	UserID() UserUUID               //
+	Type() Comment_Type             //
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }
 
 type Comment_StorageServices interface {
@@ -24,8 +24,6 @@ type Comment_StorageServices interface {
 
 	Count(commentID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
 	Get(commentID [16]byte, vo protocol.VersionOffset) (c Comment, nv protocol.NumberOfVersion, err protocol.Error)
-
-	FindByReplyTo(replyTo [16]byte, offset, limit uint64) (commentIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
 }
 
 type Comment_Type uint32
@@ -37,8 +35,6 @@ const (
 	Comment_Type_File
 
 	Comment_Type_MultiParticipant
-
-	Comment_Type_Call
 	Comment_Type_Email
 
 	Comment_Type_Image
@@ -46,15 +42,8 @@ const (
 	Comment_Type_Album
 
 	Comment_Type_Pin
-	Comment_Type_Welcome
-	Comment_Type_PhotoUpdated
-	Comment_Type_NewConnection // made-friend, new-follower,
-
-	Comment_Type_Map // location
-	Comment_Type_Product
-
-	Comment_Type_Thread  // Thread name will save in comment-text
-	Comment_Type_Forward // Retweet, Share, ...
+	Comment_Type_RelationToComment // Forward, Retweet, Share, ...
+	Comment_Type_LogActivity
 )
 
 /*
@@ -63,9 +52,9 @@ const (
 
 type (
 	Comment_Service_Register_Request interface {
-		GroupID() [16]byte
+		GroupID() GroupUUID
 		ReplyTo() [16]byte
-		UserID() protocol.UserID
+		UserID() UserUUID
 		Type() Comment_Type
 		Settings() Comment_Settings
 	}
