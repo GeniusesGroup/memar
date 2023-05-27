@@ -15,3 +15,12 @@ type QuestionMaxAttempt interface {
 	Time() protocol.Time            // Save time
 	RequestID() urp.UserRequestUUID // user-request domain
 }
+
+type  QuestionMaxAttempt_StorageServices interface {
+	Save(f QuestionMaxAttempt) (nv protocol.NumberOfVersion, err protocol.Error)
+
+	Count(questionID QuestionUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(questionID QuestionUUID, vo protocol.VersionOffset) (f QuestionMaxAttempt, nv protocol.NumberOfVersion, err protocol.Error)
+
+}
+

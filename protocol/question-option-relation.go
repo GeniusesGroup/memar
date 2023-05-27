@@ -15,3 +15,13 @@ type QuestionOptionRelation interface {
 	Time() protocol.Time                  // Save time
 	RequestID() urp.UserRequestUUID       // user-request domain
 }
+
+type  QuestionOptionRelation_StorageServices interface {
+	Save(f QuestionOptionRelation) (nv protocol.NumberOfVersion, err protocol.Error)
+
+	Count(questionOptionID QuestionOptionUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(questionOptionID QuestionOptionUUID, vo protocol.VersionOffset) (f QuestionOptionRelation, nv protocol.NumberOfVersion, err protocol.Error)
+
+	FindByRelationID(questionOptionID [16]byte, offset, limit uint64 ) (questionOptionIDs []QuestionUUID, nv protocol.NumberOfVersion, err protocol.Error)
+}
+

@@ -18,6 +18,15 @@ type QuestionDescriptive interface {
 	RequestID() urp.UserRequestUUID // user-request domain
 }
 
+type QuestionDescriptive_StorageServices interface {
+	Save(f QuestionDescriptive) (nv protocol.NumberOfVersion, err protocol.Error)
+
+	Count(questionID QuestionUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(questionID QuestionUUID, vo protocol.VersionOffset) (f QuestionDescriptive, nv protocol.NumberOfVersion, err protocol.Error)
+
+	FindByType(questionID QuestionUUID, t QuestionDescriptive_Type, offset, limit uint64) (questionIDs []QuestionUUID, nv protocol.NumberOfVersion, err protocol.Error)
+}
+
 type QuestionDescriptive_Type uint8
 
 const (

@@ -15,3 +15,10 @@ type QuestionAnswerRating interface {
 	Time() protocol.Time            // Save time
 	RequestID() urp.UserRequestUUID // user-request domain
 }
+
+type QuestionAnswerRating_StorageServices interface {
+	Save(f QuestionAnswerRating) (nv protocol.NumberOfVersion, err protocol.Error)
+
+	Count(answerID AnswerUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(answerID AnswerUUID, vo protocol.VersionOffset) (f QuestionAnswerRating, nv protocol.NumberOfVersion, err protocol.Error)
+}

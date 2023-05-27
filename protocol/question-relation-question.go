@@ -17,6 +17,18 @@ type QuestionQuestionRelation interface {
 	RequestID() urp.UserRequestUUID      // user-request domain
 }
 
+type QuestionQuestionRelation_StorageServices interface {
+	Save(f QuestionQuestionRelation) (nv protocol.NumberOfVersion, err protocol.Error)
+
+	Count(questionID QuestionUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(questionID QuestionUUID, vo protocol.VersionOffset) (f QuestionQuestionRelation, nv protocol.NumberOfVersion, err protocol.Error)
+
+	ListAllQuestionRelations(questionID QuestionUUID, offset, limit uint64) (relationID []QuestionUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	FindByRelationID(relationID QuestionUUID, offset, limit uint64) (questionID []QuestionUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	FilterByType(questionID QuestionUUID, t QuestionQuestionRelation_Type, offset, limit uint64) (questionIDs []QuestionUUID, nv protocol.NumberOfVersion, err protocol.Error)
+
+}
+
 type QuestionQuestionRelation_Type uint8
 
 const (
