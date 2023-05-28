@@ -10,11 +10,12 @@ import (
 
 // QuestionQuestionRelation indicate the domain record data fields.
 type QuestionQuestionRelation interface {
-	QuestionID() QuestionUUID            //
-	RelationID() QuestionUUID            //
-	Type() QuestionQuestionRelation_Type //
-	Time() protocol.Time                 // Save time
-	RequestID() urp.UserRequestUUID      // user-request domain
+	QuestionID() QuestionUUID                //
+	RelationID() QuestionUUID                //
+	Type() QuestionQuestionRelation_Type     //
+	Status() QuestionQuestionRelation_Status //
+	Time() protocol.Time                     // Save time
+	RequestID() urp.UserRequestUUID          //
 }
 
 type QuestionQuestionRelation_StorageServices interface {
@@ -26,7 +27,6 @@ type QuestionQuestionRelation_StorageServices interface {
 	ListAllQuestionRelations(questionID QuestionUUID, offset, limit uint64) (relationID []QuestionUUID, nv protocol.NumberOfVersion, err protocol.Error)
 	FindByRelationID(relationID QuestionUUID, offset, limit uint64) (questionID []QuestionUUID, nv protocol.NumberOfVersion, err protocol.Error)
 	FilterByType(questionID QuestionUUID, t QuestionQuestionRelation_Type, offset, limit uint64) (questionIDs []QuestionUUID, nv protocol.NumberOfVersion, err protocol.Error)
-
 }
 
 type QuestionQuestionRelation_Type uint8
@@ -38,3 +38,5 @@ const (
 	QuestionQuestionRelation_Type_Complement
 	QuestionQuestionRelation_Type_Hint // use for options not descriptive type.
 )
+
+type QuestionQuestionRelation_Status Quiddity_Status

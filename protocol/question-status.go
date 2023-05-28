@@ -13,7 +13,7 @@ type QuestionStatus interface {
 	QuestionID() QuestionUUID       //
 	Status() Question_Status        //
 	Time() protocol.Time            // Save time
-	RequestID() urp.UserRequestUUID // user-request domain
+	RequestID() urp.UserRequestUUID //
 }
 
 type QuestionStatus_StorageServices interface {
@@ -23,7 +23,6 @@ type QuestionStatus_StorageServices interface {
 	Get(questionID QuestionUUID, vo protocol.VersionOffset) (f QuestionStatus, nv protocol.NumberOfVersion, err protocol.Error)
 
 	FilterByStatus(status Question_Status, offset, limit uint64) (questionID []QuestionUUID, nv protocol.NumberOfVersion, err protocol.Error)
-
 }
 
 type Question_Status Quiddity_Status

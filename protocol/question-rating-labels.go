@@ -13,14 +13,12 @@ type QuestionRatingLabels interface {
 	QuestionID() QuestionUUID       //
 	Labels() []QuiddityUUID         //
 	Time() protocol.Time            // Save time
-	RequestID() urp.UserRequestUUID // user-request domain
+	RequestID() urp.UserRequestUUID //
 }
-
 
 type QuestionRatingLabels_StorageServices interface {
 	Save(f QuestionRatingLabels) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(questionID QuestionUUID) (nv protocol.NumberOfVersion, err protocol.Error)
 	Get(questionID QuestionUUID, vo protocol.VersionOffset) (f QuestionRatingLabels, nv protocol.NumberOfVersion, err protocol.Error)
-
 }

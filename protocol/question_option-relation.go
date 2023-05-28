@@ -4,7 +4,7 @@ package org
 
 import (
 	"libgo/protocol"
-	
+
 	urp "org/modules/user-request/protocol"
 )
 
@@ -13,15 +13,14 @@ type QuestionOptionRelation interface {
 	QuestionOptionID() QuestionOptionUUID //
 	RelationID() [16]byte                 // Question, Questionnaire
 	Time() protocol.Time                  // Save time
-	RequestID() urp.UserRequestUUID       // user-request domain
+	RequestID() urp.UserRequestUUID       //
 }
 
-type  QuestionOptionRelation_StorageServices interface {
+type QuestionOptionRelation_StorageServices interface {
 	Save(f QuestionOptionRelation) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(questionOptionID QuestionOptionUUID) (nv protocol.NumberOfVersion, err protocol.Error)
 	Get(questionOptionID QuestionOptionUUID, vo protocol.VersionOffset) (f QuestionOptionRelation, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FindByRelationID(questionOptionID [16]byte, offset, limit uint64 ) (questionOptionIDs []QuestionUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	FindByRelationID(questionOptionID [16]byte, offset, limit uint64) (questionOptionIDs []QuestionUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }
-

@@ -13,14 +13,12 @@ type QuestionRatingColors interface {
 	QuestionID() QuestionUUID       //
 	Colors() []protocol.RGB         //
 	Time() protocol.Time            // Save time
-	RequestID() urp.UserRequestUUID // user-request domain
+	RequestID() urp.UserRequestUUID //
 }
 
-type  QuestionRatingColors_StorageServices interface {
+type QuestionRatingColors_StorageServices interface {
 	Save(f QuestionRatingColors) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(questionID QuestionUUID) (nv protocol.NumberOfVersion, err protocol.Error)
 	Get(questionID QuestionUUID, vo protocol.VersionOffset) (f QuestionRatingColors, nv protocol.NumberOfVersion, err protocol.Error)
-
 }
-

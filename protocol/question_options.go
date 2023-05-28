@@ -15,7 +15,7 @@ type QuestionOptions interface {
 	Type() QuestionOptions_Type                   //
 	AlgorithmType() QuestionOptions_AlgorithmType //
 	Time() protocol.Time                          // Save time
-	RequestID() urp.UserRequestUUID               // user-request domain
+	RequestID() urp.UserRequestUUID               //
 }
 
 type QuestionOptions_StorageServices interface {

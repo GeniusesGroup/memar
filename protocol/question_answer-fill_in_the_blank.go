@@ -13,13 +13,12 @@ type QuestionAnswerFillInTheBlank interface {
 	AnswerID() AnswerUUID           //
 	Answer() []string               //
 	Time() protocol.Time            // Save time
-	RequestID() urp.UserRequestUUID // user-request domain
+	RequestID() urp.UserRequestUUID //
 }
 
-type  QuestionAnswerFillInTheBlank_StorageServices interface {
+type QuestionAnswerFillInTheBlank_StorageServices interface {
 	Save(f QuestionAnswerFillInTheBlank) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(answerID AnswerUUID) (nv protocol.NumberOfVersion, err protocol.Error)
 	Get(answerID AnswerUUID, vo protocol.VersionOffset) (f QuestionAnswerFillInTheBlank, nv protocol.NumberOfVersion, err protocol.Error)
-
 }

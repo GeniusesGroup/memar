@@ -15,7 +15,7 @@ type QuestionDescriptive interface {
 	Min() uint64                    //
 	Max() uint64                    //
 	Time() protocol.Time            // Save time
-	RequestID() urp.UserRequestUUID // user-request domain
+	RequestID() urp.UserRequestUUID //
 }
 
 type QuestionDescriptive_StorageServices interface {

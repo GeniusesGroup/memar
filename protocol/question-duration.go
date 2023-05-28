@@ -4,7 +4,7 @@ package org
 
 import (
 	"libgo/protocol"
-	
+
 	urp "org/modules/user-request/protocol"
 )
 
@@ -14,15 +14,14 @@ type QuestionDuration interface {
 	Epoch() QuestionDuration_Epoch  //
 	Duration() protocol.Duration    // from Epoch()
 	Time() protocol.Time            // save time
-	RequestID() urp.UserRequestUUID // user-request domain
+	RequestID() urp.UserRequestUUID //
 }
 
-type  QuestionDuration_StorageServices interface {
+type QuestionDuration_StorageServices interface {
 	Save(f QuestionDuration) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(questionID QuestionUUID) (nv protocol.NumberOfVersion, err protocol.Error)
 	Get(questionID QuestionUUID, vo protocol.VersionOffset) (f QuestionDuration, nv protocol.NumberOfVersion, err protocol.Error)
-
 }
 
 type QuestionDuration_Epoch uint8

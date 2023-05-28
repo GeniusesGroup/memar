@@ -13,15 +13,14 @@ type QuestionAnswerDescriptive interface {
 	AnswerID() AnswerUUID           //
 	Answer() string                 //
 	Time() protocol.Time            // Save time
-	RequestID() urp.UserRequestUUID // user-request domain
+	RequestID() urp.UserRequestUUID //
 }
 
 // QuestionAnswerDescriptive_Type_Anonymous
 
-type  QuestionAnswerDescriptive_StorageServices interface {
+type QuestionAnswerDescriptive_StorageServices interface {
 	Save(f QuestionAnswerDescriptive) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(answerID AnswerUUID) (nv protocol.NumberOfVersion, err protocol.Error)
 	Get(answerID AnswerUUID, vo protocol.VersionOffset) (f QuestionAnswerDescriptive, nv protocol.NumberOfVersion, err protocol.Error)
-
 }

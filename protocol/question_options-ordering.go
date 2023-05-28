@@ -13,14 +13,12 @@ type QuestionOptionsOrdering interface {
 	QuestionID() QuestionUUID           //
 	CorrectOrder() []QuestionOptionUUID //
 	Time() protocol.Time                // Save time
-	RequestID() urp.UserRequestUUID     // user-request domain
+	RequestID() urp.UserRequestUUID     //
 }
 
-
-type  QuestionOptionsOrdering_StorageServices interface {
+type QuestionOptionsOrdering_StorageServices interface {
 	Save(f QuestionOptionsOrdering) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(questionID QuestionUUID) (nv protocol.NumberOfVersion, err protocol.Error)
 	Get(questionID QuestionUUID, vo protocol.VersionOffset) (f QuestionOptionsOrdering, nv protocol.NumberOfVersion, err protocol.Error)
-
 }

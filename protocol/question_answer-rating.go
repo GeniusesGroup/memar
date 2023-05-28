@@ -13,7 +13,7 @@ type QuestionAnswerRating interface {
 	AnswerID() AnswerUUID           //
 	Answer() uint8                  //
 	Time() protocol.Time            // Save time
-	RequestID() urp.UserRequestUUID // user-request domain
+	RequestID() urp.UserRequestUUID //
 }
 
 type QuestionAnswerRating_StorageServices interface {

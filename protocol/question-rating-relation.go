@@ -14,7 +14,7 @@ type QuestionRatingRelation interface {
 	RelationIDs() [][16]byte                      // Question, Questionnaire
 	RelationTypes() []QuestionRatingRelation_Type //
 	Time() protocol.Time                          // Save time
-	RequestID() urp.UserRequestUUID               // user-request domain
+	RequestID() urp.UserRequestUUID               //
 }
 
 type QuestionRatingRelation_StorageServices interface {
@@ -22,7 +22,6 @@ type QuestionRatingRelation_StorageServices interface {
 
 	Count(questionID QuestionUUID) (nv protocol.NumberOfVersion, err protocol.Error)
 	Get(questionID QuestionUUID, vo protocol.VersionOffset) (f QuestionRatingRelation, nv protocol.NumberOfVersion, err protocol.Error)
-
 }
 
 type QuestionRatingRelation_Type uint16

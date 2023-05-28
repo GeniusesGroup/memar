@@ -14,7 +14,7 @@ type QuestionRating interface {
 	Type() QuestionRating_Type      //
 	Max() uint8                     //
 	Time() protocol.Time            // Save time
-	RequestID() urp.UserRequestUUID // user-request domain
+	RequestID() urp.UserRequestUUID //
 }
 
 type QuestionRating_StorageServices interface {

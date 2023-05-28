@@ -13,7 +13,7 @@ type QuestionLabelRelation interface {
 	QuestionID() QuestionUUID       //
 	Label() LabelUUID               //
 	Time() protocol.Time            // Save time
-	RequestID() urp.UserRequestUUID // user-request domain
+	RequestID() urp.UserRequestUUID //
 }
 
 type QuestionLabelRelation_StorageServices interface {

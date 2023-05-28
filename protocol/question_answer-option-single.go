@@ -13,14 +13,12 @@ type QuestionAnswerOptionSingle interface {
 	AnswerID() AnswerUUID           //
 	Answer() QuestionOptionUUID     //
 	Time() protocol.Time            // Save time
-	RequestID() urp.UserRequestUUID // user-request domain
+	RequestID() urp.UserRequestUUID //
 }
 
-
-type  QuestionAnswerOptionSingle_StorageServices interface {
+type QuestionAnswerOptionSingle_StorageServices interface {
 	Save(f QuestionAnswerOptionSingle) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(answerID AnswerUUID) (nv protocol.NumberOfVersion, err protocol.Error)
 	Get(answerID AnswerUUID, vo protocol.VersionOffset) (f QuestionAnswerOptionSingle, nv protocol.NumberOfVersion, err protocol.Error)
-
 }

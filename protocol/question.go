@@ -18,7 +18,7 @@ type Question interface {
 	QuestionID() QuestionUUID       //
 	Type() Question_Type            //
 	Time() protocol.Time            // Save time
-	RequestID() urp.UserRequestUUID // user-request domain
+	RequestID() urp.UserRequestUUID //
 }
 
 type Question_StorageServices interface {
@@ -49,8 +49,15 @@ const (
 	Question_Type_SingleChoice
 	Question_Type_MultipleChoice
 	Question_Type_Ordering // options, options-ordering
+	// Matching items require students to match a series of stems or premises to a response or principle.
+	// They consist of a set of directions, a column of statements and a column of responses.
+	// Matching questions are really a variation of the multiple choice format.
+	Question_Type_Matching
 	Question_Type_FillInTheBlank
 	Question_Type_Descriptive
 	Question_Type_Rating
 	Question_Type_Object
 )
+
+type Question_GUI_Widget interface {
+}

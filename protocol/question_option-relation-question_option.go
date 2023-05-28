@@ -14,8 +14,9 @@ import (
 type QuestionOptionQuestionOptionRelation interface {
 	QuestionOptionID() QuestionOptionUUID //
 	RelationID() QuestionOptionUUID       //
-	Time() protocol.Time                  // Save time
-	RequestID() urp.UserRequestUUID       // user-request domain
+	// Type()
+	Time() protocol.Time            // Save time
+	RequestID() urp.UserRequestUUID //
 }
 
 type QuestionOptionQuestionOptionRelation_StorageServices interface {

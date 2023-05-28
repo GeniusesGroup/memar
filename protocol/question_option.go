@@ -17,17 +17,16 @@ type QuestionOption interface {
 	Significance_Positive() uint64        //
 	Significance_Negative() uint64        //
 	Time() protocol.Time                  // Save time
-	RequestID() urp.UserRequestUUID       // user-request domain
+	RequestID() urp.UserRequestUUID       //
 }
 
-type  QuestionOption_StorageServices interface {
+type QuestionOption_StorageServices interface {
 	Save(f QuestionOption) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(questionOptionID QuestionOptionUUID) (nv protocol.NumberOfVersion, err protocol.Error)
 	Get(questionOptionID QuestionOptionUUID, vo protocol.VersionOffset) (f QuestionOption, nv protocol.NumberOfVersion, err protocol.Error)
 
 	FindByType(questionID QuestionOptionUUID, t QuestionOption_Type, offset, limit uint64) (questionIDs []QuestionOptionUUID, nv protocol.NumberOfVersion, err protocol.Error)
-
 }
 
 type QuestionOption_Type uint16

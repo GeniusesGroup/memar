@@ -14,7 +14,7 @@ type QuestionOptionAnalytical interface {
 	Progress() protocol.PerMyriad         // =~ AmountOfProgress,  EarnGoal
 	TimeFrame() protocol.Duration         //
 	Time() protocol.Time                  // Save time
-	RequestID() urp.UserRequestUUID       // user-request domain
+	RequestID() urp.UserRequestUUID       //
 }
 
 type QuestionOptionAnalytical_StorageServices interface {

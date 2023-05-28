@@ -14,13 +14,12 @@ type QuestionObject interface {
 	MediaTypes() []protocol.MediaTypeID //
 	SizeLimit() uint64                  //
 	Time() protocol.Time                // Save time
-	RequestID() urp.UserRequestUUID     // user-request domain
+	RequestID() urp.UserRequestUUID     //
 }
 
-type  QuestionObject_StorageServices interface {
-	Save(f QuestionOptionMultipleChoice) (nv protocol.NumberOfVersion, err protocol.Error)
+type QuestionObject_StorageServices interface {
+	Save(f QuestionObject) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(questionID QuestionUUID) (nv protocol.NumberOfVersion, err protocol.Error)
 	Get(questionID QuestionUUID, vo protocol.VersionOffset) (f QuestionObject, nv protocol.NumberOfVersion, err protocol.Error)
-
 }

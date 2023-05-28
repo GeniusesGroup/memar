@@ -14,13 +14,12 @@ type QuestionOptionGoal interface {
 	Target() protocol.PerMyriad           // =~ Goal
 	TimeFrame() protocol.Duration         // =~ Interval, TimeSpan, TimeFrame, TimePeriod,
 	Time() protocol.Time                  // Save time
-	RequestID() urp.UserRequestUUID       // user-request domain
+	RequestID() urp.UserRequestUUID       //
 }
 
-type  QuestionOptionGoal_StorageServices interface {
+type QuestionOptionGoal_StorageServices interface {
 	Save(f QuestionOptionGoal) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(questionOptionID QuestionUUID) (nv protocol.NumberOfVersion, err protocol.Error)
 	Get(questionOptionID QuestionUUID, vo protocol.VersionOffset) (f QuestionOptionGoal, nv protocol.NumberOfVersion, err protocol.Error)
-
 }

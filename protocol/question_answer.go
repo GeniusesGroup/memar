@@ -14,15 +14,14 @@ type AnswerUUID protocol.UUID
 type QuestionAnswer interface {
 	AnswerID() AnswerUUID           //
 	QuestionID() QuestionUUID       //
-	AnswerBy() protocol.UserID      //
+	AnswerBy() UserUUID             //
 	Time() protocol.Time            // Save time
-	RequestID() urp.UserRequestUUID // user-request domain
+	RequestID() urp.UserRequestUUID //
 }
 
-type  QuestionAnswer_StorageServices interface {
+type QuestionAnswer_StorageServices interface {
 	Save(f QuestionAnswer) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(answerID AnswerUUID) (nv protocol.NumberOfVersion, err protocol.Error)
 	Get(answerID AnswerUUID, vo protocol.VersionOffset) (f QuestionAnswer, nv protocol.NumberOfVersion, err protocol.Error)
-
 }
