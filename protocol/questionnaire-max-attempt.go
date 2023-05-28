@@ -13,5 +13,5 @@ type QuestionnaireMaxAttempt interface {
 	QuestionnaireID() QuestionnaireUUID //
 	MaxAttempt() uint16                 //
 	Time() protocol.Time                // Save time
-	RequestID() urp.UserRequestUUID     // user-request domain
+	RequestID() urp.UserRequestUUID     //
 }

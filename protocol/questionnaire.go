@@ -15,7 +15,7 @@ type Questionnaire interface {
 	QuestionnaireID() QuestionnaireUUID //
 	Type() Questionnaire_Type           //
 	Time() protocol.Time                // Save time
-	RequestID() urp.UserRequestUUID     // user-request domain
+	RequestID() urp.UserRequestUUID     //
 }
 
 type Questionnaire_Type uint16
@@ -29,6 +29,9 @@ const (
 	Questionnaire_Type_AllowToEdit
 	Questionnaire_Type_Form
 	Questionnaire_Type_MaxAttempt
+
+	// No one can made direct answer to this questionnaire.
+	Questionnaire_Type_Criterion
 
 	// TODO::: Template for forms?
 )

@@ -14,5 +14,5 @@ type QuestionnaireStartPoint interface {
 	// TODO::: embed or copy??
 	protocol.Time                   //
 	Time() protocol.Time            // save time
-	RequestID() urp.UserRequestUUID // user-request domain
+	RequestID() urp.UserRequestUUID //
 }

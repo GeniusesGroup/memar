@@ -4,7 +4,7 @@ package org
 
 import (
 	"libgo/protocol"
-	
+
 	urp "org/modules/user-request/protocol"
 )
 
@@ -16,5 +16,5 @@ type QuestionnaireOrder interface {
 	QuestionnaireID() QuestionnaireUUID           //
 	Questions() []QuestionUUID                    //
 	Time() protocol.Time                          // Save time
-	RequestID() urp.UserRequestUUID               // user-request domain
+	RequestID() urp.UserRequestUUID               //
 }

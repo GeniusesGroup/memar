@@ -4,7 +4,7 @@ package org
 
 import (
 	"libgo/protocol"
-	
+
 	urp "org/modules/user-request/protocol"
 )
 
@@ -14,7 +14,7 @@ type QuestionnaireDuration interface {
 	Epoch() QuestionnaireDuration_Epoch //
 	Duration() protocol.Duration        // from Epoch()
 	Time() protocol.Time                // save time
-	RequestID() urp.UserRequestUUID     // user-request domain
+	RequestID() urp.UserRequestUUID     //
 }
 
 type QuestionnaireDuration_Epoch uint8

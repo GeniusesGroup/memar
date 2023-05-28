@@ -9,7 +9,7 @@ import (
 )
 
 // QuestionnaireOtherRelation indicate the domain record data fields.
-// TODO::: separate to some domains? product, task, Marketing, law, invoice, education, department, content, estate, 
+// TODO::: separate to some domains? product, Marketing, law, invoice, education, department, content, estate,
 type QuestionnaireOtherRelation interface {
 	QuestionnaireID() QuestionnaireUUID //
 	DomainID() protocol.MediaTypeID     //
@@ -17,7 +17,7 @@ type QuestionnaireOtherRelation interface {
 	RecordID() [16]byte // in above domain
 	Type() QuestionnaireOtherRelation_Type
 	Time() protocol.Time            // save time
-	RequestID() urp.UserRequestUUID // user-request domain
+	RequestID() urp.UserRequestUUID //
 }
 
 type QuestionnaireOtherRelation_Type uint8

@@ -16,7 +16,7 @@ type QuestionnaireRespondentTaskRelation interface {
 	TaskID() TaskUUID                                       //
 	Type() QuestionnaireRespondentTaskRelation_Type         //
 	Time() protocol.Time                                    // save time
-	RequestID() urp.UserRequestUUID                         // user-request domain
+	RequestID() urp.UserRequestUUID                         //
 }
 
 type QuestionnaireRespondentTaskRelation_Type uint8

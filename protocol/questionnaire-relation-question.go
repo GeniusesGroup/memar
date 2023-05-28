@@ -4,7 +4,7 @@ package org
 
 import (
 	"libgo/protocol"
-	
+
 	urp "org/modules/user-request/protocol"
 )
 
@@ -16,7 +16,7 @@ type QuestionnaireQuestionRelation interface {
 	Significance_Negative() uint64            //
 	Type() QuestionnaireQuestionRelation_Type //
 	Time() protocol.Time                      // Save time
-	RequestID() urp.UserRequestUUID           // user-request domain
+	RequestID() urp.UserRequestUUID           //
 }
 
 type QuestionnaireQuestionRelation_Type uint8

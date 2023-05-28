@@ -13,5 +13,5 @@ type QuestionnaireLabel interface {
 	QuestionnaireID() QuestionnaireUUID //
 	Label() LabelUUID                   //
 	Time() protocol.Time                // Save time
-	RequestID() urp.UserRequestUUID     // user-request domain
+	RequestID() urp.UserRequestUUID     //
 }

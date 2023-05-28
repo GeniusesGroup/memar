@@ -14,8 +14,8 @@ type QuestionnaireRespondentUUID protocol.UUID
 type QuestionnaireRespondent interface {
 	QuestionnaireRespondentID() QuestionnaireRespondentUUID //
 	QuestionnaireOrderID() QuestionnaireOrderUUID           //
-	AnswerBy() protocol.UserID                              //
-	FillBy() protocol.UserID                                //
+	AnswerBy() UserUUID                                     //
+	FillBy() UserUUID                                       //
 	Time() protocol.Time                                    // Save time
-	RequestID() urp.UserRequestUUID                         // user-request domain
+	RequestID() urp.UserRequestUUID                         //
 }
