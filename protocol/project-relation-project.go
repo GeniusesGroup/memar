@@ -21,3 +21,10 @@ type ProjectRelationProject interface {
 type ProjectRelationProject_Type uint8
 
 // Blocking
+
+type ProjectRelationProject_StorageServices interface {
+	Save(f ProjectRelationProject) (nv protocol.NumberOfVersion, err protocol.Error)
+
+	Count(otherID ProjectUUID, projectID ProjectUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(otherID ProjectUUID, projectID ProjectUUID, vo protocol.VersionOffset) (f ProjectRelationProject, nv protocol.NumberOfVersion, err protocol.Error)
+}

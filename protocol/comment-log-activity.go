@@ -26,3 +26,13 @@ type CommentLogActivity interface {
 	Time() protocol.Time            // save time
 	RequestID() urp.UserRequestUUID //
 }
+
+type CommentLogActivity_StorageServices interface {
+	Save(cm CommentLogActivity) (nv protocol.NumberOfVersion, err protocol.Error)
+
+	Count(commentID CommentUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(commentID CommentUUID, vo protocol.VersionOffset) (cm CommentLogActivity, nv protocol.NumberOfVersion, err protocol.Error)
+
+	protocol.EventTarget
+}
+

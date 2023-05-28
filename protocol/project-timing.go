@@ -16,3 +16,11 @@ type ProjectTiming interface {
 	Time() protocol.Time            // save time
 	RequestID() urp.UserRequestUUID //
 }
+
+
+type ProjectTiming_StorageServices interface {
+	Save(f ProjectTiming) (nv protocol.NumberOfVersion, err protocol.Error)
+
+	Count(projectID ProjectUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(projectID ProjectUUID, vo protocol.VersionOffset) (f ProjectTiming, nv protocol.NumberOfVersion, err protocol.Error)
+}

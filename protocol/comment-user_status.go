@@ -23,7 +23,6 @@ type CommentUserStatus_StorageServices interface {
 	Count(commentID CommentUUID) (nv protocol.NumberOfVersion, err protocol.Error)
 	Get(commentID CommentUUID, vo protocol.VersionOffset) (c CommentUserStatus, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FindByReplyTo(replyTo [16]byte, offset, limit uint64) (commentIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
 }
 
 type CommentUser_Status uint8

@@ -19,8 +19,8 @@ type CommentText interface {
 type CommentText_StorageServices interface {
 	Save(c CommentText) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(commentID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(commentID [16]byte, vo protocol.VersionOffset) (c CommentText, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(commentID CommentUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(commentID CommentUUID, vo protocol.VersionOffset) (c CommentText, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FindByText(text string, offset, limit uint64) (commentIDs [16]byte, nv protocol.NumberOfVersion, err protocol.Error)
+	FindByText(text string, offset, limit uint64) (commentIDs []CommentUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }

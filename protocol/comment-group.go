@@ -21,13 +21,13 @@ type CommentGroup interface {
 type CommentGroup_StorageServices interface {
 	Save(cg CommentGroup) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(groupID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(groupID [16]byte, vo protocol.VersionOffset) (cg CommentGroup, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(groupID GroupUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(groupID GroupUUID, vo protocol.VersionOffset) (cg CommentGroup, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FindByComment(commentID [16]byte) (groupID [16]byte, err protocol.Error)
-	FindByUser(groupID [16]byte, userID UserUUID, offset, limit uint64) (commentIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
+	FindByComment(commentID CommentUUID) (groupID [16]byte, err protocol.Error)
+	FindByUser(groupID GroupUUID, userID UserUUID, offset, limit uint64) (commentIDs []CommentUUID, nv protocol.NumberOfVersion, err protocol.Error)
 
-	ListUserGroups(userID UserUUID, offset, limit uint64) (groupIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
+	ListUserGroups(userID UserUUID, offset, limit uint64) (groupIDs []GroupUUID, nv protocol.NumberOfVersion, err protocol.Error)
 	// ListThreads(groupID [16]byte, offset, limit uint64) (commentIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
 
 	protocol.EventTarget

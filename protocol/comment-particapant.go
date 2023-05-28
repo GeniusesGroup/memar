@@ -19,8 +19,9 @@ type CommentParticipant interface {
 type CommentParticipant_StorageServices interface {
 	Save(cp CommentParticipant) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(commentID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(commentID [16]byte, vo protocol.VersionOffset) (cp CommentParticipant, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(commentID CommentUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(commentID CommentUUID, vo protocol.VersionOffset) (cp CommentParticipant, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FindByUserID(userID UserUUID, offset, limit uint64) (commentIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
+	// FindByUserID(userID UserUUID, offset, limit uint64) (commentIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
+    ListUsers(commentID CommentUUID, offset, limit uint64) (userIDs []UserUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }

@@ -22,8 +22,10 @@ type Comment interface {
 type Comment_StorageServices interface {
 	Save(c Comment) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(commentID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(commentID [16]byte, vo protocol.VersionOffset) (c Comment, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(commentID CommentUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(commentID CommentUUID, vo protocol.VersionOffset) (c Comment, nv protocol.NumberOfVersion, err protocol.Error)
+
+	FilterByType(t Comment_Type, offset, limit uint64) (commentIDs []CommentUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }
 
 type Comment_Type uint32

@@ -17,6 +17,14 @@ type ProjectGroupRelation interface {
 	RequestID() urp.UserRequestUUID                  //
 }
 
+type ProjectGroupRelation_StorageServices interface {
+	Save(f ProjectGroupRelation) (nv protocol.NumberOfVersion, err protocol.Error)
+
+	Count(productID ProductUUID, projectID ProjectUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(productID ProductUUID, projectID ProjectUUID, vo protocol.VersionOffset) (f ProjectGroupRelation, nv protocol.NumberOfVersion, err protocol.Error)
+}
+
+
 type ProjectGroupRelation_Type uint8
 
 const (
