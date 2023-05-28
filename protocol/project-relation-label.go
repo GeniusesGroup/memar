@@ -13,7 +13,7 @@ type ProjectLabel interface {
 	ProjectID() ProjectUUID         //
 	LabelID() LabelUUID             //
 	Time() protocol.Time            // Save time
-	RequestID() urp.UserRequestUUID // user-request domain
+	RequestID() urp.UserRequestUUID //
 }
 
 type ProjectLabel_StorageServices interface {

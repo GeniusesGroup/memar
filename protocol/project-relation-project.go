@@ -15,7 +15,7 @@ type ProjectRelationProject interface {
 	Priority() uint64                  //
 	Type() ProjectRelationProject_Type //
 	Time() protocol.Time               // Save time
-	RequestID() urp.UserRequestUUID    // user-request domain
+	RequestID() urp.UserRequestUUID    //
 }
 
 type ProjectRelationProject_Type uint8

@@ -8,12 +8,13 @@ import (
 	urp "org/modules/user-request/protocol"
 )
 
+// use to get and show locale title from quiddity-title domain.
 type ProjectUUID = protocol.UUID
 
 // Project indicate the domain record data fields.
 type Project interface {
-	ProjectID() ProjectUUID         // group domain. use to get and show locale title.
-	UserID() protocol.UserID        //
+	ProjectID() ProjectUUID         //
+	UserID() UserUUID               //
 	Time() protocol.Time            // Save time
-	RequestID() urp.UserRequestUUID // user-request domain
+	RequestID() urp.UserRequestUUID //
 }

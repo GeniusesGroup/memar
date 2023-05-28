@@ -10,9 +10,9 @@ import (
 
 // ProjectProductRelation indicate the domain record data fields.
 type ProjectProductRelation interface {
-	ProjectID() ProjectUUID // group domain. use to get and show locale title.
+	ProjectID() ProjectUUID //
 	ProductID() ProductUUID //
 	// TODO::: type or label??
 	Time() protocol.Time            // Save time
-	RequestID() urp.UserRequestUUID // user-request domain
+	RequestID() urp.UserRequestUUID //
 }

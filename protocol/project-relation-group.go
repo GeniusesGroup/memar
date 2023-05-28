@@ -14,7 +14,7 @@ type ProjectGroupRelation interface {
 	GroupID() GroupUUID                              //
 	ProjectGroupRelation() ProjectGroupRelation_Type //
 	Time() protocol.Time                             // Save time
-	RequestID() urp.UserRequestUUID                  // user-request domain
+	RequestID() urp.UserRequestUUID                  //
 }
 
 type ProjectGroupRelation_Type uint8

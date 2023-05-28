@@ -10,10 +10,10 @@ import (
 
 // Project indicate the domain record data fields.
 type ProjectStatus interface {
-	ProjectID() ProjectUUID         // group domain. use to get and show locale title.
+	ProjectID() ProjectUUID         //
 	Status() Project_Status         //
 	Time() protocol.Time            // Save time
-	RequestID() urp.UserRequestUUID // user-request domain
+	RequestID() urp.UserRequestUUID //
 }
 
 type Project_Status Quiddity_Status
