@@ -19,3 +19,10 @@ type QuestionnaireRespondent interface {
 	Time() protocol.Time                                    // Save time
 	RequestID() urp.UserRequestUUID                         //
 }
+
+type QuestionnaireRespondent_StorageServices interface {
+	Save(pc QuestionnaireRespondent) (nv protocol.NumberOfVersion, err protocol.Error)
+
+	Count(questionnaireID QuestionnaireUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(questionnaireID QuestionnaireUUID, vo protocol.VersionOffset) (pc QuestionnaireRespondent, nv protocol.NumberOfVersion, err protocol.Error)
+}

@@ -19,6 +19,13 @@ type QuestionnaireRespondentTaskRelation interface {
 	RequestID() urp.UserRequestUUID                         //
 }
 
+type QuestionnaireRespondentTaskRelation_StorageServices interface {
+	Save(pc QuestionnaireRespondentTaskRelation) (nv protocol.NumberOfVersion, err protocol.Error)
+
+	Count(taskID TaskUUID, questionnaireID QuestionnaireUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(taskID TaskUUID, questionnaireID QuestionnaireUUID, vo protocol.VersionOffset) (pc QuestionnaireRespondentTaskRelation, nv protocol.NumberOfVersion, err protocol.Error)
+}
+
 type QuestionnaireRespondentTaskRelation_Type uint8
 
 const (

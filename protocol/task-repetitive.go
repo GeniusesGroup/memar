@@ -19,10 +19,10 @@ type TaskRepetitive interface {
 }
 
 type TaskRepetitive_StorageServices interface {
-	Save(vd TaskRepetitive) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(f TaskRepetitive) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(voucherID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(voucherID [16]byte, vo protocol.VersionOffset) (vd TaskRepetitive, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(taskID TaskUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(taskID TaskUUID, vo protocol.VersionOffset) (f TaskRepetitive, nv protocol.NumberOfVersion, err protocol.Error)
 }
 
 type TaskRepetitive_Epoch uint8

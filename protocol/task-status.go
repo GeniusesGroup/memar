@@ -16,6 +16,13 @@ type TaskStatus interface {
 	RequestID() urp.UserRequestUUID //
 }
 
+type TaskStatus_StorageServices interface {
+	Save(f TaskStatus) (nv protocol.NumberOfVersion, err protocol.Error)
+
+	Count(taskID TaskUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(taskID TaskUUID, vo protocol.VersionOffset) (f TaskStatus, nv protocol.NumberOfVersion, err protocol.Error)
+}
+
 type Task_Status Quiddity_Status
 
 const (

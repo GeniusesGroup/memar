@@ -19,6 +19,15 @@ type Task interface {
 	RequestID() urp.UserRequestUUID //
 }
 
+
+type Task_StorageServices interface {
+	Save(f Task) (nv protocol.NumberOfVersion, err protocol.Error)
+
+	Count(taskID TaskUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(taskID TaskUUID, vo protocol.VersionOffset) (f Task, nv protocol.NumberOfVersion, err protocol.Error)
+}
+
+
 type Task_Type uint8
 
 const (

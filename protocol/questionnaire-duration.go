@@ -17,6 +17,13 @@ type QuestionnaireDuration interface {
 	RequestID() urp.UserRequestUUID     //
 }
 
+type QuestionnaireDuration_StorageServices interface {
+	Save(pc QuestionnaireDuration) (nv protocol.NumberOfVersion, err protocol.Error)
+
+	Count(questionnaireID QuestionnaireUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(questionnaireID QuestionnaireUUID, vo protocol.VersionOffset) (pc QuestionnaireDuration, nv protocol.NumberOfVersion, err protocol.Error)
+}
+
 type QuestionnaireDuration_Epoch uint8
 
 const (

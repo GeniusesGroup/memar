@@ -15,3 +15,10 @@ type QuestionnaireLabel interface {
 	Time() protocol.Time                // Save time
 	RequestID() urp.UserRequestUUID     //
 }
+
+type QuestionnaireLabel_StorageServices interface {
+	Save(pc QuestionnaireLabel) (nv protocol.NumberOfVersion, err protocol.Error)
+
+	Count(questionnaireID QuestionnaireUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(questionnaireID QuestionnaireUUID, vo protocol.VersionOffset) (pc QuestionnaireLabel, nv protocol.NumberOfVersion, err protocol.Error)
+}

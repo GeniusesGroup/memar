@@ -19,6 +19,14 @@ type TaskRelationProject interface {
 	RequestID() urp.UserRequestUUID //
 }
 
+type TaskRelationProject_StorageServices interface {
+	Save(f TaskRelationProject) (nv protocol.NumberOfVersion, err protocol.Error)
+
+	Count(projectID ProjectUUID,taskID TaskUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(projectID ProjectUUID ,taskID TaskUUID, vo protocol.VersionOffset) (f TaskRelationProject, nv protocol.NumberOfVersion, err protocol.Error)
+}
+
+
 type TaskRelationProject_Type uint32
 
 const (

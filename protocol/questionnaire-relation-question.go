@@ -19,6 +19,13 @@ type QuestionnaireQuestionRelation interface {
 	RequestID() urp.UserRequestUUID           //
 }
 
+type QuestionnaireQuestionRelation_StorageServices interface {
+	Save(pc QuestionnaireQuestionRelation) (nv protocol.NumberOfVersion, err protocol.Error)
+
+	Count(questionID QuestionUUID, questionnaireID QuestionnaireUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(questionID QuestionUUID, questionnaireID QuestionnaireUUID, vo protocol.VersionOffset) (pc QuestionnaireQuestionRelation, nv protocol.NumberOfVersion, err protocol.Error)
+}
+
 type QuestionnaireQuestionRelation_Type uint8
 
 // TODO::: need types?

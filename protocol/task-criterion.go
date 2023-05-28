@@ -26,6 +26,13 @@ type TaskCriterion interface {
 	RequestID() urp.UserRequestUUID //
 }
 
+type TaskCriterion_StorageServices interface {
+	Save(f TaskCriterion) (nv protocol.NumberOfVersion, err protocol.Error)
+
+	Count(taskID TaskUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(taskID TaskUUID, vo protocol.VersionOffset) (f TaskCriterion, nv protocol.NumberOfVersion, err protocol.Error)
+}
+
 type TaskCriterion_Type uint8
 
 const (

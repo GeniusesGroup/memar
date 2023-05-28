@@ -15,3 +15,10 @@ type QuestionnaireMaxAttempt interface {
 	Time() protocol.Time                // Save time
 	RequestID() urp.UserRequestUUID     //
 }
+
+type QuestionnaireMaxAttempt_StorageServices interface {
+	Save(pc QuestionnaireMaxAttempt) (nv protocol.NumberOfVersion, err protocol.Error)
+
+	Count(questionnaireID QuestionnaireUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(questionnaireID QuestionnaireUUID, vo protocol.VersionOffset) (pc QuestionnaireMaxAttempt, nv protocol.NumberOfVersion, err protocol.Error)
+}

@@ -20,6 +20,13 @@ type QuestionnaireOtherRelation interface {
 	RequestID() urp.UserRequestUUID //
 }
 
+type QuestionnaireOtherRelation_StorageServices interface {
+	Save(pc QuestionnaireOtherRelation) (nv protocol.NumberOfVersion, err protocol.Error)
+
+	Count(questionnaireID QuestionnaireUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(questionnaireID QuestionnaireUUID, vo protocol.VersionOffset) (pc QuestionnaireOtherRelation, nv protocol.NumberOfVersion, err protocol.Error)
+}
+
 type QuestionnaireOtherRelation_Type uint8
 
 const (

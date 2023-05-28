@@ -18,3 +18,11 @@ type TaskTemplate interface {
 	Time() protocol.Time            // Save time
 	RequestID() urp.UserRequestUUID //
 }
+
+type TaskTemplate_StorageServices interface {
+	Save(f TaskTemplate) (nv protocol.NumberOfVersion, err protocol.Error)
+
+	Count(taskID TaskUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(taskID TaskUUID, vo protocol.VersionOffset) (f TaskTemplate, nv protocol.NumberOfVersion, err protocol.Error)
+}
+

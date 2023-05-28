@@ -21,4 +21,11 @@ type TaskRelationMarketingCampaign interface {
 	RequestID() urp.UserRequestUUID                   //
 }
 
+type TaskRelationMarketingCampaign_StorageServices interface {
+	Save(f TaskRelationMarketingCampaign) (nv protocol.NumberOfVersion, err protocol.Error)
+
+	Count(marketingCampaignID MarketingCampaignUUID, taskID TaskUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(marketingCampaignID MarketingCampaignUUID, taskID TaskUUID, vo protocol.VersionOffset) (f TaskRelationMarketingCampaign, nv protocol.NumberOfVersion, err protocol.Error)
+}
+
 type TaskRelationMarketingCampaign_Type uint8

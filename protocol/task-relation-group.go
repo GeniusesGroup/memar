@@ -18,6 +18,13 @@ type TaskRelationGroup interface {
 	RequestID() urp.UserRequestUUID       //
 }
 
+type TaskRelationGroup_StorageServices interface {
+	Save(f TaskRelationGroup) (nv protocol.NumberOfVersion, err protocol.Error)
+
+	Count(groupID GroupUUID, taskID TaskUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(groupID GroupUUID, taskID TaskUUID, vo protocol.VersionOffset) (f TaskRelationGroup, nv protocol.NumberOfVersion, err protocol.Error)
+}
+
 type TaskRelationGroup_Type uint8
 
 const (

@@ -16,6 +16,14 @@ type ProjectTaskTime interface {
 	RequestID() urp.UserRequestUUID //
 }
 
+type ProjectTaskTime_StorageServices interface {
+	Save(f ProjectTaskTime) (nv protocol.NumberOfVersion, err protocol.Error)
+
+	Count(taskID TaskUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(taskID TaskUUID, vo protocol.VersionOffset) (f ProjectTaskTime, nv protocol.NumberOfVersion, err protocol.Error)
+}
+
+
 type ProjectTaskTime_Type uint8
 
 const (
