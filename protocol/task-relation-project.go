@@ -16,7 +16,7 @@ type TaskRelationProject interface {
 	Permyriad() protocol.PerMyriad  // 0 means unset e.g. equal to other tasks in the project
 	Type() TaskRelationProject_Type //
 	Time() protocol.Time            // Save time
-	RequestID() urp.UserRequestUUID // user-request domain
+	RequestID() urp.UserRequestUUID //
 }
 
 type TaskRelationProject_Type uint32

@@ -15,7 +15,7 @@ type TaskRelationGroup interface {
 	GroupID() GroupUUID                   //
 	RelationType() TaskRelationGroup_Type //
 	Time() protocol.Time                  // Save time
-	RequestID() urp.UserRequestUUID       // user-request domain
+	RequestID() urp.UserRequestUUID       //
 }
 
 type TaskRelationGroup_Type uint8

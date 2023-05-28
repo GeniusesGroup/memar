@@ -4,7 +4,7 @@ package org
 
 import (
 	"libgo/protocol"
-	
+
 	urp "org/modules/user-request/protocol"
 )
 
@@ -13,7 +13,7 @@ type TaskStatus interface {
 	TaskID() TaskUUID               //
 	Status() Task_Status            //
 	Time() protocol.Time            // Save time
-	RequestID() urp.UserRequestUUID // user-request domain
+	RequestID() urp.UserRequestUUID //
 }
 
 type Task_Status Quiddity_Status

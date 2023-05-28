@@ -15,9 +15,13 @@ type TaskRelationTask interface {
 	Priority() uint64               //
 	Type() TaskRelationTask_Type    //
 	Time() protocol.Time            // Save time
-	RequestID() urp.UserRequestUUID // user-request domain
+	RequestID() urp.UserRequestUUID //
 }
 
 type TaskRelationTask_Type uint8
 
-// TaskBlocking
+const (
+	TaskRelationTask_Type_Unset      TaskRelationTask_Type = 0
+	TaskRelationTask_Type_Complement TaskRelationTask_Type = (1 << iota)
+	TaskRelationTask_Type_Blocking
+)

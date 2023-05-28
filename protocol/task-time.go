@@ -4,7 +4,7 @@ package org
 
 import (
 	"libgo/protocol"
-	
+
 	urp "org/modules/user-request/protocol"
 )
 
@@ -13,7 +13,7 @@ type ProjectTaskTime interface {
 	TaskID() TaskUUID               // project-task domain
 	Type() ProjectTaskTime_Type     //
 	Time() protocol.Time            // Save time
-	RequestID() urp.UserRequestUUID // user-request domain
+	RequestID() urp.UserRequestUUID //
 }
 
 type ProjectTaskTime_Type uint8
