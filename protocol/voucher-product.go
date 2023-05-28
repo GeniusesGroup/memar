@@ -4,22 +4,24 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // VoucherProduct restrict use voucher on specific product
 type VoucherProduct interface {
-	VoucherID() [16]byte        // voucher domain
-	Each() uint8                // Each time use
-	ProductID() [16]byte        // product domain
-	Time() protocol.Time        // save time
-	RequestID() UserRequestUUID // user-request domain
+	VoucherID() VoucherUUID         //
+	Each() uint8                    // Each time use
+	ProductID() ProductUUID         //
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }
 
 type VoucherProduct_StorageServices interface {
 	Save(vp VoucherProduct) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(voucherID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(voucherID [16]byte, vo protocol.VersionOffset) (vp VoucherProduct, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(voucherID VoucherUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(voucherID VoucherUUID, vo protocol.VersionOffset) (vp VoucherProduct, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FindByProduct(productID [16]byte, offset, limit uint64) (voucherIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
+	FindByProduct(productID ProductUUID, offset, limit uint64) (voucherIDs []VoucherUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }

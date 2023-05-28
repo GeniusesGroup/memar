@@ -4,24 +4,26 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // VoucherSourceInvoice indicate the domain record data fields.
 type VoucherSourceInvoice interface {
-	VoucherID() [16]byte                    // voucher domain
-	InvoiceID() [16]byte                    // invoice domain
+	VoucherID() VoucherUUID                 //
+	InvoiceID() InvoiceUUID                 //
 	InvoiceType() VoucherSourceInvoice_Type //
 	Time() protocol.Time                    // save time
-	RequestID() UserRequestUUID             // user-request domain
+	RequestID() urp.UserRequestUUID         //
 }
 
 type VoucherSourceInvoice_StorageServices interface {
 	Save(vsi VoucherSourceInvoice) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(voucherID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(voucherID [16]byte, vo protocol.VersionOffset) (vsi VoucherSourceInvoice, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(voucherID VoucherUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(voucherID VoucherUUID, vo protocol.VersionOffset) (vsi VoucherSourceInvoice, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FindByInvoice(invoiceID [16]byte, offset, limit uint64) (voucherIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
+	FindByInvoice(invoiceID InvoiceUUID, offset, limit uint64) (voucherIDs []VoucherUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }
 
 type VoucherSourceInvoice_Type uint8

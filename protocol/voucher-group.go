@@ -4,21 +4,23 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // VoucherGroup indicate the domain record data fields.
 type VoucherGroup interface {
-	VoucherID() [16]byte        // voucher domain
-	GroupID() [16]byte          // group domain
-	Time() protocol.Time        // save time
-	RequestID() UserRequestUUID // user-request domain
+	VoucherID() VoucherUUID         //
+	GroupID() GroupUUID             //
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }
 
 type VoucherGroup_StorageServices interface {
 	Save(vg VoucherGroup) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(voucherID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(voucherID [16]byte, vo protocol.VersionOffset) (vg VoucherGroup, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(voucherID VoucherUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(voucherID VoucherUUID, vo protocol.VersionOffset) (vg VoucherGroup, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FindByGroup(groupID [16]byte, offset, limit uint64) (voucherIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
+	FindByGroup(groupID GroupUUID, offset, limit uint64) (voucherIDs []VoucherUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }

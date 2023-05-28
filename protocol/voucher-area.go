@@ -4,23 +4,29 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
-// VoucherArea indicate the domain record data fields.
-// VoucherArea is proper or appropriate location indicate specific area not specific location
+// VoucherEstate indicate the domain record data fields.
+// VoucherEstate is proper or appropriate location indicate specific area not specific location
 // It's rule depend on products in invoices e.g. source or destination of taxi as a service(product).
-type VoucherArea interface {
-	VoucherID() [16]byte        // voucher domain
-	AreaID() [16]byte           // area domain
-	Time() protocol.Time        // save time
-	RequestID() UserRequestUUID // user-request domain
+type VoucherEstate interface {
+	VoucherID() VoucherUUID                   //
+	EstateID() EstateUUID                     //
+	BuildingID() BuildingUUID                 //
+	BuildingLocationID() BuildingLocationUUID //
+	Time() protocol.Time                      // save time
+	RequestID() urp.UserRequestUUID           //
 }
 
-type VoucherArea_StorageServices interface {
-	Save(va VoucherArea) (nv protocol.NumberOfVersion, err protocol.Error)
+type VoucherEstate_StorageServices interface {
+	Save(va VoucherEstate) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(voucherID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(voucherID [16]byte, vo protocol.VersionOffset) (va VoucherArea, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(voucherID VoucherUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(voucherID VoucherUUID, vo protocol.VersionOffset) (va VoucherEstate, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FindByArea(AreaID [16]byte, offset, limit uint64) (voucherIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
+	FindByEstate(EstateID EstateUUID, offset, limit uint64) (voucherIDs []VoucherUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	FindByBuilding(buildingID BuildingUUID, offset, limit uint64) (voucherIDs []VoucherUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	FindByBuildingLocation(buildingLocationID BuildingLocationUUID, offset, limit uint64) (voucherIDs []VoucherUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }

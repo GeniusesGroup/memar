@@ -4,23 +4,25 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // VoucherStatus indicate the domain record data fields.
 type VoucherStatus interface {
-	VoucherID() [16]byte        //
-	Status() Voucher_Status     //
-	Time() protocol.Time        // save time
-	RequestID() UserRequestUUID // user-request domain
+	VoucherID() VoucherUUID         //
+	Status() Voucher_Status         //
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }
 
 type VoucherStatus_StorageServices interface {
 	Save(vs VoucherStatus) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(voucherID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(voucherID [16]byte, vo protocol.VersionOffset) (vs VoucherStatus, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(voucherID VoucherUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(voucherID VoucherUUID, vo protocol.VersionOffset) (vs VoucherStatus, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FilterByStatus(status Voucher_Status, offset, limit uint64) (voucherIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
+	FilterByStatus(status Voucher_Status, offset, limit uint64) (voucherIDs []VoucherUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }
 
 type Voucher_Status Quiddity_Status
