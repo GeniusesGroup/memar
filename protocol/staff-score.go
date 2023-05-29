@@ -4,12 +4,14 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // StaffScore or staff grade
 type StaffScore interface {
-	StaffID() [16]byte          // staff domain
-	Score() uint64              //
-	Time() protocol.Time        // save time
-	RequestID() UserRequestUUID // user-request domain
+	StaffID() StaffUUID             //
+	Score() uint64                  //
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }

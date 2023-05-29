@@ -5,14 +5,15 @@ package org
 import (
 	"libgo/protocol"
 	"libgo/time/utc"
+	urp "org/modules/user-request/protocol"
 )
 
 type StaffOvertimeStatus interface {
-	StaffID() [16]byte            // staff domain
-	Day() utc.DayElapsed          //
-	Status() StaffOvertime_Status //
-	Time() protocol.Time          // save time
-	RequestID() UserRequestUUID   // user-request domain
+	StaffID() StaffUUID             //
+	Day() utc.DayElapsed            //
+	Status() StaffOvertime_Status   //
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }
 
 type StaffOvertimeStatus_StorageServices interface {

@@ -4,12 +4,14 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // StaffSalary is fixed negotiated salary that don't follow org||department||role salary rules.
 type StaffSalary interface {
-	StaffID() [16]byte                  //
+	StaffID() StaffUUID                 //
 	WeeklySalary() protocol.MoneyAmount //
 	Time() protocol.Time                // save time
-	RequestID() UserRequestUUID         // user-request domain
+	RequestID() urp.UserRequestUUID     //
 }

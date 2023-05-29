@@ -4,13 +4,15 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // it can be done by staff itself, manager, other staff, ...
 type StaffEvaluation interface {
-	StaffID() [16]byte     // staff domain
-	EvaluatorID() [16]byte // user domain
+	StaffID() StaffUUID     //
+	EvaluatorID() StaffUUID //
 
-	Time() protocol.Time        // save time
-	RequestID() UserRequestUUID // user-request domain
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }

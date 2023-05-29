@@ -4,22 +4,25 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 type StaffStatus interface {
-	StaffID() [16]byte          // user domain
-	Status() Staff_Status       //
-	Time() protocol.Time        // save time
-	RequestID() UserRequestUUID // user-request domain
+	StaffID() StaffUUID             //
+	OrganizationID() OrgUUID        // TODO::: change storage service
+	Status() Staff_Status           //
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }
 
 type StaffStatus_StorageServices interface {
 	Save(ss StaffStatus) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(staffID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(staffID [16]byte, vo protocol.VersionOffset) (ss StaffStatus, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(staffID StaffUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(staffID StaffUUID, vo protocol.VersionOffset) (ss StaffStatus, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FilterByStatus(status Staff_Status, offset, limit uint64) (staffIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
+	FilterByStatus(status Staff_Status, offset, limit uint64) (staffIDs []StaffUUID, nv protocol.NumberOfVersion, err protocol.Error)
 
 	// protocol.EventTarget
 }

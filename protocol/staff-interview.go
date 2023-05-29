@@ -4,11 +4,13 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 type StaffInterview interface {
-	StaffID() [16]byte // staff domain
+	StaffID() StaffUUID //
 
-	Time() protocol.Time        // save time
-	RequestID() UserRequestUUID // user-request domain
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }

@@ -6,15 +6,17 @@ import (
 	"libgo/protocol"
 	"libgo/time/earth"
 	"libgo/time/utc"
+
+	urp "org/modules/user-request/protocol"
 )
 
 type StaffMission interface {
-	StaffID() [16]byte          // staff domain
-	Day() utc.DayElapsed        //
-	DayHours() earth.DayHours   //
-	Type() StaffMission_Type    //
-	Time() protocol.Time        // save time
-	RequestID() UserRequestUUID // user-request domain
+	StaffID() StaffUUID             //
+	Day() utc.DayElapsed            //
+	DayHours() earth.DayHours       //
+	Type() StaffMission_Type        //
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }
 
 type StaffMission_Type uint8

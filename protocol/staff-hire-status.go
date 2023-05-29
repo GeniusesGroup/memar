@@ -4,22 +4,26 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 type StaffHireStatus interface {
-	UserID() protocol.UserID    // user domain
-	Status() StaffHire_Status   //
-	Time() protocol.Time        // save time
-	RequestID() UserRequestUUID // user-request domain
+	UserID() UserUUID               //
+	Status() StaffHire_Status       //
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }
 
 type StaffHireStatus_StorageServices interface {
 	Save(shs StaffHireStatus) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(userID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(userID [16]byte, vo protocol.VersionOffset) (shs StaffHireStatus, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(userID UserUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(userID UserUUID, vo protocol.VersionOffset) (shs StaffHireStatus, nv protocol.NumberOfVersion, err protocol.Error)
 
-	// FilterByStatus(status StaffHire_Status, offset, limit uint64) (userIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
+	Find_ByStatus(status StaffHire_Status, offset, limit uint64) (userIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
+	Find_ByStatus_Current(status StaffHire_Status, offset, limit uint64) (userIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
+
 	// protocol.EventTarget
 }
 

@@ -5,13 +5,15 @@ package org
 import (
 	"libgo/protocol"
 	"libgo/time/utc"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // StaffShift indicate the domain record data fields.
 type StaffShift interface {
-	StaffID() [16]byte          // staff domain
-	Day() utc.DayElapsed        //
-	ShiftID() [16]byte          // org-shift domain
-	Time() protocol.Time        // save time
-	RequestID() UserRequestUUID // user-request domain
+	StaffID() StaffUUID             //
+	Day() utc.DayElapsed            //
+	ShiftID() [16]byte              // org-shift domain
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }

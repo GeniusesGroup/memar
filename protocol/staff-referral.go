@@ -4,11 +4,13 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 type StaffReferral interface {
-	StaffID() [16]byte          // staff domain
-	ReferralID() [16]byte       // user domain
-	Time() protocol.Time        // save time
-	RequestID() UserRequestUUID // user-request domain
+	StaffID() StaffUUID             //
+	ReferralID() UserUUID           //
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }

@@ -6,15 +6,17 @@ import (
 	"libgo/protocol"
 	"libgo/time/earth"
 	"libgo/time/utc"
+
+	urp "org/modules/user-request/protocol"
 )
 
 type StaffTimingUTC interface {
-	StaffID() [16]byte          // staff domain
-	ShiftID() [16]byte          // org-shift domain
-	Day() utc.DayElapsed        //
-	DayHours() earth.DayHours   // what hours in a day this staff must active to provide services or do projects
-	Time() protocol.Time        // save time
-	RequestID() UserRequestUUID // user-request domain
+	StaffID() StaffUUID             //
+	ShiftID() [16]byte              // org-shift domain
+	Day() utc.DayElapsed            //
+	DayHours() earth.DayHours       // what hours in a day this staff must active to provide services or do projects
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }
 
 type StaffTimingUTC_StorageServices interface {

@@ -4,12 +4,14 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // TODO::: user-number??
 type StaffID interface {
-	StaffUUID() [16]byte        // user domain
-	ID() uint32                 //
-	Time() protocol.Time        // save time
-	RequestID() UserRequestUUID // user-request domain
+	StaffID() StaffUUID             //
+	ID() uint32                     //
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }

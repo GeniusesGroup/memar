@@ -4,14 +4,16 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // StaffAttendance indicate the domain record data fields.
 type StaffAttendance interface {
-	StaffID() [16]byte          // staff domain
-	Type() StaffAttendance_Type //
-	Time() protocol.Time        // save time
-	RequestID() UserRequestUUID // user-request domain
+	StaffID() StaffUUID             //
+	Type() StaffAttendance_Type     //
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }
 
 type StaffAttendance_Type uint8
