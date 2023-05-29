@@ -4,13 +4,15 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // UserVehicle
 // Vehicle is a conveyance that transports people or objects
 type UserVehicle interface {
-	UserID() protocol.UserID    // user domain
-	ThingID() [16]byte          //
-	Time() protocol.Time        // save time
-	RequestID() UserRequestUUID // user-request domain
+	UserID() UserUUID               //
+	ThingID() [16]byte              //
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }
