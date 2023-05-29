@@ -15,3 +15,11 @@ type StaffID interface {
 	Time() protocol.Time            // save time
 	RequestID() urp.UserRequestUUID //
 }
+
+type StaffID_StorageServices interface {
+	Save(f StaffID) (nv protocol.NumberOfVersion, err protocol.Error)
+
+	Count(staffID StaffUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(staffID StaffUUID, vo protocol.VersionOffset) (f StaffID, nv protocol.NumberOfVersion, err protocol.Error)
+
+}

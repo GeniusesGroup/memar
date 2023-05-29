@@ -16,12 +16,12 @@ type StaffHire interface {
 }
 
 type StaffHire_StorageServices interface {
-	Save(sh StaffHire) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(f StaffHire) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(userID UserUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(userID UserUUID, vo protocol.VersionOffset) (sh StaffHire, nv protocol.NumberOfVersion, err protocol.Error)
+	Get(userID UserUUID, vo protocol.VersionOffset) (f StaffHire, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FindByRoleID(roleID [16]byte, offset, limit uint64) (userIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
+	FindByRoleID(roleID RoleUUID, offset, limit uint64) (userIDs []UserUUID, nv protocol.NumberOfVersion, err protocol.Error)
 
 	// protocol.EventTarget
 }

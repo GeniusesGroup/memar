@@ -16,3 +16,11 @@ type StaffEvaluation interface {
 	Time() protocol.Time            // save time
 	RequestID() urp.UserRequestUUID //
 }
+
+type StaffEvaluation_StorageServices interface {
+	Save(f StaffEvaluation) (nv protocol.NumberOfVersion, err protocol.Error)
+
+	Count(staffID StaffUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(staffID StaffUUID, vo protocol.VersionOffset) (f StaffEvaluation, nv protocol.NumberOfVersion, err protocol.Error)
+
+}

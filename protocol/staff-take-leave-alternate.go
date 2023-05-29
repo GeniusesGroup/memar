@@ -17,3 +17,12 @@ type StaffTakeLeaveAlternate interface {
 	Time() protocol.Time            // save time
 	RequestID() urp.UserRequestUUID //
 }
+
+type StaffTakeLeaveAlternate_StorageServices interface {
+	Save(f StaffTakeLeaveAlternate) (nv protocol.NumberOfVersion, err protocol.Error)
+
+	Count(staffID StaffUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(staffID StaffUUID, vo protocol.VersionOffset) (f StaffTakeLeaveAlternate, nv protocol.NumberOfVersion, err protocol.Error)
+
+	// protocol.EventTarget
+}

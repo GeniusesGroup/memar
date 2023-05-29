@@ -18,10 +18,10 @@ type StaffTakeLeaveStatus interface {
 }
 
 type StaffTakeLeaveStatus_StorageServices interface {
-	Save(ss StaffTakeLeaveStatus) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(f StaffTakeLeaveStatus) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(staffID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(staffID [16]byte, vo protocol.VersionOffset) (ss StaffTakeLeaveStatus, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(staffID StaffUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(staffID StaffUUID, vo protocol.VersionOffset) (f StaffTakeLeaveStatus, nv protocol.NumberOfVersion, err protocol.Error)
 
 	// FilterByStatus(status StaffTakeLeave_Status, offset, limit uint64) (staffIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
 

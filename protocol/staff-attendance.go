@@ -16,6 +16,14 @@ type StaffAttendance interface {
 	RequestID() urp.UserRequestUUID //
 }
 
+type StaffAttendance_StorageServices interface {
+	Save(f StaffAttendance) (nv protocol.NumberOfVersion, err protocol.Error)
+
+	Count(staffID StaffUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(staffID StaffUUID, vo protocol.VersionOffset) (f StaffAttendance, nv protocol.NumberOfVersion, err protocol.Error)
+}
+
+
 type StaffAttendance_Type uint8
 
 const (

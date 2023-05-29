@@ -16,3 +16,11 @@ type StaffOvertime interface {
 	Time() protocol.Time            // save time
 	RequestID() urp.UserRequestUUID //
 }
+
+
+type StaffOvertime_StorageServices interface {
+	Save(f StaffOvertime) (nv protocol.NumberOfVersion, err protocol.Error)
+
+	Count(staffID StaffUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(staffID StaffUUID, vo protocol.VersionOffset) (f StaffOvertime, nv protocol.NumberOfVersion, err protocol.Error)
+}

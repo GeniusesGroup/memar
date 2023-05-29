@@ -20,10 +20,10 @@ type StaffTakeLeave interface {
 }
 
 type StaffTakeLeave_StorageServices interface {
-	Save(st StaffTakeLeave) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(f StaffTakeLeave) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(staffID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(staffID [16]byte, vo protocol.VersionOffset) (st StaffTakeLeave, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(staffID StaffUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(staffID StaffUUID, vo protocol.VersionOffset) (f StaffTakeLeave, nv protocol.NumberOfVersion, err protocol.Error)
 }
 
 type StaffTakeLeave_Type uint8

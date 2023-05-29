@@ -17,10 +17,10 @@ type StaffOvertimeStatus interface {
 }
 
 type StaffOvertimeStatus_StorageServices interface {
-	Save(ss StaffOvertimeStatus) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(f StaffOvertimeStatus) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(staffID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(staffID [16]byte, vo protocol.VersionOffset) (ss StaffOvertimeStatus, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(staffID StaffUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(staffID StaffUUID, vo protocol.VersionOffset) (f StaffOvertimeStatus, nv protocol.NumberOfVersion, err protocol.Error)
 
 	// FilterByStatus(status StaffOvertime_Status, offset, limit uint64) (staffIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
 

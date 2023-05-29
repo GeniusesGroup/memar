@@ -14,3 +14,11 @@ type StaffReferral interface {
 	Time() protocol.Time            // save time
 	RequestID() urp.UserRequestUUID //
 }
+
+
+type StaffReferral_StorageServices interface {
+	Save(f StaffReferral) (nv protocol.NumberOfVersion, err protocol.Error)
+
+	Count(staffID StaffUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(staffID StaffUUID, vo protocol.VersionOffset) (f StaffReferral, nv protocol.NumberOfVersion, err protocol.Error)
+}

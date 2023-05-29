@@ -17,3 +17,12 @@ type StaffShift interface {
 	Time() protocol.Time            // save time
 	RequestID() urp.UserRequestUUID //
 }
+
+type StaffShift_StorageServices interface {
+	Save(f StaffShift) (nv protocol.NumberOfVersion, err protocol.Error)
+
+	Count(staffID StaffUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(staffID StaffUUID, vo protocol.VersionOffset) (f StaffShift, nv protocol.NumberOfVersion, err protocol.Error)
+    
+	// list shifts per staffID ?
+}

@@ -15,3 +15,10 @@ type StaffSalary interface {
 	Time() protocol.Time                // save time
 	RequestID() urp.UserRequestUUID     //
 }
+
+type StaffSalary_StorageServices interface {
+	Save(f StaffSalary) (nv protocol.NumberOfVersion, err protocol.Error)
+
+	Count(staffID StaffUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(staffID StaffUUID, vo protocol.VersionOffset) (f StaffSalary, nv protocol.NumberOfVersion, err protocol.Error)
+}

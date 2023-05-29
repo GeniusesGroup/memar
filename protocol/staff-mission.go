@@ -19,6 +19,18 @@ type StaffMission interface {
 	RequestID() urp.UserRequestUUID //
 }
 
+type StaffMission_StorageServices interface {
+	Save(f StaffMission) (nv protocol.NumberOfVersion, err protocol.Error)
+
+	Count(staffID StaffUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(staffID StaffUUID, vo protocol.VersionOffset) (f StaffMission, nv protocol.NumberOfVersion, err protocol.Error)
+
+	// we may need indexing based on mission type ??
+	// FindByType(t StaffMission_Type, offset, limit uint64) (staffIDs []StaffUUID, nv protocol.NumberOfVersion, err protocol.Error)
+
+}
+
+
 type StaffMission_Type uint8
 
 const (

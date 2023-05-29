@@ -17,11 +17,12 @@ type StaffStatus interface {
 }
 
 type StaffStatus_StorageServices interface {
-	Save(ss StaffStatus) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(f StaffStatus) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(staffID StaffUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(staffID StaffUUID, vo protocol.VersionOffset) (ss StaffStatus, nv protocol.NumberOfVersion, err protocol.Error)
+	Get(staffID StaffUUID, vo protocol.VersionOffset) (f StaffStatus, nv protocol.NumberOfVersion, err protocol.Error)
 
+	// indexing ?? FindByStatus ?
 	FilterByStatus(status Staff_Status, offset, limit uint64) (staffIDs []StaffUUID, nv protocol.NumberOfVersion, err protocol.Error)
 
 	// protocol.EventTarget

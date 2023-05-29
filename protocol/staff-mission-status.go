@@ -18,10 +18,10 @@ type StaffMissionStatus interface {
 }
 
 type StaffMissionStatus_StorageServices interface {
-	Save(gs StaffMissionStatus) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(f StaffMissionStatus) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(staffID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(staffID [16]byte, vo protocol.VersionOffset) (gs StaffMissionStatus, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(staffID StaffUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(staffID StaffUUID, vo protocol.VersionOffset) (f StaffMissionStatus, nv protocol.NumberOfVersion, err protocol.Error)
 
 	// FilterByStatus(status StaffMission_Status, offset, limit uint64) (staffIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
 
