@@ -4,16 +4,21 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
+
+// LawUUID
+type LawUUID = protocol.UUID
 
 // Law give users the ability to vote to others and it allows them to make propositions on certain issues
 type Law interface {
-	LawID() [16]byte             // to track changes in a law
-	OrgID() protocol.UserID      //
-	UserID() protocol.UserID     // user domain. Law suggester
-	Language() protocol.Language // base language
-	Time() protocol.Time         // save time
-	RequestID() UserRequestUUID  // user-request domain
+	LawID() LawUUID                 // to track changes in a law
+	OrgID() UserUUID                //
+	UserID() UserUUID               // Law suggester
+	Language() protocol.Language    // base language
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }
 
 // TODO:::

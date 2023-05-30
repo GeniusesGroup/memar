@@ -4,26 +4,29 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // LawTag or law hashtag indicate the domain record data fields.
 type LawTag interface {
-	LawID() [16]byte // law domain
-	Tag() string
-	Status() LawTag_Status //
-	Time() protocol.Time   // save time
+	LawID() LawUUID                 //
+	Tag() string                    //
+	Status() LawTag_Status          //
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }
 
 type LawTag_StorageServices interface {
 	Save(ct LawTag) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(lawID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(lawID [16]byte, vo protocol.VersionOffset) (ct LawTag, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(lawID LawUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(lawID LawUUID, vo protocol.VersionOffset) (ct LawTag, nv protocol.NumberOfVersion, err protocol.Error)
 
-	ListTags(lawID [16]byte, offset, limit uint64) (tags []string, nv protocol.NumberOfVersion, err protocol.Error)
-	ListContracts(tag string, offset, limit uint64) (lawIDs [16]byte, nv protocol.NumberOfVersion, err protocol.Error)
+	ListTags(lawID LawUUID, offset, limit uint64) (tags []string, nv protocol.NumberOfVersion, err protocol.Error)
+	ListContracts(tag string, offset, limit uint64) (lawIDs []LawUUID, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FilterByStatus(lawID [16]byte, status LawTag_Status, offset, limit uint64) (tags []string, nv protocol.NumberOfVersion, err protocol.Error)
+	FilterByStatus(lawID LawUUID, status LawTag_Status, offset, limit uint64) (tags []string, nv protocol.NumberOfVersion, err protocol.Error)
 }
 
 type LawTag_Status Quiddity_Status

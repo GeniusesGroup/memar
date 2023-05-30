@@ -4,22 +4,24 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 type LawStatus interface {
-	LawID() [16]byte            // LawID
-	Status() Law_Status         //
-	Time() protocol.Time        // save time
-	RequestID() UserRequestUUID // user-request domain
+	LawID() LawUUID                 //
+	Status() Law_Status             //
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }
 
 type LawStatus_StorageServices interface {
 	Save(ls LawStatus) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(lawID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(lawID [16]byte, vo protocol.VersionOffset) (ls LawStatus, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(lawID LawUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(lawID LawUUID, vo protocol.VersionOffset) (ls LawStatus, nv protocol.NumberOfVersion, err protocol.Error)
 
-	// FilterByStatus(status Law_Status, offset, limit uint64) (lawIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
+	// FilterByStatus(status Law_Status, offset, limit uint64) (lawIDs []LawUUID, nv protocol.NumberOfVersion, err protocol.Error)
 
 	// protocol.EventTarget
 }
