@@ -4,12 +4,14 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // InviteGroup indicate the domain record data fields.
 type InviteGroup interface {
-	InviteID() InviteUUID       //
-	GroupID() GroupUUID         // group domain
-	Time() protocol.Time        // save time
-	RequestID() UserRequestUUID // user-request domain
+	InviteID() InviteUUID           //
+	GroupID() GroupUUID             //
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }

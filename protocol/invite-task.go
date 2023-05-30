@@ -4,14 +4,16 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // TODO::: Optional module
 
 // InviteTask indicate the domain record data fields.
 type InviteTask interface {
-	InviteID() InviteUUID       //
-	TaskID() TaskUUID           //
-	Time() protocol.Time        // save time
-	RequestID() UserRequestUUID // user-request domain
+	InviteID() InviteUUID           //
+	TaskID() TaskUUID               //
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }

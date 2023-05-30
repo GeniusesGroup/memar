@@ -4,15 +4,17 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // InviteWaitList indicate the domain record data fields.
 type InviteWaitList interface {
-	InviteID() InviteUUID          //
-	ConsumerID() protocol.UserID   // user domain
-	Status() InviteWaitList_Status //
-	Time() protocol.Time           // save time
-	RequestID() UserRequestUUID    // user-request domain
+	InviteID() InviteUUID           //
+	ConsumerID() UserUUID           //
+	Status() InviteWaitList_Status  //
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }
 
 type InviteWaitList_Status uint8

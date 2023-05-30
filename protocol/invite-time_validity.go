@@ -4,13 +4,15 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // InviteTimeValidity indicate the domain record data fields.
 type InviteTimeValidity interface {
-	InviteID() InviteUUID       //
-	Start() protocol.Time       //
-	End() protocol.Time         //
-	Time() protocol.Time        // save time
-	RequestID() UserRequestUUID // user-request domain
+	InviteID() InviteUUID           //
+	Start() protocol.Time           //
+	End() protocol.Time             //
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }

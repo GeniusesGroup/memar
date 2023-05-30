@@ -4,16 +4,18 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 type InviteUUID = protocol.UUID
 
 // Invite indicate the domain record data fields.
 type Invite interface {
-	InviteID() InviteUUID       //
-	Type() Invite_Type          //
-	Time() protocol.Time        // save time
-	RequestID() UserRequestUUID // user-request domain
+	InviteID() InviteUUID           //
+	Type() Invite_Type              //
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }
 
 type Invite_Type uint32

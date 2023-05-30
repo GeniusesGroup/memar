@@ -4,15 +4,17 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // InviteRequestConfirmation indicate the domain record data fields.
 type InviteRequestConfirmation interface {
 	InviteID() InviteUUID                     //
-	AccepterID() protocol.UserID              // user domain
+	AccepterID() UserUUID                     //
 	Status() InviteRequestConfirmation_Status //
 	Time() protocol.Time                      // save time
-	RequestID() UserRequestUUID               // user-request domain
+	RequestID() urp.UserRequestUUID           //
 }
 
 type InviteRequestConfirmation_Status uint8
