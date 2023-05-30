@@ -4,13 +4,17 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
+type ContractTemplateUUID = protocol.UUID
+
 type ContractTemplate interface {
-	ContractTemplateID() [16]byte // contract-template domain
-	Language() protocol.Language  // base language
-	Time() protocol.Time          // save time
-	RequestID() UserRequestUUID   // user-request domain
+	ContractTemplateID() ContractTemplateUUID //
+	Language() protocol.Language              // base language
+	Time() protocol.Time                      // save time
+	RequestID() urp.UserRequestUUID           //
 }
 
 type ContractTemplate_StorageServices interface {

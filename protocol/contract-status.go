@@ -4,13 +4,15 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 type ContractStatus interface {
-	ContractID() [16]byte       // contract domain
-	Status() Contract_Status    //
-	Time() protocol.Time        // save time
-	RequestID() UserRequestUUID // user-request domain
+	ContractID() ContractUUID       //
+	Status() Contract_Status        //
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }
 
 type Contract_Status Quiddity_Status

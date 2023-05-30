@@ -4,14 +4,16 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 type ContractTemplateTerms interface {
-	ContractTemplateID() [16]byte // contract-template domain
-	Language() protocol.Language  //
-	Terms() []string              // HTML, CSS, JS base, Solidity PL is other option
-	Time() protocol.Time          // save time
-	RequestID() UserRequestUUID   // user-request domain
+	ContractTemplateID() ContractTemplateUUID //
+	Language() protocol.Language              //
+	Terms() []string                          // HTML, CSS, JS base, Solidity PL is other option
+	Time() protocol.Time                      // save time
+	RequestID() urp.UserRequestUUID           //
 }
 
 type ContractTemplateTerms_StorageServices interface {

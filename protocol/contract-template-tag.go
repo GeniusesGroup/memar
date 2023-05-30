@@ -4,15 +4,18 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // ContractTemplateTag indicate the domain record data fields.
 // Tag is any text with hashtag in the contract template text, can't use by old fashion way to assign by users.
 type ContractTemplateTag interface {
-	ContractTemplateID() [16]byte       // contract-template domain
-	Tag() string                        //
-	Status() ContractTemplateTag_Status //
-	Time() protocol.Time                // save time
+	ContractTemplateID() ContractTemplateUUID //
+	Tag() string                              //
+	Status() ContractTemplateTag_Status       //
+	Time() protocol.Time                      // save time
+	RequestID() urp.UserRequestUUID           //
 }
 
 type ContractTemplateTag_StorageServices interface {

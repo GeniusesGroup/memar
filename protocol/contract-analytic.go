@@ -4,11 +4,13 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 type ContractAnalytic interface {
-	CoordinateID() [16]byte // contract domain
+	CoordinateID() CoordinateUUID //
 
-	Time() protocol.Time        // save time
-	RequestID() UserRequestUUID // user-request domain
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }

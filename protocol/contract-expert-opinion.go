@@ -4,13 +4,15 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 type ContractExpertOpinion interface {
-	ContractID() [16]byte         // contract domain
-	ExpertID() [16]byte           //
-	Opinion() string              //
-	Progress() protocol.PerMyriad //
-	Time() protocol.Time          // save time
-	RequestID() UserRequestUUID   // user-request domain
+	ContractID() ContractUUID       //
+	ExpertID() [16]byte             //
+	Opinion() string                //
+	Progress() protocol.PerMyriad   //
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }

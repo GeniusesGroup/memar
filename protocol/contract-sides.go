@@ -4,15 +4,17 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 type ContractSides interface {
-	ContractID() [16]byte       // contract domain
-	SideType() ContractSides_ST //
-	UserID() protocol.UserID    // user domain. Can be any user type e.g. staff
-	UserSignature() []byte      //
-	Time() protocol.Time        // save time
-	RequestID() UserRequestUUID // user-request domain
+	ContractID() ContractUUID       //
+	SideType() ContractSides_ST     //
+	UserID() UserUUID               //Can be any user type e.g. staff
+	UserSignature() []byte          //
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }
 
 type ContractSides_ST uint8
