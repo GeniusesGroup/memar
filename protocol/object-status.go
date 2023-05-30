@@ -4,13 +4,15 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 type PictureStatus interface {
-	ObjectID() [16]byte         // object domain
-	Status() Object_Status      //
-	Time() protocol.Time        // save time
-	RequestID() UserRequestUUID // user-request domain
+	ObjectID() ObjectUUID           //
+	Status() Object_Status          //
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }
 
 type PictureStatus_StorageServices interface {
