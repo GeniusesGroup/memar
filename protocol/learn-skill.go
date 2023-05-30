@@ -4,12 +4,17 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
+
+// SkillUUID
+type SkillUUID = protocol.UUID
 
 // Skill indicate the domain record data fields.
 type Skill interface {
-	SkillID() [16]byte //
+	SkillID() SkillUUID //
 
-	Time() protocol.Time        // save time
-	RequestID() UserRequestUUID // user-request domain
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }
