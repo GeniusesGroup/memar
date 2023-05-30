@@ -4,23 +4,25 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // RoleStatus indicate the domain record data fields.
 type RoleStatus interface {
-	RoleID() [16]byte           // role domain
-	Status() Role_Status        //
-	Time() protocol.Time        // save time
-	RequestID() UserRequestUUID // user-request domain
+	RoleID() RoleUUID               //
+	Status() Role_Status            //
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }
 
 type RoleStatus_StorageServices interface {
 	Save(rs RoleStatus) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(roleID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(roleID [16]byte, vo protocol.VersionOffset) (rs RoleStatus, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(roleID RoleUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(roleID RoleUUID, vo protocol.VersionOffset) (rs RoleStatus, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FilterByStatus(status Role_Status, offset, limit uint64) (roleIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
+	FilterByStatus(status Role_Status, offset, limit uint64) (roleIDs []RoleUUID, nv protocol.NumberOfVersion, err protocol.Error)
 
 	// protocol.EventTarget
 }

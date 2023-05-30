@@ -4,21 +4,23 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // RoleAccess indicate the domain record data fields.
 type RoleAccess interface {
-	RoleID() [16]byte                      // role domain
+	RoleID() RoleUUID                      //
 	AccessControl() protocol.AccessControl //
 	Time() protocol.Time                   // save time
-	RequestID() UserRequestUUID            // user-request domain
+	RequestID() urp.UserRequestUUID        //
 }
 
 type RoleAccess_StorageServices interface {
 	Save(ra RoleAccess) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(roleID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(roleID [16]byte, vo protocol.VersionOffset) (ra RoleAccess, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(roleID RoleUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(roleID RoleUUID, vo protocol.VersionOffset) (ra RoleAccess, nv protocol.NumberOfVersion, err protocol.Error)
 
 	protocol.EventTarget
 }

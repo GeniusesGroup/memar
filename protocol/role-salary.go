@@ -4,12 +4,14 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // RoleSalary is fixed negotiated salary that don't follow org||department||role salary rules.
 type RoleSalary interface {
-	RoleID() [16]byte                   // role domain
+	RoleID() RoleUUID                   //
 	WeeklySalary() protocol.MoneyAmount //
 	Time() protocol.Time                // save time
-	RequestID() UserRequestUUID         // user-request domain
+	RequestID() urp.UserRequestUUID     //
 }

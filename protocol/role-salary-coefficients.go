@@ -4,10 +4,12 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 type RoleSalaryCoefficients interface {
-	RoleID() [16]byte // role domain
+	RoleID() RoleUUID //
 
 	Importance() protocol.PerMyriad         // importance coefficient of the role
 	Accompanying() protocol.PerMyriad       //
@@ -22,6 +24,6 @@ type RoleSalaryCoefficients interface {
 	Income() protocol.PerMyriad          // whole organization income
 	DepartmenIncome() protocol.PerMyriad //
 
-	Time() protocol.Time        // save time
-	RequestID() UserRequestUUID // user-request domain
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }
