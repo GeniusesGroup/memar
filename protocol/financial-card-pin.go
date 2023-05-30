@@ -4,6 +4,8 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // FinancialCardPin indicate the domain record data fields.
@@ -14,7 +16,7 @@ type FinancialCardPin interface {
 	DynamicPin1() []byte                // OTP key
 	DynamicPin2() []byte                // OTP key
 	Time() protocol.Time                // save time
-	RequestID() UserRequestUUID         // user-request domain
+	RequestID() urp.UserRequestUUID     //
 }
 
 type FinancialCardPin_StorageServices interface {

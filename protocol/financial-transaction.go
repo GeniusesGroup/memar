@@ -4,6 +4,8 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // FinancialTransaction indicate the domain record data fields.
@@ -16,7 +18,7 @@ type FinancialTransaction interface {
 	Amount() protocol.MoneyAmount           // This transaction
 	Balance() protocol.MoneyAmount          // Account balance with this transaction
 	Time() protocol.Time                    // save time
-	RequestID() UserRequestUUID             // user-request domain
+	RequestID() urp.UserRequestUUID         //
 }
 
 // libgo: ganjine --ShardConsistency=strict
@@ -28,6 +30,8 @@ type FinancialTransaction_StorageServices interface {
 
 	// TODO::: is it worth to uncomment below service?
 	// FindByAccountSideID(accountID, accountSideID [16]byte, offset, limit uint64) (versionOffsets []uint64, nv protocol.NumberOfVersion, err protocol.Error)
+
+	protocol.EventTarget
 }
 
 // FinancialTransaction_RT indicate FinancialTransaction record reference type

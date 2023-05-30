@@ -4,15 +4,17 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // FinancialAccountID indicate the domain record data fields.
 // It is about settlement reference internal ID like bank account ID.
 type FinancialAccountID interface {
-	AccountID() [16]byte        // financial-account domain
-	ID() string                 //
-	Time() protocol.Time        // save time
-	RequestID() UserRequestUUID // user-request domain
+	AccountID() [16]byte            // financial-account domain
+	ID() string                     //
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }
 
 type FinancialAccountID_StorageServices interface {

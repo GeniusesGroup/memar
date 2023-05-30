@@ -4,6 +4,8 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // FinancialCardAccountRelation indicate the domain record data fields.
@@ -13,7 +15,7 @@ type FinancialCardAccountRelation interface {
 	Priority() uint64                            //
 	Status() FinancialCardAccountRelation_Status //
 	Time() protocol.Time                         // save time
-	RequestID() UserRequestUUID                  // user-request domain
+	RequestID() urp.UserRequestUUID              //
 }
 
 type FinancialCardAccountRelation_StorageServices interface {
@@ -26,7 +28,7 @@ type FinancialCardAccountRelation_StorageServices interface {
 	ListAccount(cardID [16]byte, offset, limit uint64) (accountIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
 }
 
-type FinancialCardAccountRelation_Status = Quiddity_Status
+type FinancialCardAccountRelation_Status Quiddity_Status
 
 const (
 // FinancialCardAccountRelation_Status_ = FinancialCardAccountRelation_Status(Quiddity_Status_FreeFlag << iota)

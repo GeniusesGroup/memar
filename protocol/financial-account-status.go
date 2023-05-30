@@ -4,6 +4,8 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // FinancialAccountStatus indicate the domain record data fields.
@@ -11,7 +13,7 @@ type FinancialAccountStatus interface {
 	AccountID() [16]byte             // financial-account domain
 	Status() FinancialAccount_Status //
 	Time() protocol.Time             // save time
-	RequestID() UserRequestUUID      // user-request domain
+	RequestID() urp.UserRequestUUID  //
 }
 
 type FinancialAccountStatus_StorageServices interface {

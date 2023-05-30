@@ -4,15 +4,17 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // FinancialAccountMain indicate the domain record data fields.
 type FinancialAccountMain interface {
-	UserID() protocol.UserID    // user domain
-	Currency() [16]byte         // financial-currency
-	AccountID() [16]byte        // financial-account domain
-	Time() protocol.Time        // save time
-	RequestID() UserRequestUUID // user-request domain
+	UserID() UserUUID               //
+	Currency() [16]byte             // financial-currency
+	AccountID() [16]byte            // financial-account domain
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }
 
 type FinancialAccountMain_StorageServices interface {

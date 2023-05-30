@@ -4,13 +4,15 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // FinancialRiskScore
 // Store user risk to prevent or detect frauds
 type FinancialRiskScore interface {
-	UserID() protocol.UserID    // user domain
-	Score() int64               //
-	Time() protocol.Time        // save time
-	RequestID() UserRequestUUID // user-request domain
+	UserID() UserUUID               //
+	Score() int64                   //
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }

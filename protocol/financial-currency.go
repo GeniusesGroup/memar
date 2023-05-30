@@ -4,13 +4,17 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
+
+type FinancialCurrencyUUID = protocol.UUID
 
 // MoneySettlementReference: https://www.federalreserve.gov/paymentsystems/fedfunds_about.htm
 type FinancialCurrency interface {
-	Currency() [16]byte // quiddity domain
+	Currency() FinancialCurrencyUUID // quiddity domain
 	// ISO_4217() iso.Currency             //
-	MoneySettlementReference() [16]byte // user domain. can be any org or society user.
+	MoneySettlementReference() UserUUID //can be any org or society user.
 	Time() protocol.Time                // save time
-	RequestID() UserRequestUUID         // user-request domain
+	RequestID() urp.UserRequestUUID     //
 }

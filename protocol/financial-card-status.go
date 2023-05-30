@@ -4,6 +4,8 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // FinancialCardStatus indicate the domain record data fields.
@@ -11,7 +13,7 @@ type FinancialCardStatus interface {
 	FinancialCardID() FinancialCardUUID //
 	Status()                            //
 	Time() protocol.Time                // save time
-	RequestID() UserRequestUUID         // user-request domain
+	RequestID() urp.UserRequestUUID     //
 }
 
 type FinancialCardStatus_StorageServices interface {

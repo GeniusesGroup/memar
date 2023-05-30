@@ -5,14 +5,16 @@ package org
 import (
 	"libgo/iso"
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // FinancialAccountIBAN indicate the domain record data fields.
 type FinancialAccountIBAN interface {
-	AccountID() [16]byte        // financial-account domain
-	IBAN() iso.IBAN             //
-	Time() protocol.Time        // save time
-	RequestID() UserRequestUUID // user-request domain
+	AccountID() [16]byte            // financial-account domain
+	IBAN() iso.IBAN                 //
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }
 
 type FinancialAccountIBAN_StorageServices interface {

@@ -4,16 +4,18 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // https://en.wikipedia.org/wiki/Credit_card_debt
 type FinancialCreditDebt interface {
-	UserID() protocol.UserID       // user domain
-	Currency() [16]byte            // financial-currency
-	Amount() protocol.MoneyAmount  //
-	Balance() protocol.MoneyAmount //
-	Time() protocol.Time           // save time
-	RequestID() UserRequestUUID    // user-request domain
+	UserID() UserUUID               //
+	Currency() [16]byte             // financial-currency
+	Amount() protocol.MoneyAmount   //
+	Balance() protocol.MoneyAmount  //
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }
 
 // if long overdraft occur, user must pay fee. also can set preference to let system sell its shareholders to overcome of overdraft.
