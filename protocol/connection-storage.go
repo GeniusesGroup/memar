@@ -18,8 +18,8 @@ type Connection interface {
 	Addr() [16]byte
 	AddrType() protocol.NetworkLink_NextHeaderID
 	DomainName() string // if exist
-	UserID() protocol.UserID
-	DelegateUserID() protocol.UserID // Persons can delegate to things(as a user type)
+	UserID() UserUUID
+	DelegateUserID() UserUUID // Persons can delegate to things(as a user type)
 
 	/* Security data */
 	// AccessControl() AccessControl
