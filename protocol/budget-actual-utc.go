@@ -5,16 +5,17 @@ package org
 import (
 	"libgo/protocol"
 	"libgo/time/utc"
+	urp "org/modules/user-request/protocol"
 )
 
 // OrgProfit
 // https://en.wikipedia.org/wiki/Rate_of_profit
 type OrgBudgetActualUTC interface {
-	Week() utc.WeekElapsed         //
-	Income() protocol.MoneyAmount  //
-	Outcome() protocol.MoneyAmount //
-	Time() protocol.Time           // save time
-	RequestID() UserRequestUUID    // user-request domain
+	Week() utc.WeekElapsed          //
+	Income() protocol.MoneyAmount   //
+	Outcome() protocol.MoneyAmount  //
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }
 
 // Usage:

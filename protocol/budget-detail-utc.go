@@ -5,13 +5,14 @@ package org
 import (
 	"libgo/protocol"
 	"libgo/time/utc"
+	urp "org/modules/user-request/protocol"
 )
 
 type DepartmentBudgetDetailUTC interface {
-	DepartmentID() [16]byte            // department domain
+	DepartmentID() DepartmentUUID      //
 	Week() utc.WeekElapsed             //
 	Type() DepartmentBudgetDetail_Type //
 	Amount() protocol.MoneyAmount      //
 	Time() protocol.Time               // save time
-	RequestID() UserRequestUUID        // user-request domain
+	RequestID() urp.UserRequestUUID    //
 }
