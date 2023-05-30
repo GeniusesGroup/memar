@@ -4,14 +4,16 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 type CategoryComplement interface {
-	CategoryID() [16]byte       // category domain
-	Priority() uint64           // Complement priority
-	ComplementID() [16]byte     // category domain
-	Time() protocol.Time        // save time
-	RequestID() UserRequestUUID // user-request domain
+	CategoryID() CategoryUUID       //
+	Priority() uint64               // Complement priority
+	ComplementID() CategoryUUID     //
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }
 
 type CategoryComplement_StorageServices interface {

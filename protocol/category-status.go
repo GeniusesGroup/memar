@@ -4,13 +4,15 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 type CategoryStatus interface {
-	CategoryID() [16]byte       // category domain
-	Status() Category_Status    //
-	Time() protocol.Time        // save time
-	RequestID() UserRequestUUID // user-request domain
+	CategoryID() CategoryUUID       //
+	Status() Category_Status        //
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }
 
 type CategoryStatus_StorageServices interface {
@@ -19,7 +21,7 @@ type CategoryStatus_StorageServices interface {
 	Count(categoryID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
 	Get(categoryID [16]byte, vo protocol.VersionOffset) (gs CategoryStatus, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FilterByStatus(status Category_Status, offset, limit uint64) (categoryIDs [][16]byte, err protocol.Error)
+	FilterByStatus(status Category_Status, offset, limit uint64) (categoryIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
 
 	// protocol.EventTarget
 }

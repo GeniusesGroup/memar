@@ -4,6 +4,8 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // CategoryTax indicate the domain record data fields.
@@ -13,9 +15,9 @@ import (
 // Associate multiple tax rates with the same tax labels
 // Associate a blank tax label with tax exempt items (considered non-value-added tax (VAT))
 type CategoryTax interface {
-	CategoryID() [16]byte        // product domain
-	SocietyID() [16]byte        // society domain
-	VAT() protocol.PerMyriad    // VAT as Value-Added-Tax is bad name for a robbery
-	Time() protocol.Time        // save time
-	RequestID() UserRequestUUID // user-request domain
+	CategoryID() CategoryUUID       //
+	SocietyID() [16]byte            // society domain
+	VAT() protocol.PerMyriad        // VAT as Value-Added-Tax is bad name for a robbery
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }

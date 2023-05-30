@@ -4,14 +4,16 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 type CategorySubstitute interface {
-	CategoryID() [16]byte       // category domain
-	Priority() uint64           // Substitute priority
-	SubstituteID() [16]byte     // category domain
-	Time() protocol.Time        // save time
-	RequestID() UserRequestUUID // user-request domain
+	CategoryID() CategoryUUID       //
+	Priority() uint64               // Substitute priority
+	SubstituteID() CategoryUUID     //
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }
 
 type CategorySubstitute_StorageServices interface {

@@ -4,15 +4,19 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
+
+type CategoryUUID = protocol.UUID
 
 // Category indicate the domain record data fields.
 // Category or Topic
 type Category interface {
-	CategoryID() [16]byte       // quiddity domain
-	ParentID() [16]byte         // CategoryID, Exist if it isn't top category.
-	Time() protocol.Time        // save time
-	RequestID() UserRequestUUID // user-request domain
+	CategoryID() CategoryUUID       // quiddity domain
+	ParentID() CategoryUUID         // Exist if it isn't top category.
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }
 
 type Category_StorageServices interface {
