@@ -4,20 +4,22 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // ProductReserveQuantity indicate the domain record data fields.
 type ProductReserveQuantity interface {
-	ProductID() [16]byte        // product domain
-	Quantity() uint64           // fix max reserve number
-	Percent() uint64            // percent of the inventory
-	Time() protocol.Time        // save time
-	RequestID() UserRequestUUID // user-request domain
+	ProductID() ProductUUID         //
+	Quantity() uint64               // fix max reserve number
+	Percent() uint64                // percent of the inventory
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }
 
 type ProductReserveQuantity_StorageServices interface {
 	Save(pr ProductReserveQuantity) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(productID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(productID [16]byte, vo protocol.VersionOffset) (pr ProductReserveQuantity, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(productID ProductUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(productID ProductUUID, vo protocol.VersionOffset) (pr ProductReserveQuantity, nv protocol.NumberOfVersion, err protocol.Error)
 }

@@ -4,14 +4,16 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // ProductMultipleUse indicate the domain record data fields.
 type ProductMultipleUse interface {
-	ProductID() [16]byte        // product domain
-	Maximum() uint64            // Maximum time this service can be served to buyer
-	Time() protocol.Time        // save time
-	RequestID() UserRequestUUID // user-request domain
+	ProductID() ProductUUID         //
+	Maximum() uint64                // Maximum time this service can be served to buyer
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }
 
 type ProductMultipleUse_StorageServices interface {

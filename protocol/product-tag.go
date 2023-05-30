@@ -4,27 +4,29 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // ProductTag indicate the domain record data fields.
 type ProductTag interface {
-	ProductID() [16]byte        // product domain
-	Tag() string                //
-	Status() ProductTag_Status  //
-	Time() protocol.Time        // save time
-	RequestID() UserRequestUUID // user-request domain
+	ProductID() ProductUUID         //
+	Tag() string                    //
+	Status() ProductTag_Status      //
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }
 
 type ProductTag_StorageServices interface {
 	Save(pt ProductTag) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(productID [16]byte, tag string) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(productID [16]byte, tag string, vo protocol.VersionOffset) (pt ProductTag, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(productID ProductUUID, tag string) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(productID ProductUUID, tag string, vo protocol.VersionOffset) (pt ProductTag, nv protocol.NumberOfVersion, err protocol.Error)
 
-	ListTags(productID [16]byte, offset, limit uint64) (tags []string, nv protocol.NumberOfVersion, err protocol.Error)
-	ListProducts(tag string, offset, limit uint64) (productIDs [16]byte, nv protocol.NumberOfVersion, err protocol.Error)
+	ListTags(productID ProductUUID, offset, limit uint64) (tags []string, nv protocol.NumberOfVersion, err protocol.Error)
+	ListProducts(tag string, offset, limit uint64) (productIDs []ProductUUID, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FilterByStatus(productID [16]byte, status UserRelation_Status, offset, limit uint64) (tags []string, nv protocol.NumberOfVersion, err protocol.Error)
+	FilterByStatus(productID ProductUUID, status UserRelation_Status, offset, limit uint64) (tags []string, nv protocol.NumberOfVersion, err protocol.Error)
 }
 
 type ProductTag_Status Quiddity_Status

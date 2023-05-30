@@ -4,25 +4,27 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 type ProductUUID = protocol.UUID
 
 // Product indicate the domain record data fields.
 type Product interface {
-	ProductID() ProductUUID     //
-	Type() Product_Type         //
-	Time() protocol.Time        // save time
-	RequestID() UserRequestUUID // user-request domain
+	ProductID() ProductUUID         //
+	Type() Product_Type             //
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }
 
 type Product_StorageServices interface {
 	Save(p Product) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(productID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(productID [16]byte, vo protocol.VersionOffset) (p Product, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(productID ProductUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(productID ProductUUID, vo protocol.VersionOffset) (p Product, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FilterByType(typ Product_Type, offset, limit uint64) (productIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
+	FilterByType(typ Product_Type, offset, limit uint64) (productIDs []ProductUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }
 
 // Cinema, Rent, Therapy, Consulting, Coaching, Mentoring, FixingService, the transportation of goods and passenger,  ...
@@ -54,11 +56,11 @@ const (
 
 // Good flags
 const (
-	Product_Type_Inventory  Product_Type = (Product_Type_StartSpecific << iota) // usually capital good must track owner. Book, Mobile, Car, ...
-	Product_Type_Custom                                                         // made on buyer requirements, product-ingredient
-	Product_Type_BestBefore                                                     // Consumption good. any Good usually use daily to satisfy human wants.
-	Product_Type_Commodity                                                      // a product of agriculture or mining
-	Product_Type_CustomIngredient //
+	Product_Type_Inventory        Product_Type = (Product_Type_StartSpecific << iota) // usually capital good must track owner. Book, Mobile, Car, ...
+	Product_Type_Custom                                                               // made on buyer requirements, product-ingredient
+	Product_Type_BestBefore                                                           // Consumption good. any Good usually use daily to satisfy human wants.
+	Product_Type_Commodity                                                            // a product of agriculture or mining
+	Product_Type_CustomIngredient                                                     //
 )
 
 // Services flags

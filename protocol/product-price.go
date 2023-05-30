@@ -4,23 +4,25 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // ProductPrice indicate the domain record data fields.
 // ProductPrice can be register just by producer organization whom own the related quiddity
 type ProductPrice interface {
-	ProductID() [16]byte         // product domain
-	Currency() [16]byte          // financial-currency
-	Price() protocol.MoneyAmount // Basic Price not payable price in the currency
-	Time() protocol.Time         // save time
-	RequestID() UserRequestUUID  // user-request domain
+	ProductID() ProductUUID          //
+	Currency() FinancialCurrencyUUID //
+	Price() protocol.MoneyAmount     // Basic Price not payable price in the currency
+	Time() protocol.Time             // save time
+	RequestID() urp.UserRequestUUID  //
 }
 
 type ProductPrice_StorageServices interface {
 	Save(pp ProductPrice) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(productID [16]byte, currency uint64) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(productID [16]byte, currency uint64, vo protocol.VersionOffset) (pp ProductPrice, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(productID ProductUUID, currency uint64) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(productID ProductUUID, currency uint64, vo protocol.VersionOffset) (pp ProductPrice, nv protocol.NumberOfVersion, err protocol.Error)
 
-	ListProductCurrencies(productID [16]byte, offset, limit uint64) (currencies []uint64, nv protocol.NumberOfVersion, err protocol.Error)
+	ListProductCurrencies(productID ProductUUID, offset, limit uint64) (currencies []FinancialCurrencyUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }

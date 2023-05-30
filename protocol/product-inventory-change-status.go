@@ -4,23 +4,25 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // ProductInventoryChangeStatus indicate the domain record data fields.
 type ProductInventoryChangeStatus interface {
-	ProductInventoryChangeID() [16]byte    // product-inventory-change domain
-	Status() ProductInventoryChange_Status // overall
-	Time() protocol.Time                   // save time
-	RequestID() UserRequestUUID            // user-request domain
+	InventoryChangeID() InventoryChangeUUID //
+	Status() ProductInventoryChange_Status  // overall
+	Time() protocol.Time                    // save time
+	RequestID() urp.UserRequestUUID         //
 }
 
 type ProductInventoryChangeStatus_StorageServices interface {
 	Save(ps ProductInventoryChangeStatus) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(productInventoryChangeID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(productInventoryChangeID [16]byte, vo protocol.VersionOffset) (ps ProductInventoryChangeStatus, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(inventoryChangeID InventoryChangeUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(inventoryChangeID InventoryChangeUUID, vo protocol.VersionOffset) (ps ProductInventoryChangeStatus, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FilterByStatus(status ProductInventoryChange_Status, offset, limit uint64) (productInventoryChangeIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
+	FilterByStatus(status ProductInventoryChange_Status, offset, limit uint64) (inventoryChangeIDs []InventoryChangeUUID, nv protocol.NumberOfVersion, err protocol.Error)
 
 	protocol.EventTarget
 }

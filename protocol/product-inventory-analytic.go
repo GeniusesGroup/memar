@@ -8,7 +8,7 @@ package org
 type ProductInventoryAnalytic interface {
 	Day()
 
-	ProductID()
-	BuildingLocationID() [16]byte // building-location domain
+	ProductID() ProductUUID
+	BuildingLocationID() BuildingLocationUUID //
 	Amount()
 }

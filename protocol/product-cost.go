@@ -4,11 +4,13 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // ProductCost indicate the domain record data fields.
 type ProductCost interface {
-	ProductID() [16]byte // product domain
+	ProductID() ProductUUID //
 
 	Materials() protocol.PerMyriad
 	MaterialsCost() protocol.MoneyAmount
@@ -24,4 +26,7 @@ type ProductCost interface {
 	RetailProfit() protocol.MoneyAmount    // The amount of retail margin
 
 	Cost() protocol.MoneyAmount
+
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }

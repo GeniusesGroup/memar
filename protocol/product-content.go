@@ -4,21 +4,23 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // ProductContent indicate the domain record data fields.
 type ProductContent interface {
-	ProductID() [16]byte        // product domain
-	ContentID() [16]byte        // content domain
-	Time() protocol.Time        // save time
-	RequestID() UserRequestUUID // user-request domain
+	ProductID() ProductUUID         //
+	ContentID() ContentUUID         //
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }
 
 type ProductContent_StorageServices interface {
 	Save(pc ProductContent) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(productID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(productID [16]byte, vo protocol.VersionOffset) (pc ProductContent, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(productID ProductUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(productID ProductUUID, vo protocol.VersionOffset) (pc ProductContent, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FindByContent(contentID [16]byte, offset, limit uint64) (productIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
+	FindByContent(contentID ContentUUID, offset, limit uint64) (productIDs []ProductUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }

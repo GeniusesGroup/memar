@@ -4,25 +4,30 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
+
+type InventoryChangeUUID = protocol.UUID
 
 // ProductInventoryChange indicate the domain record data fields.
 type ProductInventoryChange interface {
-	ProductInventoryChangeID() [16]byte //
-	ProductID() [16]byte                // product domain
-	From() [16]byte                     // building-location domain
-	To() [16]byte                       // building-location domain. Can be zero for voiding products.
-	Amount() int64                      // this transaction
-	Priority() uint64                   //
-	Time() protocol.Time                // save time
-	RequestID() UserRequestUUID         // user-request domain
+	InventoryChangeID() InventoryChangeUUID //
+	ProductID() ProductUUID                 //
+	From() BuildingLocationUUID             //
+	To() BuildingLocationUUID               // Can be zero for voiding products.
+	Amount() int64                          // this transaction
+	Priority() uint64                       //
+	// TODO::: Reference to invoice??
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }
 
 type ProductInventoryChange_StorageServices interface {
 	Save(pi ProductInventoryChange) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(productID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(productID [16]byte, vo protocol.VersionOffset) (pi ProductInventoryChange, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(inventoryChangeID InventoryChangeUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(inventoryChangeID InventoryChangeUUID, vo protocol.VersionOffset) (pi ProductInventoryChange, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FindByProduct(productID [16]byte, offset, limit uint64) (productIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
+	FindByProduct(productID ProductUUID, offset, limit uint64) (inventoryChangeIDs []InventoryChangeUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }

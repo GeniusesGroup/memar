@@ -4,22 +4,24 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // ProductTimingInterval indicate the domain record data fields.
 // e.g. flight duration, doctor visit, carwash, ...
 type ProductTimingInterval interface {
-	ProductID() ProductUUID      //
-	Minimum() protocol.Duration  // Minimum time duration for this service
-	Expected() protocol.Duration // Expected time duration for this service
-	Maximum() protocol.Duration  // Maximum time duration for this service
-	Time() protocol.Time         // save time
-	RequestID() UserRequestUUID  // user-request domain
+	ProductID() ProductUUID         //
+	Minimum() protocol.Duration     // Minimum time duration for this service
+	Expected() protocol.Duration    // Expected time duration for this service
+	Maximum() protocol.Duration     // Maximum time duration for this service
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }
 
 type ProductTimingInterval_StorageServices interface {
 	Save(pt ProductTimingInterval) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(productID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(productID [16]byte, vo protocol.VersionOffset) (pt ProductTimingInterval, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(productID ProductUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(productID ProductUUID, vo protocol.VersionOffset) (pt ProductTimingInterval, nv protocol.NumberOfVersion, err protocol.Error)
 }

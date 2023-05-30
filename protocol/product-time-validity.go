@@ -4,21 +4,23 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // ProductTimeValidity indicate the domain record data fields.
 // flight departure and arrival time, concert start and end time, ...
 type ProductTimeValidity interface {
-	ProductID() [16]byte        // product domain
-	Start() protocol.Time       //
-	End() protocol.Time         //
-	Time() protocol.Time        // save time
-	RequestID() UserRequestUUID // user-request domain
+	ProductID() ProductUUID         //
+	Start() protocol.Time           //
+	End() protocol.Time             //
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }
 
 type ProductTimeValidity_StorageServices interface {
 	Save(pt ProductTimeValidity) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(productID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(productID [16]byte, vo protocol.VersionOffset) (pt ProductTimeValidity, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(productID ProductUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(productID ProductUUID, vo protocol.VersionOffset) (pt ProductTimeValidity, nv protocol.NumberOfVersion, err protocol.Error)
 }

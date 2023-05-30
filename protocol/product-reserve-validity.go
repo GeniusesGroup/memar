@@ -4,19 +4,21 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // ProductReserveValidity indicate the domain record data fields.
 type ProductReserveValidity interface {
-	ProductID() [16]byte         // product domain
-	Duration() protocol.Duration // from add to invoice time
-	Time() protocol.Time         // save time
-	RequestID() UserRequestUUID  // user-request domain
+	ProductID() ProductUUID         //
+	Duration() protocol.Duration    // from add to invoice time
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }
 
 type ProductReserveValidity_StorageServices interface {
 	Save(prv ProductReserveValidity) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(productID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(productID [16]byte, vo protocol.VersionOffset) (prv ProductReserveValidity, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(productID ProductUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(productID ProductUUID, vo protocol.VersionOffset) (prv ProductReserveValidity, nv protocol.NumberOfVersion, err protocol.Error)
 }

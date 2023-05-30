@@ -4,22 +4,24 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // ProductArea indicate the domain record data fields.
 // ProductArea is proper or appropriate location indicate specific area not specific location e.g. Taxi, ...
 type ProductArea interface {
-	ProductID() [16]byte        // product domain
-	AreaID() [16]byte           // area domain
-	Time() protocol.Time        // save time
-	RequestID() UserRequestUUID // user-request domain
+	ProductID() ProductUUID         //
+	EstateID() EstateUUID           //
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }
 
 type ProductArea_StorageServices interface {
 	Save(pa ProductArea) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(productID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(productID [16]byte, vo protocol.VersionOffset) (pa ProductArea, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(productID ProductUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(productID ProductUUID, vo protocol.VersionOffset) (pa ProductArea, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FindByArea(AreaID [16]byte, offset, limit uint64) (productIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
+	FindByArea(estateID EstateUUID, offset, limit uint64) (productIDs []ProductUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }

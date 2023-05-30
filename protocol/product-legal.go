@@ -4,15 +4,17 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // ProductLegal indicate the domain record data fields.
 type ProductLegal interface {
-	ProductID() ProductUUID     //
-	OrgID() OrgUUID             //
-	Type() Product_Legal_Type   //
-	Time() protocol.Time        // save time
-	RequestID() UserRequestUUID // user-request domain
+	ProductID() ProductUUID         //
+	OrgID() OrgUUID                 //
+	Type() Product_Legal_Type       //
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }
 
 type ProductLegal_StorageServices interface {
