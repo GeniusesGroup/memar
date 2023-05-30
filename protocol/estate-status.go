@@ -4,13 +4,15 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 type AreaStatus interface {
-	AreaID() [16]byte           // quiddity domain
-	Status() Area_Status        //
-	Time() protocol.Time        // save time
-	RequestID() UserRequestUUID // user-request domain
+	AreaID() [16]byte               // quiddity domain
+	Status() Area_Status            //
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }
 
 type AreaStatus_StorageServices interface {

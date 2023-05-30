@@ -4,13 +4,15 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 type BuildingLocationStatus interface {
 	BuildingLocationID() [16]byte    // building-location domain
 	Status() BuildingLocation_Status //
 	Time() protocol.Time             // save time
-	RequestID() UserRequestUUID      // user-request domain
+	RequestID() urp.UserRequestUUID  //
 }
 
 type BuildingLocationStatus_StorageServices interface {

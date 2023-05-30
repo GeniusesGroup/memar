@@ -4,13 +4,18 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
+// quiddity domain. use in Coordinate domain too, to get physical location of the Location.
+type BuildingUUID = protocol.UUID
+
 type Building interface {
-	BuildingID() [16]byte       // quiddity domain
-	AreaID() [16]byte           // area domain
-	Time() protocol.Time        // save time
-	RequestID() UserRequestUUID // user-request domain
+	BuildingID() BuildingUUID       //
+	AreaID() EstateUUID             // area domain
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }
 
 type Building_StorageServices interface {
