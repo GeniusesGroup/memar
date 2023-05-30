@@ -4,11 +4,13 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 type OrgShareholder interface {
-	UserID() protocol.UserID        // user domain
+	UserID() UserUUID               //
 	Quantity() protocol.PerTrillion //
 	Time() protocol.Time            // save time
-	RequestID() UserRequestUUID     // user-request domain
+	RequestID() urp.UserRequestUUID //
 }

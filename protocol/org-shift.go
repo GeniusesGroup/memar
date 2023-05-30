@@ -2,6 +2,12 @@
 
 package org
 
+import (
+	"libgo/protocol"
+)
+
+type ShiftUUID = protocol.UUID
+
 type OrgShift_Type uint8
 
 const (

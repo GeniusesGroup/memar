@@ -2,8 +2,4 @@
 
 package org
 
-import (
-	"libgo/protocol"
-)
-
-type OrgUUID protocol.UserID
+type OrgUUID = UserUUID
