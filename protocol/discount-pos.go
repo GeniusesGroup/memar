@@ -4,14 +4,16 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // DiscountPOS indicate the domain record data fields.
 type DiscountPOS interface {
-	DiscountID() [16]byte       // discount domain
-	PosID() [16]byte            // pos domain
-	Time() protocol.Time        // save time
-	RequestID() UserRequestUUID // user-request domain
+	DiscountID() DiscountUUID       //
+	PosID() PosUUID                 //
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }
 
 type DiscountPOS_StorageServices interface {

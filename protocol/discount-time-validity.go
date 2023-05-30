@@ -4,15 +4,17 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // DiscountTimeValidity or LiveUntil indicate the domain record data fields.
 type DiscountTimeValidity interface {
-	DiscountID() [16]byte       // discount domain
-	Start() protocol.Time       //
-	End() protocol.Time         //
-	Time() protocol.Time        // save time
-	RequestID() UserRequestUUID // user-request domain
+	DiscountID() DiscountUUID       //
+	Start() protocol.Time           //
+	End() protocol.Time             //
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }
 
 type DiscountTimeValidity_StorageServices interface {

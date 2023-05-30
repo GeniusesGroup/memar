@@ -4,14 +4,16 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // DiscountUser indicate the domain record data fields.
 type DiscountUser interface {
-	DiscountID() [16]byte       // discount domain
-	UserID() protocol.UserID    // user domain
-	Time() protocol.Time        // save time
-	RequestID() UserRequestUUID // user-request domain
+	DiscountID() DiscountUUID       //
+	UserID() UserUUID               //
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }
 
 type DiscountUser_StorageServices interface {
@@ -20,5 +22,5 @@ type DiscountUser_StorageServices interface {
 	Count(discountID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
 	Get(discountID [16]byte, vo protocol.VersionOffset) (ds DiscountUser, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FindByUser(userID [16]byte, offset, limit uint64) (discountIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
+	FindByUser(userID UserUUID, offset, limit uint64) (discountIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
 }

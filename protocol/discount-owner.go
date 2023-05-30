@@ -4,14 +4,16 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // DiscountOwner indicate the domain record data fields.
 type DiscountOwner interface {
-	DiscountID() [16]byte       // discount domain
-	OrgID() OrgUUID             //
-	Time() protocol.Time        // save time
-	RequestID() UserRequestUUID // user-request domain
+	DiscountID() DiscountUUID       //
+	OrgID() OrgUUID                 //
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }
 
 type DiscountOwner_StorageServices interface {

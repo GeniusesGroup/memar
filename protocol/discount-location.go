@@ -4,14 +4,16 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // DiscountLocation indicate the domain record data fields.
 type DiscountLocation interface {
-	DiscountID() [16]byte         // discount domain
-	BuildingLocationID() [16]byte // building-location domain
-	Time() protocol.Time          // save time
-	RequestID() UserRequestUUID   // user-request domain
+	DiscountID() DiscountUUID       //
+	BuildingLocationID() [16]byte   // building-location domain
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }
 
 type DiscountLocation_StorageServices interface {

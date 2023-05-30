@@ -4,16 +4,18 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // DiscountArea indicate the domain record data fields.
 // DiscountArea is proper or appropriate location indicate specific area not specific location
 // It's rule depend on products in invoices e.g. source or destination of taxi as a service(product).
 type DiscountArea interface {
-	DiscountID() [16]byte       // discount domain
-	AreaID() [16]byte           // area domain
-	Time() protocol.Time        // save time
-	RequestID() UserRequestUUID // user-request domain
+	DiscountID() DiscountUUID       //
+	AreaID() [16]byte               // area domain
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }
 
 type DiscountArea_StorageServices interface {

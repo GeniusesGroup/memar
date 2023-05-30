@@ -6,15 +6,16 @@ import (
 	"libgo/protocol"
 	"libgo/time/earth"
 	"libgo/time/utc"
+	urp "org/modules/user-request/protocol"
 )
 
 // DiscountTimingUTC indicate the domain record data fields.
 type DiscountTimingUTC interface {
-	DiscountID() [16]byte       // discount domain
-	Weekdays() utc.Weekdays     // what days in weekday in utc time week allow to use this discount
-	DayHours() earth.DayHours   // what hours in day in utc time week allow to use this discount
-	Time() protocol.Time        // save time
-	RequestID() UserRequestUUID // user-request domain
+	DiscountID() DiscountUUID       //
+	Weekdays() utc.Weekdays         // what days in weekday in utc time week allow to use this discount
+	DayHours() earth.DayHours       // what hours in day in utc time week allow to use this discount
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }
 
 type DiscountTimingUTC_StorageServices interface {

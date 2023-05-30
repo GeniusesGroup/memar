@@ -4,6 +4,8 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 type DiscountUUID = protocol.UUID
@@ -12,9 +14,9 @@ type DiscountUUID = protocol.UUID
 // Discount or product-auction to reduce invoices price automatically by some rules know also as sales, ...
 type Discount interface {
 	DiscountID() DiscountUUID       //
-	Type() Discount_Type        //
-	Time() protocol.Time        // save time
-	RequestID() UserRequestUUID // user-request domain
+	Type() Discount_Type            //
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }
 
 type Discount_StorageServices interface {
@@ -44,3 +46,6 @@ const (
 	Discount_Type_User     // limit to specific users
 	// Discount_Type_
 )
+
+type Discount_GUI_Page_Services interface {
+}

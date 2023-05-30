@@ -4,14 +4,16 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // DiscountStatus indicate the domain record data fields.
 type DiscountStatus interface {
-	DiscountID() [16]byte       // discount domain
-	Status() Discount_Status    //
-	Time() protocol.Time        // save time
-	RequestID() UserRequestUUID // user-request domain
+	DiscountID() DiscountUUID       //
+	Status() Discount_Status        //
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }
 
 type DiscountStatus_StorageServices interface {

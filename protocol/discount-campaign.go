@@ -4,14 +4,16 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // DiscountCampaign indicate the domain record data fields.
 type DiscountCampaign interface {
-	DiscountID() [16]byte       // discount domain
-	CampaignID() [16]byte       // marketing-campaign domain
-	Time() protocol.Time        // save time
-	RequestID() UserRequestUUID // user-request domain
+	DiscountID() DiscountUUID       //
+	CampaignID() [16]byte           // marketing-campaign domain
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }
 
 type DiscountCampaign_StorageServices interface {
