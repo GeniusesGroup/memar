@@ -8,8 +8,8 @@ import (
 
 // UserOtherAppIdentity cache all foreign fundamental user data
 type UserOtherAppIdentity interface {
-	UserID() protocol.UserID     // user domain
-	OrgID() protocol.UserID      // user domain
+	UserID() UserUUID            //
+	OrgID() UserUUID             //
 	Gender() string              // In ISO format
 	PassportID() string          // If exist mean user have that country Nationality
 	Surname() string             // FirstName

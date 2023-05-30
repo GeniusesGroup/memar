@@ -4,27 +4,26 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // UserRelationStatus indicate the domain record data fields.
 type UserRelationStatus interface {
-	UserID() protocol.UserID     // user domain
-	SideID() [16]byte            // user domain
-	Status() UserRelation_Status //
-	Time() protocol.Time         // save time
-	RequestID() UserRequestUUID  // user-request domain
+	UserID() UserUUID               // user domain
+	SideID() UserUUID               // user domain
+	Status() UserRelation_Status    //
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }
 
 type UserRelationStatus_StorageServices interface {
 	Save(gs UserRelationStatus) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(userID, sideID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(userID, sideID [16]byte, vo protocol.VersionOffset) (gs UserRelationStatus, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(userID, sideID UserUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(userID, sideID UserUUID, vo protocol.VersionOffset) (gs UserRelationStatus, nv protocol.NumberOfVersion, err protocol.Error)
 
-	ListSides(userID [16]byte, offset, limit uint64) (sideIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
-	ListUsers(sideID [16]byte, offset, limit uint64) (userIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
-
-	FilterByStatus(userID [16]byte, status UserRelation_Status, offset, limit uint64) (sideIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
+	FindByStatus(userID UserUUID, status UserRelation_Status, offset, limit uint64) (sideIDs []UserUUID, nv protocol.NumberOfVersion, err protocol.Error)
 
 	protocol.EventTarget
 }

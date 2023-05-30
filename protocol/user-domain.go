@@ -4,14 +4,18 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
+// Domain is unique name in the computer world. Country e.g. Iran, ... || Digital platforms e.g. Instagram, Facebook, Google, Github, Yahoo, ...
 type UserDomain interface {
-	Domain() string             // unique name in the computer world
-	UserID() protocol.UserID    // user domain
-	Status() UserDomain_Status  //
-	Time() protocol.Time        // save time
-	RequestID() UserRequestUUID // user-request domain
+	Domain() string                   // unique name in the computer world
+	UserID() UserUUID                 //
+	AcceptedProtocols() UserDomain_AP //
+	Status() UserDomain_Status        //
+	Time() protocol.Time              // save time
+	RequestID() urp.UserRequestUUID   //
 }
 
 type UserDomain_StorageServices interface {
@@ -20,8 +24,18 @@ type UserDomain_StorageServices interface {
 	Count(domain string) (nv protocol.NumberOfVersion, err protocol.Error)
 	Get(domain string, vo protocol.VersionOffset) (ud UserDomain, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FindByUserID(userID [16]byte, offset, limit uint64) (domains []string, nv protocol.NumberOfVersion, err protocol.Error)
+	FindByUserID(userID UserUUID, offset, limit uint64) (domains []string, nv protocol.NumberOfVersion, err protocol.Error)
 }
+
+// UserDomain_AP is user domain accepted protocols
+type UserDomain_AP uint8
+
+const (
+	UserDomain_AP_Unset UserDomain_AP = iota
+	UserDomain_AP_Email
+	UserDomain_AP_SMS
+	UserDomain_AP_PhoneCall
+)
 
 // UserDomain_Status indicate UserDomain record status
 type UserDomain_Status Quiddity_Status
@@ -37,7 +51,7 @@ const (
 
 type UserDomain_Service_Register_Request interface {
 	Domain() string
-	UserID() protocol.UserID // TODO::: get user id from connection??
+	UserID() UserUUID // TODO::: get user id from connection??
 }
 
 type UserDomain_Service_Count_Request interface {
@@ -57,7 +71,7 @@ type UserDomain_Service_Get_Response1 interface {
 type UserDomain_Service_Get_Response2 protocol.NumberOfVersion
 
 type UserDomain_Service_FindByUserID_Request interface {
-	UserID() protocol.UserID
+	UserID() UserUUID
 	Offset() uint64
 	Limit() uint64
 }

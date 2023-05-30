@@ -2,12 +2,14 @@
 
 package org
 
+import urp "org/modules/user-request/protocol"
+
 type UserAddress interface {
-	UserID() [16]byte // UUID of User
+	UserID() UserUUID //
 	// TODO:::
-	MobileNumber() string
+	Address() string
 	Status() UserAddressStatus
-	RequestID() UserRequestUUID // user-request domain
+	RequestID() urp.UserRequestUUID //
 }
 
 type UserAddressStatus Quiddity_Status

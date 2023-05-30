@@ -4,21 +4,23 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // UserReferent indicate the domain record data fields.
 type UserReferent interface {
-	UserID() protocol.UserID         // user domain
-	ReferentUserID() protocol.UserID // user domain
-	Time() protocol.Time             // save time
-	RequestID() UserRequestUUID      // user-request domain
+	UserID() UserUUID               //
+	ReferentUserID() UserUUID       //
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }
 
 type UserReferent_StorageServices interface {
 	Save(ur UserReferent) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(userID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(userID [16]byte, vo protocol.VersionOffset) (ur UserReferent, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(userID UserUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(userID UserUUID, vo protocol.VersionOffset) (ur UserReferent, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FindByReferentUserID(referentUserID [16]byte, offset, limit uint64) (userIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
+	FindByReferentUserID(referentUserID UserUUID, offset, limit uint64) (userIDs []UserUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }

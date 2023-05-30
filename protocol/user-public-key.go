@@ -4,16 +4,18 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // UserPublicKey indicate the domain record data fields.
 type UserPublicKey interface {
-	UserID() protocol.UserID      // user domain
-	PublicKey() []byte            // suggest use DER format
-	Issuer() [16]byte             // user domain. Use to get notify about status of the PK e.g. revoked notification, ...
-	Status() UserPublicKey_Status //
-	Time() protocol.Time          // save time
-	RequestID() UserRequestUUID   // user-request domain
+	UserID() UserUUID               //
+	PublicKey() []byte              // suggest use DER format
+	Issuer() OrgUUID                //Use to get notify about status of the PK e.g. revoked notification, ...
+	Status() UserPublicKey_Status   //
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }
 
 // UserPublicKey_Status use to indicate UserPublicKey record status

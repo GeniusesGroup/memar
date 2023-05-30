@@ -4,25 +4,29 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // UserOtherApp store data about user delegation to this org(app) in other orgs(apps)
 type UserOtherApp interface {
-	UserID() protocol.UserID    // user domain
-	OrgID() protocol.UserID     // user domain
-	Domain() string             // unique name in the computer world. Country e.g. Iran, ... || Digital platforms e.g. Instagram, Facebook, Google, Github, Yahoo, ...
-	DomainUserID() []byte       // user id in that domain e.g. country national code
-	Time() protocol.Time        // save time
-	RequestID() UserRequestUUID // user-request domain
+	UserID() UserUUID               //
+	OrgID() UserUUID                //
+	DomainUserID() UserUUID         // user id in that domain e.g. country national code
+	OurGeneratedUserUUID() UserUUID // it will generate to fix same UUID collision problem
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }
 
 type UserOtherApp_StorageServices interface {
 	Save(uoa UserOtherApp) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(userID, orgID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(userID, orgID [16]byte, vo protocol.VersionOffset) (uoa UserOtherApp, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(userID, orgID UserUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(userID, orgID UserUUID, vo protocol.VersionOffset) (uoa UserOtherApp, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FindByDomainUserID(domainUserID string, offset, limit uint64) (userIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
+	FindByDomainUserID(domainUserID UserUUID, offset, limit uint64) (userIDs []UserOtherApp, nv protocol.NumberOfVersion, err protocol.Error)
+	FindByDomainUserIDOrgID(domainUserID UserUUID, orgID UserUUID, offset, limit uint64) (userIDs []UserUUID, nv protocol.NumberOfVersion, err protocol.Error)
 
-	ListOrgs(userID [16]byte, offset, limit uint64) (orgIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
+	ListUsers(orgID UserUUID, offset, limit uint64) (userIDs []UserUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	ListOrgs(userID UserUUID, offset, limit uint64) (orgIDs []UserUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }

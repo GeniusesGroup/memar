@@ -4,25 +4,30 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
+// TODO::: need domain or any fields here to support for Numbers Authority (GOD mode)? e.g. [IANA](https://iana.org/)
+
 type UserNumber interface {
-	UserID() protocol.UserID // user domain
-	OrgID() protocol.UserID  // user domain. TenantID
-	Number() string          // PhoneNumber
+	UserID() UserUUID    //
+	OrgID() OrgUUID      //
+	ProviderID() OrgUUID //
+	Number() string      // like PhoneNumber
 	// Number() uint64          // without country code e.g. {(00)98-}912-345-6789
-	Status() UserNumber_Status  //
-	Time() protocol.Time        // save time
-	RequestID() UserRequestUUID // Request RecordID to prove how this object created in the chain of other objects.
+	Status() UserNumber_Status      //
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID // Request RecordID to prove how this object created in the chain of other objects.
 }
 
 type UserNumber_StorageServices interface {
 	Save(pn UserNumber) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(userID, orgID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(userID, orgID [16]byte, vo protocol.VersionOffset) (pn UserNumber, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(userID UserUUID, orgID OrgUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(userID UserUUID, orgID OrgUUID, vo protocol.VersionOffset) (pn UserNumber, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FindByNumber(number uint64, offset, limit uint64) (userIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
+	FindByNumber(number uint64, offset, limit uint64) (userIDs []UserUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }
 
 // UserNumber_Status indicate UserNumber record status
@@ -39,21 +44,21 @@ const (
 
 type (
 	UserNumber_Service_Register_Request interface {
-		OrgID() protocol.UserID
+		OrgID() UserUUID
 		Number() string
 	}
 )
 type (
 	UserNumber_Service_Count_Request interface {
-		UserID() protocol.UserID
-		OrgID() protocol.UserID
+		UserID() UserUUID
+		OrgID() UserUUID
 	}
 	UserNumber_Service_Count_Response = protocol.NumberOfVersion
 )
 type (
 	UserNumber_Service_Get_Request interface {
-		UserID() protocol.UserID
-		OrgID() protocol.UserID
+		UserID() UserUUID
+		OrgID() UserUUID
 		VersionOffset() protocol.VersionOffset
 	}
 	UserNumber_Service_Get_Response = UserNumber

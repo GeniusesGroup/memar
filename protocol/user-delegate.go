@@ -12,25 +12,25 @@ import (
 
 // UserDelegate indicate the domain record data fields.
 type UserDelegate interface {
-	GivenUserID() protocol.UserID   // user domain
-	GottenUserID() protocol.UserID  // user domain
+	GivenUserID() UserUUID          //
+	GottenUserID() UserUUID         //
 	RoleID() RoleUUID               //
 	Status() UserDelegate_Status    //
 	Time() protocol.Time            // save time
-	RequestID() urp.UserRequestUUID // user-request domain
+	RequestID() urp.UserRequestUUID //
 }
 
 type UserDelegate_StorageServices interface {
 	Save(ud UserDelegate) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(givenUserID, gottenUserID [16]byte, roleID RoleUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(givenUserID, gottenUserID [16]byte, roleID RoleUUID, vo protocol.VersionOffset) (ud UserDelegate, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(givenUserID, gottenUserID UserUUID, roleID RoleUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(givenUserID, gottenUserID UserUUID, roleID RoleUUID, vo protocol.VersionOffset) (ud UserDelegate, nv protocol.NumberOfVersion, err protocol.Error)
 
-	ListRoles(givenUserID, gottenUserID [16]byte, offset, limit uint64) (roles [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
-	ListGottenUsers(roleID [16]byte, offset, limit uint64) (gottenUserIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
-	ListGivenUsers(roleID [16]byte, offset, limit uint64) (givenUserIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
-	ListGottenDelegateUsers(gottenUserID [16]byte, offset, limit uint64) (givenUserIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
-	ListGivenDelegateUsers(givenUserID [16]byte, offset, limit uint64) (gottenUserID [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
+	ListRoles(givenUserID, gottenUserID UserUUID, offset, limit uint64) (roles []RoleUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	ListGottenUsers(roleID RoleUUID, offset, limit uint64) (gottenUserIDs []UserUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	ListGivenUsers(roleID RoleUUID, offset, limit uint64) (givenUserIDs []UserUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	ListGottenDelegateUsers(gottenUserID UserUUID, offset, limit uint64) (givenUserIDs []UserUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	ListGivenDelegateUsers(givenUserID UserUUID, offset, limit uint64) (gottenUserID []UserUUID, nv protocol.NumberOfVersion, err protocol.Error)
 
 	// protocol.EventTarget
 }

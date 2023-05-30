@@ -2,4 +2,10 @@
 
 package org
 
+import (
+	"libgo/protocol"
+)
+
+type UserUUID protocol.UserID
+
 // Register new user
