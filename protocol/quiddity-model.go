@@ -4,15 +4,17 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // QuiddityModel indicate the domain record data fields.
 // Model is the 3D model of the quiddity
 type QuiddityModel interface {
-	QuiddityID() [16]byte       // quiddity domain
-	ObjectID() [32]byte         // object domain. ThingModel
-	Time() protocol.Time        // save time
-	RequestID() UserRequestUUID // user-request domain
+	QuiddityID() QuiddityUUID       //
+	ObjectID() ObjectUUID           // ThingModel
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }
 
 // ProductAttribute_Type_MetricUnit // Number, Gram, Liter, Second

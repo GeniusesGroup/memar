@@ -4,31 +4,33 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // QuiddityOwner indicate the domain record data fields.
 type QuiddityOwner interface {
-	QuiddityID() [16]byte       // Unique content ID
-	UserID() protocol.UserID    // user domain. Owner of the quiddity
-	Time() protocol.Time        // save time
-	RequestID() UserRequestUUID // user-request domain
+	QuiddityID() QuiddityUUID       //
+	UserID() UserUUID               // Owner of the quiddity
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }
 
 type QuiddityOwner_StorageServices interface {
 	Save(qo QuiddityOwner) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(quiddityID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(quiddityID [16]byte, vo protocol.VersionOffset) (qo QuiddityOwner, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(quiddityID QuiddityUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(quiddityID QuiddityUUID, vo protocol.VersionOffset) (qo QuiddityOwner, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FindByOwnerID(userID [16]byte, offset, limit uint64) (quiddityIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
+	FindByOwnerID(userID UserUUID, offset, limit uint64) (quiddityIDs []QuiddityUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }
 
 type QuiddityOwner_Service_FindByUserID_Request interface {
-	UserID() [32]byte
+	UserID() UserUUID
 	Offset() uint64
 	Limit() uint64
 }
 type QuiddityOwner_Service_FindByUserID_Response interface {
-	QuiddityIDs() [][32]byte
+	QuiddityIDs() []QuiddityUUID
 	Numbers() uint64
 }

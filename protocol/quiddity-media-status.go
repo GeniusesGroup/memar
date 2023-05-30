@@ -4,21 +4,23 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 type QuiddityMediaStatus interface {
-	QuiddityID() [16]byte         // quiddity domain. any domain e.g. user, ...
-	ObjectID() [16]byte           // object domain. media file
-	Status() QuiddityMedia_Status //
-	Time() protocol.Time          // save time
-	RequestID() UserRequestUUID   // user-request domain
+	QuiddityID() QuiddityUUID       //
+	ObjectID() ObjectUUID           // media file
+	Status() QuiddityMedia_Status   //
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }
 
 type QuiddityMediaStatus_StorageServices interface {
 	Save(q QuiddityMediaStatus) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(quiddityID, objectID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(quiddityID, objectID [16]byte, vo protocol.VersionOffset) (q QuiddityMediaStatus, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(quiddityID QuiddityUUID, objectID ObjectUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(quiddityID QuiddityUUID, objectID ObjectUUID, vo protocol.VersionOffset) (q QuiddityMediaStatus, nv protocol.NumberOfVersion, err protocol.Error)
 }
 
 type QuiddityMedia_Status Quiddity_Status

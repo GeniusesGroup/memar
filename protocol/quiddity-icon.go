@@ -4,13 +4,15 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // QuiddityIcon indicate the domain record data fields.
 // Icon or emoji use in many domains e.g. category, departments, ...
 type QuiddityIcon interface {
-	QuiddityID() [16]byte       // quiddity domain
-	Icon() [16]byte             // object domain
-	Time() protocol.Time        // save time
-	RequestID() UserRequestUUID // user-request domain
+	QuiddityID() QuiddityUUID       //
+	Icon() ObjectUUID               //
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }

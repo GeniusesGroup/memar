@@ -4,13 +4,15 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 type PictureRating interface {
-	ObjectID() [16]byte         //
-	Rating() PictureRating_Rate //
-	Time() protocol.Time        // save time
-	RequestID() UserRequestUUID // user-request domain
+	ObjectID() ObjectUUID           //
+	Rating() PictureRating_Rate     //
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }
 
 type PictureRating_Rate uint8

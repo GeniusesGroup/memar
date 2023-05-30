@@ -4,6 +4,8 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 type QuiddityRelationTypeUUID = QuiddityUUID
@@ -13,8 +15,8 @@ type QuiddityRelationTypeUUID = QuiddityUUID
 type QuiddityRelationType interface {
 	TypeID() QuiddityRelationTypeUUID    //
 	Status() QuiddityRelationType_Status //
-	Time() protocol.Time                  // save time
-	RequestID() UserRequestUUID           // user-request domain
+	Time() protocol.Time                 // save time
+	RequestID() urp.UserRequestUUID      //
 }
 
 type QuiddityRelationType_Status Quiddity_Status
