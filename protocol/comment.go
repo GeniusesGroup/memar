@@ -45,7 +45,12 @@ const (
 
 	Comment_Type_Pin
 	Comment_Type_RelationToComment // Forward, Retweet, Share, ...
-	Comment_Type_LogActivity
+
+	// TODO:::
+	Comment_Type_LogActivity_PrimaryKey_Single
+	Comment_Type_LogActivity_PrimaryKey_Double
+	Comment_Type_LogActivity_PrimaryKey_Triple
+	Comment_Type_LogActivity_PrimaryKey_String
 )
 
 /*
@@ -69,3 +74,8 @@ type (
 /*
 	Errors
 */
+
+
+type Comment_GUI_Widget interface {
+	Send()
+}
