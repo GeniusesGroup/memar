@@ -9,19 +9,19 @@ import (
 // HomeTimeline indicate the domain record data fields.
 // home timeline feed
 type HomeTimeline interface {
-	UserID() protocol.UserID       // user domain
-	CommentID() CommentUUID        // comment domain
-	ReasonUserID() protocol.UserID // it can be the owner of comment or any other user base on reason
-	Reason() HomeTimeline_Reason   //
-	Time() protocol.Time           // save time
+	UserID() UserUUID            //
+	CommentID() CommentUUID      //
+	ReasonUserID() UserUUID      // it can be the owner of comment or any other user base on reason
+	Reason() HomeTimeline_Reason //
+	Time() protocol.Time         // save time
 	// TODO::: node details??
 }
 
 type HomeTimeline_StorageServices interface {
 	Save(ht HomeTimeline) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(userID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(userID [16]byte, vo protocol.VersionOffset) (ht HomeTimeline, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(userID UserUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(userID UserUUID, vo protocol.VersionOffset) (ht HomeTimeline, nv protocol.NumberOfVersion, err protocol.Error)
 
 	protocol.EventTarget
 }

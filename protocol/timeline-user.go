@@ -4,30 +4,32 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // UserTimeline indicate the domain record data fields.
 type UserTimeline interface {
-	UserID() protocol.UserID     // user domain
-	GroupID() GroupUUID          // generate for group & comment domain
-	Priority() uint64            //
-	Status() UserTimeline_Status //
-	Time() protocol.Time         // save time
-	RequestID() UserRequestUUID  //
+	UserID() UserUUID               //
+	GroupID() GroupUUID             // generate for group & comment domain
+	Priority() uint64               //
+	Status() UserTimeline_Status    //
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }
 
 type UserTimeline_StorageServices interface {
 	Save(ht UserTimeline) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(userID [16]byte, priority uint64) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(userID [16]byte, priority uint64, vo protocol.VersionOffset) (ht UserTimeline, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(userID UserUUID, priority uint64) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(userID UserUUID, priority uint64, vo protocol.VersionOffset) (ht UserTimeline, nv protocol.NumberOfVersion, err protocol.Error)
 
-	ListUser(groupID [16]byte, offset, limit uint64) (userIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
-	ListGroup(userID [16]byte, offset, limit uint64) (groupIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
-	ListPriorities(userID, groupID [16]byte, offset, limit uint64) (priorities []uint64, nv protocol.NumberOfVersion, err protocol.Error)
+	ListUser(groupID GroupUUID, offset, limit uint64) (userIDs []UserUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	ListGroup(userID UserUUID, offset, limit uint64) (groupIDs []GroupUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	ListPriorities(userID UserUUID, groupID GroupUUID, offset, limit uint64) (priorities []uint64, nv protocol.NumberOfVersion, err protocol.Error)
 
 	// TODO:::
-	// FilterByStatus(userID [16]byte, status UserTimeline_Status, offset, limit uint64) (groupIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
+	// FilterByStatus(userID UserUUID, status UserTimeline_Status, offset, limit uint64) (groupIDs []GroupUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }
 
 type UserTimeline_Status Quiddity_Status
