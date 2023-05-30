@@ -4,12 +4,14 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 type ContentSubstitute interface {
-	ContentID() [16]byte        // content domain
-	Priority() uint64           // substitute priority
-	SubstituteID() [16]byte     // content domain
-	Time() protocol.Time        // save time
-	RequestID() UserRequestUUID // user-request domain
+	ContentID() ContentUUID         //
+	Priority() uint64               // substitute priority
+	SubstituteID() ContentUUID      //
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }

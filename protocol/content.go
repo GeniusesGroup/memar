@@ -4,28 +4,32 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
+// ContentUUID
+// Use in quiddity domain too.
 type ContentUUID = protocol.UUID
 
-// Content indicate the comment domain record data fields.
+// Content indicate the domain record data fields.
 type Content interface {
-	ContentID() ContentUUID        // quiddity domain
-	UserID() protocol.UserID    // user domain
-	ContentTypeID() [16]byte    // content-type domain
-	Time() protocol.Time        // save time
-	RequestID() UserRequestUUID // user-request domain
+	ContentID() ContentUUID         //
+	UserID() UserUUID               //
+	ContentTypeID() ContentTypeUUID // content-type domain
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }
 
 type Content_StorageServices interface {
 	Save(c Content) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(contentID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(contentID [16]byte, vo protocol.VersionOffset) (c Content, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(contentID ContentUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(contentID ContentUUID, vo protocol.VersionOffset) (c Content, nv protocol.NumberOfVersion, err protocol.Error)
 
-	GetIDs(offset, limit uint64) (contentIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
-	// GetIDsByDateTime(time protocol.Time, offset, limit uint64) (contentIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
+	GetIDs(offset, limit uint64) (contentIDs []ContentUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	// GetIDsByDateTime(time protocol.Time, offset, limit uint64) (contentIDs []ContentUUID, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FindByUserID(userID [16]byte, offset, limit uint64) (contentIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
-	FindByType(contentTypeID [16]byte, offset, limit uint64) (contentIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
+	FindByUserID(userID UserUUID, offset, limit uint64) (contentIDs []ContentUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	FindByType(contentTypeID ContentTypeUUID, offset, limit uint64) (contentIDs []ContentUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }

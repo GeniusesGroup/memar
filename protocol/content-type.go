@@ -4,27 +4,33 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
-// ContentType indicate the comment domain record data fields.
+// ContentTypeUUID
+// Use in quiddity domain too.
+type ContentTypeUUID = protocol.UUID
+
+// ContentType indicate the domain record data fields.
 // 3 type of content exist: 1:about persons, 2:about events, 3:about sciences
 type ContentType interface {
-	ContentTypeID() [16]byte    // quiddity domain
-	DomainID()                  // TODO:::
-	LawID() [16]byte            //
-	Time() protocol.Time        // save time
-	RequestID() UserRequestUUID // user-request domain
+	ContentTypeID() ContentTypeUUID // quiddity domain
+	DomainID() protocol.MediaTypeID // TODO:::
+	LawID() LawUUID                 //
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }
 
 type ContentType_StorageServices interface {
 	Save(c ContentType) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(contentID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(contentID [16]byte, vo protocol.VersionOffset) (c ContentType, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(contentTypeID ContentTypeUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(contentTypeID ContentTypeUUID, vo protocol.VersionOffset) (c ContentType, nv protocol.NumberOfVersion, err protocol.Error)
 
-	GetIDs(offset, limit uint64) (contentIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
+	GetIDs(offset, limit uint64) (contentTypeIDs []ContentTypeUUID, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FindByLaw(lawID [16]byte, offset, limit uint64) (contentIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
+	FindByLaw(lawID LawUUID, offset, limit uint64) (contentTypeIDs []ContentTypeUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }
 
 type Content_Type uint16

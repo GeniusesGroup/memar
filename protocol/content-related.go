@@ -4,14 +4,16 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 type ContentRelated interface {
-	ContentID() ContentUUID     // content domain
-	Priority() uint64           // substitute priority
-	PriorityType() [16]byte     // type domain
-	RelatedID() ContentUUID     // content domain
-	UserID() protocol.UserID    // user domain
-	Time() protocol.Time        // save time
-	RequestID() UserRequestUUID // user-request domain
+	ContentID() ContentUUID         //
+	Priority() uint64               // substitute priority
+	PriorityType() ContentTypeUUID  //
+	RelatedID() ContentUUID         //
+	UserID() UserUUID               //
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }

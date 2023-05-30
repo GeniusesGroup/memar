@@ -4,13 +4,15 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 type ContentAccess interface {
-	ContentID() [16]byte        // content domain
-	Access() Content_Access     //
-	Time() protocol.Time        // save time
-	RequestID() UserRequestUUID // user-request domain
+	ContentID() ContentUUID         //
+	Access() Content_Access         //
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }
 
 type ContentAccess_StorageServices interface {

@@ -4,6 +4,8 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // EducationKnowledgeUnitDuration indicate the domain record data fields.
@@ -11,5 +13,5 @@ type ContentDuration interface {
 	KnowledgeUnitID() EducationKnowledgeUnitUUID //
 	Duration() protocol.Duration                 // AI suggested duration
 	Time() protocol.Time                         // save time
-	RequestID() UserRequestUUID                  // user-request domain
+	RequestID() urp.UserRequestUUID              //
 }

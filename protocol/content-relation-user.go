@@ -4,15 +4,17 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // ContentParticipant indicate the domain record data fields.
 type ContentParticipant interface {
-	ContentID() [16]byte           // content domain
-	Type() ContentParticipant_Type //
-	UserID() protocol.UserID       // user domain
-	Time() protocol.Time           // save time
-	RequestID() UserRequestUUID    // user-request domain
+	ContentID() ContentUUID         //
+	Type() ContentParticipant_Type  //
+	UserID() UserUUID               //
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }
 
 // TODO::: immutable?? if wrong data save for a content??
@@ -22,7 +24,7 @@ type ContentParticipant_StorageServices interface {
 	Count(contentID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
 	Get(contentID [16]byte, vo protocol.VersionOffset) (cp ContentParticipant, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FindByUserID(userID [16]byte, offset, limit uint64) (contentIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
+	FindByUserID(userID UserUUID, offset, limit uint64) (contentIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
 }
 
 // ContentParticipant_Type indicate participant type or role
