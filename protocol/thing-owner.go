@@ -8,11 +8,11 @@ import (
 	urp "org/modules/user-request/protocol"
 )
 
-// UserVehicle
-// Vehicle is a conveyance that transports people or objects
-type UserVehicle interface {
-	UserID() UserUUID               //
-	ThingID() [16]byte              //
+// ThingOwner
+// e.g. Vehicle is a conveyance that transports people or objects
+type ThingOwner interface {
+	ThingID() ThingUUID             //
+	OwnerID() UserUUID              //
 	Time() protocol.Time            // save time
 	RequestID() urp.UserRequestUUID //
 }

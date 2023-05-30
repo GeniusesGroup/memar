@@ -4,12 +4,14 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // each metrics for a thing is immutable record and so use version mechanism to chain metrics for a device.
 type Temperature interface {
-	ThingID() [16]byte
+	ThingID() ThingUUID
 	Amount() int64
-	Time() protocol.Time        // save time
-	RequestID() UserRequestUUID // user-request domain
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }
