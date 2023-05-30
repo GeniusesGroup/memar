@@ -6,10 +6,11 @@ import (
 	"libgo/protocol"
 
 	urp "org/modules/user-request/protocol"
+	up "org/modules/user/protocol"
 )
 
 type UserOtherAppToken interface {
-	UserID() UserUUID               //
+	UserID() up.UserUUID            //
 	OrgID() OrgUUID                 //
 	Token() []byte                  // DelegateToken, AccessToken
 	Time() protocol.Time            // save time

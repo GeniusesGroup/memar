@@ -6,6 +6,7 @@ import (
 	"libgo/protocol"
 
 	urp "org/modules/user-request/protocol"
+	up "org/modules/user/protocol"
 )
 
 type OrderUUID = protocol.UUID
@@ -15,7 +16,7 @@ type OrderUUID = protocol.UUID
 // A matching engine uses the orders book to determine which orders can be fully or partially executed.
 type Order interface {
 	OrderID() OrderUUID             //
-	UserID() UserUUID               //
+	UserID() up.UserUUID            //
 	Time() protocol.Time            // save time
 	RequestID() urp.UserRequestUUID //
 }
@@ -25,5 +26,5 @@ type Order_StorageServices interface {
 
 	Get(orderID [16]byte) (o Order, err protocol.Error)
 
-	FindByUserID(userID UserUUID, offset, limit uint64) (orderIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
+	FindByUserID(userID up.UserUUID, offset, limit uint64) (orderIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
 }

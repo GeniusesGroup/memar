@@ -2,10 +2,13 @@
 
 package org
 
-import urp "org/modules/user-request/protocol"
+import (
+	urp "org/modules/user-request/protocol"
+	up "org/modules/user/protocol"
+)
 
 type UserAddress interface {
-	UserID() UserUUID //
+	UserID() up.UserUUID //
 	// TODO:::
 	Address() string
 	Status() UserAddressStatus

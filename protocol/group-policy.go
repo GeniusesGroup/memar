@@ -6,6 +6,7 @@ import (
 	"libgo/protocol"
 
 	urp "org/modules/user-request/protocol"
+	up "org/modules/user/protocol"
 )
 
 // GroupPolicy indicate the domain record data fields.
@@ -24,7 +25,7 @@ type GroupPolicy_StorageServices interface {
 	Count(groupID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
 	Get(groupID [16]byte, vo protocol.VersionOffset) (cg GroupPolicy, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FindByUserID(owneruserID UserUUID, offset, limit uint64) (ids [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
+	FindByUserID(owneruserID up.UserUUID, offset, limit uint64) (ids [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
 }
 
 type GroupPolicy_Policy uint16

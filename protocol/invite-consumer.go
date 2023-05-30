@@ -6,13 +6,14 @@ import (
 	"libgo/protocol"
 
 	urp "org/modules/user-request/protocol"
+	up "org/modules/user/protocol"
 )
 
 // InviteConsumer indicate the domain record data fields.
 type InviteConsumer interface {
 	InviteID() InviteUUID           //
-	PermitUsageID() UserUUID        //
-	ConsumerID() UserUUID           //
+	PermitUsageID() up.UserUUID     //
+	ConsumerID() up.UserUUID        //
 	Time() protocol.Time            // save time
 	RequestID() urp.UserRequestUUID //
 }

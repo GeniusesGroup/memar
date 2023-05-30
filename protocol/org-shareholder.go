@@ -6,10 +6,11 @@ import (
 	"libgo/protocol"
 
 	urp "org/modules/user-request/protocol"
+	up "org/modules/user/protocol"
 )
 
 type OrgShareholder interface {
-	UserID() UserUUID               //
+	UserID() up.UserUUID            //
 	Quantity() protocol.PerTrillion //
 	Time() protocol.Time            // save time
 	RequestID() urp.UserRequestUUID //

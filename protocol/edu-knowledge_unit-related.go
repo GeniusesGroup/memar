@@ -6,11 +6,12 @@ import (
 	"libgo/protocol"
 
 	urp "org/modules/user-request/protocol"
+	up "org/modules/user/protocol"
 )
 
 // EducationKnowledgeUnitRelated indicate the domain record data fields.
 type EducationKnowledgeUnitRelated interface {
-	SuggesterID() UserUUID             //
+	SuggesterID() up.UserUUID          //
 	Side1() EducationKnowledgeUnitUUID //
 	Priority() uint64                  //
 	Level() uint64                     //

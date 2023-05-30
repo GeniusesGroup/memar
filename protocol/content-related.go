@@ -6,6 +6,7 @@ import (
 	"libgo/protocol"
 
 	urp "org/modules/user-request/protocol"
+	up "org/modules/user/protocol"
 )
 
 type ContentRelated interface {
@@ -13,7 +14,7 @@ type ContentRelated interface {
 	Priority() uint64               // substitute priority
 	PriorityType() ContentTypeUUID  //
 	RelatedID() ContentUUID         //
-	UserID() UserUUID               //
+	UserID() up.UserUUID            //
 	Time() protocol.Time            // save time
 	RequestID() urp.UserRequestUUID //
 }

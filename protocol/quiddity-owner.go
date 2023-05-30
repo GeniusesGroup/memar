@@ -6,12 +6,13 @@ import (
 	"libgo/protocol"
 
 	urp "org/modules/user-request/protocol"
+	up "org/modules/user/protocol"
 )
 
 // QuiddityOwner indicate the domain record data fields.
 type QuiddityOwner interface {
 	QuiddityID() QuiddityUUID       //
-	UserID() UserUUID               // Owner of the quiddity
+	UserID() up.UserUUID            // Owner of the quiddity
 	Time() protocol.Time            // save time
 	RequestID() urp.UserRequestUUID //
 }
@@ -22,11 +23,11 @@ type QuiddityOwner_StorageServices interface {
 	Count(quiddityID QuiddityUUID) (nv protocol.NumberOfVersion, err protocol.Error)
 	Get(quiddityID QuiddityUUID, vo protocol.VersionOffset) (qo QuiddityOwner, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FindByOwnerID(userID UserUUID, offset, limit uint64) (quiddityIDs []QuiddityUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	FindByOwnerID(userID up.UserUUID, offset, limit uint64) (quiddityIDs []QuiddityUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }
 
 type QuiddityOwner_Service_FindByUserID_Request interface {
-	UserID() UserUUID
+	UserID() up.UserUUID
 	Offset() uint64
 	Limit() uint64
 }

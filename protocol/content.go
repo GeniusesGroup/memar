@@ -6,6 +6,7 @@ import (
 	"libgo/protocol"
 
 	urp "org/modules/user-request/protocol"
+	up "org/modules/user/protocol"
 )
 
 // ContentUUID
@@ -15,7 +16,7 @@ type ContentUUID = protocol.UUID
 // Content indicate the domain record data fields.
 type Content interface {
 	ContentID() ContentUUID         //
-	UserID() UserUUID               //
+	UserID() up.UserUUID            //
 	ContentTypeID() ContentTypeUUID // content-type domain
 	Time() protocol.Time            // save time
 	RequestID() urp.UserRequestUUID //
@@ -30,6 +31,6 @@ type Content_StorageServices interface {
 	GetIDs(offset, limit uint64) (contentIDs []ContentUUID, nv protocol.NumberOfVersion, err protocol.Error)
 	// GetIDsByDateTime(time protocol.Time, offset, limit uint64) (contentIDs []ContentUUID, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FindByUserID(userID UserUUID, offset, limit uint64) (contentIDs []ContentUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	FindByUserID(userID up.UserUUID, offset, limit uint64) (contentIDs []ContentUUID, nv protocol.NumberOfVersion, err protocol.Error)
 	FindByType(contentTypeID ContentTypeUUID, offset, limit uint64) (contentIDs []ContentUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }

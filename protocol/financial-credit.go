@@ -6,11 +6,12 @@ import (
 	"libgo/protocol"
 
 	urp "org/modules/user-request/protocol"
+	up "org/modules/user/protocol"
 )
 
 // FinancialCredit indicate the domain record data fields.
 type FinancialCredit interface {
-	UserID() UserUUID               //
+	UserID() up.UserUUID            //
 	Currency() [16]byte             // financial-currency
 	Amount() protocol.MoneyAmount   //
 	Balance() protocol.MoneyAmount  //

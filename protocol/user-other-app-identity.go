@@ -4,12 +4,14 @@ package org
 
 import (
 	"libgo/protocol"
+
+	up "org/modules/user/protocol"
 )
 
 // UserOtherAppIdentity cache all foreign fundamental user data
 type UserOtherAppIdentity interface {
-	UserID() UserUUID            //
-	OrgID() UserUUID             //
+	UserID() up.UserUUID         //
+	OrgID() up.UserUUID          //
 	Gender() string              // In ISO format
 	PassportID() string          // If exist mean user have that country Nationality
 	Surname() string             // FirstName

@@ -6,6 +6,7 @@ import (
 	"libgo/protocol"
 
 	urp "org/modules/user-request/protocol"
+	up "org/modules/user/protocol"
 )
 
 // CommentGroup indicate the domain record data fields.
@@ -13,7 +14,7 @@ import (
 type CommentGroup interface {
 	GroupID() GroupUUID             //
 	CommentID() CommentUUID         //
-	UserID() UserUUID               //
+	UserID() up.UserUUID            //
 	Time() protocol.Time            // save time
 	RequestID() urp.UserRequestUUID //
 }
@@ -25,9 +26,9 @@ type CommentGroup_StorageServices interface {
 	Get(groupID GroupUUID, vo protocol.VersionOffset) (cg CommentGroup, nv protocol.NumberOfVersion, err protocol.Error)
 
 	FindByComment(commentID CommentUUID) (groupID [16]byte, err protocol.Error)
-	FindByUser(groupID GroupUUID, userID UserUUID, offset, limit uint64) (commentIDs []CommentUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	FindByUser(groupID GroupUUID, userID up.UserUUID, offset, limit uint64) (commentIDs []CommentUUID, nv protocol.NumberOfVersion, err protocol.Error)
 
-	ListUserGroups(userID UserUUID, offset, limit uint64) (groupIDs []GroupUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	ListUserGroups(userID up.UserUUID, offset, limit uint64) (groupIDs []GroupUUID, nv protocol.NumberOfVersion, err protocol.Error)
 	// ListThreads(groupID [16]byte, offset, limit uint64) (commentIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
 
 	protocol.EventTarget

@@ -6,12 +6,13 @@ import (
 	"libgo/protocol"
 
 	urp "org/modules/user-request/protocol"
+	up "org/modules/user/protocol"
 )
 
 // LawVote indicate the domain record data fields.
 type LawVote interface {
 	LawID() LawUUID                 //
-	UserID() UserUUID               //
+	UserID() up.UserUUID            //
 	Vote() LawVote_Type             //
 	Time() protocol.Time            // save time
 	RequestID() urp.UserRequestUUID //
@@ -20,11 +21,11 @@ type LawVote interface {
 type LawVote_StorageServices interface {
 	Save(lv LawVote) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(lawID LawUUID, userID UserUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(lawID LawUUID, userID UserUUID, vo protocol.VersionOffset) (lv LawVote, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(lawID LawUUID, userID up.UserUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(lawID LawUUID, userID up.UserUUID, vo protocol.VersionOffset) (lv LawVote, nv protocol.NumberOfVersion, err protocol.Error)
 
-	ListUsers(lawID LawUUID, offset, limit uint64) (userIDs []UserUUID, nv protocol.NumberOfVersion, err protocol.Error)
-	ListLaws(userID UserUUID, offset, limit uint64) (lawIDs []LawUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	ListUsers(lawID LawUUID, offset, limit uint64) (userIDs []up.UserUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	ListLaws(userID up.UserUUID, offset, limit uint64) (lawIDs []LawUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }
 
 type LawVote_Type uint8

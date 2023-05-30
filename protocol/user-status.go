@@ -6,11 +6,12 @@ import (
 	"libgo/protocol"
 
 	urp "org/modules/user-request/protocol"
+	up "org/modules/user/protocol"
 )
 
 type UserStatus interface {
-	UserID() UserUUID               // Generated unique ID for the user
-	OrgID() UserUUID                //
+	UserID() up.UserUUID            // Generated unique ID for the user
+	OrgID() up.UserUUID             //
 	Status() User_Status            //
 	Time() protocol.Time            // save time
 	RequestID() urp.UserRequestUUID //
@@ -19,13 +20,13 @@ type UserStatus interface {
 type UserStatus_StorageServices interface {
 	Save(us UserStatus) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(userID UserUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(userID UserUUID, vo protocol.VersionOffset) (us UserStatus, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(userID up.UserUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(userID up.UserUUID, vo protocol.VersionOffset) (us UserStatus, nv protocol.NumberOfVersion, err protocol.Error)
 
-	GetIDs(offset, limit uint64) (userIDs []UserUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	GetIDs(offset, limit uint64) (userIDs []up.UserUUID, nv protocol.NumberOfVersion, err protocol.Error)
 
-	// FilterByStatus(status UserOtherApp_Status, offset, limit uint64) (userIDs []UserUUID, nv protocol.NumberOfVersion, err protocol.Error)
-	// FindByTime(day utc.DayElapsed, offset, limit uint64) (userIDs []UserUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	// FilterByStatus(status UserOtherApp_Status, offset, limit uint64) (userIDs []up.UserUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	// FindByTime(day utc.DayElapsed, offset, limit uint64) (userIDs []up.UserUUID, nv protocol.NumberOfVersion, err protocol.Error)
 
 	// protocol.EventTarget
 }

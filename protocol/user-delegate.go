@@ -6,14 +6,15 @@ import (
 	"libgo/protocol"
 
 	urp "org/modules/user-request/protocol"
+	up "org/modules/user/protocol"
 )
 
 // UserDelegate means transfer power to someone. power is role access in softwares.
 
 // UserDelegate indicate the domain record data fields.
 type UserDelegate interface {
-	GivenUserID() UserUUID          //
-	GottenUserID() UserUUID         //
+	GivenUserID() up.UserUUID       //
+	GottenUserID() up.UserUUID      //
 	RoleID() RoleUUID               //
 	Status() UserDelegate_Status    //
 	Time() protocol.Time            // save time
@@ -23,14 +24,14 @@ type UserDelegate interface {
 type UserDelegate_StorageServices interface {
 	Save(ud UserDelegate) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(givenUserID, gottenUserID UserUUID, roleID RoleUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(givenUserID, gottenUserID UserUUID, roleID RoleUUID, vo protocol.VersionOffset) (ud UserDelegate, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(givenUserID, gottenUserID up.UserUUID, roleID RoleUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(givenUserID, gottenUserID up.UserUUID, roleID RoleUUID, vo protocol.VersionOffset) (ud UserDelegate, nv protocol.NumberOfVersion, err protocol.Error)
 
-	ListRoles(givenUserID, gottenUserID UserUUID, offset, limit uint64) (roles []RoleUUID, nv protocol.NumberOfVersion, err protocol.Error)
-	ListGottenUsers(roleID RoleUUID, offset, limit uint64) (gottenUserIDs []UserUUID, nv protocol.NumberOfVersion, err protocol.Error)
-	ListGivenUsers(roleID RoleUUID, offset, limit uint64) (givenUserIDs []UserUUID, nv protocol.NumberOfVersion, err protocol.Error)
-	ListGottenDelegateUsers(gottenUserID UserUUID, offset, limit uint64) (givenUserIDs []UserUUID, nv protocol.NumberOfVersion, err protocol.Error)
-	ListGivenDelegateUsers(givenUserID UserUUID, offset, limit uint64) (gottenUserID []UserUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	ListRoles(givenUserID, gottenUserID up.UserUUID, offset, limit uint64) (roles []RoleUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	ListGottenUsers(roleID RoleUUID, offset, limit uint64) (gottenUserIDs []up.UserUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	ListGivenUsers(roleID RoleUUID, offset, limit uint64) (givenUserIDs []up.UserUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	ListGottenDelegateUsers(gottenUserID up.UserUUID, offset, limit uint64) (givenUserIDs []up.UserUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	ListGivenDelegateUsers(givenUserID up.UserUUID, offset, limit uint64) (gottenUserID []up.UserUUID, nv protocol.NumberOfVersion, err protocol.Error)
 
 	// protocol.EventTarget
 }

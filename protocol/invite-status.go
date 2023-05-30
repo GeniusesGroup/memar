@@ -6,12 +6,13 @@ import (
 	"libgo/protocol"
 
 	urp "org/modules/user-request/protocol"
+	up "org/modules/user/protocol"
 )
 
 // GroupInviteStatus indicate the domain record data fields.
 type GroupInviteStatus interface {
 	GroupID() GroupUUID             //
-	UserID() UserUUID               //
+	UserID() up.UserUUID            //
 	Status() GroupInvite_Status     //
 	Time() protocol.Time            // save time
 	RequestID() urp.UserRequestUUID //

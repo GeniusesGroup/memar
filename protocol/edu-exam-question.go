@@ -6,6 +6,7 @@ import (
 	"libgo/protocol"
 
 	urp "org/modules/user-request/protocol"
+	up "org/modules/user/protocol"
 )
 
 type EducationQuestionUUID = protocol.UUID
@@ -13,7 +14,7 @@ type EducationQuestionUUID = protocol.UUID
 // EducationKnowledgeUnitQuestion indicate the domain record data fields.
 type EducationKnowledgeUnitQuestion interface {
 	QuestionID() EducationQuestionUUID           // don't point to quiddity title na don't set title
-	UserID() UserUUID                            //
+	UserID() up.UserUUID                         //
 	KnowledgeUnitID() EducationKnowledgeUnitUUID //
 	Type() EducationKnowledgeUnitQuestion_Type   //
 	Time() protocol.Time                         // save time

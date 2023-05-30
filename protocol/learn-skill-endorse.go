@@ -6,11 +6,12 @@ import (
 	"libgo/protocol"
 
 	urp "org/modules/user-request/protocol"
+	up "org/modules/user/protocol"
 )
 
 // UserSkillEndorse indicate the domain record data fields.
 type UserSkillEndorse interface {
-	UserID() UserUUID               //
+	UserID() up.UserUUID            //
 	SkillID() SkillUUID             //
 	Time() protocol.Time            // save time
 	RequestID() urp.UserRequestUUID //

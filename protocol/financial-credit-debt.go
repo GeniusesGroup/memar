@@ -6,11 +6,12 @@ import (
 	"libgo/protocol"
 
 	urp "org/modules/user-request/protocol"
+	up "org/modules/user/protocol"
 )
 
 // https://en.wikipedia.org/wiki/Credit_card_debt
 type FinancialCreditDebt interface {
-	UserID() UserUUID               //
+	UserID() up.UserUUID            //
 	Currency() [16]byte             // financial-currency
 	Amount() protocol.MoneyAmount   //
 	Balance() protocol.MoneyAmount  //

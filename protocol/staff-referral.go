@@ -6,15 +6,15 @@ import (
 	"libgo/protocol"
 
 	urp "org/modules/user-request/protocol"
+	up "org/modules/user/protocol"
 )
 
 type StaffReferral interface {
 	StaffID() StaffUUID             //
-	ReferralID() UserUUID           //
+	ReferralID() up.UserUUID        //
 	Time() protocol.Time            // save time
 	RequestID() urp.UserRequestUUID //
 }
-
 
 type StaffReferral_StorageServices interface {
 	Save(f StaffReferral) (nv protocol.NumberOfVersion, err protocol.Error)

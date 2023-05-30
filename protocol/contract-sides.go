@@ -6,12 +6,13 @@ import (
 	"libgo/protocol"
 
 	urp "org/modules/user-request/protocol"
+	up "org/modules/user/protocol"
 )
 
 type ContractSides interface {
 	ContractID() ContractUUID       //
 	SideType() ContractSides_ST     //
-	UserID() UserUUID               //Can be any user type e.g. staff
+	UserID() up.UserUUID            //Can be any user type e.g. staff
 	UserSignature() []byte          //
 	Time() protocol.Time            // save time
 	RequestID() urp.UserRequestUUID //

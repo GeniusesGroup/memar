@@ -6,12 +6,13 @@ import (
 	"libgo/protocol"
 
 	urp "org/modules/user-request/protocol"
+	up "org/modules/user/protocol"
 )
 
 // TODO::: need domain or any fields here to support for Numbers Authority (GOD mode)? e.g. [IANA](https://iana.org/)
 
 type UserNumber interface {
-	UserID() UserUUID    //
+	UserID() up.UserUUID //
 	OrgID() OrgUUID      //
 	ProviderID() OrgUUID //
 	Number() string      // like PhoneNumber
@@ -24,10 +25,10 @@ type UserNumber interface {
 type UserNumber_StorageServices interface {
 	Save(pn UserNumber) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(userID UserUUID, orgID OrgUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(userID UserUUID, orgID OrgUUID, vo protocol.VersionOffset) (pn UserNumber, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(userID up.UserUUID, orgID OrgUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(userID up.UserUUID, orgID OrgUUID, vo protocol.VersionOffset) (pn UserNumber, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FindByNumber(number uint64, offset, limit uint64) (userIDs []UserUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	FindByNumber(number uint64, offset, limit uint64) (userIDs []up.UserUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }
 
 // UserNumber_Status indicate UserNumber record status
@@ -44,21 +45,21 @@ const (
 
 type (
 	UserNumber_Service_Register_Request interface {
-		OrgID() UserUUID
+		OrgID() up.UserUUID
 		Number() string
 	}
 )
 type (
 	UserNumber_Service_Count_Request interface {
-		UserID() UserUUID
-		OrgID() UserUUID
+		UserID() up.UserUUID
+		OrgID() up.UserUUID
 	}
 	UserNumber_Service_Count_Response = protocol.NumberOfVersion
 )
 type (
 	UserNumber_Service_Get_Request interface {
-		UserID() UserUUID
-		OrgID() UserUUID
+		UserID() up.UserUUID
+		OrgID() up.UserUUID
 		VersionOffset() protocol.VersionOffset
 	}
 	UserNumber_Service_Get_Response = UserNumber

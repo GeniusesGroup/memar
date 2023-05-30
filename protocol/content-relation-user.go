@@ -6,13 +6,14 @@ import (
 	"libgo/protocol"
 
 	urp "org/modules/user-request/protocol"
+	up "org/modules/user/protocol"
 )
 
 // ContentParticipant indicate the domain record data fields.
 type ContentParticipant interface {
 	ContentID() ContentUUID         //
 	Type() ContentParticipant_Type  //
-	UserID() UserUUID               //
+	UserID() up.UserUUID            //
 	Time() protocol.Time            // save time
 	RequestID() urp.UserRequestUUID //
 }
@@ -24,7 +25,7 @@ type ContentParticipant_StorageServices interface {
 	Count(contentID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
 	Get(contentID [16]byte, vo protocol.VersionOffset) (cp ContentParticipant, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FindByUserID(userID UserUUID, offset, limit uint64) (contentIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
+	FindByUserID(userID up.UserUUID, offset, limit uint64) (contentIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
 }
 
 // ContentParticipant_Type indicate participant type or role

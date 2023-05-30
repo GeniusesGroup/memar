@@ -6,6 +6,7 @@ import (
 	"libgo/protocol"
 
 	urp "org/modules/user-request/protocol"
+	up "org/modules/user/protocol"
 )
 
 type QuestionnaireRespondentUUID protocol.UUID
@@ -14,8 +15,8 @@ type QuestionnaireRespondentUUID protocol.UUID
 type QuestionnaireRespondent interface {
 	QuestionnaireRespondentID() QuestionnaireRespondentUUID //
 	QuestionnaireOrderID() QuestionnaireOrderUUID           //
-	AnswerBy() UserUUID                                     //
-	FillBy() UserUUID                                       //
+	AnswerBy() up.UserUUID                                  //
+	FillBy() up.UserUUID                                    //
 	Time() protocol.Time                                    // Save time
 	RequestID() urp.UserRequestUUID                         //
 }

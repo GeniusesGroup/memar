@@ -6,12 +6,13 @@ import (
 	"libgo/protocol"
 
 	urp "org/modules/user-request/protocol"
+	up "org/modules/user/protocol"
 )
 
 // UserName indicate the domain record data fields.
 // it is use in many other services like send email(email address), ...
 type UserName interface {
-	UserID() UserUUID               //
+	UserID() up.UserUUID            //
 	OrgID() OrgUUID                 //
 	Username() string               // It is not replace of user ID. It usually use to find user by their friends in more human friendly manner.
 	Status() UserName_Status        //
@@ -22,12 +23,12 @@ type UserName interface {
 type UserName_StorageServices interface {
 	Save(un UserName) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(userID, orgID UserUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(userID, orgID UserUUID, vo protocol.VersionOffset) (un UserName, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(userID, orgID up.UserUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(userID, orgID up.UserUUID, vo protocol.VersionOffset) (un UserName, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FindByUsername(username string, offset, limit uint64) (userIDs []UserUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	FindByUsername(username string, offset, limit uint64) (userIDs []up.UserUUID, nv protocol.NumberOfVersion, err protocol.Error)
 
-	ListOrgs(userID UserUUID, offset, limit uint64) (orgIDs []UserUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	ListOrgs(userID up.UserUUID, offset, limit uint64) (orgIDs []up.UserUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }
 
 // UserName_Status indicate UserName record status
@@ -44,21 +45,21 @@ const (
 
 type (
 	UserName_Service_Register_Request interface {
-		UserID() UserUUID // TODO::: get user id from connection??
+		UserID() up.UserUUID // TODO::: get user id from connection??
 		Username() string
 	}
 )
 
 type (
 	UserName_Service_Count_Request interface {
-		UserID() UserUUID
+		UserID() up.UserUUID
 	}
 	UserName_Service_Count_Response = protocol.NumberOfVersion
 )
 
 type (
 	UserName_Service_Get_Request interface {
-		UserID() UserUUID
+		UserID() up.UserUUID
 		VersionOffset() protocol.VersionOffset
 	}
 	UserName_Service_Get_Response1 = UserName
@@ -72,7 +73,7 @@ type (
 		Limit() uint64
 	}
 	UserName_Service_FindByUsername_Response interface {
-		UserIDs() []UserUUID
+		UserIDs() []up.UserUUID
 		Numbers() uint64
 	}
 )
@@ -80,16 +81,16 @@ type (
 // Use to send verification token by email protocol to other organization software to verify username manually.
 type (
 	UserName_Service_SendManualVerification_Request interface {
-		UserID() UserUUID
-		OrgID() UserUUID
+		UserID() up.UserUUID
+		OrgID() up.UserUUID
 		Username() string
 		ProtocolType() string
 	}
 )
 type (
 	UserName_Service_VerifyManually_Request interface {
-		UserID() UserUUID
-		OrgID() UserUUID
+		UserID() up.UserUUID
+		OrgID() up.UserUUID
 		Username() string
 		Token() string
 	}

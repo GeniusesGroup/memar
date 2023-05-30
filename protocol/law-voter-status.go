@@ -6,11 +6,12 @@ import (
 	"libgo/protocol"
 
 	urp "org/modules/user-request/protocol"
+	up "org/modules/user/protocol"
 )
 
 // LawVoterStatus indicate the domain record data fields.
 type LawVoterStatus interface {
-	UserID() UserUUID               //
+	UserID() up.UserUUID            //
 	Status() LawVoting_Status       //
 	Time() protocol.Time            // save time
 	RequestID() urp.UserRequestUUID //
@@ -19,8 +20,8 @@ type LawVoterStatus interface {
 type LawVoterStatus_StorageServices interface {
 	Save(lv LawVoterStatus) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(userID UserUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(userID UserUUID, vo protocol.VersionOffset) (lv LawVoterStatus, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(userID up.UserUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(userID up.UserUUID, vo protocol.VersionOffset) (lv LawVoterStatus, nv protocol.NumberOfVersion, err protocol.Error)
 
 	FilterByStatus(status LawVoting_Status, offset, limit uint64) (userIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
 }

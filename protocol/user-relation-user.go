@@ -6,12 +6,13 @@ import (
 	"libgo/protocol"
 
 	urp "org/modules/user-request/protocol"
+	up "org/modules/user/protocol"
 )
 
 // UserUserRelation indicate the domain record data fields.
 type UserUserRelation interface {
-	UserID() UserUUID               //
-	SideID() UserUUID               //
+	UserID() up.UserUUID            //
+	SideID() up.UserUUID            //
 	Relation() User_Relation        //
 	Time() protocol.Time            // save time
 	RequestID() urp.UserRequestUUID //
@@ -20,11 +21,11 @@ type UserUserRelation interface {
 type UserUserRelation_StorageServices interface {
 	Save(gs UserUserRelation) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(userID, sideID UserUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(userID, sideID UserUUID, vo protocol.VersionOffset) (gs UserUserRelation, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(userID, sideID up.UserUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(userID, sideID up.UserUUID, vo protocol.VersionOffset) (gs UserUserRelation, nv protocol.NumberOfVersion, err protocol.Error)
 
-	ListSides(userID UserUUID, offset, limit uint64) (sideIDs []UserUUID, nv protocol.NumberOfVersion, err protocol.Error)
-	ListUsers(sideID UserUUID, offset, limit uint64) (userIDs []UserUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	ListSides(userID up.UserUUID, offset, limit uint64) (sideIDs []up.UserUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	ListUsers(sideID up.UserUUID, offset, limit uint64) (userIDs []up.UserUUID, nv protocol.NumberOfVersion, err protocol.Error)
 
 	protocol.EventTarget
 }

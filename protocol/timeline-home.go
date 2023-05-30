@@ -4,14 +4,16 @@ package org
 
 import (
 	"libgo/protocol"
+
+	up "org/modules/user/protocol"
 )
 
 // HomeTimeline indicate the domain record data fields.
 // home timeline feed
 type HomeTimeline interface {
-	UserID() UserUUID            //
+	UserID() up.UserUUID         //
 	CommentID() CommentUUID      //
-	ReasonUserID() UserUUID      // it can be the owner of comment or any other user base on reason
+	ReasonUserID() up.UserUUID   // it can be the owner of comment or any other user base on reason
 	Reason() HomeTimeline_Reason //
 	Time() protocol.Time         // save time
 	// TODO::: node details??
@@ -20,8 +22,8 @@ type HomeTimeline interface {
 type HomeTimeline_StorageServices interface {
 	Save(ht HomeTimeline) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(userID UserUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(userID UserUUID, vo protocol.VersionOffset) (ht HomeTimeline, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(userID up.UserUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(userID up.UserUUID, vo protocol.VersionOffset) (ht HomeTimeline, nv protocol.NumberOfVersion, err protocol.Error)
 
 	protocol.EventTarget
 }

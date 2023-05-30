@@ -6,12 +6,13 @@ import (
 	"libgo/protocol"
 
 	urp "org/modules/user-request/protocol"
+	up "org/modules/user/protocol"
 )
 
 // ProductUser indicate the domain record data fields.
 type ProductUser interface {
 	SubscriptionID() ProductUUID    //
-	UserID() UserUUID               //
+	UserID() up.UserUUID            //
 	Time() protocol.Time            // save time
 	RequestID() urp.UserRequestUUID //
 }

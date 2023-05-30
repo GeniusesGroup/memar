@@ -6,13 +6,14 @@ import (
 	"libgo/protocol"
 
 	urp "org/modules/user-request/protocol"
+	up "org/modules/user/protocol"
 )
 
 // Reaction store user reaction to any content in the application such as laws, comments, products, ...
 // It is graph data structure that UserID is PrimaryNode and ReactionTo is SecondaryNode of node sides.
 // It is also time series data that store user reaction in time if any changes to reaction occurred.
 type Reaction interface {
-	UserID() UserUUID               //
+	UserID() up.UserUUID            //
 	ReactionTo() [16]byte           // any domain.
 	Type() rune                     // any unicode emoji character as old fashion rate(5 star) or like||dislike or ...
 	Status() Reaction_Status        //

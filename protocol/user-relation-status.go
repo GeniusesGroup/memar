@@ -6,12 +6,13 @@ import (
 	"libgo/protocol"
 
 	urp "org/modules/user-request/protocol"
+	up "org/modules/user/protocol"
 )
 
 // UserRelationStatus indicate the domain record data fields.
 type UserRelationStatus interface {
-	UserID() UserUUID               // user domain
-	SideID() UserUUID               // user domain
+	UserID() up.UserUUID            // user domain
+	SideID() up.UserUUID            // user domain
 	Status() UserRelation_Status    //
 	Time() protocol.Time            // save time
 	RequestID() urp.UserRequestUUID //
@@ -20,10 +21,10 @@ type UserRelationStatus interface {
 type UserRelationStatus_StorageServices interface {
 	Save(gs UserRelationStatus) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(userID, sideID UserUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(userID, sideID UserUUID, vo protocol.VersionOffset) (gs UserRelationStatus, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(userID, sideID up.UserUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(userID, sideID up.UserUUID, vo protocol.VersionOffset) (gs UserRelationStatus, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FindByStatus(userID UserUUID, status UserRelation_Status, offset, limit uint64) (sideIDs []UserUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	FindByStatus(userID up.UserUUID, status UserRelation_Status, offset, limit uint64) (sideIDs []up.UserUUID, nv protocol.NumberOfVersion, err protocol.Error)
 
 	protocol.EventTarget
 }

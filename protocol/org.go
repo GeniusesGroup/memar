@@ -2,4 +2,8 @@
 
 package org
 
-type OrgUUID = UserUUID
+import (
+	up "org/modules/user/protocol"
+)
+
+type OrgUUID = up.UserUUID

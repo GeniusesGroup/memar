@@ -6,6 +6,7 @@ import (
 	"libgo/iso"
 	"libgo/protocol"
 	urp "org/modules/user-request/protocol"
+	up "org/modules/user/protocol"
 )
 
 type FinancialCardUUID = protocol.UUID
@@ -13,8 +14,8 @@ type FinancialCardUUID = protocol.UUID
 // FinancialCard indicate the domain record data fields.
 type FinancialCard interface {
 	FinancialCardID() FinancialCardUUID //
-	Issuer() UserUUID                   //, any org user
-	UserID() UserUUID                   //, owner of the card
+	Issuer() up.UserUUID                //, any org user
+	UserID() up.UserUUID                //, owner of the card
 	CardNumber() iso.Card               //
 	ExpireDate() protocol.Time          //
 	CVC() uint16                        //
@@ -28,7 +29,7 @@ type FinancialCard_StorageServices interface {
 	Count(financialCardID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
 	Get(financialCardID [16]byte, vo protocol.VersionOffset) (fc FinancialCard, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FindByUser(userID UserUUID, offset, limit uint64) (financialCardIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
+	FindByUser(userID up.UserUUID, offset, limit uint64) (financialCardIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
 	FindByCardNumber(cardNumber iso.Card) (financialCardID [16]byte, err protocol.Error)
 }
 

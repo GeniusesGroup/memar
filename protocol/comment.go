@@ -6,6 +6,7 @@ import (
 	"libgo/protocol"
 
 	urp "org/modules/user-request/protocol"
+	up "org/modules/user/protocol"
 )
 
 type CommentUUID = protocol.UUID
@@ -13,7 +14,7 @@ type CommentUUID = protocol.UUID
 // Comment indicate the domain record data fields.
 type Comment interface {
 	CommentID() CommentUUID         //
-	UserID() UserUUID               //
+	UserID() up.UserUUID            //
 	Type() Comment_Type             //
 	Time() protocol.Time            // save time
 	RequestID() urp.UserRequestUUID //
@@ -61,7 +62,7 @@ type (
 	Comment_Service_Register_Request interface {
 		GroupID() GroupUUID
 		ReplyTo() [16]byte
-		UserID() UserUUID
+		UserID() up.UserUUID
 		Type() Comment_Type
 		Settings() Comment_Settings
 	}
@@ -74,7 +75,6 @@ type (
 /*
 	Errors
 */
-
 
 type Comment_GUI_Widget interface {
 	Send()

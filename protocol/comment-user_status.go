@@ -6,12 +6,13 @@ import (
 	"libgo/protocol"
 
 	urp "org/modules/user-request/protocol"
+	up "org/modules/user/protocol"
 )
 
 // CommentUserStatus indicate the domain record data fields.
 type CommentUserStatus interface {
 	CommentID() CommentUUID         //
-	UserID() UserUUID               //
+	UserID() up.UserUUID            //
 	Status() CommentUser_Status     //
 	Time() protocol.Time            // save time
 	RequestID() urp.UserRequestUUID //
@@ -22,7 +23,6 @@ type CommentUserStatus_StorageServices interface {
 
 	Count(commentID CommentUUID) (nv protocol.NumberOfVersion, err protocol.Error)
 	Get(commentID CommentUUID, vo protocol.VersionOffset) (c CommentUserStatus, nv protocol.NumberOfVersion, err protocol.Error)
-
 }
 
 type CommentUser_Status uint8

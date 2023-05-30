@@ -4,6 +4,8 @@ package org
 
 import (
 	"libgo/protocol"
+
+	up "org/modules/user/protocol"
 )
 
 // Connection or App2AppConnection indicate how connection create and save in time series data.
@@ -18,8 +20,8 @@ type Connection interface {
 	Addr() [16]byte
 	AddrType() protocol.NetworkLink_NextHeaderID
 	DomainName() string // if exist
-	UserID() UserUUID
-	DelegateUserID() UserUUID // Persons can delegate to things(as a user type)
+	UserID() up.UserUUID
+	DelegateUserID() up.UserUUID // Persons can delegate to things(as a user type)
 
 	/* Security data */
 	// AccessControl() AccessControl

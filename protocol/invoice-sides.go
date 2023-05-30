@@ -6,12 +6,13 @@ import (
 	"libgo/protocol"
 
 	urp "org/modules/user-request/protocol"
+	up "org/modules/user/protocol"
 )
 
 // InvoiceSides indicate the domain record data fields.
 type InvoiceSides interface {
 	InvoiceID() InvoiceUUID         //
-	UserID() UserUUID               //
+	UserID() up.UserUUID            //
 	Type() InvoiceSides_Type        //
 	Status() InvoiceSides_Status    //
 	Time() protocol.Time            // save time
@@ -24,7 +25,7 @@ type InvoiceSides_StorageServices interface {
 	Count(invoiceID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
 	Get(invoiceID [16]byte, vo protocol.VersionOffset) (is InvoiceSides, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FindByUser(userID UserUUID, typ InvoiceSides_Type, offset, limit uint64) (invoiceIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
+	FindByUser(userID up.UserUUID, typ InvoiceSides_Type, offset, limit uint64) (invoiceIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
 }
 
 type InvoiceSides_Type uint8

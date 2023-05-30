@@ -6,6 +6,7 @@ import (
 	"libgo/protocol"
 
 	urp "org/modules/user-request/protocol"
+	up "org/modules/user/protocol"
 )
 
 // use to get and show locale title from quiddity-title domain.
@@ -14,11 +15,10 @@ type ProjectUUID = protocol.UUID
 // Project indicate the domain record data fields.
 type Project interface {
 	ProjectID() ProjectUUID         //
-	UserID() UserUUID               //
+	UserID() up.UserUUID            //
 	Time() protocol.Time            // Save time
 	RequestID() urp.UserRequestUUID //
 }
-
 
 type Project_StorageServices interface {
 	Save(f Project) (nv protocol.NumberOfVersion, err protocol.Error)

@@ -6,6 +6,7 @@ import (
 	"libgo/protocol"
 
 	urp "org/modules/user-request/protocol"
+	up "org/modules/user/protocol"
 )
 
 // Store user requests as drafts for users to send later
@@ -14,7 +15,7 @@ import (
 // Prove how this record created in the chain of other records.
 type RequestDraft interface {
 	ID() [16]byte // RequestDraftID
-	UserID() UserUUID
+	UserID() up.UserUUID
 	UserConnectionID() [16]byte // Store to remember which ConnectionID/AppInstanceID set||chanaged this record.
 	PageID() uint64
 	ServiceID() uint64

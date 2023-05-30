@@ -6,6 +6,7 @@ import (
 	"libgo/protocol"
 
 	urp "org/modules/user-request/protocol"
+	up "org/modules/user/protocol"
 )
 
 type EducationExamUUID = protocol.UUID
@@ -13,7 +14,7 @@ type EducationExamUUID = protocol.UUID
 // EducationExam indicate the domain record data fields.
 type EducationExam interface {
 	ExamID() EducationExamUUID                   //
-	UserID() UserUUID                            //
+	UserID() up.UserUUID                         //
 	KnowledgeUnitID() EducationKnowledgeUnitUUID //
 	Time() protocol.Time                         // save time
 	RequestID() urp.UserRequestUUID              //

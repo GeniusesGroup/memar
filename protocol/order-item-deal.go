@@ -6,6 +6,7 @@ import (
 	"libgo/protocol"
 
 	urp "org/modules/user-request/protocol"
+	up "org/modules/user/protocol"
 )
 
 // Order indicate the domain record data fields. each order is immutable record.
@@ -30,7 +31,7 @@ type OrderItemDetail_StorageServices interface {
 
 	Get(orderID OrderUUID) (o Order, err protocol.Error)
 
-	FindByUserID(userID UserUUID, offset, limit uint64) (orderIDs []OrderUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	FindByUserID(userID up.UserUUID, offset, limit uint64) (orderIDs []OrderUUID, nv protocol.NumberOfVersion, err protocol.Error)
 	FindByKindID(kindID [16]byte, offset, limit uint64) (orderIDs []OrderUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }
 

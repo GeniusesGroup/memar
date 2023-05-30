@@ -6,11 +6,12 @@ import (
 	"libgo/protocol"
 
 	urp "org/modules/user-request/protocol"
+	up "org/modules/user/protocol"
 )
 
 // UserPublicKey indicate the domain record data fields.
 type UserPublicKey interface {
-	UserID() UserUUID               //
+	UserID() up.UserUUID            //
 	PublicKey() []byte              // suggest use DER format
 	Issuer() OrgUUID                //Use to get notify about status of the PK e.g. revoked notification, ...
 	Status() UserPublicKey_Status   //

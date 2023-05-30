@@ -6,6 +6,7 @@ import (
 	"libgo/protocol"
 
 	urp "org/modules/user-request/protocol"
+	up "org/modules/user/protocol"
 )
 
 type TaskUUID = protocol.UUID
@@ -13,12 +14,11 @@ type TaskUUID = protocol.UUID
 // Task indicate the domain record data fields.
 type Task interface {
 	TaskID() TaskUUID               //
-	UserID() UserUUID               //
+	UserID() up.UserUUID            //
 	Type() Task_Type                //
 	Time() protocol.Time            // Save time
 	RequestID() urp.UserRequestUUID //
 }
-
 
 type Task_StorageServices interface {
 	Save(f Task) (nv protocol.NumberOfVersion, err protocol.Error)
@@ -26,7 +26,6 @@ type Task_StorageServices interface {
 	Count(taskID TaskUUID) (nv protocol.NumberOfVersion, err protocol.Error)
 	Get(taskID TaskUUID, vo protocol.VersionOffset) (f Task, nv protocol.NumberOfVersion, err protocol.Error)
 }
-
 
 type Task_Type uint8
 

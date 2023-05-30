@@ -6,6 +6,7 @@ import (
 	"libgo/protocol"
 
 	urp "org/modules/user-request/protocol"
+	up "org/modules/user/protocol"
 )
 
 type FinancialCurrencyUUID = protocol.UUID
@@ -14,7 +15,7 @@ type FinancialCurrencyUUID = protocol.UUID
 type FinancialCurrency interface {
 	Currency() FinancialCurrencyUUID // quiddity domain
 	// ISO_4217() iso.Currency             //
-	MoneySettlementReference() UserUUID //can be any org or society user.
-	Time() protocol.Time                // save time
-	RequestID() urp.UserRequestUUID     //
+	MoneySettlementReference() up.UserUUID //can be any org or society user.
+	Time() protocol.Time                   // save time
+	RequestID() urp.UserRequestUUID        //
 }

@@ -6,12 +6,13 @@ import (
 	"libgo/protocol"
 
 	urp "org/modules/user-request/protocol"
+	up "org/modules/user/protocol"
 )
 
 // Domain is unique name in the computer world. Country e.g. Iran, ... || Digital platforms e.g. Instagram, Facebook, Google, Github, Yahoo, ...
 type UserDomain interface {
 	Domain() string                   // unique name in the computer world
-	UserID() UserUUID                 //
+	UserID() up.UserUUID              //
 	AcceptedProtocols() UserDomain_AP //
 	Status() UserDomain_Status        //
 	Time() protocol.Time              // save time
@@ -24,7 +25,7 @@ type UserDomain_StorageServices interface {
 	Count(domain string) (nv protocol.NumberOfVersion, err protocol.Error)
 	Get(domain string, vo protocol.VersionOffset) (ud UserDomain, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FindByUserID(userID UserUUID, offset, limit uint64) (domains []string, nv protocol.NumberOfVersion, err protocol.Error)
+	FindByUserID(userID up.UserUUID, offset, limit uint64) (domains []string, nv protocol.NumberOfVersion, err protocol.Error)
 }
 
 // UserDomain_AP is user domain accepted protocols
@@ -51,7 +52,7 @@ const (
 
 type UserDomain_Service_Register_Request interface {
 	Domain() string
-	UserID() UserUUID // TODO::: get user id from connection??
+	UserID() up.UserUUID // TODO::: get user id from connection??
 }
 
 type UserDomain_Service_Count_Request interface {
@@ -71,7 +72,7 @@ type UserDomain_Service_Get_Response1 interface {
 type UserDomain_Service_Get_Response2 protocol.NumberOfVersion
 
 type UserDomain_Service_FindByUserID_Request interface {
-	UserID() UserUUID
+	UserID() up.UserUUID
 	Offset() uint64
 	Limit() uint64
 }

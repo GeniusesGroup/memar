@@ -2,5 +2,9 @@
 
 package org
 
-// It is same as UserUUID
-type StaffUUID = UserUUID
+import (
+	up "org/modules/user/protocol"
+)
+
+// It is same as up.UserUUID
+type StaffUUID = up.UserUUID

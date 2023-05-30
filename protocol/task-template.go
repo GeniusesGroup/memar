@@ -6,6 +6,7 @@ import (
 	"libgo/protocol"
 
 	urp "org/modules/user-request/protocol"
+	up "org/modules/user/protocol"
 )
 
 type TaskTemplateUUID = protocol.UUID
@@ -13,7 +14,7 @@ type TaskTemplateUUID = protocol.UUID
 // Task indicate the domain record data fields.
 type TaskTemplate interface {
 	TaskTemplateID() TaskTemplateUUID //
-	UserID() UserUUID                 //
+	UserID() up.UserUUID              //
 	// TODO::: group of comment?? questionnaire??
 	Time() protocol.Time            // Save time
 	RequestID() urp.UserRequestUUID //
@@ -25,4 +26,3 @@ type TaskTemplate_StorageServices interface {
 	Count(taskID TaskUUID) (nv protocol.NumberOfVersion, err protocol.Error)
 	Get(taskID TaskUUID, vo protocol.VersionOffset) (f TaskTemplate, nv protocol.NumberOfVersion, err protocol.Error)
 }
-

@@ -6,6 +6,7 @@ import (
 	"libgo/protocol"
 
 	urp "org/modules/user-request/protocol"
+	up "org/modules/user/protocol"
 )
 
 // UTM ID
@@ -15,7 +16,7 @@ type MarketingUtmUUID = protocol.UUID
 // https://en.wikipedia.org/wiki/UTM_parameters
 type MarketingUTM interface {
 	ID() MarketingUtmUUID //
-	UserID() UserUUID     //
+	UserID() up.UserUUID  //
 
 	Source() string   // Identifies which site sent the traffic, and is a required parameter.		"utm_source=google.com", "Referer: <url>"
 	Medium() string   // Identifies what type of link was used, such as cost per click or email.	utm_medium=cpc

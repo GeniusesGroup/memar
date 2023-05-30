@@ -6,12 +6,13 @@ import (
 	"libgo/protocol"
 
 	urp "org/modules/user-request/protocol"
+	up "org/modules/user/protocol"
 )
 
 // GroupAssociatedStatus indicate the domain record data fields
 type GroupAssociatedStatus interface {
 	GroupID() GroupUUID             //
-	UserID() UserUUID               //
+	UserID() up.UserUUID            //
 	Status() GroupAssociated_Status //
 	Time() protocol.Time            // save time
 	RequestID() urp.UserRequestUUID //

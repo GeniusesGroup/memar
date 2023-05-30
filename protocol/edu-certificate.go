@@ -6,14 +6,15 @@ import (
 	"libgo/protocol"
 
 	urp "org/modules/user-request/protocol"
+	up "org/modules/user/protocol"
 )
 
 // EduCertificate indicate the domain record data fields.
 type EduCertificate interface {
 	CertificateID() [16]byte                     //
 	KnowledgeUnitID() EducationKnowledgeUnitUUID //
-	IssuedByID() UserUUID                        // organization only??
-	IssuedForID() UserUUID                       //
+	IssuedByID() up.UserUUID                     // organization only??
+	IssuedForID() up.UserUUID                    //
 	Score() uint64                               //
 	IssueTime() protocol.Time                    //
 	Time() protocol.Time                         // save time

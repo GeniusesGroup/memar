@@ -6,12 +6,13 @@ import (
 	"libgo/protocol"
 
 	urp "org/modules/user-request/protocol"
+	up "org/modules/user/protocol"
 )
 
 // EducationAnswer indicate the domain record data fields.
 type EducationAnswer interface {
 	QuestionID() EducationQuestionUUID //
-	UserID() UserUUID                  //
+	UserID() up.UserUUID               //
 	Answer() string                    // A
 	Status() EducationAnswer_Status    //
 	Time() protocol.Time               // save time

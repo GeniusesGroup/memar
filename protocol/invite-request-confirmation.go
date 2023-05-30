@@ -6,12 +6,13 @@ import (
 	"libgo/protocol"
 
 	urp "org/modules/user-request/protocol"
+	up "org/modules/user/protocol"
 )
 
 // InviteRequestConfirmation indicate the domain record data fields.
 type InviteRequestConfirmation interface {
 	InviteID() InviteUUID                     //
-	AccepterID() UserUUID                     //
+	AccepterID() up.UserUUID                  //
 	Status() InviteRequestConfirmation_Status //
 	Time() protocol.Time                      // save time
 	RequestID() urp.UserRequestUUID           //

@@ -6,11 +6,12 @@ import (
 	"libgo/protocol"
 
 	urp "org/modules/user-request/protocol"
+	up "org/modules/user/protocol"
 )
 
 // Individual and General score
 type FinancialScore interface {
-	UserID() UserUUID               //
+	UserID() up.UserUUID            //
 	Score() int64                   //
 	Time() protocol.Time            // save time
 	RequestID() urp.UserRequestUUID //
