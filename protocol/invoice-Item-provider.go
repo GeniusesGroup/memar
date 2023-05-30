@@ -4,15 +4,17 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // InvoiceItemProvider indicate the domain record data fields.
 type InvoiceItemProvider interface {
-	InvoiceID() [16]byte        // invoice domain
-	ProductID() [16]byte        // product domain
-	StaffID() [16]byte          // staff domain
-	Time() protocol.Time        // save time
-	RequestID() UserRequestUUID // user-request domain
+	InvoiceID() InvoiceUUID         //
+	ProductID() ProductUUID         //
+	StaffID() StaffUUID             //
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }
 
 type InvoiceItemProvider_StorageServices interface {

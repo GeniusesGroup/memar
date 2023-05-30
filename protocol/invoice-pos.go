@@ -4,15 +4,18 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // InvoicePOS indicate the domain record data fields.
 type InvoicePOS interface {
-	InvoiceID() [16]byte        // invoice domain
-	PosID() [16]byte            // pos domain
-	StaffID() [16]byte          // staff domain. or OrdererID that is creator of the invoice e.g. restaurant, drug prescription, sales agent,
-	Time() protocol.Time        // save time
-	RequestID() UserRequestUUID // user-request domain
+	InvoiceID() InvoiceUUID //
+	// InvoiceNumber() uint16      // TODO::: do we need auto increment number? Why not QR code?
+	PosID() PosUUID                 //
+	StaffID() StaffUUID             // OrdererID that is creator of the invoice e.g. restaurant, drug prescription, sales agent,
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }
 
 type InvoicePOS_StorageServices interface {

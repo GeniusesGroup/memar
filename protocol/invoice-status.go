@@ -4,14 +4,16 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // InvoiceStatus indicate the domain record data fields.
 type InvoiceStatus interface {
-	InvoiceID() [16]byte        // invoice-status domain
-	Status() Invoice_Status     //
-	Time() protocol.Time        // save time
-	RequestID() UserRequestUUID // user-request domain
+	InvoiceID() InvoiceUUID         // invoice-status domain
+	Status() Invoice_Status         //
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }
 
 type InvoiceStatus_StorageServices interface {
@@ -25,7 +27,7 @@ type InvoiceStatus_StorageServices interface {
 	protocol.EventTarget
 }
 
-type Invoice_Status = Quiddity_Status
+type Invoice_Status Quiddity_Status
 
 const (
 	// cancelled : Indicates that you have cancelled the invoice. Though you can view the cancelled invoice,

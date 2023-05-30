@@ -4,6 +4,8 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // InvoiceItem indicate the domain record data fields.
@@ -15,7 +17,7 @@ type InvoiceItemIngredient interface {
 	Quantity() uint64                         // decimal >> 1.5 >> 1.2 >> 10 >> 0
 	Status() InvoiceItemIngredient_Status     //
 	Time() protocol.Time                      // save time
-	RequestID() UserRequestUUID               // user-request domain
+	RequestID() urp.UserRequestUUID           //
 }
 
 type InvoiceItemIngredient_Status uint8

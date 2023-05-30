@@ -8,8 +8,8 @@ import (
 
 // InvoiceItemSummary indicate the domain record data fields.
 type InvoiceItemSummary interface {
-	InvoiceID() [16]byte                   // invoice domain
-	ProductID() [16]byte                   // product domain
+	InvoiceID() InvoiceUUID                //
+	ProductID() ProductUUID                //
 	SuggestedPrice() protocol.MoneyAmount  // Total should pay before any discount or auction
 	DiscountedPrice() protocol.MoneyAmount // user profit from this product purchase by auctions
 	PayablePrice() protocol.MoneyAmount    // Total price user pay to organization

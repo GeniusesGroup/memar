@@ -4,6 +4,8 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // InvoiceItem indicate the domain record data fields.
@@ -11,11 +13,11 @@ import (
 // Ship service can add as an item to invoice
 // Each item must check for reserve validity and make action in end of validity
 type InvoiceItem interface {
-	InvoiceID() [16]byte        // invoice domain
-	ProductID() [16]byte        // product domain
-	Quantity() uint64           // decimal >> 1.5 >> 1.2 >> 10 >> 0
-	Time() protocol.Time        // save time
-	RequestID() UserRequestUUID // user-request domain
+	InvoiceID() InvoiceUUID         //
+	ProductID() ProductUUID         //
+	Quantity() uint64               // decimal >> 1.5 >> 1.2 >> 10 >> 0
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }
 
 type InvoiceItem_StorageServices interface {

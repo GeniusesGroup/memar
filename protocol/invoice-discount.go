@@ -4,15 +4,17 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // InvoiceDiscount indicate the domain record data fields.
 type InvoiceDiscount interface {
-	InvoiceID() [16]byte              // invoice domain
-	DiscountID() [16]byte             // discount domain
+	InvoiceID() InvoiceUUID           //
+	DiscountID() DiscountUUID         //
 	Discounted() protocol.MoneyAmount //
 	Time() protocol.Time              // save time
-	RequestID() UserRequestUUID       // user-request domain
+	RequestID() urp.UserRequestUUID   //
 }
 
 type InvoiceDiscount_StorageServices interface {

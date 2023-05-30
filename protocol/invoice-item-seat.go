@@ -4,16 +4,19 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // InvoiceItemSeat indicate the domain record data fields.
+// It can also use to order buyers e.g. patient in doctor clinic.
 type InvoiceItemSeat interface {
-	InvoiceID() [16]byte            // invoice domain
-	ProductID() [16]byte            // product domain
+	InvoiceID() InvoiceUUID         //
+	ProductID() ProductUUID         //
 	SeatID() uint64                 // seat number
 	Status() InvoiceItemSeat_Status //
 	Time() protocol.Time            // save time
-	RequestID() UserRequestUUID     // user-request domain
+	RequestID() urp.UserRequestUUID //
 }
 
 type InvoiceItemSeat_StorageServices interface {

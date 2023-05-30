@@ -4,16 +4,18 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // InvoiceSides indicate the domain record data fields.
 type InvoiceSides interface {
-	InvoiceID() [16]byte         // invoice domain
-	UserID() protocol.UserID     // user domain
-	Type() InvoiceSides_Type     //
-	Status() InvoiceSides_Status //
-	Time() protocol.Time         // save time
-	RequestID() UserRequestUUID  // user-request domain
+	InvoiceID() InvoiceUUID         //
+	UserID() UserUUID               //
+	Type() InvoiceSides_Type        //
+	Status() InvoiceSides_Status    //
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }
 
 type InvoiceSides_StorageServices interface {
@@ -22,7 +24,7 @@ type InvoiceSides_StorageServices interface {
 	Count(invoiceID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
 	Get(invoiceID [16]byte, vo protocol.VersionOffset) (is InvoiceSides, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FindByUser(userID [16]byte, typ InvoiceSides_Type, offset, limit uint64) (invoiceIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
+	FindByUser(userID UserUUID, typ InvoiceSides_Type, offset, limit uint64) (invoiceIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
 }
 
 type InvoiceSides_Type uint8
@@ -34,7 +36,7 @@ const (
 	InvoiceSides_Type_Franchise
 )
 
-type InvoiceSides_Status = Quiddity_Status
+type InvoiceSides_Status Quiddity_Status
 
 const (
 // InvoiceSides_Status_ = InvoiceSides_Status(Quiddity_Status_FreeFlag << iota)

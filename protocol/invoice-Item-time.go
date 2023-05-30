@@ -4,15 +4,18 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // InvoiceItemTime indicate the domain record data fields.
 type InvoiceItemTime interface {
-	InvoiceID() [16]byte        // invoice domain
-	ProductID() [16]byte        // product domain
-	Type() InvoiceItemTime_Type //
-	Time() protocol.Time        // save time
-	RequestID() UserRequestUUID // user-request domain
+	InvoiceID() InvoiceUUID         //
+	ProductID() ProductUUID         //
+	Type() InvoiceItemTime_Type     //
+	ActionTime() protocol.Time      //
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }
 
 type InvoiceItemTime_StorageServices interface {
@@ -26,10 +29,17 @@ type InvoiceItemTime_Type uint8
 
 const (
 	InvoiceItemTime_Type_Unset InvoiceItemTime_Type = iota
+
 	InvoiceItemTime_Type_Enter
 	InvoiceItemTime_Type_Exit
 	InvoiceItemTime_Type_ManualEnter
 	InvoiceItemTime_Type_ManualExit
+
 	InvoiceItemTime_Type_Start
 	InvoiceItemTime_Type_End
+	InvoiceItemTime_Type_ManualStart
+	InvoiceItemTime_Type_ManualEnd
+
+	InvoiceItemTime_Type_Cooking
+	InvoiceItemTime_Type_Packaging
 )

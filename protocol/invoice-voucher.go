@@ -4,16 +4,18 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // InvoiceVoucher indicate the domain record data fields.
 // This domain will let users redeem their vouchers and track vouchers rules.
 type InvoiceVoucher interface {
 	InvoiceID() InvoiceUUID           //
-	VoucherID() [16]byte              // voucher domain
+	VoucherID() VoucherUUID           //
 	Discounted() protocol.MoneyAmount //
 	Time() protocol.Time              // save time
-	RequestID() UserRequestUUID       // user-request domain
+	RequestID() urp.UserRequestUUID   //
 }
 
 type InvoiceVoucher_StorageServices interface {

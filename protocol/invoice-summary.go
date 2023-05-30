@@ -9,7 +9,8 @@ import (
 // InvoiceSummary indicate the domain record data fields.
 // InvoiceSummary is summary data that calculated to reduce fetch and calculate on each client device.
 type InvoiceSummary interface {
-	InvoiceID() [16]byte                   // invoice domain
+	InvoiceID() InvoiceUUID                //
+	ItemCount() uint64                     // Total item count
 	Quantity() uint64                      // Total product count
 	SuggestedPrice() protocol.MoneyAmount  // Total should pay before any discount or auction
 	DiscountedPrice() protocol.MoneyAmount // user profit from this purchase by vouchers+auctions

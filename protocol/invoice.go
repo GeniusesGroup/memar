@@ -16,3 +16,33 @@ type InvoiceUUID = protocol.UUID
 // You can only delete an invoice in the draft state and not in any other state.
 
 // GetIDsByDateTime(time protocol.Time, offset, limit uint64) (ids [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
+
+type Invoice_GUI_Page_Conditions interface {
+	ID()
+
+	// /invoice?status=new
+	State() // show/edit/new
+
+}
+
+// /invoice-pay?id=123
+type Invoice_GUI_Page_Services interface {
+	new()
+	edit() // change invoice status
+	close()
+	save()
+	saveAndClose()
+
+	addItemByProductID()
+	editItem(rowID uint32)
+	removeItem(rowID uint32)
+	increaseItemNumber()
+	decreaseItemNumber()
+
+	addVoucher(vID VoucherUUID)
+
+	paid(amount int64, method uint8) // method:cash, card, internet, ...
+
+	print()
+	changePrintSettings()
+}
