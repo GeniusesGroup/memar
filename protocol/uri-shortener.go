@@ -4,15 +4,17 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 type URIShortener interface {
-	ID() string                  // Short Unique ID
-	URI() string                 // UUID of picture object.
-	UserID() protocol.UserID     // user domain
-	Status() URIShortener_Status //
-	Time() protocol.Time         // save time
-	RequestID() UserRequestUUID  // user-request domain
+	ID() string                     // Short Unique ID
+	URI() string                    // e.g. UUID of picture object.
+	UserID() UserUUID               //
+	Status() URIShortener_Status    //
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }
 
 const shortenerPath = "/s"
