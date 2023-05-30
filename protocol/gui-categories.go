@@ -4,13 +4,15 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // GUICategories indicate the domain record data fields.
 type GUICategories interface {
-	CategoriesID() [][16]byte   // quiddity domain
-	Time() protocol.Time        // save time
-	RequestID() UserRequestUUID // user-request domain
+	CategoriesID() []CategoryUUID   //
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }
 
 type GUICategories_StorageServices interface {
