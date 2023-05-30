@@ -4,13 +4,15 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // Urchin Tracking Module (UTM) parameters
 // https://en.wikipedia.org/wiki/UTM_parameters
 type MarketingUTMAnalytic interface {
-	AnalyticUTM() [16]byte   //
-	UserID() protocol.UserID // user domain
+	AnalyticUTM() MarketingUtmUUID //
+	UserID() UserUUID              //
 
 	Source() string   // Identifies which site sent the traffic, and is a required parameter.		"utm_source=google.com", "Referer: <url>"
 	Medium() string   // Identifies what type of link was used, such as cost per click or email.	utm_medium=cpc
@@ -18,6 +20,6 @@ type MarketingUTMAnalytic interface {
 	Term() string     // Identifies search terms.													utm_term=running+shoes
 	Content() string  // Identifies what specifically was clicked to bring the user to the site.	utm_content=logolink or utm_content=textlink	such as a banner ad or a text link. It is often used for A/B testing and content-targeted ads.
 
-	Time() protocol.Time        // save time
-	RequestID() UserRequestUUID // user-request domain
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }

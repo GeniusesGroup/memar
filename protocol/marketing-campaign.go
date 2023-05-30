@@ -2,4 +2,10 @@
 
 package org
 
+import (
+	"libgo/protocol"
+)
+
 // advertising campaign
+
+type MarketingCampaignUUID = protocol.UUID
