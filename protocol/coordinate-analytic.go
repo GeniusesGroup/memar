@@ -4,12 +4,14 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 type CoordinateAnalytic interface {
-	CoordinateID() [16]byte     // quiddity||user||invoice||area||building||building-location||staff||... domain
-	Distance() uint64           // km or ...
-	AverageSpeed() uint64       // km/h or ...
-	Time() protocol.Time        // save time
-	RequestID() UserRequestUUID // user-request domain
+	CoordinateID() CoordinateUUID   //
+	Distance() uint64               // km or ...
+	AverageSpeed() uint64           // km/h or ...
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }

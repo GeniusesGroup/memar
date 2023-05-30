@@ -4,16 +4,21 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
+
+// can be same as quiddity||user||invoice||area||building||building-location||staff||... domain
+type CoordinateUUID = protocol.UUID
 
 // Coordinate store location details of user or things
 // location of the provider. live location of the user.
 type Coordinate interface {
-	CoordinateID() [16]byte     // quiddity||user||invoice||area||building||building-location||staff||... domain
-	ThingID() [16]byte          // device who send the coordinate
-	Lat() uint64                // latitude
-	Lon() uint64                // longitude
-	Alt() uint64                // altitude
-	Time() protocol.Time        // save time
-	RequestID() UserRequestUUID // user-request domain
+	CoordinateID() CoordinateUUID   //
+	ThingID() [16]byte              // device who send the coordinate
+	Lat() uint64                    // latitude
+	Lon() uint64                    // longitude
+	Alt() uint64                    // altitude
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }
