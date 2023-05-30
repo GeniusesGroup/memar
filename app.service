@@ -1,0 +1,21 @@
+# Application systemd service file
+# https://www.freedesktop.org/software/systemd/man/systemd.service.html
+
+[Unit]
+Description=Organization
+Documentation=https://geniuses.group/developers
+After=network.target
+
+[Service]
+#CPUQuota=90%
+#MemoryLimit=15360M
+#ExecStartPre=
+LimitNOFILE=65536
+ExecStart=/root/org/org
+ExecReload=/bin/kill -SIGUSR1 $MAINPID
+Restart=on-failure
+TimeoutSec=20
+RestartSec=20
+
+[Install]
+WantedBy=multi-user.target

@@ -1,7 +1,8 @@
 # Folders
 _obj
 _test
-storage
+_main
+_modules
 images/
 
 # Prerequisites
@@ -36,6 +37,7 @@ assets--g.go
 *.dylib
 
 # Executables
+/bin
 *.exe
 *.out
 *.app
@@ -48,15 +50,6 @@ assets--g.go
 *.su
 *.idb
 *.pdb
-
-# Kernel Module Compile Results
-*.mod*
-*.cmd
-.tmp_versions/
-modules.order
-Module.symvers
-Mkfile.old
-dkms.conf
 
 # Architecture specific extensions/prefixes
 *.[568vq]
