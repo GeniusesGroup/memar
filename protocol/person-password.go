@@ -4,15 +4,17 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // PersonPassword indicate the domain record data fields.
 // A person can decide to don't register password and deny authenticate by password.
 type PersonPassword interface {
-	PersonID() protocol.UserID     // user domain
-	PasswordHash() []byte          //
-	Status() PersonPassword_Status //
-	RequestID() UserRequestUUID    // user-request domain
+	PersonID() UserUUID             //
+	PasswordHash() []byte           //
+	Status() PersonPassword_Status  //
+	RequestID() urp.UserRequestUUID //
 }
 
 type PersonPassword_StorageServices interface {
@@ -47,7 +49,7 @@ type PersonPassword_Service_Register_Request interface {
 }
 
 type PersonPassword_Service_Confirm_Request interface {
-	PersonID() protocol.UserID
+	PersonID() UserUUID
 	PasswordHash() []byte
 }
 type PersonPassword_Service_Confirm_Response interface {
