@@ -4,25 +4,27 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // OrderTrade indicate the invoice order-trade record data fields.
 // can be zero to prevent sell on profit(cover order) or stopping loss
 type OrderTrade interface {
-	OrderID() [16]byte               // order domain
+	OrderID() OrderUUID              //
 	Level() uint8                    // usually 3 level trade order
 	HighPrice() protocol.MoneyAmount // SaveProfit	e.g. 45$ , -102$
 	LowPrice() protocol.MoneyAmount  // StopLoss	e.g. 43$ , -95$
 	Type() OrderTrade_Type           //
 	Time() protocol.Time             // save time
-	RequestID() UserRequestUUID      // user-request domain
+	RequestID() urp.UserRequestUUID  //
 }
 
 type OrderTrade_StorageServices interface {
 	Save(ot OrderTrade) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(orderID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(orderID [16]byte, vo protocol.VersionOffset) (ot OrderTrade, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(orderID OrderUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(orderID OrderUUID, vo protocol.VersionOffset) (ot OrderTrade, nv protocol.NumberOfVersion, err protocol.Error)
 }
 
 type OrderTrade_Type uint8

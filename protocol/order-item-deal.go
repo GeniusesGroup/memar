@@ -4,12 +4,14 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // Order indicate the domain record data fields. each order is immutable record.
 // use to register an order to e.g. exchange(an instruction to buy or sell) currencies
 // A matching engine uses the orders book to determine which orders can be fully or partially executed.
-// 
+//
 // An order submitted without a specified price, and sequentially matched at the best available price in the market or in other words
 // if user want to limit price, must fill order-price record otherwise market price will choose for the deals.
 type OrderItemDetail interface {
@@ -20,21 +22,21 @@ type OrderItemDetail interface {
 	Amount() int64                      // + || -		or Quantity
 	Type() OrderAmount_Type             //
 	Time() protocol.Time                // save time
-	RequestID() UserRequestUUID         // user-request domain
+	RequestID() urp.UserRequestUUID     //
 }
 
 type OrderItemDetail_StorageServices interface {
 	Save(o Order) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Get(orderID [16]byte) (o Order, err protocol.Error)
+	Get(orderID OrderUUID) (o Order, err protocol.Error)
 
-	FindByUserID(userID [16]byte, offset, limit uint64) (orderIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
-	FindByKindID(kindID [16]byte, offset, limit uint64) (orderIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
+	FindByUserID(userID UserUUID, offset, limit uint64) (orderIDs []OrderUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	FindByKindID(kindID [16]byte, offset, limit uint64) (orderIDs []OrderUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }
 
 type OrderItemDetail_SideType uint8
 
-const(
+const (
 	OrderItemDetail_SideType_Unset OrderItemDetail_SideType = iota
 	OrderItemDetail_SideType_Buy
 	OrderItemDetail_SideType_Sell

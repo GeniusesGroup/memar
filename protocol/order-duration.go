@@ -4,21 +4,23 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 type OrderDuration interface {
-	OrderID() [16]byte           // order domain
-	Epoch() OrderDuration_Epoch  //
-	Duration() protocol.Duration // from Epoch()
-	Time() protocol.Time         // save time
-	RequestID() UserRequestUUID  // user-request domain
+	OrderID() OrderUUID             //
+	Epoch() OrderDuration_Epoch     //
+	Duration() protocol.Duration    // from Epoch()
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }
 
 type OrderDuration_StorageServices interface {
 	Save(od OrderDuration) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(orderID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(orderID [16]byte, vo protocol.VersionOffset) (od OrderDuration, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(orderID OrderUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(orderID OrderUUID, vo protocol.VersionOffset) (od OrderDuration, nv protocol.NumberOfVersion, err protocol.Error)
 }
 
 type OrderDuration_Epoch uint8

@@ -4,23 +4,25 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // OrderStatus indicate the order-status domain record data fields.
 type OrderStatus interface {
-	OrderID() [16]byte          // order domain
-	Status() Order_Status       //
-	Time() protocol.Time        // save time
-	RequestID() UserRequestUUID // user-request domain
+	OrderID() OrderUUID             //
+	Status() Order_Status           //
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }
 
 type OrderStatus_StorageServices interface {
 	Save(os OrderStatus) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(orderID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(orderID [16]byte, vo protocol.VersionOffset) (os OrderStatus, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(orderID OrderUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(orderID OrderUUID, vo protocol.VersionOffset) (os OrderStatus, nv protocol.NumberOfVersion, err protocol.Error)
 
-	// FilterByStatus(status Order_Status, offset, limit uint64) (orderIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
+	// FilterByStatus(status Order_Status, offset, limit uint64) (orderIDs []OrderUUID, nv protocol.NumberOfVersion, err protocol.Error)
 	// protocol.EventTarget
 }
 

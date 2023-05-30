@@ -4,6 +4,8 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // OrderReference indicate the domain record data fields. each order is immutable record.
@@ -12,5 +14,5 @@ type OrderReference interface {
 	Reference() [16]byte                    // Any ID that user can assign to track for any purpose. It can't be nil.
 	ReferenceType() FinancialTransaction_RT //
 	Time() protocol.Time                    // save time
-	RequestID() UserRequestUUID             // user-request domain
+	RequestID() urp.UserRequestUUID         //
 }

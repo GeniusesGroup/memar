@@ -4,14 +4,16 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // Order indicate the domain record data fields. each order is immutable record.
 type OrderMatched interface {
-	OrderID() OrderUUID         //
-	SideOrderID() OrderUUID     //
-	Time() protocol.Time        // save time
-	RequestID() UserRequestUUID // user-request domain
+	OrderID() OrderUUID             //
+	SideOrderID() OrderUUID         //
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }
 
 type OrderMatched_StorageServices interface {

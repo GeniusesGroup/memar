@@ -2,8 +2,6 @@
 
 package org
 
-import (
-	"libgo/protocol"
-)
+// "libgo/protocol"
 
 // limit user not buy before year a product
