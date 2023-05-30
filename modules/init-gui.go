@@ -1,16 +1,17 @@
-// go:build gui
+//go:build gui
 
-/* For license and copyright information please see LEGAL file in repository */
+/* For license and copyright information please see the LEGAL file in the code repository */
+// Auto-generated, edits may be overwritten
 
 package modules
 
 import (
-	qd "github.com/GeniusesGroup/organization/modules/quiddity-domain"
+	// "org/modules/quiddity"
 )
 
 // Init method use to register all available modules to the application.
 func Init() {
-	qd.RegisterServices() 
-	qd.RegisterPages() 
-	qd.RegisterWidgets()
+	// quiddity.RegisterServices()
+	// quiddity.RegisterPages()
+	// quiddity.RegisterWidgets()
 }

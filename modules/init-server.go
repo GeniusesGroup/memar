@@ -1,15 +1,15 @@
-// go:build server
+//go:build server
 
-/* For license and copyright information please see LEGAL file in ChaparKhane repository */
-// Auto-generated, edits will be overwritten
+/* For license and copyright information please see the LEGAL file in the code repository */
+// Auto-generated, edits may be overwritten
 
 package modules
 
 import (
-	qd "github.com/GeniusesGroup/organization/modules/quiddity-domain"
+	// "org/modules/quiddity"
 )
 
 // Init method use to register all available modules to the application.
 func Init() {
-	qd.RegisterServices()
+	// quiddity.RegisterServices()
 }
