@@ -4,13 +4,15 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // EducationCertificateIssuer indicate the domain record data fields.
 type EducationCertificateIssuer interface {
-	IssuerID() protocol.UserID                   // organization only??
+	IssuerID() UserUUID                          // organization only??
 	KnowledgeUnitID() EducationKnowledgeUnitUUID //
 	Score() uint64                               //
 	Time() protocol.Time                         // save time
-	RequestID() UserRequestUUID                  // user-request domain
+	RequestID() urp.UserRequestUUID              //
 }

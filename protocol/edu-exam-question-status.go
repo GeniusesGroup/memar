@@ -4,6 +4,8 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // EducationQuestionStatus indicate the domain record data fields.
@@ -11,7 +13,7 @@ type EducationQuestionStatus interface {
 	QuestionID() EducationQuestionUUID // don't point to quiddity title na don't set title
 	Status() EducationQuestion_Status  //
 	Time() protocol.Time               // save time
-	RequestID() UserRequestUUID        // user-request domain
+	RequestID() urp.UserRequestUUID    //
 }
 
 type EducationQuestion_Status Quiddity_Status

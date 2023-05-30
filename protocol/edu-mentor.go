@@ -4,15 +4,17 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // EducationMentor indicate the domain record data fields.
 type EducationMentor interface {
-	UserID() protocol.UserID                     //
+	UserID() UserUUID                            //
 	KnowledgeUnitID() EducationKnowledgeUnitUUID //
 	Type() EducationMentor_Type                  // education unit type
 	Time() protocol.Time                         // save time
-	RequestID() UserRequestUUID                  // user-request domain
+	RequestID() urp.UserRequestUUID              //
 }
 
 type EducationMentor_Type uint8

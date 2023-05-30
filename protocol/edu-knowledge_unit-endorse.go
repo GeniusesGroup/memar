@@ -4,14 +4,16 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // EducationKnowledgeUnitEndorse indicate the domain record data fields.
 type EducationKnowledgeUnitEndorse interface {
-	UserID() protocol.UserID                     //
+	UserID() UserUUID                            //
 	KnowledgeUnitID() EducationKnowledgeUnitUUID //
-	EndorserID() protocol.UserID                 //
+	EndorserID() UserUUID                        //
 	Score() uint64                               //
 	Time() protocol.Time                         // save time
-	RequestID() UserRequestUUID                  // user-request domain
+	RequestID() urp.UserRequestUUID              //
 }

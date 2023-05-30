@@ -4,15 +4,17 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // EducationExamRelated indicate the domain record data fields.
 type EducationExamRelated interface {
-	SuggesterID() protocol.UserID //
-	Side1() EducationExamUUID     //
-	Priority() uint64             //
-	Level() uint64                //
-	Side2() EducationExamUUID     //
-	Time() protocol.Time          // save time
-	RequestID() UserRequestUUID   // user-request domain
+	SuggesterID() UserUUID          //
+	Side1() EducationExamUUID       //
+	Priority() uint64               //
+	Level() uint64                  //
+	Side2() EducationExamUUID       //
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }

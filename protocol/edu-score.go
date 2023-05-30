@@ -4,13 +4,15 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // EducationScore indicate the domain record data fields.
 type EducationScore interface {
-	OrgID() [16]byte            //
-	UserID() protocol.UserID    //
-	Score() uint64              //
-	Time() protocol.Time        // save time
-	RequestID() UserRequestUUID // user-request domain
+	OrgID() OrgUUID                //
+	UserID() UserUUID               //
+	Score() uint64                  //
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }

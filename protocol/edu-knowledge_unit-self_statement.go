@@ -4,13 +4,15 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // EducationKnowledgeUnitSelfStatement indicate the domain record data fields.
 type EducationKnowledgeUnitSelfStatement interface {
-	UserID() protocol.UserID                     //
+	UserID() UserUUID                            //
 	KnowledgeUnitID() EducationKnowledgeUnitUUID //
 	// Language()
-	Time() protocol.Time        // save time
-	RequestID() UserRequestUUID // user-request domain
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }

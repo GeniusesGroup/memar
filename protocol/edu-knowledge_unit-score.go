@@ -4,15 +4,17 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // EducationKnowledgeUnitScore indicate the domain record data fields.
 type EducationKnowledgeUnitScore interface {
-	UserID() protocol.UserID                     //
+	UserID() UserUUID                            //
 	KnowledgeUnitID() EducationKnowledgeUnitUUID //
-	GivenScoreID() protocol.UserID               //
+	GivenScoreID() UserUUID                      //
 	Duration() protocol.Duration                 // time duration to learn
 	Score() uint64                               //
 	Time() protocol.Time                         // save time
-	RequestID() UserRequestUUID                  // user-request domain
+	RequestID() urp.UserRequestUUID              //
 }
