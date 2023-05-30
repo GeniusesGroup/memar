@@ -6,12 +6,13 @@ import (
 	"libgo/protocol"
 	"libgo/time/earth"
 	"libgo/time/utc"
+	urp "org/modules/user-request/protocol"
 )
 
 type NotificationDoNotDisturbTimings interface {
-	NotificationID() [16]byte   //
-	Day() utc.DayElapsed        //
-	DayHours() earth.DayHours   // what hours in a day notification not serve
-	Time() protocol.Time        // save time
-	RequestID() UserRequestUUID // user-request domain
+	NotificationID() [16]byte       //
+	Day() utc.DayElapsed            //
+	DayHours() earth.DayHours       // what hours in a day notification not serve
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }
