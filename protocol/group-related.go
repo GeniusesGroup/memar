@@ -4,12 +4,14 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // GroupRelated indicate the domain record data fields.
 type GroupRelated interface {
-	GroupID() [16]byte          // group domain
-	RelatedGroupID() [16]byte   // group domain. Use to categorize and graph groups
-	Time() protocol.Time        // save time
-	RequestID() UserRequestUUID // user-request domain
+	GroupID() GroupUUID             //
+	RelatedGroupID() GroupUUID      // Use to categorize and graph groups
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }

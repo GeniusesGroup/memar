@@ -4,16 +4,18 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // GroupPolicy indicate the domain record data fields.
 type GroupPolicy interface {
-	GroupID() [16]byte                 // group domain
+	GroupID() GroupUUID                //
 	GetPolicy() GroupPolicy_Policy     // Visibility level
 	SetPolicy() GroupPolicy_Policy     //
 	ForwardPolicy() GroupPolicy_Policy //
 	Time() protocol.Time               // save time
-	RequestID() UserRequestUUID        // user-request domain
+	RequestID() urp.UserRequestUUID    //
 }
 
 type GroupPolicy_StorageServices interface {
@@ -22,7 +24,7 @@ type GroupPolicy_StorageServices interface {
 	Count(groupID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
 	Get(groupID [16]byte, vo protocol.VersionOffset) (cg GroupPolicy, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FindByUserID(ownerUserID [16]byte, offset, limit uint64) (ids [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
+	FindByUserID(owneruserID UserUUID, offset, limit uint64) (ids [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
 }
 
 type GroupPolicy_Policy uint16

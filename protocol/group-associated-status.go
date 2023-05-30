@@ -4,15 +4,17 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // GroupAssociatedStatus indicate the domain record data fields
 type GroupAssociatedStatus interface {
-	GroupID() [16]byte              // group domain
-	UserID() protocol.UserID        // user domain
+	GroupID() GroupUUID             //
+	UserID() UserUUID               //
 	Status() GroupAssociated_Status //
 	Time() protocol.Time            // save time
-	RequestID() UserRequestUUID     // user-request domain
+	RequestID() urp.UserRequestUUID //
 }
 
 type GroupAssociated_Status Quiddity_Status
@@ -21,4 +23,7 @@ const (
 	GroupAssociated_Status_Joined = GroupAssociated_Status(Quiddity_Status_FreeFlag << iota)
 	GroupAssociated_Status_Blocked
 	GroupAssociated_Status_Muted
+
+	GroupAssociated_Status_WaitToAcceptByAdmins
+	GroupAssociated_Status_WaitToAcceptByUser
 )

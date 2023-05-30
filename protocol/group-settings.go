@@ -4,29 +4,24 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
-// GroupRole indicate the domain record data fields.
-type GroupSettings interface {
-	GroupID() [16]byte                     // group domain
-	ArchiveThreadAfter() protocol.Duration //
-	BlockedWords() []string                //
-	Join() GroupSettings                   //
-	Time() protocol.Time                   // save time
-	RequestID() UserRequestUUID            // user-request domain
+// GroupCommentDefaults indicate the domain record data fields.
+type GroupCommentDefaults interface {
+	GroupID() GroupUUID //
+	// ArchiveThreadAfter() protocol.Duration //
+	BlockedWords() []string            //
+	DefaultSettings() Comment_Settings //
+	DefaultStatus() Comment_Status     //
+	Time() protocol.Time               // save time
+	RequestID() urp.UserRequestUUID    //
 }
 
 type GroupSettings_StorageServices interface {
-	Save(gs GroupSettings) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(gs GroupCommentDefaults) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(groupID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(groupID [16]byte, vo protocol.VersionOffset) (gs GroupSettings, nv protocol.NumberOfVersion, err protocol.Error)
+	Get(groupID [16]byte, vo protocol.VersionOffset) (gs GroupCommentDefaults, nv protocol.NumberOfVersion, err protocol.Error)
 }
-
-type GroupSettings_Join uint8
-
-const (
-	GroupSettings_Join_Unset  GroupSettings_Join = 0
-	GroupSettings_Join_Invite GroupSettings_Join = (1 << iota)
-	GroupSettings_Join_AddByMembers
-)

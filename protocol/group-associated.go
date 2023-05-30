@@ -4,13 +4,25 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // GroupAssociated indicate the domain record data fields
 type GroupAssociated interface {
-	GroupID() GroupUUID         // group domain
-	UserID() protocol.UserID    // user domain
-	JoinBy() protocol.UserID    // user domain
-	Time() protocol.Time        // save time
-	RequestID() UserRequestUUID // user-request domain
+	GroupID() GroupUUID               //
+	UserID() UserUUID                 //
+	JoinBy() UserUUID                 //
+	JoinWay() GroupAssociated_JoinWay //
+	Time() protocol.Time              // save time
+	RequestID() urp.UserRequestUUID   //
 }
+
+type GroupAssociated_JoinWay uint8
+
+const (
+	GroupAssociated_JoinWay_Unset GroupAssociated_JoinWay = iota
+	GroupAssociated_JoinWay_Direct
+	GroupAssociated_JoinWay_JoinLink
+	GroupAssociated_JoinWay_Invite
+)

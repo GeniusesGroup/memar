@@ -4,14 +4,16 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // GroupStatus indicate the domain record data fields.
 type GroupStatus interface {
-	GroupID() [16]byte          // group-status domain
-	Status() Group_Status       //
-	Time() protocol.Time        // save time
-	RequestID() UserRequestUUID // user-request domain
+	GroupID() GroupUUID             // group-status domain
+	Status() Group_Status           //
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }
 
 type GroupStatus_StorageServices interface {
@@ -25,7 +27,7 @@ type GroupStatus_StorageServices interface {
 	// protocol.EventTarget
 }
 
-type Group_Status = Quiddity_Status
+type Group_Status Quiddity_Status
 
 const (
 // Group_Status_ = Group_Status(Quiddity_Status_FreeFlag << iota)
