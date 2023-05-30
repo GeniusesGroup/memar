@@ -4,22 +4,24 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // PosServiceArea indicate the domain record data fields.
 // Save shortcut to regular products to easily add to invoice
 type PosProduct interface {
-	PosID() [16]byte            // pos domain
-	ProductID() [16]byte        // product domain.
-	Time() protocol.Time        // save time
-	RequestID() UserRequestUUID // user-request domain
+	PosID() PosUUID                 //
+	ProductID() ProductUUID         //
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }
 
 type PosProduct_StorageServices interface {
 	Save(pp PosProduct) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(posID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(posID [16]byte, vo protocol.VersionOffset) (pp PosProduct, err protocol.Error)
+	Count(posID PosUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(posID PosUUID, vo protocol.VersionOffset) (pp PosProduct, err protocol.Error)
 
-	Delete(posID [16]byte, vo protocol.VersionOffset) (nv protocol.NumberOfVersion, err protocol.Error)
+	Delete(posID PosUUID, vo protocol.VersionOffset) (nv protocol.NumberOfVersion, err protocol.Error)
 }

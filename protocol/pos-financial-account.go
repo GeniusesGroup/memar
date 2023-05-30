@@ -4,12 +4,14 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // PosFinancialAccount or pos operator is to supply a particular service.
 type PosFinancialAccount interface {
-	PosID() [16]byte            // pos domain
-	AccountID() [16]byte        // financial-account domain
-	Time() protocol.Time        // save time
-	RequestID() UserRequestUUID // user-request domain
+	PosID() PosUUID                  //
+	AccountID() FinancialAccountUUID //
+	Time() protocol.Time             // save time
+	RequestID() urp.UserRequestUUID  //
 }

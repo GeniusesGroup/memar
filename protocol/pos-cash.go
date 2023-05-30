@@ -4,14 +4,16 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // PosProvider or pos operator is to supply a particular service.
 type PosCash interface {
-	PosID() [16]byte                    // pos domain
-	AccountID() [16]byte                // financial-account domain
+	PosID() PosUUID                     //
+	AccountID() FinancialAccountUUID    //
 	MaxCash() protocol.MoneyAmount      //
 	MaxCashTransfer() protocol.Duration // from reach the max limit
 	Time() protocol.Time                // save time
-	RequestID() UserRequestUUID         // user-request domain
+	RequestID() urp.UserRequestUUID     //
 }

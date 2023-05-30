@@ -4,22 +4,27 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
+
+// Also can be used in quiddity domains to set title, ...
+type PosUUID = protocol.UUID
 
 // POS indicate the domain record data fields.
 // POS or point-of-sale
 type POS interface {
-	PosID() [16]byte            // quiddity domain
-	Type() POS_Type             //
-	Time() protocol.Time        // save time
-	RequestID() UserRequestUUID // user-request domain
+	PosID() PosUUID                 //
+	Type() POS_Type                 //
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }
 
 type POS_StorageServices interface {
 	Save(pos POS) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(posID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(posID [16]byte, vo protocol.VersionOffset) (pos POS, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(posID PosUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(posID PosUUID, vo protocol.VersionOffset) (pos POS, nv protocol.NumberOfVersion, err protocol.Error)
 }
 
 type POS_Type uint64
