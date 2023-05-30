@@ -4,13 +4,15 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 type DepartmentGroup interface {
-	DepartmentID() [16]byte     // quiddity domain. use to get and show locale title.
-	GroupID() [16]byte          // group id
-	Time() protocol.Time        // save time
-	RequestID() UserRequestUUID // user-request domain
+	DepartmentID() DepartmentUUID   // quiddity domain. use to get and show locale title.
+	GroupID() GroupUUID             // group id
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }
 
 type DepartmentGroup_StorageServices interface {

@@ -4,13 +4,16 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 type DepartmentOffice interface {
-	DepartmentID() [16]byte       // department domain
+	DepartmentID() DepartmentUUID //
 	BuildingLocationID() [16]byte // building-location domain
-	Time() protocol.Time          // save time
-	RequestID() UserRequestUUID   // user-request domain
+	// TODO::: Label or type: IT-Office, ...
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }
 
 type DepartmentOffice_StorageServices interface {

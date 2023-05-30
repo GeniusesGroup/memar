@@ -4,13 +4,15 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 type DepartmentStatus interface {
-	DepartmentID() [16]byte     // department domain
-	Status() Department_Status  //
-	Time() protocol.Time        // save time
-	RequestID() UserRequestUUID // user-request domain
+	DepartmentID() DepartmentUUID   //
+	Status() Department_Status      //
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }
 
 type DepartmentStatus_StorageServices interface {

@@ -4,11 +4,13 @@ package org
 
 import (
 	"libgo/protocol"
+
+	urp "org/modules/user-request/protocol"
 )
 
 // due to organization payment capacity set values to show how many percent add or remove due to organization profit status
 type DepartmentSalaryCoefficients interface {
-	DepartmentID() [16]byte // department domain
+	DepartmentID() DepartmentUUID //
 
 	Importance() protocol.PerMyriad         // importance coefficient of the department
 	Accompanying() protocol.PerMyriad       // Percent for each week
@@ -23,6 +25,6 @@ type DepartmentSalaryCoefficients interface {
 	Income() protocol.PerMyriad           // whole organization income in each week
 	DepartmentIncome() protocol.PerMyriad //
 
-	Time() protocol.Time        // save time
-	RequestID() UserRequestUUID // user-request domain
+	Time() protocol.Time            // save time
+	RequestID() urp.UserRequestUUID //
 }
