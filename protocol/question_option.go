@@ -26,7 +26,7 @@ type QuestionOption_StorageServices interface {
 	Count(questionOptionID QuestionOptionUUID) (nv protocol.NumberOfVersion, err protocol.Error)
 	Get(questionOptionID QuestionOptionUUID, vo protocol.VersionOffset) (f QuestionOption, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FindByType(questionID QuestionOptionUUID, t QuestionOption_Type, offset, limit uint64) (questionIDs []QuestionOptionUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	FilterByType(t QuestionOption_Type, offset, limit uint64) (questionOptionIDs []QuestionOptionUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }
 
 type QuestionOption_Type uint16

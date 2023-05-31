@@ -24,9 +24,9 @@ type QuestionQuestionRelation_StorageServices interface {
 	Count(questionID QuestionUUID) (nv protocol.NumberOfVersion, err protocol.Error)
 	Get(questionID QuestionUUID, vo protocol.VersionOffset) (f QuestionQuestionRelation, nv protocol.NumberOfVersion, err protocol.Error)
 
-	ListAllQuestionRelations(questionID QuestionUUID, offset, limit uint64) (relationID []QuestionUUID, nv protocol.NumberOfVersion, err protocol.Error)
-	FindByRelationID(relationID QuestionUUID, offset, limit uint64) (questionID []QuestionUUID, nv protocol.NumberOfVersion, err protocol.Error)
-	FilterByType(questionID QuestionUUID, t QuestionQuestionRelation_Type, offset, limit uint64) (questionIDs []QuestionUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	FindByRelation(relationID QuestionUUID, offset, limit uint64) (questionIDs []QuestionUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	FindByRelationIDAndType(relationID QuestionUUID, t QuestionQuestionRelation_Type, offset, limit uint64) (questionIDs []QuestionUUID, nv protocol.NumberOfVersion, err protocol.Error)
+    ListRelations(questionID QuestionUUID, offset, limit uint64)(relationIDs []QuestionUUID,nv protocol.NumberOfVersion, err protocol.Error)
 }
 
 type QuestionQuestionRelation_Type uint8

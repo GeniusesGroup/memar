@@ -15,3 +15,11 @@ type QuestionMatching interface {
 	Time() protocol.Time            // Save time
 	RequestID() urp.UserRequestUUID //
 }
+
+type QuestionMatching_StorageServices interface {
+	Save(f QuestionMatching) (nv protocol.NumberOfVersion, err protocol.Error)
+
+	Count(questionID QuestionUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(questionID QuestionUUID, vo protocol.VersionOffset) (f QuestionMatching, nv protocol.NumberOfVersion, err protocol.Error)
+}
+

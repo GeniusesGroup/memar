@@ -28,7 +28,9 @@ type Question_StorageServices interface {
 	Get(questionID QuestionUUID, vo protocol.VersionOffset) (f Question, nv protocol.NumberOfVersion, err protocol.Error)
 
 	// TODO::: a method to find all questions have quiz type??
-	FindByType(questionID QuestionUUID, t Question_Type, offset, limit uint64) (questionIDs []QuestionUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	// FindByType(questionID QuestionUUID, t Question_Type, offset, limit uint64) (questionIDs []QuestionUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	FilterByType(t Question_Type, offset, limit uint64) (questionIDs []QuestionUUID, nv protocol.NumberOfVersion, err protocol.Error)
+
 }
 
 type Question_Type uint32

@@ -24,7 +24,8 @@ type QuestionOptions_StorageServices interface {
 	Count(questionID QuestionUUID) (nv protocol.NumberOfVersion, err protocol.Error)
 	Get(questionID QuestionUUID, vo protocol.VersionOffset) (f QuestionOptions, nv protocol.NumberOfVersion, err protocol.Error)
 
-	ListByOptions(questionID QuestionUUID, offset, limit uint64) (options []QuestionOptionUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	FilterByAlgorithmType(t QuestionOptions_AlgorithmType, offset, limit uint64) (questionIDs []QuestionUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	FilterByType(t QuestionOptions_Type, offset, limit uint64) (questionIDs []QuestionUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }
 
 type QuestionOptions_AlgorithmType uint8

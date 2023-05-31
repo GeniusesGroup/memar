@@ -9,7 +9,7 @@ import (
 )
 
 // QuestionOptionGoal indicate the domain record data fields.
-type QuestionOptionGoal interface {
+type QuestionOptionTarget interface {
 	QuestionOptionID() QuestionOptionUUID //
 	Target() protocol.PerMyriad           // =~ Goal
 	TimeFrame() protocol.Duration         // =~ Interval, TimeSpan, TimeFrame, TimePeriod,
@@ -18,8 +18,8 @@ type QuestionOptionGoal interface {
 }
 
 type QuestionOptionGoal_StorageServices interface {
-	Save(f QuestionOptionGoal) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(f QuestionOptionTarget) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(questionOptionID QuestionUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(questionOptionID QuestionUUID, vo protocol.VersionOffset) (f QuestionOptionGoal, nv protocol.NumberOfVersion, err protocol.Error)
+	Get(questionOptionID QuestionUUID, vo protocol.VersionOffset) (f QuestionOptionTarget, nv protocol.NumberOfVersion, err protocol.Error)
 }
