@@ -23,10 +23,8 @@ type CommentEmail interface {
 }
 
 type CommentEmail_StorageServices interface {
-	Save(c CommentEmail) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm CommentEmail) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(commentID CommentUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(commentID CommentUUID, vo protocol.VersionOffset) (c CommentEmail, nv protocol.NumberOfVersion, err protocol.Error)
-
-	FindByText(text string, offset, limit uint64) (commentIDs []CommentUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	Get(commentID CommentUUID, vo protocol.VersionOffset) (dm CommentEmail, nv protocol.NumberOfVersion, err protocol.Error)
 }

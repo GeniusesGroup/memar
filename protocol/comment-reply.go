@@ -17,10 +17,10 @@ type CommentReply interface {
 }
 
 type CommentReply_StorageServices interface {
-	Save(sf CommentReply) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm CommentReply) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(commentID CommentUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(commentID CommentUUID, vo protocol.VersionOffset) (sf CommentReply, nv protocol.NumberOfVersion, err protocol.Error)
+	Get(commentID CommentUUID, vo protocol.VersionOffset) (dm CommentReply, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FindByReplyTo(replyTo CommentUUID, offset, limit uint64) (commentIDs []CommentUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	FIND_CommentIDs_BY_ReplyToID(replyTo CommentUUID, offset, limit uint64) (commentIDs []CommentUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }

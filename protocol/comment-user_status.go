@@ -19,10 +19,10 @@ type CommentUserStatus interface {
 }
 
 type CommentUserStatus_StorageServices interface {
-	Save(c CommentUserStatus) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm CommentUserStatus) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(commentID CommentUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(commentID CommentUUID, vo protocol.VersionOffset) (c CommentUserStatus, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(commentID CommentUUID, userID up.UserUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(commentID CommentUUID, userID up.UserUUID, vo protocol.VersionOffset) (dm CommentUserStatus, nv protocol.NumberOfVersion, err protocol.Error)
 }
 
 type CommentUser_Status uint8

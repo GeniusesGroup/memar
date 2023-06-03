@@ -15,10 +15,10 @@ type CommentTag interface {
 }
 
 type CommentTag_StorageServices interface {
-	Save(ct CommentTag) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm CommentTag) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(tag string) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(tag string, vo protocol.VersionOffset) (ct CommentTag, nv protocol.NumberOfVersion, err protocol.Error)
+	Get(tag string, vo protocol.VersionOffset) (dm CommentTag, nv protocol.NumberOfVersion, err protocol.Error)
 
 	// TODO:::
 }

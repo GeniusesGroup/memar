@@ -17,10 +17,10 @@ type CommentText interface {
 }
 
 type CommentText_StorageServices interface {
-	Save(c CommentText) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm CommentText) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(commentID CommentUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(commentID CommentUUID, vo protocol.VersionOffset) (c CommentText, nv protocol.NumberOfVersion, err protocol.Error)
+	Get(commentID CommentUUID, vo protocol.VersionOffset) (dm CommentText, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FindByText(text string, offset, limit uint64) (commentIDs []CommentUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	FIND_CommentIDs_BY_Text(text string, offset, limit uint64) (commentIDs []CommentUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }

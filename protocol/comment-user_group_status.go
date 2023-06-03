@@ -19,8 +19,8 @@ type CommentUserGroupStatus interface {
 }
 
 type CommentUserGroupStatus_StorageServices interface {
-	Save(c CommentUserStatus) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm CommentUserStatus) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(userID up.UserUUID, groupID GroupUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(userID up.UserUUID, groupID GroupUUID, vo protocol.VersionOffset) (c CommentUserStatus, nv protocol.NumberOfVersion, err protocol.Error)
+	Get(userID up.UserUUID, groupID GroupUUID, vo protocol.VersionOffset) (dm CommentUserStatus, nv protocol.NumberOfVersion, err protocol.Error)
 }

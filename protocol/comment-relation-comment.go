@@ -18,9 +18,10 @@ type CommentCommentRelation interface {
 }
 
 type CommentCommentRelation_StorageServices interface {
-	Save(sf CommentCommentRelation) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm CommentCommentRelation) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Get(commentID CommentUUID) (sf CommentCommentRelation, err protocol.Error)
+	Get(commentID CommentUUID) (dm CommentCommentRelation, err protocol.Error)
 
-	FindBySideCommentID(sideCommentID CommentUUID, offset, limit uint64) (commentIDs []CommentUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	FIND_CommentIDs_BY_SideCommentID(sideCommentID CommentUUID, offset, limit uint64) (commentIDs []CommentUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }
+

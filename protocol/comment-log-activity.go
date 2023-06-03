@@ -28,11 +28,8 @@ type CommentLogActivity interface {
 }
 
 type CommentLogActivity_StorageServices interface {
-	Save(cm CommentLogActivity) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm CommentLogActivity) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(commentID CommentUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(commentID CommentUUID, vo protocol.VersionOffset) (cm CommentLogActivity, nv protocol.NumberOfVersion, err protocol.Error)
-
-	protocol.EventTarget
+	Get(commentID CommentUUID, vo protocol.VersionOffset) (dm CommentLogActivity, nv protocol.NumberOfVersion, err protocol.Error)
 }
-

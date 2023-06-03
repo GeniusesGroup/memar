@@ -18,11 +18,12 @@ type CommentPin interface {
 }
 
 type CommentPin_StorageServices interface {
-	Save(cp CommentPin) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm CommentPin) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Get(commentID CommentUUID) (cp CommentPin, err protocol.Error)
+	Get(commentID CommentUUID) (dm CommentPin, err protocol.Error)
 
-	FindByGroupID(groupID GroupUUID, offset, limit uint64) (commentIDs []GroupUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	FIND_CommentIDs_BY_GroupID(groupID GroupUUID, offset, limit uint64) (commentIDs []CommentUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	LIST_CommentPinIDs_BY_GroupID(groupID GroupUUID, offset, limit uint64) (commentPinedIDs []CommentUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }
 
 // Unpin service : Hidden status to unpin a comment

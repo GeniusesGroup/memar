@@ -18,11 +18,10 @@ type CommentParticipant interface {
 }
 
 type CommentParticipant_StorageServices interface {
-	Save(cp CommentParticipant) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm CommentParticipant) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(commentID CommentUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(commentID CommentUUID, vo protocol.VersionOffset) (cp CommentParticipant, nv protocol.NumberOfVersion, err protocol.Error)
+	Get(commentID CommentUUID, vo protocol.VersionOffset) (dm CommentParticipant, nv protocol.NumberOfVersion, err protocol.Error)
 
-	// FindByUserID(userID up.UserUUID, offset, limit uint64) (commentIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
-	ListUsers(commentID CommentUUID, offset, limit uint64) (userIDs []up.UserUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	LIST_UserIDs_BY_CommentID(commentID CommentUUID, offset, limit uint64) (userIDs []up.UserUUID , nv protocol.NumberOfVersion, err protocol.Error)
 }

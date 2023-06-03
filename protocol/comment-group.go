@@ -20,16 +20,14 @@ type CommentGroup interface {
 }
 
 type CommentGroup_StorageServices interface {
-	Save(cg CommentGroup) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm CommentGroup) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(groupID GroupUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(groupID GroupUUID, vo protocol.VersionOffset) (cg CommentGroup, nv protocol.NumberOfVersion, err protocol.Error)
+	Get(groupID GroupUUID, vo protocol.VersionOffset) (dm CommentGroup, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FindByComment(commentID CommentUUID) (groupID [16]byte, err protocol.Error)
-	FindByUser(groupID GroupUUID, userID up.UserUUID, offset, limit uint64) (commentIDs []CommentUUID, nv protocol.NumberOfVersion, err protocol.Error)
-
-	ListUserGroups(userID up.UserUUID, offset, limit uint64) (groupIDs []GroupUUID, nv protocol.NumberOfVersion, err protocol.Error)
-	// ListThreads(groupID [16]byte, offset, limit uint64) (commentIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
+	FIND_GroupIDs_BY_CommentID(commentID CommentUUID) (groupIDs []GroupUUID, err protocol.Error)
+	FIND_GroupIDs_BY_UserID(userID up.UserUUID, offset, limit uint64) (groupIDs []GroupUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	LIST_CommentIDs_By_GroupID(groupID GroupUUID, offset, limit uint64) (commentIDs []CommentUUID, nv protocol.NumberOfVersion, err protocol.Error)
 
 	protocol.EventTarget
 }

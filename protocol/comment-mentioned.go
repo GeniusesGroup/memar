@@ -16,10 +16,10 @@ type CommentMentioned interface {
 }
 
 type CommentMentioned_StorageServices interface {
-	Save(cm CommentMentioned) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm CommentMentioned) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(userID up.UserUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(userID up.UserUUID, vo protocol.VersionOffset) (cm CommentMentioned, nv protocol.NumberOfVersion, err protocol.Error)
+	Get(userID up.UserUUID, vo protocol.VersionOffset) (dm CommentMentioned, nv protocol.NumberOfVersion, err protocol.Error)
 
 	protocol.EventTarget
 }

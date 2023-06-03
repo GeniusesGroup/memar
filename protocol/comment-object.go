@@ -18,10 +18,11 @@ type CommentObject interface {
 }
 
 type CommentObject_StorageServices interface {
-	Save(co CommentObject) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm CommentObject) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(commentID CommentUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(commentID CommentUUID, vo protocol.VersionOffset) (co CommentObject, nv protocol.NumberOfVersion, err protocol.Error)
+	Get(commentID CommentUUID, vo protocol.VersionOffset) (dm CommentObject, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FindByObjectID(objectID ObjectUUID, offset, limit uint64) (commentIDs []CommentUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	FIND_CommentIDs_BY_ObjectID(objectID ObjectUUID, offset, limit uint64) (commentIDs []CommentUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }
+
