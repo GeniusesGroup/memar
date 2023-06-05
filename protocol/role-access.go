@@ -17,12 +17,10 @@ type RoleAccess interface {
 }
 
 type RoleAccess_StorageServices interface {
-	Save(ra RoleAccess) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm RoleAccess) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(roleID RoleUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(roleID RoleUUID, vo protocol.VersionOffset) (ra RoleAccess, nv protocol.NumberOfVersion, err protocol.Error)
-
-	protocol.EventTarget
+	Get(roleID RoleUUID, vo protocol.VersionOffset) (dm RoleAccess, nv protocol.NumberOfVersion, err protocol.Error)
 }
 
 // Get				GetRoleAccess

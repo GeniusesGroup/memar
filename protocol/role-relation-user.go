@@ -19,13 +19,14 @@ type RoleUserRelation interface {
 }
 
 type RoleUserRelation_StorageServices interface {
-	Save(ro RoleUserRelation) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm RoleUserRelation) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(roleID RoleUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(roleID RoleUUID, vo protocol.VersionOffset) (ro RoleUserRelation, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(roleID RoleUUID, userID up.UserUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(roleID RoleUUID, userID up.UserUUID, vo protocol.VersionOffset) (dm RoleUserRelation, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FindByOwner(ownerID up.UserUUID, offset, limit uint64) (roleIDs []RoleUUID, nv protocol.NumberOfVersion, err protocol.Error)
-	FindByOrg(orgID RoleUUID, offset, limit uint64) (roleIDs []RoleUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	// FindByOwner(ownerID up.UserUUID, offset, limit uint64) (roleIDs []RoleUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	LIST_RoleIDs_BY_UserID(userID up.UserUUID, offset, limit uint64) (roleIDs []RoleUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	LIST_UserIDs_BY_RoleID(roleID RoleUUID, offset, limit uint64) (userIDs []up.UserUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }
 
 type RoleUserRelation_Type uint8

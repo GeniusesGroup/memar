@@ -19,8 +19,8 @@ type RoleStaff interface {
 }
 
 type RoleStaff_StorageServices interface {
-	Save(rs RoleStaff) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm RoleStaff) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(roleID RoleUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(roleID RoleUUID, vo protocol.VersionOffset) (rs RoleStaff, nv protocol.NumberOfVersion, err protocol.Error)
+	Get(roleID RoleUUID, vo protocol.VersionOffset) (dm RoleStaff, nv protocol.NumberOfVersion, err protocol.Error)
 }

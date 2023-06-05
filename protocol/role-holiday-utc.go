@@ -18,3 +18,10 @@ type RoleHolidayUTC interface {
 	Time() protocol.Time            // save time
 	RequestID() urp.UserRequestUUID //
 }
+
+type RoleHolidayUTC_StorageServices interface {
+	Save(dm RoleHolidayUTC) (nv protocol.NumberOfVersion, err protocol.Error)
+
+	Count(roleID RoleUUID, week utc.WeekElapsed) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(roleID RoleUUID, week utc.WeekElapsed, vo protocol.VersionOffset) (dm RoleHolidayUTC, nv protocol.NumberOfVersion, err protocol.Error)
+}

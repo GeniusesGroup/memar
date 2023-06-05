@@ -10,19 +10,15 @@ import (
 
 // RoleOrganizationRelation indicate the domain record data fields.
 type RoleOrganizationRelation interface {
-	RoleID() RoleUUID               //
 	OrganizationID() OrgUUID        //
+	RoleID() RoleUUID               //
 	Time() protocol.Time            // save time
 	RequestID() urp.UserRequestUUID //
 }
 
 type RoleOrganizationRelation_StorageServices interface {
-	Save(sf RoleOrganizationRelation) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm RoleOrganizationRelation) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(roleID RoleUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(roleID RoleUUID, vo protocol.VersionOffset) (sf RoleOrganizationRelation, nv protocol.NumberOfVersion, err protocol.Error)
-
-	FindByOrg(organizationID OrgUUID, offset, limit uint64) (roleID []RoleUUID, nv protocol.NumberOfVersion, err protocol.Error)
-
-	protocol.EventTarget
+	Count(organizationID OrgUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(organizationID OrgUUID, vo protocol.VersionOffset) (dm RoleOrganizationRelation, nv protocol.NumberOfVersion, err protocol.Error)
 }

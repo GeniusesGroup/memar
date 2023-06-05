@@ -18,12 +18,13 @@ type RoleRoleRelation interface {
 }
 
 type RoleRoleRelation_StorageServices interface {
-	Save(ro RoleRoleRelation) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm RoleRoleRelation) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(roleID RoleUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(roleID RoleUUID, vo protocol.VersionOffset) (ro RoleRoleRelation, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(roleID RoleUUID, otherID RoleUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(roleID RoleUUID, otherID RoleUUID, vo protocol.VersionOffset) (dm RoleRoleRelation, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FindByOther(otherID RoleUUID, offset, limit uint64) (roleIDs []RoleUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	LIST_OtherIDs_BY_RoleID(roleID RoleUUID, offset, limit uint64) (otherIDs []RoleUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	LIST_RoleIDs_BY_OtherID(otherID RoleUUID, offset, limit uint64) (roleIDs []RoleUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }
 
 type RoleRoleRelation_Type uint8

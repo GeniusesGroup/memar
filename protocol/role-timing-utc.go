@@ -19,8 +19,8 @@ type RoleTimingUTC interface {
 }
 
 type RoleTimingUTC_StorageServices interface {
-	Save(rt RoleTimingUTC) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm RoleTimingUTC) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(roleID RoleUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(roleID RoleUUID, vo protocol.VersionOffset) (rt RoleTimingUTC, nv protocol.NumberOfVersion, err protocol.Error)
+	Get(roleID RoleUUID, vo protocol.VersionOffset) (dm RoleTimingUTC, nv protocol.NumberOfVersion, err protocol.Error)
 }

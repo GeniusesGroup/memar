@@ -17,14 +17,14 @@ type RoleStatus interface {
 }
 
 type RoleStatus_StorageServices interface {
-	Save(rs RoleStatus) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm RoleStatus) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(roleID RoleUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(roleID RoleUUID, vo protocol.VersionOffset) (rs RoleStatus, nv protocol.NumberOfVersion, err protocol.Error)
+	Get(roleID RoleUUID, vo protocol.VersionOffset) (dm RoleStatus, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FilterByStatus(status Role_Status, offset, limit uint64) (roleIDs []RoleUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	FILTER_RoleIDs_BY_Status(status Role_Status, offset, limit uint64) (roleIDs []RoleUUID, nv protocol.NumberOfVersion, err protocol.Error)
 
-	// protocol.EventTarget
+	protocol.EventTarget
 }
 
 type Role_Status Quiddity_Status
