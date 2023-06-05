@@ -17,12 +17,12 @@ type VoucherStatus interface {
 }
 
 type VoucherStatus_StorageServices interface {
-	Save(vs VoucherStatus) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm VoucherStatus) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(voucherID VoucherUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(voucherID VoucherUUID, vo protocol.VersionOffset) (vs VoucherStatus, nv protocol.NumberOfVersion, err protocol.Error)
+	Get(voucherID VoucherUUID, vo protocol.VersionOffset) (dm VoucherStatus, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FilterByStatus(status Voucher_Status, offset, limit uint64) (voucherIDs []VoucherUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	FILTER_VoucherIDs_BY_Status(status Voucher_Status, offset, limit uint64) (voucherIDs []VoucherUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }
 
 type Voucher_Status Quiddity_Status

@@ -14,19 +14,20 @@ type VoucherUUID = protocol.UUID
 // Voucher or gift voucher is a bond of the redeemable transaction type which is worth a certain monetary value and
 // which may be spent only for specific reasons or on specific products
 type Voucher interface {
-	VoucherID() VoucherUUID         //
+	VoucherID() VoucherUUID //
+	MaxEachUse() uint8
 	Type() Voucher_Type             //
 	Time() protocol.Time            // save time
 	RequestID() urp.UserRequestUUID //
 }
 
 type Voucher_StorageServices interface {
-	Save(v Voucher) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm Voucher) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(voucherID VoucherUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(voucherID VoucherUUID, vo protocol.VersionOffset) (v Voucher, nv protocol.NumberOfVersion, err protocol.Error)
+	Get(voucherID VoucherUUID, vo protocol.VersionOffset) (dm Voucher, nv protocol.NumberOfVersion, err protocol.Error)
 
-	// FilterByStatus(type Voucher_Type, offset, limit uint64) (voucherIDs []VoucherUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	FIND_VoucherIDs_BY_Type(t Voucher_Type, offset, limit uint64) (voucherIDs []VoucherUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }
 
 type Voucher_Type uint32

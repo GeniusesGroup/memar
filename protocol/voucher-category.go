@@ -13,14 +13,16 @@ import (
 type VoucherCategory interface {
 	VoucherID() VoucherUUID         //
 	Each() uint8                    // Each time use
-	CategoryID() CategoryUUID       //
+	CategoryID() []CategoryUUID     //
 	Time() protocol.Time            // save time
 	RequestID() urp.UserRequestUUID //
 }
 
 type VoucherCategory_StorageServices interface {
-	Save(vc VoucherCategory) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm VoucherCategory) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(voucherID VoucherUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(voucherID VoucherUUID, vo protocol.VersionOffset) (vc VoucherCategory, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(voucherID VoucherUUID, Each uint8) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(voucherID VoucherUUID, Each uint8, vo protocol.VersionOffset) (dm VoucherCategory, nv protocol.NumberOfVersion, err protocol.Error)
+
+	LIST_VoucherIDs_By_CategoryID(categoryID CategoryUUID, offset, limit uint64) (voucherIDs []VoucherUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }

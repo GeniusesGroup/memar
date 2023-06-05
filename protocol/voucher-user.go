@@ -19,10 +19,10 @@ type VoucherUser interface {
 }
 
 type VoucherUser_StorageServices interface {
-	Save(vu VoucherUser) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm VoucherUser) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(voucherID VoucherUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(voucherID VoucherUUID, vo protocol.VersionOffset) (vu VoucherUser, nv protocol.NumberOfVersion, err protocol.Error)
+	Get(voucherID VoucherUUID, vo protocol.VersionOffset) (dm VoucherUser, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FindByUser(userID up.UserUUID, offset, limit uint64) (voucherIDs []VoucherUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	FIND_VoucherIDs_BY_UserID(userID up.UserUUID, offset, limit uint64) (voucherIDs []VoucherUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }

@@ -12,16 +12,16 @@ import (
 type VoucherProduct interface {
 	VoucherID() VoucherUUID         //
 	Each() uint8                    // Each time use
-	ProductID() ProductUUID         //
+	ProductID() []ProductUUID       //
 	Time() protocol.Time            // save time
 	RequestID() urp.UserRequestUUID //
 }
 
 type VoucherProduct_StorageServices interface {
-	Save(vp VoucherProduct) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm VoucherProduct) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(voucherID VoucherUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(voucherID VoucherUUID, vo protocol.VersionOffset) (vp VoucherProduct, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(voucherID VoucherUUID, each uint8) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(voucherID VoucherUUID, each uint8, vo protocol.VersionOffset) (dm VoucherProduct, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FindByProduct(productID ProductUUID, offset, limit uint64) (voucherIDs []VoucherUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	FIND_VoucherIDs_BY_ProductID(productID ProductUUID, offset, limit uint64) (voucherIDs []VoucherUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }

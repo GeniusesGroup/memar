@@ -21,12 +21,12 @@ type VoucherEstate interface {
 }
 
 type VoucherEstate_StorageServices interface {
-	Save(va VoucherEstate) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm VoucherEstate) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(voucherID VoucherUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(voucherID VoucherUUID, vo protocol.VersionOffset) (va VoucherEstate, nv protocol.NumberOfVersion, err protocol.Error)
+	Get(voucherID VoucherUUID, vo protocol.VersionOffset) (dm VoucherEstate, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FindByEstate(EstateID EstateUUID, offset, limit uint64) (voucherIDs []VoucherUUID, nv protocol.NumberOfVersion, err protocol.Error)
-	FindByBuilding(buildingID BuildingUUID, offset, limit uint64) (voucherIDs []VoucherUUID, nv protocol.NumberOfVersion, err protocol.Error)
-	FindByBuildingLocation(buildingLocationID BuildingLocationUUID, offset, limit uint64) (voucherIDs []VoucherUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	FIND_VoucherIDs_BY_EstateID(EstateID EstateUUID, offset, limit uint64) (voucherIDs []VoucherUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	FIND_VoucherIDs_BY_BuildingID(buildingID BuildingUUID, offset, limit uint64) (voucherIDs []VoucherUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	FIND_VoucherIDs_BY_BuildingLocationID(buildingLocationID BuildingLocationUUID, offset, limit uint64) (voucherIDs []VoucherUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }

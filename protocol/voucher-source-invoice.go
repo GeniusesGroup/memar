@@ -18,12 +18,14 @@ type VoucherSourceInvoice interface {
 }
 
 type VoucherSourceInvoice_StorageServices interface {
-	Save(vsi VoucherSourceInvoice) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm VoucherSourceInvoice) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(voucherID VoucherUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(voucherID VoucherUUID, vo protocol.VersionOffset) (vsi VoucherSourceInvoice, nv protocol.NumberOfVersion, err protocol.Error)
+	Get(voucherID VoucherUUID, vo protocol.VersionOffset) (dm VoucherSourceInvoice, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FindByInvoice(invoiceID InvoiceUUID, offset, limit uint64) (voucherIDs []VoucherUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	FIND_VoucherIDs_BY_InvoiceID(invoiceID InvoiceUUID, offset, limit uint64) (voucherIDs []VoucherUUID, nv protocol.NumberOfVersion, err protocol.Error)
+
+	FIND_VoucherIDs_BY_Type(t VoucherSourceInvoice_Type, offset, limit uint64) (voucherIDs []VoucherUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }
 
 type VoucherSourceInvoice_Type uint8

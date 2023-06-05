@@ -17,10 +17,10 @@ type VoucherPOS interface {
 }
 
 type VoucherPOS_StorageServices interface {
-	Save(vp VoucherPOS) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm VoucherPOS) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(voucherID VoucherUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(voucherID VoucherUUID, vo protocol.VersionOffset) (vp VoucherPOS, nv protocol.NumberOfVersion, err protocol.Error)
+	Get(voucherID VoucherUUID, vo protocol.VersionOffset) (dm VoucherPOS, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FindByPOS(posID PosUUID, offset, limit uint64) (voucherIDs []VoucherUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	FIND_VoucherIDs_BY_PosID(posID PosUUID, offset, limit uint64) (voucherIDs []VoucherUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }

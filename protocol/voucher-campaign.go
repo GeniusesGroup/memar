@@ -17,10 +17,10 @@ type VoucherCampaign interface {
 }
 
 type VoucherCampaign_StorageServices interface {
-	Save(vc VoucherCampaign) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm VoucherCampaign) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(voucherID VoucherUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(voucherID VoucherUUID, vo protocol.VersionOffset) (vc VoucherCampaign, nv protocol.NumberOfVersion, err protocol.Error)
+	Get(voucherID VoucherUUID, vo protocol.VersionOffset) (dm VoucherCampaign, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FindByCampaign(campaignID MarketingCampaignUUID, offset, limit uint64) (voucherIDs []VoucherUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	FIND_VoucherIDs_BY_CampaignID(campaignID MarketingCampaignUUID, offset, limit uint64) (voucherIDs []VoucherUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }

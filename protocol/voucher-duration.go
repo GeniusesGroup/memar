@@ -19,10 +19,10 @@ type VoucherDuration interface {
 }
 
 type VoucherDuration_StorageServices interface {
-	Save(vd VoucherDuration) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm VoucherDuration) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(voucherID VoucherUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(voucherID VoucherUUID, vo protocol.VersionOffset) (vd VoucherDuration, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(voucherID VoucherUUID, Each uint8) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(voucherID VoucherUUID, Each uint8, vo protocol.VersionOffset) (dm VoucherDuration, nv protocol.NumberOfVersion, err protocol.Error)
 }
 
 type VoucherDuration_Epoch uint8

@@ -19,8 +19,8 @@ type VoucherInvoice interface {
 }
 
 type VoucherInvoice_StorageServices interface {
-	Save(vi VoucherInvoice) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm VoucherInvoice) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(voucherID VoucherUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(voucherID VoucherUUID, vo protocol.VersionOffset) (vi VoucherInvoice, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(voucherID VoucherUUID, each uint8) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(voucherID VoucherUUID, each uint8 ,vo protocol.VersionOffset) (dm VoucherInvoice, nv protocol.NumberOfVersion, err protocol.Error)
 }
