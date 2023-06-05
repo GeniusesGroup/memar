@@ -17,13 +17,13 @@ type CategoryItem interface {
 }
 
 type CategoryItem_StorageServices interface {
-	Save(ci CategoryItem) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(f CategoryItem) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(categoryID [16]byte, priority uint64) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(categoryID [16]byte, priority uint64, vo protocol.VersionOffset) (ci CategoryItem, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(categoryID CategoryUUID, priority uint64) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(categoryID CategoryUUID, priority uint64, vo protocol.VersionOffset) (f CategoryItem, nv protocol.NumberOfVersion, err protocol.Error)
 
-	ListCategories(itemID [16]byte, offset, limit uint64) (categoryIDs [16]byte, nv protocol.NumberOfVersion, err protocol.Error)
-	ListPriorities(itemID [16]byte, categoryID [16]byte, offset, limit uint64) (priorities []uint64, nv protocol.NumberOfVersion, err protocol.Error)
+	LIST_CategoryIDs_BY_ItemID(itemID [16]byte, offset, limit uint64) (categoryIDs []CategoryUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	LIST_Priorities_BY_CategoryID(itemID [16]byte, categoryID CategoryUUID, offset, limit uint64) (priorities []uint64, nv protocol.NumberOfVersion, err protocol.Error)
 }
 
 // services:

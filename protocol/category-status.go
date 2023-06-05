@@ -16,14 +16,14 @@ type CategoryStatus interface {
 }
 
 type CategoryStatus_StorageServices interface {
-	Save(gs CategoryStatus) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm CategoryStatus) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(categoryID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(categoryID [16]byte, vo protocol.VersionOffset) (gs CategoryStatus, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(categoryID CategoryUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(categoryID CategoryUUID, vo protocol.VersionOffset) (dm CategoryStatus, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FilterByStatus(status Category_Status, offset, limit uint64) (categoryIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
+	FILTER_CategoryIDs_BY_Status(status Category_Status, offset, limit uint64) (categoryIDs []CategoryUUID, nv protocol.NumberOfVersion, err protocol.Error)
 
-	// protocol.EventTarget
+	protocol.EventTarget
 }
 
 type Category_Status Quiddity_Status

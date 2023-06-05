@@ -21,3 +21,12 @@ type CategoryTax interface {
 	Time() protocol.Time            // save time
 	RequestID() urp.UserRequestUUID //
 }
+
+type CategoryTax_StorageServices interface {
+	Save(dm CategoryTax) (nv protocol.NumberOfVersion, err protocol.Error)
+
+	Count(categoryID CategoryUUID, SocietyID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(categoryID CategoryUUID, SocietyID [16]byte, vo protocol.VersionOffset) (dm CategoryTax, nv protocol.NumberOfVersion, err protocol.Error)
+
+	LIST_CategoryIDs_BY_SocietyID(SocietyID [16]byte, offset, limit uint64) (categoryIDs []CategoryUUID, nv protocol.NumberOfVersion, err protocol.Error)
+}

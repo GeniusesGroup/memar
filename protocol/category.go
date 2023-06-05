@@ -20,10 +20,11 @@ type Category interface {
 }
 
 type Category_StorageServices interface {
-	Save(c Category) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm Category) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(categoryID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(categoryID [16]byte, vo protocol.VersionOffset) (gs CategoryStatus, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(categoryID CategoryUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(categoryID CategoryUUID, vo protocol.VersionOffset) (dm CategoryStatus, nv protocol.NumberOfVersion, err protocol.Error)
 
-	GetIDs(offset, limit uint64) (categoryIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
+	FIND_CategoryIDs_BY_ParentID(parentID CategoryUUID, offset, limit uint64) (categoryIDs []CategoryUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	LIST_ParentIDs_BY_CategoryID(categoryID CategoryUUID, offset, limit uint64) (parentIDs []CategoryUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }
