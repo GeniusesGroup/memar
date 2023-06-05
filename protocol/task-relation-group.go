@@ -19,10 +19,13 @@ type TaskRelationGroup interface {
 }
 
 type TaskRelationGroup_StorageServices interface {
-	Save(f TaskRelationGroup) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm TaskRelationGroup) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(groupID GroupUUID, taskID TaskUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(groupID GroupUUID, taskID TaskUUID, vo protocol.VersionOffset) (f TaskRelationGroup, nv protocol.NumberOfVersion, err protocol.Error)
+	Get(groupID GroupUUID, taskID TaskUUID, vo protocol.VersionOffset) (dm TaskRelationGroup, nv protocol.NumberOfVersion, err protocol.Error)
+
+	LIST_TaskIDs_BY_GroupID(groupID GroupUUID, offset, limit uint64) (taskIDs []TaskUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	LIST_GroupIDs_BY_TaskID(taskID TaskUUID, offset, limit uint64) (groupIDs []GroupUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }
 
 type TaskRelationGroup_Type uint8

@@ -27,10 +27,12 @@ type TaskCriterion interface {
 }
 
 type TaskCriterion_StorageServices interface {
-	Save(f TaskCriterion) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm TaskCriterion) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(taskID TaskUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(taskID TaskUUID, vo protocol.VersionOffset) (f TaskCriterion, nv protocol.NumberOfVersion, err protocol.Error)
+	Get(taskID TaskUUID, vo protocol.VersionOffset) (dm TaskCriterion, nv protocol.NumberOfVersion, err protocol.Error)
+
+	FILTER_TaskIDs_BY_Type(t TaskCriterion_Type, offset, limit uint64) (taskIDs []TaskUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }
 
 type TaskCriterion_Type uint8

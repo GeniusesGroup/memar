@@ -21,8 +21,8 @@ type TaskTemplate interface {
 }
 
 type TaskTemplate_StorageServices interface {
-	Save(f TaskTemplate) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm TaskTemplate) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(taskID TaskUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(taskID TaskUUID, vo protocol.VersionOffset) (f TaskTemplate, nv protocol.NumberOfVersion, err protocol.Error)
+	Get(taskID TaskUUID, vo protocol.VersionOffset) (dm TaskTemplate, nv protocol.NumberOfVersion, err protocol.Error)
 }

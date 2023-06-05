@@ -17,10 +17,12 @@ type TaskStatus interface {
 }
 
 type TaskStatus_StorageServices interface {
-	Save(f TaskStatus) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm TaskStatus) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(taskID TaskUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(taskID TaskUUID, vo protocol.VersionOffset) (f TaskStatus, nv protocol.NumberOfVersion, err protocol.Error)
+	Get(taskID TaskUUID, vo protocol.VersionOffset) (dm TaskStatus, nv protocol.NumberOfVersion, err protocol.Error)
+
+	FILTER_TaskIDs_BY_Status(status Task_Status, offset, limit uint64) (taskIDs []TaskUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }
 
 type Task_Status Quiddity_Status

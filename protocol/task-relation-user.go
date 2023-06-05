@@ -19,10 +19,13 @@ type TaskRelationUser interface {
 }
 
 type TaskRelationUser_StorageServices interface {
-	Save(f TaskRelationUser) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm TaskRelationUser) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(userID up.UserUUID, taskID TaskUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(userID up.UserUUID, taskID TaskUUID, vo protocol.VersionOffset) (f TaskRelationUser, nv protocol.NumberOfVersion, err protocol.Error)
+	Get(userID up.UserUUID, taskID TaskUUID, vo protocol.VersionOffset) (dm TaskRelationUser, nv protocol.NumberOfVersion, err protocol.Error)
+
+	LIST_TaskIDs_BY_UserID(userID up.UserUUID, offset, limit uint64) (taskIDs []TaskUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	LIST_UserIDs_BY_TaskID(taskID TaskUUID, offset, limit uint64) (userIDs []up.UserUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }
 
 type TaskRelationUser_Type uint8

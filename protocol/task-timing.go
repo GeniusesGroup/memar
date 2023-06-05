@@ -18,8 +18,8 @@ type TaskTiming interface {
 }
 
 type TaskTiming_StorageServices interface {
-	Save(f TaskTiming) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm TaskTiming) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(taskID TaskUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(taskID TaskUUID, vo protocol.VersionOffset) (f TaskTiming, nv protocol.NumberOfVersion, err protocol.Error)
+	Get(taskID TaskUUID, vo protocol.VersionOffset) (dm TaskTiming, nv protocol.NumberOfVersion, err protocol.Error)
 }

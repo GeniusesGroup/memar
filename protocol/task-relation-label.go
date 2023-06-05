@@ -17,10 +17,10 @@ type TaskLabel interface {
 }
 
 type TaskLabel_StorageServices interface {
-	Save(f TaskLabel) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm TaskLabel) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(taskID TaskUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(taskID TaskUUID, vo protocol.VersionOffset) (f TaskLabel, nv protocol.NumberOfVersion, err protocol.Error)
+	Get(taskID TaskUUID, vo protocol.VersionOffset) (dm TaskLabel, nv protocol.NumberOfVersion, err protocol.Error)
 }
 
 // default labels:

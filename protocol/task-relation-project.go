@@ -20,12 +20,14 @@ type TaskRelationProject interface {
 }
 
 type TaskRelationProject_StorageServices interface {
-	Save(f TaskRelationProject) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm TaskRelationProject) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(projectID ProjectUUID,taskID TaskUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(projectID ProjectUUID ,taskID TaskUUID, vo protocol.VersionOffset) (f TaskRelationProject, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(projectID ProjectUUID, taskID TaskUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(projectID ProjectUUID, taskID TaskUUID, vo protocol.VersionOffset) (dm TaskRelationProject, nv protocol.NumberOfVersion, err protocol.Error)
+
+	List_ProjectIDs_BY_TaskID(taskID TaskUUID, offset, limit uint64) (projectIDs []ProjectUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	LIST_TaskIDs_BY_ProjectID(projectID ProjectUUID, offset, limit uint64) (taskIDs []TaskUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }
-
 
 type TaskRelationProject_Type uint32
 
