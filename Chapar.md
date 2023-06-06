@@ -33,6 +33,7 @@ Anywhere in this document talk about [Ethernet](https://en.wikipedia.org/wiki/Et
 - **Frames congestion** on any ports force still use cache on ports interfaces that can drop up to 50% efficiency. Suggest use computer hardware studies e.g. PCI-Express(PCIe), ...  to handle this consideration in best effort.
 
 ## Topology Example
+- [Some diagrams](https://viewer.diagrams.net/?tags=%7B%7D&highlight=0000ff&edit=_blank&layers=1&nav=1#R7V1Lk5s4EP4te3Btcpgp3tjHzCTZpCqp3aqp2k2OMsigHYxYkF%2F59SuBZCOEsT3GwIx9GUPrAfT3davVEszIfJyv%2F0hBEn7HPoxGhuavR%2BbHkWGMxxr9ywSbQmCzMyYIUuQXIn0neEK%2FIBfydsEC%2BTCTKhKMI4ISWejhOIYekWQgTfFKrjbDkXzVBARQETx5IFKl%2FyCfhPyxDHcn%2FwJREIor686kKJkDUZk%2FSRYCH69KIvPTyHxMMSbF0Xz9CCOmO6GXot3nPaXbG0thTI5p8DWZLZdfn0P7aakB68fi8e%2Fg%2B92Y3xvZiAeGPn1%2BfopTEuIAxyD6tJM%2BpHgR%2B5D1qtGzXZ1vGCdUqFPhv5CQDQcTLAimopDMI14K14j8YM3vXZuf%2FuS9seOP6%2FLJRpzEJN0UrWxx%2BrNctmuWn4l2GQEp%2BcCYQAVeBLIMeUL8GUXingo9sIffq14uyvAi9WCDTgVNQRpA0lDP2JKAGg%2FEc0hvm7ZLYQQIWsr3ATiNg229HdL0gIN9AvCTfoF%2FEe7uGwHePBP4vCl9MrApVUgwiklW6vkvJqAV1sKhclvnjpj7qc97qttmU3V6UFx%2FR8Dtg7yckzb3lEsQLbgWknBDYQOsaUIJ1y9pjTJr9UbW9kS%2Bc0ml0MCVWbAdlkUPBdd5o4pLaoERukqInAXafLFWuEAH2IQdJin2YEZv8GEVIgKfEpArbkXjExnZKfCeg5wffy5IhGIoobKEKYHrZlxUffMGlqw3XeP%2BdrWLIXQRGISl%2BMHR9iN0lr8XwN1G%2BhZtzujI4Z%2BFvDW5edXzEG7dq%2FbtVo3X6lYH6FdrdHmzriOtq5VAWLEuq2frMl%2BrdVmDsy5LUaVhO1TwDqf0r2PbJj2jXWv39%2FfvVUOLfUHnGDNFPfggC3O70mWlMvlfgBCYxrnE0Myc%2BSl%2B3qZ9DMUwj7UEVeElhdo1%2BhSyMw3BHlfwNCdyF4WBKoZQMws40NGlpwGOwoNFkkDGgQhs2G%2F3Lvbl4HOlaveO47itAG25Ewkf8ziHd9Bznk4YURHPZhmU6pyar1DuxWhOWByof5mMhW6%2BLuqdmw1oh2YvZNmpDKpcxm3mT2PtC7FHHd4Ou7VvYAojmQ8gQgEbtzwKP21lPrAogEWgH3jBHPl%2BQT2YoV9gmvfHyMdVSDu3H0b2x6Ywgi%2Bw8Maj7bJGmXUNNtLgBl1duEGuexFBvZStYqlJbqC6pNZwtG%2FDU%2FN0tx2%2F0ZXjUK5zYOg5UF92HseMla0Rs9flPXGc5%2B62Kz5DmXvq7kWGSNNxZK5X50aXDpV7XdiTITeuFXPL7hRzo9fcvoT5dQBuTGTAjXHH%2BVu9T8BPWsx5O5g7PWNu9Iv5NUJu9gx5L9mFPWsH14K51jPmVq%2BYXx%2Fgutsz4PZgAL%2BagF3Xew7YneFgfq2QdzwvFxvGSznC4XDAvVYSuB3b%2FYDycdeCuZKc6Rrznnfau0PeANTRXN2yOt4BNJiE3LUAPukZ8J4Tctdo42bPkPecjxv0xs6OkjOdY95vQu5owIePZDXr0jWSujody1AcUMCGv023qjtThBu9bdM11Y1MfMtzvk%2B3eTMMVQSRdVfsu33EEW293bo7o46qIjp%2B31MdWHV7ec%2FCxVRwce9tBRm3Bphq%2Bqk9YNSdSVcIjKHpEjCGpRpMt7Co%2B5lvsOzGgN5gUQeFK4TFHJ4XGyu4jAwnYuqe0oOA5A9eCGY4DzN2wDj%2FLbAouMvyGOsDraBbybpoxstFR1R3TBkRDZYNbbrw2ZudtL8VIl7IYOfXTUV9WhAyhsTRJv%2BBeeNAvABG44U8YFDaoTgjEPhMh2AJt00LihW0qzYREqrE4jEVcUkdB%2BnZ5q5hFrQWuj2J%2BS2w1XbGFbqqTmS74bSbd5bUYEhBo4tZw563qLdlg3mL2jr2uxmWUU%2BFc%2BciYsVXfOpCfMLnwLbi1j57UfPCYPUVUi1ezOnfvFTrOfMw5MSD1ewt7rR7rryzt7RXOHPk%2FPXkr7YY9dfZvxW9sX5%2FW9GFkZdIXholS%2B%2FHatMUMSYMeQZeAcV2aibgdRHS5cYcdZ73xnzESz8K0qJvse1jx6kLvdduHRinLpwzs4wjxqmhJ8%2BEpYg55%2BTI3Fn1naXWTNeuyZ01j%2F497xgb9vh%2FGdPrari3Thm%2BW7NrNf58vUOzOT5ibB53OjZ3mb1YhTBmQ9QKS0kLzQPx7yTXQgrVxAJmbTIwh5LHme7SHbeMQznjIL%2BtbNdlHOqGEPtiQ4gaW1%2BOYSkMFhFIR4dzYg6YM7uPp1lu%2FqUsV7V%2B4V14rizPtd7SYCeSciyT0u3b69k1K0%2BvL1jU5cFkANGiunIkeJ8lIK61bK9gG7PqNJi%2B04ovJomf97mqtNz8Z2COok1R9QuMlpAZQqm85B507h54QXFRVhLjdA6iUtkSpAjQX2pOgCxS9jHvxnoeSPZVWXEVs0JLK6Z3WgTZd5vu6ON7KA7UljhNQhDzLo1CxtzAHbd8Jt4avyhDNFiO%2BZU08ah5CUlpZzPav7gSN2HGifxr46XLrHDqyze27Ys%2By%2FQZ0e5Yn4WjuOOskurt2H1XwdFgJsYgLB%2B8L92pDz2c0qgXx3ckRN5znJsTa45iRJDQT7VuCcvGeqXbkerNIgxIVTk%2BypIIbET13EwN7Tc0Z54AxKR2qEmY%2B82nO1vPXpC82bkf8Bct%2BIXK57AcTXULVo1XMC7mFepeLrh5hZtXeLteYeg%2BwRarOr35hP3TzptPuPmEm0%2FowCdYtryXpv9AQf0W%2BM0p3JzCW3YKA5w%2BWLbRVaxAT3f%2FYapYMNj9my7z0%2F8%3D)
 - Two-tier network with core/edge. With just 1 core chapar switch and 256 edge chapar switches can connect 65280(65536-256) host to the network of course with just one physical link between core and edge switches. If we provide two core switches that have two physical link between cores and edges switches, the network can connect 65024(65536-256-256) host to the network.
 - Three-tier network with core/distribution/access. With just 1 core chapar switch and 256 distribution chapar switches and 65280 access switches can connect 16,646,400(65280\*255) host to the network of course with just one physical link between core/distribution/access switches. If we want 2 core switch and each access switch connect to two distribution switches can connect 16,516,096(65024\*254) host to the network.    
 A Chaparkhane device (router) with 32GB of ram easily handle all connections if one router outer network capacity satisfy the network nodes. Beware nodes just need Chaparkhane for outer network routing without support for anything bad like [NAT](https://en.wikipedia.org/wiki/Network_address_translation) and inner network connections just use Chaparkhane as coordinator with high secure connection by help of GP or IPsec.
@@ -60,12 +61,9 @@ A Chaparkhane device (router) with 32GB of ram easily handle all connections if 
 - Payload: Can be any upper-layer packet data that type indicates by the next header.
 
 ## Frame Types
-Chapar support **UniCast** and **BroadCast** frame and not support **MultiCast**. We strongly suggest use broadcast frames just in network discoverable mechanism like find GP network coordinators. Also to broadcast emergency messages service, not to use to broadcast video channels, ...
+Chapar support **UniCast** and **BroadCast** frame and not support **AnyCast** or **MultiCast**. We strongly suggest use broadcast frames just in network discoverable mechanism like find GP network coordinators. Also to broadcast emergency messages service, not to use to broadcast video channels, ...
 
 ## Switching
-
-### Adaptor
-When two peer connect by two different port number, one of them must be as switching adaptor. That means **usually higher hop** must add virtual switch hop to switching road. It will add one more hop port number in each chapar frame. Suggest to be addable port protocol like [SFP](https://en.wikipedia.org/wiki/Small_form-factor_pluggable_transceiver).
 
 ### Blocking Switch
 Transmitting will block sender until frame transmitted successfully. Sender can be sure frame transmitted.
@@ -75,9 +73,10 @@ Transmitting will not block caller to be non blocking and queue frames for conge
 A situation might be occur that a port available when a frame queued but when the time to send is come, the port broken and sender don't know about this.
 
 ## Rules
-- Frame size can be up to 8192 Byte or 8KB. Enough to stream 1.5Mbps video call in each 40ms frames (1.5/8*1024/1000*40=7.68KB).
+- Frame size can be up to 8192 Byte or 8KB. Enough to stream 1.5Mbps video call in each 40ms frames (`1.5/8*1024/1000*40=7.68KB`).
 - Due to the frame must have at least one hop, Use unused HopCount==0 for broadCast frames to all ports. So both HopCount==0x00 & HopCount==0xff have 255 hop port number space in frame header.
 - BroadCast frame must have all hop port number space with 0-byte data in the header, otherwise frame payload rewrite by switches devices.
+- When two peer connect by two different port number, one of them must be as switching adaptor. That means **usually higher hop** must add virtual switch hop to switching road. It will add one more hop port number in each chapar frame.
 - In each hop, the Switch device must rewrite the received port number on the frame. The reasons are:
     - BroadcastFrame: To improve performance, the previous switch just sends a frame without declaring the next port.
     - UnicastFrame: To be sure receive port is the same with declaration one in a frame.
@@ -110,6 +109,9 @@ The line processing unit (LPU) provides physical interfaces connecting the SFU(s
 - QSFP28 Port
 - Combo Port
 - Stack Port
+
+### Adaptor
+Suggest to be addable port protocol like [SFP](https://en.wikipedia.org/wiki/Small_form-factor_pluggable_transceiver).
 
 ### Port Interfaces
 offer diverse wired and wireless interfaces, for example, Ethernet(Layer1), [Power-line Communication](https://en.wikipedia.org/wiki/Power-line_communication), radio frequency(RF), RS485, RS232, ...
