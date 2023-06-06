@@ -10,22 +10,18 @@ import (
 
 type StaffStatus interface {
 	StaffID() StaffUUID             //
-	OrganizationID() OrgUUID        // TODO::: change storage service
 	Status() Staff_Status           //
 	Time() protocol.Time            // save time
 	RequestID() urp.UserRequestUUID //
 }
 
 type StaffStatus_StorageServices interface {
-	Save(f StaffStatus) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm StaffStatus) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(staffID StaffUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(staffID StaffUUID, vo protocol.VersionOffset) (f StaffStatus, nv protocol.NumberOfVersion, err protocol.Error)
+	Get(staffID StaffUUID, vo protocol.VersionOffset) (dm StaffStatus, nv protocol.NumberOfVersion, err protocol.Error)
 
-	// indexing ?? FindByStatus ?
-	FilterByStatus(status Staff_Status, offset, limit uint64) (staffIDs []StaffUUID, nv protocol.NumberOfVersion, err protocol.Error)
-
-	// protocol.EventTarget
+	FILTER_StaffIDs_BY_Status(status Staff_Status, offset, limit uint64) (staffIDs []StaffUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }
 
 type Staff_Status Quiddity_Status

@@ -13,16 +13,18 @@ import (
 type StaffShift interface {
 	StaffID() StaffUUID             //
 	Day() utc.DayElapsed            //
-	ShiftID() [16]byte              // org-shift domain
+	ShiftID() ShiftUUID            
 	Time() protocol.Time            // save time
 	RequestID() urp.UserRequestUUID //
 }
 
 type StaffShift_StorageServices interface {
-	Save(f StaffShift) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm StaffShift) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(staffID StaffUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(staffID StaffUUID, vo protocol.VersionOffset) (f StaffShift, nv protocol.NumberOfVersion, err protocol.Error)
-    
-	// list shifts per staffID ?
+	Count(staffID StaffUUID, day utc.DayElapsed) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(staffID StaffUUID, day utc.DayElapsed, vo protocol.VersionOffset) (dm StaffShift, nv protocol.NumberOfVersion, err protocol.Error)
+
+
+    LIST_StaffIDs_BY_Day(day utc.DayElapsed, offset, limit uint64) (staffIDs []StaffUUID, nv protocol.NumberOfVersion, err protocol.Error)
+
 }

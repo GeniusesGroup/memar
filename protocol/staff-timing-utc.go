@@ -11,17 +11,19 @@ import (
 )
 
 type StaffTimingUTC interface {
-	StaffID() StaffUUID             //
-	ShiftID() [16]byte              // org-shift domain
-	Day() utc.DayElapsed            //
+	StaffID() StaffUUID  //
+	Day() utc.DayElapsed //
+	ShiftID() ShiftUUID
 	DayHours() earth.DayHours       // what hours in a day this staff must active to provide services or do projects
 	Time() protocol.Time            // save time
 	RequestID() urp.UserRequestUUID //
 }
 
 type StaffTimingUTC_StorageServices interface {
-	Save(st StaffTimingUTC) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm StaffTimingUTC) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(staffID StaffUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(staffID StaffUUID, vo protocol.VersionOffset) (st StaffTimingUTC, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(staffID StaffUUID, day utc.DayElapsed) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(staffID StaffUUID, day utc.DayElapsed, vo protocol.VersionOffset) (dm StaffTimingUTC, nv protocol.NumberOfVersion, err protocol.Error)
+
+	// FIND_StaffIDs_BY_ShiftID(shiftID ShiftUUID, offset, limit uint64) (staffIDs []StaffUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }

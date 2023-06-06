@@ -18,9 +18,11 @@ type StaffEvaluation interface {
 }
 
 type StaffEvaluation_StorageServices interface {
-	Save(f StaffEvaluation) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm StaffEvaluation) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(staffID StaffUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(staffID StaffUUID, vo protocol.VersionOffset) (f StaffEvaluation, nv protocol.NumberOfVersion, err protocol.Error)
+	Get(staffID StaffUUID, vo protocol.VersionOffset) (dm StaffEvaluation, nv protocol.NumberOfVersion, err protocol.Error)
 
+	FIND_StaffIDs_BY_EvaluatorIDs(evaluatorID StaffUUID, offset, limit uint64) (staffIDs []StaffUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	LIST_EvaluatorIDs_BY_StaffID(staffID StaffUUID, offset, limit uint64) (evaluatorIDs []StaffUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }

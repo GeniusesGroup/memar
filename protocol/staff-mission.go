@@ -20,16 +20,17 @@ type StaffMission interface {
 }
 
 type StaffMission_StorageServices interface {
-	Save(f StaffMission) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm StaffMission) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(staffID StaffUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(staffID StaffUUID, vo protocol.VersionOffset) (f StaffMission, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(staffID StaffUUID, day utc.DayElapsed) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(staffID StaffUUID, day utc.DayElapsed, vo protocol.VersionOffset) (dm StaffMission, nv protocol.NumberOfVersion, err protocol.Error)
+
+	LIST_StaffIDs_BY_Day(day utc.DayElapsed, offset, limit uint64) (staffIDs []StaffUUID, nv protocol.NumberOfVersion, err protocol.Error)
 
 	// we may need indexing based on mission type ??
 	// FindByType(t StaffMission_Type, offset, limit uint64) (staffIDs []StaffUUID, nv protocol.NumberOfVersion, err protocol.Error)
 
 }
-
 
 type StaffMission_Type uint8
 

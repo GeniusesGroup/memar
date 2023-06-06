@@ -17,8 +17,8 @@ type StaffSalary interface {
 }
 
 type StaffSalary_StorageServices interface {
-	Save(f StaffSalary) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm StaffSalary) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(staffID StaffUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(staffID StaffUUID, vo protocol.VersionOffset) (f StaffSalary, nv protocol.NumberOfVersion, err protocol.Error)
+	Get(staffID StaffUUID, vo protocol.VersionOffset) (dm StaffSalary, nv protocol.NumberOfVersion, err protocol.Error)
 }

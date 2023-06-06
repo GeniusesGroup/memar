@@ -17,8 +17,8 @@ type StaffReferral interface {
 }
 
 type StaffReferral_StorageServices interface {
-	Save(f StaffReferral) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm StaffReferral) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(staffID StaffUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(staffID StaffUUID, vo protocol.VersionOffset) (f StaffReferral, nv protocol.NumberOfVersion, err protocol.Error)
+	Get(staffID StaffUUID, vo protocol.VersionOffset) (dm StaffReferral, nv protocol.NumberOfVersion, err protocol.Error)
 }

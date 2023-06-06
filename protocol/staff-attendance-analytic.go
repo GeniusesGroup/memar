@@ -19,8 +19,8 @@ type StaffAttendanceAnalytic interface {
 }
 
 type StaffAttendanceAnalytic_StorageServices interface {
-	Save(f StaffAttendanceAnalytic) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm StaffAttendanceAnalytic) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(staffID StaffUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(staffID StaffUUID, vo protocol.VersionOffset) (f StaffAttendanceAnalytic, nv protocol.NumberOfVersion, err protocol.Error)
+	Get(staffID StaffUUID, vo protocol.VersionOffset) (dm StaffAttendanceAnalytic, nv protocol.NumberOfVersion, err protocol.Error)
 }

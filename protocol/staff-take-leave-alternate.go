@@ -13,16 +13,16 @@ import (
 type StaffTakeLeaveAlternate interface {
 	StaffID() StaffUUID             //
 	Day() utc.DayElapsed            //
-	PresentedID() [16]byte          //
+	PresentedID() StaffUUID         //
 	Time() protocol.Time            // save time
 	RequestID() urp.UserRequestUUID //
 }
 
 type StaffTakeLeaveAlternate_StorageServices interface {
-	Save(f StaffTakeLeaveAlternate) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm StaffTakeLeaveAlternate) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(staffID StaffUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(staffID StaffUUID, vo protocol.VersionOffset) (f StaffTakeLeaveAlternate, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(staffID StaffUUID, day utc.DayElapsed) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(staffID StaffUUID, day utc.DayElapsed, vo protocol.VersionOffset) (dm StaffTakeLeaveAlternate, nv protocol.NumberOfVersion, err protocol.Error)
 
 	// protocol.EventTarget
 }

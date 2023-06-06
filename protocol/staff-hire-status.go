@@ -22,8 +22,8 @@ type StaffHireStatus_StorageServices interface {
 	Count(userID up.UserUUID) (nv protocol.NumberOfVersion, err protocol.Error)
 	Get(userID up.UserUUID, vo protocol.VersionOffset) (f StaffHireStatus, nv protocol.NumberOfVersion, err protocol.Error)
 
-	Find_ByStatus(status StaffHire_Status, offset, limit uint64) (userIDs []up.UserUUID, nv protocol.NumberOfVersion, err protocol.Error)
-	Find_ByStatus_Current(status StaffHire_Status, offset, limit uint64) (userIDs []up.UserUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	FIND_UserIDs_BY_Status(status StaffHire_Status, offset, limit uint64) (userIDs []up.UserUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	FIND_UserIDs_BY_Status_Current(status StaffHire_Status, offset, limit uint64) (userIDs []up.UserUUID, nv protocol.NumberOfVersion, err protocol.Error)
 
 	// protocol.EventTarget
 }

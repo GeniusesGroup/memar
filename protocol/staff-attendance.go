@@ -17,12 +17,11 @@ type StaffAttendance interface {
 }
 
 type StaffAttendance_StorageServices interface {
-	Save(f StaffAttendance) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm StaffAttendance) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(staffID StaffUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(staffID StaffUUID, vo protocol.VersionOffset) (f StaffAttendance, nv protocol.NumberOfVersion, err protocol.Error)
+	Get(staffID StaffUUID, vo protocol.VersionOffset) (dm StaffAttendance, nv protocol.NumberOfVersion, err protocol.Error)
 }
-
 
 type StaffAttendance_Type uint8
 
