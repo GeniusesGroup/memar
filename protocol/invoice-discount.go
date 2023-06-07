@@ -18,12 +18,12 @@ type InvoiceDiscount interface {
 }
 
 type InvoiceDiscount_StorageServices interface {
-	Save(iv InvoiceDiscount) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm InvoiceDiscount) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(invoiceID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(invoiceID [16]byte, vo protocol.VersionOffset) (iv InvoiceDiscount, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(invoiceID InvoiceUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(invoiceID InvoiceUUID, vo protocol.VersionOffset) (dm InvoiceDiscount, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FindByDiscountID(discountID [16]byte, offset, limit uint64) (invoiceIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
+	FIND_InvoiceIDs_BY_DiscountID(discountID DiscountUUID, offset, limit uint64) (invoiceIDs []InvoiceUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }
 
 // TODO::: discount status???

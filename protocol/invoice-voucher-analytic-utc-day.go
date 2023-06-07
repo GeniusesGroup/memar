@@ -14,3 +14,10 @@ type InvoiceVoucherAnalyticUtcDay interface {
 	RedeemedAmount() protocol.MoneyAmount // Total
 	Time() protocol.Time                  // save time
 }
+
+type InvoiceVoucherAnalyticUtcDay_StorageServices interface {
+	Save(dm InvoiceVoucherAnalyticUtcDay) (nv protocol.NumberOfVersion, err protocol.Error)
+
+	Count() (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(vo protocol.VersionOffset) (dm InvoiceVoucherAnalyticUtcDay, nv protocol.NumberOfVersion, err protocol.Error)
+}

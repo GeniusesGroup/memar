@@ -20,12 +20,12 @@ type InvoiceSides interface {
 }
 
 type InvoiceSides_StorageServices interface {
-	Save(is InvoiceSides) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm InvoiceSides) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(invoiceID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(invoiceID [16]byte, vo protocol.VersionOffset) (is InvoiceSides, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(invoiceID InvoiceUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(invoiceID InvoiceUUID, vo protocol.VersionOffset) (dm InvoiceSides, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FindByUser(userID up.UserUUID, typ InvoiceSides_Type, offset, limit uint64) (invoiceIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
+	FIND_InvoiceIDs_BY_UserID_AND_Type(userID up.UserUUID, t InvoiceSides_Type, offset, limit uint64) (invoiceIDs []InvoiceUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }
 
 type InvoiceSides_Type uint8

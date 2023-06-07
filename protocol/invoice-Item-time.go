@@ -19,10 +19,10 @@ type InvoiceItemTime interface {
 }
 
 type InvoiceItemTime_StorageServices interface {
-	Save(iit InvoiceItemTime) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm InvoiceItemTime) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(invoiceID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(invoiceID [16]byte, vo protocol.VersionOffset) (iit InvoiceItemTime, err protocol.Error)
+	Count(invoiceID InvoiceUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(invoiceID InvoiceUUID, vo protocol.VersionOffset) (dm InvoiceItemTime, err protocol.Error)
 }
 
 type InvoiceItemTime_Type uint8
@@ -43,3 +43,5 @@ const (
 	InvoiceItemTime_Type_Cooking
 	InvoiceItemTime_Type_Packaging
 )
+
+// LIST_ProductIDs_BY_InvoiceID(invoiceID InvoiceUUID, offset, limit uint64) (productIDs []ProductUUID, nv protocol.NumberOfVersion, err protocol.Error)

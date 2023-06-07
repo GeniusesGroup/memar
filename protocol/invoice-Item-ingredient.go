@@ -20,6 +20,15 @@ type InvoiceItemIngredient interface {
 	RequestID() urp.UserRequestUUID           //
 }
 
+type InvoiceItemIngredient_StorageServices interface {
+	Save(dm InvoiceItemIngredient) (nv protocol.NumberOfVersion, err protocol.Error)
+
+	Count(invoiceID InvoiceUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(invoiceID InvoiceUUID, vo protocol.VersionOffset) (dm InvoiceItemIngredient, nv protocol.NumberOfVersion, err protocol.Error)
+
+	FIND_InvoiceIDs_BY_IngredientID(IngredientID ProductUUID, offset, limit uint64) (invoiceIDs []InvoiceUUID, nv protocol.NumberOfVersion, err protocol.Error)
+}
+
 type InvoiceItemIngredient_Status uint8
 
 const (
@@ -28,3 +37,6 @@ const (
 	InvoiceItemIngredient_Status_SoftDelete
 	InvoiceItemIngredient_Status_Extra
 )
+
+// LIST_ProductIDs_BY_InvoiceID(invoiceID InvoiceUUID, offset, limit uint64) (productIDs []ProductUUID, nv protocol.NumberOfVersion, err protocol.Error)
+// LIST_IngredientIDs_BY_InvoiceID_AND_ProductID(invoiceID InvoiceUUID, productID ProductUUID, offset, limit uint64) (IngredientIDs []ProductUUID, nv protocol.NumberOfVersion, err protocol.Error)

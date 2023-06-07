@@ -17,12 +17,13 @@ type InvoiceStatus interface {
 }
 
 type InvoiceStatus_StorageServices interface {
-	Save(is InvoiceStatus) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm InvoiceStatus) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(invoiceID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(invoiceID [16]byte, vo protocol.VersionOffset) (is InvoiceStatus, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(invoiceID InvoiceUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(invoiceID InvoiceUUID, vo protocol.VersionOffset) (dm InvoiceStatus, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FindByStatus(status Invoice_Status, offset, limit uint64) (invoiceIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
+	// we may need indexing ?
+	FIND_InvoiceIDs_BY_Status(status Invoice_Status, offset, limit uint64) (invoiceIDs []InvoiceUUID, nv protocol.NumberOfVersion, err protocol.Error)
 
 	protocol.EventTarget
 }

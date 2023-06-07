@@ -18,8 +18,8 @@ type InvoiceItemSummary interface {
 }
 
 type InvoiceItemSummary_StorageServices interface {
-	Save(iis InvoiceItemSummary) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm InvoiceItemSummary) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(invoiceID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(invoiceID [16]byte, vo protocol.VersionOffset) (iis InvoiceItemSummary, err protocol.Error)
+	Count(invoiceID InvoiceUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(invoiceID InvoiceUUID, vo protocol.VersionOffset) (dm InvoiceItemSummary, err protocol.Error)
 }

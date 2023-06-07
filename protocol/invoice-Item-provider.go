@@ -18,10 +18,13 @@ type InvoiceItemProvider interface {
 }
 
 type InvoiceItemProvider_StorageServices interface {
-	Save(iip InvoiceItemProvider) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(f InvoiceItemProvider) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(invoiceID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(invoiceID [16]byte, vo protocol.VersionOffset) (iip InvoiceItemProvider, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(invoiceID InvoiceUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(invoiceID InvoiceUUID, vo protocol.VersionOffset) (f InvoiceItemProvider, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FindByStaff(staffID [16]byte, offset, limit uint64) (invoiceIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
+	FIND_InvoiceIDs_BY_StaffID(staffID StaffUUID, offset, limit uint64) (invoiceIDs []InvoiceUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }
+
+//	LIST_StaffIDs_BY_InvoiceID_And_ProductID(invoiceID InvoiceUUID, productID ProductUUID, offset, limit uint64) (staffIDs []StaffUUID, nv protocol.NumberOfVersion, err protocol.Error)
+// FIND_InvoiceIDs_BY_ProductID_AND_StaffID(productID ProductUUID, staffID StaffUUID, offset, limit uint64) (invoiceIDs []InvoiceUUID, nv protocol.NumberOfVersion, err protocol.Error)

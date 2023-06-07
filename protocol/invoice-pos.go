@@ -19,10 +19,10 @@ type InvoicePOS interface {
 }
 
 type InvoicePOS_StorageServices interface {
-	Save(ip InvoicePOS) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm InvoicePOS) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Get(invoiceID [16]byte) (ip InvoicePOS, err protocol.Error)
+	Get(invoiceID InvoiceUUID) (dm InvoicePOS, err protocol.Error)
 
-	FindByPos(posID [16]byte, offset, limit uint64) (invoiceIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
-	FindByStaff(staffID [16]byte, offset, limit uint64) (invoiceIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
+	FIND_InvoiceIDs_BY_PosID(posID PosUUID, offset, limit uint64) (invoiceIDs []InvoiceUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	FIND_InvoiceIDs_BY_StaffID(staffID StaffUUID, offset, limit uint64) (invoiceIDs []InvoiceUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }
