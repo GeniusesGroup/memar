@@ -18,10 +18,12 @@ type GroupOwner interface {
 }
 
 type GroupOwner_StorageServices interface {
-	Save(g GroupOwner) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm GroupOwner) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(groupID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(groupID [16]byte, vo protocol.VersionOffset) (g GroupOwner, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(groupID GroupUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(groupID GroupUUID, vo protocol.VersionOffset) (dm GroupOwner, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FindByUserID(owneruserID up.UserUUID, offset, limit uint64) (ids [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
+	FIND_GroupIDs_BY_OwnerUserID(ownerUserID up.UserUUID, offset, limit uint64) (groupIDs []GroupUUID, nv protocol.NumberOfVersion, err protocol.Error)
+
+	// only one owner or it could be a list of owners ??
 }

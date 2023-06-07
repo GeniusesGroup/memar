@@ -19,12 +19,13 @@ type GroupName interface {
 }
 
 type GroupName_StorageServices interface {
-	Save(gn GroupName) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm GroupName) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(groupID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(groupID [16]byte, vo protocol.VersionOffset) (gn GroupName, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(groupID GroupUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(groupID GroupUUID, vo protocol.VersionOffset) (dm GroupName, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FindByName(name string, offset, limit uint64) (groupIDs [][16]byte, err protocol.Error)
+	FIND_GroupIDs_BY_Name(name string, offset, limit uint64) (groupIDs []GroupUUID, err protocol.Error)
+	FILTER_GroupIDs_BY_Status(status GroupName_Status, offset, limit uint64) (groupIDs []GroupUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }
 
 // GroupName_Status indicate GroupName record status

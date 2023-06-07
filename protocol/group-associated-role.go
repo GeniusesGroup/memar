@@ -17,3 +17,12 @@ type GroupAssociatedRole interface {
 	Time() protocol.Time            // save time
 	RequestID() urp.UserRequestUUID //
 }
+
+type GroupAssociatedRole_StorageServices interface {
+	Save(dm GroupAssociatedRole) (nv protocol.NumberOfVersion, err protocol.Error)
+
+	Count(groupID GroupUUID, userID up.UserUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(groupID GroupUUID, userID up.UserUUID, vo protocol.VersionOffset) (dm GroupAssociatedRole, nv protocol.NumberOfVersion, err protocol.Error)
+
+	LIST_RoleIDs_BY_GroupID(groupID GroupUUID, userID up.UserUUID, offset, limit uint64) (roleIDs []RoleUUID, nv protocol.NumberOfVersion, err protocol.Error)
+}

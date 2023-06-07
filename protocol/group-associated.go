@@ -19,6 +19,17 @@ type GroupAssociated interface {
 	RequestID() urp.UserRequestUUID   //
 }
 
+type GroupAssociated_StorageServices interface {
+	Save(dm GroupAssociated) (nv protocol.NumberOfVersion, err protocol.Error)
+
+	Count(groupID GroupUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(groupID GroupUUID, vo protocol.VersionOffset) (dm GroupAssociated, nv protocol.NumberOfVersion, err protocol.Error)
+
+	FILTER_UsersJoinWayIDs_BY_JoinWay(groupID GroupUUID, joinWay GroupAssociated_JoinWay, offset, limit uint64) (joinedBys []up.UserUUID, nv protocol.NumberOfVersion, err protocol.Error)
+
+	FIND_GroupIDs_BY_UserID(userID up.UserUUID, offset, limit uint64) (groupIDs []GroupUUID, nv protocol.NumberOfVersion, err protocol.Error)
+}
+
 type GroupAssociated_JoinWay uint8
 
 const (

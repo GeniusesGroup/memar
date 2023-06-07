@@ -18,6 +18,15 @@ type GroupAssociatedStatus interface {
 	RequestID() urp.UserRequestUUID //
 }
 
+type GroupAssociatedStatus_StorageServices interface {
+	Save(dm GroupAssociatedStatus) (nv protocol.NumberOfVersion, err protocol.Error)
+
+	Count(groupID GroupUUID, userID up.UserUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(groupID GroupUUID, userID up.UserUUID, vo protocol.VersionOffset) (dm GroupAssociatedStatus, nv protocol.NumberOfVersion, err protocol.Error)
+
+	LIST_UserIDs_BY_GroupID_AND_Status(groupID GroupUUID, status GroupAssociated_Status, offset, limit uint64) (userIDs []up.UserUUID, nv protocol.NumberOfVersion, err protocol.Error)
+}
+
 type GroupAssociated_Status Quiddity_Status
 
 const (

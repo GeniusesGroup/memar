@@ -20,8 +20,10 @@ type GroupCommentDefaults interface {
 }
 
 type GroupSettings_StorageServices interface {
-	Save(gs GroupCommentDefaults) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm GroupCommentDefaults) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(groupID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(groupID [16]byte, vo protocol.VersionOffset) (gs GroupCommentDefaults, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(groupID GroupUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(groupID GroupUUID, vo protocol.VersionOffset) (dm GroupCommentDefaults, nv protocol.NumberOfVersion, err protocol.Error)
+    
+	
 }
