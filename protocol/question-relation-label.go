@@ -17,11 +17,11 @@ type QuestionLabelRelation interface {
 }
 
 type QuestionLabelRelation_StorageServices interface {
-	Save(f QuestionLabelRelation) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm QuestionLabelRelation) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(questionID QuestionUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(questionID QuestionUUID, vo protocol.VersionOffset) (f QuestionLabelRelation, nv protocol.NumberOfVersion, err protocol.Error)
+	Get(questionID QuestionUUID, vo protocol.VersionOffset) (dm QuestionLabelRelation, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FindByLabelID(labelID LabelUUID, offset, limit uint64) (questionIDs []QuestionUUID, nv protocol.NumberOfVersion, err protocol.Error)
-	ListLabelIDs(questionID QuestionUUID, offset, limit uint64) (labelIDs []LabelUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	FIND_QuestionIDs_BY_LabelID(labelID LabelUUID, offset, limit uint64) (questionIDs []QuestionUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	LIST_LabelIDs_BY_QuestionID(questionID QuestionUUID, offset, limit uint64) (labelIDs []LabelUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }

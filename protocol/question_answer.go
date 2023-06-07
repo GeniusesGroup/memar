@@ -21,11 +21,11 @@ type QuestionAnswer interface {
 }
 
 type QuestionAnswer_StorageServices interface {
-	Save(f QuestionAnswer) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm QuestionAnswer) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(answerID AnswerUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(answerID AnswerUUID, vo protocol.VersionOffset) (f QuestionAnswer, nv protocol.NumberOfVersion, err protocol.Error)
+	Get(answerID AnswerUUID, vo protocol.VersionOffset) (dm QuestionAnswer, nv protocol.NumberOfVersion, err protocol.Error)
 
-	// shall I pass questionID as well ?? 
-	ListRespondents(answerID AnswerUUID, offset, limit uint64) (answerBys []up.UserUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	// shall I pass questionID as well ??
+	LIST_RespondentIDs_BY_AnswerID(answerID AnswerUUID, offset, limit uint64) (answerBys []up.UserUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }

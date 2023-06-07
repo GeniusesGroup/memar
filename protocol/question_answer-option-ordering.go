@@ -17,8 +17,8 @@ type QuestionAnswerOptionsOrdering interface {
 }
 
 type QuestionAnswerOptionsOrdering_StorageServices interface {
-	Save(f QuestionAnswerOptionsOrdering) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm QuestionAnswerOptionsOrdering) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(questionID QuestionUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(questionID QuestionUUID, vo protocol.VersionOffset) (f QuestionAnswerOptionsOrdering, nv protocol.NumberOfVersion, err protocol.Error)
+	Get(questionID QuestionUUID, vo protocol.VersionOffset) (dm QuestionAnswerOptionsOrdering, nv protocol.NumberOfVersion, err protocol.Error)
 }

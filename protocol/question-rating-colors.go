@@ -17,8 +17,8 @@ type QuestionRatingColors interface {
 }
 
 type QuestionRatingColors_StorageServices interface {
-	Save(f QuestionRatingColors) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm QuestionRatingColors) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(questionID QuestionUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(questionID QuestionUUID, vo protocol.VersionOffset) (f QuestionRatingColors, nv protocol.NumberOfVersion, err protocol.Error)
+	Get(questionID QuestionUUID, vo protocol.VersionOffset) (dm QuestionRatingColors, nv protocol.NumberOfVersion, err protocol.Error)
 }

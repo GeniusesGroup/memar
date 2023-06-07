@@ -19,13 +19,13 @@ type QuestionOptions interface {
 }
 
 type QuestionOptions_StorageServices interface {
-	Save(f QuestionOptions) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm QuestionOptions) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(questionID QuestionUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(questionID QuestionUUID, vo protocol.VersionOffset) (f QuestionOptions, nv protocol.NumberOfVersion, err protocol.Error)
+	Get(questionID QuestionUUID, vo protocol.VersionOffset) (dm QuestionOptions, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FilterByAlgorithmType(t QuestionOptions_AlgorithmType, offset, limit uint64) (questionIDs []QuestionUUID, nv protocol.NumberOfVersion, err protocol.Error)
-	FilterByType(t QuestionOptions_Type, offset, limit uint64) (questionIDs []QuestionUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	FILTER_QuestionIDs_BY_AlgorithmType(t QuestionOptions_AlgorithmType, offset, limit uint64) (questionIDs []QuestionUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	FILTER_QuestionIDs_BY_Type(t QuestionOptions_Type, offset, limit uint64) (questionIDs []QuestionUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }
 
 type QuestionOptions_AlgorithmType uint8

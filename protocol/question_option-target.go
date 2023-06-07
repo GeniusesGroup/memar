@@ -18,8 +18,8 @@ type QuestionOptionTarget interface {
 }
 
 type QuestionOptionGoal_StorageServices interface {
-	Save(f QuestionOptionTarget) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm QuestionOptionTarget) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(questionOptionID QuestionUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(questionOptionID QuestionUUID, vo protocol.VersionOffset) (f QuestionOptionTarget, nv protocol.NumberOfVersion, err protocol.Error)
+	Get(questionOptionID QuestionUUID, vo protocol.VersionOffset) (dm QuestionOptionTarget, nv protocol.NumberOfVersion, err protocol.Error)
 }

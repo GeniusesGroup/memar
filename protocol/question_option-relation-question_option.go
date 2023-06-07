@@ -20,11 +20,11 @@ type QuestionOptionQuestionOptionRelation interface {
 }
 
 type QuestionOptionQuestionOptionRelation_StorageServices interface {
-	Save(f QuestionOptionQuestionOptionRelation) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm QuestionOptionQuestionOptionRelation) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(questionOptionID QuestionUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(questionOptionID QuestionUUID, vo protocol.VersionOffset) (f QuestionOptionQuestionOptionRelation, nv protocol.NumberOfVersion, err protocol.Error)
+	Get(questionOptionID QuestionUUID, vo protocol.VersionOffset) (dm QuestionOptionQuestionOptionRelation, nv protocol.NumberOfVersion, err protocol.Error)
 
-	listQuestionOptionRelations(questionOptionID QuestionOptionUUID, offset, limit uint64) (relationIDs []QuestionOptionUUID, nv protocol.NumberOfVersion, err protocol.Error)
-	FindByRelation(relationID QuestionOptionUUID, offset, limit uint64) (questionOptionID []QuestionOptionUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	LIST_QuestionOptionIDs_BY_RelationID(relationID QuestionOptionUUID, offset, limit uint64) (questionOptionID []QuestionOptionUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	LIST_RelationIDs_BY_QuestionOptionID(questionOptionID QuestionOptionUUID, offset, limit uint64) (relationIDs []QuestionOptionUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }

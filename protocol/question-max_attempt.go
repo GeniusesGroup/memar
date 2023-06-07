@@ -17,8 +17,8 @@ type QuestionMaxAttempt interface {
 }
 
 type QuestionMaxAttempt_StorageServices interface {
-	Save(f QuestionMaxAttempt) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm QuestionMaxAttempt) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(questionID QuestionUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(questionID QuestionUUID, vo protocol.VersionOffset) (f QuestionMaxAttempt, nv protocol.NumberOfVersion, err protocol.Error)
+	Get(questionID QuestionUUID, vo protocol.VersionOffset) (dm QuestionMaxAttempt, nv protocol.NumberOfVersion, err protocol.Error)
 }

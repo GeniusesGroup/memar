@@ -17,8 +17,8 @@ type QuestionAnswerOptionMultiple interface {
 }
 
 type QuestionAnswerOptionMultiple_StorageServices interface {
-	Save(f QuestionAnswerOptionMultiple) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm QuestionAnswerOptionMultiple) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(answerID AnswerUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(answerID AnswerUUID, vo protocol.VersionOffset) (f QuestionAnswerOptionMultiple, nv protocol.NumberOfVersion, err protocol.Error)
+	Get(answerID AnswerUUID, vo protocol.VersionOffset) (dm QuestionAnswerOptionMultiple, nv protocol.NumberOfVersion, err protocol.Error)
 }

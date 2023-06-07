@@ -17,8 +17,8 @@ type QuestionAnswerRating interface {
 }
 
 type QuestionAnswerRating_StorageServices interface {
-	Save(f QuestionAnswerRating) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm QuestionAnswerRating) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(answerID AnswerUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(answerID AnswerUUID, vo protocol.VersionOffset) (f QuestionAnswerRating, nv protocol.NumberOfVersion, err protocol.Error)
+	Get(answerID AnswerUUID, vo protocol.VersionOffset) (dm QuestionAnswerRating, nv protocol.NumberOfVersion, err protocol.Error)
 }

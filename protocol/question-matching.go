@@ -17,9 +17,9 @@ type QuestionMatching interface {
 }
 
 type QuestionMatching_StorageServices interface {
-	Save(f QuestionMatching) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm QuestionMatching) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(questionID QuestionUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(questionID QuestionUUID, vo protocol.VersionOffset) (f QuestionMatching, nv protocol.NumberOfVersion, err protocol.Error)
+	Get(questionID QuestionUUID, vo protocol.VersionOffset) (dm QuestionMatching, nv protocol.NumberOfVersion, err protocol.Error)
 }
 

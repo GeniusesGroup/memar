@@ -19,8 +19,8 @@ type QuestionAnswerDescriptive interface {
 // QuestionAnswerDescriptive_Type_Anonymous
 
 type QuestionAnswerDescriptive_StorageServices interface {
-	Save(f QuestionAnswerDescriptive) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm QuestionAnswerDescriptive) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(answerID AnswerUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(answerID AnswerUUID, vo protocol.VersionOffset) (f QuestionAnswerDescriptive, nv protocol.NumberOfVersion, err protocol.Error)
+	Get(answerID AnswerUUID, vo protocol.VersionOffset) (dm QuestionAnswerDescriptive, nv protocol.NumberOfVersion, err protocol.Error)
 }

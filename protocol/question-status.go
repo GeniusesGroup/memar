@@ -17,12 +17,12 @@ type QuestionStatus interface {
 }
 
 type QuestionStatus_StorageServices interface {
-	Save(f QuestionStatus) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm QuestionStatus) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(questionID QuestionUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(questionID QuestionUUID, vo protocol.VersionOffset) (f QuestionStatus, nv protocol.NumberOfVersion, err protocol.Error)
+	Get(questionID QuestionUUID, vo protocol.VersionOffset) (dm QuestionStatus, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FilterByStatus(status Question_Status, offset, limit uint64) (questionID []QuestionUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	FILTER_QuestionIDs_BY_Status(status Question_Status, offset, limit uint64) (questionIDs []QuestionUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }
 
 type Question_Status Quiddity_Status

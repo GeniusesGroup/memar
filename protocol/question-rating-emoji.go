@@ -17,8 +17,8 @@ type QuestionRatingEmoji interface {
 }
 
 type QuestionRatingEmoji_StorageServices interface {
-	Save(f QuestionRatingEmoji) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm QuestionRatingEmoji) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(questionID QuestionUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(questionID QuestionUUID, vo protocol.VersionOffset) (f QuestionRatingEmoji, nv protocol.NumberOfVersion, err protocol.Error)
+	Get(questionID QuestionUUID, vo protocol.VersionOffset) (dm QuestionRatingEmoji, nv protocol.NumberOfVersion, err protocol.Error)
 }

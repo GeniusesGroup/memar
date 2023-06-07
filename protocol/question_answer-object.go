@@ -17,8 +17,8 @@ type QuestionAnswerObject interface {
 }
 
 type QuestionAnswerObject_StorageServices interface {
-	Save(f QuestionAnswerObject) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm QuestionAnswerObject) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(answerID AnswerUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(answerID AnswerUUID, vo protocol.VersionOffset) (f QuestionAnswerObject, nv protocol.NumberOfVersion, err protocol.Error)
+	Get(answerID AnswerUUID, vo protocol.VersionOffset) (dm QuestionAnswerObject, nv protocol.NumberOfVersion, err protocol.Error)
 }

@@ -19,14 +19,14 @@ type QuestionQuestionRelation interface {
 }
 
 type QuestionQuestionRelation_StorageServices interface {
-	Save(f QuestionQuestionRelation) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm QuestionQuestionRelation) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(questionID QuestionUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(questionID QuestionUUID, vo protocol.VersionOffset) (f QuestionQuestionRelation, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(questionID QuestionUUID, relationID QuestionUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(questionID QuestionUUID, relationID QuestionUUID, vo protocol.VersionOffset) (dm QuestionQuestionRelation, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FindByRelation(relationID QuestionUUID, offset, limit uint64) (questionIDs []QuestionUUID, nv protocol.NumberOfVersion, err protocol.Error)
-	FindByRelationIDAndType(relationID QuestionUUID, t QuestionQuestionRelation_Type, offset, limit uint64) (questionIDs []QuestionUUID, nv protocol.NumberOfVersion, err protocol.Error)
-    ListRelations(questionID QuestionUUID, offset, limit uint64)(relationIDs []QuestionUUID,nv protocol.NumberOfVersion, err protocol.Error)
+	LIST_QuestionIDs_BY_RelationID(relationID QuestionUUID, offset, limit uint64) (questionIDs []QuestionUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	LIST_QuestionIDs_BY_RelationID_AND_Type(relationID QuestionUUID, t QuestionQuestionRelation_Type, offset, limit uint64) (questionIDs []QuestionUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	LIST_RelationIDs_BY_QuestionIDs(questionID QuestionUUID, offset, limit uint64) (relationIDs []QuestionUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }
 
 type QuestionQuestionRelation_Type uint8

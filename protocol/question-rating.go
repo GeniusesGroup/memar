@@ -18,12 +18,12 @@ type QuestionRating interface {
 }
 
 type QuestionRating_StorageServices interface {
-	Save(f QuestionRating) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm QuestionRating) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(questionID QuestionUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(questionID QuestionUUID, vo protocol.VersionOffset) (f QuestionRating, nv protocol.NumberOfVersion, err protocol.Error)
+	Get(questionID QuestionUUID, vo protocol.VersionOffset) (dm QuestionRating, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FilterByType(t QuestionRating_Type, offset, limit uint64) (questionIDs []QuestionUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	FILTER_QuestionIDs_BY_Type(t QuestionRating_Type, offset, limit uint64) (questionIDs []QuestionUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }
 
 type QuestionRating_Type uint16

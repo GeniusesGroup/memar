@@ -19,12 +19,12 @@ type QuestionDescriptive interface {
 }
 
 type QuestionDescriptive_StorageServices interface {
-	Save(f QuestionDescriptive) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm QuestionDescriptive) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(questionID QuestionUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(questionID QuestionUUID, vo protocol.VersionOffset) (f QuestionDescriptive, nv protocol.NumberOfVersion, err protocol.Error)
+	Get(questionID QuestionUUID, vo protocol.VersionOffset) (dm QuestionDescriptive, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FilterByType(t QuestionDescriptive_Type, offset, limit uint64) (questionIDs []QuestionUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	FILTER_QuestionIDs_BY_Type(t QuestionDescriptive_Type, offset, limit uint64) (questionIDs []QuestionUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }
 
 type QuestionDescriptive_Type uint8

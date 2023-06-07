@@ -17,8 +17,8 @@ type QuestionAnswerFillInTheBlank interface {
 }
 
 type QuestionAnswerFillInTheBlank_StorageServices interface {
-	Save(f QuestionAnswerFillInTheBlank) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm QuestionAnswerFillInTheBlank) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(answerID AnswerUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(answerID AnswerUUID, vo protocol.VersionOffset) (f QuestionAnswerFillInTheBlank, nv protocol.NumberOfVersion, err protocol.Error)
+	Get(answerID AnswerUUID, vo protocol.VersionOffset) (dm QuestionAnswerFillInTheBlank, nv protocol.NumberOfVersion, err protocol.Error)
 }
