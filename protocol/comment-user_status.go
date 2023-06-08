@@ -23,6 +23,8 @@ type CommentUserStatus_StorageServices interface {
 
 	Count(commentID CommentUUID, userID up.UserUUID) (nv protocol.NumberOfVersion, err protocol.Error)
 	Get(commentID CommentUUID, userID up.UserUUID, vo protocol.VersionOffset) (dm CommentUserStatus, nv protocol.NumberOfVersion, err protocol.Error)
+
+	// TODO::: get view number
 }
 
 type CommentUser_Status uint8

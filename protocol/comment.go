@@ -36,6 +36,8 @@ type Comment_Type uint32
 const (
 	Comment_Type_Unset Comment_Type = 0
 	Comment_Type_Text  Comment_Type = (1 << iota)
+	Comment_Type_Emoji
+	Comment_Type_Sticker // gif
 	Comment_Type_Voice
 	Comment_Type_File
 

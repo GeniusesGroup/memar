@@ -12,25 +12,25 @@ type GUI_Widget_Conditions interface {
 	UserID() up.UserUUID
 	Text() string
 	DisableSending() bool
+	DisableReply() bool // TODO::: add more type like limit to mentioned users.
+
+	// Labels() []string
+	// DisableReaction() bool
 }
 
 type GUI_Widget_Services interface {
-	// Open a dialog to choose attach files
+	// show object widget
 	Attach()
+
 	Send() (err protocol.Error)
 	//
 	SendSticker()
 	AddEmoji()
 	Share()
-}
 
-type GUI_Widget_Conditions interface {
-	Labels() []string
-	DisableReaction() bool
-}
+	SortByMostSeen()
 
-type GUI_Widget_Service interface {
-	Select()
-	MarkAsUnRead(cID CommentUUID)
-	SendReaction(cID CommentUUID)
+	// Select()
+	// MarkAsUnRead(cID CommentUUID)
+	// SendReaction(cID CommentUUID)
 }
