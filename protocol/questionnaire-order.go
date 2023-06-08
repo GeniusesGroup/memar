@@ -20,8 +20,8 @@ type QuestionnaireOrder interface {
 }
 
 type QuestionnaireOrder_StorageServices interface {
-	Save(pc QuestionnaireOrder) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm QuestionnaireOrder) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(questionnaireID QuestionnaireUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(questionnaireID QuestionnaireUUID, vo protocol.VersionOffset) (pc QuestionnaireOrder, nv protocol.NumberOfVersion, err protocol.Error)
+	Get(questionnaireID QuestionnaireUUID, vo protocol.VersionOffset) (dm QuestionnaireOrder, nv protocol.NumberOfVersion, err protocol.Error)
 }

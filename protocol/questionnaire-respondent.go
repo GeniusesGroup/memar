@@ -22,8 +22,8 @@ type QuestionnaireRespondent interface {
 }
 
 type QuestionnaireRespondent_StorageServices interface {
-	Save(pc QuestionnaireRespondent) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm QuestionnaireRespondent) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(questionnaireID QuestionnaireUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(questionnaireID QuestionnaireUUID, vo protocol.VersionOffset) (pc QuestionnaireRespondent, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(questionnaireRespondentID QuestionnaireRespondentUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(questionnaireRespondentID QuestionnaireRespondentUUID, vo protocol.VersionOffset) (dm QuestionnaireRespondent, nv protocol.NumberOfVersion, err protocol.Error)
 }

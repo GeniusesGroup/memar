@@ -17,8 +17,8 @@ type QuestionnaireMaxAttempt interface {
 }
 
 type QuestionnaireMaxAttempt_StorageServices interface {
-	Save(pc QuestionnaireMaxAttempt) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm QuestionnaireMaxAttempt) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(questionnaireID QuestionnaireUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(questionnaireID QuestionnaireUUID, vo protocol.VersionOffset) (pc QuestionnaireMaxAttempt, nv protocol.NumberOfVersion, err protocol.Error)
+	Get(questionnaireID QuestionnaireUUID, vo protocol.VersionOffset) (dm QuestionnaireMaxAttempt, nv protocol.NumberOfVersion, err protocol.Error)
 }

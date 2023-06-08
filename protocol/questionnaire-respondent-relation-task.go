@@ -20,10 +20,13 @@ type QuestionnaireRespondentTaskRelation interface {
 }
 
 type QuestionnaireRespondentTaskRelation_StorageServices interface {
-	Save(pc QuestionnaireRespondentTaskRelation) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(f QuestionnaireRespondentTaskRelation) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(taskID TaskUUID, questionnaireID QuestionnaireUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(taskID TaskUUID, questionnaireID QuestionnaireUUID, vo protocol.VersionOffset) (pc QuestionnaireRespondentTaskRelation, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(questionnaireRespondentID QuestionnaireRespondentUUID, taskID TaskUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(questionnaireRespondentID QuestionnaireRespondentUUID, taskID TaskUUID, vo protocol.VersionOffset) (f QuestionnaireRespondentTaskRelation, nv protocol.NumberOfVersion, err protocol.Error)
+
+	LIST_QuestionnaireRespondentIDs_BY_TaskID(taskID TaskUUID, offset, limit uint64) (QuestionnaireRespondentIDs []QuestionnaireRespondentUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	LIST_TaskIDs_BY_QuestionnaireRespondentID(QuestionnaireRespondentID QuestionnaireRespondentUUID, offset, limit uint64) (taskIDs []TaskUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }
 
 type QuestionnaireRespondentTaskRelation_Type uint8
@@ -33,3 +36,5 @@ const (
 	QuestionnaireRespondentTaskRelation_Type_Creator
 	QuestionnaireRespondentTaskRelation_Type_Pending
 )
+
+// FindByTaskIDAndType(taskID TaskUUID, t QuestionnaireRespondentTaskRelation_Type, offset, limit uint64) (QuestionnaireRespondentIDs []QuestionnaireRespondentUUID, nv protocol.NumberOfVersion, err protocol.Error)

@@ -18,8 +18,8 @@ type QuestionnaireStartPoint interface {
 }
 
 type QuestionnaireStartPoint_StorageServices interface {
-	Save(pc QuestionnaireStartPoint) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm QuestionnaireStartPoint) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(questionnaireID QuestionnaireUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(questionnaireID QuestionnaireUUID, vo protocol.VersionOffset) (pc QuestionnaireStartPoint, nv protocol.NumberOfVersion, err protocol.Error)
+	Get(questionnaireID QuestionnaireUUID, vo protocol.VersionOffset) (dm QuestionnaireStartPoint, nv protocol.NumberOfVersion, err protocol.Error)
 }

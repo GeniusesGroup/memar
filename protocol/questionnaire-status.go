@@ -17,11 +17,10 @@ type QuestionnaireStatus interface {
 }
 
 type QuestionnaireStatus_StorageServices interface {
-	Save(pc QuestionnaireStatus) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm QuestionnaireStatus) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(questionnaireID QuestionnaireUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(questionnaireID QuestionnaireUUID,vo protocol.VersionOffset) (pc QuestionnaireStatus, nv protocol.NumberOfVersion, err protocol.Error)
-
+	Get(questionnaireID QuestionnaireUUID, vo protocol.VersionOffset) (dm QuestionnaireStatus, nv protocol.NumberOfVersion, err protocol.Error)
 }
 
 type Questionnaire_Status Quiddity_Status

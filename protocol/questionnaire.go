@@ -19,10 +19,12 @@ type Questionnaire interface {
 }
 
 type Questionnaire_StorageServices interface {
-	Save(pc Questionnaire) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm Questionnaire) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(questionnaireID QuestionnaireUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(questionnaireID QuestionnaireUUID, vo protocol.VersionOffset) (pc Questionnaire, nv protocol.NumberOfVersion, err protocol.Error)
+	Get(questionnaireID QuestionnaireUUID, vo protocol.VersionOffset) (dm Questionnaire, nv protocol.NumberOfVersion, err protocol.Error)
+    
+	FIND_QuestionnaireIDs_By_Type(questionnaireID QuestionnaireUUID, t Questionnaire_Type , offset, limit uint64) (nv protocol.NumberOfVersion, err protocol.Error)
 }
 
 type Questionnaire_Type uint16

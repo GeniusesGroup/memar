@@ -20,12 +20,14 @@ type QuestionnaireQuestionRelation interface {
 }
 
 type QuestionnaireQuestionRelation_StorageServices interface {
-	Save(pc QuestionnaireQuestionRelation) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm QuestionnaireQuestionRelation) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(questionID QuestionUUID, questionnaireID QuestionnaireUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(questionID QuestionUUID, questionnaireID QuestionnaireUUID, vo protocol.VersionOffset) (pc QuestionnaireQuestionRelation, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(questionnaireID QuestionnaireUUID, questionID QuestionUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(questionnaireID QuestionnaireUUID, questionID QuestionUUID, vo protocol.VersionOffset) (dm QuestionnaireQuestionRelation, nv protocol.NumberOfVersion, err protocol.Error)
 }
 
 type QuestionnaireQuestionRelation_Type uint8
 
 // TODO::: need types?
+
+// LIST_QuestionIDs_BY_QuestionnaireID(questionnaireID QuestionnaireUUID, offset, limit uint64) (questionIDs []QuestionUUID, nv protocol.NumberOfVersion, err protocol.Error)
