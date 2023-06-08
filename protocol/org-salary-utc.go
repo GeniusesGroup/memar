@@ -9,9 +9,17 @@ import (
 )
 
 // OrgSalaryUTC is fixed salary that use in roles salary rules to calculate each staff salary.
-type OrgSalaryUTC interface {
-	WeeklySalary() protocol.MoneyAmount // base salary for all staff in organization
+type OrgSalaryUTCWeekly interface {
+	OrgID() OrgUUID
+	CurrencyID() FinancialCurrencyUUID  //
 	Amount() protocol.MoneyAmount       //
 	Time() protocol.Time                // save time
 	RequestID() urp.UserRequestUUID     //
+}
+
+type OrgSalaryUTC_StorageServices interface {
+	Save(dm OrgSalaryUTCWeekly) (nv protocol.NumberOfVersion, err protocol.Error)
+
+	Count(orgID OrgUUID, currencyID FinancialCurrencyUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(orgID OrgUUID, currencyID FinancialCurrencyUUID, vo protocol.VersionOffset) (dm OrgSalaryUTCWeekly, err protocol.Error)
 }
