@@ -16,6 +16,7 @@ type GUI_Widget_Conditions interface {
 
 type GUI_Widget_Service interface {
 	Save() // TODO::: we need some data model
+	Send()
 	Reply()
 	Forward()
 	Edit()

@@ -1,6 +1,6 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package cp
 
 import (
 	"libgo/protocol"
@@ -9,26 +9,13 @@ import (
 	up "org/modules/user/protocol"
 )
 
-type CommentUUID = protocol.UUID
-
-// Comment indicate the domain record data fields.
-type Comment interface {
+// DatModel indicate the domain record data fields.
+type DatModel interface {
 	CommentID() CommentUUID         //
 	UserID() up.UserUUID            //
 	Type() Comment_Type             //
-	Time() protocol.Time            // save time
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
-}
-
-type Comment_StorageServices interface {
-	Save(dm Comment) (nv protocol.NumberOfVersion, err protocol.Error)
-
-	Count(commentID CommentUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(commentID CommentUUID, vo protocol.VersionOffset) (dm Comment, nv protocol.NumberOfVersion, err protocol.Error)
-
-	FILTER_CommentIDs_BY_TYPE(t Comment_Type, offset, limit uint64) (commentIDs []CommentUUID, nv protocol.NumberOfVersion, err protocol.Error)
-
-	protocol.EventTarget
 }
 
 type Comment_Type uint32
@@ -57,29 +44,3 @@ const (
 	Comment_Type_LogActivity_PrimaryKey_Triple
 	Comment_Type_LogActivity_PrimaryKey_String
 )
-
-/*
-	Business Services
-*/
-
-type (
-	Comment_Service_Register_Request interface {
-		GroupID() GroupUUID
-		ReplyTo() [16]byte
-		UserID() up.UserUUID
-		Type() Comment_Type
-		Settings() Comment_Settings
-	}
-	Comment_Service_Register_Response interface {
-		CommentID() CommentUUID
-		NumberOfVersion() protocol.NumberOfVersion
-	}
-)
-
-/*
-	Errors
-*/
-
-type Comment_GUI_Widget interface {
-	Send()
-}
