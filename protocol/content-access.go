@@ -16,10 +16,10 @@ type ContentAccess interface {
 }
 
 type ContentAccess_StorageServices interface {
-	Save(ca ContentAccess) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm ContentAccess) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(contentID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(contentID [16]byte, vo protocol.VersionOffset) (ca ContentAccess, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(contentID ContentUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(contentID ContentUUID, vo protocol.VersionOffset) (dm ContentAccess, nv protocol.NumberOfVersion, err protocol.Error)
 }
 
 type Content_Access uint8

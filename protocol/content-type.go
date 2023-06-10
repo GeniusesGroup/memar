@@ -23,14 +23,13 @@ type ContentType interface {
 }
 
 type ContentType_StorageServices interface {
-	Save(c ContentType) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm ContentType) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(contentTypeID ContentTypeUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(contentTypeID ContentTypeUUID, vo protocol.VersionOffset) (c ContentType, nv protocol.NumberOfVersion, err protocol.Error)
-
-	GetIDs(offset, limit uint64) (contentTypeIDs []ContentTypeUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	Get(contentTypeID ContentTypeUUID, vo protocol.VersionOffset) (dm ContentType, nv protocol.NumberOfVersion, err protocol.Error)
 
 	FindByLaw(lawID LawUUID, offset, limit uint64) (contentTypeIDs []ContentTypeUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	GetIDs(offset, limit uint64) (contentTypeIDs []ContentTypeUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }
 
 type Content_Type uint16

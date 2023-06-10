@@ -12,20 +12,21 @@ import (
 // ContentParticipant indicate the domain record data fields.
 type ContentParticipant interface {
 	ContentID() ContentUUID         //
-	Type() ContentParticipant_Type  //
 	UserID() up.UserUUID            //
+	Type() ContentParticipant_Type  //
 	Time() protocol.Time            // save time
 	RequestID() urp.UserRequestUUID //
 }
 
 // TODO::: immutable?? if wrong data save for a content??
 type ContentParticipant_StorageServices interface {
-	Save(cp ContentParticipant) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm ContentParticipant) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(contentID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(contentID [16]byte, vo protocol.VersionOffset) (cp ContentParticipant, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(contentID ContentUUID, userID up.UserUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(contentID ContentUUID, userID up.UserUUID, vo protocol.VersionOffset) (dm ContentParticipant, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FindByUserID(userID up.UserUUID, offset, limit uint64) (contentIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
+	LIST_ContentIDs_BY_UserID(userID up.UserUUID, offset, limit uint64) (contentIDs []ContentUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	LIST_UserIDs_BY_ContentID(contentID ContentUUID, offset, limit uint64) (userIDs []up.UserUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }
 
 // ContentParticipant_Type indicate participant type or role
@@ -47,3 +48,6 @@ const (
 	// Content_Type_Game
 	ContentParticipant_Type_SportTeam
 )
+
+
+// 	FIND_ContentIDs_BY_UserID_AND_Type(userID up.UserUUID, t ContentParticipant_Type, offset, limit uint64) (contentIDs []ContentUUID, nv protocol.NumberOfVersion, err protocol.Error)

@@ -16,12 +16,12 @@ type ContentStatus interface {
 }
 
 type ContentStatus_StorageServices interface {
-	Save(cs ContentStatus) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(f ContentStatus) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(contentID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(contentID [16]byte, vo protocol.VersionOffset) (cs ContentStatus, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(contentID ContentUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(contentID ContentUUID, vo protocol.VersionOffset) (f ContentStatus, nv protocol.NumberOfVersion, err protocol.Error)
 
-	// FilterByStatus(status Content_Status, offset, limit uint64) (contentIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
+	FILTER_ContentIDs_BY_Status(status Content_Status, offset, limit uint64) (contentIDs []ContentUUID, nv protocol.NumberOfVersion, err protocol.Error)
 
 	// protocol.EventTarget
 }

@@ -23,14 +23,15 @@ type Content interface {
 }
 
 type Content_StorageServices interface {
-	Save(c Content) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm Content) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(contentID ContentUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(contentID ContentUUID, vo protocol.VersionOffset) (c Content, nv protocol.NumberOfVersion, err protocol.Error)
+	Get(contentID ContentUUID, vo protocol.VersionOffset) (dm Content, nv protocol.NumberOfVersion, err protocol.Error)
 
+	FIND_ContentIDs_BY_UserID(userID up.UserUUID, offset, limit uint64) (contentIDs []ContentUUID, nv protocol.NumberOfVersion, err protocol.Error)
 	GetIDs(offset, limit uint64) (contentIDs []ContentUUID, nv protocol.NumberOfVersion, err protocol.Error)
-	// GetIDsByDateTime(time protocol.Time, offset, limit uint64) (contentIDs []ContentUUID, nv protocol.NumberOfVersion, err protocol.Error)
-
-	FindByUserID(userID up.UserUUID, offset, limit uint64) (contentIDs []ContentUUID, nv protocol.NumberOfVersion, err protocol.Error)
-	FindByType(contentTypeID ContentTypeUUID, offset, limit uint64) (contentIDs []ContentUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }
+
+// FIND_ContentIDs_BY_TypeID(contentTypeID ContentTypeUUID, offset, limit uint64) (contentIDs []ContentUUID, nv protocol.NumberOfVersion, err protocol.Error)
+// GetIDsByDateTime(time protocol.Time, offset, limit uint64) (contentIDs []ContentUUID, nv protocol.NumberOfVersion, err protocol.Error)
+// FIND_ContentIDs_BY_UserID_AND_TypeID(userID up.UserUUID, contentTypeID ContentTypeUUID, offset, limit uint64) (contentIDs []ContentUUID, nv protocol.NumberOfVersion, err protocol.Error)
