@@ -32,5 +32,6 @@ type CommentUser_Status uint8
 const (
 	CommentUser_Status_Unset CommentUser_Status = iota
 	CommentUser_Status_Delivered
+	CommentUser_Status_Seen
 	CommentUser_Status_Read
 )
