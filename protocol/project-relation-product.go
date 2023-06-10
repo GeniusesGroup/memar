@@ -12,14 +12,20 @@ import (
 type ProjectProductRelation interface {
 	ProjectID() ProjectUUID //
 	ProductID() ProductUUID //
+	Status() ProjectProductRelation_Status
 	// TODO::: type or label??
 	Time() protocol.Time            // Save time
 	RequestID() urp.UserRequestUUID //
 }
 
 type ProjectProductRelation_StorageServices interface {
-	Save(f ProjectProductRelation) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm ProjectProductRelation) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(productID ProductUUID, projectID ProjectUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(productID ProductUUID, projectID ProjectUUID, vo protocol.VersionOffset) (f ProjectProductRelation, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(projectID ProjectUUID, productID ProductUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(projectID ProjectUUID, productID ProductUUID, vo protocol.VersionOffset) (dm ProjectProductRelation, nv protocol.NumberOfVersion, err protocol.Error)
+
+	LIST_ProductIDs_BY_ProjectID(projectID ProjectUUID, offset, limit uint64) (productIDs []ProductUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	LIST_ProjectIDs_BY_ProductID(productID ProductUUID, offset, limit uint64) (projectIDs []ProjectUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }
+
+type ProjectProductRelation_Status Quiddity_Status

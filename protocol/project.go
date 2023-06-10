@@ -21,8 +21,10 @@ type Project interface {
 }
 
 type Project_StorageServices interface {
-	Save(f Project) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm Project) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(projectID ProjectUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(projectID ProjectUUID, vo protocol.VersionOffset) (f Project, nv protocol.NumberOfVersion, err protocol.Error)
+	Get(projectID ProjectUUID, vo protocol.VersionOffset) (dm Project, nv protocol.NumberOfVersion, err protocol.Error)
+
+	FIND_UserIDs_By_ProjectID(projectID ProjectUUID, offset, limit uint64) (userIDs []up.UserUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }

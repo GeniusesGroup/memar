@@ -10,12 +10,13 @@ import (
 
 // ProjectRelationProject indicate the domain record data fields.
 type ProjectRelationProject interface {
-	ProjectID() ProjectUUID            //
-	OtherID() ProjectUUID              //
-	Priority() uint64                  //
-	Type() ProjectRelationProject_Type //
-	Time() protocol.Time               // Save time
-	RequestID() urp.UserRequestUUID    //
+	ProjectID() ProjectUUID                //
+	OtherID() ProjectUUID                  //
+	Priority() uint64                      //
+	Type() ProjectRelationProject_Type     //
+	Status() ProjectRelationProject_Status //
+	Time() protocol.Time                   // Save time
+	RequestID() urp.UserRequestUUID        //
 }
 
 type ProjectRelationProject_Type uint8
@@ -23,8 +24,15 @@ type ProjectRelationProject_Type uint8
 // Blocking
 
 type ProjectRelationProject_StorageServices interface {
-	Save(f ProjectRelationProject) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm ProjectRelationProject) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(otherID ProjectUUID, projectID ProjectUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(otherID ProjectUUID, projectID ProjectUUID, vo protocol.VersionOffset) (f ProjectRelationProject, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(projectID ProjectUUID, otherID ProjectUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(projectID ProjectUUID, otherID ProjectUUID, vo protocol.VersionOffset) (dm ProjectRelationProject, nv protocol.NumberOfVersion, err protocol.Error)
+
+	LIST_OtherIDs_BY_ProjectID(projectID ProjectUUID, offset, limit uint64) (OtherIDs []ProjectUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }
+
+// 	LIST_ProjectIDs_BY_OtherID_AND_Type(otherID ProjectUUID, t ProjectRelationProject_Type, offset, limit uint64) (projectIDs []ProjectUUID, nv protocol.NumberOfVersion, err protocol.Error)
+
+
+type ProjectRelationProject_Status Quiddity_Status

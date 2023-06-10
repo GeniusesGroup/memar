@@ -17,12 +17,12 @@ type ProjectLabel interface {
 }
 
 type ProjectLabel_StorageServices interface {
-	Save(p ProjectLabel) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm ProjectLabel) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(projectID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(projectID [16]byte, vo protocol.VersionOffset) (p ProjectLabel, nv protocol.NumberOfVersion, err protocol.Error)
-
-	// FilterByType(typ Product_Type, offset, limit uint64) (projectIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(projectID ProjectUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(projectID ProjectUUID, vo protocol.VersionOffset) (dm ProjectLabel, nv protocol.NumberOfVersion, err protocol.Error)
 
 	protocol.EventTarget
 }
+
+// 	LIST_LabelIDs_BY_ProjectID(projectID ProjectUUID, offset, limit uint64) (labelIDs []LabelUUID, nv protocol.NumberOfVersion, err protocol.Error)

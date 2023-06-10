@@ -18,10 +18,9 @@ type ProjectStatus interface {
 
 type Project_Status Quiddity_Status
 
-
 type ProjectStatus_StorageServices interface {
-	Save(f ProjectStatus) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm ProjectStatus) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(projectID ProjectUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(projectID ProjectUUID, vo protocol.VersionOffset) (f ProjectStatus, nv protocol.NumberOfVersion, err protocol.Error)
+	Get(projectID ProjectUUID, vo protocol.VersionOffset) (dm ProjectStatus, nv protocol.NumberOfVersion, err protocol.Error)
 }

@@ -25,8 +25,8 @@ type ProjectAnalytic interface {
 }
 
 type ProjectAnalytic_StorageServices interface {
-	Save(f ProjectAnalytic) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm ProjectAnalytic) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(projectID ProjectUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(projectID ProjectUUID, vo protocol.VersionOffset) (f ProjectAnalytic, nv protocol.NumberOfVersion, err protocol.Error)
+	Get(projectID ProjectUUID, vo protocol.VersionOffset) (dm ProjectAnalytic, nv protocol.NumberOfVersion, err protocol.Error)
 }

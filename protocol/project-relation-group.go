@@ -18,12 +18,14 @@ type ProjectGroupRelation interface {
 }
 
 type ProjectGroupRelation_StorageServices interface {
-	Save(f ProjectGroupRelation) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm ProjectGroupRelation) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(productID ProductUUID, projectID ProjectUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(productID ProductUUID, projectID ProjectUUID, vo protocol.VersionOffset) (f ProjectGroupRelation, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(projectID ProjectUUID, GroupID GroupUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(projectID ProjectUUID, GroupID GroupUUID, vo protocol.VersionOffset) (dm ProjectGroupRelation, nv protocol.NumberOfVersion, err protocol.Error)
+
+	LIST_GroupIDs_BY_ProjectIDs(projectID ProjectUUID, offset, limit uint64) (GroupIDs []GroupUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	LIST_ProjectIDs_BY_GroupID(GroupID GroupUUID, offset, limit uint64) (projectIDs []ProjectUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }
-
 
 type ProjectGroupRelation_Type uint8
 
@@ -31,3 +33,6 @@ const (
 	ProjectGroupRelation_Type_Unset ProjectGroupRelation_Type = iota
 	ProjectGroupRelation_Type_Authorization
 )
+
+
+// 	LIST_ProjectIDs_By_GroupID_AND_Type(GroupID GroupUUID, t ProjectGroupRelation_Type, offset, limit uint64) (projectIDs []ProjectUUID, nv protocol.NumberOfVersion, err protocol.Error)
