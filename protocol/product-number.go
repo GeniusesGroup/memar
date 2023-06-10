@@ -19,8 +19,8 @@ type ProductNumber interface {
 }
 
 type ProductNumber_StorageServices interface {
-	Save(pa ProductNumber) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm ProductNumber) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(productID ProductUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(productID ProductUUID, vo protocol.VersionOffset) (pa ProductNumber, nv protocol.NumberOfVersion, err protocol.Error)
+	Get(productID ProductUUID, vo protocol.VersionOffset) (dm ProductNumber, nv protocol.NumberOfVersion, err protocol.Error)
 }

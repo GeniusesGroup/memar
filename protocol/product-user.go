@@ -16,3 +16,11 @@ type ProductUser interface {
 	Time() protocol.Time            // save time
 	RequestID() urp.UserRequestUUID //
 }
+
+type ProductUser_StorageServices interface {
+	Save(dm ProductUser) (nv protocol.NumberOfVersion, err protocol.Error)
+
+	Count(productID ProductUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(productID ProductUUID, vo protocol.VersionOffset) (dm ProductUser, nv protocol.NumberOfVersion, err protocol.Error)
+
+}

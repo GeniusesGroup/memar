@@ -31,10 +31,10 @@ type ProductInventory_StorageService interface {
 	Unlock(p ProductInventory) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(productID ProductUUID, buildingLocationID BuildingLocationUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(productID ProductUUID, buildingLocationID BuildingLocationUUID, vo protocol.VersionOffset) (p ProductInventory, nv protocol.NumberOfVersion, err protocol.Error)
+	Get(productID ProductUUID, buildingLocationID BuildingLocationUUID, vo protocol.VersionOffset) (f ProductInventory, nv protocol.NumberOfVersion, err protocol.Error)
 
-	ListProductIDs(buildingLocationID BuildingLocationUUID, offset, limit uint64) (productIDs []ProductUUID, nv protocol.NumberOfVersion, err protocol.Error)
-	ListBuildingLocationIDs(productID ProductUUID, offset, limit uint64) (buildingLocationIDs []BuildingLocationUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	LIST_ProductIDs_BY_BuildingLocationID(buildingLocationID BuildingLocationUUID, offset, limit uint64) (productIDs []ProductUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	LIST_BuildingLocationIDs_BY_ProductID(productID ProductUUID, offset, limit uint64) (buildingLocationIDs []BuildingLocationUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }
 
 type ProductInventory_RT uint8

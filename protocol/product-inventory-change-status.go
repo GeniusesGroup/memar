@@ -17,12 +17,12 @@ type ProductInventoryChangeStatus interface {
 }
 
 type ProductInventoryChangeStatus_StorageServices interface {
-	Save(ps ProductInventoryChangeStatus) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm ProductInventoryChangeStatus) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(inventoryChangeID InventoryChangeUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(inventoryChangeID InventoryChangeUUID, vo protocol.VersionOffset) (ps ProductInventoryChangeStatus, nv protocol.NumberOfVersion, err protocol.Error)
+	Get(inventoryChangeID InventoryChangeUUID, vo protocol.VersionOffset) (dm ProductInventoryChangeStatus, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FilterByStatus(status ProductInventoryChange_Status, offset, limit uint64) (inventoryChangeIDs []InventoryChangeUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	FILTER_InventoryChangeIDs_BY_Status(status ProductInventoryChange_Status, offset, limit uint64) (inventoryChangeIDs []InventoryChangeUUID, nv protocol.NumberOfVersion, err protocol.Error)
 
 	protocol.EventTarget
 }

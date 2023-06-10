@@ -19,10 +19,13 @@ type ProductSeat interface {
 }
 
 type ProductSeat_StorageServices interface {
-	Save(ps ProductSeat) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm ProductSeat) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(productID ProductUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(productID ProductUUID, vo protocol.VersionOffset) (ps ProductSeat, nv protocol.NumberOfVersion, err protocol.Error)
+	Get(productID ProductUUID, vo protocol.VersionOffset) (dm ProductSeat, nv protocol.NumberOfVersion, err protocol.Error)
+
+	FIND_ProductIDs_BY_MapID(mapID ObjectUUID, offset, limit uint64) (productIDs []ProductUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	FILTER_ProductIDs_BY_SeatType(t ProductSeat_Type, offset, limit uint64) (productIDs []ProductUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }
 
 type ProductSeat_Type uint8

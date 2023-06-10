@@ -17,12 +17,12 @@ type ProductStatus interface {
 }
 
 type ProductStatus_StorageServices interface {
-	Save(ps ProductStatus) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm ProductStatus) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(productID ProductUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(productID ProductUUID, vo protocol.VersionOffset) (ps ProductStatus, nv protocol.NumberOfVersion, err protocol.Error)
+	Get(productID ProductUUID, vo protocol.VersionOffset) (dm ProductStatus, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FindByStatus(status Product_Status, offset, limit uint64) (productIDs []ProductUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	FILTER_ProductIDs_BY_Status(status Product_Status, offset, limit uint64) (productIDs []ProductUUID, nv protocol.NumberOfVersion, err protocol.Error)
 
 	protocol.EventTarget
 }

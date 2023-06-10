@@ -20,8 +20,8 @@ type ProductTimingInterval interface {
 }
 
 type ProductTimingInterval_StorageServices interface {
-	Save(pt ProductTimingInterval) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm ProductTimingInterval) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(productID ProductUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(productID ProductUUID, vo protocol.VersionOffset) (pt ProductTimingInterval, nv protocol.NumberOfVersion, err protocol.Error)
+	Get(productID ProductUUID, vo protocol.VersionOffset) (dm ProductTimingInterval, nv protocol.NumberOfVersion, err protocol.Error)
 }

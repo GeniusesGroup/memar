@@ -11,14 +11,23 @@ import (
 // ProductDuration indicate the domain record data fields.
 type ProductDuration interface {
 	ProductID() ProductUUID         //
+	Epoch() ProductDuration_Epoch   //
 	Duration() protocol.Duration    // from first use
 	Time() protocol.Time            // save time
 	RequestID() urp.UserRequestUUID //
 }
 
 type ProductDuration_StorageServices interface {
-	Save(pm ProductDuration) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm ProductDuration) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(productID ProductUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(productID ProductUUID, vo protocol.VersionOffset) (pm ProductDuration, nv protocol.NumberOfVersion, err protocol.Error)
+	Get(productID ProductUUID, vo protocol.VersionOffset) (dm ProductDuration, nv protocol.NumberOfVersion, err protocol.Error)
 }
+
+type ProductDuration_Epoch uint8
+
+const (
+	ProductDuration_Epoch_Unset ProductDuration_Epoch = iota
+	ProductDuration_Epoch_FirstUse
+	ProductDuration_Epoch_PurchaseTime
+)

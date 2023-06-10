@@ -18,8 +18,8 @@ type ProductTimingUTC interface {
 }
 
 type ProductTimingUTC_StorageServices interface {
-	Save(pt ProductTimingUTC) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm ProductTimingUTC) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(productID ProductUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(productID ProductUUID, vo protocol.VersionOffset) (pt ProductTimingUTC, nv protocol.NumberOfVersion, err protocol.Error)
+	Get(productID ProductUUID, vo protocol.VersionOffset) (dm ProductTimingUTC, nv protocol.NumberOfVersion, err protocol.Error)
 }

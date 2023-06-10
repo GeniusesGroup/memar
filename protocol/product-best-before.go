@@ -18,8 +18,8 @@ type ProductBestBefore interface {
 }
 
 type ProductBestBefore_StorageServices interface {
-	Save(pb ProductBestBefore) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm ProductBestBefore) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(productID ProductUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(productID ProductUUID, vo protocol.VersionOffset) (pb ProductBestBefore, nv protocol.NumberOfVersion, err protocol.Error)
+	Get(productID ProductUUID, vo protocol.VersionOffset) (dm ProductBestBefore, nv protocol.NumberOfVersion, err protocol.Error)
 }

@@ -21,20 +21,22 @@ type ProductRelation interface {
 }
 
 type ProductRelation_StorageServices interface {
-	Save(pr ProductRelation) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm ProductRelation) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(productID ProductUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(productID ProductUUID, vo protocol.VersionOffset) (pr ProductRelation, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(productID ProductUUID, relationID ProductUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(productID ProductUUID, relationID ProductUUID, vo protocol.VersionOffset) (dm ProductRelation, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FindByRelation(relationID ProductUUID, offset, limit uint64) (productIDs []ProductUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	LIST_ProductIDs_BY_RelationID(relationID ProductUUID, offset, limit uint64) (productIDs []ProductUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	LIST_RelationIDs_BY_ProductID(productID ProductUUID, offset, limit uint64) (relationIDs []ProductUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }
 
-type ProductRelation_Status uint8
+type ProductRelation_Status Quiddity_Status
 
 const (
-	ProductRelation_Status_Unset    ProductRelation_Status = 0
-	ProductRelation_Status_Optional ProductRelation_Status = (1 << iota)
+	ProductRelation_Status_Optional = ProductRelation_Status(Quiddity_Status_FreeFlag << iota)
 )
+
+// 	FIND_ProductIDs_BY_RelationID_AND_Type(relationID ProductUUID, t QuiddityRelationTypeUUID, offset, limit uint64) (productIDs []ProductUUID, nv protocol.NumberOfVersion, err protocol.Error)
 
 type mealDeal struct {
 	products []struct {

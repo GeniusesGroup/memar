@@ -18,8 +18,8 @@ type ProductReserveQuantity interface {
 }
 
 type ProductReserveQuantity_StorageServices interface {
-	Save(pr ProductReserveQuantity) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm ProductReserveQuantity) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(productID ProductUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(productID ProductUUID, vo protocol.VersionOffset) (pr ProductReserveQuantity, nv protocol.NumberOfVersion, err protocol.Error)
+	Get(productID ProductUUID, vo protocol.VersionOffset) (dm ProductReserveQuantity, nv protocol.NumberOfVersion, err protocol.Error)
 }

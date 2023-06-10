@@ -19,12 +19,12 @@ type Product interface {
 }
 
 type Product_StorageServices interface {
-	Save(p Product) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm Product) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(productID ProductUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(productID ProductUUID, vo protocol.VersionOffset) (p Product, nv protocol.NumberOfVersion, err protocol.Error)
+	Get(productID ProductUUID, vo protocol.VersionOffset) (dm Product, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FilterByType(typ Product_Type, offset, limit uint64) (productIDs []ProductUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	FILTER_ProductIDs_BY_Type(typ Product_Type, offset, limit uint64) (productIDs []ProductUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }
 
 // Cinema, Rent, Therapy, Consulting, Coaching, Mentoring, FixingService, the transportation of goods and passenger,  ...

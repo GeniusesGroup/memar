@@ -24,10 +24,10 @@ type ProductInventoryChange interface {
 }
 
 type ProductInventoryChange_StorageServices interface {
-	Save(pi ProductInventoryChange) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm ProductInventoryChange) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(inventoryChangeID InventoryChangeUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(inventoryChangeID InventoryChangeUUID, vo protocol.VersionOffset) (pi ProductInventoryChange, nv protocol.NumberOfVersion, err protocol.Error)
+	Get(inventoryChangeID InventoryChangeUUID, vo protocol.VersionOffset) (dm ProductInventoryChange, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FindByProduct(productID ProductUUID, offset, limit uint64) (inventoryChangeIDs []InventoryChangeUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	FIND_InventoryChangeIDs_BY_ProductID(productID ProductUUID, offset, limit uint64) (inventoryChangeIDs []InventoryChangeUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }

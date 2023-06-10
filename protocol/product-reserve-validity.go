@@ -17,8 +17,8 @@ type ProductReserveValidity interface {
 }
 
 type ProductReserveValidity_StorageServices interface {
-	Save(prv ProductReserveValidity) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm ProductReserveValidity) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(productID ProductUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(productID ProductUUID, vo protocol.VersionOffset) (prv ProductReserveValidity, nv protocol.NumberOfVersion, err protocol.Error)
+	Get(productID ProductUUID, vo protocol.VersionOffset) (dm ProductReserveValidity, nv protocol.NumberOfVersion, err protocol.Error)
 }

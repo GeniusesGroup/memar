@@ -18,15 +18,13 @@ type ProductTag interface {
 }
 
 type ProductTag_StorageServices interface {
-	Save(pt ProductTag) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm ProductTag) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(productID ProductUUID, tag string) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(productID ProductUUID, tag string, vo protocol.VersionOffset) (pt ProductTag, nv protocol.NumberOfVersion, err protocol.Error)
+	Get(productID ProductUUID, tag string, vo protocol.VersionOffset) (dm ProductTag, nv protocol.NumberOfVersion, err protocol.Error)
 
-	ListTags(productID ProductUUID, offset, limit uint64) (tags []string, nv protocol.NumberOfVersion, err protocol.Error)
-	ListProducts(tag string, offset, limit uint64) (productIDs []ProductUUID, nv protocol.NumberOfVersion, err protocol.Error)
-
-	FilterByStatus(productID ProductUUID, status UserRelation_Status, offset, limit uint64) (tags []string, nv protocol.NumberOfVersion, err protocol.Error)
+	LIST_Tags_BY_ProductID(productID ProductUUID, offset, limit uint64) (tags []string, nv protocol.NumberOfVersion, err protocol.Error)
+	LIST_ProductIDs_By_Tag(tag string, offset, limit uint64) (productIDs []ProductUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }
 
 type ProductTag_Status Quiddity_Status

@@ -17,8 +17,8 @@ type ProductMultipleUse interface {
 }
 
 type ProductMultipleUse_StorageServices interface {
-	Save(pm ProductMultipleUse) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm ProductMultipleUse) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(productID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(productID [16]byte, vo protocol.VersionOffset) (pm ProductMultipleUse, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(productID ProductUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(productID ProductUUID, vo protocol.VersionOffset) (dm ProductMultipleUse, nv protocol.NumberOfVersion, err protocol.Error)
 }

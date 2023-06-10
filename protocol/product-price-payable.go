@@ -20,8 +20,8 @@ type ProductPricePayable interface {
 }
 
 type ProductPricePayable_StorageServices interface {
-	Save(q ProductPricePayable) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm ProductPricePayable) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(productID ProductUUID, currency uint64) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(productID ProductUUID, currency uint64, vo protocol.VersionOffset) (q ProductPricePayable, nv protocol.NumberOfVersion, err protocol.Error)
+	Get(productID ProductUUID, currency uint64, vo protocol.VersionOffset) (dm ProductPricePayable, nv protocol.NumberOfVersion, err protocol.Error)
 }

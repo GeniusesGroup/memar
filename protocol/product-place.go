@@ -18,10 +18,10 @@ type ProductPlace interface {
 }
 
 type ProductPlace_StorageServices interface {
-	Save(pp ProductPlace) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm ProductPlace) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(productID ProductUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(productID ProductUUID, vo protocol.VersionOffset) (pp ProductPlace, nv protocol.NumberOfVersion, err protocol.Error)
+	Get(productID ProductUUID, vo protocol.VersionOffset) (dm ProductPlace, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FindByBuildingLocation(buildingLocationID BuildingLocationUUID, offset, limit uint64) (productIDs []ProductUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	FIND_ProductIDs_BY_BuildingLocationID(buildingLocationID BuildingLocationUUID, offset, limit uint64) (productIDs []ProductUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }

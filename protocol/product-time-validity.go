@@ -19,8 +19,8 @@ type ProductTimeValidity interface {
 }
 
 type ProductTimeValidity_StorageServices interface {
-	Save(pt ProductTimeValidity) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm ProductTimeValidity) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(productID ProductUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(productID ProductUUID, vo protocol.VersionOffset) (pt ProductTimeValidity, nv protocol.NumberOfVersion, err protocol.Error)
+	Get(productID ProductUUID, vo protocol.VersionOffset) (dm ProductTimeValidity, nv protocol.NumberOfVersion, err protocol.Error)
 }
