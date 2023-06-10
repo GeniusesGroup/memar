@@ -17,3 +17,12 @@ type PosCash interface {
 	Time() protocol.Time                // save time
 	RequestID() urp.UserRequestUUID     //
 }
+
+type PosCash_StorageServices interface {
+	Save(dm PosCash) (nv protocol.NumberOfVersion, err protocol.Error)
+
+	Count(posID PosUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(posID PosUUID, vo protocol.VersionOffset) (dm PosCash, err protocol.Error)
+
+	FIND_PosIDs_BY_AccountID(accountID FinancialAccountUUID, offset, limit uint64) (posIDs []PosUUID, nv protocol.NumberOfVersion, err protocol.Error)
+}

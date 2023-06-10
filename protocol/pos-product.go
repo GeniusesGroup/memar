@@ -12,16 +12,14 @@ import (
 // Save shortcut to regular products to easily add to invoice
 type PosProduct interface {
 	PosID() PosUUID                 //
-	ProductID() ProductUUID         //
+	ProductID() []ProductUUID       //
 	Time() protocol.Time            // save time
 	RequestID() urp.UserRequestUUID //
 }
 
 type PosProduct_StorageServices interface {
-	Save(pp PosProduct) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm PosProduct) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(posID PosUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(posID PosUUID, vo protocol.VersionOffset) (pp PosProduct, err protocol.Error)
-
-	Delete(posID PosUUID, vo protocol.VersionOffset) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(posID PosUUID, vo protocol.VersionOffset) (dm PosProduct, err protocol.Error)
 }

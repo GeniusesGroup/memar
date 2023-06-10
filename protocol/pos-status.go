@@ -17,12 +17,12 @@ type PosStatus interface {
 }
 
 type PosStatus_StorageServices interface {
-	Save(ps PosStatus) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm PosStatus) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(posID PosUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(posID PosUUID, vo protocol.VersionOffset) (ps PosStatus, nv protocol.NumberOfVersion, err protocol.Error)
+	Get(posID PosUUID, vo protocol.VersionOffset) (dm PosStatus, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FilterByStatus(status Pos_Status, offset, limit uint64) (posIDs []PosUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	FILTER_PosIDs_BY_Status(status Pos_Status, offset, limit uint64) (posIDs []PosUUID, nv protocol.NumberOfVersion, err protocol.Error)
 
 	protocol.EventTarget
 }

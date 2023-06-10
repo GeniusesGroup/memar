@@ -21,10 +21,12 @@ type POS interface {
 }
 
 type POS_StorageServices interface {
-	Save(pos POS) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm POS) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(posID PosUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(posID PosUUID, vo protocol.VersionOffset) (pos POS, nv protocol.NumberOfVersion, err protocol.Error)
+	Get(posID PosUUID, vo protocol.VersionOffset) (dm POS, nv protocol.NumberOfVersion, err protocol.Error)
+
+	FILTER_PosIDs_BY_Type(t POS_Type, offset, limit uint64) (posIDs []PosUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }
 
 type POS_Type uint64
