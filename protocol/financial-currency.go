@@ -19,3 +19,11 @@ type FinancialCurrency interface {
 	Time() protocol.Time                   // save time
 	RequestID() urp.UserRequestUUID        //
 }
+
+type FinancialCurrency_StorageServices interface {
+	Save(dm FinancialCurrency) (nv protocol.NumberOfVersion, err protocol.Error)
+
+	Count(currency FinancialCurrencyUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(currency FinancialCurrencyUUID, vo protocol.VersionOffset) (dm FinancialCurrency, nv protocol.NumberOfVersion, err protocol.Error)
+}
+

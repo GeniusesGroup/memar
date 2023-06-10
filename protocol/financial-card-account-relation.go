@@ -19,13 +19,13 @@ type FinancialCardAccountRelation interface {
 }
 
 type FinancialCardAccountRelation_StorageServices interface {
-	Save(f FinancialCardAccountRelation) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm FinancialCardAccountRelation) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(accountID, cardID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(accountID, cardID [16]byte, vo protocol.VersionOffset) (f FinancialCardAccountRelation, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(accountID FinancialAccountUUID, cardID FinancialCardUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(accountID FinancialAccountUUID, cardID FinancialCardUUID, vo protocol.VersionOffset) (dm FinancialCardAccountRelation, nv protocol.NumberOfVersion, err protocol.Error)
 
-	ListCard(accountID [16]byte, offset, limit uint64) (cardIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
-	ListAccount(cardID [16]byte, offset, limit uint64) (accountIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
+	LIST_CardIDs_BY_AccountID(accountID FinancialAccountUUID, offset, limit uint64) (cardIDs []FinancialCardUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	LIST_AccountIDs_BY_CardID(cardID FinancialCardUUID, offset, limit uint64) (accountIDs []FinancialAccountUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }
 
 type FinancialCardAccountRelation_Status Quiddity_Status

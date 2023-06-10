@@ -10,17 +10,17 @@ import (
 // FinancialTransactionReference store the secondary index that complicated than regular indexes.
 // Use version to save multi transactions for the same reference.
 type FinancialTransactionReference interface {
-	ReferenceID() [16]byte         // any domain base on FinancialTransaction_Type
-	SenderAccountID() [16]byte     // financial-account domain
-	SenderAccountOffset() uint64   //
-	ReceiverAccountID() [16]byte   // financial-account domain. or AccountPartyID
-	ReceiverAccountOffset() uint64 //
-	Time() protocol.Time           // save time
+	ReferenceID() protocol.UUID // any domain base on FinancialTransaction_Type
+	SenderAccountID() FinancialAccountUUID
+	SenderAccountOffset() uint64             //
+	ReceiverAccountID() FinancialAccountUUID // financial-account domain. or AccountPartyID
+	ReceiverAccountOffset() uint64           //
+	Time() protocol.Time                     // save time
 }
 
 type FinancialTransactionReference_StorageServices interface {
-	Save(ftr FinancialTransactionReference) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm FinancialTransactionReference) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(referenceID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(referenceID [16]byte, vo protocol.VersionOffset) (ftr FinancialTransactionReference, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(referenceID protocol.UUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(referenceID protocol.UUID, vo protocol.VersionOffset) (dm FinancialTransactionReference, nv protocol.NumberOfVersion, err protocol.Error)
 }

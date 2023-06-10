@@ -19,4 +19,12 @@ type FinancialCreditDebt interface {
 	RequestID() urp.UserRequestUUID //
 }
 
+
+type FinancialCreditDebt_StorageServices interface {
+	Save(dm FinancialCreditDebt) (nv protocol.NumberOfVersion, err protocol.Error)
+
+	Count(userID up.UserUUID ) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(userID up.UserUUID , vo protocol.VersionOffset) (dm FinancialCreditDebt, nv protocol.NumberOfVersion, err protocol.Error)
+}
+
 // if long overdraft occur, user must pay fee. also can set preference to let system sell its shareholders to overcome of overdraft.

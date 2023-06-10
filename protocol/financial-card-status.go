@@ -17,8 +17,8 @@ type FinancialCardStatus interface {
 }
 
 type FinancialCardStatus_StorageServices interface {
-	Save(fcs FinancialCardStatus) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm FinancialCardStatus) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(financialCardID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(financialCardID [16]byte, vo protocol.VersionOffset) (fcs FinancialCardStatus, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(financialCardID FinancialCardUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(financialCardID FinancialCardUUID, vo protocol.VersionOffset) (dm FinancialCardStatus, nv protocol.NumberOfVersion, err protocol.Error)
 }

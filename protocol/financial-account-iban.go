@@ -11,19 +11,19 @@ import (
 
 // FinancialAccountIBAN indicate the domain record data fields.
 type FinancialAccountIBAN interface {
-	AccountID() [16]byte            // financial-account domain
-	IBAN() iso.IBAN                 //
-	Time() protocol.Time            // save time
-	RequestID() urp.UserRequestUUID //
+	AccountID() FinancialAccountUUID // financial-account domain
+	IBAN() iso.IBAN                  //
+	Time() protocol.Time             // save time
+	RequestID() urp.UserRequestUUID  //
 }
 
 type FinancialAccountIBAN_StorageServices interface {
-	Save(fai FinancialAccountIBAN) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm FinancialAccountIBAN) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(accountID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(accountID [16]byte, vo protocol.VersionOffset) (fai FinancialAccountIBAN, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(accountID FinancialAccountUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(accountID FinancialAccountUUID, vo protocol.VersionOffset) (dm FinancialAccountIBAN, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FindByIBAN(iban iso.IBAN) (accountID [16]byte, err protocol.Error)
+	FIND_AccountIDs_BY_IBAN(iban iso.IBAN) (accountID FinancialAccountUUID, err protocol.Error)
 }
 
 type FinancialAccountIBAN_Service_Register_Request interface {

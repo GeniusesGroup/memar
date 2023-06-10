@@ -11,16 +11,16 @@ import (
 
 // FinancialAccountMain indicate the domain record data fields.
 type FinancialAccountMain interface {
-	UserID() up.UserUUID            //
-	Currency() [16]byte             // financial-currency
-	AccountID() [16]byte            // financial-account domain
-	Time() protocol.Time            // save time
-	RequestID() urp.UserRequestUUID //
+	UserID() up.UserUUID             //
+	Currency() FinancialCurrencyUUID 
+	AccountID() FinancialAccountUUID 
+	Time() protocol.Time             // save time
+	RequestID() urp.UserRequestUUID  //
 }
 
 type FinancialAccountMain_StorageServices interface {
-	Save(fa FinancialAccountMain) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm FinancialAccountMain) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(userID, currency [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(userID, currency [16]byte, vo protocol.VersionOffset) (fa FinancialAccountMain, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(userID up.UserUUID, currency FinancialCurrencyUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(userID up.UserUUID, currency FinancialCurrencyUUID, vo protocol.VersionOffset) (dm FinancialAccountMain, nv protocol.NumberOfVersion, err protocol.Error)
 }

@@ -17,3 +17,10 @@ type FinancialRiskScore interface {
 	Time() protocol.Time            // save time
 	RequestID() urp.UserRequestUUID //
 }
+
+type FinancialRiskScore_StorageServices interface {
+	Save(dm FinancialRiskScore) (nv protocol.NumberOfVersion, err protocol.Error)
+
+	Count(userID up.UserUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(userID up.UserUUID, vo protocol.VersionOffset) (dm FinancialRiskScore, nv protocol.NumberOfVersion, err protocol.Error)
+}

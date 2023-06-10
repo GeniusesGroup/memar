@@ -11,19 +11,19 @@ import (
 // FinancialAccountID indicate the domain record data fields.
 // It is about settlement reference internal ID like bank account ID.
 type FinancialAccountID interface {
-	AccountID() [16]byte            // financial-account domain
-	ID() string                     //
-	Time() protocol.Time            // save time
-	RequestID() urp.UserRequestUUID //
+	AccountID() FinancialAccountUUID 
+	ID() string                      //
+	Time() protocol.Time             // save time
+	RequestID() urp.UserRequestUUID  //
 }
 
 type FinancialAccountID_StorageServices interface {
-	Save(fai FinancialAccountID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm FinancialAccountID) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(accountID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(accountID [16]byte, vo protocol.VersionOffset) (fai FinancialAccountID, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(accountID FinancialAccountUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(accountID FinancialAccountUUID, vo protocol.VersionOffset) (dm FinancialAccountID, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FindByID(id string) (accountIDs [][16]byte, err protocol.Error)
+	FIND_AccountIDs_BY_ID(id string) (accountIDs []FinancialAccountUUID, err protocol.Error)
 }
 
 type (

@@ -18,3 +18,10 @@ type FinancialCredit interface {
 	Time() protocol.Time            // save time
 	RequestID() urp.UserRequestUUID //
 }
+
+type FinancialCredit_StorageServices interface {
+	Save(dm FinancialCredit) (nv protocol.NumberOfVersion, err protocol.Error)
+
+	Count(userID up.UserUUID ) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(userID up.UserUUID , vo protocol.VersionOffset) (dm FinancialCredit, nv protocol.NumberOfVersion, err protocol.Error)
+}

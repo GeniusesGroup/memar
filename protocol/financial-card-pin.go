@@ -20,8 +20,8 @@ type FinancialCardPin interface {
 }
 
 type FinancialCardPin_StorageServices interface {
-	Save(fac FinancialCardPin) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm FinancialCardPin) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(financialCardID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(financialCardID [16]byte, vo protocol.VersionOffset) (fac FinancialCardPin, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(financialCardID FinancialCardUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(financialCardID FinancialCardUUID, vo protocol.VersionOffset) (dm FinancialCardPin, nv protocol.NumberOfVersion, err protocol.Error)
 }

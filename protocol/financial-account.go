@@ -24,10 +24,10 @@ type FinancialAccount interface {
 }
 
 type FinancialAccount_StorageServices interface {
-	Save(fa FinancialAccount) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm FinancialAccount) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(accountID FinancialAccountUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(accountID FinancialAccountUUID, vo protocol.VersionOffset) (fa FinancialAccount, nv protocol.NumberOfVersion, err protocol.Error)
+	Get(accountID FinancialAccountUUID, vo protocol.VersionOffset) (dm FinancialAccount, nv protocol.NumberOfVersion, err protocol.Error)
 
 	FIND_AccountIDs_BY_UserID(userID up.UserUUID, offset, limit uint64) (accountIDs []FinancialAccountUUID, nv protocol.NumberOfVersion, err protocol.Error)
 	FIND_AccountIDs_BY_SettlementAccountID(settlementAccountID FinancialAccountUUID, offset, limit uint64) (accountIDs []FinancialAccountUUID, nv protocol.NumberOfVersion, err protocol.Error)

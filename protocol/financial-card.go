@@ -24,13 +24,13 @@ type FinancialCard interface {
 }
 
 type FinancialCard_StorageServices interface {
-	Save(fc FinancialCard) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(f FinancialCard) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(financialCardID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(financialCardID [16]byte, vo protocol.VersionOffset) (fc FinancialCard, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(financialCardID FinancialCardUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(financialCardID FinancialCardUUID, vo protocol.VersionOffset) (f FinancialCard, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FindByUser(userID up.UserUUID, offset, limit uint64) (financialCardIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
-	FindByCardNumber(cardNumber iso.Card) (financialCardID [16]byte, err protocol.Error)
+	FIND_FinancialCardIDs_BY_UserID(userID up.UserUUID, offset, limit uint64) (financialCardIDs []FinancialCardUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	FIND_FinancialCardIDs_BY_CardNumber(cardNumber iso.Card) (financialCardIDs []FinancialCardUUID, err protocol.Error)
 }
 
 type FinancialCard_Service_Register_Request interface {
