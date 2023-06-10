@@ -4,11 +4,13 @@ package cgp
 
 import (
 	"libgo/protocol"
+
+	gp "org/modules/group/protocol"
 	up "org/modules/user/protocol"
 )
 
 type GUI_Widget_Conditions interface {
-	GroupID() GroupUUID
+	GroupID() gp.GroupUUID
 	UserID() up.UserUUID
 	Text() string
 	DisableSending() bool
