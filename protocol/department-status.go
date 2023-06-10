@@ -16,12 +16,13 @@ type DepartmentStatus interface {
 }
 
 type DepartmentStatus_StorageServices interface {
-	Save(ds DepartmentStatus) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm DepartmentStatus) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(departmentID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(departmentID [16]byte, vo protocol.VersionOffset) (ds DepartmentStatus, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(departmentID DepartmentUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(departmentID DepartmentUUID, vo protocol.VersionOffset) (dm DepartmentStatus, nv protocol.NumberOfVersion, err protocol.Error)
 
-	// FilterByStatus(status Department_Status, offset, limit uint64) (departmentIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
+	FILTER_DepartmentIDs_BY_Status(status Department_Status, offset, limit uint64) (departmentIDs []DepartmentUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	
 	// protocol.EventTarget
 }
 

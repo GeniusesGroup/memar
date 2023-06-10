@@ -9,9 +9,20 @@ import (
 )
 
 // DepartmentOrgRelation indicate the domain record data fields.
-type DepartmentOrgRelation interface {
+type DepartmentOwner interface {
+	OwnerID() OrgUUID               //
 	DepartmentID() DepartmentUUID   //
-	OrganizationID() OrgUUID        //
 	Time() protocol.Time            // save time
 	RequestID() urp.UserRequestUUID //
+}
+
+type DepartmentOrgRelation_StorageServices interface {
+	Save(dm DepartmentOwner) (nv protocol.NumberOfVersion, err protocol.Error)
+
+	count(ownerID OrgUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(ownerID OrgUUID, vo protocol.VersionOffset) (dm DepartmentOwner, nv protocol.NumberOfVersion, err protocol.Error)
+
+	Delete(ownerID OrgUUID, departmentID DepartmentUUID) (err protocol.Error)
+
+	FIND_DepartmentID_BY_OrganizationID(departmentID DepartmentUUID, offset, limit uint64) (ownerID OrgUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }

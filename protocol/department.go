@@ -21,8 +21,10 @@ type Department interface {
 }
 
 type Department_StorageServices interface {
-	Save(d Department) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm Department) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(departmentID DepartmentUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(departmentID DepartmentUUID, vo protocol.VersionOffset) (d Department, nv protocol.NumberOfVersion, err protocol.Error)
+	Get(departmentID DepartmentUUID, vo protocol.VersionOffset) (dm Department, nv protocol.NumberOfVersion, err protocol.Error)
+
+	FIND_DepartmentIDs_BY_ParentID(parentID DepartmentUUID, offset, limit uint64) (departmentIDs []DepartmentUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }

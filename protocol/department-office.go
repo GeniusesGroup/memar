@@ -10,15 +10,17 @@ import (
 
 type DepartmentOffice interface {
 	DepartmentID() DepartmentUUID //
-	BuildingLocationID() [16]byte // building-location domain
+	BuildingLocationID() BuildingLocationUUID
 	// TODO::: Label or type: IT-Office, ...
 	Time() protocol.Time            // save time
 	RequestID() urp.UserRequestUUID //
 }
 
 type DepartmentOffice_StorageServices interface {
-	Save(do DepartmentOffice) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm DepartmentOffice) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(departmentID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(departmentID [16]byte, vo protocol.VersionOffset) (do DepartmentOffice, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(departmentID DepartmentUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(departmentID DepartmentUUID, vo protocol.VersionOffset) (dm DepartmentOffice, nv protocol.NumberOfVersion, err protocol.Error)
+
+	FIND_DepartmentIDs_BY_BuildingLocationID(buildingLocationID BuildingLocationUUID, offset, limit uint64) (departmentIDs []DepartmentUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }
