@@ -6,6 +6,7 @@ import (
 	"libgo/protocol"
 
 	urp "org/modules/user-request/protocol"
+	up "org/modules/user/protocol"
 )
 
 // DiscountUserType indicate the domain record data fields.
@@ -17,10 +18,10 @@ type DiscountUserType interface {
 }
 
 type DiscountUserType_StorageServices interface {
-	Save(dut DiscountUserType) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm DiscountUserType) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(discountID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(discountID [16]byte, vo protocol.VersionOffset) (dut DiscountUserType, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(discountID DiscountUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(discountID DiscountUUID, vo protocol.VersionOffset) (dm DiscountUserType, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FindByUserType(userType protocol.UserType, offset, limit uint64) (discountIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
+	FIND_DiscountIDs_BY_UserType(userType up.UserUUID, offset, limit uint64) (discountIDs []DiscountUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }

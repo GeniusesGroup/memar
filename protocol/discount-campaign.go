@@ -10,15 +10,17 @@ import (
 
 // DiscountCampaign indicate the domain record data fields.
 type DiscountCampaign interface {
-	DiscountID() DiscountUUID       //
-	CampaignID() [16]byte           // marketing-campaign domain
-	Time() protocol.Time            // save time
-	RequestID() urp.UserRequestUUID //
+	DiscountID() DiscountUUID          //
+	CampaignID() MarketingCampaignUUID 
+	Time() protocol.Time               // save time
+	RequestID() urp.UserRequestUUID    //
 }
 
 type DiscountCampaign_StorageServices interface {
-	Save(dc DiscountCampaign) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm DiscountCampaign) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(discountID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(discountID [16]byte, vo protocol.VersionOffset) (dc DiscountCampaign, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(discountID DiscountUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(discountID DiscountUUID, vo protocol.VersionOffset) (dm DiscountCampaign, nv protocol.NumberOfVersion, err protocol.Error)
+
+	FIND_DiscountIDs_BY_CampaignID(campaignID MarketingCampaignUUID, offset, limit uint64) (discountIDs []DiscountUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }

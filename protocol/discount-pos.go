@@ -17,10 +17,10 @@ type DiscountPOS interface {
 }
 
 type DiscountPOS_StorageServices interface {
-	Save(dp DiscountPOS) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm DiscountPOS) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(discountID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(discountID [16]byte, vo protocol.VersionOffset) (dp DiscountPOS, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(discountID DiscountUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(discountID DiscountUUID, vo protocol.VersionOffset) (dm DiscountPOS, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FindByPOS(posID [16]byte, offset, limit uint64) (discountIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
+	FIND_DiscountIDs_BY_PosID(posID PosUUID, offset, limit uint64) (discountIDs []DiscountUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }

@@ -18,8 +18,8 @@ type DiscountTimeValidity interface {
 }
 
 type DiscountTimeValidity_StorageServices interface {
-	Save(dtv DiscountTimeValidity) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm DiscountTimeValidity) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(discountID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(discountID [16]byte, vo protocol.VersionOffset) (dtv DiscountTimeValidity, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(discountID DiscountUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(discountID DiscountUUID, vo protocol.VersionOffset) (dm DiscountTimeValidity, nv protocol.NumberOfVersion, err protocol.Error)
 }

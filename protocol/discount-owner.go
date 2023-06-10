@@ -17,10 +17,10 @@ type DiscountOwner interface {
 }
 
 type DiscountOwner_StorageServices interface {
-	Save(dp DiscountOwner) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm DiscountOwner) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(discountID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(discountID [16]byte, vo protocol.VersionOffset) (dp DiscountOwner, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(discountID DiscountUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(discountID DiscountUUID, vo protocol.VersionOffset) (dm DiscountOwner, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FindByOrg(orgID [16]byte, offset, limit uint64) (discountIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
+	FIND_DiscountIDs_BY_OrgID(orgID OrgUUID, offset, limit uint64) (discountIDs []DiscountUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }

@@ -22,13 +22,13 @@ type DiscountProduct interface {
 }
 
 type DiscountProduct_StorageServices interface {
-	Save(dp DiscountProduct) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm DiscountProduct) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(discountID, productID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(discountID, productID [16]byte, vo protocol.VersionOffset) (dp DiscountProduct, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(discountID DiscountUUID, productID ProductUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(discountID DiscountUUID, productID ProductUUID, vo protocol.VersionOffset) (dm DiscountProduct, nv protocol.NumberOfVersion, err protocol.Error)
 
-	ListDiscounts(productID [16]byte, offset, limit uint64) (discountIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
-	ListProducts(discountID [16]byte, offset, limit uint64) (productIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
+	LIST_DiscountIDs_BY_ProductID(productID ProductUUID, offset, limit uint64) (discountIDs []DiscountUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	LIST_ProductIDs_BY_DiscountID(discountID DiscountUUID, offset, limit uint64) (productIDs []ProductUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }
 
 type DiscountProduct_Type uint16

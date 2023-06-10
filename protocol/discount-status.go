@@ -17,12 +17,12 @@ type DiscountStatus interface {
 }
 
 type DiscountStatus_StorageServices interface {
-	Save(ds DiscountStatus) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm DiscountStatus) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(discountID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(discountID [16]byte, vo protocol.VersionOffset) (ds DiscountStatus, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(discountID DiscountUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(discountID DiscountUUID, vo protocol.VersionOffset) (dm DiscountStatus, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FilterByStatus(status Discount_Status, offset, limit uint64) (discountIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
+	FILTER_DiscountIDs_BY_Status(status Discount_Status, offset, limit uint64) (discountIDs []DiscountUUID, nv protocol.NumberOfVersion, err protocol.Error)
 
 	protocol.EventTarget
 }

@@ -18,8 +18,8 @@ type DiscountValue interface {
 }
 
 type DiscountValue_StorageServices interface {
-	Save(dv DiscountValue) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm DiscountValue) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(discountID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(discountID [16]byte, vo protocol.VersionOffset) (dv DiscountValue, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(discountID DiscountUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(discountID DiscountUUID, vo protocol.VersionOffset) (dm DiscountValue, nv protocol.NumberOfVersion, err protocol.Error)
 }

@@ -19,8 +19,8 @@ type DiscountTimingUTC interface {
 }
 
 type DiscountTimingUTC_StorageServices interface {
-	Save(dt DiscountTimingUTC) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm DiscountTimingUTC) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(discountID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(discountID [16]byte, vo protocol.VersionOffset) (dt DiscountTimingUTC, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(discountID DiscountUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(discountID DiscountUUID, vo protocol.VersionOffset) (dm DiscountTimingUTC, nv protocol.NumberOfVersion, err protocol.Error)
 }

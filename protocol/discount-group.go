@@ -17,10 +17,10 @@ type DiscountGroup interface {
 }
 
 type DiscountGroup_StorageServices interface {
-	Save(dg DiscountGroup) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm DiscountGroup) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(discountID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(discountID [16]byte, vo protocol.VersionOffset) (dg DiscountGroup, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(discountID DiscountUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(discountID DiscountUUID, vo protocol.VersionOffset) (dm DiscountGroup, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FindByGroup(groupID [16]byte, offset, limit uint64) (discountIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
+	FIND_DiscountIDs_BY_GroupID(groupID GroupUUID, offset, limit uint64) (discountIDs []DiscountUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }

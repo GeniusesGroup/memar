@@ -17,8 +17,8 @@ type DiscountUsage interface {
 }
 
 type DiscountUsage_StorageServices interface {
-	Save(du DiscountUsage) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm DiscountUsage) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(discountID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(discountID [16]byte, vo protocol.VersionOffset) (du DiscountUsage, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(discountID DiscountUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(discountID DiscountUUID, vo protocol.VersionOffset) (dm DiscountUsage, nv protocol.NumberOfVersion, err protocol.Error)
 }

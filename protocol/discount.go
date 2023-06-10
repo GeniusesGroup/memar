@@ -20,10 +20,12 @@ type Discount interface {
 }
 
 type Discount_StorageServices interface {
-	Save(d Discount) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm Discount) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(discountID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(discountID [16]byte, vo protocol.VersionOffset) (d Discount, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(discountID DiscountUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(discountID DiscountUUID, vo protocol.VersionOffset) (dm Discount, nv protocol.NumberOfVersion, err protocol.Error)
+
+	FIND_DiscountIDs_BY_Type(t Discount_Type, offset, limit uint64) (discountIDs []DiscountUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }
 
 type Discount_Type uint32

@@ -18,10 +18,10 @@ type DiscountUser interface {
 }
 
 type DiscountUser_StorageServices interface {
-	Save(ds DiscountUser) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm DiscountUser) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(discountID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(discountID [16]byte, vo protocol.VersionOffset) (ds DiscountUser, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(discountID DiscountUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(discountID DiscountUUID, vo protocol.VersionOffset) (dm DiscountUser, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FindByUser(userID up.UserUUID, offset, limit uint64) (discountIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
+	FIND_DiscountIDs_BY_UserID(userID up.UserUUID, offset, limit uint64) (discountIDs []DiscountUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }

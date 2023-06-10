@@ -22,13 +22,12 @@ type DiscountCategory interface {
 }
 
 type DiscountCategory_StorageServices interface {
-	Save(dc DiscountCategory) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm DiscountCategory) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(discountID, categoryID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(discountID, categoryID [16]byte, vo protocol.VersionOffset) (dc DiscountCategory, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(discountID DiscountUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(discountID DiscountUUID, vo protocol.VersionOffset) (dm DiscountCategory, nv protocol.NumberOfVersion, err protocol.Error)
 
-	ListDiscounts(categoryID [16]byte, offset, limit uint64) (discountIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
-	ListCategories(discountID [16]byte, offset, limit uint64) (categoryIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
+	LIST_DiscountIDs_BY_CategoryID(categoryID CategoryUUID, offset, limit uint64) (discountIDs []DiscountUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }
 
 type DiscountCategory_Type uint16

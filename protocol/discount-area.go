@@ -13,16 +13,16 @@ import (
 // It's rule depend on products in invoices e.g. source or destination of taxi as a service(product).
 type DiscountArea interface {
 	DiscountID() DiscountUUID       //
-	AreaID() [16]byte               // area domain
+	EstateID() EstateUUID           
 	Time() protocol.Time            // save time
 	RequestID() urp.UserRequestUUID //
 }
 
 type DiscountArea_StorageServices interface {
-	Save(da DiscountArea) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm DiscountArea) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(discountID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(discountID [16]byte, vo protocol.VersionOffset) (da DiscountArea, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(discountID DiscountUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(discountID DiscountUUID, vo protocol.VersionOffset) (dm DiscountArea, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FindByArea(AreaID [16]byte, offset, limit uint64) (discountIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
+	FIND_DiscountIDs_BY_EstateID(EstateID EstateUUID, offset, limit uint64) (discountIDs []DiscountUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }
