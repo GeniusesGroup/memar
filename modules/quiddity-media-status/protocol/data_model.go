@@ -1,30 +1,26 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package qmsp
 
 import (
 	"libgo/protocol"
 
+	op "org/modules/object/protocol"
+	qsp "org/modules/quiddity-status/protocol"
+	qp "org/modules/quiddity/protocol"
 	urp "org/modules/user-request/protocol"
 )
 
-type QuiddityMediaStatus interface {
-	QuiddityID() QuiddityUUID       //
-	ObjectID() ObjectUUID           // media file
-	Status() QuiddityMedia_Status   //
-	Time() protocol.Time            // save time
+type DataModel interface {
+	QuiddityID() qp.QuiddityUUID    //
+	ObjectID() op.ObjectUUID        // media file
+	Status() Status                 //
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
 }
 
-type QuiddityMediaStatus_StorageServices interface {
-	Save(q QuiddityMediaStatus) (nv protocol.NumberOfVersion, err protocol.Error)
-
-	Count(quiddityID QuiddityUUID, objectID ObjectUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(quiddityID QuiddityUUID, objectID ObjectUUID, vo protocol.VersionOffset) (q QuiddityMediaStatus, nv protocol.NumberOfVersion, err protocol.Error)
-}
-
-type QuiddityMedia_Status Quiddity_Status
+type Status qsp.Quiddity_Status
 
 const (
-// QuiddityMedia_Status_ QuiddityMedia_Status = (Quiddity_Status_FreeFlag << iota)
+// Status_ Status = (Quiddity_Status_FreeFlag << iota)
 )

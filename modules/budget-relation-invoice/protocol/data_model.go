@@ -1,35 +1,31 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package brip
 
 import (
 	"libgo/protocol"
+	bp "org/modules/budget/protocol"
+	ip "org/modules/invoice/protocol"
+	qsp "org/modules/quiddity-status/protocol"
 	urp "org/modules/user-request/protocol"
 )
 
-// BudgetInvoiceRelation indicate the domain record data fields.
-type BudgetInvoiceRelation interface {
-	BudgetID() BudgetUUID             //
-	InvoiceID() InvoiceUUID           //
-	Type() BudgetInvoiceRelation_Type //
-	Status() BudgetInvoice_Status     //
-	Time() protocol.Time              // save time
-	RequestID() urp.UserRequestUUID   //
+// DataModel indicate the domain record data fields.
+type DataModel interface {
+	BudgetID() bp.BudgetUUID        //
+	InvoiceID() ip.InvoiceUUID      //
+	Type() Type                     //
+	Status() BudgetInvoice_Status   //
+	SaveTime() protocol.Time        //
+	RequestID() urp.UserRequestUUID //
 }
 
-type BudgetInvoiceRelation_StorageServices interface {
-	Save(dm BudgetInvoiceRelation) (nv protocol.NumberOfVersion, err protocol.Error)
+type BudgetInvoice_Status qsp.Quiddity_Status
 
-	Count(budgetID BudgetUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(budgetID BudgetUUID, vo protocol.VersionOffset) (dm BudgetInvoiceRelation, nv protocol.NumberOfVersion, err protocol.Error)
-}
-
-type BudgetInvoice_Status Quiddity_Status
-
-type BudgetInvoiceRelation_Type uint8
+type Type uint8
 
 const (
-	BudgetInvoiceRelation_Type_Unset BudgetInvoiceRelation_Type = iota
-	BudgetInvoiceRelation_Type_Supporter
-	BudgetInvoiceRelation_Type_Sponsor
+	Type_Unset Type = iota
+	Type_Supporter
+	Type_Sponsor
 )

@@ -1,6 +1,6 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package ekup
 
 import (
 	"libgo/protocol"
@@ -9,32 +9,30 @@ import (
 	up "org/modules/user/protocol"
 )
 
-type EducationKnowledgeUnitUUID = protocol.UUID
-
-// EducationKnowledgeUnit indicate the domain record data fields.
-type EducationKnowledgeUnit interface {
+// DataModel indicate the domain record data fields.
+type DataModel interface {
 	KnowledgeUnitID() EducationKnowledgeUnitUUID //
 	UserID() up.UserUUID                         //
-	Type() Education_Type                        // education unit type
-	Time() protocol.Time                         // save time
+	Type() Type                                  // education unit type
+	SaveTime() protocol.Time                     //
 	RequestID() urp.UserRequestUUID              //
 }
 
-type Education_Type uint32
+type Type uint32
 
 // ?? > science > field > course > lessons > topics > ??
 const (
-	Education_Type_Unset Education_Type = 0
+	Type_Unset Type = 0
 
 	// the state of knowing : knowledge as distinguished from ignorance or misunderstanding
-	Education_Type_Science Education_Type = iota
+	Type_Science Type = iota
 
 	// a branch of knowledge
-	Education_Type_Field
+	Type_Field
 
 	// education imparted in a series of lessons or meetings
-	Education_Type_Course
+	Type_Course
 
-	Education_Type_Lesson
-	Education_Type_Topic
+	Type_Lesson
+	Type_Topic
 )

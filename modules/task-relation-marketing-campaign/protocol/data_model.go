@@ -1,10 +1,12 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package trmcp
 
 import (
 	"libgo/protocol"
 
+	mcp "org/modules/marketing-campaign/protocol"
+	tp "org/modules/task/protocol"
 	urp "org/modules/user-request/protocol"
 )
 
@@ -12,20 +14,13 @@ import (
 // I know that in GUI we can distinguish between them to show more data base on relations(e.g. invoice price, ...).
 // I think we need to improve comment types to cover more types to support these domain relation.
 
-// TaskRelationMarketingCampaign indicate the domain record data fields.
-type TaskRelationMarketingCampaign interface {
-	TaskID() TaskUUID                                 //
-	MarketingCampaignID() MarketingCampaignUUID       //
-	RelationType() TaskRelationMarketingCampaign_Type //
-	Time() protocol.Time                              // Save time
-	RequestID() urp.UserRequestUUID                   //
+// DataModel indicate the domain record data fields.
+type DataModel interface {
+	TaskID() tp.TaskUUID                            //
+	MarketingCampaignID() mcp.MarketingCampaignUUID //
+	RelationType() Type                             //
+	SaveTime() protocol.Time                        // Save time
+	RequestID() urp.UserRequestUUID                 //
 }
 
-type TaskRelationMarketingCampaign_StorageServices interface {
-	Save(dm TaskRelationMarketingCampaign) (nv protocol.NumberOfVersion, err protocol.Error)
-
-	Count(marketingCampaignID MarketingCampaignUUID, taskID TaskUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(marketingCampaignID MarketingCampaignUUID, taskID TaskUUID, vo protocol.VersionOffset) (dm TaskRelationMarketingCampaign, nv protocol.NumberOfVersion, err protocol.Error)
-}
-
-type TaskRelationMarketingCampaign_Type uint8
+type Type uint8

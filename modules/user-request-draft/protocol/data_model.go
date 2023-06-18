@@ -1,6 +1,6 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package urdp
 
 import (
 	"libgo/protocol"
@@ -13,7 +13,7 @@ import (
 
 // RequestID of this record use to prove how other records created as a chain to other records or standalone data.
 // Prove how this record created in the chain of other records.
-type RequestDraft interface {
+type DataModel interface {
 	ID() [16]byte // RequestDraftID
 	UserID() up.UserUUID
 	UserConnectionID() [16]byte // Store to remember which ConnectionID/AppInstanceID set||chanaged this record.
@@ -21,6 +21,6 @@ type RequestDraft interface {
 	ServiceID() uint64
 	CompressID() uint64             // gzip
 	Request() []byte                // Decode by service request structure and compress type.
-	Time() protocol.Time            // save time
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
 }

@@ -1,32 +1,25 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package vep
 
 import (
 	"libgo/protocol"
 
+	eblp "org/modules/estate-building-location/protocol"
+	ebp "org/modules/estate-building/protocol"
+	ep "org/modules/estate/protocol"
 	urp "org/modules/user-request/protocol"
+	vp "org/modules/voucher/protocol"
 )
 
-// VoucherEstate indicate the domain record data fields.
-// VoucherEstate is proper or appropriate location indicate specific area not specific location
+// DataModel indicate the domain record data fields.
+// DataModel is proper or appropriate location indicate specific area not specific location
 // It's rule depend on products in invoices e.g. source or destination of taxi as a service(product).
-type VoucherEstate interface {
-	VoucherID() VoucherUUID                   //
-	EstateID() EstateUUID                     //
-	BuildingID() BuildingUUID                 //
-	BuildingLocationID() BuildingLocationUUID //
-	Time() protocol.Time                      // save time
-	RequestID() urp.UserRequestUUID           //
-}
-
-type VoucherEstate_StorageServices interface {
-	Save(dm VoucherEstate) (nv protocol.NumberOfVersion, err protocol.Error)
-
-	Count(voucherID VoucherUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(voucherID VoucherUUID, vo protocol.VersionOffset) (dm VoucherEstate, nv protocol.NumberOfVersion, err protocol.Error)
-
-	FIND_VoucherIDs_BY_EstateID(EstateID EstateUUID, offset, limit uint64) (voucherIDs []VoucherUUID, nv protocol.NumberOfVersion, err protocol.Error)
-	FIND_VoucherIDs_BY_BuildingID(buildingID BuildingUUID, offset, limit uint64) (voucherIDs []VoucherUUID, nv protocol.NumberOfVersion, err protocol.Error)
-	FIND_VoucherIDs_BY_BuildingLocationID(buildingLocationID BuildingLocationUUID, offset, limit uint64) (voucherIDs []VoucherUUID, nv protocol.NumberOfVersion, err protocol.Error)
+type DataModel interface {
+	VoucherID() vp.VoucherUUID                     //
+	EstateID() ep.EstateUUID                       //
+	BuildingID() ebp.BuildingUUID                  //
+	BuildingLocationID() eblp.BuildingLocationUUID //
+	SaveTime() protocol.Time                       //
+	RequestID() urp.UserRequestUUID                //
 }

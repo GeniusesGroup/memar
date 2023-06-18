@@ -1,33 +1,24 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package osp
 
 import (
 	"libgo/protocol"
 
+	op "org/modules/object/protocol"
+	qsp "org/modules/quiddity-status/protocol"
 	urp "org/modules/user-request/protocol"
 )
 
-type PictureStatus interface {
-	ObjectID() ObjectUUID           //
-	Status() Object_Status          //
-	Time() protocol.Time            // save time
+type DataModel interface {
+	ObjectID() op.ObjectUUID        //
+	Status() Status                 //
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
 }
 
-type PictureStatus_StorageServices interface {
-	Save(ps PictureStatus) (nv protocol.NumberOfVersion, err protocol.Error)
-
-	Count(objectID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(objectID [16]byte, vo protocol.VersionOffset) (ps PictureStatus, nv protocol.NumberOfVersion, err protocol.Error)
-
-	// FilterByStatus(status Object_Status, offset, limit uint64) (objectIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
-
-	// protocol.EventTarget
-}
-
-type Object_Status Quiddity_Status
+type Status qsp.Quiddity_Status
 
 const (
-// Object_Status_ Object_Status = (Quiddity_Status_FreeFlag << iota)
+// Object_Status_ Status = (Quiddity_Status_FreeFlag << iota)
 )

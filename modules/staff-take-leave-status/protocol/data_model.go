@@ -1,39 +1,30 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package stlsp
 
 import (
 	"libgo/protocol"
 	"libgo/time/utc"
 
+	qsp "org/modules/quiddity-status/protocol"
+	sp "org/modules/staff/protocol"
 	urp "org/modules/user-request/protocol"
 )
 
-type StaffTakeLeaveStatus interface {
-	StaffID() StaffUUID             //
+type DataModel interface {
+	StaffID() sp.StaffUUID          //
 	Day() utc.DayElapsed            //
-	Status() StaffTakeLeave_Status  //
-	Time() protocol.Time            // save time
+	Status() Status                 //
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
 }
 
-type StaffTakeLeaveStatus_StorageServices interface {
-	Save(dm StaffTakeLeaveStatus) (nv protocol.NumberOfVersion, err protocol.Error)
-
-	Count(staffID StaffUUID, day utc.DayElapsed) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(staffID StaffUUID, day utc.DayElapsed, vo protocol.VersionOffset) (dm StaffTakeLeaveStatus, nv protocol.NumberOfVersion, err protocol.Error)
-
-	// FilterByStatus(status StaffTakeLeave_Status, offset, limit uint64) (staffIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
-
-	// protocol.EventTarget
-}
-
-type StaffTakeLeave_Status Quiddity_Status
+type Status qsp.Quiddity_Status
 
 const (
-	StaffTakeLeave_Status_NeedAlternate = StaffTakeLeave_Status(Quiddity_Status_FreeFlag << iota)
-	StaffTakeLeave_Status_NeedAlternateApprove
-	StaffTakeLeave_Status_AlternateApprove
-	StaffTakeLeave_Status_NeedManagerApprove
-	StaffTakeLeave_Status_ManagerApprove
+	Status_NeedAlternate = Status(qsp.Quiddity_Status_FreeFlag << iota)
+	Status_NeedAlternateApprove
+	Status_AlternateApprove
+	Status_NeedManagerApprove
+	Status_ManagerApprove
 )

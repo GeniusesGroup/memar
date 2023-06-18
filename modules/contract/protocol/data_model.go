@@ -1,53 +1,42 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package cp
 
 import (
 	"libgo/protocol"
 
+	ctp "org/modules/contract-template/protocol"
 	urp "org/modules/user-request/protocol"
 )
 
-type ContractUUID = protocol.UUID
-
-type Contract interface {
-	ContractID() ContractUUID                 //
-	ContractTemplateID() ContractTemplateUUID //
-	ContractTemplateVersion() uint64          // VersionOffset
-	Data() map[Contract_KeyType]string        //
-	Time() protocol.Time                      // save time
-	RequestID() urp.UserRequestUUID           //
+type DataModel interface {
+	ContractID() ContractUUID                     //
+	ContractTemplateID() ctp.ContractTemplateUUID //
+	ContractTemplateVersion() uint64              // VersionOffset
+	Data() map[Type]string                        //
+	SaveTime() protocol.Time                      //
+	RequestID() urp.UserRequestUUID               //
 }
 
-type Contract_StorageServices interface {
-	Save(c Contract) (nv protocol.NumberOfVersion, err protocol.Error)
-
-	Count(contractID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(contractID [16]byte, vo protocol.VersionOffset) (c Contract, nv protocol.NumberOfVersion, err protocol.Error)
-
-	FindByContractTemplate(contractTemplateID [16]byte, offset, limit uint64) (contractIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
-	FindByData(data string, offset, limit uint64) (contractIDs [16]byte, nv protocol.NumberOfVersion, err protocol.Error)
-}
-
-type Contract_KeyType uint32
+type Type uint32
 
 const (
-	Contract_KeyType_Unset Contract_KeyType = iota
+	Type_Unset Type = iota
 
-	Contract_KeyType_FirstSide
-	Contract_KeyType_SecondSide
-	Contract_KeyType_ThirdSide
-	Contract_KeyType_Witness
-	Contract_KeyType_Arbitrator
-	Contract_KeyType_Expert
+	Type_FirstSide
+	Type_SecondSide
+	Type_ThirdSide
+	Type_Witness
+	Type_Arbitrator
+	Type_Expert
 
-	Contract_KeyType_Mass
-	Contract_KeyType_Density
+	Type_Mass
+	Type_Density
 
-	Contract_KeyType_WeeklyRent
-	Contract_KeyType_MonthlyRent
+	Type_WeeklyRent
+	Type_MonthlyRent
 
-	Contract_KeyType_DueTo
+	Type_DueTo
 )
 
 // Service: fulfill the obligation

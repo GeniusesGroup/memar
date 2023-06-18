@@ -18,5 +18,5 @@ type DataModel interface {
 	// TODO::: move to esteghrar repo/connection
 	// ClientType() string // persiaos, web, android, ios, ...
 	// Geo()                // location of user or post
-	Time() protocol.Time // Request time or save Time of the request not the created record by this record.
+	SaveTime() protocol.Time // Request time or save Time of the request not the created record by this record.
 }

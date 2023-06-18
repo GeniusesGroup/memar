@@ -1,27 +1,22 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package bsp
 
 import (
 	"libgo/protocol"
+	bp "org/modules/budget/protocol"
+	qsp "org/modules/quiddity-status/protocol"
 	urp "org/modules/user-request/protocol"
 )
 
 // TODO::: move all budget to the base domain
 
-// BudgetStatus indicate the domain record data fields.
-type BudgetStatus interface {
-	BudgetID() BudgetUUID //
-	Status() Budget_Status
-	Time() protocol.Time            // save time
+// DataModel indicate the domain record data fields.
+type DataModel interface {
+	BudgetID() bp.BudgetUUID //
+	Status() Status
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
 }
 
-type BudgetStatus_StorageServices interface {
-	Save(dm Budget) (nv protocol.NumberOfVersion, err protocol.Error)
-
-	Count(budgetID BudgetUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(budgetID BudgetUUID, vo protocol.VersionOffset) (dm Budget, nv protocol.NumberOfVersion, err protocol.Error)
-}
-
-type Budget_Status Quiddity_Status
+type Status qsp.Quiddity_Status

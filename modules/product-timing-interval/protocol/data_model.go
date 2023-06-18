@@ -1,27 +1,21 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package ptip
 
 import (
 	"libgo/protocol"
 
+	pp "org/modules/product/protocol"
 	urp "org/modules/user-request/protocol"
 )
 
-// ProductTimingInterval indicate the domain record data fields.
+// DataModel indicate the domain record data fields.
 // e.g. flight duration, doctor visit, carwash, ...
-type ProductTimingInterval interface {
-	ProductID() ProductUUID         //
+type DataModel interface {
+	ProductID() pp.ProductUUID      //
 	Minimum() protocol.Duration     // Minimum time duration for this service
 	Expected() protocol.Duration    // Expected time duration for this service
 	Maximum() protocol.Duration     // Maximum time duration for this service
-	Time() protocol.Time            // save time
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
-}
-
-type ProductTimingInterval_StorageServices interface {
-	Save(dm ProductTimingInterval) (nv protocol.NumberOfVersion, err protocol.Error)
-
-	Count(productID ProductUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(productID ProductUUID, vo protocol.VersionOffset) (dm ProductTimingInterval, nv protocol.NumberOfVersion, err protocol.Error)
 }

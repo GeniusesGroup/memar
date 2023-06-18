@@ -1,43 +1,35 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package qrp
 
 import (
 	"libgo/protocol"
 
+	qp "org/modules/question/protocol"
 	urp "org/modules/user-request/protocol"
 )
 
-// QuestionRating indicate the domain record data fields.
-type QuestionRating interface {
-	QuestionID() QuestionUUID       //
-	Type() QuestionRating_Type      //
+// DataModel indicate the domain record data fields.
+type DataModel interface {
+	QuestionID() qp.QuestionUUID    //
+	Type() Type                     //
 	Max() uint8                     //
-	Time() protocol.Time            // Save time
+	SaveTime() protocol.Time        // Save time
 	RequestID() urp.UserRequestUUID //
 }
 
-type QuestionRating_StorageServices interface {
-	Save(dm QuestionRating) (nv protocol.NumberOfVersion, err protocol.Error)
-
-	Count(questionID QuestionUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(questionID QuestionUUID, vo protocol.VersionOffset) (dm QuestionRating, nv protocol.NumberOfVersion, err protocol.Error)
-
-	FILTER_QuestionIDs_BY_Type(t QuestionRating_Type, offset, limit uint64) (questionIDs []QuestionUUID, nv protocol.NumberOfVersion, err protocol.Error)
-}
-
-type QuestionRating_Type uint16
+type Type uint16
 
 const (
-	QuestionRating_Type_Unset             QuestionRating_Type = 0
-	QuestionRating_Type_LikertScale_Emoji QuestionRating_Type = (1 << iota)
-	QuestionRating_Type_LikertScale_Color
-	QuestionRating_Type_LikertScale_Range // bipolar scale
-	QuestionRating_Type_Star
-	QuestionRating_Type_Number
-	QuestionRating_Type_Text
-	QuestionRating_Type_Label
+	Type_Unset             Type = 0
+	Type_LikertScale_Emoji Type = (1 << iota)
+	Type_LikertScale_Color
+	Type_LikertScale_Range // bipolar scale
+	Type_Star
+	Type_Number
+	Type_Text
+	Type_Label
 
-	QuestionRating_Type_ForceToFill
-	QuestionRating_Type_ForceToContinue
+	Type_ForceToFill
+	Type_ForceToContinue
 )

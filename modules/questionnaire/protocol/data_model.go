@@ -1,6 +1,6 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package qp
 
 import (
 	"libgo/protocol"
@@ -8,39 +8,28 @@ import (
 	urp "org/modules/user-request/protocol"
 )
 
-type QuestionnaireUUID protocol.UUID
-
-// Questionnaire indicate the domain record data fields.
-type Questionnaire interface {
+// DataModel indicate the domain record data fields.
+type DataModel interface {
 	QuestionnaireID() QuestionnaireUUID //
-	Type() Questionnaire_Type           //
-	Time() protocol.Time                // Save time
+	Type() Type                         //
+	SaveTime() protocol.Time            // Save time
 	RequestID() urp.UserRequestUUID     //
 }
 
-type Questionnaire_StorageServices interface {
-	Save(dm Questionnaire) (nv protocol.NumberOfVersion, err protocol.Error)
-
-	Count(questionnaireID QuestionnaireUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(questionnaireID QuestionnaireUUID, vo protocol.VersionOffset) (dm Questionnaire, nv protocol.NumberOfVersion, err protocol.Error)
-    
-	FIND_QuestionnaireIDs_By_Type(questionnaireID QuestionnaireUUID, t Questionnaire_Type , offset, limit uint64) (nv protocol.NumberOfVersion, err protocol.Error)
-}
-
-type Questionnaire_Type uint16
+type Type uint16
 
 const (
-	Questionnaire_Type_Unset Questionnaire_Type = 0
-	Questionnaire_Type_Quiz  Questionnaire_Type = (1 << iota)
-	Questionnaire_Type_Anonymous
-	Questionnaire_Type_Duration
-	Questionnaire_Type_StartPoint
-	Questionnaire_Type_AllowToEdit
-	Questionnaire_Type_Form
-	Questionnaire_Type_MaxAttempt
+	Type_Unset Type = 0
+	Type_Quiz  Type = (1 << iota)
+	Type_Anonymous
+	Type_Duration
+	Type_StartPoint
+	Type_AllowToEdit
+	Type_Form
+	Type_MaxAttempt
 
 	// No one can made direct answer to this questionnaire.
-	Questionnaire_Type_Criterion
+	Type_Criterion
 
 	// TODO::: Template for forms?
 )

@@ -1,32 +1,22 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package gpp
 
 import (
 	"libgo/protocol"
 
+	gp "org/modules/group/protocol"
 	urp "org/modules/user-request/protocol"
-	up "org/modules/user/protocol"
 )
 
-// GroupPolicy indicate the domain record data fields.
-type GroupPolicy interface {
-	GroupID() GroupUUID                //
+// DataModel indicate the domain record data fields.
+type DataModel interface {
+	GroupID() gp.GroupUUID             //
 	GetPolicy() GroupPolicy_Policy     // Visibility level
 	SetPolicy() GroupPolicy_Policy     //
 	ForwardPolicy() GroupPolicy_Policy //
-	Time() protocol.Time               // save time
+	SaveTime() protocol.Time           //
 	RequestID() urp.UserRequestUUID    //
-}
-
-type GroupPolicy_StorageServices interface {
-	Save(dm GroupPolicy) (nv protocol.NumberOfVersion, err protocol.Error)
-
-	Count(groupID GroupUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(groupID GroupUUID, vo protocol.VersionOffset) (dm GroupPolicy, nv protocol.NumberOfVersion, err protocol.Error)
-
-	// need to be discussed
-	// FindByUserID(ownerUserID up.UserUUID, offset, limit uint64) (ids [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
 }
 
 type GroupPolicy_Policy uint16

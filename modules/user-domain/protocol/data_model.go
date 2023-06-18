@@ -1,31 +1,23 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package udp
 
 import (
 	"libgo/protocol"
 
+	qsp "org/modules/quiddity-status/protocol"
 	urp "org/modules/user-request/protocol"
 	up "org/modules/user/protocol"
 )
 
-// Domain is unique name in the computer world. Country e.g. Iran, ... || Digital platforms e.g. Instagram, Facebook, Google, Github, Yahoo, ...
-type UserDomain interface {
+// DataModel is unique name in the computer world. Country e.g. Iran, ... || Digital platforms e.g. Instagram, Facebook, Google, Github, Yahoo, ...
+type DataModel interface {
 	Domain() string                   // unique name in the computer world
 	UserID() up.UserUUID              //
 	AcceptedProtocols() UserDomain_AP //
-	Status() UserDomain_Status        //
-	Time() protocol.Time              // save time
+	Status() Status                   //
+	SaveTime() protocol.Time          //
 	RequestID() urp.UserRequestUUID   //
-}
-
-type UserDomain_StorageServices interface {
-	Save(ud UserDomain) (nv protocol.NumberOfVersion, err protocol.Error)
-
-	Count(domain string) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(domain string, vo protocol.VersionOffset) (ud UserDomain, nv protocol.NumberOfVersion, err protocol.Error)
-
-	FindByUserID(userID up.UserUUID, offset, limit uint64) (domains []string, nv protocol.NumberOfVersion, err protocol.Error)
 }
 
 // UserDomain_AP is user domain accepted protocols
@@ -38,55 +30,15 @@ const (
 	UserDomain_AP_PhoneCall
 )
 
-// UserDomain_Status indicate UserDomain record status
-type UserDomain_Status Quiddity_Status
+// Status indicate UserDomain record status
+type Status qsp.Quiddity_Status
 
 // UserDomain statuses
 const (
-// UserDomain_Status_ = UserDomain_Status(Quiddity_Status_FreeFlag << iota)
+// Status_ = Status(Quiddity_Status_FreeFlag << iota)
 )
 
-/*
-	Business Services
-*/
 
-type UserDomain_Service_Register_Request interface {
-	Domain() string
-	UserID() up.UserUUID // TODO::: get user id from connection??
-}
-
-type UserDomain_Service_Count_Request interface {
-	Domain() string
-}
-type UserDomain_Service_Count_Response interface {
-	Numbers() uint64
-}
-
-type UserDomain_Service_Get_Request interface {
-	Domain() string
-	VersionOffset() protocol.VersionOffset
-}
-type UserDomain_Service_Get_Response1 interface {
-	UserDomain
-}
-type UserDomain_Service_Get_Response2 protocol.NumberOfVersion
-
-type UserDomain_Service_FindByUserID_Request interface {
-	UserID() up.UserUUID
-	Offset() uint64
-	Limit() uint64
-}
-type UserDomain_Service_FindByUserID_Response interface {
-	Domains() []string
-	Numbers() uint64
-}
-
-// Admins services
-
-type UserDomain_Service_ChangeStatus_Request interface {
-	Domain() string
-	Status() UserDomain_Status
-}
 
 /*
 	Errors

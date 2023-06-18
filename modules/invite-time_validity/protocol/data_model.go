@@ -1,18 +1,19 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package itvp
 
 import (
 	"libgo/protocol"
 
 	urp "org/modules/user-request/protocol"
+	ip "org/modules/invite/protocol"
 )
 
-// InviteTimeValidity indicate the domain record data fields.
-type InviteTimeValidity interface {
-	InviteID() InviteUUID           //
+// DataModel indicate the domain record data fields.
+type DataModel interface {
+	InviteID() ip.InviteUUID        //
 	Start() protocol.Time           //
 	End() protocol.Time             //
-	Time() protocol.Time            // save time
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
 }

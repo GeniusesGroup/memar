@@ -1,37 +1,33 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package bmap
 
 import (
 	"libgo/protocol"
+
+	bp "org/modules/budget/protocol"
+	fcp "org/modules/financial-currency/protocol"
 	urp "org/modules/user-request/protocol"
 )
 
-// BudgetMoneyAmount indicate the domain record data fields.
-type BudgetMoneyAmount interface {
-	BudgetID() BudgetUUID            //
-	Currency() FinancialCurrencyUUID //
-	Amount() protocol.MoneyAmount
-	Type() BudgetMoneyAmount_Type   //
-	Time() protocol.Time            // save time
-	RequestID() urp.UserRequestUUID //
+// DataModel indicate the domain record data fields.
+type DataModel interface {
+	BudgetID() bp.BudgetUUID             //
+	Currency() fcp.FinancialCurrencyUUID //
+	Amount() protocol.MoneyAmount        //
+	Type() Type                          //
+	SaveTime() protocol.Time             //
+	RequestID() urp.UserRequestUUID      //
 }
 
-type BudgetMoneyAmount_StorageServices interface {
-	Save(dm BudgetMoneyAmount) (nv protocol.NumberOfVersion, err protocol.Error)
-
-	Count(budgetID BudgetUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(budgetID BudgetUUID, vo protocol.VersionOffset) (dm BudgetMoneyAmount, nv protocol.NumberOfVersion, err protocol.Error)
-}
-
-type BudgetMoneyAmount_Type uint8
+type Type uint8
 
 const (
-	BudgetMoneyAmount_Type_Unset BudgetMoneyAmount_Type = iota
-	BudgetMoneyAmount_Type_Suggested
-	BudgetMoneyAmount_Type_Approved
-	BudgetMoneyAmount_Type_Executed
-	BudgetMoneyAmount_Type_Inspected
+	Type_Unset Type = iota
+	Type_Suggested
+	Type_Approved
+	Type_Executed
+	Type_Inspected
 )
 
 // Usage:

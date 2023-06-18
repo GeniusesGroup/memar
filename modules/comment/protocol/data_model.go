@@ -9,38 +9,39 @@ import (
 	up "org/modules/user/protocol"
 )
 
-// DatModel indicate the domain record data fields.
-type DatModel interface {
-	CommentID() CommentUUID         //
+// DataModel indicate the domain record data fields.
+type DataModel interface {
+	CommentID() CommentUUID      //
 	UserID() up.UserUUID            //
-	Type() Comment_Type             //
+	Type() Type             //
 	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
 }
 
-type Comment_Type uint32
+type Type uint32
 
 const (
-	Comment_Type_Unset Comment_Type = 0
-	Comment_Type_Text  Comment_Type = (1 << iota)
-	Comment_Type_Emoji
-	Comment_Type_Sticker // gif
-	Comment_Type_Voice
-	Comment_Type_File
+	Type_Unset Type = 0
+	Type_Text  Type = (1 << iota)
+	Type_Emoji
+	Type_Sticker // gif
+	Type_Voice
+	Type_File
 
-	Comment_Type_MultiParticipant
-	Comment_Type_Email
+	Type_MultiParticipant
+	Type_Email
 
-	Comment_Type_Image
-	Comment_Type_Video
-	Comment_Type_Album
+	Type_Image
+	Type_Video
+	Type_Album
 
-	Comment_Type_Pin
-	Comment_Type_RelationToComment // Forward, Retweet, Share, ...
+	Type_Pin
+	Type_Reply
+	Type_RelationToComment // Forward, Retweet, Share, ...
 
 	// TODO:::
-	Comment_Type_LogActivity_PrimaryKey_Single
-	Comment_Type_LogActivity_PrimaryKey_Double
-	Comment_Type_LogActivity_PrimaryKey_Triple
-	Comment_Type_LogActivity_PrimaryKey_String
+	Type_LogActivity_PrimaryKey_Single
+	Type_LogActivity_PrimaryKey_Double
+	Type_LogActivity_PrimaryKey_Triple
+	Type_LogActivity_PrimaryKey_String
 )

@@ -1,37 +1,27 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package cttp
 
 import (
 	"libgo/protocol"
 
+	ctp "org/modules/contract-template/protocol"
+	qsp "org/modules/quiddity-status/protocol"
 	urp "org/modules/user-request/protocol"
 )
 
-// ContractTemplateTag indicate the domain record data fields.
+// DataModel indicate the domain record data fields.
 // Tag is any text with hashtag in the contract template text, can't use by old fashion way to assign by users.
-type ContractTemplateTag interface {
-	ContractTemplateID() ContractTemplateUUID //
-	Tag() string                              //
-	Status() ContractTemplateTag_Status       //
-	Time() protocol.Time                      // save time
-	RequestID() urp.UserRequestUUID           //
+type DataModel interface {
+	ContractTemplateID() ctp.ContractTemplateUUID //
+	Tag() string                                  //
+	Status() Status                               //
+	SaveTime() protocol.Time                      //
+	RequestID() urp.UserRequestUUID               //
 }
 
-type ContractTemplateTag_StorageServices interface {
-	Save(ct ContractTemplateTag) (nv protocol.NumberOfVersion, err protocol.Error)
-
-	Count(contractTemplateID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(contractTemplateID [16]byte, vo protocol.VersionOffset) (ct ContractTemplateTag, nv protocol.NumberOfVersion, err protocol.Error)
-
-	ListTags(contractTemplateID [16]byte, offset, limit uint64) (tags []string, nv protocol.NumberOfVersion, err protocol.Error)
-	ListContractTemplates(tag string, offset, limit uint64) (contractTemplateIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
-
-	FilterByStatus(contractTemplateID [16]byte, status ContractTemplateTag_Status, offset, limit uint64) (tags []string, nv protocol.NumberOfVersion, err protocol.Error)
-}
-
-type ContractTemplateTag_Status Quiddity_Status
+type Status qsp.Quiddity_Status
 
 const (
-// ContractTemplateTag_Status_ = ContractTemplateTag_Status(Quiddity_Status_FreeFlag << iota)
+// Status_ = Status(Quiddity_Status_FreeFlag << iota)
 )

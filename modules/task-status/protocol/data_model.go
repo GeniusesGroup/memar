@@ -1,35 +1,28 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package tsp
 
 import (
 	"libgo/protocol"
 
+	qsp "org/modules/quiddity-status/protocol"
+	tp "org/modules/task/protocol"
 	urp "org/modules/user-request/protocol"
 )
 
-// TaskStatus indicate the domain record data fields.
-type TaskStatus interface {
-	TaskID() TaskUUID               //
-	Status() Task_Status            //
-	Time() protocol.Time            // Save time
+// DataModel indicate the domain record data fields.
+type DataModel interface {
+	TaskID() tp.TaskUUID            //
+	Status() Status                 //
+	SaveTime() protocol.Time        // Save time
 	RequestID() urp.UserRequestUUID //
 }
 
-type TaskStatus_StorageServices interface {
-	Save(dm TaskStatus) (nv protocol.NumberOfVersion, err protocol.Error)
-
-	Count(taskID TaskUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(taskID TaskUUID, vo protocol.VersionOffset) (dm TaskStatus, nv protocol.NumberOfVersion, err protocol.Error)
-
-	FILTER_TaskIDs_BY_Status(status Task_Status, offset, limit uint64) (taskIDs []TaskUUID, nv protocol.NumberOfVersion, err protocol.Error)
-}
-
-type Task_Status Quiddity_Status
+type Status qsp.Quiddity_Status
 
 const (
-	Task_Status_ReadyForDevelopment = Task_Status(Quiddity_Status_FreeFlag << iota)
-	Task_Status_InProgress
-	Task_Status_Close
-	Task_Status_Success
+	Status_ReadyForDevelopment = Status(qsp.Quiddity_Status_FreeFlag << iota)
+	Status_InProgress
+	Status_Close
+	Status_Success
 )

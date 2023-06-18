@@ -1,38 +1,25 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package usp
 
 import (
 	"libgo/protocol"
 
+	qsp "org/modules/quiddity-status/protocol"
 	urp "org/modules/user-request/protocol"
 	up "org/modules/user/protocol"
 )
 
-type UserStatus interface {
+type DataModel interface {
 	UserID() up.UserUUID            // Generated unique ID for the user
 	OrgID() up.UserUUID             //
-	Status() User_Status            //
-	Time() protocol.Time            // save time
+	Status() Status                 //
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
 }
 
-type UserStatus_StorageServices interface {
-	Save(us UserStatus) (nv protocol.NumberOfVersion, err protocol.Error)
-
-	Count(userID up.UserUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(userID up.UserUUID, vo protocol.VersionOffset) (us UserStatus, nv protocol.NumberOfVersion, err protocol.Error)
-
-	GetIDs(offset, limit uint64) (userIDs []up.UserUUID, nv protocol.NumberOfVersion, err protocol.Error)
-
-	// FilterByStatus(status UserOtherApp_Status, offset, limit uint64) (userIDs []up.UserUUID, nv protocol.NumberOfVersion, err protocol.Error)
-	// FindByTime(day utc.DayElapsed, offset, limit uint64) (userIDs []up.UserUUID, nv protocol.NumberOfVersion, err protocol.Error)
-
-	// protocol.EventTarget
-}
-
-type User_Status Quiddity_Status
+type Status qsp.Quiddity_Status
 
 const (
-// User_Status_ = User_Status(Quiddity_Status_FreeFlag << iota)
+// Status_ = Status(Quiddity_Status_FreeFlag << iota)
 )

@@ -1,26 +1,25 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package qrtp
 
 import (
 	"libgo/protocol"
 
+	qsp "org/modules/quiddity-status/protocol"
 	urp "org/modules/user-request/protocol"
 )
 
-type QuiddityRelationTypeUUID = QuiddityUUID
-
-// QuiddityRelationType store some key/value for a Quiddity to describe it e.g. mobile-cpu, ...
+// DataModel store some key/value for a Quiddity to describe it e.g. mobile-cpu, ...
 // e.g. MetricUnit: Number, Gram, Liter, Second
-type QuiddityRelationType interface {
-	TypeID() QuiddityRelationTypeUUID    //
-	Status() QuiddityRelationType_Status //
-	Time() protocol.Time                 // save time
-	RequestID() urp.UserRequestUUID      //
+type DataModel interface {
+	TypeID() QuiddityRelationTypeUUID //
+	Status() Status                   //
+	SaveTime() protocol.Time          //
+	RequestID() urp.UserRequestUUID   //
 }
 
-type QuiddityRelationType_Status Quiddity_Status
+type Status qsp.Quiddity_Status
 
 const (
-	QuiddityRelationType_Status_Unset QuiddityRelationType_Status = iota
+	Status_Unset Status = iota
 )

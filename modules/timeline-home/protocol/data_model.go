@@ -1,31 +1,23 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package thp
 
 import (
 	"libgo/protocol"
 
+	cp "org/modules/comment/protocol"
 	up "org/modules/user/protocol"
 )
 
-// HomeTimeline indicate the domain record data fields.
+// DataModel indicate the domain record data fields.
 // home timeline feed
-type HomeTimeline interface {
+type DataModel interface {
 	UserID() up.UserUUID         //
-	CommentID() CommentUUID      //
+	CommentID() cp.CommentUUID   //
 	ReasonUserID() up.UserUUID   // it can be the owner of comment or any other user base on reason
 	Reason() HomeTimeline_Reason //
-	Time() protocol.Time         // save time
+	SaveTime() protocol.Time     //
 	// TODO::: node details??
-}
-
-type HomeTimeline_StorageServices interface {
-	Save(ht HomeTimeline) (nv protocol.NumberOfVersion, err protocol.Error)
-
-	Count(userID up.UserUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(userID up.UserUUID, vo protocol.VersionOffset) (ht HomeTimeline, nv protocol.NumberOfVersion, err protocol.Error)
-
-	protocol.EventTarget
 }
 
 type HomeTimeline_Reason uint8

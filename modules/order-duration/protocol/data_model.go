@@ -1,26 +1,20 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package odp
 
 import (
 	"libgo/protocol"
 
+	op "org/modules/order/protocol"
 	urp "org/modules/user-request/protocol"
 )
 
-type OrderDuration interface {
-	OrderID() OrderUUID             //
+type DataModel interface {
+	OrderID() op.OrderUUID          //
 	Epoch() OrderDuration_Epoch     //
 	Duration() protocol.Duration    // from Epoch()
-	Time() protocol.Time            // save time
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
-}
-
-type OrderDuration_StorageServices interface {
-	Save(od OrderDuration) (nv protocol.NumberOfVersion, err protocol.Error)
-
-	Count(orderID OrderUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(orderID OrderUUID, vo protocol.VersionOffset) (od OrderDuration, nv protocol.NumberOfVersion, err protocol.Error)
 }
 
 type OrderDuration_Epoch uint8

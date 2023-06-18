@@ -1,24 +1,18 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package ssp
 
 import (
 	"libgo/protocol"
 
+	sp "org/modules/staff/protocol"
 	urp "org/modules/user-request/protocol"
 )
 
-// StaffScore or staff grade
-type StaffScore interface {
-	StaffID() StaffUUID             //
+// DataModel or staff grade
+type DataModel interface {
+	StaffID() sp.StaffUUID          //
 	Score() uint64                  //
-	Time() protocol.Time            // save time
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
-}
-
-type StaffScore_StorageServices interface {
-	Save(dm StaffScore) (nv protocol.NumberOfVersion, err protocol.Error)
-
-	Count(staffID StaffUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(staffID StaffUUID, vo protocol.VersionOffset) (dm StaffScore, nv protocol.NumberOfVersion, err protocol.Error)
 }

@@ -1,26 +1,19 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package vgp
 
 import (
 	"libgo/protocol"
 
+	gp "org/modules/group/protocol"
 	urp "org/modules/user-request/protocol"
+	vp "org/modules/voucher/protocol"
 )
 
-// VoucherGroup indicate the domain record data fields.
-type VoucherGroup interface {
-	VoucherID() VoucherUUID         //
-	GroupID() []GroupUUID             //
-	Time() protocol.Time            // save time
+// DataModel indicate the domain record data fields.
+type DataModel interface {
+	VoucherID() vp.VoucherUUID      //
+	GroupID() []gp.GroupUUID        //
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
-}
-
-type VoucherGroup_StorageServices interface {
-	Save(dm VoucherGroup) (nv protocol.NumberOfVersion, err protocol.Error)
-
-	Count(voucherID VoucherUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(voucherID VoucherUUID, vo protocol.VersionOffset) (dm VoucherGroup, nv protocol.NumberOfVersion, err protocol.Error)
-
-	FIND_VoucherIDs_BY_GroupID(groupID GroupUUID, offset, limit uint64) (voucherIDs []VoucherUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }

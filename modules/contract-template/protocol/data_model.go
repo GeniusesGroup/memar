@@ -1,6 +1,6 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package ctp
 
 import (
 	"libgo/protocol"
@@ -8,18 +8,12 @@ import (
 	urp "org/modules/user-request/protocol"
 )
 
-type ContractTemplateUUID = protocol.UUID
 
-type ContractTemplate interface {
+
+type DataMdoel interface {
 	ContractTemplateID() ContractTemplateUUID //
 	Language() protocol.Language              // base language
-	Time() protocol.Time                      // save time
+	SaveTime() protocol.Time                  //
 	RequestID() urp.UserRequestUUID           //
 }
 
-type ContractTemplate_StorageServices interface {
-	Save(ct ContractTemplate) (nv protocol.NumberOfVersion, err protocol.Error)
-
-	Count(contractTemplateID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(contractTemplateID [16]byte, vo protocol.VersionOffset) (ct ContractTemplate, nv protocol.NumberOfVersion, err protocol.Error)
-}

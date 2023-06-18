@@ -1,26 +1,22 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package cap
 
 import (
 	"libgo/protocol"
 
+	cp "org/modules/content/protocol"
 	urp "org/modules/user-request/protocol"
 )
 
-type ContentAccess interface {
-	ContentID() ContentUUID         //
+type DataModel interface {
+	ContentID() cp.ContentUUID      //
 	Access() Content_Access         //
-	Time() protocol.Time            // save time
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
 }
 
-type ContentAccess_StorageServices interface {
-	Save(dm ContentAccess) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(contentID ContentUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(contentID ContentUUID, vo protocol.VersionOffset) (dm ContentAccess, nv protocol.NumberOfVersion, err protocol.Error)
-}
 
 type Content_Access uint8
 

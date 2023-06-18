@@ -1,34 +1,25 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package psp
 
 import (
 	"libgo/protocol"
 
+	pp "org/modules/product/protocol"
+	qsp "org/modules/quiddity-status/protocol"
 	urp "org/modules/user-request/protocol"
 )
 
-// ProductStatus indicate the domain record data fields.
-type ProductStatus interface {
-	ProductID() ProductUUID         //
-	Status() Product_Status         //
-	Time() protocol.Time            // save time
+// DataModel indicate the domain record data fields.
+type DataModel interface {
+	ProductID() pp.ProductUUID      //
+	Status() Status                 //
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
 }
 
-type ProductStatus_StorageServices interface {
-	Save(dm ProductStatus) (nv protocol.NumberOfVersion, err protocol.Error)
-
-	Count(productID ProductUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(productID ProductUUID, vo protocol.VersionOffset) (dm ProductStatus, nv protocol.NumberOfVersion, err protocol.Error)
-
-	FILTER_ProductIDs_BY_Status(status Product_Status, offset, limit uint64) (productIDs []ProductUUID, nv protocol.NumberOfVersion, err protocol.Error)
-
-	protocol.EventTarget
-}
-
-type Product_Status Quiddity_Status
+type Status qsp.Quiddity_Status
 
 const (
-// Product_Status_ = Product_Status(Quiddity_Status_FreeFlag << iota)
+// Status_ = Status(Quiddity_Status_FreeFlag << iota)
 )

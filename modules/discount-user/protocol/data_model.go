@@ -1,27 +1,20 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package dup
 
 import (
 	"libgo/protocol"
 
 	urp "org/modules/user-request/protocol"
 	up "org/modules/user/protocol"
+	dp "org/modules/discount/protocol"
 )
 
-// DiscountUser indicate the domain record data fields.
-type DiscountUser interface {
-	DiscountID() DiscountUUID       //
+// DataModel indicate the domain record data fields.
+type DataModel interface {
+	DiscountID() dp.DiscountUUID    //
 	UserID() up.UserUUID            //
-	Time() protocol.Time            // save time
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
 }
 
-type DiscountUser_StorageServices interface {
-	Save(dm DiscountUser) (nv protocol.NumberOfVersion, err protocol.Error)
-
-	Count(discountID DiscountUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(discountID DiscountUUID, vo protocol.VersionOffset) (dm DiscountUser, nv protocol.NumberOfVersion, err protocol.Error)
-
-	FIND_DiscountIDs_BY_UserID(userID up.UserUUID, offset, limit uint64) (discountIDs []DiscountUUID, nv protocol.NumberOfVersion, err protocol.Error)
-}

@@ -1,6 +1,6 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package cap
 
 import (
 	"libgo/protocol"
@@ -11,6 +11,6 @@ import (
 type ContractAnalytic interface {
 	CoordinateID() CoordinateUUID //
 
-	Time() protocol.Time            // save time
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
 }

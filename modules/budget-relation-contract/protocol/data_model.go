@@ -1,27 +1,22 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package brcp
 
 import (
 	"libgo/protocol"
+	bp "org/modules/budget/protocol"
+	cp "org/modules/contract/protocol"
+	qsp "org/modules/quiddity-status/protocol"
 	urp "org/modules/user-request/protocol"
 )
 
-// BudgetContractRelation indicate the domain record data fields.
-type BudgetContractRelation interface {
-	BudgetID() BudgetUUID              //
-	ContractID() ContractUUID          //
-	Status() BudgetContract_Status     //
-	Time() protocol.Time               // save time
-	RequestID() urp.UserRequestUUID    //
+// DataModel indicate the domain record data fields.
+type DataModel interface {
+	BudgetID() bp.BudgetUUID        //
+	ContractID() cp.ContractUUID    //
+	Status() Status                 //
+	SaveTime() protocol.Time        //
+	RequestID() urp.UserRequestUUID //
 }
 
-type BudgetContractRelation_StorageServices interface {
-	Save(dm BudgetContractRelation) (nv protocol.NumberOfVersion, err protocol.Error)
-
-	Count(budgetID BudgetUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(budgetID BudgetUUID, vo protocol.VersionOffset) (dm BudgetContractRelation, nv protocol.NumberOfVersion, err protocol.Error)
-}
-
-type BudgetContract_Status Quiddity_Status
-
+type Status qsp.Quiddity_Status

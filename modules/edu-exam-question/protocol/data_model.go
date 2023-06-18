@@ -1,31 +1,30 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package eeqp
 
 import (
 	"libgo/protocol"
 
+	ekup "org/modules/edu-knowledge_unit/protocol"
 	urp "org/modules/user-request/protocol"
 	up "org/modules/user/protocol"
 )
 
-type EducationQuestionUUID = protocol.UUID
-
-// EducationKnowledgeUnitQuestion indicate the domain record data fields.
-type EducationKnowledgeUnitQuestion interface {
-	QuestionID() EducationQuestionUUID           // don't point to quiddity title na don't set title
-	UserID() up.UserUUID                         //
-	KnowledgeUnitID() EducationKnowledgeUnitUUID //
-	Type() EducationKnowledgeUnitQuestion_Type   //
-	Time() protocol.Time                         // save time
-	RequestID() urp.UserRequestUUID              //
+// DataModel indicate the domain record data fields.
+type DataModel interface {
+	QuestionID() EducationQuestionUUID                // don't point to quiddity title na don't set title
+	UserID() up.UserUUID                              //
+	KnowledgeUnitID() ekup.EducationKnowledgeUnitUUID //
+	Type() Type                                       //
+	SaveTime() protocol.Time                          //
+	RequestID() urp.UserRequestUUID                   //
 }
 
-type EducationKnowledgeUnitQuestion_Type uint8
+type Type uint8
 
 const (
-	EducationKnowledgeUnitQuestion_Type_Unset EducationKnowledgeUnitQuestion_Type = iota
-	EducationKnowledgeUnitQuestion_Type_SingleChoice
-	EducationKnowledgeUnitQuestion_Type_MultipleChoice
-	EducationKnowledgeUnitQuestion_Type_Descriptive
+	Type_Unset Type = iota
+	Type_SingleChoice
+	Type_MultipleChoice
+	Type_Descriptive
 )

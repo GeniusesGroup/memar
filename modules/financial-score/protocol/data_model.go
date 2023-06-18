@@ -1,6 +1,6 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package fsp
 
 import (
 	"libgo/protocol"
@@ -10,16 +10,10 @@ import (
 )
 
 // Individual and General score
-type FinancialScore interface {
+type DataModel interface {
 	UserID() up.UserUUID            //
 	Score() int64                   //
-	Time() protocol.Time            // save time
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
 }
 
-type FinancialScore_StorageServices interface {
-	Save(dm FinancialScore) (nv protocol.NumberOfVersion, err protocol.Error)
-
-	Count(userID up.UserUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(userID up.UserUUID, vo protocol.VersionOffset) (dm FinancialScore, nv protocol.NumberOfVersion, err protocol.Error)
-}

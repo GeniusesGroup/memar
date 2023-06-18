@@ -1,31 +1,20 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package qap
 
 import (
 	"libgo/protocol"
 
+	qp "org/modules/question/protocol"
 	urp "org/modules/user-request/protocol"
 	up "org/modules/user/protocol"
 )
 
-type AnswerUUID protocol.UUID
-
-// QuestionAnswer indicate the domain record data fields.
-type QuestionAnswer interface {
+// DataModel indicate the domain record data fields.
+type DataModel interface {
 	AnswerID() AnswerUUID           //
-	QuestionID() QuestionUUID       //
+	QuestionID() qp.QuestionUUID    //
 	AnswerBy() up.UserUUID          //
-	Time() protocol.Time            // Save time
+	SaveTime() protocol.Time        // Save time
 	RequestID() urp.UserRequestUUID //
-}
-
-type QuestionAnswer_StorageServices interface {
-	Save(dm QuestionAnswer) (nv protocol.NumberOfVersion, err protocol.Error)
-
-	Count(answerID AnswerUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(answerID AnswerUUID, vo protocol.VersionOffset) (dm QuestionAnswer, nv protocol.NumberOfVersion, err protocol.Error)
-
-	// shall I pass questionID as well ??
-	LIST_RespondentIDs_BY_AnswerID(answerID AnswerUUID, offset, limit uint64) (answerBys []up.UserUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }

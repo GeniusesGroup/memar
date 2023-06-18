@@ -1,35 +1,29 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package brup
 
 import (
 	"libgo/protocol"
+	bp "org/modules/budget/protocol"
 	urp "org/modules/user-request/protocol"
 	up "org/modules/user/protocol"
 )
 
-// BudgetUserRelation indicate the domain record data fields.
-type BudgetUserRelation interface {
-	BudgetID() BudgetUUID //
+// DataModel indicate the domain record data fields.
+type DataModel interface {
+	BudgetID() bp.BudgetUUID //
 	UserID() up.UserUUID
-	Type() Relation_Type
-	Time() protocol.Time            // save time
+	Type() Type
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
 }
 
-type BudgetUserRelation_StorageServices interface {
-	Save(dm BudgetUserRelation) (nv protocol.NumberOfVersion, err protocol.Error)
-
-	Count(budgetID BudgetUUID, userID up.UserUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(budgetID BudgetUUID, userID up.UserUUID, vo protocol.VersionOffset) (dm BudgetUserRelation, nv protocol.NumberOfVersion, err protocol.Error)
-}
-
-type Relation_Type uint8
+type Type uint8
 
 const (
-	Relation_Type_Unset Relation_Type = iota
-	Relation_Type_Suggester
-	Relation_Type_Rectifier
-	Relation_Type_Executor
-	Relation_Type_Quality_Controller
+	Type_Unset Type = iota
+	Type_Suggester
+	Type_Rectifier
+	Type_Executor
+	Type_Quality_Controller
 )

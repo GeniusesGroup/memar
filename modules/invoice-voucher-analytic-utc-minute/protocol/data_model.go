@@ -1,6 +1,6 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package ivaump
 
 import (
 	"libgo/protocol"
@@ -8,16 +8,11 @@ import (
 )
 
 // InvoiceVoucherAnalyticUtcMinute indicate the domain record data fields.
-type InvoiceVoucherAnalyticUtcMinute interface {
+type DataModel interface {
 	Minute() utc.MinuteElapsed            //
 	Redeemed() uint64                     // Total
 	RedeemedAmount() protocol.MoneyAmount // Total
-	Time() protocol.Time                  // save time
+	SaveTime() protocol.Time              //
 }
 
-type InvoiceVoucherAnalyticUtcMinute_StorageServices interface {
-	Save(dm InvoiceVoucherAnalyticUtcMinute) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count() (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(vo protocol.VersionOffset) (dm InvoiceVoucherAnalyticUtcMinute, nv protocol.NumberOfVersion, err protocol.Error)
-}

@@ -1,37 +1,30 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package ttp
 
 import (
 	"libgo/protocol"
 
+	tp "org/modules/task/protocol"
 	urp "org/modules/user-request/protocol"
 )
 
-// ProjectTaskTime indicate the domain record data fields.
-type ProjectTaskTime interface {
-	TaskID() TaskUUID               // project-task domain
-	Type() ProjectTaskTime_Type     //
-	Time() protocol.Time            // Save time
+// DataModel indicate the domain record data fields.
+type DataModel interface {
+	TaskID() tp.TaskUUID            // project-task domain
+	Type() Type                     //
+	SaveTime() protocol.Time        // Save time
 	RequestID() urp.UserRequestUUID //
 }
 
-type ProjectTaskTime_StorageServices interface {
-	Save(dm ProjectTaskTime) (nv protocol.NumberOfVersion, err protocol.Error)
-
-	Count(taskID TaskUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(taskID TaskUUID, vo protocol.VersionOffset) (dm ProjectTaskTime, nv protocol.NumberOfVersion, err protocol.Error)
-
-}
-
-type ProjectTaskTime_Type uint8
+type Type uint8
 
 const (
-	ProjectTaskTime_Type_Unset ProjectTaskTime_Type = iota
-	ProjectTaskTime_Type_ManualStart
-	ProjectTaskTime_Type_ManualTemporaryEnd
-	ProjectTaskTime_Type_ManualEnd
-	ProjectTaskTime_Type_Start
-	ProjectTaskTime_Type_TemporaryEnd
-	ProjectTaskTime_Type_End
+	Type_Unset Type = iota
+	Type_ManualStart
+	Type_ManualTemporaryEnd
+	Type_ManualEnd
+	Type_Start
+	Type_TemporaryEnd
+	Type_End
 )

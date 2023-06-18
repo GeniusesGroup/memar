@@ -1,27 +1,29 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package csp
 
 import (
 	"libgo/protocol"
 
+	cp "org/modules/contract/protocol"
+	qsp "org/modules/quiddity-status/protocol"
 	urp "org/modules/user-request/protocol"
 )
 
-type ContractStatus interface {
-	ContractID() ContractUUID       //
-	Status() Contract_Status        //
-	Time() protocol.Time            // save time
+type DataModel interface {
+	ContractID() cp.ContractUUID    //
+	Status() Status                 //
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
 }
 
-type Contract_Status Quiddity_Status
+type Status qsp.Quiddity_Status
 
 const (
-	Contract_Status_Negotiation = Contract_Status(Quiddity_Status_FreeFlag << iota)
-	Contract_Status_PartlySigned
-	Contract_Status_Signed
-	Contract_Status_LegalAction
-	Contract_Status_Done
-	Contract_Status_Canceled
+	Status_Negotiation = Status(qsp.Quiddity_Status_FreeFlag << iota)
+	Status_PartlySigned
+	Status_Signed
+	Status_LegalAction
+	Status_Done
+	Status_Canceled
 )

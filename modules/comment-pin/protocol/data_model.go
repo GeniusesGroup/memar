@@ -1,29 +1,22 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package cp
 
 import (
 	"libgo/protocol"
 
+	cp "org/modules/comment/protocol"
+	gp "org/modules/group/protocol"
 	urp "org/modules/user-request/protocol"
 )
 
-// CommentPin indicate the domain record data fields.
-type CommentPin interface {
-	CommentID() CommentUUID         //
-	GroupID() GroupUUID             //
-	CommentPinedID() CommentUUID    //
-	Time() protocol.Time            // save time
+// DataModel indicate the domain record data fields.
+type DataModel interface {
+	CommentID() cp.CommentUUID      //
+	GroupID() gp.GroupUUID          //
+	CommentPinedID() cp.CommentUUID //
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
-}
-
-type CommentPin_StorageServices interface {
-	Save(dm CommentPin) (nv protocol.NumberOfVersion, err protocol.Error)
-
-	Get(commentID CommentUUID) (dm CommentPin, err protocol.Error)
-
-	FIND_CommentIDs_BY_GroupID(groupID GroupUUID, offset, limit uint64) (commentIDs []CommentUUID, nv protocol.NumberOfVersion, err protocol.Error)
-	LIST_CommentPinIDs_BY_GroupID(groupID GroupUUID, offset, limit uint64) (commentPinedIDs []CommentUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }
 
 // Unpin service : Hidden status to unpin a comment

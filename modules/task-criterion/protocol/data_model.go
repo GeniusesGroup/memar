@@ -1,10 +1,11 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package tcp
 
 import (
 	"libgo/protocol"
 
+	tp "org/modules/task/protocol"
 	urp "org/modules/user-request/protocol"
 )
 
@@ -15,33 +16,24 @@ import (
 // Teams assign story points relative to work complexity, the amount of work, and risk or uncertainty.
 // https://www.atlassian.com/agile/project-management/estimation
 
-// TaskCriterion indicate the domain record data fields.
+// DataModel indicate the domain record data fields.
 // a basis for comparison; a reference point against which other things can be evaluated
 // the ideal in terms of which something can be judged
-type TaskCriterion interface {
-	TaskID() TaskUUID               //
-	Type() TaskCriterion_Type       //
+type DataModel interface {
+	TaskID() tp.TaskUUID            //
+	Type() Type                     //
 	Point() int64                   // can be any data e.g. percent, star, ...
-	Time() protocol.Time            // Save time
+	SaveTime() protocol.Time        // Save time
 	RequestID() urp.UserRequestUUID //
 }
 
-type TaskCriterion_StorageServices interface {
-	Save(dm TaskCriterion) (nv protocol.NumberOfVersion, err protocol.Error)
-
-	Count(taskID TaskUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(taskID TaskUUID, vo protocol.VersionOffset) (dm TaskCriterion, nv protocol.NumberOfVersion, err protocol.Error)
-
-	FILTER_TaskIDs_BY_Type(t TaskCriterion_Type, offset, limit uint64) (taskIDs []TaskUUID, nv protocol.NumberOfVersion, err protocol.Error)
-}
-
-type TaskCriterion_Type uint8
+type Type uint8
 
 const (
-	TaskCriterion_Type_Unset TaskCriterion_Type = iota
-	TaskCriterion_Type_Progress
-	TaskCriterion_Type_Probability_Win
-	TaskCriterion_Type_Probability_Failure
-	TaskCriterion_Type_StoryPoint // Agile/Scrum
-	TaskCriterion_Type_Risk       // TODO::: risk rate is calculated data or ... ?
+	Type_Unset Type = iota
+	Type_Progress
+	Type_Probability_Win
+	Type_Probability_Failure
+	Type_StoryPoint // Agile/Scrum
+	Type_Risk       // TODO::: risk rate is calculated data or ... ?
 )

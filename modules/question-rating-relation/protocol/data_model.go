@@ -1,32 +1,26 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package qrrp
 
 import (
 	"libgo/protocol"
 
+	qp "org/modules/question/protocol"
 	urp "org/modules/user-request/protocol"
 )
 
-// QuestionRating indicate the domain record data fields.
-type QuestionRatingRelation interface {
-	QuestionID() QuestionUUID                     //
-	RelationIDs() [][16]byte                      // Question, Questionnaire
-	RelationTypes() []QuestionRatingRelation_Type //
-	Time() protocol.Time                          // Save time
-	RequestID() urp.UserRequestUUID               //
+// DataModel indicate the domain record data fields.
+type DataModel interface {
+	QuestionID() qp.QuestionUUID    //
+	RelationIDs() [][16]byte        // Question, Questionnaire
+	RelationTypes() []Type          //
+	SaveTime() protocol.Time        // Save time
+	RequestID() urp.UserRequestUUID //
 }
 
-type QuestionRatingRelation_StorageServices interface {
-	Save(dm QuestionRatingRelation) (nv protocol.NumberOfVersion, err protocol.Error)
-
-	Count(questionID QuestionUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(questionID QuestionUUID, vo protocol.VersionOffset) (dm QuestionRatingRelation, nv protocol.NumberOfVersion, err protocol.Error)
-}
-
-type QuestionRatingRelation_Type uint16
+type Type uint16
 
 const (
-	QuestionRatingRelation_Type_Question QuestionRatingRelation_Type = iota
-	QuestionRatingRelation_Type_Questionnaire
+	Type_Question Type = iota
+	Type_Questionnaire
 )

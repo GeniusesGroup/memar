@@ -1,28 +1,29 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package exap
 
 import (
 	"libgo/protocol"
 
+	eeqp "org/modules/edu-exam-question/protocol"
 	urp "org/modules/user-request/protocol"
 	up "org/modules/user/protocol"
 )
 
-// EducationAnswer indicate the domain record data fields.
-type EducationAnswer interface {
-	QuestionID() EducationQuestionUUID //
-	UserID() up.UserUUID               //
-	Answer() string                    // A
-	Status() EducationAnswer_Status    //
-	Time() protocol.Time               // save time
-	RequestID() urp.UserRequestUUID    //
+// DataModel indicate the domain record data fields.
+type DataModel interface {
+	QuestionID() eeqp.EducationQuestionUUID //
+	UserID() up.UserUUID                    //
+	Answer() string                         // A
+	Status() Status                         //
+	SaveTime() protocol.Time                //
+	RequestID() urp.UserRequestUUID         //
 }
 
-type EducationAnswer_Status uint8
+type Status uint8
 
 const (
-	EducationAnswer_Unset EducationAnswer_Status = iota
+	EducationAnswer_Unset Status = iota
 	EducationAnswer_Passed
 	EducationAnswer_Failed
 )

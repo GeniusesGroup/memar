@@ -1,25 +1,19 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package ptp
 
 import (
 	"libgo/protocol"
 
+	pp "org/modules/project/protocol"
 	urp "org/modules/user-request/protocol"
 )
 
-// ProjectTiming indicate the domain record data fields.
-type ProjectTiming interface {
-	ProjectID() ProjectUUID         //
+// DataModel indicate the domain record data fields.
+type DataModel interface {
+	ProjectID() pp.ProjectUUID      //
 	ExpectedTime() protocol.Time    //
 	Deadline() protocol.Time        //
-	Time() protocol.Time            // save time
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
-}
-
-type ProjectTiming_StorageServices interface {
-	Save(dm ProjectTiming) (nv protocol.NumberOfVersion, err protocol.Error)
-
-	Count(projectID ProjectUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(projectID ProjectUUID, vo protocol.VersionOffset) (dm ProjectTiming, nv protocol.NumberOfVersion, err protocol.Error)
 }

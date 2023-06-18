@@ -1,11 +1,12 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package dscp
 
 import (
 	"libgo/protocol"
 
 	urp "org/modules/user-request/protocol"
+	dp "org/modules/department/protocol"
 )
 
 // due to organization payment capacity set values to show how many percent add or remove due to organization profit status
@@ -25,6 +26,6 @@ type DepartmentSalaryCoefficients interface {
 	Income() protocol.PerMyriad           // whole organization income in each week
 	DepartmentIncome() protocol.PerMyriad //
 
-	Time() protocol.Time            // save time
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
 }

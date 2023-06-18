@@ -1,23 +1,17 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package sip
 
 import (
 	"libgo/protocol"
 
+	sp "org/modules/staff/protocol"
 	urp "org/modules/user-request/protocol"
 )
 
-type StaffInterview interface {
-	StaffID() StaffUUID //
+type DataModel interface {
+	StaffID() sp.StaffUUID //
 
-	Time() protocol.Time            // save time
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
-}
-
-type StaffInterview_StorageServices interface {
-	Save(dm StaffInterview) (nv protocol.NumberOfVersion, err protocol.Error)
-
-	Count(staffID StaffUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(staffID StaffUUID, vo protocol.VersionOffset) (dm StaffInterview, nv protocol.NumberOfVersion, err protocol.Error)
 }

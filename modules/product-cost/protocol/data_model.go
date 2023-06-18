@@ -6,11 +6,12 @@ import (
 	"libgo/protocol"
 
 	urp "org/modules/user-request/protocol"
+	pp "org/modules/product/protocol"
 )
 
-// ProductCost indicate the domain record data fields.
-type ProductCost interface {
-	ProductID() ProductUUID //
+// DataModel indicate the domain record data fields.
+type DataModel interface {
+	ProductID() pp.ProductUUID //
 
 	Materials() protocol.PerMyriad
 	MaterialsCost() protocol.MoneyAmount
@@ -27,6 +28,6 @@ type ProductCost interface {
 
 	Cost() protocol.MoneyAmount
 
-	Time() protocol.Time            // save time
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
 }

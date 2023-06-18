@@ -1,25 +1,27 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package isp
 
 import (
 	"libgo/protocol"
 
+	gp "org/modules/group/protocol"
+	qsp "org/modules/quiddity-status/protocol"
 	urp "org/modules/user-request/protocol"
 	up "org/modules/user/protocol"
 )
 
-// GroupInviteStatus indicate the domain record data fields.
-type GroupInviteStatus interface {
-	GroupID() GroupUUID             //
+// DataModel indicate the domain record data fields.
+type DataModel interface {
+	GroupID() gp.GroupUUID          //
 	UserID() up.UserUUID            //
-	Status() GroupInvite_Status     //
-	Time() protocol.Time            // save time
+	Status() Status                 //
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
 }
 
-type GroupInvite_Status Quiddity_Status
+type Status qsp.Quiddity_Status
 
 const (
-// GroupInvite_Status_ = GroupInvite_Status(Quiddity_Status_FreeFlag << iota)
+// Status_ = Status(Quiddity_Status_FreeFlag << iota)
 )

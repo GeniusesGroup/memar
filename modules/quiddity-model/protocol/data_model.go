@@ -1,19 +1,21 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package qmp
 
 import (
 	"libgo/protocol"
 
+	op "org/modules/object/protocol"
+	qp "org/modules/quiddity/protocol"
 	urp "org/modules/user-request/protocol"
 )
 
-// QuiddityModel indicate the domain record data fields.
+// DataModel indicate the domain record data fields.
 // Model is the 3D model of the quiddity
-type QuiddityModel interface {
-	QuiddityID() QuiddityUUID       //
-	ObjectID() ObjectUUID           // ThingModel
-	Time() protocol.Time            // save time
+type DataModel interface {
+	QuiddityID() qp.QuiddityUUID    //
+	ObjectID() op.ObjectUUID        // ThingModel
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
 }
 

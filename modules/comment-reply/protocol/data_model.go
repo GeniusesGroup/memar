@@ -1,26 +1,20 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package crp
 
 import (
 	"libgo/protocol"
 
+	cp "org/modules/comment/protocol"
 	urp "org/modules/user-request/protocol"
 )
 
-// CommentReply indicate the domain record data fields.
-type CommentReply interface {
-	CommentID() CommentUUID         //
-	ReplyTo() CommentUUID           // Comment can be reply to other comment in the same group.
-	Time() protocol.Time            // save time
+// DataModel indicate the domain record data fields.
+type DataModel interface {
+	CommentID() cp.CommentUUID      //
+	ReplyTo() cp.CommentUUID        // Comment can be reply to other comment in the same group.
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
 }
 
-type CommentReply_StorageServices interface {
-	Save(dm CommentReply) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(commentID CommentUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(commentID CommentUUID, vo protocol.VersionOffset) (dm CommentReply, nv protocol.NumberOfVersion, err protocol.Error)
-
-	FIND_CommentIDs_BY_ReplyToID(replyTo CommentUUID, offset, limit uint64) (commentIDs []CommentUUID, nv protocol.NumberOfVersion, err protocol.Error)
-}

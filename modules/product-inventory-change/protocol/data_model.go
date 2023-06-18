@@ -1,33 +1,24 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package picp
 
 import (
 	"libgo/protocol"
 
+	eblp "org/modules/estate-building-location/protocol"
+	pp "org/modules/product/protocol"
 	urp "org/modules/user-request/protocol"
 )
 
-type InventoryChangeUUID = protocol.UUID
-
-// ProductInventoryChange indicate the domain record data fields.
-type ProductInventoryChange interface {
+// DataModel indicate the domain record data fields.
+type DataModel interface {
 	InventoryChangeID() InventoryChangeUUID //
-	ProductID() ProductUUID                 //
-	From() BuildingLocationUUID             //
-	To() BuildingLocationUUID               // Can be zero for voiding products.
-	Amount() int64                          // this transaction
-	Priority() uint64                       //
+	ProductID() pp.ProductUUID                   //
+	From() eblp.BuildingLocationUUID             //
+	To() eblp.BuildingLocationUUID               // Can be zero for voiding products.
+	Amount() int64                               // this transaction
+	Priority() uint64                            //
 	// TODO::: Reference to invoice??
-	Time() protocol.Time            // save time
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
-}
-
-type ProductInventoryChange_StorageServices interface {
-	Save(dm ProductInventoryChange) (nv protocol.NumberOfVersion, err protocol.Error)
-
-	Count(inventoryChangeID InventoryChangeUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(inventoryChangeID InventoryChangeUUID, vo protocol.VersionOffset) (dm ProductInventoryChange, nv protocol.NumberOfVersion, err protocol.Error)
-
-	FIND_InventoryChangeIDs_BY_ProductID(productID ProductUUID, offset, limit uint64) (inventoryChangeIDs []InventoryChangeUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }

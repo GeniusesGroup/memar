@@ -1,42 +1,33 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package qrqp
 
 import (
 	"libgo/protocol"
 
+	qp "org/modules/question/protocol"
+	qsp "org/modules/quiddity-status/protocol"
 	urp "org/modules/user-request/protocol"
 )
 
-// QuestionQuestionRelation indicate the domain record data fields.
-type QuestionQuestionRelation interface {
-	QuestionID() QuestionUUID                //
-	RelationID() QuestionUUID                //
-	Type() QuestionQuestionRelation_Type     //
-	Status() QuestionQuestionRelation_Status //
-	Time() protocol.Time                     // Save time
-	RequestID() urp.UserRequestUUID          //
+// DataModel indicate the domain record data fields.
+type DataModel interface {
+	QuestionID() qp.QuestionUUID    //
+	RelationID() qp.QuestionUUID    //
+	Type() Type                     //
+	Status() Status                 //
+	SaveTime() protocol.Time        // Save time
+	RequestID() urp.UserRequestUUID //
 }
 
-type QuestionQuestionRelation_StorageServices interface {
-	Save(dm QuestionQuestionRelation) (nv protocol.NumberOfVersion, err protocol.Error)
-
-	Count(questionID QuestionUUID, relationID QuestionUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(questionID QuestionUUID, relationID QuestionUUID, vo protocol.VersionOffset) (dm QuestionQuestionRelation, nv protocol.NumberOfVersion, err protocol.Error)
-
-	LIST_QuestionIDs_BY_RelationID(relationID QuestionUUID, offset, limit uint64) (questionIDs []QuestionUUID, nv protocol.NumberOfVersion, err protocol.Error)
-	LIST_QuestionIDs_BY_RelationID_AND_Type(relationID QuestionUUID, t QuestionQuestionRelation_Type, offset, limit uint64) (questionIDs []QuestionUUID, nv protocol.NumberOfVersion, err protocol.Error)
-	LIST_RelationIDs_BY_QuestionIDs(questionID QuestionUUID, offset, limit uint64) (relationIDs []QuestionUUID, nv protocol.NumberOfVersion, err protocol.Error)
-}
-
-type QuestionQuestionRelation_Type uint8
+type Type uint8
 
 const (
-	QuestionQuestionRelation_Type_Unset QuestionQuestionRelation_Type = iota
-	QuestionQuestionRelation_Type_SubQuestion
-	QuestionQuestionRelation_Type_Translated
-	QuestionQuestionRelation_Type_Complement
-	QuestionQuestionRelation_Type_Hint // use for options not descriptive type.
+	Type_Unset Type = iota
+	Type_SubQuestion
+	Type_Translated
+	Type_Complement
+	Type_Hint // use for options not descriptive type.
 )
 
-type QuestionQuestionRelation_Status Quiddity_Status
+type Status qsp.Quiddity_Status

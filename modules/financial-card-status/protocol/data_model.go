@@ -1,24 +1,18 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package fcsp
 
 import (
 	"libgo/protocol"
 
+	fcp "org/modules/financial-card/protocol"
 	urp "org/modules/user-request/protocol"
 )
 
-// FinancialCardStatus indicate the domain record data fields.
-type FinancialCardStatus interface {
-	FinancialCardID() FinancialCardUUID //
-	Status()                            //
-	Time() protocol.Time                // save time
-	RequestID() urp.UserRequestUUID     //
-}
-
-type FinancialCardStatus_StorageServices interface {
-	Save(dm FinancialCardStatus) (nv protocol.NumberOfVersion, err protocol.Error)
-
-	Count(financialCardID FinancialCardUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(financialCardID FinancialCardUUID, vo protocol.VersionOffset) (dm FinancialCardStatus, nv protocol.NumberOfVersion, err protocol.Error)
+// DataModel indicate the domain record data fields.
+type DataModel interface {
+	FinancialCardID() fcp.FinancialCardUUID //
+	Status()                                //
+	SaveTime() protocol.Time                //
+	RequestID() urp.UserRequestUUID         //
 }

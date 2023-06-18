@@ -1,25 +1,19 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package qoap
 
 import (
 	"libgo/protocol"
 
+	qop "org/modules/question_option/protocol"
 	urp "org/modules/user-request/protocol"
 )
 
-// QuestionOptionAnalytical indicate the domain record data fields.
-type QuestionOptionAnalytical interface {
-	QuestionOptionID() QuestionOptionUUID //
-	Progress() protocol.PerMyriad         // =~ AmountOfProgress,  EarnGoal
-	TimeFrame() protocol.Duration         //
-	Time() protocol.Time                  // Save time
-	RequestID() urp.UserRequestUUID       //
-}
-
-type QuestionOptionAnalytical_StorageServices interface {
-	Save(dm QuestionOptionAnalytical) (nv protocol.NumberOfVersion, err protocol.Error)
-
-	Count(questionID QuestionUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(questionID QuestionUUID, vo protocol.VersionOffset) (dm QuestionOptionAnalytical, nv protocol.NumberOfVersion, err protocol.Error)
+// DataModel indicate the domain record data fields.
+type DataModel interface {
+	QuestionOptionID() qop.QuestionOptionUUID //
+	Progress() protocol.PerMyriad             // =~ AmountOfProgress,  EarnGoal
+	TimeFrame() protocol.Duration             //
+	SaveTime() protocol.Time                  // Save time
+	RequestID() urp.UserRequestUUID           //
 }

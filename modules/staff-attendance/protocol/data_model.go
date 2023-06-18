@@ -1,36 +1,30 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package sap
 
 import (
 	"libgo/protocol"
 
+	sp "org/modules/staff/protocol"
 	urp "org/modules/user-request/protocol"
 )
 
-// StaffAttendance indicate the domain record data fields.
-type StaffAttendance interface {
-	StaffID() StaffUUID             //
-	Type() StaffAttendance_Type     //
-	Time() protocol.Time            // save time
+// DataModel indicate the domain record data fields.
+type DataModel interface {
+	StaffID() sp.StaffUUID          //
+	Type() Type                     //
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
 }
 
-type StaffAttendance_StorageServices interface {
-	Save(dm StaffAttendance) (nv protocol.NumberOfVersion, err protocol.Error)
-
-	Count(staffID StaffUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(staffID StaffUUID, vo protocol.VersionOffset) (dm StaffAttendance, nv protocol.NumberOfVersion, err protocol.Error)
-}
-
-type StaffAttendance_Type uint8
+type Type uint8
 
 const (
-	StaffAttendance_Type_Unset StaffAttendance_Type = iota
-	StaffAttendance_Type_Enter
-	StaffAttendance_Type_Exit
-	StaffAttendance_Type_ManualEnter
-	StaffAttendance_Type_ManualExit
-	StaffAttendance_Type_Start
-	StaffAttendance_Type_End
+	Type_Unset Type = iota
+	Type_Enter
+	Type_Exit
+	Type_ManualEnter
+	Type_ManualExit
+	Type_Start
+	Type_End
 )

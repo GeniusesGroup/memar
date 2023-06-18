@@ -1,38 +1,30 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package qrtp
 
 import (
 	"libgo/protocol"
 
+	qp "org/modules/questionnaire/protocol"
+	tp "org/modules/task/protocol"
 	urp "org/modules/user-request/protocol"
 )
 
-// QuestionnaireTaskRelation indicate the domain record data fields.
-type QuestionnaireTaskRelation interface {
-	QuestionnaireID() QuestionnaireUUID   //
-	TaskID() TaskUUID                     //
-	Type() QuestionnaireTaskRelation_Type //
-	Time() protocol.Time                  // save time
-	RequestID() urp.UserRequestUUID       //
+// DataModel indicate the domain record data fields.
+type DataModel interface {
+	QuestionnaireID() qp.QuestionnaireUUID //
+	TaskID() tp.TaskUUID                   //
+	Type() Type                            //
+	SaveTime() protocol.Time               //
+	RequestID() urp.UserRequestUUID        //
 }
 
-type QuestionnaireTaskRelation_StorageServices interface {
-	Save(dm QuestionnaireTaskRelation) (nv protocol.NumberOfVersion, err protocol.Error)
-
-	Count(questionnaireID QuestionnaireUUID, taskID TaskUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(questionnaireID QuestionnaireUUID, taskID TaskUUID, vo protocol.VersionOffset) (dm QuestionnaireTaskRelation, nv protocol.NumberOfVersion, err protocol.Error)
-
-	LIST_QuestionnaireIDs_By_TaskID(taskID TaskUUID, offset, limit uint64) (questionnaireIDs []QuestionnaireUUID, nv protocol.NumberOfVersion, err protocol.Error)
-	LIST_TaskIDs_BY_QuestionnaireID(questionnaireID QuestionnaireUUID, offset, limit uint64) (taskIDs []TaskUUID, nv protocol.NumberOfVersion, err protocol.Error)
-}
-
-type QuestionnaireTaskRelation_Type uint8
+type Type uint8
 
 const (
-	QuestionnaireTaskRelation_Type_Unset QuestionnaireTaskRelation_Type = iota
-	QuestionnaireTaskRelation_Type_Creator
-	QuestionnaireTaskRelation_Type_Pending
+	Type_Unset Type = iota
+	Type_Creator
+	Type_Pending
 )
 
-// LIST_QuestionnaireIDs_By_TaskID_AND_Type(taskID TaskUUID, t QuestionnaireTaskRelation_Type, offset, limit uint64) (questionnaireIDs []QuestionnaireUUID, nv protocol.NumberOfVersion, err protocol.Error)
+// LIST_QuestionnaireIDs_By_TaskID_AND_Type(taskID tp.TaskUUID, t Type, offset, limit uint64) (questionnaireIDs []qp.QuestionnaireUUID, nv protocol.NumberOfVersion, err protocol.Error)

@@ -7,14 +7,15 @@ import (
 
 	urp "org/modules/user-request/protocol"
 	up "org/modules/user/protocol"
+	cp "org/modules/contract/protocol"
 )
 
 type ContractSides interface {
-	ContractID() ContractUUID       //
+	ContractID() cp.ContractUUID    //
 	SideType() ContractSides_ST     //
 	UserID() up.UserUUID            //Can be any user type e.g. staff
 	UserSignature() []byte          //
-	Time() protocol.Time            // save time
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
 }
 

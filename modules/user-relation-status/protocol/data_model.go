@@ -1,37 +1,27 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package ursp
 
 import (
 	"libgo/protocol"
 
+	qsp "org/modules/quiddity-status/protocol"
 	urp "org/modules/user-request/protocol"
 	up "org/modules/user/protocol"
 )
 
-// UserRelationStatus indicate the domain record data fields.
-type UserRelationStatus interface {
+// DataModel indicate the domain record data fields.
+type DataModel interface {
 	UserID() up.UserUUID            // user domain
 	SideID() up.UserUUID            // user domain
-	Status() UserRelation_Status    //
-	Time() protocol.Time            // save time
+	Status() Status                 //
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
 }
 
-type UserRelationStatus_StorageServices interface {
-	Save(gs UserRelationStatus) (nv protocol.NumberOfVersion, err protocol.Error)
-
-	Count(userID, sideID up.UserUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(userID, sideID up.UserUUID, vo protocol.VersionOffset) (gs UserRelationStatus, nv protocol.NumberOfVersion, err protocol.Error)
-
-	FindByStatus(userID up.UserUUID, status UserRelation_Status, offset, limit uint64) (sideIDs []up.UserUUID, nv protocol.NumberOfVersion, err protocol.Error)
-
-	protocol.EventTarget
-}
-
-type UserRelation_Status Quiddity_Status
+type Status qsp.Quiddity_Status
 
 const (
-	UserRelation_Status_Blocked = UserRelation_Status(Quiddity_Status_FreeFlag << iota)
-	UserRelation_Status_Muted
+	Status_Blocked = Status(qsp.Quiddity_Status_FreeFlag << iota)
+	Status_Muted
 )

@@ -1,19 +1,20 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package icp
 
 import (
 	"libgo/protocol"
 
+	ip "org/modules/invite/protocol"
 	urp "org/modules/user-request/protocol"
 	up "org/modules/user/protocol"
 )
 
-// InviteConsumer indicate the domain record data fields.
-type InviteConsumer interface {
-	InviteID() InviteUUID           //
+// DataModel indicate the domain record data fields.
+type DataModel interface {
+	InviteID() ip.InviteUUID           //
 	PermitUsageID() up.UserUUID     //
 	ConsumerID() up.UserUUID        //
-	Time() protocol.Time            // save time
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
 }

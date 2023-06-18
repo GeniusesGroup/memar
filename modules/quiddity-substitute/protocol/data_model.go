@@ -1,28 +1,20 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package qsp
 
 import (
 	"libgo/protocol"
 
+	qp "org/modules/quiddity/protocol"
 	urp "org/modules/user-request/protocol"
 )
 
-// QuidditySubstitute indicate the domain record data fields.
+// DataModel indicate the domain record data fields.
 // or similar product
-type QuidditySubstitute interface {
-	QuiddityID() QuiddityUUID       //
+type DataModel interface {
+	QuiddityID() qp.QuiddityUUID    //
 	Priority() uint64               // Substitute priority
-	SubstituteID() QuiddityUUID     //
-	Time() protocol.Time            // save time
+	SubstituteID() qp.QuiddityUUID  //
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
-}
-
-type QuidditySubstitute_StorageServices interface {
-	Save(ps QuidditySubstitute) (nv protocol.NumberOfVersion, err protocol.Error)
-
-	Count(quiddityID QuiddityUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(quiddityID QuiddityUUID, vo protocol.VersionOffset) (ps QuidditySubstitute, nv protocol.NumberOfVersion, err protocol.Error)
-
-	FindBySubstitute(substituteID QuiddityUUID, offset, limit uint64) (quiddityIDs []QuiddityUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }

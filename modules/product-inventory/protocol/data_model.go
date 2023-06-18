@@ -1,41 +1,33 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package pip
 
 import (
 	"libgo/protocol"
 
+	eblp "org/modules/estate-building-location/protocol"
+	org "org/modules/org/protocol"
+	pp "org/modules/product/protocol"
 	urp "org/modules/user-request/protocol"
 )
 
 // TODO::: why not relate to ProductInventoryChange domain??
 
-// ProductInventory indicate the domain record data fields.
-// ProductInventory or good stock
-type ProductInventory interface {
-	ProductID() ProductUUID                   //
-	OrgID() OrgUUID                           // OwnerID
-	BuildingLocationID() BuildingLocationUUID //
-	ReferenceID() [16]byte                    // Depend on ReferenceType()
-	ReferenceType() ProductInventory_RT       //
-	Amount() int64                            // this transaction
-	Stock() int64                             // overall in each location
-	Time() protocol.Time                      // save time
-	RequestID() urp.UserRequestUUID           //
+// DataModel indicate the domain record data fields.
+// DataModel or good stock
+type DataModel interface {
+	ProductID() pp.ProductUUID                     //
+	OrgID() org.OrgUUID                            // OwnerID
+	BuildingLocationID() eblp.BuildingLocationUUID //
+	ReferenceID() [16]byte                         // Depend on ReferenceType()
+	ReferenceType() ProductInventory_RT            //
+	Amount() int64                                 // this transaction
+	Stock() int64                                  // overall in each location
+	SaveTime() protocol.Time                       //
+	RequestID() urp.UserRequestUUID                //
 }
 
-type ProductInventory_StorageService interface {
-	// Save(p ProductInventory) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Lock(productID ProductUUID, buildingLocationID BuildingLocationUUID) (p ProductInventory, err protocol.Error)
-	Unlock(p ProductInventory) (nv protocol.NumberOfVersion, err protocol.Error)
-
-	Count(productID ProductUUID, buildingLocationID BuildingLocationUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(productID ProductUUID, buildingLocationID BuildingLocationUUID, vo protocol.VersionOffset) (f ProductInventory, nv protocol.NumberOfVersion, err protocol.Error)
-
-	LIST_ProductIDs_BY_BuildingLocationID(buildingLocationID BuildingLocationUUID, offset, limit uint64) (productIDs []ProductUUID, nv protocol.NumberOfVersion, err protocol.Error)
-	LIST_BuildingLocationIDs_BY_ProductID(productID ProductUUID, offset, limit uint64) (buildingLocationIDs []BuildingLocationUUID, nv protocol.NumberOfVersion, err protocol.Error)
-}
 
 type ProductInventory_RT uint8
 

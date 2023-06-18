@@ -1,34 +1,25 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package rsp
 
 import (
 	"libgo/protocol"
 
+	qsp "org/modules/quiddity-status/protocol"
+	rp "org/modules/role/protocol"
 	urp "org/modules/user-request/protocol"
 )
 
-// RoleStatus indicate the domain record data fields.
-type RoleStatus interface {
-	RoleID() RoleUUID               //
-	Status() Role_Status            //
-	Time() protocol.Time            // save time
+// DataModel indicate the domain record data fields.
+type DataModel interface {
+	RoleID() rp.RoleUUID            //
+	Status() Status                 //
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
 }
 
-type RoleStatus_StorageServices interface {
-	Save(dm RoleStatus) (nv protocol.NumberOfVersion, err protocol.Error)
-
-	Count(roleID RoleUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(roleID RoleUUID, vo protocol.VersionOffset) (dm RoleStatus, nv protocol.NumberOfVersion, err protocol.Error)
-
-	FILTER_RoleIDs_BY_Status(status Role_Status, offset, limit uint64) (roleIDs []RoleUUID, nv protocol.NumberOfVersion, err protocol.Error)
-
-	protocol.EventTarget
-}
-
-type Role_Status Quiddity_Status
+type Status qsp.Quiddity_Status
 
 const (
-	Role_Status_Recruit = Role_Status(Quiddity_Status_FreeFlag << iota) // Recruitment in progress
+	Status_Recruit = Status(qsp.Quiddity_Status_FreeFlag << iota) // Recruitment in progress
 )

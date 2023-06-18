@@ -10,9 +10,9 @@ import (
 
 // GUICategories indicate the domain record data fields.
 type GUICategories interface {
-	CategoriesID() []CategoryUUID   //
-	Time() protocol.Time            // save time
-	RequestID() urp.UserRequestUUID //
+	CategoriesID() []cp.CategoryUUID //
+	SaveTime() protocol.Time         //
+	RequestID() urp.UserRequestUUID  //
 }
 
 type GUICategories_StorageServices interface {

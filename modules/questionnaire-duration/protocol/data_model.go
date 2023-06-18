@@ -1,27 +1,21 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package qdp
 
 import (
 	"libgo/protocol"
 
+	qp "org/modules/questionnaire/protocol"
 	urp "org/modules/user-request/protocol"
 )
 
-// QuestionnaireDuration indicate the domain record data fields.
-type QuestionnaireDuration interface {
-	QuestionnaireID() QuestionnaireUUID //
-	Epoch() QuestionnaireDuration_Epoch //
-	Duration() protocol.Duration        // from Epoch()
-	Time() protocol.Time                // save time
-	RequestID() urp.UserRequestUUID     //
-}
-
-type QuestionnaireDuration_StorageServices interface {
-	Save(dm QuestionnaireDuration) (nv protocol.NumberOfVersion, err protocol.Error)
-
-	Count(questionnaireID QuestionnaireUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(questionnaireID QuestionnaireUUID, vo protocol.VersionOffset) (dm QuestionnaireDuration, nv protocol.NumberOfVersion, err protocol.Error)
+// DataModel indicate the domain record data fields.
+type DataModel interface {
+	QuestionnaireID() qp.QuestionnaireUUID //
+	Epoch() QuestionnaireDuration_Epoch    //
+	Duration() protocol.Duration           // from Epoch()
+	SaveTime() protocol.Time               //
+	RequestID() urp.UserRequestUUID        //
 }
 
 type QuestionnaireDuration_Epoch uint8

@@ -2,13 +2,18 @@
 
 package cp
 
+import (
+	cp "org/modules/comment/protocol"
+	gp "org/modules/group/protocol"
+)
+
 type GUI_Widget_Conditions interface {
-	GroupID() GroupUUID
+	GroupID() gp.GroupUUID
 }
 
 type GUI_Widget_Service interface {
-	Pin(cID CommentUUID)
-	Unpin(cID CommentUUID)
+	Pin(cID cp.CommentUUID)
+	Unpin(cID cp.CommentUUID)
 
 	// jump to comment location in all comments in the group.
 	JumpToCommentPin()

@@ -1,24 +1,17 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package ctp
 
 import (
 	"libgo/protocol"
+	
+	cp "org/modules/comment/protocol"
 )
 
-// CommentTag indicate the domain record data fields.
+// DataModel indicate the domain record data fields.
 // It must just use to index hashtag words from comment-text domain
-type CommentTag interface {
-	Tag() string            //
-	CommentID() CommentUUID //
-	Time() protocol.Time    // save time
-}
-
-type CommentTag_StorageServices interface {
-	Save(dm CommentTag) (nv protocol.NumberOfVersion, err protocol.Error)
-
-	Count(tag string) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(tag string, vo protocol.VersionOffset) (dm CommentTag, nv protocol.NumberOfVersion, err protocol.Error)
-
-	// TODO:::
+type DataModel interface {
+	Tag() string               //
+	CommentID() cp.CommentUUID //
+	SaveTime() protocol.Time   //
 }

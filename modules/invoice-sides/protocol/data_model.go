@@ -1,44 +1,37 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package isp
 
 import (
 	"libgo/protocol"
 
+	ip "org/modules/invoice/protocol"
+	qsp "org/modules/quiddity-status/protocol"
 	urp "org/modules/user-request/protocol"
 	up "org/modules/user/protocol"
 )
 
-// InvoiceSides indicate the domain record data fields.
-type InvoiceSides interface {
-	InvoiceID() InvoiceUUID         //
+// DataModel indicate the domain record data fields.
+type DataModel interface {
+	InvoiceID() ip.InvoiceUUID      //
 	UserID() up.UserUUID            //
-	Type() InvoiceSides_Type        //
-	Status() InvoiceSides_Status    //
-	Time() protocol.Time            // save time
+	Type() Type                     //
+	Status() Status                 //
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
 }
 
-type InvoiceSides_StorageServices interface {
-	Save(dm InvoiceSides) (nv protocol.NumberOfVersion, err protocol.Error)
-
-	Count(invoiceID InvoiceUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(invoiceID InvoiceUUID, vo protocol.VersionOffset) (dm InvoiceSides, nv protocol.NumberOfVersion, err protocol.Error)
-
-	FIND_InvoiceIDs_BY_UserID_AND_Type(userID up.UserUUID, t InvoiceSides_Type, offset, limit uint64) (invoiceIDs []InvoiceUUID, nv protocol.NumberOfVersion, err protocol.Error)
-}
-
-type InvoiceSides_Type uint8
+type Type uint8
 
 const (
-	InvoiceSides_Type_Seller InvoiceSides_Type = iota
-	InvoiceSides_Type_Customer
-	InvoiceSides_Type_Agent
-	InvoiceSides_Type_Franchise
+	Type_Seller Type = iota
+	Type_Customer
+	Type_Agent
+	Type_Franchise
 )
 
-type InvoiceSides_Status Quiddity_Status
+type Status qsp.Quiddity_Status
 
 const (
-// InvoiceSides_Status_ = InvoiceSides_Status(Quiddity_Status_FreeFlag << iota)
+// Status_ = Status(Quiddity_Status_FreeFlag << iota)
 )

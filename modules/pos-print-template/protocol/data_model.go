@@ -1,18 +1,19 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package pptp
 
 import (
 	"libgo/protocol"
 
 	urp "org/modules/user-request/protocol"
+	pp "org/modules/pos/protocol"
 )
 
-// PosPrintTemplate indicate the domain record data fields.
-type PosPrintTemplate interface {
-	PosID() PosUUID //
+// DataModel indicate the domain record data fields.
+type DataModel interface {
+	PosID() pp.PosUUID //
 	// TODO::: VAT number, store address, logo, return rule, ...
-	Time() protocol.Time            // save time
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
 }
 

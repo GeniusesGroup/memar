@@ -1,17 +1,19 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package igp
 
 import (
 	"libgo/protocol"
 
+	gp "org/modules/group/protocol"
+	ip "org/modules/invite/protocol"
 	urp "org/modules/user-request/protocol"
 )
 
-// InviteGroup indicate the domain record data fields.
-type InviteGroup interface {
-	InviteID() InviteUUID           //
-	GroupID() GroupUUID             //
-	Time() protocol.Time            // save time
+// DataModel indicate the domain record data fields.
+type DataModel interface {
+	InviteID() ip.InviteUUID        //
+	GroupID() gp.GroupUUID          //
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
 }

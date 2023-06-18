@@ -1,28 +1,21 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package pcp
 
 import (
 	"libgo/protocol"
 
+	fap "org/modules/financial-account/protocol"
+	pp "org/modules/pos/protocol"
 	urp "org/modules/user-request/protocol"
 )
 
-// PosProvider or pos operator is to supply a particular service.
-type PosCash interface {
-	PosID() PosUUID                     //
-	AccountID() FinancialAccountUUID    //
-	MaxCash() protocol.MoneyAmount      //
-	MaxCashTransfer() protocol.Duration // from reach the max limit
-	Time() protocol.Time                // save time
-	RequestID() urp.UserRequestUUID     //
-}
-
-type PosCash_StorageServices interface {
-	Save(dm PosCash) (nv protocol.NumberOfVersion, err protocol.Error)
-
-	Count(posID PosUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(posID PosUUID, vo protocol.VersionOffset) (dm PosCash, err protocol.Error)
-
-	FIND_PosIDs_BY_AccountID(accountID FinancialAccountUUID, offset, limit uint64) (posIDs []PosUUID, nv protocol.NumberOfVersion, err protocol.Error)
+// DataModel or pos operator is to supply a particular service.
+type DataModel interface {
+	PosID() pp.PosUUID                   //
+	AccountID() fap.FinancialAccountUUID //
+	MaxCash() protocol.MoneyAmount       //
+	MaxCashTransfer() protocol.Duration  // from reach the max limit
+	SaveTime() protocol.Time             //
+	RequestID() urp.UserRequestUUID      //
 }

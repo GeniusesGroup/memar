@@ -1,6 +1,6 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package fcp
 
 import (
 	"libgo/protocol"
@@ -9,21 +9,11 @@ import (
 	up "org/modules/user/protocol"
 )
 
-type FinancialCurrencyUUID = protocol.UUID
-
 // MoneySettlementReference: https://www.federalreserve.gov/paymentsystems/fedfunds_about.htm
-type FinancialCurrency interface {
+type DataModel interface {
 	Currency() FinancialCurrencyUUID // quiddity domain
 	// ISO_4217() iso.Currency             //
 	MoneySettlementReference() up.UserUUID //can be any org or society user.
-	Time() protocol.Time                   // save time
+	SaveTime() protocol.Time               //
 	RequestID() urp.UserRequestUUID        //
 }
-
-type FinancialCurrency_StorageServices interface {
-	Save(dm FinancialCurrency) (nv protocol.NumberOfVersion, err protocol.Error)
-
-	Count(currency FinancialCurrencyUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(currency FinancialCurrencyUUID, vo protocol.VersionOffset) (dm FinancialCurrency, nv protocol.NumberOfVersion, err protocol.Error)
-}
-

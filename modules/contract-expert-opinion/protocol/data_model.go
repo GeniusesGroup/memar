@@ -6,13 +6,14 @@ import (
 	"libgo/protocol"
 
 	urp "org/modules/user-request/protocol"
+	cp "org/modules/contract/protocol"
 )
 
 type ContractExpertOpinion interface {
-	ContractID() ContractUUID       //
+	ContractID() cp.ContractUUID    //
 	ExpertID() [16]byte             //
 	Opinion() string                //
 	Progress() protocol.PerMyriad   //
-	Time() protocol.Time            // save time
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
 }

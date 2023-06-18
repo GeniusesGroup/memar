@@ -1,25 +1,19 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package cmp
 
 import (
 	"libgo/protocol"
 
+	cp "org/modules/comment/protocol"
 	up "org/modules/user/protocol"
 )
 
-// CommentMentioned indicate the domain record data fields.
-type CommentMentioned interface {
-	UserID() up.UserUUID    //
-	CommentID() CommentUUID //
-	Time() protocol.Time    // save time
+// DataModel indicate the domain record data fields.
+type DataModel interface {
+	UserID() up.UserUUID       //
+	CommentID() cp.CommentUUID //
+	SaveTime() protocol.Time   //
 }
 
-type CommentMentioned_StorageServices interface {
-	Save(dm CommentMentioned) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(userID up.UserUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(userID up.UserUUID, vo protocol.VersionOffset) (dm CommentMentioned, nv protocol.NumberOfVersion, err protocol.Error)
-
-	protocol.EventTarget
-}

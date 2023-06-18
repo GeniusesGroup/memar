@@ -1,44 +1,37 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package csp
 
 import (
 	"libgo/protocol"
 
+	cp "org/modules/comment/protocol"
 	urp "org/modules/user-request/protocol"
 )
 
-// Comment indicate the domain record data fields.
-type CommentSettings interface {
-	CommentID() CommentUUID         //
-	Settings() Comment_Settings     //
-	Time() protocol.Time            // save time
+// DataModel indicate the domain record data fields.
+type DataModel interface {
+	CommentID() cp.CommentUUID      //
+	Settings() Settings             //
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
 }
 
-type CommentSettings_StorageServices interface {
-	Save(dm CommentSettings) (nv protocol.NumberOfVersion, err protocol.Error)
-
-	Count(commentID CommentUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(commentID CommentUUID, vo protocol.VersionOffset) (dm CommentSettings, nv protocol.NumberOfVersion, err protocol.Error)
-}
-
-
-type Comment_Settings uint64
+type Settings uint64
 
 const (
-	Comment_Settings_Unset        Comment_Settings = 0
-	Comment_Settings_PreviewLinks Comment_Settings = (1 << iota) // Render web links as small widget or not
+	Settings_Unset        Settings = 0
+	Settings_PreviewLinks Settings = (1 << iota) // Render web links as small widget or not
 	// Authorization
-	Comment_Settings_Forwardable       // Allow to forward it
-	Comment_Settings_SilentForwardable // Don't add comment detail like user created
-	Comment_Settings_NoReply
-	Comment_Settings_Mute
+	Settings_Forwardable       // Allow to forward it
+	Settings_SilentForwardable // Don't add comment detail like user created
+	Settings_NoReply
+	Settings_Mute
 
-	Comment_Settings_Thread
+	Settings_Thread
 
-	Comment_Settings_Toxic
-	Comment_Settings_Spam
-	Comment_Settings_Sensitivity
-	Comment_Settings_Confidential // if not set mean normal message
+	Settings_Toxic
+	Settings_Spam
+	Settings_Sensitivity
+	Settings_Confidential // if not set mean normal message
 )

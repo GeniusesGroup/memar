@@ -1,6 +1,6 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package ndndtp
 
 import (
 	"libgo/protocol"
@@ -9,10 +9,10 @@ import (
 	urp "org/modules/user-request/protocol"
 )
 
-type NotificationDoNotDisturbTimings interface {
+type DataModel interface {
 	NotificationID() [16]byte       //
 	Day() utc.DayElapsed            //
 	DayHours() earth.DayHours       // what hours in a day notification not serve
-	Time() protocol.Time            // save time
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
 }

@@ -1,0 +1,62 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+package unp
+
+import (
+	"libgo/protocol"
+
+	up "org/modules/user/protocol"
+)
+
+/*
+	Business Services
+*/
+
+type (
+	BS_Register_Request interface {
+		OrgID() up.UserUUID
+		Number() string
+	}
+)
+type (
+	BS_Count_Request interface {
+		UserID() up.UserUUID
+		OrgID() up.UserUUID
+	}
+	BS_Count_Response = protocol.NumberOfVersion
+)
+type (
+	BS_Get_Request interface {
+		UserID() up.UserUUID
+		OrgID() up.UserUUID
+		VersionOffset() protocol.VersionOffset
+	}
+	BS_Get_Response = UserNumber
+)
+type (
+	BS_SendVerification_Request interface {
+		Number() string
+	}
+)
+type (
+	BS_Verify_Request interface {
+		Number() string
+		Token() string
+	}
+)
+type (
+	BS_IsVerified_Request interface {
+		Number() string
+	}
+	BS_IsVerified_Response interface {
+		Verified() bool
+	}
+)
+type (
+	BS_IsExist_Request interface {
+		Number() string
+	}
+	BS_IsExist_Response interface {
+		Exist() bool
+	}
+)

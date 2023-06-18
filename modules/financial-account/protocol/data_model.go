@@ -1,38 +1,24 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package fap
 
 import (
 	"libgo/protocol"
 
+	fcp "org/modules/financial-currency/protocol"
+	org "org/modules/org/protocol"
 	urp "org/modules/user-request/protocol"
 	up "org/modules/user/protocol"
 )
 
-type FinancialAccountUUID = protocol.UUID
-
-// FinancialAccount indicate the domain record data fields.
-type FinancialAccount interface {
+// DataModel indicate the domain record data fields.
+type DataModel interface {
 	AccountID() FinancialAccountUUID           //
-	CurrencyID() FinancialCurrencyUUID         //
+	CurrencyID() fcp.FinancialCurrencyUUID     //
 	UserID() up.UserUUID                       //
 	SettlementAccountID() FinancialAccountUUID //
-	SettlementReference() OrgUUID              // Clearing and Settlement. MoneySettlementReference can be any org or society user.
+	SettlementReference() org.OrgUUID          // Clearing and Settlement. MoneySettlementReference can be any org or society user.
 	SettlementInterval() protocol.Duration     //
-	Time() protocol.Time                       // save time
+	SaveTime() protocol.Time                   //
 	RequestID() urp.UserRequestUUID            //
-}
-
-type FinancialAccount_StorageServices interface {
-	Save(dm FinancialAccount) (nv protocol.NumberOfVersion, err protocol.Error)
-
-	Count(accountID FinancialAccountUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(accountID FinancialAccountUUID, vo protocol.VersionOffset) (dm FinancialAccount, nv protocol.NumberOfVersion, err protocol.Error)
-
-	FIND_AccountIDs_BY_UserID(userID up.UserUUID, offset, limit uint64) (accountIDs []FinancialAccountUUID, nv protocol.NumberOfVersion, err protocol.Error)
-	FIND_AccountIDs_BY_SettlementAccountID(settlementAccountID FinancialAccountUUID, offset, limit uint64) (accountIDs []FinancialAccountUUID, nv protocol.NumberOfVersion, err protocol.Error)
-
-	LIST_CurrencyIDs(offset, limit uint64) (currencyIDs []FinancialCurrencyUUID, nv protocol.NumberOfVersion, err protocol.Error)
-	LIST_CurrencyIDs_BY_UserID(userID up.UserUUID, offset, limit uint64) (currencyIDs []FinancialCurrencyUUID, nv protocol.NumberOfVersion, err protocol.Error)
-	LIST_SettlementReferences_BY_UserID(userID up.UserUUID, offset, limit uint64) (settlementReferences []OrgUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }

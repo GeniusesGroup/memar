@@ -1,21 +1,20 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package lp
 
 import (
 	"libgo/protocol"
 
+	qsp "org/modules/quiddity-status/protocol"
 	urp "org/modules/user-request/protocol"
 )
 
-type LabelUUID = protocol.UUID
-
-// Label indicate the domain record data fields.
-type Label interface {
+// DataModel indicate the domain record data fields.
+type DataModel interface {
 	LabelID() LabelUUID             //
-	Status() Label_Status           //
-	Time() protocol.Time            // Save time
+	Status() Status                 //
+	SaveTime() protocol.Time        // Save time
 	RequestID() urp.UserRequestUUID //
 }
 
-type Label_Status Quiddity_Status
+type Status qsp.Quiddity_Status

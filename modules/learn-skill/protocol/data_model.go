@@ -1,6 +1,6 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package lsp
 
 import (
 	"libgo/protocol"
@@ -8,13 +8,10 @@ import (
 	urp "org/modules/user-request/protocol"
 )
 
-// SkillUUID
-type SkillUUID = protocol.UUID
-
-// Skill indicate the domain record data fields.
-type Skill interface {
+// DataModel indicate the domain record data fields.
+type DataModel interface {
 	SkillID() SkillUUID //
 
-	Time() protocol.Time            // save time
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
 }

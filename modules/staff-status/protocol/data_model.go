@@ -1,35 +1,28 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package ssp
 
 import (
 	"libgo/protocol"
 
+	qsp "org/modules/quiddity-status/protocol"
+	sp "org/modules/staff/protocol"
 	urp "org/modules/user-request/protocol"
 )
 
-type StaffStatus interface {
-	StaffID() StaffUUID             //
-	Status() Staff_Status           //
-	Time() protocol.Time            // save time
+type DataModel interface {
+	StaffID() sp.StaffUUID          //
+	Status() Status                 //
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
 }
 
-type StaffStatus_StorageServices interface {
-	Save(dm StaffStatus) (nv protocol.NumberOfVersion, err protocol.Error)
-
-	Count(staffID StaffUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(staffID StaffUUID, vo protocol.VersionOffset) (dm StaffStatus, nv protocol.NumberOfVersion, err protocol.Error)
-
-	FILTER_StaffIDs_BY_Status(status Staff_Status, offset, limit uint64) (staffIDs []StaffUUID, nv protocol.NumberOfVersion, err protocol.Error)
-}
-
-type Staff_Status Quiddity_Status
+type Status qsp.Quiddity_Status
 
 const (
-	Staff_Status_Hire = Staff_Status(Quiddity_Status_FreeFlag << iota)
-	Staff_Status_Fire
-	Staff_Status_End // death, end of contract, ...
-	// Staff_Status_Active   // Shift
-	// Staff_Status_Inactive // Shift
+	Status_Hire = Status(qsp.Quiddity_Status_FreeFlag << iota)
+	Status_Fire
+	Status_End // death, end of contract, ...
+	// Status_Active   // Shift
+	// Status_Inactive // Shift
 )

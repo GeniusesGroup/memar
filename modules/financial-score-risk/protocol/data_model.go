@@ -1,6 +1,6 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package fsip
 
 import (
 	"libgo/protocol"
@@ -9,18 +9,11 @@ import (
 	up "org/modules/user/protocol"
 )
 
-// FinancialRiskScore
+// DataModel
 // Store user risk to prevent or detect frauds
-type FinancialRiskScore interface {
+type DataModel interface {
 	UserID() up.UserUUID            //
 	Score() int64                   //
-	Time() protocol.Time            // save time
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
-}
-
-type FinancialRiskScore_StorageServices interface {
-	Save(dm FinancialRiskScore) (nv protocol.NumberOfVersion, err protocol.Error)
-
-	Count(userID up.UserUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(userID up.UserUUID, vo protocol.VersionOffset) (dm FinancialRiskScore, nv protocol.NumberOfVersion, err protocol.Error)
 }

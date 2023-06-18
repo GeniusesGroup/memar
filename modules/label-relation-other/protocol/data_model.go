@@ -1,22 +1,23 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package lrop
 
 import (
 	"libgo/protocol"
 
 	urp "org/modules/user-request/protocol"
+	lp "org/modules/label/protocol"
 )
 
 // TODO::: Need this domain??
 
-// LabelOtherRelation indicate the domain record data fields.
-type LabelOtherRelation interface {
-	LabelID() LabelUUID             //
+// DataModel indicate the domain record data fields.
+type DataModel interface {
+	LabelID() lp.LabelUUID             //
 	DomainID() protocol.MediaTypeID //
 	// TODO::: primary key may not be a single field!
-	RecordID() protocol.UUID        // in above domain
+	RecordID() protocol.UUID // in above domain
 	Status()
-	Time() protocol.Time            // save time
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
 }

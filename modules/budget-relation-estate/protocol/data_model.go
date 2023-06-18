@@ -1,24 +1,20 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package brep
 
 import (
 	"libgo/protocol"
+	bp "org/modules/budget/protocol"
+	eblp "org/modules/estate-building-location/protocol"
+	ep "org/modules/estate/protocol"
 	urp "org/modules/user-request/protocol"
 )
 
-// BudgetEstateRelation indicate the domain record data fields.
-type BudgetEstateRelation interface {
-	BudgetID() BudgetUUID                     //
-	EstateID() EstateUUID                     //
-	BuildingLocationID() BuildingLocationUUID //
-	Time() protocol.Time                      // save time
-	RequestID() urp.UserRequestUUID           //
-}
-
-type BudgetDepartment_StorageServices interface {
-	Save(dm BudgetEstateRelation) (nv protocol.NumberOfVersion, err protocol.Error)
-
-	Count(projectID ProjectUUID, accountID FinancialAccountUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(projectID ProjectUUID, accountID FinancialAccountUUID, vo protocol.VersionOffset) (dm BudgetEstateRelation, nv protocol.NumberOfVersion, err protocol.Error)
+// DataModel indicate the domain record data fields.
+type DataModel interface {
+	BudgetID() bp.BudgetUUID                       //
+	EstateID() ep.EstateUUID                       //
+	BuildingLocationID() eblp.BuildingLocationUUID //
+	SaveTime() protocol.Time                       //
+	RequestID() urp.UserRequestUUID                //
 }

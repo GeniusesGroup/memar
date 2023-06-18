@@ -1,41 +1,32 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package gnp
 
 import (
 	"libgo/protocol"
 
+	gp "org/modules/group/protocol"
 	urp "org/modules/user-request/protocol"
 )
 
-// GroupName indicate the domain record data fields.
+// DataModel indicate the domain record data fields.
 // It is not the group title as display name, It is the unique group name.
-type GroupName interface {
-	GroupID() GroupUUID             //
+type DataModel interface {
+	GroupID() gp.GroupUUID          //
 	Name() string                   // It is not replace of group ID. It usually use to find the group in more human friendly manner.
-	Status() GroupName_Status       //
-	Time() protocol.Time            // save time
+	Status() Status                 //
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
 }
 
-type GroupName_StorageServices interface {
-	Save(dm GroupName) (nv protocol.NumberOfVersion, err protocol.Error)
-
-	Count(groupID GroupUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(groupID GroupUUID, vo protocol.VersionOffset) (dm GroupName, nv protocol.NumberOfVersion, err protocol.Error)
-
-	FIND_GroupIDs_BY_Name(name string, offset, limit uint64) (groupIDs []GroupUUID, err protocol.Error)
-	FILTER_GroupIDs_BY_Status(status GroupName_Status, offset, limit uint64) (groupIDs []GroupUUID, nv protocol.NumberOfVersion, err protocol.Error)
-}
-
-// GroupName_Status indicate GroupName record status
-type GroupName_Status uint8
+// Status indicate GroupName record status
+type Status uint8
 
 // GroupName status
 const (
-	GroupName_Status_Unset    GroupName_Status = 0
-	GroupName_Status_Register GroupName_Status = (1 << iota)
-	GroupName_Status_Remove
-	GroupName_Status_Blocked
-	GroupName_Status_Reserved
+	Status_Unset    Status = 0
+	Status_Register Status = (1 << iota)
+	Status_Remove
+	Status_Blocked
+	Status_Reserved
 )

@@ -1,6 +1,6 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package bdp
 
 type DepartmentBudgetDetail_Type uint8
 

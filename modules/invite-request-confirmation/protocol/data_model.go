@@ -1,29 +1,30 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package ircp
 
 import (
 	"libgo/protocol"
 
+	ip "org/modules/invite/protocol"
 	urp "org/modules/user-request/protocol"
 	up "org/modules/user/protocol"
 )
 
-// InviteRequestConfirmation indicate the domain record data fields.
-type InviteRequestConfirmation interface {
-	InviteID() InviteUUID                     //
-	AccepterID() up.UserUUID                  //
-	Status() InviteRequestConfirmation_Status //
-	Time() protocol.Time                      // save time
-	RequestID() urp.UserRequestUUID           //
+// DataModel indicate the domain record data fields.
+type DataModel interface {
+	InviteID() ip.InviteUUID        //
+	AccepterID() up.UserUUID        //
+	Status() Status                 //
+	SaveTime() protocol.Time        //
+	RequestID() urp.UserRequestUUID //
 }
 
-type InviteRequestConfirmation_Status uint8
+type Status uint8
 
 const (
-	InviteRequestConfirmation_Status_Unset    InviteRequestConfirmation_Status = iota
-	InviteRequestConfirmation_Status_OnHold                                    // GUI base
-	InviteRequestConfirmation_Status_Accepted                                  //
-	InviteRequestConfirmation_Status_Rejected                                  //
-	InviteRequestConfirmation_Status_Expired                                   // GUI base
+	Status_Unset    Status = iota
+	Status_OnHold          // GUI base
+	Status_Accepted        //
+	Status_Rejected        //
+	Status_Expired         // GUI base
 )

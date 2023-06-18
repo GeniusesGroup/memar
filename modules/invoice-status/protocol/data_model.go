@@ -1,61 +1,51 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package isp
 
 import (
 	"libgo/protocol"
 
+	ip "org/modules/invoice/protocol"
+	qsp "org/modules/quiddity-status/protocol"
 	urp "org/modules/user-request/protocol"
 )
 
-// InvoiceStatus indicate the domain record data fields.
-type InvoiceStatus interface {
-	InvoiceID() InvoiceUUID         // invoice-status domain
-	Status() Invoice_Status         //
-	Time() protocol.Time            // save time
+// DataModel indicate the domain record data fields.
+type DataModel interface {
+	InvoiceID() ip.InvoiceUUID      // invoice-status domain
+	Status() Status                 //
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
 }
 
-type InvoiceStatus_StorageServices interface {
-	Save(dm InvoiceStatus) (nv protocol.NumberOfVersion, err protocol.Error)
-
-	Count(invoiceID InvoiceUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(invoiceID InvoiceUUID, vo protocol.VersionOffset) (dm InvoiceStatus, nv protocol.NumberOfVersion, err protocol.Error)
-
-	// we may need indexing ?
-	FIND_InvoiceIDs_BY_Status(status Invoice_Status, offset, limit uint64) (invoiceIDs []InvoiceUUID, nv protocol.NumberOfVersion, err protocol.Error)
-
-	protocol.EventTarget
-}
-
-type Invoice_Status Quiddity_Status
+type Status qsp.Quiddity_Status
 
 const (
 	// cancelled : Indicates that you have cancelled the invoice. Though you can view the cancelled invoice,
 	// the customer cannot view the invoice or make payments against the invoice.
 	// You can only cancel an unpaid issued invoice.
 	// invoice is no longer valid, and not payable by client or refund
-	Invoice_Status_Voided = Invoice_Status(Quiddity_Status_FreeFlag << iota)
+	Status_Voided = Status(qsp.Quiddity_Status_FreeFlag << iota)
 
 	// expired : Indicates that an invoice has expired. Once expired,
 	// the customer cannot make any payments against the invoice,
 	// and you cannot cancel or delete the invoice. You can view an expired invoice.
-	// Invoice_Status_Expired
+	// Status_Expired
 
 	// partially paid : Indicates that the customer has made a partial payment against an invoice.
 	// After a payment has been made, you can neither delete nor cancel the invoice.
 	// You can only view the invoice and add internal notes to it.
-	Invoice_Status_PartiallyPaid
+	Status_PartiallyPaid
 
 	// paid : Indicates that the customer has fully paid the invoice amount.
 	// Paid is the final state of an invoice. A paid invoice can only be viewed.
 	// You can neither delete nor cancel it.
-	Invoice_Status_Paid
+	Status_Paid
 
-	Invoice_Status_UserCheckout
-	Invoice_Status_PendingReview
-	Invoice_Status_Confirmed // Approved
-	Invoice_Status_Packaging
-	Invoice_Status_Shipping
-	Invoice_Status_Done // delivered or served
+	Status_UserCheckout
+	Status_PendingReview
+	Status_Confirmed // Approved
+	Status_Packaging
+	Status_Shipping
+	Status_Done // delivered or served
 )

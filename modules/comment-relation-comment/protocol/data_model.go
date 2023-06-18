@@ -1,27 +1,20 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package crcp
 
 import (
 	"libgo/protocol"
 
+	cp "org/modules/comment/protocol"
 	urp "org/modules/user-request/protocol"
 )
 
-// CommentCommentRelation indicate the domain record data fields.
-type CommentCommentRelation interface {
-	CommentID() CommentUUID     //
-	SideCommentID() CommentUUID //
+// DataModel indicate the domain record data fields.
+type DataModel interface {
+	CommentID() cp.CommentUUID     //
+	SideCommentID() cp.CommentUUID //
 	// Type()
-	Time() protocol.Time            // save time
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
-}
-
-type CommentCommentRelation_StorageServices interface {
-	Save(dm CommentCommentRelation) (nv protocol.NumberOfVersion, err protocol.Error)
-
-	Get(commentID CommentUUID) (dm CommentCommentRelation, err protocol.Error)
-
-	FIND_CommentIDs_BY_SideCommentID(sideCommentID CommentUUID, offset, limit uint64) (commentIDs []CommentUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }
 

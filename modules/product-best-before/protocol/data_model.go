@@ -1,25 +1,21 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package pbbp
 
 import (
 	"libgo/protocol"
 
 	urp "org/modules/user-request/protocol"
+	pp "org/modules/product/protocol"
 )
 
-// ProductBestBefore indicate the domain record data fields.
+// DataModel indicate the domain record data fields.
 // https://en.wikipedia.org/wiki/Expiration_date
-type ProductBestBefore interface {
-	ProductID() ProductUUID         //
+type DataModel interface {
+	ProductID() pp.ProductUUID      //
 	Duration() protocol.Duration    // from production time
-	Time() protocol.Time            // save time
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
 }
 
-type ProductBestBefore_StorageServices interface {
-	Save(dm ProductBestBefore) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(productID ProductUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(productID ProductUUID, vo protocol.VersionOffset) (dm ProductBestBefore, nv protocol.NumberOfVersion, err protocol.Error)
-}

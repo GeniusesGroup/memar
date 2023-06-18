@@ -1,24 +1,19 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package qafitbp
 
 import (
 	"libgo/protocol"
 
 	urp "org/modules/user-request/protocol"
+	qap "org/modules/question-answer/protocol"
 )
 
-// QuestionAnswerFillInTheBlank indicate the domain record data fields.
-type QuestionAnswerFillInTheBlank interface {
-	AnswerID() AnswerUUID           //
+// DataModel indicate the domain record data fields.
+type DataModel interface {
+	AnswerID() qap.AnswerUUID       //
 	Answer() []string               //
-	Time() protocol.Time            // Save time
+	SaveTime() protocol.Time        // Save time
 	RequestID() urp.UserRequestUUID //
 }
 
-type QuestionAnswerFillInTheBlank_StorageServices interface {
-	Save(dm QuestionAnswerFillInTheBlank) (nv protocol.NumberOfVersion, err protocol.Error)
-
-	Count(answerID AnswerUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(answerID AnswerUUID, vo protocol.VersionOffset) (dm QuestionAnswerFillInTheBlank, nv protocol.NumberOfVersion, err protocol.Error)
-}

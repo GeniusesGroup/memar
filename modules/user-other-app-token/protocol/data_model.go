@@ -1,18 +1,19 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package uoatp
 
 import (
 	"libgo/protocol"
 
+	org "org/modules/org/protocol"
 	urp "org/modules/user-request/protocol"
 	up "org/modules/user/protocol"
 )
 
-type UserOtherAppToken interface {
+type DataModel interface {
 	UserID() up.UserUUID            //
-	OrgID() OrgUUID                 //
+	OrgID() org.OrgUUID             //
 	Token() []byte                  // DelegateToken, AccessToken
-	Time() protocol.Time            // save time
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
 }

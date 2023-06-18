@@ -1,39 +1,29 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package rrup
 
 import (
 	"libgo/protocol"
 
+	rp "org/modules/role/protocol"
 	urp "org/modules/user-request/protocol"
 	up "org/modules/user/protocol"
 )
 
-// RoleUserRelation indicate the domain record data fields.
-type RoleUserRelation interface {
-	RoleID() RoleUUID               //
+// DataModel indicate the domain record data fields.
+type DataModel interface {
+	RoleID() rp.RoleUUID            //
 	UserID() up.UserUUID            // user (delegate usage), ... domain
-	Type() RoleUserRelation_Type    //
-	Time() protocol.Time            // save time
+	Type() Type                     //
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
 }
 
-type RoleUserRelation_StorageServices interface {
-	Save(dm RoleUserRelation) (nv protocol.NumberOfVersion, err protocol.Error)
-
-	Count(roleID RoleUUID, userID up.UserUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(roleID RoleUUID, userID up.UserUUID, vo protocol.VersionOffset) (dm RoleUserRelation, nv protocol.NumberOfVersion, err protocol.Error)
-
-	// FindByOwner(ownerID up.UserUUID, offset, limit uint64) (roleIDs []RoleUUID, nv protocol.NumberOfVersion, err protocol.Error)
-	LIST_RoleIDs_BY_UserID(userID up.UserUUID, offset, limit uint64) (roleIDs []RoleUUID, nv protocol.NumberOfVersion, err protocol.Error)
-	LIST_UserIDs_BY_RoleID(roleID RoleUUID, offset, limit uint64) (userIDs []up.UserUUID, nv protocol.NumberOfVersion, err protocol.Error)
-}
-
-type RoleUserRelation_Type uint8
+type Type uint8
 
 const (
-	RoleUserRelation_Type_Unset RoleUserRelation_Type = iota
-	RoleUserRelation_Type_RegisteredBy
-	RoleUserRelation_Type_Issuer
-	RoleUserRelation_Type_DelegateRole // Owner
+	Type_Unset Type = iota
+	Type_RegisteredBy
+	Type_Issuer
+	Type_DelegateRole // Owner
 )

@@ -1,21 +1,22 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package oap
 
 import (
 	"libgo/protocol"
 
+	op "org/modules/order/protocol"
 	urp "org/modules/user-request/protocol"
 	up "org/modules/user/protocol"
 )
 
-// OrderApprovement indicate the domain record data fields.
-type OrderApprovement interface {
-	OrderID() OrderUUID              //
-	UserID() up.UserUUID             //
-	Status() OrderApprovement_Status //
-	Time() protocol.Time             // save time
-	RequestID() urp.UserRequestUUID  //
+// DataModel indicate the domain record data fields.
+type DataModel interface {
+	OrderID() op.OrderUUID          //
+	UserID() up.UserUUID            //
+	Status() Status                 //
+	SaveTime() protocol.Time        //
+	RequestID() urp.UserRequestUUID //
 }
 
-type OrderApprovement_Status uint8
+type Status uint8

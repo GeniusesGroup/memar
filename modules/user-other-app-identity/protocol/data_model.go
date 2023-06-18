@@ -1,6 +1,6 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package uoaip
 
 import (
 	"libgo/protocol"
@@ -8,8 +8,8 @@ import (
 	up "org/modules/user/protocol"
 )
 
-// UserOtherAppIdentity cache all foreign fundamental user data
-type UserOtherAppIdentity interface {
+// DataModel cache all foreign fundamental user data
+type DataModel interface {
 	UserID() up.UserUUID         //
 	OrgID() up.UserUUID          //
 	Gender() string              // In ISO format
@@ -26,5 +26,5 @@ type UserOtherAppIdentity interface {
 	DateOfBirth() protocol.Time  //
 	PlaceOfBirth() string        //
 	VerifiedDate() protocol.Time // If !=0 user got famous blue badge(tick) like instagram, twitter,...
-	Time() protocol.Time         // save time
+	SaveTime() protocol.Time     //
 }

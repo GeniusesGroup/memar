@@ -1,24 +1,18 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package ssp
 
 import (
 	"libgo/protocol"
 
+	sp "org/modules/staff/protocol"
 	urp "org/modules/user-request/protocol"
 )
 
-// StaffSalary is fixed negotiated salary that don't follow org||department||role salary rules.
-type StaffSalary interface {
-	StaffID() StaffUUID                 //
+// DataModel is fixed negotiated salary that don't follow org||department||role salary rules.
+type DataModel interface {
+	StaffID() sp.StaffUUID              //
 	WeeklySalary() protocol.MoneyAmount //
-	Time() protocol.Time                // save time
+	SaveTime() protocol.Time            //
 	RequestID() urp.UserRequestUUID     //
-}
-
-type StaffSalary_StorageServices interface {
-	Save(dm StaffSalary) (nv protocol.NumberOfVersion, err protocol.Error)
-
-	Count(staffID StaffUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(staffID StaffUUID, vo protocol.VersionOffset) (dm StaffSalary, nv protocol.NumberOfVersion, err protocol.Error)
 }

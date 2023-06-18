@@ -1,36 +1,32 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package bsrp
 
 import (
 	"libgo/protocol"
+	bp "org/modules/budget/protocol"
+	fap "org/modules/financial-account/protocol"
+	qsp "org/modules/quiddity-status/protocol"
 	urp "org/modules/user-request/protocol"
 )
 
-// BudgetFinancialAccount indicate the domain record data fields.
-type BudgetFinancialAccount interface {
-	BudgetID() BudgetUUID                  //
-	AccountID() FinancialAccountUUID       //
-	Type() BudgetFinancialAccount_Type     //
-	Status() BudgetFinancialAccount_Status //
-	Time() protocol.Time                   // save time
-	RequestID() urp.UserRequestUUID        //
+// DataModel indicate the domain record data fields.
+type DataModel interface {
+	BudgetID() bp.BudgetUUID             //
+	AccountID() fap.FinancialAccountUUID //
+	Type() Type                          //
+	Status() Status                      //
+	SaveTime() protocol.Time             //
+	RequestID() urp.UserRequestUUID      //
 }
 
-type BudgetFinancialAccount_StorageServices interface {
-	Save(dm BudgetFinancialAccount) (nv protocol.NumberOfVersion, err protocol.Error)
-
-	Count(projectID ProjectUUID, accountID FinancialAccountUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(projectID ProjectUUID, accountID FinancialAccountUUID, vo protocol.VersionOffset) (dm BudgetFinancialAccount, nv protocol.NumberOfVersion, err protocol.Error)
-}
-
-type BudgetFinancialAccount_Type uint8
+type Type uint8
 
 const (
-	BudgetFinancialAccount_Type_Unset BudgetFinancialAccount_Type = iota
-	BudgetFinancialAccount_Type_withdrawal
-	BudgetFinancialAccount_Type_Deposit
-	BudgetFinancialAccount_Type_Suggester
+	Type_Unset Type = iota
+	Type_withdrawal
+	Type_Deposit
+	Type_Suggester
 )
 
-type BudgetFinancialAccount_Status Quiddity_Status
+type Status qsp.Quiddity_Status

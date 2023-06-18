@@ -1,28 +1,19 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package qmp
 
 import (
 	"libgo/protocol"
 
+	op "org/modules/object/protocol"
+	qp "org/modules/quiddity/protocol"
 	urp "org/modules/user-request/protocol"
 )
 
-type QuiddityMedia interface {
-	QuiddityID() QuiddityUUID       //
+type DataModel interface {
+	QuiddityID() qp.QuiddityUUID    //
 	Priority() uint64               // Media priority
-	ObjectID() ObjectUUID           //
-	Time() protocol.Time            // save time
+	ObjectID() op.ObjectUUID        //
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
-}
-
-type QuiddityMedia_StorageServices interface {
-	Save(p QuiddityMedia) (nv protocol.NumberOfVersion, err protocol.Error)
-
-	Count(quiddityID QuiddityUUID, priority uint64) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(quiddityID QuiddityUUID, priority uint64, vo protocol.VersionOffset) (p QuiddityMedia, nv protocol.NumberOfVersion, err protocol.Error)
-
-	ListMedias(quiddityID QuiddityUUID, offset, limit uint64) (objectIDs []ObjectUUID, nv protocol.NumberOfVersion, err protocol.Error)
-	ListRelates(objectID ObjectUUID, offset, limit uint64) (quiddityIDs []QuiddityUUID, nv protocol.NumberOfVersion, err protocol.Error)
-	ListPriorities(objectID ObjectUUID, quiddityID QuiddityUUID, offset, limit uint64) (priorities []uint64, nv protocol.NumberOfVersion, err protocol.Error)
 }

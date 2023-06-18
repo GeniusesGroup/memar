@@ -1,38 +1,32 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package otp
 
 import (
 	"libgo/protocol"
 
+	op "org/modules/order/protocol"
 	urp "org/modules/user-request/protocol"
 )
 
-// OrderTrade indicate the invoice order-trade record data fields.
+// DataModel indicate the invoice order-trade record data fields.
 // can be zero to prevent sell on profit(cover order) or stopping loss
-type OrderTrade interface {
-	OrderID() OrderUUID              //
+type DataModel interface {
+	OrderID() op.OrderUUID           //
 	Level() uint8                    // usually 3 level trade order
 	HighPrice() protocol.MoneyAmount // SaveProfit	e.g. 45$ , -102$
 	LowPrice() protocol.MoneyAmount  // StopLoss	e.g. 43$ , -95$
-	Type() OrderTrade_Type           //
-	Time() protocol.Time             // save time
+	Type() Type                      //
+	SaveTime() protocol.Time         //
 	RequestID() urp.UserRequestUUID  //
 }
 
-type OrderTrade_StorageServices interface {
-	Save(ot OrderTrade) (nv protocol.NumberOfVersion, err protocol.Error)
-
-	Count(orderID OrderUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(orderID OrderUUID, vo protocol.VersionOffset) (ot OrderTrade, nv protocol.NumberOfVersion, err protocol.Error)
-}
-
-type OrderTrade_Type uint8
+type Type uint8
 
 const (
-	OrderTrade_Type_Unset OrderTrade_Type = iota
+	Type_Unset Type = iota
 	// stop-loss orders guarantee execution
-	OrderTrade_Type_StopLoss
+	Type_StopLoss
 	// stop-limit orders guarantee price
-	OrderTrade_Type_StopLimit
+	Type_StopLimit
 )

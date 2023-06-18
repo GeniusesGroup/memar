@@ -3,8 +3,10 @@
 package org
 
 import (
-	er "libgo/error"
 	"libgo/protocol"
+	
+	er "libgo/error"
+	cp "org/modules/comment/protocol"
 )
 
 type Comments_GUI_Page_Conditions interface {

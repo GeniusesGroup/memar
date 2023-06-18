@@ -1,25 +1,20 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package ppp
 
 import (
 	"libgo/protocol"
 
+	pp "org/modules/pos/protocol"
+	prp "org/modules/product/protocol"
 	urp "org/modules/user-request/protocol"
 )
 
-// PosServiceArea indicate the domain record data fields.
+// DataModel indicate the domain record data fields.
 // Save shortcut to regular products to easily add to invoice
-type PosProduct interface {
-	PosID() PosUUID                 //
-	ProductID() []ProductUUID       //
-	Time() protocol.Time            // save time
+type DataModel interface {
+	PosID() pp.PosUUID              //
+	ProductID() []prp.ProductUUID   //
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
-}
-
-type PosProduct_StorageServices interface {
-	Save(dm PosProduct) (nv protocol.NumberOfVersion, err protocol.Error)
-
-	Count(posID PosUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(posID PosUUID, vo protocol.VersionOffset) (dm PosProduct, err protocol.Error)
 }

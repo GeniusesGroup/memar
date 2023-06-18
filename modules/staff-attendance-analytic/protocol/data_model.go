@@ -1,26 +1,20 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package saap
 
 import (
 	"libgo/protocol"
 	"libgo/time/utc"
 
+	sp "org/modules/staff/protocol"
 	urp "org/modules/user-request/protocol"
 )
 
-// StaffAttendanceAnalytic indicate the domain record data fields.
-type StaffAttendanceAnalytic interface {
-	StaffID() StaffUUID             //
+// DataModel indicate the domain record data fields.
+type DataModel interface {
+	StaffID() sp.StaffUUID          //
 	Day() utc.DayElapsed            //
 	Hours() uint64                  //
-	Time() protocol.Time            // save time
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
-}
-
-type StaffAttendanceAnalytic_StorageServices interface {
-	Save(dm StaffAttendanceAnalytic) (nv protocol.NumberOfVersion, err protocol.Error)
-
-	Count(staffID StaffUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(staffID StaffUUID, vo protocol.VersionOffset) (dm StaffAttendanceAnalytic, nv protocol.NumberOfVersion, err protocol.Error)
 }

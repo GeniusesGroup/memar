@@ -1,26 +1,23 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package dtup
 
 import (
 	"libgo/protocol"
 	"libgo/time/earth"
 	"libgo/time/utc"
+
 	urp "org/modules/user-request/protocol"
+	dp "org/modules/discount/protocol"
 )
 
-// DiscountTimingUTC indicate the domain record data fields.
-type DiscountTimingUTC interface {
-	DiscountID() DiscountUUID       //
+// DataModel indicate the domain record data fields.
+type DataModel interface {
+	DiscountID() dp.DiscountUUID    //
 	Weekdays() utc.Weekdays         // what days in weekday in utc time week allow to use this discount
 	DayHours() earth.DayHours       // what hours in day in utc time week allow to use this discount
-	Time() protocol.Time            // save time
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
 }
 
-type DiscountTimingUTC_StorageServices interface {
-	Save(dm DiscountTimingUTC) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(discountID DiscountUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(discountID DiscountUUID, vo protocol.VersionOffset) (dm DiscountTimingUTC, nv protocol.NumberOfVersion, err protocol.Error)
-}

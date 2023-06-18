@@ -1,29 +1,30 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package emp
 
 import (
 	"libgo/protocol"
 
+	ekup "org/modules/edu-knowledge_unit/protocol"
 	urp "org/modules/user-request/protocol"
 	up "org/modules/user/protocol"
 )
 
-// EducationMentor indicate the domain record data fields.
-type EducationMentor interface {
-	UserID() up.UserUUID                         //
-	KnowledgeUnitID() EducationKnowledgeUnitUUID //
-	Type() EducationMentor_Type                  // education unit type
-	Time() protocol.Time                         // save time
-	RequestID() urp.UserRequestUUID              //
+// DataModel indicate the domain record data fields.
+type DataModel interface {
+	UserID() up.UserUUID                              //
+	KnowledgeUnitID() ekup.EducationKnowledgeUnitUUID //
+	Type() Type                                       // education unit type
+	SaveTime() protocol.Time                          //
+	RequestID() urp.UserRequestUUID                   //
 }
 
-type EducationMentor_Type uint8
+type Type uint8
 
 const (
-	EducationMentor_Type_Unset EducationMentor_Type = iota
-	EducationMentor_Type_OrganizationStaff
-	EducationMentor_Type_SelfStatement
-	EducationMentor_Type_UsersVote
-	EducationMentor_Type_AI
+	Type_Unset Type = iota
+	Type_OrganizationStaff
+	Type_SelfStatement
+	Type_UsersVote
+	Type_AI
 )

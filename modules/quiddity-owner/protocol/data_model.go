@@ -1,37 +1,19 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package qop
 
 import (
 	"libgo/protocol"
 
+	qp "org/modules/quiddity/protocol"
 	urp "org/modules/user-request/protocol"
 	up "org/modules/user/protocol"
 )
 
-// QuiddityOwner indicate the domain record data fields.
-type QuiddityOwner interface {
-	QuiddityID() QuiddityUUID       //
+// DataModel indicate the domain record data fields.
+type DataModel interface {
+	QuiddityID() qp.QuiddityUUID    //
 	UserID() up.UserUUID            // Owner of the quiddity
-	Time() protocol.Time            // save time
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
-}
-
-type QuiddityOwner_StorageServices interface {
-	Save(qo QuiddityOwner) (nv protocol.NumberOfVersion, err protocol.Error)
-
-	Count(quiddityID QuiddityUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(quiddityID QuiddityUUID, vo protocol.VersionOffset) (qo QuiddityOwner, nv protocol.NumberOfVersion, err protocol.Error)
-
-	FindByOwnerID(userID up.UserUUID, offset, limit uint64) (quiddityIDs []QuiddityUUID, nv protocol.NumberOfVersion, err protocol.Error)
-}
-
-type QuiddityOwner_Service_FindByUserID_Request interface {
-	UserID() up.UserUUID
-	Offset() uint64
-	Limit() uint64
-}
-type QuiddityOwner_Service_FindByUserID_Response interface {
-	QuiddityIDs() []QuiddityUUID
-	Numbers() uint64
 }

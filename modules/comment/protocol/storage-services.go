@@ -7,10 +7,10 @@ import (
 )
 
 type StorageServices interface {
-	Save(dm DatModel) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm DataModel) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(commentID CommentUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(commentID CommentUUID, vo protocol.VersionOffset) (dm DatModel, nv protocol.NumberOfVersion, err protocol.Error)
+	Get(commentID CommentUUID, vo protocol.VersionOffset) (dm DataModel, nv protocol.NumberOfVersion, err protocol.Error)
 
 	FILTER_CommentIDs_BY_TYPE(t Comment_Type, offset, limit uint64) (commentIDs []CommentUUID, nv protocol.NumberOfVersion, err protocol.Error)
 

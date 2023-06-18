@@ -1,16 +1,16 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package ctp
 
 import (
 	"libgo/protocol"
+
+	cp "org/modules/content/protocol"
 )
 
-type ContentTag interface {
-	Tag() string            //
-	ContentID() ContentUUID //
-	Time() protocol.Time    // save time
+type DataModel interface {
+	Tag() string               //
+	ContentID() cp.ContentUUID //
+	SaveTime() protocol.Time   //
 }
 
-type ContentTag_StorageServices interface {
-}

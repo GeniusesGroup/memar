@@ -1,27 +1,21 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package pppp
 
 import (
 	"libgo/protocol"
 
+	pp "org/modules/product/protocol"
 	urp "org/modules/user-request/protocol"
 )
 
-// ProductPricePayable indicate the domain record data fields.
-// ProductPricePayable store historically price with discount to show to users in price change chart.
-type ProductPricePayable interface {
-	ProductID() ProductUUID //
-	// OrgID() OrgUUID              //
+// DataModel indicate the domain record data fields.
+// DataModel store historically price with discount to show to users in price change chart.
+type DataModel interface {
+	ProductID() pp.ProductUUID //
+	// OrgID() org.OrgUUID              //
 	Currency() uint64               //
 	Price() protocol.MoneyAmount    // Basic Price not payable price in the society currency
-	Time() protocol.Time            // save time
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
-}
-
-type ProductPricePayable_StorageServices interface {
-	Save(dm ProductPricePayable) (nv protocol.NumberOfVersion, err protocol.Error)
-
-	Count(productID ProductUUID, currency uint64) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(productID ProductUUID, currency uint64, vo protocol.VersionOffset) (dm ProductPricePayable, nv protocol.NumberOfVersion, err protocol.Error)
 }

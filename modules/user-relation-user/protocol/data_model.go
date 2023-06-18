@@ -1,6 +1,6 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package urup
 
 import (
 	"libgo/protocol"
@@ -9,25 +9,13 @@ import (
 	up "org/modules/user/protocol"
 )
 
-// UserUserRelation indicate the domain record data fields.
-type UserUserRelation interface {
+// DataModel indicate the domain record data fields.
+type DataModel interface {
 	UserID() up.UserUUID            //
 	SideID() up.UserUUID            //
 	Relation() User_Relation        //
-	Time() protocol.Time            // save time
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
-}
-
-type UserUserRelation_StorageServices interface {
-	Save(gs UserUserRelation) (nv protocol.NumberOfVersion, err protocol.Error)
-
-	Count(userID, sideID up.UserUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(userID, sideID up.UserUUID, vo protocol.VersionOffset) (gs UserUserRelation, nv protocol.NumberOfVersion, err protocol.Error)
-
-	ListSides(userID up.UserUUID, offset, limit uint64) (sideIDs []up.UserUUID, nv protocol.NumberOfVersion, err protocol.Error)
-	ListUsers(sideID up.UserUUID, offset, limit uint64) (userIDs []up.UserUUID, nv protocol.NumberOfVersion, err protocol.Error)
-
-	protocol.EventTarget
 }
 
 type User_Relation uint8

@@ -1,28 +1,20 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package vup
 
 import (
 	"libgo/protocol"
 
 	urp "org/modules/user-request/protocol"
 	up "org/modules/user/protocol"
+	vp "org/modules/voucher/protocol"
 )
 
-// VoucherUser indicate the domain record data fields.
+// DataModel indicate the domain record data fields.
 // Use to restrict the voucher usage by specific users.
-type VoucherUser interface {
-	VoucherID() VoucherUUID         //
+type DataModel interface {
+	VoucherID() vp.VoucherUUID      //
 	UserID() up.UserUUID            //
-	Time() protocol.Time            // save time
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
-}
-
-type VoucherUser_StorageServices interface {
-	Save(dm VoucherUser) (nv protocol.NumberOfVersion, err protocol.Error)
-
-	Count(voucherID VoucherUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(voucherID VoucherUUID, vo protocol.VersionOffset) (dm VoucherUser, nv protocol.NumberOfVersion, err protocol.Error)
-
-	FIND_VoucherIDs_BY_UserID(userID up.UserUUID, offset, limit uint64) (voucherIDs []VoucherUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }

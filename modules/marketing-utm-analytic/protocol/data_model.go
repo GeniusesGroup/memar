@@ -1,6 +1,6 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package muap
 
 import (
 	"libgo/protocol"
@@ -11,7 +11,7 @@ import (
 
 // Urchin Tracking Module (UTM) parameters
 // https://en.wikipedia.org/wiki/UTM_parameters
-type MarketingUTMAnalytic interface {
+type DataModel interface {
 	AnalyticUTM() MarketingUtmUUID //
 	UserID() up.UserUUID           //
 
@@ -21,6 +21,6 @@ type MarketingUTMAnalytic interface {
 	Term() string     // Identifies search terms.													utm_term=running+shoes
 	Content() string  // Identifies what specifically was clicked to bring the user to the site.	utm_content=logolink or utm_content=textlink	such as a banner ad or a text link. It is often used for A/B testing and content-targeted ads.
 
-	Time() protocol.Time            // save time
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
 }

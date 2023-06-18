@@ -1,24 +1,25 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package qaoop
 
 import (
 	"libgo/protocol"
 
+	qp "org/modules/question/protocol"
 	urp "org/modules/user-request/protocol"
 )
 
-// QuestionAnswerOptionsOrdering indicate the domain record data fields.
-type QuestionAnswerOptionsOrdering interface {
-	QuestionID() QuestionUUID           //
-	OptionsOrder() []QuestionOptionUUID //
-	Time() protocol.Time                // Save time
-	RequestID() urp.UserRequestUUID     //
+// DataModel indicate the domain record data fields.
+type DataModel interface {
+	QuestionID() qp.QuestionUUID            //
+	OptionsOrder() []qop.QuestionOptionUUID //
+	SaveTime() protocol.Time                // Save time
+	RequestID() urp.UserRequestUUID         //
 }
 
-type QuestionAnswerOptionsOrdering_StorageServices interface {
-	Save(dm QuestionAnswerOptionsOrdering) (nv protocol.NumberOfVersion, err protocol.Error)
+type StorageServices interface {
+	Save(dm DataModel) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(questionID QuestionUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(questionID QuestionUUID, vo protocol.VersionOffset) (dm QuestionAnswerOptionsOrdering, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(questionID qp.QuestionUUID) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(questionID qp.QuestionUUID, vo protocol.VersionOffset) (dm DataModel, nv protocol.NumberOfVersion, err protocol.Error)
 }

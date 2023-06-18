@@ -1,37 +1,29 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package cus
 
 import (
 	"libgo/protocol"
 
+	cp "org/modules/comment/protocol"
 	urp "org/modules/user-request/protocol"
 	up "org/modules/user/protocol"
 )
 
-// CommentUserStatus indicate the domain record data fields.
-type CommentUserStatus interface {
-	CommentID() CommentUUID         //
+// DataModel indicate the domain record data fields.
+type DataModel interface {
+	CommentID() cp.CommentUUID      //
 	UserID() up.UserUUID            //
-	Status() CommentUser_Status     //
-	Time() protocol.Time            // save time
+	Status() Status                 //
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
 }
 
-type CommentUserStatus_StorageServices interface {
-	Save(dm CommentUserStatus) (nv protocol.NumberOfVersion, err protocol.Error)
-
-	Count(commentID CommentUUID, userID up.UserUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(commentID CommentUUID, userID up.UserUUID, vo protocol.VersionOffset) (dm CommentUserStatus, nv protocol.NumberOfVersion, err protocol.Error)
-
-	// TODO::: get view number
-}
-
-type CommentUser_Status uint8
+type Status uint8
 
 const (
-	CommentUser_Status_Unset CommentUser_Status = iota
-	CommentUser_Status_Delivered
-	CommentUser_Status_Seen
-	CommentUser_Status_Read
+	Status_Unset Status = iota
+	Status_Delivered
+	Status_Seen
+	Status_Read
 )

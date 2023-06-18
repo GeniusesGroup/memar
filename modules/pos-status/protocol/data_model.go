@@ -1,34 +1,25 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package psp
 
 import (
 	"libgo/protocol"
 
+	pp "org/modules/pos/protocol"
+	qsp "org/modules/quiddity-status/protocol"
 	urp "org/modules/user-request/protocol"
 )
 
-// PosStatus indicate the domain record data fields.
-type PosStatus interface {
-	PosID() PosUUID                 //
-	Status() Pos_Status             //
-	Time() protocol.Time            // save time
+// DataModel indicate the domain record data fields.
+type DataModel interface {
+	PosID() pp.PosUUID              //
+	Status() Status                 //
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
 }
 
-type PosStatus_StorageServices interface {
-	Save(dm PosStatus) (nv protocol.NumberOfVersion, err protocol.Error)
-
-	Count(posID PosUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(posID PosUUID, vo protocol.VersionOffset) (dm PosStatus, nv protocol.NumberOfVersion, err protocol.Error)
-
-	FILTER_PosIDs_BY_Status(status Pos_Status, offset, limit uint64) (posIDs []PosUUID, nv protocol.NumberOfVersion, err protocol.Error)
-
-	protocol.EventTarget
-}
-
-type Pos_Status Quiddity_Status
+type Status qsp.Quiddity_Status
 
 const (
-	Pos_Status_CashLimitInactivated = Pos_Status(Quiddity_Status_FreeFlag << iota)
+	Pos_Status_CashLimitInactivated = Status(qsp.Quiddity_Status_FreeFlag << iota)
 )

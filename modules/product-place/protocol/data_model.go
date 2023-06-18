@@ -1,27 +1,20 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package ppp
 
 import (
 	"libgo/protocol"
 
+	eblp "org/modules/estate-building-location/protocol"
+	pp "org/modules/product/protocol"
 	urp "org/modules/user-request/protocol"
 )
 
-// ProductPlace indicate the domain record data fields.
-// ProductPlace indicate service provides in specific place e.g. stations(bus, train, airport, ...), ...
-type ProductPlace interface {
-	ProductID() ProductUUID                   //
-	BuildingLocationID() BuildingLocationUUID // use also for Coordinate domain
-	Time() protocol.Time                      // save time
-	RequestID() urp.UserRequestUUID           //
-}
-
-type ProductPlace_StorageServices interface {
-	Save(dm ProductPlace) (nv protocol.NumberOfVersion, err protocol.Error)
-
-	Count(productID ProductUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(productID ProductUUID, vo protocol.VersionOffset) (dm ProductPlace, nv protocol.NumberOfVersion, err protocol.Error)
-
-	FIND_ProductIDs_BY_BuildingLocationID(buildingLocationID BuildingLocationUUID, offset, limit uint64) (productIDs []ProductUUID, nv protocol.NumberOfVersion, err protocol.Error)
+// DataModel indicate the domain record data fields.
+// DataModel indicate service provides in specific place e.g. stations(bus, train, airport, ...), ...
+type DataModel interface {
+	ProductID() pp.ProductUUID                     //
+	BuildingLocationID() eblp.BuildingLocationUUID // use also for Coordinate domain
+	SaveTime() protocol.Time                       //
+	RequestID() urp.UserRequestUUID                //
 }

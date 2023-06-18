@@ -1,18 +1,19 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package uap
 
 import (
+	qsp "org/modules/quiddity-status/protocol"
 	urp "org/modules/user-request/protocol"
 	up "org/modules/user/protocol"
 )
 
-type UserAddress interface {
+type DataModel interface {
 	UserID() up.UserUUID //
 	// TODO:::
 	Address() string
-	Status() UserAddressStatus
+	Status() Status
 	RequestID() urp.UserRequestUUID //
 }
 
-type UserAddressStatus Quiddity_Status
+type Status qsp.Quiddity_Status

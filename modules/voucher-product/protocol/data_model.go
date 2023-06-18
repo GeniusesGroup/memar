@@ -1,27 +1,20 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package vpp
 
 import (
 	"libgo/protocol"
 
+	pp "org/modules/product/protocol"
 	urp "org/modules/user-request/protocol"
+	vp "org/modules/voucher/protocol"
 )
 
-// VoucherProduct restrict use voucher on specific product
-type VoucherProduct interface {
-	VoucherID() VoucherUUID         //
+// DataModel restrict use voucher on specific product
+type DataModel interface {
+	VoucherID() vp.VoucherUUID      //
 	Each() uint8                    // Each time use
-	ProductID() []ProductUUID       //
-	Time() protocol.Time            // save time
+	ProductID() []pp.ProductUUID    //
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
-}
-
-type VoucherProduct_StorageServices interface {
-	Save(dm VoucherProduct) (nv protocol.NumberOfVersion, err protocol.Error)
-
-	Count(voucherID VoucherUUID, each uint8) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(voucherID VoucherUUID, each uint8, vo protocol.VersionOffset) (dm VoucherProduct, nv protocol.NumberOfVersion, err protocol.Error)
-
-	FIND_VoucherIDs_BY_ProductID(productID ProductUUID, offset, limit uint64) (voucherIDs []VoucherUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }

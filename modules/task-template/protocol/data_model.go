@@ -1,6 +1,6 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package ttp
 
 import (
 	"libgo/protocol"
@@ -9,20 +9,11 @@ import (
 	up "org/modules/user/protocol"
 )
 
-type TaskTemplateUUID = protocol.UUID
-
-// Task indicate the domain record data fields.
-type TaskTemplate interface {
+// DataModel indicate the domain record data fields.
+type DataModel interface {
 	TaskTemplateID() TaskTemplateUUID //
 	UserID() up.UserUUID              //
 	// TODO::: group of comment?? questionnaire??
-	Time() protocol.Time            // Save time
+	SaveTime() protocol.Time        // Save time
 	RequestID() urp.UserRequestUUID //
-}
-
-type TaskTemplate_StorageServices interface {
-	Save(dm TaskTemplate) (nv protocol.NumberOfVersion, err protocol.Error)
-
-	Count(taskID TaskUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(taskID TaskUUID, vo protocol.VersionOffset) (dm TaskTemplate, nv protocol.NumberOfVersion, err protocol.Error)
 }

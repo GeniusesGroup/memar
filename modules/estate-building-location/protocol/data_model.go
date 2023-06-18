@@ -1,18 +1,18 @@
-package org
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+package eblp
 
 import (
 	"libgo/protocol"
 
+	ebp "org/modules/estate-building/protocol"
 	urp "org/modules/user-request/protocol"
 )
 
-// quiddity domain. use in Coordinate domain too, to get physical location of the Location.
-type BuildingLocationUUID = protocol.UUID
-
-// BuildingLocation can use to indicate any part of a building like warehouses, zones, halls, ...
-type BuildingLocation interface {
+// DataModel can use to indicate any part of a building like warehouses, zones, halls, ...
+type DataModel interface {
 	BuildingLocationID() BuildingLocationUUID //
-	BuildingID() BuildingUUID                 //
-	Time() protocol.Time                      // save time
+	BuildingID() ebp.BuildingUUID             //
+	SaveTime() protocol.Time                  //
 	RequestID() urp.UserRequestUUID           //
 }

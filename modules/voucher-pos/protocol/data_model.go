@@ -1,26 +1,19 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package vpp
 
 import (
 	"libgo/protocol"
 
+	pp "org/modules/pos/protocol"
 	urp "org/modules/user-request/protocol"
+	vp "org/modules/voucher/protocol"
 )
 
-// VoucherPOS indicate the domain record data fields.
-type VoucherPOS interface {
-	VoucherID() VoucherUUID         //
-	PosID() PosUUID                 //
-	Time() protocol.Time            // save time
+// DataModel indicate the domain record data fields.
+type DataModel interface {
+	VoucherID() vp.VoucherUUID      //
+	PosID() pp.PosUUID              //
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
-}
-
-type VoucherPOS_StorageServices interface {
-	Save(dm VoucherPOS) (nv protocol.NumberOfVersion, err protocol.Error)
-
-	Count(voucherID VoucherUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(voucherID VoucherUUID, vo protocol.VersionOffset) (dm VoucherPOS, nv protocol.NumberOfVersion, err protocol.Error)
-
-	FIND_VoucherIDs_BY_PosID(posID PosUUID, offset, limit uint64) (voucherIDs []VoucherUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }

@@ -1,15 +1,16 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package rscp
 
 import (
 	"libgo/protocol"
 
 	urp "org/modules/user-request/protocol"
+	rp "org/modules/role/protocol"
 )
 
-type RoleSalaryCoefficients interface {
-	RoleID() RoleUUID //
+type DataModel interface {
+	RoleID() rp.RoleUUID //
 
 	Importance() protocol.PerMyriad         // importance coefficient of the role
 	Accompanying() protocol.PerMyriad       //
@@ -24,6 +25,6 @@ type RoleSalaryCoefficients interface {
 	Income() protocol.PerMyriad          // whole organization income
 	DepartmenIncome() protocol.PerMyriad //
 
-	Time() protocol.Time            // save time
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
 }

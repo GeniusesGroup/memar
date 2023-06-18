@@ -1,26 +1,21 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package cugsp
 
 import (
 	"libgo/protocol"
 
+	gp "org/modules/group/protocol"
 	urp "org/modules/user-request/protocol"
 	up "org/modules/user/protocol"
 )
 
-// CommentUserGroupStatus indicate the domain record data fields.
-type CommentUserGroupStatus interface {
+// DataModel indicate the domain record data fields.
+type DataModel interface {
 	UserID() up.UserUUID                 //
-	GroupID() GroupUUID                  //
+	GroupID() gp.GroupUUID               //
 	ReadUntil() protocol.NumberOfVersion //
-	Time() protocol.Time                 // save time
+	SaveTime() protocol.Time             //
 	RequestID() urp.UserRequestUUID      //
 }
 
-type CommentUserGroupStatus_StorageServices interface {
-	Save(dm CommentUserStatus) (nv protocol.NumberOfVersion, err protocol.Error)
-
-	Count(userID up.UserUUID, groupID GroupUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(userID up.UserUUID, groupID GroupUUID, vo protocol.VersionOffset) (dm CommentUserStatus, nv protocol.NumberOfVersion, err protocol.Error)
-}

@@ -1,26 +1,22 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package iirtp
 
 import (
 	"libgo/protocol"
 
+	ip "org/modules/invoice/protocol"
+	pp "org/modules/product/protocol"
 	urp "org/modules/user-request/protocol"
 )
 
-// InvoiceItemReserveTime indicate the domain record data fields.
-type InvoiceItemReserveTime interface {
-	InvoiceID() InvoiceUUID         //
-	ProductID() ProductUUID         //
+// DataModel indicate the domain record data fields.
+type DataModel interface {
+	InvoiceID() ip.InvoiceUUID      //
+	ProductID() pp.ProductUUID      //
 	Start() protocol.Time           //
 	End() protocol.Time             //
-	Time() protocol.Time            // save time
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
 }
 
-type InvoiceItemReserveTime_StorageServices interface {
-	Save(dm InvoiceItemReserveTime) (nv protocol.NumberOfVersion, err protocol.Error)
-
-	Count(invoiceID InvoiceUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(invoiceID InvoiceUUID, vo protocol.VersionOffset) (dm InvoiceItemReserveTime, nv protocol.NumberOfVersion, err protocol.Error)
-}

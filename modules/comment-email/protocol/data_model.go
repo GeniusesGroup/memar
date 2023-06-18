@@ -1,30 +1,26 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package cep
 
 import (
 	"libgo/protocol"
 
+	cp "org/modules/comment/protocol"
 	urp "org/modules/user-request/protocol"
 )
 
-// CommentEmail indicate the domain record data fields.
+// DataModel indicate the domain record data fields.
 // TODO::: email subject force to make new comment and save all emails as reply to it in that subject.
-type CommentEmail interface {
-	CommentID() CommentUUID         //
+type DataModel interface {
+	CommentID() cp.CommentUUID      //
 	From() string                   // name<username@domain>
 	To() string                     // name<username@domain>
 	CC() string                     // name<username@domain>; name<username@domain>
 	BCC() string                    // name<username@domain>
 	Subject() string                //
 	Senders() []string              // domain
-	Time() protocol.Time            // save time
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
 }
 
-type CommentEmail_StorageServices interface {
-	Save(dm CommentEmail) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(commentID CommentUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(commentID CommentUUID, vo protocol.VersionOffset) (dm CommentEmail, nv protocol.NumberOfVersion, err protocol.Error)
-}

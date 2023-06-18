@@ -1,6 +1,6 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package tp
 
 import (
 	"libgo/protocol"
@@ -9,30 +9,19 @@ import (
 	up "org/modules/user/protocol"
 )
 
-type TaskUUID = protocol.UUID
-
 // Task indicate the domain record data fields.
 type Task interface {
 	TaskID() TaskUUID               //
 	UserID() up.UserUUID            //
-	Type() Task_Type                //
-	Time() protocol.Time            // Save time
+	Type() Type                     //
+	SaveTime() protocol.Time        // Save time
 	RequestID() urp.UserRequestUUID //
 }
 
-type Task_StorageServices interface {
-	Save(dm Task) (nv protocol.NumberOfVersion, err protocol.Error)
-
-	Count(taskID TaskUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(taskID TaskUUID, vo protocol.VersionOffset) (dm Task, nv protocol.NumberOfVersion, err protocol.Error)
-
-	FIND_TaskIDs_BY_UserID(userID urp.UserUUID, offset, limit uint64) (taskIDs []TaskUUID, nv protocol.NumberOfVersion, err protocol.Error)
-}
-
-type Task_Type uint8
+type Type uint8
 
 const (
-	Task_Type_Unset Task_Type = iota
-	Task_Type_TimeBased
-	Task_Type_Repetitive
+	Type_Unset Type = iota
+	Type_TimeBased
+	Type_Repetitive
 )

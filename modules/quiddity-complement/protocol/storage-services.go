@@ -1,0 +1,19 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+package qcp
+
+import (
+	"libgo/protocol"
+
+	qp "org/modules/quiddity/protocol"
+)
+
+type StorageServices interface {
+	Save(dm DataModel) (nv protocol.NumberOfVersion, err protocol.Error)
+
+	Count(quiddityID qp.QuiddityUUID, priority uint64) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(quiddityID qp.QuiddityUUID, priority uint64, vo protocol.VersionOffset) (dm DataModel, nv protocol.NumberOfVersion, err protocol.Error)
+
+	ListQuiddities(complementID qp.QuiddityUUID, offset, limit uint64) (quiddityIDs []qp.QuiddityUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	ListPriorities(complementID, quiddityID qp.QuiddityUUID, offset, limit uint64) (priorities []uint64, nv protocol.NumberOfVersion, err protocol.Error)
+}

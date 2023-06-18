@@ -1,29 +1,20 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package idp
 
 import (
 	"libgo/protocol"
 
+	dp "org/modules/discount/protocol"
+	ip "org/modules/invoice/protocol"
 	urp "org/modules/user-request/protocol"
 )
 
-// InvoiceDiscount indicate the domain record data fields.
-type InvoiceDiscount interface {
-	InvoiceID() InvoiceUUID           //
-	DiscountID() DiscountUUID         //
+// DataModel indicate the domain record data fields.
+type DataModel interface {
+	InvoiceID() ip.InvoiceUUID        //
+	DiscountID() dp.DiscountUUID      //
 	Discounted() protocol.MoneyAmount //
-	Time() protocol.Time              // save time
+	SaveTime() protocol.Time          //
 	RequestID() urp.UserRequestUUID   //
 }
-
-type InvoiceDiscount_StorageServices interface {
-	Save(dm InvoiceDiscount) (nv protocol.NumberOfVersion, err protocol.Error)
-
-	Count(invoiceID InvoiceUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(invoiceID InvoiceUUID, vo protocol.VersionOffset) (dm InvoiceDiscount, nv protocol.NumberOfVersion, err protocol.Error)
-
-	FIND_InvoiceIDs_BY_DiscountID(discountID DiscountUUID, offset, limit uint64) (invoiceIDs []InvoiceUUID, nv protocol.NumberOfVersion, err protocol.Error)
-}
-
-// TODO::: discount status???

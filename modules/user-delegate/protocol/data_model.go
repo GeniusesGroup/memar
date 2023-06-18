@@ -1,45 +1,33 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package udp
 
 import (
 	"libgo/protocol"
 
+	qsp "org/modules/quiddity-status/protocol"
+	rp "org/modules/role/protocol"
 	urp "org/modules/user-request/protocol"
 	up "org/modules/user/protocol"
+	
 )
 
-// UserDelegate means transfer power to someone. power is role access in softwares.
+// DataModel means transfer power to someone. power is role access in softwares.
 
-// UserDelegate indicate the domain record data fields.
-type UserDelegate interface {
+// DataModel indicate the domain record data fields.
+type DataModel interface {
 	GivenUserID() up.UserUUID       //
 	GottenUserID() up.UserUUID      //
-	RoleID() RoleUUID               //
-	Status() UserDelegate_Status    //
-	Time() protocol.Time            // save time
+	RoleID() rp.RoleUUID            //
+	Status() Status                 //
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
 }
 
-type UserDelegate_StorageServices interface {
-	Save(ud UserDelegate) (nv protocol.NumberOfVersion, err protocol.Error)
-
-	Count(givenUserID, gottenUserID up.UserUUID, roleID RoleUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(givenUserID, gottenUserID up.UserUUID, roleID RoleUUID, vo protocol.VersionOffset) (ud UserDelegate, nv protocol.NumberOfVersion, err protocol.Error)
-
-	ListRoles(givenUserID, gottenUserID up.UserUUID, offset, limit uint64) (roles []RoleUUID, nv protocol.NumberOfVersion, err protocol.Error)
-	ListGottenUsers(roleID RoleUUID, offset, limit uint64) (gottenUserIDs []up.UserUUID, nv protocol.NumberOfVersion, err protocol.Error)
-	ListGivenUsers(roleID RoleUUID, offset, limit uint64) (givenUserIDs []up.UserUUID, nv protocol.NumberOfVersion, err protocol.Error)
-	ListGottenDelegateUsers(gottenUserID up.UserUUID, offset, limit uint64) (givenUserIDs []up.UserUUID, nv protocol.NumberOfVersion, err protocol.Error)
-	ListGivenDelegateUsers(givenUserID up.UserUUID, offset, limit uint64) (gottenUserID []up.UserUUID, nv protocol.NumberOfVersion, err protocol.Error)
-
-	// protocol.EventTarget
-}
-
-type UserDelegate_Status Quiddity_Status
+type Status qsp.Quiddity_Status
 
 const (
-// UserDelegate_Status_ = UserDelegate_Status(Quiddity_Status_FreeFlag << iota)
+// Status_ = Status(Quiddity_Status_FreeFlag << iota)
 )
 
 // Service: delegate user can delegate its role to other. blocked this service by default.

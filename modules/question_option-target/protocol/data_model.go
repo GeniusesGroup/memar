@@ -1,25 +1,21 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package qotp
 
 import (
 	"libgo/protocol"
 
+	qp "org/modules/question/protocol"
 	urp "org/modules/user-request/protocol"
+	qop "org/modules/question_option/protocol"
 )
 
-// QuestionOptionGoal indicate the domain record data fields.
-type QuestionOptionTarget interface {
-	QuestionOptionID() QuestionOptionUUID //
-	Target() protocol.PerMyriad           // =~ Goal
-	TimeFrame() protocol.Duration         // =~ Interval, TimeSpan, TimeFrame, TimePeriod,
-	Time() protocol.Time                  // Save time
-	RequestID() urp.UserRequestUUID       //
+// DataModel indicate the domain record data fields.
+type DataModel interface {
+	QuestionOptionID() qop.QuestionOptionUUID //
+	Target() protocol.PerMyriad               // =~ Goal
+	TimeFrame() protocol.Duration             // =~ Interval, TimeSpan, TimeFrame, TimePeriod,
+	SaveTime() protocol.Time                  // Save time
+	RequestID() urp.UserRequestUUID           //
 }
 
-type QuestionOptionGoal_StorageServices interface {
-	Save(dm QuestionOptionTarget) (nv protocol.NumberOfVersion, err protocol.Error)
-
-	Count(questionOptionID QuestionUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(questionOptionID QuestionUUID, vo protocol.VersionOffset) (dm QuestionOptionTarget, nv protocol.NumberOfVersion, err protocol.Error)
-}

@@ -1,37 +1,28 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package lvp
 
 import (
 	"libgo/protocol"
 
+	lp "org/modules/law/protocol"
 	urp "org/modules/user-request/protocol"
 	up "org/modules/user/protocol"
 )
 
-// LawVote indicate the domain record data fields.
-type LawVote interface {
-	LawID() LawUUID                 //
+// DataModel indicate the domain record data fields.
+type DataModel interface {
+	LawID() lp.LawUUID              //
 	UserID() up.UserUUID            //
-	Vote() LawVote_Type             //
-	Time() protocol.Time            // save time
+	Vote() Type                     //
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
 }
 
-type LawVote_StorageServices interface {
-	Save(lv LawVote) (nv protocol.NumberOfVersion, err protocol.Error)
-
-	Count(lawID LawUUID, userID up.UserUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(lawID LawUUID, userID up.UserUUID, vo protocol.VersionOffset) (lv LawVote, nv protocol.NumberOfVersion, err protocol.Error)
-
-	ListUsers(lawID LawUUID, offset, limit uint64) (userIDs []up.UserUUID, nv protocol.NumberOfVersion, err protocol.Error)
-	ListLaws(userID up.UserUUID, offset, limit uint64) (lawIDs []LawUUID, nv protocol.NumberOfVersion, err protocol.Error)
-}
-
-type LawVote_Type uint8
+type Type uint8
 
 const (
-	LawVote_Type_Unset LawVote_Type = iota
+	LawVote_Type_Unset Type = iota
 	LawVote_Type_Abstention
 	LawVote_Type_Agree
 	LawVote_Type_Disagree

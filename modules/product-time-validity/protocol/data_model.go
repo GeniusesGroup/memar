@@ -1,26 +1,20 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package ptvp
 
 import (
 	"libgo/protocol"
 
+	pp "org/modules/product/protocol"
 	urp "org/modules/user-request/protocol"
 )
 
-// ProductTimeValidity indicate the domain record data fields.
+// DataModel indicate the domain record data fields.
 // flight departure and arrival time, concert start and end time, ...
-type ProductTimeValidity interface {
-	ProductID() ProductUUID         //
+type DataModel interface {
+	ProductID() pp.ProductUUID      //
 	Start() protocol.Time           //
 	End() protocol.Time             //
-	Time() protocol.Time            // save time
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
-}
-
-type ProductTimeValidity_StorageServices interface {
-	Save(dm ProductTimeValidity) (nv protocol.NumberOfVersion, err protocol.Error)
-
-	Count(productID ProductUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(productID ProductUUID, vo protocol.VersionOffset) (dm ProductTimeValidity, nv protocol.NumberOfVersion, err protocol.Error)
 }

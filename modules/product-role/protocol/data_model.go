@@ -1,31 +1,24 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package prp
 
 import (
 	"libgo/protocol"
 
+	pp "org/modules/product/protocol"
+	qsp "org/modules/quiddity-status/protocol"
+	rp "org/modules/role/protocol"
 	urp "org/modules/user-request/protocol"
 )
 
-// ProductRole indicate the domain record data fields.
-// ProductRole limit sell to specific roles.
-type ProductRole interface {
-	ProductID() ProductUUID //
-	RoleID() RoleUUID       //
-	Status() ProductRole_Status
-	Time() protocol.Time            // save time
+// DataModel indicate the domain record data fields.
+// DataModel limit sell to specific roles.
+type DataModel interface {
+	ProductID() pp.ProductUUID //
+	RoleID() rp.RoleUUID       //
+	Status() Status
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
 }
 
-type ProductRole_StorageServices interface {
-	Save(dm ProductRole) (nv protocol.NumberOfVersion, err protocol.Error)
-
-	Count(productID ProductUUID, roleID RoleUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(productID ProductUUID, roleID RoleUUID, vo protocol.VersionOffset) (dm ProductRole, nv protocol.NumberOfVersion, err protocol.Error)
-
-	LIST_ProductIDs_BY_RoleID(roleID RoleUUID, offset, limit uint64) (productIDs []ProductUUID, nv protocol.NumberOfVersion, err protocol.Error)
-	LIST_RoleIDs_BY_ProductID(productID ProductUUID, offset, limit uint64) (roleIDs []RoleUUID, nv protocol.NumberOfVersion, err protocol.Error)
-}
-
-type ProductRole_Status Quiddity_Status
+type Status qsp.Quiddity_Status

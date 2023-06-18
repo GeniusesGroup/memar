@@ -1,30 +1,21 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package sspp
 
 import (
 	"libgo/protocol"
 	"libgo/time/utc"
 
+	osp "org/modules/org-shift/protocol"
+	sp "org/modules/staff/protocol"
 	urp "org/modules/user-request/protocol"
 )
 
-// StaffShift indicate the domain record data fields.
-type StaffShift interface {
-	StaffID() StaffUUID             //
-	Day() utc.DayElapsed            //
-	ShiftID() ShiftUUID            
-	Time() protocol.Time            // save time
+// DataModel indicate the domain record data fields.
+type DataModel interface {
+	StaffID() sp.StaffUUID //
+	Day() utc.DayElapsed   //
+	ShiftID() osp.ShiftUUID
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
-}
-
-type StaffShift_StorageServices interface {
-	Save(dm StaffShift) (nv protocol.NumberOfVersion, err protocol.Error)
-
-	Count(staffID StaffUUID, day utc.DayElapsed) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(staffID StaffUUID, day utc.DayElapsed, vo protocol.VersionOffset) (dm StaffShift, nv protocol.NumberOfVersion, err protocol.Error)
-
-
-    LIST_StaffIDs_BY_Day(day utc.DayElapsed, offset, limit uint64) (staffIDs []StaffUUID, nv protocol.NumberOfVersion, err protocol.Error)
-
 }

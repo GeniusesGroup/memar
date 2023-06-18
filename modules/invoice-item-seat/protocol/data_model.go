@@ -1,39 +1,29 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package iisp
 
 import (
 	"libgo/protocol"
 
+	ip "org/modules/invoice/protocol"
+	pp "org/modules/product/protocol"
+	qsp "org/modules/quiddity-status/protocol"
 	urp "org/modules/user-request/protocol"
 )
 
-// InvoiceItemSeat indicate the domain record data fields.
+// DataModel indicate the domain record data fields.
 // It can also use to order buyers e.g. patient in doctor clinic.
-type InvoiceItemSeat interface {
-	InvoiceID() InvoiceUUID         //
-	ProductID() ProductUUID         //
+type DataModel interface {
+	InvoiceID() ip.InvoiceUUID      //
+	ProductID() pp.ProductUUID      //
 	SeatID() uint64                 // seat number
-	Status() InvoiceItemSeat_Status //
-	Time() protocol.Time            // save time
+	Status() Status                 //
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
 }
 
-type InvoiceItemSeat_StorageServices interface {
-	Save(dm InvoiceItemSeat) (nv protocol.NumberOfVersion, err protocol.Error)
-
-	Count(invoiceID InvoiceUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(invoiceID InvoiceUUID, vo protocol.VersionOffset) (dm InvoiceItemSeat, nv protocol.NumberOfVersion, err protocol.Error)
-}
-
-type InvoiceItemSeat_Status Quiddity_Status
+type Status qsp.Quiddity_Status
 
 const (
-	InvoiceItemSeat_Status_Voided = InvoiceItemSeat_Status(Quiddity_Status_FreeFlag << iota)
+	Status_Voided = Status(qsp.Quiddity_Status_FreeFlag << iota)
 )
-
-// service: reserve seat
-
-// FIND_InvoiceIDs_BY_ProductIDAndSeatID(productID ProductUUID, seatID uint64, offset, limit uint64) (invoiceIDs []InvoiceUUID, nv protocol.NumberOfVersion, err protocol.Error)
-// FIND_InvoiceIDs_BY_SeatID_AND_Status(seatID uint64, status InvoiceItemSeat_Status, offset, limit uint64) (invoiceIDs []InvoiceUUID, nv protocol.NumberOfVersion, err protocol.Error)
-// FILTER_InvoiceIDs_BY_Status(status InvoiceItemSeat_Status, offset, limit uint64) (invoiceIDs []InvoiceUUID, nv protocol.NumberOfVersion, err protocol.Error)

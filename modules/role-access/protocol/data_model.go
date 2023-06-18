@@ -1,28 +1,18 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package rap
 
 import (
 	"libgo/protocol"
 
+	rp "org/modules/role/protocol"
 	urp "org/modules/user-request/protocol"
 )
 
-// RoleAccess indicate the domain record data fields.
-type RoleAccess interface {
-	RoleID() RoleUUID                      //
+// DataModel indicate the domain record data fields.
+type DataModel interface {
+	RoleID() rp.RoleUUID                   //
 	AccessControl() protocol.AccessControl //
-	Time() protocol.Time                   // save time
+	SaveTime() protocol.Time               //
 	RequestID() urp.UserRequestUUID        //
 }
-
-type RoleAccess_StorageServices interface {
-	Save(dm RoleAccess) (nv protocol.NumberOfVersion, err protocol.Error)
-
-	Count(roleID RoleUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(roleID RoleUUID, vo protocol.VersionOffset) (dm RoleAccess, nv protocol.NumberOfVersion, err protocol.Error)
-}
-
-// Get				GetRoleAccess
-// GetRecursively	GetRoleAccessRecursively to get parent role access if the role has no access. bad service??
-// Revoke			service to tell all node change role access control immediately

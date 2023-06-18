@@ -1,28 +1,23 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package vcp
 
 import (
 	"libgo/protocol"
 
+	cp "org/modules/category/protocol"
 	urp "org/modules/user-request/protocol"
+	vp "org/modules/voucher/protocol"
 )
 
-// VoucherCategory indicate the domain record data fields.
+// DataModel indicate the domain record data fields.
 // Use to restrict the voucher on specific category.
-type VoucherCategory interface {
-	VoucherID() VoucherUUID         //
+type DataModel interface {
+	VoucherID() vp.VoucherUUID      //
 	Each() uint8                    // Each time use
-	CategoryID() []CategoryUUID     //
-	Time() protocol.Time            // save time
+	CategoryID() []cp.CategoryUUID  //
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
 }
 
-type VoucherCategory_StorageServices interface {
-	Save(dm VoucherCategory) (nv protocol.NumberOfVersion, err protocol.Error)
 
-	Count(voucherID VoucherUUID, Each uint8) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(voucherID VoucherUUID, Each uint8, vo protocol.VersionOffset) (dm VoucherCategory, nv protocol.NumberOfVersion, err protocol.Error)
-
-	LIST_VoucherIDs_By_CategoryID(categoryID CategoryUUID, offset, limit uint64) (voucherIDs []VoucherUUID, nv protocol.NumberOfVersion, err protocol.Error)
-}

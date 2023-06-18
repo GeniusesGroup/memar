@@ -1,59 +1,48 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package shsp
 
 import (
 	"libgo/protocol"
 
+	qsp "org/modules/quiddity-status/protocol"
 	urp "org/modules/user-request/protocol"
 	up "org/modules/user/protocol"
 )
 
-type StaffHireStatus interface {
+type DataModel interface {
 	UserID() up.UserUUID            //
-	Status() StaffHire_Status       //
-	Time() protocol.Time            // save time
+	Status() Status                 //
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
 }
 
-type StaffHireStatus_StorageServices interface {
-	Save(f StaffHireStatus) (nv protocol.NumberOfVersion, err protocol.Error)
-
-	Count(userID up.UserUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(userID up.UserUUID, vo protocol.VersionOffset) (f StaffHireStatus, nv protocol.NumberOfVersion, err protocol.Error)
-
-	FIND_UserIDs_BY_Status(status StaffHire_Status, offset, limit uint64) (userIDs []up.UserUUID, nv protocol.NumberOfVersion, err protocol.Error)
-	FIND_UserIDs_BY_Status_Current(status StaffHire_Status, offset, limit uint64) (userIDs []up.UserUUID, nv protocol.NumberOfVersion, err protocol.Error)
-
-	// protocol.EventTarget
-}
-
-type StaffHire_Status Quiddity_Status
+type Status qsp.Quiddity_Status
 
 const (
-	StaffHire_Status_Requester = StaffHire_Status(Quiddity_Status_FreeFlag << iota)
-	StaffHire_Status_Referral
-	StaffHire_Status_Talent // high skill match
-	StaffHire_Status_NeedHRInterview
-	StaffHire_Status_ApproveForHRInterview
-	StaffHire_Status_NeedTechnicalInterview
-	StaffHire_Status_ApproveForTechnicalInterview
-	StaffHire_Status_NeedForManagerInterview
-	StaffHire_Status_ApproveForManagerInterview
-	StaffHire_Status_NeedForChiefInterview
-	StaffHire_Status_ApproveForChiefInterview
-	StaffHire_Status_NeedForBoardInterview
-	StaffHire_Status_ApproveForBoardInterview
+	Status_Requester = Status(qsp.Quiddity_Status_FreeFlag << iota)
+	Status_Referral
+	Status_Talent // high skill match
+	Status_NeedHRInterview
+	Status_ApproveForHRInterview
+	Status_NeedTechnicalInterview
+	Status_ApproveForTechnicalInterview
+	Status_NeedForManagerInterview
+	Status_ApproveForManagerInterview
+	Status_NeedForChiefInterview
+	Status_ApproveForChiefInterview
+	Status_NeedForBoardInterview
+	Status_ApproveForBoardInterview
 
 	// if not accepted or hired
-	StaffHire_Status_LockFor1Month
-	StaffHire_Status_LockFor3Month
-	StaffHire_Status_LockFor6Month
-	StaffHire_Status_LockFor12Month
+	Status_LockFor1Month
+	Status_LockFor3Month
+	Status_LockFor6Month
+	Status_LockFor12Month
 
 	// if accepted
-	StaffHire_Status_Designation
-	StaffHire_Status_Negotiation
-	StaffHire_Status_Reserved
-	StaffHire_Status_ContractProposal
+	Status_Designation
+	Status_Negotiation
+	Status_Reserved
+	Status_ContractProposal
 )

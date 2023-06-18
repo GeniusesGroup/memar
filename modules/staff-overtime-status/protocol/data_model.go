@@ -1,36 +1,27 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package sosp
 
 import (
 	"libgo/protocol"
 	"libgo/time/utc"
+
+	qsp "org/modules/quiddity-status/protocol"
+	sp "org/modules/staff/protocol"
 	urp "org/modules/user-request/protocol"
 )
 
-type StaffOvertimeStatus interface {
-	StaffID() StaffUUID             //
+type DataModel interface {
+	StaffID() sp.StaffUUID          //
 	Day() utc.DayElapsed            //
-	Status() StaffOvertime_Status   //
-	Time() protocol.Time            // save time
+	Status() Status                 //
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
 }
 
-type StaffOvertimeStatus_StorageServices interface {
-	Save(dm StaffOvertimeStatus) (nv protocol.NumberOfVersion, err protocol.Error)
-
-	Count(staffID StaffUUID,  day utc.DayElapsed ) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(staffID StaffUUID, day utc.DayElapsed, vo protocol.VersionOffset) (dm StaffOvertimeStatus, nv protocol.NumberOfVersion, err protocol.Error)
-
-
-	// FilterByStatus(status StaffOvertime_Status, offset, limit uint64) (staffIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
-
-	// protocol.EventTarget
-}
-
-type StaffOvertime_Status Quiddity_Status
+type Status qsp.Quiddity_Status
 
 const (
-	StaffOvertime_Status_NeedManagerApprove = StaffOvertime_Status(Quiddity_Status_FreeFlag << iota)
-	StaffOvertime_Status_ManagerApprove
+	Status_NeedManagerApprove = Status(qsp.Quiddity_Status_FreeFlag << iota)
+	Status_ManagerApprove
 )

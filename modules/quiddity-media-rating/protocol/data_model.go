@@ -1,17 +1,18 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package qmrp
 
 import (
 	"libgo/protocol"
 
+	op "org/modules/object/protocol"
 	urp "org/modules/user-request/protocol"
 )
 
-type PictureRating interface {
-	ObjectID() ObjectUUID           //
+type DataModel interface {
+	ObjectID() op.ObjectUUID        //
 	Rating() PictureRating_Rate     //
-	Time() protocol.Time            // save time
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
 }
 

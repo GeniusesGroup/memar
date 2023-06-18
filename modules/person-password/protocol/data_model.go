@@ -1,59 +1,31 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package ppp
 
 import (
-	"libgo/protocol"
-
+	qsp "org/modules/quiddity-status/protocol"
 	urp "org/modules/user-request/protocol"
 	up "org/modules/user/protocol"
 )
 
-// PersonPassword indicate the domain record data fields.
+// DataModel indicate the domain record data fields.
 // A person can decide to don't register password and deny authenticate by password.
-type PersonPassword interface {
+type DataModel interface {
 	PersonID() up.UserUUID          //
 	PasswordHash() []byte           //
-	Status() PersonPassword_Status  //
+	Status() Status                 //
 	RequestID() urp.UserRequestUUID //
 }
 
-type PersonPassword_StorageServices interface {
-	Save(pp PersonPassword) (nv protocol.NumberOfVersion, err protocol.Error)
-
-	Count(personID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(personID [16]byte, vo protocol.VersionOffset) (pp PersonPassword, nv protocol.NumberOfVersion, err protocol.Error)
-}
-
-// PersonPassword_Status indicate PersonPassword record status
-type PersonPassword_Status Quiddity_Status
+// Status indicate PersonPassword record status
+type Status qsp.Quiddity_Status
 
 // PersonPassword statuses
 const (
 	// authenticate person with Password + OTP
-	PersonPassword_Status_ForceUse2Factor = PersonPassword_Status(Quiddity_Status_FreeFlag << iota)
+	Status_ForceUse2Factor = Status(qsp.Quiddity_Status_FreeFlag << iota)
 	// user must change password and otp key(if enabled) for some reason
-	PersonPassword_Status_MustChangePassword
+	Status_MustChangePassword
 	// user can't use or decide to prevent authenticate via password with or without OTP.
-	PersonPassword_Status_DenyPasswordAuthentication
+	Status_DenyPasswordAuthentication
 )
-
-type PersonPassword_Service_SendResetToken_Request interface {
-	How() uint8 // sms, email, ...
-}
-type PersonPassword_Service_SendResetToken_Response interface {
-	Token() []byte // include Token&ExpireIn with signature by domain key.
-}
-
-type PersonPassword_Service_Register_Request interface {
-	PasswordHash() []byte
-}
-
-type PersonPassword_Service_Confirm_Request interface {
-	PersonID() up.UserUUID
-	PasswordHash() []byte
-}
-type PersonPassword_Service_Confirm_Response interface {
-	// Token() []byte
-	Status() PersonPassword_Status
-}

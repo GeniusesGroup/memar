@@ -1,24 +1,18 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package qrep
 
 import (
 	"libgo/protocol"
 
+	qp "org/modules/question/protocol"
 	urp "org/modules/user-request/protocol"
 )
 
-// QuestionRatingEmoji indicate the domain record data fields.
-type QuestionRatingEmoji interface {
-	QuestionID() QuestionUUID       //
+// DataModel indicate the domain record data fields.
+type DataModel interface {
+	QuestionID() qp.QuestionUUID    //
 	Emojis() []rune                 //
-	Time() protocol.Time            // Save time
+	SaveTime() protocol.Time        // Save time
 	RequestID() urp.UserRequestUUID //
-}
-
-type QuestionRatingEmoji_StorageServices interface {
-	Save(dm QuestionRatingEmoji) (nv protocol.NumberOfVersion, err protocol.Error)
-
-	Count(questionID QuestionUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(questionID QuestionUUID, vo protocol.VersionOffset) (dm QuestionRatingEmoji, nv protocol.NumberOfVersion, err protocol.Error)
 }

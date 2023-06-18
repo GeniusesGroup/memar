@@ -1,27 +1,20 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package cpp
 
 import (
 	"libgo/protocol"
 
+	cp "org/modules/comment/protocol"
 	urp "org/modules/user-request/protocol"
 	up "org/modules/user/protocol"
 )
 
-// CommentParticipant indicate the domain record data fields.
-type CommentParticipant interface {
-	CommentID() CommentUUID         //
+// DataModel indicate the domain record data fields.
+type DataModel interface {
+	CommentID() cp.CommentUUID      //
 	UserID() up.UserUUID            //
-	Time() protocol.Time            // save time
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
 }
 
-type CommentParticipant_StorageServices interface {
-	Save(dm CommentParticipant) (nv protocol.NumberOfVersion, err protocol.Error)
-
-	Count(commentID CommentUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(commentID CommentUUID, vo protocol.VersionOffset) (dm CommentParticipant, nv protocol.NumberOfVersion, err protocol.Error)
-
-	LIST_UserIDs_BY_CommentID(commentID CommentUUID, offset, limit uint64) (userIDs []up.UserUUID , nv protocol.NumberOfVersion, err protocol.Error)
-}

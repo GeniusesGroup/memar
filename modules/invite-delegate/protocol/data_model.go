@@ -1,31 +1,32 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package idp
 
 import (
 	"libgo/protocol"
 
+	ip "org/modules/invite/protocol"
 	urp "org/modules/user-request/protocol"
 )
 
-// InviteDelegate indicate the domain record data fields.
-type InviteDelegate interface {
-	InviteID() InviteUUID                     //
-	InviteDelegate_Type() InviteDelegate_Type //
-	Time() protocol.Time                      // save time
-	RequestID() urp.UserRequestUUID           //
+// DataModel indicate the domain record data fields.
+type DataModel interface {
+	InviteID() ip.InviteUUID        //
+	Type() Type                     //
+	SaveTime() protocol.Time        //
+	RequestID() urp.UserRequestUUID //
 }
 
-type InviteDelegate_Type uint32
+type Type uint32
 
 const (
-	InviteDelegate_Type_Unset      InviteDelegate_Type = 0
-	InviteDelegate_Type_1st_Friend InviteDelegate_Type = (1 << iota)
-	InviteDelegate_Type_2st_Friend
-	InviteDelegate_Type_3st_Friend
-	InviteDelegate_Type_4st_Friend
-	InviteDelegate_Type_5st_Friend
-	InviteDelegate_Type_6st_Friend
-	InviteDelegate_Type_Family
-	// InviteDelegate_Type_
+	Type_Unset      Type = 0
+	Type_1st_Friend Type = (1 << iota)
+	Type_2st_Friend
+	Type_3st_Friend
+	Type_4st_Friend
+	Type_5st_Friend
+	Type_6st_Friend
+	Type_Family
+	// Type_
 )

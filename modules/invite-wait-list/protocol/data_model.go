@@ -1,29 +1,30 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package iwlp
 
 import (
 	"libgo/protocol"
 
+	ip "org/modules/invite/protocol"
 	urp "org/modules/user-request/protocol"
 	up "org/modules/user/protocol"
 )
 
-// InviteWaitList indicate the domain record data fields.
-type InviteWaitList interface {
-	InviteID() InviteUUID           //
+// DataModel indicate the domain record data fields.
+type DataModel interface {
+	InviteID() ip.InviteUUID        //
 	ConsumerID() up.UserUUID        //
-	Status() InviteWaitList_Status  //
-	Time() protocol.Time            // save time
+	Status() Status                 //
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
 }
 
-type InviteWaitList_Status uint8
+type Status uint8
 
 const (
-	InviteWaitList_Status_Unset     InviteWaitList_Status = iota
-	InviteWaitList_Status_Wait                            // GUI base
-	InviteWaitList_Status_Confirmed                       //
-	InviteWaitList_Status_Canceled                        //
-	InviteWaitList_Status_Expired                         // GUI base
+	Status_Unset     Status = iota
+	Status_Wait             // GUI base
+	Status_Confirmed        //
+	Status_Canceled         //
+	Status_Expired          // GUI base
 )

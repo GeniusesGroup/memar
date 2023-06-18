@@ -1,10 +1,10 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package clap
 
 import (
 	"libgo/protocol"
-
+	cp "org/modules/comment/protocol"
 	urp "org/modules/user-request/protocol"
 )
 
@@ -16,20 +16,14 @@ import (
 // - Call
 // TODO::: prevent from flag set is on with other types like text
 
-// CommentLogActivity indicate the domain record data fields.
-type CommentLogActivity interface {
-	CommentID() CommentUUID         //
+// DataModel indicate the domain record data fields.
+type DataModel interface {
+	CommentID() cp.CommentUUID      //
 	DomainID() protocol.MediaTypeID // use to detect comment GUI template
 	// TODO::: primary key may not be a single field!
 	RecordID() [16]byte             // in above domain
 	RecordVersion() uint64          // VersionOffset
-	Time() protocol.Time            // save time
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
 }
 
-type CommentLogActivity_StorageServices interface {
-	Save(dm CommentLogActivity) (nv protocol.NumberOfVersion, err protocol.Error)
-
-	Count(commentID CommentUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(commentID CommentUUID, vo protocol.VersionOffset) (dm CommentLogActivity, nv protocol.NumberOfVersion, err protocol.Error)
-}

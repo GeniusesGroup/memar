@@ -1,6 +1,6 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package lp
 
 import (
 	"libgo/protocol"
@@ -9,16 +9,13 @@ import (
 	up "org/modules/user/protocol"
 )
 
-// LawUUID
-type LawUUID = protocol.UUID
-
-// Law give users the ability to vote to others and it allows them to make propositions on certain issues
-type Law interface {
+// DataModel give users the ability to vote to others and it allows them to make propositions on certain issues
+type DataModel interface {
 	LawID() LawUUID                 // to track changes in a law
 	OrgID() up.UserUUID             //
 	UserID() up.UserUUID            // Law suggester
 	Language() protocol.Language    // base language
-	Time() protocol.Time            // save time
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
 }
 
