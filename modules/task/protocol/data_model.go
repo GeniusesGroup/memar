@@ -14,7 +14,7 @@ type Task interface {
 	TaskID() TaskUUID               //
 	UserID() up.UserUUID            //
 	Type() Type                     //
-	SaveTime() protocol.Time        // Save time
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
 }
 

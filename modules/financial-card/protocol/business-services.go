@@ -5,20 +5,24 @@ package fcp
 import (
 	"libgo/iso"
 	"libgo/protocol"
+
+	fap "org/modules/financial-account/protocol"
 )
 
-type BS_Register_Request interface {
-	AccountID() [16]byte
-	CardNumber() iso.Card
-	ExpireDate() protocol.Time
-	CVC() uint16
-}
+type (
+	BS_Register_Request interface {
+		AccountID() fap.FinancialAccountUUID
+		CardNumber() iso.Card
+		ExpireDate() protocol.Time
+		CVC() uint16
+	}
+)
 
-type BS_Get_Request interface {
-	AccountID() [16]byte
-	VersionOffset() protocol.VersionOffset
-}
-type BS_Get_Response interface {
-	FinancialCard
-	Numbers() uint64
-}
+type (
+	BS_Get_Request interface {
+		AccountID() fap.FinancialAccountUUID
+		VersionOffset() protocol.VersionOffset
+	}
+	BS_Get_Response1 = DataModel
+	BS_Get_Response2 = protocol.NumberOfVersion
+)

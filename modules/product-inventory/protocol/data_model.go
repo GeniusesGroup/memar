@@ -5,40 +5,20 @@ package pip
 import (
 	"libgo/protocol"
 
-	eblp "org/modules/estate-building-location/protocol"
-	org "org/modules/org/protocol"
-	pp "org/modules/product/protocol"
+	pbp "org/modules/product-batch/protocol"
+	picp "org/modules/product-inventory-change/protocol"
 	urp "org/modules/user-request/protocol"
+	wp "org/modules/warehouse/protocol"
 )
-
-// TODO::: why not relate to ProductInventoryChange domain??
 
 // DataModel indicate the domain record data fields.
-// DataModel or good stock
+// ProductInventory or good stock
 type DataModel interface {
-	ProductID() pp.ProductUUID                     //
-	OrgID() org.OrgUUID                            // OwnerID
-	BuildingLocationID() eblp.BuildingLocationUUID //
-	ReferenceID() [16]byte                         // Depend on ReferenceType()
-	ReferenceType() ProductInventory_RT            //
-	Amount() int64                                 // this transaction
-	Stock() int64                                  // overall in each location
-	SaveTime() protocol.Time                       //
-	RequestID() urp.UserRequestUUID                //
+	WarehouseID() wp.WarehouseUUID               //
+	ProductBatchID() pbp.ProductBatchUUID        //
+	InventoryChangeID() picp.InventoryChangeUUID //
+	Amount() int64                               // this transaction
+	Stock() int64                                // overall in each location
+	SaveTime() protocol.Time                     //
+	RequestID() urp.UserRequestUUID              //
 }
-
-
-
-type ProductInventory_RT uint8
-
-const (
-	ProductInventory_RT_Unset        ProductInventory_RT = iota
-	ProductInventory_RT_Production                       // ProductionID
-	ProductInventory_RT_Invoice                          // InvoiceID
-	ProductInventory_RT_Order                            // ProductOrderID
-	ProductInventory_RT_Transfer                         // ProductInventoryChangeID
-	ProductInventory_RT_ChangeOwner                      // UserID
-	ProductInventory_RT_SplitProduct                     // Split to small size product || Split from upper size product
-	ProductInventory_RT_Void                             //
-	// ProductInventory_RT_
-)

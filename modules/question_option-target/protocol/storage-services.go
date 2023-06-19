@@ -6,8 +6,6 @@ import (
 	"libgo/protocol"
 
 	qp "org/modules/question/protocol"
-	urp "org/modules/user-request/protocol"
-	qop "org/modules/question_option/protocol"
 )
 
 type StorageServices interface {

@@ -8,7 +8,7 @@ import (
 )
 
 type (
-	Business_Service_Register_Request interface {
+	BS_Register_Request interface {
 		GroupID() gp.GroupUUID
 		CommentID() cp.CommentUUID
 	}

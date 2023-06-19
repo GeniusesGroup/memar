@@ -5,6 +5,7 @@ package org
 import (
 	"libgo/protocol"
 
+	cp "org/modules/category/protocol"
 	urp "org/modules/user-request/protocol"
 )
 

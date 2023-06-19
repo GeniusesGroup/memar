@@ -5,7 +5,7 @@ package cp
 import (
 	"libgo/protocol"
 
-	csp "org/modules/comment-settings/protocol"
+	// cp "org/modules/comment/protocol"
 	gp "org/modules/group/protocol"
 	up "org/modules/user/protocol"
 )
@@ -13,10 +13,9 @@ import (
 type (
 	BS_Register_Request interface {
 		GroupID() gp.GroupUUID
-		ReplyTo() [16]byte
+		// ReplyTo() cp.CommentUUID
 		UserID() up.UserUUID
 		Type() Type
-		Settings() csp.Comment_Settings
 	}
 	BS_Register_Response interface {
 		CommentID() CommentUUID

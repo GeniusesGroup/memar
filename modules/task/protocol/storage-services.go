@@ -5,7 +5,7 @@ package tp
 import (
 	"libgo/protocol"
 
-	urp "org/modules/user-request/protocol"
+	up "org/modules/user/protocol"
 )
 
 type StorageServices interface {
@@ -14,5 +14,5 @@ type StorageServices interface {
 	Count(taskID TaskUUID) (nv protocol.NumberOfVersion, err protocol.Error)
 	Get(taskID TaskUUID, vo protocol.VersionOffset) (dm Task, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FIND_TaskIDs_BY_UserID(userID urp.UserUUID, offset, limit uint64) (taskIDs []TaskUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	FIND_TaskIDs_BY_UserID(userID up.UserUUID, offset, limit uint64) (taskIDs []TaskUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }

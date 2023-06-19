@@ -12,13 +12,13 @@ import (
 
 type DataModel interface {
 	ContractTemplateID() ctp.ContractTemplateUUID //
-	Status() Status             //
+	Status() Status                               //
 	SaveTime() protocol.Time                      //
 	RequestID() urp.UserRequestUUID               //
 }
 
-type Statusqsp.Quiddity_Status
+type Status qsp.Quiddity_Status
 
 const (
-	ContractTemplate_Status_Draft = ContractTemplate_Status(qsp.Quiddity_Status_FreeFlag << iota)
+	Status_Draft = Status(qsp.Quiddity_Status_FreeFlag << iota)
 )

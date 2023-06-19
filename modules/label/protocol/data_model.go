@@ -13,7 +13,7 @@ import (
 type DataModel interface {
 	LabelID() LabelUUID             //
 	Status() Status                 //
-	SaveTime() protocol.Time        // Save time
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
 }
 

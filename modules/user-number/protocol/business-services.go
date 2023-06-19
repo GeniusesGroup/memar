@@ -8,16 +8,13 @@ import (
 	up "org/modules/user/protocol"
 )
 
-/*
-	Business Services
-*/
-
 type (
 	BS_Register_Request interface {
 		OrgID() up.UserUUID
 		Number() string
 	}
 )
+
 type (
 	BS_Count_Request interface {
 		UserID() up.UserUUID
@@ -25,25 +22,29 @@ type (
 	}
 	BS_Count_Response = protocol.NumberOfVersion
 )
+
 type (
 	BS_Get_Request interface {
 		UserID() up.UserUUID
 		OrgID() up.UserUUID
 		VersionOffset() protocol.VersionOffset
 	}
-	BS_Get_Response = UserNumber
+	BS_Get_Response = DataModel
 )
+
 type (
 	BS_SendVerification_Request interface {
 		Number() string
 	}
 )
+
 type (
 	BS_Verify_Request interface {
 		Number() string
 		Token() string
 	}
 )
+
 type (
 	BS_IsVerified_Request interface {
 		Number() string
@@ -52,6 +53,7 @@ type (
 		Verified() bool
 	}
 )
+
 type (
 	BS_IsExist_Request interface {
 		Number() string

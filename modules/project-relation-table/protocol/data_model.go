@@ -14,10 +14,10 @@ import (
 // DataModel indicate the domain record data fields.
 // Table or boards is visual aid to help users access tasks in GUI e.g.Table(TODO, DOING, DONE)
 type DataModel interface {
-	ProjectID() pp.ProjectUUID //
-	TableID() ltp.TableUUID    //
-	Status() Status
-	SaveTime() protocol.Time        // Save time
+	ProjectID() pp.ProjectUUID      //
+	TableID() ltp.TableUUID         //
+	Status() Status                 //
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
 }
 

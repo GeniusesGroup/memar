@@ -14,6 +14,6 @@ import (
 type DataModel interface {
 	QuestionnaireID() qp.QuestionnaireUUID //
 	Label() lp.LabelUUID                   //
-	SaveTime() protocol.Time               // Save time
+	SaveTime() protocol.Time               //
 	RequestID() urp.UserRequestUUID        //
 }

@@ -13,6 +13,6 @@ import (
 type DataModel interface {
 	ProjectID() ProjectUUID         //
 	UserID() up.UserUUID            //
-	SaveTime() protocol.Time        // Save time
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
 }

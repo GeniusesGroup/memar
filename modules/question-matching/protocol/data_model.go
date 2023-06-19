@@ -14,6 +14,6 @@ import (
 type DataModel interface {
 	QuestionID() qp.QuestionUUID       //
 	Matches() []qop.QuestionOptionUUID //
-	SaveTime() protocol.Time           // Save time
+	SaveTime() protocol.Time           //
 	RequestID() urp.UserRequestUUID    //
 }

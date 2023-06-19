@@ -14,11 +14,11 @@ import (
 // DataModel store some key/value for a Quiddity to describe it e.g. mobile-cpu, ...
 // TODO::: is it good idea to add detail manually by users?? or quiddity-model is better??
 type DataModel interface {
-	QuiddityID() qp.QuiddityUUID                  //
-	RelationID() qp.QuiddityUUID                  //
-	RelationType() qrtp.QuiddityRelationTypeUUID  // رویه پیتزا؟؟    Optional??
-	RelationValue() qrtp.QuiddityRelationTypeUUID // gram, liter, ...
-	RelationDescription() qp.QuiddityUUID         // TODO::: ??? 10gr?
+	QuiddityID() qp.QuiddityUUID                  // mobile / Pizza
+	RelationID() qp.QuiddityUUID                  // cpu / Cheese
+	RelationType() qrtp.QuiddityRelationTypeUUID  // internal / رویه پیتزا؟؟    Optional??
+	RelationValue() qrtp.QuiddityRelationTypeUUID // Hz, core / gram, liter, ...
+	RelationDescription() qp.QuiddityUUID         // 2300, 4 / TODO::: ??? 10gr?
 	Status() Status                               //
 	SaveTime() protocol.Time                      //
 	RequestID() urp.UserRequestUUID               //

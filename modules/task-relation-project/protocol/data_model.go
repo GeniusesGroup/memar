@@ -17,7 +17,7 @@ type DataModel interface {
 	Priority() uint64               //
 	Permyriad() protocol.PerMyriad  // 0 means unset e.g. equal to other tasks in the project
 	Type() Type                     //
-	SaveTime() protocol.Time        // Save time
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
 }
 

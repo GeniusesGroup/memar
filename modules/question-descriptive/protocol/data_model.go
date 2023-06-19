@@ -15,7 +15,7 @@ type DataModel interface {
 	Type() Type                     //
 	Min() uint64                    //
 	Max() uint64                    //
-	SaveTime() protocol.Time        // Save time
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
 }
 

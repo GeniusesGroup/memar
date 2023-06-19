@@ -19,7 +19,7 @@ type DataModel interface {
 	TaskID() tp.TaskUUID                            //
 	MarketingCampaignID() mcp.MarketingCampaignUUID //
 	RelationType() Type                             //
-	SaveTime() protocol.Time                        // Save time
+	SaveTime() protocol.Time                        //
 	RequestID() urp.UserRequestUUID                 //
 }
 

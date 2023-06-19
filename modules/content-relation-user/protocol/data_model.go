@@ -14,7 +14,7 @@ import (
 type DataModel interface {
 	ContentID() cp.ContentUUID      //
 	UserID() up.UserUUID            //
-	Type() ContentParticipant_Type  //
+	Type() Type                     //
 	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
 }

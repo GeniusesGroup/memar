@@ -5,6 +5,7 @@ package cp
 import (
 	"libgo/protocol"
 
+	tp "org/modules/thing/protocol"
 	urp "org/modules/user-request/protocol"
 )
 
@@ -12,7 +13,7 @@ import (
 // location of the provider. live location of the user.
 type DataModel interface {
 	CoordinateID() CoordinateUUID   //
-	ThingID() [16]byte              // device who send the coordinate
+	ThingID() tp.ThingUUID          // device who send the coordinate
 	Lat() uint64                    // latitude
 	Lon() uint64                    // longitude
 	Alt() uint64                    // altitude

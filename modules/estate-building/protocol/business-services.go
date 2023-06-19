@@ -26,7 +26,7 @@ type (
 		BuildingID() [16]byte
 		VersionOffset() protocol.VersionOffset
 	}
-	BS_Get_Response1 = Building
+	BS_Get_Response1 = DataModel
 	BS_Get_Response2 = protocol.NumberOfVersion
 )
 

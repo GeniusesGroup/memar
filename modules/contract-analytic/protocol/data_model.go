@@ -5,11 +5,12 @@ package cap
 import (
 	"libgo/protocol"
 
+	cp "org/modules/contract/protocol"
 	urp "org/modules/user-request/protocol"
 )
 
 type ContractAnalytic interface {
-	CoordinateID() CoordinateUUID //
+	ContractID() cp.ContractUUID //
 
 	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //

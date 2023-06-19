@@ -15,6 +15,7 @@ type GUI_Widget_Conditions interface {
 	Text() string
 	DisableSending() bool
 	DisableReply() bool // TODO::: add more type like limit to mentioned users.
+	EnablingForwarding() bool
 
 	// Labels() []string
 	// DisableReaction() bool

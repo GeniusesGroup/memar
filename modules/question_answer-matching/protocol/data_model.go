@@ -6,6 +6,7 @@ import (
 	"libgo/protocol"
 
 	qp "org/modules/question/protocol"
+	qop "org/modules/question_option/protocol"
 	urp "org/modules/user-request/protocol"
 )
 
@@ -13,8 +14,6 @@ import (
 type DataModel interface {
 	QuestionID() qp.QuestionUUID       //
 	Matches() []qop.QuestionOptionUUID //
-	SaveTime() protocol.Time           // Save time
+	SaveTime() protocol.Time           //
 	RequestID() urp.UserRequestUUID    //
 }
-
-

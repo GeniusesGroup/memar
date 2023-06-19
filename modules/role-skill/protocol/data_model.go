@@ -5,14 +5,15 @@ package rsp
 import (
 	"libgo/protocol"
 
+	lsp "org/modules/learn-skill/protocol"
 	rp "org/modules/role/protocol"
 	urp "org/modules/user-request/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	RoleID() rp.RoleUUID
-	SkillID() SkillUUID
+	RoleID() rp.RoleUUID            //
+	SkillID() lsp.SkillUUID         //
 	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
 }

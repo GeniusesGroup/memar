@@ -15,5 +15,5 @@ type StorageServices interface {
 	Count(contractTemplateID ctp.ContractTemplateUUID) (nv protocol.NumberOfVersion, err protocol.Error)
 	Get(contractTemplateID ctp.ContractTemplateUUID, vo protocol.VersionOffset) (dm DataModel, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FilterByStatus(status csp.Content_Status, offset, limit uint64) (contractTemplateIDs []ctp.ContractTemplateUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	FilterByStatus(status csp.Status, offset, limit uint64) (contractTemplateIDs []ctp.ContractTemplateUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }

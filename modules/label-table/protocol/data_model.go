@@ -15,6 +15,6 @@ import (
 type LabelTable interface {
 	TableID() TableUUID             //
 	Labels() []lp.LabelUUID         //
-	SaveTime() protocol.Time        // Save time
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
 }

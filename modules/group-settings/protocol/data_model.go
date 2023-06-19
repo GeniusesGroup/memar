@@ -15,9 +15,9 @@ import (
 type DataModel interface {
 	GroupID() gp.GroupUUID //
 	// ArchiveThreadAfter() protocol.Duration //
-	BlockedWords() []string                 //
-	DefaultSettings() csep.Comment_Settings //
-	DefaultStatus() cssp.Comment_Status     //
-	SaveTime() protocol.Time                //
-	RequestID() urp.UserRequestUUID         //
+	BlockedWords() []string         //
+	DefaultSettings() csep.Settings //
+	DefaultStatus() cssp.Status     //
+	SaveTime() protocol.Time        //
+	RequestID() urp.UserRequestUUID //
 }

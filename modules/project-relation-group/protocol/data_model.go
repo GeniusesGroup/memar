@@ -15,7 +15,7 @@ type DataModel interface {
 	ProjectID() pp.ProjectUUID      //
 	GroupID() gp.GroupUUID          //
 	ProjectGroupRelation() Type     //
-	SaveTime() protocol.Time        // Save time
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
 }
 

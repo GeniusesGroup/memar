@@ -18,6 +18,6 @@ type DataModel interface {
 	EndDate() protocol.Time          //
 	Number() uint64                  //
 	Status() uint8                   //
-	SaveTime() protocol.Time         // Save time
+	SaveTime() protocol.Time         //
 	RequestID() urp.UserRequestUUID  //
 }

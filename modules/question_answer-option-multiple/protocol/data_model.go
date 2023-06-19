@@ -6,6 +6,7 @@ import (
 	"libgo/protocol"
 
 	qap "org/modules/question_answer/protocol"
+	qop "org/modules/question_option/protocol"
 	urp "org/modules/user-request/protocol"
 )
 
@@ -13,13 +14,6 @@ import (
 type DataModel interface {
 	AnswerID() qap.AnswerUUID         //
 	Answer() []qop.QuestionOptionUUID //
-	SaveTime() protocol.Time          // Save time
+	SaveTime() protocol.Time          //
 	RequestID() urp.UserRequestUUID   //
-}
-
-type StorageServices interface {
-	Save(dm DataModel) (nv protocol.NumberOfVersion, err protocol.Error)
-
-	Count(answerID qap.AnswerUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(answerID qap.AnswerUUID, vo protocol.VersionOffset) (dm DataModel, nv protocol.NumberOfVersion, err protocol.Error)
 }

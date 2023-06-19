@@ -2,13 +2,17 @@
 
 package ftp
 
+import (
+	fap "org/modules/financial-account/protocol"
+)
+
 type (
 	BS_Transfer_Request interface{}
 )
 
 type (
 	BS_Get_Request interface {
-		AccountID() [16]byte //
+		AccountID() fap.FinancialAccountUUID
 	}
 )
 

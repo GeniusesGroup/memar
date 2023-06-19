@@ -2,13 +2,9 @@
 
 package pp
 
-// /product?new
-// /product?pid=ppppp
-// /product/new
-
-type GUI_Page_Conditions interface {
+type GUI_Widget_Conditions interface {
 	ProductID() ProductUUID //
 }
 
-type GUI_Page_Service interface {
+type GUI_Widget_Service interface {
 }

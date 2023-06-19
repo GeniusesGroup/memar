@@ -7,10 +7,9 @@ import (
 )
 
 type GUI_Widget_Conditions interface {
-	CommentID() cp.CommentUUID //
+	CommentID() CommentUUID //
 	EnablingForwarding() bool
 
-	replyNumber()
 	time() protocol.Time
 }
 

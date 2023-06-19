@@ -11,9 +11,9 @@ import (
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	TaskID() tp.TaskUUID            // project-task domain
+	TaskID() tp.TaskUUID            //
 	Type() Type                     //
-	SaveTime() protocol.Time        // Save time
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
 }
 

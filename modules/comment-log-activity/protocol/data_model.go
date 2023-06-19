@@ -4,6 +4,7 @@ package clap
 
 import (
 	"libgo/protocol"
+
 	cp "org/modules/comment/protocol"
 	urp "org/modules/user-request/protocol"
 )
@@ -21,9 +22,8 @@ type DataModel interface {
 	CommentID() cp.CommentUUID      //
 	DomainID() protocol.MediaTypeID // use to detect comment GUI template
 	// TODO::: primary key may not be a single field!
-	RecordID() [16]byte             // in above domain
+	RecordID() protocol.UUID        // in above domain
 	RecordVersion() uint64          // VersionOffset
 	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
 }
-

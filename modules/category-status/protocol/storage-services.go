@@ -2,7 +2,11 @@
 
 package csp
 
-import cp "org/modules/category/protocol"
+import (
+	"libgo/protocol"
+
+	cp "org/modules/category/protocol"
+)
 
 type StorageServices interface {
 	Save(dm DataModel) (nv protocol.NumberOfVersion, err protocol.Error)
@@ -10,7 +14,7 @@ type StorageServices interface {
 	Count(categoryID cp.CategoryUUID) (nv protocol.NumberOfVersion, err protocol.Error)
 	Get(categoryID cp.CategoryUUID, vo protocol.VersionOffset) (dm DataModel, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FILTER_CategoryIDs_BY_Status(status Category_Status, offset, limit uint64) (categoryIDs []cp.CategoryUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	FILTER_CategoryIDs_BY_Status(status Status, offset, limit uint64) (categoryIDs []cp.CategoryUUID, nv protocol.NumberOfVersion, err protocol.Error)
 
 	protocol.EventTarget
 }

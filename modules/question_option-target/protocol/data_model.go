@@ -5,9 +5,8 @@ package qotp
 import (
 	"libgo/protocol"
 
-	qp "org/modules/question/protocol"
-	urp "org/modules/user-request/protocol"
 	qop "org/modules/question_option/protocol"
+	urp "org/modules/user-request/protocol"
 )
 
 // DataModel indicate the domain record data fields.
@@ -15,7 +14,6 @@ type DataModel interface {
 	QuestionOptionID() qop.QuestionOptionUUID //
 	Target() protocol.PerMyriad               // =~ Goal
 	TimeFrame() protocol.Duration             // =~ Interval, TimeSpan, TimeFrame, TimePeriod,
-	SaveTime() protocol.Time                  // Save time
+	SaveTime() protocol.Time                  //
 	RequestID() urp.UserRequestUUID           //
 }
-

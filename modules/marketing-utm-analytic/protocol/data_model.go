@@ -5,6 +5,7 @@ package muap
 import (
 	"libgo/protocol"
 
+	mup "org/modules/marketing-utm/protocol"
 	urp "org/modules/user-request/protocol"
 	up "org/modules/user/protocol"
 )
@@ -12,8 +13,8 @@ import (
 // Urchin Tracking Module (UTM) parameters
 // https://en.wikipedia.org/wiki/UTM_parameters
 type DataModel interface {
-	AnalyticUTM() MarketingUtmUUID //
-	UserID() up.UserUUID           //
+	AnalyticUTM() mup.MarketingUtmUUID //
+	UserID() up.UserUUID               //
 
 	Source() string   // Identifies which site sent the traffic, and is a required parameter.		"utm_source=google.com", "Referer: <url>"
 	Medium() string   // Identifies what type of link was used, such as cost per click or email.	utm_medium=cpc

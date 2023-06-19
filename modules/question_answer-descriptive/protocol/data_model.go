@@ -5,7 +5,7 @@ package qadp
 import (
 	"libgo/protocol"
 
-	qap "org/modules/question-answer/protocol"
+	qap "org/modules/question_answer/protocol"
 	urp "org/modules/user-request/protocol"
 )
 
@@ -13,7 +13,7 @@ import (
 type DataModel interface {
 	AnswerID() qap.AnswerUUID       //
 	Answer() string                 //
-	SaveTime() protocol.Time        // Save time
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
 }
 

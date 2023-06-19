@@ -15,5 +15,5 @@ type StorageServices interface {
 	Get(quiddityID qp.QuiddityUUID, priority uint64, vo protocol.VersionOffset) (dm DataModel, nv protocol.NumberOfVersion, err protocol.Error)
 
 	ListQuiddities(complementID qp.QuiddityUUID, offset, limit uint64) (quiddityIDs []qp.QuiddityUUID, nv protocol.NumberOfVersion, err protocol.Error)
-	ListPriorities(complementID, quiddityID qp.QuiddityUUID, offset, limit uint64) (priorities []uint64, nv protocol.NumberOfVersion, err protocol.Error)
+	ListPriorities(quiddityID, complementID qp.QuiddityUUID, offset, limit uint64) (priorities []uint64, nv protocol.NumberOfVersion, err protocol.Error)
 }

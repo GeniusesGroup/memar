@@ -21,6 +21,6 @@ type DataModel interface {
 	Progress() uint64        //
 	TaskOverDueTime() uint64 // due time
 
-	SaveTime() protocol.Time        // Save time
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
 }

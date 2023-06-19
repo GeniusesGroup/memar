@@ -15,6 +15,6 @@ type DataModel interface {
 	AnswerID() AnswerUUID           //
 	QuestionID() qp.QuestionUUID    //
 	AnswerBy() up.UserUUID          //
-	SaveTime() protocol.Time        // Save time
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
 }

@@ -15,7 +15,7 @@ type DataModel interface {
 	OtherID() tp.TaskUUID           //
 	Priority() uint64               //
 	Type() Type                     //
-	SaveTime() protocol.Time        // Save time
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
 }
 

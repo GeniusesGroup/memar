@@ -7,12 +7,14 @@ import (
 	up "org/modules/user/protocol"
 )
 
-type BS_FindByUserID_Request interface {
-	UserID() up.UserUUID
-	Offset() uint64
-	Limit() uint64
-}
-type BS_FindByUserID_Response interface {
-	QuiddityIDs() []qp.QuiddityUUID
-	Numbers() uint64
-}
+type (
+	BS_FindByUserID_Request interface {
+		UserID() up.UserUUID
+		Offset() uint64
+		Limit() uint64
+	}
+	BS_FindByUserID_Response interface {
+		QuiddityIDs() []qp.QuiddityUUID
+		Numbers() uint64
+	}
+)

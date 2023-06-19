@@ -14,7 +14,7 @@ type DataModel interface {
 	QuestionID() qp.QuestionUUID    //
 	RelationIDs() [][16]byte        // Question, Questionnaire
 	RelationTypes() []Type          //
-	SaveTime() protocol.Time        // Save time
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
 }
 

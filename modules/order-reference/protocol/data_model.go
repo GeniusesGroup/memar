@@ -12,9 +12,9 @@ import (
 
 // DataModel indicate the domain record data fields. each order is immutable record.
 type DataModel interface {
-	OrderID() op.OrderUUID                      //
-	Reference() [16]byte                        // Any ID that user can assign to track for any purpose. It can't be nil.
-	ReferenceType() ftp.FinancialTransaction_RT //
-	SaveTime() protocol.Time                    //
-	RequestID() urp.UserRequestUUID             //
+	OrderID() op.OrderUUID            //
+	Reference() [16]byte              // Any ID that user can assign to track for any purpose. It can't be nil.
+	ReferenceType() ftp.ReferenceType //
+	SaveTime() protocol.Time          //
+	RequestID() urp.UserRequestUUID   //
 }

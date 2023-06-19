@@ -8,8 +8,8 @@ import (
 	up "org/modules/user/protocol"
 )
 
-// Storage_Services indicates the domain storage layer services.
-type Storage_Services interface {
+// StorageServices indicates the domain storage layer services.
+type StorageServices interface {
 	Save(dm DataModel) (err protocol.Error)
 
 	Get(requestID UserRequestUUID) (dm DataModel, err protocol.Error)

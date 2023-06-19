@@ -17,7 +17,7 @@ type DataModel interface {
 	Priority() uint64               //
 	Type() Type                     //
 	Status() Status                 //
-	SaveTime() protocol.Time        // Save time
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
 }
 

@@ -6,6 +6,7 @@ import (
 	"libgo/protocol"
 
 	dp "org/modules/discount/protocol"
+	pp "org/modules/product/protocol"
 	urp "org/modules/user-request/protocol"
 )
 

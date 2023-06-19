@@ -5,8 +5,9 @@ package csp
 import (
 	"libgo/protocol"
 
-	urp "org/modules/user-request/protocol"
 	cp "org/modules/category/protocol"
+	sp "org/modules/society/protocol"
+	urp "org/modules/user-request/protocol"
 )
 
 // DataModel indicate the domain record data fields.
@@ -17,10 +18,8 @@ import (
 // Associate a blank tax label with tax exempt items (considered non-value-added tax (VAT))
 type DataModel interface {
 	CategoryID() cp.CategoryUUID    //
-	SocietyID() [16]byte            // society domain
+	SocietyID() sp.SocietyUUID      //
 	VAT() protocol.PerMyriad        // VAT as Value-Added-Tax is bad name for a robbery
 	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
 }
-
-

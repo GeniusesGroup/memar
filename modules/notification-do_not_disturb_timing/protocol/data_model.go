@@ -6,13 +6,17 @@ import (
 	"libgo/protocol"
 	"libgo/time/earth"
 	"libgo/time/utc"
+
+	np "org/modules/notification/protocol"
 	urp "org/modules/user-request/protocol"
+	up "org/modules/user/protocol"
 )
 
 type DataModel interface {
-	NotificationID() [16]byte       //
-	Day() utc.DayElapsed            //
-	DayHours() earth.DayHours       // what hours in a day notification not serve
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+	UserID() up.UserUUID                 //
+	NotificationID() np.NotificationUUID //
+	Week() utc.Weekdays                  //
+	DayHours() earth.DayHours            // what hours in above days notification not serve
+	SaveTime() protocol.Time             //
+	RequestID() urp.UserRequestUUID      //
 }

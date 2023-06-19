@@ -11,10 +11,10 @@ import (
 type (
 	BS_Register_Request interface {
 		CommentID() cp.CommentUUID
-		Status() Comment_Status
+		Status() Status
 	}
 	BS_Register_Response interface {
-		// OldStatus() Comment_Status
+		// OldStatus() Status
 		// NewStatus() Comment_Status
 		NumberOfVersion() protocol.NumberOfVersion
 	}

@@ -4,22 +4,22 @@ package fai
 
 import (
 	"libgo/protocol"
+
+	fap "org/modules/financial-account/protocol"
 )
 
 type (
 	BS_Register_Request interface {
-		AccountID() [16]byte
+		AccountID() fap.FinancialAccountUUID
 		ID() string
 	}
 )
 
 type (
 	BS_Get_Request interface {
-		AccountID() [16]byte
+		AccountID() fap.FinancialAccountUUID
 		VersionOffset() protocol.VersionOffset
 	}
-	BS_Get_Response interface {
-		FinancialAccountID
-		Numbers() uint64
-	}
+	BS_Get_Response1 = DataModel
+	BS_Get_Response2 = protocol.NumberOfVersion
 )

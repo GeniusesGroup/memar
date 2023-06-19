@@ -16,7 +16,7 @@ type DataModel interface {
 	TaskID() tp.TaskUUID            //
 	GroupID() gp.GroupUUID          //
 	RelationType() Type             //
-	SaveTime() protocol.Time        // Save time
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
 }
 

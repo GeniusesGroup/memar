@@ -5,13 +5,13 @@ package dscp
 import (
 	"libgo/protocol"
 
-	urp "org/modules/user-request/protocol"
 	dp "org/modules/department/protocol"
+	urp "org/modules/user-request/protocol"
 )
 
 // due to organization payment capacity set values to show how many percent add or remove due to organization profit status
 type DepartmentSalaryCoefficients interface {
-	DepartmentID() DepartmentUUID //
+	DepartmentID() dp.DepartmentUUID //
 
 	Importance() protocol.PerMyriad         // importance coefficient of the department
 	Accompanying() protocol.PerMyriad       // Percent for each week

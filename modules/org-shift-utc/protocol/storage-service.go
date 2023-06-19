@@ -15,5 +15,5 @@ type StorageServices interface {
 	Get(shiftID sp.ShiftUUID, vo protocol.VersionOffset) (dm DataModel, err protocol.Error)
 
 	// do we need indexing ??
-	FIND_ShiftIDs_BY_Type(t sp.OrgShift_Type, offset, limit uint64) (shiftIDs []sp.ShiftUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	FIND_ShiftIDs_BY_Type(t sp.Type, offset, limit uint64) (shiftIDs []sp.ShiftUUID, nv protocol.NumberOfVersion, err protocol.Error)
 }

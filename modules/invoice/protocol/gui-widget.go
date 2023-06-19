@@ -2,6 +2,10 @@
 
 package ip
 
+import (
+	vp "org/modules/voucher/protocol"
+)
+
 // Also usually known as shopping-cart, ... in GUI part of applications
 
 // New invoice service

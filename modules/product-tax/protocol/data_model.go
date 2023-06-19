@@ -5,8 +5,9 @@ package ptp
 import (
 	"libgo/protocol"
 
-	urp "org/modules/user-request/protocol"
 	pp "org/modules/product/protocol"
+	sp "org/modules/society/protocol"
+	urp "org/modules/user-request/protocol"
 )
 
 // ProductTax indicate the domain record data fields.
@@ -17,9 +18,8 @@ import (
 // Associate a blank tax label with tax exempt items (considered non-value-added tax (VAT))
 type DataModel interface {
 	ProductID() pp.ProductUUID      //
-	SocietyID() SocietyUUID         //
+	SocietyID() sp.SocietyUUID      //
 	VAT() protocol.PerMyriad        // VAT as Value-Added-Tax is bad name for a robbery
 	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
 }
-

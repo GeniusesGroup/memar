@@ -4,12 +4,15 @@ package fcarp
 
 import (
 	"libgo/protocol"
+
+	fap "org/modules/financial-account/protocol"
+	fcp "org/modules/financial-card/protocol"
 )
 
 type (
 	BS_Register_Request interface {
-		AccountID() [16]byte
-		FinancialCardID() [16]byte
+		AccountID() fap.FinancialAccountUUID
+		FinancialCardID() fcp.FinancialCardUUID
 		Priority() uint64
 		Status() Status
 	}
@@ -17,10 +20,10 @@ type (
 
 type (
 	BS_Get_Request interface {
-		AccountID() [16]byte
-		FinancialCardID() [16]byte
+		AccountID() fap.FinancialAccountUUID
+		FinancialCardID() fcp.FinancialCardUUID
 		VersionOffset() protocol.VersionOffset
 	}
-	BS_Get_Response1 = FinancialCardAccountRelation
+	BS_Get_Response1 = DataModel
 	BS_Get_Response2 = protocol.VersionOffset
 )

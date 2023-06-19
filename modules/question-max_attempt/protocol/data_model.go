@@ -13,6 +13,6 @@ import (
 type DataModel interface {
 	QuestionID() qp.QuestionUUID    //
 	MaxAttempt() uint16             //
-	SaveTime() protocol.Time        // Save time
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
 }

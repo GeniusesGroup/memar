@@ -16,7 +16,7 @@ type DataModel interface {
 	Options() []qop.QuestionOptionUUID //
 	Type() Type                        //
 	AlgorithmType() AlgorithmType      //
-	SaveTime() protocol.Time           // Save time
+	SaveTime() protocol.Time           //
 	RequestID() urp.UserRequestUUID    //
 }
 

@@ -15,6 +15,6 @@ type DataModel interface {
 	QuestionnaireOrderID() QuestionnaireOrderUUID //
 	QuestionnaireID() qrp.QuestionnaireUUID       //
 	Questions() []qp.QuestionUUID                 //
-	SaveTime() protocol.Time                      // Save time
+	SaveTime() protocol.Time                      //
 	RequestID() urp.UserRequestUUID               //
 }

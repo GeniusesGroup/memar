@@ -15,7 +15,7 @@ type DataModel interface {
 	ShiftID() sp.ShiftUUID          //
 	Weekdays() utc.Weekdays         // what days in weekday in utc time week this org active to provide services
 	DayHours() earth.DayHours       // what hours in day in utc time week this org active to provide services
-	Type() sp.OrgShift_Type         //
+	Type() sp.Type                  //
 	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
 }

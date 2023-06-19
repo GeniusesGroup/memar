@@ -6,6 +6,7 @@ import (
 	"libgo/protocol"
 
 	gp "org/modules/group/protocol"
+	rp "org/modules/role/protocol"
 	up "org/modules/user/protocol"
 )
 

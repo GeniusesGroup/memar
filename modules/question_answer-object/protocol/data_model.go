@@ -5,21 +5,15 @@ package qaop
 import (
 	"libgo/protocol"
 
-	urp "org/modules/user-request/protocol"
+	op "org/modules/object/protocol"
 	qap "org/modules/question_answer/protocol"
+	urp "org/modules/user-request/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
 	AnswerID() qap.AnswerUUID       //
 	AnswerObject() op.ObjectUUID    //
-	SaveTime() protocol.Time        // Save time
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
-}
-
-type StorageServices interface {
-	Save(dm DataModel) (nv protocol.NumberOfVersion, err protocol.Error)
-
-	Count(answerID qap.AnswerUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(answerID qap.AnswerUUID, vo protocol.VersionOffset) (dm DataModel, nv protocol.NumberOfVersion, err protocol.Error)
 }

@@ -14,6 +14,6 @@ type DataModel interface {
 	QuestionOptionID() qop.QuestionOptionUUID //
 	Progress() protocol.PerMyriad             // =~ AmountOfProgress,  EarnGoal
 	TimeFrame() protocol.Duration             //
-	SaveTime() protocol.Time                  // Save time
+	SaveTime() protocol.Time                  //
 	RequestID() urp.UserRequestUUID           //
 }

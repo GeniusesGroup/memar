@@ -7,14 +7,12 @@ import (
 
 	qap "org/modules/question_answer/protocol"
 	urp "org/modules/user-request/protocol"
-	
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
 	AnswerID() qap.AnswerUUID       //
 	Answer() uint8                  //
-	SaveTime() protocol.Time        // Save time
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
 }
-

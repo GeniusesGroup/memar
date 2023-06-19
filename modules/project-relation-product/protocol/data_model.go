@@ -17,7 +17,7 @@ type DataModel interface {
 	ProductID() prp.ProductUUID //
 	Status() Status
 	// TODO::: type or label??
-	SaveTime() protocol.Time        // Save time
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
 }
 

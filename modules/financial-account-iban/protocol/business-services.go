@@ -5,18 +5,25 @@ package faip
 import (
 	"libgo/iso"
 	"libgo/protocol"
+
+	fap "org/modules/financial-account/protocol"
 )
 
-type BS_Register_Request interface {
-	AccountID() [16]byte
-	IBAN() iso.IBAN
-}
+type (
+	BS_Register_Request interface {
+		AccountID() fap.FinancialAccountUUID
+		IBAN() iso.IBAN
+	}
+)
 
-type BS_Get_Request interface {
-	AccountID() [16]byte
-	VersionOffset() protocol.VersionOffset
-}
-type BS_Get_Response interface {
-	FinancialAccountIBAN
-	Numbers() uint64
-}
+type (
+	BS_Get_Request interface {
+		AccountID() fap.FinancialAccountUUID
+		VersionOffset() protocol.VersionOffset
+	}
+	BS_Get_Response interface {
+		DataModel
+
+		Numbers() uint64
+	}
+)

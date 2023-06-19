@@ -14,6 +14,6 @@ type DataModel interface {
 	QuestionID() qp.QuestionUUID    //
 	Min() uint64                    //
 	Max() uint64                    //
-	SaveTime() protocol.Time        // Save time
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
 }

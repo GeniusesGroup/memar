@@ -23,7 +23,7 @@ type DataModel interface {
 	TaskID() tp.TaskUUID            //
 	Type() Type                     //
 	Point() int64                   // can be any data e.g. percent, star, ...
-	SaveTime() protocol.Time        // Save time
+	SaveTime() protocol.Time        //
 	RequestID() urp.UserRequestUUID //
 }
 

@@ -14,7 +14,7 @@ type DataModel interface {
 	Type() Type                           //
 	Significance_Positive() uint64        //
 	Significance_Negative() uint64        //
-	SaveTime() protocol.Time              // Save time
+	SaveTime() protocol.Time              //
 	RequestID() urp.UserRequestUUID       //
 }
 

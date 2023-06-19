@@ -5,7 +5,7 @@ package qadp
 import (
 	"libgo/protocol"
 
-	qap "org/modules/question-answer/protocol"
+	qap "org/modules/question_answer/protocol"
 )
 
 type StorageServices interface {

@@ -6,6 +6,7 @@ import (
 	"libgo/protocol"
 
 	cp "org/modules/comment/protocol"
+	op "org/modules/object/protocol"
 )
 
 type StorageServices interface {
