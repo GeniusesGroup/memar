@@ -4,17 +4,18 @@ package ftrp
 
 import (
 	"libgo/protocol"
+
 	fap "org/modules/financial-account/protocol"
 )
 
 // DataModel indicate the domain record data fields.
-// DataModel store the secondary index that complicated than regular indexes.
 // Use version to save multi transactions for the same reference.
+// It can't be changed after registered for any reason. Referencing must be automatic process.
 type DataModel interface {
-	ReferenceID() protocol.UUID // any domain base on FinancialTransaction_Type
-	SenderAccountID() fap.FinancialAccountUUID
-	SenderAccountOffset() uint64                 //
-	ReceiverAccountID() fap.FinancialAccountUUID // financial-account domain. or AccountPartyID
-	ReceiverAccountOffset() uint64               //
-	SaveTime() protocol.Time                     //
+	ReferenceID() protocol.UUID                      // any domain(Budget, Contract, Invoice, Order) base on FinancialTransaction_Type
+	SenderAccountID() fap.FinancialAccountUUID       //
+	SenderAccountOffset() protocol.NumberOfVersion   //
+	ReceiverAccountID() fap.FinancialAccountUUID     //
+	ReceiverAccountOffset() protocol.NumberOfVersion //
+	SaveTime() protocol.Time                         //
 }
