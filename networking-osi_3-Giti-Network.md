@@ -18,20 +18,19 @@ In the IoE (the Internet of Everything or IoT as the Internet of Things) era, we
 - Free, automated, and floating to lease new GP address
 - GP routers can be network coordinators alongside being a gateway
 
-## Packet Architecture
-**Frames** are Always encrypted. at least two(always the special signature frame appear at the end) or more frames in [sRPC format](./sRPC.md)
+## Frame architecture
 
 | bit     | Length(Byte-Octet)| Data                  |
 | :---:   | :---:             | :---:                 |
-| 0       | 16                | Destination GP        |
-| 128     | 16                | Source GP             |
-| 256     | ~                 | Frames                |
+| 0       | 1                 | FrameID               |
+| 8       | 16                | Destination GP        |
+| 136     | 16                | Source GP             |
 
 ### Compare with IPv6 packet
 - **Versioning**: Unlike IP, GP don't offer any versioning for the protocol as we believe if we need fundamentally change any part of a protocol after the official release, we will already make new protocol. So we respect data link layers protocols like Ethernet and use their solution like [Ethertype](https://en.wikipedia.org/wiki/Ethertype) in [Ethernet frame](https://en.wikipedia.org/wiki/Ethernet_frame) header and don't reinvent other solution.
 - **Flow Label**: Almost same as Packet Number in sRPC PacketSequenceNumber frame.
 - **Payload Length**: Due to a GP packet isn't chain of related frames and haven't primary frame, Each frame has its own length if need it.
-- **Next Header**: Due to a GP packet isn't chain of related frames and haven't primary frame, Each frame has its own *Type* to introduce itself.
+- **Next Header**: Due to a GP is a frame inside a packet and it isn't chain of related frames and haven't primary frame, Each frame has its own *FrameID* to introduce itself.
 - **Extended header**: GP uses standalone frames instead of chain of frames as primary frame and extended headers.
 - **Hop Limit**: GP suggest some mechanism in [ChaparKhane](./ChaparKhane.md) as its network router||coordinator to reach this requirement.
 
@@ -86,15 +85,13 @@ Due to the nature of this spec that must be decentralized, and we believe this t
 ## Supported programming languages
 It is so simple protocol that can easily encode and decode in any programming language. We implement it on some language like [C](), [Go](https://github.com/GeniusesGroup/libgo/blob/master/GP), [JavaScript]() and more in progress ...
 
-## Inspired of
+## Related Projects
 - [Application-Layer Traffic Optimization (ALTO) Protocol](https://www.rfc-editor.org/rfc/rfc7285.html)
 - [QUIC](https://en.wikipedia.org/wiki/QUIC) - [RFC](https://datatracker.ietf.org/doc/html/rfc9000) 
 - [HTTP2]() - [RFC](https://tools.ietf.org/html/rfc7540)
 - [IPv6](https://en.wikipedia.org/wiki/IPv6) - [RFC]()
 - [Blockchain models for universal connectivity](https://www.semanticscholar.org/paper/Blockchain-models-for-universal-connectivity-Navarro-Castro/788b7a634b369d98e72ed37c5fdf71f7fd62ef0b) - [PDF](https://pdfs.semanticscholar.org/788b/7a634b369d98e72ed37c5fdf71f7fd62ef0b.pdf?_ga=2.260489549.1562006812.1569054619-1995410782.1569054619)
 - [Matrix, An open network for secure, decentralized communication](https://matrix.org/)
-
-## Other projects
 - [Homa](https://github.com/PlatformLab/HomaModule/)
 
 ## Articles

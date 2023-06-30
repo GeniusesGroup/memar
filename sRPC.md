@@ -1,7 +1,7 @@
 # sRPC - Application Protocol
-sRPC (Syllab Remote Procedure Call) is a RPC(remote procedure call) protocol. It is develope to use by [Chapar](./Chapar.md) and [GP](./Giti-Network.md) protocols, But it can also use to be a messaging protocol among with other protocols like IP, TCP, UDP, HTTP, ...
+sRPC (Syllab Remote Procedure Call) is a RPC(remote procedure call) protocol. It is develope to introduce frame structure that can use in any network packet to add full functionality to base protocols frames e.g. [Chapar](./networking-osi_2-Chapar.md) or [GP](./networking-osi_3-Giti-Network.md) protocols.
 
-We combine OSI layer 4 to layer 6 requirements as Transport+Session+Presentation protocols to have one protocol and remove all overhead data.
+It can also use to be a messaging protocol among with other older Internet protocols like IP, TCP, UDP, HTTP, ...
 
 ## Goals
 - Minimum overhead to find service from server services
@@ -11,23 +11,15 @@ We combine OSI layer 4 to layer 6 requirements as Transport+Session+Presentation
 - Easy to understand by human
 
 ## Frames - Internal Services
-Each packet can carry many frames until respect network MTU. All frames have fixed first field name `Type` with `signed 8bit` length that is same as [MediaTypeID](./media-type.md) but not use 64bit unsigned integer and standard here as a byte to minimize packet unnecessary overhead. frame numbers will be the same as appear in below order e.g. PacketSequenceNumber=0, padding=1, ping=2, ...
+Each packet can carry many frames until respect network MTU. All frames have fixed first field name `Type` with `signed 8bit` length that is same as [MediaTypeID](./media-type.md) but not use 64bit unsigned integer and standard here as a byte to minimize packet unnecessary overhead.
 
-Negative frame type reserved and use to extend types to int16 (or int64) length.
+Frame numbers register in [networking RFC](./networking.md).
 
 ### Packet Sequence Number Frame
 Incremental number use to detect failed packet, ... Use even number e.g. 0,2,4,6,... for client(who start connection) and Use odd number e.g. 1,3,5,7,... for server(who receive connection). Separation of the packet identifiers ensures that peer are able to send packets without the latency imposed by negotiating for an identifier.
 ```go
 type PacketSequenceNumber struct {
     SequenceNumber uint64
-}
-```
-
-### Padding Frame
-```go
-type Padding struct {
-    Length   uint16
-    Padding  []byte
 }
 ```
 
@@ -94,24 +86,11 @@ type DataSignature struct {
 }
 ```
 
-## Special Signature Frame (MAC, Tag, ...)
-This is special frame that don't need `Type` field and always appear in the end of a packet(or a frame). Due to carry on end of each packet(or frame) it must be in reverse to read its fields. Depend on crypto mode it use to authenticate data transmitted and check packet(or frame) healthy in any network hop, But usually just first router and receiver check packet(or frame) signature.
-```go
-type PacketSignature struct {
-    Signature       []byte
-    SignatureScheme uint16 // SignatureScheme identifies a signature algorithm supported by TLS. See RFC 8446, Section 4.2.3.
-    Length          uint16 // including the header fields
-}
-```
-
 ## Frames Fields
 
 ### Length
 - Length of whole frame exclude `Type` common filed.
 - must respect data-link protocol due to not Fragmentation supported. Better not over of 8192 Byte(octets) or 8KB
-
-### Padding
-If block cipher use, add some random data to have fix size packet
 
 ### Stream ID
 Use even number for client(who start connection) to start a stream e.g. 0,2,4,6,... . Use odd number for server(who receive connection) to start a stream e.g. 1,3,5,7,... . Separation of the stream identifiers ensures that client and server are able to open streams without the latency imposed by negotiating for an identifier.
