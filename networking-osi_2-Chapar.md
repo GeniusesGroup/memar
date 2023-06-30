@@ -40,25 +40,22 @@ A Chaparkhane device (router) with 32GB of ram easily handle all connections if 
 - Three-tier network with core/distribution/[wireless-access](#Wireless). With just 1 core chapar switch and 256 distribution chapar switches and 65280 wireless-access switches can connect 4,261,478,400(65280\*65280) host to the network of course with just one physical link between core/distribution/wireless-access switches. If we want 2 core switches and each wireless-access switch connect to two distribution switches can connect 4,228,120,576(65024\*65024) host to the network.
 
 ## Frame architecture
-- This Frame structure will transport by physical layer so it is payload of desire frame and that frame have its header and structure like StartDelimiter, EndDelimiter, CheckSequence, ...
 - Ports number can be mutable due to physical link limits. The endpoint must beware of this aspect.
 - Each switch interface in any location of link can be wired or wireless with any Energy||Frequency specs (e.g. Fiber, WiFi, LAN, Bluetooth, ...)
 
 | bit   | Length(byte-Octet) | Data                          |
 | :---: | :---:              | :---:                         |
-| 0     | 1                  | Next Hop                      |
+| 0     | 1                  | FrameID                       |
 | 8     | 1                  | Hop Count                     |
-| 16    | 1                  | Next Header                   |
+| 16    | 1                  | Next Hop                      |
 | 24    | 1                  | First Hop Port Number         |
 | ...   | ~                  | x Hop Port Number (Optional)  |
-| ...   | ~                  | Payload                       |
 
+- FrameID: Indicate by [networking rules](./networking.md).
+- [Hop Count](https://en.wikipedia.org/wiki/Hop_(networking)#Hop_count): The hop count refers to the number of intermediate network devices through which data must pass between source and destination, and also indicate frame length.
 - [Next Hop](https://en.wikipedia.org/wiki/Hop_(networking)#Next_hop): Indicate hop number that frame must send on indicate port by that hop.
-- [Hop Count](https://en.wikipedia.org/wiki/Hop_(networking)#Hop_count): The hop count refers to the number of intermediate network devices through which data must pass between source and destination and also indicate payload location.
-- Next Header: Indicate upper layer protocol equal EtherType.
 - First Hop Port Number: Source Port Number, also can be Destination Port Number in P2P(Point to Point) connection.
 - x Hop Port Number: Up to 255 hop port number can be in a frame.
-- Payload: Can be any upper-layer packet data that type indicates by the next header.
 
 ## Frame Types
 Chapar support **UniCast** and **BroadCast** frame and not support **AnyCast** or **MultiCast**. We strongly suggest use broadcast frames just in network discoverable mechanism like find GP network coordinators. Also to broadcast emergency messages service, not to use to broadcast video channels, ...
@@ -75,56 +72,18 @@ A situation might be occur that a port available when a frame queued but when th
 ## Rules
 - Frame size can be up to 8192 Byte or 8KB. Enough to stream 1.5Mbps video call in each 40ms frames (`1.5/8*1024/1000*40=7.68KB`).
 - Due to the frame must have at least one hop, Use unused HopCount==0 for broadCast frames to all ports. So both HopCount==0x00 & HopCount==0xff have 255 hop port number space in frame header.
-- BroadCast frame must have all hop port number space with 0-byte data in the header, otherwise frame payload rewrite by switches devices.
+- BroadCast frame must have all hop port number space with 0-byte data in the header, otherwise other frames in the packet manipulates(rewrite) by switches devices.
 - When two peer connect by two different port number, one of them must be as switching adaptor. That means **usually higher hop** must add virtual switch hop to switching road. It will add one more hop port number in each chapar frame.
 - In each hop, the Switch device must rewrite the received port number on the frame. The reasons are:
     - BroadcastFrame: To improve performance, the previous switch just sends a frame without declaring the next port.
     - UnicastFrame: To be sure receive port is the same with declaration one in a frame.
     - Rule&Security: To be sure the physical network port is the same on the sender and receiver switch.
 
-## Next-Header Standard Supported Protocols
-- 0 : [sRPC - sRPC Protocol](./sRPC.md)
-- 1 : [GP - Giti Protocol](./Giti-Network.md)
-- 2 : [IPv6 - Internet Protocol v6](https://en.wikipedia.org/wiki/IPv6)
-- 3 : [NTP - Network_Time_Protocol](https://en.wikipedia.org/wiki/Network_Time_Protocol)
-
-### Non supported [EtherType](https://en.wikipedia.org/wiki/EtherType)
-- [ARP - Address Resolution Protocol](https://en.wikipedia.org/wiki/Address_Resolution_Protocol)
-- [IPv4 - Internet Protocol v4](https://en.wikipedia.org/wiki/IPv4)
-- [NDP - Neighbor Discovery Protocol](https://en.wikipedia.org/wiki/Neighbor_Discovery_Protocol)
-- [VLANs](https://en.wikipedia.org/wiki/IEEE_802.1Q)
-
 ## Hardwares
 Chapar functions can add by switching fabric unit (SFU) in any devices by any interfaces like PCIe, .... It can have 1 to 256 wired port or 2^16(65536) wireless port. 
 
-### Core
-The line processing unit (LPU) provides physical interfaces connecting the SFU(switching fabric unit) to external networks. The LPU processes and forwards service data. In addition, the LPU maintains and manages link protocols and frames congestions.
-
-### Port Types
-- RJ45 Port. RJ45 port (on 100/1000BASE Ethernet layer one) can be used in most cases.
-- SFP Port
-- SFP+ Port
-- SFP28 Port
-- QSFP+ Port
-- QSFP28 Port
-- Combo Port
-- Stack Port
-
-### Adaptor
-Suggest to be addable port protocol like [SFP](https://en.wikipedia.org/wiki/Small_form-factor_pluggable_transceiver).
-
-### Port Interfaces
-offer diverse wired and wireless interfaces, for example, Ethernet(Layer1), [Power-line Communication](https://en.wikipedia.org/wiki/Power-line_communication), radio frequency(RF), RS485, RS232, ...
-
 ### Wireless Access Point
-Each Chapar wireless ap device handles two hops of the frame instead of regular one hop in each switching hop. It means each wireless ap can serve 2^16(65536) devices.
-Like other wireless technology, We must provide some dedicate channel:
-- Broadcast control channel (BCCH) to manage broadcasting for all user equipment
-- Paging control channel (PCCH) to manage paging messages --- why not page device by DTCH?????
-- Common control channel (CCCH) and dedicated control channel (DCCH) for common messages for all user equipment in the same cell
-- Dedicated traffic channel (DTCH) to send data to the specific user equipment in a cell
-
-Use channel 49 (694-790 MHz) in [UHF](https://en.wikipedia.org/wiki/Ultra_high_frequency) frequency range to broadcast available 
+Chapar can help layer 1 protocols to made connections betweeen AP and clients. Suggest each Chapar wireless ap device handles two hops of the frame instead of regular one hop in each switching hop. It means each wireless ap can serve 2^16(65536) devices.
 
 ## Inspired of
 - https://guifi.net/
