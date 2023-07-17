@@ -2,8 +2,6 @@
 
 package vp
 
-import (
-	"libgo/protocol"
-)
+type MaxEachUse uint8
 
-type VoucherUUID = protocol.UUID
+func (dt *MaxEachUse) Optional() bool { return false }
