@@ -5,14 +5,14 @@ package picsp
 import (
 	"libgo/protocol"
 
-	picp "org/modules/product-inventory-change/protocol"
+	icp "org/modules/inventory-change/protocol"
 	qsp "org/modules/quiddity-status/protocol"
 	urp "org/modules/user-request/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	InventoryChangeID() picp.InventoryChangeUUID //
+	InventoryChangeID() icp.InventoryChangeUUID //
 	Status() Status                              // overall
 	SaveTime() protocol.Time                     //
 	RequestID() urp.UserRequestUUID              //

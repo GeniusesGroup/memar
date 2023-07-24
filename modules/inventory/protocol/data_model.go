@@ -5,8 +5,8 @@ package pip
 import (
 	"libgo/protocol"
 
-	pbp "org/modules/product-batch/protocol"
-	picp "org/modules/product-inventory-change/protocol"
+	pbp "org/modules/inventory-lot/protocol"
+	picp "org/modules/inventory-change/protocol"
 	urp "org/modules/user-request/protocol"
 	wp "org/modules/warehouse/protocol"
 )
@@ -14,8 +14,8 @@ import (
 // DataModel indicate the domain record data fields.
 // ProductInventory or good stock
 type DataModel interface {
+	LotID() pbp.ProductBatchUUID        //
 	WarehouseID() wp.WarehouseUUID               //
-	ProductBatchID() pbp.ProductBatchUUID        //
 	InventoryChangeID() picp.InventoryChangeUUID //
 	Amount() int64                               // this transaction
 	Stock() int64                                // overall in each location
