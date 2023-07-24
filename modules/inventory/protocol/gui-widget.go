@@ -1,6 +1,6 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package pip
+package ip
 
 import (
 	pp "org/modules/product/protocol"
