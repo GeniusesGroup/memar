@@ -3,20 +3,21 @@
 package lp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
-	urp "org/modules/user-request/protocol"
 	up "org/modules/user/protocol"
 )
 
 // DataModel give users the ability to vote to others and it allows them to make propositions on certain issues
 type DataModel interface {
-	LawID() LawUUID                 // to track changes in a law
-	OrgID() up.UserUUID             //
-	UserID() up.UserUUID            // Law suggester
-	Language() protocol.Language    // base language
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+	LawID() LawUUID // to track changes in a law
+	OrgID() up.UserUUID
+	UserID() up.UserUUID         // Law suggester
+	Language() protocol.Language // base language
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }
 
 // TODO:::

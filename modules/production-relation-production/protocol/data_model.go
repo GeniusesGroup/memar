@@ -6,16 +6,18 @@
 package org
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	pp "org/modules/production/protocol"
-	urp "org/modules/user-request/protocol"
 )
 
 type DataModel interface {
-	ProductionID() pp.ProductionUUID //
-	RelationID() pp.ProductionUUID   //
+	ProductionID() pp.ProductionUUID
+	RelationID() pp.ProductionUUID
+	Type() Type
 	// TODO::: other fields? Status()?
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }

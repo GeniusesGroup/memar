@@ -3,20 +3,21 @@
 package ndndtp
 
 import (
-	"libgo/protocol"
-	"libgo/time/earth"
-	"libgo/time/utc"
+	"memar/protocol"
+	"memar/time/earth"
+	"memar/time/utc"
 
 	np "org/modules/notification/protocol"
-	urp "org/modules/user-request/protocol"
 	up "org/modules/user/protocol"
 )
 
 type DataModel interface {
-	UserID() up.UserUUID                 //
-	NotificationID() np.NotificationUUID //
-	Week() utc.Weekdays                  //
-	DayHours() earth.DayHours            // what hours in above days notification not serve
-	SaveTime() protocol.Time             //
-	RequestID() urp.UserRequestUUID      //
+	UserID() up.UserUUID
+	NotificationID() np.NotificationUUID
+	Week() utc.Weekdays
+	DayHours() earth.DayHours // what hours in above days notification not serve
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }

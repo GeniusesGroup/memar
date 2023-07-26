@@ -3,18 +3,19 @@
 package idp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	dp "org/modules/discount/protocol"
 	ip "org/modules/invoice/protocol"
-	urp "org/modules/user-request/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	InvoiceID() ip.InvoiceUUID        //
-	DiscountID() dp.DiscountUUID      //
-	Discounted() protocol.MoneyAmount //
-	SaveTime() protocol.Time          //
-	RequestID() urp.UserRequestUUID   //
+	InvoiceID() ip.InvoiceUUID
+	DiscountID() dp.DiscountUUID
+	Discounted() protocol.MoneyAmount
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }

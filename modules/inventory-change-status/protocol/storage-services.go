@@ -3,7 +3,7 @@
 package icsp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	icp "org/modules/inventory-change/protocol"
 )

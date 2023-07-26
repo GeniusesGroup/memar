@@ -3,9 +3,8 @@
 package vup
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
-	urp "org/modules/user-request/protocol"
 	up "org/modules/user/protocol"
 	vp "org/modules/voucher/protocol"
 )
@@ -13,8 +12,10 @@ import (
 // DataModel indicate the domain record data fields.
 // Use to restrict the voucher usage by specific users.
 type DataModel interface {
-	VoucherID() vp.VoucherUUID      //
-	UserID() up.UserUUID            //
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+	VoucherID() vp.VoucherUUID
+	UserID() up.UserUUID
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }

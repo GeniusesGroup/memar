@@ -3,7 +3,7 @@
 package prpp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	prp "org/modules/product/protocol"
 	pp "org/modules/project/protocol"

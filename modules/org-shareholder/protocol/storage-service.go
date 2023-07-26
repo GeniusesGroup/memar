@@ -3,7 +3,7 @@
 package osp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	org "org/modules/org/protocol"
 	up "org/modules/user/protocol"

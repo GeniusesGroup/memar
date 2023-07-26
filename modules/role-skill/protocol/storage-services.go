@@ -3,7 +3,7 @@
 package rsp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	rp "org/modules/role/protocol"
 )

@@ -6,10 +6,9 @@
 package org
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	pp "org/modules/product/protocol"
-	urp "org/modules/user-request/protocol"
 )
 
 type DataModel interface {
@@ -18,6 +17,8 @@ type DataModel interface {
 	ProviderWarehouse() // TODO::: each product or branch??
 	MinStock()
 	MaxStock()
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }

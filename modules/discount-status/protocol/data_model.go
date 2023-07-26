@@ -3,24 +3,17 @@
 package dsp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	dp "org/modules/discount/protocol"
-	qsp "org/modules/quiddity-status/protocol"
-	urp "org/modules/user-request/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	DiscountID() dp.DiscountUUID    //
-	Status() Status                 //
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+	DiscountID() dp.DiscountUUID
+	Status() Status
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }
-
-type Status qsp.Quiddity_Status
-
-const (
-	Status_Expired = Status(qsp.Quiddity_Status_FreeFlag << iota)
-	Status_End
-)

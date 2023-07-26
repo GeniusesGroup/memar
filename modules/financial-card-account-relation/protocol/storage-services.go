@@ -3,7 +3,7 @@
 package fcarp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	fap "org/modules/financial-account/protocol"
 	fcp "org/modules/financial-card/protocol"

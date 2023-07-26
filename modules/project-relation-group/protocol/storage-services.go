@@ -3,7 +3,7 @@
 package prgp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	gp "org/modules/group/protocol"
 	pp "org/modules/project/protocol"

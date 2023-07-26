@@ -3,18 +3,18 @@
 package orp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
-	ftp "org/modules/financial-transaction/protocol"
 	op "org/modules/order/protocol"
-	urp "org/modules/user-request/protocol"
 )
 
 // DataModel indicate the domain record data fields. each order is immutable record.
 type DataModel interface {
-	OrderID() op.OrderUUID            //
-	Reference() [16]byte              // Any ID that user can assign to track for any purpose. It can't be nil.
-	ReferenceType() ftp.ReferenceType //
-	SaveTime() protocol.Time          //
-	RequestID() urp.UserRequestUUID   //
+	OrderID() op.OrderUUID
+	Reference() [16]byte // Any ID that user can assign to track for any purpose. It can't be nil.
+	ReferenceType() uint8
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }

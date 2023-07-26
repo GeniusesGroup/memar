@@ -3,23 +3,17 @@
 package exqsp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	eeqp "org/modules/edu-exam-question/protocol"
-	qsp "org/modules/quiddity-status/protocol"
-	urp "org/modules/user-request/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
 	QuestionID() eeqp.EducationQuestionUUID // don't point to quiddity title na don't set title
-	Status() Status                         //
-	SaveTime() protocol.Time                //
-	RequestID() urp.UserRequestUUID         //
+	Status() Status
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }
-
-type Status qsp.Quiddity_Status
-
-const (
-	Status_Deprecate = Status(qsp.Quiddity_Status_FreeFlag << iota)
-)

@@ -3,7 +3,7 @@
 package vcp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	mcp "org/modules/marketing-campaign/protocol"
 	vp "org/modules/voucher/protocol"

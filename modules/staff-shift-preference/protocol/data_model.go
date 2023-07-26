@@ -3,19 +3,20 @@
 package sspp
 
 import (
-	"libgo/protocol"
-	"libgo/time/utc"
+	"memar/protocol"
+	"memar/time/utc"
 
 	osp "org/modules/org-shift/protocol"
 	sp "org/modules/staff/protocol"
-	urp "org/modules/user-request/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	StaffID() sp.StaffUUID //
-	Day() utc.DayElapsed   //
+	StaffID() sp.StaffUUID
+	Day() utc.DayElapsed
 	ShiftID() osp.ShiftUUID
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }

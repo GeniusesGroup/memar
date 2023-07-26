@@ -3,27 +3,19 @@
 package vsip
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	ip "org/modules/invoice/protocol"
-	urp "org/modules/user-request/protocol"
 	vp "org/modules/voucher/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	VoucherID() vp.VoucherUUID      //
-	InvoiceID() ip.InvoiceUUID      //
-	InvoiceType() Type              //
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+	VoucherID() vp.VoucherUUID
+	InvoiceID() ip.InvoiceUUID
+	InvoiceType() Type
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }
-
-type Type uint8
-
-const (
-	Type_Unset Type = iota
-	Type_PastCompleted
-	Type_HurryToBuying
-	Type_BackToBuy
-)

@@ -3,7 +3,7 @@
 package crp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	cp "org/modules/comment/protocol"
 )
@@ -15,7 +15,7 @@ type GUI_Page_UsedDomains interface {
 
 // /discussion?cid=ccccccc&purl=/task?tid=ttttttt
 type GUI_Page_Conditions interface {
-	CommentID() cp.CommentUUID //
+	CommentID() cp.CommentUUID
 	PageURL() string
 
 	protocol.Pagination

@@ -3,24 +3,24 @@
 package pap
 
 import (
-	"libgo/protocol"
-	"libgo/time/utc"
+	"memar/protocol"
+	"memar/time/utc"
 
 	pp "org/modules/project/protocol"
-	urp "org/modules/user-request/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	ProjectID() pp.ProjectUUID //
-	Day() utc.DayElapsed       //
+	ProjectID() pp.ProjectUUID
+	Day() utc.DayElapsed
 
-	TotalTasks() uint64      //
-	CompletedTasks() uint64  //
-	RejectedTasks() uint64   //
-	Progress() uint64        //
+	TotalTasks() uint64
+	CompletedTasks() uint64
+	RejectedTasks() uint64
+	Progress() uint64
 	TaskOverDueTime() uint64 // due time
 
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }

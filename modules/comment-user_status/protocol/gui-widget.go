@@ -3,13 +3,13 @@
 package cus
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	cp "org/modules/comment/protocol"
 )
 
 type GUI_Widget_Conditions interface {
-	CommentID() cp.CommentUUID //
+	CommentID() cp.CommentUUID
 	ViewNumberType() ViewNumberType
 	EnableReadBy() bool
 

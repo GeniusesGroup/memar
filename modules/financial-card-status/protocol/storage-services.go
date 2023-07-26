@@ -3,7 +3,7 @@
 package fcsp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	fcp "org/modules/financial-card/protocol"
 )

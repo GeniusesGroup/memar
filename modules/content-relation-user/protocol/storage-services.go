@@ -3,7 +3,7 @@
 package crup
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	cp "org/modules/content/protocol"
 	up "org/modules/user/protocol"

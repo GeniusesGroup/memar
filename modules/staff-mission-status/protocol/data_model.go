@@ -3,25 +3,18 @@
 package smsp
 
 import (
-	"libgo/protocol"
-	"libgo/time/utc"
+	"memar/protocol"
+	"memar/time/utc"
 
-	qsp "org/modules/quiddity-status/protocol"
 	sp "org/modules/staff/protocol"
-	urp "org/modules/user-request/protocol"
 )
 
 type DataModel interface {
-	StaffID() sp.StaffUUID          //
-	Day() utc.DayElapsed            //
-	Status() Status                 //
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+	StaffID() sp.StaffUUID
+	Day() utc.DayElapsed
+	Status() Status
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }
-
-type Status qsp.Quiddity_Status
-
-const (
-	Status_NeedManagerApprove = Status(qsp.Quiddity_Status_FreeFlag << iota)
-	Status_ManagerApproved
-)

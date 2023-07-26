@@ -3,7 +3,7 @@
 package fai
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	fap "org/modules/financial-account/protocol"
 )
@@ -14,5 +14,5 @@ type StorageServices interface {
 	Count(accountID fap.FinancialAccountUUID) (nv protocol.NumberOfVersion, err protocol.Error)
 	Get(accountID fap.FinancialAccountUUID, vo protocol.VersionOffset) (dm DataModel, nv protocol.NumberOfVersion, err protocol.Error)
 
-	FIND_AccountIDs_BY_ID(id string) (accountIDs []fap.FinancialAccountUUID, err protocol.Error)
+	FIND_AccountIDs_BY_ID(id ID) (accountIDs []fap.FinancialAccountUUID, err protocol.Error)
 }

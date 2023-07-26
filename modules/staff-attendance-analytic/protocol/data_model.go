@@ -3,18 +3,19 @@
 package saap
 
 import (
-	"libgo/protocol"
-	"libgo/time/utc"
+	"memar/protocol"
+	"memar/time/utc"
 
 	sp "org/modules/staff/protocol"
-	urp "org/modules/user-request/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	StaffID() sp.StaffUUID          //
-	Day() utc.DayElapsed            //
-	Hours() uint64                  //
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+	StaffID() sp.StaffUUID
+	Day() utc.DayElapsed
+	Hours() uint64
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }

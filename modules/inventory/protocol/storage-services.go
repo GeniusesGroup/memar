@@ -3,7 +3,7 @@
 package ip
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	eblp "org/modules/estate-building-location/protocol"
 	pp "org/modules/product/protocol"

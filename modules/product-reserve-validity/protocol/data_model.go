@@ -3,16 +3,17 @@
 package prvp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	pp "org/modules/product/protocol"
-	urp "org/modules/user-request/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	ProductID() pp.ProductUUID      //
-	Duration() protocol.Duration    // from add to invoice time
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+	ProductID() pp.ProductUUID
+	Duration() protocol.Duration // from add to invoice time
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }

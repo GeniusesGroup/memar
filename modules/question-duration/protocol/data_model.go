@@ -3,26 +3,18 @@
 package qdp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
-	urp "org/modules/user-request/protocol"
 	qp "org/modules/question/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	QuestionID() qp.QuestionUUID    //
-	Epoch() QuestionDuration_Epoch  //
-	Duration() protocol.Duration    // from Epoch()
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+	QuestionID() qp.QuestionUUID
+	Epoch() Epoch
+	Duration() protocol.Duration // from Epoch()
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }
-
-
-type QuestionDuration_Epoch uint8
-
-const (
-	QuestionDuration_Epoch_Unset QuestionDuration_Epoch = iota
-	QuestionDuration_Epoch_IssueDate
-	QuestionDuration_Epoch_StartPoint
-)

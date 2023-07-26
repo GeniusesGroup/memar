@@ -3,18 +3,18 @@
 package dup
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
-	urp "org/modules/user-request/protocol"
-	up "org/modules/user/protocol"
 	dp "org/modules/discount/protocol"
+	up "org/modules/user/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	DiscountID() dp.DiscountUUID    //
-	UserID() up.UserUUID            //
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
-}
+	DiscountID() dp.DiscountUUID //
+	UserID() up.UserUUID         //
 
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
+}

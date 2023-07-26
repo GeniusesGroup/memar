@@ -3,24 +3,18 @@
 package org
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	cp "org/modules/category/protocol"
-	urp "org/modules/user-request/protocol"
 )
 
 // GUICategories indicate the domain record data fields.
 type GUICategories interface {
-	CategoriesID() []cp.CategoryUUID //
-	SaveTime() protocol.Time         //
-	RequestID() urp.UserRequestUUID  //
-}
+	CategoriesID() []cp.CategoryUUID
 
-type GUICategories_StorageServices interface {
-	Save(gc GUICategories) (nv protocol.NumberOfVersion, err protocol.Error)
-
-	Count() (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(vo protocol.VersionOffset) (gc GUICategories, nv protocol.NumberOfVersion, err protocol.Error)
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }
 
 // TODO::: cache strategy?? 1 day or what?

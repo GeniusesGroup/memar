@@ -3,7 +3,7 @@
 package pgp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	gp "org/modules/group/protocol"
 	pp "org/modules/product/protocol"

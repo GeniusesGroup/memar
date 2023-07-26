@@ -3,7 +3,7 @@
 package isp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	ip "org/modules/invoice/protocol"
 )
@@ -11,7 +11,7 @@ import (
 // DataModel indicate the domain record data fields.
 // DataModel is summary data that calculated to reduce fetch and calculate on each client device.
 type DataModel interface {
-	InvoiceID() ip.InvoiceUUID             //
+	InvoiceID() ip.InvoiceUUID
 	ItemCount() uint64                     // Total item count
 	Quantity() uint64                      // Total product count
 	SuggestedPrice() protocol.MoneyAmount  // Total should pay before any discount or auction
@@ -19,5 +19,8 @@ type DataModel interface {
 	VoucherPrice() protocol.MoneyAmount    // the sum of all vouchers apply for this invoice
 	PayablePrice() protocol.MoneyAmount    // Total price user pay to organization
 	VAT() protocol.MoneyAmount             // Total VAT user pay to its country government
-	SaveTime() protocol.Time               //
+
+	// protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }

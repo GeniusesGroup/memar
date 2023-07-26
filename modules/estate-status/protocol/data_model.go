@@ -3,21 +3,16 @@
 package esp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
-	qsp "org/modules/quiddity-status/protocol"
-	urp "org/modules/user-request/protocol"
+	ep "org/modules/estate/protocol"
 )
 
 type DataModel interface {
-	AreaID() [16]byte               // quiddity domain
-	Status() Status                 //
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+	EstateID() ep.EstateUUID
+	Status() Status
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }
-
-type Status qsp.Quiddity_Status
-
-const (
-	Status_NeighborsConflict = Status(qsp.Quiddity_Status_FreeFlag << iota)
-)

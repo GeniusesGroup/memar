@@ -3,7 +3,7 @@
 package ekurcp
 
 // import (
-// 	"libgo/protocol"
+// 	"memar/protocol"
 
 // 	urp "org/modules/user-request/protocol"
 // 	up "org/modules/user/protocol"

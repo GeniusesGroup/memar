@@ -3,7 +3,8 @@
 package brup
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
+
 	bp "org/modules/budget/protocol"
 	up "org/modules/user/protocol"
 )

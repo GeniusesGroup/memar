@@ -3,7 +3,7 @@
 package famp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	fcp "org/modules/financial-currency/protocol"
 	up "org/modules/user/protocol"

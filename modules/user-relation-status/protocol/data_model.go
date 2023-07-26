@@ -3,25 +3,18 @@
 package ursp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
-	qsp "org/modules/quiddity-status/protocol"
-	urp "org/modules/user-request/protocol"
 	up "org/modules/user/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	UserID() up.UserUUID            // user domain
-	SideID() up.UserUUID            // user domain
-	Status() Status                 //
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+	UserID() up.UserUUID
+	SideID() up.UserUUID
+	Status() Status
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }
-
-type Status qsp.Quiddity_Status
-
-const (
-	Status_Blocked = Status(qsp.Quiddity_Status_FreeFlag << iota)
-	Status_Muted
-)

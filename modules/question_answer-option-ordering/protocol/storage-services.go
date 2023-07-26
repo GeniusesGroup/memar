@@ -3,7 +3,7 @@
 package qaoop
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	qp "org/modules/question/protocol"
 )

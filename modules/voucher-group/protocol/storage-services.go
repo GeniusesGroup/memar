@@ -3,7 +3,7 @@
 package vgp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	gp "org/modules/group/protocol"
 	vp "org/modules/voucher/protocol"

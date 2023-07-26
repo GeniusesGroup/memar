@@ -3,7 +3,7 @@
 package org
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 )
 
 // /invoices?time=20,21&user=123

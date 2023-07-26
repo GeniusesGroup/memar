@@ -3,26 +3,20 @@
 package tup
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	gp "org/modules/group/protocol"
-	qsp "org/modules/quiddity-status/protocol"
-	urp "org/modules/user-request/protocol"
 	up "org/modules/user/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	UserID() up.UserUUID            //
-	GroupID() gp.GroupUUID          // generate for group & comment domain
-	Priority() uint64               //
-	Status() Status                 //
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+	UserID() up.UserUUID
+	GroupID() gp.GroupUUID // generate for group & comment domain
+	Priority() uint64
+	Status() Status
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }
-
-type Status qsp.Quiddity_Status
-
-const (
-// Status_ = Status(Quiddity_Status_FreeFlag << iota)
-)

@@ -3,20 +3,21 @@
 package org
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	op "org/modules/org/protocol"
 	pp "org/modules/product/protocol"
 	pbp "org/modules/production-batch/protocol"
-	urp "org/modules/user-request/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	ProductBatchID() ProductBatchUUID           //
-	ProductionBatchID() pbp.ProductionBatchUUID //
-	ProductID() pp.ProductUUID                  //
-	OwnerID() op.OrgUUID                        //
-	SaveTime() protocol.Time                    //
-	RequestID() urp.UserRequestUUID             //
+	ProductBatchID() ProductBatchUUID
+	ProductionBatchID() pbp.ProductionBatchUUID
+	ProductID() pp.ProductUUID
+	OwnerID() op.OrgUUID
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }

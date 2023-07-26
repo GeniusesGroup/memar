@@ -3,18 +3,17 @@
 package dgp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
-	urp "org/modules/user-request/protocol"
 	dp "org/modules/department/protocol"
 	gp "org/modules/group/protocol"
 )
 
 type DataModel interface {
-	DepartmentID() dp.DepartmentUUID // quiddity domain. use to get and show locale title.
+	DepartmentID() dp.DepartmentUUID
 	GroupID() gp.GroupUUID
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }
-
-

@@ -3,7 +3,7 @@
 package cttp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	ctp "org/modules/contract-template/protocol"
 )

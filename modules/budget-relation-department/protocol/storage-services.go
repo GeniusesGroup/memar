@@ -3,7 +3,8 @@
 package brdp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
+
 	bp "org/modules/budget/protocol"
 	dp "org/modules/department/protocol"
 )

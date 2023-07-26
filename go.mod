@@ -5,7 +5,7 @@ module org
 go 1.20
 
 require (
-	// github.com/GeniusesGroup/libgo v0.0.0-20230529153139-440c684b5097
+	// github.com/GeniusesGroup/memar-go v0.0.0-20230529153139-440c684b5097
 
 	golang.org/x/crypto v0.0.0-20220722155217-630584e8d5aa
 	golang.org/x/image v0.7.0

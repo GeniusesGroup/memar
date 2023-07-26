@@ -3,17 +3,18 @@
 package plp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	eblp "org/modules/estate-building-location/protocol"
 	pp "org/modules/pos/protocol"
-	urp "org/modules/user-request/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	PosID() pp.PosUUID                             //
-	BuildingLocationID() eblp.BuildingLocationUUID //
-	SaveTime() protocol.Time                       //
-	RequestID() urp.UserRequestUUID                //
+	PosID() pp.PosUUID
+	BuildingLocationID() eblp.BuildingLocationUUID
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }

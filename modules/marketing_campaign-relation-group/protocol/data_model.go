@@ -6,12 +6,11 @@
 package mcrgp
 
 import (
-	"libgo/protocol"
-
-	urp "org/modules/user-request/protocol"
+	"memar/protocol"
 )
 
 type DataModel interface {
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }

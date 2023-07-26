@@ -3,24 +3,20 @@
 package ppp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	prp "org/modules/product/protocol"
 	pp "org/modules/production/protocol"
-	qsp "org/modules/quiddity-status/protocol"
-	urp "org/modules/user-request/protocol"
 )
 
 // DataModel is the structure of production line.
 type DataModel interface {
-	ProductionID() pp.ProductionUUID //
-	ProductID() prp.ProductUUID      //
-	Number() uint64                  //
-	Status() Status                  //
-	SaveTime() protocol.Time         //
-	RequestID() urp.UserRequestUUID  //
+	ProductionID() pp.ProductionUUID
+	ProductID() prp.ProductUUID
+	Type() Type
+	Status() Status
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }
-
-type Status qsp.Quiddity_Status
-
-// 0//created 1//ManagerApprove 2//WarehouseApprove 3//ActiveWithApprove 4//ActiveWithoutApprove 5//ActiveWithOrderer 6//Inactive 7//Normal 8//Reject 9//Void

@@ -3,18 +3,20 @@
 package brep
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
+
 	bp "org/modules/budget/protocol"
 	eblp "org/modules/estate-building-location/protocol"
 	ep "org/modules/estate/protocol"
-	urp "org/modules/user-request/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	BudgetID() bp.BudgetUUID                       //
-	EstateID() ep.EstateUUID                       //
-	BuildingLocationID() eblp.BuildingLocationUUID //
-	SaveTime() protocol.Time                       //
-	RequestID() urp.UserRequestUUID                //
+	BudgetID() bp.BudgetUUID
+	EstateID() ep.EstateUUID
+	BuildingLocationID() eblp.BuildingLocationUUID
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }

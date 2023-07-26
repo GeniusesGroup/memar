@@ -3,8 +3,8 @@
 package faip
 
 import (
-	"libgo/iso"
-	"libgo/protocol"
+	"memar/iso"
+	"memar/protocol"
 
 	fap "org/modules/financial-account/protocol"
 )

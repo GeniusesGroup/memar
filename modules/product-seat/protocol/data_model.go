@@ -3,27 +3,20 @@
 package psp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	op "org/modules/object/protocol"
 	pp "org/modules/product/protocol"
-	urp "org/modules/user-request/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	ProductID() pp.ProductUUID      //
-	SeatCapacity() uint64           // max seat number
-	Type() Type                     //
-	MapID() op.ObjectUUID           // to show background and rows and seats. suggest use SVG format
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+	ProductID() pp.ProductUUID
+	SeatCapacity() uint64 // max seat number
+	Type() Type
+	MapID() op.ObjectUUID // to show background and rows and seats. suggest use SVG format
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }
-
-type Type uint8
-
-const (
-	Type_Unset           Type = 0
-	Type_ChooseSeatByOrg Type = (1 << iota)
-	Type_ChooseSeatByAttendanceTime
-)

@@ -3,35 +3,17 @@
 package qp
 
 import (
-	"libgo/protocol"
-
-	urp "org/modules/user-request/protocol"
+	"memar/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	QuestionnaireID() QuestionnaireUUID //
-	Type() Type                         //
-	SaveTime() protocol.Time            //
-	RequestID() urp.UserRequestUUID     //
+	QuestionnaireID() QuestionnaireUUID
+	Type() Type
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }
-
-type Type uint16
-
-const (
-	Type_Unset Type = 0
-	Type_Quiz  Type = (1 << iota)
-	Type_Anonymous
-	Type_Duration
-	Type_StartPoint
-	Type_AllowToEdit
-	Type_Form
-	Type_MaxAttempt
-
-	// No one can made direct answer to this questionnaire.
-	Type_Criterion
-
-	// TODO::: Template for forms?
-)
 
 // link to group

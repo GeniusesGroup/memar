@@ -3,21 +3,22 @@
 package gsp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	csep "org/modules/comment-settings/protocol"
 	cssp "org/modules/comment-status/protocol"
 	gp "org/modules/group/protocol"
-	urp "org/modules/user-request/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	GroupID() gp.GroupUUID //
-	// ArchiveThreadAfter() protocol.Duration //
-	BlockedWords() []string         //
-	DefaultSettings() csep.Settings //
-	DefaultStatus() cssp.Status     //
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+	GroupID() gp.GroupUUID
+	// ArchiveThreadAfter() protocol.Duration
+	BlockedWords() []string
+	DefaultSettings() csep.Settings
+	DefaultStatus() cssp.Status
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }

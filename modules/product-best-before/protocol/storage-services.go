@@ -3,7 +3,7 @@
 package pbbp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	pp "org/modules/product/protocol"
 )

@@ -3,7 +3,7 @@
 package vp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 )
 
 // DataModel indicate the domain record data fields.

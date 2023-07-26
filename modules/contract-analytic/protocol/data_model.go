@@ -3,15 +3,15 @@
 package cap
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	cp "org/modules/contract/protocol"
-	urp "org/modules/user-request/protocol"
 )
 
 type ContractAnalytic interface {
-	ContractID() cp.ContractUUID //
+	ContractID() cp.ContractUUID
 
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }

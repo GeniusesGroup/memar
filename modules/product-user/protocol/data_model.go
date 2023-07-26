@@ -3,10 +3,9 @@
 package pup
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	pp "org/modules/product/protocol"
-	urp "org/modules/user-request/protocol"
 	up "org/modules/user/protocol"
 )
 
@@ -14,6 +13,8 @@ import (
 type DataModel interface {
 	SubscriptionID() pp.ProductUUID //
 	UserID() up.UserUUID            //
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+
+	// protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }

@@ -3,25 +3,17 @@
 package odp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	op "org/modules/order/protocol"
-	urp "org/modules/user-request/protocol"
 )
 
 type DataModel interface {
-	OrderID() op.OrderUUID          //
-	Epoch() OrderDuration_Epoch     //
-	Duration() protocol.Duration    // from Epoch()
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+	OrderID() op.OrderUUID
+	Epoch() Epoch
+	Duration() protocol.Duration // from Epoch()
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }
-
-type OrderDuration_Epoch uint8
-
-const (
-	OrderDuration_Epoch_Unset OrderDuration_Epoch = iota
-	OrderDuration_Epoch_IssueDate
-	OrderDuration_Epoch_LastSuggest
-	OrderDuration_Epoch_LastDeal
-)

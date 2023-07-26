@@ -3,7 +3,7 @@
 package osup
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	fcp "org/modules/financial-currency/protocol"
 	org "org/modules/org/protocol"

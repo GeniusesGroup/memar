@@ -3,7 +3,7 @@
 package icp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 )
 
 type InventoryChangeUUID = protocol.UUID

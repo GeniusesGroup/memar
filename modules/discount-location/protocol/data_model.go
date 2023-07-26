@@ -3,18 +3,18 @@
 package dlp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
-	urp "org/modules/user-request/protocol"
 	dp "org/modules/discount/protocol"
 	bp "org/modules/estate-building-location/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	DiscountID() dp.DiscountUUID //
+	DiscountID() dp.DiscountUUID
 	BuildingLocationID() bp.BuildingLocationUUID
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
-}
 
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
+}

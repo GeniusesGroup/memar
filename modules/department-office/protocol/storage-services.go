@@ -3,7 +3,7 @@
 package dop
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	dp "org/modules/department/protocol"
 	blp "org/modules/estate-building-location/protocol"

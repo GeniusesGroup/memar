@@ -3,7 +3,7 @@
 package csp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	cp "org/modules/comment/protocol"
 	gp "org/modules/group/protocol"

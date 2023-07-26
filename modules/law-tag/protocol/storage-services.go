@@ -3,7 +3,7 @@
 package ltp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	lp "org/modules/law/protocol"
 )

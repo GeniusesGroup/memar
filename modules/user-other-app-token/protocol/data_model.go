@@ -3,17 +3,18 @@
 package uoatp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	org "org/modules/org/protocol"
-	urp "org/modules/user-request/protocol"
 	up "org/modules/user/protocol"
 )
 
 type DataModel interface {
-	UserID() up.UserUUID            //
-	OrgID() org.OrgUUID             //
-	Token() []byte                  // DelegateToken, AccessToken
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+	UserID() up.UserUUID
+	OrgID() org.OrgUUID
+	Token() Token
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }

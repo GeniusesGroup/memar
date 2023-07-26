@@ -3,15 +3,15 @@
 package uoaip
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	up "org/modules/user/protocol"
 )
 
 // DataModel cache all foreign fundamental user data
 type DataModel interface {
-	UserID() up.UserUUID         //
-	OrgID() up.UserUUID          //
+	UserID() up.UserUUID
+	OrgID() up.UserUUID
 	Gender() string              // In ISO format
 	PassportID() string          // If exist mean user have that country Nationality
 	Surname() string             // FirstName
@@ -26,5 +26,8 @@ type DataModel interface {
 	DateOfBirth() protocol.Time  //
 	PlaceOfBirth() string        //
 	VerifiedDate() protocol.Time // If !=0 user got famous blue badge(tick) like instagram, twitter,...
-	SaveTime() protocol.Time     //
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }

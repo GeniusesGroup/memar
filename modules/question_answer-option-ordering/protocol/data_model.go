@@ -3,17 +3,18 @@
 package qaoop
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	qp "org/modules/question/protocol"
 	qop "org/modules/question_option/protocol"
-	urp "org/modules/user-request/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	QuestionID() qp.QuestionUUID            //
-	OptionsOrder() []qop.QuestionOptionUUID //
-	SaveTime() protocol.Time                //
-	RequestID() urp.UserRequestUUID         //
+	QuestionID() qp.QuestionUUID
+	OptionsOrder() []qop.QuestionOptionUUID
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }

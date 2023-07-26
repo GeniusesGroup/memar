@@ -3,7 +3,7 @@
 package dap
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	dp "org/modules/discount/protocol"
 	ep "org/modules/estate/protocol"

@@ -3,7 +3,7 @@
 package iisp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	ip "org/modules/invoice/protocol"
 )

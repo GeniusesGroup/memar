@@ -3,7 +3,7 @@
 package urp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	up "org/modules/user/protocol"
 )
@@ -18,5 +18,6 @@ type DataModel interface {
 	// TODO::: move to esteghrar repo/connection
 	// ClientType() string // persiaos, web, android, ios, ...
 	// Geo()                // location of user or post
-	SaveTime() protocol.Time // Request time or save Time of the request not the created record by this record.
+
+	protocol.Storage_SaveTime // Request time or save Time of the request not the created record by this record.
 }

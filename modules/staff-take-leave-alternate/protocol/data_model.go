@@ -3,18 +3,19 @@
 package stlap
 
 import (
-	"libgo/protocol"
-	"libgo/time/utc"
+	"memar/protocol"
+	"memar/time/utc"
 
 	sp "org/modules/staff/protocol"
-	urp "org/modules/user-request/protocol"
 )
 
 // DataModel or staff replace
 type DataModel interface {
-	StaffID() sp.StaffUUID          //
-	Day() utc.DayElapsed            //
-	PresentedID() sp.StaffUUID      //
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+	StaffID() sp.StaffUUID
+	Day() utc.DayElapsed
+	PresentedID() sp.StaffUUID
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }

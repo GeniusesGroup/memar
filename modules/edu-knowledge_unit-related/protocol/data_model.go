@@ -3,20 +3,21 @@
 package ekurp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
-	urp "org/modules/user-request/protocol"
-	up "org/modules/user/protocol"
 	ekup "org/modules/edu-knowledge_unit/protocol"
+	up "org/modules/user/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	SuggesterID() up.UserUUID               //
-	Side1() ekup.EducationKnowledgeUnitUUID //
-	Priority() uint64                       //
-	Level() uint64                          //
-	Side2() ekup.EducationKnowledgeUnitUUID //
-	SaveTime() protocol.Time                //
-	RequestID() urp.UserRequestUUID         //
+	SuggesterID() up.UserUUID
+	Side1() ekup.EducationKnowledgeUnitUUID
+	Priority() uint64
+	Level() uint64
+	Side2() ekup.EducationKnowledgeUnitUUID
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }

@@ -3,29 +3,19 @@
 package trup
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	tp "org/modules/task/protocol"
-	urp "org/modules/user-request/protocol"
 	up "org/modules/user/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	TaskID() tp.TaskUUID            //
-	UserID() up.UserUUID            //
-	RelationType() Type             //
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+	TaskID() tp.TaskUUID
+	UserID() up.UserUUID
+	RelationType() Type
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }
-
-type Type uint8
-
-const (
-	Type_Unset Type = iota
-	Type_Participant
-	Type_Assigner
-	Type_Assigned
-	Type_Reviewer
-	Type_Approver
-)

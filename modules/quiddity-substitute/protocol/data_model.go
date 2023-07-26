@@ -3,18 +3,19 @@
 package qsp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	qp "org/modules/quiddity/protocol"
-	urp "org/modules/user-request/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 // or similar product
 type DataModel interface {
-	QuiddityID() qp.QuiddityUUID    //
-	Priority() uint64               // Substitute priority
-	SubstituteID() qp.QuiddityUUID  //
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+	QuiddityID() qp.QuiddityUUID
+	Priority() uint64
+	SubstituteID() qp.QuiddityUUID
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }

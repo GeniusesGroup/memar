@@ -3,22 +3,16 @@
 package eblsp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	eblp "org/modules/estate-building-location/protocol"
-	qsp "org/modules/quiddity-status/protocol"
-	urp "org/modules/user-request/protocol"
 )
 
 type DataModel interface {
-	BuildingLocationID() eblp.BuildingLocationUUID //
-	Status() Status                                //
-	SaveTime() protocol.Time                       //
-	RequestID() urp.UserRequestUUID                //
+	BuildingLocationID() eblp.BuildingLocationUUID
+	Status() Status
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }
-
-type Status qsp.Quiddity_Status
-
-const (
-// Status_ = Status(Quiddity_Status_FreeFlag << iota)
-)

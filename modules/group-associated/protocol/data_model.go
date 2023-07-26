@@ -3,29 +3,20 @@
 package gap
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
-	urp "org/modules/user-request/protocol"
-	up "org/modules/user/protocol"
 	gp "org/modules/group/protocol"
+	up "org/modules/user/protocol"
 )
 
 // DataModel indicate the domain record data fields
 type DataModel interface {
-	GroupID() gp.GroupUUID            //
-	UserID() up.UserUUID              //
-	JoinBy() up.UserUUID              //
-	JoinWay() GroupAssociated_JoinWay //
-	SaveTime() protocol.Time          //
-	RequestID() urp.UserRequestUUID   //
+	GroupID() gp.GroupUUID
+	UserID() up.UserUUID
+	JoinBy() up.UserUUID
+	JoinWay() JoinWay
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }
-
-
-type GroupAssociated_JoinWay uint8
-
-const (
-	GroupAssociated_JoinWay_Unset GroupAssociated_JoinWay = iota
-	GroupAssociated_JoinWay_Direct
-	GroupAssociated_JoinWay_JoinLink
-	GroupAssociated_JoinWay_Invite
-)

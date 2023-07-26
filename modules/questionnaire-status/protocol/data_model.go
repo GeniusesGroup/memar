@@ -3,23 +3,17 @@
 package qsp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	qp "org/modules/questionnaire/protocol"
-	qsp "org/modules/quiddity-status/protocol"
-	urp "org/modules/user-request/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	QuestionnaireID() qp.QuestionnaireUUID //
-	Status() Status                        //
-	SaveTime() protocol.Time               //
-	RequestID() urp.UserRequestUUID        //
+	QuestionnaireID() qp.QuestionnaireUUID
+	Status() Status
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }
-
-type Status qsp.Quiddity_Status
-
-const (
-	Status_Terminated = Status(qsp.Quiddity_Status_FreeFlag << iota) // Wait to approve
-)

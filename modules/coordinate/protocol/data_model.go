@@ -3,20 +3,21 @@
 package cp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	tp "org/modules/thing/protocol"
-	urp "org/modules/user-request/protocol"
 )
 
 // DataModel store location details of user or things
 // location of the provider. live location of the user.
 type DataModel interface {
-	CoordinateID() CoordinateUUID   //
-	ThingID() tp.ThingUUID          // device who send the coordinate
-	Lat() uint64                    // latitude
-	Lon() uint64                    // longitude
-	Alt() uint64                    // altitude
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+	CoordinateID() CoordinateUUID
+	ThingID() tp.ThingUUID // device who send the coordinate
+	Lat() uint64           // latitude
+	Lon() uint64           // longitude
+	Alt() uint64           // altitude
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }

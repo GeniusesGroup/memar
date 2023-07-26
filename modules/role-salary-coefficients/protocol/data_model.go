@@ -3,28 +3,29 @@
 package rscp
 
 import (
-	"libgo/protocol"
+	"memar/math/per"
+	"memar/protocol"
 
-	urp "org/modules/user-request/protocol"
 	rp "org/modules/role/protocol"
 )
 
 type DataModel interface {
-	RoleID() rp.RoleUUID //
+	RoleID() rp.RoleUUID
 
-	Importance() protocol.PerMyriad         // importance coefficient of the role
-	Accompanying() protocol.PerMyriad       //
-	ExpertiseAllowance() protocol.PerMyriad //
-	HardshipAllowance() protocol.PerMyriad  //
+	Importance() per.Myriad         // importance coefficient of the role
+	Accompanying() per.Myriad       //
+	ExpertiseAllowance() per.Myriad //
+	HardshipAllowance() per.Myriad  //
 
-	OvertimeWorking() protocol.PerMyriad //
-	WorkingHolidays() protocol.PerMyriad //
-	RotationShift() protocol.PerMyriad   //
-	NightShift() protocol.PerMyriad      //
+	OvertimeWorking() per.Myriad //
+	WorkingHolidays() per.Myriad //
+	RotationShift() per.Myriad   //
+	NightShift() per.Myriad      //
 
-	Income() protocol.PerMyriad          // whole organization income
-	DepartmenIncome() protocol.PerMyriad //
+	Income() per.Myriad           // whole organization income
+	DepartmentIncome() per.Myriad //
 
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }

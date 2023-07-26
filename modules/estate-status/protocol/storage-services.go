@@ -3,7 +3,7 @@
 package esp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 )
 
 type StorageServices interface {

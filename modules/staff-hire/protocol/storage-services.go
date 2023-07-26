@@ -3,7 +3,7 @@
 package shp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	rp "org/modules/role/protocol"
 	up "org/modules/user/protocol"

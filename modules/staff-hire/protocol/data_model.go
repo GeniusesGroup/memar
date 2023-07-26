@@ -3,16 +3,17 @@
 package shp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	rp "org/modules/role/protocol"
-	urp "org/modules/user-request/protocol"
 	up "org/modules/user/protocol"
 )
 
 type DataModel interface {
-	UserID() up.UserUUID            //
-	RoleID() rp.RoleUUID            //
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+	UserID() up.UserUUID
+	RoleID() rp.RoleUUID
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }

@@ -3,7 +3,7 @@
 package vvp
 
 import (
-	"libgo/math/per"
+	"memar/math/per"
 )
 
 // Max discount proportion per use

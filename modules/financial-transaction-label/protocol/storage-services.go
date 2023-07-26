@@ -3,7 +3,7 @@
 package ftp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	fap "org/modules/financial-account/protocol"
 )

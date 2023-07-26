@@ -3,7 +3,7 @@
 package cip
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	cp "org/modules/category/protocol"
 )

@@ -3,25 +3,18 @@
 package tp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
-	urp "org/modules/user-request/protocol"
 	up "org/modules/user/protocol"
 )
 
 // Task indicate the domain record data fields.
 type Task interface {
-	TaskID() TaskUUID               //
-	UserID() up.UserUUID            //
-	Type() Type                     //
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+	TaskID() TaskUUID
+	UserID() up.UserUUID
+	Type() Type
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }
-
-type Type uint8
-
-const (
-	Type_Unset Type = iota
-	Type_TimeBased
-	Type_Repetitive
-)

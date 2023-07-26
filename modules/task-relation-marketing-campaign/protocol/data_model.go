@@ -3,11 +3,10 @@
 package trmcp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	mcp "org/modules/marketing-campaign/protocol"
 	tp "org/modules/task/protocol"
-	urp "org/modules/user-request/protocol"
 )
 
 // TODO::: Do we need this domain? what about relate to contents? relate to objects? relate to invoices(CRM)?
@@ -16,11 +15,11 @@ import (
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	TaskID() tp.TaskUUID                            //
-	MarketingCampaignID() mcp.MarketingCampaignUUID //
-	RelationType() Type                             //
-	SaveTime() protocol.Time                        //
-	RequestID() urp.UserRequestUUID                 //
-}
+	TaskID() tp.TaskUUID
+	MarketingCampaignID() mcp.MarketingCampaignUUID
+	RelationType() Type
 
-type Type uint8
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
+}

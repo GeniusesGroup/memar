@@ -3,24 +3,16 @@
 package csp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
-	urp "org/modules/user-request/protocol"
 	cp "org/modules/category/protocol"
-	qsp "org/modules/quiddity-status/protocol"
 )
 
 type DataModel interface {
-	CategoryID() cp.CategoryUUID    //
-	Status() Status        //
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+	CategoryID() cp.CategoryUUID
+	Status() Status
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }
-
-
-
-type Status qsp.Quiddity_Status
-
-const (
-// Status_ = Status(Quiddity_Status_FreeFlag << iota)
-)

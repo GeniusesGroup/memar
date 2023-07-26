@@ -3,19 +3,19 @@
 package cp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	ctp "org/modules/content-type/protocol"
-	urp "org/modules/user-request/protocol"
 	up "org/modules/user/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	ContentID() ContentUUID             //
-	UserID() up.UserUUID                //
-	ContentTypeID() ctp.ContentTypeUUID //
-	SaveTime() protocol.Time            //
-	RequestID() urp.UserRequestUUID     //
-}
+	ContentID() ContentUUID
+	UserID() up.UserUUID
+	ContentTypeID() ctp.ContentTypeUUID
 
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
+}

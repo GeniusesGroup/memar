@@ -3,18 +3,18 @@
 package crcp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	cp "org/modules/comment/protocol"
-	urp "org/modules/user-request/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	CommentID() cp.CommentUUID     //
-	SideCommentID() cp.CommentUUID //
+	CommentID() cp.CommentUUID
+	SideCommentID() cp.CommentUUID
 	// Type()
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
-}
 
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
+}

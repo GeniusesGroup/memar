@@ -3,7 +3,7 @@
 package cmp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	cp "org/modules/comment/protocol"
 	up "org/modules/user/protocol"
@@ -11,9 +11,10 @@ import (
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	UserID() up.UserUUID       //
-	CommentID() cp.CommentUUID //
-	SaveTime() protocol.Time   //
+	UserID() up.UserUUID
+	CommentID() cp.CommentUUID
+
+	// protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }
-
-

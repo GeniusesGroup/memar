@@ -3,18 +3,18 @@
 package dop
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	dp "org/modules/department/protocol"
 	blp "org/modules/estate-building-location/protocol"
-	urp "org/modules/user-request/protocol"
 )
 
 type DataModel interface {
-	DepartmentID() dp.DepartmentUUID              //
-	BuildingLocationID() blp.BuildingLocationUUID //
+	DepartmentID() dp.DepartmentUUID
+	BuildingLocationID() blp.BuildingLocationUUID
 	// TODO::: Label or type: IT-Office, ...
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
-}
 
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
+}

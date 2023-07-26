@@ -3,21 +3,20 @@
 package vcp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	cp "org/modules/category/protocol"
-	urp "org/modules/user-request/protocol"
 	vp "org/modules/voucher/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 // Use to restrict the voucher on specific category.
 type DataModel interface {
-	VoucherID() vp.VoucherUUID      //
-	Each() uint8                    // Each time use
-	CategoryID() []cp.CategoryUUID  //
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+	VoucherID() vp.VoucherUUID
+	Each() vp.Each
+	CategoryID() []cp.CategoryUUID
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }
-
-

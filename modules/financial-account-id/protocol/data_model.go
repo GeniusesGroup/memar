@@ -3,9 +3,8 @@
 package fai
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
-	urp "org/modules/user-request/protocol"
 	fap "org/modules/financial-account/protocol"
 )
 
@@ -13,10 +12,9 @@ import (
 // It is about settlement reference internal ID like bank account ID.
 type DataModel interface {
 	AccountID() fap.FinancialAccountUUID
-	ID() string                     //
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+	ID() ID
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }
-
-
-

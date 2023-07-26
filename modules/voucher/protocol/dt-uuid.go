@@ -3,7 +3,7 @@
 package vp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 )
 
 type VoucherUUID protocol.UUID

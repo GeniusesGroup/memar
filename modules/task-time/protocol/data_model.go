@@ -3,28 +3,17 @@
 package ttp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	tp "org/modules/task/protocol"
-	urp "org/modules/user-request/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	TaskID() tp.TaskUUID            //
-	Type() Type                     //
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+	TaskID() tp.TaskUUID
+	Type() Type
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }
-
-type Type uint8
-
-const (
-	Type_Unset Type = iota
-	Type_ManualStart
-	Type_ManualTemporaryEnd
-	Type_ManualEnd
-	Type_Start
-	Type_TemporaryEnd
-	Type_End
-)

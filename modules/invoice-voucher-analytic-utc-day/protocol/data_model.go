@@ -3,14 +3,17 @@
 package ivaudp
 
 import (
-	"libgo/protocol"
-	"libgo/time/utc"
+	"memar/protocol"
+	"memar/time/utc"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	Day() utc.DayElapsed                  //
-	Redeemed() uint64                     // Total
-	RedeemedAmount() protocol.MoneyAmount // Total
-	SaveTime() protocol.Time              //
+	Day() utc.DayElapsed
+	TotalRedeemed() uint64
+	TotalRedeemedAmount() protocol.MoneyAmount
+
+	// protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }

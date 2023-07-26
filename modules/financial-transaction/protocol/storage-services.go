@@ -3,13 +3,16 @@
 package ftp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	fap "org/modules/financial-account/protocol"
 )
 
 type StorageServices interface {
 	Save(dm DataModel) (nv protocol.NumberOfVersion, err protocol.Error)
+
+	Lock(accountID fap.FinancialAccountUUID) (dm DataModel, err protocol.Error)
+	Unlock(dm DataModel) (nv protocol.NumberOfVersion, err protocol.Error)
 
 	Count(accountID fap.FinancialAccountUUID) (nv protocol.NumberOfVersion, err protocol.Error)
 	Get(accountID fap.FinancialAccountUUID, vo protocol.VersionOffset) (dm DataModel, nv protocol.NumberOfVersion, err protocol.Error)

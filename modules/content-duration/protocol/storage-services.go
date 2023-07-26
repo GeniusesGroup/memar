@@ -3,7 +3,7 @@
 package cdp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	cp "org/modules/content/protocol"
 )

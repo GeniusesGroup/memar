@@ -3,7 +3,7 @@
 package pprp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	pp "org/modules/product/protocol"
 	rp "org/modules/role/protocol"

@@ -3,7 +3,7 @@
 package osup
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	sp "org/modules/org-shift/protocol"
 )

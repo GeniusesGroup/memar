@@ -3,7 +3,7 @@
 package dip
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	dp "org/modules/discount/protocol"
 )

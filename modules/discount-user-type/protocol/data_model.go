@@ -3,16 +3,17 @@
 package dutp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	dp "org/modules/discount/protocol"
-	urp "org/modules/user-request/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	DiscountID() dp.DiscountUUID    //
-	UserType() protocol.UserType    //
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+	DiscountID() dp.DiscountUUID
+	UserType() protocol.UserType
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }

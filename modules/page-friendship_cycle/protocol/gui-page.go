@@ -3,7 +3,7 @@
 package fcpp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	urup "org/modules/user-relation-user/protocol"
 	up "org/modules/user/protocol"
@@ -20,8 +20,8 @@ type GUI_Page_HyperLinks interface {
 
 // /friendship_cycle?uid=uuuuuuu&ur=1&o=1&l=20
 type GUI_Page_Conditions interface {
-	UserID() up.UserUUID              //
-	RelationType() urup.User_Relation //
+	UserID() up.UserUUID
+	RelationType() urup.User_Relation
 
 	protocol.Pagination
 }

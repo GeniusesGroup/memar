@@ -1,0 +1,61 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+package validators
+
+import (
+	"strings"
+
+	"memar/protocol"
+
+	"org/modules/text-editor/errors"
+)
+
+// ValidateText escapes string for any bad data
+/*
+https://owasp.org/www-community/xss-filter-evasion-cheatsheet
+https://portswigger.net/web-security/cross-site-scripting/cheat-sheet
+
+This is documented in the HTML5 spec:
+
+Note: script elements inserted using innerHTML||insertAdjacentHTML do not execute when they are inserted.
+SO:		"Test<script>console.log('you are hacked!!')</script>"		not evaluated and work in Browsers!
+
+Note:
+So: 	"`${alert(1)}`" not work
+
+TODO:::		check >> let dom = new DOMParser().parseFromString()
+TODO:::		let new_element = document.createRange().createContextualFragment(string_of_html)
+TODO:::		var text = document.createTextNode('<p>Stuff</p>');		document.body.appendChild(text);
+
+TODO:::		"<img src="/images/empty.gif" onload="alert('test');this.parentNode.removeChild(this);" />"		works on template literals
+
+                org.Name = '<img src="/images/empty.gif" onload="alert(\'test\');this.parentNode.remove();console.log(thing.ID)" />'
+				org.Name = 'Test <script>alert(\'test\');this.parentNode.remove();console.log(thing.ID)" </script>'
+				<img src='x' onerror='alert(1)'>
+*/
+func ValidateText(t string, min, max int) (err protocol.Error) {
+	if len(t) < min {
+		return &errors.ErrTextLack
+	}
+	if max != 0 && len(t) > max {
+		return &errors.ErrTextOverFlow
+	}
+	// TODO::: improve and let equal sign on some situations!
+	if strings.IndexByte(t, '=') != -1 {
+		return &errors.ErrTextIllegalCharacter
+	}
+	// for char, i := range t {
+	// 	switch char {
+	// 	case '=':
+	// 	case 'j':
+	// 		// javascript:
+	// 		// "javascript," not exude due to its must be inside script tag
+
+	// 	case 'o': // to check event listener e.g. onload, onerror, ...
+	// 		if t[i:i+5] == "onload" || t[i:i+5] == "onerror" {
+	// 			return &ErrTextIllegalCharacter
+	// 		}
+	// 	}
+	// }
+	return
+}

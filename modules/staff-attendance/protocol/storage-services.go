@@ -3,7 +3,7 @@
 package sap
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	sp "org/modules/staff/protocol"
 )

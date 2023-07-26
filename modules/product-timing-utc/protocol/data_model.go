@@ -3,18 +3,19 @@
 package ptup
 
 import (
-	"libgo/protocol"
-	"libgo/time/earth"
-	"libgo/time/utc"
+	"memar/protocol"
+	"memar/time/earth"
+	"memar/time/utc"
 
 	pp "org/modules/product/protocol"
-	urp "org/modules/user-request/protocol"
 )
 
 type DataModel interface {
-	ProductID() pp.ProductUUID      //
-	Day() utc.DayElapsed            //
-	DayHours() earth.DayHours       // what hours in a day this service active to provide services
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+	ProductID() pp.ProductUUID
+	Day() utc.DayElapsed
+	DayHours() earth.DayHours // what hours in a day this service active to provide services
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }

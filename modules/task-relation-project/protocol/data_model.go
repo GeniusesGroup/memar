@@ -3,32 +3,22 @@
 package trpp
 
 import (
-	"libgo/protocol"
+	"memar/math/per"
+	"memar/protocol"
 
 	pp "org/modules/project/protocol"
 	tp "org/modules/task/protocol"
-	urp "org/modules/user-request/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	TaskID() tp.TaskUUID            //
-	ProjectID() pp.ProjectUUID      //
-	Priority() uint64               //
-	Permyriad() protocol.PerMyriad  // 0 means unset e.g. equal to other tasks in the project
-	Type() Type                     //
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+	TaskID() tp.TaskUUID
+	ProjectID() pp.ProjectUUID
+	Priority() uint64
+	PerMyriad() per.Myriad // 0 means unset e.g. equal to other tasks in the project
+	Type() Type
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }
-
-type Type uint32
-
-const (
-	Type_Unset Type = 0
-
-	Type_Blocking Type = (1 << iota) // stuck
-	Type_Move                        // move from other project
-
-	Type_Parent
-	Type_
-)

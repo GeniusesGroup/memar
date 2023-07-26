@@ -3,7 +3,7 @@
 package cp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 )
 
 type StorageServices interface {

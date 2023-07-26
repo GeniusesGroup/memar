@@ -3,18 +3,19 @@
 package top
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	tp "org/modules/thing/protocol"
-	urp "org/modules/user-request/protocol"
 	up "org/modules/user/protocol"
 )
 
 // ThingOwner
 // e.g. Vehicle is a conveyance that transports people or objects
 type ThingOwner interface {
-	ThingID() tp.ThingUUID             //
-	OwnerID() up.UserUUID           //
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+	ThingID() tp.ThingUUID
+	OwnerID() up.UserUUID
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }

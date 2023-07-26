@@ -3,19 +3,17 @@
 package sep
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
-	urp "org/modules/user-request/protocol"
 	sp "org/modules/staff/protocol"
 )
 
 // it can be done by staff itself, manager, other staff, ...
 type DataModel interface {
-	StaffID() sp.StaffUUID     //
-	EvaluatorID() sp.StaffUUID //
+	StaffID() sp.StaffUUID
+	EvaluatorID() sp.StaffUUID
 
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }
-
-

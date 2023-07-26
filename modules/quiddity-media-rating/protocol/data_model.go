@@ -3,17 +3,18 @@
 package qmrp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	op "org/modules/object/protocol"
-	urp "org/modules/user-request/protocol"
 )
 
 type DataModel interface {
-	ObjectID() op.ObjectUUID        //
-	Rating() PictureRating_Rate     //
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+	ObjectID() op.ObjectUUID
+	Rating() PictureRating_Rate
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }
 
 type PictureRating_Rate uint8

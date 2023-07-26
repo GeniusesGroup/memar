@@ -3,7 +3,7 @@
 package qrlp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	lp "org/modules/label/protocol"
 	qp "org/modules/question/protocol"

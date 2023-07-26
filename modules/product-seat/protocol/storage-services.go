@@ -3,7 +3,7 @@
 package psp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	op "org/modules/object/protocol"
 	pp "org/modules/product/protocol"

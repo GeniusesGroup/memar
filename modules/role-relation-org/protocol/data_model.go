@@ -3,17 +3,18 @@
 package rrop
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	org "org/modules/org/protocol"
 	rp "org/modules/role/protocol"
-	urp "org/modules/user-request/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	OrganizationID() org.OrgUUID    //
-	RoleID() rp.RoleUUID            //
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+	OrganizationID() org.OrgUUID
+	RoleID() rp.RoleUUID
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }

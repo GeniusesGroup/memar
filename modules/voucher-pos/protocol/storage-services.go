@@ -3,7 +3,7 @@
 package vpp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	pp "org/modules/pos/protocol"
 	vp "org/modules/voucher/protocol"

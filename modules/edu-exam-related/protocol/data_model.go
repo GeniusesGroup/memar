@@ -3,20 +3,21 @@
 package eerp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
-	urp "org/modules/user-request/protocol"
-	up "org/modules/user/protocol"
 	exp "org/modules/edu-exam/protocol"
+	up "org/modules/user/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	SuggesterID() up.UserUUID       //
-	Side1() exp.EducationExamUUID       //
-	Priority() uint64               //
-	Level() uint64                  //
-	Side2() exp.EducationExamUUID       //
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+	SuggesterID() up.UserUUID
+	Side1() exp.EducationExamUUID
+	Priority() uint64
+	Level() uint64
+	Side2() exp.EducationExamUUID
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }

@@ -3,7 +3,7 @@
 package qop
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	qrp "org/modules/questionnaire/protocol"
 )

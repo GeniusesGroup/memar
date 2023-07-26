@@ -3,7 +3,7 @@
 package iip
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	ip "org/modules/invoice/protocol"
 	pp "org/modules/product/protocol"

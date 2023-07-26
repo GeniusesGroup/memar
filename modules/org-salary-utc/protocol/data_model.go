@@ -3,19 +3,19 @@
 package osup
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	fcp "org/modules/financial-currency/protocol"
 	org "org/modules/org/protocol"
-	urp "org/modules/user-request/protocol"
 )
 
 // DataModel is fixed salary that use in roles salary rules to calculate each staff salary.
 type DataModel interface {
 	OrgID() org.OrgUUID
-	CurrencyID() fcp.FinancialCurrencyUUID //
-	Amount() protocol.MoneyAmount          //
-	SaveTime() protocol.Time               //
-	RequestID() urp.UserRequestUUID        //
-}
+	CurrencyID() fcp.FinancialCurrencyUUID
+	Amount() protocol.MoneyAmount
 
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
+}

@@ -3,7 +3,7 @@
 package ctp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	cp "org/modules/comment/protocol"
 )

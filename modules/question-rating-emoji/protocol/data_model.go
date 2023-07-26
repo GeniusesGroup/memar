@@ -3,16 +3,17 @@
 package qrep
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	qp "org/modules/question/protocol"
-	urp "org/modules/user-request/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	QuestionID() qp.QuestionUUID    //
-	Emojis() []rune                 //
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+	QuestionID() qp.QuestionUUID
+	Emojis() []rune
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }

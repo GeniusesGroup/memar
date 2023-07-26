@@ -3,20 +3,21 @@
 package ip
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	ip "org/modules/invoice/protocol"
 	pp "org/modules/pos/protocol"
 	sp "org/modules/staff/protocol"
-	urp "org/modules/user-request/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	InvoiceID() ip.InvoiceUUID //
+	InvoiceID() ip.InvoiceUUID
 	// InvoiceNumber() uint16      // TODO::: do we need auto increment number? Why not QR code?
-	PosID() pp.PosUUID              //
-	StaffID() sp.StaffUUID          // OrdererID that is creator of the invoice e.g. restaurant, drug prescription, sales agent,
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+	PosID() pp.PosUUID
+	StaffID() sp.StaffUUID // OrdererID that is creator of the invoice e.g. restaurant, drug prescription, sales agent,
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }

@@ -3,26 +3,23 @@
 package qrqp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	qp "org/modules/question/protocol"
 	qrp "org/modules/questionnaire/protocol"
-	urp "org/modules/user-request/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	QuestionnaireID() qrp.QuestionnaireUUID //
-	QuestionID() qp.QuestionUUID            //
-	Significance_Positive() uint64          //
-	Significance_Negative() uint64          //
-	Type() Type                             //
-	SaveTime() protocol.Time                //
-	RequestID() urp.UserRequestUUID         //
+	QuestionnaireID() qrp.QuestionnaireUUID
+	QuestionID() qp.QuestionUUID
+	Significance_Positive() uint64
+	Significance_Negative() uint64
+	Type() Type
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }
-
-type Type uint8
-
-// TODO::: need types?
 
 // LIST_QuestionIDs_BY_QuestionnaireID(questionnaireID qp.QuestionnaireUUID, offset, limit uint64) (questionIDs []qp.QuestionUUID, nv protocol.NumberOfVersion, err protocol.Error)

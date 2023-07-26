@@ -3,17 +3,17 @@
 package cttp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	ctp "org/modules/contract-template/protocol"
-	urp "org/modules/user-request/protocol"
 )
 
 type DataModel interface {
-	ContractTemplateID() ctp.ContractTemplateUUID //
-	Language() protocol.Language                  //
-	Terms() []string                              // HTML, CSS, JS base, Solidity PL is other option
-	SaveTime() protocol.Time                      //
-	RequestID() urp.UserRequestUUID               //
-}
+	ContractTemplateID() ctp.ContractTemplateUUID
+	Language() protocol.Language
+	Terms() Terms
 
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
+}

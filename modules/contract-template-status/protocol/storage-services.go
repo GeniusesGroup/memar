@@ -3,7 +3,7 @@
 package cts
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	csp "org/modules/content-status/protocol"
 	ctp "org/modules/contract-template/protocol"

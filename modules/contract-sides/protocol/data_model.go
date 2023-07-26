@@ -3,30 +3,19 @@
 package org
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
-	urp "org/modules/user-request/protocol"
-	up "org/modules/user/protocol"
 	cp "org/modules/contract/protocol"
+	up "org/modules/user/protocol"
 )
 
 type ContractSides interface {
-	ContractID() cp.ContractUUID    //
-	SideType() ContractSides_ST     //
-	UserID() up.UserUUID            //Can be any user type e.g. staff
-	UserSignature() []byte          //
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+	ContractID() cp.ContractUUID
+	SideType() SideType
+	UserID() up.UserUUID // Can be any user type e.g. staff
+	UserSignature() []byte
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }
-
-type ContractSides_ST uint8
-
-const (
-	ContractSides_ST_Unset ContractSides_ST = iota
-	ContractSides_ST_First
-	ContractSides_ST_Second
-	ContractSides_ST_Third
-	ContractSides_ST_Witness
-	ContractSides_ST_Arbitrator
-	ContractSides_ST_Expert
-)

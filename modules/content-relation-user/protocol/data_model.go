@@ -3,38 +3,19 @@
 package crup
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	cp "org/modules/content/protocol"
-	urp "org/modules/user-request/protocol"
 	up "org/modules/user/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	ContentID() cp.ContentUUID      //
-	UserID() up.UserUUID            //
-	Type() Type                     //
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+	ContentID() cp.ContentUUID
+	UserID() up.UserUUID
+	Type() Type
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }
-
-// Type indicate participant type or role
-type Type uint32
-
-// ContentParticipant types
-const (
-	Type_Unset Type = iota
-
-	// Type_Music
-	Type_SongWriter
-	Type_Composer
-	Type_Regulator
-	Type_MusicSupplier
-
-	// Type_Movie
-	Type_Director
-
-	// Type_Game
-	Type_SportTeam
-)

@@ -3,16 +3,16 @@
 package cp
 
 import (
-	"libgo/protocol"
-
-	urp "org/modules/user-request/protocol"
+	"memar/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 // DataModel or Topic
 type DataModel interface {
-	CategoryID() CategoryUUID    // quiddity domain
-	ParentID() CategoryUUID      // Exist if it isn't top category.
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+	CategoryID() CategoryUUID
+	ParentID() CategoryUUID // Exist if it isn't top category.
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }

@@ -3,18 +3,19 @@
 package qip
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
-	qp "org/modules/quiddity/protocol"
 	op "org/modules/object/protocol"
-	urp "org/modules/user-request/protocol"
+	qp "org/modules/quiddity/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 // Icon or emoji use in many domains e.g. category, departments, ...
 type DataModel interface {
-	QuiddityID() qp.QuiddityUUID    //
-	Icon() op.ObjectUUID            //
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+	QuiddityID() qp.QuiddityUUID
+	Icon() op.ObjectUUID
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }

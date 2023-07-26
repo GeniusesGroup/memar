@@ -3,17 +3,18 @@
 package eblup
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	eblp "org/modules/estate-building-location/protocol"
 	ebp "org/modules/estate-building/protocol"
-	urp "org/modules/user-request/protocol"
 )
 
 type DataModel interface {
-	BuildingLocationID() eblp.BuildingLocationUUID // quiddity domain. use in Coordinate domain too, to get physical location of the Location.
-	BuildingID() ebp.BuildingUUID                  //
-	Usage() string                                 //
-	SaveTime() protocol.Time                       //
-	RequestID() urp.UserRequestUUID                //
+	BuildingLocationID() eblp.BuildingLocationUUID // use in Coordinate domain too, to get physical location of the Location.
+	BuildingID() ebp.BuildingUUID
+	Usage() string
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }

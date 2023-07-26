@@ -3,17 +3,18 @@
 package vgp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	gp "org/modules/group/protocol"
-	urp "org/modules/user-request/protocol"
 	vp "org/modules/voucher/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	VoucherID() vp.VoucherUUID      //
-	GroupID() []gp.GroupUUID        //
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+	VoucherID() vp.VoucherUUID
+	GroupID() []gp.GroupUUID
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }

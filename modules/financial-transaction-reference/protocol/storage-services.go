@@ -3,7 +3,7 @@
 package ftrp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 )
 
 type StorageServices interface {
@@ -11,4 +11,7 @@ type StorageServices interface {
 
 	Count(referenceID protocol.UUID) (nv protocol.NumberOfVersion, err protocol.Error)
 	Get(referenceID protocol.UUID, vo protocol.VersionOffset) (dm DataModel, nv protocol.NumberOfVersion, err protocol.Error)
+
+	// TODO:::
+	// FIND_ReferenceID_By_AccountID_AND_VO()
 }

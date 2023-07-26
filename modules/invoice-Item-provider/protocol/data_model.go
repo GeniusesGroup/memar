@@ -3,19 +3,20 @@
 package iipp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	ip "org/modules/invoice/protocol"
 	pp "org/modules/product/protocol"
 	sp "org/modules/staff/protocol"
-	urp "org/modules/user-request/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	InvoiceID() ip.InvoiceUUID      //
-	ProductID() pp.ProductUUID      //
-	StaffID() sp.StaffUUID          //
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+	InvoiceID() ip.InvoiceUUID
+	ProductID() pp.ProductUUID
+	StaffID() sp.StaffUUID
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }

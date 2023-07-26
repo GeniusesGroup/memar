@@ -3,7 +3,7 @@
 package dpp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	dp "org/modules/discount/protocol"
 	pp "org/modules/pos/protocol"

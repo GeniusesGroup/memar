@@ -3,7 +3,7 @@
 package vup
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	up "org/modules/user/protocol"
 	vp "org/modules/voucher/protocol"

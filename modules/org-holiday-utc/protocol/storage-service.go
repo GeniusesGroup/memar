@@ -3,8 +3,8 @@
 package ohup
 
 import (
-	"libgo/protocol"
-	"libgo/time/utc"
+	"memar/protocol"
+	"memar/time/utc"
 
 	org "org/modules/org/protocol"
 )

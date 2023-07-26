@@ -3,30 +3,20 @@
 package bsrp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
+
 	bp "org/modules/budget/protocol"
 	fap "org/modules/financial-account/protocol"
-	qsp "org/modules/quiddity-status/protocol"
-	urp "org/modules/user-request/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	BudgetID() bp.BudgetUUID             //
-	AccountID() fap.FinancialAccountUUID //
-	Type() Type                          //
-	Status() Status                      //
-	SaveTime() protocol.Time             //
-	RequestID() urp.UserRequestUUID      //
+	BudgetID() bp.BudgetUUID
+	AccountID() fap.FinancialAccountUUID
+	Type() Type
+	Status() Status
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }
-
-type Type uint8
-
-const (
-	Type_Unset Type = iota
-	Type_withdrawal
-	Type_Deposit
-	Type_Suggester
-)
-
-type Status qsp.Quiddity_Status

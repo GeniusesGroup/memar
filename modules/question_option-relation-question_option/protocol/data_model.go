@@ -3,19 +3,20 @@
 package qorqop
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	qop "org/modules/question_option/protocol"
-	urp "org/modules/user-request/protocol"
 )
 
 // In most cases just when Type_Criterion flag is on.
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	QuestionOptionID() qop.QuestionOptionUUID //
-	RelationID() qop.QuestionOptionUUID       //
+	QuestionOptionID() qop.QuestionOptionUUID
+	RelationID() qop.QuestionOptionUUID
 	// Type()
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }

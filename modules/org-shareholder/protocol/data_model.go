@@ -3,18 +3,19 @@
 package osp
 
 import (
-	"libgo/protocol"
+	"memar/math/per"
+	"memar/protocol"
 
 	org "org/modules/org/protocol"
-	urp "org/modules/user-request/protocol"
 	up "org/modules/user/protocol"
 )
 
 type DataModel interface {
 	OrgID() org.OrgUUID
-	UserID() up.UserUUID            //
-	Quantity() protocol.PerTrillion //
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
-}
+	UserID() up.UserUUID
+	Quantity() per.Trillion
 
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
+}

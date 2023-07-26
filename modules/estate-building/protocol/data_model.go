@@ -3,15 +3,16 @@
 package ebp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	ep "org/modules/estate/protocol"
-	urp "org/modules/user-request/protocol"
 )
 
 type DataModel interface {
-	BuildingID() BuildingUUID   //
-	AreaID() ep.EstateUUID          // area domain
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+	BuildingID() BuildingUUID
+	AreaID() ep.EstateUUID
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }

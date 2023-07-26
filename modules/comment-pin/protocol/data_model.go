@@ -3,20 +3,21 @@
 package cp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	cp "org/modules/comment/protocol"
 	gp "org/modules/group/protocol"
-	urp "org/modules/user-request/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	CommentID() cp.CommentUUID      //
-	GroupID() gp.GroupUUID          //
-	CommentPinedID() cp.CommentUUID //
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+	CommentID() cp.CommentUUID
+	GroupID() gp.GroupUUID
+	CommentPinedID() cp.CommentUUID
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }
 
 // Unpin service : Hidden status to unpin a comment

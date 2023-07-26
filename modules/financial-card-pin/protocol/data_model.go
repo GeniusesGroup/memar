@@ -3,19 +3,20 @@
 package dcpp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	fcp "org/modules/financial-card/protocol"
-	urp "org/modules/user-request/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	FinancialCardID() fcp.FinancialCardUUID //
-	FixedPin1() uint32                      //
-	FixedPin2() uint32                      //
-	DynamicPin1() []byte                    // OTP key
-	DynamicPin2() []byte                    // OTP key
-	SaveTime() protocol.Time                //
-	RequestID() urp.UserRequestUUID         //
+	FinancialCardID() fcp.FinancialCardUUID
+	FixedPin1() uint32
+	FixedPin2() uint32
+	DynamicPin1() OTPKey
+	DynamicPin2() OTPKey
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }

@@ -3,17 +3,17 @@
 package fsp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
-	urp "org/modules/user-request/protocol"
 	up "org/modules/user/protocol"
 )
 
 // Individual and General score
 type DataModel interface {
-	UserID() up.UserUUID            //
-	Score() int64                   //
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
-}
+	UserID() up.UserUUID
+	Score() int64
 
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
+}

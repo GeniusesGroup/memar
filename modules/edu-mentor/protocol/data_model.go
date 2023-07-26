@@ -3,28 +3,19 @@
 package emp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	ekup "org/modules/edu-knowledge_unit/protocol"
-	urp "org/modules/user-request/protocol"
 	up "org/modules/user/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	UserID() up.UserUUID                              //
-	KnowledgeUnitID() ekup.EducationKnowledgeUnitUUID //
-	Type() Type                                       // education unit type
-	SaveTime() protocol.Time                          //
-	RequestID() urp.UserRequestUUID                   //
+	UserID() up.UserUUID
+	KnowledgeUnitID() ekup.EducationKnowledgeUnitUUID
+	Type() Type
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }
-
-type Type uint8
-
-const (
-	Type_Unset Type = iota
-	Type_OrganizationStaff
-	Type_SelfStatement
-	Type_UsersVote
-	Type_AI
-)

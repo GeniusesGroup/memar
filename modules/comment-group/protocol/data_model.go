@@ -3,20 +3,21 @@
 package cgp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	cp "org/modules/comment/protocol"
 	gp "org/modules/group/protocol"
-	urp "org/modules/user-request/protocol"
 	up "org/modules/user/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 // each comment is immutable record and so use version mechanism to chain comments in a group.
 type DataModel interface {
-	GroupID() gp.GroupUUID          //
-	CommentID() cp.CommentUUID      //
-	UserID() up.UserUUID            //
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+	GroupID() gp.GroupUUID
+	CommentID() cp.CommentUUID
+	UserID() up.UserUUID
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }

@@ -3,18 +3,17 @@
 package cdp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
-	urp "org/modules/user-request/protocol"
 	cp "org/modules/content/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
 	ContentID() cp.ContentUUID
-	Duration() protocol.Duration    // AI suggested duration
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+	Duration() protocol.Duration // AI suggested duration
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }
-
-

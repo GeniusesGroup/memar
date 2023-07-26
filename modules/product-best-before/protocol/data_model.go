@@ -3,19 +3,18 @@
 package pbbp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
-	urp "org/modules/user-request/protocol"
 	pp "org/modules/product/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 // https://en.wikipedia.org/wiki/Expiration_date
 type DataModel interface {
-	ProductID() pp.ProductUUID      //
-	Duration() protocol.Duration    // from production time
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+	ProductID() pp.ProductUUID
+	Duration() protocol.Duration // from production time
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }
-
-

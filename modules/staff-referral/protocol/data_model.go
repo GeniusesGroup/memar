@@ -3,16 +3,17 @@
 package srp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	sp "org/modules/staff/protocol"
-	urp "org/modules/user-request/protocol"
 	up "org/modules/user/protocol"
 )
 
 type DataModel interface {
-	StaffID() sp.StaffUUID          //
-	ReferralID() up.UserUUID        //
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+	StaffID() sp.StaffUUID
+	ReferralID() up.UserUUID
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }

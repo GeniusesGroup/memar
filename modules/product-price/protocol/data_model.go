@@ -3,21 +3,20 @@
 package ppp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	fcp "org/modules/financial-currency/protocol"
 	pp "org/modules/product/protocol"
-	urp "org/modules/user-request/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 // DataModel can be register just by producer organization whom own the related quiddity
 type DataModel interface {
-	ProductID() pp.ProductUUID             //
-	CurrencyID() fcp.FinancialCurrencyUUID //
-	Price() protocol.MoneyAmount           // Basic Price, not payable price, in the currency
-	SaveTime() protocol.Time               //
-	RequestID() urp.UserRequestUUID        //
+	ProductID() pp.ProductUUID
+	CurrencyID() fcp.FinancialCurrencyUUID
+	Price() protocol.MoneyAmount // Basic Price, not payable price, in the currency
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }
-
-

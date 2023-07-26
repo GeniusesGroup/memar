@@ -3,8 +3,8 @@
 package rhup
 
 import (
-	"libgo/protocol"
-	"libgo/time/utc"
+	"memar/protocol"
+	"memar/time/utc"
 
 	rp "org/modules/role/protocol"
 )

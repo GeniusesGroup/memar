@@ -3,7 +3,7 @@
 package rrop
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	org "org/modules/org/protocol"
 )

@@ -3,7 +3,8 @@
 package pap
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
+
 	ep "org/modules/estate/protocol"
 	pp "org/modules/product/protocol"
 )

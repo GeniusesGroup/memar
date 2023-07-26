@@ -3,7 +3,8 @@
 package qafitbp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
+
 	qap "org/modules/question_answer/protocol"
 )
 

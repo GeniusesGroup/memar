@@ -3,21 +3,19 @@
 package rrgp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	gp "org/modules/group/protocol"
-	qsp "org/modules/quiddity-status/protocol"
 	rp "org/modules/role/protocol"
-	urp "org/modules/user-request/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	RoleID() rp.RoleUUID            //
-	GroupID() gp.GroupUUID          //
-	Status() Status                 //
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
-}
+	RoleID() rp.RoleUUID
+	GroupID() gp.GroupUUID
+	Status() Status
 
-type Status qsp.Quiddity_Status
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
+}

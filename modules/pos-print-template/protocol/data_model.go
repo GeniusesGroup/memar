@@ -3,18 +3,19 @@
 package pptp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
-	urp "org/modules/user-request/protocol"
 	pp "org/modules/pos/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	PosID() pp.PosUUID //
+	PosID() pp.PosUUID
 	// TODO::: VAT number, store address, logo, return rule, ...
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }
 
 // sabz.city/complaints?tel=xxxxxxxxxx&orgID=xxx

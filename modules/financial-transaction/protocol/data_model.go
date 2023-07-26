@@ -3,10 +3,9 @@
 package ftp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	fap "org/modules/financial-account/protocol"
-	urp "org/modules/user-request/protocol"
 )
 
 // DataModel indicate the domain record data fields.
@@ -14,10 +13,12 @@ import (
 //
 //libgo:ganjine --ShardConsistency=strict
 type DataModel interface {
-	AccountID() fap.FinancialAccountUUID     //
+	AccountID() fap.FinancialAccountUUID
 	AccountSideID() fap.FinancialAccountUUID // or AccountPartyID
 	Amount() protocol.MoneyAmount            // This transaction
 	Balance() protocol.MoneyAmount           // Account balance with this transaction
-	SaveTime() protocol.Time                 //
-	RequestID() urp.UserRequestUUID          //
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }

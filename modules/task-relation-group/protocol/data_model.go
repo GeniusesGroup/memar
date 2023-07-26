@@ -3,27 +3,20 @@
 package trgp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	gp "org/modules/group/protocol"
 	tp "org/modules/task/protocol"
-	urp "org/modules/user-request/protocol"
 )
 
 // DataModel indicate the Task-Relation-Group record data fields.
 // Group here can treated as a team work on a task.
 type DataModel interface {
-	TaskID() tp.TaskUUID            //
-	GroupID() gp.GroupUUID          //
-	RelationType() Type             //
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+	TaskID() tp.TaskUUID
+	GroupID() gp.GroupUUID
+	RelationType() Type
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }
-
-type Type uint8
-
-const (
-	Type_Unset Type = iota
-	Type_Assigned
-	Type_Reviewer
-)

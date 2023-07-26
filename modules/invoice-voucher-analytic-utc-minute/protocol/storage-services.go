@@ -3,7 +3,7 @@
 package ivaump
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 )
 
 type StorageServices interface {

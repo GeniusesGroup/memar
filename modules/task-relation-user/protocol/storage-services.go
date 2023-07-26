@@ -3,7 +3,7 @@
 package trup
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	tp "org/modules/task/protocol"
 	up "org/modules/user/protocol"

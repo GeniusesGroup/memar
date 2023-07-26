@@ -3,15 +3,15 @@
 package sip
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	sp "org/modules/staff/protocol"
-	urp "org/modules/user-request/protocol"
 )
 
 type DataModel interface {
-	StaffID() sp.StaffUUID //
+	StaffID() sp.StaffUUID
 
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }

@@ -3,23 +3,16 @@
 package qrtp
 
 import (
-	"libgo/protocol"
-
-	qsp "org/modules/quiddity-status/protocol"
-	urp "org/modules/user-request/protocol"
+	"memar/protocol"
 )
 
 // DataModel store some key/value for a Quiddity to describe it e.g. mobile-cpu, ...
 // e.g. MetricUnit: Number, Gram, Liter, Second
 type DataModel interface {
-	TypeID() QuiddityRelationTypeUUID //
-	Status() Status                   //
-	SaveTime() protocol.Time          //
-	RequestID() urp.UserRequestUUID   //
+	TypeID() QuiddityRelationTypeUUID
+	Status() Status
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }
-
-type Status qsp.Quiddity_Status
-
-const (
-	Status_Unset Status = iota
-)

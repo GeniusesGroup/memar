@@ -3,7 +3,7 @@
 package pcp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 )
 
 type Comments_GUI_Page_Conditions interface {

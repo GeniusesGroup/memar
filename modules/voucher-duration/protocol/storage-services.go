@@ -3,7 +3,7 @@
 package vdp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	vp "org/modules/voucher/protocol"
 )

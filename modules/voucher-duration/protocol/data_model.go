@@ -3,26 +3,19 @@
 package vdp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
-	urp "org/modules/user-request/protocol"
 	vp "org/modules/voucher/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	VoucherID() vp.VoucherUUID      //
-	Each() uint8                    // Each time use
-	Epoch() VoucherDuration_Epoch   //
-	Duration() protocol.Duration    // from Epoch()
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+	VoucherID() vp.VoucherUUID
+	Each() vp.Each
+	Epoch() Epoch
+	Duration() protocol.Duration // from Epoch()
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }
-
-type VoucherDuration_Epoch uint8
-
-const (
-	VoucherDuration_Epoch_Unset VoucherDuration_Epoch = iota
-	VoucherDuration_Epoch_IssueDate
-	VoucherDuration_Epoch_LastUse
-)

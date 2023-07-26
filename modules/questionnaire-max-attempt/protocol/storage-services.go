@@ -3,7 +3,7 @@
 package qmap
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	qp "org/modules/questionnaire/protocol"
 )

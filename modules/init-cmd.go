@@ -6,11 +6,11 @@
 package modules
 
 import (
-	cmd "libgo/command"
-	"libgo/detail"
-	"libgo/mediatype"
-	"libgo/protocol"
-	"libgo/service"
+	cmd "memar/command"
+	"memar/detail"
+	"memar/mediatype"
+	"memar/protocol"
+	"memar/service"
 )
 
 var RootCommand rootCommand
@@ -37,7 +37,7 @@ func (s *rootCommand) IssueDate() protocol.Time            { return nil }
 func (s *rootCommand) ExpiryDate() protocol.Time           { return nil }
 func (s *rootCommand) ExpireInFavorOf() protocol.MediaType { return nil }
 
-//libgo:impl libgo/protocol.Object
+//libgo:impl memar/protocol.Object
 func (s *rootCommand) Fields() []protocol.Object_Member_Field   { return nil }
 func (s *rootCommand) Methods() []protocol.Object_Member_Method { return nil }
 
@@ -54,7 +54,7 @@ func (s *rootCommand) Weight() protocol.Weight     { return protocol.Weight_Unse
 func (s *rootCommand) Request() protocol.Object  { return nil }
 func (s *rootCommand) Response() protocol.Object { return nil }
 
-//libgo:impl libgo/protocol.Quiddity
+//libgo:impl memar/protocol.Quiddity
 func (s *rootCommand) Name() string         { return "organization" }
 func (c *rootCommand) Abbreviation() string { return "org" }
 func (s *rootCommand) Aliases() []string    { return []string{} }
@@ -62,7 +62,7 @@ func (s *rootCommand) Aliases() []string    { return []string{} }
 //libgo:impl protocol.Command
 func (s *rootCommand) Runnable() bool { return false }
 
-//libgo:impl libgo/protocol.CommandHandler
+//libgo:impl memar/protocol.CommandHandler
 func (s *rootCommand) ServeCLA(arguments []string) (err protocol.Error) {
 	err = cmd.ServeCLA(s, arguments)
 	return

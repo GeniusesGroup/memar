@@ -3,8 +3,8 @@
 package dhup
 
 import (
-	"libgo/protocol"
-	"libgo/time/utc"
+	"memar/protocol"
+	"memar/time/utc"
 
 	dp "org/modules/department/protocol"
 )

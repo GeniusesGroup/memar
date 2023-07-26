@@ -3,8 +3,8 @@
 package fcp
 
 import (
-	"libgo/iso"
-	"libgo/protocol"
+	"memar/iso"
+	"memar/protocol"
 	up "org/modules/user/protocol"
 )
 

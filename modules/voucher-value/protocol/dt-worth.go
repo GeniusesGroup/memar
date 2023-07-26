@@ -3,7 +3,7 @@
 package vvp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 )
 
 // Max discount worth per use

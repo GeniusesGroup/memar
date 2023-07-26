@@ -3,22 +3,20 @@
 package usp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
-	qsp "org/modules/quiddity-status/protocol"
-	urp "org/modules/user-request/protocol"
 	up "org/modules/user/protocol"
 )
 
 type DataModel interface {
-	ID() string                     // Short Unique ID
-	URI() string                    // e.g. UUID of picture object.
-	UserID() up.UserUUID            //
-	Status() Status                 //
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+	ID() ID
+	URI() string // e.g. UUID of picture object.
+	UserID() up.UserUUID
+	Status() Status
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }
 
 const shortenerPath = "/s"
-
-type Status qsp.Quiddity_Status

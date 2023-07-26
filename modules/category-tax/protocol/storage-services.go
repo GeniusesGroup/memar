@@ -3,7 +3,7 @@
 package csp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	cp "org/modules/category/protocol"
 	sp "org/modules/society/protocol"

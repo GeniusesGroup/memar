@@ -3,7 +3,7 @@
 package iirtp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	ip "org/modules/invoice/protocol"
 )

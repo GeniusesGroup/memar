@@ -3,7 +3,7 @@
 package ebp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 )
 
 type (

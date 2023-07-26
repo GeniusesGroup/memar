@@ -3,19 +3,20 @@
 package garp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	gp "org/modules/group/protocol"
 	rp "org/modules/role/protocol"
-	urp "org/modules/user-request/protocol"
 	up "org/modules/user/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	GroupID() gp.GroupUUID          //
-	UserID() up.UserUUID            //
-	RoleID() rp.RoleUUID            //
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+	GroupID() gp.GroupUUID
+	UserID() up.UserUUID
+	RoleID() rp.RoleUUID
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }

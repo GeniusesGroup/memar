@@ -3,7 +3,7 @@
 package srp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	sp "org/modules/staff/protocol"
 )

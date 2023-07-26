@@ -3,7 +3,7 @@
 package qrep
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	qp "org/modules/question/protocol"
 )

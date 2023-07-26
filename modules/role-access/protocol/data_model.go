@@ -3,16 +3,17 @@
 package rap
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	rp "org/modules/role/protocol"
-	urp "org/modules/user-request/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	RoleID() rp.RoleUUID                   //
-	AccessControl() protocol.AccessControl //
-	SaveTime() protocol.Time               //
-	RequestID() urp.UserRequestUUID        //
+	RoleID() rp.RoleUUID
+	AccessControl() protocol.AccessControl
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }

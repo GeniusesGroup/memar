@@ -3,7 +3,7 @@
 package dgp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	dp "org/modules/discount/protocol"
 	gp "org/modules/group/protocol"

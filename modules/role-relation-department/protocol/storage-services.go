@@ -3,7 +3,7 @@
 package rrdp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	dp "org/modules/department/protocol"
 	rp "org/modules/role/protocol"

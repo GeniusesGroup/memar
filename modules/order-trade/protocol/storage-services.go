@@ -3,7 +3,7 @@
 package otp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	op "org/modules/order/protocol"
 )

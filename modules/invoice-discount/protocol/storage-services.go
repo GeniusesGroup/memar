@@ -3,7 +3,7 @@
 package idp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	dp "org/modules/discount/protocol"
 	ip "org/modules/invoice/protocol"

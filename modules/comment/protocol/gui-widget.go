@@ -3,11 +3,11 @@
 package cp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 )
 
 type GUI_Widget_Conditions interface {
-	CommentID() CommentUUID //
+	CommentID() CommentUUID
 	EnablingForwarding() bool
 
 	time() protocol.Time

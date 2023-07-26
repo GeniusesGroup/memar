@@ -3,7 +3,7 @@
 package dup
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	dp "org/modules/discount/protocol"
 	up "org/modules/user/protocol"

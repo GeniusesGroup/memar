@@ -3,18 +3,18 @@
 package dop
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
-	org "org/modules/org/protocol"
-	urp "org/modules/user-request/protocol"
 	dp "org/modules/discount/protocol"
+	org "org/modules/org/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	DiscountID() dp.DiscountUUID    //
-	OrgID() org.OrgUUID             //
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
-}
+	DiscountID() dp.DiscountUUID
+	OrgID() org.OrgUUID
 
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
+}

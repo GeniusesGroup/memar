@@ -3,15 +3,18 @@
 package ctp
 
 import (
-	"libgo/protocol"
-	
+	"memar/protocol"
+
 	cp "org/modules/comment/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 // It must just use to index hashtag words from comment-text domain
 type DataModel interface {
-	Tag() string               //
-	CommentID() cp.CommentUUID //
-	SaveTime() protocol.Time   //
+	Tag() string
+	CommentID() cp.CommentUUID
+
+	// protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }

@@ -3,20 +3,19 @@
 package crp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
-	cp "org/modules/content/protocol"
-	urp "org/modules/user-request/protocol"
 	ctp "org/modules/content-type/protocol"
+	cp "org/modules/content/protocol"
 )
 
 type DataModel interface {
-	ContentID() cp.ContentUUID         //
-	Priority() uint64                  // substitute priority
-	PriorityType() ctp.ContentTypeUUID //
-	RelatedID() cp.ContentUUID         //
-	SaveTime() protocol.Time           //
-	RequestID() urp.UserRequestUUID    //
+	ContentID() cp.ContentUUID
+	Priority() uint64
+	PriorityType() ctp.ContentTypeUUID
+	RelatedID() cp.ContentUUID
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }
-
-

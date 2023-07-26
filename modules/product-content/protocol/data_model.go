@@ -3,21 +3,19 @@
 package pcp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	cp "org/modules/content/protocol"
 	pp "org/modules/product/protocol"
-	qsp "org/modules/quiddity-status/protocol"
-	urp "org/modules/user-request/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	ProductID() pp.ProductUUID      //
-	ContentID() cp.ContentUUID      //
-	Status() Status                 //
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
-}
+	ProductID() pp.ProductUUID
+	ContentID() cp.ContentUUID
+	Status() Status
 
-type Status qsp.Quiddity_Status
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
+}

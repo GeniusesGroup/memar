@@ -3,17 +3,18 @@
 package igp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	gp "org/modules/group/protocol"
 	ip "org/modules/invite/protocol"
-	urp "org/modules/user-request/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	InviteID() ip.InviteUUID        //
-	GroupID() gp.GroupUUID          //
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+	InviteID() ip.InviteUUID
+	GroupID() gp.GroupUUID
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }

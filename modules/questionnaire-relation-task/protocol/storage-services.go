@@ -3,7 +3,7 @@
 package qrtp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	qp "org/modules/questionnaire/protocol"
 	tp "org/modules/task/protocol"

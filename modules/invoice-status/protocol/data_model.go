@@ -3,49 +3,17 @@
 package isp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	ip "org/modules/invoice/protocol"
-	qsp "org/modules/quiddity-status/protocol"
-	urp "org/modules/user-request/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	InvoiceID() ip.InvoiceUUID      // invoice-status domain
-	Status() Status                 //
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+	InvoiceID() ip.InvoiceUUID
+	Status() Status
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }
-
-type Status qsp.Quiddity_Status
-
-const (
-	// cancelled : Indicates that you have cancelled the invoice. Though you can view the cancelled invoice,
-	// the customer cannot view the invoice or make payments against the invoice.
-	// You can only cancel an unpaid issued invoice.
-	// invoice is no longer valid, and not payable by client or refund
-	Status_Voided = Status(qsp.Quiddity_Status_FreeFlag << iota)
-
-	// expired : Indicates that an invoice has expired. Once expired,
-	// the customer cannot make any payments against the invoice,
-	// and you cannot cancel or delete the invoice. You can view an expired invoice.
-	// Status_Expired
-
-	// partially paid : Indicates that the customer has made a partial payment against an invoice.
-	// After a payment has been made, you can neither delete nor cancel the invoice.
-	// You can only view the invoice and add internal notes to it.
-	Status_PartiallyPaid
-
-	// paid : Indicates that the customer has fully paid the invoice amount.
-	// Paid is the final state of an invoice. A paid invoice can only be viewed.
-	// You can neither delete nor cancel it.
-	Status_Paid
-
-	Status_UserCheckout
-	Status_PendingReview
-	Status_Confirmed // Approved
-	Status_Packaging
-	Status_Shipping
-	Status_Done // delivered or served
-)

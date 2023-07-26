@@ -3,7 +3,7 @@
 package qmcp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	qop "org/modules/question_option/protocol"
 )

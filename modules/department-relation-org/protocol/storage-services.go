@@ -3,7 +3,7 @@
 package drop
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	dp "org/modules/department/protocol"
 	org "org/modules/org/protocol"

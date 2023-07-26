@@ -3,22 +3,20 @@
 package prp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	pp "org/modules/product/protocol"
-	qsp "org/modules/quiddity-status/protocol"
 	rp "org/modules/role/protocol"
-	urp "org/modules/user-request/protocol"
 )
 
 // DataModel indicate the domain record data fields.
-// DataModel limit sell to specific roles.
 type DataModel interface {
-	ProductID() pp.ProductUUID //
-	RoleID() rp.RoleUUID       //
+	ProductID() pp.ProductUUID
+	RoleID() rp.RoleUUID
+	Type() Type
 	Status() Status
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
-}
 
-type Status qsp.Quiddity_Status
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
+}

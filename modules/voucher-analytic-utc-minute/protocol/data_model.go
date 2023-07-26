@@ -3,14 +3,17 @@
 package vaudp
 
 import (
-	"libgo/protocol"
-	"libgo/time/utc"
+	"memar/protocol"
+	"memar/time/utc"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	Minute() utc.MinuteElapsed          //
-	Issued() uint64                     // Total
-	IssuedAmount() protocol.MoneyAmount // Total
-	SaveTime() protocol.Time            //
+	Minute() utc.MinuteElapsed
+	TotalIssued() uint64
+	TotalIssuedAmount() protocol.MoneyAmount
+
+	// protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }

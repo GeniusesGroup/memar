@@ -4,7 +4,7 @@ package brep
 
 import (
 	bp "org/modules/budget/protocol"
-	"libgo/protocol"
+	"memar/protocol"
 )
 
 type StorageServices interface {

@@ -3,7 +3,7 @@
 package dcp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	cp "org/modules/category/protocol"
 	dp "org/modules/discount/protocol"

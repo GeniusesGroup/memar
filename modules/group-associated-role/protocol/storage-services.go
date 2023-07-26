@@ -3,7 +3,7 @@
 package garp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	gp "org/modules/group/protocol"
 	rp "org/modules/role/protocol"

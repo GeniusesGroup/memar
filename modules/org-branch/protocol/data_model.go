@@ -3,13 +3,3 @@
 package obp
 
 // BranchID() >> BuildingLocationID()
-
-type Type uint8
-
-const (
-	Type_Unset Type = iota
-	Type_Online
-	Type_Branch
-	Type_Agent
-	Type_Franchise
-)

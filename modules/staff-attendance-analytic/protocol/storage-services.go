@@ -3,7 +3,7 @@
 package saap
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	sp "org/modules/staff/protocol"
 )

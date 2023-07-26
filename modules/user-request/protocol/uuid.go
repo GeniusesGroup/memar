@@ -3,7 +3,8 @@
 package urp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 )
 
-type UserRequestUUID = protocol.UUID
+// Request RecordID to prove how this object created in the chain of other objects.
+type UserRequestUUID = protocol.RequestUUID

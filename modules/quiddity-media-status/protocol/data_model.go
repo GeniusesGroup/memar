@@ -3,24 +3,18 @@
 package qmsp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	op "org/modules/object/protocol"
-	qsp "org/modules/quiddity-status/protocol"
 	qp "org/modules/quiddity/protocol"
-	urp "org/modules/user-request/protocol"
 )
 
 type DataModel interface {
-	QuiddityID() qp.QuiddityUUID    //
-	ObjectID() op.ObjectUUID        // media file
-	Status() Status                 //
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+	QuiddityID() qp.QuiddityUUID
+	MediaObjectID() op.ObjectUUID
+	Status() Status
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }
-
-type Status qsp.Quiddity_Status
-
-const (
-// Status_ Status = (Quiddity_Status_FreeFlag << iota)
-)

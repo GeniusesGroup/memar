@@ -3,15 +3,14 @@
 package lsp
 
 import (
-	"libgo/protocol"
-
-	urp "org/modules/user-request/protocol"
+	"memar/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	SkillID() SkillUUID //
+	SkillID() SkillUUID
 
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }

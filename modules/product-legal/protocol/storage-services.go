@@ -3,7 +3,7 @@
 package plp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	org "org/modules/org/protocol"
 	pp "org/modules/product/protocol"

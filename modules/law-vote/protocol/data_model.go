@@ -3,27 +3,19 @@
 package lvp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	lp "org/modules/law/protocol"
-	urp "org/modules/user-request/protocol"
 	up "org/modules/user/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	LawID() lp.LawUUID              //
-	UserID() up.UserUUID            //
-	Vote() Type                     //
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+	LawID() lp.LawUUID
+	UserID() up.UserUUID
+	Vote() Type
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }
-
-type Type uint8
-
-const (
-	LawVote_Type_Unset Type = iota
-	LawVote_Type_Abstention
-	LawVote_Type_Agree
-	LawVote_Type_Disagree
-)

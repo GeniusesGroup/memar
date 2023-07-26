@@ -3,16 +3,17 @@
 package ssp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	sp "org/modules/staff/protocol"
-	urp "org/modules/user-request/protocol"
 )
 
 // DataModel is fixed negotiated salary that don't follow org||department||role salary rules.
 type DataModel interface {
-	StaffID() sp.StaffUUID              //
-	WeeklySalary() protocol.MoneyAmount //
-	SaveTime() protocol.Time            //
-	RequestID() urp.UserRequestUUID     //
+	StaffID() sp.StaffUUID
+	WeeklySalary() protocol.MoneyAmount
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }

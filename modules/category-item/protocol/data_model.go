@@ -3,16 +3,17 @@
 package cip
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	cp "org/modules/category/protocol"
-	urp "org/modules/user-request/protocol"
 )
 
 type DataModel interface {
-	CategoryID() cp.CategoryUUID    //
-	Priority() uint64               //
-	ItemID() protocol.UUID          // any domain usually product, content, ... domain
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+	CategoryID() cp.CategoryUUID
+	Priority() uint64
+	ItemID() protocol.UUID // any domain usually product, content, ... domain
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }

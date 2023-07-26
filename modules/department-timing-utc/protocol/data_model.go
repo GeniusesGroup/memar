@@ -3,20 +3,19 @@
 package dtup
 
 import (
-	"libgo/protocol"
-	"libgo/time/earth"
-	"libgo/time/utc"
+	"memar/protocol"
+	"memar/time/earth"
+	"memar/time/utc"
 
-	urp "org/modules/user-request/protocol"
 	dp "org/modules/department/protocol"
 )
 
 type DataModel interface {
-	DepartmentID() dp.DepartmentUUID   //
-	Weekdays() utc.Weekdays         // what days in weekday in utc time week this department active to provide services
-	DayHours() earth.DayHours       // what hours in day in utc time week this department active to provide services
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+	DepartmentID() dp.DepartmentUUID
+	Weekdays() utc.Weekdays   // what days in weekday in utc time week this department active to provide services
+	DayHours() earth.DayHours // what hours in day in utc time week this department active to provide services
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }
-
-

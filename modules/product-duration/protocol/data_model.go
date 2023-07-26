@@ -3,19 +3,20 @@
 package pdp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	pp "org/modules/product/protocol"
-	urp "org/modules/user-request/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	ProductID() pp.ProductUUID      //
-	Epoch() ProductDuration_Epoch   //
-	Duration() protocol.Duration    // from first use
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+	ProductID() pp.ProductUUID
+	Epoch() ProductDuration_Epoch
+	Duration() protocol.Duration // from first use
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }
 
 type ProductDuration_Epoch uint8

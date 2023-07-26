@@ -3,18 +3,19 @@
 package cop
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
-	op "org/modules/object/protocol"
 	cp "org/modules/comment/protocol"
-	urp "org/modules/user-request/protocol"
+	op "org/modules/object/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 // Object can be any such as image, video, voice, ...
 type DataModel interface {
-	CommentID() cp.CommentUUID      //
-	ObjectID() op.ObjectUUID        //
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+	CommentID() cp.CommentUUID
+	ObjectID() op.ObjectUUID
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }

@@ -3,7 +3,7 @@
 package cus
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	cp "org/modules/comment/protocol"
 	up "org/modules/user/protocol"

@@ -3,7 +3,7 @@
 package qmp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	op "org/modules/object/protocol"
 	qp "org/modules/quiddity/protocol"

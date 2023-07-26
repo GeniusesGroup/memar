@@ -3,16 +3,18 @@
 package tmp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	tp "org/modules/thing/protocol"
-	urp "org/modules/user-request/protocol"
 )
 
 // each metrics for a thing is immutable record and so use version mechanism to chain metrics for a device.
 type DataModel interface {
 	ThingID() tp.ThingUUID
+	MetricUnit() MetricUnit
 	Amount() int64
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }

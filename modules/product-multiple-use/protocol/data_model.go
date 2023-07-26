@@ -3,17 +3,17 @@
 package pmup
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
-	urp "org/modules/user-request/protocol"
 	pp "org/modules/product/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	ProductID() pp.ProductUUID      //
-	Maximum() uint64                // Maximum time this service can be served to buyer
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
-}
+	ProductID() pp.ProductUUID
+	Maximum() uint64 // Maximum time this service can be served to buyer
 
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
+}

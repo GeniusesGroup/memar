@@ -3,7 +3,7 @@
 package qop
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 )
 
 type StorageServices interface {

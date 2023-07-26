@@ -3,17 +3,18 @@
 package dgp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	dp "org/modules/discount/protocol"
 	gp "org/modules/group/protocol"
-	urp "org/modules/user-request/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	DiscountID() dp.DiscountUUID    //
-	GroupID() gp.GroupUUID          //
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+	DiscountID() dp.DiscountUUID
+	GroupID() gp.GroupUUID
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }

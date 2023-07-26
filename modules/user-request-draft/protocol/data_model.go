@@ -3,9 +3,8 @@
 package urdp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
-	urp "org/modules/user-request/protocol"
 	up "org/modules/user/protocol"
 )
 
@@ -16,11 +15,13 @@ import (
 type DataModel interface {
 	ID() [16]byte // RequestDraftID
 	UserID() up.UserUUID
-	UserConnectionID() [16]byte // Store to remember which ConnectionID/AppInstanceID set||chanaged this record.
+	UserConnectionID() [16]byte // Store to remember which ConnectionID/AppInstanceID set||changed this record.
 	PageID() uint64
 	ServiceID() uint64
-	CompressID() uint64             // gzip
-	Request() []byte                // Decode by service request structure and compress type.
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+	CompressID() uint64 // gzip
+	Request() []byte    // Decode by service request structure and compress type.
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }

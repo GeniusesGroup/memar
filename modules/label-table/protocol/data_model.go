@@ -3,18 +3,19 @@
 package ltp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	lp "org/modules/label/protocol"
-	urp "org/modules/user-request/protocol"
 )
 
 // LabelTable indicate the domain record data fields.
 // Table or boards is visual aid to help users access tasks in GUI e.g.Table(TODO, DOING, DONE)
 // TODO::: base on label or status or both??
 type LabelTable interface {
-	TableID() TableUUID             //
-	Labels() []lp.LabelUUID         //
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+	TableID() TableUUID
+	Labels() []lp.LabelUUID
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }

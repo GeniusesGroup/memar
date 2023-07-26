@@ -3,7 +3,7 @@
 package oidp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	op "org/modules/order/protocol"
 	up "org/modules/user/protocol"

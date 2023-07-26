@@ -3,16 +3,17 @@
 package qafitbp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	qap "org/modules/question_answer/protocol"
-	urp "org/modules/user-request/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	AnswerID() qap.AnswerUUID       //
-	Answer() []string               //
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+	AnswerID() qap.AnswerUUID
+	Answer() []string
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }

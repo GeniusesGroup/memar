@@ -3,7 +3,7 @@
 package cop
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	cp "org/modules/comment/protocol"
 	op "org/modules/object/protocol"

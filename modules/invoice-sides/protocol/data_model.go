@@ -3,35 +3,20 @@
 package isp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	ip "org/modules/invoice/protocol"
-	qsp "org/modules/quiddity-status/protocol"
-	urp "org/modules/user-request/protocol"
 	up "org/modules/user/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	InvoiceID() ip.InvoiceUUID      //
-	UserID() up.UserUUID            //
-	Type() Type                     //
-	Status() Status                 //
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+	InvoiceID() ip.InvoiceUUID
+	UserID() up.UserUUID
+	Type() Type
+	Status() Status
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }
-
-type Type uint8
-
-const (
-	Type_Seller Type = iota
-	Type_Customer
-	Type_Agent
-	Type_Franchise
-)
-
-type Status qsp.Quiddity_Status
-
-const (
-// Status_ = Status(Quiddity_Status_FreeFlag << iota)
-)

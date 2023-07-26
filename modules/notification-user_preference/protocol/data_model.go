@@ -3,27 +3,18 @@
 package nupp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	np "org/modules/notification/protocol"
-	urp "org/modules/user-request/protocol"
 	up "org/modules/user/protocol"
 )
 
 type DataModel interface {
-	UserID() up.UserUUID                 //
-	NotificationID() np.NotificationUUID //
-	SignalPreference() SignalPreference  //
-	SaveTime() protocol.Time             //
-	RequestID() urp.UserRequestUUID      //
+	UserID() up.UserUUID
+	NotificationID() np.NotificationUUID
+	SignalPreference() SignalPreference
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }
-
-type SignalPreference uint8
-
-const (
-	SignalPreference_Unset SignalPreference = 0
-	SignalPreference_App   SignalPreference = (1 << iota)
-	SignalPreference_WebApp
-	SignalPreference_Email
-	SignalPreference_SMS
-)

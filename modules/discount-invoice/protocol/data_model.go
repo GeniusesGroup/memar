@@ -3,18 +3,18 @@
 package dip
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
-	urp "org/modules/user-request/protocol"
 	dp "org/modules/discount/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	DiscountID() dp.DiscountUUID    //
+	DiscountID() dp.DiscountUUID
 	MinPrice() protocol.MoneyAmount // Minimum invoice price
 	MinAmount() uint64              // Minimum invoice product numbers
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
-}
 
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
+}

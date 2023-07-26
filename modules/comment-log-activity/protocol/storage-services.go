@@ -3,9 +3,9 @@
 package clap
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
+
 	cp "org/modules/comment/protocol"
-	
 )
 
 type StorageServices interface {

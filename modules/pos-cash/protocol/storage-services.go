@@ -3,7 +3,7 @@
 package pcp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	fap "org/modules/financial-account/protocol"
 	pp "org/modules/pos/protocol"

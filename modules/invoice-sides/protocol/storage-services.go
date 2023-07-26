@@ -3,7 +3,7 @@
 package isp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	ip "org/modules/invoice/protocol"
 	up "org/modules/user/protocol"

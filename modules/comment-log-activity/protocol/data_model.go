@@ -3,10 +3,9 @@
 package clap
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	cp "org/modules/comment/protocol"
-	urp "org/modules/user-request/protocol"
 )
 
 // It can point to any domain records e.g. product, invoice, ...
@@ -22,8 +21,10 @@ type DataModel interface {
 	CommentID() cp.CommentUUID      //
 	DomainID() protocol.MediaTypeID // use to detect comment GUI template
 	// TODO::: primary key may not be a single field!
-	RecordID() protocol.UUID        // in above domain
-	RecordVersion() uint64          // VersionOffset
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+	RecordID() protocol.UUID // in above domain
+	RecordVersion() uint64   // VersionOffset
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }

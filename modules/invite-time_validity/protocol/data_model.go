@@ -3,17 +3,18 @@
 package itvp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
-	urp "org/modules/user-request/protocol"
 	ip "org/modules/invite/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	InviteID() ip.InviteUUID        //
-	Start() protocol.Time           //
-	End() protocol.Time             //
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+	InviteID() ip.InviteUUID
+	Start() protocol.Time
+	End() protocol.Time
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }

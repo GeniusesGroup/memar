@@ -3,7 +3,7 @@
 package qlp
 
 // import (
-// 	"libgo/protocol"
+// 	"memar/protocol"
 // )
 
 // TODO::: limit to user numbers

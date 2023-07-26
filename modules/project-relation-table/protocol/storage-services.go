@@ -3,7 +3,7 @@
 package prtp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	ltp "org/modules/label-table/protocol"
 	pp "org/modules/project/protocol"

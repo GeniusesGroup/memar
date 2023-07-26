@@ -3,28 +3,29 @@
 package pinp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	np "org/modules/notification/protocol"
 	op "org/modules/org/protocol"
 	pp "org/modules/product/protocol"
-	urp "org/modules/user-request/protocol"
 	wp "org/modules/warehouse/protocol"
 )
 
 // ProductInventoryNotify indicate the domain record data fields.
 type ProductInventoryNotify interface {
 	NotificationID() np.NotificationUUID // user only == timeline-user_notification / staff == any notification group
-	ProductID() pp.ProductUUID           //
+	ProductID() pp.ProductUUID
 	// LogicOnWASM() []byte // TODO:::
-	OrgID() []op.OrgUUID                           //
-	WarehouseID() []wp.WarehouseUUID               // user max 2, staff max 10
-	AmountOperator() []protocol.ComparisonOperator //
-	Amount() []int64                               //
-	StockOperator() []protocol.ComparisonOperator  //
-	Stock() []int64                                //
-	SaveTime() protocol.Time                       //
-	RequestID() urp.UserRequestUUID                //
+	OrgID() []op.OrgUUID
+	WarehouseID() []wp.WarehouseUUID // user max 2, staff max 10
+	AmountOperator() []protocol.ComparisonOperator
+	Amount() []int64
+	StockOperator() []protocol.ComparisonOperator
+	Stock() []int64
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }
 
 /*

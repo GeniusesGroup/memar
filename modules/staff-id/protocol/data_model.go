@@ -3,16 +3,17 @@
 package sip
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	sp "org/modules/staff/protocol"
-	urp "org/modules/user-request/protocol"
 )
 
 // TODO::: user-number??
 type DataModel interface {
-	StaffID() sp.StaffUUID          //
-	ID() uint32                     //
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+	StaffID() sp.StaffUUID
+	ID() uint32
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }

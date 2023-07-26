@@ -3,7 +3,7 @@
 package lvp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	lp "org/modules/law/protocol"
 	up "org/modules/user/protocol"

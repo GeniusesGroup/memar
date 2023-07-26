@@ -3,7 +3,7 @@
 package qop
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	qp "org/modules/quiddity/protocol"
 	up "org/modules/user/protocol"

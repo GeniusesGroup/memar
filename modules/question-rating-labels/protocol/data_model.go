@@ -3,17 +3,18 @@
 package qrlp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	qp "org/modules/question/protocol"
 	qdp "org/modules/quiddity/protocol"
-	urp "org/modules/user-request/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	QuestionID() qp.QuestionUUID    //
-	Labels() []qdp.QuiddityUUID     //
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+	QuestionID() qp.QuestionUUID
+	Labels() []qdp.QuiddityUUID
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }

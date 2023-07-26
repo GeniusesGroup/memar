@@ -3,17 +3,17 @@
 package omp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	op "org/modules/order/protocol"
-	urp "org/modules/user-request/protocol"
 )
 
 // DataModel indicate the domain record data fields. each order is immutable record.
 type DataModel interface {
-	OrderID() op.OrderUUID          //
-	SideOrderID() op.OrderUUID      //
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
-}
+	OrderID() op.OrderUUID
+	SideOrderID() op.OrderUUID
 
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
+}

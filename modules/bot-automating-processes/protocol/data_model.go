@@ -3,7 +3,7 @@
 package org
 
 // import (
-// 	"libgo/protocol"
+// 	"memar/protocol"
 // )
 
 // process automation

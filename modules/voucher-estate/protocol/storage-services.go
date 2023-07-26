@@ -3,7 +3,7 @@
 package vep
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	eblp "org/modules/estate-building-location/protocol"
 	ebp "org/modules/estate-building/protocol"

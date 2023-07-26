@@ -3,7 +3,8 @@
 package trlp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
+
 	tp "org/modules/task/protocol"
 )
 

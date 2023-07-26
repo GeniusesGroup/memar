@@ -3,19 +3,19 @@
 package uoap
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
-	urp "org/modules/user-request/protocol"
 	up "org/modules/user/protocol"
 )
 
 // DataModel store data about user delegation to this org(app) in other orgs(apps)
 type DataModel interface {
-	UserID() up.UserUUID               //
-	OrgID() up.UserUUID                //
+	UserID() up.UserUUID
+	OrgID() up.UserUUID
 	DomainUserID() up.UserUUID         // user id in that domain e.g. country national code
 	OurGeneratedUserUUID() up.UserUUID // it will generate to fix same UUID collision problem
-	SaveTime() protocol.Time           //
-	RequestID() urp.UserRequestUUID    //
-}
 
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
+}

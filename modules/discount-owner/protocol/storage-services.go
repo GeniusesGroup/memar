@@ -3,7 +3,7 @@
 package dop
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	dp "org/modules/discount/protocol"
 	org "org/modules/org/protocol"

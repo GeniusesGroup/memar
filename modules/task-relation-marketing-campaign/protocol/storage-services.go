@@ -3,7 +3,8 @@
 package trmcp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
+
 	mcp "org/modules/marketing-campaign/protocol"
 	tp "org/modules/task/protocol"
 )

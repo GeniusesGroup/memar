@@ -3,14 +3,14 @@
 package rrp
 
 import (
-	"libgo/protocol"
-
-	urp "org/modules/user-request/protocol"
+	"memar/protocol"
 )
 
 type ReactionRate interface {
-	ReactionTo() [16]byte           // any domain.
-	Rate() uint8                    //
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+	ReactionTo() [16]byte // any domain.
+	Rate() uint8
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }

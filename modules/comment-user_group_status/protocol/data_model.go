@@ -3,19 +3,19 @@
 package cugsp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	gp "org/modules/group/protocol"
-	urp "org/modules/user-request/protocol"
 	up "org/modules/user/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	UserID() up.UserUUID                 //
-	GroupID() gp.GroupUUID               //
-	ReadUntil() protocol.NumberOfVersion //
-	SaveTime() protocol.Time             //
-	RequestID() urp.UserRequestUUID      //
-}
+	UserID() up.UserUUID
+	GroupID() gp.GroupUUID
+	ReadUntil() protocol.NumberOfVersion
 
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
+}

@@ -3,7 +3,7 @@
 package unp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	up "org/modules/user/protocol"
 )
@@ -11,7 +11,7 @@ import (
 type (
 	BS_Register_Request interface {
 		UserID() up.UserUUID // TODO::: get user id from connection??
-		Username() string
+		Username() Username
 	}
 )
 
@@ -33,7 +33,7 @@ type (
 
 type (
 	BS_FindByUsername_Request interface {
-		Username() string
+		Username() Username
 		protocol.Pagination
 	}
 	BS_FindByUsername_Response interface {
@@ -47,7 +47,7 @@ type (
 	BS_SendManualVerification_Request interface {
 		UserID() up.UserUUID
 		OrgID() up.UserUUID
-		Username() string
+		Username() Username
 		ProtocolType() string
 	}
 )
@@ -55,7 +55,7 @@ type (
 	BS_VerifyManually_Request interface {
 		UserID() up.UserUUID
 		OrgID() up.UserUUID
-		Username() string
+		Username() Username
 		Token() string
 	}
 )
@@ -64,7 +64,7 @@ type (
 
 type (
 	BS_ChangeStatus_Request interface {
-		Username() string
-		Status() UserName_Status
+		Username() Username
+		Status() Status
 	}
 )

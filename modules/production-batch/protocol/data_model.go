@@ -3,27 +3,21 @@
 package pbp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
+	prp "org/modules/product/protocol"
 	pp "org/modules/production/protocol"
-	qsp "org/modules/quiddity-status/protocol"
-	urp "org/modules/user-request/protocol"
 )
 
 // DataModel is the structure of production line.
 type DataModel interface {
-	// A lot number is an identification number assigned to a particular quantity or lot of material from a single manufacturer.
-	// https://en.wikipedia.org/wiki/Lot_number
-	LOT() [16]byte                   //
-	ProductionID() pp.ProductionUUID //
-	StartDate() protocol.Time        //
-	EndDate() protocol.Time          //
-	Number() uint64                  //
-	Status() Status                  //
-	SaveTime() protocol.Time         //
-	RequestID() urp.UserRequestUUID  //
+	ProductionBatchID() ProductionBatchUUID
+	ProductID() prp.ProductUUID
+	ProductionID() pp.ProductionUUID
+	Number() uint64
+	Status() Status
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }
-
-type Status qsp.Quiddity_Status
-
-// 0//created 1//ManagerApprove 2//WarehouseApprove 3//ActiveWithApprove 4//ActiveWithoutApprove 5//ActiveWithOrderer 6//Inactive 7//Normal 8//Reject 9//Void

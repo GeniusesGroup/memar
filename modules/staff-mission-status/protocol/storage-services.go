@@ -3,8 +3,8 @@
 package smsp
 
 import (
-	"libgo/protocol"
-	"libgo/time/utc"
+	"memar/protocol"
+	"memar/time/utc"
 
 	sp "org/modules/staff/protocol"
 )

@@ -3,17 +3,18 @@
 package uap
 
 import (
-	qsp "org/modules/quiddity-status/protocol"
-	urp "org/modules/user-request/protocol"
+	"memar/protocol"
+
 	up "org/modules/user/protocol"
 )
 
 type DataModel interface {
-	UserID() up.UserUUID //
+	UserID() up.UserUUID
 	// TODO:::
 	Address() string
 	Status() Status
-	RequestID() urp.UserRequestUUID //
-}
 
-type Status qsp.Quiddity_Status
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
+}

@@ -2,7 +2,7 @@
 
 // sabz.city protocol package show some data in IDL standard for use in any part of the app.
 // https://en.wikipedia.org/wiki/Interface_description_language
-package org
+package modules
 
 const (
 	DomainName = "sabz.city"

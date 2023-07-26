@@ -3,16 +3,17 @@
 package qmap
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	qp "org/modules/questionnaire/protocol"
-	urp "org/modules/user-request/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	QuestionnaireID() qp.QuestionnaireUUID //
-	MaxAttempt() uint16                    //
-	SaveTime() protocol.Time               //
-	RequestID() urp.UserRequestUUID        //
+	QuestionnaireID() qp.QuestionnaireUUID
+	MaxAttempt() uint16
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }

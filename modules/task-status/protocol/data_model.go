@@ -3,26 +3,17 @@
 package tsp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
-	qsp "org/modules/quiddity-status/protocol"
 	tp "org/modules/task/protocol"
-	urp "org/modules/user-request/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	TaskID() tp.TaskUUID            //
-	Status() Status                 //
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+	TaskID() tp.TaskUUID
+	Status() Status
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }
-
-type Status qsp.Quiddity_Status
-
-const (
-	Status_ReadyForDevelopment = Status(qsp.Quiddity_Status_FreeFlag << iota)
-	Status_InProgress
-	Status_Close
-	Status_Success
-)

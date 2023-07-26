@@ -3,23 +3,17 @@
 package rsp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
-	qsp "org/modules/quiddity-status/protocol"
 	rp "org/modules/role/protocol"
-	urp "org/modules/user-request/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	RoleID() rp.RoleUUID            //
-	Status() Status                 //
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+	RoleID() rp.RoleUUID
+	Status() Status
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }
-
-type Status qsp.Quiddity_Status
-
-const (
-	Status_Recruit = Status(qsp.Quiddity_Status_FreeFlag << iota) // Recruitment in progress
-)

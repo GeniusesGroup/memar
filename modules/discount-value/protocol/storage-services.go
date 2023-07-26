@@ -3,7 +3,7 @@
 package dvp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	dp "org/modules/discount/protocol"
 )

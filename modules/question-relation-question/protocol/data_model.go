@@ -3,31 +3,19 @@
 package qrqp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	qp "org/modules/question/protocol"
-	qsp "org/modules/quiddity-status/protocol"
-	urp "org/modules/user-request/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	QuestionID() qp.QuestionUUID    //
-	RelationID() qp.QuestionUUID    //
-	Type() Type                     //
-	Status() Status                 //
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+	QuestionID() qp.QuestionUUID
+	RelationID() qp.QuestionUUID
+	Type() Type
+	Status() Status
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }
-
-type Type uint8
-
-const (
-	Type_Unset Type = iota
-	Type_SubQuestion
-	Type_Translated
-	Type_Complement
-	Type_Hint // use for options not descriptive type.
-)
-
-type Status qsp.Quiddity_Status

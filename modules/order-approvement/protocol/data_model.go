@@ -3,20 +3,19 @@
 package oap
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	op "org/modules/order/protocol"
-	urp "org/modules/user-request/protocol"
 	up "org/modules/user/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	OrderID() op.OrderUUID          //
-	UserID() up.UserUUID            //
-	Status() Status                 //
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
-}
+	OrderID() op.OrderUUID
+	UserID() up.UserUUID
+	Status() Status
 
-type Status uint8
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
+}

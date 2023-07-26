@@ -3,18 +3,19 @@
 package exqdp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	eeqp "org/modules/edu-exam-question/protocol"
-	urp "org/modules/user-request/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	QuestionID() eeqp.EducationQuestionUUID //
-	Language() protocol.Language            //
-	Question() string                       // Content+Presentation(HTML, CSS)
-	CorrectAnswer() string                  // A||B, A&B
-	SaveTime() protocol.Time                //
-	RequestID() urp.UserRequestUUID         //
+	QuestionID() eeqp.EducationQuestionUUID
+	Language() protocol.Language
+	Question() string      // Content+Presentation(HTML, CSS)
+	CorrectAnswer() string // A||B, A&B
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }

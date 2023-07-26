@@ -3,22 +3,16 @@
 package cts
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	ctp "org/modules/contract-template/protocol"
-	qsp "org/modules/quiddity-status/protocol"
-	urp "org/modules/user-request/protocol"
 )
 
 type DataModel interface {
-	ContractTemplateID() ctp.ContractTemplateUUID //
-	Status() Status                               //
-	SaveTime() protocol.Time                      //
-	RequestID() urp.UserRequestUUID               //
+	ContractTemplateID() ctp.ContractTemplateUUID
+	Status() Status
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }
-
-type Status qsp.Quiddity_Status
-
-const (
-	Status_Draft = Status(qsp.Quiddity_Status_FreeFlag << iota)
-)

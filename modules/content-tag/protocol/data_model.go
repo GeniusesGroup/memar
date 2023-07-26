@@ -3,14 +3,16 @@
 package ctp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	cp "org/modules/content/protocol"
 )
 
 type DataModel interface {
-	Tag() string               //
-	ContentID() cp.ContentUUID //
-	SaveTime() protocol.Time   //
-}
+	Tag() string
+	ContentID() cp.ContentUUID
 
+	// protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
+}

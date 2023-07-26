@@ -3,16 +3,17 @@
 package vup
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
-	urp "org/modules/user-request/protocol"
 	vp "org/modules/voucher/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	VoucherID() vp.VoucherUUID      //
-	MaximumInvoice() uint64         //
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+	VoucherID() vp.VoucherUUID
+	MaximumInvoice() uint64
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }

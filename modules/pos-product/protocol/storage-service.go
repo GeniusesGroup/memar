@@ -3,7 +3,7 @@
 package ppp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	pp "org/modules/pos/protocol"
 )

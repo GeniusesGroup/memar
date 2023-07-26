@@ -3,17 +3,18 @@
 package qspp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	qp "org/modules/questionnaire/protocol"
-	urp "org/modules/user-request/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	QuestionnaireID() qp.QuestionnaireUUID //
+	QuestionnaireID() qp.QuestionnaireUUID
 	// TODO::: embed or copy??
-	protocol.Time                   //
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+	protocol.Time
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }

@@ -3,21 +3,19 @@
 package pfap
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	fap "org/modules/financial-account/protocol"
 	pp "org/modules/pos/protocol"
-	qsp "org/modules/quiddity-status/protocol"
-	urp "org/modules/user-request/protocol"
 )
 
 // DataModel or pos operator is to supply a particular service.
 type DataModel interface {
-	PosID() pp.PosUUID                   //
-	AccountID() fap.FinancialAccountUUID //
+	PosID() pp.PosUUID
+	AccountID() fap.FinancialAccountUUID
 	Status() Status
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
-}
 
-type Status qsp.Quiddity_Status
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
+}

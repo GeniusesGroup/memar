@@ -3,44 +3,19 @@
 package qdp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	qp "org/modules/question/protocol"
-	urp "org/modules/user-request/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	QuestionID() qp.QuestionUUID    //
-	Type() Type                     //
-	Min() uint64                    //
-	Max() uint64                    //
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+	QuestionID() qp.QuestionUUID
+	Type() Type
+	Min() uint64
+	Max() uint64
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }
-
-type Type uint8
-
-const (
-	Type_Unset Type = iota
-	Type_Text
-	Type_Textarea
-
-	Type_Color
-
-	Type_Date
-	Type_Time
-	Type_Year
-	Type_Month
-	Type_Week
-
-	Type_Password
-	Type_Email
-	Type_TelNumber
-	Type_URL
-	Type_File
-
-	Type_Number
-	Type_Number_Decimal
-	Type_NumberRange
-)

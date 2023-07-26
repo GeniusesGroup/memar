@@ -3,9 +3,8 @@
 package lrop
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
-	urp "org/modules/user-request/protocol"
 	lp "org/modules/label/protocol"
 )
 
@@ -13,11 +12,13 @@ import (
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	LabelID() lp.LabelUUID             //
-	DomainID() protocol.MediaTypeID //
+	LabelID() lp.LabelUUID
+	DomainID() protocol.MediaTypeID
 	// TODO::: primary key may not be a single field!
 	RecordID() protocol.UUID // in above domain
 	Status()
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }

@@ -3,11 +3,10 @@
 package iip
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	ip "org/modules/invoice/protocol"
 	pp "org/modules/product/protocol"
-	urp "org/modules/user-request/protocol"
 )
 
 // DataModel indicate the domain record data fields.
@@ -15,9 +14,11 @@ import (
 // Ship service can add as an item to invoice
 // Each item must check for reserve validity and make action in end of validity
 type DataModel interface {
-	InvoiceID() ip.InvoiceUUID      //
-	ProductID() pp.ProductUUID      //
-	Quantity() uint64               // decimal >> 1.5 >> 1.2 >> 10 >> 0
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+	InvoiceID() ip.InvoiceUUID
+	ProductID() pp.ProductUUID
+	Quantity() uint64 // decimal >> 1.5 >> 1.2 >> 10 >> 0
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }

@@ -3,7 +3,7 @@
 package rlp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	eblp "org/modules/estate-building-location/protocol"
 	rp "org/modules/role/protocol"

@@ -3,39 +3,17 @@
 package pp
 
 import (
-	"libgo/protocol"
-
-	qsp "org/modules/quiddity-status/protocol"
-	urp "org/modules/user-request/protocol"
+	"memar/protocol"
 )
 
 // DataModel is the structure of production line.
 // https://www.zenscale.in/planning
 type DataModel interface {
-	ProductionID() ProductionUUID   //
-	Type() Type                     //
-	Status() Status                 //
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+	ProductionID() ProductionUUID
+	Type() Type
+	Status() Status
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }
-
-type Type uint8
-
-const (
-	Type_Unset            Type = 0
-	Type_CustomProduction Type = (1 << iota)
-	Type_MassProduction
-)
-
-type Status qsp.Quiddity_Status
-
-//Created
-//ManagerApprove
-//WarehouseApprove
-//ActiveWithApprove
-//ActiveWithoutApprove
-//ActiveWithOrderer
-//Inactive
-//Normal
-//Reject
-//Void

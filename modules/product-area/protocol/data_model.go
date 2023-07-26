@@ -3,22 +3,20 @@
 package pap
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	ep "org/modules/estate/protocol"
 	prp "org/modules/product/protocol"
-	qsp "org/modules/quiddity-status/protocol"
-	urp "org/modules/user-request/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 // DataModel is proper or appropriate location indicate specific area not specific location e.g. Taxi, ...
 type DataModel interface {
-	ProductID() prp.ProductUUID //
-	EstateID() ep.EstateUUID    //
+	ProductID() prp.ProductUUID
+	EstateID() ep.EstateUUID
 	Status() Status
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
-}
 
-type Status qsp.Quiddity_Status
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
+}

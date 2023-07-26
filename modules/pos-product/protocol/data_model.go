@@ -3,18 +3,19 @@
 package ppp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	pp "org/modules/pos/protocol"
 	prp "org/modules/product/protocol"
-	urp "org/modules/user-request/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 // Save shortcut to regular products to easily add to invoice
 type DataModel interface {
-	PosID() pp.PosUUID              //
-	ProductID() []prp.ProductUUID   //
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+	PosID() pp.PosUUID
+	ProductID() []prp.ProductUUID
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }

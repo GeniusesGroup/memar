@@ -3,21 +3,22 @@
 package ecp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	ekup "org/modules/edu-knowledge_unit/protocol"
-	urp "org/modules/user-request/protocol"
 	up "org/modules/user/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	CertificateID() [16]byte                          //
-	KnowledgeUnitID() ekup.EducationKnowledgeUnitUUID //
-	IssuedByID() up.UserUUID                          // organization only??
-	IssuedForID() up.UserUUID                         //
-	Score() uint64                                    //
-	IssueTime() protocol.Time                         //
-	SaveTime() protocol.Time                          //
-	RequestID() urp.UserRequestUUID                   //
+	CertificateID() [16]byte
+	KnowledgeUnitID() ekup.EducationKnowledgeUnitUUID
+	IssuedByID() up.UserUUID // organization only??
+	IssuedForID() up.UserUUID
+	Score() uint64
+	IssueTime() protocol.Time
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }

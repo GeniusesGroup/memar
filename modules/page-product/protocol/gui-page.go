@@ -29,7 +29,7 @@ type GUI_Page_HyperLinks interface {
 }
 
 type GUI_Page_Conditions interface {
-	ProductID() pp.ProductUUID //
+	ProductID() pp.ProductUUID
 
 	Editable() bool
 }

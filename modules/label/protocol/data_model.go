@@ -3,18 +3,15 @@
 package lp
 
 import (
-	"libgo/protocol"
-
-	qsp "org/modules/quiddity-status/protocol"
-	urp "org/modules/user-request/protocol"
+	"memar/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	LabelID() LabelUUID             //
-	Status() Status                 //
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
-}
+	LabelID() LabelUUID
+	Status() Status
 
-type Status qsp.Quiddity_Status
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
+}

@@ -3,29 +3,30 @@
 package dscp
 
 import (
-	"libgo/protocol"
+	"memar/math/per"
+	"memar/protocol"
 
 	dp "org/modules/department/protocol"
-	urp "org/modules/user-request/protocol"
 )
 
 // due to organization payment capacity set values to show how many percent add or remove due to organization profit status
 type DepartmentSalaryCoefficients interface {
-	DepartmentID() dp.DepartmentUUID //
+	DepartmentID() dp.DepartmentUUID
 
-	Importance() protocol.PerMyriad         // importance coefficient of the department
-	Accompanying() protocol.PerMyriad       // Percent for each week
-	ExpertiseAllowance() protocol.PerMyriad //
-	HardshipAllowance() protocol.PerMyriad  //
+	Importance() per.Myriad         // importance coefficient of the department
+	Accompanying() per.Myriad       // Percent for each week
+	ExpertiseAllowance() per.Myriad //
+	HardshipAllowance() per.Myriad  //
 
-	OvertimeWorking() protocol.PerMyriad //
-	WorkingHolidays() protocol.PerMyriad //
-	RotationShift() protocol.PerMyriad   //
-	NightShift() protocol.PerMyriad      //
+	OvertimeWorking() per.Myriad //
+	WorkingHolidays() per.Myriad //
+	RotationShift() per.Myriad   //
+	NightShift() per.Myriad      //
 
-	Income() protocol.PerMyriad           // whole organization income in each week
-	DepartmentIncome() protocol.PerMyriad //
+	Income() per.Myriad           // whole organization income in each week
+	DepartmentIncome() per.Myriad //
 
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }

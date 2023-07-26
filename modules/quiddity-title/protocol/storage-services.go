@@ -3,7 +3,7 @@
 package qtp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	qp "org/modules/quiddity/protocol"
 )

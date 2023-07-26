@@ -3,20 +3,20 @@
 package rhup
 
 import (
-	"libgo/protocol"
-	"libgo/time/earth"
-	"libgo/time/utc"
+	"memar/protocol"
+	"memar/time/earth"
+	"memar/time/utc"
 
 	rp "org/modules/role/protocol"
-	urp "org/modules/user-request/protocol"
 )
 
 type DataModel interface {
-	RoleID() rp.RoleUUID            //
-	Week() utc.WeekElapsed          //
-	Weekdays() utc.Weekdays         // what days in weekday in utc time week this role active to provide services
-	DayHours() earth.DayHours       // what hours in a day this role active to provide services
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
-}
+	RoleID() rp.RoleUUID
+	Week() utc.WeekElapsed
+	Weekdays() utc.Weekdays   // what days in weekday in utc time week this role active to provide services
+	DayHours() earth.DayHours // what hours in a day this role active to provide services
 
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
+}

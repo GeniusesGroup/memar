@@ -3,18 +3,18 @@
 package drop
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	dp "org/modules/department/protocol"
 	org "org/modules/org/protocol"
-	urp "org/modules/user-request/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	OwnerID() org.OrgUUID            //
-	DepartmentID() dp.DepartmentUUID //
-	SaveTime() protocol.Time         //
-	RequestID() urp.UserRequestUUID  //
-}
+	OwnerID() org.OrgUUID
+	DepartmentID() dp.DepartmentUUID
 
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
+}

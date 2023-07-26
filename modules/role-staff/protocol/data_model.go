@@ -3,18 +3,19 @@
 package rsp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	rp "org/modules/role/protocol"
-	urp "org/modules/user-request/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	RoleID() rp.RoleUUID            //
-	Minimum() int                   // Minimum number of employees for this job position
-	Expected() int                  // Expected number of employees for this job position
-	Maximum() int                   // Maximum number of employees for this job position
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+	RoleID() rp.RoleUUID
+	Minimum() int32  // Minimum number of employees for this job position
+	Expected() int32 // Expected number of employees for this job position
+	Maximum() int32  // Maximum number of employees for this job position
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }

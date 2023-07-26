@@ -3,7 +3,8 @@
 package trpp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
+
 	pp "org/modules/project/protocol"
 	tp "org/modules/task/protocol"
 )

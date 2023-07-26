@@ -3,7 +3,7 @@
 package pcp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	cp "org/modules/content/protocol"
 	pp "org/modules/product/protocol"

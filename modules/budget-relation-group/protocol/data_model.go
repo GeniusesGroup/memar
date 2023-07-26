@@ -3,17 +3,18 @@
 package brgp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
+
 	bp "org/modules/budget/protocol"
 	gp "org/modules/group/protocol"
-	urp "org/modules/user-request/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	BudgetID() bp.BudgetUUID //
-	GroupID() gp.GroupUUID   //
+	BudgetID() bp.BudgetUUID
+	GroupID() gp.GroupUUID
 
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }

@@ -3,18 +3,19 @@
 package vpp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	pp "org/modules/product/protocol"
-	urp "org/modules/user-request/protocol"
 	vp "org/modules/voucher/protocol"
 )
 
 // DataModel restrict use voucher on specific product
 type DataModel interface {
-	VoucherID() vp.VoucherUUID      //
-	Each() uint8                    // Each time use
-	ProductID() []pp.ProductUUID    //
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+	VoucherID() vp.VoucherUUID
+	Each() vp.Each
+	ProductID() []pp.ProductUUID
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }

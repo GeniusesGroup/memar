@@ -3,21 +3,20 @@
 package dtup
 
 import (
-	"libgo/protocol"
-	"libgo/time/earth"
-	"libgo/time/utc"
+	"memar/protocol"
+	"memar/time/earth"
+	"memar/time/utc"
 
-	urp "org/modules/user-request/protocol"
 	dp "org/modules/discount/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	DiscountID() dp.DiscountUUID    //
-	Weekdays() utc.Weekdays         // what days in weekday in utc time week allow to use this discount
-	DayHours() earth.DayHours       // what hours in day in utc time week allow to use this discount
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+	DiscountID() dp.DiscountUUID
+	Weekdays() utc.Weekdays   // what days in weekday in utc time week allow to use this discount
+	DayHours() earth.DayHours // what hours in day in utc time week allow to use this discount
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }
-
-

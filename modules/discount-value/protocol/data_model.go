@@ -3,18 +3,19 @@
 package dvp
 
 import (
-	"libgo/protocol"
+	"memar/math/per"
+	"memar/protocol"
 
-	urp "org/modules/user-request/protocol"
 	dp "org/modules/discount/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	DiscountID() dp.DiscountUUID    //
-	Quantity() protocol.PerMyriad   // max discount percentage for each invoices, products, ... price
-	Price() protocol.MoneyAmount    // max discount price can use for each invoices, product, ... price
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
-}
+	DiscountID() dp.DiscountUUID
+	Quantity() per.Myriad        // max discount percentage for each invoices, products, ... price
+	Price() protocol.MoneyAmount // max discount price can use for each invoices, product, ... price
 
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
+}

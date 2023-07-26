@@ -3,7 +3,7 @@
 package ppp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	fcp "org/modules/financial-currency/protocol"
 	pp "org/modules/product/protocol"

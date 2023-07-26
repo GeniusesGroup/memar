@@ -3,21 +3,20 @@
 package ivp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	ip "org/modules/invoice/protocol"
-	urp "org/modules/user-request/protocol"
 	vp "org/modules/voucher/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 // This domain will let users redeem their vouchers and track vouchers rules.
 type DataModel interface {
-	InvoiceID() ip.InvoiceUUID        //
-	VoucherID() vp.VoucherUUID        //
-	Discounted() protocol.MoneyAmount //
-	SaveTime() protocol.Time          //
-	RequestID() urp.UserRequestUUID   //
+	InvoiceID() ip.InvoiceUUID
+	VoucherID() vp.VoucherUUID
+	Discounted() protocol.MoneyAmount
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }
-
-

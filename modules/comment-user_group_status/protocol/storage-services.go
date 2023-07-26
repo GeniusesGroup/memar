@@ -3,7 +3,7 @@
 package cugsp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	gp "org/modules/group/protocol"
 	up "org/modules/user/protocol"

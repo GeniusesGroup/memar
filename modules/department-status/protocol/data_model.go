@@ -3,22 +3,16 @@
 package dsp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	dp "org/modules/department/protocol"
-	qsp "org/modules/quiddity-status/protocol"
-	urp "org/modules/user-request/protocol"
 )
 
 type DepartmentStatus interface {
-	DepartmentID() dp.DepartmentUUID //
-	Status() Status                  //
-	SaveTime() protocol.Time         //
-	RequestID() urp.UserRequestUUID  //
+	DepartmentID() dp.DepartmentUUID
+	Status() Status
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }
-
-type Status qsp.Quiddity_Status
-
-const (
-// Status_ Status = (Quiddity_Status_FreeFlag << iota)
-)

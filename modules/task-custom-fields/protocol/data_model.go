@@ -3,7 +3,7 @@
 package tcfp
 
 // import (
-// 	"libgo/protocol"
+// 	"memar/protocol"
 // )
 
 // TODO::: to add custom fields by user??

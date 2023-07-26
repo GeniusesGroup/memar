@@ -3,16 +3,17 @@
 package org
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	cp "org/modules/coordinate/protocol"
-	urp "org/modules/user-request/protocol"
 )
 
 type DataModel interface {
-	CoordinateID() cp.CoordinateUUID //
-	Distance() uint64                // km or ...
-	AverageSpeed() uint64            // km/h or ...
-	SaveTime() protocol.Time         //
-	RequestID() urp.UserRequestUUID  //
+	CoordinateID() cp.CoordinateUUID
+	Distance() uint64     // km or ...
+	AverageSpeed() uint64 // km/h or ...
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }

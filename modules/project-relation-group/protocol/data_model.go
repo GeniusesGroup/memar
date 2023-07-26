@@ -3,25 +3,19 @@
 package prgp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	gp "org/modules/group/protocol"
 	pp "org/modules/project/protocol"
-	urp "org/modules/user-request/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	ProjectID() pp.ProjectUUID      //
-	GroupID() gp.GroupUUID          //
-	ProjectGroupRelation() Type     //
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+	ProjectID() pp.ProjectUUID
+	GroupID() gp.GroupUUID
+	ProjectGroupRelation() Type
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }
-
-type Type uint8
-
-const (
-	Type_Unset Type = iota
-	Type_Authorization
-)

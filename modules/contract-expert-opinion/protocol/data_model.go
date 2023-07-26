@@ -3,17 +3,19 @@
 package org
 
 import (
-	"libgo/protocol"
+	"memar/math/per"
+	"memar/protocol"
 
-	urp "org/modules/user-request/protocol"
 	cp "org/modules/contract/protocol"
 )
 
 type ContractExpertOpinion interface {
-	ContractID() cp.ContractUUID    //
-	ExpertID() [16]byte             //
-	Opinion() string                //
-	Progress() protocol.PerMyriad   //
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+	ContractID() cp.ContractUUID
+	ExpertID() [16]byte
+	Opinion() string
+	Progress() per.Myriad
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }

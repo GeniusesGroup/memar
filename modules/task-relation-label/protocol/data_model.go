@@ -3,19 +3,20 @@
 package trlp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	lp "org/modules/label/protocol"
 	tp "org/modules/task/protocol"
-	urp "org/modules/user-request/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	TaskID() tp.TaskUUID            //
-	Label() lp.LabelUUID            //
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+	TaskID() tp.TaskUUID
+	Label() lp.LabelUUID
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }
 
 // default labels:

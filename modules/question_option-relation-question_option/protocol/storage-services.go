@@ -3,7 +3,7 @@
 package qorqop
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	qp "org/modules/question/protocol"
 	qop "org/modules/question_option/protocol"

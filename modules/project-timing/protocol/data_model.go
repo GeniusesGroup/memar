@@ -3,17 +3,18 @@
 package ptp
 
 import (
-	"libgo/protocol"
+	"memar/protocol"
 
 	pp "org/modules/project/protocol"
-	urp "org/modules/user-request/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	ProjectID() pp.ProjectUUID      //
-	ExpectedTime() protocol.Time    //
-	Deadline() protocol.Time        //
-	SaveTime() protocol.Time        //
-	RequestID() urp.UserRequestUUID //
+	ProjectID() pp.ProjectUUID
+	ExpectedTime() protocol.Time
+	Deadline() protocol.Time
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }

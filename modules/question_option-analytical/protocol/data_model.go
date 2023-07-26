@@ -3,17 +3,19 @@
 package qoap
 
 import (
-	"libgo/protocol"
+	"memar/math/per"
+	"memar/protocol"
 
 	qop "org/modules/question_option/protocol"
-	urp "org/modules/user-request/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	QuestionOptionID() qop.QuestionOptionUUID //
-	Progress() protocol.PerMyriad             // =~ AmountOfProgress,  EarnGoal
-	TimeFrame() protocol.Duration             //
-	SaveTime() protocol.Time                  //
-	RequestID() urp.UserRequestUUID           //
+	QuestionOptionID() qop.QuestionOptionUUID
+	Progress() per.Myriad // =~ AmountOfProgress,  EarnGoal
+	TimeFrame() protocol.Duration
+
+	protocol.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }
