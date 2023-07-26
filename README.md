@@ -1,5 +1,5 @@
 # Organization Software Template
-organization is a template repository to easily make a software for an organization with all basic functionality that any organization need in data era. Use [libgo](https://github.com/GeniusesGroup/libgo) CLI functionality to interact with this repo.
+organization is a template repository to easily make a software for an organization with all basic functionality that any organization need in data era. Use [memar-go](https://github.com/GeniusesGroup/memar-go) CLI functionality to interact with this repo.
 
 As all know, We develope and adopt software in any organization for one main goal as to increase productivity and profit.
 
