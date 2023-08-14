@@ -11,18 +11,10 @@ import (
 // DataModel indicate the domain record data fields.
 type DataModel interface {
 	ProductID() pp.ProductUUID
-	Epoch() ProductDuration_Epoch
+	Epoch() Epoch
 	Duration() protocol.Duration // from first use
 
 	protocol.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }
-
-type ProductDuration_Epoch uint8
-
-const (
-	ProductDuration_Epoch_Unset ProductDuration_Epoch = iota
-	ProductDuration_Epoch_FirstUse
-	ProductDuration_Epoch_PurchaseTime
-)
