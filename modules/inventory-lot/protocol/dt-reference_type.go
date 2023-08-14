@@ -1,6 +1,6 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package icp
+package ilp
 
 type ReferenceType uint8
 

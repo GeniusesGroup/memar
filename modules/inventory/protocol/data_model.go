@@ -13,11 +13,9 @@ import (
 // DataModel indicate the domain record data fields.
 // ProductInventory or good stock
 type DataModel interface {
-	LotID() pbp.ProductBatchUUID
+	LotID() pbp.LotUUID
 	WarehouseID() wp.WarehouseUUID
 	InventoryChangeID() icp.InventoryChangeUUID
-	Amount() int64 // this transaction
-	Stock() int64  // overall in each location
 
 	protocol.AuditLogging
 	protocol.Storage_Versioned

@@ -1,21 +1,21 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package ilp
 
 import (
 	"memar/protocol"
-
-	op "org/modules/org/protocol"
-	pp "org/modules/product/protocol"
-	pbp "org/modules/production-batch/protocol"
 )
+
+// Some resource:
+// https://www.odoo.com/documentation/16.0/applications/inventory_and_mrp/inventory/management/lots_serial_numbers/lots.html
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	ProductBatchID() ProductBatchUUID
-	ProductionBatchID() pbp.ProductionBatchUUID
-	ProductID() pp.ProductUUID
-	OwnerID() op.OrgUUID
+	LotID() LotUUID
+	ReferenceType() ReferenceType
+	ReferenceID() protocol.UUID // Depend on ReferenceType()
+	Amount() int64              // this transaction
+	Stock() int64               // overall in each location
 
 	protocol.AuditLogging
 	protocol.Storage_Versioned

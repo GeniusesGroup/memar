@@ -5,7 +5,7 @@ package icp
 import (
 	"memar/protocol"
 
-	eblp "org/modules/estate-building-location/protocol"
+	ilp "org/modules/inventory-lot/protocol"
 	pp "org/modules/product/protocol"
 )
 
@@ -13,11 +13,9 @@ import (
 type DataModel interface {
 	InventoryChangeID() InventoryChangeUUID
 	ProductID() pp.ProductUUID
-	From() eblp.BuildingLocationUUID
-	To() eblp.BuildingLocationUUID // Can be zero for voiding products.
-	ReferenceID() protocol.UUID    // Depend on ReferenceType()
-	ReferenceType() ReferenceType
-	Amount() int64 // this transaction
+	From() ilp.LotUUID
+	To() ilp.LotUUID // Can be zero for voiding products.
+	Amount() int64   // this transaction
 	Priority() uint64
 
 	protocol.AuditLogging
