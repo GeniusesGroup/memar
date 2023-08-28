@@ -1,9 +1,11 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package ilp
+package itp
 
 import (
 	"memar/protocol"
+
+	ip "org/modules/inventory/protocol"
 )
 
 // Some resource:
@@ -11,7 +13,7 @@ import (
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	LotID() LotUUID
+	InventoryID() ip.InventoryUUID
 	ReferenceType() ReferenceType
 	ReferenceID() protocol.UUID // Depend on ReferenceType()
 	Amount() int64              // this transaction

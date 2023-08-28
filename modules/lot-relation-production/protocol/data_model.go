@@ -1,23 +1,18 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package lrpp
 
 import (
 	"memar/protocol"
 
-	// op "org/modules/org/protocol"
-	// pp "org/modules/product/protocol"
+	lotp "org/modules/lot/protocol"
 	pbp "org/modules/production-batch/protocol"
-	wp "org/modules/warehouse/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	LotID() LotUUID
+	LotUUID() lotp.LotUUID
 	BatchID() pbp.ProductionBatchUUID
-	WarehouseID() wp.WarehouseUUID
-	// ProductID() pp.ProductUUID
-	// OwnerID() op.OrgUUID
 
 	protocol.AuditLogging
 	protocol.Storage_Versioned

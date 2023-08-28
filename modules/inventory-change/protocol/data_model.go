@@ -5,17 +5,15 @@ package icp
 import (
 	"memar/protocol"
 
-	ilp "org/modules/inventory-lot/protocol"
-	pp "org/modules/product/protocol"
+	ip "org/modules/inventory/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
 	InventoryChangeID() InventoryChangeUUID
-	ProductID() pp.ProductUUID
-	From() ilp.LotUUID
-	To() ilp.LotUUID // Can be zero for voiding products.
-	Amount() int64   // this transaction
+	From() ip.InventoryUUID
+	To() ip.InventoryUUID // Can be zero for voiding products.
+	Amount() int64        // this transaction
 	Priority() uint64
 
 	protocol.AuditLogging
