@@ -18,9 +18,8 @@ type DataModel interface {
 	OrderID() op.OrderUUID
 	SideType() SideType
 	Kind() Order_Kind
-	KindID() [16]byte // depend on kind A type
+	KindID() protocol.UUID // depend on kind A type
 	Amount() int64    // + || -		or Quantity
-	Type() Type
 
 	protocol.AuditLogging
 	protocol.Storage_Versioned

@@ -14,6 +14,7 @@ import (
 type DataModel interface {
 	OrderID() OrderUUID
 	UserID() up.UserUUID
+	Type() Type
 
 	protocol.AuditLogging
 	protocol.Storage_Versioned

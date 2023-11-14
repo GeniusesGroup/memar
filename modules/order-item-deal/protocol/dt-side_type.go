@@ -8,5 +8,4 @@ const (
 	SideType_Unset SideType = iota
 	SideType_Buy
 	SideType_Sell
-	// OrderItemDetail_SideType_...
 )
