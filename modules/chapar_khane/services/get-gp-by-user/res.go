@@ -1,0 +1,14 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+package ggbuService
+
+type Response struct {
+	GPUserID     uint32
+	Weight       uint8 // 16 queue for priority weight of the connections exist.
+	MaxBandwidth uint64
+	MTU          uint16
+}
+
+func (res *Response) sRPCEncoder(buf []byte) error {
+	return nil
+}
