@@ -5,13 +5,14 @@ package omp
 import (
 	"memar/protocol"
 
+	dp "org/modules/deal/protocol"
 	op "org/modules/order/protocol"
 )
 
 // DataModel indicate the domain record data fields. each order is immutable record.
 type DataModel interface {
+	DealID() dp.DealUUID
 	OrderID() op.OrderUUID
-	SideOrderID() op.OrderUUID
 
 	protocol.AuditLogging
 	protocol.Storage_Versioned
