@@ -9,3 +9,6 @@
 
 ## Related Projects
 - https://github.com/open5gs/freeDiameter4
+- https://www.vultr.com/api/#tag/baremetal
+- https://docs.openstack.org/api-quick-start/
+- https://docs.digitalocean.com/reference/api/api-reference/
