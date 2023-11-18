@@ -1,0 +1,160 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+package error
+
+import (
+	er "memar/error"
+	"memar/http"
+	"memar/json"
+	lang "memar/language"
+	"memar/srpc"
+	"memar/syllab"
+)
+
+var getPlatfromErrorsSDKService = service.Service{
+	URN:                "domain/achaemenid.protocol.service; name=get-platform-errors-js-sdk",
+	Domain:             DomainName,
+	ID:                 5727209077706595565,
+	IssueDate:          1620305281,
+	ExpiryDate:         0,
+	ExpireInFavorOfURN: "",
+	ExpireInFavorOfID:  0,
+	Status:             protocol.Software_PreAlpha,
+
+	Authorization: authorization.Service{
+		CRUD:     authorization.CRUDRead,
+		UserType: protocol.UserType_All,
+	},
+
+	Detail: map[protocol.LanguageID]service.ServiceDetail{
+		protocol.LanguageEnglish: {
+			Name:                                           "Get Platform Errors JS SDK",
+			Description: "Returns all platform errors in JS language",
+			TAGS:                                           []string{},
+		},
+	},
+
+	SRPCHandler: GetPlatfromErrorsSDKSRPC,
+	ServeHTTP: GetPlatfromErrorsSDKHTTP,
+}
+
+// GetPlatfromErrorsSDKSRPC is sRPC handler of GetPlatfromErrorsSDK service.
+func GetPlatfromErrorsSDKSRPC(st protocol.Stream) {
+	var req = &getPlatfromErrorsSDKReq{}
+	err = req.FromSyllab(srpc.GetPayload(st.IncomePayload))
+	if err != nil {
+		return
+	}
+
+	var res *getPlatfromErrorsSDKRes
+	res, err = getPlatfromErrorsSDK(st, req)
+	// Check if any error occur in bussiness logic
+	if err != nil {
+		return
+	}
+
+	st.OutcomePayload = res.SDK
+}
+
+// GetPlatfromErrorsSDKHTTP is HTTP handler of GetPlatfromErrorsSDK service.
+func GetPlatfromErrorsSDKHTTP(st protocol.Stream, httpReq *http.Request, httpRes *http.Response) {
+	var req = &getPlatfromErrorsSDKReq{}
+	err = req.FromJSON(httpReq.Body().Marshal())
+	if err != nil {
+		httpRes.SetStatus(http.StatusBadRequestCode, http.StatusBadRequestPhrase)
+		return
+	}
+
+	var res *getPlatfromErrorsSDKRes
+	res, err = getPlatfromErrorsSDK(st, req)
+	// Check if any error occur in bussiness logic
+	if err != nil {
+		httpRes.SetStatus(http.StatusBadRequestCode, http.StatusBadRequestPhrase)
+		return
+	}
+
+	httpRes.SetStatus(http.StatusOKCode, http.StatusOKPhrase)
+	httpRes.Header.Set(http.HeaderKeyContentType, "application/javascript")
+	httpRes.Body = res.SDK
+}
+
+type getPlatfromErrorsSDKReq struct {
+	Language protocol.Language
+}
+
+type getPlatfromErrorsSDKRes struct {
+	SDK []byte
+}
+
+func getPlatfromErrorsSDK(st protocol.Stream, req *getPlatfromErrorsSDKReq) (res *getPlatfromErrorsSDKRes, err protocol.Error) {
+	res = &getPlatfromErrorsSDKRes{
+		SDK: er.Errors.GetErrorsInJsFormat(req.Language),
+	}
+	return
+}
+
+/*
+	Request Encoders & Decoders
+*/
+
+func (req *getPlatfromErrorsSDKReq) FromSyllab(payload []byte, stackIndex uint32) {
+	if uint32(len(buf)) < req.LenOfSyllabStack() {
+		err = syllab.ErrShortArrayDecode
+		return
+	}
+
+	req.Language = protocol.Language(syllab.GetUInt32(buf, 0))
+	return
+}
+
+func (req *getPlatfromErrorsSDKReq) ToSyllab(payload []byte, stackIndex, heapIndex uint32) (freeHeapIndex uint32)
+	syllab.SetUInt32(buf, 0, uint32(req.Language))
+	return
+}
+
+func (req *getPlatfromErrorsSDKReq) LenOfSyllabStack() uint32 {
+	return 4
+}
+
+func (req *getPlatfromErrorsSDKReq) LenOfSyllabHeap() (ln uint32) {
+	return
+}
+
+func (req *getPlatfromErrorsSDKReq) LenAsSyllab() uint64 {
+	return uint64(req.LenOfSyllabStack() + req.LenOfSyllabHeap())
+}
+
+func (req *getPlatfromErrorsSDKReq) FromJSON(payload []byte) (remaining []byte, err protocol.Error) {
+	var decoder = json.DecoderUnsafeMinified{Buf: payload}
+	for err == nil {
+		var keyName = decoder.DecodeKey()
+		switch keyName {
+		case "Language":
+			var num uint32
+			num, err = decoder.DecodeUInt32()
+			req.Language = protocol.Language(num)
+		default:
+			err = decoder.NotFoundKeyStrict()
+		}
+
+		if decoder.End() {
+			return
+		}
+	}
+	return
+}
+
+func (req *getPlatfromErrorsSDKReq) ToJSON(payload []byte) (added []byte, err protocol.Error) {
+	var encoder = json.Encoder{Buf: payload}
+
+	encoder.EncodeString(`{"Language":`)
+	encoder.EncodeUInt32(uint32(req.Language))
+
+	encoder.EncodeByte('}')
+	return encoder.Buf
+}
+
+func (req *getPlatfromErrorsSDKReq) LenAsJSON() (ln int) {
+	ln = 23
+	return
+}

@@ -1,0 +1,18 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+package node
+
+type replication struct {
+	ReplicationID uint8
+	State         uint8
+	Nodes         []*Node // sort by index ranges!
+}
+
+// Replication State
+const (
+	// Master use to consistency of read and write and detect active master transaction manager
+	ReplicationStateMaster uint8 = iota
+	ReplicationStateReadWrite
+	ReplicationStateRead
+	ReplicationStateStop
+)

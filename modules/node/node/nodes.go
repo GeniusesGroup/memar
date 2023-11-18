@@ -1,0 +1,208 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+package node
+
+import (
+	"bytes"
+	"context"
+	"net"
+
+	"memar/log"
+	"memar/protocol"
+)
+
+// use consistent hashing
+type Nodes struct {
+	Replications       replications
+	localNode          *Node
+	Nodes              []Node // sort in nodeID
+	nodesDetails       []NodeDetails
+	PrimaryIndexRanges []uint64 // First left 64bit of record ID!
+	StorageCapacity    [16]byte // In bytes, Max 2^128 Byte, Is it enough!!??
+	OldCluster         *Nodes   // Just exist in Re-Allocate process like add node or replication zone!
+}
+
+func (n *Nodes) LocalNode() protocol.ApplicationNode                { return n.localNode }
+func (n *Nodes) GetNodeByID(nodeID uint64) protocol.ApplicationNode { return &n.Nodes[nodeID] }
+
+// Init use to get other node data and make connection to each of them
+func (n *Nodes) Init() (err protocol.Error) {
+	var goErr error
+
+	var localNode = Node{
+		// InstanceID: uuid.Random32Byte(),
+		State: NodeStateLocalNode,
+	}
+
+	if protocol.AppMode_Dev {
+		n.LocalNode = &localNode
+		n.Nodes = append(n.Nodes, localNode)
+	} else {
+		// TODO::: change to Giti network when it is ready to serve lookup domain to GP address.
+		var ipsAddr []net.IPAddr
+		ipsAddr, goErr = net.DefaultResolver.LookupIPAddr(context.Background(), Server.Manifest.DomainName)
+		if goErr != nil {
+			// TODO::: block and try agin for 3 times??
+		}
+
+		if protocol.AppMode_Dev {
+			log.Debug(domainEnglish, "Available nodes addr:", ipsAddr)
+		}
+
+		// Check if this is first instance of platform app.
+		if len(ipsAddr) == 1 {
+			n.Nodes = append(n.Nodes, localNode)
+			n.LocalNode = &n.Nodes[0]
+		} else {
+			var conn *Connection
+			var ipAddr [16]byte
+			copy(ipAddr[:], ipsAddr[0].IP)
+			conn, err = Server.Connections.MakeNewIPConnection(ipAddr)
+			if err != nil {
+				// TODO::: why fresh starting app can't make new connection???
+			}
+			var res *getServerNodeDetailsRes
+			res, err = getServerNodeDetails(conn)
+			if err != nil {
+				// TODO::: try other node to get platform nodes??
+			}
+
+			var ln = len(res.nodes)
+			n.Nodes = make([]Node, ln)
+			n.nodesDetails = make([]NodeDetails, ln)
+			for i := 0; i < ln; i++ {
+				n.Nodes[i].ID = res.nodes[i].ID
+				n.nodesDetails[i].ID = res.nodes[i].ID
+
+				n.nodesDetails[i].GPAddr = res.nodes[i].GPAddr
+				n.nodesDetails[i].IPAddr = res.nodes[i].IPAddr
+
+				if !bytes.Equal(res.nodes[i].IPAddr[:], Server.Networks.localIP[:]) {
+					n.Nodes[i].Conn, err = Server.Connections.MakeNewIPConnection(res.nodes[i].IPAddr)
+				}
+			}
+		}
+
+		// Register local node to cluster
+	}
+
+	var nodes = protocol.App.Nodes()
+	var ln = len(nodes)
+	if ln < int(c.Manifest.TotalZones) {
+		log.Warn(domainEnglish, "Just", ln, "node available but due to ReplicationNumber platform need more nodes! Run more nodes as soon as possible or data lost occur on the nodes failure!")
+		c.Replications.Zones = make([]replication, ln)
+	} else {
+		c.Replications.Zones = make([]replication, c.Manifest.TotalZones)
+	}
+	if ln == 1 {
+		var firstNode = Node{
+			Node:                   &nodes[0],
+			ID:                     0,
+			replicationID:          0,
+			primaryIndexStartRange: 0,
+			State:                  NodeStateUnset,
+		}
+		c.Replications.TotalNodesInZone = 1
+		c.Replications.Zones[0].Nodes = append(c.Replications.Zones[0].Nodes, firstNode)
+		c.Node = &c.Replications.Zones[0].Nodes[0]
+	} else {
+		for i := 0; i < ln; i++ {
+			go c.addNode(&nodes[i])
+		}
+	}
+
+	go c.orderZones()
+	return
+}
+
+func (n *Nodes) Deinit() (err protocol.Error) {
+	// Notify other nodes
+	return
+}
+
+// FindNodeIDByObjectID use to find responsible node ID for given record node part!
+// Nodes in each replication store in sort so nodeID is array location of desire node in any replication!
+func (n *Nodes) FindNodeIDByObjectID(recordID [32]byte) (nodeID uint32) {
+	if c.Replications.TotalNodesInZone < 2 {
+		// Due to nodeID == 0, Don't need to assign it again!!
+		return
+	}
+
+	var recordNodePart uint64 = uint64(recordID[0]) | uint64(recordID[1])<<8 | uint64(recordID[2])<<16 | uint64(recordID[3])<<24 |
+		uint64(recordID[4])<<32 | uint64(recordID[5])<<40 | uint64(recordID[6])<<48 | uint64(recordID[7])<<56
+
+	var primaryIndexRanges = c.PrimaryIndexRanges
+
+	var high uint32 = c.Replications.TotalNodesInZone - 1
+	var median uint32
+	var diff uint32
+	for nodeID < high {
+		diff = high - nodeID
+		if diff < 3 {
+			median = nodeID + 1 // or high - 1
+			if primaryIndexRanges[high] <= recordNodePart {
+				nodeID = high
+			} else if primaryIndexRanges[median] <= recordNodePart {
+				nodeID = median
+			}
+			break
+		} else {
+			median = nodeID + diff/2
+			if primaryIndexRanges[median] < recordNodePart {
+				nodeID = median
+			} else {
+				high = median
+			}
+		}
+	}
+
+	return
+}
+
+// GetNodeByObjectID returns the node have desire record in best replication.
+func (n *Nodes) GetNodeByObjectID(recordID [32]byte) (node *Node) {
+	var nodeID uint32 = c.FindNodeIDByObjectID(recordID)
+
+	var i uint8
+	for i = 0; i < c.Manifest.TotalZones; i++ {
+		if c.Replications.Zones[i].Nodes[nodeID].Conn == nil {
+			return &c.Replications.Zones[i].Nodes[nodeID]
+		}
+		// Indicate conn! Maybe closest Ganjine node not response recently
+		if c.Replications.Zones[i].Nodes[nodeID].Conn.State == protocol.StateOpen {
+			return &c.Replications.Zones[i].Nodes[nodeID]
+		}
+	}
+
+	return
+}
+
+// ChangeReplicationNumber call it by dev to change replication number!
+func (n *Nodes) ChangeReplicationNumber(replicationNumber uint8) {
+	// first check exiting number of replications!
+	// if c.Manifest.TotalZones == replicationNumber {
+	// 	return
+	// }
+}
+
+// AddNewNode just call from master responsible node to split node range to two or more node!
+func (n *Nodes) AddNewNode() {}
+
+func (n *Nodes) AddNode(an protocol.ApplicationNode) {
+	var err error
+	var node = Node{
+		Node: an,
+	}
+
+	if an.State == protocol.NodeStateLocalNode {
+		c.Node = &node
+	} else {
+		err = n.getNodeDetails(an)
+		if err != nil {
+
+		}
+
+		// Add n.primaryIndexStartRange to c.PrimaryIndexRanges
+		// Add n.hashIndexStartRange to c.IndexRanges
+	}
+}
