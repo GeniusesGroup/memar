@@ -1,10 +1,11 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package urdp
+package ardp
 
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	up "org/modules/user/protocol"
 )
 
@@ -21,7 +22,7 @@ type DataModel interface {
 	CompressID() uint64 // gzip
 	Request() []byte    // Decode by service request structure and compress type.
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }
