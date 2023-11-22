@@ -5,9 +5,9 @@ package cgp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	cp "org/modules/comment/protocol"
 	gp "org/modules/group/protocol"
-	up "org/modules/user/protocol"
 )
 
 // DataModel indicate the domain record data fields.
@@ -15,9 +15,8 @@ import (
 type DataModel interface {
 	GroupID() gp.GroupUUID
 	CommentID() cp.CommentUUID
-	UserID() up.UserUUID
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

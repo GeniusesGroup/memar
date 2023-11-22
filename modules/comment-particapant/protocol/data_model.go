@@ -5,6 +5,7 @@ package cpp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	cp "org/modules/comment/protocol"
 	up "org/modules/user/protocol"
 )
@@ -14,7 +15,10 @@ type DataModel interface {
 	CommentID() cp.CommentUUID
 	UserID() up.UserUUID
 
-	protocol.AuditLogging
+	// TODO::: Do we need this type or it must handle in other domains?
+	Type()
+
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

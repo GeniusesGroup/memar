@@ -5,16 +5,15 @@ package cp
 import (
 	"memar/protocol"
 
-	up "org/modules/user/protocol"
+	arp "org/modules/app-request/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
 	CommentID() CommentUUID
-	UserID() up.UserUUID
 	Type() Type
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }
