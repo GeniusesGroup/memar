@@ -1,15 +1,13 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package oip
+package ap
 
 import (
 	"memar/protocol"
-
-	np "org/modules/node/protocol"
 )
 
 type DataModel interface {
-	AppID() np.UUID
+	AppID() AppUUID
 
 	protocol.AuditLogging
 	protocol.Storage_Versioned
