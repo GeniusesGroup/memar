@@ -5,6 +5,7 @@ package prpp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	pp "org/modules/project/protocol"
 )
 
@@ -16,7 +17,7 @@ type DataModel interface {
 	Type() Type
 	Status() Status
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

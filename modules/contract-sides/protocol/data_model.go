@@ -5,6 +5,7 @@ package org
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	cp "org/modules/contract/protocol"
 	up "org/modules/user/protocol"
 )
@@ -15,7 +16,7 @@ type ContractSides interface {
 	UserID() up.UserUUID // Can be any user type e.g. staff
 	UserSignature() []byte
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

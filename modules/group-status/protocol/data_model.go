@@ -5,6 +5,7 @@ package gsp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	gp "org/modules/group/protocol"
 	up "org/modules/user/protocol"
 )
@@ -15,7 +16,7 @@ type DataModel interface {
 	UserID() up.UserUUID
 	Status() Status
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

@@ -5,6 +5,7 @@ package pinp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	np "org/modules/notification/protocol"
 	op "org/modules/org/protocol"
 	pp "org/modules/product/protocol"
@@ -23,7 +24,7 @@ type ProductInventoryNotify interface {
 	StockOperator() []protocol.ComparisonOperator
 	Stock() []int64
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

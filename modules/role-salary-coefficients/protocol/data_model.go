@@ -6,6 +6,7 @@ import (
 	"memar/math/per"
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	rp "org/modules/role/protocol"
 )
 
@@ -25,7 +26,7 @@ type DataModel interface {
 	Income() per.Myriad           // whole organization income
 	DepartmentIncome() per.Myriad //
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

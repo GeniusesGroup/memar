@@ -5,6 +5,7 @@ package rsp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	rp "org/modules/role/protocol"
 )
 
@@ -15,7 +16,7 @@ type DataModel interface {
 	Expected() int32 // Expected number of employees for this job position
 	Maximum() int32  // Maximum number of employees for this job position
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

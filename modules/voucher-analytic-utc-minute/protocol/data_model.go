@@ -13,7 +13,6 @@ type DataModel interface {
 	TotalIssued() uint64
 	TotalIssuedAmount() protocol.MoneyAmount
 
-	// protocol.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

@@ -5,6 +5,7 @@ package fap
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	fcp "org/modules/financial-currency/protocol"
 	org "org/modules/org/protocol"
 	up "org/modules/user/protocol"
@@ -19,7 +20,7 @@ type DataModel interface {
 	SettlementReference() org.OrgUUID // Clearing and Settlement. MoneySettlementReference can be any org or society user.
 	SettlementInterval() protocol.Duration
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

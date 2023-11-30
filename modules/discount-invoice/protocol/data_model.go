@@ -5,6 +5,7 @@ package dip
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	dp "org/modules/discount/protocol"
 )
 
@@ -14,7 +15,7 @@ type DataModel interface {
 	MinPrice() protocol.MoneyAmount // Minimum invoice price
 	MinAmount() uint64              // Minimum invoice product numbers
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

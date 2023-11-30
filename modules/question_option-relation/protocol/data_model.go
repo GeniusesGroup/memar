@@ -5,6 +5,7 @@ package qorp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	qop "org/modules/question_option/protocol"
 )
 
@@ -13,7 +14,7 @@ type DataModel interface {
 	QuestionOptionID() qop.QuestionOptionUUID
 	RelationID() [16]byte // Question, Questionnaire
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

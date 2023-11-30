@@ -5,6 +5,7 @@ package dap
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	dp "org/modules/discount/protocol"
 	ep "org/modules/estate/protocol"
 )
@@ -16,7 +17,7 @@ type DataModel interface {
 	DiscountID() dp.DiscountUUID
 	EstateID() ep.EstateUUID
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

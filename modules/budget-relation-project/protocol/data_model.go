@@ -5,6 +5,7 @@ package brpp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	bp "org/modules/budget/protocol"
 	pp "org/modules/project/protocol"
 	tp "org/modules/task/protocol"
@@ -16,7 +17,7 @@ type DataModel interface {
 	ProjectID() pp.ProjectUUID
 	TaskID() tp.TaskUUID
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

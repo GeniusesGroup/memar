@@ -5,6 +5,7 @@ package pbp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	prp "org/modules/product/protocol"
 	pp "org/modules/production/protocol"
 )
@@ -17,7 +18,7 @@ type DataModel interface {
 	Number() uint64
 	Status() Status
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

@@ -6,6 +6,7 @@ import (
 	"memar/iso"
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	fap "org/modules/financial-account/protocol"
 )
 
@@ -14,7 +15,7 @@ type DataModel interface {
 	AccountID() fap.FinancialAccountUUID
 	IBAN() iso.IBAN
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

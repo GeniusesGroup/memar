@@ -5,6 +5,7 @@ package qrop
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	qp "org/modules/questionnaire/protocol"
 )
 
@@ -17,7 +18,7 @@ type DataModel interface {
 	RecordID() [16]byte // in above domain
 	Type() Type
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

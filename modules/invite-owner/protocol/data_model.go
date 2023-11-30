@@ -5,6 +5,7 @@ package iop
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	ip "org/modules/invite/protocol"
 	up "org/modules/user/protocol"
 )
@@ -14,7 +15,7 @@ type DataModel interface {
 	InviteID() ip.InviteUUID
 	IssuerID() up.UserUUID
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

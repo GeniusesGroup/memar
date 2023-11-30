@@ -5,6 +5,7 @@ package pmup
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	pp "org/modules/product/protocol"
 )
 
@@ -13,7 +14,7 @@ type DataModel interface {
 	ProductID() pp.ProductUUID
 	Maximum() uint64 // Maximum time this service can be served to buyer
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

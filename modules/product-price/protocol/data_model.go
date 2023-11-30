@@ -5,6 +5,7 @@ package ppp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	fcp "org/modules/financial-currency/protocol"
 	pp "org/modules/product/protocol"
 )
@@ -16,7 +17,7 @@ type DataModel interface {
 	CurrencyID() fcp.FinancialCurrencyUUID
 	Price() protocol.MoneyAmount // Basic Price, not payable price, in the currency
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

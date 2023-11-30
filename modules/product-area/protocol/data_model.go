@@ -5,6 +5,7 @@ package pap
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	ep "org/modules/estate/protocol"
 	prp "org/modules/product/protocol"
 )
@@ -16,7 +17,7 @@ type DataModel interface {
 	EstateID() ep.EstateUUID
 	Status() Status
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

@@ -5,6 +5,7 @@ package unp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	org "org/modules/org/protocol"
 	up "org/modules/user/protocol"
 )
@@ -19,7 +20,7 @@ type DataModel interface {
 	// Number() uint64          // without country code e.g. {(00)98-}912-345-6789
 	Status() Status
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

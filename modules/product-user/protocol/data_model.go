@@ -5,16 +5,17 @@ package pup
 import (
 	"memar/protocol"
 
+	// arp "org/modules/app-request/protocol"
 	pp "org/modules/product/protocol"
 	up "org/modules/user/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	SubscriptionID() pp.ProductUUID //
-	UserID() up.UserUUID            //
+	SubscriptionID() pp.ProductUUID
+	UserID() up.UserUUID
 
-	// protocol.AuditLogging
+	// arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

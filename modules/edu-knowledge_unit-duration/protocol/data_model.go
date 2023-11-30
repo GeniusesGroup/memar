@@ -5,6 +5,7 @@ package ekudp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	ekup "org/modules/edu-knowledge_unit/protocol"
 )
 
@@ -15,7 +16,7 @@ type DataModel interface {
 	Expected() protocol.Duration // Expected time duration to learn
 	Maximum() protocol.Duration  // Maximum time duration to learn
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

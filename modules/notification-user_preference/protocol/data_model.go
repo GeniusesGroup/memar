@@ -5,6 +5,7 @@ package nupp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	np "org/modules/notification/protocol"
 	up "org/modules/user/protocol"
 )
@@ -14,7 +15,7 @@ type DataModel interface {
 	NotificationID() np.NotificationUUID
 	SignalPreference() SignalPreference
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

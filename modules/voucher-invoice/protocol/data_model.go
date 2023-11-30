@@ -5,6 +5,7 @@ package vip
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	vp "org/modules/voucher/protocol"
 )
 
@@ -17,7 +18,7 @@ type DataModel interface {
 	MinPrice() protocol.MoneyAmount // Minimum invoice price
 	MinAmount() uint64              // Minimum invoice product numbers
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

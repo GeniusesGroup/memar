@@ -5,6 +5,7 @@ package cip
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	cp "org/modules/category/protocol"
 )
 
@@ -13,7 +14,7 @@ type DataModel interface {
 	Priority() uint64
 	ItemID() protocol.UUID // any domain usually product, content, ... domain
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

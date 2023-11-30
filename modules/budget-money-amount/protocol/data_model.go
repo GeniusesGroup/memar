@@ -9,6 +9,7 @@ package bmap
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	bp "org/modules/budget/protocol"
 	fcp "org/modules/financial-currency/protocol"
 )
@@ -20,7 +21,7 @@ type DataModel interface {
 	Amount() protocol.MoneyAmount
 	Type() Type
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

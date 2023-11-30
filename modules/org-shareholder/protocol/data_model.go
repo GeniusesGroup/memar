@@ -6,6 +6,7 @@ import (
 	"memar/math/per"
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	org "org/modules/org/protocol"
 	up "org/modules/user/protocol"
 )
@@ -15,7 +16,7 @@ type DataModel interface {
 	UserID() up.UserUUID
 	Quantity() per.Trillion
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

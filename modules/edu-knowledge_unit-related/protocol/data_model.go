@@ -5,6 +5,7 @@ package ekurp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	ekup "org/modules/edu-knowledge_unit/protocol"
 	up "org/modules/user/protocol"
 )
@@ -17,7 +18,7 @@ type DataModel interface {
 	Level() uint64
 	Side2() ekup.EducationKnowledgeUnitUUID
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

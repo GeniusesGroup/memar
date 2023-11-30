@@ -5,6 +5,7 @@ package pfap
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	fap "org/modules/financial-account/protocol"
 	pp "org/modules/pos/protocol"
 )
@@ -15,7 +16,7 @@ type DataModel interface {
 	AccountID() fap.FinancialAccountUUID
 	Status() Status
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

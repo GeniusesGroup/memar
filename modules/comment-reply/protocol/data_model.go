@@ -5,6 +5,7 @@ package crp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	cp "org/modules/comment/protocol"
 )
 
@@ -13,7 +14,7 @@ type DataModel interface {
 	CommentID() cp.CommentUUID
 	ReplyTo() cp.CommentUUID // Comment can be reply to other comment just in the same group.
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

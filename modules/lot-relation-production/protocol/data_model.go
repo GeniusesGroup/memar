@@ -5,6 +5,7 @@ package lrpp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	lotp "org/modules/lot/protocol"
 	pbp "org/modules/production-batch/protocol"
 )
@@ -14,7 +15,7 @@ type DataModel interface {
 	LotUUID() lotp.LotUUID
 	BatchID() pbp.ProductionBatchUUID
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

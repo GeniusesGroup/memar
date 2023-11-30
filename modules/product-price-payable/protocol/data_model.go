@@ -5,6 +5,7 @@ package pppp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	pp "org/modules/product/protocol"
 )
 
@@ -16,7 +17,7 @@ type DataModel interface {
 	Currency() uint64
 	Price() protocol.MoneyAmount // Basic Price not payable price in the society currency
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

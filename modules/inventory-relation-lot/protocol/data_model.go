@@ -5,6 +5,7 @@ package irlp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	ip "org/modules/inventory/protocol"
 	lotp "org/modules/lot/protocol"
 )
@@ -15,7 +16,7 @@ type DataModel interface {
 	InventoryID() ip.InventoryUUID
 	LotID() lotp.LotUUID
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

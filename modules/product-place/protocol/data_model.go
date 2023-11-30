@@ -5,6 +5,7 @@ package ppp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	eblp "org/modules/estate-building-location/protocol"
 	pp "org/modules/product/protocol"
 )
@@ -15,7 +16,7 @@ type DataModel interface {
 	ProductID() pp.ProductUUID
 	BuildingLocationID() eblp.BuildingLocationUUID // use also for Coordinate domain
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

@@ -5,6 +5,7 @@ package otp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	op "org/modules/order/protocol"
 )
 
@@ -17,7 +18,7 @@ type DataModel interface {
 	LowPrice() protocol.MoneyAmount  // StopLoss	e.g. 43$ , -95$
 	Type() Type
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

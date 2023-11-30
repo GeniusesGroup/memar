@@ -5,6 +5,7 @@ package dtvp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	dp "org/modules/discount/protocol"
 )
 
@@ -14,7 +15,7 @@ type DataModel interface {
 	Start() protocol.Time
 	End() protocol.Time
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

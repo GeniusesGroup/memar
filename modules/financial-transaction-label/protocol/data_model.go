@@ -5,6 +5,7 @@ package ftp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	fap "org/modules/financial-account/protocol"
 )
 
@@ -14,7 +15,7 @@ type DataModel interface {
 	AccountOffset() protocol.NumberOfVersion
 	Label() ReferenceType
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

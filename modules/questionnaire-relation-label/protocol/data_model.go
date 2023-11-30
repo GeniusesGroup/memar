@@ -5,6 +5,7 @@ package qrlp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	lp "org/modules/label/protocol"
 	qp "org/modules/questionnaire/protocol"
 )
@@ -14,7 +15,7 @@ type DataModel interface {
 	QuestionnaireID() qp.QuestionnaireUUID
 	Label() lp.LabelUUID
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

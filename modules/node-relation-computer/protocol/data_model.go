@@ -5,16 +5,17 @@ package nrcp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	cp "org/modules/computer/protocol"
 	np "org/modules/node/protocol"
 )
 
 type DataModel interface {
-	NodeID() np.UUID
-	ComputerID() cp.UUID
+	NodeID() np.NodeUUID
+	ComputerID() cp.ComputerUUID
 	RelationType() Type
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

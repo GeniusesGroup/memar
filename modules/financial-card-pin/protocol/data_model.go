@@ -5,6 +5,7 @@ package dcpp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	fcp "org/modules/financial-card/protocol"
 )
 
@@ -16,7 +17,7 @@ type DataModel interface {
 	DynamicPin1() OTPKey
 	DynamicPin2() OTPKey
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

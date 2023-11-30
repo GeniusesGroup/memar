@@ -5,6 +5,7 @@ package dlp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	dp "org/modules/discount/protocol"
 	bp "org/modules/estate-building-location/protocol"
 )
@@ -14,7 +15,7 @@ type DataModel interface {
 	DiscountID() dp.DiscountUUID
 	BuildingLocationID() bp.BuildingLocationUUID
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

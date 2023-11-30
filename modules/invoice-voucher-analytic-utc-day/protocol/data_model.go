@@ -5,6 +5,7 @@ package ivaudp
 import (
 	"memar/protocol"
 	"memar/time/utc"
+	// arp "org/modules/app-request/protocol"
 )
 
 // DataModel indicate the domain record data fields.
@@ -13,7 +14,7 @@ type DataModel interface {
 	TotalRedeemed() uint64
 	TotalRedeemedAmount() protocol.MoneyAmount
 
-	// protocol.AuditLogging
+	// arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

@@ -5,6 +5,7 @@ package prgp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	gp "org/modules/group/protocol"
 	pp "org/modules/project/protocol"
 )
@@ -15,7 +16,7 @@ type DataModel interface {
 	GroupID() gp.GroupUUID
 	ProjectGroupRelation() Type
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

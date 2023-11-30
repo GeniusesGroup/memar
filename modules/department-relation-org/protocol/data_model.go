@@ -5,6 +5,7 @@ package drop
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	dp "org/modules/department/protocol"
 	org "org/modules/org/protocol"
 )
@@ -14,7 +15,7 @@ type DataModel interface {
 	OwnerID() org.OrgUUID
 	DepartmentID() dp.DepartmentUUID
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

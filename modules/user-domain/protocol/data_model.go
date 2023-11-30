@@ -5,6 +5,7 @@ package udp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	up "org/modules/user/protocol"
 )
 
@@ -15,7 +16,7 @@ type DataModel interface {
 	AcceptedProtocols() UserDomain_AP
 	Status() Status
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

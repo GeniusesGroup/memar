@@ -5,6 +5,7 @@ package iipp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	ip "org/modules/invoice/protocol"
 	pp "org/modules/product/protocol"
 	sp "org/modules/staff/protocol"
@@ -16,7 +17,7 @@ type DataModel interface {
 	ProductID() pp.ProductUUID
 	StaffID() sp.StaffUUID
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

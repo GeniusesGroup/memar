@@ -5,6 +5,7 @@ package rrop
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	org "org/modules/org/protocol"
 	rp "org/modules/role/protocol"
 )
@@ -14,7 +15,7 @@ type DataModel interface {
 	OrganizationID() org.OrgUUID
 	RoleID() rp.RoleUUID
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

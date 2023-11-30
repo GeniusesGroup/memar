@@ -6,6 +6,7 @@ import (
 	"memar/math/per"
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	pp "org/modules/project/protocol"
 	tp "org/modules/task/protocol"
 )
@@ -18,7 +19,7 @@ type DataModel interface {
 	PerMyriad() per.Myriad // 0 means unset e.g. equal to other tasks in the project
 	Type() Type
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

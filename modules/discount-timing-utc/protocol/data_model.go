@@ -7,6 +7,7 @@ import (
 	"memar/time/earth"
 	"memar/time/utc"
 
+	arp "org/modules/app-request/protocol"
 	dp "org/modules/discount/protocol"
 )
 
@@ -16,7 +17,7 @@ type DataModel interface {
 	Weekdays() utc.Weekdays   // what days in weekday in utc time week allow to use this discount
 	DayHours() earth.DayHours // what hours in day in utc time week allow to use this discount
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

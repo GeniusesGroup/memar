@@ -5,6 +5,7 @@ package csp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	cp "org/modules/comment/protocol"
 )
 
@@ -13,7 +14,7 @@ type DataModel interface {
 	CommentID() cp.CommentUUID
 	Status() Status
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

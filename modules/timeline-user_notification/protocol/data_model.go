@@ -5,6 +5,7 @@ package org
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	gp "org/modules/group/protocol"
 	up "org/modules/user/protocol"
 )
@@ -14,7 +15,7 @@ type DataModel interface {
 	UserID() up.UserUUID
 	GroupID() gp.GroupUUID // generate for group & comment domain
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

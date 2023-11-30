@@ -5,6 +5,7 @@ package ltp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	lp "org/modules/label/protocol"
 )
 
@@ -15,7 +16,7 @@ type LabelTable interface {
 	TableID() TableUUID
 	Labels() []lp.LabelUUID
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

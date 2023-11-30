@@ -5,16 +5,17 @@ package nap
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	np "org/modules/node/protocol"
 )
 
 type DataModel interface {
-	NodeID() np.UUID
+	NodeID() np.NodeUUID
 	AddressType() Type
 	Address() Address
 	AddressBinary() []byte
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

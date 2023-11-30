@@ -5,6 +5,7 @@ package upkp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	org "org/modules/org/protocol"
 	up "org/modules/user/protocol"
 )
@@ -16,7 +17,7 @@ type DataModel interface {
 	Issuer() org.OrgUUID //Use to get notify about status of the PK e.g. revoked notification, ...
 	Status() Status
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

@@ -5,6 +5,7 @@ package eblp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	ebp "org/modules/estate-building/protocol"
 )
 
@@ -13,7 +14,7 @@ type DataModel interface {
 	BuildingLocationID() BuildingLocationUUID
 	BuildingID() ebp.BuildingUUID
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

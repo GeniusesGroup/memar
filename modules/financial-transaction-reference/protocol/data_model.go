@@ -5,6 +5,7 @@ package ftrp
 import (
 	"memar/protocol"
 
+	// arp "org/modules/app-request/protocol"
 	fap "org/modules/financial-account/protocol"
 )
 
@@ -19,7 +20,7 @@ type DataModel interface {
 	ReceiverAccountID() fap.FinancialAccountUUID
 	ReceiverAccountOffset() protocol.NumberOfVersion
 
-	// protocol.AuditLogging
+	// arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

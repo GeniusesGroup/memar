@@ -5,6 +5,7 @@ package grp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	gp "org/modules/group/protocol"
 )
 
@@ -14,7 +15,7 @@ type GroupRelated interface {
 	RelatedGroupID() gp.GroupUUID // Use to categorize and graph groups
 	Status() Status
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

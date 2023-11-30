@@ -5,6 +5,7 @@ package iip
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	ip "org/modules/invoice/protocol"
 	pp "org/modules/product/protocol"
 	qrtp "org/modules/quiddity-relation-type/protocol"
@@ -19,7 +20,7 @@ type DataModel interface {
 	Quantity() uint64 // decimal >> 1.5 >> 1.2 >> 10 >> 0
 	Status() Status
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

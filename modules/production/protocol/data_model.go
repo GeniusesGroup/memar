@@ -4,6 +4,8 @@ package pp
 
 import (
 	"memar/protocol"
+
+	arp "org/modules/app-request/protocol"
 )
 
 // DataModel is the structure of production line.
@@ -13,7 +15,7 @@ type DataModel interface {
 	Type() Type
 	Status() Status
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

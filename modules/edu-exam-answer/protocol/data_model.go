@@ -5,6 +5,7 @@ package exap
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	eeqp "org/modules/edu-exam-question/protocol"
 	up "org/modules/user/protocol"
 )
@@ -16,7 +17,7 @@ type DataModel interface {
 	Answer() string
 	Status() Status
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

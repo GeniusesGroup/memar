@@ -5,6 +5,7 @@ package ppp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	pp "org/modules/pos/protocol"
 	prp "org/modules/product/protocol"
 )
@@ -15,7 +16,7 @@ type DataModel interface {
 	PosID() pp.PosUUID
 	ProductID() []prp.ProductUUID
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

@@ -5,6 +5,7 @@ package ssp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	sp "org/modules/staff/protocol"
 )
 
@@ -13,7 +14,7 @@ type DataModel interface {
 	StaffID() sp.StaffUUID
 	WeeklySalary() protocol.MoneyAmount
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

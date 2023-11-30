@@ -5,6 +5,7 @@ package ecip
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	ekup "org/modules/edu-knowledge_unit/protocol"
 	up "org/modules/user/protocol"
 )
@@ -15,7 +16,7 @@ type DataModel interface {
 	KnowledgeUnitID() ekup.EducationKnowledgeUnitUUID
 	Score() uint64
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

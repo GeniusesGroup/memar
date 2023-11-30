@@ -5,6 +5,7 @@ package prtp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	ltp "org/modules/label-table/protocol"
 	pp "org/modules/project/protocol"
 )
@@ -16,7 +17,7 @@ type DataModel interface {
 	TableID() ltp.TableUUID
 	Status() Status
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

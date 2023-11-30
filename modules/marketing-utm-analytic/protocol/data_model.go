@@ -5,6 +5,7 @@ package muap
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	mup "org/modules/marketing-utm/protocol"
 	up "org/modules/user/protocol"
 )
@@ -21,7 +22,7 @@ type DataModel interface {
 	Term() string     // Identifies search terms.													utm_term=running+shoes
 	Content() string  // Identifies what specifically was clicked to bring the user to the site.	utm_content=logolink or utm_content=textlink	such as a banner ad or a text link. It is often used for A/B testing and content-targeted ads.
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

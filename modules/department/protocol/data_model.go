@@ -4,6 +4,8 @@ package dp
 
 import (
 	"memar/protocol"
+
+	arp "org/modules/app-request/protocol"
 )
 
 // DataModel indicate the domain record data fields.
@@ -12,7 +14,7 @@ type DataModel interface {
 	DepartmentID() DepartmentUUID
 	ParentID() DepartmentUUID // Exist if it isn't top of the organization.
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

@@ -6,6 +6,7 @@ package rrup
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	rp "org/modules/role/protocol"
 	up "org/modules/user/protocol"
 )
@@ -16,7 +17,7 @@ type DataModel interface {
 	UserID() up.UserUUID
 	Type() Type
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

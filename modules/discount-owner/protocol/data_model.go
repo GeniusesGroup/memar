@@ -5,6 +5,7 @@ package dop
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	dp "org/modules/discount/protocol"
 	org "org/modules/org/protocol"
 )
@@ -14,7 +15,7 @@ type DataModel interface {
 	DiscountID() dp.DiscountUUID
 	OrgID() org.OrgUUID
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

@@ -5,6 +5,7 @@ package ctp
 import (
 	"memar/protocol"
 
+	// arp "org/modules/app-request/protocol"
 	cp "org/modules/comment/protocol"
 )
 
@@ -14,7 +15,7 @@ type DataModel interface {
 	Tag() string
 	CommentID() cp.CommentUUID
 
-	// protocol.AuditLogging
+	// arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

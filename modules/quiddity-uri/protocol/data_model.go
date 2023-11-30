@@ -5,6 +5,7 @@ package qup
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	qp "org/modules/quiddity/protocol"
 )
 
@@ -16,7 +17,7 @@ type DataModel interface {
 	URI() []byte // Locale name in the Computer world.
 	QuiddityID() qp.QuiddityUUID
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

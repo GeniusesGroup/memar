@@ -5,6 +5,7 @@ package osp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	oidp "org/modules/order-item-deal/protocol"
 )
 
@@ -14,7 +15,7 @@ type DataModel interface {
 	PerMyriad()
 	Amount()
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

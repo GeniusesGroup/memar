@@ -5,6 +5,7 @@ package exqdp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	eeqp "org/modules/edu-exam-question/protocol"
 )
 
@@ -15,7 +16,7 @@ type DataModel interface {
 	Question() string      // Content+Presentation(HTML, CSS)
 	CorrectAnswer() string // A||B, A&B
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

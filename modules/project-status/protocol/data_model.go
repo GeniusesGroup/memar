@@ -5,6 +5,7 @@ package psp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	pp "org/modules/project/protocol"
 )
 
@@ -13,7 +14,7 @@ type DataModel interface {
 	ProjectID() pp.ProjectUUID
 	Status() Status
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

@@ -5,6 +5,7 @@ package qrqp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	qp "org/modules/question/protocol"
 	qrp "org/modules/questionnaire/protocol"
 )
@@ -17,7 +18,7 @@ type DataModel interface {
 	Significance_Negative() uint64
 	Type() Type
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

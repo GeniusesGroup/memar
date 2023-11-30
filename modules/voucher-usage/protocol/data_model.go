@@ -5,6 +5,7 @@ package vup
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	vp "org/modules/voucher/protocol"
 )
 
@@ -13,7 +14,7 @@ type DataModel interface {
 	VoucherID() vp.VoucherUUID
 	MaximumInvoice() uint64
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

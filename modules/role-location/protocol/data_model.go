@@ -5,6 +5,7 @@ package rlp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	eblp "org/modules/estate-building-location/protocol"
 	rp "org/modules/role/protocol"
 )
@@ -16,7 +17,7 @@ type DataModel interface {
 	BuildingLocationID() eblp.BuildingLocationUUID
 	Status() Status
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

@@ -5,6 +5,7 @@ package iiip
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	ip "org/modules/invoice/protocol"
 	pp "org/modules/product/protocol"
 )
@@ -16,7 +17,7 @@ type DataModel interface {
 	Type() Type
 	ActionTime() protocol.Time
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

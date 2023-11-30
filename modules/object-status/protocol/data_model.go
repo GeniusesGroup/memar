@@ -5,6 +5,7 @@ package osp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	op "org/modules/object/protocol"
 )
 
@@ -12,7 +13,7 @@ type DataModel interface {
 	ObjectID() op.ObjectUUID
 	Status() Status
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

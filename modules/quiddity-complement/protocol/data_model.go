@@ -5,6 +5,7 @@ package qcp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	qp "org/modules/quiddity/protocol"
 )
 
@@ -14,7 +15,7 @@ type DataModel interface {
 	Priority() uint64
 	ComplementID() qp.QuiddityUUID
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

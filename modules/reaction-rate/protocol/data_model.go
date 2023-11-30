@@ -4,13 +4,15 @@ package rrp
 
 import (
 	"memar/protocol"
+
+	arp "org/modules/app-request/protocol"
 )
 
 type ReactionRate interface {
 	ReactionTo() [16]byte // any domain.
 	Rate() uint8
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

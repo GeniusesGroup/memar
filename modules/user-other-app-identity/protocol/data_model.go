@@ -5,6 +5,7 @@ package uoaip
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	up "org/modules/user/protocol"
 )
 
@@ -27,7 +28,7 @@ type DataModel interface {
 	PlaceOfBirth() string        //
 	VerifiedDate() protocol.Time // If !=0 user got famous blue badge(tick) like instagram, twitter,...
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

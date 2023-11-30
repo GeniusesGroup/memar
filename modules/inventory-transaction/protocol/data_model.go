@@ -5,6 +5,7 @@ package itp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	ip "org/modules/inventory/protocol"
 )
 
@@ -19,7 +20,7 @@ type DataModel interface {
 	Amount() int64              // this transaction
 	Stock() int64               // overall in each location
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

@@ -5,6 +5,7 @@ package cugsp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	gp "org/modules/group/protocol"
 	up "org/modules/user/protocol"
 )
@@ -15,7 +16,7 @@ type DataModel interface {
 	GroupID() gp.GroupUUID
 	ReadUntil() protocol.NumberOfVersion
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

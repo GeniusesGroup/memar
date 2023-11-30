@@ -5,6 +5,7 @@ package brdp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	bp "org/modules/budget/protocol"
 	dp "org/modules/department/protocol"
 )
@@ -14,7 +15,7 @@ type DataModel interface {
 	BudgetID() bp.BudgetUUID
 	DepartmentID() dp.DepartmentUUID
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

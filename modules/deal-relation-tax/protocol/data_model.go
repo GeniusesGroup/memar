@@ -5,6 +5,7 @@ package omp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	dp "org/modules/deal/protocol"
 	op "org/modules/order/protocol"
 )
@@ -14,7 +15,7 @@ type DataModel interface {
 	DealID() dp.DealUUID
 	OrderID() op.OrderUUID
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

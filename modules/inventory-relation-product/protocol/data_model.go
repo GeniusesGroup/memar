@@ -5,6 +5,7 @@ package irlp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	ip "org/modules/inventory/protocol"
 	pp "org/modules/product/protocol"
 )
@@ -16,7 +17,7 @@ type DataModel interface {
 	ProductID() pp.ProductUUID
 	// OwnerID() op.OrgUUID		here or product-relation-product
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

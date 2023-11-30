@@ -6,6 +6,7 @@ import (
 	"memar/math/per"
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	cp "org/modules/contract/protocol"
 )
 
@@ -15,7 +16,7 @@ type ContractExpertOpinion interface {
 	Opinion() string
 	Progress() per.Myriad
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

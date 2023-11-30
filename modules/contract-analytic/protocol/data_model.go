@@ -5,13 +5,14 @@ package cap
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	cp "org/modules/contract/protocol"
 )
 
 type ContractAnalytic interface {
 	ContractID() cp.ContractUUID
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

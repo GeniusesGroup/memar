@@ -5,6 +5,7 @@ package itvp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	ip "org/modules/invite/protocol"
 )
 
@@ -14,7 +15,7 @@ type DataModel interface {
 	Start() protocol.Time
 	End() protocol.Time
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

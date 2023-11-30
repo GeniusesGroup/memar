@@ -5,6 +5,7 @@ package clap
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	cp "org/modules/comment/protocol"
 )
 
@@ -24,7 +25,7 @@ type DataModel interface {
 	RecordID() protocol.UUID // in above domain
 	RecordVersion() uint64   // VersionOffset
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

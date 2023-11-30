@@ -5,6 +5,7 @@ package cp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	ctp "org/modules/contract-template/protocol"
 )
 
@@ -14,7 +15,7 @@ type DataModel interface {
 	ContractTemplateVersion() protocol.VersionOffset
 	Data() map[Type]string
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

@@ -5,16 +5,17 @@ package oip
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	np "org/modules/node/protocol"
 )
 
 type DataModel interface {
-	NodeID() np.UUID
-	SideNodeID() np.UUID
+	NodeID() np.NodeUUID
+	SideNodeID() np.NodeUUID
 	PingTime() protocol.Duration
 	JitterTime() protocol.Duration
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

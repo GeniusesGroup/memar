@@ -5,6 +5,7 @@ package brep
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	bp "org/modules/budget/protocol"
 	eblp "org/modules/estate-building-location/protocol"
 	ep "org/modules/estate/protocol"
@@ -16,7 +17,7 @@ type DataModel interface {
 	EstateID() ep.EstateUUID
 	BuildingLocationID() eblp.BuildingLocationUUID
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

@@ -5,6 +5,7 @@ package qmp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	op "org/modules/object/protocol"
 	qp "org/modules/quiddity/protocol"
 )
@@ -13,9 +14,9 @@ import (
 // Model is the 3D model of the quiddity
 type DataModel interface {
 	QuiddityID() qp.QuiddityUUID
-	ThingModelID() op.ObjectUUID
+	ModelID() op.ObjectUUID
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

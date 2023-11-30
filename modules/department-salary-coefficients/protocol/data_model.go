@@ -6,6 +6,7 @@ import (
 	"memar/math/per"
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	dp "org/modules/department/protocol"
 )
 
@@ -26,7 +27,7 @@ type DepartmentSalaryCoefficients interface {
 	Income() per.Myriad           // whole organization income in each week
 	DepartmentIncome() per.Myriad //
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

@@ -5,6 +5,7 @@ package org
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	cp "org/modules/category/protocol"
 	pp "org/modules/product/protocol"
 	qrp "org/modules/quiddity-relation-type/protocol"
@@ -21,7 +22,7 @@ type DataModel interface {
 	MaxQuantity() uint64
 	Status() Status
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

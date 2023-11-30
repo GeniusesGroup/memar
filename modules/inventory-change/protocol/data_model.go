@@ -5,6 +5,7 @@ package icp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	ip "org/modules/inventory/protocol"
 )
 
@@ -16,7 +17,7 @@ type DataModel interface {
 	Amount() int64        // this transaction
 	Priority() uint64
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

@@ -5,6 +5,7 @@ package ip
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	ip "org/modules/invoice/protocol"
 	pp "org/modules/pos/protocol"
 	sp "org/modules/staff/protocol"
@@ -17,7 +18,7 @@ type DataModel interface {
 	PosID() pp.PosUUID
 	StaffID() sp.StaffUUID // OrdererID that is creator of the invoice e.g. restaurant, drug prescription, sales agent,
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

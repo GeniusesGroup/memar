@@ -7,6 +7,7 @@ import (
 	"memar/time/earth"
 	"memar/time/utc"
 
+	arp "org/modules/app-request/protocol"
 	osp "org/modules/org-shift/protocol"
 	sp "org/modules/staff/protocol"
 )
@@ -17,7 +18,7 @@ type DataModel interface {
 	ShiftID() osp.ShiftUUID
 	DayHours() earth.DayHours // what hours in a day this staff must active to provide services or do projects
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

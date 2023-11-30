@@ -5,6 +5,7 @@ package vpp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	pp "org/modules/pos/protocol"
 	vp "org/modules/voucher/protocol"
 )
@@ -14,7 +15,7 @@ type DataModel interface {
 	VoucherID() vp.VoucherUUID
 	PosID() pp.PosUUID
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

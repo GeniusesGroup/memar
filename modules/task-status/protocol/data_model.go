@@ -5,6 +5,7 @@ package tsp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	tp "org/modules/task/protocol"
 )
 
@@ -13,7 +14,7 @@ type DataModel interface {
 	TaskID() tp.TaskUUID
 	Status() Status
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

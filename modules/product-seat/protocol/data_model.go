@@ -5,6 +5,7 @@ package psp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	op "org/modules/object/protocol"
 	pp "org/modules/product/protocol"
 )
@@ -16,7 +17,7 @@ type DataModel interface {
 	Type() Type
 	MapID() op.ObjectUUID // to show background and rows and seats. suggest use SVG format
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

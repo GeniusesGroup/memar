@@ -5,6 +5,7 @@ package dpp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	dp "org/modules/discount/protocol"
 	pp "org/modules/product/protocol"
 )
@@ -19,7 +20,7 @@ type DataModel interface {
 	MinStock() uint64               // 0 for unlimited until related product exist to sell
 	Type() Type
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

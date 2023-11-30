@@ -5,6 +5,7 @@ package ppsp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	pp "org/modules/product/protocol"
 	sp "org/modules/staff/protocol"
 )
@@ -15,7 +16,7 @@ type DataModel interface {
 	StaffID() sp.StaffUUID
 	Status() Status
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

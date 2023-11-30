@@ -5,6 +5,7 @@ package cts
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	ctp "org/modules/contract-template/protocol"
 )
 
@@ -12,7 +13,7 @@ type DataModel interface {
 	ContractTemplateID() ctp.ContractTemplateUUID
 	Status() Status
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

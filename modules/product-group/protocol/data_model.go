@@ -5,6 +5,7 @@ package pgp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	gp "org/modules/group/protocol"
 	pp "org/modules/product/protocol"
 )
@@ -15,7 +16,7 @@ type DataModel interface {
 	GroupID() gp.GroupUUID
 	Status() Status
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

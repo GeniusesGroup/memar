@@ -5,6 +5,7 @@ package uoatp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	org "org/modules/org/protocol"
 	up "org/modules/user/protocol"
 )
@@ -14,7 +15,7 @@ type DataModel interface {
 	OrgID() org.OrgUUID
 	Token() Token
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

@@ -5,6 +5,7 @@ package ftp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	fap "org/modules/financial-account/protocol"
 )
 
@@ -18,7 +19,7 @@ type DataModel interface {
 	Amount() protocol.MoneyAmount            // This transaction
 	Balance() protocol.MoneyAmount           // Account balance with this transaction
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

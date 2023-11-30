@@ -5,6 +5,7 @@ package dgp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	dp "org/modules/department/protocol"
 	gp "org/modules/group/protocol"
 )
@@ -13,7 +14,7 @@ type DataModel interface {
 	DepartmentID() dp.DepartmentUUID
 	GroupID() gp.GroupUUID
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

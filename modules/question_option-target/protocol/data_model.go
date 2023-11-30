@@ -6,6 +6,7 @@ import (
 	"memar/math/per"
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	qop "org/modules/question_option/protocol"
 )
 
@@ -15,7 +16,7 @@ type DataModel interface {
 	Target() per.Myriad           // =~ Goal
 	TimeFrame() protocol.Duration // =~ Interval, TimeSpan, TimeFrame, TimePeriod,
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

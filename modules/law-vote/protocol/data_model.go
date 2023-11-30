@@ -5,6 +5,7 @@ package lvp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	lp "org/modules/law/protocol"
 	up "org/modules/user/protocol"
 )
@@ -15,7 +16,7 @@ type DataModel interface {
 	UserID() up.UserUUID
 	Vote() Type
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

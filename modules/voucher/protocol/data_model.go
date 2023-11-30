@@ -4,6 +4,8 @@ package vp
 
 import (
 	"memar/protocol"
+
+	arp "org/modules/app-request/protocol"
 )
 
 // DataModel indicate the domain record data fields.
@@ -14,7 +16,7 @@ type DataModel interface {
 	MaxEachUse() MaxEachUse
 	Type() Type
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

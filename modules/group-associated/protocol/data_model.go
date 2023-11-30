@@ -5,6 +5,7 @@ package gap
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	gp "org/modules/group/protocol"
 	up "org/modules/user/protocol"
 )
@@ -16,7 +17,7 @@ type DataModel interface {
 	JoinBy() up.UserUUID
 	JoinWay() JoinWay
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

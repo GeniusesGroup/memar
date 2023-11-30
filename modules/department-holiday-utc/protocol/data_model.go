@@ -7,6 +7,7 @@ import (
 	"memar/time/earth"
 	"memar/time/utc"
 
+	arp "org/modules/app-request/protocol"
 	dp "org/modules/department/protocol"
 )
 
@@ -16,7 +17,7 @@ type DataModel interface {
 	Weekdays() utc.Weekdays   // what days in weekday in utc time week this department active to provide services
 	DayHours() earth.DayHours // what hours in a day this department active to provide services
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

@@ -6,6 +6,7 @@ import (
 	"memar/protocol"
 	"memar/time/utc"
 
+	arp "org/modules/app-request/protocol"
 	pp "org/modules/project/protocol"
 )
 
@@ -20,7 +21,7 @@ type DataModel interface {
 	Progress() uint64
 	TaskOverDueTime() uint64 // due time
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

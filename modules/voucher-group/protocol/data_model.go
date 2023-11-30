@@ -5,6 +5,7 @@ package vgp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	gp "org/modules/group/protocol"
 	vp "org/modules/voucher/protocol"
 )
@@ -14,7 +15,7 @@ type DataModel interface {
 	VoucherID() vp.VoucherUUID
 	GroupID() []gp.GroupUUID
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

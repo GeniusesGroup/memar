@@ -5,6 +5,7 @@ package itp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	ip "org/modules/invite/protocol"
 	tp "org/modules/task/protocol"
 )
@@ -16,7 +17,7 @@ type DataModel interface {
 	InviteID() ip.InviteUUID
 	TaskID() tp.TaskUUID
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

@@ -7,6 +7,7 @@ import (
 	"memar/time/earth"
 	"memar/time/utc"
 
+	arp "org/modules/app-request/protocol"
 	sp "org/modules/org-shift/protocol"
 )
 
@@ -16,7 +17,7 @@ type DataModel interface {
 	DayHours() earth.DayHours // what hours in day in utc time week this org active to provide services
 	Type() sp.Type
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

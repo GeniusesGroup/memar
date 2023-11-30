@@ -5,6 +5,7 @@ package org
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	lsp "org/modules/learn-skill/protocol"
 	up "org/modules/user/protocol"
 )
@@ -14,7 +15,7 @@ type DataModel interface {
 	UserID() up.UserUUID
 	SkillID() lsp.SkillUUID
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

@@ -5,6 +5,7 @@ package brgp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	bp "org/modules/budget/protocol"
 	gp "org/modules/group/protocol"
 )
@@ -14,7 +15,7 @@ type DataModel interface {
 	BudgetID() bp.BudgetUUID
 	GroupID() gp.GroupUUID
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

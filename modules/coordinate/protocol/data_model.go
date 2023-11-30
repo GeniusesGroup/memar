@@ -5,6 +5,7 @@ package cp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	tp "org/modules/thing/protocol"
 )
 
@@ -17,7 +18,7 @@ type DataModel interface {
 	Lon() uint64           // longitude
 	Alt() uint64           // altitude
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

@@ -5,6 +5,7 @@ package pcp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	fap "org/modules/financial-account/protocol"
 	pp "org/modules/pos/protocol"
 )
@@ -13,10 +14,11 @@ import (
 type DataModel interface {
 	PosID() pp.PosUUID
 	AccountID() fap.FinancialAccountUUID
+	// TODO::: move below fields to financial domains
 	MaxCash() protocol.MoneyAmount
 	MaxCashTransfer() protocol.Duration // from reach the max limit
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

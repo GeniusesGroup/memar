@@ -5,6 +5,7 @@ package qrp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	qop "org/modules/questionnaire-order/protocol"
 	up "org/modules/user/protocol"
 )
@@ -16,7 +17,7 @@ type DataModel interface {
 	AnswerBy() up.UserUUID
 	FillBy() up.UserUUID
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

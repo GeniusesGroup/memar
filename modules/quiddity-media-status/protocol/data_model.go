@@ -5,6 +5,7 @@ package qmsp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	op "org/modules/object/protocol"
 	qp "org/modules/quiddity/protocol"
 )
@@ -14,7 +15,7 @@ type DataModel interface {
 	MediaObjectID() op.ObjectUUID
 	Status() Status
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

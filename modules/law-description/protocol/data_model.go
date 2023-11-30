@@ -5,6 +5,7 @@ package ldp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	lp "org/modules/law/protocol"
 )
 
@@ -19,7 +20,7 @@ type DataModel interface {
 	ExecutiveGuarantee() string // HTML, CSS
 	Technical() string          // HTML, CSS, computer codes or description how to code
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

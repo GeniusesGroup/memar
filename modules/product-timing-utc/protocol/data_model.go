@@ -7,6 +7,7 @@ import (
 	"memar/time/earth"
 	"memar/time/utc"
 
+	arp "org/modules/app-request/protocol"
 	pp "org/modules/product/protocol"
 )
 
@@ -15,7 +16,7 @@ type DataModel interface {
 	Day() utc.DayElapsed
 	DayHours() earth.DayHours // what hours in a day this service active to provide services
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

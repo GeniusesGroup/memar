@@ -5,6 +5,7 @@ package garp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	gp "org/modules/group/protocol"
 	rp "org/modules/role/protocol"
 	up "org/modules/user/protocol"
@@ -16,7 +17,7 @@ type DataModel interface {
 	UserID() up.UserUUID
 	RoleID() rp.RoleUUID
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

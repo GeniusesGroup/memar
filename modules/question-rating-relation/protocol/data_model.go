@@ -5,6 +5,7 @@ package qrrp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	qp "org/modules/question/protocol"
 )
 
@@ -14,7 +15,7 @@ type DataModel interface {
 	RelationIDs() [][16]byte // Question, Questionnaire
 	RelationTypes() []Type
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

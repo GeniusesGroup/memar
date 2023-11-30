@@ -6,6 +6,7 @@ import (
 	"memar/math/per"
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	pp "org/modules/product/protocol"
 	sp "org/modules/society/protocol"
 )
@@ -21,7 +22,7 @@ type DataModel interface {
 	SocietyID() sp.SocietyUUID
 	VAT() per.Myriad // VAT as Value-Added-Tax is bad name for a robbery
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

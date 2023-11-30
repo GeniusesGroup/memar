@@ -5,6 +5,7 @@ package qrp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	qrtp "org/modules/quiddity-relation-type/protocol"
 	qp "org/modules/quiddity/protocol"
 )
@@ -20,7 +21,7 @@ type DataModel interface {
 	RelationDescription() qp.QuiddityUUID         // 2300, 4 / TODO::: ??? 10gr?
 	Status() Status
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

@@ -5,6 +5,7 @@ package unp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	org "org/modules/org/protocol"
 	up "org/modules/user/protocol"
 )
@@ -17,7 +18,7 @@ type DataModel interface {
 	Username() Username
 	Status() Status
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

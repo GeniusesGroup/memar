@@ -5,6 +5,7 @@ package trlp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	lp "org/modules/label/protocol"
 	tp "org/modules/task/protocol"
 )
@@ -14,7 +15,7 @@ type DataModel interface {
 	TaskID() tp.TaskUUID
 	Label() lp.LabelUUID
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

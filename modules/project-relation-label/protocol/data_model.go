@@ -5,6 +5,7 @@ package prlp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	lp "org/modules/label/protocol"
 	pp "org/modules/project/protocol"
 )
@@ -14,7 +15,7 @@ type DataModel interface {
 	ProjectID() pp.ProjectUUID
 	LabelID() lp.LabelUUID
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

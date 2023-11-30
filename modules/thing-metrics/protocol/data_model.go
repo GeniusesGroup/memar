@@ -5,6 +5,7 @@ package tmp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	tp "org/modules/thing/protocol"
 )
 
@@ -14,7 +15,7 @@ type DataModel interface {
 	MetricUnit() MetricUnit
 	Amount() int64
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

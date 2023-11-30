@@ -5,6 +5,7 @@ package qrrtp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	qrp "org/modules/questionnaire-respondent/protocol"
 	tp "org/modules/task/protocol"
 )
@@ -17,7 +18,7 @@ type DataModel interface {
 	TaskID() tp.TaskUUID
 	Type() Type
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

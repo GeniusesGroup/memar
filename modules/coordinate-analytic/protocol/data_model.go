@@ -5,6 +5,7 @@ package org
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	cp "org/modules/coordinate/protocol"
 )
 
@@ -13,7 +14,7 @@ type DataModel interface {
 	Distance() uint64     // km or ...
 	AverageSpeed() uint64 // km/h or ...
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

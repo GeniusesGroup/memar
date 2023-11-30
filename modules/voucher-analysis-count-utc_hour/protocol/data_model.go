@@ -1,6 +1,6 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package vaudp
+package vacuh
 
 import (
 	"memar/protocol"
@@ -9,11 +9,10 @@ import (
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	Day() utc.DayElapsed
+	Hour() utc.HourElapsed
 	TotalIssued() uint64
 	TotalIssuedAmount() protocol.MoneyAmount
 
-	// protocol.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

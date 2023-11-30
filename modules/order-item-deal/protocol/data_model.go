@@ -10,6 +10,7 @@ package oidp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	op "org/modules/order/protocol"
 )
 
@@ -19,9 +20,9 @@ type DataModel interface {
 	SideType() SideType
 	Kind() Order_Kind
 	KindID() protocol.UUID // depend on kind A type
-	Amount() int64    // + || -		or Quantity
+	Amount() int64         // + || -		or Quantity
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

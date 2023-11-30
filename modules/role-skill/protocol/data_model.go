@@ -5,6 +5,7 @@ package rsp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	lsp "org/modules/learn-skill/protocol"
 	rp "org/modules/role/protocol"
 )
@@ -14,7 +15,7 @@ type DataModel interface {
 	RoleID() rp.RoleUUID
 	SkillID() lsp.SkillUUID
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

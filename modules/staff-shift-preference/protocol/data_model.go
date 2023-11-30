@@ -6,6 +6,7 @@ import (
 	"memar/protocol"
 	"memar/time/utc"
 
+	arp "org/modules/app-request/protocol"
 	osp "org/modules/org-shift/protocol"
 	sp "org/modules/staff/protocol"
 )
@@ -16,7 +17,7 @@ type DataModel interface {
 	Day() utc.DayElapsed
 	ShiftID() osp.ShiftUUID
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

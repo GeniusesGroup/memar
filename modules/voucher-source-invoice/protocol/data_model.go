@@ -5,6 +5,7 @@ package vsip
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	ip "org/modules/invoice/protocol"
 	vp "org/modules/voucher/protocol"
 )
@@ -15,7 +16,7 @@ type DataModel interface {
 	InvoiceID() ip.InvoiceUUID
 	InvoiceType() Type
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

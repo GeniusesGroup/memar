@@ -5,6 +5,7 @@ package brip
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	bp "org/modules/budget/protocol"
 	ip "org/modules/invoice/protocol"
 )
@@ -16,7 +17,7 @@ type DataModel interface {
 	Type() Type
 	Status() Status
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

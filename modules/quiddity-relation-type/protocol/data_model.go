@@ -4,6 +4,8 @@ package qrtp
 
 import (
 	"memar/protocol"
+
+	arp "org/modules/app-request/protocol"
 )
 
 // DataModel store some key/value for a Quiddity to describe it e.g. mobile-cpu, ...
@@ -12,7 +14,7 @@ type DataModel interface {
 	TypeID() QuiddityRelationTypeUUID
 	Status() Status
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

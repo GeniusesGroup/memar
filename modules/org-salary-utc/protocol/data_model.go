@@ -5,6 +5,7 @@ package osup
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	fcp "org/modules/financial-currency/protocol"
 	org "org/modules/org/protocol"
 )
@@ -15,7 +16,7 @@ type DataModel interface {
 	CurrencyID() fcp.FinancialCurrencyUUID
 	Amount() protocol.MoneyAmount
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

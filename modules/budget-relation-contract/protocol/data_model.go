@@ -5,6 +5,7 @@ package brcp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	bp "org/modules/budget/protocol"
 	cp "org/modules/contract/protocol"
 )
@@ -15,7 +16,7 @@ type DataModel interface {
 	ContractID() cp.ContractUUID
 	Status() Status
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

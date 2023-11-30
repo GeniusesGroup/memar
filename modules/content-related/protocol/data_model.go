@@ -5,6 +5,7 @@ package crp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	ctp "org/modules/content-type/protocol"
 	cp "org/modules/content/protocol"
 )
@@ -15,7 +16,7 @@ type DataModel interface {
 	PriorityType() ctp.ContentTypeUUID
 	RelatedID() cp.ContentUUID
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

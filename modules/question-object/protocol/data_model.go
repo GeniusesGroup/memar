@@ -5,6 +5,7 @@ package qop
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	qp "org/modules/question/protocol"
 )
 
@@ -14,7 +15,7 @@ type DataModel interface {
 	MediaTypes() []protocol.MediaTypeID
 	SizeLimit() uint64
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

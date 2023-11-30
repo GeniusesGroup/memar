@@ -5,6 +5,7 @@ package pptp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	pp "org/modules/pos/protocol"
 )
 
@@ -13,7 +14,7 @@ type DataModel interface {
 	PosID() pp.PosUUID
 	// TODO::: VAT number, store address, logo, return rule, ...
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

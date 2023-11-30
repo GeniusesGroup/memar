@@ -5,6 +5,7 @@ package qapsp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	qap "org/modules/question_answer/protocol"
 	qop "org/modules/question_option/protocol"
 )
@@ -14,7 +15,7 @@ type DataModel interface {
 	AnswerID() qap.AnswerUUID
 	Answer() qop.QuestionOptionUUID
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

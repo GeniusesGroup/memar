@@ -5,6 +5,7 @@ package trup
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	tp "org/modules/task/protocol"
 	up "org/modules/user/protocol"
 )
@@ -15,7 +16,7 @@ type DataModel interface {
 	UserID() up.UserUUID
 	RelationType() Type
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

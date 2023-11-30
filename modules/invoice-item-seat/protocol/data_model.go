@@ -5,6 +5,7 @@ package iisp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	ip "org/modules/invoice/protocol"
 	pp "org/modules/product/protocol"
 )
@@ -17,7 +18,7 @@ type DataModel interface {
 	SeatID() SeatID
 	Status() Status
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

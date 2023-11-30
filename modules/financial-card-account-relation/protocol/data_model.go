@@ -5,6 +5,7 @@ package fcarp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	fap "org/modules/financial-account/protocol"
 	fcp "org/modules/financial-card/protocol"
 )
@@ -16,7 +17,7 @@ type DataModel interface {
 	Priority() uint64
 	Status() Status
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

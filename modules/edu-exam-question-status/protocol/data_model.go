@@ -5,6 +5,7 @@ package exqsp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	eeqp "org/modules/edu-exam-question/protocol"
 )
 
@@ -13,7 +14,7 @@ type DataModel interface {
 	QuestionID() eeqp.EducationQuestionUUID // don't point to quiddity title na don't set title
 	Status() Status
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

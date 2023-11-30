@@ -5,6 +5,7 @@ package gsp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	csep "org/modules/comment-settings/protocol"
 	cssp "org/modules/comment-status/protocol"
 	gp "org/modules/group/protocol"
@@ -18,7 +19,7 @@ type DataModel interface {
 	DefaultSettings() csep.Settings
 	DefaultStatus() cssp.Status
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

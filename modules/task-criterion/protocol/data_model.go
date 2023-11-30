@@ -5,6 +5,7 @@ package tcp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	tp "org/modules/task/protocol"
 )
 
@@ -16,7 +17,7 @@ type DataModel interface {
 	Type() Type
 	Point() Point
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

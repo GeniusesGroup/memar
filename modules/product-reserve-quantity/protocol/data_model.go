@@ -5,6 +5,7 @@ package prqp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	pp "org/modules/product/protocol"
 )
 
@@ -14,7 +15,7 @@ type DataModel interface {
 	Quantity() uint64 // fix max reserve number
 	Percent() uint64  // percent of the inventory
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

@@ -7,6 +7,7 @@ import (
 	"memar/time/earth"
 	"memar/time/utc"
 
+	arp "org/modules/app-request/protocol"
 	np "org/modules/notification/protocol"
 	up "org/modules/user/protocol"
 )
@@ -17,7 +18,7 @@ type DataModel interface {
 	Week() utc.Weekdays
 	DayHours() earth.DayHours // what hours in above days notification not serve
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

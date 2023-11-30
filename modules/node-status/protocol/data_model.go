@@ -5,14 +5,15 @@ package nsp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	np "org/modules/node/protocol"
 )
 
 type DataModel interface {
-	NodeID() np.UUID
+	NodeID() np.NodeUUID
 	Status() Status
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

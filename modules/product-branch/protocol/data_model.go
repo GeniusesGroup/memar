@@ -8,6 +8,7 @@ package org
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	pp "org/modules/product/protocol"
 )
 
@@ -18,7 +19,7 @@ type DataModel interface {
 	MinStock()
 	MaxStock()
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

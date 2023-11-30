@@ -5,6 +5,7 @@ package pnp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	pp "org/modules/product/protocol"
 )
 
@@ -15,7 +16,7 @@ type DataModel interface {
 	Maximum() uint64             // Maximum number can be served to buyers e.g. cinema tickets, panic-room game, ...
 	MaximumInvoiceByBuy() uint64 // Maximum buy e.g. hotel room, panic-room game, ... that must limit by buyer.
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

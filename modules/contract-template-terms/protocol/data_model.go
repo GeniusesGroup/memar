@@ -5,6 +5,7 @@ package cttp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	ctp "org/modules/contract-template/protocol"
 )
 
@@ -13,7 +14,7 @@ type DataModel interface {
 	Language() protocol.Language
 	Terms() Terms
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

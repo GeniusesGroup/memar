@@ -5,6 +5,7 @@ package eerp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	exp "org/modules/edu-exam/protocol"
 	up "org/modules/user/protocol"
 )
@@ -17,7 +18,7 @@ type DataModel interface {
 	Level() uint64
 	Side2() exp.EducationExamUUID
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

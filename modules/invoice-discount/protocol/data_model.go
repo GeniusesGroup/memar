@@ -5,6 +5,7 @@ package idp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	dp "org/modules/discount/protocol"
 	ip "org/modules/invoice/protocol"
 )
@@ -15,7 +16,7 @@ type DataModel interface {
 	DiscountID() dp.DiscountUUID
 	Discounted() protocol.MoneyAmount
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

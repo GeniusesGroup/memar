@@ -5,6 +5,7 @@ package dcp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	dp "org/modules/discount/protocol"
 	mcp "org/modules/marketing-campaign/protocol"
 )
@@ -14,7 +15,7 @@ type DataModel interface {
 	DiscountID() dp.DiscountUUID
 	CampaignID() mcp.MarketingCampaignUUID
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

@@ -5,6 +5,7 @@ package trmcp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	mcp "org/modules/marketing-campaign/protocol"
 	tp "org/modules/task/protocol"
 )
@@ -19,7 +20,7 @@ type DataModel interface {
 	MarketingCampaignID() mcp.MarketingCampaignUUID
 	RelationType() Type
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

@@ -5,6 +5,7 @@ package uoap
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	up "org/modules/user/protocol"
 )
 
@@ -15,7 +16,7 @@ type DataModel interface {
 	DomainUserID() up.UserUUID         // user id in that domain e.g. country national code
 	OurGeneratedUserUUID() up.UserUUID // it will generate to fix same UUID collision problem
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

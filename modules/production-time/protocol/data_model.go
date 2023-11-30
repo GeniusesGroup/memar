@@ -5,6 +5,7 @@ package org
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	pp "org/modules/production/protocol"
 )
 
@@ -14,7 +15,7 @@ type DataModel interface {
 	TimeType() TimeType
 	ActionTime() protocol.Time
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

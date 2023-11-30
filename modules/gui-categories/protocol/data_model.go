@@ -5,6 +5,7 @@ package org
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	cp "org/modules/category/protocol"
 )
 
@@ -12,7 +13,7 @@ import (
 type GUICategories interface {
 	CategoriesID() []cp.CategoryUUID
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

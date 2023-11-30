@@ -5,6 +5,7 @@ package cp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	ctp "org/modules/content-type/protocol"
 	up "org/modules/user/protocol"
 )
@@ -15,7 +16,7 @@ type DataModel interface {
 	UserID() up.UserUUID
 	ContentTypeID() ctp.ContentTypeUUID
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

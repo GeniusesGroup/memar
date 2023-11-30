@@ -5,14 +5,15 @@ package csp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	cp "org/modules/computer/protocol"
 )
 
 type DataModel interface {
-	ComputerID() cp.UUID
+	ComputerID() cp.ComputerUUID
 	Hypervisor() string // TODO::: name, version, ...
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

@@ -5,6 +5,7 @@ package icsp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	icp "org/modules/inventory-change/protocol"
 )
 
@@ -13,7 +14,7 @@ type DataModel interface {
 	InventoryChangeID() icp.InventoryChangeUUID
 	Status() Status
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

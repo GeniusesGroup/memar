@@ -4,6 +4,8 @@ package qp
 
 import (
 	"memar/protocol"
+
+	arp "org/modules/app-request/protocol"
 )
 
 // TODO::: dynamic data in question?? text substitution, text piping
@@ -14,7 +16,7 @@ type DataModel interface {
 	QuestionID() QuestionUUID
 	Type() Type
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

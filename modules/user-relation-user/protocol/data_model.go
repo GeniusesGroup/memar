@@ -5,6 +5,7 @@ package urup
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	up "org/modules/user/protocol"
 )
 
@@ -14,7 +15,7 @@ type DataModel interface {
 	SideID() up.UserUUID
 	Relation() User_Relation
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

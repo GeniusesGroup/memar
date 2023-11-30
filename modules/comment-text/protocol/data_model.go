@@ -5,6 +5,7 @@ package ctp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	cp "org/modules/comment/protocol"
 )
 
@@ -13,7 +14,7 @@ type DataModel interface {
 	CommentID() cp.CommentUUID
 	Text() string // Text With Style. HTML & CSS (No JS) is more expressive than markdown, suggest use them in article text to style text.
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

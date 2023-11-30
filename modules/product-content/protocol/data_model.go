@@ -5,6 +5,7 @@ package pcp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	cp "org/modules/content/protocol"
 	pp "org/modules/product/protocol"
 )
@@ -15,7 +16,7 @@ type DataModel interface {
 	ContentID() cp.ContentUUID
 	Status() Status
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

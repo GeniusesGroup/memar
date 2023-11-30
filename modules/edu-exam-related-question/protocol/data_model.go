@@ -5,6 +5,7 @@ package org
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	eeqp "org/modules/edu-exam-question/protocol"
 	exp "org/modules/edu-exam/protocol"
 	up "org/modules/user/protocol"
@@ -17,7 +18,7 @@ type DataModel interface {
 	Priority() uint64
 	QuestionID() eeqp.EducationQuestionUUID
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

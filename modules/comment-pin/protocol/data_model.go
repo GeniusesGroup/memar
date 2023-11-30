@@ -5,6 +5,7 @@ package cp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	cp "org/modules/comment/protocol"
 	gp "org/modules/group/protocol"
 )
@@ -15,7 +16,7 @@ type DataModel interface {
 	GroupID() gp.GroupUUID
 	CommentPinedID() cp.CommentUUID
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

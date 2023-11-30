@@ -5,18 +5,20 @@ package nap
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	np "org/modules/node/protocol"
+	up "org/modules/user/protocol"
 )
 
 type DataModel interface {
-	UserID()
-	NodeID() np.UUID
+	UserID() up.UserUUID
+	NodeID() np.NodeUUID
 	NotificationChannel()
 	DomainID() protocol.MediaTypeID
 	LogLevel() protocol.LogLevel
 	// TODO::: other condition
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

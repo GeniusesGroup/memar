@@ -5,6 +5,7 @@ package ptip
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	pp "org/modules/product/protocol"
 )
 
@@ -16,7 +17,7 @@ type DataModel interface {
 	Expected() protocol.Duration // Expected time duration for this service
 	Maximum() protocol.Duration  // Maximum time duration for this service
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

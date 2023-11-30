@@ -5,6 +5,7 @@ package lrop
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	lp "org/modules/label/protocol"
 )
 
@@ -18,7 +19,7 @@ type DataModel interface {
 	RecordID() protocol.UUID // in above domain
 	Status()
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

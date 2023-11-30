@@ -5,6 +5,7 @@ package thp
 import (
 	"memar/protocol"
 
+	// arp "org/modules/app-request/protocol"
 	cp "org/modules/comment/protocol"
 	up "org/modules/user/protocol"
 )
@@ -18,7 +19,7 @@ type DataModel interface {
 	Reason() Reason
 	// TODO::: node details??
 
-	// protocol.AuditLogging
+	// arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

@@ -5,6 +5,7 @@ package ttp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	tp "org/modules/task/protocol"
 )
 
@@ -14,7 +15,7 @@ type DataModel interface {
 	ExpectedTime() protocol.Time
 	Deadline() protocol.Time
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

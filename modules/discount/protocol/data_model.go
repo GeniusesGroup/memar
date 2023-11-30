@@ -4,6 +4,8 @@ package dp
 
 import (
 	"memar/protocol"
+
+	arp "org/modules/app-request/protocol"
 )
 
 // DataModel indicate the domain record data fields.
@@ -12,10 +14,7 @@ type DataModel interface {
 	DiscountID() DiscountUUID
 	Type() Type
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
-}
-
-type Discount_GUI_Page_Services interface {
 }

@@ -5,6 +5,7 @@ package qrlp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	qp "org/modules/question/protocol"
 	qdp "org/modules/quiddity/protocol"
 )
@@ -14,7 +15,7 @@ type DataModel interface {
 	QuestionID() qp.QuestionUUID
 	Labels() []qdp.QuiddityUUID
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

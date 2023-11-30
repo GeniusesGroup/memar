@@ -5,6 +5,7 @@ package plp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	org "org/modules/org/protocol"
 	pp "org/modules/product/protocol"
 )
@@ -15,7 +16,7 @@ type DataModel interface {
 	OrgID() org.OrgUUID
 	Type() Type
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

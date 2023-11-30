@@ -5,6 +5,7 @@ package idp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	ip "org/modules/inventory/protocol"
 	wp "org/modules/warehouse/protocol"
 )
@@ -14,7 +15,7 @@ type DataModel interface {
 	InventoryUUID() ip.InventoryUUID
 	WarehouseID() wp.WarehouseUUID
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

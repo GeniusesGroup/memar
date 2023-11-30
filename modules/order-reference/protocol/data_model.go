@@ -5,6 +5,7 @@ package orp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	op "org/modules/order/protocol"
 )
 
@@ -14,7 +15,7 @@ type DataModel interface {
 	Reference() [16]byte // Any ID that user can assign to track for any purpose. It can't be nil.
 	ReferenceType() uint8
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

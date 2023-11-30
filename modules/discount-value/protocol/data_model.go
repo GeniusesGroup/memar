@@ -6,6 +6,7 @@ import (
 	"memar/math/per"
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	dp "org/modules/discount/protocol"
 )
 
@@ -15,7 +16,7 @@ type DataModel interface {
 	Quantity() per.Myriad        // max discount percentage for each invoices, products, ... price
 	Price() protocol.MoneyAmount // max discount price can use for each invoices, product, ... price
 
-	protocol.AuditLogging
+	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }
