@@ -2,12 +2,11 @@
 
 package uaachp
 
-import( 
-	"memar/protocol"
- "memar/time/utc"
+import (
+	"memar/time/utc"
 )
 
 type DataModel interface {
 	Hour() utc.HourElapsed
-	OnlineCounts() uint64
+	OnlineCounts() OnlineCount
 }

@@ -2,10 +2,10 @@
 
 package uaacuhp
 
-import( 
-	"memar/protocol"
- "memar/time/utc"
-up "org/modules/user/protocol"
+import (
+	"memar/time/utc"
+
+	up "org/modules/user/protocol"
 )
 
 type DataModel interface {

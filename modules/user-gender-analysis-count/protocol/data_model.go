@@ -3,8 +3,7 @@
 package ugacp
 
 import (
-	"memar/protocol"
-	ugp "memar/modules/user-gender/protocol"
+	ugp "org/modules/user-gender/protocol"
 )
 
 type DataModel interface {

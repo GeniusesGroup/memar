@@ -3,12 +3,8 @@
 package usacp
 
 import (
-	"memar/protocol"
-
-	up "org/modules/user/protocol"
 	usp "org/modules/user-sexuality/protocol"
 )
-
 
 type DataModel interface {
 	Sexuality() usp.Sexuality

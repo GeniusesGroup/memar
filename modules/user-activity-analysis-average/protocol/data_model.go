@@ -2,14 +2,15 @@
 
 package uaaap
 
-import( 
+import (
 	"memar/protocol"
- "memar/time/utc"
-up "org/modules/user/protocol"
+	"memar/time/utc"
+
+	up "org/modules/user/protocol"
 )
 
 type DataModel interface {
 	UserID() up.UserUUID
 	Hour() utc.HourElapsed
-	AverageDuration() protocol.duration 
+	Duration() protocol.Duration
 }

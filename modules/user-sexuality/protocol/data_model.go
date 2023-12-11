@@ -5,13 +5,13 @@ package usp
 import (
 	"memar/protocol"
 
+	arp "org/modules/app-request/protocol"
 	up "org/modules/user/protocol"
-	usp "org/modules/user-sexuality/protocol"
 )
 
 type DataModel interface {
 	UserID() up.UserUUID
-	Sexuality() usp.Sexuality
+	Sexuality() Sexuality
 
 	arp.AuditLogging
 	protocol.Storage_Versioned

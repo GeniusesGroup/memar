@@ -3,8 +3,8 @@
 package uaarp
 
 import (
-	"memar/protocol"
 	"memar/time/utc"
+
 	up "org/modules/user/protocol"
 )
 

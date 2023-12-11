@@ -3,12 +3,10 @@
 package usacuhp
 
 import (
-	"memar/protocol"
-	utc "memar/protocol/time"
-	up "org/modules/user/protocol"
+	utc "memar/time/utc"
+
 	usp "org/modules/user-sexuality/protocol"
 )
-
 
 type DataModel interface {
 	Hour() utc.HourElapsed

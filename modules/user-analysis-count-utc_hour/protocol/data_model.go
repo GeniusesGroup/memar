@@ -3,13 +3,10 @@
 package uachp
 
 import (
-	"memar/protocol"
 	"memar/time/utc"
- up "org/modules/user/protocol"
 )
-
 
 type DataModel interface {
 	Hour() utc.HourElapsed
-	CountHour() uint64
+	Count() uint64
 }

@@ -3,14 +3,10 @@
 package uagcuhp
 
 import (
-	"memar/protocol"
 	"memar/time/utc"
- up "org/modules/user/protocol"
 )
 
-
 type DataModel interface {
- CountHour() uint64
+	Hour() utc.HourElapsed
 	GenderCount() uint64
-	Average() Average
 }
