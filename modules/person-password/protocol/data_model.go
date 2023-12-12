@@ -3,7 +3,9 @@
 package ppp
 
 import (
-	urp "org/modules/user-request/protocol"
+	"memar/protocol"
+
+	arp "org/modules/app-request/protocol"
 	up "org/modules/user/protocol"
 )
 
@@ -13,5 +15,8 @@ type DataModel interface {
 	PersonID() up.UserUUID
 	PasswordHash() PasswordHash
 	Status() Status
-	RequestID() urp.UserRequestUUID
+
+	arp.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }
