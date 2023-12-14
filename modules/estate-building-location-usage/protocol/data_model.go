@@ -7,13 +7,11 @@ import (
 
 	arp "org/modules/app-request/protocol"
 	eblp "org/modules/estate-building-location/protocol"
-	ebp "org/modules/estate-building/protocol"
 )
 
 type DataModel interface {
-	BuildingLocationID() eblp.BuildingLocationUUID // use in Coordinate domain too, to get physical location of the Location.
-	BuildingID() ebp.BuildingUUID
-	Usage() string
+	BuildingLocationID() eblp.BuildingLocationUUID
+	Usage() Usage
 
 	arp.AuditLogging
 	protocol.Storage_Versioned

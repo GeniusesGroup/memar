@@ -2,7 +2,7 @@
 
 package qtp
 
-// Locale name in the Human world. It can be not unique in all quiddity contents.
-type Title string
+// Locale text(name, ...) in the Human world. It can be not unique in all quiddity contents.
+type Text string
 
 // TODO::: dynamic data in title?? text substitution, text piping

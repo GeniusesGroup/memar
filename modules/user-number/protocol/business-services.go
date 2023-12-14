@@ -11,7 +11,7 @@ import (
 type (
 	BS_Register_Request interface {
 		OrgID() up.UserUUID
-		Number() string
+		Number() Number
 	}
 )
 
@@ -34,20 +34,20 @@ type (
 
 type (
 	BS_SendVerification_Request interface {
-		Number() string
+		Number() Number
 	}
 )
 
 type (
 	BS_Verify_Request interface {
-		Number() string
+		Number() Number
 		Token() string
 	}
 )
 
 type (
 	BS_IsVerified_Request interface {
-		Number() string
+		Number() Number
 	}
 	BS_IsVerified_Response interface {
 		Verified() bool
@@ -56,7 +56,7 @@ type (
 
 type (
 	BS_IsExist_Request interface {
-		Number() string
+		Number() Number
 	}
 	BS_IsExist_Response interface {
 		Exist() bool

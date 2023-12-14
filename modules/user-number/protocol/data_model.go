@@ -16,8 +16,7 @@ type DataModel interface {
 	UserID() up.UserUUID
 	OrgID() org.OrgUUID
 	ProviderID() org.OrgUUID
-	Number() string // like PhoneNumber
-	// Number() uint64          // without country code e.g. {(00)98-}912-345-6789
+	Number() Number
 	Status() Status
 
 	arp.AuditLogging

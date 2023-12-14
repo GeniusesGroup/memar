@@ -13,7 +13,7 @@ import (
 type DataModel interface {
 	QuiddityID() qp.QuiddityUUID // Wil be unique in all languages
 	Language() protocol.Language
-	Title() Title
+	Text() Text
 
 	arp.AuditLogging
 	protocol.Storage_Versioned

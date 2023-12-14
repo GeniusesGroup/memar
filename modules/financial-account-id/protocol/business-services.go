@@ -11,7 +11,7 @@ import (
 type (
 	BS_Register_Request interface {
 		AccountID() fap.FinancialAccountUUID
-		ID() string
+		ID() ID
 	}
 )
 
