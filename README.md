@@ -1,4 +1,4 @@
-# Organization Software Template
+# Organization Software Template - Golang version
 organization is a template repository to easily make a software for an organization with all basic functionality that any organization need in data era. Use [memar-go](https://github.com/GeniusesGroup/memar-go) CLI functionality to interact with this repo.
 
 As all know, We develope and adopt software in any organization for one main goal as to increase productivity and profit.
@@ -12,11 +12,7 @@ As all know, We develope and adopt software in any organization for one main goa
 ## Not Goals
 - ?
 
-## Protocols
-- ?
-
 ### Industry Protocols
-- Insurance     >> ACCORD
 - Health Care   >> HL7
 - Retail        >> GS1
 - HR            >> HRXML
