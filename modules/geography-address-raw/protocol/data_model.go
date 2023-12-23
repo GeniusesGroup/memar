@@ -2,15 +2,14 @@
 package ggarp
 
 import (
-
 	"memar/protocol"
-	ggap "org/modules/geography-address/protocol"
-	
+
+	arp "org/modules/app-request/protocol"
+	gap "org/modules/geography-address/protocol"
 )
 
 type DataModel interface {
-
-	AddressID() ggap.AddressUUID
+	AddressID() gap.AddressUUID
 	Continent() string
 	Country() string
 	State() string
@@ -26,7 +25,7 @@ type DataModel interface {
 	Building() string
 	Block() string
 	Postal() uint32
-	Zipcode() uint32
+	ZipCode() uint32
 
 	arp.AuditLogging
 	protocol.Storage_Versioned

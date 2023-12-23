@@ -4,14 +4,16 @@ package ggara
 
 import (
 	"memar/protocol"
-	ggr "org/modules/geography-address/protocol"
-	ggrrl "org/modules/geography-region-relation-label/protocol"
+
+	arp "org/modules/app-request/protocol"
+	gar "org/modules/geography-address/protocol"
+	lp "org/modules/label/protocol"
 )
 
 type DataModel interface {
-	AddressID() ggr.AddressUUID
-	RelateAdddressID() ggr.AddressUUID
-	RelationType() ggrrl.label
+	AddressID() gar.AddressUUID
+	RelateAddressID() gar.AddressUUID
+	RelationType() lp.LabelUUID
 
 	arp.AuditLogging
 	protocol.Storage_Versioned

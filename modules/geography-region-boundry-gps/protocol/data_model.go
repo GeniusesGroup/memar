@@ -4,15 +4,13 @@ package ggcrp
 
 import (
 	"memar/protocol"
-	gc "org/modules/geography-coordinate/protocol"
-	ggr "org/modules/geography-region/protocol"
+
+	arp "org/modules/app-request/protocol"
 )
-// todo::
+
+// TODO:::
 type DataModel interface {
-	
 	arp.AuditLogging
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
-	
 }
-

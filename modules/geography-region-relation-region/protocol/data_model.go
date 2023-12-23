@@ -4,14 +4,16 @@ package ggrrrp
 
 import (
 	"memar/protocol"
-	ggp "org/modules/geography/protocol"
-	ggrrl "org/modules/geography-region-relation-label/protocol"
+
+	arp "org/modules/app-request/protocol"
+	grp "org/modules/geography-region/protocol"
+	lp "org/modules/label/protocol"
 )
 
 type DataModel interface {
-	RegionID() ggp.GeographyRegionUUID
-	RelatedRegionID() ggp.GeographyRegionUUID
-	RelationType() ggrrl.label
+	RegionID() grp.GeographyRegionUUID
+	RelatedRegionID() grp.GeographyRegionUUID
+	RelationType() lp.LabelUUID
 
 	arp.AuditLogging
 	protocol.Storage_Versioned

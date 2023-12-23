@@ -4,12 +4,14 @@ package ggrrup
 
 import (
 	"memar/protocol"
+
+	arp "org/modules/app-request/protocol"
+	grp "org/modules/geography-region/protocol"
 	up "org/modules/user/protocol"
-	ggrp "org/modules/geography-region/protocol"
 )
 
 type DataModel interface {
-	GeographyID() ggrp.GeographyRegionUUID
+	GeographyID() grp.GeographyRegionUUID
 	UserID() up.UserUUID
 	RelationType() Type
 

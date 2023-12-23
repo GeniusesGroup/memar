@@ -4,11 +4,13 @@ package ggcap
 
 import (
 	"memar/protocol"
-	ggcp "org/modules/geography-coordinate/protocol"
+
+	arp "org/modules/app-request/protocol"
+	gcp "org/modules/geography-coordinate/protocol"
 )
 
 type DataModel interface {
-	CoordinateID() ggcp.CoordinateUUID
+	CoordinateID() gcp.CoordinateUUID
 	Distance() uint64     // km or ...
 	AverageSpeed() uint64 // km/h or ...
 
