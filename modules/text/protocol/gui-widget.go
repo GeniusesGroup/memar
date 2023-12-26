@@ -1,6 +1,6 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package qtp
+package tp
 
 import (
 	cp "org/modules/comment/protocol"
