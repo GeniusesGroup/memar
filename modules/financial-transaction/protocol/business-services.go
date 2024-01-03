@@ -11,6 +11,10 @@ type (
 )
 
 type (
+	BS_RecoverTransfer_Request interface{}
+)
+
+type (
 	BS_Get_Request interface {
 		AccountID() fap.FinancialAccountUUID
 	}

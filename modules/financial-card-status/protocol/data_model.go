@@ -12,7 +12,7 @@ import (
 // DataModel indicate the domain record data fields.
 type DataModel interface {
 	FinancialCardID() fcp.FinancialCardUUID
-	Status()
+	Status() Status
 
 	arp.AuditLogging
 	protocol.Storage_Versioned
