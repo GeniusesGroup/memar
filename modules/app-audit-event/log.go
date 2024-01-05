@@ -16,7 +16,6 @@ func (l *Logger) Log(event protocol.LogEvent) (err protocol.Error) {
 	return
 }
 
-// TODO::: It seems that this service must implement in `Esteghrar` repo.
 func (l *Logger) saveEvent(event protocol.LogEvent) (err protocol.Error) {
 	if !CheckLevelEnabled(event.Level()) {
 		return
@@ -28,4 +27,8 @@ func (l *Logger) saveEvent(event protocol.LogEvent) (err protocol.Error) {
 	// TODO::: Each day, Save logs to storage(mediatype.LOG.ID()) with NodeID as object ID
 	// protocol.STG.Objects().
 	return
+}
+
+func CheckLevelEnabled(level protocol.LogLevel) bool {
+	return protocol.LogMode&level != 0
 }
