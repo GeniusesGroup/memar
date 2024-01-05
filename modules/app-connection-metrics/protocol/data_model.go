@@ -5,31 +5,14 @@ package csp
 import (
 	"memar/protocol"
 
-	up "org/modules/user/protocol"
+	acp "org/modules/app-connection/protocol"
+	arp "org/modules/app-request/protocol"
 )
 
-// Connection or App2AppConnection indicate how connection create and save in time series data.
-// Each user pair with delegate-user has a chain that primary key is UserID+DelegateUserID
-type Connection interface {
-	/* Connection data */
-	MTU() int
-	Status() protocol.NetworkStatus // return last connection state
-	Weight() protocol.Weight
-
-	/* Peer data */
-	Addr() [16]byte
-	AddrType() protocol.NetworkLink_NextHeaderID
-	DomainName() string // if exist
-	UserID() up.UserUUID
-	DelegateUserID() up.UserUUID // Persons can delegate to things(as a user type)
-
-	/* Security data */
-	// AccessControl() AccessControl
-	Cipher() protocol.Cipher
-}
-
 // ConnectionMetrics
-type ConnectionMetrics interface {
+type DataModel interface {
+	ConnectionID() acp.ConnectionUUID
+
 	LastUsage() protocol.Time            // Last use of the connection
 	MaxBandwidth() uint64                // Byte/Second and Connection can limit to a fixed number
 	BytesSent() uint64                   // Counts the bytes of packets sent
@@ -41,8 +24,7 @@ type ConnectionMetrics interface {
 	SucceedStreamCount() uint64          // Count successful request
 	FailedStreamCount() uint64           // Count failed services call e.g. data validation failed, ...
 
-	StreamSucceed()
-	StreamFailed()
-	PacketReceived(packetLength uint64)
-	PacketSent(packetLength uint64)
+	arp.AuditLogging
+	protocol.Storage_Versioned
+	protocol.Storage_SaveTime
 }

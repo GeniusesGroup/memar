@@ -5,10 +5,10 @@ package services
 import (
 	"memar/authorization"
 	er "memar/error"
-	"memar/http"
+	"memar/net/http"
 	"memar/json"
 	lang "memar/language"
-	"memar/srpc"
+	"memar/net/srpc"
 	"memar/syllab"
 	"memar/protocol"
 	"memar/service"
