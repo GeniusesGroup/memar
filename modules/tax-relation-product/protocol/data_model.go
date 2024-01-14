@@ -1,14 +1,13 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package ptp
+package trpp
 
 import (
-	"memar/math/per"
 	"memar/protocol"
 
-	arp "org/modules/app-request/protocol"
+	aap "org/modules/app-audit/protocol"
 	pp "org/modules/product/protocol"
-	sp "org/modules/society/protocol"
+	tp "org/modules/tax/protocol"
 )
 
 // ProductTax indicate the domain record data fields.
@@ -18,11 +17,10 @@ import (
 // Associate multiple tax rates with the same tax labels
 // Associate a blank tax label with tax exempt items (considered non-value-added tax (VAT))
 type DataModel interface {
+	TaxID() tp.TaxUUID
 	ProductID() pp.ProductUUID
-	SocietyID() sp.SocietyUUID
-	VAT() per.Myriad // VAT as Value-Added-Tax is bad name for a robbery
 
-	arp.AuditLogging
+	aap.AuditRequest
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }
