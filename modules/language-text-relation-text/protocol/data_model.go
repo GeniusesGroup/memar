@@ -1,20 +1,22 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package tp
+package ltrtp
 
 import (
 	"memar/protocol"
 
-	arp "org/modules/app-request/protocol"
-	tp "org/modules/text/protocol"
+	aap "org/modules/app-audit/protocol"
+	ltp "org/modules/language-text/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	TextID() tp.TextUUID
+	TextID() ltp.TextUUID
+	RelatedID() ltp.TextUUID
+	Ranking() uint64
 	Type() Type
 
-	arp.AuditLogging
+	aap.AuditRequest
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

@@ -1,21 +1,19 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package trtp
+package lwp
 
 import (
 	"memar/protocol"
 
-	arp "org/modules/app-request/protocol"
-	tp "org/modules/text/protocol"
+	aap "org/modules/app-audit/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	TextID() tp.TextUUID
-	RelatedID() tp.TextUUID
-	Type()
+	WordID() WordUUID
+	Word() Word
 
-	arp.AuditLogging
+	aap.AuditRequest
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

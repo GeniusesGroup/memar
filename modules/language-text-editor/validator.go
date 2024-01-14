@@ -7,7 +7,7 @@ import (
 
 	"memar/protocol"
 
-	"org/modules/text-editor/errors"
+	"org/modules/language-text-editor/errors"
 )
 
 // ValidateText escapes string for any bad data
