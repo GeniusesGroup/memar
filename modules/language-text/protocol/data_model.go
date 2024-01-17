@@ -6,12 +6,13 @@ import (
 	"memar/protocol"
 
 	aap "org/modules/app-audit/protocol"
+	lp "org/modules/language/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
 	TextID() TextUUID // Wil be unique in all languages
-	Language() protocol.Language
+	Language() lp.LanguageUUID
 	Text() Text
 
 	aap.AuditRequest
