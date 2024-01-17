@@ -3,11 +3,13 @@
 package error
 
 import (
-	er "memar/error"
-	"memar/http"
+	"strconv"
+
+	"memar/errors"
 	"memar/json"
-	lang "memar/language"
-	"memar/srpc"
+	"memar/net/http"
+	"memar/net/srpc"
+	"memar/protocol"
 	"memar/syllab"
 )
 
@@ -28,36 +30,37 @@ var getPlatformErrorDetailService = service.Service{
 
 	Detail: map[protocol.LanguageID]service.ServiceDetail{
 		protocol.LanguageEnglish: {
-			Name:                                           "Get Platform Error Detail",
+			Name:        "Get Platform Error Detail",
 			Description: "Returns error all details by given ID",
-			TAGS:                                           []string{},
+			TAGS:        []string{},
 		},
 	},
 
 	SRPCHandler: GetPlatformErrorDetailSRPC,
-	ServeHTTP: GetPlatformErrorDetailHTTP,
+	ServeHTTP:   GetPlatformErrorDetailHTTP,
 }
 
 // GetPlatformErrorDetailSRPC is sRPC handler of GetPlatformErrorDetail service.
-func GetPlatformErrorDetailSRPC(st protocol.Stream) {
+func GetPlatformErrorDetailSRPC(sk protocol.Socket) (err protocol.Error) {
 	var req = &getPlatformErrorDetailReq{}
-	err = req.FromSyllab(srpc.GetPayload(st.IncomePayload))
+	err = req.FromSyllab(srpc.GetPayload(sk.IncomePayload))
 	if err != nil {
 		return
 	}
 
 	var res *getPlatformErrorDetailRes
 	res, err = getPlatformErrorDetail(st, req)
-	// Check if any error occur in bussiness logic
+	// Check if any error occur in business logic
 	if err != nil {
 		return
 	}
 
-	st.OutcomePayload = res.Syllab
+	sk.OutcomePayload = res.Syllab
+	return
 }
 
 // GetPlatformErrorDetailHTTP is HTTP handler of GetPlatformErrorDetail service.
-func GetPlatformErrorDetailHTTP(st protocol.Stream, httpReq *http.Request, httpRes *http.Response) {
+func GetPlatformErrorDetailHTTP(sk protocol.Socket, httpReq *http.Request, httpRes *http.Response) (err protocol.Error) {
 	var req = &getPlatformErrorDetailReq{}
 	err = req.FromJSON(httpReq.Body().Marshal())
 	if err != nil {
@@ -66,8 +69,8 @@ func GetPlatformErrorDetailHTTP(st protocol.Stream, httpReq *http.Request, httpR
 	}
 
 	var res *getPlatformErrorDetailRes
-	res, err = getPlatformErrorDetail(st, req)
-	// Check if any error occur in bussiness logic
+	res, err = getPlatformErrorDetail(sk, req)
+	// Check if any error occur in business logic
 	if err != nil {
 		httpRes.SetStatus(http.StatusBadRequestCode, http.StatusBadRequestPhrase)
 		return
@@ -75,10 +78,11 @@ func GetPlatformErrorDetailHTTP(st protocol.Stream, httpReq *http.Request, httpR
 
 	httpRes.SetStatus(http.StatusOKCode, http.StatusOKPhrase)
 	httpRes.Body = res.JSON
+	return
 }
 
 type getPlatformErrorDetailReq struct {
-	ErrorID uint64
+	ErrorID protocol.ID
 }
 
 type getPlatformErrorDetailRes struct {
@@ -86,8 +90,8 @@ type getPlatformErrorDetailRes struct {
 	Syllab []byte
 }
 
-func getPlatformErrorDetail(st protocol.Stream, req *getPlatformErrorDetailReq) (res *getPlatformErrorDetailRes, err protocol.Error) {
-	var er = protocol.App.GetErrorByID(req.ErrorID)
+func getPlatformErrorDetail(sk protocol.Socket, req *getPlatformErrorDetailReq) (res *getPlatformErrorDetailRes, err protocol.Error) {
+	var er = errors.GetByID(req.ErrorID)
 	res = &getPlatformErrorDetailRes{
 		JSON:   er.JSON,
 		Syllab: er.Syllab,
@@ -109,7 +113,7 @@ func (req *getPlatformErrorDetailReq) FromSyllab(payload []byte, stackIndex uint
 	return
 }
 
-func (req *getPlatformErrorDetailReq) ToSyllab(payload []byte, stackIndex, heapIndex uint32) (freeHeapIndex uint32)
+func (req *getPlatformErrorDetailReq) ToSyllab(payload []byte, stackIndex, heapIndex uint32) (freeHeapIndex uint32) {
 	syllab.SetUInt64(buf, 0, req.ErrorID)
 	return
 }
@@ -158,7 +162,6 @@ func (req *getPlatformErrorDetailReq) LenAsJSON() (ln int) {
 	ln = 42
 	return
 }
-
 
 // FromSyllab decode syllab to given Error
 func (e *Error) FromSyllab(payload []byte, stackIndex uint32) {

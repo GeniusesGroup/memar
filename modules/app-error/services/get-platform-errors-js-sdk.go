@@ -4,11 +4,12 @@ package error
 
 import (
 	er "memar/error"
-	"memar/http"
 	"memar/json"
-	lang "memar/language"
-	"memar/srpc"
+	"memar/net/http"
+	"memar/net/srpc"
 	"memar/syllab"
+
+	"github.com/GeniusesGroup/libgo/protocol"
 )
 
 var getPlatfromErrorsSDKService = service.Service{
@@ -28,36 +29,37 @@ var getPlatfromErrorsSDKService = service.Service{
 
 	Detail: map[protocol.LanguageID]service.ServiceDetail{
 		protocol.LanguageEnglish: {
-			Name:                                           "Get Platform Errors JS SDK",
+			Name:        "Get Platform Errors JS SDK",
 			Description: "Returns all platform errors in JS language",
-			TAGS:                                           []string{},
+			TAGS:        []string{},
 		},
 	},
 
 	SRPCHandler: GetPlatfromErrorsSDKSRPC,
-	ServeHTTP: GetPlatfromErrorsSDKHTTP,
+	ServeHTTP:   GetPlatfromErrorsSDKHTTP,
 }
 
 // GetPlatfromErrorsSDKSRPC is sRPC handler of GetPlatfromErrorsSDK service.
-func GetPlatfromErrorsSDKSRPC(st protocol.Stream) {
+func GetPlatfromErrorsSDKSRPC(sk protocol.Socket) (err protocol.Error) {
 	var req = &getPlatfromErrorsSDKReq{}
-	err = req.FromSyllab(srpc.GetPayload(st.IncomePayload))
+	err = req.FromSyllab(srpc.GetPayload(sk.IncomePayload))
 	if err != nil {
 		return
 	}
 
 	var res *getPlatfromErrorsSDKRes
-	res, err = getPlatfromErrorsSDK(st, req)
-	// Check if any error occur in bussiness logic
+	res, err = getPlatfromErrorsSDK(sk, req)
+	// Check if any error occur in business logic
 	if err != nil {
 		return
 	}
 
-	st.OutcomePayload = res.SDK
+	sk.OutcomePayload = res.SDK
+	return
 }
 
 // GetPlatfromErrorsSDKHTTP is HTTP handler of GetPlatfromErrorsSDK service.
-func GetPlatfromErrorsSDKHTTP(st protocol.Stream, httpReq *http.Request, httpRes *http.Response) {
+func GetPlatfromErrorsSDKHTTP(sk protocol.Socket, httpReq *http.Request, httpRes *http.Response) (err protocol.Error) {
 	var req = &getPlatfromErrorsSDKReq{}
 	err = req.FromJSON(httpReq.Body().Marshal())
 	if err != nil {
@@ -66,8 +68,8 @@ func GetPlatfromErrorsSDKHTTP(st protocol.Stream, httpReq *http.Request, httpRes
 	}
 
 	var res *getPlatfromErrorsSDKRes
-	res, err = getPlatfromErrorsSDK(st, req)
-	// Check if any error occur in bussiness logic
+	res, err = getPlatfromErrorsSDK(sk, req)
+	// Check if any error occur in business logic
 	if err != nil {
 		httpRes.SetStatus(http.StatusBadRequestCode, http.StatusBadRequestPhrase)
 		return
@@ -76,6 +78,7 @@ func GetPlatfromErrorsSDKHTTP(st protocol.Stream, httpReq *http.Request, httpRes
 	httpRes.SetStatus(http.StatusOKCode, http.StatusOKPhrase)
 	httpRes.Header.Set(http.HeaderKeyContentType, "application/javascript")
 	httpRes.Body = res.SDK
+	return
 }
 
 type getPlatfromErrorsSDKReq struct {
@@ -86,7 +89,7 @@ type getPlatfromErrorsSDKRes struct {
 	SDK []byte
 }
 
-func getPlatfromErrorsSDK(st protocol.Stream, req *getPlatfromErrorsSDKReq) (res *getPlatfromErrorsSDKRes, err protocol.Error) {
+func getPlatfromErrorsSDK(st protocol.Socket, req *getPlatfromErrorsSDKReq) (res *getPlatfromErrorsSDKRes, err protocol.Error) {
 	res = &getPlatfromErrorsSDKRes{
 		SDK: er.Errors.GetErrorsInJsFormat(req.Language),
 	}
@@ -107,7 +110,7 @@ func (req *getPlatfromErrorsSDKReq) FromSyllab(payload []byte, stackIndex uint32
 	return
 }
 
-func (req *getPlatfromErrorsSDKReq) ToSyllab(payload []byte, stackIndex, heapIndex uint32) (freeHeapIndex uint32)
+func (req *getPlatfromErrorsSDKReq) ToSyllab(payload []byte, stackIndex, heapIndex uint32) (freeHeapIndex uint32) {
 	syllab.SetUInt32(buf, 0, uint32(req.Language))
 	return
 }
