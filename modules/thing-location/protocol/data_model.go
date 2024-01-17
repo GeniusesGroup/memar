@@ -5,7 +5,7 @@ package org
 import (
 	"memar/protocol"
 
-	arp "org/modules/app-request/protocol"
+	aap "org/modules/app-audit/protocol"
 	eblp "org/modules/estate-building-location/protocol"
 	tp "org/modules/thing/protocol"
 )
@@ -18,7 +18,7 @@ type DataModel interface {
 	Y() uint64 // Three-Dimensional Coordinate Systems
 	Z() uint64 // Three-Dimensional Coordinate Systems
 
-	arp.AuditLogging
+	aap.AuditRequest
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

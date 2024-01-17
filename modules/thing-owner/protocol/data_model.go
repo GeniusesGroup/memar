@@ -5,7 +5,7 @@ package top
 import (
 	"memar/protocol"
 
-	arp "org/modules/app-request/protocol"
+	aap "org/modules/app-audit/protocol"
 	tp "org/modules/thing/protocol"
 	up "org/modules/user/protocol"
 )
@@ -16,7 +16,7 @@ type ThingOwner interface {
 	ThingID() tp.ThingUUID
 	OwnerID() up.UserUUID
 
-	arp.AuditLogging
+	aap.AuditRequest
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }
