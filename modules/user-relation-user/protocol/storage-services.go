@@ -16,6 +16,4 @@ type StorageServices interface {
 
 	ListSides(userID up.UserUUID, offset, limit uint64) (sideIDs []up.UserUUID, nv protocol.NumberOfVersion, err protocol.Error)
 	ListUsers(sideID up.UserUUID, offset, limit uint64) (userIDs []up.UserUUID, nv protocol.NumberOfVersion, err protocol.Error)
-
-	protocol.EventTarget
 }

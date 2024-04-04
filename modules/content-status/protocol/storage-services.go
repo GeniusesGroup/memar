@@ -15,6 +15,4 @@ type StorageServices interface {
 	Get(contentID cp.ContentUUID, vo protocol.VersionOffset) (f DataModel, nv protocol.NumberOfVersion, err protocol.Error)
 
 	FILTER_ContentIDs_BY_Status(status Status, offset, limit uint64) (contentIDs []cp.ContentUUID, nv protocol.NumberOfVersion, err protocol.Error)
-
-	// protocol.EventTarget
 }

@@ -14,6 +14,4 @@ type StorageServices interface {
 
 	FIND_UserIDs_BY_Status(status Status, offset, limit uint64) (userIDs []up.UserUUID, nv protocol.NumberOfVersion, err protocol.Error)
 	FIND_UserIDs_BY_Status_Current(status Status, offset, limit uint64) (userIDs []up.UserUUID, nv protocol.NumberOfVersion, err protocol.Error)
-
-	// protocol.EventTarget
 }

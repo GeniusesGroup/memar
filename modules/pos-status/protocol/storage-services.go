@@ -15,6 +15,4 @@ type StorageServices interface {
 	Get(posID pp.PosUUID, vo protocol.VersionOffset) (dm DataModel, nv protocol.NumberOfVersion, err protocol.Error)
 
 	FILTER_PosIDs_BY_Status(status Status, offset, limit uint64) (posIDs []pp.PosUUID, nv protocol.NumberOfVersion, err protocol.Error)
-
-	protocol.EventTarget
 }

@@ -15,6 +15,4 @@ type StorageServices interface {
 	Get(discountID dp.DiscountUUID, vo protocol.VersionOffset) (dm DataModel, nv protocol.NumberOfVersion, err protocol.Error)
 
 	FILTER_DiscountIDs_BY_Status(status Status, offset, limit uint64) (discountIDs []dp.DiscountUUID, nv protocol.NumberOfVersion, err protocol.Error)
-
-	protocol.EventTarget
 }

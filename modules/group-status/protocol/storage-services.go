@@ -16,6 +16,4 @@ type StorageServices interface {
 	Get(groupID gp.GroupUUID, userID up.UserUUID, vo protocol.VersionOffset) (dm DataModel, nv protocol.NumberOfVersion, err protocol.Error)
 
 	FILTER_GroupIDs_BY_Status(status Status, offset, limit uint64) (groupIDs []gp.GroupUUID, nv protocol.NumberOfVersion, err protocol.Error)
-
-	// protocol.EventTarget
 }

@@ -13,6 +13,4 @@ type StorageServices interface {
 
 	Count(userID up.UserUUID) (nv protocol.NumberOfVersion, err protocol.Error)
 	Get(userID up.UserUUID, vo protocol.VersionOffset) (dm DataModel, nv protocol.NumberOfVersion, err protocol.Error)
-
-	protocol.EventTarget
 }

@@ -13,6 +13,4 @@ type StorageServices interface {
 
 	Count(projectID pp.ProjectUUID) (nv protocol.NumberOfVersion, err protocol.Error)
 	Get(projectID pp.ProjectUUID, vo protocol.VersionOffset) (dm DataModel, nv protocol.NumberOfVersion, err protocol.Error)
-
-	protocol.EventTarget
 }

@@ -15,6 +15,4 @@ type StorageServices interface {
 	Get(inventoryChangeID icp.InventoryChangeUUID, vo protocol.VersionOffset) (dm DataModel, nv protocol.NumberOfVersion, err protocol.Error)
 
 	FILTER_InventoryChangeIDs_BY_Status(status Status, offset, limit uint64) (inventoryChangeIDs []icp.InventoryChangeUUID, nv protocol.NumberOfVersion, err protocol.Error)
-
-	protocol.EventTarget
 }

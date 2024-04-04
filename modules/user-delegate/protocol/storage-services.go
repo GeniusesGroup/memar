@@ -20,6 +20,4 @@ type StorageServices interface {
 	ListGivenUsers(roleID rp.RoleUUID, offset, limit uint64) (givenUserIDs []up.UserUUID, nv protocol.NumberOfVersion, err protocol.Error)
 	ListGottenDelegateUsers(gottenUserID up.UserUUID, offset, limit uint64) (givenUserIDs []up.UserUUID, nv protocol.NumberOfVersion, err protocol.Error)
 	ListGivenDelegateUsers(givenUserID up.UserUUID, offset, limit uint64) (gottenUserID []up.UserUUID, nv protocol.NumberOfVersion, err protocol.Error)
-
-	// protocol.EventTarget
 }

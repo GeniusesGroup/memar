@@ -15,6 +15,4 @@ type StorageServices interface {
 	Get(productID pp.ProductUUID, vo protocol.VersionOffset) (dm DataModel, nv protocol.NumberOfVersion, err protocol.Error)
 
 	FILTER_ProductIDs_BY_Status(status Status, offset, limit uint64) (productIDs []pp.ProductUUID, nv protocol.NumberOfVersion, err protocol.Error)
-
-	protocol.EventTarget
 }

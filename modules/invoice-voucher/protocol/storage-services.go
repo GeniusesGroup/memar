@@ -16,6 +16,4 @@ type StorageServices interface {
 	Get(invoiceID ip.InvoiceUUID, vo protocol.VersionOffset) (dm DataModel, nv protocol.NumberOfVersion, err protocol.Error)
 
 	FIND_InvoiceIDs_BY_VoucherID(voucherID vp.VoucherUUID, offset, limit uint64) (invoiceIDs []ip.InvoiceUUID, nv protocol.NumberOfVersion, err protocol.Error)
-
-	// protocol.EventTarget
 }

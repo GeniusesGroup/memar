@@ -13,6 +13,4 @@ type StorageServices interface {
 
 	Count(commentID cp.CommentUUID) (nv protocol.NumberOfVersion, err protocol.Error)
 	Get(commentID cp.CommentUUID, vo protocol.VersionOffset) (dm DataModel, nv protocol.NumberOfVersion, err protocol.Error)
-
-	protocol.EventTarget
 }

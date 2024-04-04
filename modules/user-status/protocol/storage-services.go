@@ -18,6 +18,4 @@ type StorageServices interface {
 
 	// FilterByStatus(status UserOtherApp_Status, offset, limit uint64) (userIDs []up.UserUUID, nv protocol.NumberOfVersion, err protocol.Error)
 	// FindByTime(day utc.DayElapsed, offset, limit uint64) (userIDs []up.UserUUID, nv protocol.NumberOfVersion, err protocol.Error)
-
-	// protocol.EventTarget
 }

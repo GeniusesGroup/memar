@@ -15,6 +15,4 @@ type StorageServices interface {
 	Get(categoryID cp.CategoryUUID, vo protocol.VersionOffset) (dm DataModel, nv protocol.NumberOfVersion, err protocol.Error)
 
 	FILTER_CategoryIDs_BY_Status(status Status, offset, limit uint64) (categoryIDs []cp.CategoryUUID, nv protocol.NumberOfVersion, err protocol.Error)
-
-	protocol.EventTarget
 }

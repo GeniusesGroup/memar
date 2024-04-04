@@ -15,5 +15,4 @@ type StorageServices interface {
 	Get(buildingLocationID eblp.BuildingLocationUUID, vo protocol.VersionOffset) (dm DataModel, nv protocol.NumberOfVersion, err protocol.Error)
 
 	FilterByStatus(status Status, offset, limit uint64) (buildingLocationIDs []eblp.BuildingLocationUUID, err protocol.Error)
-	// protocol.EventTarget
 }

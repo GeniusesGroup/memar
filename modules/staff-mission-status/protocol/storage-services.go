@@ -16,6 +16,4 @@ type StorageServices interface {
 	Get(staffID sp.StaffUUID, day utc.DayElapsed, vo protocol.VersionOffset) (dm DataModel, nv protocol.NumberOfVersion, err protocol.Error)
 
 	// FilterByStatus(status Status, offset, limit uint64) (staffIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
-
-	// protocol.EventTarget
 }

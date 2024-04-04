@@ -15,6 +15,4 @@ type StorageServices interface {
 	Get(userID, sideID up.UserUUID, vo protocol.VersionOffset) (dm DataModel, nv protocol.NumberOfVersion, err protocol.Error)
 
 	FindByStatus(userID up.UserUUID, status Status, offset, limit uint64) (sideIDs []up.UserUUID, nv protocol.NumberOfVersion, err protocol.Error)
-
-	protocol.EventTarget
 }

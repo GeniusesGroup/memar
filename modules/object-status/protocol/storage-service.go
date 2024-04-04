@@ -15,6 +15,4 @@ type StorageServices interface {
 	Get(objectID op.ObjectUUID, vo protocol.VersionOffset) (dm DataModel, nv protocol.NumberOfVersion, err protocol.Error)
 
 	// FilterByStatus(status Status, offset, limit uint64) (objectIDs []op.ObjectUUID, nv protocol.NumberOfVersion, err protocol.Error)
-
-	// protocol.EventTarget
 }

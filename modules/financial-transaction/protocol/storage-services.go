@@ -21,6 +21,4 @@ type StorageServices interface {
 
 	// TODO::: is it worth to uncomment below service?
 	// FindByAccountSideID(accountID, accountSideID [16]byte, offset, limit uint64) (versionOffsets []uint64, nv protocol.NumberOfVersion, err protocol.Error)
-
-	protocol.EventTarget
 }

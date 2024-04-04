@@ -14,6 +14,4 @@ type StorageServices interface {
 
 	Count(staffID sp.StaffUUID, day utc.DayElapsed) (nv protocol.NumberOfVersion, err protocol.Error)
 	Get(staffID sp.StaffUUID, day utc.DayElapsed, vo protocol.VersionOffset) (dm DataModel, nv protocol.NumberOfVersion, err protocol.Error)
-
-	// protocol.EventTarget
 }

@@ -16,6 +16,4 @@ type StorageServices interface {
 
 	// we may need indexing ?
 	FIND_InvoiceIDs_BY_Status(status Status, offset, limit uint64) (invoiceIDs []ip.InvoiceUUID, nv protocol.NumberOfVersion, err protocol.Error)
-
-	protocol.EventTarget
 }

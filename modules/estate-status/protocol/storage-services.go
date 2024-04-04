@@ -13,6 +13,4 @@ type StorageServices interface {
 	Get(areaID [16]byte, vo protocol.VersionOffset) (dm DataModel, nv protocol.NumberOfVersion, err protocol.Error)
 
 	FilterByStatus(status Status, offset, limit uint64) (areaIDs [][16]byte, err protocol.Error)
-
-	// protocol.EventTarget
 }

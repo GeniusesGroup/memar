@@ -17,6 +17,4 @@ type StorageServices interface {
 
 	FIND_UserIDs_BY_RoleID(roleID rp.RoleUUID, offset, limit uint64) (userIDs []up.UserUUID, nv protocol.NumberOfVersion, err protocol.Error)
 	LIST_RoleIDs_BY_UserID(userID up.UserUUID, offset, limit uint64) (roleIDs []rp.RoleUUID, nv protocol.NumberOfVersion, err protocol.Error)
-
-	// protocol.EventTarget
 }
