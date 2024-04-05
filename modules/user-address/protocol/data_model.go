@@ -5,7 +5,7 @@ package uap
 import (
 	"memar/protocol"
 
-	arp "org/modules/app-request/protocol"
+	aap "org/modules/app-audit/protocol"
 	up "org/modules/user/protocol"
 )
 
@@ -15,7 +15,7 @@ type DataModel interface {
 	Address() string
 	Status() Status
 
-	arp.AuditLogging
+	aap.AuditRequest
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }
