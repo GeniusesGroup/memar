@@ -5,7 +5,7 @@ package vcp
 import (
 	"memar/protocol"
 
-	arp "org/modules/app-request/protocol"
+	aap "org/modules/app-audit/protocol"
 	mcp "org/modules/marketing-campaign/protocol"
 	vp "org/modules/voucher/protocol"
 )
@@ -15,7 +15,7 @@ type DataModel interface {
 	VoucherID() vp.VoucherUUID
 	CampaignID() mcp.MarketingCampaignUUID
 
-	arp.AuditLogging
+	aap.AuditRequest
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

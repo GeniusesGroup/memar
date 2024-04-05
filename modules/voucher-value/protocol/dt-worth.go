@@ -3,10 +3,10 @@
 package vvp
 
 import (
-	"memar/protocol"
+	fmp "org/modules/financial-money/protocol"
 )
 
 // Max discount worth per use
-type Worth protocol.MoneyAmount
+type Worth fmp.MoneyAmount
 
 func (dt *Worth) Optional() bool { return false }

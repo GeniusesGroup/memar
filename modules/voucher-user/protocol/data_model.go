@@ -5,7 +5,7 @@ package vup
 import (
 	"memar/protocol"
 
-	arp "org/modules/app-request/protocol"
+	aap "org/modules/app-audit/protocol"
 	up "org/modules/user/protocol"
 	vp "org/modules/voucher/protocol"
 )
@@ -16,7 +16,7 @@ type DataModel interface {
 	VoucherID() vp.VoucherUUID
 	UserID() up.UserUUID
 
-	arp.AuditLogging
+	aap.AuditRequest
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

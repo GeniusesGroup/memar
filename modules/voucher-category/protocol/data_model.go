@@ -5,7 +5,7 @@ package vcp
 import (
 	"memar/protocol"
 
-	arp "org/modules/app-request/protocol"
+	aap "org/modules/app-audit/protocol"
 	cp "org/modules/category/protocol"
 	vp "org/modules/voucher/protocol"
 )
@@ -17,7 +17,7 @@ type DataModel interface {
 	Each() vp.Each
 	CategoryID() []cp.CategoryUUID
 
-	arp.AuditLogging
+	aap.AuditRequest
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

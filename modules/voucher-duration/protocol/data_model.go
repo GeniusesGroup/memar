@@ -5,7 +5,7 @@ package vdp
 import (
 	"memar/protocol"
 
-	arp "org/modules/app-request/protocol"
+	aap "org/modules/app-audit/protocol"
 	vp "org/modules/voucher/protocol"
 )
 
@@ -16,7 +16,7 @@ type DataModel interface {
 	Epoch() Epoch
 	Duration() protocol.Duration // from Epoch()
 
-	arp.AuditLogging
+	aap.AuditRequest
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

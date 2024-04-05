@@ -5,13 +5,15 @@ package vaudp
 import (
 	"memar/protocol"
 	"memar/time/utc"
+
+	fmp "org/modules/financial-money/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
 	Minute() utc.MinuteElapsed
 	TotalIssued() uint64
-	TotalIssuedAmount() protocol.MoneyAmount
+	TotalIssuedAmount() fmp.MoneyAmount
 
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime

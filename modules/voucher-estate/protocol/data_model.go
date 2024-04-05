@@ -7,7 +7,7 @@ package vep
 import (
 	"memar/protocol"
 
-	arp "org/modules/app-request/protocol"
+	aap "org/modules/app-audit/protocol"
 	eblp "org/modules/estate-building-location/protocol"
 	ebp "org/modules/estate-building/protocol"
 	ep "org/modules/estate/protocol"
@@ -21,7 +21,7 @@ type DataModel interface {
 	BuildingID() ebp.BuildingUUID
 	BuildingLocationID() eblp.BuildingLocationUUID
 
-	arp.AuditLogging
+	aap.AuditRequest
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }

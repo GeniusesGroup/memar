@@ -5,7 +5,8 @@ package vip
 import (
 	"memar/protocol"
 
-	arp "org/modules/app-request/protocol"
+	aap "org/modules/app-audit/protocol"
+	fmp "org/modules/financial-money/protocol"
 	vp "org/modules/voucher/protocol"
 )
 
@@ -15,10 +16,10 @@ import (
 type DataModel interface {
 	VoucherID() vp.VoucherUUID
 	Each() vp.Each
-	MinPrice() protocol.MoneyAmount // Minimum invoice price
-	MinAmount() uint64              // Minimum invoice product numbers
+	MinPrice() fmp.MoneyAmount // Minimum invoice price
+	MinAmount() uint64         // Minimum invoice product numbers
 
-	arp.AuditLogging
+	aap.AuditRequest
 	protocol.Storage_Versioned
 	protocol.Storage_SaveTime
 }
