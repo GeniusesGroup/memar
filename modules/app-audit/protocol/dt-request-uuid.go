@@ -6,5 +6,5 @@ import (
 	"memar/protocol"
 )
 
-// Request RecordID to prove how this object created in the chain of other objects.
+// Request RecordID to prove how domain objects created in the chain of other objects.
 type RequestUUID protocol.UUID
