@@ -7,12 +7,11 @@ import (
 
 	aap "org/modules/app-audit/protocol"
 	np "org/modules/notification/protocol"
-	qsp "org/modules/quiddity-status/protocol"
 )
 
 type DataModel interface {
 	NotificationID() np.NotificationUUID
-	Status() qsp.Quiddity_Status
+	Status() Status
 
 	aap.AuditRequest
 	protocol.Storage_Versioned
