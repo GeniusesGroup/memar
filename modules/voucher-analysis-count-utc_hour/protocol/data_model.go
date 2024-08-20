@@ -3,10 +3,11 @@
 package vacuh
 
 import (
-	"memar/protocol"
 	"memar/time/utc"
 
+	aap "org/modules/app-audit/protocol"
 	fmp "org/modules/financial-money/protocol"
+	sp "org/modules/storage/protocol"
 )
 
 // DataModel indicate the domain record data fields.
@@ -15,6 +16,6 @@ type DataModel interface {
 	TotalIssued() uint64
 	TotalIssuedAmount() fmp.MoneyAmount
 
-	protocol.Storage_Versioned
-	protocol.Storage_SaveTime
+	aap.AuditRequest
+	sp.SaveTime
 }

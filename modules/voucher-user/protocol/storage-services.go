@@ -5,15 +5,15 @@ package vup
 import (
 	"memar/protocol"
 
+	sp "org/modules/storage/protocol"
 	up "org/modules/user/protocol"
 	vp "org/modules/voucher/protocol"
 )
 
 type StorageServices interface {
-	Save(dm DataModel) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm DataModel) (err protocol.Error)
 
-	Count(voucherID vp.VoucherUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(voucherID vp.VoucherUUID, vo protocol.VersionOffset) (dm DataModel, nv protocol.NumberOfVersion, err protocol.Error)
+	Get(voucherID vp.VoucherUUID) (dm DataModel, err protocol.Error)
 
-	FIND_VoucherIDs_BY_UserID(userID up.UserUUID, offset, limit uint64) (voucherIDs []vp.VoucherUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	FIND_VoucherIDs_BY_UserID(userID up.UserUUID, offset, limit uint64) (voucherIDs []vp.VoucherUUID, num sp.NumberOfVersion, err protocol.Error)
 }

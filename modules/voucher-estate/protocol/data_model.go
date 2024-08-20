@@ -5,23 +5,21 @@
 package vep
 
 import (
-	"memar/protocol"
-
 	aap "org/modules/app-audit/protocol"
 	eblp "org/modules/estate-building-location/protocol"
 	ebp "org/modules/estate-building/protocol"
 	ep "org/modules/estate/protocol"
+	sp "org/modules/storage/protocol"
 	vp "org/modules/voucher/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	VoucherID() vp.VoucherUUID
+	vp.VoucherID
 	EstateID() ep.EstateUUID
 	BuildingID() ebp.BuildingUUID
 	BuildingLocationID() eblp.BuildingLocationUUID
 
 	aap.AuditRequest
-	protocol.Storage_Versioned
-	protocol.Storage_SaveTime
+	sp.SaveTime
 }

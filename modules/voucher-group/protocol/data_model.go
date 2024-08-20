@@ -3,19 +3,17 @@
 package vgp
 
 import (
-	"memar/protocol"
-
 	aap "org/modules/app-audit/protocol"
 	gp "org/modules/group/protocol"
+	sp "org/modules/storage/protocol"
 	vp "org/modules/voucher/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	VoucherID() vp.VoucherUUID
+	vp.VoucherID
 	GroupID() []gp.GroupUUID
 
 	aap.AuditRequest
-	protocol.Storage_Versioned
-	protocol.Storage_SaveTime
+	sp.SaveTime
 }

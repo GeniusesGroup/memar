@@ -4,13 +4,11 @@ package vaudp
 
 import (
 	"memar/protocol"
-
-	vp "org/modules/voucher/protocol"
+	"memar/time/utc"
 )
 
 type StorageServices interface {
-	Save(dm DataModel) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm DataModel) (err protocol.Error)
 
-	Count(voucherID vp.VoucherUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(voucherID vp.VoucherUUID, vo protocol.VersionOffset) (dm DataModel, nv protocol.NumberOfVersion, err protocol.Error)
+	Get(minute utc.MinuteElapsed) (dm DataModel, err protocol.Error)
 }

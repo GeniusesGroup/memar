@@ -3,20 +3,18 @@
 package vsip
 
 import (
-	"memar/protocol"
-
 	aap "org/modules/app-audit/protocol"
 	ip "org/modules/invoice/protocol"
+	sp "org/modules/storage/protocol"
 	vp "org/modules/voucher/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	VoucherID() vp.VoucherUUID
+	vp.VoucherID
 	InvoiceID() ip.InvoiceUUID
 	InvoiceType() Type
 
 	aap.AuditRequest
-	protocol.Storage_Versioned
-	protocol.Storage_SaveTime
+	sp.SaveTime
 }

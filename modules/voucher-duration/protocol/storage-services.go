@@ -9,8 +9,7 @@ import (
 )
 
 type StorageServices interface {
-	Save(dm DataModel) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm DataModel) (err protocol.Error)
 
-	Count(voucherID vp.VoucherUUID, Each uint8) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(voucherID vp.VoucherUUID, Each uint8, vo protocol.VersionOffset) (dm DataModel, nv protocol.NumberOfVersion, err protocol.Error)
+	Get(voucherID vp.VoucherUUID, Each uint8) (dm DataModel, err protocol.Error)
 }

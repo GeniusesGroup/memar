@@ -3,19 +3,17 @@
 package vpp
 
 import (
-	"memar/protocol"
-
 	aap "org/modules/app-audit/protocol"
 	pp "org/modules/pos/protocol"
+	sp "org/modules/storage/protocol"
 	vp "org/modules/voucher/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	VoucherID() vp.VoucherUUID
+	vp.VoucherID
 	PosID() pp.PosUUID
 
 	aap.AuditRequest
-	protocol.Storage_Versioned
-	protocol.Storage_SaveTime
+	sp.SaveTime
 }

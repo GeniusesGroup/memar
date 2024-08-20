@@ -3,20 +3,20 @@
 package vdp
 
 import (
-	"memar/protocol"
+	"memar/time/duration"
 
 	aap "org/modules/app-audit/protocol"
+	sp "org/modules/storage/protocol"
 	vp "org/modules/voucher/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	VoucherID() vp.VoucherUUID
+	vp.VoucherID
 	Each() vp.Each
 	Epoch() Epoch
-	Duration() protocol.Duration // from Epoch()
+	Duration() duration.Second // from Epoch()
 
 	aap.AuditRequest
-	protocol.Storage_Versioned
-	protocol.Storage_SaveTime
+	sp.SaveTime
 }

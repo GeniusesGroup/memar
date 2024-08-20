@@ -4,13 +4,14 @@ package vp
 
 import (
 	"memar/protocol"
+
+	sp "org/modules/storage/protocol"
 )
 
 type StorageServices interface {
-	Save(dm DataModel) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm DataModel) (err protocol.Error)
 
-	Count(voucherID VoucherUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(voucherID VoucherUUID, vo protocol.VersionOffset) (dm DataModel, nv protocol.NumberOfVersion, err protocol.Error)
+	Get(voucherID VoucherUUID) (dm DataModel, err protocol.Error)
 
-	FIND_VoucherIDs_BY_Type(t Type, offset, limit uint64) (voucherIDs []VoucherUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	FIND_VoucherIDs_BY_Type(t Type, offset, limit uint64) (voucherIDs []VoucherUUID, num sp.NumberOfVersion, err protocol.Error)
 }
