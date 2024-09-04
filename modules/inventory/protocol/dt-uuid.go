@@ -1,10 +1,14 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package ip
+package inventory_p
 
 import (
-	"memar/protocol"
+	ut16 "memar/identifier/uuid-time-16byte"
 )
 
+type Field_InventoryID interface {
+	InventoryID() InventoryUUID
+}
+
 // InventoryUUID
-type InventoryUUID protocol.UUID
+type InventoryUUID ut16.UUID
