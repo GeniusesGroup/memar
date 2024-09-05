@@ -1,10 +1,13 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package dp
+package department_p
 
 import (
-	"memar/protocol"
+	ut16 "memar/identifier/uuid-time-16byte"
 )
 
-// quiddity domain
-type DepartmentUUID protocol.UUID
+type Field_DepartmentID interface {
+	DepartmentID() DepartmentUUID
+}
+
+type DepartmentUUID ut16.UUID
