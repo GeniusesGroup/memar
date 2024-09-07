@@ -1,6 +1,6 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package br_p
+package brs_p
 
 import (
 	cl "memar/computer/language"
@@ -13,6 +13,8 @@ import (
 	storage_p "org/modules/storage/protocol"
 )
 
+// Statement (computer science) is a line of code written as part of a computer program
+// Rule statement or condition&action or policy or execution set or parameters or decision or ...
 type DataModel interface {
 	br_p.Field_BusinessRuleID
 	RuleStepID() uint8 // order of precedence

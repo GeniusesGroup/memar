@@ -10,7 +10,7 @@ type LogicType uint64
 
 const (
 	LogicType_Unset LogicType = iota
-	LogicType_Conditions
+	LogicType_Statement
 	LogicType_WASM
 	LogicType_DSL // TODO::: can indicate in very general type or need to indicate the supported languages?
 
