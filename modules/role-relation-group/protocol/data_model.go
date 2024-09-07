@@ -3,21 +3,19 @@
 package rrgp
 
 import (
-	"memar/protocol"
-
-	arp "org/modules/app-request/protocol"
-	gp "org/modules/group/protocol"
-	rp "org/modules/role/protocol"
+	aa_p "org/modules/app-audit/protocol"
+	group_p "org/modules/group/protocol"
+	role_p "org/modules/role/protocol"
+	storage_p "org/modules/storage/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	RoleID() rp.RoleUUID
-	GroupID() gp.GroupUUID
+	role_p.Field_RoleID
+	group_p.Field_GroupID
 	// Type()
 	Status() Status
 
-	arp.AuditLogging
-	protocol.Storage_Versioned
-	protocol.Storage_SaveTime
+	aa_p.Field_AuditRequest
+	storage_p.Field_SaveTime
 }

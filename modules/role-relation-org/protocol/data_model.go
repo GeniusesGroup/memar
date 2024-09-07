@@ -3,19 +3,17 @@
 package rrop
 
 import (
-	"memar/protocol"
-
-	arp "org/modules/app-request/protocol"
-	org "org/modules/org/protocol"
-	rp "org/modules/role/protocol"
+	aa_p "org/modules/app-audit/protocol"
+	org_p "org/modules/org/protocol"
+	role_p "org/modules/role/protocol"
+	storage_p "org/modules/storage/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	OrganizationID() org.OrgUUID
-	RoleID() rp.RoleUUID
+	org_p.Field_OrganizationID
+	role_p.Field_RoleID
 
-	arp.AuditLogging
-	protocol.Storage_Versioned
-	protocol.Storage_SaveTime
+	aa_p.Field_AuditRequest
+	storage_p.Field_SaveTime
 }

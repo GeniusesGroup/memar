@@ -1,9 +1,13 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package rp
+package role_p
 
 import (
-	"memar/protocol"
+	ut16 "memar/identifier/uuid-time-16byte"
 )
 
-type RoleUUID protocol.UUID
+type Field_RoleID interface {
+	RoleID() RoleUUID
+}
+
+type RoleUUID ut16.UUID

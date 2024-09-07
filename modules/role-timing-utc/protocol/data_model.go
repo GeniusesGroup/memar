@@ -3,20 +3,19 @@
 package rtup
 
 import (
-	"memar/protocol"
 	"memar/time/earth"
 	"memar/time/utc"
 
-	arp "org/modules/app-request/protocol"
-	rp "org/modules/role/protocol"
+	aa_p "org/modules/app-audit/protocol"
+	role_p "org/modules/role/protocol"
+	storage_p "org/modules/storage/protocol"
 )
 
 type DataModel interface {
-	RoleID() rp.RoleUUID
+	role_p.Field_RoleID
 	Weekdays() utc.Weekdays   // what days in weekday in utc time week this role active to provide services
 	DayHours() earth.DayHours // what hours in day in utc time week this role active to provide services
 
-	arp.AuditLogging
-	protocol.Storage_Versioned
-	protocol.Storage_SaveTime
+	aa_p.Field_AuditRequest
+	storage_p.Field_SaveTime
 }

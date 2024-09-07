@@ -4,14 +4,14 @@ package rscp
 
 import (
 	"memar/math/per"
-	"memar/protocol"
 
-	arp "org/modules/app-request/protocol"
-	rp "org/modules/role/protocol"
+	aa_p "org/modules/app-audit/protocol"
+	role_p "org/modules/role/protocol"
+	storage_p "org/modules/storage/protocol"
 )
 
 type DataModel interface {
-	RoleID() rp.RoleUUID
+	role_p.Field_RoleID
 
 	Importance() per.Myriad         // importance coefficient of the role
 	Accompanying() per.Myriad       //
@@ -26,7 +26,6 @@ type DataModel interface {
 	Income() per.Myriad           // whole organization income
 	DepartmentIncome() per.Myriad //
 
-	arp.AuditLogging
-	protocol.Storage_Versioned
-	protocol.Storage_SaveTime
+	aa_p.Field_AuditRequest
+	storage_p.Field_SaveTime
 }

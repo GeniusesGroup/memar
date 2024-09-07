@@ -1,23 +1,22 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
 // user (delegate usage), ...
-package rrup
+package rru_p
 
 import (
-	"memar/protocol"
-
-	arp "org/modules/app-request/protocol"
-	rp "org/modules/role/protocol"
-	up "org/modules/user/protocol"
+	aa_p "org/modules/app-audit/protocol"
+	role_p "org/modules/role/protocol"
+	storage_p "org/modules/storage/protocol"
+	user_p "org/modules/user/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	RoleID() rp.RoleUUID
-	UserID() up.UserUUID
+	role_p.Field_RoleID
+	user_p.Field_UserID
 	Type() Type
+	Status()
 
-	arp.AuditLogging
-	protocol.Storage_Versioned
-	protocol.Storage_SaveTime
+	aa_p.Field_AuditRequest
+	storage_p.Field_SaveTime
 }

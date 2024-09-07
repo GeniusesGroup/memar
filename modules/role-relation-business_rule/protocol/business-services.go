@@ -1,6 +1,6 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package rap
+package rrbr_p
 
 // Get				GetRoleAccess
 // GetRecursively	GetRoleAccessRecursively to get parent role access if the role has no access. bad service??

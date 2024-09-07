@@ -3,20 +3,18 @@
 package rsp
 
 import (
-	"memar/protocol"
-
-	arp "org/modules/app-request/protocol"
-	rp "org/modules/role/protocol"
+	aa_p "org/modules/app-audit/protocol"
+	role_p "org/modules/role/protocol"
+	storage_p "org/modules/storage/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	RoleID() rp.RoleUUID
+	role_p.Field_RoleID
 	Minimum() int32  // Minimum number of employees for this job position
 	Expected() int32 // Expected number of employees for this job position
 	Maximum() int32  // Maximum number of employees for this job position
 
-	arp.AuditLogging
-	protocol.Storage_Versioned
-	protocol.Storage_SaveTime
+	aa_p.Field_AuditRequest
+	storage_p.Field_SaveTime
 }

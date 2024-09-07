@@ -3,21 +3,19 @@
 package rlp
 
 import (
-	"memar/protocol"
-
-	arp "org/modules/app-request/protocol"
-	eblp "org/modules/estate-building-location/protocol"
-	rp "org/modules/role/protocol"
+	aa_p "org/modules/app-audit/protocol"
+	ebl_p "org/modules/estate-building-location/protocol"
+	role_p "org/modules/role/protocol"
+	storage_p "org/modules/storage/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 // Let staffs register enter and exit time by their mobiles in specific location.
 type DataModel interface {
-	RoleID() rp.RoleUUID
-	BuildingLocationID() eblp.BuildingLocationUUID
+	role_p.Field_RoleID
+	ebl_p.Field_BuildingLocationID
 	Status() Status
 
-	arp.AuditLogging
-	protocol.Storage_Versioned
-	protocol.Storage_SaveTime
+	aa_p.Field_AuditRequest
+	storage_p.Field_SaveTime
 }

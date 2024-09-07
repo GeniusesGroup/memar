@@ -3,19 +3,17 @@
 package rsp
 
 import (
-	"memar/protocol"
-
-	arp "org/modules/app-request/protocol"
-	lsp "org/modules/learn-skill/protocol"
-	rp "org/modules/role/protocol"
+	aa_p "org/modules/app-audit/protocol"
+	skill_p "org/modules/learn-skill/protocol"
+	role_p "org/modules/role/protocol"
+	storage_p "org/modules/storage/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	RoleID() rp.RoleUUID
-	SkillID() lsp.SkillUUID
+	role_p.Field_RoleID
+	skill_p.Field_SkillID
 
-	arp.AuditLogging
-	protocol.Storage_Versioned
-	protocol.Storage_SaveTime
+	aa_p.Field_AuditRequest
+	storage_p.Field_SaveTime
 }
