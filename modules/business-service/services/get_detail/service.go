@@ -4,9 +4,9 @@ package gds
 
 import (
 	"memar/net/srpc"
+	"memar/operation/service"
+	"memar/operation/services"
 	"memar/protocol"
-	"memar/service"
-	"memar/services"
 )
 
 var Service serv
@@ -16,7 +16,7 @@ var Service serv
 // 		SetDetail(protocol.LanguageEnglish, "Get Service Detail",
 // 			"Returns service all details by given service ID or URI",
 // 			[]string{}).
-// 		SetAuthorization(protocol.CRUDRead, protocol.UserType_All).Expired(0, ""),
+// 		SetAuthorization(operation_p.CRUDRead, user_p.Type_All).Expired(0, ""),
 // }
 
 type serv struct {

@@ -1,10 +1,14 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package asp
+package bs_p
 
 import (
-	"memar/protocol"
+	service_p "memar/operation/service/protocol"
 )
 
+type Field_ServiceID interface {
+	BusinessServiceID() ServiceUUID
+}
+
 // Applications module service identifier e.g. Get(product), Register(content), ...
-type ServiceUUID protocol.ServiceID
+type ServiceUUID service_p.ServiceID

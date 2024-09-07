@@ -1,12 +1,16 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package asp
+package bs_p
+
+import (
+	org_p "org/modules/org/protocol"
+	storage_p "org/modules/storage/protocol"
+)
 
 type (
 	BS_GetDetail_Request interface {
-		OrgID() [32]byte
-		Offset() uint64
-		Limit() uint64
+		org_p.Field_OrganizationID
+		storage_p.Pagination_Offset_Request
 	}
 
 	BS_GetDetail_Response interface {

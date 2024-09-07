@@ -5,6 +5,8 @@ package services
 import (
 	er "memar/error"
 	"memar/protocol"
+
+	storage_p "org/modules/storage/protocol"
 )
 
 const domainEnglish = "Achaemenid"
@@ -12,8 +14,8 @@ const domainPersian = "فرمانده"
 
 // Services Errors
 var (
-	ErrSDKNotFound = New("domain/error.protocol; type=error; name=sdk-not-found")
-	.SetDetail(protocol.LanguageEnglish, domainEnglish, "SDK Not Found",
+	ErrSDKNotFound = er.New("domain/error.protocol; type=error; name=sdk-not-found")
+.SetDetail(protocol.LanguageEnglish, domainEnglish, "SDK Not Found",
 		"Requested software errors SDK in desire human language not found",
 		"Contact administrator of software and ask add needed data",
 		"You can use online translator and desire human language to errors details")

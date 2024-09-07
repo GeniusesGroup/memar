@@ -17,7 +17,7 @@ func (ser *serv) ServeSRPC(st protocol.Socket, rawReq protocol.Codec) (rawRes pr
 
 	var res *getServiceDetailRes
 	res, err = getServiceDetail(st, req)
-	// Check if any error occur in bussiness logic
+	// Check if any error occur in business logic
 	if err != nil {
 		return
 	}
@@ -36,7 +36,7 @@ func (ser *serv) ServeHTTP(st protocol.Socket, httpReq protocol.HTTPRequest, htt
 
 	var res *getServiceDetailRes
 	res, err = getServiceDetail(st, req)
-	// Check if any error occur in bussiness logic
+	// Check if any error occur in business logic
 	if err != nil {
 		httpRes.SetStatus(http.StatusBadRequestCode, http.StatusBadRequestPhrase)
 		return

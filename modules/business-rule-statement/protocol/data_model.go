@@ -7,9 +7,9 @@ import (
 	"memar/protocol"
 
 	aa_p "org/modules/app-audit/protocol"
-	am_p "org/modules/app-module/protocol"
-	as_p "org/modules/app-service/protocol"
+	bm_p "org/modules/business-module/protocol"
 	br_p "org/modules/business-rule/protocol"
+	bs_p "org/modules/business-service/protocol"
 	storage_p "org/modules/storage/protocol"
 )
 
@@ -21,14 +21,14 @@ type DataModel interface {
 	cl.Field_Logical_Connective
 
 	// invoice-summary.DataModel.PayablePrice > 50,000,000
-	am_p.Field_ModuleID
+	bm_p.Field_ModuleID
 	FieldID() protocol.DataTypeID
 	Operator() cl.ComparisonOperator
 	FieldValue() []byte
 
 	// call NotifyUser(UserID, InvoiceID)
 	// or call UserEarnCoin(UserID, 500)
-	ActionID() as_p.Field_ServiceID
+	ActionID() bs_p.ServiceUUID
 	ActionValue() []byte // TODO::: field+value or just value??
 
 	aa_p.Field_AuditRequest
