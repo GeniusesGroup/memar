@@ -1,10 +1,13 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package tp
+package tax_p
 
 import (
-	"memar/protocol"
+	ut16 "memar/identifier/uuid-time-16byte"
 )
 
-type TaxUUID protocol.UUID
+type Field_TaxID interface {
+	TaxID() TaxUUID
+}
 
+type TaxUUID ut16.UUID

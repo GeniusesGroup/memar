@@ -1,21 +1,19 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package tp
+package tax_p
 
 import (
-	"memar/protocol"
-
-	aap "org/modules/app-audit/protocol"
-	sp "org/modules/society/protocol"
+	aa_p "org/modules/app-audit/protocol"
+	society_p "org/modules/society/protocol"
+	storage_p "org/modules/storage/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	TaxID() TaxUUID
-	SocietyID() sp.SocietyUUID
+	Field_TaxID
+	society_p.Field_SocietyID
 	Type() Type
 
-	aap.AuditRequest
-	protocol.Storage_Versioned
-	protocol.Storage_SaveTime
+	aa_p.Field_AuditRequest
+	storage_p.Field_SaveTime
 }

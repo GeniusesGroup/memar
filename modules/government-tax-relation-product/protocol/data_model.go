@@ -1,13 +1,12 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package trpp
+package trp_p
 
 import (
-	"memar/protocol"
-
-	aap "org/modules/app-audit/protocol"
-	pp "org/modules/product/protocol"
-	tp "org/modules/tax/protocol"
+	aa_p "org/modules/app-audit/protocol"
+	tax_p "org/modules/government-tax/protocol"
+	product_p "org/modules/product/protocol"
+	storage_p "org/modules/storage/protocol"
 )
 
 // ProductTax indicate the domain record data fields.
@@ -17,10 +16,9 @@ import (
 // Associate multiple tax rates with the same tax labels
 // Associate a blank tax label with tax exempt items (considered non-value-added tax (VAT))
 type DataModel interface {
-	TaxID() tp.TaxUUID
-	ProductID() pp.ProductUUID
+	tax_p.Field_TaxID
+	product_p.Field_ProductID
 
-	aap.AuditRequest
-	protocol.Storage_Versioned
-	protocol.Storage_SaveTime
+	aa_p.Field_AuditRequest
+	storage_p.Field_SaveTime
 }
