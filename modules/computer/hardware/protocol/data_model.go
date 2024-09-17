@@ -1,24 +1,21 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package cp
+package computer_p
 
 import (
-	"memar/protocol"
+	org_p "org/modules/identity/org/protocol"
+	thing_p "org/modules/identity/thing/protocol"
 )
 
 type ApplicationNode interface {
+	Field_ComputerID
 	Type() NodeType
-	ID() NodeID                    // as InstanceID
-	DataCenterID() protocol.UserID // orgID
-	ThingID() protocol.UserID
-	ReplicationID() uint8
+	DataCenterID() org_p.OrgUUID
+	thing_p.Field_ThingID
 	StorageCapacity() uint64 // In bytes, Max 16EB(Exabyte) that more enough for one node capacity. 0 means service only node.
-	Conn() protocol.Socket
-	Status() protocol.ApplicationStatus
+	// Conn() protocol.Socket
 	Stats()
 }
-
-type NodeID UUID
 
 type NodeType uint8
 
