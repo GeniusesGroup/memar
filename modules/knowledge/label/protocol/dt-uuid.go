@@ -1,9 +1,17 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package lp
+package label_p
 
 import (
-	"memar/protocol"
+	quiddity_p "org/modules/identity/quiddity/protocol"
 )
 
-type LabelUUID protocol.UUID
+type Field_LabelID interface {
+	LabelID() UUID
+}
+
+type Field_LabelsID interface {
+	LabelsID() []UUID
+}
+
+type UUID quiddity_p.UUID

@@ -1,19 +1,17 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package lp
+package label_p
 
 import (
-	"memar/protocol"
-
-	arp "org/modules/app-request/protocol"
+	audit_p "org/modules/computer/audit/protocol"
+	storage_p "org/modules/storage/primitive/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	LabelID() LabelUUID
-	Status() Status
+	Field_LabelID
+	// Field_Status
 
-	arp.AuditLogging
-	protocol.Storage_Versioned
-	protocol.Storage_SaveTime
+	audit_p.Field_RequestID
+	storage_p.Field_SaveTime
 }
