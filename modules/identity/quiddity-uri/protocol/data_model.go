@@ -1,12 +1,11 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package qup
+package qu_p
 
 import (
-	"memar/protocol"
-
-	arp "org/modules/app-request/protocol"
-	qp "org/modules/quiddity/protocol"
+	audit_p "org/modules/computer/audit/protocol"
+	quiddity_p "org/modules/identity/quiddity/protocol"
+	storage_p "org/modules/storage/primitive/protocol"
 )
 
 // DataModel indicate the domain record data fields.
@@ -14,10 +13,9 @@ import (
 // https://en.wikipedia.org/wiki/Uniform_Resource_Name
 // https://en.wikipedia.org/wiki/Electronic_Product_Code
 type DataModel interface {
-	URI() []byte // Locale name in the Computer world.
-	QuiddityID() qp.QuiddityUUID
+	Field_URI
+	quiddity_p.Field_QuiddityID
 
-	arp.AuditLogging
-	protocol.Storage_Versioned
-	protocol.Storage_SaveTime
+	audit_p.Field_RequestID
+	storage_p.Field_SaveTime
 }

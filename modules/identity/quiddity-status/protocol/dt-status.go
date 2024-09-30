@@ -1,16 +1,21 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package qsp
+package qs_p
 
 // qsp.Quiddity_Status indicate any quiddity record status
 type Quiddity_Status uint64
 
 // base quiddity status
+const Quiddity_Status_Unset Quiddity_Status = 0
 const (
-	Quiddity_Status_Unset                Quiddity_Status = 0
-	Quiddity_Status_Locked               Quiddity_Status = (1 << iota) // by owner
-	Quiddity_Status_Blocked                                                // by justice(admins)
-	Quiddity_Status_PermanentInactivated                                   // Due to some reason quiddity was Locked, Closed, ... and must not use or edit
+	// by owner
+	Quiddity_Status_Locked Quiddity_Status = (1 << iota)
+
+	// by justice(admins) or fraud detection mechanism
+	Quiddity_Status_Blocked
+
+	// Due to some reason quiddity was Locked, Closed, ... and must not use or edit
+	Quiddity_Status_PermanentInactivated
 	Quiddity_Status_TemporaryInactivated
 	Quiddity_Status_Hidden
 	Quiddity_Status_Deleted
