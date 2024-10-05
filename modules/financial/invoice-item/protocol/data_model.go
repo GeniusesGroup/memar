@@ -3,11 +3,11 @@
 package iip
 
 import (
-	"memar/protocol"
-
-	arp "org/modules/app-request/protocol"
-	ip "org/modules/invoice/protocol"
-	pp "org/modules/product/protocol"
+	product_p "org/modules/business/product/protocol"
+	audit_p "org/modules/computer/audit/protocol"
+	invoice_p "org/modules/financial/invoice/protocol"
+	qcu_p "org/modules/identity/quiddity-count_unit/protocol"
+	storage_p "org/modules/storage/primitive/protocol"
 )
 
 // DataModel indicate the domain record data fields.
@@ -15,11 +15,10 @@ import (
 // Ship service can add as an item to invoice
 // Each item must check for reserve validity and make action in end of validity
 type DataModel interface {
-	InvoiceID() ip.InvoiceUUID
-	ProductID() pp.ProductUUID
-	Quantity() uint64 // decimal >> 1.5 >> 1.2 >> 10 >> 0
+	invoice_p.Field_InvoiceID
+	product_p.Field_ProductID
+	qcu_p.Field_Quantity
 
-	arp.AuditLogging
-	protocol.Storage_Versioned
-	protocol.Storage_SaveTime
+	audit_p.Field_RequestID
+	storage_p.Field_SaveTime
 }

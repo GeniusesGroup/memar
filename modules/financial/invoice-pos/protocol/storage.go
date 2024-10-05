@@ -3,18 +3,17 @@
 package ip
 
 import (
-	"memar/protocol"
+	error_p "memar/error/protocol"
 
-	ip "org/modules/invoice/protocol"
-	pp "org/modules/pos/protocol"
-	sp "org/modules/staff/protocol"
+	pp "org/modules/business/pos/protocol"
+	ip "org/modules/financial/invoice/protocol"
+	storage_p "org/modules/storage/primitive/protocol"
 )
 
 type StorageServices interface {
-	Save(dm DataModel) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm DataModel) (nv storage_p.NumberOfVersion, err error_p.Error)
 
-	Get(invoiceID ip.InvoiceUUID) (dm DataModel, err protocol.Error)
+	Get(invoiceID ip.UUID) (dm DataModel, err error_p.Error)
 
-	FIND_InvoiceIDs_BY_PosID(posID pp.PosUUID, offset, limit uint64) (invoiceIDs []ip.InvoiceUUID, nv protocol.NumberOfVersion, err protocol.Error)
-	FIND_InvoiceIDs_BY_StaffID(staffID sp.StaffUUID, offset, limit uint64) (invoiceIDs []ip.InvoiceUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	FIND_InvoiceIDs_BY_PosID(posID pp.PosUUID, offset, limit uint64) (invoiceIDs []ip.UUID, nv storage_p.NumberOfVersion, err error_p.Error)
 }

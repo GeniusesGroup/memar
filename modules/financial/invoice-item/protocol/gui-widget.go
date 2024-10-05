@@ -2,10 +2,12 @@
 
 package iip
 
-import pp "org/modules/product/protocol"
+import (
+	product_p "org/modules/business/product/protocol"
+)
 
 type GUI_Widget_Conditions interface {
-	ProductID() pp.ProductUUID //
+	product_p.Field_ProductID //
 }
 
 type GUI_Widget_Service interface {

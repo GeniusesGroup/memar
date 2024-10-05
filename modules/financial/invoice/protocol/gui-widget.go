@@ -1,9 +1,9 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package ip
+package invoice_p
 
 import (
-	vp "org/modules/voucher/protocol"
+	vp "org/modules/financial/voucher/protocol"
 )
 
 // Also usually known as shopping-cart, ... in GUI part of applications
@@ -13,10 +13,10 @@ import (
 // delete invoice service : This state indicates that the invoice has been deleted.
 // You can only delete an invoice in the draft state and not in any other state.
 
-// GetIDsByDateTime(time protocol.Time, offset, limit uint64) (ids [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
+// GetIDsByDateTime(time time_p.Time, offset, limit uint64) (ids [][16]byte, nv storage_p.NumberOfVersion, err error_p.Error)
 
 type Invoice_GUI_Page_Conditions interface {
-	ID()
+	Field_InvoiceID
 
 	// /invoice?status=new
 	State() // show/edit/new
@@ -37,7 +37,7 @@ type Invoice_GUI_Page_Services interface {
 	increaseItemNumber()
 	decreaseItemNumber()
 
-	addVoucher(vID vp.VoucherUUID)
+	addVoucher(vID vp.UUID)
 
 	paid(amount int64, method uint8) // method:cash, card, internet, ...
 

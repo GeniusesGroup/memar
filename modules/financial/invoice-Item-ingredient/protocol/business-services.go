@@ -2,5 +2,5 @@
 
 package iip
 
-// LIST_ProductIDs_BY_InvoiceID(invoiceID InvoiceUUID, offset, limit uint64) (productIDs []pp.ProductUUID, nv protocol.NumberOfVersion, err protocol.Error)
-// LIST_IngredientIDs_BY_InvoiceID_AND_ProductID(invoiceID InvoiceUUID, productID pp.ProductUUID, offset, limit uint64) (IngredientIDs []pp.ProductUUID, nv protocol.NumberOfVersion, err protocol.Error)
+// LIST_ProductIDs_BY_InvoiceID(invoiceID invoice_p.UUID, offset, limit uint64) (productIDs []pp.UUID, nv storage_p.NumberOfVersion, err error_p.Error)
+// LIST_IngredientIDs_BY_InvoiceID_AND_ProductID(invoiceID invoice_p.UUID, productID pp.UUID, offset, limit uint64) (IngredientIDs []pp.UUID, nv storage_p.NumberOfVersion, err error_p.Error)

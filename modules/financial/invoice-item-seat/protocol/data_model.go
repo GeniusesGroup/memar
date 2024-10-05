@@ -3,22 +3,20 @@
 package iisp
 
 import (
-	"memar/protocol"
-
-	arp "org/modules/app-request/protocol"
-	ip "org/modules/invoice/protocol"
-	pp "org/modules/product/protocol"
+	product_p "org/modules/business/product/protocol"
+	audit_p "org/modules/computer/audit/protocol"
+	invoice_p "org/modules/financial/invoice/protocol"
+	storage_p "org/modules/storage/primitive/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 // It can also use to order buyers e.g. patient in doctor clinic.
 type DataModel interface {
-	InvoiceID() ip.InvoiceUUID
-	ProductID() pp.ProductUUID
-	SeatID() SeatID
-	Status() Status
+	invoice_p.Field_InvoiceID
+	product_p.Field_ProductID
+	Field_SeatID
+	Field_Status
 
-	arp.AuditLogging
-	protocol.Storage_Versioned
-	protocol.Storage_SaveTime
+	audit_p.Field_RequestID
+	storage_p.Field_SaveTime
 }

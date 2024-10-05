@@ -3,14 +3,14 @@
 package isp
 
 import (
-	"memar/protocol"
+	event_p "memar/event/protocol"
 )
 
-type SS_EventTarget protocol.EventTarget[SS_EventTarget_Event, SS_EventTarget_Options]
+type SS_EventTarget event_p.EventTarget[SS_EventTarget_Event, SS_EventTarget_Options]
 
 type SS_EventTarget_Event interface {
 	DataModel
-	protocol.Event
+	event_p.Event
 }
 
 type SS_EventTarget_Options interface {

@@ -1,19 +1,20 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package isp
+package is_p
 
 import (
-	"memar/protocol"
+	error_p "memar/error/protocol"
 
-	ip "org/modules/invoice/protocol"
+	ip "org/modules/financial/invoice/protocol"
+	storage_p "org/modules/storage/primitive/protocol"
 )
 
 type StorageServices interface {
-	Save(dm DataModel) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm DataModel) (nv storage_p.NumberOfVersion, err error_p.Error)
 
-	Count(invoiceID ip.InvoiceUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(invoiceID ip.InvoiceUUID, vo protocol.VersionOffset) (dm DataModel, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(invoiceID ip.UUID) (nv storage_p.NumberOfVersion, err error_p.Error)
+	Get(invoiceID ip.UUID, vo storage_p.VersionOffset) (dm DataModel, nv storage_p.NumberOfVersion, err error_p.Error)
 
 	// we may need indexing ?
-	FIND_InvoiceIDs_BY_Status(status Status, offset, limit uint64) (invoiceIDs []ip.InvoiceUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	FIND_InvoiceIDs_BY_Status(status Status, offset, limit uint64) (invoiceIDs []ip.UUID, nv storage_p.NumberOfVersion, err error_p.Error)
 }

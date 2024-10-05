@@ -3,14 +3,13 @@
 package isp
 
 import (
-	"memar/protocol"
+	error_p "memar/error/protocol"
 
-	ip "org/modules/invoice/protocol"
+	ip "org/modules/financial/invoice/protocol"
 )
 
 type StorageServices interface {
-	Save(dm DataModel) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm DataModel) (err error_p.Error)
 
-	Count(invoiceID ip.InvoiceUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(invoiceID ip.InvoiceUUID, vo protocol.VersionOffset) (dm DataModel, nv protocol.NumberOfVersion, err protocol.Error)
+	Get(invoiceID ip.UUID) (dm DataModel, err error_p.Error)
 }

@@ -2,6 +2,10 @@
 
 package iip
 
+type Field_Status interface {
+	Status() Status
+}
+
 type Status uint8
 
 const (

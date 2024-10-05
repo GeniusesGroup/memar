@@ -3,22 +3,18 @@
 package ip
 
 import (
-	"memar/protocol"
-
-	arp "org/modules/app-request/protocol"
-	ip "org/modules/invoice/protocol"
-	pp "org/modules/pos/protocol"
-	sp "org/modules/staff/protocol"
+	pos_p "org/modules/business/pos/protocol"
+	audit_p "org/modules/computer/audit/protocol"
+	invoice_p "org/modules/financial/invoice/protocol"
+	storage_p "org/modules/storage/primitive/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	InvoiceID() ip.InvoiceUUID
+	invoice_p.Field_InvoiceID
 	// InvoiceNumber() uint16      // TODO::: do we need auto increment number? Why not QR code?
-	PosID() pp.PosUUID
-	StaffID() sp.StaffUUID // OrdererID that is creator of the invoice e.g. restaurant, drug prescription, sales agent,
+	pos_p.Field_PosID
 
-	arp.AuditLogging
-	protocol.Storage_Versioned
-	protocol.Storage_SaveTime
+	audit_p.Field_RequestID
+	storage_p.Field_SaveTime
 }
