@@ -1,6 +1,9 @@
 ## Product supply chain
 A [supply chain](https://en.wikipedia.org/wiki/Supply_chain) consists of the group of people, vendors, materials, and activities involved in the creation, production, and distribution of a product. Supply means the activity of supplying or providing something.
 
+## Traceability
+[Traceability](https://en.wikipedia.org/wiki/Traceability) is the capability and ability to trace something as it moves through a process. In product development, it refers to the ability to track and trace requirements to artifacts, test runs, and anything else in the product lifecycle.
+
 ## Value chain vs Supply chain
 To better understand this, let's start with a simple example. Let's consider the production chain of a simple car.
 
