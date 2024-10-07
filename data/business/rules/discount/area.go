@@ -1,23 +1,13 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package dap
+package discount
 
 import (
-	"memar/protocol"
-
-	arp "org/modules/app-request/protocol"
-	dp "org/modules/discount/protocol"
-	ep "org/modules/estate/protocol"
+	ep "org/modules/rights/estate/protocol"
 )
 
-// DataModel indicate the domain record data fields.
-// DataModel is proper or appropriate location indicate specific area not specific location
+// Area is proper or appropriate location indicate specific area not specific location
 // It's rule depend on products in invoices e.g. source or destination of taxi as a service(product).
-type DataModel interface {
-	DiscountID() dp.DiscountUUID
-	EstateID() ep.EstateUUID
-
-	arp.AuditLogging
-	protocol.Storage_Versioned
-	protocol.Storage_SaveTime
+type Area interface {
+	ep.Field_EstateID
 }

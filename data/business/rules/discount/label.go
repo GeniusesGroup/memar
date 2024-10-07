@@ -1,26 +1,25 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package dcp
+package discount
 
 import (
-	"memar/protocol"
-
-	arp "org/modules/app-request/protocol"
-	cp "org/modules/category/protocol"
-	dp "org/modules/discount/protocol"
+	money_p "org/modules/financial/money/protocol"
+	label_p "org/modules/knowledge/label/protocol"
 )
 
-// DataModel indicate the domain record data fields.
-type DataModel interface {
-	DiscountID() dp.DiscountUUID
-	CategoryID() cp.CategoryUUID
-	MinAmount() uint64              // Minimum number to buy to use discount
-	MaxAmount() uint64              // Maximum number to buy to use discount
-	MinPrice() protocol.MoneyAmount // Minimum price to buy to use discount
-	MinStock() uint64               // 0 for unlimited until related product exist to sell
-	Type() Type
-
-	arp.AuditLogging
-	protocol.Storage_Versioned
-	protocol.Storage_SaveTime
+type Label interface {
+	label_p.Field_LabelID
+	MinAmount() uint64        // Minimum number to buy to use discount
+	MaxAmount() uint64        // Maximum number to buy to use discount
+	MinPrice() money_p.Amount // Minimum price to buy to use discount
+	MinStock() uint64         // 0 for unlimited until related product exist to sell
+	LabelType() LabelType
 }
+
+type LabelType uint16
+
+const (
+	LabelType_Unset     LabelType = 0           //
+	LabelType_Mandatory LabelType = (1 << iota) // != optional
+	LabelType_Pair                              //
+)
