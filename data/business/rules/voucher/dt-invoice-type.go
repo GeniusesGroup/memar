@@ -1,12 +1,16 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package vsip
+package voucher
 
-type Type uint8
+type Field_InvoiceType interface {
+	InvoiceType() InvoiceType
+}
+
+type InvoiceType uint8
 
 const (
-	Type_Unset Type = iota
-	Type_PastCompleted
-	Type_HurryToBuying
-	Type_BackToBuy
+	InvoiceType_Unset InvoiceType = iota
+	InvoiceType_PastCompleted
+	InvoiceType_HurryToBuying
+	InvoiceType_BackToBuy
 )

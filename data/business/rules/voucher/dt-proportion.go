@@ -1,10 +1,14 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package vvp
+package voucher
 
 import (
 	"memar/math/per"
 )
+
+type Field_Proportion interface {
+	Proportion() Proportion
+}
 
 // Max discount proportion per use
 type Proportion per.Myriad

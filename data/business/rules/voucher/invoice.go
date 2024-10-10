@@ -1,23 +1,26 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package vip
+package voucher
 
 import (
-	aap "org/modules/app-audit/protocol"
-	fmp "org/modules/financial-money/protocol"
-	sp "org/modules/storage/protocol"
-	vp "org/modules/voucher/protocol"
+	invoice_p "org/modules/financial/invoice/protocol"
+	money_p "org/modules/financial/money/protocol"
 )
 
-// TODO::: Currency??
+type Invoice_Condition interface {
+	Field_Each
+	MinPrice() money_p.Amount // Minimum invoice price, currency depend on voucher value
+	MinAmount() uint64        // Minimum invoice product numbers
+}
 
-// DataModel indicate the domain record data fields.
-type DataModel interface {
-	vp.VoucherID
-	Each() vp.Each
-	MinPrice() fmp.MoneyAmount // Minimum invoice price
-	MinAmount() uint64         // Minimum invoice product numbers
+type Invoice_ID interface {
+	invoice_p.Field_InvoiceID
+}
 
-	aap.AuditRequest
-	sp.SaveTime
+type Invoice_Type interface {
+	Field_InvoiceType
+}
+
+type Invoice_MaxUsage interface {
+	MaximumInvoice() uint64
 }

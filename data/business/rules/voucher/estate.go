@@ -1,25 +1,17 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-// Voucher estate is proper or appropriate location indicate specific area not specific location
-// It's rule depend on products in invoices e.g. source or destination of taxi as a service(product).
-package vep
+package voucher
 
 import (
-	aap "org/modules/app-audit/protocol"
-	eblp "org/modules/estate-building-location/protocol"
-	ebp "org/modules/estate-building/protocol"
-	ep "org/modules/estate/protocol"
-	sp "org/modules/storage/protocol"
-	vp "org/modules/voucher/protocol"
+	ebl_p "org/modules/rights/building-location/protocol"
+	eb_p "org/modules/rights/building/protocol"
+	ep "org/modules/rights/estate/protocol"
 )
 
-// DataModel indicate the domain record data fields.
-type DataModel interface {
-	vp.VoucherID
-	EstateID() ep.EstateUUID
-	BuildingID() ebp.BuildingUUID
-	BuildingLocationID() eblp.BuildingLocationUUID
-
-	aap.AuditRequest
-	sp.SaveTime
+// Voucher estate is proper or appropriate location indicate specific area not specific location
+// It's rule depend on products in invoices e.g. source or destination of taxi as a service(product).
+type Estate interface {
+	ep.Field_EstateID
+	eb_p.Field_BuildingID
+	ebl_p.Field_BuildingLocationID
 }

@@ -1,6 +1,10 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package vp
+package voucher
+
+type Field_Epoch interface {
+	Epoch() Epoch
+}
 
 // Each time use
 type Each uint8

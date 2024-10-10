@@ -1,19 +1,11 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package vgp
+package voucher
 
 import (
-	aap "org/modules/app-audit/protocol"
-	gp "org/modules/group/protocol"
-	sp "org/modules/storage/protocol"
-	vp "org/modules/voucher/protocol"
+	group_p "org/modules/organization/group/protocol"
 )
 
-// DataModel indicate the domain record data fields.
-type DataModel interface {
-	vp.VoucherID
-	GroupID() []gp.GroupUUID
-
-	aap.AuditRequest
-	sp.SaveTime
+type Groups interface {
+	group_p.Field_GroupsID
 }

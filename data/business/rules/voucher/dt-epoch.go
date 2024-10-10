@@ -1,6 +1,10 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package vdp
+package voucher
+
+type Field_Each interface {
+	Each() Each
+}
 
 type Epoch uint8
 

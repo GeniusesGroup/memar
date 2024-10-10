@@ -1,20 +1,19 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package vup
+package voucher
 
 import (
-	aap "org/modules/app-audit/protocol"
-	sp "org/modules/storage/protocol"
-	up "org/modules/user/protocol"
-	vp "org/modules/voucher/protocol"
+	m_user_p "memar/user/protocol"
+
+	user_p "org/modules/identity/user/protocol"
 )
 
-// DataModel indicate the domain record data fields.
 // Use to restrict the voucher usage by specific users.
-type DataModel interface {
-	vp.VoucherID
-	UserID() up.UserUUID
+type User_ID interface {
+	user_p.Field_UserID
+}
 
-	aap.AuditRequest
-	sp.SaveTime
+// Use to restrict the voucher usage by specific user type.
+type User_Type interface {
+	m_user_p.Field_UserType
 }

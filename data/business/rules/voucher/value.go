@@ -1,20 +1,14 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package vvp
+package voucher
 
 import (
-	aap "org/modules/app-audit/protocol"
-	sp "org/modules/storage/protocol"
-	vp "org/modules/voucher/protocol"
+	fc_p "org/modules/financial/currency/protocol"
 )
 
-// DataModel indicate the domain record data fields.
-type DataModel interface {
-	vp.VoucherID
-	Each() vp.Each
-	Proportion() Proportion
-	Worth() Worth
-
-	aap.AuditRequest
-	sp.SaveTime
+type Value interface {
+	Field_Each
+	Field_Proportion
+	Field_Worth
+	fc_p.Field_FinancialCurrencyID
 }
