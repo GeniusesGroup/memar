@@ -2,8 +2,7 @@
 
 package label
 
-type PictureRating_Rate uint8
-
+// PictureRating
 const (
 // 0 : Suitable for display on all websites with any audience type.
 // 1 : May contain rude gestures, provocatively dressed individuals, the lesser swear words, or mild violence.

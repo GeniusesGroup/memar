@@ -3,11 +3,9 @@
 package label
 
 const (
-	Type_Unset  = iota
-
 	// Just owner MUST edit the related record in any domain
 	// Others CAN fork or update if owner allow.
-	Type_Owner
+	QuiddityRelationUser_Owner = iota
 
 	//TODO:: other??
 )

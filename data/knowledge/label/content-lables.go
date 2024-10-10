@@ -1,14 +1,10 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package ctp
-
-type Type uint16
+package label
 
 const (
-	Type_Unset Type = iota
-
 	// Article use for many thing like NEWS, blog, education systems, features, ...
-	Type_Article
+	Type_Article = iota
 	Type_BlogPost
 	Type_NewsLetter
 

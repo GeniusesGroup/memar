@@ -1,15 +1,15 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package ftp
+package label
 
-// ReferenceType indicate FinancialTransaction record reference type
-type ReferenceType uint8
+const (
+// transaction fee, split, refund, ...
+)
 
 // Financial transaction reference types
 const (
-	ReferenceType_Unset   ReferenceType = iota
-	ReferenceType_Failed                // Refund for any reason e.g. not same currency account, not reachable bank, ...
-	ReferenceType_Blocked               // by justice
+	ReferenceType_Failed  = iota // Refund for any reason e.g. not same currency account, not reachable bank, ...
+	ReferenceType_Blocked        // by justice
 	ReferenceType_TransactionFee
 	ReferenceType_Exchange
 	ReferenceType_Prize

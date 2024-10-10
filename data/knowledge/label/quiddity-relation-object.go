@@ -4,12 +4,12 @@ package label
 
 const (
 	// Icon or emoji use in many domains e.g. label(category), departments, ...
-	Icon = iota
+	QuiddityRelationObject_Icon = iota
 
 	// Model is the 3D model of the quiddity
-	Model
+	QuiddityRelationObject_Model
 
-	Media
+	QuiddityRelationObject_Media
 
 	//TODO:: other??
 )

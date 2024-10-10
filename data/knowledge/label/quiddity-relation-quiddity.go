@@ -3,10 +3,10 @@
 package label
 
 const (
-	Complement = iota
+	QuiddityRelationQuiddity_Complement = iota
 
 	// Used to find similar product, ...
-	Substitute
+	QuiddityRelationQuiddity_Substitute
 
 	//TODO:: other??
 )
