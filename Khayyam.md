@@ -17,7 +17,16 @@ type (
 )
 ```
 
-### Types
+### GOTO
+GOTO use to fly to desire location in a process. Some known labels:
+- loop: find loop by `{}`
+- end: find by `{}`
+- return
+    - Just use to indicate return in body of a function.
+    - Not need to indicate on end of any functions.
+    - It is pure keyword and must end with [commands break](#Commands_Break) style so dev can't use like "return 0".
+
+## Types
 - **Include**: Khayyam allow developers to include multi file by use `in`.
     - use `include` more than once in a file is not legal.
     - Khayyam use `type {name} in {addr}` keyword e.g. 
@@ -29,8 +38,12 @@ type (
     - Khayyam use `type {name} im {addr}` keyword e.g. `type json im "memar/json"` to import other code file to local one. import desire file and use needed logic by this way e.g. `json.Marshal()`
 
 - **Function**: Khayyam allow developers to indicate functions by use `fn`.   
-Two type function supported:
-    - type {name} fn (args) (returns) >> pure standalone function
+    - `type {name} fn (args) (returns)` >> pure standalone function
+
+- **Method**: Khayyam allow developers to indicate methods for structures by use `mt`.   
+    - `type {name} mt ({structure}, {args}...) (returns)` >> pure standalone function
+    - Dev can use any naming for structure naming, BUT suggest use `self` as base point to other members in the capsule!
+        - `fn (type receiver) name(args) (returns)` >> method function
 
 - **Abstraction**: Khayyam allow developers to indicate abstraction by use `ab`.    
 We don't introduce any other syntax for Polymorphism(generic) like Golang(`[{name} {TYPE}]`) for other types. Compiler decide smartly to do it by runtime(Golang interface) or compile time(Golang generic).
@@ -38,6 +51,7 @@ We don't introduce any other syntax for Polymorphism(generic) like Golang(`[{nam
 - **structure**: Khayyam allow developers to indicate encapsulation-pattern by use `st`.
     - structure indicate by `type {name} st {...}` that has some other types inside itself.
     - Inside a structure can omit `type` keyword in each line to indicate fields.
+    - Khayyam way only allow access to inner data types via methods(functions). there is no data fields to expose.
 
 - **Constant**: Khayyam allow developers to indicate constant by use `cn`.   
 const, unlike other languages, is not very hard immutable data. Dev can change in runtime but unlike var, it will change binary code and don't need to get it by memory call. Compiler and runtime just let to change the value with the same memory size.
@@ -45,15 +59,7 @@ const, unlike other languages, is not very hard immutable data. Dev can change i
 - **Variable**: Khayyam allow developers to indicate constant by use `vr`.   
 Like other programming languages, `vr` keyword uses to store data in any mutable device. But unlike other, variables declare inside a function store.
 
-### sf -> self as point to other members in the capsule!
-- fn (type receiver) name(args) (returns) >> method function
-
-### rt -> return
-- Just use to indicate return in body of a function.
-- Not need to indicate on end of any functions.
-- It is pure keyword and must end with [commands break](#Commands_Break) style so dev can't use like "return 0".
-
-### Commands Break
+## Commands Break
 each command must end with new line or ';'
 
 ## Operators
@@ -68,7 +74,7 @@ fn fixedLen() (fixedSize integer.U16) {
     return
 }
 
-const fixedLen integer.U16.FromASCII(326)
+const fixedLen = integer.U16.FromASCII(326)
 ```
 
 ### getter and setter methods
@@ -88,7 +94,7 @@ You can write code to change binary code in runtime.
 In this part, we say why not choose something that be real in some other programming languages.
 
 ### Methods Overloading
-It seems we need this feature if we want to have very simple generic and polymorphism.   
+It seems we need this feature if we want to have very simple [generic](https://en.wikipedia.org/wiki/Generic_programming) and polymorphism.   
 Due to Khayyam not support primitive types, All disadvantages disappear and JUST advantages will shine.
 
 ### Method overriding
@@ -105,7 +111,10 @@ Tuples are implemented by two dynamic and static type languages.
 - In a static language, tuples implement safe structures that just don't have internal names. But it is duplicate work, more learning curve and adds more confusing situation just lazy developer to not indicate names.
 
 ### Type Inference
-Khayyam don't support type inference and also you can't assign to var before you decare it.
+- Khayyam don't support automatic type inference.
+- Linter MUST provide `Type` suggestion in developing of codes.
+- Developers can't assign to var before decare it.
+- e.g.
 ```
 var x = 41      >> type x vr whole.W8.FromString(41)
 var y = 3.14    >> type y vr rational.R32.FromString(3.14)
