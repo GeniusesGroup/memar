@@ -28,6 +28,7 @@ Anywhere in this document talk about [Ethernet](https://en.wikipedia.org/wiki/Et
 - **Bandwidth management** or [Quality of service](https://en.wikipedia.org/wiki/Quality_of_service) is a complicated feature that we decide to handle on layer one and layer three. It is easy to control endpoint devices layer one bandwidth on the connection point to help [ChaparKhane](./ChaparKhane.md) to coordinate network better, but in layer one, you can't distinguish between inbound and outbound traffics.
 - **VLAN** or [Virtual Local Area Network](https://en.wikipedia.org/wiki/Virtual_LAN) like "bandwidth management" need state to switch each frame, so it is break our goal to have a very simple switching mechanism. Network segmentation can handle on layer three by help from [ChaparKhane](./ChaparKhane.md) to coordinate local network better.
 - **Memory usage in peers**. Theoretically if two peer have more than one path to each other, peers can store each path separately for a connection unlike MAC that need just one value. But be aware that very limited ethernet switch devices support multi path to switch frames, So you can just store one path for each connection. And remember support switching in multi path manner in ethernet is very huge performance drop.
+- **Wiring changes**. some changes in wiring cause a device to device connection broken. but in most cases connection can be used in many changes to wiring by simple path recovery mechanism.
 
 ## Still considering
 - **Frames congestion** on any ports force still use cache on ports interfaces that can drop up to 50% efficiency. Suggest use computer hardware studies e.g. PCI-Express(PCIe), ...  to handle this consideration in best effort.
@@ -70,7 +71,6 @@ Transmitting will not block caller to be non blocking and queue frames for conge
 A situation might be occur that a port available when a frame queued but when the time to send is come, the port broken and sender don't know about this.
 
 ## Rules
-- Frame size can be up to 8192 Byte or 8KB. Enough to stream 1.5Mbps video call in each 40ms frames (`1.5/8*1024/1000*40=7.68KB`).
 - Due to the frame must have at least one hop, Use unused HopCount==0 for broadCast frames to all ports. So both HopCount==0x00 & HopCount==0xff have 255 hop port number space in frame header.
 - BroadCast frame must have all hop port number space with 0-byte data in the header, otherwise other frames in the packet manipulates(rewrite) by switches devices.
 - When two peer connect by two different port number, one of them must be as switching adaptor. That means **usually higher hop** must add virtual switch hop to switching road. It will add one more hop port number in each chapar frame.
