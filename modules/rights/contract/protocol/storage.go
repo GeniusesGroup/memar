@@ -1,19 +1,19 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package cp
+package contract_p
 
 import (
-	"memar/protocol"
+	error_p "memar/error/protocol"
 
-	ctp "org/modules/contract-template/protocol"
+	ctp "org/modules/rights/contract-template/protocol"
+	storage_p "org/modules/storage/primitive/protocol"
 )
 
 type StorageServices interface {
-	Save(c DataModel) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(c DataModel) (err error_p.Error)
 
-	Count(contractID ContractUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(contractID ContractUUID, vo protocol.VersionOffset) (c DataModel, nv protocol.NumberOfVersion, err protocol.Error)
+	Get(contractID UUID, vo storage_p.VersionOffset) (c DataModel, err error_p.Error)
 
-	FindByContractTemplate(contractTemplateID ctp.ContractTemplateUUID, offset, limit uint64) (contractIDs []ContractUUID, nv protocol.NumberOfVersion, err protocol.Error)
-	FindByData(data string, offset, limit uint64) (contractIDs ContractUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	FindByContractTemplate(contractTemplateID ctp.UUID, offset, limit uint64) (contractIDs []UUID, nv storage_p.NumberOfVersion, err error_p.Error)
+	// FindByData(data string, offset, limit uint64) (contractsID []UUID, nv storage_p.NumberOfVersion, err error_p.Error)
 }

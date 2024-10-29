@@ -1,23 +1,20 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package cp
+package contract_p
 
 import (
-	"memar/protocol"
-
-	arp "org/modules/app-request/protocol"
-	ctp "org/modules/contract-template/protocol"
+	audit_p "org/modules/computer/audit/protocol"
+	ct_p "org/modules/rights/contract-template/protocol"
+	storage_p "org/modules/storage/primitive/protocol"
 )
 
 type DataModel interface {
-	ContractID() ContractUUID
-	ContractTemplateID() ctp.ContractTemplateUUID
-	ContractTemplateVersion() protocol.VersionOffset
-	Data() map[Type]string
+	Field_ContractID
+	ct_p.Field_ContractTemplateID
+	Field_Data
 
-	arp.AuditLogging
-	protocol.Storage_Versioned
-	protocol.Storage_SaveTime
+	audit_p.Field_RequestID
+	storage_p.Field_SaveTime
 }
 
 // Service: fulfill the obligation
