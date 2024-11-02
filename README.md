@@ -1,5 +1,7 @@
 # Memar 
-An **application** developing **framework** provide ZeroOps(zero operations), edge computing, ... that let you develope both server and client applications in any programming language without need to think more about any fundamental requirements, Just develope business services and user interfaces, build apps as OS images or OS applications and easily just run first server node and let it distributes by many factors with inside logics not need external decision makers (automating software deployment) like Kubernetes(K8s) but with some improvements.
+**Memar** is a computer software development **structure** document that gives you a [structuralism](https://en.wikipedia.org/wiki/Structuralism) mental model to understand the development model. The implementation version of Memar is used as the software development **framework**.
+
+It will provide ZeroOps(zero operations), edge computing, ... that let you develope both server and client applications in any programming language without need to think more about any fundamental requirements, Just develope business services and user interfaces, build apps as OS images or OS applications and easily just run first server node and let it distributes by many factors with inside logics not need external decision makers (automating software deployment) like Kubernetes(K8s) but with some improvements.
 
 ## Goals
 - Provide complete framework to develope any purpose distributed application with **low||no code**.
@@ -19,7 +21,11 @@ We almost just carry many good stuff in computer science such as
 - DDD
 - UniKernel & ExoKernel
 - Agile & DevOps & NoOps
-- 
+
+## Transition period
+Since the Memar introduces all tools needed in software development and operation as a programming language([Khayyam](./Khayyam.md)) and OS([PersiaOS](./PersiaOS.md)) and network protocols like [Chapar](./networking-osi_2-Chapar.md) or [GP](./networking-osi_3-Giti-Network.md), If any organization want to move to the Memar, we provide some exiting programming language implementation to smooth this period and use existing infrastructure like Golang and Linux and IP.
+
+**But remember we don't suggest using this method in starting new projects.**
 
 ## Enterprise
 Contact us by [this](mailto:ict@geniuses.group) or [this](mailto:omidhekayati@gmail.com) if you need enterprise support for developing high available and distributed software. See features available in enterprise package:
