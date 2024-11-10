@@ -3,7 +3,7 @@
 package invoice_p
 
 import (
-	vp "org/modules/financial/voucher/protocol"
+	rule_p "org/modules/business/rule/protocol"
 )
 
 // Also usually known as shopping-cart, ... in GUI part of applications
@@ -37,7 +37,7 @@ type Invoice_GUI_Page_Services interface {
 	increaseItemNumber()
 	decreaseItemNumber()
 
-	addVoucher(vID vp.UUID)
+	addRule(ruleID rule_p.UUID)
 
 	paid(amount int64, method uint8) // method:cash, card, internet, ...
 

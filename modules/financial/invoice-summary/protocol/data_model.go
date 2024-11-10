@@ -17,8 +17,8 @@ type DataModel interface {
 	ItemCount() qcu_p.Quantity
 	ProductCount() qcu_p.Quantity
 	SuggestedPrice() money_p.Amount  // Total should pay before any discount or auction
-	DiscountedPrice() money_p.Amount // user profit from this purchase by vouchers+auctions
-	VoucherPrice() money_p.Amount    // the sum of all vouchers apply for this invoice
+	DiscountedPrice() money_p.Amount // Directly assign by users with enough authorization access (usually org staff).
+	RulePrice() money_p.Amount       // the sum of all rules(vouchers+discounts+gift+auctions) apply for this invoice
 	PayablePrice() money_p.Amount    // Total price user pay to organization
 
 	audit_p.Field_RequestID

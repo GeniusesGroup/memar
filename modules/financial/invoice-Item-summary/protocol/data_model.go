@@ -15,7 +15,8 @@ type DataModel interface {
 	invoice_p.Field_InvoiceID
 	product_p.Field_ProductID
 	SuggestedPrice() money_p.Amount  // Total should pay before any discount or auction
-	DiscountedPrice() money_p.Amount // user profit from this product purchase by auctions
+	DiscountedPrice() money_p.Amount // Directly assign by users with enough authorization access (usually org staff).
+	RulePrice() money_p.Amount       // the sum of all rules(vouchers+discounts+gift+auctions) apply for this product.
 	PayablePrice() money_p.Amount    // Total price user pay to organization
 
 	audit_p.Field_RequestID
