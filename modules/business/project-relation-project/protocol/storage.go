@@ -3,16 +3,17 @@
 package prpp
 
 import (
-	"memar/protocol"
+	error_p "memar/error/protocol"
 
-	pp "org/modules/project/protocol"
+	pp "org/modules/business/project/protocol"
+	storage_p "org/modules/storage/primitive/protocol"
 )
 
 type StorageServices interface {
-	Save(dm DataModel) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm DataModel) (nv storage_p.NumberOfVersion, err error_p.Error)
 
-	Count(projectID pp.ProjectUUID, otherID pp.ProjectUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(projectID pp.ProjectUUID, otherID pp.ProjectUUID, vo protocol.VersionOffset) (dm DataModel, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(projectID pp.UUID, otherID pp.UUID) (nv storage_p.NumberOfVersion, err error_p.Error)
+	Get(projectID pp.UUID, otherID pp.UUID, vo storage_p.VersionOffset) (dm DataModel, nv storage_p.NumberOfVersion, err error_p.Error)
 
-	LIST_OtherIDs_BY_ProjectID(projectID pp.ProjectUUID, offset, limit uint64) (OtherIDs []pp.ProjectUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	LIST_OtherIDs_BY_ProjectID(projectID pp.UUID, offset, limit uint64) (OtherIDs []pp.UUID, nv storage_p.NumberOfVersion, err error_p.Error)
 }

@@ -3,18 +3,17 @@
 package psp
 
 import (
-	"memar/protocol"
+	request_p "memar/audit/request/protocol"
+	project_p "org/modules/business/project/protocol"
 
-	arp "org/modules/app-request/protocol"
-	pp "org/modules/project/protocol"
+	storage_p "org/modules/storage/primitive/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	ProjectID() pp.ProjectUUID
+	project_p.Field_ProjectID
 	Status() Status
 
-	arp.AuditLogging
-	protocol.Storage_Versioned
-	protocol.Storage_SaveTime
+	request_p.Field_RequestID
+	storage_p.Field_SaveTime
 }

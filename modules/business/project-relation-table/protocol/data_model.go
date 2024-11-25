@@ -1,23 +1,22 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package prtp
+package prt_p
 
 import (
-	"memar/protocol"
+	request_p "memar/audit/request/protocol"
+	project_p "org/modules/business/project/protocol"
 
-	arp "org/modules/app-request/protocol"
-	ltp "org/modules/label-table/protocol"
-	pp "org/modules/project/protocol"
+	lt_p "org/modules/knowledge/label-table/protocol"
+	storage_p "org/modules/storage/primitive/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 // Table or boards is visual aid to help users access tasks in GUI e.g.Table(TODO, DOING, DONE)
 type DataModel interface {
-	ProjectID() pp.ProjectUUID
-	TableID() ltp.TableUUID
+	project_p.Field_ProjectID
+	lt_p.Field_TableID
 	Status() Status
 
-	arp.AuditLogging
-	protocol.Storage_Versioned
-	protocol.Storage_SaveTime
+	request_p.Field_RequestID
+	storage_p.Field_SaveTime
 }

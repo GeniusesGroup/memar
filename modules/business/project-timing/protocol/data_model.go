@@ -3,19 +3,20 @@
 package ptp
 
 import (
-	"memar/protocol"
+	time_p "memar/time/protocol"
 
-	arp "org/modules/app-request/protocol"
-	pp "org/modules/project/protocol"
+	request_p "memar/audit/request/protocol"
+	project_p "org/modules/business/project/protocol"
+
+	storage_p "org/modules/storage/primitive/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	ProjectID() pp.ProjectUUID
-	ExpectedTime() protocol.Time
-	Deadline() protocol.Time
+	project_p.Field_ProjectID
+	ExpectedTime() time_p.Time
+	Deadline() time_p.Time
 
-	arp.AuditLogging
-	protocol.Storage_Versioned
-	protocol.Storage_SaveTime
+	request_p.Field_RequestID
+	storage_p.Field_SaveTime
 }

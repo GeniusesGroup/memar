@@ -3,20 +3,19 @@
 package prgp
 
 import (
-	"memar/protocol"
+	request_p "memar/audit/request/protocol"
+	project_p "org/modules/business/project/protocol"
 
-	arp "org/modules/app-request/protocol"
-	gp "org/modules/group/protocol"
-	pp "org/modules/project/protocol"
+	group_p "org/modules/organization/group/protocol"
+	storage_p "org/modules/storage/primitive/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	ProjectID() pp.ProjectUUID
-	GroupID() gp.GroupUUID
+	project_p.Field_ProjectID
+	group_p.Field_GroupID
 	ProjectGroupRelation() Type
 
-	arp.AuditLogging
-	protocol.Storage_Versioned
-	protocol.Storage_SaveTime
+	request_p.Field_RequestID
+	storage_p.Field_SaveTime
 }

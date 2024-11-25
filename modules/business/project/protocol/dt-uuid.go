@@ -1,10 +1,13 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package pp
+package project_p
 
 import (
-	"memar/protocol"
+	quiddity_p "org/modules/identity/quiddity/protocol"
 )
 
-// use to get and show locale title from quiddity-title domain.
-type ProjectUUID protocol.UUID
+type Field_ProjectID interface {
+	ProjectID() UUID
+}
+
+type UUID quiddity_p.UUID

@@ -3,18 +3,19 @@
 package prpp
 
 import (
-	"memar/protocol"
+	error_p "memar/error/protocol"
 
-	prp "org/modules/product/protocol"
-	pp "org/modules/project/protocol"
+	prp "org/modules/business/product/protocol"
+	pp "org/modules/business/project/protocol"
+	storage_p "org/modules/storage/primitive/protocol"
 )
 
 type StorageServices interface {
-	Save(dm DataModel) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm DataModel) (nv storage_p.NumberOfVersion, err error_p.Error)
 
-	Count(projectID pp.ProjectUUID, productID prp.ProductUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(projectID pp.ProjectUUID, productID prp.ProductUUID, vo protocol.VersionOffset) (dm DataModel, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(projectID pp.UUID, productID prp.UUID) (nv storage_p.NumberOfVersion, err error_p.Error)
+	Get(projectID pp.UUID, productID prp.UUID, vo storage_p.VersionOffset) (dm DataModel, nv storage_p.NumberOfVersion, err error_p.Error)
 
-	LIST_ProductIDs_BY_ProjectID(projectID pp.ProjectUUID, offset, limit uint64) (productIDs []prp.ProductUUID, nv protocol.NumberOfVersion, err protocol.Error)
-	LIST_ProjectIDs_BY_ProductID(productID prp.ProductUUID, offset, limit uint64) (projectIDs []pp.ProjectUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	LIST_ProductIDs_BY_ProjectID(projectID pp.UUID, offset, limit uint64) (productIDs []prp.UUID, nv storage_p.NumberOfVersion, err error_p.Error)
+	LIST_ProjectIDs_BY_ProductID(productID prp.UUID, offset, limit uint64) (projectIDs []pp.UUID, nv storage_p.NumberOfVersion, err error_p.Error)
 }

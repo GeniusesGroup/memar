@@ -4,4 +4,4 @@ package prpp
 
 // Blocking
 
-// 	LIST_ProjectIDs_BY_OtherID_AND_Type(otherID pp.ProjectUUID, t Type, offset, limit uint64) (projectIDs []pp.ProjectUUID, nv protocol.NumberOfVersion, err protocol.Error)
+// 	LIST_ProjectIDs_BY_OtherID_AND_Type(otherID pp.UUID, t Type, offset, limit uint64) (projectIDs []pp.UUID, nv storage_p.NumberOfVersion, err error_p.Error)

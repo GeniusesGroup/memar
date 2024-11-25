@@ -3,21 +3,20 @@
 package prpp
 
 import (
-	"memar/protocol"
+	request_p "memar/audit/request/protocol"
+	product_p "org/modules/business/product/protocol"
+	project_p "org/modules/business/project/protocol"
 
-	arp "org/modules/app-request/protocol"
-	prp "org/modules/product/protocol"
-	pp "org/modules/project/protocol"
+	storage_p "org/modules/storage/primitive/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	ProjectID() pp.ProjectUUID
-	ProductID() prp.ProductUUID
+	project_p.Field_ProjectID
+	product_p.Field_ProductID
 	Status() Status
 	// TODO::: type or label??
 
-	arp.AuditLogging
-	protocol.Storage_Versioned
-	protocol.Storage_SaveTime
+	request_p.Field_RequestID
+	storage_p.Field_SaveTime
 }

@@ -1,18 +1,18 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package pp
+package project_p
 
 import (
-	"memar/protocol"
+	error_p "memar/error/protocol"
 
-	up "org/modules/user/protocol"
+	user_p "org/modules/identity/user/protocol"
+	storage_p "org/modules/storage/primitive/protocol"
 )
 
 type StorageServices interface {
-	Save(dm DataModel) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm DataModel) (err error_p.Error)
 
-	Count(projectID ProjectUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(projectID ProjectUUID, vo protocol.VersionOffset) (dm DataModel, nv protocol.NumberOfVersion, err protocol.Error)
+	Get(projectID UUID, vo storage_p.VersionOffset) (dm DataModel, err error_p.Error)
 
-	FIND_UserIDs_By_ProjectID(projectID ProjectUUID, offset, limit uint64) (userIDs []up.UserUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	FIND_UserIDs_By_ProjectID(projectID UUID, offset, limit uint64) (userIDs []user_p.UUID, err error_p.Error)
 }

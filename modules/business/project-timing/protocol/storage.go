@@ -3,14 +3,15 @@
 package ptp
 
 import (
-	"memar/protocol"
+	error_p "memar/error/protocol"
 
-	pp "org/modules/project/protocol"
+	pp "org/modules/business/project/protocol"
+	storage_p "org/modules/storage/primitive/protocol"
 )
 
 type StorageServices interface {
-	Save(dm DataModel) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm DataModel) (nv storage_p.NumberOfVersion, err error_p.Error)
 
-	Count(projectID pp.ProjectUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(projectID pp.ProjectUUID, vo protocol.VersionOffset) (dm DataModel, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(projectID pp.UUID) (nv storage_p.NumberOfVersion, err error_p.Error)
+	Get(projectID pp.UUID, vo storage_p.VersionOffset) (dm DataModel, nv storage_p.NumberOfVersion, err error_p.Error)
 }
