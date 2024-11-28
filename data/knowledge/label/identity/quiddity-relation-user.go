@@ -2,10 +2,8 @@
 
 package label
 
-const (
-	// Just owner MUST edit the related record in any domain
-	// Others CAN fork or update if owner allow.
-	QuiddityRelationUser_Owner = iota
+// Just owner MUST edit the related record in any domain
+// Others CAN fork or update if owner allow.
+// Owner
 
-	//TODO:: other??
-)
+//TODO::: add more labels
