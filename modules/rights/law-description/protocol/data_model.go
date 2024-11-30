@@ -3,24 +3,25 @@
 package ldp
 
 import (
-	"memar/protocol"
+	request_p "memar/audit/request/protocol"
 
-	arp "org/modules/app-request/protocol"
-	lp "org/modules/law/protocol"
+	language_p "org/modules/knowledge/language/protocol"
+	text_p "org/modules/knowledge/text/protocol"
+	law_p "org/modules/rights/law/protocol"
+	storage_p "org/modules/storage/primitive/protocol"
 )
 
 // DataModel
 // users can discuss by send suggestion or change proposal with comments to any part of text.
 type DataModel interface {
-	LawID() lp.LawUUID
-	Language() protocol.Language
-	Law() string                // HTML, CSS
-	Goal() string               // HTML, CSS
-	Explanation() string        // HTML, CSS
-	ExecutiveGuarantee() string // HTML, CSS
-	Technical() string          // HTML, CSS, computer codes or description how to code
+	law_p.Field_LawID
+	language_p.Field_LanguageID
+	Law() text_p.UUID
+	Goal() text_p.UUID
+	Explanation() text_p.UUID
+	ExecutiveGuarantee() text_p.UUID
+	Technical() text_p.UUID // Computer codes or description how to code
 
-	arp.AuditLogging
-	protocol.Storage_Versioned
-	protocol.Storage_SaveTime
+	request_p.Field_RequestID
+	storage_p.Field_SaveTime
 }

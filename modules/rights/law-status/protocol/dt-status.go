@@ -3,8 +3,12 @@
 package lsp
 
 import (
-	qsp "org/modules/quiddity-status/protocol"
+	qsp "org/modules/identity/quiddity-status/protocol"
 )
+
+type Field_Status interface {
+	Status() Status
+}
 
 type Status qsp.Quiddity_Status
 

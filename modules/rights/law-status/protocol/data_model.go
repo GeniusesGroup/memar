@@ -3,17 +3,16 @@
 package lsp
 
 import (
-	"memar/protocol"
+	request_p "memar/audit/request/protocol"
 
-	arp "org/modules/app-request/protocol"
-	lp "org/modules/law/protocol"
+	law_p "org/modules/rights/law/protocol"
+	storage_p "org/modules/storage/primitive/protocol"
 )
 
 type DataModel interface {
-	LawID() lp.LawUUID
-	Status() Status
+	law_p.Field_LawID
+	Field_Status
 
-	arp.AuditLogging
-	protocol.Storage_Versioned
-	protocol.Storage_SaveTime
+	request_p.Field_RequestID
+	storage_p.Field_SaveTime
 }

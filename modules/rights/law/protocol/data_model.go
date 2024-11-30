@@ -1,24 +1,21 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package lp
+package law_p
 
 import (
-	"memar/protocol"
+	request_p "memar/audit/request/protocol"
 
-	arp "org/modules/app-request/protocol"
-	up "org/modules/user/protocol"
+	language_p "org/modules/knowledge/language/protocol"
+	storage_p "org/modules/storage/primitive/protocol"
 )
 
 // DataModel give users the ability to vote to others and it allows them to make propositions on certain issues
 type DataModel interface {
-	LawID() LawUUID // to track changes in a law
-	OrgID() up.UserUUID
-	UserID() up.UserUUID         // Law suggester
-	Language() protocol.Language // base language
+	Field_LawID
+	language_p.Field_LanguageID // base language
 
-	arp.AuditLogging
-	protocol.Storage_Versioned
-	protocol.Storage_SaveTime
+	request_p.Field_RequestID
+	storage_p.Field_SaveTime
 }
 
 // TODO:::

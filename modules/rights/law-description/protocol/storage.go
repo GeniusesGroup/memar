@@ -3,16 +3,18 @@
 package ldp
 
 import (
-	"memar/protocol"
+	error_p "memar/error/protocol"
 
-	lp "org/modules/law/protocol"
+	lgp "org/modules/knowledge/language/protocol"
+	lp "org/modules/rights/law/protocol"
+	storage_p "org/modules/storage/primitive/protocol"
 )
 
 type StorageServices interface {
-	Save(dm DataModel) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm DataModel) (nv storage_p.NumberOfVersion, err error_p.Error)
 
-	Count(lawID lp.LawUUID, language protocol.Language) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(lawID lp.LawUUID, language protocol.Language, vo protocol.VersionOffset) (dm DataModel, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(lawID lp.UUID, language lgp.LanguageUUID) (nv storage_p.NumberOfVersion, err error_p.Error)
+	Get(lawID lp.UUID, language lgp.LanguageUUID, vo storage_p.VersionOffset) (dm DataModel, nv storage_p.NumberOfVersion, err error_p.Error)
 
-	ListLanguages(lawID lp.LawUUID, offset, limit uint64) (languages []protocol.Language, nv protocol.NumberOfVersion, err protocol.Error)
+	ListLanguages(lawID lp.UUID, offset, limit uint64) (languages []lgp.LanguageUUID, nv storage_p.NumberOfVersion, err error_p.Error)
 }

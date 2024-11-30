@@ -3,16 +3,17 @@
 package lsp
 
 import (
-	"memar/protocol"
+	error_p "memar/error/protocol"
 
-	lp "org/modules/law/protocol"
+	lp "org/modules/rights/law/protocol"
+	storage_p "org/modules/storage/primitive/protocol"
 )
 
 type StorageServices interface {
-	Save(dm DataModel) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm DataModel) (nv storage_p.NumberOfVersion, err error_p.Error)
 
-	Count(lawID lp.LawUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(lawID lp.LawUUID, vo protocol.VersionOffset) (dm DataModel, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(lawID lp.UUID) (nv storage_p.NumberOfVersion, err error_p.Error)
+	Get(lawID lp.UUID, vo storage_p.VersionOffset) (dm DataModel, nv storage_p.NumberOfVersion, err error_p.Error)
 
-	// FilterByStatus(status Status, offset, limit uint64) (lawIDs []lp.LawUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	// FilterByStatus(status Status, offset, limit uint64) (lawIDs []lp.UUID, nv storage_p.NumberOfVersion, err error_p.Error)
 }
