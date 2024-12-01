@@ -2,9 +2,12 @@
 
 package label
 
-const (
-	// limit sell to specific roles.
-	SellLimit = iota
+// limit sell to specific roles.
+// SellLimit
 
-	Approver
-)
+// Approver
+
+// product operator is to supply a particular service.
+// Provider
+
+// related UserIDs by RoleID use to get Coordinate(domain)

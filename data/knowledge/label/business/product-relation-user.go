@@ -2,9 +2,8 @@
 
 package label
 
-const (
-	Type_Owner = iota
-	Type_SettlementReference
-	Type_Supplier
-	Type_Distributer
-)
+// Owner
+// SettlementReference
+// Supplier
+// Distributer
+// Subscription
