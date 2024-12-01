@@ -1,5 +1,5 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package mccp
+package label
 
-// select or limit categories for a campaign
+// revenue target
