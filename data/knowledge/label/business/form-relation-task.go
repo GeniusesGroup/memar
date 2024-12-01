@@ -2,7 +2,5 @@
 
 package label
 
-const (
-	Creator = iota
-	Pending
-)
+// Creator
+// Pending
