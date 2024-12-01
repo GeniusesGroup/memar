@@ -2,6 +2,4 @@
 
 package label
 
-const (
-	
-)
+// Some product as material need or pend on other production, .e.g. car needs engine, ...
