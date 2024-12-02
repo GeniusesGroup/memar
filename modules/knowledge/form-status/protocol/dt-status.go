@@ -1,9 +1,9 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package qsp
+package fs_p
 
 import (
-	qsp "org/modules/quiddity-status/protocol"
+	qsp "org/modules/identity/quiddity-status/protocol"
 )
 
 type Status qsp.Quiddity_Status

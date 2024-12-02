@@ -1,16 +1,17 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package qdp
+package fd_p
 
 import (
-	"memar/protocol"
+	error_p "memar/error/protocol"
 
-	qp "org/modules/questionnaire/protocol"
+	form_p "org/modules/knowledge/form/protocol"
+	storage_p "org/modules/storage/primitive/protocol"
 )
 
 type StorageServices interface {
-	Save(dm DataModel) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm DataModel) (nv storage_p.NumberOfVersion, err error_p.Error)
 
-	Count(questionnaireID qp.QuestionnaireUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(questionnaireID qp.QuestionnaireUUID, vo protocol.VersionOffset) (dm DataModel, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(formID form_p.UUID) (nv storage_p.NumberOfVersion, err error_p.Error)
+	Get(formID form_p.UUID, vo storage_p.VersionOffset) (dm DataModel, nv storage_p.NumberOfVersion, err error_p.Error)
 }

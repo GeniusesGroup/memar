@@ -1,21 +1,22 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package qdp
+package fd_p
 
 import (
-	"memar/protocol"
+	request_p "memar/audit/request/protocol"
+	"memar/time/duration"
+	"memar/time/epoch"
 
-	arp "org/modules/app-request/protocol"
-	qp "org/modules/questionnaire/protocol"
+	form_p "org/modules/knowledge/form/protocol"
+	storage_p "org/modules/storage/primitive/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	QuestionnaireID() qp.QuestionnaireUUID
-	Epoch() Epoch
-	Duration() protocol.Duration // from Epoch()
+	form_p.Field_FormID
+	epoch.Field_DynamicEpoch
+	Duration() duration.Second // from Epoch()
 
-	arp.AuditLogging
-	protocol.Storage_Versioned
-	protocol.Storage_SaveTime
+	request_p.Field_RequestID
+	storage_p.Field_SaveTime
 }

@@ -1,23 +1,22 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package qrp
+package fr_p
 
 import (
-	"memar/protocol"
+	request_p "memar/audit/request/protocol"
 
-	arp "org/modules/app-request/protocol"
-	qop "org/modules/questionnaire-order/protocol"
-	up "org/modules/user/protocol"
+	user_p "org/modules/identity/user/protocol"
+	form_p "org/modules/knowledge/form/protocol"
+	storage_p "org/modules/storage/primitive/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	QuestionnaireRespondentID() QuestionnaireRespondentUUID
-	QuestionnaireOrderID() qop.QuestionnaireOrderUUID
-	AnswerBy() up.UserUUID
-	FillBy() up.UserUUID
+	Field_FormRespondentID
+	form_p.Field_FormID
+	AnswerBy() user_p.UUID
+	FillBy() user_p.UUID
 
-	arp.AuditLogging
-	protocol.Storage_Versioned
-	protocol.Storage_SaveTime
+	request_p.Field_RequestID
+	storage_p.Field_SaveTime
 }

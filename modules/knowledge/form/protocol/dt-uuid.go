@@ -1,9 +1,13 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package qp
+package form_p
 
 import (
-	"memar/protocol"
+	quiddity_p "org/modules/identity/quiddity/protocol"
 )
 
-type QuestionnaireUUID protocol.UUID
+type Field_FormID interface {
+	FormID() UUID
+}
+
+type UUID quiddity_p.UUID

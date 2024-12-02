@@ -1,20 +1,19 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package qsp
+package fs_p
 
 import (
-	"memar/protocol"
+	request_p "memar/audit/request/protocol"
 
-	arp "org/modules/app-request/protocol"
-	qp "org/modules/questionnaire/protocol"
+	form_p "org/modules/knowledge/form/protocol"
+	storage_p "org/modules/storage/primitive/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	QuestionnaireID() qp.QuestionnaireUUID
+	form_p.Field_FormID
 	Status() Status
 
-	arp.AuditLogging
-	protocol.Storage_Versioned
-	protocol.Storage_SaveTime
+	request_p.Field_RequestID
+	storage_p.Field_SaveTime
 }

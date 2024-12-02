@@ -1,16 +1,18 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package qp
+package form_p
 
 import (
-	"memar/protocol"
+	error_p "memar/error/protocol"
+
+	storage_p "org/modules/storage/primitive/protocol"
 )
 
 type StorageServices interface {
-	Save(dm DataModel) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm DataModel) (nv storage_p.NumberOfVersion, err error_p.Error)
 
-	Count(questionnaireID QuestionnaireUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(questionnaireID QuestionnaireUUID, vo protocol.VersionOffset) (dm DataModel, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(formID UUID) (nv storage_p.NumberOfVersion, err error_p.Error)
+	Get(formID UUID, vo storage_p.VersionOffset) (dm DataModel, nv storage_p.NumberOfVersion, err error_p.Error)
 
-	FIND_QuestionnaireIDs_By_Type(questionnaireID QuestionnaireUUID, t Type, offset, limit uint64) (nv protocol.NumberOfVersion, err protocol.Error)
+	FIND_FormIDs_By_Type(formID UUID, t Type, offset, limit uint64) (nv storage_p.NumberOfVersion, err error_p.Error)
 }

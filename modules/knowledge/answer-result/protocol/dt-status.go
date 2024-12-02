@@ -1,11 +1,11 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package exap
+package ar_p
 
 type Status uint8
 
 const (
-	EducationAnswer_Unset Status = iota
-	EducationAnswer_Passed
-	EducationAnswer_Failed
+	Answer_Unset Status = iota
+	Answer_Passed
+	Answer_Failed
 )

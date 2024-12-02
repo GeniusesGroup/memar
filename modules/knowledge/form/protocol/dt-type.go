@@ -1,21 +1,31 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package qp
+package form_p
 
-type Type uint16
+type Field_Type interface {
+	Type() Type
+}
+
+type Type uint64
 
 const (
-	Type_Unset Type = 0
-	Type_Quiz  Type = (1 << iota)
-	Type_Anonymous
+	Type_Unset     Type = 0
+	Type_Anonymous Type = (1 << iota)
 	Type_Duration
 	Type_StartPoint
 	Type_AllowToEdit
-	Type_Form
 	Type_MaxAttempt
 
-	// No one can made direct answer to this questionnaire.
+	// No one can made direct answer to this form.
 	Type_Criterion
+	//
+	Type_Quiz
+	//
+	Type_Survey
+	//
+	Type_Questionnaire
+	//
+	Type_Poll
 
-	// TODO::: Template for forms?
+	// TODO::: GUI template for forms?
 )
