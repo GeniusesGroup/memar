@@ -1,5 +1,7 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package brmcp
+package label
 
 // limit advertising campaign budget
+
+// Source of resources
