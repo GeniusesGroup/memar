@@ -2,8 +2,6 @@
 
 package label
 
-const (
-	Type_SameLevel = iota
-	Type_UpperLevel
-	Type_LowerLevel
-)
+// SameLevel
+// UpperLevel
+// LowerLevel

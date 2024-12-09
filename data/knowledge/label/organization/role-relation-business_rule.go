@@ -2,6 +2,4 @@
 
 package label
 
-const (
-	ApplicationAccessControl = iota
-)
+// ApplicationAccessControl
