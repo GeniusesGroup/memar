@@ -12,13 +12,3 @@ package label
 // Abstention
 // Agree
 // Disagree
-
-//
-//  ** BELOW USE IN `label-relation-other`
-// e.g. [Label, User, Organization] >> ["Citizen", "Omid", "Universe"]
-// Citizen
-// Voting rights
-// Permanently entitled to vote
-// Temporary voting rights
-// Suspension of voting rights
-// Permanent loss of voting rights
