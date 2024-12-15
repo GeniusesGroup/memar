@@ -2,9 +2,7 @@
 
 package label
 
-const (
-	LastChain = iota
+// LastChain
 
-	// e.g. financial transaction request has sub request such as withdraw, deposit, reference, send notification, ...
-	SubRequest
-)
+// e.g. financial transaction request has sub request such as withdraw, deposit, reference, send notification, ...
+// SubRequest
