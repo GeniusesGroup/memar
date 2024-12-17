@@ -3,22 +3,21 @@
 package org
 
 import (
-	"memar/protocol"
+	request_p "memar/audit/request/protocol"
 
-	aap "org/modules/app-audit/protocol"
-	eblp "org/modules/estate-building-location/protocol"
-	tp "org/modules/thing/protocol"
+	thing_p "org/modules/identity/thing/protocol"
+	estate_p "org/modules/rights/estate/protocol"
+	storage_p "org/modules/storage/primitive/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	ThingUUID() tp.ThingUUID
-	BuildingLocationID() eblp.BuildingLocationUUID
+	thing_p.Field_ThingID
+	estate_p.Field_EstateID
 	X() uint64 // Three-Dimensional Coordinate Systems
 	Y() uint64 // Three-Dimensional Coordinate Systems
 	Z() uint64 // Three-Dimensional Coordinate Systems
 
-	aap.AuditRequest
-	protocol.Storage_Versioned
-	protocol.Storage_SaveTime
+	request_p.Field_RequestID
+	storage_p.Field_SaveTime
 }

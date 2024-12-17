@@ -1,21 +1,19 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package tmp
+package channel_p
 
 import (
-	"memar/protocol"
+	request_p "memar/audit/request/protocol"
 
-	aap "org/modules/app-audit/protocol"
-	tp "org/modules/thing/protocol"
+	storage_p "org/modules/storage/primitive/protocol"
 )
 
-// each metrics for a thing is immutable record and so use version mechanism to chain metrics for a device.
+// DataModel indicate the domain record data fields.
 type DataModel interface {
-	ThingID() tp.ThingUUID
-	MetricUnit() MetricUnit
-	Amount() int64
+	Field_ChannelID
+	Field_IOType
+	Field_MetricUnit
 
-	aap.AuditRequest
-	protocol.Storage_Versioned
-	protocol.Storage_SaveTime
+	request_p.Field_RequestID
+	storage_p.Field_SaveTime
 }

@@ -1,12 +1,14 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package tp
+package thing_p
 
 import (
-	up "org/modules/user/protocol"
+	quiddity_p "org/modules/identity/quiddity/protocol"
 )
 
-// Serial numbers are identification numbers given to one product in particular,
-// to allow to track the history of the item from reception to delivery and after-sales.
-// e.g. https://en.wikipedia.org/wiki/International_Mobile_Equipment_Identity
-type ThingUUID up.UserUUID
+type Field_ThingID interface {
+	ThingID() UUID
+}
+
+// It is quiddity identifier to let user assign `name` or `label` or `status` to each channel.
+type UUID quiddity_p.UUID
