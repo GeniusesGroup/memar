@@ -3,8 +3,9 @@
 package iipp
 
 import (
+	request_p "memar/audit/request/protocol"
+
 	product_p "org/modules/business/product/protocol"
-	audit_p "org/modules/computer/audit/protocol"
 	invoice_p "org/modules/financial/invoice/protocol"
 	staff_p "org/modules/organization/staff/protocol"
 	storage_p "org/modules/storage/primitive/protocol"
@@ -16,6 +17,6 @@ type DataModel interface {
 	product_p.Field_ProductID
 	staff_p.Field_StaffID
 
-	audit_p.Field_RequestID
+	request_p.Field_RequestID
 	storage_p.Field_SaveTime
 }

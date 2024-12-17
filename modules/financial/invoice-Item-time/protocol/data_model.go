@@ -3,10 +3,10 @@
 package iiip
 
 import (
+	request_p "memar/audit/request/protocol"
 	time_p "memar/time/protocol"
 
 	product_p "org/modules/business/product/protocol"
-	audit_p "org/modules/computer/audit/protocol"
 	invoice_p "org/modules/financial/invoice/protocol"
 	label_p "org/modules/knowledge/label/protocol"
 	storage_p "org/modules/storage/primitive/protocol"
@@ -19,6 +19,6 @@ type DataModel interface {
 	label_p.Field_Type
 	ActionTime() time_p.Time
 
-	audit_p.Field_RequestID
+	request_p.Field_RequestID
 	storage_p.Field_SaveTime
 }

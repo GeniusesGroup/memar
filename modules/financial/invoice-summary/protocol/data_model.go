@@ -3,7 +3,8 @@
 package isp
 
 import (
-	audit_p "org/modules/computer/audit/protocol"
+	request_p "memar/audit/request/protocol"
+
 	invoice_p "org/modules/financial/invoice/protocol"
 	money_p "org/modules/financial/money/protocol"
 	qcu_p "org/modules/identity/quiddity-count_unit/protocol"
@@ -21,6 +22,6 @@ type DataModel interface {
 	RulePrice() money_p.Amount       // the sum of all rules(vouchers+discounts+gift+auctions) apply for this invoice
 	PayablePrice() money_p.Amount    // Total price user pay to organization
 
-	audit_p.Field_RequestID
+	request_p.Field_RequestID
 	storage_p.Field_SaveTime
 }

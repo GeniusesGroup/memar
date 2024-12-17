@@ -3,8 +3,9 @@
 package iip
 
 import (
+	request_p "memar/audit/request/protocol"
+
 	product_p "org/modules/business/product/protocol"
-	audit_p "org/modules/computer/audit/protocol"
 	invoice_p "org/modules/financial/invoice/protocol"
 	qcu_p "org/modules/identity/quiddity-count_unit/protocol"
 	storage_p "org/modules/storage/primitive/protocol"
@@ -18,6 +19,6 @@ type DataModel interface {
 	qcu_p.Field_Quantity
 	Field_Status
 
-	audit_p.Field_RequestID
+	request_p.Field_RequestID
 	storage_p.Field_SaveTime
 }

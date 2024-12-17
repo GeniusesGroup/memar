@@ -3,7 +3,8 @@
 package is_p
 
 import (
-	audit_p "org/modules/computer/audit/protocol"
+	request_p "memar/audit/request/protocol"
+
 	invoice_p "org/modules/financial/invoice/protocol"
 	storage_p "org/modules/storage/primitive/protocol"
 )
@@ -13,6 +14,6 @@ type DataModel interface {
 	invoice_p.Field_InvoiceID
 	Field_Status
 
-	audit_p.Field_RequestID
+	request_p.Field_RequestID
 	storage_p.Field_SaveTime
 }

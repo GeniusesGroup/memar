@@ -3,8 +3,9 @@
 package iisp
 
 import (
+	request_p "memar/audit/request/protocol"
+
 	product_p "org/modules/business/product/protocol"
-	audit_p "org/modules/computer/audit/protocol"
 	invoice_p "org/modules/financial/invoice/protocol"
 	storage_p "org/modules/storage/primitive/protocol"
 )
@@ -17,6 +18,6 @@ type DataModel interface {
 	Field_SeatID
 	Field_Status
 
-	audit_p.Field_RequestID
+	request_p.Field_RequestID
 	storage_p.Field_SaveTime
 }
