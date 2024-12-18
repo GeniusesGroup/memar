@@ -3,15 +3,15 @@
 package label_p
 
 import (
-	audit_p "org/modules/computer/audit/protocol"
-	storage_p "org/modules/storage/primitive/protocol"
+	request_p "memar/audit/request/protocol"
+	audit_time_p "memar/audit/time/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
 	Field_LabelID
-	// Field_Status
+	// TODO::: add data fields or delete it
 
-	audit_p.Field_RequestID
-	storage_p.Field_SaveTime
+	request_p.Field_RequestID
+	audit_time_p.Field_SaveTime
 }

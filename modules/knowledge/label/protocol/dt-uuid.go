@@ -14,4 +14,9 @@ type Field_LabelsID interface {
 	LabelsID() []UUID
 }
 
+type Field_Type interface {
+	Type() UUID
+}
+
+// Label text indicate in `text` domain.
 type UUID quiddity_p.UUID

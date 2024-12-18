@@ -1,0 +1,8 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+package la_p
+
+const (
+	// True means if app admin not indicate any status for a label before related request, That label can use in making relation.
+	CNF_DefaultAllowed = false
+)
