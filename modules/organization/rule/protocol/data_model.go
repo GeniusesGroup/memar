@@ -1,16 +1,27 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package br_p
+package rule_p
 
 import (
-	aa_p "org/modules/app-audit/protocol"
-	storage_p "org/modules/storage/protocol"
+	request_p "memar/audit/request/protocol"
+	audit_time_p "memar/audit/time/protocol"
+
+	node_p "org/modules/computer/node/protocol"
+	label_p "org/modules/knowledge/label/protocol"
 )
 
 type DataModel interface {
-	Field_BusinessRuleID
-	Field_LogicType
+	Field_RuleID
+	Field_Type
 
-	aa_p.Field_AuditRequest
-	storage_p.Field_SaveTime
+	// TODO::: below fields are rule codes?? or belong to here?? or other subdomain?
+
+	// `logic_p.Empty() == true` means rule not limit to any specific node
+	node_p.Field_NodeID
+
+	// `logic_p.Empty() == true` means rule not limit to any group of nodes with this label
+	label_p.Field_LabelID
+
+	request_p.Field_RequestID
+	audit_time_p.Field_SaveTime
 }

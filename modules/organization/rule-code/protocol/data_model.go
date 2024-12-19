@@ -1,19 +1,21 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package rap
+package rc_p
 
 import (
-	aa_p "org/modules/app-audit/protocol"
-	object_p "org/modules/object/protocol"
-	org_p "org/modules/org/protocol"
-	storage_p "org/modules/storage/protocol"
+	request_p "memar/audit/request/protocol"
+	audit_time_p "memar/audit/time/protocol"
+
+	rule_p "org/modules/organization/rule/protocol"
+	object_p "org/modules/storage/object/protocol"
 )
 
-// Use to store logic on DSLs or portable binaries like WASM, ...
+// Use to store executable logic on portable binaries like WASM, ...
+// Logic (any statement) CAN write in general purpose language or DSLs.
 type DataModel interface {
-	org_p.Field_OrganizationID
+	rule_p.Field_RuleID
 	object_p.Field_ObjectID
 
-	aa_p.Field_AuditRequest
-	storage_p.Field_SaveTime
+	request_p.Field_RequestID
+	audit_time_p.Field_SaveTime
 }
