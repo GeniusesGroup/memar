@@ -3,6 +3,10 @@
 package label
 
 // default labels:
-// 	Type_Compliment
-// 	Type_Suggestion
-// 	Type_Issue
+// 	Compliment
+// 	Suggestion
+// 	Issue
+
+// Project
+// Meeting
+//

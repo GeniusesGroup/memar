@@ -3,7 +3,7 @@
 package ttp
 
 import (
-	"memar/protocol"
+	quiddity_p "org/modules/identity/quiddity/protocol"
 )
 
-type TaskTemplateUUID protocol.UUID
+type TaskTemplateUUID quiddity_p.UUID

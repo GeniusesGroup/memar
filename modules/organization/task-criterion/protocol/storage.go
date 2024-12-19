@@ -3,16 +3,17 @@
 package tcp
 
 import (
-	"memar/protocol"
+	error_p "memar/error/protocol"
 
-	tp "org/modules/task/protocol"
+	tp "org/modules/organization/task/protocol"
+	storage_p "org/modules/storage/primitive/protocol"
 )
 
 type StorageServices interface {
-	Save(dm DataModel) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm DataModel) (nv storage_p.NumberOfVersion, err error_p.Error)
 
-	Count(taskID tp.TaskUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(taskID tp.TaskUUID, vo protocol.VersionOffset) (dm DataModel, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(taskID tp.UUID) (nv storage_p.NumberOfVersion, err error_p.Error)
+	Get(taskID tp.UUID, vo storage_p.VersionOffset) (dm DataModel, nv storage_p.NumberOfVersion, err error_p.Error)
 
-	FILTER_TaskIDs_BY_Type(t Type, offset, limit uint64) (taskIDs []tp.TaskUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	FILTER_TaskIDs_BY_Type(t Type, offset, limit uint64) (taskIDs []tp.UUID, nv storage_p.NumberOfVersion, err error_p.Error)
 }

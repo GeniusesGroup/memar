@@ -2,7 +2,13 @@
 
 package label
 
-const (
-	Assigned = iota
-	Reviewer
-)
+// Assigned
+// Reviewer
+
+// Authorization
+
+// Group here can treated as a team work on a task.
+
+// Chats_Participant
+// Chats_Reviewer
+// Chats_Approver

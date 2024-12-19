@@ -3,19 +3,20 @@
 package ttp
 
 import (
-	"memar/protocol"
+	request_p "memar/audit/request/protocol"
+	audit_time_p "memar/audit/time/protocol"
 
-	arp "org/modules/app-request/protocol"
-	up "org/modules/user/protocol"
+	user_p "org/modules/identity/user/protocol"
 )
+
+// TODO::: task can be use as template, Need this module?
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
 	TaskTemplateID() TaskTemplateUUID
-	UserID() up.UserUUID
-	// TODO::: group of comment?? questionnaire??
+	user_p.Field_UserID
+	// TODO::: group of comment?? business form??
 
-	arp.AuditLogging
-	protocol.Storage_Versioned
-	protocol.Storage_SaveTime
+	request_p.Field_RequestID
+	audit_time_p.Field_SaveTime
 }

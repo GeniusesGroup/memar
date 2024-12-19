@@ -2,7 +2,7 @@
 
 package label
 
-const (
-	TaskRelationTask_Complement = iota
-	TaskRelationTask_Blocking
-)
+// Complement
+// Blocking   // stuck
+// Move       // move from other project
+// Parent

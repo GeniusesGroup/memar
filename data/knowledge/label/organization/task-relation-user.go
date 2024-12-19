@@ -2,10 +2,14 @@
 
 package label
 
-const (
-	Type_Participant = iota
-	Type_Assigner
-	Type_Assigned
-	Type_Reviewer
-	Type_Approver
-)
+// Participant
+// Assigner
+// Reviewer
+// Assigned
+// Approver
+
+// WaitList
+
+// RequestID of making relation is made by inviter user.
+// Invited user CAN check who invite itself to this task
+// Invited

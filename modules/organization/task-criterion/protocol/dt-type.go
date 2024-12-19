@@ -2,6 +2,11 @@
 
 package tcp
 
+type Field_Type interface {
+	Type() Type
+}
+
+// معیار سنجش
 type Type uint8
 
 const (

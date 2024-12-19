@@ -2,7 +2,10 @@
 
 package tcp
 
-// معیار سنجش
+type Field_Point interface {
+	// Point is measurement criterion for a task
+	Point() Point
+}
 
 // Story points are units of measure for expressing an estimate of the overall effort required
 // to fully implement a product backlog item or any other piece of work.

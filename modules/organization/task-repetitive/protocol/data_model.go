@@ -1,22 +1,23 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package trp
+package tr_p
 
 import (
-	"memar/protocol"
+	request_p "memar/audit/request/protocol"
+	audit_time_p "memar/audit/time/protocol"
+	"memar/time/duration"
+	"memar/time/epoch"
 
-	arp "org/modules/app-request/protocol"
-	tp "org/modules/task/protocol"
+	task_p "org/modules/organization/task/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	TaskID() tp.TaskUUID
-	Each() Each
-	Epoch() Epoch
-	Duration() protocol.Duration // from Epoch()
+	task_p.Field_TaskID
+	Field_Each
+	epoch.Field_DynamicEpoch
+	Duration() duration.Second // from Epoch()
 
-	arp.AuditLogging
-	protocol.Storage_Versioned
-	protocol.Storage_SaveTime
+	request_p.Field_RequestID
+	audit_time_p.Field_SaveTime
 }

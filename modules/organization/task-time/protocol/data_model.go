@@ -3,18 +3,17 @@
 package ttp
 
 import (
-	"memar/protocol"
+	request_p "memar/audit/request/protocol"
+	audit_time_p "memar/audit/time/protocol"
 
-	arp "org/modules/app-request/protocol"
-	tp "org/modules/task/protocol"
+	task_p "org/modules/organization/task/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	TaskID() tp.TaskUUID
+	task_p.Field_TaskID
 	Type() Type
 
-	arp.AuditLogging
-	protocol.Storage_Versioned
-	protocol.Storage_SaveTime
+	request_p.Field_RequestID
+	audit_time_p.Field_SaveTime
 }

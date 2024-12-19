@@ -1,18 +1,19 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package tp
+package task_p
 
 import (
-	"memar/protocol"
+	error_p "memar/error/protocol"
 
-	up "org/modules/user/protocol"
+	user_p "org/modules/identity/user/protocol"
+	storage_p "org/modules/storage/primitive/protocol"
 )
 
 type StorageServices interface {
-	Save(dm Task) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm Task) (nv storage_p.NumberOfVersion, err error_p.Error)
 
-	Count(taskID TaskUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(taskID TaskUUID, vo protocol.VersionOffset) (dm Task, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(taskID UUID) (nv storage_p.NumberOfVersion, err error_p.Error)
+	Get(taskID UUID, vo storage_p.VersionOffset) (dm Task, nv storage_p.NumberOfVersion, err error_p.Error)
 
-	FIND_TaskIDs_BY_UserID(userID up.UserUUID, offset, limit uint64) (taskIDs []TaskUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	FIND_TaskIDs_BY_UserID(userID user_p.UUID, offset, limit uint64) (taskIDs []UUID, nv storage_p.NumberOfVersion, err error_p.Error)
 }
