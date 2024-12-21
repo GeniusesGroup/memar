@@ -9,4 +9,18 @@ package label
 
 // Project
 // Meeting
+// Event
+
+// PlanToDo
+// Doing
+// Done
 //
+
+// NeedApprobation
+// Rejected
+// NotAccepted
+// Approved
+
+// NeedAlternate
+// NeedAlternateApprove
+// AlternateApprove

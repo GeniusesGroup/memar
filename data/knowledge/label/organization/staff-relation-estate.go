@@ -2,10 +2,4 @@
 
 package label
 
-const (
-	Type_Meeting = iota
-	Type_Negotiation
-	Type_Deal
-	Type_Study
-	// Type_
-)
+// Attendance
