@@ -1,13 +1,11 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package usp
+package us_p
 
 import (
-	qsp "org/modules/quiddity-status/protocol"
+	qs_p "org/modules/identity/quiddity-status/protocol"
 )
 
-type Status qsp.Quiddity_Status
-
 const (
-// Status_ = Status(Quiddity_Status_FreeFlag << iota)
+	Status_ = qs_p.Status(qs_p.Status_FreeFlag << iota)
 )

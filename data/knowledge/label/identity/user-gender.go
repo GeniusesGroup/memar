@@ -1,5 +1,7 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package ugp
+package label
 
-type Gender uint64
+// Gender:::
+// Male
+// Female

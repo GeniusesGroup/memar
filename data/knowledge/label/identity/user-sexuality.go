@@ -1,11 +1,9 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package usp
-
-type Sexuality int32
+package label
 
 const (
-	Type_Unset Sexuality = iota
+	Type_Unset = iota
 	Type_Alloromantic
 	Type_Allosexual
 	Type_Androsexual
