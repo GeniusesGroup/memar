@@ -3,26 +3,17 @@
 package org
 
 import (
-	"memar/protocol"
-
-	arp "org/modules/app-request/protocol"
-	pp "org/modules/product/protocol"
-	prp "org/modules/production/protocol"
-	qrp "org/modules/quiddity-relation-type/protocol"
+	request_p "memar/audit/request/protocol"
+	audit_time_p "memar/audit/time/protocol"
+	pm_p "org/modules/business/product-material/protocol"
+	prp "org/modules/business/production/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	ProductionID() prp.ProductionUUID
-	ProductID() pp.ProductUUID
-	MaterialID() pp.ProductUUID
-	RelationType() qrp.QuiddityRelationTypeUUID // رویه پیتزا؟؟    Optional??
-	MinQuantity() uint64
-	BaseQuantity() uint64 // decimal >> 1.5 >> 1.2 >> 10 >> 0
-	MaxQuantity() uint64
-	Status() Status
+	ProductionID() prp.UUID
+	pm_p.DataModel
 
-	arp.AuditLogging
-	protocol.Storage_Versioned
-	protocol.Storage_SaveTime
+	request_p.Field_RequestID
+	audit_time_p.Field_SaveTime
 }

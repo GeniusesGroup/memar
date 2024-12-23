@@ -1,9 +1,13 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package pp
+package production_p
 
 import (
-	"memar/protocol"
+	quiddity_p "org/modules/identity/quiddity/protocol"
 )
 
-type ProductionUUID protocol.UUID
+type Field_ProductionID interface {
+	ProductionID() UUID
+}
+
+type UUID quiddity_p.UUID

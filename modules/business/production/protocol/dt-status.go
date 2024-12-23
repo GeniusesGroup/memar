@@ -1,12 +1,12 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package pp
+package production_p
 
 import (
-	qsp "org/modules/quiddity-status/protocol"
+	qs_p "org/modules/identity/quiddity-status/protocol"
 )
 
-type Status qsp.Quiddity_Status
+type Status qs_p.Status
 
 //Created
 //ManagerApprove
