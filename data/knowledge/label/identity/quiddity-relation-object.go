@@ -2,14 +2,12 @@
 
 package label
 
-const (
-	// Icon or emoji use in many domains e.g. label(category), departments, ...
-	QuiddityRelationObject_Icon = iota
+// Icon or emoji use in many domains e.g. label(category), departments, ...
+// Icon
 
-	// Model is the 3D model of the quiddity
-	QuiddityRelationObject_Model
+// Model is the 3D model of the quiddity
+// PhysicalModel
 
-	QuiddityRelationObject_Media
+// Media
 
-	//TODO:: other??
-)
+//TODO:: other??

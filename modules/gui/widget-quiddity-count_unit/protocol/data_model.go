@@ -3,9 +3,10 @@
 package qcu_p
 
 import (
-	audit_p "org/modules/computer/audit/protocol"
+	request_p "memar/audit/request/protocol"
+	audit_time_p "memar/audit/time/protocol"
+
 	quiddity_p "org/modules/identity/quiddity/protocol"
-	storage_p "org/modules/storage/primitive/protocol"
 )
 
 // DataModel indicate the domain record data fields.
@@ -14,6 +15,6 @@ type DataModel interface {
 	Field_CountUnitID
 	// TODO::: Allow or need multiple count unit?
 
-	audit_p.Field_RequestID
-	storage_p.Field_SaveTime
+	request_p.Field_RequestID
+	audit_time_p.Field_SaveTime
 }
