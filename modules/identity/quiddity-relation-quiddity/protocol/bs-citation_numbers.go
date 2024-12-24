@@ -1,13 +1,13 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package ltrtp
+package qrq_p
 
 import (
-	ltp "org/modules/language-text/protocol"
+	text_p "org/modules/knowledge/text/protocol"
 )
 
 type BS_CitationsNumbers_Request interface {
-	TextID() ltp.TextUUID
+	TextID() text_p.UUID
 }
 
 type BS_CitationsNumbers_Response interface {
