@@ -3,11 +3,28 @@
 package label
 
 // Owner
+// Associated
 
-// Associated_Direct
-
-// Associated_JoinLink
+// JoinByRule
 
 // RequestID of making relation is made by inviter user.
 // Invited user CAN check who invite itself to this group
-// Associated_Invite
+// Invited
+
+// WaitList
+
+// 	Joined
+// 	Blocked
+// 	Muted
+//
+// 	WaitToAcceptByAdmins
+// 	WaitToAcceptByUser
+
+// 	Wait             // GUI base
+// 	Confirmed        //
+// 	Canceled         //
+// 	Expired          // GUI base
+
+// 	OnHold          // GUI base
+// 	Accepted        //
+// 	Rejected        //
