@@ -3,3 +3,7 @@
 package label
 
 // NeighborsConflict
+
+// Reserved
+// Occupied
+// Vacant
