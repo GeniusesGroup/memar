@@ -1,9 +1,13 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package pbp
+package batch_p
 
 import (
-	"memar/protocol"
+	quiddity_p "org/modules/identity/quiddity/protocol"
 )
 
-type ProductionBatchUUID protocol.UUID
+type Field_BatchID interface {
+	ProductBatchID() UUID
+}
+
+type UUID quiddity_p.UUID
