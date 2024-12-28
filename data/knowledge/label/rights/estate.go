@@ -7,12 +7,24 @@ package label
 // Continent
 // Land
 // Area
-// House
+// GeographyRegion
+
+// Human Made:::
+// Country
+// State
+// Province
+// Region
+// City
+// District
+// Boulevard
+// MainStreet
+// Street
+// MainAlley
+// Alley
 // Building
-
-// Any part of estate without any further information
-// BuildingLocation
-
+// BuildingLocation // Any part of estate without any further information
+// Block
+// House
 // Apartment
 // Storage
 // Parking
@@ -20,7 +32,7 @@ package label
 // Hall
 // Lobby
 
-// property use ::: any part of a building like warehouses, zones, halls, ...
+// property use::: any part of a building like warehouses, zones, halls, ...
 // Residential
 // Commercial
 // Storage

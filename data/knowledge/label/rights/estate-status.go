@@ -7,3 +7,4 @@ package label
 // Reserved
 // Occupied
 // Vacant
+// Closed
