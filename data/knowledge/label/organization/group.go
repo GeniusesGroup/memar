@@ -2,6 +2,13 @@
 
 package label
 
+// Group types:::
+// Content
+// News
+// Movie
+// Music
+
+// Group access type:::
 // Public
 // Private
 // PrivateInDepartment
