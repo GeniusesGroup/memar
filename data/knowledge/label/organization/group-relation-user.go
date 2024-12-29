@@ -2,7 +2,14 @@
 
 package label
 
+// ID can be even other organizations like `ISO`
+// RegisteredBy
+// Issuer
+// Suggester
 // Owner
+
+// It can be more than just one label for associated users to a group
+// e.g. `Member`, `Honorary Members`, `Supporter`, ...
 // Associated
 
 // JoinByRule
@@ -28,3 +35,6 @@ package label
 // 	OnHold          // GUI base
 // 	Accepted        //
 // 	Rejected        //
+
+// user (delegate usage), ...
+// DelegateRole // Owner

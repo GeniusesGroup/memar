@@ -3,13 +3,18 @@
 package group_p
 
 import (
-	ut16 "memar/identifier/uuid-time-16byte"
+	quiddity_p "org/modules/identity/quiddity/protocol"
 )
 
 type Field_GroupID interface {
-	GroupID() GroupUUID
+	GroupID() UUID
 }
 
-type GroupUUID ut16.UUID
+type Field_GroupsID interface {
+	GroupsID() []UUID
+}
+
+// or ChannelID. Use to store and retrieve comments in time order. It can be UUID, URL hash or any random id.
+type UUID quiddity_p.UUID
 
 // register group

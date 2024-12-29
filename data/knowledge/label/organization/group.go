@@ -3,6 +3,10 @@
 package label
 
 // Group types:::
+// It can use to show organizational chart. Also staffs can join to the related group.
+// Department
+// 
+// Role
 // Content
 // News
 // Movie

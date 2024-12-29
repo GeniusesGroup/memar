@@ -8,3 +8,10 @@ package label
 
 // product operator is to supply a particular service.
 // Provider
+
+// limit sell to specific groups(roles, ...)
+// SellLimit
+
+// Approver
+
+// related UserIDs by RoleID use to get Coordinate(domain)
