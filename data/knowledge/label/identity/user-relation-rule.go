@@ -1,6 +1,6 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package uoatp
+package label
 
-// DelegateToken, AccessToken
-type Token []byte
+// GottenDelegate
+// GivenDelegate
