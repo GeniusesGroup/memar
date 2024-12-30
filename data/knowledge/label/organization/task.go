@@ -11,10 +11,21 @@ package label
 // Meeting
 // Event
 
-// PlanToDo
+// Repetitive task for staffs:::
+// Shift
+
+// Scrum Board:::
+// Backlog
+// PlanToDo or ToDo
 // Doing
 // Done
-//
+
+// Extreme Programming (XP) life cycle:::
+// Planning
+// Design
+// Coding
+// Testing
+// Listening
 
 // NeedApprobation
 // Rejected
@@ -24,3 +35,12 @@ package label
 // NeedAlternate
 // NeedAlternateApprove
 // AlternateApprove
+
+// Rework
+// Rejection
+// Approved
+
+// Eisenhower Matrix, It can show as table:::
+// 					Urgent			Not-Urgent
+// Important		Do(now)			Schedule
+// Not-Important	Delegate		Delete(avoid)

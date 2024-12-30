@@ -3,7 +3,7 @@
 package task_p
 
 import (
-	quiddity_p "org/modules/identity/quiddity/protocol"
+	group_p "org/modules/organization/group/protocol"
 )
 
 type Field_TaskID interface {
@@ -14,4 +14,5 @@ type Field_TasksID interface {
 	TasksID() []UUID
 }
 
-type UUID quiddity_p.UUID
+// It is base on group to support some group rules e.g. invite, ...
+type UUID group_p.UUID
