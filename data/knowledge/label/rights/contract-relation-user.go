@@ -2,11 +2,14 @@
 
 package label
 
-const (
-	SideType_First = iota
-	SideType_Second
-	SideType_Third
-	SideType_Witness
-	SideType_Arbitrator
-	SideType_Expert
-)
+// SideType:::
+// First
+// Second
+// Third
+// Witness
+// Arbitrator
+// Expert
+
+// SignatureBy or ApprovedBy means user accept the contract agreements
+// Signature will store by related request in `audit-request`.
+// SignatureBy
