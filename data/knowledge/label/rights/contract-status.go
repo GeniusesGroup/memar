@@ -2,11 +2,10 @@
 
 package label
 
-const (
-	Status_Negotiation = iota
-	Status_PartlySigned
-	Status_Signed
-	Status_LegalAction
-	Status_Done
-	Status_Canceled
-)
+// Draft
+// Negotiation
+// PartlySigned
+// Signed
+// LegalAction
+// Done
+// Canceled

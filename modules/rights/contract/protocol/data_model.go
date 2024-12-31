@@ -3,18 +3,17 @@
 package contract_p
 
 import (
-	audit_p "org/modules/computer/audit/protocol"
-	ct_p "org/modules/rights/contract-template/protocol"
-	storage_p "org/modules/storage/primitive/protocol"
+	request_p "memar/audit/request/protocol"
+	audit_time_p "memar/audit/time/protocol"
 )
 
 type DataModel interface {
 	Field_ContractID
-	ct_p.Field_ContractTemplateID
+	Field_Terms
 	Field_Data
 
-	audit_p.Field_RequestID
-	storage_p.Field_SaveTime
+	request_p.Field_RequestID
+	audit_time_p.Field_SaveTime
 }
 
 // Service: fulfill the obligation

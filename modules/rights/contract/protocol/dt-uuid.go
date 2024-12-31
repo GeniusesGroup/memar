@@ -3,11 +3,12 @@
 package contract_p
 
 import (
-	quiddity_p "org/modules/identity/quiddity/protocol"
+	group_p "org/modules/organization/group/protocol"
 )
 
 type Field_ContractID interface {
 	ContractID() UUID
 }
 
-type UUID quiddity_p.UUID
+// UUID is group to support many functionality like chats, expert opinion, ...
+type UUID group_p.UUID
