@@ -2,4 +2,8 @@
 
 package label
 
-//
+// Buyer
+// Seller
+// Broker
+
+// Approvement

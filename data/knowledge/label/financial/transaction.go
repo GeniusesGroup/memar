@@ -38,3 +38,10 @@ const (
 	ReferenceType_Compensation
 	ReferenceType_Order
 )
+
+// BlockByJustice
+
+// use to register an order to e.g. exchange(an instruction to buy or sell) currencies
+// A matching engine uses the orders book to determine which orders can be fully or partially executed.
+// Order
+// Deal

@@ -6,3 +6,13 @@ package label
 // Failed
 
 // WaitingToApprove
+//
+// Pending
+//
+// NeedApprovement
+// Approved
+// PartiallyDeal
+// FullyDeal
+// Expired
+// Cancelled
+// Voided
