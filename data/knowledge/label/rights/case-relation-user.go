@@ -33,3 +33,22 @@ const (
 
 	Witness
 )
+
+// organization that claim service must call.
+
+// Types of responsibility, including relative or joint liability
+
+// Decision or court decision
+// Just accept specific decision type
+//
+// a judgment disposing of the matter without a trial
+// Dismissal
+//
+// Invalidate
+//
+// Guilty or accused
+// Guilty
+//
+// it will only be true if something else happens first
+// Conditionally
+//
