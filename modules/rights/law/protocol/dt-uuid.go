@@ -11,4 +11,5 @@ type Field_LawID interface {
 }
 
 // UUID use to track changes in a law
+// users can discuss by send suggestion or change proposal with comments to any part of text.
 type UUID quiddity_p.UUID
