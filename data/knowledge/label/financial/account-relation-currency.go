@@ -2,4 +2,5 @@
 
 package label
 
-// PrimaryCard
+// Clearing and Settlement. MoneySettlementReference can be any org or society user.
+// SettlementReference
