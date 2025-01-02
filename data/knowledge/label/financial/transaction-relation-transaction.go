@@ -2,6 +2,4 @@
 
 package label
 
-// limit advertising campaign budget
-
-// Source of resources
+// BudgetSource

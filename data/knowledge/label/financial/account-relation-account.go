@@ -7,3 +7,11 @@ package label
 
 // LimitedTransferTo
 // LimitedTransferFrom
+
+// Budget labels:::
+// Blocking
+// Complement
+// Continuous
+// Withdrawal
+// Deposit
+// SuggestedAccount

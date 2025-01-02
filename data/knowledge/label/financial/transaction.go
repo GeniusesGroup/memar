@@ -41,7 +41,24 @@ const (
 
 // BlockByJustice
 
+// Below labels use to send the transaction to desire matching engine
+// use to register an order to e.g. exchange(an instruction to buy or sell) currencies
+// A matching engine uses the orders book to determine which orders can be fully or partially executed.
+//
+// An DataModel submitted without a specified price, and sequentially matched at the best available price in the market or in other words
+// if user want to limit price, must fill order-price record otherwise market price will choose for the deals.
+//
 // use to register an order to e.g. exchange(an instruction to buy or sell) currencies
 // A matching engine uses the orders book to determine which orders can be fully or partially executed.
 // Order
 // Deal
+
+// Budget labels:::
+// Materials
+// Labor
+// Investments // Equipment
+// Markup          // the % added to the cost to determine the wholesale price
+// WholesaleProfit // The amount of wholesale markup
+// Margin          // the % of product price to determine the retail price
+// RetailProfit    // The amount of retail margin
+// Cost

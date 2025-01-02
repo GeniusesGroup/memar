@@ -16,3 +16,9 @@ package label
 // Expired
 // Cancelled
 // Voided
+
+// Budget status:::
+// Suggested
+// Approved
+// Executed
+// Inspected

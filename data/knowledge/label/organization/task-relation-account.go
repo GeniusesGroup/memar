@@ -2,6 +2,4 @@
 
 package label
 
-// Materials
-// Labor
-// Investments
+// BudgetSource

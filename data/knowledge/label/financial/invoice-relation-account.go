@@ -1,9 +1,9 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package bp
+package label
 
-import (
-	"memar/protocol"
-)
+// BudgetSource
+// PayBy
 
-type BudgetUUID protocol.UUID
+// Supporter
+// Sponsor

@@ -2,7 +2,9 @@
 
 package label
 
-const (
-	Type_Supporter = iota
-	Type_Sponsor
-)
+// revenue target
+
+// BudgetSource
+
+// limit advertising campaign budget
+// Source of resources

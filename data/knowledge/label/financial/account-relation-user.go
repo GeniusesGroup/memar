@@ -10,3 +10,4 @@ package label
 // rule::: each user in a FinancialCurrency MUST have just one account get this label.
 // TODO::: When get this label `Owner` label can get back or not??
 // MainAccount
+// PrimaryAccount

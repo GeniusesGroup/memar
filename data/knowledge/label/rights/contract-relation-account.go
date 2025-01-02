@@ -2,8 +2,4 @@
 
 package label
 
-const (
-	Type_withdrawal = iota
-	Type_Deposit
-	SuggestedAccount
-)
+// BudgetSource

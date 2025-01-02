@@ -2,8 +2,4 @@
 
 package label
 
-const (
-	Type_Blocking = iota
-	Type_Complement
-	Type_Continuous
-)
+// BudgetSource
