@@ -37,7 +37,7 @@ package label
 // Materials
 // Labor
 // Investments
-
+//
 // https://www.linkedin.com/pulse/5-budgeting-methods-everyone-should-know-about-advantages-ehab-sobhy/
 // Budget
 // Budget_Zero_based
@@ -45,3 +45,7 @@ package label
 // Budget_Activity_Based
 // Budget_Value_Proposition
 // Budget_Flexible
+
+// Credit
+// if long overdraft occur, user must pay fee. also can set preference to let system sell its shareholders to overcome of overdraft.
+// https://en.wikipedia.org/wiki/Credit_card_debt
