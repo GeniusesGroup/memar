@@ -1,0 +1,15 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+package channel_p
+
+import (
+	request_p "memar/audit/request/protocol"
+)
+
+type Service_Signal_Get_Request interface {
+	request_p.Field_RequestID
+}
+
+type Service_Signal_Get_Response interface {
+	Field_SignalData
+}

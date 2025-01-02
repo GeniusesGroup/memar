@@ -8,12 +8,12 @@ import (
 	storage_p "org/modules/storage/primitive/protocol"
 )
 
-// DataModel indicate the domain record data fields.
-type DataModel interface {
+type Service_Signal_Find_Request interface {
 	Field_ChannelID
-	Field_IOType
-	Field_MetricUnit
+	storage_p.Pagination_Offset_Request
+}
 
-	request_p.Field_RequestID
-	storage_p.Field_SaveTime
+type Service_Signal_Find_Response interface {
+	request_p.Field_RequestIDs
+	storage_p.Pagination_Response
 }

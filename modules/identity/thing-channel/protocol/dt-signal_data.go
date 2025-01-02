@@ -1,6 +1,6 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package tcs_p
+package channel_p
 
 type Field_SignalData interface {
 	// SignalData or value is data that SendFrom(output)||ReceivedTo(input) devices.
