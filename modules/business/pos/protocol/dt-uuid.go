@@ -1,10 +1,14 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package pp
+package pos_p
 
 import (
-	"memar/protocol"
+	quiddity_p "org/modules/identity/quiddity/protocol"
 )
 
-// Also can be used in quiddity domains to set title, ...
-type PosUUID protocol.UUID
+type Field_PosID interface {
+	PosID() UUID
+}
+
+// Used quiddity UUID to set title, ...
+type UUID quiddity_p.UUID
