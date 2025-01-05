@@ -1,9 +1,13 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package cp
+package comment_p
 
 import (
-	"memar/protocol"
+	quiddity_p "org/modules/identity/quiddity/protocol"
 )
 
-type CommentUUID protocol.UUID
+type Field_CommentID interface {
+	CommentID() UUID
+}
+
+type UUID quiddity_p.UUID
