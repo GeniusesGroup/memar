@@ -1,6 +1,6 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package qcu_p
+package count_unit_p
 
 import (
 	quiddity_p "org/modules/identity/quiddity/protocol"
@@ -8,5 +8,7 @@ import (
 
 type Field_CountUnitID interface {
 	// Hz, core, gram, liter, ...
-	CountUnitID() quiddity_p.UUID
+	CountUnitID() UUID
 }
+
+type UUID quiddity_p.UUID
