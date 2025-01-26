@@ -3,3 +3,5 @@
 package marketing_l
 
 // [task, product, marketing] >>
+
+// Policy (rule):::
