@@ -1,14 +1,17 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package timeline_l
+package event
 
-// [group, quiddity, timeline] >> LogActivity, ...
-// [group, comment, timeline] >> `user tweet`, `user home timeline`
-// [group, form, timeline] >>
-// [group, question, timeline] >>
-// [group, product, timeline] >>
-// [group, invoice, timeline] >> `support`, `judge case`, ...
-// [group, object, timeline] >> income `SMTP` email, ...
+// [timeline, `event_is`, quiddity] >> LogActivity, ...
+//
+// [quiddity, `event_of`, timeline]
+//
+// [timeline, `event_is`, comment] >> `user tweet`, `user home timeline`
+// [timeline, `event_is`, form] >>
+// [timeline, `event_is`, question] >>
+// [timeline, `event_is`, product] >>
+// [timeline, `event_is`, invoice] >> `support`, `judge case`, ...
+// [timeline, `event_is`, object] >> income `SMTP` email, ...
 
-// Related `Widget` for that domain will show to user in the group of comments.
-// It can provide many GUI level requirements like Forward, Retweet, Share, ...
+// Policy (rule):::
+//
