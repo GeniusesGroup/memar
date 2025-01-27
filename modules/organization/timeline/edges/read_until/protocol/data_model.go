@@ -3,20 +3,10 @@
 package cugsp
 
 import (
-	"memar/protocol"
-
-	arp "org/modules/app-request/protocol"
-	gp "org/modules/group/protocol"
-	up "org/modules/user/protocol"
+	cgp "org/modules/gui/widget-comment/group/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	UserID() up.UserUUID
-	GroupID() gp.GroupUUID
-	ReadUntil() protocol.NumberOfVersion
-
-	arp.AuditLogging
-	protocol.Storage_Versioned
-	protocol.Storage_SaveTime
+	ReadUntil() cgp.CommentID
 }

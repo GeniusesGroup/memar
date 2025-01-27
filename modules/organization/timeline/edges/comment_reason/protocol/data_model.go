@@ -3,23 +3,13 @@
 package thp
 
 import (
-	"memar/protocol"
-
-	// arp "org/modules/app-request/protocol"
-	cp "org/modules/comment/protocol"
-	up "org/modules/user/protocol"
+	user_p "org/modules/identity/user/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 // home timeline feed
 type DataModel interface {
-	UserID() up.UserUUID
-	CommentID() cp.CommentUUID
-	ReasonUserID() up.UserUUID // it can be the owner of comment or any other user base on reason
+	ReasonUserID() user_p.UUID // it can be the owner of comment or any other user base on reason
 	Reason() Reason
 	// TODO::: node details??
-
-	// arp.AuditLogging
-	protocol.Storage_Versioned
-	protocol.Storage_SaveTime
 }
