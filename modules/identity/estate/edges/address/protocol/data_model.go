@@ -1,15 +1,8 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
-package ggarp
 
-import (
-	"memar/protocol"
-
-	arp "org/modules/app-request/protocol"
-	gap "org/modules/geography-address/protocol"
-)
+package address_p
 
 type DataModel interface {
-	AddressID() gap.AddressUUID
 	Continent() string
 	Country() string
 	State() string
@@ -26,8 +19,4 @@ type DataModel interface {
 	Block() string
 	Postal() uint32
 	ZipCode() uint32
-
-	arp.AuditLogging
-	protocol.Storage_Versioned
-	protocol.Storage_SaveTime
 }
