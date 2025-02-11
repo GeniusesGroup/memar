@@ -1,6 +1,6 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package cap
+package group_authorization
 
 type Access uint8
 
