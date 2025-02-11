@@ -3,11 +3,11 @@
 package department_p
 
 import (
-	ut16 "memar/identifier/uuid-time-16byte"
+	group_p "org/modules/organization/group/protocol"
 )
 
 type Field_DepartmentID interface {
-	DepartmentID() DepartmentUUID
+	DepartmentID() UUID
 }
 
-type DepartmentUUID ut16.UUID
+type UUID group_p.UUID
