@@ -1,5 +1,8 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package dcpp
+package otp
 
-type OTPKey []byte
+// [token, `otp`, object] >>
+
+// Policy (rule):::
+//

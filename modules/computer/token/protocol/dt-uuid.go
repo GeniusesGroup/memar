@@ -3,11 +3,11 @@
 package token_p
 
 import (
-	object_p "org/modules/storage/object/protocol"
+	quiddity_p "org/modules/identity/quiddity/protocol"
 )
 
 type Field_TokenID interface {
 	TokenID() UUID
 }
 
-type UUID object_p.UUID
+type UUID quiddity_p.UUID
