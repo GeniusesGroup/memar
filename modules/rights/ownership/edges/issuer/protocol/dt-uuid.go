@@ -1,0 +1,12 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+package issuer_p
+
+import (
+	org_p "org/modules/identity/organization/protocol"
+)
+
+// Field_OrganizationIssuerID use when need to indicate issuer of a record in a data model.
+type Field_OrganizationIssuerID interface {
+	OrganizationIssuer() org_p.UUID
+}
