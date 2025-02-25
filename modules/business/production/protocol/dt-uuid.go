@@ -3,11 +3,15 @@
 package production_p
 
 import (
-	quiddity_p "org/modules/identity/quiddity/protocol"
+	task_p "org/modules/organization/task/protocol"
 )
 
 type Field_ProductionID interface {
 	ProductionID() UUID
 }
 
-type UUID quiddity_p.UUID
+type Field_ProductionsID interface {
+	ProductionsID() []UUID
+}
+
+type UUID task_p.UUID
