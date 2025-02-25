@@ -9,3 +9,4 @@ package approved
 // [group, `approved`, quiddity] >>
 
 // Policy (rule):::
+// quiddity CAN be e.g. `request`,
