@@ -1,18 +1,17 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package cep
+package email_p
 
 import (
-	"memar/protocol"
+	error_p "memar/error/protocol"
 
-	cp "org/modules/comment/protocol"
-
+	cp "org/modules/knowledge/comment/protocol"
+	storage_p "org/modules/storage/primitive/protocol"
 )
 
-
 type StorageServices interface {
-	Save(dm DataModel) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm DataModel) (nv storage_p.NumberOfVersion, err error_p.Error)
 
-	Count(commentID cp.CommentUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(commentID cp.CommentUUID, vo protocol.VersionOffset) (dm DataModel, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(commentID cp.UUID) (nv storage_p.NumberOfVersion, err error_p.Error)
+	Get(commentID cp.UUID, vo storage_p.VersionOffset) (dm DataModel, nv storage_p.NumberOfVersion, err error_p.Error)
 }

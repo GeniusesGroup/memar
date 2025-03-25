@@ -1,10 +1,10 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package forward_allow_l
+package forward_limit_to_user
 
-// [comment, user, forward_allow] >>
-// [comment, group, forward_allow] >>
-// [comment, label, forward_allow] >>
+// [comment, `forward_limit_to_user`, user] >>
+//
+// [forward_limit_to_user, `preference_for`, forward] >>
 
 // Policy (rule):::
-// e.g. Just mentioned `user` can made a `comment` relation to this `comment` with `forward` label.
+// e.g. Just mentioned `user` can forward this `comment` in other timeline.

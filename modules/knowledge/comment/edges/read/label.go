@@ -1,5 +1,9 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package comment_read_l
+package read
 
-// Use to relate a `comment` to a `user`
+// [comment, `read_by`, user]
+//
+// [user, `read`, comment]
+
+// Policy (rule):::

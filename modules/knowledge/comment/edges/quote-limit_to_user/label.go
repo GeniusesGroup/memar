@@ -1,10 +1,10 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package quote_allow_l
+package quote_limit_to_user
 
-// [comment, user, quote_allow] >>
-// [comment, group, quote_allow] >>
-// [comment, label, quote_allow] >>
+// [comment, `quote_limit_to_user`, user] >>
+//
+// [quote_limit_to_user, `preference_for`, quote] >>
 
 // Policy (rule):::
-// e.g. Just mentioned `user` can made a `comment` relation to this `comment` with `quote` label.
+// e.g. Just mentioned `user` can embed this `comment` in other `comment`s.

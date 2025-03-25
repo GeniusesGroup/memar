@@ -1,8 +1,9 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package attach_l
+package attach
 
-// [object, quiddity, attach] >> 3D model, ...
-// [object, comment, attach] >> attached image, video, voice, ...
+// [comment, `attach`, object] >> attached image, video, voice, ...
+//
+// [object, `attach_to`, comment]
 
-// Attach objects are not the same as `timeline`.
+// Policy (rule):::

@@ -1,8 +1,10 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package reply_l
+package reply
 
-// [comment, comment, reply] >>
+// [comment, `reply_to`, comment] >>
+//
+// [comment, `reply_of`, comment] >>
 
 // Policy (rule):::
 // When a `comment` made a `reply` relation to other comment, It MUST not force to be relate to a `group` too.
