@@ -4,8 +4,8 @@ package contract_p
 
 import (
 	module_p "org/modules/computer/module/protocol"
-	quiddity_p "org/modules/identity/quiddity/protocol"
 	label_p "org/modules/knowledge/label/protocol"
+	quiddity_p "org/modules/identity/quiddity/protocol"
 )
 
 type Field_Data interface {

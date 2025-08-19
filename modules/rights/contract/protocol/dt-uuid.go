@@ -12,3 +12,5 @@ type Field_ContractID interface {
 
 // UUID is group to support many functionality like chats, expert opinion, ...
 type UUID group_p.UUID
+
+// Service: fulfill the obligation

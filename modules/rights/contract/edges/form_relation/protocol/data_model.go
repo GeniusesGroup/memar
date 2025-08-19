@@ -1,0 +1,18 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+package org
+
+import (
+	"memar/math/per"
+
+	user_p "org/modules/identity/user/protocol"
+	text_p "org/modules/knowledge/text/protocol"
+	contract_p "org/modules/rights/contract/protocol"
+)
+
+type ContractExpertOpinion interface {
+	contract_p.Field_ContractID
+	ExpertID() user_p.UUID
+	Opinion() text_p.UUID
+	Progress() per.Myriad
+}
