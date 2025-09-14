@@ -5,14 +5,14 @@ In the IoE (the Internet of Everything or IoT as the Internet of Things) era, we
 - IP Routers can just be a gateway or can't be as network coordinator
 - Registering system is centralized and manual human base
 - IP leases fee is high
-- IP addresses can't (or very hard to) register by end-user and usually register by ISPs
+- IP addresses can't (or very hard to) register by end-user devices and usually register by ISPs
 - IP addresses can't prove their ownership to use in the authentication process due to the above problem
 - IP addresses can easily be spoofed. Spoofing can be used as part of a DoS attack and Can't determine the source of an attack
 - IP packets want to be multi frame carrier, but almost always carry just one main frame by each packet indicate by [Next Header](https://en.wikipedia.org/wiki/IPv6_packet#Fixed_header) and use extension headers just for some internal protocol mechanism, not all connecting applications requirements. And unfortunately frames introduce by previous frame instead introduce by itself. 
 
 ## Goals
-- Connect users by applications instead of OSs
-- Connect users anywhere in the universe (different planets)
+- Connect applications instead of things or OSs
+- Connect things anywhere in the universe (different planets)
 - Best use of addressing space allocation and assignment
 - Decentralized and automatic process to register routers in any layer
 - Free, automated, and floating to lease new GP address
@@ -40,15 +40,15 @@ In the IoE (the Internet of Everything or IoT as the Internet of Things) era, we
 | 0      | 2                 | Planet ID       |
 | 16     | 4                 | Society ID      |
 | 48     | 4                 | Router ID       |
-| 80     | 4                 | User ID         |
+| 80     | 4                 | Thing ID        |
 | 112    | 2                 | App ID          |
 
-GP address lengths is 128 bit(16 bytes) as below describe. This protocol unlike IPv6 regard each bit of a GP address. We suggest use below rules in all levels and layers, But just PlanetID & SocietyID part must always respect suggested structure and each society network can have own rules about other routing part of protocol in their networks. **All IDs are temp IDs** and each Society, Router(thing), User & App actually own 32 bytes unique identifier.
+GP address lengths is 128 bit(16 bytes) as below describe. This protocol unlike IPv6 regard each bit of a GP address. We suggest use below rules in all levels and layers, But just PlanetID & SocietyID part must always respect suggested structure and each society network can have own rules about other routing part of protocol in their networks. **All IDs are temp IDs** and each Society, Router(thing), Thing & App actually own 32 bytes unique identifier.
 - **Planet ID**: Each planet in universe get a 2 bytes unique immutable identifier until exist.
 - **Society ID**: Each society civilization like exiting country can tell others and get a 4 bytes unique immutable identifier until exist.
 - **Router ID**: Each society must delegate its range to some routers to do routing for improve performance & consistency of its own network. So each Router always have 4 bytes unique mutable identifier until exist(society scope). Usually each organization that claim a land (physical location) like complex building own one router ID.
-- **User ID**: Each user on each device get unique mutable identifier from a router(router scope). This ID get by the OS of each device and route them to register app by user in the OS. So an OS can host one or more users until exist.
-- **App ID**: Each app get unique mutable identifier from OS. It means same app but for different user has same ID.
+- **Thing ID**: Each `Thing` or device get unique mutable identifier from a router(router scope). This ID get by the `Hypervisor OS` of the device and route them to register app in the hardware driver.
+- **App ID**: Each app get unique mutable identifier from hypervisor. App in this situation means unikernel os images that run one application with dedicated os kernel.
 
 ### Compare with IPv6 addr
 IPv6 and GP addresses are interchangeable, but need some contract with IANA to register /16 range for at least earth planet.
