@@ -29,18 +29,14 @@ type (
     - Khayyam allow developers to import multi files by use `import ()`, so use `import` more than once in a file is not legal.
     - Khayyam use `type {name} im {addr}` keyword e.g. `type json im "memar/json"` to import other code file to local one. import desire file and use needed logic by this way e.g. `json.Marshal()`
 
-- **Function**: Khayyam allow developers to indicate functions by use `fn`.   
-    - `type {name} fn (args) (returns)` >> pure standalone function
-    - It can be assumed that functions are methods for the package level encapsulation.
-
 - **Capsule**: Khayyam allow developers to indicate first level encapsulation-pattern by use `cp`.
     - Capsule structure indicate by `type {name} cp {...}` that has some other data types inside itself.
     - Inside a structure can omit `type` keyword in each line to indicate fields.
     - Khayyam way only allow access to inner data types via methods(functions). there is no data fields to expose.
 
 - **Method**: Khayyam allow developers to indicate methods for capsules by use `mt`.   
-    - `type {name} mt ({structure}, {args}...) (returns)` >> pure standalone function
-    - Dev can use any naming for structure naming, BUT suggest use `self` as base point to other members in the capsule!
+    - `type {name} mt ({capsule}, {args}...) (returns)` >> pure standalone function
+    - Dev can use any naming for capsule naming, BUT suggest use `self` as base point to other members in the capsule.
         - `type Set mt (self Key, key string_p.String) ()`
 
 - **Abstraction**: Khayyam allow developers to indicate abstraction by use `ab`.    
@@ -56,6 +52,7 @@ We don't introduce any other syntax for Polymorphism(generic) like Golang(`[{nam
 - **GOTO**: GOTO use to fly to desire location in a process. Some known labels:
   - loop: find loop by `{}`
   - end: find by `{}`
+  - next: it is like `continue` in `switch` in other languages.
   - return
       - Just use to indicate return in body of a function.
       - Not need to indicate on end of any functions.
@@ -117,13 +114,17 @@ You can write code to change binary code in runtime.
 ## Not implement features!?
 In this part, we say why not choose something that be real in some other programming languages.
 
+## **Function**: 
+Khayyam don't introduce many top level keyword for many requirements e.g. `private`, `public`, ``,... , Due to we believe this requirements CAN change in near future and this abstraction CAN easily implement by methods for any capsule. So a function is a capsule with many methods to introduce itself.   
+Khayyam don't allow developers to indicate functions by use any keywords like `fn` or `func`, ... as `type {name} fn (args) (returns)`. Khayyam still support pure standalone function and MUST not assume in wrong way. It can be assumed that functions are methods for the package level encapsulation and Khayyam not support this style.
+
 ## [Constant](https://en.wikipedia.org/wiki/Constant_(computer_programming))
-- Constant is a variable that can't change after first initialization. So it is an organization rule not compiler one.
+- Constant is a `variable` that return by a `function` that can't change after first initialization. So it is an organization rule not compiler one.
 - We have 2 types of constant:
   - static constants as compile time declaration and initialization that usually inline in compile time
   - Dynamically-valued constants as compile time declaration and runtime initialization that can't inline in compile time and need memory service call to get its value.
 - Constants can assume as functions that run in compile time! so write functions that return desire variable that live in that function body!
-- Dev can change variables in runtime. it will change binary codes and don't need to get it by memory call. Compiler and runtime just let to change the value with the same memory size. (Really decide to provide this??)
+- Dev can change variables in runtime. `compiler` CAN force `Runtime` to change binary codes and don't need to get it by memory call. Compiler and runtime just let to change the value with the same memory size. (Really decide to provide this??)
 
 ## Operators
 Since we have no primitive types in language syntax, We don't need to provide any operators!
