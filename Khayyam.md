@@ -114,6 +114,9 @@ You can write code to change binary code in runtime.
 ## Not implement features!?
 In this part, we say why not choose something that be real in some other programming languages.
 
+## Package
+When in interfaces we need to clarify methods name e.g. `Parent() T` is meaningless name and need to clarify as `ParentCommand() Command` or `ParentElement() Element` why we need package level encapsulation?
+
 ## **Function**: 
 Khayyam don't introduce many top level keyword for many requirements e.g. `private`, `public`, ``,... , Due to we believe this requirements CAN change in near future and this abstraction CAN easily implement by methods for any capsule. So a function is a capsule with many methods to introduce itself.   
 Khayyam don't allow developers to indicate functions by use any keywords like `fn` or `func`, ... as `type {name} fn (args) (returns)`. Khayyam still support pure standalone function and MUST not assume in wrong way. It can be assumed that functions are methods for the package level encapsulation and Khayyam not support this style.
