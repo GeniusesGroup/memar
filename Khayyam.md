@@ -9,9 +9,9 @@ We choose .kh for files that have Khayyam language codes.
 ### **type**
 Type or data type is a subdivision of a particular kind of things. All things MUST define in below shape to understand by Khayyam compiler.
 ```khayyam
-type {name} [Type] [subtype defined value]
+tp {name} [Type] [subtype defined value]
 
-type (
+tp (
     {name1} [Type1] [subtype defined value]
     {name2} [Type2] [subtype defined value]
 )
@@ -19,25 +19,26 @@ type (
 
 #### **Types**
 - **Include**: Khayyam allow developers to include other packages(multi files) as top level encapsulation-pattern by use `in`.
-    - use `include` more than once in a file is not legal.
-    - Khayyam use `type {name} in {addr}` keyword e.g. 
-        - `type * in "/lib/error"` to include all exported types, vars, functions, ... without need indicate package name to call them e.g. `fn test() error {}` that `error` can be type, ... indicate in included file.
-        - `type NewError in "/lib/error"` to include just `NewError` e.g. `var ErrBadThing = NewError("oops...")`
+  - Khayyam allow developers to include multi files by use `()`, so use `in` more than once in a file is not legal.
+  - Khayyam use `tp {name} in {addr}` keyword e.g. 
+    - `tp * in "/lib/error"` to include all exported types, vars, functions, ... without need indicate package name to call them e.g. `fn test() error {}` that `error` can be type, ... indicate in included file.
+    - `tp NewError in "/lib/error"` to include just `NewError` e.g. `var ErrBadThing = NewError("oops...")`
 
 - **Import**: Khayyam allow developers to imports other packages(multi files) as top level encapsulation-pattern by use `im`.
-    - Consumers will set name for a `package` that import, so Producers don't need to indicate or naming in producing side.
-    - Khayyam allow developers to import multi files by use `import ()`, so use `import` more than once in a file is not legal.
-    - Khayyam use `type {name} im {addr}` keyword e.g. `type json im "memar/json"` to import other code file to local one. import desire file and use needed logic by this way e.g. `json.Marshal()`
+  - Consumers will set name for a `package` that import, so Producers don't need to indicate or naming in producing side.
+  - Khayyam allow developers to import multi files by use `import ()`, so use `import` more than once in a file is not legal.
+  - Khayyam use `tp {name} im {addr}` keyword e.g. `tp json im "memar/json"` to import other code file to local one. import desire file and use needed logic by this way e.g. `json.Marshal()`
 
 - **Capsule**: Khayyam allow developers to indicate first level encapsulation-pattern by use `cp`.
-    - Capsule structure indicate by `type {name} cp {...}` that has some other data types inside itself.
-    - Inside a structure can omit `type` keyword in each line to indicate fields.
-    - Khayyam way only allow access to inner data types via methods(functions). there is no data fields to expose.
+  - Capsule structure indicate by `tp {name} cp {...}` that has some other data types inside itself.
+  - Inside a structure can omit `tp` keyword in each line to indicate fields.
+  - Khayyam way only allow access to inner data types via methods(functions). there is no data fields to expose.
 
-- **Method**: Khayyam allow developers to indicate methods for capsules by use `mt`.   
-    - `type {name} mt ({capsule}, {args}...) (returns)` >> pure standalone function
-    - Dev can use any naming for capsule naming, BUT suggest use `self` as base point to other members in the capsule.
-        - `type Set mt (self Key, key string_p.String) ()`
+- **Method**: Khayyam allow developers to indicate methods for capsules by use `mt`.
+  - It is optional to separate `capsule`, `args` and `returns`. Devs can use just one `()` to indicate all of them.
+  - `tp {name} mt ({capsule}) ({args}...) ({returns}) {}` >> pure standalone function
+  - Dev can use any naming for capsule naming, BUT suggest use `self` as base point to other members in the capsule.
+    - `tp Set mt (self Key) (key string_p.String) (err error_p.Error) ()`
 
 - **Abstraction**: Khayyam allow developers to indicate abstraction by use `ab`.    
 We don't introduce any other syntax for Polymorphism(generic) like Golang(`[{name} {TYPE}]`) for other types. Compiler decide smartly to do it by runtime(Golang interface) or compile time(Golang generic).
@@ -63,7 +64,7 @@ We don't introduce any other syntax for Polymorphism(generic) like Golang(`[{nam
 ## Compiler
 - Compiler provide `compiler` package that developers can use in coding and let compiler know that must decide.
 ```khayyam
-type Set mt (self Key, key STR) () {
+tp Set mt (self Key, key STR) () {
 	if key.CharacterEncoding() != ascii.CharacterEncoding {
 		compiler.Log.Fatal("Linter MUST notify developers not call this method with string other than ASCII")
 	}
@@ -76,21 +77,15 @@ type Set mt (self Key, key STR) () {
 ### Compile time functions
 - Below function MUST compute in compile time not runtime. Any use of CNF_KeepAlive_Idle return variable is just a simple constant capsule.
 ```Khayyam
-type CNF_KeepAlive_Idle fn () (dur duration.NanoSecond) {
+tp CNF_KeepAlive_Idle mt (self Config) (dur duration.NanoSecond) {
     dur.FromASCII("7200")
     dur.Multiplication(duration.NanoSecondInSecond)
 }
 
-// OR:::
-
-vr CNF_KeepAlive_Idle duration.NanoSecond { 
-    CNF_KeepAlive_Idle.FromString("7200")
-    CNF_KeepAlive_Idle.Multiplication(duration.NanoSecondInSecond)
-}
-
-type closeIdleSocket mt (tcpSock Sock, st net_p.Socket) (err error_p.Error) {
+tp closeIdleSocket mt (tcpSock Sock, st net_p.Socket) (err error_p.Error) {
     // some logic ...
-    // vr passIdle boolean.Boolean = tcpSock.checkIdlePass(CNF_KeepAlive_Idle())
+    // vr passIdle boolean.Boolean
+    tcpSock.checkIdlePass (CNF_KeepAlive_Idle()) (passIdle)
     // some logic ...
 }
 ```
@@ -101,9 +96,8 @@ type closeIdleSocket mt (tcpSock Sock, st net_p.Socket) (err error_p.Error) {
 ## Runtime
 - We need to offer very simple but with some unique logic
 
-
 ### Change logic in runtime
-You can write code to change binary code in runtime.
+You can write code to change(add or remove) modules binary code in runtime. It can be very dangerous feature and MUST tag as `unsafe`. It is useful to add or remove modules in microservice way but as describe by [this paper from google expert software developers](https://dl.acm.org/doi/pdf/10.1145/3593856.3595909)
 
 ## Linters
 - Linters MUST suggest naming e.g. in importing other packages, ...
@@ -114,23 +108,37 @@ You can write code to change binary code in runtime.
 ## Not implement features!?
 In this part, we say why not choose something that be real in some other programming languages.
 
-## Package
+### Package (Packaging)
+We can't decide yet to offer any package some files code.   
 When in interfaces we need to clarify methods name e.g. `Parent() T` is meaningless name and need to clarify as `ParentCommand() Command` or `ParentElement() Element` why we need package level encapsulation?
 
-## **Function**: 
+### **Function**: 
 Khayyam don't introduce many top level keyword for many requirements e.g. `private`, `public`, ``,... , Due to we believe this requirements CAN change in near future and this abstraction CAN easily implement by methods for any capsule. So a function is a capsule with many methods to introduce itself.   
-Khayyam don't allow developers to indicate functions by use any keywords like `fn` or `func`, ... as `type {name} fn (args) (returns)`. Khayyam still support pure standalone function and MUST not assume in wrong way. It can be assumed that functions are methods for the package level encapsulation and Khayyam not support this style.
+Khayyam don't allow developers to indicate functions by use any keywords like `fn` or `func`, ... as `tp {name} fn (args) (returns)`. Khayyam still support pure standalone function and MUST not assume in wrong way. It can be assumed that functions are methods for the package level encapsulation and Khayyam not support this style.
+We suggest use `Do` method name for a capsule to doing its logic like a simple function call 
+```khayyam
+// when is a helper function for setting the 'when' field of a Timer.
+// It returns what the time will be, in nanoseconds, Duration d in the future.
+tp Do mt (wh WhenHelper, d duration.NanoSecond) (t monotonic.Time) {}
 
-## [Constant](https://en.wikipedia.org/wiki/Constant_(computer_programming))
-- Constant is a `variable` that return by a `function` that can't change after first initialization. So it is an organization rule not compiler one.
+// use in this manner:::
+vr t1 monotonic.Time
+WhenHelper.Do (d) (t1)
+```
+
+### Constant
+- [Constant](https://en.wikipedia.org/wiki/Constant_(computer_programming)) is a `variable` that return by a `capsule` `method` that can't change after first initialization. So it is an organization rule not compiler one. e.g. a `config` capsule for a module that expose module variables, this config capsule may provide some method to change some of its variables.
 - We have 2 types of constant:
-  - static constants as compile time declaration and initialization that usually inline in compile time
+  - Static constants as compile time declaration and initialization that usually inline in compile time
   - Dynamically-valued constants as compile time declaration and runtime initialization that can't inline in compile time and need memory service call to get its value.
 - Constants can assume as functions that run in compile time! so write functions that return desire variable that live in that function body!
 - Dev can change variables in runtime. `compiler` CAN force `Runtime` to change binary codes and don't need to get it by memory call. Compiler and runtime just let to change the value with the same memory size. (Really decide to provide this??)
 
-## Operators
+### Operators
 Since we have no primitive types in language syntax, We don't need to provide any operators!
+
+### Decorators
+As describe [decorators in TS](https://www.typescriptlang.org/docs/handbook/decorators.html) or [python decorators](https://www.w3schools.com/python/python_decorators.asp) or [Java decorators](https://docs.oracle.com/javaee/7/api/javax/decorator/package-summary.html), It is just a `initialize` process that we don't want to have magic and not support this feature.
 
 ### Methods Overloading
 It seems we need this feature if we want to have very simple [generic](https://en.wikipedia.org/wiki/Generic_programming) and polymorphism.   
@@ -139,10 +147,8 @@ Due to Khayyam not support primitive types, All disadvantages disappear and JUST
 ### Method overriding
 Method overloading is a compile-time polymorphism. Method overriding is a run-time polymorphism. CAN provide runtime feature when not provide rich runtime??
 
-### Packaging
-We can't decide yet to offer any package some files code.
-
-### GC (Garbage Collection)
+### Memory management - GC (Garbage Collection)
+Libraries must provide memory management and data types (almost always ADT's decide) decide to choose and use desire memory management for its usage.
 
 ### Tuples
 Tuples are implemented by two dynamic and static type languages.
@@ -150,16 +156,23 @@ Tuples are implemented by two dynamic and static type languages.
 - In a static language, tuples implement safe structures that just don't have internal names. But it is duplicate work, more learning curve and adds more confusing situation just lazy developer to not indicate names.
 
 ### Type Inference
-- Khayyam don't support automatic type inference.
+- Khayyam don't support automatic type inference in compiler level, It is linter job.
 - Developers can't assign to var before decare it.
 - e.g.
+```go
+// Other languages
+var x = 41
+var y = 3.14
 ```
-var x = 41      >> vr x whole.W8 { x.FromString(41) }
-var y = 3.14    >> vr y rational.R32 { y.FromString(3.14) }
+```khayyam
+// Khayyam way
+vr x whole.W8; x.FromString ("41")
+
+vr y rational.R32; y.FromString ("3.14")
 ```
 
-### Loop
-We think loop can implement easily by `goto` instead of `while`, `for`, `do`, ... if and just if `Iterator` interface not implement by desire type.
+### Iteration - Loop
+We think loop can implement easily by `goto` instead of `while`, `for`, `do`, ... if and just if `Iterator` interface not implement by desire type. But strongly suggest iteration MUST implement by just `Container` ADT.
 
 ### Dependency Management
 We don't offer any version control for your codes, So we must not offer any dependency management too.
@@ -167,12 +180,12 @@ We don't offer any version control for your codes, So we must not offer any depe
 ## Keyword in a glance
 | Top level | type  | Logical | *********** | *********** |
 | :-------: | :---: | :-----: | :---------: | :---------: |
-|   type    |  in   |   if    |             |             |
+|    tp     |  in   |   if    |             |             |
 |    vr     |  im   | else if |             |             |
-|           |  fn   |  else   |             |             |
-|           |  cp   |  goto   |             |             |
-|           |  mt   |         |             |             |
+|           |  cp   |  else   |             |             |
+|           |  mt   |  goto   |             |             |
 |           |  ab   |         |             |             |
+|           |       |         |             |             |
 |           |       |         |             |             |
 
 ## Inspired of
