@@ -1,7 +1,7 @@
-# Organization Software Template - Golang version
-organization is a template repository to easily make a software for an organization with all basic functionality that any organization need in data era. Use [memar-go](https://github.com/GeniusesGroup/memar-go) CLI functionality to interact with this repo.
+# Achaemenid - Organization Software modules - Golang version
+[Achaemenid](https://github.com/GeniusesGroup/memar/blob/main/Achaemenid.md) is a repository to easily make a software for an organization with almost all functionality that any organization need in data era. Use [memar-go](https://github.com/GeniusesGroup/memar-go) CLI functionality to interact with this repo.
 
-As all know, We develope and adopt software in any organization for one main goal as to increase productivity and profit.
+As all know, We develop and adopt software in any organization for one main goal as to increase productivity and profit.
 
 ## Goals
 - Let service developers easily add more specific services by GUI.
@@ -12,8 +12,23 @@ As all know, We develope and adopt software in any organization for one main goa
 ## Not Goals
 - ?
 
-### Industry Protocols
-- Health Care   >> HL7
+## Classification
+
+### Top level tags
+- business (Supply chain, Value chain, ...)
+- communication
+- computer (application, ...)
+- economy
+- financial
+- geography
+- gui
+- identity
+- knowledge
+- organization
+- rights
+- storage
+
+## Industry Protocols
 - Retail        >> GS1
 - HR            >> HRXML
 

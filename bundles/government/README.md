@@ -4,3 +4,14 @@ In the case of its broad associative definition, government normally consists of
 
 ## State
 A [state](https://en.wikipedia.org/wiki/State_(polity)) is a political entity that regulates society and the population within a territory. Government is considered to form the fundamental apparatus of contemporary states.
+
+## Identification Numbers
+- [National Identification Number (NIN)](https://en.wikipedia.org/wiki/National_identification_number)
+- [Taxpayer Identification Number (TIN)](https://en.wikipedia.org/wiki/Taxpayer_Identification_Number)
+
+## Country specific URIs:::
+- USA [Social Security number](https://en.wikipedia.org/wiki/Social_Security_number)
+- Canada [Social insurance number](https://en.wikipedia.org/wiki/Social_insurance_number)
+- Yugoslavia [Unique Master Citizen Number](https://en.wikipedia.org/wiki/Unique_Master_Citizen_Number)
+- Denmark [Personal identification number](https://en.wikipedia.org/wiki/Personal_identification_number_(Denmark))
+
