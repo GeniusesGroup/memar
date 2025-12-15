@@ -1,6 +1,6 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package ltqp
+package text_query_p
 
 // https://www.elastic.co/guide/en/app-search/current/precision-tuning.html#precision-tuning-values
 // https://www.elastic.co/guide/en/app-search/current/precision-tuning.html#precision-tuning-terms-phrases-matching

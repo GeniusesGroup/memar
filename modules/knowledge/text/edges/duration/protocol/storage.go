@@ -3,14 +3,13 @@
 package cdp
 
 import (
-	"memar/protocol"
+	error_p "memar/error/protocol"
 
-	cp "org/modules/content/protocol"
+	text_p "org/modules/knowledge/text/protocol"
 )
 
 type StorageServices interface {
-	Save(dm DataModel) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm DataModel) (err error_p.Error)
 
-	Count(contentID cp.ContentUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(contentID cp.ContentUUID, vo protocol.VersionOffset) (dm DataModel, nv protocol.NumberOfVersion, err protocol.Error)
+	Get(tID text_p.UUID) (dm DataModel, err error_p.Error)
 }

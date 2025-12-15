@@ -1,0 +1,11 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+package tokens_p
+
+import (
+	module_p "org/modules/computer/module/protocol"
+)
+
+type Field_Analyzer interface {
+	TokenAnalyzer() module_p.UUID // module+version
+}

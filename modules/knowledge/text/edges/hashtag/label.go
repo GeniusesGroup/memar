@@ -2,4 +2,6 @@
 
 package hashtag_l
 
-// [text, text, hashtag] >>
+// [text, `has_hashtag`, (hashtag)text] >>
+//
+// [(hashtag)text, `hashtag_in`, text] >>

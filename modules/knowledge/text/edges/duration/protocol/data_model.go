@@ -3,18 +3,18 @@
 package cdp
 
 import (
-	"memar/protocol"
+	request_p "memar/process/request/protocol"
+	audit_time_p "memar/process/time/protocol"
+	"memar/time/duration"
 
-	arp "org/modules/app-request/protocol"
-	cp "org/modules/content/protocol"
+	text_p "org/modules/knowledge/text/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	ContentID() cp.ContentUUID
-	Duration() protocol.Duration // AI suggested duration
+	text_p.Field_TextID
+	duration.Field_Second // AI suggested duration
 
-	arp.AuditLogging
-	protocol.Storage_Versioned
-	protocol.Storage_SaveTime
+	request_p.Field_RequestID
+	audit_time_p.Field_SaveTime
 }
