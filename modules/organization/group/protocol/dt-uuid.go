@@ -3,7 +3,7 @@
 package group_p
 
 import (
-	quiddity_p "org/modules/identity/quiddity/protocol"
+	user_p "org/modules/identity/user/protocol"
 )
 
 type Field_GroupID interface {
@@ -14,6 +14,6 @@ type Field_GroupsID interface {
 	GroupsID() []UUID
 }
 
-type UUID quiddity_p.UUID
+type UUID user_p.UUID
 
 // register group
