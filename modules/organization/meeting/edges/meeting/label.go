@@ -2,6 +2,9 @@
 
 package meeting
 
+// [task, `meeting`, ---] >>
+
+// Policy (rule):::
 // When a task get `meeting` label this rule will called.
 // Participant or meeting manager MUST do some stuff:
 // - MUST set task title as `minutes`
