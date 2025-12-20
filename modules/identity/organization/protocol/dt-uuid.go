@@ -1,9 +1,19 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package op
+package org_p
 
 import (
-	up "org/modules/user/protocol"
+	user_p "org/modules/identity/user/protocol"
 )
 
-type OrgUUID up.UserUUID
+type Field_OrganizationID interface {
+	OrganizationID() UUID
+}
+
+// Field_OwnerID use when need to indicate the owner of a record in a data model.
+type Field_OwnerID interface {
+	OrganizationOwnerID() UUID
+}
+
+// UUID can be any org types e.g. company, society, government, ...
+type UUID user_p.UUID
