@@ -1,0 +1,2 @@
+# User
+[User](https://en.wikipedia.org/wiki/User_(computing)) in user-centered design, personas are created to represent the types of users. It is sometimes specified for each persona which types of user interfaces it is comfortable with (due to previous experience or the interface's inherent simplicity), and what technical expertise and degree of knowledge it has in specific fields or disciplines.

@@ -1,12 +1,16 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package up
+package user_p
 
 import (
-	"memar/protocol"
+	quiddity_p "org/modules/identity/quiddity/protocol"
 )
 
+type Field_UserID interface {
+	UserID() UUID
+}
+
 // Generated unique ID for the user
-type UserUUID protocol.UserID
+type UUID quiddity_p.UUID
 
 // Register new user
