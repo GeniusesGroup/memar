@@ -6,35 +6,15 @@ As all know, We develop and adopt software in any organization for one main goal
 ## Goals
 - Let service developers easily add more specific services by GUI.
 - Continue developing the software in low-code manner.
-- Compile an application as **Unikernel** instead of regular OSs binaries.
-- Develope high available and distributed software without any admin in any infrastructure layers (DevOps culture goal).
+- Compile an application as **UniKernel** instead of regular OSs binaries.
+- Develop high available and distributed software without any admin in any infrastructure layers (DevOps culture goal).
 
 ## Not Goals
-- ?
-
-## Classification
-
-### Top level tags
-- business (Supply chain, Value chain, ...)
-- communication
-- computer (application, ...)
-- economy
-- financial
-- geography
-- gui
-- identity
-- knowledge
-- organization
-- rights
-- storage
-
-## Industry Protocols
-- Retail        >> GS1
-- HR            >> HRXML
+- ??
 
 # Enterprise
 Contact us by [this](mailto://ict@geniuses.group) or [this](mailto://omidhekayati@gmail.com) if you need enterprise support for developing high available and distributed software. See features available in enterprise package:
-- Develope exclusive features in very short time
+- Develop exclusive features in very short time
 - Bug fixing quickly
 
 ## Alternatives

@@ -1,9 +1,8 @@
 # Folders
 _obj
-_test
-_main
-_modules
 images/
+____*
+*____
 
 # Prerequisites
 *.d
