@@ -1,9 +1,13 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package acp
+package connection_p
 
 import (
-	"memar/protocol"
+	quiddity_p "org/modules/identity/quiddity/protocol"
 )
 
-type ConnectionUUID protocol.UUID
+type Field_ConnectionID interface {
+	ConnectionID() UUID
+}
+
+type UUID quiddity_p.UUID

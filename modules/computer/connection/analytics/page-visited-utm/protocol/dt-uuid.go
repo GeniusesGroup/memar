@@ -1,10 +1,14 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package mup
+package utm_p
 
 import (
-	"memar/protocol"
+	quiddity_p "org/modules/identity/quiddity/protocol"
 )
 
+type Field_UtmID interface {
+	UtmID() UUID
+}
+
 // UTM ID
-type MarketingUtmUUID protocol.UUID
+type UUID quiddity_p.UUID
