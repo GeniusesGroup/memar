@@ -3,12 +3,19 @@
 package thing_p
 
 import (
-	quiddity_p "org/modules/identity/quiddity/protocol"
+	record_p "org/modules/storage/record/protocol"
 )
 
-type Field_ThingID interface {
-	ThingID() UUID
+type Field_ThingUUID interface {
+	ThingUUID() UUID
+}
+
+type Field_ThingsUUID interface {
+	ThingsUUID() []UUID
 }
 
 // It is quiddity identifier to let user assign `name` or `label` or `status` to each channel.
-type UUID quiddity_p.UUID
+// UUID can be same with any other UUID domains e.g. user, ...
+// It MUST be unique ID in all domains.
+// Usually use to SET/GET and show locale title by knowledge/text domain.
+type UUID record_p.UUID
