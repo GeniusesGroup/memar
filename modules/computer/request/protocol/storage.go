@@ -1,25 +1,69 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package arp
+package request_p
 
 import (
-	"memar/protocol"
+	// bm_p "org/modules/computer/module/protocol"
+	container_p "memar/adt/container/protocol"
+	request_p "memar/process/request/protocol"
 
-	aap "org/modules/app-audit/protocol"
-	// amp "org/modules/app-module/protocol"
-	asp "org/modules/app-service/protocol"
-	up "org/modules/user/protocol"
+	service_p "org/modules/computer/service/protocol"
+	user_p "org/modules/identity/user/protocol"
 )
 
-// StorageServices indicates the domain storage layer services.
-type StorageServices interface {
-	Save(dm DataModel) (err protocol.Error)
-
-	Get(requestID aap.RequestUUID) (dm DataModel, err protocol.Error)
-
-	FIND_RequestIDs_BY_UserID(userID up.UserUUID, offset, limit uint64) (requestIDs []aap.RequestUUID, err protocol.Error)
-	FIND_RequestIDs_BY_ServiceID(serviceID asp.ServiceUUID, offset, limit uint64) (requestIDs []aap.RequestUUID, err protocol.Error)
-
-	// TODO::: Is it GUI service that find by ServiceID and filter by other data??
-	// FILTER_RequestIDs_BY_DomainID(domainID amp.ModuleUUID, offset, limit uint64) (requestIDs []aap.RequestUUID, err protocol.Error)
+// Storage_Key_Primary indicates the domain storage primary key
+type Storage_Key_Primary interface {
+	request_p.Field_RequestID
 }
+
+// Storage_Key_Cluster indicates the domain storage cluster key
+type Storage_Key_Cluster interface {
+	request_p.Field_RequestID
+}
+
+type (
+// SS_Save_Request = DataModel
+// SS_Save_Response =
+)
+
+type (
+	SS_Get_Request = Storage_Key_Primary
+	// SS_Get_Response = DataModel
+)
+
+type (
+	SS_FIND_RequestIDs_BY_UserID_Request interface {
+		user_p.Field_UserID
+		container_p.Pagination_Offset_Request
+	}
+
+	SS_FIND_RequestIDs_BY_UserID_Response interface {
+		request_p.Field_RequestIDs
+		container_p.Pagination_Response
+	}
+)
+
+type (
+	SS_FIND_RequestIDs_BY_ServiceID_Request interface {
+		service_p.Field_ServiceID
+		container_p.Pagination_Offset_Request
+	}
+
+	SS_FIND_RequestIDs_BY_ServiceID_Response interface {
+		request_p.Field_RequestIDs
+		container_p.Pagination_Response
+	}
+)
+
+// TODO::: Is it GUI service that find by ServiceID and filter by other data??
+type (
+// SS_FILTER_RequestIDs_BY_DomainID_Request interface {
+// 	bm_p.Field_ModuleID
+// 	container_p.Pagination_Offset_Request
+// }
+
+//	SS_FILTER_RequestIDs_BY_DomainID_Response interface {
+//		request_p.Field_RequestIDs
+//		sp.Pagination_Response
+//	}
+)

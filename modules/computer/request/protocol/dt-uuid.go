@@ -3,9 +3,9 @@
 package request_p
 
 import (
-	// request_p "memar/audit/request/protocol"
+	// request_p "memar/process/request/protocol"
 
-	quiddity_p "org/modules/identity/quiddity/protocol"
+	thing_p "org/modules/identity/thing/protocol"
 )
 
 type Field_RequestID interface {
@@ -14,6 +14,6 @@ type Field_RequestID interface {
 	// request_p.Field_RequestID
 }
 
-type UUID quiddity_p.UUID
+type UUID thing_p.UUID
 
 // type UUID request_p.UUID
