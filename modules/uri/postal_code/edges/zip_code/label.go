@@ -2,7 +2,7 @@
 
 package zip_code
 
-// [address(estate), `zip_code`, uri(text)] >>
+// [postal_code, `zip_code`, -----] >>
 
 // Policy (rule):::
 //
