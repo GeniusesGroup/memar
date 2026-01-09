@@ -2,7 +2,7 @@
 
 package address
 
-// [estate, `address`, ---] >>
+// [estate, `address`, uri(text)] >>
 
 // Policy (rule):::
 // It is cache data module.

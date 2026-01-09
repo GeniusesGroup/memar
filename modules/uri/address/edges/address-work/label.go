@@ -2,6 +2,6 @@
 
 package address_work
 
-// [estate, `address_work_for`, user] >>
+// [address(estate), `address_work_for`, user] >>
 
 // Policy (rule):::
