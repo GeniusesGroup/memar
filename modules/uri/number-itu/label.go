@@ -2,9 +2,9 @@
 
 package number_itu
 
-// [uri(text), `number_itu_for`, quiddity] >>
+// [uri(text), `number_itu_for`, thing] >>
 //
-// [quiddity, `number_itu_is`, uri(text)] >>
+// [thing, `number_itu_is`, uri(text)] >>
 
 // Policy (rule):::
 // by owner or justice

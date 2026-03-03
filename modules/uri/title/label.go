@@ -2,9 +2,9 @@
 
 package title
 
-// [uri(text), `title_for`, quiddity] >>
+// [uri(text), `title_for`, thing] >>
 //
-// [quiddity, `title_is`, uri(text)] >>
+// [thing, `title_is`, uri(text)] >>
 
 // Policy (rule):::
 // or DisplayName or human usage name
