@@ -19,14 +19,12 @@ tp (
 
 #### **Types**
 - **Include**: Khayyam allow developers to include other packages(multi files) as top level encapsulation-pattern by use `in`.
-  - Khayyam allow developers to include multi files by use `()`, so use `in` more than once in a file is not legal.
   - Khayyam use `tp {name} in {addr}` keyword e.g. 
     - `tp * in "/lib/error"` to include all exported types, vars, functions, ... without need indicate package name to call them e.g. `fn test() error {}` that `error` can be type, ... indicate in included file.
     - `tp NewError in "/lib/error"` to include just `NewError` e.g. `var ErrBadThing = NewError("oops...")`
 
 - **Import**: Khayyam allow developers to imports other packages(multi files) as top level encapsulation-pattern by use `im`.
   - Consumers will set name for a `package` that import, so Producers don't need to indicate or naming in producing side.
-  - Khayyam allow developers to import multi files by use `import ()`, so use `import` more than once in a file is not legal.
   - Khayyam use `tp {name} im {addr}` keyword e.g. `tp json im "memar/json"` to import other code file to local one. import desire file and use needed logic by this way e.g. `json.Marshal()`
 
 - **Capsule**: Khayyam allow developers to indicate first level encapsulation-pattern by use `cp`.
@@ -35,13 +33,16 @@ tp (
   - Khayyam way only allow access to inner data types via methods(functions). there is no data fields to expose.
 
 - **Method**: Khayyam allow developers to indicate methods for capsules by use `mt`.
-  - It is optional to separate `capsule`, `args` and `returns`. Devs can use just one `()` to indicate all of them.
-  - `tp {name} mt ({capsule}) ({args}...) ({returns}) {}` >> pure standalone function
+  - `tp {name} mt ({capsule}) ({args}...) ({returns}...) {}`
+  - Devs MUST separate `capsule`, `args` and `returns` by use `()` to indicate all of them even it is empty. We know that all of them is same in underlying layers and this rule is just to improve code readability.
+  - Devs CAN write pure standalone function in this way, there is no limitation.
   - Dev can use any naming for capsule naming, BUT suggest use `self` as base point to other members in the capsule.
-    - `tp Set mt (self Key) (key string_p.String) (err error_p.Error) ()`
+    - `tp Set mt (self Key) (key string_p.String) (err error_p.Error) {}`
 
-- **Abstraction**: Khayyam allow developers to indicate abstraction by use `ab`.    
-We don't introduce any other syntax for Polymorphism(generic) like Golang(`[{name} {TYPE}]`) for other types. Compiler decide smartly to do it by runtime(Golang interface) or compile time(Golang generic).
+- **Abstraction**: Khayyam allow developers to indicate abstraction by use `ab`.
+  - `tp {name} ab {}`
+  - Abstractions MUST use other abstractions as arguments or returns not other `capsule`s
+  - We don't introduce any other syntax for Polymorphism(generic) like Golang(`[{name} {TYPE}]`) for other types. Compiler decide smartly to do it by runtime(Golang interface) or compile time(Golang generic).
 
 ### **Variable**:
 - Khayyam allow developers to indicate variables by use `vr`.   
@@ -64,7 +65,7 @@ We don't introduce any other syntax for Polymorphism(generic) like Golang(`[{nam
 ## Compiler
 - Compiler provide `compiler` package that developers can use in coding and let compiler know that must decide.
 ```khayyam
-tp Set mt (self Key, key STR) () {
+tp Set mt (self Key) (key STR) () {
 	if key.CharacterEncoding() != ascii.CharacterEncoding {
 		compiler.Log.Fatal("Linter MUST notify developers not call this method with string other than ASCII")
 	}
@@ -77,15 +78,15 @@ tp Set mt (self Key, key STR) () {
 ### Compile time functions
 - Below function MUST compute in compile time not runtime. Any use of CNF_KeepAlive_Idle return variable is just a simple constant capsule.
 ```Khayyam
-tp CNF_KeepAlive_Idle mt (self Config) (dur duration.NanoSecond) {
+tp CNF_KeepAlive_Idle mt (self Config) () (dur duration.NanoSecond) {
     dur.FromASCII("7200")
     dur.Multiplication(duration.NanoSecondInSecond)
 }
 
-tp closeIdleSocket mt (tcpSock Sock, st net_p.Socket) (err error_p.Error) {
+tp closeIdleSocket mt (tcpSock Sock) (st net_p.Socket) (err error_p.Error) {
     // some logic ...
     // vr passIdle boolean.Boolean
-    tcpSock.checkIdlePass (CNF_KeepAlive_Idle()) (passIdle)
+    tcpSock.checkIdlePass (Config.CNF_KeepAlive_Idle()) (passIdle)
     // some logic ...
 }
 ```
@@ -97,7 +98,7 @@ tp closeIdleSocket mt (tcpSock Sock, st net_p.Socket) (err error_p.Error) {
 - We need to offer very simple but with some unique logic
 
 ### Change logic in runtime
-You can write code to change(add or remove) modules binary code in runtime. It can be very dangerous feature and MUST tag as `unsafe`. It is useful to add or remove modules in microservice way but as describe by [this paper from google expert software developers](https://dl.acm.org/doi/pdf/10.1145/3593856.3595909)
+You can write code to change(add or remove) modules binary code in runtime. It is like `WASM` idea. It can be very dangerous feature and MUST tag as `unsafe`. It is useful to add or remove modules in microservice way but as describe by [this paper from google expert software developers](https://dl.acm.org/doi/pdf/10.1145/3593856.3595909)
 
 ## Linters
 - Linters MUST suggest naming e.g. in importing other packages, ...
@@ -112,14 +113,14 @@ In this part, we say why not choose something that be real in some other program
 We can't decide yet to offer any package some files code.   
 When in interfaces we need to clarify methods name e.g. `Parent() T` is meaningless name and need to clarify as `ParentCommand() Command` or `ParentElement() Element` why we need package level encapsulation?
 
-### **Function**: 
-Khayyam don't introduce many top level keyword for many requirements e.g. `private`, `public`, ``,... , Due to we believe this requirements CAN change in near future and this abstraction CAN easily implement by methods for any capsule. So a function is a capsule with many methods to introduce itself.   
+### **Function**:
+Function can't imagine as independent blocks of code. It is a capsule and need to provide more methods about its behavior. Many languages need to provide their other usages such as authorization to access the function as top level keyword such as `private`, `public`,... But Khayyam don't introduce many top level keyword for this type of requirements, Due to we believe this requirements CAN change in near future and this abstraction CAN easily implement by methods for any capsule. So a function is a capsule with many methods to introduce itself.   
 Khayyam don't allow developers to indicate functions by use any keywords like `fn` or `func`, ... as `tp {name} fn (args) (returns)`. Khayyam still support pure standalone function and MUST not assume in wrong way. It can be assumed that functions are methods for the package level encapsulation and Khayyam not support this style.
 We suggest use `Do` method name for a capsule to doing its logic like a simple function call 
 ```khayyam
 // when is a helper function for setting the 'when' field of a Timer.
 // It returns what the time will be, in nanoseconds, Duration d in the future.
-tp Do mt (wh WhenHelper, d duration.NanoSecond) (t monotonic.Time) {}
+tp Do mt (wh WhenHelper) (d duration.NanoSecond) (t monotonic.Time) {}
 
 // use in this manner:::
 vr t1 monotonic.Time
