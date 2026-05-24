@@ -3,7 +3,7 @@
 package law_p
 
 import (
-	quiddity_p "org/modules/identity/quiddity/protocol"
+	record_p "memar/storage/record/protocol"
 )
 
 type Field_LawID interface {
@@ -12,4 +12,4 @@ type Field_LawID interface {
 
 // UUID use to track changes in a law
 // users can discuss by send suggestion or change proposal with comments to any part of text.
-type UUID quiddity_p.UUID
+type UUID record_p.UUID
