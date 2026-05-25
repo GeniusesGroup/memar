@@ -2,11 +2,17 @@
 
 package tokens_p
 
+import (
+	text_p "org/modules/knowledge/text/protocol"
+)
+
 // Token store detail about a word in the record to index
 // Google name it as "Hit List"
 // TODO::: Removing stop words?
 type Token interface {
-	Field_TokenType
+	// Text is token that store in one place to point it in any other text.
+	text_p.Field_TextID
+
 	WordOffsetInSentence() uint64 //  Position of the token in the sentence
 	WordOffsetInText() uint64     //  Position of the word in the text
 	OffsetInSentence() uint64     //  First word character position in the sentence
