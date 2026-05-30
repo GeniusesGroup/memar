@@ -6,19 +6,19 @@ import (
 	text_p "org/modules/knowledge/text/protocol"
 )
 
-// Token store detail about a word in the record to index
+// Token store detail about a token in the text to index
 // Google name it as "Hit List"
 // TODO::: Removing stop words?
 type Token interface {
 	// Text is token that store in one place to point it in any other text.
-	text_p.Field_TextID
+	text_p.Field_TextUUID
 
-	WordOffsetInSentence() uint64 //  Position of the token in the sentence
-	WordOffsetInText() uint64     //  Position of the word in the text
-	OffsetInSentence() uint64     //  First word character position in the sentence
-	OffsetInText() uint64         //  First word character position in the text
+	TokenOffsetInSentence() uint64 //  Position of the token in the sentence
+	TokenOffsetInText() uint64     //  Position of the token in the text
+	OffsetInSentence() uint64      //  First token character position in the sentence
+	OffsetInText() uint64          //  First token character position in the text
 
-	// Words in a larger or bolder font are weighted higher than other words(tokens)
+	// Tokens in a larger or bolder font are weighted higher than other tokens
 	Weight() uint64
 
 	ScoreInSentence() uint64
