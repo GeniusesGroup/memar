@@ -2,7 +2,7 @@
 
 package spam
 
-// [----, `spam`, label] >>
+// (text)-[:spam]->(---)
 
 // Policy (rule):::
 // Users or rules CAN set this label

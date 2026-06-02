@@ -2,4 +2,6 @@
 
 package prompt
 
-// [---, `prompt`, label] >>
+// (text)-[:prompt]->(---)
+
+// Policy (rule):::

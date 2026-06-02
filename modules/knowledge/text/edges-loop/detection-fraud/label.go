@@ -1,8 +1,8 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package text_type
+package detection_fraud
 
-// [---, `text_type`, label] >>
+// (rule)-[:detection_fraud]->(---)
 
 // Policy (rule):::
-// Each text MUST have a specific type.
+// detection_spam or fraud_checker

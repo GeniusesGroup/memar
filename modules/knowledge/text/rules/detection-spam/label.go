@@ -1,6 +1,11 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package spam_for_l
+package detection_spam
 
-// [text, user, spam_for] >>
-// [comment, user, spam_for] >>
+// Policy (rule):::
+// This rule will labeled the text by `checked`
+// This rule MAY labeled any text that checked with its rules as `spam`
+
+// fields:
+// confidence: 0.87 (confidence_score)
+// execution_time_ms

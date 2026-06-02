@@ -2,4 +2,7 @@
 
 package query
 
-// [---, `query`, label] >>
+// (text)-[:query]->(---)
+
+// Policy (rule):::
+// allowed vertices: text

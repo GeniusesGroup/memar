@@ -8,4 +8,4 @@ type Field_Type interface {
 	TextType() Type
 }
 
-type Type label_p.Field_LabelID
+type Type label_p.UUID
