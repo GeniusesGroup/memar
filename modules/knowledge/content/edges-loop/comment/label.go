@@ -1,6 +1,8 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package confidential_l
+package comment
 
-// [Text, ---, Confidential] >>
-// [Comment, ---, Confidential] >>
+// (content)-[:comment]->(___)
+
+// Policy (rule):::
+//
