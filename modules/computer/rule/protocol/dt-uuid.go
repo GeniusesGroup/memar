@@ -3,11 +3,11 @@
 package rule_p
 
 import (
-	quiddity_p "org/modules/identity/quiddity/protocol"
+	record_p "memar/storage/record/protocol"
 )
 
-type Field_RuleID interface {
-	RuleID() UUID
+type Field_RuleUUID interface {
+	RuleUUID() UUID
 }
 
-type UUID quiddity_p.UUID
+type UUID record_p.UUID
