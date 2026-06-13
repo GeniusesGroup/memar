@@ -3,11 +3,11 @@
 package transaction_p
 
 import (
-	quiddity_p "org/modules/identity/quiddity/protocol"
+	record_p "memar/storage/record/protocol"
 )
 
-type Field_FinancialTransactionID interface {
-	FinancialTransactionID() UUID
+type Field_FinancialTransactionUUID interface {
+	FinancialTransactionUUID() UUID
 }
 
-type UUID quiddity_p.UUID
+type UUID record_p.UUID

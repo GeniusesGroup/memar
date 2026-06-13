@@ -1,8 +1,10 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package reference_p
+package transaction_reference_p
 
 import (
+	transaction_p "org/modules/economics/transaction/protocol"
+	thing_p "org/modules/identity/thing/protocol"
 	label_p "org/modules/knowledge/label/protocol"
 )
 
@@ -10,5 +12,7 @@ import (
 type DataModel interface {
 	// Store a label to indicate better relation reason
 	// e.g. ChangedQuantityReason
-	label_p.Field_LabelID
+	thing_p.Field_ThingUUID
+	label_p.Field_LabelUUID
+	transaction_p.Field_FinancialTransactionUUID
 }
