@@ -1,5 +1,9 @@
 # Khayyam - Programming Language
-This language is ideal for developers that want a clean spoken code that can write most performance library and application with it.
+This language is ideal for developers who want clean, spoken code capable of writing high-performance libraries and applications without fighting the compiler.
+
+**Core Philosophy: Separation of Syntax and Governance**   
+Khayyam is built on a radical approach to minimalism. It strictly defines *how* code is structured (the syntax) but intentionally delegates *how* code behaves under the hood—such as memory management, strict architectural constraints, and execution policies—to Compilers, Linters, and Organizational Frameworks (like the Memar framework).   
+This philosophy ensures the language core remains pure, un-opinionated, and future-proof. Khayyam provides the foundational building blocks, empowering organizations to enforce their own best practices through custom linter rules rather than syntactic dictatorships.
 
 ## File extension
 We choose .kh for files that have Khayyam language codes.
@@ -13,7 +17,7 @@ We choose .kh for files that have Khayyam language codes.
 |    vr     |  cp   |
 |           |  mt   |
 |           |  ab   |
-|           |  lb   |
+|           |  sc   |
 
 ### Top Level Keywords
 Khayyam fundamentally relies on only three primary top-level concepts for declaration and importing: Types (`tp`), Variables (`vr`) and Labels(`lb`).
@@ -46,6 +50,8 @@ Khayyam allow developers to indicate first level encapsulation-pattern by use `c
 #### Method
 In Khayyam, functions and methods are not separate concepts; a method is fundamentally a callable capsule. By using the `mt` subtype, developers define an executable behavior and attach it to a receiver. The receiver is not limited to capsules (`cp`); a method can be attached to *any* type (`tp`), including an abstraction (`ab`) or even another method (`mt`).
 - `tp {name} mt ({ReceiverType}) ({args}...) ({returns}...) { ___ }`
+- **Pass-by-Reference & State Protection:** All arguments passed into a method and all values returned from a method are passed strictly by reference. 
+- **Inherent Encapsulation:** Even though capsules are passed by reference, their internal state remains strictly protected. Because Khayyam enforces that all data fields are entirely hidden, a receiving method cannot directly mutate the passed capsule's fields. State mutation can ONLY occur if the passed capsule explicitly exposes a behavior (method) that allows it, rendering keywords like `const` or `mut` architecturally obsolete.
 - Devs MUST separate `capsule`, `args` and `returns` by use `()` to indicate all of them even it is empty. We know that all of them is same in underlying layers and this rule is just to improve code readability.
 - Devs CAN write pure standalone function in this way, there is no limitation.
 - Dev can use any naming for capsule naming, BUT suggest use `self` as base point to other members in the capsule.
@@ -53,6 +59,12 @@ In Khayyam, functions and methods are not separate concepts; a method is fundame
 - **Body-less Methods (FFI & Contracts):** A method can be defined without a body ({}). This is legally used in two scenarios:
   - Contract Definition: Defining the required signature for an abstraction (ab).
   - Foreign Function Interface (FFI): When the receiver is a concrete capsule (cp), a body-less method signals to the compiler that the implementation will be provided externally during the linking phase (e.g., from an Assembly .s or C .o file).
+
+#### Method Invocation Rules
+- **Uniform Invocation Syntax:** Khayyam strictly uses a single dot (`.`) operator for all method calls. The language intentionally rejects secondary tokens (such as `::`) to maintain syntax minimalism.
+- **Context-Driven Semantics:** The distinction between static behavior and instance behavior is governed by the presence of the `self` reference in the method signature, enforced strictly at the tooling/linter layer:
+  - **Type-Level (Static) Invocation:** Methods defined without a `self` reference belong to the type's blueprint. They MUST be invoked directly through the type identifier (e.g., `tp.Create()`). Invoking a type-level method on a variable instance (`vr.Create()`) is flagged as an error.
+  - **Instance-Level Invocation:** Methods defined with a `self` reference require an active memory capsule. They MUST be invoked through a variable instance (e.g., `vr.Mutate()`). Invoking an instance-level method directly on the type identifier (`tp.Mutate()`) is rejected.
 
 #### Abstraction
 Abstractions in Khayyam are pure contracts. They do not contain logic, state, or even predefined method bodies. Unlike traditional interfaces, an abstraction is simply a named tag. The methods that fulfill this contract are defined entirely outside the abstraction.
@@ -74,13 +86,14 @@ Abstractions in Khayyam are pure contracts. They do not contain logic, state, or
     tp Close mt (self Reader) () (err Error)
   ```
 
-#### Label
-- `tp {name} lb { ___ }`
-- Labels use in many logic methods like `IF`, `LOOP`, `GOTO`, ... that will develop in compiler library.
-- labels MUST used just inside a method body.
+#### (Code) Scope
+- `tp {name} sc { ___ }`
+- Code scope will use in many logic methods like `IF`, `LOOP`, `GOTO`, ... that will develop in any library.
+- Code scope MUST used just inside a method body.
 
 ### Variable
 - `vr {name} {type}`
-- Like other programming languages, `vr` keyword uses to store data in any mutable device. 
-- Variables CAN declare in any encapsulation level as files and methods bodies.
-- Compiler MUST inline variables as much as possible like immutable variables(constant in other language like Go).
+- Like other programming languages, `vr` keyword uses to declare a variable. However, **Variables in Khayyam are strictly Logical References** to a capsule's instance, never the raw data block itself.
+- **No Implicit Copying & No Assignment Operators:** Khayyam completely eliminates assignment operators (like `=`). Passing a variable to a method ALWAYS passes the reference. The language natively prevents any implicit deep or shallow copying, ensuring zero hidden memory allocation overhead.
+- If a deep copy or state duplication is logically required, it MUST be done explicitly via the capsule's behavior. The developer must declare a new variable and invoke a method (e.g., `vr newVar Type`, followed by `newVar.CopyFrom(oldVar)`).
+- Variables CAN be declared in files and method bodies.
