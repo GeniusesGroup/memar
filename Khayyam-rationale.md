@@ -12,31 +12,50 @@ We strictly avoid terms like "Standard Library" or "Official Library," as they i
 - **Separation of Concerns:** Architectural concepts, such as memory allocators or logical object lifecycles (e.g., `Init` and `Deinit` contracts), belong to the framework, not the language syntax. The language itself remains entirely independent and agnostic of these implementations.
 - **Flexibility with Caution:** Developers are free to swap, modify, or rewrite parts of the recommended framework to suit highly specialized needs. However, this is highly discouraged for general use cases. Replacing framework components requires a profound understanding of Khayyam's core design principles, as the recommended framework is heavily optimized to work seamlessly with the language's zero-magic, explicit nature.
 
-### Library-Driven Control Flow (Why Conditional Keywords Were Rejected)
+### Library-Driven Control Flow: Democratizing Syntax
+In Khayyam, the boundary between the "Language Core" and "Programming Patterns" is fundamentally redefined. Traditional programming languages hardcode control flow concepts (e.g., `if`, `loop`, `continue`, `retry`, `goto`) directly into the compiler as sacred, unchangeable keywords. This rigid approach forces a specific paradigm onto the developer and conflicts with specialized architectural constraints in large organizations.
 
+**The Khayyam Architecture:**
+- **Syntax Minimalism**: Khayyam completely strips away traditional control flow keywords. Foundational execution jumps and condition evaluations are not reserved syntax words; they are treated as standard method calls (Compiler Intrinsics) linked to specific execution contexts.
+- **Library-Level Abstraction**: Advanced control flow structures—such as a Ruby-style `retry` that restarts a loop from the first iteration, or a standard `continue`—are implemented purely as libraries or modular packages (e.g., `memar/process/control-flow/continue.kh`).
+- **Explicit Scope & Tooling Assistance**: To prevent hidden side effects and maintain total transparency, the compiler never performs implicit or magical auto-imports of control flow libraries. Every structure must be explicitly brought into scope using the `in` keyword. To reduce developer friction without introducing compiler magic, Khayyam relies on an intelligent development companion (LSP / Developer Assistant) to automate and manage these explicit syntax mappings seamlessly.
+- **Linter Governance over Compiler Dictatorship**: By moving control flow to the library layer, organizations gain the power to enforce their own architectural guidelines via Linters. For example, a company can configure its Linter to block raw intrinsic jump methods and mandate the use of its own approved, domain-specific control flow libraries, all without altering the core language.
+
+**Conclusion**:
+This architecture prevents the language core from becoming bloated or obsolete. It empowers developers to define custom, highly complex execution patterns (like a tailored `retry` mechanism) as simple, explicit library imports, ensuring that Khayyam remains an agile, un-opinionated execution environment rather than a dictating rulebook.
+
+#### Why Conditional Keywords Were Rejected
 In traditional languages, conditional statements like `if`, `else if`, and `else` are hardcoded into the compiler's core syntax and Abstract Syntax Tree (AST). Khayyam explicitly rejects this design to maintain strict language orthogonality and prevent syntax bloating.
 
-#### The Problem with Built-in Conditionals
-1. **Semantic Contradiction with Multi-Return Methods:** In Khayyam, methods return values through explicit output variables on separate lines. Forcing a method invocation inside a traditional conditional block (e.g., `if (method())`) creates immense parsing ambiguity and forces the compiler to establish complex, arbitrary evaluation rules.
-2. **AST Complexity:** Built-in conditionals complicate the compiler's syntax analyzer, turning control flow into a magical entity distinct from standard type evaluations.
+- **The Problem with Built-in Conditionals:**
+  1. *Semantic Contradiction with Multi-Return Methods:* In Khayyam, methods return values through explicit output variables on separate lines. Forcing a method invocation inside a traditional conditional block (e.g., `if (method())`) creates immense parsing ambiguity and forces the compiler to establish complex, arbitrary evaluation rules.
+  2. *AST Complexity:* Built-in conditionals complicate the compiler's syntax analyzer, turning control flow into a magical entity distinct from standard type evaluations.
 
-#### The Khayyam Architectural Solution
-In Khayyam, control flow is entirely decoupled from the language syntax. There are no built-in logical keywords except the bare-metal `goto` instruction. Conditionals are implemented as standard, framework-level abstraction types (`tp`) that interact with the compiler to conditionally execute a specific code scope.
+- **The Khayyam Architectural Solution:**
+  1. In Khayyam, control flow is entirely decoupled from the language syntax. There are no built-in logical keywords; low-level jumps are handled via atomic compiler intrinsic methods. Conditionals are implemented as standard, framework-level abstraction types (`tp`) that interact with the underlying execution layer to conditionally execute a specific code scope.
+  2. To use conditional structures, a developer simply includes them explicitly from the framework's logic layer, treating them exactly like any other component:
 
-To use conditional structures, a developer simply includes them directly from the framework's logic layer, treating them exactly like any other component:
+#### Iteration - Loop
+Looping mechanisms can be easily constructed using low-level compiler intrinsic jump methods instead of hardcoding heavy structures like `while`, `for`, or `do-while` into the core compiler syntax. However, to guarantee type safety and clean memory patterns, Khayyam strongly enforces that collection iteration MUST be driven by the Container Abstract Data Type (ADT) rather than manual pointer or index manipulation.
 
+#### Example
 ```khayyam
-tp IF in "khayyam/compiler/logic/if.kh"
-tp ELSE in "khayyam/compiler/logic/else.kh"
+tp IF in "memar/process/control-flow/if.kh"
+tp ELSE in "memar/process/control-flow/else.kh"
+tp Error in "memar/process/error/error.kh"
 
-vr isValid Status
-validator.Check(data)(isValid)
+tp CheckSomeThing () (data Data) (err Error) {
+  vr isValid Status
+  validator.Check(data)(isValid)
 
-IF(isValid) {
-    // Code scope to execute if true
-}
-ELSE(isValid) {
-    // Code scope to execute if false
+  IF(isValid, CodeScope1NameInsteadOfComment)
+  tp CodeScope1NameInsteadOfComment lb {
+      // Code scope to execute if true
+  }
+  ELSE(isValid, CodeScope2NameInsteadOfComment)
+  tp CodeScope2NameInsteadOfComment lb {
+      // Code scope to execute if false
+  }
 }
 ```
 
@@ -135,13 +154,37 @@ The term "Garbage Collection" (GC) has been incorrectly monopolized by heavy run
 - **Linters as the Guardian (The true place of Borrow Checking):** Concepts like memory safety, preventing data races, and use-after-free are fundamentally static analysis concerns, not syntax elements. Instead of polluting the language syntax with complex lifetime annotations (as seen in languages with strict borrow checkers), Khayyam relies on powerful, strict Linters. The Linter enforces correct variable usage and safe memory access patterns during development, ensuring safety without adding cognitive load to the code's visual structure.
 - **Explicit over Magic:** If a specific memory management model requires particular methods to track memory (e.g., incrementing/decrementing reference counts), Khayyam encourages using explicit code generation (e.g., generating `file_name.generated_by_gc1.kh` files) rather than hiding the logic behind syntax-level magic or borrow checkers.
 
+### Error Handling: Library-Driven and Syntax-Free
+Khayyam fundamentally rejects the inclusion of error handling mechanisms (such as `try-catch`, `panic`, `recover`, or Rust's `?` operator) within the language syntax. 
+
+**The Rationale:**
+1.  **No Hidden Control Flow:** Syntactic sugars like `?` mask early returns and bind the compiler to specific standard library types (e.g., `Result`). Khayyam believes control flow should never be hidden behind operators.
+2.  **No Core-Level Panics:** Abrupt execution halts (`panic` or `throw`) are essentially specialized state manipulations and long jumps. In Khayyam, these are strictly implemented as standard library methods (e.g., `PANIC()` in the Memar framework), not compiler directives.
+3.  **Linter Over Syntax:** Khayyam avoids Go's verbose error-checking boilerplate. Instead of forcing syntax-level checks, Khayyam relies on its powerful Compiler and Linter to ensure developers explicitly handle or route returned error capsules, keeping the code clean and the compiler agnostic.
+
+
+### Mutability and References: Framework Semantics Over Hardcoded Syntax
+Khayyam completely excludes concepts like mutability qualifiers (`mut`, `const`) or specialized concurrency primitives (such as Go's `chan`) from its core grammar and compiler. 
+
+**The Rationale:**
+1.  **Avoiding the "Deceptive Simplicity" Trap:** Languages like Go embed features like channels (`chan`) into the syntax for initial ease of use. However, because these primitives are hardcoded, they become unyielding architectural dead-ends when developers encounter highly specific performance or structural requirements, forcing ugly runtime hacks or language migrations.
+2.  **Pure Abstraction-Based Metadata:** Following the design pattern implemented in `weak.kh` (where `WeakReference` is declared purely as `tp WeakReference ab`), traits like mutability (`Mutable`/`Immutable`) or execution safety (`Concurrent`) are treated as regular library-defined abstractions within the Memar framework (e.g., under `memar/storage/memory/reference/`).
+3.  **Decoupled Governance:** The Khayyam compiler remains an agnostic, hyper-fast execution engine that only understands memory boundaries and atomic jumps. The responsibility of enforcing mutability rules, race-condition checks, or reference-counting constraints is entirely delegated to the Linter. This empowers organizations to adapt or completely swap memory governance policies via custom linter configurations without ever modifying the language syntax.
+
+
+### Concurrency: Syntax-Free and Definition-Driven
+Khayyam intentionally avoids embedding concurrency models (like Go's `go` keyword or Rust's `async/await`) into its syntax. Instead, it relies on abstract contracts and framework-level user-space scheduling, perfectly aligning with modern Unikernel and Exokernel architectures.
+
+**The Rationale:**
+1.  **Definition-Site over Call-Site:** Khayyam believes that the nature of execution (whether a method blocks or runs asynchronously) is an intrinsic property of the method itself, not a choice left to the caller. By tagging a method or capsule with an abstraction (e.g., `tp Async ab`), the creator explicitly enforces its concurrent behavior.
+2.  **User-Space Scheduling (Unikernel Synergy):** To achieve extreme performance and zero-overhead context switching, Khayyam's default architectural stance favors user-space threads (Green threads) managed by library-level schedulers (like the Memar framework). The language syntax remains blissfully unaware of underlying OS kernel threads.
+3.  **Avoiding Function Coloring:** By treating asynchronous behavior purely as an abstraction (`ab`) verified by the Linter rather than a compiler keyword, Khayyam entirely avoids the "function coloring" problem that plagues traditional `async/await` languages, keeping the core AST clean and orthogonal.
+
+
 ### Tuples
 Tuples are implemented by two dynamic and static type languages.
 - In a dynamic language, tuples implement unsafe structures that allocate by the runtime and have a performance penalty for the app because we use runtime for developing or compiling phase.
 - In a static language, tuples implement safe structures that just don't have internal names. But it is duplicate work, more learning curve and adds more confusing situation just lazy developer to not indicate names.
-
-### Iteration - Loop
-We think loop can implement easily by `goto` instead of `while`, `for`, `do`, ... if and just if `Iterator` interface not implement by desire type. But strongly suggest iteration MUST implement by just `Container` ADT.
 
 ### Dependency Management
 We don't offer any version control for your codes, So we must not offer any dependency management too.
@@ -151,6 +194,67 @@ We don't offer any version control for your codes, So we must not offer any depe
 - Devs can't declare multiple types in one block by using a `{}` list
 - Devs can't declare multiple in one line using a `;` as say in `Commands Break` part
 
+### Absence of Closures and Anonymous Functions
+Khayyam intentionally omits support for closures (anonymous functions) to enforce strict Architectural boundaries and Single Responsibility Principles (SRP).
+
+**Why it was dropped:**
+In many modern languages, closures are heavily used for callbacks or inline dynamic logic (e.g., capturing variables for sorting or filtering). While this provides syntactical convenience, it introduces severe architectural flaws:
+1.  **Hidden State Capturing:** Closures implicitly capture variables from their surrounding scope, creating invisible dependencies and breaking explicit state management.
+2.  **Spaghetti Logic:** Providing the ability to write inline functions encourages developers to mash multiple distinct behaviors into a single method body under the false promise of "refactoring later."
+3.  **Compiler & Runtime Overhead:** Captured scopes often force variables to escape to the heap (causing allocations), bypassing clean stack execution.
+
+**The Khayyam Way:**
+If a behavior requires a state (like a captured variable), it is by definition a new domain entity. Developers MUST define a specific Capsule (cp) for it, explicitly pass the required state into it, and implement the necessary Method (mt). This guarantees that all state dependencies remain explicit, testable, and strictly encapsulated.
+
+### Native Localization (I18n) and AST-Driven UI Integrity via Sidecar Metadata (`-detail.kh`)
+
+#### The Problem in Legacy Architectures
+In traditional programming environments, human-centric metadata (such as internationalization, localization strings, and UI presentation labels) is entirely decoupled from the core type system. A simple data type (e.g., `username`) suffers from extreme fragmentation: its behavior is defined in the backend, its validation is duplicated in the frontend, and its human-readable labels are scattered across disconnected translation files (e.g., `en.json`, `fa.json`). This fragmentation violently violates the "Single Source of Truth" principle, generates massive boilerplate, and creates a high risk of desynchronization between system types and user interfaces.
+
+#### The Khayyam Solution: The Ubiquitous Semantic Layer
+In Khayyam, the sidecar detail files (`-detail.{lang}.kh`) extend far beyond static comments or compiler directives; they serve as a native, compile-time semantic layer for the entire application stack—including the graphical user interface (GUI).
+
+By anchoring human metadata directly to types (`tp`) and capsules (`cp`) within the `-detail.kh` ecosystem, Khayyam achieves absolute integration:
+
+1. **Native Human Multi-Language Support (I18n):** Developers can embed multi-lingual documentation, user-friendly labels, and localized error definitions directly onto the type within the sidecar file. This ensures the main `.kh` file remains purely functional and minimal, untainted by heavy language strings.
+2. **Single Source of Truth for GUIs:** Because this metadata is baked directly into the Abstract Syntax Tree (AST), visual layout engines, GUI frameworks, and API gateways can dynamically query the Khayyam binary/source to extract localized presentation data. 
+3. **Zero-Redundancy Presentation Alignment:** A type like `username` carries its own visual identity stack-wide. There is no need to redefine or remap names inside the GUI framework. The end-user automatically observes a consistent, localized description driven directly by the type system itself.
+
+This paradigm eliminates the historical boundary between pure machine logic and human-centric UI presentation, guaranteeing 100% product-wide integrity with zero duplicated code.
+
+## Design Decisions & FAQ
+
+### 1. Memory Sovereignty vs. Runtime Magic
+In modern garbage-collected languages like Go, memory management is hidden behind compiler heuristics such as Escape Analysis. While this provides a convenient abstraction for general-purpose programming, it strips the systems architect of deterministic control. 
+
+For instance, in high-throughput network applications (e.g., parsing HTTP packets over userspace TCP sockets), developers often employ worker pools to prevent goroutine stacks (which are allocated on the heap) from dynamic resizing overhead. However, due to the rigid nature of implicit escape analysis, forcing critical transaction buffers to reside strictly within a specific local memory scope is nearly impossible. The runtime ultimately forces heap allocations, inducing unpredictable Garbage Collection (GC) pauses.
+
+Khayyam is built on the principle of **Memory Sovereignty**. The language layout rejects implicit "runtime magic." Architects retain explicit layout control via the compiler and linter ecosystem without sacrificing low-level optimizations to a generic execution engine. Khayyam was not created out of leisure; it is an architectural necessity to reclaim hardware efficiency.
+
+### 2. The Eradication of Pointers and the Null Black Hole
+Historically, programming languages have introduced a "billion-dollar mistake" by exposing raw machine pointers (`*T` or `&T`) directly into the language syntax, conflating them with high-level references. This syntactic pollution inevitably forces runtimes to introduce concepts like `nil` or `null`, leading to catastrophic Null Pointer Exceptions (NPEs), and eventually requiring sub-optimal library escapes like Go's `unsafe` package.
+
+Khayyam completely eliminates pointers from its grammar. At the syntax level, developers interact strictly with immutable or highly controlled references to Capsules (`cp`). 
+
+We solve the "Null Dilemma" through three strict architectural constraints:
+1. **No `nil` Keyword:** There is no dedicated keyword for nullability in Khayyam's grammar. Syntax remains minimal and clear.
+2. **Definite Assignment Analysis:** The Khayyam compiler/linter enforces that no variable (`vr`) can be read, evaluated, or passed as an argument unless it has been explicitly and definitively initialized with a valid instance. An unwritten reference is a compile-time failure.
+3. **Behavioral Nullability (`IsNull()`):** Nullability is treated as a semantic behavior rather than a hardware state. If a Capsule acts as a container or an optional wrapper, it must explicitly implement an `IsNull()` method. The evaluation of emptiness is delegated to capsule logic, leaving the language core pure and deterministic.
+
+### 3. The Rejection of Lifetime Annotations
+Languages like Rust enforce memory safety without a garbage collector by introducing implicit ownership rules and explicit "Lifetime Annotations" (`'a`). While mathematically sound, this design pollutes the syntax, significantly steepens the learning curve, and offloads compiler complexity onto the developer's cognitive load. Rust requires lifetimes because its syntax allows arbitrary references to local stack variables to be passed across asynchronous and synchronous boundaries.
+
+Khayyam explicitly rejects Lifetime Annotations. We achieve deterministic memory safety without syntactic pollution through the following architectural constraints:
+
+1. **Strict Capsule Encapsulation:** In Khayyam, internal state is completely opaque. You cannot leak a raw reference of an internal field to an external scope. Interaction occurs strictly via message passing (methods).
+2. **Deterministic Scope Boundaries (`sc`):** The allocation and deallocation lifecycle of any capsule instance are bound to its execution scope or explicitly managed via linter-enforced `Deinit()` patterns. 
+3. **No Raw Stack Borrowing:** Since syntax-level pointers are eliminated, the compiler can statically prove variable validity via Definite Assignment Analysis without requiring explicit developer annotations.
+
+#### The Role of Profile-Guided Optimization (PGO)
+In Khayyam, we separate *Memory Safety* from *Memory Optimization*. Safety is guaranteed statically by the compiler and linter. Optimization, however, is delegated to the tooling ecosystem via [Profile-Guided Optimization (PGO)](https://en.wikipedia.org/wiki/Profile-guided_optimization). 
+
+Instead of forcing developers to provide compilation hints, the Khayyam compiler analyzes runtime execution profiles (highly effective in predictable environments like Unikernels). The compiler uses this data to optimize memory layouts, pre-allocate deterministic buffer sizes inside worker stacks, and perform dynamic escape analysis—moving heap allocations to local scopes automatically. Software should adapt to hardware behavior via metrics, not via syntax pollution.
+
 ## Inspired of
 ### Languages
 These languages inspirations don't mean just about get good idea but mean drop bad idea from these and not implement them.
@@ -159,6 +263,7 @@ These languages inspirations don't mean just about get good idea but mean drop b
 - [Go](https://golang.org/)
 - [Rust](https://www.rust-lang.org/)
 - [Spiral](https://github.com/mrakgr/The-Spiral-Language)
+- [flat assembler](https://flatassembler.net/)
 
 ### Articles
 - https://pingcap.com/blog/early-impressions-of-go-from-a-rust-programmer/
