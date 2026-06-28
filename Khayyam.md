@@ -49,7 +49,7 @@ Khayyam allow developers to indicate first level encapsulation-pattern by use `c
 
 #### Method
 In Khayyam, functions and methods are not separate concepts; a method is fundamentally a callable capsule. By using the `mt` subtype, developers define an executable behavior and attach it to a receiver. The receiver is not limited to capsules (`cp`); a method can be attached to *any* type (`tp`), including an abstraction (`ab`) or even another method (`mt`).
-- `tp {name} mt ({ReceiverType}) ({args}...) ({returns}...) { ___ }`
+- `tp {name} mt (self {capsule_owner}) ({efficacy variables}...) ({impressible(affective) variables}...) { ___ }`
 - **Pass-by-Reference & State Protection:** All arguments passed into a method and all values returned from a method are passed strictly by reference. 
 - **Inherent Encapsulation:** Even though capsules are passed by reference, their internal state remains strictly protected. Because Khayyam enforces that all data fields are entirely hidden, a receiving method cannot directly mutate the passed capsule's fields. State mutation can ONLY occur if the passed capsule explicitly exposes a behavior (method) that allows it, rendering keywords like `const` or `mut` architecturally obsolete.
 - Devs MUST separate `capsule`, `args` and `returns` by use `()` to indicate all of them even it is empty. We know that all of them is same in underlying layers and this rule is just to improve code readability.
@@ -67,8 +67,8 @@ In Khayyam, functions and methods are not separate concepts; a method is fundame
   - **Instance-Level Invocation:** Methods defined with a `self` reference require an active memory capsule. They MUST be invoked through a variable instance (e.g., `vr.Mutate()`). Invoking an instance-level method directly on the type identifier (`tp.Mutate()`) is rejected.
 
 #### Abstraction
-Abstractions in Khayyam are pure contracts. They do not contain logic, state, or even predefined method bodies. Unlike traditional interfaces, an abstraction is simply a named tag. The methods that fulfill this contract are defined entirely outside the abstraction.
-- `tp {name} ab`
+Abstractions in Khayyam are pure contracts. They do not contain logic, state, or even predefined method bodies. The methods that fulfill this contract are defined entirely outside the abstraction. To mirror the robust composition patterns found in systems engineering, Khayyam supports **Abstraction Composition** via a dedicated scope block `{}` at the type definition site.
+- `tp {name} ab { {Composition of Abstractions} }`
 - Abstractions MUST use other abstractions as arguments or returns, not other `capsule`s.
 - **No Generic Syntax:** We do not introduce syntax complexity for Polymorphism or Generics (like `<T>` in C# or `[T]` in Go). Khayyam inherently supports **Covariant Return Types**. If an abstraction dictates a method must return Abstraction `A`, a capsule can implement this method by returning Capsule `B` (as long as `B` implements `A`).
 - **Smart Compilation:** The compiler decides smartly whether to handle these abstractions at compile-time (Monomorphization, zero-cost abstraction when exact capsules are known) or at runtime (via dynamic dispatch/interfaces when underlying capsules are hidden), entirely freeing the developer from generic syntax management.
@@ -76,7 +76,7 @@ Abstractions in Khayyam are pure contracts. They do not contain logic, state, or
   - **Contract-First Approach:** Abstractions in Khayyam represent behavior. If an abstraction requires an `Element`, it simply accepts `Element`. Any capsule that satisfies this interface is valid. 
   - **The Intelligence of the Compiler:** Instead of forcing developers to choose between compile-time and runtime polymorphism via syntax, the Khayyam compiler analyzes the codebase graph. It intelligently optimizes the implementation—applying monomorphization (compile-time) where specific types are known, or dynamic dispatch (runtime) where flexibility is required.
   - **Why this works:** Polymorphism is about **code reuse**, not about teaching the compiler how to do its job. By keeping syntax minimal, we allow the compiler to innovate in how it resolves these abstractions, keeping the source code clean and focused on domain logic rather than type-system boilerplate.
-- Example:
+- Examples:
   ```khayyam
     // Defining a pure abstraction
     tp Reader ab
@@ -84,6 +84,16 @@ Abstractions in Khayyam are pure contracts. They do not contain logic, state, or
     // The methods belonging to this abstraction are defined independently
     tp Read mt (self Reader) (data Element) (err Error)
     tp Close mt (self Reader) () (err Error)
+  ```
+
+  ```khayyam
+  // An abstraction can embed other abstractions within its block to declare a subtyping/contractual dependency:
+  tp Error ab {
+      DataType
+      Field_MediaType
+      Equivalence
+      ADT
+  }
   ```
 
 #### (Code) Scope

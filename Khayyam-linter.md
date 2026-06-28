@@ -54,3 +54,13 @@ y.FromString ("3.14")
 - Linter MUST provide `Type` suggestion in developing of codes.
 - Variables MUST treat immutable by default after initialization, unless Developer indicate it by some specific method. If need to change the capsule data, need to copy desire data to new variables.
 - Linter MUST help to generate some useful methods like getter and setter methods. For each structure field developer must define global get & set methods, otherwise compiler throw compile error if any read||write directly to fields be in codes.
+
+## Abstraction Validation and DX Scaffolding
+Since the language syntax avoids explicit implementation keywords, the Linter is responsible for assisting the developer and ensuring architectural compliance:
+- **Scaffolding**: When a developer intends to implement an abstraction (detected via context or explicit linter hints), the Linter provides automated code generation to scaffold all missing method signatures with empty bodies.
+- **Proactive Warnings**: The Linter analyzes the codebase and issues warnings if a capsule partially implements an abstraction's method set in a context where it is clearly expected to satisfy that abstraction, preventing unexpected compilation failures.
+
+## Explicit Delegation Verification
+The Linter enforces the rule of explicit delegation to eliminate lazy programming patterns and ensure 100% human readability:
+- **Anti-Lazy Inheritance Check**: The Linter blocks any patterns or workarounds that attempt to create implicit or magical method promotion hooks.
+- **Smart Remediation**: When a compilation error occurs due to a missing method that actually exists within an embedded capsule, the Linter must detect this structural configuration and suggest the exact explicit delegation block to the developer, ensuring high DX without complicating the core language syntax.
