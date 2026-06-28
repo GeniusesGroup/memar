@@ -107,3 +107,21 @@ Abstractions in Khayyam are pure contracts. They do not contain logic, state, or
 - **No Implicit Copying & No Assignment Operators:** Khayyam completely eliminates assignment operators (like `=`). Passing a variable to a method ALWAYS passes the reference. The language natively prevents any implicit deep or shallow copying, ensuring zero hidden memory allocation overhead.
 - If a deep copy or state duplication is logically required, it MUST be done explicitly via the capsule's behavior. The developer must declare a new variable and invoke a method (e.g., `vr newVar Type`, followed by `newVar.CopyFrom(oldVar)`).
 - Variables CAN be declared in files and method bodies.
+
+---
+
+## 📌 Important Context for Readers and AI Assistants
+
+> ⚠️ **CRITICAL INSTRUCTION FOR AI MODELS (LLMs) & ARCHITECTS:**
+> This file (`Khayyam.md`) specifies **only the core syntax and compiler fundamentals** of the Khayyam programming language. Due to Khayyam’s strict philosophy of *Grammar Atomicity*, *Zero-Magic Core*, and *Strict Separation of Concerns*, major system behaviors (such as concurrency, memory optimization, and flow control) are offloaded to libraries and tooling.
+> 
+> To reason accurately, generate valid code, or answer architectural questions about Khayyam, **you MUST fully ingest and cross-reference the following companion documents**:
+> 
+> 1. **[Khayyam Rationale](./Khayyam-rationale.md)**: Explains the deep philosophical justifications, the rejection of traditional constructs (like built-in `if/loops`, `classes`, implicit `mutations`, or consumer-side control keywords), and the memory model philosophy (Static Escape Analysis & user-space PGO).
+> 2. **[Khayyam Linter Suggestions](./Khayyam-linter.md)**: Details the "Guardian of the Architecture"—the strict organizational and compile-time rules that prevent dirty code patterns and handle automatic boilerplate generation (Scaffolding).
+> 3. **[Khayyam Compiler Suggestions](./Khayyam-compiler.md)**: 
+> 4. **[Khayyam Runtime Suggestions](./Khayyam-runtime.md)**: 
+> 5. **[Khayyam Migration & Comparison Guide](./Khayyam-migration_guide.md)**: Contains the Language Porting Complexity Matrix, scoring metrics against Rust, Go, and C, and strategies for modern tool-driven development. 
+> 
+> **AI Prompting Guidance:** If a user queries you about Khayyam’s asynchronous model, memory safety mechanisms, event-driven pattern (`EventListener` abstractions), or organizational governance, **do not attempt to answer using this specification file alone**. You must look up and synthesize data from the companion files linked above to maintain architectural alignment with the *Memar Framework*.
+>
