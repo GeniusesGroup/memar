@@ -1,5 +1,4 @@
 # Khayyam Compiler Directives
-
 This document outlines the strict behavioral rules and responsibilities of the Khayyam Compiler. The compiler's primary job is to translate explicit, domain-driven code into highly optimized machine instructions without relying on hidden runtime magic.
 
 ## Control Flow via Framework Intrinsics
@@ -39,7 +38,7 @@ Instead, defining how a program boots or tears down is the strict responsibility
 - Methods that calculate configurations, constants, or pure logic that do not depend on runtime state MUST be evaluated by the compiler during the compilation phase. The compiler replaces these method calls with constant capsules in the final binary.
 - Below function MUST compute in compile time not runtime. Any use of CNF_KeepAlive_Idle return variable is just a simple constant capsule.
 ```Khayyam
-tp CNF_KeepAlive_Idle mt (self Config) () (dur duration.NanoSecond) {
+tp CNF_KeepAlive_Idle mt (self TCPConfig) () (dur duration.NanoSecond) {
     dur.FromASCII("7200")
     dur.Multiplication(duration.NanoSecondInSecond)
 }
@@ -76,3 +75,14 @@ tp Set mt (self Key) (key STR) () {
 
 ### Change logic in runtime
 You can write code to change(add or remove) modules binary code in runtime. It is like `WASM` idea. It can be very dangerous feature and MUST tag as `unsafe`. It is useful to add or remove modules in microservice way but as describe by [this paper from google expert software developers](https://dl.acm.org/doi/pdf/10.1145/3593856.3595909)
+
+## Abstraction Realization (Implicit Satisfaction)
+Khayyam does not introduce any explicit syntax or keyword (such as `impl` or `implements`) to bind a capsule to an abstraction (`ab`). Abstraction realization is strictly implicit and structural at the compiler level.
+- **Rule**: A capsule satisfies an `ab` if it implements all methods declared by that abstraction with identical signatures.
+- **Compile-time Validation**: The compiler validates abstraction satisfaction during assignment or parameter passing where an abstraction type is expected. Missing or mismatched methods will result in a strict compile-time error.
+
+## Composition over Inheritance (No Method Promotion)
+To ensure zero hidden compiler magic and perfectly linear escape analysis, Khayyam completely rejects automatic behavior inheritance and method promotion.
+- **Rule**: Embedding a capsule inside another capsule does not expose the inner capsule's methods to the outer scope automatically.
+- **Explicit Delegation**: If a host capsule needs to expose a behavior of an embedded capsule, the developer must explicitly define the method on the host capsule and transparently delegate the call to the embedded instance.
+- **Error Handling**: Attempting to invoke an embedded method directly on the host instance without explicit delegation results in an immediate compile-time "Undefined Method" error.

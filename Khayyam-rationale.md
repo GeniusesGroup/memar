@@ -59,6 +59,14 @@ tp CheckSomeThing () (data Data) (err Error) {
 }
 ```
 
+#### Elimination of Logical Operators at Syntax Level
+Khayyam strictly rejects the inclusion of traditional logical operators (`&`, `|`, `!`) within the language grammar. Since the language design operates entirely without primitive types or built-in operational magic, boolean and conditional logic are offloaded to explicit capsule methods and conditional abstractions. Complex conditional matrices are treated as semantic patterns—resembling predictable compile-time evaluation or specification capsules—rather than unreadable syntactic expression trees. The compiler guarantees that these explicit method chains are optimized directly into atomic hardware bitwise instructions (`AND`/`OR`), preserving maximum hardware execution efficiency without compromising syntactic purity.
+
+### Rejection of Syntactic Macros and Meta-Programming
+Khayyam firmly rejects the concept of syntactic macros or separate token-manipulation languages (as seen in Rust's `!`). Introducing a macro system turns the compiler into an unpredictable black box, compromises spatial linearity, and hinders AI-driven static analysis. 
+
+In Khayyam, the boundary between compile-time and run-time execution is an optimization concern, not a syntactic bifurcation. The compiler automatically and implicitly executes any deterministic, pure logic at compile-time whenever the parameters are invariant, without requiring dedicated syntax. Any structural code generation or boilerplate elimination is strictly delegated to external organizational Linters and Scaffolding tooling. This ensures the source code remains 100% explicit, uniform, and concrete.
+
 ### Package (Packaging)
 Khayyam explicitly removes the concept of package-level encapsulation or global namespaces. We believe that relying on packages often leads to lazy naming conventions (e.g., naming a method `Parent()` simply because it resides in an `ast` package) and eventually causes naming collisions.
 
@@ -221,6 +229,29 @@ By anchoring human metadata directly to types (`tp`) and capsules (`cp`) within 
 3. **Zero-Redundancy Presentation Alignment:** A type like `username` carries its own visual identity stack-wide. There is no need to redefine or remap names inside the GUI framework. The end-user automatically observes a consistent, localized description driven directly by the type system itself.
 
 This paradigm eliminates the historical boundary between pure machine logic and human-centric UI presentation, guaranteeing 100% product-wide integrity with zero duplicated code.
+
+### Absence of Control Keywords on the Consumer Side
+In traditional language design, the burden of managing state mutability, access constraints, and lifecycle safety is often split between the definition site and the consumer site. Languages like Rust, C++, and TypeScript introduce keywords such as `mut`, `const`, `readonly`, or `final` at the variable declaration or call site, forcing the consumer to explicitly dictate how they intend to treat an instance.
+
+Khayyam completely rejects this paradigm, eliminating all consumer-side control keywords and modifiers.
+1. **Sovereign Encapsulation**
+In Khayyam, encapsulation is absolute and non-negotiable. All internal data fields of a capsule are strictly private and hidden from the outside world. There is no concept of direct memory exposure or public fields; a capsule never allows external access to its raw bytes. The only mechanism for interaction is message passing via public method invocation.   
+Consequently, the sovereignty of state behavior belongs entirely to the capsule itself, not the consumer:
+     - **Inherent Immutability:** If a capsule does not expose methods that mutate its internal state post-initialization, it is inherently read-only. The consumer does not need a `const` keyword to guarantee immutability, because they possess no mechanical means to violate the capsule's boundaries.
+     - **Inherent Mutability:** If a capsule exposes mutating methods, its mutability is an intrinsic behavioral trait defined by its own domain invariants, not a permission granted by the caller.
+
+2. **Domain Integrity over Syntactic Configuration**
+Shifting mutability and control semantics to the consumer side often functions as a syntactic band-aid for weak encapsulation. When a consumer uses a keyword like `mut` to force a type to become malleable, they are overriding boundaries that should fundamentally belong to the underlying domain model.    
+In Khayyam, if a consumer requires a version of a data structure that behaves differently regarding mutability, this is treated as a **new business domain requirement**, not a local syntax trick.    
+For example, a fixed financial value shouldn't be declared as a `const Decimal_64_64` by the consumer. If the business logic requires that this financial value must never change, that behavior is encapsulated inside the core definition. If another context requires a mutable variant or an extended behavior, it dictates the birth of a brand new capsule with a distinct identity—such as `TransactionAmount`—which wraps the original structure and defines its own precise interaction rules. Any modification in behavior equals the birth of a capsule with a new identity.
+
+3. **Eradication of Call-Site Cognitive Load**
+By stripping away all access modifiers and control keywords from the consumer side, Khayyam achieves an ultra-minimalistic syntax. Developers do not have to constantly evaluate whether to append `mut`, `const`, or pointer annotations when declaring a variable (`vr`). A variable is simply a clean reference to a capsule, and its capabilities are entirely discovered through that capsule's public interface. This eliminates syntax noise, prevents "Function Coloring" and variable-level decoration issues, and ensures that the codebase remains highly predictable, readable, and self-documenting.
+
+### Rejection of Default Implementations
+Khayyam firmly rejects the concept of "Default Implementations" or default trait methods (as seen in Rust or Java). Allowing executable logic inside an abstraction violates its fundamental contractual purity and introduces implicit dynamic routing behaviors that cloud compile-time optimizations and hardware transparency.
+
+If multiple capsules share common behavior, they must utilize Explicit Delegation through internal capsules rather than absorbing implicit code through traits. Boilerplate elimination is strictly offloaded to the organizational Linter and Scaffolding tooling, ensuring the final source code remains 100% explicit, linear, and completely free of compiler magic.
 
 ## Design Decisions & FAQ
 
