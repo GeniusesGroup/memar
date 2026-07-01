@@ -152,6 +152,13 @@ Due to Khayyam not support primitive types, All disadvantages disappear and JUST
 ### Method overriding
 Method overloading is a compile-time polymorphism. Method overriding is a run-time polymorphism. CAN provide runtime feature when not provide rich runtime??
 
+### Composition Depth as a Decomposition Signal
+Because Khayyam method calls are statements, not chainable expressions, every intermediate result requires an explicitly named variable. This is a deliberate trade-off: the discomfort of a growing method body is treated as a design signal, not a cost to be optimized away.
+
+When a developer notices a method or widget accumulating multiple unrelated named steps (e.g., "determine the active user" inside a "register comment" widget), this is the language pushing back against an under-decomposed model — not a syntax limitation to work around. The correct response is always further decomposition into a new capsule or widget with its own narrow responsibility and its own error boundary, never a request for implicit chaining syntax.
+
+This applies uniformly, including to data pipelines (parse → validate → transform → aggregate) that may *feel* like a single operation. Each stage is a distinct concern with its own failure mode and reuse potential, and Khayyam intentionally provides no syntactic shortcut that would let these stages collapse into a single undifferentiated block. The verbosity of named intermediate steps is the price paid for forcing this discipline to be visible in the code itself, rather than living only in a developer's head or in a comment.
+
 ### Memory management - GC (Garbage Collection)
 Libraries must provide memory management and data types (almost always ADT's decide) decide to choose and use desire memory management for its usage.
 
@@ -206,13 +213,15 @@ We don't offer any version control for your codes, So we must not offer any depe
 Khayyam intentionally omits support for closures (anonymous functions) to enforce strict Architectural boundaries and Single Responsibility Principles (SRP).
 
 **Why it was dropped:**
-In many modern languages, closures are heavily used for callbacks or inline dynamic logic (e.g., capturing variables for sorting or filtering). While this provides syntactical convenience, it introduces severe architectural flaws:
-1.  **Hidden State Capturing:** Closures implicitly capture variables from their surrounding scope, creating invisible dependencies and breaking explicit state management.
-2.  **Spaghetti Logic:** Providing the ability to write inline functions encourages developers to mash multiple distinct behaviors into a single method body under the false promise of "refactoring later."
-3.  **Compiler & Runtime Overhead:** Captured scopes often force variables to escape to the heap (causing allocations), bypassing clean stack execution.
+In many modern languages, closures are heavily used for callbacks or inline dynamic logic (e.g., capturing variables for sorting or filtering). While this provides syntactical convenience, it introduces architectural flaws:
+
+1. **Hidden State Capturing:** Closures implicitly capture variables from their surrounding scope, creating invisible dependencies and breaking explicit state management.
+2. **Spaghetti Logic:** Providing the ability to write inline functions encourages developers to mash multiple distinct behaviors into a single method body under the false promise of "refactoring later."
+3. **Reduced Optimization Surface:** Capsule-centric code, where state is always a named, explicit type, is significantly easier for the compiler to analyze and optimize than ad-hoc captured scopes. While both models are theoretically equivalent in the worst case, capsule-based state is far more consistently optimizable in practice, because the compiler always has a concrete, named type to reason about rather than an implicit closure environment whose shape varies by call site.
 
 **The Khayyam Way:**
-If a behavior requires a state (like a captured variable), it is by definition a new domain entity. Developers MUST define a specific Capsule (cp) for it, explicitly pass the required state into it, and implement the necessary Method (mt). This guarantees that all state dependencies remain explicit, testable, and strictly encapsulated.
+If a behavior requires state (like a captured variable), it is by definition a new domain entity. Developers MUST define a specific Capsule (`cp`) for it, explicitly pass the required state into it, and implement the necessary Method (`mt`). This guarantees that all state dependencies remain explicit, testable, strictly encapsulated, and consistently optimizable by the compiler.
+
 
 ### Native Localization (I18n) and AST-Driven UI Integrity via Sidecar Metadata (`-detail.kh`)
 
@@ -285,21 +294,3 @@ Khayyam explicitly rejects Lifetime Annotations. We achieve deterministic memory
 In Khayyam, we separate *Memory Safety* from *Memory Optimization*. Safety is guaranteed statically by the compiler and linter. Optimization, however, is delegated to the tooling ecosystem via [Profile-Guided Optimization (PGO)](https://en.wikipedia.org/wiki/Profile-guided_optimization). 
 
 Instead of forcing developers to provide compilation hints, the Khayyam compiler analyzes runtime execution profiles (highly effective in predictable environments like Unikernels). The compiler uses this data to optimize memory layouts, pre-allocate deterministic buffer sizes inside worker stacks, and perform dynamic escape analysis—moving heap allocations to local scopes automatically. Software should adapt to hardware behavior via metrics, not via syntax pollution.
-
-## Inspired of
-### Languages
-These languages inspirations don't mean just about get good idea but mean drop bad idea from these and not implement them.
-- [C](https://en.wikipedia.org/wiki/C_(programming_language))
-- [D](https://dlang.org)
-- [Go](https://golang.org/)
-- [Rust](https://www.rust-lang.org/)
-- [Spiral](https://github.com/mrakgr/The-Spiral-Language)
-- [flat assembler](https://flatassembler.net/)
-
-### Articles
-- https://pingcap.com/blog/early-impressions-of-go-from-a-rust-programmer/
-- http://www.linux-kongress.org/2009/slides/compiler_survey_felix_von_leitner.pdf
-- http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.143.4688
-
-## Khayyam word meaning
-[Omar Khayyam](https://en.wikipedia.org/wiki/Omar_Khayyam) was a Persian mathematician, astronomer, philosopher, and poet.
