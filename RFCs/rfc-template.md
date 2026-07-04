@@ -1,16 +1,26 @@
 ---
-RFC Number: 000000
-Title: "{Unique name}"
-Status: Draft # Draft | Proposed | Final | Superseded | Rejected
+RFC Number: 495000 # PLACEHOLDER — generate per rfc-numbering.md at file creation time.
+Title: "RFC Template" # "{Unique name}"
+Status: Proposed # Draft | Proposed | Final | Superseded | Rejected
 Start Date: 2026-06-30
-Applied to: [] # e.g. ["Khayyam.md#control-flow"] — empty until pasted into the target doc
+Applied to: ["./*"] # ./* means applied to all rfc in this directory. e.g. ["Khayyam.md#control-flow"] — empty until pasted into the target doc
 Supersedes: null
 Superseded by: null
 Related:
   Depends_on: []      # e.g. ["000002"]
   Extends: []         # e.g. ["000003"]
   Conflicts with: []  # left non-empty only if a real, still-unresolved tension exists
-Author(s): []         # ["My Name (me@example.org)", "AN Other (you@example.org)"]
+Contributor(s):
+  - name: "Omid Hekayati"
+    uri: "mailto:omid@geniuses.group"
+    contribution: ""
+    task: []
+  - name: "Claude"
+    uri: "https://claude.ai"
+    model: "claude-sonnet-5"
+    effort: "Medium - extended thinking enabled"
+    contribution: "Drafted initial text, argued for and against alternatives, incorporated revisions"
+    task: []
 ---
 
 ## Summary
