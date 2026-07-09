@@ -31,7 +31,7 @@ Contributor(s):
     uri: "https://claude.ai"
     model: "claude-sonnet-5"
     effort: "Medium - extended thinking enabled"
-    contribution: ""
+    contribution: "Critical review: reframed Immutable Infrastructure section from 'reinforcing' to 'compatible but logically independent'; identified the multi-cause return signature gap and separated it into two distinct sub-problems (identification cost vs. signature-level exhaustiveness); flagged the exhaustiveness need as unresolved rather than dismissed and proposed deferring it to linter/compiler tooling; flagged citation-verification and contributor-attribution gaps"
     task: []
 ---
 
@@ -250,6 +250,8 @@ What this RFC adds, beyond what RFC 495369 alone provides, is the *type-system m
 
 A potential future mechanism — a runtime type registry that could register new concept types without full recompilation — could theoretically be compatible with this RFC's identity principle (identity is in the type, even if the type is registered at runtime) while conflicting with RFC 495369's governance principle (a new capability was added without recompilation). Whether such a mechanism is desirable, architecturally sound, or within the scope of either RFC is an open question. The current position is that it should not be assumed or built into the framework's default behavior; like configuration-driven behavior in RFC 495369, it is an optional feature whose presence must be deliberately designed and justified, not an implicit backdoor around the default governance model.
 
+**A caveat on this entire section:** as of this writing, RFC 495369 is itself a placeholder (see Future Possibilities) — its full scope has not yet been defined in a dedicated session. The analysis above reflects the currently understood shape of RFC 495369's principle, not its finalized text. If the dedicated 495369 session produces a materially different formulation, this section should be revisited.
+
 ### The Classification Problem
 
 The most important unresolved challenge this RFC leaves for future work is the **Classification Problem**: how does a developer (or a tool) determine whether a given capsule is a "static concept" or a "data carrier"?
@@ -278,6 +280,8 @@ This is a non-binding convention: enforcement, if any, is a per-organization Lin
 
 3. **Increased API surface per concept.** Each distinct type that appears in a public method signature becomes part of the API contract. Changing or removing that type is a breaking change. This is a genuine cost. The framework accepts this cost because the benefit — type-level identity verified at compile time — is judged to outweigh it for the kind of systems Memar targets. But this is a trade-off, not a free win, and projects with different priorities (rapid iteration, unstable APIs, or a need to minimize public type counts) may reasonably reach a different conclusion.
 
+4. **No syntax-level exhaustiveness (deferred to tooling).** A method that returns an open abstraction (e.g., `Error`) does not, by itself, give the compiler a closed set of concrete types to verify exhaustiveness against — unlike Rust's `enum`-based `match`. This is a real, unresolved need, not a dismissed one. The framework's position is that this need belongs at the linter/compiler tooling layer — not in method-signature or enum syntax — so that identifying a *received* value stays a cheap, direct type check (see Multi-Concept Returns via Abstraction) while completeness-checking is handled separately, without adding ceremony to the type system. Until that tooling exists, callers must rely on manual completeness discipline (see Future Possibilities: Linter/Compiler-Enforced Exhaustiveness).
+
 ## Rationale and alternatives
 
 ### The Single Argument
@@ -298,7 +302,9 @@ A single `GenericError` type holding all metadata as instance fields, populated 
 
 A single type with an enum-like tag field distinguishing concepts.
 
-**Rejected because:** functionally equivalent to the generic Init approach with respect to identity. The "which concept" question is answered by a runtime tag value, not by the type. The tag is typed (an enum) rather than untyped (a string), which provides marginal safety, but does not address the fundamental issue: identity has been moved from the type system to a runtime value. This is the approach taken by Rust's error enums — Rust accepts this trade-off because it values exhaustiveness checking within a grouped failure family. Memar values type-level identity in individual method signatures more than grouped exhaustiveness. These are different design goals, both valid.
+**Rejected because:** functionally equivalent to the generic Init approach with respect to identity. The "which concept" question is answered by a runtime tag value, not by the type. The tag is typed (an enum) rather than untyped (a string), which provides marginal safety, but does not address the fundamental issue: identity has been moved from the type system to a runtime value. This is the approach taken by Rust's error enums — Rust accepts this trade-off because it values exhaustiveness checking within a grouped failure family.
+
+This RFC does not dismiss the need that enum-based exhaustiveness checking satisfies. The need to know, at compile time, whether every outcome a call can actually produce has been handled is real, and an open abstraction return type such as `Error` does not satisfy it. What this RFC rejects is *encoding that need into the type system's syntax* — a tag field, a `match`-style keyword, or a closed enum construct at the method signature. Consistent with the framework's broader position that [Khayyam spec citation for: "Polymorphism is about code reuse, not about teaching the compiler how to do its job"], exhaustiveness is treated as a tooling-layer concern — something a strong linter and an optimizing compiler should provide without the type system or its syntax growing new ceremony to express it. See Future Possibilities: Linter/Compiler-Enforced Exhaustiveness.
 
 ### Rejected: String-Based Codes
 
@@ -348,12 +354,19 @@ Across multiple language communities, there is an observable drift toward type-l
 
 - **Immutable Infrastructure deep-dive (RFC 495369 expansion).** RFC 495369 is currently a placeholder recording the immutable infrastructure principle. A dedicated session is planned to define its full scope, including its relationship to deployment, the Khayyam compiler, and Chapar/sRPC device provisioning.
 
+- **Linter/Compiler-Enforced Exhaustiveness.** A dedicated topic for the Khayyam linter and compiler RFC(s): define how tooling can determine, for a given abstraction-typed return (e.g., `Error`), the closed set of concrete types a specific call site can actually produce — via code-generator metadata, whole-program analysis, or an explicit "closed contract" declared on the abstraction — and flag incomplete handling at the caller. The goal is the practical benefit of Rust-style exhaustiveness checking without introducing enum-like syntax into method signatures or the type system itself. Prior art worth evaluating in that dedicated session includes closed/sealed type hierarchies (e.g., Kotlin's `sealed class`, Swift's protocol-conformance-closed hierarchies), which achieve exhaustiveness through a compiler-known closed set of implementing *types* rather than a runtime data tag — potentially reconcilable with this RFC's Rule 1 without new syntax at the call site.
+
 ---
 
 ## Change Rationale
 
 | Revision | Section | Change | Reason |
 |----------|---------|--------|--------|
+| 7 (this) | Contributor(s) | Filled in Claude's contribution field | Was blank despite being credited in revision 5's rationale |
+| 7 | Rationale → "Rejected: Enum-Tagged Single Type" | Clarified that exhaustiveness is a real, unresolved need deferred to linter/compiler tooling, not a dismissed one | User: the requirement is real, but its place is tooling/compiler optimization, not method-signature or enum syntax — "Polymorphism is about code reuse, not about teaching the compiler how to do its job" |
+| 7 | Drawbacks | Added item 4: "No syntax-level exhaustiveness (deferred to tooling)" | Same user clarification; makes the trade-off visible as a standalone Drawback instead of only inside Rationale/Prior art |
+| 7 | Reference → "Compatibility with Immutable Infrastructure" | Added caveat noting RFC 495369 is still a placeholder and this section is provisional | Claude's critique: avoid asserting settled content about an RFC not yet written, per the project's own "no premature closure" principle |
+| 7 | Future possibilities | Added "Linter/Compiler-Enforced Exhaustiveness" as a dedicated future topic, citing sealed/closed type hierarchies (Kotlin, Swift) as prior art to evaluate | Follow-up to the exhaustiveness clarification above |
 | 6 (this) | Entire document | Split into two files: this principle RFC (memar) and a Go philosophy companion (memar-go). Removed all Go-specific analysis, community critiques, and language comparisons from this file. Converted examples to Khayyam syntax. Simplified multi-cause returns to standard abstraction pattern. | User direction: RFC should be Khayyam/Memar-centered, not Go-centered; Error has its own RFC; Go comparison belongs in memar-go |
 | 6 | Guide → "Static Capsule Families" | Replaced separate "Error Capsule as Primary Example" and "Beyond Errors" sections with unified section; Error is one family among many | User: "too much focus on Error in this file; Error will have its own RFC" |
 | 6 | Guide → "Multi-Concept Returns via Abstraction" | New section replacing "Multi-Cause Error Returns"; presents Error abstraction as the standard, well-understood pattern, not an open problem | User: "the answer is defining a variable with the abstraction type" |
