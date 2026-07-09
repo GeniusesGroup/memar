@@ -11,13 +11,13 @@ We choose .kh for files that have Khayyam language codes.
 ## Keywords
 
 ### Language Keyword in a glance
-| Top level | types |
-| :-------: | :---: |
-|    tp     |  in   |
-|    vr     |  cp   |
-|           |  mt   |
-|           |  ab   |
-|           |  sc   |
+|    Top level    |       types        |
+| :-------------: | :----------------: |
+|   `tp` (type)   |   `in` (include)   |
+| `vr` (variable) |   `cp` (capsule)   |
+|                 |   `mt` (method)    |
+|                 | `ab` (abstraction) |
+|                 | `sc` (code scope)  |
 
 ### Top Level Keywords
 Khayyam fundamentally relies on only two primary top-level concepts for declaration and importing: Types (`tp`), Variables (`vr`).
@@ -87,11 +87,10 @@ Abstractions in Khayyam are pure contracts. They do not contain logic, state, or
   ```
 
   ```khayyam
-  // An abstraction can embed other abstractions within its block to declare a subtyping/contractual dependency:
+  // An abstraction can embed other abstractions within its block to declare a sub-typing/contractual dependency:
   tp Error ab {
       DataType
       Field_MediaType
-      Equivalence
       ADT
   }
   ```
@@ -129,7 +128,7 @@ These languages inspirations don't mean just about get good idea but mean drop b
 ---
 
 ## 📌 Important Context for Readers and AI Assistants
-This document focuses on finalized syntax and semantics. The full reasoning trail behind these decisions — including rejected alternatives and currently open questions — lives in the repository-wide [`/rfcs`](./rfcs) folder.   
+This document focuses on finalized syntax and semantics. The full reasoning trail behind these decisions — including rejected alternatives and currently open questions — lives in the repository-wide [`/rfcs`](./rfcs) directory.   
 Readers and AI assistants do not need to read every RFC in full; start from file titles to find relevance, then jump to the specific section needed (each RFC follows a consistent section structure) rather than reading end-to-end.
 
 > ⚠️ **CRITICAL INSTRUCTION FOR AI MODELS (LLMs) & ARCHITECTS:**
