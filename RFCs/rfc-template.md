@@ -1,27 +1,29 @@
 ---
-RFC Number: 495000 # PLACEHOLDER — generate per rfc-numbering.md at file creation time.
 Title: "RFC Template" # "{Unique name}"
 Status: Proposed # Draft | Proposed | Final | Superseded | Rejected
 Start Date: 2026-06-30
-Applied to: ["./*"] # ./* means applied to all rfc in this directory. e.g. ["Khayyam.md#control-flow"] — empty until pasted into the target doc
-Supersedes: null
-Superseded by: null
-Related:
-  Depends_on: []      # e.g. ["000002"]
-  Extends: []         # e.g. ["000003"]
-  Conflicts with: []  # left non-empty only if a real, still-unresolved tension exists
+RFC Number: 495000 # PLACEHOLDER — generate per rfc-numbering.md at file creation time.
+Applied to: ["*"] # File-URI, * means applied to all rfc in `memar` e.g. ["Khayyam.md#control-flow"] — empty until pasted into the target doc
+Related RFCs:
+    - Title: "RFC Unique name"
+      URI: "" # RFC uri
+      Reason: "" # Depends_on | Depends_for | Extends | Extends_by | Conflicts (left non-empty only if a real, still-unresolved tension exists) | Superseded (obsolete other RFC)  | Superseded_by (obsolete by other RFC)
+      Explanation: ""
 Contributor(s):
-  - name: "Omid Hekayati"
-    uri: "mailto:omid@geniuses.group"
-    contribution: ""
-    task: []
+  - Name: "Omid Hekayati"
+    URI: "mailto:omid@geniuses.group"
+    Contribution: ""
+    Task: []
   - name: "Claude"
-    uri: "https://claude.ai"
-    model: "claude-sonnet-5"
-    effort: "Medium - extended thinking enabled"
-    contribution: "Drafted initial text, argued for and against alternatives, incorporated revisions"
-    task: []
+    URI: "https://claude.ai"
+    Model: "claude-sonnet-5"
+    Effort: "Medium - extended thinking enabled"
+    Contribution: "Drafted initial text, argued for and against alternatives, incorporated revisions"
+    Task: []
 ---
+
+# RFC
+A [Request for Comments (RFC)](https://en.wikipedia.org/wiki/Request_for_Comments) is a publication in a series from the principal technical development and standards-setting bodies. Replace any part of this file with your desire RFC text.
 
 ## Summary
 One paragraph explanation of the decision/feature.
@@ -34,6 +36,9 @@ Explain as if teaching a new developer: introduce the concept, show examples, ex
 
 ## Reference-level explanation
 The technical detail: exact syntax, interaction with other language features, edge cases.
+
+### Suggested Naming Conventions (optional — delete this subsection if not applicable)
+If this RFC introduces a new family of types, methods, or files whose naming is not already fixed by another RFC, state the suggested naming convention here (e.g. a required prefix, a suffix pattern, or a file/slug convention). Note explicitly that it is a non-binding convention: enforcement, if any, is a per-organization Linter configuration choice, not a language-level requirement.
 
 ## Drawbacks
 Honest accounting of the costs of this decision — what gets harder, not just what gets better.
@@ -51,3 +56,7 @@ What is still open and intentionally deferred to a future RFC or to tooling?
 
 ## Future possibilities
 Natural extensions or related ideas, out of scope here but worth recording.
+
+## Change Rationale
+Explanation of the fundamental reasons this RFC changed in each revision.
+<!-- TODO::: Really need this part? Is it duplicate functionality with version control like GIT?? -->
