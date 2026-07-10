@@ -61,6 +61,6 @@ Since the language syntax avoids explicit implementation keywords, the Linter is
 - **Proactive Warnings**: The Linter analyzes the codebase and issues warnings if a capsule partially implements an abstraction's method set in a context where it is clearly expected to satisfy that abstraction, preventing unexpected compilation failures.
 
 ## Explicit Delegation Verification
-The Linter enforces the rule of explicit delegation to eliminate lazy programming patterns and ensure 100% human readability:
-- **Anti-Lazy Inheritance Check**: The Linter blocks any patterns or workarounds that attempt to create implicit or magical method promotion hooks.
-- **Smart Remediation**: When a compilation error occurs due to a missing method that actually exists within an embedded capsule, the Linter must detect this structural configuration and suggest the exact explicit delegation block to the developer, ensuring high DX without complicating the core language syntax.
+Khayyam enforces explicit delegation to eliminate lazy programming patterns and ensure 100% human readability. The Linter blocks implicit or magical method promotion hooks and provides smart remediation when a developer attempts to call an embedded capsule's method on the host.
+
+> For the full specification — including anti-lazy inheritance checks, smart remediation behavior, scaffolding details, and the orphan rule — see **[RFC 495467 — Khayyam Rejection of Inheritance](./khayyam-rejection_of_inheritance.md)**.
