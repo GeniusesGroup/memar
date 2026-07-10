@@ -58,10 +58,11 @@ tp closeIdleSocket mt (tcpSock TCPSock) (st NetSocket) (err Error) {
 - Compiler provide `compiler` library that developers can use in coding and let compiler know that must decide.
 ```khayyam
 tp Set mt (self Key) (key STR) () {
-	if key.CharacterEncoding().IsEqual(asciiCharacterEncoding) {
-		compiler.Log.Fatal("Linter MUST notify developers not call this method with string other than ASCII")
-	}
-	self.CopyFrom(key)
+    <!-- TODO::: make example khayyam friendly syntax -->
+    if key.CharacterEncoding().IsEqual(asciiCharacterEncoding) {
+        compiler.Log.Fatal("Linter MUST notify developers not call this method with string other than ASCII")
+    }
+    self.CopyFrom(key)
 }
 ```
 - The function body can omit in write code and add by compiler plugins as know code generation.
@@ -82,7 +83,6 @@ Khayyam does not introduce any explicit syntax or keyword (such as `impl` or `im
 - **Compile-time Validation**: The compiler validates abstraction satisfaction during assignment or parameter passing where an abstraction type is expected. Missing or mismatched methods will result in a strict compile-time error.
 
 ## Composition over Inheritance (No Method Promotion)
-To ensure zero hidden compiler magic and perfectly linear escape analysis, Khayyam completely rejects automatic behavior inheritance and method promotion.
-- **Rule**: Embedding a capsule inside another capsule does not expose the inner capsule's methods to the outer scope automatically.
-- **Explicit Delegation**: If a host capsule needs to expose a behavior of an embedded capsule, the developer must explicitly define the method on the host capsule and transparently delegate the call to the embedded instance.
-- **Error Handling**: Attempting to invoke an embedded method directly on the host instance without explicit delegation results in an immediate compile-time "Undefined Method" error.
+Khayyam completely rejects automatic behavior inheritance and method promotion. Embedding a capsule inside another capsule does not expose the inner capsule's methods to the outer scope automatically. The only sanctioned mechanism for behavior sharing is explicit delegation.
+
+> For the full specification — including compiler rules, linter enforcement, rationale, prior art, and design alternatives — see **[RFC 495467 — Khayyam Rejection of Inheritance](./khayyam-rejection_of_inheritance.md)**.
