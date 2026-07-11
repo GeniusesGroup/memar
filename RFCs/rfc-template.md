@@ -7,19 +7,25 @@ Applied to: ["*"] # File-URI, * means applied to all rfc in `memar` e.g. ["Khayy
 Related RFCs:
     - Title: "RFC Unique name"
       URI: "" # RFC uri
-      Reason: "" # Depends_on | Depends_for | Extends | Extends_by | Conflicts (left non-empty only if a real, still-unresolved tension exists) | Superseded (obsolete other RFC)  | Superseded_by (obsolete by other RFC)
+      Reason: "" # Reference | Depends_on | Depends_for | Extends | Extends_by | Conflicts (left non-empty only if a real, still-unresolved tension exists) | Superseded (obsolete other RFC)  | Superseded_by (obsolete by other RFC)
       Explanation: ""
 Contributor(s):
   - Name: "Omid Hekayati"
     URI: "mailto:omid@geniuses.group"
     Contribution: ""
-    Task: []
+    Tasks: 
+      - Titles: [] # e.g. `Model financial account`, ...
+        URI: "" # Task uri such as `chat share url`, `issue url`, ...
+        Explanation: ""
   - name: "Claude"
     URI: "https://claude.ai"
     Model: "claude-sonnet-5"
     Effort: "Medium - extended thinking enabled"
     Contribution: "Drafted initial text, argued for and against alternatives, incorporated revisions"
-    Task: []
+    Tasks:
+      - Titles: [] # e.g. Model `financial account`, ...
+        URI: "" # Task uri such as `chat share url`, `issue url`, ...
+        Explanation: ""
 ---
 
 # RFC
