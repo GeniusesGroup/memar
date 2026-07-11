@@ -1,15 +1,10 @@
 ---
-RFC Number: 495465
 Title: "Protocol"
 Status: Proposed
 Start Date: 2026-07-10
+RFC Number: 495465
 Applied to: ["*"]
-Supersedes: ""
-Superseded by: ""
-Related:
-  Depends_on: []
-  Extends: []
-  Conflicts with: []
+Related RFCs: []
 Contributor(s):
   - name: "Omid Hekayati"
     uri: "mailto:omid@geniuses.group"
@@ -27,6 +22,12 @@ Contributor(s):
     effort: "High"
     contribution: "Split original monolithic RFC into three focused RFCs. Restructured Protocol RFC to be purely ontological. Enhanced with Protocol–Process–System relationship (systems theory), Protocol–Science–Methodology connection, diversified domain examples (diplomatic, scientific, medical, legal, aviation, sports), corrected Protocol vs Standard to define standard as third-party attestation, added methodology dimension to Protocol vs Specification, relabeled Formal Definition as language-level illustration, strengthened ontology candidate analysis with process argument."
     task: ["content-split", "restructuring", "enrichment", "ontological-revision"]
+  - name: "Claude"
+    uri: "https://claude.ai"
+    model: "Claude Sonnet 5"
+    effort: "medium - thinking"
+    contribution: "Critical review pass: distinguished idea/discovery from structured lifecycle development within the Methodologically-produced property; added non-software methodology examples; corrected process cardinality (one-or-more, possibly nested) in the core definition and Process-bound property; flagged System and Process as undefined foundational dependencies; refined Protocol vs Standard to distinguish institutionalization attestation from maturity attestation, grounded in IETF RFC 6410 criteria."
+    task: ["critical-review", "clarification", "ontological-revision"]
 ---
 
 # Protocol
@@ -56,12 +57,12 @@ Memar needs a stable, precise definition of Protocol because the concept serves 
 ## Guide-level Explanation
 
 ### What is a Protocol?
-A Protocol is a named set of **declarative rules that govern a process within a system**. It specifies *what* must happen — message formats, call sequences, expected behaviors, state transitions — without prescribing *how* those requirements are fulfilled. Think of HTTP: the protocol defines that a client sends a request line, headers, and an optional body, and that a server responds with a status line, headers, and a body. The protocol does not dictate whether the server is written in C, Python, or runs on bare metal.
+A Protocol is a named set of **declarative rules that govern one or more processes within a system**. It specifies *what* must happen — message formats, call sequences, expected behaviors, state transitions — without prescribing *how* those requirements are fulfilled. Think of HTTP: the protocol defines that a client sends a request line, headers, and an optional body, and that a server responds with a status line, headers, and a body. The protocol does not dictate whether the server is written in C, Python, or runs on bare metal.
 
 This definition contains three inseparable components:
 
 - **Rules**: The declarative requirements — what must happen, in what order, under what conditions.
-- **Process**: The activity or sequence of activities the rules govern. A protocol without a process is rules on a shelf — a collection of statements with no domain of application.
+- **Process**: The activity or sequence of activities the rules govern. A protocol without a process is rules on a shelf — a collection of statements with no domain of application. A process may itself be composed of an indeterminate number of nested sub-processes; a Protocol may govern a single process, several independent processes, or a process at any level of this nesting. The definition does not presuppose a single atomic process.
 - **System**: The containing context within which the process operates. Protocols exist within systems; processes occur within systems; the system provides the boundary that gives the protocol its scope.
 
 A protocol without a process is inert — it is a collection of statements with no domain of application. A process without protocol-governing rules is unstructured activity — it happens, but not reproducibly or verifiably. A system without protocols governing its internal processes is not a system in the systems-theory sense — it is merely a collection of independent elements with no defined interactions. The three co-arise: you cannot meaningfully discuss one without the others.
@@ -137,6 +138,8 @@ The same principle applies to software. An API protocol (like HTTP) enables repr
 
 This connection also illuminates why protocols require **methodology for their production**. Science does not accept claims produced by arbitrary methods — it requires adherence to the scientific method as a protocol for knowledge production. Similarly, a protocol that governs a software system's interactions should itself be produced through a defined methodology, not ad hoc text. In Khayyam, the `ab` (abstraction) construct is one such methodological tool — a language-level mechanism for producing protocols that carry structural guarantees (no state, no behavior, pure declarative requirements). The abstraction construct ensures that what it produces is, by construction, a protocol and not merely a description.
 
+The same requirement applies outside software. A diplomatic protocol such as the Vienna Convention did not emerge as a single author's draft; it was produced through structured multilateral negotiation, drafting committees, and formal ratification review — a methodology analogous in function, though different in form, to Khayyam's `ab` construct for code-level protocols. Similarly, a clinical research protocol must pass through structured ethics review (e.g., IRB approval) and methodological critique before it carries the status of a valid research protocol; a proposed experimental procedure that has not undergone this review remains a draft, not a protocol.
+
 ### Protocol vs Contract
 A Contract implies **parties, obligations, and commitments**. When two organizations sign a contract, there are specific entities with reciprocal duties, and breach carries legal or formal consequences. A Protocol does not inherently require predefined parties. HTTP exists as a protocol regardless of whether any particular client and server are currently interacting. Any conformant participant can engage with the protocol without negotiating with a counterparty.
 
@@ -150,9 +153,14 @@ The word "standard" is one of the most consistently misused terms in both techni
 
 Consider ISO 9001. ISO 9001 itself is a document that defines quality management protocols. When a car factory "gets ISO 9001 certified," a third-party auditor (accredited by ISO but not employed by ISO — ISO itself explicitly states it does not issue certificates directly) verifies that the factory has institutionalized the specified protocols within its quality management processes. The certification does not mean the factory produces defect-free cars. It means the factory follows the specified protocols for quality management. The protocol is the rule set; the standard is the attestation that the rule set is operational.
 
+Third-party attestation takes at least two forms, distinguished by what is being attested:
+
+- **Institutionalization attestation** — a third party certifies that a *specific organization* has adopted and operationalized a protocol within its own processes (e.g., ISO 9001 certification of a factory).
+- **Maturity attestation** — a third party certifies that a *protocol itself* has reached a defined level of technical maturity, based on objective evidence such as independent interoperable implementations and successful operational deployment (e.g., the IETF's promotion of a Proposed Standard to Internet Standard under RFC 6410, which requires at least two independent interoperating implementations with widespread deployment and no interoperability-blocking errata).
+
 This definition has several important consequences:
 
-1. **A protocol does not "become" a standard through ratification.** When IETF ratifies HTTP, HTTP does not become a standard. IETF has *approved* the HTTP protocol specification. What colloquially gets called "the HTTP standard" is actually "the IETF-ratified HTTP protocol specification." The protocol's rules are the same before and after ratification; only the governance status changes.
+1. **A protocol becomes a standard only through a defined attestation process, not through mere publication.** When the IETF publishes an RFC as a Proposed Standard, no attestation has yet occurred — this is closer to a specification being made public. Advancement to Internet Standard, by contrast, is a genuine maturity attestation: the IESG formally confirms, based on documented evidence of independent interoperable implementations and operational experience, that the protocol has met defined criteria (RFC 6410). What colloquially gets called "the HTTP standard" conflates two different moments — HTTP's publication as a specification, and, for the parts of HTTP that have reached that status, its attestation as an Internet Standard. These are not the same event, and the protocol's rules do not change between them; only its attested maturity status does.
 
 2. **An organization can implement a protocol perfectly without ever obtaining a standard certification.** A company can follow all ISO 9001 protocols internally without paying an auditor. Their processes may be excellent. They simply lack the external attestation.
 
@@ -160,7 +168,7 @@ This definition has several important consequences:
 
 4. **Standardization (the activity) is not the same as a standard (the attestation).** Organizations like ISO engage in standardization — the activity of defining protocols, promoting their adoption, and accrediting auditors who verify implementation. This activity is valuable and necessary. But the *word* "standard" should refer to the attestation, not to the protocols being standardized.
 
-**Note on colloquial usage:** This precise definition differs from how "standard" is commonly used. In everyday language, people say "HTTP standard" or "industry standard" to mean "widely adopted protocol." This RFC adopts the precise definition: a standard is an attestation of protocol institutionalization. This is not pedantry — it is the same kind of precision that distinguishes "the earth is spherical" from "the earth is flat." Widespread usage does not make imprecise usage correct.
+**Note on colloquial usage:** This precise definition differs from how "standard" is commonly used. In everyday language, people say "HTTP standard" or "industry standard" to mean "widely adopted protocol." This RFC adopts the precise definition: a standard is a third-party attestation — either of an organization's institutionalization of a protocol, or of a protocol's own technical maturity. This is not pedantry — it is the same kind of precision that distinguishes "the earth is spherical" from "the earth is flat." Widespread usage does not make imprecise usage correct.
 
 ### Protocol vs Specification
 A specification is *how* something is documented. A protocol is *what* is documented. But this distinction, while correct, misses a deeper difference: **a protocol requires a methodology for its production; a specification does not.**
@@ -237,8 +245,8 @@ Regardless of which ontology candidate is ultimately adopted, the following prop
 - **Behavior-free:** A Protocol specifies behavioral *expectations* (what should happen) but does not contain behavioral *implementations* (how to make it happen).
 - **Composable:** Protocols can reference, extend, or compose other protocols. A secure messaging protocol might extend a base messaging protocol by adding encryption requirements.
 - **Identity-free:** A Protocol does not define or confer identity on its implementers. Multiple implementers of the same Protocol are independent entities.
-- **Process-bound:** A Protocol governs a process within a system. A protocol without a process it governs is not a protocol — it is inert text. This is the property that distinguishes protocols from general rule sets like style guides or personal preferences.
-- **Methodologically produced:** A Protocol is the output of a structured method that constrains its form. Arbitrary text is not a protocol, even if it describes rules. The methodology ensures the output actually governs a process verifiably.
+- **Process-bound:** A Protocol governs one or more processes within a system. A process may itself contain an indeterminate number of nested sub-processes, and a Protocol may bind to a process at any level of this hierarchy, or govern several processes at once. A protocol with no process it governs, at any level, is not a protocol — it is inert text. This is the property that distinguishes protocols from general rule sets like style guides or personal preferences.
+- **Methodologically produced:** A Protocol is the product of a structured method applied across its full lifecycle — from initial ideation, through structured proposal and formulation, to critical review and validation. Methodology is not limited to a final verification step; it also governs how the underlying idea is formed and disciplined in the first place, just as reasoning itself depends on learned structures (language, domain training, disciplinary method) rather than occurring in a vacuum. However, an idea or draft, however well-considered, does not by itself carry Protocol status. It must pass through this structured refinement before it earns that status — mirroring, without being identical to, the progression from idea to hypothesis to tested theory in science. A text that has not undergone this progression remains a draft or proposal, not a Protocol.
 
 ### Protocol Relationships
 Protocols relate to each other in several ways. These relationships are important to name explicitly because many discussions about "inheritance" in software are actually about protocol relationships, and importing inheritance terminology imports assumptions from programming language history that may not apply:
@@ -331,6 +339,7 @@ Without this RFC, the term "Protocol" remains undefined in the Memar framework. 
 - **CORBA IDL, Protocol Buffers:** Interface Definition Languages that define protocols or data schemas in a language-agnostic way.
 
 ## Unresolved Questions
+- **Foundational Dependency on System and Process:** This RFC's ontology depends on System and Process as prerequisite concepts. Neither currently has a dedicated Memar RFC. Until such RFCs exist, System and Process are treated as intuitively-understood primitives (drawn from systems theory) rather than formally defined Memar concepts. This dependency should be revisited once System and/or Process RFCs are drafted, and this RFC's Related RFCs field should be updated accordingly at that time.
 - **Protocol Versioning:** How should protocols evolve while maintaining backward compatibility? This RFC does not prescribe a versioning strategy, but versioning is crucial in practice (HTTP/1.1 to HTTP/2, HL7 v2 to FHIR).
 - **Cross-Module and Cross-Organizational Protocols:** Can protocols span modules within a system or organizations? How is conformance coordinated when no single authority governs both sides? We assume an independent protocol definition can be imported as needed, but coordination mechanisms remain undefined.
 - **Runtime Conformance Checks:** Protocols are fundamentally static specifications. Should there ever be optional runtime conformance verification? Generally no, but some domains (e.g., security protocols) might benefit. This is a tooling question that interacts with the EBO principle.
@@ -360,13 +369,9 @@ In a subsequent review cycle, the Protocol definition was substantially revised 
 - Strengthen the ontology candidate analysis by evaluating each against the process and system requirements.
 - Add "Process-bound" and "Methodologically produced" to the Protocol Properties list.
 
-## Related RFCs
-
-| **RFC** | **Relationship** |
-|---------|-----------------|
-| explicit_behavior_ownership.md | **Extends.** Defines the design principle that governs how protocols are implemented (no default behavior, no implicit acquisition). |
-| khayyam-rejection_of_inheritance.md | **Independent.** Addresses language-level decisions about inheritance; references Protocol definition from this RFC. |
-| khayyam-protocols_vs_contracts.md | **See also.** Related concept; this RFC refines the Protocol side of that distinction. |
-| khayyam-error_abstraction.md | **References.** Uses Protocols to define abstract error interfaces. |
-| khayyam-rejection_of_default_implementations.md | **Superseded by** explicit_behavior_ownership.md. Default implementations violate protocol purity. |
-| khayyam-rejection_of_method_promotion.md | **Superseded by** khayyam-rejection_of_inheritance.md. Method promotion is a form of implicit behavior inheritance. |
+In a further review cycle (critical review with Claude), the Protocol definition was refined to:
+- Distinguish idea/discovery from structured lifecycle development within the "Methodologically produced" property, so that the property does not read as requiring committee-style production from the first moment of ideation, while still holding that an unrefined idea or draft does not by itself carry Protocol status — analogous to the idea → hypothesis → tested theory progression in science.
+- Add non-software examples of protocol-production methodology (diplomatic treaty negotiation, clinical research ethics review) alongside the existing Khayyam `ab` example, so the property is not illustrated by software alone.
+- Correct process cardinality: a Protocol governs "one or more processes," not "a process," and processes may themselves be nested into sub-processes, with a Protocol able to bind at any level of that hierarchy.
+- Flag System and Process as undefined foundational dependencies in Unresolved Questions, pending dedicated Memar RFCs for each.
+- Refine Protocol vs Standard to distinguish two forms of third-party attestation — institutionalization attestation (the ISO 9001 model) and maturity attestation (the IETF Internet Standard model, per RFC 6410's criteria of independent interoperable implementations and operational experience) — correcting the prior framing that treated IETF ratification as mere colloquial misuse rather than a genuine, if differently-scoped, attestation.
