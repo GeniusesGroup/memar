@@ -4,7 +4,11 @@ Status: Proposed
 Start Date: 2026-07-10
 RFC Number: 495465
 Applied to: ["*"]
-Related RFCs: []
+Related RFCs: 
+  - Title: "Terminology"
+    URI: "./terminology.md"
+    Reason: "Foundation Alignment"
+    Explanation: "Terminology governs how concepts are understood across protocol"
 Contributor(s):
   - name: "Omid Hekayati"
     uri: "mailto:omid@geniuses.group"
@@ -184,6 +188,26 @@ This distinction is visible in practice:
 
 Whether a protocol and its specification are identical remains an open philosophical question, but for practical purposes in Memar, they are treated as distinct: the protocol is the conceptual entity (the rules governing a process); the specification is its documentation (the text describing those rules). The methodology produces the protocol; the specification records it.
 
+### Protocol vs API Specification
+
+Within software engineering specifically, "protocol" and "API specification" are used almost interchangeably in casual discussion — "the API spec" and "the protocol" are often treated as two names for the same artifact. The general Protocol vs Specification distinction above applies here directly, but the API case deserves its own treatment, both because the conflation is extremely common in practice and because it is the specific instance the Terminology RFC's Motivation section points to as an example of a broader terminology failure (see the Terminology RFC).
+
+An API specification — an OpenAPI/Swagger document, a gRPC `.proto` file, a GraphQL schema, a WSDL file — is a document, in a particular machine-readable or human-readable format, describing one particular interface's endpoints, message shapes, and invocation conventions. It is a specification in the sense already defined: it can, in principle, be produced simply by writing it down in the required format, and two people working independently could easily produce two different, non-equivalent API specifications while both intending to describe the same underlying interaction rules.
+
+A Protocol, in the sense defined by this RFC, is the underlying, named set of declarative rules that govern the process those endpoints participate in — the ordering constraints, the required message content, the state transitions, the error semantics — independent of which document format is used to write those rules down, and independent of which programming language or framework will eventually implement them.
+
+The relationship becomes concrete with a familiar case. HTTP is a protocol: a named set of rules governing request/response exchange between a client and a server process, defined independently of any particular API. An OpenAPI document describing one specific web service's endpoints is a specification: it documents one particular application of HTTP, plus that service's own conventions, to one particular set of resources. The OpenAPI document did not create HTTP as a protocol, and rewriting that OpenAPI document in a different format — a hand-written Markdown table, for instance — would not change the underlying protocol the API implements, provided the actual rules governing the interaction stayed the same.
+
+This produces consequences that matter for Memar development in practice:
+
+1. **Two API specifications, written in different formats or conventions, can describe the same protocol.** A REST API described in OpenAPI and an equivalent RPC-style API described in a `.proto` file can, in principle, govern the same underlying process with the same rules, expressed through two different specification formats and two different technology-level conventions. Confusing "the protocol" with "the OpenAPI document" makes this equivalence invisible, and can lead a team to treat a migration between API styles as a protocol change when it is only a specification-format change — or the reverse, treating an actual protocol change as a harmless format migration.
+
+2. **A single API specification routinely bundles several distinct protocols.** A typical OpenAPI document usually documents authentication (governed by whatever auth protocol — OAuth2, API keys, mTLS — the service uses), the resource-manipulation interaction itself (governed by HTTP's own protocol rules plus the service's own resource-state-transition rules), and often versioning or pagination conventions that are themselves small protocols in their own right. Treating "the API spec" as one undifferentiated unit obscures the fact that several independent protocols, each with its own conformance rules and its own evolution path, have been bundled into a single document for convenience.
+
+3. **A protocol can exist, and be reasoned about, before any API specification for it has been written.** Because a Protocol is methodologically produced (see "Protocol, Science, and Methodology," above) and is process-bound rather than document-bound, Memar contributors can define and critique a protocol's rules directly — as this RFC does for the general concept of Protocol itself — without first committing to an API specification format. The specification should be derived from an already-validated protocol, not the reverse; a protocol should not be inferred backward from whatever specification format a team happened to reach for first. This is the Concept-First-Thinking discipline the Terminology RFC establishes generally, applied to the specific case of API design.
+
+Confusing these two concepts introduces implementation assumptions into architectural discussions that have no legitimate place there: a debate that is actually about a protocol's rules (should this operation be idempotent? what happens on partial failure?) gets misdiagnosed as a debate about specification format (should we use OpenAPI or a `.proto` file?), and vice versa. Protocols should be understood, designed, and critiqued independently of any particular specification format, framework, language, or vendor ecosystem; the specification is the document that, once the protocol is settled, records it for a particular audience and toolchain.
+
 ### Protocol vs Interface
 Programming languages introduce constructs named "interface" (Java, Go), "protocol" (Swift), and "trait" (Rust). These are *code-level counterparts* of the broader concept of Protocol. They may represent partial aspects of the general concept — typically the structural requirement that certain methods or operations must exist. However, these language constructs often carry additional baggage: default implementations (Swift protocols, Rust traits), implicit behavior acquisition (Go embedding), or type-system constraints that go beyond pure interaction rules.
 
@@ -251,9 +275,11 @@ Regardless of which ontology candidate is ultimately adopted, the following prop
 ### Protocol Relationships
 Protocols relate to each other in several ways. These relationships are important to name explicitly because many discussions about "inheritance" in software are actually about protocol relationships, and importing inheritance terminology imports assumptions from programming language history that may not apply:
 
-- **Protocol Extension:** One protocol adds requirements on top of another. HTTP/2 extends HTTP by defining a new framing layer while preserving the semantic model. This is a *declarative* relationship — the extended protocol inherits *requirements*, not behavior.
+- **Protocol Extension:** One protocol adds requirements on top of another, introducing a new dimension of requirement the base protocol did not address at all. HTTP/2 extends HTTP by defining a new framing layer while preserving the semantic model. This is a *declarative* relationship — the extended protocol inherits *requirements*, not behavior.
 
-- **Protocol Refinement:** A protocol narrows or constrains another. A "JSON-only" variant of a protocol refines the original by restricting the acceptable content types.
+- **Protocol Refinement:** A protocol narrows the acceptable value space of a requirement the base protocol already made, without introducing a new dimension of requirement. BSON refines JSON in this sense: BSON does not introduce a kind of requirement JSON entirely lacked — both remain structured, self-describing document formats — it constrains and extends JSON's existing type system, adding explicit binary and date types where JSON only offered generic numbers and strings, while preserving JSON's own document-shape rules.
+
+The formal boundary between Extension and Refinement is not yet fully settled. Because adding any new requirement necessarily also shrinks the set of conforming implementations, every Extension is, in one sense, also a restriction. The working distinction above — Extension adds a new *dimension* of requirement; Refinement narrows the *value space* of a dimension the base protocol already had — is a first approximation, flagged as an open question below rather than treated as settled.
 
 - **Protocol Composition:** Multiple protocols are combined. A "secure file transfer" protocol might compose a file transfer protocol with a security protocol. Each constituent protocol retains its identity; the composition creates a new, compound set of requirements.
 
@@ -340,6 +366,7 @@ Without this RFC, the term "Protocol" remains undefined in the Memar framework. 
 
 ## Unresolved Questions
 - **Foundational Dependency on System and Process:** This RFC's ontology depends on System and Process as prerequisite concepts. Neither currently has a dedicated Memar RFC. Until such RFCs exist, System and Process are treated as intuitively-understood primitives (drawn from systems theory) rather than formally defined Memar concepts. This dependency should be revisited once System and/or Process RFCs are drafted, and this RFC's Related RFCs field should be updated accordingly at that time.
+- **Extension vs. Refinement boundary:** What is the precise, non-example-dependent formal criterion that separates Protocol Extension from Protocol Refinement? The working distinction (a new requirement dimension vs. a narrowed value space within an existing dimension) needs to be tested against more cases — BSON vs. JSON, HTTP/2 vs. HTTP/1.1, and others — before it can be considered settled.
 - **Protocol Versioning:** How should protocols evolve while maintaining backward compatibility? This RFC does not prescribe a versioning strategy, but versioning is crucial in practice (HTTP/1.1 to HTTP/2, HL7 v2 to FHIR).
 - **Cross-Module and Cross-Organizational Protocols:** Can protocols span modules within a system or organizations? How is conformance coordinated when no single authority governs both sides? We assume an independent protocol definition can be imported as needed, but coordination mechanisms remain undefined.
 - **Runtime Conformance Checks:** Protocols are fundamentally static specifications. Should there ever be optional runtime conformance verification? Generally no, but some domains (e.g., security protocols) might benefit. This is a tooling question that interacts with the EBO principle.
@@ -375,3 +402,7 @@ In a further review cycle (critical review with Claude), the Protocol definition
 - Correct process cardinality: a Protocol governs "one or more processes," not "a process," and processes may themselves be nested into sub-processes, with a Protocol able to bind at any level of that hierarchy.
 - Flag System and Process as undefined foundational dependencies in Unresolved Questions, pending dedicated Memar RFCs for each.
 - Refine Protocol vs Standard to distinguish two forms of third-party attestation — institutionalization attestation (the ISO 9001 model) and maturity attestation (the IETF Internet Standard model, per RFC 6410's criteria of independent interoperable implementations and operational experience) — correcting the prior framing that treated IETF ratification as mere colloquial misuse rather than a genuine, if differently-scoped, attestation.
+
+In a further review cycle, following the Terminology RFC's own review:
+- Added a dedicated "Protocol vs API Specification" section, migrating and substantially expanding the treatment that previously lived, in simplified and slightly inconsistent form, inside the Terminology RFC's worked examples. This keeps Terminology free of dependencies on other RFCs (per that RFC's own foundational-RFC positioning) while giving the API-specification case — the single most common real-world instance of the protocol/specification conflation — a treatment grounded in this RFC's actual finalized definitions, rather than the simplified restatement that previously appeared elsewhere.
+- Replaced the abstract "JSON-only variant" example under Protocol Refinement with the concrete BSON-vs-JSON case, and made explicit that the formal boundary between Protocol Extension and Protocol Refinement remains unresolved, rather than implying the two examples given settle the distinction.
