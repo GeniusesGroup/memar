@@ -57,35 +57,16 @@ Khayyam is designed for building high-performance libraries and applications whe
 In Khayyam, abstractions can include other abstractions. When an abstraction includes another, it extends the set of requirements that conforming capsules must satisfy:
 
 ```khayyam
-tp Hasher ab {}
+tp DataType ab {}
 
-tp hash mt (self Hasher) (data Bytes) (h UInt64)
-
-tp SaltyHasher ab {
-    Hasher
+tp Error ab {
+    DataType
 }
-
-tp salt mt (self SaltyHasher) () (h Bytes)
 ```
 
-`SaltyHasher` includes `Hasher`, meaning any capsule that conforms to `SaltyHasher` must define both `hash()` and `salt()`. No behavior is transferred — the inclusion is purely declarative. The capsule that implements `SaltyHasher` owns every method it defines.
+`Error` includes `DataType`, meaning any capsule that conforms to `Error` must define DataType too. No behavior is transferred — the inclusion is purely declarative. The capsule that implements `Error` owns every method it defines.
 
 This is inheritance in its correct sense: requirements flow from one abstraction to another, and the implementing capsule explicitly satisfies all of them.
-
-### Subtyping Through Abstraction Conformance
-Abstraction inclusion creates a subtyping relationship. A capsule that conforms to `SaltyHasher` can be used wherever `Hasher` is expected, because `SaltyHasher` includes `Hasher`'s requirements. This is a structural subtyping relationship based on abstraction extension, not on behavior transfer.
-
-For example, a function that accepts any `Hasher`:
-
-```khayyam
-tp Process mt (self Service) (h Hasher) (data Bytes) -> UInt64 {
-    return h.hash(data)
-}
-```
-
-A capsule that conforms to `SaltyHasher` (and therefore also to `Hasher`) can be passed to this function. The subtyping is established at the abstraction level; the behavior is owned by the conforming capsule.
-
-This is one of the forms that polymorphism takes in Khayyam. A deeper treatment of polymorphism is left to a dedicated RFC.
 
 ### Capsule Composition: No Method Promotion
 A capsule can contain other capsules as internal fields. However, **embedding a capsule does not automatically expose the inner capsule's methods to the outer capsule.** If a host capsule needs to expose a behavior of an embedded capsule, the developer must explicitly define a method on the host capsule and delegate the call.
@@ -232,7 +213,6 @@ If Khayyam allowed behavior transfer between capsules, every subsequent design d
 - **Performance Benchmarking:** What is the actual runtime performance impact of explicit delegation compared to behavior-transfer-based dispatch? Early evidence from Zig and similar systems suggests the overhead is negligible, but formal benchmarking is needed.
 - **Code Generation Standards:** What are the standards for AI or tooling-generated delegation code? Should generated code be marked with specific annotations? Should there be a standard directory or naming convention for generated files?
 - **Abstraction Inclusion Depth:** How deep can abstraction inclusion chains go (abstraction A includes B includes C)? Is there a practical limit, and does it introduce any of the visibility problems that behavior transfer creates? The current position is that inclusion depth is not inherently problematic because no behavior is transferred.
-- **Polymorphism in Khayyam:** Subtyping through abstraction conformance is one form of polymorphism. What other forms does Khayyam support, and how do they interact with EBO? A dedicated RFC is needed.
 
 ## Future Possibilities
 - **AI-Assisted Delegation Scaffolding:** The linter and IDE tooling could automatically generate explicit delegation methods when a developer composes capsules, reducing the boilerplate of explicit delegation while preserving source-level visibility.
@@ -247,6 +227,5 @@ This RFC was originally titled "Rejection of Inheritance" and framed Khayyam's p
 
 Content was incorporated from multiple sources beyond the original monolithic document:
 - **Working notes:** The Go embedding clarification was extracted from the working notes and integrated as a core argument. The meta-observation about what "inheritance" debates are really about was initially integrated here but subsequently moved to the Explicit Behavior Ownership RFC during terminology and content review — it is a general conceptual argument, not a language-specific design decision.
-- **Khayyam-compiler.md:** The "Composition over Inheritance (No Method Promotion)" section provided the formal compiler rules.
 - **Khayyam-linter.md:** The "Explicit Delegation Verification" and "Anti-Lazy Inheritance Check" sections provided the linter enforcement rules.
 - **Khayyam.md:** The abstraction definition and conformance model provided the context for how Khayyam handles the relationship between capsules and abstractions without behavior transfer.

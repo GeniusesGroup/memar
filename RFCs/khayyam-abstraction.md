@@ -5,14 +5,19 @@ Start Date: 2026-07-11
 RFC Number: 495493
 Applied to: ["Khayyam.md#Abstraction"]
 Related RFCs:
-    - Title: "RFC 000003"
-      URI: ""
+    - Title: "Library-Driven Control Flow"
+      URI: "./khayyam-library_driven_control_flow.md"
       Reason: "Depends_on"
-      Explanation: "This RFC builds on the precedent set by RFC 000003 of keeping behavioral policies as ordinary library-driven mechanisms rather than new syntax."
+      Explanation: "This RFC builds on the precedent set by RFC of keeping behavioral policies as ordinary library-driven mechanisms rather than new syntax."
 Contributor(s):
   - Name: "Omid Hekayati"
     URI: "mailto:omid@geniuses.group"
-    Contribution: "Defined the core abstraction model, contributed the Smart Compilation strategy, and authored the pure-contract philosophy."
+    Contribution: "Defined the core abstraction model and authored the pure-contract philosophy."
+    Tasks: []
+    URI: "https://gemini.google.com/"
+    Model: "3.1 pro"
+    Effort: "Extended thinking enabled"
+    Contribution: "Drafted initial some text in this RFC"
     Tasks: []
   - Name: "Claude"
     URI: "https://claude.ai"
@@ -20,21 +25,26 @@ Contributor(s):
     Effort: "Medium - extended thinking enabled"
     Contribution: "Identified the structural-vs-nominal tension, drafted the intentional-satisfaction problem statement, argued for and against alternatives, consolidated multiple RFCs into this unified document."
     Tasks: []
+  - Name: "Super Z"
+    URI: "https://z.ai"
+    Model: "GLM"
+    Effort: "Medium"
+    Contribution: "Merged RFC content into this RFC"
+    Tasks: []
 ---
 
 # Abstraction in Khayyam
 Abstractions in Khayyam occupy a conceptual space closely related to [IDL (Interface Description Language)](https://en.wikipedia.org/wiki/Interface_description_language) as used in protocol packages: both describe behavioral contracts that specify *what* is required without prescribing implementation details. Just as an IDL defines the data and operations exchanged between parties in a protocol, a Khayyam abstraction defines the method signatures a capsule must expose — serving as the language-level counterpart to a protocol specification.
 
-This RFC consolidates all design decisions, resolved policies, and open questions related to the `ab` (abstraction) type in Khayyam into a single authoritative document. It supersedes two prior drafts — RFC 495390 ("Intentional Abstraction Satisfaction") and RFC 000017 ("Rejection of Default Implementations") — and merges them with the existing Smart Compilation and DX Scaffolding content into one cohesive specification.
+This RFC consolidates all design decisions, resolved policies, and open questions related to the `ab` (abstraction) type in Khayyam into a single authoritative document. It supersedes two prior drafts — RFC 495390 ("Intentional Abstraction Satisfaction") and RFC 000017 ("Rejection of Default Implementations") — and merges them with the existing DX Scaffolding content into one cohesive specification.
 
 ## Summary
-Khayyam's abstraction (`ab`) is a **pure contract mechanism** with four resolved design properties and one open question:
+Khayyam's abstraction (`ab`) is a **pure contract mechanism** with three resolved design properties and one open question:
 
 1. **No executable logic.** An abstraction contains no method bodies — it describes *what* is required, never supplies *how*. Default implementations (as in Rust traits or Java `default` interface methods) are explicitly rejected.
-2. **No generic syntax.** Khayyam avoids explicit type-parameter syntax (`<T>`, `[T]`) entirely. Polymorphism is achieved through the abstraction contract itself; the compiler resolves the concrete implementation strategy.
-3. **Smart compilation.** The compiler analyzes the dependency graph and automatically chooses between monomorphization (zero-cost, compile-time inlining) and dynamic dispatch (runtime VTable resolution), freeing the developer from manual dispatch management.
-4. **Implicit structural satisfaction.** A capsule satisfies an abstraction if it implements all required methods with matching signatures. No explicit `impl` or `implements` keyword exists.
-5. **Open question — intentional satisfaction.** Whether purely structural satisfaction carries an accidental-satisfaction risk (as it does in Go), and if so, whether a mitigation mechanism is needed without compromising Khayyam's minimalism.
+2. **No generic syntax.** Abstractions carry no type parameters. Polymorphism classification and the rejection of generic syntax are documented in RFC 495494 (Polymorphism).
+3. **Implicit structural satisfaction.** A capsule satisfies an abstraction if it implements all required methods with matching signatures. No explicit `impl` or `implements` keyword exists.
+4. **Open question — intentional satisfaction.** Whether purely structural satisfaction carries an accidental-satisfaction risk (as it does in Go), and if so, whether a mitigation mechanism is needed without compromising Khayyam's minimalism.
 
 ## Motivation
 
@@ -51,7 +61,7 @@ Khayyam needs a single, coherent abstraction model that is consistent with its c
 ### Concrete Pain Points Addressed
 - **Go's accidental satisfaction problem.** In Go's structural typing system, any type with matching method signatures accidentally satisfies an interface. For marker-like abstractions (e.g., a small `Error` interface), an unrelated capsule can qualify without its author ever intending this. This RFC records this risk as an open question specific to Khayyam.
 - **Rust's `impl` ceremony.** Rust requires explicit `impl Trait for Type` declarations at every implementation site. While this eliminates accidental satisfaction, it adds boilerplate that scales linearly with the number of abstraction-capsule pairs — in tension with Khayyam's minimalism goals for the common case.
-- **Java/C# generic syntax complexity.** Explicit type parameters (`<T>`) force developers to expose implementation details that violate the principle of information hiding. They also create a separate dimension of syntax complexity that Khayyam's design philosophy rejects.
+- **Java/C# generic syntax complexity.** Explicit type parameters (`<T>`) force developers to expose implementation details that violate the principle of information hiding. Khayyam avoids this by carrying no type parameters on abstractions — see RFC 495494 for the full polymorphism classification and rationale.
 - **Default method inheritance confusion.** Rust's default trait methods and Java's `default` interface methods silently provide behavior from an abstraction, blurring the line between contract and implementation and making the execution path harder to reason about at compile time.
 
 ## Guide-level explanation
@@ -104,7 +114,6 @@ r = myFileReader  // validated at compile time
 ### What You Cannot Do
 
 - You **cannot** put a method body inside an abstraction definition. Abstractions are pure contracts.
-- You **cannot** use generic syntax like `<T>` or `[T]`. Polymorphism is handled through the abstraction contract itself, not through type parameters.
 - You **cannot** use a capsule type as an argument or return type in an abstraction's method signature — only other abstractions are allowed, ensuring the contract remains implementation-agnostic.
 - You **cannot** explicitly declare "I implement this abstraction" using any keyword. Satisfaction is structural.
 - You **cannot** define default implementations in an abstraction. Shared behavior must use explicit delegation to an ordinary capsule.
@@ -128,23 +137,9 @@ This is deliberate, visible boilerplate. It keeps the execution path 100% explic
 
 ## Reference-level explanation
 
-### Smart Compilation of Abstractions
+### Dispatch Strategy
 
-Khayyam avoids explicit generic syntax (like `<T>`). Abstractions are pure contracts, and the compiler is responsible for determining the optimal implementation strategy based on what it can prove at compile time.
-
-The compiler MUST analyze the dependency graph to determine the implementation strategy for an abstraction. Two strategies exist:
-
-- **Compile-Time (Monomorphization):** If the exact underlying capsule satisfying the abstraction is known at compile time, the compiler MUST inline the code, resulting in zero-cost abstraction. The abstraction exists only at the type-checking level; at the machine-code level, the call is a direct jump to the concrete method. This is the same principle behind Rust's "zero-cost abstraction" guarantee, but in Khayyam it is achieved without any generic syntax — the compiler deduces monomorphization opportunity from the dependency graph, not from explicit type-parameter annotations.
-
-- **Run-Time (Dynamic Dispatch):** If the capsule is hidden or determined dynamically, the compiler automatically implements a VTable/Interface mechanism for runtime resolution. This introduces the standard one-indirection-per-call overhead of dynamic dispatch, which is the accepted cost of runtime polymorphism in every systems language.
-
-The decision between these two strategies is driven by the **reachability graph** of the abstraction usage. If the compiler can trace every possible concrete capsule that could satisfy the abstraction at a given usage site (a closed set), it monomorphizes. If at least one possible capsule is unresolved at compile time (an open set — e.g., loaded from a plugin, determined by configuration, or passed across a module boundary where the full set is not visible), it falls back to dynamic dispatch.
-
-This is not an all-or-nothing decision. Within a single codebase, the same abstraction `Reader` may be monomorphized at some call sites and dynamically dispatched at others, depending on what the compiler can prove at each specific location.
-
-### Covariant Return Types
-
-Khayyam inherently supports covariant return types. If an abstraction dictates a method must return Abstraction `A`, a capsule can implement this method by returning Capsule `B` (as long as `B` implements `A`). This is a natural consequence of the structural satisfaction model and requires no special syntax or annotation.
+The compiler's mechanism for resolving polymorphic calls (monomorphization vs. dynamic dispatch) is documented in RFC 495494 (Polymorphism).
 
 ### Abstraction Realization (Implicit Satisfaction)
 
@@ -221,7 +216,7 @@ If the open question on intentional satisfaction is later resolved in favor of r
 
 ### Why This Design Over Alternatives
 
-**Against explicit generic syntax (`<T>`, `[T]`):** Explicit type-parameter syntax forces developers to expose implementation details (what concrete types a function operates on) that violate the principle of information hiding. It also creates a separate dimension of syntax complexity. Khayyam's approach — letting the compiler infer the dispatch strategy from the dependency graph — achieves the same performance outcomes without the syntax surface area. Polymorphism is about code reuse, not about teaching the compiler how to do its job.
+**Against explicit generic syntax (`<T>`, `[T]`):** Abstractions carry no type parameters. The full classification of Khayyam's polymorphism model and the rationale for rejecting generic syntax are documented in RFC 495494.
 
 **Against Rust's `impl` ceremony:** While Rust's explicit `impl Trait for Type` eliminates accidental satisfaction, it adds boilerplate at every implementation site. In a large codebase with many abstraction-capsule pairs, this scales poorly and is in tension with Khayyam's minimalism goals for the common case. The current structural model is simpler and more ergonomic; the accidental-satisfaction risk is recorded as an open question for targeted mitigation, not as a reason to adopt full nominal typing.
 
@@ -231,13 +226,7 @@ If the open question on intentional satisfaction is later resolved in favor of r
 
 ### The Pure Contract Philosophy
 
-Khayyam treats abstraction as a pure contractual agreement, entirely avoiding generic syntax (e.g., `<T>`, `[T]`). The rationale is that explicitly defining type parameters in the syntax forces developers to expose implementation details, violating the core principle of Information Hiding. This leads to two key design principles:
-
-- **Contract-First Approach:** Abstractions in Khayyam represent behavior. If an abstraction requires an `Element`, it simply accepts `Element`. Any capsule that satisfies this interface is valid. The abstraction does not care about the concrete capsule's internal structure — it only cares about the behavioral contract.
-
-- **The Intelligence of the Compiler:** Instead of forcing developers to choose between compile-time and runtime polymorphism via syntax, the Khayyam compiler analyzes the codebase graph. It intelligently optimizes the implementation — applying monomorphization (compile-time) where specific types are known, or dynamic dispatch (runtime) where flexibility is required.
-
-- **Why this works:** Polymorphism is about **code reuse**, not about teaching the compiler how to do its job. By keeping syntax minimal, we allow the compiler to innovate in how it resolves these abstractions, keeping the source code clean and focused on domain logic rather than type-system boilerplate.
+Khayyam treats abstraction as a pure contractual agreement. An abstraction represents behavior: if it requires an `Element`, it simply accepts `Element`. Any capsule that satisfies this interface is valid. The abstraction does not care about the concrete capsule's internal structure — it only cares about the behavioral contract. This "Contract-First Approach" means abstractions are implementation-agnostic by construction.
 
 ### The Three Directions on Intentional Satisfaction
 
@@ -247,7 +236,7 @@ Three potential resolutions exist for the open question of intentional vs. accid
 
 **(b) Require explicit, nominal declaration for every abstraction implementation.** Along the lines of Rust's `impl Trait for Type`. Eliminates the risk entirely, but adds ceremony to every implementation site and is a significant, backward-incompatible change to a philosophy Khayyam currently states as a feature ("Contract-First Approach").
 
-**(c) A hybrid model.** Structural satisfaction remains the default, but specific abstractions — those identified as small, marker-like, or identity-bearing — can opt into requiring an explicit declaration. This would need a formal criterion for which abstractions qualify, and a library-driven (not new-keyword) mechanism for declaring it, consistent with RFC 000003's precedent of keeping such behaviors as ordinary method calls rather than new syntax.
+**(c) A hybrid model.** Structural satisfaction remains the default, but specific abstractions — those identified as small, marker-like, or identity-bearing — can opt into requiring an explicit declaration. This would need a formal criterion for which abstractions qualify, and a library-driven (not new-keyword) mechanism for declaring it, consistent with "Library-Driven Control Flow" RFC's precedent of keeping such behaviors as ordinary method calls rather than new syntax.
 
 ## Prior art
 
@@ -257,18 +246,18 @@ Go's interfaces are the closest existing model to Khayyam's abstraction design. 
 
 ### Rust — Traits (Nominal Typing, Default Methods)
 
-Rust's traits use fully nominal typing with explicit `impl Trait for Type` declarations. This eliminates accidental satisfaction entirely. Rust also supports default method bodies in traits, which provide shared behavior without requiring implementers to write delegation code. The cost is mandatory ceremony at every implementation site and the implicit routing behavior of default methods (a trait's default method body executes in the context of the concrete type, creating a form of multiple dispatch that can be surprising). Khayyam adopts Rust's zero-cost abstraction goal but achieves it through compiler graph analysis rather than explicit generic syntax, and explicitly rejects default method bodies.
+Rust's traits use fully nominal typing with explicit `impl Trait for Type` declarations. This eliminates accidental satisfaction entirely. Rust also supports default method bodies in traits, which provide shared behavior without requiring implementers to write delegation code. The cost is mandatory ceremony at every implementation site and the implicit routing behavior of default methods (a trait's default method body executes in the context of the concrete type, creating a form of multiple dispatch that can be surprising). Khayyam explicitly rejects default method bodies.
 
 ### Java — Interfaces (Nominal Typing, Default Methods, Generics)
 
-Java's interfaces use nominal typing with `implements` declarations. Since Java 8, interfaces support `default` methods with executable bodies. Java also has full generic syntax (`<T>`). This combination provides maximum flexibility but at the cost of significant syntax complexity and the same implicit routing concerns as Rust's default methods. Khayyam explicitly avoids both the generic syntax and the default method mechanism.
+Java's interfaces use nominal typing with `implements` declarations. Since Java 8, interfaces support `default` methods with executable bodies. Java also has full generic syntax (`<T>`), whose rejection is documented in RFC 495494 (Polymorphism). This combination provides maximum flexibility but at the cost of significant syntax complexity and the same implicit routing concerns as Rust's default methods. Khayyam explicitly rejects the default method mechanism.
 
 ### TypeScript — Structural Typing (Compile-Time Only)
 
 TypeScript's type system uses structural typing for interface satisfaction, closely mirroring Go's model. TypeScript interfaces can describe object shapes, and any object with matching properties satisfies the interface. TypeScript has no default method implementations (its interfaces are purely type-level, erased at runtime). The accidental-satisfaction risk exists but is less practically concerning because TypeScript interfaces are not used as runtime dispatch mechanisms. Khayyam's abstractions, by contrast, have runtime implications (VTable generation), making accidental satisfaction a potentially more serious issue.
 
 ### Zig — No Built-in Interfaces (Comptime-Based Alternatives)
-Zig takes the most radical minimalist approach: it has no interface or trait mechanism at all. Generic behavior is achieved through `comptime` (compile-time code execution) and duck typing at the generic function level. This provides maximum simplicity but shifts the entire burden of polymorphism to the developer. Khayyam's design occupies a middle ground: it provides a first-class abstraction type for cleaner API contracts, but delegates the dispatch strategy decision to the compiler.
+Zig takes the most radical minimalist approach: it has no interface or trait mechanism at all. Generic behavior is achieved through `comptime` (compile-time code execution) and duck typing at the generic function level. This provides maximum simplicity but shifts the entire burden of polymorphism to the developer. Khayyam's design occupies a middle ground: it provides a first-class abstraction type for cleaner API contracts while keeping the language grammar minimal.
 
 ### Haskell — Typeclasses (Nominal, No Defaults in the Language Core)
 
