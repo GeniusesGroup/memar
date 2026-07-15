@@ -1,14 +1,18 @@
 ---
 Title: "Protocol"
 Status: Proposed
-Start Date: 2026-07-10
-RFC Number: 495465
+Start Date: 2026-06-21
+RFC Number: 495002
 Applied to: ["*"]
-Related RFCs: 
+Related RFCs:
   - Title: "Terminology"
     URI: "./terminology.md"
     Reason: "Foundation Alignment"
     Explanation: "Terminology governs how concepts are understood across protocol"
+  - Title: "System"
+    URI: "./system.md"
+    Reason: "Depends_on"
+    Explanation: "System is now formally defined. This RFC's Protocol-Process-System ontology depends on System being a defined concept."
 Contributor(s):
   - name: "Omid Hekayati"
     uri: "mailto:omid@geniuses.group"
@@ -37,7 +41,7 @@ Contributor(s):
 # Protocol
 
 ## Summary
-This RFC defines the concept of **Protocol** as a general, domain-independent abstraction. **A Protocol is a named set of declarative rules that governs processes within a system**. It specifies *what* must happen within a process — formats, sequences, behavioral expectations, state transitions — without prescribing *how* those requirements are fulfilled. The definition is intentionally not limited to programming languages or software systems; it must remain valid across networking, diplomacy, science, medicine, industry, law, and organizational processes. This RFC establishes the inseparable relationship between protocols, processes, and systems, distinguishes Protocol from related but distinct concepts — Contract, Standard, Specification, Interface, and Policy — and provides an ontological foundation for all subsequent Memar RFCs that reference protocols.
+This RFC defines the concept of **Protocol** as a general, domain-independent abstraction. **A Protocol is a named set of declarative rules that governs processes within a [system](./system.md)**. It specifies *what* must happen within a process — formats, sequences, behavioral expectations, state transitions — without prescribing *how* those requirements are fulfilled. The definition is intentionally not limited to programming languages or software systems; it must remain valid across networking, diplomacy, science, medicine, industry, law, and organizational processes. This RFC establishes the inseparable relationship between protocols, processes, and systems, distinguishes Protocol from related but distinct concepts — Contract, Standard, Specification, Interface, and Policy — and provides an ontological foundation for all subsequent Memar RFCs that reference protocols.
 
 ## Motivation
 
@@ -365,7 +369,6 @@ Without this RFC, the term "Protocol" remains undefined in the Memar framework. 
 - **CORBA IDL, Protocol Buffers:** Interface Definition Languages that define protocols or data schemas in a language-agnostic way.
 
 ## Unresolved Questions
-- **Foundational Dependency on System and Process:** This RFC's ontology depends on System and Process as prerequisite concepts. Neither currently has a dedicated Memar RFC. Until such RFCs exist, System and Process are treated as intuitively-understood primitives (drawn from systems theory) rather than formally defined Memar concepts. This dependency should be revisited once System and/or Process RFCs are drafted, and this RFC's Related RFCs field should be updated accordingly at that time.
 - **Extension vs. Refinement boundary:** What is the precise, non-example-dependent formal criterion that separates Protocol Extension from Protocol Refinement? The working distinction (a new requirement dimension vs. a narrowed value space within an existing dimension) needs to be tested against more cases — BSON vs. JSON, HTTP/2 vs. HTTP/1.1, and others — before it can be considered settled.
 - **Protocol Versioning:** How should protocols evolve while maintaining backward compatibility? This RFC does not prescribe a versioning strategy, but versioning is crucial in practice (HTTP/1.1 to HTTP/2, HL7 v2 to FHIR).
 - **Cross-Module and Cross-Organizational Protocols:** Can protocols span modules within a system or organizations? How is conformance coordinated when no single authority governs both sides? We assume an independent protocol definition can be imported as needed, but coordination mechanisms remain undefined.
