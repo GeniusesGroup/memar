@@ -1,15 +1,14 @@
 ---
 Title: "Terminology"
 Status: Proposed
-Start Date: 2026-07-11
-RFC Number: 495495
+Start Date: 2026-06-21
+RFC Number: 495001
 Applied to: ["*"]
 Related RFCs: []
 Contributor(s):
   - Name: "Omid Hekayati"
     URI: "mailto:omid@geniuses.group"
-    Contribution: "Core concepts, terminology philosophy, architectural rationale, three-tier classification, critique of AI-drafted material, worked examples (heat pump, container/docker, cloud), position on independent AI review as interim external scrutiny."
-    Tasks: []
+    Works: ["Core concepts", "Terminology philosophy", "Architectural rationale", "Three-tier classification", "Critique of AI-drafted material", "Worked examples (heat pump, container/docker, cloud)", "Position on independent AI review as interim external scrutiny."]
   - Name: "ChatGPT"
     URI: "https://openai.com"
     Contribution: "Initial drafting, critique, synthesis"
@@ -18,14 +17,12 @@ Contributor(s):
     URI: "https://claude.ai"
     Model: "Claude Sonnet 5"
     Effort: ""
-    Contribution: "Critical review pass: flagged internal inconsistency in the Scientific-terms tier (conflation of mathematical, empirical, and philosophical epistemic categories), proposed explicit tier-assignment criteria for Technology and Scientific terms, identified inconsistency between an earlier draft's simplified Protocol example and the finalized Protocol RFC's ontology, grounded the concept-vs-representation pattern in genericized-trademark theory and prototype theory, reframed 'independent verification' to account for AI-assisted review as an interim mechanism for an open-source project without yet-active external human reviewers, and expanded the document from an outline into full explanatory prose."
-    Tasks: ["critical-review", "clarification", "grounding-citations", "expansion"]
+    Works: ["critical-review", "clarification", "grounding-citations", "expansion", "Critical review pass: flagged internal inconsistency in the Scientific-terms tier (conflation of mathematical, empirical, and philosophical epistemic categories), proposed explicit tier-assignment criteria for Technology and Scientific terms, identified inconsistency between an earlier draft's simplified Protocol example and the finalized Protocol RFC's ontology, grounded the concept-vs-representation pattern in genericized-trademark theory and prototype theory, reframed 'independent verification' to account for AI-assisted review as an interim mechanism for an open-source project without yet-active external human reviewers, and expanded the document from an outline into full explanatory prose."]
 ---
 
 # Terminology
 
 ## Summary
-
 This RFC establishes Memar's terminology philosophy: the position that the words used to name a concept are not a cosmetic layer sitting on top of architecture, but one of the forces that produces architecture in the first place.
 
 Memar treats terminology as a first-class architectural concern rather than a communication detail. The terminology used to describe a problem directly influences the mental model used to understand it. That mental model subsequently influences architecture, implementation, optimization, decomposition, governance, and long-term maintainability. A team that names a problem badly will, on average and over time, build a worse system than a team that names the same problem well — not because the first team is less skilled, but because it is reasoning about a distorted object.
@@ -50,9 +47,7 @@ Consequently, terminology decisions should be reviewed with the same seriousness
 
 
 ## Motivation
-
 Many software discussions begin with questions such as:
-
 - Which language should we use?
 - Which database should we use?
 - Which framework should we use?
@@ -91,7 +86,6 @@ Once these substitutions occur, architectural reasoning becomes constrained by i
 
 
 ### Terminology Debt
-
 Terminology Debt occurs when a system, document, team, organization, or ecosystem accumulates ambiguous, overloaded, implementation-centric, product-centric, or commercially-driven terminology that obscures the underlying concepts those terms were originally meant to name.
 
 Symptoms include:
@@ -115,7 +109,6 @@ This is not a metaphorical claim. A system cannot be consistently understood if 
 ## Guide-Level Explanation
 
 ### Terminology Shapes Mental Models
-
 Terminology is not neutral. It is not a label applied after the thinking is done; it participates in the thinking itself.
 
 The words used to describe a problem influence:
@@ -131,7 +124,6 @@ Terminology is therefore an active participant in system design, not a passive r
 
 
 ### Concept-First Thinking
-
 Memar promotes Concept-First Thinking: the discipline of understanding a problem at increasing levels of concreteness, in a fixed order, rather than jumping directly to the most concrete level available.
 
 The preferred reasoning flow is:
@@ -148,7 +140,6 @@ For this reason, Memar encourages investing learning effort into concepts before
 
 
 ### Tool-First Thinking
-
 Tool-First Thinking reverses the preferred sequence:
 
 **Tool → Technology Assumptions → Artificial Constraints → Problem Definition**
@@ -156,7 +147,6 @@ Tool-First Thinking reverses the preferred sequence:
 Memar considers this an anti-pattern: a developer encounters a tool before understanding the underlying concept, absorbs that tool's specific assumptions as if they were properties of the concept itself, and then unconsciously lets those assumptions constrain how the actual problem gets defined.
 
 Representative examples of this ordering error:
-
 - SQL before Relation.
 - OOP before Abstraction.
 - Kubernetes before Distributed Systems.
@@ -177,12 +167,49 @@ If the concept disappears together with the technology — if a developer genuin
 
 ## Reference-Level Explanation
 
-### Terminology Layers
+### Definition vs Explanation
+A definition and an explanation serve different purposes and should not be confused. A **Definition** establishes the identity and boundary of a concept. Its purpose is to answer:
 
+> What is this concept?
+
+A good definition should be both:
+
+* **Comprehensive** enough to include all valid instances of the concept.
+* **Exclusive** enough to exclude concepts that are not the same thing.
+
+A definition should therefore be as small, stable, and atomic as possible. Introducing excessive context, examples, motivations, consequences, or relationships into a definition often weakens its discriminative power. An **Explanation** exists for a different purpose. Its role is to answer questions such as:
+
+> Why does this definition exist?
+>
+> How should it be interpreted?
+>
+> How does it relate to other concepts?
+>
+> What are its practical implications?
+
+Explanations may contain examples, rationale, historical context, relationships, trade-offs, prior art, and alternative interpretations. These additions may improve understanding, but they do not belong to the definition itself. A concept may require extensive explanation while still having a short definition. For example, a definition may identify a concept as a particular kind of description, while the explanation clarifies the forms, abstractions, assumptions, limitations, and relationships involved in that description. When ambiguity exists, Memar gives priority to preserving a precise definition and moves additional context into explanatory sections rather than expanding the definition itself.
+
+#### Comprehensive and Exclusive, More Precisely
+**Comprehensive** means the definition includes every valid instance of the concept — nothing that should count as belonging to the concept is left outside its boundary. **Exclusive** means the definition includes only those instances — nothing that does not belong to the concept is let inside its boundary. Together, these are the two directions of a single requirement: a definition should be neither too narrow, excluding valid cases, nor too broad, admitting invalid ones. This is the same requirement classical logic calls [necessary and sufficient conditions](https://en.wikipedia.org/wiki/Necessary_and_sufficient_condition): comprehensiveness is a necessity requirement — every true instance must satisfy the definition — and exclusivity is a sufficiency requirement — satisfying the definition must be enough to guarantee the instance is a true one.
+
+#### Composite Definitions
+A definition does not have to be a single sentence to remain a Definition rather than an Explanation. Several of Memar's own RFCs — the Protocol RFC is the clearest case — define a concept through a small set of necessary properties (Protocol's Declarative, Stateless, Process-bound, and Methodologically produced properties, among others) rather than through one compact sentence. This remains Definition, not Explanation, for as long as every property genuinely narrows the boundary — removing it would let something invalid inside the definition, or push something valid outside it. The moment a sentence stops narrowing the boundary and starts motivating, illustrating, or justifying a property instead, that sentence has become Explanation, even if it still sits inside a section labeled Definition. A practical test: does removing this sentence change which instances the definition includes? If yes, the sentence is part of the Definition. If no — if the sentence only helps a reader understand or accept a boundary that was already fully fixed without it — the sentence is Explanation, and belongs in surrounding prose rather than in the boundary-setting claim itself.
+
+#### The Regress Problem and Primitive Notions
+Every definition uses other words, and those words, if also defined, use further words in turn — a chain that cannot continue indefinitely without either circularity or infinite regress. Formal systems have long accepted this and handled it deliberately rather than by accident: a small number of concepts are designated [primitive notions](https://en.wikipedia.org/wiki/Primitive_notion) — terms taken as understood without further definition, on top of which everything else in the system is built. Euclidean geometry, for instance, leaves "point" and "line" formally undefined and constructs its theorems on top of them.
+
+Memar faces the same problem, and for the same structural reason — not by oversight. A term such as System functions as a primitive notion for much of Memar's terminology: the Protocol RFC's own ontology depends on System, without System itself having, at every point in Memar's history, a complete formal definition of its own (see the Protocol RFC's discussion of this dependency). This is not a flaw to apologize for; every sufficiently rich formal system has primitives. What matters is that Memar's primitive notions be chosen deliberately and named explicitly as primitives, rather than silently assumed to already be defined somewhere else in the framework.
+
+#### Diverging From Ecosystem Definitions
+A related and sharper problem than the regress problem is this: many of the words Memar needs to define — Protocol, Standard, System, Service — already carry definitions, plural, out in the wider software ecosystem, and those definitions are frequently imprecise, inconsistent across sources, or actively misleading (see Terminology Debt, above). When Memar produces its own Definition for such a term, that Definition will often not match, and may be considerably more precise than, the definition a reader already carries in from that wider ecosystem.
+
+This divergence must be stated explicitly, not left implicit. A reader who encounters Memar's Definition of Protocol without being told it differs from the colloquial software-industry sense of "protocol" will silently graft Memar's more precise rules onto their prior, looser understanding, rather than replacing it — producing exactly the kind of quiet terminology drift this RFC exists to prevent. Wherever a Memar Definition is likely to conflict with a term's common ecosystem usage, the Definition should say so directly, rather than assume the divergence is obvious or that the reader will notice it unprompted.
+
+
+### Terminology Layers
 Memar sorts terms into three layers. Each layer is defined below by what distinguishes it, not only by example, so that the classification can be applied to a term this RFC has not already listed.
 
 #### Scientific Terms
-
 **Definition:** A term qualifies as a Scientific Term when its meaning has been established, or is deliberately intended to be established, through a methodology characterized by explicit and falsifiable definitions, clearly stated boundaries and edge cases, openness to criticism and revision, and — where available — independent verification by parties outside the term's original author or authoring organization. Scientific Terms are not, by this definition, restricted to terms that already belong to an established academic discipline; a term Memar itself defines can qualify as Scientific if it is produced and defended through this methodology, rather than asserted by convenience.
 
 Examples:
@@ -462,3 +489,10 @@ Strengthened the Graph example to explicitly cite Graph Theory and Graph Rewriti
 - Reframed the "term migrates between layers" idea — raised and rejected during this review — into a named pattern, **conceptual leakage**, grounded in two established, citable frameworks: genericized trademark theory (for the general phenomenon of usage collapsing a broad and a narrow term into one) and prototype theory (for the specific case where a general concept is understood only through its most familiar exemplar, as with Container and Docker). This replaces any notion that the underlying concept itself changes over time.
 - Marked the AI Implications section's core claim (that AI systems overweight popular terminology) as an explicit working hypothesis rather than a stated fact, consistent with Memar's general position that unvalidated claims should not be presented with more confidence than their evidence supports — including when the claim concerns an AI system's own behavior.
 - Expanded the document throughout from an outline into full explanatory prose, per explicit request, without shortening or summarizing any previously agreed content.
+
+### Definition vs Explanation Expansion
+
+- Precisely defined Comprehensive and Exclusive as the two directions of necessary and sufficient conditions, rather than leaving them as intuitive labels.
+- Clarified that a definition composed of several necessary properties (as in the Protocol RFC) remains a Definition, not an Explanation, and gave a practical test — does removing a given sentence change which instances the definition includes — for telling the two apart within such a composite definition.
+- Introduced the regress problem and primitive notions to explain why some Memar concepts (System, notably, as depended on by the Protocol RFC) are necessarily left without a complete independent definition at any given point in the framework's development, and why this is expected rather than a defect, provided the primitive is chosen and named deliberately.
+- Added an explicit requirement that a Memar Definition state, rather than leave implicit, when it diverges from a term's common usage in the wider software ecosystem — since a reader who is not told about the divergence will otherwise silently merge Memar's more precise definition with their own prior, looser one.
