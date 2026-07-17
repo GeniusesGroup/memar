@@ -25,23 +25,27 @@ Contributor(s):
   - Name: "Omid Hekayati"
     URI: "mailto:omid@geniuses.group"
     Tasks:
-      - Titles: ["Architect"]
+      - Works: ["Architect", "Initiated the need for this RFC", "Core definition of Technology as applied knowledge", "Inseparability of System and Architecture", "Lived-experience critique connecting technology and lifestyle", "War/discourse/governance as technologies", "ISA example as a test case for Architecture-as-System", "'Reality is the best guess one System can make of another' as the grounding intuition for structural abstraction", "Framework vs. Sub-Framework distinction", "Working test for Architecture legitimacy", "Original proposal to reintroduce open/closed/isolated systems classification, later expanded into the System Openness subsection"]
         URI: ""
-        Explanation: "Initiated the need for a foundational concepts RFC; provided the core definition of Technology as applied knowledge; articulated the inseparability of System and Architecture as concepts; supplied the lived-experience critique and the connection between technology and lifestyle; contributed the position that war, discourse, and governance are technologies."
   - Name: "ChatGPT"
     URI: "https://openai.com"
     Tasks:
-      - Titles: ["Initial draft"]
+      - Works: ["Initial draft", "Candidate definitions for System, Architecture, Technology, Protocol, Abstraction", "Bidirectional phrasing for the 'shaped by' edge", "Conceptual vs. Graph Centrality distinction", "Identified Edge Types as an emerging topic", "Argued against premature dedicated RFCs for Edge Types and Abstraction", "Pressed for explicit statement of the ISA-legitimacy departure from industry usage", "Connected this RFC to the Terminology RFC's mental-models principle"]
         URI: ""
-        Explanation: "Proposed the initial RFC structure; drafted candidate definitions for System, Architecture, Technology, Protocol, and Abstraction; proposed the relationship structure between concepts; identified the problem statement regarding inconsistent usage across disciplines."
   - Name: "Super Z"
     URI: "https://z.ai"
     Model: "GLM 5.2"
     Effort: "High"
     Tasks:
-      - Titles: ["Initial draft"]
+      - Works: ["Initial draft", "Critical review and refinement", "Synthesized contributor inputs into a coherent document", "Added Knowledge, Model, Framework, Implementation sections", "Composed Relationships Between Concepts and Discussion"]
         URI: ""
-        Explanation: "Synthesized contributor inputs with the Terminology RFC's principles and the RFC Template's structure into a single coherent document; expanded definitions with cross-disciplinary grounding; added Knowledge, Model, Framework, and Implementation sections; composed the Relationships Between Concepts section and Discussion."
+  - Name: "Claude"
+    URI: "https://claude.ai"
+    Model: "claude-sonnet-5"
+    Effort: "Medium - extended thinking enabled"
+    Tasks:
+      - Works: ["Critical review", "Structural critique", "Identified Abstraction/Model front-matter contradiction", "Framework-as-System vs. Framework-as-Aspect distinction", "Reformulated the Meta-Principle", "Structural vs. Purposive Abstraction, grounded in Maturana and Varela", "Expanded Omid's open/closed/isolated proposal into the full System Openness subsection", "Reconciliation pass with the Framework RFC (removed the residual 'Framework is a System' claim)", "Corrected contributor-attribution errors"]
+        URI: ""
 ---
 
 # System
@@ -65,7 +69,7 @@ Each of these misunderstandings, in isolation, is minor. In aggregate, they prod
 
 The deeper motivation is structural. Memar's Terminology RFC establishes that terminology shapes mental models, and that mental models shape architecture. If the most fundamental terms in the ecosystem — System, Architecture, Technology — are left undefined, every RFC that uses them implicitly imports whatever interpretation each reader happens to carry. This is the same mechanism the Terminology RFC describes under "conceptual leakage": a general concept (System) becomes understood only through its most familiar exemplar (a software system), and the broader meaning is lost. The result is that architectural reasoning becomes unconsciously constrained by whatever subset of each concept's meaning is most locally familiar, rather than by the concept's full scope.
 
-A foundational RFC that defines these terms explicitly is therefore not a philosophical luxury. It is a structural prerequisite for the coherence of every RFC that follows.
+A foundational RFC that defines these terms explicitly is therefore not a philosophical luxury. It is a structural prerequisite for the coherence of every RFC that follows. The purpose of these definitions is not merely semantic consistency — it is to improve the quality of mental models used to reason about systems. Terminology debt, as the Terminology RFC argues, is a root cause of architectural debt: imprecise terms produce imprecise mental models, and imprecise mental models produce imprecise architectures. This RFC intervenes at the earliest possible point in that chain.
 
 
 ## Guide-level Explanation
@@ -86,6 +90,13 @@ The Guide-level explanation you are reading now provides a high-level overview o
 
 A contributor who has read the Guide-level explanation should have a working understanding of every concept. A contributor who needs to evaluate edge cases, resolve ambiguities, or understand why a definition was chosen over alternatives should consult the Reference-level explanation.
 
+### A Note on Systems Thinking
+Readers will notice, across this RFC and others, that many things — a person, a team, a company, a programming language, a habit, a conversation — can plausibly be described as a System, depending on the observer's purpose and level of analysis. This is not a flaw in these definitions; it is a basic feature of systems theory itself. System-hood is not an intrinsic property that some things have and others lack. It is a lens that can be applied to almost anything a person interacts with, because almost anything a person interacts with has interacting parts, a boundary an observer can draw around it, and behavior that depends on how those parts relate.
+
+This has a direct consequence for how this RFC, and Memar's RFCs generally, should be read. At the level of casual explanation — in conversation, in code comments, in reasoning out loud — saying "X is a System" about nearly anything (a framework, a team, a habit) is rarely wrong, precisely because the lens is so widely applicable. Where this RFC is careful is at the level of formal *definition*: no concept's core identity is defined as System (see Relationships Between Concepts > Meta-Principle), because a definition that could apply equally to everything loses its power to distinguish anything from anything else. A definition and an explanatory aside are held to different standards for this reason, not because the explanatory aside is wrong.
+
+Readers who have not previously encountered systems theory or systems thinking are encouraged to read at least an introductory treatment of the field — von Bertalanffy's *General System Theory* or Meadows's *Thinking in Systems* are reasonable starting points — not because this RFC requires specialist knowledge, but because the intuition that "almost everything can be viewed as a System" is easier to apply correctly, without either over- or under-using it, once it has been encountered outside the specific context of Memar.
+
 
 ### Concepts at a Glance
 Before the detailed definitions, a brief orientation to how the key concepts relate:
@@ -97,7 +108,7 @@ Before the detailed definitions, a brief orientation to how the key concepts rel
 - A **Model** is a simplified representation of a system or aspect of reality, used to reason about it.
 - An **Abstraction** is the mechanism by which models reduce complexity — preserving what matters and discarding what does not, relative to a specific purpose.
 - A **Protocol** (defined in detail in its own RFC) is a structured body of knowledge that enables participants within a system to interact, coordinate, and evolve consistently.
-- A **Framework** is a structured set of constraints, conventions, and reusable components that provides a foundation for building systems within a defined domain. A framework does not describe a particular system — it defines a design space within which multiple architectures may be created. See the [Framework RFC](./framework.md) for Memar's specific application of this concept.
+- A **Framework** is a description of a system. It characteristically exists prior to, and independently from, any specific realization of the system it describes. A framework does not describe a particular realized system; it defines a space within which multiple systems may be created, understood, or evaluated. See the [Framework RFC](./framework.md) for Memar's specific application of this concept.
 - An **Implementation** is a concrete realization of a system's design, expressed in specific technologies, languages, and tools.
 
 These concepts are not independent. They form a web of relationships — directional influences, mutual dependencies, and co-equal pairings — rather than a linear chain or hierarchy. Science produces knowledge; knowledge is applied as technology; technology enables system development; and systems are shaped by both framework and architecture as co-equal aspects. But these directional influences are only one dimension of the picture: modeling, abstraction, and process operate across the entire structure, and every concept influences others in ways that cannot be captured by a single ordering. Each concept exists in relation to the others, and understanding any one of them precisely requires understanding its relationships to the rest.
@@ -122,6 +133,17 @@ This definition is deliberately general. It is drawn from and consistent with th
 **Emergence.** A system exhibits behavior that emerges from the interaction of its elements but is not reducible to the properties of any individual element. This is a core insight of systems theory and is what distinguishes a system from a mere collection. A pile of sand is a collection; a sand dune — which has shape, stability properties, and responses to wind that no individual grain possesses — is a system.
 
 **Interdependence.** The elements of a system are interdependent: a change in one element may propagate to others through the relationships that connect them. This interdependence is what makes systems both powerful (coordinated behavior) and fragile (cascading failure).
+
+#### System Openness: Open, Closed, and Isolated
+A System's relationship to another System, with respect to a specific channel of influence, may be one of three kinds:
+
+- **Open**: influence flows in both directions. Each System can affect, and be affected by, the other.
+- **Closed**: influence flows in one direction only. One System affects the other without being affected back, for the channel under consideration.
+- **Isolated**: no influence crosses between the two Systems, for the channel under consideration.
+
+These are not fixed, permanent properties of a System in general. They describe a specific relationship, with respect to a specific kind of influence, at a specific point in time — and all three can change. The same pair of Systems may be open with respect to one channel and closed with respect to another. A relationship that is closed at one point in time may become open later, and vice versa.
+
+For example, a contributor shaping a framework's design may, for a period, act as a system that is closed with respect to that framework — influencing its design without incorporating anything back from it. Later, the same contributor may shift to an open relationship with the framework: incorporating feedback derived from using the framework, or from other contributors' critique of it, back into how they think and act. This shift does not require redefining either System; it is a change in the *type* of relationship between two Systems that are already connected by an "influences" edge (see Relationships Between Concepts). This is also why a directional statement like "Technology enables System Development" (an epistemic-influence edge) does not preclude experience from System Development later influencing Technology — the two Systems may simply have moved from a closed relationship to an open one, or have always been open with respect to a different channel than the one the directional statement describes.
 
 #### What a System Is Not
 A system is not its implementation. The same system — understood as a collection of interacting elements organized toward a purpose — may be implemented in radically different ways. A government may be implemented as a democracy, a monarchy, or a technocracy without ceasing to be a system for governing. A financial system may be implemented with physical currency, digital ledgers, or barter without ceasing to be a system for facilitating exchange. Confusing a system with its implementation is a specific instance of the concept-vs-representation confusion that the Terminology RFC identifies as a primary source of architectural error.
@@ -148,14 +170,17 @@ The definition is consistent with general systems theory as articulated by von B
 ##### Unresolved Questions
 1. Should Memar eventually adopt a more formal treatment of system boundaries, perhaps drawing on the distinction between open and closed systems from thermodynamics and information theory?
 2. How should this RFC's definition of "purpose" interact with systems that have conflicting or internally contested purposes — for example, a political system in which different actors have genuinely incompatible goals?
+3. Should System Openness (open/closed/isolated) be formalized as a labeled property on the "influences" edge type in the conceptual graph, so that RFCs can state explicitly which kind of relationship they mean rather than leaving it implicit?
 
 ### Structure
 **Structure** is the set of capabilities and limitations (constraints) a System exposes and enforces.
 
-Capabilities are what the System *can* do — the operations, transitions, and interactions available to those who interact with it. Constraints are what the System *cannot* do, or the conditions under which a capability is available, valid, or forbidden.
+Capabilities are what the System *can* do — the operations, transitions, and interactions available to those who interact with it. Constraints are what the System *cannot* do, or the conditions under which a capability is available, valid, or forbidden. Structure, in this sense, defines the space of admissible operations for a System: what is permitted, what is forbidden, and under what conditions a given capability applies.
 
-#### Structure Is Not Arrangement
-Structure does not merely describe the arrangement of parts — the component hierarchy, module layout, or dependency graph. In common engineering usage, "structure" often carries this connotation: a static blueprint of how pieces are organized. Memar uses the word in a fundamentally different sense. Structure here is closer to **operational shape**: what a System can and cannot do. A system's component layout is one *projection* of its structure, but it is not the structure itself. Confusing the projection with the thing projected leads to the same class of error the Terminology RFC identifies under concept-vs-representation confusion: treating the map (layout) as the territory (operational shape).
+#### Structure Is Not the Arrangement of Parts
+Structure is not the arrangement of a system's parts — its component hierarchy, module layout, or dependency graph. That is a separate concern: how a system is composed or assembled. Much of the confusion around the word "structure" in general usage traces back to the construction industry, where "structure" and "building" are used almost interchangeably to mean the physical arrangement of a construction — walls, beams, floors. That usage describes composition, not capability and constraint, and Memar does not inherit it.
+
+Memar does not yet have a dedicated, formalized term for "the arrangement of a system's parts" as a first-class concept (candidate names, and whether it warrants a concept of its own, are left open — see Unresolved Questions). What matters for this RFC is only the negative claim: whatever that concept turns out to be called, it is not Structure. A system's component layout may be *one input* that determines its Structure — how parts are arranged can affect what the system can and cannot do — but the layout itself is not the Structure. Confusing the two is the same class of error the Terminology RFC identifies under concept-vs-representation confusion: treating a description of parts as though it were a description of capability and constraint.
 
 #### The Inseparability of Capability and Constraint
 Capabilities and constraints are not independent properties that happen to coexist in a structure. They are two aspects of the same thing — inseparable, like two sides of a coin. Every capability implies limitations. Every limitation enables capabilities.
@@ -166,6 +191,12 @@ This inseparability has a practical consequence for how structures are reasoned 
 
 #### Structure, Behavior, and Implementation
 Structure cannot be defined independently of behavior: describing what a System does inherently requires knowing what it is permitted to do and what it is restricted from doing. A definition of Structure that omits behavior collapses into a description of static shape — fields, storage layout — which Memar treats as a symptom of premature implementation-oriented thinking, not as Structure itself.
+
+#### Discussion
+
+##### Unresolved Questions
+1. Does "the arrangement of a system's parts" warrant a dedicated, formally defined concept of its own within Memar, and if so, what should it be called? Until this is resolved, Structure's definition can only state what it excludes, not what the excluded concept positively is.
+2. How does Structure relate to the layout-related vocabulary already in use elsewhere in Memar (for example, package and module layout in memar-go), and should this RFC's Structure be renamed if it turns out to conflict with established usage rather than merely with general-industry usage?
 
 ### Process
 A **process** is an organized sequence of activities or interactions that occurs *within* a system, involving one or more of the system's elements and contributing to the system's behavior or purposes.
@@ -184,6 +215,11 @@ The relationship between process and system is one of containment and co-definit
 - A **system is defined by its processes** as much as by its elements. Two systems with identical elements but different processes are different systems, because they exhibit different behavior.
 
 This inseparability is why Process is defined in this RFC rather than in a standalone document: any attempt to define Process without reference to System either silently assumes System's meaning or produces a definition that floats free of the context that gives it coherence.
+
+#### Process and Structure
+Structure and Process describe a System from two different vantage points, and the distinction between them is easiest to state precisely as follows: **Structure defines the space of admissible operations** a System exposes and enforces — what is permitted, forbidden, or conditionally available; **Process is the concrete, temporal enactment of one path through that space** — the specific sequence of activities that actually occurs, in a specific order, at a specific time.
+
+A Structure can exist without any particular Process ever occurring — a System may expose a capability that is never invoked. A Process, conversely, cannot occur outside the space its System's Structure admits: a Process that attempts an operation the Structure forbids is not a different kind of Process, it is a failure, a violation, or evidence that the Structure was mis-specified. This is a one-directional dependency: Structure bounds what Process can do; Process does not bound what Structure permits, though repeated observation of Process may reveal that a Structure's stated bounds do not match its enforced bounds, which is itself useful information for refining the Structure.
 
 #### Discussion
 
@@ -220,6 +256,20 @@ Architecture does not exist independently of the system it addresses. There is n
 
 This does not mean that architectural knowledge is not transferable between systems. Patterns, principles, and heuristics learned from one system may apply to another. But the applicability must be evaluated each time, because the system's purpose, constraints, and context determine which architectural decisions are appropriate, and these differ from system to system.
 
+#### Shape Is Not Control, and Not One-Way
+Throughout this RFC, Architecture is described as "shaping" a System. This word is chosen deliberately — it captures the active, transformative role architecture plays in determining what a system becomes. But "shapes" does not mean "controls," and it does not mean the influence is one-way.
+
+Consider classical architecture as a System: it permits certain choices (grand columns, ornate detailing, specific proportions) and forbids others (minimalist blank walls, uniform white surfaces). In doing so, it shapes what the resulting building can express — grandeur, authority, permanence. But it also creates constraints: high cost, specialized labor, long construction timelines. A decision-maker who encounters these constraints during the architectural process may revise their original goals, which in turn re-invokes the goal-selection process and reshapes the architecture itself. The influence is bidirectional and iterative, consistent with the System Openness model (see System > System Openness: Open, Closed, and Isolated).
+
+The same bidirectionality holds in software. An architecture that mandates a specific consistency model shapes every subsequent design decision — but the experience of implementing that consistency model may reveal that it is too expensive for the system's actual workload, which feeds back into architectural revision. Architecture shapes the System; the System, through its behavior under real conditions, reshapes Architecture. This is not a defect of the definition — it is how real development works, and the definition is designed to accommodate it rather than to pretend it does not happen.
+
+#### A Working Test: Does This Deserve to Be Called Architecture?
+The ISA example above (see Prior Art) is used deliberately as a calibration point, not merely as an illustration. Memar's position is that something earns the name Architecture only if it exhibits, at some meaningful scale, the properties System itself requires: purpose, boundary, emergence, and interdependence — the same bar the Meta-Principle applies when asking whether a concept may be modeled as a System (see Relationships Between Concepts > Meta-Principle). An ISA clears this bar: it has purpose, produces emergent trade-offs no single decision fully explains, and cannot be understood in isolation from what it depends on and constrains. A one-paragraph note justifying a single naming choice does not clear this bar, no matter how confidently it is labeled "architecture."
+
+This has a consequence that Memar states explicitly rather than leaving implicit: much of what is commonly called "Software Architecture," "Service Architecture," or "Microservice Architecture" in industry usage may not qualify as Architecture in this RFC's sense. Some of it does — a genuinely evolving, multi-contributor body of decisions with real emergent consequences clears the bar regardless of what domain it is applied to. But some of it is better described, in Memar's vocabulary, as Design, Structure, Pattern, or a Sub-Framework (see the Framework RFC for the Framework/Sub-Framework distinction) that has borrowed the word "architecture" for its perceived weight rather than earned it. This is not a claim that such artifacts are worthless — a well-chosen pattern or a well-scoped sub-framework is valuable on its own terms — only that calling them Architecture, in Memar's sense, overstates what they are.
+
+This is a direct, intentional departure from a large body of common software engineering usage, not an incidental side effect of a stricter definition, and Memar states it as such rather than letting a reader discover the implication on their own. It is also, at the time of this writing, a position that has been argued for but not yet stress-tested against a wide range of real cases (see Unresolved Questions below) — it should be read as Memar's current working criterion, not as a settled classification that every future RFC must defer to without question.
+
 #### Discussion
 
 ##### Drawbacks
@@ -235,9 +285,12 @@ The breadth of this definition means that nearly any decision about a system cou
 ##### Prior Art
 ISO/IEC 42010:2022 defines architecture as "the fundamental concepts or properties of a system in its environment embodied in its elements, relationships, and in the principles of its design and evolution." This RFC's definition is consistent with that standard but emphasizes the process dimension more explicitly: architecture is not only what the system is, but how it came to be that way and how it will continue to change.
 
+**Instruction Set Architecture (ISA)** provides a concrete and instructive example of Architecture-as-System. An ISA is not an implementation (it is not a particular chip design), not a tool (it is not a compiler or an assembler), and not a mere description (a document describing an ISA is not the ISA itself — the ISA is the body of decisions that the document records). An ISA is the collection of processes by which the boundary between hardware and software is designed: which operations are defined, how memory is addressed, what the calling conventions are, how exceptions propagate. An ISA has purpose (enabling software-hardware coordination), constraints (what instructions are and are not available), dependencies (on the physics of transistor behavior, on manufacturing capabilities), and evolution (x86, ARM, RISC-V each represent a distinct evolutionary path shaped by different architectural trade-offs). An ISA that is defined without reference to the electronic substrate that will implement it is difficult to evaluate — understanding *why* an ISA made certain choices requires understanding the constraints of the substrate, even though the ISA itself is not that substrate. This is precisely the relationship this RFC describes: Architecture is Architecture *of* a System, *for* a purpose, *under* constraints — and an ISA exhibits all of these properties in a form that can be examined directly.
+
 ##### Unresolved Questions
 1. Should Memar develop a more formal framework for assessing the architectural weight of a decision, or is the proportional-impact heuristic sufficient?
 2. How should architectural decisions made by different contributors at different times be reconciled when they conflict?
+3. The ISA-level legitimacy test (see A Working Test, above) has been argued for but checked against only a handful of examples. Does it hold up against a wider range of cases — for instance, a small but genuinely long-lived and multi-contributor open-source library's design decisions, which may be smaller in scope than an ISA but still exhibit real emergence and interdependence? Where exactly is the line, and should it be a hard boundary or a graded one, consistent with the Drawbacks discussion above treating "architectural weight" as a spectrum rather than a binary?
 
 
 ### Technology
@@ -336,7 +389,7 @@ Every model is a model *of* a system — or of an aspect of reality relevant to 
 
 Modeling is the activity by which such representations are constructed, validated, and evolved. Within Memar, modeling is not a preliminary sketch that is discarded once implementation begins — it is a continuous architectural activity that accompanies every stage of system development. The model remains the source of truth; implementations are projections of that truth into specific technological contexts.
 
-Model, Abstraction, and the full treatment of Modeling as an architectural discipline are defined in the [Modeling RFC](./modeling.md).
+The conceptual definitions of Model and Abstraction are established in this RFC, since both are used pervasively across the entire conceptual graph and cannot wait on a document that depends on this one. The full treatment of Modeling as an ongoing architectural activity — how Memar performs, validates, and evolves models in practice — is defined in the [Modeling RFC](./modeling.md), which builds on the definitions established here.
 
 
 ### Abstraction
@@ -351,6 +404,13 @@ Abstractions inevitably leak. The information they omit does not cease to exist;
 
 Recognizing that abstractions leak — and designing with that leakage in mind rather than pretending it does not exist — is a hallmark of mature engineering. Within Memar, abstractions should be chosen not only for what they hide but for how predictably they leak. An abstraction that leaks in well-understood, well-documented ways is preferable to one that appears clean but fails catastrophically when the hidden complexity becomes relevant.
 
+#### Structural Abstraction vs. Purposive Abstraction
+The examples above — temperature, user — describe **purposive abstraction**: a deliberate choice, made for a specific reasoning goal, about what to preserve and what to discard. But not all abstraction is chosen. A second, more fundamental kind of abstraction is imposed on any observing System by its own Structure, before any purpose is even considered.
+
+Every System that observes another System is itself a System, with its own capabilities and limitations. What it can perceive of the observed System is bounded by those limitations, whether or not it intends to abstract anything at all. A human eye responds to a narrow band of electromagnetic wavelengths and is structurally incapable of registering the rest; this is not a simplification chosen for a purpose, the way an engineer chooses to reason about "temperature" instead of molecular kinetic energy — it is a constraint of the observing System's own Structure, present before any purpose is chosen. Purposive abstraction operates on top of, and is bounded by, this prior structural abstraction: a reasoner can choose to discard information it structurally had access to, but it cannot choose to include information its own Structure never made available in the first place.
+
+One practical consequence follows directly: what any System knows of another System is never the observed System directly, but the observing System's best available reconstruction of it, shaped by the observer's own Structure. This is consistent with, and reinforces, the fallibilist position already established in the Knowledge and Science section — that scientific knowledge does not claim certainty, only mechanisms for detecting and correcting error. Those mechanisms are necessary precisely because no observing System has unmediated access to another System; every account of a System is itself the output of some other System's abstraction process, structural and purposive together, and is therefore always provisional and open to revision as the observing System's own capabilities change.
+
 #### Discussion
 
 ##### Drawbacks
@@ -360,11 +420,12 @@ Teaching abstraction as a first-class concern adds conceptual overhead to the le
 - **Treat abstraction as an implementation detail (rejected).** This is the default in many software frameworks, where abstractions are provided by the framework and treated as opaque by the user. This works until the abstraction leaks, at which point the user is unable to reason about the failure because they were never expected to understand what the abstraction hides. Memar considers this unacceptable for a framework whose stated goal is to improve reasoning quality.
 
 ##### Prior Art
-The theory of abstraction in computer science is developed in detail in the literature on abstract data types, information hiding (Parnas, "On the Criteria to Be Used in Decomposing Systems into Modules," 1972), and abstraction barriers. The philosophical treatment of abstraction as a cognitive process is developed in the cognitive science literature (e.g., Hofstadter, "Gödel, Escher, Bach," 1979).
+The theory of abstraction in computer science is developed in detail in the literature on abstract data types, information hiding (Parnas, "On the Criteria to Be Used in Decomposing Systems into Modules," 1972), and abstraction barriers. The philosophical treatment of abstraction as a cognitive process is developed in the cognitive science literature (e.g., Hofstadter, "Gödel, Escher, Bach," 1979). The distinction between structural and purposive abstraction is consistent with Maturana and Varela's concept of structural coupling ("Autopoiesis and Cognition," 1980; "The Tree of Knowledge," 1987), in which an observing system's own structure determines which perturbations from another system it is even capable of registering, independent of any purpose the observer might later apply to what it registers.
 
 ##### Unresolved Questions
 1. Should Memar provide explicit mechanisms for documenting abstraction leakage, or should this be left to informal documentation?
 2. How should the choice of abstraction level be guided in Memar's modeling process?
+3. Should the distinction between structural and purposive abstraction be reflected as two separate, formally named concepts in a future revision, or is it sufficient as an explanatory distinction within a single Abstraction concept?
 
 
 ### Protocol
@@ -373,11 +434,21 @@ Protocols exist *within* systems. A protocol governs one or more processes withi
 Protocol's full definition, ontology, and relationship to Process are defined in the [Protocol RFC](./protocol.md).
 
 ### Framework
-A **framework** is a structured set of constraints, conventions, and reusable components that provides a foundation for building systems within a defined problem domain.
+A **framework** is a description of a system.
 
-A framework does not describe a particular system. It defines a design space within which multiple architectures may be created. It provides structure without specifying content, conventions without prescribing decisions, and components without completing the design. The system that results from using a framework is not the framework; it is a system that was built within the framework's constraints.
+Here, **description** carries its ordinary sense: **a statement that represents something in words** (or, more broadly, in any symbolic form). This RFC does not treat Description as a specialized technical term requiring its own Reference-level definition — it is used in the same sense the word carries in general usage, and the discriminative work in this RFC is done by what is being described (a system) and how (see Model, above, for the closest related concept, and Framework and Model, below, for how the two differ despite both being kinds of description).
 
-Framework and Architecture are co-equal aspects of a System — neither is "above" or "below" the other. They answer different questions: Framework defines *what kinds of solutions are allowed*; Architecture defines *which solution was chosen*. The full treatment of this relationship, including the distinction between domain-level constraints (framework) and system-level constraints (architecture), is provided in the [Framework RFC](./framework.md).
+A framework does not describe a particular realized system. It defines a space within which multiple systems may be created, understood, or evaluated. Framework descriptions characteristically exist prior to, and independently from, any specific realization of the system they describe — a property this RFC and the Framework RFC term *hypothetical* (meaning "assumed before realization," not "imaginary or unrealizable").
+
+Framework and Architecture are co-equal aspects of a System — neither is "above" or "below" the other. They answer different questions: Framework defines *what kinds of solutions are allowed*; Architecture defines *which solution was chosen*. The full treatment of this relationship, including the distinction between domain-level constraints (framework) and system-level constraints (architecture), the distinction between frameworks and sub-frameworks, the relationship between Framework and Model, the explicit/implicit framework distinction, and the goal-oriented nature of frameworks, is provided in the [Framework RFC](./framework.md).
+
+#### Framework as Aspect, and Framework Considered as a System
+A framework's core identity, per this RFC and the Framework RFC, is that of a description — not a System. This distinction matters because it is easy to slide from "a framework constrains a system" into treating "being a System" as part of what a framework fundamentally is. It is not — in the same way that Technology's core identity is applied knowledge, not System (see Technology, above). System is never baked into a concept's core definition in this RFC; at most, it is a secondary lens that may or may not apply to a given instance of a concept, and Framework is no exception to that rule.
+
+**Framework Considered as a System.** Independently of the aspect relationship above, a specific framework may, in a given instance, also be examined as a System in its own right. Khayyam, considered as an evolving body of RFCs, contributors, and conventions, can be studied this way — it has its own Architecture, its own contributors, its own emergent design outcomes — quite apart from any System built using it. But this is a fact about Khayyam specifically (and about any sufficiently mature, evolving, multi-contributor framework), not a claim built into what the word "Framework" means. A framework does not need to be a System, or to be studied as one, for the Framework-as-Aspect relationship above to hold: even a small, single-author, never-revised framework still constrains the Structure of systems built within it, whether or not it independently qualifies as a System by the criteria in the Meta-Principle (see Relationships Between Concepts > Meta-Principle, below).
+
+**Framework as Aspect.** When a System S is built within a framework F, F's description functions as an aspect of S — specifically, the part of S's Structure that S inherited from F rather than chose for itself. This is what "Framework and Architecture are co-equal aspects of a System" means: S's Structure is partly shaped by decisions made within S (Architecture) and partly shaped by constraints inherited from F (Framework-as-aspect). Whether this relationship is best described as F becoming "an aspect of" S, or as F constraining S's Structure from outside without F entering S in any sense, is an open question the Framework RFC leaves for future revision (see the Framework RFC, Unresolved Questions) rather than one this RFC settles.
+This mirrors the pattern already established for Architecture: the concept's definition does not require System-hood, but a sufficiently rich, ongoing instance of the concept may be modeled as a System when that lens is useful for reasoning about it. The relationship is also not one-to-one: a single framework can be an aspect of many different Systems simultaneously (Khayyam is an aspect of the Structure of every system built with it) while, from its own vantage point and only when the System lens is applied to it, remaining one System.
 
 
 ### Implementation
@@ -411,10 +482,16 @@ The distinction between architecture and implementation is discussed in the soft
 ### Relationships Between Concepts
 The concepts defined in this RFC are not independent, but their relationships cannot be captured by a linear ordering, a tree, or a taxonomy. They form a conceptual graph — a network of nodes (concepts) connected by different types of edges (relationships). This section makes those edge types explicit, because in a graph, ambiguity lives not in the nodes but in the edges: if the types of relationships between concepts are not clearly distinguished, readers will fill in the gaps with assumptions — often hierarchical ones — that the RFC does not intend.
 
-#### Meta-Principle: Concepts Are Themselves Systems
-Architecture, Framework, Protocol, Model, Process, Structure, and similar concepts defined in this RFC are themselves Systems. Each is a collection of interacting elements organized toward a purpose. This has a important consequence: when we say that Architecture shapes a System, or that a Framework constrains a System, we are really saying that one System influences, constrains, describes, or shapes another System. The relationship between any two concepts in this RFC is, at the deepest level, a relationship between two Systems.
+#### Meta-Principle: Some of These Concepts Are Themselves Systems
+Some, but not all, of the concepts defined in this RFC are themselves Systems. A concept qualifies as a System only if it independently satisfies System's own criteria — interacting elements, a boundary, emergent behavior, and interdependence (see System > Key Properties) — not merely because it can be described using System-like vocabulary such as "a collection" or "a set."
 
-This principle prevents a common source of confusion: the assumption that these concepts belong to fundamentally different metaphysical categories. They do not. A Framework is a System that constrains other Systems. A Model is a System that represents other Systems. A Protocol is a System that governs processes within other Systems. The edge types described below are therefore not category differences but specific modes of systemic influence.
+**Architecture and Framework may qualify, when considered as ongoing activities.** Architecture — when understood not as a static description but as the evolving collection of processes, contributors, feedback loops, and decisions by which a system is designed and developed — may itself be modeled as a System. It has interacting elements (contributors, tools, processes), a boundary (the scope of architectural concern for that system), emergent behavior (design outcomes that no single contributor intended), and interdependence (a change in one architectural decision propagates to others). The same applies to Framework, considered as an evolving body of constraints, conventions, contributors, and processes. Khayyam, considered as an evolving body of RFCs, contributors, and conventions, is a System in its own right, with its own Architecture, quite apart from any system built using it. Protocol's status as a System is addressed by the Protocol RFC.
+
+However, this is not an unconditional claim that *every* architecture is necessarily a System. A very small, purely descriptive architecture — a brief note documenting a single design choice — may not independently exhibit emergence or interdependence in a meaningful sense. The claim is that Architecture, as Memar understands and practices it (a continuous, evolving, multi-contributor process), does qualify; and that any architecture substantial enough to shape a System's long-term properties will typically exhibit the characteristics that make the System model useful for reasoning about it.
+
+**Structure, Process (a single instance), and Model do not qualify on their own.** Structure is a *set* of capabilities and limitations — a description, not itself a collection of interacting elements producing emergent behavior. A single Process is a sequence of activities that acquires its meaning entirely from the System it occurs within (see Process > Process and System) — it has no independent boundary or purpose of its own. A Model is a representation constructed by an observing System, not an independent System that could be said to have its own emergent behavior. These three remain what the rest of this RFC treats them as: mechanisms and descriptions used *to characterize* Systems, not additional Systems standing alongside the ones they characterize.
+
+This has a practical consequence for reading the relationships below: when we say that Architecture shapes a System, or that a Framework constrains a System, we are describing one System influencing another (see System Openness, above, for how the direction and mutuality of that influence can itself change over time). But when we say a Structure describes a System, or a Model represents a System, we are not describing a relationship between two Systems — we are describing how a single System is characterized, from a particular vantage point, by something that is not itself a System. Conflating these two kinds of statement is a more subtle version of the same hierarchical misreading this section exists to prevent: it is possible to over-correct against a false hierarchy by inventing Systems that do not independently earn the label, which is its own source of confusion.
 
 #### A Conceptual Map
 The following diagram shows the central concept (System) and the primary relationship types connecting it to related concepts. Each arrow label denotes a distinct type of relationship:
@@ -481,6 +558,8 @@ The following diagram shows the central concept (System) and the primary relatio
     the entire conceptual structure.
 ```
 
+This diagram depicts Framework in its role as *Framework-as-aspect* — the part of a System's Structure inherited from the framework it was built within. It does not depict a framework considered as a System in its own right, which is an optional, instance-specific lens rather than part of what the diagram's edges assert. See Framework > Framework as Aspect, and Framework Considered as a System.
+
 #### Edge Types: What Kinds of Relationships Exist?
 The diagram above uses distinct relationship labels rather than a single "depends on" arrow. This is deliberate. The relationships between these concepts are not all of the same kind, and treating them as if they were — as a single "dependency" type — is what produces the hierarchical misunderstandings this RFC seeks to prevent. The primary edge types are:
 
@@ -488,9 +567,9 @@ The diagram above uses distinct relationship labels rather than a single "depend
 
 **described by**: A System can be described through its Structure or its Processes. This is not the same as containing them. A city *contains* streets, and it can also be *described by* those streets. Both statements are true, but they express different relationships: one is about composition, the other is about epistemic access.
 
-**shaped by**: Architecture shapes a System. This is an active, transformative relationship — architecture participates in determining what the system becomes. Crucially, Architecture is itself a System, so "shaped by" is really one System influencing the development of another.
+**shaped by**: Architecture shapes a System, while feedback from the System continuously reshapes the Architecture. This is an active, transformative relationship — architecture participates in determining what the system becomes — but it is not one-way. Architecture, when considered as an ongoing, evolving, multi-contributor process rather than a static description, may itself be modeled as a System (see Meta-Principle, below); read that way, "shaped by" is one System-like process influencing the development of another, and the System Openness model (see System > System Openness) determines whether that influence is open (bidirectional), closed (one-way), or isolated at any given time. This reading is a useful lens, not a requirement: the edge holds regardless of whether, in a given case, Architecture is substantial enough to independently qualify as a System.
 
-**constrained by**: A Framework constrains the design space of Systems built within it. Constraints are not descriptions or predictions — they are active limitations on what is possible.
+**constrained by**: A Framework constrains the design space of Systems built within it. A framework is a description of a system; the `constrained_by` relationship captures the effect of that description on another System's Structure. The constraint is not necessarily documented or explicit — an implicit framework element (e.g., Linux's "everything is a file" principle) can constrain a System's Structure just as effectively as a formally specified one.
 
 **expressed by**: A System is expressed by its Processes. This relationship is about manifestation: processes are how a system's structure and purpose become observable in time.
 
@@ -505,6 +584,8 @@ The diagram above uses distinct relationship labels rather than a single "depend
 **produces**: Science produces Knowledge. This is a generative relationship — one concept is the output of another's activity.
 
 **enables**: Technology enables System Development. Knowledge enables Technology. This is a capability relationship — one concept makes another possible without fully determining it.
+
+These edge types are first-class concepts in the conceptual graph — the relationships between nodes carry as much meaning as the nodes themselves. Their precise semantics, compositional rules, and constraints on valid usage remain an evolving area. As the node definitions stabilize, the primary source of remaining ambiguity in the graph is migrating from the nodes to the edges, and a dedicated formal treatment (see Unresolved Questions, item 4, and Future Possibilities) may become necessary before the graph can serve as a reliable reasoning tool across multiple RFCs. For now, the definitions above serve as a working taxonomy — sufficient to prevent the most common misreadings, but not yet a complete formalism.
 
 #### Epistemic Influence vs. Structural Containment
 A critical distinction pervades the graph above, and failing to recognize it is the primary reason readers mistakenly place Architecture "above" other concepts:
@@ -527,10 +608,16 @@ Several concepts do not occupy a single position in the graph but operate across
 - **Process** is not subordinate to Architecture. Architecture and Process continuously influence one another — architecture shapes processes, and processes in turn reveal, validate, and reshape architecture. Process pervades the entire graph: systems contain processes, architecture governs processes, technology enables processes, and implementation realizes processes.
 
 #### Co-Equal Aspects of System
-**Framework and Architecture** are co-equal aspects of System, not in a parent/child hierarchy. They are related but distinct: Framework defines *what is possible*; Architecture defines *what was chosen*. Both produce constraints, but of different kinds (domain-level vs. system-level). See the Framework section for the full treatment of this relationship, including examples.
+**Framework and Architecture** are co-equal aspects of System, not in a parent/child hierarchy. They are related but distinct: Framework defines *what is possible*; Architecture defines *what was chosen*. A framework is a description of a system that defines a design space; architecture applies processes to realize a particular system within that space. Both produce constraints, but of different kinds (domain-level vs. system-level). See the Framework section and the Framework RFC for the full treatment of this relationship, including the Framework-Model distinction, the explicit/implicit framework distinction, and the goal-oriented nature of frameworks.
 
 #### System as Central Node
 Every other concept in this RFC exists in relation to a System: architecture is the architecture *of* a system, a framework provides the design space *for* systems, a process occurs *within* a system, technology is knowledge applied *to* systems, a model is a model *of* a system (or of an aspect of reality relevant to a system), and an implementation is an implementation *of* a system's design. This is why System is defined first in this RFC and why it is the node to which the most edges connect.
+
+This centrality reflects two distinct things that should not be conflated:
+
+- **Conceptual centrality**: System is the concept that gives meaning to the others. Without a System to architect, to model, to implement, or to constrain, the other concepts have no object. This is not an artifact of this RFC's organization — it is a feature of the domain itself. Just as "knowledge" and "science" are central nodes in any epistemological model because all reasoning about justification, evidence, and belief presupposes them, "system" is central in any architectural model because all reasoning about design, structure, and process presupposes an entity being designed, structured, or processed.
+
+- **Graph centrality** (as in graph theory): the node with the most edges. System has this property in the conceptual graph, but that is a *consequence* of conceptual centrality, not a cause. Some concepts (Knowledge, Science, Abstraction) are meaningful independently of any particular System — knowledge exists before any system is built using it, and scientific methodology operates on domains far removed from system design. The graph should not be read as implying that nothing exists outside System, only that within this RFC's scope — which is architectural reasoning — System is the entity with respect to which the other concepts are defined.
 
 #### Discussion
 
@@ -548,6 +635,7 @@ A graph-based model is inherently more complex to communicate than a linear chai
 1. Should this conceptual graph be formalized as part of Memar's development process, or should it remain as guidance?
 2. Are there important relationship types missing from this model that should be added in future revisions?
 3. Should Memar develop a formal notation for these edge types that can be used in other RFCs?
+4. Should the edge types themselves (contains, described by, shaped by, constrained by, expressed by, represented by, governed by, realized by, influences, produces, enables) receive a dedicated formal treatment — defining their precise semantics, compositional rules, and constraints on valid usage? As the nodes stabilize, ambiguity is increasingly migrating to the edges; a formal edge-type ontology may become necessary before the conceptual graph can serve as a reliable reasoning tool across multiple RFCs.
 
 
 ## Discussion
@@ -586,9 +674,14 @@ The approach of establishing a shared vocabulary before proceeding to domain-spe
 3. Should the conceptual graph's edge types be formalized into a notation that other RFCs can reference?
 
 ### Future Possibilities
+- Add more words like "pattern", "paradigm", "thinking tools", ...
 - A dedicated RFC for **Constraint** as a first-class concept, since both Framework and Architecture depend on it and the distinction between domain-level and system-level constraints may warrant deeper formal treatment.
+- A dedicated concept (name to be determined) for "the arrangement of a system's parts" — the composition/assembly concept that Structure explicitly excludes but that Memar has not yet formally named (see Structure > Unresolved Questions).
 - A terminology registry that maps each term defined across all Memar RFCs to its definition, its terminology layer, and its relationships to other terms.
 - A visual diagram of the conceptual graph suitable for inclusion in onboarding material.
+- An **Edge Type Ontology RFC** that formally defines the semantics, compositional rules, and valid-usage constraints for each edge type (contains, described by, shaped by, constrained by, expressed by, represented by, governed by, realized by, influences, produces, enables). As the node definitions stabilize, the primary source of remaining ambiguity in the conceptual graph is the edges — and edge ambiguity is harder to detect than node ambiguity because readers tend to fill in edge semantics from context.
+- A dedicated RFC for **Abstraction Validation** — the question of what qualifies a concept to be considered valid at a given level of abstraction. Memar is, in practice, performing this validation implicitly (e.g., distinguishing Architecture from Design, Framework from Library, Structure from Arrangement), but the criteria are not yet formally modeled. Making them explicit would transform Memar from a project that defines terms into a project that also provides a framework for evaluating whether any given term is being used at the appropriate level of specificity for the concept it names.
+- A dedicated RFC exploring the concept of **Contributor-as-System** — modeling contributors (human or AI) as Systems whose own Structure (capabilities, limitations, available time, cognitive biases) creates bidirectional influence with the Systems they develop (see System Openness). This is explicitly deferred because it introduces a new conceptual layer that deserves careful, focused treatment rather than compression into an existing RFC.
 
 
 ## Change Rationale
@@ -604,7 +697,24 @@ The key architectural decisions in this RFC are:
 2. Defining Technology as applied knowledge rather than as artifacts, to prevent Tool-First Thinking.
 3. Including non-computational examples (family, government, lifestyle, discourse, war) to ensure the definitions are maximally general.
 4. Presenting the relationships between concepts as a typed graph rather than a linear dependency chain, flat list, or taxonomy — making explicit that the concepts are connected by multiple distinct relationship types (contains, described by, shaped by, constrained by, represented by, etc.) and that no concept is "above" another.
-5. Establishing the meta-principle that concepts like Architecture, Framework, Protocol, and Model are themselves Systems, so that relationships between concepts are ultimately relationships between Systems.
+5. Establishing the meta-principle that *some* concepts (Architecture and Framework, considered as ongoing bodies of activity) are themselves Systems, while others (Structure, a single Process, Model) are not — a concept must independently satisfy System's own criteria (interacting elements, boundary, emergence, interdependence) to qualify, not merely be describable as "a collection."
 6. Including Knowledge and Science to anchor the epistemic influence dimension of the graph.
-7. Defining Structure as the set of capabilities and limitations a System exposes — explicitly distinguishing it from the common engineering connotation of "arrangement of parts" — and establishing the inseparability of capability and constraint.
-8. Defining Framework and Architecture as co-equal aspects of System (Constraint Space vs. Decision Space), with a compact treatment here and a full treatment in the dedicated Framework RFC (RFC 495003).
+7. Defining Structure as the set of capabilities and limitations a System exposes — explicitly distinguishing it from the arrangement of a system's parts, a separate, not-yet-formally-named concept in Memar — and establishing the inseparability of capability and constraint.
+8. Distinguishing structural abstraction (imposed by an observing System's own Structure, prior to any purpose) from purposive abstraction (a deliberate choice of what to preserve and discard for a specific goal), and establishing that every account one System has of another is mediated by the observing System's own structural limitations.
+9. Distinguishing Framework-as-Aspect (the part of another System's Structure inherited from the framework it was built within) from Framework Considered as a System (an optional, secondary lens applicable to a specific, sufficiently rich framework instance, not a claim built into what "Framework" means) — see item 22 below for the revision that arrived at this final framing.
+10. Introducing System Openness (open, closed, isolated) as a property of the relationship between two Systems with respect to a specific channel of influence, capable of changing over time — used to explain bidirectional or reversing influence (e.g., between a contributor and a framework) without requiring every intermediate activity to be modeled as its own System.
+11. Correcting an internal contradiction in the initial draft, where Abstraction was stated to be deferred to the Modeling RFC (consistent with Model) but was, in fact, already fully defined in this RFC; Abstraction's full definition remains here.
+12. Defining Framework and Architecture as co-equal aspects of System (Constraint Space vs. Decision Space), with a compact treatment here and a full treatment in the dedicated Framework RFC (RFC 495003). Framework is defined as "a description of a system" — an atomic definition whose discriminative power comes from the explanatory structure surrounding it (hypothetical nature, goal-orientation, relationship to Model, explicit/implicit distinction, development framework as specialization).
+13. Clarifying that "shapes" in "Architecture shapes a System" does not mean one-way control — the relationship is bidirectional and iterative, consistent with System Openness, and classical-architecture and ISA examples are used to demonstrate this.
+14. Refining the Meta-Principle from an unconditional claim ("Architecture and Framework are Systems") to a qualified one ("Architecture and Framework *may themselves be modeled as* Systems when they exhibit the requisite properties"), and making explicit that not every trivially small architecture qualifies.
+15. Distinguishing Conceptual Centrality (System gives meaning to the other concepts) from Graph Centrality (System has the most edges), to prevent the misconception that nothing meaningful exists outside System in the conceptual graph.
+16. Identifying Edge Types as an emerging topic that may require their own dedicated RFC, as the nodes stabilize and ambiguity migrates to the edges.
+17. Updating the "shaped by" edge type definition to explicitly state its bidirectional character at the point of definition (not only in Change Rationale), so that readers who do not read the full Discussion still encounter the correct semantics.
+18. Adding an explicit bridge to the Terminology RFC's principle that "terminology shapes mental models" — stating that the purpose of these definitions is not merely semantic consistency but the improvement of mental models used to reason about systems, and that terminology debt is a root cause of architectural debt.
+19. Adding a lightweight Edge Taxonomy note immediately after the edge-type definitions, establishing that edge types are first-class concepts whose full formal treatment is deferred but whose working definitions are provided here.
+20. Adding an explicit, stated-not-implied legitimacy test for Architecture, using the ISA example as a calibration point: something is Architecture, in Memar's sense, only if it independently exhibits System's own properties at meaningful scale. Explicitly acknowledging that this excludes much of what is commonly labeled "Software Architecture," "Service Architecture," or "Microservice Architecture" in industry usage, and marking the test as a current working criterion rather than a settled classification, pending further testing against a wider range of cases.
+21. Correcting a contributor-attribution error: the ISA example was introduced by Omid Hekayati, not Claude; the Conceptual Centrality vs. Graph Centrality distinction and the identification of Edge Types as an emerging topic were raised by ChatGPT in a later review round, not by Claude. Contributor Task entries were corrected accordingly.
+22. Correcting a regression: an earlier revision of this RFC treated "Framework as System" as one of two equally valid senses of the word Framework, which contradicted the Framework RFC's atomic definition ("a framework is a description of a system") and a general principle established during the Framework RFC's own revision — that System is never baked into a concept's core definition, but is always, at most, a secondary lens that a sufficiently rich instance of a concept may be examined through (the same pattern already applied to Technology, and to Architecture in the Meta-Principle below). Framework as Aspect remains the RFC's account of how a framework's constraints appear within a built System's Structure; Framework Considered as a System is now presented explicitly as optional and instance-specific, not as a co-equal sense of the word. The "shaped by" edge type definition was similarly softened, for consistency, from an unconditional "Architecture is itself a System" to a hedged reading.
+23. Correcting a second contributor-attribution error: the original proposal to reintroduce the open/closed/isolated systems classification (System Openness) came from Omid Hekayati, not Claude. Claude's contribution was expanding that proposal into the full subsection, with the contributor example, the "influences" edge connection, and the note that openness can change over time. Both contributions are now recorded separately.
+24. Adding a short definition of Description ("a statement that represents something in words, or more broadly in any symbolic form") at the point where Framework's definition first depends on it, since Framework's definition rests on this term without it having been defined anywhere in Memar's RFCs.
+25. Adding "A Note on Systems Thinking" (under How to Read This RFC) to address a recurring source of confusion: that many things, examined loosely, can be called a System, and that this is a normal feature of systems theory rather than a sign of imprecision. The note distinguishes this explanatory-level looseness from the definitional discipline the Meta-Principle enforces, and recommends readers unfamiliar with systems theory or systems thinking read an introductory treatment of the field.
