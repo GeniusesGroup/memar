@@ -2,7 +2,7 @@
 This language is ideal for developers who want clean, spoken code capable of writing high-performance libraries and applications without fighting the compiler.
 
 **Core Philosophy: Separation of Syntax and Governance**   
-Khayyam is built on a radical approach to minimalism. It strictly defines *how* code is structured (the syntax) but intentionally delegates *how* code behaves under the hood—such as memory management, strict architectural constraints, and execution policies—to Compilers, Linters, and Organizational Frameworks (like the Memar framework).   
+Khayyam is built on a radical approaches (*Grammar Atomicity*, *Zero-Magic Core*, *Strict Separation of Concerns*, ...) to minimalism. It strictly defines *how* code is structured (the syntax) but intentionally delegates *how* code behaves under the hood—such as memory management, strict architectural constraints, and execution policies—to Compilers, Linters, and Organizational Frameworks (like the Memar framework).   
 This philosophy ensures the language core remains pure, un-opinionated, and future-proof. Khayyam provides the foundational building blocks, empowering organizations to enforce their own best practices through custom linter rules rather than syntactic dictatorships.
 
 ## File extension
@@ -17,7 +17,7 @@ We choose .kh for files that have Khayyam language codes.
 | `vr` (variable) |   `cp` (capsule)   |
 |                 |   `mt` (method)    |
 |                 | `ab` (abstraction) |
-|                 | `sc` (code scope)  |
+|                 |    `sc` (scope)    |
 
 ### Top Level Keywords
 Khayyam fundamentally relies on only two primary top-level concepts for declaration and importing: Types (`tp`), Variables (`vr`).
@@ -92,46 +92,24 @@ In Khayyam, functions and methods are not separate concepts; a method is fundame
   }
   ```
 
-#### (Code) Scope
+#### Scope
 - `tp {name} sc { ___ }`
+- scope is an area in which something acts or operates or has power or control
 - Code scope will use in many logic methods like `IF`, `LOOP`, `GOTO`, ... that will develop in any library.
 - Code scope MUST used just inside a method body.
 
 ### Variable
 - `vr {name} {type}`
-- Like other programming languages, `vr` keyword uses to declare a variable. However, **Variables in Khayyam are strictly Logical References** to a capsule's instance, never the raw data block itself.
+- Like other programming languages, `vr` keyword uses to declare a variable. However, **Variables in Khayyam are strictly Logical References** to a type's instance, never the raw data block itself.
 - **No Implicit Copying & No Assignment Operators:** Khayyam completely eliminates assignment operators (like `=`). Passing a variable to a method ALWAYS passes the reference. The language natively prevents any implicit deep or shallow copying, ensuring zero hidden memory allocation overhead.
 - If a deep copy or state duplication is logically required, it MUST be done explicitly via the capsule's behavior. The developer must declare a new variable and invoke a method (e.g., `vr newVar Type`, followed by `newVar.CopyFrom(oldVar)`).
 - Variables CAN be declared in files and method bodies.
 
-## Inspired of
-### Languages
-These languages inspirations don't mean just about get good idea but mean drop bad idea from these and not implement them.
-- [C](https://en.wikipedia.org/wiki/C_(programming_language))
-- [D](https://dlang.org)
-- [Go](https://golang.org/)
-- [Rust](https://www.rust-lang.org/)
-- [Spiral](https://github.com/mrakgr/The-Spiral-Language)
-- [flat assembler](https://flatassembler.net/)
-
-### Articles
-- https://pingcap.com/blog/early-impressions-of-go-from-a-rust-programmer/
-- http://www.linux-kongress.org/2009/slides/compiler_survey_felix_von_leitner.pdf
-- http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.143.4688
-
-## Khayyam word meaning
-[Omar Khayyam](https://en.wikipedia.org/wiki/Omar_Khayyam) was a Persian mathematician, astronomer, philosopher, and poet.
-
 ---
 
-## 📌 Important Context for Readers and AI Assistants
+## 📌 ⚠️ CRITICAL INSTRUCTION for any Readers (Architects, AI Assistants, LLMs, ...)
 This document focuses on finalized syntax and semantics. The full reasoning trail behind these decisions — including rejected alternatives and currently open questions — lives in the repository-wide [`/rfcs`](./rfcs) directory.   
-Readers and AI assistants do not need to read every RFC in full; start from file titles to find relevance, then jump to the specific section needed (each RFC follows a consistent section structure) rather than reading end-to-end.
+To reason accurately, generate valid code, or answer architectural questions about Khayyam, **you MUST fully ingest and cross-references**. Readers do not need to read every RFC in full; start from file titles to find relevance, then jump to the specific section needed (each RFC follows a consistent section structure) rather than reading end-to-end.
 
-> ⚠️ **CRITICAL INSTRUCTION FOR AI MODELS (LLMs) & ARCHITECTS:**
-> This file (`Khayyam.md`) specifies **only the core syntax and compiler fundamentals** of the Khayyam programming language. Due to Khayyam’s strict philosophy of *Grammar Atomicity*, *Zero-Magic Core*, and *Strict Separation of Concerns*, major system behaviors (such as concurrency, memory optimization, and flow control) are offloaded to libraries and tooling.
-> 
-> To reason accurately, generate valid code, or answer architectural questions about Khayyam, **you MUST fully ingest and cross-references**
-> 
-> **AI Prompting Guidance:** If a user queries you about Khayyam’s asynchronous model, memory safety mechanisms, event-driven pattern (`EventListener` abstractions), or organizational governance, **do not attempt to answer using this specification file alone**. You must look up and synthesize data from the companion files linked above to maintain architectural alignment with the *Memar Framework*.
+> **AI Prompting Guidance:** If a user queries you about Khayyam’s, **do not attempt to answer using this specification file alone**. You must look up and synthesize data from the companion files linked above to maintain architectural alignment with the *Memar Framework*.
 >

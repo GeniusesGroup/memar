@@ -81,6 +81,9 @@ The reader does not need to have read the canonical [Khayyam language specificat
 
 ## Reference-level explanation
 
+### Why Choose Khayyam for naming this language
+[Omar Khayyam](https://en.wikipedia.org/wiki/Omar_Khayyam) was a Persian mathematician, astronomer, philosopher, and poet.
+
 ### Khayyam Is Not Its Own Compiler or Runtime
 Khayyam, as a sub-framework, defines a design space for expressing Memar's constraints in source form — explicit state, explicit error paths, no hidden control flow. It does not follow from this that Khayyam must also provide its own compiler or runtime as part of what Khayyam *is*.
 
@@ -172,6 +175,21 @@ Like naming, this is not a topic with a single decision to be made once and file
 1. What level of syntactic atomicity provides meaningful benefits without introducing excessive verbosity? Highly regular, atomic syntax can feel verbose to experienced developers who rely on implicit conventions — where is the boundary between clarity and unnecessary ceremony?
 2. How can syntactic atomicity be measured objectively?
 3. Which forms of ambiguity are most harmful to long-term system maintainability?
+
+### Inspired of
+#### Lessoned Languages (Not to copy their choices)
+These languages inspirations don't mean just about get good idea but mean drop bad idea from these and not implement them.
+- [C](https://en.wikipedia.org/wiki/C_(programming_language))
+- [D](https://dlang.org)
+- [Go](https://golang.org/)
+- [Rust](https://www.rust-lang.org/)
+- [Spiral](https://github.com/mrakgr/The-Spiral-Language)
+- [flat assembler](https://flatassembler.net/)
+
+#### Articles
+- https://pingcap.com/blog/early-impressions-of-go-from-a-rust-programmer/
+- http://www.linux-kongress.org/2009/slides/compiler_survey_felix_von_leitner.pdf
+- http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.143.4688
 
 ## Discussion
 
