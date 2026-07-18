@@ -295,6 +295,54 @@ This is a tooling-level specification, not a language-level one, but it affects 
 
 When a Khayyam compiler translates an abstraction to a target language (e.g., Go, Rust, C), the structural-satisfaction model must be correctly mapped to the target's type system. In Go's case, this is natural (Go is also structural). In Rust's case, the compiler must generate `impl` blocks for every capsule-abstraction pair it discovers through graph analysis. If an intentional-satisfaction mechanism is later introduced, it would directly simplify this cross-language translation by providing unambiguous, queryable metadata about which abstractions each capsule is intended to implement.
 
+### 4. Abstraction Design and Over-Abstraction Risk
+Khayyam's abstractions are intended as "architectural contracts that express meaningful behavioral boundaries." But the language currently provides no formal guideline for where one abstraction should end and another should begin. Should a `Sortable` abstraction also imply `Equatable`? Should a `Serializable` abstraction imply `Cloneable`? In Khayyam, where inclusion is the mechanism, the question becomes: what is the minimum coherent behavioral boundary?
+
+This is not just a style question. It affects API surface area, compilation strategy (more conforming capsules means less monomorphization), and onboarding friction.
+
+A possible heuristic: an abstraction should represent a **domain concept**, not a **technical capability**. `UserRepository` is a valid abstraction. `Filterable` is probably not.
+
+The largest non-technical risk may be abstraction inflation. If developers misunderstand the role of abstractions, they may begin creating `Readable`, `Writable`, `Searchable`, `Filterable`, `Sortable`, `Composable`, and so on, as generic reuse mechanisms. This recreates the same problems seen in interface-heavy ecosystems. The intended role of abstractions is: architectural contracts that express meaningful behavioral boundaries — not general-purpose code reuse tools. The success of Khayyam may depend heavily on preserving this distinction.
+
+##### Drawbacks
+Without formal guidelines, different teams (or different developers within the same team) will make inconsistent abstraction-granularity decisions. Over time, this inconsistency can erode the API coherence that the abstraction model is designed to provide.
+
+##### Rationale and alternatives
+- **Define a maximum set of methods per abstraction (rejected)**: arbitrary numeric limits do not capture the semantic coherence that matters.
+- **Require a domain-concept naming heuristic as a compiler rule (considered, not chosen)**: too subjective for mechanical enforcement; better suited as a linter guideline.
+- **Adopt traditional generic syntax with constraint clauses (rejected)**: would reintroduce the type-carrier indirection that Khayyam's design philosophy explicitly removes.
+- **Use structural typing as in Go (considered, not chosen)**: Go's structural typing achieves similar expressiveness but without the Smart Compilation optimization path that Khayyam's abstraction model enables.
+
+##### Prior art
+Rust's trait system is the closest mainstream prior art for behavioral contracts, but Rust uses `impl Trait for Type` syntax and allows generic bounds. Go's structural interfaces are simpler but lack monomorphization optimization. Haskell's type classes are more powerful but introduce a level of abstraction complexity that Khayyam deliberately avoids.
+
+##### Unresolved questions
+1. Is the domain-concept vs. technical-capability heuristic sufficient, or does it need to be supplemented with more specific criteria?
+2. Should the Memar framework define a curated set of canonical abstractions that serve as reference examples for appropriate granularity?
+3. Are there realistic algorithms that genuinely require type identity rather than behavioral contracts, and if so, how should Khayyam handle them?
+
+### 5. Abstraction Stability and Versioning
+
+When an abstraction's behavioral contract changes — a new method is added, a return type changes, a precondition is tightened — what happens to every capsule that conforms to it?
+
+In Rust, adding a method to a trait is a breaking change. In Go, adding a method to an interface is not (structural typing). In Java, default methods were introduced specifically to solve this problem. Khayyam's inclusion-based model needs its own answer. Since Smart Compilation may monomorphize based on the current set of conforming capsules, an abstraction change could trigger recompilation across the entire dependency graph.
+
+This is not just a compiler problem. It is an ecosystem governance problem. If core abstractions in the Memar framework evolve frequently, the cost of upgrading becomes a function of the abstraction stability model, not the code change itself.
+
+##### Drawbacks
+There are no direct drawbacks to documenting this question now. The cost of not documenting it is that an abstraction evolution decision made ad hoc later could create ecosystem-wide breakage with no prior analysis.
+
+##### Rationale and alternatives
+- **Adopt Rust's trait-evolution rules (rejected)**: Rust's nominal typing makes adding a method a breaking change, which is overly conservative for Khayyam's inclusion-based model.
+- **Adopt Go's structural typing approach (considered, not chosen)**: Go's approach is too permissive for Khayyam's goal of explicit behavioral contracts, since any capsule that happens to have the right methods would accidentally conform.
+
+##### Prior art
+Rust's trait-evolution rules, Go's interface-addition semantics, and Java's default methods are the primary prior art. Semantic versioning (SemVer) provides a general versioning framework, but does not address the specific challenge of versioning *behavioral contracts* where satisfaction is structural rather than declared.
+
+##### Unresolved questions
+1. What is the minimal safe evolution operation on an abstraction? Can a new method be added non-breakingly if it has a default implementation expressed as a standalone method?
+2. Should Khayyam define a formal versioning scheme for abstractions, similar to semantic versioning but adapted for behavioral contracts?
+
 ## Future possibilities
 
 ### Compiler-Generated Dispatch Metadata
@@ -311,3 +359,11 @@ A future RFC could define a convention (not a language feature) for attaching do
 ### Composable Abstraction Constraints
 
 A future extension could allow organizations to define "abstraction constraints" — predicates that an abstraction's satisfiers must meet (e.g., "any capsule satisfying `Serializable` must also satisfy `Clone`"). This would be enforced at the Linter level and expressed as configuration, not as language syntax.
+
+### Curated Canonical Abstractions
+
+A curated reference set of canonical abstractions in the Memar framework, serving as examples of appropriate granularity and domain-concept framing. This would provide new developers with concrete templates for what a well-designed abstraction looks like, reducing the risk of over-abstraction.
+
+### Abstraction-Granularity Linter Rules
+
+A linter rule that detects abstraction names that are likely technical capabilities rather than domain concepts (e.g., names ending in `-able`, `-ible`) and suggests reconsideration. A complementary rule could detect under-abstraction (abstractions with too many methods that should be split into smaller, more focused behavioral boundaries).
