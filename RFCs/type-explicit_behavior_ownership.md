@@ -9,6 +9,18 @@ Related RFCs:
       URI: "./protocol.md"
       Reason: "Depends_on"
       Explanation: "Defines Protocol as a pure declarative specification. EBO enforces that implementations of protocols carry no hidden behavior."
+    - Title: "Modeling"
+      URI: "./modeling.md"
+      Reason: "Depends_on"
+      Explanation: "EBO is an implementation-level preservation of modeling decisions. The modeling principles defined here (especially 'Modeling Before Implementation') are a prerequisite for applying EBO meaningfully — behavior ownership cannot be correctly determined before the system identifies the Type that represents the underlying concept."
+    - Title: "Type"
+      URI: "./type.md"
+      Reason: "Depends_on"
+      Explanation: "Type is the modeling boundary where behavior ownership becomes explicit. EBO preserves the ownership boundaries that Type establishes during modeling."
+    - Title: "Polymorphism in Khayyam"
+      URI: "./khayyam-polymorphism.md"
+      Reason: "Applied_in"
+      Explanation: "EBO provides the principled foundation for this RFC's rejection of generic syntax. The Polymorphism RFC applies EBO's ownership model at the language level."
 Contributor(s):
   - name: "Omid Hekayati"
     uri: "mailto:omid@geniuses.group"
@@ -138,6 +150,25 @@ The implication is counterintuitive but important: the boilerplate that EBO requ
 
 ## Guide-level Explanation
 
+### Dependency on Modeling
+EBO depends on correct modeling. This dependency is not incidental — it is structural.
+
+Before determining *who* owns a behavior, the system must first determine *what concept* the behavior belongs to. A behavior without a clear Type owner usually indicates a modeling problem that predates any implementation decision. EBO prevents implementation mechanisms from hiding or distorting ownership decisions; it does not replace the modeling process that identifies those decisions in the first place.
+
+The chain is:
+
+```text
+Modeling identifies a concept and its boundary
+     |
+     v
+Type represents that concept and becomes the ownership boundary
+     |
+     v
+EBO preserves that boundary in implementation
+```
+
+This means EBO is an implementation-level preservation of a modeling decision, not a substitute for modeling. When a behavior's ownership is ambiguous in code, the root cause often lies upstream — in a modeling step that failed to identify the correct Type for the concept. The modeling principles in `modeling.md` (especially "Modeling Before Implementation") are a prerequisite for applying EBO meaningfully. See also the discussion of the conceptual dependency graph in `type.md`.
+
 ### The Principle: One Behavior, One Visible Owner
 For any given method (behavior), exactly one component "owns" its implementation. If component `A` has method `foo()`, then `A` is the owner. No other component can claim that same `foo()` belongs to it unless it *explicitly* delegates by writing a method that calls `A.foo()`.
 
@@ -199,13 +230,15 @@ This topic requires future exploration, particularly around the boundary between
 
 ### Generics and Ownership Ambiguity
 
-Generics (type parameters such as `List<T>`) introduce a form of ownership ambiguity that is structurally similar to the mechanisms EBO rejects, even though generics are not typically discussed alongside inheritance or method promotion.
+Generics (type parameters such as `List<T>`) are not behavior injection in the sense that EBO primarily addresses. Inheritance, trait default methods, and method promotion all *inject* behavior into a component — a method body appears where none was written. A generic type parameter does not inject behavior; it propagates type identity. `List<Connection>` does not gain a new `Add` method — it *instantiates* an existing one from a template.
 
-Consider `List<T>.Add(T item)`. The `Add` method is defined in the generic template `List<T>`, but the actual types that use it are `List<Connection>`, `List<Service>`, and so on. Who owns the behavior of `List<Connection>.Add()`? The template `List<T>` defines it, but `List<Connection>` is the type whose instances actually execute it. The implementation lives in one place; the type that "has" the method is a different, parameterized instantiation. Navigating from `List<Connection>` to the actual implementation of `Add` requires understanding the generic type system — a form of ownership discovery cost.
+However, generics introduce a distinct form of ownership ambiguity that, while different in mechanism from behavior injection, produces a similar visibility problem. Consider `List<T>.Add(T item)`. The `Add` method is defined in the generic template `List<T>`, but the actual types that use it are `List<Connection>`, `List<Service>`, and so on. Who owns the behavior of `List<Connection>.Add()`? The template `List<T>` defines it, but `List<Connection>` is the type whose instances actually execute it. The implementation lives in one place; the type that "has" the method is a different, parameterized instantiation. Navigating from `List<Connection>` to the actual implementation of `Add` requires understanding the generic type system — a form of ownership discovery cost.
 
-More fundamentally, a developer reading the source of a domain-specific capsule that uses `List<Connection>` cannot see the behavior of `Add` in that source. The behavior is defined elsewhere, in the generic template. This violates the visibility test: answering "where was this behavior defined?" requires navigating to a different file and understanding parameter substitution. The same principle applies regardless of whether the mechanism is classical inheritance, trait defaults, or generic type parameters — if a method is present on a type but its implementation is not visible in that type's source, ownership is ambiguous.
+More fundamentally, a developer reading the source of a domain-specific capsule that uses `List<Connection>` cannot see the behavior of `Add` in that source. The behavior is defined elsewhere, in the generic template. This violates the visibility test: answering "where was this behavior defined?" requires navigating to a different file and understanding parameter substitution.
 
-EBO's position aligns with and provides principled support for Khayyam's rejection of generic syntax. The domain-specific capsule approach — defining a `ConnectionList` capsule with its own explicitly defined `Add` method — satisfies EBO because every method visible on `ConnectionList` is defined in `ConnectionList`'s source code, either directly or through explicit delegation to an internal data structure. There is no hidden edge in the behavior graph. The detailed language-level specification of this approach is in the Containers, Generics Elimination, and Rich Domain Models RFC.
+An important observation is that generic syntax often becomes necessary not because it is inherently required, but because behavior ownership has already been separated from domain concepts earlier in the modeling process. When a domain concept (e.g., "the set of connections managed by this service") is not modeled as its own first-class type with its own behavior, a generic container becomes the default fallback — and the ownership ambiguity EBO identifies is a consequence of that earlier modeling decision, not of the generic syntax itself. The Polymorphism RFC (RFC 495494) develops this "generics as symptom" argument in detail.
+
+EBO's position is that generic syntax is rejected not because parameterization is inherently invalid, but because existing generic mechanisms often combine multiple semantic responsibilities (polymorphism, behavior reuse, compile-time facts, optimization hints) into a single abstraction mechanism, making behavior ownership and modeling boundaries unclear. The domain-specific capsule approach — defining a `ConnectionList` capsule with its own explicitly defined `Add` method — satisfies EBO because every method visible on `ConnectionList` is defined in `ConnectionList`'s source code, either directly or through explicit delegation to an internal data structure. There is no hidden edge in the behavior graph. The detailed language-level specification of this approach is in the Polymorphism RFC (RFC 495494).
 
 ## Reference-level Explanation
 
@@ -259,6 +292,8 @@ flowchart LR
 ### Interaction with Protocols
 Because of EBO, no protocol or trait may inject behavior. A trait's default method is effectively hidden code — it appears in a component without that component's source defining it. Therefore, EBO forbids default methods in protocols. Protocols remain pure declarative specifications (as defined in the Protocol RFC). Components implementing a protocol must write out each method explicitly, even if the logic is identical across many components.
 
+Extension relationships between protocols (one abstraction extending another) are relationships between abstractions, not mechanisms for acquiring behavior. Protocol extension transfers declarative requirements, not behavioral implementations — it adds obligations without adding any mechanism for fulfilling them. This is why EBO does not challenge protocol extension: the extended protocol does not gain any behavior from the protocol it extends; it only gains additional requirements that every conforming component must explicitly satisfy.
+
 Code generation is the recommended mechanism for reducing the boilerplate of writing similar implementations across multiple components. The key constraint is that generated code must be visible and auditable — it must exist in files the developer can read, not only in compiler intermediates.
 
 ### Decision Flowchart
@@ -291,7 +326,7 @@ sequenceDiagram
 - **Compile-time Checking:** The compiler will enforce that all protocol requirements are satisfied by explicit methods in the implementing component. There is no mechanism for "inheriting" satisfaction.
 - **Visibility:** Static analysis and the compiler can determine all methods of a component by scanning its source code. There is no need to search inherited scopes or macro expansions (except fully-expanded, visible code).
 - **Documentation:** Each method's owner is documented by its source location. There is no ambiguity about "where did this method come from."
-- **AI-Assisted Development:** Explicit code structures are easier for AI models to reason about. When an AI sees a clear chain of calls, it can better verify correctness, suggest improvements, and generate accurate modifications. Hidden behaviors (from mixins, macros, or inheritance) confuse static analysis and AI alike.
+- **AI-Assisted Development:** Explicit code structure provides clearer signals for AI-assisted analysis and generation. When every method call and its origin are visible in source code, AI models can more reliably verify correctness, suggest improvements, and generate accurate modifications. Hidden behaviors (from mixins, macros, or inheritance) introduce ambiguity that degrades the quality of automated reasoning.
 - **Code Generation Leverage:** AI can generate explicit delegation methods on demand, and linters can scaffold them proactively. The generated code is fully visible, auditable, and modifiable — it stays debuggable and safe. Crucially, this inverts the traditional boilerplate trade-off: the explicit structure that EBO requires is not a cost that AI mitigates, but a property that AI leverages to produce better analysis, refactoring, and verification. The extra lines of code serve as the substrate that makes AI-assisted reasoning more reliable.
 
 ## Drawbacks

@@ -13,10 +13,14 @@ Related RFCs:
       URI: "./protocol.md"
       Reason: "Depends_on"
       Explanation: "Defines Protocol as a pure declarative specification. This RFC uses that definition to justify why abstractions carry no behavior, and why generic type parameters are unnecessary when abstraction conformance is the polymorphic mechanism."
+    - Title: "Type"
+      URI: "./type.md"
+      Kind: Depends_on
+      Explanation: "Type is the central recurring concept throughout this document"
     - Title: "Explicit Behavior Ownership"
-      URI: "./explicit_behavior_ownership.md"
+      URI: "./type-explicit_behavior_ownership.md"
       Reason: "Depends_on"
-      Explanation: "EBO provides the principled foundation (single visible owner) that this RFC applies at the language level. Generic type parameters introduce ownership ambiguity that violates EBO's visibility requirement."
+      Explanation: "EBO is a prerequisite for understanding this RFC. Without EBO's ownership model, the rejection of generic syntax may appear arbitrary — it is not a language preference, but a direct consequence of the principle that every behavior must have a single visible owner. Generic type parameters introduce ownership ambiguity (the behavior lives in the template, not in the concrete type), which violates EBO's visibility requirement. This RFC applies EBO's principle at the language level; it does not re-derive it."
 Contributor(s):
   - Name: "Omid Hekayati"
     URI: "mailto:omid@geniuses.group"
@@ -28,6 +32,14 @@ Contributor(s):
     Effort: "Extended thinking enabled"
     Contribution: "Drafted initial text of RFC 00007 (Containers, Generics Elimination, and Rich Domain Models), argued for and against alternatives including the anemic domain model argument and the EBO-based rejection of generic syntax."
     Tasks: []
+  - Name: "ChatGPT"
+    URI: "https://openai.com"
+    Model: "GPT-5.5"
+    Effort: "Medium"
+    Tasks:
+      - Titles: ["Critical review"]
+        URI: ""
+        Explanation: ""
   - Name: "Claude"
     URI: "https://claude.ai"
     Model: "claude-sonnet-5"
@@ -41,6 +53,8 @@ Contributor(s):
     Contribution: "Merged RFC 00007 content into this RFC, ensuring full preservation of all details including the closed vs. open type parameters analysis, the EBO rationale, and the domain-specific containers pattern."
     Tasks: []
 ---
+
+> **Prerequisite:** This RFC assumes familiarity with the Explicit Behavior Ownership (EBO) RFC. The rejection of generic syntax is a consequence of EBO's ownership model — not an independent language preference. Without EBO, the arguments below may appear to be about syntax aesthetics rather than principled design. If you have not read EBO, start there.
 
 # Polymorphism in Khayyam
 
@@ -107,20 +121,33 @@ tp salt mt (self SaltyHasher) () (h Bytes)
 A `SaltyHasher` can be passed to any function expecting a `Hasher`, because it includes `Hasher`'s requirements. This is inheritance in its correct sense: requirements flow, behavior does not. The implementing capsule owns every method it defines.
 
 ### Polymorphism Without Generics: Domain-Specific Containers
+The question "what replaces `List<T>`?" reveals a modeling assumption that deserves examination. `List<T>` presents itself as a container — a storage structure parameterized by element type. But from the domain's perspective, what actually exists is not "a list of connections" but a **concept** — "the set of connections managed by this service" — that happens to use a list as its internal storage mechanism. The concept has its own identity, its own invariants (no duplicate connections, lifecycle rules), and its own behavior (query methods, bulk operations). None of these belong to a generic list; they belong to the concept itself.
 
-Instead of a generic `List<Connection>`, a developer (or a code generator/AI assistant) defines an intermediate domain-specific capsule, `ConnectionList`, whose public methods strictly accept and return only `Connection` capsules, and whose internal validation rules (e.g. duplicate prevention) live directly inside its own methods (`ConnectionList.Add()`), exactly where that logic belongs. Where a method needs to accept any implementer of a shared behavior, it refers to the abstraction directly (e.g. `Index(el Element)` rather than `Index[T](el T)`).
+A developer (or a code generator/AI assistant) therefore defines a domain-specific capsule, `ConnectionList`, whose public methods strictly accept and return only `Connection` capsules, and whose internal validation rules live directly inside its own methods — exactly where that logic belongs. Where a method needs to accept any implementer of a shared behavior, it refers to the abstraction directly (e.g. `Index(el Element)` rather than `Index[T](el T)`).
 
-This is not a workaround for the absence of generics — it is the principled approach. The domain-specific capsule does more than a generic container ever could: it enforces domain invariants, provides domain-meaningful method names, and keeps all logic related to a collection of connections inside the type that represents that concept.
+This is not a workaround for the absence of generics — it is the principled approach. The domain-specific capsule does more than a generic container ever could: it enforces domain invariants, provides domain-meaningful method names, and keeps all logic related to a collection of connections inside the type that represents that concept. The raw list or map is an implementation detail inside the capsule, not the public abstraction that application code interacts with.
 
 ### What You Will Not Do in Khayyam
-
 - You will **not** write `fn process<T: Hasher>(h: T)` — there is no generic syntax. You write `fn process(h: Hasher)` and the compiler handles the rest.
 - You will **not** overload a method name with different parameter types — there is no ad-hoc overloading. Each method has exactly one signature.
 - You will **not** rely on implicit type coercion (e.g., an `Int32` silently becoming an `Int64`). The language does not perform implicit type conversions.
 - You will **not** use generic collections like `List<T>`, `Map<K, V>`, or `Set<T>`. Instead, you will define (or scaffold) domain-specific capsule types that wrap the underlying ADTs and carry the domain logic that belongs to them.
 
-### A Note on Ad-Hoc Behavior via Compile-Time Conditionals
+### Generic Syntax vs Generic Capability
+Khayyam rejects generic **syntax**, not generic **capability**.
 
+A generic capability means that one implementation can operate over multiple concrete types according to a declared behavioral contract. This is a valuable and widely-needed capability: sorting algorithms, hashers, serializers, and container operations all require it. Khayyam fully provides this capability through abstraction conformance — a method accepting an abstraction type is, in effect, a universally quantified function over all types satisfying that abstraction.
+
+Generic **syntax** (`<T>`, `[T]`, `where T: Trait`) is only one historically-dominant way to express that capability. It works by introducing explicit type parameters that the developer must annotate, constrain, and propagate through call chains. This syntax conflates two fundamentally different concerns:
+
+1. **Type generalization** — the ability for one piece of code to work with multiple types. This is the legitimate capability that polymorphism should provide.
+2. **Behavior ownership placement** — the question of *where* the behavior's definition lives and *who* owns it. Generic syntax structurally places behavior definitions in templates rather than in the concrete types that represent domain concepts, which is a behavior-ownership decision, not a polymorphism decision.
+
+Khayyam keeps the first capability (through abstraction conformance and Smart Compilation) while rejecting the second consequence of generic syntax: moving behavior ownership away from domain concepts and into type-parameterized templates. The distinction matters because it is the ownership consequence, not the polymorphism capability, that produces the Anemic Domain Model anti-pattern discussed throughout this RFC.
+
+This is why the question "how do you achieve generics without generic syntax?" is, from Khayyam's perspective, a category error. The correct question is: "how do you achieve polymorphic capability while preserving behavior ownership?" — and abstraction conformance is the answer.
+
+### A Note on Ad-Hoc Behavior via Compile-Time Conditionals
 A rare but valid form of ad-hoc polymorphism is the need to execute completely different logic based on the concrete type behind an abstraction — not just dispatching to the type's own implementation, but branching the caller's control flow. In Khayyam, this can be achieved through compile-time conditional checks (type inspection) within a single method, rather than through function overloading with different parameter types.
 
 However, this need is rare in practice and arises primarily in the context of ADTs, where the abstraction principle itself is intentionally suspended (ADTs exist precisely to enable type-based branching). In all other contexts, if different behavior is needed for different types, the correct mechanism is abstraction conformance — where each capsule provides its own implementation of the shared abstraction's methods.
@@ -128,7 +155,6 @@ However, this need is rare in practice and arises primarily in the context of AD
 ## Reference-level explanation
 
 ### Polymorphism Classification in Khayyam
-
 The foundational classification of polymorphism types in programming language theory comes from Christopher Strachey's 1967 lecture, later refined by Luca Cardelli and Peter Wegner (1985). They identify two major categories:
 
 | Category | Strachey's term | Description |
@@ -230,7 +256,6 @@ The specific machine-code mechanism used for each polymorphic call site is deter
 This is not an all-or-nothing decision. The same polymorphic code may be compiled differently at different call sites, depending on what the compiler can prove at each specific location. The developer never specifies which strategy to use.
 
 ### Relationship to Parametric Polymorphism
-
 An important theoretical observation, supported by recent research (see Prior Art), is that **inclusion polymorphism and parametric polymorphism have significant overlap in expressive power**. The paper "Structural Subtyping as Parametric Polymorphism" (Ghiotto et al., 2023, POPL) demonstrates that structural subtyping can encode parametric polymorphism, and vice versa, in certain type systems.
 
 This is relevant to Khayyam because it means that the absence of explicit generic syntax does not necessarily mean a loss of expressive power. When a developer writes:
@@ -244,12 +269,14 @@ This is, in effect, a universally quantified function: "for all types `H` that s
 The difference is not in expressive power, but in **where the quantification is visible**: in parametric polymorphism, the type parameter is explicit in the syntax; in Khayyam's inclusion polymorphism, the quantification is implicit in the abstraction type and resolved by the compiler.
 
 ### Generic Syntax Elimination: Domain-Specific Containers and the Anemic Domain Model
-
-This section details how Khayyam replaces generic type parameters with domain-specific intermediate capsules, and why this is not a limitation but a deliberate design choice that strengthens encapsulation.
+This section details how Khayyam replaces generic type parameters with domain-specific capsules, and why this is not a limitation but a deliberate design choice that strengthens encapsulation.
 
 #### Domain-Specific Containers
+The framing "domain-specific containers replace generic containers" is misleading if it implies that a `ConnectionList` is a wrapper around `List<T>`. The correct framing is: **a domain concept that happens to use collection-like storage is modeled as its own first-class type**, not as a parameterized storage structure.
 
-Raw ADTs are not exposed directly to application logic; intermediate domain capsules (`ConnectionList`, `ServiceRegistry`) wrap them. These domain-specific containers have public methods that strictly accept and return only the relevant capsule type, and their internal validation rules live directly inside their own methods — exactly where that logic belongs. Where a method needs to accept any implementer of a shared behavior, it refers to the abstraction directly (e.g. `Index(el Element)` rather than `Index[T](el T)`).
+The concept "the set of connections managed by this service" is not a `List` variant — it is an independently-modeled concept with its own identity, behavior, and invariants. The fact that it uses a map or list internally is an implementation detail, not its public identity. Application code interacts with the concept's methods (`AddConnection`, `GetConnection`, `RemoveDisconnected`); it never interacts with the underlying storage abstraction.
+
+Raw ADTs are not exposed directly to application logic; domain capsules (`ConnectionList`, `ServiceRegistry`) wrap them. These capsules have public methods that strictly accept and return only the relevant capsule type, and their internal validation rules live directly inside their own methods — exactly where that logic belongs. Where a method needs to accept any implementer of a shared behavior, it refers to the abstraction directly (e.g. `Index(el Element)` rather than `Index[T](el T)`).
 
 The base ADTs (e.g. a raw hash map) act as plain "hosts" — they do not need generic syntax to know their "guest" element's identity; the guest capsule manages its own identity/memory rules.
 
@@ -291,10 +318,24 @@ Whether dynamic dispatch is *always* reducible to a compile-time-resolved form w
 
 A method name must represent one clear, unambiguous intent. This is not merely a syntactic restriction — it is a consequence of Khayyam's polymorphism model. With inclusion polymorphism, if different behavior is needed for different types, the correct mechanism is abstraction conformance: define an abstraction that captures the shared behavior, and let each capsule provide its own implementation. Overloading would provide a second, conflicting path to the same goal, creating ambiguity about which mechanism to use in any given situation.
 
+#### Why the Matrix Question Does Not Challenge This RFC
+The question most often raised against Khayyam's design takes a form like "what about `Matrix<T, const N: usize>`?" — but this question conflates two fundamentally different concerns. The `T` parameter is a polymorphism question (fully solved by abstraction conformance). The `const N` parameter is a **type-level computation** question: it encodes a compile-time fact (the matrix dimension) into the type identity, which the compiler then uses for memory layout optimization, loop unrolling, and SIMD vectorization.
+
+In current mainstream languages, type parameters have become a general-purpose communication channel between the developer and the compiler. When a language lacks proper abstraction mechanisms for conveying compile-time facts (dimension constraints, memory layout hints, optimization metadata), the only available channel is the type system — so developers encode everything into type parameters. This is not a strength of generic syntax; it is a consequence of lacking alternatives.
+
+**Khayyam's design position:** Compile-time facts should be expressed through explicit contracts between the developer and the compiler (e.g., a capsule satisfying a compiler-visible abstraction that declares its dimension, storage strategy, and optimization properties), not by overloading type identity with non-identity information. Whether additional compiler-facing abstractions are required is a tooling design question, not a justification for generic type syntax.
+
+This separates three concerns that generic syntax conflates:
+
+- **Polymorphic reuse** — fully provided through abstraction conformance and Smart Compilation. This is settled.
+- **Compile-time facts** (dimensions, layout constraints, optimization hints) — should be expressed through dedicated compiler-visible contracts, not by encoding them into type identity. If a compiler needs information from the developer to perform optimization, the correct response is to define an abstraction for that specific compiler-facing concept, not to repurpose type parameters as a general-purpose information channel.
+- **Rule verification** (dimension compatibility, state machine transitions, protocol constraints) — should be modeled as rules or constraints, not as type identity. A matrix multiplication requiring compatible dimensions is a rule about the operation, not an identity property of the matrix type.
+
+The remaining work is not about whether generic syntax is required (it is not, for polymorphism), but about what specific compiler-facing abstractions Khayyam needs to define for compile-time facts and optimization contracts. This is a tooling design question that belongs to a dedicated RFC on compiler contracts, not to this polymorphism-focused RFC.
+
 ## Drawbacks
 
 ### 1. No Way to Constrain by Data Shape
-
 In languages with explicit type-parameter syntax, a generic function can constrain its type parameter by both behavior (trait bounds) and data shape (e.g., "must have a `length` field"). In Khayyam, abstractions only constrain behavior (method signatures), not data layout. If a function needs to work with any type that has a specific internal structure, there is no way to express this constraint without defining an abstraction with a method that exposes that structure. This is not a limitation of Khayyam's parametric polymorphism per se — it is a property of behavior-based abstraction that holds regardless of whether the parametric polymorphism is expressed via `<T>` syntax or via abstraction conformance.
 
 This is generally considered acceptable in systems programming — behavior-based constraints are more robust than structure-based ones because they decouple the consumer from the producer's internal representation. However, it can feel limiting in scenarios where data-shape polymorphism is the natural fit (e.g., generic serialization that needs to inspect field names).
@@ -322,7 +363,6 @@ This cost is partially mitigated by two factors. First, Khayyam's ecosystem incl
 ## Rationale and Alternatives
 
 ### Why Khayyam Achieves Parametric Polymorphism Through Inclusion Rather Than Type-Parameter Syntax
-
 **The core argument:** Khayyam does not lack parametric polymorphism — it achieves the same universally-quantified code reuse through a different mechanism. When a method accepts an abstraction type, it is, in effect, parametric over all types satisfying that abstraction. The compiler's Smart Compilation strategy (see "The Compiler's Role: Dispatch Strategy") determines the optimal dispatch mechanism (monomorphization or dynamic dispatch) from the dependency graph, without the developer needing to annotate type parameters, specify constraints, or manage variance.
 
 Explicit type-parameter syntax (`<T>`) makes the developer explicitly manage these concerns. This is valuable when the type system is the primary mechanism for achieving polymorphism. But when a language already has a robust abstraction mechanism that the compiler can analyze for dispatch optimization, explicit type parameters become redundant syntax — they expose implementation details that the compiler can determine on its own, and they add grammar complexity for no gain in expressive power.
@@ -331,15 +371,39 @@ Khayyam's design philosophy is that the compiler should be intelligent enough to
 
 **What this costs:** The developer loses the ability to express type-level constraints that go beyond what an abstraction can specify (e.g., "this type must have a compile-time-known size" or "this type must be `Copy`-able"). If such constraints become necessary in specific domains, they would need to be expressed through additional abstractions (e.g., `tp StaticSized ab` with a method that returns the size at compile time), which is more verbose but consistent with the language's philosophy.
 
-### Why No Function Overloading
+**Why explicit type carriers are often redundant**. Consider a BTree algorithm that needs to compare keys. What the algorithm actually requires is a behavioral contract — "I can compare keys" — not the identity of the key type itself.
 
+In languages with generic syntax, this is commonly expressed as `BTree<K, V> where K: Ord`. However, the algorithm never uses the identity of `K`; it uses only the behavior guaranteed by `Ord`. The type parameter serves primarily as a carrier that associates the behavioral contract with a concrete type — a layer of indirection that adds syntactic overhead without contributing to the algorithm's logic.
+
+Khayyam eliminates that carrier. The algorithm accepts an abstraction that defines comparison behavior, and any conforming capsule can participate. From the algorithm's perspective, the required information is fully expressed by the abstraction itself — no type parameter, no constraint clause, no variance annotation.
+
+The compiler's Smart Compilation strategy can then apply equivalent optimization opportunities (for example, monomorphization when the reachable set of conforming capsules is closed, or dispatch strategies appropriate to open abstraction sets) without requiring explicit type-parameter syntax in the source code.
+
+This distinction is central to Khayyam's design philosophy: algorithms should declare the behaviors they require, not the concrete type identities they happen to operate on. Generic syntax is one historical solution for expressing parametric reuse, but it conflates two different concerns: type generalization and behavior ownership. Khayyam keeps the first capability through abstraction conformance while rejecting the second consequence of generic syntax: moving ownership of domain behavior away from domain concepts.
+
+### Why No Function Overloading
 Overloading creates a naming collision that must be resolved at every call site by the compiler. This resolution depends on the argument types, which means the same function name can refer to completely different code depending on context. This is the opposite of the explicit, linear execution model Khayyam strives for: the reader should be able to trace the code path without having to mentally resolve type-based dispatch for function names.
 
 Abstraction conformance provides the same ergonomic benefit (one method name that works with multiple types) without the ambiguity: the method is defined once on the abstraction, and each conforming capsule provides its implementation. The dispatch is through the abstraction, not through name resolution.
 
 ### Why No Coercion
-
 Implicit type conversions are a form of hidden behavior. When an `Int32` is silently converted to an `Int64`, the developer may not be aware that a widening conversion occurred, which can mask bugs in numerical algorithms. In safety-critical and performance-critical code (Khayyam's target domain), this hidden behavior is unacceptable.
+
+### Generics as a Symptom, Not a Cause
+Many arguments for and against generics treat generics themselves as the subject of debate. From Khayyam's perspective, generics are more accurately understood as a **symptom** of a deeper modeling problem: behavior ownership has already been separated from domain concepts before the question of generic syntax even arises.
+
+Consider the typical path that leads to generic containers in a codebase:
+
+1. A domain concept (e.g., "a collection of connections") is not modeled as its own first-class concept with its own identity, behavior, and invariants.
+2. Instead, it is represented as a generic `List<Connection>` — a type-agnostic storage structure that happens to hold Connection values.
+3. Domain logic (duplicate prevention, lifecycle rules, query methods) then has nowhere to live inside the type, so it migrates to external services, controllers, or utility functions.
+4. The generic container is now entrenched, and the domain model is anemic.
+
+In this sequence, the generic container is not the root cause — it is the mechanism by which an earlier modeling failure (failing to give "collection of connections" its own identity) becomes entrenched in code. The generic syntax made this path easy; but the decision to not model the concept as a first-class type preceded the syntax choice.
+
+Generic syntax is one historical solution for expressing parametric reuse, but it conflates two different concerns: **type generalization** (a legitimate polymorphic capability) and **behavior ownership** (a modeling decision). Khayyam keeps the first capability through abstraction conformance while rejecting the second consequence of generic syntax: moving ownership of domain behavior away from domain concepts.
+
+This reframing is important because it explains why adding generic syntax to Khayyam would be regressive even if the syntax itself were minimal and clean: the problem is not the angle brackets, it is the behavior-ownership structure that generic syntax imposes on every container, algorithm, and data structure that uses it.
 
 ### Why Generic Syntax Breaks Encapsulation: The Anemic Domain Model and EBO Perspectives
 
@@ -370,6 +434,8 @@ Khayyam's position is that Go 1.18 generics were added to solve a real problem (
 
 From the containers perspective, Khayyam's approach is closer in spirit to a strict "wrapper type per use case" discipline sometimes manually adopted in DDD-heavy codebases as a best practice, here made the only available path.
 
+Go's experience also illustrates a broader pattern: when a language's base types and abstractions are introduced without sufficient behavioral contracts (e.g., `map` and `slice` in Go having no abstraction layer and no way to add domain-specific methods to them), developers eventually demand generic syntax as a workaround — not because they need parametric polymorphism per se, but because the existing types lack the abstraction surface needed for domain modeling. The pressure for generics in Go was, in part, a consequence of this initial abstraction gap. Generic syntax thus becomes a general-purpose communication channel between the developer and the compiler: when the language provides no other way to convey compile-time facts (constraints, optimization hints, element identity), type parameters become the default channel. Khayyam avoids this by ensuring that its base abstractions and capsule types carry their own behavioral contracts from the start.
+
 ### Rust — Traits (Nominal Ad-hoc) + Generics (Parametric) + impl Blocks
 
 Rust combines three polymorphism mechanisms: traits (ad-hoc, nominal), generics (parametric, with trait bounds), and `dyn Trait` objects (runtime subtype polymorphism). This is the most expressive polymorphism system in mainstream systems programming, but it comes at the cost of significant conceptual and syntactic complexity.
@@ -398,17 +464,7 @@ Statically typed mainstream languages (Java, C#, Rust, Go since 1.18) all provid
 
 ## Unresolved questions
 
-### 1. Are There Concrete Use Cases Where Inclusion-Based Parametric Polymorphism Falls Short?
-
-Khayyam achieves parametric polymorphism through inclusion polymorphism + Smart Compilation, and the theoretical argument (Ghiotto et al., 2023) supports their equivalence in expressive power. However, there may be practical edge cases where the abstraction-conformance mechanism cannot replicate what explicit type-parameter syntax provides. Specific scenarios to investigate:
-
-- **Type-safe container abstractions:** Can `tp List ab { Count mt (self List) () (n Int) }` replace `List<T>` for all practical container use cases, or are there scenarios where the container's element type must be known at compile time for memory layout optimization in a way that abstraction conformance cannot express?
-- **Compile-time computation on types:** Are there scenarios where a function needs to perform type-level computation (e.g., computing a buffer size based on a type's properties) that cannot be expressed through method calls on an abstraction?
-- **Data-shape constraints:** Are there practical scenarios where constraining by data layout (not just behavior) is necessary, and cannot be worked around by exposing the layout through an abstraction method?
-
-This question should be answered by attempting to implement a representative set of generic algorithms (sort, map, filter, reduce, binary search) using only abstraction conformance, and documenting any cases where the approach breaks down.
-
-### 2. Should Abstraction Extension Support Multiple Inclusion Without Conflict Resolution?
+### 1. Should Abstraction Extension Support Multiple Inclusion Without Conflict Resolution?
 
 When an abstraction `C` includes both `A` and `B`, and `A` and `B` both define a method with the same name and compatible signatures, what happens? Options include:
 
@@ -418,35 +474,32 @@ When an abstraction `C` includes both `A` and `B`, and `A` and `B` both define a
 
 This is the classic diamond problem from multiple inheritance. Khayyam avoids the worst case (behavior transfer), but the name collision issue remains. The answer affects how abstraction extension can be used in practice.
 
-### 3. Can the Smart Compilation Strategy Be Extended to Devirtualization?
+### 2. Can the Smart Compilation Strategy Be Extended to Devirtualization?
 
 Devirtualization is an optimization where a runtime dispatch call is converted to a direct call when the compiler can prove the concrete type at a specific call site, even if the function was originally compiled for dynamic dispatch. This is common in JVM and .NET runtimes.
 
 If Khayyam's compiler supports devirtualization (converting a VTable call to a direct call after initial dynamic compilation), it would mean that the monomorphization/dynamic-dispatch decision doesn't need to be made at compile time — it can be deferred and optimized incrementally. This would increase the optimization potential for plugin architectures and dynamically loaded code.
 
-### 4. Should There Be a Mechanism for "Sealed" Abstractions?
+### 3. Should There Be a Mechanism for "Sealed" Abstractions?
 
 A sealed abstraction is one that can only be satisfied by capsules defined within the same module or package. This is useful for modeling closed type hierarchies (e.g., `Result` with exactly two variants: `Ok` and `Err`). Without sealing, any external capsule could satisfy the abstraction, which may be undesirable for abstractions that represent a closed set of behaviors.
 
 This could be expressed as a Linter rule (enforcing that only certain files can contain capsules satisfying a specific abstraction) rather than a language feature, consistent with Khayyam's governance philosophy.
 
-### 5. Scaffolded Container Capsules: Version Control or Build-Time Generation?
+### 4. Scaffolded Container Capsules: Version Control or Build-Time Generation?
 
 Whether scaffolded concrete container capsules (e.g. a generated `connection_list.kh`) are intended to be committed to version control or generated fresh on every build is not yet settled; this affects IDE/autocomplete behavior before a build has run. This is a tooling-level question, not a language-design question, but it directly impacts the developer experience of working with domain-specific containers — the primary mechanism through which Khayyam achieves polymorphic container behavior without generic syntax.
 
 ## Future possibilities
 
 ### Polymorphic Data Structures Without Generics
-
-If the open question about type-safe containers (Unresolved Question 1) is resolved favorably, Khayyam could support a standard library of polymorphic data structures (List, Map, Set, Queue) implemented purely through abstraction conformance. This would demonstrate that the "no generics" design is viable for practical, production-quality code.
+Khayyam's standard library could include polymorphic data structures (List, Map, Set, Queue) implemented purely through abstraction conformance and domain-specific capsules. The design questions around this (scaffolding strategy, generated vs. hand-written capsules) are covered in Unresolved Question 4. The core question — whether polymorphic containers are viable without generic syntax — is settled affirmatively by the domain-specific capsule pattern documented in this RFC.
 
 ### Cross-Language Polymorphism Mapping
-
 A future RFC or engineering note could document the exact mapping from Khayyam's polymorphism to each target language:
 - **Go target:** Khayyam abstraction → Go interface. Smart Compilation monomorphization → Go generic function instantiation.
 - **Rust target:** Khayyam abstraction → Rust trait. Implicit satisfaction → generated `impl` blocks.
 - **C target:** Khayyam abstraction → C header with function pointers (VTable struct). Monomorphization → static inline functions.
 
 ### Compile-Time Polymorphism Assertions
-
 A future extension could allow developers to write compile-time assertions about polymorphic behavior, expressed as Linter rules rather than language syntax. For example: "All capsules satisfying `Serializer` must also satisfy `Clone`." This would be enforced at the organizational level, not at the language level.

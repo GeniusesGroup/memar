@@ -1,5 +1,5 @@
 ---
-Title: "Khayyam"
+Title: "Khayyam Design Philosophy"
 Status: Draft
 Start Date: 2026-07-13
 RFC Number: 495539
@@ -7,36 +7,39 @@ Applied to: []
 Related RFCs:
     - Title: "Khayyam - Programming Language"
       URI: "../Khayyam.md"
-      Reason: "Reference"
-      Explanation: "This assessment analyzes the design philosophy documented in the canonical Khayyam language specification."
-    - Title: "Modeling"
-      URI: "./modeling.md"
-      Reason: "Depends_on"
-      Explanation: ""
-    - Title: "Protocol"
-      URI: "./protocol.md"
-      Reason: "Depends_on"
-      Explanation: "Defines Protocol as a pure declarative specification"
+      Kind: Extends
+      Explanation: "This document records the design philosophy and recurring architectural principles behind the canonical Khayyam language specification. It does not modify, restate, or supersede the specification itself."
     - Title: "Terminology"
       URI: "./terminology.md"
-      Reason: "Foundation Alignment"
-      Explanation: "Terminology governs how concepts are understood across modeling"
+      Kind: Depends_on
+      Explanation: "Terminology governs how concepts referenced throughout this document (capsule, abstraction, behavior) are defined across Memar."
+    - Title: "Protocol"
+      URI: "./protocol.md"
+      Kind: Depends_on
+      Explanation: "Per Protocol's definition ('a named set of declarative rules that governs processes within a system'), Khayyam's method/abstraction model is itself an instance of a protocol. This document's philosophy inherits that framing even though 'Protocol' is not named verbatim in the body text."
+    - Title: "Framework"
+      URI: "./framework.md"
+      Reason: "Depends_on"
+      Explanation: "The separation of encapsulation syntax from governance enforcement follows the framework/language/OS separation defined in that document."
+    - Title: "Modeling"
+      URI: "./modeling.md"
+      Kind: Depends_on
+      Explanation: "Modeling is the central recurring concept throughout this document — system-modeling language, domain modeling, architectural modeling. This document's philosophy is a direct application of Modeling's definitions to language design, even where the word itself isn't repeated in every section."
 Contributor(s):
   - Name: "Omid Hekayati"
     URI: "mailto:omid@geniuses.group"
     Tasks:
       - Titles: ["Original idea and reflections", "Design leadership and coordination"]
         URI: ""
-        Explanation: "Original author of all reflections and design assessments; identified the core principles, strengths, risks, and open design questions that form the substance of this RFC."
-  - name: "ChatGPT"
-    uri: "https://openai.com"
-    model: "GPT-5.5"
-    effort: "Medium"
+        Explanation: "Original author of all reflections and design assessments; identified the core principles that form the substance of this RFC."
+  - Name: "ChatGPT"
+    URI: "https://openai.com"
+    Model: "GPT-5.5"
+    Effort: "Medium"
     Tasks:
       - Titles: ["Drafted initial text"]
         URI: ""
         Explanation: ""
-    task: []
   - Name: "Super Z"
     URI: "https://z.ai"
     Model: "GLM 5.2"
@@ -45,24 +48,50 @@ Contributor(s):
       - Titles: ["Restructuring into RFC template"]
         URI: ""
         Explanation: "Restructured unstructured reflections into the canonical RFC template format; preserved original arguments and voice while mapping content to Reference-level topic subsections."
+  - Name: "Claude"
+    URI: "https://anthropic.com"
+    Model: "Claude Sonnet 5"
+    Effort: "High - thinking"
+    Tasks:
+      - Titles: ["Narrative/technical separation", "Governance and attribution review"]
+        URI: ""
+        Explanation: "Front-matter governance. Separated the document into a narrative/philosophy layer (retained here) and a technical/decision layer (extracted to a staging file for placement into dedicated future RFCs)."
 ---
 
-# Khayyam
+# Khayyam Design Philosophy
 
 ## Summary
-This RFC presents a comprehensive assessment of the Khayyam programming language's design philosophy, identifying its core architectural principles, observed strengths, recognized risks, and open design questions. The assessment concludes that Khayyam's defining characteristic is not its syntax but its deliberate derivation of language constructs from long-term system-modeling principles. Several topics identified here carry explicit seeds for future, more narrowly scoped RFCs — including Inclusion-Based Polymorphism, Self-Documenting Code Enforcement, Library-First Compilation Pipeline, Syntactic Atomicity, Target Platform Implications, Abstraction Boundary Guidelines, Error Propagation Model, Abstraction Stability and Versioning, and Primitive Capsule Specification.
+This RFC documents the design philosophy underlying the Khayyam programming language: the architectural principles, motivations, and observed strengths that emerge from Khayyam's approach of deriving language constructs from long-term system-modeling requirements, rather than assembling a feature set.
+
+This RFC intentionally does not contain topic-specific technical decisions — error propagation mechanics, primitive capsule contracts, abstraction versioning rules, polymorphism compilation strategy, and similar concerns are addressed in their own dedicated RFCs as they are written. A reader who does not find a specific mechanism documented here should not assume it is unresolved; see the project's general documentation-navigation guidance for how to search across Memar's RFCs by topic rather than by filename.
 
 ## Motivation
-As Khayyam evolves beyond its initial syntax specification, a structured assessment of its design philosophy is needed for two reasons. First, multiple design discussions have converged on a small set of recurring principles — behavior over type identity, domain modeling as a first-class concern, and the separation of syntax from governance — but these principles have never been formally documented in one place. Second, several open design questions (error propagation, abstraction granularity, evolution without breaking) have been identified informally and deserve a structured record with clear unresolved questions and future possibilities, so that future contributors can build on them rather than rediscovering the same issues.
+Multiple design discussions across Khayyam's evolution have converged on a small set of recurring principles — behavior over type identity, domain modeling as a first-class concern, and the separation of syntax from governance — but these principles had never been documented together in one place. This RFC exists to record that shared philosophical foundation, so that future contributors have a stable reference point rather than rediscovering the same reasoning independently.
+
+This RFC deliberately does not attempt to resolve open technical questions that have a distinct, separate mechanism to decide (how errors propagate, what primitive capsules guarantee, how abstractions version, and so on). Keeping those out of this document means this document's content will not go stale as implementation decisions are made elsewhere — a risk that materialized concretely during this RFC's own drafting, when an earlier version restated an error-handling question that had already been substantially addressed elsewhere.
+
+Ongoing design tensions that apply continuously to syntax and grammar decisions — rather than being resolved once, elsewhere — remain part of this document, since there is no separate place where they would be decided independently of this philosophy.
 
 ## Guide-level explanation
 Khayyam is evolving away from being a traditional programming language and toward becoming a system-modeling language. Most language designs begin by collecting useful features — OOP, generics, pattern matching, functional constructs, traits, reflection, meta-programming — and combining them into a coherent syntax. Khayyam follows a fundamentally different path: instead of asking "What features should a language provide?", it asks "What architectural principles should a long-lived system follow?" and then derives language constructs from those principles.
 
-This RFC captures the current state of that derivation. It is organized into topics, each of which examines one facet of Khayyam's design. Some topics document observed strengths that emerge naturally from the language's constraints. Others document open questions — areas where the architectural direction is clear but the specific mechanism has not yet been finalized. A few topics carry explicit seeds for future RFCs, meaning they contain enough substance to warrant their own dedicated specification once the design matures.
+This RFC captures the philosophical layer of that derivation — the recurring principles observed across many separate design discussions. It intentionally stays at the level of *why* rather than *how*, wherever a distinct *how* has (or will have) a dedicated home elsewhere. The specific mechanisms (how errors propagate, how primitive types are specified, how abstractions version, how polymorphism compiles) are the concern of separate, focused RFCs, written once each design matures enough to be specified concretely.
 
-The reader does not need to have read the canonical [Khayyam language specification](../Khayyam.md) to follow this assessment, though familiarity with Khayyam's core concepts — capsules, abstractions, methods, and Smart Compilation — will provide useful context.
+The reader does not need to have read the canonical [Khayyam language specification](../Khayyam.md) to follow this document, though familiarity with Khayyam's core concepts — capsules, abstractions, methods, and Smart Compilation — will provide useful context.
 
 ## Reference-level explanation
+
+### Khayyam Is Not Its Own Compiler or Runtime
+Khayyam, as a sub-framework, defines a design space for expressing Memar's constraints in source form — explicit state, explicit error paths, no hidden control flow. It does not follow from this that Khayyam must also provide its own compiler or runtime as part of what Khayyam *is*.
+
+Building a compiler or runtime is a separate concern with its own design space, its own trade-offs, and its own failure modes. Folding it into Khayyam's own scope creates a well-documented failure pattern seen across many language projects: once a language project owns compiler and runtime implementation, every new developer-convenience request becomes pressure to add syntax, special cases, or built-in magic to make that convenience possible — because the team that controls the language spec is the same team that feels the pain of not having the convenience. Over time this erodes the "no hidden control flow, no implicit behavior" principle
+Khayyam exists to protect, from the inside, by the people most invested in protecting it.
+
+Keeping compiler and runtime implementation outside Khayyam's own scope as separate systems that consume Khayyam's specification, built by teams whose incentives are implementation correctness and performance rather than syntax convenience — is therefore not an incidental scoping choice. It is a structural safeguard against the specific failure mode described above.
+
+This has a direct consequence for how Khayyam's own RFCs should be scoped: a proposal to add syntax "to make the compiler's job easier" or "because other languages do it this way" is, by this principle, a signal to examine the proposal skeptically rather than a reason to adopt it.
+
+(This is a draft note for further discussion — the precise boundary between "what Khayyam specifies" and "what a Khayyam implementation provides" still needs worked examples before this can be a settled RFC section.)
 
 ### System-Modeling Language Philosophy
 The more Khayyam evolves, the less it appears to be a traditional programming language and the more it resembles a system-modeling language. This distinction may ultimately become one of Khayyam's defining characteristics.
@@ -115,33 +144,14 @@ This perspective influenced discussions around generics, parametric polymorphism
 #### Reassessment of Parametric Polymorphism
 Many canonical examples of parametric polymorphism are historically tied to limitations of existing languages rather than fundamental architectural requirements. Examples include `identity<T>()`, `swap<T>()`, `Option<T>`, and `Result<T,E>`. In several cases, these abstractions exist primarily because of constraints such as single-return-value functions, nullability problems, exception models, and weak domain modeling. When those constraints disappear in Khayyam, some of these patterns become significantly less important.
 
-This suggests that discussions about generics should not begin with "How do we support generic syntax?" but rather "Why does this requirement exist in the first place?".
-
-#### Inclusion-Based Polymorphism
-Consider a BTree algorithm that needs to compare keys. What the algorithm actually requires is a behavioral contract — "I can compare keys" — not the identity of the key type itself. In languages with generic syntax, this is commonly expressed as `BTree<K, V> where K: Ord`. However, the algorithm never uses the identity of `K`; it uses only the behavior guaranteed by `Ord`. The type parameter serves primarily as a carrier that associates the behavioral contract with a concrete type — a layer of indirection that adds syntactic overhead without contributing to the algorithm's logic.
-
-Khayyam eliminates that carrier. The algorithm accepts an abstraction that defines comparison behavior, and any conforming capsule can participate. From the algorithm's perspective, the required information is fully expressed by the abstraction itself — no type parameter, no constraint clause, no variance annotation.
-
-The compiler's Smart Compilation strategy can then apply the same optimizations (such as monomorphization when the reachable set of conforming capsules is closed, or dynamic dispatch when it is open) without requiring explicit type-parameter syntax in the source code.
-
-#### Discussion
-
-##### Rationale and alternatives
-- **Adopt traditional generic syntax with constraint clauses (rejected)**: this would reintroduce the type-carrier indirection that Khayyam's design philosophy explicitly removes.
-- **Use structural typing as in Go (considered, not chosen)**: Go's structural typing achieves similar expressiveness but without the Smart Compilation optimization path that Khayyam's abstraction model enables.
-- **Use full dependent types (rejected)**: excessive complexity for the problem being solved; Khayyam aims for minimalism, not expressive maximality.
-
-##### Unresolved questions
-1. Are there realistic algorithms that genuinely require type identity rather than behavioral contracts, and if so, how should Khayyam handle them?
-2. How does the absence of explicit type parameters affect tooling — IDE auto-completion, documentation generation, and static analysis?
-
-##### Future possibilities
-This topic carries an explicit seed for a dedicated RFC: **Inclusion-Based Polymorphism**. A future RFC should formalize the compilation strategy, define the rules for Smart Compilation's monomorphization-vs-dispatch decision, and provide concrete benchmark data comparing Khayyam's approach to traditional generic syntax in real-world scenarios.
+This suggests that discussions about generics should not begin with "How do we support generic syntax?" but rather "Why does this requirement exist in the first place?". The specific compilation mechanism that follows from this reasoning — how Khayyam's inclusion-based approach actually works and compiles — is the subject of its own dedicated RFC, not this document.
 
 ### Self-Documenting Code and Naming
 In most languages, naming is a style preference. In Khayyam, it is enforced by the language itself: magic numbers are forbidden, primitives must be wrapped in named capsules (`W32`, not `int`), and generic containers are replaced by domain-specific names (`UserRegistry`, not `Map<ID, User>`).
 
 This means that in a Khayyam codebase, it is structurally impossible to write opaque code even if a developer tries. The language grammar makes the architect's intent visible at every call site.
+
+This is not a one-time mechanism to be decided and then documented elsewhere — it is an ongoing tension that recurs every time a new naming rule, keyword, or grammar constraint is considered. Because of that, it stays part of this document rather than being extracted into a dedicated topic RFC.
 
 #### Discussion
 
@@ -149,158 +159,19 @@ This means that in a Khayyam codebase, it is structurally impossible to write op
 1. Where is the boundary between "enforced clarity" and "forced verbosity"? When does a domain-specific capsule name become unnecessary indirection? A capsule called `RetryCounter` adds clarity; a capsule called `LoopIndex` may not.
 2. Should Khayyam provide a linter rule or a compiler directive that allows teams to define their own boundaries for this trade-off?
 
-##### Future possibilities
-This topic carries an explicit seed for a dedicated RFC: **Self-Documenting Code Enforcement**. A future RFC should define a formal heuristic for distinguishing clarity-enhancing names from verbosity-inducing ones, and specify whether enforcement is a compiler-level or linter-level concern.
-
-### Library-First Compilation Pipeline
-PGO in Khayyam is not a compiler flag — it is a library that developers explicitly include in their production pipeline. This is a genuinely unusual design decision with deep implications. If PGO can be a library, what else in the compilation pipeline could be? Escape analysis, inlining heuristics, dead code elimination? The principle seems to be: if an optimization strategy depends on runtime context, it belongs in a library, not in the compiler.
-
-This creates a separation between **deterministic guarantees** (the compiler) and **contextual optimizations** (libraries). The compiler must always produce correct code without any library. Libraries then improve performance when the developer chooses to include them.
-
-#### Discussion
-
-##### Drawbacks
-The risk is fragmentation: different projects may use different optimization libraries, making performance harder to reason about across the ecosystem. This needs a clear governance model.
-
-##### Rationale and alternatives
-- **Keep all optimizations in the compiler (rejected)**: this would prevent developers from choosing optimization strategies appropriate to their specific runtime context and deployment target.
-- **Use a plugin system (considered, not chosen)**: a plugin system introduces its own complexity and stability guarantees that the simpler library-based approach avoids.
-
-##### Unresolved questions
-1. What governance model should the ecosystem adopt to prevent optimization-library fragmentation?
-2. Is there a minimum set of optimizations that must always be compiler-provided for correctness, regardless of library availability?
-
-##### Future possibilities
-This topic carries an explicit seed for a dedicated RFC: **Library-First Compilation Pipeline**. A future RFC should enumerate which compilation phases are candidates for library extraction, define the interface between the compiler and optimization libraries, and establish the governance model for ecosystem-wide optimization consistency.
-
 ### Syntactic Atomicity and Semantic Clarity
 Khayyam is designed around the principle that language constructs should communicate intent as explicitly and unambiguously as possible. This idea is explored through **syntactic atomicity**: each syntactic construct should correspond to a single semantic intent, and each semantic intent should preferably be represented by a single syntactic construct.
 
 The primary goal is semantic clarity rather than AI assistance. By reducing ambiguity, implicit conventions, overloaded meanings, and context-dependent interpretation, Khayyam seeks to make architectural intent easier to understand, reason about, validate, transform, and maintain. These benefits are expected to apply broadly to humans, compilers, analysis tools, verification systems, and machine-assisted reasoning systems alike. This remains a design hypothesis requiring empirical validation.
 
+Like naming, this is not a topic with a single decision to be made once and filed elsewhere — it is the principle applied every time a new keyword, syntactic form, or grammar rule is proposed for Khayyam. It stays here for the same reason.
+
 #### Discussion
 
-##### Unresolved Questions
+##### Unresolved questions
 1. What level of syntactic atomicity provides meaningful benefits without introducing excessive verbosity? Highly regular, atomic syntax can feel verbose to experienced developers who rely on implicit conventions — where is the boundary between clarity and unnecessary ceremony?
 2. How can syntactic atomicity be measured objectively?
 3. Which forms of ambiguity are most harmful to long-term system maintainability?
-
-##### Future Possibilities
-This topic carries an explicit seed for a dedicated RFC: **Syntactic Atomicity**.
-
-A future RFC should define syntactic atomicity formally, establish measurable criteria, and evaluate its impact on readability, maintainability, tooling, automated reasoning, and long-term architectural clarity.
-
-### Execution Semantics Philosophy
-Khayyam is designed around the principle that execution behavior should remain explicit, predictable, and architecturally visible. The primary objective is to minimize hidden runtime assumptions and maximize the visibility of computational behavior within the model itself.
-
-As a result, Khayyam favors:
-* Explicit execution behavior over implicit concurrency models
-* Explicit resource management over hidden runtime mechanisms
-* Direct computational semantics over operating-system-dependent abstractions
-
-These preferences influence language design decisions such as execution models, memory abstractions, and runtime responsibilities. The goal is not to require a specific deployment environment. Rather, the goal is to ensure that architectural decisions remain visible, modelable, and predictable regardless of the underlying execution platform.
-
-Many of these principles align naturally with unikernel-style computing, where applications operate with minimal hidden runtime layers and explicit control over execution behavior. However, Khayyam adopts these ideas as architectural principles rather than deployment requirements.
-
-Every language feature should have explicit execution semantics. Architectural behavior should emerge from visible models and protocols rather than from implicit runtime facilities or operating-system abstractions.
-
-This approach seeks to reduce the gap between architectural intent, implementation behavior, and runtime execution, allowing systems to remain understandable and evolvable over long periods of time.
-
-#### Discussion
-
-##### Drawbacks
-If a team needs to deploy Khayyam code on a standard Linux server, how much of the language's value proposition is lost? The unikernel-first assumption may limit early adoption in organizations that do not yet use unikernels in production.
-
-##### Unresolved questions
-1. Should Khayyam define a **hosted mode** for development and testing that simulates unikernel constraints on a standard OS, similar to how Rust's `#[no_std]` is opt-in rather than the default?
-2. What is the minimum set of OS abstractions Khayyam must provide for hosted-mode development to be productive?
-
-##### Future possibilities
-This topic carries an explicit seed for a dedicated RFC: **Target Platform Implications**. A future RFC should define the hosted-mode specification, enumerate the OS abstractions required for productive development outside a unikernel, and specify the boundary between unikernel-native and hosted-mode behavior.
-
-### Abstraction Design
-Khayyam's abstractions are intended as "architectural contracts that express meaningful behavioral boundaries." But the language currently provides no formal guideline for where one abstraction should end and another should begin.
-
-Consider: should a `Sortable` abstraction also imply `Equatable`? Should a `Serializable` abstraction imply `Cloneable`? In trait-heavy languages, these questions lead to trait hierarchies. In Khayyam, where inclusion is the mechanism, the question becomes: what is the minimum coherent behavioral boundary?
-
-This is not just a style question. It affects API surface area, compilation strategy (more conforming capsules means less monomorphization), and onboarding friction.
-
-A possible heuristic: an abstraction should represent a **domain concept**, not a **technical capability**. `UserRepository` is a valid abstraction. `Filterable` is probably not.
-
-#### Over-Abstraction Risk
-The largest non-technical risk may be abstraction inflation. If developers misunderstand the role of abstractions, they may begin creating `Readable`, `Writable`, `Searchable`, `Filterable`, `Sortable`, `Composable`, and so on, as generic reuse mechanisms. This recreates the same problems seen in interface-heavy ecosystems.
-
-The intended role of abstractions appears to be: architectural contracts that express meaningful behavioral boundaries — not general-purpose code reuse tools. The success of Khayyam may depend heavily on preserving this distinction.
-
-#### Discussion
-
-##### Drawbacks
-Without formal guidelines, different teams (or different developers within the same team) will make inconsistent abstraction-granularity decisions. Over time, this inconsistency can erode the API coherence that the abstraction model is designed to provide.
-
-##### Rationale and alternatives
-- **Define a maximum set of methods per abstraction (rejected)**: arbitrary numeric limits do not capture the semantic coherence that matters.
-- **Require a domain-concept naming heuristic as a compiler rule (considered, not chosen)**: too subjective for mechanical enforcement; better suited as a linter guideline.
-
-##### Unresolved questions
-1. Is the domain-concept vs. technical-capability heuristic sufficient, or does it need to be supplemented with more specific criteria?
-2. Should the Memar framework define a curated set of canonical abstractions that serve as reference examples for appropriate granularity?
-
-##### Future possibilities
-This topic carries an explicit seed for a dedicated RFC: **Abstraction Boundary Guidelines**. A future RFC should formalize the granularity heuristic, provide positive and negative examples, and specify whether enforcement belongs at the compiler, linter, or organizational-governance level.
-
-### Error Propagation Model
-The canonical Khayyam specification notes that `Result<T, E>` exists in other languages primarily because of nullability problems and single-return-value functions — constraints that Khayyam does not share. But errors still occur in any system: network connections fail, files don't exist, and parsers encounter invalid input. If Khayyam does not use `Result<T, E>`, the error propagation mechanism remains an open design question that deserves its own RFC.
-
-Possibilities worth exploring include capsule-level error state (similar to Go's error return, but encapsulated), abstraction-level error contracts (a `Failable` abstraction that defines error semantics), and memory ADT-based error propagation (leveraging the same explicit lifecycle model used for memory).
-
-The choice here will significantly impact every capsule and abstraction in the ecosystem.
-
-#### Discussion
-
-##### Rationale and alternatives
-- **Adopt `Result<T, E>` directly (rejected)**: this would reintroduce the type-carrier pattern that Khayyam's inclusion-based polymorphism philosophy explicitly removes.
-- **Use exception-like mechanisms (rejected)**: exceptions introduce hidden control flow, contradicting Khayyam's principle of making all behavior explicit and visible at the call site.
-
-##### Unresolved questions
-1. Which of the three proposed mechanisms — capsule-level error state, abstraction-level error contracts, or memory ADT-based propagation — best aligns with Khayyam's existing design principles?
-2. How does the error propagation model interact with Smart Compilation's optimization strategy? Can error paths be optimized as aggressively as success paths?
-
-##### Future possibilities
-This topic carries an explicit seed for a dedicated RFC: **Error Propagation Model**. A future RFC should evaluate each proposed mechanism against Khayyam's design principles, provide concrete syntax proposals, and analyze the performance implications of each approach.
-
-### Abstraction Stability and Versioning
-When an abstraction's behavioral contract changes — a new method is added, a return type changes, a precondition is tightened — what happens to every capsule that conforms to it?
-
-In Rust, adding a method to a trait is a breaking change. In Go, adding a method to an interface is not (structural typing). In Java, default methods were introduced specifically to solve this problem. Khayyam's inclusion-based model needs its own answer. Since Smart Compilation may monomorphize based on the current set of conforming capsules, an abstraction change could trigger recompilation across the entire dependency graph.
-
-This is not just a compiler problem. It is an ecosystem governance problem. If core abstractions in the Memar framework evolve frequently, the cost of upgrading becomes a function of the abstraction stability model, not the code change itself.
-
-#### Discussion
-
-##### Rationale and alternatives
-- **Adopt Rust's trait-evolution rules (rejected)**: Rust's nominal typing makes adding a method a breaking change, which is overly conservative for Khayyam's inclusion-based model.
-- **Adopt Go's structural typing approach (considered, not chosen)**: Go's approach is too permissive for Khayyam's goal of explicit behavioral contracts, since any capsule that happens to have the right methods would accidentally conform.
-
-##### Unresolved questions
-1. What is the minimal safe evolution operation on an abstraction? Can a new method be added non-breakingly if it has a default implementation expressed as a standalone method?
-2. Should Khayyam define a formal versioning scheme for abstractions, similar to semantic versioning but adapted for behavioral contracts?
-
-##### Future possibilities
-This topic carries an explicit seed for a dedicated RFC: **Abstraction Stability and Versioning**. A future RFC should define the versioning model for abstractions, specify the safe-evolution rules, and describe the recompilation strategy when an abstraction in a dependency changes.
-
-### Primitive Capsule Specification
-The canonical Khayyam specification claims that replacing `int32` with `W32` is "zero-cost" via Smart Compilation. But `W32` is not just a renamed integer — it is a capsule that presumably provides behavioral guarantees beyond what `int32` offers. What exactly does `W32` guarantee? Some possibilities include overflow behavior (wrapping vs. panic vs. saturating), bit-width enforcement (no implicit widening), serialization contract (predictable binary layout), and range semantics (if used as an index, bounds checking).
-
-The answer matters because it defines the migration contract. If `W32` only provides renaming, the "zero-cost" claim is trivial. If it provides behavioral guarantees, the migration is more complex but the value is real.
-
-#### Discussion
-
-##### Unresolved questions
-1. What behavioral guarantees does each primitive capsule provide? Is there a formal specification for `W32`, `W64`, `F32`, `F64`, and other primitive capsules?
-2. Should primitive capsules be defined by the language itself, by the standard library, or by the Memar framework? Each choice has different implications for portability and governance.
-
-##### Future possibilities
-This topic carries an explicit seed for a dedicated RFC: **Primitive Capsule Specification**. A future RFC should enumerate every primitive capsule, define its behavioral contract precisely, and specify the migration path from raw primitive types.
 
 ## Discussion
 
@@ -308,20 +179,20 @@ This topic carries an explicit seed for a dedicated RFC: **Primitive Capsule Spe
 Not applicable at the RFC-wide level. Each topic section above that introduces naming implications includes its own Suggested Naming Conventions or Naming Discussion where relevant.
 
 ### Drawbacks
-The primary risk of this assessment is that it documents aspirations and principles without yet having implementation evidence for several of them. Smart Compilation, infrastructure-level data structures, ADT integration, runtime optimization strategies, and memory model implications are all theoretically sound and do not currently appear contradictory. However, they remain hypotheses that must eventually be validated through real implementations. Premature commitment to architectural principles that prove impractical in implementation could lead to costly rework.
+The principles documented here are, by nature, interpretive rather than settled fact — they describe a consistent direction observed across many design discussions, not a technical conclusion that can be independently verified. A reader could mistake this philosophical framing for a finalized technical decision on any given topic; it is not. Conversely, the absence of a topic from this document does not imply it is unresolved elsewhere — it may simply belong in a different, more focused RFC. Both risks are mitigated by the project's general documentation-navigation guidance rather than by anything specific to this document.
 
 ### Rationale and alternatives
-- **Publish separate RFCs for each topic rather than one assessment (rejected)**: the topics are interconnected — behavior over type identity informs both the polymorphism model and the naming philosophy — and splitting them would obscure these connections.
-- **Wait until implementation evidence exists before documenting (rejected)**: documenting the principles now creates a shared reference point that prevents parallel discussions from diverging, even if some conclusions may later be revised.
+- **Keep philosophy and technical decisions combined in a single document (original approach, revised)**: earlier drafts of this RFC combined both layers, reasoning that the topics are interconnected. In practice, this created a duplication risk: technical claims restated here could drift out of sync with the dedicated RFCs where those same mechanisms are actually decided. This risk materialized concretely — an earlier draft's discussion of error propagation restated a question already substantially addressed by the existing error-abstraction RFC and by the canonical specification's own method-return pattern. The current approach keeps here only what is either (a) pure philosophy with no separate technical mechanism, or (b) an ongoing design tension with no single external decision point (naming, syntactic atomicity). Topics with a distinct, separable mechanism move to their own RFCs as they are written, and are not individually cross-referenced from this document — readers are directed to the project's general documentation-navigation guidance instead.
+- **Wait until implementation evidence exists before documenting (rejected)**: documenting the philosophical principles now still creates a shared reference point, even if specific technical mechanisms are decided later — and because this document no longer makes technical claims about those separable mechanisms, this reasoning holds more cleanly than it did in the original, mixed-scope version.
 
 ### Prior art
-Rust's design philosophy documents and Go's "Go Proverbs" serve a similar purpose of capturing design intent alongside technical specification. This RFC differs by integrating the assessment directly into the RFC structure rather than maintaining it as a separate, informal document.
+Rust's design philosophy documents and Go's "Go Proverbs" serve a similar purpose of capturing design intent alongside technical specification. This RFC differs by keeping the philosophical/ongoing-tension layer separate from decidable technical specification entirely, rather than combining both.
 
 ### Unresolved questions
-1. Should this assessment be split into multiple RFCs once the individual topic-seed RFCs are written, or should it persist as a single overview document?
-2. How frequently should this assessment be revisited as the implementation matures?
+1. As the technical topics implied by this philosophy (error propagation, primitive capsule contracts, abstraction versioning, inclusion-based polymorphism, and others) get their own dedicated RFCs, does this document need to change at all, or does it remain stable as a pure philosophy reference?
+2. How frequently should this document be revisited to confirm the principles it describes still hold as more of Khayyam is implemented?
 
 ### Future possibilities
-Each topic section above that carries an explicit seed for a future RFC represents a concrete next step. In priority order, the error propagation model and the abstraction stability model have the most direct impact on the ecosystem and should likely be addressed first, followed by the primitive capsule specification and the abstraction boundary guidelines.
+As Khayyam's technical RFCs are written for the topics this philosophy implies, this document is expected to remain largely unchanged — its scope is philosophy and ongoing design tensions, not one-time mechanism decisions, so it does not need to track the completion status of those RFCs individually. This RFC can move toward Final once its own scope is judged complete, independent of how many companion technical RFCs still remain to be written.
 
 ## Change Rationale
