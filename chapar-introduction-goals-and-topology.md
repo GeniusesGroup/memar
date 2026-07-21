@@ -1,12 +1,12 @@
 ---
-RFC Number: 001000
+ID: 001000
 Title: "Chapar: Introduction, Goals, Non-Goals, and Topology Capacity"
 Status: Draft
 Start Date: 2026-07-01
-Applied to: ["networking-osi_2-Chapar.md#chapar---data-link-protocol"]
+Applied to: ["chapar.md#chapar---data-link-protocol"]
 Supersedes: null
 Superseded by: null
-Related:
+Citations:
   Depends_on: []
   Extends: []
   Conflicts with: []
@@ -14,10 +14,10 @@ Author(s): []
 ---
 
 ## Summary
-Chapar is a stateless, source-routed layer-2 protocol. This RFC records the goals it is designed against, the things it deliberately does not attempt to solve (and why), and worked capacity examples showing what its addressing scheme can reach at different topology depths. The protocol specification itself (`networking-osi_2-Chapar.md`) stays limited to wire format and normative behavior; the narrative context for it lives here.
+Chapar is a stateless, source-routed layer-2 protocol. This document records the goals it is designed against, the things it deliberately does not attempt to solve (and why), and worked capacity examples showing what its addressing scheme can reach at different topology depths. The protocol specification itself ([chapar.md](./chapar.md)) stays limited to wire format and normative behavior; the narrative context for it lives here.
 
 ## Motivation
-A protocol spec that only states rules, without the goals those rules serve or the boundaries they deliberately stop at, is hard to extend correctly later — a future contributor can't tell whether an omission was intentional or an oversight. This RFC exists to make every intentional boundary explicit and give it a recorded reason, separately from the wire-format spec.
+A protocol spec that only states rules, without the goals those rules serve or the boundaries they deliberately stop at, is hard to extend correctly later — a future contributor can't tell whether an omission was intentional or an oversight. This document exists to make every intentional boundary explicit and give it a recorded reason, separately from the wire-format spec.
 
 ### Why "Chapar"
 ["The Chapar"](https://en.wikipedia.org/wiki/Chapar_Khaneh) (Persian: چاپار‎) were express couriers of the Achaemenid-era Persian postal system, each station (a "Chapar Khaneh") keeping fresh horses and supplies so a message could keep moving without its courier having to rest or resupply. The name was not chosen only for its historical flavor — the parallel to this protocol's own design is fairly direct: in the old system, a letter was handed off to a new courier at each Chapar Khaneh station, continuing its journey under new hands rather than one courier carrying it the whole way. In this protocol, the same thing happens structurally: whenever a packet reaches a ChaparKhane, its Chapar frame is effectively handed to a new leg of routing — a fresh path is established or composed for the next stage of the journey, rather than the originating device having to have known the complete end-to-end route in advance. Horse and letter became switch and packet, but the underlying shape — relay stations that hand a message onward, each responsible only for the next leg — is the same one this protocol is built on.
@@ -29,12 +29,12 @@ Equally important are the things Chapar explicitly does not try to do — each o
 - **Security** is left to physical access control and to ChaparKhane as network coordinator, since layer 2 is inherently tied to physical-layer access. Layer 1 can provide immediate containment when instructed by an authorized coordinator — shutting down a wired port, or de-associating a wireless client — but this is a mitigation step, not a resolution, and the two cases are not equivalent. For a wired link, cutting logical access is a reasonably complete containment of that specific connection, though the underlying physical-security issue (an unauthorized device or person on the premises) still needs a human/physical response. For wireless, containment is structurally weaker: the medium is inherently shared and broadcast, so a de-associated device can still jam the channel or passively eavesdrop on traffic within range regardless of its protocol-level connection state — de-authentication removes a device from the protocol, not from the physical medium. In both cases, disconnecting a misbehaving device buys time and starts the response; it does not substitute for physical security intervention.
 - **Error detection** belongs to layer 1 (link health) or to upper layers (end-to-end data integrity), not to this layer.
 - **Fragmentation** is not handled here; MTU limits are a concern for whichever layer decides how to split data.
-- **Switching loops** do not need separate prevention logic, because the hop-bounded, source-routed frame structure makes them structurally impossible for Unicast (see [RFC 001002](./001002-chapar-broadcast-scope-and-known-risks.md) for the Broadcast case specifically).
+- **Switching loops** do not need separate prevention logic, because the hop-bounded, source-routed frame structure makes them structurally impossible for Unicast (see [related document](./chapar-broadcast-scope-and-known-risks.md) for the Broadcast case specifically).
 - **Backup links / fault tolerance** across multiple physical paths is left to endpoints and the network coordinator, since handling it here would require exactly the kind of per-switch state Chapar is designed to avoid.
 - **Bandwidth management / QoS** is left to layer 1 and layer 3, since layer 2 cannot even distinguish inbound from outbound traffic on its own.
 - **VLAN-equivalent segmentation** is left to layer 3 (via ChaparKhane), for the same state-avoidance reason as QoS.
 - **Multi-path memory at peers** is not a Chapar concern; a peer may choose to remember more than one path to another peer, but Chapar does not require or manage this.
-- **Recovery after wiring changes** has no dedicated mechanism; see the Discovery mechanism ([RFC 001003](./001003-chapar-discovery-and-path-establishment.md)) for how a broken path is typically re-established via ordinary upper-layer retry.
+- **Recovery after wiring changes** has no dedicated mechanism; see the Discovery mechanism ([related document](./chapar-discovery-and-path-establishment.md)) for how a broken path is typically re-established via ordinary upper-layer retry.
 
 ## Reference-level explanation
 
@@ -43,7 +43,7 @@ These examples show how many hosts a Chapar network can reach at different topol
 
 - **Two-tier (core/edge)**: 1 core switch + 256 edge switches connects 65,280 hosts (65,536 − 256) with a single physical link between core and each edge switch. With 2 core switches and dual links throughout, this becomes 65,024 hosts (65,536 − 256 − 256).
 - **Three-tier (core/distribution/access)**: 1 core + 256 distribution + 65,280 access switches connects 16,646,400 hosts (65,280 × 255). With 2 core switches and dual-homed access switches, this becomes 16,516,096 hosts (65,024 × 254).
-- **Three-tier with wireless access**: 1 core + 256 distribution + 65,280 wireless-access switches connects 4,261,478,400 hosts (65,280 × 65,280), given each wireless access point can address up to 65,536 devices (see [networking-hardware.md](../networking-hardware.md) for the wireless addressing rationale). With 2 core switches and dual-homed wireless-access switches, this becomes 4,228,120,576 hosts (65,024 × 65,024).
+- **Three-tier with wireless access**: 1 core + 256 distribution + 65,280 wireless-access switches connects 4,261,478,400 hosts (65,280 × 65,280), given each wireless access point can address up to 65,536 devices (see [networking-hardware.md](./networking-hardware.md) for the wireless addressing rationale). With 2 core switches and dual-homed wireless-access switches, this becomes 4,228,120,576 hosts (65,024 × 65,024).
 
 A ChaparKhane router with 32 GB of RAM can comfortably handle routing for a network in this range, as long as its own outer-network capacity satisfies the aggregate demand of its nodes. Nodes only depend on ChaparKhane for outer-network routing (with no need for anything like NAT); inner-network connections use ChaparKhane purely as a coordinator, secured via GP or IPsec.
 
@@ -71,7 +71,7 @@ Chapar draws on ideas from several existing systems and standards rather than in
 - Further background: [supporting articles](https://www.dropbox.com/sh/51l4x1p2e8lub5x/AABVgFyJ0fuia8QZt7SEZgBWa?dl=0)
 
 ## Unresolved questions
-- None specific to this RFC at the time of writing; individual Non-Goals may need their own follow-up RFC if a future requirement forces reconsideration (e.g., if a real deployment needs layer-2 fault tolerance badly enough to revisit the multi-path decision).
+- None specific to this document at the time of writing; individual Non-Goals may need their own follow-up document if a future requirement forces reconsideration (e.g., if a real deployment needs layer-2 fault tolerance badly enough to revisit the multi-path decision).
 
 ## Future possibilities
-- If a specific deployment (e.g., a large greenhouse or industrial site) hits a hard requirement that a Non-Goal currently excludes, that should become its own RFC proposing a targeted extension, rather than reopening this document.
+- If a specific deployment (e.g., a large greenhouse or industrial site) hits a hard requirement that a Non-Goal currently excludes, that should become its own document proposing a targeted extension, rather than reopening this document.
