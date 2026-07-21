@@ -1,12 +1,12 @@
 ---
-RFC Number: 001002
+ID: 001002
 Title: "Chapar Broadcast: Scope, Privacy Rationale, and Known (Not New) Risks"
 Status: Draft
 Start Date: 2026-07-01
-Applied to: ["networking-osi_2-Chapar.md#frame-types", "networking-osi_2-Chapar.md#non-goals-non-considering-that-can-be-treated-as-disadvantages"]
+Applied to: ["chapar.md#frame-types", "chapar.md#non-goals-non-considering-that-can-be-treated-as-disadvantages"]
 Supersedes: null
 Superseded by: null
-Related:
+Citations:
   Depends_on: ["001000"]
   Extends: ["001003"]
   Conflicts with: []
@@ -20,7 +20,7 @@ Chapar restricts Broadcast frames to rare, low-frequency scenarios (device disco
 Two separate objections tend to surface when reviewing Chapar's Broadcast rules: (1) "won't a Broadcast frame be duplicated across redundant paths, effectively creating an unbounded loop," and (2) "since Chapar declares security a Non-Goal, doesn't that make it worse than Ethernet." Both deserve a direct, recorded answer rather than a defensive aside in the spec.
 
 ## Guide-level explanation
-Broadcast in Chapar is meant for exactly two things: a new device announcing itself to find a coordinator (see [RFC 001003](./001003-chapar-discovery-and-path-establishment.md)), and emergency signaling. It is explicitly not meant for general content distribution (e.g., streaming video to many recipients on a segment).
+Broadcast in Chapar is meant for exactly two things: a new device announcing itself to find a coordinator (see [related document](./chapar-discovery-and-path-establishment.md)), and emergency signaling. It is explicitly not meant for general content distribution (e.g., streaming video to many recipients on a segment).
 
 There are two independent reasons for this restriction:
 - **Privacy**: broadcasting general content to every node on a segment lets any node infer another node's activity — what is being watched, when it is paused or resumed, and so on. This is a form of surveillance the design rejects as a leftover assumption from physical-world broadcast constraints (e.g., a stadium crowd watching one shared screen) that a digital network is not obligated to repeat. Content genuinely meant for many recipients should be delivered as distinct application-layer streams, not layer-2 broadcast.

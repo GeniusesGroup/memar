@@ -2,12 +2,12 @@
 Chapar is introduced to improve [layer 2 of OSI](https://en.wikipedia.org/wiki/Data_link_layer) that can transmit frames at or near speed of the physical layer (Computing & Networking) limiting and not depend on any devices internal bus speed like RAM, CAM, ... due to it doesn't need any state manager in switching devices (intermediate nodes). It use and combine good specs of [datagrams](https://en.wikipedia.org/wiki/Datagram) and [virtual circuits](http://www.telecomabc.com/v/virtual-circuit.html) to make most efficient protocol.  
 Chapar is a switching protocol that store switch state just in frames and just in two connected peer that can be treated as [stateless protocol](https://en.wikipedia.org/wiki/Stateless_protocol). Other protocols usually need to store some states in all hop switches devices (setup information mechanism) other than on frames and peers e.g. other protocols that use and store [MAC](https://en.wikipedia.org/wiki/MAC_address) in frames and each switching device in the network, that must translate to some data in each switch devices to switch frames.
 
-For the full rationale behind these design choices — including comparison with Ethernet's state model and cost structure — see [RFC 001001](./RFCs/001001-chapar-vs-ethernet-rationale.md).
+For the full rationale behind these design choices — including comparison with Ethernet's state model and cost structure — see [related document](./chapar-vs-ethernet-rationale.md).
 
 ## Inform
 Anywhere in this document talk about [Ethernet](https://en.wikipedia.org/wiki/Ethernet), means ethernet in [layer two](https://en.wikipedia.org/wiki/Ethernet_frame#Frame_%E2%80%93_data_link_layer) not including layer one. Ethernet in layer one has its frame header and dedicated specs that usually engineers mix ethernet for two layer almost because they use and think to TCP/IP model instead of OSI model.
 
-Goals, explicit Non-Goals, and worked topology-capacity examples are recorded in [RFC 001000](./RFCs/001000-chapar-introduction-goals-and-topology.md) rather than here, to keep this document limited to wire format and normative behavior.
+Goals, explicit Non-Goals, and worked topology-capacity examples are recorded in [related document](./chapar-introduction-goals-and-topology.md) rather than here, to keep this document limited to wire format and normative behavior.
 
 ## Frame architecture
 - Ports number can be mutable due to physical link limits. The endpoint must beware of this aspect.
@@ -30,14 +30,14 @@ Goals, explicit Non-Goals, and worked topology-capacity examples are recorded in
 ## Frame Types
 Chapar support **UniCast** and **BroadCast** frame and not support **AnyCast** or **MultiCast**. We strongly suggest use broadcast frames just in network discoverable mechanism like find GP network coordinators. Also to broadcast emergency messages service, not to use to broadcast video channels, ...
 
-Chapar itself carries a Broadcast frame without interpreting why it was sent — the actual Discovery or Emergency semantics live in an [sRPC](./sRPC.md) service call (identified by `ServiceID`) elsewhere in the same packet, not a dedicated FrameType. See [RFC 001002](./RFCs/001002-chapar-broadcast-scope-and-known-risks.md) for why Broadcast is restricted this way.
+Chapar itself carries a Broadcast frame without interpreting why it was sent — the actual Discovery or Emergency semantics live in an [sRPC](./sRPC.md) service call (identified by `ServiceID`) elsewhere in the same packet, not a dedicated FrameType. See [related document](./chapar-broadcast-scope-and-known-risks.md) for why Broadcast is restricted this way.
 
 ## Discovery
 A device announces itself with a one-way Broadcast frame (`HopCount == 0x00`) — a fire-and-forget [sRPC](./sRPC.md) call with no defined response, the same whether it's a first announcement or a routine re-announcement on a self-configured interval. As it floods hop by hop, the existing port-rewrite [Rule](#rules) causes the frame to accumulate its own reverse path.
 
-Chapar has no persistent, stable device address (see [RFC 001001](./RFCs/001001-chapar-vs-ethernet-rationale.md)); where an upper layer needs to identify a sender, this accumulated reverse path is what serves that role — ephemeral, and relative to whoever holds it, not a portable identifier (see [RFC 001003](./RFCs/001003-chapar-discovery-and-path-establishment.md)).
+Chapar has no persistent, stable device address (see [related document](./chapar-vs-ethernet-rationale.md)); where an upper layer needs to identify a sender, this accumulated reverse path is what serves that role — ephemeral, and relative to whoever holds it, not a portable identifier (see [related document](./chapar-discovery-and-path-establishment.md)).
 
-Any node may react (optional); ChaparKhane always must. Reacting means independently initiating a fresh Unicast frame to the new device using the accumulated path, reversed — not a coupled RPC response. Re-establishing a path after a topology change likewise relies on an ordinary upper-layer timeout triggering a fresh announcement, not a dedicated Chapar mechanism. See [RFC 001003](./RFCs/001003-chapar-discovery-and-path-establishment.md) for the full mechanism, device-to-device path composition, and open questions — Discovery is also likely not the only service built this way; see that RFC for why the full space is left to ChaparKhane's own service design.
+Any node may react (optional); ChaparKhane always must. Reacting means independently initiating a fresh Unicast frame to the new device using the accumulated path, reversed — not a coupled RPC response. Re-establishing a path after a topology change likewise relies on an ordinary upper-layer timeout triggering a fresh announcement, not a dedicated Chapar mechanism. See [related document](./chapar-discovery-and-path-establishment.md) for the full mechanism, device-to-device path composition, and open questions — Discovery is also likely not the only service built this way; see that document for why the full space is left to ChaparKhane's own service design.
 
 ## Switching
 
