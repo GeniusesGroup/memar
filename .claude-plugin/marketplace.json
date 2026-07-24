@@ -1,0 +1,15 @@
+{
+  "name": "Memar",
+  "owner": {
+    "name": "Geniuses.Group",
+    "email": "ict@geniuses.group"
+  },
+  "description": "Claude Code plugins for the Memar framework ecosystem (Khayyam and related Documents), served directly from this repo.",
+  "plugins": [
+    {
+      "name": "memar-plugin",
+      "source": "./.agents",
+      "description": "Skills for the Khayyam language and Memar framework, backed by this repo's live documents."
+    }
+  ]
+}

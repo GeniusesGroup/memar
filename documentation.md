@@ -17,6 +17,10 @@ Citations:
       URI: "https://github.com/architecture-decision-record/architecture-decision-record/blob/main/locales/en/templates/decision-record-template-by-jeff-tyree-and-art-akerman/index.md"
       Relation: "Reference"
       Reason: "A widely-cited independent architecture-decision-record template, examined as evidence that independently-designed templates for a single document purpose (here, ADR) still converge on the same handful of underlying concerns (claim, rationale, alternatives, consequences, related decisions) as this specification's own Optional Sections catalog, just under different names."
+    - Title: "Diátaxis"
+      URI: "https://diataxis.fr/"
+      Relation: "Reference"
+      Reason: "Supports treating procedural how-to content as categorically distinct from the reference/explanation content this specification governs, motivating the separation of Skill files from documents following this specification."
 Contributors:
   - Name: "Omid Hekayati"
     URI: "mailto:omid@geniuses.group"
@@ -28,7 +32,7 @@ Contributors:
     Model: "claude-sonnet-5"
     Effort: "Medium - extended thinking enabled"
     Tasks:
-      - Works: ["Drafted and revised the specification across multiple rounds", "Proposed the topic-first Reference-level structure and Discussion section", "Migrated Contributors to Task-based tracking", "Implemented the Abstract/Introduction/Explanation restructuring", "Implemented the author-named Guide-topic convention", "Fixed regressions and naming collisions in the supplied file's own restructuring", "Renamed and generalized the specification to document-generic wording", "Expanded Optional Sections with Definition/Assumptions and Constraints/Implications/Examples, screened against duplicate-concept overlap"]
+      - Works: ["Drafted and revised the specification across multiple rounds", "Proposed the topic-first Reference-level structure and Discussion section", "Migrated Contributors to Task-based tracking", "Implemented the Abstract/Introduction/Explanation restructuring", "Implemented the author-named Guide-topic convention", "Fixed regressions and naming collisions in the supplied file's own restructuring", "Renamed and generalized the specification to document-generic wording", "Expanded Optional Sections with Definition/Assumptions and Constraints/Implications/Examples, screened against duplicate-concept overlap", "Moved procedural how-to content into a companion Skill file, citing Diátaxis as prior art for the separation"]
         URI: ""
   - Name: "Super Z"
     URI: "https://z.ai"
@@ -47,110 +51,36 @@ Contributors:
 ---
 
 # Documentation
-This document specifies the canonical documentation structure every formal document produced under Geniuses Group must follow.
+This document specifies the canonical documentation structure every formal document must follow.
 
 ## Abstract
-This specification defines the structure every formal document in Geniuses Group's projects must follow: a YAML front-matter block for identity, classification, citations, and attribution, followed by a body organized as `Abstract`, `Introduction`, `Explanation`, `Results`, `Discussion`, and `Change Rationale`. See [Guide](#how-to-make-a-new-document) for how to write a new document using this specification.
+This specification defines the structure every formal document in any projects must follow: a YAML front-matter block for identity, classification, citations, and attribution, followed by a body organized as `Abstract`, `Introduction`, `Explanation`, `Results`, `Discussion`, and `Change Rationale`.
+
+See [Guide](.agents/skills/document-creator/SKILL.md) for how to write a new document using this specification.
 
 ## Introduction
 *This section's subsections (`Motivation`, `Methodology`) are a suggested partitioning, not the only one — an author may add another subsection here with a stated reason the existing ones don't cover what's needed. The `Introduction` heading itself carries no direct content.*
 
 ### Motivation
-The real motivation for this specification is not specific to any one project or document purpose — it is to give every document produced across Geniuses Group's projects a single, predictable structure, so a reader or an AI assistant who has read one document already knows where to find anything in another, regardless of which project or document type it belongs to.
+The real motivation for this specification is not specific to any one project or document purpose — it is to give every document projects a single, predictable structure, so a reader or an AI assistant who has read one document already knows where to find anything in another, regardless of which project or document type it belongs to.
 
 ### Methodology
-This specification's structure was not designed in the abstract in a single pass. It was arrived at through: research into precedent from other documentation and standards processes (including IETF); sustained critical review across multiple working sessions, with each proposed change argued for and against rather than accepted on first suggestion; direct testing of proposed structural changes against a real document already written under an earlier version of this specification ([protocol.md](https://github.com/GeniusesGroup/memar/blob/2cb39b5eeb3a0eddd5bc1bfe132193068dea768b/protocol.md)), which is what surfaced a concrete scattering problem later fixed by the topic-first structure below, rather than that problem being reasoned out abstractly beforehand; and a review of documentation conventions across disciplines (research papers, standards documents, architecture records), which found the same recurring building blocks — identity, a compact claim, motivating context, detailed content, open questions, rationale — differing mainly in emphasis rather than fundamental shape.
+This specification's structure was not designed in the abstract in a single pass. It was arrived at through: research into precedent from other documentation and standards processes (including IETF); sustained critical review across multiple working sessions, with each proposed change argued for and against rather than accepted on first suggestion; direct testing of proposed structural changes against a real document already written under an earlier version of this specification ([protocol.md](https://github.com/GeniusesGroup/memar/blob/2cb39b5eeb3a0eddd5bc1bfe132193068dea768b/RFCs/protocol.md)), which is what surfaced a concrete scattering problem later fixed by the topic-first structure below, rather than that problem being reasoned out abstractly beforehand; and a review of documentation conventions across disciplines (research papers, standards documents, architecture records), which found the same recurring building blocks — identity, a compact claim, motivating context, detailed content, open questions, rationale — differing mainly in emphasis rather than fundamental shape.
 
 ## Explanation
-*Reading every topic below in full is not required — read only what's relevant to your question. If a single topic can answer this document's central, most likely question on its own, without needing the rest, the author should link to it from the Abstract labeled "Guide" (as this document does). Not every document has such a topic; this is optional, not mandatory. When one exists, it is conventionally listed first, so a reader who skips the Abstract and comes straight here still finds it without needing to search. There is no fixed heading name reserved for it — name it for what it actually does (e.g. "How to make a new document" below), not generically.*
+*Reading every topic below in full is not required — read only what's relevant to your question. If a single topic under Explanation, or a companion Skill file, can answer this document's central "how do I do this" question on its own, the author should link to it from the Abstract labeled "Guide" (as this document does). Prefer a Skill file for genuinely procedural, step-by-step content — see [How-to content and Skill files](#how-to-content-and-skill-files) — and an internal topic only for content that's illustrative but not a strict procedure. Not every document has such a link; this is optional, not mandatory. When an internal topic is used this way, it is conventionally listed first, so a reader who skips the Abstract and comes straight here still finds it without needing to search. There is no fixed heading name reserved for it — name it for what it actually does, not generically.*
 
-### How to make a new document
-1. Copy the template from [The Template](#the-template) below into a new file named `<short-descriptive-slug>.md` — no number, no domain prefix, just a short, hyphenated, human-readable slug derived from the Title.
-2. Set `ID` to the current UTC hour-count, and never change it again. On Linux/macOS: `echo $(( $(date -u +%s) / 3600 ))`. On Windows PowerShell: `[math]::Truncate([DateTimeOffset]::UtcNow.ToUnixTimeSeconds() / 3600)`. On any platform with Python: `python3 -c "import time; print(int(time.time()//3600))"`.
-3. Fill in the rest of the front matter:
-   - `Title`: short, quoted, unique.
-   - `Status`: start at `Draft`.
-   - `Start Date`: today's date (UTC), matching the moment `ID` was generated.
-   - `Applied to`: leave `[]` until the document reaches `Final`.
-   - `Citations`: leave `[]` if none apply; otherwise one entry per cited source, with `Relation` one of `Reference`, `Depends_on`, `Depends_for`, `Extends`, `Extends_by`, `Conflicts`, `Superseded`, `Superseded_by`, and `Reason` explaining why.
-   - `Contributors`: one entry per contributor, each with at least one `Tasks` item (`Works` — an array of very short, headline-style strings describing what was done — plus optional `URI`). AI contributors also add `Model` and `Effort`.
-4. Write the body.
-   - `Abstract`, `Introduction` (`Motivation`, `Methodology`) stay unified, document-wide prose.
-   - Under `Explanation`, split the content into topic subsections; give each topic its own `#### Discussion` (`Drawbacks` / `Rationale and alternatives` / `Prior art` / `Unresolved questions` / `Future possibilities`) only where the topic genuinely has something to say, never as an empty header. For a topic needing finer sub-sections, nest `#### {Sub section title}` under it. A topic may also propose its own `Conventions` — see [Optional Sections](#optional-sections) for this and other optional building blocks; placement is flexible beyond the fixed top-level sections.
-   - If a single topic can answer the document's central question on its own, name it for what it does, list it first, and link it from the Abstract labeled "Guide." Anything that applies to the whole document rather than one topic goes in the document-wide `Discussion` section, not into any topic's own bundle.
-   - Leave `Results` empty unless there is real, observed outcome to report — it is retrospective, not a prediction made while writing the document.
+### How-to content and Skill files
+A document following this specification describes structure — what a document's parts mean, what is required, what is possible — not the step-by-step procedure for producing an artifact. Procedural, "do this, then this" content belongs in a separate Skill file instead (see `.agents/skills/`), not inside a document governed by this specification.
 
-### The Template
-This is illustrative, not normative — it shows the shape every document starts from, not a rigid enforcement of exactly what must be present. Copy everything below into a new file and replace every placeholder.
-
-```
----
-Title: ""
-Status: Draft
-Start Date: ""
-ID: ""
-Applied to: []
-Citations:
-    - Title: ""
-      URI: ""
-      Relation: ""
-      Reason: ""
-Contributors:
-  - Name: ""
-    URI: ""
-    Tasks:
-      - Works: []
-        URI: ""
----
-
-# Document Title
-
-## Abstract
-
-## Introduction
-
-### Motivation
-
-### Methodology
-
-## Explanation
-
-### {A freely-named, illustrative topic answering the document's central question on its own — optional; list it first and link it from Abstract labeled "Guide" if it exists}
-
-### {Section title}
-{Description text}
-
-#### {Sub section title}
-{Description text}
+For this specification itself, that walkthrough is in [document-creator skill](.agents/skills/document-creator/SKILL.md)
 
 #### Discussion
-
-##### Drawbacks
-
-##### Rationale and alternatives
-
 ##### Prior art
+The Diátaxis documentation framework identifies four distinct kinds of documentation — tutorials, how-to guides, reference, and explanation — and groups reference and explanation together as propositional, theoretical knowledge meant to be studied, as against tutorials and how-to guides, grouped together as action-oriented knowledge meant to be followed. The Skill-file separation established here follows the same line: this specification governs the theoretical half (what a document is and means); a Skill file governs the active half (how to produce one).
 
 ##### Unresolved questions
-
-##### Future possibilities
-
-## Results
-
-## Discussion
-
-### Drawbacks
-
-### Rationale and alternatives
-
-### Prior art
-
-### Unresolved questions
-
-### Future possibilities
-
-## Change Rationale
-```
+Whether every Skill file referenced this way should itself follow some minimal shared structure (a name, a description of when to use it, the steps) or is left entirely to whatever convention the wider AI tooling ecosystem already expects, is not decided here — this specification treats Skill files as out of its own scope either way.
 
 ### File
 - `<slug>.md` — short, hyphenated, no number, no domain prefix. Stable once Final.
@@ -166,7 +96,7 @@ A short, unique, human-readable name for the document, in double quotes. It is t
 | **Draft** | Direction is not yet settled; real, unresolved questions remain, named in that document's own Unresolved questions. | Empty | No |
 | **Proposed** | Design discussion reached consensus; ready for final review before being reflected in canonical documentation. | Empty | Not yet — may still be revised during final review |
 | **Final** | Reflected in canonical documentation. | Lists exactly where | Yes |
-| **Superseded** | Replaced by a newer document. See `Superseded by`. | Unchanged from when it was Final | No — depend on the superseding document instead |
+| **Superseded** | Replaced by a newer document. See [`Superseded by`](#relation). | Unchanged from when it was Final | No — depend on the superseding document instead |
 | **Rejected** | Considered and explicitly not adopted. Kept for the historical record. | Empty | No |
 
 Additional rules:
@@ -242,18 +172,33 @@ None remaining. The earlier open question (hour- vs. minute-level granularity) w
 An array of file URIs, or the single string `"*"` meaning the document applies without limitation — to any project that chooses to use this specification, not to one project specifically. A more specific entry is a file URI with an optional fragment, e.g. `["Khayyam.md#control-flow"]`. Empty (`[]`) for `Draft`/`Proposed`/`Rejected`; populated only at `Final`; unchanged from its Final value for `Superseded`.
 
 ### Citations
-An array of records citing another document or an external source, each with:
-- **Title**: the cited work's title, quoted.
-- **URI**: the cited work's URI — a relative reference for a document in this repository (e.g. `./dependency-resolution.md`), an absolute URI for anything external. See [URI](#uri).
-- **Relation**: one of `Reference` (cites for context, no structural dependency), `Depends_on` (cannot be implemented/understood without the cited work), `Depends_for` (inverse of `Depends_on`), `Extends` (builds on top of), `Extends_by` (inverse of `Extends`), `Conflicts` (a real, unresolved tension), `Superseded` (this document obsoletes the cited document), `Superseded_by` (the inverse).
-- **Reason**: free text on why the relationship holds.
+- An array of records citing another document or an external source, each with `Title`, `URI`, `Relation`, `Reason`.
+- List order carries no meaning.
+- **Citing external sources.** A citation should only be added when the relationship is substantive, not decorative — not a passing or general-sounding mention. When judging whether an external source is worth citing, prefer:
+  - Peer-reviewed or standards-body sources (published research, IETF/W3C/ISO-style documents) over a vendor's own product documentation, where both are available.
+  - Structure as a quality signal: a source that shows its reasoning or evidence rather than only asserting a conclusion is more trustworthy than one that reads well but argues nothing — polished prose is not itself evidence of rigor.
+  - A clear distinction between two different kinds of claims from the same source: a claim about *observable, testable behavior* (e.g. "this software does X under condition Y") is generally reliable regardless of the source's other qualities; a claim about that same source's *own design philosophy or motives* is a self-assessment and should be treated with more skepticism, since the source is not a neutral party about itself.
 
-List order carries no meaning. When a document is superseded, both sides update: the older document's `Status` becomes `Superseded` with a `Superseded_by` entry pointing forward; the newer document adds a `Superseded` entry pointing back.
+#### Title
+the cited work's title, quoted.
 
-**Citing external sources.** A citation should only be added when the relationship is substantive, not decorative — not a passing or general-sounding mention. When judging whether an external source is worth citing, prefer:
-- Peer-reviewed or standards-body sources (published research, IETF/W3C/ISO-style documents) over a vendor's own product documentation, where both are available.
-- Structure as a quality signal: a source that shows its reasoning or evidence rather than only asserting a conclusion is more trustworthy than one that reads well but argues nothing — polished prose is not itself evidence of rigor.
-- A clear distinction between two different kinds of claims from the same source: a claim about *observable, testable behavior* (e.g. "this software does X under condition Y") is generally reliable regardless of the source's other qualities; a claim about that same source's *own design philosophy or motives* is a self-assessment and should be treated with more skepticism, since the source is not a neutral party about itself.
+#### URI
+the cited work's URI — a relative reference for a document in this repository (e.g. `./dependency-resolution.md`), an absolute URI for anything external. See [URI](#uri-1).
+
+#### Relation
+one of:
+- `Reference`: cites for context, no structural dependency
+- `Depends_on`: cannot be implemented/understood without the cited work
+- `Depends_for`: inverse of `Depends_on`
+- `Extends`: builds on top of
+- `Extends_by`: inverse of `Extends`
+- `Conflicts`: a real, unresolved tension
+- `Superseded`: this document obsoletes the cited document. When a document is superseded, both sides update: the older document's `Status` becomes `Superseded` with a `Superseded_by` entry pointing forward; the newer document adds a `Superseded` entry pointing back.
+- `Superseded_by`: the inverse
+- `Evidence`: is what supports the proposition
+
+#### Reason
+free text on why the relationship holds.
 
 #### Discussion
 ##### Rationale and alternatives
@@ -322,7 +267,7 @@ This field's use of `URI` for identity follows RFC 000014's use of File URIs for
 ### Body sections
 The body follows the front-matter, as a fixed set of top-level (`##`) sections in order: `Abstract`, `Introduction`, `Explanation`, `Results`, `Discussion`, `Change Rationale`. No document may introduce a new top-level section beside these without a change to this specification itself. Beyond that one hard boundary, exact placement and heading depth of anything nested under a fixed top-level section are the author's choice — see [Optional Sections](#optional-sections) for a non-exhaustive catalog of building blocks commonly used that way.
 
-- **Abstract**: one self-contained paragraph stating this document's actual claim or decision — not a preview of what the reader is about to read, and not usage instructions. If a single topic under Explanation can answer the document's central question on its own, link to it here labeled "Guide."
+- **Abstract**: one self-contained paragraph stating this document's actual claim or decision — not a preview of what the reader is about to read, and not usage instructions. If a single topic under Explanation, or a companion Skill file, can answer the document's central "how do I do this" question on its own, link to it here labeled "Guide" — see [How-to content and Skill files](#how-to-content-and-skill-files).
 - **Introduction**: document-wide context needed before the technical content. Carries no direct content itself.
 - **Explanation**: the document's actual content, as topic subsections in the order the author judges most useful — see [Conventions](#conventions) for this specification's own mandatory naming and cross-referencing rules, and [The Discussion pattern](#the-discussion-pattern) for how each topic's rationale-type content is structured.
 - **Results**: what was actually observed after real use of this document's decision — retrospective, not a prediction made while writing the document. Left empty until there is real data to report; not required to ever be filled in.
@@ -428,3 +373,4 @@ If tooling is ever built to help produce or check documents, it could read this 
 - **Tenth revision.** Fixed a heading-level mismatch between prose and example (describing a topic-level convention item as a sibling of `#### Discussion` while showing it at `###` in a code block). Corrected a misunderstanding of the ninth revision's own `Conventions` heading appearing twice: one instance is this template's own mandatory rules (kept, unchanged in meaning), the other is a catalog entry within `Optional Sections` for a topic's own proposed convention — these are different things that happened to share a name, not a duplicate to merge. Removed the `Motivation and Methodology` topic created in the ninth revision, since Motivation and Methodology are unrelated in content and neither belongs bundled with the other, and since limiting `Optional Sections` to only these two implied it was an exhaustive list rather than an open, growing catalog. Broadened the topic-level naming-only convention item into a general `Conventions` item covering any non-binding convention a topic proposes, not naming alone. `Optional Sections` no longer prescribes a specific heading depth for any of its entries — placement is the author's choice, bounded only by the existing rule against new top-level sections.
 - **Eleventh revision.** Renamed this specification from `rfc-template.md` (`RFC Template Specification`) to `documentation.md` (`Documentation Framework Specification`), following an extended discussion on knowledge management concluding that `RFC`, `PRD`, `ADR`, and similar labels are better treated as profiles applied to one shared documentation structure than as independent document types requiring separate templates. `RFC Number` was renamed to `ID` throughout, since the identifier mechanism itself was never RFC-specific. Added a `Document Profiles` topic stating this principle and honestly marking that only the RFC profile is fully defined and tested today; other profiles (`PRD`, `ADR`, `Concept Definition`) are deliberately left undefined until each can be developed and tested against a real document of that kind, consistent with this specification's own Methodology. Removed a front-matter `Citations` entry that had cited `rfc-template.md` as a separate document this one "Extends" — inapplicable, since this is a rename of that document, not an extension of it. Generalized RFC-specific wording throughout the rest of the specification to be document-generic, without otherwise changing any established rule, structure, or convention — this revision is a rename and generalization pass, not a redesign.
 - **Twelfth revision.** Shortened `Title` from `Documentation Framework Specification` to `Documentation`, matching the actual filename per the `File`/`Title` slug-consistency rule. Removed one redundant Rust-specific mention from `Methodology`, keeping the load-bearing ones in `ID`'s own Rationale/Prior art, where they justify a still-current design decision rather than merely narrating history. Removed the `Document Profiles` topic entirely: on review, no formal Profile abstraction is needed — a single shared structure plus a growing `Optional Sections` catalog is sufficient, and avoids an unresolved composition question (`Document Profiles` had left open how a profile's required sections would combine with the base structure's) that simply does not arise without a Profile layer. Converted every `Optional Sections` entry to its own heading, since each is a distinct, individually-referenceable concept rather than a field of one record type. Expanded `Optional Sections` with `Definition`, `Assumptions and Constraints`, `Implications`, and `Examples`, added after screening a larger candidate list (from further discussion and an independent architecture-decision-record template) against what the catalog already covered under a different name — most candidates (`Decision`, `Positions`/`Argument`, `Related decisions`/`requirements`/`artifacts`/`principles`, `Group`, `Summary`, `The Mission`, `FAQ`, `Glossary`, `Appendix`) were rejected as duplicates or as too broad to be a distinct concept. Strengthened `Optional Sections`' justification with the cross-discipline scientific-paper analogy and the principle that every documented subject (`Customer`, `Repository`, `Task`, `Protocol`, ...) enters documentation as an equal, undifferentiated token, with structure never presuming one kind of subject is inherently more important or different in kind than another. Added the Tyree-Akerman architecture-decision-record template as a citation and as Prior art, as independent evidence that separately-designed, single-purpose templates converge on the same underlying concerns under different names. Added a `Contributors` entry for ChatGPT, evidenced by the chat content supplied for this round.
+- **Thirteenth revision.** Moved the procedural "how to make a new document" walkthrough out of this specification entirely, into a companion Skill file (`.agents/skills/document-creator/SKILL.md`), on the principle that a document following this specification describes structure, not step-by-step procedure — the two are categorically different kinds of content, following the same distinction the Diátaxis documentation framework draws between reference/explanation and tutorials/how-to guides, now cited as Prior art. `The Template` stayed in this specification, since it is reference material (a shape), not a procedure. The `Guide` convention's definition was widened to explicitly allow linking to an external Skill file, not only an internal topic, since the walkthrough that used to demonstrate the internal-topic form of `Guide` no longer lives here.

@@ -1,0 +1,4 @@
+# Agents
+An **agent** is any entity that acts on behalf of another person, organization, or system to carry out a defined set of responsibilities. The concept is much older than artificial intelligence, and is not specific to it: a company's CEO is an agent of its shareholders and board, carrying out duties delegated to them; a lawyer is an agent of their client; a purchasing manager is an agent of their employer. An AI system acting on someone's behalf is one instance of this general relationship, not the definition of it.
+
+Do not assume "agent" in this repository means "AI agent." A human role, an organizational function, or an AI system can all be agents, and content in this directory should be written so it applies to whichever kind of agent is actually reading or carrying out the work, not phrased as if an AI is always the one on the other end.
