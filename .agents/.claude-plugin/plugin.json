@@ -1,0 +1,13 @@
+{
+  "name": "memar-plugin",
+  "displayName": "Memar / Khayyam",
+  "description": "Skills for working with the Memar framework and the Khayyam programming language, fetches the canonical repo live instead of relying on possibly-outdated built-in knowledge.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Geniuses.Group"
+  },
+  "homepage": "https://github.com/GeniusesGroup/memar",
+  "repository": "https://github.com/GeniusesGroup/memar",
+  "keywords": ["memar", "khayyam", "programming-language", "documentation"],
+  "category": "development"
+}
