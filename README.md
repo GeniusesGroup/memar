@@ -5,6 +5,17 @@ Memar is not an authority that decides reality. Memar is a framework for constru
 
 It will provide ZeroOps(zero operations), edge computing, ... that let you develop both server and client applications in any programming language without need to think more about any fundamental requirements, Just develop business services and user interfaces, build apps as OS images or OS applications and easily just run first server node and let it distributes by many factors with inside logics not need external decision makers (automating software deployment) like Kubernetes(K8s) but with some improvements.
 
+## Why Memar Exists
+Memar did not begin with the goal of creating a new programming language, framework, architecture methodology, or software platform. It began with a different question:
+
+> How many of the concepts commonly accepted in software engineering are actually well-defined?
+
+Throughout the history of computing, many concepts have become deeply embedded in industry practice. Terms such as architecture, framework, technology, relation, encapsulation, leadership, abstraction, and many others are widely used and often treated as self-evident. Memar started from the observation that widespread usage does not necessarily imply conceptual clarity. Many software projects operate within existing assumptions. Memar takes a different approach. Instead of starting from established terminology, it starts from definitions. Instead of accepting classifications, it asks how those classifications are justified. Instead of optimizing implementation details, it attempts to understand the underlying structure of the problem space.
+
+This approach naturally requires crossing traditional disciplinary boundaries. Modeling, systems thinking, architecture, language design, knowledge organization, management, and software engineering cannot always be treated as isolated domains. Many of the patterns, ambiguities, and contradictions observed in one domain reappear in others. As a result, Memar is not primarily an exercise in specialization. It is an attempt to discover deeper structures that remain consistent across multiple domains.
+
+The project assumes that meaningful progress often requires stepping outside existing conceptual systems and examining their assumptions from an external perspective. This process is difficult because it challenges ideas that are frequently treated as foundational, yet it is often the only way to expose hidden contradictions and create more coherent models. Memar therefore treats definitions as more fundamental than terminology, models as more important than implementations, and understanding as more important than convention.
+
 ## Goals
 - Improves the quality of reasoning about systems.
 - 
