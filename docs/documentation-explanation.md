@@ -1,10 +1,14 @@
 ---
-Title: "Documentation"
+Title: "Documentation — Explanation"
 Status: Proposed
 Start Date: 2026-06-21
 ID: 495000
 Applied to: []
 Citations:
+    - Title: "Documentation"
+      URI: "./documentation.md"
+      Relation: "Depends_on"
+      Reason: "This document specifies the Explanation facet defined by documentation.md; the Facet concept itself, and why Explanation is governed separately from Practice, is defined there, not repeated here."
     - Title: "Modeling"
       URI: "./modeling.md"
       Relation: Depends_on
