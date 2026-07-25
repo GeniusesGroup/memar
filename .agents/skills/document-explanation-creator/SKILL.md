@@ -4,7 +4,7 @@ description: Use when creating a new formal explanation document, or when revisi
 ---
 
 # How to make a new explanation document
-This is the procedure for producing a document that follows `documentation.md`. It assumes you already know, or will look up as needed, what each field and section in that specification means. This file only covers the steps, not the deep definitions.
+This is the procedure for producing an Explanation-facet document that follows `documentation-explanation.md`. It assumes you already know, or will look up as needed, what each field and section in that specification means. This file only covers the steps, not the deep definitions.
 
 ## Steps
 1. Copy the [The Template](#the-template) section into a new file named `<short-descriptive-slug>.md` — no number, no domain prefix, just a short, hyphenated, human-readable slug derived from the Title.
@@ -21,7 +21,7 @@ This is the procedure for producing a document that follows `documentation.md`. 
    - `Contributors`: one entry per contributor, each with at least one `Tasks` item (`Works` — an array of very short, headline-style strings describing what was done — plus optional `URI`). AI contributors also add `Model` and `Effort`.
 4. Write the body.
    - `Abstract`, `Introduction` (`Motivation`, `Methodology`) stay unified, document-wide prose.
-   - Under `Explanation`, split the content into topic subsections; give each topic its own `#### Discussion` (`Drawbacks` / `Rationale and alternatives` / `Prior art` / `Unresolved questions` / `Future possibilities`) only where the topic genuinely has something to say, never as an empty header. For a topic needing finer sub-sections, nest `#### {Sub section title}` under it. A topic may also propose its own `Conventions` — see `documentation.md`'s "Optional Sections" for this and other optional building blocks; placement is flexible beyond the fixed top-level sections.
+   - Under `Explanation`, split the content into topic subsections; give each topic its own `#### Discussion` (`Drawbacks` / `Rationale and alternatives` / `Prior art` / `Unresolved questions` / `Future possibilities`) only where the topic genuinely has something to say, never as an empty header. For a topic needing finer sub-sections, nest `#### {Sub section title}` under it. A topic may also propose its own `Conventions` — see `documentation-explanation.md`'s "Optional Sections" for this and other optional building blocks; placement is flexible beyond the fixed top-level sections.
    - If a single topic can answer the document's central question on its own, name it for what it does, list it first, and link it from the Abstract labeled "Guide." Anything that applies to the whole document rather than one topic goes in the document-wide `Discussion` section, not into any topic's own bundle.
    - Leave `Results` empty unless there is real, observed outcome to report — it is retrospective, not a prediction made while writing the document.
 5. If this is a revision of a document written under an earlier version, bring it in line with the current structure at this edit
@@ -100,4 +100,5 @@ Contributors:
 
 ## Reference files
 use below paths or fetch the relevant document via `memar-navigator` rather than inventing an answer.
-- [documentation.md](../../../documentation.md)
+- [documentation.md](../../../docs/documentation.md) — meta-layer: defines Facets and names current facets
+- [documentation-explanation.md](../../../docs/documentation-explanation.md) — the Explanation facet specification this procedure follows
