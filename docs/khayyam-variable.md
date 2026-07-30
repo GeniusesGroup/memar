@@ -2,17 +2,17 @@
 Title: "Variable in Khayyam"
 Status: Draft
 Start Date: 2026-07-15
-RFC Number: 495591
+ID: 495591
 Applied to: []
-Related RFCs:
+Citations:
     - Title: "Khayyam - Programming Language"
-      URI: "../Khayyam.md"
-      Reason: "Reference"
-      Explanation: "The canonical specification defines the core variable syntax (vr), import mechanism, and logical-reference semantics that this RFC elaborates and motivates."
+      URI: "./Khayyam.md"
+      Relation: "Reference"
+      Reason: "The canonical specification defines the core variable syntax (vr), import mechanism, and logical-reference semantics that this document elaborates and motivates."
     - Title: "Khayyam Design Philosophy"
       URI: "./khayyam.md"
-      Reason: "Reference"
-      Explanation: "The philosophy RFC documents the recurring principles (self-documenting code, syntactic atomicity, domain modeling) that underpin the variable design decisions recorded here."
+      Relation: "Reference"
+      Reason: "The philosophy document the recurring principles (self-documenting code, syntactic atomicity, domain modeling) that underpin the variable design decisions recorded here."
 Contributor(s):
   - Name: "Omid Hekayati"
     URI: "mailto:omid@geniuses.group"
@@ -31,19 +31,19 @@ Contributor(s):
     Model: "GLM 5.2"
     Effort: "High"
     Tasks:
-      - Works: ["Restructuring into RFC template", "Content consolidation and enrichment", "Restructured scattered variable-related content into the canonical RFC template; consolidated content from multiple source files; added reference-level elaborations on scope, initialization, and import mechanics."]
+      - Works: ["Restructuring into document template", "Content consolidation and enrichment", "Restructured scattered variable-related content into the canonical document template; consolidated content from multiple source files; added reference-level elaborations on scope, initialization, and import mechanics."]
         URI: ""
 ---
 
 # Variable Semantics and Declaration in Khayyam
 
 ## Summary
-This RFC specifies the semantics, declaration rules, and design rationale for variables in Khayyam. A variable in Khayyam is a named reference to an instance of a type — never a raw data block and never decorated with consumer-side mutability keywords. Variables are declared with explicit types and initialized exclusively through capsule methods (no assignment operators). The language forbids multi-variable declarations, type inference, and magic numbers, ensuring that every variable declaration carries domain meaning and that the codebase remains self-documenting by construction.
+This document specifies the semantics, declaration rules, and design rationale for variables in Khayyam. A variable in Khayyam is a named reference to an instance of a type — never a raw data block and never decorated with consumer-side mutability keywords. Variables are declared with explicit types and initialized exclusively through capsule methods (no assignment operators). The language forbids multi-variable declarations, type inference, and magic numbers, ensuring that every variable declaration carries domain meaning and that the codebase remains self-documenting by construction.
 
 ## Motivation
 In most mainstream languages, variable declarations are a locus of hidden complexity: type inference hides the actual type from readers, assignment operators enable implicit copies and aliasing bugs, multi-variable declarations compress distinct pieces of information into a single line, and consumer-side modifiers (`mut`, `const`, `readonly`) shift mutability decisions to every call site rather than anchoring them in the type's own definition. These conveniences optimize for writing speed at the expense of reading clarity, long-term maintainability, and domain integrity.
 
-Khayyam's variable model was designed to eliminate each of these sources of opacity. By requiring explicit types, forbidding assignment operators, rejecting multi-declaration syntax, and separating variable identity from type behavior, the language ensures that every variable declaration communicates its domain purpose, its type, and its behavioral contract without ambiguity. This RFC documents those rules, explains their motivation, and records the alternatives that were considered and rejected.
+Khayyam's variable model was designed to eliminate each of these sources of opacity. By requiring explicit types, forbidding assignment operators, rejecting multi-declaration syntax, and separating variable identity from type behavior, the language ensures that every variable declaration communicates its domain purpose, its type, and its behavioral contract without ambiguity. This document those rules, explains their motivation, and records the alternatives that were considered and rejected.
 
 ## Guide-level explanation
 A Khayyam variable is declared with the `vr` keyword, an explicit name, and an explicit type. There is no type inference, no assignment operator, and no multi-variable declaration syntax. Initialization happens through capsule methods, not through direct assignment. A variable creates a named reference to an instance of a type; the variable itself has no behavioral semantics — the behavior of the referenced instance is defined by its type.
@@ -99,12 +99,50 @@ None at this time.
 ##### Future possibilities
 None recorded yet.
 
-### No Type Inference
-Khayyam explicitly does not support automatic type inference at the compiler level. Every variable declaration must include an explicit type. While implementing type inference is technically trivial, it introduces "magic" into the codebase: it slightly speeds up the writing process for the author but significantly increases the cognitive load for the reader, who must mentally reconstruct the inferred type from context.
+### Explicit Types
+Khayyam requires every variable declaration to include an explicit type. This is not a syntactic preference, a compiler limitation, or an implementation convenience. It is a deliberate architectural decision derived from one of the fundamental principles of the language:
 
-In Khayyam, code readability is paramount. Developers must declare explicit types. Linters will heavily assist developers during the writing phase, suggesting the correct types based on the assigned capsules, ensuring the final code is crystal clear, explicitly typed, and requires minimal mental processing for future maintainers.
+> Types are part of the system's semantic model and therefore must remain explicitly represented in the source code.
 
-This rule also reinforces the "de-Primitive-ing" principle: because every variable must carry an explicit type, and because primitives are replaced by named capsules (e.g., `W32` instead of `int`), the type declaration itself communicates domain meaning rather than just machine representation.
+A variable cannot exist without a type. Regardless of whether a language is statically typed or dynamically typed, every value ultimately has a type. The difference between languages is therefore not whether types exist, but whether the type becomes an explicit part of the source model or remains an implicit assumption reconstructed by tools during analysis.
+
+Khayyam considers the source code to be the canonical representation of the software model. If a concept is considered important enough to exist within the model, it should also be visible within the source code rather than being reconstructed through compiler or IDE analysis.
+
+#### Source Code Is More Than Compiler Input
+Many programming languages primarily treat source code as input for a compiler or interpreter. From that perspective, any information that the compiler can successfully infer appears to be redundant. Khayyam intentionally adopts a different perspective. Source code is not merely an executable artifact. It is the primary medium through which software is understood, reviewed, discussed, maintained, evolved, and archived. It serves as the shared representation of the system's semantic model for developers, architects, reviewers, maintainers, documentation authors, and AI systems.
+
+A compiler typically consumes the source code once for each build. Humans and AI systems may read, analyze, and reason about the same source code for many years. Optimizing the language primarily for compiler convenience therefore solves the smallest part of the problem. Khayyam instead optimizes for preserving semantic clarity throughout the entire lifetime of the software.
+
+#### Explicit Types Preserve the Model
+Type inference reduces the amount of written code by moving semantic information from the source file into compiler analysis. Although the inferred type may be technically correct, the source code no longer explicitly communicates the author's intended model. Every reader must mentally reconstruct the compiler's reasoning before understanding the declaration. Khayyam deliberately rejects this trade-off. The language considers explicit type declarations to be part of the software model itself rather than annotations added for compiler convenience.
+
+Keeping the type visible within the source code provides several long-term advantages:
+- The complete semantic model remains directly observable.
+- Domain concepts remain traceable from modeling to implementation.
+- Reviewers can validate the intended concept without reproducing compiler analysis.
+- AI systems receive the author's intended model directly instead of approximating it through inference.
+- Architectural intent remains permanently visible during maintenance.
+- Incorrect assumptions become visible immediately instead of remaining hidden inside tooling.
+
+Reducing the number of written characters is not considered sufficient justification for hiding part of the semantic model.
+
+#### Design Decisions Should Belong to the Author
+Type inference introduces another subtle consequence. Whenever a compiler infers a type, it effectively makes a semantic decision on behalf of the author. Even when the inferred result is technically correct, the compiler has still chosen how the declaration should be interpreted. In Khayyam, identifying the intended concept is considered the responsibility of the software designer rather than the compiler.
+
+An explicit type declaration serves as an intentional confirmation that the declared concept accurately reflects the author's model. Future reviewers, maintainers, and AI systems can verify this decision directly from the source code instead of attempting to reconstruct it indirectly. The goal is not simply to produce compilable software, but to preserve the author's conceptual model as faithfully as possible.
+
+#### Explicit Types Become More Valuable as Systems Grow
+Languages that emphasize dynamic typing or aggressive type inference often appear simpler when demonstrated using small examples, isolated algorithms, or short scripts. Within such limited contexts, the surrounding concepts are few enough that readers can usually infer the missing information with little effort. Large software systems behave differently. As projects evolve into long-lived systems containing hundreds or thousands of interacting concepts, semantic information becomes progressively more valuable than syntactic brevity. The effort required to repeatedly reconstruct omitted type information grows with the complexity of the system. For this reason, Khayyam does not regard explicit typing as an optional stylistic preference that developers may choose once a project becomes sufficiently large. Instead, explicit types are considered a foundational architectural principle that supports long-term comprehension, maintenance, collaboration, and automated reasoning.
+
+#### No Privileged Types
+Many programming languages begin by defining a privileged collection of built-in or primitive types such as integers, floating-point numbers, strings, or booleans. The remainder of the type system is then constructed around these predefined concepts. Khayyam intentionally avoids this distinction. The language does not assign any fundamental semantic privilege to so-called primitive types. From the perspective of the language model, every type participates in the same conceptual system. Whether a type represents a number, a business concept, a communication protocol, or a user-defined abstraction does not change its semantic status. Because the language does not begin with a predefined universe of privileged types, it also avoids allowing tooling to silently reconstruct missing type information.
+
+Explicit type declarations ensure that the semantic model expressed by the author remains completely visible, regardless of the origin or nature of the type being used. Ultimately, Khayyam is not attempting to minimize the number of characters written by the developer. Its objective is to maximize the visibility, fidelity, and longevity of the software model represented by the source code. Types are fundamental elements of that model. They therefore remain explicit.
+
+#### Type declarations act as executable documentation
+
+#### Type inference optimizes authoring; explicit types optimize understanding
+Type inference optimizes writing code. Explicit types optimize understanding systems. Without doubt, writing code is once; reading is more than once.
 
 #### Discussion
 
@@ -151,7 +189,7 @@ None at this time.
 None recorded yet.
 
 ### No Assignment Operators
-Khayyam completely eliminates assignment operators (like `=`). Variables represent logical references to type instances; passing a variable to a method provides access to the same instance. The language structurally prevents any implicit deep or shallow copying through its syntax — the storage and copying model is an implementation concern addressed by future RFCs on resource management.
+Khayyam completely eliminates assignment operators (like `=`). Variables represent logical references to type instances; passing a variable to a method provides access to the same instance. The language structurally prevents any implicit deep or shallow copying through its syntax — the storage and copying model is an implementation concern addressed by future documents on resource management.
 
 This rule has far-reaching implications: it means that state changes are always mediated by capsule methods, never by direct assignment. A variable's reference never silently changes to point to a different capsule instance — any such change requires an explicit method call that makes the operation visible in the source code.
 
@@ -188,7 +226,7 @@ A variable in Khayyam does not represent a storage location or a raw memory regi
 This means:
 - **A variable's type determines its behavioral contract.** Since the type is always a named type, the variable's capabilities are fully discoverable from that type's public interface — no reflection, no runtime type queries, no `instanceof` needed.
 
-This design is a direct consequence of the "Separation of Syntax and Governance" philosophy: the variable syntax (`vr`) handles identity and reference, while the type definition handles behavior. The storage and lifecycle model is a separate concern addressed by future RFCs on resource management.
+This design is a direct consequence of the "Separation of Syntax and Governance" philosophy: the variable syntax (`vr`) handles identity and reference, while the type definition handles behavior. The storage and lifecycle model is a separate concern addressed by future documents on resource management.
 
 #### Discussion
 
@@ -203,7 +241,7 @@ Developers coming from value-semantic languages (C, C++, Go) may initially expec
 Java's reference semantics for objects are superficially similar, but Java still uses assignment (`=`) and has a separate primitive type system that uses value semantics. Khayyam's model is more uniform: everything is a reference, and there are no primitives at the language level.
 
 ##### Unresolved questions
-- How the reference model interacts with the resource management layer for lifecycle enforcement is a separate concern addressed by future RFCs.
+- How the reference model interacts with the resource management layer for lifecycle enforcement is a separate concern addressed by future documents.
 
 ##### Future possibilities
 None recorded yet.
@@ -246,7 +284,7 @@ None recorded yet.
 ### Self-Documenting Code and No Magic Numbers
 In traditional languages, developers often write raw formulas like `if a == b + 1` and rely on comments to explain what `1` means. Khayyam forces developers to eliminate magic numbers by requiring that every value be wrapped in a named capsule with a descriptive name. By declaring an explicit variable for `1` with a descriptive name before using it in a method call, the code becomes inherently self-documenting at the declaration site, eliminating the need for redundant comments.
 
-Because variables require explicit types, the source code preserves the concepts introduced during modeling. A variable declaration should reveal a domain concept, not merely a machine representation. This is the variable-level manifestation of Khayyam's broader self-documenting architecture principle (documented in the Design Philosophy RFC).
+Because variables require explicit types, the source code preserves the concepts introduced during modeling. A variable declaration should reveal a domain concept, not merely a machine representation. This is the variable-level manifestation of Khayyam's broader self-documenting architecture principle (documented in the Design Philosophy document).
 
 #### Discussion
 
@@ -268,12 +306,12 @@ Domain-Driven Design as formulated by Eric Evans advocates for rich domain model
 A linter rule that detects capsule names that are unlikely to carry domain meaning (e.g., names that are synonyms for primitive operations like `Counter`, `Index`, `Flag`) and suggests merging them into their parent capsule's domain.
 
 ### Constants as Capsule-Returned Values
-The constant model in Khayyam is fully specified in RFC 495592 ([Encapsulation in Khayyam](./khayyam-encapsulation.md), section "Constants as Capsule-Returned Values"). In summary: a constant is a variable returned by a capsule method that cannot change after first initialization — an organizational and architectural rule enforced by the capsule's own design (not exposing a mutating method), not by a dedicated compiler keyword. From the variable's perspective, a constant is declared and initialized like any other variable; the immutability guarantee is inherited from the capsule's behavioral contract.
+The constant model in Khayyam is fully specified in document#495592 ([Encapsulation in Khayyam](./khayyam-encapsulation.md), section "Constants as Capsule-Returned Values"). In summary: a constant is a variable returned by a capsule method that cannot change after first initialization — an organizational and architectural rule enforced by the capsule's own design (not exposing a mutating method), not by a dedicated compiler keyword. From the variable's perspective, a constant is declared and initialized like any other variable; the immutability guarantee is inherited from the capsule's behavioral contract.
 
 ### Resource Lifecycle (Deferred)
 The storage model and resource lifecycle for variable-backed instances are implementation concerns, not variable-syntax concerns. A variable does not need to know whether its instance lives in an Arena, a Pool, or on the stack — that is a governance decision, not a syntax concern.
 
-This topic — including memory allocation, deallocation, garbage collection alternatives, and resource management ADTs — is deferred to a future RFC on resource management.
+This topic — including memory allocation, deallocation, garbage collection alternatives, and resource management ADTs — is deferred to a future document on resource management.
 
 #### Discussion
 
@@ -282,13 +320,13 @@ Developers accustomed to garbage-collected languages (Go, Java, C#) will eventua
 
 ##### Rationale and alternatives
 - **Garbage collection (as in Go, Java; rejected)**: introduces unpredictable pause times and hidden runtime overhead, contradicting Khayyam's principle of making all behavior explicit and predictable.
-- **Explicit resource management (Khayyam's intended approach)**: makes resource lifecycle a visible, predictable, and auditable part of the program's architecture. The precise mechanism is deferred to a future RFC.
+- **Explicit resource management (Khayyam's intended approach)**: makes resource lifecycle a visible, predictable, and auditable part of the program's architecture. The precise mechanism is deferred to a future document.
 
 ##### Prior art
 Rust's ownership model is the closest mainstream prior art in terms of explicit resource management. The specific approach Khayyam will take is not yet specified.
 
 ##### Unresolved questions
-- The precise resource management model, API surface, and interaction with variable declarations is deferred to a future RFC.
+- The precise resource management model, API surface, and interaction with variable declarations is deferred to a future document.
 
 ##### Future possibilities
 None recorded yet.
