@@ -2,7 +2,7 @@
 This language is ideal for developers who want clean, spoken code capable of writing high-performance libraries and applications without fighting the compiler.
 
 **Core Philosophy: Separation of Syntax and Governance**   
-Khayyam is built on a radical approaches (*Grammar Atomicity*, *Zero-Magic Core*, *Strict Separation of Concerns*, ...) to minimalism. It strictly defines *how* code is structured (the syntax) but intentionally delegates *how* code behaves under the hood—such as memory management, strict architectural constraints, and execution policies—to Compilers, Linters, and Organizational Frameworks (like the Memar framework).   
+Khayyam is built on a radical approaches (*Grammar Atomicity*, *Zero-Magic Core*, *Strict Separation of Concerns*, ...) to minimalism. It strictly defines *how* code is structured (the syntax) but intentionally delegates *how* code behaves under the hood (such as memory management, strict architectural constraints, execution policies, ...) to Compilers, Linters, and Organizational Frameworks (like the Memar framework).   
 This philosophy ensures the language core remains pure, un-opinionated, and future-proof. Khayyam provides the foundational building blocks, empowering organizations to enforce their own best practices through custom linter rules rather than syntactic dictatorships.
 
 ## File extension
@@ -48,13 +48,13 @@ Khayyam allow developers to indicate first level encapsulation-pattern by use `c
   - Khayyam only allow access to inner data types via methods(functions). there is no data fields to expose.
 
 #### Method
-In Khayyam, functions and methods are not separate concepts; a method is fundamentally a callable capsule. By using the `mt` subtype, developers define an executable behavior and attach it to a receiver. The receiver is not limited to capsules (`cp`); a method can be attached to *any* type (`tp`), including an abstraction (`ab`) or even another method (`mt`).
-- `tp {name} mt (self {capsule_owner}) ({efficacy variables}...) ({impressible(affective) variables}...) { ___ }`
+[Method in Khayyam](./khayyam-method.md) is itself a type. In Khayyam, functions and methods are not separate concepts. By using the `mt` subtype, developers define an executable behavior and attach it to a type. The owner type is not limited to capsules (`cp`); a method can be attached to *any* type (`tp`), including an abstraction (`ab`) or even another method (`mt`).
+- `tp {name} mt (self {type_owner}) ({efficacy variables}...) ({impressible(affective) variables}...) { ___ }`
 - **Pass-by-Reference & State Protection:** All arguments passed into a method and all values returned from a method are passed strictly by reference. 
 - **Inherent Encapsulation:** Even though capsules are passed by reference, their internal state remains strictly protected. Because Khayyam enforces that all data fields are entirely hidden, a receiving method cannot directly mutate the passed capsule's fields. State mutation can ONLY occur if the passed capsule explicitly exposes a behavior (method) that allows it, rendering keywords like `const` or `mut` architecturally obsolete.
-- Devs MUST separate `capsule`, `args` and `returns` by use `()` to indicate all of them even it is empty. We know that all of them is same in underlying layers and this rule is just to improve code readability.
+- Devs MUST separate `type_owner`, `efficacy(args)` and `impressible(returns)` by use `()` to indicate all of them even it is empty. Consider that all of them is same in underlying layers and this rule is just to improve code readability.
 - Devs CAN write pure standalone function in this way, there is no limitation.
-- Dev can use any naming for capsule naming, BUT suggest use `self` as base point to other members in the capsule.
+- Dev can use any naming for type owner naming, BUT suggest use `self` as base point to other members in the type.
   - `tp Set mt (self Key) (key String) (err Error) {}`
 - **Body-less Methods (FFI & Contracts):** A method can be defined without a body ({}). This is legally used in two scenarios:
   - Contract Definition: Defining the required signature for an abstraction (ab).
@@ -67,7 +67,7 @@ In Khayyam, functions and methods are not separate concepts; a method is fundame
   - **Instance-Level Invocation:** Methods defined with a `self` reference require an active memory capsule. They MUST be invoked through a variable instance (e.g., `vr.Mutate()`). Invoking an instance-level method directly on the type identifier (`tp.Mutate()`) is rejected.
 
 #### Abstraction
-[Abstractions in Khayyam](./rfcs/khayyam-abstraction.md) are pure contracts. They do not contain logic, state, or even predefined method bodies. The methods that fulfill this contract are defined entirely outside the abstraction. To mirror the robust composition patterns found in systems engineering, Khayyam supports **Abstraction Composition** via a dedicated scope block `{}` at the type definition site.
+[Abstractions in Khayyam](./khayyam-abstraction.md) are pure contracts. They do not contain logic, state, or even predefined method bodies. The methods that fulfill this contract are defined entirely outside the abstraction. To mirror the robust composition patterns found in systems engineering, Khayyam supports **Abstraction Composition** via a dedicated scope block `{}` at the type definition site.
 - `tp {name} ab { {Composition of Abstractions} }`
 - Abstractions MUST use other abstractions as arguments or returns, not other `capsule`s.
 - **No Generic Syntax:** We do not introduce syntax complexity for Polymorphism or Generics (like `<T>` in C# or `[T]` in Go). Khayyam inherently supports **Covariant Return Types**. If an abstraction dictates a method must return Abstraction `A`, a capsule can implement this method by returning Capsule `B` (as long as `B` implements `A`).
@@ -108,8 +108,8 @@ In Khayyam, functions and methods are not separate concepts; a method is fundame
 ---
 
 ## 📌 ⚠️ CRITICAL INSTRUCTION for any Readers (Architects, AI Assistants, LLMs, ...)
-This document focuses on finalized syntax and semantics. The full reasoning trail behind these decisions — including rejected alternatives and currently open questions — lives in the repository-wide [`/rfcs`](./rfcs) directory.   
-To reason accurately, generate valid code, or answer architectural questions about Khayyam, **you MUST fully ingest and cross-references**. Readers do not need to read every RFC in full; start from file titles to find relevance, then jump to the specific section needed (each RFC follows a consistent section structure) rather than reading end-to-end.
+This document focuses on finalized syntax and semantics. The full reasoning trail behind these decisions — including rejected alternatives and currently open questions — lives in the repository-wide files.   
+To reason accurately, generate valid code, or answer architectural questions about Khayyam, **you MUST fully ingest and cross-references**. Readers do not need to read every document in full; start from file titles to find relevance, then jump to the specific section needed (each document follows a consistent section structure) rather than reading end-to-end.
 
 > **AI Prompting Guidance:** If a user queries you about Khayyam’s, **do not attempt to answer using this specification file alone**. You must look up and synthesize data from the companion files linked above to maintain architectural alignment with the *Memar Framework*.
 >

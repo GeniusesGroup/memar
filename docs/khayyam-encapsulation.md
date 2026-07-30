@@ -10,17 +10,25 @@ Citations:
       Relation: "Reference"
       Reason: "The canonical specification defines capsule, method, and abstraction syntax that this document elaborates and motivates."
     - Title: "Khayyam Design Philosophy"
-      URI: "./khayyam.md"
+      URI: "./khayyam-design_philosophy.md"
       Relation: "Reference"
-      Reason: "The philosophy document the recurring principles (behavior over type identity, domain modeling, syntactic atomicity) that underpin the encapsulation design decisions recorded here."
+      Reason: "The philosophy document records the recurring principles (behavior over type identity, domain modeling, syntactic atomicity) that underpin the encapsulation design decisions recorded here."
     - Title: "Abstraction in Khayyam"
       URI: "./khayyam-abstraction.md"
       Relation: "Reference"
-      Reason: "The abstraction mechanism is specified separately. This document the encapsulation guarantees (capsules hide all internal state, all interaction occurs through methods) that make the abstraction model possible."
+      Reason: "The abstraction mechanism is specified separately. This document records the encapsulation guarantees (capsules hide all internal state, all interaction occurs through methods) that make the abstraction model possible."
     - Title: "Polymorphism in Khayyam"
       URI: "./khayyam-polymorphism.md"
       Relation: "Reference"
       Reason: "Polymorphism classification and dispatch strategy are specified separately. This document defines the capsule-level boundaries that constrain polymorphic behavior."
+    - Title: "Method in Khayyam"
+      URI: "./khayyam-method.md"
+      Relation: "Reference"
+      Reason: "Method as Callable Capsule — the mechanical spec of the method signature itself (pass-by-reference, parenthesized separation, static-vs-instance invocation, body-less methods) — previously lived in this document's Explanation section and has moved there, since a capsule is an abstraction over `vr`/`mt`, not the other way around. This document now depends on that spec rather than restating it."
+    - Title: "Logic in Khayyam"
+      URI: "./khayyam-logic.md"
+      Relation: "Reference"
+      Reason: "The Code Scope (`sc`) topic previously lived in this document's Explanation section and has moved there, since code scopes are structurally the mechanism control-flow libraries (IF/ELSE/LOOP) are built on, not a capsule-level concern."
 Contributors:
   - Name: "Omid Hekayati"
     URI: "mailto:omid@geniuses.group"
@@ -46,14 +54,16 @@ Contributors:
     Model: "claude-sonnet-5"
     Effort: "Medium"
     Tasks:
-      - Works: ["Migrated document structure to the current Explanation-facet specification (Abstract / Introduction / Explanation / Results / Discussion / Change Rationale)", "Merged the standalone Absence of Closures and Anonymous Functions document into the Explanation section as a topic following Method as Callable Capsule, preserving all original content"]
+      - Works: ["Migrated document structure to the current Explanation-facet specification (Abstract / Introduction / Explanation / Results / Discussion / Change Rationale)", "Merged the standalone Absence of Closures and Anonymous Functions document into the Explanation section as a topic following Method as Callable Capsule, preserving all original content", "Extracted Method as Callable Capsule to khayyam-method.md and Code Scope to khayyam-logic.md, since capsule is an abstraction over vr/mt rather than the reverse", "Reframed Absence of Closures and Anonymous Functions from a negative (\"we don't support X\") framing to a positive one (closures as an implicit-capsule syntax we chose not to admit, and why)"]
         URI: ""
 ---
 
 # Encapsulation in Khayyam
 
 ## Abstract
-This document specifies Khayyam's encapsulation model: the architectural rules governing how capsules own their state and behavior, how interaction occurs exclusively through methods, and how mutability is an intrinsic property of the capsule's own definition rather than a consumer-side keyword. The central principle is Sovereign Encapsulation — all internal fields of a capsule are strictly private, all interaction occurs via method invocation (message passing). The document also covers the rejection of tuples, the method invocation model (uniform dot syntax with self-based dispatch), the absence of closures and anonymous functions, primitive capsule behavioral guarantees, and the capsule-level constant model.
+This document specifies Khayyam's encapsulation model: the architectural rules governing how capsules own their state and behavior, how interaction occurs exclusively through methods, and how mutability is an intrinsic property of the capsule's own definition rather than a consumer-side keyword. The central principle is Sovereign Encapsulation — all internal fields of a capsule are strictly private, all interaction occurs via method invocation (message passing). The document also covers the rejection of tuples, closures as an inadmissible implicit-capsule syntax, primitive capsule behavioral guarantees, and the capsule-level constant model.
+
+A capsule is an abstraction layered over `vr` (variable) and `mt` (method), not an independent primitive. Accordingly, the mechanical grammar of the method signature itself is specified in [Method in Khayyam](./khayyam-method.md#method-as-callable-capsule), and the `sc` (code scope) mechanism underlying control-flow libraries is specified in [Logic in Khayyam](./khayyam-logic.md#code-scope) — this document references both rather than restating them.
 
 For a walk-through of the core mechanics before the detailed rules, see the [Guide](#capsules-and-methods-at-a-glance) below.
 
@@ -62,7 +72,7 @@ For a walk-through of the core mechanics before the detailed rules, see the [Gui
 ### Motivation
 Languages like Rust, C++, and TypeScript split the burden of managing mutability and lifecycle safety between the definition site and the consumer site, via keywords such as `mut`/`const`. This forces the consumer to explicitly dictate how they intend to treat an instance, and lets a caller override boundaries that should fundamentally belong to the domain model — a form of syntactic band-aid for weak encapsulation, and a source of constant call-site cognitive load. Meanwhile, tuple types and generic containers allow anonymous, positional data groupings that obscure domain meaning, and public field access breaks encapsulation at the structural level.
 
-Khayyam's encapsulation model was designed to address all of these issues simultaneously. By making all fields private, all interaction method-based, all mutability intrinsic to the capsule, and all multi-value groupings named capsules, the language ensures that domain boundaries are expressed at the definition site and cannot be bypassed at the call site. This document those rules, explains their motivation, and records the alternatives that were considered and rejected.
+Khayyam's encapsulation model was designed to address all of these issues simultaneously. By making all fields private, all interaction method-based, all mutability intrinsic to the capsule, and all multi-value groupings named capsules, the language ensures that domain boundaries are expressed at the definition site and cannot be bypassed at the call site. This document records those rules, explains their motivation, and records the alternatives that were considered and rejected.
 
 ### Methodology
 
@@ -157,72 +167,14 @@ None at this time.
 ##### Future possibilities
 A linter mode that detects capsules with "trivial getter" methods (methods that simply return a field value without transformation) and suggests whether they indicate a missing domain abstraction or are genuinely appropriate.
 
-### Method as Callable Capsule
-In Khayyam, functions and methods are not separate concepts; a method is fundamentally a callable capsule. By using the `mt` subtype, developers define an executable behavior and attach it to a receiver. The receiver is not limited to capsules (`cp`); a method can be attached to *any* type (`tp`), including an abstraction (`ab`) or even another method (`mt`).
+### Closures as Implicit Capsule Syntax
+A closure, looked at structurally rather than syntactically, is not really a separate language feature — it is an implicit capsule. Whatever a closure captures is, in effect, a set of unnamed fields; whatever a closure runs when called is, in effect, an unnamed method attached to those fields. Every closure written in another language is already doing what a Khayyam capsule does — holding state and offering behavior over it — the only difference is that it does so anonymously, without a declared type, and without going through Sovereign Encapsulation's requirement that a capsule's state be named and explicit.
 
-The method signature follows this pattern:
+Seen this way, Khayyam does not need a standalone rule that singles out and forbids closures. It only needs to decline adding syntax for a capsule that is allowed to skip naming its own fields. If a behavior needs state (the kind of thing a closure would capture), that state is, by definition, a new domain entity with a name — so a developer defines a specific capsule for it, explicitly passes the required state in, and implements the necessary method, exactly as for any other capsule. There is no closure or lambda syntax in the grammar; any callback-shaped requirement is expressed as a named capsule implementing the relevant abstraction (e.g. a comparator capsule implementing a `Compare` method), referenced by name like any other type.
 
-```khayyam
-tp {name} mt (self {capsule_owner}) ({efficacy variables}...) ({impressible(affective) variables}...) { ___ }
-```
+This framing also clarifies why this topic belongs inside the encapsulation document rather than standing alone: it is not an independent restriction sitting beside Sovereign Encapsulation — it *is* Sovereign Encapsulation, applied to the one syntactic form (an inline, capturing function) that would otherwise let a capsule's state stay implicit and unnamed.
 
-Key rules:
-- **Pass-by-Reference and State Protection**: All arguments passed into a method and all values returned from a method are passed strictly by reference. Even though capsules are passed by reference, their internal state remains strictly protected because all data fields are entirely hidden. A receiving method cannot directly mutate the passed capsule's fields. State mutation can only occur if the passed capsule explicitly exposes a behavior (method) that allows it.
-- **Parenthesized Separation**: Developers must separate `capsule`, `args`, and `returns` by using `()` to indicate all of them, even if empty. All three are the same at the underlying layers; this rule exists to improve code readability.
-- **Standalone Functions**: Developers can write pure standalone functions by omitting the `self` parameter — there is no limitation requiring a receiver.
-- **Recommended Naming**: Developers can use any naming for the capsule owner parameter, but `self` is suggested as the base point to reference other members in the capsule.
-
-Example:
-```khayyam
-tp Set mt (self Key) (key String) (err Error) {}
-```
-
-#### Method Invocation Rules
-
-Khayyam strictly uses a single dot (`.`) operator for all method calls. The language intentionally rejects secondary tokens (such as `::`) to maintain syntax minimalism.
-
-The distinction between static behavior and instance behavior is governed by the presence of the `self` reference in the method signature, enforced strictly at the tooling/linter layer:
-
-- **Type-Level (Static) Invocation**: Methods defined without a `self` reference belong to the type's blueprint. They must be invoked directly through the type identifier (e.g., `tp.Create()`). Invoking a type-level method on a variable instance (`vr.Create()`) is flagged as an error.
-- **Instance-Level Invocation**: Methods defined with a `self` reference require an active memory capsule. They must be invoked through a variable instance (e.g., `vr.Mutate()`). Invoking an instance-level method directly on the type identifier (`tp.Mutate()`) is rejected.
-
-This dispatch model ensures that the boundary between type-level and instance-level behavior is always visible in the method signature, not hidden behind a `static` keyword or a naming convention.
-
-#### Body-less Methods (FFI and Contracts)
-
-A method can be defined without a body (`{}`). This is legally used in two scenarios:
-
-1. **Contract Definition**: Defining the required signature for an abstraction (`ab`). The method body is provided by each capsule that implements the abstraction.
-2. **Foreign Function Interface (FFI)**: When the receiver is a concrete capsule (`cp`), a body-less method signals to the compiler that the implementation will be provided externally during the linking phase (e.g., from an Assembly `.s` or C `.o` file).
-
-#### Discussion
-
-##### Drawbacks
-The strict separation of capsule, args, and returns with `()` adds syntactic ceremony for methods that take no arguments or return no values. A method like `tp Close mt (self Reader) () () {}` has two empty parenthetical groups that carry no information — they exist purely for consistency and readability conventions.
-
-##### Rationale and alternatives
-- **Unified parameter list without parenthetical separation (rejected)**: would make it harder to distinguish at a glance which parameters are inputs and which are outputs, especially for methods with many parameters.
-- **Separate keyword for functions vs. methods (rejected)**: a method is fundamentally a callable capsule; introducing a separate keyword would create an artificial distinction where none exists at the semantic level.
-
-##### Prior art
-Go's method syntax with an explicit receiver is syntactically similar. Rust's `fn` with `&self`/`&mut self` is semantically similar but introduces reference annotations that Khayyam eliminates. Smalltalk's message-passing model is the closest conceptual match.
-
-##### Unresolved questions
-None at this time.
-
-##### Future possibilities
-None recorded yet.
-
-### Absence of Closures and Anonymous Functions
-Khayyam intentionally omits support for closures and anonymous functions. If a behavior requires captured state, that state must surface as a named, explicit capsule (`cp`) with its own method (`mt`), not be hidden inside an unnamed function.
-
-Closures are heavily used in other languages for callbacks and inline dynamic logic (e.g. capturing variables for sorting or filtering). While syntactically convenient, this introduces architectural problems: hidden state capturing creates invisible dependencies and breaks explicit state management, and the ease of writing inline functions encourages developers to mash multiple distinct behaviors into a single method body under the false promise of "refactoring later."
-
-If a behavior needs state (like a captured variable), that is by definition a new domain entity. Developers must define a specific capsule for it, explicitly pass the required state in, and implement the necessary method. This keeps all state dependencies explicit, testable, strictly encapsulated, and analyzable by the compiler.
-
-There is no closure or lambda syntax in the grammar. Any callback-shaped requirement is expressed as a named capsule implementing the relevant abstraction (e.g. a comparator capsule implementing a `Compare` method), referenced by name like any other type.
-
-This is not an independent rule sitting beside Sovereign Encapsulation — it is a direct consequence of it. Sovereign Encapsulation already requires that all of a capsule's state be named and explicit rather than implicitly exposed; a closure's captured variables are exactly the kind of implicit, unnamed state that model exists to eliminate, merely relocated from a field to a capture list instead of removed.
+Declining to admit this implicit-capsule syntax into the grammar has real consequences worth naming plainly. Closures are heavily used in other languages for callbacks and inline dynamic logic (e.g. capturing variables for sorting or filtering), and their convenience carries real architectural costs: hidden state capturing creates invisible dependencies and breaks explicit state management, and the ease of writing inline functions encourages developers to mash multiple distinct behaviors into a single method body under the false promise of "refactoring later." Requiring every captured state to surface as a named capsule keeps all state dependencies explicit, testable, strictly encapsulated, and analyzable by the compiler.
 
 #### Discussion
 
@@ -334,35 +286,6 @@ Most languages provide an explicit `const`/`final`/`let` keyword. Khayyam's "con
 ##### Future possibilities
 None recorded yet.
 
-### Code Scope
-A code scope is defined with the `sc` subtype:
-
-```khayyam
-tp {name} sc { ___ }
-```
-
-Code scopes are used in logic methods such as `IF`, `LOOP`, `GOTO`, and other control-flow constructs that will be developed in libraries. A code scope must be used only inside a method body — it cannot appear at the file level or inside a capsule definition outside of a method.
-
-This design ensures that control-flow constructs are not built into the language syntax but are instead provided as library-level abstractions, consistent with Khayyam's philosophy of separating syntax from governance. The language provides the `sc` mechanism; libraries and frameworks provide the specific control-flow implementations.
-
-#### Discussion
-
-##### Drawbacks
-Without built-in control-flow syntax, even basic constructs like `if` and `for` require importing a library. This may feel unfamiliar to developers coming from languages where these constructs are keywords, and it adds an import dependency that does not exist in other languages.
-
-##### Rationale and alternatives
-- **Built-in control-flow keywords (the conventional approach; rejected)**: would embed specific control-flow semantics into the language, preventing frameworks and organizations from defining their own control-flow policies (e.g., mandatory error checking on each iteration, or logging on each branch).
-- **Code scope as a library-only feature without language support (considered, not chosen)**: without the `sc` type, libraries would need to use capsules for control flow, losing the semantic distinction between "a data capsule" and "a control-flow scope."
-
-##### Prior art
-Lisp's macro-based control flow and Forth's immediate words are distant precedents for library-defined control flow. No mainstream language provides `sc`-style scope abstractions as a first-class type.
-
-##### Unresolved questions
-None at this time.
-
-##### Future possibilities
-None recorded yet.
-
 ## Results
 
 ## Discussion
@@ -382,7 +305,7 @@ The encapsulation model's insistence on method-only interaction, no tuples, no c
 - **Allow public fields for simple data carriers (rejected)**: would create a two-tier system where some capsules have public fields and others don't, with no principled rule for which should be which. It would also break the guarantee that a capsule's entire contract is its method interface.
 - **Allow tuples for "simple" multi-value returns (rejected)**: the boundary between "simple" and "complex" is subjective; once tuples are allowed for simple cases, they tend to proliferate to complex cases where they obscure domain meaning.
 - **Allow consumer-side `const` for read-only references (rejected)**: see [Sovereign Encapsulation](#sovereign-encapsulation) for the full rationale.
-- **Allow closures for simple, single-use callbacks (rejected)**: see [Absence of Closures and Anonymous Functions](#absence-of-closures-and-anonymous-functions) for the full rationale.
+- **Allow closures for simple, single-use callbacks (rejected)**: see [Closures as Implicit Capsule Syntax](#closures-as-implicit-capsule-syntax) for the full rationale.
 
 ### Prior art
 Smalltalk's strict message-passing encapsulation (no public fields, all interaction through messages) is the closest mainstream prior art for the capsule model. Prior art for abstractions and polymorphism is documented in their documents respectively.
@@ -397,3 +320,5 @@ Smalltalk's strict message-passing encapsulation (no public fields, all interact
 ## Change Rationale
 - **Structural migration.** Brought the document in line with the current Explanation-facet specification (`documentation-explanation.md`): `Summary` renamed to `Abstract`; `Motivation` moved under a new `Introduction` wrapper alongside an (empty) `Methodology`; the former `Guide-level explanation` promoted to a named, first-listed `Explanation` topic ("Capsules and Methods at a Glance") and linked from the Abstract as "Guide"; the `Reference-level explanation` heading removed, its topics now sitting directly under `Explanation`; added an empty `Results` section per the fixed body-section order.
 - **Closures merge.** Merged the standalone "Absence of Closures and Anonymous Functions" document into `Explanation` as a new topic, placed immediately after "Method as Callable Capsule," on the grounds that it is a direct corollary of Sovereign Encapsulation rather than an independent rule. All original content (summary, motivation, guide- and reference-level explanation, and the full Discussion bundle) was preserved; only the internal headings were removed as part of folding it into the topic-plus-Discussion shape. The document-wide `Discussion > Drawbacks` and `Rationale and alternatives` were extended with one clause each to reflect the newly merged topic. The standalone file has been retired.
+- **Extraction of non-capsule content.** A capsule is an abstraction layered over `vr` and `mt`, not an independent primitive — so content specific to those underlying concepts should be defined in their own documents and only referenced here. Accordingly: "Method as Callable Capsule" (including its Method Invocation Rules and Body-less Methods subsections) moved to [Method in Khayyam](./khayyam-method.md); "Code Scope" moved to [Logic in Khayyam](./khayyam-logic.md), since `sc` is structurally the mechanism control-flow libraries are built on rather than a capsule-level concern. The Abstract and front-matter Citations were updated to reference both documents instead of restating their content.
+- **Positive reframing of closures.** "Absence of Closures and Anonymous Functions" renamed to "Closures as Implicit Capsule Syntax" and its opening reframed: rather than starting from "Khayyam does not support closures," it now starts from the structural observation that a closure already *is* an implicit, unnamed capsule, and that Sovereign Encapsulation's existing requirement (state must be named and explicit) is sufficient on its own to explain why this syntax was not admitted — no separate prohibitive rule is needed. The Discussion subsections (Drawbacks, Rationale and alternatives, Prior art) were left unchanged, since the case they make does not depend on which framing introduces the topic. Cross-reference links elsewhere in this document were updated to the new heading.
