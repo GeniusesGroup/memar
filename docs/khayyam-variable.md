@@ -13,6 +13,22 @@ Citations:
       URI: "./khayyam.md"
       Relation: "Reference"
       Reason: "The philosophy document the recurring principles (self-documenting code, syntactic atomicity, domain modeling) that underpin the variable design decisions recorded here."
+    - Title: "Type"
+      URI: "./type.md"
+      Kind: Depends_on
+      Reason: "Type is the central recurring concept throughout this document"
+    - Title: "Encapsulation in Khayyam"
+      URI: "./khayyam-encapsulation.md"
+      Relation: "Reference"
+      Reason: ""
+    - Title: "Abstraction in Khayyam"
+      URI: "./khayyam-abstraction.md"
+      Relation: "Reference"
+      Reason: ""
+    - Title: "Polymorphism in Khayyam"
+      URI: "./khayyam-polymorphism.md"
+      Relation: "Reference"
+      Reason: ""
 Contributor(s):
   - Name: "Omid Hekayati"
     URI: "mailto:omid@geniuses.group"
@@ -33,6 +49,13 @@ Contributor(s):
     Tasks:
       - Works: ["Restructuring into document template", "Content consolidation and enrichment", "Restructured scattered variable-related content into the canonical document template; consolidated content from multiple source files; added reference-level elaborations on scope, initialization, and import mechanics."]
         URI: ""
+  - Name: "Claude"
+    URI: "https://claude.ai"
+    Model: "claude-sonnet-5"
+    Effort: "Medium - extended thinking enabled"
+    Tasks:
+      - Works: ["Critical review"]
+        URI: ""
 ---
 
 # Variable Semantics and Declaration in Khayyam
@@ -42,6 +65,8 @@ This document specifies the semantics, declaration rules, and design rationale f
 
 ## Motivation
 In most mainstream languages, variable declarations are a locus of hidden complexity: type inference hides the actual type from readers, assignment operators enable implicit copies and aliasing bugs, multi-variable declarations compress distinct pieces of information into a single line, and consumer-side modifiers (`mut`, `const`, `readonly`) shift mutability decisions to every call site rather than anchoring them in the type's own definition. These conveniences optimize for writing speed at the expense of reading clarity, long-term maintainability, and domain integrity.
+
+Separately, arithmetic and comparison operations are not infallible mathematical abstractions — they are physical, hardware-bound processes that can fail (overflow, division by zero, precision loss). Conventional infix syntax (`c = a + b`) leaves no channel through which such a failure can be reported, forcing languages toward dangerous workarounds: silent overflow, hidden panics, or exceptions that bypass the normal control-flow path. This same failure-visibility principle motivates Khayyam's treatment of arithmetic as ordinary, explicit capsule method calls rather than operators (see [Domain-Driven Arithmetic](#domain-driven-arithmetic)).
 
 Khayyam's variable model was designed to eliminate each of these sources of opacity. By requiring explicit types, forbidding assignment operators, rejecting multi-declaration syntax, and separating variable identity from type behavior, the language ensures that every variable declaration communicates its domain purpose, its type, and its behavioral contract without ambiguity. This document those rules, explains their motivation, and records the alternatives that were considered and rejected.
 
@@ -77,7 +102,7 @@ The `vr` keyword is the sole mechanism for declaring a variable. The grammar per
 vr {name} {type}
 ```
 
-The name must be a valid identifier. The type must be a previously defined or imported type (capsule, abstraction, method, or scope). A variable declaration is a distinct, separate statement — it cannot be combined with any other declaration on the same line, and it cannot carry an initializer inline. This ensures that every variable has its own visible scope in the source and that a reader can never skim past a declaration because it was compressed alongside others.
+The name must be a valid identifier. The type must be a previously defined or imported type. Of the four Type categories (see [Type in Khayyam](./khayyam-type.md)), only two can serve as a variable's type: **capsule** and **abstraction**. Method and Scope are Type categories in their own right but have no instance for a variable to reference. How an abstraction-typed variable resolves to a concrete capsule instance at runtime (dispatch) is specified in [Polymorphism in Khayyam](./khayyam-polymorphism.md), not in this document. A variable declaration is a distinct, separate statement — it cannot be combined with any other declaration on the same line, and it cannot carry an initializer inline. This ensures that every variable has its own visible scope in the source and that a reader can never skim past a declaration because it was compressed alongside others.
 
 The explicit separation of declaration from initialization is deliberate. A variable's name and type are communicated in one step; its initial state is communicated in a separate, equally visible step. This two-step pattern reinforces the principle that the *what* (identity and type) and the *how* (initial state) are distinct pieces of information, each deserving its own moment of reader attention.
 
@@ -163,33 +188,10 @@ None at this time.
 ##### Future possibilities
 A linter auto-completion mode that proposes the full type annotation as the developer types, reducing the mechanical cost of explicit typing without compromising readability.
 
-### Mutability Is a Type Concern, Not a Variable Concern
-A variable in Khayyam creates a named reference to an instance of a type. The variable itself has no behavioral semantics — whether the referenced instance can or cannot mutate is determined entirely by the type's own definition (specifically, whether the capsule exposes any mutating methods), not by any modifier on the variable declaration.
-
-This means the question "is this variable immutable?" is ill-posed in Khayyam. The correct question is "does this type expose mutating behavior?" — and that question is answered by inspecting the type's method contract, not the variable's declaration syntax.
-
-This is not a consumer-side keyword constraint (there is no `const` or `let`) — it is a direct consequence of the separation between variable identity and type behavior. A variable is a name and a type relationship; the type owns the behavior.
-
-#### Discussion
-
-##### Drawbacks
-Every behavioral variant of a value (e.g., a frequently-needed mutable view of an otherwise-immutable type) requires defining and naming a new capsule, rather than a one-character keyword at the call site. This is intentional friction, but it does mean more named types exist in a codebase than in languages with consumer-side modifiers.
-
-##### Rationale and alternatives
-- **Consumer-side `mut`/`const` (as in Rust, C++, TypeScript; rejected)**: allows behavior overrides at the call site that bypass the domain model's own invariants, and adds a constant low-grade decision burden to every variable declaration. It also conflates two distinct concerns: the identity of a reference (variable) and the behavioral contract of the referenced instance (type).
-- **Reassignable-by-default with `const` opt-out (as in JavaScript `let`/`const`; rejected)**: makes mutation the path of least resistance, encouraging developers to default to mutable variables and add `const` only when they remember — the opposite of Khayyam's intent.
-
-##### Prior art
-Rust's `let` (immutable by default) with `mut` opt-in is the closest mainstream prior art at the syntax level, though Rust conflates binding, object, ownership, and mutation into a single declaration modifier. Khayyam separates these concerns: the variable is the reference, the type owns the behavior.
-
-##### Unresolved questions
-None at this time.
-
-##### Future possibilities
-None recorded yet.
-
 ### No Assignment Operators
-Khayyam completely eliminates assignment operators (like `=`). Variables represent logical references to type instances; passing a variable to a method provides access to the same instance. The language structurally prevents any implicit deep or shallow copying through its syntax — the storage and copying model is an implementation concern addressed by future documents on resource management.
+Khayyam completely eliminates assignment operators (like `=`). The primary reason is syntactic atomicity: conventional `=` silently fuses several distinct operations — binding a name, mutating state, and, depending on the language, copying — into a single, overloaded token, leaving the reader to infer from context which operation is actually taking place. Khayyam's broader design principle requires every statement to perform exactly one, explicitly named operation; a single character cannot satisfy that requirement, so Khayyam routes every state change through a named capsule method instead.
+
+Variables represent logical references to type instances; passing a variable to a method provides access to the same instance. The language structurally prevents any implicit deep or shallow copying through its syntax — the storage and copying model is an implementation concern addressed by future documents on resource management.
 
 This rule has far-reaching implications: it means that state changes are always mediated by capsule methods, never by direct assignment. A variable's reference never silently changes to point to a different capsule instance — any such change requires an explicit method call that makes the operation visible in the source code.
 
@@ -200,7 +202,7 @@ vr newVar Type
 newVar.CopyFrom(oldVar)
 ```
 
-The removal of `=` also eliminates an entire class of bugs related to unintended aliasing (where two variables unexpectedly reference the same mutable data), because the language makes it structurally impossible to create such aliases through assignment. Any aliasing that does occur is always explicit and intentional, created through method parameters that reference the same instance.
+As a downstream consequence — not the primary motivation — the removal of `=` also eliminates an entire class of bugs related to unintended aliasing (where two variables unexpectedly reference the same mutable data), because the language makes it structurally impossible to create such aliases through assignment. Any aliasing that does occur is always explicit and intentional, created through method parameters that reference the same instance.
 
 #### Discussion
 
@@ -220,8 +222,38 @@ None at this time.
 ##### Future possibilities
 None recorded yet.
 
+### Domain-Driven Arithmetic
+Khayyam provides no mathematical or logical operators (`+`, `-`, `==`, `*`). All operations are explicit methods on a capsule (e.g. `a.Add(b)(c, err)`), so the possibility of failure (overflow, division by zero) is always visible in the method's signature rather than hidden behind syntactic sugar.
+
+Where another language would write `c = a + b`, Khayyam code calls a method directly on the domain capsule: `a.Add(b)(c, err)`. For simple operations, this method lives directly on the relevant domain capsule (e.g. a `Money` capsule exposing its own `Add`/`Sum` method, which can also enforce domain rules like currency matching while it's at it). For complex formulas where writing nested method calls would be unwieldy, developers may instead pass the formula as a string to a specialized evaluator capsule (e.g. `MathEval.FromString("x = (-b + sqrt(b^2 - 4ac)) / 2a")`). When the parameters to such a formula are compile-time constants, the compiler evaluates the deterministic, pure logic at compile time automatically — the same way a regex engine pre-compiles its automaton from a literal pattern — so this is not a runtime-only escape hatch; it carries the same compile-time guarantees as the direct method-call form whenever its inputs are known statically.
+
+#### Mechanism Summary
+- No `+`, `-`, `*`, `==`, or similar tokens exist in the grammar.
+- Arithmetic and comparison are always explicit capsule methods with explicit error outputs.
+- `MathEval.FromString()` (or equivalent) handles complex formulas via string input, with compile-time evaluation when inputs are invariant.
+
+Like every other method call in Khayyam, `a.Add(b)(c, err)` is a statement, not a chainable expression — writing `a.Add(b).Multiply(c)` is not legal syntax any more than it would be for a non-arithmetic method. A formula deep enough to need several such calls is, by the same reasoning documented for methods generally, a signal to reach for `MathEval` rather than a reason to want expression chaining (see [Composition Depth as a Decomposition Signal](./khayyam-method.md#composition-depth-as-a-decomposition-signal-no-expression-chaining)).
+
+#### Discussion
+
+##### Drawbacks
+Even trivial arithmetic requires a method call rather than an infix operator, which is significantly more verbose than virtually every other language in existence. For formulas passed as strings, type-checking of the formula's inner operands (e.g. preventing `Money + Duration`) depends on the specific evaluator capsule's implementation rather than being a language-level guarantee — this is currently an open design question for the standard `MathEval` implementation specifically (see Unresolved questions).
+
+##### Rationale and alternatives
+Built-in infix operators (the universal default) were rejected because they structurally cannot express a failure path, which conflicts with Khayyam's broader principle that no control flow, including failure handling, should ever be hidden behind syntax (the same principle Library-Driven Control Flow applies to branching).
+
+##### Prior art
+Domain-modeling-heavy codebases in many languages already wrap arithmetic in named methods for business types (e.g. `Money.add()` in DDD-style Java/C# code) as a best practice; Khayyam makes this the *only* available path rather than an optional convention.
+
+##### Unresolved questions
+Whether the standard `MathEval.FromString()`-style evaluator performs full compile-time type-checking of formula operands (preventing nonsensical cross-type operations like adding incompatible domain quantities), or only validates syntax while deferring type errors to runtime, is not yet settled for the recommended framework implementation.
+
+##### Future possibilities
+A formal specification for compile-time type-checking of `MathEval`-style formula operands, resolving the unresolved question above by defining exactly which cross-type operand errors the standard evaluator is guaranteed to catch before runtime.
+
+
 ### Variable as Logical Reference
-A variable in Khayyam does not represent a storage location or a raw memory region. It represents a logical reference to a type instance. The storage model is an implementation concern; the language model concerns identity and access.
+A variable in Khayyam does not represent a storage location or a raw memory region. It represents a logical reference to an instance of a type. The storage model is an implementation concern; the language model concerns identity and access. The reference mechanism itself — how a name's identity and access are technically realized — is a distinct, implementation-level concept with its own specification, deferred to a future document; this document treats it only as a language-level primitive.
 
 This means:
 - **A variable's type determines its behavioral contract.** Since the type is always a named type, the variable's capabilities are fully discoverable from that type's public interface — no reflection, no runtime type queries, no `instanceof` needed.
@@ -231,7 +263,7 @@ This design is a direct consequence of the "Separation of Syntax and Governance"
 #### Discussion
 
 ##### Drawbacks
-Developers coming from value-semantic languages (C, C++, Go) may initially expect that assigning one variable to another creates an independent copy. In Khayyam, both variables reference the same instance. This requires a mental model shift from "variables as containers" to "variables as references," which may cause confusion during the initial learning period.
+Developers coming from value-semantic languages (C, C++, Go) may initially expect that assigning one variable to another creates an independent copy. Khayyam has no assignment operator to create that expectation in the first place; where an independent copy is genuinely needed, it is obtained explicitly through a well-defined abstraction such as `Copy` or `Clone`, which a capsule may choose to implement. What such an abstraction is, and how a given capsule implements it, is a capsule-level and abstraction-level concern (see [Polymorphism in Khayyam](./khayyam-polymorphism.md)) — outside the scope of variable syntax and of this document. This still requires a mental model shift from "variables as containers" to "variables as references," which may cause confusion during the initial learning period.
 
 ##### Rationale and alternatives
 - **Value semantics by default (as in C, Go; rejected)**: would require implicit copies on every assignment or pass, introducing hidden memory allocation overhead and creating a performance model that depends on the compiler's copy-elision decisions.
