@@ -2,88 +2,71 @@
 Title: "Modeling"
 Status: Proposed
 Start Date: 2026-06-30
-RFC Number: 495216
+ID: 495216
 Applied to: []
-Related RFCs:
+Citations:
     - Title: "Terminology"
       URI: "./terminology.md"
-      Reason: "Depends_on"
-      Explanation: "Terminology governs how concepts are understood across all modeling discussions."
+      Relation: "Depends_on"
+      Reason: "Terminology governs how concepts are understood across all modeling discussions."
     - Title: "Protocol"
       URI: "./protocol.md"
-      Reason: "Depends_on"
-      Explanation: "Defines Protocol as a pure declarative specification; modeling produces the domain structures that protocols then constrain."
+      Relation: "Depends_on"
+      Reason: "Defines Protocol as a pure declarative specification; modeling produces the domain structures that protocols then constrain."
     - Title: "System"
       URI: "./system.md"
-      Reason: "Depends_on"
-      Explanation: "Defines Model and Abstraction at the conceptual level. This RFC builds on those definitions to specify how Memar performs modeling as an architectural activity."
-Contributor(s):
+      Relation: "Depends_on"
+      Reason: "Defines Model and Abstraction at the conceptual level. This document builds on those definitions to specify how Memar performs modeling as an architectural activity."
+Contributors:
   - Name: "Omid Hekayati"
     URI: "mailto:omid@geniuses.group"
     Tasks:
-      - Titles: ["Core principles", "Domain decomposition", "Abstraction justification"]
+      - Works: ["Core principles", "Domain decomposition", "Abstraction justification", "Attribute-or-edge test", "Acquired vs. discovered data", "Event-aware state modeling", "Document-spec restructuring", "Loop-edge classification", "Edge taxonomy", "Practice-document extraction", "Terminology corrections", "Unified modeling/review practice", "Pluggable-module principle"]
         URI: ""
-        Explanation: "Defined the core modeling philosophy; directed the rejection of aggregate-root ownership and the abstraction-responsibility principle."
   - Name: "Gemini"
     URI: "https://gemini.google.com/"
     Model: "3.1 Pro"
     Effort: "Extended thinking enabled"
     Tasks:
-      - Titles: ["Initial draft", "Argumentation"]
+      - Works: ["Initial draft", "Argumentation"]
         URI: ""
-        Explanation: "Drafted initial text; argued for and against alternatives; incorporated revisions."
   - Name: "ChatGPT"
     URI: "https://openai.com"
     Model: "GPT-5.5"
     Tasks:
-      - Titles: ["Initial draft", "Argumentation"]
+      - Works: ["Initial draft", "Argumentation", "Independence-signal review", "Event-framing review"]
         URI: ""
-        Explanation: "Drafted initial text; argued for and against alternatives; incorporated revisions."
   - Name: "Super Z"
     URI: "https://z.ai"
     Model: "GLM 5.2"
     Tasks:
-      - Titles: ["Structural revision", "Template compliance", "Content enrichment"]
+      - Works: ["Structural revision", "Template compliance", "Content enrichment"]
         URI: ""
-        Explanation: "Restructured to comply with RFC Template Specification; wrote Summary and Guide-level explanation; added Discussion bundles, cross-references, and Drawbacks to every topic; fixed front-matter field formats and Related RFCs Reason values."
   - Name: "Claude"
     URI: "https://claude.ai"
     Model: "Claude Sonnet 5"
     Effort: "medium - thinking"
     Tasks:
-      - Titles: ["Critical review", "Attribute-or-edge test", "Acquired vs. discovered data", "Event-aware state modeling", "Initial discovery checklist"]
+      - Works: ["Critical review"]
         URI: ""
-        Explanation: "Critiqued the aggregate-root rejection example, the behavior-before-structure sequencing claim, and the undefined operational criterion for independent responsibility; replaced the Order/Payment example with Invoice/Financial Transaction and added the naming-precision note; added the Attribute-or-Edge Test and its Reuse-Across-Contexts corroborating signal; added Acquired Data vs. Discovered Data and the discovered-should-not-automatically-be-stored principle; added Modeling State Change as Events, Not Destructive Updates, led by the reality-before-projections framing; added the Initial Discovery Questions checklist; incorporated further review from ChatGPT (GPT-5.5) on this same revision pass."
 ---
 
 # Modeling
 
-## Summary
-This RFC defines how Memar approaches domain modeling: treating the model as the primary architectural artifact, discovering it through graph-based exploration before any implementation commitment, and decomposing the domain around independent responsibilities rather than data ownership or presentation structures. It establishes that an abstraction is justified by an autonomous responsibility and lifecycle, not by the existence of data; that adaptability emerges from model quality, not from technology choices; and that behavioral complexity is a modeling smell rather than a requirement. The aggregate-root pattern of conventional DDD is rejected in favor of composing independent concerns at the composition layer, with no single fixed owning entity. Crucially, the output of the modeling phase is a set of abstractions, concerns, relationships, and supporting documents — not capsules. Capsules are implementation-level realizations that belong to later architectural and implementation phases.
+## Abstract
+This document defines how Memar approaches modeling: treating the model as the primary architectural artifact, discovering it through graph-based exploration before any implementation commitment, and decomposing the domain around independent responsibilities rather than data ownership or presentation structures. It establishes that an abstraction is justified by an autonomous responsibility and lifecycle, not by the existence of data; that adaptability emerges from model quality, not from technology choices; and that behavioral complexity is a modeling smell rather than a requirement. The aggregate-root pattern of conventional DDD is rejected in favor of composing independent concerns at the composition layer, with no single fixed owning entity. Crucially, the output of the modeling phase is a set of abstractions, concerns, relationships, and supporting documents — not capsules. Capsules are implementation-level realizations that belong to later architectural and implementation phases.
 
-## Motivation
+## Introduction
+
+### Motivation
 The framework should prevent incorrect models before implementation and reduce the cost of correction when mistakes inevitably occur. In practice, most architectural rigidity does not originate from poor technology choices — it originates from models that conflate unrelated concerns, mirror presentation structures, or bind responsibilities to fixed owning entities. Once a flawed model propagates into databases, APIs, user interfaces, and deployment pipelines, every subsequent correction carries compounding cost. Memar therefore needs an explicit, opinionated modeling discipline that maximizes the quality of the model before implementation begins and preserves the ability to evolve it afterward.
 
-## Guide-level explanation
-Modeling begins when a new requirement enters the system. The objective is not to immediately design APIs, databases, screens, or implementation structures. The objective is to understand the domain well enough that architectural boundaries emerge naturally.
-
-A modeling session typically follows this workflow:
-1. Extract concepts, responsibilities, constraints, and relationships from the requirement.
-2. Treat every discovered concept as provisional rather than accepted.
-3. Challenge each concept:
-  - Does an equivalent concept already exist?
-  - Is it introducing a new responsibility or only a new name?
-  - Is it a fundamental concern or a contextual view?
-4. Build a graph of concepts and relationships.
-5. Examine the graph for responsibility boundaries.
-6. Identify concerns that appear to have independent responsibilities or lifecycles.
-7. Delay implementation decisions until the graph stabilizes and major assumptions have been challenged.
-
-During modeling, assumptions are targets for investigation rather than facts to be recorded. The purpose of discussion is not to collect concepts but to eliminate incorrect ones. A modeling session is successful when it improves understanding of the domain. New questions, rejected assumptions, clarified terminology, and refined boundaries are all valid outcomes. Producing implementation artifacts is not required. Modeling should continue until the team can explain the domain using stable concepts, stable relationships, and clear responsibility boundaries. Only then should implementation-oriented activities begin.
+### Methodology
+Memar approaches modeling as graph-based discovery rather than schema design: concepts and relationships are proposed provisionally, challenged against the criteria established throughout this document, and retained only once they survive that challenge.
 
 Modeling inherently requires systemic thinking — examining how concerns interact, how behaviors propagate across boundaries, and how decisions in one part of the system affect behavior in another. A modeling effort that examines concepts in isolation, or that partitions the domain along organizational or team boundaries (e.g., frontend vs. backend) rather than along natural concern boundaries, will produce a model that reflects organizational structure rather than system behavior. Many architectural failures — a retry mechanism that degrades user experience, an error message that exposes internal failures, a validation step placed at the wrong point in a workflow — originate not from poor modeling of individual components but from a failure to model the system as a whole.
 
-## Reference-level explanation
+## Explanation
 
 ### What a Model Is
 A **model** is a simplified representation of a system or aspect of reality, constructed to facilitate understanding, analysis, prediction, communication, or transformation.
@@ -92,7 +75,7 @@ Models are composed of abstractions and relationships. They preserve information
 
 A model may be formal or informal, mathematical or visual, textual or computational. An equation that describes orbital mechanics is a model. A diagram that describes a software system's component structure is a model. A natural-language description of a business process is a model. The medium of the model is less important than the rigor and purpose with which it is constructed.
 
-This definition is grounded in the [System RFC](./system.md), where Model is defined as a concept in the Scientific terminology layer: its meaning is rooted in the philosophy of science and systems theory, defined with explicit boundaries, and intended to be open to criticism and revision.
+This definition is grounded in the [System document](./system.md), where Model is defined as a concept in the Scientific terminology layer: its meaning is rooted in the philosophy of science and systems theory, defined with explicit boundaries, and intended to be open to criticism and revision.
 
 #### Models Are Not Reality
 A model is not the thing it models. This distinction — between the map and the territory, the representation and the represented — is one of the oldest and most frequently violated principles in intellectual history. Confusing a model with reality leads to several well-documented failures:
@@ -119,28 +102,15 @@ The distinction between models and reality is discussed extensively in philosoph
 2. How should models be versioned and evolved alongside the systems they describe?
 
 ### Initial Discovery Questions
-Understanding what a model is (see above) does not by itself tell a modeler where to begin when facing an unstructured requirement — a lengthy specification document, a stakeholder interview, or an existing but undocumented system. Before any node is proposed, the following questions give a concrete entry point:
-
-- What information must the system know to fulfill this requirement?
-- For each piece of information: is it [acquired or discovered](#acquired-data-vs-discovered-data)?
-- What responsibilities are implied by this requirement — what rules, validations, or lifecycle transitions does it require?
-- Which of those responsibilities could plausibly evolve independently of the others?
-- Does a similar responsibility already exist elsewhere in the graph, under a different name?
-- Which of the concepts under discussion are [derived or contextual views](#concept-existence-vs-model-existence) of another concept, rather than fundamental concerns in their own right?
-- What relationships connect these concepts, and what do those relationships encode — ownership, reference, composition, or something else?
-
-These questions do not replace the fuller discovery process described in this RFC — they exist to give a modeler a starting point rather than a blank page. Answering them produces the first provisional candidates that the rest of the modeling process (see [Challenging Proposed Concepts](#challenging-proposed-concepts)) then interrogates, tests, and refines.
+Understanding what a model is (see above) does not by itself tell a modeler where to begin when facing an unstructured requirement — a lengthy specification document, a stakeholder interview, or an existing but undocumented system. The concrete entry-point questions a modeler asks before proposing any node are execution practice rather than architectural definition, and are not restated here. Answering them produces the first provisional candidates that the rest of the modeling process (see [Challenging Proposed Concepts](#challenging-proposed-concepts)) then interrogates, tests, and refines.
 
 #### Discussion
 
 ##### Drawbacks
-A checklist risks being treated as a mechanical procedure whose completion signals that modeling is "done," which contradicts the iterative, non-linear nature of the rest of this RFC. It is intended only as an entry point for the first pass over a new requirement, not as a gate or a substitute for the deeper discovery process.
+A checklist risks being treated as a mechanical procedure whose completion signals that modeling is "done," which contradicts the iterative, non-linear nature of the rest of this document. It is intended only as an entry point for the first pass over a new requirement, not as a gate or a substitute for the deeper discovery process.
 
 ##### Rationale and alternatives
 - **No initial checklist (rejected)**: leaving modelers to begin entirely from first principles each time is consistent with treating modeling as pure judgment, but in practice produces inconsistent starting points across sessions and modelers, and gives no guidance for the common case of an unstructured, lengthy requirement.
-
-##### Future possibilities
-A future RFC could expand this into a fuller intake template for requirement documents, connecting each answer directly to the graph-construction workflow.
 
 ### The Model as the Primary Artifact
 Modeling in Memar means discovering the natural structure of a domain before writing any implementation code. The output of modeling is not a database schema, not an API definition, and not a class hierarchy — it is a graph of concerns, responsibilities, and relationships that reveals where the real architectural boundaries lie.
@@ -185,14 +155,14 @@ Modeling discovers the abstractions, concerns, responsibilities, relationships, 
 
 This means the boundary between modeling and protocol is not a hard phase transition — it is a gradual shift in emphasis from discovery to formalization. Early in a project, modeling dominates and the protocol is thin. As understanding matures, the protocol grows richer and begins to constrain implementation decisions. Both activities remain architectural in nature: they are decisions about the system's structure and behavior, made before and during implementation.
 
-For a detailed discussion of Protocol, see the [Protocol RFC](./protocol.md). For terminology definitions, see the [Terminology RFC](./terminology.md).
+For a detailed discussion of Protocol, see the [Protocol document](./protocol.md). For terminology definitions, see the [Terminology document](./terminology.md).
 
 ### Models Must Survive Implementation Changes
 A model should not become difficult to change merely because an implementation already exists. One of the primary responsibilities of architecture is to preserve the ability to evolve domain understanding over time. As knowledge grows, previously accepted models may be refined, decomposed, consolidated, or replaced. Such changes should be treated as normal architectural evolution rather than exceptional events.
 
 Memar therefore places significant emphasis on protocols as stable boundaries between models and their implementations. A protocol defines the observable contract of a concern without exposing the implementation decisions behind it. By preserving this separation, implementations can evolve, migrate, or even be completely replaced while minimizing the impact on the surrounding architecture.
 
-For a detailed discussion, see the [Protocol RFC](./protocol.md).
+For a detailed discussion, see the [Protocol document](./protocol.md).
 
 #### Discussion
 
@@ -282,7 +252,34 @@ Graph exploration has no natural stopping criterion. A team can continue discove
 2. How should graphs from different modeling sessions be merged or compared when no standard notation exists?
 
 ##### Future possibilities
-A future RFC could define a lightweight graph notation tailored to Memar's modeling needs, designed to be expressive enough for architectural discovery while remaining simple enough to be sketched on a whiteboard or in a plain-text editor.
+A future document could define a lightweight graph notation tailored to Memar's modeling needs, designed to be expressive enough for architectural discovery while remaining simple enough to be sketched on a whiteboard or in a plain-text editor.
+
+### Edge Types and Their Traditional Counterparts
+Three structurally distinct kinds of edge recur across every graph model, and they are worth naming precisely because the difference between them is easy to miss:
+
+* An **edge** connects two distinct nodes. What it represents — reference, ownership, or anything else — is open-ended and not enumerated exhaustively by this document (see below); what makes it this first kind of edge is simply that it has two different nodes at its ends.
+* A **loop-edge** connects a node to itself. It is easy to overlook as its own category — many modelers only ever think in terms of edges joining two different things — but a self-referencing edge is structurally different from an ordinary edge, and Memar gives it a dedicated role: naming a candidate or established classification of the node it is attached to (see [Classification Emerges From Rules and Relations, Not From Intrinsic Labels](#classification-emerges-from-rules-and-relations-not-from-intrinsic-labels)). Traditionally, this is the counterpart of a `type` column, or a row's membership in a specific table under table-per-type inheritance.
+* A **shortcut edge** carries no new architectural information on its own. It exists purely to make an already-derivable traversal cheaper to compute. For example, determining whether an `Invoice` was paid in cash would otherwise require traversing every `Financial Transaction` connected to it and checking, for each one, whether its receiving account carries a `Cash_Account` label — a shortcut edge can instead connect `Invoice` directly to that already-derived fact. This is the graph-native counterpart of a database index or a materialized, denormalized column. A shortcut edge deserves particular caution: it must never become the source of truth for the information it shortcuts. It is only ever a cache of a fact derivable from other edges already in the graph, and should be modeled and named in a way that makes clear it is not itself authoritative — the same discipline already established for [Acquired vs. Discovered data](#acquired-data-vs-discovered-data) applies here: a shortcut edge is discovered, not acquired, and must always remain re-derivable from the edges that produced it.
+
+An ordinary edge — the first kind above — can still play many different roles, and naming a few recurring ones is useful for building a shared vocabulary and recognizing traditional-modeling counterparts, without treating the list as closed or mandatory:
+
+* A **reference** — a named pointer from one node to another that the referencing node depends on but does not own, e.g. `Product --(Title)--> Text` (see [The Attribute-or-Edge Test](#the-attribute-or-edge-test)). Traditionally, this is a foreign key.
+* An **ownership/composition** relationship — the lifecycle of the referenced node is bound to the owning node, which has no independent existence outside it. Traditionally, this is an embedded/owned row, or a foreign key with cascading delete.
+
+#### Discussion
+
+##### Drawbacks
+Even a three-way distinction this minimal can tempt teams into premature notation standardization — creating a formal taxonomy before the domain's actual relationships are understood, which is precisely the schema-first anti-pattern this document elsewhere rejects. The named roles above should be read as descriptive vocabulary for edges that already exist for good reasons, not as a checklist every model must populate.
+
+##### Rationale and alternatives
+- **Untyped, uniform edges (rejected)**: treating every edge as architecturally equivalent, with no distinction between an edge, a loop-edge, and a shortcut edge, makes it impossible to reason about which edges represent classification, which represent domain truth between two things, and which represent derived optimization — precisely the confusion that leads teams to accidentally treat a shortcut edge as authoritative, or to model a classification as an ordinary attribute instead of recognizing it as a loop-edge.
+- **A closed, enumerated taxonomy for ordinary edges (rejected)**: fixing reference and ownership as the complete set of ordinary-edge kinds would mirror the fixed-relationship-type thinking this document rejects elsewhere (see [Modeling Requires Explicit Relationship Analysis](#modeling-requires-explicit-relationship-analysis)); only the edge/loop-edge/shortcut-edge distinction carries structural weight, and everything else remains open-ended.
+
+##### Prior art
+The edge/shortcut-edge distinction parallels the general/index-or-materialized-view distinction across both entity-relationship modeling and property-graph databases; the loop-edge draws on the same reification pattern discussed under [Classification Emerges From Rules and Relations, Not From Intrinsic Labels](#classification-emerges-from-rules-and-relations-not-from-intrinsic-labels).
+
+##### Unresolved questions
+1. As further recurring ordinary-edge roles are named in practice, should any of them ever graduate into something more formal than descriptive vocabulary (e.g. a required annotation), or should the list remain permanently open and informal?
 
 ### Graphs Are Not Documentation Artifacts
 In Memar, graphs are not used merely to visualize a model that has already been discovered. Graphs are used as a discovery mechanism. The purpose of graph analysis is to expose relationships, dependencies, responsibilities, and architectural structures that may not be visible through implementation-oriented perspectives.
@@ -376,11 +373,7 @@ Graph stability is a retrospective indicator — it can only be measured after m
 ### Modeling Before Implementation
 Modeling should reach a sufficient level of maturity before implementation begins. Once a concept enters implementation, every subsequent change becomes progressively more expensive due to dependencies in storage, APIs, user interfaces, tests, deployment pipelines, and operational procedures. For this reason, Memar encourages extensive exploration at the modeling stage before committing to implementation decisions.
 
-A proposed model should be continuously challenged:
-* Does an equivalent concept already exist?
-* Is this truly a new concern or merely a specialized use of an existing one?
-* Does the proposed model introduce a new responsibility, or only a new presentation?
-* Are we creating a new concept, or simply giving a new name to an existing one?
+A proposed model should be continuously challenged against the same criteria used throughout modeling (see [Challenging Proposed Concepts](#challenging-proposed-concepts)) — this is not a separate, implementation-adjacent check, but the same discipline applied at the point where the cost of getting it wrong is about to rise sharply.
 
 For example, a team may initially introduce a `Comment` model. Before implementation begins, the model should be examined against existing concepts such as `Content`. The goal is not to maximize reuse, but to determine whether a genuinely new responsibility exists or whether the proposed model is simply a contextual specialization of an already existing concept.
 
@@ -400,15 +393,7 @@ The "model before implement" discipline can conflict with lean and experimental 
 2. How should the cost of late model changes be estimated to help teams decide whether additional modeling investment is justified?
 
 ### Challenging Proposed Concepts
-Every newly proposed concept should be assumed to be provisional until it survives critical examination. The purpose of modeling is not to collect concepts. The purpose of modeling is to discover whether a proposed concept represents a genuinely independent responsibility.
-
-For every proposed concept, the team should ask:
-- Does an equivalent concept already exist?
-- Is this concept merely a contextual view of another concept?
-- Is it introducing a new responsibility or only a new name?
-- Does it have an independent lifecycle?
-- Does it enforce rules that no existing concern already owns?
-- Would the system lose architectural clarity if this concept disappeared?
+Every newly proposed concept should be assumed to be provisional until it survives critical examination. The purpose of modeling is not to collect concepts. The purpose of modeling is to discover whether a proposed concept represents a genuinely independent responsibility. The specific set of challenge questions a team runs a proposed concept through is execution practice and is not restated here.
 
 A concept that cannot justify its existence should not become an independent abstraction.
 
@@ -423,10 +408,7 @@ During modeling, statements from stakeholders should be treated as hypotheses ra
 - **The responsibility of the modeler is not to record assumptions.**
 - **The responsibility of the modeler is to test them.**
 
-For example `"We need a Comment model."` should immediately trigger questions such as:
-- Why is Comment different from Content?
-- Which responsibility exists in Comment that does not already exist elsewhere?
-- Is this a domain concept or merely a presentation distinction?
+For example, a stakeholder statement such as `"We need a Comment model."` is an assumption to be tested, not a requirement to be recorded — the modeler's job is to determine whether `Comment` names a genuinely new responsibility or merely a presentation distinction on top of an existing concept such as `Content` (see [Challenging Proposed Concepts](#challenging-proposed-concepts) for the fuller test).
 
 Modeling progresses through validated assumptions, not collected assumptions.
 
@@ -434,24 +416,10 @@ Modeling progresses through validated assumptions, not collected assumptions.
 Questions are not merely a communication mechanism. A good modeling question can eliminate entire branches of an incorrect model before implementation begins. Modeling sessions should prioritize discovering better questions rather than producing more diagrams. A team that rapidly creates concepts without questioning them is usually documenting assumptions rather than modeling the domain.
 
 ### Early Indicators of Modeling Progress
-Before graph stability can be observed, teams may use the following indicators:
-- Fewer newly introduced concepts per session.
-- Increasing agreement on concept meanings.
-- Reduction of duplicate terminology.
-- Reduction of exceptional behaviors.
-- Ability to explain the domain using fewer fundamental concepts.
-
-These indicators do not prove model maturity, but they often signal convergence.
+[Graph stability](#graph-stability-as-an-indicator-of-model-maturity) is retrospective and cannot guide a team's first few sessions. Before it becomes observable, a smaller set of earlier, session-level signals can indicate convergence without proving maturity.
 
 ### Expected Output of a Modeling Session
-A modeling session is successful if it produces:
-- New questions.
-- Clarified terminology.
-- Rejected assumptions.
-- Refined relationships.
-- Improved responsibility boundaries.
-
-A session does not need to produce implementation artifacts, database schemas, APIs, or finalized abstraction definitions.
+A modeling session does not need to produce implementation artifacts, database schemas, APIs, or finalized abstraction definitions to be successful. Its success is measured by improved understanding of the domain.
 
 ### Concept Existence vs. Model Existence
 A recurring source of confusion in modeling discussions is the assumption that every identifiable concept must become an independent model element. Memar does not make this claim. The existence of a concept and the existence of a dedicated model are separate questions.
@@ -477,7 +445,7 @@ Failure to make these distinctions often produces two opposite architectural fai
 
 The primary objective of modeling is not decomposition itself. The objective is discovering and preserving the natural boundaries that already exist within the domain.
 
-A future RFC should provide formal criteria for determining when a concept becomes an independent abstraction and when it should remain a derived or contextual representation of another concept.
+A future document should provide formal criteria for determining when a concept becomes an independent abstraction and when it should remain a derived or contextual representation of another concept.
 
 #### The Attribute-or-Edge Test
 A practical operationalization of the "independent responsibility" criterion is available directly from the graph itself: for any data point a node appears to need, ask whether that node actually owns the responsibility for that data, or whether the requirement is better expressed as an edge to an already-independent node.
@@ -491,7 +459,7 @@ Concentrating text-handling responsibility into a single concern this way resolv
 
 This test — "is this data owned here, or is it a named relationship to an already-independent concern?" — gives modelers a concrete, graph-native way to apply the single-responsibility principle without relying purely on intuitive judgment. It does not eliminate subjectivity in the harder cases (see Unresolved Questions below), but it converts many everyday attribute-vs-abstraction decisions into a mechanical check against the existing graph.
 
-The `Product --(Title)--> Text` example is used as a recurring reference example throughout this RFC precisely because it exercises internationalization, search, versioning, reuse, and derived-structure concerns in a single, small graph — it is worth returning to whenever a new principle needs a concrete illustration.
+The `Product --(Title)--> Text` example is used as a recurring reference example throughout this document precisely because it exercises internationalization, search, versioning, reuse, and derived-structure concerns in a single, small graph — it is worth returning to whenever a new principle needs a concrete illustration.
 
 #### Reuse Across Contexts as an Additional Signal
 The Attribute-or-Edge Test answers a narrower question than the one it is sometimes mistaken for. It tells a modeler whether a piece of data belongs to the node that appears to need it, or to an edge pointing at an already-independent node. It does not by itself explain why a node such as `Text` is independent in the first place, as opposed to `Title` or `ProductName`, which are not.
@@ -518,7 +486,37 @@ The distinction between fundamental and derived concepts parallels the "value ob
 2. How should the system handle a concept that starts as derived but later evolves to carry independent responsibilities? Is this a model evolution or a new abstraction introduction?
 
 ##### Future possibilities
-A future RFC should define a abstraction-justification checklist — a set of questions that, when answered for a given concept, produce a clear recommendation on whether it deserves an independent abstraction. This would reduce the subjectivity inherent in the current "responsibility-driven" judgment.
+A future document should define a abstraction-justification checklist — a set of questions that, when answered for a given concept, produce a clear recommendation on whether it deserves an independent abstraction. This would reduce the subjectivity inherent in the current "responsibility-driven" judgment.
+
+### Classification Emerges From Rules and Relations, Not From Intrinsic Labels
+A common modeling mistake is to treat classification as an intrinsic property of a node. Terms such as *Instruction*, *Memory*, *Skill*, *Procedure*, or *Research Artifact* are often assumed to describe fundamentally different kinds of things from the moment they are created. From a modeling perspective, this assumption should be questioned. Before classification, all of these artifacts may be viewed simply as unclassified content — a base node that has not yet acquired any of these identities.
+
+A classification is not an inherent property of a node. It emerges when the node satisfies a specific set of rules that allow it to participate in a particular role or relationship. A piece of content may be considered an *Instruction* because it satisfies the rules required for guiding behavior; a *Memory* because it satisfies the rules required for long-term contextual reuse; a *Procedure* because it satisfies the rules required for repeatable execution. The classification does not exist independently of the rules that justify it.
+
+Graph-based modeling gives this principle a concrete mechanical form. A candidate classification can be represented as a self-referencing (loop) edge on the unclassified base node — a provisional label that says "this node may be an X" without yet committing to X as an independent concept. Whether that label is ever promoted from a loop-edge into its own, independently referenced node follows the same test already established in [Concept Existence vs. Model Existence](#concept-existence-vs-model-existence): the label is promoted only when it itself carries an independent responsibility, behavioral boundary, or lifecycle. Not every loop-edge is a candidate for promotion — a `Status` loop-edge (e.g. marking a node `Active` or `Archived`) rarely carries independent responsibility of its own, and correctly stays a loop-edge rather than becoming a node. This is not a separate promotion criterion; it is the same independent-responsibility test applied to loop-edges specifically, giving [The Attribute-or-Edge Test](#the-attribute-or-edge-test) a sibling for the node-vs-loop-edge question, alongside the attribute-vs-edge question it already answers.
+
+Once a classification is established, it can unlock relationship types that are explicitly valid only between nodes sharing that classification — for example, a `Substitute` edge, defined once for a given classification, may be used to mark two nodes as functional stand-ins for each other (two `Product`s that satisfy the same customer need, say), regardless of what other classifications either of them separately carries. This is explicit reuse at the abstraction level, not implicit inheritance: the base node does not silently gain behavior from an ambient hierarchy; it gains the ability to participate in specific, named relationships because it explicitly satisfies the rules that define a specific classification — the same discipline by which a capsule explicitly forwards to another capsule's methods rather than inheriting them automatically.
+
+This perspective helps reduce unnecessary type proliferation, prevents terminology from being mistaken for structure, and gives the [Reuse Across Contexts](#reuse-across-contexts-as-an-additional-signal) signal a mechanical trigger: the more often a given loop-edge label recurs across otherwise-unrelated base nodes with its own consistent rules, the stronger the case that it deserves promotion into an independent node in its own right.
+
+#### Discussion
+
+##### Drawbacks
+Representing every candidate classification as a loop-edge before deciding whether to promote it adds a layer of graph machinery that a simpler, direct-labeling approach (attaching a type tag to a node) would avoid. For teams unfamiliar with graph-native modeling, distinguishing a loop-edge that will never be promoted (like `Status`) from one that is a genuine promotion candidate (like `Instruction` or `Product`) may not be obvious without practice, and risks producing graphs cluttered with loop-edges no one intends to promote.
+
+##### Rationale and alternatives
+- **Direct type tagging (rejected)**: attaching a type or label field directly to a node, as in most property-graph databases, is simpler to implement but treats classification as an intrinsic, static property rather than something that emerges from — and can be re-evaluated against — the node's actual relationships and satisfied rules.
+- **Class hierarchies with inheritance (rejected)**: defining `Instruction`, `Memory`, and `Procedure` as subclasses of `Content` in a conventional inheritance hierarchy commits to the classification at definition time and makes it difficult for a node to satisfy more than one classification, or to have its classification re-evaluated as the rules it satisfies change.
+
+##### Prior art
+The loop-edge-to-node promotion mechanism echoes reification in knowledge representation — the process by which a relationship or property is "promoted" into a first-class entity in its own right when it needs to carry further properties or relationships of its own. It also parallels the multi-label mechanism found in property-graph databases, where a single node may carry several labels simultaneously, while adding the further discipline of an explicit promotion criterion rather than treating every label as equally durable.
+
+##### Unresolved questions
+1. How should a modeler distinguish, in practice, a loop-edge that is only ever going to remain a loop-edge (like `Status`) from one that is a genuine promotion candidate, before the independent-responsibility test can be fully evaluated?
+2. When a label is promoted into its own node, what happens to relationships that were previously expressed as loop-edges on the base node under that label — are they automatically migrated to the newly promoted node, or does that require deliberate, manual re-modeling?
+
+##### Future possibilities
+A future document could formalize the loop-edge-to-node promotion mechanism as part of a broader graph notation, addressing how classification-in-progress is represented during a modeling session versus how it is finalized once a label is promoted.
 
 ### Acquired Data vs. Discovered Data
 A complementary lens for distinguishing fundamental concepts from derived ones (see [Concept Existence vs. Model Existence](#concept-existence-vs-model-existence)) is to ask, for any candidate data point, whether it is **acquired** or **discovered**:
@@ -550,7 +548,7 @@ Two related situations are commonly, and mistakenly, treated identically in mode
 
 Memar treats both situations as instances of the same underlying modeling concern: a change to a concern's state is itself an event, and event design is not separable from modeling that concern's structure and behavior. A concern's lifecycle should be modeled with the expectation that its history of state changes may need to be queried, not only its current state.
 
-To be explicit about what this principle does not claim: it does not mean Event Sourcing, CQRS, or append-only storage are mandatory. This is a modeling-level concern, not an implementation or storage-engine mandate. This RFC does not prescribe event sourcing, a specific storage engine, or a specific persistence strategy as a required implementation approach — those are implementation-phase decisions addressed elsewhere. What belongs to modeling is the recognition that overwriting state without preserving its history is a decision with real, often unintended, architectural consequences, and that decision should be made deliberately during modeling rather than defaulted into by whichever storage technology a team happens to reach for. In practice, storage engines that operate above a raw key-value layer typically build indexes over exactly this kind of event history to answer queries efficiently — but how indexing is achieved is an implementation concern; that the history exists to be indexed is a modeling concern.
+To be explicit about what this principle does not claim: it does not mean Event Sourcing, CQRS, or append-only storage are mandatory. This is a modeling-level concern, not an implementation or storage-engine mandate. This document does not prescribe event sourcing, a specific storage engine, or a specific persistence strategy as a required implementation approach — those are implementation-phase decisions addressed elsewhere. What belongs to modeling is the recognition that overwriting state without preserving its history is a decision with real, often unintended, architectural consequences, and that decision should be made deliberately during modeling rather than defaulted into by whichever storage technology a team happens to reach for. In practice, storage engines that operate above a raw key-value layer typically build indexes over exactly this kind of event history to answer queries efficiently — but how indexing is achieved is an implementation concern; that the history exists to be indexed is a modeling concern.
 
 #### Discussion
 
@@ -566,7 +564,7 @@ Treating every state change as a preservable event can be taken to an extreme wh
 2. Should this concern be formalized as a distinct capability interface (analogous to the `Internal`, `Temporary`, `Timeout` capability interfaces used elsewhere in Memar's error abstraction) that a concern can opt into, rather than being an implicit property of every concern?
 
 ##### Future possibilities
-A future RFC could define the relationship between this modeling-level concern and Memar's eventual persistence/storage architecture, including how event history is expected to be queried, without prescribing a specific storage engine.
+A future document could define the relationship between this modeling-level concern and Memar's eventual persistence/storage architecture, including how event history is expected to be queried, without prescribing a specific storage engine.
 
 ### Concept Discovery Must Not Be Driven by Presentation
 Memar treats presentation structures as unreliable sources for discovering domain concepts.
@@ -635,22 +633,50 @@ This is closely related to, but distinct from, established critiques of Anemic/G
 2. Should there be a convention or lint rule that prevents an abstraction from directly accessing another abstraction's internal state, even when both are assembled by the same aggregator?
 
 ##### Future possibilities
-A future RFC could define a formal "aggregation contract" — a lightweight protocol that specifies what an aggregator may and may not do with the abstractions it assembles, including constraints on accessing internal state, propagating errors, and managing lifecycle.
+A future document could define a formal "aggregation contract" — a lightweight protocol that specifies what an aggregator may and may not do with the abstractions it assembles, including constraints on accessing internal state, propagating errors, and managing lifecycle.
+
+### Extensible Behavior Belongs to Pluggable Modules
+Not every requirement that touches a concept belongs inside that concept's own model. A discount mechanism on an `Invoice` is a useful illustration: one organization wants a simple percentage discount; another wants a multi-tier discount that reduces an invoice by 10% the first time a customer uses it, 20% the second, and 30% the third; another wants a location-restricted discount that only applies at specific branches, or only to specific products. A single discount module flexible enough to anticipate every one of these at once can be built — but sooner or later, a new requirement will not fit whatever was anticipated.
+
+Memar's answer is not to keep extending `Invoice` itself to absorb every new variation. `Invoice` connects to any number of independent, pluggable modules — Rules — through an ordinary reference edge, without needing to know, at the level of its own model, what kind of Rule it is connected to. Whether a given Rule carries a discount behavior, a refund behavior, or a staff-assignment behavior for scheduling service staff is that Rule's own concern, modeled independently, with its own graph and its own responsibilities — and, like any concept in this document, potentially governed by a Code of its own that constrains what further Rules it may in turn accept. `Invoice` does no more than expose the point at which a Rule may attach; it does not change shape to accommodate whatever a new Rule needs.
+
+This is the same discipline already familiar from single-responsibility and open/closed thinking, applied at the level of the model rather than only at the level of source code: a concept should be open to new pluggable behavior attaching to it, without being modified every time a new variation of that behavior is required. This applies equally outside of software — a physical product line, an organizational process, or a legal system can all be designed with the same separation between a stable core and pluggable, independently evolving extensions; modularity is not a computing-specific concern any more than "Code" itself is (see Memar's terminology guidance on the general, pre-computing sense of "Code").
+
+A full treatment of this principle — how pluggable modules are declared, discovered, and governed, and its relationship to Khayyam's own modularity model — belongs in a dedicated, shared document referenced by this document, the protocol Documents, and Khayyam's modularity treatment, rather than restated separately in each. This document establishes only the modeling-level consequence: a concern's model should expose attachment points for pluggable modules rather than growing new fields or branches to absorb every variation a module might need.
+
+#### Discussion
+
+##### Drawbacks
+Pushing variation out into pluggable modules trades one kind of complexity for another: instead of a single, if bloated, `Invoice` model, a team now has `Invoice` plus an open-ended set of independently evolving Rule modules, and must maintain discipline about what belongs in the core versus what belongs in a plugin. For a genuinely small, stable set of variations, introducing a full Rule/module boundary can be more architectural overhead than the variation itself would ever have cost to hard-code.
+
+##### Rationale and alternatives
+- **Anticipatory hard-coding (rejected)**: building a single, maximally configurable discount mechanism directly into `Invoice` that tries to anticipate every variation a team can imagine. This inevitably fails to anticipate the variation that actually arrives, and every failure to anticipate becomes a change to `Invoice` itself rather than the addition of an independent module.
+- **Inheritance-based variation (rejected)**: modeling `TieredDiscountInvoice`, `LocationRestrictedInvoice`, and similar as subtypes of `Invoice`. This multiplies `Invoice` itself rather than keeping it stable, and runs into the same combinatorial-explosion problem inheritance-based variation always does once more than one axis of variation exists at once (e.g. tiered *and* location-restricted).
+
+##### Prior art
+This mirrors the plugin/extension-point pattern common across many mature software systems, and the strategy pattern from object-oriented design generally; it is also simply a restatement, at the model level, of the open/closed principle. Outside software, it parallels how a legal system separates a stable constitutional core from more easily amended regulations and bylaws that plug into it without altering the core itself.
+
+##### Unresolved questions
+1. What, structurally, distinguishes a concept whose variations must become pluggable Rule modules from a concept whose variations are stable and few enough to model directly? Is this the same independent-responsibility test already established elsewhere in this document, or does it need its own criterion?
+2. How does a concept like `Invoice` declare, at the model level, which attachment points exist and what a Rule attaching to one is expected to provide — without reintroducing the fixed, anticipatory contract this section otherwise avoids?
+
+##### Future possibilities
+The shared document mentioned above should define how a concern declares an attachment point, how a Rule module registers against one, and how conflicts between multiple attached Rules (e.g. two discount Rules on the same `Invoice`) are resolved — none of which this document takes a position on.
 
 ## Discussion
 
 ### Naming Conventions
-This RFC does not introduce new naming conventions for implementation artifacts. The conceptual terms used here (abstraction, concern, aggregator, composition layer, graph) are established elsewhere in the Memar specification and are not redefined here.
+This document does not introduce new naming conventions for implementation artifacts. The conceptual terms used here (abstraction, concern, aggregator, composition layer, graph) are established elsewhere in the Memar specification and are not redefined here.
 
 ### Drawbacks
-The modeling approach described in this RFC demands significant upfront investment before any implementation progress is visible. For small or well-understood domains, the full graph-discovery process may be disproportionate to the complexity being managed. The approach also assumes that a team has access to domain expertise — if the domain experts are unavailable or the domain is poorly understood, graph exploration may produce a model that reflects the team's assumptions rather than the domain's actual structure.
+The modeling approach described in this document demands significant upfront investment before any implementation progress is visible. For small or well-understood domains, the full graph-discovery process may be disproportionate to the complexity being managed. The approach also assumes that a team has access to domain expertise — if the domain experts are unavailable or the domain is poorly understood, graph exploration may produce a model that reflects the team's assumptions rather than the domain's actual structure.
 
 ### Rationale and alternatives
 - **Ad-hoc modeling without a defined process (rejected)**: this is the default in most organizations. It produces inconsistent models whose quality depends entirely on the individual architect's skill and experience, without any mechanism for systematic improvement.
 - **Heavyweight formal modeling (rejected)**: approaches like full UPDM or SysML modeling provide rigor but introduce tooling and expertise barriers that make them impractical for most software teams. Memar seeks a middle ground: systematic enough to be teachable and repeatable, lightweight enough to be applied without specialized tools.
 
 ### Prior art
-The overall approach draws from multiple traditions: DDD (Eric Evans) for the emphasis on domain language and bounded contexts, Event Storming (Alberto Brandolini) for the practice of discovering domain structure through collaborative exploration, and graph theory for the analytical framework used to evaluate model structure. Memar's distinctive contribution is the integration of these traditions into a single, coherent modeling discipline that is tightly coupled with the abstraction and protocol constructs defined in other RFCs.
+The overall approach draws from multiple traditions: DDD (Eric Evans) for the emphasis on domain language and bounded contexts, Event Storming (Alberto Brandolini) for the practice of discovering domain structure through collaborative exploration, and graph theory for the analytical framework used to evaluate model structure. Memar's distinctive contribution is the integration of these traditions into a single, coherent modeling discipline that is tightly coupled with the abstraction and protocol constructs defined in other documents.
 
 ### Unresolved questions
 1. Should Memar prescribe specific modeling workshops or exercises (e.g., event storming, domain storytelling) as part of the standard modeling process, or should the modeling technique remain entirely up to the team?
@@ -658,13 +684,16 @@ The overall approach draws from multiple traditions: DDD (Eric Evans) for the em
 3. What is the recommended approach when a team inherits a legacy system with no existing model? Should they model from scratch and migrate, or incrementally extract the model from the existing codebase?
 
 ### Future possibilities
-- A future RFC could define a model-quality linter — an automated tool that checks a graph for common modeling anti-patterns such as circular dependencies, overly broad abstractions, or concepts without clear responsibility boundaries.
-- A future RFC could address the transition path from legacy systems to Memar-structured models, including strategies for incremental model extraction and migration.
+- A future document could define a model-quality linter — an automated tool that checks a graph for common modeling anti-patterns such as circular dependencies, overly broad abstractions, or concepts without clear responsibility boundaries.
+- A future document could address the transition path from legacy systems to Memar-structured models, including strategies for incremental model extraction and migration.
 
 ## Change Rationale
-- **Initial revision.** First structured revision of this RFC. Added `RFC Number` (495216, derived from the original Start Date). Migrated `Contributor(s)` from the deprecated `contribution`/`task` format to the `Tasks`-based format per the RFC Template Specification. Fixed `Related RFCs` `Reason` value for Terminology from the non-standard `"Foundation Alignment"` to `"Depends_on"`. Wrote the previously empty `Summary` and `Guide-level explanation` sections. Added `#### Discussion` bundles (with Drawbacks, Rationale and alternatives, Prior art, and where appropriate Unresolved questions and Future possibilities) to every Reference-level topic. Added the missing `## Discussion` and `## Change Rationale` sections. Converted plain-text internal references to hyperlinks. Added additional examples (e-commerce Order/Payment relationship) and expanded existing discussion points with deeper analysis and more alternatives.
+- **Initial revision.** First structured revision of this document. Added `ID` (495216, derived from the original Start Date). Migrated `Contributor(s)` from the deprecated `contribution`/`task` format to the `Tasks`-based format per the document Template Specification. Fixed `Citations` `Reason` value for Terminology from the non-standard `"Foundation Alignment"` to `"Depends_on"`. Wrote the previously empty `Summary` and `Guide-level explanation` sections. Added `#### Discussion` bundles (with Drawbacks, Rationale and alternatives, Prior art, and where appropriate Unresolved questions and Future possibilities) to every Reference-level topic. Added the missing `## Discussion` and `## Change Rationale` sections. Converted plain-text internal references to hyperlinks. Added additional examples (e-commerce Order/Payment relationship) and expanded existing discussion points with deeper analysis and more alternatives.
 - **Vocabulary separation revision.** Replaced all modeling-phase references to "capsule" with Discovery Vocabulary terms (abstraction, concern, conceptual boundary, responsibility). Clarified that capsules are implementation-level constructs and are not outputs of the modeling phase. Added the "Modeling Produces Abstractions, Not Capsules" section to establish a clear vocabulary boundary between the modeling phase (which produces abstractions, concerns, relationships, constraints, and supporting documents) and later architectural/implementation phases (which produce capsules, protocols, services, and other implementation structures). Rewrote the "Concept Existence vs. Model Existence" and "Domain Decomposition" sections to consistently use abstraction-level terminology throughout.
 - **Discovery and behavior emphasis.** Added a paragraph to "Graphs Are Not Documentation Artifacts" clarifying that graphs serve as a discovery environment where questions, assumptions, and modeling decisions evolve alongside structure — not merely as visualization tools. Added the "Modeling Focuses on Behavior Before Structure" section to establish that a system's real complexity resides in what it does, not what it stores, and that modeling should prioritize behavioral understanding before structural decisions. Added an explicit definition of "aggregator" in the "Domain Decomposition over Aggregate-Root Modeling" section to prevent ambiguous interpretation across modeling, architecture, and composition contexts.
 - **Phase relationships and systemic thinking.** Added the "Modeling, Protocol, and Architecture" section to clarify that these are not sequential pipeline phases but complementary aspects of a single architectural process — modeling discovers domain understanding, protocol captures it as knowledge contracts, and both are architectural in nature. Added a paragraph on systemic thinking to the guide-level explanation, emphasizing that modeling must examine how concerns interact across boundaries rather than partitioning the domain along organizational lines.
 - **Attribute-or-edge test, naming precision, concurrent discovery, and event-aware state modeling.** Added "The Attribute-or-Edge Test" under "Concept Existence vs. Model Existence," operationalizing the independent-responsibility criterion as a mechanical check ("is this data owned here, or is it a named edge to an already-independent concern?"), using a `Product`/`Text` example that explicitly covers storage, validation, versioning, internationalization (i18n), and search as responsibilities properly owned by a shared `Text` abstraction rather than duplicated per node. Replaced the `Order`/`Payment` example in "Modeling Requires Explicit Relationship Analysis" with `Invoice`/`Financial Transaction`, and added an explicit note that word choice at the modeling stage is not cosmetic — `Order` and `Payment` were rejected because they smuggle in incorrect assumptions about workflow outcome and implementation layer. Renamed "Modeling Focuses on Behavior Before Structure" to "Behavior and Structure Are Discovered Together" and rewrote it to clarify that behavior and structure are discovered concurrently rather than in strict sequence, while retaining the discipline of interrogating every proposed node or edge for its behavioral consequences immediately; this also resolves an internal tension with the adjacent "Behavior Often Reveals the Quality of the Model" section, which already described behavior as co-discovered rather than sequentially deferred. Added "Acquired Data vs. Discovered Data" as a complementary lens to the existing Fundamental/Derived distinction, with a position/velocity example illustrating why a discovered value should not be stored as if it were an acquired one. Added "Modeling State Change as Events, Not Destructive Updates," establishing that state changes are architecturally significant events to be modeled deliberately — covering both inherently time-series data and ordinary field changes (e.g. `Username`) — without prescribing any specific storage engine or persistence strategy.
-- **Independence signal, event framing, and discovery entry point (ChatGPT/GPT-5.5 review incorporated).** Added "Reuse Across Contexts as an Additional Signal" beneath the Attribute-or-Edge Test, framing cross-context reuse as a corroborating but non-required signal for independent-abstraction status, with `Text` (reused) and `Invoice` (not reused, still independent) as contrasting examples; this avoids overstating reuse as the primary criterion, which independent responsibility/lifecycle remains. Established the `Product`/`Title`/`Text` example as a recurring reference example, and cross-referenced it from the `Invoice`/`Financial Transaction` example so the structural (attribute-vs-node) and behavioral (invariant-ownership) lessons remain distinct but mutually discoverable. Added an explicit "a discovered concept should not automatically become a stored concept" principle to "Acquired Data vs. Discovered Data." Reordered "Modeling State Change as Events, Not Destructive Updates" to lead with "the model should preserve reality before it preserves projections" and an explicit disclaimer that Event Sourcing, CQRS, and append-only storage are not thereby mandated, rather than leaving that disclaimer implicit until later in the section. Added "Initial Discovery Questions," a short checklist distinguishing *how to begin* discovering abstractions from the rest of the RFC's treatment of *what a good abstraction looks like*, explicitly scoped as an entry point rather than a gate.
+- **Independence signal, event framing, and discovery entry point (ChatGPT/GPT-5.5 review incorporated).** Added "Reuse Across Contexts as an Additional Signal" beneath the Attribute-or-Edge Test, framing cross-context reuse as a corroborating but non-required signal for independent-abstraction status, with `Text` (reused) and `Invoice` (not reused, still independent) as contrasting examples; this avoids overstating reuse as the primary criterion, which independent responsibility/lifecycle remains. Established the `Product`/`Title`/`Text` example as a recurring reference example, and cross-referenced it from the `Invoice`/`Financial Transaction` example so the structural (attribute-vs-node) and behavioral (invariant-ownership) lessons remain distinct but mutually discoverable. Added an explicit "a discovered concept should not automatically become a stored concept" principle to "Acquired Data vs. Discovered Data." Reordered "Modeling State Change as Events, Not Destructive Updates" to lead with "the model should preserve reality before it preserves projections" and an explicit disclaimer that Event Sourcing, CQRS, and append-only storage are not thereby mandated, rather than leaving that disclaimer implicit until later in the section. Added "Initial Discovery Questions," a short checklist distinguishing *how to begin* discovering abstractions from the rest of the document's treatment of *what a good abstraction looks like*, explicitly scoped as an entry point rather than a gate.
+- **Specification realignment; practice moved to a skill; loop-edge classification; edge-type vocabulary.** Migrated the front matter to the current specification (`Contributor(s)` renamed to `Contributors`; `Works` entries shortened to headline style). Moved `Motivation` under `Introduction` and added `Methodology`. Moved the former top-level `Guide` section under `Explanation` as its first topic, linked from the Abstract. Removed every checklist and step-by-step procedure that had accumulated in this document — the modeling workflow, Initial Discovery Questions, Challenging a Proposed Concept, Testing an Assumption, Early Indicators of Modeling Progress, and Expected Output of a Modeling Session — replacing them with short principle statements cross-referenced to a new companion `domain-modeling` skill that now holds the concrete procedures, per the project's policy of keeping imperative, practice-level content in Skills rather than reference documents. (An intermediate draft of this change mistakenly cited a separate `modeling-practice.md` document via `Citations`; this was corrected, since Skills are not governed by the Document process and are referenced as ordinary links, not `Citations` entries.) Generalized the TODO-marked "Content Before Classification" section into "Classification Emerges From Rules and Relations, Not From Intrinsic Labels," formalizing a loop-edge-to-node promotion mechanism — provisional classifications are represented as self-referencing (loop) edges, promoted to independent nodes only when the classification itself passes the same independent-responsibility test already established in "Concept Existence vs. Model Existence," rather than a separate criterion — and clarifying that relationship types unlocked by a shared classification (e.g. a `Substitute` edge between two `Product`s) are explicit, opt-in reuse rather than implicit inheritance. Added "Edge Types and Their Traditional Counterparts," naming reference, composition/ownership, label, and shortcut/index edges alongside their relational-database counterparts, with an explicit caution that shortcut edges must never become a source of truth.
+- **Practice moved to a sibling document instead of a Skill; "domain-" prefix dropped; Guide removed; edge taxonomy simplified.** Per project decision made in a parallel conversation, moved practice/procedural content out of a Skill entirely and into a sibling document, `modeling.practice.md`, living alongside this document rather than under a Skills directory; removed the remaining forward pointers this document had toward that companion content, since this document should not need its own practice content to be understood (the reference relationship runs the other way — the practice document points back here — and even that is kept minimal). Removed the `Guide` topic entirely: everything it covered was about how this document is operationalized in a session, which is now `modeling.practice.md`'s responsibility, not this document's. Dropped the "domain-" prefix from "domain modeling" in the Abstract and from every "domain-modeling" skill/practice reference throughout — "modeling" alone is Memar's term for this activity. Simplified "Edge Types and Their Traditional Counterparts" from four enumerated, seemingly-exhaustive edge types down to a single architecturally meaningful distinction (an edge is either a shortcut edge or it is not), with reference, ownership, and label demoted to non-exhaustive, illustrative examples of ordinary edges rather than a closed taxonomy. Corrected a misuse of "RFC" in this document's own Change Rationale — Memar's terminology reserves "RFC" for a document's status-change pathway, not the document itself; "Document" is the correct term throughout.
+- **Three-way edge distinction; unified modeling/review practice; pluggable-module principle.** Corrected "Edge Types and Their Traditional Counterparts" a second time: an edge is not simply "shortcut or not" — a loop-edge (a node connected to itself) is a third, structurally distinct kind of edge in its own right, easily overlooked, and is now named as a peer of ordinary edges and shortcut edges rather than folded in as one example of an ordinary edge; replaced the `Invoice`-total shortcut-edge example with a clearer one (whether an `Invoice` was paid in cash, without traversing every `Financial Transaction` to check each one's account label). Rewrote `modeling.practice.md` to merge model discovery and model review into a single unified procedure rather than two documents, since the two activities share essentially the same steps; incorporated Model Reading, Node/Relationship audits, a Single Responsibility Check, an Implementation Contamination Check, a Completeness Check, a Common Anti-Patterns table, and Severity Levels from a separately-authored review practice, and made explicit that the same critical scrutiny applies whether the model under discussion is one's own or published by another organization. Added "Extensible Behavior Belongs to Pluggable Modules," establishing — via a discount-mechanism example on `Invoice` — that a concept's model should expose attachment points for independently-modeled, pluggable Rule modules rather than growing new fields or branches to absorb every variation a plugin might need; deliberately avoided the title "Code vs. Rule," since further discussion showed that framing itself invites the same conceptual narrowing this document's terminology guidance warns about, and left the deeper treatment (including its relationship to Khayyam's own modularity model) for a future, dedicated, shared document rather than restating it here.

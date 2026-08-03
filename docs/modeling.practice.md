@@ -1,222 +1,154 @@
 ---
-name: domain-modeling-review
-description: defines how domain models (particularly graph models) are reviewed
+name: modeling
+description: Defines the concrete, step-by-step procedure for running a Memar modeling session — discovering a model from scratch, refining an existing one, or critically reviewing a model (including one published by another organization) — the checklists and workflow that modeling.md's principles govern but intentionally does not itself contain.
 ---
 
-# Domain Modeling Review Practice
-> **Purpose:** This practice defines how domain models (particularly graph models) are reviewed in the Memar project.  
+# Modeling Practice
+> **Purpose:** This practice defines how a Memar modeling session is carried out in practice — the concrete steps, checklists, and session-quality signals referenced by [modeling.md](./modeling.md).
 > **Nature:** This is a *Practice* — a method commonly used for this type of work, not a claim about knowledge, skill, or capability.
 
----
-
-## When to Apply This Practice
-Apply domain modeling review when:
-- A new graph model or domain model is proposed
-- An existing model is being refined or extended
-- Model boundaries are being questioned
-- Concept confusion is suspected
-- The user requests model validation
+Discovering a model from an unstructured requirement, refining an existing model, and critically reviewing a model someone else proposed — including a model published as open data by another organization — are not separate activities. They share the same procedure below. Whatever the starting point, the same critical scrutiny applies to a concept whether it was proposed by you or by someone else: the modeling phase is where the smallest mistake is cheapest to catch and most expensive to leave uncaught, since everything downstream — every implementation decision — builds on top of it.
 
 ---
 
-## Core Modeling Distinctions
+## Model Reading
+Before critiquing or extending anything:
+1. Identify all nodes already in the model — or, if starting from an unstructured requirement instead of an existing model, all candidate concepts the requirement implies.
+2. Identify all edges and loop-edges already present (see [Edge Types and Their Traditional Counterparts](./modeling.md#edge-types-and-their-traditional-counterparts)).
+3. Trace the model's "story" — what reality does it claim to describe?
+4. Note initial questions or confusions without resolving them yet.
 
-### Before reviewing any model, verify these distinctions are maintained:
+Produce a neutral restatement of what the model appears to say before judging any part of it.
 
-#### 1. Concept vs. Data
+## Starting a New Requirement
+When there is no existing model to read — only an unstructured requirement, a lengthy specification document, a stakeholder interview, or an undocumented system — ask, before proposing any node:
 
-| Concept | Data |
-|---------|------|
-| Has independent meaning | Derives meaning from context |
-| Can be defined in isolation | Requires a concept to attach to |
-| Exists in the domain | Is a property or attribute |
-| "What something IS" | "What is known ABOUT it" |
+- What information must the system know to fulfill this requirement?
+- For each piece of information: is it acquired or discovered?
+- What responsibilities are implied by this requirement — what rules, validations, or lifecycle transitions does it require?
+- Which of those responsibilities could plausibly evolve independently of the others?
+- Does a similar responsibility already exist elsewhere in the graph, under a different name?
+- Which of the concepts under discussion are derived or contextual views of another concept, rather than fundamental concerns in their own right?
+- What relationships connect these concepts, and what do those relationships encode?
 
-**Test:** If you remove all properties/values, does the thing still exist as an understandable concept? If yes → Concept. If no → Data.
+These questions do not replace the fuller procedure below — they exist to give a modeler a starting point rather than a blank page.
 
-**Common error:** Modeling stored data as if it were a concept. Example: treating "email address" as a concept rather than data about a person/identity.
+## The Modeling Workflow
+A modeling or review session typically follows this workflow:
+1. Extract or list concepts, responsibilities, constraints, and relationships (from the requirement, or from the model being reviewed).
+2. Treat every concept as provisional rather than accepted — including concepts that already exist in a model someone else proposed.
+3. Challenge each concept (see [Challenging a Proposed Concept](#challenging-a-proposed-concept) below).
+4. Audit the graph's nodes and relationships (see the audits below).
+5. Examine the graph for responsibility boundaries.
+6. Identify concerns that appear to have independent responsibilities or lifecycles.
+7. Delay implementation decisions until the graph stabilizes and major assumptions have been challenged.
 
----
+During this process, assumptions are targets for investigation rather than facts to be recorded. The purpose is not to collect concepts but to eliminate incorrect ones. A session is successful when it improves understanding of the domain — new questions, rejected assumptions, clarified terminology, and refined boundaries are all valid outcomes; producing implementation artifacts is not required. Continue until the domain can be explained using stable concepts, stable relationships, and clear responsibility boundaries. Only then should implementation-oriented activities begin.
 
-#### 2. Rule vs. Code
+## Challenging a Proposed Concept
+For every concept under discussion, ask:
+- Does an equivalent concept already exist?
+- Is this concept merely a contextual view of another concept?
+- Is it introducing a new responsibility or only a new name?
+- Does it have an independent lifecycle?
+- Does it enforce rules that no existing concern already owns?
+- Would the system lose architectural clarity if this concept disappeared?
 
-| Rule | Code |
-|------|------|
-| What MUST be true | How truth is enforced |
-| Declarative statement | Imperative implementation |
-| Part of domain understanding | Part of technical realization |
-| Stable across implementations | Specific to language/platform |
-| "A user cannot have duplicate emails" | `if (exists(email)) throw Error` |
+A concept that cannot justify its existence should not become — or remain — an independent abstraction.
 
-**Test:** Can the constraint be stated clearly in business/domain language without reference to any programming concept? If yes → Rule. If the statement only makes sense in code → Code (and the rule may not have been extracted).
+## Testing an Assumption
+When a stakeholder, or a model already in front of you, states something as a fact (e.g. "We need a Comment model" or a node simply named `Comment`), do not record or accept it — test it:
+- Why is this different from the closest existing concept?
+- Which responsibility exists here that does not already exist elsewhere?
+- Is this a domain concept, or merely a presentation distinction?
 
-**Common error:** Embedding rules in code without explicit rule statements, making the rule invisible to anyone not reading implementation.
-
----
-
-#### 3. Relationship vs. Entity
-
-| Relationship | Entity (Concept) |
-|-------------|-------------------|
-| Exists BETWEEN things | Exists independently |
-| Has no meaning without related concepts | Has meaning in isolation |
-| Often modeled as edge | Often modeled as node |
-| "User HAS orders" | "User", "Order" |
-
-**Test:** Does this thing make sense as a complete sentence subject/object on its own? If it always requires "between X and Y" → Likely a relationship.
-
-**Common error:** Modeling relationships as entities (reification) when they should remain as relationships. Or vice versa: treating genuine concepts as mere attributes.
-
----
-
-## Review Procedure
-
-### Step 1: Model Reading
-
-Before critiquing:
-1. Identify all nodes in the model
-2. Identify all edges/relationships
-3. Trace the model's "story" — what reality does it describe?
-4. Note initial questions or confusions
-
-**Output:** A neutral restatement of what the model appears to say.
-
-### Step 2: Node Classification Audit
-
-For each node, classify it as:
+## Node Classification Audit
+For each node, classify it as one of:
 
 | Type | Indicator |
 |------|-----------|
-| **Pure Concept** | Independent meaning, definable alone |
-| **Relationship masquerading as node** | Only meaningful between other things |
-| **Rule masquerading as node** | Actually a constraint/behavior |
-| **Data masquerading as node** | Actually a value/attribute |
-| **Mixed** | Contains multiple types (warning sign) |
+| Independent concept | Has meaning on its own; survives the [Challenging a Proposed Concept](#challenging-a-proposed-concept) test |
+| Relationship mistaken for a node | Only meaningful between two other things; should be an edge |
+| Data mistaken for a node | Holds no responsibility of its own; should be an attribute or a reference to an already-independent node (see the Attribute-or-Edge Test) |
+| Loop-edge mistaken for a node, or vice versa | A classification that was promoted too early, or a genuine independent concept still expressed only as a label |
+| Mixed | Contains more than one of the above — a warning sign in itself |
 
-**Flag any node that is:**
-- Unclassifiable → May indicate unclear thinking
-- Mixed → Should probably be decomposed
-- Misclassified → Incorrect modeling
+Flag any node that is unclassifiable, mixed, or misclassified. A mixed node should almost always be decomposed into separate nodes connected by an explicit relationship.
 
-### Step 3: Relationship Audit
+## Relationship Audit
+For each edge or loop-edge:
+1. Does it genuinely connect two independent concepts, or is one side of it actually data or a disguised classification?
+2. Is it actually encoding a rule or constraint disguised as a relationship (e.g. an edge named `validates` that is silently hiding a validation rule)?
+3. Is its cardinality correct and justified?
+4. Is its direction meaningful? Would the reverse direction also be valid, or even more natural?
+5. If it is a shortcut edge, can it still be re-derived from other edges already in the graph — has it drifted into becoming a source of truth?
 
-For each relationship:
-1. Is it genuinely a relationship (connects two concepts)?
-2. Or is it actually a rule disguised as a relationship?
-3. Is the cardinality correct and justified?
-4. Is the direction meaningful?
-5. Would the reverse direction also be valid?
+## Single Responsibility Check
+Each node should represent one coherent idea. Signs of a mixed responsibility:
+- The node's name uses "and" or "or".
+- Different discussions of the node focus on different, unrelated aspects of it.
+- Some of its relationships pertain to one aspect, others to a completely different aspect.
+- Its definition requires multiple unrelated clauses to state.
 
-**Watch for:**
-- Missing relationships that should exist
-- Relationships that encode rules (e.g., "validates" hiding a validation rule)
-- Symmetric relationships forced into directional form (or vice versa)
+The remedy is decomposition: separate nodes, connected by an explicit relationship.
 
-### Step 4: Single Responsibility Check
+## Implementation Contamination Check
+Verify the model has not been shaped by a source outside the domain itself — whether the model is your own or another organization's:
 
-Each concept/node should represent ONE coherent idea.
+| Source | Contamination sign |
+|--------|---------------------|
+| Database | Tables become concepts; normalization drives boundaries instead of responsibility |
+| UI | Screens become concepts; display needs drive structure |
+| API | Response/request shapes dictate concept design |
+| Framework or language | Class-inheritance or language-feature constraints appear as if they were domain constraints |
 
-**Signs of mixed responsibility:**
-- The node name uses "and" or "or"
-- Different discussions about the node focus on different aspects
-- Some relationships relate to one aspect, others to another aspect
-- The definition requires multiple unrelated clauses
+If contamination is found, separate which parts of the model reflect reality from which parts reflect an implementation concern that leaked upstream into the model.
 
-**Remedy:** Decompose into separate nodes with clear relationships between them.
-
-### Step 5: Implementation Contamination Check
-
-Verify that the model has NOT been contaminated by:
-
-| Source | Contamination Sign |
-|--------|------------------|
-| Database | Tables become entities; normalization drives boundaries |
-| UI | Screens become objects; display needs drive structure |
-| API | JSON shapes dictate entity design |
-| Framework | Class inheritance constraints appear in model |
-| Language | Language features limit concept granularity |
-
-**If contamination is found:** Identify which parts of the model reflect reality vs. which reflect implementation concerns.
-
-### Step 6: Completeness Check
-
+## Completeness Check
 Ask:
 - What questions can this model answer?
-- What questions CANNOT it answer (but should)?
-- Are there orphaned concepts (no relationships)?
-- Are there implied but unstated relationships?
-
----
+- What questions can it *not* answer, but should be able to?
+- Are there orphaned concepts with no relationships at all?
+- Are there relationships that are implied by the requirement but not yet represented?
 
 ## Common Modeling Anti-Patterns
 
-| Anti-Pattern | Description | Detection |
-|-------------|-------------|-----------|
-| **God Concept** | One node that means everything | Node connected to almost everything; vague definition |
-| **Data as Concept** | Attributes promoted to entities | Node has no behavior/rules, just holds values |
-| **Rule as Entity** | Constraints turned into things | Node that actually represents "must/should/cannot" |
-| **Relationship Reification** | Edges turned into nodes unnecessarily | Node whose sole purpose is connecting two other nodes |
-| **Implementation Mirror** | Model copies database/API/UI | Structure matches technical artifact too closely |
-| **Terminology Drift** | Names don't match definitions | Definition of X actually describes Y |
-
----
-
-## Output Format
-
-When providing a model review, use this structure:
-
-```markdown
-## Model Review: [Model Name]
-
-### 1. Understanding
-[Your neutral restatement of the model]
-
-### 2. Node Classification
-| Node | Classification | Confidence | Notes |
-|------|---------------|------------|-------|
-| ... | Concept/Relationship/Rule/Data/Mixed | High/Medium/Low | ... |
-
-### 3. Findings
-#### Strengths
-[What works well]
-
-#### Concerns
-| ID | Concern | Severity | Type |
-|----|---------|----------|------|
-| C1 | ... | Critical/High/Medium/Low | Classification/Contamination/Missing/etc. |
-
-#### Questions for Clarification
-[Things you need understood before proceeding]
-
-### 4. Suggestions (if applicable)
-[Only if you have concrete improvements]
-
-### 5. Recommended Next Steps
-[What should happen next]
-```
-
----
+| Anti-pattern | Description | Detection |
+|---|---|---|
+| God concept | One node that means almost everything | Connected to nearly everything; vague, hard-to-state definition |
+| Data as concept | An attribute promoted to its own node | The node has no responsibility or rules of its own, only values |
+| Rule as concept | A constraint turned into a node | The node actually represents a "must/should/cannot" statement |
+| Unnecessary reification | An edge turned into a node without a genuine independent responsibility | The node's sole purpose is connecting two other nodes |
+| Implementation mirror | The model copies a database, API, or UI shape | Structure matches a technical artifact more closely than it matches the domain |
+| Terminology drift | A name no longer matches its definition | The definition of X actually describes Y |
 
 ## Severity Levels
+When flagging a concern during a session, grade it:
 
 | Severity | Meaning | Action |
-|----------|---------|--------|
-| **Critical** | Model is fundamentally misstructured | Must redesign before proceeding |
-| **High** | Significant issues that will cause problems | Should fix before building on this |
-| **Medium** | Notable issues but model is usable | Fix in next iteration |
-| **Low** | Minor improvements possible | Address when convenient |
-| **Observation** | Not necessarily an issue, worth noting | Keep in mind |
+|---|---|---|
+| Critical | The model is fundamentally misstructured | Must be redesigned before proceeding |
+| High | A significant issue that will cause real problems | Should be fixed before building further on top of it |
+| Medium | A notable issue, but the model is still usable | Fix in the next iteration |
+| Low | A minor, optional improvement | Address when convenient |
+| Observation | Not necessarily an issue, worth noting | Keep in mind |
 
----
+## Early Indicators of Modeling Progress
+Before graph stability can be observed, look for:
+- Fewer newly introduced concepts per session.
+- Increasing agreement on concept meanings.
+- Reduction of duplicate terminology.
+- Reduction of exceptional behaviors.
+- Ability to explain the domain using fewer fundamental concepts.
 
-## Relation to Other Practices
+These indicators do not prove model maturity, but they often signal convergence.
 
-| Practice | Connection |
-|----------|-----------|
-| Architectural Critique | Model review often reveals architectural assumptions |
-| Documentation Improvement | Review outcomes should update project docs |
-| Conversation Handoff | Review conclusions captured for continuity |
+## Expected Output of a Session
+A modeling or review session is successful if it produces:
+- New questions.
+- Clarified terminology.
+- Rejected assumptions.
+- Refined relationships.
+- Improved responsibility boundaries.
 
----
-
-*This Practice is part of the Memar project collaboration framework. It should evolve as the project's modeling understanding deepens.*
+A session does not need to produce implementation artifacts, database schemas, APIs, or finalized abstraction definitions.
