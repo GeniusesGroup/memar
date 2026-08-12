@@ -1,14 +1,12 @@
 # Memar 
-**Memar** is a computer software development **structure** document that gives you a [structuralism](https://en.wikipedia.org/wiki/Structuralism) mental model to understand the development model. The implementation version of Memar is used as the software development **framework**.
+**Memar** is a system development **framework** as **structure** document that gives you a [structuralism](https://en.wikipedia.org/wiki/Structuralism) mental model to understand the development model.
 
 Memar is not an authority that decides reality. Memar is a framework for constructing, examining, and refining mental models about systems. The goal is not to eliminate ambiguity, but to make ambiguity visible, explicit, and subject to independent evaluation.
-
-It will provide ZeroOps(zero operations), edge computing, ... that let you develop both server and client applications in any programming language without need to think more about any fundamental requirements, Just develop business services and user interfaces, build apps as OS images or OS applications and easily just run first server node and let it distributes by many factors with inside logics not need external decision makers (automating software deployment) like Kubernetes(K8s) but with some improvements.
 
 ## Why Memar Exists
 Memar did not begin with the goal of creating a new programming language, framework, architecture methodology, or software platform. It began with a different question:
 
-> How many of the concepts commonly accepted in software engineering are actually well-defined?
+> How many of the concepts commonly accepted in engineering (building, software, ...) are actually well-defined?
 
 Throughout the history of computing, many concepts have become deeply embedded in industry practice. Terms such as architecture, framework, technology, relation, encapsulation, leadership, abstraction, and many others are widely used and often treated as self-evident. Memar started from the observation that widespread usage does not necessarily imply conceptual clarity. Many software projects operate within existing assumptions. Memar takes a different approach. Instead of starting from established terminology, it starts from definitions. Instead of accepting classifications, it asks how those classifications are justified. Instead of optimizing implementation details, it attempts to understand the underlying structure of the problem space.
 
@@ -18,12 +16,8 @@ The project assumes that meaningful progress often requires stepping outside exi
 
 ## Goals
 - Improves the quality of reasoning about systems.
-- 
-- Provide complete framework to develop any purpose distributed application with **low||no code**.
-- No(minimum) dependency on any other repositories.
-- Compile an application as **Unikernel** instead of regular OSs or containers binaries.
-- Develop high available and distributed software without any admin in any infrastructure layers (DevOps culture goal).
-- Let service developers act Lean and Agile in their organization.
+- Almost no (minimum) dependency on any other repositories (frameworks).
+- Let developers act Lean and Agile (not [agile-manifesto](https://agilemanifesto.org/)) in their organization.
 - [Reinvent the wheel](https://en.wikipedia.org/wiki/Reinventing_the_wheel)
 
 ## Not Goals
@@ -51,7 +45,17 @@ If you encounter an open question, an ambiguity, or a topic that doesn't seem to
 
 This applies to human readers and AI assistants alike: don't infer the absence of a decision from the absence of a mention in the current file.
 
-## Transition period
+## System Categories
+
+### Computer
+The computer software implementation version of Memar is used as the software development **framework**.
+
+It will provide ZeroOps(zero operations), edge computing, ... that let you develop both server and client applications in any programming language without need to think more about any fundamental requirements, Just develop business services and user interfaces, build apps as OS images or OS applications and easily just run first server node and let it distributes by many factors with inside logics not need external decision makers (automating software deployment) like Kubernetes(K8s) but with some improvements.
+- Compile an application as **Unikernel** instead of regular OSs or containers binaries.
+- Develop high available and distributed software without any admin in any infrastructure layers (DevOps culture goal).
+- Provide complete framework to develop any purpose distributed application with **low||no code**.
+
+#### Transition period
 Since the Memar introduces all tools needed in software development and operation as a programming language([Khayyam](./Khayyam.md)) and OS([PersiaOS](./PersiaOS.md)) and network protocols like [Chapar](./chapar.md) or [GP](./networking-osi_3-Giti-Network.md), If any organization want to move to the Memar, we provide some exiting programming language implementation to smooth this period and use existing infrastructure like Golang and Linux and IP.
 
 **But remember we don't suggest using this method in starting new projects.**
@@ -68,6 +72,7 @@ Contact us by [this](mailto:ict@geniuses.group) or [this](mailto:omid@geniuses.g
 - [EntGo](https://entgo.io/)
 - [go-zero](https://github.com/zeromicro/go-zero) as bad idea because of (microservice system), (fully compatible with net/http), (middlewares are supported), ...
 or [really relativetime?? Why not monotonic time??](https://github.com/zeromicro/go-zero/blob/master/core/timex/relativetime.go)
+- https://en.wikipedia.org/wiki/Genera_(software)
 
 ## Word
 Memar is the Persian word means [architect](https://en.wikipedia.org/wiki/Architect), That is a person who plans, designs and oversees the construction of buildings. To practice architecture means to provide services in connection with the design of buildings and the space within the site surrounding the buildings that have human occupancy or use as their principal purpose. Etymologically, the term architect derives from the Latin architectus, which derives from the Greek (arkhi-, chief + tekton, builder), i.e., chief builder.
