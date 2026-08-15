@@ -48,7 +48,7 @@ Implementation
 This principle does not reject established mechanisms; it rejects using their names as substitutes for understanding. A technically sophisticated mechanism applied to the wrong process remains a wrong design. A simpler mechanism applied to a correctly understood process may provide stronger correctness, lower coordination cost, and greater clarity.
 
 ### Process Is Not a Mechanism
-A transaction is not a process. A queue is not a process. A lock is not a process. A thread is not a process. A request is not a process. A workflow engine is not a process. A Saga is not a process. Each of these may participate in the execution or coordination of a process, but none defines the underlying concept.
+A transaction is not a process. A queue is not a process. A lock is not a process. A thread is not a process. A request is not a process. A workflow engine is not a process. A Saga is not a process. Each of these may participate in the execution or coordination of a process, but none defines the underlying concept. A request may initiate, advance, observe, modify, retry, or terminate a process, but the request itself is an interaction or representation of an interaction, not the process as a whole.
 
 This distinction matters because mechanisms usually encode particular assumptions, so a mechanism useful for one process can be unnecessary, inappropriate, or even harmful for another. A failed operation does not inherently imply rollback. A repeated operation does not inherently imply that the server should retry it. Concurrent execution does not inherently imply a lock. An event does not inherently imply that the producer knows which consumers will react to it. The process must be understood independently of the mechanism before the mechanism is selected.
 
@@ -64,8 +64,9 @@ Several recurring errors result from treating implementation terminology as if i
 - **Treating Process as server-side execution.** A process may cross servers, clients, systems, participants, and time boundaries; the component that initiates a process does not necessarily execute it.
 - **Treating failure as rollback.** Rollback is one possible response to failure, not the definition of failure or process recovery.
 - **Treating retry as automatic.** Retry may be explicitly requested by a user, SDK, operator, scheduler, or another process; it does not inherently belong to the server that performed the previous attempt.
-- **Treating concurrency as locking.** Concurrency is about simultaneous or overlapping progression; locking is one possible mechanism for satisfying a particular constraint, not the definition of concurrency.
-- **Treating events as commands to known consumers.** An event can expose a fact without the producer knowing which processes will react to it.
+- **Treating concurrency as locking.** Concurrency is about simultaneous or overlapping progression; it does not imply shared state or shared mutable ownership. Locking is one possible mechanism for satisfying a particular constraint, not the definition of concurrency.
+- **Treating events as commands to known consumers.** An event can expose a fact without the producer knowing which processes will react to it, and a consumer is not thereby made a continuation of the producer's process.
+- **Treating event handling behavior as intrinsic to Event.** Whether an event handler blocks, alters, or otherwise affects another activity is a property of the dispatch and handling rules, not of the Event concept itself.
 - **Treating asynchrony as a language primitive.** Asynchrony is a property of progression and waiting relationships; `async/await` is only one implementation representation of it.
 - **Treating observation as the definition of the process.** A given observation should not automatically be elevated to the process's intrinsic definition.
 - **Treating implementation boundaries as process boundaries.** A function, module, service, server, or deployment unit is not automatically a process boundary.
@@ -73,6 +74,8 @@ Several recurring errors result from treating implementation terminology as if i
 
 ### Definition
 A **Process** is a bounded progression of related activities, interactions, or changes that can be understood as belonging to a common intent or concern.
+
+A process is the concept that gives related activities and changes a meaningful progression. Activities and changes are therefore parts or manifestations of a process, rather than an alternative definition of the process itself.
 
 The definition deliberately does not require a process to be a sequence in the strict sense. Activities may be sequential, concurrent, overlapping, conditional, iterative, delegated, interrupted, or independently continued, and a process may have no single continuously executing component. A process does not derive its identity from the mechanism used to enact it — the same process may be implemented through different combinations of direct calls, messages, events, scheduled work, persistent state, distributed participants, or other mechanisms.
 
@@ -88,8 +91,26 @@ The defining question is therefore not *"which mechanism executes this?"* but *"
 2. Whether temporal progression is intrinsic to the definition of Process, or a property of its enactment.
 3. Whether a Process can exist conceptually without an enactment, or whether the distinction should instead be between a Process definition and a Process instance.
 
+### Process Definition and Process Instance
+A process model describes the possible structure, behavior, constraints, and outcomes of a process. A particular enactment of that process may traverse only a subset of those possibilities.
+
+Each **Process Instance** is therefore a particular realization of a process. It may activate only some activities, follow one of several possible paths, involve a subset of participants, encounter different conditions, or terminate at a particular outcome. The complete process model may describe possibilities that are not exercised by a particular instance, while an observed instance may reveal only a partial view of the process.
+
+The distinction is important because a process model must not be confused with any single execution of it. A process definition describes what may be relevant to the process as a whole; an instance describes what is relevant to one occurrence. An instance does not need to realize every element represented by the process model.
+
+This distinction also matters when a process is retried, repeated, or composed. A later attempt may be initiated as a new interaction or request while remaining part of the same higher-level process, and the higher-level process may retain knowledge of how many attempts have occurred or which part of its progression they belong to.
+
+#### Discussion
+
+##### Unresolved questions
+1. Whether Memar should eventually distinguish more formally between a process definition, a process instance, and other possible representations of an enactment.
+
 ### Intent
 Intent provides an important basis for identifying the boundary of a process. Two activities may occur close together in time and even use the same data while belonging to different processes; conversely, activities performed by different components may belong to one process when they collectively contribute to the same intent.
+
+Within this document, **Intent** and **Purpose** are closely related rather than competing concepts. Both concern the outcome toward which a process is directed. The distinction is primarily one of expression and origin: an intent may be implicit, inferred, or held by a participant, while a purpose is an articulated account of what the process is for and what outcome it is organized toward. A process may therefore have a purpose even when no participant explicitly states an intent.
+
+Identifying the purpose or intent of a process may itself require analysis. A process may have been established for one purpose and later acquire additional purposes or functions through interaction with other systems, participants, or processes. These later effects may become relevant to understanding the process even when they were not part of its original intent. Likewise, a process may be directed toward an intended outcome without successfully realizing that outcome. Purpose or intent therefore does not imply successful completion.
 
 Intent should not be reduced to a user request — a process may be initiated by a person, another process, a system condition, a scheduled condition, an external event, or some other actor. Intent also does not necessarily determine implementation ownership: the participant that expresses an intent does not necessarily execute every activity required to fulfill it. This is what allows a process to cross component, service, machine, organizational, or temporal boundaries without losing its conceptual identity.
 
@@ -143,13 +164,15 @@ A process may continue after an interruption or unsuccessful attempt, but contin
 
 This distinction matters most when designing distributed systems: the location from which continuation is requested and the location in which the resulting work is executed are separate architectural decisions. A retry also does not imply that the process should return to its previous state — a new attempt may legitimately begin from a later state, use new information, or follow a different path.
 
+A retry request typically carries the same intent and parameters as the request it follows, but it is not the same request occurrence — it is a new interaction that happens to refer back to an earlier one. This does not make the retry invisible to the higher-level process: a process can be fully aware that a given step is being retried, how many attempts have occurred, and which part of its progression they belong to, and can expose that information to other participants — awareness of retry is a property the process may carry, even though each individual attempt remains, on its own, a distinct occurrence rather than a replay of the same one.
+
 ### Cancellation
 A process may be cancellable, but cancellation is not synonymous with rollback. Cancellation expresses a decision that the process should no longer continue according to some applicable rule; it does not necessarily mean that every effect already produced by the process should be removed. Whether cancellation is available, who can request it, when it is valid, and which effects can be reversed are properties of the process.
 
 A system should not automatically replace a participant's ability to make a decision with an implementation-level rollback merely because an operation encountered difficulty. A process can instead be designed so that its current state and available actions are visible to a participant, allowing that participant to decide whether to continue, retry, or cancel where the domain permits such decisions.
 
 ### Concurrency
-Activities within a process may be sequential, concurrent, overlapping, or independently progressing. Concurrency is a property of how parts of a process may progress relative to one another — it is not, by itself, evidence that mutual exclusion is required.
+Activities within a process may be sequential, concurrent, overlapping, or independently progressing. Concurrency is a property of how parts of a process may progress relative to one another — it is not, by itself, evidence that mutual exclusion is required. Concurrency does not imply shared state either. Activities may progress concurrently while operating on independent state or independently owned resources.
 
 A process that appears to operate on a shared resource may sometimes be redesigned so that the relevant work is partitioned by ownership, routed to a responsible participant, serialized by scheduling, or otherwise structured such that a lock is unnecessary. For example, if bookkeeping for each account can be assigned to one execution owner at a time — a server, worker, process, execution context, or another architecturally chosen unit — operations concerning different accounts may progress independently without requiring all participants to acquire the same lock.
 
@@ -166,9 +189,13 @@ A process may require coordination among participants, but coordination does not
 A process should first establish which participant must know what, which participant must decide what, which state must be consistent, which actions depend on others, which outcomes must be observed, and which actions may proceed independently. Only after these requirements are understood should an implementation mechanism be selected — this prevents a mechanism from creating coordination requirements that the process itself does not need.
 
 ### Events
-An event can represent a fact that has occurred and make that fact available to other participants or processes, without the producer needing to know which processes will consume it. This is what separates an event from a direct command.
+An event can represent a fact that has occurred and make that fact available to other participants or processes, without the producer needing to know which processes will consume it. The act of emitting an event is therefore not, by itself, a command to a known consumer or a continuation of the originating process. This is what separates an event from a direct command.
+
+An event is not inherently a continuation point of the process that emitted it. A process may emit an event and continue independently, or may complete while another independent process later reacts to the fact. A receiving process does not become a continuation, sub-process, or participant of the originating process merely because it reacts to the event.
 
 For example, the fact that an order has reached a final paid state may be relevant to accounting, fulfillment, notification, analytics, or other processes; the process responsible for recording the order does not need to know how any of those processes operate, and a receiving process does not become part of the originating process merely because it reacts to the event. Events can therefore support independent processes without requiring the originating process to model all downstream behavior. The representation of an event — a message, record, callback, broker, log, or another mechanism — is an implementation concern unless the representation itself is part of the domain.
+
+The effect of handling an event on the originating process is likewise not an intrinsic property of Event. An event-handling mechanism may allow the originating process to continue independently, or it may temporarily or conditionally affect its continuation. For example, a browser may dispatch an event to a handler that can prevent or alter some subsequent behavior. That blocking or alteration is a property of the dispatch and handling rules, not a defining property of Event itself. The behavior of an Event Handler therefore belongs to the rules of the mechanism or system in which the event is handled, rather than to the concept of Event alone.
 
 ### Asynchrony
 Asynchrony should be understood as a relationship between the progression and waiting of activities, not as the presence of a particular programming-language construct. A process can be asynchronous when one participant can continue without waiting for another activity to complete, or when continuation can occur independently at a later point — this does not require a particular programming model such as `async/await`.
@@ -178,6 +205,8 @@ Conversely, using an asynchronous programming primitive does not by itself estab
 ### Observation
 A process can be observed from different perspectives. An observation describes what is relevant from the position and purpose of the observer, so different observers may identify different aspects of the same ongoing process. Observation is useful for understanding a process, but it should not be confused with the basis on which the process itself must be designed — a description of what can be observed from one position is not necessarily a definition of the process, and a property of a process as perceived by a particular participant should not automatically be treated as an intrinsic property independent of context.
 
+What is typically observed is a process instance — one particular enactment — rather than the complete process model described in *Process Definition and Process Instance* above. An observer's account of "the process" is therefore often, more precisely, an account of one instance, or a partial view assembled from several. This does not make the underlying process observer-relative in every respect: the fact that a process admits multiple valid observations does not mean it has no structure independent of any observation. Observation affects what is relevant to a given observer at a given position; it does not mean reality has no structure that exists independently of that observation — different observations may reveal different, genuinely real, aspects of the same process, rather than each observer being free to define the process as anything they choose.
+
 This distinction is relevant to architectural concepts such as modularity, cohesion, coupling, boundaries, and decomposition, which may depend on the question being answered, the concern being addressed, and the relationships that matter to the decision. The existence of multiple valid observations does not mean every decomposition is equally useful — it means the basis of the decomposition must be made explicit.
 
 #### Discussion
@@ -185,12 +214,23 @@ This distinction is relevant to architectural concepts such as modularity, cohes
 ##### Unresolved questions
 1. Whether Observation should remain a topic within Process, or become a broader concept applicable to System, Model, and other entities as well.
 
+### Feedback and Process
+A process does not necessarily progress as a one-way chain from input to outcome. Its activities and outcomes may affect participants, the surrounding environment, or other processes, and those changes may subsequently influence the continuation, repetition, or future instances of the process.
+
+This feedback is not merely an implementation detail. It may be part of the behavior that must be understood when modeling the process. A result of one process may become information or a condition that changes how the same process continues, how another process behaves, or whether a new instance is initiated.
+
+Feedback also does not imply that the process contains a literal loop in its implementation. The effect may cross participants, systems, or process boundaries before influencing a later activity or instance.
+
+This relationship makes Process inherently open to information from its environment: the process may change its future progression in response to what its previous activities or outcomes have caused or revealed.
+
 ### Process and System
 A System and a Process are related but distinct concepts. A System is a bounded set of interacting elements whose behavior and constraints can be considered as a whole; a Process describes progression, interaction, or change that may occur within or across such a system. A process may involve multiple systems, and a system may contain multiple processes; a process may also cross a system boundary when the participants required to enact it belong to different systems.
 
-Process should therefore not be defined as merely an internal operation of a System, nor should System be defined as merely a collection of Processes. The relationship is better understood through participation and context: a process may occur within one system, may span several systems at once, or may be examined using a system boundary that differs from the one an observer initially assumed — but a process is never meaningfully evaluated with *no* system context at all. Removing every system boundary from consideration does not make a process context-free; it makes it unanalyzable, for the same reason `system.md` gives for why a process needs a system: without a system to provide scope, boundary, and purpose, a sequence of activities cannot be reasoned about or designed.
+Process should therefore not be defined as merely an internal operation of a System, nor should System be defined as merely a collection of Processes. The relationship is better understood through participation and context: a process may occur within one system, may span several systems at once, or may be examined using a system boundary that differs from the one an observer initially assumed — but a process is never meaningfully evaluated with *no* system context at all. Removing every system boundary from consideration does not make a process context-free; it makes it unanalyzable, for the same reason `system.md` gives for why a process needs a system: without a system to provide scope, boundary, and purpose, a progression of activities cannot be reasoned about or designed.
 
 The detailed definition of System belongs to `system.md`, which keeps only what is specific to System's own perspective on this relationship (a system without processes is a heap, not a system; a system is defined by its processes as much as by its elements).
+
+This does not mean that Process is subordinate to a particular fixed System boundary. The relevant system context may consist of one system, multiple systems, an environment, or another analytical boundary selected for the purpose of the analysis. A process can therefore be understood before the final system boundaries involved in its realization have been fully determined, while still requiring system context to be meaningfully analyzed.
 
 #### Discussion
 
@@ -200,6 +240,7 @@ The detailed definition of System belongs to `system.md`, which keeps only what 
 
 ##### Unresolved questions
 1. Whether the asymmetric-dependency approach above actually eliminates the circularity `system.md` originally warned about, or merely relocates it — this is a real risk, not a resolved one, and both documents now need to stay in sync as either one changes.
+2. `system.md` still derives System's own existence from Process ("a system without processes is not a system... the interactions — which are processes — are what make the collection a system"). This document, symmetrically, no longer derives Process's meaning from a fixed System boundary. Whether this residual asymmetry is intentional and defensible, or whether `system.md`'s phrasing should be loosened to avoid making Process a hidden precondition for System's existence (mirroring what this document already avoids in the other direction), is not resolved here and would require a corresponding edit to `system.md` if pursued.
 
 ### Process and Structure
 Structure describes the capabilities and limitations exposed and enforced by a system or other modeled entity. Process describes how activities, interactions, and changes may progress within the possibilities and constraints provided by that structure. A process therefore operates in relation to structure, but structure does not dictate one unique process — the same structural capability may support multiple processes, and a process may require capabilities distributed across multiple structural boundaries.
@@ -210,6 +251,8 @@ This distinction prevents process design from being reduced to the existing orga
 A process boundary identifies which activities, interactions, participants, or states are being considered as part of one conceptual process. The boundary should be determined by the intent and relationships that make the activities meaningfully related, rather than by implementation boundaries alone — a process boundary does not necessarily correspond to a function, a class, a module, a service, a server, a database transaction, a request, a thread, or a deployment unit. Implementation boundaries may coincide with process boundaries, but this coincidence must be justified rather than assumed.
 
 ### Process Composition
+Composition should not be inferred merely from the presence of several activities that happen to occur together, in sequence, or in reaction to one another. A process may contain many activities without any of them constituting an independently meaningful process in its own right. A sub-process becomes a useful, separately-nameable concept when it has a sufficiently independent intent, boundary, responsibility, outcome, or relationship to other processes to justify treating it as its own process — not merely because it can be pointed to as a distinguishable step.
+
 A process may contain or depend upon other processes, and composition does not require the composed processes to lose their independent identity. A higher-level process may request another process to perform a task and use its outcome without taking ownership of every activity performed by that process. This allows processes to be composed through explicit relationships rather than by merging their internal behavior, and it makes it possible for independent processes to react to a shared fact without becoming a single process.
 
 Composition includes nesting: a process may contain sub-processes, and a sub-process may itself contain further sub-processes, to any depth. A surgical operation contains the anesthesia-induction process, the incision process, the tissue-repair process, and the recovery-monitoring process — each of which contains its own sub-processes. A software request-handling pipeline contains authentication, authorization, validation, business logic, and response-serialization processes. Nesting is not limited to a fixed depth; the appropriate level of analysis depends on the decision being made.
@@ -218,6 +261,11 @@ Composition includes nesting: a process may contain sub-processes, and a sub-pro
 
 ##### Unresolved questions
 1. Whether Memar should eventually develop a more formal treatment of process composition — how processes combine, constrain, or interfere with one another.
+
+### Process and Workflow
+A **Workflow** is one possible representation or organization of a process, typically emphasizing the activities, transitions, responsibilities, and ordering used to guide its execution. Not every process is a workflow, and a process does not become a workflow merely because it can be represented as one.
+
+A workflow may therefore be a useful representation of a process without becoming the definition of that process. The distinction follows the same concept-before-representation principle used throughout this document: the process is the subject being understood, while a workflow is one possible way of describing or directing its enactment.
 
 ### Process and Implementation
 Implementation is one representation of a process, not the process itself. A process may be implemented using different technologies, execution models, deployment structures, or programming paradigms while preserving the same conceptual intent and relevant behavior. Conversely, two implementations that look similar at the code level may represent different processes if their intent, constraints, participants, or outcomes differ.
@@ -250,18 +298,16 @@ Process is closely related to many foundational concepts, but those concepts ret
 - **Module** provides a structural boundary for organizing capabilities or responsibilities; it is not inherently a process boundary.
 - **Architecture** concerns the organization of a system and its relationships; processes provide important behavioral context for architectural decisions.
 - **Implementation** realizes a process through concrete mechanisms and technologies.
-- **Method** (Khayyam) is one language-level construct through which activities within a process are invoked; method invocation is itself a form of control flow, and Khayyam's Method Type is the mechanism by which the language handles it.
 
 The detailed definitions of these concepts belong to their respective documents. Process should remain the point at which their behavioral relationships can be understood.
 
 #### Discussion
 
 ##### Unresolved questions
-1. Whether this document should say anything explicit about the relationship between Process and Khayyam's Method Type — given that method invocation is treated in the Khayyam control-flow work as a form of control flow the language deliberately handles — or whether that relationship belongs entirely to Khayyam's own documents.
-2. Whether the distinction between Process, Workflow, and Protocol requires its own dedicated documentation.
-3. Whether the project needs a separate concept for an ongoing or incomplete process instance, distinct from the definition of Process itself.
-4. Whether scheduling should remain a topic within Process or become a separate foundational concept.
-5. Whether Process should explicitly distinguish between internal activities and interactions with external participants.
+1. Whether Process should distinguish between internal activities and interactions with external participants, and if so, whether that distinction belongs in *Activities and Interactions* rather than here.
+2. Whether scheduling should remain a topic within Process or become a separate foundational concept.
+3. Whether the distinction between Process and Protocol requires dedicated documentation beyond their current relationship.
+4. Whether Workflow requires any further conceptual treatment beyond its role as a possible process representation.
 
 ## Results
 Insufficient time has passed since this document was adopted to report real, observed outcomes from its use. This section will be filled in once there is such experience to draw on.
