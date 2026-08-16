@@ -28,7 +28,7 @@ First structured revision of this document. Added `ID` (495216, derived from the
   - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — argued.
 
 #### Summary
-Replaced all modeling-phase references to "capsule" with Discovery Vocabulary terms (abstraction, concern, conceptual boundary, responsibility). Clarified that capsules are implementation-level constructs and are not outputs of the modeling phase. Added "Modeling Produces Abstractions, Not Capsules" to establish a clear vocabulary boundary between the modeling phase (which produces abstractions, concerns, relationships, constraints, and supporting documents) and later architectural/implementation phases (which produce capsules, protocols, services, and other implementation structures). Rewrote "Concept Existence vs. Model Existence" and "Domain Decomposition" to consistently use abstraction-level terminology throughout.
+Replaced implementation-level vocabulary in the modeling phase with Discovery Vocabulary terms (abstraction, concern, conceptual boundary, responsibility). Clarified that modeling outputs conceptual knowledge rather than implementation structures. Added "Modeling Produces Abstractions and Supporting Documents" to establish this vocabulary boundary. Rewrote "Concept Existence vs. Model Existence" and "Domain Decomposition" to consistently use abstraction-level terminology throughout.
 
 ---
 
@@ -149,3 +149,28 @@ This document is now structured per `documentation-explanation.md`, with the sam
 
 #### Summary
 Previously, this document used "process" only in its ordinary English sense throughout, with no signal to the reader that Memar has a separate, formal Process concept at all — someone modeling from this document alone had no reason to go look for one. Two cross-references were added: a direct one in "Modeling, Protocol, and Architecture," the section that already discusses the System→Process→Protocol chain conceptually without naming Process as a defined term, and a lighter one in "Behavior and Structure Are Discovered Together," where the behavioral vocabulary discussed (failure, retry, concurrency) overlaps directly with process.md's own vocabulary.
+
+
+### Modeling review and vocabulary cleanup
+- Time: 2026-08-15T00:00:00Z
+- Type: Changed
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — directed: final vocabulary and modeling-boundary corrections.
+  - [Claude](../CONTRIBUTORS.md#claude) — reviewed: final consistency pass and cleanup.
+
+#### Summary
+Removed procedural workflow content from the reference document so that execution guidance remains in `modeling.practice.md`. Clarified that modeling produces abstractions, relationships, constraints, and supporting documents rather than implementation-level structures. Preserved the `Product`/`Title`/`Text` attribute-or-edge example, acquired-versus-discovered data distinction, event-aware state modeling, concurrent behavior-and-structure discovery, explicit aggregation emergence, and pluggable-module principle. Added an explicit statement to the practice document that requirement terminology is evidence to investigate rather than an authoritative model boundary. Removed implementation-level vocabulary from the modeling document and its historical change descriptions to keep the modeling vocabulary consistent.
+
+---
+
+### Coordination pass with system.md, process.md, and modularity.md
+- Time: 2026-08-16T00:00:00Z
+- Type: Changed
+- Propagates to:
+  - system.md: Done — the independent-responsibility justification in Domain Decomposition over Aggregate-Root Modeling now cites system.md's Responsibility section.
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — requested: asked for a coordinated pass across `system.md`, `process.md`, `modularity.md`, and `modeling.md` together, so shared concepts have one authoritative home each.
+  - [Claude](../CONTRIBUTORS.md#claude) — rewrote: shortened "Extensible Behavior Belongs to Pluggable Modules" to state only the modeling-level consequence and the `Invoice` illustration, pointing at `modularity.md`'s now-existing "Pluggable Behavior" topic for the architectural treatment this section used to carry in full — resolving the forward-reference this section had explicitly left for "a dedicated, shared document" before that document existed; cited `system.md`'s new Responsibility section from the independent-responsibility justification in Domain Decomposition over Aggregate-Root Modeling; resolved Unresolved question 1 under the pluggable-modules Discussion, since `system.md` now states the general test explicitly.
+
+#### Summary
+This document had been carrying the full architectural reasoning for pluggable Modules in its own words, with a note already flagging that the material belonged in a shared document once one existed. Now that `modularity.md` exists, that section is reduced to the modeling-level consequence and its illustrating example, referencing `modularity.md` for the rest. The independent-responsibility criterion this document had already worked out informally is now also tied back to `system.md`'s formal Responsibility definition.

@@ -95,6 +95,15 @@ This definition is deliberately general. It is drawn from and consistent with th
 
 **Interdependence.** The elements of a system are interdependent: a change in one element may propagate to others through the relationships that connect them. This interdependence is what makes systems both powerful (coordinated behavior) and fragile (cascading failure).
 
+**Responsibility.** When a System is considered as a part of a larger System, its Responsibility is its Purpose expressed relative to that larger System — the portion of the larger System's purpose that this part exists to serve. Responsibility is not a separate primitive alongside Purpose; it is Purpose viewed from the vantage point of a containing System rather than in isolation. A part with no containing System has a Purpose but not, in this relative sense, a Responsibility.
+
+#### When Is a Responsibility Coherent?
+A Responsibility is not established by declaration. Asserting that a part "has a coherent responsibility" makes no claim that can be checked, in the same way that asserting a module "has high cohesion" makes no claim that can be checked unless it also says cohesive *for whom*, and *with respect to what future change*. What can be checked is narrower: whether the part has an independent behavioral boundary and lifecycle — whether it can change, be replaced, extended, or reasoned about without requiring an unrelated part to change with it for reasons that have nothing to do with that part's own purpose.
+
+This is rarely settled in one step. A part is typically proposed first — a field placed inside a larger concept because that is the simplest way to record it — and only afterward examined: does this field's validation, versioning, or meaning change for reasons unconnected to the concept currently holding it? If so, the model is revised, and the revision is itself re-examined. Establishing a coherent Responsibility is therefore a cycle of proposing a boundary and then observing whether it holds, not a single upfront decision that a sufficiently careful modeler could get right on the first attempt. See [Process → Observation](./process.md#observation) for the general relationship between an observed property and the thing being observed, and [Modeling → Domain Decomposition over Aggregate-Root Modeling](./modeling.md#domain-decomposition-over-aggregate-root-modeling) for a worked example of this cycle — a `username` field first modeled inside `User` and later found, on observation, to have independent validation, versioning, and lifecycle of its own.
+
+Two observers may reasonably disagree about whether a given Responsibility is coherent, because coherence is evaluated against a stated concern — what is expected to vary independently, for whom, under which future change — not against the part in isolation. This does not make the judgment arbitrary. "This boundary serves this concern" is a claim that evidence can support or contradict; "this part feels cohesive" resists being shown wrong precisely because it names no concern to check it against.
+
 #### System Openness: Open, Closed, and Isolated
 A System's relationship to another System, with respect to a specific channel of influence, may be one of three kinds:
 
@@ -132,6 +141,7 @@ The definition is consistent with general systems theory as articulated by von B
 1. Should Memar eventually adopt a more formal treatment of system boundaries, perhaps drawing on the distinction between open and closed systems from thermodynamics and information theory?
 2. How should this document's definition of "purpose" interact with systems that have conflicting or internally contested purposes — for example, a political system in which different actors have genuinely incompatible goals?
 3. Should System Openness (open/closed/isolated) be formalized as a labeled property on the "influences" edge type in the conceptual graph, so that documents can state explicitly which kind of relationship they mean rather than leaving it implicit?
+4. Responsibility is newly added here, defined as Purpose relative to a containing System. `modularity.md`, `process.md`, and `modeling.md` all used the word informally before this definition existed; each should be checked against this section rather than continuing to carry its own implicit sense of the word, and this section should be revised if that check surfaces a usage this definition does not actually cover.
 
 ### Structure
 **Structure** is the set of capabilities and limitations (constraints) a System exposes and enforces.
@@ -168,8 +178,10 @@ A **system is defined by its processes** as much as by its elements. Two systems
 
 A **process without a system** is never meaningfully evaluated with no system context at all — though, as [Process → Process and System](./process.md#process-and-system) argues, it need not be bound to one single, fixed system boundary the way this document's earlier definition implied.
 
+A **process** can be understood independently of a single fixed system boundary, but evaluating its behavior, constraints, and participants always involves some context. That context may consist of one system, multiple systems, an environment, or another analytical boundary chosen for the purpose of the analysis.
+
 #### Process and Structure
-Structure and Process describe a System from two different vantage points, and the distinction between them is easiest to state precisely as follows: **Structure defines the space of admissible operations** a System exposes and enforces — what is permitted, forbidden, or conditionally available; **Process is the concrete, temporal enactment of one path through that space** — the specific sequence of activities that actually occurs, in a specific order, at a specific time.
+Structure and Process describe a System from two different vantage points, and the distinction between them is easiest to state precisely as follows: **Structure defines the space of admissible operations** a System exposes and enforces — what is permitted, forbidden, or conditionally available; **Process** describes how activities, interactions, and changes may progress within the space of possibilities and constraints provided by Structure. A particular process instance may enact one possible path through that space, but Process itself is not limited to a single sequence or path
 
 A Structure can exist without any particular Process ever occurring — a System may expose a capability that is never invoked. A Process, conversely, cannot occur outside the space its System's Structure admits: a Process that attempts an operation the Structure forbids is not a different kind of Process, it is a failure, a violation, or evidence that the Structure was mis-specified. This is a one-directional dependency: Structure bounds what Process can do; Process does not bound what Structure permits, though repeated observation of Process may reveal that a Structure's stated bounds do not match its enforced bounds, which is itself useful information for refining the Structure.
 

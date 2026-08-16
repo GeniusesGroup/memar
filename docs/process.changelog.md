@@ -46,3 +46,23 @@ A three-way review round. ChatGPT's critique converged, across two exchanges wit
 
 #### Rationale and alternatives
 Considered fixing the `system.md` "heap" framing tension in the same pass, to fully close ChatGPT's item 9. Deferred instead, since Omid's instruction for this round was scoped to `process.md`; recorded as an open question here so it is not lost, rather than assuming it can wait indefinitely without a record.
+
+---
+
+### Observation topic rewritten around the modeling/observation cycle; capability/constraint wording aligned with system.md
+- Time: 2026-08-16T00:00:00Z
+- Type: Changed
+- Cited:
+  - Merriam-Webster — Reference: definitions of *cohesion*, *cohering*, and *coherence* Omid supplied from his own reference-checking during the LinkedIn discussion that motivated this document's Observation topic, used to ground the terminology precisely rather than relying on the informal sense of "cohesion" already in circulation.
+- Propagates to:
+  - system.md: Done — new Responsibility section added there and cross-referenced from here in the same pass.
+  - modularity.md: Done — Module Identity and Responsibility section now cites this topic instead of asserting "coherent responsibility" independently.
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — corrected, argued: corrected a misattribution — the "this module has high cohesion" quote discussed in review is from a LinkedIn post by another author that Omid commented on, not from Omid's own writing; Omid's own position, contrary to what was initially assumed, is that development-time and observation-time ask different questions rather than the same relativized one — development-time asks how to structure something for minimum coupling of any kind, observation-time asks for whom and against which concern an existing boundary holds up; also clarified that modeling and observation are not two strictly separated phases but a cycle, illustrated by `username` first being modeled as a plain field inside `User` and only later, on observation, found to warrant its own Module.
+  - [Claude](../CONTRIBUTORS.md#claude) — reviewed, rewrote: added "Modeling and Observation Form a Cycle, Not Two Separated Phases" under Observation, incorporating the corrected framing above and the falsifiable/unfalsifiable distinction between a boundary justified against a stated concern and one merely asserted to be cohesive; cross-referenced `system.md`'s new Responsibility section and `modeling.md`'s Domain Decomposition topic; changed "capabilities and limitations" to "capabilities and constraints" in Process and Structure to match the term `system.md`'s own Structure section uses throughout after its opening sentence; updated Relationship to Other Concepts to point the Module bullet at `modularity.md` now that it exists, resolving the placeholder that section had been carrying, and added a System bullet reference to the new Responsibility section.
+
+#### Summary
+Reworked Observation to state, rather than only imply, that modeling and observation form a repeating cycle rather than a one-time handoff, and to state the specific, corrected version of the development-time/observation-time distinction Omid actually argued in the source discussion, replacing an earlier internal draft that had it backwards. Aligned "capabilities and limitations" to "capabilities and constraints" to match `system.md`. Resolved two forward-reference placeholders (Module, Responsibility) now that `modularity.md` and `system.md`'s Responsibility section both exist.
+
+#### Rationale and alternatives
+Considered leaving the corrected development-time/observation-time distinction as a passing remark rather than its own labeled subsection. Rejected because the distinction had already been gotten wrong once during review, in text headed toward these documents; giving it a named subsection with a citation to the source definitions makes the corrected version the one a future reader actually finds.

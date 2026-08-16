@@ -93,3 +93,22 @@ This document is now structured per `documentation-explanation.md`. Its Citation
 
 #### Rationale and alternatives
 The original `## Change Rationale` list had no per-entry timestamps, only relative order, and several items span review rounds rather than single sessions. Rather than inventing precise timestamps for 26 individual items, entries above are grouped by inferred round and dated approximately; correct the dates above if more precise ones are known. This is the same open question `documentation-changelog.md`'s own Unresolved Questions section names for migrated historical entries.
+
+---
+
+### Responsibility added as a Key Property, closing a gap shared with process.md and modularity.md
+- Time: 2026-08-16T00:00:00Z
+- Type: Added
+- Propagates to:
+  - process.md: Done — Observation topic and Relationship to Other Concepts updated to reference this section.
+  - modularity.md: Done — Module Identity and Responsibility, and the Module Among Related Concepts table, updated to reference this section instead of using "responsibility" informally.
+  - modeling.md: Done — the independent-responsibility justification in Domain Decomposition over Aggregate-Root Modeling now cites this section.
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — requested, approved: identified, while reviewing modularity.md against process.md and modeling.md, that "responsibility" was load-bearing in all three documents without a formal home anywhere; approved adding it here specifically because this is the project's mother document for these concepts, not because of any status difference between the documents involved; supplied the correction that modeling and observation form a cycle rather than two strictly separated phases (a part may first be modeled naively, then revised once observation shows its boundary does not hold), and that the falsifiable/unfalsifiable distinction between "this boundary was drawn for this concern, for this observer" and "this module has high cohesion" originates from a LinkedIn discussion Omid took part in as a commenter, not as the original post's author.
+  - [Claude](../CONTRIBUTORS.md#claude) — rewrote: added Responsibility as a new Key Property (System's Purpose expressed relative to a containing System) and a "When Is a Responsibility Coherent?" subsection giving the operational test — independent behavioral boundary and lifecycle, checked against a stated concern rather than declared — grounded in the operational criterion already present in `modeling.md`'s Domain Decomposition topic ("independent responsibility, behavioral boundary, or lifecycle") and cross-referenced to `process.md`'s Observation topic for the observer-relativity argument; added a corresponding Unresolved question flagging that `modularity.md`, `process.md`, and `modeling.md` all used the word informally before this definition existed and should be checked against it.
+
+#### Summary
+Added Responsibility as a new Key Property of System: a part's Purpose expressed relative to the larger System containing it, not a separate primitive. Added a companion subsection stating what actually makes a Responsibility coherent — an independent behavioral boundary and lifecycle, evaluated against a stated concern — since asserting coherence without naming that concern makes an unfalsifiable claim. This closes a gap that had `modularity.md`, `process.md`, and `modeling.md` each leaning on the word "responsibility" without any of the four documents defining it.
+
+#### Rationale and alternatives
+Considered leaving Responsibility informal, on the grounds that `modeling.md`'s existing "independent responsibility, behavioral boundary, or lifecycle" phrasing was already operational enough in context. Rejected because three documents were each free to drift the term in a different direction without a shared definition to check against, which is exactly the coordination risk this round of review was meant to close.
