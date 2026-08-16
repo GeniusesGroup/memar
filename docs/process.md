@@ -209,6 +209,11 @@ What is typically observed is a process instance — one particular enactment �
 
 This distinction is relevant to architectural concepts such as modularity, cohesion, coupling, boundaries, and decomposition, which may depend on the question being answered, the concern being addressed, and the relationships that matter to the decision. The existence of multiple valid observations does not mean every decomposition is equally useful — it means the basis of the decomposition must be made explicit.
 
+#### Modeling and Observation Form a Cycle, Not Two Separated Phases
+Modeling and observation are not two strictly separated phases where modeling never asks what observation asks, or vice versa. A part is typically proposed first in whatever shape is simplest to record — a `username` field placed inside a `User` model, for instance — and only afterward examined: does this field's validation, versioning, or meaning actually vary independently of the concept currently holding it? If the observation surfaces such independence, the model is revised, and the revised model is itself later re-examined the same way. Modeling and observation are therefore a cycle that repeats over a model's life, not a one-time handoff from a design phase to a review phase.
+
+Within that cycle, the two directions of questioning stay distinct even as they alternate. At development time, the question is not "does this boundary feel cohesive to someone?" but "how should this be structured so that the least coupling of any kind results?" — a question about the artifact being built, independent of any particular observer's perspective on it. At observation time, once a boundary already exists, a different question becomes available: for what concern, and for whom, does this boundary hold up or fail to? This second question is what turns an unfalsifiable claim like "this module has high cohesion" — which names no concern to check it against, and so cannot be shown wrong — into a checkable one: "this boundary was drawn for this concern, for this observer." The second form can be shown wrong; the first cannot, which is precisely why it is not useful as a design criterion, only as a prompt to ask the more specific question. See [Modeling → Domain Decomposition over Aggregate-Root Modeling](./modeling.md#domain-decomposition-over-aggregate-root-modeling) for a worked instance of this cycle, and [System → Responsibility](./system.md#system) for the corresponding claim stated as a property of System rather than of Process.
+
 #### Discussion
 
 ##### Unresolved questions
@@ -243,7 +248,7 @@ This does not mean that Process is subordinate to a particular fixed System boun
 2. `system.md` still derives System's own existence from Process ("a system without processes is not a system... the interactions — which are processes — are what make the collection a system"). This document, symmetrically, no longer derives Process's meaning from a fixed System boundary. Whether this residual asymmetry is intentional and defensible, or whether `system.md`'s phrasing should be loosened to avoid making Process a hidden precondition for System's existence (mirroring what this document already avoids in the other direction), is not resolved here and would require a corresponding edit to `system.md` if pursued.
 
 ### Process and Structure
-Structure describes the capabilities and limitations exposed and enforced by a system or other modeled entity. Process describes how activities, interactions, and changes may progress within the possibilities and constraints provided by that structure. A process therefore operates in relation to structure, but structure does not dictate one unique process — the same structural capability may support multiple processes, and a process may require capabilities distributed across multiple structural boundaries.
+Structure describes the capabilities and constraints exposed and enforced by a system or other modeled entity — see [System → Structure](./system.md#structure) for the full treatment of why these two are inseparable rather than independent properties. Process describes how activities, interactions, and changes may progress within the possibilities and constraints provided by that structure. A process therefore operates in relation to structure, but structure does not dictate one unique process — the same structural capability may support multiple processes, and a process may require capabilities distributed across multiple structural boundaries.
 
 This distinction prevents process design from being reduced to the existing organization of implementation components. A process may reveal that a current structure imposes unnecessary constraints, in which case changing the structure may be preferable to adding more coordination mechanisms to the process.
 
@@ -288,14 +293,14 @@ Not every process requires all of these elements. The model should be driven by 
 ### Relationship to Other Concepts
 Process is closely related to many foundational concepts, but those concepts retain their own definitions:
 
-- **System** provides a context within which processes may occur and with which processes may interact.
+- **System** provides a context within which processes may occur and with which processes may interact. [System → Responsibility](./system.md#system) defines what it means for a part's boundary within a larger System to be coherent, a question this document's own Observation topic also depends on.
 - **Structure** provides capabilities and constraints relevant to what processes can do.
 - **State** represents conditions relevant to the progression of a process.
 - **Event** can communicate that something relevant has occurred without requiring the producer to know the consumers.
 - **Error** describes a condition requiring its own conceptual treatment; within a process, an error may be a cause or expression of failure.
 - **Concurrency** describes relationships between simultaneously or independently progressing activities.
 - **Protocol** describes rules governing interactions between participants; a process may use protocols without being identical to them.
-- **Module** provides a structural boundary for organizing capabilities or responsibilities; it is not inherently a process boundary.
+- **Module** provides a structural boundary for organizing capabilities or responsibilities; it is not inherently a process boundary. See [Modularity](./modularity.md) for the full treatment, including why a process boundary and a Module boundary must each be justified on its own terms rather than assumed to coincide.
 - **Architecture** concerns the organization of a system and its relationships; processes provide important behavioral context for architectural decisions.
 - **Implementation** realizes a process through concrete mechanisms and technologies.
 
