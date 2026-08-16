@@ -65,6 +65,7 @@ Several recurring errors result from treating implementation terminology as if i
 - **Treating failure as rollback.** Rollback is one possible response to failure, not the definition of failure or process recovery.
 - **Treating retry as automatic.** Retry may be explicitly requested by a user, SDK, operator, scheduler, or another process; it does not inherently belong to the server that performed the previous attempt.
 - **Treating concurrency as locking.** Concurrency is about simultaneous or overlapping progression; it does not imply shared state or shared mutable ownership. Locking is one possible mechanism for satisfying a particular constraint, not the definition of concurrency.
+- **Treating Parallelism as a concept distinct from Concurrency.** The hazards commonly attributed only to execution on multiple physical cores can occur on a single core whenever activities can interleave; see *This Document Treats Concurrency as One Concept, Not Two* under Concurrency.
 - **Treating events as commands to known consumers.** An event can expose a fact without the producer knowing which processes will react to it, and a consumer is not thereby made a continuation of the producer's process.
 - **Treating event handling behavior as intrinsic to Event.** Whether an event handler blocks, alters, or otherwise affects another activity is a property of the dispatch and handling rules, not of the Event concept itself.
 - **Treating asynchrony as a language primitive.** Asynchrony is a property of progression and waiting relationships; `async/await` is only one implementation representation of it.
@@ -177,6 +178,41 @@ Activities within a process may be sequential, concurrent, overlapping, or indep
 A process that appears to operate on a shared resource may sometimes be redesigned so that the relevant work is partitioned by ownership, routed to a responsible participant, serialized by scheduling, or otherwise structured such that a lock is unnecessary. For example, if bookkeeping for each account can be assigned to one execution owner at a time — a server, worker, process, execution context, or another architecturally chosen unit — operations concerning different accounts may progress independently without requiring all participants to acquire the same lock.
 
 The important question is therefore not *"where should we add a lock?"* but *"what concurrency constraints does the process actually require, and can the process be structured so that those constraints are satisfied without shared mutable ownership?"* Locking is one possible mechanism for satisfying a concurrency constraint; it is not the definition of concurrency and should not become its default representation.
+
+This can be stated as an explicit chain of questions, each one skipped if the previous already resolves the concern:
+
+```text
+Do the concurrent activities share state?
+        ↓
+Do they share mutable state?
+        ↓
+Does that state need to satisfy the same invariant?
+        ↓
+Does maintaining that invariant require common ownership?
+        ↓
+Can the responsibility instead be partitioned?
+        ↓
+Can scheduling enforce that partition?
+        ↓
+Only if none of the above resolves it —
+is synchronization actually required?
+        ↓
+Only then — is locking one possible mechanism?
+```
+
+Most concurrency questions are resolved well before the last two steps. Reaching directly for synchronization or locking skips the steps that, in many real designs, would have made them unnecessary.
+
+#### This Document Treats Concurrency as One Concept, Not Two
+Many explanations of concurrent systems introduce Parallelism as a second concept alongside Concurrency, distinguished by whether activities execute on more than one physical processing unit at the same time. This document does not adopt that split; it treats Concurrency as the single relevant concept, regardless of how many processing units are involved.
+
+The reason is that the hazard usually attributed only to "parallel" execution does not require a second processing unit to occur. Consider two coroutines sharing a variable: the first begins an operation on that variable, then yields while it waits on a result from the second; the second coroutine — scheduled onto the very same CPU core, not a different one — begins the same operation on the same variable and corrupts its state before the first coroutine resumes and becomes aware of the change. Nothing about this requires two cores. A single core capable of switching between two units of work reproduces the same hazard usually described as a problem exclusive to parallel execution. Filing it under "Parallelism" and treating single-core code as exempt hides a hazard that is present as soon as activities can interleave at all — with or without a second processing unit.
+
+Introducing a second word to carve out the multi-core case follows the same pattern this project has already flagged elsewhere: rather than working with a Concurrency broad enough to already cover the phenomenon, the ecosystem introduced a second term around a narrower slice of it — comparable to how an early, over-narrow definition of *inheritance* was left in place while *composition* was coined separately to say what a properly scoped original term could already have said.
+
+What genuinely does vary, and does deserve modeling attention, is how many independent units of execution — Workers — a process's activities are distributed across, and how those Workers relate to physical execution resources. A Worker is a logical unit this model cares about; it may be registered and assigned its own identifier independently of how many CPU cores exist or which one it happens to run on at a given moment. A CPU core is a physical execution resource with its own identifier, assigned by the operating system or runtime rather than by the process model. The relationship between the two — one Worker pinned to one core, several Workers time-sharing one core, one Worker migrating across cores — is exactly the kind of choice *Mechanisms Are Not Obligations* already warns should not be assumed by default: pinning part of a process to one fixed Worker, for instance, can resolve a concurrency hazard without a lock, precisely because it removes the possibility of two activities touching the same state through two different Workers at once. This is a modeling decision worth considering regardless of how many cores are involved, not a technique that only becomes relevant once multiple cores are.
+
+#### Others
+- Go's goroutine scheduler is a useful illustration of what happens when this distinction is left implicit. It is widely liked for making concurrent code pleasant to write, and the M:N scheduling it performs across goroutines and OS threads is a reasonable implementation choice for many teams. But that scheduling does not remove the underlying concurrency hazards described above — it relocates them behind an abstraction. Without a further layer designed specifically to make that relocation visible and controllable, the ease of spawning goroutines readily produces exactly this class of hazard, along with unnecessary queuing and locking that a more deliberate Worker/core model would have avoided. A mechanism that is pleasant to use is not evidence that the concurrency the process actually requires has been modeled — the same *Process Before Mechanism* principle this document opens with.
 
 ### Ordering
 A process may impose ordering constraints on some activities without requiring a total order over all activities. Two activities may need to occur in a particular order because one depends on the result of another, while other activities are independent and may proceed without ordering constraints. The existence of a process therefore does not imply a single linear execution sequence.
@@ -310,7 +346,7 @@ The detailed definitions of these concepts belong to their respective documents.
 
 ##### Unresolved questions
 1. Whether Process should distinguish between internal activities and interactions with external participants, and if so, whether that distinction belongs in *Activities and Interactions* rather than here.
-2. Whether scheduling should remain a topic within Process or become a separate foundational concept.
+2. Whether scheduling should remain a topic within Process or become a separate foundational concept — this would also be where a formal Worker/CPU-core registration and identity model belongs, if the informal treatment under Concurrency needs to become more than illustrative.
 3. Whether the distinction between Process and Protocol requires dedicated documentation beyond their current relationship.
 4. Whether Workflow requires any further conceptual treatment beyond its role as a possible process representation.
 
