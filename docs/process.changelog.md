@@ -66,3 +66,32 @@ Reworked Observation to state, rather than only imply, that modeling and observa
 
 #### Rationale and alternatives
 Considered leaving the corrected development-time/observation-time distinction as a passing remark rather than its own labeled subsection. Rejected because the distinction had already been gotten wrong once during review, in text headed toward these documents; giving it a named subsection with a citation to the source definitions makes the corrected version the one a future reader actually finds.
+
+---
+
+### Concurrency: added the escalating decision chain the source discussion had agreed on but never actually written in
+- Time: 2026-08-16T00:00:00Z
+- Type: Added
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — requested: on rereading, found the Concurrency topic too thin relative to how much ground the source discussion had actually covered, and specifically asked for the concurrency-vs-parallelism disambiguation from a separate LinkedIn disagreement he had — that disambiguation is not yet added; see Unresolved questions.
+  - [Claude](../CONTRIBUTORS.md#claude) — rewrote: checked the topic against the full source transcript and found the escalating question chain (shared state → shared mutable state → shared invariant → common ownership → partitionable responsibility → scheduling → synchronization → locking, each step skipped if an earlier one already resolves the concern) had been explicitly proposed and agreed on in the source discussion but was never actually written into the document — only the prose conclusion (the account/ownership/scheduling paragraph) had made it in, not the chain itself. Added it as an explicit block. Did not add a Concurrency-vs-Parallelism comparison, since it does not appear anywhere in the transcript provided for this document and inventing the distinction risked repeating an earlier misattribution error in this same review; logged as an unresolved question requesting the source material instead.
+
+#### Summary
+The Concurrency topic already contained the core conclusion (concurrency does not imply shared state; a process can sometimes be redesigned by partitioning ownership or responsibility instead of adding a lock) but not the explicit step-by-step chain that motivated it, which had been proposed and agreed in the source discussion. Added the chain as a code block immediately following the existing prose, changing nothing about the existing conclusions.
+
+#### Rationale and alternatives
+Considered writing a Concurrency-vs-Parallelism comparison from general knowledge of the two terms, since the request specifically named it. Rejected: this document's own standard is to ground claims in the actual source discussion rather than plausible-sounding first-principles reasoning, and a previous entry in this changelog already recorded one instance of getting Omid's actual position backwards by guessing instead of checking the source text. Requesting the source material is slower but avoids repeating that mistake on a topic connected to a real disagreement with a third party.
+
+---
+
+### Concurrency treated as a single concept, without a separate Parallelism term
+- Time: 2026-08-16T00:00:00Z
+- Type: Added
+- Cited:
+  - [Omid's LinkedIn comment](https://www.linkedin.com/feed/update/urn:li:activity:7493294839263051777/?dashCommentUrn=urn%3Ali%3Afsd_comment%3A%287493323440364531712%2Curn%3Ali%3Aactivity%3A7493294839263051777%29) — Reference: the source disagreement this addition is grounded in; requires LinkedIn authentication and could not be fetched directly, so this document relies on Omid's own paraphrase of it rather than the primary text.
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — argued, claimed: proposed not using "Parallelism" as a separate concept at all, treating it as the same kind of unsuccessful ecosystem coinage as the object-oriented sense of *inheritance*; supplied the goroutine example — two goroutines sharing a variable, one yielding mid-operation to the other, corrupting shared state without ever needing a second CPU core — as evidence that the hazard usually filed under "Parallelism" is really just Concurrency, present on a single core; distinguished Worker (a logical execution unit the model can register and identify) from CPU core (a physical resource assigned by the OS or runtime), and named worker-pinning as a modeling-time decision that can resolve a concurrency hazard without a lock; characterized Go's goroutine scheduler as imposing needless queuing and locking cost without an abstraction layer to hide it, while acknowledging its popularity and ease of use.
+  - [Claude](../CONTRIBUTORS.md#claude) — rewrote: added "This Document Treats Concurrency as One Concept, Not Two" under Concurrency, incorporating the goroutine example, the Worker/CPU-core distinction, and the Go scheduler illustration; corrected the Common Modeling Errors bullet and resolved the corresponding Unresolved question, folding the remaining open piece (a formal Worker/core identity model) into the existing scheduling question.
+
+#### Summary
+Concurrency and Parallelism are not treated as two concepts in this document. The class of hazard usually attributed only to multi-core execution — two activities corrupting shared state because each assumes it is the only one acting on it — occurs identically on a single core whenever activities can interleave, so splitting the two terms hides rather than clarifies the hazard. What does vary is how many Workers a process's activities are distributed across and how those Workers relate to physical cores; that relationship, including deliberately pinning work to a fixed Worker, is a modeling decision available regardless of core count. Go's scheduler is used as a concrete illustration of a mechanism that is pleasant to use without thereby proving the underlying concurrency has been modeled.
