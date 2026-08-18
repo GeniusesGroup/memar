@@ -95,3 +95,35 @@ Considered writing a Concurrency-vs-Parallelism comparison from general knowledg
 
 #### Summary
 Concurrency and Parallelism are not treated as two concepts in this document. The class of hazard usually attributed only to multi-core execution — two activities corrupting shared state because each assumes it is the only one acting on it — occurs identically on a single core whenever activities can interleave, so splitting the two terms hides rather than clarifies the hazard. What does vary is how many Workers a process's activities are distributed across and how those Workers relate to physical cores; that relationship, including deliberately pinning work to a fixed Worker, is a modeling decision available regardless of core count. Go's scheduler is used as a concrete illustration of a mechanism that is pleasant to use without thereby proving the underlying concurrency has been modeled.
+
+---
+
+### Agency-driven execution responsibility and concurrency
+- Time: 2026-08-17
+- Type: Expanded
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — clarified that Process execution may be distributed among many Agents independently of domain-entity boundaries; emphasized dynamic responsibility assignment and the distinction between execution ownership and domain ownership.
+  - [ChatGPT](../CONTRIBUTORS.md#chatgpt) — integrated the resulting model into `process.md`.
+
+#### Summary
+Added `Agency and Execution Responsibility` to make explicit that Process may involve many execution Agents whose set can change without changing the conceptual Process. Added dynamic responsibility assignment, partitioning, rebalancing, Consistent Hashing as an example mechanism, responsibility-before-synchronization reasoning, domain-state versus execution-ownership distinction, and Worker/Actor as implementation representations. Existing Concurrency guidance was strengthened to state explicitly that assigning an Execution Agent to an account or partition does not make that Agent the permanent domain owner and does not require an Account Service to own all progression.
+
+#### Rationale and alternatives
+The new treatment deliberately starts from Process, state, invariants, responsibility, and partitioning before synchronization. Worker, Actor, Lock, Queue, Scheduler, and Consistent Hashing remain implementation mechanisms rather than definitions of Process or Concurrency.
+
+---
+
+### Trimmed Agency and Execution Responsibility, closing the duplication with agency.md
+- Time: 2026-08-17T00:00:00Z
+- Type: Fixed
+- Propagates to:
+  - agency.md: Done — reciprocal links and a Process entry in its "Relation to Memar" diagram were added there in the same pass; see agency.changelog.md's corresponding entry.
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — requested: pointed out that an earlier pass had mistakenly applied edits to a stale copy of this document, discarding the "Agency and Execution Responsibility" topic ChatGPT had just added; asked for the edits to be redone against the actual latest version instead.
+  - [Claude](../CONTRIBUTORS.md#claude) — rewrote, corrected: re-based this pass on the actual latest process.md and process.changelog.md rather than a stale local copy. Found that "Agency and Execution Responsibility" (added by the prior entry) substantially duplicated agency.md's own "Agency in Process Execution" topic — same Account/Agent example, same Consistent Hashing diagram, same responsibility-before-synchronization chain, same Worker/Actor-as-representation argument — and that Concurrency's own paragraph re-walked through the same Account/Agent example a third time. Shrank "Agency and Execution Responsibility" to a pointer at agency.md plus only the Process-specific residue; trimmed Concurrency's redundant paragraph to a one-line pointer at the (now-shrunk) topic above; trimmed the three Agency-related Common Modeling Errors bullets to shorter versions pointing at Agency's own fuller catalog; renamed the oddly-named "#### Others" heading under Concurrency to "Go's Scheduler as an Illustration"; re-added the link from Concurrency's Worker/CPU-core paragraph to [Agency → Execution Agent](./agency.md#execution-agent) that had been lost when the prior pass was accidentally based on a stale file. Left the existing Agency bullet under Relationship to Other Concepts and the existing scheduling Unresolved question as ChatGPT had written them, since both were already accurate and did not need correction.
+
+#### Summary
+The previous entry's "Agency and Execution Responsibility" topic, agency.md's own "Agency in Process Execution" topic, and Concurrency's own prose were independently saying the same thing three times within two documents. Reduced to one authoritative copy in agency.md, with this document keeping only short pointers and the residue specific to Process. No conceptual content was changed — only where each piece of it lives.
+
+#### Rationale and alternatives
+Considered keeping the full walkthrough in this document as well, on the grounds that a reader of process.md's Concurrency topic shouldn't have to leave the document to see a concrete example. Rejected: the example is identical to agency.md's, and keeping two full copies is exactly the drift risk this project's review has been working against — a future edit to one copy (e.g. renaming Consistent Hashing's role, or changing the Account/Agent example) would silently leave the other stale. A pointer costs the reader one click; a second full copy costs the project a second maintenance burden.

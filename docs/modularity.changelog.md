@@ -56,3 +56,17 @@ Writing new content asserting Module's formal relationship to Framework and Stru
 
 #### Summary
 This document previously asserted "coherent responsibility" as if self-evident and duplicated `process.md`'s Module/Process boundary reasoning independently. Both are now resolved by citing a single authoritative source instead: Responsibility and its coherence test now live in `system.md`, and the Module/Process boundary argument now lives in `process.md`, with this document keeping only what is specific to Module's own side of each relationship.
+
+---
+
+### Fixed Protocol description to match protocol.md's actual ontology
+- Time: 2026-08-16T00:00:00Z
+- Type: Fixed
+- Propagates to:
+  - protocol.md: Reference — this fix was found during a conceptual review of protocol.md against this and the other revised documents; see protocol.changelog.md's corresponding entry.
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — requested: asked for a conceptual review of protocol.md against the rest of the now-revised document set.
+  - [Claude](../CONTRIBUTORS.md#claude) — rewrote: corrected "Module, Process, and Protocol" and the "Module Among Related Concepts" table, both of which described Protocol as governing "interactions within or between Systems" — this document's own paraphrase, not protocol.md's actual definition, which routes Protocol through Process (System contains Processes, governed by Protocols) rather than having Protocol govern System-to-System interaction directly. Added a link to protocol.md's "What is a Protocol?" topic.
+
+#### Summary
+This document's characterization of Protocol did not match protocol.md's own ontology. Corrected both occurrences (the Module/Process/Protocol topic and the comparison table) to say Protocol governs Processes within a System, rather than System-to-System interaction directly, and linked to protocol.md instead of restating its definition from memory.

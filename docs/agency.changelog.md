@@ -29,3 +29,33 @@ Restructured the document to follow `documentation-explanation.md`'s current tem
 #### Rationale and alternatives
 - **Silently fixing gaps without flagging them as edits (rejected)**: an earlier approach to this edit considered folding the added content into the existing prose so it would read as though it had always been there. Rejected because it would misrepresent provenance — this document's own stated principle, carried over from the 2026-08-04 discussion, is that definitions and design decisions should be traceable to why they were made; silently blending newly-added reasoning into inherited prose would undermine that principle inside the very document that states it. Every addition of substance is instead attributable to this changelog entry.
 - **Leaving the reviewer's own critique only in the chat, not in the document (rejected, per explicit request)**: the default in past reviews of this kind had been to report gaps and critique conversationally rather than to write them into the artifact. Rejected here at the person's explicit request; the critique now lives in the document's own `## Discussion` section (`Drawbacks`, `Prior art`, `Unresolved questions`, `Future possibilities`) so it survives independently of this specific conversation.
+
+### Agency and Process execution responsibility model
+- Time: 2026-08-17
+- Type: Expanded
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — clarified that an execution Agent may be responsible for a bounded portion of a Process without implying a permanent domain-ownership boundary or an `agent_for` relationship; emphasized that a system may have many processing Agents and that responsibility may be dynamically reassigned.
+  - [ChatGPT](../CONTRIBUTORS.md#chatgpt) — integrated the resulting model into `agency.md`.
+
+#### Summary
+Added an explicit treatment of Agency in Process execution. The document now distinguishes `agent_for` (acting on behalf of a Principal) from execution responsibility, defines Execution Agent as a descriptive use of Agency rather than a new entity type, distinguishes execution responsibility from domain ownership, and records Worker and Actor as possible implementation representations rather than conceptual primitives. Dynamic assignment, partitioning, migration, rebalancing, and Consistent Hashing are documented as execution concerns that follow from responsibility modeling rather than defining Agency.
+
+#### Rationale and alternatives
+- **Treating Worker as the primitive execution concept (rejected):** Worker is implementation vocabulary and varies by runtime.
+- **Treating Actor as the primitive execution concept (rejected):** Actor Model is a particular execution model and is narrower than Agency.
+- **Using `agent_for` for execution responsibility (rejected):** acting on behalf of a Principal and being responsible for advancing a process are distinct relationships.
+
+### Cross-referenced process.md, closing the Worker/Agency gap
+- Time: 2026-08-17T00:00:00Z
+- Type: Changed
+- Propagates to:
+  - process.md: Done — reciprocal links added there in the same pass; see process.changelog.md's corresponding entry.
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — requested: noticed, after today's ChatGPT session added "Agency in Process Execution," that this document and process.md's Concurrency topic cover closely related ground (Worker, execution responsibility, responsibility-before-synchronization) without referencing each other, and asked for a deliberate integration pass rather than leaving the two to develop independently.
+  - [Claude](../CONTRIBUTORS.md#claude) — reviewed, rewrote: reviewed today's "Agency and Process execution responsibility model" changelog entry and the corresponding body content (Agency in Process Execution, Execution Agent, Agency and Ownership of Process State, Dynamic Assignment, Agency Before Synchronization) against process.md's own, independently-written Concurrency topic; found them consistent in substance (both treat Worker as a non-primitive representation of a more general responsibility concept, both reach a similar escalating decision chain before reaching for synchronization) with no contradiction requiring resolution; added a link from "Agency in Process Execution"'s opening paragraph and from the Worker mention under Execution Agent to process.md's Concurrency topic; added Process to the "Relation to Memar" diagram, which listed System, Module, and Organization but had omitted Process despite this document's own Process-execution content.
+
+#### Summary
+Found this document's new Process-execution content substantively consistent with process.md's independently-developed Concurrency topic — both arrived at treating Worker as a representation of a more general responsibility concept, and both reach a similar responsibility-before-synchronization ordering. No content was rewritten to resolve a conflict, since none was found; the two documents were cross-linked instead of left to duplicate each other going forward, and Process was added to this document's own "Relation to Memar" summary diagram, which had omitted it.
+
+#### Rationale and alternatives
+Considered merging the "Agency Before Synchronization" chain and process.md's Concurrency decision chain into a single, shared chain cited by both documents, since they overlap substantially. Deferred: the two chains are pitched at different levels of generality (Agency's version is domain-general; Process's version has Concurrency-specific steps — shared mutable state, invariants, scheduling — that don't belong in Agency's more general statement of the same principle), and collapsing them into one shared version is a larger structural change than a same-day integration pass should attempt without dedicated review.

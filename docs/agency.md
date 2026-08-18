@@ -595,6 +595,125 @@ Therefore:
 
 > **Delegation establishes a relationship; it does not prescribe every action.**
 
+### Agency in Process Execution
+Agency is not limited to situations in which one System delegates work to another System through a Principal–Agent relationship. A process can also depend on a System being capable of taking responsibility for a bounded portion of the process progression and determining how that responsibility is executed. See [Process → Concurrency](./process.md#concurrency) for the Process-side treatment this topic supplies the Agency grounding for — in particular, the Worker/CPU-core distinction and the escalating decision chain there (shared state → shared mutable state → shared invariant → common ownership → partitionable responsibility → scheduling → synchronization → locking) are a Concurrency-specific instance of the general responsibility-before-synchronization principle this topic states below, under *Agency Before Synchronization*.
+
+This distinction is important because the Agent relationship used to describe representation (`agent_for`) is not the only relationship through which Agency becomes relevant. A process may assign execution responsibility to a System without that System becoming a representative of the process, a domain entity, or a Principal's Agent in the narrower representational sense.
+
+For example, a process may require that, at a particular time, one execution Agent is responsible for advancing the state associated with Account `123`:
+
+```text
+Account 123
+     │
+     │ execution responsibility
+     ▼
+Agent 847
+```
+
+The Account is a domain entity. Agent 847 is an acting system. The assignment between them is a relationship; it does not imply that an `Account Service` is the permanent owner of all Account processing, nor that the Account itself is an Agent.
+
+The assignment may later change:
+
+```text
+Account 123
+     │
+     ├── responsibility → Agent 847
+     │
+     └── responsibility → Agent 912   (after reassignment)
+```
+
+The important property is not the identity of the particular Agent but the existence of a well-defined responsibility boundary at the time the process is progressing. This makes Agency useful for modeling execution independently of the mechanism used to realize it.
+
+#### Execution Agent
+An **Execution Agent** is an Agent that assumes responsibility for advancing some bounded part of a Process. The term describes a use of Agency, not a new entity type.
+
+An Execution Agent may be represented by many different mechanisms, including a Worker, Actor, process, thread, service instance, device, human operator, or another system. None of those representations is intrinsically an Agent merely because it has the corresponding implementation name. See [Process → Concurrency](./process.md#concurrency) for Worker's own treatment there, including its distinction from a physical CPU core.
+
+Conversely, a Worker can be an expression of Agency when it is not merely an execution primitive but a bounded acting unit with an identifiable responsibility, relevant capabilities, available knowledge, and authority to perform the work assigned to it.
+
+This gives a useful conceptual distinction:
+
+```text
+Agency
+   ↓
+Agent
+   ↓
+Execution responsibility
+   ↓
+Possible implementation representations
+   ├── Worker
+   ├── Actor
+   ├── Process
+   ├── Thread
+   ├── Service instance
+   └── other execution mechanism
+```
+
+The list is intentionally not a taxonomy of Agents. It is a list of possible representations of an Agent's execution role.
+
+#### Agency and Ownership of Process State
+When an Execution Agent is responsible for a portion of a process, the useful question is not simply where the code runs. It is which Agent is responsible for advancing the relevant state and maintaining the invariants that apply to that responsibility.
+
+This distinction matters for Concurrency. If two independent activities operate on different independently responsible state, they may progress concurrently without requiring coordination merely because they execute at the same time. If two activities can modify the same state under the same invariant, the model should first ask whether responsibility can be partitioned so that one Agent is responsible for that state at a time.
+
+This is not equivalent to saying that every entity must have one permanent Worker. Responsibility may be assigned temporarily, partitioned, migrated, replicated, or otherwise structured according to the process requirements. The important point is that the assignment itself is modeled before the execution mechanism is chosen.
+
+#### Dynamic Assignment
+Execution responsibility does not need to be permanently attached to an Agent.
+
+A system may increase or decrease the number of Execution Agents while preserving the conceptual Process. The assignment of responsibility can therefore change independently of the identity of the domain entities being processed.
+
+For a partitionable process, a mapping mechanism such as Consistent Hashing may be used to map process-relevant identities or partitions to available Agents. The mapping is an implementation mechanism; the underlying model is the allocation of responsibility among Agents.
+
+For example:
+
+```text
+Account ID / Partition Key
+          │
+          ▼
+   Responsibility Map
+      │           │
+      ▼           ▼
+  Agent 847    Agent 912
+```
+
+If the number of Agents changes, the mapping can be recalculated with limited reassignment rather than requiring every Agent to coordinate over every account. This does not make Consistent Hashing a requirement of Agency. It illustrates how an Agency-first model can make scaling and reassignment questions explicit before a particular mechanism is selected.
+
+#### Agency Before Synchronization
+When multiple Agents can affect the same process state, synchronization may be necessary. But synchronization should be considered only after the responsibility structure has been examined.
+
+The conceptual order is:
+
+```text
+Process
+   ↓
+Relevant state and invariants
+   ↓
+Responsible Agents
+   ↓
+Responsibility partitioning
+   ↓
+Required communication and coordination
+   ↓
+Synchronization mechanisms, if still required
+```
+
+This order prevents a lock, queue, mailbox, scheduler, or transactional mechanism from silently becoming the model of responsibility itself.
+
+A Single Writer arrangement, an Actor-style mailbox, or a Worker assigned to a partition can each be useful realizations of this principle. None should be mistaken for the principle itself.
+
+#### Discussion
+
+##### Rationale and alternatives
+- **Treating Worker as the primitive execution concept (rejected).** Worker is useful implementation vocabulary, but its meaning varies across runtimes and frameworks. The underlying question is whether an acting system has a bounded execution responsibility. Worker is therefore treated as a possible representation of an Execution Agent rather than the conceptual primitive.
+- **Treating Actor as the primitive execution concept (rejected).** Actor Model provides valuable accumulated knowledge about isolated state, communication, and independent execution, but `Actor` carries a particular model of execution. Agency is intentionally broader: an Agent may be human, organizational, software, AI, hybrid, or another acting system, and an execution Agent need not be implemented using the Actor Model.
+- **Treating `agent_for` as the relationship for every execution responsibility (rejected).** `agent_for` describes acting on behalf of another System. An Execution Agent may instead be responsible for advancing a process or managing a partition of state without representing another System in that sense. The process model therefore needs a distinct responsibility relationship rather than stretching `agent_for` beyond its meaning.
+
+##### Unresolved questions
+1. Whether Memar should eventually give the execution-responsibility relationship a canonical edge name, or keep it expressed through the existing Responsibility concept until the graph model demonstrates a need for a specific relation.
+2. Whether Execution Agent should remain descriptive terminology or eventually become a formally defined concept in Process.
+3. How responsibility transfer, temporary reassignment, failure takeover, and concurrent replication should be represented without conflating responsibility with implementation ownership.
+
 ### Delegation
 
 Delegation is a mechanism through which a system assigns responsibility, authority, or an objective to another system.
@@ -1790,6 +1909,57 @@ Prompts are one communication mechanism.
 
 They do not define the complete structure of Agency.
 
+#### Treating Worker or Actor as the Primitive
+Worker and Actor can be useful names for implementation mechanisms, but neither defines Agency.
+
+A Worker may represent an Execution Agent when it carries a bounded responsibility for advancing part of a process. An Actor may represent an Execution Agent when the Actor Model is the chosen execution model. Neither term should be used as a substitute for first asking what responsibility exists, which system assumes it, and what authority and capability are required.
+
+Therefore:
+
+```text
+Agency
+   ↓
+Agent
+   ↓
+Execution responsibility
+   ↓
+Worker / Actor / other representation
+```
+
+The reverse direction is unsafe:
+
+```text
+Worker / Actor
+   ↓
+therefore Agent
+```
+
+The implementation name alone does not establish the conceptual role.
+
+#### Treating Execution Ownership as Domain Ownership
+An Agent responsible for advancing the state of a domain entity does not thereby become the domain owner of that entity.
+
+For example:
+
+```text
+Account 123 ── execution responsibility ──► Agent 847
+```
+
+does not mean:
+
+```text
+Account 123 ── owned by ──► Agent 847
+```
+
+The execution responsibility may be temporary, partitioned, migrated, failed over, or rebalanced. The domain entity remains the same entity throughout those changes.
+
+Likewise, one Agent may be responsible for many domain entities. Modeling a separate permanent Agent boundary for every domain concept merely because the implementation currently processes that concept would confuse execution structure with domain structure.
+
+#### Treating `agent_for` as Every Responsibility Relationship
+`agent_for` expresses a system acting on behalf of another system. It should not be stretched to represent every situation in which an Agent has responsibility for advancing a process.
+
+An Execution Agent may be responsible for a process partition without representing another System in a Principal relationship. The distinction should remain explicit so that representational Agency and execution responsibility do not collapse into one relationship.
+
 #### Treating Organizational Problems as AI Problems
 
 An AI Agent can reveal failures in:
@@ -1955,6 +2125,7 @@ It connects naturally to several other concepts:
 Agency
    │
    ├── System
+   ├── Process
    ├── Relation
    ├── Responsibility
    ├── Authority
@@ -2060,8 +2231,13 @@ Who is answerable for decisions and outcomes; not automatically assigned to the 
 
 The transfer of goals, responsibility, authority, context, knowledge, feedback, results, warnings, or requests for escalation between participants in an agentive relationship — see [Communication](#communication).
 
-### Working Principles
+#### Execution Agent
+An Agent that assumes responsibility for advancing a bounded part of a Process. This is a descriptive use of Agent, not a separate entity type; Worker, Actor, process, thread, service instance, or another mechanism may represent an Execution Agent.
 
+#### Execution Responsibility
+The relationship through which an Agent is responsible for advancing a bounded part of a Process or managing relevant process state. It is distinct from `agent_for`, which expresses acting on behalf of a Principal.
+
+### Working Principles
 Until the open questions are resolved, the following principles provide a stable working model:
 
 1. **Model Agency before AI Agent.**
@@ -2084,6 +2260,12 @@ Until the open questions are resolved, the following principles provide a stable
 18. **Prefer relationships over artificial entity boundaries when the domain supports them.**
 19. **Do not allow professional or technological taxonomies to become false models of responsibility or knowledge.**
 20. **Keep the conceptual model independent of implementation technologies.**
+21. **Model execution responsibility as a relationship before selecting Worker, Actor, Queue, Lock, Scheduler, or other execution mechanisms.**
+22. **Treat Worker and Actor as possible representations of Execution Agents, not as definitions of Agency.**
+23. **Do not use `agent_for` to represent every responsibility relationship; acting on behalf of a Principal and being responsible for process execution are related but distinct relationships.**
+24. **Allow execution responsibility to be dynamically assigned, transferred, partitioned, or rebalanced without changing the identity of the domain entities being processed.**
+25. **Do not infer domain ownership from execution responsibility; an Execution Agent may process many domain entities and responsibility may move between Agents.**
+26. **Distinguish `agent_for` from execution responsibility so that representation and processing do not collapse into one relationship.**
 
 ### Conclusion
 

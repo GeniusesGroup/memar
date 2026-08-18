@@ -3,26 +3,11 @@ Title: "Terminology"
 Status: Proposed
 Start Date: 2026-06-21
 ID: 495001
-Applied to: ["*"]
-Citations: []
-Contributor(s):
-  - Name: "Omid Hekayati"
-    URI: "mailto:omid@geniuses.group"
-    Works: ["Core concepts", "Terminology philosophy", "Architectural rationale", "Three-tier classification", "Critique of AI-drafted material", "Worked examples (heat pump, container/docker, cloud)", "Position on independent AI review as interim external scrutiny."]
-  - Name: "ChatGPT"
-    URI: "https://openai.com"
-    Contribution: "Initial drafting, critique, synthesis"
-    Tasks: []
-  - Name: "Claude"
-    URI: "https://claude.ai"
-    Model: "Claude Sonnet 5"
-    Effort: ""
-    Works: ["critical-review", "clarification", "grounding-citations", "expansion", "Critical review pass: flagged internal inconsistency in the Scientific-terms tier (conflation of mathematical, empirical, and philosophical epistemic categories), proposed explicit tier-assignment criteria for Technology and Scientific terms, identified inconsistency between an earlier draft's simplified Protocol example and the finalized Protocol document's ontology, grounded the concept-vs-representation pattern in genericized-trademark theory and prototype theory, reframed 'independent verification' to account for AI-assisted review as an interim mechanism for an open-source project without yet-active external human reviewers, and expanded the document from an outline into full explanatory prose."]
 ---
 
 # Terminology
 
-## Summary
+## Abstract
 This document establishes Memar's terminology philosophy: the position that the words used to name a concept are not a cosmetic layer sitting on top of architecture, but one of the forces that produces architecture in the first place.
 
 Memar treats terminology as a first-class architectural concern rather than a communication detail. The terminology used to describe a problem directly influences the mental model used to understand it. That mental model subsequently influences architecture, implementation, optimization, decomposition, governance, and long-term maintainability. A team that names a problem badly will, on average and over time, build a worse system than a team that names the same problem well — not because the first team is less skilled, but because it is reasoning about a distorted object.
@@ -46,7 +31,9 @@ Therefore:
 Consequently, terminology decisions should be reviewed with the same seriousness as architectural decisions — the same scrutiny that would be applied to a choice of data model or a service boundary should be applied to the choice of the word used to describe that data model or that boundary.
 
 
-## Motivation
+## Introduction
+
+### Motivation
 Many software discussions begin with questions such as:
 - Which language should we use?
 - Which database should we use?
@@ -85,7 +72,7 @@ Representative examples of this substitution:
 Once these substitutions occur, architectural reasoning becomes constrained by implementations rather than guided by concepts. The remainder of this document exists to give Memar contributors a working vocabulary and a working discipline for noticing when this has happened, and for reversing it before it hardens into architecture.
 
 
-### Terminology Debt
+#### Terminology Debt
 Terminology Debt occurs when a system, document, team, organization, or ecosystem accumulates ambiguous, overloaded, implementation-centric, product-centric, or commercially-driven terminology that obscures the underlying concepts those terms were originally meant to name.
 
 Symptoms include:
@@ -105,8 +92,10 @@ Memar considers Terminology Debt a precursor to many forms of Technical Debt, no
 
 This is not a metaphorical claim. A system cannot be consistently understood if its terminology cannot be consistently understood; and a system that is inconsistently understood by the people building it will, over time, accumulate structural inconsistency as a direct consequence — different contributors, working from different mental models of the same word, will make locally reasonable but globally incompatible decisions. By the time that incompatibility becomes visible as a technical problem (a data model that cannot represent a case someone assumed it already handled, an API boundary that leaks an assumption another team didn't share), the terminology failure that caused it may be months or years in the past and easy to miss entirely.
 
+### Methodology
+This document was drafted by Omid Hekayati (core concepts, terminology philosophy, architectural rationale, the three-tier classification, the critique of AI-drafted material, the worked examples), then reviewed and expanded across several rounds by ChatGPT (initial drafting, critique, synthesis) and Claude (critical review, clarification, grounding citations, expansion from outline into full prose). This document was deliberately positioned so that other Memar documents depend on it, not the reverse — it does not cite or import content from Protocol, System, or any other document, even where those documents' own worked examples (Protocol, in particular) would be natural illustrations, so that Terminology can remain a genuine foundation rather than a document with its own upstream dependencies. Full provenance for every round is recorded in [terminology.changelog.md](./terminology.changelog.md) rather than here.
 
-## Guide-Level Explanation
+## Explanation
 
 ### Terminology Shapes Mental Models
 Terminology is not neutral. It is not a label applied after the thinking is done; it participates in the thinking itself.
@@ -165,8 +154,6 @@ A useful heuristic:
 If the concept disappears together with the technology — if a developer genuinely cannot describe what they were trying to achieve without referring to the specific tool — the concept was likely never understood independently of that tool in the first place. This heuristic is a fast, practical test a contributor can apply to their own understanding before relying on it architecturally.
 
 
-## Reference-Level Explanation
-
 ### Definition vs Explanation
 A definition and an explanation serve different purposes and should not be confused. A **Definition** establishes the identity and boundary of a concept. Its purpose is to answer:
 
@@ -198,13 +185,21 @@ A definition does not have to be a single sentence to remain a Definition rather
 #### The Regress Problem and Primitive Notions
 Every definition uses other words, and those words, if also defined, use further words in turn — a chain that cannot continue indefinitely without either circularity or infinite regress. Formal systems have long accepted this and handled it deliberately rather than by accident: a small number of concepts are designated [primitive notions](https://en.wikipedia.org/wiki/Primitive_notion) — terms taken as understood without further definition, on top of which everything else in the system is built. Euclidean geometry, for instance, leaves "point" and "line" formally undefined and constructs its theorems on top of them.
 
-Memar faces the same problem, and for the same structural reason — not by oversight. A term such as System functions as a primitive notion for much of Memar's terminology: the Protocol document's own ontology depends on System, without System itself having, at every point in Memar's history, a complete formal definition of its own (see the Protocol document's discussion of this dependency). This is not a flaw to apologize for; every sufficiently rich formal system has primitives. What matters is that Memar's primitive notions be chosen deliberately and named explicitly as primitives, rather than silently assumed to already be defined somewhere else in the framework.
+Memar faces the same problem, and for the same structural reason — not by oversight. For a period of Memar's development, System served as a working example of this: Protocol's own ontology depended on System before System itself had, at that point, a complete formal definition of its own. System has since received a full definition in its own document. The pattern the example illustrates remains valid regardless — at any given point in Memar's development, some concept is functioning as a primitive notion for whatever depends on it, whether or not that particular concept has since been resolved. This is not a flaw to apologize for; every sufficiently rich formal system has primitives. What matters is that Memar's primitive notions be chosen deliberately and named explicitly as primitives, rather than silently assumed to already be defined somewhere else in the framework.
 
 #### Diverging From Ecosystem Definitions
 A related and sharper problem than the regress problem is this: many of the words Memar needs to define — Protocol, Standard, System, Service — already carry definitions, plural, out in the wider software ecosystem, and those definitions are frequently imprecise, inconsistent across sources, or actively misleading (see Terminology Debt, above). When Memar produces its own Definition for such a term, that Definition will often not match, and may be considerably more precise than, the definition a reader already carries in from that wider ecosystem.
 
 This divergence must be stated explicitly, not left implicit. A reader who encounters Memar's Definition of Protocol without being told it differs from the colloquial software-industry sense of "protocol" will silently graft Memar's more precise rules onto their prior, looser understanding, rather than replacing it — producing exactly the kind of quiet terminology drift this document exists to prevent. Wherever a Memar Definition is likely to conflict with a term's common ecosystem usage, the Definition should say so directly, rather than assume the divergence is obvious or that the reader will notice it unprompted.
 
+#### Terminology Authority and Governance
+Once a Memar document establishes a Definition for a term, that Definition — not the term's popularity or prevalence elsewhere — is what governs its use within the Memar ecosystem. This is the same principle any specialized domain already relies on: statutory definitions in law differ from colloquial ones and courts follow the statutory meaning; clinical terminology in medicine differs from everyday language and practitioners follow the clinical meaning; "force" in physics has a precise definition that differs from everyday speech, and no physicist apologizes for the precision. The point is not to correct how the wider world uses a word. It is to ensure that within Memar, every participant — human or AI — can rely on a stable, precise definition rather than guessing which of several colloquial senses is meant.
+
+Authority over a term is established when a document defines it with the four elements *Comprehensive and Exclusive, More Precisely* and *Diverging From Ecosystem Definitions* already require: the definition itself, its distinctions from related terms, an explicit acknowledgment of colloquial usage where one exists, and the rationale for the choice. The [Protocol document](./protocol.md) is the clearest existing example of a Definition built this way — precise, distinguished from Contract, Standard, Specification, Interface, and Policy, with its divergence from colloquial usage stated rather than assumed.
+
+Once established, a Definition governs how later documents use that term. A document that needs to use a term differently from its established Definition has two options: use a different term, or revise the Definition — and a revision must state what changed, why, and what it implies for documents that already depend on the old sense, recorded in that document's own changelog per `documentation-changelog.md`. This cost is intentional: it discourages casual redefinition while leaving room to correct a genuine error. Popularity does not override this. If 99% of developers use "standard" to mean "widely adopted specification," that popularity does not make the colloquial sense correct for Memar's purposes, any more than colloquially calling every reptile a "lizard" makes that usage correct for zoological taxonomy.
+
+This governance applies only to terms a Memar document has actually taken the trouble to define. It does not extend to ordinary English (or Persian, or any other language) usage of words no document has defined — Memar governs the specific terms it has taken responsibility for, not the language generally.
 
 ### Terminology Layers
 Memar sorts terms into three layers. Each layer is defined below by what distinguishes it, not only by example, so that the classification can be applied to a term this document has not already listed.
@@ -259,7 +254,7 @@ Many technology terms represent decades of accumulated practical experience, and
 For example: a relation is not defined by SQL. A graph is not defined by a graph database. A process is not defined by an operating system. A protocol is not defined by a specific implementation framework. Technology can provide useful, even excellent, implementations of a concept; it should not become the source of conceptual truth for that concept.
 
 
-### Business Terms
+#### Business Terms
 **Definition:** Business terminology includes commercial labels, industry narratives, consulting vocabulary, ecosystem movements, product families, and marketing-oriented abstractions. Business terminology is frequently optimized for adoption, market expansion, ecosystem growth, branding, communication efficiency, or product positioning, rather than for conceptual precision.
 
 Examples:
@@ -376,9 +371,12 @@ Whether or not the underlying mechanism is exactly as described above, the pract
 
 When ambiguity exists, AI systems operating within the Memar ecosystem should prefer the most fundamental interpretation available unless the surrounding context explicitly requires otherwise. Memar therefore encourages explicit terminology governance whenever AI systems participate in modeling, documentation, architecture, analysis, or design activities — including, recursively, the drafting and critique of this document itself.
 
+#### Word-Weight Rebalancing
+One proposed way to act on the working hypothesis above — not a settled or independently validated mechanism, and subject to the same epistemic caution as the hypothesis it builds on — is for an AI system working within Memar to treat a Memar document's established Definition of a term as carrying more weight, for that term, than whatever balance of senses its training data would otherwise suggest. Sketched at a high level, such a mechanism would need to: load a Memar document's Definitions as context that takes precedence over training-data defaults for those specific terms; prefer the document's sense when a term is ambiguous between it and a colloquial sense, within Memar-related work; surface the conflict explicitly when a person's usage differs from a document's Definition, rather than silently substituting one for the other; and stay consistent with how a term is defined at its point of origin when one document references a term another document defines, rather than falling back on an independent, training-data-derived reading of it.
+
+This is not proposed as an AI-only concern. A human contributor benefits from the same discipline — treating a term's Memar Definition as the reference once one exists — the difference being that a human can knowingly choose to depart from it, where a mechanism along these lines would need to be designed to default to it. Whether such a mechanism is worth building, and in what form, is left open; see Future possibilities.
 
 ### Architectural Review Guidance
-
 During reviews, contributors should ask:
 
 - Is this term fundamental or implementation-specific?
@@ -394,49 +392,45 @@ During reviews, contributors should ask:
 Terminology review should occur before architectural review whenever possible, because poor terminology often produces poor architecture, and correcting terminology after an architecture has already been built around it is significantly more expensive than correcting it before.
 
 
-## Drawbacks
+## Results
+Insufficient time has passed since this document was adopted to report real, observed outcomes from its use. This section will be filled in once there is such experience to draw on.
 
+## Discussion
+
+### Drawbacks
 This approach increases documentation effort, learning effort, review effort, terminology analysis effort, and concept clarification effort. Discussions may initially become slower, because participants are encouraged to clarify concepts before proposing technologies, rather than jumping straight to a familiar tool. Some widely accepted industry terminology may require decomposition into more fundamental concepts before it can be used safely within Memar, which itself takes time and can feel, to a newcomer, like unnecessary ceremony around a word everyone already understands well enough for ordinary purposes.
 
 Some participants may view this process as unnecessary complexity, particularly under deadline pressure, when a familiar but imprecise term would let a conversation move faster in the short term. However, Memar considers these costs significantly lower than the long-term costs of reasoning from distorted mental models, which tend to surface much later, much more expensively, and in a form that is far harder to trace back to its terminological origin. The objective of this document is not speed of discussion; it is quality of understanding.
 
 
-## Rationale and Alternatives
+### Rationale and alternatives
 
-### Why not simply use popular terminology?
-
+#### Why not simply use popular terminology?
 Popularity does not imply precision. Many popular terms accumulate conflicting meanings over time precisely because their popularity is driven by broad appeal rather than by narrow, precise applicability. Popularity is therefore insufficient, on its own, as a foundation for architectural reasoning, even though it remains useful for other purposes (discoverability, communication with newcomers, marketing).
 
-### Why not eliminate technology terminology?
-
+#### Why not eliminate technology terminology?
 Technology terminology remains necessary; implementation eventually requires technologies, and no system can be built entirely out of scientific principles without ever naming an actual technique or tool. This document only rejects allowing technology terminology to redefine foundational concepts. Technology is a consumer of concepts; it should not become the source of concepts.
 
-### Why not eliminate business terminology?
-
+#### Why not eliminate business terminology?
 Business terminology often carries valuable historical, organizational, operational, and commercial knowledge — Agile and DevOps, whatever their definitional instability, both encode real, hard-won lessons about how software gets built by actual teams under actual constraints. The problem is not the existence of business terminology; the problem is its misuse as a conceptual foundation. Business terminology can remain useful provided it does not replace more fundamental concepts in architectural reasoning.
 
-### Why prefer scientific terminology?
-
+#### Why prefer scientific terminology?
 Because scientific terminology is generally associated with stronger validation processes and clearer definitions than technology and business terminology. This does not make scientific terminology perfect; it makes it the strongest available starting point currently known, for the reasons discussed in "Science as Methodology" above.
 
-### Why classify terminology at all?
-
+#### Why classify terminology at all?
 Because terminology influences mental models, mental models influence architecture, and architecture influences system outcomes. Therefore terminology is an architectural concern, not merely a stylistic one. Classification provides a mechanism for evaluating terminology quality before it affects architectural decisions, rather than discovering the problem only after the architecture built on top of it has already calcified.
 
-### Why Three Layers, and Not More
-
+#### Why Three Layers, and Not More
 A more granular classification is defensible, and this document does not claim the three-layer model is the only correct one. The Scientific layer in particular could reasonably be split into mathematical/formal terms, empirical/scientific terms, and philosophical/foundational terms, since these are validated by different mechanisms and offer different strengths of guarantee (see the discussion under "Scientific Terms," above). Memar has deliberately chosen the coarser three-layer model — Scientific, Technology, Business — because a classification that developers will actually apply during a real review, under real time pressure, is more valuable in practice than a taxonomically complete one that is too elaborate to use consistently. This is a stated trade-off, not an oversight, and it is revisited in "Unresolved Questions" below.
 
 
-## Prior Art
-
+### Prior art
 Most mature engineering disciplines naturally move from Scientific Principles, to Engineering Models, to Technologies, to Tools, before making implementation decisions. Structural engineering does not begin with CAD software selection. Aeronautical engineering does not begin with simulation tool selection. Thermal engineering does not begin with product selection. Software development frequently reverses this order and begins with tools — arguably because software's tooling is cheap and immediate to acquire in a way that a wind tunnel or a structural test rig is not, which removes much of the friction that would otherwise force earlier disciplines back toward first principles.
 
 This document attempts to restore, within Memar, the direction of reasoning commonly found in mature engineering disciplines, while acknowledging that software's low barrier to tool acquisition makes this discipline harder to sustain than it is in fields where reaching for a tool prematurely is simply not an option.
 
 
-## Unresolved Questions
-
+### Unresolved questions
 - Should the Scientific layer eventually be split into mathematical/formal, empirical/scientific, and philosophical/foundational sub-tiers, or does the coarser single layer remain the right trade-off as Memar's documentation grows?
 - Should terminology classification become part of document review checklists across all of Memar, not only as guidance within this document?
 - Should Memar maintain a formal terminology registry?
@@ -449,7 +443,8 @@ This document attempts to restore, within Memar, the direction of reasoning comm
 - Should this document's Citations field eventually reference a stable Framework/Language/OS relationship document, once that document has a settled number and URI? At the time of this document's drafting, that document exists only as informal working material.
 
 
-## Future Possibilities
+### Future possibilities
+- A Word-Weight Rebalancing mechanism for AI systems (see AI Implications), specifying concretely how a Memar document's Definitions would be loaded as higher-precedence context, how conflicts with a person's own usage would be surfaced, and how the mechanism's actual effect would be evaluated rather than assumed.
 - Framework-wide terminology registry.
 - Automated terminology conflict detection.
 - Automated conceptual-leakage detection, flagging documentation where a general concept is discussed almost exclusively in terms of one specific vendor or tool.
@@ -461,27 +456,3 @@ This document attempts to restore, within Memar, the direction of reasoning comm
 - Architectural terminology review workflows.
 - A documented convention, once document contributor governance is finalized, for distinguishing AI-assisted internal critique from sustained human external review in a contributor's listed effort — so that a reader can tell, at a glance, how much of "public scrutiny" a given document has actually received.
 
-## Change Rationale
-
-### Initial Version
-Introduces Memar's terminology philosophy, terminology layers, terminology debt, concept-first reasoning, tool-first anti-patterns, scientific methodology rationale, terminology governance principles, and AI interpretation guidance.
-
-Establishes terminology as a first-class architectural concern within the Memar ecosystem. Defines the relationship between terminology quality, mental-model quality, and architectural quality. Provides a foundation for future terminology governance, concept tracing, AI-assisted reasoning, and architectural review processes.
-
-### Review Cycle with ChatGPT
-Strengthened the Graph example to explicitly cite Graph Theory and Graph Rewriting rather than naming only the anti-pattern. Strengthened the Business Terms definition to describe business terminology as optimized for adoption and communication efficiency rather than precision, avoiding an unprovable claim about intent. Added Cloud and Container/Docker as worked examples. Established the dependency direction that other Memar documents should depend on this Terminology document, and not the reverse — including the explicit decision that the Protocol document should not be listed in this document's Citations, since Protocol is a specific application of the principles established here, not a peer or a prerequisite.
-
-### Critical Review Cycle with Claude
-- Flagged that the Scientific-terms layer, as originally written, silently conflated mathematical/formal concepts, empirical/scientific concepts, and philosophical/foundational concepts under a single label, and added an explicit acknowledgment of this simplification along with a pointer to the finer-grained alternative, rather than presenting the layer as internally uniform.
-- Added explicit, criterion-based definitions for the Scientific and Technology layers (rather than relying on examples alone), including a formal definition of Technology grounded in knowledge-applied-to-system-development-toward-a-goal.
-- Resolved an open question about whether Protocol belongs in the Scientific layer despite not being part of established academic science, by clarifying that the Scientific layer is defined by methodology (explicit, falsifiable, criticized, revised) rather than by prior membership in an academic discipline — and added an explicit note on what "independent verification" and "public scrutiny" currently mean for Memar in practice, given that the project is open-source and publicly announced but has not yet attracted sustained external human review, and that AI-assisted review is being used as a provisional, explicitly non-equivalent substitute in the interim.
-- Removed a deep "Protocol vs. API Specification" section that had begun restating and simplifying the Protocol document's own ontology within this document, consistent with the decision, above, that this document should not depend on or import content from other documents; a short one-line reference to Protocol/API-Specification confusion remains in the Motivation examples, without restating Protocol's definition.
-- Reframed the "term migrates between layers" idea — raised and rejected during this review — into a named pattern, **conceptual leakage**, grounded in two established, citable frameworks: genericized trademark theory (for the general phenomenon of usage collapsing a broad and a narrow term into one) and prototype theory (for the specific case where a general concept is understood only through its most familiar exemplar, as with Container and Docker). This replaces any notion that the underlying concept itself changes over time.
-- Marked the AI Implications section's core claim (that AI systems overweight popular terminology) as an explicit working hypothesis rather than a stated fact, consistent with Memar's general position that unvalidated claims should not be presented with more confidence than their evidence supports — including when the claim concerns an AI system's own behavior.
-- Expanded the document throughout from an outline into full explanatory prose, per explicit request, without shortening or summarizing any previously agreed content.
-
-### Definition vs Explanation Expansion
-- Precisely defined Comprehensive and Exclusive as the two directions of necessary and sufficient conditions, rather than leaving them as intuitive labels.
-- Clarified that a definition composed of several necessary properties (as in the Protocol document) remains a Definition, not an Explanation, and gave a practical test — does removing a given sentence change which instances the definition includes — for telling the two apart within such a composite definition.
-- Introduced the regress problem and primitive notions to explain why some Memar concepts (System, notably, as depended on by the Protocol document) are necessarily left without a complete independent definition at any given point in the framework's development, and why this is expected rather than a defect, provided the primitive is chosen and named deliberately.
-- Added an explicit requirement that a Memar Definition state, rather than leave implicit, when it diverges from a term's common usage in the wider software ecosystem — since a reader who is not told about the divergence will otherwise silently merge Memar's more precise definition with their own prior, looser one.
