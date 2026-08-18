@@ -101,3 +101,20 @@ This document is now structured per `documentation-explanation.md`. Its Citation
 
 #### Rationale and alternatives
 Considered leaving IETF's own "RFC 6410" and similar citations unchanged case-by-case versus a single blanket find-and-replace. A blanket replace was rejected because it would have silently corrupted external, factually-specific identifiers (e.g. turning "RFC 6410" into "document 6410," which refers to nothing). A regex excluding "RFC" followed by a number was used instead, and its output was verified before finalizing this document.
+
+---
+
+### Conceptual consistency check against the now-current system.md, process.md, modularity.md, terminology.md, and framework.md
+- Time: 2026-08-16T00:00:00Z
+- Type: Fixed
+- Propagates to:
+  - modularity.md: Done — its "Module, Process, and Protocol" section and its "Module Among Related Concepts" table both described Protocol as governing "interactions within or between Systems," which does not match this document's actual chain (System contains Processes, governed by Protocols); both were corrected to route through Process, with a link back to this document's "What is a Protocol?" topic.
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — requested: asked for a conceptual (not structural) review of this document against the rest of the now-revised document set, specifically flagging that the "Terminology Governance document" item under Future possibilities was stale now that terminology.md exists.
+  - [Claude](../CONTRIBUTORS.md#claude) — reviewed, rewrote: removed the "Terminology Governance document" Future possibility, since terminology.md's "Terminology Authority and Governance" and "Word-Weight Rebalancing" sections now cover exactly what that item proposed creating; added a note to the "Cross-Module and Cross-Organizational Protocols" Unresolved question pointing to modularity.md's now-existing formal definition of Module, without treating that alone as resolving the question; found and fixed the reverse-direction inconsistency in modularity.md, where Protocol's relationship to System had been paraphrased imprecisely.
+
+#### Summary
+This document's own content needed only two changes: one stale Future possibility (a Terminology Governance document, now that terminology.md exists and covers that ground) and one enrichment to an Unresolved question (Module now has a formal definition, in modularity.md, that didn't exist when the question was first raised). The larger finding was in the opposite direction — modularity.md had been paraphrasing this document's Protocol/Process/System chain imprecisely, describing Protocol as governing System-to-System interaction directly rather than governing Processes within a System. That was corrected in modularity.md, not here, since this document's own ontology was already accurate.
+
+#### Rationale and alternatives
+Considered leaving the "Terminology Governance document" Future possibility in place with a note that it had been superseded, rather than removing it outright, to preserve a record of what was originally proposed. Removed instead, following the same pattern already used elsewhere in this project's changelogs for resolved Future possibilities and Unresolved questions: the resolution itself is the record, kept in this changelog entry, so the base document does not accumulate crossed-out proposals.
