@@ -1,3 +1,10 @@
+---
+Title: "Khayyam - Programming Language"
+Status: Proposed
+Start Date: 2020-02-02
+ID: 484848
+---
+
 # Khayyam - Programming Language
 This language is ideal for developers who want clean, spoken code capable of writing high-performance libraries and applications without fighting the compiler.
 
@@ -49,7 +56,7 @@ Khayyam allow developers to indicate first level encapsulation-pattern by use `c
 
 #### Method
 [Method in Khayyam](./khayyam-method.md) is itself a type. In Khayyam, functions and methods are not separate concepts. By using the `mt` subtype, developers define an executable behavior and attach it to a type. The owner type is not limited to capsules (`cp`); a method can be attached to *any* type (`tp`), including an abstraction (`ab`) or even another method (`mt`).
-- `tp {name} mt (self {type_owner}) ({efficacy variables}...) ({impressible(affective) variables}...) { ___ }`
+- `tp {name} mt (self {owner}) (influencing variables...) (influenced variables...) { }`
 - **Pass-by-Reference & State Protection:** All arguments passed into a method and all values returned from a method are passed strictly by reference. 
 - **Inherent Encapsulation:** Even though capsules are passed by reference, their internal state remains strictly protected. Because Khayyam enforces that all data fields are entirely hidden, a receiving method cannot directly mutate the passed capsule's fields. State mutation can ONLY occur if the passed capsule explicitly exposes a behavior (method) that allows it, rendering keywords like `const` or `mut` architecturally obsolete.
 - Devs MUST separate `type_owner`, `efficacy(args)` and `impressible(returns)` by use `()` to indicate all of them even it is empty. Consider that all of them is same in underlying layers and this rule is just to improve code readability.

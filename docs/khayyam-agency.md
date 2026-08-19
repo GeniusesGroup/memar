@@ -1,43 +1,84 @@
 ---
-RFC Number: 000011
-Title: "Concurrency: Syntax-Free and Definition-Driven"
+Title: "Agency in Khayyam"
 Status: Proposed
-Start Date: 2026-06-30
-Applied to: []
-Supersedes: null
-Superseded by: null
-Related:
-  Depends_on: ["000001", "000003"]
-  Extends: []
-  Conflicts with: []
-Author(s): []
+Start Date: "2026-06-30"
+ID: 495210
 ---
 
-## Summary
-Khayyam embeds no concurrency model into its syntax — no `go` keyword, no `async`/`await`. Whether a method blocks or runs asynchronously is an intrinsic property of the method's own definition (tagged via an abstraction, e.g. `tp Async ab`), not a choice made by the caller, and execution is scheduled in user-space by framework-level schedulers, aligned with Unikernel/Exokernel architecture.
+# Agency in Khayyam
 
-## Motivation
+## Abstract
+This document applies [Agency](./agency.md)'s vocabulary to Khayyam design decisions where it clarifies something that was not fully explicit before. Two instances are documented so far, in unrelated parts of the language: concurrency, and abstraction satisfaction. Both are retrospective applications of Agency's vocabulary to decisions reasoned through independently, before Agency existed as a document — this document states each original justification first, then states separately how Agency's vocabulary describes the same ground. Where the two accounts agree, that agreement is treated as evidence the original decision was sound, not as evidence that Agency was secretly present all along. See Methodology, below.
+
+Concurrency is the more fully worked-out instance: Khayyam embeds no concurrency model into its syntax — no `go` keyword, no `async`/`await`. Whether a method blocks or runs asynchronously is an intrinsic property of the method's own definition (tagged via an abstraction, e.g. `tp Async ab`), not a choice made by the caller, and execution is scheduled in user-space by framework-level schedulers, aligned with Unikernel/Exokernel architecture. [Agency](./agency.md) and [Process](./process.md#concurrency) later established, independently of Khayyam's own design history, that a Worker, Actor, thread, or other unit of execution is a *representation* of an execution responsibility, not the concept itself — and that treating one of those representations as a language- or syntax-level primitive is a common source of unnecessary coupling and unnecessary synchronization machinery. Khayyam's refusal to bake `go`/`async`/`await` into its grammar reached the same conclusion first, from a different direction (avoiding the function-coloring problem, keeping the compiler minimal).
+
+Abstraction satisfaction is the second, more tentative instance: [Abstraction in Khayyam](./khayyam-abstraction.md) has an open question about whether a capsule should need to declare intent before it counts as satisfying an abstraction, or whether structurally matching its signatures is enough. Agency's vocabulary offers a sharper way to state what that question is actually asking — see *Agency Beyond Concurrency*, below — without resolving it.
+
+This document does not restrict itself to these two; see Unresolved questions for whether further instances belong here.
+
+## Introduction
+
+### Motivation
 Embedding a concurrency model directly into language syntax (Go's `go`, Rust's `async`/`await`) couples the language permanently to one specific concurrency philosophy and is the classic source of the "function coloring" problem, where async and sync functions become incompatible without explicit, often painful conversion machinery.
 
-## Guide-level explanation
-A method's creator, not its caller, decides whether that method is asynchronous, by tagging it with an abstraction at definition time. Callers do not choose sync-vs-async behavior at the call site; they simply call the method, and its nature is already fixed by its own definition. Underlying execution runs on user-space (green) threads managed by library-level schedulers (e.g. the Memar framework's scheduler) — the language syntax itself remains entirely unaware of OS kernel threads.
+There is a second, independent reason to reject this coupling, visible only once Agency's own vocabulary is available: a language keyword that spawns a unit of concurrent execution is, functionally, declaring a primitive execution-Agent representation (a goroutine, a green thread, a task) directly into the grammar — before any question has been asked about who is responsible for what state, whether that responsibility can be partitioned, or whether synchronization is even the right tool. [Process → Concurrency](./process.md#concurrency) names this precisely: reaching for a mechanism (a keyword that spawns a `go`routine, in this case) before the responsibility question has been asked tends to produce exactly the queuing- and locking-heavy code that a deliberate Worker/responsibility model would have avoided. A language that bakes `go` into its grammar has made that mistake at the most permanent possible layer — its own syntax — for every program that will ever be written in it.
 
-## Reference-level explanation
-- **Definition-Site over Call-Site:** concurrency behavior is intrinsic to the method, expressed via an abstraction tag, not a caller-side keyword.
-- **User-Space Scheduling (Unikernel Synergy):** the default architectural stance favors green threads managed by library-level schedulers, for zero-overhead context switching.
-- **Avoiding Function Coloring:** because asynchronous behavior is a Linter-verified abstraction (`ab`) rather than a compiler keyword, the function-coloring problem that plagues `async`/`await` languages does not arise, keeping the core AST clean and orthogonal.
+### Methodology
+This document does not derive Khayyam's concurrency decisions from Agency after the fact and then rewrite history to claim they were always Agency-driven. The decisions documented below — definition-site tagging, user-space scheduling, no baked-in keyword — were made and justified independently, before [Agency](./agency.md) existed as a document. What follows states the original justification first, in each case, and then states separately, and explicitly, how Agency's later, independently-developed vocabulary describes the same decision. Where the two accounts agree, that agreement is treated as evidence the original decision was sound, not as evidence that Agency was secretly present all along.
 
-## Drawbacks
-Without a privileged compiler-level concurrency keyword, all of the static guarantees that languages like Rust derive from `async`/`await` being baked into the type system (e.g. compile-time prevention of blocking calls inside async contexts) must instead be reconstructed entirely by Linter rules — placing the same opt-in/swappable trade-off discussed in RFC 0008 and RFC 0009 onto concurrency safety as well.
+## Explanation
 
-## Rationale and alternatives
-Built-in `async`/`await` syntax (Rust, JS, Python, C#) was rejected specifically because of the function-coloring problem it introduces; Go's `go` keyword was rejected as a syntax-level concurrency primitive that, per RFC 0001's framework-first philosophy, should not be hardcoded into the language at all.
+### Definition-Site Over Call-Site
+A method's creator, not its caller, decides whether that method is asynchronous, by tagging it with an abstraction at definition time. Callers do not choose sync-vs-async behavior at the call site; they simply call the method, and its nature is already fixed by its own definition.
 
-## Prior art
-Erlang/BEAM's process model and user-space green-thread scheduling are the closest prior art for definition-driven, syntax-light concurrency at scale. Go's goroutines popularized lightweight user-space threads but still couple their creation to a dedicated keyword (`go`), which Khayyam avoids.
+Read through Agency's vocabulary, this is a specific, non-obvious claim about *where responsibility for a method's execution properties belongs*. A method is the thing that knows what it needs — whether it blocks, what it depends on, what invariants it touches. The caller is a different party, often with no visibility into any of that. Letting the caller choose sync-vs-async behavior at the call site (as `async`/`await`-style languages effectively do, by requiring the caller to `await` or not) makes the calling Agent responsible for a decision that properly belongs to the method's own definition. Definition-site tagging keeps that responsibility where the relevant knowledge actually is.
 
-## Unresolved questions
-The precise mechanism by which the scheduler interacts with a `PANIC()` call (an abrupt halt implemented as an ordinary library method per RFC 0009) — specifically, how static analysis identifies "diverging" methods that never return normally, for the purposes of exhaustive `Deinit()`-path coverage discussed in RFC 0008 — is not yet resolved and is earmarked for a dedicated runtime/linter-focused RFC.
+### User-Space Scheduling (Unikernel Synergy)
+Underlying execution runs on user-space (green) threads managed by library-level schedulers (e.g. the Memar framework's scheduler) — the language syntax itself remains entirely unaware of OS kernel threads. The default architectural stance favors green threads managed by library-level schedulers, for zero-overhead context switching, consistent with [Framework → Memar's Framework: Design Space Over Implementation Layers](./framework.md#memars-framework-design-space-over-implementation-layers): the scheduler is a framework-level component, not a language-level or OS-level given.
 
-## Future possibilities
-A dedicated `Khayyam-runtime`/`Khayyam-compiler` RFC set covering scheduler design, the PANIC/runtime interaction above, and how Unikernel thinking shows up concretely in the execution model is the recommended next step for this area.
+### Avoiding Function Coloring
+Because asynchronous behavior is a Linter-verified abstraction (`ab`) rather than a compiler keyword, the function-coloring problem that plagues `async`/`await` languages does not arise, keeping the core AST clean and orthogonal. This mirrors [Control Flow in Khayyam](./khayyam-control_flow.md)'s own governing principle — the compiler exposes minimal primitives, and every named behavior built on them is a library decision, never a grammar one — applied here to concurrency specifically rather than to branching, looping, or error propagation. This document does not restate that general argument; see Control Flow's own *Rationale and alternatives* for why compiler-owned syntax is rejected as a category, independent of which feature is in question.
+
+### Concurrency Decisions as Agency, Not Syntax
+A language keyword that spawns a unit of concurrent execution (Go's `go`, most explicitly) is, in Agency's terms, hard-coding one particular Execution Agent representation — a goroutine — directly into the grammar, before any question has been asked about who is responsible for what state. This is the same error [Agency's own Common Modeling Errors](./agency.md) and [Process's Common Modeling Errors](./process.md#common-modeling-errors) name under a different framing: treating Worker, Actor, or another execution representation as the primitive concept, rather than as one possible representation of a bounded execution responsibility.
+
+Khayyam's refusal to add `go`/`async`/`await` as keywords already avoids this, for reasons that had nothing to do with Agency at the time — the function-coloring problem, and a general reluctance to let the compiler privilege one paradigm. Stated through Agency's vocabulary now that it exists: adding such a keyword to Khayyam would mean deciding, once, permanently, in the grammar, which execution-Agent representation every concurrent Khayyam program must use — exactly the decision [Process → Concurrency](./process.md#concurrency)'s escalating question chain (shared state → shared mutable state → shared invariant → common ownership → partitionable responsibility → scheduling → synchronization → locking) argues should be reached only after the responsibility question has actually been asked, not assumed by reaching for a keyword first.
+
+This does not mean Khayyam has no need for some library-level representation of an execution Agent. It means that representation, whatever shape it takes and whatever it ends up being called, is built the same way `IF`/`ELSE` and `PANIC()` are — as an ordinary, named, importable abstraction operating on the compiler's minimal execution primitives, not as syntax — so that the choice of execution-Agent representation remains a library decision a project can inspect, replace, or govern via its Linter, rather than a permanent grammar commitment.
+
+### Agency Beyond Concurrency: Intentional vs. Accidental Contract Satisfaction
+Concurrency is not the only place Agency's vocabulary turns out to bear on an existing Khayyam design question. [Abstraction in Khayyam](./khayyam-abstraction.md) currently resolves whether a capsule satisfies an abstraction (`ab`) purely structurally: a capsule satisfies `Reader` if it happens to implement `Reader`'s required methods with matching signatures, whether or not its author ever intended that capsule to be usable as a `Reader`. That document's own central Unresolved question — whether this "accidental satisfaction" is acceptable as-is, or whether Khayyam needs some intentional-satisfaction mechanism — is, read through Agency's vocabulary, a question about whether structural resemblance is sufficient to establish an `agent_for`-style relationship, or whether such a relationship requires a declared, intentional undertaking.
+
+[Agency](./agency.md)'s own model does not treat resemblance as sufficient for an Agent relationship to hold: a Principal–Agent relationship is constituted by a deliberate undertaking of responsibility, not by two parties happening to have compatible shapes. Read that way, Khayyam's current structural-satisfaction model has no Agency in this sense at all — a capsule that accidentally matches `Reader`'s signatures has not agreed to act as a `Reader` for anyone; it merely happens to be usable as one. The accidental-satisfaction risk `khayyam-abstraction.md` already names as a drawback is, in Agency's terms, exactly the gap between "structurally resembles an Agent" and "has actually undertaken to act as one."
+
+This does not resolve `khayyam-abstraction.md`'s open question, and this document takes no position on which of that document's three options (keep structural satisfaction, require nominal declaration, or a hybrid marker-based model) is correct — that decision depends on tradeoffs (boilerplate, discoverability, migration cost) this document has no basis to weigh. What Agency's vocabulary offers is a sharper way to state what is actually at stake in that decision: not merely "should Khayyam add ceremony," but "should satisfying a contract in Khayyam ever require the kind of declared, intentional commitment Agency's model already requires of an `agent_for` relationship elsewhere." If `khayyam-abstraction.md` is revised in light of this framing, any resulting mechanism should still follow the same library-not-syntax pattern this document argues for throughout — `khayyam-abstraction.md`'s own option (c) already anticipates this ("a library-driven \[...\] mechanism for declaring it") independently of Agency.
+
+#### Discussion
+
+##### Drawbacks
+Without a privileged compiler-level concurrency keyword, all of the static guarantees that languages like Rust derive from `async`/`await` being baked into the type system (e.g. compile-time prevention of blocking calls inside async contexts) must instead be reconstructed entirely by Linter rules — placing the same opt-in/swappable trade-off discussed in [Memory Model](./khayyam-memory_model.md) onto concurrency safety as well.
+
+##### Rationale and alternatives
+Built-in `async`/`await` syntax (Rust, JS, Python, C#) was rejected specifically because of the function-coloring problem it introduces; Go's `go` keyword was rejected as a syntax-level concurrency primitive that, per [Framework](./framework.md)'s framework-first philosophy, should not be hardcoded into the language at all. Read retrospectively through Agency, both rejections also avoid hard-coding one particular execution-Agent representation into the grammar — an additional, independently-arrived-at reason for the same conclusion, not the original one.
+
+##### Prior art
+Erlang/BEAM's process model and user-space green-thread scheduling are the closest prior art for definition-driven, syntax-light concurrency at scale — and, read through Agency, BEAM's own "process" is itself a named execution-Agent representation, not unlike what a future Khayyam Worker/Actor library would provide, except BEAM commits to it at the language level while Khayyam leaves the choice to a library. Go's goroutines popularized lightweight user-space threads but still couple their creation to a dedicated keyword (`go`), which Khayyam avoids.
+
+##### Unresolved questions
+1. The precise mechanism by which the scheduler interacts with a `PANIC()` call (an abrupt halt implemented as an ordinary library method per [Control Flow in Khayyam](./khayyam-control_flow.md#error-propagation)) — specifically, how static analysis identifies "diverging" methods that never return normally, for the purposes of exhaustive `Deinit()`-path coverage discussed in [Memory Model](./khayyam-memory_model.md) — is not yet resolved and is earmarked for a dedicated runtime/linter-focused document.
+2. Khayyam does not yet have a standard-library representation for an execution Agent. [Process → Concurrency](./process.md#concurrency) and [Agency → Execution Agent](./agency.md) establish what such a representation would need to satisfy conceptually; deciding its concrete shape — what it is called, its API, how it is registered and identified, how responsibility for a partition is assigned and reassigned — is deliberately left open here. This document does not propose a name or design for it, including "Worker" or "Actor": naming a specific mechanism now, even as a mere proposal, risks the same error this document argues against — a specific execution-Agent representation quietly becoming the assumed answer before the actual requirements (scheduling model, runtime constraints, linter governance) that a library-level decision should be made from have been worked out. That decision belongs to a runtime/compiler-focused document, not this one. See Future possibilities.
+3. This document's scope is no longer concurrency-only: *Agency Beyond Concurrency*, below, adds a second instance (abstraction satisfaction). One earlier candidate for a third instance was checked and closed: a method being "owned by" another method or abstraction, per [Method in Khayyam → Method Structure](./khayyam-method.md#method-structure), is a type-system attachment point (which type a callable behavior is structurally attached to), not a party responsible for or delegating an action. It shares a word with Agency's "owner" vocabulary but not the underlying concept, and does not belong here. Whether other Khayyam design decisions besides these two connect to Agency remains open; this document adds an instance only when a real, checked connection is found, not speculatively.
+4. Whether Khayyam should adopt an intentional-satisfaction mechanism at all — and if so, which of [Abstraction in Khayyam](./khayyam-abstraction.md)'s three candidate options — is that document's own open question, not this one's; see *Agency Beyond Concurrency*, below, for what Agency's vocabulary adds to it without resolving it.
+
+##### Future possibilities
+A standard-library representation of an execution Agent is the most direct next step this document points toward, but this document deliberately does not propose its name, API, or design — doing so here would prescribe a mechanism the same way a `go` keyword or an `async`/`await` pair does, only in prose instead of grammar. That design work belongs to Khayyam's own compiler/runtime documentation, informed by [Agency → Execution Agent](./agency.md) and [Process → Concurrency](./process.md#concurrency) rather than by this document naming a shape in advance.
+
+## Results
+
+## Discussion
+
+### Unresolved questions
+See the Unresolved questions under *Concurrency Decisions as Agency, Not Syntax*, above; this document does not have additional document-level open questions beyond those.
+
+### Future possibilities
+See the Future possibilities under *Concurrency Decisions as Agency, Not Syntax*, above.

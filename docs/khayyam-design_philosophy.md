@@ -2,11 +2,11 @@
 Title: "Khayyam Design Philosophy"
 Status: Draft
 Start Date: 2026-07-13
-RFC Number: 495539
+ID: 495539
 Applied to: []
-Related RFCs:
+Citations:
     - Title: "Khayyam - Programming Language"
-      URI: "../Khayyam.md"
+      URI: "./Khayyam.md"
       Kind: Extends
       Explanation: "This document records the design philosophy and recurring architectural principles behind the canonical Khayyam language specification. It does not modify, restate, or supersede the specification itself."
     - Title: "Terminology"
@@ -31,7 +31,7 @@ Contributor(s):
     Tasks:
       - Titles: ["Original idea and reflections", "Design leadership and coordination"]
         URI: ""
-        Explanation: "Original author of all reflections and design assessments; identified the core principles that form the substance of this RFC."
+        Explanation: "Original author of all reflections and design assessments; identified the core principles that form the substance of this document."
   - Name: "ChatGPT"
     URI: "https://openai.com"
     Model: "GPT-5.5"
@@ -45,9 +45,9 @@ Contributor(s):
     Model: "GLM 5.2"
     Effort: "Medium"
     Tasks:
-      - Titles: ["Restructuring into RFC template"]
+      - Titles: ["Restructuring into document template"]
         URI: ""
-        Explanation: "Restructured unstructured reflections into the canonical RFC template format; preserved original arguments and voice while mapping content to Reference-level topic subsections."
+        Explanation: "Restructured unstructured reflections into the canonical document template format; preserved original arguments and voice while mapping content to Reference-level topic subsections."
   - Name: "Claude"
     URI: "https://anthropic.com"
     Model: "Claude Sonnet 5"
@@ -55,29 +55,29 @@ Contributor(s):
     Tasks:
       - Titles: ["Narrative/technical separation", "Governance and attribution review"]
         URI: ""
-        Explanation: "Front-matter governance. Separated the document into a narrative/philosophy layer (retained here) and a technical/decision layer (extracted to a staging file for placement into dedicated future RFCs)."
+        Explanation: "Front-matter governance. Separated the document into a narrative/philosophy layer (retained here) and a technical/decision layer (extracted to a staging file for placement into dedicated future documents)."
 ---
 
 # Khayyam Design Philosophy
 
 ## Summary
-This RFC documents the design philosophy underlying the Khayyam programming language: the architectural principles, motivations, and observed strengths that emerge from Khayyam's approach of deriving language constructs from long-term system-modeling requirements, rather than assembling a feature set.
+This document documents the design philosophy underlying the Khayyam programming language: the architectural principles, motivations, and observed strengths that emerge from Khayyam's approach of deriving language constructs from long-term system-modeling requirements, rather than assembling a feature set.
 
-This RFC intentionally does not contain topic-specific technical decisions — error propagation mechanics, primitive capsule contracts, abstraction versioning rules, polymorphism compilation strategy, and similar concerns are addressed in their own dedicated RFCs as they are written. A reader who does not find a specific mechanism documented here should not assume it is unresolved; see the project's general documentation-navigation guidance for how to search across Memar's RFCs by topic rather than by filename.
+This document intentionally does not contain topic-specific technical decisions — error propagation mechanics, primitive capsule contracts, abstraction versioning rules, polymorphism compilation strategy, and similar concerns are addressed in their own dedicated documents as they are written. A reader who does not find a specific mechanism documented here should not assume it is unresolved; see the project's general documentation-navigation guidance for how to search across Memar's documents by topic rather than by filename.
 
 ## Motivation
-Multiple design discussions across Khayyam's evolution have converged on a small set of recurring principles — behavior over type identity, domain modeling as a first-class concern, and the separation of syntax from governance — but these principles had never been documented together in one place. This RFC exists to record that shared philosophical foundation, so that future contributors have a stable reference point rather than rediscovering the same reasoning independently.
+Multiple design discussions across Khayyam's evolution have converged on a small set of recurring principles — behavior over type identity, domain modeling as a first-class concern, and the separation of syntax from governance — but these principles had never been documented together in one place. This document exists to record that shared philosophical foundation, so that future contributors have a stable reference point rather than rediscovering the same reasoning independently.
 
-This RFC deliberately does not attempt to resolve open technical questions that have a distinct, separate mechanism to decide (how errors propagate, what primitive capsules guarantee, how abstractions version, and so on). Keeping those out of this document means this document's content will not go stale as implementation decisions are made elsewhere — a risk that materialized concretely during this RFC's own drafting, when an earlier version restated an error-handling question that had already been substantially addressed elsewhere.
+This document deliberately does not attempt to resolve open technical questions that have a distinct, separate mechanism to decide (how errors propagate, what primitive capsules guarantee, how abstractions version, and so on). Keeping those out of this document means this document's content will not go stale as implementation decisions are made elsewhere — a risk that materialized concretely during this document's own drafting, when an earlier version restated an error-handling question that had already been substantially addressed elsewhere.
 
 Ongoing design tensions that apply continuously to syntax and grammar decisions — rather than being resolved once, elsewhere — remain part of this document, since there is no separate place where they would be decided independently of this philosophy.
 
 ## Guide-level explanation
 Khayyam is evolving away from being a traditional programming language and toward becoming a system-modeling language. Most language designs begin by collecting useful features — OOP, generics, pattern matching, functional constructs, traits, reflection, meta-programming — and combining them into a coherent syntax. Khayyam follows a fundamentally different path: instead of asking "What features should a language provide?", it asks "What architectural principles should a long-lived system follow?" and then derives language constructs from those principles.
 
-This RFC captures the philosophical layer of that derivation — the recurring principles observed across many separate design discussions. It intentionally stays at the level of *why* rather than *how*, wherever a distinct *how* has (or will have) a dedicated home elsewhere. The specific mechanisms (how errors propagate, how primitive types are specified, how abstractions version, how polymorphism compiles) are the concern of separate, focused RFCs, written once each design matures enough to be specified concretely.
+This document captures the philosophical layer of that derivation — the recurring principles observed across many separate design discussions. It intentionally stays at the level of *why* rather than *how*, wherever a distinct *how* has (or will have) a dedicated home elsewhere. The specific mechanisms (how errors propagate, how primitive types are specified, how abstractions version, how polymorphism compiles) are the concern of separate, focused documents, written once each design matures enough to be specified concretely.
 
-The reader does not need to have read the canonical [Khayyam language specification](../Khayyam.md) to follow this document, though familiarity with Khayyam's core concepts — capsules, abstractions, methods, and Smart Compilation — will provide useful context.
+The reader does not need to have read the canonical [Khayyam language specification](./Khayyam.md) to follow this document, though familiarity with Khayyam's core concepts — capsules, abstractions, methods, and Smart Compilation — will provide useful context.
 
 ## Reference-level explanation
 
@@ -92,9 +92,9 @@ Khayyam exists to protect, from the inside, by the people most invested in prote
 
 Keeping compiler and runtime implementation outside Khayyam's own scope as separate systems that consume Khayyam's specification, built by teams whose incentives are implementation correctness and performance rather than syntax convenience — is therefore not an incidental scoping choice. It is a structural safeguard against the specific failure mode described above.
 
-This has a direct consequence for how Khayyam's own RFCs should be scoped: a proposal to add syntax "to make the compiler's job easier" or "because other languages do it this way" is, by this principle, a signal to examine the proposal skeptically rather than a reason to adopt it.
+This has a direct consequence for how Khayyam's own documents should be scoped: a proposal to add syntax "to make the compiler's job easier" or "because other languages do it this way" is, by this principle, a signal to examine the proposal skeptically rather than a reason to adopt it.
 
-(This is a draft note for further discussion — the precise boundary between "what Khayyam specifies" and "what a Khayyam implementation provides" still needs worked examples before this can be a settled RFC section.)
+(This is a draft note for further discussion — the precise boundary between "what Khayyam specifies" and "what a Khayyam implementation provides" still needs worked examples before this can be a settled document section.)
 
 ### System-Modeling Language Philosophy
 The more Khayyam evolves, the less it appears to be a traditional programming language and the more it resembles a system-modeling language. This distinction may ultimately become one of Khayyam's defining characteristics.
@@ -147,14 +147,14 @@ This perspective influenced discussions around generics, parametric polymorphism
 #### Reassessment of Parametric Polymorphism
 Many canonical examples of parametric polymorphism are historically tied to limitations of existing languages rather than fundamental architectural requirements. Examples include `identity<T>()`, `swap<T>()`, `Option<T>`, and `Result<T,E>`. In several cases, these abstractions exist primarily because of constraints such as single-return-value functions, nullability problems, exception models, and weak domain modeling. When those constraints disappear in Khayyam, some of these patterns become significantly less important.
 
-This suggests that discussions about generics should not begin with "How do we support generic syntax?" but rather "Why does this requirement exist in the first place?". The specific compilation mechanism that follows from this reasoning — how Khayyam's inclusion-based approach actually works and compiles — is the subject of its own dedicated RFC, not this document.
+This suggests that discussions about generics should not begin with "How do we support generic syntax?" but rather "Why does this requirement exist in the first place?". The specific compilation mechanism that follows from this reasoning — how Khayyam's inclusion-based approach actually works and compiles — is the subject of its own dedicated document, not this document.
 
 ### Self-Documenting Code and Naming
 In most languages, naming is a style preference. In Khayyam, it is enforced by the language itself: magic numbers are forbidden, primitives must be wrapped in named capsules (`W32`, not `int`), and generic containers are replaced by domain-specific names (`UserRegistry`, not `Map<ID, User>`).
 
 This means that in a Khayyam codebase, it is structurally impossible to write opaque code even if a developer tries. The language grammar makes the architect's intent visible at every call site.
 
-This is not a one-time mechanism to be decided and then documented elsewhere — it is an ongoing tension that recurs every time a new naming rule, keyword, or grammar constraint is considered. Because of that, it stays part of this document rather than being extracted into a dedicated topic RFC.
+This is not a one-time mechanism to be decided and then documented elsewhere — it is an ongoing tension that recurs every time a new naming rule, keyword, or grammar constraint is considered. Because of that, it stays part of this document rather than being extracted into a dedicated topic document.
 
 #### Discussion
 
@@ -194,23 +194,23 @@ These languages inspirations don't mean just about get good idea but mean drop b
 ## Discussion
 
 ### Naming Conventions
-Not applicable at the RFC-wide level. Each topic section above that introduces naming implications includes its own Suggested Naming Conventions or Naming Discussion where relevant.
+Not applicable at the document-wide level. Each topic section above that introduces naming implications includes its own Suggested Naming Conventions or Naming Discussion where relevant.
 
 ### Drawbacks
-The principles documented here are, by nature, interpretive rather than settled fact — they describe a consistent direction observed across many design discussions, not a technical conclusion that can be independently verified. A reader could mistake this philosophical framing for a finalized technical decision on any given topic; it is not. Conversely, the absence of a topic from this document does not imply it is unresolved elsewhere — it may simply belong in a different, more focused RFC. Both risks are mitigated by the project's general documentation-navigation guidance rather than by anything specific to this document.
+The principles documented here are, by nature, interpretive rather than settled fact — they describe a consistent direction observed across many design discussions, not a technical conclusion that can be independently verified. A reader could mistake this philosophical framing for a finalized technical decision on any given topic; it is not. Conversely, the absence of a topic from this document does not imply it is unresolved elsewhere — it may simply belong in a different, more focused document. Both risks are mitigated by the project's general documentation-navigation guidance rather than by anything specific to this document.
 
 ### Rationale and alternatives
-- **Keep philosophy and technical decisions combined in a single document (original approach, revised)**: earlier drafts of this RFC combined both layers, reasoning that the topics are interconnected. In practice, this created a duplication risk: technical claims restated here could drift out of sync with the dedicated RFCs where those same mechanisms are actually decided. This risk materialized concretely — an earlier draft's discussion of error propagation restated a question already substantially addressed by the existing error-abstraction RFC and by the canonical specification's own method-return pattern. The current approach keeps here only what is either (a) pure philosophy with no separate technical mechanism, or (b) an ongoing design tension with no single external decision point (naming, syntactic atomicity). Topics with a distinct, separable mechanism move to their own RFCs as they are written, and are not individually cross-referenced from this document — readers are directed to the project's general documentation-navigation guidance instead.
+- **Keep philosophy and technical decisions combined in a single document (original approach, revised)**: earlier drafts of this document combined both layers, reasoning that the topics are interconnected. In practice, this created a duplication risk: technical claims restated here could drift out of sync with the dedicated documents where those same mechanisms are actually decided. This risk materialized concretely — an earlier draft's discussion of error propagation restated a question already substantially addressed by the existing error-abstraction document and by the canonical specification's own method-return pattern. The current approach keeps here only what is either (a) pure philosophy with no separate technical mechanism, or (b) an ongoing design tension with no single external decision point (naming, syntactic atomicity). Topics with a distinct, separable mechanism move to their own documents as they are written, and are not individually cross-referenced from this document — readers are directed to the project's general documentation-navigation guidance instead.
 - **Wait until implementation evidence exists before documenting (rejected)**: documenting the philosophical principles now still creates a shared reference point, even if specific technical mechanisms are decided later — and because this document no longer makes technical claims about those separable mechanisms, this reasoning holds more cleanly than it did in the original, mixed-scope version.
 
 ### Prior art
-Rust's design philosophy documents and Go's "Go Proverbs" serve a similar purpose of capturing design intent alongside technical specification. This RFC differs by keeping the philosophical/ongoing-tension layer separate from decidable technical specification entirely, rather than combining both.
+Rust's design philosophy documents and Go's "Go Proverbs" serve a similar purpose of capturing design intent alongside technical specification. This document differs by keeping the philosophical/ongoing-tension layer separate from decidable technical specification entirely, rather than combining both.
 
 ### Unresolved questions
-1. As the technical topics implied by this philosophy (error propagation, primitive capsule contracts, abstraction versioning, inclusion-based polymorphism, and others) get their own dedicated RFCs, does this document need to change at all, or does it remain stable as a pure philosophy reference?
+1. As the technical topics implied by this philosophy (error propagation, primitive capsule contracts, abstraction versioning, inclusion-based polymorphism, and others) get their own dedicated documents, does this document need to change at all, or does it remain stable as a pure philosophy reference?
 2. How frequently should this document be revisited to confirm the principles it describes still hold as more of Khayyam is implemented?
 
 ### Future possibilities
-As Khayyam's technical RFCs are written for the topics this philosophy implies, this document is expected to remain largely unchanged — its scope is philosophy and ongoing design tensions, not one-time mechanism decisions, so it does not need to track the completion status of those RFCs individually. This RFC can move toward Final once its own scope is judged complete, independent of how many companion technical RFCs still remain to be written.
+As Khayyam's technical documents are written for the topics this philosophy implies, this document is expected to remain largely unchanged — its scope is philosophy and ongoing design tensions, not one-time mechanism decisions, so it does not need to track the completion status of those documents individually. This document can move toward Final once its own scope is judged complete, independent of how many companion technical documents still remain to be written.
 
 ## Change Rationale

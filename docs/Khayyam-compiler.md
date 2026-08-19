@@ -19,12 +19,6 @@ Khayyam's AST does not natively recognize high-level conditional logic like `if`
       - 
 - **Commands Break**: each command must end with new line
 
-## Smart Compilation of Abstractions
-Khayyam avoids explicit generic syntax (like `<T>`). Abstractions are pure contracts.
-- **Graph Analysis:** The compiler MUST analyze the dependency graph to determine the implementation strategy for an abstraction.
-- **Compile-Time (Monomorphization):** If the exact underlying capsule satisfying the abstraction is known at compile time, the compiler MUST inline the code, resulting in zero-cost abstraction.
-- **Run-Time (Dynamic Dispatch):** If the capsule is hidden or determined dynamically, the compiler automatically implements a VTable/Interface mechanism for runtime resolution.
-
 ## Environment-Agnostic Entry Points
 Khayyam does not enforce any syntax-level entry point or lifecycle functions such as `main`, `init`, or `deinit`.
 
@@ -76,13 +70,3 @@ tp Set mt (self Key) (key STR) () {
 
 ### Change logic in runtime
 You can write code to change(add or remove) modules binary code in runtime. It is like `WASM` idea. It can be very dangerous feature and MUST tag as `unsafe`. It is useful to add or remove modules in microservice way but as describe by [this paper from google expert software developers](https://dl.acm.org/doi/pdf/10.1145/3593856.3595909)
-
-## Abstraction Realization (Implicit Satisfaction)
-Khayyam does not introduce any explicit syntax or keyword (such as `impl` or `implements`) to bind a capsule to an abstraction (`ab`). Abstraction realization is strictly implicit and structural at the compiler level.
-- **Rule**: A capsule satisfies an `ab` if it implements all methods declared by that abstraction with identical signatures.
-- **Compile-time Validation**: The compiler validates abstraction satisfaction during assignment or parameter passing where an abstraction type is expected. Missing or mismatched methods will result in a strict compile-time error.
-
-## Composition over Inheritance (No Method Promotion)
-Khayyam completely rejects automatic behavior inheritance and method promotion. Embedding a capsule inside another capsule does not expose the inner capsule's methods to the outer scope automatically. The only sanctioned mechanism for behavior sharing is explicit delegation.
-
-> For the full specification — including compiler rules, linter enforcement, rationale, prior art, and design alternatives — see **[RFC 495467 — Khayyam Rejection of Inheritance](./khayyam-rejection_of_inheritance.md)**.

@@ -3,74 +3,25 @@ Title: "Variable in Khayyam"
 Status: Draft
 Start Date: 2026-07-15
 ID: 495591
-Applied to: []
-Citations:
-    - Title: "Khayyam - Programming Language"
-      URI: "./Khayyam.md"
-      Relation: "Reference"
-      Reason: "The canonical specification defines the core variable syntax (vr), import mechanism, and logical-reference semantics that this document elaborates and motivates."
-    - Title: "Khayyam Design Philosophy"
-      URI: "./khayyam.md"
-      Relation: "Reference"
-      Reason: "The philosophy document the recurring principles (self-documenting code, syntactic atomicity, domain modeling) that underpin the variable design decisions recorded here."
-    - Title: "Type"
-      URI: "./type.md"
-      Kind: Depends_on
-      Reason: "Type is the central recurring concept throughout this document"
-    - Title: "Encapsulation in Khayyam"
-      URI: "./khayyam-encapsulation.md"
-      Relation: "Reference"
-      Reason: ""
-    - Title: "Abstraction in Khayyam"
-      URI: "./khayyam-abstraction.md"
-      Relation: "Reference"
-      Reason: ""
-    - Title: "Polymorphism in Khayyam"
-      URI: "./khayyam-polymorphism.md"
-      Relation: "Reference"
-      Reason: ""
-Contributor(s):
-  - Name: "Omid Hekayati"
-    URI: "mailto:omid@geniuses.group"
-    Tasks:
-      - Works: ["Original design decisions", "Defined the core variable semantics, no-assignment-operator rule, and de-primitive-ing philosophy in the canonical Khayyam specification."]
-        URI: ""
-  - Name: "ChatGPT"
-    URI: "https://openai.com"
-    Model: "GPT-5.5"
-    Effort: "Medium"
-    Tasks:
-      - Works: ["Critical review"]
-        URI: ""
-  - Name: "Super Z"
-    URI: "https://z.ai"
-    Model: "GLM 5.2"
-    Effort: "High"
-    Tasks:
-      - Works: ["Restructuring into document template", "Content consolidation and enrichment", "Restructured scattered variable-related content into the canonical document template; consolidated content from multiple source files; added reference-level elaborations on scope, initialization, and import mechanics."]
-        URI: ""
-  - Name: "Claude"
-    URI: "https://claude.ai"
-    Model: "claude-sonnet-5"
-    Effort: "Medium - extended thinking enabled"
-    Tasks:
-      - Works: ["Critical review"]
-        URI: ""
 ---
 
-# Variable Semantics and Declaration in Khayyam
+# Variable in Khayyam
 
-## Summary
-This document specifies the semantics, declaration rules, and design rationale for variables in Khayyam. A variable in Khayyam is a named reference to an instance of a type — never a raw data block and never decorated with consumer-side mutability keywords. Variables are declared with explicit types and initialized exclusively through capsule methods (no assignment operators). The language forbids multi-variable declarations, type inference, and magic numbers, ensuring that every variable declaration carries domain meaning and that the codebase remains self-documenting by construction.
+## Abstract
+This document specifies the semantics, declaration rules, and rationale of variables in Khayyam. A variable is a named logical reference to an instance of a type, never a raw data block and never the owner of consumer-side mutability semantics. A declaration makes its name and type explicit; initialization and every later state change occur through named capsule methods rather than assignment syntax. Khayyam consequently admits neither type inference, multi-variable declarations, nor built-in arithmetic and logical operators. These constraints preserve the domain model directly in source code and keep behavioral decisions with the types that own them.
 
-## Motivation
+## Introduction
+
+### Motivation
 In most mainstream languages, variable declarations are a locus of hidden complexity: type inference hides the actual type from readers, assignment operators enable implicit copies and aliasing bugs, multi-variable declarations compress distinct pieces of information into a single line, and consumer-side modifiers (`mut`, `const`, `readonly`) shift mutability decisions to every call site rather than anchoring them in the type's own definition. These conveniences optimize for writing speed at the expense of reading clarity, long-term maintainability, and domain integrity.
 
 Separately, arithmetic and comparison operations are not infallible mathematical abstractions — they are physical, hardware-bound processes that can fail (overflow, division by zero, precision loss). Conventional infix syntax (`c = a + b`) leaves no channel through which such a failure can be reported, forcing languages toward dangerous workarounds: silent overflow, hidden panics, or exceptions that bypass the normal control-flow path. This same failure-visibility principle motivates Khayyam's treatment of arithmetic as ordinary, explicit capsule method calls rather than operators (see [Domain-Driven Arithmetic](#domain-driven-arithmetic)).
 
-Khayyam's variable model was designed to eliminate each of these sources of opacity. By requiring explicit types, forbidding assignment operators, rejecting multi-declaration syntax, and separating variable identity from type behavior, the language ensures that every variable declaration communicates its domain purpose, its type, and its behavioral contract without ambiguity. This document those rules, explains their motivation, and records the alternatives that were considered and rejected.
+Khayyam's variable model was designed to eliminate each of these sources of opacity. By requiring explicit types, forbidding assignment operators, rejecting multi-declaration syntax, and separating variable identity from type behavior, the language ensures that every variable declaration communicates its domain purpose, its type, and its behavioral contract without ambiguity. This document specifies those rules, explains their motivation, and records the alternatives that were considered and rejected.
 
-## Guide-level explanation
+## Explanation
+
+### Overview
 A Khayyam variable is declared with the `vr` keyword, an explicit name, and an explicit type. There is no type inference, no assignment operator, and no multi-variable declaration syntax. Initialization happens through capsule methods, not through direct assignment. A variable creates a named reference to an instance of a type; the variable itself has no behavioral semantics — the behavior of the referenced instance is defined by its type.
 
 ```khayyam
@@ -93,8 +44,6 @@ Declaring a variable establishes a name and type relationship. It does not defin
 
 This design means that reading Khayyam code never requires mental type-inference reconstruction, never hides aliasing behind an `=` sign, and never surprises a reader with an unexpected mutation — the capsule's public interface is the complete and only contract.
 
-## Reference-level explanation
-
 ### Variable Declaration Syntax
 The `vr` keyword is the sole mechanism for declaring a variable. The grammar permits exactly one variable name and one type per declaration statement; there is no comma-separated multi-declaration form. The syntax is:
 
@@ -102,7 +51,7 @@ The `vr` keyword is the sole mechanism for declaring a variable. The grammar per
 vr {name} {type}
 ```
 
-The name must be a valid identifier. The type must be a previously defined or imported type. Of the four Type categories (see [Type in Khayyam](./khayyam-type.md)), only two can serve as a variable's type: **capsule** and **abstraction**. Method and Scope are Type categories in their own right but have no instance for a variable to reference. How an abstraction-typed variable resolves to a concrete capsule instance at runtime (dispatch) is specified in [Polymorphism in Khayyam](./khayyam-polymorphism.md), not in this document. A variable declaration is a distinct, separate statement — it cannot be combined with any other declaration on the same line, and it cannot carry an initializer inline. This ensures that every variable has its own visible scope in the source and that a reader can never skim past a declaration because it was compressed alongside others.
+The name must be a valid identifier. The type must be a previously defined or imported type. Of the four Type categories (see [Type in Khayyam](./type.md)), only two can serve as a variable's type: **capsule** and **abstraction**. Method and Scope are Type categories in their own right but have no instance for a variable to reference. How an abstraction-typed variable resolves to a concrete capsule instance at runtime (dispatch) is specified in [Polymorphism in Khayyam](./khayyam-polymorphism.md), not in this document. A variable declaration is a distinct, separate statement — it cannot be combined with any other declaration on the same line, and it cannot carry an initializer inline. This ensures that every variable has its own visible scope in the source and that a reader can never skim past a declaration because it was compressed alongside others.
 
 The explicit separation of declaration from initialization is deliberate. A variable's name and type are communicated in one step; its initial state is communicated in a separate, equally visible step. This two-step pattern reinforces the principle that the *what* (identity and type) and the *how* (initial state) are distinct pieces of information, each deserving its own moment of reader attention.
 
@@ -164,7 +113,8 @@ Many programming languages begin by defining a privileged collection of built-in
 
 Explicit type declarations ensure that the semantic model expressed by the author remains completely visible, regardless of the origin or nature of the type being used. Ultimately, Khayyam is not attempting to minimize the number of characters written by the developer. Its objective is to maximize the visibility, fidelity, and longevity of the software model represented by the source code. Types are fundamental elements of that model. They therefore remain explicit.
 
-#### Type declarations act as executable documentation
+#### Type declarations as executable documentation
+An explicit type declaration is executable documentation: it is checked by the compiler while also stating the author’s intended concept to every later reader. The declaration therefore does not merely describe a value’s representation; it binds the source-level name to a named behavioral contract that tooling can validate.
 
 #### Type inference optimizes authoring; explicit types optimize understanding
 Type inference optimizes writing code. Explicit types optimize understanding systems. Without doubt, writing code is once; reading is more than once.
@@ -240,7 +190,7 @@ Like every other method call in Khayyam, `a.Add(b)(c, err)` is a statement, not 
 Even trivial arithmetic requires a method call rather than an infix operator, which is significantly more verbose than virtually every other language in existence. For formulas passed as strings, type-checking of the formula's inner operands (e.g. preventing `Money + Duration`) depends on the specific evaluator capsule's implementation rather than being a language-level guarantee — this is currently an open design question for the standard `MathEval` implementation specifically (see Unresolved questions).
 
 ##### Rationale and alternatives
-Built-in infix operators (the universal default) were rejected because they structurally cannot express a failure path, which conflicts with Khayyam's broader principle that no control flow, including failure handling, should ever be hidden behind syntax (the same principle Library-Driven Control Flow applies to branching).
+Built-in infix operators (the universal default) were rejected because they structurally cannot express a failure path, which conflicts with Khayyam's broader principle that no control flow, including failure handling, should ever be hidden behind syntax (the same principle Khayyam Control Flow applies to branching).
 
 ##### Prior art
 Domain-modeling-heavy codebases in many languages already wrap arithmetic in named methods for business types (e.g. `Money.add()` in DDD-style Java/C# code) as a best practice; Khayyam makes this the *only* available path rather than an optional convention.
@@ -363,6 +313,9 @@ Rust's ownership model is the closest mainstream prior art in terms of explicit 
 ##### Future possibilities
 None recorded yet.
 
+## Results
+No observed results are recorded yet. This section will be updated when use of the variable model yields evidence that can be distinguished from its intended rationale.
+
 ## Discussion
 
 ### Naming Conventions
@@ -377,7 +330,7 @@ The variable model's insistence on explicit types, no assignment operators, and 
 
 ### Rationale and alternatives
 - **Combine declaration and initialization (rejected)**: would require an assignment operator, conflicting with the no-assignment rule and its aliasing-prevention benefits.
-- **Allow type inference for "obvious" cases (rejected)**: the boundary of "obvious" is subjective and creates inconsistency; see [No Type Inference](#no-type-inference).
+- **Allow type inference for "obvious" cases (rejected)**: the boundary of "obvious" is subjective and creates inconsistency; see [Explicit Types](#explicit-types).
 - **Allow multi-declaration for same-type variables (rejected)**: would compress distinct variables into a single line, violating the one-visible-step-per-statement principle; see [Variable Declaration Syntax](#variable-declaration-syntax).
 
 ### Prior art
@@ -390,5 +343,3 @@ Rust's `let` with optional `mut` is the closest mainstream variable model, thoug
 ### Future possibilities
 - A migration tool that automatically converts variable declarations from other languages into Khayyam's `vr` syntax, handling the separation of declaration and initialization.
 - A linter rule set for variable naming conventions, configurable per organization, that enforces the domain-meaningful naming principle at the project level.
-
-## Change Rationale

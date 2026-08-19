@@ -1,95 +1,96 @@
 ---
 Title: "Modularity in Khayyam"
 Status: Draft
-Start Date: "2026-07-29"
-ID: "495930"
-Applied to: []
-Citations:
-    - Title: "Khayyam - Programming Language"
-      URI: "./Khayyam.md"
-      Relation: "Reference"
-      Reason: "The canonical specification defines the `in` subtype."
-    - Title: "Encapsulation in Khayyam"
-      URI: "./khayyam-encapsulation.md"
-      Relation: "Depends_on"
-      Reason: ""
-Contributors:
-  - Name: "Omid Hekayati"
-    URI: "mailto:omid@geniuses.group"
-    Tasks:
-      - Works: ["Original design decisions for <modular programming>"]
-        URI: ""
-  - Name: "ChatGPT"
-    URI: "https://openai.com"
-    Model: "GPT-5.5"
-    Tasks:
-      - Works: ["Argumentation", "Argued for and against alternatives; incorporated revisions."]
-        URI: ""
+Start Date: 2026-07-29
+ID: 495930
 ---
 
 # Modularity in Khayyam
 
 ## Abstract
-[Modular programming](https://en.wikipedia.org/wiki/Modular_programming) is a programming paradigm that emphasizes organizing the functions of a codebase into independent modules, each providing an aspect of a computer program in its entirety without providing other aspects.
+This document specifies how Khayyam represents and resolves modular relationships without making a storage, distribution, or package-management mechanism part of the language grammar. The architectural definition of a Module — a System under a modular boundary, identified by coherent responsibility and explicit relationships — belongs to [Modularity](./modularity.md). Khayyam applies that definition at the language and ecosystem layers: `in` includes named entities from a file; explicit names carry their meaning without package prefixes; and dependency location, version selection, integrity, and caching remain framework or tooling responsibilities. A companion manifest is the proposed location for the latter concerns, but its format and resolution algorithm are not yet specified.
 
 ## Introduction
 
 ### Motivation
-One of the recurring problems in modern modular programming is the gradual migration of ecosystem concerns into programming language semantics. A programming language should define how software components are expressed, referenced, and composed. It should not define where those components are stored, how they are distributed, which transport protocol retrieves them, how versions are resolved, or how packages are authenticated. These concerns belong to the surrounding ecosystem. Once they become part of the language itself, they become extremely difficult to evolve independently. The history of modern programming languages demonstrates that many modularity problems originate from coupling independent concerns that should have remained separate. The following table summarizes some common examples.
+Programming languages often couple three independently changing concerns: the language mechanism that refers to code, the logical Module that owns a responsibility, and the ecosystem mechanism that finds, versions, distributes, and verifies source. A repository move, package-manager change, or distribution change can then force source-level or language-level change even though the responsible Module has not changed.
 
-| Language / Ecosystem | Language Coupled To | Long-Term Consequence |
-|----------------------|--------------------|-----------------------|
-| C / C++ | Physical file layout (`#include`) | Logical modules become dependent on filesystem organization. |
-| Java | Package hierarchy and directory structure | Namespace, storage layout, and module identity become tightly coupled. Refactoring physical organization becomes harder than necessary. |
-| C# / .NET | Namespaces, assemblies, and project structure | Multiple concepts partially overlap, making modular boundaries depend on tooling conventions. |
-| Go | Repository location, module identity, and dependency resolution | Import paths encode distribution details. Changes in hosting, repository organization, or dependency management affect source code. The language specification must evolve alongside ecosystem concerns. |
-| Rust | Cargo package model | Cargo provides an excellent ecosystem, but the package manager effectively defines the language's modular structure. Alternative module ecosystems become significantly harder to introduce. |
-| JavaScript / Node.js | npm package resolution | Package manager conventions become part of the programming model. Module identity is strongly influenced by distribution mechanisms rather than architectural contracts. |
+Khayyam separates those concerns. The language needs a small, explicit way to include a named entity from another file. It does not need to define repository identity, network transport, registry policy, dependency-version selection, or authentication. These are real needs, but they belong to the framework and tooling layer, where they can evolve independently of the grammar.
 
-None of these approaches are inherently "wrong." Most of them solve practical engineering problems successfully. The architectural concern is different. Each of these designs couples concepts that naturally evolve at different rates.
-- Programming languages evolve slowly.
-- Package managers evolve more rapidly.
-- Repository hosting changes frequently.
-- Distribution mechanisms continue to change as software ecosystems mature.
+### Ecosystem Coupling
+The issue is not that package-oriented ecosystems fail to solve practical problems. It is that they commonly make one representation carry several meanings at once. The comparison below identifies the coupling Khayyam avoids; it does not treat any ecosystem as generally inferior.
 
-When these concerns become part of the language semantics, every ecosystem evolution places pressure on the language itself. Features originally introduced to solve distribution or dependency problems gradually become permanent language constructs, even though they are not fundamentally language concepts. Khayyam intentionally follows a different architectural direction. A module is defined by its contract rather than by its storage location. Its identity is independent of repositories, directories, package managers, hosting providers, or transport protocols. The responsibility of the language ends once it defines how modules are identified and composed. Questions such as:
+| Language / ecosystem | Concerns coupled to the programming model | Long-term consequence |
+| --- | --- | --- |
+| C / C++ | Physical file layout through `#include` | Logical inclusion depends directly on filesystem organization. |
+| Java | Package hierarchy and directory structure | Namespace, storage layout, and module identity become tightly coupled. |
+| C# / .NET | Namespaces, assemblies, and project structure | Several partially overlapping concepts determine a modular boundary through tooling conventions. |
+| Go | Repository location, module identity, and dependency resolution | Import paths encode distribution details, so changes in hosting or dependency policy affect source code. |
+| Rust | Cargo package model | The package manager strongly shapes the language's modular structure, making alternative module ecosystems harder to introduce. |
+| JavaScript / Node.js | npm package resolution | Distribution conventions strongly influence module identity in the programming model. |
 
-- where a module is stored,
-- how it is discovered,
-- how it is downloaded,
-- how versions are selected,
-- how integrity is verified,
-- how dependencies are cached,
+Programming-language grammar, package-management policy, repository hosting, and distribution mechanisms evolve at different rates. A design that combines them turns ordinary ecosystem evolution into pressure for language evolution. Khayyam's separation is intended to preserve a stable inclusion grammar while leaving its surrounding ecosystem replaceable.
 
-are responsibilities of the surrounding software ecosystem rather than the language itself. For this reason, Khayyam introduces an explicit module manifest. The manifest is not simply a dependency file. It is the formal contract describing the module's identity, published capabilities, entry points, dependencies, compatibility requirements, and other metadata required by external tools. Different build systems, package managers, deployment environments, or organizational infrastructures may interpret this manifest differently without requiring any change to the language itself. This separation allows both the language and the surrounding ecosystem to evolve independently while preserving long-term architectural stability.
+### Relationship to Modularity
+[Modularity](./modularity.md) is the authoritative conceptual document for Module identity, responsibility, boundaries, relationships, optional Modules, and the distinction between modularity and its physical representations. This document does not redefine any of those concepts. It records only the consequence for Khayyam: file paths, directories, repositories, packages, manifests, and deployment artifacts may represent or help resolve a Module, but none is the language-level definition of one.
 
 ### Methodology
-The decisions presented in this document were derived through a concept-first modeling methodology rather than by extending existing language designs. The process begins by identifying the fundamental concepts required for modular software construction independently of any programming language, operating system, file system, package manager, repository layout, or development tool. Once these concepts are modeled, existing programming languages and ecosystems are analyzed as real-world implementations rather than as authoritative references. Their designs are evaluated to understand which concepts they represent accurately, which concerns they couple unnecessarily, and which implementation constraints have influenced their architecture. The purpose of this analysis is not to reproduce existing solutions, but to distinguish fundamental concepts from implementation-specific decisions. Only after this separation are language constructs proposed. As a result, the language syntax is expected to emerge naturally from the conceptual model instead of becoming the starting point of the design.
+The decisions in this document are derived by first modeling the concepts required for modular software construction independently of a programming language, operating system, file system, package manager, repository layout, or development tool. Existing languages and ecosystems are then examined as implementations rather than authorities: the analysis asks which concepts they represent accurately, which concerns they couple unnecessarily, and which implementation constraints shaped their architecture.
+
+This methodology is shared with the broader conceptual work in [Modularity](./modularity.md), but it remains material here because it governs how Khayyam-specific language constructs are evaluated. The language syntax is a consequence of the model — in this case, the separation of source inclusion from distribution and resolution — rather than the starting point that determines the model.
 
 ## Explanation
 
-### Modularity Is About Contracts, Not Storage
-The essence of modular programming is not dividing source code into directories. It is defining explicit boundaries and contracts between independently evolving parts of a software system. Directories, repositories, packages, and archives are merely storage conventions. They should not become part of the language semantics.
+### Inclusion Is Not Module Definition
+Khayyam uses `in` as a routing operator for including named Types and Variables from another file:
 
-### What Is a Module?
-A module is not a directory. A directory is merely one possible storage mechanism. Likewise, a module is not a repository, a package, a namespace, or a versioned archive. Those are implementation concerns. A module is a logical unit that publishes a well-defined contract describing:
-- what it provides,
-- how it can be referenced,
-- what dependencies it requires,
-- and under which conditions those dependencies are resolved.
+```khayyam
+tp TcpConn in "net/tcp"
+vr MaxTimeout in "net/config"
+```
 
-The physical layout of files is therefore independent from the logical identity of the module. Different storage systems may organize the same module differently without changing the module itself.
+This syntax makes a source-level dependency explicit. It does not assert that a file is a Module, that a directory is a package, or that a path identifies a versioned distribution artifact. Those are separate representations and resolution concerns. Keeping `in` limited to inclusion prevents the grammar from acquiring rules about hosting, registries, versions, transport protocols, or organizational layout.
 
-### Why a Manifest Instead of Direct Language Semantics?
-Khayyam intentionally places module metadata in a manifest rather than embedding it into language syntax. This design follows a simple architectural principle:
-> Software architecture should depend on explicit contracts, not on incidental storage conventions.
+### Naming Without Package Context
+Khayyam has no package-level namespace or package-level encapsulation. A name must therefore state its own domain meaning rather than relying on a package prefix to supply the missing context. `Parent()` is ambiguous when seen alone; `ParentCommand()` or `ParentElement()` communicates the intended concept directly.
 
-A manifest provides a stable contract describing a module without requiring the programming language to understand repository layouts, package registries, network protocols, or distribution strategies. As software ecosystems evolve, these external mechanisms may change repeatedly while the language itself remains unchanged. Separating these concerns reduces unnecessary coupling and allows independent evolution of both the language and its surrounding tooling ecosystem.
+This is not a claim that names never collide or that a file path is irrelevant to reading code. It is a rule about where meaning must be carried: a package prefix must not be the only explanation of an otherwise vague name. The `in` declaration identifies the source of an included entity, while the entity's own name remains responsible for expressing what it is.
+
+#### Discussion
+
+##### Drawbacks
+Without package-level grouping, code cannot rely on a package prefix to make a family of vague names readable. This increases the naming discipline required of every Type and Method and can make migration from package-oriented codebases feel more verbose.
+
+##### Rationale and alternatives
+Conventional package and namespace systems were rejected as the language's primary source of semantic context because they encourage prefix-reliant naming and couple a logical grouping mechanism to source organization. Khayyam instead requires meaningful entity names and uses `in` only to make the source dependency explicit.
+
+The practical concern is not merely aesthetic. A package can make `Parent()` appear adequate only because a reader is expected to supply the package context mentally. That context can be absent in review, search results, generated documentation, or an AI-assisted analysis. `ParentCommand()` and `ParentElement()` preserve the distinction in the entity name itself.
+
+##### Prior art
+Go and Java rely on packages for organization and disambiguation. ES-module imports demonstrate one useful part of the alternative: an explicit import identifies where a dependency comes from without making a global package hierarchy the sole carrier of meaning. Khayyam applies the stronger requirement that the included entity's own name must remain meaningful without depending on such a prefix.
+
+##### Unresolved questions
+Earlier design material mentioned a hypothetical `im` keyword (`tp {name} im {address}`) for including an entire file under one local name, such as `jsonEncode.Encoder`. It was exploratory, not a commitment to a second import mechanism. Whether `in` alone can cover both inclusion of a named entity and any future whole-file inclusion need remains unresolved.
+
+### Dependency Resolution and Companion Manifest
+An `in` address is a source-level path, not a network locator or a version declaration. Consequently, version selection, source discovery, integrity verification, caching, and conflict resolution do not belong in the `in` grammar.
+
+The need for a resolution layer remains real even when Khayyam does not offer it as language syntax. For example, two parts of a project can require different versions of the same imported source, and a build can require integrity verification through pinning or hashes. The question is therefore where this work belongs, not whether it exists. The answer proposed here is the framework and tooling layer.
+
+The preferred direction is a companion manifest at the framework/tooling layer. It may resolve import roots such as `memar/` to concrete source locations and versions or hashes, while leaving the source syntax unchanged:
+
+```khayyam
+tp TcpConn in "memar/net/tcp"
+```
 
 ### Manifest as the Module Contract
-The manifest is not merely a dependency file. It is the formal description of a module. A module should be understandable without inspecting its internal directory layout. The manifest provides the information required to identify, reference, validate, and consume the module. Dependency resolution is only one responsibility derived from this contract.
+The manifest is not merely a dependency file. It is the formal external contract through which a Module can be identified, referenced, validated, and consumed without inspecting its internal directory layout. It describes the Module's published surface and the conditions under which external tooling resolves it. Dependency resolution is one responsibility derived from this contract, not the whole of it.
 
-```
+This does not make the manifest the ontological definition of Module: [Modularity](./modularity.md) defines a Module through its coherent responsibility, boundaries, and relationships. The manifest is the framework-level representation of those aspects that consumers and tools need to discover and use. A change in manifest syntax, storage, or resolver must not change the Module's conceptual identity.
+
+The following model is a directional content model, not yet a settled manifest schema:
+
+```text
 Manifest
 │
 ├── Identity
@@ -104,81 +105,52 @@ Manifest
 └── Metadata
 ```
 
-### Modules Are Not Directories
-Directories exist because today's file systems require them. Nothing in the definition of a module depends on directories. A future storage mechanism may organize modules inside databases, object stores, content-addressable storage, or distributed repositories. The logical identity of a module must remain independent from its physical storage.
+Different build systems, package managers, deployment environments, and organizational infrastructures may interpret this contract differently without requiring any change to Khayyam grammar. This separation allows the language and its ecosystem to evolve independently while retaining a stable, inspectable module-facing contract.
 
-### Language Should Describe Modules, Not Distributions
-A programming language should define how software components are composed. It should not define where they are downloaded from, how they are versioned, how they are authenticated, or how they are distributed. Those concerns belong to the surrounding ecosystem rather than the language itself.
+Two locations for version information were considered:
 
-### Naming-Driven Package Elimination
-Khayyam has no package-level encapsulation or global namespace concept. Producers (library authors) never define a package name; consumers include a file directly and assign it a local capsule name themselves via the `in` keyword (e.g. `tp JsonEncoder in "memar/codec/data_exchange/json/encode.kh"`).
-
-Developers must write clear, fully self-explanatory names for capsules and methods — `Parent() T` is ambiguous and discouraged; `ParentCommand() Command` or `ParentElement() Element` is preferred, since this makes code readable without needing any package prefix for context. When a developer wants to use code from another file, they import that file directly and choose the local name themselves: `tp JsonEncoder in "memar/codec/data_exchange/json/encode.kh"`. Because the consumer — not the producer — controls the local scope and name, there is no central package registry to collide with.
-
-- **Explicit Naming:** required for every capsule/method, since no package prefix will ever disambiguate it.
-- **Consumer-Driven Inclusion:** the `in` keyword binds a file's contents to a locally chosen name; producers do not declare or reserve any name on the consumer's behalf.
-
-#### Motivation
-Relying on packages tends to produce lazy naming (e.g. naming a method `Parent()` simply because it lives inside an `ast` package, relying on the package prefix to disambiguate) and eventually causes naming collisions across a codebase or ecosystem, since package names are a shared, contested global namespace.
+1. **Embed it in the `in` address.** Rejected: it imports a distribution and versioning concern into language syntax and makes source code depend on external resolution conventions.
+2. **Resolve it through a companion manifest.** Preferred: it keeps the grammar stable while allowing framework tooling to evolve its source-location, versioning, and integrity policies independently.
 
 #### Discussion
 
 ##### Drawbacks
-Without any package-level grouping, every imported file's contents must be named individually and explicitly by every consumer, which removes the convenience of a package prefix automatically scoping a whole family of related names together. This places the entire disambiguation burden on naming discipline rather than the namespace system.
+Until a manifest format and resolver exist, the design identifies the correct responsibility boundary without answering operational cases such as conflicting version requirements, offline cache policy, or integrity failure handling.
+
+The manifest can also become an accidental second language if it absorbs concepts that ought to stay in Khayyam's grammar, or if it is treated as the Module's definition instead of as its external representation. Its eventual schema must preserve the boundary stated here.
 
 ##### Rationale and alternatives
-Conventional package/namespace systems were rejected because they encourage context-dependent, prefix-reliant naming (the `Parent()` example) and introduce a shared global namespace as a potential collision surface — both in tension with Khayyam's broader explicitness principles (RFC 0002, RFC 0007).
+Encoding source location or version information directly in an `in` address was rejected because it makes an ecosystem convention a permanent part of the language grammar. A companion manifest keeps that policy external, allowing different build systems, package managers, deployment environments, and organizations to interpret or replace it without changing Khayyam syntax.
+
+Treating a manifest as only a dependency lock file was also rejected. Consumers need more than a resolved source location: they need a stable way to discover a Module's identity, entry points, published contracts, capabilities, compatibility conditions, and integrity information. Conversely, treating a manifest as the Module itself was rejected because the conceptual Module exists independently of whichever representation a particular toolchain uses.
 
 ##### Prior art
-Go and Java both rely heavily on packages for both organization and disambiguation. Khayyam's consumer-driven inclusion model is closer in spirit to ES module imports with explicit local aliasing (`import { encode as jsonEncode } from "..."`), but goes further by never having a producer-defined export name to alias *from* in the first place.
+Go's `go.mod`, Node's `package.json` and lock files, and Rust's `Cargo.toml` and `Cargo.lock` all place significant dependency-resolution data beside source code rather than inside their languages' import grammar. Khayyam follows the companion-manifest direction while avoiding source-level import strings that encode a distribution location or version.
 
 ##### Unresolved questions
-The rationale source material also describes a hypothetical, exploratory `im` keyword (`tp {name} im {addr}`) for importing an entire file under one local name (e.g. `jsonEncode.Encoder`), distinct from `in`. This was clarified during design discussion as an illustrative/exploratory mention only, not a committed second keyword alongside `in` — it should not be read as confirming two parallel import mechanisms exist. Whether a second import form is actually needed (versus `in` alone covering both "import a specific named entity" and "import a whole file under a local name") remains genuinely undecided and should be resolved before this RFC can move to Final status.
+The manifest format; the exact resolution algorithm; resolution of the `memar/` prefix; multi-version conflict policy; supply-chain integrity mechanisms such as pinning or hashing; and the authoritative meaning of each proposed manifest field remain out of scope and undecided.
 
 ##### Future possibilities
-None recorded yet.
-
-### Dependency Resolution via File URI and Companion Manifest
-Khayyam's `in`-based import resolves to a file-system-style path (e.g. `memar/net/tcp`), not a network/version-aware URI. Because plain File URI resolution (RFC 8089) has no concept of versioning, dependency/version resolution must be solved one layer up — by a framework-level tooling convention, most likely a companion manifest file placed alongside a module — rather than inside the language grammar itself.
-
-A developer writes `in "memar/net/tcp"` exactly as today; nothing about the import syntax itself changes. Separately, somewhere outside the language grammar — most plausibly a manifest file living alongside a module, in the spirit of how a `go.mod` or `package.json` sits beside source code rather than inside it — a framework-level tool determines which actual source (and which version of it) the `memar/` prefix resolves to for a given build. This keeps the language's stated promise (`in` is a simple, file-system-style path, not a network protocol) fully intact, while still giving an answer to "which bytes get linked" at the tooling layer.
-
-Two concrete mechanisms were considered for where version information should live:
-1. **Encoding a version inside the import path itself** (e.g. a query-string-like extension to the `in` address, similar in spirit to an HTTP URI's query component). This was evaluated and is **not** the recommended direction, because it would import a foreign concept (version syntax) directly into the language grammar — the same objection already raised against Go's URL-shaped import paths.
-2. **A companion manifest file alongside a module**, external to the language grammar entirely, responsible for resolving `memar/`-prefixed (and other) import roots to actual source locations and specific versions/hashes. This is the preferred direction, since it keeps the `in` keyword's grammar untouched and treats versioning purely as a build/tooling-layer concern, consistent with RFC 0001's framework-over-language philosophy.
-
-Plain File URI resolution (RFC 8089) was confirmed to have no built-in versioning concept whatsoever — it addresses only a path on a filesystem, with no notion of "version" of that path's contents — which rules it out as a sufficient mechanism on its own and motivates the need for this RFC.
-
-#### Motivation
-Earlier source material stated tersely: "We don't offer any version control for your codes, so we must not offer any dependency management too." In practice this leaves open real, unanswered questions: when two parts of a project need two different versions of the same imported file, or when the supply-chain integrity of an imported file needs to be verified (hashing/pinning), something has to resolve that — the question is only *where* that resolution mechanism should live, not whether the need exists at all.
-
-#### Discussion
-
-##### Drawbacks
-Deferring all dependency resolution to an external, not-yet-specified manifest format means, until that manifest format is actually designed, there is no concrete answer to "what happens when two parts of a project need different versions of the same file" — this RFC identifies the right *layer* for the answer to live in, but does not yet provide the answer itself.
-
-##### Rationale and alternatives
-Encoding version information directly into the `in` address string (option 1 above) was considered and rejected for reintroducing a network/versioning-shaped concept into the language grammar — precisely the same objection already raised against Go's `import "github.com/user/repo/v2"`-style paths, where a concern external to the language (source location and versioning) is baked into syntax.
-
-##### Prior art
-Go's `go.mod`, Node's `package.json`/`package-lock.json`, and Rust's `Cargo.toml`/`Cargo.lock` are all examples of companion-manifest-driven dependency resolution living beside, not inside, the source language's import syntax — the direction this RFC leans toward, while explicitly avoiding Go's choice to also bake a source-location/versioning convention into the import string itself.
-
-##### Unresolved questions
-The actual manifest format, its exact resolution algorithm (including how it would resolve the `memar/` prefix specifically to "the canonical Memar framework source"), and how supply-chain integrity (hashing/pinning) is verified are all still completely open and out of scope for this RFC.
-
-##### Future possibilities
-A dedicated follow-up RFC specifying the manifest file's exact format and resolution algorithm is the natural next step once this directional decision (manifest-based, not import-syntax-based) is confirmed.
+A dedicated document can specify the manifest format, resolution algorithm, integrity model, and compatibility policy once the directional decision to keep them outside the `in` grammar is confirmed.
 
 ## Results
+No observed results are recorded yet. This section will be updated when use of the language and tooling boundary yields evidence that can be distinguished from its intended rationale.
 
 ## Discussion
 
 ### Drawbacks
+The separation creates an intentional two-layer reading task: a developer must understand both Khayyam's simple inclusion grammar and the relevant framework's resolution policy. It also postpones concrete tooling ergonomics until the manifest and resolver are specified. This cost is accepted because combining the two layers would make changes in distribution policy changes to the language itself.
 
 ### Rationale and alternatives
+Khayyam does not define modularity through files, directories, repositories, packages, or manifests; [Modularity](./modularity.md) establishes why none of these representations can define Module. Nor does it embed dependency-management policy in `in`. The language's responsibility is explicit inclusion of source-level entities; ecosystem tooling's responsibility is selecting and validating the corresponding source.
 
 ### Prior art
+The comparison with package-centric ecosystems is not evidence that their designs are incorrect. They solve practical engineering problems. It illustrates a different boundary choice: Khayyam refuses to make the current solution for source distribution part of the programming-language model.
 
 ### Unresolved questions
+1. Is a whole-file inclusion form beyond `in` genuinely needed?
+2. What manifest schema and resolver model can support versioning and integrity without creating a second, hidden language-level module system?
+3. Which resolution policies are foundational framework law, and which are pluggable organizational rules?
 
 ### Future possibilities
+Once a manifest and resolver are designed, their document should define the framework/tooling contract and link back here for the language boundary, rather than extending `in` with distribution policy.
