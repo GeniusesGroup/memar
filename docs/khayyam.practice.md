@@ -1,36 +1,34 @@
 ---
 name: khayyam-syntax
-description: Use whenever Khayyam (the programming language, file extension .kh) is mentioned, discussed, or when writing, reading, reviewing, or explaining Khayyam code. Khayyam is a young, uncommon language not covered by general training data — do not attempt to write or reason about Khayyam code from memory or by analogy to Go/Rust/C. Trigger this skill for requests like "write this in Khayyam", "explain Khayyam's syntax", "how do capsules/abstractions/methods work in Khayyam", or any .kh file content. Part of the Memar framework ecosystem; also trigger if the user mentions "Memar" alongside code/language questions.
+description: Use whenever Khayyam (the programming language, file extension .kh) is mentioned, discussed, or when writing, reading, reviewing, or explaining Khayyam code. Khayyam is a young, uncommon language not covered by general training data — do not attempt to write or reason about Khayyam code from memory or by analogy to Go/Rust/C. Trigger this skill for requests like "write this in Khayyam", "convert this function to Khayyam", "explain Khayyam's syntax", "how do capsules/abstractions/methods work in Khayyam", or any .kh file content. Part of the Memar framework ecosystem; also trigger if the user mentions "Memar" alongside code/language questions.
 ---
 
 # Khayyam Language Skill
-Khayyam is a minimalist, un-opinionated **system-modeling language** (not a traditional feature-collecting language), part of the **Memar framework** ecosystem. Its core philosophy is **Separation of Syntax and Governance**: Khayyam defines strictly *how* code is structured, and deliberately delegates *how* code behaves (memory management, architectural rules, execution policy) to compilers, linters, and organizational frameworks like Memar.
+Khayyam is a minimalist system-modeling language, part of the Memar framework ecosystem. **File extension:** `.kh`
 
-**File extension:** `.kh`
+## Scope of this skill: mechanical syntax vs. full modeling philosophy
+Two different postures, depending on what the person actually wants:
 
-## ⚠️ Always defer to the live repo — do not rely on memory or a static cheat sheet alone
-This skill does **not** bundle a copy of the Khayyam spec. Khayyam has 15+ interlinked document files that evolve independently (design changes, new constructs, rejected alternatives) — a copy here would go stale. Use the **`memar-navigator`** skill to fetch the live files from `github.com/GeniusesGroup/memar` before writing or explaining any nontrivial Khayyam code.
+- **Mechanical translation.** Translating existing code, porting a legacy module, or otherwise using Khayyam as a drop-in target language: translate structure-for-structure (functions → methods, structs → capsules, interfaces → abstractions) — see *Translating from other languages*, below. Don't push renaming, re-decomposition, or restructuring toward domain-driven capsules unless asked.
+- **Full design treatment.** The person wants Khayyam written the way Memar intends: apply *Rules worth applying even when not asked*, below, without waiting to be asked.
 
-**Files most relevant to this skill** (see `memar-navigator` for how to fetch them and how the cross-reference/Citations convention works):
-- `Khayyam.md` — canonical syntax spec. Always check this first; it's the source of truth for the quick reference below.
-- `khayyam-design_philosophy.md` — rationale (naming, no-generics stance, domain modeling).
-- Topic-specific documents, read on demand depending on the question: `khayyam-abstraction.md`, `khayyam-encapsulation.md`, `khayyam-inheritance.md`, `khayyam-polymorphism.md`, `khayyam-variable.md`, `khayyam-memory_model.md`, `khayyam-concurrency.md`, `khayyam-error_handling.md`, `khayyam-function_as_capsule.md`, `khayyam-library_driven_control_flow.md`, `khayyam-naming_driven_package_elimination.md`, `khayyam-dependency_resolution.md`, `khayyam-composition_depth_as_decomposition_signal.md`, `khayyam-absence_of_closures.md`, `khayyam-decorators_rejection.md`, `khayyam-rejection_of_macros.md`, `khayyam-domain_driven_arithmetic.md`
-- Tooling documents if the question is about compilation/linting/FFI/migration: `Khayyam-compiler.md`, `Khayyam-linter.md`, `Khayyam-runtime.md`, `Khayyam-migration_guide.md`
+When unclear which is wanted, default to mechanical translation and mention that a fuller pass is available if wanted.
 
-If a question depends on something not covered by these (or by `terminology.md` / `protocol.md` / `framework.md` / `modeling.md`, which the Khayyam documents assume as background), fetch those too rather than guessing — `memar-navigator` covers the full topic index.
+## ⚠️ Verify against the live repo, not memory
+This skill does not bundle the spec. Fetch `Khayyam.md` via the **`memar`** skill before writing or explaining any nontrivial code — it evolves independently and a copy here would go stale. For anything this cheat sheet doesn't cover — why a rule exists, a topic not listed below, or anything outside Khayyam itself — use `memar` SKILL rather than guessing or naming a specific document from memory.
 
-## Quick reference (mechanically summarized from Khayyam.md at time of writing — verify against the live file for anything precision-sensitive)
+## Quick reference (verify against the live file for anything precision-sensitive)
 
 ### Top-level keywords
-| Keyword | Meaning | Keyword | Meaning |
-|---|---|---|---|
-| `tp` | type | `in` | include (import) |
-| `vr` | variable | `cp` | capsule |
-| | | `mt` | method |
-| | | `ab` | abstraction |
-| | | `sc` | scope |
+| Keyword | Meaning  | Keyword | Meaning          |
+| ------- | -------- | ------- | ---------------- |
+| `tp`    | type     | `in`    | include (import) |
+| `vr`    | variable | `cp`    | capsule          |
+|         |          | `mt`    | method           |
+|         |          | `ab`    | abstraction      |
+|         |          | `sc`    | scope            |
 
-Everything at the top level is either a **Type** (`tp`) or a **Variable** (`vr`). There is no `namespace`/`package` concept — the file system is the source of truth, and `in` routes to a file path.
+Everything at the top level is either a **Type** (`tp`) or a **Variable** (`vr`). No `namespace`/`package` — the file system is the source of truth, `in` routes to a file path.
 
 ### Import
 ```khayyam
@@ -42,51 +40,69 @@ vr MaxTimeout in "net/config"    // import a variable/constant/singleton
 ```khayyam
 tp {name} cp { ___ }
 ```
-- Fields: one `fieldName fieldType` per line.
-- Fields are **never** directly accessible from outside — only via methods. No public fields, ever.
+- One `fieldName fieldType` per line.
+- Fields are never directly accessible from outside — only via methods. No public fields, ever.
 
 ### Method
 ```khayyam
 tp {name} mt (self {type_owner}) ({args}...) ({returns}...) { ___ }
 ```
-- A method is a callable capsule; the receiver (`self`) can be attached to *any* type, including an abstraction or another method.
-- The three parentheses (`type_owner`, args, returns) are **always** written, even when empty.
-- All args and returns are passed **strictly by reference**. There is no by-value passing.
-- No `const`/`mut` keywords — mutation is only possible if the capsule explicitly exposes a mutating method.
-- Body-less methods (`{}` omitted) are valid for: (a) abstraction contract signatures, (b) FFI linking against external `.s`/`.o` implementations.
-- Calls always use a single `.` — no `::` or other secondary operator.
-- **No `self` in signature → static, called on the type**: `TypeName.Method()`.
-- **`self` in signature → instance, called on a variable**: `varName.Method()`.
+- The receiver (`self`) can be attached to any type — a capsule, an abstraction, or another method.
+- All three parentheses always written, even when empty.
+- Args/returns passed strictly by reference; no by-value.
+- No `const`/`mut` — mutation only through an exposed mutating method.
+- Body-less method = abstraction contract signature, or FFI stub against an external `.s`/`.o` implementation.
+- Calls always use a single `.` — never `::`.
+- No `self` in signature → static, call via `TypeName.Method()`. `self` present → instance, call via `varName.Method()`.
+- A method's synchronous or asynchronous nature is declared at its own definition (an abstraction tag), never chosen by the caller. There is no `go`/`async`/`await` keyword.
 
 ### Abstraction (pure contract)
 ```khayyam
 tp Reader ab
 tp Read mt (self Reader) (data Element) (err Error)   // defined independently, body-less
 ```
-- Abstractions hold no logic/state/bodies. Methods fulfilling the contract are defined outside it.
-- Abstractions compose via a `{}` block at the definition site.
-- Abstractions may only use other abstractions as args/returns — never concrete capsules.
-- **No generics syntax** (no `<T>`, `[T]`). Covariant returns + "Smart Compilation" replace the need for it.
+- No logic, state, or bodies. Methods fulfilling the contract are defined outside it.
+- Compose via a `{}` block at the definition site.
+- May only use other abstractions as args/returns — never concrete capsules.
+- No generics syntax (`<T>`, `[T]`). Covariant returns + compiler-chosen dispatch replace it.
+- Satisfaction is structural — no `implements` keyword.
 
 ### Scope
 ```khayyam
 tp {name} sc { ___ }
 ```
-Used for control-flow constructs (`IF`, `LOOP`, `GOTO`, etc., built as libraries, not language keywords). Only valid inside a method body.
+Control-flow (`IF`, `LOOP`, `GOTO`, etc.) is library-built, not language keywords. Only valid inside a method body.
 
 ### Variable
 ```khayyam
 vr {name} {type}
 ```
-- Variables are **logical references**, never raw data. No `=` assignment operator anywhere, and no implicit copying (deep or shallow).
-- Explicit duplication requires a method call, e.g. `vr newVar Type` then `newVar.CopyFrom(oldVar)`.
+- A logical reference, never raw data. No `=`, no implicit copying (deep or shallow).
+- Explicit duplication: `vr newVar Type` then `newVar.CopyFrom(oldVar)`.
 
-## Design principles worth applying even when not asked explicitly
+## Translating from other languages (mechanical mapping)
+For the mechanical-translation posture — a structural mapping, not a redesign.
 
-- **Behavior over type identity** — prefer expressing "what capability is required" over "what concrete type is this." This is why Khayyam has no generics syntax.
-- **No primitive obsession** — raw `string`/`int`/`bool` used for business values is discouraged; wrap them in named capsules (e.g. `W32`, not `int`; `UserRegistry`, not `Map<ID, User>`).
-- **No utility dumping grounds** — avoid suggesting `Utils`/`Helpers`/`Common` capsules; push responsibilities into domain-meaningful capsules instead.
-- **Self-documenting naming is enforced, not stylistic** — magic numbers and opaque generic containers are treated as violations of intent, not just style nits.
-- **Syntactic atomicity** — one syntactic construct per semantic intent.
+| From (typical)               | To (Khayyam)                                                               |
+| ---------------------------- | -------------------------------------------------------------------------- |
+| `struct`/`class` fields      | `cp` with hidden fields, accessor/mutator methods                          |
+| free function                | `mt` with no `self`                                                        |
+| method on a type             | `mt` with `self {type_owner}`                                              |
+| `interface`/`trait`          | `ab`                                                                       |
+| generic function `f<T>(x T)` | rewrite around required behavior (an `ab`) instead of a type parameter     |
+| `x = y` / mutation           | a method call that explicitly performs the mutation                        |
+| deep/shallow copy            | explicit `CopyFrom`-style method, never implicit                           |
+| `go`/`async`/`await`         | no equivalent — tag the method itself at its definition, not the call site |
 
-These are philosophy/direction from `khayyam-design_philosophy.md`, not settled mechanisms for every case — if a concrete question depends on a mechanism not covered by the files listed above, fetch the relevant document via `memar-navigator` rather than inventing an answer.
+If a construct doesn't map cleanly (closures, macros, generics-heavy code), don't invent syntax — fetch the documented replacement pattern via `memar` SKILL before proposing one.
+
+## Rules worth applying even when not asked
+For the full-design-treatment posture:
+
+- Prefer behavior-based abstractions over type-identity-based designs.
+- Wrap primitive values in named capsules; don't use raw `string`/`int`/`bool` for business values (`W32`, not `int`; `UserRegistry`, not `Map<ID, User>`).
+- Don't create `Utils`/`Helpers`/`Common` capsules — place responsibility in domain-meaningful capsules.
+- No magic numbers, no opaque generic containers — name what a value means.
+- One syntactic construct per semantic intent.
+
+These are direction, not exhaustive settled mechanisms — if a concrete case isn't covered above, fetch the relevant document via `memar` SKILL rather than inventing an answer.

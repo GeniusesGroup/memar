@@ -70,3 +70,17 @@ This document previously asserted "coherent responsibility" as if self-evident a
 
 #### Summary
 This document's characterization of Protocol did not match protocol.md's own ontology. Corrected both occurrences (the Module/Process/Protocol topic and the comparison table) to say Protocol governs Processes within a System, rather than System-to-System interaction directly, and linked to protocol.md instead of restating its definition from memory.
+
+---
+
+### Completed Khayyam-specific modularity propagation
+- Time: 2026-08-19T00:00:00Z
+- Type: Changed
+- Propagates to:
+  - khayyam-modularity.md: Done — reduced the Khayyam document to language and ecosystem consequences, with this document as the conceptual authority.
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — requested: requested the Khayyam modularity document be reconciled with this general document.
+  - [ChatGPT](../CONTRIBUTORS.md#chatgpt) (GPT-5.6) — rewrote: verified that the general document already contains the authoritative Module definition and that the remaining Khayyam material is language/ecosystem-specific; added the reciprocal link and closed the pending propagation item.
+
+#### Summary
+The pending propagation to `khayyam-modularity.md` is complete. The Khayyam document no longer repeats the conceptual definition of Module or Modularity; it links here and retains only its treatment of `in`, explicit naming without package context, and framework-level manifest and dependency resolution.

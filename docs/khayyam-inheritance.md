@@ -2,17 +2,17 @@
 Title: "Inheritance in Khayyam"
 Status: Proposed
 Start Date: 2026-07-10
-RFC Number: 495467
+ID: 495467
 Applied to: ["Khayyam.md"]
-Related RFCs:
+Citations:
     - Title: "Protocol"
       URI: "./protocol.md"
       Reason: "Depends_on"
-      Explanation: "Defines Protocol as a pure declarative specification. This RFC builds on that definition to explain how abstraction inclusion creates inheritance relationships between abstractions."
+      Explanation: "Defines Protocol as a pure declarative specification. This document builds on that definition to explain how abstraction inclusion creates inheritance relationships between abstractions."
     - Title: "Explicit Behavior Ownership"
       URI: "./explicit_behavior_ownership.md"
       Reason: "Depends_on"
-      Explanation: "EBO provides the principled foundation that behavior transfer between capsules is rejected. This RFC specifies the language-level enforcement of that principle."
+      Explanation: "EBO provides the principled foundation that behavior transfer between capsules is rejected. This document specifies the language-level enforcement of that principle."
 Contributor(s):
   - name: "Omid Hekayati"
     uri: "mailto:omid@geniuses.group"
@@ -22,27 +22,27 @@ Contributor(s):
     uri: "https://openai.com"
     model: "GPT-5.5"
     effort: ""
-    contribution: "Drafted initial text for the original monolithic Protocol RFC; portions of the behavior transfer and method promotion analysis were incorporated from that draft"
+    contribution: "Drafted initial text for the original monolithic Protocol document; portions of the behavior transfer and method promotion analysis were incorporated from that draft"
     task: []
   - name: "Super Z"
     uri: "https://z.ai"
     model: "GLM"
     effort: "Medium"
-    contribution: "Restructured this RFC from 'Rejection of Inheritance' to 'Inheritance in Khayyam,' reframing the topic as placement (inheritance belongs to abstractions, not capsules) rather than rejection. Added subtyping section with correct Khayyam syntax. Unified terminology with EBO RFC."
+    contribution: "Restructured this document from 'Rejection of Inheritance' to 'Inheritance in Khayyam,' reframing the topic as placement (inheritance belongs to abstractions, not capsules) rather than rejection. Added subtyping section with correct Khayyam syntax. Unified terminology with EBO document."
     task: ["reframe", "terminology-unification", "subtyping-section", "content-reorganization"]
 ---
 
 # Inheritance in Khayyam
 
 ## Summary
-In Khayyam, inheritance is a relationship between abstractions, not between capsules. When an abstraction includes another abstraction, it extends the set of requirements that conforming capsules must satisfy — but no behavior is transferred. Capsules never acquire behavior from other capsules through "inheritance," method promotion, or any implicit mechanism. The only sanctioned mechanism for behavior sharing is **explicit delegation**: the developer writes a method on the host capsule that visibly forwards the call to an embedded instance. This RFC specifies how Khayyam models inheritance at the language level and how the compiler and linter enforce the separation between abstraction extension (allowed) and behavior transfer between capsules (rejected). The principled foundation for this separation — including the conceptual challenge to "inheritance" as a model for behavioral transfer — is established in the [Explicit Behavior Ownership](./explicit_behavior_ownership.md) RFC.
+In Khayyam, inheritance is a relationship between abstractions, not between capsules. When an abstraction includes another abstraction, it extends the set of requirements that conforming capsules must satisfy — but no behavior is transferred. Capsules never acquire behavior from other capsules through "inheritance," method promotion, or any implicit mechanism. The only sanctioned mechanism for behavior sharing is **explicit delegation**: the developer writes a method on the host capsule that visibly forwards the call to an embedded instance. This document specifies how Khayyam models inheritance at the language level and how the compiler and linter enforce the separation between abstraction extension (allowed) and behavior transfer between capsules (rejected). The principled foundation for this separation — including the conceptual challenge to "inheritance" as a model for behavioral transfer — is established in the [Explicit Behavior Ownership](./explicit_behavior_ownership.md) document.
 
 ## Motivation
 
 ### Where Inheritance Belongs
 Inheritance, understood as the transfer of requirements from one abstraction to another, is a legitimate and useful relationship. In Khayyam, this relationship exists between abstractions: when abstraction A includes abstraction B, any capsule conforming to A must also satisfy B's requirements. The requirements are extended; no behavior is transferred.
 
-What Khayyam rejects is the transfer of **behavior** (method implementations) between capsules. The mechanisms that other languages label "inheritance" — class inheritance, trait default implementations, method promotion through embedding — all share one property: a method appears in a capsule without that capsule's source code defining it. The principled case for why this is problematic is made in the [Explicit Behavior Ownership](./explicit_behavior_ownership.md) RFC. This RFC addresses the language-level consequences: how the compiler enforces the rule, what alternatives developers use, and what practical effects this has on compilation, analysis, and design patterns.
+What Khayyam rejects is the transfer of **behavior** (method implementations) between capsules. The mechanisms that other languages label "inheritance" — class inheritance, trait default implementations, method promotion through embedding — all share one property: a method appears in a capsule without that capsule's source code defining it. The principled case for why this is problematic is made in the [Explicit Behavior Ownership](./explicit_behavior_ownership.md) document. This document addresses the language-level consequences: how the compiler enforces the rule, what alternatives developers use, and what practical effects this has on compilation, analysis, and design patterns.
 
 ### Practical Problems with Behavior Transfer in Khayyam's Context
 Khayyam is designed for building high-performance libraries and applications where compiler-level escape analysis, memory safety, and behavioral predictability are paramount. Allowing behavior to appear in a capsule without being defined there introduces several practical problems:
@@ -187,7 +187,7 @@ Since there is no behavior transfer between capsules, the compiler never needs t
 ## Rationale and Alternatives
 
 ### Why Not Allow "Safe" Behavior Transfer?
-An alternative is to allow restricted behavior transfer — for example, "single inheritance is allowed but only from abstract base classes" or "inheritance is allowed but the base class cannot have concrete methods." This was rejected. The principled argument is in the EBO RFC (see "Why Not Accept 'Controlled' Hidden Behavior?"). At the language level, the additional concern is that even restricted behavior transfer creates conceptual dependency on the transfer model that influences how developers think about component relationships, and the "safe" boundaries are subjective and tend to erode over time as exceptions are added.
+An alternative is to allow restricted behavior transfer — for example, "single inheritance is allowed but only from abstract base classes" or "inheritance is allowed but the base class cannot have concrete methods." This was rejected. The principled argument is in the EBO document (see "Why Not Accept 'Controlled' Hidden Behavior?"). At the language level, the additional concern is that even restricted behavior transfer creates conceptual dependency on the transfer model that influences how developers think about component relationships, and the "safe" boundaries are subjective and tend to erode over time as exceptions are added.
 
 ### Why Not Use Go-Style Embedding?
 Go's embedding is often cited as a "middle ground" between behavior transfer and composition. It provides method promotion without the full complexity of class-based behavior transfer. This was rejected because method promotion is still implicit behavior acquisition — the embedding component's source code does not show the promoted methods. The visibility problem remains, just in a milder form.
@@ -209,7 +209,7 @@ If Khayyam allowed behavior transfer between capsules, every subsequent design d
 - **Zig Comptime and Delegation:** Zig has no inheritance and relies on explicit composition and compile-time code generation. This aligns closely with Khayyam's approach and validates the feasibility of a behavior-transfer-free design in a systems programming language.
 
 ## Unresolved Questions
-- **Design Pattern Catalog:** What is the complete catalog of OO design patterns that rely on behavior transfer, and what are the Khayyam equivalents for each? A dedicated document or RFC may be needed to guide developers migrating from OO languages.
+- **Design Pattern Catalog:** What is the complete catalog of OO design patterns that rely on behavior transfer, and what are the Khayyam equivalents for each? A dedicated document or document may be needed to guide developers migrating from OO languages.
 - **Performance Benchmarking:** What is the actual runtime performance impact of explicit delegation compared to behavior-transfer-based dispatch? Early evidence from Zig and similar systems suggests the overhead is negligible, but formal benchmarking is needed.
 - **Code Generation Standards:** What are the standards for AI or tooling-generated delegation code? Should generated code be marked with specific annotations? Should there be a standard directory or naming convention for generated files?
 - **Abstraction Inclusion Depth:** How deep can abstraction inclusion chains go (abstraction A includes B includes C)? Is there a practical limit, and does it introduce any of the visibility problems that behavior transfer creates? The current position is that inclusion depth is not inherently problematic because no behavior is transferred.
@@ -221,11 +221,11 @@ If Khayyam allowed behavior transfer between capsules, every subsequent design d
 - **Formal Proof of Completeness:** A formal argument that explicit delegation can express every relationship that behavior transfer can express, with examples demonstrating the translation. This would address the concern that some patterns are "impossible" without behavior transfer.
 
 ## Change Rationale
-This RFC was created by splitting the original monolithic "Protocol" document into three focused RFCs. The inheritance-related content was distributed between the Explicit Behavior Ownership RFC (which addresses the principled foundation) and this RFC (which addresses the language-level specification for Khayyam).
+This document was created by splitting the original monolithic "Protocol" document into three focused documents. The inheritance-related content was distributed between the Explicit Behavior Ownership document (which addresses the principled foundation) and this document (which addresses the language-level specification for Khayyam).
 
-This RFC was originally titled "Rejection of Inheritance" and framed Khayyam's position as a rejection. During review, it became clear that this framing was misleading: Khayyam does not reject inheritance — it places it where it belongs. Inheritance (the extension of requirements) is supported between abstractions. What is rejected is the transfer of behavior between capsules, which is not inheritance in any meaningful sense. The RFC was retitled and restructured to reflect this positioning.
+This document was originally titled "Rejection of Inheritance" and framed Khayyam's position as a rejection. During review, it became clear that this framing was misleading: Khayyam does not reject inheritance — it places it where it belongs. Inheritance (the extension of requirements) is supported between abstractions. What is rejected is the transfer of behavior between capsules, which is not inheritance in any meaningful sense. The document was retitled and restructured to reflect this positioning.
 
 Content was incorporated from multiple sources beyond the original monolithic document:
-- **Working notes:** The Go embedding clarification was extracted from the working notes and integrated as a core argument. The meta-observation about what "inheritance" debates are really about was initially integrated here but subsequently moved to the Explicit Behavior Ownership RFC during terminology and content review — it is a general conceptual argument, not a language-specific design decision.
+- **Working notes:** The Go embedding clarification was extracted from the working notes and integrated as a core argument. The meta-observation about what "inheritance" debates are really about was initially integrated here but subsequently moved to the Explicit Behavior Ownership document during terminology and content review — it is a general conceptual argument, not a language-specific design decision.
 - **Khayyam-linter.md:** The "Explicit Delegation Verification" and "Anti-Lazy Inheritance Check" sections provided the linter enforcement rules.
 - **Khayyam.md:** The abstraction definition and conformance model provided the context for how Khayyam handles the relationship between capsules and abstractions without behavior transfer.

@@ -1,61 +1,18 @@
 ---
-Title: "MetaProgramming in Khayyam"
+Title: "Metaprogramming in Khayyam"
 Status: Draft
-Start Date: "2026-07-30"
-ID: "495955"
-Applied to: []
-Citations:
-    - Title: "Khayyam - Programming Language"
-      URI: "./Khayyam.md"
-      Relation: "Reference"
-      Reason: "The canonical specification's Abstraction section (Contract-First Approach, structural satisfaction) is what makes the opt-in abstraction pattern used throughout this document — most directly in Reflective Programming — possible."
-    - Title: "Method in Khayyam"
-      URI: "./khayyam-method.md"
-      Relation: "Depends_on"
-      Reason: "Decorators, macros, and reflection all ultimately act on or through ordinary methods, so this document depends on the owner/influencing/influenced method model specified there — a concern about the transparency of the language surface generally, distinct from method declaration itself."
-    - Title: "Encapsulation in Khayyam"
-      URI: "./khayyam-encapsulation.md"
-      Relation: "Reference"
-      Reason: "Sovereign Encapsulation and Closures as Implicit Capsule Syntax are the same 'nothing hidden, everything named' commitment this document applies to decorators, macros, and reflection."
-    - Title: "Logic in Khayyam"
-      URI: "./khayyam-logic.md"
-      Relation: "Reference"
-      Reason: "The zero-hidden-magic principle behind Library-Driven Control Flow's rejection of compiler-special-cased keywords is the same principle applied here to decorators and macros."
-    - Title: "Variable in Khayyam"
-      URI: "./khayyam-variable.md"
-      Relation: "Reference"
-      Reason: "The rejection of decorators and macros rests on the same explicitness commitment documented there under Explicit Types: convenience that hides a mechanism from the reader is a bad trade, whether the hidden mechanism is a type or a behavior transformation."
-    - Title: "Polymorphism in Khayyam"
-      URI: "./khayyam-polymorphism.md"
-      Relation: "Reference"
-      Reason: "The container-scaffolding example behind this document's Rejection of Syntactic Macros topic is consolidated into Polymorphism in Khayyam."
-    - Title: "abstraction_p.Implements — A Tooling-Facing Implementation-Intent Declaration"
-      URI: "./abstraction-implements.md"
-      Relation: "Reference"
-      Reason: "A concrete, working example of this document's central pattern: a tooling-facing or introspection-facing need met entirely with an ordinary composed method and opt-in abstraction composition, with no new syntax required. Reflective Programming below follows the same pattern."
-Contributors:
-  - Name: "Omid Hekayati"
-    URI: "mailto:omid@geniuses.group"
-    Tasks:
-      - Works: ["Original design decisions for rejecting decorators and syntactic macros in the canonical Khayyam specification", "Identified the conceptual link between decorators/macros and reflective programming as related metaprogramming strategies, and proposed splitting them into a dedicated document"]
-        URI: ""
-  - Name: "Claude"
-    URI: "https://claude.ai"
-    Model: "claude-sonnet-5"
-    Effort: "High"
-    Tasks:
-      - Works: ["Specified the Decorators Rejection and Rejection of Syntactic Macros and Meta-Programming topics", "Drafted the new Reflective Programming topic, applying the abstraction_p.Implements opt-in-abstraction pattern to reflection"]
-        URI: ""
+Start Date: 2026-07-30
+ID: 495955
 ---
 
-# MetaProgramming in Khayyam
+# Metaprogramming in Khayyam
 
 ## Abstract
 [MetaProgramming](https://en.wikipedia.org/wiki/Metaprogramming) — a program manipulating, generating, or inspecting its own structure or behavior, rather than just executing it — is not built into Khayyam's grammar as dedicated syntax. This document covers the three metaprogramming strategies most relevant to Khayyam's design and the position it takes on each: **decorators** (Python's `@decorator`, Java/C#-style annotations that wrap or modify a method's behavior) have no dedicated syntax at all — cross-cutting behavior must be explicit, visible composition; **syntactic macros** (Rust's `macro_rules!`/procedural macros, the C preprocessor) have no dedicated syntax either — code generation is handled entirely by external tooling operating on ordinary, explicit source files; **reflection** (a program inspecting its own structure at compile time or runtime) *is* supported, but not as an intrinsic, universally-available capability — a type opts in explicitly by composing a reflection-facing abstraction, and the compiler or runtime provides the implementation only for what that abstraction exposes, never more.
 
 All three positions trace to the same commitment documented throughout this project: nothing about a program's structure or behavior should be reachable, alterable, or inspectable through a path that isn't visible in ordinary, explicit source — a composed abstraction, a named method call — even when a hidden path would be more convenient to write.
 
-For the core distinction between the three (why two are rejected outright and one is supported but bounded), see the [Guide](#three-strategies-one-boundary) below.
+For the core distinction between the three (why two are rejected outright and one is supported but bounded), see [Three Strategies, One Boundary](#three-strategies-one-boundary).
 
 ## Introduction
 
@@ -67,6 +24,9 @@ Reflection is a different kind of case. Unlike decorators and macros, which *alt
 A further, more general question underlies all three positions: when a method or abstraction's design is fully legible to a human reader, why should the language itself need to get involved to help a specific tool — a codegen generator, an IDE, a linter, a serializer — do its job? [`abstraction_p.Implements`](./abstraction-implements.md) is a concrete, working answer to this question for one such need (signaling implementation intent before a capsule is structurally complete): it was met entirely with an ordinary composed method, no new syntax required, precisely because the tooling need was already reachable through the existing capsule/method vocabulary. Reflective Programming, below, follows exactly the same pattern for a different need (exposing structure to a tool at runtime or compile time). The same explicitness commitment that led Khayyam to reject implicit type inference in favor of always-explicit types (see [Explicit Types](./khayyam-variable.md#explicit-types)) applies throughout: convenience that saves the author some typing or wiring at declaration time, at the cost of a reader (or a type's own author) having to separately know about and mentally simulate a hidden mechanism, is a bad trade in a language whose central commitment is explicitness.
 
 ### Methodology
+This document evaluates each metaprogramming strategy by separating the capability a tool needs from the mechanism commonly used to obtain it. It asks, in order: whether the capability changes behavior, generates source, or inspects declared structure; whether the affected type or call site can explicitly grant that capability; and whether the existing Type, Abstraction, Capsule, and Method vocabulary can express the grant without a new grammar feature.
+
+This method produces different conclusions for the three strategies. Decorators and syntactic macros depend on a transformation that a reader cannot see in the ordinary call or source surface, so they are rejected. Structural inspection can be made visible as a capability a type explicitly composes, so opt-in reflection is retained as a direction. The implementation mechanism for that capability remains an open design question; the methodology settles the authorization boundary before selecting a compiler, runtime, or tooling realization.
 
 ## Explanation
 
@@ -80,7 +40,7 @@ Wikipedia's article on reflective programming names reflection as one of the sta
 ### Decorators Rejection
 Khayyam has no decorator syntax (Python's `@decorator`, TypeScript/Java-style annotations that wrap or modify a method's behavior). Any cross-cutting behavior a decorator would normally provide (logging, caching, retry logic) must be expressed as explicit, visible composition — typically by the caller explicitly invoking the cross-cutting behavior itself — rather than an attribute silently wrapping the original method.
 
-Decorators silently alter what a method actually does at the call site without that alteration being visible in the call itself — a function annotated `@retry` or `@cached` behaves completely differently from its plain signature, and a reader must separately know to look for and understand the decorator's implementation. This is in direct tension with Khayyam's broader principle that nothing about a method's runtime behavior should be hidden from its declaration and call sites — the same commitment as Sovereign Encapsulation and Closures as Implicit Capsule Syntax in [Encapsulation in Khayyam](./khayyam-encapsulation.md#sovereign-encapsulation), the zero-hidden-magic principle in [Logic in Khayyam](./khayyam-logic.md), and [Method in Khayyam](./khayyam-method.md)'s own no-chaining and no-fn-keyword decisions.
+Decorators silently alter what a method actually does at the call site without that alteration being visible in the call itself — a function annotated `@retry` or `@cached` behaves completely differently from its plain signature, and a reader must separately know to look for and understand the decorator's implementation. This is in direct tension with Khayyam's broader principle that nothing about a method's runtime behavior should be hidden from its declaration and call sites — the same commitment as Sovereign Encapsulation and Closures as Implicit Capsule Syntax in [Encapsulation in Khayyam](./khayyam-encapsulation.md#sovereign-encapsulation), the zero-hidden-magic principle in [Control Flow in Khayyam](./khayyam-control_flow.md), and [Method in Khayyam](./khayyam-method.md)'s own no-chaining and no-fn-keyword decisions.
 
 Where another language would write `@retry(times=3) func fetchData()`, a Khayyam developer instead explicitly composes the retry behavior at the call site or within an explicitly named wrapping capsule, so that the retry logic is visibly present in the source rather than silently injected by an annotation. There is no decorator/annotation syntax in the grammar capable of wrapping or altering a method's behavior; any equivalent functionality must be built from ordinary capsules and explicit method calls.
 
@@ -101,7 +61,7 @@ The original source document cited "Error Handling: Library-Driven and Syntax-Fr
 ##### Future possibilities
 None recorded yet.
 
-### Rejection of Syntactic Macros and Meta-Programming
+### Rejection of Syntactic Macros and Language-Level Metaprogramming
 Khayyam provides no syntactic macro system (Rust-style `macro_rules!`/procedural macros, C preprocessor macros) and no compile-time meta-programming/code-generation facility baked into the language itself. Any code generation a project needs is handled by external tooling operating on the explicit source, not by language-level macro expansion.
 
 Macro systems let code generate or rewrite other code at compile time through a separate, often opaque expansion phase, which conflicts directly with Khayyam's foundational explicitness principle: source code should mean exactly what it says, with no hidden expansion step a reader must mentally simulate to understand what will actually execute.
@@ -114,7 +74,7 @@ Where another language might reach for a macro to eliminate boilerplate (e.g. ge
 Without a macro system, some categories of legitimate boilerplate reduction (e.g. deriving a family of trait implementations automatically at compile time) require external tooling to be run as a separate build step, rather than being handled inline by the compiler itself — adding a tooling dependency for cases a macro system would otherwise absorb into the language.
 
 ##### Rationale and alternatives
-Macro systems (Rust's `macro_rules!`/proc-macros, C's preprocessor) were rejected because they introduce a compile-time code-rewriting phase that is, by design, somewhat opaque to a reader inspecting only the source — directly in tension with the zero-hidden-magic principle running through this document, [Sovereign Encapsulation](./khayyam-encapsulation.md#sovereign-encapsulation), and [Library-Driven Control Flow](./khayyam-logic.md#library-driven-control-flow) (rejecting macros for the same reason those documents reject implicit mutability keywords and compiler-special-cased control flow, respectively).
+Macro systems (Rust's `macro_rules!`/proc-macros, C's preprocessor) were rejected because they introduce a compile-time code-rewriting phase that is, by design, somewhat opaque to a reader inspecting only the source — directly in tension with the zero-hidden-magic principle running through this document, [Sovereign Encapsulation](./khayyam-encapsulation.md#sovereign-encapsulation), and [Library-Driven Control Flow](./khayyam-control_flow.md#library-driven-control-flow) (rejecting macros for the same reason those documents reject implicit mutability keywords and compiler-special-cased control flow, respectively).
 
 ##### Prior art
 Rust's macro system and the C preprocessor are the primary prior art being rejected here. Languages and ecosystems that instead rely on external code generators emitting plain source (e.g. Go's `go generate` convention, or Protocol Buffers' code generation step) are closer in spirit to Khayyam's chosen approach. Notably, Rust — which also has no built-in reflection — leans on its macro system (e.g. `serde`'s derive macros) to cover needs Khayyam covers instead through opt-in reflection (see [Reflective Programming](#reflective-programming)); rejecting macros without offering some other release valve for that category of need would leave a real gap.

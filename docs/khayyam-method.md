@@ -3,40 +3,6 @@ Title: "Method in Khayyam"
 Status: Draft
 Start Date: "2026-07-28"
 ID: "495900"
-Applied to: []
-Citations:
-    - Title: "Khayyam - Programming Language"
-      URI: "./Khayyam.md"
-      Relation: "Reference"
-      Reason: "The canonical specification defines the `mt` subtype and the method signature grammar this document elaborates and motivates."
-    - Title: "Encapsulation in Khayyam"
-      URI: "./khayyam-encapsulation.md"
-      Relation: "Depends_on"
-      Reason: "Method Structure relies on the capsule model — Capsule Structure and Privacy, Sovereign Encapsulation — defined there, for its common-case examples and for the state-protection guarantee described under Pass-by-Reference and State Protection. Encapsulation in Khayyam references this document back for the method-signature mechanics."
-    - Title: "Logic in Khayyam"
-      URI: "./khayyam-logic.md"
-      Relation: "Reference"
-      Reason: "Logic in Khayyam's IF/ELSE model relies on the same pass-by-reference, explicit-influenced-variable mechanic specified here under Method Structure — no chaining, in either document, is a consequence of that mechanic."
-Contributors:
-  - Name: "Omid Hekayati"
-    URI: "mailto:omid@geniuses.group"
-    Tasks:
-      - Works: ["Original design decisions for the absence of a fn/func keyword, for rejecting expression chaining, and for the method signature grammar in the canonical Khayyam specification", "Reframed method parameters away from an input/output model toward owner, influencing, and influenced variables; identified the open dual-role-variable question (a variable that is both influencing and influenced in the same call)"]
-        URI: ""
-  - Name: "Super Z"
-    URI: "https://z.ai"
-    Model: "GLM 5.2"
-    Effort: "Medium"
-    Tasks:
-      - Works: ["Reference-level elaboration of method dispatch (static-vs-instance invocation, body-less methods for FFI/contracts)"]
-        URI: ""
-  - Name: "Claude"
-    URI: "https://claude.ai"
-    Model: "claude-sonnet-5"
-    Effort: "High"
-    Tasks:
-      - Works: ["Merged the standalone Function as Capsule and Composition Depth documents into the current Explanation-facet specification", "Specified Method Structure (signature grammar, pass-by-reference, static-vs-instance invocation, body-less methods for FFI/contracts)", "Reframed method parameters as owner/influencing/influenced variables in place of the traditional arguments/return-values framing, with a dedicated Explanation topic for the reasoning", "No Dedicated fn/func Keyword: led with the argument that a seemingly type-independent behavior (e.g. Sum) almost always turns out to belong to a specific type once examined, with the wrapper-capsule-plus-Do pattern presented as the fallback rather than the default"]
-        URI: ""
 ---
 
 # Method in Khayyam
@@ -191,7 +157,7 @@ None recorded yet.
 ### Composition Depth as a Decomposition Signal (No Expression Chaining)
 Khayyam method calls are statements, not chainable expressions (`a.Foo().Bar()` is not legal syntax). Every intermediate result requires an explicitly declared, named variable. A method or widget body that accumulates many such named steps is treated as a deliberate design signal calling for further decomposition, not a cost to optimize away with chaining syntax.
 
-When a developer notices a method or widget accumulating multiple unrelated named steps — for example, a "register comment" widget that both resolves "who is the active user" *and* validates/saves the comment — this is the language pushing back against an under-decomposed model, not a syntax limitation to work around. The correct response is always further decomposition: split out a separate widget/capsule with its own narrow responsibility and its own error boundary (e.g. a dedicated widget that returns only an `ActiveUserID`), never a request for implicit chaining syntax.
+When a developer notices a method or widget accumulating multiple unrelated named steps — for example, a "register comment" widget that both resolves "who is the active user" *and* validates/saves the comment — this is the language pushing back against an under-decomposed model, not a syntax limitation to work around. The correct response is always further decomposition: split out a separate widget/capsule with its own narrow responsibility and its own error boundary (e.g. a dedicated widget that returns only an `ActiveUserID`), never a request for implicit chaining syntax. This is a language-level, syntactic enforcement of the same test stated conceptually in [System → When Is a Responsibility Coherent?](./system.md#when-is-a-responsibility-coherent) and applied architecturally in [Modularity → Module Identity and Responsibility](./modularity.md#module-identity-and-responsibility): whether a step's presence in this particular body is required by a shared concern, or is only there because it was convenient to write inline.
 
 This applies uniformly, including to things that *feel* like a single operation — for example a `parse → validate → transform → aggregate` data pipeline. Each stage is a distinct concern with its own failure mode and reuse potential, and Khayyam intentionally provides no syntactic shortcut letting these stages collapse into one undifferentiated block.
 
@@ -232,7 +198,3 @@ Prior art for each individual decision is documented under its own topic above. 
 
 ### Future possibilities
 A linter rule flagging influencing variables that receive calls to their own known-mutating methods (see [Influencing and Influenced Variables](#influencing-and-influenced-variables-not-inputs-and-outputs)).
-
-## Change Rationale
-- Synthesizes the standalone "Function as Capsule (No fn/func Keyword)" and "Composition Depth as a Decomposition Signal (No Expression Chaining)" documents.
-- Method parameters are named owner / influencing variable / influenced variable rather than the conventional "arguments"/"return values"; see this document's own [Influencing and Influenced Variables](#influencing-and-influenced-variables-not-inputs-and-outputs) topic for the reasoning.

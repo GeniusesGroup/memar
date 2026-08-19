@@ -295,7 +295,7 @@ A language may represent a Module using files, directories, namespaces, packages
 
 These representations are implementations of modularity, not its definition.
 
-Khayyam's modularity treatment therefore belongs to the language and ecosystem layer. It should explain how the language expresses and resolves modular relationships without redefining the architectural concept of Module through filesystem or package conventions.
+Khayyam's modularity treatment therefore belongs to the language and ecosystem layer. It should explain how the language expresses and resolves modular relationships without redefining the architectural concept of Module through filesystem or package conventions. [Modularity in Khayyam](./khayyam-modularity.md) records that language- and ecosystem-specific application.
 
 ## Results
 
