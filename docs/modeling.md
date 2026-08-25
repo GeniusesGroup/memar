@@ -2,7 +2,7 @@
 Title: "Modeling"
 Status: Proposed
 Start Date: 2026-06-30
-ID: 495216
+ID: 495220
 ---
 
 # Modeling
@@ -54,6 +54,26 @@ The distinction between models and reality is discussed extensively in philosoph
 ##### Unresolved questions
 1. Should Memar prescribe specific modeling formalisms, or remain formalism-agnostic?
 2. How should models be versioned and evolved alongside the systems they describe?
+
+### One Reality, Multiple Abstraction Lenses
+A single aspect of reality can be modeled through more than one co-equal abstraction lens. A structural lens asks what exists and how it is organized; a behavioral or process lens asks how it acts and progresses; a normative lens asks what rules govern that behavior; a systemic lens asks how parts interact within boundaries to produce emergent results. These lenses are modes of observation applied to one reality — they are not levels of a hierarchy, and they are not entities inside the produced model.
+
+Conflating a lens with a modeled entity is a recurring category error in modeling discussions. Statements such as "the structural view of X", "the process view of X", and "the rule view of X" name three observations of one concern, not three concerns to be discovered, named, and stored alongside it. When a modeling session starts producing parallel structures whose only difference is the lens they were observed through, that is usually evidence that one concern has been counted several times.
+
+The lenses are complementary rather than competing: each reveals aspects the others abstract away, and all may describe the same underlying reality simultaneously without contradiction (see [System → A Note on Systems Thinking](./system.md#a-note-on-systems-thinking) for the general claim that system-hood itself is such a lens, and [Process → Observation](./process.md#observation) for why different observers of the same process may legitimately report different, genuinely real aspects of it). Which lens deserves attention at a given moment follows from the concern being addressed; a modeling effort that exercises only one lens tends to leave the discovered structure silently shaped by that lens's blind spots — most commonly, structure discovered purely structurally and behavior retrofitted afterward.
+
+#### Discussion
+
+##### Drawbacks
+Treating lenses as informal vocabulary rather than formal constructs means no mechanical rule says when a second observation names a new lens versus a new concern. The principle can also be misused in both directions: multiplying entities by treating every observation angle as its own sub-model, or suppressing legitimate distinctions by declaring everything "just another lens on the same thing."
+
+##### Rationale and alternatives
+- **A single canonical decomposition per domain (rejected)**: assuming every aspect of reality has exactly one correct structural breakdown forces behavioral and governance observations to be squeezed into structural artifacts where they fit poorly.
+- **Formal multi-view frameworks (considered, not chosen)**: architecture frameworks that prescribe fixed view sets provide useful checklists but conflict with Memar's discovery-driven approach; which lenses matter is discovered from the concern at hand, not fixed up front.
+
+##### Unresolved questions
+1. Should the recurring lenses (structural, behavioral/process, normative, systemic) ever be named formally as part of Memar's vocabulary, or remain descriptive?
+2. By what observable signal does a modeler distinguish "two lenses on one concern" from "two concerns observed through one lens"?
 
 ### Initial Discovery Questions
 Understanding what a model is (see above) does not by itself tell a modeler where to begin when facing an unstructured requirement — a lengthy specification document, a stakeholder interview, or an existing but undocumented system. The concrete entry-point questions a modeler asks before proposing any node are execution practice rather than architectural definition, and are not restated here. Answering them produces the first provisional candidates that the rest of the modeling process (see [Challenging Proposed Concepts](#challenging-proposed-concepts)) then interrogates, tests, and refines.
@@ -236,6 +256,8 @@ The edge/shortcut-edge distinction parallels the general/index-or-materialized-v
 
 ##### Unresolved questions
 1. As further recurring ordinary-edge roles are named in practice, should any of them ever graduate into something more formal than descriptive vocabulary (e.g. a required annotation), or should the list remain permanently open and informal?
+2. When one conceptual relationship is meaningfully traversable in both directions between two concerns, does the model declare a single relationship Type observed from two directions, or two distinct relationship Types — and where does the identity of a relationship reside: in the relationship itself, in each directional representation, or elsewhere? Answering this requires storage-semantics decisions that this document deliberately does not make.
+3. Which Module hosts a relationship whose endpoints belong to different Modules — either endpoint, both, or an independent third home — remains open. Hosting decisions made primarily for repository convenience tend to encode false conceptual ownership (see [Modularity](./modularity.md)).
 
 ### Graphs Are Not Documentation Artifacts
 In Memar, graphs are not used merely to visualize a model that has already been discovered. Graphs are used as a discovery mechanism. The purpose of graph analysis is to expose relationships, dependencies, responsibilities, and architectural structures that may not be visible through implementation-oriented perspectives.
@@ -521,6 +543,28 @@ Treating every state change as a preservable event can be taken to an extreme wh
 
 ##### Future possibilities
 A future document could define the relationship between this modeling-level concern and Memar's eventual persistence/storage architecture, including how event history is expected to be queried, without prescribing a specific storage engine.
+
+### Constraints Belong to the Constraining Concern
+When a requirement limits what may be done with some resources, the source of the limitation matters as much as the limit itself. A constraint that originates outside a resource — imposed by another concern, another participant, or another System — should be modeled as a relationship owned by the constraining concern, not as additional fields duplicated onto every resource it affects.
+
+The constraining concern carries its own state: what it targets, how much of its demand has so far been realized against the resources it observes, and what remains. The constrained resources are places where the constraint may become effective; they are not owners of the constraint's bookkeeping. Duplicating constraint state onto each affected resource corrupts exactly the information the constraint exists to express: once the same limitation is recorded as independent copies spread across many resources, the aggregate effect of the single original constraint can no longer be read correctly from those copies, and adding, removing, or retargeting resources forces edits everywhere except in the constraining concern itself.
+
+This principle has a consequence that frequently resolves otherwise confusing field-level questions: two quantities visible on the same resource are not necessarily one primary fact plus one cached copy of it. A resource-visible value may instead be the evaluation result of the external constraints and rules currently active against that resource. Before storing a value that looks derivable, the question is therefore not only "which stored fact produces this?" but "is this actually the evaluation result of concerns outside this node?" — because if it is, no amount of caching another local field will reproduce it correctly.
+
+Such a constraining concern is often realized as an independently modeled Module attaching to the affected concept rather than growing that concept's fields or branches (see [Extensible Behavior Belongs to Pluggable Modules](#extensible-behavior-belongs-to-pluggable-modules)).
+
+#### Discussion
+
+##### Drawbacks
+Modeling constraints as observing concerns moves work from write time to evaluation time: answering "what remains usable here?" requires consulting active relationships instead of reading one stored number. Systems with many simultaneous constraints need an explicit composition story for how their combined effects are evaluated, and deferring that story risks inconsistent answers from ad hoc queries.
+
+##### Rationale and alternatives
+- **Constraint state duplicated onto each affected resource (rejected)**: simple to store and fast to read locally, but it destroys the aggregate meaning of the constraint, scatters one responsibility across many models, and makes the set of active limitations invisible as a whole.
+- **A single global registry of all constraints (rejected)**: recentralizes what should be independently modeled concerns and recreates aggregation-by-theme at the constraint level; each constraining concern owns its own state and relationships.
+
+##### Unresolved questions
+1. When multiple independent constraints affect overlapping sets of resources and their effects interact, what composition semantics should the model establish for evaluating their combined result?
+2. Under what conditions is it legitimate to persist an evaluated constraint result as a cached, non-authoritative projection, and how should such a cache remain re-derivable under the discipline established for shortcut edges (see [Edge Types and Their Traditional Counterparts](#edge-types-and-their-traditional-counterparts))?
 
 ### Concept Discovery Must Not Be Driven by Presentation
 Memar treats presentation structures as unreliable sources for discovering domain concepts.

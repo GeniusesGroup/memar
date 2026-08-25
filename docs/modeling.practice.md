@@ -31,7 +31,7 @@ When there is no existing model to read — only an unstructured requirement, a 
 - Which of the concepts under discussion are derived or contextual views of another concept, rather than fundamental concerns in their own right?
 - What relationships connect these concepts, and what do those relationships encode?
 
-These questions do not replace the fuller procedure below — they exist to give a modeler a starting point rather than a blank page.
+These questions do not replace the fuller procedure below — they exist to give a modeler a starting point rather than a blank page. The wording supplied by a requirement, stakeholder, or existing model is evidence to investigate, not an authoritative model boundary. A proposed concept should remain provisional until its responsibility, relationships, and behavioral consequences have been examined.
 
 ## The Modeling Workflow
 A modeling or review session typically follows this workflow:

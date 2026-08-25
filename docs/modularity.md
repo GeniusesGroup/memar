@@ -67,6 +67,8 @@ This distinction is essential for long-lived systems. A stable Module should not
 
 This does not imply that every variation must become a separate Module. Creating boundaries has a cost. Whether a variation has enough independent meaning, Responsibility, lifecycle, or evolution to justify its own boundary is not something a Module boundary can settle by being declared — see [System → When Is a Responsibility Coherent?](./system.md#when-is-a-responsibility-coherent) for what can actually be checked, and [Process → Modeling and Observation Form a Cycle](./process.md#modeling-and-observation-form-a-cycle-not-two-separated-phases) for why this is typically discovered by proposing a boundary and then observing whether it holds, rather than decided correctly in one step. `modeling.md`'s own [Domain Decomposition over Aggregate-Root Modeling](./modeling.md#domain-decomposition-over-aggregate-root-modeling) walks through exactly this cycle for a `username` field originally modeled inside `User`.
 
+A capability also does not inherit identity from the concepts it operates on. A Module that reads, validates, constrains, or analyzes Concepts defined elsewhere does not thereby become part of those Concepts' own Modules, nor do those Concepts become part of the capability's identity. The boundary follows the Responsibility, not the endpoints a capability happens to touch.
+
 #### Type and Module
 Type and Module may both use abstraction and encapsulation, but they answer different questions.
 
@@ -110,6 +112,22 @@ A Module may be pluggable even when its implementation is compiled into the same
 
 The architectural question is whether the added behavior has an independent conceptual boundary and can attach through an explicit relationship. The loading, linking, packaging, or deployment mechanism is a separate concern.
 
+### Foundational Concepts Should Remain Few
+When a new requirement arrives, the traditional reflex is to ask which domain it belongs to — and, finding none, to create one. Memar's expectation is the opposite: the set of genuinely independent foundational Concepts in a mature System tends to be small and stable, and most apparent variety is carried by capabilities that attach to those few foundations through explicit relationships, Optional Modules, and Rules.
+
+The industry ecosystem offers a large inventory of recognized domain names, and each can look like evidence that a corresponding foundational Concept must exist. It is not: an industry taxonomy describes how today's products happen to be packaged, and adopting it as a decomposition plan reproduces that packaging inside the model. The first hypothesis for an apparently new domain should therefore be that it names a capability — a relationship, Rule, or independently evolving Module — over Concepts that already exist. Only when the requirement demonstrably cannot be expressed that way does a candidate foundational Concept earn examination through the ordinary test: an independent Responsibility, behavioral boundary, or lifecycle (see [System → When Is a Responsibility Coherent?](./system.md#when-is-a-responsibility-coherent)).
+
+Two failure directions guard this principle. Collapsing a genuinely independent concern into an existing Concept because "foundations should stay few" is under-modeling; promoting every recognizable domain name into a foundational Concept is artificial decomposition. Both are already treated as opposite failures in [Modeling → Concept Existence vs. Model Existence](./modeling.md#concept-existence-vs-model-existence); what this document adds is the prior expectation about which direction real Systems usually err in: toward proliferation of foundations, not scarcity.
+
+#### Discussion
+
+##### Drawbacks
+Applied mechanically, the preference for few foundations becomes a reason to refuse legitimately independent Concepts, forcing them into awkward relationships with unrelated hosts until the distortion is expensive to undo. The heuristic shifts the burden of proof; it cannot replace the judgment it serves.
+
+##### Rationale and alternatives
+- **Industry-domain-driven decomposition (rejected)**: mirroring the ecosystem's recognized domains as foundational Concepts imports today's product boundaries as tomorrow's architectural boundaries.
+- **Foundation-count as a target metric (rejected)**: "few" describes the expected outcome of honest independence testing, not a quota; the number of foundations is an output of the model, never an input to it.
+
 ### Rules as a Provisional Term
 The term *Rule* is commonly used for many different concepts. In software ecosystems it often refers to a conditional expression, a validation predicate, a policy object, or a component executed by a Rule Engine. None of these meanings is sufficient to define the architectural concept under discussion here.
 
@@ -130,6 +148,19 @@ For example:
 These behaviors may all be optional Modules, but they do not become one concern merely because they can affect a final outcome. Their boundaries are determined by the Module to which their responsibility relates.
 
 This distinction is particularly important for financial and commercial models. A field such as `discount` on an Invoice may incorrectly collapse a potentially independent family of behaviors into one representation. A model should instead preserve the distinctions that actually exist in the domain.
+
+### Capability Completeness
+A Module that introduces a relationship with independent domain meaning owns the complete capability that makes that relationship meaningful: the relationship itself, the rules governing when it may exist and what it implies, and any processing required to realize its effects. Splitting one capability across several Modules — its data recorded by one endpoint's Module, its processing implemented by another, its rules held by a third — divides a single Responsibility across boundaries none of which can evolve or be replaced on its own.
+
+Completeness is the negative test accompanying identity-based boundaries: if removing a capability requires coordinated edits to several otherwise-unrelated Modules, its boundary was drawn incorrectly. This does not forbid a capability from *using* other Modules' services; it forbids the capability's own semantics and behavior from having more than one owning Module. Equally, completeness is not a license to absorb the endpoints' internals — the owning Module must not take over validation, state, or decisions that belong to the Concepts it relates; it owns what makes the relationship work, nothing more.
+
+#### Discussion
+
+##### Drawbacks
+Completeness pulls against minimality: honoring it tends to produce Modules larger than a bare relationship definition, and "completeness" can be misused to justify swallowing neighboring responsibilities wholesale. The test remains whether the added material varies for reasons tied to this capability's own Responsibility, not whether it could physically be placed here.
+
+##### Unresolved questions
+1. Can completeness be checked other than by hypothetical removal ("if this capability were deleted, which Modules would need edits?") — for instance, statically, from declared dependencies alone?
 
 ### Event as a Module Capability
 An Event is not necessarily a new data model introduced solely to notify other Modules.
@@ -159,6 +190,11 @@ The example does not prescribe a particular event broker, queue, callback mechan
 Module, Process, and Protocol describe different dimensions: a Module provides a structural boundary for capabilities or responsibilities; a Process describes progression, interaction, and change; a Protocol describes declarative rules that govern one or more Processes within a System — see [Protocol](./protocol.md#what-is-a-protocol) for the full chain (System contains Processes, governed by Protocols). None of these should be substituted for another merely because a particular implementation represents them using the same programming construct.
 
 The Module-specific consequence is this document's own to state: a Module boundary is not automatically a Process boundary, and a Process is not automatically bounded by any single Module — the same Process may cross several Modules, and the same Module may contain or participate in many Processes. [Process → Process and Boundary](./process.md#process-and-boundary) and [Process → Process Composition](./process.md#process-composition) give the fuller, Process-side treatment of why an implementation boundary (module, function, service, deployment unit) must not be assumed to coincide with a Process boundary; this document does not restate that reasoning, only the corresponding claim from Module's own side.
+
+### Conceptual Relationships Are Not Runtime Coupling
+A dependency recorded between two Modules at the conceptual level does not necessarily imply invocation-level coupling at run time. A relationship registered in the model may be realized asymmetrically: each side may act upon it at different times, through different mechanisms, or a third party may execute the relationship's effects without either endpoint invoking the other. Mutual conceptual dependence between two Modules is therefore not, by itself, a defect to be engineered away.
+
+Forcing the dependency graph of the model to mirror the import restrictions of a particular language or runtime confuses representation with concept. Language-level cycle restrictions belong to the language layer and are discussed in [Modularity in Khayyam](./khayyam-modularity.md); they constrain how a model is expressed, not which relationships the domain admits.
 
 ### Module Among Related Concepts
 Module shares tools such as abstraction and encapsulation with several other Memar concepts, which is precisely why its boundary needs to be stated plainly rather than left to be inferred. The table below is a quick-reference summary of distinctions already made in this document and in the documents of the other concepts named; it does not introduce new definitions, does not establish a hierarchy among the rows, and is not a substitute for reading each concept's own document.
@@ -346,6 +382,7 @@ Memar therefore treats prior architectural terminology as evidence and material 
 8. How should modularity be evaluated when a single Module intentionally contains multiple lower-level responsibilities that are tightly coupled by the domain?
 9. What evidence distinguishes a necessary Module boundary from fragmentation introduced only by implementation convenience?
 10. What is the exact formal relationship between Module and Framework? Module was proposed during the discussion leading to this document as peer-level to System, Structure, Protocol, and Framework; this document now positions Module against Type, Structure, Protocol, Process, and Responsibility, but the relationship to Framework specifically remains open and deserves a dedicated consistency review.
+11. Where should the Module that owns a cross-boundary relationship live when its endpoints belong to different Modules — with one endpoint, with both, or in an independent third home? Hosting chosen mainly for repository convenience encodes false conceptual ownership; see [Modeling → Edge Types and Their Traditional Counterparts](./modeling.md#edge-types-and-their-traditional-counterparts) unresolved questions.
 
 ### Future possibilities
 A dedicated treatment may later define the relationship between Module, Optional Module, Protocol, EventTarget, and the provisional Rule concept in more formal graph terms.
