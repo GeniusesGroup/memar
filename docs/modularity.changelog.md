@@ -84,3 +84,21 @@ This document's characterization of Protocol did not match protocol.md's own ont
 
 #### Summary
 The pending propagation to `khayyam-modularity.md` is complete. The Khayyam document no longer repeats the conceptual definition of Module or Modularity; it links here and retains only its treatment of `in`, explicit naming without package context, and framework-level manifest and dependency resolution.
+
+---
+
+### Capability completeness, foundation restraint, and decoupling conceptual from runtime dependency
+- Time: 2026-08-25T00:00:00Z
+- Type: Added
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — argued: drove the discovery discussions these principles generalize from (capabilities repeatedly misread as candidate new domains; one capability's parts nearly scattered across endpoint Modules; mutual conceptual dependency mistaken for a defect because of language-level cycle rules); approved scope and wording.
+  - [ChatGPT](../CONTRIBUTORS.md#chatgpt) — argued: co-developed the positions across parallel sessions, including the reversal that had initially separated a capability's processing from its relationship.
+  - [ox-alpha](../CONTRIBUTORS.md#ox-alpha) (opencode) — drafted, reviewed, applied: generalized the findings to principle level without domain examples; added the cross-Module hosting unresolved question and the placement deferral record below.
+- Propagates to:
+  - modeling.md: Done in this same pass — Edge Types unresolved questions now include the bidirectional-relationship question referenced by Unresolved question 11.
+
+#### Summary
+Added four things. "Capability Completeness": a Module introducing a meaningful domain relationship owns everything that makes it work — relationship, governing rules, and required processing — and a capability's parts must not scatter across its endpoints' Modules, with removal-cost stated as the negative test. "Foundational Concepts Should Remain Few": a mature System is expected to hold a small, stable set of foundational Concepts carrying many attached capabilities; an apparently new domain is first a hypothesis about a relationship, Rule, or Optional Module over existing Concepts, with industry domain names explicitly denied evidentiary status, and both failure directions (under-modeling, artificial decomposition) guarded. A sentence in Module Identity and Responsibility stating that a capability does not inherit identity from the concepts it operates on. "Conceptual Relationships Are Not Runtime Coupling": model-level mutual dependence may be realized asymmetrically in time and mechanism and is not inherently a defect; language-layer cycle rules constrain expression, not the domain. Extended document-level Unresolved Questions with the cross-Module hosting question.
+
+#### Rationale and alternatives
+- **Prescribing repository placement conventions for capabilities (rejected)**: where a Module is stored, and how repository trees express core-versus-plugable organization, are representation and tooling concerns deliberately kept outside this conceptual document. Current working position at the time of this change, recorded here so it is not re-derived later: repository placement and any entry-point/primary-domain taxonomy for optional capabilities remain open implementation-layer questions pending a dedicated layout/tooling document; nothing in this document should be read as settling them.

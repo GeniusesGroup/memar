@@ -118,3 +118,38 @@ This document's own content needed only two changes: one stale Future possibilit
 
 #### Rationale and alternatives
 Considered leaving the "Terminology Governance document" Future possibility in place with a note that it had been superseded, rather than removing it outright, to preserve a record of what was originally proposed. Removed instead, following the same pattern already used elsewhere in this project's changelogs for resolved Future possibilities and Unresolved questions: the resolution itself is the record, kept in this changelog entry, so the base document does not accumulate crossed-out proposals.
+
+---
+
+### External-observer consequence made explicit
+- Time: 2026-08-25T00:00:00Z
+- Type: Changed
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — argued: proposed recasting Protocol as the boundary facing a System's external observer; accepted the correction recorded below that this is a consequence of the existing definition, not a replacement for it.
+  - [ChatGPT](../CONTRIBUTORS.md#chatgpt) — argued: developed the observation-precedes-action position across discussion, including the hospital-complaint example showing that reading a protocol ordinarily prepares a subsequent act upon the governed system.
+  - [ox-alpha](../CONTRIBUTORS.md#ox-alpha) (opencode) — drafted, reviewed, applied: wrote the new topic with explicit guards against redefinition drift toward specification/framework territory, and linked the enabling (not constituting) relation to Agency.
+- Propagates to:
+  - agency.md: Done in this same pass — "From Observer to Agent" cross-links this topic.
+
+#### Summary
+Added "Protocols and External Observers". The existing definition — declarative rules governing processes within a System — is unchanged. The new topic states its external consequence: precisely because a Protocol governs processes, it is what makes a System understandable and interactable-from outside its boundary, and understanding a protocol ordinarily precedes becoming a participant. Two guards are explicit: describing a System is not what makes something a Protocol (that is Specification/Framework territory), and understanding a protocol enables but does not constitute action, which belongs to Agency.
+
+#### Rationale and alternatives
+- **Redefining Protocol as "the abstractions by which a System is explained to an external observer" (rejected)**: this surfaced during discussion as a candidate reframing. Rejected because it collides with this document's settled ontology — a protocol detached from any governed process is inert — and because "description of a System for observers" duplicates distinctions this document already maintains against Specification and Framework. The adopted text keeps governance as the defining property and presents external observability as its consequence, preserving both the ontology and the insight behind the proposed reframing.
+
+---
+
+### Two open items absorbed from the retired Persian draft
+- Time: 2026-08-25T00:00:00Z
+- Type: Added
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — requested: asked for a final review of the legacy Persian-language draft (`protocol.per.md`) so nothing of value is lost before its deletion.
+  - [ox-alpha](../CONTRIBUTORS.md#ox-alpha) (opencode) — reviewed, applied: compared the Persian draft against this document item by item; confirmed all substantive content is already present here in evolved form (with its Standard definition explicitly superseded by the attestation framework); transferred the only two genuinely missing items, recorded below.
+- Propagates to:
+  - protocol.per.md: Pending deletion — fully superseded by this document; no further changes should reference it.
+
+#### Summary
+Added one Unresolved question, "Attestation of Memar's own Protocols" — who plays the attesting role for protocols produced within the Memar ecosystem itself: self-declaration by an implementing contributor versus a dedicated independent body, possibly decided per protocol; until resolved, conformance claims about Memar protocols carry no standard status in this document's precise sense. Added one Future possibilities item, "AI-assisted conformance" — tooling lowering the practical cost of producing and running conformance tests, including possible automatic generation of conformance suites from declared rules. Both were distilled from the legacy Persian draft; everything else in that draft was verified as already covered here.
+
+#### Rationale and alternatives
+- **Transferring more content from the Persian draft (rejected)**: the remaining material — the old Rule-Set-style formal definition, the pre-attestation definition of Standard, the five-concept comparison table, and the khayyam-* document-mapping instructions — is either already present here in evolved form, explicitly contradicted by this document's current ontology, or composed of stale references to since-restructured documents. Carrying it forward would reintroduce known-outdated positions rather than preserve knowledge.

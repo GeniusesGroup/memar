@@ -17,7 +17,7 @@
   - [Claude](../CONTRIBUTORS.md#claude) (Claude Sonnet 5, medium effort with thinking) — reviewed: critical review, content enrichment.
 
 #### Summary
-First structured revision of this document. Added `ID` (495216, derived from the original Start Date). Migrated `Contributor(s)` from the deprecated `contribution`/`task` format to the `Tasks`-based format. Fixed `Citations` `Reason` value for Terminology from the non-standard "Foundation Alignment" to "Depends_on." Wrote the previously empty Abstract and Guide-level explanation sections. Added Discussion bundles (Drawbacks, Rationale and alternatives, Prior art, and where appropriate Unresolved questions and Future possibilities) to every Reference-level topic. Added the missing document-level Discussion and Change Rationale sections. Converted plain-text internal references to hyperlinks. Added additional examples (e-commerce Order/Payment relationship) and expanded existing discussion points with deeper analysis and more alternatives.
+First structured revision of this document. Added `ID` (495220, derived from the original Start Date). Migrated `Contributor(s)` from the deprecated `contribution`/`task` format to the `Tasks`-based format. Fixed `Citations` `Reason` value for Terminology from the non-standard "Foundation Alignment" to "Depends_on." Wrote the previously empty Abstract and Guide-level explanation sections. Added Discussion bundles (Drawbacks, Rationale and alternatives, Prior art, and where appropriate Unresolved questions and Future possibilities) to every Reference-level topic. Added the missing document-level Discussion and Change Rationale sections. Converted plain-text internal references to hyperlinks. Added additional examples (e-commerce Order/Payment relationship) and expanded existing discussion points with deeper analysis and more alternatives.
 
 ---
 
@@ -174,3 +174,22 @@ Removed procedural workflow content from the reference document so that executio
 
 #### Summary
 This document had been carrying the full architectural reasoning for pluggable Modules in its own words, with a note already flagging that the material belonged in a shared document once one existed. Now that `modularity.md` exists, that section is reduced to the modeling-level consequence and its illustrating example, referencing `modularity.md` for the rest. The independent-responsibility criterion this document had already worked out informally is now also tied back to `system.md`'s formal Responsibility definition.
+
+---
+
+### Lens plurality, constraint ownership, and edge-direction open questions
+- Time: 2026-08-25T00:00:00Z
+- Type: Added
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — argued: originated both principles during accounting-domain development discussions (a resource quantity that looked cache-like turning out to evaluate external constraints; several abstraction views repeatedly confused with separate entities); approved final scope and wording.
+  - [ChatGPT](../CONTRIBUTORS.md#chatgpt) — argued: co-developed both principles across two discovery sessions, including the first formulation of constraint copying onto resources and its later correction.
+  - [ox-alpha](../CONTRIBUTORS.md#ox-alpha) (opencode) — drafted, reviewed, applied: generalized both findings into principle-level topics without domain examples; added edge bidirectionality and hosting unresolved questions; withdrew an earlier proposed shortcut-edge ownership clause after review showed it conflated two different abstraction lenses.
+- Propagates to:
+  - modularity.md: Done in this same pass — see modularity.changelog.md; the hosting question added here cross-references it.
+  - protocol.md, agency.md: Done in this same pass — observer-facing consequences of Protocol and Agency roles.
+
+#### Summary
+Added "One Reality, Multiple Abstraction Lenses": a single reality may be modeled through co-equal abstraction modes (structural, behavioral/process, normative, systemic) that are neither hierarchy levels nor entities inside the produced model, with the warning that parallel structures differing only by lens usually indicate one concern counted several times. Added "Constraints Belong to the Constraining Concern": a constraint originating outside a resource is modeled as a relationship owned by the constraining concern, carrying its own target/satisfied/remaining state and observing the affected resources, never duplicated onto each of them; with the corollary that two related-looking quantities on one node may be independent projections evaluated against different active rules rather than primary-plus-cache. Extended Edge Types Unresolved Questions with two items deferred to storage-semantics design: whether a bidirectional relationship is one Type observed from two directions or two distinct Types (and where relationship identity resides), and which Module hosts a relationship whose endpoints belong to different Modules.
+
+#### Rationale and alternatives
+- **Writing current working positions into the document itself (rejected)**: tentative positions stay out of base documents per project convention. Recorded here instead so they are not re-derived later. Working positions at the time of this change: (1) the working preference for a bidirectional pair is two distinct relationship Types, since the human-facing descriptions of the two directions differ regardless of representation; (2) a proposed clause assigning shortcut-edge ownership to the deriving concern was examined and withdrawn — shortcut edges are judged within their own abstraction lens, while acquired/discovered data is a separate lens, and the output of discovered data may itself be an ordinary edge.

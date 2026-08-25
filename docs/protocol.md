@@ -99,6 +99,18 @@ Protocol is the third term in the chain:
 
 A process without protocol-governing rules is unstructured activity — it happens, but not reproducibly or verifiably. Protocols are not merely "rules that happen to exist within systems" — for a process that requires reproducibility or verifiability, a protocol is part of what gives that process those properties. When we define a protocol in Memar, we are not just defining a set of method signatures — we are defining a governance structure for a process within a system: the protocol defines *what interactions must occur*; the implementing entities define *how those interactions occur*; the system provides the context within which both the process and its governance make sense.
 
+### Protocols and External Observers
+Because a Protocol declares which interactions are valid, in what order, and under what conditions, it is also the primary means by which a System becomes understandable from outside its own boundary. An external party cannot meaningfully interact with processes it cannot predict; the Protocol is what makes those processes predictable before participation begins.
+
+It follows that reading and understanding a Protocol typically precedes meaningful interaction with the governed System. Observation through a Protocol is not passive consumption of description — it is preparation for action: a party that has understood a protocol has, in the usual case, done most of what becoming a competent participant requires. The observer-facing appearance and the process-governing nature of a Protocol are one property seen from two sides; governance is exactly what renders a System legible and actionable to outsiders.
+
+Two boundaries keep this consequence from being over-read. First, this does not redefine Protocol as documentation or description: a text that merely describes a System is a specification (or, at Framework scale, a framework description); what makes a Protocol a Protocol remains that it governs processes, and governed processes are what outsiders can understand and join. Second, understanding a protocol enables but does not constitute action: whether and how an informed party begins to act on the System is an Agency question, not a property of the Protocol — see [Agency](./agency.md).
+
+#### Discussion
+
+##### Drawbacks
+The observer-facing framing invites regression to the familiar software habit of equating "protocol" with an interface document or API specification. That equation is rejected above, but repetition will be needed wherever the Protocol–Specification distinction erodes in everyday usage.
+
 ### Protocol, Science, and Methodology
 The connection between protocol and science runs deeper than the observation that "research has protocols." It touches the nature of knowledge production itself.
 
@@ -344,9 +356,11 @@ Without this document, the term "Protocol" remains undefined in the Memar framew
 - **Protocol vs Specification Identity:** Is a protocol identical to its specification, or does the conceptual protocol exist independently of any written document? The document leans toward treating them as distinct (the protocol is the rules governing a process; the specification is the document describing those rules) but acknowledges the question is unresolved.
 - **Ontology Finalization:** The choice among Rule Set, Interaction Model, and Verifiable Interaction Model remains open. The addition of process and system as required components may favor Candidate B or C over Candidate A, but formal analysis is needed.
 - **Protocol Conformance Measurement:** If Candidate C (Verifiable Interaction Model) is adopted, what constitutes adequate conformance verification? This touches on tooling and is beyond this document's scope.
+- **Attestation of Memar's own Protocols:** This document defines Standard as third-party attestation of institutionalization or maturity, but does not settle who plays the attesting role for protocols produced within the Memar ecosystem itself. Whether self-declaration by an implementing contributor is sufficient, whether a dedicated independent body is eventually required, and whether the answer may differ per protocol (a core ecosystem protocol versus a single organization's internal one) are all open. Until resolved, no conformance claim about a Memar protocol should be read as carrying standard status in the precise sense defined above.
 
 ### Future possibilities
 - **Protocol Conformance document:** A dedicated document defining how conformance to a protocol is verified, including the role of testing, formal verification, and tooling.
 - **Protocol Relationships document:** A dedicated document formalizing the taxonomy of protocol relationships (extension, refinement, composition) and the rules governing each.
 - **Protocol Versioning document:** A dedicated document addressing how protocols evolve, deprecate, and maintain compatibility.
+- **AI-assisted conformance:** Linters, generators, and increasingly AI-based tooling lower the cost of producing and running conformance tests for protocol implementations. A future treatment could examine how such tooling changes the practical economics of protocol adoption — including whether conformance test suites can be generated automatically from a protocol's declared rules — without changing what conformance itself means.
 
