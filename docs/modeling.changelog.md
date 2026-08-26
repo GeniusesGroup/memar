@@ -193,3 +193,31 @@ Added "One Reality, Multiple Abstraction Lenses": a single reality may be modele
 
 #### Rationale and alternatives
 - **Writing current working positions into the document itself (rejected)**: tentative positions stay out of base documents per project convention. Recorded here instead so they are not re-derived later. Working positions at the time of this change: (1) the working preference for a bidirectional pair is two distinct relationship Types, since the human-facing descriptions of the two directions differ regardless of representation; (2) a proposed clause assigning shortcut-edge ownership to the deriving concern was examined and withdrawn — shortcut edges are judged within their own abstraction lens, while acquired/discovered data is a separate lens, and the output of discovered data may itself be an ordinary edge.
+
+---
+
+### Classification gray zones: incidental metadata and temporal graduation
+- Time: 2026-08-25T00:00:00Z
+- Type: Added
+- Propagates to:
+  - type.md: Done — the type-layer counterpart landed in the same pass (stateless concepts remain Types; family resemblance is not qualification); see type.changelog.md.
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — directed: approved dissolving the source document and distributing its classification content here during the type-documentation correction pass.
+  - [ox-alpha](../CONTRIBUTORS.md#ox-alpha) (opencode) — drafted.
+
+#### Summary
+Added explicit treatment of two recurring gray zones to the loop-edge classification discussion: incidental metadata (a field merely recording when or in what scope a label applies does not make it a data-carrying concern in its own right — the test remains independent responsibility, not field presence) and temporal graduation (something classified today may evolve until its rules justify independence tomorrow; such label-to-node promotion is legitimate but must be decided explicitly at each evolution point under the same test, never assumed silently in either direction). This inherits the classification thread of the dissolved *Static Concepts Must Be Types* document (495421): its "static concept vs data carrier" determination was this document's node-vs-loop-edge question seen from the implementation side. The formalization follow-up remains covered by the already-open criteria question under Concept Existence vs. Model Existence, so no new unresolved-question entry was needed.
+
+---
+
+### Concept-vs-data definition pair absorbed from a dissolved type-series stub
+- Time: 2026-08-25T00:00:00Z
+- Type: Added
+- Propagates to:
+  - type.md: Done — the companion stub `type-rules_and_invariants.md` was absorbed there and `type-relations.md` dissolved as redundant in the same pass; see type.changelog.md.
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — directed: review and merge the small type-series companions into the strong documents.
+  - [ox-alpha](../CONTRIBUTORS.md#ox-alpha) (opencode) — reviewed, applied.
+
+#### Summary
+Absorbed the crisp definitional pair from the dissolved 20-line stub `type-concepts_vs_data.md` into "Concept Existence vs. Model Existence": a concept has semantic identity (participates in the model, may own behavior and rules) while data represents information without necessarily having independent identity of its own, anchored by the canonical `Person`/birth-date and `Contract`/description-field example pairs. The stub's "Modeling Question" and common-mistake warning (data structures first, concepts later) were already carried by this section's opening framing and the acquired-versus-discovered lens respectively. The stub had sat in the type- series despite declaring its own key question a modeling question; dissolution resolves that layer misplacement.
