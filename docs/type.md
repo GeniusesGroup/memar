@@ -2,73 +2,13 @@
 Title: "Type"
 Status: Draft
 Start Date: 2026-07-19
-RFC Number: 495685
-Applied to: []
-Citations:
-    - Title: "Modeling"
-      URI: "./modeling.md"
-      Relation: Depends_on
-      Reason: "Type is the result of correct modeling. The concept of Type cannot be understood or defined independently from the modeling process that identifies what should exist as a Type. Modeling establishes that abstractions are justified by independent responsibilities, not by data — and Type is the construct that carries that justification into the language."
-    - Title: "Encapsulation in Khayyam"
-      URI: "./khayyam-encapsulation.md"
-      Relation: Reference
-      Reason: "Specifies how Capsule and Method manifest in Khayyam — Sovereign Encapsulation, method invocation rules, and the rejection of tuples and consumer-side mutability keywords."
-    - Title: "Abstraction in Khayyam"
-      URI: "./khayyam-abstraction.md"
-      Relation: Reference
-      Reason: "Specifies how Abstraction manifests in Khayyam — pure contracts, implicit structural satisfaction, rejection of default implementations, and abstraction composition."
-    - Title: "Inheritance in Khayyam"
-      URI: "./khayyam-inheritance.md"
-      Relation: Reference
-      Reason: "Specifies that inheritance in Khayyam is a relationship between abstractions, not between capsules — behavior transfer is rejected, abstraction extension is supported."
-    - Title: "Polymorphism in Khayyam"
-      URI: "./khayyam-polymorphism.md"
-      Relation: Reference
-      Reason: "Classifies the polymorphism forms Khayyam supports through abstraction conformance — inclusion, parametric, and ad-hoc — and the rejection of generic syntax."
-    - Title: "Khayyam Design Philosophy"
-      URI: "./khayyam.md"
-      Relation: Reference
-      Reason: "Documents the recurring principles (Behavior Over Type Identity, Domain Modeling, Syntactic Atomicity) that the Type concept in Khayyam is an instance of."
-    - Title: "Khayyam - Programming Language"
-      URI: "../Khayyam.md"
-      Relation: Reference
-      Reason: "The canonical specification of Khayyam's type subtypes and their syntax."
-    - Title: "RFC Template Specification"
-      URI: "./rfc-template.md"
-      Relation: Reference
-      Reason: "This document follows the canonical RFC structure."
-Contributors:
-  - Name: "Omid Hekayati"
-    URI: "mailto:omid@geniuses.group"
-    Tasks:
-      - Works: ["Authored initial reflections on Type as Semantic Entity and its relationship with Capsule and Abstraction", "Directed the philosophical framing: Type as an independent concept before its manifestation in Khayyam", "Identified Method as a type category and the absence of primitive types in Khayyam", "Corrected assumptions about primitive types and emphasized the independent-concept-first structure", "Critical review: identified Method-as-Type argument weakness, Scope justification gap, Type definition exclusivity concern, and DDD reference overhead"]
-        URI: ""
-  - Name: "ChatGPT"
-    URI: "https://openai.com"
-    Model: "GPT-5.5"
-    Effort: "Medium"
-    Tasks:
-      - Titles: ["Critical review"]
-  - Name: "Super Z"
-    URI: "https://z.ai"
-    Model: "GLM 5.2"
-    Effort: "High"
-    Tasks:
-      - Works: ["Conducted cross-language and type-theoretic research", "Authored critical analysis and comparative sections", "Restructured the document to follow the RFC template", "Revised across multiple iterations: removed Primitive Types, added Method and Scope as type categories, separated independent Type concept from Khayyam manifestation, incorporated findings from companion RFCs"]
-        URI: ""
-  - Name: "Claude"
-    URI: "https://claude.ai"
-    Model: "claude-sonnet-5"
-    Effort: "Medium - extended thinking enabled"
-    Tasks:
-      - Works: ["Critical review of 4th revision: identified Method-as-Type argument weakness, Scope-as-Type justification gap, Type definition exclusivity risk, DDD reference overhead, premature bridging claim, and Type hierarchy resolution"]
-        URI: ""
+ID: 495685
 ---
 
 # Type
 
 ## Abstract
-This RFC defines **Type** as a foundational modeling concept: a first-class semantic entity with an explicit identity and a defined contract. The definition is given independently of any specific language — it describes what Type *means* as a modeling decision, not what a compiler requires. A Type represents a named concept in the domain model; its identity is nominal and its purpose is semantic, not structural. This understanding of Type has found concrete expression in the Khayyam programming language, where every type — whether it owns state (Capsule), defines callable behavior (Method), specifies a contract (Abstraction), or delimits a semantic boundary (Scope) — participates in a unified type model derived from these principles. See [Guide](#how-to-identify-a-type-in-the-domain) for a practical decision framework.
+This document defines **Type** as a foundational modeling concept: a first-class semantic entity with an explicit identity and a defined contract. The definition is given independently of any specific language — it describes what Type *means* as a modeling decision, not what a compiler requires. A Type represents a named concept in the domain model; its identity is nominal and its purpose is semantic, not structural. This understanding of Type has found concrete expression in the Khayyam programming language, where every type — whether it owns state (Capsule), defines callable behavior (Method), specifies a contract (Abstraction), or delimits a semantic boundary (Scope) — participates in a unified type model derived from these principles. See [Guide](#how-to-identify-a-type-in-the-domain) for a practical decision framework.
 
 ## Introduction
 
@@ -80,12 +20,12 @@ The concept of Type, before it becomes a language construct, is a modeling conce
 This document defines Type at that modeling level first, then shows how Khayyam's type system is a concrete realization of these principles. The separation is deliberate: the definition should remain valid even if Khayyam's syntax changes, because it describes a concept, not a syntax.
 
 ### Type Beyond Programming Languages
-Type, as defined in this RFC, is not introduced by programming languages. A language is one mechanism for expressing Types, not the reason Types exist. A Type exists wherever a system distinguishes one meaningful category of entity from another — a domain model, a business process, a protocol, or an organizational structure can contain Types even where no source code exists to represent them. Khayyam does not create the existence of Types; it provides a language for expressing a distinction that already holds at the modeling level.
+Type, as defined in this document, is not introduced by programming languages. A language is one mechanism for expressing Types, not the reason Types exist. A Type exists wherever a system distinguishes one meaningful category of entity from another — a domain model, a business process, a protocol, or an organizational structure can contain Types even where no source code exists to represent them. Khayyam does not create the existence of Types; it provides a language for expressing a distinction that already holds at the modeling level.
 
-In practice, the correlation between Type and Khayyam is strong, because Khayyam is currently the first and most concrete realization of these principles — most readers will encounter Type through Khayyam's syntax before encountering it as an abstract modeling concept. That correlation is a fact about where this RFC's principles are first put into practice; it is not a claim about where Type originates. The [Definition of Type](#definition-of-type) below is written to hold independently of Khayyam, and [Manifestation in Khayyam](#manifestation-in-khayyam) exists as a separate section specifically to keep that boundary visible: principles first, language second.
+In practice, the correlation between Type and Khayyam is strong, because Khayyam is currently the first and most concrete realization of these principles — most readers will encounter Type through Khayyam's syntax before encountering it as an abstract modeling concept. That correlation is a fact about where this document's principles are first put into practice; it is not a claim about where Type originates. The [Definition of Type](#definition-of-type) below is written to hold independently of Khayyam, and [Manifestation in Khayyam](#manifestation-in-khayyam) exists as a separate section specifically to keep that boundary visible: principles first, language second.
 
 ### Methodology
-This document was developed through analysis of existing RFCs in the Memar project — particularly Modeling, Encapsulation, Abstraction, Inheritance, and Polymorphism — to extract the common concept that underlies them all. The analysis attempted to avoid presuppositions about what Type should be, instead deriving its properties from the principles and decisions already established across these companion documents. Where a claim about Type depends on a specific decision already recorded elsewhere, that dependency is made explicit through Citations rather than restated. Where the evidence from companion documents was insufficient to justify a definitive claim, the question is recorded as unresolved rather than assumed.
+This document was developed through analysis of existing documents in the Memar project — particularly Modeling, Encapsulation, Abstraction, Inheritance, and Polymorphism — to extract the common concept that underlies them all. The analysis attempted to avoid presuppositions about what Type should be, instead deriving its properties from the principles and decisions already established across these companion documents. Where a claim about Type depends on a specific decision already recorded elsewhere, that dependency is made explicit through a direct link to the companion document rather than restated. Where the evidence from companion documents was insufficient to justify a definitive claim, the question is recorded as unresolved rather than assumed.
 
 ## Explanation
 
@@ -100,7 +40,7 @@ Not every concept in a domain should become a Type. The following framework prov
 
 **Should NOT be a Type** when the concept fails these criteria — see [What Is Not a Type](#what-is-not-a-type) for the detailed catalog of exclusions and examples.
 
-**The gray zone**: Some concepts fall where reasonable modelers disagree. The modeling RFC addresses this directly: an abstraction is justified by an autonomous responsibility and lifecycle, not by the existence of data. A concept may justify an independent Type only when it represents an autonomous concern with its own rules, behavior, lifecycle, validation requirements, or architectural responsibilities. The mere ability to assign a name to something does not automatically justify introducing a separate Type. This criterion — derived from modeling.md's "Concept Existence vs. Model Existence" principle — provides the boundary: the gray zone is resolved by asking not "can we name this?" but "does this carry an independent responsibility?"
+**The gray zone**: Some concepts fall where reasonable modelers disagree. The modeling document addresses this directly: an abstraction is justified by an autonomous responsibility and lifecycle, not by the existence of data. A concept may justify an independent Type only when it represents an autonomous concern with its own rules, behavior, lifecycle, validation requirements, or architectural responsibilities. The mere ability to assign a name to something does not automatically justify introducing a separate Type. This criterion — derived from modeling.md's "Concept Existence vs. Model Existence" principle — provides the boundary: the gray zone is resolved by asking not "can we name this?" but "does this carry an independent responsibility?"
 
 **A note on lifecycle**: The term "lifecycle" in this framework does not exclusively mean runtime creation and destruction (create, persist, destroy). For some Type categories — particularly Method — lifecycle encompasses the stages of definition, composition, specialization, and execution. A Method is defined with a signature, composed with other Methods or Types, specialized through receiver attachment, and executed when invoked. These stages constitute a lifecycle, even though a Method is not "created" or "destroyed" in the same way a Capsule instance is. The framework applies across categories when lifecycle is understood at this level of generality.
 
@@ -173,7 +113,7 @@ Conversely, two Types with different structures but the same name in the same bo
 
 **The nominal enforcement requirement**: If `Age` and `Height` are nominally distinct Types, the type system must prevent their conflation — you cannot pass an `Age` where a `Height` is expected, even though both share the same representation. If the type system cannot observe this distinction, nominal identity is merely a naming convention, not a semantic property.
 
-**Interaction with structural satisfaction**: In Khayyam, a Capsule satisfies an Abstraction through implicit structural satisfaction — if a Capsule implements all required methods with matching signatures, it conforms, without an explicit `impl` keyword. This introduces a tension with nominal identity at the Abstraction layer: a Capsule might accidentally satisfy an Abstraction it was never intended to implement (Go's well-known accidental satisfaction problem). Whether this risk warrants a mitigation mechanism is recorded as an open question in the Abstraction RFC. The Type Identity principle stated here — nominal identity within a context — applies at the declaration level; structural satisfaction operates at the conformance level. The two are not contradictory, but their interaction requires careful design.
+**Interaction with structural satisfaction**: In Khayyam, a Capsule satisfies an Abstraction through implicit structural satisfaction — if a Capsule implements all required methods with matching signatures, it conforms, without an explicit `impl` keyword. This introduces a tension with nominal identity at the Abstraction layer: a Capsule might accidentally satisfy an Abstraction it was never intended to implement (Go's well-known accidental satisfaction problem). Whether this risk warrants a mitigation mechanism is recorded as an open question in the Abstraction document. The Type Identity principle stated here — nominal identity within a context — applies at the declaration level; structural satisfaction operates at the conformance level. The two are not contradictory, but their interaction requires careful design.
 
 #### Discussion
 ##### Drawbacks
@@ -195,6 +135,28 @@ A programming language type is one possible representation of a modeling Type. T
 
 The modeling Type is primary; the implementation type is secondary. The mapping from modeling Type to implementation type is a design decision, not an identity. However, this creates a gap that must be bridged: if the modeling Type exists at a different level, there must be a mechanism for mapping between them. This mechanism is not specified here — it is a concern of the language that realizes these principles.
 
+#### Stateless Types
+**Identity belongs to the type system.** The answer to "which concept is this?" MUST be determinable from the Type alone — at compile time, by the type checker — never by inspecting runtime data. The framework, as the architectural authority over the language ([Framework](./framework.md)), assigns identity to the type system's responsibilities; data's role is variation between instances of the same concept, not distinction between concepts. Every value in a realized system serves exactly one of three roles, and each role has exactly one home:
+
+| Responsibility | Home | Verifiable at |
+|---|---|---|
+| Identity — which concept is this? | The type system (the Type itself) | Compile time |
+| Behavior — what can it do? | Methods on the Type | Signature at compile time, execution at runtime |
+| Data — what values does this instance carry? | Instance state (fields) | Runtime |
+
+Confusing the roles forces one mechanism to simulate another: identity simulated as data cannot be checked at compile time, behavior simulated as data cannot vary between instances, and data simulated in signatures cannot be expressed in contracts.
+
+Modeling justifies a Type by independent responsibility, not by the presence of data (see [How to identify a Type](#how-to-identify-a-type-in-the-domain)). It follows that a concept carrying no per-instance state — every distinguishable fact about it fixed at definition time — is still a Type whenever domain participants name and reason about it on its own terms: a failure condition (`ErrNotFound`), a permission (`PermissionDeleteAccount`), a lifecycle status (`StatusArchived`). Nominal identity then imposes a hard requirement on any realization: each such Type MUST be carried as its own named entity. The requirement is not arbitrary — a static concept has no per-instance data in which identity could meaningfully live, so the Type itself is the only identity mechanism left; demoting it to runtime data inside a shared container leaves nothing else answering "which concept is this?". Representing such concepts as a name field, tag value, or string constant within one generic implementation type (for example, a generic error capsule initialized with `"ErrNotFound"`) is the ascent problem in its most consequential form — a single implementation type silently standing in for many modeling Types — and it demotes identity checks from compile time to runtime value comparison, outside the type system's guarantees entirely.
+
+Two boundary clauses complete the rule. First, the converse guards against over-splitting: where instances of *one* Type vary, that variation is data — fields on the Type's realization — not new Types. Second, neither structural similarity nor structural difference between realizations creates or dissolves Type identity; both questions were settled at the modeling layer (see [Type Identity](#type-identity)). Family resemblance to known static-concept families (errors, capability identifiers, status codes) is likewise not itself a qualification — each candidate still passes through the modeling test, and a status label that carries no independent responsibility remains an attribute of its owning concept, not a Type of its own.
+
+#### Discussion
+##### Drawbacks
+Requiring one named entity per stateless concept proliferates Types. The framework accepts this deliberately and expects such Types to be produced by code generators rather than hand authorship — the manual path's weight is a signal of intent, not an accident. Additionally, each concrete Type appearing in public signatures becomes part of the contract whose removal is a breaking change — a genuine cost, judged worthwhile because compile-time-checked identity is the higher-priority guarantee; projects prioritizing rapid iteration or minimal API surfaces may reasonably weigh it differently. Finally, the rule demands a conceptual shift from developers accustomed to thinking of identifiers — errors, statuses, permissions — as values (strings, constants, enum variants): the [framework's philosophy](./framework.md) provides the foundation for the shift, but adoption friction is real and acknowledged.
+
+##### Prior art
+Java assigns each failure concept its own exception class — the closest mainstream validation of type-per-concept identity. Its weaknesses lie in the exception mechanism Memar rejects (implicit stack unwinding, catch blocks at arbitrary distance), not in the identity model; its checked-exception contract burden, however, previews the API-surface cost noted above. Rust and Swift group failure concepts as enum variants within error types: identity sits in a runtime tag rather than in the Type itself, a trade-off they accept in exchange for exhaustiveness checking over grouped failure families. More broadly, across language communities whose official philosophy rejects type-level identity, practice drifts toward it anyway — developers define custom types once sentinel strings prove insufficient, lint rules emerge to distinguish identity-as-data from identity-as-Type, and richer comparison mechanisms approximate what the type system would have provided natively. That drift is evidence the need is real and widespread; the memar-go companion analysis documents it in depth for the Go ecosystem.
+
 ### Categories of Type
 The Type concept manifests through distinct categories that represent different semantic roles. These categories are not subtypes of each other — they are different ways a Type can fulfill its role in the domain model.
 
@@ -209,7 +171,7 @@ This distinction is important because traditional programming languages often or
 
 Understanding a category should not require understanding its position in a hierarchy. Each category must remain meaningful and well-defined in isolation.
 
-This principle — graph of semantic relationships, not inheritance hierarchy — extends beyond the Type model. It reflects a foundational modeling decision: concepts are connected through explicit semantic roles, not through taxonomic classification. This same principle is expected to apply across the broader Memar modeling framework and is likely to be reflected in companion documents such as `modeling.md` and `terminology.md`.
+This principle — graph of semantic relationships, not inheritance hierarchy — extends beyond the Type model. It reflects a foundational modeling decision: concepts are connected through explicit semantic roles, not through taxonomic classification. This same principle is expected to apply across the broader Memar modeling framework and is likely to be reflected in companion documents such as [Modeling](./modeling.md) and [Terminology](./terminology.md).
 
 #### Capsule — Type with Owned State
 A Capsule is a Type that owns state and the behavior that operates on it.
@@ -236,7 +198,7 @@ The key implications:
 
 **Method lifecycle**: A Method has a lifecycle that encompasses definition (signature declaration), composition (attachment to a receiver type and combination with other methods), specialization (override or extension in a satisfying capsule), and execution (invocation). This lifecycle is distinct from the instance lifecycle of a Capsule — a Method is not "created" or "destroyed" at runtime in the same sense — but it constitutes a genuine lifecycle nonetheless: the Method passes through identifiable stages that affect its identity and behavior within the type model.
 
-The "Method as Type" position has consequences for the composition of categories: since methods are types, they are currently the primary mechanism through which capsules satisfy abstractions. An Abstraction specifies which methods must exist; a Capsule provides their implementations. The method itself, as a Type, is the unit of composition. Whether Methods are the *only* such mechanism, or whether other constructs (Relations, Protocols) may serve comparable bridging roles in the future, remains an open question. This is why the Inheritance RFC can state that "behavior transfer between capsules is rejected" while "abstraction extension (inheritance of requirements) is supported" — the method, as a Type, is the unit that connects the two categories as currently modeled.
+The "Method as Type" position has consequences for the composition of categories: since methods are types, they are currently the primary mechanism through which capsules satisfy abstractions. An Abstraction specifies which methods must exist; a Capsule provides their implementations. The method itself, as a Type, is the unit of composition. Whether Methods are the *only* such mechanism, or whether other constructs (Relations, Protocols) may serve comparable bridging roles in the future, remains an open question. This is why the Inheritance document can state that "behavior transfer between capsules is rejected" while "abstraction extension (inheritance of requirements) is supported" — the method, as a Type, is the unit that connects the two categories as currently modeled.
 
 #### Abstraction — Type as Contract
 An Abstraction is a Type-level contract without owning state or behavior.
@@ -256,7 +218,7 @@ A Scope is a Type that delimits a semantic boundary within which names, relation
 
 A Scope is not merely a syntactic block. It defines what is visible, what is accessible, what is owned, and what is isolated within its boundary — properties determined by the Scope's own naming rules, visibility rules, and entry/exit semantics, not by whatever construct currently contains it (see [A note on independent identity](#how-to-identify-a-type-in-the-domain)). Many higher-level constructs can be modeled as specialized forms of Scope rather than independent language primitives: a namespace, a module's visibility boundary, a package boundary, a transaction's isolation boundary, and a local algorithmic block (as used by `if`, `loop`, `goto`) are all instances of the same fundamental concept — a bounded region with its own naming, access, and composition rules.
 
-Khayyam's current syntax places scopes inside method bodies to express algorithmic control flow, and its examples reflect that usage. This is a placement rule enforced at the language and tooling layer, not a defining property of Scope itself: nothing in the semantic-boundary definition above requires a Scope to be nested inside a Method, and namespace- or module-level boundaries are realizations of the same category that are not nested inside any Method. Where Khayyam's syntax permits or restricts Scope's placement is a language-design question for the Khayyam specification and its governing linters — see [Khayyam.md](../Khayyam.md) — not a claim this RFC makes about what a Scope is.
+Khayyam's current syntax places scopes inside method bodies to express algorithmic control flow, and its examples reflect that usage. This is a placement rule enforced at the language and tooling layer, not a defining property of Scope itself: nothing in the semantic-boundary definition above requires a Scope to be nested inside a Method, and namespace- or module-level boundaries are realizations of the same category that are not nested inside any Method. Where Khayyam's syntax permits or restricts Scope's placement is a language-design question for the Khayyam specification and its governing linters — see [khayyam.md](./khayyam.md) — not a claim this document makes about what a Scope is.
 
 The decision to treat Scope as a Type category reflects the principle that language constructs which establish independent semantic boundaries deserve first-class treatment in the type model. If Scope were merely a compiler-level syntactic convenience with no semantic significance, it would not qualify as a Type. The fact that it governs visibility, ownership, composition, and isolation — all of which are semantic properties — justifies its inclusion.
 
@@ -289,7 +251,7 @@ Concepts such as Rule, Relation, Protocol, Workflow, and Policy depend on Types,
 This boundary is deliberately conservative, for the reason argued in [What Is Not a Type](#what-is-not-a-type): admitting a new category too readily risks the same dilution that made "Object" in OOP progressively meaningless. Should a future concept prove genuinely irreducible to the existing four roles, introducing a fifth category is not ruled out — but the burden of proof sits with demonstrating irreducibility, not with defending the current count.
 
 #### Type Categories vs Language Keywords
-Other languages introduce many more top-level constructs than Khayyam does — `struct`, `class`, `record`, `union`, `interface`, `trait`, `namespace`, `module`, `package`, `enum`, `concept`, among others. This is not evidence that Khayyam's model is incomplete; it reflects a different premise. The existence of a dedicated keyword in another language does not imply the existence of a distinct foundational concept. Several of the most common keywords above are, on inspection, specific realizations of a category this RFC already covers:
+Other languages introduce many more top-level constructs than Khayyam does — `struct`, `class`, `record`, `union`, `interface`, `trait`, `namespace`, `module`, `package`, `enum`, `concept`, among others. This is not evidence that Khayyam's model is incomplete; it reflects a different premise. The existence of a dedicated keyword in another language does not imply the existence of a distinct foundational concept. Several of the most common keywords above are, on inspection, specific realizations of a category this document already covers:
 
 | Common keyword elsewhere | Typical role | Khayyam category |
 |---|---|---|
@@ -298,7 +260,7 @@ Other languages introduce many more top-level constructs than Khayyam does — `
 | `function`, `procedure`, `routine`, `handler` | callable behavior | Method |
 | `namespace`, `module`, `package` | boundary of visibility, ownership, or isolation | Scope |
 
-This mapping is not exhaustive and not a claim that every keyword in every language reduces cleanly to one of these four roles. A construct like `union`, for instance, is arguably closer to an implementation strategy for representing overlapping state than to a modeling role, and this RFC takes no position on it. The claim is narrower and specific to the rows above: where a construct's role is owning state, defining a pure contract, providing callable behavior, or establishing a visibility/ownership boundary, Khayyam expresses it through the corresponding Type category rather than through a dedicated keyword of its own.
+This mapping is not exhaustive and not a claim that every keyword in every language reduces cleanly to one of these four roles. A construct like `union`, for instance, is arguably closer to an implementation strategy for representing overlapping state than to a modeling role, and this document takes no position on it. The claim is narrower and specific to the rows above: where a construct's role is owning state, defining a pure contract, providing callable behavior, or establishing a visibility/ownership boundary, Khayyam expresses it through the corresponding Type category rather than through a dedicated keyword of its own.
 
 #### Discussion
 ##### Drawbacks
@@ -317,19 +279,194 @@ Rust's struct/trait distinction parallels Capsule/Abstraction, but Rust treats f
 1. Does Method fundamentally represent a Type category, or is Method a behavior owned by another Type? The current model treats Method as a Type, and the "fundamental semantic building block" argument supports this position. However, alternative interpretations remain possible — for instance, a Method could be viewed as a behavioral facet of the Type it is attached to, rather than an independent entity. The question is recorded as unresolved because the current model's treatment of Method-as-Type, while well-motivated, has not yet been validated through implementation experience.
 2. How does "Method as Type" affect compilation and dispatch? If a Method is a Type, does it have a runtime representation, or is it purely compile-time?
 
+### Type Metadata
+Types accumulate auxiliary concerns beyond their core contract — access to state and to invoked behavior, implementation intent visible to tooling, human-facing names and documentation across languages. This section records three such families because they recur constantly; it does not claim they are the only ones, and new families are expected. Every family receives the same treatment regardless: its carrying answer is chosen between ordinary first-class constructs and companion artifacts — never new declaration keywords on the language surface. Each family below states the concern, the carrying answer, and why the keyword route was rejected.
+
+#### Access
+Whether for state or for behavior, access expectations are part of the Type's own definition. Encapsulation by construction keeps everything inside a Type's boundary inaccessible from outside; interaction happens through the Type's methods, and each method governs the level at which it permits invocation — a behavior may be callable broadly or restricted to specific callers, exactly as a field may be exposed or held internal. A declaration keyword like `private` therefore adds nothing the model lacks: it restates structurally enforced facts at the language surface, and worse, its existence implies that openness were the default requiring explicit closure — when this framework's default is precisely the opposite. Every member being internal unless deliberately exposed is not a modifier to declare; it is the standing rule of the boundary itself.
+
+#### Implementation intent
+Types under active development often need tooling assistance before they are complete: generating repetitive members against an Abstraction's requirements, reviewing partial progress, or reserving a contract slot ahead of implementation. Structural conformance alone cannot provide this signal — an unfinished Type does not yet satisfy anything, so there is nothing for a tool to detect. The framework's answer is an ordinary first-class construct: the Type composes an intent-declaring Abstraction or exposes a plainly named Method announcing which Abstraction it targets, giving tools a uniform, discoverable marker ahead of completion.
+
+Requirements of this kind vary by circumstance and multiply quickly — one effort needs pre-completion signals, another wants completeness checking, another wants capability tagging — so folding them into syntax taxes every reader of the language to serve whichever family arrived first: the coloring cost of a crowded surface. Recorded precedent adds a second rejection ground: keyword/marker routes add ceremony without stronger guarantees than plain constructs, because a deliberate actor can misstate intent through a keyword exactly as easily as through a method — the syntax buys restriction in name only.
+
+#### Human-facing identity
+Where software is multilingual — or consumed across programming languages through generated bindings — a Type's identity does not stop at its functional contract. Its localized names, UI labels, human-readable documentation, and localized descriptions of its behaviors and failures belong to the Type itself.
+
+The pathology this refuses is familiar. A single concept ends up described in four disconnected places: its behavior in one layer, its validation re-expressed in another, its display strings in translation files keyed by string lookup somewhere else entirely. Each copy drifts on its own schedule; interfaces desynchronize from types, boilerplate accumulates with every new consumer, and the single source of truth quietly dies while every party believes they hold it. This framework attaches the whole stack to the Type instead: human-facing metadata lives in companion artifacts kept beside the Type's definition — one per required language, sharing a common base name qualified by the target language — so the functional definition remains uncluttered while the association stays mechanical rather than merely conventional.
+
+Because these artifacts are first-class parts of the Type's definition, consumers do not maintain parallel mappings: presentation layers, gateways, and generated bindings query the metadata directly from where it lives, and localized text reaches the end user driven by the type system itself — zero-redundancy alignment between what the system is and what the user sees. Downstream programming languages receive the same identity through generated output from that one source; adding a second implementation language means regenerating, not re-translating. External translation files keyed by string lookup are rejected as the direct cause of the fragmentation above, not merely a less convenient alternative — the same reasoning that distinguishes this from annotation-based localization schemes, which tie strings to classes yet still leave them external resources resolved by lookup rather than first-class parts of the definition.
+
+A real cost is accepted knowingly: tight coupling means even a wording tweak by a non-developer translator touches files living beside source definitions. Tooling and workflow must therefore treat companion artifacts as safely editable outside full development environments, so translation work never requires developer round-trips nor risks the functional definition.
+
+The pattern across the recorded families is deliberate and generalizes: metadata requirements are circumstance-dependent, open-ended, and specific to each family, while syntax is closed and shared by everyone. When a family not covered here appears, the question is never "what keyword should express this?" but "which explicit carrier fits it — a first-class construct or a companion artifact?". Metadata is content; the language surface stays minimal.
+
 ### Type and Modeling
 Because Types represent semantic entities, defining a Type is a modeling decision rather than merely a programming decision.
 
-A Type should correspond to a meaningful concept in the domain model, not simply to a convenient collection of data fields. Before defining Types, the modeler must identify the concepts, boundaries, identities, and relationships that exist in the modeled reality. A Type is the result of correct modeling, not a replacement for the modeling process. This document depends on the principles defined in `modeling.md`, especially the "Modeling Before Implementation" principle.
+A Type should correspond to a meaningful concept in the domain model, not simply to a convenient collection of data fields. Before defining Types, the modeler must identify the concepts, boundaries, identities, and relationships that exist in the modeled reality. A Type is the result of correct modeling, not a replacement for the modeling process. This document depends on the principles defined in [Modeling](./modeling.md), especially the "Modeling Before Implementation" principle.
 
-The modeling RFC establishes that the output of modeling is a set of abstractions, concerns, relationships, and supporting documents — not capsules. Capsules are implementation-level realizations. This means the modeling phase identifies Types at the Abstraction level first; the Capsule level comes later, during architecture and implementation. The Type concept spans both levels, but the modeling decision that justifies a Type's existence operates at the Abstraction level.
+The modeling document establishes that the output of modeling is a set of abstractions, concerns, relationships, and supporting documents — not capsules. Capsules are implementation-level realizations. This means the modeling phase identifies Types at the Abstraction level first; the Capsule level comes later, during architecture and implementation. The Type concept spans both levels, but the modeling decision that justifies a Type's existence operates at the Abstraction level.
+
+Ownership flows one way across these levels. Modeling identifies a concept and its boundary; the Type represents that concept and becomes the boundary behavior hangs from; implementation-level principles — Explicit Behavior Ownership, [below](#explicit-behavior-ownership) — preserve that boundary rather than replace the modeling that produced it. When a behavior's ownership is ambiguous in code, the root cause usually lies upstream: a modeling step that failed to identify the correct Type for the concept. Ambiguity discovered at implementation time is therefore a modeling defect surfacing, not an implementation problem to patch locally.
 
 #### Discussion
 ##### Drawbacks
 If every type definition requires a modeling decision, the cost of introducing types increases. For prototyping and exploration, this is a significant friction. A type system derived from modeling principles must provide mechanisms for gradual introduction — lightweight types that can be strengthened as the model matures — without requiring full modeling justification from the start.
 
+### Explicit Behavior Ownership
+
+Memar enforces the principle **Single Visible Ownership of Behavior**: every action (method) has exactly one clear, discoverable owner, and no behavior is inherited, promoted, injected, or synthesized without being spelled out in source code. This principle — **Explicit Behavior Ownership (EBO)** — states that only explicitly-defined or explicitly-delegated methods count as behavior of an entity. Any feature that implicitly adds behavior is rejected: inheritance, trait default implementations, implementation embedding (an inner component's methods silently appearing on the outer component), method promotion, compiler synthesis, and opaque macro expansion. Protocol extension is unaffected: it transfers declarative requirements, never behavioral implementations. All behavior sharing must be explicit and visible.
+
+Formally: for every method `m` present in a component `C`, one of two conditions must hold —
+
+1. `C`'s source code explicitly defines `m`; or
+2. `C`'s source code contains an explicit delegation call naming another component's method (`other.m(...)`).
+
+No other mechanism may introduce `m` into `C`: no implicit copy or aliasing across components; no acquisition through inheritance, embedding, or macro expansion unless the expansion exists verbatim in source under the developer's control; and protocol extension is not behavior acquisition at all, so it stands outside this rule entirely.
+
+Three questions must have direct, local answers when reading any component: **Where was this behavior defined? Why is it available here? Who owns it?** If any answer requires traversing an inheritance hierarchy, mentally executing a macro, or consulting documentation beyond the source itself, visibility has failed. Navigating elsewhere to study a delegation *target's* internals is fine — the three answers come locally from the explicit call; navigation is for depth, not discovery.
+
+Delegation is the mechanism by which behavior is shared under EBO, and its goal is not reuse in the traditional sense but **visibility**: when component A delegates to B, A's source contains a visible call to B's method, so readers of A see *what* is delegated (name and signature), *where* it goes (the target), and *why* (the surrounding logic explaining the decision). Inheritance offers none of these locally. Each method node belongs to exactly one owner, and every call edge is written in source — making the behavior graph explicit, inspectable, and acyclic by construction: one cannot accidentally create ownership loops, and no method can be traced back to two authoritative sources. The ownership graph is a tree (or forest), never a multi-parent DAG.
+
+#### How Behavior Hides
+
+Modern platforms offer many mechanisms that let behavior appear in a component without being defined there. They are often grouped under the label "inheritance," but they are independent solutions to a legitimate problem — boilerplate reduction — which happen to share one property: **ownership ambiguity**. The catalog:
+
+- **Classical inheritance:** a base-class method appears in all descendants with no code in the descendant.
+- **Trait default implementations:** implementing a type acquires a provided body without writing it.
+- **Method promotion (embedding):** embedding a type makes the inner type's methods available on the outer one.
+- **Compiler synthesis:** generated members (`equals`, `hashCode`) appear unwritten.
+- **Generated implicit methods:** generators create methods present in the binary but absent from the source the developer reads.
+- **Macro expansion:** a macro call expands into method definitions invisible before expansion.
+- **Automatic delegation:** frameworks or runtimes silently forward calls to embedded or wrapped objects.
+
+Each introduces a hidden edge in the behavior graph: a method exists in a component whose source does not show why. A recurring lesson from debates over these mechanisms is that the arguments are rarely about the mechanisms themselves — they are about **ownership** (who is responsible?), **visibility** (where does it come from?), **discoverability** (how do I find it?), and **structural relationships** (what is the real relationship between these components?). By answering those directly instead of adjudicating which "type of inheritance" is acceptable, the underlying problem resolves without engaging a taxonomy whose subject may not exist. EBO categorizes nothing and restricts no specific mechanism; it states the positive rule — behavior must have a visible owner — and lets consequences follow.
+
+#### "Inheritance" Is a Borrowed Metaphor — With No Subject Here
+
+A deeper observation concerns the conceptual model that makes hidden-behavior mechanisms seem natural. The word "inheritance" was not coined by software engineering, and tracing the borrowing illuminates why it carries implications that do not serve software design.
+
+In law (*hereditas*, Roman law; *farāʾiḍ*, Islamic inheritance law whose mathematically fixed shares differ sharply from both Roman and common-law traditions; common-law testamental freedom vs. civil-law forced heirship), inheritance means the transfer of **property or rights** — never capabilities or behavior — and even within law its meaning splits (*successio in personam* vs. *successio in rem*; two fundamentally different transfers unified under one word). . Someone who inherits a piano does not inherit the previous owner's ability to play it.
+
+In genetics, the metaphor's nearest home domain, genes carry instructions for protein synthesis — not behavior. Behavior emerges from gene–environment interactions: epigenetics, neural development, learning, culture. Genetic material comes from **two** parents, not one "base class"; Mendelian inheritance recombines alleles rather than copying traits from a single source. Even Mendel distinguished **genotype** from **phenotype** precisely because inheritance and expression are not the same thing.
+
+Software borrowed the word for principles that genuinely predate OOP — structure reuse, behavior sharing, hierarchical classification — but the biological metaphor carried implications foreign to the actual mechanisms. "Classical" inheritance transfers both structure and behavior from a single parent, a model with no parallel in either home domain. When later languages recognized the tensions, each partial fix required a new term precisely because the original metaphor could not be repaired from within: Go introduced embedding and interfaces — yet embedding still promotes methods implicitly; Rust introduced traits with default implementations — behavior injection under another name. These are independent mechanisms solving boilerplate reduction, each carrying the same cost. None is a "variant" of inheritance.
+
+One software relationship *is* structurally analogous to genetic inheritance: an Abstraction extending another Abstraction. Requirements flow from parent specification to child without the parent being altered, the child building further on top. EBO does not challenge this — what it challenges is the transfer of *behavioral implementations*: bodies, logic, side effects. Extension transfers declarative requirements (signatures, constraints), adding obligations without adding any mechanism for fulfilling them; conforming components write and own every method themselves, visibly. Preferring the term **extension** over "inheritance" is then a terminological choice, not a claim that the structure differs: "inheritance" is so thoroughly associated with behavioral transfer that using it for extension risks importing assumptions that do not apply. The principle matters more than the word — requirements may be extended; behavior must always be explicitly owned.
+
+This also settles the familiar practice of splitting inheritance into "good vs. bad," "interface vs. implementation," "type vs. behavioral": that taxonomy assumes inheritance is one coherent concept with variants. Its home-domain meanings do not apply to behavioral transfer between software components; the labeled mechanisms are independent solutions sharing one cost. Categorizing them is taxonomy without a subject. When two components share behavior under EBO, each defines (or explicitly delegates) it independently, acknowledging similarity through conformance to shared Abstractions — correctly described as extension.
+
+#### Abstractions Stay Pure
+
+Default implementations produce a slow failure mode worth naming: the **death of abstraction**. An Abstraction begins as pure requirements; someone adds a default because "most implementers will want this"; defaults accumulate; the Abstraction stops being an abstraction and becomes an implementation container — a base class in disguise, where implementers wanting different behavior must fight the defaults rather than own their choices. EBO prevents this by forbidding default implementations entirely: Abstractions remain pure, all behavior lives in concrete Types, and code generation is the sanctioned mechanism for easing repeated similar implementations — provided generated code is visible and auditable, living in files developers read rather than compiler intermediates.
+
+A concrete illustration: suppose an `Error` Abstraction declares `is_retryable()`, and a default centralizes retry logic by checking error codes. Who owns the behavior? The Abstraction declared it; concrete types may need to override it; different concrete types may need different logic entirely. With a default, the Abstraction owns the behavior nominally while every diverging implementer fights that ownership — a confused graph with the abstraction and its implementers in implicit conflict. Under EBO the answer is unambiguous: whichever concrete component defines `is_retryable()` owns it; the Abstraction only requires that it exist.
+
+An emerging hypothesis sharpens the intuition: the true owner of a behavior is the component whose source contains its definition — ownership should never be duplicated across entities, because multiple ownership paths recreate ambiguity (if `is_retryable()` traces to both an Abstraction and a concrete Type, neither is authoritative).
+
+#### Generics and Ownership Ambiguity
+
+Generic type parameters (`List<T>`) are not behavior injection in EBO's primary sense: inheritance, trait defaults, and promotion inject bodies where none were written, whereas a type parameter propagates type identity — `List<Connection>` gains no new `Add`; it instantiates an existing one from a template.
+
+But generics introduce a distinct ownership ambiguity with a similar visibility outcome. `Add` is defined in the template `List<T>`; the types that execute it are `List<Connection>`, `List<Service>`. Who owns `List<Connection>.Add()`? The implementation lives in one place; the type that "has" the method is a parameterized instantiation; navigating from use-site to implementation requires understanding the generic substitution system — a real ownership-discovery cost. A developer reading a domain capsule built on `List<Connection>` cannot see `Add`'s behavior in that source at all, failing the visibility test.
+
+A deeper observation follows: generic syntax often becomes necessary not because it is inherently required, but because behavior ownership was already separated from domain concepts upstream in modeling. When "the set of connections managed by this service" is not modeled as its own first-class Type with its own behavior, a generic container becomes the fallback — and the ambiguity is a consequence of that earlier modeling decision, not of generic syntax itself. The Polymorphism document develops this "generics as symptom" argument in detail.
+
+EBO's position: generic syntax is rejected not because parameterization is invalid, but because existing generic mechanisms typically fuse several semantic responsibilities — polymorphism, behavior reuse, compile-time facts, optimization hints — into one mechanism, blurring both behavior ownership and modeling boundaries. The domain-specific alternative — a `ConnectionList` Type defining its own `Add`, directly or via explicit delegation to an internal structure — satisfies EBO completely: every method visible on `ConnectionList` is defined in `ConnectionList`'s source. No hidden edges.
+
+#### The Economics of Explicitness
+
+The standard defense of implicit mechanisms is boilerplate reduction — a framing that treats writing cost as the dominant cost of software. It is not. Consider the lifecycle: a method is written once, then read, understood, debugged, and modified dozens or hundreds of times. If an implicit mechanism cuts writing cost by 20% but raises understanding cost by 30% across fifty subsequent encounters, total cost rises. Maintenance and comprehension dominate the economics, not initial authoring.
+
+Trade-offs here are also mis-framed as binary ("less code but more magic" vs. "more clarity but more verbosity"). The accurate model is opportunity cost: fifteen minutes spent tracing a method through three inheritance layers is fifteen minutes not spent on the actual problem. This holds regardless of reader capability — an experienced developer or a powerful model *can* trace the chain; the question is what else those finite cognitive resources would have produced. Finiteness of processing capacity, human or computational, is a structural property no hardware paradigm removes.
+
+AI participation collapses the traditional trade-off altogether. Development now involves multiple reader-writer classes — humans, linters, compilers, analyzers, generators, AI assistants — and explicit systems serve them all: AI reasons more reliably over visible call origins; static analysis enumerates a component's methods by scanning source, simulating nothing; IDEs document and refactor accurately when ownership is unambiguous; formal verification becomes tractable when the behavior graph has no hidden edges. When AI generates the explicit delegation replacing an inheritance chain, writing cost drops toward zero *and* understanding cost drops structurally — "less code but more magic" versus "more code but more clarity" stops being a choice, because both sides improve. The counterintuitive conclusion: the boilerplate EBO requires is not a cost to mitigate but the very mechanism that makes code legible to every participant, human or machine — exactly as meaningful variable names exist not for the compiler, which needs only addresses, but for every reader that needs to understand.
+
+#### The Ownership Graph
+
+Behavior can be modeled as a directed graph — nodes are components, edges are calls or delegations. Conventional systems fill this graph with implicit inheritance edges; EBO permits only explicit ones:
+
+```mermaid
+graph TD
+    subgraph Component A
+        A_f1["f1()"]
+        A_f2["f2()"]
+    end
+    subgraph Component B
+        B_f1["f1()"]
+        B_f2["f2()"]
+    end
+    %% Allowed: explicit delegation
+    A_f1 -->|calls| B_f1
+    %% Disallowed: implicit inheritance (dotted)
+    A_f2 -.->|-- forbidden -->| B_f2
+    style B_f2 fill:#f9dcdc
+    style A_f2 stroke-dasharray: 5,5
+```
+*Figure: Solid arrow = explicit call/delegation (allowed). Dashed arrow = implicit behavior inheritance (forbidden).*
+
+```mermaid
+flowchart LR
+    Owner1(Component A)
+    Owner2(Component B)
+    A1(Method f) -->|implemented in A| A2[f in A]
+    B1[f] -.->|no implicit inheritance| x[f]
+    Owner1 --> B1
+    classDef hiddenBehavior fill:#f9dcdc;
+    class x hiddenBehavior;
+```
+*Figure: Only explicit method definitions (solid) are counted. The dashed line shows a prohibited implicit transfer of behavior.*
+
+Tooling consequences follow directly from the graph's honesty: compile-time checking enforces that every Abstraction requirement is met by an explicit method in the satisfying component, with no inherited satisfaction; static analysis and compilers enumerate a component's complete method set by scanning source alone; documentation needs no answer to "where did this method come from?" because the source location *is* the answer; AI-assisted analysis and generation gain reliability from fully visible origins; and code generation leverage inverts the old trade-off — AI and linters can scaffold explicit delegations on demand, keeping them auditable and modifiable, so the extra lines become the substrate making automated reasoning more trustworthy rather than a cost automation merely tolerates.
+
+#### Discussion
+
+##### Drawbacks
+
+- **Increased boilerplate** — developers write explicit delegation instead of inheriting; a real increase in lines of code, substantially reduced in AI-assisted environments where generation and lint-scaffolding produce the delegation automatically. The remaining lines purchase visible ownership for every reader; the trade-off shifts from "more code vs. hidden behavior" to "more code AND clear behavior."
+- **Initial development speed** — early in a project, hierarchies are shallow and verbosity feels unnecessary; the comprehension benefit compounds as the codebase grows.
+- **Pattern migration** — teams accustomed to inheritance-based design must reformulate patterns (Template Method, inheritance-based Strategy) with composition and delegation. A corresponding benefit hides here: principled deviation from OO norms filters for practitioners who think critically about trade-offs, as the Go and Rust communities demonstrate.
+- **Generated-code management** — heavy reliance on generation demands reliable, auditable generators and workflow discipline around generated artifacts.
+
+##### Rationale and alternatives
+
+- **Reject each hidden-behavior mechanism individually (rejected)** — "no inheritance," "no trait defaults," "no promotion," "no macro methods" was the earlier, per-document approach. Unifying under EBO means future, unimagined mechanisms are evaluated automatically against one rule: does this introduce behavior without explicit, visible ownership? A growing blacklist cannot do that.
+- **Allow controlled hidden behavior (rejected)** — e.g., defaults permitted on abstractions marked pure, or embedding restricted to interface-like targets. Exceptions erode principles: each creates a category to learn and police, and any permission for hidden behavior reopens the exact problem EBO closes — there is no practically definable safe subset, and each exception demands its own enforcement, review, and documentation, consuming what it promised to save. Ecosystem evidence settles the enforcement question: successful Java and C# teams already follow EBO-like conventions ("prefer composition over inheritance," "no deep hierarchies") enforced through reviews, linters, and institutional knowledge — fragile, incomplete, expensive. If a convention is near-universal among high-performing teams, encode it in the language and let the compiler enforce it for free.
+- **Rely on tooling to expose hidden behavior (rejected)** — IDEs annotating inherited methods still place the visibility burden on tools rather than source. Source is the ground truth; if understanding a component requires an IDE, it has already failed. Code review web interfaces, PR diffs, and printed code all lose tool-provided annotations.
+- **Define inheritance precisely and permit only that form (rejected)** — e.g., allowing "protocol extension only." This engages a taxonomy whose subject does not exist: extension is already correctly named and already outside EBO's scope. Granting "precise inheritance" legitimacy re-imports the inapplicable concept; the honest naming is explicit delegation for implementations and extension for protocols.
+- **Doing nothing (the cost)** — without a unifying ownership principle, each mechanism gets debated in isolation, producing inconsistent decisions and ad-hoc rules, with developers navigating hidden behavior through fragile tooling, documentation, and tribal knowledge.
+
+##### Prior art
+
+- **Go interfaces:** default-free interfaces align with EBO — but embedding implicitly promotes methods, which EBO rejects.
+- **Java interfaces (pre-8):** pure, aligned — Java 8 default methods moved away.
+- **Rust traits:** default methods and blanket implementations inject behavior the implementing type's source does not define.
+- **C# extension methods:** add behavior visible in IntelliSense but absent from the type's source.
+- **Python / duck typing:** monkey patching, multiple inheritance, metaclass manipulation all violate ownership clarity in favor of flexibility.
+- **C++ multiple inheritance:** concrete-body MI creates diamond-ownership ambiguity; the single-owner rule eliminates the class of problem.
+- **Ada generics:** compile-time composition explicit in instantiation — partially aligned, though resulting behavior remains hard to trace.
+
+The common thread: every listed language treats "inheritance" (or its equivalents) as a coherent concept to refine, restrict, or work around. EBO's position is that the concept itself — as a model for behavioral transfer — is what fails examination, not particular implementations.
+
+##### Unresolved questions
+
+1. **Generated-code transparency:** generators must emit readable, auditable source files — never opaque binaries or compiler intermediates. Working answer recorded; tooling specifics open.
+2. **Multiple delegations:** a component may hold and delegate to several other components — each relationship explicit in source.
+3. **Performance overhead:** explicit delegation may cost slightly versus inlined inheritance; clarity is favored, and optimization belongs to compilers and runtimes, not source-level design.
+4. **Dynamic behavior:** dynamic proxies and reflection-based method addition generally violate EBO — runtime-added methods mean source no longer reflects the available set.
+5. **Macro boundary:** exactly where transparent code generation ends and opaque macro magic begins remains open. The guiding principle is human cognitive accessibility — the same reason variables are not named `x42`: generated behavior should be readable and navigable without special tooling. Resolution may ultimately be linter configuration rather than language rule.
+
+##### Future possibilities
+
+1. **AI-assisted delegation generation:** instant, auditable scaffolding of forwarding methods.
+2. **Formal verification:** with no hidden edges, verification scope equals source scope.
+3. **Ownership-clarity metrics:** IDEs and linters could compute and display an "ownership clarity score" for each component— a measure of how easily a reader can determine the origin of each behavior.
+4. **Delegation pattern library:** standardized forwarding/adapting/decorating patterns reducing the burden without hiding anything.
+5. **Beyond software:** responsibility-clarity applications in organizational design.
+
 ### Type and Rules
-A Type may own rules that define valid states and behaviors. However, the term "rules" covers several distinct concepts that should be separated:
+A Type may own rules that define valid states and behaviors. Two framings keep this honest. First, a rule exists at the modeling level: it is domain knowledge stated as a constraint or valid-behavior description, and implementation code merely executes it — the checking code is one realization, not the rule itself. Second, ownership follows the concept constrained: rules belong to the Type — or the Relation — that owns the concept they govern, and where a constraint originates outside a resource, Modeling's constraint-ownership principle ([Constraints Belong to the Constraining Concern](./modeling.md#constraints-belong-to-the-constraining-concern)) places it on the constraining concern rather than duplicating it onto each affected party. However, the term "rules" covers several distinct concepts that should be separated:
 
 **Type Invariants** are state properties that must hold for all valid instances of the Type. They can be checked by inspecting a single instance. Example: `balance >= 0`. These correspond to Eiffel's class invariants.
 
@@ -359,10 +496,10 @@ This matters because graph-based domain models — the tool Memar uses for domai
 
 #### Discussion
 ##### Future possibilities
-Whether Relations warrant dedicated language-level treatment — endpoint ownership, first-class status conditions, directionality, arity — is deferred to a future companion RFC that can address it as a modeling-layer concern in its own right, informed by prior art such as Chen's Entity-Relationship model, RDF/OWL, property graph databases, and Alloy.
+Whether Relations warrant dedicated language-level treatment — endpoint ownership, first-class status conditions, directionality, arity — is deferred to a future companion document that can address it as a modeling-layer concern in its own right, informed by prior art such as Chen's Entity-Relationship model, RDF/OWL, property graph databases, and Alloy.
 
 ### Manifestation in Khayyam
-The principles defined above — Type as semantic entity, nominal identity, four categories of Type, owned rules — have found concrete expression in the Khayyam programming language. This section documents that manifestation without repeating the companion RFCs; for details, see the Citations.
+The principles defined above — Type as semantic entity, nominal identity, four categories of Type, owned rules — have found concrete expression in the Khayyam programming language. This section documents that manifestation without repeating the companion documents; for details, see [Khayyam](./khayyam.md) and its companion documents on [Encapsulation](./khayyam-encapsulation.md), [Abstraction](./khayyam-abstraction.md), [Inheritance](./khayyam-inheritance.md), and [Polymorphism](./khayyam-polymorphism.md).
 
 **No primitive types**: Khayyam does not have primitive types. Even values that other languages represent as `int`, `bool`, or `string` are wrapped in named capsules (`W32`, `Bool`, `String`). This is a direct consequence of the "Type as semantic entity" principle: if `Age` and `Height` are different Types, their representation must also be different Types, not shared primitives. This eliminates the ascent problem described in [Type vs Implementation Type](#type-vs-implementation-type) at the language level.
 
@@ -410,20 +547,11 @@ Khayyam's contribution is not any single one of these ideas but their integratio
 6. **Gradual typing**: How does a language enforcing "every type is a semantic entity" interoperate with systems that do not share this philosophy?
 7. **Bootstrapping**: Without primitives, what are the foundational Capsules, and how are they defined without circularity?
 8. **Method dispatch**: If a Method is a Type, does it have a runtime representation, or is it purely compile-time?
-9. **Accidental satisfaction**: Implicit structural satisfaction (no `impl` keyword) risks accidental conformance. Whether this warrants a mitigation mechanism is recorded as an open question in the Abstraction RFC.
+9. **Accidental satisfaction**: Implicit structural satisfaction (no `impl` keyword) risks accidental conformance. Whether this warrants a mitigation mechanism is recorded as an open question in the Abstraction document.
 
 ### Future possibilities
 1. **Refinement types for invariants**: An SMT solver could check simple invariants at compile time.
 2. **Formal specification of the satisfaction mechanism**: Once design decisions are made, the Capsule/Abstraction bridge could be specified formally.
 3. **Gradual typing at boundaries**: A mechanism for converting between semantic Types and structural types at API boundaries.
 4. **Rule analysis tooling**: Static analysis to verify invariants, detect rule conflicts, and identify over-constraining.
-5. **A dedicated Relation RFC**: Addressing whether and how Relations gain independent status, endpoint ownership, directionality, and arity, as a modeling-layer concern built on top of — not inside — this Type definition.
-
-## Change Rationale
-- **Initial draft**: Established the foundational concepts of Type as Semantic Entity, Type and Modeling, Capsule and Abstraction as realizations of Type, Type and Rules, Type and Relations.
-- **Second revision**: Restructured into the RFC template. Added Type Identity, Type vs Implementation Type, rule categories, Capsule/Abstraction bridge analysis, and unresolved questions based on cross-language research.
-- **Third revision**: Corrected structural errors based on review feedback: removed Primitive Types (Khayyam has none), added Method as a Type category (mt), added Scope as a Type category (sc), repositioned the definition of Type as an independent concept before its manifestation in Khayyam, reduced overall length by consolidating repetitive comparative analysis, and aligned the category model with Khayyam's actual four-subtype structure (cp, mt, ab, sc).
-- **Fourth revision**: Incorporated findings from the companion RFCs (Encapsulation, Abstraction, Inheritance, Polymorphism, Modeling). Added Citations to all companion RFCs. Resolved the Type Identity open question about structural satisfaction vs. nominal identity by referencing the Abstraction RFC's treatment of implicit structural satisfaction and accidental satisfaction risk. Added the relationship between inheritance and Type categories (inheritance between Abstractions, not Capsules). Added the modeling RFC's "Concept Existence vs. Model Existence" principle to the decision framework. Refined Methodology section to reflect the actual research approach.
-- **Fifth revision**: Applied critical review from ChatGPT (GPT-5.5). Key changes: (1) Removed all references to DDD and Aggregate Root — these belong in companion RFCs, not in the Type definition. (2) Added "What Is Not a Type" section to establish the exclusive boundary of the Type definition, addressing the risk that an overly inclusive definition dilutes the concept. (3) Moved the Type hierarchy question from Unresolved to an official position: "Type Categories Are Not a Hierarchy" — categories are connected through semantic relationships, not taxonomic classification. (4) Strengthened the Scope category: Scope is a "semantic boundary" that defines visibility, ownership, composition, and isolation — not merely a syntactic block. (5) Improved the Method-as-Type argument: Methods are Types because they are fundamental semantic building blocks through which higher-level concepts (rules, vouchers, policies) are expressed, not merely because they have identity and contract. (6) Weakened the bridging claim: Methods are "currently the primary mechanism" connecting Capsules and Abstractions, not the definitive bridge. (7) Clarified Method lifecycle: it encompasses definition, composition, specialization, and execution — not runtime creation/destruction. (8) Added conservative expansion principle: the Type category should remain conservative, avoiding the OOP-style overloading that rendered "Object" meaningless. (9) Added Method-as-Type as an unresolved question to record that the position is well-motivated but not yet validated through implementation. (10) Removed the "Beyond DDD" subsection from Type and Modeling.
-- **Sixth revision**: Applied critical review from Claude, cross-checked against `Khayyam.md`. Key changes: (1) Replaced the parent-child tree diagram under "The Relationships Between Categories" with a relation table, since the tree's visual shape contradicted the adjacent "Type Categories Are Not a Hierarchy" claim. (2) Resolved a direct contradiction in the Scope section: the claim that a Scope's "identity is derived from its containing Method" conflicted with the independent-identity criterion in "How to identify a Type." Scope's containment within a method body is now explicitly framed as a syntactic placement constraint, distinct from its independent semantic identity (naming, visibility, and control-flow boundary). (3) Reframed "Type and Relations": a Relation presupposes the Types it connects and therefore operates one layer above this document's concern (what qualifies as a Type). The section no longer argues for Relations as a candidate Type category at this level; it defers first-class-Relation questions (endpoint ownership, directionality, arity) to a future companion RFC, and the "Manifestation in Khayyam" section no longer lists first-class relations among the realized principles, since Khayyam does not currently manifest them. (4) Strengthened the Method-as-Type argument by adding the distinguishing property — independent, referenceable existence (signature, cross-file import, receiver-independent attachment, composition) — that separates a Method from an ordinary expression or statement, closing a circularity gap where the prior argument could equally apply to any executable construct. (5) Removed duplication between "How to identify a Type" and "What Is Not a Type": the former now points to the latter for the negative-criteria catalog instead of repeating it with different wording.
-- **Seventh revision**: Applied a second round of critical review from ChatGPT (GPT-5.5), cross-examined and refined through discussion. Key changes: (1) Removed the placement-based justification for Scope entirely, rather than merely softening it: the claim that Scope "must" live inside a Method is now documented as Khayyam's current syntax/usage pattern (a language-layer concern, deferred to `Khayyam.md`), not a defining property argued in this RFC. (2) Added "A note on independent identity" to the identification framework, generalizing the fix beyond Scope: independent identity is a claim about meaning, not about existing free of any containing context — a parameter has identity distinct from its Method despite being confined to that Method's signature, and the same reasoning applies to any category whose current usage places it inside another construct. (3) Added "Why Only Four Categories?": a Type category is justified only when it represents a fundamental semantic role irreducible to a specialization, composition, or usage pattern of an existing category; Rule, Relation, Protocol, Workflow, and Policy depend on Types without currently justifying a distinct category. (4) Added "Type Categories vs Language Keywords": a mapping table showing that common keywords in other languages (`struct`/`class`/`record`, `interface`/`trait`, `function`/`procedure`, `namespace`/`module`/`package`) are typically realizations of Capsule, Abstraction, Method, or Scope respectively — the existence of a dedicated keyword elsewhere does not imply a distinct foundational concept. (5) Added "Type Beyond Programming Languages" to the Introduction: Type is not introduced by programming languages; a language is one mechanism for expressing Types, not their origin. The strong correlation between Type and Khayyam in this document reflects that Khayyam is currently the first concrete manifestation of these principles, not a claim that Type is a language feature.
+5. **A dedicated Relation document**: Addressing whether and how Relations gain independent status, endpoint ownership, directionality, and arity, as a modeling-layer concern built on top of — not inside — this Type definition.
