@@ -56,15 +56,18 @@ It will provide ZeroOps(zero operations), edge computing, ... that let you devel
 - Provide complete framework to develop any purpose distributed application with **low||no code**.
 
 #### Transition period
-Since the Memar introduces all tools needed in software development and operation as a programming language([Khayyam](./Khayyam.md)) and OS([PersiaOS](./PersiaOS.md)) and network protocols like [Chapar](./chapar.md) or [GP](./networking-osi_3-Giti-Network.md), If any organization want to move to the Memar, we provide some exiting programming language implementation to smooth this period and use existing infrastructure like Golang and Linux and IP.
+Since the Memar introduces all tools needed in software development and operation as a programming language([Khayyam](./docs/khayyam.md)) and OS([PersiaOS](./docs/PersiaOS.md)) and network protocols like [Chapar](./docs/chapar.md) or [Giti-Protocol](./docs/giti.md), If any organization want to move to the Memar, we provide some exiting programming language implementation to smooth this period and use existing infrastructure like Golang and Linux and IP.
 
 **But remember we don't suggest using this method in starting new projects.**
 
 ## Enterprise
+Some components named throughout Memar's documentation — **ChaparKhane** (the router / network-coordinator role) and **Achaemenid** (the application auto-generation mechanism) among them — are intended to be offered as commercial software by Geniuses Group. Wherever such names appear without further explanation, this is why: they are products in their own right, not merely documentation subjects.
+
+This restricts no one. Organizations remain free to develop whatever implementations these open protocols require for their own needs. But part of this project is commercial by design, because Memar's continuous development depends on the support of the organizations using it: if you find the introduced protocols good, the way forward is not to implement them yourselves — it is to support us, so that Memar moves faster.
+
 Contact us by [this](mailto:ict@geniuses.group) or [this](mailto:omid@geniuses.group) or [this](mailto:omidhekayati@gmail.com) if you need enterprise support for developing high available and distributed software. See features available in enterprise package:
 - Develop exclusive features in very short time
 - Bug fixing quickly
-- 
 
 ## Related Projects
 - [Clive is an operating system designed to work in distributed and cloud computing environments.](https://github.com/fjballest/clive)

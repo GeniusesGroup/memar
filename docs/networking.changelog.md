@@ -47,3 +47,29 @@ The Abstract and Scope no longer define networking as connections between 'compu
 
 #### Summary
 Six review threads closed in one pass. The signature frame now explains how a reader reaches the end-anchored trailer without walking forward: layer 1 delivers a delimited unit, and parsing proceeds backward from that edge through SignatureScheme/Length. Packets gained two corrections: the encryption suggestion reads as low-cost-default-after-layer-3 with deeper encryption as a knowingly expensive option rather than an absolute; and the 8 KB bound is attributed to its true origin — the model's 16-bit Length ceiling — demoting the video-call arithmetic to illustration, followed by the new architecture-wide principle that fragmentation does not exist in any layer (links carry whole packets or do not host them), with sRPC-level simulation noted as an application-side workaround and genuine end-to-end 8 KB MTU as the goal. Frames now record why FrameType deliberately parts ways with MediaTypeID: hash-derived decentralized minting justifies 64 bits there, while a small centrally-registered wire vocabulary paid on every frame justifies one byte here. The registry states its numbers are presentational until Memar's protocols settle. Wireless access points gained the missing rationale: connector-bounded silicon caps wired ports under one byte of addressing, while logical associations need the two-hop treatment to widen cell-local addressing to sixteen bits. Finally, the small-packet confidentiality-plus-integrity question was added to Unresolved questions, naming AEAD constructions as leading candidate without settling anything.
+
+### Added the Commercial components statement
+- Time: 2026-08-26T09:36:34Z
+- Type: added
+- Propagates to:
+  - giti.md: Done — inline pointer added where ChaparKhane and Achaemenid are introduced.
+  - README.md (repository root): Done — one-sentence pointer added.
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — decided: see the paired entry in giti.changelog.md for the full ruling.
+  - [ox-alpha](../CONTRIBUTORS.md#ox-alpha) — wrote.
+
+#### Summary
+New topic recording that ChaparKhane and Achaemenid are intended commercial software by Geniuses Group — the reason they sometimes appear without explanation — while stating explicitly that organizations remain free to develop their own implementations on top of the open protocols; the project's ask is support (funding the continuous development) rather than self-implementation, so that Memar moves faster.
+
+### Relocated the commercial statement to README
+- Time: 2026-08-26T10:14:15Z
+- Type: revised
+- Propagates to:
+  - README.md (repository root): Done — statement now lives in README's Enterprise section.
+  - giti.md: Done — pointer repointed to it.
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — decided: the statement is enterprise material belonging under README's Enterprise heading, not inside a protocol specification.
+  - [ox-alpha](../CONTRIBUTORS.md#ox-alpha) — applied.
+
+#### Summary
+The Commercial components topic added earlier this session was removed from this document after the owner judged its home wrong: the statement belongs to the project's business face, not a technical specification. It now lives in README's Enterprise section, which documents referencing these components point to instead.
