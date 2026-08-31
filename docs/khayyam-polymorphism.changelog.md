@@ -9,9 +9,9 @@
   - [Abstraction in Khayyam](./khayyam-abstraction.md) — Extends: supplies the abstraction type and its mechanics; this document classifies the polymorphism it enables and the syntaxes Khayyam rejects.
   - [Protocol](./protocol.md) — Depends_on: defines Protocol as a pure declarative specification used to explain why abstractions carry no behavior.
   - [Type](./type.md) — Depends_on: the type model defines the concepts and categories on which polymorphism operates.
-  - [Explicit Behavior Ownership](./type-explicit_behavior_ownership.md) — Depends_on: its requirement for a single visible behavior owner grounds the rejection of generic type-parameter syntax.
+  - [Explicit Behavior Ownership](./type.md#explicit-behavior-ownership) — Depends_on: its requirement for a single visible behavior owner grounds the rejection of generic type-parameter syntax.
 - Propagates to:
-  - [Khayyam — Programming Language](./Khayyam.md#abstraction): Done — the canonical Abstraction section reflects the abstraction mechanism on which this document builds.
+  - [Khayyam — Programming Language](./khayyam.md#abstraction): Done — the canonical Abstraction section reflects the abstraction mechanism on which this document builds.
 - Contributors:
   - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — claimed: defined abstraction-conformance polymorphism, abstraction extension and subtyping, the domain-specific-container alternative, and the anemic-domain-model argument against generic syntax.
   - [Gemini](../CONTRIBUTORS.md#gemini) (3.1 pro, extended thinking) — drafted: the original containers/generics-elimination material and its alternatives.
@@ -37,3 +37,14 @@ Created the polymorphism document and consolidated the former container/generics
 
 #### Summary
 Migrated the base document from the retired `Summary` / `Guide-level explanation` / `Reference-level explanation` structure to `Abstract`, `Introduction`, `Explanation`, `Results`, and `Discussion`. Historical citations, contributor information, and propagation tracking are preserved here instead of in front matter. The detailed explanatory, analytical, prior-art, and open-question content remains intact.
+
+---
+
+### Fix example naming and annotate dual-role call
+- Time: 2026-08-27T00:00:00Z
+- Type: Fixed
+- Contributors:
+  - [Super Z](../CONTRIBUTORS.md#super-z) — rewrote: content below
+
+#### Summary
+Corrects `tp hash`/`tp salt` to `tp Hash`/`tp Salt` per the PascalCase convention and `UInt64`/`UInt32` to `W64`/`W32` per the `W`/`R` capsule naming in sibling documents (also `h.hash` → `h.Hash`). Annotates the `ConnectionList` example's `self.container.Add(conID, con) (con, err)` call where `con` occupies both roles — influencing in `(conID, con)` and influenced in `(con, err)` — as an exhibit of the open dual-role question in `khayyam-method.md`; no settled notation exists yet.

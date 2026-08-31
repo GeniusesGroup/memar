@@ -17,18 +17,6 @@ With the aid of the Khayyam Transpiler, the mechanical difficulty of porting (ra
 | **C++**                | Low (Templates)            | RAII to `Deinit` & ADTs   | **10**            |
 | **Python / JS**        | Low (Dynamic)              | GC to Explicit Allocators | **14**            |
 
-## The Architectural Gains of Migration
-Porting to Khayyam is not just a syntax translation; it is an upgrade to your codebase's maintainability.
-
-### 1. Self-Documenting Code by Default (No Magic Numbers)
-In traditional languages, developers often write raw formulas like `if a == b + 1` and rely on comments to explain what `1` means. Khayyam forces developers to eliminate magic numbers. By declaring an explicit variable for `1` with a descriptive name before using it in a method call, the code becomes inherently self-documenting, eliminating the need for redundant comments.
-
-### 2. The Simplicity of "De-Primitive-ing"
-Replacing primitives is a mechanical, zero-cost task. A traditional `int32` is simply mapped to Khayyam's `W32` capsule. The developer only needs a single `tp ... in ...` declaration at the top of the file to import the correct behavior, unifying the type system without adding complexity.
-
-### 3. Explicit Memory Sovereignty
-Khayyam removes hidden Garbage Collection overhead. Migrated libraries must assign lifecycles explicitly via Memory ADTs (e.g., Arenas, Pools). This makes resource utilization 100% predictable.
-
 ---
 
 ## Ecosystem Bootstrapping Strategy
@@ -39,15 +27,6 @@ To rapidly build the Khayyam and Memar framework ecosystem, the community employ
 
 ## Khayyam Architectural Evaluation & Cross-Language Matrix
 This document provides a rigorous, hardware-centric, and architectural comparison between the Khayyam programming language and prominent industry alternatives. It serves as an analytical guide for software architects evaluating the long-term cognitive, performance, and infrastructure costs of migrating to the Khayyam ecosystem.
-
----
-
-### 1. Memory Optimization & Compilation Strategy
-
-Khayyam decouples memory safety and allocation performance through a clear multi-tiered compilation pipeline, completely separating deterministic compiler guarantees from advanced runtime orchestration libraries.
-
-* **Fast/Static Compilation Mode (Development & Verification):** The core compiler utilizes a strictly linear, static **Escape Analysis** ruleset. Since the linter and language grammar forbid arbitrary pointers and implicit mutations, the compiler evaluates heap-to-stack promotions instantly during daily development cycles without performance regressions or compilation delays.
-* **Adaptive Optimization Layer (Production & Unikernels):** **PGO (Profile-Guided Optimization)** in Khayyam is not a hardcoded compiler feature, but a **high-level orchestration library**. Developers explicitly introduce this library into their production pipeline. It hooks into high-level system abstractions—leveraging the deterministic, single-process nature of Unikernel deployments—to collect runtime execution traces. This data is then used to dynamically remap short-lived capsule memory footprints directly onto the entry stacks of user-space workers/goroutines, achieving near-zero allocation overhead.
 
 ---
 

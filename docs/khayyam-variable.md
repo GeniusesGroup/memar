@@ -152,7 +152,7 @@ vr newVar Type
 newVar.CopyFrom(oldVar)
 ```
 
-As a downstream consequence — not the primary motivation — the removal of `=` also eliminates an entire class of bugs related to unintended aliasing (where two variables unexpectedly reference the same mutable data), because the language makes it structurally impossible to create such aliases through assignment. Any aliasing that does occur is always explicit and intentional, created through method parameters that reference the same instance.
+As a downstream consequence — not the primary motivation — the removal of `=` also eliminates the specific sub-class of aliasing bugs that arise from direct assignment (`b = a`) where two names unexpectedly reference the same mutable data, because the language makes it structurally impossible to create such aliases through assignment. Explicit reference sharing through method parameters — the language's intended sharing mechanism (e.g., passing the same `conn` to a registry that stores it) — remains possible and is intentional by design.
 
 #### Discussion
 
@@ -209,6 +209,8 @@ This means:
 - **A variable's type determines its behavioral contract.** Since the type is always a named type, the variable's capabilities are fully discoverable from that type's public interface — no reflection, no runtime type queries, no `instanceof` needed.
 
 This design is a direct consequence of the "Separation of Syntax and Governance" philosophy: the variable syntax (`vr`) handles identity and reference, while the type definition handles behavior. The storage and lifecycle model is a separate concern addressed by future documents on resource management.
+
+> **Scope clarification — code-level `vr` vs. capsule field.** A common misreading treats `vr x W32` inside a method body and `Timeout Duration` inside `tp AppConfig cp { … }` as the same “variable” concern. They are governed at different levels. A code-level `vr` is bound once at declaration to its declared type; “rebinding the name to a different instance” is not a `vr`-level operation — state change is performed by calling a method on the bound instance. Questions of whether a name can be rebound, and whether a field can be rebound to a different instance, belong to the capsule level (field rebinding *is* mutation, gated by [Sovereign Encapsulation](./khayyam-encapsulation.md#sovereign-encapsulation)), not to `vr` as such. This document clarifies the distinction rather than adding a general rebinding rule at the `vr` level.
 
 #### Discussion
 

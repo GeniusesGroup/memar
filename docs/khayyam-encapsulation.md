@@ -3,59 +3,6 @@ Title: "Encapsulation in Khayyam"
 Status: Draft
 Start Date: "2026-07-15"
 ID: "495592"
-Applied to: []
-Citations:
-    - Title: "Khayyam - Programming Language"
-      URI: "./Khayyam.md"
-      Relation: "Reference"
-      Reason: "The canonical specification defines capsule, method, and abstraction syntax that this document elaborates and motivates."
-    - Title: "Khayyam Design Philosophy"
-      URI: "./khayyam-design_philosophy.md"
-      Relation: "Reference"
-      Reason: "The philosophy document records the recurring principles (behavior over type identity, domain modeling, syntactic atomicity) that underpin the encapsulation design decisions recorded here."
-    - Title: "Abstraction in Khayyam"
-      URI: "./khayyam-abstraction.md"
-      Relation: "Reference"
-      Reason: "The abstraction mechanism is specified separately. This document records the encapsulation guarantees (capsules hide all internal state, all interaction occurs through methods) that make the abstraction model possible."
-    - Title: "Polymorphism in Khayyam"
-      URI: "./khayyam-polymorphism.md"
-      Relation: "Reference"
-      Reason: "Polymorphism classification and dispatch strategy are specified separately. This document defines the capsule-level boundaries that constrain polymorphic behavior."
-    - Title: "Method in Khayyam"
-      URI: "./khayyam-method.md"
-      Relation: "Reference"
-      Reason: "Method as Callable Capsule — the mechanical spec of the method signature itself (pass-by-reference, parenthesized separation, static-vs-instance invocation, body-less methods) — previously lived in this document's Explanation section and has moved there, since a capsule is an abstraction over `vr`/`mt`, not the other way around. This document now depends on that spec rather than restating it."
-    - Title: "Control Flow in Khayyam"
-      URI: "./khayyam-control_flow.md"
-      Relation: "Reference"
-      Reason: "The Code Scope (`sc`) topic previously lived in this document's Explanation section and has moved there, since code scopes are structurally the mechanism control-flow libraries (IF/ELSE/LOOP) are built on, not a capsule-level concern."
-Contributors:
-  - Name: "Omid Hekayati"
-    URI: "mailto:omid@geniuses.group"
-    Tasks:
-      - Works: ["Original design decisions", "Sovereign Encapsulation concept", "Defined the capsule structure, method model, and the elimination of consumer-side mutability keywords in the canonical Khayyam specification."]
-        URI: ""
-  - Name: "ChatGPT"
-    URI: "https://openai.com"
-    Model: "GPT-5.5"
-    Effort: "Medium"
-    Tasks:
-      - Works: ["Critical review"]
-        URI: ""
-  - Name: "Super Z"
-    URI: "https://z.ai"
-    Model: "GLM 5.2"
-    Effort: "Medium"
-    Tasks:
-      - Works: ["Restructuring into document template", "Content consolidation and enrichment", "Restructured scattered encapsulation-related content into the canonical document template; consolidated content from staging and specification files; added reference-level elaborations on capsule structure, method dispatch, abstraction design, and primitive capsule specification."]
-        URI: ""
-  - Name: "Claude"
-    URI: "https://claude.ai"
-    Model: "claude-sonnet-5"
-    Effort: "Medium"
-    Tasks:
-      - Works: ["Migrated document structure to the current Explanation-facet specification (Abstract / Introduction / Explanation / Results / Discussion / Change Rationale)", "Merged the standalone Absence of Closures and Anonymous Functions document into the Explanation section as a topic following Method as Callable Capsule, preserving all original content", "Extracted Method as Callable Capsule to khayyam-method.md and Code Scope to khayyam-control_flow.md, since capsule is an abstraction over vr/mt rather than the reverse", "Reframed Absence of Closures and Anonymous Functions from a negative (\"we don't support X\") framing to a positive one (closures as an implicit-capsule syntax we chose not to admit, and why)"]
-        URI: ""
 ---
 
 # Encapsulation in Khayyam
@@ -73,8 +20,6 @@ For a walk-through of the core mechanics before the detailed rules, see the [Gui
 Languages like Rust, C++, and TypeScript split the burden of managing mutability and lifecycle safety between the definition site and the consumer site, via keywords such as `mut`/`const`. This forces the consumer to explicitly dictate how they intend to treat an instance, and lets a caller override boundaries that should fundamentally belong to the domain model — a form of syntactic band-aid for weak encapsulation, and a source of constant call-site cognitive load. Meanwhile, tuple types and generic containers allow anonymous, positional data groupings that obscure domain meaning, and public field access breaks encapsulation at the structural level.
 
 Khayyam's encapsulation model was designed to address all of these issues simultaneously. By making all fields private, all interaction method-based, all mutability intrinsic to the capsule, and all multi-value groupings named capsules, the language ensures that domain boundaries are expressed at the definition site and cannot be bypassed at the call site. This document records those rules, explains their motivation, and records the alternatives that were considered and rejected.
-
-### Methodology
 
 ## Explanation
 
@@ -295,6 +240,7 @@ Most languages provide an explicit `const`/`final`/`let` keyword. Khayyam's "con
 None recorded yet.
 
 ## Results
+No observed results are recorded yet. This section will be updated when use of the encapsulation model yields evidence that can be distinguished from its intended rationale.
 
 ## Discussion
 
@@ -324,12 +270,3 @@ Smalltalk's strict message-passing encapsulation (no public fields, all interact
 
 ### Future possibilities
 - A standard library of commonly-needed capsules (e.g., `Pair`, `Result`, `Option`, `Range`) that provide named, domain-specific alternatives to tuples and generic containers, following the naming and design conventions documented in this document.
-
-## Change Rationale
-- **Fully resolved reference-rebinding; named representation exposure as a permanent, unclosable limitation.** Further review (2026-08-01) closed the reference-rebinding question at both levels rather than leaving the local-variable half deferred: since Khayyam has no primitive types, obtaining any new instance — for a variable or a field — always goes through that type's own constructor or copy/clone contract, and local-variable rebinding touches no capsule's private state to begin with, so no invariant was ever at risk. Separately, the storage-aliasing unresolved question was split into two distinct cases: genuine low-level memory aliasing (still deferred to future memory-management documents, where an ownership/borrow-tracking policy could plausibly help) versus "representation exposure" — a capsule's own method surface returning a reference to a sub-capsule (or exposing an `unsafe` accessor) that itself has a wider mutation surface than intended, letting a caller bypass the outer capsule's control entirely through the sub-capsule's own legitimate, honestly-declared contract. This second case is documented as permanently unclosable by any compiler or linter policy — it is not a type-soundness gap but an architectural discipline question resting entirely on each capsule author's choice of how narrow a return type to expose, analogous to "representation exposure" / defensive-copying discussions in other OOP languages.
-- **Resolved field-rebinding question; clarified primitive-capsule inlining; documented rejected closure alternative.** Three points raised in review (2026-08-01): (1) the reference-rebinding unresolved question was split — resolved for capsule fields (field rebinding is definitionally the same event as field mutation, gated by the same method-only-access rule; obtaining the new instance still requires a constructor or an explicit copy/clone abstraction per `khayyam-variable.md`'s Domain-Driven Arithmetic) and scoped out to `khayyam-variable.md` for bare local variables; (2) the Primitive Capsule Specification topic was clarified to state explicitly that inlining is a backend optimization orthogonal to "all interaction occurs through methods," that the listed behavioral guarantees are illustrative rather than mandatory, and that the cost/safety tradeoff for a given primitive capsule (e.g. `W32`) is local to that capsule's own design rather than a language default — resolving an apparent tension between the "zero-cost" framing and the guarantees discussion; (3) the Closures rationale gained a documented-and-rejected alternative (a lighter explicitly-captured inline syntax short of a full capsule declaration), added for completeness though the underlying design decision was not reopened.
-- **Absorbed variable-mutability content.** The "Mutability Is a Type Concern, Not a Variable Concern" section was removed from `khayyam-variable.md` (2026-07-31 review) because it was framed entirely as negation and because the underlying rule is not variable-specific — a capsule's own fields need the identical rule. Its substance was folded into [Sovereign Encapsulation](#sovereign-encapsulation) as a generalization from capsule-level to reference-level (variables and fields alike): the "ill-posed question" framing, the conflation-of-concerns rationale, and the Rust `let`/`mut` prior-art detail were merged into the existing paragraphs rather than kept as a separate topic. One gap the removed text also left open was surfaced explicitly as a new unresolved question: whether a reference itself (not the instance it points to) can be rebound after initial assignment.
-- **Structural migration.** Brought the document in line with the current Explanation-facet specification (`documentation-explanation.md`): `Summary` renamed to `Abstract`; `Motivation` moved under a new `Introduction` wrapper alongside an (empty) `Methodology`; the former `Guide-level explanation` promoted to a named, first-listed `Explanation` topic ("Capsules and Methods at a Glance") and linked from the Abstract as "Guide"; the `Reference-level explanation` heading removed, its topics now sitting directly under `Explanation`; added an empty `Results` section per the fixed body-section order.
-- **Closures merge.** Merged the standalone "Absence of Closures and Anonymous Functions" document into `Explanation` as a new topic, placed immediately after "Method as Callable Capsule," on the grounds that it is a direct corollary of Sovereign Encapsulation rather than an independent rule. All original content (summary, motivation, guide- and reference-level explanation, and the full Discussion bundle) was preserved; only the internal headings were removed as part of folding it into the topic-plus-Discussion shape. The document-wide `Discussion > Drawbacks` and `Rationale and alternatives` were extended with one clause each to reflect the newly merged topic. The standalone file has been retired.
-- **Extraction of non-capsule content.** A capsule is an abstraction layered over `vr` and `mt`, not an independent primitive — so content specific to those underlying concepts should be defined in their own documents and only referenced here. Accordingly: "Method as Callable Capsule" (including its Method Invocation Rules and Body-less Methods subsections) moved to [Method in Khayyam](./khayyam-method.md); "Code Scope" moved to [Control Flow in Khayyam](./khayyam-control_flow.md), since `sc` is structurally the mechanism control-flow libraries are built on rather than a capsule-level concern. The Abstract and front-matter Citations were updated to reference both documents instead of restating their content.
-- **Positive reframing of closures.** "Absence of Closures and Anonymous Functions" renamed to "Closures as Implicit Capsule Syntax" and its opening reframed: rather than starting from "Khayyam does not support closures," it now starts from the structural observation that a closure already *is* an implicit, unnamed capsule, and that Sovereign Encapsulation's existing requirement (state must be named and explicit) is sufficient on its own to explain why this syntax was not admitted — no separate prohibitive rule is needed. The Discussion subsections (Drawbacks, Rationale and alternatives, Prior art) were left unchanged, since the case they make does not depend on which framing introduces the topic. Cross-reference links elsewhere in this document were updated to the new heading.

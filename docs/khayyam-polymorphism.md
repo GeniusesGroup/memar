@@ -15,7 +15,7 @@ Rather than generic type parameters (`List<T>`), Khayyam achieves type-safe, pol
 ## Introduction
 
 ### Assumptions and constraints
-This document assumes familiarity with [Explicit Behavior Ownership](./type-explicit_behavior_ownership.md). The rejection of generic syntax follows from EBO's ownership model; it is not an independent preference about syntax aesthetics. Without that model, the arguments below can be mistaken for a stylistic rejection rather than a consequence of the rule that every behavior has one visible owner.
+This document assumes familiarity with [Explicit Behavior Ownership](./type.md#explicit-behavior-ownership). The rejection of generic syntax follows from EBO's ownership model; it is not an independent preference about syntax aesthetics. Without that model, the arguments below can be mistaken for a stylistic rejection rather than a consequence of the rule that every behavior has one visible owner.
 
 ### Motivation
 
@@ -54,7 +54,7 @@ This is the primary form of polymorphism in Khayyam. You write a method that acc
 ```khayyam
 // A method that works with ANY hasher — this is polymorphism
 tp Process mt (self Service) (h Hasher, data Bytes) (err Error) {
-    h.hash(data)(err)
+    h.Hash(data)(err)
 }
 ```
 Whether `Process` receives a `Sha256Hasher`, a `Md5Hasher`, or a `SaltyHasher` (which extends `Hasher`), the code works. The compiler decides, at each call site, whether to inline the specific hash implementation (monomorphization) or use a VTable (dynamic dispatch). You don't write different code for each case.
@@ -64,13 +64,13 @@ You can build more specific abstractions by including other abstractions. This c
 ```khayyam
 tp Hasher ab {}
 
-tp hash mt (self Hasher) (data Bytes) (h UInt64)
+tp Hash mt (self Hasher) (data Bytes) (h W64)
 
 tp SaltyHasher ab {
     Hasher
 }
 
-tp salt mt (self SaltyHasher) () (h Bytes)
+tp Salt mt (self SaltyHasher) () (h Bytes)
 ```
 A `SaltyHasher` can be passed to any function expecting a `Hasher`, because it includes `Hasher`'s requirements. This is inheritance in its correct sense: requirements flow, behavior does not. The implementing capsule owns every method it defines.
 
@@ -137,7 +137,7 @@ Additionally, the academic literature recognizes **row polymorphism** (structura
 |------|---------------------|-------|
 | **Inclusion (subtype) polymorphism** | Abstraction conformance (`ab`) | A capsule satisfying an abstraction is a subtype of that abstraction. This is Khayyam's primary polymorphism mechanism. |
 | **Parametric polymorphism** | Achieved via inclusion polymorphism + Smart Compilation | Khayyam does not have explicit type-parameter syntax (`<T>`), but the expressiveness of parametric polymorphism is fully available: a method accepting an abstraction type is, in effect, a universally quantified function ("for all types satisfying this abstraction"). The compiler monomorphizes or dispatches dynamically as appropriate. See "Relationship to Parametric Polymorphism" below for the theoretical justification. |
-| **Ad-hoc polymorphism via constrained interfaces** | Abstraction types as method parameters | When a method accepts an abstraction type, it behaves differently for each concrete capsule that satisfies the abstraction. Each capsule provides its own implementation. This is a form of ad-hoc polymorphism — the same operation (`h.hash(data)`) dispatches to different code depending on the concrete type. |
+| **Ad-hoc polymorphism via constrained interfaces** | Abstraction types as method parameters | When a method accepts an abstraction type, it behaves differently for each concrete capsule that satisfies the abstraction. Each capsule provides its own implementation. This is a form of ad-hoc polymorphism — the same operation (`h.Hash(data)`) dispatches to different code depending on the concrete type. |
 
 **Syntax explicitly rejected:**
 
@@ -181,7 +181,7 @@ tp Serialize mt (self Serializer) (data Bytes) (out Bytes) (err Error)
 tp VersionedSerializer ab {
     Serializer
 }
-tp Version mt (self VersionedSerializer) () (v UInt32)
+tp Version mt (self VersionedSerializer) () (v W32)
 ```
 
 A capsule conforming to `VersionedSerializer` can be passed to any function expecting a `Serializer`. The subtyping relationship is established at the abstraction level through declarative inclusion — no behavior is transferred, only requirements.
@@ -244,6 +244,7 @@ tp AddConnection mt (self ConnectionList) (con Connection) (err Error) {
 
     vr conID ConnectionID
     con.ConnectionID(conID) (err)
+    // NOTE: `con` here occupies both roles — influencing in `(conID, con)` and influenced in `(con, err)`. This exhibits the open dual-role question of khayyam-method.md#the-open-question-a-variable-that-is-both; no settled notation exists yet. A future notation may require explicit marking or splitting.
     self.container.Add(conID, con) (con, err)
 }
 
@@ -358,7 +359,7 @@ This reframing is important because it explains why adding generic syntax to Kha
 
 Adding generic syntax (the mainstream default) was rejected because it structurally permits domain logic to live outside the type it concerns, which conflicts with Khayyam's encapsulation principle more directly than almost any other common language feature.
 
-An additional principled foundation comes from the Explicit Behavior Ownership principle (document 495466). Generic type parameters introduce ownership ambiguity: a method such as `List<T>.Add(T item)` is defined in the generic template but appears on every parameterized instantiation (`List<Connection>`, `List<Service>`, etc.). The implementation is not visible at the point of use — it lives in the template, not in the concrete type's source. This violates EBO's visibility requirement: answering "where was this behavior defined?" when looking at `List<Connection>` requires navigating to a separate generic template and understanding parameter substitution. The domain-specific capsule approach (e.g., `ConnectionList` with its own explicitly defined methods) satisfies both encapsulation and EBO simultaneously.
+An additional principled foundation comes from the Explicit Behavior Ownership principle ([Type — Explicit Behavior Ownership](./type.md#explicit-behavior-ownership)). Generic type parameters introduce ownership ambiguity: a method such as `List<T>.Add(T item)` is defined in the generic template but appears on every parameterized instantiation (`List<Connection>`, `List<Service>`, etc.). The implementation is not visible at the point of use — it lives in the template, not in the concrete type's source. This violates EBO's visibility requirement: answering "where was this behavior defined?" when looking at `List<Connection>` requires navigating to a separate generic template and understanding parameter substitution. The domain-specific capsule approach (e.g., `ConnectionList` with its own explicitly defined methods) satisfies both encapsulation and EBO simultaneously.
 
 #### Alternative Considered: Zig-Style Comptime Duck Typing
 

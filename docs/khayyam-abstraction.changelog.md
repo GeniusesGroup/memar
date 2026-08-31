@@ -8,7 +8,7 @@
 - Cited:
   - [Control Flow in Khayyam](./khayyam-control_flow.md) — Depends_on: this document builds on the precedent set by that document of keeping behavioral policies as ordinary library-driven mechanisms rather than new syntax.
 - Propagates to:
-  - Khayyam.md: Reference — this document elaborates and motivates `Khayyam.md#Abstraction`.
+  - khayyam.md: Reference — this document elaborates and motivates `khayyam.md#Abstraction`.
 - Contributors:
   - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — claimed: defined the core abstraction model and authored the pure-contract philosophy.
   - [Gemini](../CONTRIBUTORS.md#gemini) (3.1 pro, extended thinking) — drafted: initial draft text.
@@ -51,3 +51,20 @@ The previous migration entry, despite its own description, had in practice summa
 
 #### Rationale and alternatives
 Considered treating the previous entry's version as good enough, since the current template's own conventions do not forbid concise writing. Rejected: conciseness introduced here was not a stylistic choice, it was an accidental loss of substance during migration — several sections lost their only citable reasoning (e.g., why `FileLogger`/`Stringer` is a real accidental-satisfaction case, not a hypothetical one) and their only worked examples. A foundational, heavily-cross-referenced document like this one is exactly the case where under-specification compounds into future ambiguity, which is the concrete harm this correction addresses.
+
+---
+
+### Correct the receiver-type rule in Abstraction Realization
+- Time: 2026-08-27T00:00:00Z
+- Type: Fixed
+- Cited:
+  - [Polymorphism in Khayyam](./khayyam-polymorphism.md) — Reference: examples there use `tp Read mt (self FileReader)…` vs. `self Reader`, exposing the drift
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — requested: noted that examples and the “identical signatures” rule contradicted
+  - [Super Z](../CONTRIBUTORS.md#super-z) — rewrote: corrected the rule to exclude the receiver; added covariant-return reference
+
+#### Summary
+Corrects the rule in `Abstraction Realization (Implicit Satisfaction)`. The previous wording required “receiver type, parameter types, and return types all match” identically, yet every normative example declared `tp Read mt (self Reader)…` on the abstraction and `tp Read mt (self FileReader)…` on the capsule with a different receiver. The rule now states that for each method the influencing-variable types must match exactly, the influenced-variable types must match exactly or via covariant return, and the receiver is definitionally the implementing capsule itself.
+
+#### Rationale and alternatives
+Alternatives: (a) keep the identical-receiver wording and change examples to use the abstraction as receiver (rejected — capsule would not own its method); (b) add an explicit `as Reader` annotation (rejected — reintroduces `impl` ceremony). The chosen wording preserves structural satisfaction while making receiver ownership explicit.

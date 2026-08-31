@@ -49,9 +49,11 @@ In this manner devs are forced to write very short codes in each file to respect
 
 - **Type Inclusion:** `tp {name} in "{path}"`
   - *Example:* `tp TcpConn in "net/tcp"` (Imports a capsule, abstraction, or method type)
-  - *Example:* `tp ErrServiceNotFound in "memar/process/services/errors/service-not-found.kh"` without need to indicate a name to call them, e.g. `fn example () () (err error) { err = ErrServiceNotFound }`
+  - *Example:* `tp ErrServiceNotFound in "memar/process/services/errors/service-not-found.kh"` without need to indicate a name to call them, e.g. `err.CopyFrom(ErrServiceNotFound)(err)` (statement form; `=` does not exist in Khayyam)
 - **Variable Inclusion:** `vr {name} in "{path}"`
   - *Example:* `vr MaxTimeout in "net/config"` (Imports a specific variable, constant, or singleton)
+
+> **Name collision is an architecture error, not a language disambiguation problem.** If two external dependencies export the same name (e.g., both export `Error`) and a single file needs both, Khayyam provides no `as` alias syntax. That silence is deliberate. A collision signals that two abstractions claim to own one concept — the correct fix is not a wrapper or adaptor at the import site but a root-cause redesign so that one abstraction is the single owner of that concept. Where a temporary workaround is unavoidable, wrap one dependency in a local capsule (composition) rather than aliasing it; aliasing preserves the duplicated abstraction and, as the author noted, “becomes the dirty mental model of the developer who keeps reaching for unsustainable solutions.” Tooling/versioning (which file URI resolves to which version) is a build/tooling-layer concern, not a syntax concern, and therefore does not appear here.
 
 ### Type
 Type or data type is a subdivision of a particular kind of things. All things MUST be defined in the shape below to be understood by the Khayyam compiler.
@@ -82,9 +84,10 @@ Khayyam allows developers to indicate first-level [encapsulation-pattern](./khay
 
 ##### Method Invocation Rules
 - **Uniform Invocation Syntax:** Khayyam strictly uses a single dot (`.`) operator for all method calls. The language intentionally rejects secondary tokens (such as `::`) to maintain syntax minimalism.
-- **Context-Driven Semantics:** The distinction between static behavior and instance behavior is governed by the presence of the `self` reference in the method signature, enforced strictly at the tooling/linter layer:
-  - **Type-Level (Static) Invocation:** Methods defined without a `self` reference belong to the type's blueprint. They MUST be invoked directly through the type identifier (e.g., `tp.Create()`). Invoking a type-level method on a variable instance (`vr.Create()`) is flagged as an error.
-  - **Instance-Level Invocation:** Methods defined with a `self` reference require an active memory capsule. They MUST be invoked through a variable instance (e.g., `vr.Mutate()`). Invoking an instance-level method directly on the type identifier (`tp.Mutate()`) is rejected.
+- **Context-Driven Semantics:** The distinction between static behavior and instance behavior is governed by the presence of the `self` reference in the method signature, enforced by the compiler (not the linter):
+  - **Type-Level (Static) Invocation:** Methods defined without a `self` reference belong to the type's blueprint. They MUST be invoked directly through the type identifier (e.g., `tp.Create()`). Invoking a type-level method on a variable instance (`vr.Create()`) is a compile-time error.
+  - **Instance-Level Invocation:** Methods defined with a `self` reference require an active memory capsule. They MUST be invoked through a variable instance (e.g., `vr.Mutate()`). Invoking an instance-level method directly on the type identifier (`tp.Mutate()`) is a compile-time error.
+
 
 #### Abstraction
 [Abstractions in Khayyam](./khayyam-abstraction.md) are pure contracts. They do not contain logic, state, or even predefined method bodies. The methods that fulfill this contract are defined entirely outside the abstraction. To mirror the robust composition patterns found in systems engineering, Khayyam supports **Abstraction Composition** via a dedicated scope block `{}` at the type definition site.
@@ -135,6 +138,15 @@ Building a compiler or runtime is a separate concern with its own design space, 
 Keeping compiler and runtime implementation outside Khayyam's own scope as separate systems that consume Khayyam's specification, built by teams whose incentives are implementation correctness and performance rather than syntax convenience — is therefore not an incidental scoping choice. It is a structural safeguard against the specific failure mode described above.
 
 This has a direct consequence for how Khayyam's own documents should be scoped: a proposal to add syntax "to make the compiler's job easier" or "because other languages do it this way" is, by this principle, a signal to examine the proposal skeptically rather than a reason to adopt it. The precise boundary between "what Khayyam specifies" and "what a Khayyam implementation provides" still needs worked examples before this can be considered settled — see Unresolved questions.
+
+### Separation of Syntax and Governance: A Principle
+
+**Principle:** *Syntax defines what exists* (ontology: which types, values, and relationships a program may mention). *Governance defines how instances flow* (policies about lifecycle, error routing, and architectural constraints on those instances). The compiler enforces the first; the linter/framework enforces the second. This line is not “syntax is small vs. linter is big” — it is *what* vs. *how*.
+
+- **Syntax (compiler-enforced):** Whether a type, value, or relationship may appear at all. Examples: “a bare numeric literal `41` may not appear as a value without a named capsule” (claiming existence of an unmodeled value), “a static method must be called on the type, an instance method on a variable” (which entity a name resolves to), “all fields are private, access only via methods.”
+- **Governance (linter/framework-enforced):** Policies about how already-well-typed instances move through the program. Examples: memory safety / `Deinit()`-path coverage, error-inspection discipline, code-scope naming conventions, orphan-rule for cross-file extension, architectural constraints like “no `Utils` capsules.”
+
+A decision that *creates* or *denies* existence belongs in syntax precisely because a linter rule can be disabled — disabling a syntax rule changes what programs exist; disabling a governance rule changes how well they are kept. This is why `khayyam-variable.md` rejects moving the magic-number ban to the linter (“lint rules can be disabled, weakening the safeguard”) while `khayyam-memory_model.md` accepts linter-enforcement for memory safety — the former denies existence of unmodeled values, the latter polices flow of already-typed instances.
 
 ### Behavior Over Type Identity
 Traditional generic systems frequently focus on type identity — `T`, `K`, `V` — as the central mechanism for abstraction. Khayyam instead emphasizes required behavior: the essential question is "what capabilities are required?" rather than "what concrete type is this?" This recurred across discussions of generics, parametric polymorphism, containers, algorithms, and infrastructure components alike, and is one of the reasons behind the No Generic Syntax rule under Abstraction, above. See [Abstraction in Khayyam → Behavior Over Type Identity](./khayyam-abstraction.md#behavior-over-type-identity) for the full treatment, including why several canonical parametric-polymorphism patterns (`identity<T>()`, `Option<T>`, `Result<T,E>`) are tied to constraints other languages have that Khayyam does not.

@@ -15,7 +15,7 @@ Two different postures, depending on what the person actually wants:
 When unclear which is wanted, default to mechanical translation and mention that a fuller pass is available if wanted.
 
 ## ⚠️ Verify against the live repo, not memory
-This skill does not bundle the spec. Fetch `Khayyam.md` via the **`memar`** skill before writing or explaining any nontrivial code — it evolves independently and a copy here would go stale. For anything this cheat sheet doesn't cover — why a rule exists, a topic not listed below, or anything outside Khayyam itself — use `memar` SKILL rather than guessing or naming a specific document from memory.
+This skill does not bundle the spec. Fetch `khayyam.md` via the **`memar`** skill before writing or explaining any nontrivial code — it evolves independently and a copy here would go stale. For anything this cheat sheet doesn't cover — why a rule exists, a topic not listed below, or anything outside Khayyam itself — use `memar` SKILL rather than guessing or naming a specific document from memory.
 
 ## Quick reference (verify against the live file for anything precision-sensitive)
 
