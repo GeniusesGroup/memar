@@ -3,44 +3,6 @@ Title: "Control Flow in Khayyam"
 Status: Draft
 Start Date: "2026-07-29"
 ID: "495920"
-Applied to: []
-Citations:
-    - Title: "Khayyam - Programming Language"
-      URI: "./Khayyam.md"
-      Relation: "Reference"
-      Reason: "The canonical specification defines the `sc` subtype and the `in` import mechanism that library-provided control-flow methods are built on."
-    - Title: "Encapsulation in Khayyam"
-      URI: "./khayyam-encapsulation.md"
-      Relation: "Depends_on"
-      Reason: "Library-Defined Control Flow's ELSE-must-reference-its-condition rule is a direct application of that document's Closures as Implicit Capsule Syntax topic (no implicit binding to 'whatever came before')."
-    - Title: "Method in Khayyam"
-      URI: "./khayyam-method.md"
-      Relation: "Depends_on"
-      Reason: "Control flow (IF/ELSE, OnPresent/OnAbsent) is built entirely from ordinary method calls, and inherits that document's pass-by-reference, explicit-output-variable, no-chaining model rather than introducing any dedicated call syntax of its own."
-    - Title: "The Error"
-      URI: "./error.md"
-      Relation: "Depends_on"
-      Reason: "Error Propagation treats `Error` (and its concrete subtypes) as the value being propagated; what the abstraction itself is, and what contract it must satisfy, is defined there, not here."
-Contributors:
-  - Name: "Omid Hekayati"
-    URI: "mailto:omid@geniuses.group"
-    Tasks:
-      - Works: ["Original design decisions for library-driven control flow, elimination of logical/arithmetic operators, and the code scope (`sc`) mechanism in the canonical Khayyam specification"]
-        URI: ""
-  - Name: "ChatGPT"
-    URI: "https://chatgpt.com/"
-    Model: "Unspecified (custom GPT; exact underlying model not recorded — fill in if known)"
-    Effort: "High"
-    Tasks:
-      - Works: ["Proposed extracting Domain-Driven Arithmetic out of this document, reframing Error Handling as Error Propagation (a form of control flow rather than an unrelated concern), separating what the compiler provides (execution primitives) from what libraries build on top of it, and reframing Structured Programming historically rather than as an unquestioned default"]
-        URI: ""
-  - Name: "Claude"
-    URI: "https://claude.ai"
-    Model: "claude-sonnet-5"
-    Effort: "High"
-    Tasks:
-      - Works: ["Created this document by merging the standalone Library-Driven Control Flow and Domain-Driven Arithmetic documents, together with the Code Scope topic relocated from khayyam-encapsulation.md, into the current Explanation-facet specification", "Applied the architectural review agreed between the author and ChatGPT: promoted the compiler-exposes-primitives-only conclusion into the Abstract as a stated outcome, split a new Execution Primitives topic out of Library-Driven Control Flow (renamed Library-Defined Control Flow), expanded Structured Programming into a full Structured vs Unstructured Programming topic with its own Discussion bundle, renamed and reframed Error Handling as Error Propagation, and removed residual Domain-Driven Arithmetic content (comparison-operator examples aside) following its extraction to khayyam-variable.md"]
-        URI: ""
 ---
 
 # Control Flow in Khayyam
@@ -59,7 +21,7 @@ For a walk-through of the core idea before the detailed rules, see the [Guide](#
 ## Introduction
 
 ### Motivation
-Traditional languages hardcode control flow into the compiler as sacred, unchangeable keywords, forcing one specific paradigm onto every developer and conflicting with specialized architectural constraints in large organizations. There is also a structural reason: Khayyam methods return values through explicit output variables on separate lines (see [Method as Callable Capsule](./khayyam-method.md#method-as-callable-capsule)), so embedding a method call directly inside a traditional `if (method())`-style conditional creates significant parsing ambiguity.
+Traditional languages hardcode control flow into the compiler as sacred, unchangeable keywords, forcing one specific paradigm onto every developer and conflicting with specialized architectural constraints in large organizations. There is also a structural reason: Khayyam methods return values through explicit output variables on separate lines (see [Method Structure](./khayyam-method.md#method-structure)), so embedding a method call directly inside a traditional `if (method())`-style conditional creates significant parsing ambiguity.
 
 The historical debate over which control-flow constructs a language *should* privilege — structured programming's `if`/`while`/`for` against the older, hardware-native `goto` — has largely been settled in mainstream language design, in favor of structured constructs (see [Structured vs Unstructured Programming](#structured-vs-unstructured-programming) below). Khayyam treats that outcome as informative rather than binding: it confirms that most code reads and maintains better as structured constructs, not that a compiler must forbid the alternative, or make either one a privileged part of its own grammar, forever.
 
@@ -148,6 +110,7 @@ Code scopes are used in logic methods such as `IF`, `LOOP`, `GOTO`, and other co
 This design ensures that control-flow constructs are not built into the language syntax but are instead provided as library-level abstractions, consistent with Khayyam's philosophy of separating syntax from governance. The language provides the `sc` mechanism; libraries and frameworks provide the specific control-flow implementations.
 
 #### Discussion
+A mid-scope `CF.Return()` — like `return` in other languages — is ordinary control flow, not automatically a smell; similarly `CF.Break()` is not automatically a smell. What matters is not mixing the concept of scope (`sc` names *what* would run) with the concept of control-flow driving (the library method decides *when*).
 
 ##### Drawbacks
 Even a basic construct like `if` or `for` requires an explicit import rather than a keyword the compiler already knows — a real, honest one-time cost per file (the `in` statement), and unfamiliar at first for developers used to keyword syntax. What this should not be read to imply is that keyword-based languages avoid an equivalent cost: they pay it once, permanently, inside the compiler's own source, where it cannot be inspected, customized, or upgraded without forking the language itself. Khayyam's version of that same design cost is visible in application code and, once paid by a library author, becomes a stable, shared reference every caller in the codebase imports rather than reinvents.
@@ -170,6 +133,8 @@ Beyond the `sc` subtype itself, the compiler exposes a small, fixed set of low-l
 
 This is the entirety of the compiler's involvement in control flow: a way to group statements (`sc`) and a way to jump between them (compiler intrinsics). Everything else — what a jump is named, when it fires, what data it carries, whether it is packaged as `IF`, `GOTO`, `retry`, or a domain-specific presence check, and which paradigm it belongs to — is a library decision, not a compiler one.
 
+The compiler itself is an independent application that exposes this involvement as a public abstraction. Concretely, when control flow changes — entering or leaving an `sc`, taking or skipping a branch — the compiler emits events (the “compiler’s runtime” event stream) to which tooling can subscribe. A DAA, linter, or any analysis library therefore does not need the compiler to understand a specific library’s `IF`; it listens to the `sc` entry/exit and jump events that *any* library, including a future `CF` library, necessarily produces. The common denominator across all control-flow libraries is `sc`, not how they drive it.
+
 #### Discussion
 
 ##### Drawbacks
@@ -183,10 +148,10 @@ This is not a cost unique to Khayyam so much as a cost every language pays, made
 This mirrors how most compiled languages already treat their own backends: `if`/`while`/`for` all lower to the same small set of conditional-jump instructions at the machine-code level. Khayyam is unusual only in exposing that lowering boundary to library authors directly, rather than hiding it entirely behind compiler-owned keywords.
 
 ##### Unresolved questions
-The precise, stable set of compiler-intrinsic jump instructions has not been enumerated in a public specification yet.
+The precise, versioned contract for the compiler’s control-flow primitives — the `sc`/jump intrinsics *and* the event stream that DAA/linter subscribe to — has not been published as a standalone, versioned specification yet. Until it is, third-party CF libraries cannot target it without depending on compiler internals. See Future possibilities.
 
 ##### Future possibilities
-A formal, versioned specification of the intrinsic instruction set, so third-party control-flow libraries can target it without depending on compiler internals.
+A formal, versioned specification of the intrinsic + event contract, so third-party control-flow libraries can target it without depending on compiler internals.
 
 ### Library-Defined Control Flow
 Khayyam strips all traditional control-flow keywords (`if`, `else`, `for`, `while`, `continue`, `retry`, `goto`) and all logical operators (`&`, `|`, `!`) from the language grammar. Every control-flow abstraction built on the primitives above — however it is named, and regardless of which paradigm it belongs to — is implemented entirely as a library-level method call (e.g. `tp IF in "memar/process/control-flow/if.kh"`), brought into scope explicitly via `in`, never via implicit/magical auto-import. "Library-defined" describes how these abstractions are packaged today, not a constraint the language itself imposes: nothing prevents a future code generator, compiler-intrinsics-aware framework, or an organization's own toolchain from producing the same abstractions through a different mechanism, as long as they are still built from the primitives above rather than added to the grammar.
@@ -250,25 +215,26 @@ tp Error in "memar/process/error/error.kh"
 tp Logger in "memar/process/log/logger.kh"
 
 tp ProcessPayment mt (self PaymentService) (req PaymentRequest) (err Error) {
-  vr saveErr StorageError
-  storage.Save(req.Transaction)(saveErr)
+    vr saveErr StorageError
+    storage.Save(req.Transaction)(saveErr)
 
-  saveErr.OnAbsent(PaymentRecorded)
-  tp PaymentRecorded sc {
-      // storage succeeded — no error was present
-      // continue processing
-  }
+    saveErr.OnAbsent(PaymentRecorded)
+    tp PaymentRecorded sc {
+        // storage succeeded — no error was present
+        // continue processing
+    }
 
-  saveErr.OnPresent(PaymentStorageFailed)
-  tp PaymentStorageFailed sc {
-      // storage failed — a real error is present
-      // log it with context, return a layer-appropriate error (naming and layering of this error path is an open question — see Unresolved questions)
-      vr logEntry StorageFailureLog
-      logEntry.From(saveErr)(logEntry)
-      logEntry.AttachContext(self.InstanceID, req.TransactionID)(logEntry)
-      Logger.DispatchEvent(logEntry)()
-      err = ErrPaymentTemporarilyUnavailable
-  }
+    saveErr.OnPresent(PaymentStorageFailed)
+    tp PaymentStorageFailed sc {
+        // storage failed — a real error is present
+        // log it with context, return a layer-appropriate error (naming and layering of this error path is an open question — see Unresolved questions)
+        vr logEntry StorageFailureLog
+        logEntry.From(saveErr)(logEntry)
+        logEntry.AttachContext(self.InstanceID, req.TransactionID)(logEntry)
+        Logger.DispatchEvent(logEntry)()
+
+        err.CloneFrom(ErrPaymentTemporarilyUnavailable)()
+    }
 }
 ```
 
@@ -291,7 +257,7 @@ Looping is built the same way: low-level compiler-intrinsic jump methods replace
 Every conditional, even a trivial one, needs an explicit import and a named scope rather than a single keyword and a brace block — more characters at the call site than a keyword-based language, and that much is a plain, honest fact. What it is not is a hidden cost other languages avoid: a built-in `if` looks free at the call site precisely because its design cost was paid once, permanently, inside the compiler, while the convention around it — how it interacts with error handling, whether a check reads as a naked boolean or a named domain condition — is left to diverge silently, unpaid for, between call sites and teams. In Khayyam, once `IF`/`ELSE` or a domain-named pair like `OnPresent`/`OnAbsent` exists in a codebase, every subsequent call site imports that same reference implementation rather than re-deciding the same shape; the up-front verbosity buys one inspectable, swappable answer to "how do we branch here," instead of a keyword whose actual behavior around errors, logging, or domain meaning still gets reinvented ad hoc at every call site anyway.
 
 ##### Rationale and alternatives
-Keeping `if`/`else`/`for` as compiler keywords (the universal default in other languages) was rejected — not because it is free, it is not, the same design decisions still have to be made, just once, by the language's original authors, and then frozen for every program that will ever run on it — but because it permanently couples one specific control-flow paradigm to the compiler, leaving no path for an organization to enforce a different one, or to reach for something more expressive like a domain-named conditional method (see [Domain-Specific Conditional Methods](#the-preferred-form-domain-specific-conditional-methods) above), without forking the language.
+Keeping `if`/`else`/`for` as compiler keywords (the universal default in other languages) was rejected — not because it is free, it is not, the same design decisions still have to be made, just once, by the language's original authors, and then frozen for every program that will ever run on it — but because it permanently couples one specific control-flow paradigm to the compiler, leaving no path for an organization to govern, extend, or replace it without forking the language.
 
 ##### Prior art
 No mainstream general-purpose language fully removes conditional/loop keywords from its grammar; Forth-family languages and some Lisp dialects come closest by treating control flow as ordinary words/forms rather than special syntax.
@@ -312,7 +278,7 @@ A method that can fail declares an explicit `Error`-typed (or, where appropriate
 - **No Hidden Control Flow:** no operator may mask an early return; every fallible operation's error path is a normal, visible output variable.
 - **No Core-Level Panics:** abrupt execution halts are implemented as standard library methods (e.g. `PANIC()` in the Memar framework), not compiler directives or special syntax.
 - **Linter Over Syntax:** instead of Go-style mandatory boilerplate, the compiler/linter ensures developers explicitly handle or route returned error capsules.
-- **Covariant Error Returns:** a method may declare its error output as the generic `Error` abstraction, or as a specific concrete error capsule type directly (e.g. `(err ErrServiceNotFound)` instead of `(err Error)`), as long as that concrete type itself implements the `Error` abstraction. This is not considered a violation of the abstraction's contract, and gives callers static, compile-time knowledge of exactly which error type to expect without any runtime type-narrowing/reflection mechanism being required in the language. (The contract this covariance must satisfy is defined by the `Error` abstraction itself, in [The Error](./error.md) — this bullet only concerns the propagation channel's typing, not the abstraction's contract.)
+- **Covariant Error Returns:** a method may declare its error output as the generic `Error` abstraction, or as a specific concrete error capsule type directly (e.g. `(err ErrServiceNotFound)` instead of `(err Error)`), as long as that concrete type itself implements the `Error` abstraction. This is not considered a violation of the abstraction's contract, and gives callers static, compile-time knowledge of exactly which error type to expect without any runtime type-narrowing/reflection mechanism being required in the language for that single-error case. For methods with *multiple* possible error types, the output must be the generic `Error` abstraction; callers then branch via explicit methods on the error (e.g., `err.IsServiceNotFound()(isNotFound)` or domain-specific `OnPresent`/`OnAbsent` checks), not via type-switch/reflection. This distinction — single-error covariant vs. multi-error abstract — was missing in an earlier draft.
 
 #### Discussion
 
@@ -332,6 +298,7 @@ None at this time for the core propagation mechanism. See [The Error](./error.md
 None recorded yet.
 
 ## Results
+No observed results are recorded yet. This section will be updated when use of the control-flow model yields evidence that can be distinguished from its intended rationale.
 
 ## Discussion
 
@@ -349,9 +316,3 @@ No mainstream general-purpose language fully removes both control-flow keywords 
 
 ### Future possibilities
 - A richer standard library of named, domain-flavored conditional and error-propagation methods is expected to grow over time.
-
-## Change Rationale
-- **Initial creation.** Created by merging the standalone "Library-Driven Control Flow" and "Domain-Driven Arithmetic: Operator Elimination and Compile-Time Formula Evaluation" documents into the current Explanation-facet specification, together with the "Code Scope" topic relocated from `khayyam-encapsulation.md` (code scopes are the primitive `IF`/`ELSE`/`LOOP` are built on, not a capsule-level concern). Both standalone document files, and the Code Scope section in `khayyam-encapsulation.md`, have been retired/removed accordingly.
-- **Architectural rescoping (2026-07-31).** Following dialectical review with ChatGPT and Claude: `Domain-Driven Arithmetic` was extracted out of this document entirely by the author, to be treated separately in `khayyam-variable.md`; the residual comparison/arithmetic-operator references, the `MathEval` compile-time-type-checking Unresolved question, and the corresponding Future-possibilities item were removed here accordingly (see the companion note handed off alongside this revision for what to check against the target document). The document's core conclusion — that the compiler exposes only execution primitives and privileges no control-flow model — was promoted into the Abstract as a stated outcome rather than left implicit or treated as the document's starting motivation. The former `Structured programming` stub was expanded into a full `Structured vs Unstructured Programming` topic with its own Discussion bundle, reframing the historical goto-versus-structured debate as a question of what a compiler should privilege, not what a compiler should permit. A new `Execution Primitives: The Compiler's Role` topic was split out of the former `Library-Driven Control Flow` topic (itself renamed `Library-Defined Control Flow`) to keep "what the compiler provides" separate from "what libraries build on top of it." `Error Handling: Library-Driven and Syntax-Free` was renamed `Error Propagation` and reframed as one instance of control flow rather than an unrelated concern, with a short comparison of propagation strategies used by other languages (exceptions, `Result` types, Go-style returns, panic/recover) added to its opening.
-- **Drawback-framing correction (2026-07-31).** The author flagged that several Drawbacks/Rationale passages implicitly compared Khayyam's *visible* design costs (imports, ceremony, more characters at a call site) against other languages' costs as if the latter were zero, when in fact those languages pay an equivalent design cost once, invisibly, inside the compiler — frozen for the language's lifetime rather than owned and adjustable by the codebase using it. The author also noted that `Structured vs Unstructured Programming` implied only two paradigms (structured, unstructured) existed, when `Domain-Specific Conditional Methods` demonstrates a third — one that is frequently the *better* option, not a stylistic fallback. Every Drawbacks/Rationale passage touching this comparison (`Structured vs Unstructured Programming`, `Code Scope`, `Execution Primitives`, `Library-Defined Control Flow`, and the document-wide Discussion) was rewritten to state the honest, narrower residual cost (onboarding-recognition friction, ecosystem-bootstrapping maturity, or plain call-site character count) instead of an implied "other languages don't pay this" framing, and to credit domain-named conditionals as a genuine third option rather than a footnote to `IF`/`ELSE`.
-- **Openness and scope clarifications (2026-07-31).** Per further author feedback: the "structured / unstructured / domain-named" paradigm list was made explicitly non-exhaustive and scoped to today's conventional, classical-hardware execution model — nothing in Khayyam couples a control-flow model to a particular computation substrate, so a fundamentally different future paradigm (e.g. quantum computing's superposition-based branching) can be added as another library without touching the language, and this is now stated directly in both the Abstract and `Structured vs Unstructured Programming`. A proposed Drawback about divergent `IF` libraries across projects was not added, per the author's judgment that this is not a realistic failure mode. The residual bootstrapping-cost Drawback under `Execution Primitives`, and two "open cross-document question" phrasings that implicitly demanded an unwritten companion document, were softened to avoid creating any obligation toward other documents or overstating the difficulty of reaching high productivity. The Abstract now also explicitly acknowledges that method invocation is itself a control-flow event, and states — rather than leaves implicit — that Khayyam deliberately treats Method as a more foundational Type covered elsewhere, not as an oversight in this document's scope.

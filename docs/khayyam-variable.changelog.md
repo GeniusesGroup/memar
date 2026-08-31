@@ -6,8 +6,8 @@
 - Time: 2026-07-15T00:00:00Z
 - Type: Added
 - Cited:
-  - [Khayyam — Programming Language](./Khayyam.md) — Reference: defines the canonical `vr` declaration syntax, `in` inclusion syntax, and logical-reference semantics elaborated here.
-  - [Khayyam Design Philosophy](./khayyam-design_philosophy.md) — Reference: provides the self-documenting-code, syntactic-atomicity, and domain-modeling principles used to motivate the variable design.
+  - [Khayyam — Programming Language](./khayyam.md) — Reference: defines the canonical `vr` declaration syntax, `in` inclusion syntax, and logical-reference semantics elaborated here.
+  - [Khayyam Design Philosophy](./khayyam-design_philosophy.md) — Reference: provides the self-documenting-code, syntactic-atomicity, and domain-modeling principles used to motivate the variable design. *(That document has since been fully retired and deleted; its content was absorbed into khayyam.md and khayyam-abstraction.md — see khayyam.changelog.md. This citation is preserved as historical provenance only.)*
   - [Type](./type.md) — Depends_on: variables name instances of types, and the type model determines which kinds of type may be referenced.
   - [Encapsulation in Khayyam](./khayyam-encapsulation.md) — Reference: defines the capsule-owned behavioral contract, including the constant model and the rule that mutability is not a variable-level property.
   - [Abstraction in Khayyam](./khayyam-abstraction.md) — Reference: defines the abstraction category that may be named in a variable declaration.
@@ -36,3 +36,18 @@ Created the variable document and consolidated the design's declaration syntax, 
 
 #### Summary
 Migrated the base document from the retired `Summary` / `Guide-level explanation` / `Reference-level explanation` layout to `Abstract`, `Introduction`, `Explanation`, `Results`, and `Discussion`. Removed legacy `Citations`, `Contributor(s)`, and `Applied to` front-matter fields and the obsolete `Change Rationale` section; their historical information is preserved here. Existing explanatory topics and their detailed discussion were retained rather than condensed.
+
+---
+
+### Clarify aliasing scope and code-level vs. field-level variable
+- Time: 2026-08-27T00:00:00Z
+- Type: Fixed
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — requested: noted the rebinding discussion belongs at capsule level, not `vr` level, and should be a clarifying nudge only
+  - [Super Z](../CONTRIBUTORS.md#super-z) — rewrote: narrowed the aliasing sentence and added the scope-clarification note
+
+#### Summary
+Narrows the aliasing claim in `No Assignment Operators` from a broad “eliminates aliasing” to the specific sub-class that `b = a` would create; explicit reference sharing through method parameters remains the intended mechanism (e.g., passing the same `conn` to a registry). Adds a scope-clarification note to `Variable as Logical Reference` distinguishing a code-level `vr x W32` inside a method body from a field `Timeout Duration` inside a capsule — rebinding questions belong to the capsule level (field rebinding *is* mutation, gated by Sovereign Encapsulation), not to `vr` as such.
+
+#### Rationale and alternatives
+Alternatives for aliasing wording: (a) keep broad wording (rejected — misleading), (b) soften to “reduces” (rejected — elimination of `b = a` aliasing is total). For the scope note: (a) add a general rebinding rule at `vr` level (rejected per author preference), (b) add only a clarifying nudge distinguishing code-level vs. capsule-level variables (chosen).

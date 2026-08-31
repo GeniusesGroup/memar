@@ -6,7 +6,7 @@
 - Time: 2026-07-28T00:00:00Z
 - Type: Added
 - Cited:
-  - [Khayyam - Programming Language](./Khayyam.md) — Reference: the canonical specification defines the `mt` subtype and the method signature grammar this document elaborates and motivates.
+  - [Khayyam - Programming Language](./khayyam.md) — Reference: the canonical specification defines the `mt` subtype and the method signature grammar this document elaborates and motivates.
   - [Encapsulation in Khayyam](./khayyam-encapsulation.md) — Depends_on: Method Structure relies on the capsule model — Capsule Structure and Privacy, Sovereign Encapsulation — defined there, for its common-case examples and for the state-protection guarantee described under Pass-by-Reference and State Protection. Encapsulation in Khayyam references this document back for the method-signature mechanics.
   - [Logic in Khayyam](./khayyam-control_flow.md) — Reference: Logic in Khayyam's IF/ELSE model relies on the same pass-by-reference, explicit-influenced-variable mechanic specified here under Method Structure — no chaining, in either document, is a consequence of that mechanic.
 - Contributors:
@@ -34,3 +34,17 @@ This document already used the current template's top-level structure but had no
 
 #### Rationale and alternatives
 Considered adding a connection between Method's owner/influencing/influenced reframing and Agency, on the theory that "owner" is shared vocabulary between the two documents. Rejected on inspection: Method's owner is about which type a callable behavior is structurally attached to, not about who is responsible for or delegates an action — the two documents use the same word for genuinely different concepts, and forcing a connection between them would be exactly the kind of unforced, decorative cross-referencing this project's review has been trying to avoid, not the kind that resolves real duplication or drift.
+
+---
+
+### Correct static/instance dispatch enforcement and clarify influencing/influenced code smell
+- Time: 2026-08-27T00:00:00Z
+- Type: Fixed
+- Cited:
+  - [Khayyam — Programming Language](./khayyam.md) — Depends_on: the new Separation of Syntax and Governance principle that classifies “which entity a call targets” as syntax
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — requested: clarified that `CF.Return` mid-method is not automatically a smell and that an influencing→influenced transition is a code-smell nudge, not a language error
+  - [Super Z](../CONTRIBUTORS.md#super-z) — rewrote: content below
+
+#### Summary
+Corrects `Method Invocation Rules` from “enforced strictly at the tooling/linter layer” / “flagged as an error” to “enforced by the compiler” / “is a compile-time error” — dispatch determines which entity a call targets (`what exists`), so it belongs to syntax under the Separation principle; the linter may add additional diagnostics. Keeps the future linter rule for flagging an influencing variable that receives a mutating call, and treats an influencing→influenced transition in one call as an organizational code-smell to be flagged and refactored (e.g., return an error and let the caller `Close()` the `net.Conn`), not as a language-level error.

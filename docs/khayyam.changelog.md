@@ -133,3 +133,18 @@ The Discussion section previously described a document that no longer exists in 
 
 #### Rationale and alternatives
 Considered leaving the Discussion section's philosophical framing intact on the theory that it still describes real, useful tradeoffs even if some phrasing is stale. Rejected: the section did not just have stale phrasing, its central claims were actively false about this document as it now stands (e.g. claiming this document "differs by keeping the philosophical/ongoing-tension layer separate from decidable technical specification entirely" when the document's whole recent history is the opposite of that) — accurate self-description is not optional in a document other people and AI assistants will rely on to understand what this document is.
+
+---
+
+### Add Separation of Syntax and Governance principle; correct static/instance enforcement; document import-collision and fix `=` examples
+- Time: 2026-08-27T00:00:00Z
+- Type: Changed
+- Cited:
+  - [Variable in Khayyam](./khayyam-variable.md) — Reference: magic-number example for the “lint can be disabled” argument
+  - [Memory Model](./khayyam-memory_model.md) — Reference: linter-enforced safety as the contrasting flow-policy example
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — requested: the principle that the language need not restrict which types may be passed as type-arguments; clarified the compiler's event role
+  - [Super Z](../CONTRIBUTORS.md#super-z) — rewrote: content below
+
+#### Summary
+Adds `Separation of Syntax and Governance: A Principle` — *Syntax defines what exists* (types/values/relationships, compiler-enforced) vs. *Governance defines how instances flow* (lifecycle, error routing, architectural constraints, linter/framework-enforced). Test: “does this rule decide whether a program *may mention* something?” → syntax; “which flows are preferred?” → governance. Consequences documented: magic-number ban stays syntax (denies existence of unmodeled values) while memory-safety stays governance (polices flow of already-typed instances). Corrects `Method Invocation Rules` to state that static-vs-instance dispatch is enforced by the compiler (previously misworded as linter) and is a compile-time error. Documents `Import Mechanism` name collision as an architecture error (no `as` alias; fix at root cause, temporary wrapper via composition, versioning is a build/tooling concern). Replaces `err = ErrServiceNotFound` example snippet that used `=` (which does not exist in Khayyam) with the statement-form `CopyFrom` equivalent.

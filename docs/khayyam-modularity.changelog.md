@@ -6,7 +6,7 @@
 - Time: 2026-07-29T00:00:00Z
 - Type: Added
 - Cited:
-  - [Khayyam — Programming Language](./Khayyam.md) — Reference: defines the `in` inclusion mechanism whose modularity consequences this document explains.
+  - [Khayyam — Programming Language](./khayyam.md) — Reference: defines the `in` inclusion mechanism whose modularity consequences this document explains.
   - [Encapsulation in Khayyam](./khayyam-encapsulation.md) — Depends_on: provides the encapsulation context for keeping behavior and representation boundaries explicit.
 - Contributors:
   - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — claimed: original design decisions for Khayyam's modular-programming direction.

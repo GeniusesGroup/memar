@@ -83,7 +83,7 @@ tp Close mt (self FileReader) () (err Error) { /* ... */ }
 
 // The compiler accepts this because FileReader satisfies Reader
 vr r Reader
-r = myFileReader  // validated at compile time
+r.CopyFrom(myFileReader)()  // validated at compile time — `r = myFileReader` is not Khayyam syntax.
 ```
 
 See *Agency Beyond Concurrency* in [Agency in Khayyam](./khayyam-agency.md#agency-beyond-concurrency-intentional-vs-accidental-contract-satisfaction) for what this design choice means read through Agency's vocabulary.
@@ -100,12 +100,12 @@ If multiple capsules need to share common behavior (e.g., a default "presence ch
 ```khayyam
 // Shared behavior lives in an ordinary capsule
 tp PresenceHelper cp { /* ... */ }
-tp CheckPresence mt (self PresenceHelper) (result Bool) (err Error) { /* ... */ }
+tp CheckPresence mt (self PresenceHelper) () (result Bool, err Error) { /* ... */ }
 
 // Each implementer explicitly delegates
 tp Cache mt (self RedisStore) (result Bool) (err Error) {
-    // explicit one-line delegation — no implicit inheritance
-    result, err = self.helper.CheckPresence()
+   // explicit one-line delegation — no implicit inheritance
+   self.helper.CheckPresence()(result, err)
 }
 ```
 
@@ -117,7 +117,7 @@ The compiler's mechanism for resolving polymorphic calls (monomorphization vs. d
 ### Abstraction Realization (Implicit Satisfaction)
 Khayyam does not introduce any explicit syntax or keyword (such as `impl` or `implements`) to bind a capsule to an abstraction (`ab`). Abstraction realization is strictly implicit and structural at the compiler level.
 
-- **Rule**: A capsule satisfies an `ab` if and only if it implements all methods declared by that abstraction with identical signatures (receiver type, parameter types, and return types all match).
+- **Rule**: A capsule satisfies an `ab` if and only if it implements every method declared by that abstraction. For each such method, the influencing-variable types must match exactly, the influenced-variable types must match exactly or via covariant return (see [Covariant Return Types in Polymorphism](./khayyam-polymorphism.md#covariant-return-types)), and the receiver is the implementing capsule itself (not the abstraction). The example `tp Read mt (self FileReader) (data Element) (err Error)` therefore satisfies `tp Read mt (self Reader) (data Element) (err Error)` — the receiver differs by design.
 - **Validation point**: The compiler validates abstraction satisfaction during assignment or parameter passing where an abstraction type is expected. Missing or mismatched methods will result in a strict compile-time error.
 
 This design mirrors Go's interface satisfaction model at the language level. It eliminates the boilerplate of explicit implementation declarations (Rust's `impl Trait for Type`) and keeps the language grammar minimal. However, it also inherits Go's known risk of **accidental satisfaction** — see Unresolved questions.
@@ -135,11 +135,11 @@ Khayyam explicitly **rejects** default method implementations (also known as "de
 ```khayyam
 // Shared behavior capsule
 tp DefaultValidator cp { /* ... */ }
-tp Validate mt (self DefaultValidator) (result Bool) (err Error) { /* ... */ }
+tp Validate mt (self DefaultValidator) () (result Bool, err Error) { /* ... */ }
 
 // Each implementer writes an explicit delegation line
 tp Validate mt (self UserRecord) (result Bool) (err Error) {
-    result, err = self.validator.Validate()
+   self.validator.Validate()(result, err)
 }
 ```
 
@@ -205,7 +205,7 @@ Khayyam treats abstraction as a pure contractual agreement. An abstraction repre
 #### The Three Directions on Intentional Satisfaction
 Three potential resolutions exist for the open question of intentional vs. accidental satisfaction. None is chosen yet:
 
-**(a) Keep the current structural model as documented.** Simplest, matches [Khayyam](./Khayyam.md) as written today, but leaves the accidental-satisfaction risk open at the language level for any marker-like abstraction — not just `Error`, but any small abstraction the standard library or an organization defines going forward.
+**(a) Keep the current structural model as documented.** Simplest, matches [Khayyam](./khayyam.md) as written today, but leaves the accidental-satisfaction risk open at the language level for any marker-like abstraction — not just `Error`, but any small abstraction the standard library or an organization defines going forward.
 
 **(b) Require explicit, nominal declaration for every abstraction implementation.** Along the lines of Rust's `impl Trait for Type`. Eliminates the risk entirely, but adds ceremony to every implementation site and is a significant, backward-incompatible change to a philosophy Khayyam currently states as a feature ("Contract-First Approach").
 
