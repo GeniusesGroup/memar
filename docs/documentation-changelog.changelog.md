@@ -37,3 +37,26 @@ The `### Cited` section previously defined the full Relation vocabulary inline a
 #### Rationale and alternatives
 - **Keep the full Relation vocabulary inline in this specification (rejected)**: would have required keeping two definitions in sync — the one here and the one in `documentation.md → Citations` — every time the vocabulary changed. With `Evidence` just added and the `Reference`/`Depends_on` boundary still an open Unresolved question, the vocabulary is not yet stable enough to risk duplication drift.
 - **Move the Relation vocabulary here and have `documentation.md` reference this file (considered, not chosen)**: would have made the Changelog spec the canonical home for a concern that is not Changelog-specific. The vocabulary applies wherever citations appear — currently Changelog, potentially a future Research facet — so its canonical home is the meta-layer, not any one facet's spec.
+
+### Scoped the changelog to the base artifact; practice companions share it
+- Time: 2026-09-01T14:34:32Z
+- Type: Changed
+- Cited:
+  - [Documentation — Explanation Changelog](./documentation-explanation.changelog.md) — Evidence: the worked case for the change — the retired `documentation-explanation.practice.changelog.md` recorded its practice file's changes as alignments forced by base-document changes, demonstrating that base and companion changes are one narrative rather than two.
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — decided: one changelog per topic, not one per file — fewer documents, and the changes to a base document and its practice companion are too closely related to justify two ledgers; noted approvingly that the `thinking` topic had already been handled this way in practice.
+  - [Super Z](../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — rewrote.
+
+#### Summary
+Added the Changelog-scope rule to the specification: a changelog is paired to a base artifact, and the base artifact's `<base>.practice.md` companion records its changes in that same changelog — a practice file never receives a changelog of its own. This supersedes the earlier four-file structure (`<base>.md`, `<base>.practice.md`, `<base>.changelog.md`, `<base>.practice.changelog.md`) — a decision the owner had themselves specified during the Chapar documentation migration (recorded in `chapar.practice.changelog.md`) and now supersedes by their own direction. Existing `.practice.changelog.md` files merge into their base artifact's changelog as a propagation of this change.
+
+#### Propagates to
+- `documentation-explanation.practice.changelog.md`: Done — merged into `documentation-explanation.changelog.md` and deleted.
+- `type.practice.changelog.md`: Done — merged into `type.changelog.md` and deleted.
+- `giti.practice.changelog.md`: Done — merged into `giti.changelog.md` and deleted.
+- `chapar.practice.changelog.md`: Done — merged into `chapar.changelog.md` and deleted.
+- `networking.changelog.md`: Done — its reference to the retired `giti.practice.changelog.md` repointed to `giti.changelog.md`.
+
+#### Rationale and alternatives
+- **Keep the uniform per-file rule (rejected by the owner)**: mechanically simpler to state, but the coupling evidence ran the other way — companion changelogs were recording alignments forced by base changes — and the file-count cost is one this documentation system already names in its Drawbacks. The scope rule is barely more complex than the naming rule it sits beside.
+- **Extend the sharing rule to Handoff companions now (rejected for now)**: the Handoff facet's own open question about handoff-changelog history stays open; this change does not preempt it.

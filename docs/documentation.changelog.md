@@ -56,3 +56,20 @@ Two related cleanups. First, every remaining mention of Diátaxis was removed fr
 #### Propagates to
 - `documentation-changelog.md`: Done — `### Cited` section trimmed from two paragraphs to one; Relation vocabulary and per-relation guidance removed, replaced with a reference to `documentation.md → Citations`; only Changelog-specific content kept.
 - `documentation-explanation.md`: Done — `#### URI` subsection under `### Conventions` trimmed to a one-line reference to `documentation.md → URI`; the Internal Cross-References example was updated from `[URI](#uri)` (which would have become a broken anchor after the URI subsection moved) to `[Conventions](#conventions)`.
+
+### Registered the Handoff facet as the fourth facet; added the no-fabricated-provenance content rule
+- Time: 2026-09-01T14:15:37Z
+- Type: Added
+- Cited:
+  - [Documentation — Handoff](./documentation-handoff.md) — Depends_on: the newly registered facet's governing specification; the meta-layer's entry is a pointer to it, not a restatement of it.
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — decided: directed that the Handoff facet be registered in the meta-layer rather than left as an unregistered specification, resolving the registration question that specification's own Unresolved questions had deferred; and directed that base documents must not carry fabricated information or scattered migration narration — a rule the meta-layer was the right home for, since it applies to every Explanation- and Practice-facet document.
+  - [Super Z](../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — rewrote.
+
+#### Summary
+Registered the Handoff facet in the meta-layer as the fourth facet: the Abstract now names four facets (adding "read to resume a paused discussion"), the core observation paragraph's three-reader enumeration became four readers, the Facets list gained a Handoff entry (definition plus pointer to [documentation-handoff.md](./documentation-handoff.md), following the lean definition-plus-pointer pattern established for the other facets), the facet-selection guidance, Extensibility, hierarchy table (now five files), Drawbacks, and Future possibilities were updated to the four-facet model, and the Methodology records that the Handoff pattern repeated informally across working sessions before being named — the same adoption path as the Changelog facet. The Facet topic's Unresolved question about future reader relationships was updated to reflect that the discussion-resumption relationship was observed in real records before it was named.
+
+Separately, a new cross-cutting content rule — "No Fabricated or Redundant Provenance" — was added under Explanation: no invented facts, and historical/migration narration lives once (in the paired changelog), never repeated across documents.
+
+#### Rationale and alternatives
+- **Leave the Handoff facet unregistered pending more usage evidence (rejected by the owner)**: the facet already has a governing specification, a paired practice, and a real adopted convention (`<base>.handoff.md`); an unregistered specification outside the meta-layer is exactly the implicit-convention state the facet system exists to eliminate, and the Changelog facet registered with no more evidence of repetition than this.

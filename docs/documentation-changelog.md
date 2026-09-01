@@ -22,6 +22,22 @@ Base documents were accumulating two kinds of front-matter weight that their act
 ### File format
 A Changelog-facet file has no YAML front matter — just a plain H1 title, following the pattern `# {Base Document's Title} Changelog` (e.g. `documentation-explanation.md`, titled "Documentation — Explanation", pairs with `documentation-explanation.changelog.md`, titled "Documentation — Explanation Changelog"). Everything else in this specification — `## Changelog` and its entries, `CONTRIBUTORS.md` references — is body content beneath that title; there is no `Status`, `Start Date`, or `ID` to track, since a changelog never reaches a settled "design" the way an Explanation-facet document does.
 
+### Changelog scope
+A changelog is paired to a **base artifact**, not to each file that belongs to the artifact's topic. The base artifact's Practice-facet companion (`<base>.practice.md`) is part of that topic: changes to the companion are recorded in the base artifact's changelog, and the companion never receives a changelog of its own. Each entry's `Summary` names which file or files the change touched, so a reader can find one file's history inside the shared ledger.
+
+A boundary note on the pattern: the companion rule keys on the **dot** — `modeling.practice.md` is a companion of `modeling.md` — and does not reach hyphenated standalone documents that merely end in "practice" or similar. `documentation-practice.md`, the Practice facet's own governing specification, is an independent base artifact, not a companion of `documentation.md`; its changelog remains its own `documentation-practice.changelog.md`.
+
+This is the same recursion stop the facet already applies to changelog files themselves (a `.changelog.md` file gets no companion changelog), extended one step: a practice companion is not an independent artifact whose history stands apart from the thing it procedures — it is the base topic's how-to half, and its changes usually follow from the base document's changes, so one ledger keeps that causal link locally visible instead of splitting it across two files that must reference each other.
+
+#### Discussion
+
+##### Rationale and alternatives
+- **A separate changelog per practice file (rejected)**: the coupling between a base specification and its procedure runs one way — a companion's changes exist to keep it in line with the base artifact's changes — so per-file changelogs either duplicate the same change as two entries or split one narrative across two ledgers referencing each other, and they multiply files for no reader benefit.
+- **Extend the sharing rule to Handoff companions now (rejected for now)**: a handoff is mutable working state rather than a procedure, and whether its churn is worth changelog history at all is an open question in the Handoff facet ([documentation-handoff.md → Unresolved questions](./documentation-handoff.md#unresolved-questions)); deciding it here would preempt that question without new evidence.
+
+##### Unresolved questions
+The boundary note above keys the companion rule on the dot, with hyphenated standalone documents as counter-examples. If a future document legitimately falls between the two patterns — a hyphenated name that *is* a companion, or a dotted name that is not — the rule needs a principled criterion (for example, derivability of the relationship from the name alone) rather than case-by-case judgment.
+
 ### Structure
 All entries live under a single `## Changelog` heading — never one `##` per entry — so the top-level heading list stays small and stable even as entries accumulate indefinitely. Entries are ordered chronologically, oldest first, so a contributor appends the next entry at the end of the file without needing to search for where it goes. Each entry is a `###` with a short, descriptive title (not a timestamp — see Rationale and alternatives). Directly under the title, a short list of metadata bullets — mirroring how a document's own YAML front matter holds its short, structured facts separately from its prose body; an entry's bullets are that same idea at entry scale. Actual content (`Summary`, and optionally `Rationale and alternatives`) follows as real `####` headings, since it's prose, not metadata:
 
@@ -65,7 +81,10 @@ A single, project-wide file — not paired to any one artifact — listing every
 - Bio: Lead architect of the Memar framework.
 
 ## Claude
-- Model: claude-sonnet-5
+- Models:
+  - [claude-opus-5]()
+  - [claude-sonnet-5]()
+  - [claude-fable-5]()
 ```
 
 For an AI contributor, only `Name` and the officially documented `Model` identifier are recorded here as stable facts. `Effort`, and anything else that can genuinely vary between one contribution and the next, belongs inline in that specific changelog entry's own `Contributors` bullet instead (e.g. "Claude (claude-sonnet-5, extended thinking) — rewrote: ..."), not here.
