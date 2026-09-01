@@ -42,6 +42,17 @@ The thirteen entries below are migrated as-is from `documentation-explanation.md
 #### Summary
 `documentation.md` was split into three files: this document's base (`documentation-explanation.md`, keeping the original `ID`, as substantive successor), a new lightweight meta-specification (`documentation.md`) defining the Facet concept, and `documentation-practice.md` governing the Practice facet, adopting the schema independently converged on by Anthropic, OpenAI, and Microsoft's own skill-creator files rather than inventing a new one.
 
+### Created the paired practice file
+- Time: 2026-07-25T00:00:00Z
+- Cited:
+  - [Documentation — Explanation](./documentation-explanation.md) — Depends_on: this practice file is the procedure for producing an Explanation-facet document; the structure it produces is defined by that specification, not repeated here.
+  - [Documentation](./documentation.md) — Reference: the meta-layer that defines what a Facet is and why Practice-facet files exist alongside Explanation-facet specifications.
+- Contributors:
+  - See the project-wide [CONTRIBUTORS.md](../CONTRIBUTORS.md) registry.
+
+#### Summary
+Created as the Practice-facet companion to `documentation-explanation.md`, following the Practice facet's schema (name/description-only front matter, imperative body, under ~500 lines). Walks a contributor through producing a new Explanation-facet document: copying the template, generating the `ID`, filling in front matter, writing the body, and progressive migration of older documents.
+
 ### Migrated Citations, Contributors, and Applied to into this changelog file
 - Time: 2026-08-05T08:51:08Z
 - Type: Changed
@@ -78,3 +89,20 @@ The `#### URI` subsection under `### Conventions` was the canonical definition o
 #### Rationale and alternatives
 - **Keep the URI definition here, since this specification is where it has always lived (rejected)**: would have left a cross-cutting concern canonically defined in a facet-specific specification. The Changelog spec would either have had to redefine the same rule (drift risk) or reference this specification's URI subsection (making the Explanation spec an implicit meta-layer for the Changelog spec, which inverts the intended hierarchy).
 - **Remove the `#### URI` subsection entirely, with no replacement reference (considered, not chosen)**: would have left a reader of this specification's `### Conventions` section with no signal that URI format is governed by a project-wide rule. A one-line reference costs almost nothing and saves the reader from accidentally defining a non-portable URI scheme inline.
+
+### Aligned the practice file with the post-Changelog-facet specification
+- Time: 2026-08-11T00:00:00Z
+- Type: Changed
+- Cited:
+  - [Documentation — Explanation](./documentation-explanation.md) — Reference: the base specification's body skeleton dropped `Change Rationale` and the `Applied to`/`Citations`/`Contributors` front-matter fields as part of the Changelog-facet migration; the practice file was updated to match.
+  - [Documentation — Changelog](./documentation-changelog.md) — Depends_on: step 6 of the practice's procedure creates a paired Changelog-facet file, whose structure is defined by that specification.
+  - [Documentation](./documentation.md) — Reference: added to the practice's Reference files list because the cross-cutting Citations and URI conventions now live there.
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — directed: pointed out that the practice file had been missed during the earlier round of changes that moved provenance out of Explanation-facet base documents into the Changelog facet.
+  - [Super Z](../CONTRIBUTORS.md#super-z) — rewrote: removed the obsolete front-matter fields and `## Change Rationale` from the practice's template; removed the obsolete "Guide" topic convention from its procedure; added its step 6 (create the paired `<base>.changelog.md`) and the `documentation-changelog.md` reference.
+
+#### Summary
+The practice file had been missed when the Changelog-facet migration was applied to the rest of the documentation set: its procedure was still instructing a contributor to fill in `Applied to`, `Citations`, and `Contributors` in the base document's front matter and to keep a `## Change Rationale` body section, all of which the base specification no longer permits. Brought in line: front-matter instructions cover only `Title`, `Status`, `Start Date`, `ID`; the Template drops the migrated fields and section; the obsolete "Guide" topic convention is removed; step 6 now creates the paired `<base>.changelog.md` file and migrates older documents' former provenance fields into Changelog entries.
+
+#### Rationale and alternatives
+- **Keep the "Guide" topic convention in the practice's step 4 (rejected)**: the Guide/optional-topic mechanism was removed in favor of the Practice facet's companion-file convention — instructing the contributor to also create an internal "Guide" topic would re-introduce the obsolete convention the practice file itself replaces.

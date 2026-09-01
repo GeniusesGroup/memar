@@ -112,7 +112,7 @@ This document is now structured per `documentation-explanation.md` with no prove
 - Type: Added
 - Propagates to:
   - modeling.md: Done — the classification gray zones (incidental metadata; temporal graduation) added to its loop-edge discussion; see modeling.changelog.md.
-  - type.practice.md: Done — created as this document's Practice counterpart, absorbing the operational layer of the same source; see type.practice.changelog.md.
+  - type.practice.md: Done — created as this document's Practice counterpart, absorbing the operational layer of the same source; its record is merged into this ledger.
   - error.md: Done — nine references repointed here from the dissolved document; see error.changelog.md.
   - immutable_infrastructure.md: Done — the compatibility-and-logical-independence analysis now lives there as "Relationship to Type-Level Identity", carrying the provisional-content caveat forward; see immutable_infrastructure.changelog.md. The document's dedicated session may still revise the section against its final formulations.
   - Future Khayyam tooling documents: Pending — preserved decisions with no current home: covariant returns follow from abstraction conformance (the Error-case statement lives in error.md); code generators emit one type per static concept, 1:1 with their input definitions; cross-language mapping preserves identity only because identity was never stored as data; the authoritative enforcement checkpoint is the generator-input layer rather than output-source heuristics; exhaustiveness is a real, unresolved need assigned to linter/compiler tooling without new syntax — candidate mechanisms to evaluate include code-generator metadata, whole-program analysis, and an explicit "closed contract" declared on the abstraction, with Kotlin sealed classes and Swift closed hierarchies as prior art achieving it over compiler-known closed sets of types.
@@ -171,3 +171,50 @@ Added "Type Metadata" as an Explanation topic, sibling to "Type Categories vs La
 
 #### Summary
 Added "Explicit Behavior Ownership" as a major Explanation topic (~150 lines before its Discussion bundle), preserving the dissolved document in full: the Single Visible Ownership principle with its two-condition formal rule and the three always-local questions (where defined / why available / who owns); delegation-as-visibility semantics with the acyclic single-path ownership graph; the seven-mechanism hidden-behavior catalog with the meta-observation that debates are really about ownership/visibility/discoverability; the complete legal-and-genetic critique of the inherited metaphor (hereditas, farāʾiḍ, genotype/phenotype) concluding the taxonomy-has-no-subject position and the extension-not-inheritance terminology; the death-of-abstraction pattern with the is_retryable ownership analysis and the behavior-owner hypothesis; the generics topic carrying all four paragraphs including the generics-as-symptom argument and the domain-specific-capsule answer; the full economics chain (write-once/read-many, opportunity cost and cognitive finiteness, the AI-era collapse of the trade-off, boilerplate as AI-legibility mechanism with the variable-names analogy); both mermaid ownership-graph figures plus tooling implications; and a topic-level Discussion bundle carrying all four Drawbacks, five Rationale-and-alternatives entries, seven Prior-art items with their common-thread observation, five Unresolved questions, and five Future possibilities. One structural improvement: the former Dependency-on-Modeling section became an ownership-flow paragraph inside "Type and Modeling," where it belongs directionally. Heritage notes: the document itself was born by splitting the monolithic Protocol document, unifying four earlier per-mechanism rejection documents; the reviewer maxim "protocols and explicit implementations reduce cognitive load" is preserved by this record. Citations dispositioned: Protocol and Modeling dependencies are satisfied by body links; the Type self-dependency dissolved with absorption; the khayyam-polymorphism Applied_in relation survives as polymorphism's inbound links, repointed. Status correction recorded per current policy: the dissolved document said Proposed — everything remains Draft.
+
+---
+
+### Creation, absorbing the operational content of "Static Concepts Must Be Types"
+- Time: 2026-08-25T00:00:00Z
+- Type: Added
+- Cited:
+  - [Type](./type.md) — Depends_on: this practice operationalizes that document's principles (nominal identity, stateless Types, category model) as steps; every rule here derives from it.
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — requested: directed that pre-facet micro-documents be dissolved into strong Explanation documents plus sufficient Practice documents, so an agent needing only the how reads one lean file without inheriting false assumptions from argumentative history.
+  - [Super Z](../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — drafted: composed this procedure from the retired document's operational content and type.md's principles.
+
+#### Summary
+Created `type.practice.md` per `documentation-practice.md`'s Practice-facet schema (two-field front matter, imperative body). Absorbed the operational layer of the dissolved *Static Concepts Must Be Types* document (495421): the Type-qualification checklist, the category-choice table, the static-concept mapping rules with their detection test and gray zones, the multi-outcome abstraction-return pattern with its dispatch-vs-identification distinction, and the `Err` naming convention. Deliberately excluded everything argumentative (rejected alternatives, prior art, rationale) — those live in type.md and in that artifact's consolidated heritage record under type.changelog.md — and routed concept-existence questions to modeling practice, since classification was never a type-layer decision. A completion audit added two further clauses from the source: family-member graduation (a member acquiring genuine per-instance data becomes a data carrier while static members stay distinct) and the note that other static-concept families record their own naming conventions. A third pass, cross-checking an external review's gap list, restored the framework's review maxim ("polymorphism is about code reuse, not about teaching the compiler how to do its job") and the interim manual-completeness-discipline note, both of which had survived nowhere verbatim after dissolution. The same pass surfaced the exhaustiveness mechanism candidates (code-generator metadata; whole-program analysis; Kotlin sealed classes and Swift closed hierarchies as prior art over compiler-known closed sets of Types) into step 4 itself, so they no longer live only in type.changelog.md's Pending ledger.
+
+---
+
+### Type Identity stub dissolved
+- Time: 2026-08-25T00:00:00Z
+- Type: refactor
+- Propagates to:
+  - type.practice.md: Done — the stub's sole non-redundant asset, the apartment illustration (color differences leave one Type; an ownership relation may itself be a Type because it carries independent meaning), absorbed into the qualification step.
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — directed: review and merge the small type-series companions into the strong documents.
+  - [Super Z](../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — reviewed, applied.
+
+#### Summary
+Dissolved `type-identity.md`, a 42-line pre-facet stub, after a lens review found every claim already carried by a deeper home: identity-as-modeling-decision → "Type and Modeling" here plus Modeling's justification criteria; the identity-sources list (domain meaning, lifecycle, behavior ownership, relationships, rules, external recognition) → the qualification checklist ("external recognition" being this document's already-stated "domain participants recognize, name, and reason about"); attributes-describe-vs-identity-defines-existence → "What Is Not a Type" plus Modeling's Attribute-or-Edge Test; language-as-expression-not-source → "Type Beyond Programming Languages" and "Type vs Implementation Type". Its title also collided with this document's own deeper "Type Identity" section, so it could never have remained standalone without confusion. The conventions document's mention of the filename is a naming-pattern example, not a content reference, and needed no change.
+
+---
+
+### Absorption of the individual type-companion documents
+- Time: 2026-08-25T00:00:00Z
+- Type: Added
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — directed: dissolve the single-topic companions into the strong documents and this practice file, with no summarization loss. Supplied the metadata framings (access expectations span behavior invocation as much as state; multilingual identity is each Type's single-source-of-truth duty).
+  - [Super Z](../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — reviewed, applied.
+
+#### Summary
+
+**From `type-identity.md`** (42-line stub): the apartment illustration absorbed into the qualification step — color differences leave one Type; an ownership relation may itself be a Type because it carries independent meaning. Everything else already lived in deeper homes (type.md's Type Identity / What Is Not a Type / Beyond Programming Languages; modeling.md's justification criteria), so nothing further was imported.
+
+**From `type-metadata.md`** (ID 000018): new "Carrying Type metadata" section — construct-first answers for access and intent signals (never surface keywords); one companion artifact per required language beside the Type's definition, all sharing a single base name qualified by the target language (e.g. `TypeName-detail.en` / `TypeName-detail.fa`); localized names, labels, documentation, and failure descriptions live there, never inline or in external translation maps; regenerate-not-re-translate when an implementation language is added; translator-edits-without-developer-round-trips edge case; plus a routing rule for any unlisted metadata family (carrier by audience: tools/logic → constructs, humans/volume → companion artifacts — then record the decision).
+
+**From `type-explicit_behavior_ownership.md`** (ID 495466): new "Behavior ownership" operational section — the three always-local questions (where defined / why available / who owns); delegation written as a visible call so what/where/why read in place, navigation reserved for depth; never default-implement — generate explicit methods from the single source instead; generated code must land in readable, auditable source files, never intermediates; multiple delegation targets allowed, each explicit; runtime injection (dynamic proxies, reflection-added methods) prohibited; the macro/generation boundary tested by human cognitive accessibility; and two relocated operational diagrams — the EBO decision flowchart and the Processor→Validator delegation sequence.
+
+`type-rules_and_invariants`, `type-relations`, and `type-concepts_vs_data` were reviewed in the same series but left no practice-layer residue: their why-level content went to type.md and modeling.md respectively (see those changelogs).
