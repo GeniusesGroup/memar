@@ -56,19 +56,20 @@ Frame type numbers are registered here, in this table, and must be respected by 
 - The sign bit extends the one-byte frame number to an eight-byte signed value (63-bit number range) supporting more frame types; the extension is carried by `ExtendFrameType`/`IsFrameTypeExtend` above.
 - Until Memar's own protocols settle further, the specific numbers in the table carry presentational weight only: they fix relative order and let documents reference one another consistently; no formal allocation authority or process exists yet for the free range between them.
 
-|            Num.            |      Frame name      |                      Doc                       |
-| :------------------------: | :------------------: | :--------------------------------------------: |
-|             0              |        Unset         |                    --------                    |
-|             1              |         Asb          |     [Protocol](./networking-osi_1-Asb.md)      |
-|             2              |        Parvaz        |    [Protocol](./networking-osi_1-Parvaz.md)    |
-|             3              |        Chapar        |            [Protocol](./chapar.md)             |
-|             4              |          GP          | [Protocol](./giti.md) |
-|             5              | PacketSequenceNumber |             [Protocol](./sRPC.md)              |
-|             10             |       Padding        |     [Frame](#padding-frame)                    |
-|             11             |       Security       |  [Frame](#special-signature-frame)             |
-|           ...              |                      |                                                |
-|         100 ~ 127          |                      |             experimental protocols             |
-| 128  ~ 9223372036854775807 |    Extended Frame    |       Just exist in signed frame numbers       |
+|            Num.            |      Frame name      |                   Doc                    |
+| :------------------------: | :------------------: | :--------------------------------------: |
+|             0              |        Unset         |                 --------                 |
+|             1              |         Asb          |  [Protocol](./networking-osi_1-Asb.md)   |
+|             2              |        Parvaz        | [Protocol](./networking-osi_1-Parvaz.md) |
+|             3              |        Chapar        |         [Protocol](./chapar.md)          |
+|             4              |       GP-Thing       |          [Protocol](./giti.md)           |
+|             5              |        GP-App        |          [Protocol](./giti.md)           |
+|             6              | PacketSequenceNumber |          [Protocol](./sRPC.md)           |
+|             10             |       Padding        |         [Frame](#padding-frame)          |
+|             11             |       Security       |    [Frame](#special-signature-frame)     |
+|            ...             |                      |                                          |
+|         100 ~ 127          |                      |          experimental protocols          |
+| 128  ~ 9223372036854775807 |    Extended Frame    |    Just exist in signed frame numbers    |
 
 ### Frames defined here
 Named frames live under this single heading; each new frame this document specifies becomes its own `####` entry beneath it.
@@ -121,6 +122,7 @@ Three concrete shapes make the principle tangible:
 - **A plain two-device association** (a wireless pairing, a direct cable) carries layer 1 plus whatever upper-layer framing the payload uses — in Memar, sRPC frames speaking directly for layer 3. Registration and introduction happen directly with the coordinator above; the packets may contain no data-link header at all, going straight from the medium upward.
 - **A phone attaching to a cell tower** does not introduce itself to every other phone on that tower. Attachment — a layer-1 identity — creates connectivity; upper-layer messaging registers membership with whoever coordinates the cell; a shared broadcast data-link segment is simply not part of that topology.
 - **A multi-access switched segment** — many peers, no designated single peer — is exactly where a data-link switching layer earns its existence, because forwarding knowledge must live somewhere and the alternatives are flooding or state in every node.
+- **A low-capacity wireless association** (a sensor radio whose media frames sit far below the packet model's bound): only layer 1 plus a compact sRPC exchange appear — a sensor announcing a few bytes of telemetry is a service call on layer 1, not a routed conversation, and no bulk or two-way transfer is expected on such a link. Real routing needs header room media this small do not have, so no switching or routing layer is expected on them at all; the receiving access point decides above the link what the announced data is worth.
 
 The corollary for protocol documents: a protocol declares the conditions under which it applies instead of presuming it rides beneath every packet, and upper layers must be able to traverse a link that realizes fewer layers than the textbook stack draws. See [Chapar](./chapar.md)'s Frame architecture topic for this principle applied to a real protocol.
 
@@ -140,6 +142,8 @@ Congestion on any port still forces caching on port interfaces, which can drop e
 Port-level congestion is a fundamental property of any statistically-multiplexed frame-switched network, independent of forwarding-decision complexity — it is not eliminated by simpler switching logic, and Ethernet does not solve it at the header level either. Chapar does not add a header field for congestion signaling: the cost is not justified against the available operational approach — per-port link observability paired with the SFU hardware model, allowing capacity to be monitored and links upgraded as real usage demands.
 
 #### Switching
+[Diagram showing how packets route in their way!](https://www.draw.io/?lightbox=1&highlight=0000ff&edit=_blank&layers=1&nav=1#R7VrbctowEP0aZtqHdizfMI8JTdPMpE2mTKbNo7AV49ZYjhAB9%2Bu7RhK%2BCAhNjLmkLx5ptZJXZ492V4aO1R%2FPLxlOR19pQOKOaQTzjvWpY5qe68EzF2RC4JiGEIQsCoQIFYJB9IdIoVKbRgGZVBQ5pTGP0qrQp0lCfF6RYcborKr2QOPqW1McEk0w8HGsS39EAR9JqevYxcAXEoUj9Wrk9sTIGCttuZXJCAd0VhJZFx2rzyjlojWe90mcg6eAEfM%2BrxldWsZIwreZ4IgJTzieys1Ju3imdksC2LzsUsZHNKQJji8K6Tmj0yQg%2BYoG9EZ8HEMTQfMX4TyT%2FsNTTkFUrHBNaSr1dKvlRiZ0ynxph7SMYxYSqSXxzi0sTZM7vSR0TDjLQIGRGPPoqeo%2BLFkQLvUKnKAhoVoNm6nB9u2qryEHzk3zpp%2FFEQDEYKezUcTJIMWLTc3gdFQBGwokr4dLAfZ%2Fhwt8b6YcViFSHkQMmB3RBPoAUs6q9Sg%2BEcbJfCNCclTRMlNd2Z%2BVaS5loxLDlew1mHaPh4q2TkV3X1TsHQRsgBbLfubzPzqqe%2F9KSL2mIZVTb2kEhiw5b3lV0iNUI7OwSc6qOWZpxla%2BQnrcOCaOI7QTj5wxhrOSQpojPVnvMNutRSmrluOe0be6Rs2PwoKXetVe4VQ3BszOJylOoB3m7burW1D6DrEaEoEch5XLKko8ZHVJWQtBqDGGUb5BhhPwxLrF9puNcByFed8Hki1e1kR6qnu%2BzfyEVvn5QA%2BvOqmV02vtK0Upa0rInaWpzva7JHoEBdO4GcDjCvSMd4rt7%2FfN5wbo6xi1QGS3SV9rbZh6oItwWWDrPk6pGvgwWXDyDBQQSufFYDWwQQ%2BPc7zFEyR9cfvKUazHvcLlpWAm1qmEtJKe6Qktv7xqPf6JjZxu%2FOvaeySQuYpABxT%2FyrFOmbbr2rFXP9HdGtAiKDdROx7IVZ3MI16q86F3LxfbLjFZK5zV%2BDX%2BRWVlz9pYJj6rXytDX11WHsiFeBcOb%2FyyvBeHO6hhh%2Bu3w3IOradEx%2Bs57qorw9HXST1vn2nuMD6obHW41EGqHK7GP5tsjZz7T%2FxFhuEadvdNMNj2WmSwpV%2B3jjBxrOK2CsB7ThwIdTdmgucnNP0JyjqM2nwXLt9NJd%2B%2By12n4WrB01w%2B4IzgsR5Q7ZOMsaj%2Ba1W7QVYv1tbBf5pFmga%2Fa7YJv7E1%2FObbgL%2FdIln%2FFr6x1DtJF9SLvFZ%2FjdCj%2F%2F9P6jksLbpAv%2B78d8GOjwF0i%2F9GiaKp%2BIeZdfEX)
+
 Two generic switch classes exist, defined here once so every protocol document can reference them:
 
 ##### Blocking Switch
@@ -148,6 +152,21 @@ Transmitting will block sender until frame transmitted successfully. Sender can 
 ##### Non blocking Switch
 Transmitting will not block caller to be non blocking and queue frames for congestion situations.
 A situation might be occur that a port available when a frame queued but when the time to send is come, the port broken and sender don't know about this.
+
+### Edge computing
+Network cost is transmission plus routing plus state — minimizing a header's byte count is not minimizing the total. Moving data across a network to be processed or stored far from where it arose must be justified by more than habit; when locality reduces total cost, the architecture should make execution and storage at the edge possible and economically preferable — the low-power Chapar switching fabric and nearby coordinators included. This is an architectural preference, not a mandate on applications: no topology is forced on anyone, and the ecosystem's tooling (code generation, coordinator services) is expected to make the local choice the easy choice.
+
+### Place in the stack
+The project's network protocols map onto OSI for orientation:
+
+| Layer       | OSI mapping | Protocol                                                                                                                                    |
+| :---------- | :---------- | :------------------------------------------------------------------------------------------------------------------------------------------ |
+| Physical    | Layer 1     | Any suitable medium spec, e.g. Ethernet (its layer-one part only); [Asb](./networking-osi_1-Asb.md), [Parvaz](./networking-osi_1-Parvaz.md) |
+| Link        | Layer 2     | [Chapar](./chapar.md)                                                                                                                       |
+| Network     | Layer 3     | [Giti (GP)](./giti.md)                                                                                                                      |
+| Application | Layers 4–7  | [sRPC](./sRPC.md)                                                                                                                           |
+
+Per the [Layer presence](#layer-presence) principle this mapping describes capability, not obligation — a given link realizes whichever of these layers justify themselves on it; a protocol document declares the conditions under which it applies rather than presuming it rides beneath every packet. Above the stack sit the rest of the ecosystem: the router/network-coordinator role is the ChaparKhane ([Chapar](./chapar.md)), the operating system is [PersiaOS](./persia_os.md), and applications run as unikernel images produced by the Achaemenid auto-generation mechanism (see the [Enterprise](../README.md#enterprise) statement for the commercial components). Protocol documents own their own layer's content; this table is the single stack overview, and protocol documents reference it instead of restating a private copy.
 
 ## Results
 Insufficient deployment experience has been recorded under this consolidated structure to report real, observed outcomes. This section will be filled in once there is such experience to draw on.
