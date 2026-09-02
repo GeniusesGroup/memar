@@ -103,3 +103,17 @@ Added the topic "Famous names: VM, container, and what they actually are" — ea
 #### Rationale and alternatives
 - **Give each famous name its own catalogue entry maintained over time (rejected)**: a catalogue of rebuttals ages; the underlying test does not — which guarantee does this name provide, and which meaning does it define? The topic states the test and applies it, rather than accumulating per-name entries.
 - **Absorb the discussion's arguments as a quoted external position (rejected)**: provenance belongs to this file; the body states arguments on their own merits, wherever they were first heard.
+
+### Answered the app-status cost objection for drivers and frame delivery in the Networking topic
+- Time: 2026-09-01T16:16:25Z
+- Type: revised
+- Cited:
+  - [Giti (GP)](./giti.md) — Reference: the GP redesign discussion raised the objection (a driver as an independent app seemingly multiplying processing cost) while resolving mixed-level endpoint addressing through this document's model.
+- Propagates to:
+  - giti.md: Done — its mixed-level communication ruling references this topic's answer.
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — decided: the cost objection must be answered here, not in the protocol document — and the answer is structural: the isolation mechanism that separates applications is the same one that grants hardware access, so no kernel↔app context switch sits on the packet path; and one step beyond traditional models, the NIC's memory can be granted into the destination application's address space so packet data lands there directly — without the kernel copying it or even observing each packet. Security is supplied by exclusive granting, not by kernel mediation of every packet.
+  - [Super Z](../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — applied.
+
+#### Summary
+The Networking topic gained the paragraph dissolving the driver-as-app cost objection: isolation costs, not per-packet mediation — no context switch on the packet path, and a direct NIC-memory grant into the destination application's buffers as the permitted cheaper path that traditional kernel-mediated stacks never take. The topic's unresolved question (frame delivery as a default app holding the NIC entitlement) stays open, but the cost argument against that reading is now answered in advance.
