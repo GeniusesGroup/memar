@@ -1,5 +1,5 @@
 # sRPC - Application Protocol
-sRPC (Syllab Remote Procedure Call) is a RPC(remote procedure call) protocol. It is develope to introduce frame structure that can use in any network packet to add full functionality to base protocols frames e.g. [Chapar](./networking-osi_2-Chapar.md) or [GP](./networking-osi_3-Giti-Network.md) protocols.
+sRPC (Syllab Remote Procedure Call) is a RPC(remote procedure call) protocol. It is develope to introduce frame structure that can use in any network packet to add full functionality to base protocols frames e.g. [Chapar](./chapar.md) or [GP](./giti.md) protocols.
 
 It can also use to be a messaging protocol among with other older Internet protocols like IP, TCP, UDP, HTTP, ...
 
