@@ -1,5 +1,5 @@
 # Syllab - Encoder
-Syllab as most efficient data codec is a cross platform codec (data serialization/de-serialization system) library architected for maximum memory efficiency. It allows you to directly access serialized data without parsing/unpacking it first!
+Syllab as most efficient data codec is a cross platform codec (data serialization/de-serialization system) library architected for maximum memory efficiency to carry data-types over networks. It allows you to directly access serialized data without parsing/unpacking it first!
 This codec architecture is very similar to memory management by programming languages that respect and influence by computer architecture that work in simplest way that can work just by bits (0&1)!
 
 ## Goals
@@ -19,6 +19,9 @@ This codec architecture is very similar to memory management by programming lang
 
 ## Architecture
 Syllab encoder can almost encode/decode all data models (data types) in all programming language! It encode/decode data to two categories! Fixed and dynamically sized data! Fixed sized means peer know data always have same size like int8, int64, [16]byte, ...! These types of data encode by serialize in order from first byte of buffer in order they appear! In other side when peer don't know about size of data Syllab use heap like location in buffer in the end of fixed size data and point to address of it in simple but powerful manner! More complex dynamic size data types like maps split to some simple to encode||decode in these manners!
+
+### Endian
+Syllab use little-endian to encode and decode data, but it must work on both little and big endian CPU architectures.
 
 ### Memory Blocks
 A Syllab layout consists of the following types of memory blocks:
@@ -107,9 +110,28 @@ heap:
   0020  4f 72 61 6e 67 65  68 65 6c 6c 6f
 ```
 
+## Data Fields
+
+### DataTypeID
+- It is optional field
+- It MUST be first field if decide to add this field.
+- It is useful, If developers want to indicate dynamically types in runtime, they can use below structure.
+```go
+type Capsule struct {
+	dataTypeID uint64
+	dynamicallyArray
+}
+```
+
+### Pointer
+- Use to point an address in the heap of packet.
+
+### Length
+- Use to indicate length of data in the heap of packet.
+
 ## Code Generations
 It is very simple encoder base on code-generation for encode/decode process but also can marshal/un-marshal use by some runtime functions that we strongly don't suggest them!
-Like our other RFCs, We suggest do logics in compile time not runtime to improve performance and efficiency. Syllab architecture is so simple that can easily implement by code generation not marshalling or un-marshalling in runtime!
+Like our other documents, We suggest do logics in compile time not runtime to improve performance and efficiency. Syllab architecture is so simple that can easily implement by code generation not marshalling or un-marshalling in runtime!
 
 ## Supported Programming Languages
 It is so simple protocol that can easily encode, decode & generate code in any programming language! We implement it on some language like [C](), [Go](https://github.com/GeniusesGroup/libgo/blob/master/syllab), [JavaScript]() and more in progress ...

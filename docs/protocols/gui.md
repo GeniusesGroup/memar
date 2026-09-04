@@ -1,4 +1,4 @@
-# GUI - Giti User Interface
+# GUI - Graphic User Interface
 
 ## Page
 

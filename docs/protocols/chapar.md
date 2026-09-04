@@ -301,7 +301,7 @@ Consolidating the specification and all of its rationale into one document makes
 - **Keep the pre-consolidation structure unchanged (rejected)**: it was the older documentation method this revision migrates away from; the record of that migration lives in [chapar.changelog.md](./chapar.changelog.md), not in this document's body.
 
 ### Unresolved questions
-Whether this document should be split again if its length ever becomes a real reading burden — mirroring the open question in [documentation-explanation.md](./documentation-explanation.md) about its own consolidated structure.
+Whether this document should be split again if its length ever becomes a real reading burden — mirroring the open question in [documentation-explanation.md](../documentation-explanation.md) about its own consolidated structure.
 
 ### Future possibilities
 If a single topic's rationale grows unwieldy (for example, if the Discovery signed-response scheme becomes a full design), it should spin out as its own document at that point, following the progressive-migration rule rather than a dedicated restructuring pass.
