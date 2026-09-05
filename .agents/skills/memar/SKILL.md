@@ -1,57 +1,78 @@
 ---
 name: memar
-description: Memar is a system development framework — a design space that any development can be conducted within, not a project that is itself being built. Use this skill for ANY work conducted the Memar way, not only work on the Memar repository: developing any system (software, hardware, apps, gadgets, buildings, organizations/society) such as a project built with Memar (e.g. the `organization` project), a sub-project of Memar (Khayyam, os, Chapar, Giti/GP, sRPC, GUI, Syllab, Achaemenid), or work applying Memar's principles to something else entirely — even if "Memar" is never mentioned: a request like "write this in Khayyam" or "design this the way Memar does" is enough. It also covers conversations that reason about ideas, architecture, modeling, terminology, critique, or documentation under Memar's approach. This skill holds no project knowledge itself — it only defines how to reliably discover and use Memar's live documentation to have the `Memar` mental model before doing anything.
+description: Operating practices for any work conducted the Memar way — not only work inside the GeniusesGroup/memar repository. Use when developing any system (software, hardware, apps, gadgets, buildings, organizations/society) with Memar; when working on a Memar-built project (e.g. `organization`); a Memar sub-project (Khayyam, os, Chapar, Giti/GP, sRPC, GUI, Syllab, Achaemenid); or when applying Memar's principles even if "Memar" is never named — e.g. "write this in Khayyam" or "design this the way Memar does". Also covers reasoning about ideas, architecture, modeling, terminology, critique, or documentation under Memar's approach. This skill holds no project knowledge; it only defines how to discover and use Memar's live documentation to hold the Memar mental model before acting.
 ---
 
 # Memar
 
 ## Purpose
-This skill defines the operating practices for working with Memar and its sub-projects (Khayyam among them). It intentionally does **not** duplicate project documentation or specifications. Project knowledge always lives in the repository documentation (`/docs/`). This skill only explains how to discover, navigate, and use that knowledge to have the `Memar` mental model.
+This skill defines how an agent discovers and applies Memar (and its sub-projects, including Khayyam). It does **not** duplicate project documentation. Project knowledge lives in the repository (`docs/`). This skill only explains how to find, navigate, and use that knowledge.
 
-## Scope: not limited to the Memar repository, and not limited to software
-Memar and Khayyam are meant to be *used*, not just maintained. Most people who trigger this skill will be working on **their own, separate thing they're designing or building** — a codebase, a product, a piece of hardware, an organization — and want to apply Memar's approach. They are not editing the `GeniusesGroup/memar` repo itself. Treat `GeniusesGroup/memar` purely as the **reference documentation** to consult (specs, practices, design rationale), while the actual work happens in the person's own project, whatever form it takes. Don't assume the person's project *is* Memar, don't assume it's software, and don't wait for them to mention "Memar" by name — a request like "write this in Khayyam" or "design this the way Memar does" is enough to trigger full use of this skill.
+## Scope
+Memar and Khayyam are meant to be *used*, not only maintained. Most people who trigger this skill are working on **their own** project — code, hardware, an organization, etc. — and want Memar's approach. Treat `GeniusesGroup/memar` as **reference documentation**; do the actual work in the person's project. Do not assume that project *is* Memar, do not assume it is software, and do not wait for the word "Memar" — phrases like "write this in Khayyam" are enough.
 
-Memar is not a passive reference library, however — it is the **framework the development is conducted within**. When a project is developed the Memar way, Memar's principles, definitions, and practices participate in every stage of that development, not only where Memar is explicitly invoked: development of a project such as `organization` is not meaningfully possible without Memar's involvement, because its modeling, terminology, documentation, and critique practices *are* Memar's. This skill therefore stays active for the whole life of such a project — architecture, modeling, implementation, review, and documentation conversations alike — rather than being consulted once at the start.
+Memar is the **framework the development is conducted within**, not a passive library. When a project is developed the Memar way, Memar's principles participate in every stage. Keep this skill active for the life of such a project — architecture, modeling, implementation, review, and documentation — not only at the start.
 
 ## Three-layer separation
-When working with Memar, keep these responsibilities separate:
-1. **Documentation** — the source of truth. Defines concepts, specifications, architecture, and decisions. Lives in the repository, not in any skill.
-2. **Practices** — recommended ways of working with the documentation. Organizational knowledge, not agent-specific; may be followed by humans, IDEs, automation tools, AI systems, or any other agent. Also lives in the repository (e.g. `docs/*.practice.md`), not in this skill.
-3. **Agent configuration** — how *this* agent, with *its* specific tools, discovers and applies the above. This skill belongs to this layer, and only this layer.
+1. **Documentation** — source of truth (concepts, specs, architecture, decisions). Lives in the repository, not in any skill.
+2. **Practices** — recommended ways of working with that documentation. Organizational, not agent-specific (`docs/*.practice.md`), not in this skill.
+3. **Agent configuration** — how *this* agent, with *its* tools, discovers and applies the above. This skill belongs only here.
 
 ## Working rules
-- Before reasoning about ideas, architecture, modeling, terminology, or critique — in this repository or in any project using Memar's approach — read [Thinking](../../../docs/thinking.md) and follow its discourse norms.
+- Before reasoning about ideas, architecture, modeling, terminology, or critique, read [**Thinking**](/docs/thinking.md) and follow its discourse norms.
 - Never answer from training-data memory when project documentation exists.
-- Never invent Memar-specific rules, conventions, or terminology by analogy to mainstream standards of whatever domain is involved — mainstream programming languages/frameworks if the work is software, but equally typical building codes, organizational structures, or social conventions if it isn't. Memar frequently departs from mainstream conventions on purpose. (General background knowledge of the relevant domain is fine for context; what's off-limits is inventing Memar-specific behavior from it.)
-- Treat the repository documentation as canonical source of truth.
-- Discover relevant documents from the repository instead of relying on embedded copies or a hardcoded file list — the file set changes independently of this skill.
+- Never invent Memar-specific rules, conventions, or terminology by analogy to mainstream standards of the domain involved (programming frameworks, building codes, organizational norms, etc.). Memar often departs from mainstream on purpose. General domain background is fine; inventing Memar-specific behavior from it is not.
+- Treat repository documentation as the canonical source of truth.
+- Discover relevant documents from the repository; do not rely on embedded copies or a hardcoded file list.
 - Read only the documentation required for the current task.
-- Do not read [`docs/protocols/`](../../../docs/protocols/) wholesale. If a subject defined in that folder seems needed — e.g. the definition of Error — read that folder's [`README.md`](../../../docs/protocols/README.md) first: it states what the folder is for and when its documents matter; the documents themselves are found by listing the folder (the filenames are the index), so nothing is opened needlessly. When the task merely needs to *use* the library implementing a protocol (consume its package), those documents are unnecessary entirely — go to the implementing `memar-{language}` repository instead (e.g. [`memar-go`](https://github.com/GeniusesGroup/memar-go/)); open a protocol's own document only when its rules and rationale — the contract itself — is genuinely the subject of the task.
-- Do not enumerate, rediscover, or inspect unrelated Memar documentation merely because it exists.
-- Do not restart Memar documentation discovery on every interaction when the relevant knowledge is already available in the current context or persistent project context.
-- If a task is unrelated to Memar-specific knowledge, do not perform additional Memar documentation discovery merely because this skill is active.
-- If required documentation cannot be found, state that clearly instead of fabricating an answer.
-- Canonical repository is https://github.com/GeniusesGroup/memar
-- Use the current repository contents whenever precision matters. Do not embed copies of project documents inside this skill. Documentation evolves independently and should remain the single source of truth.
+- Do not read [`docs/protocols/`](/docs/protocols/) wholesale. If a subject there seems needed (e.g. Error), read that folder's [`README.md`](/docs/protocols/README.md) first; list the folder for filenames as the index. When the task only needs to *use* a library that implements a protocol, skip those docs and go to the implementing `memar-{language}` repository (e.g. https://github.com/GeniusesGroup/memar-go/). Open a protocol document only when the contract itself is the subject.
+- Do not enumerate unrelated Memar documentation merely because it exists.
+- Do not restart discovery on every turn when the relevant knowledge is already in context.
+- If the task is unrelated to Memar-specific knowledge, do not discover Memar docs merely because this skill is active.
+- If required documentation cannot be found, say so clearly instead of fabricating an answer.
+- Canonical repository: https://github.com/GeniusesGroup/memar
+- Do not embed copies of project documents inside this skill.
 
 ## How to discover documentation
-This part is inherently agent-specific — it depends on which tools are actually available — so it lives here rather than in a repository-level Practice document.
+This section is agent-specific (tool-dependent), so it lives here rather than in a repository Practice.
 
-Shallow-clone the repo rather than hitting the GitHub REST API: the API is unauthenticated and shared across many users, so it rate-limits quickly, while `git clone` does not.
+**Prefer, in order:**
+1. If the current workspace *is* the `GeniusesGroup/memar` repository, use it as the Memar root.
+2. Otherwise shallow-clone (or reuse) into the system temporary directory, folder name **`memar`** — same as the repository name. Do not append suffixes like `-repo`.
 
 ```bash
-[ -d /tmp/memar-repo/.git ] || git clone --depth 1 https://github.com/GeniusesGroup/memar.git /tmp/memar-repo
+# Unix / Git Bash / WSL — MEMAR_ROOT is e.g. /tmp/memar
+MEMAR_ROOT="${TMPDIR:-/tmp}/memar"
+[ -d "$MEMAR_ROOT/.git" ] || git clone --depth 1 https://github.com/GeniusesGroup/memar.git "$MEMAR_ROOT"
 ```
 
-Then read only the specific file(s) needed with `view`/`grep` — don't dump the whole repo into context. If already cloned earlier in this session, reuse it; don't reclone.
+```powershell
+# Windows PowerShell — MEMAR_ROOT is e.g. C:\Users\...\AppData\Local\Temp\memar
+$MEMAR_ROOT = Join-Path $env:TEMP "memar"
+if (-not (Test-Path (Join-Path $MEMAR_ROOT ".git"))) {
+  git clone --depth 1 https://github.com/GeniusesGroup/memar.git $MEMAR_ROOT
+}
+```
 
-If a referenced file isn't found in the clone, say so plainly and ask for it directly (it may be an unpublished draft) rather than fabricating its content.
+Prefer `git clone` over the GitHub REST API (unauthenticated API rate-limits quickly; clone does not).
+
+Then read only the needed file(s) with the agent's normal read/search tools — do not dump the whole repo into context. If already cloned earlier in the session, reuse it; do not reclone.
+
+If a referenced file is missing from the clone, say so and ask for it (it may be an unpublished draft) rather than fabricating content.
+
+### Path resolution (agents)
+Links in this skill and across Memar documentation use ordinary Markdown / Git path forms (`/docs/...`, `./foo.md`, `../bar.md`, etc.). For an agent, **every such path is relative to the Memar repository root** established above — not to the user's project workspace, not to this skill's directory, and not to the machine filesystem root.
+
+- A root-style path such as `/docs/thinking.md` means `{Memar root}/docs/thinking.md`.
+- A relative link inside a document (e.g. `./modeling.md` from `docs/system.md`) resolves against that document's directory **under the Memar root**, as Markdown/Git already imply — still never against the user's other project.
+
+When following hyperlinks between documents, keep resolving under that same Memar tree.
 
 ## How to navigate between documents
-Don't guess filenames or rely on a memorized list of what exists — instead:
+Do not guess filenames or rely on a memorized list:
 1. Start from `README.md` (or the relevant `docs/` entry point) for orientation.
-2. Follow each document's hyperlink to move through related documents if it is necessary by memar rules.
+2. Follow each document's hyperlinks when Memar rules require related reading.
 
-This convention doesn't go stale as new documents are added, unlike a hardcoded index, so it's safe to rely on permanently.
+This stays valid as new documents are added, unlike a hardcoded index.
 
-You do not need to read every document in full to answer a question. Start from a document's front matter (Title, Status, ID) and its Abstract to judge relevance, then jump directly to the specific section you need inside that file. Documents share one section structure (Abstract → Introduction → Explanation → Results → Discussion), so the section answering the question is reachable without reading end-to-end. A document's `Status` value states how far its content is settled — treat nothing before `Final` as settled, and follow the detailed semantics in the project's documentation specification.
+You do not need to read every document end-to-end. Use front matter (Title, Status, ID) and the Abstract to judge relevance, then jump to the needed section. Documents share one section structure (Abstract → Introduction → Explanation → Results → Discussion). Treat nothing before `Status: Final` as settled; detailed semantics live in the project's documentation specification.
