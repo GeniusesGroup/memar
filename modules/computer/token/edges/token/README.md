@@ -2,4 +2,4 @@
 
 ## Model
 
-- `(quiddity)-[:token]->(---)`
+- `(thing)-[:token]->(---)`

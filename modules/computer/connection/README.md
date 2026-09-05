@@ -3,7 +3,7 @@ a “connection” is a very low level concept; it basically means the pipes are
 
 ## Model
 
-- `(quiddity)-[:software_connection]->(---)`
+- `(thing)-[:software_connection]->(---)`
 
 ## Connection-oriented communication
 

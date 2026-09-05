@@ -2,10 +2,10 @@
 
 ## Model
 
-- `(quiddity)-[:suggest_by]->(user)`
-- `(quiddity)-[:suggest_by]->(group)`
-- `(user)-[:suggest]->(quiddity)`
-- `(group)-[:suggest]->(quiddity)`
+- `(thing)-[:suggest_by]->(user)`
+- `(thing)-[:suggest_by]->(group)`
+- `(user)-[:suggest]->(thing)`
+- `(group)-[:suggest]->(thing)`
 
 ## Policies (rules)
 

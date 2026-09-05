@@ -2,8 +2,8 @@
 
 ## Model
 
-- `(quiddity)-[:ability_is]->(text)`
-- `(quiddity)-[:limitation_is]->(text)`
+- `(thing)-[:ability_is]->(text)`
+- `(thing)-[:limitation_is]->(text)`
 
 ## Policies (rules)
 

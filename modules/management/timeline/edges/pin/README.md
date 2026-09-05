@@ -2,8 +2,8 @@
 
 ## Model
 
-- `(timeline)-[:pin_is]->(quiddity)`
-- `(quiddity)-[:pin_in]->(timeline)`
+- `(timeline)-[:pin_is]->(thing)`
+- `(thing)-[:pin_in]->(timeline)`
 
 ## Policies (rules)
 

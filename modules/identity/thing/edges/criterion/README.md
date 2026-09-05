@@ -5,4 +5,4 @@ e.g. [Staff(456), `get_criterion_by(score)`, User(AI)]
 
 ## Model
 
-- `(quiddity)-[:get_criterion_by]->(user)`
+- `(thing)-[:get_criterion_by]->(user)`

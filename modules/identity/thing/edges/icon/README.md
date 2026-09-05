@@ -2,8 +2,8 @@
 
 ## Model
 
-- `(quiddity)-[:icon_is]->(object)`
-- `(object)-[:is_icon_for]->(quiddity)`
+- `(thing)-[:icon_is]->(object)`
+- `(object)-[:is_icon_for]->(thing)`
 
 ## Policies (rules)
 

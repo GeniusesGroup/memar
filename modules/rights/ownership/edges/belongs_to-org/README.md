@@ -5,7 +5,7 @@ e.g. `product`(iphone 16 pro max) `belongs_to_org` `org`(Apple)
 
 ## Model
 
-- `(quiddity)-[:belongs_to_org]->(org)`
+- `(thing)-[:belongs_to_org]->(org)`
 
 ## Policies (rules)
 

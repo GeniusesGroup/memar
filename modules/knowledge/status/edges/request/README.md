@@ -2,10 +2,10 @@
 
 ## Model
 
-- `(quiddity)-[:request_by]->(user)`
-- `(quiddity)-[:request_by]->(group)`
-- `(user)-[:request]->(quiddity)`
-- `(group)-[:request]->(quiddity)`
+- `(thing)-[:request_by]->(user)`
+- `(thing)-[:request_by]->(group)`
+- `(user)-[:request]->(thing)`
+- `(group)-[:request]->(thing)`
 
 ## Policies (rules)
 

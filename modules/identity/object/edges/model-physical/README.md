@@ -2,7 +2,7 @@
 
 ## Model
 
-- `(quiddity)-[:physical_model_is]->(object)`
+- `(thing)-[:physical_model_is]->(object)`
 
 ## Policies (rules)
 

@@ -2,7 +2,7 @@
 
 ## Model
 
-- `(quiddity)-[:---]->(read_only)`
+- `(thing)-[:---]->(read_only)`
 
 ## Policies (rules)
 

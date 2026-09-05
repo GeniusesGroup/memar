@@ -2,10 +2,10 @@
 
 ## Model
 
-- `(quiddity)-[:approval_needed_by]->(user)`
-- `(quiddity)-[:approval_needed_by]->(group)`
-- `(user)-[:approval_needed_for]->(quiddity)`
-- `(group)-[:approval_needed_for]->(quiddity)`
+- `(thing)-[:approval_needed_by]->(user)`
+- `(thing)-[:approval_needed_by]->(group)`
+- `(user)-[:approval_needed_for]->(thing)`
+- `(group)-[:approval_needed_for]->(thing)`
 
 ## Policies (rules)
 

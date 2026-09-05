@@ -5,4 +5,4 @@ e.g. `product`(iphone 16 pro max) `belongs_to_module` `product` module
 
 ## Model
 
-- `(quiddity)-[:belongs_to_module]->(module)`
+- `(thing)-[:belongs_to_module]->(module)`

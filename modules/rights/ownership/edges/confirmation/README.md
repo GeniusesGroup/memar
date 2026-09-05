@@ -2,7 +2,7 @@
 
 ## Model
 
-- `(quiddity)-[:confirmation_by]->(user)`
-- `(quiddity)-[:confirmation_by]->(group)`
-- `(user)-[:confirmation_to]->(quiddity)`
-- `(group)-[:confirmation_to]->(quiddity)`
+- `(thing)-[:confirmation_by]->(user)`
+- `(thing)-[:confirmation_by]->(group)`
+- `(user)-[:confirmation_to]->(thing)`
+- `(group)-[:confirmation_to]->(thing)`

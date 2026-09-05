@@ -2,8 +2,8 @@
 
 ## Model
 
-- `(timeline)-[:mute]->(quiddity)`
-- `(quiddity)-[:mute_in]->(timeline)`
+- `(timeline)-[:mute]->(thing)`
+- `(thing)-[:mute_in]->(timeline)`
 - `(timeline)-[:mute]->(user)`
 - `(timeline)-[:mute]->(comment)`
 

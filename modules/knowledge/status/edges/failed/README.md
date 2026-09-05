@@ -2,7 +2,7 @@
 
 ## Model
 
-- `(quiddity)-[:failed]->(---)`
+- `(thing)-[:failed]->(---)`
 
 ## Policies (rules)
 

@@ -2,7 +2,7 @@
 
 ## Model
 
-- `(quiddity)-[:quiddity]->(complement)`
+- `(thing)-[:quiddity]->(complement)`
 - `(product)-[:product]->(complement)`
 - `(task)-[:task]->(complement)`
 - `(account)-[:account]->(complement)` (note: Budget,)

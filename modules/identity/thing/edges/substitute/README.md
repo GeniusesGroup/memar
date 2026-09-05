@@ -2,7 +2,7 @@
 
 ## Model
 
-- `(quiddity)-[:quiddity]->(substitute)`
+- `(thing)-[:quiddity]->(substitute)`
 - `(product)-[:product]->(substitute)` (note: Used to find similar product, ...)
 - `(task)-[:task]->(substitute)`
 - `(account)-[:account]->(substitute)` (note: Budget,)
