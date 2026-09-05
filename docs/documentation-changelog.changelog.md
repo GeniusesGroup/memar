@@ -60,3 +60,17 @@ Added the Changelog-scope rule to the specification: a changelog is paired to a 
 #### Rationale and alternatives
 - **Keep the uniform per-file rule (rejected by the owner)**: mechanically simpler to state, but the coupling evidence ran the other way — companion changelogs were recording alignments forced by base changes — and the file-count cost is one this documentation system already names in its Drawbacks. The scope rule is barely more complex than the naming rule it sits beside.
 - **Extend the sharing rule to Handoff companions now (rejected for now)**: the Handoff facet's own open question about handoff-changelog history stays open; this change does not preempt it.
+
+---
+
+### CONTRIBUTORS.md model lists given an explicit chronological, append-only order
+- Time: 2026-09-05T14:30:00Z
+- Type: Changed
+- Propagates to:
+  - CONTRIBUTORS.md: Done — every Models list reordered oldest-first (Super Z and Qwen were descending) and official per-model links added where the vendor page was verified by direct fetch.
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — requested: asked whether the Models lists should run ascending or descending, and to audit the file's model ordering and add official website links per model where possible.
+  - [OpenCode](../CONTRIBUTORS.md#opencode) (Qwen3.8-Flash) — argued, rewrote: recommended ascending (append-only) to match the facet's own entry convention; verified each linked URL by fetching it.
+
+#### Summary
+The CONTRIBUTORS.md section now states that an AI contributor's Models list is chronological, oldest first, with new models appended at the end — the same append-only convention as changelog entries, so adding a model never forces a re-sort — and that a model may carry a link to its official documentation page where one exists and has been verified. Applied in CONTRIBUTORS.md: GLM and Qwen lists reversed to ascending; OpenAI, Anthropic, Google DeepMind, Z.ai, and Qwen-collection model pages linked. GLM-5.0 and Qwen3.8-Flash carry no dedicated link because no verifiable per-model page was found, and the previous GLM-5.3-Flash link was removed: it pointed at oxalpha.io, an unrelated third-party model page, not Z.ai.
