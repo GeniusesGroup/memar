@@ -15,6 +15,9 @@ This approach naturally requires crossing traditional disciplinary boundaries. M
 The project assumes that meaningful progress often requires stepping outside existing conceptual systems and examining their assumptions from an external perspective. This process is difficult because it challenges ideas that are frequently treated as foundational, yet it is often the only way to expose hidden contradictions and create more coherent models. Memar therefore treats definitions as more fundamental than terminology, models as more important than implementations, and understanding as more important than convention.
 
 ## Goals
+Memar's purpose is a chain: reliable **knowledge** of reality, built and revised through **thinking**, at a quality that constitutes **intelligence**, exercised as **agency** toward goals beyond itself — ultimately the outcomes those agents pursue, such as quality of life. The goal is stated in full, with its rationale, in [Framework → Memar's Purpose Space](./docs/framework.md#memars-purpose-space-from-knowledge-to-agency); the concept homes are [Knowledge](./docs/knowledge.md), [Thinking](./docs/thinking.md), and [Agency](./docs/agency.md).
+
+The engineering goals below are means to that end:
 - Improves the quality of reasoning about systems.
 - Almost no (minimum) dependency on any other repositories (frameworks).
 - Let developers act Lean and Agile (not [agile-manifesto](https://agilemanifesto.org/)) in their organization.
@@ -56,7 +59,7 @@ It will provide ZeroOps(zero operations), edge computing, ... that let you devel
 - Provide complete framework to develop any purpose distributed application with **low||no code**.
 
 #### Transition period
-Since the Memar introduces all tools needed in software development and operation as a programming language([Khayyam](./docs/khayyam.md)) and OS([PersiaOS](./docs/PersiaOS.md)) and network protocols like [Chapar](./docs/chapar.md) or [Giti-Protocol](./docs/giti.md), If any organization want to move to the Memar, we provide some exiting programming language implementation to smooth this period and use existing infrastructure like Golang and Linux and IP.
+Since the Memar introduces almost all technologies needed in software development and operation as a programming language([Khayyam](./docs/khayyam.md)) and [OS](./docs/protocols/os.md) and network protocols like [Chapar](./docs/protocols/chapar.md) or [Giti-Protocol](./docs/protocols/giti.md), If any organization want to move to the Memar, we provide some exiting programming language implementation to smooth this period and use existing infrastructure like Golang and Linux and IP.
 
 **But remember we don't suggest using this method in starting new projects.**
 
@@ -71,11 +74,13 @@ Contact us by [this](mailto:ict@geniuses.group) or [this](mailto:omid@geniuses.g
 
 ## Related Projects
 - [Clive is an operating system designed to work in distributed and cloud computing environments.](https://github.com/fjballest/clive)
-- [SQLc](sqlc.dev)
+- [SQLc](https://sqlc.dev)
 - [EntGo](https://entgo.io/)
 - [go-zero](https://github.com/zeromicro/go-zero) as bad idea because of (microservice system), (fully compatible with net/http), (middlewares are supported), ...
 or [really relativetime?? Why not monotonic time??](https://github.com/zeromicro/go-zero/blob/master/core/timex/relativetime.go)
 - https://en.wikipedia.org/wiki/Genera_(software)
 
 ## Word
-Memar is the Persian word means [architect](https://en.wikipedia.org/wiki/Architect), That is a person who plans, designs and oversees the construction of buildings. To practice architecture means to provide services in connection with the design of buildings and the space within the site surrounding the buildings that have human occupancy or use as their principal purpose. Etymologically, the term architect derives from the Latin architectus, which derives from the Greek (arkhi-, chief + tekton, builder), i.e., chief builder.
+Memar is the Persian word means [architect](https://en.wikipedia.org/wiki/Architect) ([معمار](https://fa.wikipedia.org/wiki/%D9%85%D8%B9%D9%85%D8%A7%D8%B1)), That is a person who plans, designs and oversees the construction of buildings. To practice architecture means to provide services in connection with the design of buildings and the space within the site surrounding the buildings that have human occupancy or use as their principal purpose. Etymologically, the term architect derives from the Latin architectus, which derives from the Greek (arkhi-, chief + tekton, builder), i.e., chief builder — where *arkhe* (from the verb *arkhin*) carries the sense of "guiding" and "governing".
+
+We chose this name for the framework because of the strong resemblance between the architect's role and the process that takes place in the world of computing.
