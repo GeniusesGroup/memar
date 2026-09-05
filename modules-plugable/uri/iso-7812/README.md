@@ -1,8 +1,9 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Iso 7812
 
-package iso_7812
+## Model
 
-// [token, `iso_7812`, text] >>
+- `(token)-[:iso_7812]->(text)`
 
-// Policy (rule):::
-// CardNumber() string
+## Policies (rules)
+
+- CardNumber() string

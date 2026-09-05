@@ -1,7 +1,5 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Item seat
 
-package invoice_item_seat
+## Model
 
-// [invoice_item, `invoice_item_seat`, ----] >>
-
-// Policy (rule):::
+- `(invoice_item)-[:invoice_item_seat]->(---)`

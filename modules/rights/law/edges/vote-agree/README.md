@@ -1,7 +1,5 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Vote agree
 
-package vote_agree
+## Model
 
-// [law, vote_agree_by, citizen(user)] >>
-
-// Policy (rule):::
+- `(law)-[:vote_agree_by]->(citizen(user))`

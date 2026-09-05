@@ -1,8 +1,9 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Blocked text
 
-package blocked_text
+## Model
 
-// [group, `blocked_text`, text] >>
+- `(group)-[:blocked_text]->(text)`
 
-// Policy (rule):::
-// It can be any text types like word, phrase, ...
+## Policies (rules)
+
+- It can be any text types like word, phrase, ...

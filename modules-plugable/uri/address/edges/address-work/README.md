@@ -1,7 +1,5 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Address work
 
-package address_work
+## Model
 
-// [address(estate), `address_work_for`, user] >>
-
-// Policy (rule):::
+- `(address(estate))-[:address_work_for]->(user)`

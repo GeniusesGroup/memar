@@ -4,3 +4,21 @@
 Bookkeeping is the recording of financial transactions, and is part of the process of accounting in business and other organizations. It involves preparing source documents for all transactions, operations, and other events of a business. Transactions include purchases, sales, receipts and payments by an individual person, organization or corporation. There are several standard methods of bookkeeping, including the single-entry and double-entry bookkeeping systems. While these may be viewed as "real" bookkeeping, any process for recording financial transactions is a bookkeeping process.
 
 **The primary purpose of bookkeeping is to record the financial effects of transactions**. An important difference between a manual and an electronic accounting system is the former's latency between the recording of a financial transaction and its posting in the relevant account. This delay, which is absent in electronic accounting systems due to nearly instantaneous posting to relevant accounts, is characteristic of manual systems, and gave rise to the primary books of accounts—cash book, purchase book, sales book, etc.—for immediately documenting a financial transaction.
+
+## Dictionary
+
+bookkeeping  book·keep·ing /ˈbukˌkiːpɪŋ/ n [U]
+
+n.
+- the activity of recording business transactions
+
+## Model
+
+- `(account)-[:book]->(transaction)`
+- `(transaction)-[:book_in]->(account)`
+
+## Policies (rules)
+
+- a record in which commercial accounts are recorded
+
+## Fields

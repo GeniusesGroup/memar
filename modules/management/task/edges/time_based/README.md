@@ -1,7 +1,5 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Time based
 
-package time_based
+## Model
 
-// [task, ---, `time_based`] >>
-
-// Policy (rule):::
+- `(task)-[:---]->(time_based)`

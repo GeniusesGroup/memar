@@ -1,9 +1,10 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Music video
 
-package music_video
+## Model
 
-// (content)-[:music_video]->(___)
+- `(content)-[:music_video]->(___)`
 
-// Policy (rule):::
-// https://en.wikipedia.org/wiki/Music_video
-// A music video is a video that integrates a song or an album with imagery that is produced for promotional or musical artistic purposes.
+## Policies (rules)
+
+- https://en.wikipedia.org/wiki/Music_video
+- A music video is a video that integrates a song or an album with imagery that is produced for promotional or musical artistic purposes.

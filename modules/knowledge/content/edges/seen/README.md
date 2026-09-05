@@ -1,9 +1,6 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Seen
 
-package seen
+## Model
 
-// [comment, `seen_by`, user]
-//
-// [user, `seen`, comment]
-
-// Policy (rule):::
+- `(comment)-[:seen_by]->(user)`
+- `(user)-[:seen]->(comment)`

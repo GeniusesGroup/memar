@@ -1,10 +1,10 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Label used by
 
-package label_used_by
+## Model
 
-// [label, `label_used_by`, org] >>
-//
-// [org, `used_label_is`, label] >>
+- `(label)-[:label_used_by]->(org)`
+- `(org)-[:used_label_is]->(label)`
 
-// Policy (rule):::
-// indicate allowed labeling occur in which organization.
+## Policies (rules)
+
+- indicate allowed labeling occur in which organization.

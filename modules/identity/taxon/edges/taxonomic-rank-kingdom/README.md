@@ -1,8 +1,9 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Taxonomic rank kingdom
 
-package taxonomic_rank_kingdom
+## Model
 
-// [taxon, `taxonomic_rank_kingdom`, label(taxonomic_rank)] >>
+- `(taxon)-[:taxonomic_rank_kingdom]->(label(taxonomic_rank))`
 
-// Policy (rule):::
-// https://en.wikipedia.org/wiki/Kingdom_(biology)
+## Policies (rules)
+
+- https://en.wikipedia.org/wiki/Kingdom_(biology)

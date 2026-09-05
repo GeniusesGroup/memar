@@ -1,13 +1,15 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Deleted
 
-package deleted
+## Model
 
-// [status, `deleted`, ----] >>
+- `(status)-[:deleted]->(---)`
 
-// Policy (rule):::
-// Soft Deleted
-//
-// Methods:::
-// IsDeleted
-// DeletionTime
-// DeleterID
+## Policies (rules)
+
+- Soft Deleted
+
+## Methods
+
+- IsDeleted
+- DeletionTime
+- DeleterID

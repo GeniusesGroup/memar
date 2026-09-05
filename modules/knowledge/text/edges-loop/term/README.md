@@ -1,8 +1,9 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Term
 
-package term
+## Model
 
-// (text)-[:term]->(---)
+- `(text)-[:term]->(---)`
 
-// Policy (rule):::
-// a word or expression used for some particular thing
+## Policies (rules)
+
+- a word or expression used for some particular thing

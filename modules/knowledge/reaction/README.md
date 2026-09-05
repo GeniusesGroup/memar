@@ -1,6 +1,7 @@
 ## Reaction
 
 ## Dictionary
+
 reaction  [rɪ'ækʃn]
 
 n.

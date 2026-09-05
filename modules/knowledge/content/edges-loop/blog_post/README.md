@@ -1,8 +1,5 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Blog post
 
-package blog_post
+## Model
 
-// (content)-[:blog_post]->(___)
-
-// Policy (rule):::
-//
+- `(content)-[:blog_post]->(___)`

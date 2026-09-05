@@ -1,10 +1,10 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Issuer
 
-package issuer
+## Model
 
-// [ownership, `issuer_is`, organization] >>
-//
-// [organization, `issuer_of`, ownership] >>
+- `(ownership)-[:issuer_is]->(organization)`
+- `(organization)-[:issuer_of]->(ownership)`
 
-// Policy (rule):::
-// e.g. Use to get notify about status of the CryptoKeys e.g. revoked notification, ...
+## Policies (rules)
+
+- e.g. Use to get notify about status of the CryptoKeys e.g. revoked notification, ...

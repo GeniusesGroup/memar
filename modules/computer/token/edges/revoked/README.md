@@ -1,8 +1,5 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Revoked
 
-package revoked
+## Model
 
-// [token, `revoked`, ----] >>
-
-// Policy (rule):::
-//
+- `(token)-[:revoked]->(---)`

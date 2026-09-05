@@ -1,11 +1,11 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Authorized
 
-package authorized
+## Model
 
-// [request, `authorized_by`, rule] >>
-//
-// [rule, `authorized`, request] >>
+- `(request)-[:authorized_by]->(rule)`
+- `(rule)-[:authorized]->(request)`
 
-// Policy (rule):::
-// Store to know which `rule` allow this request to perform.
-// rule_p.Field_AuthorizedBy
+## Policies (rules)
+
+- Store to know which `rule` allow this request to perform.
+- rule_p.Field_AuthorizedBy

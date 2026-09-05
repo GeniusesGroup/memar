@@ -1,10 +1,6 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Name first
 
-package FirstName
+## Model
 
-// [person, `FirstName_is`, uri(text)] >>
-//
-// [uri(text), `FirstName_for`, person] >>
-
-// Policy (rule):::
-//
+- `(person)-[:FirstName_is]->(uri(text))`
+- `(uri(text))-[:FirstName_for]->(person)`

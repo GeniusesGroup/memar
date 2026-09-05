@@ -1,8 +1,9 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Text
 
-package text
+## Model
 
-// (thing)-[:text]->(---)
+- `(thing)-[:text]->(---)`
 
-// Policy (rule):::
-// Any general lexicon text types got this label
+## Policies (rules)
+
+- Any general lexicon text types got this label

@@ -1,10 +1,10 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Translation suggestion
 
-package translation_suggestion
+## Model
 
-// [text, `translation_suggestion_is`, text] >>
-//
-// [text, `translation_suggestion_of`, text] >>
+- `(text)-[:translation_suggestion_is]->(text)`
+- `(text)-[:translation_suggestion_of]->(text)`
 
-// Policy (rule):::
-// Translation use in `Localization` in `suggestion` phase
+## Policies (rules)
+
+- Translation use in `Localization` in `suggestion` phase

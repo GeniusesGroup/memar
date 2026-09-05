@@ -1,15 +1,14 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Owner
 
-package owner
+## Model
 
-// [ownership, `owner_is`, user] >>
-// [ownership, `owner_is`, group] >>
+- `(ownership)-[:owner_is]->(user)`
+- `(ownership)-[:owner_is]->(group)`
+- `(user)-[:owner_of]->(ownership)`
+- `(group)-[:owner_of]->(ownership)`
+- `(user)-[:owner_of]->(account)`
 
-// [user, `owner_of`, ownership] >>
-// [group,`owner_of`,  ownership] >>
-//
-// [user, `owner_of`, account] >>
+## Policies (rules)
 
-// Policy (rule):::
-// Just owner MUST edit the related record in any domain
-// Others CAN fork or update if owner allow.
+- Just owner MUST edit the related record in any domain
+- Others CAN fork or update if owner allow.

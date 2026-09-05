@@ -1,8 +1,5 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Label
 
-package label
+## Model
 
-// [thing, `label`, ----] >>
-
-// Policy (rule):::
-//
+- `(thing)-[:label]->(---)`

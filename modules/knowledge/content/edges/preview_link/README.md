@@ -1,8 +1,9 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Preview link
 
-package preview_link
+## Model
 
-// [comment, `preview_link`, uri] >>
+- `(comment)-[:preview_link]->(uri)`
 
-// Policy (rule):::
-// Render web links and save it as HTML,CSS to show as small widget
+## Policies (rules)
+
+- Render web links and save it as HTML,CSS to show as small widget

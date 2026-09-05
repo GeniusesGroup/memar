@@ -1,8 +1,9 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Detection toxicity
 
-package detection_toxicity
+## Model
 
-// (rule)-[:detection_toxicity]->(---)
+- `(rule)-[:detection_toxicity]->(---)`
 
-// Policy (rule):::
-// detection_spam or toxicity_checker
+## Policies (rules)
+
+- detection_spam or toxicity_checker

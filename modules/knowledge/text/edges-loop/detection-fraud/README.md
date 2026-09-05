@@ -1,8 +1,9 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Detection fraud
 
-package detection_fraud
+## Model
 
-// (rule)-[:detection_fraud]->(---)
+- `(rule)-[:detection_fraud]->(---)`
 
-// Policy (rule):::
-// detection_spam or fraud_checker
+## Policies (rules)
+
+- detection_spam or fraud_checker

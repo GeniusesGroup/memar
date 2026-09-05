@@ -1,7 +1,5 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Authorize by card
 
-package authorize_by_card
+## Model
 
-// [transaction, `authorize_by_card`, card] >>
-
-// Policy (rule):::
+- `(transaction)-[:authorize_by_card]->(card)`

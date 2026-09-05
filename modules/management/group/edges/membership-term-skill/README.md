@@ -1,15 +1,12 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Membership term skill
 
-package membership_term_skill
+## Model
 
-// [group, `membership_term_skill`, skill] >>
+- `(group)-[:membership_term_skill]->(skill)`
 
-// Policy (rule):::
-// MUST, obligatory, compulsory, binding, required, inescapable, unavoidable, requisite, necessary, essential, imperative
-// Mandatory
-//
-// SHOULD, nice to have, optional, Conditional,
-//
-//
-// MAY, not needed,
-//
+## Policies (rules)
+
+- MUST, obligatory, compulsory, binding, required, inescapable, unavoidable, requisite, necessary, essential, imperative
+- Mandatory
+- SHOULD, nice to have, optional, Conditional,
+- MAY, not needed,

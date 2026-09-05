@@ -1,7 +1,5 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Summary
 
-package invoice_summary
+## Model
 
-// [invoice, `invoice_summary`, ---] >>
-
-// Policy (rule):::
+- `(invoice)-[:invoice_summary]->(---)`

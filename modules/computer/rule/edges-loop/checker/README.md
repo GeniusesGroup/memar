@@ -1,13 +1,13 @@
 # Checker
 
-## Graph
+## Model
+
 - `(rule)-[:checker]->(___)`
 
-## Policy (rule)
+## Policies (rules)
+
 - Some rule exist to check records for any purpose like categorizing(labeling)
 
 ## TODO
-- 
 
 ## Fields
-- 

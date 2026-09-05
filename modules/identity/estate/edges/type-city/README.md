@@ -1,7 +1,5 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Type city
 
-package type_city
+## Model
 
-// [estate, `type_city`, -----] >>
-
-// Policy (rule):::
+- `(estate)-[:type_city]->(---)`

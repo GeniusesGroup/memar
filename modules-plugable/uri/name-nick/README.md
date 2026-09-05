@@ -1,10 +1,6 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Name nick
 
-package NickName
+## Model
 
-// [person, `NickName_is`, uri(text)] >>
-//
-// [uri(text), `NickName_for`, person] >>
-
-// Policy (rule):::
-//
+- `(person)-[:NickName_is]->(uri(text))`
+- `(uri(text))-[:NickName_for]->(person)`

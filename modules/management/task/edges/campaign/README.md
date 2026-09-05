@@ -1,7 +1,7 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Campaign
 
-package campaign_l
+## Model
 
-// [task, product, campaign] >> select or limit products for a campaign
-// [task, label, campaign] >> select or limit categories for a campaign
-// [task, group, campaign] >> To send SMS or ... to all user joined group. Join can be optional. DeJoin mechanism must be exist.
+- `(task)-[:product]->(campaign)` (note: select or limit products for a campaign)
+- `(task)-[:label]->(campaign)` (note: select or limit categories for a campaign)
+- `(task)-[:group]->(campaign)` (note: To send SMS or ... to all user joined group. Join can be optional. DeJoin mechanism must be exist.)

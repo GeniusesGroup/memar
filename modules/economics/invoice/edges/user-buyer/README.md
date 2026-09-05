@@ -1,10 +1,10 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# User buyer
 
-package buyer
+## Model
 
-// [invoice, `buyer_is`, user] >> product
-//
-// [user, `buyer_for`, invoice] >>
+- `(invoice)-[:buyer_is]->(user)` (note: product)
+- `(user)-[:buyer_for]->(invoice)`
 
-// Policy (rule):::
-// someone whose job is to choose and buy the goods for a shop or company
+## Policies (rules)
+
+- someone whose job is to choose and buy the goods for a shop or company

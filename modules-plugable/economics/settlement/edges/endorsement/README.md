@@ -3,12 +3,13 @@ Endorsement refers to transfer transaction ownership to another entity, serving 
 
 ## Dictionary
 
+## Model
 
-## Graph
 - `(transaction)-[:endorsement_in_favor_of]->(transaction)`
 - `(transaction)-[:is_endorsement_for]->(transaction)`
 
-## Policy (rule)
+## Policies (rules)
+
 - a `transaction` CAN have more than one `endorsement` to split first transaction quantity.
 - TODO::: Is it shortcut edge?? `SUSPENDED_BY`
 

@@ -1,6 +1,7 @@
 # Call
 
 ## Requiremets
+
 - Call waiting
 - Auto call answering
 - Call forwarding
@@ -11,12 +12,14 @@
 - Call can from POTS that came from a hardware gateway(e.g. Synway gateway) to the organization
 
 ## Other open source
+
 - Asterisk
 - Issabel
 - FreePBX 
 - [linphone](https://www.linphone.org/)
 
 ## Some keywords
+
 - [POTS: Plain old telephone service]((https://en.wikipedia.org/wiki/Plain_old_telephone_service))
 - [PSTN: public switched telephone network](https://en.wikipedia.org/wiki/Public_switched_telephone_network)
 - [Softphone](https://en.wikipedia.org/wiki/Softphone)

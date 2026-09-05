@@ -1,9 +1,10 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Hashtag
 
-package hashtag
+## Model
 
-// (text)-[:hashtag]->(---)
+- `(text)-[:hashtag]->(---)`
 
-// Policy (rule):::
-// Mentions some topic e.g. #Victory
-// It MUST store with # sign to distinguish between `Victory` and `#Victory`
+## Policies (rules)
+
+- Mentions some topic e.g. #Victory
+- It MUST store with # sign to distinguish between `Victory` and `#Victory`

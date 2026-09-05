@@ -1,10 +1,6 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# User franchise
 
-package franchise
+## Model
 
-// [invoice, `franchise_by`, user] >> product
-//
-// [user, `franchise_for`, invoice] >>
-
-// Policy (rule):::
-//
+- `(invoice)-[:franchise_by]->(user)` (note: product)
+- `(user)-[:franchise_for]->(invoice)`

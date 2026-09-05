@@ -1,8 +1,9 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Taxonomic rank family
 
-package taxonomic_rank_family
+## Model
 
-// [taxon, `taxonomic_rank_family`, label(taxonomic_rank)] >>
+- `(taxon)-[:taxonomic_rank_family]->(label(taxonomic_rank))`
 
-// Policy (rule):::
-// https://en.wikipedia.org/wiki/Family_(biology)
+## Policies (rules)
+
+- https://en.wikipedia.org/wiki/Family_(biology)

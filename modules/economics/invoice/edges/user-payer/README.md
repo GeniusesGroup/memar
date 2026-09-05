@@ -1,10 +1,6 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# User payer
 
-package payer
+## Model
 
-// [invoice, `payer_is`, user] >> product
-//
-// [user, `payer_for`, invoice] >>
-
-// Policy (rule):::
-//
+- `(invoice)-[:payer_is]->(user)` (note: product)
+- `(user)-[:payer_for]->(invoice)`

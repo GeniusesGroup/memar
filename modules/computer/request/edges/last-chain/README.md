@@ -1,10 +1,10 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Last chain
 
-package last_chain
+## Model
 
-// [request, `last_chain_of`, request] >>
-//
-// [request, `last_chain_is`, request] >>
+- `(request)-[:last_chain_of]->(request)`
+- `(request)-[:last_chain_is]->(request)`
 
-// Policy (rule):::
-// LastChain or Previous request chain
+## Policies (rules)
+
+- LastChain or Previous request chain

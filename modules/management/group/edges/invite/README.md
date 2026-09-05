@@ -1,8 +1,9 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Invite
 
-package invite
+## Model
 
-// [group, user, invite] >>
+- `(group)-[:user]->(invite)`
 
-// Policy (rule):::
-// It is direct user invite
+## Policies (rules)
+
+- It is direct user invite

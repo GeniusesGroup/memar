@@ -1,9 +1,6 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Read
 
-package read
+## Model
 
-// [comment, `read_by`, user]
-//
-// [user, `read`, comment]
-
-// Policy (rule):::
+- `(comment)-[:read_by]->(user)`
+- `(user)-[:read]->(comment)`

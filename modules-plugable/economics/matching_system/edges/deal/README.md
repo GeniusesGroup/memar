@@ -1,8 +1,9 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Deal
 
-package deal
+## Model
 
-// [transaction, `deal`, transaction] >>
+- `(transaction)-[:deal]->(transaction)`
 
-// Policy (rule):::
-// It CAN PartiallyDeal or FullyDeal
+## Policies (rules)
+
+- It CAN PartiallyDeal or FullyDeal

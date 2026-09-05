@@ -1,10 +1,10 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# User side fourth
 
-package side_fourth
+## Model
 
-// [contract, `side_fourth_is`, user] >>
-//
-// [user, `is_fourth_side_for`, contract] >>
+- `(contract)-[:side_fourth_is]->(user)`
+- `(user)-[:is_fourth_side_for]->(contract)`
 
-// Policy (rule):::
-// It can only set before signature.
+## Policies (rules)
+
+- It can only set before signature.

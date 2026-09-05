@@ -1,8 +1,9 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Exist
 
-package exist
+## Model
 
-// [batch, `exist_in`, warehouse] >>
+- `(batch)-[:exist_in]->(warehouse)`
 
-// Rules:::
-// Use to account product inventory in specific location
+## Policies (rules)
+
+- Use to account product inventory in specific location

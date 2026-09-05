@@ -1,6 +1,6 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Participant
 
-package participant_l
+## Model
 
-// [user, quiddity, participant] >>
-// [group, quiddity, participant] >>
+- `(user)-[:quiddity]->(participant)`
+- `(group)-[:quiddity]->(participant)`

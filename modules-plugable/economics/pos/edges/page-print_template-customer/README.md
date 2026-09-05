@@ -1,11 +1,11 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Page print template customer
 
-package page_print_template_customer
+## Model
 
-// [pos, `page-print_template-customer_is`, page] >>
-//
-// [page, `page-print_template-customer_for`, pos] >>
+- `(pos)-[:page-print_template-customer_is]->(page)`
+- `(page)-[:page-print_template-customer_for]->(pos)`
 
-// Policy (rule):::
-// CAN include::: VAT number, store address, logo, return rule, ...
-// primary print template for the pos that print customer invoice
+## CAN include
+
+- VAT number, store address, logo, return rule, ...
+- primary print template for the pos that print customer invoice

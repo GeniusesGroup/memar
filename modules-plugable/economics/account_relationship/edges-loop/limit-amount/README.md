@@ -1,5 +1,5 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Limit amount
 
-package account_limit_amount
+## Model
 
-// [account, ----, account_limit_amount] >>
+- `(account)-[:----]->(account_limit_amount)`

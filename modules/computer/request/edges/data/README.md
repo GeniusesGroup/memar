@@ -1,7 +1,5 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Data
 
-package data
+## Model
 
-// [request, `data`, ----] >>
-
-// Policy (rule):::
+- `(request)-[:data]->(---)`

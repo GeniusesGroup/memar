@@ -1,11 +1,10 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Pos issuer
 
-package pos_issuer
+## Model
 
-// [invoice, `pos_issuer_is`, pos] >>
-//
-// [pos, `pos_issued`, invoice] >>
+- `(invoice)-[:pos_issuer_is]->(pos)`
+- `(pos)-[:pos_issued]->(invoice)`
 
-// Policy (rule):::
-// It is the seller pos.
-//
+## Policies (rules)
+
+- It is the seller pos.

@@ -1,7 +1,5 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Item ingredient
 
-package invoice_item_ingredient
+## Model
 
-// [invoice_item, `invoice_item_ingredient`, ----] >>
-
-// Policy (rule):::
+- `(invoice_item)-[:invoice_item_ingredient]->(---)`

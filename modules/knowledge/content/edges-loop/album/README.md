@@ -1,8 +1,5 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Album
 
-package album
+## Model
 
-// (content)-[:album]->(___)
-
-// Policy (rule):::
-//
+- `(content)-[:album]->(___)`

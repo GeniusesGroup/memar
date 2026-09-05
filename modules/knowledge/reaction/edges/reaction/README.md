@@ -1,7 +1,6 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Reaction
 
-package reaction
+## Model
 
-// [thing, `get_reaction_by`, user] >>
-//
-// [user, `reaction_to` thing] >>
+- `(thing)-[:get_reaction_by]->(user)`
+- `(user)-[:reaction_to]->(thing)`

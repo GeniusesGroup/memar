@@ -1,10 +1,10 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# User expert
 
-package expert
+## Model
 
-// [contract, `expert_is`, user] >> 
-//
-// [user, `is_expert_for`, contract] >>
+- `(contract)-[:expert_is]->(user)`
+- `(user)-[:is_expert_for]->(contract)`
 
-// Policy (rule):::
-// It can set before signature or after by a judge.
+## Policies (rules)
+
+- It can set before signature or after by a judge.

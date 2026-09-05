@@ -1,8 +1,9 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Key public
 
-package public_key
+## Model
 
-// [token, `public_key`, object] >>
+- `(token)-[:public_key]->(object)`
 
-// Policy (rule):::
-// suggest use DER format
+## Policies (rules)
+
+- suggest use DER format

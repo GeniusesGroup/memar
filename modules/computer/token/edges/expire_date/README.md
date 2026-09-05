@@ -1,8 +1,9 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Expire date
 
-package expire_date
+## Model
 
-// [token, `expire_date`, time] >>
+- `(token)-[:expire_date]->(time)`
 
-// Policy (rule):::
-// ExpireDate() time_p.Time
+## Policies (rules)
+
+- ExpireDate() time_p.Time

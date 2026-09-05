@@ -1,10 +1,6 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Name sur
 
-package SurName
+## Model
 
-// [person, `SurName_is`, uri(text)] >>
-//
-// [uri(text), `SurName_for`, person] >>
-
-// Policy (rule):::
-//
+- `(person)-[:SurName_is]->(uri(text))`
+- `(uri(text))-[:SurName_for]->(person)`

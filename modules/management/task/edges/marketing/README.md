@@ -1,7 +1,5 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Marketing
 
-package marketing_l
+## Model
 
-// [task, product, marketing] >>
-
-// Policy (rule):::
+- `(task)-[:product]->(marketing)`

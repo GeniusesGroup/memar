@@ -1,6 +1,7 @@
 # Label
 
 ## Dictionary
+
 label  ['leɪbl]
 
 n.
@@ -17,6 +18,7 @@ v.
 5. distinguish (an element or atom) by using a radioactive isotope or an isotope of unusual mass for tracing through chemical reactions
 
 ## Taxonomy
+
 [Taxonomy](https://en.wikipedia.org/wiki/Taxonomy) is a practice and science concerned with classification or categorization. Typically, there are two parts to it: the development of an underlying scheme of classes (a taxonomy) and the allocation of things to the classes (classification).
 
 Originally, taxonomy referred only to the classification of organisms on the basis of shared characteristics. Today it also has a more general sense. It may refer to the classification of things or concepts, as well as to the principles underlying such work. Thus a taxonomy can be used to organize species, documents, videos or anything else.

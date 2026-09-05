@@ -1,7 +1,5 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Goal
 
-package goal
+## Model
 
-// [law, goal_is, text] >>
-
-// Policy (rule):::
+- `(law)-[:goal_is]->(text)`

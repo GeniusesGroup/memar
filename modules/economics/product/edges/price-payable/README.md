@@ -1,8 +1,9 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Price payable
 
-package price_payable
+## Model
 
-// [product, `price_payable`, count_unit] >>
+- `(product)-[:price_payable]->(count_unit)`
 
-// Policy (rule):::
-// After process all common discount NOT specific rules like `pos` discounts, ...
+## Policies (rules)
+
+- After process all common discount NOT specific rules like `pos` discounts, ...

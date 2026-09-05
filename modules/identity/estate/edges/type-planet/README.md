@@ -1,7 +1,5 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Type planet
 
-package type_planet
+## Model
 
-// [estate, `type_planet`, -----] >>
-
-// Policy (rule):::
+- `(estate)-[:type_planet]->(---)`

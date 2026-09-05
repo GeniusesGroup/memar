@@ -1,10 +1,10 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# User arbitrator
 
-package arbitrator
+## Model
 
-// [contract, `arbitrator_is`, user] >>
-//
-// [user, `is_arbitrator_for`, contract] >>
+- `(contract)-[:arbitrator_is]->(user)`
+- `(user)-[:is_arbitrator_for]->(contract)`
 
-// Policy (rule):::
-// It can set before signature or after by a judge.
+## Policies (rules)
+
+- It can set before signature or after by a judge.

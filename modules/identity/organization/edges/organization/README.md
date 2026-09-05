@@ -1,7 +1,5 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Organization
 
-package organization
+## Model
 
-// [user, `organization`, ---] >>
-
-// Policy (rule):::
+- `(user)-[:organization]->(---)`

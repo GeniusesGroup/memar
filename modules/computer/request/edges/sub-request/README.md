@@ -1,10 +1,10 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Sub request
 
-package sub_request
+## Model
 
-// [request, `sub_request_of`, request] >>
-//
-// [request, `sub_request_is`, request] >>
+- `(request)-[:sub_request_of]->(request)`
+- `(request)-[:sub_request_is]->(request)`
 
-// Policy (rule):::
-// e.g. financial transaction request has sub request such as withdraw, deposit, reference, send notification, ...
+## Policies (rules)
+
+- e.g. financial transaction request has sub request such as withdraw, deposit, reference, send notification, ...

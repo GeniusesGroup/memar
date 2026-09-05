@@ -4,3 +4,7 @@ The [ZIP Code](https://en.wikipedia.org/wiki/ZIP_Code) system (an acronym for Zo
 Introduced on July 1, 1963, the basic format was five digits, the first designating a region of the country and subsequent digits localizing the destination further. In 1983, an extended code was introduced named ZIP+4; it included the five digits of the ZIP Code, followed by a hyphen and four digits that designated a location even more specific than the original five.
 
 Private carriers and the USPS use ZIP Codes to route deliveries. In addition, ZIP Codes have become a basis for breaking down demographic, marketing, and sales data for analytical purposes.
+
+## Model
+
+- `(postal_code)-[:zip_code]->(---)`

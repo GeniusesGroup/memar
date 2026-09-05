@@ -1,11 +1,13 @@
 # Transaction reference
 Transaction reference or `is_financial_settlement_for` use in relation to any domain to track for any purpose like invoice payment, ...
 
-## Graph
+## Model
+
 - `(transaction)-[:transaction_reference_is]->(thing)`
 - `(thing)-[:financial_transaction_is]->(transaction)`
 
-## Policy (rule)
+## Policies (rules)
+
 - domains like `Budget`, `Contract`, `Order`, ...
 - `batch` for `Invoice` for `product_inventory` purpose
 - CAN relate multiple transactions for the same reference.

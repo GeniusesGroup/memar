@@ -1,9 +1,6 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Pricing
 
-package pricing
+## Model
 
-// [product, `pricing`, count_unit] >> rule
-//
-// [rule, `process_pricing_for`, product] >>
-
-// Policy (rule):::
+- `(product)-[:pricing]->(count_unit)` (note: rule)
+- `(rule)-[:process_pricing_for]->(product)`

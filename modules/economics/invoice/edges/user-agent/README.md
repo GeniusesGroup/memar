@@ -1,10 +1,6 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# User agent
 
-package agent
+## Model
 
-// [invoice, `agent_is`, user] >> product
-//
-// [user, `agent_for`, invoice] >>
-
-// Policy (rule):::
-//
+- `(invoice)-[:agent_is]->(user)` (note: product)
+- `(user)-[:agent_for]->(invoice)`

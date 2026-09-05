@@ -1,10 +1,6 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Page visited
 
-package page_visited
+## Model
 
-// [connection, `visited`, page] >>
-//
-// [page, `visited_by`, connection] >>
-
-// Policy (rule):::
-//
+- `(connection)-[:visited]->(page)`
+- `(page)-[:visited_by]->(connection)`

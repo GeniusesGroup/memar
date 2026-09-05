@@ -1,8 +1,9 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Match partly
 
-package match_partly
+## Model
 
-// [text, `match_partly_in`, text] >>
+- `(text)-[:match_partly_in]->(text)`
 
-// Policy (rule):::
-// It means first text is appear in second text directly e.g. `shiraz` is appear in `shiraz weather` text.
+## Policies (rules)
+
+- It means first text is appear in second text directly e.g. `shiraz` is appear in `shiraz weather` text.

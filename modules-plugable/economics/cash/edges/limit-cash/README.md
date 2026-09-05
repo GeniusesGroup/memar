@@ -1,8 +1,9 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Limit cash
 
-package account_limit_cash
+## Model
 
-// [account, ----, account_limit_cash] >>
+- `(account)-[:----]->(account_limit_cash)`
 
-// Policy (rule):::
-// If set, means account can use as cash (AcceptCash)
+## Policies (rules)
+
+- If set, means account can use as cash (AcceptCash)

@@ -1,8 +1,5 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Concert
 
-package concert
+## Model
 
-// (content)-[:concert]->(___)
-
-// Policy (rule):::
-//
+- `(content)-[:concert]->(___)`

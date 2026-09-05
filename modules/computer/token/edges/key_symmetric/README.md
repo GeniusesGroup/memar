@@ -1,8 +1,9 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Key symmetric
 
-package key_symmetric
+## Model
 
-// [token, `key_symmetric`, object] >>
+- `(token)-[:key_symmetric]->(object)`
 
-// Policy (rule):::
-// Just store in user device and MUST not send over network
+## Policies (rules)
+
+- Just store in user device and MUST not send over network

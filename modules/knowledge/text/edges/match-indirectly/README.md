@@ -1,8 +1,9 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Match indirectly
 
-package match_indirectly
+## Model
 
-// [text, `match_indirectly_in`, text] >>
+- `(text)-[:match_indirectly_in]->(text)`
 
-// Policy (rule):::
-// It means first text is appear in second text indirectly usually due to typo e.g. `shiraz` is appear in `shirraaz weather` text.
+## Policies (rules)
+
+- It means first text is appear in second text indirectly usually due to typo e.g. `shiraz` is appear in `shirraaz weather` text.

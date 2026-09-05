@@ -1,7 +1,5 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Neighbors conflict
 
-package neighbors_conflict
+## Model
 
-// [estate, `neighbors_conflict`, estate] >>
-
-// Policy (rule):::
+- `(estate)-[:neighbors_conflict]->(estate)`

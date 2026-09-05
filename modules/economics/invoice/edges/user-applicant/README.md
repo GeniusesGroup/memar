@@ -1,10 +1,6 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# User applicant
 
-package applicant
+## Model
 
-// [invoice, `applicant_is`, user] >> product
-//
-// [user, `applicant_for`, invoice] >>
-
-// Policy (rule):::
-//
+- `(invoice)-[:applicant_is]->(user)` (note: product)
+- `(user)-[:applicant_for]->(invoice)`

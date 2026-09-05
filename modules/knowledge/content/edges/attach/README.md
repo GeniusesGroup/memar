@@ -1,9 +1,6 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Attach
 
-package attach
+## Model
 
-// [comment, `attach`, object] >> attached image, video, voice, ...
-//
-// [object, `attach_to`, comment]
-
-// Policy (rule):::
+- `(comment)-[:attach]->(object)` (note: attached image, video, voice, ...)
+- `(object)-[:attach_to]->(comment)`

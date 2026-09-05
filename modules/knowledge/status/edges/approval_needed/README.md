@@ -1,12 +1,12 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Approval needed
 
-package approval_needed
+## Model
 
-// [quiddity, `approval_needed_by`, user] >>
-// [quiddity, `approval_needed_by`, group] >>
-//
-// [user, `approval_needed_for`, quiddity] >>
-// [group, `approval_needed_for`, quiddity] >>
+- `(quiddity)-[:approval_needed_by]->(user)`
+- `(quiddity)-[:approval_needed_by]->(group)`
+- `(user)-[:approval_needed_for]->(quiddity)`
+- `(group)-[:approval_needed_for]->(quiddity)`
 
-// Policy (rule):::
-// quiddity CAN be e.g. `request`, `transaction`, ...
+## Policies (rules)
+
+- quiddity CAN be e.g. `request`, `transaction`, ...

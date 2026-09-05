@@ -1,8 +1,9 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Department
 
-package department
+## Model
 
-// [group, `department`, ----] >>
+- `(group)-[:department]->(---)`
 
-// Policy (rule):::
-// It can use to show organizational chart. Also staffs can join to the related group.
+## Policies (rules)
+
+- It can use to show organizational chart. Also staffs can join to the related group.

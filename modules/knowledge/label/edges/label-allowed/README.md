@@ -1,9 +1,6 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Label allowed
 
-package label_allowed
+## Model
 
-// [label, `label_allowed_in`, module(vertices)] >>
-//
-// [module(vertices), `allowed_label_is`, label] >>
-
-// Policy (rule):::
+- `(label)-[:label_allowed_in]->(module(vertices))`
+- `(module(vertices))-[:allowed_label_is]->(label)`

@@ -1,8 +1,9 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Taxonomic rank domain
 
-package taxonomic_rank_domain
+## Model
 
-// [taxon, `taxonomic_rank_domain`, label(taxonomic_rank)] >>
+- `(taxon)-[:taxonomic_rank_domain]->(label(taxonomic_rank))`
 
-// Policy (rule):::
-// https://en.wikipedia.org/wiki/Domain_(biology)
+## Policies (rules)
+
+- https://en.wikipedia.org/wiki/Domain_(biology)

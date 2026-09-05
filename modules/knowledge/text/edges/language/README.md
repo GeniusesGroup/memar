@@ -1,9 +1,10 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Language
 
-package text_language
+## Model
 
-// [text, `text_language`, language_human] >>
+- `(text)-[:text_language]->(language_human)`
 
-// Policy (rule):::
-// Translation language text use in `Localization`.
-// A `thing` relate to text by e.g. `title` and this `text` relate to each `Localization` text by this label.
+## Policies (rules)
+
+- Translation language text use in `Localization`.
+- A `thing` relate to text by e.g. `title` and this `text` relate to each `Localization` text by this label.

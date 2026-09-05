@@ -1,7 +1,5 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Type province
 
-package type_province
+## Model
 
-// [estate, `type_province`, -----] >>
-
-// Policy (rule):::
+- `(estate)-[:type_province]->(---)`

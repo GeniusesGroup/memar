@@ -1,8 +1,9 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Product regular
 
-package product_regular
+## Model
 
-// [pos, `product_regular`, product] >>
+- `(pos)-[:product_regular]->(product)`
 
-// Policy (rule):::
-// regular products to easily add to invoice
+## Policies (rules)
+
+- regular products to easily add to invoice

@@ -1,10 +1,10 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Authenticated by
 
-package authenticated_by
+## Model
 
-// [connection, `authenticated_by`, token] >>
-//
-// [token, `authenticated`, connection] >>
+- `(connection)-[:authenticated_by]->(token)`
+- `(token)-[:authenticated]->(connection)`
 
-// Policy (rule):::
-// Use to authenticate by other organization for this user in this org as `SameIdentification`.
+## Policies (rules)
+
+- Use to authenticate by other organization for this user in this org as `SameIdentification`.

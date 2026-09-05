@@ -1,7 +1,6 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Hashtag
 
-package hashtag_l
+## Model
 
-// [text, `has_hashtag`, (hashtag)text] >>
-//
-// [(hashtag)text, `hashtag_in`, text] >>
+- `(text)-[:has_hashtag]->((hashtag)text)`
+- `((hashtag)text)-[:hashtag_in]->(text)`

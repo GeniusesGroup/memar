@@ -1,10 +1,10 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Mention
 
-package mention
+## Model
 
-// [text, `mention`, user] >>
-//
-// [user, `mention_in`, text] >>
+- `(text)-[:mention]->(user)`
+- `(user)-[:mention_in]->(text)`
 
-// Policy (rule):::
-// User CAN be any type such as person, group, organization, bot, ...
+## Policies (rules)
+
+- User CAN be any type such as person, group, organization, bot, ...

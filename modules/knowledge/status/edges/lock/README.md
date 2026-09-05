@@ -1,8 +1,9 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Lock
 
-package locked
+## Model
 
-// [status, `locked`, ----] >>
+- `(status)-[:locked]->(---)`
 
-// Policy (rule):::
-// by owner
+## Policies (rules)
+
+- by owner

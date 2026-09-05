@@ -1,10 +1,10 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# User provider
 
-package provider
+## Model
 
-// [invoice, `provider`, user] >> product
-//
-// [user, `provides`, invoice] >>
+- `(invoice)-[:provider]->(user)` (note: product)
+- `(user)-[:provides]->(invoice)`
 
-// Policy (rule):::
-// Usually a `rule` set this relation and that rule call a `staff` not random user.
+## Policies (rules)
+
+- Usually a `rule` set this relation and that rule call a `staff` not random user.

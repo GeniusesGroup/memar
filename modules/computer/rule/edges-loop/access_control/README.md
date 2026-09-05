@@ -1,13 +1,11 @@
 # Access control
 
-## Graph
+## Model
+
 - `(rule)-[:access_control]->(___)`
 
-## Policy (rule)
-- 
+## Policies (rules)
 
 ## TODO
-- 
 
 ## Fields
-- 

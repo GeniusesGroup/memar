@@ -1,9 +1,10 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Model structure
 
-package structure
+## Model
 
-// [quiddity, `ability_is`, text] >>
-// [quiddity, `limitation_is`, text] >>
+- `(quiddity)-[:ability_is]->(text)`
+- `(quiddity)-[:limitation_is]->(text)`
 
-// Policy (rule):::
-// Structure -  https://en.wikipedia.org/wiki/Structure
+## Policies (rules)
+
+- Structure -  https://en.wikipedia.org/wiki/Structure

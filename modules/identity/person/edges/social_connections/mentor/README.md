@@ -1,9 +1,10 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Mentor
 
-package mentor_l
+## Model
 
-// [user, knowledge_unit, mentor] >>
-// [group, knowledge_unit, mentor] >>
+- `(user)-[:knowledge_unit]->(mentor)`
+- `(group)-[:knowledge_unit]->(mentor)`
 
-// Policy:::
-// User CAN get `mentor` label because of `OrganizationStaff`, `SelfStatement`, `UsersVote`, `AI`, ...
+## Policies (rules)
+
+- User CAN get `mentor` label because of `OrganizationStaff`, `SelfStatement`, `UsersVote`, `AI`, ...

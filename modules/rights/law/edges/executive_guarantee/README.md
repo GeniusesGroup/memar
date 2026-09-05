@@ -1,8 +1,9 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Executive guarantee
 
-package executive_guarantee
+## Model
 
-// [law, executive_guarantee_is, text] >>
+- `(law)-[:executive_guarantee_is]->(text)`
 
-// Policy (rule):::
-// Executive guarantee or sanction is a form of punishment that can be used if someone disobeys a rule or law
+## Policies (rules)
+
+- Executive guarantee or sanction is a form of punishment that can be used if someone disobeys a rule or law

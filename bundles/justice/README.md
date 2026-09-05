@@ -3,8 +3,10 @@ Each org (police is org!) or person can fill a sue! Story is like an org own a r
 Each claim just approve or decline not any text to describe how to run court decision.
 
 ## Usage
+
 - can block user balance and transfer it.
 
 ## Claim types
+
 Just accept specific claim typ, so claim types is fixed.
 - Identity theft

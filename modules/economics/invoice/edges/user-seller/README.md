@@ -1,10 +1,6 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# User seller
 
-package seller
+## Model
 
-// [invoice, `seller_is`, user] >> product
-//
-// [user, `seller_of`, invoice] >>
-
-// Policy (rule):::
-//
+- `(invoice)-[:seller_is]->(user)` (note: product)
+- `(user)-[:seller_of]->(invoice)`

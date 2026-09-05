@@ -1,8 +1,5 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Sport game
 
-package sport_game
+## Model
 
-// (content)-[:sport_game]->(___)
-
-// Policy (rule):::
-//
+- `(content)-[:sport_game]->(___)`

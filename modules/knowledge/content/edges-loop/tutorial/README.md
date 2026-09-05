@@ -1,8 +1,5 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Tutorial
 
-package tutorial
+## Model
 
-// (content)-[:tutorial]->(___)
-
-// Policy (rule):::
-//
+- `(content)-[:tutorial]->(___)`

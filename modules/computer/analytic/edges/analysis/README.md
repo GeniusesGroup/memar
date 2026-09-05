@@ -1,9 +1,5 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Analysis
 
-package analysis
+## Model
 
-// [analytic, `analysis`, ---] >>
-//
-
-// Policy (rule):::
-//
+- `(analytic)-[:analysis]->(---)`

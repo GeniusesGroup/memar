@@ -1,8 +1,9 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Oauth2
 
-package oauth2
+## Model
 
-// [token, `oauth2`, object] >>
+- `(token)-[:oauth2]->(object)`
 
-// Policy (rule):::
-// DelegateToken, AccessToken
+## Policies (rules)
+
+- DelegateToken, AccessToken

@@ -1,7 +1,5 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Quote
 
-package quote
+## Model
 
-// [comment, `quote`, comment] >>
-
-// Policy (rule):::
+- `(comment)-[:quote]->(comment)`

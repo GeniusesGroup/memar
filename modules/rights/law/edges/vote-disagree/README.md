@@ -1,8 +1,9 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Vote disagree
 
-package vote_disagree
+## Model
 
-// [law, `vote_disagree_by`, citizen(user)] >>
+- `(law)-[:vote_disagree_by]->(citizen(user))`
 
-// Policy (rule):::
-// ["VAT", `vote_disagree_by`, "Omid"]
+## Policies (rules)
+
+- ["VAT", `vote_disagree_by`, "Omid"]

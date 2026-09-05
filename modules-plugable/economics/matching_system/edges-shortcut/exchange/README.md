@@ -1,10 +1,10 @@
 # Exchange Transaction
 
-## Graph
-- `(transaction)-[:exchange]->(___)`
-- `(??Dollar)<-[:currency]-(account)<-[:account__by]-(transaction)-[:account__from]->(account)-[:currency]->(??EURO)`
+## Model
 
-## Policy (rule)
-  
+- `(transaction)-[:exchange]->(transaction)`
+- `(??Dollar)<-[:currency]-(account)<-[:account__by]-(transaction)-[:deal]->(transaction)-[:account__from]->(account)-[:currency]->(??EURO)`
+
+## Policies (rules)
 
 ## Fields

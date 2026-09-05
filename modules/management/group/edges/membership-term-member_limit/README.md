@@ -1,8 +1,5 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Membership term member limit
 
-package membership_term_member_limit
+## Model
 
-// [group, `membership_term_member_limit`, ----] >>
-
-// Policy (rule):::
-//
+- `(group)-[:membership_term_member_limit]->(---)`

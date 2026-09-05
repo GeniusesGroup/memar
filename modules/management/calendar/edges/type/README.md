@@ -1,9 +1,10 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Type
 
-package typ
+## Model
 
-// [calendar, `type`, label(??)] >>
+- `(calendar)-[:type]->(label(??))`
 
-// Policy (rule):::
-// https://en.wikipedia.org/wiki/List_of_calendars
-// Chinese, Hebrew, Islamic, Gregorian, Julian, Persian, Indian National Calendar, Lunar, ...
+## Policies (rules)
+
+- https://en.wikipedia.org/wiki/List_of_calendars
+- Chinese, Hebrew, Islamic, Gregorian, Julian, Persian, Indian National Calendar, Lunar, ...

@@ -1,7 +1,5 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Explanation
 
-package explanation
+## Model
 
-// [law, explanation_is, text] >>
-
-// Policy (rule):::
+- `(law)-[:explanation_is]->(text)`

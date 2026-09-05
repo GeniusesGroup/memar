@@ -1,10 +1,10 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Table
 
-package table
+## Model
 
-// [label, `column_of`, label(table)] >>
-//
-// [label(table), `column_is`, label] >>
+- `(label)-[:column_of]->(label(table))`
+- `(label(table))-[:column_is]->(label)`
 
-// Policy (rule):::
-// e.g. `Scrum Board` for `task` labels
+## Policies (rules)
+
+- e.g. `Scrum Board` for `task` labels

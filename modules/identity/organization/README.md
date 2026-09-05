@@ -4,7 +4,9 @@ An [organization](https://en.wikipedia.org/wiki/Organization) or organisation ([
 There are a variety of legal types of organizations, including corporations, governments, non-governmental organizations, political organizations, international organizations, religious organizations, armed forces, charities, not-for-profit corporations, partnerships, cooperatives, and educational institutions, etc.
 
 ## Legal person
+
 In law, a [legal person](https://en.wikipedia.org/wiki/Legal_person) is any person or legal entity that can do the things a human person is usually able to do in law – such as enter into contracts, sue and be sued, own property, and so on. The reason for the term "legal person" is that some legal persons are not human persons: companies and corporations (i.e., business entities) are persons, legally speaking (they can legally do most of the things an ordinary person can do), but they are not, in a literal sense, human beings.
 
 ## Juridical person
+
 A [juridical person](https://en.wikipedia.org/wiki/Juridical_person) is a legal person that is not a natural person but an organization recognized by law as a fictitious person such as a corporation, government agency, non-governmental organisation, or international organization (such as the European Union). Other terms include artificial person, corporate person, judicial person, juridical entity, juridic person, or juristic person. A juridical person maintains certain duties and rights as enumerated under relevant laws. The rights and responsibilities of a juridical person are distinct from those of the natural persons constituting it.

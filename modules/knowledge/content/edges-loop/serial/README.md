@@ -1,8 +1,5 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Serial
 
-package serial
+## Model
 
-// (content)-[:serial]->(___)
-
-// Policy (rule):::
-//
+- `(content)-[:serial]->(___)`

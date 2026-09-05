@@ -1,5 +1,5 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Metrics
 
-package connection_metrics
+## Model
 
-// [connection, `metrics`, time] >>
+- `(connection)-[:metrics]->(time)`

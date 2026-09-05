@@ -1,11 +1,12 @@
 # Cash Transaction
 
+## Model
 
-## Graph
 - `[transaction-[:cash_transaction]->(___)`
 - `(transaction)-[:book_in]->(account)-[:cash_account]->(___)`
 
-## Policy (rule)
+## Policies (rules)
+
 - One account MUST have `cash_account` label
 
 ## Fields

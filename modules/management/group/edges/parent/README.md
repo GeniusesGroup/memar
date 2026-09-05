@@ -1,11 +1,10 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Parent
 
-package parent
+## Model
 
-// [group, `parent_of`, group] >>
-//
-// [group, `parent_is`, group] >>
+- `(group)-[:parent_of]->(group)`
+- `(group)-[:parent_is]->(group)`
 
-// Policy (rule):::
-// Use to categorize and graph groups
-//
+## Policies (rules)
+
+- Use to categorize and graph groups

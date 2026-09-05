@@ -1,8 +1,9 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Confidential
 
-package confidential
+## Model
 
-// (content)-[:confidential]->(___)
+- `(content)-[:confidential]->(___)`
 
-// Policy (rule):::
-// TODO::: Do we need `confidential` for `text` too?
+## TODO
+
+- Do we need `confidential` for `text` too?

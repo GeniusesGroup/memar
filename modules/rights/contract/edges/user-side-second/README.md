@@ -1,10 +1,10 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# User side second
 
-package side_second
+## Model
 
-// [contract, `side_second_is`, user] >>
-//
-// [user, `is_second_side_for`, contract] >>
+- `(contract)-[:side_second_is]->(user)`
+- `(user)-[:is_second_side_for]->(contract)`
 
-// Policy (rule):::
-// It can only set before signature.
+## Policies (rules)
+
+- It can only set before signature.

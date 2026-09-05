@@ -1,8 +1,5 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Book
 
-package book
+## Model
 
-// (content)-[:book]->(___)
-
-// Policy (rule):::
-//
+- `(content)-[:book]->(___)`

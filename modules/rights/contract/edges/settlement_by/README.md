@@ -1,13 +1,10 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Settlement by
 
-package settlement_by
+## Model
 
-// [contract, `settlement_by`, case] >>
-//
-// [case, `settlement_for`, contract] >>
+- `(contract)-[:settlement_by]->(case)`
+- `(case)-[:settlement_for]->(contract)`
 
-// Policy (rule):::
-//
+## Services
 
-// Services::: 
-// - fulfill the obligation
+- fulfill the obligation

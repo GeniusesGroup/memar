@@ -4,4 +4,5 @@ A [tax](https://en.wikipedia.org/wiki/Tax) is a mandatory financial charge or so
 In economic terms, taxation transfers wealth from households or businesses to the government of a nation.
 
 ## VAT
+
 VAT is just like any other product, but it is in such a way that the user is forced to purchase it in exchange for no service or goods!

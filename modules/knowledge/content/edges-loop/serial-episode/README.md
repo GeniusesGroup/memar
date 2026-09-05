@@ -1,8 +1,5 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Serial episode
 
-package serial__episode
+## Model
 
-// (content)-[:serial__episode]->(___)
-
-// Policy (rule):::
-//
+- `(content)-[:serial__episode]->(___)`

@@ -1,13 +1,13 @@
 # Rule
 
-## Graph
+## Model
+
 - `(software)-[:rule]->(___)`
 
-## Policy (rule)
+## Policies (rules)
+
 - rule will usually get `process` label too
 
 ## TODO
-- 
 
 ## Fields
-- 

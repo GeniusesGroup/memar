@@ -1,10 +1,10 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# PIN
 
-package pin
+## Model
 
-// [timeline, `pin_is`, quiddity] >>
-//
-// [quiddity, `pin_in`, timeline] >>
+- `(timeline)-[:pin_is]->(quiddity)`
+- `(quiddity)-[:pin_in]->(timeline)`
 
-// Policy (rule):::
-// any quiddity like comment, product, ...
+## Policies (rules)
+
+- any quiddity like comment, product, ...

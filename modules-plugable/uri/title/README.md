@@ -1,11 +1,11 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Title
 
-package title
+## Model
 
-// [uri(text), `title_for`, thing] >>
-//
-// [thing, `title_is`, uri(text)] >>
+- `(uri(text))-[:title_for]->(thing)`
+- `(thing)-[:title_is]->(uri(text))`
 
-// Policy (rule):::
-// or DisplayName or human usage name
-// `quiddity` CAN be any other domain e.g. `user`, `product`, `knowledge`, ...
+## Policies (rules)
+
+- or DisplayName or human usage name
+- `quiddity` CAN be any other domain e.g. `user`, `product`, `knowledge`, ...

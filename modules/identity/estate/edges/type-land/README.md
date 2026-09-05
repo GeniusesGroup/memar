@@ -1,7 +1,5 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Type land
 
-package type_land
+## Model
 
-// [estate, `type_land`, -----] >>
-
-// Policy (rule):::
+- `(estate)-[:type_land]->(---)`

@@ -1,8 +1,14 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Securities for
+a formal declaration that documents a fact of relevance to finance and investment; the holder has a right to receive interest or dividends
 
-package securities
+## Model
 
-// [account, `securities(belong_to)`, organization] >>
+- `(account)-[:securities(belong_to)]->(organization)`
 
-// Policy (rule):::
-// use for any purpose like organization_shares, ...
+## Policies (rules)
+
+- use for any purpose like organization_shares, ...
+
+## Shareholder
+
+Shareholder indicates as owner of the related SecuritiesAccount

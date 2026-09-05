@@ -1,10 +1,6 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Legal action
 
-package legal_action
+## Model
 
-// [contract, `legal_action_by`, case] >>
-//
-// [case, `is_legal_action_for`, contract] >>
-
-// Policy (rule):::
-//
+- `(contract)-[:legal_action_by]->(case)`
+- `(case)-[:is_legal_action_for]->(contract)`

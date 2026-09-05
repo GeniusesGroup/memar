@@ -1,7 +1,5 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# OTP addition
 
-package otp_addition
+## Model
 
-// [token, `otp_addition`, ...] >>
-
-// Policy (rule):::
+- `(token)-[:otp_addition]->(...)`

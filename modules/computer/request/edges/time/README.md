@@ -1,11 +1,11 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Time
 
-package request_time
+## Model
 
-// [request, `request_time`, time] >>
-//
-// [time, `request_time`, request] >>
+- `(request)-[:request_time]->(time)`
+- `(time)-[:request_time]->(request)`
 
-// Policy (rule):::
-// For each user MUST have dedicate time category.
-// Use `minute` window to category user requests??
+## Policies (rules)
+
+- For each user MUST have dedicate time category.
+- Use `minute` window to category user requests??

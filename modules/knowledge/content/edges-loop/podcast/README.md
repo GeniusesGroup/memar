@@ -1,10 +1,11 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Podcast
 
-package podcast
+## Model
 
-// (content)-[:podcast]->(___)
+- `(content)-[:podcast]->(___)`
 
-// Policy (rule):::
-// Medium can be audio or video
-// It can get `live` label too.
-// https://en.wikipedia.org/wiki/Podcast
+## Policies (rules)
+
+- Medium can be audio or video
+- It can get `live` label too.
+- https://en.wikipedia.org/wiki/Podcast

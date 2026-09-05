@@ -1,10 +1,10 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Quote limit to user
 
-package quote_limit_to_user
+## Model
 
-// [comment, `quote_limit_to_user`, user] >>
-//
-// [quote_limit_to_user, `preference_for`, quote] >>
+- `(comment)-[:quote_limit_to_user]->(user)`
+- `(quote_limit_to_user)-[:preference_for]->(quote)`
 
-// Policy (rule):::
-// e.g. Just mentioned `user` can embed this `comment` in other `comment`s.
+## Policies (rules)
+
+- e.g. Just mentioned `user` can embed this `comment` in other `comment`s.

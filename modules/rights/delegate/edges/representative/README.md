@@ -1,10 +1,10 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Representative
 
-package representative
+## Model
 
-// [user, `representative_for`, user] >> AuthorizationRuleID
-//
-// [user, `representative_is`, user] >>
+- `(user)-[:representative_for]->(user)` (note: AuthorizationRuleID)
+- `(user)-[:representative_is]->(user)`
 
-// Policy (rule):::
-// an advocate who represents someone else's policy or purpose
+## Policies (rules)
+
+- an advocate who represents someone else's policy or purpose

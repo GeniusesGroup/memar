@@ -1,10 +1,10 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Page tv template customer
 
-package page_tv_template_customer
+## Model
 
-// [pos, `page-tv_template-customer_is`, page] >>
-//
-// [page, `page-tv_template-customer_for`, pos] >>
+- `(pos)-[:page-tv_template-customer_is]->(page)`
+- `(page)-[:page-tv_template-customer_for]->(pos)`
 
-// Policy (rule):::
-// primary tv or screen page template for the pos that show to customers
+## Policies (rules)
+
+- primary tv or screen page template for the pos that show to customers

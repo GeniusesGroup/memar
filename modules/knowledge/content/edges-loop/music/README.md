@@ -1,8 +1,5 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Music
 
-package music
+## Model
 
-// (content)-[:music]->(___)
-
-// Policy (rule):::
-//
+- `(content)-[:music]->(___)`

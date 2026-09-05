@@ -1,9 +1,9 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Article
 
-package article
+## Model
 
-// (content)-[:article]->(___)
+- `(content)-[:article]->(___)`
 
-// Policy (rule):::
-// Article use for many thing like NEWS, blog, education systems, features, ...
-//
+## Policies (rules)
+
+- Article use for many thing like NEWS, blog, education systems, features, ...

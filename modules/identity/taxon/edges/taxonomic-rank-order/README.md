@@ -1,8 +1,9 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Taxonomic rank order
 
-package taxonomic_rank_order
+## Model
 
-// [taxon, `taxonomic_rank_order`, label(taxonomic_rank)] >>
+- `(taxon)-[:taxonomic_rank_order]->(label(taxonomic_rank))`
 
-// Policy (rule):::
-// https://en.wikipedia.org/wiki/Order_(biology)
+## Policies (rules)
+
+- https://en.wikipedia.org/wiki/Order_(biology)

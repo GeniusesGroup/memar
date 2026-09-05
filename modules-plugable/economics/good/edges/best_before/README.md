@@ -1,8 +1,9 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Best before
 
-package best_before
+## Model
 
-// [product, `best_before`, ---] >> Duration(Second)
+- `(product)-[:best_before]->(---)` (note: Duration(Second))
 
-// Policy (rule):::
-// https://en.wikipedia.org/wiki/Expiration_date
+## Policies (rules)
+
+- https://en.wikipedia.org/wiki/Expiration_date

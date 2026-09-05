@@ -1,7 +1,5 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Request to join
 
-package request_to_join
+## Model
 
-// [group, `request_to_join`, user] >>
-
-// Policy (rule):::
+- `(group)-[:request_to_join]->(user)`

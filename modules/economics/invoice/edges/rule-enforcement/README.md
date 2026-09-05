@@ -1,8 +1,9 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Rule enforcement
 
-package rule_enforcement
+## Model
 
-// [invoice, `rule_enforcement`, rule] >> Status
+- `(invoice)-[:rule_enforcement]->(rule)` (note: Status)
 
-// Policy (rule):::
-// Use incompatibility status when bad rule requested to apply to the invoice.
+## Policies (rules)
+
+- Use incompatibility status when bad rule requested to apply to the invoice.

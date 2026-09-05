@@ -1,8 +1,9 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Typo
 
-package typo
+## Model
 
-// (text)-[:typo]->(---)
+- `(text)-[:typo]->(---)`
 
-// Policy (rule):::
-// One of usage is to fixed the typo
+## Policies (rules)
+
+- One of usage is to fixed the typo

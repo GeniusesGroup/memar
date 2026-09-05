@@ -1,10 +1,6 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# User customer
 
-package customer
+## Model
 
-// [invoice, `customer_is`, user] >> product
-//
-// [user, `customer_for`, invoice] >>
-
-// Policy (rule):::
-//
+- `(invoice)-[:customer_is]->(user)` (note: product)
+- `(user)-[:customer_for]->(invoice)`

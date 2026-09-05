@@ -1,8 +1,5 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Taxonomic rank life
 
-package taxonomic_rank_life
+## Model
 
-// [taxon, `taxonomic_rank_life`, label(taxonomic_rank)] >>
-
-// Policy (rule):::
-//
+- `(taxon)-[:taxonomic_rank_life]->(label(taxonomic_rank))`

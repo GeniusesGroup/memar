@@ -1,14 +1,13 @@
 # Repeatable
 
+## Model
 
-## Graph
 - `(rule)-[:repeatable]->(___)`
 
-## Policy (rule)
+## Policies (rules)
+
 - Time information indicate in calendar domain
 
 ## TODO
-- 
 
 ## Fields
-- 

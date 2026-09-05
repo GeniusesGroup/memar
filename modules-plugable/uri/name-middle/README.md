@@ -1,10 +1,6 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Name middle
 
-package MiddleName
+## Model
 
-// [person, `MiddleName_is`, uri(text)] >>
-//
-// [uri(text), `MiddleName_for`, person] >>
-
-// Policy (rule):::
-//
+- `(person)-[:MiddleName_is]->(uri(text))`
+- `(uri(text))-[:MiddleName_for]->(person)`

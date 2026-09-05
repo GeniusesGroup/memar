@@ -1,10 +1,6 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Mother
 
-package mother
+## Model
 
-// [person, `mother_of`, person] >>
-//
-// [person, `mother_is`, person] >>
-
-// Policy (rule):::
-//
+- `(person)-[:mother_of]->(person)`
+- `(person)-[:mother_is]->(person)`

@@ -1,8 +1,9 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Model physical
 
-package physical_model
+## Model
 
-// [quiddity, `physical_model_is`, object] >>
+- `(quiddity)-[:physical_model_is]->(object)`
 
-// Policy (rule):::
-// Model is the 3D model of the quiddity e.g. product
+## Policies (rules)
+
+- Model is the 3D model of the quiddity e.g. product

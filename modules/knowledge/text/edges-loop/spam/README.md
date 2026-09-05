@@ -1,8 +1,9 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Spam
 
-package spam
+## Model
 
-// (text)-[:spam]->(---)
+- `(text)-[:spam]->(---)`
 
-// Policy (rule):::
-// Users or rules CAN set this label
+## Policies (rules)
+
+- Users or rules CAN set this label

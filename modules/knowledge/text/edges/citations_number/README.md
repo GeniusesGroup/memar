@@ -1,7 +1,6 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Citations number
 
-package text_citation
+## Model
 
-// [text, `text_citation_gotten_from`, text(reference)] >>
-//
-// [text(reference), `text_citation_given_to`, text] >>
+- `(text)-[:text_citation_gotten_from]->(text(reference))`
+- `(text(reference))-[:text_citation_given_to]->(text)`

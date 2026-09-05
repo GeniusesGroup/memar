@@ -1,8 +1,9 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Key private
 
-package key_private
+## Model
 
-// [token, `key_private`, object] >>
+- `(token)-[:key_private]->(object)`
 
-// Policy (rule):::
-// Just store in user device and MUST not send over network
+## Policies (rules)
+
+- Just store in user device and MUST not send over network

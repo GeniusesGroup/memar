@@ -1,10 +1,6 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Service
 
-package service
+## Model
 
-// [request, `called`, service] >>
-//
-// [service, `is_called_by`, request] >>
-
-// Policy (rule):::
-//
+- `(request)-[:called]->(service)`
+- `(service)-[:is_called_by]->(request)`

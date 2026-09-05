@@ -1,8 +1,9 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Shareholder
 
-package shareholder
+## Model
 
-// [account, ---, `shareholder`] >>
+- `(account)-[:---]->(shareholder)`
 
-// Policy (rule):::
-// Stock
+## Policies (rules)
+
+- Stock

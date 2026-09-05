@@ -1,10 +1,8 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
+# Criterion
 
-package criterion
+e.g. [Task(123), `get_criterion_by`, User(omid)]
+e.g. [Staff(456), `get_criterion_by(score)`, User(AI)]
 
-// [quiddity, `get_criterion_by`,  user] >>
-//
-// e.g. [Task(123), `get_criterion_by`, User(omid)]
-// e.g. [Staff(456), `get_criterion_by(score)`, User(AI)]
+## Model
 
-// Policy (rule):::
+- `(quiddity)-[:get_criterion_by]->(user)`
