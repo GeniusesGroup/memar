@@ -112,3 +112,17 @@ Added Responsibility as a new Key Property of System: a part's Purpose expressed
 
 #### Rationale and alternatives
 Considered leaving Responsibility informal, on the grounds that `modeling.md`'s existing "independent responsibility, behavioral boundary, or lifecycle" phrasing was already operational enough in context. Rejected because three documents were each free to drift the term in a different direction without a shared definition to check against, which is exactly the coordination risk this round of review was meant to close.
+
+---
+
+### Knowledge definition now defers to the Knowledge document for its detailed treatment
+- Time: 2026-09-05T11:30:00Z
+- Type: Changed
+- Propagates to:
+  - knowledge.md: Done — created as the detailed home of the concept in the same pass (see its changelog).
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — decided: directed that the Knowledge Management document be renamed and re-scoped to Knowledge, making this document's one-line definition the foundational layer and knowledge.md the detailed treatment.
+  - [Qwen](../CONTRIBUTORS.md#qwen) (Qwen3.8-Flash) — rewrote.
+
+#### Summary
+The Knowledge definition in the Knowledge and Science topic now points to [Knowledge](./knowledge.md) for the detailed treatment of the concept — the same deferral pattern this document already uses for Protocol ("defined in detail in its Protocol document"). The foundational one-line definition itself is unchanged and remains here, because other documents depend on this document's concept web.

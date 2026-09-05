@@ -309,7 +309,7 @@ The definition is consistent with the philosophy of technology as articulated by
 
 
 ### Knowledge and Science
-**Knowledge** is a justified, structured understanding of a domain, acquired through observation, reasoning, experimentation, or critical discourse, that enables reliable prediction, explanation, or action within that domain.
+**Knowledge** is a justified, structured understanding of a domain, acquired through observation, reasoning, experimentation, or critical discourse, that enables reliable prediction, explanation, or action within that domain. The detailed treatment of the concept — its relationship to Data, Information, and Document, and the principles any system must follow to preserve it — is developed in [Knowledge](./knowledge.md).
 
 **Science** is the methodology — the set of practices, norms, and institutions — by which knowledge is produced, tested, revised, and accumulated. Science is not a body of facts; it is a process. The body of facts is the current, provisional output of that process.
 

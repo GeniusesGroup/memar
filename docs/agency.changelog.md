@@ -67,7 +67,7 @@ Considered merging the "Agency Before Synchronization" chain and process.md's Co
 - Type: Changed
 - Contributors:
   - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - argued: supplied the observation-enables-action insight and the complaint-procedure example during accounting-domain discovery discussions.
-  - [ox-alpha](../CONTRIBUTORS.md#ox-alpha) (opencode) - drafted, applied: added the role-transition subsection and cross-link to protocol.md's new observer-facing topic.
+  - [Super Z](../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) - drafted, applied: added the role-transition subsection and cross-link to protocol.md's new observer-facing topic.
 - Propagates to:
   - protocol.md: Done in this same pass - its "Protocols and External Observers" topic cross-links back to this subsection.
 
@@ -76,3 +76,15 @@ Added "From Observer to Agent" under Agent as a Relational Concept. The point ma
 
 #### Rationale and alternatives
 - **Placing the transition under Execution instead (rejected)**: execution concerns how an Agent acts once agency is already in play; the new subsection concerns how a System comes to occupy the Agent position at all, which belongs with the relational-role reasoning of Agent as a Relational Concept rather than with the execution pipeline.
+
+---
+
+### Knowledge Management references hyperlinked; glossary Knowledge defers to its concept home
+- Time: 2026-09-05T11:30:00Z
+- Type: Changed
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — decided: directed that knowledge, thinking, and agency be linked so the concepts do not stand apart (see knowledge.changelog.md).
+  - [Qwen](../CONTRIBUTORS.md#opencode) (Qwen3.8-Flash) — rewrote.
+
+#### Summary
+The three plain-text "Knowledge Management" mentions in the Agency and Knowledge Management topic are now hyperlinks to [Knowledge](./knowledge.md), which was renamed from knowledge-management.md and re-scoped to the concept in the same pass. The glossary's Knowledge entry no longer states a competing standalone definition: it now defers to knowledge.md, building on the foundational definition in [System](./system.md#knowledge-and-science). The Relation to Memar concept list already named Knowledge; that reference now resolves to a real document.
