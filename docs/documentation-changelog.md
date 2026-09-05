@@ -87,7 +87,7 @@ A single, project-wide file — not paired to any one artifact — listing every
   - [claude-fable-5]()
 ```
 
-For an AI contributor, only `Name` and the officially documented `Model` identifier are recorded here as stable facts. `Effort`, and anything else that can genuinely vary between one contribution and the next, belongs inline in that specific changelog entry's own `Contributors` bullet instead (e.g. "Claude (claude-sonnet-5, extended thinking) — rewrote: ..."), not here.
+For an AI contributor, only `Name` and the officially documented `Model` identifier are recorded here as stable facts. Models are listed chronologically, oldest first, with each new model appended at the end — the same append-only convention as changelog entries, so adding a model never requires re-sorting. A model may carry a link to its official documentation page where one exists and has been verified. `Effort`, and anything else that can genuinely vary between one contribution and the next, belongs inline in that specific changelog entry's own `Contributors` bullet instead (e.g. "Claude (claude-sonnet-5, extended thinking) — rewrote: ..."), not here.
 
 The same preservation rule as elsewhere applies: while a contributor is still actively working on any unfinished (non-`Final`) artifact, they may add or extend their own entry here; no one edits another's entry.
 
