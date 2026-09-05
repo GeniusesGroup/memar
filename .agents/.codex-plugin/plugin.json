@@ -1,0 +1,29 @@
+{
+  "name": "memar",
+  "version": "0.1.0",
+  "description": "Operating practices for Memar and Khayyam in any project. Discovers live docs from the GeniusesGroup/memar root (workspace or shallow clone); Markdown/Git paths resolve against that root, not the skill install path.",
+  "author": {
+    "name": "Geniuses.Group",
+    "email": "ict@geniuses.group",
+    "url": "https://geniuses.group"
+  },
+  "homepage": "https://github.com/GeniusesGroup/memar",
+  "repository": "https://github.com/GeniusesGroup/memar",
+  "keywords": ["memar", "khayyam", "programming-language", "framework", "documentation"],
+  "category": "development",
+  "license": "See repository LEGAL",
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Memar",
+    "shortDescription": "Memar / Khayyam via live documentation",
+    "longDescription": "Use Memar's approach in any project — not only inside this repository. The bundled skill establishes a Memar root (current workspace when it is GeniusesGroup/memar, otherwise a shallow clone named memar) and resolves ordinary Markdown/Git paths in the skill and across docs against that root.",
+    "developerName": "Geniuses.Group",
+    "category": "Productivity",
+    "capabilities": ["Read"],
+    "websiteURL": "https://geniuses.group",
+    "defaultPrompt": [
+      "Apply Memar's approach — read Thinking and the relevant live docs first.",
+      "Design this the Memar / Khayyam way using the canonical documentation."
+    ]
+  }
+}

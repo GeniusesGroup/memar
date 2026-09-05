@@ -1,0 +1,26 @@
+{
+  "name": "Memar",
+  "owner": {
+    "name": "Geniuses.Group",
+    "email": "ict@geniuses.group"
+  },
+  "description": "Plugins for the Memar framework (Khayyam and related docs). Skills discover live documentation from the Memar repo root; path links resolve against that root.",
+  "interface": {
+    "displayName": "Memar"
+  },
+  "plugins": [
+    {
+      "name": "memar",
+      "source": {
+        "source": "local",
+        "path": "./.agents"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity",
+      "description": "Operating practices for Memar/Khayyam in any project. Live docs from GeniusesGroup/memar; Markdown/Git paths resolve against the Memar root, not the skill install path."
+    }
+  ]
+}

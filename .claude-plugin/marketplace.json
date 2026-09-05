@@ -4,12 +4,12 @@
     "name": "Geniuses.Group",
     "email": "ict@geniuses.group"
   },
-  "description": "Claude Code plugins for the Memar framework ecosystem (Khayyam and related Documents), served directly from this repo.",
+  "description": "Claude Code plugins for the Memar framework (Khayyam and related docs). Skills discover live documentation from the Memar repo root; path links resolve against that root.",
   "plugins": [
     {
-      "name": "memar-plugin",
+      "name": "Memar",
       "source": "./.agents",
-      "description": "Skills for the Khayyam language and Memar framework, backed by this repo's live documents."
+      "description": "Operating practices for Memar/Khayyam in any project. Live docs from GeniusesGroup/memar; Markdown/Git paths resolve against the Memar root, not the skill install path."
     }
   ]
 }
