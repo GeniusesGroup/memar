@@ -15,7 +15,6 @@ Memar is not a passive reference library, however — it is the **framework the 
 
 ## Three-layer separation
 When working with Memar, keep these responsibilities separate:
-
 1. **Documentation** — the source of truth. Defines concepts, specifications, architecture, and decisions. Lives in the repository, not in any skill.
 2. **Practices** — recommended ways of working with the documentation. Organizational knowledge, not agent-specific; may be followed by humans, IDEs, automation tools, AI systems, or any other agent. Also lives in the repository (e.g. `docs/*.practice.md`), not in this skill.
 3. **Agent configuration** — how *this* agent, with *its* specific tools, discovers and applies the above. This skill belongs to this layer, and only this layer.
@@ -27,6 +26,7 @@ When working with Memar, keep these responsibilities separate:
 - Treat the repository documentation as canonical source of truth.
 - Discover relevant documents from the repository instead of relying on embedded copies or a hardcoded file list — the file set changes independently of this skill.
 - Read only the documentation required for the current task.
+- Do not read [`docs/protocols/`](../../../docs/protocols/) wholesale. If a subject defined in that folder seems needed — e.g. the definition of Error — read that folder's [`README.md`](../../../docs/protocols/README.md) first: it states what the folder is for and when its documents matter; the documents themselves are found by listing the folder (the filenames are the index), so nothing is opened needlessly. When the task merely needs to *use* the library implementing a protocol (consume its package), those documents are unnecessary entirely — go to the implementing `memar-{language}` repository instead (e.g. [`memar-go`](https://github.com/GeniusesGroup/memar-go/)); open a protocol's own document only when its rules and rationale — the contract itself — is genuinely the subject of the task.
 - Do not enumerate, rediscover, or inspect unrelated Memar documentation merely because it exists.
 - Do not restart Memar documentation discovery on every interaction when the relevant knowledge is already available in the current context or persistent project context.
 - If a task is unrelated to Memar-specific knowledge, do not perform additional Memar documentation discovery merely because this skill is active.
@@ -53,3 +53,5 @@ Don't guess filenames or rely on a memorized list of what exists — instead:
 2. Follow each document's hyperlink to move through related documents if it is necessary by memar rules.
 
 This convention doesn't go stale as new documents are added, unlike a hardcoded index, so it's safe to rely on permanently.
+
+You do not need to read every document in full to answer a question. Start from a document's front matter (Title, Status, ID) and its Abstract to judge relevance, then jump directly to the specific section you need inside that file. Documents share one section structure (Abstract → Introduction → Explanation → Results → Discussion), so the section answering the question is reachable without reading end-to-end. A document's `Status` value states how far its content is settled — treat nothing before `Final` as settled, and follow the detailed semantics in the project's documentation specification.

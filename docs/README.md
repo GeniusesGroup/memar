@@ -48,6 +48,13 @@ Documents in this directory are primarily intended to explain and evolve underst
 - migration notes
 - normative specifications (when appropriate)
 
+Design documents are not limited to any single component. A given design document may affect the language, the recommended framework library, linter/compiler behavior, OS-layer assumptions, or several of these at once; its scope is stated explicitly in its own content.
+
+## Subdirectories
+
+### `protocols/`
+The specifications of **Memar's own protocols** — the named sets of declarative rules Memar owns and expects systems built with it to conform to (the Error contract, the Media Type scheme, the Chapar/GP/sRPC network protocols, the OS contract, ...). This is distinct from the conceptual foundation documents at this directory's root (System, Type, Process, Protocol, ...), which model general concepts: a concept document answers "what is X?", a document in `protocols/` answers "what is *Memar's* protocol for X?". The folder is the source of truth for each protocol, not executable code; implementations live in the `memar-{language}` repositories (e.g. [memar-go](https://github.com/GeniusesGroup/memar-go/)). A base document that needs only a concept's general meaning should not cite a protocol document for it — an unreferenced term carries its general meaning per [Terminology → The Default Meaning of an Unreferenced Term](./terminology.md#the-default-meaning-of-an-unreferenced-term); see [`protocols/README.md`](./protocols/README.md) for the membership criterion and the implementation-repository convention.
+
 ---
 
 ## Relationship to Practices
@@ -64,4 +71,7 @@ We just name `/practices/` to `skills/` to respect ecosystem word but in near fu
 ---
 
 ## Philosophy
-Document categories such as RFC, ADR, PRD, MRD, design documents, research papers, or concept documents are viewed as documentation profiles rather than fundamentally different documentation systems. Memar prefers a shared documentation foundation where the nature of the knowledge being documented determines the structure of the document, while specialized document profiles may impose additional conventions when needed. The goal is to maximize consistency, reduce fragmentation, and allow knowledge to evolve without unnecessary structural duplication.
+Document categories such as [RFC — Request for Comments](https://en.wikipedia.org/wiki/Request_for_Comments), [ADR — Architecture decision record](https://en.wikipedia.org/wiki/Architectural_decision), PRD, MRD, design documents, research papers, or concept documents are viewed as documentation profiles rather than fundamentally different documentation systems. Memar prefers a shared documentation foundation where the nature of the knowledge being documented determines the structure of the document, while specialized document profiles may impose additional conventions when needed. The goal is to maximize consistency, reduce fragmentation, and allow knowledge to evolve without unnecessary structural duplication.
+
+## Reading guidance
+You do not need to read every document in full to answer a question. Start from a document's front matter (Title, Status, ID) and its Abstract to find what is relevant, then jump directly to the specific section you need inside that file. Every document follows the same section structure (Abstract → Introduction → Explanation → Results → Discussion), so you can navigate directly to the section that answers your question rather than reading end-to-end. A document's `Status` value tells you how far its content can be trusted as settled — the detailed status semantics are defined in [documentation-explanation.md](./documentation-explanation.md#status).

@@ -128,6 +128,24 @@ Applied mechanically, the preference for few foundations becomes a reason to ref
 - **Industry-domain-driven decomposition (rejected)**: mirroring the ecosystem's recognized domains as foundational Concepts imports today's product boundaries as tomorrow's architectural boundaries.
 - **Foundation-count as a target metric (rejected)**: "few" describes the expected outcome of honest independence testing, not a quota; the number of foundations is an output of the model, never an input to it.
 
+### What Earns Foundational Status
+The expectation that foundational Concepts remain few still needs a way to decide, for a specific candidate, whether it belongs to that small set or to the capabilities layered above it. Importance is not the test: a concern can dominate an organization's daily work and still be fully expressible through existing foundations, while a quietly load-bearing abstraction may be irreplaceable.
+
+The working test is this: attempt to express, through the remaining abstractions, the part of reality the candidate currently covers. If the result forces the fabrication of a new foundational abstraction, or a distortion of an existing one, the candidate has earned consideration for foundational status. If the gap can instead be filled by an independently modeled capability attaching to existing Concepts — a relationship, Rule, or Optional Module — the candidate belongs above the foundations, regardless of how central it feels to any particular organization.
+
+Two guards keep the test honest. First, the fabrication must land inside the foundational set: difficulty, inconvenience, or verbosity in modeling without the candidate is not evidence; only pressure to invent or bend another foundational Concept counts. Second, the test runs against requirements that actually exist, not anticipated ones — a candidate does not become foundational because some imagined future requirement might someday lack a comfortable home (see [Foundational Concepts Should Remain Few](#foundational-concepts-should-remain-few)).
+
+The test is asymmetric by design. Removing a foundational Concept degrades the expressive power of the remaining foundations themselves; removing a non-foundational one merely removes one capability among many that the same foundations continue to carry.
+
+#### Discussion
+
+##### Drawbacks
+"Fabrication" and "distortion" remain qualitative judgments, and borderline candidates — those sitting between specialization and foundation — can be argued either way by motivated reasoning. The test narrows and disciplines the debate; it does not replace the judgment at its center.
+
+##### Rationale and alternatives
+- **Importance or usage frequency as the criterion (rejected)**: criticality is relative to a particular System's purpose, and treating it as an intrinsic property of a Module reproduces exactly the confusion this document attributes to common readings of Domain-Driven Design's Core Domain (see Prior art).
+- **Universality across organizations as the criterion (rejected)**: a Concept every organization happens to want may still be composable from existing foundations; universality measures demand, not structural necessity.
+
 ### Rules as a Provisional Term
 The term *Rule* is commonly used for many different concepts. In software ecosystems it often refers to a conditional expression, a validation predicate, a policy object, or a component executed by a Rule Engine. None of these meanings is sufficient to define the architectural concept under discussion here.
 

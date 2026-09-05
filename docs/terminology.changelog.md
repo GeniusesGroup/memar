@@ -90,3 +90,20 @@ Checked this document for Process-specific content that should migrate to proces
 
 #### Rationale and alternatives
 Considered keeping Word-Weight Rebalancing at framework.md's original, more confident phrasing on the grounds that it was already written and reviewed. Rejected: this document's AI Implications section is explicit that the underlying claim is an unvalidated working hypothesis, and a mechanism built to act on a hypothesis should not be stated with more certainty than the hypothesis itself carries — doing so would let the more confident copy quietly become the ecosystem's working understanding of AI Implications by virtue of being the more citable-sounding of the two versions.
+
+---
+
+### The Default Meaning of an Unreferenced Term added; Vocabulary document retired
+- Time: 2026-09-03T00:00:00Z
+- Type: Added
+- Cited:
+  - `docs/vocabulary.md` (deleted) — Evidence: the retired document's own state motivated the rule; it held only two external links (connection-oriented/connectionless, consumed by chapar.md's Ethernet-comparison discussion) and no membership criterion, no front matter, and no changelog of its own, so it had begun functioning as an unmanaged catch-all — the exact failure mode an ungoverned vocabulary list invites.
+- Propagates to:
+  - `docs/vocabulary.md`: Done — deleted. Its two links moved into [networking.md](./protocols/networking.md)'s Layer presence topic (the classification question is a cross-layer networking concern, not a layer-2 protocol's); the RFC-process paragraph it carried was RFC-era boilerplate rather than governed content, so it died with the file without loss — the substance of that paragraph (a consistent, reviewed path for changes to enter the project's documentation, with statuses that say what may be depended on) is specified authoritatively in [documentation-explanation.md](./documentation-explanation.md)'s Status section, and its remaining wording was generic GitHub pull-request boilerplate.
+  - thinking.md: Done — the Discourse Norms' definitions-outrank-terminology entry previously pointed to vocabulary.md as a lookup home; it now points to this document's new section instead.
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — claimed, decided: judged vocabulary.md unsalvageable as a registry (without a hard membership criterion it would only accumulate entries nobody governs — "a place where anything can be dumped"); directed that the default-meaning rule live in this document as an independent section, stated as a general principle rather than tied to the retired file; supplied the monolithic example; further directed that the general-meaning default excludes ecosystem definitions and narratives entirely, not merely business-layer ones — a word without a Memar reference means its dictionary/general sense, nothing more.
+  - [Super Z](../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — rewrote: drafted the section, relocated the vocabulary links, and repointed the inbound references.
+
+#### Summary
+Added **The Default Meaning of an Unreferenced Term** as a new section directly after Terminology Authority and Governance, completing that section's boundary statement: governance covers the terms Memar has defined; this section covers all the others. The rule: an unreferenced word carries exactly its general (dictionary or established scientific) meaning — ecosystem redefinitions, industry mythology, and framework narratives do not attach to it. Referencing a Memar Definition is the explicit act that switches a word to its specialized sense. The rule replaces the retired `vocabulary.md`, whose role had been to hold pointers to general meanings but which had no membership criterion and had become an unmanaged catch-all.
