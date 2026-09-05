@@ -56,3 +56,14 @@ Created `thinking.practice.md` as the Practice-facet companion to this document,
 - **Absorb the critique content into `documentation-explanation.practice.md` instead (rejected)**: would couple a thinking-mode procedure to the document-production procedure, implying critique is documentation-specific; critique applies to proposals, models, and designs that never become documents.
 - **Create a separate `documentation.practice.md` holding a "critique as part of writing" note (rejected)**: the note is one sentence — a whole file for it would be structure without a reader; the same note placed in `documentation-explanation.practice.md`'s writing step reaches exactly the contributor who needs it, at the moment they need it.
 - **Keep `documentation-critique.practice.md` as-is (rejected)**: its name and placement claimed documentation ownership of a thinking-mode practice, and its rules duplicated this document's discourse norms without linking to them — two sources of truth for the same norms, guaranteeing drift.
+
+---
+
+### Knowledge Management link retargeted after the rename
+- Time: 2026-09-05T11:30:00Z
+- Type: Changed
+- Contributors:
+  - [Qwen](../CONTRIBUTORS.md#qwen) (Qwen3.8-Flash) — rewrote: mechanical retarget following the rename and re-scope decided in knowledge.changelog.md.
+
+#### Summary
+The 4E-grounding topic's reference was retargeted from `knowledge-management.md` to [Knowledge](./knowledge.md) after that document was renamed and re-scoped to the concept. No change to this document's content or claims.

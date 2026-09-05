@@ -236,6 +236,38 @@ None specific to this topic.
 ##### Future possibilities
 - **Minimal OS Interface Specification:** A formal specification of the minimal OS interface Memar applications actually require (the boundary between "what the framework's design space requires from a substrate" and "what a substrate provides") would be the natural follow-up to this topic at the OS-design layer.
 
+### Memar's Purpose Space: From Knowledge to Agency
+This document's own criterion for a development framework is that its goals be stated explicitly, and specific enough that different readers arrive at compatible interpretations (see [Goal-Oriented Frameworks and Purpose Space](#goal-oriented-frameworks-and-purpose-space), above). This topic states Memar's goal once, at that standard, so that no other document has to guess what the framework is for.
+
+Memar's purpose is a chain:
+
+```text
+Knowledge ──material──► Thinking ──quality──► Intelligence ──exercised──► Agency ──directed──► Goals
+```
+
+- **Knowledge** is the material — what understanding is made of and how it survives in systems ([Knowledge](./knowledge.md)).
+- **Thinking** is the activity that manipulates that material toward ends ([Thinking](./thinking.md)).
+- **Intelligence** is the *quality* of that activity: the ability to build a reliable model of reality from partial and ambiguous evidence, and to revise that model when new evidence contradicts it. It has no document of its own because it is not an independent concept — it is an output relation of knowledge, thinking, and agency, defined here the way [System](./system.md#knowledge-and-science) defines Science inline: naming the relation, not re-deriving the constituents.
+- **Agency** is the exercise of that quality toward objectives — acting on the model, deciding, and taking responsibility ([Agency](./agency.md)).
+- **Goals** are what the whole chain serves, and they lie beyond the chain: intelligence and agency are never the terminal value; they exist for the outcomes agents pursue — among them, the quality of life of the people and systems involved ([System → Technology](./system.md#technology) already treats lifestyle as a system so understood).
+
+Stated as a single goal, through the lens this document establishes for frameworks themselves — a framework is a description of a system, and System-hood is a secondary but legitimate lens on any framework (see [System → Framework as Aspect, and Framework Considered as a System](./system.md#framework-as-aspect-and-framework-considered-as-a-system)) — Memar's goal is:
+
+> **Memar is a system that can, across a wide range of cognitive tasks and without task-specific training for each problem, build a reliable model of reality, revise it with new evidence, and reason and decide independently toward a goal.**
+
+The four capabilities in that sentence are the four links the chain names: generalization (no per-task training), world modeling (a reliable model of reality), learning and revision (correction by evidence), and agency (independent reasoning and decision toward a goal). Every engineering goal in the project [README](../README.md) — minimal dependencies, concept-first definitions, reinventing the wheel rather than inheriting its assumptions — is a *means* to this end, not the end itself. The framework defines the design space so that systems built within it (and Memar's own development process, which must satisfy the same consistency test stated above) can approach this capability.
+
+#### Discussion
+
+##### Rationale and alternatives
+- **A dedicated `intelligence.md` (rejected)**: intelligence is what the other three documents jointly produce; a standalone document could only restate them and would become the project's first tautology-bearing file. The chain needs a home, not each link of it.
+- **Stating the chain inside [Knowledge](./knowledge.md) (rejected)**: one link of the chain cannot own the whole chain without every other document either duplicating it or deferring to a sibling that is not its owner; the purpose space of a framework belongs in the framework document — which is this document, by its own Purpose Space rule.
+- **Stating the goal only in the README (rejected)**: the README is a first-visitor index, not a normative home; it now carries a short pointer to this statement rather than a competing one.
+
+##### Unresolved questions
+1. How should progress toward this goal be evaluated — what observable evidence would show that a system built with Memar is approaching the stated capability, and what would show it is not?
+2. Should the goal statement be reflected in the README's System Categories for Memar's non-software instantiations (buildings, organizations, society), or does the chain apply only to cognitive systems?
+
 ### Document Authority and Terminology Governance
 Memar documents are the authoritative source for the terms they define, and this governs how "framework," "architecture," and every other term this document uses are meant to be read. The general principle — a document's Definition takes precedence over colloquial usage once established, how that authority is established and maintained, and its consequences for AI systems working within Memar (Word-Weight Rebalancing) — is stated once, in full, in [Terminology → Terminology Authority and Governance](./terminology.md#terminology-authority-and-governance) and [Terminology → Word-Weight Rebalancing](./terminology.md#word-weight-rebalancing), rather than restated here. The [Protocol document](./protocol.md) remains the clearest existing example of a Definition built to that standard.
 
@@ -244,7 +276,7 @@ Memar documents are the authoritative source for the terms they define, and this
 ## Discussion
 
 ### Unresolved questions
-1. The [memar-go generics elimination] event cited under *Memar's Framework* as evidence has no linkable document in this project's own documentation system yet — it is described in prose only. If this event is meant to stand as citable evidence for the document's core claim, it may deserve its own short record (in `memar-go`'s own changelog, or referenced from there) rather than remaining a parenthetical description here.
+1. The [memar-go generics elimination](https://github.com/GeniusesGroup/memar-go/blob/master/RFCs/Elimination_of_Open_Generic_Type_Parameters.md) event cited under *Memar's Framework* as evidence is documented in the `memar-go` repository, not in this project's own documentation system. If this event is meant to stand as citable evidence for the document's core claim, it may deserve its own short record (in `memar-go`'s own changelog, or referenced from there) rather than remaining a parenthetical description here.
 2. *Memar's Framework: Design Space Over Implementation Layers* now scopes itself explicitly to Memar's Computer (software) system category, per the project README's System Categories. Memar's other, non-software system categories do not yet have a comparable design-space treatment anywhere. Whether they need one, and if so whether it belongs in this document as a sibling topic or somewhere else entirely, is open.
 3. The [Protocol document](./protocol.md) reference under *Document Authority and Terminology Governance* previously carried an explicit identifier ("RFC 495465") in this document's prose. That identifier is not repeated here, since a document's identifier is assigned at creation and is not a stable citation form on its own — but if a stable way to cite a specific document's current identity is needed (beyond a relative link, which can go stale if a file is renamed), that is an open question for the documentation system generally, not specific to Framework.
 

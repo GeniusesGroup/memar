@@ -106,3 +106,22 @@ Considered moving Document Authority and Terminology Governance out of this docu
 
 #### Rationale and alternatives
 Considered creating a dedicated `memar.md` to hold Memar's project-level identity, migrated out of the README into the Explanation-facet template. Rejected: the README already states this identity, at the correct domain-agnostic scope, and a README is read by a different audience (first-time visitors to the repository) than an Explanation-facet document is — forcing it into that template would not consolidate anything, it would create a second "what is Memar" document that the README and `memar.md` would then need to be kept consistent with each other, which is the exact duplication risk this whole review effort has been working against.
+
+---
+
+### Memar's Purpose Space: the knowledge-then-thinking-then-intelligence-then-agency chain stated as the framework's goal
+- Time: 2026-09-05T11:30:00Z
+- Type: Added
+- Cited:
+  - [Knowledge](./knowledge.md) — Reference: owns the first link of the chain; its Concept Web topic defers the chain statement to this document.
+  - [Thinking](./thinking.md) — Reference: the activity whose material knowledge is and whose quality intelligence names.
+  - [Agency](./agency.md) — Reference: the exercise of intelligence toward objectives.
+- Propagates to:
+  - README.md: Done — the Goals section now points to this statement instead of standing alone; the four engineering bullets are labeled as means.
+  - knowledge.md: Done — its Concept Web topic links here for the chain's authoritative home.
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — claimed, decided: stated that the purpose of defining knowledge and thinking is intelligence, and the purpose of intelligence is agency toward further goals such as quality of life, and that this reasoning thread — one of Memar's primary goals — had gone missing from the documents; adopted the goal definition (a system that, across a wide range of cognitive tasks and without task-specific training, builds a reliable model of reality, revises it with new evidence, and reasons and decides independently toward a goal); ruled that stating it as "Memar is a system that…" is legitimate because every framework is also observable through the system lens, per this document's own Framework-as-Aspect position; rejected a standalone intelligence document since intelligence is an output relation of the other concepts.
+  - [Qwen](../CONTRIBUTORS.md#qwen) (Qwen3.8-Flash) — rewrote: drafted the topic against this document's own goal-specificity criterion.
+
+#### Summary
+Added the *Memar's Purpose Space: From Knowledge to Agency* topic, giving the framework an explicit goal statement as this document's own Goal-Oriented Frameworks criterion requires. The topic states the knowledge→thinking→intelligence→agency→goals chain with each link's owning document, defines intelligence inline without a dedicated document (following the precedent of Science in system.md), states Memar's goal through the framework-as-system lens, and subordinates the README's engineering bullets as means. The README's Goals section now carries a pointer here rather than a competing statement.

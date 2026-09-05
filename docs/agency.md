@@ -15,17 +15,9 @@ Agency is modeled here as a fundamental concept for understanding systems that c
 ### Motivation
 This document defines and models **Agency** as a fundamental concept for understanding systems that can act, make decisions, assume responsibilities, or act on behalf of another system.
 
-The purpose of this document is not to define AI agents specifically. AI agents are only one possible manifestation of agency.
+> The purpose of this document is not to define AI agents specifically. AI agents are only one possible manifestation of agency.
 
-The broader purpose is to establish a conceptual foundation that allows human, organizational, software, artificial-intelligence, and hybrid forms of agency to be understood through a common model.
-
-This distinction is important because the current ecosystem frequently treats the term *Agent* as if it were a concept introduced by Artificial Intelligence. It is not.
-
-Agent is an older and more general concept. AI Agent is a specialization or manifestation within that broader conceptual space.
-
-Reducing the concept to AI unnecessarily discards accumulated knowledge about delegation, responsibility, authority, representation, decision-making, trust, contracts, and interaction between systems.
-
-Therefore:
+The broader purpose is to establish a conceptual foundation that allows human, organizational, software, artificial-intelligence, and hybrid forms of agency to be understood through a common model. This distinction is important because the current ecosystem frequently treats the term *Agent* as if it were a concept introduced by Artificial Intelligence. It is not. Agent is an older and more general concept. AI Agent is a specialization or manifestation within that broader conceptual space. Reducing the concept to AI unnecessarily discards accumulated knowledge about delegation, responsibility, authority, representation, decision-making, trust, contracts, and interaction between systems. Therefore:
 
 > **Agency should be modeled before AI Agent.**
 
@@ -44,7 +36,6 @@ Consistent with the first principle above — definitions take precedence over t
 The following scope statement follows the same modeling principles.
 
 **This document covers:**
-
 - Agency
 - Agent
 - Principal
@@ -71,7 +62,6 @@ The following scope statement follows the same modeling principles.
 - The relationship between agency and autonomy
 
 **This document does not attempt to define:**
-
 - a particular AI architecture,
 - a particular agent framework,
 - prompt engineering,
@@ -86,7 +76,6 @@ Those may depend on Agency, but they do not define Agency.
 
 ### The Central Distinction
 A recurring source of confusion is treating the following concepts as interchangeable:
-
 - System
 - Agent
 - Agency
@@ -94,19 +83,13 @@ A recurring source of confusion is treating the following concepts as interchang
 - Autonomy
 - Delegation
 
-They are related, but they are not equivalent.
-
-A **System** is an entity or organized whole with some boundary, capabilities, behavior, and constraints.
-
-**Agency** concerns the capacity or condition through which a system can act.
-
-An **Agent** identifies a system participating in an agentive relationship or otherwise exhibiting agency.
-
-A **Role** describes a position a system occupies within a particular relationship or context.
-
-**Delegation** describes the transfer or assignment of responsibility and/or authority from one participant to another.
-
-**Autonomy** concerns the degree to which a system can determine or execute its actions without direct control over each individual action.
+They are related, but they are not equivalent:
+- A **System** is an entity or organized whole with some boundary, capabilities, behavior, and constraints.
+- **Agency** concerns the capacity or condition through which a system can act.
+- An **Agent** identifies a system participating in an agentive relationship or otherwise exhibiting agency.
+- A **Role** describes a position a system occupies within a particular relationship or context.
+- **Delegation** describes the transfer or assignment of responsibility and/or authority from one participant to another.
+- **Autonomy** concerns the degree to which a system can determine or execute its actions without direct control over each individual action.
 
 These distinctions must remain explicit.
 
@@ -115,26 +98,10 @@ A preliminary definition for Memar is:
 
 > **Agency is the capacity or condition of a system to act intentionally toward objectives within a boundary of capabilities, knowledge, authority, and constraints.**
 
-This definition is deliberately broader than "acting on behalf of another."
-
-A system may exhibit agency without having been explicitly delegated a responsibility by another system.
-
-For example, a human may pursue a self-generated objective without acting on behalf of another person or organization.
-
-Likewise, an autonomous system may pursue an objective without receiving an individual instruction for every action it takes.
-
-Therefore, delegation is not a necessary condition for all forms of agency.
-
-However, delegation becomes fundamental when agency exists **on behalf of another system**.
-
-This distinction allows both intrinsic and relational manifestations of agency to be represented without forcing one to replace the other.
+This definition is deliberately broader than "acting on behalf of another." A system may exhibit agency without having been explicitly delegated a responsibility by another system. For example, a human may pursue a self-generated objective without acting on behalf of another person or organization. Likewise, an autonomous system may pursue an objective without receiving an individual instruction for every action it takes. Therefore, delegation is not a necessary condition for all forms of agency. However, delegation becomes fundamental when agency exists **on behalf of another system**. This distinction allows both intrinsic and relational manifestations of agency to be represented without forcing one to replace the other.
 
 #### Agency as a Property of Systems
-Agency can also be considered independently of delegation.
-
-A system may possess or exhibit agency even when no external Principal is present.
-
-This allows the model to represent:
+Agency can also be considered independently of delegation. A system may possess or exhibit agency even when no external Principal is present. This allows the model to represent:
 
 ```text
 System
@@ -150,14 +117,10 @@ Principal
    └── Agent
 ```
 
-The two structures are compatible.
-
-This distinction prevents delegated agency from being treated as the only possible form of agency.
+The two structures are compatible. This distinction prevents delegated agency from being treated as the only possible form of agency.
 
 #### Agency as a Relationship-Enabled Property
-At the same time, when one System acts on behalf of another, the agentive relation establishes a specific context of Agency.
-
-Therefore:
+At the same time, when one System acts on behalf of another, the agentive relation establishes a specific context of Agency. Therefore:
 
 ```text
 Intrinsic Agency
@@ -169,11 +132,7 @@ and:
 Relational / Delegated Agency
 ```
 
-should not necessarily be treated as mutually exclusive types.
-
-A delegated Agent may possess its own Agency and exercise it in fulfillment of another System's responsibility.
-
-This is a central principle of the model:
+should not necessarily be treated as mutually exclusive types. A delegated Agent may possess its own Agency and exercise it in fulfillment of another System's responsibility. This is a central principle of the model:
 
 > **An Agent may receive responsibility without receiving an algorithm.**
 
@@ -194,17 +153,11 @@ Agency and autonomy are related but distinct. A system can have agency while ope
 - architectural specifications,
 - and decisions made by the client.
 
-The contractor can still determine many aspects of execution.
-
-Therefore:
+The contractor can still determine many aspects of execution. Therefore:
 
 > **Delegated responsibility does not imply direct control over execution.**
 
-Conversely, autonomy does not by itself establish agency.
-
-A system may perform autonomous internal operations without those operations constituting meaningful agency in the relevant context.
-
-Autonomy is therefore better understood as a characteristic of how agency is exercised rather than as a synonym for agency.
+Conversely, autonomy does not by itself establish agency. A system may perform autonomous internal operations without those operations constituting meaningful agency in the relevant context. Autonomy is therefore better understood as a characteristic of how agency is exercised rather than as a synonym for agency.
 
 ### Agent and Agency
 Agency and Agent must not be collapsed into the same concept. Agency describes a capacity, condition, or property of a system. Agent identifies a system participating in an agentive context. A useful conceptual distinction is:
@@ -221,29 +174,10 @@ and, in a relational context:
 System A ───── agent_for ─────► System B
 ```
 
-where the systems occupy different positions in the relationship.
-
-The system acting as the agent may be called the **Agent** in that relationship.
-
-The system on whose behalf it acts may be called the **Principal**.
-
-This means that Agent should not automatically be modeled as a separate kind of entity.
-
-A human does not become a new entity when becoming an Agent.
-
-A software system does not become a new entity when acting as an Agent.
-
-Rather, the same system participates in an agentive relationship or exhibits agency.
+where the systems occupy different positions in the relationship. The system acting as the agent may be called the **Agent** in that relationship. The system on whose behalf it acts may be called the **Principal**. This means that Agent should not automatically be modeled as a separate kind of entity. A human does not become a new entity when becoming an Agent. A software system does not become a new entity when acting as an Agent. Rather, the same system participates in an agentive relationship or exhibits agency.
 
 ### Agent as a Relational Concept
-The term Agent is frequently used as though it describes an intrinsic type.
-
-That assumption is not always appropriate.
-
-Consider a human being.
-
-The same human may:
-
+The term Agent is frequently used as though it describes an intrinsic type. That assumption is not always appropriate. Consider a human being. The same human may:
 - act independently,
 - act on behalf of a customer,
 - act on behalf of an organization,
@@ -252,20 +186,13 @@ The same human may:
 - supervise another Agent,
 - or act as Principal in another relationship.
 
-The underlying system has not changed into a different entity.
-
-Its **position in a relationship** has changed.
-
-Therefore, in a graph-oriented model, Agent is often better understood as a role emerging from a relationship rather than as a separate node.
-
-For example:
+The underlying system has not changed into a different entity. Its **position in a relationship** has changed. Therefore, in a graph-oriented model, Agent is often better understood as a role emerging from a relationship rather than as a separate node. For example:
 
 ```text
 System A ───── agent_for ─────► System B
 ```
 
 Here:
-
 - `System A` may occupy the Agent role.
 - `System B` may occupy the Principal role.
 - `agent_for` is the relationship.
@@ -1093,7 +1020,7 @@ Knowledge Space
 Agent B
 ```
 
-This is one reason Knowledge Management is not merely an administrative concern.
+This is one reason [knowledge management](./knowledge.md) is not merely an administrative concern.
 
 It is part of the infrastructure through which collective Agency operates.
 
@@ -1103,7 +1030,7 @@ Many failures attributed to AI Agents are not fundamentally AI problems.
 
 They may be manifestations of weaknesses in:
 
-- Knowledge Management
+- [Knowledge Management](./knowledge.md)
 - responsibility definition,
 - delegation,
 - documentation,
@@ -1143,7 +1070,7 @@ But the deeper problem may be:
 
 > "The organization has no mechanism for transferring and preserving understanding."
 
-This connects Agency directly to Knowledge Management.
+This connects Agency directly to [Knowledge Management](./knowledge.md).
 
 ### Contracts
 
@@ -2200,7 +2127,7 @@ Information and conditions relevant to the Agent's current action.
 
 #### Knowledge
 
-Information or understanding available to support interpretation, decision, and action.
+Understanding available to a System to support interpretation, decision, and action; the concept itself is defined in [Knowledge](./knowledge.md), building on the foundational definition in [System → Knowledge and Science](./system.md#knowledge-and-science).
 
 #### Autonomy
 
