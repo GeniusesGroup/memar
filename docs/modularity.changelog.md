@@ -93,7 +93,7 @@ The pending propagation to `khayyam-modularity.md` is complete. The Khayyam docu
 - Contributors:
   - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — argued: drove the discovery discussions these principles generalize from (capabilities repeatedly misread as candidate new domains; one capability's parts nearly scattered across endpoint Modules; mutual conceptual dependency mistaken for a defect because of language-level cycle rules); approved scope and wording.
   - [ChatGPT](../CONTRIBUTORS.md#chatgpt) — argued: co-developed the positions across parallel sessions, including the reversal that had initially separated a capability's processing from its relationship.
-  - [ox-alpha](../CONTRIBUTORS.md#ox-alpha) (opencode) — drafted, reviewed, applied: generalized the findings to principle level without domain examples; added the cross-Module hosting unresolved question and the placement deferral record below.
+  - [Super Z](../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — drafted, reviewed, applied: generalized the findings to principle level without domain examples; added the cross-Module hosting unresolved question and the placement deferral record below.
 - Propagates to:
   - modeling.md: Done in this same pass — Edge Types unresolved questions now include the bidirectional-relationship question referenced by Unresolved question 11.
 
@@ -102,3 +102,22 @@ Added four things. "Capability Completeness": a Module introducing a meaningful 
 
 #### Rationale and alternatives
 - **Prescribing repository placement conventions for capabilities (rejected)**: where a Module is stored, and how repository trees express core-versus-plugable organization, are representation and tooling concerns deliberately kept outside this conceptual document. Current working position at the time of this change, recorded here so it is not re-derived later: repository placement and any entry-point/primary-domain taxonomy for optional capabilities remain open implementation-layer questions pending a dedicated layout/tooling document; nothing in this document should be read as settling them.
+
+---
+
+### Foundational-status test distilled from core-domain review
+- Time: 2026-08-25T00:00:00Z
+- Type: Added
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — argued: reached the criterion during a core-versus-plugable review of an economics domain tree — a foundational abstraction is one whose absence would force fabricating or altering another foundational concept to express the same reality; confirmed that importance and usage frequency carry no evidentiary weight.
+  - [ChatGPT](../CONTRIBUTORS.md#chatgpt) — argued: co-developed the criterion and its application across the same session.
+  - [Super Z](../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — drafted, reviewed, applied: generalized the criterion into a topic without domain examples and added two honesty guards (fabrication must land inside the foundational set; evaluation runs against actual requirements, not anticipated ones).
+- Propagates to:
+  - none — self-contained addition to this document.
+
+#### Summary
+Added "What Earns Foundational Status", immediately following "Foundational Concepts Should Remain Few". The earlier topic sets the expectation and shifts the burden of proof; the new one supplies the decision procedure once the burden is met: attempt to express, through the remaining abstractions, the reality the candidate covers. Forced fabrication or distortion of another foundational abstraction earns foundational consideration; a gap fillable by an independently modeled capability places the candidate above the foundations regardless of how central it feels to any organization. Importance and usage frequency are recorded as non-evidence (consistent with the document's existing position on criticality-as-intrinsic readings of DDD's Core Domain), and two guards are stated explicitly: only fabrication landing inside the foundational set counts, and the test evaluates actual rather than anticipated requirements.
+
+#### Rationale and alternatives
+- **Folding the test into "Foundational Concepts Should Remain Few" as a paragraph (rejected)**: the two topics answer different questions — expectation and burden-shifting versus decision procedure — and keeping them separate lets each claim be cited independently when future classification debates reach for one and not the other.
+- **Transferring the concrete domain placements that motivated the criterion (rejected)**: which specific domains in a given ecosystem's tree are foundational versus plugable is domain modeling work that belongs to that ecosystem's own documents; only the generalizable criterion enters this foundation document.

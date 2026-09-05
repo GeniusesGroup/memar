@@ -201,6 +201,13 @@ Once established, a Definition governs how later documents use that term. A docu
 
 This governance applies only to terms a Memar document has actually taken the trouble to define. It does not extend to ordinary English (or Persian, or any other language) usage of words no document has defined — Memar governs the specific terms it has taken responsibility for, not the language generally.
 
+### The Default Meaning of an Unreferenced Term
+Terminology governance, as stated above, covers only the terms a Memar document has actually defined. A complementary rule covers everything else: **when a word appears in Memar's documents without a reference to a Memar document that defines it, the word carries exactly its general meaning — the ordinary dictionary or established scientific sense — and nothing more.**
+
+That default is deliberately narrower than the word's total usage in the wild. It excludes not only Business-layer narratives but Technology-layer usages as well: an ecosystem's redefinition, an industry's accumulated mythology, a framework's marketing sense — none of these attaches to a word merely because the word is common in that ecosystem. The word *monolithic* illustrates the boundary: its general meaning — a single, unified whole — is an ordinary dictionary sense, and a Memar document using "monolithic" without a Memar reference means exactly that, not the stories, debates, and sales narratives that have accumulated around "monolithic architecture" in the software ecosystem. Those narratives are not part of the word's meaning here, and no Memar claim inherits their assumptions by using the word.
+
+This rule is what makes Memar's unreferenced vocabulary workable. The framework cannot — and should not — define every word it uses; most words in most documents are ordinary language doing ordinary work. A reader (human or AI) who encounters an unreferenced term resolves it through its general sense — through [Terminology Layers](#terminology-layers), where an established scientific sense exists, that scientific sense is the preferred default — and nowhere else. Only when a document explicitly references a Memar Definition does the specialized sense govern (see [Terminology Authority and Governance](#terminology-authority-and-governance) above). Referencing a Definition is therefore an act with content: it switches a word from its general meaning to the framework's meaning, and a document that wants the specialized sense must make that switch explicitly rather than assume it.
+
 ### Terminology Layers
 Memar sorts terms into three layers. Each layer is defined below by what distinguishes it, not only by example, so that the classification can be applied to a term this document has not already listed.
 
@@ -440,7 +447,6 @@ This document attempts to restore, within Memar, the direction of reasoning comm
 - Can terminology debt be measured, even approximately?
 - Can terminology quality be objectively evaluated, or is evaluation of terminology quality itself inescapably a matter of expert judgment?
 - At what point, if any, should AI-assisted review (see "On Independent Verification, Today") be considered to have been superseded by sustained human external review, and how would Memar recognize that point when it arrives?
-- Should this document's Citations field eventually reference a stable Framework/Language/OS relationship document, once that document has a settled number and URI? At the time of this document's drafting, that document exists only as informal working material.
 
 
 ### Future possibilities

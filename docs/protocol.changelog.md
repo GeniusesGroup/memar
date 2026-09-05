@@ -127,7 +127,7 @@ Considered leaving the "Terminology Governance document" Future possibility in p
 - Contributors:
   - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — argued: proposed recasting Protocol as the boundary facing a System's external observer; accepted the correction recorded below that this is a consequence of the existing definition, not a replacement for it.
   - [ChatGPT](../CONTRIBUTORS.md#chatgpt) — argued: developed the observation-precedes-action position across discussion, including the hospital-complaint example showing that reading a protocol ordinarily prepares a subsequent act upon the governed system.
-  - [ox-alpha](../CONTRIBUTORS.md#ox-alpha) (opencode) — drafted, reviewed, applied: wrote the new topic with explicit guards against redefinition drift toward specification/framework territory, and linked the enabling (not constituting) relation to Agency.
+  - [Super Z](../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — drafted, reviewed, applied: wrote the new topic with explicit guards against redefinition drift toward specification/framework territory, and linked the enabling (not constituting) relation to Agency.
 - Propagates to:
   - agency.md: Done in this same pass — "From Observer to Agent" cross-links this topic.
 
@@ -144,7 +144,7 @@ Added "Protocols and External Observers". The existing definition — declarativ
 - Type: Added
 - Contributors:
   - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — requested: asked for a final review of the legacy Persian-language draft (`protocol.per.md`) so nothing of value is lost before its deletion.
-  - [ox-alpha](../CONTRIBUTORS.md#ox-alpha) (opencode) — reviewed, applied: compared the Persian draft against this document item by item; confirmed all substantive content is already present here in evolved form (with its Standard definition explicitly superseded by the attestation framework); transferred the only two genuinely missing items, recorded below.
+  - [Super Z](../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — reviewed, applied: compared the Persian draft against this document item by item; confirmed all substantive content is already present here in evolved form (with its Standard definition explicitly superseded by the attestation framework); transferred the only two genuinely missing items, recorded below.
 - Propagates to:
   - protocol.per.md: Pending deletion — fully superseded by this document; no further changes should reference it.
 
