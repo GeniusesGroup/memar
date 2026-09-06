@@ -19,6 +19,8 @@ Current edges (under review; naming/shape not final):
 - Release/unblock is a new compensating transaction, never a deletion.
 - A judge may block an amount without naming a destination account; destination-less constraints are valid.
 
+Use cases this module must cover (each quantity-general, none legal-only): balance-based restrictions, negative-balance prohibition rules, judicial/legal restraints, and pending-transfer reservations. The balance-like values must stay distinct: **ActualBalance** (booked facts only), **AvailableBalance** (actual minus active restrictions/pending reservations — a projection evaluated from rules, never stored as state), and any other projection (an analytics output).
+
 ## Discussion
 
 ### Drawbacks

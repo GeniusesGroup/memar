@@ -5,6 +5,7 @@ A transaction is an abstraction of a request by one or more users for a bookkeep
 ## Model
 
 - A transaction is a `thing`.
+- `Quantity` is a field of the transaction record — the single source of truth for the amount (the `bookkeeping` edge deliberately stores no copy).
 - `(transaction)-[:account__from]->(account)` — the single source account (optional at registration).
 - `(transaction)-[:account__to]->(account)` — the single destination account (optional at registration).
 - `(transaction)-[:bookkeeping]->(account)` — realized effects; the edge is owned by the account domain ([bookkeeping](../account/edges/bookkeeping/README.md)).

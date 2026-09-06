@@ -32,7 +32,7 @@ A booked effect is never undone or edited. Cancellation after debit is a new tra
 
 ## 7. Booked quantity equals requested quantity
 
-The kernel never alters the quantity of a transaction at booking time. Partial fulfilment, fees, or amount-changing conditions are separate transactions produced by rules/processors. Therefore the `bookkeeping` edge stores no quantity of its own.
+The kernel never alters the quantity of a transaction at booking time. The requested quantity lives on the transaction record itself — `Transaction.Quantity` is the single source of truth; the `bookkeeping` edge stores no copy of it (repeating it there would be a redundant cache). Partial fulfilment, fees, or amount-changing conditions are separate transactions produced by rules/processors.
 
 ## 8. Balance snapshot is a record fact; availability is not account state
 

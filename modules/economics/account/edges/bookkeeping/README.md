@@ -19,6 +19,8 @@ Open question (deferred to the storage-engine session): whether the reverse trav
 
 ## Policies (rules)
 
+- Cardinality: one transaction produces one bookkeeping record per affected account — two for a from+to transaction, one while only the source effect has realized (invariant #3 deferral), zero if it is never processed past draft.
+- Sign convention: the effect's direction and sign come from WHICH side of the transaction the account sits on — an `account__from` record subtracts the quantity, an `account__to` record adds it. The edge direction is always transaction→account; quantity itself is never stored here (invariant #7).
 - There is no quantity field on this edge: booked quantity always equals the transaction's requested quantity (invariant #7). Any deviation (partial fill, fee, rule-altered amount) is a different transaction with its own bookkeeping.
 - A record is never edited or deleted. Reversal is a new bookkeeping record produced by a new (compensating) transaction (invariant #6).
 - The account's current balance is the `Balance` of its highest-index record; nothing stores balance on the account node (invariant #8).
@@ -52,6 +54,8 @@ Open question (deferred to the storage-engine session): whether the reverse trav
 
 - Does the kernel ever allow booked quantity ≠ requested quantity? If yes, a `Field_Quantity` must return as record truth, not cache (invariant #7).
 - Reversal test: must a compensating record ever point at a specific bookkeeping edge rather than the originating transaction? If yes, bookkeeping needs its own addressable identity.
+- Is `TransactionIndex` a domain contract (stable across storage engines, exposed in reports/APIs, meaningful to consumers) or a pure storage detail that the domain model must not promise?
+- Code comment inconsistency to fix: `dt-balance.go` currently describes Balance as "the total of all the transactions on the account including any pending transactions" — that contradicts the realized-effect semantics agreed here (a bookkeeping record is a booked fact, not a projection over pending state). The comment must be corrected in code.
 
 ### Future possibilities
 

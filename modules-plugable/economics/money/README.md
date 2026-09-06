@@ -17,7 +17,7 @@ Money is pluggable: a count unit like any other. Currencies are declared through
 
 - Money-as-core was rejected: transactions are unit-general (shares, kg, points); a money-first core was the legacy framing this redesign removed (see [topic-core-vs-pluggable.md](../../../modules/economics/topic-core-vs-pluggable.md)).
 - Exchange rates rejected as stored facts: a rate is discovered/derived from past trades — a hint, not a guarantee — so it is analytics territory, not module state.
-- Per-currency precision as edges was rejected: it is a data-type property, hence internal packages, mostly for display.
+- Per-currency precision as edges was rejected: it is a data-type property, hence internal packages. NOTE: precision is NOT display-only — decimal precision and rounding rules affect which operations are creditable/valid (an amount that rounds away is a real economic difference), so they are domain-affecting, not GUI concerns.
 
 ### Prior art
 
@@ -27,6 +27,7 @@ Money is pluggable: a count unit like any other. Currencies are declared through
 
 - Does `money` need to exist at all, or should amount/precision move to consumers of `memar/math/decimal`?
 - `int64` scaling vs `decimal_p.Quantity` used on bookkeeping fields — reconcile the two quantity representations.
+- Define the rounding/precision contract per currency (banker's rounding vs half-up, when truncation is legal) — this must be settled before fee/interest rules are trusted with real balances.
 
 ### Future possibilities
 

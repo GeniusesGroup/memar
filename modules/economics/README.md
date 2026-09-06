@@ -20,3 +20,14 @@ The load-bearing rules of these domains are collected in [topic-accounting-invar
 ## Namespace note
 
 `economics` is a browsing namespace for a repository with 500+ modules, not an ontological claim that e.g. Account "is a kind of economics". A module's placement indicates its primary integration point, not its identity owner.
+
+## Agreed next steps
+
+Order settled in the modeling sessions (2026-08/09); each step's findings land in the module docs:
+
+1. Finalize the [bookkeeping](account/edges/bookkeeping/README.md) edge: fields, sign convention, cardinality, ordering/concurrency, reversal/finality, TransactionIndex as contract-or-detail.
+2. Cross-check rule-engine mechanics (triggers, authority/priority, idempotency, races, dependent transactions) — see [rule README](../computer/rule/README.md).
+3. Design [restriction](../../modules-plugable/economics/restriction/README.md) on top of the settled rule mechanics.
+4. Keep [settlement](../../modules-plugable/economics/settlement/README.md) separated from clearing and matching; test against bank, warehouse, and securities scenarios.
+5. Re-review [invoice](invoice/README.md)/[product](product/README.md)/[money](../../modules-plugable/economics/money/README.md) against tax, rent, penalties, and rounding contracts.
+6. Then securities/custody, credit, payroll, analytics.

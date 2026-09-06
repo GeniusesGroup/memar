@@ -4,6 +4,14 @@ Settlement is tiered bookkeeping: an effect booked on a lower account must also 
 
 The term [settlement](https://en.wikipedia.org/wiki/Settlement_(finance)) is kept for its general meaning ("discharging obligations"); the module is NOT limited to the financial clearing/settlement pipeline.
 
+Stage separation (often conflated in the chats; keep them distinct):
+
+- **Matching** — finding compatible requests (owned by [matching_system](../matching_system/README.md)).
+- **Clearing** — computing/netting the obligations between parties before anything is booked (owned by this module's rules; not yet modeled).
+- **Settlement** — producing the final effect as ordinary transactions + bookkeeping (this module's core job).
+
+Bank, warehouse, and securities scenarios must all pass through the same three-stage shape before this module's design is finalized.
+
 ## Model
 
 - `(account)-[:settlement_reference_is]->(account)` / `(account)-[:settlement_reference_of]->(account)` — current edge form (see open question below).

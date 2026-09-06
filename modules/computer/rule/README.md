@@ -40,6 +40,8 @@ These are carried as unresolved in the Memar document; this module must not sile
 - Temporal validity of a Rule (effective date, amendment, repeal) and its interaction with historical edges created under a now-superseded Rule — the auditability concern that matters most for tax and dispute-resolution domains.
 - The precise Code/Rule boundary test (when a condition is "conditional enough" to warrant a Rule vs. an inherent constraint that stays Code).
 - Whether a Rule may attach to multiple independent events/triggers, or needs scope/ownership limits to prevent global-listener sprawl.
+- Idempotency and race handling when multiple Rules react to the same event (double-fire prevention, reaction ordering).
+- Authority and priority between competing Rules on the same trigger (who wins, who may override).
 
 ### Future possibilities
 

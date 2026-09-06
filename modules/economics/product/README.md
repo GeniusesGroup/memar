@@ -24,7 +24,7 @@ For example, when specifying a screw, it is easier to refer to "HSC0424PP" than 
 
 ### Rationale and alternatives
 
-- Core by necessity: an invoice claims something, and that something must be identifiable and priceable. The alternative — invoices referencing any `thing` directly with Product as a pluggable label — was rejected because price/pricing semantics need a single home.
+- Core by necessity: an invoice claims something, and that something must be identifiable and priceable. The alternative ï¿½ invoices referencing any `thing` directly with Product as a pluggable label ï¿½ was rejected because price/pricing semantics need a single home.
 - Good/Service kept out of core: organizations draw those boundaries differently; fixing them in core would force one taxonomy on everyone.
 
 ### Prior art
@@ -35,6 +35,7 @@ For example, when specifying a screw, it is easier to refer to "HSC0424PP" than 
 
 - Are `price`/`pricing` kernel edges of product or rule-driven capabilities?
 - Relation of product to `count_unit`: is pricing always expressed in the account's unit?
+- Core-ness must survive contact with non-retail priceables: tax lines, rent, penalties, pure services (an invoice billing only a fee/penalty). If these can be billed without a `product` node, the capability test ("anything priceable") needs tightening or the node becomes a catch-all.
 
 ### Future possibilities
 
