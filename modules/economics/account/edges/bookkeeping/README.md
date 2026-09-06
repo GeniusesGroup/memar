@@ -30,3 +30,29 @@ Open question (deferred to the storage-engine session): whether the reverse trav
 - `Field_TransactionIndex` — auto-increment ordinal of this record within its account's history; gives direct access to "the Nth booking of this account" without traversal.
 - `Field_Balance` — the account's balance resulting from this record. An immutable historical snapshot (append-only, never recomputed), kept so point-in-time balance is O(1). This is the accepted form of caching; it is categorically different from a mutable derived field like `AvailableBalance`, which was rejected as account state (invariant #8).
 - `Field_RequestID` + request audit time — which request produced this record.
+
+## Discussion
+
+### Drawbacks
+
+- A ledger entry cannot answer "how much?" alone; it dereferences the transaction. If the transaction is archived/deleted by retention policy, the entry loses meaning — the ledger is not self-sufficient.
+- `TransactionIndex` per account implies a write-serialization point per account (concurrency cost at the engine level).
+
+### Rationale and alternatives
+
+- Book as a separate node was considered (earlier diagrams drew it between Engine and Account) and rejected: nothing needs to reference a bookkeeping record except through its transaction, so an edge with fields is sufficient.
+- `Field_FinancialTransactionUUID` is the transaction-side endpoint of the edge (a UUID reference, per [topic-reference-by-uuid.md](../../../topic-reference-by-uuid.md)), not a cache — it is the audit traceability requirement.
+- `Field_Balance` is an accepted cache (O(1) point-in-time reads); it is a historical fact of this record, never recomputed.
+
+### Prior art
+
+- Double-entry ledgers record per-posting running balances on ledger pages — same idea, here as edge fields.
+
+### Unresolved questions
+
+- Does the kernel ever allow booked quantity ≠ requested quantity? If yes, a `Field_Quantity` must return as record truth, not cache (invariant #7).
+- Reversal test: must a compensating record ever point at a specific bookkeeping edge rather than the originating transaction? If yes, bookkeeping needs its own addressable identity.
+
+### Future possibilities
+
+- Materialized balance checkpoints every N records for very long accounts (pure engine optimization).

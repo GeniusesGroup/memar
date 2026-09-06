@@ -19,7 +19,30 @@ Current edges (under review; naming/shape not final):
 - Release/unblock is a new compensating transaction, never a deletion.
 - A judge may block an amount without naming a destination account; destination-less constraints are valid.
 
-## Open questions
+## Discussion
 
-- Final edge set/labels for the module (work in progress by owner).
-- Interaction with `condition_is` on transactions: a restriction is a rule reacting to events, not a per-transaction condition; keep the two usages distinct.
+### Drawbacks
+
+- A rule watching all of a target's accounts until satisfied costs more than a field check, and must stay active indefinitely if the quantity never materializes.
+- "Blocked" is no longer visible as account state; every tool/GUI must query rule satisfaction to explain a refusal.
+
+### Rationale and alternatives
+
+- Per-account block edges carrying the amount were rejected: one judicial order of 1000 copied onto 100 accounts means 100,000 restrained — wrong semantics.
+- `AvailableBalance` as an account field was rejected as a mutable derived value (invariant #8); `total_blocked` lives in analytics instead.
+- The name `restriction` was chosen over `hold` (banking-colored) and `lien`/`encumbrance` (law-colored): the same mechanism must serve non-legal cases like pending-transfer reservations.
+
+### Prior art
+
+- Wage garnishment regulation (e.g. US 31 CFR 212.7): one order, one protected amount, applied across multiple accounts.
+- Bank levy practice: a single debt restraining many accounts.
+
+### Unresolved questions
+
+- (Listed above: final edge set; distinctness from `condition_is`.)
+- Destination-less blocks (freeze without naming a beneficiary): which edge expresses "held by no one yet"?
+- Should the rule expose `required/satisfied/remaining` as its own fields or derive them from its blocking transactions?
+
+### Future possibilities
+
+- Dishonor/bounce events feeding reputation/social-score analytics (cross-category consumer of this module's events).

@@ -46,3 +46,33 @@ Every module follows one project-defined skeleton (manifest, edges, edges-loop, 
 
 - [topic-accounting-invariants.md](topic-accounting-invariants.md)
 - [modules/computer/rule](../computer/rule/README.md)
+
+## Discussion
+
+### Drawbacks
+
+- Core-by-necessity is argued, not measured; two modelers can disagree (invoice and product were both contested in the source sessions before settling as core).
+- Entry-point placement is ambiguous for capabilities instantiated from two domains at once; the taxonomy can force a false primary.
+- "Edge = module when it carries semantics" still needs a judgement per edge; without recorded rationale the repo drifts toward "everything is a module".
+
+### Rationale and alternatives
+
+- Importance/prevalence was rejected as the core test: payroll, VAT, POS are ubiquitous yet removable; making them core forces every organization to carry them.
+- Filing pluggable edges under the core domain folder (`transaction/edges/endorsement`) was rejected: readers infer the core processor must know that behavior, and the core processor accretes organization-specific workflows one edge at a time.
+- Splitting an edge and its processing across modules was rejected: it creates half-modules that cannot be installed/removed as a unit.
+- A `cross-domain` bucket was rejected: it becomes the home of things nobody understands; such capabilities need their own identity instead.
+
+### Prior art
+
+- DDD bounded contexts and plugin architectures — this model goes further: relationships (edges) are first-class module candidates, not just services.
+- Labeled property graphs: edges carrying state (the bookkeeping edge holding Balance) is native practice.
+
+### Unresolved questions
+
+- Final module skeleton folder names (manifest, edges, edges-loop, edges-shortcut, protocol, services, status) — under revision in a separate session; `edges-loop`/`edges-shortcut` need precise structural definitions, not topical ones.
+- Where does a capability instantiated from two entry points go?
+- Does `analytics` get one namespace per category or one global analytics category?
+
+### Future possibilities
+
+- A "Module Contract" spec: manifest fields, allowed folders, machine-checkable placement rules.

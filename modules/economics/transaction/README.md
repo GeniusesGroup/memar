@@ -20,7 +20,30 @@ A transaction is an abstraction of a request by one or more users for a bookkeep
 - Statuses (draft, authorization, ...) come from the general status domain; a status change may trigger processes via rules — the kernel hard-codes no workflow.
 - Transactions relate to each other through edges (`followed_by`, `exchange`, `settles`, `endorsement_in_favor_of`, ...), most of them owned by pluggable modules.
 
-## Open questions
+## Discussion
 
+### Drawbacks
+
+- Because a transaction is a request, "transaction history" and "what actually happened" are different queries (transactions vs bookkeeping); consumers must understand both.
+- Optional from/to at registration means the kernel cannot fully validate a transaction alone; validity emerges at processing time via rules.
+
+### Rationale and alternatives
+
+- Modeling Transaction as the operation itself (classical payment processing) was rejected: drafts, cancelled requests, and multi-day deferred deposits are first-class requirements (check, LC), and an operation-only model must fake them with extra concepts.
+- A transaction-owned status enum was rejected in favor of the general status domain, so organizations extend lifecycles without touching core.
+- Allowing multiple accounts per side was considered (classic accounting) and rejected — see invariant #2 rationale.
+
+### Prior art
+
+- Banking apps already show "requests/orders" separately from posted transactions — matches invariant #1.
+- Intent-based transaction proposals (DeFi): declare the outcome, let the system find the execution path.
+
+### Unresolved questions
+
+- Which of `account__to` (core) vs `account__by` (matching_system) owns "the account the user wants to receive into"? `account__from` README still describes optional `takes` semantics with pre-matching_system naming; reconcile.
+- Canonical status list (draft, authorization, ...): which are kernel defaults, which are organizational?
 - `Field_FinancialTransactionUUID` keeps a legacy "financial" prefix although the domain is unit-general; rename pending.
-- `account__from` README still describes optional `takes` semantics with pre-matching_system naming; reconcile with `account__by` (matching_system).
+
+### Future possibilities
+
+- Transaction-chain views (`followed_by`/`settles`/`exchange`) as a GUI widget module over the graph.

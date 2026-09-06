@@ -11,7 +11,7 @@ A domain is core only by necessity: removing it would force the kernel to fabric
 - [invoice](invoice/README.md) — a statement of what is claimable between parties; a common cause/reference of transactions.
 - [product](product/README.md) — anything that can be priced; the subject an invoice bills and a transaction settles.
 
-The load-bearing rules of these domains are collected in [topic-accounting-invariants.md](topic-accounting-invariants.md).
+The load-bearing rules of these domains are collected in [topic-accounting-invariants.md](topic-accounting-invariants.md). Cross-domain references follow [topic-reference-by-uuid.md](topic-reference-by-uuid.md); module placement follows [topic-core-vs-pluggable.md](topic-core-vs-pluggable.md).
 
 ## Everything else is pluggable
 

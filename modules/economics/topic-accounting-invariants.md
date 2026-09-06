@@ -47,4 +47,39 @@ No transaction exists without a reason (`transaction_reference_is` to any `thing
 ## Related
 
 - [topic-core-vs-pluggable.md](topic-core-vs-pluggable.md)
+- [topic-reference-by-uuid.md](topic-reference-by-uuid.md)
 - [account/README.md](account/README.md), [transaction/README.md](transaction/README.md), [bookkeeping edge](account/edges/bookkeeping/README.md)
+
+## Discussion
+
+### Drawbacks
+
+- One-source/one-destination (#2) multiplies transaction count for splits, fees, and batch payouts; "one business operation" semantics move to edges and are harder to query.
+- No atomicity (#3, #6) means users can see intermediate states (withdrawn but not yet deposited); UI and support flows must expose this, not hide it.
+- #7 pushes partial fulfilment entirely into pluggable modules; the kernel cannot express "book half of this transaction".
+
+### Rationale and alternatives
+
+- #2: classic double-entry allows an arbitrary account set per transaction. Rejected here because each side carries its own status/lifecycle, and a bag-of-changes loses the source→destination mapping (A→B 500 + A→C 500 vs A→B 700 + A→C 300 produce the same change set).
+- #3: the classical ACID atomic transfer was rejected: deferred destination effects are the essence of checks, LC/escrow, and future-dated transactions; rollback hides business truth.
+- #4/#5: per-change `(quantity, unit)` was considered and rejected: the unit is a stable account property; repeating it per transaction adds no information and permits unbalanced mixed-unit transactions.
+- #8: per-account `AvailableBalance` was the legacy model (~10 years old); rejected because a global constraint (one judicial block of 1000) copied per account multiplies it (100 accounts × 1000).
+- #9: fee as a second destination was rejected: it breaks #2 and loses "fee depends on the original transaction's outcome".
+
+### Prior art
+
+- Double-entry bookkeeping: the balance requirement matches #3's anti-creation intent.
+- Modern ledger products (e.g. Modern Treasury journal model): Transaction + per-account Entry — similar structure, but they model booked results, not pre-execution requests (#1).
+- Intent-based transactions (blockchain/DeFi literature): separation of intent and execution path — aligned with #1.
+- Letter of Credit / covered LC practice: source funds reserved at issuance, destination paid on conditions — real-world precedent for #3.
+- Wage garnishment / bank levy regulation (e.g. US 31 CFR 212.7): one order against a person applied across multiple accounts — precedent for #8 and the restriction module.
+
+### Unresolved questions
+
+- Does the kernel ever allow booked quantity ≠ requested quantity? #7 currently answers "no"; a real counterexample forces `Field_Quantity` back onto the bookkeeping edge.
+- Should #10 (every transaction has a cause) be enforced as a mandatory edge or stay a convention?
+
+### Future possibilities
+
+- "Cheque" as pure composition (deferred transaction + maturity rule + uri-numbered edge) — no new primitives expected; build it as a test of the model.
+- Bouncing/dishonor as an event consumed by reputation/social-score analytics.
