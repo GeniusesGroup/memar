@@ -116,7 +116,7 @@ A "suggested" tier is inherently softer than the MUST-level rules above it, and 
 Go's `vet` and `staticcheck` occupy the same tier: official-tooling diagnostics that encode community consensus without being language rules. The naming/type-suggestion requirements mirror LSP-based assists in modern IDEs generally. The `sc`-as-common-denominator rule is Khayyam-specific, mirroring the compiler's own event contract (see its Prior art under [Control Flow via `sc` and Jump Primitives](./khayyam-compiler.md#control-flow-via-sc-and-jump-primitives)).
 
 ##### Unresolved questions
-How a suggested diagnostic is promoted (or demoted) over time — and whether the promotion path runs through organization adoption, a governance RFC, or default-on status in a reference linter — is not settled.
+How a suggested diagnostic is promoted (or demoted) over time — and whether the promotion path runs through organization adoption, a dedicated governance document, or default-on status in a reference linter — is not settled.
 
 ## Results
 No observed results are recorded yet. This section will be updated when tooling built against these rules yields evidence that can be distinguished from their intended rationale.
