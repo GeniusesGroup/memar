@@ -26,6 +26,10 @@ A pluggable module is filed under the domain through which it is instantiated (i
 
 `modules-plugable/<category>/<core-domain-name>/...` is forbidden: it implies a pluggable "version" of a core domain that does not exist. Capability names, not domain names, label pluggable modules.
 
+## Parameters vs semantics
+
+A difference in parameters → configuration/rule inside one module. A difference in processing semantics → potentially a distinct module. Example: VAT differs across jurisdictions mostly in products and rates (one VAT module + per-organization configuration), but if one jurisdiction requires a VAT line inside the invoice and another requires a separate invoice, that is a semantic difference — one module whose rule decides the output shape, or two modules.
+
 ## Names are labels; UUIDs are identity
 
 Two organizations may ship edges/modules with the same human name (`all_or_none`, `endorsement_in_favor_of`) but different UUIDs and different rule semantics. Never bind behavior to a name; bind it to the module/edge identity.

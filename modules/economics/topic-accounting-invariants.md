@@ -16,6 +16,8 @@ A transaction has at most one `account__from` and at most one `account__to`/`acc
 
 The source-side effect MUST be booked before (or at the same time as) the destination-side effect. A transaction MAY book the withdrawal now and the deposit days later (check, LC/escrow, deferred settlement). Crediting before debiting creates unbacked quantity — money/stock creation out of nothing — and is forbidden by the kernel.
 
+A transaction also conserves quantity: what leaves the source equals what enters the destination. A non-balanced change set ("sum ≠ 0") has no meaning in this model — rejected outright, since it would undermine the foundation of accounting itself.
+
 ## 4. Unit belongs to the account, not the transaction
 
 The count unit is declared once per account via the general `(thing)-[:count_unit_is]->(count_unit)` edge. Both accounts of one transaction MUST share the same count unit; the transaction stores only a quantity.
@@ -38,7 +40,7 @@ Each `bookkeeping` record caches the resulting `Balance` — an immutable, histo
 
 ## 9. Fees and charges are rules producing transactions
 
-A fee policy ("1% up to 10") is a Rule reacting to a transaction, producing an additional transaction (possibly conditional on the original's outcome). It is not a field on the transaction and not a second destination.
+A fee policy ("1% up to 10") is a Rule reacting to a transaction, producing an additional transaction (possibly conditional on the original's outcome). It is not a field on the transaction and not a second destination. When the fee applies — on attempt, on success, on failure, after authorization, after settlement — is organization policy inside the Rule; the kernel does not fix it.
 
 ## 10. Every transaction has a cause, linked by reference
 

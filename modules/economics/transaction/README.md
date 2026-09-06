@@ -18,6 +18,7 @@ A transaction is an abstraction of a request by one or more users for a bookkeep
 - The source effect must precede the destination effect; the destination effect may be arbitrarily delayed or conditional (invariant #3).
 - No rollback: cancelling after a debit creates a compensating transaction (invariant #6).
 - Statuses (draft, authorization, ...) come from the general status domain; a status change may trigger processes via rules — the kernel hard-codes no workflow.
+- Generic statuses like `issued`, `blocked`, `bounced` apply to ANY transaction, not just cheques: a transaction awaiting processing is "issued"; a court can block any of them; a failed fulfilment bounces with consequences (e.g. social-credit rules). Cheque-specific vocabulary is labels, not new lifecycle states.
 - Transactions relate to each other through edges (`followed_by`, `exchange`, `settles`, `endorsement_in_favor_of`, ...), most of them owned by pluggable modules.
 
 ## Discussion
