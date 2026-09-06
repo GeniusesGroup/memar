@@ -9,9 +9,31 @@ The general principle — why a domain splits into **Code** (fixed structure: no
 
 This module is the concrete home of that principle in the graph: a Rule is a node connected by an edge to the Code element (node type, edge type, or specific instance) it governs, so "which entities are subject to Rule X" is answerable by traversing the graph. Evaluating whether a Rule's condition holds at runtime is the job of a separate rule-engine component that reads Rule nodes from the graph — the interpreter, not the data.
 
-### Open questions (not settled by this module)
+## Discussion
+
+### Drawbacks
+
+- Rule sprawl: making Rule a first-class node tempts modelers into turning genuinely universal constraints (which should stay Code) into Rule nodes, inflating the graph without benefit. The Code/Rule boundary test (below) is the guard and is still open.
+- A Rule reachable by many edges can become a de-facto global event listener; without scope/trigger/ownership limits, the rules-engine can end up entangled with the whole architecture (raised during economics modeling of `condition_is`/restriction).
+
+### Rationale and alternatives
+
+- Rule-as-graph-node over a hardcoded `if` or an external config file: keeps "what is governed by Rule X" answerable by graph traversal and lets organizations install/remove policies without touching Code.
+- Engine kept separate from data (interpreter vs data): this module stores Rule nodes only; evaluation is another component's job.
+
+### Prior art
+
+- Production-rule systems (e.g. RETE engines) and policy-as-code; the Memar Code/Rule split is the governing principle (linked above).
+
+### Unresolved questions (not settled by this module; carried in Memar)
+
 These are carried as unresolved in the Memar document; this module must not silently pick an answer:
 - Internal representation of a Rule node's condition (declarative expression, external function reference, decision table, …).
 - Conflict resolution when multiple Rules govern the same Code element (precedence, specificity, explicit override edge).
 - Temporal validity of a Rule (effective date, amendment, repeal) and its interaction with historical edges created under a now-superseded Rule — the auditability concern that matters most for tax and dispute-resolution domains.
 - The precise Code/Rule boundary test (when a condition is "conditional enough" to warrant a Rule vs. an inherent constraint that stays Code).
+- Whether a Rule may attach to multiple independent events/triggers, or needs scope/ownership limits to prevent global-listener sprawl.
+
+### Future possibilities
+
+- A rule-scoping convention (which events a Rule may bind, who owns it) informed by the economics consumers (`transaction/condition_is`, `restriction/restricted_rule`, fee rules).
