@@ -1,9 +1,8 @@
 # Bookkeeping
-[Bookkeeping](https://en.wikipedia.org/wiki/Bookkeeping) is the record of [financial transactions](https://en.wikipedia.org/wiki/Financial_transaction) that occur in business daily or any time so as to have a proper and accurate financial report.
 
-Bookkeeping is the recording of financial transactions, and is part of the process of accounting in business and other organizations. It involves preparing source documents for all transactions, operations, and other events of a business. Transactions include purchases, sales, receipts and payments by an individual person, organization or corporation. There are several standard methods of bookkeeping, including the single-entry and double-entry bookkeeping systems. While these may be viewed as "real" bookkeeping, any process for recording financial transactions is a bookkeeping process.
+The kernel edge between a transaction and an account: the realized effect of processing a transaction on one account. One transaction produces one bookkeeping record per affected account, possibly at different times (withdrawal first, deposit later — see invariant #3 in [topic-accounting-invariants.md](../../../../topic-accounting-invariants.md)).
 
-**The primary purpose of bookkeeping is to record the financial effects of transactions**. An important difference between a manual and an electronic accounting system is the former's latency between the recording of a financial transaction and its posting in the relevant account. This delay, which is absent in electronic accounting systems due to nearly instantaneous posting to relevant accounts, is characteristic of manual systems, and gave rise to the primary books of accounts—cash book, purchase book, sales book, etc.—for immediately documenting a financial transaction.
+The term [bookkeeping](https://en.wikipedia.org/wiki/Bookkeeping) is reused here in its general sense of recording quantity changes, not financial recording only.
 
 ## Dictionary
 
@@ -14,11 +13,20 @@ n.
 
 ## Model
 
-- `(account)-[:book]->(transaction)`
-- `(transaction)-[:book_in]->(account)`
+- `(transaction)-[:bookkeeping]->(account)`
+
+Open question (deferred to the storage-engine session): whether the reverse traversal `(account)-[:booked_by]->(transaction)` is a second edge record or a representation of the same edge identity with a shared UUID.
 
 ## Policies (rules)
 
-- a record in which commercial accounts are recorded
+- There is no quantity field on this edge: booked quantity always equals the transaction's requested quantity (invariant #7). Any deviation (partial fill, fee, rule-altered amount) is a different transaction with its own bookkeeping.
+- A record is never edited or deleted. Reversal is a new bookkeeping record produced by a new (compensating) transaction (invariant #6).
+- The account's current balance is the `Balance` of its highest-index record; nothing stores balance on the account node (invariant #8).
 
 ## Fields
+
+- `Field_AccountID` — edge endpoint (account side), a UUID reference only.
+- `Field_FinancialTransactionUUID` — edge endpoint (transaction side). Part of the record's identity, not a cache: a ledger entry that cannot be traced to its originating transaction is worthless for audit.
+- `Field_TransactionIndex` — auto-increment ordinal of this record within its account's history; gives direct access to "the Nth booking of this account" without traversal.
+- `Field_Balance` — the account's balance resulting from this record. An immutable historical snapshot (append-only, never recomputed), kept so point-in-time balance is O(1). This is the accepted form of caching; it is categorically different from a mutable derived field like `AvailableBalance`, which was rejected as account state (invariant #8).
+- `Field_RequestID` + request audit time — which request produced this record.
