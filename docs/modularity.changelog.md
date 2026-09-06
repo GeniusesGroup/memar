@@ -121,3 +121,17 @@ Added "What Earns Foundational Status", immediately following "Foundational Conc
 #### Rationale and alternatives
 - **Folding the test into "Foundational Concepts Should Remain Few" as a paragraph (rejected)**: the two topics answer different questions — expectation and burden-shifting versus decision procedure — and keeping them separate lets each claim be cited independently when future classification debates reach for one and not the other.
 - **Transferring the concrete domain placements that motivated the criterion (rejected)**: which specific domains in a given ecosystem's tree are foundational versus plugable is domain modeling work that belongs to that ecosystem's own documents; only the generalizable criterion enters this foundation document.
+
+---
+
+### Cross-reference to Code/Rule separation in modeling.md
+- Time: 2026-09-06T00:00:00Z
+- Type: Changed
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — directed.
+  - [Qwen](../CONTRIBUTORS.md#qwen) (Qwen3.8-Flash) — applied.
+- Propagates to:
+  - none — companion edit to modeling.changelog.md (Code/Rule separation absorption).
+
+#### Summary
+Added a pointer from "Rules as a Provisional Term" to modeling.md's new "Separating Structure (Code) from Policy (Rule)" section, recording that a graph-node framing of Rule exists there and that its reconciliation with this document's module framing is an open question. No position change in this document.

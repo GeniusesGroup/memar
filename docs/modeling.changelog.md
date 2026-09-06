@@ -183,7 +183,7 @@ This document had been carrying the full architectural reasoning for pluggable M
 - Contributors:
   - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — argued: originated both principles during accounting-domain development discussions (a resource quantity that looked cache-like turning out to evaluate external constraints; several abstraction views repeatedly confused with separate entities); approved final scope and wording.
   - [ChatGPT](../CONTRIBUTORS.md#chatgpt) — argued: co-developed both principles across two discovery sessions, including the first formulation of constraint copying onto resources and its later correction.
-  - [ox-alpha](../CONTRIBUTORS.md#ox-alpha) (opencode) — drafted, reviewed, applied: generalized both findings into principle-level topics without domain examples; added edge bidirectionality and hosting unresolved questions; withdrew an earlier proposed shortcut-edge ownership clause after review showed it conflated two different abstraction lenses.
+  - [Super Z](../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — drafted, reviewed, applied: generalized both findings into principle-level topics without domain examples; added edge bidirectionality and hosting unresolved questions; withdrew an earlier proposed shortcut-edge ownership clause after review showed it conflated two different abstraction lenses.
 - Propagates to:
   - modularity.md: Done in this same pass — see modularity.changelog.md; the hosting question added here cross-references it.
   - protocol.md, agency.md: Done in this same pass — observer-facing consequences of Protocol and Agency roles.
@@ -203,7 +203,7 @@ Added "One Reality, Multiple Abstraction Lenses": a single reality may be modele
   - type.md: Done — the type-layer counterpart landed in the same pass (stateless concepts remain Types; family resemblance is not qualification); see type.changelog.md.
 - Contributors:
   - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — directed: approved dissolving the source document and distributing its classification content here during the type-documentation correction pass.
-  - [ox-alpha](../CONTRIBUTORS.md#ox-alpha) (opencode) — drafted.
+  - [Super Z](../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — drafted.
 
 #### Summary
 Added explicit treatment of two recurring gray zones to the loop-edge classification discussion: incidental metadata (a field merely recording when or in what scope a label applies does not make it a data-carrying concern in its own right — the test remains independent responsibility, not field presence) and temporal graduation (something classified today may evolve until its rules justify independence tomorrow; such label-to-node promotion is legitimate but must be decided explicitly at each evolution point under the same test, never assumed silently in either direction). This inherits the classification thread of the dissolved *Static Concepts Must Be Types* document (495421): its "static concept vs data carrier" determination was this document's node-vs-loop-edge question seen from the implementation side. The formalization follow-up remains covered by the already-open criteria question under Concept Existence vs. Model Existence, so no new unresolved-question entry was needed.
@@ -217,7 +217,25 @@ Added explicit treatment of two recurring gray zones to the loop-edge classifica
   - type.md: Done — the companion stub `type-rules_and_invariants.md` was absorbed there and `type-relations.md` dissolved as redundant in the same pass; see type.changelog.md.
 - Contributors:
   - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — directed: review and merge the small type-series companions into the strong documents.
-  - [ox-alpha](../CONTRIBUTORS.md#ox-alpha) (opencode) — reviewed, applied.
+  - [Super Z](../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — reviewed, applied.
 
 #### Summary
 Absorbed the crisp definitional pair from the dissolved 20-line stub `type-concepts_vs_data.md` into "Concept Existence vs. Model Existence": a concept has semantic identity (participates in the model, may own behavior and rules) while data represents information without necessarily having independent identity of its own, anchored by the canonical `Person`/birth-date and `Contract`/description-field example pairs. The stub's "Modeling Question" and common-mistake warning (data structures first, concepts later) were already carried by this section's opening framing and the acquired-versus-discovered lens respectively. The stub had sat in the type- series despite declaring its own key question a modeling question; dissolution resolves that layer misplacement.
+
+---
+
+### Code/Rule separation absorbed from the organization repository
+- Time: 2026-09-06T00:00:00Z
+- Type: Added
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — directed: judged the source RFC's content a general modeling principle rather than Organization-domain material and ordered its absorption into this document.
+  - [Qwen](../CONTRIBUTORS.md#qwen) (Qwen3.8-Flash) — drafted, applied.
+- Propagates to:
+  - modularity.md: Done in this same pass — reciprocal cross-reference added to "Rules as a Provisional Term"; see modularity.changelog.md.
+
+#### Summary
+Added "Separating Structure (Code) from Policy (Rule)": every domain is modeled in two layers — Code (the fixed structural shape: node types, edge types, and their mandatory relationships) and Rule (conditional, context-dependent policy logic) — with Rule modeled as a first-class graph node connected by an edge to the Code element it governs, execution delegated to a separate rule-engine component, and the statute/bylaw analogy retained. Absorbed from the organization repository's RFC "Separation of Code (Structure) and Rule (Policy) in Graph Domain Modeling" (495340, Proposed) together with its companion topic note "Code vs. Rule Boundary Criteria"; the RFC's project-specific implementation aspects remain in that repository's `modules/computer/rule`. Extended Edge Types Unresolved Questions with the static-typing-versus-loop-edge type-upgrade criterion question surfaced during the same absorption.
+
+#### Rationale and alternatives
+- **Writing the boundary-test hypothesis into the document (rejected)**: the candidate test from the source note ("a condition that varies by organization, jurisdiction, or time without changing the underlying node/edge type needed is a Rule; a condition that determines whether a type can exist at all is Code") is an untested working position, recorded here so it is not re-derived later; it must be run against real edge cases (NOT-NULL-style constraints, cardinality constraints) before being trusted.
+- **Resolving the tension with "Rules as a Provisional Term" (rejected as premature)**: the source RFC asserts Rule as a first-class graph node, while this framework's module framing treats *Rule* as a provisional term for a Module's optional relationship to another Module. Both framings are kept, cross-linked, and their reconciliation is recorded as an open question rather than decided unilaterally.
