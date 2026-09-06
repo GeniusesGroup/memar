@@ -148,3 +148,35 @@ Considered leaving the Discussion section's philosophical framing intact on the 
 
 #### Summary
 Adds `Separation of Syntax and Governance: A Principle` — *Syntax defines what exists* (types/values/relationships, compiler-enforced) vs. *Governance defines how instances flow* (lifecycle, error routing, architectural constraints, linter/framework-enforced). Test: “does this rule decide whether a program *may mention* something?” → syntax; “which flows are preferred?” → governance. Consequences documented: magic-number ban stays syntax (denies existence of unmodeled values) while memory-safety stays governance (polices flow of already-typed instances). Corrects `Method Invocation Rules` to state that static-vs-instance dispatch is enforced by the compiler (previously misworded as linter) and is a compile-time error. Documents `Import Mechanism` name collision as an architecture error (no `as` alias; fix at root cause, temporary wrapper via composition, versioning is a build/tooling concern). Replaces `err = ErrServiceNotFound` example snippet that used `=` (which does not exist in Khayyam) with the statement-form `CopyFrom` equivalent.
+
+---
+
+### Restore Execution Semantics Philosophy — silently lost in the f73c633 restructure
+- Time: 2026-09-06T10:30:00Z
+- Type: Fixed
+- Cited:
+  - [Khayyam Runtime Specification](./khayyam-runtime.md) — Reference: the runtime-side realization of the execution-semantics alignment, now linked from the restored topic so the principle and its one concrete realization stay distinct.
+  - commit `091333a` (2026-07-13, `RFCs/khayyam.md`) — Evidence: this topic was added to the language document on 2026-07-13, directly after the session that drafted it, and was removed on 2026-07-18 during the Encapsulation/Variable restructure (`f73c633`) without being migrated anywhere.
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — directed, decided: while migrating two design-chat transcripts into the documentation, noticed the topic was missing from the current document and asked for a history check before deciding its home; confirmed on the evidence that it once lived here, was lost in transit, and belongs here rather than in a tooling document.
+  - [Super Z](../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash, via the OpenCode agent) — reviewed, restored: traced the addition and silent removal through git history; restored the topic after *Separation of Syntax and Governance* with its full text, Drawbacks, Unresolved questions, and Future possibilities preserved; added one link sentence to the runtime reference architecture and one "recurring tension" placement paragraph, mirroring how *Self-Documenting Code and Naming* and *Syntactic Atomicity* justify their placement here.
+
+#### Summary
+The *Execution Semantics Philosophy* topic — explicit, predictable, architecturally visible execution behavior; the three explicit-over-implicit preferences; unikernel-style computing as a natural alignment rather than a deployment requirement — is restored to this document. It had been added on 2026-07-13 and then silently dropped by the 2026-07-18 restructure, with no migration record; this entry is that missing record. Placement decision checked and confirmed: the principle is a language-design principle applied at every construct-vs-execution decision (language-level, like Separation of Syntax and Governance), while `khayyam-runtime.md` is the Memar Framework's one concrete runtime realization of it (implementation-side) — so the principle lives here, with a link outward, not in the runtime document, which deliberately binds implementers rather than the language.
+
+#### Rationale and alternatives
+Considered placing the topic in `khayyam-runtime.md` instead, since Unikernel is named only in the tooling documents today. Rejected: the runtime document is addressed to the runtime's developers and imposes nothing on the language — a language-design philosophy placed there would invert its own direction of constraint; the correct shape is the principle here, linked from the runtime side whenever needed. Also considered rewriting the topic against the current document's voice before restoring. Rejected: the text was already session-approved in this exact form; only a placement paragraph and the runtime link were added.
+
+---
+
+### Hypothesis-voice corrections and the modeling boundary link
+- Time: 2026-09-06T11:00:00Z
+- Type: Fixed
+- Cited:
+  - [Modeling](./modeling.md) — Reference: modeling methodology, including Concept Existence vs. Model Existence and the limits of modeling, now linked from Domain Modeling Principles instead of being implied.
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — directed: while auditing the design-chat transcript for untransferred points before deleting it, identified the un-applied design-review corrections from that same chat: the document's claims about long-term benefits should read as design intent (hypotheses) rather than established results, and the limits-of-modeling question should relate to the Modeling document rather than stay implicit in this one.
+  - [Super Z](../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash, via the OpenCode agent) — applied.
+
+#### Summary
+Three claim-voice corrections aligning assertions with the design-review discipline established in the chat that produced them: "Khayyam optimizes for architectural integrity over time" now reads "is designed to optimize for"; "the grammar makes the architect's intent visible at every call site" now reads "the grammar is designed to make"; "ensures that business meaning is never lost to primitive types" now reads "is designed to keep business meaning from being lost". Each is a design hypothesis pending empirical validation, not a demonstrated result. Additionally, Domain Modeling Principles now states explicitly that modeling methodology and the limits of modeling belong to the Modeling document, with a direct link to Concept Existence vs. Model Existence - closing the chat's decision that khayyam.md should relate to modeling.md on that question instead of leaving the boundary implicit.

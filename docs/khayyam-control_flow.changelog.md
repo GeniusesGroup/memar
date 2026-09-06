@@ -9,7 +9,7 @@
   - [Khayyam - Programming Language](./khayyam.md) — Reference: The canonical specification defines the `sc` subtype and the `in` import mechanism that library-provided control-flow methods are built on.
   - [Encapsulation in Khayyam](./khayyam-encapsulation.md) — Depends_on: Library-Defined Control Flow's ELSE-must-reference-its-condition rule is a direct application of that document's Closures as Implicit Capsule Syntax topic (no implicit binding to 'whatever came before').
   - [Method in Khayyam](./khayyam-method.md) — Depends_on: Control flow (IF/ELSE, OnPresent/OnAbsent) is built entirely from ordinary method calls, and inherits that document's pass-by-reference, explicit-output-variable, no-chaining model rather than introducing any dedicated call syntax of its own.
-  - [The Error](./error.md) — Depends_on: Error Propagation treats `Error` (and its concrete subtypes) as the value being propagated; what the abstraction itself is, and what contract it must satisfy, is defined there, not here.
+  - [The Error](./protocols/error.md) — Depends_on: Error Propagation treats `Error` (and its concrete subtypes) as the value being propagated; what the abstraction itself is, and what contract it must satisfy, is defined there, not here.
 - Propagates to:
   - khayyam-encapsulation.md: Done — the Code Scope topic was removed from that document's Explanation section and relocated into this document as part of the same merge (see its changelog).
 - Contributors:
@@ -71,7 +71,7 @@ Completed the migration (this document already followed most of the current stru
 - Type: Fixed
 - Cited:
   - [Method in Khayyam](./khayyam-method.md) — Depends_on: `sc` entry/exit and the `IF`/`ELSE` exclusivity are learned from `sc` events
-  - [The Error](./error.md) — Depends_on: single-error vs. multi-error channel typing
+  - [The Error](./protocols/error.md) — Depends_on: single-error vs. multi-error channel typing
 - Contributors:
   - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — requested: clarified that the compiler is an independent app emitting events, that type-as-argument need not be restricted at language level, and that `CF.Return`/`Break` mid-scope is not automatically a smell
   - [Super Z](../CONTRIBUTORS.md#super-z) — rewrote: content below

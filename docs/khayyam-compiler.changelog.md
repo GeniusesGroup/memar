@@ -49,3 +49,17 @@ This document is now structured per `documentation-explanation.md`: YAML front m
 
 #### Rationale and alternatives
 Considered writing the new Discussion content as fresh design contributions (e.g., proposing a concrete event schema or designation syntax while at it). Rejected: this migration's purpose is structural, and the document's own framing forbids it from deciding things onto the language — new design belongs in its own session with Omid's review. Also considered assigning an ID at current time instead of retroactively; rejected in favor of the Start-Date-derived hour value per the ID spec's retroactive-numbering provision.
+
+---
+
+### Implementation-start plan recorded — readiness review, JS prototype, repository question
+- Time: 2026-09-06T10:30:00Z
+- Type: Added
+- Cited:
+  - [protocols/lexer.md](./protocols/lexer.md) — Reference: the first Future-possibilities item pointing at the lexer protocol is now satisfied by a real document; the readiness-review item below generalizes the same gate to the whole compiler effort.
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — directed: while consolidating the 2026-08-11/12 design-chat transcript into the documentation, decided the three implementation-strategy outcomes of that chat belong in this document's Future possibilities rather than staying only in the chat record; reviewed the wording.
+  - [Super Z](../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash, via the OpenCode agent) — applied.
+
+#### Summary
+Three Future-possibilities entries added, transferring the implementation-start decisions from the design chat: (1) an Implementation Readiness Review gate — per open item, settle concept definition, boundary clarity, explicit semantic rule, language-vs-implementation ownership, foundational-law-vs-policy status, multi-implementation realizability, and cross-implementation invariants — before any compiler code; (2) the JavaScript-first prototype strategy (Khayyam source to language frontend to a semantic representation to memar-js on V8, WebAssembly second) with its two binding disciplines — the JS backend must not become the semantics' hidden source of truth, and two backends behind one semantic representation serve as the implementation-independence test — plus the seven questions the frontend abstraction must answer before code, with the note that the name `Parser` is deliberately not pre-assumed; (3) the repository question — no dedicated `khayyam` repository for now, language work starts in `memar-khayyam`, and a separate repository is justified only once the language can be understood and specified independently of Memar, holding the language as an artifact rather than an implementation.
