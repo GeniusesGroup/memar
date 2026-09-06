@@ -153,6 +153,8 @@ In the modularity model, what has informally been called a Rule may itself be a 
 
 The term remains provisional because the project has not yet established that *Rule* is the best name for this role. The architectural property must therefore not depend on the word. A future terminology document may replace it without changing the underlying model.
 
+A separate modeling-level framing treats Rule as a first-class graph node connected by an edge to the structure it governs (see [Separating Structure (Code) from Policy (Rule)](./modeling.md#separating-structure-code-from-policy-rule)). Whether the module framing and the graph-node framing are two views of one concept is an open question recorded there; this document takes no position on it.
+
 #### Scope Matters
 An extension can act at different levels without becoming the same behavior.
 

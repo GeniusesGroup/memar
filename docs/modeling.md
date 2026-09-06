@@ -258,6 +258,7 @@ The edge/shortcut-edge distinction parallels the general/index-or-materialized-v
 1. As further recurring ordinary-edge roles are named in practice, should any of them ever graduate into something more formal than descriptive vocabulary (e.g. a required annotation), or should the list remain permanently open and informal?
 2. When one conceptual relationship is meaningfully traversable in both directions between two concerns, does the model declare a single relationship Type observed from two directions, or two distinct relationship Types — and where does the identity of a relationship reside: in the relationship itself, in each directional representation, or elsewhere? Answering this requires storage-semantics decisions that this document deliberately does not make.
 3. Which Module hosts a relationship whose endpoints belong to different Modules — either endpoint, both, or an independent third home — remains open. Hosting decisions made primarily for repository convenience tend to encode false conceptual ownership (see [Modularity](./modularity.md)).
+4. When a Thing acquires a type, the model expresses this as a loop-edge (a dynamic, in-graph type upgrade). Implementations sometimes express the same fact statically instead (e.g., compile-time interface embedding, where a Department is always a Group by definition). What is the criterion for choosing between the mechanisms? The working hypothesis — static typing when the type is always and definitionally the parent type, loop-edge when the type may be acquired dynamically at runtime — has not been validated against real cases.
 
 ### Graphs Are Not Documentation Artifacts
 In Memar, graphs are not used merely to visualize a model that has already been discovered. Graphs are used as a discovery mechanism. The purpose of graph analysis is to expose relationships, dependencies, responsibilities, and architectural structures that may not be visible through implementation-oriented perspectives.
@@ -608,7 +609,7 @@ Memar rejects the conventional DDD pattern where a domain "owner" entity (e.g. `
 
 The traditional aggregate-root pattern assumes a single, stable owning entity for a cluster of related data, but real systems frequently need different aggregations of the same underlying concerns depending on context. A canonical example: identity resolved via a local registration form needs a different aggregation shape than identity resolved via a third-party OAuth provider (e.g. Google login) — a single fixed `User` aggregator forces both flows into one shape that fits neither well, and tempts the owning entity to absorb logic (like credential validation) that does not actually belong to it.
 
-`username`, `email`, and similar concerns are modeled as independent, self-contained abstractions with their own validation and behavior. A composition-layer construct (typically a GUI widget or page, though this is the common case, not the only one) assembles whichever subset of these independent abstractions a specific use case actually needs, and is responsible only for that assembly — not for absorbing the internal logic of the concerns it aggregates. Per [Composition Depth as a Decomposition Signal (No Expression Chaining)](./khayyam-composition_depth_as_decomposition_signal)'s decomposition-signal principle, if an aggregator's body starts doing more than its one named responsibility (e.g. a `RegisterComment` widget that also resolves "who is the current user"), that is the signal to split out a separate, dedicated widget (e.g. one that returns only an `ActiveUserID`), pushing that sub-concern's own validation and error-handling down into that separate widget rather than leaving it in the original caller.
+`username`, `email`, and similar concerns are modeled as independent, self-contained abstractions with their own validation and behavior. A composition-layer construct (typically a GUI widget or page, though this is the common case, not the only one) assembles whichever subset of these independent abstractions a specific use case actually needs, and is responsible only for that assembly — not for absorbing the internal logic of the concerns it aggregates. Per [Composition Depth as a Decomposition Signal (No Expression Chaining)](./khayyam-method.md#composition-depth-as-a-decomposition-signal-no-expression-chaining)'s decomposition-signal principle, if an aggregator's body starts doing more than its one named responsibility (e.g. a `RegisterComment` widget that also resolves "who is the current user"), that is the signal to split out a separate, dedicated widget (e.g. one that returns only an `ActiveUserID`), pushing that sub-concern's own validation and error-handling down into that separate widget rather than leaving it in the original caller.
 
 A common misunderstanding is to interpret decomposition as merely extracting fields from a larger structure. For example, an `ActiveUserID` returned by a dedicated widget is not itself the concern being modeled. The actual concern is active-user resolution and selection: maintaining the currently active identity, enforcing any rules that govern identity switching, validating permissions, and exposing the selected identity to other parts of the system. The returned identifier is only an output of that concern, not the concern itself. This distinction is important because Memar decomposes systems around responsibilities and behavioral boundaries, not around individual pieces of data. A data value may appear in many places, but the responsibility that governs its creation, validation, and lifecycle should exist in exactly one place.
 
@@ -663,7 +664,46 @@ This mirrors the plugin/extension-point pattern common across many mature softwa
 2. How does a concept like `Invoice` declare, at the model level, which attachment points exist and what a Rule attaching to one is expected to provide — without reintroducing the fixed, anticipatory contract this section otherwise avoids?
 
 ##### Future possibilities
-The shared document mentioned above should define how a concern declares an attachment point, how a Rule module registers against one, and how conflicts between multiple attached Rules (e.g. two discount Rules on the same `Invoice`) are resolved — none of which this document takes a position on.
+The shared document mentioned above should define how a concern declares an attachment point, how a Rule module registers against one, and how conflicts between multiple attached Rules (e.g. two discount Rules on the same `Invoice`) are resolved — none of which this document takes a position on. (The Code/Rule framing of these questions is now opened under [Separating Structure (Code) from Policy (Rule)](#separating-structure-code-from-policy-rule).)
+
+### Separating Structure (Code) from Policy (Rule)
+Domains that look structurally identical across organizations often differ only in the *conditions* attached to them, not in the underlying graph shape. A trip's price depends on traffic level and time window, but the relationship — a purchase of a transport product — is structurally identical across all trips. A tax obligation depends on jurisdiction and self-declaration process, but the invoice relationship is structurally identical to any other commercial invoice. Becoming staff of an organization may require a prerequisite (e.g., an authenticated OTP token) in one organization but not another, without changing the underlying edge type.
+
+Each domain is therefore modeled in two layers:
+
+- **Code** answers *what kinds of things and connections can exist at all* — the fixed structural shape of a domain: node types, edge types, and their mandatory relationships.
+- **Rule** answers *under what conditions a given instance of that structure is valid, required, or triggered* — the conditional, context-dependent policy logic that governs how a structural element behaves in a given situation.
+
+The modeling-level requirement is that a Rule is not embedded as a hardcoded conditional inside application code, and not treated as an external, non-graph configuration: it is modeled as a first-class node in the graph, connected by an edge to the Code element (node type, edge type, or specific instance) it governs. This keeps the graph queryable as a single source of truth — "which entities are subject to Rule X" must be answerable by traversing the model, not by reading code. Executing a Rule (evaluating at runtime whether its condition is met) belongs to a separate rule-engine component that reads Rule nodes from the graph; the engine is the interpreter, not part of the structural model, and it is justified only after the responsibility is modeled (see [Event, Rule, and Mechanism-First Design](./modularity.md#event-rule-and-mechanism-first-design)).
+
+The distinction parallels how legal systems separate **statute** (the general, stable law) from **executive bylaw/regulation** (the situational implementation, which can vary by locality and change without amending the statute itself).
+
+#### Discussion
+
+##### Drawbacks
+1. Added indirection for every conditional behavior: even simple, rarely-varying conditions require traversing to a Rule node and invoking the engine instead of a direct code check — a real runtime and cognitive cost, not just a modeling nicety.
+2. Rule-sprawl risk: once "make it a Rule" becomes the default answer to any conditional, genuinely universal constraints may be over-modeled as Rule nodes "just in case," inflating the graph without benefit.
+3. Making Rule evaluation graph-traversal-dependent may carry real performance implications at scale, especially where one instance is subject to many applicable Rules that must all be resolved to determine validity.
+
+##### Rationale and alternatives
+- **Hardcoded conditionals in application code (rejected)**: duplicates logic per organization/jurisdiction, makes cross-organization variation a code-deployment event instead of a data event, and leaves the graph an incomplete source of truth.
+- **External, non-graph policy store (not chosen as primary)**: a rules table in a separate relational system, or a policy-as-code file outside the graph, breaks the single-source-of-truth goal — "which entities are affected by Rule X" would require a join outside the model. This remains a legitimate execution-layer detail (the rule-engine itself may be an external process); what stays in-graph is the Rule's existence and relationships.
+
+##### Prior art
+The statute/bylaw distinction in legal systems; business rule engines (e.g., Drools) and policy-as-code systems (e.g., Open Policy Agent/Rego), which separate decision logic from application code but typically do not represent rules as first-class nodes in the same graph as the data they govern.
+
+##### Unresolved questions
+1. What is the internal representation of a Rule node's condition (declarative expression, reference to an external function, decision table, etc.)?
+2. How are conflicts between multiple applicable Rules on the same Code element resolved (precedence, specificity ordering, explicit override edge)?
+3. How is a Rule's temporal validity (effective date, amendment, repeal) tracked, and how does it interact with historical edges created under a now-superseded Rule? This directly affects auditability, which matters most in high-stakes domains such as tax and dispute resolution.
+4. What is the precise boundary test for "this condition must be a Rule" vs. "this constraint is inherent enough to remain Code"? [What Earns Foundational Status](./modularity.md#what-earns-foundational-status) gives an analogous test for foundational membership; no equivalent exists yet for the Code/Rule line.
+5. This section treats Rule as a first-class graph node, while [Rules as a Provisional Term](./modularity.md#rules-as-a-provisional-term) treats *Rule* as a provisional name for a Module's optional relationship to another Module. Whether these are two views of one concept, or whether the graph-node framing should be replaced by the module framing, is not resolved here.
+6. Where does the rule-engine live architecturally, and how does it query the graph efficiently at the scale this framework targets?
+
+##### Future possibilities
+- Rule versioning and temporal-validity tracking as a dedicated sub-model.
+- Rule composition/inheritance (e.g., a jurisdiction-level Rule as a base that organization-level Rules can narrow but not widen).
+- A formal "Domain Boundary Criteria" treatment generalizing, in framework terms, when a new node/edge type is warranted vs. when something should remain a label or a Rule (related to, but distinct from, the foundational-status test in [Modularity](./modularity.md#what-earns-foundational-status)).
 
 ## Results
 Insufficient time has passed since this document was adopted to report real, observed outcomes from its use. This section will be filled in once there is such experience to draw on.
