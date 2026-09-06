@@ -14,7 +14,7 @@
 - Use financial account to support almost all transaction types
 - e.g. bond be exchanged for currency and deposits
 - e.g. sell product and buy other product by JUST move inventory to middle temp accounts.
-- At most one `account__from` per transaction (invariant #2 in [topic-accounting-invariants.md](../../../topic-accounting-invariants.md)).
+- At most one `account__from` per transaction (invariant #2 in [accounting-invariants.md](../../../accounting-invariants.md)).
 - The effect on the source account MUST be booked before any effect of the same transaction on the destination; delay of the destination effect is allowed, reorder is not (invariant #3).
 - The source account's `count_unit` defines the transaction's unit; `account__to` MUST share it (invariant #4).
 

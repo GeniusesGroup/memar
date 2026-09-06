@@ -1,6 +1,13 @@
-# Topic: Accounting Invariants
+---
+Title: "Accounting Invariants"
+Status: Proposed
+Start Date: 2026-08-04
+ID: 082916
+---
 
-Status: consolidated from the Account & Transaction modeling sessions (2026-08). These are the load-bearing rules of the core economics domains. Each one is a decision that was pressure-tested against real requirements (check, LC, legal block, fee, exchange, payroll); violating it breaks those scenarios.
+# Accounting Invariants
+
+Status: consolidated from the Account & Transaction modeling sessions (2026-08). These are the load-bearing rules of the core economics domains. Each one is a decision that was pressure-tested against real requirements (check, LC, legal block, fee, exchange, payroll); violating it breaks those scenarios. Category-level document: both `account` and `transaction` reference it, so it lives beside the modules rather than inside either - keeping the modules independent of each other.
 
 ## 1. A transaction is a request, not an operation
 
@@ -48,8 +55,8 @@ No transaction exists without a reason (`transaction_reference_is` to any `thing
 
 ## Related
 
-- [topic-core-vs-pluggable.md](topic-core-vs-pluggable.md)
-- [topic-reference-by-uuid.md](topic-reference-by-uuid.md)
+- [core-vs-pluggable.md](core-vs-pluggable.md)
+- the reference-by-UUID rule (now in [bookkeeping](account/edges/bookkeeping/README.md))
 - [account/README.md](account/README.md), [transaction/README.md](transaction/README.md), [bookkeeping edge](account/edges/bookkeeping/README.md)
 
 ## Discussion

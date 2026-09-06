@@ -12,6 +12,8 @@ According to [Henri Fayol](https://en.wikipedia.org/wiki/Henri_Fayol), managemen
 - Coordinating: Creating a structure through which an organization's goals can be accomplished.
 - Controlling: Checking progress against plans.
 
+Note: "leading/commanding" here is Fayol's observable managerial activity. The popular umbrella concept "Leadership" is deliberately **not** a modeled entity in this module.
+
 ## Organize
 
 to make the necessary arrangements so that an activity can happen effectively

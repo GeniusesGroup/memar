@@ -4,14 +4,14 @@ Economics is the category for bookkeeping of any countable quantity: money, kilo
 
 ## Core domains
 
-A domain is core only by necessity: removing it would force the kernel to fabricate or distort another foundational concept (see [topic-core-vs-pluggable.md](topic-core-vs-pluggable.md)). Importance or prevalence is not the test.
+A domain is core only by necessity: removing it would force the kernel to fabricate or distort another foundational concept (see [core-vs-pluggable.md](core-vs-pluggable.md)). Importance or prevalence is not the test.
 
-- [account](account/README.md) — holds the bookkeeping state of one quantity with one count unit.
-- [transaction](transaction/README.md) — a request by one or more users for a bookkeeping change; not an operation.
-- [invoice](invoice/README.md) — a statement of what is claimable between parties; a common cause/reference of transactions.
-- [product](product/README.md) — anything that can be priced; the subject an invoice bills and a transaction settles.
+- [account](account/README.md) - holds the bookkeeping state of one quantity with one count unit.
+- [transaction](transaction/README.md) - a request by one or more users for a bookkeeping change; not an operation.
+- [invoice](invoice/README.md) - a statement of what is claimable between parties; a common cause/reference of transactions.
+- [product](product/README.md) - anything that can be priced; the subject an invoice bills and a transaction settles.
 
-The load-bearing rules of these domains are collected in [topic-accounting-invariants.md](topic-accounting-invariants.md). Cross-domain references follow [topic-reference-by-uuid.md](topic-reference-by-uuid.md); module placement follows [topic-core-vs-pluggable.md](topic-core-vs-pluggable.md).
+The load-bearing rules of these domains are collected in [accounting-invariants.md](accounting-invariants.md). Product's boundary questions (vs sellable/commercial, vs content, vs estate) are collected in [product/product.handoff.md](product/product.handoff.md). Cross-domain references follow [account/edges/bookkeeping/README.md](account/edges/bookkeeping/README.md); module placement follows [core-vs-pluggable.md](core-vs-pluggable.md).
 
 ## Everything else is pluggable
 

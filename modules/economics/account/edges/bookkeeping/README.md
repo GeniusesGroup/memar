@@ -1,6 +1,21 @@
 # Bookkeeping
 
-The kernel edge between a transaction and an account: the realized effect of processing a transaction on one account. One transaction produces one bookkeeping record per affected account, possibly at different times (withdrawal first, deposit later — see invariant #3 in [topic-accounting-invariants.md](../../../../topic-accounting-invariants.md)).
+The kernel edge between a transaction and an account: the realized effect of processing a transaction on one account. One transaction produces one bookkeeping record per affected account, possibly at different times (withdrawal first, deposit later — see invariant #3 in [accounting-invariants.md](../../../accounting-invariants.md)).
+
+## Reference by UUID, not aggregates (cross-domain modeling rule)
+
+Discovered in this domain, general enough to govern all of Memar: **domain models MUST NOT embed or return each other's types.** A cross-domain link is held as a UUID reference only; a separate service resolves UUID → record when the full object is needed. This edge is the working example: it holds `Field_AccountID` and `Field_FinancialTransactionUUID` — UUIDs, nothing more. Account does not carry Transaction objects; Transaction does not carry Account objects.
+
+Why (from the Account & Transaction modeling session, 2026-08):
+
+- Account ↔ Transaction is a genuinely mutual conceptual dependency (a transaction names accounts; a ledger entry names its transaction). Fighting it with shared abstraction packages or interfaces only hides the cycle or throws away type information. With UUID-only fields there is no bidirectional *type* dependency at all — the "cycle" was never a domain problem; it is an artifact of aggregate-style modeling (DDD) that embeds child records inside one owner.
+- Caching: the consumer of a UUID decides whether/how to resolve and cache; an embedded aggregate forces the producer's freshness semantics onto every consumer.
+- Embedded/edge deployment: a module compiled as a library at the edge can hold references without co-locating the other domain's storage.
+- Language note: Go forbids import cycles at package level, which pressures developers into string-typed IDs or artificial abstractions. Khayyam measures dependencies at type level, so this rule is naturally enforceable there. The Go constraint is a representation limit, not a domain principle.
+- Related identity principle: human-readable identifiers (username, cheque number, sayyad code) are also not fields on a node — they are edges from the node to a `uri` domain record; the same "reference, not embed" logic applied to naming.
+- Rejected alternatives: shared abstraction package holding both interfaces (only good if the relationship itself is a real domain concept, not a cycle-breaking device); dependency inversion via interfaces (hides, does not resolve); DDD aggregate root owning bookkeeping entries (forces one domain to own another domain's records).
+- Costs (drawbacks): reading a transaction with its accounts costs several fetches instead of one aggregate load; without discipline, "just UUIDs" degenerates into primitive string typing that throws away all type information.
+- Open: does a bidirectional edge (bookkeeping traversed from both sides) share one edge UUID or exist as two records? (model question above); should UUID→record resolution be a generated per-domain service or one generic graph resolver? Candidate future: formalize as a Memar-wide modeling rule with lint/codegen support.
 
 The term [bookkeeping](https://en.wikipedia.org/wiki/Bookkeeping) is reused here in its general sense of recording quantity changes, not financial recording only.
 
@@ -43,7 +58,7 @@ Open question (deferred to the storage-engine session): whether the reverse trav
 ### Rationale and alternatives
 
 - Book as a separate node was considered (earlier diagrams drew it between Engine and Account) and rejected: nothing needs to reference a bookkeeping record except through its transaction, so an edge with fields is sufficient.
-- `Field_FinancialTransactionUUID` is the transaction-side endpoint of the edge (a UUID reference, per [topic-reference-by-uuid.md](../../../topic-reference-by-uuid.md)), not a cache — it is the audit traceability requirement.
+- `Field_FinancialTransactionUUID` is the transaction-side endpoint of the edge (a UUID reference, per the reference-by-UUID rule above), not a cache — it is the audit traceability requirement.
 - `Field_Balance` is an accepted cache (O(1) point-in-time reads); it is a historical fact of this record, never recomputed.
 
 ### Prior art

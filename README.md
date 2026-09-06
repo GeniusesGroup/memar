@@ -29,6 +29,8 @@ This repository focuses on the Organization identity/management domain. It is pa
 - PersiaOS — an operating system component
 - Chapar / GP / sRPC — networking protocols
 
+The relationship is methodological before it is technical: **Memar defines the way of thinking and modeling; Organization is one of the largest domains to be modeled with that method.** This is why Memar is required reading before contributing design judgments here — a contributor who has not internalized it tends to restart from industry defaults (starting from common management vocabulary instead of extracted concepts), repeating the exact failures Memar's method exists to prevent (see [`modules/management/vocabulary-discipline.handoff.md`](modules/management/vocabulary-discipline.handoff.md)).
+
 See [GeniusesGroup](https://github.com/GeniusesGroup) for the full set of related repositories.
 
 ## Enterprise

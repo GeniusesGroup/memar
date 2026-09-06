@@ -5,6 +5,15 @@
 
 [Six degrees of separation](https://en.wikipedia.org/wiki/Six_degrees_of_separation) is the idea that all people are six or fewer social connections away from each other. As a result, a chain of "friend of a friend" statements can be made to connect any two people in a maximum of six steps.
 
+## Connection-degree edges are precomputed, derived labels
+
+Answering "how is user A related to user B?" (the LinkedIn-style question) by traversing the friendship graph on every profile view is too expensive. The resolved direction (modeling discussion, 2025-01-16; general principle in [`modules/storage/graph`](../../../../storage/graph/README.md)):
+
+- The `connection-1st`, `connection-2nd`, `connection-3rd` edges ARE the precomputed answer: **derived shortcut edges** over the authoritative friendship/connection base edges, giving O(1) degree reads on profile pages.
+- They are **automatic labels** - users cannot assign them (see [connection](connection/README.md)) - maintained by the system when base relations change; each friendship add/remove invalidates and recomputes the affected degree edges (write-time cost accepted for read-time O(1)).
+- They are **caches, not truth**: always re-derivable from the authoritative base edges, never the source of truth, never authoritative for authorization decisions.
+- Depth is bounded (1st/2nd/3rd) rather than arbitrary - beyond that, read-time traversal or approximation is acceptable. The exact depth cutoff and the incremental-update strategy are engine/implementation concerns (see the graph README's algorithm inventory).
+
 ## The circles of friendship
 
 Many article like [this](https://kottke.org/21/06/the-circles-of-friendship) introduce deeply.

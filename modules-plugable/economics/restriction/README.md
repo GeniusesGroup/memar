@@ -1,6 +1,6 @@
 # Restriction
 
-Restriction is a pluggable module for global quantity constraints — e.g. a judicial order freezing 1000 units of a person's assets. The constraint targets a person/thing, NOT individual accounts: copying the amount onto every account of the target would multiply the constraint (100 accounts × 1000 ≠ 1000). This is why the legacy `AvailableBalance`-as-account-state model was rejected (invariant #8 in [topic-accounting-invariants.md](../../../modules/economics/topic-accounting-invariants.md)).
+Restriction is a pluggable module for global quantity constraints — e.g. a judicial order freezing 1000 units of a person's assets. The constraint targets a person/thing, NOT individual accounts: copying the amount onto every account of the target would multiply the constraint (100 accounts × 1000 ≠ 1000). This is why the legacy `AvailableBalance`-as-account-state model was rejected (invariant #8 in [accounting-invariants.md](../../../modules/economics/accounting-invariants.md)).
 
 ## Model
 

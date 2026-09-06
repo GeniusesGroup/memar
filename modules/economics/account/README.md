@@ -9,7 +9,7 @@ An account is the bookkeeping holder of one countable quantity. It is not financ
 
 ## Policies (rules)
 
-- Balance is not stored on the account node; it is the `Balance` snapshot of the account's latest bookkeeping record (invariant #8 in [topic-accounting-invariants.md](../topic-accounting-invariants.md)).
+- Balance is not stored on the account node; it is the `Balance` snapshot of the account's latest bookkeeping record (invariant #8 in [accounting-invariants.md](../accounting-invariants.md)).
 - Availability (blocked/holdable amounts) is NOT account state. It is evaluated from active rules (see `modules-plugable/economics/restriction`); there is deliberately no `AvailableBalance` field.
 - A bookkeeping balance expresses holding/possession, not legal title. Legal ownership is modeled once in `rights/ownership` and may attach to any node, including accounts.
 - Negative balance is neither allowed nor forbidden by the kernel; it is governed by pluggable rules (credit, overdraft policies).

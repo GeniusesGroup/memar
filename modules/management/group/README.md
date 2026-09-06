@@ -20,6 +20,7 @@
 ### Prior art
 
 - Organizational-chart and RBAC membership models; DAO/treasury and informal-group cases (below) are the stress tests that break registration-based assumptions.
+- Spotify Model (Squads, Tribes, Chapters, Guilds) — cross-cutting group kinds over one generic group, explicitly not a tree; supports the "generic Group + distinguishing label" reading over separate entity types per group kind (from the 2026-08-04 Task Management discussion: groups are recognized by the labels they carry, and a Department is a Group that some authorized role has distinguished as such).
 
 ### Unresolved questions
 
@@ -27,6 +28,7 @@
 2. **Oversight membership shape**: for an external organization acting as a committee's oversight member, does it get (a) a dedicated, standalone edge type (e.g., `oversees`) with no accompanying generic membership edge at all, or (b) both a generic `member_of` edge and an additional `oversees` edge in parallel? Not yet confirmed.
 3. **Organization-to-organization business relationships** (franchise, sales agent, repair agent, etc.): should each business-relationship kind get its own dedicated edge type (a new kind requires a Code change), or one shared base edge (e.g., `business_relation`) plus a separate node/edge specifying the relationship's nature (a new kind is only a data addition, consistent with the Code/Rule boundary discussion)? Open, and in tension with the decomposition principle above.
 4. **Cycle potential**: with org-to-org relation edges coexisting with `group→parent` hierarchies and org-as-external-member-of-group relations, cycles are structurally possible (e.g., Org A's committee has Org B as oversight member, and Org B's structure eventually relates back to Org A). Not necessarily a modeling flaw, but any algorithm that assumes membership implies inherited authority/access must explicitly guard against cycles. Is cycle handling already addressed elsewhere in the codebase, or must it become an explicit design consideration?
+5. **Label-granting authority**: the structural reading above says a Department *is* a Group (type level); the discussion reading says a Department is a Group that an authorized role has *labeled* as one. Who may grant that label — which role/edge carries the permission — and is it the same mechanism that would distinguish other group kinds (squad, tribe, chapter, guild)?
 
 ### Future possibilities
 

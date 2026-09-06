@@ -1,4 +1,11 @@
-# Topic: Core vs Pluggable Boundary Criteria
+---
+Title: "Core vs Pluggable Boundary Criteria"
+Status: Proposed
+Start Date: 2026-08-04
+ID: 082917
+---
+
+# Core vs Pluggable Boundary Criteria
 
 Status: consolidated from the Account & Transaction modeling sessions (2026-08). These criteria decide what lives in `modules/` vs `modules-plugable/` and where a capability's files go.
 
@@ -48,7 +55,7 @@ Every module follows one project-defined skeleton (manifest, edges, edges-loop, 
 
 ## Related
 
-- [topic-accounting-invariants.md](topic-accounting-invariants.md)
+- [accounting-invariants.md](accounting-invariants.md)
 - [modules/computer/rule](../computer/rule/README.md)
 
 ## Discussion

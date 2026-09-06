@@ -22,7 +22,7 @@ Pluggable policies and preferences between accounts (or between an account and a
 ### Rationale and alternatives
 
 - Kept together because the volume of account-to-account relationship needs is small; splitting into `account_restriction` + `account_preference` was considered and deferred until edge count forces it.
-- Filing these under the account core was rejected: they are policy, not identity (see [topic-core-vs-pluggable.md](../../../modules/economics/topic-core-vs-pluggable.md)).
+- Filing these under the account core was rejected: they are policy, not identity (see [core-vs-pluggable.md](../../../modules/economics/core-vs-pluggable.md)).
 
 ### Prior art
 
