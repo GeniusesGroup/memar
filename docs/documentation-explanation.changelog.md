@@ -14,7 +14,7 @@ This document records why and how `documentation-explanation.md` changed over ti
   - [Super Z](../CONTRIBUTORS.md#super-z) - GLM 5.2
   - [ChatGPT](../CONTRIBUTORS.md#chatgpt) - GPT 5.5
 
-#### Summary
+#### What changed
 The thirteen entries below are migrated as-is from `documentation-explanation.md`'s former `## Change Rationale` section (itself a rename of an even earlier `rfc-template.md`'s Change Rationale, going back to before the Explanation/Practice/Changelog facet split existed). Individual contributor roles per historical entry were not tracked at the time and are not reconstructed retroactively — only the registry is known reliably. Going forward, new entries use the full structure defined in `documentation-changelog.md`.
 
 1. **Initial consolidation.** Consolidated the RFC template and its field specifications into a single specification, motivated by the loading cost of feeding multiple files into every chat session and the drift risk between the template and its specs. A pre-Final merging rule allows related Draft/Proposed RFCs to be consolidated without generating a new RFC number. A contributor preservation rule requires every contributor to add their own entry and forbids modifying others'.
@@ -39,7 +39,7 @@ The thirteen entries below are migrated as-is from `documentation-explanation.md
 - Contributors:
   - See the project-wide [CONTRIBUTORS.md](../CONTRIBUTORS.md) registry.
 
-#### Summary
+#### What changed
 `documentation.md` was split into three files: this document's base (`documentation-explanation.md`, keeping the original `ID`, as substantive successor), a new lightweight meta-specification (`documentation.md`) defining the Facet concept, and `documentation-practice.md` governing the Practice facet, adopting the schema independently converged on by Anthropic, OpenAI, and Microsoft's own skill-creator files rather than inventing a new one.
 
 ### Created the paired practice file
@@ -50,7 +50,7 @@ The thirteen entries below are migrated as-is from `documentation-explanation.md
 - Contributors:
   - See the project-wide [CONTRIBUTORS.md](../CONTRIBUTORS.md) registry.
 
-#### Summary
+#### What changed
 Created as the Practice-facet companion to `documentation-explanation.md`, following the Practice facet's schema (name/description-only front matter, imperative body, under ~500 lines). Walks a contributor through producing a new Explanation-facet document: copying the template, generating the `ID`, filling in front matter, writing the body, and progressive migration of older documents.
 
 ### Migrated Citations, Contributors, and Applied to into this changelog file
@@ -67,7 +67,7 @@ Created as the Practice-facet companion to `documentation-explanation.md`, follo
   - [Super Z](../CONTRIBUTORS.md#super-z) — rewrote: restructured an earlier revision's section layout; applied the pre-Final merging and contributor-preservation rules.
   - [ChatGPT](../CONTRIBUTORS.md#chatgpt) — argued: argued for one shared documentation structure with RFC/PRD/ADR as profiles, not independent templates; suggested Model/Risks/Problem as candidate catalog items; drew the cross-discipline scientific-paper analogy and the token-equality argument used in this specification's own Optional Sections framing.
 
-#### Summary
+#### What changed
 Per the decision to move all provenance (citations, contributor attribution, cross-document propagation tracking) out of Explanation-facet base documents and into their paired Changelog-facet file, this document was created. `documentation-explanation.md`'s own front-matter `Citations` and `Contributors` fields, and its `## Change Rationale` section, are superseded by this file and should be removed from the base document (tracked separately — see Propagates to).
 
 #### Propagates to
@@ -83,10 +83,10 @@ Per the decision to move all provenance (citations, contributor attribution, cro
   - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — argued: the `#### URI` subsection under `### Conventions` was defining a rule (the `file:` scheme prohibition) that applies to any document of any facet, not only Explanation-facet documents. Keeping it here made this specification the de facto canonical home for a cross-cutting concern, which is the wrong place.
   - [Super Z](../CONTRIBUTORS.md#super-z) — rewrote: trimmed `#### URI` from a full subsection (RFC 3986 definition, two forms, the `file:` prohibition, the note about provenance fields having moved to the Changelog) to a one-line reference to `documentation.md → URI`. Also updated the Internal Cross-References example from `[URI](#uri)` — which would have become a broken anchor once the `#### URI` subsection was removed — to `[Conventions](#conventions)`, an example that remains valid.
 
-#### Summary
+#### What changed
 The `#### URI` subsection under `### Conventions` was the canonical definition of URI format (absolute vs. relative reference) and the `file:` scheme prohibition. That rule applies wherever a URI appears — internal hyperlinks, citation entries, contributor identity, examples — in any document of any facet, not only in Explanation-facet documents. The definition was moved to `documentation.md → URI` as a cross-cutting convention, and this specification's `#### URI` subsection was trimmed to a one-line reference pointing there. The Internal Cross-References example was also updated, since the previous example (`[URI](#uri)`) would have become a broken anchor after the URI subsection moved.
 
-#### Rationale and alternatives
+#### Considered and not done
 - **Keep the URI definition here, since this specification is where it has always lived (rejected)**: would have left a cross-cutting concern canonically defined in a facet-specific specification. The Changelog spec would either have had to redefine the same rule (drift risk) or reference this specification's URI subsection (making the Explanation spec an implicit meta-layer for the Changelog spec, which inverts the intended hierarchy).
 - **Remove the `#### URI` subsection entirely, with no replacement reference (considered, not chosen)**: would have left a reader of this specification's `### Conventions` section with no signal that URI format is governed by a project-wide rule. A one-line reference costs almost nothing and saves the reader from accidentally defining a non-portable URI scheme inline.
 
@@ -101,8 +101,57 @@ The `#### URI` subsection under `### Conventions` was the canonical definition o
   - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — directed: pointed out that the practice file had been missed during the earlier round of changes that moved provenance out of Explanation-facet base documents into the Changelog facet.
   - [Super Z](../CONTRIBUTORS.md#super-z) — rewrote: removed the obsolete front-matter fields and `## Change Rationale` from the practice's template; removed the obsolete "Guide" topic convention from its procedure; added its step 6 (create the paired `<base>.changelog.md`) and the `documentation-changelog.md` reference.
 
-#### Summary
+#### What changed
 The practice file had been missed when the Changelog-facet migration was applied to the rest of the documentation set: its procedure was still instructing a contributor to fill in `Applied to`, `Citations`, and `Contributors` in the base document's front matter and to keep a `## Change Rationale` body section, all of which the base specification no longer permits. Brought in line: front-matter instructions cover only `Title`, `Status`, `Start Date`, `ID`; the Template drops the migrated fields and section; the obsolete "Guide" topic convention is removed; step 6 now creates the paired `<base>.changelog.md` file and migrates older documents' former provenance fields into Changelog entries.
 
-#### Rationale and alternatives
+#### Considered and not done
 - **Keep the "Guide" topic convention in the practice's step 4 (rejected)**: the Guide/optional-topic mechanism was removed in favor of the Practice facet's companion-file convention — instructing the contributor to also create an internal "Guide" topic would re-introduce the obsolete convention the practice file itself replaces.
+
+---
+
+### Method finalized; body restructured; discussion content relocated per the finalized method
+- Time: 2026-09-06T00:00:00Z
+- Type: Changed
+- Propagates to:
+  - documentation-explanation.handoff.md: Created - this specification's open questions and anticipated work moved there.
+  - documentation-changelog.md: Done - entry structure restructured (What changed / Considered and not done / Related work / Decision; Contributors presence-only) in the same pass.
+  - documentation-handoff.md: Done - Open Questions / Anticipated Work structure added; open-question residence rule stated in the same pass.
+  - documentation-handoff.practice.md: Done - no changes needed (verified clean).
+  - documentation-explanation.practice.md: Done - template and steps rewritten to follow the finalized body structure.
+  - All documents reformed under the new pattern: process.md, error.md, memory.md, concurrency.md, dependency-management.md, time.md, networking.md, networking-connection.md, sRPC.md, modeling.md, type.md (in this session's scope; others migrate progressively).
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - claimed, decided
+  - [Super Z](../CONTRIBUTORS.md#super-z) - reviewed, argued, rewrote, moved
+
+#### What changed
+- The `Discussion` wrapper is dissolved entirely, and `Drawbacks` with it (Omid Hekayati - the wrapper's content, on inspection, was questions in declarative clothing and evaluations the current-state reader does not need; an explanatory document is not a place for doubt, and an AI-assisted reader cannot reliably separate a negated position from an affirmed one when loading a body into context).
+- The body's fixed top-level sections are reduced to `Abstract`, `Introduction`, `Explanation`, `Results` (Omid Hekayati - the four-section skeleton with an open catalog is clearer than a five-section skeleton carrying a doubt-shaped wrapper; Super Z - applied).
+- `Rationale and alternatives` leaves the body: rejected-alternative reasoning is decision-shaping context and lives in the changelog entry's `Considered and not done` section (Omid Hekayati - directed; Super Z - named the section).
+- `Future possibilities` leaves the body for the handoff's `Anticipated Work` section (Omid Hekayati - decided; Super Z - had flagged it as an open question in the same session and recorded it rather than deciding).
+- `Prior art` is retired as a title and its two functions split (Omid Hekayati - identified the title as wrong from the start, citing the patent-law sense of the term; Super Z - proposed the split): premise evidence stays inline at the claim it supports; comparative surveys become the changelog entry's `Related work` section.
+- `Unresolved questions` are retired as a title; open questions live in the handoff as `Open Questions`, distinct in name from anything in a base document (Omid Hekayati - no two documentation types should carry identical titles; Super Z - applied).
+- Changelog entries restructured: `Summary` becomes `What changed`; `Considered and not done`, `Related work`, and `Decision` added as optional entry sections (Omid Hekayati - demanded structured sections instead of prose Summary after seeing migrated content flattened into narrative; Super Z - written).
+- The Contributors bullet shrinks to presence plus role tags; every substantive claim in an entry carries its attribution inline in parentheses, so statements and their authors never separate (Omid Hekayati - the role prose had grown and scattered attribution; Super Z - wrote the rule).
+- The Relevance discipline convention added: a body statement earns its place by serving the current-state reader; decision-shaping context is changelog content regardless of which body section it would sit in (Omid Hekayati - the criterion's two-reader framing approved; Super Z - written).
+- This specification's own body was reformed under the pattern it prescribes: the Status field's, ID field's, and Progressive migration topic's rationale-and-alternatives and question content, the document-level Rationale and Future sections, and the ecosystem-survey narratives (Rust RFC template organization, Rust/IETF numbering schemes, the Tyree-and-Akerman ADR template survey) moved to this changelog and the paired handoff (Super Z).
+- A final audit found several `Rationale and alternatives`, `Prior art`, and `Unresolved questions` blocks that the earlier passes missed; all are recorded below and in the paired handoff (Super Z - audit and migration).
+- The practice companion (`documentation-explanation.practice.md`) reformed: template shows the four fixed sections only with `{Sub section}` placeholders marked as Optional Sections candidates; steps rewritten to route rejected alternatives, open questions, and anticipated work to the changelog entry and handoff respectively (Omid Hekayati - supplied the corrected template shape; Super Z - applied).
+
+#### Considered and not done
+- Renaming the body's evidence practice with a new titled wrapper (`Evidence`) (Super Z - proposed, then withdrawn): evidence is cited inline at claims, so no wrapper title is needed; the changelog `Cited` field's existing `Evidence` relation already carries the word.
+- Keeping `Future possibilities` in the body pending separate review (Super Z - flagged the question) (Omid Hekayati - decided immediately against: same criterion as the other removals).
+- Keeping a `Discussion` wrapper that holds only `Drawbacks` (rejected): a wrapper for a single optional section is structural weight with no routing content left inside; the section enters the catalog directly. (Omid Hekayati)
+- Keeping `Rationale and alternatives` as a body wrapper so the design's rejected alternatives stay near their decision (rejected): the AI-loading hazard outweighs locality; the changelog's `Considered and not done` carries them. (Omid Hekayati)
+- A lint-style check for provenance in bodies (Super Z - proposed): premature without tooling; the convention plus review is the current enforcement.
+- A dedicated one-time migration pass across all existing documents (rejected): the progressive-migration rule applies; each file migrates at its next natural edit. (Super Z)
+- Maintaining this detailed Status semantics alongside the compact table in `README.md` means the two must stay consistent as either evolves; the specification also elaborates obligations without precisely defining what counts as a correction small enough to apply in place versus a change substantial enough to require a superseding document. (Super Z - migrated from Status field)
+- The ID number is no longer purely arbitrary - it encodes creation order, a deliberate exception justified because creation time is immutable. Collisions at hour granularity must currently be resolved manually - a stopgap, since no tooling exists. Retroactive backfilling for documents sharing a `Start Date` has no principled ordering signal. (Super Z - migrated from ID field)
+- Consolidating the specification and its field specifications into one document means they can no longer be loaded independently; the document is longer than any of its predecessors, and there is no way to load only part of it into context. The mitigating factor - the Abstract being self-contained for the ordinary case - was already stated in the body's usage guidance and stays there. (Super Z - migrated from document level)
+
+#### Related work
+- The Rust RFC process maintains a single `0000-template.md` plus a separate process README rather than consolidating template and per-field specifications; this project consolidated because its AI-assisted document-writing sessions make multi-file loading costs salient. (Super Z - migrated)
+- Rust's RFC numbering assigns no number at drafting (a `0000-` placeholder until a PR exists, then the PR's number), with an internal preference for small continuous-feeling numbers; IETF RFCs are strictly sequential and centrally assigned. (Super Z - migrated)
+- The Jeff Tyree and Art Akerman architecture-decision-record template maps closely onto this specification's concerns, with `Implications` its one genuinely distinct contribution, adopted into Optional Sections. (Super Z - migrated)
+
+#### Decision
+All retired wrapper titles are removed from the pattern; documents written under the old pattern migrate progressively on their next natural edit. Open questions (Optional Sections catalog extensions, Future-possibilities disposition, spec-split threshold, ID collision tooling) and anticipated work live in the paired handoff. (Omid Hekayati - approved)

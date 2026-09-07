@@ -73,3 +73,39 @@ Separately, a new cross-cutting content rule — "No Fabricated or Redundant Pro
 
 #### Rationale and alternatives
 - **Leave the Handoff facet unregistered pending more usage evidence (rejected by the owner)**: the facet already has a governing specification, a paired practice, and a real adopted convention (`<base>.handoff.md`); an unregistered specification outside the meta-layer is exactly the implicit-convention state the facet system exists to eliminate, and the Changelog facet registered with no more evidence of repetition than this.
+
+---
+
+### Body structure finalized; discussion content relocated per the finalized method
+- Time: 2026-09-06T00:00:00Z
+- Type: Changed
+- Propagates to:
+  - documentation.handoff.md: Created - this document's open questions and anticipated work moved there.
+  - documentation-explanation.md: Done - the method this migration follows was finalized there in the same pass.
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - claimed, decided
+  - [Super Z](../CONTRIBUTORS.md#super-z) - rewrote, moved
+
+#### What changed
+- The body's fixed top-level sections are reduced to `Abstract`, `Introduction`, `Explanation`, `Results` (Omid Hekayati - the `Discussion` section with sub-titles added avoidable ambiguity to the skeleton; Super Z - applied).
+- `Drawbacks` becomes an Optional Sections catalog entry (Omid Hekayati - directed; Super Z - written, placed after `Examples`), taken by an author where the content calls for it - document-wide after `Results`, or topic-level.
+- The routing of former discussion content (evidence inline; considered-and-not-done to the changelog; open questions and anticipated work to the handoff) moved into the Relevance discipline convention, which is the criterion the routing follows (Super Z).
+- All `Rationale and alternatives`, `Prior art`, `Unresolved questions`, and `Future possibilities` blocks removed from this document's body; their content is preserved below and in the paired handoff (Super Z - audit and migration).
+
+#### Considered and not done
+- Keeping a `Discussion` wrapper that holds only `Drawbacks` (rejected): a wrapper for a single optional section is structural weight with no routing content left inside; the section enters the catalog directly. (Omid Hekayati)
+- Keeping `Rationale and alternatives` as a body wrapper so the design's rejected alternatives stay near their decision (rejected): the AI-loading hazard - negated positions read as affirmed ones - outweighs locality; the changelog's `Considered and not done` carries them. (Omid Hekayati - the hazard; Super Z - recorded)
+- Treating the no-fabricated-provenance rule as a style preference rather than a content rule (rejected): redundant and fabricated provenance are not stylistic blemishes - fabricated history misleads reasoning, and scattered migration notes multiply the places a future reader must check before trusting any one statement. Both directly undermine the single-source-of-truth structure the facet system exists to provide. (Omid Hekayati - the rule; Super Z - migrated)
+- Keeping a single, shared documentation structure for all content (rejected): this was the status quo, and it produced the concrete tension described in Methodology - procedural and analytical content ended up competing for the same schema's attention. The Facet decomposition resolved that by giving each kind of content a structure optimized for its own use case. (Omid Hekayati)
+- Using the names "Why" and "How" for the two facets (rejected): "Why" does not describe what the Explanation facet contains - it contains specifications, definitions, analyses, and design decisions, not only reasons or motivations. "How" is closer but still too narrow - Practice encompasses any content meant to be followed, not only step-by-step procedures. (Omid Hekayati)
+- Naming the facets "Specification" and "Skill" instead of "Explanation" and "Practice" (rejected): "Specification" describes a specific kind of Explanation-facet document, not the facet itself. "Skill" describes the file format and folder convention of the Practice facet's most common instantiation, not the facet itself. The facet names should describe the reader's relationship to the content. (Omid Hekayati)
+- Making the facet names language-agnostic (considered, not chosen): English facet names are already used throughout this project's technical content and tooling. Introducing a second set of names in another language without a concrete need would add a translation obligation with no clear benefit. (Omid Hekayati)
+- Treating Changelog as a sub-convention of Explanation or Practice rather than its own facet (rejected): a changelog is neither studied to understand a subject nor followed to accomplish a task - it is consulted to audit history. Bundling it under either of the other two facets would force a structural mismatch. (Omid Hekayati)
+- Defining additional facets now, before a real need for them exists (rejected): would produce empty or near-empty specifications - exactly the mistake this project's own Methodology warns against. The Changelog facet itself was added only after the same `<base>.changelog.md` pattern was already being applied across multiple artifacts. (Omid Hekayati)
+
+#### Related work
+- The Tyree-Akerman architecture-decision-record template (cited in documentation-explanation.md) is independent, narrower evidence for the same underlying principle: that different documentation purposes converge on the same structural concerns even when designed without knowledge of each other. (Super Z - migrated)
+- The three independently-converged Skill-file conventions (Anthropic, OpenAI, Microsoft - see documentation-practice.md) are evidence from the Practice side specifically: all three arrived at the same minimal schema without coordination, demonstrating that the structural requirements of Practice-facet content are not this project's invention but a genuinely load-bearing constraint that emerges wherever this kind of content is produced. (Super Z - migrated)
+
+#### Decision
+Fixed skeleton: four sections. Everything else optional, catalogued. Open questions (mixed-facet documents, facet registry, further reader relationships) and anticipated work (facet growth) live in the paired handoff. (Omid Hekayati - approved)

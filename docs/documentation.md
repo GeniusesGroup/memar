@@ -30,30 +30,12 @@ Documentation content must be current truth, not archaeology. Three rules apply 
 - **Historical notes live in exactly one place.** How a document, a convention, or the documentation method itself came to be — including what an older approach looked like and when it was replaced — belongs in the paired changelog, once. Base documents state current rules and their reasons, without narrating what used to be written where, which revision introduced which sentence, or how a migration was executed. A reader needing that history consults the one home it has; a reader who does not is never taxed by it.
 - **No redundant restatement.** When content exists in its authoritative home, other documents link to it instead of repeating it — repetition is where documents go to drift apart.
 
-#### Discussion
-
-##### Rationale and alternatives
-- **Treat this as a style preference rather than a content rule (rejected)**: redundant and fabricated provenance are not stylistic blemishes — fabricated history misleads reasoning, and scattered migration notes multiply the places a future reader must check before trusting any one statement. Both directly undermine the single-source-of-truth structure the facet system exists to provide.
 
 ### Facet
 A **Facet** is a named category of documentation content, defined by the reader's relationship to it: what the reader is expected to *do* with the content. Each facet has its own governing specification — a separate document that defines what structure, fields, and conventions documents of that facet must follow. The facet itself is the meta-layer: it names the category, states what makes it distinct, and points to its specification.
 
 The core observation is that documentation content is not homogeneous: a reader studying a specification to understand a design, a reader following a procedure to accomplish a task, a reader consulting a history to audit changes, and a reader reading a record to resume a paused discussion are doing four categorically different things, and the structure that serves each best is not the same. Forcing all four into one shared schema means either overburdening the simpler kinds with apparatus they don't need, or under-equipping the richer kinds with structure they do. The Facet concept resolves this by naming each kind upfront and giving it its own governing specification.
 
-#### Discussion
-
-##### Rationale and alternatives
-- **Keep a single, shared documentation structure for all content (rejected)**: this was the status quo, and it produced the concrete tension described in Methodology — procedural and analytical content ended up competing for the same schema's attention. The Facet decomposition resolved that by giving each kind of content a structure optimized for its own use case.
-- **Use the names "Why" and "How" for the two facets (rejected)**: "Why" does not describe what the Explanation facet contains — it contains specifications, definitions, analyses, and design decisions, not only reasons or motivations. "How" is closer but still too narrow — Practice encompasses any content meant to be followed, not only step-by-step procedures. "Facet" and the specific facet names (Explanation, Practice) carry less misleading connotation and describe the reader's relationship to the content directly.
-
-##### Prior art
-The Tyree-Akerman architecture-decision-record template (cited in [documentation-explanation.md](./documentation-explanation.md)) is independent, narrower evidence for the same underlying principle: that different documentation purposes converge on the same structural concerns even when designed without knowledge of each other.
-
-The three independently-converged Skill-file conventions (Anthropic, OpenAI, Microsoft — see [documentation-practice.md](./documentation-practice.md)) are evidence from the Practice side specifically: all three arrived at the same minimal schema (name/description-only frontmatter, progressive disclosure, no auxiliary documentation inside the skill folder) without coordination, demonstrating that the structural requirements of Practice-facet content are not this project's invention but a genuinely load-bearing constraint that emerges wherever this kind of content is produced.
-
-##### Unresolved questions
-1. Whether further reader relationships will emerge within this project's scope that don't fit any of the four current facets — if they do, the system extends by adding a new facet following the same pattern. (The Handoff facet was added this way, resolving the earlier version of this question: the discussion-resumption relationship had emerged in real records before it was named.)
-2. Whether a facet should carry any metadata of its own (a canonical name, a one-line definition, a reference to its governing specification) in a centralized registry, or whether the current loose convention (each facet is simply documented in its own specification file, cross-referenced from here) is sufficient.
 
 ### Facets currently defined
 Four facets are defined as of this document's current revision. Each is specified in its own document, following the Explanation facet's own structure — meaning that the specifications of all four facets are themselves Explanation-facet documents.
@@ -86,33 +68,14 @@ Content meant to be *read to resume a paused discussion*: a companion record (`<
 
 The Handoff facet is defined by the same companion-file convention as the Changelog facet, but its reader relationship differs from all three older facets: a changelog is consulted to audit the past, while a handoff is read to continue unfinished work. Its central discipline — the record is an *analysis* of the discussion, not a transcript, with the risks of distillation named and structurally controlled — and its agent-general scope (a fully human session is covered by the same artifact) are defined in the governing specification. Unlike a changelog, a handoff is mutable working state, revised as the discussion moves and retired when nothing open remains.
 
-#### Discussion
-
-##### Rationale and alternatives
-- **Name the facets "Specification" and "Skill" instead of "Explanation" and "Practice" (rejected)**: "Specification" describes a specific *kind* of Explanation-facet document, not the facet itself. A concept definition, an analysis, or an architecture decision are all Explanation-facet documents but none of them is a "specification." Similarly, "Skill" describes the file format and folder convention of the Practice facet's most common instantiation, not the facet itself. The facet names should describe the *reader's relationship* to the content, not one specific format it might take.
-- **Make the facet names language-agnostic (considered, not chosen)**: English facet names are already used throughout this project's technical content and tooling. Introducing a second set of names in another language without a concrete need would add a translation obligation with no clear benefit. If a future need arises for non-English facet names, the facet system is abstract enough to accommodate it.
-- **Treat Changelog as a sub-convention of Explanation or Practice rather than its own facet (rejected)**: a changelog is neither studied to understand a subject nor followed to accomplish a task — it is consulted to audit history. Bundling it under either of the other two facets would force a structural mismatch (a changelog has no YAML front matter, no fixed body skeleton, no progressive disclosure) and would obscure the fact that the same `<base>.changelog.md` pattern is applied uniformly across artifacts of every facet, not only Explanation-facet ones.
 
 ### Which facet does a document belong to?
 The decision is made by the document's author, guided by the document's *primary purpose*: if a reader is expected to study it to understand something, it is Explanation; if a reader is expected to follow it to accomplish something, it is Practice; if a reader is expected to consult it to audit how a paired artifact changed over time, it is Changelog; if a reader is expected to read it to resume a paused discussion across a session boundary, it is Handoff. Most documents are unambiguous. When the boundary is unclear — for example, a document that contains both analytical content and a step-by-step procedure — the author should ask which purpose dominates: if the procedure is the document's reason for existing and the analysis exists only to support it, the document is Practice (with the analytical portion treated as context-setting within the procedure). If the analysis is the document's reason for existing and a brief procedure is included only as an illustrative example, the document is Explanation.
 
-#### Discussion
-
-##### Unresolved questions
-Whether a single document should ever be allowed to carry both facets' structures simultaneously (for example, an Explanation-facet body with a Practice-facet appendix) is not settled. The current position — one facet per document, choose the dominant purpose — is simpler and avoids the ambiguity of mixed-facet documents, but may prove too rigid if a real need for mixed content arises.
 
 ### Extensibility
 The facet system is designed to be extensible without structural upheaval. New facets may be added by writing a new governing specification document (itself an Explanation-facet document) and registering it here. The current four-facet model covers the reader relationships observed in this project so far: studying to understand, following to accomplish, consulting to audit history, and reading to resume a paused discussion. If a future document type demonstrates a need that fits none of these four — for example, a document that is primarily a worked example, or a decision log with no analytical argument — a fifth facet could be added following the same pattern, with no change to the facet concept itself or to the existing facet specifications.
 
-#### Discussion
-
-##### Rationale and alternatives
-- **Define additional facets now, before a real need for them exists (rejected)**: would produce empty or near-empty specifications — exactly the mistake this project's own Methodology warns against (designing structure in the abstract instead of testing it against a real document). Defining a facet's structure before there is a real document of that kind to test it against risks producing a specification that looks complete but does not actually serve the use case it was designed for. The Changelog facet itself was added only after the same `<base>.changelog.md` pattern was already being applied across multiple artifacts, not predicted in advance; the Handoff facet followed the same path — its pattern repeated informally across working sessions and practice drafts before being named.
-- **Use a formal facet registry file instead of this prose section (considered, not chosen)**: a machine-readable registry (YAML or JSON) would make facet discovery automatable. At the current scale of four facets, the overhead of maintaining a separate registry file alongside the prose explanation is not justified. The prose here is authoritative; a registry can be extracted from it mechanically if tooling ever needs one.
-
-##### Future possibilities
-- If tooling is built that consumes facet metadata, a formal facet registry could be extracted from this section without changing the underlying model.
-- If a fifth facet is ever added, the meta-layer's [Facets currently defined](#facets-currently-defined) section grows by one entry per facet, and each new facet's governing specification follows the same pattern: an Explanation-facet document that specifies the new facet's structure, cross-referenced from here. No change to the facet concept itself or to the existing facet specifications is required — the system is additive by design.
 
 ### Relationship between this document and its facet specifications
 This document (`documentation.md`) is the entry point and meta-layer. It defines what facets are, names them, and explains extensibility. It does not itself specify the structure of any facet — that is each facet's own governing document's job. The five files form a hierarchy:
@@ -126,11 +89,6 @@ This document (`documentation.md`) is the entry point and meta-layer. It defines
 | `documentation-handoff.md` | Governs the Handoff facet: specifies the `<base>.handoff.md` state-capture artifact, the analysis-not-transcription discipline, and its relationship to the other facets | Explanation |
 
 All five are Explanation-facet documents — they are specifications to be studied, not procedures to be followed. The documents *produced with the help of* `documentation-practice.md` (such as a `write-a-document/SKILL.md`) are Practice-facet documents; the documents *produced with the help of* `documentation-changelog.md` (such as `documentation-explanation.changelog.md`) are Changelog-facet documents; the documents *produced with the help of* `documentation-handoff.md` (such as a `<base>.handoff.md` companion) are Handoff-facet documents. The governing specifications and the documents they govern belong to different facets by design.
-
-#### Discussion
-
-##### Prior art
-This pattern — a meta-specification that defines categories and points to per-category specifications — is common in modular standards. IETF RFCs, for example, are organized by category (Standards Track, Best Current Practice, Informational, Experimental) with separate documents defining what each category means, while the overall RFC process document defines what the categories are and how they relate. The same principle applies here at a smaller scale.
 
 ### Citations
 A citation is a structured reference to another document or external source, recording the relationship between this document and the cited work. Citations are currently used in [Changelog-facet](./documentation-changelog.md) entries (in the `Cited` bullet field); they may also appear in other facets that need provenance tracking in the future. The rules below apply wherever a citation appears, regardless of which facet the citing document belongs to.
@@ -151,36 +109,14 @@ A citation is a structured reference to another document or external source, rec
 - `Superseded_by`: the inverse — this document is obsoleted by the cited work.
 - `Evidence`: the cited work is what supports a proposition made in this document. Distinct from `Reference` (cited for context only) and `Depends_on` (a structural dependency). Use `Evidence` when the source is the empirical or argumentative basis for a claim, but the claim does not structurally depend on the source existing.
 
-#### Discussion
-
-##### Unresolved questions
-The boundary between `Reference` and `Depends_on` is not precisely defined. The current wording conflates two things that may not always agree — whether the cited work is needed to *understand* this document's text, and whether it's needed to *implement* this document correctly — under one definition ("cannot be implemented/understood without..."). A real case can satisfy one without the other: a document may be fully readable on its own while still being impossible to correctly implement without another document's mechanism already existing. A proposed starting criterion for the *understandability* axis — if this document's own definitions are unintelligible without reading the cited work, use `Depends_on`; if it's merely a pointer to further information and this document stands alone without it, use `Reference` — is a reasonable basis, but does not by itself resolve whether an *implementability* axis needs to be tracked separately. Deferred to a dedicated session rather than resolved here.
 
 ### URI
-A URI is a string identifier as defined by RFC 3986. Two forms are used throughout this project's documentation:
+A URI is a string identifier as defined by [RFC 3986](https://datatracker.ietf.org/doc/html/rfc3986). Two forms are used throughout this project's documentation:
 - **Absolute URI**: carries a scheme, e.g. `mailto:omid@geniuses.group`, `https://claude.ai`. Used when the URI must resolve independently of this repository.
-- **Relative reference**: a scheme-less reference resolved against a base URI (RFC 3986, Section 5), e.g. `./chat-logs/x.md`. Used for resources local to this repository. This is a first-class, standards-compliant form, not a workaround.
+- **Relative reference**: a scheme-less reference resolved against a base URI ([RFC 3986, Section 5](https://datatracker.ietf.org/doc/html/rfc3986#section-5)), e.g. `./chat-logs/x.md`. Used for resources local to this repository. This is a first-class, standards-compliant form, not a workaround.
 
-The `file:` scheme (RFC 8089) specifically requires an absolute path, which breaks portability across different clones of the same repository; a scheme-less relative reference is used for local paths instead of `file:` for that reason. This rule applies wherever a URI appears — internal hyperlinks, citation entries, contributor identity, examples, and any other reference to a local resource, in any facet.
+The `file:` scheme ([RFC 8089](https://datatracker.ietf.org/doc/html/rfc8089)) specifically requires an absolute path, which breaks portability across different clones of the same repository; a scheme-less relative reference is used for local paths instead of `file:` for that reason. This rule applies wherever a URI appears — internal hyperlinks, citation entries, contributor identity, examples, and any other reference to a local resource, in any facet.
 
 ## Results
 Insufficient time has passed since this facet-based architecture was adopted to report real, observed outcomes from its use. This section will be filled in once there is such experience to draw on.
 
-## Discussion
-
-### Drawbacks
-Adding a meta-layer document means a reader who wants to understand the full documentation system must now consult five files instead of one. This is a deliberate trade-off: the five-file structure eliminates the structural compromise of the earlier single-file approach, at the cost of four additional files to read. The mitigating factor is that a reader who only needs to *write* a document of one facet (by far the most common case) only needs that facet's governing specification and the companion Skill file — the meta-layer is needed only when understanding the system as a whole.
-
-### Rationale and alternatives
-- **Keep a single `documentation.md` that governs all facets inline (rejected)**: this was the pre-facet approach, and it produced the concrete tension described in Methodology — the Practice facet's schema (adopted from three real ecosystems) fundamentally conflicts with the Explanation facet's rich front matter. A single document can describe all facets, but it cannot *govern* all of them with a single consistent set of rules.
-- **Give each facet an entirely independent name, unconnected to any external framework (considered, not chosen)**: the facet names (Explanation, Practice, Changelog) are this project's own, chosen to describe the reader's relationship to the content directly. An entirely independent naming scheme was not needed because the names already state what they mean.
-
-### Prior art
-The earlier single-document approach (then `documentation.md`, now `documentation-explanation.md`) went through thirteen revisions, several of which directly addressed the tension between procedural and analytical content. The sixth revision introduced the `Optional Sections` catalog as a mechanism for accommodating different document purposes within one structure. The thirteenth revision moved procedural content into a separate Skill file, on the principle that procedural and analytical content are categorically different. The facet concept is the architectural crystallization of that thirteenth-revision instinct — not just moving the procedural content elsewhere, but explicitly naming *why* it belongs elsewhere. The Changelog facet was added after the same `<base>.changelog.md` pattern emerged across multiple artifacts and proved to be a real, repeated structural need rather than an ad-hoc convention.
-
-### Unresolved questions
-1. Should the meta-layer (`documentation.md`) eventually contain a machine-readable facet registry (for example, a YAML block listing each facet's name, governing specification, and one-line definition) in addition to the current prose description?
-2. Whether the five-file structure itself should be reconsidered if the number of facets grows beyond five or six — at that point, the meta-layer's prose may become long enough that a tabular or registry-based approach is more maintainable.
-
-### Future possibilities
-If a fifth facet is ever added, the meta-layer's [Facets currently defined](#facets-currently-defined) section grows by one entry per facet, and each new facet's governing specification follows the same pattern: an Explanation-facet document that specifies the new facet's structure, cross-referenced from here. No change to the facet concept itself or to the existing facet specifications is required — the system is additive by design.
