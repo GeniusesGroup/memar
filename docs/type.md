@@ -46,14 +46,6 @@ Not every concept in a domain should become a Type. The following framework prov
 
 **A note on independent identity**: "Independent identity" is a claim about meaning, not about unconstrained existence, and the two are easily conflated. A concept has independent identity when it is named and reasoned about on its own terms — not when it can exist free of any containing context. A parameter has an identity distinct from the Method that declares it (a `Person` parameter is still recognized and reasoned about as `Person`), even though the parameter cannot exist outside that Method's signature. The same reasoning applies to any Type category whose current usage places it inside another construct: containment constrains where the concept may appear, not what the concept means. This distinction matters when applying the framework to categories such as Scope — see [Scope](#scope--type-as-semantic-boundary).
 
-#### Discussion
-##### Drawbacks
-Any decision framework risks false precision. The responsibility-based criterion helps, but responsibility itself can be a matter of perspective — what looks like an independent responsibility to one modeler may look like a derived view to another. The lifecycle criterion also requires careful interpretation: if lifecycle is broadened to include definition and composition stages, the risk is that nearly every named artifact can be argued to have a "lifecycle," weakening the criterion's discriminating power.
-
-##### Rationale and alternatives
-- **No framework, rely on intuition (rejected)**: Without guidance, the tendency is to over-type or under-type without consistency.
-- **A strict checklist with binary answers (rejected)**: Domain modeling is not binary. The responsibility criterion reduces the gray zone but does not eliminate it — that is a feature, not a flaw.
-
 ### Definition of Type
 A **Type** is a first-class modeled entity with an explicit identity and a defined contract.
 
@@ -91,17 +83,6 @@ The following are **not** Types:
 
 The exclusive boundary matters because Type is a foundational concept, but not every named artifact automatically becomes a Type. The expansion of the Type category should remain conservative: a concept should be admitted as a Type only when the modeling justification — independent identity, autonomous responsibility, defined contract — is clear. Admitting too many concepts as Types dilutes the category, making it progressively harder to distinguish what is architecturally significant from what is merely named. The history of Object-Oriented Programming provides a cautionary parallel: the concept of "Object" once had a clear meaning, but was gradually overloaded to encompass data, behavior, identity, namespace, module, service, and factory — until it became so broad that it lost discriminating power. The Type concept should not follow that trajectory.
 
-#### Discussion
-##### Drawbacks
-Defining Type as "first-class modeled entity" sets an expectation that a type system can verify and enforce modeling-level properties. If "modeled entity" is merely a naming convention — if the type system treats semantically distinct Types as interchangeable because they share structure — then the claim is aspirational. Any language claiming semantic types must ensure the type system can observe and enforce the distinction.
-
-##### Rationale and alternatives
-- **Define Type structurally (rejected)**: A structural definition fails to capture the modeling-level distinction. Two concepts with the same structure are not necessarily the same concept.
-- **Define Type as a formal type-theoretic construct (considered, deferred)**: Martin-Löf Type Theory defines types through introduction, elimination, and computation rules. This is rigorous but may be too formal for the current stage. A future revision could strengthen the definition toward this formalism.
-
-##### Prior art
-Martin-Löf's intuitionistic type theory treats types as meaningful propositions. OWL's named classes carry semantic identity beyond their property definitions. Neither of these fully aligns with the position taken here — MLTT is more formal but at a different abstraction level; OWL is declarative without behavioral semantics.
-
 ### Type Identity
 A Type's identity is **nominal** — it derives from the Type's declared name within a bounded context, not from its structure.
 
@@ -114,17 +95,6 @@ Conversely, two Types with different structures but the same name in the same bo
 **The nominal enforcement requirement**: If `Age` and `Height` are nominally distinct Types, the type system must prevent their conflation — you cannot pass an `Age` where a `Height` is expected, even though both share the same representation. If the type system cannot observe this distinction, nominal identity is merely a naming convention, not a semantic property.
 
 **Interaction with structural satisfaction**: In Khayyam, a Capsule satisfies an Abstraction through implicit structural satisfaction — if a Capsule implements all required methods with matching signatures, it conforms, without an explicit `impl` keyword. This introduces a tension with nominal identity at the Abstraction layer: a Capsule might accidentally satisfy an Abstraction it was never intended to implement (Go's well-known accidental satisfaction problem). Whether this risk warrants a mitigation mechanism is recorded as an open question in the Abstraction document. The Type Identity principle stated here — nominal identity within a context — applies at the declaration level; structural satisfaction operates at the conformance level. The two are not contradictory, but their interaction requires careful design.
-
-#### Discussion
-##### Drawbacks
-Nominal typing creates composability barriers that structural typing avoids. If `Age` and `Height` are distinct, you cannot write a single `max(a, b)` for both without an explicit abstraction covering both. This is the cost of semantic precision — and its benefit: it prevents accidental conflation of distinct concepts.
-
-##### Rationale and alternatives
-- **Structural typing (rejected)**: Two Types with the same structure would be interchangeable, defeating semantic identity. TypeScript's structural typing demonstrates this: `interface Person { name: string }` and `interface Company { name: string }` are interchangeable, which is precisely the conflation this principle prevents.
-- **Behavioral typing (considered, insufficient alone)**: Two Types are the same iff they support the same operations. But `Age` and `Height` both support arithmetic, yet should not be interchangeable. Behavioral typing alone is insufficient without nominal anchoring.
-
-##### Unresolved questions
-How does nominal identity interact with generic or parameterized types? If `Registry<T>` is a Type, is `Registry<Person>` the same concept as `Registry<Company>`? In nominal systems, each instantiation is a different type — this seems correct, but the implications for code reuse need exploration.
 
 ### Type vs Implementation Type
 A programming language type is one possible representation of a modeling Type. They are not the same thing, and conflating them causes two distinct problems:
@@ -150,11 +120,6 @@ Modeling justifies a Type by independent responsibility, not by the presence of 
 
 Two boundary clauses complete the rule. First, the converse guards against over-splitting: where instances of *one* Type vary, that variation is data — fields on the Type's realization — not new Types. Second, neither structural similarity nor structural difference between realizations creates or dissolves Type identity; both questions were settled at the modeling layer (see [Type Identity](#type-identity)). Family resemblance to known static-concept families (errors, capability identifiers, status codes) is likewise not itself a qualification — each candidate still passes through the modeling test, and a status label that carries no independent responsibility remains an attribute of its owning concept, not a Type of its own.
 
-#### Discussion
-##### Drawbacks
-Requiring one named entity per stateless concept proliferates Types. The framework accepts this deliberately and expects such Types to be produced by code generators rather than hand authorship — the manual path's weight is a signal of intent, not an accident. Additionally, each concrete Type appearing in public signatures becomes part of the contract whose removal is a breaking change — a genuine cost, judged worthwhile because compile-time-checked identity is the higher-priority guarantee; projects prioritizing rapid iteration or minimal API surfaces may reasonably weigh it differently. Finally, the rule demands a conceptual shift from developers accustomed to thinking of identifiers — errors, statuses, permissions — as values (strings, constants, enum variants): the [framework's philosophy](./framework.md) provides the foundation for the shift, but adoption friction is real and acknowledged.
-
-##### Prior art
 Java assigns each failure concept its own exception class — the closest mainstream validation of type-per-concept identity. Its weaknesses lie in the exception mechanism Memar rejects (implicit stack unwinding, catch blocks at arbitrary distance), not in the identity model; its checked-exception contract burden, however, previews the API-surface cost noted above. Rust and Swift group failure concepts as enum variants within error types: identity sits in a runtime tag rather than in the Type itself, a trade-off they accept in exchange for exhaustiveness checking over grouped failure families. More broadly, across language communities whose official philosophy rejects type-level identity, practice drifts toward it anyway — developers define custom types once sentinel strings prove insufficient, lint rules emerge to distinguish identity-as-data from identity-as-Type, and richer comparison mechanisms approximate what the type system would have provided natively. That drift is evidence the need is real and widespread; the memar-go companion analysis documents it in depth for the Go ecosystem.
 
 ### Categories of Type
@@ -262,22 +227,7 @@ Other languages introduce many more top-level constructs than Khayyam does — `
 
 This mapping is not exhaustive and not a claim that every keyword in every language reduces cleanly to one of these four roles. A construct like `union`, for instance, is arguably closer to an implementation strategy for representing overlapping state than to a modeling role, and this document takes no position on it. The claim is narrower and specific to the rows above: where a construct's role is owning state, defining a pure contract, providing callable behavior, or establishing a visibility/ownership boundary, Khayyam expresses it through the corresponding Type category rather than through a dedicated keyword of its own.
 
-#### Discussion
-##### Drawbacks
-Four categories increase the conceptual burden: developers must decide not only "should this be a Type?" but "what category?" The distinction is clear in principle but can be blurry in practice. Additionally, the "How to identify a Type" framework currently works well for Capsules and Abstractions — which clearly have independent identity and autonomous responsibility — but is less immediately intuitive for Method and Scope, whose inclusion as Type categories requires additional justification beyond the base criteria.
-
-##### Rationale and alternatives
-- **Unify Capsule and Abstraction (rejected)**: This loses the essential distinction between "owns state" and "defines contract." Scala's experience with stateful traits demonstrates the problems of unification.
-- **Treat Method as a separate concept from Type (rejected)**: Methods *are* Types. Making them non-types would prevent them from being imported, composed, and referenced through the same mechanism — breaking the orthogonality of the type model. It would also remove the natural bridging unit between Abstractions and Capsules.
-- **Treat Method as a kind of Capsule (considered, not chosen)**: A method is a "callable capsule" in spirit, but calling it a Capsule obscures the fundamental distinction: a Method's primary purpose is executability, not state ownership. The categories should reflect semantic role, not implementation similarity.
-- **Treat Scope as a compiler construct, not a Type (considered, not chosen)**: If Scope were merely syntactic, it would not qualify. But Scope establishes semantic boundaries — visibility, ownership, composition, isolation — that are relevant to the type model. These properties justify its inclusion as a Type category.
-
-##### Prior art
 Rust's struct/trait distinction parallels Capsule/Abstraction, but Rust treats functions as separate from the type system. OCaml's structure/signature distinction is similar but also separates functions from types. Khayyam's "Method as Type" is a genuinely different position — closer to Smalltalk's "everything is an object" but with explicit type categories rather than a single uniform concept.
-
-##### Unresolved questions
-1. Does Method fundamentally represent a Type category, or is Method a behavior owned by another Type? The current model treats Method as a Type, and the "fundamental semantic building block" argument supports this position. However, alternative interpretations remain possible — for instance, a Method could be viewed as a behavioral facet of the Type it is attached to, rather than an independent entity. The question is recorded as unresolved because the current model's treatment of Method-as-Type, while well-motivated, has not yet been validated through implementation experience.
-2. How does "Method as Type" affect compilation and dispatch? If a Method is a Type, does it have a runtime representation, or is it purely compile-time?
 
 ### Type Metadata
 Types accumulate auxiliary concerns beyond their core contract — access to state and to invoked behavior, implementation intent visible to tooling, human-facing names and documentation across languages. This section records three such families because they recur constantly; it does not claim they are the only ones, and new families are expected. Every family receives the same treatment regardless: its carrying answer is chosen between ordinary first-class constructs and companion artifacts — never new declaration keywords on the language surface. Each family below states the concern, the carrying answer, and why the keyword route was rejected.
@@ -309,10 +259,6 @@ A Type should correspond to a meaningful concept in the domain model, not simply
 The modeling document establishes that the output of modeling is a set of abstractions, concerns, relationships, and supporting documents — not capsules. Capsules are implementation-level realizations. This means the modeling phase identifies Types at the Abstraction level first; the Capsule level comes later, during architecture and implementation. The Type concept spans both levels, but the modeling decision that justifies a Type's existence operates at the Abstraction level.
 
 Ownership flows one way across these levels. Modeling identifies a concept and its boundary; the Type represents that concept and becomes the boundary behavior hangs from; implementation-level principles — Explicit Behavior Ownership, [below](#explicit-behavior-ownership) — preserve that boundary rather than replace the modeling that produced it. When a behavior's ownership is ambiguous in code, the root cause usually lies upstream: a modeling step that failed to identify the correct Type for the concept. Ambiguity discovered at implementation time is therefore a modeling defect surfacing, not an implementation problem to patch locally.
-
-#### Discussion
-##### Drawbacks
-If every type definition requires a modeling decision, the cost of introducing types increases. For prototyping and exploration, this is a significant friction. A type system derived from modeling principles must provide mechanisms for gradual introduction — lightweight types that can be strengthened as the model matures — without requiring full modeling justification from the start.
 
 ### Explicit Behavior Ownership
 
@@ -420,50 +366,7 @@ flowchart LR
 
 Tooling consequences follow directly from the graph's honesty: compile-time checking enforces that every Abstraction requirement is met by an explicit method in the satisfying component, with no inherited satisfaction; static analysis and compilers enumerate a component's complete method set by scanning source alone; documentation needs no answer to "where did this method come from?" because the source location *is* the answer; AI-assisted analysis and generation gain reliability from fully visible origins; and code generation leverage inverts the old trade-off — AI and linters can scaffold explicit delegations on demand, keeping them auditable and modifiable, so the extra lines become the substrate making automated reasoning more trustworthy rather than a cost automation merely tolerates.
 
-#### Discussion
-
-##### Drawbacks
-
-- **Increased boilerplate** — developers write explicit delegation instead of inheriting; a real increase in lines of code, substantially reduced in AI-assisted environments where generation and lint-scaffolding produce the delegation automatically. The remaining lines purchase visible ownership for every reader; the trade-off shifts from "more code vs. hidden behavior" to "more code AND clear behavior."
-- **Initial development speed** — early in a project, hierarchies are shallow and verbosity feels unnecessary; the comprehension benefit compounds as the codebase grows.
-- **Pattern migration** — teams accustomed to inheritance-based design must reformulate patterns (Template Method, inheritance-based Strategy) with composition and delegation. A corresponding benefit hides here: principled deviation from OO norms filters for practitioners who think critically about trade-offs, as the Go and Rust communities demonstrate.
-- **Generated-code management** — heavy reliance on generation demands reliable, auditable generators and workflow discipline around generated artifacts.
-
-##### Rationale and alternatives
-
-- **Reject each hidden-behavior mechanism individually (rejected)** — "no inheritance," "no trait defaults," "no promotion," "no macro methods" was the earlier, per-document approach. Unifying under EBO means future, unimagined mechanisms are evaluated automatically against one rule: does this introduce behavior without explicit, visible ownership? A growing blacklist cannot do that.
-- **Allow controlled hidden behavior (rejected)** — e.g., defaults permitted on abstractions marked pure, or embedding restricted to interface-like targets. Exceptions erode principles: each creates a category to learn and police, and any permission for hidden behavior reopens the exact problem EBO closes — there is no practically definable safe subset, and each exception demands its own enforcement, review, and documentation, consuming what it promised to save. Ecosystem evidence settles the enforcement question: successful Java and C# teams already follow EBO-like conventions ("prefer composition over inheritance," "no deep hierarchies") enforced through reviews, linters, and institutional knowledge — fragile, incomplete, expensive. If a convention is near-universal among high-performing teams, encode it in the language and let the compiler enforce it for free.
-- **Rely on tooling to expose hidden behavior (rejected)** — IDEs annotating inherited methods still place the visibility burden on tools rather than source. Source is the ground truth; if understanding a component requires an IDE, it has already failed. Code review web interfaces, PR diffs, and printed code all lose tool-provided annotations.
-- **Define inheritance precisely and permit only that form (rejected)** — e.g., allowing "protocol extension only." This engages a taxonomy whose subject does not exist: extension is already correctly named and already outside EBO's scope. Granting "precise inheritance" legitimacy re-imports the inapplicable concept; the honest naming is explicit delegation for implementations and extension for protocols.
-- **Doing nothing (the cost)** — without a unifying ownership principle, each mechanism gets debated in isolation, producing inconsistent decisions and ad-hoc rules, with developers navigating hidden behavior through fragile tooling, documentation, and tribal knowledge.
-
-##### Prior art
-
-- **Go interfaces:** default-free interfaces align with EBO — but embedding implicitly promotes methods, which EBO rejects.
-- **Java interfaces (pre-8):** pure, aligned — Java 8 default methods moved away.
-- **Rust traits:** default methods and blanket implementations inject behavior the implementing type's source does not define.
-- **C# extension methods:** add behavior visible in IntelliSense but absent from the type's source.
-- **Python / duck typing:** monkey patching, multiple inheritance, metaclass manipulation all violate ownership clarity in favor of flexibility.
-- **C++ multiple inheritance:** concrete-body MI creates diamond-ownership ambiguity; the single-owner rule eliminates the class of problem.
-- **Ada generics:** compile-time composition explicit in instantiation — partially aligned, though resulting behavior remains hard to trace.
-
-The common thread: every listed language treats "inheritance" (or its equivalents) as a coherent concept to refine, restrict, or work around. EBO's position is that the concept itself — as a model for behavioral transfer — is what fails examination, not particular implementations.
-
-##### Unresolved questions
-
-1. **Generated-code transparency:** generators must emit readable, auditable source files — never opaque binaries or compiler intermediates. Working answer recorded; tooling specifics open.
-2. **Multiple delegations:** a component may hold and delegate to several other components — each relationship explicit in source.
-3. **Performance overhead:** explicit delegation may cost slightly versus inlined inheritance; clarity is favored, and optimization belongs to compilers and runtimes, not source-level design.
-4. **Dynamic behavior:** dynamic proxies and reflection-based method addition generally violate EBO — runtime-added methods mean source no longer reflects the available set.
-5. **Macro boundary:** exactly where transparent code generation ends and opaque macro magic begins remains open. The guiding principle is human cognitive accessibility — the same reason variables are not named `x42`: generated behavior should be readable and navigable without special tooling. Resolution may ultimately be linter configuration rather than language rule.
-
-##### Future possibilities
-
-1. **AI-assisted delegation generation:** instant, auditable scaffolding of forwarding methods.
-2. **Formal verification:** with no hidden edges, verification scope equals source scope.
-3. **Ownership-clarity metrics:** IDEs and linters could compute and display an "ownership clarity score" for each component— a measure of how easily a reader can determine the origin of each behavior.
-4. **Delegation pattern library:** standardized forwarding/adapting/decorating patterns reducing the burden without hiding anything.
-5. **Beyond software:** responsibility-clarity applications in organizational design.
+Go interfaces (default-free, aligned with EBO — but embedding implicitly promotes methods, which EBO rejects); Java interfaces pre-8 (pure, aligned — Java 8 default methods moved away); Rust traits (default methods and blanket implementations inject behavior the implementing type's source does not define); C# extension methods (behavior visible in IntelliSense but absent from the type's source); Python and duck typing (monkey patching, multiple inheritance, metaclass manipulation violate ownership clarity in favor of flexibility); C++ multiple inheritance (concrete-body MI creates diamond-ownership ambiguity; the single-owner rule eliminates the class of problem); Ada generics (compile-time composition explicit in instantiation — partially aligned, though resulting behavior remains hard to trace). The common thread: every listed language treats "inheritance" (or its equivalents) as a coherent concept to refine, restrict, or work around. EBO's position is that the concept itself — as a model for behavioral transfer — is what fails examination, not particular implementations.
 
 ### Type and Rules
 A Type may own rules that define valid states and behaviors. Two framings keep this honest. First, a rule exists at the modeling level: it is domain knowledge stated as a constraint or valid-behavior description, and implementation code merely executes it — the checking code is one realization, not the rule itself. Second, ownership follows the concept constrained: rules belong to the Type — or the Relation — that owns the concept they govern, and where a constraint originates outside a resource, Modeling's constraint-ownership principle ([Constraints Belong to the Constraining Concern](./modeling.md#constraints-belong-to-the-constraining-concern)) places it on the constraining concern rather than duplicating it onto each affected party. However, the term "rules" covers several distinct concepts that should be separated:
@@ -482,21 +385,17 @@ What Eiffel's Design by Contract teaches: invariants are checked at class bounda
 
 What dependent and refinement types teach: the strongest possible integration of rules and types dissolves the distinction entirely — a rule *is* a type. This is powerful but comes at high cognitive cost. Refinement types (LiquidHaskell) provide a practical middle ground limited to SMT-decidable predicates.
 
-#### Discussion
-##### Unresolved questions
-1. Are rules checked at compile time or runtime? This is the most consequential implementation decision.
-2. What happens when rules from different Types conflict?
-3. Can business rules be configured without changing the Type's identity?
-4. What is the relationship between rule hierarchies and type realization?
+### Concepts Outlive Their Labels
+A recurring failure in the ecosystem's discourse is rejecting a *concept* by rejecting its *label* — discarding the wrapped insight along with the naming tradition it arrived in. The Type model's own position requires the opposite discipline: a concept is judged on what it does for the model, and its prevailing label is only the historical packaging it came in.
+
+The sharpest current case is the functional-programming communities' rejection of object-orientation, which frequently extends to the concepts the OO tradition's vocabulary carries — aggregation, encapsulation, inheritance-as-practiced. The rejection of the vocabulary is understandable: OO's labels arrived bundled with practices worth rejecting (behavior transfer, deep inheritance trees, mutability as default). But the concepts are not the bundle. **Encapsulation, specifically, is not an OO invention that FP may decline — it is a precondition of the Type model itself**: a primitive value that cannot hold its own invariants, that anyone may mutate from anywhere, cannot even serve as the base of a type system. A language without encapsulation cannot define its own `Bool` with the guarantee that it stays `True` or `False`. This is not a hypothetical: the record shows FP-heritage languages growing per-language encapsulation and access-discipline mechanisms as their systems scaled — the concept was declined by name and then re-admitted by need, which is the pattern this document names *concepts outliving their labels*.
+
+The same discipline applies in the other direction, and the framework's own positions exercise it: [Modeling](./modeling.md) rejects the *aggregate-root* pattern while keeping aggregation as a composition outcome; the framework's protocol documents reject the memory/storage dichotomy's *vocabulary* while keeping both retention needs as properties; [khayyam-inheritance](./khayyam-inheritance.md) rejects behavior transfer while keeping requirement extension between abstractions. In every case the test is the same: which concept did this label wrap, does the concept survive independent of the packaging, and what explicitly replaces the packaging's function? A critique that cannot answer the third question has rejected a name, not designed anything.
 
 ### Type and Relations
 A Relation connects Types to one another, but it is not itself a fifth Type category alongside Capsule, Method, Abstraction, and Scope. A Relation presupposes the existence of the Types it connects — it cannot be defined without them — and so it operates one layer above the concern this document addresses: what qualifies as a Type, and what a Type is made of.
 
 This matters because graph-based domain models — the tool Memar uses for domain discovery, where both Nodes and Edges may carry independent meaning — are *consumers* of Type at a higher modeling layer, not part of Type's own definition. An `Employment` relation between `Person` and `Company` may itself need to become a Type once it has properties like start/end dates or status, but that decision is made using the same criteria as any other Type (see [How to identify a Type](#how-to-identify-a-type-in-the-domain)); it does not require a separate "Relation" category to exist first.
-
-#### Discussion
-##### Future possibilities
-Whether Relations warrant dedicated language-level treatment — endpoint ownership, first-class status conditions, directionality, arity — is deferred to a future companion document that can address it as a modeling-layer concern in its own right, informed by prior art such as Chen's Entity-Relationship model, RDF/OWL, property graph databases, and Alloy.
 
 ### Manifestation in Khayyam
 The principles defined above — Type as semantic entity, nominal identity, four categories of Type, owned rules — have found concrete expression in the Khayyam programming language. This section documents that manifestation without repeating the companion documents; for details, see [Khayyam](./khayyam.md) and its companion documents on [Encapsulation](./khayyam-encapsulation.md), [Abstraction](./khayyam-abstraction.md), [Inheritance](./khayyam-inheritance.md), and [Polymorphism](./khayyam-polymorphism.md).
@@ -517,41 +416,3 @@ The principles defined above — Type as semantic entity, nominal identity, four
 
 ## Results
 This document is still in Draft status. No real-world outcomes from applying this Type model have been observed yet. This section will be populated once the model has been implemented and used in at least one non-trivial project.
-
-## Discussion
-
-### Drawbacks
-The most significant drawback is the gap between aspiration and specification. The claim that Types are "semantic entities" sets an expectation that the type system can verify semantic properties. Without a formal definition of "semantic identity" and without specifying the Capsule/Abstraction realization mechanism in full detail, the claim is philosophical rather than technical. This is acceptable for a Draft but must be addressed before Proposed status.
-
-The second drawback is the absence of primitives. While eliminating primitives solves the ascent problem, it creates a bootstrapping challenge: what are the foundational Capsules that everything else builds on, and how are they defined without circularity? This is an implementation concern but it affects the Type model's coherence.
-
-### Rationale and alternatives
-- **Adopt a traditional type system and enforce modeling through conventions (rejected)**: This works when the team has strong discipline and fails when it does not. The goal is to make discipline enforceable.
-- **Adopt a dependent type system (rejected for now)**: Too complex for the current stage. Refinement types may be added as a middle ground in future revisions.
-
-### Prior art
-- **Martin-Löf Type Theory**: Types as meaningful entities defined by formal rules. This document shares the aspiration but lacks MLTT's rigor.
-- **Rust**: Struct/trait distinction parallels Capsule/Abstraction. Rust treats functions as separate from types; Khayyam does not.
-- **Eiffel**: Design by Contract parallels rules owned by Types. Eiffel's runtime checking is the most mature implementation.
-- **Alloy**: Relations as foundational entities. Alloy demonstrates that first-class relations are viable and powerful.
-- **Smalltalk**: "Everything is an object" parallels "everything is a Type," but Smalltalk lacks explicit type categories.
-
-Khayyam's contribution is not any single one of these ideas but their integration: a unified type model where Capsules, Methods, Abstractions, and Scopes are all Types; Methods are currently the primary mechanism connecting Capsules and Abstractions; inheritance is placed between Abstractions while behavior transfer between Capsules is rejected; and polymorphism operates through abstraction conformance rather than generic syntax — all derived from the principle that Type is a modeling decision, not a compiler convenience.
-
-### Unresolved questions
-1. **Formal semantics of "semantic identity"**: Proposed direction — nominal declaration + contract specification + contextual scoping. Needs rigorous definition.
-2. **Multiple Abstraction satisfaction**: Can a Capsule satisfy multiple Abstractions? How are method name conflicts resolved?
-3. **Rule checking**: Are rules checked at compile time or runtime? What are the decidability boundaries?
-4. **Rule conflicts**: What happens when rules from different Types realized by the same Capsule conflict?
-5. **Method as Type**: Does Method fundamentally represent a Type category, or is Method a behavior owned by another Type? The current model treats Method as a Type, supported by the "fundamental semantic building block" and "independent, referenceable existence" arguments — but alternative interpretations remain possible and the position has not yet been validated through implementation experience.
-6. **Gradual typing**: How does a language enforcing "every type is a semantic entity" interoperate with systems that do not share this philosophy?
-7. **Bootstrapping**: Without primitives, what are the foundational Capsules, and how are they defined without circularity?
-8. **Method dispatch**: If a Method is a Type, does it have a runtime representation, or is it purely compile-time?
-9. **Accidental satisfaction**: Implicit structural satisfaction (no `impl` keyword) risks accidental conformance. Whether this warrants a mitigation mechanism is recorded as an open question in the Abstraction document.
-
-### Future possibilities
-1. **Refinement types for invariants**: An SMT solver could check simple invariants at compile time.
-2. **Formal specification of the satisfaction mechanism**: Once design decisions are made, the Capsule/Abstraction bridge could be specified formally.
-3. **Gradual typing at boundaries**: A mechanism for converting between semantic Types and structural types at API boundaries.
-4. **Rule analysis tooling**: Static analysis to verify invariants, detect rule conflicts, and identify over-constraining.
-5. **A dedicated Relation document**: Addressing whether and how Relations gain independent status, endpoint ownership, directionality, and arity, as a modeling-layer concern built on top of — not inside — this Type definition.

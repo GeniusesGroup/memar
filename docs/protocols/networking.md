@@ -32,7 +32,7 @@ A packet carries many frames in a desired order; devices on the network read the
 A principle this model states once and owns everywhere: **fragmentation does not exist in this architecture.** No layer defines any mechanism for splitting a packet to fit a smaller unit, or for reassembling one afterward — delivering its own unit intact is each layer's whole obligation. Links are therefore expected to carry whole packets; a medium whose units cannot hold the traffic simply does not host it ([Layer presence](#layer-presence) decides that per link). Anything resembling segmentation can only be simulated above the model, through sRPC-level exchange conventions — workable, but an application-side workaround bending the model rather than a capability of it. The goal remains a genuine 8 KB MTU end to end.
 
 ### Frames
-Frames indicate in each protocol's own RFC — e.g. [GP](./giti.md), [sRPC Protocol](./sRPC.md), [Chapar](./chapar.md). Each packet can carry many frames as long as it respects the network MTU. All frames have a fixed first field named `FrameType`, one byte wide. FrameType is a small, centrally-registered set of wire framings maintained in one table here — and it appears in every frame of every packet, so its width is paid continuously by all traffic. One byte covers the real population with room for an experimental range and a signed-extension escape hatch.
+Frames indicate in each protocol's own document — e.g. [GP](./giti.md), [sRPC Protocol](./sRPC.md), [Chapar](./chapar.md). Each packet can carry many frames as long as it respects the network MTU. All frames have a fixed first field named `FrameType`, one byte wide. FrameType is a small, centrally-registered set of wire framings maintained in one table here — and it appears in every frame of every packet, so its width is paid continuously by all traffic. One byte covers the real population with room for an experimental range and a signed-extension escape hatch.
 
 ```go
 type Frame interface {
@@ -81,7 +81,7 @@ A special frame that always appears at the end of a packet; because it sits at t
 type PacketSignature struct {
     FrameType       byte
     Signature       []byte
-    SignatureScheme uint16 // SignatureScheme identifies a signature algorithm supported by TLS. See RFC 8446, Section 4.2.3.
+    SignatureScheme uint16 // SignatureScheme identifies a signature algorithm supported by TLS. See https://datatracker.ietf.org/doc/html/rfc8446#section-4.2.3.
     Length          uint16 // including the header fields
 }
 ```
@@ -113,6 +113,22 @@ Suggest the Internet protocol suite use `FrameType == 100` (experimental range) 
 
 - **NDP**: the [Neighbor Discovery Protocol](https://en.wikipedia.org/wiki/Neighbor_Discovery_Protocol) is based on the IPv6 protocol.
 - **NTP**: the [Network Time Protocol](https://en.wikipedia.org/wiki/Network_Time_Protocol) is based on the UDP protocol.
+
+### Memar's position on the traditional network stack
+The traditional network stack — the TCP/IP implementation a conventional operating system embeds in its privileged core and exposes to applications through a socket API — is a protocol surface owned outside Memar, and this document records Memar's position on depending on it. A terminology caution comes first, because the ecosystem's name for this thing is loaded: [OS](./os.md) establishes that *kernel* names a layer of whichever system carries it, not a component exclusive to operating systems — so this document speaks of the **traditional OS-embedded stack**, and when the ecosystem's phrase "kernel network stack" appears in sources, that is the thing being discussed.
+
+The stance, in one sentence: **in a Memar system, the traditional OS-embedded stack is a compatibility library — chosen where its constraints are acceptable, replaced where they are not — never the foundation.** The prevailing default routes a system's networking through the host's embedded stack because the host presents no alternative; that is inheritance, not examination. The parallel position on storage is recorded in [filesystem](./filesystem.md), and the OS-side half of this judgment — why a stack does not belong in the OS's own duties — is [OS → Networking](./os.md#networking-frame-delivery-not-communication-meaning).
+
+What the examination yields, per point:
+
+- **State ownership belongs with the protocol's logic.** A connection's state — buffers, sequence tracking, timers, negotiated options — is what the layers above it depend on, and when it lives behind an opaque host API, upper layers design against a hidden shadow of the truth. [networking-connection](./networking-connection.md) states the contract that follows.
+- **A layer-seven library must behave like one.** An application-layer implementation that also manages sockets, framing, and buffer lifetimes has concentrated jobs that the layer model separates deliberately — the resulting library is simultaneously hard to reason about, hard to replace, and attractive to reimplement badly. The critique is of the placement, not of any particular library's craftsmanship.
+- **Timeouts and liveness are budgets of the owning component.** The networking face of [Process → Requests, Cancellation, and Timeout](../process.md#requests-cancellation-and-timeout): the component that runs the protocol owns the timers and exposes configuration, not per-operation renegotiation.
+- **Protocol compliance is checkable, and deviations are real.** Implementations shipped under prestigious labels — including a mainstream language's bundled TCP — have been examined by this project and found deviating from the specifications they claim to realize. Per [Protocol](../protocol.md#protocols-and-external-observers), conformance is never inferred from a label; a system that treats the host stack as an unquestionable foundation has no defense against this except noticing late.
+
+Depending on the embedded stack is still justified where the check says so: interoperability with the existing Internet before GP has real reach, the operational tooling maturity the traditional stack carries, and cases where the host's constraints genuinely match the system's own. The positive counterpart — protocol logic in userspace, application-owned connection state — is the direction the ecosystem itself validated with QUIC and that this project's own userspace-TCP work pursues, with the unikernel shape as the longer-term home (see [OS](./os.md)'s unikernel reading). One counter-argument deserves its own statement: protocols riding on HTTP pass through filters that expect HTTP, while raw-TCP protocols get blocked. That is a deployment constraint of a specific era and region, not an architecture; designing the stack around a censor's current behavior guarantees the architecture inherits the censor's lifetime. Where deployment reality forces HTTP-shaped traffic today, the check — not dogma — decides.
+
+Open work on this position — the check's practice-document question, the userspace realization's scope, and its relationship to [GP](./giti.md)'s application-connection model — is tracked in the paired [handoff](./networking.handoff.md).
 
 ### Layer presence
 No layer of the network model is mandatory. Every layer has its own identity — a job it does and a reason to exist on a particular link — and whether a layer is present on any given hop is decided by that hop's capacity and role, never assumed by default. A stack diagram describes what layers *can* do together, not what must always be stacked on top of each other.
@@ -168,29 +184,7 @@ The project's network protocols map onto OSI for orientation:
 | Network     | Layer 3     | [Giti (GP)](./giti.md)                                                                                                                      |
 | Application | Layers 4–7  | [sRPC](./sRPC.md)                                                                                                                           |
 
-Per the [Layer presence](#layer-presence) principle this mapping describes capability, not obligation — a given link realizes whichever of these layers justify themselves on it; a protocol document declares the conditions under which it applies rather than presuming it rides beneath every packet. Above the stack sit the rest of the ecosystem: the router/network-coordinator role is the ChaparKhane ([Chapar](./chapar.md)), the operating system is [PersiaOS](./persia_os.md), and applications run as unikernel images produced by the Achaemenid auto-generation mechanism (see the [Enterprise](../README.md#enterprise) statement for the commercial components). Protocol documents own their own layer's content; this table is the single stack overview, and protocol documents reference it instead of restating a private copy.
+Per the [Layer presence](#layer-presence) principle this mapping describes capability, not obligation — a given link realizes whichever of these layers justify themselves on it; a protocol document declares the conditions under which it applies rather than presuming it rides beneath every packet. Above the stack sit the rest of the ecosystem: the router/network-coordinator role is the ChaparKhane ([Chapar](./chapar.md)), the operating system is the OS contract defined in this documentation set ([OS - Operating System](./os.md)), and applications run as unikernel images produced by the Achaemenid auto-generation mechanism (see the [Enterprise](../../README.md#enterprise) statement for the commercial components). Protocol documents own their own layer's content; this table is the single stack overview, and protocol documents reference it instead of restating a private copy.
 
 ## Results
 Insufficient deployment experience has been recorded under this consolidated structure to report real, observed outcomes. This section will be filled in once there is such experience to draw on.
-
-## Discussion
-
-### Drawbacks
-Consolidating the packet model, registry, special frames, layering principle, and hardware notes into one file makes it the mandatory dependency of every protocol document — a change to the registry or packet rules touches all of them at once. This is deliberate (one owner of truth beats three drifting files) but concentrates review responsibility here.
-
-### Rationale and alternatives
-- **Keep the three legacy files separate (rejected)**: the split followed no reader need — the packet model, its frame kinds, and the hardware considerations are consulted together; the separation produced dead links (`networking-frame-signature.md`) and duplicated switch-class definitions across files.
-- **Leave the layer-presence principle inside [Chapar](./chapar.md) (rejected)**: it is not Chapar's rule — it binds every layer and every future protocol; keeping it there would force unrelated protocols to cite a layer-2 specification to justify their own absence.
-
-### Prior art
-- [Enlightra](https://enlightra.com/)
-- The OSI model's own layering, and the long practice of tunneling one layer over another (L2-over-L3 VPNs), show stacks being composed opportunistically — the [Layer presence](#layer-presence) principle states explicitly what such practice implies: presence is per-link, never automatic.
-
-### Unresolved questions
-1. Is FrameType 11 (`Security`) the same frame as the [Special signature frame](#special-signature-frame)? The legacy registry pointed both Padding and Security at the signature document without ever stating the mapping; the table above preserves the association, but the identification needs an explicit ruling.
-2. The exact sub-frame-type layout for the Internet-suite compatibility range (`FrameType == 100`) is sketched but not specified — how Ethernet's EtherType and IP's protocol numbers map into it needs its own pass.
-3. Can one primitive give a *small* packet both goals at once — confidentiality (unreadable by third parties in transit) and integrity/authenticity (tamper-evident)? Today the pieces split: the signature frame provides integrity only, and the encryption suggestions provide confidentiality only. Modern AEAD constructions (e.g., AES-GCM, ChaCha20-Poly1305 — the family TLS 1.3 standardized) solve exactly this pairing with a single key and roughly a 16-byte tag, making them the leading candidate if the model adopts a dedicated answer; recorded deliberately as an open direction for dedicated review, not a settled method.
-
-### Future possibilities
-- The registry grows by appending rows; if it ever becomes machine-consumed, extract it into a formal registry per the pattern discussed in [Documentation](../documentation.md).
-- More compatibility mappings (ATM, MPLS, ...) follow the same FrameType-plus-sub-frame pattern as the Internet suite.

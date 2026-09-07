@@ -1,0 +1,50 @@
+# Thinking Handoff
+
+Open work for `thinking.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](./documentation-handoff.md) for what a handoff is.
+
+## Open Questions
+
+### The definition topic
+- State: whether "thinking" should be left undefined with only behavior regulated was considered and rejected (an undefined central term imports the reader's colloquial sense; terminology governance requires defining the load-bearing term here); whether this document should be named "critique" or "discourse" was also considered and rejected (both name one product or setting of thinking; the broader concept keeps the scope honest).
+
+### Is "mode" the right concept at all?
+- State: the modes may be better modeled as strategies, dispositions, or phases; the function-group framing is a working position, not a settled one.
+- Next: test the framing against real work; re-model if it strains.
+
+### Which further modes belong here
+- State: convergent thinking (named implicitly as divergence's counterpart but not yet given its own entry), inductive and deductive inference, and probabilistic thinking have all been plausibly named; what observed dependence would justify adding each is undecided.
+- Next: add a mode when a document depends on it explicitly, per the changelog argument rule.
+
+### Are the four functional groups the right partition?
+- State: whether generative and corrective modes should be regrouped as their coverage grows is undecided.
+- Next: revisit as the mode list grows.
+
+### The 4E grounding's adoption depth
+- State: which parts of the 4E literature, if any, Memar should adopt as *Evidence*-cited foundations versus treat as context only — and what criterion distinguishes them — is unresolved; likewise whether the embodied/enacted claims have any operational consequence for AI-mediated collaboration or matter only for human participants at present.
+- Next: decide when the first rule would need to cite a specific 4E claim as evidence.
+
+### Conversation formalization as Protocol
+- State: whether a conversation between two thinking systems should be formally specified as a Protocol in Memar's sense — with its own document — or whether that over-formalizes an activity whose norms are stated conceptually here. Related: what is lost, conceptually, when the medium is asynchronous and persistent (a repository comment thread) rather than live — whether that changes the model or only the medium's properties.
+- Next: decide if a protocol treatment earns its place (see Anticipated Work).
+
+### Discourse-norm enforcement
+- State: which of the discourse norms, if any, are strict enough to warrant linter-style verification in written artifacts versus remaining conversational disciplines; and whether the "hidden reasoning" warrant in the proportional-criticism norm should be parameterized (e.g. by the maturity of the artifact being criticized) or whether the qualitative statement suffices.
+- Next: propose a linter check when a norm violation first appears in a written artifact.
+
+### Intra-system thinking
+- State: how this document treats *intra*-system thinking — one system's solitary analysis — versus the inter-system exchanges the norms address; the conversation model covers the exchange case, and whether the norms extend unchanged to solitary work is unexamined.
+- Next: examine when a solitary-analysis rule is first needed.
+
+### The medium's role as its own topic
+- State: whether the medium's role should be developed into its own topic (or document) — covering what thinking material loses crossing each medium type and what compensation the participants owe — or whether that belongs to a future Protocol treatment (see the conversation-formalization question).
+- Next: decide alongside the conversation-formalization question.
+
+### Further cognitive-science grounding
+- State: what further cognitive-science grounding deserves adoption as the document matures — working memory constraints on exchange design, dual-process accounts of evaluation, or others — and by what criterion each is admitted.
+- Next: admit grounding when a norm needs a better-specified basis.
+
+## Anticipated Work
+
+- The mode list grows as Memar's work demonstrates dependence on further modes, each addition argued in this document's changelog.
+- If the conversation-as-two-thinking-systems model is formalized as a Protocol, this document remains the conceptual home and the protocol document the normative one, following the project's concept/implementation separation.
+- Deeper cognitive-science grounding is expected to refine the norms over time — replacing qualitative statements (e.g. about criticism proportionality) with better-specified ones as the underlying science warrants.

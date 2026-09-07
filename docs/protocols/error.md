@@ -27,7 +27,7 @@ This document answers each of these directly, recording the reasoning and the al
 ### Methodology
 This document is the consolidation of two documents previously maintained in parallel: the *Error Abstraction* document (composition, identity, tooling-facing declaration, optional capability interfaces) and the *Error vs. Log* document (the Capture → Persist → Re-express translation discipline). The two were merged because they answer two halves of the same question — what an `Error` is, and what an `Error` is allowed to do when it leaves its origin layer — and forcing a reader to load two documents to assemble a single mental model produced the same scattering problem this project's documentation specification was written to eliminate.
 
-The content was arrived at through: sustained design discussion across multiple working sessions, with each proposed change argued for and against rather than accepted on first suggestion; rejection of an earlier `Equivalence[Error]` method on the grounds that it duplicated the `DataTypeID()` comparison; rejection of a sealed-interface marker pattern (documents 495390, 495393, 495414) after evidence accumulated that it bought no real guarantee beyond a plain exported method; correction of a Go-specific realization detail that had been incorrectly generalized into the abstraction's canonical composition (the `ADT` family narrowing); and direct testing of the boundary-translation rule against a concrete worked example (the financial-transaction service used in the [Boundary translation](#boundary-translation) topic below) to confirm the three-step Capture → Persist → Re-express pattern actually resolves the two failure modes the rule was written to prevent.
+The content was arrived at through: sustained design discussion across multiple working sessions, with each proposed change argued for and against rather than accepted on first suggestion; rejection of an earlier `Equivalence[Error]` method on the grounds that it duplicated the `DataTypeID()` comparison; rejection of a sealed-interface marker pattern after evidence accumulated that it bought no real guarantee beyond a plain exported method; correction of a Go-specific realization detail that had been incorrectly generalized into the abstraction's canonical composition (the `ADT` family narrowing); and direct testing of the boundary-translation rule against a concrete worked example (the financial-transaction service used in the [Boundary translation](#boundary-translation) topic below) to confirm the three-step Capture → Persist → Re-express pattern actually resolves the two failure modes the rule was written to prevent.
 
 ## Explanation
 
@@ -42,7 +42,7 @@ tp Error ab {
 }
 ```
 
-A concrete error composes `Error` — the exact mechanics of how a concrete capsule obtains `Error`'s method implementations from a shared parent capsule are intentionally NOT shown here. Khayyam has no automatic inheritance or method promotion: placing one capsule inside another via composition is containment only, and the containing capsule must explicitly implement and forward each method itself. That question — Khayyam's capsule composition and reuse model in general, not specific to `Error` — is tracked as its own future document (see [Unresolved questions](#unresolved-questions)); this document does not assume an answer to it.
+A concrete error composes `Error` — the exact mechanics of how a concrete capsule obtains `Error`'s method implementations from a shared parent capsule are intentionally NOT shown here. Khayyam has no automatic inheritance or method promotion: placing one capsule inside another via composition is containment only, and the containing capsule must explicitly implement and forward each method itself. That question — Khayyam's capsule composition and reuse model in general, not specific to `Error` — is tracked as its own future document (see this document's [handoff](./error.handoff.md)); this document does not assume an answer to it.
 
 Worth stating plainly: the absence of automatic method promotion means a concrete error's forwarding methods must be written explicitly, one way or another. This is not treated here as a defect requiring mitigation. Explicit forwarding has a real benefit — no implicit resolution chain to trace, no accidental complex inheritance relationships forming behind a developer's back, and a capsule's actual behavior is always visible directly in its own file rather than inherited invisibly from elsewhere. In an era where hand-typing repetitive boilerplate is no longer how most such code actually gets produced — whether by a code generator (the tooling-facing pattern this document depends on) or by AI-assisted development — the traditional cost argument against explicitness carries much less weight than it would have in an earlier era of software development, while the comprehension benefit of explicitness remains fully intact regardless of who or what writes the code.
 
@@ -51,7 +51,7 @@ Each embedded abstraction contributes a specific, non-overlapping responsibility
 
 - **`DataType`** supplies the type-level identity machinery — `Field_ID` (whose value is what `DataTypeID()` returns), `Field_LifeCycle` (recording whether a type is `Experimental`, `Stable`, `Deprecated`, or `EndOfLife`), the `Detail` and `Quiddity` text bundles, and the optional `ExpireInFavorOf` pointer discussed under [Identity and equality](#identity-and-equality). Without `DataType`, `Error` would have no canonical identifier to compare across processes.
 - **`Field_MediaType`** supplies the serialization envelope label used when an error's `DataTypeID` (and nothing else) is transmitted across a network boundary. It is what allows a remote receiver to dispatch on the *kind* of error without needing the full concrete type's method set in scope.
-- **`ADT`** supplies the null-state family (`IsNil` / `IsNull` / `IsEmpty`). Khayyam's `Error` canonically requires all three; the question of what `IsNull`/`IsEmpty` should mean for a value whose entire purpose is identity (rather than data) is left to a dedicated ADT session and tracked under [Unresolved questions](#unresolved-questions).
+- **`ADT`** supplies the null-state family (`IsNil` / `IsNull` / `IsEmpty`). Khayyam's `Error` canonically requires all three; the question of what `IsNull`/`IsEmpty` should mean for a value whose entire purpose is identity (rather than data) is left to a dedicated ADT session and tracked in this document's [handoff](./error.handoff.md).
 - **`ImplementsError`** is the tooling-facing declaration described in its own topic below — a single plain method that lets a code generator discover intent before a capsule structurally qualifies as an `Error`.
 
 ### Optional capability interfaces
@@ -99,24 +99,7 @@ tp Find mt (self Service) (id ID) (result Result) (err Error)
 
 Identity is `DataTypeID()` alone (via `datatype_p.Field_ID`, part of `DataType`). `Error` does NOT declare an `Equivalence` method. An earlier draft included one; it was removed because, once it is established that `Error` carries no per-instance dynamic field meaningful to compare beyond "which error occurred" (see [Boundary discipline](#boundary-discipline) below), any equivalence check would only re-derive the `DataTypeID` comparison under a second name. A generic, package-level helper function (`error.IsEqual`, in the implementation package, not a required interface method) is provided for convenience where an explicit comparison is useful.
 
-A related, briefly considered design — using `ExpireInFavorOf() DataType` (from `datatype_p.Details`) as an implicit equivalence relation, so that a deprecated error could be treated as "equal to" its replacement — was rejected as misleading: conflating "this type is being phased out in favor of that one" with "these two values are the same" is a category error. Whether `ExpireInFavorOf` itself is still needed at all, now that this reasoning for keeping it has been rejected, is tracked in [Unresolved questions](#unresolved-questions) — it may be fully redundant, since `Field_LifeCycle` already records a type's lifecycle stage (including an `EndOfLife` state), but `ExpireInFavorOf` answers a different question (*which type replaces this one*) that `LifeCycle` alone does not.
-
-#### Discussion
-
-##### Drawbacks
-
-Equality by `DataTypeID` alone means two structurally identical errors defined in different files (or different organizations) are *not* equal, even if a human would call them the same concept. This is intentional — identity is anchored to the file URI the type was declared in, exactly as Khayyam's import mechanism anchors everything else — but it does mean the framework has no built-in notion of "synonymous errors across organizations." Cross-organization error mapping, when it is needed, is an application concern handled at a translation boundary (see [Boundary translation](#boundary-translation)), not a property of `Error` itself.
-
-##### Rationale and alternatives
-
-- **`Equivalence[Error]` method (rejected):** redundant with `DataTypeID()` comparison once it was established that `Error` carries no comparison-meaningful per-instance data. Maintaining it would have required every concrete error to implement a method whose body always degenerates to the same `DataTypeID` comparison.
-- **`ExpireInFavorOf` as implicit equivalence (rejected):** conflates type-lifecycle phasing with value equality. A deprecated type and its replacement are not "the same value" — they are two distinct types, one of which is being phased out in favor of the other.
-- **Identity by `Name` or `Aliases` (rejected):** human-readable names are not guaranteed unique across files, are locale-dependent, and may change as a type's vocabulary evolves. `DataTypeID` is stable, programmatically safe, and locale-independent.
-
-##### Unresolved questions
-
-- **`IsEqual`'s `MediaType()` comparison.** The generic `error.IsEqual` helper compares both `DataTypeID()` and `MediaType()`. If `MediaType` is a fixed, type-level property (every instance of a given `DataTypeID` always reports the same `MediaType`), this check is redundant and should be dropped. If `MediaType` can genuinely vary per-instance for the same `DataTypeID`, this reopens the "identity is `DataTypeID` alone" principle stated above and needs to be resolved explicitly. Not yet decided.
-- **`ExpireInFavorOf`.** The reasoning that originally justified analyzing it alongside `Equivalence` no longer applies, but whether the underlying capability (declaring "this type is replaced by that one") is still wanted for `Error`, in some form, has not been given a final yes/no. Blocked on `datatype_p.Details` (the file defining it) being shared for review.
+Whether `ExpireInFavorOf` itself is still needed at all is tracked in this document's [handoff](./error.handoff.md) — it may be fully redundant, since `Field_LifeCycle` already records a type's lifecycle stage (including an `EndOfLife` state), but `ExpireInFavorOf` answers a different question (*which type replaces this one*) that `LifeCycle` alone does not.
 
 ### Boundary discipline
 Two distinct boundary disciplines apply to `Error`, and they are easy to conflate. The first governs what an `Error` value may *carry* across a process or network boundary. The second governs what an `Error` value may *be* (which vocabulary it may speak) when it crosses from a diagnostic layer to an actionable one inside a single process. Both must be respected.
@@ -124,7 +107,16 @@ Two distinct boundary disciplines apply to `Error`, and they are easy to conflat
 #### What may cross a process or network boundary
 Only `DataTypeID` crosses a network or process boundary. A concrete error's own fields, if it has any, are either (a) purely local — consumed before a call ever reaches a boundary (for example, SDK-side field validation, never serialized), or (b) routed to a Log Event through the Capture → Persist → Re-express discipline described below — never transmitted as part of the `Error` value itself.
 
-Dynamic, per-call data that a caller genuinely needs (for example, a retry-after duration) does not belong inside `Error` at all; it belongs in a separate, not-yet-designed sibling output returned alongside `Error` (tracked in the [Unresolved questions](#unresolved-questions), out of this document's scope). The discipline is strict: if a piece of data must travel with an error to a remote receiver, it must be encoded in a *new* `DataTypeID` (i.e. a new concrete error type), not appended as a field on an existing one.
+What arrives on the other side of that boundary is, concretely, a numeric identifier — not a human-language message. A single-locale text string is the wrong currency for a contract crossing machines and organizations: it cannot be compared or dispatched on reliably, it forces every receiver into string matching, and it binds the wire format to one rendering of one audience's vocabulary. An integer identifier is stable, locale-independent, cheap to compare, and lets each receiving side resolve the identifier into its own local text bundle (the `Detail` fields above) for whichever audience it faces. The text an error carries belongs at the ends of the wire, resolved per audience; the identifier is what travels.
+
+Dynamic, per-call data that a caller genuinely needs (for example, a retry-after duration) does not belong inside `Error` at all; it belongs in a separate, not-yet-designed sibling output returned alongside `Error` (tracked in this document's [handoff](./error.handoff.md), out of this document's scope). The discipline is strict: if a piece of data must travel with an error to a remote receiver, it must be encoded in a *new* `DataTypeID` (i.e. a new concrete error type), not appended as a field on an existing one.
+
+#### Immutability: an Error is a fixed contract member, not an accumulating envelope
+An `Error` value is immutable by construction: identity is the `DataTypeID`, there are no per-instance fields that participate in the contract, and nothing about a concrete error changes after it is created. This is not an incidental property but a consequence of the identity model — and it puts this protocol deliberately at odds with the wrap-and-enrich convention that dominates the broader ecosystem (Go's `%w` wrapping, exception chaining with attached context, middleware decorating errors as they bubble up). In that convention, each layer appends its own context to the error as it passes through, so the error an upper layer finally receives is an accretion of every intermediate layer's annotations.
+
+That convention is rejected here as a category confusion: it uses the error contract — whose job is to tell the immediate caller what happened and what to do next — as a vehicle for diagnostic bookkeeping, which is Log's job. Each layer's "enrichment" is precisely the diagnostic detail that the [Boundary translation](#boundary-translation) discipline says belongs in a log event persisted at the boundary, not in the contract the next layer must interpret. The alternative is not loss of information: the Capture → Persist → Re-express steps preserve every layer's diagnostic contribution in the log stream, correlated, while the re-expressed error stays exactly as wide as the receiving layer's vocabulary. The ecosystem's contrary experience — "if you don't enrich at each layer you lose the trace" — is real, but it is evidence about ecosystems that lack the separation of concerns this protocol draws, not evidence that the error contract must absorb the log's role. Where the ecosystem practice persists despite this, the failure modes of [Boundary discipline](#boundary-discipline) follow: callers receive errors too detailed for their vocabulary, and diagnostic data arrives scattered across the contract instead of correlated in the log.
+
+The same immutability discipline answers a recurring design question: an error must never be created dynamically to carry per-request particulars (a failing filename, a request id). If those particulars matter to the caller's decision, the *operation's design* is wrong — a well-shaped method returns a fixed, named error type, and whatever identification the caller needs is available through inputs the caller already holds or through the sibling output channel tracked in the unresolved questions. Creating a distinct error instance per request is a signature of diagnostic data being smuggled into the contract.
 
 #### What vocabulary an Error may speak across a layer boundary
 This is the *Error vs. Log* discipline. **Error** and **Log** are distinct concerns that the broader software ecosystem routinely conflates. `Error` is a contract addressed to the immediate caller, meant to let that caller decide what to do next. `Log` is a forensic record addressed to an operator or monitoring system. Whenever an error crosses from a layer where it is diagnostic (full of internal detail) into a layer where it is only actionable (meaningful to a business-level caller, free of internal detail), it must be **translated** — captured with context, persisted via a dedicated logging capsule, and re-expressed as a new, layer-appropriate error — not merely forwarded.
@@ -141,6 +133,8 @@ Both failures stem from the same root cause: treating "error propagation" and "o
 - **`Log`** is an *event* — a functional occurrence within the system that something happened which is operationally significant. A log event may be handled in multiple ways depending on severity and context: stored for later forensic investigation, streamed in real time to another system, or used to trigger an immediate notification (for example alerting an on-call engineer). The key distinction is that a log event records something the *system itself* did or experienced — infrastructure behavior, internal state transitions, resource failures — not something a *user* did or experienced.
 
 This distinction has a direct corollary: **user-domain outcomes must not be modeled as log events.** A `403 Forbidden` response, for example, is not a system event — it is a normal outcome in the user-request domain ("this user is not authorized to perform this action"). Logging it as a system event conflates two separate concerns, pollutes the operational event stream with business-domain data, and obscures both. The correct place to track user request outcomes is within the request-handling domain itself, where the full context of the request is available and the tracking is meaningful to the business, not to an operator monitoring system health.
+
+A third entity completes the picture, and conflating it with either of the two above is the root of most error-handling confusion in the broader ecosystem: the **Bug**. A bug is a defect in human reasoning — an erroneous expectation, design, or implementation held by the people who built the system. It is a property of the development process, not a runtime entity. An `Error`, by contrast, is an informational entity the system itself holds and reports: a named, expected member of a method's contract. Because the two live in different worlds — one human and historical, one informational and runtime — they are *found* by different means: a bug is discovered by human investigation (using Log as forensic evidence among other inputs), while an `Error` is known to the system the moment it exists. Treating an `Error` as if it were a bug to be hunted through log output, or a bug as if it were an `Error` to be modeled in a contract, misplaces both. This distinction is why the Capture → Persist → Re-express discipline below refuses to mix forensic log records into the error contract: the log is the bug's evidence trail; the error is the caller's decision input.
 
 These two concerns have different audiences, different lifetimes, and different content requirements. Conflating them — by letting a low-level error capsule propagate unchanged through every intermediate layer, with logging treated as an afterthought sprinkled wherever convenient — produces errors that are too detailed for their consumer and logs that are too scattered to be useful.
 
@@ -211,28 +205,7 @@ The following clarifications apply to the rule's scope:
 - **Translation is required when vocabularies diverge.** The signal is: "does the caller need to understand anything about how this capsule is implemented to react correctly to this error?" If yes, the error is in the wrong vocabulary and must be translated before crossing the boundary.
 - **The logging capsule is not prescribed.** The specific shape of `TransactionFailureLog`, the log sink type, and the telemetry pipeline are framework/library concerns left to the Memar recommended logging capsules or to organization-specific replacements. This document specifies the *discipline* (the decision to enrich and persist at the boundary), not the mechanism.
 
-##### Discussion
-
-###### Drawbacks
-
-This rule cannot be reduced to a structural or syntactic check, unlike most other rules in this document set (for example definite assignment, or `Deinit`-path coverage). Determining whether a given error *should* have been translated at a given boundary requires understanding the semantic role of that boundary — a judgment about domain architecture, not about code shape. A structural linter can verify that a logging capsule was called somewhere along a path, or that a return type is `Error`-compatible. It cannot determine whether the *specific* error returned still leaks internal vocabulary inappropriate to its caller, or whether a low-level error was forwarded unchanged when it should have been re-expressed.
-
-This class of review is better suited to AI-assisted static analysis trained on the distinction described here, operating as a complementary check alongside (not a replacement for) the structural linter rules defined elsewhere.
-
-###### Rationale and alternatives
-
-The alternative — letting errors propagate verbatim through every layer, with logging treated as an afterthought — was rejected as the direct cause of both failure modes described in [Boundary discipline](#boundary-discipline). It is the prevailing pattern in most codebases precisely because no language or framework makes translation the path of least resistance; this document makes it explicit that the Memar framework does.
-
-###### Prior art
-
-This pattern echoes the general "fault boundary translation" practice recommended in Domain-Driven Design and clean-architecture literature (translating infrastructure exceptions into domain exceptions at a repository boundary), but is stated here as an explicit, named, framework-wide rule rather than an implicit convention. The specific enrichment-before-logging step (attaching `ServerInstanceID`, `ConnectionID`, correlated IDs to the log record at the point of maximum available context) draws on observability engineering practices — structured logging, distributed tracing correlation — that exist in the ecosystem as best practices but are rarely enforced architecturally.
-
-###### Unresolved questions
-
-Whether a companion naming convention (for example a type-naming prefix or suffix distinguishing errors that are "safe to propagate as-is" from errors that "must be translated before crossing a boundary") should be introduced is not yet decided. If introduced, this would become a follow-up document referencing this one.
-
-###### Future possibilities
-A companion document specifying the concrete API of the recommended Memar logging capsule (the shape of `TransactionFailureLog`, the `Logger` interface, and standard context-attachment methods) is the natural next step once this boundary-translation discipline itself is finalized.
+A companion document specifying the concrete API of the recommended Memar logging capsule (the shape of `TransactionFailureLog`, the `Logger` interface, and standard context-attachment methods) is the natural next step once this boundary-translation discipline itself is finalized — tracked in this document's [handoff](./error.handoff.md).
 
 ### Detail and Quiddity fields — two audiences, not one
 
@@ -243,37 +216,11 @@ A companion document specifying the concrete API of the recommended Memar loggin
 
 `Aliases` and `Abbreviation` are human-lookup conveniences only, never unique and never usable for dispatch or equality — `DataTypeID` is the only identifier with that guarantee. A concrete, confirmed use case for `Aliases` on `Error` specifically: a support agent searching for an error by a user's vaguely-remembered wording over the phone.
 
-#### Discussion
-
-##### Rationale and alternatives
-
-- **A single free-text `Description` field (rejected):** collapses two genuinely different jobs (describing the type in general versus advising the occurrence-facing reader on what to do) into one blob of text, with no machine-readable signal of which audience a given sentence serves.
-- **Locale-independent `Domain` as a classification signal (rejected):** would couple a business-domain taxonomy to `Error`'s dispatch model, freezing a particular taxonomy into the type system when capability interfaces already provide a more flexible, type-safe alternative.
-
-##### Prior art
-
-The Detail/Quiddity split (type documentation vs. occurrence guidance) has no direct precedent identified in mainstream error-handling literature; it was arrived at independently during this discussion. Most prior art (Go's `error`, Rust's `Error` trait, Java's `Throwable`) carries a single free-text message or a context-display string with no built-in audience distinction.
-
 ### ADT composition — the full `ADT` family at the canonical/Khayyam level
 
 `Error`'s canonical composition embeds the full `ADT` family (`IsNil`/`IsNull`/`IsEmpty`), not just `Nil`. An earlier draft of this document narrowed this to `Nil` alone; that was a mistake, made by generalizing a Go-specific realization detail into the abstraction's canonical definition. The narrowing to `Nil` is legitimate only as Go's own realization, motivated by a Go-specific fact: Khayyam variables are always true references (never nullable pointers), so "nil" in Khayyam does not carry the same meaning it does in Go, and the concept of absence Khayyam needs is not reducible to a simple pointer-nil check the way Go's `err == nil` is. Go's memar-go realization may therefore continue to use only `adt_p.Nil`, as a backend-specific divergence (the same kind of divergence already established for `ImplementsError`'s naming), but this must not be read back into the Memar-level definition of `Error` itself.
 
-What genuinely remains open, and is **not** resolved by this correction, is the deeper semantic question: what `IsNull`/`IsEmpty` actually *mean* for a value whose entire purpose is identity, not data. That question belongs to the `ADT` capsule family's own dedicated document, tracked separately (see [Unresolved questions](#unresolved-questions)), and this document does not attempt to answer it — only to correctly state that Khayyam's `Error` requires all three methods, whatever their eventual semantics turn out to be.
-
-#### Discussion
-
-##### Drawbacks
-
-Requiring three methods whose semantics are not yet settled is an uncomfortable position: implementers writing concrete errors today are being asked to provide `IsNull`/`IsEmpty` implementations whose contracts are not yet fully defined. The mitigation is that a concrete error can return a fixed, conservative answer (`false` for both, since an `Error` value that exists is by definition not null) until the dedicated ADT document resolves the deeper question.
-
-##### Rationale and alternatives
-
-- **Narrow to `Nil` alone at the canonical level (an earlier draft; rejected):** generalized a Go-specific realization fact into the abstraction. Khayyam's reference semantics are different enough from Go's pointer semantics that the same narrowing does not necessarily make sense in other backends.
-- **Drop `ADT` from `Error`'s composition entirely (rejected):** would remove the only contract-level way to ask "is there actually an error here at all" without a separate side-channel boolean. The `OnPresent`/`OnAbsent` dispatch used in the worked example under [Boundary translation](#boundary-translation) depends on this.
-
-##### Unresolved questions
-
-- **`ADT`'s `IsNull`/`IsEmpty` semantics for a value like `Error`.** Khayyam's `Error` canonically requires all three `ADT` methods (see above); Go's realization narrows to `Nil` alone for Go-specific reasons and is not a template for other backends. What `IsNull`/`IsEmpty` should actually mean for `Error` remains open, tracked in a dedicated ADT/Khayyam session and its own document.
+What genuinely remains open, and is **not** resolved by this correction, is the deeper semantic question: what `IsNull`/`IsEmpty` actually *mean* for a value whose entire purpose is identity, not data. That question belongs to the `ADT` capsule family's own dedicated document, tracked separately (see this document's [handoff](./error.handoff.md)), and this document does not attempt to answer it — only to correctly state that Khayyam's `Error` requires all three methods, whatever their eventual semantics turn out to be.
 
 ### `ImplementsError` — a tooling-facing declaration, not a safety mechanism
 
@@ -295,17 +242,7 @@ tp ImplError mt (self ErrServiceNotFound) () () {
 }
 ```
 
-This method provides **no safety or "sealed interface" guarantee** — an earlier design (now Rejected) attempted to harden the Go realization into a compiler-enforced sealed interface using an unexported method and a required embedded marker struct. On review, this was found to add real ceremony (the marker had to live in a specific package, one extra embedded field per concrete type) without buying a real guarantee: deliberately embedding a shared marker struct and deliberately writing the same plain method independently are equally trivial for anyone acting in bad faith, so neither realization is actually harder to fake than the other. Accidental (non-deliberate) collision was separately judged implausible on its own, given `Error`'s real, fully-expanded method count (~15-20 methods once `DataType` is expanded). `abstraction_p.Implements` and its domain-specific realizations exist purely to help tooling, not to guard against misuse.
-
-#### Discussion
-
-##### Rationale and alternatives
-- **Sealed-interface marker method (documents 495390, 495393, 495414 — all rejected):** examined in detail and found to provide no guarantee beyond a plain exported method. The marker added ceremony (one extra embedded struct per concrete type, in a specific package) without adding any real protection — a determined bad actor can embed the marker just as trivially as they can write the plain method.
-- **The fully generic `Implements()` name, with no domain suffix (rejected):** a capsule declaring intent for more than one abstraction at once would have no way to indicate *which* declaration was for which abstraction. The `ImplError` name resolves that ambiguity at zero cost.
-- **No tooling-facing declaration at all (rejected):** a code generator scaffolding a large capsule from a `.kh` definition would have no signal that an incomplete capsule is *meant* to become an `Error`, and would be forced to wait until every required method is hand-written before it could recognize the capsule as conforming. The declaration shifts intent-discovery to the earliest possible moment.
-
-##### Future possibilities
-A dedicated document for the `Error` family's code generator input format, specifying how a `.kh`/DSL definition of an error's metadata maps to the generated concrete type, is the natural next step once the broader `abstraction_p.Implements` pattern is itself finalized.
+This method provides **no safety or "sealed interface" guarantee**. `abstraction_p.Implements` and its domain-specific realizations exist purely to help tooling, not to guard against misuse.
 
 ### Enforcement of the "each Error is its own type" rule
 Per the [Type](../type.md) identity principle, every concrete error is its own distinct type, generated (not hand-authored, in the common case) by a code generator that reads `ImplementsError`-declared, incomplete capsules and scaffolds the remaining `Error` methods. The suggested (non-binding) naming convention for this family is the `Err` prefix (`ErrServiceNotFound`, `ErrTransactionUnavailable`), as recorded in [type.practice.md](../type.practice.md).
@@ -321,40 +258,3 @@ A reader who finds the "every error is its own type" claim surprising, or who wa
 
 ## Results
 Insufficient time has passed since this consolidated document was adopted to report real, observed outcomes from its use across multiple concrete errors. The boundary-translation discipline, in particular, has been validated against the financial-transaction worked example used in [Boundary translation](#boundary-translation) but has not yet been exercised at scale across a real production codebase. This section will be filled in once there is such experience to draw on.
-
-## Discussion
-
-### Drawbacks
-1. **Type proliferation** — a system with many distinct error concepts will contain many distinct type definitions; the general trade-off is recorded with the identity principle itself in [Type](../type.md). Mitigated by code generation (the `abstraction_p.Implements` pattern); the framework's position is that this is an intended, correct consequence, not a flaw.
-2. **Two design threads remain genuinely open** (see [Unresolved questions](#unresolved-questions)) — this document should not be read as completely closing the `Error` abstraction's design, only as the current, consolidated, best understanding.
-3. **`ADT`'s `IsNull`/`IsEmpty` semantics for `Error` are not yet defined** — the methods are required (canonically, in Khayyam), but what they should actually return for a value like `Error` is deferred to the dedicated ADT session. Go's realization sidesteps this by using only `Nil`, which is a legitimate, narrower backend-specific choice, not a resolution of the underlying question.
-4. **Boundary translation cannot be linted structurally** — see the topic-level Discussion under [Boundary translation](#boundary-translation). This shifts the burden of verifying the rule onto semantic review or AI-assisted static analysis, neither of which is yet built.
-
-### Rationale and alternatives
-- **Single generic `Error` capsule with an `Init` method (rejected):** the central rejected alternative of the [Type](../type.md) identity principle, applied here to `Error` specifically — the concept motivating case for that principle in the first place. Demotes identity from the type system to runtime data; incompatible with covariant returns and with the optional capability-interface pattern (both depend on distinct concrete types).
-- **`Equivalence[Error]` method (rejected):** redundant with `DataTypeID()` comparison once it was established that `Error` carries no comparison-meaningful per-instance data.
-- **Sealed-interface marker method (documents 495390, 495393, 495414 — all rejected):** examined in detail and found to provide no guarantee beyond a plain exported method; see the [ImplementsError topic](#implementserror--a-tooling-facing-declaration-not-a-safety-mechanism) above.
-- **A single `Category()` enum for classification (rejected in favor of optional capability interfaces):** a closed enum forces every error into one bucket along one axis; `Internal`/`Temporary`/`Timeout` capture genuinely orthogonal dimensions (an error can be any combination) more accurately than a single tag could, and remain fully optional per concrete error rather than mandatory.
-- **Keeping the Error composition rules and the boundary-translation rules in separate documents (rejected):** the two are halves of the same question — what an `Error` *is* and what an `Error` is *allowed to do* when it leaves its origin layer. Forcing a reader to load two documents to assemble a single mental model produced the same scattering problem this project's documentation specification was written to eliminate.
-
-### Prior art
-Go's `error` interface (single method, value-oriented, identity via `errors.Is`/`errors.As` chain-walking) and Rust's `Error` trait with enum-based error families are both discussed in depth in the Go-focused companion analysis kept in the memar-go repository (`Static_Concepts_Must_Be_Types-vs-go_philosophy.md`), which this document defers to rather than repeating.
-
-The Detail/Quiddity split (type documentation vs. occurrence guidance) has no direct precedent identified in mainstream error-handling literature; it was arrived at independently during this discussion.
-
-The boundary-translation pattern echoes the general "fault boundary translation" practice recommended in DDD and clean-architecture literature (translating infrastructure exceptions into domain exceptions at a repository boundary), but is stated here as an explicit, named, framework-wide rule rather than an implicit convention. The specific enrichment-before-logging step (attaching `ServerInstanceID`, `ConnectionID`, correlated IDs to the log record at the point of maximum available context) draws on observability engineering practices (structured logging, distributed tracing correlation) that exist in the ecosystem as best practices but are rarely enforced architecturally.
-
-### Unresolved questions
-- **`IsEqual`'s `MediaType()` comparison.** The generic `error.IsEqual` helper compares both `DataTypeID()` and `MediaType()`. If `MediaType` is a fixed, type-level property (every instance of a given `DataTypeID` always reports the same `MediaType`), this check is redundant and should be dropped. If `MediaType` can genuinely vary per-instance for the same `DataTypeID`, this reopens the "identity is `DataTypeID` alone" principle stated under [Identity and equality](#identity-and-equality) and needs to be resolved explicitly. Not yet decided.
-- **`ExpireInFavorOf`.** The reasoning that originally justified analyzing it alongside `Equivalence` no longer applies (see [Identity and equality](#identity-and-equality) above), but whether the underlying capability (declaring "this type is replaced by that one") is still wanted for `Error`, in some form, has not been given a final yes/no. Blocked on `datatype_p.Details` (the file defining it) being shared for review.
-- **`ADT`'s `IsNull`/`IsEmpty` semantics for a value like `Error`.** Khayyam's `Error` canonically requires all three `ADT` methods (see the [ADT composition topic](#adt-composition--the-full-adt-family-at-the-canonicallykhayyam-level) above); Go's realization narrows to `Nil` alone for Go-specific reasons and is not a template for other backends. What `IsNull`/`IsEmpty` should actually mean for `Error` remains open, tracked in a dedicated ADT/Khayyam session and its own document.
-- **Khayyam's capsule composition and method-reuse model, in general (not specific to `Error`).** An earlier draft of this document's composition example incorrectly implied that composing `Error` into a concrete capsule automatically promotes its methods, the way Go's struct embedding does. Khayyam has no such automatic inheritance: composition is containment only, and a containing capsule must explicitly implement and forward each method itself. The full implications of this (how concrete errors are actually meant to be authored, what role code generation plays versus a possible future language-level reuse mechanism) needs its own dedicated document, since the relevant information is currently scattered across [khayyam.md](../khayyam.md)'s capsule and abstraction-composition sections rather than settled in one place. Not specific to `Error`, but `Error` is the concrete motivating case that surfaced it.
-- **Whether the optional capability-interface set (`Internal`, `Temporary`, `Timeout`) is complete**, or whether additional orthogonal dimensions will be needed as more of the framework is built out. No process for adding new ones has been defined yet (presumably: propose a new capability interface the same way these three were introduced, but this has not been stated as a rule anywhere).
-- **The not-yet-designed retry/cache-policy sibling abstraction**, referenced above as the intended home for dynamic, per-call data like a retry-after duration — out of this document's scope, tracked separately.
-- **Whether a companion naming convention is needed** to distinguish errors that are "safe to propagate as-is" from errors that "must be translated before crossing a boundary" (carried forward from the original *Error vs. Log* document). Not yet decided.
-- **Whether a structured Memar logging capsule API should be specified** as a follow-up document (carried forward from the original *Error vs. Log* document).
-
-### Future possibilities
-- A dedicated document for the `Error` family's code generator input format, specifying how a `.kh`/DSL definition of an error's metadata maps to the generated concrete type.
-- Once the ADT session concludes, revisit this document's composition if `Nil` alone proves insufficient.
-- A companion document specifying the concrete API of the recommended Memar logging capsule (the shape of `TransactionFailureLog`, the `Logger` interface, and standard context-attachment methods), as the natural next step once the boundary-translation discipline is finalized.

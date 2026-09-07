@@ -8,10 +8,12 @@ The seven entries below are migrated from `type.md`'s former `## Change Rational
 - Time: unknown (historical import)
 - Type: Added
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — claimed, argued: authored the initial reflections on Type as a semantic entity and its relationship with Capsule and Abstraction; directed the philosophical framing of Type as an independent concept considered before its manifestation in Khayyam.
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — claimed, argued
 
-#### Summary
+#### What changed
 Established the foundational concepts of the document: Type as a Semantic Entity, Type and Modeling, Capsule and Abstraction as realizations of Type, Type and Rules, and Type and Relations.
+
+Authored the initial reflections on Type as a semantic entity and its relationship with Capsule and Abstraction; directed the philosophical framing of Type as an independent concept considered before its manifestation in Khayyam. (Omid Hekayati)
 
 ---
 
@@ -20,10 +22,12 @@ Established the foundational concepts of the document: Type as a Semantic Entity
 - Type: Changed
 - Contributors:
   - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — requested
-  - [Super Z](../CONTRIBUTORS.md#super-z) (GLM 5.2) — researched, rewrote: conducted the cross-language and type-theoretic research; restructured the document to follow the then-current template.
+  - [Super Z](../CONTRIBUTORS.md#super-z) (GLM 5.2) — researched, rewrote
 
-#### Summary
+#### What changed
 Restructured the document into the formal template. Added Type Identity, Type vs Implementation Type, the rule categories, Capsule/Abstraction bridge analysis, and unresolved questions based on cross-language research.
+
+Conducted the cross-language and type-theoretic research; restructured the document to follow the then-current template. (Super Z)
 
 ---
 
@@ -31,11 +35,15 @@ Restructured the document into the formal template. Added Type Identity, Type vs
 - Time: unknown (historical import)
 - Type: Changed
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — argued: identified Method as a type category and the absence of primitive types in Khayyam; corrected assumptions about primitive types; emphasized the independent-concept-first structure.
-  - [Super Z](../CONTRIBUTORS.md#super-z) (GLM 5.2) — rewrote: applied the corrections across multiple revision iterations.
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — argued
+  - [Super Z](../CONTRIBUTORS.md#super-z) (GLM 5.2) — rewrote
 
-#### Summary
+#### What changed
 Corrected structural errors based on review feedback: removed Primitive Types (Khayyam has none), added Method as a Type category (`mt`), added Scope as a Type category (`sc`), repositioned the definition of Type as an independent concept before its manifestation in Khayyam, reduced overall length by consolidating repetitive comparative analysis, and aligned the category model with Khayyam's actual four-subtype structure (`cp`, `mt`, `ab`, `sc`).
+
+Identified Method as a type category and the absence of primitive types in Khayyam; corrected assumptions about primitive types; emphasized the independent-concept-first structure. (Omid Hekayati)
+
+Applied the corrections across multiple revision iterations. (Super Z)
 
 ---
 
@@ -51,10 +59,12 @@ Corrected structural errors based on review feedback: removed Primitive Types (K
   - [Khayyam](./khayyam.md) — Reference: documents the recurring principles (Behavior Over Type Identity, Domain Modeling, Syntactic Atomicity) that the Type concept in Khayyam instantiates, and is the canonical specification of Khayyam's type subtypes and their syntax.
 - Contributors:
   - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — requested
-  - [Super Z](../CONTRIBUTORS.md#super-z) (GLM 5.2) — rewrote: incorporated the companion-document findings into the document.
+  - [Super Z](../CONTRIBUTORS.md#super-z) (GLM 5.2) — rewrote
 
-#### Summary
+#### What changed
 Incorporated findings from the companion documents (Encapsulation, Abstraction, Inheritance, Polymorphism, Modeling). Resolved the Type Identity open question about structural satisfaction vs. nominal identity by referencing the Abstraction document's treatment of implicit structural satisfaction and accidental satisfaction risk. Added the relationship between inheritance and Type categories (inheritance between Abstractions, not Capsules). Added the Modeling document's "Concept Existence vs. Model Existence" principle to the decision framework. Refined the Methodology section to reflect the actual research approach.
+
+Incorporated the companion-document findings into the document. (Super Z)
 
 ---
 
@@ -62,12 +72,18 @@ Incorporated findings from the companion documents (Encapsulation, Abstraction, 
 - Time: unknown (historical import)
 - Type: Changed
 - Contributors:
-  - [ChatGPT](../CONTRIBUTORS.md#chatgpt) (GPT-5.5) — reviewed, argued: critical review whose findings this revision applied.
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — reviewed: flagged the Method-as-Type argument weakness, the Scope justification gap, the Type-definition exclusivity concern, and the DDD reference overhead (recorded in the former Contributors field; the surviving history does not tie this review to a single numbered pass).
-  - [Claude](../CONTRIBUTORS.md#claude) (claude-sonnet-5, extended thinking) — reviewed: flagged the Method-as-Type argument weakness, the Scope-as-Type justification gap, the Type-definition exclusivity risk, the DDD reference overhead, the premature bridging claim, and the Type-hierarchy resolution (recorded against the preceding revision's state; the surviving history does not tie this review to a single numbered pass).
+  - [ChatGPT](../CONTRIBUTORS.md#chatgpt) (GPT-5.5) — reviewed, argued
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — reviewed
+  - [Claude](../CONTRIBUTORS.md#claude) (claude-sonnet-5, extended thinking) — reviewed
 
-#### Summary
+#### What changed
 Applied critical review from ChatGPT (GPT-5.5): (1) removed all references to DDD and Aggregate Root — these belong in companion documents, not in the Type definition; (2) added "What Is Not a Type" to establish the exclusive boundary of the definition, addressing the risk that an overly inclusive definition dilutes the concept; (3) moved the Type-hierarchy question from Unresolved to an official position — "Type Categories Are Not a Hierarchy," categories connected through semantic relationships rather than taxonomic classification; (4) strengthened the Scope category as a "semantic boundary" defining visibility, ownership, composition, and isolation, not merely a syntactic block; (5) improved the Method-as-Type argument — Methods are Types because they are the fundamental semantic building blocks through which higher-level concepts (rules, vouchers, policies) are expressed, not merely because they have identity and contract; (6) weakened the bridging claim to "currently the primary mechanism" connecting Capsules and Abstractions rather than the definitive bridge; (7) clarified Method lifecycle as definition, composition, specialization, and execution — not runtime creation/destruction; (8) added the conservative-expansion principle, avoiding the OOP-style overloading that rendered "Object" meaningless; (9) recorded Method-as-Type as an unresolved question, well-motivated but not yet validated through implementation; (10) removed the "Beyond DDD" subsection from Type and Modeling.
+
+Critical review whose findings this revision applied. (ChatGPT)
+
+Flagged the Method-as-Type argument weakness, the Scope justification gap, the Type-definition exclusivity concern, and the DDD reference overhead (recorded in the former Contributors field; the surviving history does not tie this review to a single numbered pass). (Omid Hekayati)
+
+Flagged the Method-as-Type argument weakness, the Scope-as-Type justification gap, the Type-definition exclusivity risk, the DDD reference overhead, the premature bridging claim, and the Type-hierarchy resolution (recorded against the preceding revision's state; the surviving history does not tie this review to a single numbered pass). (Claude)
 
 ---
 
@@ -76,10 +92,12 @@ Applied critical review from ChatGPT (GPT-5.5): (1) removed all references to DD
 - Type: Fixed
 - Contributors:
   - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — requested
-  - [Claude](../CONTRIBUTORS.md#claude) — reviewed, argued: critical review, cross-checked against `khayyam.md`.
+  - [Claude](../CONTRIBUTORS.md#claude) — reviewed, argued
 
-#### Summary
+#### What changed
 Applied critical review from Claude, cross-checked against `khayyam.md`: (1) replaced the parent-child tree diagram under "The Relationships Between Categories" with a relation table, since the tree's visual shape contradicted the adjacent "Type Categories Are Not a Hierarchy" claim; (2) resolved a direct contradiction in the Scope section — the claim that a Scope's identity derives from its containing Method conflicted with the independent-identity criterion; containment within a method body is now framed as a syntactic placement constraint, distinct from Scope's independent semantic identity; (3) reframed "Type and Relations": a Relation presupposes the Types it connects and therefore operates one layer above this document's concern, deferring first-class-Relation questions (endpoint ownership, directionality, arity) to a future companion document, and "Manifestation in Khayyam" no longer lists first-class relations among realized principles, since Khayyam does not currently manifest them; (4) strengthened the Method-as-Type argument with the distinguishing property — independent, referenceable existence (signature, cross-file import, receiver-independent attachment, composition) — closing a circularity gap where the prior argument could equally apply to any executable construct; (5) removed duplication between "How to identify a Type" and "What Is Not a Type," the former now pointing to the latter for the negative-criteria catalog.
+
+Critical review, cross-checked against `khayyam.md`. (Claude)
 
 ---
 
@@ -88,10 +106,12 @@ Applied critical review from Claude, cross-checked against `khayyam.md`: (1) rep
 - Type: Changed
 - Contributors:
   - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — requested
-  - [ChatGPT](../CONTRIBUTORS.md#chatgpt) (GPT-5.5) — reviewed, argued: second critical-review round, cross-examined and refined through discussion.
+  - [ChatGPT](../CONTRIBUTORS.md#chatgpt) (GPT-5.5) — reviewed, argued
 
-#### Summary
+#### What changed
 Applied a second round of critical review from ChatGPT (GPT-5.5): (1) removed the placement-based justification for Scope entirely rather than merely softening it — the claim that Scope "must" live inside a Method is documented as Khayyam's current syntax/usage pattern (a language-layer concern, deferred to `khayyam.md`), not a defining property; (2) added "A note on independent identity" generalizing the fix beyond Scope: independent identity is a claim about meaning, not about existing free of any containing context — a parameter has identity distinct from its Method despite being confined to that Method's signature; (3) added "Why Only Four Categories?" — a Type category is justified only by a fundamental semantic role irreducible to specialization, composition, or usage pattern of an existing category; Rule, Relation, Protocol, Workflow, and Policy depend on Types without justifying distinct categories; (4) added "Type Categories vs Language Keywords," a mapping showing common keywords elsewhere (`struct`/`class`/`record`, `interface`/`trait`, `function`/`procedure`, `namespace`/`module`/`package`) as typically realizations of Capsule, Abstraction, Method, or Scope — a dedicated keyword elsewhere does not imply a distinct foundational concept; (5) added "Type Beyond Programming Languages" to the Introduction — Type is not introduced by programming languages; Khayyam's prominence here reflects its role as the first concrete manifestation of these principles, not a claim that Type originates in language.
+
+Second critical-review round, cross-examined and refined through discussion. (ChatGPT)
 
 ---
 
@@ -99,11 +119,15 @@ Applied a second round of critical review from ChatGPT (GPT-5.5): (1) removed th
 - Time: 2026-08-25T00:00:00Z
 - Type: refactor
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — requested: asked that this document be upgraded to the current documentation methodology, moving provenance into a paired changelog file.
-  - [ox-alpha](../CONTRIBUTORS.md#ox-alpha) (opencode) — rewrote: performed the migration described below.
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — requested
+  - [ox-alpha](../CONTRIBUTORS.md#ox-alpha) (opencode) — rewrote
 
-#### Summary
+#### What changed
 This document is now structured per `documentation-explanation.md` with no provenance in its front matter or body: the former `Applied to`, `Citations`, and `Contributors` front-matter fields and the `## Change Rationale` section are migrated entirely into this file (entries above). Two in-body sentences that referenced the removed `Citations` field were reworded (Methodology; "Manifestation in Khayyam"), and plain-text mentions of the documents the reader genuinely needs while reading — `modeling.md` (in "Type Categories Are Not a Hierarchy" and "Type and Modeling"), `terminology.md`, and the Khayyam companion documents — became ordinary hyperlinks, per the rule that reader-needed sources link directly in the body while argumentative provenance lives only here.
+
+Asked that this document be upgraded to the current documentation methodology, moving provenance into a paired changelog file. (Omid Hekayati)
+
+Performed the migration described below. (ox-alpha)
 
 ---
 
@@ -118,13 +142,17 @@ This document is now structured per `documentation-explanation.md` with no prove
   - Future Khayyam tooling documents: Pending — preserved decisions with no current home: covariant returns follow from abstraction conformance (the Error-case statement lives in error.md); code generators emit one type per static concept, 1:1 with their input definitions; cross-language mapping preserves identity only because identity was never stored as data; the authoritative enforcement checkpoint is the generator-input layer rather than output-source heuristics; exhaustiveness is a real, unresolved need assigned to linter/compiler tooling without new syntax — candidate mechanisms to evaluate include code-generator metadata, whole-program analysis, and an explicit "closed contract" declared on the abstraction, with Kotlin sealed classes and Swift closed hierarchies as prior art achieving it over compiler-known closed sets of types.
   - Future ADT document: Pending — whether `IsEmpty`/`IsNil`/`IsNull` semantics make sense for stateless Types at all (methods inherited from `ADT`); error.md tracks the Error-specific instance and defers to the dedicated ADT session.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — directed: pre-facet micro-documents predate Memar's documentation principles; the end state is strong Explanation documents plus sufficient Practice documents, with citations pointing at Type and Modeling generally so downstream work inherits principles instead of a private vocabulary. Reviewed the lens analysis that motivated dissolution.
-  - [ox-alpha](../CONTRIBUTORS.md#ox-alpha) (opencode) — drafted, applied: authored the new topic from the source's principle core; performed the dissolution and cross-document redistribution.
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — directed
+  - [ox-alpha](../CONTRIBUTORS.md#ox-alpha) (opencode) — drafted, applied
 
-#### Summary
+#### What changed
 Added "Stateless Types" under Type vs Implementation Type, opening with the governing principle — identity belongs to the type system, answerable from the Type alone at compile time, never from runtime data — followed by the three-role decomposition table (Identity → type system/compile time; Behavior → methods; Data → fields/runtime), the MUST that stateless concepts be carried as their own named entities, the ascent-problem framing of data-simulated identity, boundary clauses against over-splitting and structural reasoning and family-resemblance-as-qualification, and a Drawbacks note recording the accepted proliferation/API-surface trade-off.
 
 The topic absorbs document 495421, "Static Concepts Must Be Types", now dissolved and deleted together with its changelog file. Its principle is a corollary of nominal identity plus the ascent problem, so it survives as a focused topic here rather than an independent document. Heritage record consolidated from that artifact's retired changelog: originating design decision production-validated for years in memar-go; first committed 2026-07-08; drafted across six recorded revisions on 2026-07-08/09 — Super Z (GLM) drafting, ChatGPT (GPT-5.5) reframing the rationale around Concept-vs-Data and clarifying MUST/SHOULD criteria, Claude establishing Immutable Infrastructure's logical independence and deferring exhaustiveness to tooling; Go-specific analysis split to a memar-go companion document on 2026-07-09; migrated to the Explanation-facet template earlier today; dissolved hours later when a layer-lens review assigned roughly half its content to Modeling (classification) and Khayyam tooling (enforcement, codegen, cross-language). The redistribution above is exhaustive; nothing of value was discarded, and the classification thread continues in modeling.md. A second completion pass over the source immediately before final deletion closed the last gaps this entry now carries: the "only identity mechanism left" justification inside the MUST, the conceptual-shift drawback, the Rust/Swift enum trade-off and the industry-drift prior-art observation, the family-member graduation clause (recorded in type.practice.md), and the Pending scope notes for the future tooling documents above. A third relocation, prompted by review, moved the Immutable Infrastructure compatibility analysis out of this ledger into immutable_infrastructure.md itself — its proper explanatory home — leaving this ledger a pointer rather than a parking place for substantive prose.
+
+Pre-facet micro-documents predate Memar's documentation principles; the end state is strong Explanation documents plus sufficient Practice documents, with citations pointing at Type and Modeling generally so downstream work inherits principles instead of a private vocabulary. Reviewed the lens analysis that motivated dissolution. (Omid Hekayati)
+
+Authored the new topic from the source's principle core; performed the dissolution and cross-document redistribution. (ox-alpha)
 
 ---
 
@@ -134,11 +162,13 @@ The topic absorbs document 495421, "Static Concepts Must Be Types", now dissolve
 - Propagates to:
   - modeling.changelog.md: Done — the companion stub `type-concepts_vs_data.md` was absorbed into modeling.md in the same pass (its subject matter is modeling-layer); see that file's entry.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — directed: review and merge the small type-series companions into the strong documents.
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — directed
   - [ox-alpha](../CONTRIBUTORS.md#ox-alpha) (opencode) — reviewed, applied.
 
-#### Summary
+#### What changed
 Two more pre-facet stubs dissolved after lens review. `type-rules_and_invariants.md` contributed two framings "Type and Rules" now states up front: a rule exists at the modeling level while implementation code merely executes it (the checking code is one realization, not the rule), and rule ownership follows the constrained concept — belonging to the Type or Relation that governs it, with an explicit cross-link to Modeling's constraint-ownership principle. `type-relations.md` added nothing: its promotion criterion, graph perspective, Ownership example, and simple-association contrast were all already carried by "Type and Relations" — and its one blanket claim ("Edges are Types") was rejected as contradicting Modeling's edge taxonomy, under which shortcut edges and loop-edge labels are precisely the edges that do not become independent concepts.
+
+Review and merge the small type-series companions into the strong documents. (Omid Hekayati)
 
 ---
 
@@ -146,11 +176,13 @@ Two more pre-facet stubs dissolved after lens review. `type-rules_and_invariants
 - Time: 2026-08-25T00:00:00Z
 - Type: Added
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — directed, argued: no new declaration keywords for Type metadata; needs are carried by the Type's own constructs and companion artifacts. Refined the framing in review: access expectations span behavior invocation as much as state; multilingual identity is each Type's single-source-of-truth duty (propagated to other languages via generated output), never a scattered-files accommodation; and this foundational document must not reference downstream specifications such as Khayyam, which is shaped by the Type definition, not the reverse.
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — directed, argued
   - [ox-alpha](../CONTRIBUTORS.md#ox-alpha) (opencode) — drafted, applied.
 
-#### Summary
+#### What changed
 Added "Type Metadata" as an Explanation topic, sibling to "Type Categories vs Language Keywords", extending the anti-keyword philosophy from categories to metadata. Three families, three carrying answers: **access** — for state and for behavior invocation alike — handled by encapsulation by construction plus methods governing their own invocation levels, making keywords like `private` surface-restatements that imply openness were the default; **implementation intent** — carried by ordinary first-class constructs (an intent-declaring Abstraction composed into the definition, or a plainly named Method), since such requirements are circumstance-dependent and numerous, syntax is closed and shared, keyword approaches tax every reader (the coloring cost), and precedent shows ceremony without stronger guarantees; **human-facing identity** — localized names, labels, documentation, and failure descriptions held in companion artifacts beside the definition as part of the Type's single source of truth, propagated to downstream languages through generated output, never dispersed into disconnected translation files. Absorbs dissolved stub ID 000018, whose Status had been mis-recorded as Proposed — corrected here: Memar documents remain Draft; nothing in the framework is near finalization. The stub's concrete file-naming realization was deliberately not carried: it belongs to downstream specifications, pending their own validation. A completion pass then restored the stub's fuller texture as three `####` subsections: the four-place fragmentation pathology (behavior, re-expressed validation, lookup-keyed display strings) behind the single-source-of-truth refusal; machine-queryable first-class companion artifacts replacing parallel mappings and string-keyed lookups (with the annotation-based-localization distinction — external resources resolved by lookup vs. first-class parts of the definition); the regenerate-not-re-translate rule for added implementation languages; and the accepted translator-workflow cost with its tooling mitigation. A review pass then removed an unintended exhaustivity reading: the intro now states the three families are recorded because they recur, not because they complete the set — every family, recorded or future, receives the same treatment (carrier chosen between first-class constructs and companion artifacts, never syntax), and the closing paragraph generalizes the question from "what keyword?" to "which explicit carrier?".
+
+No new declaration keywords for Type metadata; needs are carried by the Type's own constructs and companion artifacts. Refined the framing in review: access expectations span behavior invocation as much as state; multilingual identity is each Type's single-source-of-truth duty (propagated to other languages via generated output), never a scattered-files accommodation; and this foundational document must not reference downstream specifications such as Khayyam, which is shaped by the Type definition, not the reverse. (Omid Hekayati)
 
 ---
 
@@ -164,13 +196,21 @@ Added "Type Metadata" as an Explanation topic, sibling to "Type Categories vs La
   - khayyam-inheritance.md: Done — its front-matter citation URI was already broken (`./explicit_behavior_ownership.md`, missing the `type-` prefix); now points here.
   - protocol.md: Done — two mentions linked (the split-history note annotated as absorbed; the Unresolved-questions EBO reference linked).
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — claimed, argued, directed: core EBO principle; the inheritance-concept critique across its legal and genetic home domains and the directive that the inheritance taxonomy has no valid subject; the extension-not-inheritance terminology for abstraction relationships. Present across the document's entire life — from authoring the principle through directing this dissolution into type.md without any summarization, including routing the operational-residue check toward practice.
-  - [ChatGPT](../CONTRIBUTORS.md#chatgpt) (GPT-5.5) — drafted, argued: initial draft of the original EBO material; created the ownership graph models and mermaid diagrams; produced the formal two-condition EBO definition.
-  - [Super Z](../CONTRIBUTORS.md#super-z) (GLM) — rewrote, enriched: split the original monolithic Protocol document into three focused documents; carried working-notes content in (Ownership Discovery Cost, Death of Abstraction, AI-era cost model reconsideration, Boilerplate-vs-Understanding Cost, Trade-Off Reconsideration, the Error Example, the Behavior Owner hypothesis, macros as compile-time execution, and the Social Inheritance Analogy relocated from khayyam-inheritance as a general design-principle argument); restructured to template; authored the independent legal/genetic inheritance critique; enhanced the AI-era argument (explicit code as structural advantage) and added the cognitive-finiteness argument; strengthened enforcement-gap analysis with Java/C# convention evidence; reframed the macro boundary around human cognitive accessibility; corrected protocol-extension carve-outs throughout.
-  - [ox-alpha](../CONTRIBUTORS.md#ox-alpha) (opencode) — reviewed, applied: performed the dissolution into type.md with zero-loss redistribution (Explanation topic plus practice section), reference repointing across polymorphism/inheritance/protocol, and this record.
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — claimed, argued, directed
+  - [ChatGPT](../CONTRIBUTORS.md#chatgpt) (GPT-5.5) — drafted, argued
+  - [Super Z](../CONTRIBUTORS.md#super-z) (GLM) — rewrote, enriched
+  - [ox-alpha](../CONTRIBUTORS.md#ox-alpha) (opencode) — reviewed, applied
 
-#### Summary
+#### What changed
 Added "Explicit Behavior Ownership" as a major Explanation topic (~150 lines before its Discussion bundle), preserving the dissolved document in full: the Single Visible Ownership principle with its two-condition formal rule and the three always-local questions (where defined / why available / who owns); delegation-as-visibility semantics with the acyclic single-path ownership graph; the seven-mechanism hidden-behavior catalog with the meta-observation that debates are really about ownership/visibility/discoverability; the complete legal-and-genetic critique of the inherited metaphor (hereditas, farāʾiḍ, genotype/phenotype) concluding the taxonomy-has-no-subject position and the extension-not-inheritance terminology; the death-of-abstraction pattern with the is_retryable ownership analysis and the behavior-owner hypothesis; the generics topic carrying all four paragraphs including the generics-as-symptom argument and the domain-specific-capsule answer; the full economics chain (write-once/read-many, opportunity cost and cognitive finiteness, the AI-era collapse of the trade-off, boilerplate as AI-legibility mechanism with the variable-names analogy); both mermaid ownership-graph figures plus tooling implications; and a topic-level Discussion bundle carrying all four Drawbacks, five Rationale-and-alternatives entries, seven Prior-art items with their common-thread observation, five Unresolved questions, and five Future possibilities. One structural improvement: the former Dependency-on-Modeling section became an ownership-flow paragraph inside "Type and Modeling," where it belongs directionally. Heritage notes: the document itself was born by splitting the monolithic Protocol document, unifying four earlier per-mechanism rejection documents; the reviewer maxim "protocols and explicit implementations reduce cognitive load" is preserved by this record. Citations dispositioned: Protocol and Modeling dependencies are satisfied by body links; the Type self-dependency dissolved with absorption; the khayyam-polymorphism Applied_in relation survives as polymorphism's inbound links, repointed. Status correction recorded per current policy: the dissolved document said Proposed — everything remains Draft.
+
+Core EBO principle; the inheritance-concept critique across its legal and genetic home domains and the directive that the inheritance taxonomy has no valid subject; the extension-not-inheritance terminology for abstraction relationships. Present across the document's entire life — from authoring the principle through directing this dissolution into type.md without any summarization, including routing the operational-residue check toward practice. (Omid Hekayati)
+
+Initial draft of the original EBO material; created the ownership graph models and mermaid diagrams; produced the formal two-condition EBO definition. (ChatGPT)
+
+Split the original monolithic Protocol document into three focused documents; carried working-notes content in (Ownership Discovery Cost, Death of Abstraction, AI-era cost model reconsideration, Boilerplate-vs-Understanding Cost, Trade-Off Reconsideration, the Error Example, the Behavior Owner hypothesis, macros as compile-time execution, and the Social Inheritance Analogy relocated from khayyam-inheritance as a general design-principle argument); restructured to template; authored the independent legal/genetic inheritance critique; enhanced the AI-era argument (explicit code as structural advantage) and added the cognitive-finiteness argument; strengthened enforcement-gap analysis with Java/C# convention evidence; reframed the macro boundary around human cognitive accessibility; corrected protocol-extension carve-outs throughout. (Super Z)
+
+Performed the dissolution into type.md with zero-loss redistribution (Explanation topic plus practice section), reference repointing across polymorphism/inheritance/protocol, and this record. (ox-alpha)
 
 ---
 
@@ -180,11 +220,15 @@ Added "Explicit Behavior Ownership" as a major Explanation topic (~150 lines bef
 - Cited:
   - [Type](./type.md) — Depends_on: this practice operationalizes that document's principles (nominal identity, stateless Types, category model) as steps; every rule here derives from it.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — requested: directed that pre-facet micro-documents be dissolved into strong Explanation documents plus sufficient Practice documents, so an agent needing only the how reads one lean file without inheriting false assumptions from argumentative history.
-  - [Super Z](../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — drafted: composed this procedure from the retired document's operational content and type.md's principles.
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — requested
+  - [Super Z](../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — drafted
 
-#### Summary
+#### What changed
 Created `type.practice.md` per `documentation-practice.md`'s Practice-facet schema (two-field front matter, imperative body). Absorbed the operational layer of the dissolved *Static Concepts Must Be Types* document (495421): the Type-qualification checklist, the category-choice table, the static-concept mapping rules with their detection test and gray zones, the multi-outcome abstraction-return pattern with its dispatch-vs-identification distinction, and the `Err` naming convention. Deliberately excluded everything argumentative (rejected alternatives, prior art, rationale) — those live in type.md and in that artifact's consolidated heritage record under type.changelog.md — and routed concept-existence questions to modeling practice, since classification was never a type-layer decision. A completion audit added two further clauses from the source: family-member graduation (a member acquiring genuine per-instance data becomes a data carrier while static members stay distinct) and the note that other static-concept families record their own naming conventions. A third pass, cross-checking an external review's gap list, restored the framework's review maxim ("polymorphism is about code reuse, not about teaching the compiler how to do its job") and the interim manual-completeness-discipline note, both of which had survived nowhere verbatim after dissolution. The same pass surfaced the exhaustiveness mechanism candidates (code-generator metadata; whole-program analysis; Kotlin sealed classes and Swift closed hierarchies as prior art over compiler-known closed sets of Types) into step 4 itself, so they no longer live only in type.changelog.md's Pending ledger.
+
+Directed that pre-facet micro-documents be dissolved into strong Explanation documents plus sufficient Practice documents, so an agent needing only the how reads one lean file without inheriting false assumptions from argumentative history. (Omid Hekayati)
+
+Composed this procedure from the retired document's operational content and type.md's principles. (Super Z)
 
 ---
 
@@ -194,11 +238,13 @@ Created `type.practice.md` per `documentation-practice.md`'s Practice-facet sche
 - Propagates to:
   - type.practice.md: Done — the stub's sole non-redundant asset, the apartment illustration (color differences leave one Type; an ownership relation may itself be a Type because it carries independent meaning), absorbed into the qualification step.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — directed: review and merge the small type-series companions into the strong documents.
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — directed
   - [Super Z](../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — reviewed, applied.
 
-#### Summary
+#### What changed
 Dissolved `type-identity.md`, a 42-line pre-facet stub, after a lens review found every claim already carried by a deeper home: identity-as-modeling-decision → "Type and Modeling" here plus Modeling's justification criteria; the identity-sources list (domain meaning, lifecycle, behavior ownership, relationships, rules, external recognition) → the qualification checklist ("external recognition" being this document's already-stated "domain participants recognize, name, and reason about"); attributes-describe-vs-identity-defines-existence → "What Is Not a Type" plus Modeling's Attribute-or-Edge Test; language-as-expression-not-source → "Type Beyond Programming Languages" and "Type vs Implementation Type". Its title also collided with this document's own deeper "Type Identity" section, so it could never have remained standalone without confusion. The conventions document's mention of the filename is a naming-pattern example, not a content reference, and needed no change.
+
+Review and merge the small type-series companions into the strong documents. (Omid Hekayati)
 
 ---
 
@@ -206,10 +252,10 @@ Dissolved `type-identity.md`, a 42-line pre-facet stub, after a lens review foun
 - Time: 2026-08-25T00:00:00Z
 - Type: Added
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — directed: dissolve the single-topic companions into the strong documents and this practice file, with no summarization loss. Supplied the metadata framings (access expectations span behavior invocation as much as state; multilingual identity is each Type's single-source-of-truth duty).
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — directed
   - [Super Z](../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — reviewed, applied.
 
-#### Summary
+#### What changed
 
 **From `type-identity.md`** (42-line stub): the apartment illustration absorbed into the qualification step — color differences leave one Type; an ownership relation may itself be a Type because it carries independent meaning. Everything else already lived in deeper homes (type.md's Type Identity / What Is Not a Type / Beyond Programming Languages; modeling.md's justification criteria), so nothing further was imported.
 
@@ -218,3 +264,77 @@ Dissolved `type-identity.md`, a 42-line pre-facet stub, after a lens review foun
 **From `type-explicit_behavior_ownership.md`** (ID 495466): new "Behavior ownership" operational section — the three always-local questions (where defined / why available / who owns); delegation written as a visible call so what/where/why read in place, navigation reserved for depth; never default-implement — generate explicit methods from the single source instead; generated code must land in readable, auditable source files, never intermediates; multiple delegation targets allowed, each explicit; runtime injection (dynamic proxies, reflection-added methods) prohibited; the macro/generation boundary tested by human cognitive accessibility; and two relocated operational diagrams — the EBO decision flowchart and the Processor→Validator delegation sequence.
 
 `type-rules_and_invariants`, `type-relations`, and `type-concepts_vs_data` were reviewed in the same series but left no practice-layer residue: their why-level content went to type.md and modeling.md respectively (see those changelogs).
+
+Dissolve the single-topic companions into the strong documents and this practice file, with no summarization loss. Supplied the metadata framings (access expectations span behavior invocation as much as state; multilingual identity is each Type's single-source-of-truth duty). (Omid Hekayati)
+
+---
+
+### Added "Concepts Outlive Their Labels"
+- Time: 2026-09-06T00:00:00Z
+- Type: Added
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — claimed, argued
+  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — reviewed, rewrote
+
+#### What changed
+New topic stating the concept-over-label discipline in both directions — wholesale vocabulary rejection losing wrapped concepts, and name multiplication splitting one concept into apparent kinds — with the FP/OOP encapsulation case as the recorded example and the framework's own rejections as the exercised pattern.
+
+The pattern was brought from Omid's public discussions: functional-programming communities reject object-oriented vocabulary wholesale while remaining fully dependent on the wrapped concepts — encapsulation being the sharp case, since without it even a primitive type cannot be defined (representation must hide behind operations for any value to hold its own invariants); he directed that the pattern be recorded in this document (the Type concept being itself a casualty of label-vs-concept confusion) alongside the framework's own inverse exercises of the same discipline (aggregate-root rejection keeping aggregation, dichotomy rejection keeping both retention needs, behavior-transfer rejection keeping requirement extension) (Omid Hekayati).
+
+The topic was written with the three-question test (which concept did the label wrap; does it survive independent of the packaging; what explicitly replaces the packaging's function) so future rejections are checkable; the encapsulation argument was grounded in Khayyam's own no-primitive-types design (W32/Bool/String capsules as encapsulation doing its work); the memory dichotomy case was cross-linked; the "too obvious to record" rejection was recorded (Super Z).
+
+---
+
+### Documentation-method migration completed: Discussion wrappers, Rationale, Prior art, Unresolved questions, Future possibilities dissolved per the finalized method
+- Time: 2026-09-07T00:00:00Z
+- Type: refactor
+- Propagates to:
+  - type.handoff.md: Created - open questions and future possibilities moved there.
+- Contributors:
+  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — moved
+
+#### What changed
+- The body's fixed top-level sections are now `Abstract`, `Introduction`, `Explanation`, `Results` only (Super Z - applied the finalized documentation method).
+- The document-level `Drawbacks`, `Rationale and alternatives`, and `Prior art` content preserved below; `Unresolved questions` and `Future possibilities` moved to the paired handoff (Super Z).
+
+Dissolved every `#### Discussion` wrapper (How to identify a Type, Definition of Type, Type Identity, Stateless Types, the four-categories topic, Type and Modeling, EBO, Type and Rules, Concepts Outlive Their Labels, Type and Relations) and the document-level `## Discussion`; drawback statements folded into their topics as inline content; rejected alternatives, comparative prior art, document-level Drawbacks, open questions, and future possibilities relocated without loss. (Super Z)
+
+#### Considered and not done
+- **No framework, rely on intuition (rejected; migrated from the identification topic's retired `Rationale and alternatives`)**: without guidance, the tendency is to over-type or under-type without consistency.
+- **A strict checklist with binary answers (rejected; migrated from the identification topic's retired `Rationale and alternatives`)**: domain modeling is not binary. The responsibility criterion reduces the gray zone but does not eliminate it — that is a feature, not a flaw.
+- **Define Type structurally (rejected; migrated from the Definition topic's retired `Rationale and alternatives`)**: a structural definition fails to capture the modeling-level distinction. Two concepts with the same structure are not necessarily the same concept.
+- **Define Type as a formal type-theoretic construct (considered, deferred; migrated from the Definition topic's retired `Rationale and alternatives`)**: Martin-Löf Type Theory defines types through introduction, elimination, and computation rules. This is rigorous but may be too formal for the current stage. A future revision could strengthen the definition toward this formalism.
+- **Structural typing (rejected; migrated from the Type-Identity topic's retired `Rationale and alternatives`)**: two Types with the same structure would be interchangeable, defeating semantic identity. TypeScript's structural typing demonstrates this: `interface Person { name: string }` and `interface Company { name: string }` are interchangeable, which is precisely the conflation this principle prevents.
+- **Behavioral typing (considered, insufficient alone; migrated from the Type-Identity topic's retired `Rationale and alternatives`)**: two Types are the same iff they support the same operations. But `Age` and `Height` both support arithmetic, yet should not be interchangeable. Behavioral typing alone is insufficient without nominal anchoring.
+- **Unify Capsule and Abstraction (rejected; migrated from the four-categories topic's retired `Rationale and alternatives`)**: this loses the essential distinction between "owns state" and "defines contract." Scala's experience with stateful traits demonstrates the problems of unification.
+- **Treat Method as a separate concept from Type (rejected; migrated from the four-categories topic's retired `Rationale and alternatives`)**: Methods *are* Types. Making them non-types would prevent them from being imported, composed, and referenced through the same mechanism — breaking the orthogonality of the type model. It would also remove the natural bridging unit between Abstractions and Capsules.
+- **Treat Method as a kind of Capsule (considered, not chosen; migrated from the four-categories topic's retired `Rationale and alternatives`)**: a method is a "callable capsule" in spirit, but calling it a Capsule obscures the fundamental distinction: a Method's primary purpose is executability, not state ownership. The categories should reflect semantic role, not implementation similarity.
+- **Treat Scope as a compiler construct, not a Type (considered, not chosen; migrated from the four-categories topic's retired `Rationale and alternatives`)**: if Scope were merely syntactic, it would not qualify. But Scope establishes semantic boundaries — visibility, ownership, composition, isolation — that are relevant to the type model. These properties justify its inclusion as a Type category.
+- **Reject each hidden-behavior mechanism individually (rejected; migrated from the EBO topic's retired `Rationale and alternatives`)** — "no inheritance," "no trait defaults," "no promotion," "no macro methods" was the earlier, per-document approach. Unifying under EBO means future, unimagined mechanisms are evaluated automatically against one rule: does this introduce behavior without explicit, visible ownership? A growing blacklist cannot do that.
+- **Allow controlled hidden behavior (rejected; migrated from the EBO topic's retired `Rationale and alternatives`)** — e.g., defaults permitted on abstractions marked pure, or embedding restricted to interface-like targets. Exceptions erode principles: each creates a category to learn and police, and any permission for hidden behavior reopens the exact problem EBO closes — there is no practically definable safe subset, and each exception demands its own enforcement, review, and documentation, consuming what it promised to save. Ecosystem evidence settles the enforcement question: successful Java and C# teams already follow EBO-like conventions ("prefer composition over inheritance," "no deep hierarchies") enforced through reviews, linters, and institutional knowledge — fragile, incomplete, expensive. If a convention is near-universal among high-performing teams, encode it in the language and let the compiler enforce it for free.
+- **Rely on tooling to expose hidden behavior (rejected; migrated from the EBO topic's retired `Rationale and alternatives`)** — IDEs annotating inherited methods still place the visibility burden on tools rather than source. Source is the ground truth; if understanding a component requires an IDE, it has already failed. Code review web interfaces, PR diffs, and printed code all lose tool-provided annotations.
+- **Define inheritance precisely and permit only that form (rejected; migrated from the EBO topic's retired `Rationale and alternatives`)** — e.g., allowing "protocol extension only." This engages a taxonomy whose subject does not exist: extension is already correctly named and already outside EBO's scope. Granting "precise inheritance" legitimacy re-imports the inapplicable concept; the honest naming is explicit delegation for implementations and extension for protocols.
+- **Doing nothing (the cost; migrated from the EBO topic's retired `Rationale and alternatives`)** — without a unifying ownership principle, each mechanism gets debated in isolation, producing inconsistent decisions and ad-hoc rules, with developers navigating hidden behavior through fragile tooling, documentation, and tribal knowledge.
+- **Treating labels and concepts as inseparable (rejected; migrated from the Concepts-Outlive-Their-Labels topic's inline considered-and-rejected paragraph)**: that is how whole toolchains get rejected for their names — the FP-overcorrection — and how a framework ends up re-deriving discarded concepts later, under new names, without the record of why.
+- **Leaving the concept-over-label pattern unrecorded as too obvious (rejected; migrated from the same paragraph)**: the error recurs at every scale — language communities, framework reviews, and this project's own discussions have all seen it; the named pattern with its three-question test is what makes the next occurrence checkable instead of re-argued.
+- **Adopt a traditional type system and enforce modeling through conventions (rejected; migrated from the document-level retired `Rationale and alternatives`)**: this works when the team has strong discipline and fails when it does not. The goal is to make discipline enforceable.
+- **Adopt a dependent type system (rejected for now; migrated from the document-level retired `Rationale and alternatives`)**: too complex for the current stage. Refinement types may be added as a middle ground in future revisions.
+
+#### Considered and not done (topic-level drawbacks relocated per owner ruling)
+- **Any decision framework risks false precision.** The responsibility-based criterion helps, but responsibility itself can be a matter of perspective — what looks like an independent responsibility to one modeler may look like a derived view to another; and the lifecycle criterion requires careful interpretation — broadened to include definition and composition stages, nearly every named artifact can be argued to have a "lifecycle," weakening the criterion's discriminating power. (Migrated from the identification topic)
+- **Defining Type as "first-class modeled entity" sets an expectation a type system may not meet:** if "modeled entity" is merely a naming convention — semantically distinct Types treated as interchangeable because they share structure — the claim is aspirational, and any language claiming semantic types must ensure the type system can observe and enforce the distinction. (Migrated from the Definition topic)
+- **Nominal typing creates composability barriers structural typing avoids:** with `Age` and `Height` distinct, no single `max(a, b)` covers both without an explicit abstraction; this is the cost of semantic precision — and its benefit, preventing accidental conflation of distinct concepts. (Migrated from the Type-Identity topic)
+- **Requiring one named entity per stateless concept proliferates Types** — accepted deliberately, with such Types expected from code generators rather than hand authorship (the manual path's weight is a signal of intent); each concrete Type in public signatures becomes breaking-change surface, judged worthwhile because compile-time-checked identity is the higher-priority guarantee; and the rule demands a conceptual shift from treating identifiers (errors, statuses, permissions) as values — the framework's philosophy grounds the shift, but adoption friction is real. (Migrated from the Stateless-Types topic)
+- **Four categories increase the conceptual burden:** developers must decide not only "should this be a Type?" but "what category?"; the distinction is clear in principle but blurry in practice, and the identification framework is less immediately intuitive for Method and Scope than for Capsule and Abstraction. (Migrated from the four-categories topic)
+- **Modeling-gated type introduction raises prototyping friction.** A type system derived from modeling principles must provide mechanisms for gradual introduction — lightweight types strengthenable as the model matures — without requiring full modeling justification from the start. (Migrated from the Type-and-Modeling topic)
+- **EBO's costs, stated plainly:** increased boilerplate (explicit delegation instead of inheritance, substantially reduced in AI-assisted environments where generation and lint-scaffolding produce the delegation — the remaining lines purchase visible ownership, shifting the trade-off to "more code AND clear behavior"); initial development speed (early hierarchies are shallow and verbosity feels unnecessary; the comprehension benefit compounds as the codebase grows); pattern migration (teams accustomed to inheritance-based design must reformulate Template Method and inheritance-based Strategy with composition and delegation — with the hidden benefit that principled deviation from OO norms filters for practitioners who think critically about trade-offs, as the Go and Rust communities demonstrate); and generated-code management (heavy reliance on generation demands reliable, auditable generators and workflow discipline around generated artifacts). (Migrated from the EBO topic)
+
+#### Considered and not done (from the removed document-level Drawbacks section)
+- **The gap between aspiration and specification**: the claim that Types are "semantic entities" sets an expectation that the type system can verify semantic properties. Without a formal definition of "semantic identity" and without specifying the Capsule/Abstraction realization mechanism in full detail, the claim is philosophical rather than technical. This is acceptable for a Draft but must be addressed before Proposed status.
+- **The absence of primitives**: while eliminating primitives solves the ascent problem, it creates a bootstrapping challenge — what are the foundational Capsules that everything else builds on, and how are they defined without circularity? An implementation concern that affects the Type model's coherence.
+
+#### Related work
+- Martin-Löf's intuitionistic type theory treats types as meaningful propositions. OWL's named classes carry semantic identity beyond their property definitions. Neither fully aligns with the position taken here — MLTT is more formal but at a different abstraction level; OWL is declarative without behavioral semantics. (Migrated from the Definition topic's retired `Prior art`)
+- Rust's struct/trait distinction parallels Capsule/Abstraction, but Rust treats functions as separate from the type system. OCaml's structure/signature distinction is similar but also separates functions from types. Khayyam's "Method as Type" is a genuinely different position — closer to Smalltalk's "everything is an object" but with explicit type categories rather than a single uniform concept. (Migrated from the four-categories topic's retired `Prior art`)
+- EBO's language survey: Go interfaces (default-free, aligned — but embedding implicitly promotes methods, which EBO rejects); Java interfaces pre-8 (pure, aligned — Java 8 default methods moved away); Rust traits (default methods and blanket implementations inject behavior the implementing type's source does not define); C# extension methods (behavior visible in IntelliSense but absent from the type's source); Python and duck typing (monkey patching, multiple inheritance, metaclass manipulation violate ownership clarity in favor of flexibility); C++ multiple inheritance (concrete-body MI creates diamond-ownership ambiguity; the single-owner rule eliminates the class of problem); Ada generics (compile-time composition explicit in instantiation — partially aligned, though resulting behavior remains hard to trace). The common thread: every listed language treats "inheritance" (or its equivalents) as a coherent concept to refine, restrict, or work around; EBO's position is that the concept itself — as a model for behavioral transfer — is what fails examination, not particular implementations. (Migrated from the EBO topic's retired `Prior art`)
+- Martin-Löf Type Theory (types as meaningful entities defined by formal rules — this document shares the aspiration but lacks MLTT's rigor); Rust (struct/trait distinction parallels Capsule/Abstraction, but Rust treats functions as separate from types; Khayyam does not); Eiffel (Design by Contract parallels rules owned by Types; Eiffel's runtime checking is the most mature implementation); Alloy (relations as foundational entities — first-class relations are viable and powerful); Smalltalk ("everything is an object" parallels "everything is a Type," but Smalltalk lacks explicit type categories). Khayyam's contribution is not any single one of these ideas but their integration: a unified type model where Capsules, Methods, Abstractions, and Scopes are all Types; Methods are currently the primary mechanism connecting Capsules and Abstractions; inheritance is placed between Abstractions while behavior transfer between Capsules is rejected; and polymorphism operates through abstraction conformance rather than generic syntax — all derived from the principle that Type is a modeling decision, not a compiler convenience. (Migrated from the document-level retired `Prior art`)
