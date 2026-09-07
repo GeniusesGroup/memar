@@ -104,5 +104,5 @@ sequenceDiagram
 
 - [type.md](./type.md) — why: principles, definitions, and rejected alternatives.
 - [modeling.practice.md](./modeling.practice.md) — upstream procedure that decides what concepts exist.
-- [error.md](./error.md) — worked application to the Error family.
+- [error.md](./protocols/error.md) — worked application to the Error family.
 - [immutable_infrastructure.md](./immutable_infrastructure.md) — runtime-change governance constraining step 3's MUST.

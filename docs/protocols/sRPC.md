@@ -13,7 +13,7 @@ It can also use to be a messaging protocol among with other older Internet proto
 ## Frames - Internal Services
 Each packet can carry many frames until respect network MTU. All frames have fixed first field name `Type` with `signed 8bit` length that is same as [MediaTypeID](./media-type.md) but not use 64bit unsigned integer and standard here as a byte to minimize packet unnecessary overhead.
 
-Frame numbers register in [networking RFC](./networking.md).
+Frame numbers register in the [Networking](./networking.md) document.
 
 ### Packet Sequence Number Frame
 Incremental number use to detect failed packet, ... Use even number e.g. 0,2,4,6,... for client(who start connection) and Use odd number e.g. 1,3,5,7,... for server(who receive connection). Separation of the packet identifiers ensures that peer are able to send packets without the latency imposed by negotiating for an identifier.
@@ -124,4 +124,16 @@ It is so simple protocol that can easily encode and decode in any programming la
 
 ## Inspired of
 - [ICMP -Internet Control Message Protocol](https://en.wikipedia.org/wiki/Internet_Control_Message_Protocol)
-- [QUIC](https://en.wikipedia.org/wiki/QUIC) - [RFC](https://datatracker.ietf.org/doc/html/rfc9000) 
+- [QUIC](https://en.wikipedia.org/wiki/QUIC) - [RFC 9000](https://datatracker.ietf.org/doc/html/rfc9000)
+
+## Position on Message Brokers
+The standalone message broker — MQTT, AMQP, and kin deployed as a separate service — is an external protocol surface Memar does not adopt as a default, and the reason is arithmetic, not taste. The honest-delivery pattern the broker serves (at-least-once, exactly-once semantics, its QoS levels) requires the broker to persist messages to non-volatile storage before acknowledging them. An application that itself must durably record what it sends then pays for that persistence twice: once in the application's own storage, once in the broker's — plus the network hop between them — per message, at layers that did not need the duplication. At IoT volumes this cost dominates the system's storage budget; at any volume it buys a guarantee the application's own store could have provided directly.
+
+Memar's stance: **the broker's mechanism belongs in a library inside the application's own architecture, not in a separate standalone service.** Where durable delivery is the requirement, the durable store is the application's own; the delivery machinery (the acknowledgement discipline this protocol already defines, persistent queues, retries initiated by whichever participant this framework's retry rules allow) wraps that store rather than shadowing it. This is the same judgment [Networking](./networking.md#memars-position-on-the-traditional-network-stack) records for protocol logic generally: middleware logic is application-relevant logic, and its placement is a decision to be made, not an OS-shaped default to be inherited.
+
+Two further notes are attached to this position:
+
+- The sync/async client models brokers offer are both cost-irrational in the same way: either the client's logic is structured around the broker's session (sync), or the broker is trusted to have persisted before the client continues (async) — losing data precisely when the acknowledgement meant nothing. Both models are artifacts of the broker being a separate process; a library-owned broker dissolves the trade-off by letting the application's own storage be the durability point.
+- The producer-consumer independence principle ([Process → Events](../process.md#events)) is untouched by this position: making the broker mechanism a library does not couple producers to consumers — it only relocates who runs the machinery.
+
+Open work on this protocol — the wire-level cancellation contract, and the wire-shape agreement this position's delivery machinery needs — is tracked in the paired [handoff](./sRPC.handoff.md).

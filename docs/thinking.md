@@ -22,7 +22,7 @@ Norms for evaluating claims, naming things, and exchanging ideas are exercised i
 The remedy is the same one this project applies elsewhere (see [Framework](./framework.md), on definitions preceding artifacts): state the model first, then derive the norms from it. A document about thinking is the foundation those norms were implicitly assuming all along.
 
 ### Methodology
-The discourse norms this document derives were accumulated across years of working conversations before this document existed; drafting this document examined them for what they presuppose rather than inventing them. That examination produced the two modeling moves the document makes — treating a conversation as two thinking systems joined by a medium, and treating thinking modes as function groups of the same underlying activity — both applied retrospectively to explain why the inherited rules work. The cognitive-science grounding (4E cognition) was included from the document's start; see [Unresolved questions](#unresolved-questions) for what remains unexamined about it.
+The discourse norms this document derives were accumulated across years of working conversations before this document existed; drafting this document examined them for what they presuppose rather than inventing them. That examination produced the two modeling moves the document makes — treating a conversation as two thinking systems joined by a medium, and treating thinking modes as function groups of the same underlying activity — both applied retrospectively to explain why the inherited rules work. The cognitive-science grounding (4E cognition) was included from the document's start; see the paired [handoff](./thinking.handoff.md) for what remains unexamined about it.
 
 ## Explanation
 
@@ -34,13 +34,6 @@ Three boundary clarifications follow from the definition:
 - **A thinker is a system, not necessarily a person.** Consistent with [System](./system.md)'s position that system-hood is a lens applicable to almost anything, any system that manipulates representations toward ends qualifies: a human, an organization, an AI model. Nothing in the definition privileges biological implementation.
 - **Thinking is not defined by correctness.** Thinking produces claims, and claims can be wrong. The quality of thinking is a separate property from its occurrence — which is exactly why norms for evaluating thought are needed, and why this document exists.
 
-#### Discussion
-
-##### Rationale and alternatives
-- **Leave "thinking" undefined and regulate only behavior (rejected)**: an undefined central term would import the reader's colloquial sense — for AI-era readers, often "the internal reasoning phase of a language model" — which is one implementation of thinking, not the concept. Memar's terminology governance ([Terminology → Terminology Authority and Governance](./terminology.md#terminology-authority-and-governance)) requires defining a load-bearing term once, here, and letting documents reference that definition.
-- **Name this document "critique" or "discourse" (rejected)**: both name one product or one setting of thinking. The rules Memar needs cover more than critique (systems thinking, creative exploration) and more settings than discourse (solitary analysis). Naming the document after the broader concept keeps its scope honest; the narrower subjects can become their own documents if they earn one.
-
-##### Prior art
 Cognitive science treats thinking as information processing over mental representations; the framing above is the standard working sense, deliberately kept compatible with it rather than diverging from it without cause.
 
 ### Modes of Thinking
@@ -58,7 +51,7 @@ Modes whose function is assessing thinking material — weighing claims, options
 #### Structural Modes
 Modes whose function is organizing or reorganizing thinking material — finding form in it.
 
-- **Abstract thinking** — moving from instances to generalities and back: recognizing what a set of cases shares, separating the essential from the incidental, and forming concepts from that separation. This mode is a precondition for nearly everything else Memar does — a definition is abstract thinking's product, a model is its structured form. It pairs with concrete thinking (below) rather than opposing it: the abstraction earns its keep when it returns and explains its instances.
+- **Abstract thinking** — moving from instances to generalities and back: recognizing what a set of cases shares, separating the essential from the incidental, and forming concepts from that separation. This mode is a precondition for nearly everything else Memar does — a definition is abstract thinking's product, a model is its structured form. It pairs with concrete thinking (below) rather than opposing it: the abstraction earns its keep when it returns and explains its instances. In criticism, this mode is what separates receiving an objection from acting on it: an objection arrives as an instance, and the general concern it implicates is discovered by this mode's instance-to-generality move (see the discourse norm below).
 - **Concrete thinking** — the counterpart mode: working with specific instances, examples, and cases. Not lesser thinking — Memar's own Methodology sections repeatedly show that abstract structures are tested and corrected against concrete examples. The abstract/concrete pair is a cycle, not a ladder.
 - **Systems thinking** — attending to how parts interact, how behavior propagates across boundaries, and how the whole behaves differently from its parts. Memar's modeling discipline ([Modeling](./modeling.md)) and its [System](./system.md) document operationalize this mode for architecture work specifically.
 - **Sequential thinking** — ordering material into steps, chains, and dependencies: reasoning that follows a path where each stage constrains the next. Contrast with the structural modes above, which find form in wholes rather than paths. Procedures, proofs, and cause-effect reasoning all exercise it.
@@ -80,21 +73,6 @@ Modes whose function is updating thinking material in response to reality or to 
 #### Grouping Notes
 The functional groups are a navigation aid, not a classification doctrine — a single cognitive act routinely combines modes across groups (testing a hypothesis is hypothetical thinking generative of candidates, evaluated critically, then accepted or revised adaptively). The groups are also not claimed to be mutually exclusive at the mode level: analytic and critical overlap by design, and a future revision may merge or re-scope them; what is fixed here is the membership criterion (a named function in thinking), not the boundary drawing. This is deliberately not a taxonomy in the sense [classification principles](./classification-principles.md) warn about — no mode's membership is treated as an intrinsic property of a thought; the groups exist to be used, and are revised when they stop being useful.
 
-#### Discussion
-
-##### Rationale and alternatives
-- **A closed taxonomy of thinking modes (rejected)**: would replicate the taxonomy-before-definition failure Memar's [classification principles](./classification-principles.md) warn against. Modes are named only for functions the project's actual work depends on.
-- **A flat list without grouping (considered, not chosen)**: simpler at today's scale of thirteen modes, but each added mode would linearly grow the section without revealing which modes are siblings of which; the functional grouping carries that structure at negligible cost.
-- **Treat modes as separate "skills" an agent or person either has or lacks (rejected)**: conflates the description of a practice with a capability — the same conflation [`.agents/skills/README.md`](../.agents/skills/README.md) corrects for the word "skill". A mode is a way of operating, available to be exercised deliberately regardless of the thinker's current proficiency.
-
-##### Prior art
-Taxonomies of thinking skills and dispositions are established in educational psychology and cognitive science — Bloom's taxonomy of educational objectives, dual-process accounts of cognition, and the critical-thinking and metacognition literatures among them. Those taxonomies classify for instructional assessment; this document names modes for the narrower purpose of grounding this project's own discourse norms, and adopts no taxonomic scheme wholesale.
-
-##### Unresolved questions
-1. Is "mode" the right concept at all, or are these better modeled as strategies, dispositions, or phases? The function-group framing is a working position, not a settled one.
-2. Which further modes belong here — convergent thinking (named implicitly as divergence's counterpart but not yet given its own entry), inductive and deductive inference, probabilistic thinking have all been plausibly named — and what observed dependence would justify adding each?
-3. Are the four functional groups the right partition, or should generative and corrective modes be regrouped as their coverage grows?
-
 ### Grounding: Cognition and the 4E Framing
 The model above is grounded in cognitive science, and this document treats that field as the scientific layer its own model must stay consistent with and deepen against. One framing is recorded now because it directly affects how Memar should think about thinkers:
 
@@ -103,18 +81,6 @@ The **4E framing of cognition** holds that cognition is **embodied** (shaped by 
 The **extended** claim is the one Memar already depends on in practice, stated here as its general form: a thinker's representations may live partially outside the thinker — in documents, in a graph model, in a shared repository — and those external artifacts are genuinely part of the thinking system, not merely its outputs. This is the general principle behind several Memar positions already: that a model is a primary architectural artifact rather than documentation of one ([Modeling](./modeling.md)), that knowledge left only in individuals' heads is knowledge at risk ([Knowledge](./knowledge.md)), and that a repository's documentation functions as shared cognitive material for every human and AI agent working on the project. This document claims the reverse direction too: if external artifacts are part of the thinking system, then the *quality of the shared medium* — its definitions, its internal consistency, its freedom from unexamined terminology — is a quality of the thinking itself. That is the warrant for treating documentation discipline as a thinking discipline.
 
 The embodied, embedded, and enacted claims are recorded as context, not yet operationalized: Memar has not yet derived rules from them. They are kept here because an AI-mediated conversation is a concrete case where all three are in play — each participant's cognition is shaped by a different embodiment, a different environment, and a different mode of engagement — and the differences are easy to overlook when the interface makes both parties look like interchangeable text producers.
-
-#### Discussion
-
-##### Drawbacks
-The 4E framing is a research program, not a settled theory; its variants disagree about how strong each claim is, and "cognition is extended" in particular remains contested. Building project rules on it risks inheriting its controversies. The mitigation is the one this document already applies: only the extended claim is operationalized, and only to the extent of grounding what Memar already does (external models as primary artifacts); the contested stronger readings are not relied on.
-
-##### Prior art
-4E cognition (embodied, embedded, enacted, extended) emerged across philosophy of mind and cognitive science from the 1990s onward, against classical computationalist and brain-bound pictures of cognition. Related antecedents include distributed cognition (Hutchins) and activity theory.
-
-##### Unresolved questions
-1. Which parts of the 4E literature, if any, should Memar adopt as *Evidence*-cited foundations versus treat as context only — and what criterion distinguishes them?
-2. Do the embodied/enacted claims have any operational consequence for AI-mediated collaboration, or do they only matter for human participants at present?
 
 ### A Conversation as Two Thinking Systems Connected Through a Medium
 The exchange this document calls a **conversation** is modeled as follows: two thinking systems are connected through a medium — speech, text on a screen, a chat interface, a shared repository — and thinking material (claims, definitions, questions, criticisms, models) travels across that medium in both directions.
@@ -126,22 +92,13 @@ The medium is implementation, not concept. Whether the connection is voice, keyb
 
 This model is what makes the discourse norms in the next topic derivable rather than arbitrary: each norm below exists because of a specific way thinking material degrades while traveling between two thinking systems — or a specific way one system's evaluation of the other's material goes wrong.
 
-#### Discussion
-
-##### Rationale and alternatives
-- **Regulate conversations as etiquette between unequals (rejected)**: the asymmetry framing — "the human directs, the AI obeys" or the inverse — produces different rule sets per direction, which then drift apart and cannot be transferred to human-human or AI-AI exchanges. Memar's agent documents ([`.agents/README.md`](../.agents/README.md)) already commit to agent-generic phrasing; this model is the conceptual version of that commitment.
-- **Model conversation as protocol-governed process (considered, not chosen)**: Memar does define Process and Protocol formally ([Process](./process.md), [Protocol](./protocol.md)), and a conversation does satisfy them. But treating the protocol layer as the primary frame would foreground turn-taking and format — the aspects least specific to thinking — while the norms that matter here concern how claims are evaluated, which the protocol frame does not address. The thinking-systems frame is the one the norms actually follow from.
-
-##### Unresolved questions
-1. Should a conversation between two thinking systems be formally specified as a Protocol in Memar's sense — with its own document — or does that over-formalize an activity whose norms are stated here conceptually?
-2. What is lost, conceptually, when the medium is asynchronous and persistent (a repository comment thread) rather than live — does that change the model, or only the medium's properties?
-
 ### Discourse Norms Derived From This Model
 These are the norms Memar participants — human, AI, or organizational — follow when exchanging thinking material. Each is stated with the failure mode it prevents; the derivation is the document's content, not a restatement of external rules.
 
 - **Evaluate claims on their merits, not their source.** A claim's origin — the other participant's identity, seniority, confidence, or the popularity of a position — is not evidence for it. Evaluation criteria: internal consistency, alignment with established definitions, explanatory power, consequences, and evidence quality. Agreement is not a goal of an exchange; accuracy, consistency, and clarity are. *(Failure prevented: deferring to source rather than examining content.)*
 - **Definitions outrank terminology.** When reasoning about any load-bearing term, consult its defined meaning ([Terminology](./terminology.md)) rather than assuming the common industry sense; a word's general meaning can be broader than its most common technical usage, and a term no Memar document has defined by reference defaults to its ordinary general meaning, not to any ecosystem's usage ([Terminology → The Default Meaning of an Unreferenced Term](./terminology.md#the-default-meaning-of-an-unreferenced-term)). Where terminology and definition conflict, the definition governs ([Terminology → Terminology Authority and Governance](./terminology.md#terminology-authority-and-governance)). *(Failure prevented: two thinking systems silently operating on different definitions of the same word — the most common silent failure when material crosses a medium.)*
 - **Do not assume the other participant is correct — or incorrect.** Both errors are the same failure: substituting a prior about the source for evaluation of the claim. The asymmetry warrant: the model in the previous topic makes the participants symmetric in role, so the rule must be symmetric too. *(Failure prevented: deference in one direction, dismissiveness in the other.)*
+- **Receive criticism at its conceptual root, not only its instance.** When a participant raises a criticism — typically against one concrete example — the receiving participant's job is to discover the general concern the example stands for: the principle, definition, or modeling decision the instance is evidence of a problem with. This usually takes one question when the instance is ambiguous ("is the problem the example itself, or the rule that produced it?"), and it must be asked rather than guessed. The critique is then answered — and, where it is accepted, corrected — **in the general form it should have been made in**: the rule, the definition, the whole class of cases, not merely the instance raised. Three failure modes this norm prevents: fixing the example while the generating rule survives unchanged (the critique recurs); answering a narrower claim than the critic intended (a missed correction); and over-generalizing a critique that was genuinely instance-local (a wrong correction). The proportional-criticism norm below governs the *giver's* side of the same exchange: the receiver's discovery of the root does not manufacture a stronger critique than was made — where the discovered root was never argued by the giver, the receiver records it as their own extension and treats it by the evidence standard, not as something the giver established. *(Failure prevented: instance-patching in place of principle-correction; answered-but-not-asked ambiguity.)*
 - **Assume hidden reasoning may exist, and require criticism to be proportional.** A counterpart's proposal may carry years of reasoning not visible in the current exchange — particularly in a project with accumulated history. Criticism is therefore earned by argument, not by surface plausibility: a critique is valuable only when it provides a stronger explanation, a more consistent model, or a revealed contradiction — an objection that would be satisfied by re-reading the existing model is noise, not critique. *(Failure prevented: superficial objections to deeply-reasoned models; equally, unearned deference to them.)*
 - **Ask rather than assume.** When intent, scope, priority, or historical context is unclear, prefer a question to an assumption. Defaults from past exchanges can be actively misleading, because each exchange may operate under different premises. *(Failure prevented: propagating an assumption that was never agreed, across the medium, into decisions.)*
 - **Resist defaults that arrive with the medium.** Industry conventions, popular technologies, established terminology, and common patterns may be useful references, but none is authoritative by virtue of its popularity — and material received through a widely-used channel arrives pre-packaged with such defaults. Evaluate each against this project's definitions and model. *(Failure prevented: importing assumptions through vocabulary.)*
@@ -149,36 +106,5 @@ These are the norms Memar participants — human, AI, or organizational — foll
 
 Two boundaries on this topic: norms specific to modeling are owned by [Modeling](./modeling.md) and are not restated here; norms specific to producing documentation are owned by the documentation system's specifications and practices, starting from [Documentation](./documentation.md). This document owns the rules that apply to thinking material *as it travels between any two thinking systems* — the intersection all those specialized documents assume.
 
-#### Discussion
-
-##### Rationale and alternatives
-- **Keep these rules distributed across the specialized documents that overlap them (rejected for the general rules)**: the modeling-specific and documentation-specific rules genuinely do live in their specialized documents. But the general evaluation norms have no natural specialized owner — they apply everywhere and are owned by no domain. Leaving them ownerless reproduces the scattering problem under a different name; this document is their single home.
-
-##### Unresolved questions
-1. Which of these norms, if any, are strict enough to warrant linter-style verification in written artifacts versus remaining conversational disciplines?
-2. The "hidden reasoning" warrant in the proportional-criticism norm references accumulated project history; should the norm be parameterized (e.g. by the maturity of the artifact being criticized), or is the qualitative statement sufficient?
-
 ## Results
 Insufficient time has passed since this document was adopted to report real, observed outcomes from its use. This section will be filled in once there is such experience to draw on.
-
-## Discussion
-
-### Drawbacks
-Deriving norms from a model of thinking makes this document a single point of dependency: a defect in the model (for example, a wrong assumption in the conversation model) propagates into every norm derived from it. A list of ungrounded rules fails differently — locally and visibly. This document also deliberately overlaps its neighbors (terminology, modeling, documentation practices) at their edges; the overlap is bounded by the ownership rule stated in [Discourse Norms](#discourse-norms-derived-from-this-model), but boundaries erode without maintenance.
-
-### Rationale and alternatives
-- **A document per mode (critical-thinking.md, systems-thinking.md, ...) (considered, not chosen)**: the modes share their foundation — what a thinker is, how material travels between thinkers — and splitting would force either duplication of that foundation or a dependency web among siblings. One document with open-ended mode coverage matches the project's current scale; a mode that outgrows its section here can graduate to its own document following the project's progressive-migration pattern.
-- **Ground the document in AI-agent research rather than cognitive science (rejected)**: agent frameworks describe current AI products' behavior, which changes on product timescales; cognitive science describes thinking itself, which is the stable referent the norms need. This follows the project's general preference for scientific-layer terminology ([Terminology → Scientific Terms](./terminology.md#scientific-terms)).
-
-### Prior art
-Critical-thinking literature (informal logic, argumentation theory) supplies the evaluation criteria referenced by the first norm. Systems-thinking literature (systems theory, cybernetics) underlies both the systems-thinking mode and Memar's [System](./system.md) document. The 4E cognition framing is prior art for the grounding topic and is discussed there. Dialogical models of reasoning (e.g. argumentation as a two-party activity rather than a monologue) anticipate this document's conversation model.
-
-### Unresolved questions
-1. How should this document treat *intra*-system thinking — one system's solitary analysis — versus the inter-system exchanges the norms address? The conversation model covers the exchange case; whether the norms extend unchanged to solitary work is unexamined.
-2. Should the medium's role be developed into its own topic (or document) — covering what thinking material loses crossing each medium type and what compensation the participants owe — or does that belong to a future Protocol treatment (see the conversation topic's Unresolved questions)?
-3. What further cognitive-science grounding deserves adoption as the document matures — working memory constraints on exchange design, dual-process accounts of evaluation, or others — and by what criterion is each admitted?
-
-### Future possibilities
-- The mode list grows as Memar's work demonstrates dependence on further modes, each addition argued in this document's changelog.
-- If the conversation-as-two-thinking-systems model is formalized as a Protocol, this document remains the conceptual home and the protocol document the normative one, following the project's concept/implementation separation.
-- Deeper cognitive-science grounding is expected to refine the norms over time — replacing qualitative statements (e.g. about criticism proportionality) with better-specified ones as the underlying science warrants.

@@ -19,10 +19,12 @@ This document originated from two public discussions about concurrency and distr
 
 The purpose of this document is not to prescribe a particular execution mechanism or development technique. A process should be understood before selecting the mechanisms by which it may be initiated, coordinated, executed, continued, observed, interrupted, or completed. Many terms commonly used in software development describe mechanisms rather than the underlying process; treating a mechanism as the definition of the process creates a misleading mental model and can make a particular implementation technique appear universally necessary when it is not.
 
+A third public discussion — the design of Go's `context` package — later joined these two. It recurred to the same pattern from the request side: a mechanism (a request-scoped context object) was treated as though it were the natural carrier of cancellation, deadlines, and cross-layer data, and the cost of that treatment was not examined before adoption. The analysis it produced is recorded in *Requests, Cancellation, and Timeout* below; it is summarized here because, like Saga and locking, it is a case where a mechanism's popularity substitutes for an analysis the process should have received first.
+
 This document also absorbs the treatment of Failure's relationship to Process, to the extent needed here. The detailed conceptual treatment of Error remains out of scope and belongs to dedicated Error documentation.
 
 ### Methodology
-This document was drafted through an extended dialectical session covering two public discussions (Saga/rollback, distributed locking), then reviewed against `system.md`, `protocol.md`, and `terminology.md` for cross-document consistency — since, by this project's own methodology, Process cannot be understood in isolation from System. That review surfaced a direct conflict with a decision `system.md` had already made and recorded: see *Process and System → Discussion → Rationale and Alternatives* below for the conflict and its resolution.
+This document was drafted through an extended dialectical session covering two public discussions (Saga/rollback, distributed locking), then reviewed against `system.md`, `protocol.md`, and `terminology.md` for cross-document consistency — since, by this project's own methodology, Process cannot be understood in isolation from System. That review surfaced a direct conflict with a decision `system.md` had already made and recorded: see *Process and System → Discussion → Rationale and Alternatives* below for the conflict and its resolution. The *Requests, Cancellation, and Timeout* topic was added later, from a third public discussion (Go's `context`), and was deliberately folded into this document rather than a new one: the critique is an application of this document's central principle — process before mechanism — to the request mechanism, and the protocols directory's membership criterion requires a document to specify a protocol, which this topic does not (yet); the conditions under which it graduates into a protocol document are recorded in this document's changelog.
 
 ## Explanation
 
@@ -72,6 +74,8 @@ Several recurring errors result from treating implementation terminology as if i
 - **Treating observation as the definition of the process.** A given observation should not automatically be elevated to the process's intrinsic definition.
 - **Treating implementation boundaries as process boundaries.** A function, module, service, server, or deployment unit is not automatically a process boundary.
 - **Treating a familiar pattern as a requirement.** Patterns and mechanisms are solutions to classes of problems; they should not become the starting point for defining the problem.
+- **Treating the request's execution context as the identity or carrier of the process.** A request-scoped context object is a mechanism for threading values through call layers; the process the request initiates has its own intent, participants, state, and outcomes, which must be modeled independently of what the mechanism happens to carry. Using the context to smuggle data past intermediate layers is a layering violation that hides a missing capability — e.g. the layer that actually needs a network socket or a specific connection does not have legitimate access to it, and the context conceals that fact instead of forcing the access to be modeled. See *Requests, Cancellation, and Timeout*.
+- **Treating cancellation and timeout as request decorations.** A deadline announced from outside the executing body, per request, presumes the request can redirect work it does not own, at a moment it does not choose, through a mechanism that cannot know the executing module's state. Cancellation validity and timeout budget are properties of the executing mechanism, not decorations attached to each request. See *Requests, Cancellation, and Timeout*.
 - **Treating execution representation as execution responsibility.** A Worker, Actor, thread, process, service instance, or server may represent an execution responsibility, but its implementation boundary does not automatically define the process boundary, domain ownership, or responsibility boundary. See Agency's own Common Modeling Errors for the fuller treatment.
 - **Treating domain ownership as execution ownership.** A domain entity may be processed by an Agent without becoming owned by that Agent, and an Agent may process many entities. See Agency's own Common Modeling Errors for the fuller treatment.
 - **Treating Agent, Worker, or Actor as interchangeable terms.** Agency is the broader concept; Agent describes an acting system, while Worker and Actor are possible execution representations with their own implementation assumptions. See [Agency](./agency.md) for the full terminology.
@@ -85,15 +89,7 @@ The definition deliberately does not require a process to be a sequence in the s
 
 The defining question is therefore not *"which mechanism executes this?"* but *"what is happening, for what intent, involving which participants, under which constraints, and with which possible outcomes?"*
 
-#### Discussion
-
-##### Rationale and alternatives
-- **Requiring Process to be a strict sequence (rejected).** `system.md`'s prior definition called Process "an organized sequence of activities or interactions." This document deliberately drops "sequence," because sequence is one possible shape a process can take, not a defining property — treating it as defining would make concurrent, event-driven, and independently-progressing processes look like deviations from the "real" definition rather than the ordinary cases they are.
-
-##### Unresolved questions
-1. Whether some weaker ordering property should remain part of the definition itself, rather than being pushed entirely into *Ordering* below.
-2. Whether temporal progression is intrinsic to the definition of Process, or a property of its enactment.
-3. Whether a Process can exist conceptually without an enactment, or whether the distinction should instead be between a Process definition and a Process instance.
+The lineage of the concept is old: process philosophy and process algebra (CSP, π-calculus) both model progression, concurrency, and interaction without requiring a single total order.
 
 ### Process Definition and Process Instance
 A process model describes the possible structure, behavior, constraints, and outcomes of a process. A particular enactment of that process may traverse only a subset of those possibilities.
@@ -104,11 +100,6 @@ The distinction is important because a process model must not be confused with a
 
 This distinction also matters when a process is retried, repeated, or composed. A later attempt may be initiated as a new interaction or request while remaining part of the same higher-level process, and the higher-level process may retain knowledge of how many attempts have occurred or which part of its progression they belong to.
 
-#### Discussion
-
-##### Unresolved questions
-1. Whether Memar should eventually distinguish more formally between a process definition, a process instance, and other possible representations of an enactment.
-
 ### Intent
 Intent provides an important basis for identifying the boundary of a process. Two activities may occur close together in time and even use the same data while belonging to different processes; conversely, activities performed by different components may belong to one process when they collectively contribute to the same intent.
 
@@ -117,11 +108,6 @@ Within this document, **Intent** and **Purpose** are closely related rather than
 Identifying the purpose or intent of a process may itself require analysis. A process may have been established for one purpose and later acquire additional purposes or functions through interaction with other systems, participants, or processes. These later effects may become relevant to understanding the process even when they were not part of its original intent. Likewise, a process may be directed toward an intended outcome without successfully realizing that outcome. Purpose or intent therefore does not imply successful completion.
 
 Intent should not be reduced to a user request — a process may be initiated by a person, another process, a system condition, a scheduled condition, an external event, or some other actor. Intent also does not necessarily determine implementation ownership: the participant that expresses an intent does not necessarily execute every activity required to fulfill it. This is what allows a process to cross component, service, machine, organizational, or temporal boundaries without losing its conceptual identity.
-
-#### Discussion
-
-##### Unresolved questions
-1. Whether every Process must have an identifiable intent, or whether intent is sometimes assigned only by an observer, after the fact.
 
 ### Participants
 A process may involve one or more participants. A participant may be a person, organization, system, component, service, device, or other entity capable of taking part in an activity or interaction relevant to the process. Participation does not imply implementation ownership.
@@ -137,12 +123,6 @@ An activity may produce a result that becomes relevant to another process withou
 A process may involve state. State represents conditions relevant to understanding the position or status of a process, and a process may move from one state to another as activities occur, information becomes available, conditions change, or decisions are made.
 
 A state transition is not necessarily equivalent to the execution of one function or one request — it may result from multiple activities, asynchronous interactions, external decisions, or independently executed work. Likewise, the existence of a state does not imply that all transitions must be controlled by a single component. A useful process model therefore distinguishes between the state being represented, the conditions under which that state can change, the activities or interactions that may cause change, and the participants capable of causing or authorizing that change. The representation of state is an implementation concern unless the representation itself is part of the domain concept.
-
-#### Discussion
-
-##### Unresolved questions
-1. Whether State and Transition are intrinsic concepts of Process or useful modeling dimensions that apply only to some processes.
-2. How the relationship between Process and State should be characterized more formally — a process transforms state, but State is not yet formally defined as its own concept in Memar.
 
 ### Outcomes
 A process may have one or more possible outcomes. An outcome is not necessarily a binary success or failure — a process may produce a completed outcome, a partial outcome, a pending condition, a cancelled outcome, a rejected outcome, or another domain-specific result.
@@ -174,6 +154,20 @@ A retry request typically carries the same intent and parameters as the request 
 A process may be cancellable, but cancellation is not synonymous with rollback. Cancellation expresses a decision that the process should no longer continue according to some applicable rule; it does not necessarily mean that every effect already produced by the process should be removed. Whether cancellation is available, who can request it, when it is valid, and which effects can be reversed are properties of the process.
 
 A system should not automatically replace a participant's ability to make a decision with an implementation-level rollback merely because an operation encountered difficulty. A process can instead be designed so that its current state and available actions are visible to a participant, allowing that participant to decide whether to continue, retry, or cancel where the domain permits such decisions.
+
+### Requests, Cancellation, and Timeout
+A request is an interaction: it may initiate, advance, observe, modify, retry, or terminate a process, but it is not the process (see *Process Is Not a Mechanism*). The discussions summarized here examined a specific, widespread mechanism family — Go's `context` package and its equivalents (C# `CancellationToken` with `HttpContext.Items`, JavaScript `AbortSignal`, Python `contextvars`) — and found it repeatedly cast in three roles that the process model does not grant it: the identity of the in-flight process, the carrier of cancellation and deadlines, and the channel through which data travels between layers. These roles are examined in turn.
+
+#### Cancellation from outside the executing body
+A cancellation facility that lets any holder of a request-scoped value signal "stop" to a body of work raises the immediate question: can the initiator actually expect an in-flight request to be cancelled cleanly from outside the code executing it? The honest answer is: only where the executing module cooperates, at points it has chosen, with checks it performs — which means the mechanism does not deliver cancellation so much as pollute every layer with cancellation checks whose validity no layer is in a position to judge. Whether a cancellation is *valid now* — whether the work is at a boundary where stopping is safe, whether effects already produced stand, whether the module's state permits it — is knowledge of the executing module, not of the caller holding the token. This document's Cancellation section already states the correct shape: cancellation availability, who may request it, and when it is valid are properties of the process, decided through its own state machine. An external party *requests* cancellation; the executing module *decides* — and a design that reverses that direction has promoted the requester's convenience above the executor's coherence.
+
+This does not mean cancellation of running work is impossible; it means the ability is bought, not declared. Where a module genuinely supports interruption (a socket read that can be abandoned, a computation with a defined safe stop point), that capability belongs to the module's own design and is exposed deliberately — not derived from the existence of a context object flowing through every call.
+
+#### Timeout is an internal budget, not a per-request promise
+The same reasoning applies to deadlines. Announcing "this request has two seconds" from the caller presumes a global property of a processing path that no single layer owns: the path crosses layers whose budgets are set by different concerns at different times, and a deadline imposed uniformly from outside either trims the wrong layer or pretends trimming is free. Timeout belongs to the executing mechanism as an internal budget — like a cache entry's TTL, which is decided by the cache and its configuration, not re-negotiated by every reader per lookup. A configuration surface may expose the budget once, from outside, at deployment time; what it must not do is require every request to carry its own promise that all layers are obligated to honor. Where a specific operation genuinely has a caller-meaningful time bound (a user-facing read, an interactive step), that bound is a parameter of that interaction — modeled explicitly where it is meaningful, not threaded invisibly everywhere.
+
+#### Data carriage between layers
+The third role — using the request context to pass values from outer layers to an inner destination without the middle layers seeing them — inverts a burden this document's Process and Boundary section places on every design: implementation boundaries may coincide with process boundaries, but the coincidence must be justified, never assumed. Bypassing intermediate layers with a side-channel does not remove those layers' involvement; it removes their *visibility*. If an inner layer needs a capability (a socket, a connection, a tenant identifier) that middle layers do not legitimately provide, the honest designs are to grant the access where it belongs, or to discover that the layering itself is wrong. The context mechanism makes the third option available: conceal the missing access behind a value threaded past everyone responsible for it. The defect it hides — API surfaces that never gave layers legitimate access to what they need — remains, and is now also invisible. (This document's own Concurrency section records the same judgment about Go's scheduler: a mechanism can relocate a hazard behind a pleasant abstraction without removing it.)
 
 ### Agency and Execution Responsibility
 Process describes progression; Agency provides the conceptual model for who or what is responsible for advancing that progression. A process may involve many execution Agents, whose set can change while the process remains conceptually the same — see [Agency → Execution Agent](./agency.md#execution-agent) for what an Execution Agent is, [Agency → Dynamic Assignment](./agency.md#dynamic-assignment) for how responsibility can be reassigned, partitioned, or rebalanced independently of domain-entity identity, and [Agency → Agency Before Synchronization](./agency.md#agency-before-synchronization) for the general responsibility-before-synchronization reasoning that this document's own Concurrency topic applies to the specific case of Worker/core assignment.
@@ -258,11 +252,6 @@ Modeling and observation are not two strictly separated phases where modeling ne
 
 Within that cycle, the two directions of questioning stay distinct even as they alternate. At development time, the question is not "does this boundary feel cohesive to someone?" but "how should this be structured so that the least coupling of any kind results?" — a question about the artifact being built, independent of any particular observer's perspective on it. At observation time, once a boundary already exists, a different question becomes available: for what concern, and for whom, does this boundary hold up or fail to? This second question is what turns an unfalsifiable claim like "this module has high cohesion" — which names no concern to check it against, and so cannot be shown wrong — into a checkable one: "this boundary was drawn for this concern, for this observer." The second form can be shown wrong; the first cannot, which is precisely why it is not useful as a design criterion, only as a prompt to ask the more specific question. See [Modeling → Domain Decomposition over Aggregate-Root Modeling](./modeling.md#domain-decomposition-over-aggregate-root-modeling) for a worked instance of this cycle, and [System → Responsibility](./system.md#system) for the corresponding claim stated as a property of System rather than of Process.
 
-#### Discussion
-
-##### Unresolved questions
-1. Whether Observation should remain a topic within Process, or become a broader concept applicable to System, Model, and other entities as well.
-
 ### Feedback and Process
 A process does not necessarily progress as a one-way chain from input to outcome. Its activities and outcomes may affect participants, the surrounding environment, or other processes, and those changes may subsequently influence the continuation, repetition, or future instances of the process.
 
@@ -281,16 +270,6 @@ The detailed definition of System belongs to `system.md`, which keeps only what 
 
 This does not mean that Process is subordinate to a particular fixed System boundary. The relevant system context may consist of one system, multiple systems, an environment, or another analytical boundary selected for the purpose of the analysis. A process can therefore be understood before the final system boundaries involved in its realization have been fully determined, while still requiring system context to be meaningfully analyzed.
 
-#### Discussion
-
-##### Rationale and alternatives
-- **Keep Process defined inline in `system.md` (formerly the settled position; now superseded).** `system.md` previously rejected a standalone Process document with a specific argument: "Process cannot be defined without reference to System. A standalone Process document would either duplicate System's definition or silently depend on it, creating the same circular dependency problem this document exists to prevent." That argument is correct about *symmetric* duplication, but this document resolves it by making the dependency asymmetric and one-directional instead: `system.md` defines System and keeps only the System-specific half of the Process↔System relationship; this document defines Process in full, including the Process-specific half of that same relationship. Neither document re-derives the other's core definition. As of this revision, `system.md` has been updated accordingly — its own `### Process` section is now a short pointer here, and its Rationale and Alternatives entry now records this reversal explicitly rather than silently.
-- **Define Process as a sub-concept under Protocol (rejected, inherited from `system.md`).** Protocol governs processes, but Process is not a sub-concept of Protocol — processes exist whether or not they are governed by protocols, and Process is a foundational concept that Protocol depends on, not the reverse. `protocol.md`'s own chain — "System → contains → Processes → governed by → Protocols" — is consistent with this document as long as "contains" is read as "provides context for" rather than "cannot exist independent of any system," which is the reading this document adopts above.
-
-##### Unresolved questions
-1. Whether the asymmetric-dependency approach above actually eliminates the circularity `system.md` originally warned about, or merely relocates it — this is a real risk, not a resolved one, and both documents now need to stay in sync as either one changes.
-2. `system.md` still derives System's own existence from Process ("a system without processes is not a system... the interactions — which are processes — are what make the collection a system"). This document, symmetrically, no longer derives Process's meaning from a fixed System boundary. Whether this residual asymmetry is intentional and defensible, or whether `system.md`'s phrasing should be loosened to avoid making Process a hidden precondition for System's existence (mirroring what this document already avoids in the other direction), is not resolved here and would require a corresponding edit to `system.md` if pursued.
-
 ### Process and Structure
 Structure describes the capabilities and constraints exposed and enforced by a system or other modeled entity — see [System → Structure](./system.md#structure) for the full treatment of why these two are inseparable rather than independent properties. Process describes how activities, interactions, and changes may progress within the possibilities and constraints provided by that structure. A process therefore operates in relation to structure, but structure does not dictate one unique process — the same structural capability may support multiple processes, and a process may require capabilities distributed across multiple structural boundaries.
 
@@ -305,11 +284,6 @@ Composition should not be inferred merely from the presence of several activitie
 A process may contain or depend upon other processes, and composition does not require the composed processes to lose their independent identity. A higher-level process may request another process to perform a task and use its outcome without taking ownership of every activity performed by that process. This allows processes to be composed through explicit relationships rather than by merging their internal behavior, and it makes it possible for independent processes to react to a shared fact without becoming a single process.
 
 Composition includes nesting: a process may contain sub-processes, and a sub-process may itself contain further sub-processes, to any depth. A surgical operation contains the anesthesia-induction process, the incision process, the tissue-repair process, and the recovery-monitoring process — each of which contains its own sub-processes. A software request-handling pipeline contains authentication, authorization, validation, business logic, and response-serialization processes. Nesting is not limited to a fixed depth; the appropriate level of analysis depends on the decision being made.
-
-#### Discussion
-
-##### Unresolved questions
-1. Whether Memar should eventually develop a more formal treatment of process composition — how processes combine, constrain, or interfere with one another.
 
 ### Process and Workflow
 A **Workflow** is one possible representation or organization of a process, typically emphasizing the activities, transitions, responsibilities, and ordering used to guide its execution. Not every process is a workflow, and a process does not become a workflow merely because it can be represented as one.
@@ -351,30 +325,5 @@ Process is closely related to many foundational concepts, but those concepts ret
 
 The detailed definitions of these concepts belong to their respective documents. Process should remain the point at which their behavioral relationships can be understood.
 
-#### Discussion
-
-##### Unresolved questions
-1. Whether Process should distinguish between internal activities and interactions with external participants, and if so, whether that distinction belongs in *Activities and Interactions* rather than here.
-2. Whether scheduling should remain a topic within Process or become a separate foundational concept. The Agency and Execution Responsibility section now establishes the conceptual distinction between an Execution Agent and its implementation representation; a future scheduling document may formalize Worker identity, registration, placement, migration, and CPU-core relationships without making those mechanisms part of the Process definition.
-3. Whether the distinction between Process and Protocol requires dedicated documentation beyond their current relationship.
-4. Whether Workflow requires any further conceptual treatment beyond its role as a possible process representation.
-
 ## Results
 Insufficient time has passed since this document was adopted to report real, observed outcomes from its use. This section will be filled in once there is such experience to draw on.
-
-## Discussion
-
-### Drawbacks
-This document is large, covering a number of adjacent concepts (Concurrency, Coordination, Events, Asynchrony) that could each eventually justify their own document — this was a known and accepted risk from the outset. Extracting Process into its own document also reintroduces the drift risk `system.md`'s original Rationale and Alternatives warned about: two documents now each describe the Process↔System relationship from their own side, and each future change to either concept needs a corresponding check against the other.
-
-### Rationale and alternatives
-See *Process and System → Discussion → Rationale and alternatives* above for the central decision (standalone document vs. inline in `system.md`) and *Definition → Discussion → Rationale and alternatives* for the removal of "sequence" from the definition; both are topic-specific enough that they are documented at the topic level rather than repeated here.
-
-### Prior art
-The concept of process as distinct from sequence is foundational to process philosophy (Whitehead, *Process and Reality*, 1929) and to process algebra (CSP, π-calculus), both of which model progression, concurrency, and interaction without requiring a single total order. Business process management (BPM) and workflow literature address process composition and boundary questions from a more applied, organizational angle. The distinction between failure and rollback, and between concurrency and locking, draws on established distributed-systems literature on Sagas, compensating transactions, optimistic concurrency, and distributed leases — the latter is discussed directly in the public exchange that motivated this document, referencing Brendan Burns's *Designing Distributed Systems* on the difference between a lock as a permanent grant versus a lease that must be renewed and can silently expire.
-
-### Unresolved questions
-Topic-specific unresolved questions are recorded under their own topic's Discussion above, rather than repeated here.
-
-### Future possibilities
-If Concurrency, Coordination, or Events grow enough conceptual weight of their own — enough to be reasoned about independently of Process rather than only in relation to it — each may eventually justify a dedicated document, at which point this document would shrink to reference them rather than define them in full, following the same source-of-truth pattern this document itself now establishes relative to `system.md`.

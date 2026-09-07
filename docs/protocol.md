@@ -106,10 +106,7 @@ It follows that reading and understanding a Protocol typically precedes meaningf
 
 Two boundaries keep this consequence from being over-read. First, this does not redefine Protocol as documentation or description: a text that merely describes a System is a specification (or, at Framework scale, a framework description); what makes a Protocol a Protocol remains that it governs processes, and governed processes are what outsiders can understand and join. Second, understanding a protocol enables but does not constitute action: whether and how an informed party begins to act on the System is an Agency question, not a property of the Protocol — see [Agency](./agency.md).
 
-#### Discussion
-
-##### Drawbacks
-The observer-facing framing invites regression to the familiar software habit of equating "protocol" with an interface document or API specification. That equation is rejected above, but repetition will be needed wherever the Protocol–Specification distinction erodes in everyday usage.
+A third consequence, frequently missed in practice: **conformance is never inferred from a label.** Calling an implementation "standard," shipping it in a platform's standard library, or deploying it everywhere does not make it conform to the protocol it claims to realize — conformance is a checkable property of the implementation against the protocol's own rules, and mainstream implementations have demonstrably deviated from the specifications they ship under (TCP option and sequencing behavior in a major language's bundled network library being a verifiable example the project has examined). Memar's stance is therefore adherence to *protocols*, not to *standards*: the rules are the authority, and any implementation — however prestigious its origin or widespread its use — earns reliance only by passing the check, not by carrying the label. This is what makes the external-observer property above actually work: an observer relies on a participant's behavior because it is verifiable against rules, not because the participant is famous.
 
 ### Protocol, Science, and Methodology
 The connection between protocol and science runs deeper than the observation that "research has protocols." It touches the nature of knowledge production itself.
@@ -281,86 +278,4 @@ Note: Patterns involving *implementing entities* (e.g., how an entity satisfies 
 
 ## Results
 Insufficient time has passed since this document was adopted to report real, observed outcomes from its use. This section will be filled in once there is such experience to draw on.
-
-## Discussion
-
-### Drawbacks
-- **Abstraction Risk:** Defining Protocol at a high level of generality may feel abstract and removed from the day-to-day concerns of a language designer or developer. The definition is intentionally conceptual, which means it does not immediately yield implementation guidance.
-- **Terminology Friction:** Many developers are accustomed to using "protocol" loosely (e.g., "the HTTP protocol" meaning the IETF standard) and "standard" even more loosely. A precise definition may feel pedantic or conflict with established usage in some communities. However, widespread imprecise usage does not invalidate precise definition — any more than widespread belief in a flat earth invalidates the spherical model.
-- **Incomplete Finalization:** The ontology question (Rule Set vs. Interaction Model vs. Verifiable Interaction Model) remains open. Deferring this decision means the document's core definition carries inherent ambiguity, though the process and system components apply regardless of which candidate is ultimately chosen.
-- **Precision Cost:** Maintaining a precise definition of Protocol — and distinguishing it from Contract, Standard, Specification, Interface, and Policy — imposes a cognitive cost on readers and contributors. Every time these terms are used in subsequent documents, the distinction must be maintained. This cost is accepted as a necessary investment in conceptual clarity.
-
-### Rationale and alternatives
-
-#### Why This document Is Needed
-Without a clear, general definition of Protocol, every subsequent Memar document that references protocols risks ambiguity. The distinctions between Protocol, Contract, Standard, Specification, Interface, and Policy are not academic — they drive different design decisions. For example, if Protocol were conflated with Contract, one might incorrectly assume protocols imply bilateral obligations. If Protocol were conflated with Standard, one might incorrectly assume all protocols require third-party certification.
-
-#### Why Not Adopt a Language-Specific Definition?
-An alternative would be to define Protocol purely in terms of Khayyam's `ab` (abstraction) construct: "a Protocol is what Khayyam calls an abstraction." This was rejected because it ties the concept to one language's implementation. The concept of Protocol existed long before Khayyam and exists in domains outside software. A language-specific definition would prevent Memar from reasoning about protocols in a general way.
-
-#### Why Not Treat Protocol and Interface as Equivalent?
-Another alternative is to use "Interface" as the primary term, following Java and Go convention. This was rejected because "Interface" carries strong associations with programming language type systems, whereas "Protocol" captures the broader reality that interaction rules exist in networking, diplomacy, science, industry, organizational processes, and other domains where "interface" would be an awkward fit.
-
-#### Why Define Standard as Third-Party Attestation?
-An alternative is to accept the common usage where "standard" means "widely adopted protocol specification" (e.g., "HTTP is a web standard"). This was rejected because it collapses two genuinely distinct concepts into one word. The protocol (the rules governing a process) and the attestation (the certification that those rules are institutionalized) are different things with different properties, different producers, and different consumers. A company can follow a protocol without holding a standard certification. A company can hold a standard certification and still produce poor outcomes. These facts demonstrate that the two concepts are distinct, and precision requires distinct words.
-
-#### Impact of Not Doing This
-Without this document, the term "Protocol" remains undefined in the Memar framework. Discussions about protocol conformance, protocol composition, and protocol relationships would lack a shared foundation, leading to circular debates and inconsistent decisions across documents.
-
-### Prior art
-
-#### Networking Protocols
-- **HTTP:** Defined across multiple IETF documents ([RFC 9110](https://datatracker.ietf.org/doc/html/rfc9110), [9111](https://datatracker.ietf.org/doc/html/rfc9111), [9112](https://datatracker.ietf.org/doc/html/rfc9112), [9113](https://datatracker.ietf.org/doc/html/rfc9113), [9114](https://datatracker.ietf.org/doc/html/rfc9114)). HTTP is a protocol — a set of rules governing the request-response process between clients and servers. IETF has ratified this protocol; this ratification is often colloquially called "making it a standard," but per this document's definitions, the protocol's rules are unchanged by ratification. What changes is the governance status, not the ontological nature of the entity.
-- **TCP/IP:** TCP ([RFC 793](https://datatracker.ietf.org/doc/html/rfc793)) and IP ([RFC 791](https://datatracker.ietf.org/doc/html/rfc791)) define the transport and network layers of the Internet protocol suite. These are foundational examples of protocols as interaction models with verifiable conformance.
-- **SMTP:** [RFC 5321](https://datatracker.ietf.org/doc/html/rfc5321) defines the Simple Mail Transfer Protocol. It specifies message formats, command sequences, and response codes without prescribing implementation — a protocol governing the email-transmission process.
-
-#### Diplomatic and Social Protocols
-- **Vienna Convention on Diplomatic Relations (1961):** An international treaty codifying the protocol governing diplomatic missions. It defines the process of accreditation, communication, privileges, and immunities. It is a protocol governing the state-to-state interaction process.
-- **United Nations Protocol and Liaison Service:** Responsible for the protocol governing the organization's official meetings, ceremonies, and diplomatic interactions. The service's existence demonstrates that even at the highest levels of international organization, protocol management is recognized as a distinct, essential function.
-- **Courtroom protocol (various jurisdictions):** Rules governing the process of judicial proceedings. These protocols vary by jurisdiction but share a common structure: they define who may speak, in what order, under what conditions, and with what consequences for violations.
-
-#### Scientific and Research Protocols
-- **The Scientific Method:** The foundational meta-protocol of all modern science. It governs the process of knowledge production by requiring hypotheses to be testable and falsifiable, experiments to be reproducible, and conclusions to follow from evidence. The methodology is inseparable from the science it produces.
-- **Clinical Trial Protocols (ICH-GCP):** The International Council for Harmonisation's Good Clinical Practice guidelines define the protocol structure for clinical trials — objectives, design, methodology, statistical considerations, and organization. A clinical trial without a registered protocol cannot produce valid scientific evidence.
-- **Laboratory Protocols:** In chemistry, biology, and physics, laboratory protocols specify the exact steps, reagents, conditions, and measurements required for an experiment. The protocol ensures reproducibility: another researcher following the same protocol in another laboratory should obtain comparable results.
-
-#### Industry and Organizational Protocols
-- **ISO 9001 (Quality Management):** Defines protocols governing quality management processes — process control, documentation, corrective action, continuous improvement. ISO itself does not issue certifications; it accredits third-party auditors who verify that organizations have institutionalized these protocols. The protocols are the rules; the certification (the "standard" in the precise sense) is the attestation.
-- **ISO 27001 (Information Security):** Defines protocols governing information security management processes — risk assessment, access control, incident management. Same certification model as ISO 9001.
-- **ISO 20022 (Finance):** A multi-part standard defining messaging protocols for financial transactions (payments, securities). It specifies message schemas and flows — protocols for financial data exchange processes.
-- **Construction Safety Protocols (OSHA):** Occupational Safety and Health Administration standards define protocols governing workplace safety processes — hazard identification, protective equipment requirements, incident reporting procedures.
-
-#### Domain-Specific Protocols
-- **ACORD (Insurance):** Provides data exchange protocols for insurance forms. These define allowed messages between insurers, agents, and regulators — protocols for the insurance-data-exchange process.
-- **HL7 / FHIR (Healthcare):** HL7 (v2, v3) and FHIR are protocols for medical data exchange processes. HL7 v2 defines text-based message formats; FHIR defines a RESTful API protocol with JSON/XML schemas.
-- **SWIFT (Finance):** The SWIFT MT and MX protocols define rules for interbank transfer message formats, ensuring consistent message structures across banks worldwide — a protocol governing the interbank-transfer process.
-- **OPC UA (Industrial IoT):** A protocol for device interoperability in industrial settings — governing the device-communication process within industrial automation systems.
-
-#### API and Specification Ecosystems
-- **OpenAPI:** A specification format for describing RESTful APIs. It is a specification *of* protocols — it documents the rules for interacting with an API process.
-- **GraphQL:** A query language and runtime for APIs. The GraphQL specification defines a protocol for the data-fetching process, including query syntax, type system, and execution semantics.
-
-#### Programming Language Constructs (Partial Equivalents)
-- **Swift Protocols:** Swift's `protocol` construct is structurally similar to a Protocol in the general sense — it declares method requirements without (necessarily) providing implementations.
-- **Go Interfaces:** Go's `interface` describes method sets without default method code. However, Go's embedding mechanism allows implicit interface satisfaction, which blurs the ownership boundary.
-- **Rust Traits:** Traits act like interfaces but can include default method implementations, which goes beyond pure protocol declaration.
-- **Java Interfaces:** Originally pure (no behavior); Java 8 added default methods, moving away from protocol purity.
-- **CORBA IDL, Protocol Buffers:** Interface Definition Languages that define protocols or data schemas in a language-agnostic way.
-
-### Unresolved questions
-- **Extension vs. Refinement boundary:** What is the precise, non-example-dependent formal criterion that separates Protocol Extension from Protocol Refinement? The working distinction (a new requirement dimension vs. a narrowed value space within an existing dimension) needs to be tested against more cases — BSON vs. JSON, HTTP/2 vs. HTTP/1.1, and others — before it can be considered settled.
-- **Protocol Versioning:** How should protocols evolve while maintaining backward compatibility? This document does not prescribe a versioning strategy, but versioning is crucial in practice (HTTP/1.1 to HTTP/2, HL7 v2 to FHIR).
-- **Cross-Module and Cross-Organizational Protocols:** Can protocols span modules within a system or organizations? How is conformance coordinated when no single authority governs both sides? We assume an independent protocol definition can be imported as needed, but coordination mechanisms remain undefined. [Modularity](./modularity.md) now gives Module a formal definition that did not exist when this question was first raised; the question itself is not resolved by that alone, since Modularity does not address protocol conformance coordination, but a revisit of this item should start from Modularity's definition rather than an informal sense of "module."
-- **Runtime Conformance Checks:** Protocols are fundamentally static specifications. Should there ever be optional runtime conformance verification? Generally no, but some domains (e.g., security protocols) might benefit. This is a tooling question that interacts with the [EBO principle](./type.md#explicit-behavior-ownership).
-- **Multi-Language Protocol Compatibility:** If a protocol is used across language boundaries, how should its specification be encoded? This touches on tooling and specification formats but is beyond this document's scope.
-- **Protocol vs Specification Identity:** Is a protocol identical to its specification, or does the conceptual protocol exist independently of any written document? The document leans toward treating them as distinct (the protocol is the rules governing a process; the specification is the document describing those rules) but acknowledges the question is unresolved.
-- **Ontology Finalization:** The choice among Rule Set, Interaction Model, and Verifiable Interaction Model remains open. The addition of process and system as required components may favor Candidate B or C over Candidate A, but formal analysis is needed.
-- **Protocol Conformance Measurement:** If Candidate C (Verifiable Interaction Model) is adopted, what constitutes adequate conformance verification? This touches on tooling and is beyond this document's scope.
-- **Attestation of Memar's own Protocols:** This document defines Standard as third-party attestation of institutionalization or maturity, but does not settle who plays the attesting role for protocols produced within the Memar ecosystem itself. Whether self-declaration by an implementing contributor is sufficient, whether a dedicated independent body is eventually required, and whether the answer may differ per protocol (a core ecosystem protocol versus a single organization's internal one) are all open. Until resolved, no conformance claim about a Memar protocol should be read as carrying standard status in the precise sense defined above.
-
-### Future possibilities
-- **Protocol Conformance document:** A dedicated document defining how conformance to a protocol is verified, including the role of testing, formal verification, and tooling.
-- **Protocol Relationships document:** A dedicated document formalizing the taxonomy of protocol relationships (extension, refinement, composition) and the rules governing each.
-- **Protocol Versioning document:** A dedicated document addressing how protocols evolve, deprecate, and maintain compatibility.
-- **AI-assisted conformance:** Linters, generators, and increasingly AI-based tooling lower the cost of producing and running conformance tests for protocol implementations. A future treatment could examine how such tooling changes the practical economics of protocol adoption — including whether conformance test suites can be generated automatically from a protocol's declared rules — without changing what conformance itself means.
 

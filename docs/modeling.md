@@ -40,20 +40,7 @@ A model is not the thing it models. This distinction — between the map and the
 
 Within Memar, every model should be treated as a tool with known limitations, not as a complete description of its target. Memar's modeling process should include explicit mechanisms for identifying and documenting what each model deliberately omits.
 
-#### Discussion
-
-##### Drawbacks
-Emphasizing the gap between models and reality can lead to a form of epistemic paralysis: if no model is complete, how can any model be trusted? The answer is that models do not need to be complete to be useful; they need to be honest about what they include and what they exclude, and the consequences of each omission should be understood and documented. A model that is explicitly incomplete but whose incompleteness is well-characterized is more useful than a model that claims completeness but silently omits important aspects of its target.
-
-##### Rationale and alternatives
-- **Treat models as approximations of reality (considered, not chosen as primary definition).** While true, this framing can imply that models should be judged by their fidelity to reality, which is only one dimension of model quality. A model may serve its purpose well even if it departs significantly from reality in aspects that are irrelevant to that purpose.
-
-##### Prior art
 The distinction between models and reality is discussed extensively in philosophy of science, most accessibly in Box and Draper ("Empirical Model-Building and Response Surfaces," 1987) and in the broader systems modeling literature.
-
-##### Unresolved questions
-1. Should Memar prescribe specific modeling formalisms, or remain formalism-agnostic?
-2. How should models be versioned and evolved alongside the systems they describe?
 
 ### One Reality, Multiple Abstraction Lenses
 A single aspect of reality can be modeled through more than one co-equal abstraction lens. A structural lens asks what exists and how it is organized; a behavioral or process lens asks how it acts and progresses; a normative lens asks what rules govern that behavior; a systemic lens asks how parts interact within boundaries to produce emergent results. These lenses are modes of observation applied to one reality — they are not levels of a hierarchy, and they are not entities inside the produced model.
@@ -62,29 +49,11 @@ Conflating a lens with a modeled entity is a recurring category error in modelin
 
 The lenses are complementary rather than competing: each reveals aspects the others abstract away, and all may describe the same underlying reality simultaneously without contradiction (see [System → A Note on Systems Thinking](./system.md#a-note-on-systems-thinking) for the general claim that system-hood itself is such a lens, and [Process → Observation](./process.md#observation) for why different observers of the same process may legitimately report different, genuinely real aspects of it). Which lens deserves attention at a given moment follows from the concern being addressed; a modeling effort that exercises only one lens tends to leave the discovered structure silently shaped by that lens's blind spots — most commonly, structure discovered purely structurally and behavior retrofitted afterward.
 
-#### Discussion
-
-##### Drawbacks
-Treating lenses as informal vocabulary rather than formal constructs means no mechanical rule says when a second observation names a new lens versus a new concern. The principle can also be misused in both directions: multiplying entities by treating every observation angle as its own sub-model, or suppressing legitimate distinctions by declaring everything "just another lens on the same thing."
-
-##### Rationale and alternatives
-- **A single canonical decomposition per domain (rejected)**: assuming every aspect of reality has exactly one correct structural breakdown forces behavioral and governance observations to be squeezed into structural artifacts where they fit poorly.
-- **Formal multi-view frameworks (considered, not chosen)**: architecture frameworks that prescribe fixed view sets provide useful checklists but conflict with Memar's discovery-driven approach; which lenses matter is discovered from the concern at hand, not fixed up front.
-
-##### Unresolved questions
-1. Should the recurring lenses (structural, behavioral/process, normative, systemic) ever be named formally as part of Memar's vocabulary, or remain descriptive?
-2. By what observable signal does a modeler distinguish "two lenses on one concern" from "two concerns observed through one lens"?
-
 ### Initial Discovery Questions
 Understanding what a model is (see above) does not by itself tell a modeler where to begin when facing an unstructured requirement — a lengthy specification document, a stakeholder interview, or an existing but undocumented system. The concrete entry-point questions a modeler asks before proposing any node are execution practice rather than architectural definition, and are not restated here. Answering them produces the first provisional candidates that the rest of the modeling process (see [Challenging Proposed Concepts](#challenging-proposed-concepts)) then interrogates, tests, and refines.
 
-#### Discussion
-
-##### Drawbacks
-A checklist risks being treated as a mechanical procedure whose completion signals that modeling is "done," which contradicts the iterative, non-linear nature of the rest of this document. It is intended only as an entry point for the first pass over a new requirement, not as a gate or a substitute for the deeper discovery process.
-
-##### Rationale and alternatives
-- **No initial checklist (rejected)**: leaving modelers to begin entirely from first principles each time is consistent with treating modeling as pure judgment, but in practice produces inconsistent starting points across sessions and modelers, and gives no guidance for the common case of an unstructured, lengthy requirement.
+### Initial Discovery Questions
+Understanding what a model is (see above) does not by itself tell a modeler where to begin when facing an unstructured requirement — a lengthy specification document, a stakeholder interview, or an existing but undocumented system. The concrete entry-point questions a modeler asks before proposing any node are execution practice rather than architectural definition, and are not restated here. Answering them produces the first provisional candidates that the rest of the modeling process (see [Challenging Proposed Concepts](#challenging-proposed-concepts)) then interrogates, tests, and refines.
 
 ### The Model as the Primary Artifact
 Modeling in Memar means discovering the natural structure of a domain before writing any implementation code. The output of modeling is not a database schema, not an API definition, and not a class hierarchy — it is a graph of concerns, responsibilities, and relationships that reveals where the real architectural boundaries lie.
@@ -93,21 +62,7 @@ Memar treats the domain model as the primary architectural artifact of a system.
 
 For this reason, Memar encourages extensive model exploration before implementation and seeks to minimize the coupling between implementation details and domain concepts. The closer a system keeps its implementation aligned with the model, the easier it becomes to evolve the architecture when new understanding emerges. The model should remain the source of truth. Implementations are merely projections of that truth into specific technological contexts.
 
-#### Discussion
-
-##### Drawbacks
-Treating the model as primary requires upfront investment in modeling before any visible implementation progress can be demonstrated. In environments where stakeholders measure velocity by shipping features, this approach can create political friction. Additionally, the claim that "a model can be validated without implementation" is itself limited — some categories of correctness (performance characteristics, storage feasibility, integration compatibility) can only be fully evaluated once an implementation exists.
-
-##### Rationale and alternatives
-- **Implementation-driven modeling (rejected)**: starting from code and extracting the model afterward is common in agile practices, but consistently produces models that reflect incidental implementation decisions rather than domain structure. The cost of correcting such models grows with every additional feature built on top of them.
-- **Parallel modeling and implementation (considered, not chosen)**: developing the model and implementation concurrently reduces time-to-first-prototype but makes it harder to distinguish model concepts from implementation artifacts during review. Memar permits rapid prototyping for learning purposes but does not treat prototypes as committed implementation.
-
-##### Prior art
 The idea that the model precedes and constrains the implementation is central to model-driven architecture (MDA) as defined by the OMG, and to Eric Evans' Domain-Driven Design, which argues that the domain model should be the heart of the software. Memar's contribution is not the principle itself but the specific mechanisms (graph-based discovery, conceptual boundaries, protocol separation) that make the principle practically enforceable.
-
-##### Unresolved questions
-1. How much modeling maturity is "sufficient" before implementation begins? Is there a measurable threshold, or does this remain a judgment call?
-2. Can a lightweight checklist be derived from the graph-stability indicators to make "sufficient maturity" more objectively evaluable?
 
 ### Modeling Produces Conceptual Abstractions, Not Implementation Structures
 The output of modeling is entirely conceptual. The primary outputs of modeling are:
@@ -140,16 +95,6 @@ Memar therefore places significant emphasis on protocols as stable boundaries be
 
 For a detailed discussion, see the [Protocol document](./protocol.md).
 
-#### Discussion
-
-##### Drawbacks
-Protocol boundaries introduce indirection. Every interaction with an abstraction's implementation must pass through its protocol rather than accessing implementation details directly, which can increase the cognitive overhead of understanding the system, particularly for developers accustomed to directly accessing object internals. There is also a risk of over-abstracting early, creating protocol boundaries around concerns that turn out to be simple enough that the indirection is not justified by any real need for implementation independence.
-
-##### Rationale and alternatives
-- **Direct implementation coupling (rejected)**: allowing implementations to depend directly on each other's internals is simpler in the short term but makes any change to a single concern ripple unpredictably across the system. This is the dominant source of rigidity in most software architectures.
-- **Shared-database integration without protocol boundaries (rejected)**: this is the de facto pattern in many systems, where different services or modules share a database schema and therefore share each other's structural decisions. It eliminates the indirection but makes any schema change a coordinated, high-risk event.
-
-##### Prior art
 The principle that stable interfaces should outlive their implementations is foundational in software engineering, from Parnas' 1972 paper on information hiding to the interface-segregation principle in SOLID design. Memar's protocol concept extends this principle by making it a first-class architectural construct rather than a coding convention.
 
 ### Adaptability Emerges from Modeling, Not Technology
@@ -159,16 +104,6 @@ A well-structured model can often survive major implementation changes with limi
 
 **Technology choices should serve the model, not define it.**
 
-#### Discussion
-
-##### Drawbacks
-This principle can be misinterpreted as license to defer all technology decisions indefinitely. In practice, some technology constraints (regulatory requirements, existing infrastructure, team expertise) may legitimately constrain the model or at least the shape of its realizations. A team that exclusively models without considering technological feasibility risks producing a model that cannot be practically implemented in its target environment.
-
-##### Rationale and alternatives
-- **Technology-first architecture (rejected)**: selecting the technology stack and then fitting the domain into it is the dominant industry practice. It produces systems whose structure reflects framework conventions (controllers, repositories, entities) rather than domain boundaries, making the system adaptable to framework changes but not to domain evolution.
-- **Full technology agnosticism (considered, not chosen)**: deferring all technology decisions until after modeling is complete is the ideal but may be impractical when the team's expertise or the deployment environment constrains the feasible implementation options. A pragmatic middle ground acknowledges known constraints without allowing them to dictate the model's conceptual structure.
-
-##### Prior art
 The observation that architecture is dominated by model quality rather than technology choice echoes arguments in Ralph Johnson's "Frameworks = Components + Patterns" and more recently in the "bounded context" concept from DDD, where the quality of the context boundary matters far more than the technology used within it.
 
 ### Modeling Requires Explicit Relationship Analysis
@@ -184,20 +119,8 @@ For example, consider `Invoice` and `Financial Transaction`. These are related v
 
 This illustrates that a cross-concern invariant does not require a shared owning entity or a composition-layer aggregator to be enforced correctly. It requires only that the concern whose lifecycle the invariant actually gates — here, `Invoice`'s transition to `Paid` — reads what it needs from its own edges to already-independent nodes. The invariant is not split, duplicated, or homeless; it belongs entirely to the one concern whose state it governs, without that concern absorbing the internal validation logic of the nodes it references. Examining `Invoice` and `Financial Transaction` in isolation would miss all of this.
 
-Word choice in this kind of example is not cosmetic. `Order` and `Payment` were initially considered and rejected: an order is a command that may never be fulfilled (e.g. an order to buy 1,000 shares of a stock, or 50 beams of steel, that never executes), so it has no inherent connection to financial settlement; and a `Payment` is typically itself a composition-layer construct (a checkout widget or page) rather than a base concern. `Invoice` and `Financial Transaction` were chosen instead because they name the actual base concerns without smuggling in assumptions about workflow outcome or implementation layer. This level of care in naming is not optional polish — an imprecise name at the modeling stage silently encodes an incorrect assumption into the abstraction's identity, and that assumption then propagates into every place the abstraction is used.
-
 `Invoice`/`Financial Transaction` illustrates where a cross-concern behavioral invariant lives once aggregate-root ownership is rejected. For the complementary, more structural question of when a concept deserves its own node at all, see the recurring `Product`/`Title`/`Text` example in [The Attribute-or-Edge Test](#the-attribute-or-edge-test).
 
-#### Discussion
-
-##### Drawbacks
-Treating every relationship as a first-class modeling concern increases the complexity of the modeling process itself. Not all relationships carry architectural significance — many are purely structural or incidental. The risk is that the modeling effort becomes bogged down in cataloging relationships that have no impact on boundaries or responsibilities, consuming time without producing architectural insight. Distinguishing architecturally significant relationships from incidental ones requires judgment that is difficult to codify.
-
-##### Rationale and alternatives
-- **Entity-first modeling (rejected)**: starting by defining entities and their attributes, then adding relationships as an afterthought, produces models where the relationships are shaped by storage convenience rather than domain semantics. This is the dominant approach in ORM-driven development.
-- **Relationship-only modeling (rejected)**: focusing exclusively on relationships without grounding them in identifiable concerns produces an abstract graph that is difficult to map to concrete system boundaries. Memar requires both nodes and edges, not one at the expense of the other.
-
-##### Prior art
 Graph-based conceptual modeling has roots in entity-relationship modeling (Chen, 1976) and concept maps (Novak, 1984). More recently, knowledge-graph approaches in data engineering treat relationships as first-class entities with their own attributes and lifecycle. Memar applies this principle specifically to software architecture rather than data engineering.
 
 ### Graphs as a Modeling Tool
@@ -213,23 +136,6 @@ By analyzing graph structure, it becomes possible to identify:
 
 This process often reveals structures that remain hidden when modeling is performed through database schemas, object hierarchies, or user-interface layouts. For this reason, graph exploration should precede implementation-oriented design activities whenever possible.
 
-#### Discussion
-
-##### Drawbacks
-Graph exploration has no natural stopping criterion. A team can continue discovering new relationships, refining node boundaries, and reorganizing the graph indefinitely, which conflicts with the practical need to begin implementation at some point. Additionally, there is no widely adopted standard for what a "modeling graph" should look like — the lack of a prescribed notation means different teams or different modeling sessions may produce graphs that are difficult to compare or consolidate.
-
-##### Rationale and alternatives
-- **Schema-first modeling (rejected)**: starting from database schemas or API definitions anchors the model to implementation decisions too early. The resulting model reflects storage and transport concerns rather than domain structure.
-- **Text-first modeling (rejected)**: describing the domain in prose and extracting entities from the text is a common UML-driven practice, but prose descriptions tend to linearize relationships that are inherently graph-structured, causing many cross-cutting concerns to be missed.
-- **Formal ontology languages (considered, not chosen)**: using OWL or similar formalisms would provide precise semantics but introduces a tooling and expertise barrier that is disproportionate for most software modeling contexts. Memar uses informal graphs but structures the modeling process around them systematically.
-
-##### Unresolved questions
-1. Should Memar eventually prescribe a concrete graph notation (nodes as rectangles, edges as labeled arrows, etc.), or is the freedom to use any notation a deliberate strength?
-2. How should graphs from different modeling sessions be merged or compared when no standard notation exists?
-
-##### Future possibilities
-A future document could define a lightweight graph notation tailored to Memar's modeling needs, designed to be expressive enough for architectural discovery while remaining simple enough to be sketched on a whiteboard or in a plain-text editor.
-
 ### Edge Types and Their Traditional Counterparts
 Three structurally distinct kinds of edge recur across every graph model, and they are worth naming precisely because the difference between them is easy to miss:
 
@@ -242,23 +148,7 @@ An ordinary edge — the first kind above — can still play many different role
 * A **reference** — a named pointer from one node to another that the referencing node depends on but does not own, e.g. `Product --(Title)--> Text` (see [The Attribute-or-Edge Test](#the-attribute-or-edge-test)). Traditionally, this is a foreign key.
 * An **ownership/composition** relationship — the lifecycle of the referenced node is bound to the owning node, which has no independent existence outside it. Traditionally, this is an embedded/owned row, or a foreign key with cascading delete.
 
-#### Discussion
-
-##### Drawbacks
-Even a three-way distinction this minimal can tempt teams into premature notation standardization — creating a formal taxonomy before the domain's actual relationships are understood, which is precisely the schema-first anti-pattern this document elsewhere rejects. The named roles above should be read as descriptive vocabulary for edges that already exist for good reasons, not as a checklist every model must populate.
-
-##### Rationale and alternatives
-- **Untyped, uniform edges (rejected)**: treating every edge as architecturally equivalent, with no distinction between an edge, a loop-edge, and a shortcut edge, makes it impossible to reason about which edges represent classification, which represent domain truth between two things, and which represent derived optimization — precisely the confusion that leads teams to accidentally treat a shortcut edge as authoritative, or to model a classification as an ordinary attribute instead of recognizing it as a loop-edge.
-- **A closed, enumerated taxonomy for ordinary edges (rejected)**: fixing reference and ownership as the complete set of ordinary-edge kinds would mirror the fixed-relationship-type thinking this document rejects elsewhere (see [Modeling Requires Explicit Relationship Analysis](#modeling-requires-explicit-relationship-analysis)); only the edge/loop-edge/shortcut-edge distinction carries structural weight, and everything else remains open-ended.
-
-##### Prior art
 The edge/shortcut-edge distinction parallels the general/index-or-materialized-view distinction across both entity-relationship modeling and property-graph databases; the loop-edge draws on the same reification pattern discussed under [Classification Emerges From Rules and Relations, Not From Intrinsic Labels](#classification-emerges-from-rules-and-relations-not-from-intrinsic-labels).
-
-##### Unresolved questions
-1. As further recurring ordinary-edge roles are named in practice, should any of them ever graduate into something more formal than descriptive vocabulary (e.g. a required annotation), or should the list remain permanently open and informal?
-2. When one conceptual relationship is meaningfully traversable in both directions between two concerns, does the model declare a single relationship Type observed from two directions, or two distinct relationship Types — and where does the identity of a relationship reside: in the relationship itself, in each directional representation, or elsewhere? Answering this requires storage-semantics decisions that this document deliberately does not make.
-3. Which Module hosts a relationship whose endpoints belong to different Modules — either endpoint, both, or an independent third home — remains open. Hosting decisions made primarily for repository convenience tend to encode false conceptual ownership (see [Modularity](./modularity.md)).
-4. When a Thing acquires a type, the model expresses this as a loop-edge (a dynamic, in-graph type upgrade). Implementations sometimes express the same fact statically instead (e.g., compile-time interface embedding, where a Department is always a Group by definition). What is the criterion for choosing between the mechanisms? The working hypothesis — static typing when the type is always and definitionally the parent type, loop-edge when the type may be acquired dynamically at runtime — has not been validated against real cases.
 
 ### Graphs Are Not Documentation Artifacts
 In Memar, graphs are not used merely to visualize a model that has already been discovered. Graphs are used as a discovery mechanism. The purpose of graph analysis is to expose relationships, dependencies, responsibilities, and architectural structures that may not be visible through implementation-oriented perspectives.
@@ -269,16 +159,6 @@ Furthermore, graphs serve as a discovery environment where concepts, relationshi
 
 The practical consequence is that a graph is expected to change frequently during modeling. It is a working tool, not a polished deliverable. A graph that has not been revised multiple times during the modeling process is likely a graph that has not been used seriously as a discovery mechanism.
 
-#### Discussion
-
-##### Drawbacks
-Treating graphs as disposable working tools means there may be no durable record of the modeling process once implementation begins. If a team revisits a modeling decision months later, the original graph — with all its intermediate states, abandoned alternatives, and rejected structures — may no longer exist. This loss of modeling history can make it difficult to understand why certain boundaries were chosen and others were not, especially when the original modelers are no longer available.
-
-##### Rationale and alternatives
-- **Graphs as living documentation (considered, not chosen)**: maintaining the graph as a continuously updated document alongside the codebase keeps the modeling history accessible but introduces an ongoing maintenance obligation. The graph must be updated every time the model evolves, or it becomes misleading. For teams that already struggle with documentation maintenance, this obligation may be unrealistic.
-- **Versioned graph artifacts (considered, not chosen)**: committing graph snapshots to version control at each modeling milestone preserves history without requiring continuous maintenance. This approach is promising but has no established convention for graph file formats or commit granularity.
-
-##### Prior art
 The distinction between "design as discovery" and "design as documentation" parallels the distinction between exploratory data analysis and confirmatory data analysis in statistics. In both cases, the exploratory phase uses flexible, informal tools, while the confirmatory phase produces structured, auditable artifacts.
 
 ### Behavior and Structure Are Discovered Together
@@ -290,17 +170,6 @@ The vocabulary in the previous paragraph — failure, retry, concurrency, recove
 
 A model that captures both together tends to reveal appropriate structures naturally. A structurally elegant model produced without equal attention to behavioral expectations will inevitably require expensive corrections once implementation exposes the gaps.
 
-#### Discussion
-
-##### Drawbacks
-Treating structure and behavior as inseparable can make modeling sessions feel unfocused, since a discussion of a node's fields can be repeatedly interrupted by behavioral questions and vice versa — stakeholders who expect a clean, sequential process (first the data model, then the behavior) may find this uncomfortable. In domains where behavior is poorly documented or where domain experts think primarily in terms of data structures (e.g., reporting systems, data-warehousing contexts), the constant behavioral interrogation may feel unfamiliar and require additional facilitation effort. There is also a risk of over-analyzing edge-case behavior before the core structural patterns have stabilized, consuming modeling time on concerns that may turn out to be rare or irrelevant.
-
-##### Rationale and alternatives
-- **Structure-first modeling (rejected)**: defining entities, their attributes, and their relationships before examining behavior is the dominant industry approach, driven by ORM tools, database-first design, and API-specification workflows. It produces models that accurately describe what the system contains but often fail to capture what the system does — leading to behavioral gaps that surface only during implementation or, worse, in production.
-- **Strict behavior-before-structure sequencing (rejected)**: requiring behavior to be fully understood before any structural decision is made is appealing in principle but unworkable in practice — stakeholders cannot describe behavior in a vacuum, without reference to the concepts that behavior acts upon. It also implies a rigidity of phases that Memar's modeling process does not otherwise impose.
-- **Unstructured parallel discovery (rejected)**: discovering behavior and structure simultaneously without discipline is appealing but in practice tends to produce models where structural assumptions unconsciously constrain behavioral exploration. For example, once an `Order` entity has been defined with a `status` field, the team may stop asking whether `status` is even the right behavioral model for order lifecycle. Memar's approach differs from unstructured parallelism by requiring that every proposed node or edge be immediately interrogated for its behavioral consequences, rather than accepted and revisited later.
-
-##### Prior art
 The principle that behavior deserves equal attention to structure is central to behavior-driven development (BDD) and to event-storming, where domain events — behavioral occurrences — are a primary discovery mechanism alongside structural ones. Memar's contribution is treating this as continuous, disciplined co-discovery within graph-based modeling, rather than either a separate development practice or a strictly sequential phase.
 
 ### Behavior Often Reveals the Quality of the Model
@@ -310,16 +179,6 @@ When a system requires an increasing number of special cases, exceptions, coordi
 
 **A mature model tends to simplify behavior. An immature model often transfers its complexity into implementation.**
 
-#### Discussion
-
-##### Drawbacks
-The claim that behavioral complexity signals modeling immaturity can be overapplied. Some domains are genuinely complex — regulatory compliance, multi-currency financial settlement, real-time collaborative editing — and no amount of modeling will eliminate their inherent behavioral complexity. Applying this principle indiscriminately risks creating a culture where legitimate domain complexity is dismissed as a modeling failure, leading to oversimplified models that cannot handle real-world edge cases.
-
-##### Rationale and alternatives
-- **Behavior-driven modeling (rejected in its conventional form)**: starting from user stories or behavior specifications and deriving the model from them tends to produce models that reflect usage patterns rather than domain structure. The resulting model may be optimized for current workflows but resistant to unanticipated changes.
-- **Separate behavioral and structural modeling (rejected)**: this is the dominant industry practice — model the structure first, then define behavior as methods, handlers, or services. Memar does not treat behavior as a separate phase because behavioral expectations are often the clearest indicator of whether structural boundaries have been drawn correctly.
-
-##### Prior art
 This principle resonates with Rich Hickey's "design is about pulling things apart" philosophy and with the notion of "essential complexity" from Fred Brooks' "No Silver Bullet." Memar's contribution is the specific heuristic: when behavioral complexity accumulates, re-examine the model before adding implementation complexity.
 
 ### Graph Stability as an Indicator of Model Maturity
@@ -336,19 +195,6 @@ Indicators of increasing maturity may include:
 
 A mature model does not eliminate change. Rather, it reduces the frequency with which new requirements force fundamental restructuring of existing boundaries. As understanding improves, implementation details may continue to evolve while the core graph remains relatively stable.
 
-#### Discussion
-
-##### Drawbacks
-Graph stability is a retrospective indicator — it can only be measured after multiple modeling sessions, which means it cannot guide early modeling decisions. A team in its first modeling session has no prior graph to compare against, making this indicator useless at the stage where guidance is most needed. Additionally, apparent stability may reflect insufficient challenge rather than genuine convergence — a model that has not been tested against new requirements or critical review may appear stable simply because it has not been stressed.
-
-##### Rationale and alternatives
-- **Artifact-count metrics (rejected)**: measuring maturity by the number of concerns, services, or tests produced is tempting because it is easy to automate. However, these metrics conflate modeling quality with implementation effort. A system can have hundreds of well-tested services built on a poorly structured model.
-- **External review as the primary maturity signal (considered, not chosen)**: relying on peer review or expert assessment to determine model maturity is valuable but subjective and difficult to scale. Graph stability provides an internal, reproducible signal that complements external review.
-
-##### Unresolved questions
-1. Is there a minimum number of modeling sessions required before graph stability becomes a meaningful indicator? Three? Five?
-2. How should "fundamental restructuring" be distinguished from "expected refinement" when evaluating whether new requirements force boundary changes?
-
 ### Modeling Before Implementation
 Modeling should reach a sufficient level of maturity before implementation begins. Once a concept enters implementation, every subsequent change becomes progressively more expensive due to dependencies in storage, APIs, user interfaces, tests, deployment pipelines, and operational procedures. For this reason, Memar encourages extensive exploration at the modeling stage before committing to implementation decisions.
 
@@ -358,28 +204,12 @@ For example, a team may initially introduce a `Comment` model. Before implementa
 
 The cost of redesign is lowest during modeling. Therefore, the majority of conceptual consolidation should happen before implementation rather than after it.
 
-#### Discussion
-
-##### Drawbacks
-The "model before implement" discipline can conflict with lean and experimental product-development approaches that emphasize validated learning through working software. If the team discovers, after implementing a prototype, that their model assumptions were wrong, the modeling effort invested before the prototype may have been partially wasted. The principle also does not account for domains that are poorly understood at the outset and can only be clarified through iterative implementation — in such cases, insisting on modeling maturity before any implementation may delay the very learning that would improve the model.
-
-##### Rationale and alternatives
-- **Spike-driven modeling (considered, not chosen)**: building a thin vertical slice through the system to validate model assumptions, then discarding the spike and modeling properly before real implementation. This preserves the learning benefit of early implementation without committing to the model that the spike reveals to be wrong. The risk is that teams rarely discard spikes — they tend to evolve into production code, carrying their modeling assumptions with them.
-- **Time-boxed modeling (considered, not chosen)**: setting a fixed duration for modeling (e.g., one sprint) and beginning implementation regardless of maturity. This is pragmatic but explicitly accepts the cost of model changes during implementation.
-
-##### Unresolved questions
-1. Should Memar prescribe a specific modeling methodology (event storming, domain storytelling, etc.), or remain methodology-agnostic?
-2. How should the cost of late model changes be estimated to help teams decide whether additional modeling investment is justified?
-
 ### Challenging Proposed Concepts
 Every newly proposed concept should be assumed to be provisional until it survives critical examination. The purpose of modeling is not to collect concepts. The purpose of modeling is to discover whether a proposed concept represents a genuinely independent responsibility. The specific set of challenge questions a team runs a proposed concept through is execution practice and is not restated here.
 
 A concept that cannot justify its existence should not become an independent abstraction.
 
-#### Discussion
-
-##### Rationale and alternatives
-- Without explicit challenge rules, teams tend to accept concepts too quickly and reproduce presentation structures inside the model.
+Without explicit challenge rules, teams tend to accept concepts too quickly and reproduce presentation structures inside the model.
 
 ### Assumptions Are Modeling Targets
 During modeling, statements from stakeholders should be treated as hypotheses rather than facts.
@@ -449,25 +279,7 @@ Independent responsibility, behavioral boundary, or lifecycle (see above) remain
 
 The absence of reuse does not disqualify a concept from independent-abstraction status. `Invoice` (see [Modeling Requires Explicit Relationship Analysis](#modeling-requires-explicit-relationship-analysis)) is used in only one context — financial/billing — yet still warrants its own abstraction, because its lifecycle and responsibility are independent regardless of how many other concerns reference it. Reuse strengthens the case for extraction; it is not the test itself, and a modeler should not withhold an abstraction from a concept with a clear independent lifecycle merely because that concept has not yet appeared in a second context.
 
-#### Discussion
-
-##### Drawbacks
-The distinction between "fundamental" and "derived" concepts is itself subjective and context-dependent. A `DiscountedPrice` that in one context is merely a calculated view of `Price` may, in another context, carry its own business rules — minimum discount thresholds, regulatory restrictions, temporal validity windows — that justify an independent abstraction. The risk of misclassification increases with domain complexity, and an incorrect classification in either direction (promoting a derived concept to an abstraction, or collapsing a fundamental concern into a derived view) produces real architectural damage.
-
-##### Rationale and alternatives
-- **Name-driven decomposition (rejected)**: every named concept gets its own abstraction. This maximizes modularity but produces artificial fragmentation — the "artificial decomposition" failure described above.
-- **Data-driven decomposition (rejected)**: every distinct data structure gets its own abstraction. This inherits the assumptions of database normalization and conflates storage concerns with domain boundaries.
-- **Responsibility-driven decomposition (chosen)**: only concepts that carry an independent responsibility, behavioral boundary, or lifecycle receive their own abstraction. This requires more judgment but produces boundaries that reflect the domain's actual architecture.
-
-##### Prior art
 The distinction between fundamental and derived concepts parallels the "value object" vs. "entity" distinction in DDD, but Memar extends it beyond data identity to encompass responsibility and lifecycle. The "contextual view" category is informed by CQRS (Command Query Responsibility Segregation), where the same underlying data may be projected into multiple read-model shapes without each projection becoming an independent architectural element.
-
-##### Unresolved questions
-1. What are the formal criteria — beyond "independent responsibility and lifecycle" — for abstraction justification? Can these criteria be made measurable?
-2. How should the system handle a concept that starts as derived but later evolves to carry independent responsibilities? Is this a model evolution or a new abstraction introduction?
-
-##### Future possibilities
-A future document should define a abstraction-justification checklist — a set of questions that, when answered for a given concept, produce a clear recommendation on whether it deserves an independent abstraction. This would reduce the subjectivity inherent in the current "responsibility-driven" judgment.
 
 ### Classification Emerges From Rules and Relations, Not From Intrinsic Labels
 A common modeling mistake is to treat classification as an intrinsic property of a node. Terms such as *Instruction*, *Memory*, *Skill*, *Procedure*, or *Research Artifact* are often assumed to describe fundamentally different kinds of things from the moment they are created. From a modeling perspective, this assumption should be questioned. Before classification, all of these artifacts may be viewed simply as unclassified content — a base node that has not yet acquired any of these identities.
@@ -482,24 +294,7 @@ Once a classification is established, it can unlock relationship types that are 
 
 This perspective helps reduce unnecessary type proliferation, prevents terminology from being mistaken for structure, and gives the [Reuse Across Contexts](#reuse-across-contexts-as-an-additional-signal) signal a mechanical trigger: the more often a given loop-edge label recurs across otherwise-unrelated base nodes with its own consistent rules, the stronger the case that it deserves promotion into an independent node in its own right.
 
-#### Discussion
-
-##### Drawbacks
-Representing every candidate classification as a loop-edge before deciding whether to promote it adds a layer of graph machinery that a simpler, direct-labeling approach (attaching a type tag to a node) would avoid. For teams unfamiliar with graph-native modeling, distinguishing a loop-edge that will never be promoted (like `Status`) from one that is a genuine promotion candidate (like `Instruction` or `Product`) may not be obvious without practice, and risks producing graphs cluttered with loop-edges no one intends to promote.
-
-##### Rationale and alternatives
-- **Direct type tagging (rejected)**: attaching a type or label field directly to a node, as in most property-graph databases, is simpler to implement but treats classification as an intrinsic, static property rather than something that emerges from — and can be re-evaluated against — the node's actual relationships and satisfied rules.
-- **Class hierarchies with inheritance (rejected)**: defining `Instruction`, `Memory`, and `Procedure` as subclasses of `Content` in a conventional inheritance hierarchy commits to the classification at definition time and makes it difficult for a node to satisfy more than one classification, or to have its classification re-evaluated as the rules it satisfies change.
-
-##### Prior art
 The loop-edge-to-node promotion mechanism echoes reification in knowledge representation — the process by which a relationship or property is "promoted" into a first-class entity in its own right when it needs to carry further properties or relationships of its own. It also parallels the multi-label mechanism found in property-graph databases, where a single node may carry several labels simultaneously, while adding the further discipline of an explicit promotion criterion rather than treating every label as equally durable.
-
-##### Unresolved questions
-1. How should a modeler distinguish, in practice, a loop-edge that is only ever going to remain a loop-edge (like `Status`) from one that is a genuine promotion candidate, before the independent-responsibility test can be fully evaluated?
-2. When a label is promoted into its own node, what happens to relationships that were previously expressed as loop-edges on the base node under that label — are they automatically migrated to the newly promoted node, or does that require deliberate, manual re-modeling?
-
-##### Future possibilities
-A future document could formalize the loop-edge-to-node promotion mechanism as part of a broader graph notation, addressing how classification-in-progress is represented during a modeling session versus how it is finalized once a label is promoted.
 
 ### Acquired Data vs. Discovered Data
 A complementary lens for distinguishing fundamental concepts from derived ones (see [Concept Existence vs. Model Existence](#concept-existence-vs-model-existence)) is to ask, for any candidate data point, whether it is **acquired** or **discovered**:
@@ -513,14 +308,6 @@ Every discovered data point should be traceable, through the graph, to the acqui
 
 A discovered concept should not automatically become a stored concept. The ability to derive a value from existing data is often evidence that the value belongs to a view, projection, report, calculation, or contextual model rather than to the core model itself — `Speed` is exactly this kind of case: a legitimate, useful concept, but one that belongs downstream of the model rather than inside it.
 
-#### Discussion
-
-##### Rationale and alternatives
-- **Treating all stored data uniformly (rejected)**: not distinguishing acquired from discovered data is the default in most schema-first designs, where every field is stored as though it were an equally primary fact. This makes it impossible to later tell which fields are recomputable and which represent irreplaceable source-of-truth information.
-
-##### Unresolved questions
-1. When a discovered value becomes expensive to recompute (e.g., an aggregation over a very large history of acquired data), at what point is it legitimate to also persist it as a cached, non-authoritative copy — and how should that copy be modeled so it is never mistaken for an acquired fact?
-
 ### Modeling State Change as Events, Not Destructive Updates
 **The model should preserve reality before it preserves projections.** A concern's actual history of state changes — the sequence of facts that actually occurred — is reality. A concern's current field values, snapshots, or read-optimized views are projections of that reality, convenient but replaceable. Modeling should establish the former before committing to the latter, in the same way [acquired data must be preserved even when a discovered value is more immediately useful](#acquired-data-vs-discovered-data).
 
@@ -533,22 +320,6 @@ Memar treats both situations as instances of the same underlying modeling concer
 
 To be explicit about what this principle does not claim: it does not mean Event Sourcing, CQRS, or append-only storage are mandatory. This is a modeling-level concern, not an implementation or storage-engine mandate. This document does not prescribe event sourcing, a specific storage engine, or a specific persistence strategy as a required implementation approach — those are implementation-phase decisions addressed elsewhere. What belongs to modeling is the recognition that overwriting state without preserving its history is a decision with real, often unintended, architectural consequences, and that decision should be made deliberately during modeling rather than defaulted into by whichever storage technology a team happens to reach for. In practice, storage engines that operate above a raw key-value layer typically build indexes over exactly this kind of event history to answer queries efficiently — but how indexing is achieved is an implementation concern; that the history exists to be indexed is a modeling concern.
 
-#### Discussion
-
-##### Drawbacks
-Treating every state change as a preservable event can be taken to an extreme where trivial, high-frequency, or genuinely inconsequential changes are all retained indefinitely, creating storage and query-performance concerns that have nothing to do with domain modeling. Not every state change carries architectural significance, and modeling should distinguish changes worth preserving from incidental ones rather than preserving everything by default.
-
-##### Rationale and alternatives
-- **Destructive update as the default (rejected)**: treating in-place overwrite as the default and history preservation as an opt-in special case is the dominant industry practice, inherited directly from relational `UPDATE` semantics. It silently discards architecturally significant information unless a team happens to think of history preservation in advance.
-- **Mandatory event sourcing for all concerns (rejected)**: requiring every concern to be modeled as an append-only event log is appealing for consistency but conflates a modeling-level concern with an implementation-level commitment. Memar treats the *preservability* of state history as a modeling question and leaves *how* it is achieved to implementation.
-
-##### Unresolved questions
-1. What criteria distinguish a state change worth preserving as history from one that can be safely treated as a destructive update?
-2. Should this concern be formalized as a distinct capability interface (analogous to the `Internal`, `Temporary`, `Timeout` capability interfaces used elsewhere in Memar's error abstraction) that a concern can opt into, rather than being an implicit property of every concern?
-
-##### Future possibilities
-A future document could define the relationship between this modeling-level concern and Memar's eventual persistence/storage architecture, including how event history is expected to be queried, without prescribing a specific storage engine.
-
 ### Constraints Belong to the Constraining Concern
 When a requirement limits what may be done with some resources, the source of the limitation matters as much as the limit itself. A constraint that originates outside a resource — imposed by another concern, another participant, or another System — should be modeled as a relationship owned by the constraining concern, not as additional fields duplicated onto every resource it affects.
 
@@ -557,19 +328,6 @@ The constraining concern carries its own state: what it targets, how much of its
 This principle has a consequence that frequently resolves otherwise confusing field-level questions: two quantities visible on the same resource are not necessarily one primary fact plus one cached copy of it. A resource-visible value may instead be the evaluation result of the external constraints and rules currently active against that resource. Before storing a value that looks derivable, the question is therefore not only "which stored fact produces this?" but "is this actually the evaluation result of concerns outside this node?" — because if it is, no amount of caching another local field will reproduce it correctly.
 
 Such a constraining concern is often realized as an independently modeled Module attaching to the affected concept rather than growing that concept's fields or branches (see [Extensible Behavior Belongs to Pluggable Modules](#extensible-behavior-belongs-to-pluggable-modules)).
-
-#### Discussion
-
-##### Drawbacks
-Modeling constraints as observing concerns moves work from write time to evaluation time: answering "what remains usable here?" requires consulting active relationships instead of reading one stored number. Systems with many simultaneous constraints need an explicit composition story for how their combined effects are evaluated, and deferring that story risks inconsistent answers from ad hoc queries.
-
-##### Rationale and alternatives
-- **Constraint state duplicated onto each affected resource (rejected)**: simple to store and fast to read locally, but it destroys the aggregate meaning of the constraint, scatters one responsibility across many models, and makes the set of active limitations invisible as a whole.
-- **A single global registry of all constraints (rejected)**: recentralizes what should be independently modeled concerns and recreates aggregation-by-theme at the constraint level; each constraining concern owns its own state and relationships.
-
-##### Unresolved questions
-1. When multiple independent constraints affect overlapping sets of resources and their effects interact, what composition semantics should the model establish for evaluating their combined result?
-2. Under what conditions is it legitimate to persist an evaluated constraint result as a cached, non-authoritative projection, and how should such a cache remain re-derivable under the discipline established for shortcut edges (see [Edge Types and Their Traditional Counterparts](#edge-types-and-their-traditional-counterparts))?
 
 ### Concept Discovery Must Not Be Driven by Presentation
 Memar treats presentation structures as unreliable sources for discovering domain concepts.
@@ -584,17 +342,6 @@ The purpose of modeling is to discover stable domain boundaries, not to mirror p
 
 Presentation concerns may eventually require specialized widgets, pages, APIs, or aggregators, but these should emerge from the model rather than define it.
 
-#### Discussion
-
-##### Drawbacks
-In practice, many projects begin with a user interface design or a set of API specifications, and the team has no alternative starting point for modeling. Dismissing the UI as an unreliable source is theoretically sound but practically frustrating when the UI is the most concrete artifact the team possesses. Additionally, in some domains — particularly consumer-facing products — the user experience is the domain, and the distinction between "presentation structure" and "domain concept" becomes difficult to maintain.
-
-##### Rationale and alternatives
-- **UI-driven modeling (rejected)**: deriving the model from pages, screens, and API endpoints is the de facto industry practice, driven by the prevalence of UI-first design tools and API-first development workflows. It produces models that are tightly coupled to a specific product's user experience and resistant to changes in that experience.
-- **Event-driven modeling (considered, not chosen)**: starting from domain events (e.g., "OrderPlaced", "PaymentReceived") rather than UI structures. This is a stronger starting point for domain discovery but requires familiarity with event-storming techniques and does not naturally capture state-based concepts.
-- **Language-driven modeling (considered, not chosen)**: analyzing the domain's ubiquitous language — the terms, phrases, and patterns that domain experts use — to identify concepts. This is aligned with DDD's strategic design phase but requires sustained access to domain experts, which is not always available.
-
-##### Prior art
 The critique of UI-driven modeling is shared by Eric Evans, who warns against "CRUD-driven" design where every screen becomes an entity. The specific argument that multiple presentation forms (comments, posts, articles, messages) may share a fundamental concept (`Content`) resonates with the "shared kernel" pattern in DDD, where multiple bounded contexts agree on a common model subset.
 
 ### Domain Decomposition over Aggregate-Root Modeling
@@ -617,28 +364,18 @@ There is no language-level "aggregate root" or "entity" construct distinct from 
 
 An abstraction is not justified by the existence of data. An abstraction is justified by the existence of an independent Responsibility, behavioral boundary, or lifecycle — see [System → Responsibility](./system.md#system) for the general definition and [System → When Is a Responsibility Coherent?](./system.md#when-is-a-responsibility-coherent) for what "independent" can actually be checked against, rather than asserted. Data decomposition is a consequence of responsibility decomposition, not the objective of modeling.
 
-#### Discussion
-
-##### Naming Conventions
 An aggregator should be named after the use case it serves (e.g. `RegisterComment`, `LocalLoginForm`, `OAuthCallbackHandler`), not after the domain concept it assembles (e.g. `User`). This convention reinforces that the aggregator is a composition-layer construct with a single named responsibility, not a domain-owned entity.
 
-##### Drawbacks
-Without a single canonical owning entity, code that needs "the whole picture" of a concept like a user must always go through some composition-layer construct rather than a direct, centrally-defined object — this can mean more indirection to assemble a complete view, and requires discipline to avoid quietly re-inventing a de facto aggregate root inside a frequently reused widget. The approach also increases the number of abstractions in a system, which can make the overall architecture harder to navigate for newcomers who expect to find a `User` object that contains all user-related data and behavior.
-
-##### Rationale and alternatives
-- **Classical DDD aggregate-root pattern (rejected)**: a single, owning entity directly containing related sub-concerns. In practice, it tends to pull unrelated validation and identity logic into one type, and breaks down whenever a concept (like "the current user") genuinely has more than one valid shape depending on context (local form vs. OAuth-resolved identity).
-- **Trait/mixin-based decomposition (considered, not chosen)**: defining concerns as mixins that are composed into a single entity at compile time. This addresses the code-organization concern but does not solve the architectural problem: the composed entity still has a single identity and lifecycle, which forces all contexts to share one shape.
-- **Composition-root pattern from functional programming (considered, not chosen)**: assembling dependencies at a single composition root, as in pure dependency injection. Memar's approach is similar but applies at the concept level (abstractions) rather than the service level, and allows multiple composition roots for different contexts rather than a single application-wide root.
-
-##### Prior art
 This is closely related to, but distinct from, established critiques of Anemic/God-object Aggregate Roots within the DDD community itself; it also resonates with component-composition patterns common in modern frontend frameworks, where a "page" or "widget" composes several independent, narrowly-scoped pieces of state rather than a single monolithic model object. The principle that aggregation should happen at the composition layer rather than within the domain model also has parallels in the ports-and-adapters (hexagonal) architecture, where the domain core defines capabilities and the application layer assembles them into use cases.
 
-##### Unresolved questions
-1. What happens when two composition-layer widgets need the same aggregation but with slightly different validation rules? Is this handled by the abstractions themselves (context-aware validation) or by the aggregators (decorating the abstractions)?
-2. Should there be a convention or lint rule that prevents an abstraction from directly accessing another abstraction's internal state, even when both are assembled by the same aggregator?
+### One Authoritative Location per Concern's Data
+A concern's authoritative data — the data whose truth the concern owns and enforces — has exactly one location: the memory in which it is held is part of how the concern's identity and lifecycle are realized, and a boundary realized twice is two boundaries. A copy of that data held elsewhere is a *derived copy*: never a second authority, and if it carries no defined re-derivation path, not even a copy — a second, diverging original.
 
-##### Future possibilities
-A future document could define a formal "aggregation contract" — a lightweight protocol that specifies what an aggregator may and may not do with the abstractions it assembles, including constraints on accessing internal state, propagating errors, and managing lifecycle.
+The modeling failures this rule prevents are worked out in the framework's protocol documents, which own the retention concepts involved; at modeling time it is enough to hold the rule and to recognize its two recurring violations — one concern's data split across multiple locations, and a faster retention tier standing in front of the authoritative location as if it were infrastructure rather than what it is, a derived copy. Which products, technologies, or tiers realize the locations is an implementation-phase concern; naming any of them in a modeling principle would date the principle and invite readers to argue products instead of concepts.
+
+As with several other implementation-adjacent questions that surface during modeling — retention properties, reclamation, connection lifetimes, time — the rule itself belongs to modeling while its working-out belongs to the framework: either Memar's own libraries and protocol documents carry the answer, or the organization developing the system reads those documents and builds its own library against them. Modeling records the question and the boundary; the protocol documents answer it.
+
+
 
 ### Extensible Behavior Belongs to Pluggable Modules
 Not every requirement that touches a concept belongs inside that concept's own model. The full architectural treatment of this — what a pluggable Module is, why *pluggable* does not mean *dynamically loaded plugin*, and why the provisional term Rule names a Module's optional relationship to another Module rather than a conditional expression — now lives in [Modularity](./modularity.md#pluggable-behavior). This section keeps only the modeling-level consequence and the `Invoice` illustration this document has used since before that document existed.
@@ -647,24 +384,7 @@ A discount mechanism on an `Invoice` is a useful illustration: one organization 
 
 This document's modeling-level consequence is: a concern's model should expose attachment points for pluggable Modules rather than growing new fields or branches to absorb every variation one might need.
 
-#### Discussion
-
-##### Drawbacks
-Pushing variation out into pluggable modules trades one kind of complexity for another: instead of a single, if bloated, `Invoice` model, a team now has `Invoice` plus an open-ended set of independently evolving Rule modules, and must maintain discipline about what belongs in the core versus what belongs in a plugin. For a genuinely small, stable set of variations, introducing a full Rule/module boundary can be more architectural overhead than the variation itself would ever have cost to hard-code.
-
-##### Rationale and alternatives
-- **Anticipatory hard-coding (rejected)**: building a single, maximally configurable discount mechanism directly into `Invoice` that tries to anticipate every variation a team can imagine. This inevitably fails to anticipate the variation that actually arrives, and every failure to anticipate becomes a change to `Invoice` itself rather than the addition of an independent module.
-- **Inheritance-based variation (rejected)**: modeling `TieredDiscountInvoice`, `LocationRestrictedInvoice`, and similar as subtypes of `Invoice`. This multiplies `Invoice` itself rather than keeping it stable, and runs into the same combinatorial-explosion problem inheritance-based variation always does once more than one axis of variation exists at once (e.g. tiered *and* location-restricted).
-
-##### Prior art
 This mirrors the plugin/extension-point pattern common across many mature software systems, and the strategy pattern from object-oriented design generally; it is also simply a restatement, at the model level, of the open/closed principle. Outside software, it parallels how a legal system separates a stable constitutional core from more easily amended regulations and bylaws that plug into it without altering the core itself.
-
-##### Unresolved questions
-1. [System → When Is a Responsibility Coherent?](./system.md#when-is-a-responsibility-coherent) now gives the general test (independent behavioral boundary and lifecycle, checked against a stated concern rather than declared). Whether this test is sufficient on its own to decide when a concept's variations must become pluggable Rule modules, or whether Rule attachment needs an additional criterion beyond ordinary Module boundary justification, is not yet resolved.
-2. How does a concept like `Invoice` declare, at the model level, which attachment points exist and what a Rule attaching to one is expected to provide — without reintroducing the fixed, anticipatory contract this section otherwise avoids?
-
-##### Future possibilities
-The shared document mentioned above should define how a concern declares an attachment point, how a Rule module registers against one, and how conflicts between multiple attached Rules (e.g. two discount Rules on the same `Invoice`) are resolved — none of which this document takes a position on. (The Code/Rule framing of these questions is now opened under [Separating Structure (Code) from Policy (Rule)](#separating-structure-code-from-policy-rule).)
 
 ### Separating Structure (Code) from Policy (Rule)
 Domains that look structurally identical across organizations often differ only in the *conditions* attached to them, not in the underlying graph shape. A trip's price depends on traffic level and time window, but the relationship — a purchase of a transport product — is structurally identical across all trips. A tax obligation depends on jurisdiction and self-declaration process, but the invoice relationship is structurally identical to any other commercial invoice. Becoming staff of an organization may require a prerequisite (e.g., an authenticated OTP token) in one organization but not another, without changing the underlying edge type.
@@ -678,57 +398,8 @@ The modeling-level requirement is that a Rule is not embedded as a hardcoded con
 
 The distinction parallels how legal systems separate **statute** (the general, stable law) from **executive bylaw/regulation** (the situational implementation, which can vary by locality and change without amending the statute itself).
 
-#### Discussion
-
-##### Drawbacks
-1. Added indirection for every conditional behavior: even simple, rarely-varying conditions require traversing to a Rule node and invoking the engine instead of a direct code check — a real runtime and cognitive cost, not just a modeling nicety.
-2. Rule-sprawl risk: once "make it a Rule" becomes the default answer to any conditional, genuinely universal constraints may be over-modeled as Rule nodes "just in case," inflating the graph without benefit.
-3. Making Rule evaluation graph-traversal-dependent may carry real performance implications at scale, especially where one instance is subject to many applicable Rules that must all be resolved to determine validity.
-
-##### Rationale and alternatives
-- **Hardcoded conditionals in application code (rejected)**: duplicates logic per organization/jurisdiction, makes cross-organization variation a code-deployment event instead of a data event, and leaves the graph an incomplete source of truth.
-- **External, non-graph policy store (not chosen as primary)**: a rules table in a separate relational system, or a policy-as-code file outside the graph, breaks the single-source-of-truth goal — "which entities are affected by Rule X" would require a join outside the model. This remains a legitimate execution-layer detail (the rule-engine itself may be an external process); what stays in-graph is the Rule's existence and relationships.
-
-##### Prior art
 The statute/bylaw distinction in legal systems; business rule engines (e.g., Drools) and policy-as-code systems (e.g., Open Policy Agent/Rego), which separate decision logic from application code but typically do not represent rules as first-class nodes in the same graph as the data they govern.
-
-##### Unresolved questions
-1. What is the internal representation of a Rule node's condition (declarative expression, reference to an external function, decision table, etc.)?
-2. How are conflicts between multiple applicable Rules on the same Code element resolved (precedence, specificity ordering, explicit override edge)?
-3. How is a Rule's temporal validity (effective date, amendment, repeal) tracked, and how does it interact with historical edges created under a now-superseded Rule? This directly affects auditability, which matters most in high-stakes domains such as tax and dispute resolution.
-4. What is the precise boundary test for "this condition must be a Rule" vs. "this constraint is inherent enough to remain Code"? [What Earns Foundational Status](./modularity.md#what-earns-foundational-status) gives an analogous test for foundational membership; no equivalent exists yet for the Code/Rule line.
-5. This section treats Rule as a first-class graph node, while [Rules as a Provisional Term](./modularity.md#rules-as-a-provisional-term) treats *Rule* as a provisional name for a Module's optional relationship to another Module. Whether these are two views of one concept, or whether the graph-node framing should be replaced by the module framing, is not resolved here.
-6. Where does the rule-engine live architecturally, and how does it query the graph efficiently at the scale this framework targets?
-
-##### Future possibilities
-- Rule versioning and temporal-validity tracking as a dedicated sub-model.
-- Rule composition/inheritance (e.g., a jurisdiction-level Rule as a base that organization-level Rules can narrow but not widen).
-- A formal "Domain Boundary Criteria" treatment generalizing, in framework terms, when a new node/edge type is warranted vs. when something should remain a label or a Rule (related to, but distinct from, the foundational-status test in [Modularity](./modularity.md#what-earns-foundational-status)).
 
 ## Results
 Insufficient time has passed since this document was adopted to report real, observed outcomes from its use. This section will be filled in once there is such experience to draw on.
-
-## Discussion
-
-### Naming Conventions
-This document does not introduce new naming conventions for implementation artifacts. The conceptual terms used here (abstraction, concern, aggregator, composition layer, graph) are established elsewhere in the Memar specification and are not redefined here.
-
-### Drawbacks
-The modeling approach described in this document demands significant upfront investment before any implementation progress is visible. For small or well-understood domains, the full graph-discovery process may be disproportionate to the complexity being managed. The approach also assumes that a team has access to domain expertise — if the domain experts are unavailable or the domain is poorly understood, graph exploration may produce a model that reflects the team's assumptions rather than the domain's actual structure.
-
-### Rationale and alternatives
-- **Ad-hoc modeling without a defined process (rejected)**: this is the default in most organizations. It produces inconsistent models whose quality depends entirely on the individual architect's skill and experience, without any mechanism for systematic improvement.
-- **Heavyweight formal modeling (rejected)**: approaches like full UPDM or SysML modeling provide rigor but introduce tooling and expertise barriers that make them impractical for most software teams. Memar seeks a middle ground: systematic enough to be teachable and repeatable, lightweight enough to be applied without specialized tools.
-
-### Prior art
-The overall approach draws from multiple traditions: DDD (Eric Evans) for the emphasis on domain language and bounded contexts, Event Storming (Alberto Brandolini) for the practice of discovering domain structure through collaborative exploration, and graph theory for the analytical framework used to evaluate model structure. Memar's distinctive contribution is the integration of these traditions into a single, coherent modeling discipline that is tightly coupled with the abstraction and protocol constructs defined in other documents.
-
-### Unresolved questions
-1. Should Memar prescribe specific modeling workshops or exercises (e.g., event storming, domain storytelling) as part of the standard modeling process, or should the modeling technique remain entirely up to the team?
-2. How should modeling be integrated into CI/CD pipelines? Can model quality be automatically checked (e.g., detecting cycles in the dependency graph, flagging abstractions without clear responsibilities)?
-3. What is the recommended approach when a team inherits a legacy system with no existing model? Should they model from scratch and migrate, or incrementally extract the model from the existing codebase?
-
-### Future possibilities
-- A future document could define a model-quality linter — an automated tool that checks a graph for common modeling anti-patterns such as circular dependencies, overly broad abstractions, or concepts without clear responsibility boundaries.
-- A future document could address the transition path from legacy systems to Memar-structured models, including strategies for incremental model extraction and migration.
 
