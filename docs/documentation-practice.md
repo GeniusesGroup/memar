@@ -24,9 +24,6 @@ Exactly two fields, both required:
 
 No other fields. All three cited conventions agree on this independently; Anthropic's and OpenAI's both state it as an explicit rule, not an informal habit.
 
-#### Discussion
-##### Prior art
-Microsoft's own convention layers substantial additional structure on top of this same core (a fixed section order, mandatory callout blocks, a categorization/symlink system) — but explicitly scopes that additional structure to one narrow sub-case (Azure SDK skills specifically), noting elsewhere that "for domain skills, use your judgment to organize logically." The two-field frontmatter rule itself, unlike the rest of Microsoft's structure, is not qualified this way — it applies universally in all three conventions examined.
 
 ### Progressive disclosure
 A Skill file loads in three levels, each larger and rarer than the last:
@@ -82,13 +79,3 @@ Imperative and concise. Assume the agent reading this is already capable — wri
 ## Results
 Insufficient time has passed since this specification was adopted to report real, observed outcomes from its use. This section will be filled in once there is such experience to draw on.
 
-## Discussion
-
-### Rationale and alternatives
-- **Design a new, project-specific schema for Skill files (rejected)**: would produce a fourth, incompatible convention where three independently-converged ones already exist and already work with real tooling (including the very AI systems, such as Claude, that this project already relies on to author and use these files).
-- **Require Skill files to cite an Explanation-facet document via a `Citations` field when one exists (considered, not chosen)**: `Citations` is provenance machinery that used to live in an Explanation-facet document's front matter and now lives in its paired Changelog-facet file; requiring it inside a Skill file would reintroduce exactly the apparatus this facet is supposed to avoid. A Skill file's body may still mention a related Explanation-facet document by name in plain prose, without any structured citation field. Provenance for the Skill file itself, if needed, lives in the Skill's paired Changelog-facet file (`<base>.changelog.md`), not inside the Skill folder.
-
-### Unresolved questions
-Whether this project will ever need Skill-file conventions beyond what the three cited examples already establish — this project has not yet produced enough Skill files to know.
-
-- Add `Workflow`, `Rules`, ... optional sections.

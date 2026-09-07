@@ -36,17 +36,7 @@ A **Handoff-facet document** (`<base>.handoff.md`) is the written artifact that 
 Two boundary statements sharpen the definition:
 
 - **A handoff is a distillation, not a record.** A transcript preserves what was said; a handoff preserves what the discussion *established* — and those are different artifacts with different failure modes. This distinction is load-bearing for the whole specification and is developed in [Analysis, Not Transcription](#analysis-not-transcription).
-- **A handoff is not the discussion's conclusion made permanent.** Concluding a topic — writing its outcome into the governed documentation — is the job the [Explanation facet](./documentation-explanation.md) and the [Changelog facet](./documentation-changelog.md) already serve. A handoff is for discussions that have *not* reached that state: the topic is still moving, and the artifact exists so the movement survives the session boundary. When the discussion does conclude, the handoff's content graduates into the proper documents and the handoff retires.
-
-#### Discussion
-
-##### Rationale and alternatives
-- **Use the name "continuity note" (rejected)**: describes a hope (that the topic continues) rather than the artifact's function (transferring state across a boundary). "Handoff" names the function, and does so with an established, cross-domain word rather than a coined one — consistent with the project's preference for scientific-layer or established terminology over invented labels ([Terminology → Scientific Terms](./terminology.md#scientific-terms)).
-- **Use the name "conversation note" (rejected)**: scopes the artifact to AI chat sessions. The need is agent-generic: a fully human working session — a design review meeting, a pair-modeling session, a shift handover — requires exactly the same state transfer, and this project's agent documents ([`.agents/README.md`](../.agents/README.md)) commit to content that applies to whichever agent is actually reading. The session may be AI-mediated, human, or organizational; the artifact's structure is identical in all three cases.
-- **Leave this as convention without a governing specification (rejected)**: the pattern was already repeating across real artifacts (see Methodology). Leaving it unnamed would reproduce the drift the [Documentation](./documentation.md) meta-layer exists to prevent — each future handoff inventing its own structure, with no guarantee the next session knows how to read the previous one's.
-
-##### Prior art
-Telecommunications handover: the transfer of an in-progress session between channels or cells without loss — the source of the term and of the requirement that the transfer preserve the session rather than restart it. Change-of-shift report in healthcare: structured transfer of patient state between shifts, with its own documented failure literature when done poorly. Follow-the-sun development: the same transfer across time zones in software work. Meeting minutes and decision logs: the long-established human practice of distilling a discussion into its outcomes — a handoff document is their disciplined descendant, with structure added for the risks minutes historically ignore (confidence, assumptions, invisible premises).
+- **A handoff is not the discussion's conclusion made permanent.** Concluding a topic — writing its outcome into the governed documentation — is the job the [Explanation facet](./documentation-explanation.md) and the [Changelog facet](./documentation-changelog.md) already serve. A handoff is for discussions that have *not* reached that state: the topic is still moving, and the artifact exists so the movement survives the session boundary. When the discussion does conclude, the handoff's content graduates into the proper documents and the handoff retires. One recurring case makes a handoff outlive its originating session: an **open question** that concluded without an answer — the Explanation facet excludes unresolved questions from document bodies (see its [Relevance discipline](./documentation-explanation.md#relevance-discipline)), so a question that survives a discussion's end stays here, in the base artifact's handoff, until it resolves into design (graduating through the changelog) or is explicitly dropped and recorded in the changelog.
 
 ### Analysis, Not Transcription
 Producing a handoff is an **analysis** of the discussion, not a copy of it. This distinction is the specification's central claim, because every structural requirement below exists to control a specific risk that analysis carries. Three risks are named explicitly:
@@ -57,16 +47,6 @@ Producing a handoff is an **analysis** of the discussion, not a copy of it. This
 
 With these controls, the distillation earns its cost: it is short enough to actually be read at the start of a session (unlike a transcript), and structured enough that its selectivity is auditable (unlike an ad-hoc summary). Without them, a handoff is not a neutral convenience — it is a new point of failure, potentially worse than no artifact because it creates false confidence in an unauditable selection.
 
-#### Discussion
-
-##### Drawbacks
-The controls cost effort: a disciplined handoff takes noticeably longer to write than a loose summary, and a writer under session-end pressure will be tempted to skip the confidence marking or the rationale capture — exactly the parts that carry the value. The specification accepts this cost deliberately: a fast, unreliable handoff pays its cost later, with interest, when the next session trusts it.
-
-##### Rationale and alternatives
-- **Specify a transcript-based handoff (rejected)**: preserves fidelity but fails the purpose — the next session must re-analyze the full exchange, paying again the cost the handoff existed to avoid, and transcript volume discourages the artifact from being written at all.
-- **Specify only a free-form summary (rejected)**: minimal effort, but leaves all three risks uncontrolled — selection asymmetry, unlabeled interpretation, and lost premises are precisely what free-form summaries historically suffer from, in this project's own working context as much as anywhere.
-- **Use meeting-minutes format as-is (considered, not chosen)**: minutes capture outcomes and action items well, but conventionally omit confidence levels, assumption tracking, and rejected-alternative rationale — the three controls this document makes mandatory. The handoff structure is minutes extended with those controls, not minutes adopted wholesale.
-
 ### Relationship to the Other Facets
 The Handoff facet does not compete with the existing facets — each governs a different reader relationship, and the boundaries between them are what keep each artifact honest:
 
@@ -76,86 +56,54 @@ The Handoff facet does not compete with the existing facets — each governs a d
 
 The handoff relationship between sessions is also what the [Thinking](./thinking.md) document's conversation model predicts is needed: thinking material degrades crossing a medium, and a session boundary is a medium crossing. The handoff artifact is the compensation for that specific degradation — specified here, justified there.
 
-#### Discussion
-
-##### Unresolved questions
-1. Should a concluded handoff be deleted, archived under a different name, or left in place with its Status set to Complete? Deletion loses the trail of how the documentation came to be; retention accumulates files. Not settled here — the practice file carries the current working answer, and this document may adopt it once real usage shows which costs dominate.
-2. Can one handoff serve a discussion that spans more than one base topic — or should multi-topic sessions split into one handoff per topic at the boundary? The practice file currently requires one-topic-per-file; whether that survives real multi-topic sessions is untested.
-
 ### File Format
 A Handoff-facet file is named `<base-filename>.handoff.md`, following the same companion-file convention the Changelog facet established — with the same pairing rule: the base artifact is not necessarily a document (a handoff can carry a discussion about an image, a piece of code, a model), though a discussion document is the overwhelmingly common case.
 
 The file has no YAML front matter — just a plain H1 title, following the Changelog facet's pattern (`# {Base Document's Title} Handoff`). The rationale is the same one the Changelog facet recorded: a handoff never reaches a settled "design" the way an Explanation-facet document does; it is a living state-capture, and its identity comes from its paired base file, which its filename already encodes.
 
 ### Structure
-The body is a fixed skeleton of state sections — fixed, because the next session's ability to *find* a category of state quickly is the entire point, and a findable structure cannot be left to per-file invention. Sections are included when they have content and omitted entirely when they do not; an empty header is never left in place, so the skeleton's presence always means the state exists:
+The body is an open catalog of state sections - open, because the next session's ability to *find* a category of state quickly is the entire point, and a findable structure cannot be left to per-file invention. This works the same way the Explanation facet's [Optional Sections](./documentation-explanation.md#optional-sections) catalog does: each section below is a building block the writer includes when the discussion's state calls for it, not a mandatory template.
 
-```markdown
-# {Base Document's Title} Handoff
+### Optional Sections
+A non-exhaustive catalog of state sections a handoff's author may include - nowhere is any of these mandatory, and this list may grow. Sections are included when they have content and omitted entirely when they do not; an empty header is never left in place, so the skeleton's presence always means the state exists. New sections may be added as real discussions demonstrate the need, following the same pattern.
 
-## Topic & Purpose
-{What is being discussed and why — one short paragraph. The handoff's only narrative section.}
+#### Topic & Purpose
+What is being discussed and why - one short paragraph. The handoff's only narrative section.
 
-## Status
-{Active | Paused | Blocked | Complete — the topic's overall state.}
+#### Status
+Active | Paused | Blocked | Complete - the topic's overall state.
 
-## Decisions
-{For each decision: what was decided, the reasoning, and its confidence — Decided / Tentative / Explored-but-unresolved / Deferred. Where alternatives were considered and rejected, the rejected alternative and the reason are recorded with the decision.}
+#### Decisions
+For each decision: what was decided, the reasoning, and its confidence - Decided / Tentative / Explored-but-unresolved / Deferred. Where alternatives were considered and rejected, the rejected alternative and the reason are recorded with the decision.
 
-## Ambiguities Resolved
-{For each: what was unclear, what is now clear, and what evidence or argument resolved it.}
+#### Ambiguities Resolved
+For each: what was unclear, what is now clear, and what evidence or argument resolved it.
 
-## Open Questions
-{For each: the question, why it matters, whether it blocks continuation, and a suggested path toward answering it.}
+#### Open Questions
+For each: the question, why it matters, whether it blocks continuation, and a suggested path toward answering it.
 
-## Assumptions
-{For each: what is being assumed, its stability (Strong / Weak / Unexamined), and what would change if it proved wrong.}
+#### Anticipated Work
+Extensions, growth paths, and follow-up work the discussion anticipates but no one has committed to - distinct from Open Questions (something is undecided) and Proposed Next Steps (someone is doing it now). This section also receives the anticipated work a base document records for its future, per the Explanation facet's Relevance discipline.
 
-## Key Definitions Established
-{Terms defined, refined, or confirmed during the discussion, with the agreed definition — cross-referencing the governing document where the definition has been formally recorded.}
+#### Assumptions
+For each: what is being assumed, its stability (Strong / Weak / Unexamined), and what would change if it proved wrong.
 
-## Proposed Next Steps
-{Ordered steps toward continuation, with dependencies.}
+#### Key Definitions Established
+Terms defined, refined, or confirmed during the discussion, with the agreed definition - cross-referencing the governing document where the definition has been formally recorded.
 
-## Related Artifacts
-{Documents, models, or records affected by or affecting this discussion — what relation, what action is needed there.}
+#### Proposed Next Steps
+Ordered steps toward continuation, with dependencies.
 
-## Notes
-{Anything that does not fit above but may matter later.}
-```
+#### Related Artifacts
+Documents, models, or records affected by or affecting this discussion - what relation, what action is needed there.
+
+#### Notes
+Anything that does not fit above but may matter later.
 
 Two writing rules bind every section:
 
-- **Confidence vocabulary is fixed.** The four levels (Decided, Tentative, Explored-but-unresolved, Deferred) and the three stability levels (Strong, Weak, Unexamined) are the artifact's controlled vocabulary — the receiving session must be able to distinguish firm conclusions from provisional ones without guessing what the writer meant.
-- **Specific over general.** "We discussed modeling approaches" is a failed entry; "Decided: graph-oriented modeling as primary method — reason: reveals relationships better than table-based approaches" is a passing one. Every entry must be understandable by a session that did not participate, without re-reading the discussion it summarizes.
-
-#### Discussion
-
-##### Rationale and alternatives
-- **Free-form structure (rejected)**: see [Analysis, Not Transcription](#analysis-not-transcription) — the fixed skeleton is the selection-asymmetry control; a free-form handoff cannot be audited for what it omitted.
-- **A machine-readable format (YAML/JSON) instead of Markdown (considered, not chosen)**: would make handoffs queryable, but the artifact's primary reader is a session that reads prose, and a structured format raises the writing cost at exactly the point (session end) where the writer has least capacity for it. A structured extraction can be added later as tooling, the way the facet registry question is being handled for the meta-layer.
-- **Timestamped entries like a changelog (rejected)**: a handoff's entries are the current state of a discussion, not a history of changes to it — the state is rewritten as the discussion moves, not appended to. If the history of the discussion's own evolution matters, that is what the discussion's eventual Changelog entries will record when its content graduates into governed documents.
-
+- **Confidence vocabulary is fixed.** The four levels (Decided, Tentative, Explored-but-unresolved, Deferred) and the three stability levels (Strong, Weak, Unexamined) are the artifact's controlled vocabulary - the receiving session must be able to distinguish firm conclusions from provisional ones without guessing what the writer meant.
+- **Specific over general.** "We discussed modeling approaches" is a failed entry; "Decided: graph-oriented modeling as primary method - reason: reveals relationships better than table-based approaches" is a passing one. Every entry must be understandable by a session that did not participate, without re-reading the discussion it summarizes.
 ## Results
 Insufficient time has passed since this specification was adopted to report real, observed outcomes from its use. This section will be filled in once there is such experience to draw on.
 
-## Discussion
-
-### Drawbacks
-The facet adds a fourth artifact kind to the documentation system — one more thing a contributor must understand and choose among. It also institutionalizes a writing obligation at session boundaries, where motivation to produce it is lowest; the quality controls in [Analysis, Not Transcription](#analysis-not-transcription) make the obligation heavier than the ad-hoc habit it replaces, by design. And the boundary between "handoff" and "early draft of the real document" is a real risk: a discussion that has effectively concluded should graduate into Explanation- and Changelog-facet documents, not persist as a handoff indefinitely — [Relationship to the Other Facets](#relationship-to-the-other-facets) states the boundary, but enforcing it requires judgment every time.
-
-### Rationale and alternatives
-- **Extend the Practice facet instead (a bigger practice document, no new facet) (rejected)**: a practice is meant to be *followed* to accomplish something; the handoff document's primary reader relationship is different — it is *consulted* to resume a discussion's state, and its structure serves a reader reconstructing state, not an agent executing steps. Forcing it into the Practice facet would repeat the schema mismatch the facet system was created to eliminate. The procedure for producing a handoff *is* practice content, and it lives in the paired practice file.
-- **Extend the Changelog facet instead (rejected)**: a changelog is append-only history of an artifact's changes; a handoff is a mutable snapshot of a discussion's state. Append-only state-capture would force every refinement of a decision into a new entry, burying the current state under the discussion's own evolution — the reader needing "where do we stand" would have to reconstruct it from the deltas, which is the cost the artifact exists to avoid.
-- **Leave the practice unformalized, relying on the existing practice documents only (rejected)**: the two prior practice documents structured the *writing* of handoffs but left the artifact itself with no governing specification, no name in the facet system, and no defined relationship to the other facets — every structural decision they carried (confidence vocabulary, required sections, one-topic-per-file) was informal convention. This document absorbs that content, formalizes it, and gives the pattern the same named, extensible treatment the other facets have.
-
-### Prior art
-The telecommunications handover and healthcare change-of-shift literatures are the concept's established homes (see Prior art under [What a Handoff Is](#what-a-handoff-is)). Meeting-minutes and decision-log practice is the closest documentation-side tradition. Within AI-assisted development specifically, handoff/context-summary conventions have begun appearing in ecosystem tooling — evidence of the need, though those conventions are typically free-form and unstructured in exactly the ways [Analysis, Not Transcription](#analysis-not-transcription) warns against.
-
-### Unresolved questions
-1. Does a handoff ever warrant its own companion changelog — for example, when a handoff is long-lived across many sessions and its own evolution becomes worth auditing? The Changelog facet's recursion stop applies to `.changelog.md` files themselves; whether it should extend to long-lived `.handoff.md` files is unexamined.
-2. Should handoff files live beside their base documents in `docs/`, or in a separate directory — and does the answer change when the base artifact is outside `docs/`? File placement interacts with the repository's naming conventions and is not settled here.
-
-### Future possibilities
-- Tooling could validate a handoff against its skeleton (required sections present, confidence vocabulary used correctly) the same way a linter checks document structure — proposed, not designed.
-- A handoff whose topic concludes could trigger the documentation-update proposal the Documentation Improvement workflow defines — the graduation path from discussion state to governed documents, made mechanical.
