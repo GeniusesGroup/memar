@@ -26,6 +26,21 @@ Do not produce a handoff when:
 - no continuation is anticipated
 - everything the session concluded has already graduated into governed documents (see the graduation rule in [documentation-handoff.md → What a Handoff Is](./documentation-handoff.md#what-a-handoff-is))
 
+The lists above govern session end. A tangent detected mid-session is a separate trigger — see [Mid-Session Tangents](#mid-session-tangents).
+
+---
+
+## Mid-Session Tangents
+
+A **tangent** is a request that opens a development thread whose context the current session will not otherwise need. Clarifying questions and small edits related to the session's topic are not tangents.
+
+When a tangent appears mid-session, produce the handoff at once rather than at session end:
+
+1. Propose a separate session for the tangent — once; the person's choice to continue here is final.
+2. Record the tangent's state into the appropriate handoff (see [Placement](#placement)) so the fresh session starts from it instead of from scrollback.
+3. State in one line what was recorded and where — a silent handoff hides its selection asymmetry.
+4. Load no more of the tangent's context into the current session than recording requires.
+
 ---
 
 ## Producing a Handoff
@@ -52,7 +67,7 @@ At the start of a session that continues from a handoff:
 1. **Read it completely before responding.** A partial read defeats the artifact — the sections are interdependent (an assumption may qualify a decision; an open question may block a next step).
 2. **Acknowledge the state before advancing.** State the decisions you are building on and their confidence levels, so misreadings surface at the start rather than mid-work.
 3. **Do not re-argue Decided points unless asked or unless new evidence exists.** Tentative points may be revisited — that is what the marker means. Re-arguing without new evidence repeats the cost the handoff was produced to avoid.
-4. **Update the handoff as the session moves the state.** New decisions are added with their confidence; resolved questions move to Ambiguities Resolved; a changed direction rewrites the affected sections. The handoff is a living state-capture, not an append-only history — stale state is worse than absent state, because it is trusted.
+4. **Update the handoff as the session moves the state.** New decisions are added with their confidence; resolved questions move to Ambiguities Resolved - but only until their resolution graduates into the governed documents: a graduated item is removed from the handoff, since the specification carries the answer and the changelog carries the record (see the graduation rule in [documentation-handoff.md → What a Handoff Is](./documentation-handoff.md#what-a-handoff-is)); a changed direction rewrites the affected sections. The handoff is a living state-capture, not an append-only history — stale state is worse than absent state, because it is trusted.
 5. **Graduate conclusions when they stabilize.** When a decision hardens into settled design, propose it into the governing Explanation-facet document, and wait for approval before modifying project documents. A documentation-improvement proposal:
    - identifies the **exact document and section**, and provides **replacement-ready text in English** (the project's documentation language);
    - states **what ambiguity the change resolves** — documentation serves understanding, not volume: an addition that answers no currently-unanswerable question is not an improvement;

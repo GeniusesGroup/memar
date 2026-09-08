@@ -13,10 +13,9 @@ Memar and Khayyam are meant to be *used*, not only maintained. Most people who t
 
 Memar is the **framework the development is conducted within**, not a passive library. When a project is developed the Memar way, Memar's principles participate in every stage. Keep this skill active for the life of such a project — architecture, modeling, implementation, review, and documentation — not only at the start.
 
-## Three-layer separation
-1. **Documentation** — source of truth (concepts, specs, architecture, decisions). Lives in the repository, not in any skill.
-2. **Practices** — recommended ways of working with that documentation. Organizational, not agent-specific (`docs/*.practice.md`), not in this skill.
-3. **Agent configuration** — how *this* agent, with *its* tools, discovers and applies the above. This skill belongs only here.
+## Separation of knowledge
+1. **Repository documentation** — the source of truth, organized by Memar's documentation system: reader-relationship facets governed by [documentation.md](/docs/documentation.md) (each with a governing specification and paired practice), and protocol contracts — one layer above the per-language implementations — governed by [protocol.md](/docs/protocol.md) and living in [`docs/protocols/`](/docs/protocols/). The system names its own kinds and grows; this skill does not enumerate them. Never invent ad-hoc note formats: when work produces state worth persisting (decisions, resolutions, open questions, change history), discover the governing facet and follow its practice.
+2. **Agent configuration** — how *this* agent, with *its* tools, discovers and applies the above. Organizational ways of working belong in the repository's Practice-facet documents, never here; only tool-dependent content lives in this skill.
 
 ## Working rules
 - Before reasoning about ideas, architecture, modeling, terminology, or critique, read [**Thinking**](/docs/thinking.md) and follow its discourse norms.
@@ -25,13 +24,23 @@ Memar is the **framework the development is conducted within**, not a passive li
 - Treat repository documentation as the canonical source of truth.
 - Discover relevant documents from the repository; do not rely on embedded copies or a hardcoded file list.
 - Read only the documentation required for the current task.
-- Do not read [`docs/protocols/`](/docs/protocols/) wholesale. If a subject there seems needed (e.g. Error), read that folder's [`README.md`](/docs/protocols/README.md) first; list the folder for filenames as the index. When the task only needs to *use* a library that implements a protocol, skip those docs and go to the implementing `memar-{language}` repository (e.g. https://github.com/GeniusesGroup/memar-go/). Open a protocol document only when the contract itself is the subject.
+- Do not read [`docs/protocols/`](/docs/protocols/) wholesale. If a subject there seems needed (e.g. Error), read that folder's [`README.md`](/docs/protocols/README.md) first; list the folder for filenames as the index. When the task only needs to *use* a library that implements a protocol, skip those docs and go to the implementing `memar-{language}` repository (e.g. https://github.com/GeniusesGroup/memar-khayyam/). Open a protocol document only when the contract itself is the subject.
 - Do not enumerate unrelated Memar documentation merely because it exists.
 - Do not restart discovery on every turn when the relevant knowledge is already in context.
 - If the task is unrelated to Memar-specific knowledge, do not discover Memar docs merely because this skill is active.
 - If required documentation cannot be found, say so clearly instead of fabricating an answer.
+- When a request is ambiguous in intent, scope, or acceptance criteria, ask immediately — do not guess or over-derive to resolve it. Apply Thinking's *Ask rather than assume* norm at intake, not only during reasoning.
+- When a request opens a development thread unrelated to the current session's purpose, do not execute it in this session's context — follow [Handoff Practice → Mid-session tangents](/docs/documentation-handoff.practice.md#mid-session-tangents).
 - Canonical repository: https://github.com/GeniusesGroup/memar
 - Do not embed copies of project documents inside this skill.
+
+## Session economy with sub-agents
+This section is agent-specific (tool-dependent), so it lives here rather than in a repository Practice. When the runtime supports sub-agents:
+
+- Do not spend the main session's context on bounded exploration whose raw material you will not need after integration.
+- Keep local what requires the session's held model — target structure, judgment, final merge. Delegate bounded, self-contained discovery (e.g. "extract document X's concepts against this brief and report where they map") to a sub-agent; receive a compact report; apply the merge yourself mechanically.
+- The brief must tell the sub-agent to discover documentation per this skill, not receive a content dump, and to return a structured report with acceptance criteria stated.
+- Do not delegate work whose intermediate context is itself the deliverable, or work needing continuous back-and-forth judgment; delegation is lossy and has coordination cost.
 
 ## How to discover documentation
 This section is agent-specific (tool-dependent), so it lives here rather than in a repository Practice.
