@@ -1,6 +1,6 @@
 ---
 name: implement-chapar
-description: Use when implementing a Chapar data-link switch, a Chapar endpoint (sending Unicast, announcing or reacting to Discovery), or ChaparKhane path coordination. Procedures are derived step by step from chapar.md; it contains no design rationale (see chapar.md's Discussion bundles) and defines no wire-format changes of its own.
+description: Use when implementing a Chapar data-link switch, a Chapar endpoint (sending Unicast, announcing or reacting to Discovery), or ChaparKhane path coordination. Procedures are derived step by step from chapar.md; it contains no design rationale (see chapar.md's paired changelog and handoff) and defines no wire-format changes of its own.
 ---
 
 # Implementing Chapar

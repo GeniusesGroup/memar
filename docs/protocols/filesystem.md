@@ -17,14 +17,14 @@ This specification critically examines whether the traditional File and Director
 In developing knowledge management standards, organizations continuously default to file-centric tools (e.g., Git) and hierarchical storage paradigms. This forces multidimensional knowledge into rigid, single-parent hierarchical structures (directories) and isolated byte boundaries (files). The friction observed in tracking historical context, linking related concepts, and discovering information suggests that the underlying storage abstraction is fundamentally mismatched with knowledge modeling needs. We must ask: how many of our architectural layers are fundamental requirements, and how many are merely inherited assumptions?
 
 ### Methodology
-This analysis deconstructs the historical assumptions of filesystems using graph theory and OS architecture. It analyzes the continuous need for workarounds to escape tree limitations (e.g., symlinks, tags) and reframes version control systems (like Git) not as independent innovations, but as direct patches over filesystem flaws. Unresolved questions from initial discussions are kept genuinely open to drive future documents.
+This analysis deconstructs the historical assumptions of filesystems using graph theory and OS architecture. It analyzes the continuous need for workarounds to escape tree limitations (e.g., symlinks, tags) and reframes version control systems (like Git) not as independent innovations, but as direct patches over filesystem flaws. Unresolved questions from initial discussions are kept genuinely open in the paired handoff to drive future documents.
 
 ## Explanation
 
 ### Memar's Stance on the Filesystem Protocol Surface
 The filesystem is not a concept Memar defines: it is a protocol surface owned outside Memar — the POSIX file interface, the VFS contract, and their kin — with stable, externally specified rules. Memar's own stack is expected to implement that surface rather than inherit it from a host: [memar-khayyam](https://github.com/GeniusesGroup/memar-khayyam/), for example, will likely provide filesystem access as a component it realizes itself. This is why this document lives in [`protocols/`](./README.md): it does not answer "what is a filesystem?" (the general meaning governs — see [Terminology → The Default Meaning of an Unreferenced Term](../terminology.md#the-default-meaning-of-an-unreferenced-term)); it answers "what is Memar's position on depending on the filesystem?"
 
-That stance has one content: **in Memar's stack, the filesystem is a high-level library — a component whose inclusion is a decision — not an OS-given foundation.** The prevailing OS view inverts this: because every conventional operating system presents files as unavoidable, developers design systems as if the filesystem were a fundamental requirement, and that inherited assumption leaks into domain models, knowledge structures, and architectures. This document is a deep critique of that inheritance; the topics below supply the evidence. Its function toward the builder is a warning with an action attached: **set aside the old default that you necessarily need a filesystem, and actually check whether you want the need** — for compilation, artifact caching, configuration delivery, and log storage, a filesystem may well be the right answer. What is not acceptable is choosing it by default, without the check. The check itself — the criteria that replace the strong past default — is operationalized in the companion [Filesystem Practice](./filesystem.practice.md).
+That stance has one content: **in Memar's stack, the filesystem is a high-level library — a component whose inclusion is a decision — not an OS-given foundation.** The prevailing OS view inverts this: because every conventional operating system presents files as unavoidable, developers design systems as if the filesystem were a fundamental requirement, and that inherited assumption leaks into domain models, knowledge structures, and architectures. This document is a deep critique of that inheritance; the topics below supply the evidence. Its function toward the builder is a warning with an action attached: **set aside the old default that you necessarily need a filesystem, and actually check whether you want the need** — for compilation, artifact caching, configuration delivery, and log storage, a filesystem may well be the right answer. What is not acceptable is choosing it by default, without the check. If the check says the filesystem goes, expect the trade-off: direct human navigation via CLI and legacy tool integration become harder; multiple classification, semantic querying, traceability of decisions, and maintaining a single source of truth become easier. The check itself — the criteria that replace the strong past default — is operationalized in the companion [Filesystem Practice](./filesystem.practice.md).
 
 ### Filesystem as a Historical Accident
 Nearly all modern software systems inherit an evolutionary stack of assumptions from the 1960s and 1970s computing era:
@@ -104,55 +104,3 @@ Insufficient time has passed to report real, observed outcomes from implementing
 
 This section will be populated with Geniuses Group-specific outcomes once architectural alternatives based on this critique are applied in practice within the Organization platform or related projects.
 
-## Discussion
-
-### Drawbacks
-The filesystem is one of the most successful and deeply entrenched abstractions in computer science history. Deviating from it requires rethinking developer tooling, deployment pipelines, and human interaction paradigms that have been optimized over five decades. Specific challenges include:
-
-1. **Interoperability friction**: Most third-party tools expect POSIX-compliant, file-based I/O. Build systems, linters, deployment tools, and IDEs all assume files exist at paths.
-2. **Cognitive transition cost**: Developers have internalized file-centric mental models ("open file," "save file," "move file"). Migration requires unlearning as much as learning.
-3. **Risk of replacement failure**: If the replacement system has gaps (and any system will), the migration may leave the organization worse than before — with broken tooling and incomplete knowledge management.
-4. **Performance maturity**: Filesystems are heavily optimized after decades of engineering effort. New abstractions rarely match this level of performance out of the gate.
-
-Additionally, a nuanced drawback specific to this critique: **the arguments here apply most strongly to KNOWLEDGE systems, not to all systems**. For source code compilation, build artifact caching, configuration delivery, and log storage — filesystems remain appropriate and well-matched. The critique targets the LEAKAGE of filesystem assumptions into domains where they don't belong, not the use of filesystems in domains where they belong.
-
-### Rationale and alternatives
-- **Claim: "Filesystem is bad, we must replace it" (rejected)**: This document does not argue the filesystem was a mistake. It was highly effective for storage-oriented systems. The claim is narrowly scoped: it is an inherited assumption for *knowledge systems*, not a fundamental requirement.
-- **Claim: "Git is an independent knowledge tool" (refined)**: Git is a filesystem repair mechanism. Its flaws in knowledge management are inherited directly from the file/directory paradigm.
-- **Claim: "We should build a Graph Database" (rejected as direct implication)**: A graph database provides storage mechanics, not a knowledge model. Without principled design of what nodes and edges MEAN, a graph database becomes another data swamp — this time with cycles. The principles here describe conceptual structure; implementation technology choice is separate.
-
-### Prior art
-- **Semantic File Systems (Gifford, Jouvelot, Sheldon, & O'Toole, 1991)**: Landmark ACM research introducing attribute-based file access. Demonstrated that automatic extraction and indexing of file properties enables queries impossible with hierarchical directories. Directly inspired the [Directory as Tree: A Flawed Classification Model](#directory-as-tree-a-flawed-classification-model) topic of this specification.
-- **Unikernels (Madhavapeddy, Williams, & Spork, 2013)**: ASPLOS paper presenting MirageOS and the library OS approach. Showed that compiling applications into specialized OS images eliminates the need for general-purpose filesystems. Validated by subsequent production deployments in cloud environments.
-- **POSIX Abstractions in Modern Operating Systems (Yang et al., 2016)**: ACM study examining POSIX usage patterns in Android, OS X, and Ubuntu. Found that many modern applications use POSIX in compatibility layers rather than natively, suggesting filesystem APIs persist by convention rather than necessity.
-- **A Tale of Two Abstractions: The Case for Object Storage (Bittman et al., HotStorage '19)**: USENIX research comparing file and object abstractions for persistent data. Found that both abstractions coexist because they optimize for different use cases — supporting our position that filesystem is one valid projection among many.
-- **Zettelkasten Method (Luhmann, sommergessen)**: Personal knowledge management system using atomic notes with emergent structure through linking. Influences the [File: An Artificial Knowledge Boundary](#file-an-artificial-knowledge-boundary) critique by demonstrating practical knowledge systems that don't use files or folders as primary organization.
-- **Nonaka SECI Model (Nonaka & Takeuchi, 1995)**: While focused on organizational learning, the SECI model's distinction between tacit and explicit knowledge informs our Knowledge vs. Document distinction. Explicit knowledge artifacts (documents) are always incomplete projections of the richer tacit knowledge context.
-
-### Possible questions
-1. **Is a "File" a fundamental concept, or merely one possible projection of content?**
-   *Addressed:* A file is not fundamental. It is a physical boundary for bytes. Content is a semantic entity independent of its file projection.
-2. **Should organizational knowledge be modeled around files, or around relationships?**
-   *Addressed:* Around relationships. Knowledge is a network of concepts, decisions, and tasks. Files isolate these concepts into isolated silos.
-3. **Is repository-wide state a genuine business requirement, or an artifact of filesystem-centric tooling?**
-   *Addressed:* It is largely an artifact. The business requires understanding *why* a change occurred (Task/Decision), not the global state of all files at an arbitrary commit. Logical snapshots tied to tasks replace physical snapshots.
-4. **If a filesystem is removed entirely, which capabilities become harder, and which become easier?**
-   *Addressed:* Harder: Direct human navigation via CLI and legacy tool integration. Easier: Multiple classification, semantic querying, traceability of decisions, and maintaining a single source of truth.
-5. **Can every filesystem concept be represented as graph structures?**
-   *Addressed:* Yes mathematically (e.g., directory = edge with `contains` label). However, merely emulating filesystem concepts in a graph carries over historical baggage. A clean architectural redesign is preferred over emulation.
-6. **Is Repository itself a fundamental domain concept, or merely a filesystem-era projection of a richer graph structure?** A repository bundles several distinct concerns—access control, context, grouping, versioning boundary, discovery boundary—into a single physical container. It is not yet established whether these concerns are inherently coupled, or whether "Repository" would simply re-emerge as an *emergent* grouping (e.g., all Content linked to a shared context node) once the underlying model no longer requires a physical container to enforce them.
-
-### Unresolved questions
-1. **Can repository-wide state be completely eliminated without losing necessary historical context?** (If so, the snapshot paradigm of Git is obsolete).
-2. **What minimum primitive replaces the File?** If a file is an artificial boundary, what is the correct atomic unit of content?
-3. **What capabilities are lost if the filesystem disappears entirely?** Are there critical operations that *only* a filesystem can natively support?
-4. **Are there domains where the filesystem as a knowledge model is actually optimal, or is it always a compromise?**
-5. **How do we handle the cognitive transition for developers who have spent careers thinking in files?** Even if the new model is superior, the migration cost (learning, tooling, muscle memory) is non-trivial and may be underestimated.
-
-### Future possibilities
-Future documents must explore alternative primitives for Content and Task modeling that are not bound by file boundaries or tree structures. Additionally, a dedicated document is needed to redefine versioning not as a repository-wide physical snapshot, but as a logical consequence of task and decision evolution. Specific topics for future exploration include:
-
-- **Content Identity Mechanisms**: How ContentUUID or content-addressable identifiers replace file paths as stable references without sacrificing usability.
-- **Graph-Based Classification Systems**: Practical implementations of multi-dimensional classification that exceed the capabilities of tags or hierarchies while remaining performant at scale.
-- **Task-Centric Versioning**: History models where the primary unit is task evolution (question → research → decision → outcome → related changes), not global snapshot.
-- **Projection Layer Architecture**: How to maintain file-system-like UI compatibility (for developer familiarity and tool integration) atop a non-file-based knowledge model.

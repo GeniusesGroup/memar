@@ -17,17 +17,19 @@
   - [Claude](../CONTRIBUTORS.md#claude) (Claude Sonnet 5, medium effort with thinking) — reviewed
 
 #### What changed
-First structured revision of this document. Added `ID` (495220, derived from the original Start Date). Migrated `Contributor(s)` from the deprecated `contribution`/`task` format to the `Tasks`-based format. Fixed `Citations` `Reason` value for Terminology from the non-standard "Foundation Alignment" to "Depends_on." Wrote the previously empty Abstract and Guide-level explanation sections. Added Discussion bundles (Drawbacks, Rationale and alternatives, Prior art, and where appropriate Unresolved questions and Future possibilities) to every Reference-level topic. Added the missing document-level Discussion and Change Rationale sections. Converted plain-text internal references to hyperlinks. Added additional examples (e-commerce Order/Payment relationship) and expanded existing discussion points with deeper analysis and more alternatives.
-
-Core principles; domain decomposition; abstraction justification; the attribute-or-edge test; acquired vs. discovered data; event-aware state modeling; document-spec restructuring; loop-edge classification; edge taxonomy; practice-document extraction; terminology corrections; the unified modeling/review practice; the pluggable-module principle. (Omid Hekayati)
-
-Initial draft, argumentation. (Gemini)
-
-Initial draft; argumentation; independence-signal review; event-framing review. (ChatGPT)
-
-Structural revision, template compliance, content enrichment. (Super Z)
-
-Critical review, content enrichment. (Claude)
+- First structured revision of this document.
+- Added `ID` (495220, derived from the original Start Date).
+- Migrated `Contributor(s)` from the deprecated `contribution`/`task` format to the `Tasks`-based format.
+- Fixed `Citations` `Reason` value for Terminology from the non-standard "Foundation Alignment" to "Depends_on."
+- Wrote the previously empty Abstract and Guide-level explanation sections.
+- Added Discussion bundles (Drawbacks, Rationale and alternatives, Prior art, and where appropriate Unresolved questions and Future possibilities) to every Reference-level topic.
+- Added the missing document-level Discussion and Change Rationale sections.
+- Converted plain-text internal references to hyperlinks.
+- Added additional examples (e-commerce Order/Payment relationship) and expanded existing discussion points with deeper analysis and more alternatives.
+- The core principles; domain decomposition; abstraction justification; the attribute-or-edge test; acquired vs. discovered data; event-aware state modeling; document-spec restructuring; loop-edge classification; edge taxonomy; practice-document extraction; terminology corrections; the unified modeling/review practice; and the pluggable-module principle were claimed (Omid Hekayati).
+- The independence-signal review and the event-framing review were contributed (ChatGPT).
+- The structural revision, template compliance, and content enrichment were done (Super Z).
+- The critical review and content enrichment were done (Claude).
 
 ---
 
@@ -38,7 +40,10 @@ Critical review, content enrichment. (Claude)
   - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — argued.
 
 #### What changed
-Replaced implementation-level vocabulary in the modeling phase with Discovery Vocabulary terms (abstraction, concern, conceptual boundary, responsibility). Clarified that modeling outputs conceptual knowledge rather than implementation structures. Added "Modeling Produces Abstractions and Supporting Documents" to establish this vocabulary boundary. Rewrote "Concept Existence vs. Model Existence" and "Domain Decomposition" to consistently use abstraction-level terminology throughout.
+- Implementation-level vocabulary in the modeling phase was replaced with Discovery Vocabulary terms (abstraction, concern, conceptual boundary, responsibility).
+- It was clarified that modeling outputs conceptual knowledge rather than implementation structures.
+- "Modeling Produces Abstractions and Supporting Documents" was added to establish this vocabulary boundary.
+- "Concept Existence vs. Model Existence" and "Domain Decomposition" were rewritten to consistently use abstraction-level terminology throughout.
 
 ---
 
@@ -49,7 +54,9 @@ Replaced implementation-level vocabulary in the modeling phase with Discovery Vo
   - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — argued.
 
 #### What changed
-Added a paragraph to "Graphs Are Not Documentation Artifacts" clarifying that graphs serve as a discovery environment where questions, assumptions, and modeling decisions evolve alongside structure, not merely as visualization tools. Added "Modeling Focuses on Behavior Before Structure" to establish that a system's real complexity resides in what it does, not what it stores, and that modeling should prioritize behavioral understanding before structural decisions. Added an explicit definition of "aggregator" in "Domain Decomposition over Aggregate-Root Modeling" to prevent ambiguous interpretation across modeling, architecture, and composition contexts.
+- A paragraph was added to "Graphs Are Not Documentation Artifacts" clarifying that graphs serve as a discovery environment where questions, assumptions, and modeling decisions evolve alongside structure, not merely as visualization tools.
+- "Modeling Focuses on Behavior Before Structure" was added to establish that a system's real complexity resides in what it does, not what it stores, and that modeling should prioritize behavioral understanding before structural decisions.
+- An explicit definition of "aggregator" was added in "Domain Decomposition over Aggregate-Root Modeling" to prevent ambiguous interpretation across modeling, architecture, and composition contexts.
 
 ---
 
@@ -60,7 +67,8 @@ Added a paragraph to "Graphs Are Not Documentation Artifacts" clarifying that gr
   - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — argued.
 
 #### What changed
-Added "Modeling, Protocol, and Architecture" to clarify that these are not sequential pipeline phases but complementary aspects of a single architectural process — modeling discovers domain understanding, protocol captures it as knowledge contracts, and both are architectural in nature. Added a paragraph on systemic thinking to the guide-level explanation, emphasizing that modeling must examine how concerns interact across boundaries rather than partitioning the domain along organizational lines.
+- "Modeling, Protocol, and Architecture" was added to clarify that these are not sequential pipeline phases but complementary aspects of a single architectural process — modeling discovers domain understanding, protocol captures it as knowledge contracts, and both are architectural in nature.
+- A paragraph on systemic thinking was added to the guide-level explanation, emphasizing that modeling must examine how concerns interact across boundaries rather than partitioning the domain along organizational lines.
 
 ---
 
@@ -71,7 +79,11 @@ Added "Modeling, Protocol, and Architecture" to clarify that these are not seque
   - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — claimed, argued.
 
 #### What changed
-Added "The Attribute-or-Edge Test" under "Concept Existence vs. Model Existence," operationalizing the independent-responsibility criterion as a mechanical check ("is this data owned here, or is it a named edge to an already-independent concern?"), using a `Product`/`Text` example covering storage, validation, versioning, internationalization, and search as responsibilities properly owned by a shared `Text` abstraction rather than duplicated per node. Replaced the `Order`/`Payment` example in "Modeling Requires Explicit Relationship Analysis" with `Invoice`/`Financial Transaction`, with an explicit note that word choice at the modeling stage is not cosmetic — `Order` and `Payment` were rejected because they smuggle in incorrect assumptions about workflow outcome and implementation layer. Renamed "Modeling Focuses on Behavior Before Structure" to "Behavior and Structure Are Discovered Together," clarifying that behavior and structure are discovered concurrently rather than in strict sequence, while retaining the discipline of interrogating every proposed node or edge for its behavioral consequences immediately. Added "Acquired Data vs. Discovered Data" as a complementary lens to the existing Fundamental/Derived distinction, with a position/velocity example illustrating why a discovered value should not be stored as if it were an acquired one. Added "Modeling State Change as Events, Not Destructive Updates," establishing that state changes are architecturally significant events to be modeled deliberately, without prescribing any specific storage engine or persistence strategy.
+- "The Attribute-or-Edge Test" was added under "Concept Existence vs. Model Existence," operationalizing the independent-responsibility criterion as a mechanical check ("is this data owned here, or is it a named edge to an already-independent concern?"), using a `Product`/`Text` example covering storage, validation, versioning, internationalization, and search as responsibilities properly owned by a shared `Text` abstraction rather than duplicated per node.
+- The `Order`/`Payment` example in "Modeling Requires Explicit Relationship Analysis" was replaced with `Invoice`/`Financial Transaction`, with an explicit note that word choice at the modeling stage is not cosmetic — `Order` and `Payment` were rejected because they smuggle in incorrect assumptions about workflow outcome and implementation layer.
+- "Modeling Focuses on Behavior Before Structure" was renamed to "Behavior and Structure Are Discovered Together," clarifying that behavior and structure are discovered concurrently rather than in strict sequence, while retaining the discipline of interrogating every proposed node or edge for its behavioral consequences immediately.
+- "Acquired Data vs. Discovered Data" was added as a complementary lens to the existing Fundamental/Derived distinction, with a position/velocity example illustrating why a discovered value should not be stored as if it were an acquired one.
+- "Modeling State Change as Events, Not Destructive Updates" was added, establishing that state changes are architecturally significant events to be modeled deliberately, without prescribing any specific storage engine or persistence strategy.
 
 #### Considered and not done
 Renaming "Modeling Focuses on Behavior Before Structure" to "Behavior and Structure Are Discovered Together" also resolved an internal tension with the adjacent "Behavior Often Reveals the Quality of the Model" section, which already described behavior as co-discovered rather than sequentially deferred — the rename brought the two sections into agreement rather than leaving one implicitly contradicting the other.
@@ -85,7 +97,11 @@ Renaming "Modeling Focuses on Behavior Before Structure" to "Behavior and Struct
   - [ChatGPT](../CONTRIBUTORS.md#chatgpt) (GPT-5.5) — reviewed, argued.
 
 #### What changed
-Added "Reuse Across Contexts as an Additional Signal" beneath the Attribute-or-Edge Test, framing cross-context reuse as a corroborating but non-required signal for independent-abstraction status, with `Text` (reused) and `Invoice` (not reused, still independent) as contrasting examples. Established the `Product`/`Title`/`Text` example as a recurring reference example, cross-referenced from the `Invoice`/`Financial Transaction` example so the structural (attribute-vs-node) and behavioral (invariant-ownership) lessons remain distinct but mutually discoverable. Added an explicit "a discovered concept should not automatically become a stored concept" principle to "Acquired Data vs. Discovered Data." Reordered "Modeling State Change as Events, Not Destructive Updates" to lead with "the model should preserve reality before it preserves projections" and an explicit disclaimer that Event Sourcing, CQRS, and append-only storage are not thereby mandated. Added "Initial Discovery Questions," a short checklist distinguishing how to begin discovering abstractions from the rest of the document's treatment of what a good abstraction looks like, explicitly scoped as an entry point rather than a gate. (This checklist was itself removed in a later revision — see "Specification realignment" below.)
+- "Reuse Across Contexts as an Additional Signal" was added beneath the Attribute-or-Edge Test, framing cross-context reuse as a corroborating but non-required signal for independent-abstraction status, with `Text` (reused) and `Invoice` (not reused, still independent) as contrasting examples.
+- The `Product`/`Title`/`Text` example was established as a recurring reference example, cross-referenced from the `Invoice`/`Financial Transaction` example so the structural (attribute-vs-node) and behavioral (invariant-ownership) lessons remain distinct but mutually discoverable.
+- An explicit "a discovered concept should not automatically become a stored concept" principle was added to "Acquired Data vs. Discovered Data."
+- "Modeling State Change as Events, Not Destructive Updates" was reordered to lead with "the model should preserve reality before it preserves projections" and an explicit disclaimer that Event Sourcing, CQRS, and append-only storage are not thereby mandated.
+- "Initial Discovery Questions" was added — a short checklist distinguishing how to begin discovering abstractions from the rest of the document's treatment of what a good abstraction looks like, explicitly scoped as an entry point rather than a gate. (This checklist was itself removed in a later revision — see "Specification realignment" below.)
 
 #### Considered and not done
 Framing reuse as a corroborating but non-required signal, rather than a primary criterion, was a deliberate choice: independent responsibility and lifecycle remain the actual test, and overstating reuse's importance would have let a genuinely independent but rarely-reused concept (like `Invoice`) look wrongly disqualified.
@@ -100,11 +116,10 @@ Framing reuse as a corroborating but non-required signal, rather than a primary 
   - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — claimed
 
 #### What changed
-Migrated the front matter to the then-current specification (`Contributor(s)` renamed to `Contributors`; `Works` entries shortened to headline style). Moved Motivation under Introduction and added Methodology. Moved the former top-level Guide section under Explanation as its first topic, linked from the Abstract. Removed every checklist and step-by-step procedure that had accumulated in this document — the modeling workflow, Initial Discovery Questions, Challenging a Proposed Concept, Testing an Assumption, Early Indicators of Modeling Progress, and Expected Output of a Modeling Session — replacing them with short principle statements cross-referenced to a new companion `domain-modeling` skill that then held the concrete procedures. Generalized the TODO-marked "Content Before Classification" section into "Classification Emerges From Rules and Relations, Not From Intrinsic Labels," formalizing a loop-edge-to-node promotion mechanism — provisional classifications are represented as self-referencing (loop) edges, promoted to independent nodes only when the classification itself passes the same independent-responsibility test already established in "Concept Existence vs. Model Existence." Added "Edge Types and Their Traditional Counterparts," naming reference, composition/ownership, label, and shortcut/index edges alongside their relational-database counterparts, with an explicit caution that shortcut edges must never become a source of truth.
-
-Structural revision, template compliance. (Super Z)
-
-Loop-edge classification, edge taxonomy, practice-document extraction. (Omid Hekayati)
+- The front matter was migrated to the then-current specification (`Contributor(s)` renamed to `Contributors`; `Works` entries shortened to headline style), Motivation was moved under Introduction with Methodology added, and the former top-level Guide section was moved under Explanation as its first topic, linked from the Abstract — the structural revision and template compliance (Super Z).
+- Every checklist and step-by-step procedure that had accumulated in this document — the modeling workflow, Initial Discovery Questions, Challenging a Proposed Concept, Testing an Assumption, Early Indicators of Modeling Progress, and Expected Output of a Modeling Session — was removed, replaced with short principle statements cross-referenced to a new companion `domain-modeling` skill that then held the concrete procedures (Omid Hekayati — practice-document extraction).
+- The TODO-marked "Content Before Classification" section was generalized into "Classification Emerges From Rules and Relations, Not From Intrinsic Labels," formalizing a loop-edge-to-node promotion mechanism — provisional classifications are represented as self-referencing (loop) edges, promoted to independent nodes only when the classification itself passes the same independent-responsibility test already established in "Concept Existence vs. Model Existence" (Omid Hekayati — loop-edge classification).
+- "Edge Types and Their Traditional Counterparts" was added, naming reference, composition/ownership, label, and shortcut/index edges alongside their relational-database counterparts, with an explicit caution that shortcut edges must never become a source of truth (Omid Hekayati — edge taxonomy).
 
 #### Considered and not done
 An intermediate draft of this change mistakenly cited a separate `modeling-practice.md` document via `Citations`; this was corrected, since Skills are not governed by the Document process and are referenced as ordinary links, not `Citations` entries. This intermediate approach (practice content as a Skill) was itself superseded by the next revision below.
@@ -121,9 +136,14 @@ An intermediate draft of this change mistakenly cited a separate `modeling-pract
   - [Claude](../CONTRIBUTORS.md#claude) — rewrote.
 
 #### What changed
-Moved practice/procedural content out of a Skill entirely and into a sibling document, `modeling.practice.md`, living alongside this document; removed the remaining forward pointers this document had toward that companion content, since the reference relationship runs the other way (the practice document points back here, and even that is kept minimal). Removed the Guide topic entirely: everything it covered was about how this document is operationalized in a session, which became `modeling.practice.md`'s responsibility. Dropped the "domain-" prefix from "domain modeling" in the Abstract and from every "domain-modeling" skill/practice reference throughout — "modeling" alone is Memar's term for this activity. Simplified "Edge Types and Their Traditional Counterparts" from four enumerated, seemingly-exhaustive edge types down to a single architecturally meaningful distinction (an edge is either a shortcut edge or it is not), with reference, ownership, and label demoted to non-exhaustive, illustrative examples of ordinary edges rather than a closed taxonomy. Corrected a misuse of "RFC" in this document's own change history — Memar's terminology reserves "RFC" for external standards-track documents (e.g. IETF RFCs), not for Memar's own document type; "document" is the correct term throughout.
+- Practice/procedural content was moved out of a Skill entirely and into a sibling document, `modeling.practice.md`, living alongside this document; the remaining forward pointers this document had toward that companion content were removed, since the reference relationship runs the other way (the practice document points back here, and even that is kept minimal).
+- The Guide topic was removed entirely: everything it covered was about how this document is operationalized in a session, which became `modeling.practice.md`'s responsibility.
+- The "domain-" prefix was dropped from "domain modeling" in the Abstract and from every "domain-modeling" skill/practice reference throughout — "modeling" alone is Memar's term for this activity.
+- "Edge Types and Their Traditional Counterparts" was simplified from four enumerated, seemingly-exhaustive edge types down to a single architecturally meaningful distinction (an edge is either a shortcut edge or it is not), with reference, ownership, and label demoted to non-exhaustive, illustrative examples of ordinary edges rather than a closed taxonomy.
+- A misuse of "RFC" in this document's own change history was corrected — Memar's terminology reserves "RFC" for external standards-track documents (e.g. IETF RFCs), not for Memar's own document type; "document" is the correct term throughout.
 
-Per a project decision made in a parallel conversation, moved practice content out of a Skill entirely and into a sibling document. (Omid Hekayati)
+#### Deliberation
+- The move of practice content out of a Skill entirely and into a sibling document came from a project decision made in a parallel conversation (Omid Hekayati).
 
 ---
 
@@ -137,9 +157,10 @@ Per a project decision made in a parallel conversation, moved practice content o
   - [Claude](../CONTRIBUTORS.md#claude) — reviewed, rewrote.
 
 #### What changed
-Corrected "Edge Types and Their Traditional Counterparts" a second time: an edge is not simply "shortcut or not" — a loop-edge (a node connected to itself) is a third, structurally distinct kind of edge in its own right, now named as a peer of ordinary edges and shortcut edges rather than folded in as one example of an ordinary edge. Replaced the `Invoice`-total shortcut-edge example with a clearer one (whether an `Invoice` was paid in cash, without traversing every `Financial Transaction` to check each one's account label). Rewrote `modeling.practice.md` to merge model discovery and model review into a single unified procedure rather than two documents, incorporating Model Reading, Node/Relationship audits, a Single Responsibility Check, an Implementation Contamination Check, a Completeness Check, a Common Anti-Patterns table, and Severity Levels from a separately-authored review practice. Added "Extensible Behavior Belongs to Pluggable Modules," establishing — via a discount-mechanism example on `Invoice` — that a concept's model should expose attachment points for independently-modeled, pluggable Rule modules rather than growing new fields or branches to absorb every variation a plugin might need.
-
-The unified modeling/review practice, the pluggable-module principle. (Omid Hekayati)
+- "Edge Types and Their Traditional Counterparts" was corrected a second time: an edge is not simply "shortcut or not" — a loop-edge (a node connected to itself) is a third, structurally distinct kind of edge in its own right, now named as a peer of ordinary edges and shortcut edges rather than folded in as one example of an ordinary edge.
+- The `Invoice`-total shortcut-edge example was replaced with a clearer one (whether an `Invoice` was paid in cash, without traversing every `Financial Transaction` to check each one's account label).
+- `modeling.practice.md` was rewritten to merge model discovery and model review into a single unified procedure rather than two documents, incorporating Model Reading, Node/Relationship audits, a Single Responsibility Check, an Implementation Contamination Check, a Completeness Check, a Common Anti-Patterns table, and Severity Levels from a separately-authored review practice (Omid Hekayati — the unified modeling/review practice).
+- "Extensible Behavior Belongs to Pluggable Modules" was added, establishing — via a discount-mechanism example on `Invoice` — that a concept's model should expose attachment points for independently-modeled, pluggable Rule modules rather than growing new fields or branches to absorb every variation a plugin might need (Omid Hekayati — the pluggable-module principle).
 
 #### Considered and not done
 Deliberately avoided the title "Code vs. Rule" for the pluggable-module section, since discussion showed that framing itself invites the same conceptual narrowing this document's own terminology guidance warns against. The deeper treatment, including its relationship to Khayyam's own modularity model, was left for a future, dedicated, shared document rather than restated here.
@@ -154,11 +175,13 @@ Deliberately avoided the title "Code vs. Rule" for the pluggable-module section,
   - [Claude](../CONTRIBUTORS.md#claude) — rewrote
 
 #### What changed
-This document is now structured per `documentation-explanation.md`, with the same template as system.md, protocol.md, terminology.md, and process.md. Its Citations, Contributor roster, and full change history now live entirely in this file.
+- This document is now structured per `documentation-explanation.md`, with the same template as system.md, protocol.md, terminology.md, and process.md. Its Citations, Contributor roster, and full change history now live entirely in this file.
+- This document had already been substantially migrated in earlier revisions (Abstract/Introduction/Explanation/document-level Discussion, with correct lowercase Discussion sub-heading casing throughout, were already in place).
+- The remaining gaps were a missing `## Results` section, front matter still carrying `Citations` and `Contributors` directly rather than in a changelog, and the `## Change Rationale` section itself, which is migrated into the changelog entries above (Claude).
+- This document was checked for Process-specific content that should migrate to process.md, following the review already applied to protocol.md and terminology.md — none was found, since every use of "process" here is either the ordinary-English sense ("modeling process," "business process") or a reference to the Document process (this document's own review/status pathway), not Memar's formal Process concept (Claude).
 
-Asked that this document be migrated to the current structure with a paired changelog file, matching the treatment already applied to system.md, protocol.md, and terminology.md. (Omid Hekayati)
-
-This document had already been substantially migrated in earlier revisions (Abstract/Introduction/Explanation/document-level Discussion, with correct lowercase Discussion sub-heading casing throughout, were already in place); the remaining gaps were a missing `## Results` section, front matter still carrying `Citations` and `Contributors` directly rather than in a changelog, and the `## Change Rationale` section itself, which is migrated into the changelog entries above; checked this document for Process-specific content that should migrate to process.md, following the review already applied to protocol.md and terminology.md — found none, since every use of "process" here is either the ordinary-English sense ("modeling process," "business process") or a reference to the Document process (this document's own review/status pathway), not Memar's formal Process concept. (Claude)
+#### Deliberation
+- The migration of this document to the current structure with a paired changelog file was requested, matching the treatment already applied to system.md, protocol.md, and terminology.md (Omid Hekayati).
 
 ---
 
@@ -170,11 +193,12 @@ This document had already been substantially migrated in earlier revisions (Abst
   - [Claude](../CONTRIBUTORS.md#claude) — rewrote
 
 #### What changed
-Previously, this document used "process" only in its ordinary English sense throughout, with no signal to the reader that Memar has a separate, formal Process concept at all — someone modeling from this document alone had no reason to go look for one. Two cross-references were added: a direct one in "Modeling, Protocol, and Architecture," the section that already discusses the System→Process→Protocol chain conceptually without naming Process as a defined term, and a lighter one in "Behavior and Structure Are Discovered Together," where the behavioral vocabulary discussed (failure, retry, concurrency) overlaps directly with process.md's own vocabulary.
+- Previously, this document used "process" only in its ordinary English sense throughout, with no signal to the reader that Memar has a separate, formal Process concept at all — someone modeling from this document alone had no reason to go look for one.
+- A direct cross-reference was added in "Modeling, Protocol, and Architecture" — the section that already discusses the System→Process→Protocol chain conceptually without naming Process as a defined term — as a paragraph stating directly that this document's informal uses of "process" are ordinary English, not the formal Process concept, and that Protocol actually governs the formal one, with a link to process.md added alongside the existing Protocol and Terminology links (Claude).
+- A second, lighter cross-reference was added in "Behavior and Structure Are Discovered Together" — the section where the behavioral vocabulary discussed (failure, retry, concurrency) overlaps directly with process.md's own vocabulary — connecting that vocabulary (failure, retry, concurrency, recovery) directly to process.md's formal treatment of the same vocabulary (Claude).
 
-Pointed out that a reader who models something using only this document, without knowledge of process.md, could reasonably assume "process" carries its ordinary ecosystem-default meaning here rather than Memar's formal definition — this document should not let that ambiguity stand. (Omid Hekayati)
-
-Added a paragraph to "Modeling, Protocol, and Architecture" stating directly that this document's informal uses of "process" are ordinary English, not the formal Process concept, and that Protocol actually governs the formal one; added a link to process.md alongside the existing Protocol and Terminology links. Added a second, lighter cross-reference in "Behavior and Structure Are Discovered Together," connecting that section's behavioral vocabulary (failure, retry, concurrency, recovery) directly to process.md's formal treatment of the same vocabulary. (Claude)
+#### Deliberation
+- It was pointed out that a reader who models something using only this document, without knowledge of process.md, could reasonably assume "process" carries its ordinary ecosystem-default meaning here rather than Memar's formal definition — this document should not let that ambiguity stand (Omid Hekayati).
 
 
 ### Modeling review and vocabulary cleanup
@@ -185,11 +209,13 @@ Added a paragraph to "Modeling, Protocol, and Architecture" stating directly tha
   - [Claude](../CONTRIBUTORS.md#claude) — reviewed
 
 #### What changed
-Removed procedural workflow content from the reference document so that execution guidance remains in `modeling.practice.md`. Clarified that modeling produces abstractions, relationships, constraints, and supporting documents rather than implementation-level structures. Preserved the `Product`/`Title`/`Text` attribute-or-edge example, acquired-versus-discovered data distinction, event-aware state modeling, concurrent behavior-and-structure discovery, explicit aggregation emergence, and pluggable-module principle. Added an explicit statement to the practice document that requirement terminology is evidence to investigate rather than an authoritative model boundary. Removed implementation-level vocabulary from the modeling document and its historical change descriptions to keep the modeling vocabulary consistent.
-
-Final vocabulary and modeling-boundary corrections. (Omid Hekayati)
-
-Final consistency pass and cleanup. (Claude)
+- Procedural workflow content was removed from the reference document so that execution guidance remains in `modeling.practice.md`.
+- It was clarified that modeling produces abstractions, relationships, constraints, and supporting documents rather than implementation-level structures.
+- The `Product`/`Title`/`Text` attribute-or-edge example, acquired-versus-discovered data distinction, event-aware state modeling, concurrent behavior-and-structure discovery, explicit aggregation emergence, and pluggable-module principle were preserved.
+- An explicit statement was added to the practice document that requirement terminology is evidence to investigate rather than an authoritative model boundary.
+- Implementation-level vocabulary was removed from the modeling document and its historical change descriptions to keep the modeling vocabulary consistent.
+- The final vocabulary and modeling-boundary corrections were Omid Hekayati's.
+- The final consistency pass and cleanup was Claude's.
 
 ---
 
@@ -203,11 +229,13 @@ Final consistency pass and cleanup. (Claude)
   - [Claude](../CONTRIBUTORS.md#claude) — rewrote
 
 #### What changed
-This document had been carrying the full architectural reasoning for pluggable Modules in its own words, with a note already flagging that the material belonged in a shared document once one existed. Now that `modularity.md` exists, that section is reduced to the modeling-level consequence and its illustrating example, referencing `modularity.md` for the rest. The independent-responsibility criterion this document had already worked out informally is now also tied back to `system.md`'s formal Responsibility definition.
+- This document had been carrying the full architectural reasoning for pluggable Modules in its own words, with a note already flagging that the material belonged in a shared document once one existed.
+- Now that `modularity.md` exists, "Extensible Behavior Belongs to Pluggable Modules" was shortened to state only the modeling-level consequence and the `Invoice` illustration, pointing at `modularity.md`'s now-existing "Pluggable Behavior" topic for the architectural treatment this section used to carry in full — resolving the forward-reference this section had explicitly left for "a dedicated, shared document" before that document existed (Claude).
+- The independent-responsibility criterion this document had already worked out informally was tied back to `system.md`'s formal Responsibility definition, with `system.md`'s new Responsibility section cited from the independent-responsibility justification in Domain Decomposition over Aggregate-Root Modeling (Claude).
+- Unresolved question 1 under the pluggable-modules Discussion was resolved, since `system.md` now states the general test explicitly (Claude).
 
-Asked for a coordinated pass across `system.md`, `process.md`, `modularity.md`, and `modeling.md` together, so shared concepts have one authoritative home each. (Omid Hekayati)
-
-Shortened "Extensible Behavior Belongs to Pluggable Modules" to state only the modeling-level consequence and the `Invoice` illustration, pointing at `modularity.md`'s now-existing "Pluggable Behavior" topic for the architectural treatment this section used to carry in full — resolving the forward-reference this section had explicitly left for "a dedicated, shared document" before that document existed; cited `system.md`'s new Responsibility section from the independent-responsibility justification in Domain Decomposition over Aggregate-Root Modeling; resolved Unresolved question 1 under the pluggable-modules Discussion, since `system.md` now states the general test explicitly. (Claude)
+#### Deliberation
+- A coordinated pass across `system.md`, `process.md`, `modularity.md`, and `modeling.md` together was requested, so shared concepts have one authoritative home each (Omid Hekayati).
 
 ---
 
@@ -223,13 +251,16 @@ Shortened "Extensible Behavior Belongs to Pluggable Modules" to state only the m
   - protocol.md, agency.md: Done in this same pass — observer-facing consequences of Protocol and Agency roles.
 
 #### What changed
-Added "One Reality, Multiple Abstraction Lenses": a single reality may be modeled through co-equal abstraction modes (structural, behavioral/process, normative, systemic) that are neither hierarchy levels nor entities inside the produced model, with the warning that parallel structures differing only by lens usually indicate one concern counted several times. Added "Constraints Belong to the Constraining Concern": a constraint originating outside a resource is modeled as a relationship owned by the constraining concern, carrying its own target/satisfied/remaining state and observing the affected resources, never duplicated onto each of them; with the corollary that two related-looking quantities on one node may be independent projections evaluated against different active rules rather than primary-plus-cache. Extended Edge Types Unresolved Questions with two items deferred to storage-semantics design: whether a bidirectional relationship is one Type observed from two directions or two distinct Types (and where relationship identity resides), and which Module hosts a relationship whose endpoints belong to different Modules.
+- "One Reality, Multiple Abstraction Lenses" was added: a single reality may be modeled through co-equal abstraction modes (structural, behavioral/process, normative, systemic) that are neither hierarchy levels nor entities inside the produced model, with the warning that parallel structures differing only by lens usually indicate one concern counted several times.
+- "Constraints Belong to the Constraining Concern" was added: a constraint originating outside a resource is modeled as a relationship owned by the constraining concern, carrying its own target/satisfied/remaining state and observing the affected resources, never duplicated onto each of them; with the corollary that two related-looking quantities on one node may be independent projections evaluated against different active rules rather than primary-plus-cache.
+- Edge Types Unresolved Questions was extended with two items deferred to storage-semantics design: whether a bidirectional relationship is one Type observed from two directions or two distinct Types (and where relationship identity resides), and which Module hosts a relationship whose endpoints belong to different Modules (Super Z).
 
-Originated both principles during accounting-domain development discussions (a resource quantity that looked cache-like turning out to evaluate external constraints; several abstraction views repeatedly confused with separate entities); approved final scope and wording. (Omid Hekayati)
-
-Co-developed both principles across two discovery sessions, including the first formulation of constraint copying onto resources and its later correction. (ChatGPT)
-
-Generalized both findings into principle-level topics without domain examples; added edge bidirectionality and hosting unresolved questions; withdrew an earlier proposed shortcut-edge ownership clause after review showed it conflated two different abstraction lenses. (Super Z)
+#### Deliberation
+- Both principles originated during accounting-domain development discussions — a resource quantity that looked cache-like turning out to evaluate external constraints, and several abstraction views repeatedly confused with separate entities (Omid Hekayati).
+- Both principles were co-developed across two discovery sessions, including the first formulation of constraint copying onto resources and its later correction (ChatGPT).
+- Both findings were generalized into principle-level topics without domain examples (Super Z).
+- An earlier proposed shortcut-edge ownership clause was withdrawn after review showed it conflated two different abstraction lenses (Super Z).
+- The final scope and wording were approved (Omid Hekayati).
 
 #### Considered and not done
 - **Writing current working positions into the document itself (rejected)**: tentative positions stay out of base documents per project convention. Recorded here instead so they are not re-derived later. Working positions at the time of this change: (1) the working preference for a bidirectional pair is two distinct relationship Types, since the human-facing descriptions of the two directions differ regardless of representation; (2) a proposed clause assigning shortcut-edge ownership to the deriving concern was examined and withdrawn — shortcut edges are judged within their own abstraction lens, while acquired/discovered data is a separate lens, and the output of discovered data may itself be an ordinary edge.
@@ -246,9 +277,12 @@ Generalized both findings into principle-level topics without domain examples; a
   - [Super Z](../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — drafted.
 
 #### What changed
-Added explicit treatment of two recurring gray zones to the loop-edge classification discussion: incidental metadata (a field merely recording when or in what scope a label applies does not make it a data-carrying concern in its own right — the test remains independent responsibility, not field presence) and temporal graduation (something classified today may evolve until its rules justify independence tomorrow; such label-to-node promotion is legitimate but must be decided explicitly at each evolution point under the same test, never assumed silently in either direction). This inherits the classification thread of the dissolved *Static Concepts Must Be Types* document (495421): its "static concept vs data carrier" determination was this document's node-vs-loop-edge question seen from the implementation side. The formalization follow-up remains covered by the already-open criteria question under Concept Existence vs. Model Existence, so no new unresolved-question entry was needed.
+- Explicit treatment of two recurring gray zones was added to the loop-edge classification discussion: incidental metadata (a field merely recording when or in what scope a label applies does not make it a data-carrying concern in its own right — the test remains independent responsibility, not field presence) and temporal graduation (something classified today may evolve until its rules justify independence tomorrow; such label-to-node promotion is legitimate but must be decided explicitly at each evolution point under the same test, never assumed silently in either direction).
+- This inherits the classification thread of the dissolved *Static Concepts Must Be Types* document (495421): its "static concept vs data carrier" determination was this document's node-vs-loop-edge question seen from the implementation side.
+- The formalization follow-up remains covered by the already-open criteria question under Concept Existence vs. Model Existence, so no new unresolved-question entry was needed.
 
-Approved dissolving the source document and distributing its classification content here during the type-documentation correction pass. (Omid Hekayati)
+#### Deliberation
+- The dissolution of the source document and the distribution of its classification content here was approved during the type-documentation correction pass (Omid Hekayati).
 
 ---
 
@@ -262,9 +296,12 @@ Approved dissolving the source document and distributing its classification cont
   - [Super Z](../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — reviewed, applied.
 
 #### What changed
-Absorbed the crisp definitional pair from the dissolved 20-line stub `type-concepts_vs_data.md` into "Concept Existence vs. Model Existence": a concept has semantic identity (participates in the model, may own behavior and rules) while data represents information without necessarily having independent identity of its own, anchored by the canonical `Person`/birth-date and `Contract`/description-field example pairs. The stub's "Modeling Question" and common-mistake warning (data structures first, concepts later) were already carried by this section's opening framing and the acquired-versus-discovered lens respectively. The stub had sat in the type- series despite declaring its own key question a modeling question; dissolution resolves that layer misplacement.
+- The crisp definitional pair from the dissolved 20-line stub `type-concepts_vs_data.md` was absorbed into "Concept Existence vs. Model Existence": a concept has semantic identity (participates in the model, may own behavior and rules) while data represents information without necessarily having independent identity of its own, anchored by the canonical `Person`/birth-date and `Contract`/description-field example pairs.
+- The stub's "Modeling Question" and common-mistake warning (data structures first, concepts later) were already carried by this section's opening framing and the acquired-versus-discovered lens respectively.
+- The stub had sat in the type- series despite declaring its own key question a modeling question; dissolution resolves that layer misplacement.
 
-Review and merge the small type-series companions into the strong documents. (Omid Hekayati)
+#### Deliberation
+- Review and merge of the small type-series companions into the strong documents was directed (Omid Hekayati).
 
 ---
 
@@ -278,9 +315,12 @@ Review and merge the small type-series companions into the strong documents. (Om
   - modularity.md: Done in this same pass — reciprocal cross-reference added to "Rules as a Provisional Term"; see modularity.changelog.md.
 
 #### What changed
-Added "Separating Structure (Code) from Policy (Rule)": every domain is modeled in two layers — Code (the fixed structural shape: node types, edge types, and their mandatory relationships) and Rule (conditional, context-dependent policy logic) — with Rule modeled as a first-class graph node connected by an edge to the Code element it governs, execution delegated to a separate rule-engine component, and the statute/bylaw analogy retained. Absorbed from the organization repository's RFC "Separation of Code (Structure) and Rule (Policy) in Graph Domain Modeling" (495340, Proposed) together with its companion topic note "Code vs. Rule Boundary Criteria"; the RFC's project-specific implementation aspects remain in that repository's `modules/computer/rule`. Extended Edge Types Unresolved Questions with the static-typing-versus-loop-edge type-upgrade criterion question surfaced during the same absorption.
+- "Separating Structure (Code) from Policy (Rule)" was added: every domain is modeled in two layers — Code (the fixed structural shape: node types, edge types, and their mandatory relationships) and Rule (conditional, context-dependent policy logic) — with Rule modeled as a first-class graph node connected by an edge to the Code element it governs, execution delegated to a separate rule-engine component, and the statute/bylaw analogy retained.
+- The content was absorbed from the organization repository's RFC "Separation of Code (Structure) and Rule (Policy) in Graph Domain Modeling" (495340, Proposed) together with its companion topic note "Code vs. Rule Boundary Criteria"; the RFC's project-specific implementation aspects remain in that repository's `modules/computer/rule`.
+- Edge Types Unresolved Questions was extended with the static-typing-versus-loop-edge type-upgrade criterion question surfaced during the same absorption.
 
-Judged the source RFC's content a general modeling principle rather than Organization-domain material and ordered its absorption into this document. (Omid Hekayati)
+#### Deliberation
+- The source RFC's content was judged a general modeling principle rather than Organization-domain material, and its absorption into this document was ordered (Omid Hekayati).
 
 #### Considered and not done
 - **Writing the boundary-test hypothesis into the document (rejected)**: the candidate test from the source note ("a condition that varies by organization, jurisdiction, or time without changing the underlying node/edge type needed is a Rule; a condition that determines whether a type can exist at all is Code") is an untested working position, recorded here so it is not re-derived later; it must be run against real edge cases (NOT-NULL-style constraints, cardinality constraints) before being trusted.
@@ -298,11 +338,13 @@ Judged the source RFC's content a general modeling principle rather than Organiz
   - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — rewrote
 
 #### What changed
-The rule's force is unchanged — one concern's authoritative data has one location, and a derived copy is never a second authority — but its vocabulary now comes from the Memory document's definitions instead of the ecosystem's storage split, and no product or technology name appears in the section.
+- The rule's force is unchanged — one concern's authoritative data has one location, and a derived copy is never a second authority — but its vocabulary now comes from the Memory document's definitions instead of the ecosystem's storage split, and no product or technology name appears in the section.
+- The section was renamed to "One Authoritative Location per Concern's Data"; all product and technology names were purged; both failure faces were re-stated in memory terms (locations and retention tiers, not store products); the explicit note that the shadow-tier pattern is a product of the memory/storage dichotomy was added and the dichotomy rejection in memory.md cross-linked; the modeling-level rule itself (one authoritative location per concern's data) was kept unchanged in force (Super Z).
 
-The "One Data Store Serves One Concern's Ownership" section was judged misplaced in vocabulary and framing — naming products in an abstract modeling document misleads from the ground up (the product name was corrected to a generic cache term in a first pass, then the whole section was sent back for abstraction), and the section's reliance on the memory/storage split inherited exactly the dichotomy the framework rejects; the reframe in retention-property terms was directed, with definitions deferred to the new Memory document (Omid Hekayati).
-
-The section was renamed to "One Authoritative Location per Concern's Data"; all product and technology names were purged; both failure faces were re-stated in memory terms (locations and retention tiers, not store products); the explicit note that the shadow-tier pattern is a product of the memory/storage dichotomy was added and the dichotomy rejection in memory.md cross-linked; the modeling-level rule itself (one authoritative location per concern's data) was kept unchanged in force (Super Z).
+#### Deliberation
+- The "One Data Store Serves One Concern's Ownership" section was judged misplaced in vocabulary and framing: naming products in an abstract modeling document misleads from the ground up — the product name was corrected to a generic cache term in a first pass, then the whole section was sent back for abstraction (Omid Hekayati).
+- The section's reliance on the memory/storage split inherited exactly the dichotomy the framework rejects (Omid Hekayati).
+- The reframe in retention-property terms was directed, with definitions deferred to the new Memory document (Omid Hekayati).
 
 ---
 
@@ -314,11 +356,12 @@ The section was renamed to "One Authoritative Location per Concern's Data"; all 
   - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — rewrote
 
 #### What changed
-The reference now runs one way: memory.md (protocol layer) cites modeling.md (concept layer) for the rule; modeling.md no longer cites any protocol document. The section is shorter, tool-free, and self-contained at the modeling level.
+- The reference now runs one way: memory.md (protocol layer) cites modeling.md (concept layer) for the rule; modeling.md no longer cites any protocol document. The section is shorter, tool-free, and self-contained at the modeling level.
+- The section was shrunk to the rule, the derived-copy reading, the two recurring violations stated without links, and the general modeling-time guidance (the question surfaces during modeling; either Memar's libraries and protocol documents carry the answer, or the organization builds its own library against them); the shadow-tier working-out, the dichotomy link, and the volatility vocabulary were moved into memory.md, which now holds the full treatment; the one direction that remains was kept (memory.md citing this section as the modeling-level statement of the rule) (Super Z).
 
-It was identified that the section's direct links into `protocols/memory.md` created a bidirectional reference between a root concept document and a protocol document, which is unstable — memory's document is developed *on* modeling's method, so the dependency runs one way only. Two options were directed (move the memory document to root, or state the rule abstractly here with the working-out owned by the protocol documents) and the second was chosen: modeling keeps the rule and names the boundary; the protocol documents keep the definitions and the worked-out failures (Omid Hekayati).
-
-The section was shrunk to the rule, the derived-copy reading, the two recurring violations stated without links, and the general modeling-time guidance (the question surfaces during modeling; either Memar's libraries and protocol documents carry the answer, or the organization builds its own library against them); the shadow-tier working-out, the dichotomy link, and the volatility vocabulary were moved into memory.md, which now holds the full treatment; the one direction that remains was kept (memory.md citing this section as the modeling-level statement of the rule) (Super Z).
+#### Deliberation
+- It was identified that the section's direct links into `protocols/memory.md` created a bidirectional reference between a root concept document and a protocol document, which is unstable — memory's document is developed *on* modeling's method, so the dependency runs one way only (Omid Hekayati).
+- Two options were directed — move the memory document to root, or state the rule abstractly here with the working-out owned by the protocol documents — and the second was chosen: modeling keeps the rule and names the boundary; the protocol documents keep the definitions and the worked-out failures (Omid Hekayati).
 
 ---
 

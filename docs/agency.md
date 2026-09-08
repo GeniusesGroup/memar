@@ -8,7 +8,7 @@ ID: 496330
 # Agency
 
 ## Abstract
-Agency is modeled here as a fundamental concept for understanding systems that can act, make decisions, assume responsibilities, or act on behalf of another system. AI Agent is treated as one manifestation of Agency, not as its definition — Agent is an older and more general concept than Artificial Intelligence, and reducing it to AI discards accumulated knowledge about delegation, responsibility, authority, representation, decision-making, trust, and contracts. The document's central claim is that most problems attributed to AI Agents — ambiguous delegation, missing context, undocumented knowledge, unclear acceptance criteria — predate AI and are not solved by changing tools; they are solved by modeling Agency correctly. `Agent` and `agent_for` are treated as relational: a System occupies the Agent or Principal position within a relationship rather than becoming a new kind of entity by doing so. Delegation, Responsibility, Authority, Capability, Context, Knowledge, Trust, and Accountability are modeled as distinct, non-substitutable concepts whose conflation is identified as a recurring source of failure. The document closes with open questions — most centrally, whether Agency is a property, a capability, or a relational condition, and whether Agent is fundamentally a role rather than a type — that are deliberately left unresolved rather than forced to a premature answer.
+Agency is modeled here as a fundamental concept for understanding systems that can act, make decisions, assume responsibilities, or act on behalf of another system. AI Agent is treated as one manifestation of Agency, not as its definition — Agent is an older and more general concept than Artificial Intelligence, and reducing it to AI discards accumulated knowledge about delegation, responsibility, authority, representation, decision-making, trust, and contracts. The document's central claim is that most problems attributed to AI Agents — ambiguous delegation, missing context, undocumented knowledge, unclear acceptance criteria — predate AI and are not solved by changing tools; they are solved by modeling Agency correctly. `Agent` and `agent_for` are treated as relational: a System occupies the Agent or Principal position within a relationship rather than becoming a new kind of entity by doing so. Delegation, Responsibility, Authority, Capability, Context, Knowledge, Trust, and Accountability are modeled as distinct, non-substitutable concepts whose conflation is identified as a recurring source of failure. The document records its open questions — most centrally, whether Agency is a property, a capability, or a relational condition, and whether Agent is fundamentally a role rather than a type — as deliberately left unresolved rather than forced to a premature answer, in the paired [Agency Handoff](./agency.handoff.md).
 
 ## Introduction
 
@@ -136,13 +136,6 @@ should not necessarily be treated as mutually exclusive types. A delegated Agent
 
 > **An Agent may receive responsibility without receiving an algorithm.**
 
-#### Discussion
-
-##### Unresolved questions
-- **Is Agency a property, capability, or condition?** The current model uses all three perspectives because each explains a different aspect. A future definition should determine whether one is primary.
-- **Is Agency intrinsic, relational, or both?** Current reasoning suggests both forms are valid. The model should determine whether they share a common primitive.
-- **Does self-directed action ever fully escape delegation, or does it only push the Principal inward?** A human pursuing a self-generated objective is used above as the paradigm case of intrinsic agency — agency with no external Principal. But the same act can be redescribed as a System (the person, taken as a whole) delegating to one of its own internal Systems (a motivational subsystem, a habit, a decision made by an earlier version of the same person) — in which case it is delegated agency after all, just with the Principal and Agent both inside the same boundary. This is a real open question about where the boundary of "external" is drawn, not a settled matter, and it should not be resolved implicitly by which example happens to be chosen. It connects to [Nested Agency](#nested-agency) and to the recursive structure described there.
-
 ### Agency Is Not the Same as Autonomy
 Agency and autonomy are related but distinct. A system can have agency while operating under substantial constraints. For example, a contractor may have responsibility for constructing a building while being constrained by:
 - a contract,
@@ -233,11 +226,6 @@ The same principle applies to software and organizations.
 Roles arise from relationships, and the same System may move between them. A common sequence: a System first observes another System from outside — frequently by coming to understand the protocols that govern the observed System's processes — and only afterwards enters a relationship in which it acts upon that System. Understanding a protocol ordinarily precedes acting under it; see [Protocol → Protocols and External Observers](./protocol.md#protocols-and-external-observers).
 
 The transition matters for modeling: "observer" and "agent" are positions relative to a relationship, not permanent types of the System occupying them. A patient who studies a hospital's complaint procedure and then files a complaint has not changed kind; the same System has moved from one role to another as new relationships formed. Modeling either role as an intrinsic property of the System freezes what is usually a fluid, repeatable shift.
-
-#### Discussion
-
-##### Unresolved questions
-- **Is Agent fundamentally a role?** Current modeling strongly suggests that Agent is often a relational role rather than an independent entity type. However, some contexts may justify using Agent as a conceptual entity. This should be established by modeling rather than terminology. A related, unresolved sub-question: if a System can exhibit intrinsic Agency with no Principal at all (see [What Is Agency?](#what-is-agency)), is "Agent" still the right name for that System when it is acting on its own behalf, or does the word Agent only ever apply once a relationship exists — leaving intrinsic agency-exhibiting Systems simply as Systems, never as Agents, until they enter a relationship?
 
 ### The `agent_for` Relationship
 
@@ -352,17 +340,6 @@ Therefore:
 > **Principal and Agent are relational positions, while System is the underlying entity.**
 
 This distinction should be preserved unless future modeling demonstrates that an independent Agent concept is necessary.
-
-#### Discussion
-
-##### Rationale and alternatives
-
-- **Modeling `agent_for` as a node, with Agent and Principal as its endpoints (an earlier draft; not chosen)**: an earlier pass at this model treated Agent and Principal as intrinsic entity types connected by the relationship, and separately treated the relationship as something that might need to be modeled as its own entity because it carries qualifiers (a status, a scope, a time bound). Both moves were reconsidered. If `A ── agent_for ──► B` can be represented directly as a graph edge, there is no reason to create an intermediate `AgentFor` node merely because the relationship has a name — the same reasoning that keeps other named relationships in Memar as edges rather than nodes. And once `agent_for` is an edge rather than a node, Agent and Principal stop being types a System belongs to and become the labels for the two endpoints of that edge — which is what forced the reconsideration described in [Agent as a Relational Concept](#agent-as-a-relational-concept) and in [The Central Distinction](#the-central-distinction).
-- **Treating Agent as the primitive concept of this document (rejected — see also [Methodology](#methodology))**: once `agent_for` is understood as an edge between two Systems, Agent is no longer a natural candidate for the document's primitive concept, since it names a position on an edge rather than a node. The candidates for primitive status become Agency, System, and Relation instead — which is the reasoning that produced this document's own title.
-
-##### Unresolved questions
-
-- **What is the exact semantic direction of `agent_for`?** The relationship must be formalized so that its graph direction cannot be misunderstood — including whether the direction should read Principal → Agent or Agent → Principal, since natural-language phrasing ("A is agent for B") does not settle this by itself and different direction conventions have been used informally in early drafts of this model.
 
 ### Principal
 
@@ -634,18 +611,6 @@ This order prevents a lock, queue, mailbox, scheduler, or transactional mechanis
 
 A Single Writer arrangement, an Actor-style mailbox, or a Worker assigned to a partition can each be useful realizations of this principle. None should be mistaken for the principle itself.
 
-#### Discussion
-
-##### Rationale and alternatives
-- **Treating Worker as the primitive execution concept (rejected).** Worker is useful implementation vocabulary, but its meaning varies across runtimes and frameworks. The underlying question is whether an acting system has a bounded execution responsibility. Worker is therefore treated as a possible representation of an Execution Agent rather than the conceptual primitive.
-- **Treating Actor as the primitive execution concept (rejected).** Actor Model provides valuable accumulated knowledge about isolated state, communication, and independent execution, but `Actor` carries a particular model of execution. Agency is intentionally broader: an Agent may be human, organizational, software, AI, hybrid, or another acting system, and an execution Agent need not be implemented using the Actor Model.
-- **Treating `agent_for` as the relationship for every execution responsibility (rejected).** `agent_for` describes acting on behalf of another System. An Execution Agent may instead be responsible for advancing a process or managing a partition of state without representing another System in that sense. The process model therefore needs a distinct responsibility relationship rather than stretching `agent_for` beyond its meaning.
-
-##### Unresolved questions
-1. Whether Memar should eventually give the execution-responsibility relationship a canonical edge name, or keep it expressed through the existing Responsibility concept until the graph model demonstrates a need for a specific relation.
-2. Whether Execution Agent should remain descriptive terminology or eventually become a formally defined concept in Process.
-3. How responsibility transfer, temporary reassignment, failure takeover, and concurrent replication should be represented without conflating responsibility with implementation ownership.
-
 ### Delegation
 
 Delegation is a mechanism through which a system assigns responsibility, authority, or an objective to another system.
@@ -686,12 +651,6 @@ Outcome
 The Principal defines or establishes part of the problem space.
 
 The Agent operates within that space.
-
-#### Discussion
-
-##### Rationale and alternatives
-
-- **A separate `delegation.md` document (considered, then rejected)**: an earlier draft of this work proposed splitting Delegation out into its own document, on the reasoning that Delegation was substantial enough in volume to justify a dedicated file. That reasoning was reconsidered and rejected: volume is not the criterion Memar uses for whether something is an independent Concept. The relevant question is whether Delegation can be defined without first defining Agency — and it cannot. Asking "what is Delegation?" already presupposes a System capable of Agency assigning some of it to another System; the definition is not self-standing. Delegation is therefore modeled as a chapter of Agency rather than as an independent document, at least until some future need demonstrates otherwise.
 
 ### Responsibility
 
@@ -822,14 +781,6 @@ The surrounding Agent may use:
 - and internal procedures.
 
 Therefore, a prompt is not synonymous with Agency.
-
-#### Discussion
-
-##### Unresolved questions
-
-- **What exactly constitutes intentionality?** The definition of Agency in [What Is Agency?](#what-is-agency) rests on a System acting "intentionally toward objectives," and this document uses that phrase as load-bearing without fully defining it. A partial, working answer, offered here without treating it as settled: the chain "Principal's desired outcome → Agent's interpreted objective → intermediate goals → plan → action" (described above) is at minimum a *necessary* structure for intentionality in this model — a System producing behavior with no such chain, however complex the behavior, would not on this account be exhibiting Agency, only behavior (see [Failure of Agency](#failure-of-agency) and the next question below). Whether that chain is also *sufficient* — whether any System that can be described as running it thereby has intentionality, regardless of what is actually happening inside it — is exactly the part that remains open, especially for software and AI systems, and is not resolved by this document.
-- **Can a System have Agency without goals?** If goals are intrinsic to Agency, the model must define what counts as a goal. If goals can be externally imposed, the relationship between Agency and Delegation must be clarified.
-- **What distinguishes Agency from mere behavior?** Not every System that produces behavior necessarily exhibits Agency. A more rigorous boundary is required than the partial answer offered above.
 
 ### Execution
 
@@ -1319,12 +1270,6 @@ Therefore, accountability must be modeled separately from Agency.
 This is particularly important for organizations using AI.
 
 Delegating execution to an AI Agent does not necessarily transfer organizational accountability to the AI.
-
-#### Discussion
-
-##### Unresolved questions
-
-- **How does accountability propagate through delegated Agency?** Delegation does not necessarily transfer accountability. The model should establish explicit rules for responsibility and accountability propagation — including whether accountability can be split (partially transferred) rather than only wholly retained or wholly transferred, which the current model does not address.
 
 ### Human Agency
 
@@ -2077,12 +2022,6 @@ In particular, Agency should not become a container into which every concept rel
 
 Its scope should remain centered on the capacity and structure of systems that act.
 
-#### Discussion
-
-##### Unresolved questions
-
-- **How does Agent/System/Principal relate to Khayyam's Type categories?** `type.md` defines four Type categories in Khayyam — Capsule, Method, Abstraction, and Scope. This document has not established where System, Agent, and Principal sit relative to that taxonomy, or whether they need to at all — Agency may be a cross-cutting concern that applies to instances of any Type category rather than a specialization of one particular category (a System with Agency could plausibly be modeled as a Capsule, but nothing here has tested that claim). This is flagged as a genuine gap rather than resolved, since answering it without the same care given to `type.md` itself risks forcing a fit that was not actually verified.
-
 ### Terminology
 
 The following terminology principles should be maintained. This list has been extended from an earlier draft to cover every concept that receives its own topic above; the earlier version defined Agency, Agent, Principal, `agent_for`, Delegation, Responsibility, Authority, Capability, Context, Knowledge, and Autonomy, but left Trust, Contract, Accountability, Execution, Decision-Making, Goal, and Communication undefined here despite each having a full topic elsewhere in this document — an inconsistency between the glossary and the body that is corrected below.
@@ -2170,7 +2109,7 @@ An Agent that assumes responsibility for advancing a bounded part of a Process. 
 The relationship through which an Agent is responsible for advancing a bounded part of a Process or managing relevant process state. It is distinct from `agent_for`, which expresses acting on behalf of a Principal.
 
 ### Working Principles
-Until the open questions are resolved, the following principles provide a stable working model:
+Until the open questions, recorded in the [Agency Handoff](./agency.handoff.md), are resolved, the following principles provide a stable working model:
 
 1. **Model Agency before AI Agent.**
 2. **Do not redefine Agent around Artificial Intelligence.**
@@ -2240,33 +2179,4 @@ The objective is to avoid throwing away valid knowledge simply because a new tec
 **Agency should therefore be modeled as a general property and structure of acting systems, with AI treated as one of its manifestations rather than its definition.**
 
 ## Results
-Insufficient time has passed since this specification was adopted to report real, observed outcomes from its use. This section will be filled in once there is such experience to draw on — in particular, whether the working principles in [Working Principles](#working-principles) hold up as later documents (Role, Permission, Contract) are written against this document, and whether the `agent_for` direction convention (still an open question above) causes confusion in practice once it is fixed.
-
-## Discussion
-
-### Drawbacks
-- **Intentionality is load-bearing but only partially grounded.** The core definition of Agency in [What Is Agency?](#what-is-agency) depends on the word "intentionally," and while [Goals and Purpose](#goals-and-purpose) offers a partial, working account (a Principal-objective → Agent-interpretation → goals → plan → action chain as a necessary condition), that account is not verified as sufficient, and the document proceeds to use the term throughout as though it were settled. A reader applying this model closely will hit this gap directly.
-- **The number of concepts introduced without a closed set of relationships between them is large.** Delegation, Responsibility, Authority, Capability, Context, Knowledge, Trust, Contract, and Accountability are each modeled as distinct, but this document only states pairwise non-equivalences (Capability ≠ Authority ≠ Responsibility, Authority ≠ Responsibility, Autonomy ≠ Agency) rather than a positive account of how the full set composes. A reader cannot currently derive, from this document alone, what combination of these concepts is sufficient for a coherent delegation — only a list of ways delegation can fail when one is missing (see [Failure of Agency](#failure-of-agency)).
-- **Every example of Agency in this document is drawn from human or organizational contexts, translated to software and AI by analogy.** The contractor, the customer, the engineer, the company — these carry intuitions about intention, understanding, and trust that may not transfer cleanly to a software or AI Agent, and this document does not test where the analogy breaks, only asserts that the underlying structure is shared. This is consistent with the document's stated purpose (model Agency before AI Agent), but it does mean the AI-specific claims here are less load-tested than the human and organizational ones.
-
-### Rationale and alternatives
-- **Organizing this document as a flat sequence of independently-numbered sections, in an earlier draft (rejected at this revision)**: the version of this document produced before it was brought into the Explanation-facet structure used 65 sequentially numbered top-level sections with no grouping. That structure made it difficult to see which concepts were sub-parts of which — for example, that Verification and Validation exist to qualify Trust, or that the nine items under Common Modeling Errors are a single coherent unit rather than nine independent topics. Migrating to the current facet's topic/sub-topic structure, with each topic carrying its own `#### Discussion` where it has open questions or rejected alternatives specific to it, was chosen over keeping the flat structure and only reformatting the front matter, because the flat structure was itself judged to be part of what made prior open questions and rejected alternatives hard to keep attached to the specific claim they concern.
-- **Keeping this document's original social-media motivation (a short public post plus follow-up comments, aimed at a general technical audience) merged into this document, rather than as a separate artifact (rejected)**: the discussion that produced this document's content began as planning for a public post about AI Agents. That framing — persuading a general audience, in a small number of short comments — was deliberately not carried into this document. An document answers to different requirements (completeness, precision, exposed open questions) than a public post does (brevity, a single strong claim, a call to action), and conflating the two would have forced this document to either under-explain its concepts for the sake of readability or over-explain them for the sake of a general audience. The public-facing material remains a separate artifact outside Memar's documentation set.
-
-### Prior art
-This document has not yet been checked against, or explicitly positioned relative to, several existing bodies of work that plausibly overlap with it and are worth investigating before this document is considered stable:
-
-- **Principal-agent theory**, from economics, which has a long-standing formal treatment of delegation, information asymmetry, and misaligned incentives between a Principal and an Agent — much of it directly relevant to the Delegation, Trust, and Accountability topics above, and not yet cross-referenced here.
-- **Agent-oriented programming and multi-agent systems research**, a decades-old field in computer science and AI concerned with formalizing exactly the kind of Agent/Principal/Delegation structure this document models informally. This document's claim that "Agent is older than AI" would be considerably stronger with direct engagement with this literature rather than only the general historical argument made in [Historical Continuity](#historical-continuity).
-- **Speech act theory and philosophy of action**, which has its own long-standing treatment of intentionality — directly relevant to the open question left in [Goals and Purpose](#goals-and-purpose).
-
-None of these are cited yet because none have been verified against this specific model closely enough to cite responsibly. Listing them here as Prior Art to investigate, rather than silently omitting them, is intended to make the gap visible rather than to imply it does not exist.
-
-### Unresolved questions
-- **Should Agent eventually become its own document once this cluster of concepts grows further?** The discussion that produced this document considered and rejected both `agent.md` (see [Methodology](#methodology)) and `delegation.md` (see [Delegation](#delegation)) as separate documents at this stage. Whether that remains correct once Role, Permission, and Contract are modeled as their own documents — at which point Agent might need to be defined independently to be referenced by all of them — is left open rather than decided now.
-- **Does this document's own existence, as one artifact among several produced through a multi-participant, multi-AI drafting process, count as an instance of the Hybrid Agency it describes?** This is noted as a genuine reflexive question rather than a rhetorical one: the process that produced this document involved a human Principal setting direction, one AI system drafting and revising collaboratively, and a second AI system (performing this edit) reorganizing and extending it against a separate specification — which maps fairly directly onto the Hybrid Agency and Multi-Agent Systems topics above. Whether that mapping holds up, and whether it is useful, has not been tested here.
-
-### Future possibilities
-- **`role.md`, `permission.md`, and `contract.md`** were each mentioned during the discussion that produced this document as concepts dense enough that they may eventually warrant their own documents, referencing Agency rather than redefining it — consistent with the Delegation decision in [Delegation](#delegation), the same "can it be defined without first defining Agency?" test should be applied to each before splitting it out.
-- **A worked example connecting this document to `type.md`** — resolving the open question in [Relation to Memar](#relation-to-memar) about where System, Agent, and Principal sit relative to Capsule, Method, Abstraction, and Scope — would let later documents stop treating that relationship as an open question.
-- **A positive composition rule for how Delegation, Responsibility, Authority, Capability, Context, Knowledge, and Trust combine into a coherent delegation**, replacing the current pairwise non-equivalence statements (noted as a Drawback above) with something closer to a checklist or a formal condition.
+Insufficient time has passed since this specification was adopted to report real, observed outcomes from its use. This section will be filled in once there is such experience to draw on — in particular, whether the working principles in [Working Principles](#working-principles) hold up as later documents (Role, Permission, Contract) are written against this document, and whether the `agent_for` direction convention (still open, recorded in the [Agency Handoff](./agency.handoff.md)) causes confusion in practice once it is fixed.

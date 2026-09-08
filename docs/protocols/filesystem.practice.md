@@ -34,7 +34,7 @@ Run it when any of these appears in the work:
 Answer each question about **one concern at a time** — the answer may differ per concern within the same system. Do not answer for "the system" as a whole.
 
 1. **What kind of thing is being stored?**
-   Opaque bytes with no internal semantics (build artifacts, caches, logs, media blobs) → the filesystem fits; the critique targets leakage, not use ([Drawbacks](./filesystem.md#drawbacks)). Semantic, multi-relational knowledge → the file imposes an artificial boundary around it ([File: An Artificial Knowledge Boundary](./filesystem.md#file-an-artificial-knowledge-boundary)).
+   Opaque bytes with no internal semantics (build artifacts, caches, logs, media blobs) → the filesystem fits; the critique targets leakage, not use ([Drawbacks, recorded in the base document's changelog](./filesystem.changelog.md)). Semantic, multi-relational knowledge → the file imposes an artificial boundary around it ([File: An Artificial Knowledge Boundary](./filesystem.md#file-an-artificial-knowledge-boundary)).
 
 2. **How must it be discovered?**
    By known location → path-based access is a legitimate projection. By meaning, attribute, or relationship → the tree is the wrong primitive ([Path-Based Discovery vs. Semantic Discovery](./filesystem.md#path-based-discovery-vs-semantic-discovery)).
@@ -46,7 +46,7 @@ Answer each question about **one concern at a time** — the answer may differ p
    True hierarchies (`Country → City → Street → House`) → tree is native and fine. Multi-dimensional membership (one item in many categories at once) → single-parent containment is a constraint, not a model ([Directory as Tree: A Flawed Classification Model](./filesystem.md#directory-as-tree-a-flawed-classification-model)).
 
 5. **What external surfaces must be satisfied?**
-   External tools, other operating systems, or boot processes that expect POSIX paths → expose files as a **projection layer** over the real model, not as the model itself ([File/Directory as UI Projection, Not Domain Model](./filesystem.md#filedirectory-as-ui-projection-not-domain-model), [Future possibilities → Projection Layer Architecture](./filesystem.md#future-possibilities)).
+   External tools, other operating systems, or boot processes that expect POSIX paths → expose files as a **projection layer** over the real model, not as the model itself ([File/Directory as UI Projection, Not Domain Model](./filesystem.md#filedirectory-as-ui-projection-not-domain-model), [Anticipated Work → Projection Layer Architecture](./filesystem.handoff.md#anticipated-work)).
 
 6. **Could the substrate be smaller?**
    The unikernel result shows the filesystem is an optional runtime capability, not an inherent necessity ([Unikernel Criticism of Mandatory Filesystem Layers](./filesystem.md#unikernel-criticism-of-mandatory-filesystem-layers)). If the answers above find no need for a given concern, do not include it for that concern.

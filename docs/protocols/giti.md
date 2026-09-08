@@ -172,7 +172,7 @@ Routers, OSs, and apps can request action from each other — report attackers a
 What this topic deliberately does *not* fix is the binding/authentication method behind a report: GP intentionally specifies no definitive identity-attestation scheme here, so that no single approach hardens into law and crowds out better ones. What the protocol does provide is the structure accountability needs — every Router ID range belongs to a specific, identifiable organization, and the mandatory society/router services below exist precisely to exercise that accountability. This is where GP structurally parts ways with IPv4/IPv6: there, a report's origin dissolves behind VPNs and shared carriers with no one answerable; here, a report always terminates at an accountable range owner. Spoofing inside a range remains possible — but the range owner answers for it, which shifts enforcement from per-packet forensics (impossible at Internet scale) to organizational responsibility (enforceable).
 
 ### Implementation and status
-GP is simple enough to encode and decode easily in any programming language. Implementations exist or are in progress in Khayyam ([memar-khayyam/net/GP](https://github.com/GeniusesGroup/memar-khayyam/blob/master/net/GP)), C, Go ([memar-go/net/GP](https://github.com/GeniusesGroup/memar-go/blob/master/net/GP)), JavaScript, and more. The current implementation is considered alpha; compatibility with future versions is neither guaranteed nor expected. GP can ship inside os, device drivers, apps, ... due to its very simple spec. The software routers of this ecosystem differ in internal service call, security, pipelining, and multiplexing, and are based on code-generation development while remaining usable through plain package APIs.
+GP is simple enough to encode and decode easily in any programming language. Implementations exist or are in progress in Khayyam ([memar-khayyam/net/GP](https://github.com/GeniusesGroup/memar-khayyam/blob/master/net/GP)), C, Go ([memar-go/net/GP](https://github.com/GeniusesGroup/memar-go/blob/master/net/gp)), JavaScript, and more. The current implementation is considered alpha; compatibility with future versions is neither guaranteed nor expected. GP can ship inside os, device drivers, apps, ... due to its very simple spec. The software routers of this ecosystem differ in internal service call, security, pipelining, and multiplexing, and are based on code-generation development while remaining usable through plain package APIs.
 
 ## Results
 Insufficient deployment experience has been recorded under this consolidated structure to report real, observed outcomes. This section will be filled in once there is such experience to draw on.
@@ -182,13 +182,13 @@ Insufficient deployment experience has been recorded under this consolidated str
 ### Prior art
 Direct ancestors and peers:
 - [Application-Layer Traffic Optimization (ALTO) Protocol](https://www.rfc-editor.org/rfc/rfc7285.html)
-- [QUIC](https://en.wikipedia.org/wiki/QUIC) — [RFC 9000](https://datatracker.ietf.org/doc/html/rfc9000)
+- [QUIC](https://en.wikipedia.org/wiki/QUIC) — [RFC 9000 — QUIC: A UDP-Based Multiplexed and Secure Transport](https://datatracker.ietf.org/doc/html/rfc9000)
 - [HTTP2](https://tools.ietf.org/html/rfc7540)
 - [IPv6](https://en.wikipedia.org/wiki/IPv6)
 - [Blockchain models for universal connectivity](https://www.semanticscholar.org/paper/Blockchain-models-for-universal-connectivity-Navarro-Castro/788b7a634b369d98e72ed37c5fdf71f7fd62ef0b) — [PDF](https://pdfs.semanticscholar.org/788b/7a634b369d98e72ed37c5fdf71f7fd62ef0b.pdf)
 - [Matrix, an open network for secure, decentralized communication](https://matrix.org/)
 - [Homa](https://github.com/PlatformLab/HomaModule/)
-- [RFC 1106](https://datatracker.ietf.org/doc/html/rfc1106)
+- [RFC 1106 — TCP Option: Backwards Flow](https://datatracker.ietf.org/doc/html/rfc1106)
 
 Decentralized-network projects consulted:
 - https://code.google.com/p/phantom/

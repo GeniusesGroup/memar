@@ -67,6 +67,15 @@ This distinction is essential for long-lived systems. A stable Module should not
 
 This does not imply that every variation must become a separate Module. Creating boundaries has a cost. Whether a variation has enough independent meaning, Responsibility, lifecycle, or evolution to justify its own boundary is not something a Module boundary can settle by being declared — see [System → When Is a Responsibility Coherent?](./system.md#when-is-a-responsibility-coherent) for what can actually be checked, and [Process → Modeling and Observation Form a Cycle](./process.md#modeling-and-observation-form-a-cycle-not-two-separated-phases) for why this is typically discovered by proposing a boundary and then observing whether it holds, rather than decided correctly in one step. `modeling.md`'s own [Domain Decomposition over Aggregate-Root Modeling](./modeling.md#domain-decomposition-over-aggregate-root-modeling) walks through exactly this cycle for a `username` field originally modeled inside `User`.
 
+Strong module boundaries introduce explicit relationships and therefore require discipline. They can also introduce indirection where a small, stable variation could have been implemented directly. Separating optional behavior into independent Modules can increase the number of concepts that must be understood. If the boundary is invented only to satisfy a pattern, the result can be more complicated than the original design.
+
+Modularity can therefore fail in two opposite directions:
+
+- insufficient separation, where unrelated responsibilities become entangled;
+- excessive separation, where trivial responsibilities are fragmented into unnecessary boundaries.
+
+The goal is not to maximize the number of Modules. The goal is to discover boundaries that correspond to real responsibilities and meaningful independence.
+
 A capability also does not inherit identity from the concepts it operates on. A Module that reads, validates, constrains, or analyzes Concepts defined elsewhere does not thereby become part of those Concepts' own Modules, nor do those Concepts become part of the capability's identity. The boundary follows the Responsibility, not the endpoints a capability happens to touch.
 
 #### Type and Module
@@ -119,14 +128,7 @@ The industry ecosystem offers a large inventory of recognized domain names, and 
 
 Two failure directions guard this principle. Collapsing a genuinely independent concern into an existing Concept because "foundations should stay few" is under-modeling; promoting every recognizable domain name into a foundational Concept is artificial decomposition. Both are already treated as opposite failures in [Modeling → Concept Existence vs. Model Existence](./modeling.md#concept-existence-vs-model-existence); what this document adds is the prior expectation about which direction real Systems usually err in: toward proliferation of foundations, not scarcity.
 
-#### Discussion
-
-##### Drawbacks
 Applied mechanically, the preference for few foundations becomes a reason to refuse legitimately independent Concepts, forcing them into awkward relationships with unrelated hosts until the distortion is expensive to undo. The heuristic shifts the burden of proof; it cannot replace the judgment it serves.
-
-##### Rationale and alternatives
-- **Industry-domain-driven decomposition (rejected)**: mirroring the ecosystem's recognized domains as foundational Concepts imports today's product boundaries as tomorrow's architectural boundaries.
-- **Foundation-count as a target metric (rejected)**: "few" describes the expected outcome of honest independence testing, not a quota; the number of foundations is an output of the model, never an input to it.
 
 ### What Earns Foundational Status
 The expectation that foundational Concepts remain few still needs a way to decide, for a specific candidate, whether it belongs to that small set or to the capabilities layered above it. Importance is not the test: a concern can dominate an organization's daily work and still be fully expressible through existing foundations, while a quietly load-bearing abstraction may be irreplaceable.
@@ -137,14 +139,7 @@ Two guards keep the test honest. First, the fabrication must land inside the fou
 
 The test is asymmetric by design. Removing a foundational Concept degrades the expressive power of the remaining foundations themselves; removing a non-foundational one merely removes one capability among many that the same foundations continue to carry.
 
-#### Discussion
-
-##### Drawbacks
 "Fabrication" and "distortion" remain qualitative judgments, and borderline candidates — those sitting between specialization and foundation — can be argued either way by motivated reasoning. The test narrows and disciplines the debate; it does not replace the judgment at its center.
-
-##### Rationale and alternatives
-- **Importance or usage frequency as the criterion (rejected)**: criticality is relative to a particular System's purpose, and treating it as an intrinsic property of a Module reproduces exactly the confusion this document attributes to common readings of Domain-Driven Design's Core Domain (see Prior art).
-- **Universality across organizations as the criterion (rejected)**: a Concept every organization happens to want may still be composable from existing foundations; universality measures demand, not structural necessity.
 
 ### Rules as a Provisional Term
 The term *Rule* is commonly used for many different concepts. In software ecosystems it often refers to a conditional expression, a validation predicate, a policy object, or a component executed by a Rule Engine. None of these meanings is sufficient to define the architectural concept under discussion here.
@@ -153,7 +148,7 @@ In the modularity model, what has informally been called a Rule may itself be a 
 
 The term remains provisional because the project has not yet established that *Rule* is the best name for this role. The architectural property must therefore not depend on the word. A future terminology document may replace it without changing the underlying model.
 
-A separate modeling-level framing treats Rule as a first-class graph node connected by an edge to the structure it governs (see [Separating Structure (Code) from Policy (Rule)](./modeling.md#separating-structure-code-from-policy-rule)). Whether the module framing and the graph-node framing are two views of one concept is an open question recorded there; this document takes no position on it.
+A separate modeling-level framing treats Rule as a first-class graph node connected by an edge to the structure it governs (see [Separating Structure (Code) from Policy (Rule)](./modeling.md#separating-structure-code-from-policy-rule)). Whether the module framing and the graph-node framing are two views of one concept is an open question recorded in that document's [handoff](./modeling.handoff.md#separating-structure-code-from-policy-rule); this document takes no position on it.
 
 #### Scope Matters
 An extension can act at different levels without becoming the same behavior.
@@ -174,13 +169,7 @@ A Module that introduces a relationship with independent domain meaning owns the
 
 Completeness is the negative test accompanying identity-based boundaries: if removing a capability requires coordinated edits to several otherwise-unrelated Modules, its boundary was drawn incorrectly. This does not forbid a capability from *using* other Modules' services; it forbids the capability's own semantics and behavior from having more than one owning Module. Equally, completeness is not a license to absorb the endpoints' internals — the owning Module must not take over validation, state, or decisions that belong to the Concepts it relates; it owns what makes the relationship work, nothing more.
 
-#### Discussion
-
-##### Drawbacks
 Completeness pulls against minimality: honoring it tends to produce Modules larger than a bare relationship definition, and "completeness" can be misused to justify swallowing neighboring responsibilities wholesale. The test remains whether the added material varies for reasons tied to this capability's own Responsibility, not whether it could physically be placed here.
-
-##### Unresolved questions
-1. Can completeness be checked other than by hypothetical removal ("if this capability were deleted, which Modules would need edits?") — for instance, statically, from declared dependencies alone?
 
 ### Event as a Module Capability
 An Event is not necessarily a new data model introduced solely to notify other Modules.
@@ -231,7 +220,7 @@ Module shares tools such as abstraction and encapsulation with several other Mem
 | Rule (provisional) | Behavior attachable to a Module without becoming part of its essential identity |
 | Module | A System considered as a bounded part of a larger System, identified by its Responsibility |
 
-This document does not yet place Module relative to every System-level concept in Memar — Framework in particular is not addressed here even though it was raised as a candidate for the same level as Module during the discussion that led to this document. That omission is intentional rather than an oversight; see Unresolved questions.
+This document does not yet place Module relative to every System-level concept in Memar — Framework in particular is not addressed here even though it was raised as a candidate for the same level as Module during the discussion that led to this document. That omission is intentional rather than an oversight; see [Open Questions in the paired handoff](./modularity.handoff.md#open-questions).
 
 ### Modularity Is Not Deployment
 A Module is independent of the mechanism used to deploy it.
@@ -354,59 +343,3 @@ These representations are implementations of modularity, not its definition.
 Khayyam's modularity treatment therefore belongs to the language and ecosystem layer. It should explain how the language expresses and resolves modular relationships without redefining the architectural concept of Module through filesystem or package conventions. [Modularity in Khayyam](./khayyam-modularity.md) records that language- and ecosystem-specific application.
 
 ## Results
-
-## Discussion
-
-### Drawbacks
-Strong module boundaries introduce explicit relationships and therefore require discipline. They can also introduce indirection where a small, stable variation could have been implemented directly.
-
-Separating optional behavior into independent Modules can increase the number of concepts that must be understood. If the boundary is invented only to satisfy a pattern, the result can be more complicated than the original design.
-
-Modularity can therefore fail in two opposite directions:
-
-- insufficient separation, where unrelated responsibilities become entangled;
-- excessive separation, where trivial responsibilities are fragmented into unnecessary boundaries.
-
-The goal is not to maximize the number of Modules. The goal is to discover boundaries that correspond to real responsibilities and meaningful independence.
-
-The present definition also intentionally leaves some terminology unresolved. In particular, the project has not yet selected a final name for every kind of optional behavior that can attach to a Module. The document does not attempt to prescribe a universal implementation mechanism either; this means it may not immediately answer practical questions such as where a particular Module should be stored in a repository or how a specific runtime should discover it. Those questions belong to the relevant implementation and tooling documents after the conceptual model is settled.
-
-### Rationale and alternatives
-The document deliberately does not define Module through packages, services, repositories, processes, containers, or plugins. Each is too dependent on a particular representation or operational arrangement. This is the central alternative rejected by this document: defining modularity through the physical organization of software would make the architectural model unstable whenever languages, build systems, deployment platforms, or repository conventions changed.
-
-Another rejected alternative is to treat Microservices as the natural unit of modularity. Deployment independence can be useful, but it is neither necessary nor sufficient for conceptual modularity.
-
-The document also rejects the assumption that every extensible behavior requires a new domain data model. Existing Concepts, service requests, responses, and capabilities should be reused when they already express the required information.
-
-The document also does not establish a closed taxonomy of Module kinds. Terms such as *Core Module*, *Infrastructure Module*, *Policy Module*, and similar classifications may be useful in particular contexts, but they should not become part of the foundational definition unless the project discovers a real conceptual distinction that requires them.
-
-Optional Module is retained because it expresses a concrete distinction already required by the model: a Module can be structurally non-essential to a particular System while still providing valuable behavior.
-
-The term Rule remains provisional. If a more precise term is discovered, the terminology can change without requiring a change to the underlying modular model.
-
-### Prior art
-The discussion of modularity in software has appeared in object-oriented design, component systems, structured programming, package systems, service-oriented architecture, microservices, and Domain-Driven Design. These traditions provide useful mechanisms and observations but do not supply a single definition of Module that is independent of their implementation assumptions. Domain-Driven Design's Core Domain is a particularly relevant case: the term is commonly presented as if criticality were an intrinsic property of a domain, which invites the same confusion this document argues against — a Module's essential or optional status is relative to a particular System's purpose, not an inherent property of the Module itself.
-
-The Big Ball of Mud discussion is also relevant prior art because it demonstrates that architectural degradation is not uniquely associated with a deployment shape. The relevant problem is the loss of coherent structure and controllable relationships, not the number of deployment units a system happens to have.
-
-Memar therefore treats prior architectural terminology as evidence and material for comparison rather than as authority over the definitions used by the project.
-
-### Unresolved questions
-1. What is the final terminology for the kind of Optional Module currently discussed provisionally as a Rule?
-2. Which properties distinguish an optional extension from an ordinary independently related Module?
-3. What exact relationship should a Module expose when it permits optional behavior to attach without changing its own model?
-4. What properties of an EventTarget are fundamental enough to define once and reuse across Types and Modules?
-5. When an EventTarget exposes a request or response to interested participants, which parts belong to the Type, the Protocol, and the Process?
-6. How should Module identity and dependency resolution be represented independently of repository and filesystem conventions?
-7. Which modularity properties can be established by modeling alone, and which require implementation or tooling support?
-8. How should modularity be evaluated when a single Module intentionally contains multiple lower-level responsibilities that are tightly coupled by the domain?
-9. What evidence distinguishes a necessary Module boundary from fragmentation introduced only by implementation convenience?
-10. What is the exact formal relationship between Module and Framework? Module was proposed during the discussion leading to this document as peer-level to System, Structure, Protocol, and Framework; this document now positions Module against Type, Structure, Protocol, Process, and Responsibility, but the relationship to Framework specifically remains open and deserves a dedicated consistency review.
-11. Where should the Module that owns a cross-boundary relationship live when its endpoints belong to different Modules — with one endpoint, with both, or in an independent third home? Hosting chosen mainly for repository convenience encodes false conceptual ownership; see [Modeling → Edge Types and Their Traditional Counterparts](./modeling.md#edge-types-and-their-traditional-counterparts) unresolved questions.
-
-### Future possibilities
-A dedicated treatment may later define the relationship between Module, Optional Module, Protocol, EventTarget, and the provisional Rule concept in more formal graph terms.
-
-A future document may also define how modular boundaries can be reviewed independently of implementation structure, including checks for responsibility coherence, uncontrolled knowledge, unnecessary coupling, and accidental deployment-driven boundaries.
-
-Once this document is stable, documents that currently define modularity-related behavior locally — including `modeling.md`, `khayyam-modularity.md`, `framework.md`, and `protocol.md` — should be reduced where appropriate and reference this document instead. Each should retain only the consequences specific to its own concerns rather than redefining Module independently.

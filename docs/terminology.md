@@ -14,7 +14,7 @@ Memar treats terminology as a first-class architectural concern rather than a co
 
 The purpose of this document is not to classify words for their own sake. The purpose is to improve reasoning quality by encouraging deliberate movement toward more fundamental concepts before selecting technologies, tools, products, standards, frameworks, implementation strategies, or vendors. Classification is a means to that end, not the end itself: a term's tier tells a reader how much architectural weight it should be allowed to carry, not merely which bucket it belongs in.
 
-Memar distinguishes between three layers of terminology — Scientific Terms, Technology Terms, and Business Terms — and recommends that learning, modeling, and architectural reasoning begin from the most fundamental layer available. This three-layer model is a deliberate simplification. A more granular model is possible and is discussed later in this document (see "Why Three Layers, and Not More"); Memar adopts the simpler model because a workable, memorable classification that developers will actually use during real reviews is worth more, in practice, than a taxonomically perfect one that nobody applies.
+Memar distinguishes between three layers of terminology — Scientific Terms, Technology Terms, and Business Terms — and recommends that learning, modeling, and architectural reasoning begin from the most fundamental layer available. This three-layer model is a deliberate simplification. A more granular model is possible; Memar adopts the simpler model because a workable, memorable classification that developers will actually use during real reviews is worth more, in practice, than a taxonomically perfect one that nobody applies.
 
 ### Core Principle
 
@@ -228,7 +228,7 @@ Examples:
 - Aerodynamics ([Aerodynamics](https://en.wikipedia.org/wiki/Aerodynamics))
 - Protocol — see the Protocol document, which established Protocol's definition precisely through this kind of methodology: competing candidate definitions were proposed, tested against counterexamples, and narrowed to one that survives them.
 
-This list mixes concepts with quite different epistemic character — some are mathematical constructs with formal proofs (Graph, Relation), some are results of empirical, falsifiable science (Thermodynamics, Aerodynamics, Information Theory), and some are foundational or philosophical concepts (Identity, State, Classification) that have been examined rigorously for a very long time without ever converging on a single settled academic consensus, the way a mathematical theorem converges on a proof. Memar is aware that grouping these together as one "Scientific" layer is itself a simplification of exactly the kind this document warns against elsewhere — a full accounting would likely separate formal/mathematical terms, empirical/scientific terms, and philosophical/foundational terms into distinct sub-tiers, since a mathematical proof, a reproducible experiment, and a centuries-old philosophical argument are validated in different ways and offer different strengths of guarantee. Memar accepts this simplification deliberately, for the reasons given in the Summary and revisited in "Why Three Layers, and Not More" below, and flags the finer-grained alternative as an open question rather than pretending the single Scientific layer is internally uniform.
+This list mixes concepts with quite different epistemic character — some are mathematical constructs with formal proofs (Graph, Relation), some are results of empirical, falsifiable science (Thermodynamics, Aerodynamics, Information Theory), and some are foundational or philosophical concepts (Identity, State, Classification) that have been examined rigorously for a very long time without ever converging on a single settled academic consensus, the way a mathematical theorem converges on a proof. Memar is aware that grouping these together as one "Scientific" layer is itself a simplification of exactly the kind this document warns against elsewhere — a full accounting would likely separate formal/mathematical terms, empirical/scientific terms, and philosophical/foundational terms into distinct sub-tiers, since a mathematical proof, a reproducible experiment, and a centuries-old philosophical argument are validated in different ways and offer different strengths of guarantee. Memar accepts this simplification deliberately, for the reasons stated in the [Abstract](#abstract), and flags the finer-grained alternative as an [open question](./terminology.handoff.md#open-questions) rather than pretending the single Scientific layer is internally uniform.
 
 Scientific terminology is not considered infallible. Scientific models evolve and are regularly challenged; scientific communities regularly replace, refine, merge, split, and invalidate models that were once considered settled. Memar does not treat science as a source of absolute truth. However, scientific terminology is generally subjected to explicit definitions, reproducibility requirements, continuous criticism, clearer boundaries, stronger validation processes, independent verification, public scrutiny, and cross-disciplinary review — mechanisms that technology and business terminology are usually not subjected to with the same rigor or consistency. Memar therefore treats scientific terminology as the preferred foundation for learning, modeling, and architectural reasoning. This preference is pragmatic rather than ideological: the objective is not to be scientific for its own sake, but to maximize reasoning quality, and science currently offers the strongest known set of mechanisms for that purpose.
 
@@ -381,7 +381,7 @@ When ambiguity exists, AI systems operating within the Memar ecosystem should pr
 #### Word-Weight Rebalancing
 One proposed way to act on the working hypothesis above — not a settled or independently validated mechanism, and subject to the same epistemic caution as the hypothesis it builds on — is for an AI system working within Memar to treat a Memar document's established Definition of a term as carrying more weight, for that term, than whatever balance of senses its training data would otherwise suggest. Sketched at a high level, such a mechanism would need to: load a Memar document's Definitions as context that takes precedence over training-data defaults for those specific terms; prefer the document's sense when a term is ambiguous between it and a colloquial sense, within Memar-related work; surface the conflict explicitly when a person's usage differs from a document's Definition, rather than silently substituting one for the other; and stay consistent with how a term is defined at its point of origin when one document references a term another document defines, rather than falling back on an independent, training-data-derived reading of it.
 
-This is not proposed as an AI-only concern. A human contributor benefits from the same discipline — treating a term's Memar Definition as the reference once one exists — the difference being that a human can knowingly choose to depart from it, where a mechanism along these lines would need to be designed to default to it. Whether such a mechanism is worth building, and in what form, is left open; see Future possibilities.
+This is not proposed as an AI-only concern. A human contributor benefits from the same discipline — treating a term's Memar Definition as the reference once one exists — the difference being that a human can knowingly choose to depart from it, where a mechanism along these lines would need to be designed to default to it. Whether such a mechanism is worth building, and in what form, is left open; see [Anticipated Work](./terminology.handoff.md#anticipated-work).
 
 ### Architectural Review Guidance
 During reviews, contributors should ask:
@@ -401,64 +401,4 @@ Terminology review should occur before architectural review whenever possible, b
 
 ## Results
 Insufficient time has passed since this document was adopted to report real, observed outcomes from its use. This section will be filled in once there is such experience to draw on.
-
-## Discussion
-
-### Drawbacks
-This approach increases documentation effort, learning effort, review effort, terminology analysis effort, and concept clarification effort. Discussions may initially become slower, because participants are encouraged to clarify concepts before proposing technologies, rather than jumping straight to a familiar tool. Some widely accepted industry terminology may require decomposition into more fundamental concepts before it can be used safely within Memar, which itself takes time and can feel, to a newcomer, like unnecessary ceremony around a word everyone already understands well enough for ordinary purposes.
-
-Some participants may view this process as unnecessary complexity, particularly under deadline pressure, when a familiar but imprecise term would let a conversation move faster in the short term. However, Memar considers these costs significantly lower than the long-term costs of reasoning from distorted mental models, which tend to surface much later, much more expensively, and in a form that is far harder to trace back to its terminological origin. The objective of this document is not speed of discussion; it is quality of understanding.
-
-
-### Rationale and alternatives
-
-#### Why not simply use popular terminology?
-Popularity does not imply precision. Many popular terms accumulate conflicting meanings over time precisely because their popularity is driven by broad appeal rather than by narrow, precise applicability. Popularity is therefore insufficient, on its own, as a foundation for architectural reasoning, even though it remains useful for other purposes (discoverability, communication with newcomers, marketing).
-
-#### Why not eliminate technology terminology?
-Technology terminology remains necessary; implementation eventually requires technologies, and no system can be built entirely out of scientific principles without ever naming an actual technique or tool. This document only rejects allowing technology terminology to redefine foundational concepts. Technology is a consumer of concepts; it should not become the source of concepts.
-
-#### Why not eliminate business terminology?
-Business terminology often carries valuable historical, organizational, operational, and commercial knowledge — Agile and DevOps, whatever their definitional instability, both encode real, hard-won lessons about how software gets built by actual teams under actual constraints. The problem is not the existence of business terminology; the problem is its misuse as a conceptual foundation. Business terminology can remain useful provided it does not replace more fundamental concepts in architectural reasoning.
-
-#### Why prefer scientific terminology?
-Because scientific terminology is generally associated with stronger validation processes and clearer definitions than technology and business terminology. This does not make scientific terminology perfect; it makes it the strongest available starting point currently known, for the reasons discussed in "Science as Methodology" above.
-
-#### Why classify terminology at all?
-Because terminology influences mental models, mental models influence architecture, and architecture influences system outcomes. Therefore terminology is an architectural concern, not merely a stylistic one. Classification provides a mechanism for evaluating terminology quality before it affects architectural decisions, rather than discovering the problem only after the architecture built on top of it has already calcified.
-
-#### Why Three Layers, and Not More
-A more granular classification is defensible, and this document does not claim the three-layer model is the only correct one. The Scientific layer in particular could reasonably be split into mathematical/formal terms, empirical/scientific terms, and philosophical/foundational terms, since these are validated by different mechanisms and offer different strengths of guarantee (see the discussion under "Scientific Terms," above). Memar has deliberately chosen the coarser three-layer model — Scientific, Technology, Business — because a classification that developers will actually apply during a real review, under real time pressure, is more valuable in practice than a taxonomically complete one that is too elaborate to use consistently. This is a stated trade-off, not an oversight, and it is revisited in "Unresolved Questions" below.
-
-
-### Prior art
-Most mature engineering disciplines naturally move from Scientific Principles, to Engineering Models, to Technologies, to Tools, before making implementation decisions. Structural engineering does not begin with CAD software selection. Aeronautical engineering does not begin with simulation tool selection. Thermal engineering does not begin with product selection. Software development frequently reverses this order and begins with tools — arguably because software's tooling is cheap and immediate to acquire in a way that a wind tunnel or a structural test rig is not, which removes much of the friction that would otherwise force earlier disciplines back toward first principles.
-
-This document attempts to restore, within Memar, the direction of reasoning commonly found in mature engineering disciplines, while acknowledging that software's low barrier to tool acquisition makes this discipline harder to sustain than it is in fields where reaching for a tool prematurely is simply not an option.
-
-
-### Unresolved questions
-- Should the Scientific layer eventually be split into mathematical/formal, empirical/scientific, and philosophical/foundational sub-tiers, or does the coarser single layer remain the right trade-off as Memar's documentation grows?
-- Should terminology classification become part of document review checklists across all of Memar, not only as guidance within this document?
-- Should Memar maintain a formal terminology registry?
-- Can terminology analysis be partially automated — for example, by detecting when a general concept's mentions in a document correlate almost entirely with mentions of a single specific vendor or tool (a possible automated signal for conceptual leakage)?
-- How should AI systems implement terminology weighting in practice, beyond the qualitative guidance given in "AI Implications"?
-- Should future documents explicitly identify which terminology layer each of their key terms belongs to, as this document's own Protocol document arguably should have done and did not?
-- Can terminology debt be measured, even approximately?
-- Can terminology quality be objectively evaluated, or is evaluation of terminology quality itself inescapably a matter of expert judgment?
-- At what point, if any, should AI-assisted review (see "On Independent Verification, Today") be considered to have been superseded by sustained human external review, and how would Memar recognize that point when it arrives?
-
-
-### Future possibilities
-- A Word-Weight Rebalancing mechanism for AI systems (see AI Implications), specifying concretely how a Memar document's Definitions would be loaded as higher-precedence context, how conflicts with a person's own usage would be surfaced, and how the mechanism's actual effect would be evaluated rather than assumed.
-- Framework-wide terminology registry.
-- Automated terminology conflict detection.
-- Automated conceptual-leakage detection, flagging documentation where a general concept is discussed almost exclusively in terms of one specific vendor or tool.
-- AI-assisted concept tracing.
-- Concept-to-technology mapping tools.
-- Terminology linting as part of document review tooling.
-- Auto-generated Memar glossary, tagged by terminology layer.
-- Terminology debt assessment tooling.
-- Architectural terminology review workflows.
-- A documented convention, once document contributor governance is finalized, for distinguishing AI-assisted internal critique from sustained human external review in a contributor's listed effort — so that a reader can tell, at a glance, how much of "public scrutiny" a given document has actually received.
 

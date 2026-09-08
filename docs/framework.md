@@ -122,40 +122,12 @@ A further consistency requirement applies: a development framework's goals shoul
 
 A framework constraint does not only rule things out — it can also force a *prior* process into existence that would not otherwise have been necessary. Consider a framework constraint such as **"no aspect of the design space may be assumed by default; every assumption must be the outcome of an explicit decision."** Applied to the 100-unit residential example, this constraint means that the question "should each unit have a private kitchen?" cannot simply be decided at the architecture stage by habit or convention — because a habitual answer is, by definition, an unexamined default. The constraint forces an *upstream* process to happen first: a detailed, explicit description of the residents' intended lifestyle, specific enough that the private-kitchen question (and others like it) can be evaluated against it rather than assumed. The framework did not answer the kitchen question, and it did not perform the lifestyle-description process itself — but by refusing to let the question go unexamined, it made that upstream process necessary in a way it otherwise would not have been. This is a second, distinct way a framework's Purpose Space shapes what happens before Architecture makes its decisions: not only by stating goals directly, but by imposing constraints whose only way of being satisfied is the prior existence of a clarifying process.
 
-The relationship between a framework's goals and its design space is not yet fully formalized in Memar; see Unresolved questions below.
+The relationship between a framework's goals and its design space is not yet fully formalized in Memar; see the paired [Framework Handoff](./framework.handoff.md).
 
 #### Framework vs. Library vs. Toolkit
 A library provides specific functionality that a system can use. A toolkit provides a collection of tools for specific tasks. A framework provides a structure within which a system is built. The distinction is one of control: a library is called by the system it serves; a framework calls the system that serves it. This is often described as the "inversion of control" principle. In practice, the distinction is not always sharp — many frameworks include libraries, and many libraries have framework-like conventions — but the conceptual distinction matters because it affects how the developer reasons about the relationship between their code and the framework's code.
 
 Frameworks occupy an intermediate position in the concept hierarchy. They are more concrete than abstractions or models — they provide actual structure that can be used — but less concrete than implementations — they do not specify every detail of the resulting system. A web application framework provides the conventions and components for building web applications, but does not specify what any particular web application does. Memar itself is a framework: it provides the conventions, constraints, and components for building software systems according to Memar's architectural principles, but it does not specify what any particular system built with Memar does.
-
-#### Discussion
-
-##### Drawbacks
-Frameworks can constrain architectural freedom by imposing structure that may not be optimal for every system. A developer who uses a framework may unconsciously accept architectural decisions that the framework makes implicitly, treating them as inevitable rather than as choices that could have been made differently. Memar mitigates this risk by making its own architectural decisions explicit and by encouraging contributors to understand *why* each constraint exists, not merely *that* it exists.
-
-The co-equal relationship between Framework and Architecture introduces a terminological risk: because both use the word "constraint," readers may conflate the two types. Memar mitigates this by distinguishing them as *domain-level* constraints (framework) versus *system-level* constraints (architecture), and by ensuring that the dependency chain in [System](./system.md)'s Relationships topic makes their distinct roles clear.
-
-##### Rationale and alternatives
-- **Provide guidelines rather than a framework (rejected).** Guidelines lack the structural enforcement that a framework provides. Without concrete constraints, conventions, and components, different contributors will make incompatible choices, and the coherence of the resulting systems will suffer.
-- **Position Framework as a subset or parent of Architecture (rejected).** Making one subordinate to the other implies a hierarchy that does not exist. Framework and Architecture address different questions — permissible design space vs. concrete realization — and neither contains the other. A system has both a framework (or operates within one) and an architecture; they coexist as parallel, co-dependent aspects of the system.
-
-##### Prior art
-The concept of a software framework is well-established in the literature (Johnson and Foote, "Designing Reusable Classes," 1988; Fayad and Schmidt, "Object-Oriented Application Frameworks," 1997). The distinction between framework and library is discussed in Gamma et al. ("Design Patterns," 1994).
-
-##### Unresolved questions
-1. How should Memar balance the need for framework-level constraints with the need for architectural flexibility?
-2. Should Memar define a formal extension mechanism for cases where the framework's constraints are genuinely inappropriate for a specific system?
-3. Should the Framework-as-Aspect relationship be relabeled as a distinct edge type (e.g., `constrains` rather than `is an aspect of`), to more precisely capture that a Framework does not become a part of a System but rather constrains a System's Structure from outside? The current "aspect" framing captures the structural consequence (the Framework's constraints appear *within* the System's Structure) but may be misread as implying that the Framework itself is *inside* the System. A future revision should evaluate whether the edge-type language from [System](./system.md)'s conceptual graph provides a more precise framing.
-4. Should a framework's goals be formalized as a named section within the framework's description, or is an informal statement sufficient?
-5. How should conflicts between a framework's goals be resolved when they pull in different directions (e.g., "minimize cost" vs. "maximize resilience")?
-6. Should the Purpose Space / Constraint Space distinction be reflected in [System](./system.md)'s conceptual graph as two distinct edge types, or is the current single `constrained_by` edge sufficient?
-7. How does the goal-orientation of a framework relate to System's Purpose and to System's newly-added Responsibility (a part's Purpose expressed relative to a containing System — see [System → Responsibility](./system.md#system))? Is a framework's goal the same as a System's purpose, is it closer to a Responsibility, or is there a meaningful distinction from both? This document does not yet check its own use of "goal" against either definition.
-
-##### Future possibilities
-- A dedicated document or section that formalizes the relationship between a framework's stated goals and the design space it produces — potentially including a notation for expressing framework goals and a method for evaluating whether a given design space is consistent with its stated goals.
-- Integration with the Terminology Governance mechanism (see Document Authority and Terminology Governance below) to ensure that a framework's goals are treated as authoritative definitions within the Memar ecosystem.
-- A dedicated **Sub-Framework document** that formally defines the boundary between frameworks and sub-frameworks, provides evaluation criteria, and assesses common industry systems against those criteria. This would be particularly valuable for contributors who need to understand whether adopting an external system introduces sub-framework-level gaps into their design space.
 
 ### Framework and Sub-Framework
 The distinction between a framework and a sub-framework is not about size, popularity, or the number of features it provides. It is about **completeness of guidance for a development domain** — or, to put it differently, about the degree of *silence* a framework leaves for the developer.
@@ -185,19 +157,6 @@ In current industry usage, the word "framework" is applied to both complete fram
 
 This is an instance of a broader pattern [System](./system.md) identifies: common industry terminology often conflates distinct concepts, and Memar's definitions may intentionally diverge from common usage when common usage is ambiguous, inconsistent, or misleading. The divergence should be acknowledged explicitly — which this paragraph does — rather than left for the reader to discover through confusion.
 
-#### Discussion
-
-##### Drawbacks
-The framework/sub-framework distinction introduces a terminological cost. Every existing system called a "framework" in the industry must now be re-evaluated: is it a framework or a sub-framework? This re-evaluation is labor-intensive and may be perceived as gatekeeping — as Memar declaring that most of the industry's "frameworks" are not "real" frameworks. The mitigation is the same as for all of Memar's terminological divergences: the distinction exists because it captures a real structural difference that affects how systems are built, and the cost of not making the distinction (silent gaps in guidance, integration friction between incompatible sub-frameworks) is higher than the cost of the unfamiliar terminology.
-
-##### Unresolved questions
-1. Should the framework/sub-framework distinction be formalized as a labeled property on the `constrained_by` edge in [System](./system.md)'s conceptual graph, so that documents can state explicitly whether a given `constrained_by` relationship involves a framework or a sub-framework?
-2. Is there a useful intermediate category between "framework" and "sub-framework" — a system that is more complete than a typical sub-framework but not as comprehensive as a full framework?
-3. Should this distinction receive its own dedicated document, given that it has practical implications for how Memar evaluates and integrates with external systems?
-
-##### Future possibilities
-- A dedicated **Sub-Framework document** that formally defines the boundary between frameworks and sub-frameworks, provides evaluation criteria, and assesses common industry systems against those criteria. This would be particularly valuable for contributors who need to understand whether adopting an external system introduces sub-framework-level gaps into their design space.
-
 ### Memar's Framework: Design Space Over Implementation Layers
 The preceding topic establishes the general nature of Framework and its co-equal relationship with Architecture. This topic describes how that general definition applies specifically to Memar's **Computer** system category — the software-implementation instantiation of Memar, as distinguished from Memar's other, non-software system categories in the project [README](../README.md). Memar's identity as a project is not software-specific: it is meant for developing any system — technology, software, hardware, apps, gadgets, buildings, organizations and society, and more. What follows is scoped to the software case; a parallel topic for Memar's other system categories, if and when they reach the same level of detail, belongs alongside this one rather than folded into it.
 
@@ -205,7 +164,7 @@ The conventional hierarchy in software development places the framework as a gue
 
 The deeper problem with the conventional model is that the layers were never designed with each other in mind at the architectural level. A language is typically designed to be OS-agnostic and framework-agnostic. An OS is typically designed to be language-agnostic. A framework, arriving last, is left to patch the gaps between whatever assumptions the first two happened to make independently. The result is a stack of layers that each hide complexity from the layer above — and where each layer's hidden complexity eventually leaks upward as surprising constraints, performance cliffs, or security surfaces.
 
-Memar's position is that this ordering is historical accident, not architectural necessity. A framework that defines its design space first — and then specifies what language and OS behavior it needs to support that space — can maintain coherence across all three layers rather than inheriting incoherence from two independent prior decisions. When a framework is subordinate to a language and an OS, it inherits every assumption those layers baked in — often assumptions made decades ago for very different hardware, scale, and application models. A framework built inside Go must accept Go's concurrency model, Go's memory model, and Go's standard library conventions. A framework built on Linux must accept POSIX's process/thread model, its I/O abstractions, and its general-purpose kernel interface. These inherited assumptions are invisible until they become constraints, at which point they are very expensive to remove.
+Memar's position is that this ordering is historical accident, not architectural necessity. A framework that defines its design space first — and then specifies what language and OS behavior it needs to support that space — can maintain coherence across all three layers rather than inheriting incoherence from two independent prior decisions. When a framework is subordinate to a language and an OS, it inherits every assumption those layers baked in — often assumptions made decades ago for very different hardware, scale, and application models. A framework built inside Go must accept Go's concurrency model, Go's memory model, and Go's standard library conventions. A framework built on Linux must accept POSIX's process/thread model, its I/O abstractions, and its general-purpose kernel interface. These inherited assumptions are invisible until they become constraints, at which point they are very expensive to remove. This cost is not merely a one-time adaptation friction: a concrete instance already occurred in `memar-go`, where introducing Go generics into an already-working, production-tested implementation produced widespread breakage that, after being deferred for roughly two years, was determined to be unresolvable within Go's generics model rather than merely time-consuming to fix — direct evidence, not a hypothetical risk, that friction from implementing framework design-space constraints atop a language with different assumptions compounds over time rather than being paid once. (This event is not yet recorded as a linkable document in this project's own documentation system; see the paired [Framework Handoff](./framework.handoff.md).)
 
 In Memar's model, a developer working on a business feature does not think about "which OS API to call" or "which language runtime to trust." They think about the domain model and the framework's contracts. The OS and the language are implementation details of those contracts — present, but not surfaced. This is the same thinking behind Unikernel architectures, where the application and the OS are compiled together into a single artifact with no general-purpose kernel in between: the application does not "call the OS," it is co-designed with the minimal substrate it actually needs.
 
@@ -215,26 +174,6 @@ In Memar's model, a developer working on a business feature does not think about
 - Memar is implemented as libraries across multiple languages and runtimes, at different levels of completeness: a Go implementation (`memar-go`) that has been production-tested in a real business deployment; a JavaScript implementation covering select subsystems only (error handling, services) with no current timeline for further completion; a Rust implementation not yet started, with its repository reserved for future work contingent on additional contributor capacity; and Khayyam itself, still under active design. Defining the design space at the framework level does not require every language binding to be complete or even started — it means Memar's design principles are the starting point that any such binding must conform to, whenever and to whatever extent it is undertaken.
 
 This stance has no syntax or grammar implications — it is a principle that shapes the design decisions made in every subsequent document. Specifically, it is the reason why control flow keywords, memory management, concurrency primitives, and standard library shapes are not baked into the Khayyam language itself but instead live in the Memar framework, why the framework's recommended toolchain (compiler, linter, scaffolding) is designed as a coherent unit rather than as independent tools that happen to be compatible, and why constraints (e.g. "no hidden state," "every error path must be visible") are expressed as framework-level contracts rather than as optional conventions.
-
-#### Discussion
-
-##### Drawbacks
-Inverting the conventional layer ordering does not make Memar incompatible with existing languages and operating systems — a Go implementation has been built and production-tested in a real business context, and partial implementations exist in other languages. However, this cost is not merely a one-time adaptation friction: a concrete instance already occurred in `memar-go`, where introducing Go generics into an already-working, production-tested implementation produced widespread breakage that, after being deferred for roughly two years, was determined to be unresolvable within Go's generics model rather than merely time-consuming to fix. This is cited as direct evidence for the document's core claim — that friction from implementing framework design-space constraints atop a language with different assumptions compounds over time rather than being paid once — rather than a hypothetical risk. (This event is not yet recorded as a linkable document in this project's own documentation system; see Unresolved questions at the end of this document.)
-
-##### Rationale and alternatives
-The conventional model (framework lives inside language and OS) was rejected because it guarantees that the framework will eventually be constrained by assumptions it did not make and cannot change. The cost of that constraint compounds over time — each new capability the framework needs must be negotiated against what the language and OS already decided, rather than being specified from first principles. Memar's approach accepts a higher initial cost (no incremental adoption, no reuse of existing language/OS tooling without design review) in exchange for eliminating that compounding constraint cost.
-
-##### Prior art
-- **Unikernel projects** (MirageOS, IncludeOS, Nanos): the closest architectural parallel, specifically in their treatment of the OS as a consequence of the application's requirements rather than a given substrate.
-- **Singularity (Microsoft Research)**: an OS research project that co-designed the language (Sing#) and the OS from shared first principles, rather than fitting a language onto an existing OS.
-- **Erlang/BEAM**: a language+runtime that is, in practice, its own OS-like substrate — the BEAM VM defines process scheduling, memory isolation, and fault tolerance in ways that make the underlying OS largely irrelevant to application code.
-- **General-purpose OS + framework combinations** (Spring Boot on JVM on Linux, Rails on Ruby on Linux): the conventional prior art being explicitly rejected, not because they are bad engineering for their context, but because their inherited-assumption problem is well-documented and the cost of navigating it is visible in every large codebase that has lived long enough.
-
-##### Unresolved questions
-None specific to this topic.
-
-##### Future possibilities
-- **Minimal OS Interface Specification:** A formal specification of the minimal OS interface Memar applications actually require (the boundary between "what the framework's design space requires from a substrate" and "what a substrate provides") would be the natural follow-up to this topic at the OS-design layer.
 
 ### Memar's Purpose Space: From Knowledge to Agency
 This document's own criterion for a development framework is that its goals be stated explicitly, and specific enough that different readers arrive at compatible interpretations (see [Goal-Oriented Frameworks and Purpose Space](#goal-oriented-frameworks-and-purpose-space), above). This topic states Memar's goal once, at that standard, so that no other document has to guess what the framework is for.
@@ -257,28 +196,8 @@ Stated as a single goal, through the lens this document establishes for framewor
 
 The four capabilities in that sentence are the four links the chain names: generalization (no per-task training), world modeling (a reliable model of reality), learning and revision (correction by evidence), and agency (independent reasoning and decision toward a goal). Every engineering goal in the project [README](../README.md) — minimal dependencies, concept-first definitions, reinventing the wheel rather than inheriting its assumptions — is a *means* to this end, not the end itself. The framework defines the design space so that systems built within it (and Memar's own development process, which must satisfy the same consistency test stated above) can approach this capability.
 
-#### Discussion
-
-##### Rationale and alternatives
-- **A dedicated `intelligence.md` (rejected)**: intelligence is what the other three documents jointly produce; a standalone document could only restate them and would become the project's first tautology-bearing file. The chain needs a home, not each link of it.
-- **Stating the chain inside [Knowledge](./knowledge.md) (rejected)**: one link of the chain cannot own the whole chain without every other document either duplicating it or deferring to a sibling that is not its owner; the purpose space of a framework belongs in the framework document — which is this document, by its own Purpose Space rule.
-- **Stating the goal only in the README (rejected)**: the README is a first-visitor index, not a normative home; it now carries a short pointer to this statement rather than a competing one.
-
-##### Unresolved questions
-1. How should progress toward this goal be evaluated — what observable evidence would show that a system built with Memar is approaching the stated capability, and what would show it is not?
-2. Should the goal statement be reflected in the README's System Categories for Memar's non-software instantiations (buildings, organizations, society), or does the chain apply only to cognitive systems?
-
 ### Document Authority and Terminology Governance
 Memar documents are the authoritative source for the terms they define, and this governs how "framework," "architecture," and every other term this document uses are meant to be read. The general principle — a document's Definition takes precedence over colloquial usage once established, how that authority is established and maintained, and its consequences for AI systems working within Memar (Word-Weight Rebalancing) — is stated once, in full, in [Terminology → Terminology Authority and Governance](./terminology.md#terminology-authority-and-governance) and [Terminology → Word-Weight Rebalancing](./terminology.md#word-weight-rebalancing), rather than restated here. The [Protocol document](./protocol.md) remains the clearest existing example of a Definition built to that standard.
 
 ## Results
 
-## Discussion
-
-### Unresolved questions
-1. The [memar-go generics elimination](https://github.com/GeniusesGroup/memar-go/blob/master/RFCs/Elimination_of_Open_Generic_Type_Parameters.md) event cited under *Memar's Framework* as evidence is documented in the `memar-go` repository, not in this project's own documentation system. If this event is meant to stand as citable evidence for the document's core claim, it may deserve its own short record (in `memar-go`'s own changelog, or referenced from there) rather than remaining a parenthetical description here.
-2. *Memar's Framework: Design Space Over Implementation Layers* now scopes itself explicitly to Memar's Computer (software) system category, per the project README's System Categories. Memar's other, non-software system categories do not yet have a comparable design-space treatment anywhere. Whether they need one, and if so whether it belongs in this document as a sibling topic or somewhere else entirely, is open.
-3. The [Protocol document](./protocol.md) reference under *Document Authority and Terminology Governance* previously carried an explicit identifier ("RFC 495465") in this document's prose. That identifier is not repeated here, since a document's identifier is assigned at creation and is not a stable citation form on its own — but if a stable way to cite a specific document's current identity is needed (beyond a relative link, which can go stale if a file is renamed), that is an open question for the documentation system generally, not specific to Framework.
-
-### Future possibilities
-See the Future possibilities subsections under each Explanation topic above.

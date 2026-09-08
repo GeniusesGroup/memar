@@ -13,18 +13,26 @@
   - process.md: Pending — should reference this document for the Module/Process boundary distinction instead of restating it locally.
   - protocol.md: Pending — should reference this document for the Module/Protocol boundary distinction instead of restating it locally.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — claimed, argued: framed the original problem, drove the discussion through many rounds, supplied the constitutional-law and Invoice/Product/Pricing examples, and rejected several proposed classifications as premature taxonomy.
-  - [ChatGPT](../CONTRIBUTORS.md#chatgpt) — drafted: proposed the initial structural questions, drafted the document body and this changelog in an earlier, non-conformant format.
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — claimed, argued
+  - [ChatGPT](../CONTRIBUTORS.md#chatgpt) — drafted
 
-#### Summary
-Created the first dedicated Explanation-facet document for Modularity, as Draft. It defines Module as a System considered under a modular boundary, independent of files, directories, packages, repositories, processes, services, containers, or deployment units; grounds Module identity in coherent responsibility and explicit relationships; distinguishes Module from Type, Process, and Protocol; treats Optional Module as a purpose-relative (not intrinsic) distinction; leaves the term Rule intentionally provisional; and treats EventTarget as a capability of an existing Type or Module rather than a separate event data model. It also reframes the Monolith-vs-Microservices comparison as a category error (an observer-boundary effect, not a modularity measure) and treats Big Ball of Mud as architectural degradation rather than a synonym for monolithic deployment.
+#### What changed
+- Created the first dedicated Explanation-facet document for Modularity, as Draft. It defines Module as a System considered under a modular boundary, independent of files, directories, packages, repositories, processes, services, containers, or deployment units; grounds Module identity in coherent responsibility and explicit relationships; distinguishes Module from Type, Process, and Protocol; treats Optional Module as a purpose-relative (not intrinsic) distinction; leaves the term Rule intentionally provisional; and treats EventTarget as a capability of an existing Type or Module rather than a separate event data model. It also reframes the Monolith-vs-Microservices comparison as a category error (an observer-boundary effect, not a modularity measure) and treats Big Ball of Mud as architectural degradation rather than a synonym for monolithic deployment.
+- The document consolidates and generalizes material previously expressed across `modeling.md`, `khayyam-modularity.md`, `process.md`, `protocol.md`, and the project's broader terminology and systems reasoning, rather than leaving Module implicitly defined by its scattered usages.
+- The document body and this changelog were drafted in an earlier, non-conformant format (ChatGPT).
+- The document is intentionally Draft because terminology around Rule, Optional Module, EventTarget, and the precise formal relationships among Module, System, Structure, Framework, Protocol, Process, and Type remain open.
 
-#### Rationale and alternatives
-The document consolidates and generalizes material previously expressed across `modeling.md`, `khayyam-modularity.md`, `process.md`, `protocol.md`, and the project's broader terminology and systems reasoning, rather than leaving Module implicitly defined by its scattered usages.
+#### Deliberation
+- The original problem was framed (Omid Hekayati).
+- The initial structural questions were proposed (ChatGPT).
+- The discussion was driven through many rounds (Omid Hekayati).
+- The constitutional-law and Invoice/Product/Pricing examples were supplied (Omid Hekayati).
+- Several proposed classifications were rejected as premature taxonomy (Omid Hekayati).
 
-Several alternatives raised during drafting were deliberately not adopted: a closed taxonomy of Module kinds (Core/Extension/Optional/Infrastructure/Policy Module) was proposed and then withdrawn as premature classification without a settled definition; an Active/Passive Module distinction was proposed and withdrawn once no genuinely passive Module could be identified; and treating Rule as a Module's fixed attribute, versus treating it as a relationship between Modules, was left open rather than forced to a conclusion.
-
-The document is intentionally Draft because terminology around Rule, Optional Module, EventTarget, and the precise formal relationships among Module, System, Structure, Framework, Protocol, Process, and Type remain open.
+#### Considered and not done
+- **A closed taxonomy of Module kinds (Core/Extension/Optional/Infrastructure/Policy Module) (rejected)**: raised during drafting and withdrawn as premature classification without a settled definition.
+- **An Active/Passive Module distinction (rejected)**: raised during drafting and withdrawn once no genuinely passive Module could be identified.
+- **Treating Rule as a Module's fixed attribute, versus treating it as a relationship between Modules (left open)**: left open rather than forced to a conclusion.
 
 ### Review pass: resolved structural duplication, added a comparison table and prior-art gap
 - Time: 2026-08-16T00:00:00Z
@@ -32,14 +40,20 @@ The document is intentionally Draft because terminology around Rule, Optional Mo
 - Propagates to:
   - modularity.md: Done — this entry documents the change made directly to the paired document in this same pass.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — requested: asked for a completeness check against the source discussion and for the changelog to be brought into the project's documentation-changelog format.
-  - [Claude](../CONTRIBUTORS.md#claude) — reviewed, rewrote: found and merged a duplicated `### Discussion` subsection that had been generated both inside Explanation and again at the document's own top-level `## Discussion`; added a "Module Among Related Concepts" comparison table; added Domain-Driven Design's Core Domain as prior art; added an unresolved question about Module's positioning relative to Framework and Structure.
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — requested
+  - [Claude](../CONTRIBUTORS.md#claude) — reviewed, rewrote
 
-#### Summary
-The earlier ChatGPT-generated draft had produced two separate `## Discussion`-style sections — one nested inside `## Explanation` and one at the document's own end — with overlapping subsection names (`Drawbacks`, `Rationale and alternatives`, `Prior art`, `Unresolved questions`, `Future possibilities`) but different content in each. These were merged into a single top-level `## Discussion`, with no content dropped. A "Module Among Related Concepts" table was added after the Module/Process/Protocol section to make the boundary between Module, Type, Protocol, Process, Rule, Abstraction, and Encapsulation scannable at a glance, since sharpening exactly this kind of boundary is the document's stated purpose. Domain-Driven Design's Core Domain was added to Prior art, since it is a well-known prior attempt at the same core-vs-satellite distinction and, per the discussion, suffers from treating criticality as intrinsic rather than purpose-relative — the same confusion this document argues against. Finally, an unresolved question was added noting that Module's peer-level relationship to Framework and Structure — raised early in the source discussion but never written into the document itself — is left open rather than asserted.
+#### What changed
+- The earlier ChatGPT-generated draft had produced two separate `## Discussion`-style sections — one nested inside `## Explanation` and one at the document's own end — with overlapping subsection names (`Drawbacks`, `Rationale and alternatives`, `Prior art`, `Unresolved questions`, `Future possibilities`) but different content in each. These were merged into a single top-level `## Discussion`, with no content dropped.
+- A "Module Among Related Concepts" table was added after the Module/Process/Protocol section to make the boundary between Module, Type, Protocol, Process, Rule, Abstraction, and Encapsulation scannable at a glance, since sharpening exactly this kind of boundary is the document's stated purpose.
+- Domain-Driven Design's Core Domain was added to Prior art, since it is a well-known prior attempt at the same core-vs-satellite distinction and, per the discussion, suffers from treating criticality as intrinsic rather than purpose-relative — the same confusion this document argues against.
+- An unresolved question was added noting that Module's peer-level relationship to Framework and Structure — raised early in the source discussion but never written into the document itself — is left open rather than asserted.
 
-#### Rationale and alternatives
-Writing new content asserting Module's formal relationship to Framework and Structure was considered and rejected for this pass: the project's own convention is to defer structural claims until the underlying design question is settled elsewhere, and Framework's relationship to Module was never resolved in the source discussion. Logging it as an explicit unresolved question was chosen instead, so the gap is visible without prematurely committing the document to an unreviewed position.
+#### Deliberation
+- A completeness check against the source discussion, and bringing the changelog into the project's documentation-changelog format, were requested (Omid Hekayati).
+
+#### Considered and not done
+- **Writing new content asserting Module's formal relationship to Framework and Structure (rejected for this pass)**: the project's own convention is to defer structural claims until the underlying design question is settled elsewhere, and Framework's relationship to Module was never resolved in the source discussion. Logging it as an explicit unresolved question was chosen instead, so the gap is visible without prematurely committing the document to an unreviewed position.
 
 ---
 
@@ -51,11 +65,18 @@ Writing new content asserting Module's formal relationship to Framework and Stru
   - process.md: Done — Module, Process, and Protocol shortened to point at process.md's own fuller treatment instead of restating it.
   - modeling.md: Done — added as a cross-reference for the `username`/`User` example illustrating the modeling/observation cycle.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — requested: asked for a coordinated pass across `system.md`, `process.md`, `modularity.md`, and `modeling.md` together, so shared concepts have one authoritative home each and every other document references it, rather than each document defining its own version and drifting apart over time.
-  - [Claude](../CONTRIBUTORS.md#claude) — rewrote: replaced "capabilities and limitations" with "capabilities and constraints" throughout (Abstract, Module Identity and Responsibility) to match the term `system.md`'s own Structure section uses; rewrote Module Identity and Responsibility to define a Module's identity via `system.md`'s new Responsibility section rather than an undefined "responsibility"; shortened Module, Process, and Protocol to state only the Module-specific consequence and point at `process.md`'s own, more detailed Process and Boundary and Process Composition topics rather than restating their reasoning independently; added Responsibility and Structure rows to the Module Among Related Concepts table and narrowed the closing note's list of unaddressed peer-level concepts to Framework, now that Structure is addressed; narrowed Unresolved question 10 correspondingly.
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — requested
+  - [Claude](../CONTRIBUTORS.md#claude) — rewrote
 
-#### Summary
-This document previously asserted "coherent responsibility" as if self-evident and duplicated `process.md`'s Module/Process boundary reasoning independently. Both are now resolved by citing a single authoritative source instead: Responsibility and its coherence test now live in `system.md`, and the Module/Process boundary argument now lives in `process.md`, with this document keeping only what is specific to Module's own side of each relationship.
+#### What changed
+- This document previously asserted "coherent responsibility" as if self-evident and duplicated `process.md`'s Module/Process boundary reasoning independently. Both are now resolved by citing a single authoritative source instead: Responsibility and its coherence test now live in `system.md`, and the Module/Process boundary argument now lives in `process.md`, with this document keeping only what is specific to Module's own side of each relationship.
+- "capabilities and limitations" replaced with "capabilities and constraints" throughout (Abstract, Module Identity and Responsibility), to match the term `system.md`'s own Structure section uses.
+- Module Identity and Responsibility rewritten to define a Module's identity via `system.md`'s new Responsibility section rather than an undefined "responsibility".
+- Module, Process, and Protocol shortened to state only the Module-specific consequence and point at `process.md`'s own, more detailed Process and Boundary and Process Composition topics rather than restating their reasoning independently.
+- Responsibility and Structure rows added to the Module Among Related Concepts table; the closing note's list of unaddressed peer-level concepts narrowed to Framework, now that Structure is addressed; Unresolved question 10 narrowed correspondingly.
+
+#### Deliberation
+- A coordinated pass across `system.md`, `process.md`, `modularity.md`, and `modeling.md` together was requested, so shared concepts have one authoritative home each and every other document references it, rather than each document defining its own version and drifting apart over time (Omid Hekayati).
 
 ---
 
@@ -65,11 +86,16 @@ This document previously asserted "coherent responsibility" as if self-evident a
 - Propagates to:
   - protocol.md: Reference — this fix was found during a conceptual review of protocol.md against this and the other revised documents; see protocol.changelog.md's corresponding entry.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — requested: asked for a conceptual review of protocol.md against the rest of the now-revised document set.
-  - [Claude](../CONTRIBUTORS.md#claude) — rewrote: corrected "Module, Process, and Protocol" and the "Module Among Related Concepts" table, both of which described Protocol as governing "interactions within or between Systems" — this document's own paraphrase, not protocol.md's actual definition, which routes Protocol through Process (System contains Processes, governed by Protocols) rather than having Protocol govern System-to-System interaction directly. Added a link to protocol.md's "What is a Protocol?" topic.
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — requested
+  - [Claude](../CONTRIBUTORS.md#claude) — rewrote
 
-#### Summary
-This document's characterization of Protocol did not match protocol.md's own ontology. Corrected both occurrences (the Module/Process/Protocol topic and the comparison table) to say Protocol governs Processes within a System, rather than System-to-System interaction directly, and linked to protocol.md instead of restating its definition from memory.
+#### What changed
+- This document's characterization of Protocol did not match protocol.md's own ontology. Corrected both occurrences (the Module/Process/Protocol topic and the comparison table) to say Protocol governs Processes within a System, rather than System-to-System interaction directly, and linked to protocol.md instead of restating its definition from memory.
+- The corrected occurrences had described Protocol as governing "interactions within or between Systems" — this document's own paraphrase, not protocol.md's actual definition, which routes Protocol through Process (System contains Processes, governed by Protocols) rather than having Protocol govern System-to-System interaction directly.
+- The link added points to protocol.md's "What is a Protocol?" topic.
+
+#### Deliberation
+- A conceptual review of protocol.md against the rest of the now-revised document set was requested (Omid Hekayati).
 
 ---
 
@@ -79,11 +105,15 @@ This document's characterization of Protocol did not match protocol.md's own ont
 - Propagates to:
   - khayyam-modularity.md: Done — reduced the Khayyam document to language and ecosystem consequences, with this document as the conceptual authority.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — requested: requested the Khayyam modularity document be reconciled with this general document.
-  - [ChatGPT](../CONTRIBUTORS.md#chatgpt) (GPT-5.6) — rewrote: verified that the general document already contains the authoritative Module definition and that the remaining Khayyam material is language/ecosystem-specific; added the reciprocal link and closed the pending propagation item.
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — requested
+  - [ChatGPT](../CONTRIBUTORS.md#chatgpt) (GPT-5.6) — rewrote
 
-#### Summary
-The pending propagation to `khayyam-modularity.md` is complete. The Khayyam document no longer repeats the conceptual definition of Module or Modularity; it links here and retains only its treatment of `in`, explicit naming without package context, and framework-level manifest and dependency resolution.
+#### What changed
+- The pending propagation to `khayyam-modularity.md` is complete. The Khayyam document no longer repeats the conceptual definition of Module or Modularity; it links here and retains only its treatment of `in`, explicit naming without package context, and framework-level manifest and dependency resolution.
+- Verified that the general document already contains the authoritative Module definition and that the remaining Khayyam material is language/ecosystem-specific; the reciprocal link added and the pending propagation item closed.
+
+#### Deliberation
+- Reconciling the Khayyam modularity document with this general document was requested (Omid Hekayati).
 
 ---
 
@@ -91,16 +121,22 @@ The pending propagation to `khayyam-modularity.md` is complete. The Khayyam docu
 - Time: 2026-08-25T00:00:00Z
 - Type: Added
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — argued: drove the discovery discussions these principles generalize from (capabilities repeatedly misread as candidate new domains; one capability's parts nearly scattered across endpoint Modules; mutual conceptual dependency mistaken for a defect because of language-level cycle rules); approved scope and wording.
-  - [ChatGPT](../CONTRIBUTORS.md#chatgpt) — argued: co-developed the positions across parallel sessions, including the reversal that had initially separated a capability's processing from its relationship.
-  - [Super Z](../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — drafted, reviewed, applied: generalized the findings to principle level without domain examples; added the cross-Module hosting unresolved question and the placement deferral record below.
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — argued
+  - [ChatGPT](../CONTRIBUTORS.md#chatgpt) — argued
+  - [Super Z](../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — drafted, reviewed, applied
 - Propagates to:
   - modeling.md: Done in this same pass — Edge Types unresolved questions now include the bidirectional-relationship question referenced by Unresolved question 11.
 
-#### Summary
-Added four things. "Capability Completeness": a Module introducing a meaningful domain relationship owns everything that makes it work — relationship, governing rules, and required processing — and a capability's parts must not scatter across its endpoints' Modules, with removal-cost stated as the negative test. "Foundational Concepts Should Remain Few": a mature System is expected to hold a small, stable set of foundational Concepts carrying many attached capabilities; an apparently new domain is first a hypothesis about a relationship, Rule, or Optional Module over existing Concepts, with industry domain names explicitly denied evidentiary status, and both failure directions (under-modeling, artificial decomposition) guarded. A sentence in Module Identity and Responsibility stating that a capability does not inherit identity from the concepts it operates on. "Conceptual Relationships Are Not Runtime Coupling": model-level mutual dependence may be realized asymmetrically in time and mechanism and is not inherently a defect; language-layer cycle rules constrain expression, not the domain. Extended document-level Unresolved Questions with the cross-Module hosting question.
+#### What changed
+- Added four things. "Capability Completeness": a Module introducing a meaningful domain relationship owns everything that makes it work — relationship, governing rules, and required processing — and a capability's parts must not scatter across its endpoints' Modules, with removal-cost stated as the negative test. "Foundational Concepts Should Remain Few": a mature System is expected to hold a small, stable set of foundational Concepts carrying many attached capabilities; an apparently new domain is first a hypothesis about a relationship, Rule, or Optional Module over existing Concepts, with industry domain names explicitly denied evidentiary status, and both failure directions (under-modeling, artificial decomposition) guarded. A sentence in Module Identity and Responsibility stating that a capability does not inherit identity from the concepts it operates on. "Conceptual Relationships Are Not Runtime Coupling": model-level mutual dependence may be realized asymmetrically in time and mechanism and is not inherently a defect; language-layer cycle rules constrain expression, not the domain. Extended document-level Unresolved Questions with the cross-Module hosting question.
+- The findings were generalized to principle level without domain examples, and the placement deferral record below added.
 
-#### Rationale and alternatives
+#### Deliberation
+- The discovery discussions these principles generalize from were driven — capabilities repeatedly misread as candidate new domains; one capability's parts nearly scattered across endpoint Modules; mutual conceptual dependency mistaken for a defect because of language-level cycle rules (Omid Hekayati).
+- The positions were co-developed across parallel sessions, including the reversal that had initially separated a capability's processing from its relationship (ChatGPT).
+- Scope and wording were approved (Omid Hekayati).
+
+#### Considered and not done
 - **Prescribing repository placement conventions for capabilities (rejected)**: where a Module is stored, and how repository trees express core-versus-plugable organization, are representation and tooling concerns deliberately kept outside this conceptual document. Current working position at the time of this change, recorded here so it is not re-derived later: repository placement and any entry-point/primary-domain taxonomy for optional capabilities remain open implementation-layer questions pending a dedicated layout/tooling document; nothing in this document should be read as settling them.
 
 ---
@@ -109,16 +145,22 @@ Added four things. "Capability Completeness": a Module introducing a meaningful 
 - Time: 2026-08-25T00:00:00Z
 - Type: Added
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — argued: reached the criterion during a core-versus-plugable review of an economics domain tree — a foundational abstraction is one whose absence would force fabricating or altering another foundational concept to express the same reality; confirmed that importance and usage frequency carry no evidentiary weight.
-  - [ChatGPT](../CONTRIBUTORS.md#chatgpt) — argued: co-developed the criterion and its application across the same session.
-  - [Super Z](../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — drafted, reviewed, applied: generalized the criterion into a topic without domain examples and added two honesty guards (fabrication must land inside the foundational set; evaluation runs against actual requirements, not anticipated ones).
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — argued
+  - [ChatGPT](../CONTRIBUTORS.md#chatgpt) — argued
+  - [Super Z](../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — drafted, reviewed, applied
 - Propagates to:
   - none — self-contained addition to this document.
 
-#### Summary
-Added "What Earns Foundational Status", immediately following "Foundational Concepts Should Remain Few". The earlier topic sets the expectation and shifts the burden of proof; the new one supplies the decision procedure once the burden is met: attempt to express, through the remaining abstractions, the reality the candidate covers. Forced fabrication or distortion of another foundational abstraction earns foundational consideration; a gap fillable by an independently modeled capability places the candidate above the foundations regardless of how central it feels to any organization. Importance and usage frequency are recorded as non-evidence (consistent with the document's existing position on criticality-as-intrinsic readings of DDD's Core Domain), and two guards are stated explicitly: only fabrication landing inside the foundational set counts, and the test evaluates actual rather than anticipated requirements.
+#### What changed
+- Added "What Earns Foundational Status", immediately following "Foundational Concepts Should Remain Few". The earlier topic sets the expectation and shifts the burden of proof; the new one supplies the decision procedure once the burden is met: attempt to express, through the remaining abstractions, the reality the candidate covers. Forced fabrication or distortion of another foundational abstraction earns foundational consideration; a gap fillable by an independently modeled capability places the candidate above the foundations regardless of how central it feels to any organization. Importance and usage frequency are recorded as non-evidence (consistent with the document's existing position on criticality-as-intrinsic readings of DDD's Core Domain), and two guards are stated explicitly: only fabrication landing inside the foundational set counts, and the test evaluates actual rather than anticipated requirements.
+- The criterion was generalized into a topic without domain examples, and the two honesty guards added.
 
-#### Rationale and alternatives
+#### Deliberation
+- The criterion was reached during a core-versus-plugable review of an economics domain tree — a foundational abstraction is one whose absence would force fabricating or altering another foundational concept to express the same reality (Omid Hekayati).
+- The criterion and its application were co-developed across the same session (ChatGPT).
+- Importance and usage frequency were confirmed to carry no evidentiary weight (Omid Hekayati).
+
+#### Considered and not done
 - **Folding the test into "Foundational Concepts Should Remain Few" as a paragraph (rejected)**: the two topics answer different questions — expectation and burden-shifting versus decision procedure — and keeping them separate lets each claim be cited independently when future classification debates reach for one and not the other.
 - **Transferring the concrete domain placements that motivated the criterion (rejected)**: which specific domains in a given ecosystem's tree are foundational versus plugable is domain modeling work that belongs to that ecosystem's own documents; only the generalizable criterion enters this foundation document.
 
@@ -133,5 +175,39 @@ Added "What Earns Foundational Status", immediately following "Foundational Conc
 - Propagates to:
   - none — companion edit to modeling.changelog.md (Code/Rule separation absorption).
 
-#### Summary
+#### What changed
 Added a pointer from "Rules as a Provisional Term" to modeling.md's new "Separating Structure (Code) from Policy (Rule)" section, recording that a graph-node framing of Rule exists there and that its reconciliation with this document's module framing is an open question. No position change in this document.
+
+---
+
+### Second migration wave: `## Discussion` retired per the finalized method
+- Time: 2026-09-08T00:00:00Z
+- Type: refactor
+- Propagates to:
+  - modularity.handoff.md: Created - open questions and anticipated work moved there.
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - requested
+  - [OpenCode](../CONTRIBUTORS.md#opencode) (qwen3.8-flash) - moved
+
+#### What changed
+- The body's fixed top-level sections are now Abstract, Introduction, Explanation, and Results only; the document-level `## Discussion` and the three topic-level `#### Discussion` wrappers (under Foundational Concepts Should Remain Few, What Earns Foundational Status, and Capability Completeness) are gone.
+- Drawbacks were current-state claims about the design's cost, so they stayed inline at the claims they qualify: each topic's Drawbacks text now closes its own topic, and the document-level boundary-cost and two-failure-directions passages are folded into Module Identity and Responsibility at "Creating boundaries has a cost."
+- Retired `Rationale and alternatives` content - the two topic-level subsections and the document-level section - is preserved below under Considered and not done; the document-level `Prior art` survey is preserved below under Related work.
+- Unresolved questions (the document-level list plus the Capability Completeness question) and `Future possibilities` moved to the paired `modularity.handoff.md` as Open Questions and Anticipated Work.
+- Passages already carried by the body were dropped rather than copied: the Rule-provisional restatement (Rules as a Provisional Term already states it), the implementation-mechanism deferral (Modularity and Implementation Representation plus this file's 2026-08-25 placement bullet already carry it), and the Big Ball of Mud prior-art paragraph (the body's Big Ball of Mud and Modularity section states it, and the initial-draft entry already cites Big Ball of Mud as evidence).
+- Pointers into retired sections now link to their live homes: the Module Among Related Concepts note links to the handoff's Open Questions, and the Rules as a Provisional Term note links to Modeling's handoff where the Code/Rule reconciliation question now lives.
+
+#### Considered and not done
+- **Industry-domain-driven decomposition (rejected; migrated from the Foundational-Concepts-Should-Remain-Few topic's retired Rationale and alternatives)**: mirroring the ecosystem's recognized domains as foundational Concepts imports today's product boundaries as tomorrow's architectural boundaries.
+- **Foundation-count as a target metric (rejected; migrated from the same topic's retired Rationale and alternatives)**: "few" describes the expected outcome of honest independence testing, not a quota; the number of foundations is an output of the model, never an input to it.
+- **Importance or usage frequency as the foundational-status criterion (rejected; migrated from the What-Earns-Foundational-Status topic's retired Rationale and alternatives)**: criticality is relative to a particular System's purpose, and treating it as an intrinsic property of a Module reproduces exactly the confusion this document attributes to common readings of Domain-Driven Design's Core Domain (see this entry's Related work).
+- **Universality across organizations as the foundational-status criterion (rejected; migrated from the same topic's retired Rationale and alternatives)**: a Concept every organization happens to want may still be composable from existing foundations; universality measures demand, not structural necessity.
+- **Defining Module through packages, services, repositories, processes, containers, or plugins (rejected; migrated from the document-level retired Rationale and alternatives)**: each is too dependent on a particular representation or operational arrangement; defining modularity through the physical organization of software would make the architectural model unstable whenever languages, build systems, deployment platforms, or repository conventions changed. This was the central alternative rejected by the document.
+- **Treating Microservices as the natural unit of modularity (rejected; migrated from the same section)**: deployment independence can be useful, but it is neither necessary nor sufficient for conceptual modularity.
+- **Requiring a new domain data model for every extensible behavior (rejected; migrated from the same section)**: existing Concepts, service requests, responses, and capabilities should be reused when they already express the required information.
+- **A closed taxonomy of Module kinds (rejected; migrated from the same section)**: terms such as *Core Module*, *Infrastructure Module*, and *Policy Module* may be useful in particular contexts, but they should not become part of the foundational definition unless the project discovers a real conceptual distinction that requires them. (The same rejection was first recorded in this file's initial-draft entry; this bullet preserves the retired section's own wording and scope note.)
+- **Dropping the Optional Module term along with the taxonomy (not done; recorded decision; migrated from the same section)**: Optional Module is retained because it expresses a concrete distinction already required by the model - a Module can be structurally non-essential to a particular System while still providing valuable behavior.
+
+#### Related work
+- The discussion of modularity in software has appeared in object-oriented design, component systems, structured programming, package systems, service-oriented architecture, microservices, and Domain-Driven Design. These traditions provide useful mechanisms and observations but do not supply a single definition of Module that is independent of their implementation assumptions. Domain-Driven Design's Core Domain is a particularly relevant case: the term is commonly presented as if criticality were an intrinsic property of a domain, which invites the same confusion this document argues against - a Module's essential or optional status is relative to a particular System's purpose, not an inherent property of the Module itself. (Migrated from the document-level retired Prior art.)
+- Memar treats prior architectural terminology as evidence and material for comparison rather than as authority over the definitions used by the project. (Migrated from the same section.)

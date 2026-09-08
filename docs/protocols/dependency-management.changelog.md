@@ -10,11 +10,16 @@
   - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — reviewed, rewrote
 
 #### What changed
-Initial Draft positioning the version-control repository as the dependency mechanism — repository references, explicit pinning, local relative addressing — with the package-manager layer (registries, resolution, lockfiles) recorded as an unnecessary default and the strongest practical objections kept open.
+- Initial Draft positioning the version-control repository as the dependency mechanism — repository references, explicit pinning, local relative addressing — with the package-manager layer (registries, resolution, lockfiles) recorded as an unnecessary default and the strongest practical objections kept open.
+- The position was stated as "the VCS is the mechanism", with the boundary rule (a dependency's internal structure is its own encapsulation) as the second load-bearing claim (Super Z).
+- Registry-as-catalog (accepted) was separated from registry-as-infrastructure (rejected) so the position is not misread as rejecting discovery (Super Z).
+- Semver was recorded as a claim rather than a guarantee (Super Z).
+- The tooling gap (reference-refresh automation) was kept honest in the unresolved questions (Super Z).
 
-The position was brought from an extended public debate on package management: remote import paths break reproducibility and self-containment; transitive-resolution algorithms make every consumer responsible for conflicts in code it never calls; the VCS already provides pinning (submodule-style references, local relative addressing) and the package-manager layer re-solves that worse. The position was defended through the debate's strongest counter-arguments (transitive pinning ergonomics, fork workflows, download cost) and the genuinely open ones accepted as open (Omid Hekayati).
-
-The position was stated as "the VCS is the mechanism" with the boundary rule (a dependency's internal structure is its own encapsulation) as the second load-bearing claim; registry-as-catalog (accepted) was separated from registry-as-infrastructure (rejected) so the position is not misread as rejecting discovery; semver was recorded as a claim rather than a guarantee; the tooling gap (reference-refresh automation) was kept honest in the unresolved questions (Super Z).
+#### Deliberation
+- The position was brought from an extended public debate on package management: remote import paths break reproducibility and self-containment; transitive-resolution algorithms make every consumer responsible for conflicts in code it never calls; the VCS already provides pinning (submodule-style references, local relative addressing) and the package-manager layer re-solves that worse (Omid Hekayati).
+- The position was defended through the debate's strongest counter-arguments (transitive pinning ergonomics, fork workflows, download cost) (Omid Hekayati).
+- The genuinely open counter-arguments were accepted as open (Omid Hekayati).
 
 ---
 

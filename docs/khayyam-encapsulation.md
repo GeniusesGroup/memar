@@ -19,7 +19,7 @@ For a walk-through of the core mechanics before the detailed rules, see the [Gui
 ### Motivation
 Languages like Rust, C++, and TypeScript split the burden of managing mutability and lifecycle safety between the definition site and the consumer site, via keywords such as `mut`/`const`. This forces the consumer to explicitly dictate how they intend to treat an instance, and lets a caller override boundaries that should fundamentally belong to the domain model — a form of syntactic band-aid for weak encapsulation, and a source of constant call-site cognitive load. Meanwhile, tuple types and generic containers allow anonymous, positional data groupings that obscure domain meaning, and public field access breaks encapsulation at the structural level.
 
-Khayyam's encapsulation model was designed to address all of these issues simultaneously. By making all fields private, all interaction method-based, all mutability intrinsic to the capsule, and all multi-value groupings named capsules, the language ensures that domain boundaries are expressed at the definition site and cannot be bypassed at the call site. This document records those rules, explains their motivation, and records the alternatives that were considered and rejected.
+Khayyam's encapsulation model was designed to address all of these issues simultaneously. By making all fields private, all interaction method-based, all mutability intrinsic to the capsule, and all multi-value groupings named capsules, the language ensures that domain boundaries are expressed at the definition site and cannot be bypassed at the call site. This document records those rules and explains their motivation; the alternatives that were considered and rejected are recorded in the paired changelog.
 
 ## Explanation
 
@@ -55,24 +55,11 @@ A capsule's public methods are its entire contract. If a capsule exposes no muta
 
 The immutability guarantee described here is a *method-contract* guarantee: a capsule exposing no mutating method cannot be mutated *through its own public interface*. It does not, by itself, resolve whether the memory a capsule's fields reference can also be mutated by some other owner of that same memory (e.g. a capsule holding a view into a buffer that a separate owner is permitted to overwrite elsewhere) — that is a distinct, lower-level memory-management concern, not addressed by this document. Whether, and how, this distinction is checked or enforced is left entirely to the compiler and/or linter layer, which may adopt a strict, Rust-`mut`-like enforcement policy; a more permissive policy that stays silent whenever an aliasing pattern is provably safe; or any other policy of its own design. This document does not mandate a specific enforcement policy — only that no *consumer-side keyword* can override a capsule's own declared behavior. The interaction between this guarantee and the underlying memory-management model is substantial and is deliberately deferred to future documents on memory management and buffer/storage ownership.
 
-#### Discussion
-
-##### Drawbacks
 Every behavioral variant of a value (e.g. a frequently-needed mutable view of an otherwise-immutable type) requires defining and naming a new capsule, rather than a one-character keyword at the call site. This is intentional friction (consistent with the broader design philosophy that prefers explicit domain modeling over syntactic shortcuts), but it does mean more named types exist in a codebase than in languages with consumer-side modifiers.
 
-##### Rationale and alternatives
-The alternative (consumer-side `mut`/`const`) was rejected because it allows behavior overrides at the call site that bypass the domain model's own invariants, and because it adds a constant low-grade decision burden to every variable declaration. It also conflates two distinct concerns that Khayyam keeps separate: the identity of a reference (a variable or a field, which simply names a relationship to an instance) and the behavioral contract of the referenced instance (owned entirely by its type).
+**Representation exposure is not resolvable by any enforcement policy, and this document does not claim otherwise.** If a capsule's own method surface returns a reference to a sub-capsule that itself exposes mutating methods (e.g. a `Tcp` capsule offering `ReceiveBuffer() Buffer`, where `Buffer` has its own `Overwrite` method), any caller holding that returned `Buffer` can mutate it through `Buffer`'s own, entirely legitimate contract — outside `Tcp`'s knowledge or control. Nothing here is hidden or type-unsound: `Buffer`'s mutating methods are declared honestly, and `Tcp` chose to return a `Buffer` rather than a narrower, read-only abstraction over it. This is the same failure mode long documented in object-oriented languages as "representation exposure" (returning a mutable reference to internal state defeats encapsulation regardless of how strict the language's field-privacy rules are) — see e.g. the "defensive copying" guidance in *Effective Java*. No amount of compiler or linter policy can distinguish this from a legitimate, intended API, because it is one: whether to return a narrower abstraction (e.g. a read-only `Buffer` view exposing no mutating method) instead of the full `Buffer` capsule is entirely the capsule author's own design discipline, not something Sovereign Encapsulation can enforce from outside. The same applies, more sharply, if a capsule's own field type happens to expose an `unsafe`-style direct-memory-access method: any consumer holding an instance of that field type can mutate the backing memory without the owning capsule ever being called. Sovereign Encapsulation guarantees that *no consumer-side keyword* can force mutation against a type's contract; it does not and cannot guarantee that every capsule author has designed a narrow-enough contract to prevent transitive exposure through capsules they chose to return or expose.
 
-##### Prior art
-Rust's `mut`, C++'s `const`, TypeScript's `readonly` all place mutability responsibility at the consumer site. Rust's `let mut` is the closest single-keyword prior art at the declaration-site level, but it conflates several distinct concerns — binding, ownership, and mutation — into one modifier; Khayyam keeps these separate by never letting a reference declaration (variable or field) carry mutation semantics at all. Smalltalk-style strict message-passing encapsulation (no public fields at all) is closer to Khayyam's model.
-
-##### Unresolved questions
-- Whether a capsule backed by a borrowed, externally-mutable buffer can be mutated through a channel other than its own method contract (raw memory aliasing at or below the buffer level) is deferred to future documents on memory management and buffer ownership; this is a case where an ownership/borrow-tracking policy in the compiler or linter layer could plausibly close the gap.
-- **Representation exposure is not resolvable by any enforcement policy, and this document does not claim otherwise.** If a capsule's own method surface returns a reference to a sub-capsule that itself exposes mutating methods (e.g. a `Tcp` capsule offering `ReceiveBuffer() Buffer`, where `Buffer` has its own `Overwrite` method), any caller holding that returned `Buffer` can mutate it through `Buffer`'s own, entirely legitimate contract — outside `Tcp`'s knowledge or control. Nothing here is hidden or type-unsound: `Buffer`'s mutating methods are declared honestly, and `Tcp` chose to return a `Buffer` rather than a narrower, read-only abstraction over it. This is the same failure mode long documented in object-oriented languages as "representation exposure" (returning a mutable reference to internal state defeats encapsulation regardless of how strict the language's field-privacy rules are) — see e.g. the "defensive copying" guidance in *Effective Java*. No amount of compiler or linter policy can distinguish this from a legitimate, intended API, because it is one: whether to return a narrower abstraction (e.g. a read-only `Buffer` view exposing no mutating method) instead of the full `Buffer` capsule is entirely the capsule author's own design discipline, not something Sovereign Encapsulation can enforce from outside. The same applies, more sharply, if a capsule's own field type happens to expose an `unsafe`-style direct-memory-access method: any consumer holding an instance of that field type can mutate the backing memory without the owning capsule ever being called. Sovereign Encapsulation guarantees that *no consumer-side keyword* can force mutation against a type's contract; it does not and cannot guarantee that every capsule author has designed a narrow-enough contract to prevent transitive exposure through capsules they chose to return or expose.
-- Reference-rebinding — reassigning a variable or field's name to point at a different instance, as distinct from mutating the instance it already points to — is not a gap in this document, at either level. Khayyam has no primitive types; every variable's or field's declared type is itself a capsule or an abstraction. Obtaining a *new* instance to rebind to (whether for a local variable or a field) still requires going through that type's own constructor or an explicit copy/clone abstraction it chooses to implement (see `khayyam-variable.md`'s Domain-Driven Arithmetic) — there is no ambient, type-independent way to conjure a value. And for a local variable specifically, rebinding touches no capsule's private state at all (it is not privately-owned state of anything), so no Sovereign Encapsulation invariant is even at stake; for a field, rebinding *is* mutation, gated by the same privacy rule already described above. Nothing is left open here.
-
-##### Future possibilities
-None recorded yet.
+Reference-rebinding — reassigning a variable or field's name to point at a different instance, as distinct from mutating the instance it already points to — is not a gap in this document, at either level. Khayyam has no primitive types; every variable's or field's declared type is itself a capsule or an abstraction. Obtaining a *new* instance to rebind to (whether for a local variable or a field) still requires going through that type's own constructor or an explicit copy/clone abstraction it chooses to implement (see `khayyam-variable.md`'s Domain-Driven Arithmetic) — there is no ambient, type-independent way to conjure a value. And for a local variable specifically, rebinding touches no capsule's private state at all (it is not privately-owned state of anything), so no Sovereign Encapsulation invariant is even at stake; for a field, rebinding *is* mutation, gated by the same privacy rule already described above. Nothing is left open here.
 
 ### Capsule Structure and Privacy
 A capsule is declared with the `cp` subtype under the `tp` keyword:
@@ -98,23 +85,7 @@ tp ServerConfig cp {
 
 The `TLSConfig` field is itself a capsule, composed within `ServerConfig`. Access to `TLSConfig`'s internal data must go through `TLSConfig`'s own methods — `ServerConfig` does not gain special access to `TLSConfig`'s fields by virtue of containing it.
 
-#### Discussion
-
-##### Drawbacks
 Even trivial read access to a field (e.g., getting a configuration value) requires a method definition. For capsules with many fields, this can result in a large number of getter-style methods. However, these methods serve a critical purpose: they define the capsule's behavioral contract, and they can be evolved independently of the internal representation without breaking consumers.
-
-##### Rationale and alternatives
-- **Allow selective field exposure (as in C# properties, Rust `pub` fields; rejected)**: creates a two-tier system where some fields are public and others are private, with no principled rule for which should be which. It also breaks the guarantee that a capsule's entire contract is discoverable through its method interface.
-- **Allow friend/internal visibility (as in C++, Java package-private; rejected)**: introduces scope-based exceptions that weaken the encapsulation guarantee and create implicit coupling between files or modules.
-
-##### Prior art
-Smalltalk's object model (all instance variables are private, all interaction is through messages) is the closest prior art. Go's struct model with uppercase/lowercase visibility is a weaker form that still allows direct field access for exported fields.
-
-##### Unresolved questions
-None at this time.
-
-##### Future possibilities
-A linter mode that detects capsules with "trivial getter" methods (methods that simply return a field value without transformation) and suggests whether they indicate a missing domain abstraction or are genuinely appropriate.
 
 ### Closures as Implicit Capsule Syntax
 A closure, looked at structurally rather than syntactically, is not really a separate language feature — it is an implicit capsule. Whatever a closure captures is, in effect, a set of unnamed fields; whatever a closure runs when called is, in effect, an unnamed method attached to those fields. Every closure written in another language is already doing what a Khayyam capsule does — holding state and offering behavior over it — the only difference is that it does so anonymously, without a declared type, and without going through Sovereign Encapsulation's requirement that a capsule's state be named and explicit.
@@ -125,26 +96,9 @@ This framing also clarifies why this topic belongs inside the encapsulation docu
 
 Declining to admit this implicit-capsule syntax into the grammar has real consequences worth naming plainly. Closures are heavily used in other languages for callbacks and inline dynamic logic (e.g. capturing variables for sorting or filtering), and their convenience carries real architectural costs: hidden state capturing creates invisible dependencies and breaks explicit state management, and the ease of writing inline functions encourages developers to mash multiple distinct behaviors into a single method body under the false promise of "refactoring later." Requiring every captured state to surface as a named capsule keeps all state dependencies explicit, testable, strictly encapsulated, and analyzable by the compiler.
 
-#### Discussion
-
-##### Drawbacks
-The discomfort and verbosity of having to name a capsule for even small, single-use behaviors (e.g. a one-off sort comparator) is a real and acknowledged cost. There is a recognized risk that a developer could recreate the same laziness this rule is meant to prevent by writing a throwaway, badly-named, single-use capsule instead of a proper closure — this is treated as a naming-convention/linter concern (see future linter documents), not a reason to reconsider this decision.
-
-##### Rationale and alternatives
-- **A lighter, explicitly-captured inline syntax that lists captured state in the signature itself, short of a full named-capsule declaration (considered; rejected)**: this was examined as a middle ground that would keep captures explicit (addressing the hidden-dependency objection) while reducing ceremony. It was rejected because, once captured state must be written out explicitly at the call site, the result is structurally indistinguishable from a small named capsule — the same fields, the same single method — and the only thing such syntax would save is the act of typing a name for it. Since the friction this document accepts is naming and defining a type, not the mechanics of expressing fields or a method body, this alternative does not address the actual source of the friction it targets, and would add a second, redundant way to express what a capsule already expresses.
-
 **Reduced Optimization Surface:** capsule-centric code, where state is always a named, explicit type, is significantly easier for the compiler to analyze and optimize than ad-hoc captured scopes. Both models are theoretically equivalent in the worst case, but capsule-based state is far more consistently optimizable in practice, because the compiler always has a concrete, named type to reason about rather than an implicit closure environment whose shape varies by call site. (An earlier, now-corrected version of this rationale argued closures cause additional heap allocation/escape compared to capsules — this is not accurate: a named capsule holding the same captured references has the same memory-lifetime profile as a closure would. The real justification is architectural explicitness and analyzability, not raw performance.)
 
-##### Prior art
-Java's pre-Java-8 model (no lambdas, only anonymous inner classes) followed the same philosophy Khayyam follows here, and it is informative evidence about the real-world cost of this constraint: the resulting boilerplate for simple, single-use callbacks (event listeners, one-off comparators) was significant enough that Java eventually added lambda expressions in Java 8 under sustained developer pressure.
-
-A second, more direct data point comes from Go's standard `net/http` package, which offers two parallel ways to register a request handler for the same need: a closure-based form, `func HandleFunc(pattern string, handler func(http.ResponseWriter, *http.Request))`, and a capsule/struct-based form, `func Handle(pattern string, handler Handler)`. In practice, when both paths exist side by side, developers consistently default to the closure-based path, and encapsulation suffers in both forms regardless: `pattern` ends up living outside the handler type rather than being owned by it. This is read as evidence that offering closures alongside a capsule-based alternative does not lead to better modeling — it leads to the closure path being taken by default, with the encapsulation discipline silently degraded. Removing the closure path entirely is treated as a deliberate forcing function rather than an oversight, precisely because this dual-path failure mode is observed in real, widely-used code rather than hypothesized.
-
-##### Unresolved questions
-None at this time.
-
-##### Future possibilities
-None recorded yet.
+The discomfort and verbosity of having to name a capsule for even small, single-use behaviors (e.g. a one-off sort comparator) is a real and acknowledged cost. There is a recognized risk that a developer could recreate the same laziness this rule is meant to prevent by writing a throwaway, badly-named, single-use capsule instead of a proper closure — this is treated as a naming-convention/linter concern (see future linter documents), not a reason to reconsider this decision.
 
 ### Relationship with Abstractions
 A capsule exposes behavior through methods. The relationship between capsules and abstractions is defined separately in the [Abstraction document](./khayyam-abstraction.md). This document concerns itself only with the encapsulation guarantees that make the abstraction model possible: capsules hide all internal state, and all interaction occurs through methods whose signatures the abstraction defines.
@@ -158,22 +112,7 @@ There is no tuple literal or tuple type syntax in the grammar. Multiple related 
 
 Tuples are rejected not because they lack behavior at the point of definition — a `(String, Int)` pair may appear harmless in isolation — but because they facilitate a wrong architectural evolution path. Over time, what begins as an anonymous positional grouping inevitably accumulates associated behavior (validation, formatting, conversion) that becomes scattered across the codebase rather than co-located with the data it concerns. This is the same trajectory that leads from anonymous data bags to anemic domain models. By requiring multi-value concepts to be represented as named types when they have semantic meaning, Khayyam ensures that domain identity is established from the outset and that behavior has a natural home.
 
-#### Discussion
-
-##### Drawbacks
 Even a trivial, throwaway pairing of two values (e.g. swapping two variables, or returning a quick coordinate pair) requires naming and defining a capsule, rather than using an anonymous, lightweight tuple literal — measurably more ceremony than virtually every modern language provides for this common case.
-
-##### Rationale and alternatives
-- **Tuple types (the conventional approach in Go, Rust, Python, and many other languages; rejected)**: their positional, anonymous nature allows unnamed structural grouping of values without introducing a domain identity. While tuple types are a valid construct in formal type theory, in architectural modeling they serve as a primitive form of encapsulation — one that provides state grouping without ownership, without behavior, and without identity. This combination facilitates the gradual emergence of anemic domain models, where data and behavior become separated across the codebase.
-
-##### Prior art
-Go's multiple return values, Rust's and Python's tuple types, and TypeScript's tuple types are all common prior art for this feature; Khayyam's rejection here is closer in spirit to strongly nominal-typing-oriented languages and to general DDD advice discouraging "primitive obsession" and anonymous data bags.
-
-##### Unresolved questions
-None at this time.
-
-##### Future possibilities
-None recorded yet.
 
 ### Primitive Capsule Specification
 The canonical Khayyam specification claims that replacing `int32` with `W32` is "zero-cost." But `W32` is not just a renamed integer — it is a capsule that provides behavioral guarantees beyond what `int32` offers. The migration contract depends on what exactly `W32` guarantees.
@@ -190,25 +129,7 @@ This topic is also relevant to whether primitive capsules should be defined by t
 
 None of the possible behavioral guarantees listed above create an exception to Sovereign Encapsulation's "all interaction occurs through methods" rule, and none are guaranteed by this document — they are illustrative ("possible"), not mandatory. Whether a given primitive capsule's methods happen to be trivial enough for the compiler to inline is a backend optimization decision, orthogonal to the interaction model: the operation still goes through a method either way. A capsule author is free to design a `W32`-like capsule whose methods are cheap and unchecked (accepting the same risk profile as a raw primitive type in another language) or one whose methods are heavier and safer (e.g. checked arithmetic); the tradeoff, and the cost it implies, is local to that capsule's own design, not a language-level default. This is also why "zero-cost" cannot be asserted for `W32` as a category — it depends entirely on which behavioral guarantees the specific `W32` a project uses chooses to implement.
 
-#### Discussion
-
-##### Drawbacks
 Defining behavioral guarantees for primitive capsules adds complexity to the "de-Primitive-ing" migration story. A developer replacing `int32` with `W32` must now understand that `W32` is not a drop-in replacement but a capsule with specific behavioral contracts that may differ from the raw integer semantics they expect.
-
-##### Rationale and alternatives
-- **Primitive capsules as pure renames with no behavioral guarantees (rejected)**: would make the "de-Primitive-ing" migration trivially zero-cost but would also make it meaningless — a rename without behavioral difference adds no value.
-- **Primitive capsules with full behavioral specifications (Khayyam's apparent intent)**: makes the migration more valuable but requires explicit specification of each primitive capsule's behavioral guarantees.
-
-##### Prior art
-Zig's integer types include comptime range checks and overflow semantics. Rust's integer types distinguish between wrapping (`wrapping_add`), checked (`checked_add`), and saturating (`saturating_add`) operations through methods, not through separate types. Ada's range types are closer to Khayyam's model of encoding range semantics in the type itself.
-
-##### Unresolved questions
-1. What behavioral guarantees does each primitive capsule provide? Is there a formal specification for `W32`, `W64`, `R32`, `R64`, and other primitive capsules?
-2. Should primitive capsules be defined by the language itself, by the standard library, or by the Memar framework? Each choice has different implications for portability and governance.
-3. How do primitive capsule guarantees interact with the compiler's optimization strategy — can a `W32` with wrapping semantics be optimized differently from a `W32` with saturating semantics?
-
-##### Future possibilities
-A formal specification document for each primitive capsule, defining its behavioral guarantees, overflow semantics, serialization contract, and range semantics, serving as the reference for both compiler implementation and migration guidance.
 
 ### Constants as Capsule-Returned Values
 A constant in Khayyam is simply a variable returned by a capsule method that cannot change after first initialization — an organizational and architectural rule, not a dedicated compiler keyword. Two flavors are distinguished:
@@ -220,29 +141,7 @@ A "config" capsule for a module, for example, exposes module-level values throug
 
 This approach is consistent with Sovereign Encapsulation: the "this value never changes" guarantee depends on the capsule author's discipline (not exposing a mutating method) rather than being enforced by a keyword, and the consumer discovers the guarantee through the capsule's public interface, not through a modifier on the variable declaration.
 
-#### Discussion
-
-##### Drawbacks
 Without a dedicated keyword, the "this value never changes" guarantee for a constant depends entirely on the capsule author's discipline (not exposing a mutating method) rather than being enforced by a single, unmistakable declaration keyword a reader can immediately recognize.
-
-##### Rationale and alternatives
-- **Dedicated `const` keyword (the conventional approach in most languages; rejected)**: would reintroduce a consumer/producer-side modifier that Khayyam otherwise eliminates entirely in favor of behavior being intrinsic to the capsule. A dedicated `const` keyword was already rejected at the consumer side; this section addresses the producer side — how a value that should never change after initialization is expressed without introducing a separate keyword category.
-- **`constexpr`/`comptime` keyword (as in C++, Zig; rejected)**: while closer in spirit to Khayyam's "constant as a compile-time function" framing, these still introduce a separate keyword category rather than making the behavior intrinsic to the capsule's method design.
-
-##### Prior art
-Most languages provide an explicit `const`/`final`/`let` keyword. Khayyam's "constant as a compile-time function" framing is conceptually close to `constexpr` functions in C++ or `comptime` values in Zig, though without a dedicated keyword marking them as such.
-
-##### Unresolved questions
-- Whether developers should be able to change a "dynamically-valued constant" at runtime by having the compiler force the runtime to rewrite binary code directly (avoiding a memory-service call, with the same memory size) is explicitly marked as undecided and remains unresolved.
-- How to pass a return value from a constant method to other methods — the interaction between constant methods and the broader method-call chain needs further specification.
-
-##### Future possibilities
-None recorded yet.
-
-## Results
-No observed results are recorded yet. This section will be updated when use of the encapsulation model yields evidence that can be distinguished from its intended rationale.
-
-## Discussion
 
 ### Naming Conventions
 Suggested conventions for capsule and abstraction names (non-binding, enforceable via linter configuration):
@@ -252,21 +151,5 @@ Suggested conventions for capsule and abstraction names (non-binding, enforceabl
 - **Method names**: PascalCase for public methods, matching the capsule's domain language. Avoid getter/setter prefixes (`Get...`, `Set...`) when the method name can express the domain action more directly (e.g., `ApplyTimeout` instead of `SetTimeout`).
 - **Field names**: PascalCase inside capsules, consistent with the type naming convention. Since fields are always private, their names are an internal design decision of the capsule author.
 
-### Drawbacks
-The encapsulation model's insistence on method-only interaction, no tuples, no closures, and no consumer-side mutability keywords creates a codebase with more named types and more method definitions than virtually any mainstream language. For simple data structures (a 2D coordinate, a key-value pair, a result type) or simple one-off behaviors (a sort comparator, a callback), the developer must define a named capsule with named fields and explicit methods, rather than using a tuple, a struct with public fields, or a closure. This is the price of guaranteed domain integrity and encapsulation — but it is a real price, and it is felt most acutely during rapid prototyping or when writing glue code between systems.
-
-### Rationale and alternatives
-- **Allow public fields for simple data carriers (rejected)**: would create a two-tier system where some capsules have public fields and others don't, with no principled rule for which should be which. It would also break the guarantee that a capsule's entire contract is its method interface.
-- **Allow tuples for "simple" multi-value returns (rejected)**: the boundary between "simple" and "complex" is subjective; once tuples are allowed for simple cases, they tend to proliferate to complex cases where they obscure domain meaning.
-- **Allow consumer-side `const` for read-only references (rejected)**: see [Sovereign Encapsulation](#sovereign-encapsulation) for the full rationale.
-- **Allow closures for simple, single-use callbacks (rejected)**: see [Closures as Implicit Capsule Syntax](#closures-as-implicit-capsule-syntax) for the full rationale.
-
-### Prior art
-Smalltalk's strict message-passing encapsulation (no public fields, all interaction through messages) is the closest mainstream prior art for the capsule model. Prior art for abstractions and polymorphism is documented in their documents respectively.
-
-### Unresolved questions
-1. Should the language or the Memar framework provide a set of "standard" capsules for common patterns (e.g., `Pair`, `Result`, `Option`) to reduce the ceremony of defining named capsules for simple cases?
-2. How does the encapsulation model interact with serialization and deserialization — can a capsule's internal state be serialized without going through its public methods?
-
-### Future possibilities
-- A standard library of commonly-needed capsules (e.g., `Pair`, `Result`, `Option`, `Range`) that provide named, domain-specific alternatives to tuples and generic containers, following the naming and design conventions documented in this document.
+## Results
+No observed results are recorded yet. This section will be updated when use of the encapsulation model yields evidence that can be distinguished from its intended rationale.

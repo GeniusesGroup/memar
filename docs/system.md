@@ -31,7 +31,7 @@ The deeper motivation is structural. Memar's Terminology document establishes th
 A foundational document that defines these terms explicitly is therefore not a philosophical luxury. It is a structural prerequisite for the coherence of every document that follows. The purpose of these definitions is not merely semantic consistency — it is to improve the quality of mental models used to reason about systems. Terminology debt, as the Terminology document argues, is a root cause of architectural debt: imprecise terms produce imprecise mental models, and imprecise mental models produce imprecise architectures. This document intervenes at the earliest possible point in that chain.
 
 ### Methodology
-The definitions in this document are synthesized from multiple sources — systems theory (von Bertalanffy, Boulding, Checkland), philosophy of technology (Ellul, Mumford, Heidegger), philosophy of science (Popper, Kuhn, Lakatos), and software architecture (ISO/IEC 42010, IEEE 610.12) — with explicit attention to internal consistency and to the Terminology document's principles of concept-first thinking, terminological precision, and scientific methodology. No single existing standard provides a complete, mutually consistent set of definitions for all the concepts Memar needs; synthesizing from multiple sources produces a more useful result than uncritically adopting any one of them (see Discussion → Rationale and alternatives).
+The definitions in this document are synthesized from multiple sources — systems theory (von Bertalanffy, Boulding, Checkland), philosophy of technology (Ellul, Mumford, Heidegger), philosophy of science (Popper, Kuhn, Lakatos), and software architecture (ISO/IEC 42010, IEEE 610.12) — with explicit attention to internal consistency and to the Terminology document's principles of concept-first thinking, terminological precision, and scientific methodology. No single existing standard provides a complete, mutually consistent set of definitions for all the concepts Memar needs; synthesizing from multiple sources produces a more useful result than uncritically adopting any one of them (see the Initial synthesis entry's [Considered and not done](./system.changelog.md#considered-and-not-done) in [system.changelog.md](./system.changelog.md)).
 
 This document was produced through a multi-contributor process spanning several review rounds — full provenance, including who drafted, argued for, or corrected which specific decisions, is recorded in [system.changelog.md](./system.changelog.md) rather than here, consistent with how this project now separates a document's current design from its change history.
 
@@ -49,9 +49,9 @@ The definitions in this document are not arbitrary. They are selected to satisfy
 3. **Internal consistency.** The definitions are mutually consistent: System is defined independently of its implementation, and Architecture is defined in terms of System; Technology is defined as applied knowledge directed at systems, not as artifacts; and the relationships between all concepts form a coherent graph rather than a collection of independent assertions.
 
 ### How to Read This document
-The topics you are about to read move from orientation (why this document exists, how the concepts relate at a glance) to the full, authoritative definitions, organized by concept, each with its own drawbacks, rationale, and open questions where relevant.
+The topics you are about to read move from orientation (why this document exists, how the concepts relate at a glance) to the full, authoritative definitions, organized by concept. Each topic carries its rationale, and — where a cost of the definition bears directly on reading it — that claim as well; the alternatives considered and rejected are recorded in the paired [changelog](./system.changelog.md), and the questions still open in the paired [handoff](./system.handoff.md).
 
-A contributor who reads the opening topics should have a working understanding of every concept. A contributor who needs to evaluate edge cases, resolve ambiguities, or understand why a definition was chosen over alternatives should consult that concept's own topic and its Discussion.
+A contributor who reads the opening topics should have a working understanding of every concept. A contributor who needs to evaluate edge cases, resolve ambiguities, or understand why a definition was chosen over alternatives should consult that concept's own topic, its entries in the paired [changelog](./system.changelog.md), and its open questions in the paired [handoff](./system.handoff.md).
 
 ### A Note on Systems Thinking
 Readers will notice, across this document and others, that many things — a person, a team, a company, a programming language, a habit, a conversation — can plausibly be described as a System, depending on the observer's purpose and level of analysis. This is not a flaw in these definitions; it is a basic feature of systems theory itself. System-hood is not an intrinsic property that some things have and others lack. It is a lens that can be applied to almost anything a person interacts with, because almost anything a person interacts with has interacting parts, a boundary an observer can draw around it, and behavior that depends on how those parts relate.
@@ -122,27 +122,6 @@ A system is not a product. A product is one possible implementation of one possi
 
 A system is not a technology. A technology is knowledge applied to develop systems. The system is the entity that results from, or is modified by, the application of that knowledge. Confusing these two categories leads to reasoning of the form "we need a new system" when what is actually needed is new knowledge about how to modify the existing system — a distinction that matters because the solution path is different in each case.
 
-#### Discussion
-
-##### Drawbacks
-The generality of this definition means it applies to almost anything that can be described as having parts that interact. Some contributors may find this so broad as to be unhelpful: if everything is a system, does the term carry any useful discriminative power? The answer is that the term's usefulness comes not from narrowing the set of things it applies to, but from providing a common analytical lens — relationships, boundaries, emergence, purpose — through which very different entities can be compared, reasoned about, and designed. A definition that excluded, say, social systems would force Memar to treat software architecture and organizational architecture as fundamentally different activities, when in practice they share deep structural similarities that the general definition makes visible.
-
-##### Rationale and alternatives
-- **Restrict "system" to computational or software entities (rejected).** This would be consistent with much industry usage but would sever the conceptual connection between software architecture and other forms of system design (organizational, infrastructure, process) that Memar explicitly recognizes as architecturally relevant. It would also contradict the Terminology document's principle that concepts should outlive technologies.
-
-- **Restrict "system" to entities with clearly defined boundaries (rejected).** Many real-world systems (ecosystems, markets, organizational cultures) have fuzzy, contested, or observer-dependent boundaries. Excluding them would impoverish Memar's conceptual vocabulary for describing the environments in which software systems operate.
-
-- **Adopt a purely mathematical definition from dynamical systems theory (rejected).** While mathematically precise, this would exclude many systems that are architecturally relevant but do not have easily formalizable state spaces — organizational systems, governance systems, and social mechanisms being primary examples.
-
-##### Prior art
-The definition is consistent with general systems theory as articulated by von Bertalanffy ("General System Theory," 1968), Boulding ("The World as a Total System," 1985), and Checkland ("Systems Thinking, Systems Practice," 1981). It is also consistent with the IEEE standard definition of a system as "a collection of components organized to accomplish a specific function or set of functions" (IEEE Std 610.12), though the definition in this document is broader in that it does not restrict the function to be specified in advance and does not require the components to be physical.
-
-##### Unresolved questions
-1. Should Memar eventually adopt a more formal treatment of system boundaries, perhaps drawing on the distinction between open and closed systems from thermodynamics and information theory?
-2. How should this document's definition of "purpose" interact with systems that have conflicting or internally contested purposes — for example, a political system in which different actors have genuinely incompatible goals?
-3. Should System Openness (open/closed/isolated) be formalized as a labeled property on the "influences" edge type in the conceptual graph, so that documents can state explicitly which kind of relationship they mean rather than leaving it implicit?
-4. Responsibility is newly added here, defined as Purpose relative to a containing System. `modularity.md`, `process.md`, and `modeling.md` all used the word informally before this definition existed; each should be checked against this section rather than continuing to carry its own implicit sense of the word, and this section should be revised if that check surfaces a usage this definition does not actually cover.
-
 ### Structure
 **Structure** is the set of capabilities and limitations (constraints) a System exposes and enforces.
 
@@ -151,7 +130,7 @@ Capabilities are what the System *can* do — the operations, transitions, and i
 #### Structure Is Not the Arrangement of Parts
 Structure is not the arrangement of a system's parts — its component hierarchy, module layout, or dependency graph. That is a separate concern: how a system is composed or assembled. Much of the confusion around the word "structure" in general usage traces back to the construction industry, where "structure" and "building" are used almost interchangeably to mean the physical arrangement of a construction — walls, beams, floors. That usage describes composition, not capability and constraint, and Memar does not inherit it.
 
-Memar does not yet have a dedicated, formalized term for "the arrangement of a system's parts" as a first-class concept (candidate names, and whether it warrants a concept of its own, are left open — see Unresolved Questions). What matters for this document is only the negative claim: whatever that concept turns out to be called, it is not Structure. A system's component layout may be *one input* that determines its Structure — how parts are arranged can affect what the system can and cannot do — but the layout itself is not the Structure. Confusing the two is the same class of error the Terminology document identifies under concept-vs-representation confusion: treating a description of parts as though it were a description of capability and constraint.
+Memar does not yet have a dedicated, formalized term for "the arrangement of a system's parts" as a first-class concept (candidate names, and whether it warrants a concept of its own, are left open — see [Structure's open questions](./system.handoff.md#structure)). What matters for this document is only the negative claim: whatever that concept turns out to be called, it is not Structure. A system's component layout may be *one input* that determines its Structure — how parts are arranged can affect what the system can and cannot do — but the layout itself is not the Structure. Confusing the two is the same class of error the Terminology document identifies under concept-vs-representation confusion: treating a description of parts as though it were a description of capability and constraint.
 
 #### The Inseparability of Capability and Constraint
 Capabilities and constraints are not independent properties that happen to coexist in a structure. They are two aspects of the same thing — inseparable, like two sides of a coin. Every capability implies limitations. Every limitation enables capabilities.
@@ -162,12 +141,6 @@ This inseparability has a practical consequence for how structures are reasoned 
 
 #### Structure, Behavior, and Implementation
 Structure cannot be defined independently of behavior: describing what a System does inherently requires knowing what it is permitted to do and what it is restricted from doing. A definition of Structure that omits behavior collapses into a description of static shape — fields, storage layout — which Memar treats as a symptom of premature implementation-oriented thinking, not as Structure itself.
-
-#### Discussion
-
-##### Unresolved questions
-1. Does "the arrangement of a system's parts" warrant a dedicated, formally defined concept of its own within Memar, and if so, what should it be called? Until this is resolved, Structure's definition can only state what it excludes, not what the excluded concept positively is.
-2. How does Structure relate to the layout-related vocabulary already in use elsewhere in Memar (for example, package and module layout in memar-go), and should this document's Structure be renamed if it turns out to conflict with established usage rather than merely with general-industry usage?
 
 ### Process
 A **process** is what a system does. The full definition — including why "sequence" is deliberately not part of it, the process-before-mechanism design principle, and the reference-level treatment of intent, participants, failure, concurrency, retry, and related topics — now lives in its own document: see [Process](./process.md). This section keeps only what is specific to Process's relationship with System.
@@ -184,15 +157,6 @@ A **process** can be understood independently of a single fixed system boundary,
 Structure and Process describe a System from two different vantage points, and the distinction between them is easiest to state precisely as follows: **Structure defines the space of admissible operations** a System exposes and enforces — what is permitted, forbidden, or conditionally available; **Process** describes how activities, interactions, and changes may progress within the space of possibilities and constraints provided by Structure. A particular process instance may enact one possible path through that space, but Process itself is not limited to a single sequence or path
 
 A Structure can exist without any particular Process ever occurring — a System may expose a capability that is never invoked. A Process, conversely, cannot occur outside the space its System's Structure admits: a Process that attempts an operation the Structure forbids is not a different kind of Process, it is a failure, a violation, or evidence that the Structure was mis-specified. This is a one-directional dependency: Structure bounds what Process can do; Process does not bound what Structure permits, though repeated observation of Process may reveal that a Structure's stated bounds do not match its enforced bounds, which is itself useful information for refining the Structure.
-
-#### Discussion
-
-##### Rationale and alternatives
-- **Define Process as a standalone document (formerly rejected; reversed 2026-08-15).** This document previously rejected a standalone Process document with the following argument: "Process cannot be defined without reference to System. A standalone Process document would either duplicate System's definition or silently depend on it, creating the same circular dependency problem this document exists to prevent." That argument correctly rules out a *symmetric* duplication, but the scope of Process outgrew what this section could hold without either truncating the analysis or making this document disproportionately large relative to its other topics. Process is now defined in [process.md](./process.md), which resolves the circularity by making the dependency asymmetric instead: this document keeps System's own definition and the System-specific half of the Process↔System relationship; `process.md` keeps Process's own definition and the Process-specific half of that same relationship. Neither document re-derives the other's core definition. Whether this asymmetry fully eliminates the circularity, or only relocates it, is not yet settled — see `process.md`'s own Unresolved Questions.
-- **Define Process as a sub-concept under Protocol (rejected).** Protocol governs processes, but Process is not a sub-concept of Protocol. Processes exist whether or not they are governed by protocols; many processes in natural, social, and organizational systems operate without any formal protocol governing them. Process is a foundational concept that Protocol depends on, not the reverse.
-
-##### Unresolved questions
-Migrated to [process.md](./process.md)'s own Unresolved Questions — see its *Process Composition* and *State and Transition* topics for the process-composition and Process–State questions formerly listed here.
 
 ### Architecture
 **Architecture** is the collection of processes involved in the design and development of a system.
@@ -220,35 +184,18 @@ Consider classical architecture as a System: it permits certain choices (grand c
 
 The same bidirectionality holds in software. An architecture that mandates a specific consistency model shapes every subsequent design decision — but the experience of implementing that consistency model may reveal that it is too expensive for the system's actual workload, which feeds back into architectural revision. Architecture shapes the System; the System, through its behavior under real conditions, reshapes Architecture. This is not a defect of the definition — it is how real development works, and the definition is designed to accommodate it rather than to pretend it does not happen.
 
+#### The Instruction Set Architecture Example
+**Instruction Set Architecture (ISA)** provides a concrete and instructive example of Architecture-as-System. An ISA is not an implementation (it is not a particular chip design), not a tool (it is not a compiler or an assembler), and not a mere description (a document describing an ISA is not the ISA itself — the ISA is the body of decisions that the document records). An ISA is the collection of processes by which the boundary between hardware and software is designed: which operations are defined, how memory is addressed, what the calling conventions are, how exceptions propagate. An ISA has purpose (enabling software-hardware coordination), constraints (what instructions are and are not available), dependencies (on the physics of transistor behavior, on manufacturing capabilities), and evolution (x86, ARM, RISC-V each represent a distinct evolutionary path shaped by different architectural trade-offs). An ISA that is defined without reference to the electronic substrate that will implement it is difficult to evaluate — understanding *why* an ISA made certain choices requires understanding the constraints of the substrate, even though the ISA itself is not that substrate. This is precisely the relationship this document describes: Architecture is Architecture *of* a System, *for* a purpose, *under* constraints — and an ISA exhibits all of these properties in a form that can be examined directly.
+
 #### A Working Test: Does This Deserve to Be Called Architecture?
-The ISA example above (see Prior Art) is used deliberately as a calibration point, not merely as an illustration. Memar's position is that something earns the name Architecture only if it exhibits, at some meaningful scale, the properties System itself requires: purpose, boundary, emergence, and interdependence — the same bar the Meta-Principle applies when asking whether a concept may be modeled as a System (see Relationships Between Concepts > Meta-Principle). An ISA clears this bar: it has purpose, produces emergent trade-offs no single decision fully explains, and cannot be understood in isolation from what it depends on and constrains. A one-paragraph note justifying a single naming choice does not clear this bar, no matter how confidently it is labeled "architecture."
+The ISA example above (see [The Instruction Set Architecture Example](#the-instruction-set-architecture-example)) is used deliberately as a calibration point, not merely as an illustration. Memar's position is that something earns the name Architecture only if it exhibits, at some meaningful scale, the properties System itself requires: purpose, boundary, emergence, and interdependence — the same bar the Meta-Principle applies when asking whether a concept may be modeled as a System (see Relationships Between Concepts > Meta-Principle). An ISA clears this bar: it has purpose, produces emergent trade-offs no single decision fully explains, and cannot be understood in isolation from what it depends on and constrains. A one-paragraph note justifying a single naming choice does not clear this bar, no matter how confidently it is labeled "architecture."
 
 This has a consequence that Memar states explicitly rather than leaving implicit: much of what is commonly called "Software Architecture," "Service Architecture," or "Microservice Architecture" in industry usage may not qualify as Architecture in this document's sense. Some of it does — a genuinely evolving, multi-contributor body of decisions with real emergent consequences clears the bar regardless of what domain it is applied to. But some of it is better described, in Memar's vocabulary, as Design, Structure, Pattern, or a Sub-Framework (see the Framework document for the Framework/Sub-Framework distinction) that has borrowed the word "architecture" for its perceived weight rather than earned it. This is not a claim that such artifacts are worthless — a well-chosen pattern or a well-scoped sub-framework is valuable on its own terms — only that calling them Architecture, in Memar's sense, overstates what they are.
 
-This is a direct, intentional departure from a large body of common software engineering usage, not an incidental side effect of a stricter definition, and Memar states it as such rather than letting a reader discover the implication on their own. It is also, at the time of this writing, a position that has been argued for but not yet stress-tested against a wide range of real cases (see Unresolved Questions below) — it should be read as Memar's current working criterion, not as a settled classification that every future document must defer to without question.
+This is a direct, intentional departure from a large body of common software engineering usage, not an incidental side effect of a stricter definition, and Memar states it as such rather than letting a reader discover the implication on their own. It is also, at the time of this writing, a position that has been argued for but not yet stress-tested against a wide range of real cases (see [Architecture's open questions](./system.handoff.md#architecture)) — it should be read as Memar's current working criterion, not as a settled classification that every future document must defer to without question.
 
-#### Discussion
-
-##### Drawbacks
+#### Architectural Weight as a Spectrum
 The breadth of this definition means that nearly any decision about a system could be classified as architectural, which risks the term becoming vacuous. Memar mitigates this by not treating "architectural" as a binary label but as a spectrum: a decision's architectural significance is proportional to its impact on the system's behavior, evolvability, or properties. Low-impact decisions — such as the choice of a local variable name — are architectural in the trivial sense that they are part of system development, but they carry negligible architectural weight. High-impact decisions — such as the choice of consistency model, communication pattern, or module boundary — carry substantial architectural weight and deserve proportionally more deliberation, documentation, and review.
-
-##### Rationale and alternatives
-- **Restrict architecture to "high-level design" (rejected).** This is the most common industry definition, but it creates a false distinction between "architectural" decisions and "implementation" decisions that does not hold under scrutiny. Many decisions made during implementation have architectural consequences, and excluding them from the architectural domain means those consequences go unexamined.
-
-- **Define architecture as "the structure of a system" (rejected).** This confuses a system's structure with the process and decisions that produced it. A system's structure is a snapshot; architecture is the reasoning, constraints, and trade-offs that the snapshot embodies.
-
-- **Define architecture as "the decisions that are expensive to change" (rejected).** While pragmatically useful as a heuristic, this is a consequence-based definition that can only be applied retrospectively. A decision is not known to be expensive to change until after it has been made and the attempt to change it has been evaluated. Architecture, as a discipline, needs a definition that can be applied prospectively — before the consequences of a decision are known.
-
-##### Prior art
-ISO/IEC 42010:2022 defines architecture as "the fundamental concepts or properties of a system in its environment embodied in its elements, relationships, and in the principles of its design and evolution." This document's definition is consistent with that standard but emphasizes the process dimension more explicitly: architecture is not only what the system is, but how it came to be that way and how it will continue to change.
-
-**Instruction Set Architecture (ISA)** provides a concrete and instructive example of Architecture-as-System. An ISA is not an implementation (it is not a particular chip design), not a tool (it is not a compiler or an assembler), and not a mere description (a document describing an ISA is not the ISA itself — the ISA is the body of decisions that the document records). An ISA is the collection of processes by which the boundary between hardware and software is designed: which operations are defined, how memory is addressed, what the calling conventions are, how exceptions propagate. An ISA has purpose (enabling software-hardware coordination), constraints (what instructions are and are not available), dependencies (on the physics of transistor behavior, on manufacturing capabilities), and evolution (x86, ARM, RISC-V each represent a distinct evolutionary path shaped by different architectural trade-offs). An ISA that is defined without reference to the electronic substrate that will implement it is difficult to evaluate — understanding *why* an ISA made certain choices requires understanding the constraints of the substrate, even though the ISA itself is not that substrate. This is precisely the relationship this document describes: Architecture is Architecture *of* a System, *for* a purpose, *under* constraints — and an ISA exhibits all of these properties in a form that can be examined directly.
-
-##### Unresolved questions
-1. Should Memar develop a more formal framework for assessing the architectural weight of a decision, or is the proportional-impact heuristic sufficient?
-2. How should architectural decisions made by different contributors at different times be reconciled when they conflict?
-3. The ISA-level legitimacy test (see A Working Test, above) has been argued for but checked against only a handful of examples. Does it hold up against a wider range of cases — for instance, a small but genuinely long-lived and multi-contributor open-source library's design decisions, which may be smaller in scope than an ISA but still exhibit real emergence and interdependence? Where exactly is the line, and should it be a hard boundary or a graded one, consistent with the Drawbacks discussion above treating "architectural weight" as a spectrum rather than a binary?
-
 
 ### Technology
 **Technology** is the knowledge used to create, modify, operate, or evolve systems in pursuit of specific goals.
@@ -288,26 +235,6 @@ Problem → What kind of system would address it → What knowledge is needed �
 
 The second chain is the Concept-First sequence that the Terminology document advocates. The first chain produces architectures that are shaped by the capabilities and limitations of whatever artifacts the reasoner happens to be familiar with, rather than by the actual structure of the problem.
 
-#### Discussion
-
-##### Drawbacks
-The breadth of this definition means that "technology" becomes nearly synonymous with "applied knowledge," which may seem to drain the word of specific meaning. Memar accepts this trade-off deliberately. The alternative — restricting "technology" to physical or computational artifacts — creates a conceptual blind spot: it makes it impossible to reason precisely about the technological character of governance, discourse, lifestyle, and other non-artifact systems, even though these systems are developed, maintained, and evolved through the same kind of applied knowledge that produces physical artifacts. The cost of missing this connection is higher than the cost of using a broad definition.
-
-##### Rationale and alternatives
-- **Restrict technology to physical artifacts and software (rejected).** This is the most common usage but excludes methods, processes, organizational practices, and social mechanisms that are clearly developed through applied knowledge and directed at specific goals — the defining features of technology.
-
-- **Define technology as "tools and their application" (rejected).** This conflates the tool (artifact) with the knowledge that produced it, perpetuating the Tool-First Thinking pattern the Terminology document identifies as a primary source of architectural error.
-
-- **Define technology as "the application of science" (rejected).** While historically suggestive, this implies that technology requires prior scientific understanding, which is not always the case. Many technologies predate the scientific understanding of why they work. Craft knowledge, trial-and-error engineering, and empirical refinement can produce effective technologies without a fully developed scientific theory.
-
-##### Prior art
-The definition is consistent with the philosophy of technology as articulated by Ellul, Mumford, Heidegger ("The Question Concerning Technology," 1954), and the UNESCO definition of technology as "the know-how and creative process that may assist people to exploit tools, resources and systems to solve problems and to enhance their control over the natural and made environment in an endeavor to improve the human condition." It is also consistent with the Terminology document's definition of Technology Terms.
-
-##### Unresolved questions
-1. Should Memar develop a more granular taxonomy of technology types (physical, conceptual, organizational, cognitive) with specific guidance for each?
-2. How should the relationship between technology and power be addressed, if at all, within a software architecture framework?
-
-
 ### Knowledge and Science
 **Knowledge** is a justified, structured understanding of a domain, acquired through observation, reasoning, experimentation, or critical discourse, that enables reliable prediction, explanation, or action within that domain. The detailed treatment of the concept — its relationship to Data, Information, and Document, and the principles any system must follow to preserve it — is developed in [Knowledge](./knowledge.md).
 
@@ -321,25 +248,6 @@ Science produces knowledge. Knowledge, when applied toward specific goals, becom
 Memar does not claim that science is always correct. It claims that science is currently the strongest known methodology for constructing reliable knowledge — a pragmatic claim, not an ideological one, as the Terminology document states. Scientific knowledge evolves. Models are replaced. Theories are revised. What distinguishes science from other knowledge-production methods is not that it is immune to error, but that it has built-in mechanisms for detecting and correcting error: reproducibility, peer review, falsifiability, and cumulative revision.
 
 For Memar, this has a concrete implication: when a concept has a well-established scientific treatment, that treatment should be the starting point for reasoning, not a technology's interpretation of it. A graph should be understood through graph theory before it is understood through a graph database. A constraint should be understood through constraint satisfaction theory before it is understood through a specific solver. Heat transfer should be understood through thermodynamics before it is understood through a product called an "air conditioner."
-
-#### Discussion
-
-##### Drawbacks
-
-Basing architectural reasoning on scientific foundations increases the learning burden on contributors. Not every contributor needs to become a domain scientist, but every contributor needs enough scientific literacy to distinguish a concept from its implementation and to evaluate whether a technology's claims about a concept are grounded in the underlying science or are marketing-level simplifications. This is a non-trivial investment, and Memar acknowledges it as a real cost.
-
-##### Rationale and alternatives
-- **Base architectural reasoning on practical experience alone (rejected).** Practical experience is valuable but is subject to cognitive biases, survivorship bias, and the difficulty of distinguishing correlation from causation in complex systems. Science provides mechanisms for correcting these biases that practical experience alone does not.
-
-- **Treat all knowledge sources as equally valid (rejected).** This would eliminate the ability to evaluate the quality of evidence behind a claim. The Terminology document's distinction between Scientific, Technology, and Business terminology exists precisely because different knowledge sources have different validation mechanisms and different levels of reliability.
-
-##### Prior art
-The relationship between science, knowledge, and technology is explored extensively in the philosophy of science (Popper, "The Logic of Scientific Discovery," 1959; Kuhn, "The Structure of Scientific Revolutions," 1962; Lakatos, "The Methodology of Scientific Research Programmes," 1978) and the philosophy of technology (as cited above in the Technology section).
-
-##### Unresolved questions
-1. How should Memar handle concepts that have scientific treatments in multiple disciplines, where the treatments conflict?
-2. At what level of scientific rigor should Memar's own terminology be held, given that it is a software framework and not an academic publication?
-
 
 ### Model
 Every model is a model *of* a system — or of an aspect of reality relevant to a system. The relationship between model and system is therefore one of representation: a model provides a simplified, purpose-driven view of a system's structure, behavior, or properties that enables reasoning, communication, and transformation at a level of detail appropriate to the decision being made.
@@ -368,23 +276,6 @@ Every System that observes another System is itself a System, with its own capab
 
 One practical consequence follows directly: what any System knows of another System is never the observed System directly, but the observing System's best available reconstruction of it, shaped by the observer's own Structure. This is consistent with, and reinforces, the fallibilist position already established in the Knowledge and Science section — that scientific knowledge does not claim certainty, only mechanisms for detecting and correcting error. Those mechanisms are necessary precisely because no observing System has unmediated access to another System; every account of a System is itself the output of some other System's abstraction process, structural and purposive together, and is therefore always provisional and open to revision as the observing System's own capabilities change.
 
-#### Discussion
-
-##### Drawbacks
-Teaching abstraction as a first-class concern adds conceptual overhead to the learning process. Contributors must learn not only how to use abstractions but how to evaluate their boundaries, their leakage patterns, and their suitability for specific purposes. This is a real cost, particularly for newcomers who are accustomed to treating abstractions as opaque, leak-proof boundaries provided by a framework or language runtime.
-
-##### Rationale and alternatives
-- **Treat abstraction as an implementation detail (rejected).** This is the default in many software frameworks, where abstractions are provided by the framework and treated as opaque by the user. This works until the abstraction leaks, at which point the user is unable to reason about the failure because they were never expected to understand what the abstraction hides. Memar considers this unacceptable for a framework whose stated goal is to improve reasoning quality.
-
-##### Prior art
-The theory of abstraction in computer science is developed in detail in the literature on abstract data types, information hiding (Parnas, "On the Criteria to Be Used in Decomposing Systems into Modules," 1972), and abstraction barriers. The philosophical treatment of abstraction as a cognitive process is developed in the cognitive science literature (e.g., Hofstadter, "Gödel, Escher, Bach," 1979). The distinction between structural and purposive abstraction is consistent with Maturana and Varela's concept of structural coupling ("Autopoiesis and Cognition," 1980; "The Tree of Knowledge," 1987), in which an observing system's own structure determines which perturbations from another system it is even capable of registering, independent of any purpose the observer might later apply to what it registers.
-
-##### Unresolved questions
-1. Should Memar provide explicit mechanisms for documenting abstraction leakage, or should this be left to informal documentation?
-2. How should the choice of abstraction level be guided in Memar's modeling process?
-3. Should the distinction between structural and purposive abstraction be reflected as two separate, formally named concepts in a future revision, or is it sufficient as an explanatory distinction within a single Abstraction concept?
-
-
 ### Protocol
 Protocols exist *within* systems. A protocol governs one or more processes within a system, and the system provides the boundary that gives the protocol its scope. This relationship is foundational rather than incidental: a system without protocols governing its internal processes is not a system in the systems-theory sense — it is merely a collection of independent elements with no defined interactions. Protocol, Process, and System co-arise; you cannot meaningfully discuss one without the others.
 
@@ -404,7 +295,7 @@ A framework's core identity, per this document and the Framework document, is th
 
 **Framework Considered as a System.** Independently of the aspect relationship above, a specific framework may, in a given instance, also be examined as a System in its own right. Khayyam, considered as an evolving body of documents, contributors, and conventions, can be studied this way — it has its own Architecture, its own contributors, its own emergent design outcomes — quite apart from any System built using it. But this is a fact about Khayyam specifically (and about any sufficiently mature, evolving, multi-contributor framework), not a claim built into what the word "Framework" means. A framework does not need to be a System, or to be studied as one, for the Framework-as-Aspect relationship above to hold: even a small, single-author, never-revised framework still constrains the Structure of systems built within it, whether or not it independently qualifies as a System by the criteria in the Meta-Principle (see Relationships Between Concepts > Meta-Principle, below).
 
-**Framework as Aspect.** When a System S is built within a framework F, F's description functions as an aspect of S — specifically, the part of S's Structure that S inherited from F rather than chose for itself. This is what "Framework and Architecture are co-equal aspects of a System" means: S's Structure is partly shaped by decisions made within S (Architecture) and partly shaped by constraints inherited from F (Framework-as-aspect). Whether this relationship is best described as F becoming "an aspect of" S, or as F constraining S's Structure from outside without F entering S in any sense, is an open question the Framework document leaves for future revision (see the Framework document, Unresolved Questions) rather than one this document settles.
+**Framework as Aspect.** When a System S is built within a framework F, F's description functions as an aspect of S — specifically, the part of S's Structure that S inherited from F rather than chose for itself. This is what "Framework and Architecture are co-equal aspects of a System" means: S's Structure is partly shaped by decisions made within S (Architecture) and partly shaped by constraints inherited from F (Framework-as-aspect). Whether this relationship is best described as F becoming "an aspect of" S, or as F constraining S's Structure from outside without F entering S in any sense, is an open question the Framework document leaves for future revision (see the Framework document's [open questions](./framework.handoff.md#open-questions)) rather than one this document settles.
 This mirrors the pattern already established for Architecture: the concept's definition does not require System-hood, but a sufficiently rich, ongoing instance of the concept may be modeled as a System when that lens is useful for reasoning about it. The relationship is also not one-to-one: a single framework can be an aspect of many different Systems simultaneously (Khayyam is an aspect of the Structure of every system built with it) while, from its own vantage point and only when the System lens is applied to it, remaining one System.
 
 
@@ -420,21 +311,7 @@ A common source of confusion in software development is the belief that architec
 
 This distinction matters because it determines what can be changed without architectural review and what cannot. Changing a variable name, refactoring a function, or optimizing a query are implementation changes: they affect how the system is expressed but not what the system does or how it is organized. Changing a module boundary, a communication pattern, or a data model is an architectural change: it affects the system's structure, behavior, or properties in ways that ripple across the implementation. Being able to distinguish between these two kinds of change — and being able to explain why a particular change belongs in one category rather than the other — is a core architectural competency.
 
-#### Discussion
-
-##### Drawbacks
 Emphasizing the distinction between architecture and implementation can create a perceived separation between "architects" and "developers" that may not be healthy for a project. Memar does not endorse this separation. Every contributor who makes decisions that affect the system's structure or behavior is, to that extent, engaging in architectural activity, regardless of their title. The distinction between architecture and implementation is a distinction between kinds of decisions, not between kinds of people.
-
-##### Rationale and alternatives
-- **Treat implementation as part of architecture (rejected).** While every implementation decision has some architectural dimension, treating all implementation as architecture would eliminate the useful distinction between decisions that affect the system's properties and decisions that do not. The distinction is not about importance — an implementation bug can be as consequential as an architectural flaw — but about the kind of reasoning required to evaluate and make each type of decision.
-
-##### Prior art
-The distinction between architecture and implementation is discussed in the software architecture literature (Bass, Clements, and Kazman, "Software Architecture in Practice," various editions) and is implicit in the ISO/IEC 42010 standard.
-
-##### Unresolved questions
-1. Should Memar define explicit criteria for when an implementation change requires architectural review?
-2. How should architectural decisions be documented in a way that remains accessible to contributors who primarily work at the implementation level?
-
 
 ### Relationships Between Concepts
 The concepts defined in this document are not independent, but their relationships cannot be captured by a linear ordering, a tree, or a taxonomy. They form a conceptual graph — a network of nodes (concepts) connected by different types of edges (relationships). This section makes those edge types explicit, because in a graph, ambiguity lives not in the nodes but in the edges: if the types of relationships between concepts are not clearly distinguished, readers will fill in the gaps with assumptions — often hierarchical ones — that the document does not intend.
@@ -542,7 +419,7 @@ The diagram above uses distinct relationship labels rather than a single "depend
 
 **enables**: Technology enables System Development. Knowledge enables Technology. This is a capability relationship — one concept makes another possible without fully determining it.
 
-These edge types are first-class concepts in the conceptual graph — the relationships between nodes carry as much meaning as the nodes themselves. Their precise semantics, compositional rules, and constraints on valid usage remain an evolving area. As the node definitions stabilize, the primary source of remaining ambiguity in the graph is migrating from the nodes to the edges, and a dedicated formal treatment (see Unresolved Questions, item 4, and Future Possibilities) may become necessary before the graph can serve as a reliable reasoning tool across multiple documents. For now, the definitions above serve as a working taxonomy — sufficient to prevent the most common misreadings, but not yet a complete formalism.
+These edge types are first-class concepts in the conceptual graph — the relationships between nodes carry as much meaning as the nodes themselves. Their precise semantics, compositional rules, and constraints on valid usage remain an evolving area. As the node definitions stabilize, the primary source of remaining ambiguity in the graph is migrating from the nodes to the edges, and a dedicated formal treatment (see [item 4 of the Relationships topic's open questions](./system.handoff.md#relationships-between-concepts) and the handoff's [Anticipated Work](./system.handoff.md#anticipated-work)) may become necessary before the graph can serve as a reliable reasoning tool across multiple documents. For now, the definitions above serve as a working taxonomy — sufficient to prevent the most common misreadings, but not yet a complete formalism.
 
 #### Epistemic Influence vs. Structural Containment
 A critical distinction pervades the graph above, and failing to recognize it is the primary reason readers mistakenly place Architecture "above" other concepts:
@@ -576,35 +453,6 @@ This centrality reflects two distinct things that should not be conflated:
 
 - **Graph centrality** (as in graph theory): the node with the most edges. System has this property in the conceptual graph, but that is a *consequence* of conceptual centrality, not a cause. Some concepts (Knowledge, Science, Abstraction) are meaningful independently of any particular System — knowledge exists before any system is built using it, and scientific methodology operates on domains far removed from system design. The graph should not be read as implying that nothing exists outside System, only that within this document's scope — which is architectural reasoning — System is the entity with respect to which the other concepts are defined.
 
-#### Discussion
-
-##### Drawbacks
-A graph-based model is inherently more complex to communicate than a linear chain. Readers who expect a simple ordering may find the multiple edge types and cross-cutting relationships harder to internalize. Memar accepts this cost because the simplicity of a linear chain is deceptive: it creates false confidence in a hierarchy that does not exist, and that false confidence propagates into architectural reasoning as an unconscious assumption that some concepts are "above" others.
-
-##### Rationale and alternatives
-- **Present the concepts as a linear dependency chain (rejected).** A linear chain implies that concepts can be ordered from "most fundamental" to "most derived," and that each concept depends on exactly one predecessor. This is false: Architecture depends on System, but also on Knowledge, Technology, and Process. Modeling depends on Architecture but also on Abstraction and System. The real relationships form a graph, and presenting them as a chain forces a tree-shaped mental model that the rest of the document contradicts.
-
-- **Present the concepts as a flat list with cross-references (rejected).** A flat list does not convey the relationship structure at all. It leaves readers to infer the relationships themselves, which produces exactly the kind of hierarchical misunderstanding this section exists to prevent.
-
-- **Present the concepts as a taxonomy (rejected).** A taxonomy implies mutually exclusive categories, but these concepts overlap. Modeling and Architecture overlap; Protocol and Framework overlap; Technology and Implementation overlap. A graph accommodates overlap naturally through multiple edge types.
-
-##### Unresolved questions
-1. Should this conceptual graph be formalized as part of Memar's development process, or should it remain as guidance?
-2. Are there important relationship types missing from this model that should be added in future revisions?
-3. Should Memar develop a formal notation for these edge types that can be used in other documents?
-4. Should the edge types themselves (contains, described by, shaped by, constrained by, expressed by, represented by, governed by, realized by, influences, produces, enables) receive a dedicated formal treatment — defining their precise semantics, compositional rules, and constraints on valid usage? As the nodes stabilize, ambiguity is increasingly migrating to the edges; a formal edge-type ontology may become necessary before the conceptual graph can serve as a reliable reasoning tool across multiple documents.
-
-
-## Results
-Insufficient time has passed since this document was adopted to report real, observed outcomes from its use. This section will be filled in once there is such experience to draw on.
-
-## Discussion
-
-### Why a Single Document for These Concepts?
-During the initial discussion that motivated this document, the possibility of separating System and Architecture into independent documents was considered and rejected. The reason is practical: every statement about architecture is implicitly a statement about the system being architected, and every statement about how to understand a system is implicitly an architectural statement. Attempting to define System without reference to Architecture produces a definition that is inert — it describes what a system is but not why the distinction matters or how the concept is used. Attempting to define Architecture without a prior definition of System requires Architecture to define its own object, which either duplicates System's definition or silently assumes it. A single document that defines both concepts and their relationship is therefore more coherent than two documents that each pretend the other does not exist.
-
-The same argument applies, with diminishing force, to the other concepts included in this document. Technology could plausibly be separated into its own document, but its definition is so closely tied to System (technology develops systems) and to Knowledge/Science (technology is applied knowledge) that separating it would create circular dependencies. Model and Abstraction are included because they are the primary mechanisms through which architectural reasoning operates, and because the Modeling document depends on both being defined. Protocol is included only as a brief pointer to its own document, to complete the conceptual map. [Framework](./framework.md) is included here with a brief definition and a link to its dedicated document, which provides the full treatment of the Framework-Architecture co-equal relationship and Memar's specific application of the concept. Implementation is included because distinguishing it from Architecture is a frequent source of confusion and because it plays a central role in the conceptual relationship structure.
-
 ### Terminology Layer Placement
 Consistent with the Terminology document's classification:
 
@@ -614,32 +462,6 @@ Consistent with the Terminology document's classification:
 - **Protocol** is treated as a Scientific Term by the Protocol document's own argument; this document defers to that classification.
 - **Knowledge** and **Science** are treated as Scientific Terms by the nature of the concepts themselves.
 
-### Naming Conventions
-This document proposes no naming conventions for code-level identifiers. The concepts defined here are foundational and their names (System, Architecture, Technology, Model, Abstraction, Protocol, Framework, Implementation) are treated as common English words whose meaning within Memar is defined by this document, not by any naming convention.
-
-### Drawbacks
-This document attempts to define a large number of concepts in a single document. The risk is that some definitions receive less scrutiny than they would in a dedicated document. This risk is accepted because the alternative — defining each concept in isolation — creates the circular dependency problem described above, and because the primary purpose of this document is to establish a shared vocabulary, not to provide the final, exhaustive treatment of each concept. Concepts that require deeper treatment already have or are expected to receive their own dedicated documents: [Protocol document](./protocol.md), [Framework document](./framework.md), and [Modeling document](./modeling.md).
-
-### Rationale and alternatives
-- **Define only System and Architecture, leaving the other concepts to their own documents (rejected).** The concepts in this document form a coherent conceptual graph. Defining System and Architecture without defining the concepts they relate to and that relate to them would produce a document that is internally incomplete and that forces each subsequent document to independently establish its own conceptual context.
-
-- **Use existing standard definitions without adaptation (rejected).** While this document's definitions are grounded in existing traditions, no single existing standard provides a complete, mutually consistent set of definitions for all the concepts Memar needs. Synthesizing from multiple sources, with explicit attention to internal consistency and to the Terminology document's principles, produces a more useful result than uncritically adopting any single source.
-
-### Prior art
-The approach of establishing a shared vocabulary before proceeding to domain-specific specifications is common in standards-setting bodies. The ISO/IEC 42010 standard for architecture description provides definitions of "system" and "architecture" that are broadly consistent with this document, though this document's definitions are broader in several respects (particularly the inclusion of non-computational systems and the lifecycle-spanning definition of architecture). The IEEE standard glossary of software engineering terminology provides definitions that are narrower, being restricted to software. This document draws on both traditions but is not bound by either.
-
-### Unresolved questions
-1. Should this document eventually be split into multiple, more focused documents as the concepts mature, or should it remain as a single foundational document?
-2. How should this document's definitions interact with definitions established by other standards bodies (ISO, IEEE, W3C) when those definitions conflict?
-3. Should the conceptual graph's edge types be formalized into a notation that other documents can reference?
-
-### Future possibilities
-- Add more words like "pattern", "paradigm", "thinking tools", ...
-- A dedicated document for **Constraint** as a first-class concept, since both Framework and Architecture depend on it and the distinction between domain-level and system-level constraints may warrant deeper formal treatment.
-- A dedicated concept (name to be determined) for "the arrangement of a system's parts" — the composition/assembly concept that Structure explicitly excludes but that Memar has not yet formally named (see Structure > Unresolved Questions).
-- A terminology registry that maps each term defined across all Memar documents to its definition, its terminology layer, and its relationships to other terms.
-- A visual diagram of the conceptual graph suitable for inclusion in onboarding material.
-- An **Edge Type Ontology document** that formally defines the semantics, compositional rules, and valid-usage constraints for each edge type (contains, described by, shaped by, constrained by, expressed by, represented by, governed by, realized by, influences, produces, enables). As the node definitions stabilize, the primary source of remaining ambiguity in the conceptual graph is the edges — and edge ambiguity is harder to detect than node ambiguity because readers tend to fill in edge semantics from context.
-- A dedicated document for **Abstraction Validation** — the question of what qualifies a concept to be considered valid at a given level of abstraction. Memar is, in practice, performing this validation implicitly (e.g., distinguishing Architecture from Design, Framework from Library, Structure from Arrangement), but the criteria are not yet formally modeled. Making them explicit would transform Memar from a project that defines terms into a project that also provides a framework for evaluating whether any given term is being used at the appropriate level of specificity for the concept it names.
-- A dedicated document exploring the concept of **Contributor-as-System** — modeling contributors (human or AI) as Systems whose own Structure (capabilities, limitations, available time, cognitive biases) creates bidirectional influence with the Systems they develop (see System Openness). This is explicitly deferred because it introduces a new conceptual layer that deserves careful, focused treatment rather than compression into an existing document.
+## Results
+Insufficient time has passed since this document was adopted to report real, observed outcomes from its use. This section will be filled in once there is such experience to draw on.
 
