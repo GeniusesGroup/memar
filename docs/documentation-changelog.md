@@ -48,13 +48,13 @@ All entries live under a single `## Changelog` heading - never one `##` per entr
 - Tasks:
   - {Task reference (URI or identifier)}: {Closed | Partial | Reference} - {why}
 - Contributors:
-  - [{Name}](../CONTRIBUTORS.md#{name}) - {short role tags only, e.g. claimed, decided}
+  - [{Name}](../CONTRIBUTORS.md#{name}) ({ModelName} via {ToolName}) - {short role tags only, e.g. claimed, decided}
 
 #### What changed
-{the change itself, as structured statements - each substantive claim carrying its attribution inline in parentheses, per [Contributors](#contributors-entry-field)}
+{the change itself, as structured statements - claims carrying inline attribution only where authorship varies across the entry, per [Contributors](#contributors-entry-field)}
 ```
 
-A small wording fix from one person needs almost none of this - `What changed` and a one-line `Contributors` bullet are enough.
+A small wording fix from one person needs almost none of this - `What changed` and a one-line `Contributors` bullet are enough. `What changed` states the outcome of the change, not the process that produced it: positions raised, counters, and what tipped the balance belong in [Deliberation](#deliberation) when the entry records a deliberation. Attribution in `What changed` is required only where authorship varies across the entry's claims; where the `Contributors` tags already answer "who stands behind every claim" uniformly, per-claim tags are omitted - one fact, one home. Decision and position claims (who proposed, who required, what tipped the balance) live only in `Deliberation`; `What changed` states outcomes without re-narrating who decided them.
 
 ### Optional Sections
 A non-exhaustive catalog of content sections a changelog entry's author may include - nowhere is any of these mandatory, and this list may grow. An entry includes whichever sections the change genuinely has content for; unused items are simply omitted, not left as empty headers. New sections may be added as real entries demonstrate the need, following the same pattern. Each carries its attribution inline in parentheses, per [Contributors](#contributors-entry-field).
@@ -64,6 +64,9 @@ Alternatives examined and not applied in this change, each with its reason - the
 
 #### Related work
 Comparative surveys of how other projects organize the same problem and how this project differed - the retired body title `Prior art` migrates here.
+
+#### Deliberation
+The chronology of positions in a multi-participant session - who claimed what, what was countered, and what tipped the balance - as claim-shaped sentences each carrying its own inline attribution, ordered by the exchange rather than by person. This is the named home for the decision-shaping context the Abstract promises; it is distinct from [Considered and not done](#considered-and-not-done) (which records rejected alternatives as outcomes) and [Decision](#decision) (which records the final ruling). Included only when the entry records a deliberation; single-contributor changes never need it. It records only the exchange the entry's own text evidences; where none was recorded, its absence is honest, not a gap.
 
 #### Decision
 The final ruling on what was and was not applied, when the entry records a deliberation rather than a single change.
@@ -95,7 +98,8 @@ The same preservation rule as elsewhere applies: while a contributor is still ac
 ### Contributors (entry field)
 Each changelog entry's `Contributors` bullet names who was involved and what role they played, as a link to that person's `CONTRIBUTORS.md` heading. The bullet stays **short**: presence plus role tag only (`claimed`, `argued`, `reviewed`, `rewrote`, `tested`, `approved`, `requested` being common examples - the vocabulary is intentionally open, not a closed list; a more formal, fixed role taxonomy exists in academic publishing, the CRediT - Contributor Roles Taxonomy - system, as a model for how far formalization could go if ever needed). The bullet does not carry narrative.
 
-The narrative lives in the entry's structured sections, where each claim carries its attribution inline: a `What changed`, `Considered and not done`, `Related work`, or `Decision` sentence states the claim and names who made it in parentheses at the point of the claim - `(Omid Hekayati)`, `(Super Z)` - so statements and their authors never separate into different parts of the entry, and no reader has to reconstruct who argued what from a detached role list. Splitting them is how attribution errors happen: a role bullet grows into prose, prose drifts away from the claims it describes, and the reader can no longer tell which contributor holds which statement.
+The narrative lives in the entry's structured sections, where claims carry their attribution inline at the point of the claim - `(Omid Hekayati)`, `(Super Z)` - so statements and their authors never separate into different parts of the entry, and no reader has to reconstruct who argued what from a detached role list. The inline tag is required wherever authorship varies across a section's claims; where one contributor stands behind all of them, the `Contributors` tags already say it and the per-claim repetition is dropped - duplicated attribution is itself a drift risk, the two copies being free to diverge. Splitting them is how attribution errors happen: a role bullet grows into prose, prose drifts away from the claims it describes, and the reader can no longer tell which contributor holds which statement. Where an earlier migration relocated prose verbatim into an entry, rewriting it into this claim-shaped form is expected, not forbidden: the constraint that governs such relocations is against losing information, not against changing its shape.
+
 ### Type
 Free text, not a controlled vocabulary — what counts as a meaningful category of change varies too much across artifact kinds to close this off. Two existing vocabularies are offered as a starting point, not a requirement: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)'s `Added`/`Changed`/`Deprecated`/`Removed`/`Fixed`/`Security`, and [Conventional Commits](https://www.conventionalcommits.org/)' `feat`/`fix`/`docs`/`style`/`refactor`/`perf`/`test`/`build`/`ci`/`chore`/`revert`. Both are written for software releases and commits specifically; a documentation change may need a word neither offers (e.g. "clarified," "merged," "split"). Use whichever word is most accurate, from either vocabulary or outside it.
 

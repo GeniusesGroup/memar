@@ -10,12 +10,19 @@ This document records why and how `documentation-changelog.md` changed over time
   - [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) — Reference: examined as existing vocabulary for change types (`Added`/`Changed`/`Deprecated`/`Removed`/`Fixed`/`Security`), offered in the base specification's Type section as a starting point, not a requirement.
   - [Conventional Commits](https://www.conventionalcommits.org/) — Reference: examined as a second existing vocabulary for change types (`feat`/`fix`/`docs`/`style`/`refactor`/`perf`/`test`/`build`/`ci`/`chore`/`revert`), offered alongside Keep a Changelog in the Type section.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — directed: identified the need to move provenance out of base documents into companion history files; directed adopting the Facet pattern for the Changelog rather than leaving it as ad-hoc convention.
-  - [Claude](../CONTRIBUTORS.md#claude) — rewrote: drafted the initial Changelog facet specification, including the entry structure, CONTRIBUTORS.md mechanism, and propagation tracking.
-  - [Super Z](../CONTRIBUTORS.md#super-z) — rewrote: refined the specification across multiple rounds; added the `Evidence` relation to the Cited vocabulary; clarified the exception that Changelog-facet files do not themselves get companion changelogs.
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — directed
+  - [Claude](../CONTRIBUTORS.md#claude) — rewrote
+  - [Super Z](../CONTRIBUTORS.md#super-z) — rewrote
 
 #### What changed
-Created as the governing specification for the Changelog facet, defining: the `<base>.changelog.md` companion-file convention; the entry structure (short descriptive title, metadata bullets for `Time`/`Type`/`Cited`/`Propagates to`/`Tasks`/`Contributors`, followed by `Summary` and optional `Rationale and alternatives` as prose headings); the project-wide `CONTRIBUTORS.md` registry; and the absorption of base documents' former `Citations`, `Contributors`, and `Applied to` front-matter fields (and `## Change Rationale` body section) into this facet.
+- Created as the governing specification for the Changelog facet, defining: the `<base>.changelog.md` companion-file convention; the entry structure (short descriptive title, metadata bullets for `Time`/`Type`/`Cited`/`Propagates to`/`Tasks`/`Contributors`, followed by `Summary` and optional `Rationale and alternatives` as prose headings); the project-wide `CONTRIBUTORS.md` registry; and propagation tracking (Claude — drafted; Super Z — refined across multiple rounds).
+- Base documents' former `Citations`, `Contributors`, and `Applied to` front-matter fields (and `## Change Rationale` body section) were absorbed into this facet (Omid Hekayati — directed; Claude — drafted).
+- The `Evidence` relation was added to the Cited vocabulary (Super Z).
+- The exception that Changelog-facet files do not themselves get companion changelogs was clarified (Super Z).
+
+#### Deliberation
+- The need to move provenance out of base documents into companion history files was identified (Omid Hekayati).
+- Adopting the Facet pattern for the Changelog, rather than leaving it as ad-hoc convention, was directed (Omid Hekayati).
 
 #### Considered and not done
 - **Giving a Changelog-facet file its own companion changelog (rejected)**: would recurse indefinitely with no natural stopping point. Version control already records what changed in a changelog file itself, which is sufficient — the whole reason a Changelog facet exists for other artifacts is that version control alone doesn't capture *why*, but a changelog entry's own reason for existing is already "recording why," so the same gap doesn't recur one level up.
@@ -28,11 +35,17 @@ Created as the governing specification for the Changelog facet, defining: the `<
 - Cited:
   - [Documentation](./documentation.md) — Depends_for: the source-selection criteria and full Relation vocabulary (including `Evidence`) are now defined there as cross-cutting concerns, applying wherever citations appear in any facet.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — argued: the `### Cited` section in this specification was carrying two different kinds of content — Changelog-specific format rules, and the general citation vocabulary and source-selection criteria that any facet needing citations would also need. The latter does not belong here; it belongs in the meta-layer so a future facet inherits it without redefinition.
-  - [Super Z](../CONTRIBUTORS.md#super-z) — rewrote: trimmed `### Cited` from two paragraphs to one, removing the inline Relation vocabulary enumeration and the per-relation guidance for `Evidence`; replaced them with a reference to `documentation.md → Citations`. Kept only what is specific to a Changelog entry's `Cited` field: the "replaces former Citations field" framing, the "cite here is sufficient provenance" rule, and the inline-hyperlink exception for sources the base artifact's own body genuinely needs at the point of reading.
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — argued
+  - [Super Z](../CONTRIBUTORS.md#super-z) — rewrote
 
 #### What changed
-The `### Cited` section previously defined the full Relation vocabulary inline and gave per-relation guidance (notably for the new `Evidence` relation). That content was duplicated from where it now lives authoritatively — `documentation.md → Citations`, added as a cross-cutting concern in the same round of changes. The section was trimmed to keep only the Changelog-specific rules: that a `Cited` entry replaces the base artifact's former `Citations` field; that citing a source here is sufficient provenance (no need to repeat it in the base artifact's body); and the one exception — if the base artifact's own body genuinely needs a source at the point a reader is reading it, link it inline as a normal hyperlink, never as an unlinked "see X" pointer.
+- The `### Cited` section previously defined the full Relation vocabulary inline and gave per-relation guidance (notably for the new `Evidence` relation); that content was duplicated from where it now lives authoritatively — `documentation.md → Citations`, added as a cross-cutting concern in the same round of changes.
+- The section was trimmed from two paragraphs to one, removing the inline Relation vocabulary enumeration and the per-relation guidance for `Evidence` and replacing them with a reference to `documentation.md → Citations`.
+- Kept only what is specific to a Changelog entry's `Cited` field: the "replaces former Citations field" framing; the "cite here is sufficient provenance" rule (no need to repeat it in the base artifact's body); and the inline-hyperlink exception for sources the base artifact's own body genuinely needs at the point of reading — link it inline as a normal hyperlink, never as an unlinked "see X" pointer.
+
+#### Deliberation
+- The `### Cited` section in this specification was carrying two different kinds of content — Changelog-specific format rules, and the general citation vocabulary and source-selection criteria that any facet needing citations would also need (Omid Hekayati — argued).
+- The latter does not belong here; it belongs in the meta-layer so a future facet inherits it without redefinition (Omid Hekayati — argued).
 
 #### Considered and not done
 - **Keep the full Relation vocabulary inline in this specification (rejected)**: would have required keeping two definitions in sync — the one here and the one in `documentation.md → Citations` — every time the vocabulary changed. With `Evidence` just added and the `Reference`/`Depends_on` boundary still an open Unresolved question, the vocabulary is not yet stable enough to risk duplication drift.
@@ -44,11 +57,17 @@ The `### Cited` section previously defined the full Relation vocabulary inline a
 - Cited:
   - [Documentation — Explanation Changelog](./documentation-explanation.changelog.md) — Evidence: the worked case for the change — the retired `documentation-explanation.practice.changelog.md` recorded its practice file's changes as alignments forced by base-document changes, demonstrating that base and companion changes are one narrative rather than two.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — decided: one changelog per topic, not one per file — fewer documents, and the changes to a base document and its practice companion are too closely related to justify two ledgers; noted approvingly that the `thinking` topic had already been handled this way in practice.
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — decided
   - [Super Z](../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — rewrote.
 
 #### What changed
-Added the Changelog-scope rule to the specification: a changelog is paired to a base artifact, and the base artifact's `<base>.practice.md` companion records its changes in that same changelog — a practice file never receives a changelog of its own. This supersedes the earlier four-file structure (`<base>.md`, `<base>.practice.md`, `<base>.changelog.md`, `<base>.practice.changelog.md`) — a decision the owner had themselves specified during the Chapar documentation migration (recorded in `chapar.practice.changelog.md`) and now supersedes by their own direction. Existing `.practice.changelog.md` files merge into their base artifact's changelog as a propagation of this change.
+- The Changelog-scope rule was added to the specification: a changelog is paired to a base artifact, and the base artifact's `<base>.practice.md` companion records its changes in that same changelog — a practice file never receives a changelog of its own (Omid Hekayati — decided one changelog per topic, not one per file: fewer documents, and the changes to a base document and its practice companion are too closely related to justify two ledgers; Super Z — rewrote).
+- This supersedes the earlier four-file structure (`<base>.md`, `<base>.practice.md`, `<base>.changelog.md`, `<base>.practice.changelog.md`) (Omid Hekayati — decided).
+- Existing `.practice.changelog.md` files merge into their base artifact's changelog as a propagation of this change (Omid Hekayati — decided).
+
+#### Deliberation
+- The earlier four-file structure had been a decision the owner themselves specified during the Chapar documentation migration (recorded in `chapar.practice.changelog.md`), and the owner now supersedes it by their own direction (Omid Hekayati).
+- The `thinking` topic had already been handled with one changelog per topic in practice, noted approvingly (Omid Hekayati).
 
 #### Propagates to
 - `documentation-explanation.practice.changelog.md`: Done — merged into `documentation-explanation.changelog.md` and deleted.
@@ -69,11 +88,18 @@ Added the Changelog-scope rule to the specification: a changelog is paired to a 
 - Propagates to:
   - CONTRIBUTORS.md: Done — every Models list reordered oldest-first (Super Z and Qwen were descending) and official per-model links added where the vendor page was verified by direct fetch.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — requested: asked whether the Models lists should run ascending or descending, and to audit the file's model ordering and add official website links per model where possible.
-  - [OpenCode](../CONTRIBUTORS.md#opencode) (Qwen3.8-Flash) — argued, rewrote: recommended ascending (append-only) to match the facet's own entry convention; verified each linked URL by fetching it.
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — requested
+  - [Qwen](../CONTRIBUTORS.md#qwen) (Qwen3.8-Flash) — argued, rewrote
 
 #### What changed
-The CONTRIBUTORS.md section now states that an AI contributor's Models list is chronological, oldest first, with new models appended at the end — the same append-only convention as changelog entries, so adding a model never forces a re-sort — and that a model may carry a link to its official documentation page where one exists and has been verified. Applied in CONTRIBUTORS.md: GLM and Qwen lists reversed to ascending; OpenAI, Anthropic, Google DeepMind, Z.ai, and Qwen-collection model pages linked. GLM-5.0 and Qwen3.8-Flash carry no dedicated link because no verifiable per-model page was found, and the previous GLM-5.3-Flash link was removed: it pointed at oxalpha.io, an unrelated third-party model page, not Z.ai.
+- The CONTRIBUTORS.md section now states that an AI contributor's Models list is chronological, oldest first, with new models appended at the end — the same append-only convention as changelog entries, so adding a model never forces a re-sort.
+- It now also states that a model may carry a link to its official documentation page where one exists and has been verified.
+- Applied in CONTRIBUTORS.md: GLM and Qwen lists reversed to ascending; OpenAI, Anthropic, Google DeepMind, Z.ai, and Qwen-collection model pages linked, each linked URL verified by fetching.
+- GLM-5.0 and Qwen3.8-Flash carry no dedicated link because no verifiable per-model page was found, and the previous GLM-5.3-Flash link was removed: it pointed at oxalpha.io, an unrelated third-party model page, not Z.ai.
+
+#### Deliberation
+- Whether the Models lists should run ascending or descending was asked, with a request to audit the file's model ordering and add official website links per model where possible (Omid Hekayati — requested).
+- Ascending (append-only) was recommended, to match the facet's own entry convention (Qwen — argued).
 
 ---
 
@@ -96,14 +122,44 @@ The CONTRIBUTORS.md section now states that an AI contributor's Models list is c
 - A final audit found several `Rationale and alternatives` and `Unresolved questions` blocks that the earlier passes missed; all are recorded below and in the paired handoff (Super Z - audit and migration).
 
 #### Considered and not done
-- A separate changelog per practice file (rejected): the coupling between a base specification and its procedure runs one way - so per-file changelogs either duplicate the same change as two entries or split one narrative across two ledgers referencing each other, and they multiply files for no reader benefit. (Omid Hekayati)
-- Extend the sharing rule to Handoff companions now (rejected for now): a handoff is mutable working state rather than a procedure, and whether its churn is worth changelog history at all is an open question in the Handoff facet; deciding it here would preempt that question without new evidence. (Omid Hekayati)
-- A single `Applied to` field on the base artifact, as before (rejected): could only express "where the current design already landed," not "what changes are still owed elsewhere," and couldn't distinguish which specific change a propagation obligation came from. (Omid Hekayati)
-- `Pending`/`Done` only, no `Rejected` (considered, not chosen): a propagation that's considered and deliberately declined would have no way to stop appearing as outstanding work in a future search. (Omid Hekayati)
-- Timestamp as the entry's own `###` heading (an earlier draft; not chosen): put a machine-format string where a human-scannable title should be. Time is a fact about the entry, not its identity, so it moved into a `Time` bullet. (Omid Hekayati)
-- A `####` heading for every field, including the short metadata ones (an earlier draft; not chosen): for fields that are genuinely metadata rather than content, a heading is more structural weight than the field needs. (Omid Hekayati)
-- Giving a Changelog-facet file its own companion changelog (rejected): would recurse indefinitely with no natural stopping point; version control already records what changed in a changelog file itself. (Omid Hekayati)
-- Treating Changelog as an ad-hoc per-document convention rather than a named Facet (rejected): once the same pattern was being applied across multiple artifacts, naming it as a Facet was the smaller conceptual cost than leaving it as implicit convention. (Omid Hekayati)
+- A separate changelog per practice file (rejected): the coupling between a base specification and its procedure runs one way - so per-file changelogs either duplicate the same change as two entries or split one narrative across two ledgers referencing each other, and they multiply files for no reader benefit.
+- Extend the sharing rule to Handoff companions now (rejected for now): a handoff is mutable working state rather than a procedure, and whether its churn is worth changelog history at all is an open question in the Handoff facet; deciding it here would preempt that question without new evidence.
+- A single `Applied to` field on the base artifact, as before (rejected): could only express "where the current design already landed," not "what changes are still owed elsewhere," and couldn't distinguish which specific change a propagation obligation came from.
+- `Pending`/`Done` only, no `Rejected` (considered, not chosen): a propagation that's considered and deliberately declined would have no way to stop appearing as outstanding work in a future search.
+- Timestamp as the entry's own `###` heading (an earlier draft; not chosen): put a machine-format string where a human-scannable title should be. Time is a fact about the entry, not its identity, so it moved into a `Time` bullet.
+- A `####` heading for every field, including the short metadata ones (an earlier draft; not chosen): for fields that are genuinely metadata rather than content, a heading is more structural weight than the field needs.
+- Giving a Changelog-facet file its own companion changelog (rejected): would recurse indefinitely with no natural stopping point; version control already records what changed in a changelog file itself.
+- Treating Changelog as an ad-hoc per-document convention rather than a named Facet (rejected): once the same pattern was being applied across multiple artifacts, naming it as a Facet was the smaller conceptual cost than leaving it as implicit convention.
 
 #### Decision
-Open questions (dot-boundary criterion, entry-title uniqueness, historical-entry timestamps) moved to the paired handoff. (Omid Hekayati - approved)
+Open questions (dot-boundary criterion, entry-title uniqueness, historical-entry timestamps) moved to the paired handoff.
+
+### Added the Deliberation section; narrowed What changed to outcomes; replaced the verbatim-relocation constraint
+- Time: 2026-09-07T20:56:16Z
+- Type: Changed
+- Propagates to:
+  - documentation-changelog.handoff.md: Done - the "Where multi-participant deliberation narrative lives in an entry" question removed; its resolution graduated into the specification and is recorded in this entry.
+  - Pre-finalization changelog entries carrying verbatim-migrated narrative: Done - campaign executed 2026-09-07, one sub-agent per file under the procedure recorded in documentation-changelog.handoff.md → Anticipated Work; 45 files remediated plus the two pilot files given a second pass; `content.changelog.md` excluded as unrecoverable from its own text and left for owner-assisted repair.
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - claimed, decided
+  - [Qwen](../CONTRIBUTORS.md#qwen) (Qwen3.8-Flash) - argued, wrote
+
+#### What changed
+- The Optional Sections catalog gained `Deliberation`: the chronology of positions in a multi-participant session, as claim-shaped sentences each carrying its own inline attribution, ordered by the exchange rather than by person; distinct from `Considered and not done` (rejected alternatives as outcomes) and `Decision` (the final ruling); never needed for single-contributor changes, and never reconstructed from evidence the entry does not carry.
+- `What changed` was narrowed by an explicit writing rule: it states the outcome of the change, not the process that produced it.
+- The verbatim-relocation constraint was replaced by an information-loss prohibition: migrated narrative may be rewritten claim-shaped, since what the constraint guards is content, not shape; the rewrite of the affected pre-finalization entries is tracked as the Pending propagation above.
+- Per-claim attribution in `What changed` was narrowed to the varying-authorship case: uniform attribution stays in the `Contributors` tags rather than repeating on every bullet, and decision and position claims live only in `Deliberation` - one fact, one home.
+- The remediation campaign was executed the same day across the changelog set: 46 `Deliberation` sections now exist; the only surviving violation is `content.changelog.md`, whose chronology cannot be restructured from its own text (owner-assisted repair tracked in the paired handoff).
+
+#### Deliberation
+- The oddity was flagged from a separate session: deliberation chronology and migrated verbatim narrative squeezed into `What changed` read as transplant rather than record - one `(Name)` tag per narrative paragraph instead of per claim (Omid Hekayati - the failure report).
+- The owner proposed fixed person/topic-centric entry titles ("what was the problem and who raised it", "who raised critiques") (Omid Hekayati - the proposal).
+- Counter-arguments were recorded in the same discussion: fixed titles re-import the per-purpose-template model both facets rejected, tax small single-contributor changes with empty structure, and contradict the open-catalog principle adopted in the 2026-09-06 finalization (Qwen - argued).
+- The root was then diagnosed one level up: the Abstract already promises decision-shaping context a home in the changelog, but the catalog held only outcome-shaped sections - the defect was a missing catalog section, not the `What changed` section itself (Qwen - the diagnosis; Omid Hekayati - accepted).
+- What tipped the balance: the root diagnosis made a named process section both necessary and sufficient, so the catalog extension was chosen over the alternatives recorded below (Qwen - argued; Omid Hekayati - decided).
+- In the same session the owner asked whether `Deliberation` should be mandatory even for single-participant changes, to close every duplication route; the variant was argued against - a forced section for an exchange that never happened gets padded with re-narrated outcomes, the same per-purpose-template failure that killed the fixed-entry-titles proposal above, while the varying-authorship rule already leaves solo entries with zero names in `What changed` - and the owner directed proceeding with the narrower rule (Omid Hekayati - the question, decided; Qwen - argued).
+
+#### Considered and not done
+- Fixed person/topic-centric entry titles ("what was the problem and who raised it", "who raised critiques") (rejected): re-imports the per-purpose-template model both facets rejected, taxes small single-contributor changes with empty structure, and contradicts the open-catalog principle adopted in the 2026-09-06 method finalization. (Omid Hekayati - the proposal; Qwen - the counter-arguments; Omid Hekayati - decided)
+- Absorbing the chronology into `Decision` (rejected): `Decision` must stay short and quotable as the ruling; merging process into ruling destroys its citation value. (Qwen - argued; Omid Hekayati - accepted)
+- Keeping `What changed` as the home with a writing rule only, no new section (rejected): claim-shaped sentences under a title meaning "the change itself" still mislabel deliberation as outcome - the form fix alone leaves the identity crisis that produced the oddity. (Qwen - argued; Omid Hekayati - accepted)

@@ -62,13 +62,35 @@ Created as the Practice-facet companion to `documentation-explanation.md`, follo
   - [Architecture Decisions: Demystifying Architecture](https://github.com/architecture-decision-record/architecture-decision-record/blob/main/locales/en/templates/decision-record-template-by-jeff-tyree-and-art-akerman/index.md) — Reference: a widely-cited independent architecture-decision-record template, examined as evidence that independently-designed templates for a single document purpose (here, ADR) still converge on the same handful of underlying concerns (claim, rationale, alternatives, consequences, related decisions) as this specification's own Optional Sections catalog, just under different names.
   - [Diátaxis](https://diataxis.fr/) — Reference: supports treating procedural how-to content as categorically distinct from the reference/explanation content this specification governs, motivating the separation of Skill files from documents following this specification.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — directed: directed every revision; resolved merge-numbering and collision-resolution rules; resolved the Contribution-to-Task decision; caught multiple front-matter inconsistencies; directed the Abstract/Introduction/Explanation restructuring; proposed removing the fixed Guide-level/Reference-level headings in favor of an author-named, Abstract-linked Guide topic; directed the generalization from RFC-specific to document-generic scope; proposed the Optional Sections catalog as the mechanism for that, over a formal Profile abstraction.
-  - [Claude](../CONTRIBUTORS.md#claude) — rewrote: drafted and revised the specification across multiple rounds; proposed the topic-first Reference-level structure and Discussion section; migrated Contributors to Task-based tracking; implemented the Abstract/Introduction/Explanation restructuring; implemented the author-named Guide-topic convention; fixed regressions and naming collisions in the supplied file's own restructuring; renamed and generalized the specification to document-generic wording; expanded Optional Sections with Definition/Assumptions and Constraints/Implications/Examples, screened against duplicate-concept overlap; moved procedural how-to content into a companion Skill file, citing Diátaxis as prior art for the separation. Extracted this changelog file from `documentation-explanation.md`'s front-matter `Citations`/`Contributors` and body `## Change Rationale`.
-  - [Super Z](../CONTRIBUTORS.md#super-z) — rewrote: restructured an earlier revision's section layout; applied the pre-Final merging and contributor-preservation rules.
-  - [ChatGPT](../CONTRIBUTORS.md#chatgpt) — argued: argued for one shared documentation structure with RFC/PRD/ADR as profiles, not independent templates; suggested Model/Risks/Problem as candidate catalog items; drew the cross-discipline scientific-paper analogy and the token-equality argument used in this specification's own Optional Sections framing.
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — directed
+  - [Claude](../CONTRIBUTORS.md#claude) — rewrote
+  - [Super Z](../CONTRIBUTORS.md#super-z) — rewrote
+  - [ChatGPT](../CONTRIBUTORS.md#chatgpt) — argued
 
 #### What changed
 Per the decision to move all provenance (citations, contributor attribution, cross-document propagation tracking) out of Explanation-facet base documents and into their paired Changelog-facet file, this document was created. `documentation-explanation.md`'s own front-matter `Citations` and `Contributors` fields, and its `## Change Rationale` section, are superseded by this file and should be removed from the base document (tracked separately — see Propagates to).
+
+- This changelog file was extracted from `documentation-explanation.md`'s front-matter `Citations`/`Contributors` and body `## Change Rationale` (Claude).
+
+Claims migrated from the pre-finalization Contributors roster, concerning the historical revisions recorded in the "Historical entries (pre-Changelog-facet)" entry above:
+
+- The specification was drafted and revised across multiple rounds; regressions and naming collisions in the supplied file's own restructuring were fixed; and the specification was renamed and generalized to document-generic wording (Claude).
+- Contributors were migrated to Task-based tracking; the Abstract/Introduction/Explanation restructuring and the author-named Guide-topic convention were implemented; Optional Sections were expanded with Definition/Assumptions and Constraints/Implications/Examples, screened against duplicate-concept overlap; and procedural how-to content was moved into a companion Skill file, citing Diátaxis as prior art for the separation (Claude).
+- An earlier revision's section layout was restructured, and the pre-Final merging and contributor-preservation rules were applied (Super Z).
+- Multiple front-matter inconsistencies were caught (Omid Hekayati).
+
+#### Deliberation
+- Every revision was directed (Omid Hekayati).
+- The merge-numbering and collision-resolution rules were resolved (Omid Hekayati).
+- The topic-first Reference-level structure and the Discussion section were proposed (Claude).
+- The Contribution-to-Task decision was resolved (Omid Hekayati).
+- The Abstract/Introduction/Explanation restructuring was directed (Omid Hekayati).
+- Removing the fixed Guide-level/Reference-level headings in favor of an author-named, Abstract-linked Guide topic was proposed (Omid Hekayati).
+- One shared documentation structure with RFC/PRD/ADR as profiles, not independent templates, was argued for (ChatGPT).
+- The generalization from RFC-specific to document-generic scope was directed (Omid Hekayati).
+- The Optional Sections catalog was proposed as the mechanism for that generalization, over a formal Profile abstraction (Omid Hekayati).
+- Model/Risks/Problem were suggested as candidate catalog items (ChatGPT).
+- The cross-discipline scientific-paper analogy and the token-equality argument used in this specification's own Optional Sections framing were drawn (ChatGPT).
 
 #### Propagates to
 - `documentation-explanation.md`: Done — removed front-matter `Citations`, `Contributors`, `Applied to`; removed `## Change Rationale` section; removed the now-redundant `### Citations`, `### Contributors`, `### Applied to` topic definitions from its body (these concepts are now defined here and in `documentation-changelog.md` instead); removed the obsolete `Guide`/optional-topic mechanism now that Practice-facet files handle procedural content generally.
@@ -80,11 +102,17 @@ Per the decision to move all provenance (citations, contributor attribution, cro
 - Cited:
   - [Documentation](./documentation.md) — Depends_for: the URI format (absolute vs. relative reference, the `file:` scheme prohibition) is now defined there as a cross-cutting convention, applying wherever a URI appears in any document of any facet.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — argued: the `#### URI` subsection under `### Conventions` was defining a rule (the `file:` scheme prohibition) that applies to any document of any facet, not only Explanation-facet documents. Keeping it here made this specification the de facto canonical home for a cross-cutting concern, which is the wrong place.
-  - [Super Z](../CONTRIBUTORS.md#super-z) — rewrote: trimmed `#### URI` from a full subsection (RFC 3986 definition, two forms, the `file:` prohibition, the note about provenance fields having moved to the Changelog) to a one-line reference to `documentation.md → URI`. Also updated the Internal Cross-References example from `[URI](#uri)` — which would have become a broken anchor once the `#### URI` subsection was removed — to `[Conventions](#conventions)`, an example that remains valid.
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — argued
+  - [Super Z](../CONTRIBUTORS.md#super-z) — rewrote
 
 #### What changed
-The `#### URI` subsection under `### Conventions` was the canonical definition of URI format (absolute vs. relative reference) and the `file:` scheme prohibition. That rule applies wherever a URI appears — internal hyperlinks, citation entries, contributor identity, examples — in any document of any facet, not only in Explanation-facet documents. The definition was moved to `documentation.md → URI` as a cross-cutting convention, and this specification's `#### URI` subsection was trimmed to a one-line reference pointing there. The Internal Cross-References example was also updated, since the previous example (`[URI](#uri)`) would have become a broken anchor after the URI subsection moved.
+- The `#### URI` subsection under `### Conventions` was the canonical definition of URI format (absolute vs. relative reference) and the `file:` scheme prohibition. That rule applies wherever a URI appears — internal hyperlinks, citation entries, contributor identity, examples — in any document of any facet, not only in Explanation-facet documents.
+- The definition was moved to `documentation.md → URI` as a cross-cutting convention, and this specification's `#### URI` subsection — a full subsection carrying the RFC 3986 definition, the two forms, the `file:` prohibition, and the note about provenance fields having moved to the Changelog — was trimmed to a one-line reference pointing there.
+- The Internal Cross-References example was updated from `[URI](#uri)` — which would have become a broken anchor once the `#### URI` subsection was removed — to `[Conventions](#conventions)`, an example that remains valid.
+
+#### Deliberation
+- The `#### URI` subsection under `### Conventions` was defining a rule (the `file:` scheme prohibition) that applies to any document of any facet, not only Explanation-facet documents (Omid Hekayati — argued).
+- Keeping it here made this specification the de facto canonical home for a cross-cutting concern, which is the wrong place (Omid Hekayati — argued).
 
 #### Considered and not done
 - **Keep the URI definition here, since this specification is where it has always lived (rejected)**: would have left a cross-cutting concern canonically defined in a facet-specific specification. The Changelog spec would either have had to redefine the same rule (drift risk) or reference this specification's URI subsection (making the Explanation spec an implicit meta-layer for the Changelog spec, which inverts the intended hierarchy).
@@ -98,11 +126,14 @@ The `#### URI` subsection under `### Conventions` was the canonical definition o
   - [Documentation — Changelog](./documentation-changelog.md) — Depends_on: step 6 of the practice's procedure creates a paired Changelog-facet file, whose structure is defined by that specification.
   - [Documentation](./documentation.md) — Reference: added to the practice's Reference files list because the cross-cutting Citations and URI conventions now live there.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — directed: pointed out that the practice file had been missed during the earlier round of changes that moved provenance out of Explanation-facet base documents into the Changelog facet.
-  - [Super Z](../CONTRIBUTORS.md#super-z) — rewrote: removed the obsolete front-matter fields and `## Change Rationale` from the practice's template; removed the obsolete "Guide" topic convention from its procedure; added its step 6 (create the paired `<base>.changelog.md`) and the `documentation-changelog.md` reference.
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — directed
+  - [Super Z](../CONTRIBUTORS.md#super-z) — rewrote
 
 #### What changed
-The practice file had been missed when the Changelog-facet migration was applied to the rest of the documentation set: its procedure was still instructing a contributor to fill in `Applied to`, `Citations`, and `Contributors` in the base document's front matter and to keep a `## Change Rationale` body section, all of which the base specification no longer permits. Brought in line: front-matter instructions cover only `Title`, `Status`, `Start Date`, `ID`; the Template drops the migrated fields and section; the obsolete "Guide" topic convention is removed; step 6 now creates the paired `<base>.changelog.md` file and migrates older documents' former provenance fields into Changelog entries.
+The practice file had been missed when the Changelog-facet migration was applied to the rest of the documentation set: its procedure was still instructing a contributor to fill in `Applied to`, `Citations`, and `Contributors` in the base document's front matter and to keep a `## Change Rationale` body section, all of which the base specification no longer permits. Brought in line: front-matter instructions cover only `Title`, `Status`, `Start Date`, `ID`; the Template drops the migrated fields and section; the obsolete "Guide" topic convention is removed; step 6 now creates the paired `<base>.changelog.md` file and migrates older documents' former provenance fields into Changelog entries; and the `documentation-changelog.md` reference was added.
+
+#### Deliberation
+- The practice file had been missed during the earlier round of changes that moved provenance out of Explanation-facet base documents into the Changelog facet (Omid Hekayati — pointed out).
 
 #### Considered and not done
 - **Keep the "Guide" topic convention in the practice's step 4 (rejected)**: the Guide/optional-topic mechanism was removed in favor of the Practice facet's companion-file convention — instructing the contributor to also create an internal "Guide" topic would re-introduce the obsolete convention the practice file itself replaces.
@@ -155,3 +186,16 @@ The practice file had been missed when the Changelog-facet migration was applied
 
 #### Decision
 All retired wrapper titles are removed from the pattern; documents written under the old pattern migrate progressively on their next natural edit. Open questions (Optional Sections catalog extensions, Future-possibilities disposition, spec-split threshold, ID collision tooling) and anticipated work live in the paired handoff. (Omid Hekayati - approved)
+
+### Removed the specification's own stale references to the retired Discussion section
+- Time: 2026-09-08T08:23:05Z
+- Type: Changed
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - claimed, decided
+  - [Qwen](../CONTRIBUTORS.md#qwen) (Qwen3.8-Flash) - wrote
+
+#### What changed
+- The finalization had left the specification contradicting itself: the Abstract still listed `Discussion` as a fifth body section, and the Optional Sections intro still said "the fixed five" and named `Discussion` as a nesting host - both corrected to the four fixed sections the `Body sections` rule states.
+- The `Conventions` catalog entry pointed at "that topic's `Discussion`" as its sibling anchor; reworded to "that topic's other subsections", since topic-level Discussion wrappers retire together with the document-level one.
+- The scientific-paper analogy's use of "Discussion" describes external paper conventions, not this specification's skeleton, and was kept.
+- Surfaced during the 2026-09-07 commit-readiness review of the second migration wave; the owner directed closing it before that wave is briefed, and the wave itself is now tracked in the paired handoff.

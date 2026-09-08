@@ -14,11 +14,21 @@
   - [thinking.md](./thinking.md): Done — the boundary note that pointed to the retired `documentation-review.practice.md` now points to [Documentation](./documentation.md) as the documentation system's entry point.
   - `documentation-critique.practice.md`: Done — its "Relation to Other Practices" rows referencing the two retired practices updated to the merged practice.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — claimed, decided: directed the consolidation of the handoff-related practice documents into one base document named `documentation-handoff.md` (dropping the `conversation` qualifier — the `documentation-` prefix already scopes it, and "handoff" is the established cross-domain term); required that the artifact be defined agent-generally (a fully human session is covered by the same artifact, not only AI chat sessions); required that the artifact's self-awareness risks — selection asymmetry, analysis-versus-record confusion, invisible premises — be named and structurally controlled rather than left as caveats; proposed the `.handoff.md` companion suffix following the `.changelog.md` precedent.
-  - [Super Z](../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — rewrote: drafted the specification and the paired practice, structured the three risks and their controls, and executed the consolidation.
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — claimed, decided
+  - [Super Z](../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — rewrote
 
 #### What changed
-Created `documentation-handoff.md` (ID 496741) as the governing specification for the Handoff facet: a `<base>.handoff.md` companion capturing the distilled state of a discussion so a later session — AI, human, or organizational — can resume it. The specification defines the concept (state transfer across a session boundary, borrowing the established cross-domain term), its central discipline (analysis, not transcription — three named risks with structural controls: fixed skeleton against selection asymmetry, mandatory confidence vocabulary against analysis-record confusion, required rationale capture against invisible premises), its relationship to the existing facets (no design claims — conclusions graduate into Explanation-facet documents; mutable state, not append-only history), the fixed section skeleton, and the file format. Created the paired practice file with the producing, consuming, and placement procedures. Absorbed and deleted the three practice documents; the surviving references to them are these provenance records.
+- Created `documentation-handoff.md` (ID 496741) as the governing specification for the Handoff facet: a `<base>.handoff.md` companion capturing the distilled state of a discussion so a later session — AI, human, or organizational — can resume it (Omid Hekayati — decided; Super Z — drafted).
+- The specification defines the concept (state transfer across a session boundary, borrowing the established cross-domain term), its central discipline (analysis, not transcription — three named risks with structural controls: fixed skeleton against selection asymmetry, mandatory confidence vocabulary against analysis-record confusion, required rationale capture against invisible premises), its relationship to the existing facets (no design claims — conclusions graduate into Explanation-facet documents; mutable state, not append-only history), the fixed section skeleton, and the file format (Super Z — drafted).
+- Created the paired practice file with the producing, consuming, and placement procedures (Super Z — drafted).
+- Absorbed and deleted the three practice documents; the surviving references to them are these provenance records (Omid Hekayati — directed; Super Z — executed).
+
+#### Deliberation
+- The consolidation was directed into one base document named `documentation-handoff.md`, dropping the `conversation` qualifier — the `documentation-` prefix already scopes it, and "handoff" is the established cross-domain term (Omid Hekayati — decided).
+- The artifact was required to be defined agent-generally — a fully human session is covered by the same artifact, not only AI chat sessions (Omid Hekayati — required).
+- The artifact's self-awareness risks — selection asymmetry, analysis-versus-record confusion, invisible premises — were required to be named and structurally controlled rather than left as caveats (Omid Hekayati — required).
+- The `.handoff.md` companion suffix was proposed following the `.changelog.md` precedent (Omid Hekayati — proposed).
+- The specification and paired practice were drafted, the three risks and their controls structured, and the consolidation executed (Super Z — rewrote).
 
 #### Considered and not done
 - **Keep the three practice files separate (rejected by the owner)**: they were overlapping drafts of the same artifact, each informal, none authoritative, and together they suggested workflows (review checklists, proposal templates) whose home is not handoff at all — consolidation replaces three sources of drift with one specification.
@@ -28,11 +38,15 @@ Created `documentation-handoff.md` (ID 496741) as the governing specification fo
 - Time: 2026-09-01T14:34:32Z
 - Type: Changed
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — decided: a question whose answer is settled must not remain in the base document at all — the base document carries current state, and its changelog carries the history; the question's existence and resolution are recorded here.
-  - [Super Z](../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — rewrote.
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Super Z](../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — rewrote
 
 #### What changed
-The base document's Unresolved questions had carried the facet-registration question struck through as resolved, after the owner directed registration. Per the owner's rule — an answered question leaves the base document entirely; the changelog is where "a question was here, and is now settled" is recorded — the question was removed, the remaining questions renumbered, and the Future possibilities bullet anticipating registration was dropped since registration has occurred. The resolution event itself is recorded in the "Registered the Handoff facet as the fourth facet" entry of [documentation.changelog.md](./documentation.changelog.md); this entry preserves the fact that the question existed in this document and where its answer came from.
+- The base document's Unresolved questions had carried the facet-registration question struck through as resolved, after the owner directed registration; the question was removed, the remaining questions renumbered, and the Future possibilities bullet anticipating registration was dropped since registration has occurred (Omid Hekayati — decided; Super Z — rewrote).
+- The governing rule: a question whose answer is settled must not remain in the base document at all — the base document carries current state, and its changelog carries the history; the changelog is where "a question was here, and is now settled" is recorded, so the question's existence and resolution are recorded here (Omid Hekayati — decided).
+- The resolution event itself is recorded in the "Registered the Handoff facet as the fourth facet" entry of [documentation.changelog.md](./documentation.changelog.md); this entry preserves the fact that the question existed in this document and where its answer came from (Omid Hekayati — the rule; Super Z — recorded).
+
+#### Considered and not done
 - **Fold the handoff content into the Changelog facet as a second file kind (rejected)**: a changelog is append-only history consulted to audit the past; a handoff is mutable state consulted to resume work. Append-only state-capture buries the current state under the discussion's own evolution — the exact cost the artifact exists to avoid. The two facets cross-reference instead.
 
 ### Body restructured; discussion content relocated per the finalized method
@@ -47,9 +61,13 @@ The base document's Unresolved questions had carried the facet-registration ques
 
 #### What changed
 - The handoff facet now explicitly covers the parked-open-question case: the `not the conclusion made permanent` bullet was extended with the survived-question rule and its two exits - graduate through the changelog, or drop through the changelog - keeping base documents' bodies doubt-free while preserving open work (Omid Hekayati - decided; Super Z - written).
-- The skeleton's `Open Questions` section gained a sibling, `Anticipated Work`, receiving extensions and growth paths a discussion anticipates but no one has committed to - and the anticipated work a base document records for its future, per the Explanation facet's Relevance discipline (Omid Hekayati - the routing decision; Super Z - applied).
+- The skeleton's `Open Questions` section gained a sibling, `Anticipated Work`, receiving extensions and growth paths a discussion anticipates but no one has committed to - and the anticipated work a base document records for its future, per the Explanation facet's Relevance discipline (Super Z - applied).
 - The specification's own body reformed under the finalized method: topic-level `#### Drawbacks` and document-level `## Drawbacks` replaced by open-catalog sections; rejected-alternative and open-question content moved out (Super Z).
-- The `Structure` topic now describes the skeleton as an open catalog of state sections, explicitly aligned with the Explanation facet's Optional Sections model; the former word "fixed" is replaced by "open" (Omid Hekayati - decided; Super Z - applied).
+- The `Structure` topic now describes the skeleton as an open catalog of state sections, explicitly aligned with the Explanation facet's Optional Sections model; the former word "fixed" is replaced by "open" (Super Z - applied).
+
+#### Deliberation
+- The owner made the routing decision that open questions and anticipated work leave the base document's body for the paired handoff; Super Z applied it (Omid Hekayati - the routing decision; Super Z - applied).
+- The owner decided the `Structure` shift from "fixed" to "open", aligning the skeleton with the Explanation facet's Optional Sections model; Super Z applied it (Omid Hekayati - decided; Super Z - applied).
 - A final audit found several `Rationale and alternatives`, `Prior art`, and `Unresolved questions` blocks that the earlier passes missed; all are recorded below and in the paired handoff (Super Z - audit and migration).
 
 #### Considered and not done
@@ -67,14 +85,34 @@ The base document's Unresolved questions had carried the facet-registration ques
 - Give each facet an entirely independent naming scheme unconnected to external frameworks (considered, not chosen): the names already state what they mean. (Super Z)
 
 #### Related work
-- Telecommunications handover: transfer of an in-progress session between channels or cells without loss - the source of the term and of the requirement that the transfer preserve the session rather than restart it. (Super Z - migrated)
-- Change-of-shift report in healthcare: structured transfer of patient state between shifts, with its own documented failure literature when done poorly. (Super Z - migrated)
-- Follow-the-sun development: the same transfer across time zones in software work. (Super Z - migrated)
-- Meeting minutes and decision logs: the long-established human practice of distilling a discussion into its outcomes - a handoff is their disciplined descendant, with structure added for the risks minutes historically ignore (confidence, assumptions, invisible premises). (Super Z - migrated)
-- Within AI-assisted development, handoff/context-summary conventions have begun appearing in ecosystem tooling - evidence of the need, though typically free-form and unstructured in exactly the ways the analysis-not-transcription discipline warns against. (Super Z - migrated)
+- Telecommunications handover: transfer of an in-progress session between channels or cells without loss - the source of the term and of the requirement that the transfer preserve the session rather than restart it.
+- Change-of-shift report in healthcare: structured transfer of patient state between shifts, with its own documented failure literature when done poorly.
+- Follow-the-sun development: the same transfer across time zones in software work.
+- Meeting minutes and decision logs: the long-established human practice of distilling a discussion into its outcomes - a handoff is their disciplined descendant, with structure added for the risks minutes historically ignore (confidence, assumptions, invisible premises).
+- Within AI-assisted development, handoff/context-summary conventions have begun appearing in ecosystem tooling - evidence of the need, though typically free-form and unstructured in exactly the ways the analysis-not-transcription discipline warns against.
 
 #### Considered and not done (from the removed Drawbacks section)
-- The facet adds a fourth artifact kind to the documentation system - one more thing a contributor must understand and choose among. It also institutionalizes a writing obligation at session boundaries, where motivation to produce it is lowest; the quality controls make the obligation heavier than the ad-hoc habit it replaces, by design. And the boundary between "handoff" and "early draft of the real document" is a real risk: a discussion that has effectively concluded should graduate into Explanation- and Changelog-facet documents, not persist as a handoff indefinitely - enforcing it requires judgment every time. (Super Z - migrated from the removed section)
+- The facet adds a fourth artifact kind to the documentation system - one more thing a contributor must understand and choose among. It also institutionalizes a writing obligation at session boundaries, where motivation to produce it is lowest; the quality controls make the obligation heavier than the ad-hoc habit it replaces, by design. And the boundary between "handoff" and "early draft of the real document" is a real risk: a discussion that has effectively concluded should graduate into Explanation- and Changelog-facet documents, not persist as a handoff indefinitely - enforcing it requires judgment every time.
 
 #### Decision
-The wrapper titles are gone from this specification's body; open questions and anticipated work live in the paired handoff. (Omid Hekayati - approved)
+The wrapper titles are gone from this specification's body; open questions and anticipated work live in the paired handoff.
+
+### Added the mid-session tangent trigger; qualified the resolved-question move with graduation
+- Time: 2026-09-07T21:05:00Z
+- Type: Changed
+- Propagates to:
+  - `.agents/skills/memar/SKILL.md`: Done - the skill carries only the tangent intake trigger (a Working rules bullet pointing to this practice) and, in its *Separation of knowledge* section, the general rule to discover the governing facet from `documentation.md` instead of inventing ad-hoc note formats; the procedure itself stays here, so no information is duplicated across the layers.
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - claimed, decided
+  - [Qwen](../CONTRIBUTORS.md#qwen) (Qwen3.8-Flash) - argued, wrote
+
+#### What changed
+- The practice gained a `Mid-Session Tangents` section: a tangent (a request opening a development thread whose context the current session will not otherwise need) is now a mid-session handoff trigger, with the procedure - propose a separate session once, the person's choice final; record the tangent's state into the appropriate handoff immediately; state in one line what was recorded and where; load no more context than recording requires. Clarifying questions and small related edits are explicitly excluded from the definition, so the trigger cannot degrade into nagging.
+- The skill carries only the intake trigger and a pointer to this practice, not the procedure.
+- Consuming step 4 was qualified: a resolved question stays in Ambiguities Resolved only until its resolution graduates; a graduated item is removed from the handoff, because the specification carries the answer and the changelog carries the record.
+
+#### Deliberation
+- The tangent rule was motivated by an observed failure: a documentation-change request raised inside an unrelated session polluted that session's context and the work could not be completed there (Omid Hekayati - the failure report).
+- The first draft carried the full tangent procedure in the skill; the owner redirected to a minimal trigger there with the procedure in this practice, so no information is duplicated across the layers (Omid Hekayati - the redirect; Qwen - applied).
+- The first version of this entry kept the resolution's explanation in the handoff's Ambiguities Resolved and left the position chronology inside `What changed`; the owner flagged both as violations of the method the same session had just written - graduated content leaves the handoff, and a new writing rule binds the entry that introduces it (Omid Hekayati - the critique; Qwen - accepted and restructured).
+- The critique exposed the step 4 ambiguity: "resolved questions move to Ambiguities Resolved" read as permanent retention; the owner directed closing it with the graduation qualifier (Omid Hekayati - decided; Qwen - drafted).

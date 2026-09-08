@@ -24,3 +24,8 @@ Active
 - State: the Session consolidation rule says a new entry is added only when the kind of work changes. Whether "kind of work" should be tied to the `Type` field's vocabulary, to a structural boundary in the base artifact, or left as author judgment is not yet tested against a real multi-kind session.
 - Blocks continuation: No
 - Next: observe the first session that produces both a `refactor` and a substantive `Added` change on one artifact.
+
+## Anticipated Work
+
+### content.changelog.md remediation
+The only file the 2026-09-07 campaign could not remediate from its own text: the "Initial revision" entry carries untagged narrative paragraphs across four contributors whose decision chronology is unattributable without guessing. Needs owner-assisted repair (the owner holds the memory the text lacks) or explicit acceptance of the entry as-is.
