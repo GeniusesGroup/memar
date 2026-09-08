@@ -10,11 +10,17 @@
   - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — reviewed, rewrote
 
 #### What changed
-Initial Draft recording the interface-shaped position: time's framework presence is a small ordering/comparison contract plus three separable satellite concerns; mutability ruled out; the definitional question kept genuinely open.
+- Initial Draft created, recording the interface-shaped position: time's framework presence is a small ordering/comparison contract plus three separable satellite concerns; mutability ruled out; the definitional question kept genuinely open (Omid Hekayati).
+- The position was shaped into the four-concern separation with the minimal-commitment contract (ordering and comparison only), so the unresolved definitional question does not block API rules (Super Z).
+- The richer semantics (causality, monotonicity) were distributed to the documents that own them (Super Z).
+- The Draft was kept deliberately small (Super Z).
 
-The topic was opened from the project's conceptual discussions: the definition of time is unsettled and a framework must not hard-code a metaphysics; the ecosystem's bundled "standard time library" mixes four separable concerns (instant, duration, civil conversion, formatting) whose coupling leaks into APIs needing only one; the pointer-mediated mutable time values observed in a mainstream library as a cost-and-clarity failure consistent with the framework's value-semantics positions (Omid Hekayati).
-
-The position was shaped into the four-concern separation with the minimal-commitment contract (ordering and comparison only) so the unresolved definitional question does not block API rules; the richer semantics (causality, monotonicity) were distributed to the documents that own them; the Draft was kept deliberately small per Omid's instruction that the topic open rather than settle (Super Z).
+#### Deliberation
+- The topic was opened from the project's conceptual discussions (Omid Hekayati).
+- The definition of time is unsettled and a framework must not hard-code a metaphysics (Omid Hekayati).
+- The ecosystem's bundled "standard time library" mixes four separable concerns (instant, duration, civil conversion, formatting) whose coupling leaks into APIs needing only one (Omid Hekayati).
+- The pointer-mediated mutable time values observed in a mainstream library were a cost-and-clarity failure consistent with the framework's value-semantics positions (Omid Hekayati).
+- The Draft was to open the topic rather than settle it, and was kept deliberately small accordingly (Omid Hekayati — the instruction; Super Z — applied).
 
 ---
 

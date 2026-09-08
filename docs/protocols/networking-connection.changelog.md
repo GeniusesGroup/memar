@@ -10,11 +10,14 @@
   - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — reviewed, rewrote
 
 #### What changed
-Initial Draft defining the connection concept in Networking's packet model and the framework's core rule: connection state is owned by the component that runs the protocol logic and is exposed to layers above; timeouts and liveness are the owning component's budgets; blocking-read as an interface failure, not a property of networking.
+- Initial Draft defining the connection concept in Networking's packet model and the framework's core rule: connection state is owned by the component that runs the protocol logic and is exposed to layers above; timeouts and liveness are the owning component's budgets; blocking-read as an interface failure, not a property of networking (Omid Hekayati).
+- The positive contract (connection concept, state-ownership-with-exposure rule, half-open resolution rule) was stated as the complement to networking.md's position on the traditional network stack (Super Z).
+- The blocking-read failure was linked to the interface-design level rather than to a specific language (Super Z).
+- Frame-level mechanics were kept out of scope per protocol-document ownership (Super Z).
 
-The positions were brought from public discussions: the blocking-socket-read critique (no first-class "no data yet" outcome; goroutine-spawning and read-deadline answers are workarounds around a mis-shaped interface) and the stateful/stateless contradiction (HTTP called stateless while its specifications define persistent state; Transport state re-created badly at the Application layer). Also contributed the timeout-as-component-budget rule later formalized in process.md's context critique (Omid Hekayati).
-
-The positive contract (connection concept, state-ownership-with-exposure rule, half-open resolution rule) was stated as the complement to networking.md's position on the traditional network stack; the blocking-read failure was linked to the interface-design level rather than to a specific language; frame-level mechanics were kept out of scope per protocol-document ownership (Super Z).
+#### Deliberation
+- The positions were brought from public discussions: the blocking-socket-read critique (no first-class "no data yet" outcome; goroutine-spawning and read-deadline answers are workarounds around a mis-shaped interface) and the stateful/stateless contradiction (HTTP called stateless while its specifications define persistent state; Transport state re-created badly at the Application layer) (Omid Hekayati).
+- The timeout-as-component-budget rule was contributed, later formalized in process.md's context critique (Omid Hekayati).
 
 ---
 

@@ -17,14 +17,17 @@
   - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — rewrote
 
 #### What changed
-This document previously predated the current documentation method: no front matter, no recorded drafting date, scattered across three sibling files with dead links. It was rewritten as a single Explanation-facet specification consolidating all three: the packet model (at least two frames, signature frame at packet end, OSI-ordering and post-layer-3 encryption suggestions, 8 KB bound with the video-call arithmetic), the frame concept with its `FrameType` byte, Go interface, and `NextFrame()` handler requirement, the frame-type registry (with the experimental-range ignore rule and signed extension), the special signature and padding frames, Internet-suite compatibility mapping, the hardware considerations (SFU, wireless access points, congestion), and the two generic switch classes — previously duplicated between files. The new Layer presence topic states the principle extracted from Chapar review in its general form: no layer of the network model is mandatory, every layer has its own identity, and presence on a link is decided per link by capacity and role — illustrated by the direct association, the phone-and-tower, and the multi-access switched segment. Repairs made in passing: the registry's dangling `networking-frame-signature.md` links now point at internal anchors, stray duplicate rows were dropped from the legacy table, and one truncated sentence (the signed-bit extension rule) was completed. The original drafting date being unrecorded, Start Date reflects this rewrite; the lineage is this entry.
+- This document previously predated the current documentation method: no front matter, no recorded drafting date, scattered across three sibling files with dead links.
+- It was rewritten as a single Explanation-facet specification consolidating all three: the packet model (at least two frames, signature frame at packet end, OSI-ordering and post-layer-3 encryption suggestions, 8 KB bound with the video-call arithmetic), the frame concept with its `FrameType` byte, Go interface, and `NextFrame()` handler requirement, the frame-type registry (with the experimental-range ignore rule and signed extension), the special signature and padding frames, Internet-suite compatibility mapping, the hardware considerations (SFU, wireless access points, congestion), and the two generic switch classes — previously duplicated between files.
+- The new Layer presence topic states the principle extracted from Chapar review in its general form: no layer of the network model is mandatory, every layer has its own identity, and presence on a link is decided per link by capacity and role — illustrated by the direct association, the phone-and-tower, and the multi-access switched segment.
+- Repairs made in passing: the registry's dangling `networking-frame-signature.md` links now point at internal anchors, stray duplicate rows were dropped from the legacy table, and one truncated sentence (the signed-bit extension rule) was completed.
+- The original drafting date being unrecorded, Start Date reflects this rewrite; the lineage is this entry.
+- Whether FrameType 11 (`Security`) is identical to the special signature frame — the legacy files implied but never stated it — is flagged in the base document's own Unresolved questions for an explicit ruling.
 
-Identified that part of what had been written into Chapar belongs to networking generally, ruled the general form ("no layer is mandatory; every layer has its own identity"), directed the rewrite of this old document under the current method, and approved merging the two sibling files into it. (Omid Hekayati)
-
-Performed the consolidation. (Super Z)
-
-#### Unresolved questions carried forward
-Whether FrameType 11 (`Security`) is identical to the special signature frame — the legacy files implied but never stated it — is flagged in the base document's own Unresolved questions for an explicit ruling.
+#### Deliberation
+- Part of what had been written into Chapar was identified as belonging to networking generally (Omid Hekayati).
+- The general form was ruled: "no layer is mandatory; every layer has its own identity" (Omid Hekayati).
+- The rewrite of this old document under the current method was directed, and merging the two sibling files into it was approved (Omid Hekayati).
 
 ### Broadened the definition, grouped named frames, and recorded the self-describing-frame decision
 - Time: 2026-08-26T08:12:10Z
@@ -36,9 +39,14 @@ Whether FrameType 11 (`Security`) is identical to the special signature frame �
   - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — applied.
 
 #### What changed
-The Abstract and Scope no longer define networking as connections between 'computer systems': the definition is now between computing components generally, with the PCIe/GPU-CPU case asserted in the definition itself — such a link forms a real network whose principles this document governs — instead of appearing later as an example. All frames specified by this document now sit under a single ### heading (Frames defined here) with one #### entry per frame, so future additions join an existing category rather than scattering across top-level topics. A new subsection under Frames records the two identification approaches for packet sections: header-introduces-next chaining versus self-describing frames, with self-description mandatory here (first byte FrameType, eight bytes extended), noting QUIC's reliance on the same shape and tying the model together with the NextFrame() handler requirement.
+- The Abstract and Scope no longer define networking as connections between 'computer systems': the definition is now between computing components generally, with the PCIe/GPU-CPU case asserted in the definition itself — such a link forms a real network whose principles this document governs — instead of appearing later as an example.
+- All frames specified by this document now sit under a single ### heading (Frames defined here) with one #### entry per frame, so future additions join an existing category rather than scattering across top-level topics.
+- A new subsection under Frames records the two identification approaches for packet sections: header-introduces-next chaining versus self-describing frames, with self-description mandatory here (first byte FrameType, eight bytes extended), noting QUIC's reliance on the same shape and tying the model together with the NextFrame() handler requirement.
 
-Flagged the opening definition as inheriting the ecosystem's computer-to-computer assumption and required the GPU/CPU-over-PCIe case stated as definition rather than example; directed that all frames specified here live under one heading with per-frame subheadings as they multiply; and ruled that the two identification approaches be written down — header-introduces-next (the legacy shape, e.g. EtherType/protocol-field chaining) versus each frame introducing itself at its own first byte (adopted here; the shape modern protocols such as QUIC emphasize). (Omid Hekayati)
+#### Deliberation
+- The opening definition was flagged as inheriting the ecosystem's computer-to-computer assumption, and the GPU/CPU-over-PCIe case was required as definition rather than example (Omid Hekayati).
+- It was directed that all frames specified here live under one heading with per-frame subheadings as they multiply (Omid Hekayati).
+- It was ruled that the two identification approaches be written down — header-introduces-next (the legacy shape, e.g. EtherType/protocol-field chaining) versus each frame introducing itself at its own first byte (adopted here; the shape modern protocols such as QUIC emphasize) (Omid Hekayati).
 
 ### Resolved review threads: trailer location, fragmentation denial, encryption nuance, registry honesty, MediaTypeID rationale, wireless addressing
 - Time: 2026-08-26T09:03:51Z
@@ -52,11 +60,21 @@ Flagged the opening definition as inheriting the ecosystem's computer-to-compute
   - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — applied
 
 #### What changed
-Six review threads closed in one pass. The signature frame now explains how a reader reaches the end-anchored trailer without walking forward: layer 1 delivers a delimited unit, and parsing proceeds backward from that edge through SignatureScheme/Length. Packets gained two corrections: the encryption suggestion reads as low-cost-default-after-layer-3 with deeper encryption as a knowingly expensive option rather than an absolute; and the 8 KB bound is attributed to its true origin — the model's 16-bit Length ceiling — demoting the video-call arithmetic to illustration, followed by the new architecture-wide principle that fragmentation does not exist in any layer (links carry whole packets or do not host them), with sRPC-level simulation noted as an application-side workaround and genuine end-to-end 8 KB MTU as the goal. Frames now record why FrameType deliberately parts ways with MediaTypeID: hash-derived decentralized minting justifies 64 bits there, while a small centrally-registered wire vocabulary paid on every frame justifies one byte here. The registry states its numbers are presentational until Memar's protocols settle. Wireless access points gained the missing rationale: connector-bounded silicon caps wired ports under one byte of addressing, while logical associations need the two-hop treatment to widen cell-local addressing to sixteen bits. Finally, the small-packet confidentiality-plus-integrity question was added to Unresolved questions, naming AEAD constructions as leading candidate without settling anything.
+- Six review threads closed in one pass.
+- The signature frame now explains how a reader reaches the end-anchored trailer without walking forward: layer 1 delivers a delimited unit, and parsing proceeds backward from that edge through SignatureScheme/Length.
+- Packets gained two corrections: the encryption suggestion reads as low-cost-default-after-layer-3 with deeper encryption as a knowingly expensive option rather than an absolute; and the 8 KB bound is attributed to its true origin — the model's 16-bit Length ceiling — demoting the video-call arithmetic to illustration, followed by the new architecture-wide principle that fragmentation does not exist in any layer (links carry whole packets or do not host them), with sRPC-level simulation noted as an application-side workaround and genuine end-to-end 8 KB MTU as the goal.
+- Frames now record why FrameType deliberately parts ways with MediaTypeID: hash-derived decentralized minting justifies 64 bits there, while a small centrally-registered wire vocabulary paid on every frame justifies one byte here.
+- The registry states its numbers are presentational until Memar's protocols settle.
+- Wireless access points gained the missing rationale: connector-bounded silicon caps wired ports under one byte of addressing, while logical associations need the two-hop treatment to widen cell-local addressing to sixteen bits.
+- The small-packet confidentiality-plus-integrity question was added to Unresolved questions, naming AEAD constructions as leading candidate without settling anything.
 
-Approved making the trailer's backward-parse explicit; ruled that the 8 KB bound originates from the model's own 16-bit Length ceiling and that fragmentation is denied across every layer (simulable only above, via sRPC conventions, never a layer capability), with maximum-capacity operation as the stated direction; corrected the encryption suggestion to low-cost-after-L3 rather than always, with deeper encryption as a knowingly-expensive option; asked the small-packet confidentiality-plus-integrity pairing be kept an open question rather than settled, open to a definitively better proposal; ruled current registry numbers presentational until Memar's protocols settle; and delegated the wireless-addressing rationale text to Super Z (GLM-5.3-Flash). (Omid Hekayati)
-
-Drafted all six revisions. (Super Z)
+#### Deliberation
+- Making the trailer's backward-parse explicit was approved (Omid Hekayati).
+- It was ruled that the 8 KB bound originates from the model's own 16-bit Length ceiling and that fragmentation is denied across every layer (simulable only above, via sRPC conventions, never a layer capability), with maximum-capacity operation as the stated direction (Omid Hekayati).
+- The encryption suggestion was corrected to low-cost-after-L3 rather than always, with deeper encryption as a knowingly-expensive option (Omid Hekayati).
+- It was asked that the small-packet confidentiality-plus-integrity pairing be kept an open question rather than settled, open to a definitively better proposal (Omid Hekayati).
+- Current registry numbers were ruled presentational until Memar's protocols settle (Omid Hekayati).
+- The wireless-addressing rationale text was delegated to Super Z (GLM-5.3-Flash) (Omid Hekayati).
 
 ### Added the Commercial components statement
 - Time: 2026-08-26T09:36:34Z
@@ -69,9 +87,8 @@ Drafted all six revisions. (Super Z)
   - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — wrote.
 
 #### What changed
-New topic recording that ChaparKhane and Achaemenid are intended commercial software by Geniuses Group — the reason they sometimes appear without explanation — while stating explicitly that organizations remain free to develop their own implementations on top of the open protocols; the project's ask is support (funding the continuous development) rather than self-implementation, so that Memar moves faster.
-
-See the paired entry in giti.changelog.md for the full ruling. (Omid Hekayati)
+- New topic recording that ChaparKhane and Achaemenid are intended commercial software by Geniuses Group — the reason they sometimes appear without explanation — while stating explicitly that organizations remain free to develop their own implementations on top of the open protocols; the project's ask is support (funding the continuous development) rather than self-implementation, so that Memar moves faster.
+- See the paired entry in giti.changelog.md for the full ruling.
 
 ### Relocated the commercial statement to README
 - Time: 2026-08-26T10:14:15Z
@@ -84,9 +101,12 @@ See the paired entry in giti.changelog.md for the full ruling. (Omid Hekayati)
   - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — applied.
 
 #### What changed
-The Commercial components topic added earlier this session was removed from this document after the owner judged its home wrong: the statement belongs to the project's business face, not a technical specification. It now lives in README's Enterprise section, which documents referencing these components point to instead.
+- The Commercial components topic added earlier this session was removed from this document.
+- The statement now lives in README's Enterprise section, which documents referencing these components point to instead.
 
-The statement is enterprise material belonging under README's Enterprise heading, not inside a protocol specification. (Omid Hekayati)
+#### Deliberation
+- The owner judged the topic's home wrong: the statement belongs to the project's business face, not a technical specification (Omid Hekayati).
+- The statement was held to be enterprise material belonging under README's Enterprise heading, not inside a protocol specification (Omid Hekayati).
 
 ### Renamed GP's registry row, added GP-App, and recorded the Edge computing principle
 - Time: 2026-08-31T17:29:51Z
@@ -103,11 +123,13 @@ The statement is enterprise material belonging under README's Enterprise heading
   - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — applied.
 
 #### What changed
-Registry row 4 renamed from GP to GP-Thing and row 5 added as GP-App, matching GP's redesigned pair of routing frames. New Edge computing topic under Hardware records the principle that network cost is transmission plus routing plus state — minimizing a header is not minimizing the network — and that when locality reduces total cost, edge execution and storage should be possible and economically preferable, as a preference the ecosystem's tooling makes easy, never a mandate on applications.
+- Registry row 4 renamed from GP to GP-Thing and row 5 added as GP-App, matching GP's redesigned pair of routing frames.
+- New Edge computing topic under Hardware records the principle that network cost is transmission plus routing plus state — minimizing a header is not minimizing the network — and that when locality reduces total cost, edge execution and storage should be possible and economically preferable, as a preference the ecosystem's tooling makes easy, never a mandate on applications.
 
-GP's routing is now expressed by two frame types (Thing-level and App-level delivery) instead of one, and the Edge computing principle belongs here because it is an architecture-wide rule about where computation and storage live, not a GP packet property; see the paired entries in giti.changelog.md for the full rulings. (Omid Hekayati)
-
-Partner model in the recorded design review that produced the two-frame decision and the edge-computing principle. (ChatGPT)
+#### Deliberation
+- The two-frame decision and the edge-computing principle came from a recorded design review in which ChatGPT was the partner model (ChatGPT).
+- GP's routing was now expressed by two frame types (Thing-level and App-level delivery) instead of one (Omid Hekayati).
+- The Edge computing principle was ruled to belong here because it is an architecture-wide rule about where computation and storage live, not a GP packet property; the full rulings are in the paired entries in giti.changelog.md (Omid Hekayati).
 
 ### Absorbed the stack overview and stated the low-capacity-media case of Layer presence
 - Time: 2026-08-31T19:26:46Z
@@ -123,11 +145,13 @@ Partner model in the recorded design review that produced the two-frame decision
   - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — applied.
 
 #### What changed
-New Place in the stack topic: the OSI-oriented table (Asb/Parvaz, Chapar, Giti (GP), sRPC) with the ecosystem roles (ChaparKhane, PersiaOS, Achaemenid unikernel generation) and the explicit rule that protocol documents reference this table instead of restating their own. Layer presence gained a fourth concrete shape: the low-capacity wireless association — layer 1 plus a compact sRPC call, no switching or routing layer expected on media too small to route on, which resolves the small-IoT-media question GP's redesign had raised.
+- New Place in the stack topic: the OSI-oriented table (Asb/Parvaz, Chapar, Giti (GP), sRPC) with the ecosystem roles (ChaparKhane, PersiaOS, Achaemenid unikernel generation) and the explicit rule that protocol documents reference this table instead of restating their own.
+- Layer presence gained a fourth concrete shape: the low-capacity wireless association — layer 1 plus a compact sRPC call, no switching or routing layer expected on media too small to route on, which resolves the small-IoT-media question GP's redesign had raised.
 
-The stack overview belongs to the parent document, since a protocol's own copy read as if that protocol were the whole stack; and on low-bandwidth media the goal is not layer-3 routing at all — such networks engage only layer 1 with a compact sRPC exchange (a sensor announcing telemetry; the access point decides what the data is worth above the link), because media too small for real routing even at layer 1 host no higher layer, a ruling that belongs here since it answers for all layers. (Omid Hekayati)
-
-Its protocol-versus-architecture separation framing is what the stack relocation applies. (ChatGPT)
+#### Deliberation
+- The stack overview was ruled to belong to the parent document, since a protocol's own copy read as if that protocol were the whole stack (Omid Hekayati).
+- On low-bandwidth media the goal was ruled to be not layer-3 routing at all — such networks engage only layer 1 with a compact sRPC exchange (a sensor announcing telemetry; the access point decides what the data is worth above the link), because media too small for real routing even at layer 1 host no higher layer; a ruling that belongs here since it answers for all layers (Omid Hekayati).
+- The stack relocation applies the protocol-versus-architecture separation framing (ChatGPT).
 
 ### Removed the MediaTypeID comparison from the Frames topic; the decision now stands alone
 - Time: 2026-09-03T00:00:00Z
@@ -139,9 +163,12 @@ Its protocol-versus-architecture separation framing is what the stack relocation
   - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — applied.
 
 #### What changed
-The Frames topic's passage explaining why FrameType deliberately parts ways with MediaTypeID (hash-derived decentralized minting justifying 64 bits there versus a small centrally-registered wire vocabulary justifying one byte here) was removed. The topic now states the FrameType decision definitively — one byte, centrally registered, paid on every frame, with the experimental range and signed extension — without reference to MediaTypeID. The removed rationale's substance is preserved in this entry and in the 2026-08-26 entry above, which first recorded it.
+- The Frames topic's passage explaining why FrameType deliberately parts ways with MediaTypeID (hash-derived decentralized minting justifying 64 bits there versus a small centrally-registered wire vocabulary justifying one byte here) was removed.
+- The topic now states the FrameType decision definitively — one byte, centrally registered, paid on every frame, with the experimental range and signed extension — without reference to MediaTypeID.
+- The removed rationale's substance is preserved in this entry and in the 2026-08-26 entry above, which first recorded it.
 
-Base documents state definitive decisions, not justificatory comparisons against other Memar documents; where a comparison shaped a decision, its provenance belongs in the changelog, not in the normative text. (Omid Hekayati)
+#### Deliberation
+- It was ruled that base documents state definitive decisions, not justificatory comparisons against other Memar documents; where a comparison shaped a decision, its provenance belongs in the changelog, not in the normative text (Omid Hekayati).
 
 ---
 
@@ -153,9 +180,10 @@ Base documents state definitive decisions, not justificatory comparisons against
   - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) - moved.
 
 #### What changed
-This document, its changelog, and its sibling files (networking-osi_1-Asb.md, networking-osi_1-Parvaz.md, networking-connection.md) moved from `docs/` to `docs/protocols/`. Relative links to documentation-system documents were adjusted for the added depth; no content change.
+- This document, its changelog, and its sibling files (networking-osi_1-Asb.md, networking-osi_1-Parvaz.md, networking-connection.md) moved from `docs/` to `docs/protocols/`. Relative links to documentation-system documents were adjusted for the added depth; no content change.
 
-Memar's own protocol specifications are collected in `docs/protocols/`; networking is the shared foundation of the protocol set and moves together with the protocols built on it (Chapar, GP, sRPC, the OSI layer-1 documents, the codecs). (Omid Hekayati)
+#### Deliberation
+- Memar's own protocol specifications are collected in `docs/protocols/`; networking is the shared foundation of the protocol set and moves together with the protocols built on it (Chapar, GP, sRPC, the OSI layer-1 documents, the codecs) (Omid Hekayati).
 
 ---
 
@@ -170,11 +198,15 @@ Memar's own protocol specifications are collected in `docs/protocols/`; networki
   - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — rewrote
 
 #### What changed
-The position — the traditional OS-embedded network stack is a compatibility library, chosen where its constraints are acceptable and replaced where they are not, never the foundation — now lives in this document as a full topic with its four examination points (state ownership, layer-seven discipline, budgets, checkable compliance), the justified-dependence cases, the userspace direction, and the filtration counter-argument. The OS-side half was added to os.md's Networking topic. No content was lost from the dissolved document; its "kernel" wording was corrected throughout.
+- The position — the traditional OS-embedded network stack is a compatibility library, chosen where its constraints are acceptable and replaced where they are not, never the foundation — now lives in this document as a full topic ("Memar's position on the traditional network stack"), placed after Compatibility with existing protocols, with its four examination points (state ownership, layer-seven discipline, budgets, checkable compliance), the justified-dependence cases, the userspace direction, and the filtration counter-argument.
+- The subject was renamed from "kernel network stack" to "traditional OS-embedded stack" to remove the terminology conflict.
+- The OS-side half was added to os.md's Networking topic as the transition-period paragraph.
+- The standalone document (created earlier the same day) was dissolved and all inbound references were repointed; no content was lost from it; its "kernel" wording was corrected throughout.
+- The earlier standalone-document decision was recorded in the topic's own Rationale so the reversal is explicit rather than silent.
 
-The standalone position document "Memar's Position on the Kernel Network Stack" was judged ill-fitting and misworded — its use of "kernel" conflicted with this documentation set's own definition ([OS](./os.md) establishes kernel as a layer concept of any system, not an OS-exclusive component), and the position's two halves belong to the two documents that already own them. Directed that the standalone document be dissolved and its content folded here and into os.md (Omid Hekayati).
-
-The standalone document (created earlier the same day) was dissolved and its position folded into the new "Memar's position on the traditional network stack" topic here, placed after Compatibility with existing protocols; the subject was renamed from "kernel network stack" to "traditional OS-embedded stack" to remove the terminology conflict; the OS-side transition-period paragraph was written in os.md's Networking topic; all inbound references were repointed; the earlier standalone-document decision was recorded in the topic's own Rationale so the reversal is explicit rather than silent (Super Z).
+#### Deliberation
+- The standalone position document "Memar's Position on the Kernel Network Stack" was judged ill-fitting and misworded: its use of "kernel" conflicted with this documentation set's own definition ([OS](./os.md) establishes kernel as a layer concept of any system, not an OS-exclusive component), and the position's two halves belong to the two documents that already own them (Omid Hekayati).
+- It was directed that the standalone document be dissolved and its content folded into this document and into os.md (Omid Hekayati).
 
 ---
 

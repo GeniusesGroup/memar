@@ -45,19 +45,7 @@ Each can hold without the other. A closed, compile-time-fixed set of immutable s
 
 What type-level identity adds beyond this document alone is compile-time-*typed* identity: concepts are not merely fixed at compile time — the type system itself carries and verifies their identity, a stronger guarantee than compile-time-fixed data.
 
-**A caveat on this entire section:** this document is itself a placeholder pending its dedicated session (see [Unresolved questions](#unresolved-questions)). The analysis reflects the currently understood shape of both principles, not finalized texts; if the dedicated session produces materially different formulations, this section should be revisited.
+**A caveat on this entire section:** this document is itself a placeholder pending its dedicated session (see this document's [handoff](./immutable_infrastructure.handoff.md)). The analysis reflects the currently understood shape of both principles, not finalized texts; if the dedicated session produces materially different formulations, this section should be revisited.
 
 ## Results
-This document is an intentionally minimal placeholder pending its dedicated session; no outcome reporting exists yet. Several analyses are deliberately deferred to that session — full scope definition, Motivation depth, Drawbacks, Rationale and alternatives, and Prior-art research (candidate directions already noted under [Prior art](#prior-art)) — and this section will be populated once real deployment experience accumulates.
-
-## Discussion
-
-### Prior art
-(Deferred — likely candidates to research include immutable infrastructure practices in ops/deployment tooling (e.g. container image rebuilds instead of in-place config mutation), and their relationship, if any, to compile-time vs. runtime specialization in compilers.)
-
-### Unresolved questions
-- Full scope and definition of "immutable infrastructure" within Memar has not yet been discussed in depth; this document is a placeholder pending a dedicated session.
-- Whether immutable infrastructure removes the need for Profile-Guided Optimization in the Khayyam compiler entirely, or only for a subset of currently PGO-addressed cases (e.g. configuration-driven behavior, as opposed to per-request/per-connection runtime-data-driven behavior), is unresolved and disputed — see the open dispatch-resolution question in [memar-go generics elimination RFC].
-
-### Future possibilities
-- Dedicated session to define immutable infrastructure's relationship to deployment, the Khayyam compiler, and Chapar/sRPC device provisioning — including the connection-continuity decision under [Open Design Threads](#open-design-threads).
+This document is an intentionally minimal placeholder pending its dedicated session; no outcome reporting exists yet. Several analyses are deliberately deferred to that session — full scope definition, Motivation depth, drawback accounting, rejected-alternative reasoning, and prior-art research (candidate directions already noted in this document's [changelog](./immutable_infrastructure.changelog.md)) — and this section will be populated once real deployment experience accumulates.

@@ -44,46 +44,12 @@ Decorators silently alter what a method actually does at the call site without t
 
 Where another language would write `@retry(times=3) func fetchData()`, a Khayyam developer instead explicitly composes the retry behavior at the call site or within an explicitly named wrapping capsule, so that the retry logic is visibly present in the source rather than silently injected by an annotation. There is no decorator/annotation syntax in the grammar capable of wrapping or altering a method's behavior; any equivalent functionality must be built from ordinary capsules and explicit method calls.
 
-#### Discussion
-
-##### Drawbacks
-Common cross-cutting concerns (retry, caching, timing/logging wrappers) that a decorator would express in a single line require explicit, repeated composition at every relevant call site or an explicitly named wrapping capsule, which is more verbose than the decorator-based equivalent in other languages.
-
-##### Rationale and alternatives
-Decorator/annotation syntax (Python, TypeScript, Java, C#) was rejected because it lets a method's effective runtime behavior diverge silently from what its declaration shows — directly conflicting with Khayyam's explicitness principle.
-
-##### Prior art
-Python decorators and Java/C# annotations are the primary prior art being rejected here. Languages without a decorator mechanism (C, Go) instead rely on explicit wrapper functions/structs for the same cross-cutting needs, which is closer to Khayyam's chosen approach.
-
-##### Unresolved questions
-The original source document cited "Error Handling: Library-Driven and Syntax-Free" as a foundational dependency for the "nothing should be hidden" principle. That document's identity is known (see Citations) but its content has not yet been supplied to this document set, so the specific claim it's meant to support here is unverified.
-
-##### Future possibilities
-None recorded yet.
-
 ### Rejection of Syntactic Macros and Language-Level Metaprogramming
 Khayyam provides no syntactic macro system (Rust-style `macro_rules!`/procedural macros, C preprocessor macros) and no compile-time meta-programming/code-generation facility baked into the language itself. Any code generation a project needs is handled by external tooling operating on the explicit source, not by language-level macro expansion.
 
 Macro systems let code generate or rewrite other code at compile time through a separate, often opaque expansion phase, which conflicts directly with Khayyam's foundational explicitness principle: source code should mean exactly what it says, with no hidden expansion step a reader must mentally simulate to understand what will actually execute.
 
 Where another language might reach for a macro to eliminate boilerplate (e.g. generating repetitive trait implementations), Khayyam developers rely on external scaffolding/code-generation tools that produce ordinary, explicit `.kh` source files ahead of time — files that are then read, reviewed, and version-controlled exactly like hand-written code, with no invisible expansion happening at compile time. There is no macro-definition or macro-invocation syntax in the grammar. Code generation, where needed, is explicitly a pre-compile, tooling-level step that emits ordinary source files, not a compiler-level expansion mechanism — [`abstraction_p.Implements`](./protocols/abstraction-implements.md) is a working example of exactly this pattern: it gives a codegen tool a discoverable signal to scaffold an incomplete capsule's boilerplate, entirely through an ordinary composed method rather than through any macro or annotation. The original source document's own container-scaffolding example pointed to what is now [Polymorphism in Khayyam](./khayyam-polymorphism.md) as the concrete case.
-
-#### Discussion
-
-##### Drawbacks
-Without a macro system, some categories of legitimate boilerplate reduction (e.g. deriving a family of trait implementations automatically at compile time) require external tooling to be run as a separate build step, rather than being handled inline by the compiler itself — adding a tooling dependency for cases a macro system would otherwise absorb into the language.
-
-##### Rationale and alternatives
-Macro systems (Rust's `macro_rules!`/proc-macros, C's preprocessor) were rejected because they introduce a compile-time code-rewriting phase that is, by design, somewhat opaque to a reader inspecting only the source — directly in tension with the zero-hidden-magic principle running through this document, [Sovereign Encapsulation](./khayyam-encapsulation.md#sovereign-encapsulation), and [Library-Driven Control Flow](./khayyam-control_flow.md#library-driven-control-flow) (rejecting macros for the same reason those documents reject implicit mutability keywords and compiler-special-cased control flow, respectively).
-
-##### Prior art
-Rust's macro system and the C preprocessor are the primary prior art being rejected here. Languages and ecosystems that instead rely on external code generators emitting plain source (e.g. Go's `go generate` convention, or Protocol Buffers' code generation step) are closer in spirit to Khayyam's chosen approach. Notably, Rust — which also has no built-in reflection — leans on its macro system (e.g. `serde`'s derive macros) to cover needs Khayyam covers instead through opt-in reflection (see [Reflective Programming](#reflective-programming)); rejecting macros without offering some other release valve for that category of need would leave a real gap.
-
-##### Unresolved questions
-None at this time.
-
-##### Future possibilities
-None recorded yet.
 
 ### Reflective Programming
 Reflection — a program inspecting, and in some languages modifying, its own structure at compile time or runtime — is supported in Khayyam, but it is not an intrinsic capability every type carries by default. Khayyam's version has more in common with `abstraction_p.Implements` than with Java's `getClass()` or Go's `reflect` package: a type becomes reflectable by explicitly composing a reflection-facing abstraction, and only what that abstraction's methods expose becomes visible to reflective tooling. There is no universal backdoor into every type's fields and methods; there is an ordinary, opt-in capability, declared the same way any other capability is declared.
@@ -100,43 +66,6 @@ The compiler or runtime then provides the concrete implementation for whatever t
 
 This preserves Sovereign Encapsulation rather than working around it: reflection doesn't bypass "all fields are private, all interaction is through methods" — an opted-in type is still only exposing structural facts through ordinary methods the abstraction defines, exactly like any other capability a capsule chooses to offer.
 
-#### Discussion
-
-##### Drawbacks
-Compared to universal, always-on reflection (Java, Go, C#), Khayyam's opt-in model means a tool that wants to inspect an arbitrary, unknown type simply cannot, unless that type's author already anticipated the need and composed the relevant abstraction. This is a real limitation for exploratory tooling (a generic debugger or REPL that wants to inspect "whatever value is here") that universal reflection handles for free.
-
-##### Rationale and alternatives
-- **Universal, always-on reflection (the conventional approach in Java, Go, C#; rejected)**: gives every type an always-available introspection surface whether or not its author intended one, which is exactly the kind of hidden, unauthorized-by-declaration path this document's decorator and macro rejections also reject — the fact that reflection only *reads* rather than *rewrites* does not change that the path itself is not visible in the type's own declaration.
-- **No reflection at all, rely entirely on macros for structure-dependent codegen (Rust's approach; considered, not chosen)**: works, but only by keeping the macro system Khayyam has already rejected for unrelated, stronger reasons (see [Rejection of Syntactic Macros and Meta-Programming](#rejection-of-syntactic-macros-and-meta-programming)). Opt-in reflection covers much of the same need (a tool asking a type what it looks like) without requiring a compile-time code-rewriting phase at all.
-
-##### Prior art
-Java's `Class`/`getClass()` and Go's `reflect` package are the primary prior art for universal, always-on reflection, rejected here in favor of an opt-in model. Rust deliberately has no reflection and relies on derive macros (`serde`, `Debug`) for the same category of need — a useful contrast, since Khayyam rejects Rust's macro-based solution too but, unlike Rust, retains a non-macro path to the same underlying need. C#'s attribute-plus-reflection combination is closer to a hidden-by-default, opt-out model (nearly everything is reflectable unless deliberately hidden) — the inverse of Khayyam's opt-in-by-default stance.
-
-##### Unresolved questions
-- The exact shape of the reflection-facing abstraction (or family of abstractions, if field-level, method-level, and full-structural reflection warrant separate contracts) has not been designed. `reflect_p.Structural` above is illustrative naming only, not a settled proposal.
-- Whether the compiler provides the implementation automatically once a type composes the abstraction (similar to a derive), or whether the type's author must still write it by hand with compiler-provided helpers, is undecided.
-- Whether reflective access, once granted via the abstraction, can be further scoped (e.g. field names only, no values; read-only, no modification) or is all-or-nothing per composed abstraction.
-- Whether runtime-modifying reflection (not just inspection) is in scope for Khayyam at all, or whether this document's position should be inspection-only by design — the drafting here leaned on inspection-oriented examples throughout and has not tested the modification case.
-
-##### Future possibilities
-A standard `reflect_p` package defining the canonical reflection-facing abstraction(s), analogous to `abstraction_p.Implements`, once real tooling needs (serialization, ORMs, debuggers) clarify what shape it should take.
-
 ## Results
 Insufficient time has passed since this document's positions were adopted to report real, observed outcomes from their use. This section will be filled in once there is such experience to draw on.
 
-## Discussion
-
-### Drawbacks
-Together, these three positions mean that in Khayyam, any tool wanting to alter a method's behavior invisibly, generate code invisibly, or inspect a type's structure without that type's author having opted in, simply cannot — it must instead work through visible composition, external tooling, or an explicitly composed abstraction. This is a real capability gap relative to languages that offer at least one of these unconditionally, and it means some legitimate tooling categories (universal serializers, generic debuggers, ORMs that work on arbitrary unannotated types) require more upfront cooperation from a type's author in Khayyam than they would elsewhere.
-
-### Rationale and alternatives
-All three positions trace to the same underlying test: does this capability require a hidden path into a type's behavior or structure that the type's own declaration doesn't show? Decorators and macros fail this test unconditionally and are rejected outright. Reflection can pass it, but only if implemented as an opt-in capability rather than a universal one — so that's the position Khayyam takes, rather than either rejecting reflection entirely (which would leave a real gap decorators/macros can't fill either, given they're also rejected) or adopting it universally (which would reopen the hidden-path problem from the other direction).
-
-### Prior art
-Prior art for each individual position is documented under its own topic above. Taken as a whole, this document's stance — support the underlying need (introspection) while rejecting the specific mechanisms (decorators, macros, universal reflection) that would make it invisible or unconditional — mirrors the pattern already established by `abstraction_p.Implements`: solve the tooling problem with an ordinary, opt-in, composed method, not a language feature.
-
-### Unresolved questions
-1. The reflection-facing abstraction's exact shape is undesigned — see Reflective Programming's own Unresolved questions for the specific open sub-questions.
-
-### Future possibilities
-A standard `reflect_p` package (see Reflective Programming's Future possibilities).

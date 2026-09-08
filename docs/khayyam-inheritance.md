@@ -97,12 +97,6 @@ Khayyam distinguishes these cases clearly:
 - **Abstraction inclusion** (combining abstraction requirements) is allowed. When one abstraction includes another, the requirements are extended — this is inheritance between abstractions.
 - **Capsule embedding with method promotion** is rejected. A capsule's internal fields are private; their methods are not exposed.
 
-#### Discussion
-##### Rationale and alternatives
-- **Allow restricted "safe" behavior transfer (e.g. single inheritance from abstract base classes only, or bases without concrete methods; rejected)**: even restricted behavior transfer creates conceptual dependency on the transfer model that influences how developers think about component relationships, and the "safe" boundaries are subjective and tend to erode over time as exceptions are added. The principled argument is made in the [Explicit Behavior Ownership](./type.md#explicit-behavior-ownership) document.
-- **Go-style embedding (rejected)**: often cited as a middle ground between behavior transfer and composition, providing method promotion without full class-based inheritance. Rejected because method promotion is still implicit behavior acquisition — the embedding component's source code does not show the promoted methods. The visibility problem remains, just in a milder form.
-- **Rust-style traits with default implementations (rejected)**: default implementations introduce the same ownership ambiguity the Explicit Behavior Ownership principle prohibits: a method exists in a type but the type's source code does not define it. The default method's implementation lives in the trait, creating dual ownership.
-
 ### Template Method and Other OO Patterns
 Traditional object-oriented design patterns that rely on behavior transfer — most notably Template Method, where a base class defines the skeleton of an algorithm and subclasses override specific steps — do not have a direct equivalent in Khayyam's model.
 
@@ -111,7 +105,7 @@ The alternative is to use **abstractions** and **explicit delegation**. Instead 
 2. Have the "template" capsule accept implementations of those steps via its fields.
 3. The "template" capsule explicitly calls the provided implementations.
 
-This is functionally equivalent to Template Method but preserves explicit ownership: every method is defined in the capsule whose source code contains it.
+This is functionally equivalent to Template Method but preserves explicit ownership: every method is defined in the capsule whose source code contains it. The alternative is more verbose than the pattern it replaces, and developers must learn it.
 
 ### Compiler Rules
 
@@ -160,34 +154,3 @@ Since there is no behavior transfer between capsules, the compiler never needs t
 ## Results
 No observed results are recorded yet. This section will be updated when use of this model yields evidence that can be distinguished from its intended rationale.
 
-## Discussion
-
-### Drawbacks
-- **No Direct Template Method Pattern:** The traditional Template Method pattern relies on behavior transfer and does not have a direct syntactic equivalent. The alternative (abstraction + explicit delegation) is more verbose but functionally equivalent. Developers must learn the alternative pattern.
-- **More Explicit Code:** Every behavior must be written explicitly. For large component structures where many components share similar behavior, this results in more source code. In the AI era, this is less a cost and more a structural advantage: AI-generated delegation code is cheap to produce, and the resulting explicit structure makes the codebase more legible to both human and AI participants. The source code is undeniably longer, but length is not the relevant metric — legibility is.
-- **Design Pattern Migration:** Teams migrating from OO languages (Java, C#, C++) must reformulate behavior-transfer-based designs. This is not just a syntax change — it requires rethinking the architectural relationships between components.
-- **No "Base Class" Convenience:** Common patterns like a `BaseService` class that provides shared infrastructure (logging, configuration, error handling) to all service subclasses do not translate directly. Each service must explicitly compose its infrastructure.
-
-### Rationale and alternatives
-**Impact of not doing this:** If Khayyam allowed behavior transfer between capsules, every subsequent design decision would need to account for chains, method resolution order, and hidden behavior paths. The compiler would need to support virtual dispatch tables, the linter would need to trace hierarchies, and developers would mentally simulate chains to understand a capsule's full behavior. By establishing at the foundation that behavior transfer between capsules does not exist, all of this complexity is eliminated. Per-alternative arguments (restricted transfer, Go-style embedding, Rust-style defaults) are recorded under [Capsule Composition Without Method Promotion](#capsule-composition-without-method-promotion)'s own Discussion.
-
-### Prior art
-- **Go Struct Embedding:** Go allows embedding structs and interfaces within other structs. Embedded struct methods are promoted to the outer struct. This is the most well-known "composition with promotion" mechanism. Khayyam rejects the promotion aspect while keeping the composition aspect (capsules can contain other capsules as fields). Go's interface-level embedding (interface inclusion) aligns with Khayyam's abstraction extension.
-- **Rust Traits:** Rust traits can have default method implementations and blanket implementations. Both introduce behavior without the implementing type's source code defining it. Khayyam rejects both, keeping traits (abstractions) as pure declarations.
-- **Java Class Inheritance:** Java supports single class inheritance with concrete method bodies and multi-interface implementation. Java 8+ added default interface methods. Khayyam rejects all forms of behavior transfer and default methods. Java's interface extension (without defaults) aligns with Khayyam's abstraction extension.
-- **C++ Multiple Inheritance:** C++ allows multiple inheritance with concrete method bodies, including the diamond problem. Khayyam's rejection of behavior transfer between capsules eliminates this class of problems entirely.
-- **Swift Protocols with Extensions:** Swift protocols can be extended with default implementations via protocol extensions. This allows behavior injection that is invisible at the conforming type's definition site. Khayyam rejects this pattern.
-- **Kotlin Open Classes:** Kotlin marks classes as `open` to allow inheritance, with `final` as the default. This is a more conservative approach than Java's, but still allows behavior transfer when opted in. Khayyam does not provide behavior transfer between capsules at all.
-- **Zig Comptime and Delegation:** Zig has no inheritance and relies on explicit composition and compile-time code generation. This aligns closely with Khayyam's approach and validates the feasibility of a behavior-transfer-free design in a systems programming language.
-
-### Unresolved questions
-1. **Design Pattern Catalog:** What is the complete catalog of OO design patterns that rely on behavior transfer, and what are the Khayyam equivalents for each? A dedicated document may be needed to guide developers migrating from OO languages.
-2. **Performance Benchmarking:** What is the actual runtime performance impact of explicit delegation compared to behavior-transfer-based dispatch? Early evidence from Zig and similar systems suggests the overhead is negligible, but formal benchmarking is needed.
-3. **Code Generation Standards:** What are the standards for AI or tooling-generated delegation code? Should generated code be marked with specific annotations? Should there be a standard directory or naming convention for generated files?
-4. **Abstraction Inclusion Depth:** How deep can abstraction inclusion chains go (abstraction A includes B includes C)? Is there a practical limit, and does it introduce any of the visibility problems that behavior transfer creates? The current position is that inclusion depth is not inherently problematic because no behavior is transferred.
-
-### Future possibilities
-- **AI-Assisted Delegation Scaffolding:** The linter and IDE tooling could automatically generate explicit delegation methods when a developer composes capsules, reducing the boilerplate of explicit delegation while preserving source-level visibility.
-- **Delegation Pattern Library:** A standard library of common delegation patterns (forwarding, adapting, decorating, intercepting) that developers can use as templates for explicit delegation.
-- **Ownership Visualization:** IDE tooling that visualizes the explicit delegation graph for a capsule, showing which methods are native and which delegate to embedded capsules. This would provide the "overview" benefit of hierarchies without the hidden behavior.
-- **Formal Proof of Completeness:** A formal argument that explicit delegation can express every relationship that behavior transfer can express, with examples demonstrating the translation. This would address the concern that some patterns are "impossible" without behavior transfer.

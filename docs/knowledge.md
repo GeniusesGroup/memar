@@ -44,7 +44,7 @@ Stated from the perspective of the people and systems that depend on knowledge, 
 6. **Communication-knowledge confusion**: transient communication channels (email, chat, meetings, handoffs) produce knowledge but fail to preserve it structurally.
 
 ### Methodology
-This analysis synthesizes four sources: academic research on knowledge organization and retrieval (semantic filesystems, documentation usefulness, organizational knowledge creation); multi-session architectural dialogues examining File, Directory, Git, Repository, Content, Task, and their relationships; historical analysis of how computing abstractions evolved from physical constraints (block devices, limited memory, single-user systems) into assumed truths about knowledge organization; and cross-domain observation — healthcare, education, manufacturing, legal, and small enterprises — which supplies the evidence that the underlying failures, and therefore the principles addressing them, are domain-independent. Unresolved questions are kept genuinely open to drive future specifications.
+This analysis synthesizes four sources: academic research on knowledge organization and retrieval (semantic filesystems, documentation usefulness, organizational knowledge creation); multi-session architectural dialogues examining File, Directory, Git, Repository, Content, Task, and their relationships; historical analysis of how computing abstractions evolved from physical constraints (block devices, limited memory, single-user systems) into assumed truths about knowledge organization; and cross-domain observation — healthcare, education, manufacturing, legal, and small enterprises — which supplies the evidence that the underlying failures, and therefore the principles addressing them, are domain-independent. Unresolved questions are kept genuinely open in the paired handoff to drive future specifications.
 
 ## Explanation
 
@@ -87,12 +87,6 @@ Legal Precedent Brief: Smith v. Jones (2024)
 This hierarchy holds whether the domain is software development, healthcare, education, law, or manufacturing. The examples differ; the structural relationships do not.
 
 The foundational one-line definition used across Memar is given in [System → Knowledge and Science](./system.md#knowledge-and-science): knowledge is a justified, structured understanding of a domain, acquired through observation, reasoning, experimentation, or critical discourse, that enables reliable prediction, explanation, or action within that domain. This document is the detailed treatment of that concept — what the understanding is made of, how it relates to its representations, and what systems must do to preserve it.
-
-#### Discussion
-
-##### Rationale and alternatives
-- **Define knowledge as a static asset (rejected)**: the research literature on organizational knowledge creation (Nonaka & Takeuchi's SECI model) established knowledge as a dynamic, social process rather than a stock of artifacts. The modeling principles below follow that reading — knowledge exists in the living relationships between assertions, evidence, tasks, and participants, not in the files that freeze them. The organizational application of that process view is developed in the Organization project.
-- **Leave "knowledge" undefined and regulate only storage behavior (rejected)**: management rules stated over an undefined central term import the reader's colloquial sense. Memar's terminology governance ([Terminology → Terminology Authority and Governance](./terminology.md#terminology-authority-and-governance)) requires defining a load-bearing term once, here, and letting other documents reference that definition.
 
 ### Knowledge in Memar's Concept Web
 Knowledge is one link in the chain Memar exists to serve:
@@ -292,47 +286,3 @@ For AI-assisted development, knowledge structure directly determines capability:
 
 ## Results
 Insufficient time has passed to report real, observed outcomes from implementing systems based on these principles. This section will be populated once principle-aligned implementations are applied in practice within Geniuses Group projects.
-
-## Discussion
-
-### Drawbacks
-These principles are demanding. Implementing them fully requires:
-
-1. **Infrastructure investment**: graph-based storage, content-addressable identifiers, and rich relationship modeling do not come free with traditional stacks. The investment does scale, however: small teams can start with stable identifiers and structured decision logging alone.
-2. **Behavioral change**: professionals are deeply habituated to existing mental models ("where is the file?", "which folder does this go in?"). Migration requires unlearning regardless of domain.
-3. **Tooling gap**: most organizations lack principle-aligned knowledge systems; custom or niche tooling is often required.
-4. **Risk of over-engineering**: it is possible to build an elaborate knowledge graph nobody uses because it is too complex for everyday tasks. The principles should be applied incrementally, not all-at-once.
-
-Most dangerously, adopting these principles can lead to **analysis paralysis** — endless modeling without shipping. The counterweight principle is: **imperfect knowledge management now beats perfect knowledge management never**.
-
-### Rationale and alternatives
-- **"Just use Confluence/Notion/Wiki" (rejected)**: these tools improve over raw files but still inherit the document-as-knowledge fallacy. They add layers (search, linking, collaboration) on top of fundamentally document-centric storage. Useful, but not addressing the root issue.
-- **"Just use a Knowledge Graph database" (rejected as complete solution)**: a graph database provides storage mechanics, not a knowledge model. Without principled design of what the nodes and edges MEAN, a knowledge graph becomes another data swamp — this time with cycles.
-- **"Keep current tools but be more disciplined" (partial acceptance)**: commit-message conventions, structured clinical notes, standardized syllabi. These mitigate symptoms but do not cure the disease. For organizations already invested in existing tooling, this is a reasonable transitional strategy while building toward principle-aligned systems.
-- **"These principles only apply to large organizations" (rejected)**: small teams suffer knowledge loss more acutely, because they lack institutional memory and redundant personnel. The principles scale down: a solo practitioner benefits from task-centric history and explicit relationships.
-
-### Prior art
-- **Gifford et al., Semantic File Systems (1991)**: demonstrated that attribute-based (semantic) access outperforms hierarchical (directory-tree) access for information-rich content. Directly supports [Storage Model ≠ Content Model](#storage-model--content-model), [Relationships Are First-Class Citizens](#relationships-are-first-class-citizens), and [Classification Should Not Be Confined to a Single Hierarchy](#classification-should-not-be-confined-to-a-single-hierarchy).
-- **Madhavapeddy et al., Unikernels (2013)**: showed that general-purpose filesystems are not universal requirements, supporting the argument that filesystem is an optional capability, not a knowledge primitive.
-- **Nonaka & Takeuchi, The Knowledge-Creating Company (1991)**: the SECI model established knowledge as a dynamic, social process rather than a static asset. This document adopts the process view; the organizational machinery (socialization, externalization, combination, internalization) is developed in the Organization project.
-- **Nygard, Architecture Decision Records**: a pattern for capturing decisions with context — the software instantiation of [Task-Centric Knowledge Evolution](#task-centric-knowledge-evolution) and [Knowledge Requires Explicit Context Recovery](#knowledge-requires-explicit-context-recovery).
-- **Diátaxis Framework (Rock)**: documentation structured by audience need (tutorials, how-to, reference, explanation). Complements this framework by addressing document PURPOSE.
-- **Zettelkasten Method (Luhmann)**: personal knowledge management based on atomic notes, links, and emergent structure. Influences [The Smallest Knowledge Unit Is Smaller Than You Think](#the-smallest-knowledge-unit-is-smaller-than-you-think) and [Relationships Are First-Class Citizens](#relationships-are-first-class-citizens).
-- **Solid (Berners-Lee)**: web decentralization emphasizing personal data pods, content addressability, and granular permissions — a technical implementation of several principles here.
-- **Communities of Practice (Wenger-Trayner)**: how groups learn together through shared practice — evidence for the process view of knowledge and for [Communication Channels Produce Knowledge but Are Not Knowledge Repositories](#communication-channels-produce-knowledge-but-are-not-knowledge-repositories).
-
-### Unresolved questions
-1. **What IS the minimum viable knowledge unit?** The granularity principle argues for fine units, but practical experience is needed to identify the optimal balance between expressiveness and complexity. Is the unit a Concept? An Assertion? A property change? Does the answer vary by domain?
-2. **Can snapshot-style state ever be completely eliminated?** For legal holds, regulatory compliance, financial audits, and clinical trials, point-in-time global state is a genuine requirement. Is there a hybrid model where logical snapshots coexist with task-centric evolution?
-3. **How do we handle concurrent knowledge modification without locking semantics?** If two people simultaneously edit the definition of a protocol or a standard, how do we reconcile? (This is the same fundamental problem as database concurrency, not unique to knowledge graphs.)
-4. **Are there domains where hierarchical classification IS actually optimal?** The classification principle argues against single hierarchies universally, but configuration management, biological taxonomy, and library classification may be sufficiently hierarchical that tree projection IS the natural knowledge model. Where is the crossover point?
-5. **Does the Task concept itself decompose further?** If Task is not primitive, what is? How far down does decomposition go before reaching truly atomic knowledge primitives?
-6. **How do cultural factors affect principle adoption?** Research indicates that national culture, professional norms, and organizational climate significantly impact knowledge-sharing behavior. Do the principles need cultural localization, or are they genuinely universal? (The localization question, as a practice, belongs to the Organization project; it is recorded here because it tests the domain-independence claim.)
-
-### Future possibilities
-- **Content Domain Model**: [Content](./content.md) now defines Content, Semantic, Reference, and composition; the knowledge-side integration (how Knowledge units, Assertions, and Distinctions map onto Content and Relation) should be worked out against it.
-- **Task Domain Model**: defining Task, Decision, Discussion, Outcome and their relationships — possibly as compositions of more primitive concepts.
-- **Versioning Strategy**: how versioning works in a non-file-centric system (content versions vs. snapshot versions vs. logical timestamps).
-- **Migration Path**: how organizations transition from current tooling to principle-aligned systems incrementally (the organizational-side program belongs to the Organization project).
-- **AI Integration Patterns**: how AI systems consume knowledge structured by these principles, and how AI can assist in maintaining it (relationship inference, context extraction, duplicate detection).
-- **Knowledge Practices**: the companion [Knowledge Practice](./knowledge.practice.md) develops the followable procedures this document's principles presuppose — questioning, researching, and evaluating knowledge.

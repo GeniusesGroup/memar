@@ -62,24 +62,6 @@ A method can be defined without a body (`{}`). This is legally used in two scena
 1. **Contract Definition**: Defining the required signature for an abstraction (`ab`). The method body is provided by each capsule that implements the abstraction.
 2. **Foreign Function Interface (FFI)**: When the receiver is a concrete capsule (`cp`), a body-less method signals to the compiler that the implementation will be provided externally during the linking phase (e.g., from an Assembly `.s` or C `.o` file).
 
-#### Discussion
-
-##### Drawbacks
-The strict separation of owner, influencing variables, and influenced variables with `()` adds syntactic ceremony for methods that need neither. In practice this case is rarer than it first appears — most methods that look parameter-less still have at least one influenced variable, typically an `Error` (e.g. `tp Close mt (self Reader) () (err Error) {}`, not `() ()`, since closing a reader can fail). But a method that genuinely has nothing to declare on either side — e.g. a `tp Reset mt (self Counter) () () {}` that is defined to always succeed — still carries two empty parenthetical groups that convey no information, purely for the sake of consistency with every other method's shape.
-
-##### Rationale and alternatives
-- **Unified parameter list without parenthetical separation (rejected)**: would make it harder to distinguish at a glance which variables are influencing variables and which are influenced variables, especially for methods with many parameters.
-- **Separate keyword for functions vs. methods (rejected)**: a method is fundamentally its own type category, attachable to any owner type; introducing a separate keyword for the receiver-less case would create an artificial distinction where none exists at the semantic level.
-
-##### Prior art
-Go's method syntax with an explicit receiver is syntactically similar. Rust's `fn` with `&self`/`&mut self` is semantically similar but introduces reference annotations that Khayyam eliminates. Smalltalk's message-passing model is the closest conceptual match.
-
-##### Unresolved questions
-None at this time.
-
-##### Future possibilities
-None recorded yet.
-
 ### Influencing and Influenced Variables, Not Inputs and Outputs
 "Input" and "output" is a borrowed framing, and it is a poor fit for a language where a type carries its own methods with it and every variable is passed by reference. In a value-oriented language, an "input" really can be treated as read-only by the callee, because the callee has no mechanism to reach back and change it. That guarantee does not hold here, and it does not hold in any language where a real capsule/struct is passed by reference and carries its own mutating methods. Consider C: a function receiving a pointer to a struct is nominally receiving an "argument," but nothing stops that function from calling the struct's own mutating operations on it — developers routinely do exactly this, because the struct's mutating functions are conventionally recognizable and are, in practice, called from inside other functions that also treat the same struct as an "input." The struct was never purely an input to begin with; it was already something else the label just didn't have a name for.
 
@@ -94,26 +76,7 @@ These are relational categories, not fixed properties of a variable. The same `v
 #### The Open Question: A Variable That Is Both
 A genuine unresolved case is a variable that plays both roles in the very same call. Consider `sk Socket` in a method that reads configuration values off `sk` (making it an influencing variable for that part of the method) and also calls `sk.Close()` before returning (making it an influenced variable, since the socket's own internal closed-state has now changed as a side effect of this call). There is currently no settled notation for declaring this dual role explicitly — a variable can only be written into one of the two parenthesized groups today, whichever the author judges primary.
 
-One working hypothesis, not yet a rule: a variable needing both roles in the same call may itself be a decomposition signal, in the same spirit as [Composition Depth as a Decomposition Signal](#composition-depth-as-a-decomposition-signal-no-expression-chaining) — if `sk`'s configuration is read in one place and its lifecycle is closed in another, the method doing both may be doing two jobs (reading state, and terminating a resource) that would be clearer as two methods with a traceable order between them, rather than one method where a single variable's effect on, and by, the call are tangled together. This is offered as a hypothesis to test against real code, not a settled rule — see Unresolved questions.
-
-#### Discussion
-
-##### Drawbacks
-Owner/influencing/influenced is one more piece of vocabulary a newcomer has to learn instead of reaching for the already-familiar "input"/"output" mental model every other language uses. And the dual-role case above shows the three-way split is not yet a complete model — a real, common pattern (a resource handle that is read from and then closed in the same call) does not fit cleanly into exactly one of the two non-owner groups.
-
-##### Rationale and alternatives
-- **Keep "arguments" and "return values" (the conventional framing; rejected)**: accurately describes languages where the callee cannot reach back into the caller's variables, but is actively misleading in Khayyam, where every non-owner variable is passed by reference and can, in principle, be mutated through its own exposed methods regardless of which parenthesized group it sits in. Keeping the conventional names would quietly promise a read/write guarantee the language does not make.
-- **"Input"/"output" (a common relabeling; rejected for the same reason)**: still a positional framing (which side of the call is it "on"), not a role framing (what does it actually do in this call); it inherits the same misleading guarantee as "arguments"/"return values."
-
-##### Prior art
-C's pass-by-pointer struct parameters are the direct prior art for the problem being solved here — the same "argument that is also mutated internally" pattern this section describes. Go and Rust's pointer/reference parameters share the same structural ambiguity; Rust's borrow checker is the closest prior art for actually *enforcing* a distinction between read-only and mutable access at the language level (via `&` vs `&mut`), which Khayyam's current model does not attempt — the influencing/influenced split here is a naming and modeling clarification, not an enforcement mechanism.
-
-##### Unresolved questions
-- Whether a variable playing both the influencing and influenced role in the same call should get explicit notation (a third grouping, a marker, or something else), or whether it should remain disallowed/discouraged in favor of splitting the method, is not yet decided.
-- Whether the compiler or linter should (or even can, without deeper static analysis) detect when a variable declared in the influencing group is, in fact, being mutated inside the method body via one of its own exposed methods — surfacing exactly the case this section describes as a warning.
-
-##### Future possibilities
-A linter rule that flags an influencing variable receiving a call to one of its own known-mutating methods, prompting the author to either move it to the influenced group or consider splitting the method, once the dual-role question above is resolved.
+One working hypothesis, not yet a rule: a variable needing both roles in the same call may itself be a decomposition signal, in the same spirit as [Composition Depth as a Decomposition Signal](#composition-depth-as-a-decomposition-signal-no-expression-chaining) — if `sk`'s configuration is read in one place and its lifecycle is closed in another, the method doing both may be doing two jobs (reading state, and terminating a resource) that would be clearer as two methods with a traceable order between them, rather than one method where a single variable's effect on, and by, the call are tangled together. This is offered as a hypothesis to test against real code, not a settled rule — see the paired handoff's [Open Questions](./khayyam-method.handoff.md#a-variable-that-is-both-influencing-and-influenced-in-the-same-call).
 
 ### No Dedicated fn/func Keyword
 In Khayyam, functions and methods are not separate concepts. There is no `fn`/`func` keyword in the grammar — but more importantly than the missing keyword itself, Khayyam treats the instinct to reach for a genuinely standalone, type-independent function as usually a sign of unfinished thinking about the behavior, not a real requirement of the behavior itself.
@@ -136,24 +99,6 @@ TimeHelper.When(d)(t1)
 
 This is not a rejection of pure, standalone-function-style logic — it is fully supported — it is simply always expressed as a method, and, wherever possible, attached to the type the behavior actually belongs to (as `Sum` belongs to `W32`) rather than to a fresh wrapper capsule invented for the occasion. The wrapper-capsule-plus-`Do` pattern above is what's left over once that search comes up genuinely empty.
 
-#### Discussion
-
-##### Drawbacks
-This reframing adds a real thinking cost before writing anything: instead of just typing a free function, a developer has to first ask which type the behavior actually belongs to — for `Sum`, that means noticing the overflow/coercion questions and picking a numeric type before writing a line of logic. And for the genuinely rare case where no existing type fits, expressing the behavior still requires a named method (typically wrapped in a small capsule to give it a name and a home) rather than a single top-level function declaration, which remains more ceremony than virtually every other language needs for this case.
-
-##### Rationale and alternatives
-- **Dedicated `fn`/`func` keyword plus access-modifier keywords (the conventional approach; rejected)**: an unnecessary second category of declaration syntax layered on top of a model — attach a method to whichever type owns the behavior — that already covers the case, once that type is correctly identified.
-- **Free functions with no owner as the default (rejected)**: makes it too easy to stop at the first "this doesn't need a type" impression, which the `Sum` example shows is usually wrong on inspection; defaulting to a method on an owning type forces that inspection to happen at declaration time rather than being skipped.
-
-##### Prior art
-Most languages (C, Go, Java, Rust, Python) provide a dedicated function-declaration keyword distinct from their type/class declaration syntax, and treat `Sum(a, b)`-style free functions as entirely ordinary. Smalltalk and other strictly message-passing-oriented languages, where even "free functions" are ultimately methods on some object, are closer in spirit to Khayyam's approach here. Domain-modeling-heavy codebases in many languages (e.g. `Money.add()` over a free `add(a, b)`) already arrive at the same "behavior belongs to a type" conclusion as a best practice, without the language forcing it.
-
-##### Unresolved questions
-None at this time.
-
-##### Future possibilities
-None recorded yet.
-
 ### Composition Depth as a Decomposition Signal (No Expression Chaining)
 Khayyam method calls are statements, not chainable expressions (`a.Foo().Bar()` is not legal syntax). Every intermediate result requires an explicitly declared, named variable. A method or widget body that accumulates many such named steps is treated as a deliberate design signal calling for further decomposition, not a cost to optimize away with chaining syntax.
 
@@ -163,38 +108,5 @@ This applies uniformly, including to things that *feel* like a single operation 
 
 Because every method's influenced variables are written by reference into pre-declared variables (never returned as an expression value — see [Method Structure](#method-structure)), there is no syntactic slot in the grammar for one call's result to be fed directly as another call's input. The verbosity of named intermediate steps is the price paid for forcing this discipline to be visible directly in the source, rather than living only in a developer's head or a comment.
 
-#### Discussion
-
-##### Drawbacks
-Even a simple, genuinely single-purpose sequence (e.g. a three-step pure math calculation) requires multiple named temporary variables, which can read as noisier than an equivalent one-line chained expression in other languages, especially for short-lived, never-reused intermediate values.
-
-##### Rationale and alternatives
-Allowing expression-level chaining (as virtually all modern languages do) was rejected because it removes the friction that currently makes over-large method/widget bodies visible and uncomfortable — without that friction, the language would have no organic pressure toward decomposition, relying entirely on developer discipline or external linting to catch the same problem after the fact.
-
-##### Prior art
-Go and Rust both support method chaining freely; this is treated as the default in modern language design, which makes Khayyam's rejection here a deliberate, atypical choice rather than an oversight.
-
-##### Unresolved questions
-None at this time. (An earlier concern — whether this rule could be misapplied to single-responsibility pipelines that only *look* like several operations — was resolved: it applies uniformly, since each pipeline stage genuinely is a distinct concern with its own failure mode.)
-
-##### Future possibilities
-None recorded yet.
-
 ## Results
 
-## Discussion
-
-### Drawbacks
-Together, these decisions mean Khayyam code contains more named methods and more named intermediate variables than equivalent code in most mainstream languages: every seemingly type-independent utility requires first identifying which type actually owns the behavior (or, failing that, a purpose-built capsule-plus-method pair); every multi-step computation becomes a sequence of named variables rather than a chained expression. Both costs are treated as deliberate, load-bearing friction rather than incidental ceremony to be minimized. Separately, the owner/influencing/influenced reframing of method parameters trades a familiar (if inaccurate) input/output mental model for a more accurate but less familiar one, and does not yet have a settled answer for variables that play both roles in the same call.
-
-### Rationale and alternatives
-Both `fn`/`func`-keyword and expression-chaining rejections trace back to the same underlying choice: Khayyam consistently declines to add a second, shortcut syntax alongside an already-sufficient general mechanism (the method model, attached to whichever type actually owns the behavior; named, pre-declared variables for a method's influenced variables), even where the shortcut is common practice elsewhere and would reduce ceremony in the common case. The influencing/influenced reframing follows a related but distinct logic: not "add no new mechanism" but "name the existing mechanism by what it does, not by an inherited framing (input/output) that doesn't hold once methods are pass-by-reference and types carry their own mutating behavior."
-
-### Prior art
-Prior art for each individual decision is documented under its own topic above. Taken together, Smalltalk's message-passing model (no free functions, no operator overloading magic) is the closest overall precedent for this document's general stance: prefer an already-general mechanism, explicitly used, over a second, more convenient but less legible one.
-
-### Unresolved questions
-1. Whether a variable playing both the influencing and influenced role in the same call needs its own notation, or should be treated as a signal to split the method — see [Influencing and Influenced Variables](#influencing-and-influenced-variables-not-inputs-and-outputs).
-
-### Future possibilities
-A linter rule flagging influencing variables that receive calls to their own known-mutating methods (see [Influencing and Influenced Variables](#influencing-and-influenced-variables-not-inputs-and-outputs)).

@@ -10,11 +10,16 @@
   - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — reviewed, rewrote
 
 #### What changed
-Initial Draft with three realization rules — user-space-thread substrate, channels-as-signals (never channel-as-store), pooled execution units — plus the substrate-hostile-operation obligation for framework libraries.
+- The initial draft established three realization rules — user-space-thread substrate, channels-as-signals (never channel-as-store), pooled execution units — plus the substrate-hostile-operation obligation for framework libraries.
+- Concept-level treatment was split from realization-level rules: the concept level was kept in process.md's Concurrency topic (where the Worker/core model and the locking decision chain already live), the realization level in this document, both cross-linked (Super Z).
+- The channel rule was stated deliberately stricter than the ecosystem idiom, and the divergence recorded against Go specifically (Super Z).
+- The signaling-primitive contract was kept as an unresolved question tied to process.md's Event concept (Super Z).
 
-The positions were brought from public concurrency discussions: channels are signals, not stores (buffer sizes in the millions as a recurring production failure; the ring-buffer internals of a mainstream channel implementation read as evidence the structure was built for coordination); user-space threading as the required substrate (kernel-thread-per-activity re-pays the cost M:N runtimes exist to remove); worker pools over spawn-per-request (per-request goroutine starvation and tail-latency collapse at scale, the reason high-performance servers pool) (Omid Hekayati).
-
-The concept-level treatment (kept in process.md's Concurrency topic, where the Worker/core model and the locking decision chain already live) was split from realization-level rules (this document), both cross-linked; the channel rule was stated deliberately stricter than the ecosystem idiom and the divergence recorded against Go specifically; the signaling-primitive contract was kept as an unresolved question tied to process.md's Event concept (Super Z).
+#### Deliberation
+- The positions were brought from public concurrency discussions (Omid Hekayati):
+  - channels are signals, not stores — buffer sizes in the millions as a recurring production failure; the ring-buffer internals of a mainstream channel implementation read as evidence the structure was built for coordination.
+  - user-space threading as the required substrate — kernel-thread-per-activity re-pays the cost M:N runtimes exist to remove.
+  - worker pools over spawn-per-request — per-request goroutine starvation and tail-latency collapse at scale, the reason high-performance servers pool.
 
 ---
 

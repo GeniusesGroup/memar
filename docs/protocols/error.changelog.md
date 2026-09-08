@@ -16,13 +16,16 @@ The entries below consolidate the document's former front-matter provenance (`Ap
   - [Claude](../../CONTRIBUTORS.md#claude) (claude-sonnet-5, extended thinking) — reviewed.
 
 #### What changed
-Defined `Error`'s composition (`DataType`, `Field_MediaType`, `ADT`, `ImplementsError`), identity by `DataTypeID()` alone, the rejection of `Equivalence` and of sealed-interface markers, the optional capability interfaces (`Internal`/`Temporary`/`Timeout`), and the multi-cause return convention. Tracked `ADT`'s `IsNull`/`IsEmpty` semantics, the `IsEqual`/`MediaType` redundancy question, and the open Khayyam capsule-composition model.
+- Defined `Error`'s composition (`DataType`, `Field_MediaType`, `ADT`, `ImplementsError`) and its method composition and boundary-crossing discipline, identity by `DataTypeID()` alone, the rejection of `Equivalence` and of sealed-interface markers, the optional capability-interface pattern (`Internal`/`Temporary`/`Timeout`), the `ImplementsError` naming rationale, and the multi-cause return convention (Omid Hekayati — authored the core design decisions).
+- Tracked `ADT`'s `IsNull`/`IsEmpty` semantics, the `IsEqual`/`MediaType` redundancy question, and the open Khayyam capsule-composition model.
+- Initial draft (Gemini).
+- Drafted and revised the interface across several rounds (Super Z).
 
-Authored all core design decisions across an extended multi-session discussion; defined `Error`'s method composition and boundary-crossing discipline; rejected `Equivalence` and sealed-interface markers; established the `ImplementsError` naming rationale and the optional capability-interface pattern. (Omid Hekayati)
-
-Initial draft. (Gemini)
-
-Drafted and revised the interface across several rounds; identified and corrected two Go package-visibility bugs in an intermediate marker-method design; argued for, then against, a sealed-interface marker pattern as evidence developed. (Super Z)
+#### Deliberation
+- The core design decisions were authored across an extended multi-session discussion (Omid Hekayati).
+- An intermediate marker-method design was drafted, in which two Go package-visibility bugs were identified and corrected (Super Z).
+- A sealed-interface marker pattern was argued for, then against, as evidence developed (Super Z).
+- Sealed-interface markers were rejected (Omid Hekayati).
 
 ---
 
@@ -33,9 +36,8 @@ Drafted and revised the interface across several rounds; identified and correcte
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — claimed
 
 #### What changed
-Authored in parallel as a standalone document, defining the Capture → Persist → Re-express discipline; the two-audience distinction between `Error` (caller-facing contract) and Log (operator-facing forensic event); the corollary that user-domain outcomes must not be modeled as log events; and the worked financial-transaction example demonstrating the rule. Noted explicitly that the rule cannot be reduced to a structural or syntactic check and is better suited to AI-assisted static analysis than to a linter.
-
-Authored the boundary-translation discipline that this document absorbs. (Omid Hekayati)
+- Authored in parallel as a standalone document, since absorbed into this one, defining the boundary-translation discipline — the Capture → Persist → Re-express discipline; the two-audience distinction between `Error` (caller-facing contract) and Log (operator-facing forensic event); the corollary that user-domain outcomes must not be modeled as log events; and the worked financial-transaction example demonstrating the rule.
+- Noted explicitly that the rule cannot be reduced to a structural or syntactic check and is better suited to AI-assisted static analysis than to a linter.
 
 ---
 
@@ -47,11 +49,10 @@ Authored the boundary-translation discipline that this document absorbs. (Omid H
   - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.2) — rewrote
 
 #### What changed
-Merged the *Error vs. Log* boundary-translation rules into the *Error Abstraction* document, on the recognition that they answer two halves of one question — what an `Error` *is*, and what it is allowed to do when it leaves its origin layer — and that forcing readers to load two documents produced the same scattering problem the documentation specification was written to eliminate. Every load-bearing claim, alternative rejection, and unresolved question from both sources was preserved without summarizing; a Composition overview topic was added; a Boundary discipline topic now separates the two boundary rules explicitly (process/network crossing vs. diagnostic-to-actionable layer translation); an Enforcement topic states that "each Error is its own type" is load-bearing for everything else.
-
-Decided on the merge once both halves were recognized as one question; also decided (informed by document 495420, developed in a parallel session) that each Error concept is its own concrete type. (Omid Hekayati)
-
-Consolidated the two discussions into this single canonical document; restructured the merged content to follow then-current body-section specification; verified all Khayyam code examples against khayyam.md's syntax rules. (Super Z)
+- Merged the *Error vs. Log* boundary-translation rules into the *Error Abstraction* document, on the recognition that they answer two halves of one question — what an `Error` *is*, and what it is allowed to do when it leaves its origin layer — and that forcing readers to load two documents produced the same scattering problem the documentation specification was written to eliminate (Omid Hekayati — decided the merge once both halves were recognized as one question).
+- Decided, informed by document 495420 developed in a parallel session, that each Error concept is its own concrete type (Omid Hekayati).
+- Consolidated the two discussions into this single canonical document; restructured the merged content to follow then-current body-section specification; verified all Khayyam code examples against khayyam.md's syntax rules (Super Z).
+- Every load-bearing claim, alternative rejection, and unresolved question from both sources was preserved without summarizing; a Composition overview topic was added; a Boundary discipline topic now separates the two boundary rules explicitly (process/network crossing vs. diagnostic-to-actionable layer translation); an Enforcement topic states that "each Error is its own type" is load-bearing for everything else (Super Z).
 
 ---
 
@@ -65,11 +66,9 @@ Consolidated the two discussions into this single canonical document; restructur
   - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — rewrote.
 
 #### What changed
-Error was the motivating case of the dissolved *Static Concepts Must Be Types* document (495421); that document's principle now lives in [Type](../type.md). Nine references were repointed with no content change: the front-matter `Citations` entry, the Abstract's assumption statement, Multi-cause returns, both code-generator Future-possibilities notes, Enforcement (including the `Err` naming-convention pointer, which now targets type.practice.md), Drawback 1, the generic-`Init` rejection rationale, and Prior art (which now names only the memar-go companion analysis directly, since the base document it used to cite alongside that companion is gone).
-
-Recorded for a future pass, so the outstanding work is searchable: this document still carries legacy `Applied to`/`Citations`/`Contributors` front matter and a `## Change Rationale` section from before the Facet split, and is due for its own Explanation-facet migration like the rest of the set.
-
-Dissolve pre-facet micro-documents so citations point at Type and Modeling generally. (Omid Hekayati)
+- Error was the motivating case of the dissolved *Static Concepts Must Be Types* document (495421); that document's principle now lives in [Type](../type.md).
+- Nine references were repointed with no content change: the front-matter `Citations` entry, the Abstract's assumption statement, Multi-cause returns, both code-generator Future-possibilities notes, Enforcement (including the `Err` naming-convention pointer, which now targets type.practice.md), Drawback 1, the generic-`Init` rejection rationale, and Prior art (which now names only the memar-go companion analysis directly, since the base document it used to cite alongside that companion is gone) (Omid Hekayati — directed dissolving pre-facet micro-documents so citations point at Type and Modeling generally; Super Z — rewrote).
+- Recorded for a future pass, so the outstanding work is searchable: this document still carries legacy `Applied to`/`Citations`/`Contributors` front matter and a `## Change Rationale` section from before the Facet split, and is due for its own Explanation-facet migration like the rest of the set.
 
 ---
 
@@ -81,9 +80,10 @@ Dissolve pre-facet micro-documents so citations point at Type and Modeling gener
   - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — rewrote.
 
 #### What changed
-The body already conformed to `documentation-explanation.md` (Abstract; Introduction with Motivation and Methodology; topic-first Explanation with per-topic Discussion bundles; Results; document-wide Discussion); the remaining work was provenance and identity. The former `Applied to`, `Citations`, and `Contributors` front-matter fields and the trailing Change Rationale section moved into this file (entries above, in phase order). Citation dispositions: the Type dependency is now linked directly in the body (see the repointing entry); the Khayyam syntax-source citation became an ordinary body link at its one reader-needed mention (Unresolved questions, capsule-composition model); the abstraction_p.Implements dependency had never had a resolvable URI and remains tracked through the Implements-pattern follow-up under Unresolved questions; the Documentation structure-compliance citation became obsolete under the facet split. H1 aligned to the Title ("The Error"), dropping the subtitle descriptor the Abstract already carries; this changelog retitled accordingly.
-
-Continue the documentation-correction pass onto this document itself. (Omid Hekayati)
+- Continuing the documentation-correction pass onto this document itself, the body already conformed to `documentation-explanation.md` (Abstract; Introduction with Motivation and Methodology; topic-first Explanation with per-topic Discussion bundles; Results; document-wide Discussion); the remaining work was provenance and identity.
+- The former `Applied to`, `Citations`, and `Contributors` front-matter fields and the trailing Change Rationale section moved into this file (entries above, in phase order).
+- Citation dispositions: the Type dependency is now linked directly in the body (see the repointing entry); the Khayyam syntax-source citation became an ordinary body link at its one reader-needed mention (Unresolved questions, capsule-composition model); the abstraction_p.Implements dependency had never had a resolvable URI and remains tracked through the Implements-pattern follow-up under Unresolved questions; the Documentation structure-compliance citation became obsolete under the facet split.
+- H1 aligned to the Title ("The Error"), dropping the subtitle descriptor the Abstract already carries; this changelog retitled accordingly.
 
 ---
 
@@ -101,11 +101,7 @@ Continue the documentation-correction pass onto this document itself. (Omid Heka
   - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — moved, rewrote
 
 #### What changed
-This document and its changelog moved from `docs/` into the framework-contracts subdirectory (`docs/abstractions/`, since renamed `docs/protocols/`) — a subdirectory whose membership criterion (recorded in its README) is: documents specifying Memar's own framework-level contracts, as distinct from the conceptual foundation documents at `docs/` root. These documents are the source of truth for their protocols, not executable code; implementations live in the `memar-{language}` repositories. No content change; no new dependency or citation introduced.
-
-Documents defining a Memar framework-level abstraction or contract get their own subdirectory under `docs/`, so that base documents referencing the abstraction layer do so deliberately rather than by accident; the subdirectory was later renamed `docs/protocols/` when its membership widened to Memar's protocol specifications — see the renaming entry below. (Omid Hekayati)
-
-Relocated this document and its changelog, adjusted internal relative links for the new depth, repointed the inbound references listed above. (Super Z)
+- This document and its changelog moved from `docs/` into the framework-contracts subdirectory (`docs/abstractions/`, since renamed `docs/protocols/`) — a subdirectory whose membership criterion (recorded in its README) is: documents specifying Memar's own framework-level contracts, as distinct from the conceptual foundation documents at `docs/` root. These documents are the source of truth for their protocols, not executable code; implementations live in the `memar-{language}` repositories. No content change; no new dependency or citation introduced (Omid Hekayati — decided that documents defining a Memar framework-level abstraction or contract get their own subdirectory under `docs/`, so that base documents referencing the abstraction layer do so deliberately rather than by accident; the subdirectory was later renamed `docs/protocols/` when its membership widened to Memar's protocol specifications — see the renaming entry below; Super Z — relocated this document and its changelog, adjusted internal relative links for the new depth, repointed the inbound references listed above).
 
 ---
 
@@ -117,11 +113,16 @@ Relocated this document and its changelog, adjusted internal relative links for 
   - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — reviewed, rewrote
 
 #### What changed
-Boundary discipline gained three additions: an explicit Bug/Error/Log-Event three-entity distinction grounding why the error contract must not absorb forensic bookkeeping; a stated rationale for the numeric-identifier wire format (stability, dispatch, locale-independence, per-audience text resolution at the ends); and a new Immutability topic stating the protocol's deliberate break from the ecosystem's wrap-and-enrich convention, with the rejected convention's strongest argument (trace preservation) answered by pointing at the Capture → Persist → Re-express steps as the place diagnostic data actually lives.
+- Boundary discipline gained three additions: an explicit Bug/Error/Log-Event three-entity distinction grounding why the error contract must not absorb forensic bookkeeping; a stated rationale for the numeric-identifier wire format (stability, dispatch, locale-independence, per-audience text resolution at the ends); and a new Immutability topic stating the protocol's deliberate break from the ecosystem's wrap-and-enrich convention, with the rejected convention's strongest argument (trace preservation) answered by pointing at the Capture → Persist → Re-express steps as the place diagnostic data actually lives.
+- The additions were verified against the document's existing claims before writing — immutability was found to be already implied by the identity model ("no per-instance dynamic field meaningful to compare", each error its own type) but never stated as a discipline, and the wire-format rationale was found consistent with `DataTypeID`-only crossing but never articulated, so both additions extend rather than contradict existing content. The three additions were written into Boundary discipline (the Bug paragraph, the wire-format paragraph, the immutability topic) in the document's established prose style, the immutability argument linked to the identity model and the capture/persist/re-express steps so the rejection of wrap-enrichment does not read as information loss (Super Z).
 
-Three positions were brought from years of public developer-community discussions (gopherconf.ir, Go Engineers, Gommunity): (1) the three-entity distinction — a bug is a defect in human reasoning discoverable by human investigation, an error is an informational entity the system holds and reports, a log event records what the system experienced — with the corollary that per-layer diagnostic attachment (wrap/enrich) confuses the error contract with the log's forensic role; (2) an `Error` must be immutable, never created dynamically to carry per-request particulars like a failing filename — if the caller needs those, the operation's design is wrong or the data belongs to the caller's own inputs; (3) what crosses the wire is a numeric identifier, not a single-locale text string, since strings cannot be dispatched on reliably and bind the contract to one rendering. Position (2) was accepted into the document as stated; positions (1) and (3) were recorded with their ecosystem-contrary framing intact. Counter-positions from the discussions (wrap-as-trace-preservation: "without enrichment at each layer you lose the trace") were explicitly weighed in the text rather than ignored (Omid Hekayati).
-
-The additions were verified against the document's existing claims before writing — immutability was found to be already implied by the identity model ("no per-instance dynamic field meaningful to compare", each error its own type) but never stated as a discipline, and the wire-format rationale was found consistent with `DataTypeID`-only crossing but never articulated, so both additions extend rather than contradict existing content. The three additions were written into Boundary discipline (the Bug paragraph, the wire-format paragraph, the immutability topic) in the document's established prose style, the immutability argument linked to the identity model and the capture/persist/re-express steps so the rejection of wrap-enrichment does not read as information loss (Super Z).
+#### Deliberation
+- Three positions were brought from years of public developer-community discussions (gopherconf.ir, Go Engineers, Gommunity) (Omid Hekayati).
+- (1) the three-entity distinction — a bug is a defect in human reasoning discoverable by human investigation, an error is an informational entity the system holds and reports, a log event records what the system experienced — with the corollary that per-layer diagnostic attachment (wrap/enrich) confuses the error contract with the log's forensic role (Omid Hekayati).
+- (2) an `Error` must be immutable, never created dynamically to carry per-request particulars like a failing filename — if the caller needs those, the operation's design is wrong or the data belongs to the caller's own inputs (Omid Hekayati).
+- (3) what crosses the wire is a numeric identifier, not a single-locale text string, since strings cannot be dispatched on reliably and bind the contract to one rendering (Omid Hekayati).
+- Counter-positions from the discussions (wrap-as-trace-preservation: "without enrichment at each layer you lose the trace") were explicitly weighed in the text rather than ignored (Omid Hekayati).
+- Position (2) was accepted into the document as stated; positions (1) and (3) were recorded with their ecosystem-contrary framing intact (Omid Hekayati).
 
 ---
 
@@ -171,6 +172,6 @@ Dissolved every `#### Discussion` wrapper (Identity and equality, Boundary trans
 - **Boundary translation cannot be linted structurally** — stated inline under the Boundary-translation topic. This shifts the burden of verifying the rule onto semantic review or AI-assisted static analysis, neither of which is yet built.
 
 #### Related work
-- Go's `error` interface (single method, value-oriented, identity via `errors.Is`/`errors.As` chain-walking) and Rust's `Error` trait with enum-based error families are both discussed in depth in the Go-focused companion analysis kept in the memar-go repository (`Static_Concepts_Must_Be_Types-vs-go_philosophy.md`), which this document defers to rather than repeating. (Migrated from the document-level retired `Prior art`)
+- Go's `error` interface (single method, value-oriented, identity via `errors.Is`/`errors.As` chain-walking) and Rust's `Error` trait with enum-based error families are both discussed in depth in the Go-focused companion analysis kept in the memar-go repository ([memar_type-vs-go_philosophy.md](https://github.com/GeniusesGroup/memar-go/blob/main/.agents/docs/memar_type-vs-go_philosophy.md)), which this document defers to rather than repeating. (Migrated from the document-level retired `Prior art`)
 - The Detail/Quiddity split (type documentation vs. occurrence guidance) has no direct precedent identified in mainstream error-handling literature; it was arrived at independently during this discussion. Most prior art (Go's `error`, Rust's `Error` trait, Java's `Throwable`) carries a single free-text message or a context-display string with no built-in audience distinction. (Migrated from the Detail-and-Quiddity topic's retired `Prior art`)
 - The boundary-translation pattern echoes the general "fault boundary translation" practice recommended in DDD and clean-architecture literature (translating infrastructure exceptions into domain exceptions at a repository boundary), but is stated here as an explicit, named, framework-wide rule rather than an implicit convention. The specific enrichment-before-logging step (attaching `ServerInstanceID`, `ConnectionID`, correlated IDs to the log record at the point of maximum available context) draws on observability engineering practices (structured logging, distributed tracing correlation) that exist in the ecosystem as best practices but are rarely enforced architecturally. (Migrated from the Boundary-translation topic's retired `Prior art`)

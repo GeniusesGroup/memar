@@ -23,7 +23,7 @@ Multiple design discussions across Khayyam's evolution converged independently o
 ### Methodology
 This document gives a general, syntax-level overview of Khayyam — enough to read and write valid code. It is deliberately not exhaustive: the reasoning behind each construct, the alternatives considered, and currently open questions live in companion documents, linked inline wherever a construct has one of its own. The approach has been to keep this specification itself short and link outward, rather than grow one very long document that tries to hold both the syntax and its full justification.
 
-Where a construct's design draws on a deliberate comparison against other languages' choices — grounded, where possible, in the wider computer-science literature rather than informal preference — that comparison lives in the relevant companion document's own Prior art section (see, for example, [Abstraction in Khayyam](./khayyam-abstraction.md)'s comparison against Go, Rust, Java, TypeScript, Zig, and Haskell), not repeated here.
+Where a construct's design draws on a deliberate comparison against other languages' choices — grounded, where possible, in the wider computer-science literature rather than informal preference — that comparison lives in the relevant companion document's own paired changelog (see, for example, [Abstraction in Khayyam](./khayyam-abstraction.changelog.md)'s comparison against Go, Rust, Java, TypeScript, Zig, and Haskell, recorded under Related work), not repeated here.
 
 ## Explanation
 
@@ -137,7 +137,7 @@ Building a compiler or runtime is a separate concern with its own design space, 
 
 Keeping compiler and runtime implementation outside Khayyam's own scope as separate systems that consume Khayyam's specification, built by teams whose incentives are implementation correctness and performance rather than syntax convenience — is therefore not an incidental scoping choice. It is a structural safeguard against the specific failure mode described above.
 
-This has a direct consequence for how Khayyam's own documents should be scoped: a proposal to add syntax "to make the compiler's job easier" or "because other languages do it this way" is, by this principle, a signal to examine the proposal skeptically rather than a reason to adopt it. The precise boundary between "what Khayyam specifies" and "what a Khayyam implementation provides" still needs worked examples before this can be considered settled — see Unresolved questions.
+This has a direct consequence for how Khayyam's own documents should be scoped: a proposal to add syntax "to make the compiler's job easier" or "because other languages do it this way" is, by this principle, a signal to examine the proposal skeptically rather than a reason to adopt it. The precise boundary between "what Khayyam specifies" and "what a Khayyam implementation provides" still needs worked examples before this can be considered settled — see the paired handoff's [Open Questions](./khayyam.handoff.md#open-questions).
 
 ### Separation of Syntax and Governance: A Principle
 
@@ -160,23 +160,11 @@ As a result, Khayyam favors:
 
 These preferences influence language design decisions such as execution models, memory abstractions, and runtime responsibilities. The goal is not to require a specific deployment environment. Rather, the goal is to ensure that architectural decisions remain visible, modelable, and predictable regardless of the underlying execution platform.
 
-Many of these principles align naturally with unikernel-style computing, where applications operate with minimal hidden runtime layers and explicit control over execution behavior. However, Khayyam adopts these ideas as architectural principles rather than deployment requirements; the runtime-side realization of this alignment lives in the [Memar Framework's reference architecture](./khayyam-runtime.md), which is one concrete answer to it — not its definition.
+Many of these principles align naturally with unikernel-style computing, where applications operate with minimal hidden runtime layers and explicit control over execution behavior. However, Khayyam adopts these ideas as architectural principles rather than deployment requirements; the runtime-side realization of this alignment lives in the [Memar Framework's reference architecture](./khayyam-runtime.md), which is one concrete answer to it — not its definition. The unikernel-aligned assumption may limit early adoption in organizations that do not yet use unikernels in production.
 
 Every language feature should have explicit execution semantics. Architectural behavior should emerge from visible models and protocols rather than from implicit runtime facilities or operating-system abstractions. This approach seeks to reduce the gap between architectural intent, implementation behavior, and runtime execution, allowing systems to remain understandable and evolvable over long periods of time.
 
 Like the Separation of Syntax and Governance, this is not a topic with a single decision to be made once and filed elsewhere — it is the principle applied every time a construct's interaction with execution (memory, concurrency, boot, teardown) is designed. It stays here for the same reason.
-
-#### Discussion
-
-##### Drawbacks
-If a team needs to deploy Khayyam code on a standard Linux server, how much of the language's value proposition is lost? The unikernel-aligned assumption may limit early adoption in organizations that do not yet use unikernels in production.
-
-##### Unresolved questions
-1. Should Khayyam define a **hosted mode** for development and testing that simulates unikernel constraints on a standard OS, similar to how Rust's `#[no_std]` is opt-in rather than the default?
-2. What is the minimum set of OS abstractions a hosted mode must provide for productive development outside a unikernel?
-
-##### Future possibilities
-This topic carries an explicit seed for a dedicated document: **Target Platform Implications** — defining the hosted-mode specification, enumerating the OS abstractions required for productive development outside a unikernel, and specifying the boundary between unikernel-native and hosted-mode behavior.
 
 ### Behavior Over Type Identity
 Traditional generic systems frequently focus on type identity — `T`, `K`, `V` — as the central mechanism for abstraction. Khayyam instead emphasizes required behavior: the essential question is "what capabilities are required?" rather than "what concrete type is this?" This recurred across discussions of generics, parametric polymorphism, containers, algorithms, and infrastructure components alike, and is one of the reasons behind the No Generic Syntax rule under Abstraction, above. See [Abstraction in Khayyam → Behavior Over Type Identity](./khayyam-abstraction.md#behavior-over-type-identity) for the full treatment, including why several canonical parametric-polymorphism patterns (`identity<T>()`, `Option<T>`, `Result<T,E>`) are tied to constraints other languages have that Khayyam does not.
@@ -189,19 +177,7 @@ Many language designs begin by collecting useful features and combining them int
 This distinction is not merely philosophical. It has concrete implications for every design decision in the language, from how polymorphism works to how compilation is structured. A traditional language optimizes for feature completeness; Khayyam is designed to optimize for architectural integrity over time.
 
 #### Long-Term Architectural Potential
-One of the strongest aspects of Khayyam is its apparent focus on preventing architectural decay. Many language features optimize for short-term convenience. Khayyam often appears willing to accept additional modeling effort if it improves system clarity, domain integrity, architectural longevity, and maintainability over decades. This is unusual among modern languages and represents a deliberate trade-off that prioritizes the sustainability of large-scale systems over the speed of small-scale prototyping.
-
-#### Discussion
-
-##### Drawbacks
-A system-modeling approach inherently demands more upfront design investment. Developers accustomed to rapid prototyping in dynamically typed or feature-rich languages may find the initial modeling overhead excessive, particularly for small projects or proof-of-concept work where long-term architectural integrity is irrelevant.
-
-##### Prior art
-The idea of a language derived from architectural principles rather than feature collections has precedents in restricted domains — for example, Erlang's design from telecommunications reliability requirements, or Verilog's design from hardware modeling needs. Khayyam's ambition is to apply this principle more broadly to general-purpose system software.
-
-##### Unresolved questions
-1. Is the system-modeling language framing the right way to position Khayyam externally, or does it create confusion with actual modeling languages (UML, Alloy) that serve a different purpose?
-2. At what project size does the architectural integrity trade-off begin to pay for itself?
+One of the strongest aspects of Khayyam is its apparent focus on preventing architectural decay. Many language features optimize for short-term convenience. Khayyam often appears willing to accept additional modeling effort if it improves system clarity, domain integrity, architectural longevity, and maintainability over decades. This is unusual among modern languages and represents a deliberate trade-off that prioritizes the sustainability of large-scale systems over the speed of small-scale prototyping. The cost of that trade is concrete: a system-modeling approach inherently demands more upfront design investment, and developers accustomed to rapid prototyping in dynamically typed or feature-rich languages may find the initial modeling overhead excessive, particularly for small projects or proof-of-concept work where long-term architectural integrity is irrelevant.
 
 ### Self-Documenting Code and Naming
 In most languages, naming is a style preference. In Khayyam, it is enforced by the language itself: magic numbers are forbidden, primitives must be wrapped in named capsules (`W32`, not `int`), and generic containers are replaced by domain-specific names (`UserRegistry`, not `Map<ID, User>`).
@@ -210,12 +186,6 @@ This means that in a Khayyam codebase, it is structurally impossible to write op
 
 This is not a one-time mechanism to be decided and then documented elsewhere — it is an ongoing tension that recurs every time a new naming rule, keyword, or grammar constraint is considered. Because of that, it stays part of this document, the same document every new construct is considered against, rather than being extracted into a separate style-guide document that would only drift from whatever this document actually specifies.
 
-#### Discussion
-
-##### Unresolved questions
-1. Where is the boundary between "enforced clarity" and "forced verbosity"? When does a domain-specific capsule name become unnecessary indirection? A capsule called `RetryCounter` adds clarity; a capsule called `LoopIndex` may not.
-2. Should Khayyam provide a linter rule or a compiler directive that allows teams to define their own boundaries for this trade-off?
-
 ### Syntactic Atomicity and Semantic Clarity
 Khayyam is designed around the principle that language constructs should communicate intent as explicitly and unambiguously as possible. This idea is explored through **syntactic atomicity**: each syntactic construct should correspond to a single semantic intent, and each semantic intent should preferably be represented by a single syntactic construct.
 
@@ -223,35 +193,16 @@ The primary goal is semantic clarity rather than AI assistance. By reducing ambi
 
 Like naming, this is not a topic with a single decision to be made once and filed elsewhere — it is the principle applied every time a new keyword, syntactic form, or grammar rule is proposed for Khayyam. It stays here for the same reason.
 
-#### Discussion
-
-##### Unresolved questions
-1. What level of syntactic atomicity provides meaningful benefits without introducing excessive verbosity? Highly regular, atomic syntax can feel verbose to experienced developers who rely on implicit conventions — where is the boundary between clarity and unnecessary ceremony?
-2. How can syntactic atomicity be measured objectively?
-3. Which forms of ambiguity are most harmful to long-term system maintainability?
-
 ### Domain Modeling Principles
 Khayyam pushes development in the opposite direction of most modern languages when it comes to domain modeling. Where other languages claim to support Domain-Driven Design but whose abstractions frequently collapse into generic containers and primitive types — `List<User>`, `Map<String, Object>`, `Dictionary<string, any>` — Khayyam encourages domain-specific concepts: `UserRegistry`, `ConnectionIndex`, `ServiceCatalog`, `PermissionStore`.
 
-Questions of modeling methodology — how concepts are discovered, when a concept deserves an independent abstraction versus remaining a derived or contextual one, and what the limits of modeling actually are — are intentionally not answered here. They are domain-independent and are addressed in [Modeling](./modeling.md), in particular *Concept Existence vs. Model Existence*; this document stays on the language side of that boundary.
+Questions of modeling methodology — how concepts are discovered, when a concept deserves an independent abstraction versus remaining a derived or contextual one, and what the limits of modeling actually are — are intentionally not answered here. They are domain-independent and are addressed in [Modeling](./modeling.md), in particular *Concept Existence vs. Model Existence*; this document stays on the language side of that boundary. The domain modeling approach demands that developers invest time in naming and structuring types before writing behavior. For developers accustomed to starting with functions and extracting types later, this represents a workflow inversion that may slow initial development velocity.
 
 #### Resistance to Primitive Obsession
 Large systems often accumulate thousands of values represented as `string`, `int`, and `bool`, while each instance carries completely different business meaning. Khayyam's emphasis on capsules and explicit modeling naturally pushes developers away from this pattern. This is not merely a typing preference; it is an architectural safeguard. By requiring all values to be wrapped in named capsules, the language is designed to keep business meaning from being lost to primitive types.
 
 #### Resistance to Utility-Oriented Architecture
 Many mature codebases eventually develop structures such as `Helpers`, `Utils`, `Common`, `Shared`, and `Base`, which become architectural dumping grounds. Khayyam's modeling style appears to discourage this evolution. Responsibilities are expected to live within meaningful capsules rather than generic utility containers. The language's import mechanism and single-responsibility file conventions reinforce this by making it natural to organize behavior around domain concepts rather than around utility categories.
-
-#### Discussion
-
-##### Drawbacks
-The domain modeling approach demands that developers invest time in naming and structuring types before writing behavior. For developers accustomed to starting with functions and extracting types later, this represents a workflow inversion that may slow initial development velocity.
-
-##### Rationale and alternatives
-- **Allow generic containers alongside domain-specific capsules (rejected)**: this would immediately re-open the door to the primitive-obsession and utility-dumping patterns that Khayyam's design explicitly aims to prevent.
-- **Provide a lint rule rather than a language-level constraint (considered, not chosen)**: lint rules can be disabled or ignored at the organizational level, weakening the architectural safeguard.
-
-##### Prior art
-Domain-Driven Design as formulated by Eric Evans advocates for rich domain models, but leaves enforcement to developer discipline. Khayyam encodes this discipline into the language grammar itself, making it structurally difficult to violate.
 
 ### Naming
 Khayyam takes its name from [Omar Khayyam](https://en.wikipedia.org/wiki/Omar_Khayyam) (1048–1131), a Persian polymath: mathematician, astronomer, philosopher, and poet.
@@ -266,21 +217,3 @@ None of this is a claim that the language was engineered to match the man point 
 
 ## Results
 
-## Discussion
-
-### Drawbacks
-This document now combines finalized syntax and semantics with the philosophical and architectural reasoning behind them, after absorbing what previously lived in a separate design-philosophy document. Combining both in one place risks the same duplication problem that separation was originally meant to prevent: a construct's rationale, once stated here, must not also be restated — and risk drifting out of sync — in that construct's own dedicated document (e.g. [Abstraction in Khayyam](./khayyam-abstraction.md), [Method in Khayyam](./khayyam-method.md)). This document manages that risk the same way those documents manage their own overlaps with each other: state a topic once, in the place closest to where a reader would look for it, and link to it from everywhere else rather than restating it.
-
-### Rationale and alternatives
-- **Keep a separate philosophy document (original approach, reversed)**: Khayyam previously split the canonical specification from a separate document holding the recurring architectural principles and design tensions behind it. In practice this created the same duplication risk splitting was meant to avoid — technical claims in the philosophy document could drift out of sync with the dedicated documents where those mechanisms were actually decided, which happened concretely once, when an earlier draft of that document restated an error-propagation question already substantially addressed elsewhere. The document was retired and its content merged back here and into each construct's own dedicated document, rather than trying to patch the split further. See this document's own changelog for the full provenance of what moved where.
-- **Keep philosophy and syntax reference as two documents indefinitely, accepting the drift risk (rejected)**: rejected once a second, independent failure of the same kind (this document's own now-superseded "Behavior Over Type Identity"/"Reassessment of Parametric Polymorphism" sections had drifted out of sync with the more developed version already migrated to `khayyam-abstraction.md`) confirmed the risk was recurring, not a one-time accident.
-
-### Prior art
-Rust's design philosophy documents and Go's "Go Proverbs" serve a similar purpose of capturing design intent alongside technical specification, generally as separate documents from the language reference itself. Khayyam's own experience with that split — the drift described above — is a data point specific to this project, not a general argument against the pattern; other projects may find the split works well for them.
-
-### Unresolved questions
-1. The precise boundary between "what Khayyam specifies" and "what a Khayyam implementation provides" (see *Khayyam Is Not Its Own Compiler or Runtime*, above) still needs worked examples before it can be considered settled.
-2. Now that philosophy and syntax reference live in one document, is there a size or complexity threshold at which splitting a specific topic back out into its own dedicated document becomes worthwhile, the way *Behavior Over Type Identity* already points to [Abstraction in Khayyam](./khayyam-abstraction.md) rather than restating it here?
-
-### Future possibilities
-None recorded at this time.

@@ -15,11 +15,17 @@
   - [Super Z](../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — rewrote
 
 #### What changed
-The project's collaboration and reasoning rules — previously a list of behavioral prescriptions in an always-active agent skill (`.agents/skills/main/SKILL.md`) and before that in instruction files — were replaced by a model-first document: what thinking is, which modes it has, how a conversation is two thinking systems joined by a medium, and which discourse norms follow from that model (evaluate claims on merits; definitions outrank terminology; do not assume the other participant correct or incorrect; criticism proportional to the model criticized; ask rather than assume; resist defaults arriving with the medium; prefer long-term clarity). Cognitive-science grounding (4E cognition) was added per the owner's direction. Rules specific to modeling or documentation remain owned by their specialized documents; this document owns the rules governing thinking material as it travels between any two thinking systems.
+- The project's collaboration and reasoning rules — previously a list of behavioral prescriptions in an always-active agent skill (`.agents/skills/main/SKILL.md`) and before that in instruction files — were replaced by a model-first document: what thinking is, which modes it has, how a conversation is two thinking systems joined by a medium, and which discourse norms follow from that model (evaluate claims on merits; definitions outrank terminology; do not assume the other participant correct or incorrect; criticism proportional to the model criticized; ask rather than assume; resist defaults arriving with the medium; prefer long-term clarity).
+- Cognitive-science grounding (4E cognition) was added.
+- Rules specific to modeling or documentation remain owned by their specialized documents; this document owns the rules governing thinking material as it travels between any two thinking systems.
+- The rules were extracted from the retired skill and the archived instruction file, the discourse norms derived from the conversation model, and the document drafted per the Explanation facet specification (Super Z).
 
-Directed that the always-active instruction skill be retired rather than duplicated; chose the name `thinking.md` so the document can grow beyond critical thinking into systems, creative, and adaptive thinking as cognitive-science grounding deepens; required 4E cognition grounding and the two-thinking-systems conversation model from the start; directed that the conversation model treat exchange between any two thinking systems (human, AI, organizational) symmetrically, never as AI-specific etiquette; reviewed the first draft and directed that the base document state only the "why" — historical provenance of the rules belongs here, not in the explanatory document. (Omid Hekayati)
-
-Extracted the rules from the retired skill and the archived instruction file, derived the discourse norms from the conversation model, and drafted the document per the Explanation facet specification. (Super Z)
+#### Deliberation
+- The retirement of the always-active instruction skill, rather than its duplication, was directed (Omid Hekayati).
+- The name `thinking.md` was chosen so the document can grow beyond critical thinking into systems, creative, and adaptive thinking as cognitive-science grounding deepens (Omid Hekayati).
+- 4E cognition grounding and the two-thinking-systems conversation model were required from the start (Omid Hekayati).
+- The conversation model treating exchange between any two thinking systems (human, AI, organizational) symmetrically, never as AI-specific etiquette, was directed (Omid Hekayati).
+- The first draft was reviewed and the base document directed to state only the "why" — historical provenance of the rules belongs here, not in the explanatory document (Omid Hekayati).
 
 #### Considered and not done
 - **Keep the rules as an always-active skill and merely expand it (rejected by the owner)**: the skill form had no derivation behind its rules, framed general norms as AI-specific instructions, and duplicated rules already owned by terminology, modeling, and documentation documents.
@@ -35,9 +41,16 @@ Extracted the rules from the retired skill and the archived instruction file, de
   - [Super Z](../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — rewrote.
 
 #### What changed
-Expanded Modes of Thinking from four named modes to thirteen, organized into five functional groups: Evaluative (critical, analytical, evaluative decision), Structural (abstract, concrete, systems, sequential), Generative (creative, divergent, analogical, hypothetical), and Corrective (adaptive, reflective). The grouping-by-function structure was introduced so the open-ended family stays navigable; abstract thinking was added explicitly after the owner flagged its absence. The group structure and every mode beyond the original four are this revision's contribution — the owner's original four survive unchanged as members of their groups. In the base document, the Motivation was rewritten to state the costs of the rules having no authoritative home (no derivation, scoping drift, no growth path) rather than narrating where the rules used to live; the Methodology was reduced to stating what the drafting presupposed, not the chain of custody from retired files; and a Rationale entry in the Discourse Norms topic was generalized the same way. The moved provenance lives in this entry and the entry above.
+- Modes of Thinking expanded from four named modes to thirteen, organized into five functional groups: Evaluative (critical, analytical, evaluative decision), Structural (abstract, concrete, systems, sequential), Generative (creative, divergent, analogical, hypothetical), and Corrective (adaptive, reflective).
+- The grouping-by-function structure was introduced so the open-ended family stays navigable.
+- Abstract thinking was added explicitly.
+- The group structure and every mode beyond the original four are this revision's contribution — the owner's original four survive unchanged as members of their groups.
+- In the base document, the Motivation was rewritten to state the costs of the rules having no authoritative home (no derivation, scoping drift, no growth path) rather than narrating where the rules used to live; the Methodology was reduced to stating what the drafting presupposed, not the chain of custody from retired files; and a Rationale entry in the Discourse Norms topic was generalized the same way.
+- The moved provenance lives in this entry and the entry above.
 
-The first draft's mode list (critical, systems, creative, adaptive) merely mirrored his own examples back instead of completing the family — abstract thinking was missing outright; directed that the base document state only the "why" of its content, with all history of how it came to be written moved into this changelog. (Omid Hekayati)
+#### Deliberation
+- The first draft's mode list (critical, systems, creative, adaptive) merely mirrored the owner's own examples back instead of completing the family — abstract thinking was missing outright, flagged by the owner (Omid Hekayati — argued).
+- The base document was directed to state only the "why" of its content, with all history of how it came to be written moved into this changelog (Omid Hekayati — decided).
 
 #### Considered and not done
 - **Keep the mode list at the owner's original four (rejected)**: the list was explicitly offered as incomplete by the owner — it was a starting seed, not a ceiling, and the document's own membership criterion (a named function in thinking) already justified the additions.
@@ -56,11 +69,16 @@ The first draft's mode list (critical, systems, creative, adaptive) merely mirro
   - [Super Z](../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — reviewed, rewrote
 
 #### What changed
-Created `thinking.practice.md` as the Practice-facet companion to this document, operationalizing its modes — chiefly critical thinking — into a followable procedure. The file absorbed the content of the retired `documentation-critique.practice.md` (the critique practice had been mis-homed under the documentation prefix: its content is about exercising a thinking mode, not about producing documents), with three changes: (1) its rules were re-anchored as operationalizations of this document's discourse norms rather than freestanding instructions, eliminating a second copy of the proportional-criticism and definitions-over-terminology rules; (2) a "Where Critique Sits" section was added stating the owner's position — critique is a component of writing and of modeling work, exercised alongside the generative and structural modes, and becomes the subject of this practice only when it is the dominant activity; (3) its "Relation to Other Practices" cross-references were updated to the surviving artifacts. A pointer to the new practice was added to `documentation-explanation.practice.md`'s writing step, marking the component-versus-activity boundary the owner required.
+- `thinking.practice.md` was created as the Practice-facet companion to this document, operationalizing its modes — chiefly critical thinking — into a followable procedure.
+- The file absorbed the content of the retired `documentation-critique.practice.md` (the critique practice had been mis-homed under the documentation prefix: its content is about exercising a thinking mode, not about producing documents), with three changes: (1) its rules were re-anchored as operationalizations of this document's discourse norms rather than freestanding instructions, eliminating a second copy of the proportional-criticism and definitions-over-terminology rules; (2) a "Where Critique Sits" section was added stating the owner's position — critique is a component of writing and of modeling work, exercised alongside the generative and structural modes, and becomes the subject of this practice only when it is the dominant activity; (3) its "Relation to Other Practices" cross-references were updated to the surviving artifacts.
+- A pointer to the new practice was added to `documentation-explanation.practice.md`'s writing step, marking the component-versus-activity boundary.
+- The practice file was drafted and the absorbed content distributed (Super Z).
 
-Proposed creating a thinking practice document as the absorption target for the critique practice; directed that documentation work must not be framed as if critique were its whole posture — critical examination is one component of writing a document (one mode among the family), even when starting from scratch; directed the review of where each part of the critique practice's content belonged best. (Omid Hekayati)
-
-Agreed with the placement after reviewing the alternatives, drafted the practice file, and distributed the absorbed content. (Super Z)
+#### Deliberation
+- Creating a thinking practice document as the absorption target for the critique practice was proposed (Omid Hekayati).
+- The direction that documentation work must not be framed as if critique were its whole posture — critical examination is one component of writing a document (one mode among the family), even when starting from scratch — was given (Omid Hekayati).
+- The review of where each part of the critique practice's content belonged best was directed (Omid Hekayati).
+- The placement was agreed after the alternatives were reviewed (Super Z).
 
 #### Considered and not done
 - **Absorb the critique content into `documentation-explanation.practice.md` instead (rejected)**: would couple a thinking-mode procedure to the document-production procedure, implying critique is documentation-specific; critique applies to proposals, models, and designs that never become documents.
@@ -76,9 +94,9 @@ Agreed with the placement after reviewing the alternatives, drafted the practice
   - [Qwen](../CONTRIBUTORS.md#qwen) (Qwen3.8-Flash) — rewrote
 
 #### What changed
-The 4E-grounding topic's reference was retargeted from `knowledge-management.md` to [Knowledge](./knowledge.md) after that document was renamed and re-scoped to the concept. No change to this document's content or claims.
-
-Mechanical retarget following the rename and re-scope decided in knowledge.changelog.md. (Qwen)
+- The 4E-grounding topic's reference was retargeted from `knowledge-management.md` to [Knowledge](./knowledge.md) after that document was renamed and re-scoped to the concept.
+- No change to this document's content or claims.
+- The retarget was mechanical, following the rename and re-scope decided in knowledge.changelog.md.
 
 ---
 
@@ -90,11 +108,14 @@ Mechanical retarget following the rename and re-scope decided in knowledge.chang
   - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — reviewed, rewrote
 
 #### What changed
-New discourse norm: receive criticism at its conceptual root, not only its instance — discover the general concern an example evidences, ask when scope is ambiguous, repair in generals, and treat any root beyond the giver's own argument as the receiver's extension. The Abstract thinking mode entry now names the same move as criticism's mechanism (Super Z).
+- New discourse norm: receive criticism at its conceptual root, not only its instance — discover the general concern an example evidences, ask when scope is ambiguous, repair in generals, and treat any root beyond the giver's own argument as the receiver's extension (Omid Hekayati — claimed).
+- The norm was added to Discourse Norms with the failure modes enumerated: instance-patching, answering narrower than intended, over-generalizing an instance-local critique (Super Z).
+- The receiver-side boundary was added — discovering the root does not manufacture a stronger critique than the giver argued, so an extension beyond the giver's claim is recorded as the receiver's own and judged by the evidence standard (Super Z).
+- The Abstract thinking mode entry was extended, naming the instance-to-generality move as criticism's mechanism — the mechanism behind the norm (Super Z).
 
-The norm was distilled from a working session's observed failure: a reviewer raised a criticism against one concrete instance (a tool name in one section) and the receiving agent repaired only that instance, then needed the same criticism repeated for a second instance before generalizing; the rule stated — the receiver must discover the criticism's conceptual root, ask when scope is ambiguous, and repair in generals, not merely the cited instance — and directed it be recorded in this document, noting the agent had not applied this document despite it being loaded (Omid Hekayati).
-
-The norm was added to Discourse Norms with the failure modes enumerated (instance-patching, answering narrower than intended, over-generalizing an instance-local critique); the receiver-side boundary was added — discovering the root does not manufacture a stronger critique than the giver argued, so an extension beyond the giver's claim is recorded as the receiver's own and judged by the evidence standard; the Abstract thinking mode entry was extended with the instance-to-generality move as the mechanism behind the norm (Super Z).
+#### Deliberation
+- The norm was distilled from a working session's observed failure: a reviewer raised a criticism against one concrete instance (a tool name in one section) and the receiving agent repaired only that instance, then needed the same criticism repeated for a second instance before generalizing (Omid Hekayati).
+- The rule was stated — the receiver must discover the criticism's conceptual root, ask when scope is ambiguous, and repair in generals, not merely the cited instance — and its recording in this document directed, noting the agent had not applied this document despite it being loaded (Omid Hekayati — argued).
 
 ---
 

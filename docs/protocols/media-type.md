@@ -27,7 +27,7 @@ type or structure scope like `storage`, `service`, `error`, `page`, `widget`, ..
 package name that this mediatype belongs to it.
 
 ### Name
-name must be unique in the domain scope e.g. "product" in the "page" scope of the domain. e.g. `log`, `get-email`, `get-email`, `request`, `response`, `not-standard-structure-id`, ... Due to RFC rules, a media-type can has more than one parameters, so you can easily add more than one if need it like http that use `charset=` and `boundary=` in content-type header.
+name must be unique in the domain scope e.g. "product" in the "page" scope of the domain. e.g. `log`, `get-email`, `get-email`, `request`, `response`, `not-standard-structure-id`, ... Due to [RFC 6838](https://datatracker.ietf.org/doc/html/rfc6838) rules, a media-type can has more than one parameters, so you can easily add more than one if need it like http that use `charset=` and `boundary=` in content-type header.
 
 ## ID
 - To have canonical structure IDs calculate it from hash of MediaType().
@@ -38,10 +38,10 @@ name must be unique in the domain scope e.g. "product" in the "page" scope of th
 - use URN standard like `urn:giti:geniuses.group:page:login` as `urn:giti:{{domain-name}}:{{structure-type}}:{{structure-name}}`
 
 ## RFCs
-- https://datatracker.ietf.org/doc/html/rfc6838
-- https://datatracker.ietf.org/doc/html/rfc2046
-- https://datatracker.ietf.org/doc/html/rfc2609
-- [Problem Details for HTTP APIs](https://datatracker.ietf.org/doc/html/rfc7807)
+- [Media Type Specifications and Registration Procedures (RFC 6838)](https://datatracker.ietf.org/doc/html/rfc6838)
+- [MIME Part Two: Media Types (RFC 2046)](https://datatracker.ietf.org/doc/html/rfc2046)
+- [Service Location Protocol, Version 2 (RFC 2609)](https://datatracker.ietf.org/doc/html/rfc2609)
+- [Problem Details for HTTP APIs (RFC 7807)](https://datatracker.ietf.org/doc/html/rfc7807)
 
 ## Resources
 - http://www.iana.org/assignments/media-types/media-types.xhtml
