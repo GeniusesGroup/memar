@@ -74,7 +74,7 @@ What is being discussed and why - one short paragraph. The handoff's only narrat
 Active | Paused | Blocked | Complete - the topic's overall state.
 
 #### Decisions
-For each decision: what was decided, the reasoning, and its confidence - Decided / Tentative / Explored-but-unresolved / Deferred. Where alternatives were considered and rejected, the rejected alternative and the reason are recorded with the decision.
+For each decision: what was decided, the reasoning, and its confidence - Decided / Tentative / Explored-but-unresolved / Deferred. Where alternatives were considered and rejected, the rejected alternative and the reason are recorded with the decision. A decision lives here only while it is not yet durably recorded elsewhere: when its rule has landed in the governing document and its changelog records the decision, the entry leaves this handoff - the base document carries the rule and the changelog carries the record, and a handoff copy of settled design is a duplicate guaranteed to drift. Tentative and Deferred entries stay until they firm up and graduate the same way, or are dropped.
 
 #### Ambiguities Resolved
 For each: what was unclear, what is now clear, and what evidence or argument resolved it.

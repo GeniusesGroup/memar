@@ -15,7 +15,7 @@ Open work for `documentation.md`. Entries are mutable current state - revised as
 - Next: decide when a real mixed-content document appears.
 
 ### Facet registry
-- State: whether a facet should carry metadata of its own (canonical name, one-line definition, reference to its governing specification) in a centralized machine-readable registry, or whether the current loose convention (each facet documented in its own specification file, cross-referenced from here) is sufficient. At the current scale of four facets the registry overhead is not justified; the prose here is authoritative and can be extracted mechanically if tooling ever needs it.
+- State: whether a facet should carry metadata of its own (canonical name, one-line definition, reference to its governing specification) in a centralized machine-readable registry, or whether the current loose convention (each facet documented in its own specification file, cross-referenced from here) is sufficient. At the current scale of five facets the registry overhead is not justified; the prose here is authoritative and can be extracted mechanically if tooling ever needs it.
 - Next: revisit when tooling consumes facet metadata or the facet count grows.
 
 ### Citations: Reference versus Depends_on boundary
@@ -29,8 +29,8 @@ Open work for `documentation.md`. Entries are mutable current state - revised as
 ## Anticipated Work
 
 ### Facet growth
-- If a fifth facet is ever added, the [Facets currently defined](./documentation.md#facets-currently-defined) section grows by one entry per facet, and each new facet's governing specification follows the same pattern: an Explanation-facet document that specifies the new facet's structure, cross-referenced from here. No change to the facet concept itself or to the existing facet specifications is required - the system is additive by design.
+- If a sixth facet is ever added, the [Facets currently defined](./documentation.md#facets-currently-defined) section grows by one entry per facet, and each new facet's governing specification follows the same pattern: an Explanation-facet document that specifies the new facet's structure, cross-referenced from here. No change to the facet concept itself or to the existing facet specifications is required - the system is additive by design. (The Research facet was added this way on 2026-09-08, with one adoption-path inversion: its specification was drafted from a stated requirement set before any informal accumulation, rather than consolidated from a practiced convention.)
 
 ### Further reader relationships
-- State: whether further reader relationships will emerge within this project's scope that don't fit any of the four current facets - if they do, the system extends by adding a new facet following the same pattern. (The Handoff facet was added this way, resolving the earlier version of this question: the discussion-resumption relationship had emerged in real records before it was named.)
-- Next: watch for a real document type that fits none of the four.
+- State: whether further reader relationships will emerge within this project's scope that don't fit any of the five current facets - if they do, the system extends by adding a new facet following the same pattern. (The Handoff facet was added this way, resolving the earlier version of this question: the discussion-resumption relationship had emerged in real records before it was named. The Research facet was added the same day with the inverted adoption path noted under Facet growth.)
+- Next: watch for a real document type that fits none of the five.

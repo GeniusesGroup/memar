@@ -68,7 +68,7 @@ At the start of a session that continues from a handoff:
 2. **Acknowledge the state before advancing.** State the decisions you are building on and their confidence levels, so misreadings surface at the start rather than mid-work.
 3. **Do not re-argue Decided points unless asked or unless new evidence exists.** Tentative points may be revisited — that is what the marker means. Re-arguing without new evidence repeats the cost the handoff was produced to avoid.
 4. **Update the handoff as the session moves the state.** New decisions are added with their confidence; resolved questions move to Ambiguities Resolved - but only until their resolution graduates into the governed documents: a graduated item is removed from the handoff, since the specification carries the answer and the changelog carries the record (see the graduation rule in [documentation-handoff.md → What a Handoff Is](./documentation-handoff.md#what-a-handoff-is)); a changed direction rewrites the affected sections. The handoff is a living state-capture, not an append-only history — stale state is worse than absent state, because it is trusted.
-5. **Graduate conclusions when they stabilize.** When a decision hardens into settled design, propose it into the governing Explanation-facet document, and wait for approval before modifying project documents. A documentation-improvement proposal:
+5. **Graduate conclusions when they stabilize.** When a decision hardens into settled design, propose it into the governing Explanation-facet document, and wait for approval before modifying project documents; once the decision is durably recorded in the governing document and its changelog, remove it from the handoff's Decisions section - the specification carries the rule and the changelog carries the record, the same graduation that removes resolved questions (step 4). A documentation-improvement proposal:
    - identifies the **exact document and section**, and provides **replacement-ready text in English** (the project's documentation language);
    - states **what ambiguity the change resolves** — documentation serves understanding, not volume: an addition that answers no currently-unanswerable question is not an improvement;
    - names its **type**: ambiguity resolution (existing text can be read multiple ways), gap filling (something is missing or incomplete), decision recording (a concluded decision is not yet captured), terminology alignment (the same term carries different meanings across documents), or structural improvement (organization hinders comprehension);
@@ -81,6 +81,7 @@ At the start of a session that continues from a handoff:
 Before closing a handoff, verify:
 
 - [ ] Every decision carries reasoning and a confidence level
+- [ ] No graduated decision remains in Decisions (a decision recorded in the governing document and its changelog has left the handoff)
 - [ ] Every resolved ambiguity records *how* it was resolved, not only the verdict
 - [ ] Every open question states why it matters and whether it blocks
 - [ ] Every assumption states its stability and the consequence of its failure

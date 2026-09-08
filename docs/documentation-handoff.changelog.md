@@ -116,3 +116,27 @@ The wrapper titles are gone from this specification's body; open questions and a
 - The first draft carried the full tangent procedure in the skill; the owner redirected to a minimal trigger there with the procedure in this practice, so no information is duplicated across the layers (Omid Hekayati - the redirect; Qwen - applied).
 - The first version of this entry kept the resolution's explanation in the handoff's Ambiguities Resolved and left the position chronology inside `What changed`; the owner flagged both as violations of the method the same session had just written - graduated content leaves the handoff, and a new writing rule binds the entry that introduces it (Omid Hekayati - the critique; Qwen - accepted and restructured).
 - The critique exposed the step 4 ambiguity: "resolved questions move to Ambiguities Resolved" read as permanent retention; the owner directed closing it with the graduation qualifier (Omid Hekayati - decided; Qwen - drafted).
+
+### Graduation rule made explicit for handoff decisions
+- Time: 2026-09-08T12:20:10Z
+- Type: Changed
+- Cited:
+  - [Documentation — Research](./documentation-research.md) - Evidence: the real instance that exposed the gap - its handoff's Decisions section held only decisions already graduated into the governing specification and its changelog.
+- Propagates to:
+  - documentation-handoff.practice.md: Done - the consuming procedure's graduation step now removes the graduated decision from the handoff, and the quality checklist gained the no-graduated-decisions check.
+  - documentation-research.handoff.md: Done - its Decisions section removed entirely; every decision in it had graduated into [documentation-research.md](./documentation-research.md) and its changelog.
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - claimed, critiqued, decided
+  - [Super Z](../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) - analyzed, rewrote
+
+#### What changed
+- The specification's Decisions section now states the graduation boundary directly: a decision lives in the handoff only while it is not yet durably recorded elsewhere; when its rule has landed in the governing document and its changelog records the decision, the entry leaves the handoff - the base document carries the rule and the changelog carries the record (Omid Hekayati - the critique; Super Z - the rule drafted).
+
+#### Deliberation
+- The owner read a real handoff's Decisions section, found settled content there, and posed the alternative reading: the handoff is the place for material a future session can still answer or improve, not for decisions taken and finished (Omid Hekayati - critiqued).
+- The root check confirmed the reader was not misreading: the specification carried a graduation rule for the handoff as a whole and, since the previous session, an explicit one for resolved questions in the practice's consuming procedure - but the Decisions section itself carried none, so a writer following the skeleton could fill it with graduated decisions while violating no stated section-level rule (Super Z - the analysis; the specification was the defect, not the reading).
+- The boundary drawn is graduation, not confidence level: a Decided-but-not-yet-graduated decision is genuine resumable state - the next session must not re-argue it, and it may not yet be written anywhere else - while a graduated one already has its two authoritative homes (Super Z - the extension; the critique itself did not argue this far, so it is recorded as the receiver's extension and stands by the evidence standard).
+
+#### Considered and not done
+- Keeping graduated decisions in the handoff as a summary of where the design stands (rejected): the base document carries the rule and the changelog carries the record; a summary copy is guaranteed to drift, and the handoff's Topic & Purpose is the one narrative home for how the discussion stands.
+- Fixing only the instance handoff and leaving the specification as it was (rejected): the error was reproducible by the specification as written - any writer following the skeleton could refill Decisions with graduated content; the rule belongs in the specification, the procedure step in the practice, and the instance cleanup follows from both.

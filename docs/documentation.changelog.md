@@ -135,3 +135,26 @@ This document records why and how `documentation.md` changed over time. See [Doc
 
 #### Decision
 Fixed skeleton: four sections. Everything else optional, catalogued. Open questions (mixed-facet documents, facet registry, further reader relationships) and anticipated work (facet growth) live in the paired handoff. (Omid Hekayati - approved)
+
+### Registered the Research facet as the fifth facet
+- Time: 2026-09-08T11:46:19Z
+- Type: Added
+- Cited:
+  - [Documentation — Research](./documentation-research.md) — Depends_on: the newly registered facet's governing specification; the meta-layer's entry is a pointer to it, not a restatement of it.
+- Propagates to:
+  - documentation.handoff.md: Done - the Facet growth anticipated-work entry updated from the fifth-facet case to the sixth-facet case, now that the fifth facet exists.
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — claimed, decided
+  - [Super Z](../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — drafted
+
+#### What changed
+- Registered the Research facet in the meta-layer as the fifth facet: the Abstract now names five facets (adding "examined to evaluate a deliberate inquiry"), the core observation paragraph's reader enumeration became five readers, the Facets list gained a Research entry (definition plus pointer to [documentation-research.md](./documentation-research.md), following the lean definition-plus-pointer pattern established for the other facets), the facet-selection guidance gained the research branch, Extensibility was updated to the five-facet model, and the hierarchy table grew to six files (Omid Hekayati — confirmed the registration and the draft; Super Z — applied).
+- The registered reader relationship is *examining to evaluate a deliberate inquiry* — categorically different from auditing history (Changelog) and resuming a paused discussion (Handoff): a research records how a question was pursued and how firm its outcome stands, and carries the negative results ("investigated; no change warranted") that produce no changelog entry and would otherwise leave no trace.
+
+#### Deliberation
+- The Research facet's specification was drafted from the owner's requirements before any informal accumulation — a different adoption path than the Changelog and Handoff facets, which each consolidated a practiced convention; the owner accepted this inversion, ruling that the requirement set (explicit question/goal standing, participant roles with review outcome, mandatory table of contents, stick-to-base naming) is itself the evidence of the recurring need (Omid Hekayati — decided; Super Z — recorded).
+- The facet's entry names the reader relationship "examined to evaluate" rather than "studied" or "consulted" — a research's reader is judging an inquiry's course and outcome, not learning a subject or auditing an artifact (Super Z — drafted; owner confirmed).
+
+#### Considered and not done
+- **Deferring registration until a first real research exists (rejected by the owner)**: the facet system's own earlier position — define additional facets only when a real need exists — was weighed; the counter accepted here is that the specification was drafted against a concrete, stated requirement set, the companion pattern is already field-tested by two facets, and the naming decision gates every research filename, so registering before the first file exists prevents a renaming after references form (Omid Hekayati — decided).
+- **Naming the facet "Investigation" (considered, not chosen)**: "Research" matches the established cross-domain word for a deliberate bounded inquiry and keeps the file suffix (`research`) and facet name identical, as Changelog and Handoff do (Super Z).
