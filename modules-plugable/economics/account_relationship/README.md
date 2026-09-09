@@ -36,3 +36,9 @@ Pluggable policies and preferences between accounts (or between an account and a
 ### Future possibilities
 
 - Named beneficiary lists as sibling edges once more relationship needs surface.
+
+## Idea backlog from edge code comments
+
+Raw proposal from comment note in `edges-loop/limit-amount/protocol/transfer-amount.go`. Nothing below is ratified.
+
+- **MinTransferAmount cannot be a constant**: the comment itself flags it ("it is depend on the currency, can't declared in this way!"). Review question: does the minimum become a per-count-unit rule (restriction module) or per-organization policy?

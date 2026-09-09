@@ -3,7 +3,7 @@
 package is_p
 
 import (
-	event_p "memar/event/protocol"
+	event_p "memar/process/event/protocol"
 )
 
 type SS_EventTarget event_p.Target[SS_EventTarget_Event]

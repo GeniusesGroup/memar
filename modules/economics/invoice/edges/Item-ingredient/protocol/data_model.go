@@ -3,20 +3,20 @@
 package iip
 
 import (
-	request_p "memar/audit/request/protocol"
-	audit_time_p "memar/audit/time/protocol"
 	decimal_p "memar/math/decimal/protocol"
+	request_p "memar/process/request/protocol"
+	audit_time_p "memar/process/time/protocol"
 
-	product_p "org/modules/business/product/protocol"
-	ii_p "org/modules/financial/invoice/edges/item/protocol"
-	invoice_p "org/modules/financial/invoice/protocol"
+	ii_p "org/modules/economics/invoice/edges/item/protocol"
+	invoice_p "org/modules/economics/invoice/protocol"
+	product_p "org/modules/economics/product/protocol"
 	label_p "org/modules/knowledge/label/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
 	invoice_p.Field_InvoiceID
-	label_p.Field_LabelID
+	label_p.Field_LabelUUID
 	product_p.Field_ProductID
 
 	ii_p.Field_InvoiceItemID
@@ -25,5 +25,5 @@ type DataModel interface {
 	Field_Status
 
 	request_p.Field_RequestID
-	audit_time_p.Field_SaveTime
+	audit_time_p.Field_Request
 }

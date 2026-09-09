@@ -3,11 +3,11 @@
 package item_p
 
 import (
-	error_p "memar/error/protocol"
+	error_p "memar/process/error/protocol"
 
-	product_p "org/modules/business/product/protocol"
-	invoice_p "org/modules/financial/invoice/protocol"
-	storage_p "org/modules/storage/primitive/protocol"
+	storage_p "memar/storage/protocol"
+	invoice_p "org/modules/economics/invoice/protocol"
+	product_p "org/modules/economics/product/protocol"
 )
 
 type StorageServices interface {

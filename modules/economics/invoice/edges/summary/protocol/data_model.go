@@ -3,12 +3,12 @@
 package is_p
 
 import (
-	request_p "memar/audit/request/protocol"
-	audit_time_p "memar/audit/time/protocol"
 	decimal_p "memar/math/decimal/protocol"
+	request_p "memar/process/request/protocol"
+	audit_time_p "memar/process/time/protocol"
 
-	invoice_p "org/modules/financial/invoice/protocol"
-	money_p "org/modules/financial/money/protocol"
+	invoice_p "org/modules/economics/invoice/protocol"
+	money_p "org/modules/economics/money/protocol"
 )
 
 // DataModel indicate the domain record data fields.
@@ -24,5 +24,5 @@ type DataModel interface {
 	PayablePrice() money_p.Amount    // Total price user pay to organization
 
 	request_p.Field_RequestID
-	audit_time_p.Field_SaveTime
+	audit_time_p.Field_Request
 }

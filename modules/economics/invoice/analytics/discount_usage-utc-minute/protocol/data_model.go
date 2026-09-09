@@ -3,18 +3,20 @@
 package ivaump
 
 import (
-	"memar/protocol"
-	"memar/time/utc"
-	// arp "org/modules/app-request/protocol"
+	audit_time_p "memar/process/time/protocol"
+	"memar/time/earth"
+
+	// 		request_p "memar/process/request/protocol"
+
+	fmp "org/modules/economics/money/protocol"
 )
 
 // InvoiceVoucherAnalyticUtcMinute indicate the domain record data fields.
 type DataModel interface {
-	Minute() utc.MinuteElapsed
+	Minute() earth.Minute
 	TotalRedeemed() uint64
-	TotalRedeemedAmount() protocol.MoneyAmount
+	TotalRedeemedAmount() fmp.Amount
 
-	// arp.AuditLogging
-	protocol.Storage_Versioned
-	protocol.Storage_SaveTime
+	// request_p.Field_RequestID
+	audit_time_p.Field_Request
 }

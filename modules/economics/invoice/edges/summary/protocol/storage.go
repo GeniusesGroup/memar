@@ -3,9 +3,9 @@
 package is_p
 
 import (
-	error_p "memar/error/protocol"
+	error_p "memar/process/error/protocol"
 
-	ip "org/modules/financial/invoice/protocol"
+	ip "org/modules/economics/invoice/protocol"
 )
 
 type StorageServices interface {

@@ -3,13 +3,13 @@
 package item_p
 
 import (
-	request_p "memar/audit/request/protocol"
-	audit_time_p "memar/audit/time/protocol"
 	decimal_p "memar/math/decimal/protocol"
+	request_p "memar/process/request/protocol"
+	audit_time_p "memar/process/time/protocol"
 
-	product_p "org/modules/business/product/protocol"
-	invoice_p "org/modules/financial/invoice/protocol"
-	money_p "org/modules/financial/money/protocol"
+	invoice_p "org/modules/economics/invoice/protocol"
+	money_p "org/modules/economics/money/protocol"
+	product_p "org/modules/economics/product/protocol"
 	label_p "org/modules/knowledge/label/protocol"
 )
 
@@ -21,7 +21,7 @@ type DataModel interface {
 
 	invoice_p.Field_InvoiceID
 	product_p.Field_ProductID
-	label_p.Field_LabelID
+	label_p.Field_LabelUUID
 
 	decimal_p.Field_Quantity
 	SuggestedPrice() money_p.Amount  // Total should pay before any discount or auction
@@ -30,5 +30,5 @@ type DataModel interface {
 	PayablePrice() money_p.Amount    // Total price user pay to organization
 
 	request_p.Field_RequestID
-	audit_time_p.Field_SaveTime
+	audit_time_p.Field_Request
 }

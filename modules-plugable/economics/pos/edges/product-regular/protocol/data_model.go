@@ -3,20 +3,13 @@
 package ppp
 
 import (
-	"memar/protocol"
-
-	arp "org/modules/app-request/protocol"
-	pp "org/modules/pos/protocol"
-	prp "org/modules/product/protocol"
+	pos_p "org/modules/economics/pos/protocol"
+	product_p "org/modules/economics/product/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 // Save shortcut to regular products to easily add to invoice
 type DataModel interface {
-	PosID() pp.PosUUID
-	ProductID() []prp.ProductUUID
-
-	arp.AuditLogging
-	protocol.Storage_Versioned
-	protocol.Storage_SaveTime
+	pos_p.Field_PosID
+	ProductID() []product_p.UUID
 }

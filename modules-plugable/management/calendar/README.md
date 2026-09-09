@@ -1,0 +1,18 @@
+# Calendar Reason
+
+A pluggable module giving organizations a vocabulary of **reasons for creating a calendar record** - cooking, event, enter/exit (attendance), start/end (work periods), packaging. Each reason is its own edge folder under `edges/` with its own README; each carries its own organization policy.
+
+## Why pluggable
+
+Which reasons an organization needs, and which rules govern each (who may enter/exit, when packaging is allowed), are organization-specific policies - per the core-vs-pluggable criteria (a difference in processing semantics -> pluggable; the calendar itself stays in the management core).
+
+## Edges
+
+cooking, event, enter, enter-manual, exit, exit-manual, start, start-manual, end, end-manual, packaging.
+
+## Open questions
+
+- Are the `-manual` variants distinct reasons or the same reasons with an input-method attribute?
+- Do enter/exit belong here or to a dedicated attendance module (they overlap staff attendance analytics)?
+- The original comments marked every reason "Policy (rule)" - the reason set is a rule vocabulary, not a fixed enum.
+- From the cooking comment: usually a calendar is a `product`, but it can also be other ones like a `task` - multi-typing question (see modules/management/calendar/README.md).

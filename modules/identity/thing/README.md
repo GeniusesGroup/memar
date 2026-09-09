@@ -26,3 +26,23 @@ Quiddity describes properties that a particular substance (e.g. a person) shares
 ## Animate and Inanimate
 
 We categorize things in two categories **Animate** and **Inanimate**. Animates will introduce in `user` and its subdomains as `organization`, `person`, ... domain and Inanimate e.g. `estate`, ...
+
+## Idea backlog from edge code comments
+
+Raw proposals from comment notes inside edge .go files (comments remain in code as source). Review discipline per modules/management/vocabulary-discipline.handoff.md. Nothing below is ratified.
+
+### User-assigned object labels - edges/user-relation-object.go
+- **Idea**: when users assign certain labels to their objects, they allow others to get and see them (candidates: UserPicture, UserPrimaryPicture); a user preference can limit access to some relation level (e.g. only the 1stFriendshipCycle); rules CAN limit users from using these labels for external reasons (e.g. governments forcing a clear face in pictures).
+- **Review questions**: is label-driven access an authorization rule evaluation over the social graph (rights domain), or a property of the label edge? This is the clearest meeting point of identity, social connections, and rights.
+
+### Picture rating - edges/picture/obejct.go
+- **Idea**: PictureRating scale 0-3: 0 = suitable for all websites/audiences; 1 = rude gestures, provocatively dressed individuals, mild swearing, mild violence; 2 = harsh profanity, intense violence, nudity, hard drug use; 3 = hardcore sexual imagery or extremely disturbing violence.
+- **Review questions**: does content rating belong to knowledge/content instead of thing? Is the 4-level scale one vocabulary or per-jurisdiction policy?
+
+### Currency labels - edges/count_unit/labels/currency/edges/currency.go
+- **Idea**: currency as a count-unit label with DecimalNumber (e.g. 8099 >> 80.99) and a settlement-reference Domain field (mediatype precedent referenced).
+- **Review questions**: does decimal placement belong to the count unit or to the money module (economics)?
+
+### Criterion (data model; idea semantics only)
+- **Idea**: task evaluation criteria with a generic Point (percent, star, ...); story-point estimation (Atlassian) referenced as precedent.
+- **Review questions**: is criterion a task-side edge (management) rather than thing-side?

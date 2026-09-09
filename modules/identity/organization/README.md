@@ -20,3 +20,11 @@ A [juridical person](https://en.wikipedia.org/wiki/Juridical_person) is a legal 
 
 ## Organization vs. Group (conceptual level)
 `Organization` is a higher-order concept than `Group` — effectively "a group of groups." An organization can contain multiple departments; departments are modeled as groups; groups can themselves contain persons, other groups, or even other organizations as members (e.g., a university committee can have another organization as an external oversight member). Architecturally: `User`/`Organization` sit under the `identity` domain; `Group` sits under the `management` domain. This distinction is considered clear and settled. The remaining structural/implementation questions live in [`modules/management/group`](../../management/group/README.md).
+
+## Idea backlog from edge code comments
+
+Raw proposal from comment note inside edge .go files (comments remain in code as source). Review discipline per modules/management/vocabulary-discipline.handoff.md. Nothing below is ratified.
+
+### Citizenship - edges/user-relation-org.go
+- **Idea**: user-organization labels as citizenship: Citizen with a voting-rights lifecycle (voting rights, permanently entitled to vote, temporary voting rights, suspension of voting rights, permanent loss of voting rights). Example form in comments: [User, Organization, Label] >> [Omid, Universe, Citizen].
+- **Review questions**: is voting rights a label, a capability (rights domain), or an organization-policy evaluation?

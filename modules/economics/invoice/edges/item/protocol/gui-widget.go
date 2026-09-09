@@ -3,7 +3,7 @@
 package item_p
 
 import (
-	product_p "org/modules/business/product/protocol"
+	product_p "org/modules/economics/product/protocol"
 )
 
 type GUI_Widget_Conditions interface {

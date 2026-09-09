@@ -25,3 +25,11 @@ A good is a physical/economic item tracked for inventory. It is pluggable, not c
 ### Future possibilities
 
 - Barcode/serial identity for goods via the `uri` domain (reference-not-field), not as good-node attributes.
+
+## Idea backlog from edge code comments
+
+Raw proposals from comment notes in `edges/*.go` (comments remain in code as source). Nothing below is ratified.
+
+- **Material model** (`edges/material/protocol/data_model.go`): product-material key/value description (mobile-cpu, pizza-cheese) with min/base/max quantities; PrimaryNode = product (Mobile, Pizza), SecondaryNode = material (cpu, pizza cheese) which can be a substitute; edge = material relation kind (internal tool, pizza topping). Open TODO: is user-manual detail entry good, or is a quiddity-model better?
+- **Reserve quantity** (`edges/reserve-quantity`): fixed max-reserve count or percent of inventory.
+- **Best before** (`edges/best_before`): duration from production time.

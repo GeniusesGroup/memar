@@ -49,3 +49,12 @@ A transaction is an abstraction of a request by one or more users for a bookkeep
 ### Future possibilities
 
 - Transaction-chain views (`followed_by`/`settles`/`exchange`) as a GUI widget module over the graph.
+
+## Idea backlog from edge code comments
+
+Raw proposal from comment notes inside edge .go files (comments remain in code as source). Review discipline per modules/management/vocabulary-discipline.handoff.md. Nothing below is ratified.
+
+### Reference types - edges-shortcut/transaction.go
+- **Idea**: reference-type labels for transactions: TransactionFee, Prize, Donate, Charity, Tip, Commission, Reward, Profit, Credit, Loan, BadDebt (debt default), Installment, Compensation, RentalFee, Bill, Asset, Stock, Invoice (both buy and refund via ReturnInvoice). Explicitly rejected in comments (digital-era banking, no cash support): RevolvingFund, SameBankTransfer, ForeignBankTransfer, POSTransfer, WebTransfer - "not the goal, just the way of transaction that can be checked by RequestID".
+- **Budget labels**: Materials, Labor, Investments (Equipment), Markup (the % added to cost for wholesale price), WholesaleProfit, Margin (the % of product price for retail price), RetailProfit, Cost.
+- **Review questions**: do reference types belong to the reference edge (transaction_reference_is) as labels, or to the originating domains? Are budget labels the budget module's data? The Item-ingredient and item-seat business-service comments (listing query services) are data-model pass material.

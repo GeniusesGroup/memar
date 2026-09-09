@@ -40,3 +40,11 @@ The module owns: `trade`, `deal`, `exchange` edges; `all_or_none` and `instant_w
 ### Future possibilities
 
 - A market registry module (which markets exist, their rule sets) separate from the matching engine itself.
+
+## Idea backlog from edge code comments
+
+Raw proposals from comment notes in `edges/trade/protocol/*.go` (comments remain in code as source). Nothing below is ratified.
+
+- **Order-type vocabulary** beyond current Regular/Trade: StopLoss (guarantees execution), StopLimit (guarantees price), Auction (needs a NeedApprove engine mechanism; Vickrey second-price auction noted as prior art), IOC/GTC order lifetimes (Immediate-or-Cancel, Good-till-Cancel).
+- **Trade levels**: per-level HighPrice (SaveProfit, e.g. 45\$ or -102\$) / LowPrice (StopLoss, e.g. 43\$ or -95\$); zero means no cover/stop; usually 3 levels.
+- **Review questions**: are order types rules over the trade edge or trade-edge types? Does Auction need a matching-engine protocol rather than a label?

@@ -3,10 +3,10 @@
 package iisp
 
 import (
-	request_p "memar/audit/request/protocol"
-	audit_time_p "memar/audit/time/protocol"
+	request_p "memar/process/request/protocol"
+	audit_time_p "memar/process/time/protocol"
 
-	ii_p "org/modules/financial/invoice/edges/item/protocol"
+	ii_p "org/modules/economics/invoice/edges/item/protocol"
 )
 
 // DataModel indicate the domain record data fields.
@@ -16,5 +16,5 @@ type DataModel interface {
 	Field_SeatID
 
 	request_p.Field_RequestID
-	audit_time_p.Field_SaveTime
+	audit_time_p.Field_Request
 }

@@ -28,3 +28,11 @@ We trust them enough to leave our children with them.
 - **Acquaintances:** Usually < 500, a relationship less intimate than friendship
 - **KnownNames:** Usually < 1500
 - **KnownFaces:** Usually < 5000
+
+## Idea backlog from edge code comments
+
+Raw proposals from comment notes inside edge .go files (comments remain in code as source). Review discipline per modules/management/vocabulary-discipline.handoff.md. Nothing below is ratified.
+
+### Social-graph relation labels - edges/social_connections/user-relation-user.go
+- **Idea**: Follow (used to make or start making friendship), Blocked, Muted; ReferentUser or Introducer; DelegateTo / DelegateFrom (about user delegation to this app in other apps); notification-reason labels keyed to friendship cycles (Reason_1stFriendshipCycle ... Reason_UserFollow).
+- **Review questions**: do DelegateTo/DelegateFrom duplicate the rights/delegate machinery? Do cycle reasons duplicate the derived connection-1st/2nd/3rd edges (see the section above)? Where do Blocked/Muted live relative to the group module's blocked edge?

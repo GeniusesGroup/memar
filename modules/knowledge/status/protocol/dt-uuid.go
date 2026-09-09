@@ -3,11 +3,11 @@
 package status_p
 
 import (
-	quiddity_p "org/modules/identity/quiddity/protocol"
+	thing_p "org/modules/identity/thing/protocol"
 )
 
 type Field_StatusID interface {
 	StatusID() UUID
 }
 
-type UUID quiddity_p.UUID
+type UUID thing_p.UUID

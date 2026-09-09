@@ -3,10 +3,10 @@
 package iisp
 
 import (
-	error_p "memar/error/protocol"
+	error_p "memar/process/error/protocol"
 
-	ip "org/modules/financial/invoice/protocol"
-	storage_p "org/modules/storage/primitive/protocol"
+	storage_p "memar/storage/protocol"
+	ip "org/modules/economics/invoice/protocol"
 )
 
 type StorageServices interface {
