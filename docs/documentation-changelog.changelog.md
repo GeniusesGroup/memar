@@ -163,3 +163,27 @@ Open questions (dot-boundary criterion, entry-title uniqueness, historical-entry
 - Fixed person/topic-centric entry titles ("what was the problem and who raised it", "who raised critiques") (rejected): re-imports the per-purpose-template model both facets rejected, taxes small single-contributor changes with empty structure, and contradicts the open-catalog principle adopted in the 2026-09-06 method finalization. (Omid Hekayati - the proposal; Qwen - the counter-arguments; Omid Hekayati - decided)
 - Absorbing the chronology into `Decision` (rejected): `Decision` must stay short and quotable as the ruling; merging process into ruling destroys its citation value. (Qwen - argued; Omid Hekayati - accepted)
 - Keeping `What changed` as the home with a writing rule only, no new section (rejected): claim-shaped sentences under a title meaning "the change itself" still mislabel deliberation as outcome - the form fix alone leaves the identity crisis that produced the oddity. (Qwen - argued; Omid Hekayati - accepted)
+
+---
+
+### Added the Trivial changes rule: changes with nothing to audit receive no entry; commit economy added alongside
+- Time: 2026-09-09T06:02:23Z
+- Type: Added
+- Cited:
+  - [SDK](./protocols/sdk.changelog.md) — Evidence: the triggering case — a link-repair entry in gui.changelog.md whose whole content restated a one-line diff — was flagged in the SDK protocol's own changelog while its propagation record was being written.
+- Propagates to:
+  - gui.changelog.md: Done — the "SDK link corrected" entry removed under the new rule; the fix itself had already landed and remains in version control.
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — claimed, decided
+  - [Super Z](../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash via ZCode) — recorded
+
+#### What changed
+- The specification gained `Trivial changes`: a change with nothing to audit — broken-link repair, typo fix, cosmetic correction — receives no entry; the diff is the whole record. Two boundaries accompany it: a change that starts disclosing something worth auditing is no longer trivial and earns an entry; and a trivial fix made alongside a substantive change rides inside that session's consolidated entry instead of earning its own.
+- The specification also gained `Commit economy`, immediately after: the same rule one level up — a trivial change does not earn its own commit and waits to ride with the repository's next substantive commit — with the boundary that batching is a delay in recording, not a substitute: at session end the working state is committed; uncommitted working state is not a storage medium.
+
+#### Deliberation
+- The noise was flagged with the concrete example: a whole changelog entry for a link correction "is really pointless" and clutters the ledger for no audit value (Omid Hekayati — claimed).
+- The exception's discretionary nature was acknowledged in the request itself — an agent could read it otherwise — so the rule was made structural: the test is the facet's own audit reader, with the two boundaries stated in the specification rather than left to each writer's judgment (Super Z — recorded; Omid Hekayati — decided).
+- The same discussion then extended the economy to commits: fast-committing small changes costs a permanent history entry, review weight, and attention that a trivial change cannot justify (Omid Hekayati — claimed).
+- One accumulation risk was raised and answered inside the rule rather than as a separate section: batching could become hoarding if trivial changes never catch a ride, so the rule states the session-end boundary explicitly — batching is a delay in recording, not a substitute for recording (Super Z — recorded; Omid Hekayati — accepted).
+- The two rules were added in one consolidated entry the same session, per the Session consolidation rule (Super Z — recorded).
