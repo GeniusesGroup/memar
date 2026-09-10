@@ -14,7 +14,7 @@ This document consolidates all design decisions, resolved policies, and open que
 Khayyam's abstraction (`ab`) is a **pure contract mechanism** with three resolved design properties and one open question:
 
 1. **No executable logic.** An abstraction contains no method bodies — it describes *what* is required, never supplies *how*. Default implementations (as in Rust traits or Java `default` interface methods) are explicitly rejected.
-2. **No generic syntax.** Abstractions carry no type parameters. Polymorphism classification and the rejection of generic syntax are documented in [Polymorphism in Khayyam](./khayyam-polymorphism.md).
+2. **No generic syntax.** Abstractions carry no type parameters. Polymorphism classification and the rejection of generic syntax are documented in [Polymorphism in Khayyam](./polymorphism.md).
 3. **Implicit structural satisfaction.** A capsule satisfies an abstraction if it implements all required methods with matching signatures. No explicit `impl` or `implements` keyword exists.
 4. **Open question — intentional satisfaction.** Whether purely structural satisfaction carries an accidental-satisfaction risk (as it does in Go), and if so, whether a mitigation mechanism is needed without compromising Khayyam's minimalism.
 
@@ -37,7 +37,7 @@ Khayyam needs a single, coherent abstraction model that is consistent with its c
 #### Concrete Pain Points Addressed
 - **Go's accidental satisfaction problem.** In Go's structural typing system, any type with matching method signatures accidentally satisfies an interface. For marker-like abstractions (e.g., a small `Error` interface), an unrelated capsule can qualify without its author ever intending this. This document records this risk as an open question specific to Khayyam.
 - **Rust's `impl` ceremony.** Rust requires explicit `impl Trait for Type` declarations at every implementation site. While this eliminates accidental satisfaction, it adds boilerplate that scales linearly with the number of abstraction-capsule pairs — in tension with Khayyam's minimalism goals for the common case.
-- **Java/C# generic syntax complexity.** Explicit type parameters (`<T>`) force developers to expose implementation details that violate the principle of information hiding. Khayyam avoids this by carrying no type parameters on abstractions — see [Polymorphism in Khayyam](./khayyam-polymorphism.md) for the full polymorphism classification and rationale.
+- **Java/C# generic syntax complexity.** Explicit type parameters (`<T>`) force developers to expose implementation details that violate the principle of information hiding. Khayyam avoids this by carrying no type parameters on abstractions — see [Polymorphism in Khayyam](./polymorphism.md) for the full polymorphism classification and rationale.
 - **Default method inheritance confusion.** Rust's default trait methods and Java's `default` interface methods silently provide behavior from an abstraction, blurring the line between contract and implementation and making the execution path harder to reason about at compile time.
 
 ## Explanation
@@ -88,7 +88,7 @@ vr r Reader
 r.CopyFrom(myFileReader)()  // validated at compile time — `r = myFileReader` is not Khayyam syntax.
 ```
 
-See *Agency Beyond Concurrency* in [Agency in Khayyam](./khayyam-agency.md#agency-beyond-concurrency-intentional-vs-accidental-contract-satisfaction) for what this design choice means read through Agency's vocabulary.
+See *Agency Beyond Concurrency* in [Agency in Khayyam](./agency.md#agency-beyond-concurrency-intentional-vs-accidental-contract-satisfaction) for what this design choice means read through Agency's vocabulary.
 
 ### What You Cannot Do
 - You **cannot** put a method body inside an abstraction definition. Abstractions are pure contracts.
@@ -114,15 +114,15 @@ tp Cache mt (self RedisStore) (result Bool) (err Error) {
 This is deliberate, visible boilerplate. It keeps the execution path 100% explicit and linear, free of compiler magic or implicit routing.
 
 ### Dispatch Strategy
-The compiler's mechanism for resolving polymorphic calls (monomorphization vs. dynamic dispatch) is documented in [Polymorphism in Khayyam](./khayyam-polymorphism.md).
+The compiler's mechanism for resolving polymorphic calls (monomorphization vs. dynamic dispatch) is documented in [Polymorphism in Khayyam](./polymorphism.md).
 
 ### Abstraction Realization (Implicit Satisfaction)
 Khayyam does not introduce any explicit syntax or keyword (such as `impl` or `implements`) to bind a capsule to an abstraction (`ab`). Abstraction realization is strictly implicit and structural at the compiler level.
 
-- **Rule**: A capsule satisfies an `ab` if and only if it implements every method declared by that abstraction. For each such method, the influencing-variable types must match exactly, the influenced-variable types must match exactly or via covariant return (see [Covariant Return Types in Polymorphism](./khayyam-polymorphism.md#covariant-return-types)), and the receiver is the implementing capsule itself (not the abstraction). The example `tp Read mt (self FileReader) (data Element) (err Error)` therefore satisfies `tp Read mt (self Reader) (data Element) (err Error)` — the receiver differs by design.
+- **Rule**: A capsule satisfies an `ab` if and only if it implements every method declared by that abstraction. For each such method, the influencing-variable types must match exactly, the influenced-variable types must match exactly or via covariant return (see [Covariant Return Types in Polymorphism](./polymorphism.md#covariant-return-types)), and the receiver is the implementing capsule itself (not the abstraction). The example `tp Read mt (self FileReader) (data Element) (err Error)` therefore satisfies `tp Read mt (self Reader) (data Element) (err Error)` — the receiver differs by design.
 - **Validation point**: The compiler validates abstraction satisfaction during assignment or parameter passing where an abstraction type is expected. Missing or mismatched methods will result in a strict compile-time error.
 
-This design mirrors Go's interface satisfaction model at the language level. It eliminates the boilerplate of explicit implementation declarations (Rust's `impl Trait for Type`) and keeps the language grammar minimal. However, it also inherits Go's known risk of **accidental satisfaction**: an unrelated capsule can accidentally satisfy a small, marker-like abstraction if its method signatures happen to match — see [Abstraction in Khayyam Handoff](./khayyam-abstraction.handoff.md) for the status of this risk. For example, if a `FileLogger` capsule happens to define a `String()` method with the correct signature, it could accidentally qualify as a `Stringer` abstraction without its author ever intending this relationship. The risk is most acute for small abstractions with one or two methods, where signature collision is statistically more likely; for large abstractions with many methods, accidental satisfaction is practically impossible.
+This design mirrors Go's interface satisfaction model at the language level. It eliminates the boilerplate of explicit implementation declarations (Rust's `impl Trait for Type`) and keeps the language grammar minimal. However, it also inherits Go's known risk of **accidental satisfaction**: an unrelated capsule can accidentally satisfy a small, marker-like abstraction if its method signatures happen to match — see [Abstraction in Khayyam Handoff](./abstraction.handoff.md) for the status of this risk. For example, if a `FileLogger` capsule happens to define a `String()` method with the correct signature, it could accidentally qualify as a `Stringer` abstraction without its author ever intending this relationship. The risk is most acute for small abstractions with one or two methods, where signature collision is statistically more likely; for large abstractions with many methods, accidental satisfaction is practically impossible.
 
 ### Rejection of Default Implementations
 Khayyam explicitly **rejects** default method implementations (also known as "default trait methods" in Rust or "default interface methods" in Java 8+). An abstraction (`ab`) is a pure contract with no executable logic of its own.
@@ -165,6 +165,6 @@ This may be the most important principle to have emerged from Khayyam's polymorp
 #### A Note on Parametric Polymorphism
 Many canonical examples of parametric polymorphism are historically tied to limitations of other languages rather than to fundamental architectural requirements. `identity<T>()`, `swap<T>()`, `Option<T>`, and `Result<T,E>` exist, in several cases, primarily because of constraints such as single-return-value functions, nullability problems, exception models, and weak domain modeling. Where Khayyam removes those constraints — multiple influenced variables per method, no null/exception model of the kind that motivates `Option`/`Result` — some of these patterns become significantly less necessary in the first place, not merely re-solvable with different syntax.
 
-This suggests generics discussions in Khayyam should not open with "how do we support generic syntax?" but with "why does this requirement exist in the first place, and does it still exist once Khayyam's own constraints are accounted for?" The specific compilation mechanism that follows once a real requirement is identified — how Khayyam's inclusion-based approach actually works and compiles — remains [Polymorphism in Khayyam](./khayyam-polymorphism.md)'s own subject, not this document's.
+This suggests generics discussions in Khayyam should not open with "how do we support generic syntax?" but with "why does this requirement exist in the first place, and does it still exist once Khayyam's own constraints are accounted for?" The specific compilation mechanism that follows once a real requirement is identified — how Khayyam's inclusion-based approach actually works and compiles — remains [Polymorphism in Khayyam](./polymorphism.md)'s own subject, not this document's.
 
 ## Results

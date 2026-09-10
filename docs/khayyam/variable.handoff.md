@@ -1,6 +1,6 @@
 # Variable in Khayyam Handoff
 
-Open work for `khayyam-variable.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](./documentation-handoff.md) for what a handoff is.
+Open work for `variable.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](../documentation-handoff.md) for what a handoff is.
 
 ## Open Questions
 
@@ -26,7 +26,7 @@ Open work for `khayyam-variable.md`. Entries are mutable current state — revis
 - State: Should the linter provide an auto-fix mode that converts multi-declaration syntax (if encountered in migrated code) into separate `vr` declarations? (From the retired document-level Unresolved questions.)
 
 ### How does the variable model interact with the Memar framework's governance layer?
-- State: Are there framework-specific rules for variable naming, scoping, or lifecycle that extend beyond the language-level rules documented in `khayyam-variable.md`? (From the retired document-level Unresolved questions.)
+- State: Are there framework-specific rules for variable naming, scoping, or lifecycle that extend beyond the language-level rules documented in `variable.md`? (From the retired document-level Unresolved questions.)
 
 ## Anticipated Work
 

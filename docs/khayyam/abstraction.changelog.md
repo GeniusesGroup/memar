@@ -6,14 +6,14 @@
 - Time: 2026-07-11T00:00:00Z
 - Type: Added
 - Cited:
-  - [Control Flow in Khayyam](./khayyam-control_flow.md) — Depends_on: this document builds on the precedent set by that document of keeping behavioral policies as ordinary library-driven mechanisms rather than new syntax.
+  - [Control Flow in Khayyam](./control_flow.md) — Depends_on: this document builds on the precedent set by that document of keeping behavioral policies as ordinary library-driven mechanisms rather than new syntax.
 - Propagates to:
   - khayyam.md: Reference — this document elaborates and motivates `khayyam.md#Abstraction`.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — claimed
-  - [Gemini](../CONTRIBUTORS.md#gemini) (3.1 pro, extended thinking) — drafted
-  - [Claude](../CONTRIBUTORS.md#claude) (claude-sonnet-5, medium effort with extended thinking) — reviewed, rewrote
-  - [Super Z](../CONTRIBUTORS.md#super-z) (GLM, medium effort) — rewrote
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — claimed
+  - [Gemini](../../CONTRIBUTORS.md#gemini) (3.1 pro, extended thinking) — drafted
+  - [Claude](../../CONTRIBUTORS.md#claude) (claude-sonnet-5, medium effort with extended thinking) — reviewed, rewrote
+  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM, medium effort) — rewrote
 
 #### What changed
 - Consolidated all design decisions, resolved policies, and open questions related to the `ab` (abstraction) type in Khayyam into a single authoritative document, superseding two prior drafts ("Intentional Abstraction Satisfaction" and "Rejection of Default Implementations") and merging them with existing DX Scaffolding content.
@@ -38,15 +38,15 @@
 - Propagates to:
   - khayyam-agency.md: Done — a related migration ("Khayyam Is Not Its Own Compiler or Runtime") was carried out there in the same review effort; see khayyam-agency.changelog.md.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — requested
-  - [Claude](../CONTRIBUTORS.md#claude) — reviewed, rewrote
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — requested
+  - [Claude](../../CONTRIBUTORS.md#claude) — reviewed, rewrote
 
 #### What changed
 - This document is now structured per `documentation-explanation.md`: restructured from `Summary/Motivation/Guide-level explanation/Reference-level explanation/Drawbacks/Rationale and alternatives/Prior art/Unresolved questions/Future possibilities` (each a top-level section, with "Unresolved questions" items 4 and 5 themselves containing full nested Drawbacks/Rationale/Prior art/Unresolved-questions blocks — the same kind of structural artifact found and fixed in `modularity.md` earlier in this review) into the current template (`Abstract → Introduction → Explanation → Results → Discussion`).
 - A structural artifact — two "Unresolved questions" items that were actually full sub-topics with their own nested Discussion blocks — is resolved by moving their substantive content into Explanation and their actual open questions into this document's own Discussion.
 - Former "Unresolved questions" items 4 ("Abstraction Design and Over-Abstraction Risk") and 5 ("Abstraction Stability and Versioning") were moved into the document-level Discussion's own Unresolved questions, since their substantive prose was genuine Explanation-level content, not merely restatements of an open question.
 - Front-matter `Citations`, `Contributor(s)`, and `Applied to` were moved into this changelog.
-- Every occurrence of "RFC" referring to Memar's own documents was replaced with "document," linking to [Polymorphism in Khayyam](./khayyam-polymorphism.md) and [Control Flow in Khayyam](./khayyam-control_flow.md) where those documents actually exist, and describing the two now-superseded, absorbed drafts ("Intentional Abstraction Satisfaction," "Rejection of Default Implementations") in plain text without a link, since they no longer exist as separate documents.
+- Every occurrence of "RFC" referring to Memar's own documents was replaced with "document," linking to [Polymorphism in Khayyam](./polymorphism.md) and [Control Flow in Khayyam](./control_flow.md) where those documents actually exist, and describing the two now-superseded, absorbed drafts ("Intentional Abstraction Satisfaction," "Rejection of Default Implementations") in plain text without a link, since they no longer exist as separate documents.
 - "Behavior Over Type Identity" and "A Note on Parametric Polymorphism" are added, migrated from `khayyam-design_philosophy.md`, which is being retired; this document keeps only the abstraction-satisfaction-relevant portion of that content, since the more general vision-level material in the source document belongs elsewhere. The additions connect the already-present "Pure Contract Philosophy" to the more general principle behind it and to why Khayyam needs fewer of the classic parametric-polymorphism patterns (`identity<T>()`, `swap<T>()`, `Option<T>`, `Result<T,E>`) than languages that motivated them by constraints Khayyam does not have.
 
 #### Deliberation
@@ -63,8 +63,8 @@ Considered migrating "Reassessment of Parametric Polymorphism" to `khayyam-polym
 - Time: 2026-08-17T00:00:00Z
 - Type: Fixed
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — argued
-  - [Claude](../CONTRIBUTORS.md#claude) — rewrote, corrected
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — argued
+  - [Claude](../../CONTRIBUTORS.md#claude) — rewrote, corrected
 
 #### What changed
 - The previous migration entry, despite its own description, had in practice summarized several sections rather than reorganizing them intact — the most serious instance being “Abstraction Validation and DX Scaffolding,” which was replaced with a placeholder note rather than the section's real content. This entry corrects that: the document now carries the full original prose, code examples, and paragraph-level reasoning throughout, reorganized into the current template but not condensed.
@@ -85,10 +85,10 @@ Considered treating the previous entry's version as good enough, since the curre
 - Time: 2026-08-27T00:00:00Z
 - Type: Fixed
 - Cited:
-  - [Polymorphism in Khayyam](./khayyam-polymorphism.md) — Reference: examples there use `tp Read mt (self FileReader)…` vs. `self Reader`, exposing the drift
+  - [Polymorphism in Khayyam](./polymorphism.md) — Reference: examples there use `tp Read mt (self FileReader)…` vs. `self Reader`, exposing the drift
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — requested
-  - [Super Z](../CONTRIBUTORS.md#super-z) — rewrote
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — requested
+  - [Super Z](../../CONTRIBUTORS.md#super-z) — rewrote
 
 #### What changed
 - Corrects the rule in `Abstraction Realization (Implicit Satisfaction)`: the rule was corrected to exclude the receiver, and a covariant-return reference was added.
@@ -109,8 +109,8 @@ Alternatives: (a) keep the identical-receiver wording and change examples to use
 - Propagates to:
   - khayyam-abstraction.handoff.md: Created - open questions and anticipated work moved there.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - requested
-  - [OpenCode](../CONTRIBUTORS.md#opencode) (qwen3.8-flash) - moved
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) - requested
+  - [OpenCode](../../CONTRIBUTORS.md#opencode) (qwen3.8-flash) - moved
 
 #### What changed
 - The body's fixed top-level sections are now Abstract, Introduction, Explanation, Results; the document-level `## Discussion` and its Drawbacks, Rationale and alternatives, Prior art, Unresolved questions, and Future possibilities subsections no longer appear in the body (no topic-level Discussion wrappers remained).
@@ -132,7 +132,7 @@ Alternatives: (a) keep the identical-receiver wording and change examples to use
 #### Related work
 - **Go — Interfaces (Structural Typing, No Defaults).** Go's interfaces are the closest existing model to Khayyam's abstraction design. Go uses fully structural typing: a type satisfies an interface if it has all the required methods, with no `implements` declaration. Go interfaces carry no default implementations. This simplicity is widely praised, but it comes with the accidental-satisfaction problem documented extensively in the Go community. The Go community's pragmatic response has been to accept this risk for large interfaces (where it is negligible) and use unexported marker methods for small, identity-carrying interfaces — a workaround at the library level, not a language-level solution. (Migrated from the retired document-level Prior art.)
 - **Rust — Traits (Nominal Typing, Default Methods).** Rust's traits use fully nominal typing with explicit `impl Trait for Type` declarations. This eliminates accidental satisfaction entirely. Rust also supports default method bodies in traits, which provide shared behavior without requiring implementers to write delegation code. The cost is mandatory ceremony at every implementation site and the implicit routing behavior of default methods (a trait's default method body executes in the context of the concrete type, creating a form of multiple dispatch that can be surprising). Khayyam explicitly rejects default method bodies. (Migrated from the retired document-level Prior art.)
-- **Java — Interfaces (Nominal Typing, Default Methods, Generics).** Java's interfaces use nominal typing with `implements` declarations. Since Java 8, interfaces support `default` methods with executable bodies. Java also has full generic syntax (`<T>`), whose rejection is documented in [Polymorphism in Khayyam](./khayyam-polymorphism.md). This combination provides maximum flexibility but at the cost of significant syntax complexity and the same implicit routing concerns as Rust's default methods. Khayyam explicitly rejects the default method mechanism. (Migrated from the retired document-level Prior art.)
+- **Java — Interfaces (Nominal Typing, Default Methods, Generics).** Java's interfaces use nominal typing with `implements` declarations. Since Java 8, interfaces support `default` methods with executable bodies. Java also has full generic syntax (`<T>`), whose rejection is documented in [Polymorphism in Khayyam](./polymorphism.md). This combination provides maximum flexibility but at the cost of significant syntax complexity and the same implicit routing concerns as Rust's default methods. Khayyam explicitly rejects the default method mechanism. (Migrated from the retired document-level Prior art.)
 - **TypeScript — Structural Typing (Compile-Time Only).** TypeScript's type system uses structural typing for interface satisfaction, closely mirroring Go's model. TypeScript interfaces can describe object shapes, and any object with matching properties satisfies the interface. TypeScript has no default method implementations (its interfaces are purely type-level, erased at runtime). The accidental-satisfaction risk exists but is less practically concerning because TypeScript interfaces are not used as runtime dispatch mechanisms. Khayyam's abstractions, by contrast, have runtime implications (VTable generation), making accidental satisfaction a potentially more serious issue. (Migrated from the retired document-level Prior art.)
 - **Zig — No Built-in Interfaces (Comptime-Based Alternatives).** Zig takes the most radical minimalist approach: it has no interface or trait mechanism at all. Generic behavior is achieved through `comptime` (compile-time code execution) and duck typing at the generic function level. This provides maximum simplicity but shifts the entire burden of polymorphism to the developer. Khayyam's design occupies a middle ground: it provides a first-class abstraction type for cleaner API contracts while keeping the language grammar minimal. (Migrated from the retired document-level Prior art.)
 - **Haskell — Typeclasses (Nominal, No Defaults in the Language Core).** Haskell's typeclasses use nominal typing with explicit `instance` declarations. Typeclasses in their pure form carry no default implementations (though GHC extensions add them). Haskell's approach is closest to a "pure contract" model, and it demonstrates that nominal typing and zero-cost abstraction can coexist. However, Haskell's typeclass resolution happens at compile time through a separate mechanism (instance resolution), which is a form of implicit behavior that Khayyam's explicit delegation model avoids. (Migrated from the retired document-level Prior art.)

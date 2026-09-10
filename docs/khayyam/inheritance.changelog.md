@@ -6,14 +6,14 @@
 - Time: 2026-07-10T00:00:00Z (approximated from Start Date; original drafting time not recorded)
 - Type: Added
 - Cited:
-  - [Protocol](./protocol.md) — Depends_on: Protocol's definition as a pure declarative specification underpins how abstraction inclusion creates requirement-inheritance relationships between abstractions.
-  - [Explicit Behavior Ownership](./type.md#explicit-behavior-ownership) — Depends_on: EBO is the principled foundation for rejecting behavior transfer between capsules; this document specifies its language-level consequences.
+  - [Protocol](../protocol.md) — Depends_on: Protocol's definition as a pure declarative specification underpins how abstraction inclusion creates requirement-inheritance relationships between abstractions.
+  - [Explicit Behavior Ownership](../type.md#explicit-behavior-ownership) — Depends_on: EBO is the principled foundation for rejecting behavior transfer between capsules; this document specifies its language-level consequences.
 - Propagates to:
   - khayyam.md: Done — khayyam.md's abstraction/conformance framing reflects this document's placement model of inheritance.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — claimed
-  - [ChatGPT](../CONTRIBUTORS.md#chatgpt) (GPT-5.5) — drafted
-  - [Super Z](../CONTRIBUTORS.md#super-z) — rewrote
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — claimed
+  - [ChatGPT](../../CONTRIBUTORS.md#chatgpt) (GPT-5.5) — drafted
+  - [Super Z](../../CONTRIBUTORS.md#super-z) — rewrote
 
 #### What changed
 - This document was created by splitting the original monolithic "Protocol" document into focused documents; the inheritance-related content was distributed between the Explicit Behavior Ownership document (principled foundation) and this document (language-level specification).
@@ -34,12 +34,12 @@
 - Time: 2026-08-26T00:00:00Z
 - Type: refactor
 - Cited:
-  - [Documentation](./documentation.md) — Reference: facet meta-layer defining Explanation/Practice/Changelog and the cross-cutting URI and citation rules.
-  - [Documentation — Explanation](./documentation-explanation.md) — Depends_on: governing structure the base document was migrated to.
-  - [Documentation — Changelog](./documentation-changelog.md) — Depends_on: entry structure used for this companion file.
+  - [Documentation](../documentation.md) — Reference: facet meta-layer defining Explanation/Practice/Changelog and the cross-cutting URI and citation rules.
+  - [Documentation — Explanation](../documentation-explanation.md) — Depends_on: governing structure the base document was migrated to.
+  - [Documentation — Changelog](../documentation-changelog.md) — Depends_on: entry structure used for this companion file.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — requested
-  - [Super Z](../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — migrated
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — requested
+  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — migrated
 
 #### What changed
 - Structural migration only; no design decision changed.
@@ -55,8 +55,8 @@
 - Time: 2026-08-26T00:00:00Z
 - Type: Added
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — requested
-  - [Super Z](../CONTRIBUTORS.md#super-z) — drafted
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — requested
+  - [Super Z](../../CONTRIBUTORS.md#super-z) — drafted
 
 #### What changed
 - "The Design Goal: Minimal Independent Concepts, Not Base Classes" was added at the top of Motivation, making explicit the positive principle behind the document's rules: Khayyam's type model targets the minimal set of independent concepts from which every other concept is derived by composition, not base-class hierarchies.
@@ -68,10 +68,10 @@
 - Time: 2026-08-30T00:00:00Z
 - Type: Fixed
 - Contributors:
-  - [Super Z](../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — fixed
+  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — fixed
 
 #### What changed
-- The `type-explicit_behavior_ownership.md` file that three links targeted no longer exists: the standalone Explicit Behavior Ownership sub-document was absorbed into [Type](./type.md), where the principle now lives as its `Explicit Behavior Ownership` section.
+- The `type-explicit_behavior_ownership.md` file that three links targeted no longer exists: the standalone Explicit Behavior Ownership sub-document was absorbed into [Type](../type.md), where the principle now lives as its `Explicit Behavior Ownership` section.
 - The three links (Summary and "Why Not Allow 'Safe' Behavior Transfer?" in the base document, and the Cited entry of the "Created by splitting the Protocol document" entry above) now point to `./type.md#explicit-behavior-ownership`.
 - Link-target correction only; no text or design decision changed.
 
@@ -81,8 +81,8 @@
 - Propagates to:
   - khayyam-inheritance.handoff.md: Created - open questions and anticipated work moved there.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - requested
-  - [OpenCode](../CONTRIBUTORS.md#opencode) (qwen3.8-flash) - moved
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) - requested
+  - [OpenCode](../../CONTRIBUTORS.md#opencode) (qwen3.8-flash) - moved
 
 #### What changed
 - The base document's body now carries only the four fixed top-level sections: Abstract, Introduction, Explanation, Results; the document-level `## Discussion` and the topic-level Discussion wrapper under "Capsule Composition Without Method Promotion" are gone.
@@ -92,7 +92,7 @@
 - The four unresolved questions moved to the paired handoff's `Open Questions`; the four future possibilities moved to its `Anticipated Work`.
 
 #### Considered and not done
-- **Allow restricted "safe" behavior transfer, e.g. single inheritance from abstract base classes only or bases without concrete methods (rejected; migrated from the retired Discussion wrapper under "Capsule Composition Without Method Promotion")**: even restricted behavior transfer creates conceptual dependency on the transfer model that influences how developers think about component relationships, and the "safe" boundaries are subjective and tend to erode over time as exceptions are added. The principled argument is made in the [Explicit Behavior Ownership](./type.md#explicit-behavior-ownership) document.
+- **Allow restricted "safe" behavior transfer, e.g. single inheritance from abstract base classes only or bases without concrete methods (rejected; migrated from the retired Discussion wrapper under "Capsule Composition Without Method Promotion")**: even restricted behavior transfer creates conceptual dependency on the transfer model that influences how developers think about component relationships, and the "safe" boundaries are subjective and tend to erode over time as exceptions are added. The principled argument is made in the [Explicit Behavior Ownership](../type.md#explicit-behavior-ownership) document.
 - **Go-style embedding (rejected; migrated from the same wrapper)**: often cited as a middle ground between behavior transfer and composition, providing method promotion without full class-based inheritance. Rejected because method promotion is still implicit behavior acquisition — the embedding component's source code does not show the promoted methods. The visibility problem remains, just in a milder form.
 - **Rust-style traits with default implementations (rejected; migrated from the same wrapper)**: default implementations introduce the same ownership ambiguity the Explicit Behavior Ownership principle prohibits: a method exists in a type but the type's source code does not define it. The default method's implementation lives in the trait, creating dual ownership.
 - **Behavior transfer between capsules (rejected; migrated from the retired document-level Rationale and alternatives)**: if Khayyam allowed it, every subsequent design decision would need to account for chains, method resolution order, and hidden behavior paths; the compiler would need to support virtual dispatch tables, the linter would need to trace hierarchies, and developers would mentally simulate chains to understand a capsule's full behavior. By establishing at the foundation that behavior transfer between capsules does not exist, all of this complexity is eliminated. The per-alternative arguments (restricted transfer, Go-style embedding, Rust-style defaults) are recorded directly above.

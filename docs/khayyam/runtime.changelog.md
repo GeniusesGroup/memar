@@ -6,10 +6,10 @@
 - Time: 2026-08-27T00:00:00Z
 - Type: Changed
 - Cited:
-  - [Khayyam Compiler Directives](./Khayyam-compiler.md) — Reference: the same `unsafe` runtime-patching description there
-  - [Polymorphism in Khayyam](./khayyam-polymorphism.md) — Reference: the Dynamic Dispatch Reducibility note that expects reducibility under Immutable Infrastructure
+  - [Khayyam Compiler Directives](./compiler.md) — Reference: the same `unsafe` runtime-patching description there
+  - [Polymorphism in Khayyam](./polymorphism.md) — Reference: the Dynamic Dispatch Reducibility note that expects reducibility under Immutable Infrastructure
 - Contributors:
-  - [Super Z](../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — rewrote
+  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — rewrote
 
 #### What changed
 - A relation note was appended to `Change logic in runtime`: the default/safe deployment model is Immutable Infrastructure (no runtime capability addition without recompilation); the described `unsafe` WASM-like module replacement is an explicit, opt-in escape hatch, audited and never used for normal evolution, and therefore does not contradict the principle.
@@ -20,11 +20,11 @@
 - Time: 2026-08-30T00:00:00Z
 - Type: refactor
 - Cited:
-  - [Documentation — Explanation](./documentation-explanation.md) — Depends_on: the structure this migration follows — YAML front matter, the `Abstract → Introduction → Explanation → Results → Discussion` body, and the per-topic Discussion pattern — is that specification's, applied to this document for the first time.
+  - [Documentation — Explanation](../documentation-explanation.md) — Depends_on: the structure this migration follows — YAML front matter, the `Abstract → Introduction → Explanation → Results → Discussion` body, and the per-topic Discussion pattern — is that specification's, applied to this document for the first time.
   - [Khayyam - Programming Language](./khayyam.md) — Reference: *Khayyam Is Not Its Own Compiler or Runtime* and *Separation of Syntax and Governance*, which supply the framing for the new Abstract, Motivation, and Discussion content.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — requested, clarified
-  - [Super Z](../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — rewrote
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — requested, clarified
+  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — rewrote
 
 #### What changed
 - The document is now structured per `documentation-explanation.md`: YAML front matter added (Status: Proposed; Start Date and ID assigned retroactively from the file's first commit date, 2026-06-26); Abstract, Motivation, per-topic Discussion sections, Results, and a document-wide Discussion added.
@@ -49,8 +49,8 @@
 - Propagates to:
   - khayyam-runtime.handoff.md: Created - open questions and anticipated work moved there.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - requested
-  - [OpenCode](../CONTRIBUTORS.md#opencode) (qwen3.8-flash) - moved
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) - requested
+  - [OpenCode](../../CONTRIBUTORS.md#opencode) (qwen3.8-flash) - moved
 
 #### What changed
 - The body now carries only the fixed top-level sections — `Abstract`, `Introduction`, `Explanation`, `Results`: the document-level `## Discussion` and both topic-level `#### Discussion` wrappers (under Concurrency and Execution Model and Change Logic in Runtime (Unsafe)) are retired; no other body content changed.
@@ -64,7 +64,7 @@
 - **User-space framework ownership (chosen; migrated from the same topic as the recorded decision)**: scheduling and synchronization become ordinary capsules — visible in imports, swappable per domain, and governable by linter policy like any other library decision.
 - **Make runtime module replacement a first-class, always-available capability (rejected; migrated from the Change Logic in Runtime (Unsafe) topic's retired Rationale and alternatives)**: would contradict Immutable Infrastructure as the default deployment model — no runtime addition of capability without recompilation — and normalize the uncontrolled capability evolution that principle exists to prevent.
 - **Omit the capability entirely (rejected; migrated from the same topic)**: microservice-style module turnover has genuine uses; removing it entirely would push adopters toward out-of-band binary manipulation with no audit story at all.
-- **Keep it opt-in and tagged `unsafe` (chosen; migrated from the same topic as the recorded decision)**: the capability exists, is visibly dangerous at the call site, and sits outside the normal path — the same shape as the [compiler-side resolution](./khayyam-compiler.md#change-logic-in-runtime-unsafe) of this topic.
+- **Keep it opt-in and tagged `unsafe` (chosen; migrated from the same topic as the recorded decision)**: the capability exists, is visibly dangerous at the call site, and sits outside the normal path — the same shape as the [compiler-side resolution](./compiler.md#change-logic-in-runtime-unsafe) of this topic.
 - **Declare no runtime document at all (rejected; migrated from the retired document-level Rationale and alternatives)**: Khayyam genuinely does not dictate a runtime — but leaving the execution layer entirely unspecified hands the last, least-visible layer of the stack to whoever implements it first, with no record of how the framework is expected to honor the philosophy. The magic-prevention argument that justifies keeping the compiler out of the language applies equally here, one layer down.
 - **Elevate this document to "the Khayyam runtime" (rejected; migrated from the same section)**: would convert a reference architecture into a de-facto language requirement, contradicting the runtime-agnostic stance the document itself opens with. Its Status and framing remain that of one framework's design, consumable and replaceable.
 - **Fold runtime concerns into [Khayyam](./khayyam.md) (rejected; migrated from the same section)**: Khayyam's own Methodology keeps that document a short overview linking outward; execution-layer detail there would couple language evolution to framework implementation choices.
@@ -81,8 +81,8 @@
 - Time: 2026-09-09T00:00:00Z
 - Type: Changed
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — corrected
-  - [Super Z](../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — applied
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — corrected
+  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — applied
 
 #### What changed
 - The "Relation to Immutable Infrastructure" note under Change Logic in Runtime (Unsafe) is re-anchored to the base principle Structure Is Fixed by Definition (type.md): the runtime executes a fixed definition, and `unsafe` patching is the controlled exception admitting definition changes into a running instance. The note no longer routes readers through khayyam-polymorphism.md's retired topic anchor, and the Immutable Infrastructure brand — whose home is the protocol layer — no longer appears in this document.

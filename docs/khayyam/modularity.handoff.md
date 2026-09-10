@@ -1,6 +1,6 @@
 # Modularity in Khayyam Handoff
 
-Open work for `khayyam-modularity.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](./documentation-handoff.md) for what a handoff is.
+Open work for `modularity.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](../documentation-handoff.md) for what a handoff is.
 
 ## Open Questions
 
@@ -15,4 +15,4 @@ Open work for `khayyam-modularity.md`. Entries are mutable current state — rev
 ## Anticipated Work
 
 - A dedicated document can specify the manifest format, resolution algorithm, integrity model, and compatibility policy once the directional decision to keep them outside the `in` grammar is confirmed. (From the Manifest-as-Module-Contract topic's retired Future possibilities.)
-- Once a manifest and resolver are designed, their document should define the framework/tooling contract and link back to `khayyam-modularity.md` for the language boundary, rather than extending `in` with distribution policy. (From the document-level retired Future possibilities.)
+- Once a manifest and resolver are designed, their document should define the framework/tooling contract and link back to `modularity.md` for the language boundary, rather than extending `in` with distribution policy. (From the document-level retired Future possibilities.)

@@ -11,7 +11,7 @@ ID: 495120
 This document is addressed to the developers of a Khayyam runtime — specifically the Memar Framework's — not to the Khayyam language. Nothing here adds to, restricts, or amends Khayyam's syntax or semantics; every requirement below is a recommendation about how Khayyam's own thinking — explicit, predictable behavior over hidden runtime magic, and governance over syntactic dictatorship — should find concrete manifestation in the execution layer the framework provides.
 
 ## Abstract
-Khayyam does not dictate a runtime; this document is a reference architecture — the Memar Framework — one concrete answer to what a runtime built to maximize Khayyam's potential looks like, particularly for high-performance and Unikernel/Exokernel environments. It states two runtime-side commitments: the concurrency model is delegated entirely to user-space runtime libraries (scheduling, synchronization primitives as swappable capsules, core-pinning for lock-free design) rather than hardcoded into a language core; and the deployment default is [Structure Is Fixed by Definition](./type.md#structure-is-fixed-by-definition), with runtime code mutation existing only as an `unsafe`, opt-in escape hatch. Both commitments are requirements on an *implementation*, never on the language: a Khayyam program remains valid — and a different runtime remains permitted — regardless of what the Memar Framework chooses here.
+Khayyam does not dictate a runtime; this document is a reference architecture — the Memar Framework — one concrete answer to what a runtime built to maximize Khayyam's potential looks like, particularly for high-performance and Unikernel/Exokernel environments. It states two runtime-side commitments: the concurrency model is delegated entirely to user-space runtime libraries (scheduling, synchronization primitives as swappable capsules, core-pinning for lock-free design) rather than hardcoded into a language core; and the deployment default is [Structure Is Fixed by Definition](../type.md#structure-is-fixed-by-definition), with runtime code mutation existing only as an `unsafe`, opt-in escape hatch. Both commitments are requirements on an *implementation*, never on the language: a Khayyam program remains valid — and a different runtime remains permitted — regardless of what the Memar Framework chooses here.
 
 ## Introduction
 
@@ -23,7 +23,7 @@ The runtime is the last layer where such magic could quietly return, because it 
 ## Explanation
 
 ### Concurrency and Execution Model
-Unlike traditional languages that hardcode concurrency primitives (like `channels` or `mutexes`) and black-box schedulers into the language core, the Khayyam ecosystem delegates these entirely to the runtime library.
+Unlike traditional languages that hardcode concurrency primitives (like `channels` or `mutexes`) and black-box schedulers into the language core, the Khayyam ecosystem ([Ecosystem](../system.md#ecosystem)) delegates these entirely to the runtime library.
 
 * **User-Space Scheduling:** Thread management, yielding, and context switching are handled by user-space schedulers provided by the framework. This eliminates the overhead of kernel-level context switches.
 * **Library-Driven Primitives:** Synchronization tools (Channels, Mutexes, WaitGroups) are capsules (libraries) rather than syntax keywords. This allows developers to swap, rewrite, or bypass them entirely based on domain needs.

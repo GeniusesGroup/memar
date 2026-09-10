@@ -6,10 +6,10 @@
 - Time: 2026-06-30T00:00:00Z
 - Type: Added
 - Cited:
-  - [Control Flow in Khayyam](./khayyam-control_flow.md) — Depends_on: this document builds on the precedent set by that document of keeping behavioral policies as ordinary library-driven mechanisms rather than new syntax.
-  - [Framework](./framework.md) — Depends_on.
+  - [Control Flow in Khayyam](./control_flow.md) — Depends_on: this document builds on the precedent set by that document of keeping behavioral policies as ordinary library-driven mechanisms rather than new syntax.
+  - [Framework](../framework.md) — Depends_on.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — claimed, argued
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — claimed, argued
 
 #### What changed
 - Established that Khayyam embeds no concurrency model into its syntax: no `go`/`async`/`await` keywords.
@@ -26,13 +26,13 @@
 - Time: 2026-08-17T00:00:00Z
 - Type: refactor
 - Cited:
-  - [Agency](./agency.md) — Depends_on: this document's central new claim — that a Worker/Actor-style representation should not be hard-coded into a language's grammar — is stated in Agency's own terms (Execution Agent as a representation, not a primitive) rather than reconstructed independently here.
-  - [Process](./process.md) — Depends_on: the Concurrency topic's escalating decision chain (shared state → ... → synchronization → locking) is cited directly as the reasoning a `go`-style keyword would bypass.
+  - [Agency](../agency.md) — Depends_on: this document's central new claim — that a Worker/Actor-style representation should not be hard-coded into a language's grammar — is stated in Agency's own terms (Execution Agent as a representation, not a primitive) rather than reconstructed independently here.
+  - [Process](../process.md) — Depends_on: the Concurrency topic's escalating decision chain (shared state → ... → synchronization → locking) is cited directly as the reasoning a `go`-style keyword would bypass.
 - Propagates to:
   - khayyam-control_flow.md: Reference only — this document's citation of Control Flow's own general syntax-minimalism argument was checked against the current file and found accurate; no change needed there.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — requested, argued
-  - [Claude](../CONTRIBUTORS.md#claude) — reviewed, rewrote, recommended
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — requested, argued
+  - [Claude](../../CONTRIBUTORS.md#claude) — reviewed, rewrote, recommended
 
 #### What changed
 - `khayyam-concurrency.md` was renamed `khayyam-agency.md` and migrated into the current Explanation-facet template.
@@ -60,10 +60,10 @@
 - Time: 2026-08-17T00:00:00Z
 - Type: Fixed
 - Cited:
-  - [Method in Khayyam](./khayyam-method.md) — Reference: checked directly to resolve Unresolved question 3, rather than continuing to speculate about its content secondhand.
+  - [Method in Khayyam](./method.md) — Reference: checked directly to resolve Unresolved question 3, rather than continuing to speculate about its content secondhand.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — requested
-  - [Claude](../CONTRIBUTORS.md#claude) — reviewed, rewrote
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — requested
+  - [Claude](../../CONTRIBUTORS.md#claude) — reviewed, rewrote
 
 #### What changed
 - The candidate connection between Khayyam's method-ownership model and Agency, raised speculatively in the previous entry, does not hold up on inspection — resolved as a non-connection rather than left open.
@@ -79,8 +79,8 @@
 - Time: 2026-08-17T00:00:00Z
 - Type: Fixed
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — argued
-  - [Claude](../CONTRIBUTORS.md#claude) — rewrote
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — argued
+  - [Claude](../../CONTRIBUTORS.md#claude) — rewrote
 
 #### What changed
 - The "Worker"/"Actor" naming was removed from Unresolved question 2, Future possibilities, and the closing paragraph of "Concurrency Decisions as Agency, Not Syntax" — the three places where this document had drifted into naming a specific mechanism ("Worker/Actor package") while arguing against exactly that kind of premature naming — each replaced with unnamed language ("a standard-library representation of an execution Agent," "whatever it ends up being called"), leaving the concrete design and vocabulary entirely to a dedicated future runtime/compiler-focused document rather than suggesting a shape here.
@@ -95,11 +95,11 @@
 - Time: 2026-08-17T00:00:00Z
 - Type: Changed
 - Cited:
-  - [Abstraction in Khayyam](./khayyam-abstraction.md) — Depends_on: the new "Agency Beyond Concurrency" topic is grounded directly in that document's own "Is Khayyam's Structural Satisfaction Model Sufficient..." Unresolved question, checked firsthand before writing.
+  - [Abstraction in Khayyam](./abstraction.md) — Depends_on: the new "Agency Beyond Concurrency" topic is grounded directly in that document's own "Is Khayyam's Structural Satisfaction Model Sufficient..." Unresolved question, checked firsthand before writing.
   - [khayyam-design_philosophy.md] — Depends_on: "Khayyam Is Not Its Own Compiler or Runtime" is migrated from that document's Reference-level explanation, as part of that document's planned retirement.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — argued, requested
-  - [Claude](../CONTRIBUTORS.md#claude) — rewrote
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — argued, requested
+  - [Claude](../../CONTRIBUTORS.md#claude) — rewrote
 
 #### What changed
 - This document no longer reads as concurrency-specific: its title, Abstract, and Unresolved questions now reflect two checked instances (concurrency; abstraction satisfaction) rather than one.
@@ -121,8 +121,8 @@
 - Time: 2026-08-17T00:00:00Z
 - Type: Fixed
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — argued
-  - [Claude](../CONTRIBUTORS.md#claude) — rewrote
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — argued
+  - [Claude](../../CONTRIBUTORS.md#claude) — rewrote
 
 #### What changed
 - The compiler/runtime-boundary elaboration ("the language specification defines *what* is guaranteed... a specific compiler or runtime defines *how*...") was removed from Future possibilities, leaving only the original, simpler pointer to Khayyam's compiler/runtime documentation generally — this document no longer carries compiler/runtime-boundary content, and that elaboration belongs with the compiler/runtime documentation itself.
@@ -140,8 +140,8 @@
 - Propagates to:
   - khayyam-agency.handoff.md: Created - open questions and anticipated work moved there.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - requested
-  - [OpenCode](../CONTRIBUTORS.md#opencode) (qwen3.8-flash) - moved
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) - requested
+  - [OpenCode](../../CONTRIBUTORS.md#opencode) (qwen3.8-flash) - moved
 
 #### What changed
 - The body's fixed top-level sections are now Abstract, Introduction, Explanation, Results only: the document-level `## Discussion` and the nested `#### Discussion` wrapper under the *Agency Beyond Concurrency* topic are retired.
@@ -154,7 +154,7 @@
 
 #### Considered and not done
 - **Built-in `async`/`await` syntax (rejected; migrated from the *Agency Beyond Concurrency* topic's retired Discussion wrapper)**: built-in `async`/`await` syntax (Rust, JS, Python, C#) was rejected specifically because of the function-coloring problem it introduces. Read retrospectively through Agency, the rejection also avoids hard-coding one particular execution-Agent representation into the grammar — an additional, independently-arrived-at reason for the same conclusion, not the original one.
-- **Go's `go` keyword (rejected; migrated from the same wrapper)**: rejected as a syntax-level concurrency primitive that, per [Framework](./framework.md)'s framework-first philosophy, should not be hardcoded into the language at all; the Agency reading adds the same independently-arrived-at reason recorded above.
+- **Go's `go` keyword (rejected; migrated from the same wrapper)**: rejected as a syntax-level concurrency primitive that, per [Framework](../framework.md)'s framework-first philosophy, should not be hardcoded into the language at all; the Agency reading adds the same independently-arrived-at reason recorded above.
 
 #### Related work
 - **Erlang/BEAM (migrated from the *Agency Beyond Concurrency* topic's retired Discussion wrapper)**: BEAM's process model and user-space green-thread scheduling are the closest prior art for definition-driven, syntax-light concurrency at scale; read through Agency, BEAM's own "process" is itself a named execution-Agent representation, not unlike what a future Khayyam Worker/Actor library would provide, except BEAM commits to it at the language level while Khayyam leaves the choice to a library.

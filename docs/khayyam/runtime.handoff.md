@@ -1,6 +1,6 @@
 # Khayyam Runtime Specification (Reference Architecture) Handoff
 
-Open work for `khayyam-runtime.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](./documentation-handoff.md) for what a handoff is.
+Open work for `runtime.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](../documentation-handoff.md) for what a handoff is.
 
 ## Open Questions
 
@@ -16,4 +16,4 @@ The precise boundary between "what Khayyam specifies" and "what a Khayyam implem
 ## Anticipated Work
 
 - A minimal conformance floor for any Khayyam runtime (what the language actually assumes from below, if anything), separating portable guarantees from Memar-Framework specifics. (From the retired document-level Future possibilities.)
-- The scheduler/synchronization capsule contracts, specifying what a swappable primitive must satisfy to interoperate with the framework's scheduling — resolving the syscall-boundary question under [Concurrency and Execution Model](./khayyam-runtime.md#concurrency-and-execution-model). (From the retired document-level Future possibilities.)
+- The scheduler/synchronization capsule contracts, specifying what a swappable primitive must satisfy to interoperate with the framework's scheduling — resolving the syscall-boundary question under [Concurrency and Execution Model](./runtime.md#concurrency-and-execution-model). (From the retired document-level Future possibilities.)

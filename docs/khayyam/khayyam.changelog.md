@@ -6,7 +6,7 @@
 - Time: 2020-02-02T00:00:00Z
 - Type: Added
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — claimed
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — claimed
 
 #### What changed
 - Established the canonical Khayyam syntax specification: file extension `.kh`; the two top-level keywords (`tp`, `vr`); the five subtypes (`in`, `cp`, `mt`, `ab`, `sc`); pass-by-reference-only semantics with no assignment operator and no implicit copying; no generic syntax; capsules with fully hidden fields; methods with mandatory three-part signatures and body-less forms for abstraction contracts and FFI; abstractions as pure, generic-free contracts satisfied structurally; and scope blocks for library-defined control flow.
@@ -23,8 +23,8 @@
 - Propagates to:
   - khayyam-design_philosophy.md: Done — the migrated Naming content is removed from there in the same session; see that document's own changelog.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — requested
-  - [Claude](../CONTRIBUTORS.md#claude) — rewrote
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — requested
+  - [Claude](../../CONTRIBUTORS.md#claude) — rewrote
 
 #### What changed
 - The document was restructured from an untemplated `Summary/Core Philosophy/[sections]/CRITICAL INSTRUCTION` layout into the current template (`Abstract → Introduction → Explanation → Results → Discussion`), per `documentation-explanation.md`.
@@ -45,12 +45,12 @@ Considered removing the "CRITICAL INSTRUCTION for any Readers" block outright, s
 - Time: 2026-08-17T00:00:00Z
 - Type: Fixed
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — approved, argued
-  - [Claude](../CONTRIBUTORS.md#claude) — rewrote
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — approved, argued
+  - [Claude](../../CONTRIBUTORS.md#claude) — rewrote
 
 #### What changed
 - The "CRITICAL INSTRUCTION for any Readers" block and its corresponding Unresolved question were removed; the document no longer tells readers, in an alarmed tone, to go read other documents before trusting this one.
-- A Methodology subsection was added under Introduction stating the overview-only, link-outward approach — plainly and once, near the top, that this is an overview and where the fuller reasoning lives — and pointing to companion documents' own Prior art sections (e.g. [Abstraction in Khayyam](./khayyam-abstraction.md)'s comparison against Go, Rust, Java, TypeScript, Zig, and Haskell) as where the comparative, computer-science-grounded critique actually lives, rather than repeating it here.
+- A Methodology subsection was added under Introduction stating the overview-only, link-outward approach — plainly and once, near the top, that this is an overview and where the fuller reasoning lives — and pointing to companion documents' own Prior art sections (e.g. [Abstraction in Khayyam](./abstraction.md)'s comparison against Go, Rust, Java, TypeScript, Zig, and Haskell) as where the comparative, computer-science-grounded critique actually lives, rather than repeating it here.
 - Inline links were added from Capsule to `khayyam-encapsulation.md`, from Pass-by-Reference to `khayyam-memory_model.md`, from the FFI bullet to `Khayyam-compiler.md`, from the No Generic Syntax bullet to `khayyam-polymorphism.md`, and opening-sentence links for Scope (to `khayyam-control_flow.md`) and Variable (to `khayyam-variable.md`), matching the pattern the Method and Abstraction sections already used — the body now links to the fuller reasoning inline, at the specific construct each companion document actually concerns: Capsule, Method, Abstraction, Scope, and Variable all point to their own document at the point of first mention, rather than leaving the reader to discover the companion set from a single block at the end.
 
 #### Deliberation
@@ -67,13 +67,13 @@ Considered removing the "CRITICAL INSTRUCTION for any Readers" block outright, s
 - Propagates to:
   - khayyam-abstraction.md: Reference — that document's own Prior art section already carries out this kind of critical, per-language comparison (Go, Rust, Java, TypeScript, Zig, Haskell) for the abstraction model specifically; this entry does not add new content there, it records that the comparison exists and was checked against this list.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — requested, clarified
-  - [Claude](../CONTRIBUTORS.md#claude) — reviewed, rewrote
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — requested, clarified
+  - [Claude](../../CONTRIBUTORS.md#claude) — reviewed, rewrote
 
 #### What changed
 - The "Inspired of" section (Lessoned Languages: C, D, Go, Rust, Spiral, flat assembler; three articles on Go/Rust comparison and compiler design) was removed from `khayyam-design_philosophy.md`'s body and recorded here instead of in a changelog of its own.
 - The list was checked against this session's own work: nothing in it was used as direct inspiration for a specific Khayyam construct — no direct borrowing from this list was found anywhere in Khayyam's current design.
-- The list's actual function — a harsh, critical comparison against prior languages — is the same function [Abstraction in Khayyam](./khayyam-abstraction.md)'s own Prior art section already performs for the abstraction model specifically; that section is the closest existing embodiment of what this list was for.
+- The list's actual function — a harsh, critical comparison against prior languages — is the same function [Abstraction in Khayyam](./abstraction.md)'s own Prior art section already performs for the abstraction model specifically; that section is the closest existing embodiment of what this list was for.
 - An earlier, mistaken `khayyam-design_philosophy.changelog.md`, created for this same entry in a previous pass before this document's planned retirement was accounted for, was deleted.
 
 #### Deliberation
@@ -95,8 +95,8 @@ Considered redistributing each named language/article into whichever topic docum
   - framework.md: Rejected — considered as a destination for System-Modeling Language Philosophy, since it discusses architectural-principles-over-feature-collection in terms close to Framework's own Constraint Space language. Rejected: Omid specifically does not want Khayyam's own voice or framing entering `framework.md` or `modeling.md`, which are meant to stay independent of any one language's perspective; this document is the correct, deliberately Khayyam-specific home instead.
   - modeling.md: Rejected — considered as a destination for Domain Modeling Principles for the same reason (its Primitive Obsession / Utility-Oriented Architecture resistance echoes modeling.md's own domain-decomposition arguments), and rejected for the same reason.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — requested, argued
-  - [Claude](../CONTRIBUTORS.md#claude) — rewrote
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — requested, argued
+  - [Claude](../../CONTRIBUTORS.md#claude) — rewrote
 
 #### What changed
 - "System-Modeling Language Philosophy" — the framing of Khayyam as a system-modeling language deriving constructs from architectural principles rather than collecting features (with the Long-Term Architectural Potential trade-off) — was added to Introduction, between Motivation and Naming, with its "Long-Term Architectural Potential" subsection and full Discussion (Drawbacks, Prior art, Unresolved questions).
@@ -117,8 +117,8 @@ Considered splitting each topic's general principle (which could read as domain-
 - Cited:
   - [khayyam-design_philosophy.md] — Depends_on: both topics are migrated verbatim from that document's Reference-level explanation, as part of that document's planned retirement.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — argued
-  - [Claude](../CONTRIBUTORS.md#claude) — rewrote
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — argued
+  - [Claude](../../CONTRIBUTORS.md#claude) — rewrote
 
 #### What changed
 - "Self-Documenting Code and Naming" and "Syntactic Atomicity and Semantic Clarity" were added to Introduction, immediately after System-Modeling Language Philosophy, preserving their full text, examples, and Unresolved questions; both were removed from `khayyam-design_philosophy.md`.
@@ -138,13 +138,13 @@ Considered a generic `coding-style.md` as the eventual home for style-adjacent c
 - Type: refactor
 - Cited:
   - [khayyam-design_philosophy.md] — Depends_on: this entry absorbs everything that remained in that document — its Summary and Motivation content, and its front-matter Citations and Contributors — completing its retirement. That document should now be deleted from the repository; nothing in it is not already reflected here or in khayyam-abstraction.md.
-  - [Terminology](./terminology.md) — Depends_on: governs how capsule/abstraction/behavior are defined across Memar, carried forward from `khayyam-design_philosophy.md`'s own Citations.
-  - [Protocol](./protocol.md) — Depends_on: per Protocol's definition, Khayyam's method/abstraction model is itself an instance of a protocol; this framing is inherited even though "Protocol" is not named verbatim in this document's body, carried forward from `khayyam-design_philosophy.md`'s own Citations.
-  - [Framework](./framework.md) — Depends_on: the separation of encapsulation syntax from governance enforcement follows the framework/language/OS separation defined there, carried forward from `khayyam-design_philosophy.md`'s own Citations.
-  - [Modeling](./modeling.md) — Depends_on: modeling is a recurring concept throughout this document's philosophy-derived content — system-modeling language, domain modeling — as a direct application of Modeling's definitions to language design, carried forward from `khayyam-design_philosophy.md`'s own Citations.
+  - [Terminology](../terminology.md) — Depends_on: governs how capsule/abstraction/behavior are defined across Memar, carried forward from `khayyam-design_philosophy.md`'s own Citations.
+  - [Protocol](../protocol.md) — Depends_on: per Protocol's definition, Khayyam's method/abstraction model is itself an instance of a protocol; this framing is inherited even though "Protocol" is not named verbatim in this document's body, carried forward from `khayyam-design_philosophy.md`'s own Citations.
+  - [Framework](../framework.md) — Depends_on: the separation of encapsulation syntax from governance enforcement follows the framework/language/OS separation defined there, carried forward from `khayyam-design_philosophy.md`'s own Citations.
+  - [Modeling](../modeling.md) — Depends_on: modeling is a recurring concept throughout this document's philosophy-derived content — system-modeling language, domain modeling — as a direct application of Modeling's definitions to language design, carried forward from `khayyam-design_philosophy.md`'s own Citations.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — requested, reviewed
-  - [Claude](../CONTRIBUTORS.md#claude) — rewrote
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — requested, reviewed
+  - [Claude](../../CONTRIBUTORS.md#claude) — rewrote
 
 #### What changed
 - `khayyam-design_philosophy.md` is now fully retired: everything it held has either moved to this document, moved to `khayyam-abstraction.md`, or — for the two items with no forward destination — is recorded in this entry.
@@ -154,8 +154,8 @@ Considered a generic `coding-style.md` as the eventual home for style-adjacent c
 - The remaining Guide-level explanation text ("Khayyam is evolving away from being a traditional programming language...") was not migrated into this document's body, since it duplicates System-Modeling Language Philosophy nearly verbatim and is already present here (Claude).
 - `khayyam-design_philosophy.md`'s meta-commentary about its own scope and structure (why it excluded resolved technical mechanisms, why it stayed at the level of philosophy) was not migrated, since that commentary describes a document that will no longer exist; the one substantive lesson buried in that commentary is recorded in this section below, where a future reader can still learn from it (Claude).
 - A concrete historical lesson from the document's own drafting is preserved even though the document holding it is gone: an earlier draft of `khayyam-design_philosophy.md` restated an error-propagation question that had already been substantially addressed elsewhere, creating drift between the philosophy layer and the actual decided mechanism — the concrete failure mode this whole document-consolidation effort has been guarding against throughout this session, kept as a citable instance of it happening once already, not only as an abstract risk.
-- A separate duplication was found in the same pass and is now resolved here rather than in a new entry: this document's "Behavior Over Type Identity" and "Reassessment of Parametric Polymorphism" sections (added directly by Omid's own manual edit) were the earlier, less-refined versions of content a prior pass in this same session had already migrated — in expanded, better cross-referenced form — into [Abstraction in Khayyam](./khayyam-abstraction.md)'s own "Behavior Over Type Identity" and "A Note on Parametric Polymorphism" sections. The more developed version in `khayyam-abstraction.md` was kept as authoritative; this document's own section was shortened to state the principle in brief (tying it explicitly to the No Generic Syntax rule under Abstraction, above) and point to `khayyam-abstraction.md` for the full treatment, rather than carrying two versions of the same reasoning forward.
-- The original contributions to `khayyam-design_philosophy.md`'s Reference-level content, now living in this document and in `khayyam-abstraction.md`, are recorded here: [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — original idea, reflections, and design leadership behind every principle now merged in; [ChatGPT](../CONTRIBUTORS.md#chatgpt) (GPT-5.5, medium effort) — drafted the initial text; [Super Z](../CONTRIBUTORS.md#super-z) (GLM 5.2, medium effort) — restructured the original unstructured reflections into document-template form; [Claude](../CONTRIBUTORS.md#claude) (claude-sonnet-5, high effort with thinking) — separated the narrative/philosophy layer from the technical/decision layer in an earlier pass.
+- A separate duplication was found in the same pass and is now resolved here rather than in a new entry: this document's "Behavior Over Type Identity" and "Reassessment of Parametric Polymorphism" sections (added directly by Omid's own manual edit) were the earlier, less-refined versions of content a prior pass in this same session had already migrated — in expanded, better cross-referenced form — into [Abstraction in Khayyam](./abstraction.md)'s own "Behavior Over Type Identity" and "A Note on Parametric Polymorphism" sections. The more developed version in `khayyam-abstraction.md` was kept as authoritative; this document's own section was shortened to state the principle in brief (tying it explicitly to the No Generic Syntax rule under Abstraction, above) and point to `khayyam-abstraction.md` for the full treatment, rather than carrying two versions of the same reasoning forward.
+- The original contributions to `khayyam-design_philosophy.md`'s Reference-level content, now living in this document and in `khayyam-abstraction.md`, are recorded here: [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — original idea, reflections, and design leadership behind every principle now merged in; [ChatGPT](../../CONTRIBUTORS.md#chatgpt) (GPT-5.5, medium effort) — drafted the initial text; [Super Z](../../CONTRIBUTORS.md#super-z) (GLM 5.2, medium effort) — restructured the original unstructured reflections into document-template form; [Claude](../../CONTRIBUTORS.md#claude) (claude-sonnet-5, high effort with thinking) — separated the narrative/philosophy layer from the technical/decision layer in an earlier pass.
 
 #### Deliberation
 - The remainder of `khayyam-design_philosophy.md` — front matter, Summary, Motivation, and Guide-level explanation — was asked to be merged in as well, and its front-matter Citations and Contributors, which have nowhere else to go since the base document is being deleted, to move to this changelog (Omid Hekayati — requested).
@@ -169,8 +169,8 @@ Considered migrating the remaining Guide-level explanation paragraph verbatim re
 - Time: 2026-08-17T00:00:00Z
 - Type: Fixed
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — requested, corrected
-  - [Claude](../CONTRIBUTORS.md#claude) — reviewed, rewrote, corrected
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — requested, corrected
+  - [Claude](../../CONTRIBUTORS.md#claude) — reviewed, rewrote, corrected
 
 #### What changed
 - The document-level Discussion section (Drawbacks/Rationale and alternatives/Prior art/Unresolved questions/Future possibilities) was found to be still, word for word, the deleted design-philosophy document's own self-referential Discussion — describing "this document" as a philosophy-only layer kept deliberately separate from technical specification, which directly contradicts this document's actual current state now that the two are merged: it previously described a document that no longer exists in that form rather than this document's actual, now-merged state.
@@ -195,11 +195,11 @@ Considered leaving the Discussion section's philosophical framing intact on the 
 - Time: 2026-08-27T00:00:00Z
 - Type: Changed
 - Cited:
-  - [Variable in Khayyam](./khayyam-variable.md) — Reference: magic-number example for the “lint can be disabled” argument
-  - [Memory Model](./khayyam-memory_model.md) — Reference: linter-enforced safety as the contrasting flow-policy example
+  - [Variable in Khayyam](./variable.md) — Reference: magic-number example for the “lint can be disabled” argument
+  - [Memory Model](./memory_model.md) — Reference: linter-enforced safety as the contrasting flow-policy example
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — requested, clarified
-  - [Super Z](../CONTRIBUTORS.md#super-z) — rewrote
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — requested, clarified
+  - [Super Z](../../CONTRIBUTORS.md#super-z) — rewrote
 
 #### What changed
 - Added `Separation of Syntax and Governance: A Principle` — *Syntax defines what exists* (types/values/relationships, compiler-enforced) vs. *Governance defines how instances flow* (lifecycle, error routing, architectural constraints, linter/framework-enforced).
@@ -219,11 +219,11 @@ Considered leaving the Discussion section's philosophical framing intact on the 
 - Time: 2026-09-06T10:30:00Z
 - Type: Fixed
 - Cited:
-  - [Khayyam Runtime Specification](./khayyam-runtime.md) — Reference: the runtime-side realization of the execution-semantics alignment, now linked from the restored topic so the principle and its one concrete realization stay distinct.
+  - [Khayyam Runtime Specification](./runtime.md) — Reference: the runtime-side realization of the execution-semantics alignment, now linked from the restored topic so the principle and its one concrete realization stay distinct.
   - commit `091333a` (2026-07-13, `RFCs/khayyam.md`) — Evidence: this topic was added to the language document on 2026-07-13, directly after the session that drafted it, and was removed on 2026-07-18 during the Encapsulation/Variable restructure (`f73c633`) without being migrated anywhere.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — directed, decided
-  - [Super Z](../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash, via the OpenCode agent) — reviewed, restored
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — directed, decided
+  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash, via the OpenCode agent) — reviewed, restored
 
 #### What changed
 - The *Execution Semantics Philosophy* topic — explicit, predictable, architecturally visible execution behavior; the three explicit-over-implicit preferences; unikernel-style computing as a natural alignment rather than a deployment requirement — is restored to this document, after *Separation of Syntax and Governance*, with its full text, Drawbacks, Unresolved questions, and Future possibilities preserved.
@@ -244,10 +244,10 @@ Considered placing the topic in `khayyam-runtime.md` instead, since Unikernel is
 - Time: 2026-09-06T11:00:00Z
 - Type: Fixed
 - Cited:
-  - [Modeling](./modeling.md) — Reference: modeling methodology, including Concept Existence vs. Model Existence and the limits of modeling, now linked from Domain Modeling Principles instead of being implied.
+  - [Modeling](../modeling.md) — Reference: modeling methodology, including Concept Existence vs. Model Existence and the limits of modeling, now linked from Domain Modeling Principles instead of being implied.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — directed
-  - [Super Z](../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash, via the OpenCode agent) — applied
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — directed
+  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash, via the OpenCode agent) — applied
 
 #### What changed
 - Three claim-voice corrections aligning assertions with the design-review discipline established in the chat that produced them: "Khayyam optimizes for architectural integrity over time" now reads "is designed to optimize for"; "the grammar makes the architect's intent visible at every call site" now reads "the grammar is designed to make"; "ensures that business meaning is never lost to primitive types" now reads "is designed to keep business meaning from being lost". Each is a design hypothesis pending empirical validation, not a demonstrated result.
@@ -264,8 +264,8 @@ Considered placing the topic in `khayyam-runtime.md` instead, since Unikernel is
 - Propagates to:
   - khayyam.handoff.md: Created - open questions and anticipated work moved there.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - requested
-  - [OpenCode](../CONTRIBUTORS.md#opencode) (qwen3.8-flash) - moved
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) - requested
+  - [OpenCode](../../CONTRIBUTORS.md#opencode) (qwen3.8-flash) - moved
 
 #### What changed
 - The body retains only the fixed top-level sections (`Abstract`, `Introduction`, `Explanation`, `Results`): the document-level `## Discussion` and all five topic-level `#### Discussion` wrappers (under *Execution Semantics Philosophy*, *System-Modeling Language Philosophy*, *Self-Documenting Code and Naming*, *Syntactic Atomicity and Semantic Clarity*, and *Domain Modeling Principles*) are removed.
@@ -281,9 +281,24 @@ Considered placing the topic in `khayyam-runtime.md` instead, since Unikernel is
 - **Keep philosophy and syntax reference as two documents indefinitely, accepting the drift risk (rejected; migrated from the same section)**: rejected once a second, independent failure of the same kind confirmed the risk was recurring, not a one-time accident — this document's own then-superseded "Behavior Over Type Identity"/"Reassessment of Parametric Polymorphism" sections had drifted out of sync with the more developed version already migrated to `khayyam-abstraction.md`.
 - **Allow generic containers alongside domain-specific capsules (rejected; migrated from the Domain Modeling Principles topic's retired Rationale and alternatives)**: this would immediately re-open the door to the primitive-obsession and utility-dumping patterns that Khayyam's design explicitly aims to prevent.
 - **Provide a lint rule rather than a language-level constraint (considered, not chosen; migrated from the same topic's wrapper)**: lint rules can be disabled or ignored at the organizational level, weakening the architectural safeguard.
-- **Consolidating philosophy and syntax reference into one document carries a duplication risk (drawback record; migrated from the removed document-level Drawbacks)**: this document now combines finalized syntax and semantics with the philosophical and architectural reasoning behind them, after absorbing what previously lived in a separate design-philosophy document, and a construct's rationale, once stated here, must not also be restated — and risk drifting out of sync — in that construct's own dedicated document (e.g. [Abstraction in Khayyam](./khayyam-abstraction.md), [Method in Khayyam](./khayyam-method.md)). The risk is managed the same way those documents manage their own overlaps: state a topic once, in the place closest to where a reader would look for it, and link to it from everywhere else rather than restating it.
+- **Consolidating philosophy and syntax reference into one document carries a duplication risk (drawback record; migrated from the removed document-level Drawbacks)**: this document now combines finalized syntax and semantics with the philosophical and architectural reasoning behind them, after absorbing what previously lived in a separate design-philosophy document, and a construct's rationale, once stated here, must not also be restated — and risk drifting out of sync — in that construct's own dedicated document (e.g. [Abstraction in Khayyam](./abstraction.md), [Method in Khayyam](./method.md)). The risk is managed the same way those documents manage their own overlaps: state a topic once, in the place closest to where a reader would look for it, and link to it from everywhere else rather than restating it.
 
 #### Related work
 - Rust's design philosophy documents and Go's "Go Proverbs" serve a similar purpose of capturing design intent alongside technical specification, generally as separate documents from the language reference itself. Khayyam's own experience with that split — the drift recorded under Considered and not done above — is a data point specific to this project, not a general argument against the pattern; other projects may find the split works well for them. (Migrated from the removed document-level Prior art.)
 - A language derived from architectural principles rather than feature collections has precedents in restricted domains — for example, Erlang's design from telecommunications reliability requirements, or Verilog's design from hardware modeling needs; Khayyam's ambition is to apply this principle more broadly to general-purpose system software. (Migrated from the System-Modeling Language Philosophy topic's retired Prior art.)
 - Domain-Driven Design as formulated by Eric Evans advocates for rich domain models, but leaves enforcement to developer discipline; Khayyam encodes this discipline into the language grammar itself, making it structurally difficult to violate. (Migrated from the Domain Modeling Principles topic's retired Prior art.)
+
+---
+
+### The Grammar Refuses Protocol Semantics
+- Time: 2026-09-10T00:00:00Z
+- Type: Added
+- Contributors:
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — requested, decided the criterion
+  - [Super Z](../../CONTRIBUTORS.md#super-z) — stated, applied
+
+#### What changed
+- Added the *The Grammar Refuses Protocol Semantics* principle to the Explanation, between *Separation of Syntax and Governance* and *Execution Semantics Philosophy*: a construct enters the grammar only when its semantics can be stated without adopting any protocol's definitions; where a construct's meaning would require protocol-owned definitions, the grammar refuses the construct, and the need is met through the language's generic mechanisms (ordinary values and explicit outputs, explicit imports, library-provided methods, the `ab` construct for authoring contracts).
+- The principle states as a rule what the per-construct documents already enacted individually (no error-handling syntax, no memory primitives, no concurrency keywords, no standard-library shapes in the grammar) and fixes the boundary as protocol-level, not concept-level: base-layer modeling concepts (`tp` for Type, `sc` for Scope) remain expressible, because the grammar supplies the declaration mechanism, not a specific contract.
+- Names the framework-independence consequence: protocols are owned by the governance framework above the language (Memar today, another framework tomorrow); baking one in would reduce the language to that framework's syntax extension.
+- Trigger: the language–protocol relationship had been stated per construct but never as a general rule, and a documentation-set review misread [Control Flow in Khayyam](./control_flow.md)'s citation of [The Error](../protocols/error.md) as a grammar-level dependency. The general statement closes that misreading path; the folder role statement ([README.md](./README.md)) carries the citation-layer version of the same statement.

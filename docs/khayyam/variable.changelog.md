@@ -8,15 +8,15 @@
 - Cited:
   - [Khayyam — Programming Language](./khayyam.md) — Reference: defines the canonical `vr` declaration syntax, `in` inclusion syntax, and logical-reference semantics elaborated here.
   - [Khayyam Design Philosophy](./khayyam-design_philosophy.md) — Reference: provides the self-documenting-code, syntactic-atomicity, and domain-modeling principles used to motivate the variable design. *(That document has since been fully retired and deleted; its content was absorbed into khayyam.md and khayyam-abstraction.md — see khayyam.changelog.md. This citation is preserved as historical provenance only.)*
-  - [Type](./type.md) — Depends_on: variables name instances of types, and the type model determines which kinds of type may be referenced.
-  - [Encapsulation in Khayyam](./khayyam-encapsulation.md) — Reference: defines the capsule-owned behavioral contract, including the constant model and the rule that mutability is not a variable-level property.
-  - [Abstraction in Khayyam](./khayyam-abstraction.md) — Reference: defines the abstraction category that may be named in a variable declaration.
-  - [Polymorphism in Khayyam](./khayyam-polymorphism.md) — Reference: specifies dispatch for a variable declared against an abstraction.
+  - [Type](../type.md) — Depends_on: variables name instances of types, and the type model determines which kinds of type may be referenced.
+  - [Encapsulation in Khayyam](./encapsulation.md) — Reference: defines the capsule-owned behavioral contract, including the constant model and the rule that mutability is not a variable-level property.
+  - [Abstraction in Khayyam](./abstraction.md) — Reference: defines the abstraction category that may be named in a variable declaration.
+  - [Polymorphism in Khayyam](./polymorphism.md) — Reference: specifies dispatch for a variable declared against an abstraction.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — claimed
-  - [ChatGPT](../CONTRIBUTORS.md#chatgpt) (GPT-5.5, medium effort) — reviewed
-  - [Super Z](../CONTRIBUTORS.md#super-z) (GLM 5.2, high effort) — rewrote
-  - [Claude](../CONTRIBUTORS.md#claude) (claude-sonnet-5, extended thinking) — reviewed
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — claimed
+  - [ChatGPT](../../CONTRIBUTORS.md#chatgpt) (GPT-5.5, medium effort) — reviewed
+  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM 5.2, high effort) — rewrote
+  - [Claude](../../CONTRIBUTORS.md#claude) (claude-sonnet-5, extended thinking) — reviewed
 
 #### What changed
 - Created the variable document and consolidated the design's declaration syntax, explicit-type rule, assignment prohibition, logical-reference model, scope and inclusion mechanism, arithmetic treatment, constants, and deferred resource-lifecycle concerns.
@@ -33,12 +33,12 @@
 - Time: 2026-08-19T00:00:00Z
 - Type: refactor
 - Cited:
-  - [Documentation — Explanation](./documentation-explanation.md) — Depends_on: defines the current required front matter, top-level body sections, topic-first organization, and progressive migration rules.
-  - [Documentation — Changelog](./documentation-changelog.md) — Depends_on: defines the companion changelog that receives migrated provenance and change rationale.
-  - [How to make a new explanation document](./documentation-explanation.practice.md) — Reference: supplies the revision procedure used for this migration.
+  - [Documentation — Explanation](../documentation-explanation.md) — Depends_on: defines the current required front matter, top-level body sections, topic-first organization, and progressive migration rules.
+  - [Documentation — Changelog](../documentation-changelog.md) — Depends_on: defines the companion changelog that receives migrated provenance and change rationale.
+  - [How to make a new explanation document](../documentation-explanation.practice.md) — Reference: supplies the revision procedure used for this migration.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — requested
-  - [ChatGPT](../CONTRIBUTORS.md#chatgpt) (GPT-5.6) — rewrote
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — requested
+  - [ChatGPT](../../CONTRIBUTORS.md#chatgpt) (GPT-5.6) — rewrote
 
 #### What changed
 - Migrated the base document from the retired `Summary` / `Guide-level explanation` / `Reference-level explanation` layout to `Abstract`, `Introduction`, `Explanation`, `Results`, and `Discussion`.
@@ -57,8 +57,8 @@
 - Time: 2026-08-27T00:00:00Z
 - Type: Fixed
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — requested
-  - [Super Z](../CONTRIBUTORS.md#super-z) — rewrote
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — requested
+  - [Super Z](../../CONTRIBUTORS.md#super-z) — rewrote
 
 #### What changed
 - Narrows the aliasing claim in `No Assignment Operators` from a broad “eliminates aliasing” to the specific sub-class that `b = a` would create; explicit reference sharing through method parameters remains the intended mechanism (e.g., passing the same `conn` to a registry).
@@ -79,8 +79,8 @@
 - Propagates to:
   - khayyam-variable.handoff.md: Created - open questions and anticipated work moved there.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - requested
-  - [OpenCode](../CONTRIBUTORS.md#opencode) (qwen3.8-flash) - moved
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) - requested
+  - [OpenCode](../../CONTRIBUTORS.md#opencode) (qwen3.8-flash) - moved
 
 #### What changed
 - The body's fixed top-level sections are now Abstract, Introduction, Explanation, Results only; the document-level `## Discussion` and all eight topic-level `#### Discussion` wrappers are dissolved.
@@ -108,8 +108,8 @@
 - **Explicit resource management (Khayyam's intended approach; migrated from the same topic as the recorded decision)**: makes resource lifecycle a visible, predictable, and auditable part of the program's architecture. The precise mechanism is deferred to a future document.
 - **GC-experienced developers will eventually need to engage with explicit resource management; the specifics of that engagement are not a variable-level concern (migrated from the Resource-Lifecycle (Deferred) topic's retired Drawbacks)**: kept here rather than folded into the body because it describes the adoption cost of a not-yet-specified future design, not a current-state cost of the variable model.
 - **Combine declaration and initialization (rejected; migrated from the retired document-level Rationale and alternatives)**: would require an assignment operator, conflicting with the no-assignment rule and its aliasing-prevention benefits.
-- **Allow type inference for "obvious" cases (rejected; migrated from the retired document-level Rationale and alternatives)**: the boundary of "obvious" is subjective and creates inconsistency; see [Explicit Types](./khayyam-variable.md#explicit-types).
-- **Allow multi-declaration for same-type variables (rejected; migrated from the retired document-level Rationale and alternatives)**: would compress distinct variables into a single line, violating the one-visible-step-per-statement principle; see [Variable Declaration Syntax](./khayyam-variable.md#variable-declaration-syntax).
+- **Allow type inference for "obvious" cases (rejected; migrated from the retired document-level Rationale and alternatives)**: the boundary of "obvious" is subjective and creates inconsistency; see [Explicit Types](./variable.md#explicit-types).
+- **Allow multi-declaration for same-type variables (rejected; migrated from the retired document-level Rationale and alternatives)**: would compress distinct variables into a single line, violating the one-visible-step-per-statement principle; see [Variable Declaration Syntax](./variable.md#variable-declaration-syntax).
 - **The variable model's insistence on explicit types, no assignment operators, and no multi-declaration syntax creates a measurably more verbose declaration experience than virtually every modern language (migrated from the retired document-level Drawbacks)**: for every variable, the developer must write a separate declaration line with an explicit type, and then a separate initialization line via a method call. This verbosity is the price of guaranteed readability and domain integrity — but it is a real price, and it is felt most acutely during rapid prototyping or when writing boilerplate-heavy code.
 
 #### Related work

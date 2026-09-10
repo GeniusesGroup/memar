@@ -1,6 +1,6 @@
 # Khayyam - Programming Language Handoff
 
-Open work for `khayyam.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](./documentation-handoff.md) for what a handoff is.
+Open work for `khayyam.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](../documentation-handoff.md) for what a handoff is.
 
 ## Open Questions
 
@@ -38,7 +38,7 @@ Highly regular, atomic syntax can feel verbose to experienced developers who rel
 See [Khayyam Is Not Its Own Compiler or Runtime](./khayyam.md#khayyam-is-not-its-own-compiler-or-runtime). (Document-level, from the removed `## Discussion`.)
 
 ### Is there a size or complexity threshold at which splitting a specific topic back out into its own dedicated document becomes worthwhile?
-Now that philosophy and syntax reference live in one document — the way *Behavior Over Type Identity* already points to [Abstraction in Khayyam](./khayyam-abstraction.md) rather than restating it in this one. (Document-level, from the removed `## Discussion`.)
+Now that philosophy and syntax reference live in one document — the way *Behavior Over Type Identity* already points to [Abstraction in Khayyam](./abstraction.md) rather than restating it in this one. (Document-level, from the removed `## Discussion`.)
 
 ## Anticipated Work
 

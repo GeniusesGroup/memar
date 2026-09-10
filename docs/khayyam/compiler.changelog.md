@@ -6,11 +6,11 @@
 - Time: 2026-08-27T00:00:00Z
 - Type: Fixed
 - Cited:
-  - [Control Flow in Khayyam](./khayyam-control_flow.md) — Depends_on: `sc` and event abstraction that the compiler exposes
-  - [Variable in Khayyam](./khayyam-variable.md) — Reference: domain-driven arithmetic and `FromString` human-readable text concerns
+  - [Control Flow in Khayyam](./control_flow.md) — Depends_on: `sc` and event abstraction that the compiler exposes
+  - [Variable in Khayyam](./variable.md) — Reference: domain-driven arithmetic and `FromString` human-readable text concerns
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — requested
-  - [Super Z](../CONTRIBUTORS.md#super-z) — rewrote
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — requested
+  - [Super Z](../../CONTRIBUTORS.md#super-z) — rewrote
 
 #### What changed
 - Replaces `Control Flow via Framework Intrinsics` (which claimed the compiler “treats the framework’s `IF` as an intrinsic” and listed `goto` as the only native branching keyword) with `Control Flow via `sc` and Jump Primitives`: the AST recognizes only `sc` and low-level jump intrinsics (lowered to `goto` at IR, not a source keyword); framework `IF`/`ELSE` are ordinary library code; the compiler emits `sc` entry/exit and jump events to which DAA/linter subscribe.
@@ -33,10 +33,10 @@
 - Time: 2026-08-27T00:00:00Z
 - Type: Changed
 - Cited:
-  - [Khayyam Runtime Specification](./khayyam-runtime.md) — Reference: the same `unsafe` runtime-patching description
-  - [Polymorphism in Khayyam](./khayyam-polymorphism.md) — Reference: the Dynamic Dispatch Reducibility note that expects reducibility under Immutable Infrastructure
+  - [Khayyam Runtime Specification](./runtime.md) — Reference: the same `unsafe` runtime-patching description
+  - [Polymorphism in Khayyam](./polymorphism.md) — Reference: the Dynamic Dispatch Reducibility note that expects reducibility under Immutable Infrastructure
 - Contributors:
-  - [Super Z](../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — rewrote
+  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — rewrote
 
 #### What changed
 - Appends to `Change logic in runtime` a relation note: the default/safe deployment model is Immutable Infrastructure (no runtime capability addition without recompilation); the described `unsafe` WASM-like module replacement is an explicit, opt-in escape hatch, audited and never used for normal evolution, and therefore does not contradict the principle.
@@ -47,11 +47,11 @@
 - Time: 2026-08-30T00:00:00Z
 - Type: refactor
 - Cited:
-  - [Documentation — Explanation](./documentation-explanation.md) — Depends_on: the structure this migration follows — YAML front matter, the `Abstract → Introduction → Explanation → Results → Discussion` body, and the per-topic Discussion pattern — is that specification's, applied to this document for the first time.
+  - [Documentation — Explanation](../documentation-explanation.md) — Depends_on: the structure this migration follows — YAML front matter, the `Abstract → Introduction → Explanation → Results → Discussion` body, and the per-topic Discussion pattern — is that specification's, applied to this document for the first time.
   - [Khayyam - Programming Language](./khayyam.md) — Reference: *Khayyam Is Not Its Own Compiler or Runtime* and *Separation of Syntax and Governance*, which supply the framing for the new Abstract, Motivation, and Discussion content.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — requested
-  - [Super Z](../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — rewrote
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — requested
+  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — rewrote
 
 #### What changed
 - The document is now structured per `documentation-explanation.md`: YAML front matter added (Status: Proposed; Start Date and ID assigned retroactively from the file's first commit date, 2026-06-22); Abstract, Motivation, per-topic Discussion sections, Results, and a document-wide Discussion added.
@@ -73,10 +73,10 @@
 - Time: 2026-09-06T10:30:00Z
 - Type: Added
 - Cited:
-  - [protocols/lexer.md](./protocols/lexer.md) — Reference: the first Future-possibilities item pointing at the lexer protocol is now satisfied by a real document; the readiness-review item below generalizes the same gate to the whole compiler effort.
+  - [protocols/lexer.md](../protocols/lexer.md) — Reference: the first Future-possibilities item pointing at the lexer protocol is now satisfied by a real document; the readiness-review item below generalizes the same gate to the whole compiler effort.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — directed, reviewed
-  - [Super Z](../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash, via the OpenCode agent) — applied
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — directed, reviewed
+  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash, via the OpenCode agent) — applied
 
 #### What changed
 - Three Future-possibilities entries added, transferring the implementation-start decisions from the design chat:
@@ -96,8 +96,8 @@
 - Propagates to:
   - khayyam-compiler.handoff.md: Created - open questions and anticipated work moved there.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - requested
-  - [OpenCode](../CONTRIBUTORS.md#opencode) (qwen3.8-flash) - moved
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) - requested
+  - [OpenCode](../../CONTRIBUTORS.md#opencode) (qwen3.8-flash) - moved
 
 #### What changed
 - The body retains only the fixed top-level sections `Abstract`, `Introduction`, `Explanation`, `Results`; the document-level `## Discussion` is gone.
@@ -113,12 +113,12 @@
 - **Silence instead of events (rejected; migrated from the same topic)**: without emitted control-flow events, each analysis tool would have to re-derive branch structure by re-recognizing library names in the AST — reimplementing, per tool, the coupling the event design avoids.
 - **Hardcode `main`/`init`/`deinit` into the language (rejected; migrated from the `Environment-Agnostic Entry Points` topic's retired Rationale and alternatives)**: permanently couples one execution model to the grammar, forcing a breaking language change whenever the execution paradigm evolves, and making the language wrong-by-default for environments (event-driven, serverless, WASM, embedded) whose boot model differs.
 - **Let the compiler pick one canonical boot convention (rejected; migrated from the same topic)**: moves the coupling from the grammar to the only implementation most users will ever touch — nearly the same coupling with a thinner layer of deniability; boot remains a *configuration* choice, resolved per target.
-- **Privilege specific types or methods as compiler builtins (rejected; migrated from the `Compile-Time Functions` topic's retired Rationale and alternatives)**: violates Zero-Magic Core; there are no privileged types (see [No Privileged Types](./khayyam-variable.md#no-privileged-types)) — `W32` and `NanoSecond` are ordinary capsules, and the compiler knowing `FromASCII` "by name" would be exactly the magic this directive exists to prevent.
+- **Privilege specific types or methods as compiler builtins (rejected; migrated from the `Compile-Time Functions` topic's retired Rationale and alternatives)**: violates Zero-Magic Core; there are no privileged types (see [No Privileged Types](./variable.md#no-privileged-types)) — `W32` and `NanoSecond` are ordinary capsules, and the compiler knowing `FromASCII` "by name" would be exactly the magic this directive exists to prevent.
 - **Let the compiler decide purity automatically by analysis (considered, not chosen; migrated from the same topic)**: silently deciding on the author's behalf conflicts with the principle that design decisions belong to the author and remain visible in source. Automatic analysis may be layered on top of explicit designation as a convenience or diagnostic, but designation stays the source of truth.
 - **Evaluate nothing at compile time (rejected; migrated from the same topic)**: loses the pre-compilation guarantee and pushes genuinely static configuration cost into every runtime startup.
 - **Make runtime module replacement a first-class, always-available capability (rejected; migrated from the `Change Logic in Runtime (Unsafe)` topic's retired Rationale and alternatives)**: contradicts Immutable Infrastructure as the default deployment model — no runtime addition of capability without recompilation — and would normalize the uncontrolled capability evolution that principle exists to prevent.
 - **Omit the capability entirely (rejected; migrated from the same topic)**: microservice-style module turnover has genuine uses; removing it entirely would push adopters toward out-of-band binary manipulation with no audit story at all.
-- **Keep it opt-in and tagged `unsafe` (chosen; migrated from the same topic as the recorded decision)**: the capability exists, is visibly dangerous at the call site, and sits outside the normal path — the same shape as the [runtime-side resolution](./khayyam-runtime.md#change-logic-in-runtime-unsafe) of this topic.
+- **Keep it opt-in and tagged `unsafe` (chosen; migrated from the same topic as the recorded decision)**: the capability exists, is visibly dangerous at the call site, and sits outside the normal path — the same shape as the [runtime-side resolution](./runtime.md#change-logic-in-runtime-unsafe) of this topic.
 - **Fold compiler decisions into [Khayyam](./khayyam.md) (rejected; migrated from the retired document-level Rationale and alternatives)**: Khayyam's own Methodology keeps that document a short overview that links outward; implementation directives there would couple language evolution to implementation detail and grow exactly the document the language spec deliberately keeps small.
 - **Leave compiler behavior unspecified (rejected; migrated from the same block)**: the handoff from language to implementation is Khayyam's central architectural move; leaving the receiving side undocumented means each compiler team re-derives — or silently ignores — the philosophy the handoff exists to preserve, reproducing the convenience-pressure failure mode the separation was designed to prevent.
 
@@ -135,8 +135,8 @@
 - Time: 2026-09-09T00:00:00Z
 - Type: Changed
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — corrected
-  - [Super Z](../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — applied
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — corrected
+  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — applied
 
 #### What changed
 - The "Relation to Immutable Infrastructure" note mirrors khayyam-runtime.md's re-anchoring: the compile-time-fixed default is now cited from the base principle Structure Is Fixed by Definition (type.md), and the Immutable Infrastructure brand no longer appears in this document. The escape-hatch reading is unchanged.

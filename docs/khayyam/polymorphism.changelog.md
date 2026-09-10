@@ -6,18 +6,18 @@
 - Time: 2026-07-11T00:00:00Z
 - Type: Added
 - Cited:
-  - [Abstraction in Khayyam](./khayyam-abstraction.md) — Extends: supplies the abstraction type and its mechanics; this document classifies the polymorphism it enables and the syntaxes Khayyam rejects.
-  - [Protocol](./protocol.md) — Depends_on: defines Protocol as a pure declarative specification used to explain why abstractions carry no behavior.
-  - [Type](./type.md) — Depends_on: the type model defines the concepts and categories on which polymorphism operates.
-  - [Explicit Behavior Ownership](./type.md#explicit-behavior-ownership) — Depends_on: its requirement for a single visible behavior owner grounds the rejection of generic type-parameter syntax.
+  - [Abstraction in Khayyam](./abstraction.md) — Extends: supplies the abstraction type and its mechanics; this document classifies the polymorphism it enables and the syntaxes Khayyam rejects.
+  - [Protocol](../protocol.md) — Depends_on: defines Protocol as a pure declarative specification used to explain why abstractions carry no behavior.
+  - [Type](../type.md) — Depends_on: the type model defines the concepts and categories on which polymorphism operates.
+  - [Explicit Behavior Ownership](../type.md#explicit-behavior-ownership) — Depends_on: its requirement for a single visible behavior owner grounds the rejection of generic type-parameter syntax.
 - Propagates to:
   - [Khayyam — Programming Language](./khayyam.md#abstraction): Done — the canonical Abstraction section reflects the abstraction mechanism on which this document builds.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — claimed
-  - [Gemini](../CONTRIBUTORS.md#gemini) (3.1 pro, extended thinking) — drafted
-  - [ChatGPT](../CONTRIBUTORS.md#chatgpt) (GPT-5.5, medium effort) — critically reviewed
-  - [Claude](../CONTRIBUTORS.md#claude) (claude-sonnet-5, extended thinking) — researched and rewrote
-  - [Super Z](../CONTRIBUTORS.md#super-z) (GLM, medium effort) — merged
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — claimed
+  - [Gemini](../../CONTRIBUTORS.md#gemini) (3.1 pro, extended thinking) — drafted
+  - [ChatGPT](../../CONTRIBUTORS.md#chatgpt) (GPT-5.5, medium effort) — critically reviewed
+  - [Claude](../../CONTRIBUTORS.md#claude) (claude-sonnet-5, extended thinking) — researched and rewrote
+  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM, medium effort) — merged
 
 #### What changed
 - The polymorphism document was created, consolidating the former container/generics-elimination material (Gemini — drafted the original containers/generics-elimination material and its alternatives; Super Z — merged, preserving the former containers-without-generics document's detail in this document).
@@ -36,12 +36,12 @@
 - Time: 2026-08-19T00:00:00Z
 - Type: refactor
 - Cited:
-  - [Documentation — Explanation](./documentation-explanation.md) — Depends_on: defines the current front matter, top-level body sections, and topic-first organization.
-  - [Documentation — Changelog](./documentation-changelog.md) — Depends_on: defines this companion file as the home for migrated provenance and change history.
-  - [How to make a new explanation document](./documentation-explanation.practice.md) — Reference: supplies the revision procedure applied in this migration.
+  - [Documentation — Explanation](../documentation-explanation.md) — Depends_on: defines the current front matter, top-level body sections, and topic-first organization.
+  - [Documentation — Changelog](../documentation-changelog.md) — Depends_on: defines this companion file as the home for migrated provenance and change history.
+  - [How to make a new explanation document](../documentation-explanation.practice.md) — Reference: supplies the revision procedure applied in this migration.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — requested
-  - [ChatGPT](../CONTRIBUTORS.md#chatgpt) (GPT-5.6) — rewrote
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — requested
+  - [ChatGPT](../../CONTRIBUTORS.md#chatgpt) (GPT-5.6) — rewrote
 
 #### What changed
 - The base document was migrated from the retired `Summary` / `Guide-level explanation` / `Reference-level explanation` structure to `Abstract`, `Introduction`, `Explanation`, `Results`, and `Discussion`.
@@ -60,7 +60,7 @@
 - Time: 2026-08-27T00:00:00Z
 - Type: Fixed
 - Contributors:
-  - [Super Z](../CONTRIBUTORS.md#super-z) — rewrote
+  - [Super Z](../../CONTRIBUTORS.md#super-z) — rewrote
 
 #### What changed
 Corrects `tp hash`/`tp salt` to `tp Hash`/`tp Salt` per the PascalCase convention and `UInt64`/`UInt32` to `W64`/`W32` per the `W`/`R` capsule naming in sibling documents (also `h.hash` → `h.Hash`). Annotates the `ConnectionList` example's `self.container.Add(conID, con) (con, err)` call where `con` occupies both roles — influencing in `(conID, con)` and influenced in `(con, err)` — as an exhibit of the open dual-role question in `khayyam-method.md`; no settled notation exists yet.
@@ -71,8 +71,8 @@ Corrects `tp hash`/`tp salt` to `tp Hash`/`tp Salt` per the PascalCase conventio
 - Time: 2026-09-09T00:00:00Z
 - Type: Changed
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — corrected
-  - [Super Z](../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — argued, rewrote
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — corrected
+  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — argued, rewrote
 
 #### What changed
 - The "Dynamic Dispatch Reducibility" topic is resolved in the affirmative for Memar from the base layer's own principle — Structure Is Fixed by Definition (type.md): dispatch may defer selection to runtime, but the candidate set and every candidate's implementation must already be spelled out in source (Explicit Behavior Ownership), and a genuinely runtime-only type selection — target set or implementation arriving while the system runs — would mint structure in execution, which the principle excludes outright.

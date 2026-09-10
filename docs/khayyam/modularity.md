@@ -8,7 +8,7 @@ ID: 495930
 # Modularity in Khayyam
 
 ## Abstract
-This document specifies how Khayyam represents and resolves modular relationships without making a storage, distribution, or package-management mechanism part of the language grammar. The architectural definition of a Module — a System under a modular boundary, identified by coherent responsibility and explicit relationships — belongs to [Modularity](./modularity.md). Khayyam applies that definition at the language and ecosystem layers: `in` includes named entities from a file; explicit names carry their meaning without package prefixes; and dependency location, version selection, integrity, and caching remain framework or tooling responsibilities. A companion manifest is the proposed location for the latter concerns, but its format and resolution algorithm are not yet specified.
+This document specifies how Khayyam represents and resolves modular relationships without making a storage, distribution, or package-management mechanism part of the language grammar. The architectural definition of a Module — a System under a modular boundary, identified by coherent responsibility and explicit relationships — belongs to [Modularity](../modularity.md). Khayyam applies that definition at the language and ecosystem layers: `in` includes named entities from a file; explicit names carry their meaning without package prefixes; and dependency location, version selection, integrity, and caching remain framework or tooling responsibilities. A companion manifest is the proposed location for the latter concerns, but its format and resolution algorithm are not yet specified.
 
 ## Introduction
 
@@ -32,12 +32,12 @@ The issue is not that package-oriented ecosystems fail to solve practical proble
 Programming-language grammar, package-management policy, repository hosting, and distribution mechanisms evolve at different rates. A design that combines them turns ordinary ecosystem evolution into pressure for language evolution. Khayyam's separation is intended to preserve a stable inclusion grammar while leaving its surrounding ecosystem replaceable.
 
 ### Relationship to Modularity
-[Modularity](./modularity.md) is the authoritative conceptual document for Module identity, responsibility, boundaries, relationships, optional Modules, and the distinction between modularity and its physical representations. This document does not redefine any of those concepts. It records only the consequence for Khayyam: file paths, directories, repositories, packages, manifests, and deployment artifacts may represent or help resolve a Module, but none is the language-level definition of one.
+[Modularity](../modularity.md) is the authoritative conceptual document for Module identity, responsibility, boundaries, relationships, optional Modules, and the distinction between modularity and its physical representations. This document does not redefine any of those concepts. It records only the consequence for Khayyam: file paths, directories, repositories, packages, manifests, and deployment artifacts may represent or help resolve a Module, but none is the language-level definition of one.
 
 ### Methodology
 The decisions in this document are derived by first modeling the concepts required for modular software construction independently of a programming language, operating system, file system, package manager, repository layout, or development tool. Existing languages and ecosystems are then examined as implementations rather than authorities: the analysis asks which concepts they represent accurately, which concerns they couple unnecessarily, and which implementation constraints shaped their architecture.
 
-This methodology is shared with the broader conceptual work in [Modularity](./modularity.md), but it remains material here because it governs how Khayyam-specific language constructs are evaluated. The language syntax is a consequence of the model — in this case, the separation of source inclusion from distribution and resolution — rather than the starting point that determines the model.
+This methodology is shared with the broader conceptual work in [Modularity](../modularity.md), but it remains material here because it governs how Khayyam-specific language constructs are evaluated. The language syntax is a consequence of the model — in this case, the separation of source inclusion from distribution and resolution — rather than the starting point that determines the model.
 
 ## Explanation
 
@@ -78,7 +78,7 @@ The separation creates an intentional two-layer reading task: a developer must u
 ### Manifest as the Module Contract
 The manifest is not merely a dependency file. It is the formal external contract through which a Module can be identified, referenced, validated, and consumed without inspecting its internal directory layout. It describes the Module's published surface and the conditions under which external tooling resolves it. Dependency resolution is one responsibility derived from this contract, not the whole of it.
 
-This does not make the manifest the ontological definition of Module: [Modularity](./modularity.md) defines a Module through its coherent responsibility, boundaries, and relationships. The manifest is the framework-level representation of those aspects that consumers and tools need to discover and use. A change in manifest syntax, storage, or resolver must not change the Module's conceptual identity.
+This does not make the manifest the ontological definition of Module: [Modularity](../modularity.md) defines a Module through its coherent responsibility, boundaries, and relationships. The manifest is the framework-level representation of those aspects that consumers and tools need to discover and use. A change in manifest syntax, storage, or resolver must not change the Module's conceptual identity.
 
 The following model is a directional content model, not yet a settled manifest schema:
 
