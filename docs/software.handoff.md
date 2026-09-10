@@ -16,4 +16,3 @@ The IEEE numbers cited (730, 828, 829, 830, 1012, 1016, 1028, 1058, 1063) reflec
 ## Anticipated Work
 
 - Dedicated session to refine the definition and produce the lifecycle treatment — the direction the [Immutable Infrastructure handoff](./protocols/immutable_infrastructure.handoff.md) points to as the home for deployment/change governance's lifecycle working-out.
-- Terminology decision on "ecosystem" before the word carries weight in Memar documents (flagged in the document itself).
