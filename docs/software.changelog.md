@@ -18,3 +18,22 @@
 
 #### Deliberation
 - Founding the document was directed during that session: the deployment-governance scoping surfaced the ambiguity of "software" and "ecosystem", and the valuable findings were to be captured in a founded document rather than scattered session notes (Omid Hekayati — directed).
+
+---
+
+### "Software ecosystem" read through the established Ecosystem definition
+- Time: 2026-09-10T11:32:04Z
+- Type: Changed
+- Propagates to:
+  - software.handoff.md: Done — the "Terminology decision on ecosystem" anticipated-work item removed as graduated.
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Super Z](../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — rewrote
+
+#### What changed
+- The founding session's interim position — "ecosystem" undefined, must not carry weight until Memar decides — is superseded: the [System document has since established the definition](./system.md#ecosystem), and the document now reads "software ecosystem" through it.
+- The section was retitled from `"Software ecosystem" is not a Memar term` to `"Software ecosystem"` and rewritten: the term names the ecosystem formed around software practice; a software system is a constituent such an ecosystem can form around, never the ecosystem itself; the marketing sense remains a Business Term carrying no weight, with the naming-the-concrete-relationships discipline kept as the response to it.
+- The Abstract's "treated as undefined until Memar decides otherwise" clause was replaced accordingly.
+
+#### Deliberation
+- The supersession was directed in the ecosystem de-ambiguation session: the audit showed the corpus's ecosystem uses conforming to the structural sense, and the owner approved the definition and the reference fixes together (Omid Hekayati — decided).

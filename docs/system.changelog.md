@@ -253,3 +253,34 @@
 - **Document-level approach (migrated from the document-level Prior art)**: establishing a shared vocabulary before proceeding to domain-specific specifications is common in standards-setting bodies; the ISO/IEC 42010 standard for architecture description provides definitions of "system" and "architecture" broadly consistent with this document, though this document's definitions are broader in several respects (particularly the inclusion of non-computational systems and the lifecycle-spanning definition of architecture), while the IEEE standard glossary of software engineering terminology is narrower, being restricted to software — this document draws on both traditions but is not bound by either.
 - **Naming conventions (migrated from the document-level Naming Conventions note)**: this document proposes no naming conventions for code-level identifiers; the concepts defined there are foundational and their names (System, Architecture, Technology, Model, Abstraction, Protocol, Framework, Implementation) are treated as common English words whose meaning within Memar is defined by the document, not by any naming convention.
 
+---
+
+### Established the Ecosystem definition
+- Time: 2026-09-10T11:32:04Z
+- Type: Added
+- Cited:
+  - [Terminology → Terminology Authority and Governance](./terminology.md#terminology-authority-and-governance) — Evidence: the four-element authority requirement (boundary, distinctions, colloquial acknowledgment, rationale) the new topic follows.
+  - [Terminology → Business Terms](./terminology.md#business-terms) — Reference: already lists ecosystem movements among its examples, which the topic's colloquial-usage note leans on.
+- Propagates to:
+  - software.md: Done — "software ecosystem" read through the definition; the founding interim ban superseded (software.changelog.md).
+  - software.handoff.md: Done — the ecosystem terminology-decision item removed as graduated.
+  - terminology.md: Done — one informational pointer at the governance section's Memar-ecosystem use.
+  - framework.md, protocols/networking.md, khayyam-runtime.md: Done — claim-bearing Memar-ecosystem uses anchored.
+  - modularity.md: Done — the one semantic divergence the audit found reworded.
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — argued, decided
+  - [Super Z](../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — drafted, rewrote
+
+#### What changed
+- New concept topic: **Ecosystem** — a System whose constituents are themselves Systems interacting through relationships within a shared environment the ecosystem comprises, the whole's Structure (its capabilities and constraints) fixed by no design, single or collective, and emergent from those interactions. Key properties: constituents are Systems (designed artifacts qualify — what is excluded is a whole whose Structure a definition fixes); the environment sits inside the boundary; a center of gravity is not a designer. Distinctions from Framework, community, platform, and market; the industry's marketing sense acknowledged as a Business Term and excluded.
+- Structure conformity verified and stated in the topic: Structure carries its defined sense — the capabilities and constraints a System exposes and enforces — and the definition's claim is about the *origin* of whole-level Structure (emergent rather than laid down by a definition), not a second meaning of the word (Omid Hekayati required the check).
+- Concepts at a Glance gained the ecosystem bullet; Terminology Layer Placement classifies ecosystem as a Scientific Term (ecology origin, extended along the same structural lines rather than a coined sense); the biological-ecosystem example under System's Purpose property now links to the topic.
+- The Motivation's bare "the most fundamental terms in the ecosystem" was reworded to name its referent ("Memar's conceptual foundation") — one of two semantic divergences the framework-wide audit of the word found (the other is modularity.md's, propagated above).
+- The definition was reached by candidate testing per the Protocol document's method: the minimal system-of-systems form was rejected (admits products — modules are Systems), the self-governed-constituents form was rejected (expels designed artifacts, which are legitimate constituents), and the center-of-gravity form was rejected (widens the boundary instead of fixing it).
+
+#### Deliberation
+- Defining the word here, rather than leaving it ordinary-language or banning it, was decided after the audit showed the corpus's ~120 body uses conforming to the structural sense; software.md's founding session had recorded the word as undefined pending a decision, and this entry is that decision (Omid Hekayati — decided).
+- The placement here rather than in terminology.md was directed with the layering constraint: terminology is the more foundational document and must not depend on this document's definitions; its reference to the ecosystem concept is informational only (Omid Hekayati — directed).
+- Anchoring was limited to where a cold reader could misread (the Memar-ecosystem uses that carry claims) rather than applied to every occurrence; the external-industry uses stay ordinary-language per the Default Meaning rule (Omid Hekayati — directed).
+- An initial draft of this round gave the word-level fixes (the anchors, the terminology pointer, the two rewordings) one changelog row each in their own artifacts; the owner flagged the rows as Trivial-changes violations — a fix with nothing of its own to audit takes no entry and no standalone commit, so the fixes ride this entry, which states their outcomes, and their changelogs carry no rows (Omid Hekayati — corrected).
+
