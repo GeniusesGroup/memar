@@ -64,3 +64,17 @@
 
 #### What changed
 Corrects `tp hash`/`tp salt` to `tp Hash`/`tp Salt` per the PascalCase convention and `UInt64`/`UInt32` to `W64`/`W32` per the `W`/`R` capsule naming in sibling documents (also `h.hash` → `h.Hash`). Annotates the `ConnectionList` example's `self.container.Add(conID, con) (con, err)` call where `con` occupies both roles — influencing in `(conID, con)` and influenced in `(con, err)` — as an exhibit of the open dual-role question in `khayyam-method.md`; no settled notation exists yet.
+
+---
+
+### Dispatch-reducibility dispute resolved from Structure Is Fixed by Definition
+- Time: 2026-09-09T00:00:00Z
+- Type: Changed
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — corrected
+  - [Super Z](../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — argued, rewrote
+
+#### What changed
+- The "Dynamic Dispatch Reducibility" topic is resolved in the affirmative for Memar from the base layer's own principle — Structure Is Fixed by Definition (type.md): dispatch may defer selection to runtime, but the candidate set and every candidate's implementation must already be spelled out in source (Explicit Behavior Ownership), and a genuinely runtime-only type selection — target set or implementation arriving while the system runs — would mint structure in execution, which the principle excludes outright.
+- The topic title drops the "Under Immutable Infrastructure" suffix; the pending-finalization caveat is gone because the derivation no longer depends on the Draft protocol document. The runtime-logic-entry question is named without citation as a separate, convergent concern owned by the framework's protocol documents.
+- The change is strictly a strengthening of grounding: the dispute had been held open pending the protocol document's dedicated session; it is now closed on grounds already adopted at the base layer.

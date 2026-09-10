@@ -74,3 +74,17 @@
 - Erlang/BEAM and Go's runtime are the closest precedents for user-space scheduling with language-level integration; Go is the cautionary half of the comparison — its channels and scheduler are exceptional engineering, but permanently privileged, which is precisely the coupling Khayyam refuses. Seastar (the ScyllaDB framework) is the closest precedent for the core-affinity/lock-free model: shared-nothing, pin-per-core task ownership at framework level, below the language. Unikernel systems (MirageOS, IncludeOS) demonstrate the deployment end of the same philosophy — the runtime is the application's actual operating environment, not a guest above someone else's scheduler. (Migrated from the Concurrency and Execution Model topic's retired Prior art)
 - WebAssembly's module add/remove at runtime is the design the text itself names. Erlang/OTP's hot code loading shows runtime replacement can be industrialized — but only behind significant surrounding machinery (supervision trees, versioned state-transition code), evidence that the feature is legitimate yet never free; the machinery is the runtime's concern, not the language's. (Migrated from the Change Logic in Runtime (Unsafe) topic's retired Prior art)
 - The runtime-as-separate-specification pattern is common in language ecosystems — Go's memory model and scheduler docs, the JVM specification, Erlang/OTP's design principles — each documenting execution semantics the language grammar deliberately does not carry. This document follows that shape, with the Memar Framework in the role those projects' runtimes occupy, and Unikernel/Exokernel literature as the deployment-side tradition it targets. (Migrated from the retired document-level Prior art)
+
+---
+
+### Unsafe-patching note re-anchored to Structure Is Fixed by Definition
+- Time: 2026-09-09T00:00:00Z
+- Type: Changed
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — corrected
+  - [Super Z](../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — applied
+
+#### What changed
+- The "Relation to Immutable Infrastructure" note under Change Logic in Runtime (Unsafe) is re-anchored to the base principle Structure Is Fixed by Definition (type.md): the runtime executes a fixed definition, and `unsafe` patching is the controlled exception admitting definition changes into a running instance. The note no longer routes readers through khayyam-polymorphism.md's retired topic anchor, and the Immutable Infrastructure brand — whose home is the protocol layer — no longer appears in this document.
+- The escape-hatch reading of `unsafe` patching is unchanged.
+- The Abstract's deployment-commitment sentence now cites the same base principle instead of describing the default.

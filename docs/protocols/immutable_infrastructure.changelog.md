@@ -6,8 +6,8 @@
 - Time: unknown (historical import — concept dated 2026-07-06; first committed 2026-07-09)
 - Type: Added
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — claimed
-  - [Claude](../CONTRIBUTORS.md#claude) (claude-sonnet-5, extended thinking) — claimed
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — claimed
+  - [Claude](../../CONTRIBUTORS.md#claude) (claude-sonnet-5, extended thinking) — claimed
 
 #### What changed
 - The placeholder document established the immutability statement (configuration change = artifact change requiring rebuild/recompile), its proposed foundational status with the expected Khayyam compiler/PGO benefit, the closely related no-runtime-code-addition governance rule treated as a single "what code enters the repository" concern addressed through source review alone, and explicit deferral of all deeper analysis — motivation depth, guide/reference treatment, drawbacks, rationale, prior art — to a dedicated future session, with only candidate prior-art directions noted (Omid Hekayati — the concept; Claude — recorded).
@@ -22,10 +22,10 @@
 - Time: 2026-08-25T00:00:00Z
 - Type: Added
 - Cited:
-  - [Type](./type.md) — Depends_on: the added section analyzes this document's governance rule against that document's stateless-Types identity principle; both sides of the relationship are needed for the argument.
+  - [Type](../type.md) — Depends_on: the added section analyzes this document's governance rule against that document's stateless-Types identity principle; both sides of the relationship are needed for the argument.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — directed
-  - [Super Z](../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — drafted
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — directed
+  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — drafted
 
 #### What changed
 - Added "Relationship to Type-Level Identity", absorbing the compatibility-and-logical-independence analysis originally authored inside *Static Concepts Must Be Types* (495421, dissolved the same day): convergence without interdependence; the sentinel-value counterexample (immutable infrastructure satisfiable with data-based identity); the runtime-registry counterexample (identity-in-type achievable while violating recompilation governance); and the compile-time-*typed*-identity gain.
@@ -41,8 +41,8 @@
 - Time: 2026-08-25T00:00:00Z
 - Type: Added
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — directed
-  - [Super Z](../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — drafted, applied
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — directed
+  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — drafted, applied
 
 #### What changed
 - The standalone context note `immutable-infrastructure and Connections.md` (an untracked working note marked "Deferred — for a dedicated future chat") was merged as the new "Open Design Threads" section.
@@ -59,8 +59,8 @@
 - Time: 2026-08-25T00:00:00Z
 - Type: refactor
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — requested
-  - [Super Z](../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — rewrote
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — requested
+  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — rewrote
 
 #### What changed
 - Restructured per `documentation-explanation.md`.
@@ -84,8 +84,8 @@
 - Propagates to:
   - immutable_infrastructure.handoff.md: Created - open questions and anticipated work moved there.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - requested
-  - [OpenCode](../CONTRIBUTORS.md#opencode) (qwen3.8-flash) - moved
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) - requested
+  - [OpenCode](../../CONTRIBUTORS.md#opencode) (qwen3.8-flash) - moved
 
 #### What changed
 - The body's top-level sections are now Abstract, Introduction, Explanation, Results only; the `## Discussion` section was removed.
@@ -97,3 +97,49 @@
 
 #### Related work
 - Prior-art research was deferred at retirement; likely candidates to research include immutable infrastructure practices in ops/deployment tooling (e.g. container image rebuilds instead of in-place config mutation), and their relationship, if any, to compile-time vs. runtime specialization in compilers. (Migrated from the retired Prior art section)
+
+---
+
+### Relocation to `protocols/` per the folder's membership criterion
+- Time: 2026-09-09T00:00:00Z
+- Type: refactor
+- Cited:
+  - [Protocols folder README](./README.md) — Depends_on: the membership criterion this relocation was judged against.
+- Propagates to:
+  - type.practice.md: Rejected — the practice's runtime-registration governance derives from the base layer's own principles (Structure Is Fixed by Definition, Stateless Types via its step 3); a base document holds no reference up to a protocol document.
+  - khayyam-polymorphism.md: Rejected — the dispatch-reducibility argument derives from Structure Is Fixed by Definition and Explicit Behavior Ownership (type.md); the same base-to-protocol reference boundary.
+- Contributors:
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — proposed, corrected
+  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — argued, moved
+
+#### What changed
+- The document and its paired changelog and handoff moved from `docs/` root to [`docs/protocols/`](./README.md); relative links repaired for the new depth (`type.md`, `CONTRIBUTORS.md`, `documentation-handoff.md`).
+- A membership statement was added to "The Principle" recording why the document lives there.
+- No substantive content of the principle changed; the document remains a Draft placeholder pending its dedicated session.
+
+#### Deliberation
+- The relocation was proposed from a review of the documentation set's layering: root holds the lowest-level concept documents from which mental models are built, and this document is not one of them (Omid Hekayati — proposed).
+- The proposal was tested against the counter-reading that the document is a framework-level principle like "no hidden control flow" and belongs beside the root's concept documents; rejected because the repository's own distinction is general-concept-definition vs. Memar-owned rule set, not principle vs. protocol — the Error contract is equally cross-cutting and lives in protocols/, and this document's body carries the rule while its concept definition is explicitly deferred to the paired handoff's open questions, which is protocol-shaped, not concept-shaped (Super Z — argued).
+- The first application attempt repointed the base documents' references to this document's new location; withdrawn and recorded as Rejected above — references may not run from a base document up to the protocol layer projected onto it; base documents derive their constraints from their own layer's principles, and the citation direction runs from this document down (it already cites type.md for the identity relationship) (Omid Hekayati — corrected; Super Z — applied).
+
+---
+
+### Rescoped to the deployment domain; type-level principle established in Type
+- Time: 2026-09-09T00:00:00Z
+- Type: Changed
+- Cited:
+  - [Software Configuration Management](https://en.wikipedia.org/wiki/Software_configuration_management) — Reference: prior-art survey for the lifecycle working-out recorded in the handoff (configuration identification, baselines, change control, status accounting, audit).
+- Propagates to:
+  - type.md: Done — the type-level principle this document realizes ("Structure Is Fixed by Definition") is now stated there; this document cites it downward.
+  - immutable_infrastructure.handoff.md: Done — lifecycle-positioning open question added; title updated.
+- Contributors:
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — directed
+  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — drafted
+
+#### What changed
+- The document's scope is now explicitly the deployment domain. Infrastructure names the base a deployed system runs on — the platform layer whose capacity a system's operations ride on — and the immutability rule governs that base and the configuration reaching it; the document no longer presents itself as a general Memar foundation spanning every structural question.
+- The title drops "as a Memar Foundation": the general structural principle is now owned by the base layer ([Type → Structure Is Fixed by Definition](../type.md#structure-is-fixed-by-definition)), which this document cites downward and realizes for deployment; the identity-relationship section notes the adoption and marks the runtime-registry counterexample for revision against it in the dedicated session.
+- The paired handoff's open questions updated: lifecycle positioning (candidate home: a dedicated software-life-cycle document, treating software as the objective manifestation of a system of aggregated processes), with the ambiguous "ecosystem" terminology flagged for decision.
+
+#### Related work
+- Configuration-management practice (IEEE Std 828, ISO 10007 lineage) treats change through identified configuration items, baselines, change control, and audit — the institutional counterpart of the definition-execution boundary; candidate reference for the lifecycle document the handoff anticipates. Ops/deployment tooling (container image rebuilds, unikernel images) remains the other recorded prior-art direction.

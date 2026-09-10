@@ -128,3 +128,16 @@
 - **`Compile-Time Functions`:** Zig's `comptime`, C++ `constexpr`, and D's CTFE all evaluate pure code at compile time over ordinary language constructs rather than a separate macro language. Zig's approach is closest in spirit; Khayyam differs in tying eligibility to explicit designation of the method (author-owned, visible in source) rather than to a language-level `const` typing discipline. (Migrated from the topic's retired Prior art)
 - **`Change Logic in Runtime (Unsafe)`:** WebAssembly's module add/remove at runtime is the design Khayyam's own text names. Erlang/OTP's hot code loading shows runtime replacement can be industrialized — but only behind significant surrounding machinery (supervision trees, versioned state-transition code), evidence that the feature is legitimate yet never free; the machinery is the runtime's concern, not the language's. (Migrated from the topic's retired Prior art)
 - **Document-level:** Go's language specification is deliberately implementation-neutral, with gc, gollvm, and gccgo as independent consumers of it, and compiler-specific behavior documented separately from the spec. Khayyam's split follows the same shape at smaller scale — directives rather than conformance chapters — for the same reason: the language's stability should not depend on any one implementation's details. (Migrated from the retired document-level Prior art)
+
+---
+
+### Unsafe-patching note re-anchored to Structure Is Fixed by Definition
+- Time: 2026-09-09T00:00:00Z
+- Type: Changed
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — corrected
+  - [Super Z](../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — applied
+
+#### What changed
+- The "Relation to Immutable Infrastructure" note mirrors khayyam-runtime.md's re-anchoring: the compile-time-fixed default is now cited from the base principle Structure Is Fixed by Definition (type.md), and the Immutable Infrastructure brand no longer appears in this document. The escape-hatch reading is unchanged.
+- The Abstract's directive sentence now cites the same base principle.
