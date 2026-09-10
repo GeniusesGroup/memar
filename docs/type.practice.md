@@ -97,12 +97,11 @@ sequenceDiagram
 
 - **Optional-field accumulation smell**: a realization growing fields meaningful only for some instances signals merged concerns — route back to modeling, do not patch with optionals.
 - **Structural-typing habits** from languages like TypeScript: structural match/similarity has no identity force here.
-- **Runtime concept registration pressure** (plugins, dynamic failure modes): governance is governed by [Immutable Infrastructure](./immutable_infrastructure.md); any registry mechanism must be deliberately designed, never assumed.
+- **Runtime concept registration pressure** (plugins, dynamic failure modes): a registry admitting new concepts at runtime violates both rules the practice's layer carries — [Structure Is Fixed by Definition](./type.md#structure-is-fixed-by-definition) (the running system cannot mint structure) and step 3's forbidden pattern (concept identity demoted from compile time to runtime comparison inside a mutable shared container). Any registry mechanism must therefore be deliberately designed, never assumed, and must pass the modeling test for every concept it admits.
 - **Enforcement today is heuristic**: structural linters can flag missing-field/`Init` patterns; the authoritative checkpoint is the code generator's input layer, where static/dynamic intent is explicit by construction.
 
 ## References
 
 - [type.md](./type.md) — why: principles, definitions, and rejected alternatives.
 - [modeling.practice.md](./modeling.practice.md) — upstream procedure that decides what concepts exist.
-- [error.md](./protocols/error.md) — worked application to the Error family.
-- [immutable_infrastructure.md](./immutable_infrastructure.md) — runtime-change governance constraining step 3's MUST.
+- [error.md](./protocols/error.md) — worked application to the Error family, cited as an example the Error protocol applies this practice's identity model to, not as a rule source.

@@ -7,6 +7,8 @@ A document belongs here when it specifies, or is expected to grow into the speci
 What does **not** belong here:
 - **Concept documents** (System, Type, Process, [Protocol](../protocol.md), Modeling, ...) — these model general concepts and lenses; they stay at `docs/` root.
 
+**Citation direction.** The layering carries a citation rule: where a document here derives from, applies, or is projected onto a base document's principles, the citation runs from the protocol document *down* to the base document — never back up. A base document's rules stand on its own layer's adopted principles, so it holds no reference up to a protocol document as the authority for them: where it must name a concern whose working-out is owned by the protocol layer, it names that ownership without a link, as [Modeling](../modeling.md) does for the retention concepts. Referencing a protocol document a base document depends on as a consumed contract is a different relationship and remains legitimate (as Khayyam's control-flow document depends on [The Error](./error.md)).
+
 The documents themselves are not listed here — the folder listing is the index. This file only states the folder's role and criterion, which do not change when documents are added.
 
 ## Where implementations live
