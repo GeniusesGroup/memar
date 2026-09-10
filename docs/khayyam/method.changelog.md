@@ -7,12 +7,12 @@
 - Type: Added
 - Cited:
   - [Khayyam - Programming Language](./khayyam.md) — Reference: the canonical specification defines the `mt` subtype and the method signature grammar this document elaborates and motivates.
-  - [Encapsulation in Khayyam](./khayyam-encapsulation.md) — Depends_on: Method Structure relies on the capsule model — Capsule Structure and Privacy, Sovereign Encapsulation — defined there, for its common-case examples and for the state-protection guarantee described under Pass-by-Reference and State Protection. Encapsulation in Khayyam references this document back for the method-signature mechanics.
-  - [Logic in Khayyam](./khayyam-control_flow.md) — Reference: Logic in Khayyam's IF/ELSE model relies on the same pass-by-reference, explicit-influenced-variable mechanic specified here under Method Structure — no chaining, in either document, is a consequence of that mechanic.
+  - [Encapsulation in Khayyam](./encapsulation.md) — Depends_on: Method Structure relies on the capsule model — Capsule Structure and Privacy, Sovereign Encapsulation — defined there, for its common-case examples and for the state-protection guarantee described under Pass-by-Reference and State Protection. Encapsulation in Khayyam references this document back for the method-signature mechanics.
+  - [Logic in Khayyam](./control_flow.md) — Reference: Logic in Khayyam's IF/ELSE model relies on the same pass-by-reference, explicit-influenced-variable mechanic specified here under Method Structure — no chaining, in either document, is a consequence of that mechanic.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — claimed
-  - [Super Z](../CONTRIBUTORS.md#super-z) (GLM 5.2, medium effort) — rewrote
-  - [Claude](../CONTRIBUTORS.md#claude) (claude-sonnet-5, high effort) — rewrote
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — claimed
+  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM 5.2, medium effort) — rewrote
+  - [Claude](../../CONTRIBUTORS.md#claude) (claude-sonnet-5, high effort) — rewrote
 
 #### What changed
 - The standalone "Function as Capsule (No fn/func Keyword)" and "Composition Depth as a Decomposition Signal (No Expression Chaining)" documents were synthesized into one Explanation-facet document (Claude — merged).
@@ -31,11 +31,11 @@
 - Time: 2026-08-17T00:00:00Z
 - Type: refactor
 - Cited:
-  - [System](./system.md) — Reference: the new "When Is a Responsibility Coherent?" section is cited from Composition Depth as a Decomposition Signal, since that topic's decomposition test is a Khayyam-specific, syntactically-enforced application of the general one stated there.
-  - [Modularity](./modularity.md) — Reference: cited alongside System for the same reason, at the architectural rather than conceptual level.
+  - [System](../system.md) — Reference: the new "When Is a Responsibility Coherent?" section is cited from Composition Depth as a Decomposition Signal, since that topic's decomposition test is a Khayyam-specific, syntactically-enforced application of the general one stated there.
+  - [Modularity](../modularity.md) — Reference: cited alongside System for the same reason, at the architectural rather than conceptual level.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — requested
-  - [Claude](../CONTRIBUTORS.md#claude) — reviewed, rewrote
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — requested
+  - [Claude](../../CONTRIBUTORS.md#claude) — reviewed, rewrote
 
 #### What changed
 - Front-matter `Citations` and `Contributors` were moved into this changelog and the stale `Applied to: []` field was removed.
@@ -57,8 +57,8 @@
 - Cited:
   - [Khayyam — Programming Language](./khayyam.md) — Depends_on: the new Separation of Syntax and Governance principle that classifies “which entity a call targets” as syntax
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — requested
-  - [Super Z](../CONTRIBUTORS.md#super-z) — rewrote
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — requested
+  - [Super Z](../../CONTRIBUTORS.md#super-z) — rewrote
 
 #### What changed
 - `Method Invocation Rules` corrected from “enforced strictly at the tooling/linter layer” / “flagged as an error” to “enforced by the compiler” / “is a compile-time error” — dispatch determines which entity a call targets (`what exists`), so it belongs to syntax under the Separation principle; the linter may add additional diagnostics.
@@ -75,8 +75,8 @@
 - Propagates to:
   - khayyam-method.handoff.md: Created - open questions and anticipated work moved there.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - requested
-  - [OpenCode](../CONTRIBUTORS.md#opencode) (qwen3.8-flash) - moved
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) - requested
+  - [OpenCode](../../CONTRIBUTORS.md#opencode) (qwen3.8-flash) - moved
 
 #### What changed
 - The body now carries only the fixed top-level sections Abstract, Introduction, Explanation, Results: the document-level `## Discussion` section was removed, and the four topic-level `#### Discussion` wrappers — under Method Structure, Influencing and Influenced Variables, No Dedicated fn/func Keyword, and Composition Depth as a Decomposition Signal — were dissolved, every block relocated or verified already carried by the body, none lost.

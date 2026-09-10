@@ -1,11 +1,11 @@
 # Abstraction in Khayyam Handoff
 
-Open work for `khayyam-abstraction.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](./documentation-handoff.md) for what a handoff is.
+Open work for `abstraction.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](../documentation-handoff.md) for what a handoff is.
 
 ## Open Questions
 
 ### Is structural satisfaction sufficient, or does it need an intentional-satisfaction mechanism?
-This is the central open question, carried forward from the two documents `khayyam-abstraction.md` absorbs, with several sub-questions:
+This is the central open question, carried forward from the two documents `abstraction.md` absorbs, with several sub-questions:
 - Should this be resolved before Khayyam leaves Draft-equivalent status for the abstraction model, given how disruptive option (b) or (c) below would be if decided later?
 - Which of options (a)/(b)/(c) below best balances the accidental-satisfaction risk against Khayyam's minimalism and Contract-First goals?
 - This document should not advance past its current status on the intentional-satisfaction question until the previous sub-question is resolved.
@@ -16,7 +16,7 @@ Three potential resolutions exist for the question of intentional vs. accidental
 
 **(b) Require explicit, nominal declaration for every abstraction implementation.** Along the lines of Rust's `impl Trait for Type`. Eliminates the risk entirely, but adds ceremony to every implementation site and is a significant, backward-incompatible change to a philosophy Khayyam currently states as a feature ("Contract-First Approach").
 
-**(c) A hybrid model.** Structural satisfaction remains the default, but specific abstractions — those identified as small, marker-like, or identity-bearing — can opt into requiring an explicit declaration. This would need a formal criterion for which abstractions qualify, and a library-driven (not new-keyword) mechanism for declaring it, consistent with [Control Flow in Khayyam](./khayyam-control_flow.md)'s precedent of keeping such behaviors as ordinary method calls rather than new syntax.
+**(c) A hybrid model.** Structural satisfaction remains the default, but specific abstractions — those identified as small, marker-like, or identity-bearing — can opt into requiring an explicit declaration. This would need a formal criterion for which abstractions qualify, and a library-driven (not new-keyword) mechanism for declaring it, consistent with [Control Flow in Khayyam](./control_flow.md)'s precedent of keeping such behaviors as ordinary method calls rather than new syntax.
 
 ### Linter delegation verification mechanism
 The precise mechanism by which the Linter verifies explicit delegation (in the no-default-implementations model) is not yet specified.

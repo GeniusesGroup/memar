@@ -1,11 +1,11 @@
 # Encapsulation in Khayyam Handoff
 
-Open work for `khayyam-encapsulation.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](./documentation-handoff.md) for what a handoff is.
+Open work for `encapsulation.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](../documentation-handoff.md) for what a handoff is.
 
 ## Open Questions
 
 ### Memory aliasing through borrowed, externally-mutable buffers
-- State: carried from the Sovereign-Encapsulation topic's retired Unresolved questions list; the deferral itself is stated in the body at [Sovereign Encapsulation](./khayyam-encapsulation.md#sovereign-encapsulation). Whether a capsule backed by a borrowed, externally-mutable buffer can be mutated through a channel other than its own method contract (raw memory aliasing at or below the buffer level) is deferred to future documents on memory management and buffer ownership; this is a case where an ownership/borrow-tracking policy in the compiler or linter layer could plausibly close the gap.
+- State: carried from the Sovereign-Encapsulation topic's retired Unresolved questions list; the deferral itself is stated in the body at [Sovereign Encapsulation](./encapsulation.md#sovereign-encapsulation). Whether a capsule backed by a borrowed, externally-mutable buffer can be mutated through a channel other than its own method contract (raw memory aliasing at or below the buffer level) is deferred to future documents on memory management and buffer ownership; this is a case where an ownership/borrow-tracking policy in the compiler or linter layer could plausibly close the gap.
 
 ### What behavioral guarantees do primitive capsules provide?
 - State: carried from the Primitive-Capsule-Specification topic's retired Unresolved questions list.

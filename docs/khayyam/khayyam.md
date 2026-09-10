@@ -23,7 +23,7 @@ Multiple design discussions across Khayyam's evolution converged independently o
 ### Methodology
 This document gives a general, syntax-level overview of Khayyam — enough to read and write valid code. It is deliberately not exhaustive: the reasoning behind each construct, the alternatives considered, and currently open questions live in companion documents, linked inline wherever a construct has one of its own. The approach has been to keep this specification itself short and link outward, rather than grow one very long document that tries to hold both the syntax and its full justification.
 
-Where a construct's design draws on a deliberate comparison against other languages' choices — grounded, where possible, in the wider computer-science literature rather than informal preference — that comparison lives in the relevant companion document's own paired changelog (see, for example, [Abstraction in Khayyam](./khayyam-abstraction.changelog.md)'s comparison against Go, Rust, Java, TypeScript, Zig, and Haskell, recorded under Related work), not repeated here.
+Where a construct's design draws on a deliberate comparison against other languages' choices — grounded, where possible, in the wider computer-science literature rather than informal preference — that comparison lives in the relevant companion document's own paired changelog (see, for example, [Abstraction in Khayyam](./abstraction.changelog.md)'s comparison against Go, Rust, Java, TypeScript, Zig, and Haskell, recorded under Related work), not repeated here.
 
 ## Explanation
 
@@ -62,17 +62,17 @@ tp {name} [Type] [subtype defined value]
 ```
 
 #### Capsule
-Khayyam allows developers to indicate first-level [encapsulation-pattern](./khayyam-encapsulation.md) by using `cp`.
+Khayyam allows developers to indicate first-level [encapsulation-pattern](./encapsulation.md) by using `cp`.
 - `tp {name} cp { ___ }`
 - Capsule structure CAN include some other data types inside itself.
 - Each field in a capsule is written as `fieldName fieldType` on each line.
 - Khayyam only allows access to inner data types via methods (functions). There are no data fields to expose.
 
 #### Method
-[Method in Khayyam](./khayyam-method.md) is itself a type. In Khayyam, functions and methods are not separate concepts. By using the `mt` subtype, developers define an executable behavior and attach it to a type. The owner type is not limited to capsules (`cp`); a method can be attached to *any* type (`tp`), including an abstraction (`ab`) or even another method (`mt`).
+[Method in Khayyam](./method.md) is itself a type. In Khayyam, functions and methods are not separate concepts. By using the `mt` subtype, developers define an executable behavior and attach it to a type. The owner type is not limited to capsules (`cp`); a method can be attached to *any* type (`tp`), including an abstraction (`ab`) or even another method (`mt`).
 
 - `tp {name} mt (self {owner}) (influencing variables...) (influenced variables...) { }`
-- **Pass-by-Reference & State Protection:** All arguments passed into a method and all values returned from a method are passed strictly by reference. See [Memory Model in Khayyam](./khayyam-memory_model.md) for the full rationale.
+- **Pass-by-Reference & State Protection:** All arguments passed into a method and all values returned from a method are passed strictly by reference. See [Memory Model in Khayyam](./memory_model.md) for the full rationale.
 - **Inherent Encapsulation:** Even though capsules are passed by reference, their internal state remains strictly protected. Because Khayyam enforces that all data fields are entirely hidden, a receiving method cannot directly mutate the passed capsule's fields. State mutation can ONLY occur if the passed capsule explicitly exposes a behavior (method) that allows it, rendering keywords like `const` or `mut` architecturally obsolete.
 - Devs MUST separate `type_owner`, `efficacy (args)`, and `impressible (returns)` by using `()` to indicate all of them even when empty. Consider that all of them are the same in underlying layers, and this rule is just to improve code readability.
 - Devs CAN write pure standalone functions in this way; there is no limitation.
@@ -80,7 +80,7 @@ Khayyam allows developers to indicate first-level [encapsulation-pattern](./khay
   - `tp Set mt (self Key) (key String) (err Error) {}`
 - **Body-less Methods (FFI & Contracts):** A method can be defined without a body (`{}`). This is legitimately used in two scenarios:
   - Contract Definition: Defining the required signature for an abstraction (`ab`).
-  - Foreign Function Interface (FFI): When the receiver is a concrete capsule (`cp`), a body-less method signals to the compiler that the implementation will be provided externally during the linking phase (e.g., from an Assembly `.s` or C `.o` file). See [Khayyam Compiler Directives](./Khayyam-compiler.md) for the compiler-side handling.
+  - Foreign Function Interface (FFI): When the receiver is a concrete capsule (`cp`), a body-less method signals to the compiler that the implementation will be provided externally during the linking phase (e.g., from an Assembly `.s` or C `.o` file). See [Khayyam Compiler Directives](./compiler.md) for the compiler-side handling.
 
 ##### Method Invocation Rules
 - **Uniform Invocation Syntax:** Khayyam strictly uses a single dot (`.`) operator for all method calls. The language intentionally rejects secondary tokens (such as `::`) to maintain syntax minimalism.
@@ -90,11 +90,11 @@ Khayyam allows developers to indicate first-level [encapsulation-pattern](./khay
 
 
 #### Abstraction
-[Abstractions in Khayyam](./khayyam-abstraction.md) are pure contracts. They do not contain logic, state, or even predefined method bodies. The methods that fulfill this contract are defined entirely outside the abstraction. To mirror the robust composition patterns found in systems engineering, Khayyam supports **Abstraction Composition** via a dedicated scope block `{}` at the type definition site.
+[Abstractions in Khayyam](./abstraction.md) are pure contracts. They do not contain logic, state, or even predefined method bodies. The methods that fulfill this contract are defined entirely outside the abstraction. To mirror the robust composition patterns found in systems engineering, Khayyam supports **Abstraction Composition** via a dedicated scope block `{}` at the type definition site.
 
 - `tp {name} ab { {Composition of Abstractions} }`
 - Abstractions MUST use other abstractions as arguments or returns, not other `capsule`s.
-- **No Generic Syntax:** We do not introduce syntax complexity for [Polymorphism or Generics](./khayyam-polymorphism.md) (like `<T>` in C# or `[T]` in Go). Khayyam inherently supports **Covariant Return Types**. If an abstraction dictates a method must return Abstraction `A`, a capsule can implement this method by returning Capsule `B` (as long as `B` implements `A`).
+- **No Generic Syntax:** We do not introduce syntax complexity for [Polymorphism or Generics](./polymorphism.md) (like `<T>` in C# or `[T]` in Go). Khayyam inherently supports **Covariant Return Types**. If an abstraction dictates a method must return Abstraction `A`, a capsule can implement this method by returning Capsule `B` (as long as `B` implements `A`).
 - **Smart Compilation:** The compiler decides smartly whether to handle these abstractions at compile-time (Monomorphization, zero-cost abstraction when exact capsules are known) or at runtime (via dynamic dispatch/interfaces when underlying capsules are hidden), entirely freeing the developer from generic syntax management.
 
 Examples:
@@ -119,11 +119,11 @@ tp Error ab {
 #### Scope
 - `tp {name} sc { ___ }`
 - Scope is an area in which something acts or operates or has power or control.
-- Code scope is used in many logic methods like `IF`, `LOOP`, `GOTO`, ... See [Control Flow in Khayyam](./khayyam-control_flow.md) for how these are built as libraries within this mechanism, not language keywords.
+- Code scope is used in many logic methods like `IF`, `LOOP`, `GOTO`, ... See [Control Flow in Khayyam](./control_flow.md) for how these are built as libraries within this mechanism, not language keywords.
 - Code scope MUST be used only inside a method body.
 
 ### Variable
-See [Variable in Khayyam](./khayyam-variable.md) for the full rationale behind these constraints.
+See [Variable in Khayyam](./variable.md) for the full rationale behind these constraints.
 - `vr {name} {type}`
 - Like other programming languages, the `vr` keyword is used to declare a variable. However, **Variables in Khayyam are strictly Logical References** to a type's instance, never the raw data block itself.
 - **No Implicit Copying & No Assignment Operators:** Khayyam completely eliminates assignment operators (like `=`). Passing a variable to a method ALWAYS passes the reference. The language natively prevents any implicit deep or shallow copying, ensuring zero hidden memory allocation overhead.
@@ -146,7 +146,14 @@ This has a direct consequence for how Khayyam's own documents should be scoped: 
 - **Syntax (compiler-enforced):** Whether a type, value, or relationship may appear at all. Examples: “a bare numeric literal `41` may not appear as a value without a named capsule” (claiming existence of an unmodeled value), “a static method must be called on the type, an instance method on a variable” (which entity a name resolves to), “all fields are private, access only via methods.”
 - **Governance (linter/framework-enforced):** Policies about how already-well-typed instances move through the program. Examples: memory safety / `Deinit()`-path coverage, error-inspection discipline, code-scope naming conventions, orphan-rule for cross-file extension, architectural constraints like “no `Utils` capsules.”
 
-A decision that *creates* or *denies* existence belongs in syntax precisely because a linter rule can be disabled — disabling a syntax rule changes what programs exist; disabling a governance rule changes how well they are kept. This is why `khayyam-variable.md` rejects moving the magic-number ban to the linter (“lint rules can be disabled, weakening the safeguard”) while `khayyam-memory_model.md` accepts linter-enforcement for memory safety — the former denies existence of unmodeled values, the latter polices flow of already-typed instances.
+A decision that *creates* or *denies* existence belongs in syntax precisely because a linter rule can be disabled — disabling a syntax rule changes what programs exist; disabling a governance rule changes how well they are kept. This is why `variable.md` rejects moving the magic-number ban to the linter (“lint rules can be disabled, weakening the safeguard”) while `memory_model.md` accepts linter-enforcement for memory safety — the former denies existence of unmodeled values, the latter polices flow of already-typed instances.
+
+### The Grammar Refuses Protocol Semantics
+**Principle:** *A construct enters the grammar only when its semantics can be stated without adopting any protocol's definitions.* Where what a construct means would require the definitions a protocol owns — what an error is, what a memory guarantee is, what a concurrency primitive may assume — the grammar refuses the construct, and the need is met through the language's generic mechanisms instead: ordinary values and explicit outputs, explicit imports, library-provided methods, and the `ab` construct for authoring contracts.
+
+This is why Khayyam has no `try`/`catch`, no `?` propagation operator, and no error shape built into the language universe: error handling is control flow whose meaning requires the Error protocol's definitions, and writing it into the grammar would make one error model a permanent, unexaminable property of the language — the same position [Library-Defined Control Flow](./control_flow.md#library-defined-control-flow) takes on branch and loop keywords, and the same mistake committed by languages that baked an error type into the language and then left everything beyond it as the developer's problem. The protocol's definitions enter a Khayyam program the ordinary way instead — an imported abstraction (`tp Error in "memar/process/error/error.kh"`), an ordinary output value, a Linter discipline; [Error Propagation](./control_flow.md#error-propagation) in the control-flow document is the worked case. The same refusal covers memory primitives, concurrency keywords, and standard-library shapes.
+
+The boundary is protocol-level, not concept-level. The grammar does express the modeling concepts defined at the base layer — `tp` for Type, `sc` for Scope — because those definitions are general and language-independent, and the grammar supplies only the declaration mechanism, not a specific contract. What the grammar may never do is adopt one specific contract's semantics as its own: protocols are owned by the governance framework above the language (Memar today, another framework tomorrow), and baking one in would reduce the language to that framework's syntax extension. This principle is the negative image of the Separation of Syntax and Governance above: that principle divides what the language already owns between compiler and linter; this one decides what never enters the language's scope at all.
 
 ### Execution Semantics Philosophy
 
@@ -160,14 +167,14 @@ As a result, Khayyam favors:
 
 These preferences influence language design decisions such as execution models, memory abstractions, and runtime responsibilities. The goal is not to require a specific deployment environment. Rather, the goal is to ensure that architectural decisions remain visible, modelable, and predictable regardless of the underlying execution platform.
 
-Many of these principles align naturally with unikernel-style computing, where applications operate with minimal hidden runtime layers and explicit control over execution behavior. However, Khayyam adopts these ideas as architectural principles rather than deployment requirements; the runtime-side realization of this alignment lives in the [Memar Framework's reference architecture](./khayyam-runtime.md), which is one concrete answer to it — not its definition. The unikernel-aligned assumption may limit early adoption in organizations that do not yet use unikernels in production.
+Many of these principles align naturally with unikernel-style computing, where applications operate with minimal hidden runtime layers and explicit control over execution behavior. However, Khayyam adopts these ideas as architectural principles rather than deployment requirements; the runtime-side realization of this alignment lives in the [Memar Framework's reference architecture](./runtime.md), which is one concrete answer to it — not its definition. The unikernel-aligned assumption may limit early adoption in organizations that do not yet use unikernels in production.
 
 Every language feature should have explicit execution semantics. Architectural behavior should emerge from visible models and protocols rather than from implicit runtime facilities or operating-system abstractions. This approach seeks to reduce the gap between architectural intent, implementation behavior, and runtime execution, allowing systems to remain understandable and evolvable over long periods of time.
 
 Like the Separation of Syntax and Governance, this is not a topic with a single decision to be made once and filed elsewhere — it is the principle applied every time a construct's interaction with execution (memory, concurrency, boot, teardown) is designed. It stays here for the same reason.
 
 ### Behavior Over Type Identity
-Traditional generic systems frequently focus on type identity — `T`, `K`, `V` — as the central mechanism for abstraction. Khayyam instead emphasizes required behavior: the essential question is "what capabilities are required?" rather than "what concrete type is this?" This recurred across discussions of generics, parametric polymorphism, containers, algorithms, and infrastructure components alike, and is one of the reasons behind the No Generic Syntax rule under Abstraction, above. See [Abstraction in Khayyam → Behavior Over Type Identity](./khayyam-abstraction.md#behavior-over-type-identity) for the full treatment, including why several canonical parametric-polymorphism patterns (`identity<T>()`, `Option<T>`, `Result<T,E>`) are tied to constraints other languages have that Khayyam does not.
+Traditional generic systems frequently focus on type identity — `T`, `K`, `V` — as the central mechanism for abstraction. Khayyam instead emphasizes required behavior: the essential question is "what capabilities are required?" rather than "what concrete type is this?" This recurred across discussions of generics, parametric polymorphism, containers, algorithms, and infrastructure components alike, and is one of the reasons behind the No Generic Syntax rule under Abstraction, above. See [Abstraction in Khayyam → Behavior Over Type Identity](./abstraction.md#behavior-over-type-identity) for the full treatment, including why several canonical parametric-polymorphism patterns (`identity<T>()`, `Option<T>`, `Result<T,E>`) are tied to constraints other languages have that Khayyam does not.
 
 ### System-Modeling Language Philosophy
 The more Khayyam evolves, the less it appears to be a traditional programming language and the more it resembles a system-modeling language. This distinction may ultimately become one of Khayyam's defining characteristics.
@@ -196,7 +203,7 @@ Like naming, this is not a topic with a single decision to be made once and file
 ### Domain Modeling Principles
 Khayyam pushes development in the opposite direction of most modern languages when it comes to domain modeling. Where other languages claim to support Domain-Driven Design but whose abstractions frequently collapse into generic containers and primitive types — `List<User>`, `Map<String, Object>`, `Dictionary<string, any>` — Khayyam encourages domain-specific concepts: `UserRegistry`, `ConnectionIndex`, `ServiceCatalog`, `PermissionStore`.
 
-Questions of modeling methodology — how concepts are discovered, when a concept deserves an independent abstraction versus remaining a derived or contextual one, and what the limits of modeling actually are — are intentionally not answered here. They are domain-independent and are addressed in [Modeling](./modeling.md), in particular *Concept Existence vs. Model Existence*; this document stays on the language side of that boundary. The domain modeling approach demands that developers invest time in naming and structuring types before writing behavior. For developers accustomed to starting with functions and extracting types later, this represents a workflow inversion that may slow initial development velocity.
+Questions of modeling methodology — how concepts are discovered, when a concept deserves an independent abstraction versus remaining a derived or contextual one, and what the limits of modeling actually are — are intentionally not answered here. They are domain-independent and are addressed in [Modeling](../modeling.md), in particular *Concept Existence vs. Model Existence*; this document stays on the language side of that boundary. The domain modeling approach demands that developers invest time in naming and structuring types before writing behavior. For developers accustomed to starting with functions and extracting types later, this represents a workflow inversion that may slow initial development velocity.
 
 #### Resistance to Primitive Obsession
 Large systems often accumulate thousands of values represented as `string`, `int`, and `bool`, while each instance carries completely different business meaning. Khayyam's emphasis on capsules and explicit modeling naturally pushes developers away from this pattern. This is not merely a typing preference; it is an architectural safeguard. By requiring all values to be wrapped in named capsules, the language is designed to keep business meaning from being lost to primitive types.

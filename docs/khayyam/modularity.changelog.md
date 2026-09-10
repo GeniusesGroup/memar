@@ -7,10 +7,10 @@
 - Type: Added
 - Cited:
   - [Khayyam — Programming Language](./khayyam.md) — Reference: defines the `in` inclusion mechanism whose modularity consequences this document explains.
-  - [Encapsulation in Khayyam](./khayyam-encapsulation.md) — Depends_on: provides the encapsulation context for keeping behavior and representation boundaries explicit.
+  - [Encapsulation in Khayyam](./encapsulation.md) — Depends_on: provides the encapsulation context for keeping behavior and representation boundaries explicit.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — claimed
-  - [ChatGPT](../CONTRIBUTORS.md#chatgpt) (GPT-5.5) — argued
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — claimed
+  - [ChatGPT](../../CONTRIBUTORS.md#chatgpt) (GPT-5.5) — argued
 
 #### What changed
 - Created the Khayyam-specific modularity document, covering the separation of language inclusion syntax from storage and distribution concerns, package-elimination through explicit naming, and the proposed companion-manifest direction for dependency resolution.
@@ -25,15 +25,15 @@
 - Time: 2026-08-19T00:00:00Z
 - Type: refactor
 - Cited:
-  - [Modularity](./modularity.md) — Depends_on: the authoritative definition of Module and Modularity; this document now retains only Khayyam-specific language and ecosystem consequences.
-  - [Documentation — Explanation](./documentation-explanation.md) — Depends_on: defines the current Explanation-facet structure.
-  - [Documentation — Changelog](./documentation-changelog.md) — Depends_on: defines this companion changelog as the home for provenance and revision history.
-  - [How to make a new explanation document](./documentation-explanation.practice.md) — Reference: supplies the migration procedure.
+  - [Modularity](../modularity.md) — Depends_on: the authoritative definition of Module and Modularity; this document now retains only Khayyam-specific language and ecosystem consequences.
+  - [Documentation — Explanation](../documentation-explanation.md) — Depends_on: defines the current Explanation-facet structure.
+  - [Documentation — Changelog](../documentation-changelog.md) — Depends_on: defines this companion changelog as the home for provenance and revision history.
+  - [How to make a new explanation document](../documentation-explanation.practice.md) — Reference: supplies the migration procedure.
 - Propagates to:
-  - [Modularity](./modularity.md): Done — the general document links to this document for the Khayyam language and ecosystem realization.
+  - [Modularity](../modularity.md): Done — the general document links to this document for the Khayyam language and ecosystem realization.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — requested
-  - [ChatGPT](../CONTRIBUTORS.md#chatgpt) (GPT-5.6) — rewrote
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — requested
+  - [ChatGPT](../../CONTRIBUTORS.md#chatgpt) (GPT-5.6) — rewrote
 
 #### What changed
 - Reframed the document as the Khayyam language and ecosystem application of the general modularity model.
@@ -52,10 +52,10 @@
 - Time: 2026-08-19T00:00:00Z
 - Type: Fixed
 - Cited:
-  - [Modularity](./modularity.md) — Depends_on: distinguishes a Module's conceptual identity from its framework-level manifest representation.
+  - [Modularity](../modularity.md) — Depends_on: distinguishes a Module's conceptual identity from its framework-level manifest representation.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — reviewed
-  - [ChatGPT](../CONTRIBUTORS.md#chatgpt) (GPT-5.6) — rewrote
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — reviewed
+  - [ChatGPT](../../CONTRIBUTORS.md#chatgpt) (GPT-5.6) — rewrote
 
 #### What changed
 - The prior migration removed more than conceptual duplication: it also removed the substantive manifest content model and the comparative explanation of why Khayyam separates language grammar from ecosystem resolution.
@@ -72,10 +72,10 @@
 - Time: 2026-08-19T00:00:00Z
 - Type: Fixed
 - Cited:
-  - [Modularity](./modularity.md) — Reference: supplies the shared conceptual methodology and the authoritative Module definition to which this document refers.
+  - [Modularity](../modularity.md) — Reference: supplies the shared conceptual methodology and the authoritative Module definition to which this document refers.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — reviewed
-  - [ChatGPT](../CONTRIBUTORS.md#chatgpt) (GPT-5.6) — audited, rewrote
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — reviewed
+  - [ChatGPT](../../CONTRIBUTORS.md#chatgpt) (GPT-5.6) — audited, rewrote
 
 #### What changed
 - The second audit distinguishes content that may be referenced from Modularity — the general definition of Module and the claim that physical representations do not define it — from content that remains necessary in this document.
@@ -93,8 +93,8 @@
 - Propagates to:
   - khayyam-modularity.handoff.md: Created - open questions and anticipated work moved there.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - requested
-  - [OpenCode](../CONTRIBUTORS.md#opencode) (qwen3.8-flash) - moved
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) - requested
+  - [OpenCode](../../CONTRIBUTORS.md#opencode) (qwen3.8-flash) - moved
 
 #### What changed
 - The body's fixed top-level sections are now Abstract, Introduction, Explanation, Results only; the document-level Discussion, the Naming Without Package Context topic's Discussion wrapper, and the Manifest as the Module Contract topic's Discussion wrapper were dissolved.
