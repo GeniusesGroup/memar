@@ -16,7 +16,7 @@ Three potential resolutions exist for the question of intentional vs. accidental
 
 **(b) Require explicit, nominal declaration for every abstraction implementation.** Along the lines of Rust's `impl Trait for Type`. Eliminates the risk entirely, but adds ceremony to every implementation site and is a significant, backward-incompatible change to a philosophy Khayyam currently states as a feature ("Contract-First Approach").
 
-**(c) A hybrid model.** Structural satisfaction remains the default, but specific abstractions — those identified as small, marker-like, or identity-bearing — can opt into requiring an explicit declaration. This would need a formal criterion for which abstractions qualify, and a library-driven (not new-keyword) mechanism for declaring it, consistent with [Control Flow in Khayyam](./control_flow.md)'s precedent of keeping such behaviors as ordinary method calls rather than new syntax.
+**(c) A hybrid model.** Structural satisfaction remains the default, but specific abstractions — those identified as small, marker-like, or identity-bearing — can opt into requiring an explicit declaration. This would need a formal criterion for which abstractions qualify, and a library-driven (not new-keyword) mechanism for declaring it, consistent with [Control Flow](../protocols/control-flow.md)'s precedent of keeping such behaviors as ordinary method calls rather than new syntax.
 
 ### Linter delegation verification mechanism
 The precise mechanism by which the Linter verifies explicit delegation (in the no-default-implementations model) is not yet specified.
