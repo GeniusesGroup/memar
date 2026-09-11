@@ -302,3 +302,22 @@ Considered placing the topic in `khayyam-runtime.md` instead, since Unikernel is
 - The principle states as a rule what the per-construct documents already enacted individually (no error-handling syntax, no memory primitives, no concurrency keywords, no standard-library shapes in the grammar) and fixes the boundary as protocol-level, not concept-level: base-layer modeling concepts (`tp` for Type, `sc` for Scope) remain expressible, because the grammar supplies the declaration mechanism, not a specific contract.
 - Names the framework-independence consequence: protocols are owned by the governance framework above the language (Memar today, another framework tomorrow); baking one in would reduce the language to that framework's syntax extension.
 - Trigger: the language–protocol relationship had been stated per construct but never as a general rule, and a documentation-set review misread [Control Flow in Khayyam](./control_flow.md)'s citation of [The Error](../protocols/error.md) as a grammar-level dependency. The general statement closes that misreading path; the folder role statement ([README.md](./README.md)) carries the citation-layer version of the same statement.
+
+---
+
+### The Grammar Refuses Protocol Semantics revised; the Control Flow document retired
+- Time: 2026-09-10T00:00:00Z
+- Type: Changed
+- Cited:
+  - [Control Flow](../protocols/control-flow.md) — Depends_on: the design of library-defined control flow and the negative reasoning about grammar absences are owned there after the absorption.
+- Contributors:
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided (the negatives-to-changelog doctrine: bodies carry current positive state only, per the same reasoning that retired the Discussion section)
+  - [Super Z](../../CONTRIBUTORS.md#super-z) — applied
+
+#### What changed
+- The principle section keeps the positive criterion (what enters the grammar) and the protocol-level boundary; its negative-illustration paragraph (the `try`/`catch` enumeration, the baked-error critique, the worked-case pointer) migrated to the Control Flow protocol document's changelog.
+- The Scope topic now states the grammar facts positively and retargets its pointer: a code scope is inert until a library-provided method drives it, the grammar ships no control-flow keywords or logical operators of its own, and the design of flow constructs lives in the Control Flow protocol document.
+- `control_flow.md` and its paired changelog and handoff are retired and deleted; their content is fully redistributed (the migration map is the protocol document's changelog entry). The prior entry below remains as history; its links describe the document as it then was.
+
+#### Considered and not done
+- **Keeping a stub pointer file in place of the retired document (rejected)**: a near-empty body would need permanent maintenance while carrying no state of its own; every consumer pointer was retargeted instead.

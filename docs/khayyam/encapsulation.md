@@ -10,7 +10,7 @@ ID: "495592"
 ## Abstract
 This document specifies Khayyam's encapsulation model: the architectural rules governing how capsules own their state and behavior, how interaction occurs exclusively through methods, and how mutability is an intrinsic property of the capsule's own definition rather than a consumer-side keyword. The central principle is Sovereign Encapsulation — all internal fields of a capsule are strictly private, all interaction occurs via method invocation (message passing). The document also covers the rejection of tuples, closures as an inadmissible implicit-capsule syntax, primitive capsule behavioral guarantees, and the capsule-level constant model.
 
-A capsule is an abstraction layered over `vr` (variable) and `mt` (method), not an independent primitive. Accordingly, the mechanical grammar of the method signature itself is specified in [Method in Khayyam](./method.md#method-as-callable-capsule), and the `sc` (code scope) mechanism underlying control-flow libraries is specified in [Control Flow in Khayyam](./control_flow.md#code-scope) — this document references both rather than restating them.
+A capsule is an abstraction layered over `vr` (variable) and `mt` (method), not an independent primitive. Accordingly, the mechanical grammar of the method signature itself is specified in [Method in Khayyam](./method.md#method-as-callable-capsule), and the `sc` (code scope) mechanism underlying control-flow libraries is specified in [Khayyam](./khayyam.md#scope) — this document references both rather than restating them.
 
 For a walk-through of the core mechanics before the detailed rules, see the [Guide](#capsules-and-methods-at-a-glance) below.
 
