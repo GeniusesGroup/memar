@@ -275,7 +275,3 @@ In the protocol domain, terms like "protocol inheritance" or "sub-protocol" are 
 | Protocol with default method bodies | **Rejected** | Introduces behavior; violates protocol purity. |
 
 Note: Patterns involving *implementing entities* (e.g., how an entity satisfies a protocol, whether delegation is explicit or implicit) are governed by the Explicit Behavior Ownership document, not this one.
-
-## Results
-Insufficient time has passed since this document was adopted to report real, observed outcomes from its use. This section will be filled in once there is such experience to draw on.
-

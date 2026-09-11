@@ -150,6 +150,3 @@ Suggested conventions for capsule and abstraction names (non-binding, enforceabl
 - **Abstraction names**: PascalCase, domain-concept framing (e.g., `Reader`, `Writer`, `Repository`). Avoid technical-capability framing (e.g., `Readable`, `Writable`, `Filterable`) — these indicate over-abstraction risk.
 - **Method names**: PascalCase for public methods, matching the capsule's domain language. Avoid getter/setter prefixes (`Get...`, `Set...`) when the method name can express the domain action more directly (e.g., `ApplyTimeout` instead of `SetTimeout`).
 - **Field names**: PascalCase inside capsules, consistent with the type naming convention. Since fields are always private, their names are an internal design decision of the capsule author.
-
-## Results
-No observed results are recorded yet. This section will be updated when use of the encapsulation model yields evidence that can be distinguished from its intended rationale.

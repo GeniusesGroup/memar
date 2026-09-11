@@ -24,5 +24,5 @@ Procedures for operating GP networks. [giti.md](./giti.md) owns the protocol —
 ## Edge cases and failure modes
 - Destination GP address not registered, or not requesting Internet reachability: drop the packet; do not invent a delivery.
 - The Internet bridge rides UDP: no Chapar-grade ingress validation holds on that path; apply the [source validation](./giti.md#standard-services) invariant wherever a GP router processes the packet.
-- A Thing-level destination that never requested App-level delivery: its device app's own rules decide — forward as usual, or report as an incident (see giti.md's [Unresolved questions](./giti.md#unresolved-questions) on mixed-level communication).
+- A Thing-level destination that never requested App-level delivery: its device app's own rules decide — forward as usual, or report as an incident (see giti's [Whether a Thing-level destination accepts unsolicited App-level frames](./giti.handoff.md#whether-a-thing-level-destination-accepts-unsolicited-app-level-frames) on mixed-level communication).
 - No agreed intermediary exists and no direct connection is possible: the packet is undeliverable at this layer; do not flood or guess — recovery belongs to upper layers.

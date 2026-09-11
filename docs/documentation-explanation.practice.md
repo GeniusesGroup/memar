@@ -22,7 +22,7 @@ This is the procedure for producing an Explanation-facet document that follows `
    - Exercise the thinking modes while writing — critical examination of your own claims is one component of writing, applied while drafting, not a separate later phase. When critique of a draft is the dominant activity rather than a component of writing it, [thinking.practice.md](./thinking.practice.md) covers that exercise.
    - Document-wide optional sections sit directly under the body's top level, not inside any topic.
    - Do not put considered-and-rejected alternatives, open questions, or anticipated work in the body: alternatives go to the changelog entry's `Considered and not done` section, open questions to the handoff's `Open Questions`, anticipated work to the handoff's `Anticipated Work` (steps 6-7).
-   - Leave `Results` empty unless there is real, observed outcome to report — it is retrospective, not a prediction made while writing the document.
+   - Do not write a `Results` section: a result's home is determined by its type — see [documentation.md → Results routing](./documentation.md#results-routing); observed outcomes are not body content.
 5. If this is a revision of a document written under an earlier version, bring it in line with the current structure at this edit — see `documentation-explanation.md`'s "Progressive migration" topic.
 6. Create or update the paired Changelog-facet file `<same-slug>.changelog.md` alongside the base document. Its first entry records the document's creation (and, if this is a revision of an older document, migrates any `Citations`, `Contributors`, `Applied to` front-matter fields and `## Change Rationale` body content from the old version into Changelog entries — see `documentation-changelog.md` for the entry structure). The base document keeps none of that provenance in its own front matter or body.
 
@@ -54,8 +54,6 @@ ID: ""
 ### {Section}
 
 #### {Sub section} (Can be one of Optional Sections)
-
-## Results
 ```
 
 ## Reference files

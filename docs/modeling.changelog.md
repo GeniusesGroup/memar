@@ -463,3 +463,17 @@ Dissolved every Discussion wrapper and the document-level Discussion; drawback s
 #### Related work
 - This document does not introduce new naming conventions for implementation artifacts. The conceptual terms used here (abstraction, concern, aggregator, composition layer, graph) are established elsewhere in the Memar specification and are not redefined here. (Migrated from the document-level retired Naming Conventions note)
 - The overall approach draws from multiple traditions: DDD (Eric Evans) for the emphasis on domain language and bounded contexts, Event Storming (Alberto Brandolini) for the practice of discovering domain structure through collaborative exploration, and graph theory for the analytical framework used to evaluate model structure. Memar's distinctive contribution is the integration of these traditions into a single, coherent modeling discipline that is tightly coupled with the abstraction and protocol constructs defined in other documents. (Migrated from the document-level retired Prior art)
+
+---
+
+### Decomposition-signal citation re-anchored to the base layer
+- Time: 2026-09-10T00:00:00Z
+- Type: Fixed
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — requested
+  - [Super Z](../CONTRIBUTORS.md#super-z) — applied
+
+#### What changed
+- The aggregation topic's decomposition guidance now cites [Module Identity and Responsibility](./modularity.md#module-identity-and-responsibility) — the base-layer statement of the same test — instead of [Composition Depth as a Decomposition Signal](./khayyam/method.md#composition-depth-as-a-decomposition-signal-no-expression-chaining) in the Khayyam method document, which itself derives the principle from System and Modularity and only enforces it syntactically at the language layer.
+- Reason: a base document never cites the language layer as the authority for its own principles; the language document's own text already names System and Modularity as the conceptual sources, so the base citation is the correct direction. The language layer's syntactic enforcement is named in prose, without a link, as ownership.
+- Same-session context: the formerly cited document moved from `docs/khayyam-method.md` to `docs/khayyam/method.md` when the Khayyam layer received its own folder; the re-anchoring makes the citation direction correct regardless of that placement.

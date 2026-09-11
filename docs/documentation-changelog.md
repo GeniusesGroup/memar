@@ -8,7 +8,7 @@ ID: 496040
 # Documentation — Changelog
 This document specifies the Changelog facet: a companion file, named `<base-filename>.changelog.md`, that records why and how its paired artifact changed over time. The paired artifact is not necessarily a document — it can be an image, a piece of code, or anything else a change history is worth keeping for. See [Documentation](./documentation.md) for what a facet is.
 
-**Exception**: a Changelog-facet file does not itself get a companion changelog. This is a deliberate stop to the recursion, not an oversight — see Discussion. (This exception applies to Changelog-facet files — the `.changelog.md` companions — not to this specification itself, which is an Explanation-facet document and does have a companion changelog: [documentation-changelog.changelog.md](./documentation-changelog.changelog.md).)
+**Exception**: a Changelog-facet file does not itself get a companion changelog. This is a deliberate stop to the recursion, not an oversight; the rejected alternative is recorded in [documentation-changelog.changelog.md](./documentation-changelog.changelog.md). (This exception applies to Changelog-facet files — the `.changelog.md` companions — not to this specification itself, which is an Explanation-facet document and does have a companion changelog: [documentation-changelog.changelog.md](./documentation-changelog.changelog.md).)
 
 ## Abstract
 A Changelog-facet document is an append-only, chronologically-ordered record of changes to one paired artifact. It is not a substitute for other organizational records — chat transcripts, meeting recordings, decision threads — and does not try to preserve those in full; it keeps only a concise, minutes-style summary of each change: what changed, why, on what evidence, who did what, and what else it should affect. Everything that used to live in a base document's own front matter as `Citations`, `Contributors`, and `Applied to` now lives here instead, since a reader of the base artifact needs its current state, not its provenance — provenance belongs in history, and history belongs here.
@@ -117,6 +117,3 @@ Replaces the base artifact's former `Applied to` field, and generalizes it: inst
 
 ### Tasks
 An optional reference to an external task-tracking entry (however that ends up being modeled — this specification does not assume or require a specific Task system), with one of three relations: `Closed` (this change completes that task), `Partial` (this change is progress toward it but doesn't complete it), or `Reference` (mentioned for context, no completion claim either way).
-
-## Results
-Insufficient time has passed since this specification was adopted to report real, observed outcomes from its use. This section will be filled in once there is such experience to draw on.

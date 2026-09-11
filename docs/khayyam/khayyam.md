@@ -221,6 +221,3 @@ The connection is not simply that a Persian project chose a well-known Persian n
 - **Skepticism of received answers.** Omar Khayyam's poetry is remembered, in part, for a willingness to question inherited certainty rather than repeat it. This language's own recurring design instinct — that a proposal to add something merely because other languages do it that way is a signal to examine the proposal more skeptically, not a reason to adopt it — is the same posture applied to language design.
 
 None of this is a claim that the language was engineered to match the man point for point. It is closer to the reverse: the name was available, it fit, and looking closely at why it fits is worth doing once, here, rather than leaving it as a passing choice of etymology.
-
-## Results
-

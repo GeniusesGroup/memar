@@ -90,6 +90,3 @@ Anything that does not fit above but may matter later.
 - **Active** researches are mutable working records: findings accumulate, questions and participants are added, statuses are updated as the inquiry moves.
 - **Complete and Withdrawn** researches are frozen records. A correction is a newer research that references and supersedes the old one; the superseded record stays in place with its `Superseded by` pointer — a wrong finding and a negative result are equally part of the inquiry's trail. Mechanical repairs (broken links, typos) do not reopen a frozen record.
 - A research file receives **no companion changelog and no companion handoff**: its own status fields and participant record are its live state — the same recursion stop the other companion facets apply — and a superseding research is its correction mechanism.
-
-## Results
-Insufficient time has passed since this specification was drafted to report real, observed outcomes from its use. This section will be filled in once there is such experience to draw on.

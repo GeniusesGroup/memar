@@ -172,7 +172,7 @@ Transmitting will not block caller to be non blocking and queue frames for conge
 A situation might be occur that a port available when a frame queued but when the time to send is come, the port broken and sender don't know about this.
 
 ### Edge computing
-Network cost is transmission plus routing plus state — minimizing a header's byte count is not minimizing the total. Moving data across a network to be processed or stored far from where it arose must be justified by more than habit; when locality reduces total cost, the architecture should make execution and storage at the edge possible and economically preferable — the low-power Chapar switching fabric and nearby coordinators included. This is an architectural preference, not a mandate on applications: no topology is forced on anyone, and the ecosystem's tooling (code generation, coordinator services) is expected to make the local choice the easy choice.
+Network cost is transmission plus routing plus state — minimizing a header's byte count is not minimizing the total. Moving data across a network to be processed or stored far from where it arose must be justified by more than habit; when locality reduces total cost, the architecture should make execution and storage at the edge possible and economically preferable — the low-power Chapar switching fabric and nearby coordinators included. This is an architectural preference, not a mandate on applications: no topology is forced on anyone, and the [Memar ecosystem](../system.md#ecosystem)'s tooling (code generation, coordinator services) is expected to make the local choice the easy choice.
 
 ### Place in the stack
 The project's network protocols map onto OSI for orientation:
@@ -185,6 +185,3 @@ The project's network protocols map onto OSI for orientation:
 | Application | Layers 4–7  | [sRPC](./sRPC.md)                                                                                                                           |
 
 Per the [Layer presence](#layer-presence) principle this mapping describes capability, not obligation — a given link realizes whichever of these layers justify themselves on it; a protocol document declares the conditions under which it applies rather than presuming it rides beneath every packet. Above the stack sit the rest of the ecosystem: the router/network-coordinator role is the ChaparKhane ([Chapar](./chapar.md)), the operating system is the OS contract defined in this documentation set ([OS - Operating System](./os.md)), and applications run as unikernel images produced by the Achaemenid auto-generation mechanism (see the [Enterprise](../../README.md#enterprise) statement for the commercial components). Protocol documents own their own layer's content; this table is the single stack overview, and protocol documents reference it instead of restating a private copy.
-
-## Results
-Insufficient deployment experience has been recorded under this consolidated structure to report real, observed outcomes. This section will be filled in once there is such experience to draw on.

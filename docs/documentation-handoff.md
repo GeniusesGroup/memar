@@ -104,6 +104,3 @@ Two writing rules bind every section:
 
 - **Confidence vocabulary is fixed.** The four levels (Decided, Tentative, Explored-but-unresolved, Deferred) and the three stability levels (Strong, Weak, Unexamined) are the artifact's controlled vocabulary - the receiving session must be able to distinguish firm conclusions from provisional ones without guessing what the writer meant.
 - **Specific over general.** "We discussed modeling approaches" is a failed entry; "Decided: graph-oriented modeling as primary method - reason: reveals relationships better than table-based approaches" is a passing one. Every entry must be understandable by a session that did not participate, without re-reading the discussion it summarizes.
-## Results
-Insufficient time has passed since this specification was adopted to report real, observed outcomes from its use. This section will be filled in once there is such experience to draw on.
-

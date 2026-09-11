@@ -54,11 +54,11 @@ The seven entries below are migrated from `type.md`'s former `## Change Rational
 - Type: Changed
 - Cited:
   - [Modeling](./modeling.md) — Depends_on: Type is the result of correct modeling; the concept of Type cannot be understood independently of the modeling process that identifies what should exist as a Type, and Modeling establishes that abstractions are justified by independent responsibilities, not by data.
-  - [Encapsulation in Khayyam](./khayyam-encapsulation.md) — Reference: specifies how Capsule and Method manifest in Khayyam — Sovereign Encapsulation, method invocation rules, and the rejection of tuples and consumer-side mutability keywords.
-  - [Abstraction in Khayyam](./khayyam-abstraction.md) — Reference: specifies pure contracts, implicit structural satisfaction, rejection of default implementations, and abstraction composition.
-  - [Inheritance in Khayyam](./khayyam-inheritance.md) — Reference: inheritance is a relationship between abstractions, not between capsules — behavior transfer rejected, abstraction extension supported.
-  - [Polymorphism in Khayyam](./khayyam-polymorphism.md) — Reference: classifies the polymorphism forms Khayyam supports through abstraction conformance — inclusion, parametric, and ad-hoc — and the rejection of generic syntax.
-  - [Khayyam](./khayyam.md) — Reference: documents the recurring principles (Behavior Over Type Identity, Domain Modeling, Syntactic Atomicity) that the Type concept in Khayyam instantiates, and is the canonical specification of Khayyam's type subtypes and their syntax.
+  - [Encapsulation in Khayyam](./khayyam/encapsulation.md) — Reference: specifies how Capsule and Method manifest in Khayyam — Sovereign Encapsulation, method invocation rules, and the rejection of tuples and consumer-side mutability keywords.
+  - [Abstraction in Khayyam](./khayyam/abstraction.md) — Reference: specifies pure contracts, implicit structural satisfaction, rejection of default implementations, and abstraction composition.
+  - [Inheritance in Khayyam](./khayyam/inheritance.md) — Reference: inheritance is a relationship between abstractions, not between capsules — behavior transfer rejected, abstraction extension supported.
+  - [Polymorphism in Khayyam](./khayyam/polymorphism.md) — Reference: classifies the polymorphism forms Khayyam supports through abstraction conformance — inclusion, parametric, and ad-hoc — and the rejection of generic syntax.
+  - [Khayyam](./khayyam/khayyam.md) — Reference: documents the recurring principles (Behavior Over Type Identity, Domain Modeling, Syntactic Atomicity) that the Type concept in Khayyam instantiates, and is the canonical specification of Khayyam's type subtypes and their syntax.
 - Contributors:
   - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — requested
   - [Super Z](../CONTRIBUTORS.md#super-z) (GLM 5.2) — rewrote
@@ -390,3 +390,21 @@ Dissolved every `#### Discussion` wrapper (How to identify a Type, Definition of
 
 #### Considered and not done
 - Alternative names: "Definition-Execution Separation" and "Single Definition Authority". "Structure Is Fixed by Definition" was kept because System already defines Structure precisely (capabilities and constraints, explicitly not the arrangement of parts) and the title anchors the principle to that defined home; the separation framing survives in the boundary clauses rather than the name.
+
+---
+
+### Definition sections made Khayyam-independent
+- Time: 2026-09-10T00:00:00Z
+- Type: Fixed
+- Cited:
+  - [Khayyam](./khayyam/khayyam.md) — Depends_on: this document's realization layer, whose placement (`docs/khayyam/`) and citation rule were registered in the same session
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — requested
+  - [Super Z](../CONTRIBUTORS.md#super-z) — applied
+
+#### What changed
+- The *Type Identity* topic's structural-satisfaction paragraph no longer presents implicit satisfaction as a Khayyam property and no longer tracks the language layer's state ("recorded as an open question in the Abstraction document" removed): structural satisfaction is stated as a way a language may realize conformance, the accidental-satisfaction tension is kept, and the mitigation question is named as a language-design question owned where the conformance mechanism itself is defined — a body tracks its own layer's state only.
+- The Capsule definition's realization note ("In Khayyam, this is enforced through Sovereign Encapsulation ...") moved to the *Manifestation in Khayyam* section as its own item, where this document's realization claims live; the definition section now ends at the semantic claim.
+- The Method definition's "In the Khayyam model" attribution became "In this document's model": Method-as-Type is this document's position, which Khayyam realizes, not a property borrowed from the language.
+- The Abstraction composition sentence dropped the "Khayyam's mechanism" attribution: requirement extension is the mechanism defined here; `ab` composition is its realization.
+- No definitional content changed — the definitions already stood independently of Khayyam (the Abstract and Introduction had stated that separation explicitly since the document's consolidation); the edits remove the remaining points where realization vocabulary and language-layer state tracking sat inside definition sections.

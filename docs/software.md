@@ -34,7 +34,7 @@ The IEEE software documentation family is the mature taxonomy of the lifecycle c
 | [Software design description](https://en.wikipedia.org/wiki/Software_design_description) | IEEE Std 1016 | Design lands as Type decisions ([Type](./type.md), [Modularity](./modularity.md), the Khayyam documents). |
 | [Software configuration management](https://en.wikipedia.org/wiki/Software_configuration_management) | [IEEE Std 828](https://ieeexplore.ieee.org/document/6170935/) | The framework's Immutable Infrastructure protocol document owns the deployment immutability rule; the lifecycle working-out is owed (see its handoff). |
 | [Software test documentation](https://en.wikipedia.org/wiki/Software_test_documentation) | IEEE Std 829 | No home yet; owed. |
-| [Software verification and validation](https://en.wikipedia.org/wiki/Software_verification_and_validation) | IEEE Std 1012 | Partially anchored: abstraction conformance ([Abstraction in Khayyam](./khayyam-abstraction.md)) is the compile-time verification face; the rest owed. |
+| [Software verification and validation](https://en.wikipedia.org/wiki/Software_verification_and_validation) | IEEE Std 1012 | Partially anchored: abstraction conformance ([Abstraction in Khayyam](./khayyam/abstraction.md)) is the compile-time verification face; the rest owed. |
 | [Software quality assurance](https://en.wikipedia.org/wiki/Software_quality_assurance) | IEEE Std 730 | No home yet; owed. |
 | [Software project management](https://en.wikipedia.org/wiki/Software_project_management) | IEEE Std 1058 | No home yet; owed. |
 | [Software user documentation](https://en.wikipedia.org/wiki/Software_user_documentation) | IEEE Std 1063 | Partially owned: [Type Practice → Carrying Type metadata](./type.practice.md#carrying-type-metadata) covers human-facing companion artifacts per Type. |
@@ -42,6 +42,3 @@ The IEEE software documentation family is the mature taxonomy of the lifecycle c
 
 ### "Software ecosystem"
 As applied to software, "ecosystem" names the [ecosystem](./system.md#ecosystem) formed around software practice — the languages, tools, products, conventions, organizations, and communities interacting within the practice's shared environment — not a property of any single software system: a software system is a constituent such an ecosystem can form around, never the ecosystem itself. The marketing sense ("join our ecosystem") names a vendor's governed offering set, which is precisely not an ecosystem ([System → Ecosystem](./system.md#ecosystem), Colloquial usage); it is a Business Term and carries no weight here — where it is meant, the concrete relationships are named instead: the base document set, the framework's protocol documents, and the implementation repositories.
-
-## Results
-Insufficient time has passed since this document was adopted to report real, observed outcomes from its use. This section will be filled in once there is such experience to draw on.

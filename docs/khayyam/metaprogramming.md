@@ -65,7 +65,3 @@ tp UserRecord cp {
 The compiler or runtime then provides the concrete implementation for whatever that abstraction's contract requires (e.g. a method enumerating `UserRecord`'s fields by name and type) — the same "compiler/runtime provides the implementation, the type only declares intent" division of labor `abstraction_p.Implements` already established for codegen scaffolding, applied here to introspection instead. A type that does not compose the abstraction is not reflectable at all — not partially, not through some fallback path — because there is nothing in its declaration granting that access.
 
 This preserves Sovereign Encapsulation rather than working around it: reflection doesn't bypass "all fields are private, all interaction is through methods" — an opted-in type is still only exposing structural facts through ordinary methods the abstraction defines, exactly like any other capability a capsule chooses to offer.
-
-## Results
-Insufficient time has passed since this document's positions were adopted to report real, observed outcomes from their use. This section will be filled in once there is such experience to draw on.
-
