@@ -42,6 +42,3 @@ This rule is deliberately stricter than the ecosystem's, where buffered channels
 Handling an incoming request does not spawn an execution unit per request. Units are drawn from the system's worker pool — sized by the system's own configuration ([Process → Requests, Cancellation, and Timeout](../process.md#requests-cancellation-and-timeout)'s budget rule applies: pool sizing is configuration owned by the executing system, not a per-request decision). The per-request-spawn pattern's failure mode (starvation, tail latency, unbounded memory under load) is why every mature server runtime converged on pools; the framework makes the converged answer the default rather than leaving each application to rediscover it.
 
 A mainstream language's channel implementation (read through its pre-generics era) exposes the fixed-capacity ring buffer with per-element machinery directly in its source — the structural evidence that the primitive was built for coordination, not data retention. Worker pools are the converged answer of every high-performance server runtime — the premise the pooling rule above generalizes.
-
-## Results
-Insufficient time has passed since this document was drafted to report outcomes; the first realization is expected alongside the framework's networking work.

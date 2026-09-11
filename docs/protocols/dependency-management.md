@@ -41,6 +41,3 @@ Version numbering conventions (semantic versioning among them) are useful commun
 It does not claim downloading is solved by nothing: large dependency trees are a real cost, and VCS-level sharing (a local clone cache shared across projects) is the expected mitigation — the same mechanism the VCS uses for its own object storage. It does not claim submodules are flawless: their sharp edges (detached heads, nested pinning, update ergonomics) are real and are the price of using the VCS's own primitive rather than a purpose-built layer. The claim is that the price is lower and the mechanism is honest — the dependency state is *in* the repository, visible in its history, reviewable in its diffs.
 
 Vendoring (a mainstream language's historical `vendor/` directory and the pre-package-manager state of the PHP ecosystem) is the industry's earlier answer to the same reproducibility need; large monorepos' one-version policies solve dependency selection by eliminating it — evidence that explicit pinning and graph resolution are alternatives rather than necessities.
-
-## Results
-Insufficient time has passed since this document was drafted to report outcomes; the framework's own repository set will be the first evidence.

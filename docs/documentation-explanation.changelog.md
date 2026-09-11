@@ -199,3 +199,56 @@ All retired wrapper titles are removed from the pattern; documents written under
 - The `Conventions` catalog entry pointed at "that topic's `Discussion`" as its sibling anchor; reworded to "that topic's other subsections", since topic-level Discussion wrappers retire together with the document-level one.
 - The scientific-paper analogy's use of "Discussion" describes external paper conventions, not this specification's skeleton, and was kept.
 - Surfaced during the 2026-09-07 commit-readiness review of the second migration wave; the owner directed closing it before that wave is briefed, and the wave itself is now tracked in the paired handoff.
+
+### Results section removed; skeleton reduced to three fixed sections; results routing established
+- Time: 2026-09-10T16:57:44Z
+- Type: Changed
+- Cited:
+  - [ICMJE Recommendations](https://www.icmje.org/recommendations/) — Evidence: the manuscript-preparation standard requires findings presented in logical sequence with the main findings first, and places interpretation, context against the totality of evidence, and conclusions beyond the data in Discussion, not Results.
+  - [Bavdekar SB, Chandak S. Results: Unraveling the Findings. J Assoc Physicians India. 2015;63(9):44-6](https://pubmed.ncbi.nlm.nih.gov/27608866/) — Evidence: "Results section is used to inform readers about the actual observations made in the research study."
+  - [Snyder N, Foltz C, Lendner M, Vaccaro AR. How to Write an Effective Results Section. Clin Spine Surg. 2019;32(7):295-6](https://pubmed.ncbi.nlm.nih.gov/31145152/) — Evidence: findings are reported objectively, "even without interpreting the data."
+  - [Hess DR. How to write an effective discussion. Respir Care. 2004;49(10):1238-41](https://pubmed.ncbi.nlm.nih.gov/15447810/) — Evidence: "Explaining the meaning of the results to the reader is the purpose of the discussion section of a research paper."
+  - [Schulz KF, Altman DG, Moher D. CONSORT 2010 Statement. BMJ. 2010;340:c332](https://doi.org/10.1136/bmj.c332) — Evidence: every Results-domain checklist item is this-trial data (participant flow, recruitment, outcomes and estimation, harms), while Generalisability (item 21) and Interpretation (item 22) sit under Discussion — even generalization across contexts is not a Results content.
+  - [Appelbaum M, Cooper H, Kline RB, Mayo-Wilson E, Nezu AM, Rao SM. Journal article reporting standards for quantitative research (JARS-Quant). Am Psychol. 2018;73(1):3-25](https://pubmed.ncbi.nlm.nih.gov/29345484/) — Evidence: hypotheses (anticipated results) and analyses (observed results) are separate reporting groupings (primary, secondary, exploratory).
+- Propagates to:
+  - documentation.md: Done - own Results section removed; `Results routing` added as a cross-cutting convention, following the URI precedent for concerns that span facets.
+  - documentation-explanation.practice.md: Done - template and step 4 updated.
+  - README.md, .agents/skills/memar/SKILL.md: Done - stale structure lines corrected (trivial; no paired changelogs).
+  - 45 base documents, Results section removed same-session under the owner's directive, applied through sub-agents; per the owner's ruling a removal this mechanical carries no per-document changelog entry - this consolidated list is the record. Top-level (17): documentation-handoff.md, documentation-changelog.md, documentation-research.md, documentation-practice.md, framework.md, knowledge.md, process.md, protocol.md, software.md, system.md, thinking.md, terminology.md, modularity.md, modeling.md, type.md, content.md, agency.md. Protocols (15): lexer.md, giti.md, chapar.md, sdk.md, concurrency.md, dependency-management.md, networking.md, networking-connection.md, os.md, time.md, abstraction-implements.md, error.md, memory.md, filesystem.md, immutable_infrastructure.md. Khayyam (13, under docs/khayyam/): abstraction.md, agency.md, compiler.md, encapsulation.md, inheritance.md, khayyam.md, linter.md, metaprogramming.md, method.md, modularity.md, polymorphism.md, runtime.md, variable.md.
+  - Four carried non-placeholder content and were routed, not deleted: agency.md (watch-items to the handoff's Open Questions), filesystem.md (external literature evidence inline at the claims it supports), immutable_infrastructure.md (deferral note to the handoff's Anticipated Work), error.md (validation note inline at the Boundary translation claim). The paired handoffs and filesystem.md's inline evidence carry their own provenance lines; the 26 per-document changelog entries first appended for this pass were removed on the same ruling.
+  - protocols/control-flow.md: Done through the concurrent session's own commit (be9c260), which dropped its Results placeholder under this decision; docs/khayyam/control_flow.md was retired and deleted outright with that session, needing no migration. content.md's earlier blocker (its changelog being off-limits) dissolved with the no-entry ruling.
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - argued, directed
+  - [Super Z](../CONTRIBUTORS.md#super-z) (GLM 5.3) - researched, argued, wrote
+
+#### What changed
+- The fixed body skeleton is reduced to `Abstract`, `Introduction`, `Explanation` (Omid Hekayati - directed removal after the results-notion round; Super Z - applied).
+- Relevance discipline gains an `Observed results` bullet pointing to the cross-cutting routing map (Super Z - written; Omid Hekayati - placement decided: the map lives in documentation.md, not here, because its homes span four facets).
+- documentation.md gains `Results routing`: an agent holding a result looks up its home at the meta layer by type - anticipated to the Abstract claim, derived to `Implications`, observed to the changelog entry, inline Evidence, a Research record, or handoff working state - without needing to know which facet's structure applies first (Omid Hekayati - argued the placement and the lookup path; Super Z - written).
+- The empirical record of this specification's own Results rule was audited before removal: all ~50 `## Results` sections in the repository were unpopulated placeholders in three drifted boilerplate variants, several files carried the heading with nothing under it, and the section had repeatedly attracted misrouted content - external literature evidence (filesystem.md), a deferred-analysis list (immutable_infrastructure.md, since repaired), watch-items belonging to the handoff (agency.md), and a claim-validation note belonging inline (error.md) (Super Z - survey).
+- The same-session migration was directed by the owner, superseding the 2026-09-06 rejection of a dedicated migration pass; applied through sub-agents with per-document changelog entries, excluding documents under concurrent edit (Omid Hekayati - directed).
+
+#### Deliberation
+- The same round's three-notion decomposition (anticipated / derived / observed) showed each notion already has a named home, making the fixed section redundant rather than load-bearing (Super Z - analysis; Omid Hekayati - drew the removal conclusion from it).
+- Keeping the section was defended and failed on three tests: Relevance discipline already excludes observations from the body (they change confidence in claims, not the claims, definitions, arguments, or open questions themselves); no document ever populated it while it attracted misrouted content; and the scientific-skeleton analogy was misapplied - a paper reports a completed study, so its Results always exist, while a living specification's use is concurrent and unbounded, so its Results could only ever be meta-commentary about the document itself, whose readers (audit, inquiry) already have facets (Super Z - critique pass; Omid Hekayati - accepted).
+- The sufficiency of the resulting three-section skeleton is recorded as an open question in the paired handoff rather than claimed settled (Omid Hekayati - raised; Super Z - recorded).
+
+#### Considered and not done
+- **Keep the section with a disambiguating definition naming the three notions (rejected)**: the correct analysis applied to the wrong remedy - it preserved a section the discipline already excludes and practice never used.
+- **Demote Results to an Optional Sections entry, present only when populated (rejected)**: the content type remains excluded by Relevance discipline; claim-supporting observations already route inline as Evidence; and presence-as-maturity-signal would track use-maturity, which the Status rules deliberately refuse to do.
+- **Rename the section to Observed results (rejected)**: the same content under a truer name fixes neither the hollowness nor the misrouting.
+- **A separate Research-facet record for the literature evidence (rejected for now)**: this entry carries the full quote set at equal durability; a record can be promoted later if re-examination demand appears.
+- **Progressive-only migration (superseded)**: the owner directed same-session migration of all documents in this session.
+
+#### Related work
+- ICMJE: "Present your results in logical sequence in the text, tables, and figures, giving the main or most important findings first"; Discussion is where findings are put "in the context of the totality of the relevant evidence", and conclusions must not go beyond what the data support.
+- Bavdekar & Chandak 2015: the Results section informs readers of "the actual observations made in the research study", objective and complete.
+- Snyder et al. 2019: a case is built "even without interpreting the data" - reporting and interpreting are separable acts.
+- Hess 2004: meaning-explanation of results is the Discussion's purpose, by definition.
+- CONSORT 2010: Results items are exclusively this-trial data; generalizability and interpretation are Discussion items - the scope-attribution boundary this routing adopts (a document reports what its own project's use produced; cross-system effect claims are inquiry material).
+- Appelbaum et al. 2018 (JARS-Quant): anticipated results (hypotheses) and observed results (analyses) are distinct reporting groupings.
+- Genre correction underlying the removal: a paper's Results reports the study's subject matter; a specification's "Results" would report the specification's own fortunes - meta-evidence, whose homes are the audit and inquiry facets, not the body.
+- Kotz & Cals 2013 (J Clin Epidemiol. 66(9):945) and Foote 2009 (Chest. 135(3):866-8) were retrieved but yielded no verifiable quotable text (no accessible abstract or full text); they are excluded rather than paraphrased from memory.
+
+#### Decision
+The skeleton is three fixed sections; an Explanation-facet document carries no `Results` section; a result's home is determined by its type per documentation.md → Results routing; existing Results sections migrated same-session where their files were not under concurrent edit - routed, not deleted, wherever they carried content; the excluded documents (content.md, the docs/khayyam/ subtree, modeling, type, abstraction-implements, control-flow, error, memory) migrate progressively. (Omid Hekayati - approved)

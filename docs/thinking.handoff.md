@@ -43,8 +43,13 @@ Open work for `thinking.md`. Entries are mutable current state — revised as ea
 - State: what further cognitive-science grounding deserves adoption as the document matures — working memory constraints on exchange design, dual-process accounts of evaluation, or others — and by what criterion each is admitted.
 - Next: admit grounding when a norm needs a better-specified basis.
 
+### Two concerns believed conflated in this document
+- State: the owner judges that two subjects are mixed in this document — the model/derivation side (what thinking is, which modes it has) and the operational discourse-norms side — and suspects the cause is that `thinking.practice.md` was not shaped as the operational home the split implies. Where exactly the boundary between the two should run is the question to settle.
+- Next: settle the boundary in the document's dedicated upgrade session (see Anticipated Work).
+
 ## Anticipated Work
 
 - The mode list grows as Memar's work demonstrates dependence on further modes, each addition argued in this document's changelog.
 - If the conversation-as-two-thinking-systems model is formalized as a Protocol, this document remains the conceptual home and the protocol document the normative one, following the project's concept/implementation separation.
 - Deeper cognitive-science grounding is expected to refine the norms over time — replacing qualitative statements (e.g. about criticism proportionality) with better-specified ones as the underlying science warrants.
+- Dedicated session to upgrade this document on its own: separate the two conflated concerns (see the Open Question above), decide `thinking.practice.md`'s proper shape, and consider regrouping the discourse norms by the thinking mode that chiefly exercises each (the owner's readability suggestion; the flat list of nine remains navigable at current scale — the confirm-before-large-scope-changes norm added 2026-09-10 sits beside its sibling Ask rather than assume). The owner directed that this document not be treated as finalized.

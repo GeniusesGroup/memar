@@ -139,6 +139,3 @@ These are examples, not requirements; any implementation that compiles an applic
 
 ### Relationship to PersiaOS
 PersiaOS is a project built on this architecture that delivers applications; it is not part of the architecture itself, and its documentation is project documentation, not architect-level. The architect-level claims its earlier project brief carried — the isolation-first principle, routing as an application, per-application resource entitlements, device-class neutrality — have been absorbed into this document where they hold. Its project-specific decisions (dedicated network protocols, firewall placement, accounting defaults) remain PersiaOS's own, and its project documentation should stand as an application of, and a reference into, this document rather than as a restatement of it.
-
-## Results
-Insufficient time has passed since this document was formed to report real, observed outcomes from its use. This section will be filled in once there is such experience to draw on.

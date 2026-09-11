@@ -158,3 +158,18 @@ Fixed skeleton: four sections. Everything else optional, catalogued. Open questi
 #### Considered and not done
 - **Deferring registration until a first real research exists (rejected by the owner)**: the facet system's own earlier position — define additional facets only when a real need exists — was weighed; the counter accepted here is that the specification was drafted against a concrete, stated requirement set, the companion pattern is already field-tested by two facets, and the naming decision gates every research filename, so registering before the first file exists prevents a renaming after references form (Omid Hekayati — decided).
 - **Naming the facet "Investigation" (considered, not chosen)**: "Research" matches the established cross-domain word for a deliberate bounded inquiry and keeps the file suffix (`research`) and facet name identical, as Changelog and Handoff do (Super Z).
+
+---
+
+### Results routing established as a cross-cutting convention; own Results section removed
+- Time: 2026-09-10T16:57:44Z
+- Type: Changed
+- Cited:
+  - [Documentation — Explanation](./documentation-explanation.md) — Depends_on: the three-section skeleton this change self-applies, and the Results-routing exclusion it implements, are defined by the Explanation facet's governing specification; the removal decision and its evidence base are recorded in that document's paired changelog (2026-09-10T16:57:44Z entry).
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - argued, directed
+  - [Super Z](../CONTRIBUTORS.md#super-z) (GLM 5.3) - researched, wrote
+
+#### What changed
+- `Results routing` was added as a cross-cutting convention, after `URI` and on the same precedent: a concern whose homes span several facets is defined at the meta layer, at pointer level, with each home's structure left to that facet's own specification. The routing keys on the type of the result — anticipated (the document's Abstract claim), derived (the `Implications` catalog entry), observed (the changelog entry that made the change, inline Evidence at a claim, a Research record, or handoff working state) — so an agent holding a result looks up its home by type without needing to know which facet's structure applies first (Omid Hekayati - argued the placement and the lookup path; Super Z - written).
+- The document's own `## Results` section - an unpopulated placeholder - was removed under the three-section skeleton (`Abstract`, `Introduction`, `Explanation`); an Explanation-facet document carries no Results section.

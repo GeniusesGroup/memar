@@ -150,7 +150,3 @@ Since there is no behavior transfer between capsules, the compiler never needs t
 - **Perfectly linear escape analysis:** No externally-acquired methods create non-local references.
 - **Devirtualization:** Without behavior-transfer-based polymorphism, more calls can be resolved statically.
 - **Inlining:** Explicit delegation calls are straightforward candidates for inlining.
-
-## Results
-No observed results are recorded yet. This section will be updated when use of this model yields evidence that can be distinguished from its intended rationale.
-

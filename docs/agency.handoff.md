@@ -49,6 +49,10 @@ The discussion that produced this document considered and rejected both `agent.m
 ### Does this document's own existence count as an instance of the Hybrid Agency it describes?
 This is a genuine reflexive question rather than a rhetorical one: the process that produced this document involved a human Principal setting direction, one AI system drafting and revising collaboratively, and a second AI system (performing an earlier edit) reorganizing and extending it against a separate specification — which maps fairly directly onto the [Hybrid Agency](./agency.md#hybrid-agency) and [Multi-Agent Systems](./agency.md#multi-agent-systems) topics in the body. Whether that mapping holds up, and whether it is useful, has not been tested.
 
+### Do the Working Principles hold up as later documents are written against them?
+- State: moved here 2026-09-10 from the removed `Results` section (three-section skeleton migration): whether the working principles in [Working Principles](./agency.md#working-principles) hold up is watched as later documents (Role, Permission, Contract) are written against this document.
+- Next: evaluate each new document written against this one for whether the principles required exception or restatement; record findings in this handoff and route any resulting change through a changelog entry.
+
 ## Anticipated Work
 
 - Define `role.md`, `permission.md`, and `contract.md` if they prove dense enough to warrant their own documents — concepts mentioned during the discussion that produced this document as ones that may eventually reference Agency rather than redefine it; consistent with the Delegation decision in [Delegation](./agency.md#delegation), the same "can it be defined without first defining Agency?" test should be applied to each before splitting it out. (From the document-level Future possibilities.)

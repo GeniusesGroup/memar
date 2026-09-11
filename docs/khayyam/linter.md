@@ -63,6 +63,3 @@ Khayyam syntax allows an argument position to be satisfied either by a variable 
 The compiler is an independent application that emits control-flow events (entering/leaving an `sc`, taking/skipping a branch). Analysis libraries such as DAA or the linter subscribe to these events rather than requiring the compiler to recognize a specific library's `IF` by name.
 
 - **Suggested linter rule:** A DAA implementation should treat `sc` as the common denominator across all control-flow libraries, not `IF`/`ELSE` names. Branch exclusivity is learned from `sc` events, not from special-casing a privileged library. See [the compiler-side statement of the same contract](./compiler.md#control-flow-via-sc-and-jump-primitives).
-
-## Results
-No observed results are recorded yet. This section will be updated when tooling built against these rules yields evidence that can be distinguished from their intended rationale.

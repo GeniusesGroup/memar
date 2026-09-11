@@ -480,7 +480,3 @@ Consistent with the Terminology document's classification:
 - **Protocol** is treated as a Scientific Term by the Protocol document's own argument; this document defers to that classification.
 - **Knowledge** and **Science** are treated as Scientific Terms by the nature of the concepts themselves.
 - **Ecosystem** is treated as a Scientific Term: its meaning is established in ecology — a biological community together with its physical environment as one unit — and this document extends it along the same structural lines rather than coining a new sense; the industry's marketing usage is a Business Term ([Terminology → Business Terms](./terminology.md#business-terms)).
-
-## Results
-Insufficient time has passed since this document was adopted to report real, observed outcomes from its use. This section will be filled in once there is such experience to draw on.
-

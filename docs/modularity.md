@@ -203,7 +203,7 @@ The Module-specific consequence is this document's own to state: a Module bounda
 ### Conceptual Relationships Are Not Runtime Coupling
 A dependency recorded between two Modules at the conceptual level does not necessarily imply invocation-level coupling at run time. A relationship registered in the model may be realized asymmetrically: each side may act upon it at different times, through different mechanisms, or a third party may execute the relationship's effects without either endpoint invoking the other. Mutual conceptual dependence between two Modules is therefore not, by itself, a defect to be engineered away.
 
-Forcing the dependency graph of the model to mirror the import restrictions of a particular language or runtime confuses representation with concept. Language-level cycle restrictions belong to the language layer and are discussed in [Modularity in Khayyam](./khayyam-modularity.md); they constrain how a model is expressed, not which relationships the domain admits.
+Forcing the dependency graph of the model to mirror the import restrictions of a particular language or runtime confuses representation with concept. Language-level cycle restrictions belong to the language layer and are discussed in [Modularity in Khayyam](./khayyam/modularity.md); they constrain how a model is expressed, not which relationships the domain admits.
 
 ### Module Among Related Concepts
 Module shares tools such as abstraction and encapsulation with several other Memar concepts, which is precisely why its boundary needs to be stated plainly rather than left to be inferred. The table below is a quick-reference summary of distinctions already made in this document and in the documents of the other concepts named; it does not introduce new definitions, does not establish a hierarchy among the rows, and is not a substitute for reading each concept's own document.
@@ -296,7 +296,7 @@ Likewise, a monolithic deployment is not evidence that modularity is absent.
 The important question is always whether the conceptual Modules have coherent responsibilities, explicit relationships, controlled knowledge of one another, and sufficient independence to evolve without unnecessary propagation of change.
 
 ### Event, Rule, and Mechanism-First Design
-Modularity does not require an ecosystem of specialized mechanisms for every relationship.
+Modularity does not require a proliferation of specialized mechanisms for every relationship.
 
 A common implementation tendency is to introduce separate abstractions for every communication pattern:
 
@@ -340,6 +340,4 @@ A language may represent a Module using files, directories, namespaces, packages
 
 These representations are implementations of modularity, not its definition.
 
-Khayyam's modularity treatment therefore belongs to the language and ecosystem layer. It should explain how the language expresses and resolves modular relationships without redefining the architectural concept of Module through filesystem or package conventions. [Modularity in Khayyam](./khayyam-modularity.md) records that language- and ecosystem-specific application.
-
-## Results
+Khayyam's modularity treatment therefore belongs to the language and ecosystem layer. It should explain how the language expresses and resolves modular relationships without redefining the architectural concept of Module through filesystem or package conventions. [Modularity in Khayyam](./khayyam/modularity.md) records that language- and ecosystem-specific application.

@@ -30,6 +30,7 @@ Memar is the **framework the development is conducted within**, not a passive li
 - If the task is unrelated to Memar-specific knowledge, do not discover Memar docs merely because this skill is active.
 - If required documentation cannot be found, say so clearly instead of fabricating an answer.
 - When a request is ambiguous in intent, scope, or acceptance criteria, ask immediately — do not guess or over-derive to resolve it. Apply Thinking's *Ask rather than assume* norm at intake, not only during reasoning.
+- When a change is large-scope — a definition other documents reference, a restructure of a document or the document set, or edits spanning several files — present the plan (the proposed text and the list of touched files) and obtain the user's explicit approval before applying; after applying, hold the result open for the user's review and apply their feedback. Apply Thinking's *Confirm before large-scope changes* norm at intake, not only during reasoning.
 - When a request opens a development thread unrelated to the current session's purpose, do not execute it in this session's context — follow [Handoff Practice → Mid-session tangents](/docs/documentation-handoff.practice.md#mid-session-tangents).
 - Canonical repository: https://github.com/GeniusesGroup/memar
 - Do not embed copies of project documents inside this skill.
@@ -84,4 +85,4 @@ Do not guess filenames or rely on a memorized list:
 
 This stays valid as new documents are added, unlike a hardcoded index.
 
-You do not need to read every document end-to-end. Use front matter (Title, Status, ID) and the Abstract to judge relevance, then jump to the needed section. Documents share one section structure (Abstract → Introduction → Explanation → Results → Discussion). Treat nothing before `Status: Final` as settled; detailed semantics live in the project's documentation specification.
+You do not need to read every document end-to-end. Use front matter (Title, Status, ID) and the Abstract to judge relevance, then jump to the needed section. Documents share one section structure (Abstract → Introduction → Explanation). Treat nothing before `Status: Final` as settled; detailed semantics live in the project's documentation specification.

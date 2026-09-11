@@ -101,11 +101,6 @@ A reference may have zero, one, or several locators (a book referenced by title 
 
 **Navigation is not intrinsic to Reference.** `<a href="/article/123">` asserts only "this resource references that resource." That a browser, upon click, changes the visible page is a *behavior the browser chose to attach to that relation* — an Interaction/Rendering-layer decision, not a property of the Reference itself. The same reference relation could instead trigger a tooltip, a sidebar preview, or nothing.
 
-#### Discussion
-
-##### Unresolved questions
-1. Are "navigate," "embed," and "execute" (the different things a consumer might do upon encountering a Reference) properties of the edge itself (e.g., a `mode` field), or are they entirely determined by the consuming Thing's own rules? Nothing above should be treated as settling this.
-
 ### Lexical Token vs. Sense — Handling Ambiguity
 If Reference is a graph edge from *some node* to a target, a hard question follows immediately: what is that source node's identity, when the source is a word or phrase repeated many times inside a larger body of free text?
 
@@ -119,12 +114,6 @@ This alone does not resolve ambiguity, however, because a single lexical string 
 **Bare, unmodified tokens may remain unresolved.** A document that contains only the word "Architecture" — a title, a tag, a project name with no surrounding disambiguating phrase — has no compositional context to resolve which sense is meant. The correct behavior is to **let the ambiguity stand explicitly** (the lexical token exists with no resolved sense-edge, or with multiple candidate sense-edges left unranked) rather than forcing a guess. **This is not an error state.** Any engine built on top of this model must not assume every token eventually resolves to exactly one sense.
 
 **Why ambiguity exists in natural language at all** (background, not architecture): partly cognitive economy (metaphorical extension of existing words costs less than inventing new ones for every related concept), and partly pure historical accident (etymologically distinct words converging phonetically over centuries). Artificial disambiguation-first languages (e.g., Lojban) demonstrate that unambiguous vocabularies *can* be built, but natural languages never migrate toward them because ambiguity resolved cheaply by context is more efficient for everyday communication than maintaining large precise vocabularies. Technical documentation is the opposite case — the cost of ambiguity typically exceeds the cost of precise terminology — which is consistent with this project's general preference (seen elsewhere, e.g., [framework.md](./framework.md)) for exact, non-overlapping definitions.
-
-#### Discussion
-
-##### Unresolved questions
-1. Is the level of Lexical Token uniqueness (global across a system, vs. local per document) settled by the "global" decision above, or does it require finer-grained scoping rules not yet examined?
-2. How does token composition behave when compound tokens overlap or nest in ways not yet tested against real multi-word phrases?
 
 ### Addressability
 A second, related question surfaced from the same discovery thread: reference edges require *some* identifiable node on each end — but what, exactly, is allowed to be a node? Can a single word inside a long paragraph be one? A rectangular region of an image? A time range inside a video?
@@ -141,11 +130,6 @@ This was deliberately phrased as **Addressable Entity**, not "Thing," because it
 
 **Automatic discovery vs. explicit assertion are distinct and must not be conflated.** A system inferring "this paragraph likely mentions a person" (automated semantic discovery, with confidence, possibly wrong, possibly using a more precise boundary — a dotted outline around a face rather than a bounding box) is architecturally different from a human explicitly asserting "this exact span refers to this exact concept." Both are legitimate, and a model should be able to hold both simultaneously about the same content without one overwriting the other — but they are not the same kind of fact and should not be represented identically.
 
-#### Discussion
-
-##### Unresolved questions
-1. Does the Addressable Entity principle's circularity admit a genuinely a priori (rather than after-the-fact) test, and if so, what is it?
-
 ### Composition
 Content is rarely atomic. A product listing contains a title, price, image, and an action; an invoice contains line items; a paragraph may itself be composed of sentences carrying independent semantic weight. The relation "this Thing contains/consists-of these Things" is real, necessary, and unavoidable — the question is how it should be modeled.
 
@@ -159,11 +143,6 @@ Content is rarely atomic. A product listing contains a title, price, image, and 
 Both are legitimate uses of a general "contains" relation, but **they are not the same graph and must not be collapsed into one.** The observed failure mode (a single `<table>` element simultaneously carrying structural nesting, domain data, and display styling) is precisely what results from collapsing them.
 
 **Implementation note:** The concrete mechanics of expressing composition — how a capsule declares its parts, how instances are constructed, how consistency is enforced — belong to the host language's type/capability system (Khayyam), not to this document.
-
-#### Discussion
-
-##### Unresolved questions
-1. Is Composition's `contains` edge the same relation-primitive family as [Reference](#reference-as-a-relation-not-a-property) — i.e., is composition simply a typed edge, no different in kind from `refers-to`, `mentions`, or `refers-to-type` — or does containment's implication of ownership/lifecycle require its own distinct primitive? This has not been tested against enough real cases to decide.
 
 ### Layout / Spatial and Sequential Arrangement
 Once multiple Things are composed together, Composition alone does not answer a further, distinct question: in what **arrangement** do the parts relate to one another, for a given consumer? Side-by-side or stacked? In what order does a screen reader visit them? What happens when available space changes — narrow phone, wide monitor, or no visual space at all in a voice-only context?
@@ -182,11 +161,6 @@ What can be stated today without over-committing to a specific solution:
 
 **Implementation note:** Any concrete arrangement vocabulary is expected to live in renderer/library implementations, potentially beginning in memar-khayyam or consumer projects such as `organization`, and may migrate into shared architecture only once real usage justifies a stable abstraction — not before.
 
-#### Discussion
-
-##### Unresolved questions
-1. Does the project need a minimal, rendering-agnostic arrangement primitive (ordering, grouping, priority) at the Composition level, leaving concrete algorithms (Flexbox-like, Grid-like, voice-sequence-like) entirely to renderers? Or is even that minimal abstraction premature until more real cases are studied? Deferred to a dedicated document once sufficient concrete cases exist to test candidate abstractions against.
-
 ### Theme / Role-to-Rendering Mapping
 Separate from spatial arrangement is the question of how a given semantic Role is rendered in isolation — what a "primary action" looks like, sounds like, or feels like. This concern's shape is more settled than Layout's, though still not resolved in detail.
 
@@ -202,11 +176,6 @@ The relationship between [Layout](#layout--spatial-and-sequential-arrangement) a
 This project does not yet have a settled answer to where the Theme/Layout boundary should sit, or whether a third concept (analogous to a Launcher — something that can enforce structural constraints a Theme cannot override) is needed. A further, more radical possibility was raised and is recorded here explicitly rather than resolved: **should the freedom this document grants for user-authored Themes extend even further, to user-authored Page and Widget composition itself** — i.e., should end users (not just Design Language authors) be able to compose their own arrangements of Widgets into Pages, constrained only by what the underlying Semantic Graph exposes, the way a Launcher lets a user rearrange (but not redefine) home-screen content? This is not decided. It is recorded here because it directly affects how much authority a future Theme/Layout document should claim, and premature closure on this question would risk designing Layout/Theme too narrowly.
 
 **Implementation note:** Role naming conventions, mapping registries, and conflict resolution are library/renderer concerns, not defined here.
-
-#### Discussion
-
-##### Unresolved questions
-1. What is the correct relationship between Theme, Layout, and a potential third "structural enforcement" concept (Launcher-like)? Does user-facing composition freedom extend only to styling, only to arrangement, or as far as Widget/Page composition itself? Deferred, along with the [Layout](#layout--spatial-and-sequential-arrangement) questions, to a dedicated future document — this document only records that the question exists and should not be assumed pre-answered by ecosystem convention.
 
 ### Event / Reactive Propagation
 Multiple independent parts of a composed structure frequently need to react when one part changes — a running total recalculating when a line item changes, a footer updating when a list changes, a sidebar refreshing when a related record updates elsewhere. Manually keeping such derived values synchronized at every call site was identified as a concrete, recurring source of bugs in reviewed legacy code (the same invoice example referenced in [Composition](#composition)).
@@ -238,11 +207,6 @@ A concrete legacy failure examined during discovery: an `invoicePage` implemente
 
 **Page as a specialized Widget, not a separate primitive.** Building on the recursive-addressability conclusion in [Addressability](#addressability): if a Widget nested deep inside a Page can, like any addressable fragment of unstructured content, legitimately need an independent address (deep-linking to a specific dialog; a comment targeting one specific sub-component), then the meaningful difference between "Page" and "Widget" is not a difference in *kind* but a difference in **degree of addressability** — a Page is simply a Widget with the additional property of being addressable at the top level (via something resembling a URL). This suggests a simplification: rather than two separate primitives (`Page`, `Widget`), a single primitive (`Widget`, composable and optionally, recursively addressable) may suffice.
 
-#### Discussion
-
-##### Unresolved questions
-1. Current URL structure is flat/hierarchical in a way that does not naturally accommodate arbitrarily deep, recursive addressability into a Composition graph (e.g., addressing one specific button inside one specific row inside one specific table inside one page). This is the same open question first raised about text fragments (`#chapter-5` — new node, part of an existing node, or an internal locator?) recurring at the Composition/Widget level. Its recurrence across two otherwise-separated domains (unstructured content and structured Composition) is itself evidence that Addressability is a shared, general primitive rather than two coincidentally similar concepts — but the concrete addressing mechanism for deep Composition trees is not resolved here.
-
 ### Authoring Syntax vs. Semantic Graph
 A cross-cutting concern surfaced repeatedly across the concern topics above: **the syntax an author physically types must not be conflated with the Semantic Graph the model actually operates on.** A recurring architectural shape emerged, but it must be described carefully as two distinct relationships, not one:
 
@@ -272,21 +236,11 @@ These two relationships are not symmetric. **Authoring compiles to the Graph** �
 
 Two decade-old legacy examples examined during discovery (`${hamburgerMenuWidget.ConnectedCallback()}` embedded directly in an HTML template; an invoice table row template binding fields such as `${pr.Quiddity.Title}` and `${pr.PayablePrice}` directly into table cells) were read, in retrospect, not as isolated hacks but as symptoms of the author already reaching, a decade prior and without the vocabulary to name it, toward exactly this Composition-as-typed-graph model — treating a Widget as a composable function call rather than a Custom Element, and treating a table row as a typed Composition of `Product Title / Original Price / Payable Price / Quantity / Actions` rather than as an HTML `<table>` structure.
 
-#### Discussion
-
-##### Unresolved questions
-1. Whether the Authoring Model must itself be an entirely new syntax, or whether it can be realized as a disciplined subset of HTML/Markdown compiled through an intermediate tool that strips out scattered metadata (`title`, `property`, `content` attributes and similar) in favor of short `refers-to-type` edges resolved from a Type Definition. Both remain live candidates; neither has been chosen.
-
 ### "Khayyam-manner" Languages, Not Khayyam-Only
 The architectural preference throughout this document for a strongly-typed capsule language should not be read as a hard dependency on Khayyam specifically — the intent is a **class of languages sharing certain properties**, of which Khayyam is the first and most disciplined instance. Dynamic-typed languages can, in principle, approximate this class, though with more friction; but the two properties that matter cannot be abandoned without losing the benefits this document relies on throughout:
 
 - **No unwrapped primitive types** flowing through the system without a meaningful, named Type wrapping them (the direct lesson behind Khayyam's own elimination of bare primitives).
 - **Absolute encapsulation** — no accidental exposure of internal structure that would let a caller bypass a Type's own invariants.
-
-#### Discussion
-
-##### Unresolved questions
-1. This document states these two properties as the informal criteria for "Khayyam-manner," but does not yet provide a fully testable definition — a concrete pass/fail test any candidate language or subset could be checked against. Without such a test, "Khayyam-manner" risks becoming a subjective label any language could claim. Establishing this test is left for future work, potentially as its own dedicated document once more implementation experience accumulates.
 
 ### Structural Notation Within an Authoring Syntax Itself
 A question is recorded here precisely because it is unresolved and directly tests the principles established above against a concrete, everyday case: **is the structural notation of an authoring format itself a form of embedded semantic tagging?**
@@ -328,52 +282,3 @@ This matters as direct evidence for Position B, not merely a hypothetical concer
 This also reframes a claim commonly made about Markdown's own design goal — that it was created specifically to remain meaningful even without rendering, as plain text. That goal, examined against this evidence, is itself GUI-adjacent rather than GUI-neutral: "readable as plain text" implicitly assumes a *sighted* reader scanning a monospaced grid, for whom indentation and alignment are legible structural cues. It does not extend to a non-visual consumer (a screen reader reading character-by-character, a Braille display without spatial layout, or a language model without privileged access to a rendered grid) for whom the same whitespace carries no reliable structural signal at all. "Meaningful unrendered" and "meaningful without any visual/spatial parsing whatsoever" are not the same claim, and Markdown — like the diagrams in this very document — only satisfies the first.
 
 This is recorded as evidence, not as a final resolution of the broader question above — the appropriate replacement for tree/graph notation in a fully non-visual-neutral Authoring Model is left open, along with the rest of this topic.
-
-#### Discussion
-
-##### Unresolved questions
-1. Where is the boundary between necessary structural delimitation of a content stream (which some minimal notation may be unavoidable to express) and embedded semantic tagging (which this document's own logic says should be an external edge)? This question is deferred, but is flagged as high-priority: unlike several other open questions in this document, it does not require new Composition/Layout infrastructure to investigate — it can be tested directly against the existing YAML-front-matter-plus-inline-Markdown convention this very document is written in.
-
----
-
-## Results
-*This section is intentionally left empty. It is reserved for retrospective reporting once real implementation experience (in memar-khayyam and/or `organization`) is available to evaluate against the concepts defined above. Its emptiness reflects the document's current status (Draft, pre-implementation), not an oversight.*
-
----
-
-## Discussion
-
-### Drawbacks
-- **Analytical cost.** Correctly separating Semantic, Composition, Layout, Theme, and Event — rather than reaching for a familiar mixed-syntax shortcut — requires deliberate, sustained analytical effort per concern. Teams without the discovery process behind this document may find the separations arbitrary or over-engineered until they encounter the specific failure modes (dual-source metadata, singleton widgets, scattered aggregate math) that motivated each one.
-- **No implementation yet exists to validate these concepts against real, large-scale use.** Every concept above is discovery-stage; none has been stress-tested against a production system built specifically to this model.
-- **Authoring tooling does not yet exist.** No editor support, validation, or auto-completion currently exists for any Authoring Model described in [Authoring Syntax vs. Semantic Graph](#authoring-syntax-vs-semantic-graph) — such tooling must be built, not assumed.
-- **Risk of scope creep is structurally real, not hypothetical.** This document's own scope expanded substantially over the course of discovery (from a narrow CSS-avoidance idea, to a "Semantic Interface Architecture," to the full `content.md` covering Composition/Layout/Theme/Event). Each concern's "Implementation note" boundary exists specifically to contain this tendency going forward, but the boundary requires active maintenance — future contributors must resist re-absorbing implementation mechanics into this document once they exist elsewhere.
-- **This document's own authoring format has not yet been checked against its own principles.** [Structural Notation Within an Authoring Syntax Itself](#structural-notation-within-an-authoring-syntax-itself) identifies that the document's own Markdown+front-matter convention may itself violate the inline-vs-external distinction this document argues for elsewhere — a self-consistency gap that is acknowledged, not fixed, here.
-
-### Rationale and alternatives
-**Why not extend RDFa/Microdata in place, as originally attempted a decade ago?** Because embedding structured metadata as attributes inside content tags reproduces, by construction, the exact dual-source/scattered-metadata problem this document's [Type Reference](#type-reference--where-semantic-meets-a-type-system) and [Authoring Syntax vs. Semantic Graph](#authoring-syntax-vs-semantic-graph) topics were built to eliminate — regardless of how syntactically convenient any single attribute looks in isolation.
-
-**Why not adopt JSON-LD (a single separate metadata block) as the standard target format?** Because a separate block is still a second, independently-maintained source of truth alongside the content itself, and the industry's own migration toward JSON-LD was driven by tooling convenience rather than resolving that duality — it merely relocated where the duplication lives. The Compiler-mediated model in [Authoring Syntax vs. Semantic Graph](#authoring-syntax-vs-semantic-graph) treats *any* such target (inline attributes, a separate JSON-LD block, or something else) purely as a generated output, never a hand-maintained source.
-
-**Why not adopt schema.org (or any other external vocabulary) as this project's default Type vocabulary?** Because doing so would import that vocabulary's own modeling choices — which may not agree with this project's own modeling discipline (see the `Password`-as-connection-token example in [Type Reference](#type-reference--where-semantic-meets-a-type-system)) — directly into the architecture's foundation, and because external vocabularies are demonstrably subject to unilateral change or deprecation on a timeline outside this project's control (see the 2026 schema.org/FAQ-richresult case study in the same topic). Only the reference *mechanism* is standardized here; vocabularies remain external and optional.
-
-**Why not simply extend HTML's element/attribute vocabulary (the original approach taken in early research)?** Because HTML's ~30 years of gradual, historically-motivated accretion (documented extensively in [researchs/](../researchs/)) means many of its elements are compositions of more fundamental concepts rather than fundamental concepts themselves (e.g., `h1`–`h6` as `Text` + an `Importance` level, rather than six independent concepts) — extending such a vocabulary risks perpetuating its historical accidents rather than correcting them.
-
-### Prior art
-A detailed survey of prior art (HTML, ARIA, RDF, RDFa, JSON-LD, Topic Maps, Semantic Web stack, Hypermedia/REST, Microformats, Microdata, OWL, SKOS, XForms, UML, HCI pattern languages, Web Components, Design Tokens, VUI grammars, Accessibility Tree) exists in [semantic_primitive_discovery-related_work-z.ai.md](../researchs/semantic_primitive_discovery-related_work-z.ai.md). That survey is AI-generated exploratory research and **carries no architectural authority** — see [researchs/README.md](../researchs/README.md) for the project's general policy on research-directory content, and note specifically that one entry in that survey (CKML) could not be independently verified and should be treated as unconfirmed pending primary-source review, not as an established finding.
-
-Two pieces of prior art deserve brief mention here because they most directly informed specific decisions above:
-
-- **XForms'** model/view separation via `<xforms:bind>` is the closest existing precedent to the Authoring Model / Semantic Graph split in [Authoring Syntax vs. Semantic Graph](#authoring-syntax-vs-semantic-graph), though XForms never achieved broad adoption and offers no general-purpose (non-form) interface vocabulary.
-- **Hypermedia/REST's** link-relation model (`rel="edit"`, `rel="cancel"`) is the closest existing precedent for expressing behavioral/action intent through typed relations rather than dedicated element types — directly relevant to the Reference-as-relation position in [Reference as a Relation, Not a Property](#reference-as-a-relation-not-a-property).
-
-### Unresolved questions
-1. What is the relationship between this document's model and content that is neither purely unstructured text nor a fully-typed Khayyam capsule — e.g., media (image, audio, video) where regions/timestamps need addressing but no Type system currently governs their internal structure? This question is cross-cutting rather than belonging to any single topic above.
-
-### Future possibilities
-- **A concrete Authoring Syntax prototype**, compiling to Khayyam graph calls, tested against real legacy templates (the invoice examples referenced throughout this document) to validate the concept/implementation split claimed across the concern topics above.
-- **A dedicated Layout/Theme document**, once enough real Composition examples exist across at least GUI and one non-visual modality (VUI or Braille) to test candidate rendering-agnostic arrangement vocabularies and the Theme/Layout/Launcher boundary raised in [Where Theme's Authority Ends](#where-themes-authority-ends).
-- **A testable "Khayyam-manner" criterion**, likely as its own short document, derived from concrete cases of languages that do and do not qualify.
-- **A self-audit of this project's own Markdown+front-matter documentation convention** against the Position A/B question in [Structural Notation Within an Authoring Syntax Itself](#structural-notation-within-an-authoring-syntax-itself), since this is directly testable against material already in daily use, unlike most other open questions in this document.
-- **Cross-modal rendering experiments** — taking a single Semantic Graph instance through both a GUI renderer and a VUI renderer, to empirically test whether the Semantic/Interaction/Rendering separation claimed throughout actually holds under real multi-modal pressure, rather than remaining a theoretical claim.
-- **Independent verification of the AI-generated prior-art survey**, particularly the unresolved CKML entry, before any of its conclusions are relied upon elsewhere.

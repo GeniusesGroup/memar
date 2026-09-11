@@ -75,7 +75,3 @@ When the body references a companion file in `references/`, name it for what it 
 
 ### Writing style
 Imperative and concise. Assume the agent reading this is already capable — write only what it doesn't already know. Every sentence should earn its token cost; prefer a short example over a paragraph of explanation wherever both would work.
-
-## Results
-Insufficient time has passed since this specification was adopted to report real, observed outcomes from its use. This section will be filled in once there is such experience to draw on.
-

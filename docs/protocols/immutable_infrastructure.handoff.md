@@ -13,3 +13,6 @@ Whether immutable infrastructure removes the need for Profile-Guided Optimizatio
 ## Anticipated Work
 
 - Dedicated session to define immutable infrastructure's relationship to deployment, the Khayyam compiler, and Chapar/sRPC device provisioning — including the connection-continuity decision under [Open Design Threads](./immutable_infrastructure.md#open-design-threads).
+- Deferred analyses for the dedicated session: full scope definition, Motivation depth, drawback accounting, rejected-alternative reasoning, and prior-art research (candidate prior-art directions recorded in the paired [changelog](./immutable_infrastructure.changelog.md)).
+  - State: moved 2026-09-10 from the base document's removed `Results` section (three-section skeleton migration).
+  - Next: carry these analyses into the dedicated session anticipated above.

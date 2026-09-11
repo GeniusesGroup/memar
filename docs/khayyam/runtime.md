@@ -35,6 +35,3 @@ Library-driven synchronization means there is no single, universally-optimized p
 You can write code to change(add or remove) modules binary code in runtime. It is like `WASM` idea. It can be very dangerous feature and MUST tag as `unsafe`. It is useful to add or remove modules in microservice way but as describe by [this paper from google expert software developers](https://dl.acm.org/doi/pdf/10.1145/3593856.3595909)
 
 > **Relation to Structure Is Fixed by Definition:** The base principle's rule — structure is established at definition time and enters execution only through the artifact — is the default this reference architecture builds toward: the `unsafe` runtime patching described here is an *explicit, opt-in escape hatch* from it — not the default path — comparable to WASM module replacement, and it does not contradict the principle; it is the controlled violation that must be tagged, audited, and never used for normal capability evolution. The deployment-side working-out of the principle — immutable infrastructure — is owned by the framework's protocol documents.
-
-## Results
-No observed results are recorded yet. This section will be updated when the Memar Framework's execution model is exercised in real deployments and yields evidence that can be distinguished from its intended rationale.

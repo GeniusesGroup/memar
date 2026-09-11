@@ -52,7 +52,7 @@ This points to a distinction that is easy to lose: a File is not Knowledge, it i
 
 ### Directory as Tree: A Flawed Classification Model
 The Directory is a strict classification system disguised as a storage mechanism. It forces a hierarchical, single-parent model (`belongs_to exactly_one_parent`) onto reality.
-In graph theory, a directory tree is a highly restricted subset of a graph. Real-world concepts are multidimensional. A photograph represents Person, Event, Place, and Time simultaneously. A directory tree can only model one classification natively. The ecosystem has continually invented mechanisms to bypass this (Symlinks, Tags, Labels), which is an implicit admission that the tree model is structurally inadequate for multiple classification.
+In graph theory, a directory tree is a highly restricted subset of a graph. Real-world concepts are multidimensional. A photograph represents Person, Event, Place, and Time simultaneously. A directory tree can only model one classification natively. The ecosystem has continually invented mechanisms to bypass this (Symlinks, Tags, Labels), which is an implicit admission that the tree model is structurally inadequate for multiple classification. The classification critique has empirical support: semantic filesystem research demonstrated that users of attribute-based systems found information 5-10x faster than hierarchical systems for real-world queries (Gifford et al., 1991).
 
 ### Path-Based Discovery vs. Semantic Discovery
 The filesystem inherently assumes that discovery is based on location:
@@ -63,7 +63,7 @@ This requires the human to maintain a mental map of the tree structure. However,
 ```
 Meaning   ->  Discovery ("I know what it is about")
 ```
-None of these modern discovery mechanisms rely on paths. This does not mean path-based discovery is invalid in every case—a hierarchy like `Country -> City -> Street -> House` remains a legitimate and useful way to traverse certain relationships. The flaw is not that paths exist, but that the filesystem elevates *one* projection of relationships to the status of the *only* addressable one. A knowledge model should be able to expose path-like views (for humans who think that way) as one of several projections over a richer relationship graph, rather than forcing all discovery through location.
+None of these modern discovery mechanisms rely on paths. This does not mean path-based discovery is invalid in every case—a hierarchy like `Country -> City -> Street -> House` remains a legitimate and useful way to traverse certain relationships. The flaw is not that paths exist, but that the filesystem elevates *one* projection of relationships to the status of the *only* addressable one. A knowledge model should be able to expose path-like views (for humans who think that way) as one of several projections over a richer relationship graph, rather than forcing all discovery through location. Wikidata and the Google Knowledge Graph validate in practice that relationship-first models scale to millions of entities in ways tree-based models cannot.
 
 ### Git as a Filesystem Repair Mechanism
 Tools like Git are often lauded as independent innovations. Architecturally, they are better understood as a layer of patches (repair mechanisms) over the flaws of the File/Directory paradigm:
@@ -81,7 +81,7 @@ For compiling code, it is necessary. For organizational knowledge, the answer is
 
 ### Unikernel Criticism of Mandatory Filesystem Layers
 The Unikernel architecture (e.g., MirageOS) demonstrates that a general-purpose filesystem is not a universal requirement. By compiling application files directly into a single OS image, Unikernels strip away the traditional Virtual File System (VFS) layer. 
-It is important not to overstate this: this does not prove the filesystem is entirely unnecessary in all domains. It simply proves that the filesystem is *not universally required*. It transitions from an "inherent system necessity" to an "optional runtime capability," challenging the default assumption that all higher-level systems must rely on it.
+It is important not to overstate this: this does not prove the filesystem is entirely unnecessary in all domains. It simply proves that the filesystem is *not universally required*. It transitions from an "inherent system necessity" to an "optional runtime capability," challenging the default assumption that all higher-level systems must rely on it. This optionality is borne out in practice: production adoption (e.g., Docker-based deployments, cloud-native applications) demonstrates that filesystem-less operation is viable for specific domains.
 
 ### Distinction Between Storage Engine and Content Model
 Critiquing the filesystem does not mean abandoning storage. A base storage engine (typically Key/Value stores today) is still required for persistence. However, there is a strict architectural distinction between:
@@ -94,13 +94,3 @@ The failure of the traditional filesystem is that it conflated these two concept
 A refinement emerging from extended discussion: File and Directory may have always been primarily **user interface projections** — ways of interacting with stored information — rather than domain models reflecting the intrinsic structure of knowledge itself.
 
 Consider: even systems that don't use files internally (chat applications, AI assistants, graph databases) often present file-like interfaces to users because people expect them. The filesystem metaphor persists not because it's conceptually correct but because it's familiar. This is consistent with the UI Projection ≠ Domain Model principle of the companion [Knowledge](../knowledge.md) specification: the file explorer GUI is a valid projection, but treating that projection as the source of truth about knowledge structure is the error.
-
-## Results
-Insufficient time has passed to report real, observed outcomes from implementing systems that entirely discard filesystem primitives within Geniuses Group projects. However, external evidence supports aspects of this critique:
-
-- **Semantic filesystem research (Gifford et al., 1991)** demonstrated that users of attribute-based systems found information 5-10x faster than hierarchical systems for real-world queries — empirical validation of the classification critique.
-- **Unikernel adoption in production** (e.g., Docker-based deployments, cloud-native applications) demonstrates that filesystem-less operation is viable for specific domains.
-- **Graph-based knowledge graphs** (Wikidata, Google Knowledge Graph) validate that relationship-first models scale to millions of entities in ways tree-based models cannot.
-
-This section will be populated with Geniuses Group-specific outcomes once architectural alternatives based on this critique are applied in practice within the Organization platform or related projects.
-

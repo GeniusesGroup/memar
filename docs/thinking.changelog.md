@@ -157,3 +157,23 @@ Dissolved every `#### Discussion` wrapper (the definition topic, Modes of Thinki
 - Taxonomies of thinking skills and dispositions are established in educational psychology and cognitive science — Bloom's taxonomy of educational objectives, dual-process accounts of cognition, and the critical-thinking and metacognition literatures among them. Those taxonomies classify for instructional assessment; this document names modes for the narrower purpose of grounding this project's own discourse norms, and adopts no taxonomic scheme wholesale. (Migrated from the Modes topic's retired `Prior art`)
 - 4E cognition (embodied, embedded, enacted, extended) emerged across philosophy of mind and cognitive science from the 1990s onward, against classical computationalist and brain-bound pictures of cognition. Related antecedents include distributed cognition (Hutchins) and activity theory. (Migrated from the 4E-grounding topic's retired `Prior art`)
 - Critical-thinking literature (informal logic, argumentation theory) supplies the evaluation criteria referenced by the first norm. Systems-thinking literature (systems theory, cybernetics) underlies both the systems-thinking mode and Memar's [System](./system.md) document. The 4E cognition framing is prior art for the grounding topic and is discussed there. Dialogical models of reasoning (e.g. argumentation as a two-party activity rather than a monologue) anticipate this document's conversation model. (Migrated from the document-level retired `Prior art`)
+
+---
+
+### Added the confirm-before-large-scope-changes norm
+- Time: 2026-09-10T11:32:04Z
+- Type: Added
+- Propagates to:
+  - `.agents/skills/memar/SKILL.md`: Done — an intake rule added to Working rules, mirroring the existing Ask-rather-than-assume intake rule.
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — argued, decided
+  - [Super Z](../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — drafted, rewrote
+
+#### What changed
+- New discourse norm: confirm before large-scope changes — when a proposed change reaches beyond the instance under discussion (a definition other documents consume, a structure other sections depend on, an edit spanning several documents), propose before applying: state the proposed content and the files it will touch, so the counterpart can shape the change before it exists rather than review it after the fact.
+- The norm was placed beside *Ask rather than assume*, its sibling intake norm — both prevent material that was never agreed from propagating into decisions; that one governs the scale of assumptions, this one the scale of changes.
+
+#### Deliberation
+- The norm was distilled from a working session's observed failure: an agent had recorded that "ecosystem" carried no Memar definition, and in a later session began a document-set-wide treatment of the word without presenting the plan first — the ambiguity rule was loaded but not applied at change scale (Omid Hekayati — argued).
+- Recording the norm in this document and operationalizing it at intake in the `memar` skill, following the existing pattern, was directed (Omid Hekayati — decided).
+- The owner's note that this document is not finalized was recorded: the norm's placement beside its sibling is current state, and regrouping the norms by the thinking mode that chiefly exercises each remains open for a future revision (Omid Hekayati).

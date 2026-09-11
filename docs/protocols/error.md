@@ -193,7 +193,7 @@ tp RecordTransaction mt (self TransactionService) (req TransactionRequest) (err 
 }
 ```
 
-The caller of `RecordTransaction` — typically a GUI or an upstream business service — only ever sees `ErrTransactionTemporarilyUnavailable`. It never sees that the underlying cause was a storage connectivity issue, a serialization failure, or a timeout; those distinctions are irrelevant to what the GUI needs to do, which is usually "tell the user and perhaps allow retry." The full diagnostic detail, meanwhile, is fully preserved in the log record, correlated with `TransactionID`, ready for an operator to investigate.
+The caller of `RecordTransaction` — typically a GUI or an upstream business service — only ever sees `ErrTransactionTemporarilyUnavailable`. It never sees that the underlying cause was a storage connectivity issue, a serialization failure, or a timeout; those distinctions are irrelevant to what the GUI needs to do, which is usually "tell the user and perhaps allow retry." The full diagnostic detail, meanwhile, is fully preserved in the log record, correlated with `TransactionID`, ready for an operator to investigate. The boundary-translation discipline has been validated against the financial-transaction worked example in this section; it has not yet been exercised at scale across a real production codebase.
 
 ##### When translation is — and is not — required
 
@@ -255,6 +255,3 @@ This rule is the load-bearing one that everything else in this document depends 
 - Identity-by-`DataTypeID` would degenerate to "all errors share one `DataTypeID`", making the equality discussion meaningless.
 
 A reader who finds the "every error is its own type" claim surprising, or who wants the full argument for it, should read [Type](../type.md) directly; this document does not re-argue it.
-
-## Results
-Insufficient time has passed since this consolidated document was adopted to report real, observed outcomes from its use across multiple concrete errors. The boundary-translation discipline, in particular, has been validated against the financial-transaction worked example used in [Boundary translation](#boundary-translation) but has not yet been exercised at scale across a real production codebase. This section will be filled in once there is such experience to draw on.

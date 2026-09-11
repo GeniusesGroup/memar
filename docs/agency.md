@@ -2177,6 +2177,3 @@ The objective is not to make AI fit an old vocabulary merely for historical cons
 The objective is to avoid throwing away valid knowledge simply because a new technology has made an old concept fashionable again.
 
 **Agency should therefore be modeled as a general property and structure of acting systems, with AI treated as one of its manifestations rather than its definition.**
-
-## Results
-Insufficient time has passed since this specification was adopted to report real, observed outcomes from its use. This section will be filled in once there is such experience to draw on — in particular, whether the working principles in [Working Principles](#working-principles) hold up as later documents (Role, Permission, Contract) are written against this document, and whether the `agent_for` direction convention (still open, recorded in the [Agency Handoff](./agency.handoff.md)) causes confusion in practice once it is fixed.

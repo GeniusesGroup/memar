@@ -73,6 +73,3 @@ Compile-time evaluation is effectively a second interpreter the implementation m
 You can write code to change(add or remove) modules binary code in runtime. It is like `WASM` idea. It can be very dangerous feature and MUST tag as `unsafe`. It is useful to add or remove modules in microservice way but as describe by [this paper from google expert software developers](https://dl.acm.org/doi/pdf/10.1145/3593856.3595909)
 
 > **Relation to Structure Is Fixed by Definition (same as in runtime.md):** Default = the base principle's definition-time rule; this `unsafe` patching is an opt-in escape hatch, not the normal path. The two documents share the same resolution and do not contradict.
-
-## Results
-No observed results are recorded yet. This section will be updated when implementing against these directives yields evidence that can be distinguished from their intended rationale.

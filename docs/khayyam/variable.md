@@ -190,6 +190,3 @@ The constant model in Khayyam is fully specified in [Encapsulation in Khayyam](.
 The storage model and resource lifecycle for variable-backed instances are implementation concerns, not variable-syntax concerns. A variable does not need to know whether its instance lives in an Arena, a Pool, or on the stack — that is a governance decision, not a syntax concern.
 
 This topic — including memory allocation, deallocation, garbage collection alternatives, and resource management ADTs — is deferred to a future document on resource management.
-
-## Results
-No observed results are recorded yet. This section will be updated when use of the variable model yields evidence that can be distinguished from its intended rationale.

@@ -129,6 +129,3 @@ Error handling is part of the delivered interface, not consumer improvisation. T
 - **[Modularity](../modularity.md)** — the SDK is part of the module's realization of its protocol ([Part of the module, not beside it](#part-of-the-module-not-beside-it)); the local/network realization split behind one call surface is [Modularity Is Not Deployment](../modularity.md#modularity-is-not-deployment) at the call level.
 - **[Process](../process.md)** — an SDK call invokes a process opaquely ([Invoking a process](#invoking-a-process)); the SDK is the mechanism-independent process boundary made real for consumers.
 - **[Agency](../agency.md)** — a network call is Principal–Agent delegation with the serving side as Execution Agent ([The call as delegation](#the-call-as-delegation)); integrity of the agreed process is the delegation's purpose.
-
-## Results
-Insufficient time has passed since these positions were adopted to report real, observed outcomes from implementing against them. This section will be filled in once there is such experience to draw on.

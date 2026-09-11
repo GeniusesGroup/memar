@@ -105,6 +105,3 @@ Two locations for version information were considered:
 
 1. **Embed it in the `in` address.** Rejected: it imports a distribution and versioning concern into language syntax and makes source code depend on external resolution conventions.
 2. **Resolve it through a companion manifest.** Preferred: it keeps the grammar stable while allowing framework tooling to evolve its source-location, versioning, and integrity policies independently.
-
-## Results
-No observed results are recorded yet. This section will be updated when use of the language and tooling boundary yields evidence that can be distinguished from its intended rationale.

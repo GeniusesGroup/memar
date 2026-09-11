@@ -41,6 +41,3 @@ Consistent with [Process → Requests, Cancellation, and Timeout](../process.md#
 A connection's endpoints can fail independently, so the protocol must define how an endpoint detects and resolves half-open states — the peer gone without a closing exchange — and what happens to in-flight work when it does. This document specifies the *rule* (detection and resolution are the owning component's responsibility, driven by its own budgets, and their outcome is exposed as connection state); the frame-level mechanics (which frames carry the probes and closes) belong to each protocol's own document — [Chapar](./chapar.md) for its links, and the userspace transport realization tracked in [Networking](./networking.md)'s position topic.
 
 The ownership-with-exposure direction is validated by QUIC's userspace model (connection state in the library, visible and configurable) — existence proof that state ownership with exposure is implementable, not merely aspirational — and the "stateless HTTP" contradiction is visible in the HTTP cookie and session specifications themselves.
-
-## Results
-Insufficient time has passed since this document was drafted to report real, observed outcomes. It is a Draft whose positions await their first implementation in the userspace transport work.

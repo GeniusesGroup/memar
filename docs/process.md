@@ -324,6 +324,3 @@ Process is closely related to many foundational concepts, but those concepts ret
 - **Implementation** realizes a process through concrete mechanisms and technologies.
 
 The detailed definitions of these concepts belong to their respective documents. Process should remain the point at which their behavioral relationships can be understood.
-
-## Results
-Insufficient time has passed since this document was adopted to report real, observed outcomes from its use. This section will be filled in once there is such experience to draw on.

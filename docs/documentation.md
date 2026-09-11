@@ -6,10 +6,10 @@ ID: 495820
 ---
 
 # Documentation
-This document defines what a Facet is, names the five facets currently in use, and explains how the facet system extends. It does not itself specify the structure of any facet — that is each facet's own document's job.
+This document defines what a Facet is, names the five facets currently in use, explains how the facet system extends, and carries the cross-cutting conventions that span facets (results routing, citations, URI). It does not itself specify the structure of any facet — that is each facet's own document's job.
 
 ## Abstract
-Documentation in this project is organized into **Facets** — distinct kinds of documentation content, each with its own governing structure and its own specification document. A facet is defined by the reader's relationship to the content: what the reader is expected to do with it. This project currently defines five facets — **Explanation** (content meant to be studied to understand something), **Practice** (content meant to be followed to accomplish something), **Changelog** (content meant to be consulted to audit how an artifact changed over time), **Handoff** (content meant to be read to resume a paused discussion across a session boundary), and **Research** (content meant to be examined to evaluate a deliberate inquiry). See [Facets](#facets) for the definitions and [Extensibility](#extensibility) for how new facets may be added.
+Documentation in this project is organized into **Facets** — distinct kinds of documentation content, each with its own governing structure and its own specification document. A facet is defined by the reader's relationship to the content: what the reader is expected to do with it. This project currently defines five facets — **Explanation** (content meant to be studied to understand something), **Practice** (content meant to be followed to accomplish something), **Changelog** (content meant to be consulted to audit how an artifact changed over time), **Handoff** (content meant to be read to resume a paused discussion across a session boundary), and **Research** (content meant to be examined to evaluate a deliberate inquiry). See [Facets](#facets) for the definitions and [Extensibility](#extensibility) for how new facets may be added. Cross-cutting conventions that apply regardless of facet — where a result of each type is recorded, citation practice, URI form — are defined here as well.
 
 ## Introduction
 
@@ -59,7 +59,7 @@ Content meant to be *consulted* to audit history: an append-only, chronologicall
 
 **Governing specification:** [documentation-changelog.md](./documentation-changelog.md)
 
-The Changelog facet absorbs what used to live in base documents' front matter as `Citations`, `Contributors`, and `Applied to`, and what used to live in their body as `## Change Rationale`. A reader of a base artifact needs its current state, not its provenance; provenance belongs in history, and history belongs here. **Exception**: a Changelog-facet file does not itself get a companion changelog — a deliberate stop to the recursion, justified in [documentation-changelog.md → Discussion](./documentation-changelog.md#rationale-and-alternatives). (This exception applies to Changelog-facet files — the `.changelog.md` companions — not to the Changelog facet's own governing specification, which is an Explanation-facet document and does have a companion changelog: [documentation-changelog.changelog.md](./documentation-changelog.changelog.md).)
+The Changelog facet absorbs what used to live in base documents' front matter as `Citations`, `Contributors`, and `Applied to`, and what used to live in their body as `## Change Rationale`. A reader of a base artifact needs its current state, not its provenance; provenance belongs in history, and history belongs here. **Exception**: a Changelog-facet file does not itself get a companion changelog — a deliberate stop to the recursion, justified in [documentation-changelog.md → Abstract](./documentation-changelog.md#abstract). (This exception applies to Changelog-facet files — the `.changelog.md` companions — not to the Changelog facet's own governing specification, which is an Explanation-facet document and does have a companion changelog: [documentation-changelog.changelog.md](./documentation-changelog.changelog.md).)
 
 #### Handoff
 Content meant to be *read to resume a paused discussion*: a companion record (`<base>.handoff.md`) carrying a discussion's current state across a session boundary — decisions with their confidence, resolved ambiguities, open questions, assumptions, and proposed next steps — so the next session (an AI system, a returning human, a colleague joining mid-stream) can continue from recovered state instead of re-derivation.
@@ -124,6 +124,12 @@ A URI is a string identifier as defined by [RFC 3986](https://datatracker.ietf.o
 
 The `file:` scheme ([RFC 8089](https://datatracker.ietf.org/doc/html/rfc8089)) specifically requires an absolute path, which breaks portability across different clones of the same repository; a scheme-less relative reference is used for local paths instead of `file:` for that reason. This rule applies wherever a URI appears — internal hyperlinks, citation entries, contributor identity, examples, and any other reference to a local resource, in any facet.
 
-## Results
-Insufficient time has passed since this facet-based architecture was adopted to report real, observed outcomes from its use. This section will be filled in once there is such experience to draw on.
+### Results routing
+Documentation work constantly produces results, and the type of the result — not the writer's preference — determines where it is recorded. This routing is cross-cutting: its homes span several facets, while each home's structure is defined by that facet's own governing specification, not repeated here.
+
+- **Anticipated results** — what a decision is expected to achieve, stated while writing: the document's own claim, in its [Abstract](./documentation-explanation.md#abstract).
+- **Derived results** — consequences that adopting the decision forces, whether or not anyone wants them: the [Implications](./documentation-explanation.md#implications) entry of the Explanation facet's Optional Sections.
+- **Observed results** — what real use actually produced: an observation that changed the design belongs to the [Changelog](./documentation-changelog.md) entry that made the change; one that supports a specific claim is cited inline at that claim, as Evidence ([Relevance discipline](./documentation-explanation.md#relevance-discipline)); one that warrants deliberate study is a [Research](./documentation-research.md) record; one awaiting action is working state in the paired [handoff](./documentation-handoff.md).
+
+An Explanation-facet document carries no `Results` section; the boundary is defined in [documentation-explanation.md → Body sections](./documentation-explanation.md#body-sections).
 
