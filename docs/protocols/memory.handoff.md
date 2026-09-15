@@ -10,7 +10,7 @@ Open work for `protocols/memory.md`. Entries are mutable current state — revis
 
 ### Copy semantics at process/network boundaries versus in-process call boundaries
 - State: the [Error protocol](./error.md)'s boundary rules suggest the default may differ across a network boundary; the interaction is not worked out. Next in that direction: work it out jointly with the error protocol's next revision.
-- State: the adjacent, narrower question — whether an ordinary in-process argument or return value that stays inside one ownership domain is required to be passed by reference rather than copied — is also open. This document currently requires only that the copy/share choice be *stated* as a contract term, and states its default for values that *cross* ownership domains. Whether to also fix a protocol-level default for plain call-boundary passing was raised while dissolving a draft coding-style rule that asserted such a default as a MUST; it is deliberately not adopted here, since the neutrality above is this document's own position and a protocol-level MUST would have to be argued against it rather than past it. Where the claim is settled today it is settled at the realization layer: Khayyam's grammar passes arguments and returns strictly by reference and forbids implicit copying ([Khayyam → named constructs](../khayyam/khayyam.md), [Khayyam Memory Model](../khayyam/memory_model.md)) — an instance of this protocol, not its authority.
+- State: the adjacent, narrower question — whether an ordinary in-process argument or return value that stays inside one ownership domain is required to be passed by reference rather than copied — is also open. This document currently requires only that the copy/share choice be *stated* as a contract term, and states its default for values that *cross* ownership domains. Whether to also fix a protocol-level default for plain call-boundary passing was raised while dissolving a draft coding-style rule that asserted such a default as a MUST; it is deliberately not adopted here, since the neutrality above is this document's own position and a protocol-level MUST would have to be argued against it rather than past it. Where the claim is settled today it is settled at the realization layer: Khayyam's grammar passes arguments and returns strictly by reference and forbids implicit copying ([Khayyam](../khayyam/khayyam.md)) — an instance of this protocol, not its authority.
 - Next: decide in a dedicated session, together with the tier the chosen position carries (protocol default, library contract term, or tooling-suggested).
 
 ### The copy convention's interaction with pooling
@@ -25,9 +25,23 @@ Open work for `protocols/memory.md`. Entries are mutable current state — revis
 - State: the taxonomy's comparative survey (how each ecosystem positions its mechanism, and the marketing claims attached) was moved to this document's changelog under the documentation method's Discussion-pattern revision. If the survey proves needed in the body for a reader to evaluate the position, that is evidence the criterion needs a refinement; if not, it stays historical.
 - Next: revisit after the first implementation evidence lands.
 
+### What convention names and places generated teardown source?
+- State: automation of path-complete release is required to emit explicit source, but the filename, inclusion rule, and whether the artifact is temporary or checked-in are not specified. A historical Khayyam-shelf draft used `file_name.generated_by_gc1.kh` as an example name only.
+- Next: settle with the [Linter](./linter.md) and [Compiler](./compiler.md) protocols, as a convention those documents' rule-authorship work can consume.
+
+### Compile-time binary mutation of dynamically-valued constants
+- State: an idea recorded in the retired Khayyam-shelf memory-model draft — mutating the binary in place so a "dynamically-valued constant" avoids a memory call, at the same size — was explicitly undecided in that draft's source material. It is not adopted here.
+- Next: reopen only with a dedicated argument; otherwise leave dropped.
+
+### Published compatibility contract for default memory-safety analyses
+- State: a future possibility carried from the retired Khayyam-shelf draft — publish exactly which static analyses a reference linter configuration performs for memory safety (and which are organization-overridable) so the safety/flexibility trade-off is legible to newcomers without reading the full rule set.
+- Next: draft alongside the [Linter](./linter.md) authorship/notation work; not required for the protocol positions above to stand.
+
 ## Anticipated Work
 
 - The contract-term notation design (capability interface, naming convention, or Syllab-level annotation).
 - A taxonomy of buffer ownership classes for pooled implementations.
-- Once Khayyam's memory model stabilizes, a check that the contract terms and the reclamation taxonomy here can be realized in it without per-language divergence.
+- A check that the contract terms, the reclamation taxonomy, and the emitted-source automation path can be realized by more than one language's toolchain without per-language divergence of the *requirements*.
 - Alignment of the OS storage topic's vocabulary with the definition here.
+- The generated-source convention for teardown automation.
+- The published compatibility contract for default memory-safety analyses.

@@ -51,6 +51,11 @@
   - [Qwen3.8](https://huggingface.co/collections/Qwen/qwen38)
   - [Qwen3.8-Flash](https://huggingface.co/Qwen/models)
 
+## Grok
+- [Website](https://x.ai)
+- Models:
+  - Grok 4.6
+
 ---
 ---
 
@@ -67,6 +72,9 @@
 
 ## OpenCode
 - [Website](https://opencode.ai)
+
+## Cursor
+- [Website](https://cursor.com)
 
 ## Hermes
 - [Website](https://hermes-ai.net/)

@@ -20,4 +20,4 @@ Open work for `protocols/concurrency.md`. Entries are mutable current state — 
 
 - The signaling primitive's contract specification (delivery guarantees, multiple receivers, priority).
 - Substrate observability (Worker states, queue depths, pool saturation) as a framework capability.
-- Alignment checks with khayyam-runtime.md once that document matures.
+- Alignment checks with [Runtime](./runtime.md) once that protocol and a Khayyam-consuming realization of it mature.

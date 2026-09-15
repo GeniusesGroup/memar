@@ -108,7 +108,7 @@ Explicit type declarations require more keystrokes per variable than inferred ty
 ### No Assignment Operators
 Khayyam completely eliminates assignment operators (like `=`). The primary reason is syntactic atomicity: conventional `=` silently fuses several distinct operations — binding a name, mutating state, and, depending on the language, copying — into a single, overloaded token, leaving the reader to infer from context which operation is actually taking place. Khayyam's broader design principle requires every statement to perform exactly one, explicitly named operation; a single character cannot satisfy that requirement, so Khayyam routes every state change through a named capsule method instead.
 
-Variables represent logical references to type instances; passing a variable to a method provides access to the same instance. The language structurally prevents any implicit deep or shallow copying through its syntax — the storage and copying model is an implementation concern addressed by future documents on resource management.
+Variables represent logical references to type instances; passing a variable to a method provides access to the same instance. The language structurally prevents any implicit deep or shallow copying through its syntax — the storage and copying model is a protocol concern owned by [Memory](../protocols/memory.md), not by this document's grammar.
 
 This rule has far-reaching implications: it means that state changes are always mediated by capsule methods, never by direct assignment. A variable's reference never silently changes to point to a different capsule instance — any such change requires an explicit method call that makes the operation visible in the source code.
 
@@ -144,7 +144,7 @@ A variable in Khayyam does not represent a storage location or a raw memory regi
 This means:
 - **A variable's type determines its behavioral contract.** Since the type is always a named type, the variable's capabilities are fully discoverable from that type's public interface — no reflection, no runtime type queries, no `instanceof` needed.
 
-This design is a direct consequence of the "Separation of Syntax and Governance" philosophy: the variable syntax (`vr`) handles identity and reference, while the type definition handles behavior. The storage and lifecycle model is a separate concern addressed by future documents on resource management.
+This design is a direct consequence of the "Separation of Syntax and Governance" philosophy: the variable syntax (`vr`) handles identity and reference, while the type definition handles behavior. The storage and lifecycle model is owned by [Memory](../protocols/memory.md); this document does not restate it.
 
 > **Scope clarification — code-level `vr` vs. capsule field.** A common misreading treats `vr x W32` inside a method body and `Timeout Duration` inside `tp AppConfig cp { … }` as the same “variable” concern. They are governed at different levels. A code-level `vr` is bound once at declaration to its declared type; “rebinding the name to a different instance” is not a `vr`-level operation — state change is performed by calling a method on the bound instance. Questions of whether a name can be rebound, and whether a field can be rebound to a different instance, belong to the capsule level (field rebinding *is* mutation, gated by [Sovereign Encapsulation](./encapsulation.md#sovereign-encapsulation)), not to `vr` as such. This document clarifies the distinction rather than adding a general rebinding rule at the `vr` level.
 
@@ -186,7 +186,5 @@ Variable names in Khayyam should reflect their domain purpose, not their type or
 ### Constants as Capsule-Returned Values
 The constant model in Khayyam is fully specified in [Encapsulation in Khayyam](./encapsulation.md), section "Constants as Capsule-Returned Values". In summary: a constant is a variable returned by a capsule method that cannot change after first initialization — an organizational and architectural rule enforced by the capsule's own design (not exposing a mutating method), not by a dedicated compiler keyword. From the variable's perspective, a constant is declared and initialized like any other variable; the immutability guarantee is inherited from the capsule's behavioral contract.
 
-### Resource Lifecycle (Deferred)
-The storage model and resource lifecycle for variable-backed instances are implementation concerns, not variable-syntax concerns. A variable does not need to know whether its instance lives in an Arena, a Pool, or on the stack — that is a governance decision, not a syntax concern.
-
-This topic — including memory allocation, deallocation, garbage collection alternatives, and resource management ADTs — is deferred to a future document on resource management.
+### Resource Lifecycle
+The storage model and resource lifecycle for variable-backed instances are not variable-syntax concerns. A variable does not need to know whether its instance lives in an Arena, a Pool, or on the stack — that is a governance decision, not a syntax concern. Allocation, reclamation, teardown, and allocator libraries are owned by [Memory](../protocols/memory.md). How this language realizes those requirements — no raw pointers, no `nil` keyword, conventional `Deinit()`/`Free()` and `IsNull()` surfaces — is stated in [Khayyam → How Khayyam realizes Memory](./khayyam.md#how-khayyam-realizes-memory).

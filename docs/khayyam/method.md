@@ -56,6 +56,9 @@ The distinction between static behavior and instance behavior is governed by the
 
 This dispatch model ensures that the boundary between type-level and instance-level behavior is always visible in the method signature, not hidden behind a `static` keyword or a naming convention.
 
+#### Type-level arguments for `sc` and `mt`
+An argument position may be satisfied by a `vr` of the declared type or, for the subtypes `sc` and `mt`, by the type itself passed as a type-level argument. The compiler resolves which reading applies from the callee's signature; there is no ambiguity at the AST. Passing a bare type where a capsule or abstraction *value* is expected is meaningful only for `sc`/`mt`; elsewhere it is a governance smell the [Linter](../protocols/linter.md) may flag, not a syntax error. Passing an `mt` value in closure style — capturing state as an implicit capsule — is discouraged; see [Closures as Implicit Capsule Syntax](./encapsulation.md#closures-as-implicit-capsule-syntax).
+
 #### Body-less Methods (FFI and Contracts)
 A method can be defined without a body (`{}`). This is legally used in two scenarios:
 

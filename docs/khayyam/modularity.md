@@ -51,6 +51,8 @@ vr MaxTimeout in "net/config"
 
 This syntax makes a source-level dependency explicit. It does not assert that a file is a Module, that a directory is a package, or that a path identifies a versioned distribution artifact. Those are separate representations and resolution concerns. Keeping `in` limited to inclusion prevents the grammar from acquiring rules about hosting, registries, versions, transport protocols, or organizational layout.
 
+A type included with `in` may have further methods (`mt`) attached in another file of the same local directory — that is how a capsule splits across files without a `package` keyword. Attaching a method to a type imported from an external library or a different domain directory is still *syntax-legal* and is a governance failure: it is monkey-patching. The [Linter](../protocols/linter.md) MUST, in the reference configuration, warn or error on that attachment; the repair is composition (wrap the external capsule in a local one), not a grammar restriction. The local/distant boundary is directory-based by default and is organization-overridable — see the linter handoff.
+
 ### Naming Without Package Context
 Khayyam has no package-level namespace or package-level encapsulation. A name must therefore state its own domain meaning rather than relying on a package prefix to supply the missing context. `Parent()` is ambiguous when seen alone; `ParentCommand()` or `ParentElement()` communicates the intended concept directly.
 

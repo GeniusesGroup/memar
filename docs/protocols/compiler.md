@@ -1,75 +1,54 @@
 ---
-Title: "Khayyam Compiler Directives"
-Status: Proposed
+Title: "Compiler"
+Status: Draft
 Start Date: 2026-06-22
 ID: 495024
 ---
 
-# Khayyam Compiler Directives
-This document is addressed to the developers of a Khayyam compiler — not to the Khayyam language. Nothing here adds to, restricts, or amends Khayyam's syntax or semantics; every directive below is a recommendation to a compiler implementation team about how Khayyam's own thinking (Zero-Magic Core, Separation of Syntax and Governance, no privileged types) should find concrete manifestation in the tool they build. The directives are currently enforced only by review against this document — there is no conformance suite yet, so implementation drift is caught by people, not tooling.
+# Compiler
 
 ## Abstract
-A Khayyam compiler is a separate system that consumes the Khayyam specification — not part of what Khayyam *is* (see [Khayyam Is Not Its Own Compiler or Runtime](./khayyam.md#khayyam-is-not-its-own-compiler-or-runtime)). This document states the directives its implementers work under: recognize only `sc` (code scope) and a small set of low-level jump intrinsics as control-flow primitives, and expose compiler-internal events to analysis tools rather than recognizing any library's constructs by name; keep entry-point and lifecycle conventions out of the language and in compiler configuration plus runtime libraries; evaluate explicitly-designated pure methods at compile time without privileging any type; and treat runtime code mutation as an `unsafe`, opt-in escape hatch under [Structure Is Fixed by Definition](../type.md#structure-is-fixed-by-definition). Each directive constrains an *implementation*, never the language: disabling or weakening one changes how well a compiler serves Khayyam's philosophy, not what Khayyam programs may express.
+A **compiler** is a system that consumes a language's specification and produces a target representation of a well-formed program. It is not identified with any one language, and it is not identified with any one target — native machine code, JavaScript, WebAssembly, and further backends are equally legitimate products of the same concept. The compiler is a separate system from the language it consumes: it is not part of what that language *is*. This document is Memar's protocol for that system: what a compiler may recognize (the language's own primitives, never a library's names as intrinsics), that it emits analysis events rather than special-casing libraries, that entry and lifecycle are configuration plus [Runtime](./runtime.md) libraries rather than grammar, that designated pure operations may be evaluated at compile time without privileging types, and that it consumes the [Lexer](./lexer.md) under that protocol's contract. A Khayyam-to-JavaScript compiler and a C compiler that honors the same rules are two realizations, not two concepts.
 
 ## Introduction
 
 ### Motivation
-Khayyam's core philosophy is a handoff: syntax strictly defines how code is structured, while behavior under the hood — memory management, execution policy, architectural constraint — is delegated to compilers, linters, and organizational frameworks. A handoff only works if the receiving side knows what it received. [Khayyam Is Not Its Own Compiler or Runtime](./khayyam.md#khayyam-is-not-its-own-compiler-or-runtime) documents the failure mode that motivates keeping the compiler a separate system: once a project owns its compiler, every convenience request becomes pressure to add syntax, special cases, or built-in magic, eroding the "no hidden control flow, no implicit behavior" principle Khayyam exists to protect. Separation of teams is the structural safeguard; but separation alone does not tell the compiler team what the safeguard requires of them day to day.
+Once a language project owns compiler implementation, every convenience request becomes pressure to add syntax, special cases, or built-in magic — because the team that controls the language spec is the same team that feels the pain of not having the convenience. The failure is documented across language projects; [Khayyam Is Not Its Own Compiler or Runtime](../khayyam/khayyam.md#khayyam-is-not-its-own-compiler-or-runtime) records it for one language. This protocol states the same boundary as a contract any compiler realization must satisfy, so the safeguard does not have to be re-derived per language.
 
-This document is that statement. It records, for the compiler's own developers, the specific shortcuts that would quietly reintroduce the magic Khayyam removed — special-casing a framework's `IF` by name, hardcoding a `main` lifecycle into the toolchain, privileging numeric types as builtins, normalizing runtime code mutation — and the affirmative behavior each replaced shortcut should be replaced by. A compiler implementer who has read this document should never have to re-derive, from the language specification alone, which side of Khayyam's syntax/governance line a given implementation decision falls on.
+The second failure is identifying "compiler" with "Khayyam to machine code." A compiler that lowers Khayyam to JavaScript, or that lowers C to an intermediate representation, is still a compiler. If the protocol is shaped by one language and one target, every later backend has to fight the definition.
+
+The third failure is the compiler quietly adopting protocol semantics by recognizing a library by name — treating a framework's `IF` as an intrinsic, a numeric type as a builtin, a `main` as grammar. Each shortcut reintroduces magic the language's specification refused.
+
+### Methodology
+The positions below were first exercised as directives to a Khayyam compiler, then lifted: what survives without naming that language's constructs is the protocol; what names those constructs is a realization fact and lives in [Khayyam](../khayyam/khayyam.md). The Lexer was split out of the same discussion into its own protocol because a lexer serves many consumers, of which a compiler is only one. Compile-time evaluation is stated as a designation-and-purity rule, not as a catalogue of privileged types; C's `const` folding and similar toolchain features are evidence the requirement is not language-unique. Directives are currently enforced by review against this document — there is no conformance suite yet.
 
 ## Explanation
 
-### Control Flow via `sc` and Jump Primitives
-Khayyam's AST natively recognizes only two control-flow primitives: the `sc` (code scope) grouping and a small set of low-level jump/branch intrinsics (lowered to `goto` at the IR level). It does not natively recognize high-level `if`/`else`/`for`. For a compiler implementer this is not a limitation to work around but the direct expression of Khayyam's refusal to privilege any control-flow paradigm in the toolchain (see [The Grammar Refuses Protocol Semantics](./khayyam.md#the-grammar-refuses-protocol-semantics) for the language-side reasoning).
+### What a compiler is
+A compiler is a system whose process is compilation: given a source and a language specification, it accepts or refuses the source as a program of that language, and, on acceptance, produces a target representation. The language specification is an input, not a component of the compiler. The target is an output chosen by configuration — it is not part of the compiler's definition. Multiple compilers may consume one language; one compiler may produce several targets behind one semantic representation. The semantic representation, not any one backend, is the source of truth both targets realize.
 
-- **No privileged `goto` keyword at language level.** An early draft treated `goto` as the only native branching keyword; that thinking is retired (the reasoning is recorded in [the Control Flow protocol document's changelog](../protocols/control-flow.changelog.md)). The language exposes `sc`; the compiler lowers `sc`-driven branches to jumps internally, without a `goto` keyword in source.
-- **No special-casing of framework `IF`.** The compiler does not treat `IF`/`ELSE` imported from the framework as intrinsics. Framework CF methods are ordinary library code built from `sc` + jumps.
-- **Event abstraction.** The compiler, as an independent application, emits control-flow events (entering/leaving an `sc`, taking/skipping a branch) to which analysis libraries (DAA, linter) subscribe. DAA therefore learns branch exclusivity from `sc` events, not from recognizing `IF` by name. The full versioned contract is anticipated work — see the paired handoff.
-- **Commands break with a new line.** Each command must end with a new line — the general rule the `return` marker rule below specializes.
+A compiler is not the language. Folding compiler implementation into the language's own scope is the failure mode the Motivation names.
 
-Recognizing only `sc` + jumps means the compiler cannot hand-tune a lowering for any specific control-flow library — everything is lowered through the same generic primitives, and a naive lowering of library-driven branching can cost performance relative to a keyword-recognizing compiler's bespoke paths. The event-emission contract is also a real surface the compiler must keep stable: once analysis tools depend on it, changing event shape or ordering becomes a breaking change for consumers the compiler does not control.
+### The compiler recognizes language primitives, not library names
+The compiler's front end accepts the constructs the language specification actually defines. It does not treat library-provided operations as intrinsics because they are common, useful, or imported from a privileged package. Framework control-flow methods, numeric helpers, and lifecycle hooks are ordinary library code. Special-casing any of them by name couples the compiler to one library and forces every other library through that one library's shape.
 
-#### GOTO (lowering detail)
-- `goto(LocationLabel)` is a compiler-internal IR method (not a source keyword).
-- Labels are resolved from `sc` boundaries:
-  - `loop` / `end` / `next` correspond to `sc` entry/exit points.
-  - `return` indicates return from a method body. It does not need to be written at the end of a method; it is a pure IR marker and must end with a line break so it cannot be used as `return 0`.
+What a given language's primitives *are* is stated in that language's documents. For Khayyam, the grammar's control-flow primitive is the inert code scope `sc`, and the compiler of a Khayyam realization lowers scope-driven branches to internal jumps without a `goto` keyword in source — see [Khayyam](../khayyam/khayyam.md). That lowering is a realization of this topic, not this topic's definition.
 
-### Environment-Agnostic Entry Points
-Khayyam does not enforce any syntax-level entry point or lifecycle functions such as `main`, `init`, or `deinit`.
+### The compiler emits analysis events
+The compiler, as an independent application, emits events that analysis tools subscribe to — entering and leaving a scope, taking or skipping a branch — rather than requiring those tools to recognize a library's constructs by name. The [Linter](./linter.md) and definite-assignment / path-coverage analyses consume this surface. Once tools depend on it, changing event shape or ordering is a breaking change for consumers the compiler does not control. The versioned event schema is not yet specified; see the paired handoff.
 
-Hardcoding an execution model into the language syntax restricts its adaptability for different environments (e.g., event-driven architectures, serverless, or WASM) and forces future breaking changes if the execution paradigm evolves. Instead, defining how a program boots or tears down is the strict responsibility of the `compiler` and `runtime` libraries. These libraries can introduce their own conventions, ensuring the core Khayyam language remains completely environment-agnostic and future-proof.
+### Entry and lifecycle are not grammar
+A compiler does not hardcode a syntax-level entry point or lifecycle (`main`, `init`, `deinit`, or equivalents) into the language it consumes. How a program boots and tears down is compiler configuration plus the selected [Runtime](./runtime.md). Changing target environment — a Unix process, a unikernel, WebAssembly, a serverless handler, a JavaScript host — is a configuration change, not a language change.
 
-- **Delegation:** The compiler and the selected runtime framework are entirely responsible for defining how a program boots.
-- **Adaptability:** This allows the compiler to easily target different environments (e.g., WASM, Serverless, embedded systems) by simply changing the compiler configuration, without breaking language compatibility.
+The cost of the rule is real: a newcomer cannot discover where execution starts from the language alone. That cost is accepted so the language does not have to grow a new entry-point syntax each time the execution environment changes.
 
-With no syntax-level entry point, a newcomer cannot discover "where does this program start" from the language alone — the answer lives in the compiler configuration and the selected runtime's documentation. Misconfiguration is also quieter: a program with no boot convention wired in fails at a later, less obvious point than a missing `main` would.
+### Designated pure operations may run at compile time
+An operation that does not depend on runtime state, and that is *explicitly designated* as pure, may be evaluated during compilation and replaced in the target by its result. Qualification is designation plus purity, never a privileged type the compiler "knows." Languages that fold constants implicitly still owe an equivalent honesty about *which* operations ran at compile time; this protocol's default is explicit designation so a reader can see the boundary.
 
-### Compile-Time Functions
-- Methods that calculate configurations, constants, or pure logic that do not depend on runtime state MUST be evaluated by the compiler during the compilation phase. The compiler replaces these method calls with constant capsules in the final binary.
-- Whether a method qualifies is not because the compiler magically knows `FromASCII`/`Multiplication` — there are no privileged types. `W32`/`NanoSecond` are ordinary capsules. A method qualifies only if it is explicitly designated as pure/const (e.g., it touches no `vr` outside its own scope and its inputs are compile-time constants). The string `"7200"` in the example is human-readable text supplied to a typed variable's method — the variable's type (`NanoSecond`) gives the value its identity, so it is not a magic number; the operation happens at compile time, not runtime.
-- Below function MUST compute in compile time not runtime. Any use of `CNF_KeepAlive_Idle` return variable is just a simple constant capsule.
+Compile-time evaluation is a second interpreter that must stay semantically identical to runtime evaluation of the same operation. Divergence is a real bug class. Designation adds an authoring obligation that implicit const-evaluation does not have; the protocol accepts that cost for visibility.
 
-```Khayyam
-tp CNF_KeepAlive_Idle mt (self TCPConfig) () (dur duration.NanoSecond) {
-    dur.FromASCII("7200")
-    dur.Multiplication(duration.NanoSecondInSecond)
-}
+### The compiler consumes the Lexer; it is not the Lexer
+Lexical processing is owned by the [Lexer](./lexer.md). A compiler is one consumer of that protocol. Tokenization strategy, token shape, and whether a lexer exists at all for a given source are not compiler-definitional. A compiler that parses characters directly remains a valid architecture under the Lexer protocol's own terms.
 
-tp closeIdleSocket mt (tcpSock TCPSock) (st NetSocket) (err Error) {
-    // some logic ...
-    vr idleDur duration.NanoSecond
-    Config.CNF_KeepAlive_Idle()(idleDur)
-    vr passIdle Bool
-    tcpSock.checkIdlePass(idleDur)(passIdle)
-    // some logic ...
-}
-```
-
-Compile-time evaluation is effectively a second interpreter the implementation must build and keep semantically identical to runtime evaluation — divergence between the compile-time and runtime result of the same designated method is a real and subtle bug class. Explicit designation also adds an authoring obligation (marking purity) that languages with implicit const-evaluation do not have.
-
-### Change Logic in Runtime (Unsafe)
-You can write code to change(add or remove) modules binary code in runtime. It is like `WASM` idea. It can be very dangerous feature and MUST tag as `unsafe`. It is useful to add or remove modules in microservice way but as describe by [this paper from google expert software developers](https://dl.acm.org/doi/pdf/10.1145/3593856.3595909)
-
-> **Relation to Structure Is Fixed by Definition (same as in runtime.md):** Default = the base principle's definition-time rule; this `unsafe` patching is an opt-in escape hatch, not the normal path. The two documents share the same resolution and do not contradict.
+### Runtime mutation of the artifact is `unsafe`
+A compiler may support emitting or linking code that patches a running module's binary — adding or removing modules the way a WASM host replaces a module. The capability is dangerous and MUST be tagged `unsafe`. It is an opt-in escape hatch from [Structure Is Fixed by Definition](../type.md#structure-is-fixed-by-definition), not the normal path. The [Runtime](./runtime.md) states the same hatch on the execution side; [immutable infrastructure](./immutable_infrastructure.md) owns the deployment-side working-out. The two sides do not contradict: default is the base principle; the hatch is explicit, audited, and never used for normal capability evolution.

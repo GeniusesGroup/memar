@@ -1,4 +1,4 @@
-# Khayyam Runtime Specification Changelog
+# Runtime Changelog
 
 ## Changelog
 
@@ -88,3 +88,30 @@
 - The "Relation to Immutable Infrastructure" note under Change Logic in Runtime (Unsafe) is re-anchored to the base principle Structure Is Fixed by Definition (type.md): the runtime executes a fixed definition, and `unsafe` patching is the controlled exception admitting definition changes into a running instance. The note no longer routes readers through khayyam-polymorphism.md's retired topic anchor, and the Immutable Infrastructure brand — whose home is the protocol layer — no longer appears in this document.
 - The escape-hatch reading of `unsafe` patching is unchanged.
 - The Abstract's deployment-commitment sentence now cites the same base principle instead of describing the default.
+
+---
+
+### Lifted to a general Runtime protocol, not a language VM
+- Time: 2026-09-15T09:00:00Z
+- Type: Changed
+- Propagates to:
+  - runtime.handoff.md: Done — rewritten; host-kind conformance floor added; concurrency overlap named as Concurrency's.
+  - khayyam.md: Done — execution-semantics pointer retargeted here as environment contract, not a Khayyam-owned VM.
+  - concurrency.md: none — substrate remains there; this document hosts it and does not restate it.
+- Contributors:
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — claimed, decided
+  - [Grok](../../CONTRIBUTORS.md#grok) (Grok 4.6 via Cursor) — rewrote
+
+#### What changed
+- The document is now the Runtime protocol: the environment in which already-established structure is exercised — execution time, not definition time — and not identified with a language virtual machine. OS, unikernel, WASM host, JavaScript engine, and a language library are named as kinds of runtime.
+- User-space scheduling, channels-as-signals, and pooling are not restated; they are [Concurrency](./concurrency.md)'s. This document places those mechanics as libraries a runtime hosts. Core-pinning is not a Runtime MUST — if it is required, that is a concurrency-realization extension.
+- The `unsafe` hatch remains the execution-side escape from Structure Is Fixed by Definition.
+- Status returns to Draft. Title is "Runtime".
+
+#### Deliberation
+- Runtime is a very general word and must not be limited to language runtime (Omid Hekayati — claimed).
+- Transfer out of the Khayyam shelf was agreed (Omid Hekayati — decided).
+
+#### Considered and not done
+- **Renaming to avoid the word Runtime (not done)**: the filename keeps history; the body now states the breadth the word must carry. A later title change remains open if the word still misleads.
+

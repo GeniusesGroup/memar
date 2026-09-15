@@ -1,4 +1,4 @@
-# Khayyam Linter & Tooling Rules Changelog
+# Linter Changelog
 
 ## Changelog
 
@@ -90,3 +90,29 @@ This document is now structured per `documentation-explanation.md`: YAML front m
 - Java's IDE-generated getter/setter convention is the direct precedent, including its well-known failure mode (bean-shaped classes whose encapsulation is nominal). Go's explicit-methods-only culture shows the opposite pole: no generation, maximal ceremony. Khayyam's position is the middle one — generation is available and expected, but each generated method enters the source and the capsule's contract as if hand-written. (Migrated from the Boilerplate Generation topic's retired Prior art)
 - Go's `vet` and `staticcheck` occupy the same tier: official-tooling diagnostics that encode community consensus without being language rules. The naming/type-suggestion requirements mirror LSP-based assists in modern IDEs generally. The `sc`-as-common-denominator rule is Khayyam-specific, mirroring the compiler's own event contract (see the compiler-side treatment under [Control Flow via `sc` and Jump Primitives](./compiler.md#control-flow-via-sc-and-jump-primitives)). (Migrated from the Suggested Diagnostics topic's retired Prior art)
 - Go is the closest structural precedent: a deliberately minimal language paired with official tooling (`gofmt`, `vet`) that carries community standards the grammar does not. The difference is degree — Go's tooling is conventionally important, while Khayyam's linter is architecturally load-bearing by design, holding responsibilities (safety enforcement, orphan governance) that Go's compiler or Rust's compiler own structurally. This inversion is Khayyam's own; the prior art establishes the pattern, not the weight. (Migrated from the document-level retired Prior art)
+
+---
+
+### Lifted to a language-independent Linter protocol
+- Time: 2026-09-15T09:00:00Z
+- Type: Changed
+- Propagates to:
+  - linter.handoff.md: Done — rewritten around rule-authorship notation; Khayyam-specific UX questions kept with new homes named.
+  - khayyam.md: Done — type-as-argument and newline/lowering facts stated as grammar; contracts-first reading order named.
+  - khayyam/modularity.md: Done — orphan-rule realization.
+  - khayyam/encapsulation.md: Done — requested accessor generation.
+  - khayyam/method.md: Done — type-level `sc`/`mt` argument grammar.
+- Contributors:
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — claimed, decided
+  - [Grok](../../CONTRIBUTORS.md#grok) (Grok 4.6 via Cursor) — rewrote
+
+#### What changed
+- The document is now the Linter protocol: what a linter is, the compiler/linter split, that a rule lives in its subject's document, required members of a governance rule pending notation, configuration and override, event consumption, and that assistance writes source on request.
+- Khayyam-syntax diagnostics left this body: orphan rule to [Modularity in Khayyam](../khayyam/modularity.md), accessor generation to [Encapsulation](../khayyam/encapsulation.md), type-as-argument to [Method](../khayyam/method.md) with a pointer from [Khayyam](../khayyam/khayyam.md), command-newline/lowering to Khayyam. Declaration-block folding stayed here as a general tooling assist ([Tooling may present structure first](./linter.md#tooling-may-present-structure-first)); the Khayyam-specific `tp ... in ...` forms are realization facts of that language's declaration shape, not this protocol.
+- Status returns to Draft because the authorship notation is unsettled.
+- Title is "Linter"; the changelog heading follows.
+
+#### Deliberation
+- Khayyam itself has no special linter rules; the protocol did not previously say how rules are authored (Omid Hekayati — claimed).
+- Two aspects stay distinct: how a linter works, and the rules it checks — the latter belong to subject documents (Omid Hekayati — decided).
+

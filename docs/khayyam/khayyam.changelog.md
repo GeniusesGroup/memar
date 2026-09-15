@@ -321,3 +321,46 @@ Considered placing the topic in `khayyam-runtime.md` instead, since Unikernel is
 
 #### Considered and not done
 - **Keeping a stub pointer file in place of the retired document (rejected)**: a near-empty body would need permanent maintenance while carrying no state of its own; every consumer pointer was retargeted instead.
+
+---
+
+### Toolchain documents leave this layer; grammar facts stay
+- Time: 2026-09-15T09:00:00Z
+- Type: Changed
+- Cited:
+  - [Memory](../protocols/memory.md) — Consumed contract: copy, teardown, and safety as protocol, not a Khayyam memory model.
+  - [Linter](../protocols/linter.md) — Consumed contract: compiler/linter split this document already named as syntax/governance.
+  - [Compiler](../protocols/compiler.md) — Consumed contract: primitives versus library names; this document keeps the `sc` lowering as realization.
+  - [Runtime](../protocols/runtime.md) — Consumed contract: execution environment, not a Khayyam-owned VM.
+- Propagates to:
+  - README.md: Done — membership criterion no longer houses compiler, linter, or runtime.
+- Contributors:
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Grok](../../CONTRIBUTORS.md#grok) (Grok 4.6 via Cursor) — applied
+
+#### What changed
+- Pass-by-reference, FFI, syntax/governance, and execution-semantics pointers retarget to the protocol documents; `memory_model.md` is no longer cited.
+- Scope states command-newline and `sc` lowering without a `goto` keyword; type-as-argument grammar lives in [Method](./method.md), with a pointer from Scope.
+- Folder README: a document belongs here for grammar and construct design, not for toolchain protocols this layer consumes.
+- Import mechanism states contracts-first reading; companion folding is the Linter protocol's assist, not a practice-file note.
+
+---
+
+### How Khayyam realizes Memory — notes from the retired shelf
+- Time: 2026-09-15T13:00:00Z
+- Type: Changed
+- Cited:
+  - [Memory](../protocols/memory.md) — Consumed contract: the requirements these notes realize.
+- Propagates to:
+  - variable.md: Done — Resource Lifecycle points here and to Memory; deferred wording removed.
+- Contributors:
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Cursor](../../CONTRIBUTORS.md#cursor) (Composer) — applied
+
+#### What changed
+- Variable bullets state no raw machine pointers and no `nil`/`null` keyword; absence uses a type method, conventionally `IsNull()`.
+- A new topic, [How Khayyam realizes Memory](./khayyam.md#how-khayyam-realizes-memory), carries the retired shelf's Khayyam-specific mechanisms: no lifetime annotations and why, `Deinit()`/`Free()` as teardown conventions, static escape analysis plus PGO-as-library (including the unikernel worker-stack motivation), and the generated-companion naming pointer to Memory's handoff.
+
+#### Deliberation
+- These notes were deliberately kept out of the Memory protocol so that protocol stays language-independent; deleting the shelf without placing them would have lost realization content (Omid Hekayati — decided).
+

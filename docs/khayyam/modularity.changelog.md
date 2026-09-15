@@ -112,3 +112,18 @@
 #### Related work
 - Go and Java rely on packages for organization and disambiguation. ES-module imports demonstrate one useful part of the alternative: an explicit import identifies where a dependency comes from without making a global package hierarchy the sole carrier of meaning. Khayyam applies the stronger requirement that the included entity's own name must remain meaningful without depending on such a prefix. (Migrated from the Naming Without Package Context topic's retired Prior art)
 - Go's `go.mod`, Node's `package.json` and lock files, and Rust's `Cargo.toml` and `Cargo.lock` all place significant dependency-resolution data beside source code rather than inside their languages' import grammar. Khayyam follows the companion-manifest direction while avoiding source-level import strings that encode a distribution location or version. (Migrated from the Manifest as the Module Contract topic's retired Prior art)
+
+---
+
+### Orphan-rule realization: attaching methods to imported types
+- Time: 2026-09-15T09:00:00Z
+- Type: Changed
+- Cited:
+  - [Linter](../protocols/linter.md) — Consumed contract: the check is governance; this document owns the modularity claim.
+- Contributors:
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided (rule home is the subject's document)
+  - [Grok](../../CONTRIBUTORS.md#grok) (Grok 4.6 via Cursor) — applied
+
+#### What changed
+- Inclusion Is Not Module Definition now states that attaching a method to a type imported from an external library or a different domain directory is syntax-legal and a governance failure (monkey-patching); the reference linter configuration warns or errors, and the repair is composition — content relocated from the retired Khayyam-shelf linter document.
+

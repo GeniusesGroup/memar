@@ -8,7 +8,7 @@ The entries below consolidate the document's former front-matter provenance (`Ap
 - Time: unknown (historical import)
 - Type: Added
 - Cited:
-  - [Khayyam](../khayyam.md) — Reference: source of truth for the syntax of every code example in this document (`tp`/`mt`/`vr`/`cp`/`ab`/`sc` keywords, capsule composition, abstraction composition, body-less methods as contracts).
+  - [Khayyam](../khayyam/khayyam.md) — Reference: source of truth for the syntax of every code example in this document (`tp`/`mt`/`vr`/`cp`/`ab`/`sc` keywords, capsule composition, abstraction composition, body-less methods as contracts).
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — claimed, argued
   - [Gemini](../../CONTRIBUTORS.md#gemini) (3.1 Pro, extended thinking) — drafted, argued

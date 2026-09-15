@@ -7,12 +7,6 @@ Open work for `variable.md`. Entries are mutable current state — revised as ea
 ### Does the standard `MathEval` evaluator type-check formula operands at compile time?
 - State: Whether the standard `MathEval.FromString()`-style evaluator performs full compile-time type-checking of formula operands (preventing nonsensical cross-type operations like adding incompatible domain quantities), or only validates syntax while deferring type errors to runtime, is not yet settled for the recommended framework implementation. (From the Domain-Driven-Arithmetic topic.)
 
-### How does the reference model interact with the resource management layer?
-- State: How the reference model interacts with the resource management layer for lifecycle enforcement is a separate concern addressed by future documents. (From the Variable-as-Logical-Reference topic.)
-
-### What is the precise resource management model, and how does it meet variable declarations?
-- State: The precise resource management model, API surface, and interaction with variable declarations is deferred to a future document. (From the Resource-Lifecycle (Deferred) topic.)
-
 ### Can a file export a variable under an alias?
 - State: Whether a file can export a variable under a different name than its declaration name (aliasing) is not currently addressed. (From the Variable-Scope-and-Visibility topic.)
 

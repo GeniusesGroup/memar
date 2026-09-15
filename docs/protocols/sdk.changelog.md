@@ -11,7 +11,7 @@
   - [Error](./error.md) — Reference: the numeric error-coding discipline the SDK's boundary mapping adopts.
   - [Process](../process.md) — Reference: already names the SDK among legitimate retry initiators; consistent with the responsibility allocation recorded here, nothing changed there.
 - Propagates to:
-  - gui.md: Done — the broken SDK link in the architecture position corrected to `./sdk.md` (recorded in [gui.changelog.md](./gui.changelog.md)).
+  - gui.md: Done — the broken SDK link in the architecture position corrected to `./sdk.md` (cosmetic link repair; no changelog entry there, per the Changelog facet's trivial-repair rule).
   - media-type.md: Pending — the "Easily generate SDK" goal line gains a forward link to this document when the SDK document stabilizes.
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — claimed, argued

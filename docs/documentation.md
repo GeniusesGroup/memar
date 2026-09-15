@@ -127,8 +127,8 @@ The `file:` scheme ([RFC 8089](https://datatracker.ietf.org/doc/html/rfc8089)) s
 ### File Naming
 A file name carries structure, not only an identifier: it states which category a document belongs to, which concept it addresses, and — for a companion record — which facet it follows. Three separators divide that labor, and each carries exactly one kind of boundary; a name is legible when no separator is asked to carry two.
 
-- **Folder, or hyphen (`-`)** — the structural boundary between category and topic. The folder carries it where a category has enough documents to own a directory (`protocols/media-type.md`, `khayyam/memory_model.md`); the hyphen carries it where documents sit beside one another in one directory (`abstraction-implements.md`, `networking-osi_1-Asb.md`). The left side names the namespace, the right side the subject.
-- **Underscore (`_`)** — joins the words of a single conceptual term so the term reads as one unit rather than as separate parts (`memory_model.md`, `immutable_infrastructure.md`, `osi_1`).
+- **Folder, or hyphen (`-`)** — the structural boundary between category and topic. The folder carries it where a category has enough documents to own a directory (`protocols/media-type.md`, `khayyam/variable.md`); the hyphen carries it where documents sit beside one another in one directory (`abstraction-implements.md`, `networking-osi_1-Asb.md`). The left side names the namespace, the right side the subject.
+- **Underscore (`_`)** — joins the words of a single conceptual term so the term reads as one unit rather than as separate parts (`immutable_infrastructure.md`, `osi_1`).
 - **Dot (`.`)** — separates a companion record's facet key from its base name (`<base>.changelog.md`, `<base>.handoff.md`, `<base>.practice.md`, `<base>.research.<NNN>.md`), which is how the companion pairing is stated instead of inferred.
 
 The distinction is load-bearing: `type-explicit_behavior_ownership.md` says *category* `type`, *term* `Explicit Behavior Ownership`, while a name whose parts all wear the same separator states no boundary at all and leaves the reader to guess where the category stops and the topic starts.
