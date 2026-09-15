@@ -1,11 +1,11 @@
 ---
 name: thinking
-description: defines how the thinking modes are exercised in Memar's work — chiefly critical evaluation of a proposal, model, or design
+description: defines how the thinking modes and their elementary operations are exercised in Memar's work — chiefly critical evaluation of a proposal, model, or design
 ---
 
 # Thinking Practice
 
-> **Purpose:** This practice defines how the [Thinking](./thinking.md) modes are exercised in Memar's actual work, starting with the one whose procedure is most developed: critical evaluation. The concept, the modes, and the discourse norms live in [thinking.md](./thinking.md) — that document is assumed reading, and its rules are not restated here.
+> **Purpose:** This practice defines how the [Thinking](./thinking.md) modes are exercised in Memar's actual work, starting with the one whose procedure is most developed: critical evaluation. The concept, the modes, the elementary operations and awareness disciplines beneath them, and the discourse norms live in [thinking.md](./thinking.md) — that document is assumed reading, and its rules are not restated here.
 
 ---
 
@@ -15,6 +15,27 @@ Thinking is a family of modes, and critical thinking is one of them — not all 
 
 1. **Critique is a component of writing, not a separate phase for evaluating finished things.** Documentation work exercises all the modes together: producing a document from scratch is creative, abstract, and structural work — and critical examination of one's own claims is one component of that writing, applied while drafting, not a ritual bolted on afterward. The same holds for modeling ([modeling.practice.md](./modeling.practice.md) owns that exercise). This practice covers critique when it is the *dominant* activity — an explicit evaluation of a proposal, model, or design.
 2. **Do not let critique dominate an exchange.** An engagement that is all critique is as unhealthy as one with none: generative and structural work must keep producing the material critique evaluates. The discourse norms in [thinking.md → Discourse Norms](./thinking.md#discourse-norms-derived-from-this-model) govern the balance; this practice only sharpens the critical end of it.
+
+---
+
+## Working With the Operations Layer
+
+A mode's Runs-on clause ([thinking.md → Elementary Operations and Awareness Disciplines](./thinking.md#elementary-operations-and-awareness-disciplines)) tells you which operations the mode exercises — use it when the mode's *name* is not enough to decide what to actually do:
+
+- **When you cannot tell which mode a task needs, work at the operation level.** Ask what the material lacks — a whole un-examined (decompose), alternatives un-weighed (compare and apply criteria), a field never closed (commit), a model no one has tested against instances (instantiate) — and run the operation the lack names. The mode follows.
+- **When a critique must name its strongest move, name the operation.** "I compared the two framings and X persists across both" is a stronger critique statement than "this feels critical" — the operation makes the critique checkable.
+- **When drifting, switch to the discipline level.** Awareness of goal is the standing remedy for exploration that has become wandering; awareness of assumptions is the standing remedy for reasoning that has silently committed to its premises. Disciplines do not produce material — they re-govern the operations that do.
+
+---
+
+## Named-Error Checks
+
+Knowing that an argument has slipped is part of doing the work, not an optional refinement ([thinking.md → Named Errors](./thinking.md#named-errors-biases-and-fallacies)). The body document owns the two error classes; this practice carries the checks an exercise runs against them:
+
+- **Sender-side, before issuing material:** re-read the claim for the bias signatures the operations layer names — discrepancy noticing that only confirms (confirmation bias), ordering pinned to the first input (anchoring), comparison over a surviving-only sample (survivorship bias). One named check per issued claim is the minimum; the discipline that carries it is awareness of assumptions.
+- **Receiver-side, on receiving material:** check the transit for the named fallacy forms — support that comes from the source rather than the claim (ad hominem, appeal to authority), a position replaced by a weaker one (straw man), popularity standing in for evidence (industry convention; the practice's insufficient-critique list below is this check in Memar vocabulary).
+- **Both sides, on both paths:** the Persian phrase that names the shared property is به غلط — both classes derail the path of thinking and of dialogue alike, so a check that passes sender-side can still fail transit, and material that arrives clean can still corrupt the receiver's own operations. Run the check on both paths, not only the one you occupy.
+- The checklists are deliberately short. Enumerating individual biases and fallacies is catalog work — grow the list per project, from named errors actually observed in that project's material, not from a generic catalog imported wholesale.
 
 ---
 

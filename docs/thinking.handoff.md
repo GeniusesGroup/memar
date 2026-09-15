@@ -4,16 +4,13 @@ Open work for `thinking.md`. Entries are mutable current state — revised as ea
 
 ## Open Questions
 
-### The definition topic
-- State: whether "thinking" should be left undefined with only behavior regulated was considered and rejected (an undefined central term imports the reader's colloquial sense; terminology governance requires defining the load-bearing term here); whether this document should be named "critique" or "discourse" was also considered and rejected (both name one product or setting of thinking; the broader concept keeps the scope honest).
-
-### Is "mode" the right concept at all?
-- State: the modes may be better modeled as strategies, dispositions, or phases; the function-group framing is a working position, not a settled one.
-- Next: test the framing against real work; re-model if it strains.
-
 ### Which further modes belong here
-- State: convergent thinking (named implicitly as divergence's counterpart but not yet given its own entry), inductive and deductive inference, and probabilistic thinking have all been plausibly named; what observed dependence would justify adding each is undecided.
-- Next: add a mode when a document depends on it explicitly, per the changelog argument rule.
+- State: inductive and deductive inference and probabilistic thinking remain plausible candidates. For probabilistic thinking specifically: the judgment of evidence quality and strength-of-claim is owned by the Critical mode and operationalized by the paired practice (the stability column and the proportional-strength table); what would justify its own entry is a document depending on the *quantitative* form — explicit probabilities, calibration, expected-value trade-offs — which no document has yet shown. The operations layer may absorb the question entirely: if inference and judgment become named operations, the question becomes which combinations the project's work still exercises under no existing mode.
+- Next: add a mode when a document depends on it explicitly, per the changelog argument rule; re-test the remaining candidates against the operations layer once it exists.
+
+### Are the four functional groups the right partition?
+- State: whether generative and corrective modes should be regrouped as their coverage grows is undecided.
+- Next: revisit as the mode list grows.
 
 ### Are the four functional groups the right partition?
 - State: whether generative and corrective modes should be regrouped as their coverage grows is undecided.
@@ -32,7 +29,7 @@ Open work for `thinking.md`. Entries are mutable current state — revised as ea
 - Next: propose a linter check when a norm violation first appears in a written artifact.
 
 ### Intra-system thinking
-- State: how this document treats *intra*-system thinking — one system's solitary analysis — versus the inter-system exchanges the norms address; the conversation model covers the exchange case, and whether the norms extend unchanged to solitary work is unexamined.
+- State: how this document treats *intra*-system thinking — one system's solitary analysis — versus the inter-system exchanges the norms address; the conversation model covers the exchange case, and whether the norms extend unchanged to solitary work is unexamined (cognitive biases, now recorded in the body, give the intra-system side a starting vocabulary).
 - Next: examine when a solitary-analysis rule is first needed.
 
 ### The medium's role as its own topic
@@ -49,7 +46,10 @@ Open work for `thinking.md`. Entries are mutable current state — revised as ea
 
 ## Anticipated Work
 
-- The mode list grows as Memar's work demonstrates dependence on further modes, each addition argued in this document's changelog.
+- The mode list grows as Memar's work demonstrates dependence on further modes, each addition argued in this document's changelog; the operations and disciplines lists grow the same way, one layer down.
+- **TizFekri vocabulary survey:** map the TizFekri institute's practice vocabulary (پرورش مهارت‌های اجرایی، پرسشگری/استدلال‌ورزی/تصمیم‌گیری نقادانه، دلیل آوردن و نقد دلایل، «باهم اندیشیدن» و «با هم ساختن»، #اندیشیدن_آموختنی_است) against this document's modes, operations, and disciplines — converging field evidence recorded in the 2026-09-14 rebuild entry; the survey decides whether any mapping earns a place in the body or stays a reference.
+- **Runs-on reader test:** watch whether the Runs-on clauses actually reduce mode ambiguity for working sessions (the owner's motivation for applying them to all fourteen modes); revise wording where a clause still requires interpretation.
+- The previously scheduled dedicated upgrade session retains: separating the two conflated concerns (model/derivation side vs. operational discourse-norms side), deciding whether the discourse norms regroup by the thinking mode that chiefly exercises each (the owner's readability suggestion; the flat list of nine remains navigable at current scale), and deepening the 4E grounding.
 - If the conversation-as-two-thinking-systems model is formalized as a Protocol, this document remains the conceptual home and the protocol document the normative one, following the project's concept/implementation separation.
 - Deeper cognitive-science grounding is expected to refine the norms over time — replacing qualitative statements (e.g. about criticism proportionality) with better-specified ones as the underlying science warrants.
 - Dedicated session to upgrade this document on its own: separate the two conflated concerns (see the Open Question above), decide `thinking.practice.md`'s proper shape, and consider regrouping the discourse norms by the thinking mode that chiefly exercises each (the owner's readability suggestion; the flat list of nine remains navigable at current scale — the confirm-before-large-scope-changes norm added 2026-09-10 sits beside its sibling Ask rather than assume). The owner directed that this document not be treated as finalized.
