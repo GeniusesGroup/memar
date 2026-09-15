@@ -93,16 +93,16 @@ Knowledge is one link in the chain Memar exists to serve:
 
 ```text
 Knowledge ──material──► Thinking ──quality──► Intelligence ──exercised──► Agency ──directed──► Goals
-(this document)         (thinking.md)          (framework.md)             (agency.md)
+(this document)         (cognition.md)         (framework.md)             (agency.md)
 ```
 
 - **Knowledge** is what understanding is made of and how it survives — the subject of this document.
-- **Thinking** is the activity that manipulates representations toward some end ([Thinking](./thinking.md)); knowledge is both its material and its product.
+- **Thinking** is the process of a cognitive system manipulating representations toward some end ([Cognition](./cognition.md)); knowledge is both its material and its product.
 - **Intelligence** is the quality of that activity: building a reliable model of reality from partial and ambiguous evidence, and revising it with new evidence. Memar states it as a goal in [Framework → Memar's Purpose Space](./framework.md#memars-purpose-space-from-knowledge-to-agency), not as an independent concept with its own document, because it is an output relation of knowledge, thinking, and agency — defining it separately would restate them.
 - **Agency** is acting on the model toward objectives ([Agency](./agency.md)); an Agent's effective agency depends on the knowledge available to it, and knowledge that exists only inside individual Agents is a failure of collective agency, not merely of filing.
 - **Goals** — ultimately the quality of life of the systems and people involved — are what the whole chain serves.
 
-**Scope boundary.** This document owns the concept of knowledge and the modeling principles below. It does not own: the activity of thinking ([Thinking](./thinking.md)); the structure of acting systems ([Agency](./agency.md)); the domain model of Content, Relation, and Timeline ([Content](./content.md), [Modeling](./modeling.md)); or knowledge management as an organizational discipline — creation workflows, tacit-to-explicit conversion practice, sector adoption patterns, and change management — which belongs to the Organization project.
+**Scope boundary.** This document owns the concept of knowledge and the modeling principles below. It does not own: the process of thinking ([Cognition](./cognition.md)); the structure of acting systems ([Agency](./agency.md)); the domain model of Content, Relation, and Timeline ([Content](./content.md), [Modeling](./modeling.md)); or knowledge management as an organizational discipline — creation workflows, tacit-to-explicit conversion practice, sector adoption patterns, and change management — which belongs to the Organization project.
 
 ### Principles for Modeling Knowledge
 The principles below describe what a system must do if it is to treat knowledge as what it is. They are principle-level and domain-independent: they prescribe no storage technology, no schema, and no workflow, all of which belong to implementing projects.
@@ -282,4 +282,4 @@ Code has a dual nature unique to software: it is both a human-readable knowledge
 
 Software-specific relationship types are particularly prone to remaining implicit, and implicit relationships are lost knowledge: module dependencies live only in import statements, API contracts only in stale documentation, feature gating only in scattered configuration, architectural layers only in directory conventions, security boundaries only in comments. Making these relationships explicit is the software instance of [Relationships Are First-Class Citizens](#relationships-are-first-class-citizens).
 
-For AI-assisted development, knowledge structure directly determines capability: fragmented knowledge yields generic, context-free suggestions; well-structured knowledge — explicit relationships, task-centric history, concept-level granularity — lets an AI system reason about *why* things exist and propagate changes correctly. This is the practical face of the chain in [Knowledge in Memar's Concept Web](#knowledge-in-memars-concept-web): the quality of the shared medium is a quality of the thinking that runs on it ([Thinking → Grounding: Cognition and the 4E Framing](./thinking.md#grounding-cognition-and-the-4e-framing)).
+For AI-assisted development, knowledge structure directly determines capability: fragmented knowledge yields generic, context-free suggestions; well-structured knowledge — explicit relationships, task-centric history, concept-level granularity — lets an AI system reason about *why* things exist and propagate changes correctly. This is the practical face of the chain in [Knowledge in Memar's Concept Web](#knowledge-in-memars-concept-web): the quality of the shared medium is a quality of the thinking that runs on it ([Cognition → Grounding: Cognition and the 4E Framing](./cognition.md#grounding-cognition-and-the-4e-framing)).
