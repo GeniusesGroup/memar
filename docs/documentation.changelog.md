@@ -173,3 +173,30 @@ Fixed skeleton: four sections. Everything else optional, catalogued. Open questi
 #### What changed
 - `Results routing` was added as a cross-cutting convention, after `URI` and on the same precedent: a concern whose homes span several facets is defined at the meta layer, at pointer level, with each home's structure left to that facet's own specification. The routing keys on the type of the result — anticipated (the document's Abstract claim), derived (the `Implications` catalog entry), observed (the changelog entry that made the change, inline Evidence at a claim, a Research record, or handoff working state) — so an agent holding a result looks up its home by type without needing to know which facet's structure applies first (Omid Hekayati - argued the placement and the lookup path; Super Z - written).
 - The document's own `## Results` section - an unpopulated placeholder - was removed under the three-section skeleton (`Abstract`, `Introduction`, `Explanation`); an Explanation-facet document carries no Results section.
+
+---
+
+### File Naming and Documentation Language registered as cross-cutting conventions
+- Time: 2026-09-14T17:47:53Z
+- Type: Changed
+- Cited:
+  - [Documentation — Explanation](./documentation-explanation.md) - Reference: the two rules specific to that specification's front matter (the slug derives from `Title`; the name is stable once `Final`) stay stated there, while the separator structure moved here.
+  - [Filesystem](./protocols/filesystem.md) - Reference: the rejected alternative home, cited because its own thesis is the reason for the rejection.
+- Propagates to:
+  - documentation-explanation.md: Done - its `File` topic's superseded filename wording ("hyphenated, no number, no domain prefix") replaced by a pointer to [File Naming](./documentation.md#file-naming); that wording contradicted the practice the convention now describes, since directories carry the category and digits appear inside conceptual terms (`osi_1`) and in Research ordinals by design.
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - argued, directed
+  - [ZCode](../CONTRIBUTORS.md#zcode) - researched, wrote
+
+#### What changed
+- `File Naming` joined `Citations`, `URI`, and `Results routing` as a convention defined at the meta layer. It assigns exactly one boundary to each of three separators: folder or hyphen for the category/topic edge (the folder where a category owns a directory, the hyphen where documents sit beside one another), underscore for the words of one conceptual term, and dot for a companion record's facet key. The last of the three had been stated per-facet inside each governing specification (`<base>.changelog.md`, `<base>.research.<NNN>.md`) but never as one rule, so a new facet had to infer the pattern from existing files rather than read it somewhere (Omid Hekayati - directed the home; ZCode - wrote, deriving the rule from the separators the set already uses).
+- `Documentation Language` was registered with it: the written record is English and a proposal carries replacement-ready English, while conversation is explicitly outside the rule. The justification given is the record's audience - agents of every kind, human, IDE, CLI, and AI, across sessions and shifts - rather than a preference among languages, so the rule states what it is for and what it does not govern.
+- Both conventions arrived by dissolving a stray untracked draft that held them, not by drafting them fresh: which is why the naming entry covers companions and folders, neither of which that draft contemplated (Omid Hekayati - directed the dissolution).
+
+#### Deliberation
+- Whether a document's name is a documentation concern or a filesystem concern was decided by the substance: a name is how a record is addressed in whatever medium currently holds it, and Memar's position is that a record's identity is its addressability rather than the name of the file carrying it. Registering the convention here states it where every facet's files are governed; registering it in the Filesystem protocol would have subordinated a documentation-method rule to the medium that document exists to argue against.
+- The medium-bound character of both conventions was recorded as open work instead of being smoothed over: once the project's own organization exists and records are addressed rather than pathed, the naming convention and the dot-companion mechanism have to be re-derived, and the naming of non-document content (a film, a recording) is deliberately not generalized from file habits now, since a name can hold far less than such content is. (Omid Hekayati - argued that generalizing from the file side is unwinnable; ZCode - recorded.)
+
+#### Considered and not done
+- **A standing `Conventions` document (rejected)**: the draft was dissolved rather than registered. A container whose only membership criterion is "shared agreements" has no boundary on what enters it - the draft had accumulated a documentation naming rule, a citation-direction rule the folder READMEs already own, and three empty section headings of exactly the kind the Results-section round found to attract misrouted content over time - reproducing the shape already rejected on record for a generic `coding-style.md`.
+- **Placing the naming convention in `protocols/filesystem.md` (rejected)**: its thesis is that path-shaped names are not content's structure; the convention would have been read as that document endorsing the filesystem view it argues against.

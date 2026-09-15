@@ -9,8 +9,9 @@ Open work for `protocols/memory.md`. Entries are mutable current state — revis
 - Next: design the notation after the abstraction syntax stabilizes.
 
 ### Copy semantics at process/network boundaries versus in-process call boundaries
-- State: the [Error protocol](./error.md)'s boundary rules suggest the default may differ across a network boundary; the interaction is not worked out.
-- Next: work out jointly with the error protocol's next revision.
+- State: the [Error protocol](./error.md)'s boundary rules suggest the default may differ across a network boundary; the interaction is not worked out. Next in that direction: work it out jointly with the error protocol's next revision.
+- State: the adjacent, narrower question — whether an ordinary in-process argument or return value that stays inside one ownership domain is required to be passed by reference rather than copied — is also open. This document currently requires only that the copy/share choice be *stated* as a contract term, and states its default for values that *cross* ownership domains. Whether to also fix a protocol-level default for plain call-boundary passing was raised while dissolving a draft coding-style rule that asserted such a default as a MUST; it is deliberately not adopted here, since the neutrality above is this document's own position and a protocol-level MUST would have to be argued against it rather than past it. Where the claim is settled today it is settled at the realization layer: Khayyam's grammar passes arguments and returns strictly by reference and forbids implicit copying ([Khayyam → named constructs](../khayyam/khayyam.md), [Khayyam Memory Model](../khayyam/memory_model.md)) — an instance of this protocol, not its authority.
+- Next: decide in a dedicated session, together with the tier the chosen position carries (protocol default, library contract term, or tooling-suggested).
 
 ### The copy convention's interaction with pooling
 - State: a pooled buffer is shared across requests by definition; which of a pooled library's outputs are copies and which are views needs a worked-out taxonomy, not just the rule.

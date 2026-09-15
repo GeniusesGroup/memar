@@ -75,6 +75,17 @@ For each node, classify it as one of:
 
 Flag any node that is unclassifiable, mixed, or misclassified. A mixed node should almost always be decomposed into separate nodes connected by an explicit relationship.
 
+## Premature Classification Check
+Before relying on a classification, look for the signs that the label arrived before the rules that would justify it:
+
+- The session is arguing about the word while agreeing about the behavior and the relationships. The definition is what is owed; the label follows from it, never the reverse.
+- A category tree, or an inheritance-shaped hierarchy, exists whose members were never derived from observed shared properties.
+- "Is X a Y?" cannot be answered without inventing caveats. The candidate is likelier a Role, a Rule, or a loop-edge than a type — see [Relationship Audit](#relationship-audit) step 1 and the `Rule as concept` row in [Common Modeling Anti-Patterns](#common-modeling-anti-patterns).
+- Cases keep landing in neither of two categories, and the fix proposed is a third category. A continuum, not a missing class, is the likelier reading; add a category only after the boundary has been examined.
+- One artifact needs a different label in each context. Either the labels name roles and belong on edges, or the scheme does not match the domain; distinguish which before re-labelling.
+
+A label that survives this check still has to complete the sentence stated in [Modeling → Classification Emerges From Rules and Relations](./modeling.md#classification-emerges-from-rules-and-relations-not-from-intrinsic-labels). Completing it is the promotion test; failing to complete it is not a naming problem to argue further but a signal that the rules and relationships have not yet been discovered.
+
 ## Relationship Audit
 For each edge or loop-edge:
 1. Does it genuinely connect two independent concepts, or is one side of it actually data or a disguised classification?

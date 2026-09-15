@@ -26,8 +26,9 @@ This specification's structure was not designed in the abstract in a single pass
 *Reading every topic below in full is not required — read only what's relevant to your question. Procedural, "do this, then this" content for producing a document under this specification lives in the paired Practice-facet file `documentation-explanation.practice.md` (named per the rule in [documentation.md](./documentation.md)); this specification describes structure, not procedure.*
 
 ### File
-- `<slug>.md` — short, hyphenated, no number, no domain prefix. Stable once Final.
-- Filenames never contain [ID](#id)
+What a filename encodes — which separator marks the category, which the conceptual term, which the facet companion — is defined in [documentation.md → File Naming](./documentation.md#file-naming) as a cross-cutting convention applying to every facet. Two rules concern this specification's front matter specifically:
+- The slug derives from the document's [`Title`](#title), and a filename never contains its [ID](#id).
+- The name is stable once the document's `Status` is `Final`.
 
 ### Title
 A short, unique, human-readable name for the document, in double quotes. It is the source of the filename slug. A title change that alters the concept is a new document with a new `ID`; a title change that merely rephrases the same concept is a minor revision of the same document.
@@ -39,7 +40,7 @@ A short, unique, human-readable name for the document, in double quotes. It is t
 | **Draft** | Direction is not yet settled; real, unresolved questions remain, recorded in the document's paired handoff. | No |
 | **Proposed** | Design discussion reached consensus; ready for final review before being reflected in canonical documentation. | Not yet — may still be revised during final review |
 | **Final** | Reflected in canonical documentation. | Yes |
-| **Superseded** | Replaced by a newer document. See [`Superseded by`](#relation). | No — depend on the superseding document instead |
+| **Superseded** | Replaced by a newer document. See [`Superseded by`](./documentation.md#citations). | No — depend on the superseding document instead |
 | **Rejected** | Considered and explicitly not adopted. Kept for the historical record. | No |
 
 Additional rules:
@@ -60,7 +61,7 @@ A UTC unix-time-derived integer, generated once when the file is first drafted, 
 
 **Value.** UTC unix time truncated to the hour — `(unix seconds) / 3600` — as a plain decimal integer (e.g. `495317`).
 
-**Generation.** See [How to make a new document](#how-to-make-a-new-document) for the per-platform commands.
+**Generation.** See [How to make a new document](./documentation-explanation.practice.md) for the per-platform commands.
 
 **Uniqueness and collisions.** Two or more documents drafted in the same working session landing in the same hour is expected and normal. Resolve manually today: keep the first document's number, give the next one the following hour's value or any other free value. Manual resolution is a stopgap, not the preferred end state (see the paired handoff's anticipated work).
 
