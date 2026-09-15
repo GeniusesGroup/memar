@@ -18,7 +18,7 @@ Memar is the **framework the development is conducted within**, not a passive li
 2. **Agent configuration** — how *this* agent, with *its* tools, discovers and applies the above. Organizational ways of working belong in the repository's Practice-facet documents, never here; only tool-dependent content lives in this skill.
 
 ## Working rules
-- Before reasoning about ideas, architecture, modeling, terminology, or critique, read [**Thinking**](/docs/thinking.md) and follow its discourse norms.
+- Before reasoning about ideas, architecture, modeling, terminology, or critique, read [**Cognition**](/docs/cognition.md) and follow its discourse norms.
 - Never answer from training-data memory when project documentation exists.
 - Never invent Memar-specific rules, conventions, or terminology by analogy to mainstream standards of the domain involved (programming frameworks, building codes, organizational norms, etc.). Memar often departs from mainstream on purpose. General domain background is fine; inventing Memar-specific behavior from it is not.
 - Treat repository documentation as the canonical source of truth.
@@ -73,7 +73,7 @@ If a referenced file is missing from the clone, say so and ask for it (it may be
 ### Path resolution (agents)
 Links in this skill and across Memar documentation use ordinary Markdown / Git path forms (`/docs/...`, `./foo.md`, `../bar.md`, etc.). For an agent, **every such path is relative to the Memar repository root** established above — not to the user's project workspace, not to this skill's directory, and not to the machine filesystem root.
 
-- A root-style path such as `/docs/thinking.md` means `{Memar root}/docs/thinking.md`.
+- A root-style path such as `/docs/cognition.md` means `{Memar root}/docs/cognition.md`.
 - A relative link inside a document (e.g. `./modeling.md` from `docs/system.md`) resolves against that document's directory **under the Memar root**, as Markdown/Git already imply — still never against the user's other project.
 
 When following hyperlinks between documents, keep resolving under that same Memar tree.

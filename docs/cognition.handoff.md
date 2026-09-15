@@ -1,6 +1,6 @@
-# Thinking Handoff
+# Cognition Handoff
 
-Open work for `thinking.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](./documentation-handoff.md) for what a handoff is.
+Open work for `cognition.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](./documentation-handoff.md) for what a handoff is.
 
 ## Open Questions
 
@@ -32,6 +32,10 @@ Open work for `thinking.md`. Entries are mutable current state — revised as ea
 - State: how this document treats *intra*-system thinking — one system's solitary analysis — versus the inter-system exchanges the norms address; the conversation model covers the exchange case, and whether the norms extend unchanged to solitary work is unexamined (cognitive biases, now recorded in the body, give the intra-system side a starting vocabulary).
 - Next: examine when a solitary-analysis rule is first needed.
 
+### The other cognitive processes
+- State: the frame names the family — perception, attention, memory, learning, thinking — but models only thinking, the process the norms exercise; whether any other process earns its own treatment (a document, or a topic here) or stays permanently a named pointer is undecided. The learning coupling in the thinking definition is the only dependency on a sibling process currently claimed.
+- Next: decide when a norm or a document depends on one of the named processes explicitly, per the growth rule used for modes.
+
 ### The medium's role as its own topic
 - State: whether the medium's role should be developed into its own topic (or document) — covering what thinking material loses crossing each medium type and what compensation the participants owe — or whether that belongs to a future Protocol treatment (see the conversation-formalization question).
 - Next: decide alongside the conversation-formalization question.
@@ -41,7 +45,7 @@ Open work for `thinking.md`. Entries are mutable current state — revised as ea
 - Next: admit grounding when a norm needs a better-specified basis.
 
 ### Two concerns believed conflated in this document
-- State: the owner judges that two subjects are mixed in this document — the model/derivation side (what thinking is, which modes it has) and the operational discourse-norms side — and suspects the cause is that `thinking.practice.md` was not shaped as the operational home the split implies. Where exactly the boundary between the two should run is the question to settle.
+- State: the owner judges that two subjects are mixed in this document — the model/derivation side (what thinking is, which modes it has) and the operational discourse-norms side — and suspects the cause is that `cognition.practice.md` was not shaped as the operational home the split implies. Where exactly the boundary between the two should run is the question to settle.
 - Next: settle the boundary in the document's dedicated upgrade session (see Anticipated Work).
 
 ## Anticipated Work
@@ -52,4 +56,4 @@ Open work for `thinking.md`. Entries are mutable current state — revised as ea
 - The previously scheduled dedicated upgrade session retains: separating the two conflated concerns (model/derivation side vs. operational discourse-norms side), deciding whether the discourse norms regroup by the thinking mode that chiefly exercises each (the owner's readability suggestion; the flat list of nine remains navigable at current scale), and deepening the 4E grounding.
 - If the conversation-as-two-thinking-systems model is formalized as a Protocol, this document remains the conceptual home and the protocol document the normative one, following the project's concept/implementation separation.
 - Deeper cognitive-science grounding is expected to refine the norms over time — replacing qualitative statements (e.g. about criticism proportionality) with better-specified ones as the underlying science warrants.
-- Dedicated session to upgrade this document on its own: separate the two conflated concerns (see the Open Question above), decide `thinking.practice.md`'s proper shape, and consider regrouping the discourse norms by the thinking mode that chiefly exercises each (the owner's readability suggestion; the flat list of nine remains navigable at current scale — the confirm-before-large-scope-changes norm added 2026-09-10 sits beside its sibling Ask rather than assume). The owner directed that this document not be treated as finalized.
+- Dedicated session to upgrade this document on its own: separate the two conflated concerns (see the Open Question above), decide `cognition.practice.md`'s proper shape, and consider regrouping the discourse norms by the thinking mode that chiefly exercises each (the owner's readability suggestion; the flat list of nine remains navigable at current scale — the confirm-before-large-scope-changes norm added 2026-09-10 sits beside its sibling Ask rather than assume). The owner directed that this document not be treated as finalized.

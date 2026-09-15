@@ -1,26 +1,26 @@
 ---
-name: thinking
+name: cognition
 description: defines how the thinking modes and their elementary operations are exercised in Memar's work — chiefly critical evaluation of a proposal, model, or design
 ---
 
-# Thinking Practice
+# Cognition Practice
 
-> **Purpose:** This practice defines how the [Thinking](./thinking.md) modes are exercised in Memar's actual work, starting with the one whose procedure is most developed: critical evaluation. The concept, the modes, the elementary operations and awareness disciplines beneath them, and the discourse norms live in [thinking.md](./thinking.md) — that document is assumed reading, and its rules are not restated here.
+> **Purpose:** This practice defines how the thinking modes of [Cognition](./cognition.md) are exercised in Memar's actual work, starting with the one whose procedure is most developed: critical evaluation. The concept, the modes, the elementary operations and awareness disciplines beneath them, and the discourse norms live in [cognition.md](./cognition.md) — that document is assumed reading, and its rules are not restated here.
 
 ---
 
 ## Where Critique Sits
 
-Thinking is a family of modes, and critical thinking is one of them — not all of it ([thinking.md → Modes of Thinking](./thinking.md#modes-of-thinking)). Two consequences govern this practice's scope:
+Thinking is a family of modes, and critical thinking is one of them — not all of it ([cognition.md → Modes of Thinking](./cognition.md#modes-of-thinking)). Two consequences govern this practice's scope:
 
 1. **Critique is a component of writing, not a separate phase for evaluating finished things.** Documentation work exercises all the modes together: producing a document from scratch is creative, abstract, and structural work — and critical examination of one's own claims is one component of that writing, applied while drafting, not a ritual bolted on afterward. The same holds for modeling ([modeling.practice.md](./modeling.practice.md) owns that exercise). This practice covers critique when it is the *dominant* activity — an explicit evaluation of a proposal, model, or design.
-2. **Do not let critique dominate an exchange.** An engagement that is all critique is as unhealthy as one with none: generative and structural work must keep producing the material critique evaluates. The discourse norms in [thinking.md → Discourse Norms](./thinking.md#discourse-norms-derived-from-this-model) govern the balance; this practice only sharpens the critical end of it.
+2. **Do not let critique dominate an exchange.** An engagement that is all critique is as unhealthy as one with none: generative and structural work must keep producing the material critique evaluates. The discourse norms in [cognition.md → Discourse Norms](./cognition.md#discourse-norms-derived-from-this-model) govern the balance; this practice only sharpens the critical end of it.
 
 ---
 
 ## Working With the Operations Layer
 
-A mode's Runs-on clause ([thinking.md → Elementary Operations and Awareness Disciplines](./thinking.md#elementary-operations-and-awareness-disciplines)) tells you which operations the mode exercises — use it when the mode's *name* is not enough to decide what to actually do:
+A mode's Runs-on clause ([cognition.md → Elementary Operations and Awareness Disciplines](./cognition.md#elementary-operations-and-awareness-disciplines)) tells you which operations the mode exercises — use it when the mode's *name* is not enough to decide what to actually do:
 
 - **When you cannot tell which mode a task needs, work at the operation level.** Ask what the material lacks — a whole un-examined (decompose), alternatives un-weighed (compare and apply criteria), a field never closed (commit), a model no one has tested against instances (instantiate) — and run the operation the lack names. The mode follows.
 - **When a critique must name its strongest move, name the operation.** "I compared the two framings and X persists across both" is a stronger critique statement than "this feels critical" — the operation makes the critique checkable.
@@ -30,7 +30,7 @@ A mode's Runs-on clause ([thinking.md → Elementary Operations and Awareness Di
 
 ## Named-Error Checks
 
-Knowing that an argument has slipped is part of doing the work, not an optional refinement ([thinking.md → Named Errors](./thinking.md#named-errors-biases-and-fallacies)). The body document owns the two error classes; this practice carries the checks an exercise runs against them:
+Knowing that an argument has slipped is part of doing the work, not an optional refinement ([cognition.md → Named Errors](./cognition.md#named-errors-biases-and-fallacies)). The body document owns the two error classes; this practice carries the checks an exercise runs against them:
 
 - **Sender-side, before issuing material:** re-read the claim for the bias signatures the operations layer names — discrepancy noticing that only confirms (confirmation bias), ordering pinned to the first input (anchoring), comparison over a surviving-only sample (survivorship bias). One named check per issued claim is the minimum; the discipline that carries it is awareness of assumptions.
 - **Receiver-side, on receiving material:** check the transit for the named fallacy forms — support that comes from the source rather than the claim (ad hominem, appeal to authority), a position replaced by a weaker one (straw man), popularity standing in for evidence (industry convention; the practice's insufficient-critique list below is this check in Memar vocabulary).
@@ -63,7 +63,7 @@ Layer 4: Consequences   — what follows if this is adopted?
 Layer 5: Alternatives   — what else explains the same phenomena?
 ```
 
-Most surface-level critiques operate only on Layer 1. Valuable critique operates on Layers 3–5 — consistent with the discourse norm that terminology and definitions are evaluated differently: when terminology and definition conflict, the definition governs ([thinking.md → Discourse Norms](./thinking.md#discourse-norms-derived-from-this-model)).
+Most surface-level critiques operate only on Layer 1. Valuable critique operates on Layers 3–5 — consistent with the discourse norm that terminology and definitions are evaluated differently: when terminology and definition conflict, the definition governs ([cognition.md → Discourse Norms](./cognition.md#discourse-norms-derived-from-this-model)).
 
 ---
 
@@ -103,7 +103,7 @@ Most surface-level critiques operate only on Layer 1. Valuable critique operates
 | Deeply-developed model | Fundamental flaw in assumptions OR significantly better explanatory power |
 | Battle-tested architecture | Multiple lines of evidence + comprehensive alternative |
 
-A superficial objection to a deeply-reasoned model is not merely unhelpful — it is noise that obscures genuine issues. (The norm's home is [thinking.md](./thinking.md#discourse-norms-derived-from-this-model); this table operationalizes it.)
+A superficial objection to a deeply-reasoned model is not merely unhelpful — it is noise that obscures genuine issues. (The norm's home is [cognition.md](./cognition.md#discourse-norms-derived-from-this-model); this table operationalizes it.)
 
 ---
 
@@ -150,7 +150,7 @@ verify you critiqued the actual proposal, not a misreading of it]
 
 | Artifact | Connection |
 |----------|-----------|
-| [thinking.md](./thinking.md) | Governing concept — the modes, the discourse norms, and the model this practice operationalizes |
+| [cognition.md](./cognition.md) | Governing concept — the cognition frame, the thinking modes, the elementary operations and awareness disciplines, the named-error classes, and the discourse norms this practice operationalizes |
 | [modeling.practice.md](./modeling.practice.md) | Model discovery and review — critique of a model belongs to its review procedure; this practice covers proposals and designs generally |
 | [documentation-handoff.practice.md](./documentation-handoff.practice.md) | Critique conclusions that outlive the session are captured in a handoff record |
 
