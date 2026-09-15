@@ -22,7 +22,7 @@
     "capabilities": ["Read"],
     "websiteURL": "https://geniuses.group",
     "defaultPrompt": [
-      "Apply Memar's approach — read Thinking and the relevant live docs first.",
+      "Apply Memar's approach — read Cognition and the relevant live docs first.",
       "Design this the Memar / Khayyam way using the canonical documentation."
     ]
   }
