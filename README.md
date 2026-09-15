@@ -15,7 +15,7 @@ This approach naturally requires crossing traditional disciplinary boundaries. M
 The project assumes that meaningful progress often requires stepping outside existing conceptual systems and examining their assumptions from an external perspective. This process is difficult because it challenges ideas that are frequently treated as foundational, yet it is often the only way to expose hidden contradictions and create more coherent models. Memar therefore treats definitions as more fundamental than terminology, models as more important than implementations, and understanding as more important than convention.
 
 ## Goals
-Memar's purpose is a chain: reliable **knowledge** of reality, built and revised through **thinking**, at a quality that constitutes **intelligence**, exercised as **agency** toward goals beyond itself — ultimately the outcomes those agents pursue, such as quality of life. The goal is stated in full, with its rationale, in [Framework → Memar's Purpose Space](./docs/framework.md#memars-purpose-space-from-knowledge-to-agency); the concept homes are [Knowledge](./docs/knowledge.md), [Thinking](./docs/thinking.md), and [Agency](./docs/agency.md).
+Memar's purpose is a chain: reliable **knowledge** of reality, built and revised through **thinking**, at a quality that constitutes **intelligence**, exercised as **agency** toward goals beyond itself — ultimately the outcomes those agents pursue, such as quality of life. The goal is stated in full, with its rationale, in [Framework → Memar's Purpose Space](./docs/framework.md#memars-purpose-space-from-knowledge-to-agency); the concept homes are [Knowledge](./docs/knowledge.md), [Cognition](./docs/cognition.md), and [Agency](./docs/agency.md).
 
 The engineering goals below are means to that end:
 - Improves the quality of reasoning about systems.
@@ -59,7 +59,7 @@ It will provide ZeroOps(zero operations), edge computing, ... that let you devel
 - Provide complete framework to develop any purpose distributed application with **low||no code**.
 
 #### Transition period
-Since the Memar introduces almost all technologies needed in software development and operation as a programming language([Khayyam](./docs/khayyam.md)) and [OS](./docs/protocols/os.md) and network protocols like [Chapar](./docs/protocols/chapar.md) or [Giti-Protocol](./docs/protocols/giti.md), If any organization want to move to the Memar, we provide some exiting programming language implementation to smooth this period and use existing infrastructure like Golang and Linux and IP.
+Since the Memar introduces almost all technologies needed in software development and operation as a programming language([Khayyam](./docs/khayyam/khayyam.md)) and [OS](./docs/protocols/os.md) and network protocols like [Chapar](./docs/protocols/chapar.md) or [Giti-Protocol](./docs/protocols/giti.md), If any organization want to move to the Memar, we provide some exiting programming language implementation to smooth this period and use existing infrastructure like Golang and Linux and IP.
 
 **But remember we don't suggest using this method in starting new projects.**
 

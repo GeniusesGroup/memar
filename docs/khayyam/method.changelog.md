@@ -108,3 +108,18 @@
 - Most languages (C, Go, Java, Rust, Python) provide a dedicated function-declaration keyword distinct from their type/class declaration syntax and treat `Sum(a, b)`-style free functions as entirely ordinary; Smalltalk and other strictly message-passing-oriented languages, where even "free functions" are ultimately methods on some object, are closer in spirit to Khayyam's approach; domain-modeling-heavy codebases in many languages (e.g. `Money.add()` over a free `add(a, b)`) already arrive at the same "behavior belongs to a type" conclusion as a best practice, without the language forcing it. (Migrated from the No-Dedicated-fn/func-Keyword topic's retired Prior art)
 - Go and Rust both support method chaining freely; this is treated as the default in modern language design, which makes Khayyam's rejection here a deliberate, atypical choice rather than an oversight. (Migrated from the Composition-Depth topic's retired Prior art)
 - Taken together, Smalltalk's message-passing model (no free functions, no operator overloading magic) is the closest overall precedent for this document's general stance: prefer an already-general mechanism, explicitly used, over a second, more convenient but less legible one. (Migrated from the removed document-level Prior art, whose per-decision pointer — prior art documented under each topic — is now served by the topic-attributed entries above.)
+
+---
+
+### Type-level arguments for `sc` and `mt`
+- Time: 2026-09-15T09:00:00Z
+- Type: Changed
+- Cited:
+  - [Linter](../protocols/linter.md) — Consumed contract: the check is governance; this document owns the grammar.
+- Contributors:
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided (rule home is the subject's document)
+  - [Grok](../../CONTRIBUTORS.md#grok) (Grok 4.6 via Cursor) — applied
+
+#### What changed
+- Method Invocation Rules now state that an argument position may be a `vr` or, for `sc`/`mt`, the type itself; a bare type where a capsule/abstraction value is expected is a linter-flaggable smell, not a syntax error. Relocated from the retired Khayyam-shelf linter document.
+

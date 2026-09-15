@@ -122,3 +122,24 @@
 - Domain-Driven Design as formulated by Eric Evans advocates for rich domain models and the elimination of "primitive obsession," but leaves enforcement to developer discipline. Khayyam encodes this discipline into the language grammar itself, making it structurally difficult to violate. (Migrated from the Self-Documenting-Code topic's retired Prior art)
 - Rust's ownership model is the closest mainstream prior art in terms of explicit resource management. The specific approach Khayyam will take is not yet specified. (Migrated from the Resource-Lifecycle (Deferred) topic's retired Prior art)
 - Rust's `let` with optional `mut` is the closest mainstream variable model, though it allows type inference and uses `=` for assignment. Go's `var` declaration with explicit type is syntactically similar to Khayyam's `vr`, but Go allows `:=` short declarations and assignment operators. (Migrated from the retired document-level Prior art)
+
+---
+
+### Resource Lifecycle retargets to the Memory protocol
+- Time: 2026-09-15T13:00:00Z
+- Type: Changed
+- Cited:
+  - [Memory](../protocols/memory.md) — Consumed contract: allocation, reclamation, teardown, allocators.
+  - [Khayyam](./khayyam.md) — Realization: How Khayyam realizes Memory.
+- Propagates to:
+  - variable.handoff.md: Done — two resource-management open questions removed; the protocol and Khayyam topic are the homes.
+- Contributors:
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Cursor](../../CONTRIBUTORS.md#cursor) (Composer) — applied
+
+#### What changed
+- Body pointers that deferred storage and lifecycle to a "future document on resource management" now point at [Memory](../protocols/memory.md) and [Khayyam → How Khayyam realizes Memory](./khayyam.md#how-khayyam-realizes-memory).
+- The `Resource Lifecycle (Deferred)` heading loses the deferral; the topic states the governance/syntax split and links out.
+
+#### Deliberation
+- After the Khayyam-shelf memory-model document was retired into the Memory protocol, leaving a "future document" deferral would have been a dangling promise (Omid Hekayati — claimed).

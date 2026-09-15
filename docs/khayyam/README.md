@@ -4,7 +4,7 @@ This directory holds the design and specification documents of the **Khayyam pro
 The language's weight in Memar's development approach is not what gives these documents their own folder. Layering is about what *kind of claim* a document makes, not about a document's importance: these documents make realization claims, and that kind needed its own home the same way the protocol layer did.
 
 ## Membership criterion
-A document belongs here when it specifies a construct or concern of the Khayyam language itself — its grammar and syntax, the design decisions and open questions behind its constructs, or the design of its toolchain (compiler, linter, runtime) as consumers of that specification. Documents enter at whatever [Status](../documentation-explanation.md#status) they carry, including Draft, and are developed here in place.
+A document belongs here when it specifies a construct or concern of the Khayyam language itself — its grammar and syntax, and the design decisions and open questions behind its constructs. Compiler, linter, and runtime are not Khayyam's to specify: they are protocols in [`protocols/`](../protocols/README.md) that a Khayyam realization consumes. Documents enter at whatever [Status](../documentation-explanation.md#status) they carry, including Draft, and are developed here in place.
 
 What does **not** belong here:
 - **Concept documents** (System, Type, Modeling, ...) — general concepts stay at `docs/` root. A concept's definition is owned there even when Khayyam is its first realization; Type's four categories are the standing example, defined in [Type](../type.md) and realized here as the `cp`/`mt`/`ab`/`sc` subtypes.

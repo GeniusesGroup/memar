@@ -45,7 +45,7 @@ Khayyam fundamentally relies on only two primary top-level concepts for declarat
 ### Import Mechanism (`in`)
 Khayyam treats the file URI system as the ultimate source of truth (a URI addressing scheme for locating source, not a dependency on any particular filesystem's broader feature set — no directory permissions, watches, or other OS-level filesystem semantics are implied), avoiding abstract concepts like `namespace` or `package`. The `in` keyword is used as a routing operator to include entities from other files. Since capsules (`cp`), abstractions (`ab`), and methods (`mt`) are all fundamentally types, the import syntax remains strictly orthogonal:
 
-In this manner devs are forced to write very short codes in each file to respect single responsible codes.
+In this manner devs are forced to write very short codes in each file to respect single responsible codes. A file is meant to be read contracts-first: inclusion and type declarations before method bodies. Companion tooling may fold those declaration blocks and bodies so that order is the default view; that assist is [Linter → Tooling may present structure first](../protocols/linter.md#tooling-may-present-structure-first), not grammar.
 
 - **Type Inclusion:** `tp {name} in "{path}"`
   - *Example:* `tp TcpConn in "net/tcp"` (Imports a capsule, abstraction, or method type)
@@ -72,7 +72,7 @@ Khayyam allows developers to indicate first-level [encapsulation-pattern](./enca
 [Method in Khayyam](./method.md) is itself a type. In Khayyam, functions and methods are not separate concepts. By using the `mt` subtype, developers define an executable behavior and attach it to a type. The owner type is not limited to capsules (`cp`); a method can be attached to *any* type (`tp`), including an abstraction (`ab`) or even another method (`mt`).
 
 - `tp {name} mt (self {owner}) (influencing variables...) (influenced variables...) { }`
-- **Pass-by-Reference & State Protection:** All arguments passed into a method and all values returned from a method are passed strictly by reference. See [Memory Model in Khayyam](./memory_model.md) for the full rationale.
+- **Pass-by-Reference & State Protection:** All arguments passed into a method and all values returned from a method are passed strictly by reference. Explicit copy is a capsule method, not an assignment operator — see [Variable in Khayyam](./variable.md). The protocol-level copy and teardown rules this grammar realizes are in [Memory](../protocols/memory.md).
 - **Inherent Encapsulation:** Even though capsules are passed by reference, their internal state remains strictly protected. Because Khayyam enforces that all data fields are entirely hidden, a receiving method cannot directly mutate the passed capsule's fields. State mutation can ONLY occur if the passed capsule explicitly exposes a behavior (method) that allows it, rendering keywords like `const` or `mut` architecturally obsolete.
 - Devs MUST separate `type_owner`, `efficacy (args)`, and `impressible (returns)` by using `()` to indicate all of them even when empty. Consider that all of them are the same in underlying layers, and this rule is just to improve code readability.
 - Devs CAN write pure standalone functions in this way; there is no limitation.
@@ -80,7 +80,7 @@ Khayyam allows developers to indicate first-level [encapsulation-pattern](./enca
   - `tp Set mt (self Key) (key String) (err Error) {}`
 - **Body-less Methods (FFI & Contracts):** A method can be defined without a body (`{}`). This is legitimately used in two scenarios:
   - Contract Definition: Defining the required signature for an abstraction (`ab`).
-  - Foreign Function Interface (FFI): When the receiver is a concrete capsule (`cp`), a body-less method signals to the compiler that the implementation will be provided externally during the linking phase (e.g., from an Assembly `.s` or C `.o` file). See [Khayyam Compiler Directives](./compiler.md) for the compiler-side handling.
+  - Foreign Function Interface (FFI): When the receiver is a concrete capsule (`cp`), a body-less method signals to the compiler that the implementation will be provided externally during the linking phase (e.g., from an Assembly `.s` or C `.o` file). See [Compiler](../protocols/compiler.md).
 
 ##### Method Invocation Rules
 - **Uniform Invocation Syntax:** Khayyam strictly uses a single dot (`.`) operator for all method calls. The language intentionally rejects secondary tokens (such as `::`) to maintain syntax minimalism.
@@ -121,14 +121,25 @@ tp Error ab {
 - Scope is an area in which something acts or operates or has power or control.
 - A code scope is inert until a library-provided method drives it: the grammar ships no control-flow keywords or logical operators of its own. See [Control Flow](../protocols/control-flow.md) for how flow constructs are built as libraries within this mechanism.
 - Code scope MUST be used only inside a method body.
+- Each command ends with a new line. There is no `goto` keyword: a compiler of this language lowers `sc`-driven branches to internal jumps, and `return` is an IR marker that must itself end with a line break so it cannot be written as `return 0`. That lowering is a realization of [Compiler → The compiler recognizes language primitives, not library names](../protocols/compiler.md#the-compiler-recognizes-language-primitives-not-library-names), not a grammar keyword.
+- An argument position may be satisfied by a `vr` of the declared type or, for `sc` and `mt`, by the type itself passed as a type-level argument. See [Method → Type-level arguments for `sc` and `mt`](./method.md#type-level-arguments-for-sc-and-mt).
 
 ### Variable
 See [Variable in Khayyam](./variable.md) for the full rationale behind these constraints.
 - `vr {name} {type}`
-- Like other programming languages, the `vr` keyword is used to declare a variable. However, **Variables in Khayyam are strictly Logical References** to a type's instance, never the raw data block itself.
+- Like other programming languages, the `vr` keyword is used to declare a variable. However, **Variables in Khayyam are strictly Logical References** to a type's instance, never the raw data block itself, and never a raw machine pointer.
+- **No `nil` / `null` keyword:** the grammar has no universal nullability token. Absence, when a type can represent it, is a method on that type's contract — conventionally `IsNull()` — realizing [Memory → Absence is a type's contract](../protocols/memory.md#absence-is-a-types-contract-not-a-universal-machine-condition).
 - **No Implicit Copying & No Assignment Operators:** Khayyam completely eliminates assignment operators (like `=`). Passing a variable to a method ALWAYS passes the reference. The language natively prevents any implicit deep or shallow copying, ensuring zero hidden memory allocation overhead.
 - If a deep copy or state duplication is logically required, it MUST be done explicitly via the capsule's behavior. The developer must declare a new variable and invoke a method (e.g., `vr newVar Type`, followed by `newVar.CopyFrom(oldVar)`).
 - Variables CAN be declared in files and method bodies.
+
+### How Khayyam realizes Memory
+[Memory](../protocols/memory.md) owns the language-independent requirements. This language meets them without growing memory-management syntax:
+
+- **No lifetime annotations.** The grammar has none. Correctness of lifetimes is obtained from sovereign encapsulation (no leaking raw internal references), deterministic `sc` boundaries, the absence of syntax-level pointers, definite-assignment analysis (an uninitialized `vr` is refused), and linter path coverage for release — not from author-written lifetime parameters.
+- **Teardown surfaces.** When a capsule acquires memory that needs an explicit release, the conventional methods are `Deinit()` or `Free()`. Path-complete invocation of those methods is governance checked by the [Linter](../protocols/linter.md), under [Memory → Safety enforcement is governance](../protocols/memory.md#safety-enforcement-is-governance) and [Memory → Teardown is explicit, and automation writes source](../protocols/memory.md#teardown-is-explicit-and-automation-writes-source). The method names are library convention, not keywords.
+- **Layout analysis.** A Khayyam-consuming compiler may run a linear static escape analysis for everyday builds, because the grammar forbids arbitrary pointers and implicit mutation. Profile-guided layout migration (heap↔stack, pre-sizing from traces) is a separable orchestration library — particularly motivated in predictable single-process environments such as unikernels remapping short-lived footprints onto worker entry stacks — and remains a long-term goal per [Memory → Layout optimization is not a language feature](../protocols/memory.md#layout-optimization-is-not-a-language-feature), not a solved claim of this grammar.
+- **Generated companions.** When tooling automates path-complete release, it emits explicit source the program includes. The historical draft name `file_name.generated_by_gc1.kh` is a candidate only; the convention is open in [Memory's handoff](../protocols/memory.handoff.md#what-convention-names-and-places-generated-teardown-source).
 
 ### Khayyam Is Not Its Own Compiler or Runtime
 Khayyam, as a sub-framework, defines a design space for expressing Memar's constraints in source form — explicit state, explicit error paths, no hidden control flow. It does not follow from this that Khayyam must also provide its own compiler or runtime as part of what Khayyam *is*.
@@ -144,9 +155,9 @@ This has a direct consequence for how Khayyam's own documents should be scoped: 
 **Principle:** *Syntax defines what exists* (ontology: which types, values, and relationships a program may mention). *Governance defines how instances flow* (policies about lifecycle, error routing, and architectural constraints on those instances). The compiler enforces the first; the linter/framework enforces the second. This line is not “syntax is small vs. linter is big” — it is *what* vs. *how*.
 
 - **Syntax (compiler-enforced):** Whether a type, value, or relationship may appear at all. Examples: “a bare numeric literal `41` may not appear as a value without a named capsule” (claiming existence of an unmodeled value), “a static method must be called on the type, an instance method on a variable” (which entity a name resolves to), “all fields are private, access only via methods.”
-- **Governance (linter/framework-enforced):** Policies about how already-well-typed instances move through the program. Examples: memory safety / `Deinit()`-path coverage, error-inspection discipline, code-scope naming conventions, orphan-rule for cross-file extension, architectural constraints like “no `Utils` capsules.”
+- **Governance (linter/framework-enforced):** Policies about how already-well-typed instances move through the program. Examples: memory-safety teardown-path coverage, error-inspection discipline, code-scope naming conventions, orphan-rule for cross-file extension, architectural constraints like “no `Utils` capsules.”
 
-A decision that *creates* or *denies* existence belongs in syntax precisely because a linter rule can be disabled — disabling a syntax rule changes what programs exist; disabling a governance rule changes how well they are kept. This is why `variable.md` rejects moving the magic-number ban to the linter (“lint rules can be disabled, weakening the safeguard”) while `memory_model.md` accepts linter-enforcement for memory safety — the former denies existence of unmodeled values, the latter polices flow of already-typed instances.
+A decision that *creates* or *denies* existence belongs in syntax precisely because a linter rule can be disabled — disabling a syntax rule changes what programs exist; disabling a governance rule changes how well they are kept. This is why `variable.md` rejects moving the magic-number ban to the linter (“lint rules can be disabled, weakening the safeguard”) while [Memory](../protocols/memory.md) accepts linter-enforcement for memory safety — the former denies existence of unmodeled values, the latter polices flow of already-typed instances. The split itself is the [Linter](../protocols/linter.md) protocol's compiler-versus-linter line, realized here as grammar versus governance.
 
 ### The Grammar Refuses Protocol Semantics
 **Principle:** *A construct enters the grammar only when its semantics can be stated without adopting any protocol's definitions.* Where what a construct means would require the definitions a protocol owns — what an error is, what a memory guarantee is, what a concurrency primitive may assume — the grammar refuses the construct, and the need is met through the language's generic mechanisms instead: ordinary values and explicit outputs, explicit imports, library-provided methods, and the `ab` construct for authoring contracts.
@@ -167,7 +178,7 @@ As a result, Khayyam favors:
 
 These preferences influence language design decisions such as execution models, memory abstractions, and runtime responsibilities. The goal is not to require a specific deployment environment. Rather, the goal is to ensure that architectural decisions remain visible, modelable, and predictable regardless of the underlying execution platform.
 
-Many of these principles align naturally with unikernel-style computing, where applications operate with minimal hidden runtime layers and explicit control over execution behavior. However, Khayyam adopts these ideas as architectural principles rather than deployment requirements; the runtime-side realization of this alignment lives in the [Memar Framework's reference architecture](./runtime.md), which is one concrete answer to it — not its definition. The unikernel-aligned assumption may limit early adoption in organizations that do not yet use unikernels in production.
+Many of these principles align naturally with unikernel-style computing, where applications operate with minimal hidden runtime layers and explicit control over execution behavior. However, Khayyam adopts these ideas as architectural principles rather than deployment requirements; the execution-side contract is [Runtime](../protocols/runtime.md) — one environment among OS, unikernel, WASM host, and language library, not a Khayyam-owned VM. The unikernel-aligned assumption may limit early adoption in organizations that do not yet use unikernels in production.
 
 Every language feature should have explicit execution semantics. Architectural behavior should emerge from visible models and protocols rather than from implicit runtime facilities or operating-system abstractions. This approach seeks to reduce the gap between architectural intent, implementation behavior, and runtime execution, allowing systems to remain understandable and evolvable over long periods of time.
 

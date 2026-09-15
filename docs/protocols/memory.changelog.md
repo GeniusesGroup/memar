@@ -127,3 +127,71 @@
 #### Considered and not done (from the removed document-level Drawbacks section)
 - **The contract-explicitness requirement adds real specification and documentation burden to every Memar library, including ones whose language's default semantics would have made most terms trivially safe** — a cost the framework accepts deliberately: the burden is where the cost of the decisions actually is. (Omid Hekayati)
 - **The definitional positions — one memory class, three volatility properties, one reclamation question — ask readers to abandon vocabulary they have used their whole careers, and the transition generates friction this document cannot remove, only justify** — accepted deliberately for the same reason. (Omid Hekayati)
+
+---
+
+### Absorb managerial requirements; retire the Khayyam-shelf memory-model document
+- Time: 2026-09-15T09:00:00Z
+- Type: Changed
+- Cited:
+  - [Linter](./linter.md) — Consumed contract: safety checks are governance this protocol states and that protocol checks.
+  - [Compiler](./compiler.md) — Consumed contract: uninitialized reads are ontology; teardown automation may emit source.
+- Propagates to:
+  - memory.handoff.md: Done — Khayyam-shelf relocation item closed; generated-source convention and binary-mutation questions recorded.
+  - memory_model.md: Done — retired and deleted; managerial positions absorbed here.
+  - memory_model.handoff.md: Done — retired and deleted; surviving questions merged.
+  - khayyam.md: Done — grammar facts kept; pointers retargeted here; later entry places realization notes.
+  - variable.md / variable.handoff.md: Pending at absorb time — closed in the following entry.
+  - control-flow.md: Done — presence/absence candidate retargeted to Absence is a type's contract.
+  - agency.md / agency.handoff.md: Done — safety-trade-off and teardown-path pointers retargeted.
+- Contributors:
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — claimed, decided
+  - [Grok](../../CONTRIBUTORS.md#grok) (Grok 4.6 via Cursor) — rewrote
+
+#### What changed
+- The document now carries a third movement: reclamation, teardown, and layout optimization are toolchain and library concerns, not language-syntax concerns, and the same requirements bind a C or Go toolchain without those languages growing new grammar.
+- Automation of path-complete release, when a toolchain performs it, emits explicit source the program includes — a generated file, a temporary compilation unit, or a checked-in companion — rather than hidden insertion or lifetime annotations in the author's source.
+- Safety checks are governance, relaxable by organization; uninitialized reads remain a compiler or linter refusal of existence; allocators are libraries; layout optimization is a separable orchestration concern stated as a long-term goal; emptiness is a type's contract term, not a universal machine condition.
+- Methodology no longer defers reclamation-mechanism choice to a Khayyam-shelf document.
+- `memory_model.md` and its handoff are retired and deleted. Grammar facts that document mixed in (`vr` as logical reference, no assignment operator, pass-by-reference) already live in [Khayyam](../khayyam/khayyam.md) and [Variable](../khayyam/variable.md).
+
+#### Deliberation
+- A Khayyam-shelf memory-model document implies the language owns memory management, which the grammar-refusal principle contradicts (Omid Hekayati — claimed).
+- The managerial requirements must be stated independently of Khayyam, because they are implementable on a C or Go compiler without syntax change; C's currently-manual acquire/release can be automated by writing explicit code into a file, not by magic in the author's source (Omid Hekayati — decided).
+- Concatenating the retired file's Khayyam-specific mechanisms into this protocol was rejected; absorbing the positions and deleting the shelf document follows the Control Flow merger (Omid Hekayati — decided).
+
+#### Considered and not done
+- **Keeping a Khayyam `memory_model.md` as a realization stub (rejected)**: a near-empty body would still occupy the language shelf and re-create the misreading; grammar facts already have homes.
+- **Dumping the retired file's body into this document as a Khayyam chapter (rejected)**: would make the protocol a language specification.
+- **Adopting compile-time binary mutation of dynamically-valued constants (not adopted)**: was explicitly undecided in the retired draft's source material; recorded as an open question, not as a requirement.
+- **A Rust-style mandatory, unbypassable borrow checker as the default enforcement (rejected in the retired draft; preserved here)**: considered and rejected as the *default* mechanism in favor of a linter-based, organization-swappable one, consistent with framework-over-language placement — the strength of the safety guarantee is then a toolchain-configuration decision, not a language guarantee. (Omid Hekayati — decided in the retired draft's source material)
+- **Reading profile-guided heap↔stack migration as an already-solved engineering problem (rejected in the retired draft; preserved here)**: PGO as a discipline is established in toolchains such as LLVM/GCC for performance optimization, but not typically at the scope of automatic allocation-site migration described in the retired draft; that scope remains a long-term architectural goal. Go's Escape Analysis is cited as the motivating counter-example of implicit, non-overridable runtime memory magic; Rust's lifetime annotations as the motivating counter-example of syntactic cost for safety. (from the retired draft's Drawbacks / Prior art)
+
+---
+
+### Place Khayyam realization notes; close variable deferrals after the shelf retirement
+- Time: 2026-09-15T13:00:00Z
+- Type: Changed
+- Cited:
+  - [Khayyam](../khayyam/khayyam.md) — Realization: no raw pointers, no `nil` keyword, `Deinit()`/`Free()`/`IsNull()` conventions, escape-analysis and PGO placement.
+  - [Variable](../khayyam/variable.md) — Realization: Resource Lifecycle no longer defers to a missing document.
+- Propagates to:
+  - memory.handoff.md: Done — compatibility-contract future possibility and generated-name candidate recorded.
+  - khayyam.md: Done — `How Khayyam realizes Memory` topic added; Variable bullets gain pointer/`nil` facts.
+  - variable.md / variable.handoff.md: Done — Resource Lifecycle retargeted here; deferred open questions removed.
+  - khayyam.changelog.md / variable.changelog.md: Done — paired entries.
+- Contributors:
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Cursor](../../CONTRIBUTORS.md#cursor) (Composer) — applied
+
+#### What changed
+- The audit of the retired shelf file found managerial positions already absorbed, but Khayyam-specific mechanisms and the variable-layer deferral still had no live home; those gaps are closed without reopening a shelf document.
+- Surviving deliberative material from the retired draft's Drawbacks, Rationale, and Prior art is preserved in the absorb entry's `Considered and not done` above; the compatibility-contract future possibility lands in this document's handoff.
+
+#### Deliberation
+- Realization facts that name Khayyam constructs must live in Khayyam documents, not in this protocol — the same split the absorb entry already decided (Omid Hekayati — decided).
+- `variable.md`'s "future document on resource management" was the old shelf by another name; after retirement it would have been a dangling deferral (Omid Hekayati — claimed).
+
+#### Considered and not done
+- **Re-creating a Khayyam `memory_model.md` only for realization notes (rejected again)**: a short topic under [Khayyam](../khayyam/khayyam.md) is enough; a separate file would re-shelf the misreading.
+- **Editing historical changelog links that still name `memory_model.md` (not done)**: left as provenance, matching the Control Flow merger's practice.

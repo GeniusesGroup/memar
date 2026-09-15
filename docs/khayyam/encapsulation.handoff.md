@@ -23,6 +23,9 @@ Open work for `encapsulation.md`. Entries are mutable current state — revised 
 1. Should the language or the Memar framework provide a set of "standard" capsules for common patterns (e.g., `Pair`, `Result`, `Option`) to reduce the ceremony of defining named capsules for simple cases?
 2. How does the encapsulation model interact with serialization and deserialization — can a capsule's internal state be serialized without going through its public methods?
 
+### Does the `get`/`set` generation MAY belong here?
+The 2026-09-15 pass landed "a linter MAY write accessors on request" in [Capsule Structure and Privacy](./encapsulation.md). That sentence is a suggested tooling rule, not a fact of encapsulation. Whether it stays, or moves to a protocol-layer suggested-rules catalog, is owned by [Linter Handoff → Do suggested rules get a catalog document](../protocols/linter.handoff.md#do-suggested-rules-get-a-catalog-document-stay-in-subject-documents-or-split-by-kind). Do not add more maybe-rules here until that is decided.
+
 ## Anticipated Work
 
 - A linter mode that detects capsules with "trivial getter" methods (methods that simply return a field value without transformation) and suggests whether they indicate a missing domain abstraction or are genuinely appropriate. (From the Capsule-Structure-and-Privacy topic.)

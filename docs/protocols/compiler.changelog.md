@@ -1,4 +1,4 @@
-# Khayyam Compiler Changelog
+# Compiler Changelog
 
 ## Changelog
 
@@ -141,3 +141,27 @@
 #### What changed
 - The "Relation to Immutable Infrastructure" note mirrors khayyam-runtime.md's re-anchoring: the compile-time-fixed default is now cited from the base principle Structure Is Fixed by Definition (type.md), and the Immutable Infrastructure brand no longer appears in this document. The escape-hatch reading is unchanged.
 - The Abstract's directive sentence now cites the same base principle.
+
+---
+
+### Lifted to a language-independent Compiler protocol
+- Time: 2026-09-15T09:00:00Z
+- Type: Changed
+- Propagates to:
+  - compiler.handoff.md: Done — rewritten; Khayyam-to-JS prototype and event schema kept as anticipated work.
+  - khayyam.md: Done — `sc` lowering, command newline, and `return` IR marker stated as realization facts.
+  - lexer.md: none — already a consumed protocol; historical changelog links left as provenance.
+- Contributors:
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — claimed, decided
+  - [Grok](../../CONTRIBUTORS.md#grok) (Grok 4.6 via Cursor) — rewrote
+
+#### What changed
+- The document is now the Compiler protocol: a compiler consumes a language specification and produces a target representation; it is not identified with one language or one target (native, JavaScript, WebAssembly).
+- Requirements stated without owning Khayyam's AST: recognize language primitives not library names; emit analysis events; entry/lifecycle are configuration plus Runtime; designated pure operations may run at compile time; consume the Lexer; runtime mutation of the artifact is `unsafe`.
+- Khayyam-specific lowering (`sc` to internal jumps, `return` as newline-terminated IR marker) moved to [Khayyam](../khayyam/khayyam.md).
+- Status returns to Draft. Title is "Compiler".
+
+#### Deliberation
+- Compiler is not uniquely Khayyam-to-machine-code; a precise definition is needed so other uses (Khayyam to JS) share it (Omid Hekayati — claimed).
+- The document must move to the protocols folder as a general concept (Omid Hekayati — decided).
+

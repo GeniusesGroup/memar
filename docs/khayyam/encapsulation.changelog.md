@@ -147,3 +147,18 @@ Completed the migration an earlier pass had started (this document already follo
 - Primitive-integer prior art (migrated from the Primitive-Capsule-Specification topic's retired Prior art): Zig's integer types include comptime range checks and overflow semantics; Rust's integer types distinguish between wrapping (`wrapping_add`), checked (`checked_add`), and saturating (`saturating_add`) operations through methods, not through separate types; Ada's range types are closer to Khayyam's model of encoding range semantics in the type itself.
 - Constant prior art (migrated from the Constants-as-Capsule-Returned-Values topic's retired Prior art): most languages provide an explicit `const`/`final`/`let` keyword; Khayyam's "constant as a compile-time function" framing is conceptually close to `constexpr` functions in C++ or `comptime` values in Zig, though without a dedicated keyword marking them as such.
 - Document-level prior art (migrated from the retired document-level Prior art): Smalltalk's strict message-passing encapsulation (no public fields, all interaction through messages) is the closest mainstream prior art for the capsule model; prior art for abstractions and polymorphism is documented in their respective documents.
+
+---
+
+### Requested accessor generation is explicit source, not a public surface
+- Time: 2026-09-15T09:00:00Z
+- Type: Changed
+- Cited:
+  - [Linter](../protocols/linter.md) — Consumed contract: assistance writes source on request.
+- Contributors:
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided (rule home is the subject's document)
+  - [Grok](../../CONTRIBUTORS.md#grok) (Grok 4.6 via Cursor) — applied
+
+#### What changed
+- Capsule Structure and Privacy now states that a linter or companion generator MAY write `get`/`set` methods into explicit source when requested, and MUST NOT synthesize a public surface the author never asked for — content relocated from the retired Khayyam-shelf linter document.
+
