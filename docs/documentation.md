@@ -6,10 +6,10 @@ ID: 495820
 ---
 
 # Documentation
-This document defines what a Facet is, names the five facets currently in use, explains how the facet system extends, and carries the cross-cutting conventions that span facets (results routing, citations, URI). It does not itself specify the structure of any facet — that is each facet's own document's job.
+This document defines what a Facet is, names the five facets currently in use, explains how the facet system extends, and carries the cross-cutting conventions that span facets (file naming, documentation language, results routing, citations, URI). It does not itself specify the structure of any facet — that is each facet's own document's job.
 
 ## Abstract
-Documentation in this project is organized into **Facets** — distinct kinds of documentation content, each with its own governing structure and its own specification document. A facet is defined by the reader's relationship to the content: what the reader is expected to do with it. This project currently defines five facets — **Explanation** (content meant to be studied to understand something), **Practice** (content meant to be followed to accomplish something), **Changelog** (content meant to be consulted to audit how an artifact changed over time), **Handoff** (content meant to be read to resume a paused discussion across a session boundary), and **Research** (content meant to be examined to evaluate a deliberate inquiry). See [Facets](#facets) for the definitions and [Extensibility](#extensibility) for how new facets may be added. Cross-cutting conventions that apply regardless of facet — where a result of each type is recorded, citation practice, URI form — are defined here as well.
+Documentation in this project is organized into **Facets** — distinct kinds of documentation content, each with its own governing structure and its own specification document. A facet is defined by the reader's relationship to the content: what the reader is expected to do with it. This project currently defines five facets — **Explanation** (content meant to be studied to understand something), **Practice** (content meant to be followed to accomplish something), **Changelog** (content meant to be consulted to audit how an artifact changed over time), **Handoff** (content meant to be read to resume a paused discussion across a session boundary), and **Research** (content meant to be examined to evaluate a deliberate inquiry). See [Facets currently defined](#facets-currently-defined) for the definitions and [Extensibility](#extensibility) for how new facets may be added. Cross-cutting conventions that apply regardless of facet — how a document's name encodes its category, concept, and facet; the language the written record is kept in; where a result of each type is recorded; citation practice; URI form — are defined here as well.
 
 ## Introduction
 
@@ -123,6 +123,20 @@ A URI is a string identifier as defined by [RFC 3986](https://datatracker.ietf.o
 - **Relative reference**: a scheme-less reference resolved against a base URI ([RFC 3986, Section 5](https://datatracker.ietf.org/doc/html/rfc3986#section-5)), e.g. `./chat-logs/x.md`. Used for resources local to this repository. This is a first-class, standards-compliant form, not a workaround.
 
 The `file:` scheme ([RFC 8089](https://datatracker.ietf.org/doc/html/rfc8089)) specifically requires an absolute path, which breaks portability across different clones of the same repository; a scheme-less relative reference is used for local paths instead of `file:` for that reason. This rule applies wherever a URI appears — internal hyperlinks, citation entries, contributor identity, examples, and any other reference to a local resource, in any facet.
+
+### File Naming
+A file name carries structure, not only an identifier: it states which category a document belongs to, which concept it addresses, and — for a companion record — which facet it follows. Three separators divide that labor, and each carries exactly one kind of boundary; a name is legible when no separator is asked to carry two.
+
+- **Folder, or hyphen (`-`)** — the structural boundary between category and topic. The folder carries it where a category has enough documents to own a directory (`protocols/media-type.md`, `khayyam/memory_model.md`); the hyphen carries it where documents sit beside one another in one directory (`abstraction-implements.md`, `networking-osi_1-Asb.md`). The left side names the namespace, the right side the subject.
+- **Underscore (`_`)** — joins the words of a single conceptual term so the term reads as one unit rather than as separate parts (`memory_model.md`, `immutable_infrastructure.md`, `osi_1`).
+- **Dot (`.`)** — separates a companion record's facet key from its base name (`<base>.changelog.md`, `<base>.handoff.md`, `<base>.practice.md`, `<base>.research.<NNN>.md`), which is how the companion pairing is stated instead of inferred.
+
+The distinction is load-bearing: `type-explicit_behavior_ownership.md` says *category* `type`, *term* `Explicit Behavior Ownership`, while a name whose parts all wear the same separator states no boundary at all and leaves the reader to guess where the category stops and the topic starts.
+
+A name is chosen by the criteria that govern the term it encodes — it communicates meaning, preserves conceptual boundaries, avoids implementation-specific vocabulary, and stays stable over time, since a rename changes how the concept is addressed rather than how it is written. The human-readable form of a document's name is its front-matter `Title`, which is the slug's source; see [documentation-explanation.md → Title](./documentation-explanation.md#title).
+
+### Documentation Language
+The project's written record is kept in English. The reason is the record's audience rather than a preference about which language reads better: documentation is read by agents of every kind — human, IDE, CLI, AI — across sessions, shifts, and projects, and one language is what lets all of them read the same text instead of a version of it. A proposal to change documentation states its replacement text in English, ready to substitute, so accepting a proposal never requires a translation pass. Conversation is outside this rule: it follows whoever is speaking, and the language a discussion happened in is no reason to write the record in it.
 
 ### Results routing
 Documentation work constantly produces results, and the type of the result — not the writer's preference — determines where it is recorded. This routing is cross-cutting: its homes span several facets, while each home's structure is defined by that facet's own governing specification, not repeated here.

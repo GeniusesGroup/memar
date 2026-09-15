@@ -245,7 +245,7 @@ tp ImplError mt (self ErrServiceNotFound) () () {
 This method provides **no safety or "sealed interface" guarantee**. `abstraction_p.Implements` and its domain-specific realizations exist purely to help tooling, not to guard against misuse.
 
 ### Enforcement of the "each Error is its own type" rule
-Per the [Type](../type.md) identity principle, every concrete error is its own distinct type, generated (not hand-authored, in the common case) by a code generator that reads `ImplementsError`-declared, incomplete capsules and scaffolds the remaining `Error` methods. The suggested (non-binding) naming convention for this family is the `Err` prefix (`ErrServiceNotFound`, `ErrTransactionUnavailable`), as recorded in [type.practice.md](../type.practice.md).
+Per the [Type](../type.md) identity principle, every concrete error is its own distinct type, generated (not hand-authored, in the common case) by a code generator that reads `ImplementsError`-declared, incomplete capsules and scaffolds the remaining `Error` methods. The suggested (non-binding) naming convention for this family is the `Err` prefix with the remainder in PascalCase (`ErrServiceNotFound`, `ErrTransactionUnavailable`); this document is that convention's home. Its status — a topic's explicitly non-binding convention, enforced if at all by per-organization linter configuration — is the kind defined in [documentation-explanation.md → Conventions](../documentation-explanation.md#conventions).
 
 This rule is the load-bearing one that everything else in this document depends on. Without it:
 

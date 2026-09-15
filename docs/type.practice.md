@@ -41,7 +41,7 @@ Do not justify a fifth category unless the candidate role is irreducible to spec
    tp Find mt (self Service) (id ID) (result Result, err ErrNotFound)
    ```
 4. Multi-outcome calls → declare the Abstraction as the outcome type; the returned value's concrete Type carries which-one occurred. What may defer to runtime is *dispatch* among candidates — never the *identification* of any single concept, which stays a direct type assertion. Exhaustiveness checking over an open abstraction is a real, unresolved need assigned to linter/compiler tooling, not signature syntax — until that tooling exists, callers rely on manual completeness discipline. Candidate mechanisms for that tooling include code-generator metadata, whole-program analysis, and closed/sealed hierarchies (Kotlin `sealed class`, Swift protocol-conformance-closed types), which achieve exhaustiveness over compiler-known closed sets of Types without runtime tags. The framework's stance is captured in its review maxim: "polymorphism is about code reuse, not about teaching the compiler how to do its job."
-5. Naming conventions: the `Err` + PascalCase prefix is the recorded default for the error family (non-binding; enforcement is linter configuration). Other static-concept families record their own domain-appropriate conventions in their governing documents.
+5. Naming conventions: each static-concept family records its own domain-appropriate naming convention in that family's governing document, and states it as non-binding unless a contract requires it.
 
 Gray zones in step 3:
 - Incidental metadata (one timestamp field on a status-like entity) does not make it a data carrier — rerun the modeling test on responsibility, not field presence.
