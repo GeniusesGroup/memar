@@ -1,0 +1,29 @@
+# Monetary Standard and Resource Wealth — Handoff
+
+Companion of `monetary-standard-and-resource-wealth.md`.
+
+## Open Questions
+1. **Where does the dollar meet the joule?** [Exergy territorial wealth fund and currency independence from exported saved gas (Territorial Exergy Sovereign Wealth Fund)](monetary-standard-and-resource-wealth.md#exergy-territorial-wealth-fund-and-currency-independence-from-exported-saved-gas-territorial-exergy-sovereign-wealth-fund) mints its legitimacy in hard currency (300 to 350 million dollars a month; over 1 billion a year); [Joule-based work-backed monetary standard on net exergy (Exergy-Backed Energy Currency)](monetary-standard-and-resource-wealth.md#joule-based-work-backed-monetary-standard-on-net-exergy-exergy-backed-energy-currency) forbids money creation without metered energy and claims immunity from currency crises. The fund's dollars must either be spent without circulating (an external sector with no internal money price), converted at a declared parity (importing volatility the standard was built to exclude), or exempted (the printing press renamed). Which is it? *(Why: every capital-finance metric in the fund and the "zero structural inflation" claim in the standard are simultaneously true only under one of the three readings, and the reading decides whether the two records compose or contradict. Blocking: yes for any combined verdict.)*
+2. **Who meters the counterfactual?** The fund's quota is gas *saved* — measured against consumption that would otherwise have occurred. The exergy ledger prerequisite (an idea of the observability-of-flows record, linked, never assumed) meters production and delivery, not counterfactuals; the 300-to-350-million-dollar figure has no recorded baseline method. Who certifies the baseline, and can it be gamed by a village that never planned to electrify? *(Why: without a baseline protocol, the fund's entire revenue is self-reported arithmetic and the zero-percent-dependence claim is unauditable. Blocking: yes for the fund's metrics; no for the standard.)*
+3. **Does the joule standard cover services and labor at all?** Its unit is defined by physical work (kilowatt-hours, megajoules); the cooperative work the [Citizen time-banking and tokenization of cooperative micro-tasks (Decentralized Time-Banking)](reward-cooperation-thrift.md#citizen-time-banking-and-tokenization-of-cooperative-micro-tasks-decentralized-time-banking) record mints is time, not joules, and that record claims the same wallet. Is work-capital a full currency (then hours need an energy-equivalent and the parity 1 hour = 1 credit becomes an energy measurement of caregiving) or a settlement layer for energy goods only (then most daily exchange is outside the standard and its "zero structural inflation" governs only part of prices)? *(Why: the answer fixes the scope of every metric in this document. Blocking: yes for the standard's scope claims.)*
+4. **Is the sanctions immunity designed or asserted?** The mechanism text asserts that the energy standard immunizes cell-to-cell trade "against currency crises and sanctions," yet its prerequisites — the platform, the ledger, the wide sensor network — run on infrastructure that sanctions can reach (imports, cloud custody, chip supply), and the fund's revenue passes through a state export ring. Reviewer note: no mechanism in either record addresses how an exergic settlement avoids the sanctioned rails. *(Why: an immunity claim without an adversary model is a premise in need of a handoff, not a metric; this is where the reviewer disagrees with the source and requests a response. Blocking: no for the requirement; yes for treating the immunity claim as evidence-grade.)*
+
+## Decisions
+- (none; no verdict recorded.)
+
+## Extensions / anticipated work
+- If Q1 lands on "dollars spent, not minted," the fund's disbursement rules (import parity, project milestones) belong to a monetary-constitution record this document set does not yet have; the candidate host is this document's folder (economy) or governance — decide by the network/consumer rule: the standard is the network, the fund its consumer.
+- A conversion note on payāb/qanat measurement as the precedent instrument for the standard's audit story (reviewer-authored anchors reference it; the historical source of the practice could be cited if the claim is used in promotion).
+- The fund's "legislative act granting export usufract" prerequisite may deserve its own governance-record entry — one bill is load-bearing for both records here.
+
+## Assumptions
+- The gas-savings arithmetic (300–350 million dollars per month from Shiraz in summer; over 1 billion per year) is owner-asserted from source materials, pending energy-ledger verification (stability: Weak).
+- 5GDHC loops, the urban gas-distribution ban, the exergy ledger and the unikernel platform are linked ideas of the energy and information-systems documents, never premises of this one (per the 2026-09-13 audit).
+- A functioning Energy Exchange with an "export ring" persists during the transition and accepts village-held quotas — assumed by the fund mechanism, unexamined by any record here (stability: Unexamined).
+- The petrochemical buyers are domestic customers with hard-currency budgets — the mechanism text offers them as the alternative to export without saying which currency they pay in (stability: Weak).
+
+## Proposed Next Steps
+1. Owner: answer Q1 (the dollar–joule border) — it is the document's framing ruling and blocks the fund's adoption path.
+2. Owner: answer Q2 (baseline certification) jointly with the information-systems family that owns the exergy ledger.
+3. Owner: answer Q3 (standard scope) jointly with the time-banking record in `reward-cooperation-thrift.md`.
+4. Delegatable: collect the source figures behind the 300–350 million dollar/month claim (Shiraz summer gas balance) for the numeric audit the cleanup gate requires.

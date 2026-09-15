@@ -1,0 +1,27 @@
+# Daylight to Interiors — Handoff
+
+Companion of `daylight-to-interiors.md`.
+
+## Open Questions
+1. **Is the requirement "light by form" or "real solar spectrum everywhere" ([Daylighting architecture and the optimization of incidence angle](daylight-to-interiors.md#daylighting-architecture-and-the-optimization-of-incidence-angle) vs [Conducting natural sunlight into the depths of the ten basement levels with heliostat pipes and optical fiber (Solar Light-Pipes)](daylight-to-interiors.md#conducting-natural-sunlight-into-the-depths-of-the-ten-basement-levels-with-heliostat-pipes-and-optical-fiber-solar-light-pipes))?** The passive record's zero-daytime-lamp duty presupposes no permanently windowless occupied room; the basement record exists precisely because the society's own section decides to work people ten floors below one, and declares the biological reason (serotonin, circadian rhythm) as a need only raw sun answers. *(Provenance: collision paragraph "a dark room is a design failure / dark by construction". Why: the answer determines whether heliostat fields are mandatory architecture — and their cost — or a rescue permitted only below grade. Blocking: yes for a combined verdict on the three records; no for the passive record alone.)*
+2. **Does the roof carry one heliostat trunk or two, and may the arriving sun keep its heat?** The basement record promises full-spectrum undressed sun at 98-percent reflection; the ground-floor record promises the same full-spectrum phrase minus infrared at above-85-percent transmission, and the two compete for the same volumes — dual-axis collectors on one roof, central vertical shafts in one structure ([Heliostat-focusing fibre-optic channels for natural light to the ground floor (Heliostat Fibre-Optic Solar Pinhole)](daylight-to-interiors.md#heliostat-focusing-fibre-optic-channels-for-natural-light-to-the-ground-floor-heliostat-fibre-optic-solar-pinhole)'s shaft prerequisite is shared territory with the risers of [Conducting natural sunlight into the depths of the ten basement levels with heliostat pipes and optical fiber (Solar Light-Pipes)](daylight-to-interiors.md#conducting-natural-sunlight-into-the-depths-of-the-ten-basement-levels-with-heliostat-pipes-and-optical-fiber-solar-light-pipes)). *(Provenance: collision paragraph "one question, two answers: is the arriving sunlight allowed to carry its heat?". Why: one engineered shaft serving two distributions is a different cost curve from two shafts, and the infrared question is the plants' and the visitors' verdict on the workers' bonus. Blocking: yes for the engineering verdict; no for the underlying requirement.)*
+3. **Who audits which lighting-savings promise?** Three currencies coexist in this document — up to 60 percent lighting-load cut (passive), 70 percent of the negative floors' lighting electricity (basework), zero watts consumed (pilotis) — each stated against a different denominator, none mapped to metered rooms. *(Provenance: collision paragraph "their energy and electricity claims still double-book". Why: the energy ledger downstream needs a boundary it can verify; summed, the three claims are one unfalsifiable number. Blocking: no for the requirement; yes for the metrics' auditability.)*
+
+## Decisions
+- (none; no verdict recorded.)
+
+## Extensions / anticipated work
+- The serotonin/circadian premise of the basement record is a health claim belonging, per the dependency direction, to the living-and-culture health-watch ledger; this document declares the need (full-spectrum light at minus ten) and should cross-link once that verdict is recorded.
+- A rooftop survey (collector area vs the 2,000-square-meter roof and the [Wall-free transparent ground floor on pilotis with at least 6 meters of clear height (continuous 100-hectare substrate)](../form-and-land/which-plane-carries-which-flow.md#wall-free-transparent-ground-floor-on-pilotis-with-at-least-6-meters-of-clear-height-continuous-100-hectare-substrate)'s unshadowed band) would decide whether Q2 is a conflict at all.
+- The two active records both descend from the "System-architect supplemental idea" source; if the owner confirms they were meant as one system (humans below, plants at grade), the merge practice of this ledger applies and their shafts should be co-designed.
+
+## Assumptions (stability)
+- The ten basement levels and the 6-meter pilotis will actually be built (both active records stand on these greenfield premises from which-plane; stability: Strong within the model, Weak against the which-plane handoff Q1–Q2 still open there).
+- 100-percent daytime natural illumination of the suites is achievable by geometry in the plateau's latitude band (stability: Weak — no worked section is recorded).
+- Fiber bundles and light pipes reach the quoted transmission (under 15 percent loss at 40 meters; above 85 percent at 35 meters) with real products (stability: Unexamined).
+
+## Proposed Next Steps
+1. Owner: answer Q1 (duty of form vs permission of devices) — it sets which rooms are the passive record's and which the pipes may claim.
+2. Owner: rule Q2 (single trunk, heat policy) — the answer should be recorded jointly with the movement/structural ledgers whose roofs and shafts are shared.
+3. Owner: state Q3's metering boundary, or delegate it to the energy ledger's next pass.
+4. Delegatable: recheck the three savings figures against any manufacturer data for light-pipe and fiber bundle systems (feeds the third Assumption).

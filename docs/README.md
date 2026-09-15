@@ -58,6 +58,9 @@ The specifications of **Memar's own protocols** — the named sets of declarativ
 ### `khayyam/`
 The design and specification documents of the **Khayyam programming language** — the language designed within Memar's design space, one of Memar's language realizations ([`protocols/` → Implementation repositories](./protocols/README.md#where-implementations-live)). This is a third document kind, distinct from the concept documents at this root and the protocol documents in `protocols/`: a document here answers "how does Khayyam realize X?", cites downward to the base concepts it applies and to `protocols/` for the contracts it consumes, and is cited by base documents only as a named instance — never as the authority for a base principle. See [`khayyam/README.md`](./khayyam/README.md) for the membership criterion and the citation rule.
 
+### `society/`
+`society/` (inside `/docs/`, alongside `protocols/` and `khayyam/`) holds the requirement knowledge base for designing sustainable human societies: one page per requirement — stated as a question that favors no answer — with its rival and complementary proposals as `####` approach sections, and paired `.handoff.md` (open owner-decisions) and `.changelog.md` (provenance and attribution) companions per the facet rules above. Start at [society/README.md](society/README.md). Approaches are cited by section title and page link.
+
 ---
 
 ## Relationship to Practices

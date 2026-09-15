@@ -1,0 +1,26 @@
+# The Dead Among the Living — Handoff
+
+Companion of `the-dead-among-the-living.md`.
+
+## Open Questions
+1. **Is [Ecological burial (Green Burial) and the necropolis of notables with a planted tree in place of a headstone](the-dead-among-the-living.md#ecological-burial-green-burial-and-the-necropolis-of-notables-with-a-planted-tree-in-place-of-a-headstone) one indivisible rite or two severable answers?** The record's mechanism composts the body (the half the Fit text's religious-law deadlock bears on) while its prerequisites retire the headstone for a biometric QR plaque and a tree (a marker act on standing cemetery ground that the same Fit critique never touches). One question, two answers for the owner: indivisible, so the greenfield verdict condemns plaque and tree to the new land along with the grave, and the existing fabric keeps its black granite until reverse renewal empties it; or severable, so "0 percent impervious headstone surface" becomes a present-day instrument — gardeners and plaques on existing cemetery land, no disturbed deceased — and the record's greenfield tag applies only to the burial method. *(Why: this is the page's only answer to a requirement whose question speaks of the dead a society already has; the severability ruling decides whether anything here is adoptable before the greenfield. Blocking: yes for the whole adoption of [Ecological burial (Green Burial) and the necropolis of notables with a planted tree in place of a headstone](the-dead-among-the-living.md#ecological-burial-green-burial-and-the-necropolis-of-notables-with-a-planted-tree-in-place-of-a-headstone).)*
+2. **Whose ground, whose canopy?** The "necropolis of notables" shares the mechanism with every other grave, but the ledger records no rule for which dead lie under public canopy (named, visited, maintained by the settlement) and which under family trees, nor what happens when a memorial tree dies — the tree is the headstone, so its loss is a grave's loss. *(Why: "1 tree per deceased" is a flow, not a stock, and the memorial function the requirement names needs a durability rule the mechanism lacks. Blocking: yes for treating [Ecological burial (Green Burial) and the necropolis of notables with a planted tree in place of a headstone](the-dead-among-the-living.md#ecological-burial-green-burial-and-the-necropolis-of-notables-with-a-planted-tree-in-place-of-a-headstone) as complete; no for the soil-metric argument, which stands.)*
+3. **Who adjudicates rites compliance?** The Fit text names "the deadlock of traditional religious law" as the rejection mechanism in the existing fabric but records no institution, ruling or negotiation path that would make the composting method permissible at all — even on new land, in a society whose burial law is not optional. Is the answer that [Ecological burial (Green Burial) and the necropolis of notables with a planted tree in place of a headstone](the-dead-among-the-living.md#ecological-burial-green-burial-and-the-necropolis-of-notables-with-a-planted-tree-in-place-of-a-headstone) presumes a settlement that has already ruled on this elsewhere (which record?), or that the requirement must carry its own fiqh-facing clause? *(Why: a requirement document that never favors an answer still has to name who does; today the deadlock is asserted, not adjudicated. Blocking: yes for any adoption; this is also the only question on the page an owner cannot close by engineering.)*
+
+## Decisions
+- (none; no verdict recorded.)
+
+## Extensions / anticipated work
+- If Q1 lands on severability, the plaque-and-tree clause should be checked against the stewardship ledger's ground-plane forest and the 20/80 open-ground stability claims [Ecological burial (Green Burial) and the necropolis of notables with a planted tree in place of a headstone](the-dead-among-the-living.md#ecological-burial-green-burial-and-the-necropolis-of-notables-with-a-planted-tree-in-place-of-a-headstone) already joins — one tree, one canopy, one credit, no double-count.
+- The biometric QR plaque is a records-custody object (identity persistence against tree death, plot rotation, family transfer) — a candidate cross-link to the information-systems ledger once its custody ruling exists; flagged, not authored.
+- Cemetery area and plot rotation have no figures anywhere in the ledger; a per-capita calculation (deaths per year × one tree) belongs with the settlement-grain module's population figures.
+
+## Assumptions
+- One sturdy tree survives at each grave as a permanent civic asset (the maintenance rule Q2 asks for is absent — stability: Weak).
+- The soil "with active biological texture" prerequisite exists at scale on the plain's marginal land (stability: Unexamined).
+- The requirement's scope is the remains and the memorial only — no funeral procession, hearse or gathering-hall clauses are assumed anywhere (stability: Strong as recorded; none exist).
+
+## Proposed Next Steps
+1. Owner: answer Q1 (severable or indivisible) — it converts the page's greenfield verdict into either a timeline or a choice of instruments.
+2. Owner: decide whether Q3 (rites adjudication) is this page's to hold or a governance question the owner opens elsewhere; this reviewer will not answer it from here.
+3. Delegatable: pull the deaths-per-year and cemetery-area figures needed for Q2's flow-to-stock arithmetic.

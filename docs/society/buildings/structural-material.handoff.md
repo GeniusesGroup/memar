@@ -1,0 +1,26 @@
+# Structural Material System — Handoff
+
+Companion of `structural-material.md`.
+
+## Open Questions
+1. **Which frame is standard above grade — one decision, two answers.** [Hybrid structure: impervious reinforced concrete below grade, mass engineered timber above (Hybrid Concrete-Mass Timber)](structural-material.md#hybrid-structure-impervious-reinforced-concrete-below-grade-mass-engineered-timber-above-hybrid-concrete-mass-timber) puts timber in load, [Permanent mass-timber formwork left in place as thermal insulation and finished facade (Permanent Mass Timber Shuttering & Carbon Lock)](structural-material.md#permanent-mass-timber-formwork-left-in-place-as-thermal-insulation-and-finished-facade-permanent-mass-timber-shuttering--carbon-lock) puts it in skin, and the latter's stated prerequisite (two-way hollow concrete slabs) is exactly what the former abolishes. Is the ruling "timber structure above grade, skin only on surviving concrete elements" or "concrete frame with permanent timber skin as the house method, CLT held as a future variant"? *(Why: a settlement that standardizes on both per project has no shared detail library, and the two carbon claims are not additive — the seam in the body's collision section. Blocking: yes for any block-level structural package; no for the underlying requirement.)*
+2. **Is the "CO2 lock equivalent to total cement consumed" claim arithmetically possible?** [Permanent mass-timber formwork left in place as thermal insulation and finished facade (Permanent Mass Timber Shuttering & Carbon Lock)](structural-material.md#permanent-mass-timber-formwork-left-in-place-as-thermal-insulation-and-finished-facade-permanent-mass-timber-shuttering--carbon-lock) asserts an equivalence between the carbon buried in the permanent panels and the emissions of all cement in the building body. Reviewer doubt (not in the source): a floor's formwork skin is a fixed board tonnage per square meter of contact surface, while cement emissions scale with the slab's full concrete mass — the equivalence needs a timber-to-cement mass ratio the record never states. *(Why: the metric is the record's headline claim; if it fails the ratio check, the claim must be restated per square meter of skinned surface, not per building body. Blocking: no — the mechanism stands; only the metric's strength is at risk.)*
+3. **Where does the certified renewable-forest timber come from?** [Hybrid structure: impervious reinforced concrete below grade, mass engineered timber above (Hybrid Concrete-Mass Timber)](structural-material.md#hybrid-structure-impervious-reinforced-concrete-below-grade-mass-engineered-timber-above-hybrid-concrete-mass-timber) lists a supply prerequisite but no source; domestic stands are protected, so the practical reading is import. Does the owner accept import dependence (currency, shipping emissions not in the 60-to-75 percent ledger) as a precondition, or does the hybrid record's adoption become conditional on a future domestic CLT line? *(Why: this decides whether [Greenfield only] in that record's Fit is the right tag or whether an [Dual — transitional] reading (import now, domestic later) belongs to the owner. Blocking: yes for adopting the hybrid answer; no for the need.)*
+4. **Critique of the document itself:** both records arrived with no Fit, no anchor and no hook — all six fields are reviewer-authored (2026-09-14) and listed in the changelog. The hybrid record's [Greenfield only] rests on a host argument (crane-clear just-in-time site, dry enclosure, absent ten-basement host in the existing fabric); if the owner knows a panelized retro-fit path over existing foundations, the tag should be revisited. *(Why: the reviewer may be importing a foreign supply-chain picture onto an Iranian site with different practices. Blocking: no.)*
+
+## Decisions
+- (none yet; no verdict recorded.)
+
+## Extensions / anticipated work
+- Mass-balance table for Q2: permanent-timber tonnage per m² skinned vs cement content per m² of floor, from the hollow-slab typical section.
+- Interface note with `placement-and-routing-of-service-flows.md`: CLT decks, like the level slab, must not be notched for services — the ceiling-void routing rule is the timber frame's sibling constraint; a combined "do-not-pierce-the-floor" verdict could later cover both.
+- Fire-code reading for exposed timber faces in escape routes and party walls (feeds Q1's second answer and the skin record's Fit critique).
+
+## Assumptions (stability)
+- The ten-basement vertical zoning both records presuppose holds as recorded in [Vertical zoning of 10 basement levels (Deep Subsurface Clustering) and 35-meter penetration](../form-and-land/which-plane-carries-which-flow.md#vertical-zoning-of-10-basement-levels-deep-subsurface-clustering-and-35-meter-penetration) (stable per that record; Strong).
+- Concrete remains the material of everything below grade in both answers — no basement-in-timber alternative is on file (Weak: nothing forbids a future record proposing one).
+
+## Proposed Next Steps
+1. Owner call on Q1 (frame standard) — take with Q3 (supply), since the second answer is the import-free one.
+2. Delegate the Q2 mass-balance check; feed the result back into the skin record's Metrics text.
+3. Confirm or amend the six reviewer-authored analytical fields (Q4).
