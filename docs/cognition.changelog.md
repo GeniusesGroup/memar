@@ -317,3 +317,57 @@ Dissolved every `#### Discussion` wrapper (the definition topic, Modes of Thinki
 - The agent→agency rename is the repository's precedent and its citation here is by shape, not subject: a document named for the narrower, more famous member gets retired for the encompassing concept once the encompassing concept is the one doing the governing. This document reached the same posture the week its own definition introduced it: thinking defined as one process of a cognitive system.
 - The scientific standard accounts of cognition — the process family of perception, attention, memory, learning, and thinking — are the structure the new opening topic states at working-definition level and cites above; they are a frame for this document, not a claim that this document models the family.
 - The TizFekri practice vocabulary — cultivable thinking skills, "اندیشیدن آموختنی است", the نقادانه triad of questioning, reasoning, and decision — names a teachability claim about thinking specifically, one member of this family; mapping it against this document's modes stays the separate open item recorded in the handoff.
+
+---
+
+### Error-reduction upgrade: sharpened norms, asymmetry obligations, multi-system consultation
+- Time: 2026-09-15T13:45:00Z
+- Type: Changed
+- Propagates to:
+  - `cognition.practice.md`: Done — Norm Application Points section added; operations use-threshold restated; named-error checks gained source-deference and structural-fallacy wording; critique procedure gained reported/inferred/confirmed provenance; proportional-strength table tied to inspectable material and the no-silence reverse guard.
+  - `cognition.handoff.md`: Done — duplicate functional-groups entry removed; conflation question settled with the sharper seam; open questions updated for what this upgrade closed and left open; anticipated-work duplicates collapsed.
+  - `.agents/skills/memar/SKILL.md`: Done — stale "Thinking's" intake pointers retargeted to "Cognition's" only; no new skill rules added (norms stay in this document).
+  - `.agents/.codex-plugin/plugin.json`: Done — "read Thinking" retargeted to "read Cognition".
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — claimed (consult-other-cognitive-systems; skill needs no new rules), decided (apply the multi-model set plus the consultation norm; keep norms in the base)
+  - [Claude](../CONTRIBUTORS.md#claude) (Opus-5 via Cursor) — claimed, argued (independent critique package)
+  - [ChatGPT](../CONTRIBUTORS.md#chatgpt) (GPT-5.6-terra via Cursor) — claimed, argued (independent critique package)
+  - [Cursor](../CONTRIBUTORS.md#cursor) (Composer) — rewrote
+
+#### What changed
+- **Abstract and Methodology wording:** the over-strong "derivable from a model of cognition itself" claim was narrowed to grounding chiefly in the conversation model, with honesty that not every norm is a pure derivation from that model alone (ChatGPT claimed the overreach; Claude claimed the live seam is conversation-plus-norms vs modes/operations reference layer).
+- **Status and Use:** Draft + always-loaded tension resolved — norms are current working constraints, provisional not optional; specialized documents outrank on their domains; contradictions are reported through the changelog (ChatGPT claimed).
+- **Learning coupling qualified:** producing or storing an artifact is not itself learning; do not read artifacts as proof of retention or weight update (ChatGPT claimed).
+- **Modes use threshold:** begin from the material's missing operation, not mode-label matching (ChatGPT claimed; Claude claimed modes layer is inert at decision time).
+- **4E extended boundaries:** collaboration-extended vs private retention; artifact participation ≠ automatic membership in one thinker's boundary (ChatGPT claimed).
+- **Conversation model — symmetry qualified:** reciprocal epistemic standing for claim evaluation; not interchangeable authority, responsibility, or decision rights (ChatGPT claimed).
+- **New topic — What Implementation Asymmetry Obliges:** no self-citation as established fact; declare unverified reading and context limits; externalize session state into shared artifacts (Claude claimed).
+- **Discourse norms sharpened or added:**
+  - Evaluate on merits — source as neither authority nor disqualifier; source may be defeasible context (ChatGPT claimed).
+  - Definitions — verify load-bearing terms before building on them (Claude claimed).
+  - Conceptual-root — reported / inferred / confirmed provenance; no receiver-manufactured scope attributed to the giver (ChatGPT claimed; Claude reinforced).
+  - Proportional criticism — inspectable-material strength; reverse guard against critique-suppression (Claude claimed the suppression failure; ChatGPT claimed inspectable strength).
+  - **Report absence rather than supplying it** (Claude claimed).
+  - **Treat shared artifacts as claims, not absolute authority** (Claude claimed).
+  - **Consult other cognitive systems when conceptual depth warrants it** — AI-to-other-models or human-to-human review meeting; generative+evaluative; merits still govern; depth and availability jointly trigger (Omid Hekayati claimed; form generalized beyond AI).
+  - Prefer long-term clarity — explicit speed request does not cancel large-scope confirmation or definitional verification (Claude claimed the collision with Confirm).
+  - **Precedence when norms collide** — intake Ask/Confirm first; then definitions/absence; then evaluation norms; then long-term clarity (Claude claimed).
+  - Norms bind at intake, stated in the norms topic (Claude claimed the missing application-point problem).
+- **Named errors:** source-deference / agreement pressure added as a bias with this project's own mirroring-draft instance (Claude claimed); fallacy redefined as defective inferential support whether solitary or exchanged (ChatGPT claimed).
+- Practice and propagation as listed under Propagates to.
+
+#### Deliberation
+- Independent critiques were solicited from Claude (Opus-5) and ChatGPT (GPT-5.6-terra) before drafting, as a live exercise of what became the consultation norm (Omid Hekayati — directed the review; Cursor/Composer — ran both).
+- Claude claimed the document's headline derivation overreaches because norms follow from the conversation model, not from the modes/operations taxonomy; ChatGPT claimed several norms (confirm-large-scope, prefer-clarity) are change-governance or framework values, not pure conversation-model derivations — the body now states both honestly rather than forcing a single derivation story (Claude, ChatGPT — claimed; Cursor/Composer — drafted).
+- Omid Hekayati claimed the multi-system consultation obligation, insisted it is not AI-only (a human convening other humans is the same norm), asked whether the skill needed new text, and decided it does not — Cognition remains the single home; skill only keeps intake pointers (Omid Hekayati — claimed, decided).
+- Applying the fuller set of High and Medium proposals from both critiques, not only the first shortlist, was directed (Omid Hekayati — decided).
+- Moving norms out of the base into practice was rejected by both critiques and by the owner — derivation and single home stay; practice gains application checkpoints only (Claude, ChatGPT — argued; Omid Hekayati — decided).
+
+#### Considered and not done
+- **Rewrite the memar skill with duplicated norm text (rejected by the owner):** would recreate the second-home drift the document exists to prevent; intake pointers already present, only retargeted from Thinking to Cognition.
+- **Re-scope cognition.practice.md from critique-first to a full per-norm compliance manual now (deferred):** Norm Application Points close the immediate gap; a full re-scope waits until critique procedures outgrow the file (Claude claimed the re-scope; not forced this round).
+- **Graduate modes/operations out of the always-loaded base now (deferred):** Claude claimed zero normative loss if they graduate; kept here pending the Runs-on reader test (handoff).
+- **Add inductive/deductive/probabilistic modes or operationalize embodied/enacted (rejected both critiques):** no demonstrated dependence; growth rule holds.
+- **Formalize conversation as Protocol now (rejected both critiques):** no demonstrated failure from its absence.
+- **Enumerate a bias/fallacy catalogue in the body (rejected):** only source-deference earned a named mention by a recorded project instance; further enumeration stays practice-layer and per-project.
+- **Regroup discourse norms by mode for navigation (deferred):** precedence addresses collision; mode-grouped navigation remains an open readability question (handoff).
