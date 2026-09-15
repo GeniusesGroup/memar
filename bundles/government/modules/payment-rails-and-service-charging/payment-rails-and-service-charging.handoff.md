@@ -1,0 +1,28 @@
+# Payment Rails and Service Charging — Handoff
+
+Companion of `payment-rails-and-service-charging.md`.
+
+## Open Questions
+1. **Is the invoice fee a service price or a residual tax?** [Integrated financial interface, digital wallet and real-time settlement without queues or checkout counters](payment-rails-and-service-charging.md#integrated-financial-interface-digital-wallet-and-real-time-settlement-without-queues-or-checkout-counters) funds itself from marketplace invoice fees and dispute files; [Full repeal of blind urban taxes in favor of transparent direct payment for services (Fee-for-Service)](payment-rails-and-service-charging.md#full-repeal-of-blind-urban-taxes-in-favor-of-transparent-direct-payment-for-services-fee-for-service) forbids levies without proportion to service received. Is the invoice fee the fee-for-service price of the settlement rail (cost-accounted, like the repeal's own cost-prerequisite), or a percentage of trade the repeal merely relocated? *(Why: it decides whether this document is one constitution or a constitution plus an exempt merchant; it also binds the land-housing endowment's "fixed percentage of platform transactions" — that slice is only lawful under the same reading. Blocking: yes for any combined verdict.)*
+2. **Who pays when everyone is self-sufficient?** The repeal exempts self-sufficient complexes from all levies; the wallet's income shrinks with transaction volume if fees are "negligible"; the exergic fund record ([Monetary Standard and Resource Wealth](../economy/monetary-standard-and-resource-wealth.md)) is elsewhere. What is the platform's funding floor — the bootstrap capital, the metered services to non-self-sufficient holdouts, or a declared subsidy — and does the repeal's "end of borrowings and budget deficits" leave room for a founding loan? *(Why: the two records' revenue clauses net to zero in the society they aim to build: max self-sufficiency ⇒ min invoice fees ⇒ no rail. Blocking: yes for the repeal's implementation sequence.)*
+3. **Does a dispute-file revenue source bias the rail toward conflict?** The wallet earns from dispute files; the judiciary synergy record supplies the adjudication. A rail paid per dispute has an incentive structure opposite its "under 1 second, zero interruption" promise. Should dispute fees be priced to the actual adjudication cost with no margin (removing the incentive), or is a platform that profits from friction acceptable? *(Why: this is the sharpest incentive flaw in the economy folder and neither record's flaw text mentions it. Blocking: yes for adopting the wallet's revenue model as written.)*
+4. **Reviewer critique — a network record naming consumers.** Per the dependency doctrine, network records state abstract rules and never name consumers; this wallet record's mechanism names "PRT fares" and (via synergies) the first-floor restaurant. The naming may be descriptive, but it makes the rail's requirements depend on two consumer documents' survival. Strike consumer names (rail settles "all value transfers") or accept them as illustrative with no normative force? *(Why: doctrine was ratified 2026-09-13 precisely for pairs like this one; a review pass may not silently re-doctrine a preserved text. Blocking: no.)*
+5. **Reviewer critique — "100-percent queue elimination" measures an absence.** The metric reduces a time no one records in a cash society, and the wallet has no adoption metric (percent of transactions, settlement uptime). A verdict against this record as written is a verdict against a metric that can reach its target with zero adoption. Should an adoption meter be added? *(Why: metrics decide audits; this record is currently unauditable where it matters. Blocking: no for the requirement; yes for implementation claims.)*
+
+## Decisions
+- (none; no verdict recorded.)
+
+## Extensions / anticipated work
+- Cross-listing: the wallet is a declared prerequisite of [Land and Housing Tenure](../economy/land-housing-tenure.md) (endowment slice; fund settlement) and [Permitted Intermediation](../economy/permitted-intermediation.md) (brokerage-free transactions); if the rail's verdict changes scope, those documents' prerequisites must be revisited — reciprocal Related-documents lines already exist in both directions.
+- The activity-based cost accounting the repeal's prerequisites name is an instrument the cost meters of the information-systems family may own; a routing note there avoids two documents building the same ledger.
+- A unit-of-account note: this document stays currency-neutral (it never says the wallet holds joules, rials or tokens); if the work-backed standard is adopted, the unit question must be answered once, in the monetary document, not here.
+
+## Assumptions
+- Distributed-ledger settlement can hold "under 1 second" at marketplace scale with "negligible fee" — stated as mechanism, unverified (stability: Weak).
+- The IoT tracking the wallet's prerequisites require is the same infrastructure the fee-for-service record's "industrial activity-based cost accounting" bills on — assumed shared, never declared.
+- Self-sufficiency exemptions are computable per complex (what a complex "actually receives" of public services) — the entire repeal depends on this attribution problem; no record here meters it.
+
+## Proposed Next Steps
+1. Owner: rule on Q1 (rail as public utility or marketplace merchant) — it is this document's framing decision and answers Q2 and Q3 downstream.
+2. Owner: dispose of Q4 (consumer names in the wallet mechanism) jointly with the doctrine's next batch reviews.
+3. Delegatable: draft the adoption-metric candidates (settlement uptime; share of invoices settled without till intervention) for the wallet record's next revision.
