@@ -39,9 +39,10 @@ Memar is the **framework the development is conducted within**, not a passive li
 This section is agent-specific (tool-dependent), so it lives here rather than in a repository Practice. When the runtime supports sub-agents:
 
 - Do not spend the main session's context on bounded exploration whose raw material you will not need after integration.
-- Keep local what requires the session's held model — target structure, judgment, final merge. Delegate bounded, self-contained discovery (e.g. "extract document X's concepts against this brief and report where they map") to a sub-agent; receive a compact report; apply the merge yourself mechanically.
+- Keep local what requires the session's held model — target structure, judgment, final merge. Delegate bounded, self-contained discovery (e.g. "extract document X's concepts against this brief and report where they map") to a sub-agent; receive a report sized to what that delegated work needs; apply the merge yourself mechanically.
 - The brief must tell the sub-agent to discover documentation per this skill, not receive a content dump, and to return a structured report with acceptance criteria stated.
 - Do not delegate work whose intermediate context is itself the deliverable, or work needing continuous back-and-forth judgment; delegation is lossy and has coordination cost.
+- Prefer a **new** sub-agent with a short brief (paths + the passages it must judge) over **resuming** a long prior sub-agent thread: resume replays that thread's history into the bill again. Prefer a smaller model when the job is a second opinion, not primary drafting. Do not open whole base documents when the needed sections can be named by path and anchor.
 
 ## How to discover documentation
 This section is agent-specific (tool-dependent), so it lives here rather than in a repository Practice.

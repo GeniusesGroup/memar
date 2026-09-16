@@ -1,26 +1,25 @@
 {
-  "name": "Memar",
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "memar",
   "owner": {
     "name": "Geniuses.Group",
-    "email": "ict@geniuses.group"
+    "email": "ict@geniuses.group",
+    "url": "https://geniuses.group"
   },
-  "description": "Plugins for the Memar framework (Khayyam and related docs). Skills discover live documentation from the Memar repo root; path links resolve against that root.",
-  "interface": {
-    "displayName": "Memar"
-  },
+  "description": "Agent plugins for the Memar framework (Khayyam and related docs). Skills discover live documentation from the Memar repo root; path links resolve against that root.",
   "plugins": [
     {
       "name": "memar",
-      "source": {
-        "source": "local",
-        "path": "./.agents"
-      },
-      "policy": {
-        "installation": "AVAILABLE",
-        "authentication": "ON_INSTALL"
+      "source": "./.agents",
+      "displayName": "Memar",
+      "description": "Operating practices for Memar/Khayyam in any project. Live docs from GeniusesGroup/memar; Markdown/Git paths resolve against the Memar root, not the skill install path.",
+      "version": "0.1.0",
+      "author": {
+        "name": "Geniuses.Group",
+        "email": "ict@geniuses.group"
       },
       "category": "Productivity",
-      "description": "Operating practices for Memar/Khayyam in any project. Live docs from GeniusesGroup/memar; Markdown/Git paths resolve against the Memar root, not the skill install path."
+      "keywords": ["memar", "khayyam", "programming-language", "framework", "documentation"]
     }
   ]
 }
