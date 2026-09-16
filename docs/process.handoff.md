@@ -12,6 +12,14 @@ Open work for `process.md`. Entries are mutable current state — revised as eac
 ### Process Definition and Process Instance
 1. Whether Memar should eventually distinguish more formally between a process definition, a process instance, and other possible representations of an enactment.
 
+### Expectations and Checks
+1. Whether **Check** warrants its own concept document, as Error's protocol treatment was eventually given a dedicated Error document — the topic's definition presupposes Process and is stated here, but the concept recurs across domains (testing, inspection, review, auditing) and may outgrow the topic.
+2. Whether the boundary between "expectations stated for the inquiry process" and "expectations for the inquiry's subject" is precise enough to be applied without re-derivation, or needs its own worked treatment when the first protocol document consumes it.
+
+### Defect Resolution as an Inquiry
+1. Whether the defect's own lifecycle — reported, confirmed, resolved, rejected, deferred — deserves explicit treatment as a process model in its own right, or remains an instance of the topics here (the ecosystem's issue tracker is a mechanism, and per *Process Is Not a Mechanism* the process must be understood first).
+2. Whether **Defect** warrants its own concept document — the topic defines it minimally as failure-against-expectation, and Error's dedicated documentation may subsume or refine the term when it is written.
+
 ### Intent
 1. Whether every Process must have an identifiable intent, or whether intent is sometimes assigned only by an observer, after the fact.
 
@@ -42,4 +50,6 @@ Open work for `process.md`. Entries are mutable current state — revised as eac
 
 ## Anticipated Work
 
+- **Graduation criterion for Defect Resolution as a standalone document**: the topic stays in this document while its content is the linking of already-owned rules (Expectations and Checks' inquiry boundary, Cognition's operations, the Research facet) to the defect situation. It graduates only if Memar-specific rules accrue that are not applications of those documents — for example, reproducibility requirements on the inquiry, or a defect-reporting contract between participants — at which point a protocol document under `protocols/` becomes warranted. Any proposed addition to the topic should first be tested against that rule: content that applies an inherited rule to defects belongs in the consuming document, not here.
+- **Graduation criterion for Development as a standalone document**: the *Development as a Process* topic is carried as an umbrella adoption — a word that adds no content of its own, whose warranted content is exactly the Process topics applied to the entity being advanced. It graduates into its own document only if warranted content accrues that is **not** an application of those topics — a genuine question about development the Process topics cannot already answer. Candidate cases the protocol layer could still force: whether the stage/degree structure of a development needs more than the topics give (e.g. whether a target stage admits degrees of attainment beyond a process's outcome set), or whether the participant/agency structure of a long-running development program exceeds what *Agency and Development* plus the topics supply. Until then the topic stays in this document, and any proposed addition to it should first be tested against the umbrella rule: content that merely applies an inherited topic to developments belongs in the consuming protocol document, not here. (Same path Process itself took out of `system.md`.)
 - If Concurrency, Coordination, or Events grow enough conceptual weight of their own — enough to be reasoned about independently of Process rather than only in relation to it — each may eventually justify a dedicated document, at which point process.md would shrink to reference them rather than define them in full, following the same source-of-truth pattern process.md itself now establishes relative to `system.md`. (Migrated from the document's retired `Future possibilities` section.)

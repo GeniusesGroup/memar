@@ -228,7 +228,7 @@
   - process.handoff.md: Created — all seven topic-level unresolved-question lists and the document-level pointer moved there, organized by topic.
 - Contributors:
   - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — decided
-  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — moved, folded
+  - [Super Z](../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — moved, folded
 
 #### What changed
 - The document-level Prior art's premise evidence (Whitehead's process philosophy and CSP/π-calculus as the lineage of process-distinct-from-sequence; Burns's lock-versus-lease distinction as the direct basis of the distributed-systems argument) was folded into the Definition topic's Rationale entry it supports.
@@ -249,7 +249,7 @@
   - process.handoff.md: Done - the anticipated work recorded there under `Anticipated Work`.
 - Contributors:
   - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — decided
-  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — moved, folded
+  - [Super Z](../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — moved, folded
 
 #### What changed
 - The body's fixed top-level sections are now `Abstract`, `Introduction`, `Explanation`, `Results` only (Omid Hekayati - decided; Super Z - applied).
@@ -267,3 +267,80 @@
 #### Considered and not done (from the removed document-level Drawbacks section)
 - **This document is large, covering a number of adjacent concepts (Concurrency, Coordination, Events, Asynchrony) that could each eventually justify their own document** — a known and accepted risk from the outset. (Omid Hekayati)
 - **Extracting Process into its own document reintroduces the drift risk `system.md`'s original Rationale and Alternatives warned about: two documents now each describe the Process↔System relationship from their own side, and each future change to either concept needs a corresponding check against the other** — accepted, and tracked as the Process-and-System open question in the paired handoff. (Omid Hekayati)
+
+---
+
+### Motivation restored to a motivation; Development topic annotated as an umbrella adoption
+- Time: 2026-09-16T00:00:00Z
+- Type: Changed
+- Propagates to:
+  - process.handoff.md: Done — Development's graduation criterion rewritten around the umbrella rule.
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — reviewed, argued, decided
+  - [Super Z](../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash via [Buffy](../CONTRIBUTORS.md#buffy)) — drafted
+
+#### What changed
+- The Motivation section had grown into a revision history rather than a statement of why the document exists: the paragraph announcing the later addition of the `context` discussion, and the paragraph reporting the later addition of the *Expectations and Checks* and *Development as a Process* topics, were removed. Both are already recorded in this changelog's own entries below, so nothing was lost; Motivation now states only the document's origin and purpose — the recurring mechanism-first pattern across the source discussions, and the discipline of separating process from mechanism. The Failure paragraph's self-referential framing ("this document also absorbs…") was rewritten as a timeless statement of the document's scope boundary with the future Error documentation (Super Z — applied; Omid Hekayati — the review).
+- The *Development as a Process* topic gained a paragraph recording Omid's position, adopted in this pass: Development is carried as an **umbrella term** — a word naming no content of its own, serving only to gather concepts that already exist, like *object-oriented* over encapsulation, inheritance, and polymorphism, or *leader* over the distinct concepts management science separates. Its content in this document is therefore exactly the Process topics applied to the entity being advanced. The competing scholarly definitions of development (one tradition defines it as the growth of a system's problem-solving power) are candidate characterizations of the target stage and the measure of progress toward it — decisions a particular development's model makes, not adjudications this topic performs (Omid Hekayati — argued; Super Z — drafted).
+
+#### Considered and not done
+- **Moving the removed Motivation paragraphs into the changelog as new content (rejected as unnecessary)**: before deleting, the coverage was checked — the `context` discussion's addition and the two-topics addition are already recorded by their own entries in this changelog ("Requests, Cancellation, and Timeout"; "Two topics added"), so the paragraphs carried no information this file lacked, and copying them would only create a second copy to keep in sync.
+- **Adopting one of the scholarly definitions (e.g. growth of problem-solving power) as the topic's definition (rejected)**: they are rival characterizations of what a development aims at, and the umbrella stance exists precisely so the topic does not adjudicate them; each becomes relevant only when a concrete development's model must fix its target stage and progress measure.
+
+#### Deliberation
+- Omid's review of the day's edits raised three points; the first and third are recorded in this entry — the second, the scope of the TDD protocol document, was accepted in the same pass and is recorded in [tdd.changelog.md](./protocols/tdd.changelog.md)'s corresponding entry (Omid Hekayati).
+- On the first point, Omid objected that Motivation had come to read like a changelog entry rather than a motivation; the objection was accepted without reservation and the trim was made (Omid Hekayati).
+- On the third point, Omid argued the word Development itself warrants no root-document concept under the project's standard against umbrella concepts at the root: it introduces nothing of its own and merely connects principles that already exist, the way OOP is an umbrella over encapsulation and the like, and that thinkers attach rival definitions to the word anyway (e.g. "increase of the system's problem-solving power") (Omid Hekayati).
+- The resolution adopted keeps the topic (it was already written as an adoption of the word's established general meaning, adding no structure) but states the umbrella character explicitly, so future edits test additions against the umbrella rule instead of letting content accrete (Super Z — proposed; Omid Hekayati — accepted).
+
+---
+
+### Two topics added: Expectations and Checks; Development as a Process
+- Time: 2026-09-16T00:00:00Z
+- Type: Added
+- Propagates to:
+  - protocols/tdd.md: Done — its concept-level core relocated here; the protocol document rewritten to consume the new topic.
+  - protocols/tdd.changelog.md: Done — relocation entry recorded there.
+  - process.handoff.md: Done — open questions and the Development graduation criterion recorded there.
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — claimed, argued, approved
+  - [Super Z](../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash via [Buffy](../CONTRIBUTORS.md#buffy)) — drafted
+
+#### What changed
+- **Expectations and Checks** (placed after Outcomes): the process-level concept beneath every domain's testing practices. A process model states its expected input and output before enactment; expectations held tacitly in temporary memory are invisible to other participants and exempt from checking, so the discipline is writing them first; a check is the comparison of a process instance against the model's stated expectations; software's *test* is named as one domain's word for check; the realization of a check is a mechanism under *Process Before Mechanism*; boundary cases (inquiry processes, post-hoc verification) are delimited. The concept's dependence on Process is now stated in Process's own document — without the process model, testing has no subject (Omid Hekayati).
+- **Development as a Process** (placed after Process and Workflow): Development defined per its established general meaning — a process in which an entity passes by degrees toward a different stage — adopted as an instance of Process with no new structure of its own; domain-independence kept by grounding the word in Process rather than in software; Memar's own concern (the development of systems, carried out by a network of agents) named; governance of development processes assigned to the protocol layer, named here without citation per that layer's citation rule (Omid Hekayati).
+- One Abstract sentence added so the Abstract covers the new topics.
+
+#### Considered and not done
+- **Giving Development its own document at docs/ root (rejected for now)**: the concept's warranted content — definition, per-topic inheritance from Process, pointer to Agency's Development section, governance note — fits a topic without residue; a standalone document would currently be a canopy over concepts that all already have homes. The graduation criterion is recorded in the paired handoff's Anticipated Work; the same path brought Process itself out of `system.md` when its topic outgrew the parent. (Omid Hekayati)
+- **Placing a Development document under protocols/ (rejected)**: the protocols directory's membership criterion is a contract, rule set, or encoding format; Development is the *process under governance*, not a rule set — TDD is the rule set. A protocol-layer document would also have had to define the Development concept itself, a concept-document job the folder's README excludes. (Omid Hekayati)
+- **Leaving the expectations/check concept in the TDD protocol document (rejected)**: the concept is domain-independent and definitional — a check presupposes a process model whose expectations precede its instances — so its home is the base layer. Keeping it in the protocol document would force base documents to cite a protocol layer for a general meaning, which the layering's citation rule forbids. (Omid Hekayati)
+
+---
+
+### Defect Resolution as an Inquiry topic added
+- Time: 2026-09-16T00:00:00Z
+- Type: Added
+- Propagates to:
+  - protocols/tdd.practice.md: Done — the Boundary section names the reported defect as the inquiry case's recurring instance and links this topic.
+  - protocols/tdd.changelog.md: Done — the retarget recorded in its session entry.
+  - process.handoff.md: Done — the topic's open questions and its protocol-layer graduation criterion recorded there.
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — requested, decided
+  - [Super Z](../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash via [Buffy](../CONTRIBUTORS.md#buffy)) — drafted
+
+#### What changed
+- A new topic, **Defect Resolution as an Inquiry** (placed after *Failure*, before *Continuation and Retry*): a defect is defined as a failure observed against an expectation, so the concept presupposes the expectation and unrecorded expectations are stated first; resolving a defect of unknown cause is classified as an **inquiry** process whose expectations are stated for the inquiry itself (evidence, decision, record) per *Expectations and Checks*'s already-stated boundary; the ecosystem's single word *debugging* is named as hiding the seam between the inquiry and the correction that follows it; the inquiry runs on Cognition's operations and awareness disciplines — the characteristic failure being confirmation — and is recorded per the Research facet where it deserves to survive; and the concluding correction is an ordinary development step under *Expectations and Checks*, with the model-caused case routed to Modeling's discipline.
+- The topic adds no rules of its own: its content is three already-owned rules (Expectations and Checks' inquiry boundary, Cognition's discourse norms and operations, the Research facet's record) linked to the defect-resolution situation — reasons and links, no examples or procedures.
+
+#### Considered and not done
+- **A standalone document for the subject at docs/ root (rejected for now)**: the warranted content fits a topic without residue — every rule it needs is already owned by Process, Cognition, Modeling, and the Documentation system, and no question about defects exists that those documents cannot already answer. The graduation criterion is recorded in the paired handoff's Anticipated Work. (Omid Hekayati)
+- **A protocol document under protocols/ (rejected)**: the protocols folder's membership criterion is a contract, rule set, or encoding format; the topic states no Memar-specific rules — an agent holding the base documents derives the resolution procedure from them. A protocol layer would also have had to define the Defect concept itself, a concept-document job the folder's README excludes. (Omid Hekayati)
+- **Placing the topic in cognition.md (rejected)**: the inquiry's conduct borrows Cognition's operations, but the subject — a defect and its resolution — is a process situation and its home is the process document; Cognition is cited, not extended. (Super Z — proposed; Omid Hekayati — accepted)
+- **A paired debugging practice document (rejected for now)**: an agent holding cognition.practice.md's operation-level and named-error checks derives the investigation procedure; a practice file would restate what the practice layer already carries. (Super Z)
+
+#### Deliberation
+- The owner's position, carried into the topic's design: what an executing agent needs is the link between an owned rule and the situation, not exemplars — the same position that excluded worked examples from the TDD protocol document; a hundred examples teach imitation of case surfaces, while one well-placed rule generates the correct procedure for every next case (Omid Hekayati).
+- The owner objected to the initial framing that treated the subject as a missing protocol; the correction accepted: the discipline already exists, distributed across the documents that own its pieces — what was missing was only the pointer from the defect situation to those owners (Omid Hekayati — objected; Super Z — corrected).
+
+---
