@@ -14,11 +14,12 @@ Open work for `process.md`. Entries are mutable current state — revised as eac
 
 ### Expectations and Checks
 1. Whether **Check** warrants its own concept document, as Error's protocol treatment was eventually given a dedicated Error document — the topic's definition presupposes Process and is stated here, but the concept recurs across domains (testing, inspection, review, auditing) and may outgrow the topic.
-2. Whether the boundary between "expectations stated for the inquiry process" and "expectations for the inquiry's subject" is precise enough to be applied without re-derivation, or needs its own worked treatment when the first protocol document consumes it.
+2. Whether the boundary between "expectations stated for the inquiry process" and "expectations for the inquiry's subject" is precise enough to be applied without re-derivation, or needs its own worked treatment. The first consuming protocol ([tdd.md](./protocols/tdd.md) / [tdd.practice.md](./protocols/tdd.practice.md)) now routes on that boundary; whether agents still re-derive it in defect inquiries remains the live test — tracked also in [tdd.handoff.md](./protocols/tdd.handoff.md).
+3. Whether the four roles that share overloaded domain words (written expectation artifact, comparison procedure, enacted comparison, disposition) eventually need fixed Memar terms beyond the *expectation* / *check* pair clarified in the 2026-09-16 review — open only if that pair proves insufficient in practice; mirrored in [tdd.handoff.md](./protocols/tdd.handoff.md).
 
 ### Defect Resolution as an Inquiry
 1. Whether the defect's own lifecycle — reported, confirmed, resolved, rejected, deferred — deserves explicit treatment as a process model in its own right, or remains an instance of the topics here (the ecosystem's issue tracker is a mechanism, and per *Process Is Not a Mechanism* the process must be understood first).
-2. Whether **Defect** warrants its own concept document — the topic defines it minimally as failure-against-expectation, and Error's dedicated documentation may subsume or refine the term when it is written.
+2. Whether **Defect** warrants its own concept document — the topic defines it as a negative check verdict (not the *Failure* outcome), and Error's dedicated documentation may subsume or refine the term when it is written.
 
 ### Intent
 1. Whether every Process must have an identifiable intent, or whether intent is sometimes assigned only by an observer, after the fact.

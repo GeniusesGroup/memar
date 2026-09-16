@@ -344,3 +344,25 @@
 - The owner objected to the initial framing that treated the subject as a missing protocol; the correction accepted: the discipline already exists, distributed across the documents that own its pieces — what was missing was only the pointer from the defect situation to those owners (Omid Hekayati — objected; Super Z — corrected).
 
 ---
+
+### Review pass — check/test vocabulary, defect as check verdict, one-shot boundary restored
+- Time: 2026-09-16T13:30:00Z
+- Type: Changed
+- Propagates to:
+  - protocols/tdd.md: Done — consumes the clarified vocabulary; defect and one-shot routing already through the practice.
+  - protocols/tdd.changelog.md: Done — paired review entry recorded there.
+  - process.handoff.md: Done — Expectations and Checks Q2 updated; defect definition note and vocabulary Q3 added.
+- Contributors:
+  - [Claude](../CONTRIBUTORS.md#claude) (Opus-5 via [Cursor](../CONTRIBUTORS.md#cursor)) — claimed, argued (independent critique)
+  - [ChatGPT](../CONTRIBUTORS.md#chatgpt) (GPT-5.6-terra via [Cursor](../CONTRIBUTORS.md#cursor)) — claimed, argued (independent critique)
+  - Cursor/Composer — reviewed, drafted, integrated
+
+#### What changed
+- *Expectations and Checks*: the overloaded claim that software's *test* is merely another name for *check* was replaced by an explicit split — *check* names the comparison, *expectation* its stated form; a domain word may name both and documents that need the distinction use the two Memar words. Verification is restated as a check performed without the prior-ordering discipline. The one-shot / non-repeatable boundary lost in the relocation pass was restored as the third boundary: written expectations still precede enactment; an unavailable re-run does not void the ordering.
+- *Defect Resolution as an Inquiry*: **defect** is redefined as a negative check verdict, explicitly distinguished from the *Failure* outcome — an instance may complete and be defective, or fail as expected and not be.
+
+#### Deliberation
+- Independent critiques were solicited from Claude (Opus-5) and ChatGPT (GPT-5.6-terra) under Cognition's consult-other-cognitive-systems norm; both ranked the test/check overload and the defect/Failure conflation as load-bearing (Cursor/Composer — ran; both models — claimed).
+- The one-shot boundary's absence was traced to the relocation pass that moved the concept core from TDD into Process; restoring it here, not only in the protocol, follows the same ownership rule that relocated the core (Claude Opus-5 — claimed; Cursor/Composer — applied).
+
+---
