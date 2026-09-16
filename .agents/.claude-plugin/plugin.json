@@ -1,5 +1,5 @@
 {
-  "name": "memar-plugin",
+  "name": "memar",
   "displayName": "Memar / Khayyam",
   "description": "Operating practices for Memar and Khayyam in any project. Discovers live docs from the GeniusesGroup/memar root (workspace or shallow clone); Markdown/Git paths resolve against that root, not the skill install path.",
   "version": "0.1.0",
