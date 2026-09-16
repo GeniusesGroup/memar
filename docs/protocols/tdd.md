@@ -1,0 +1,48 @@
+---
+Title: "TDD"
+Status: Draft
+Start Date: "2026-09-16"
+ID: "510430"
+---
+
+# TDD
+
+## Abstract
+This document states Memar's position on **Test-Driven Development (TDD)**: the adoption, for the development of systems, of the discipline every process model already carries — **the expected input and output of the process are stated before the process is enacted, and the enacted instance is checked against them** — with the check realized, wherever it can be, in a form a machine can apply, a test. The discipline itself is a property of Process, not of software: its concept-level treatment — expectations written before enactment, the check as the comparison of an instance against stated expectations, and the boundaries of that ordering — is owned by [Process → Expectations and Checks](../process.md#expectations-and-checks) and is not restated here. This document adds what is Memar's own: the adoption of the name TDD — the word software's ecosystem gave the discipline — for development as a whole, the separation of the test from its implementation mechanisms, the reading it gives requirements concepts such as the user story, and the scope Memar applies it to. Worked examples are deliberately absent: this document gives reasons and relationships, not illustrations. The followable procedure for one development step under this discipline — the practice this document governs but does not itself contain — lives in the paired [TDD Practice](./tdd.practice.md).
+
+## Introduction
+
+### Motivation
+TDD is usually taught through demonstration — a screen recording, a worked case, a sample project. For an executing agent, human or machine, a demonstration is not knowledge; it is a surface pattern to imitate without its reason, and imitation of a case's surface is precisely what misleads when the next case differs. In this project, documents are read by agents that must act correctly on reasons they can check, so the discipline is recorded as the reason itself, with no case to copy.
+
+The deeper reason this document exists, however, is placement. The discipline is not TDD's property at all — a check presupposes a process: a model whose stated expectations precede its instances, without which testing has no subject. A concept that general and definitional belongs to the base layer, or every base document would need to cite a protocol document for a general meaning, which the layering forbids. The concept's home is [Process → Expectations and Checks](../process.md#expectations-and-checks); what remains here is the protocol Memar owns.
+
+### Methodology
+The document consumes [Process](../process.md) and [Protocol](../protocol.md) and adds no process definition of its own. The positions were argued by Omid Hekayati in discussion with the drafting agent (2026-09-16); the concept core was relocated to `process.md` in the same pass that produced this document's current form — see the paired [changelog](./tdd.changelog.md) for the relocation and the alternatives rejected. The exclusion of examples is an explicit decision recorded there, not an omission.
+
+## Explanation
+
+### What Memar Adopts
+Memar adopts the discipline [Process → Expectations and Checks](../process.md#expectations-and-checks) states as binding — expected input and output written before enactment, the instance checked against them — for the development of systems, under the established name **Test-Driven Development (TDD)**. Development is taken in its full generality ([Process → Development as a Process](../process.md#development-as-a-process)): the discipline binds a checkout counter being designed for a store and a mobile phone being brought to production exactly as it binds a function. The name is the software ecosystem's word for the discipline — its home territory is software, where the check most often takes a machine-applicable form — and Memar keeps it because naming the instance is how the discipline reaches the developers who already carry the word, while the document's definitions stay anchored to the concept layer, not to the ecosystem's usage. The adoption covers development processes at every scale: a function's expected output written before the function, a feature's expected behavior written before the feature, a system's expected interfaces written before the system.
+
+What Memar does **not** adopt is the ecosystem's reduction of the discipline to its most common mechanism. The red-green-refactor cycle, test frameworks, assertion libraries, and file layouts are realization choices under [Process → Process Before Mechanism](../process.md#process-before-mechanism) — appropriate where they fit, not constitutive of the discipline. Memar's obligation is the ordering and the checkable form; the tools are selected afterward, per project and per check.
+
+### Test Is Not Its Implementation
+A test, in this document's sense, is the written expectation of a development process's input and output in a checkable form. It is not defined by being *code*. Test code is one realization — the appropriate one when the expected output can be checked mechanically. For a development step whose expectations cannot be executed, the same discipline produces the written expectation in whatever form the domain applies: a defined procedure with defined observations, a stated acceptance condition, a written record of what must hold. What Memar requires is the checkable form and the ordering, not a programming artifact.
+
+This separation is the same realization/mechanism split Process draws everywhere: the check is the concept; its realization is a mechanism. Confusing them produces the two familiar failures — treating untestable-expectations work as if it were not development discipline because no test code results, and treating the presence of test code as if it established the discipline when the expectations were stated after the fact, which [Process → Expectations and Checks](../process.md#expectations-and-checks) already classifies as verification, not the discipline.
+
+### A User Story Is a Development Process's Expectations
+Canopy concepts of requirements — the user story foremost — become concrete under this discipline. A user story is, or should be, the written input and output expectations of a development process or of the system process being developed toward: who or what brings what in, what must come out, under which conditions, with which outcomes. Under this reading the story is not a documentation artifact standing beside the code; it is the same expectation artifact the development conforms to, and the executable test, where one exists, is its most precise realization. The same holds for any equivalent canopy concept in any domain Memar is applied to.
+
+This is why the discipline must not be reduced to writing test code. A canopy concept that stops at narration — a desire stated without expected input and output — fails the discipline no matter how it is phrased; one that states checkable expectations for a named process satisfies it, whether or not any of those expectations become executable.
+
+### Scope
+The discipline binds at [Process → Expectations and Checks](../process.md#expectations-and-checks)'s stated scope — planned processes whose expectations are decidable before enactment, with inquiry processes and post-hoc verification as its delimited boundary cases — and Memar applies it as a development protocol across its system categories: a building, an organization, or a society page developed the Memar way carries its stated expectations before the work that must satisfy them, exactly as software does. What varies across domains is the form the check can take — software's test code is its most mechanical realization, and a domain whose checks cannot be executed still states the expectation in the checkable form that domain applies — never whether the ordering binds. Where Memar's own documentation is the developed artifact, the discipline applies to Memar itself: this document's claims are checkable expectations for how Memar's development processes are conducted, and the framework's own protocols are produced under the same rule it states.
+
+### Relationship to Other Concepts
+**Process.** The concept layer. The discipline is an ordering constraint on the relationship between a process's definition and its enactment, defined in full at [Process → Expectations and Checks](../process.md#expectations-and-checks); this document consumes it and adds no process theory. [Process → Development as a Process](../process.md#development-as-a-process) supplies the second concept this protocol governs: development itself.
+
+**Protocol.** This document is itself an instance of the pattern it adopts: a named set of declarative rules governing a process — the development process — stated before enactment. Where Memar's other protocols govern the processes of systems being developed, this one governs the process of developing them. The authorship rule of [Linter → A rule's home is its subject's document](./linter.md#a-rules-home-is-its-subjects-document) applies to what this document governs: rules about how development expectations are written and checked live here; rules about what the developed system must do live in the documents that own those subjects.
+
+**Modeling.** [Modeling → Modeling Before Implementation](../modeling.md#modeling-before-implementation) and this discipline are two applications of one principle — commitments become explicit before they become costly. The division of labor: the model defines what the process is and what its expectations must be checked against; the written expectation states those expectations in checkable form. A test that contradicts the model tests the wrong process.
