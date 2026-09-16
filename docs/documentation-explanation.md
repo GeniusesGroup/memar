@@ -81,7 +81,7 @@ This rule applies only pre-Final; once Final, merging requires a new, supersedin
 ### Body sections
 The body follows the front-matter, as a fixed set of top-level (`##`) sections in order: `Abstract`, `Introduction`, `Explanation`. No document may introduce a new top-level section beside these without a change to this specification itself. Everything else a document needs is an optional building block from [Optional Sections](#optional-sections) - placed by the author wherever fits, at whatever heading depth the location calls for. The fixed three are the skeleton; the catalog is the flesh.
 
-- **Abstract**: one self-contained paragraph stating this document's actual claim or decision - not a preview of what the reader is about to read, and not usage instructions.
+- **Abstract**: one self-contained paragraph stating this document's actual claim or decision - not a preview of what the reader is about to read, not usage instructions, and not a revision narrative (who reviewed it, which pass introduced which sentence, or a pointer to the changelog for the document's own history).
 - **Introduction**: document-wide context needed before the technical content. Carries no direct content itself.
 - **Explanation**: the document's actual content, as topic subsections in the order the author judges most useful - see [Conventions](#conventions) for this specification's own mandatory naming and cross-referencing rules, and [Relevance discipline](#relevance-discipline) for what belongs in the body versus the companion facets.
 
@@ -98,6 +98,14 @@ Any reference within a document to another section of the same file must be a re
 A body statement earns its place by serving the reader of the document's **current state**: reading it must change that reader's understanding of the design as it stands — its claims, definitions, arguments, or open questions. Content whose value is to a reader auditing *how* that state came to be does not belong in the body, however true or interesting it is: where and with whom positions were formed, in what order decisions arrived, the narrative of the debate that shaped them, anecdotes, and participant detail are decision-shaping context and belong to the paired [Changelog](./documentation-changelog.md). The test is not usefulness — decision-shaping context is usually useful — but which reader it serves.
 
 This applies inside sections that legitimately exist: a `Motivation` states the failure mode that motivates the document (current-state relevant), and a `Methodology` states the method and its verification discipline (current-state relevant); neither carries the social history of the positions they describe. The rule generalizes the provenance statement in this specification's [Abstract](#abstract) from a field list to a criterion: whatever a changelog reader needs and a current-state reader does not, is changelog content.
+
+**Recurring misroute — filling Abstract, Motivation, or Methodology with audit material.** Agents repeatedly put into these three openings what belongs only in the changelog: session dates, who argued or reviewed, which drafting pass relocated what, "see the paired changelog for the alternatives rejected," and other sentences that teach nothing about the *subject* and everything about the *document's production*. The test for each opening is the same Relevance criterion, applied narrowly:
+
+- **Abstract** — does this sentence state the document's claim? If it narrates how the claim was reached, drop it or move it to the changelog.
+- **Motivation** — does this sentence name the failure mode that makes the document necessary? If it narrates who noticed the failure, when, or how the writing session unfolded, drop it or move it.
+- **Methodology** — does this sentence state a method the reader must hold to understand or verify the content (what layer is consumed, what is excluded and why as a standing rule, what verification discipline the claims rest on)? If it only records that a review happened, who participated, or which prior draft looked different, it fails — that material never helps a later reader understand the subject better; it only helps an auditor reconstruct the writing. Omit Methodology entirely when nothing methodologically distinctive remains after that filter.
+
+The paired changelog is the correct home for production history; pointing at it from Motivation or Methodology does not license restating that history in the body.
 
 The full routing of former discussion-section content follows from this criterion:
 
@@ -122,10 +130,10 @@ A formal definition of the concept or term this document is about — distinct f
 A topic may propose its own non-binding convention — naming, structural, or otherwise — typically as a sibling of that topic's other subsections. Broader than naming alone: use it for any convention the topic introduces, explicitly non-binding — enforcement, if any, is a per-organization Linter configuration choice.
 
 #### Motivation
-The specific problem or friction a document solves — not a generic statement of importance, but the concrete failure mode that motivated writing it. Commonly placed under `Introduction`.
+The specific problem or friction a document solves — not a generic statement of importance, but the concrete failure mode that motivated writing it. Commonly placed under `Introduction`. It names the failure mode, not the writing session that discovered it; session narrative, requester identity, and "how we got here" chronology belong in the changelog (see [Relevance discipline](#relevance-discipline)).
 
 #### Methodology
-How a document's content was actually arrived at (research into precedent, the critique process it went through, testing against real examples) — worth including only when that process itself is worth recording; most documents can omit it. Commonly placed under `Introduction`, alongside but independent of `Motivation` — the two are unrelated in content and either can be used without the other.
+The method the content rests on — analytical moves, layering constraints, verification discipline, what is deliberately excluded as a standing rule of the document — worth including only when that method itself is load-bearing for understanding the claims; most documents can omit it. Commonly placed under `Introduction`, alongside but independent of `Motivation` — the two are unrelated in content and either can be used without the other. Methodology is **not** a miniature changelog: participant names, session dates, review-pass narratives, and pointers whose only payload is "history lives elsewhere" fail the [Relevance discipline](#relevance-discipline) filter and must not appear here.
 
 #### Problem
 The problem this document addresses, stated from the reader's, user's, or business's perspective — distinct from `Motivation`, which explains why the document itself was worth writing. For most documents the two coincide and only `Motivation` is needed; use `Problem` separately when the document's subject is a problem someone else is experiencing, not the document's own reason for existing.

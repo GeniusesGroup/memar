@@ -252,3 +252,24 @@ All retired wrapper titles are removed from the pattern; documents written under
 
 #### Decision
 The skeleton is three fixed sections; an Explanation-facet document carries no `Results` section; a result's home is determined by its type per documentation.md → Results routing; existing Results sections migrated same-session where their files were not under concurrent edit - routed, not deleted, wherever they carried content; the excluded documents (content.md, the docs/khayyam/ subtree, modeling, type, abstraction-implements, control-flow, error, memory) migrate progressively. (Omid Hekayati - approved)
+
+---
+
+### Relevance discipline: name the Abstract/Motivation/Methodology audit-filler misroute
+- Time: 2026-09-16T14:00:00Z
+- Type: Changed
+- Propagates to:
+  - documentation-explanation.practice.md: Done — body-writing step gains an explicit filter before leaving Abstract/Motivation/Methodology.
+  - protocols/tdd.md: Done — Methodology cleaned as the triggering instance; entry in [protocols/tdd.changelog.md](./protocols/tdd.changelog.md).
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — objected, directed the governing-doc upgrade
+  - Cursor/Composer — drafted
+
+#### What changed
+- Relevance discipline: added a named recurring misroute — filling Abstract, Motivation, or Methodology with session dates, participant/review narrative, drafting-pass archaeology, and changelog pointers that teach nothing about the subject — with a three-way filter (claim / failure mode / load-bearing method) and the rule that Methodology is omitted when nothing methodologically distinctive survives.
+- Body-sections Abstract bullet: excludes revision narrative and changelog-history pointers, not only "preview" and usage instructions.
+- Optional Sections Motivation and Methodology: rewritten so Motivation names the failure mode (not the writing story) and Methodology names the method the claims rest on — explicitly not a miniature changelog; the prior Methodology wording ("critique process it went through") had invited the misroute the Relevance discipline already forbade.
+- Practice companion: step 4 gains the same filter as an executable check, linking the named misroute.
+
+#### Deliberation
+- The triggering instance was `tdd.md`'s Methodology absorbing who-argued / review-pass / see-changelog material after a vocabulary review — content that does not help a later reader understand TDD (Omid Hekayati — objected). The governing specification's Relevance discipline already stated the criterion; what was missing was a named failure mode agents keep repeating, plus Optional-section wording that no longer invites "how we wrote it" into Methodology (Omid Hekayati — directed; Cursor/Composer — applied).
