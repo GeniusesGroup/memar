@@ -89,3 +89,60 @@
 - The defect-routing addition follows the owner's approved plan for the Defect Resolution topic: the practice names the situation's home rather than carrying its own debugging guidance (Omid Hekayati — decided; Super Z — applied).
 
 ---
+
+### Review pass — vocabulary, ownership of expectations, membership framing, handoff
+- Time: 2026-09-16T13:30:00Z
+- Type: Changed
+- Propagates to:
+  - process.md: Done — check/expectation vocabulary, verification restatement, one-shot boundary, defect-as-check-verdict; entry in [process.changelog.md](../process.changelog.md).
+  - process.handoff.md: Done — Expectations Q2/Q3 and Defect Q2 updated.
+  - protocols/README.md: Done — third membership kind (development protocols) and the no-implementing-repository exception.
+  - protocols/tdd.handoff.md: Done — created with open questions from this pass.
+  - protocols/tdd.practice.md: Done — steps and failure modes retargeted to the new topics.
+- Contributors:
+  - [Claude](../../CONTRIBUTORS.md#claude) (Opus-5 via [Cursor](../../CONTRIBUTORS.md#cursor)) — claimed, argued (independent critique)
+  - [ChatGPT](../../CONTRIBUTORS.md#chatgpt) (GPT-5.6-terra via [Cursor](../../CONTRIBUTORS.md#cursor)) — claimed, argued (independent critique)
+  - Cursor/Composer — reviewed, drafted, integrated
+
+#### What changed
+- Abstract: promoted the membership warrant — this protocol governs the *development* process (conforming participant: the development agent), distinct from protocols that govern processes inside the built system.
+- New topic *Whose Expectations Are Written*: the written expectation is of the **developed** process; the development step's expectation is derivative (its output is an instance satisfying those expectations); one check serves both.
+- *Test Is Not Its Implementation*: aligned with Process's check/expectation split — this document uses *test* for the written-expectation artifact only; grounded the another-agent-could-run-the-check criterion in the base (moved up from being practice-only).
+- *A User Story…*: retitled and tightened — the story *is* the developed process's expectation artifact (not "or should be"; not "development process or system process"); "canopy" replaced by "umbrella requirements concepts."
+- *Scope*: states that for a development, Process's "conformance matters" condition always holds; restores the one-shot boundary as a consumed case; Modeling relationship notes that the written expectation's authority derives from the model.
+- Practice: step 1 names the process being developed; step 3 obliges the two pre-work facts (checkable; not already satisfied) rather than mandating a failing run; failure-modes table gains the wrong-subject row; Boundary carries the one-shot case.
+- Created `tdd.handoff.md` for Draft-status open questions (vocabulary enrichment, user-story ownership, inquiry-boundary live test, one-shot protocol enrichment).
+- `protocols/README.md`: third membership kind + exception that development protocols have no `memar-{language}` implementation (their followable form is the Practice companion).
+
+#### Considered and not done
+- **Coining a Memar-native name to replace TDD (rejected again)**: the reach argument from the scope-generalization pass still holds; vocabulary fixes address the confusion without renaming. (Both critiques noted the name's friction; Cursor/Composer — kept per prior decision.)
+- **Moving the another-agent criterion into Process (rejected)**: it is a protocol-layer operational test on the written artifact under this discipline, not a new process concept. (GPT-5.6-terra — raised as ownership risk; Cursor/Composer — kept in TDD.)
+
+#### Deliberation
+- Independent critiques from Claude (Opus-5) and ChatGPT (GPT-5.6-terra) under Cognition's consultation norm converged on test/check overload, missing handoff, and whose-expectations ambiguity as load-bearing; membership-kind and red-green re-import ranked next (Cursor/Composer — ran both; integrated the ranked set).
+- The "or" in the user-story topic was treated as a definitional float, not a stylistic hedge: deleting it and naming the developed process as the sole subject closes the float without inventing a requirements document (Claude Opus-5 — claimed; Cursor/Composer — applied).
+
+---
+
+### Correction — no special-case protocol framing; Methodology cleaned; code tests affirmed
+- Time: 2026-09-16T14:00:00Z
+- Type: Changed
+- Propagates to:
+  - protocols/README.md: Done — removed the third membership kind and the "no implementing repository" exception added in the prior review pass.
+  - documentation-explanation.md / documentation-explanation.practice.md: Done — Relevance discipline sharpened against Abstract/Motivation/Methodology audit filler; entries in [documentation-explanation.changelog.md](../documentation-explanation.changelog.md).
+- Contributors:
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — objected, decided
+  - Cursor/Composer — corrected
+
+#### What changed
+- Abstract: removed the "Unlike Memar's other protocols…" warrant that treated TDD as a unique exception among protocols.
+- *What Memar Adopts* / *Test Is Not Its Implementation* / user-story paragraph / practice step 3: corrected the drift that read as if computer-code tests were optional or non-constitutive of software work — the discipline is not *limited* to code; where code is what is developed, test code is the ordinary demanded realization; language packages (including future Khayyam / `memar-{language}` helpers) are welcome mechanisms, not excluded.
+- *Relationship → Protocol*: reframed without contrast-to-others — like Error, the governed process may appear in development work, across systems, or as system behavior toward others.
+- *Methodology*: stripped session dates, participant narrative, and changelog pointers; kept only the standing method (consumes Process/Protocol; definitions at concept layer; examples excluded as a standing rule).
+- `protocols/README.md`: reverted the third membership kind and the Exception that claimed development protocols have no `memar-{language}` implementation.
+
+#### Deliberation
+- Owner objected that TDD is not uniquely exceptional among protocols (Error likewise travels between systems, is used in development, and can be part of a system's outward behavior), and that "not limited to computer code" was never "computer code needs no tests" (Omid Hekayati).
+- Owner objected that Methodology had absorbed changelog content (session/review narrative) that does not help a later reader understand TDD; the Relevance discipline already forbade it and was violated (Omid Hekayati — objected; Cursor/Composer — acknowledged and corrected, and sharpened the governing Explanation docs so the misroute is named).
+
+---
