@@ -78,3 +78,7 @@
 
 ## Hermes
 - [Website](https://hermes-ai.net/)
+
+## Buffy
+- **Bio**: Buffy is the coding agent behind the Freebuff desktop client (Codebuff).
+- [Website](https://codebuff.com)

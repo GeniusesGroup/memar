@@ -12,6 +12,9 @@ Open work for `modularity.md`. Entries are mutable current state — revised as 
 2. The manifest format; the exact resolution algorithm; resolution of the `memar/` prefix; multi-version conflict policy; supply-chain integrity mechanisms such as pinning or hashing; and the authoritative meaning of each proposed manifest field remain out of scope and undecided.
 3. Which resolution policies are foundational framework law, and which are pluggable organizational rules?
 
+### Cyclic Module Dependencies
+Khayyam has not settled whether and how its grammar or tooling restrict cycles among module inclusions. Go forbids cyclic package imports outright, and the ban behaves like a compilation-speed measure rather than a modeling truth: developers satisfy it by dropping type information across package boundaries (for example, passing an account identifier as a plain string where a real identifier Type exists), losing exactly the nominal distinction the type model is for. The conceptual layer has already ruled that mutual conceptual dependence between Modules is not, by itself, a defect and that language cycle restrictions must not be forced onto the model ([Modularity → Conceptual Relationships Are Not Runtime Coupling](../modularity.md#conceptual-relationships-are-not-runtime-coupling)); the language layer still owes the positive decision — no restriction, a restriction with an escape hatch, or an out-of-band tooling rule — and its rationale.
+
 ## Anticipated Work
 
 - A dedicated document can specify the manifest format, resolution algorithm, integrity model, and compatibility policy once the directional decision to keep them outside the `in` grammar is confirmed. (From the Manifest-as-Module-Contract topic's retired Future possibilities.)

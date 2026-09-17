@@ -11,7 +11,7 @@ Open work for `documentation-explanation.md`. Entries are mutable current state 
 ## Open Questions
 
 ### Should the Optional Sections catalog gain further entries?
-- State: raised while drafting the catalog; never resolved. Candidate entries named in the original working note: `Evidence Against (the Idea)`, `Design Principles`, `Consequences`, `Open Questions` itself.
+- State: raised while drafting the catalog; never resolved. Candidate entries named in the original working note: `Evidence Against (the Idea)`, `Design Principles`, `Consequences`, `Open Questions` itself. Two further candidates from the knowledge-management session's document draft: `Modeling Notes` (per-artifact records of how claims were modeled — node, edge, property, projection, rule — called there a block almost no knowledge-management system has, vital for a modeling discipline) and `Common Misconceptions` (confusions with adjacent words the topic actively refuses).
 - Consideration: an `Open Questions` catalog entry is now complicated by the body's own rule that unresolved questions live in handoffs, not in documents — a catalog entry for it may be self-defeating or may be exactly the sanctioned home for documents that legitimately need it. This tension is the reason the item is still open.
 - Next: evaluate each candidate against real documents that felt the absence of it.
 

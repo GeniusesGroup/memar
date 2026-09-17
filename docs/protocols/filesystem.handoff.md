@@ -12,6 +12,10 @@ Open work for `protocols/filesystem.md`. Entries are mutable current state — r
 
 ### What capabilities are lost if the filesystem disappears entirely?
 - State: are there critical operations that *only* a filesystem can natively support? (Migrated from the base document's retired `Unresolved questions`.)
+- Decomposition from the knowledge-management session: Git's value is the *solutions* it happens to provide, not the *problems* it answers; a successor must re-derive each requirement without assuming file shapes. The requirements Git currently satisfies: stable **Identity** for artifacts; **Change** recording over time; **Provenance** (who, when, based on what); **Consistency** (many actors, one evolving knowledge base); **Synchronization** (offline, online, and distributed continuation); **State Reconstruction** (recover any named past state); and **Conflict Resolution**. Each is a knowledge-system need that survives the filesystem critique; Git's file-centric realization of each does not.
+
+### If Git is internally already graph-like, what does its filesystem surface contribute?
+- State: Git's object model is a graph — commits are content-addressed nodes (identity by hash, not path), parents are edges, branches are labels on nodes — so the filesystem-centric shape persists at Git's *surface and workflows*, not in its model. The residual limit is semantic, not structural: Git models the graph of files and changes, not the knowledge graph — it cannot know that two terms are synonyms, that one decision caused seventeen modifications, or that one document invalidates another's assumption. Open: whether a knowledge system can adopt the graph-like internal model while replacing the file-centric surface, or whether Git's repair value is inherently bound to code-centric workflows. (From the knowledge-management session that produced `knowledge.md`.)
 
 ### Are there domains where the filesystem as a knowledge model is actually optimal, or is it always a compromise?
 - State: unresolved at the time of migration. (Migrated from the base document's retired `Unresolved questions`.)

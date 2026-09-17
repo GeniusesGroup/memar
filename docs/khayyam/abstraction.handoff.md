@@ -35,6 +35,9 @@ When an abstraction's behavioral contract changes — a new method is added, a r
 - What is the minimal safe evolution operation on an abstraction? Can a new method be added non-breakingly if it has a default implementation expressed as a standalone method?
 - Should Khayyam define a formal versioning scheme for abstractions, similar to semantic versioning but adapted for behavioral contracts?
 
+### Residual inheritance-wording re-audit
+The vr-ab review session closed with an open suggestion to re-audit this document (and `polymorphism.md`) for surviving "inheritance" phrasing that conflicts with the extension-not-inheritance terminology established in [Type → Explicit Behavior Ownership](../type.md#explicit-behavior-ownership); the pass was never run.
+
 ## Anticipated Work
 
 - **Compiler-generated dispatch metadata.** Once the intentional-satisfaction question is resolved (in any direction), the compiler could emit metadata files (e.g. a JSON manifest) listing every capsule and the abstractions it satisfies — valuable for IDE tooling (jump-to-implementation, find-all-satisfiers), cross-language compiler backends (generating `impl` blocks for Rust, `implements` for Java), and documentation generation (automated "implemented by" pages per abstraction).

@@ -27,16 +27,14 @@ Khayyam needs an explicit, documented classification of its polymorphism model f
 - **Compiler implementation clarity.** The compiler team needs to know exactly what polymorphic behaviors the type system must support. Ambiguity here leads to either over-engineering (implementing unnecessary dispatch mechanisms) or under-engineering (failing to support valid use cases).
 - **Cross-language compilation.** When translating Khayyam code to target languages (Go, Rust, C), the compiler needs to know which polymorphic mechanism to emit for each usage site. Without a clear classification, the translation is ambiguous.
 - **Developer education.** Developers coming from Java, Rust, Go, or C++ will have different assumptions about what "polymorphism" means. An explicit classification prevents misunderstandings and sets correct expectations.
-- **Consistency with document 495493.** The Abstraction Design document defines the `ab` mechanism in detail but does not explicitly classify which polymorphism forms it provides. This document closes that gap.
+- **Consistency with document 495493.** The Abstraction Design document defines the `ab` mechanism in detail but does not explicitly classify which polymorphism forms it provides. This document closes that gap. The dependency runs one way: Polymorphism *uses* Abstraction — an abstraction can exist with no polymorphic use whatsoever — and this document completes or specializes nothing about it.
 
 ### The Anemic Domain Model Problem with Generic Collections
-
 Generic collections create an illusion of correctness: domain logic that must live inside the container (e.g. "no duplicate Service IDs in this list") gets pushed outside the encapsulated type into disconnected layers (controllers, random services) because the generic abstraction has no room for it — directly breaking encapsulation and producing "Anemic Domain Models." Generic syntax (`<T>`) also introduces parsing/readability overhead that conflicts with Khayyam's minimal-syntax philosophy.
 
 The problem is structural, not incidental. A `List<Connection>` cannot carry any domain-specific behavior — it is, by design, a type-agnostic container. But real domain logic needs type-specific containers: a `ConnectionList` that prevents duplicate connections, enforces connection lifecycle rules, and provides domain-meaningful query methods. By forcing all containers through the generic straitjacket, languages incentivize developers to push validation and business rules into external services rather than encapsulating them within the type itself.
 
 ### Concrete Pain Points Addressed
-
 - **Java/C# developers** expect generics (`<T>`) for writing reusable algorithms. They need to understand that Khayyam's abstractions achieve the same code-reuse goal without the syntax, and when they might feel the absence.
 - **Rust developers** expect trait bounds and explicit `impl` blocks for polymorphism. They need to understand how Khayyam's implicit structural satisfaction replaces that ceremony, and what the tradeoffs are.
 - **Go developers** expect interface-based polymorphism plus (since Go 1.18) limited generics. They need to understand why Khayyam chose not to follow Go's path of adding generics on top of interfaces.
@@ -278,6 +276,6 @@ This separates three concerns that generic syntax conflates:
 
 - **Polymorphic reuse** — fully provided through abstraction conformance and Smart Compilation. This is settled.
 - **Compile-time facts** (dimensions, layout constraints, optimization hints) — should be expressed through dedicated compiler-visible contracts, not by encoding them into type identity. If a compiler needs information from the developer to perform optimization, the correct response is to define an abstraction for that specific compiler-facing concept, not to repurpose type parameters as a general-purpose information channel.
-- **Rule verification** (dimension compatibility, state machine transitions, protocol constraints) — should be modeled as rules or constraints, not as type identity. A matrix multiplication requiring compatible dimensions is a rule about the operation, not an identity property of the matrix type.
+- **Rule verification** (dimension and unit compatibility, state machine transitions, protocol constraints) — should be modeled as rules or constraints, not as type identity. A matrix multiplication requiring compatible dimensions is a rule about the operation, not an identity property of the matrix type.
 
 The remaining work is not about whether generic syntax is required (it is not, for polymorphism), but about what specific compiler-facing abstractions Khayyam needs to define for compile-time facts and optimization contracts. This is a tooling design question that belongs to a dedicated document on compiler contracts, not to this polymorphism-focused document.

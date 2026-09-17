@@ -172,7 +172,7 @@ The file-as-module model means that a file with many exported variables can beco
 ### Self-Documenting Code and No Magic Numbers
 In traditional languages, developers often write raw formulas like `if a == b + 1` and rely on comments to explain what `1` means. Khayyam forces developers to eliminate magic numbers by requiring that every value be wrapped in a named capsule with a descriptive name. By declaring an explicit variable for `1` with a descriptive name before using it in a method call, the code becomes inherently self-documenting at the declaration site, eliminating the need for redundant comments.
 
-Because variables require explicit types, the source code preserves the concepts introduced during modeling. A variable declaration should reveal a domain concept, not merely a machine representation. This is the variable-level manifestation of Khayyam's broader self-documenting architecture principle (documented in the Design Philosophy document).
+Because variables require explicit types, the source code preserves the concepts introduced during modeling. A variable declaration should reveal a domain concept, not merely a machine representation. This is the variable-level manifestation of Khayyam's broader self-documenting architecture principle (stated in [Khayyam → Self-Documenting Code and Naming](./khayyam.md#self-documenting-code-and-naming)).
 
 The boundary between "enforced clarity" and "forced verbosity" is not always clear. A capsule called `RetryCounter` adds clarity; a capsule called `LoopIndex` may not. The language does not currently provide a mechanism for teams to adjust this boundary — it is enforced uniformly by the grammar.
 
