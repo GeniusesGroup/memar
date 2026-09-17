@@ -39,14 +39,12 @@ This precision is deliberately domain-agnostic. Memar's core vocabulary is meant
 shared, examined foundation rather than on assumptions no one stated out loud.
 
 ## How to Navigate This Documentation
-Memar's documentation is intentionally decentralized: each concern is documented in exactly one authoritative place, and content is not duplicated across files to describe the same decision twice. This keeps every topic maintainable from a single source of truth, but it means no single file — including this README — gives a complete picture on its own.
+Memar's documentation is intentionally decentralized: each concern lives in one authoritative place, so no single file — including this README — is a complete picture.
 
-If you encounter an open question, an ambiguity, or a topic that doesn't seem to be addressed in the file you're reading, do not assume it's unresolved:
+1. **Search full-text across the documents, not by filename.** File names are descriptive slugs, not a topic taxonomy — a concept can live under a name you would not guess. Judging relevance by filename alone will miss existing answers.
+2. **If a thorough search still does not resolve the ambiguity, open an issue.** Describe the specific ambiguity so it can be addressed.
 
-1. **Search full-text across the documents, not by filename.** File names are descriptive slugs, not a topic taxonomy — a concept can live under a name you wouldn't guess. For example, questions about generics are addressed under *Polymorphism*, not under a file named "generics." Judging relevance by filename alone will cause you to miss existing answers.
-2. **If a thorough search still doesn't resolve the ambiguity, open an issue.** Describe the specific ambiguity so it can be addressed — either by extending an existing document or by creating a new one.
-
-This applies to human readers and AI assistants alike: don't infer the absence of a decision from the absence of a mention in the current file.
+Agents working the Memar way follow [`.agents/skills/memar/SKILL.md`](.agents/skills/memar/SKILL.md), which resolves and searches the live `docs/` tree through the bundled scripts rather than by memorized paths.
 
 ## System Categories
 
@@ -71,14 +69,6 @@ This restricts no one. Organizations remain free to develop whatever implementat
 Contact us by [this](mailto:ict@geniuses.group) or [this](mailto:omid@geniuses.group) or [this](mailto:omidhekayati@gmail.com) if you need enterprise support for developing high available and distributed software. See features available in enterprise package:
 - Develop exclusive features in very short time
 - Bug fixing quickly
-
-## Related Projects
-- [Clive is an operating system designed to work in distributed and cloud computing environments.](https://github.com/fjballest/clive)
-- [SQLc](https://sqlc.dev)
-- [EntGo](https://entgo.io/)
-- [go-zero](https://github.com/zeromicro/go-zero) as bad idea because of (microservice system), (fully compatible with net/http), (middlewares are supported), ...
-or [really relativetime?? Why not monotonic time??](https://github.com/zeromicro/go-zero/blob/master/core/timex/relativetime.go)
-- https://en.wikipedia.org/wiki/Genera_(software)
 
 ## Word
 Memar is the Persian word means [architect](https://en.wikipedia.org/wiki/Architect) ([معمار](https://fa.wikipedia.org/wiki/%D9%85%D8%B9%D9%85%D8%A7%D8%B1)), That is a person who plans, designs and oversees the construction of buildings. To practice architecture means to provide services in connection with the design of buildings and the space within the site surrounding the buildings that have human occupancy or use as their principal purpose. Etymologically, the term architect derives from the Latin architectus, which derives from the Greek (arkhi-, chief + tekton, builder), i.e., chief builder — where *arkhe* (from the verb *arkhin*) carries the sense of "guiding" and "governing".
