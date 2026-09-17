@@ -40,7 +40,7 @@ Several methodological commitments shaped this document, consistent with the pro
 
 **A semantic model must not depend on how a human ultimately perceives or interacts with content.** This principle, arrived at through repeated correction of GUI-centric bias (e.g., "Input is Data Entry" — a GUI framing rejected in favor of "Input is a Receive action"), applies uniformly whether the eventual consumer is a sighted GUI user, a voice interface, a Braille display, a search engine, or an AI agent.
 
-**Numeric claims from AI-generated research are qualitative judgments, not measured data**, and are never cited as such in this document. See [researchs/README.md](../researchs/README.md).
+**Numeric claims from AI-generated research are qualitative judgments, not measured data**, and are never cited as such in this document. See [Documentation — Research → Findings](./documentation-research.md#findings).
 
 ---
 
