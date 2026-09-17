@@ -39,3 +39,10 @@ Open work for `polymorphism.md`. Entries are mutable current state — revised a
 ### Compile-Time Polymorphism Assertions
 - State: from the document's retired Discussion (Future possibilities). A future extension could allow developers to write compile-time assertions about polymorphic behavior, expressed as Linter rules rather than language syntax — for example: "All capsules satisfying `Serializer` must also satisfy `Clone`" — enforced at the organizational level, not at the language level.
 - Next: depends on the Linter's mechanism for organizational-level rules.
+
+### Dedicated compiler-contracts document
+- State: [polymorphism.md](./polymorphism.md) closes its Matrix analysis by assigning the compile-time-facts and optimization-contracts residue "to a dedicated document on compiler contracts" — the named successor had no tracked work item until this entry; the document itself has not been drafted and no owner was assigned.
+- Next: draft when the compiler-facing abstractions the Matrix section names (dimensions, layout constraints, optimization hints) have their first real consumer; coordinate with [Compiler](../protocols/compiler.md).
+
+### Residual inheritance-wording re-audit
+- State: the vr-ab review session closed with an open suggestion to re-audit this document (and `abstraction.md`) for surviving "inheritance" phrasing that conflicts with the extension-not-inheritance terminology established in [Type → Explicit Behavior Ownership](../type.md#explicit-behavior-ownership); the pass was never run.

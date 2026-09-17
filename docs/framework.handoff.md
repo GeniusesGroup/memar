@@ -4,6 +4,10 @@ Open work for `framework.md`. Entries are mutable current state — revised as e
 
 ## Open Questions
 
+### Mental model of the substrate before tool selection
+- State: recovered 2026-09-17 from an audit of Omid Hekayati's Telegram-group messages (gopherconf.ir, Gommunity, 2024-2025). A recurring owner position: before selecting any tool, reason from the substrate's own model — know what a hash table is before asking whether Go's `map` fits; design a storage engine by deciding which layer must know the schema, not by comparing database products; and see the whole data path through the machine (even to CPU/cache behavior) as the architecture under design. Relatedly: pursue requirements through **protocols, not tool features**. The framework's documents draw the protocol/implementation distinction and make framework-versus-tool the load-bearing [definition](./framework.md#framework-as-description), but the working rule "reason from the substrate's mental model first, tools second" is stated nowhere; it is also the practical grounding for the [reinvent-the-wheel](../README.md#goals) goal.
+- Next: state the rule when the framework document next grows its practice/rationale layer (or route it to [Modeling](./modeling.md) if it proves to be modeling-method rather than framework doctrine); the substrate examples above are the owner's own and can be cited as evidence.
+
 ### Balancing framework constraints against architectural flexibility
 How should Memar balance the need for framework-level constraints with the need for architectural flexibility?
 
@@ -21,6 +25,9 @@ How should conflicts between a framework's goals be resolved when they pull in d
 
 ### Purpose Space / Constraint Space as distinct edge types
 Should the Purpose Space / Constraint Space distinction be reflected in [System](./system.md)'s conceptual graph as two distinct edge types, or is the current single `constrained_by` edge sufficient?
+
+### Framework → Model relationship as a graph edge
+[framework.md](./framework.md) states the relationship only descriptively — every framework employs models ("A framework *uses* models; a model *is* a representation"), since a framework is a description and every descriptive statement within it constitutes a model at some level of abstraction. Decide whether Framework → Model should also appear as an explicit edge in [System](./system.md)'s conceptual graph — and, if so, whether it is a mandatory edge (a Framework without any Model cannot exist) or remains an explanatory relation owned by the Framework document.
 
 ### Framework goals versus System Purpose and Responsibility
 How does the goal-orientation of a framework relate to System's Purpose and to System's newly-added Responsibility (a part's Purpose expressed relative to a containing System — see [System → Responsibility](./system.md#system))? Is a framework's goal the same as a System's purpose, is it closer to a Responsibility, or is there a meaningful distinction from both? [framework.md](./framework.md) does not yet check its own use of "goal" against either definition.

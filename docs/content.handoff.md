@@ -58,6 +58,10 @@ Open work for `content.md`. Entries are mutable current state — revised as eac
 - State: the document-wide cross-cutting question, moved 2026-09-11 from the retired document-level Discussion. Media (image, audio, video) may need region/timestamp addressing while no Type system currently governs their internal structure; the question belongs to no single topic.
 - Next: examine when media topics develop; relates to the Addressability questions above.
 
+### Can one Content participate in multiple Timelines, and is Timeline a distinct concern?
+- State: the knowledge-management session modeled organizational history as Content units attached to one or more Timelines — the pattern where a post lives in its author's timeline and reaches others' timelines through re-entry, without duplicating the unit. This is also what makes knowledge.md's Task-Centric principle realizable: one Task's outcome can appear in several participants' views while remaining one Content. content.md defines Composition, Reference, and (unresolved) Arrangement, but names no Timeline concern and no ordering semantics such a view requires; `knowledge.md` formerly pointed its scope boundary at a "Timeline" domain model here, which did not exist — that dangling reference was removed.
+- Next: decide whether Timeline is a distinct concern, or a consumer-side projection under Arrangement/Composition, when the first multi-timeline case is worked in a consumer project such as `organization`.
+
 ## Anticipated Work
 
 ### A concrete Authoring Syntax prototype

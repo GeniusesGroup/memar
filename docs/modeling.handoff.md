@@ -72,6 +72,9 @@ Open work for `modeling.md`. Entries are mutable current state — revised as ea
 5. The section treats Rule as a first-class graph node, while [Rules as a Provisional Term](./modularity.md#rules-as-a-provisional-term) treats *Rule* as a provisional name for a Module's optional relationship to another Module. Whether these are two views of one concept, or whether the graph-node framing should be replaced by the module framing, is not resolved there.
 6. Where does the rule-engine live architecturally, and how does it query the graph efficiently at the scale this framework targets?
 
+### Edge identity and reification
+1. Does an ordinary edge carry its own addressable identity — independently of promotion to a node or a Type? The rejected blanket claim "Edges are Types" (type.changelog.md, *Rules-and-invariants framing absorbed* entry) settled that not every edge becomes an independent concept, but it left open the prior capability: addressing a specific edge in order to attach another edge to it (an annotation, a guarantee, a supersession), which graph-based modeling sessions have assumed when giving every edge its own identifier and letting edges terminate other edges. The edge taxonomy is silent on whether edges are first-class addressables at this minimal level.
+
 ### Document-level
 1. Should Memar prescribe specific modeling workshops or exercises (e.g., event storming, domain storytelling) as part of the standard modeling process, or should the modeling technique remain entirely up to the team?
 2. How should modeling be integrated into CI/CD pipelines? Can model quality be automatically checked (e.g., detecting cycles in the dependency graph, flagging abstractions without clear responsibilities)?

@@ -143,3 +143,15 @@
 
 #### Deliberation
 - After the Khayyam-shelf memory-model document was retired into the Memory protocol, leaving a "future document" deferral would have been a dangling promise (Omid Hekayati — claimed).
+
+---
+
+### Review-round wording alternatives recorded as considered
+- Time: 2026-09-16T00:00:00Z
+- Type: Fixed
+- Contributors:
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided
+
+#### What changed
+- Recorded, from the audit of a now-pruned `chats-context` session file, three wording changes proposed for the Abstract/Overview during the vr-ab review round that were not adopted, so they are not silently re-argued: (1) weakening "creates a named reference to an instance of a type" to "establishes a named relationship with a type" pending the Type model's settlement; (2) replacing "reference" altogether — "a variable binds a name to a typed entity" — to avoid importing reference-semantics assumptions from mainstream languages; (3) removing the "provides access to the same instance" sentence as an identity/resource-model claim the variable document should not make.
+- The body retains its original wording; the concern behind (3) is defused by the Resource Lifecycle retarget above, which assigns storage and copy semantics to the Memory protocol, while the instance-sharing statement remains a grammar-level fact about pass-by-reference.

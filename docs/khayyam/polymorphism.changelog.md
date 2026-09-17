@@ -215,3 +215,18 @@ In rare cases involving multiple levels of abstraction extension (e.g., `A` incl
 The cost of writing an intermediate domain-specific capsule for every container usage is real, ongoing engineering effort, even for cases that would otherwise be a single line of generic syntax (`List<Connection> connections;`) in another language. This is reframed in this document as "a fundamental investment in Clean Architecture," but it is still a genuine, non-trivial cost paid on every container use, not just complex ones.
 
 This cost is partially mitigated by two factors. First, Khayyam's ecosystem includes scaffolding tooling (the Memar framework) that can generate domain-specific container capsules from a declaration, reducing the manual effort to specifying the domain's validation rules and query methods rather than boilerplate container logic. Second, the domain-specific capsule does more than a generic container — it carries domain invariants and provides domain-meaningful APIs — so the investment yields returns in code quality that generic containers cannot provide.
+
+---
+
+### Abstraction-relation direction recorded from the vr-ab review session
+- Time: 2026-09-16T00:00:00Z
+- Type: Fixed
+- Contributors:
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — ruled
+
+#### What changed
+- The Motivation's consistency bullet now states the ruling on the dependency's direction: Polymorphism *uses* Abstraction — an abstraction can exist with no polymorphic use — and this document neither completes nor specializes Abstraction.
+- The initial-draft entry's `Extends` Cited label is left untouched as the historical record of that document's pre-ruling front matter; the relation was reframed to references/uses by ruling, not retroactively rewritten.
+
+#### Deliberation
+- The ruling — Polymorphism is not a subset or perfection of Abstraction, and the citation must read "references/uses" — was given in the vr-ab review session but never reached this document; recorded here when the session's chat file was pruned from `chats-context/` (Omid Hekayati — ruled).

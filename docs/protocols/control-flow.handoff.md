@@ -4,6 +4,9 @@ Open work for `protocols/control-flow.md`. Entries are mutable current state —
 
 ## Open Questions
 
+### Which error class is declared as an abrupt halt (panic)?
+- State: recovered 2026-09-17 from an audit of Omid Hekayati's Telegram-group messages (Go Engineers, 2024). A position reached in a panic-vs-error discussion, offered by the owner as a general doctrine: errors **temporary and outside the program's control** (e.g. momentary memory unavailability) warrant abrupt halting (panic-class behavior), while input-validation failures return errors addressed to the caller — with the owner noting the answer depends on how the return/halt distinction is modeled, not merely on which is conventional in Go. This document anticipates halting semantics ([Topics to be developed here](./control-flow.md#topics-to-be-developed-here)) and [The Error](./error.md) carries an `Internal`/`Temporary`/`Timeout` class model (the optional capability interfaces of [Composition](./error.md#composition)) without yet connecting the two: which class conditions justify a `PANIC()`-family halt versus an ordinary propagated error is undecided.- Next: settle jointly with the halting-semantics topic when that topic is developed; the temporary/uncontrollable criterion is the owner's working position to evaluate, not a decided rule.
+
 ### Should the success/failure pair live on the Error abstraction or on a shared abstraction?
 - State: asking an `Error` — whose identity already represents failure — "what to do on success" may be semantically backwards; the pair may belong one level up, on the shared abstraction `IsNull()` already belongs to, with `Error` only inheriting it. Not yet decided.
 - Next: resolve before finalizing the pair naming.

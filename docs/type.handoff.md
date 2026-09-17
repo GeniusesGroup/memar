@@ -40,7 +40,7 @@ Open work for `type.md`. Entries are mutable current state — revised as each i
 - Next: design when the first interop boundary appears.
 
 ### Bootstrapping without primitives
-- State: without primitives, what are the foundational Capsules, and how are they defined without circularity? An implementation concern that affects the Type model's coherence.
+- State: without primitives, what are the foundational Capsules, and how are they defined without circularity? An implementation concern that affects the Type model's coherence. Cross-referenced 2026-09-16 from the retired `chats-context -- Error & ADT.md` audit: the concrete motivating case recorded there was the String↔Error circular dependency in the stdlib bootstrap, with the owner's standing rejection of solving it via a hidden primitive type (on principle — see [Type → Manifestation in Khayyam → No primitive types](./type.md#manifestation-in-khayyam)); the language-side track of the same question now lives in [Khayyam's handoff](./khayyam/khayyam.handoff.md#stdlib-bootstrap-ordering-under-the-no-hidden-primitive-rule).
 - Next: settle with Khayyam's foundational-capsule work.
 
 ### Accidental satisfaction mitigation
