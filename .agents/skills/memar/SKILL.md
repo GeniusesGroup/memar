@@ -44,46 +44,21 @@ This section is agent-specific (tool-dependent), so it lives here rather than in
 - Do not delegate work whose intermediate context is itself the deliverable, or work needing continuous back-and-forth judgment; delegation is lossy and has coordination cost.
 - Prefer a **new** sub-agent with a short brief (paths + the passages it must judge) over **resuming** a long prior sub-agent thread: resume replays that thread's history into the bill again. Prefer a smaller model when the job is a second opinion, not primary drafting. Do not open whole base documents when the needed sections can be named by path and anchor.
 
-## How to discover documentation
-This section is agent-specific (tool-dependent), so it lives here rather than in a repository Practice.
+## Documentation navigation
+Two standard-library Python scripts ship beside this file ([`scripts/`](scripts/)); they are the navigation mechanism. Invoke them; do not re-derive their logic or read them for usage — each documents itself via `--help`. Every path in Memar documentation is relative to the **Memar repository root**, never to the user's workspace, this skill's directory, or the filesystem root.
 
-**Prefer, in order:**
-1. If the current workspace *is* the `GeniusesGroup/memar` repository, use it as the Memar root.
-2. Otherwise shallow-clone (or reuse) into the system temporary directory, folder name **`memar`** — same as the repository name. Do not append suffixes like `-repo`.
+1. Root: if the workspace *is* `GeniusesGroup/memar`, that is the root. Otherwise `memar-root.py` resolves it (shallow-clones if missing) and prints the path — use that as `$MEMAR_ROOT` for the session; do not re-resolve after the first run.
+2. Relevance: `memar-doc.py meta FILE` prints a document's front matter + Abstract — judge from that before opening anything whole.
+3. Reading: `memar-doc.py section FILE HEADING` extracts exactly the needed section; follow documents' own hyperlinks (resolve via `memar-doc.py path REF --from FILE`) when Memar rules require related reading.
+4. Finding: `memar-doc.py search PATTERN...` searches full-text across the doc set — filenames are slugs, not a taxonomy, so never guess by filename. A `Status` earlier than `Final` means unsettled; section structure is uniformly Abstract → Introduction → Explanation.
 
 ```bash
-# Unix / Git Bash / WSL — MEMAR_ROOT is e.g. /tmp/memar
-MEMAR_ROOT="${TMPDIR:-/tmp}/memar"
-[ -d "$MEMAR_ROOT/.git" ] || git clone --depth 1 https://github.com/GeniusesGroup/memar.git "$MEMAR_ROOT"
+MEMAR_ROOT="$(python "$SKILL_DIR/scripts/memar-root.py")"     # once per session ($SKILL_DIR = this file's directory)
+python "$SKILL_DIR/scripts/memar-doc.py" meta docs/framework.md   # judge relevance cheaply
+python "$SKILL_DIR/scripts/memar-doc.py" section docs/framework.md "Goal-Oriented Frameworks and Purpose Space"
+python "$SKILL_DIR/scripts/memar-doc.py" search "polymorphism"    # full-text, not filename
 ```
 
-```powershell
-# Windows PowerShell — MEMAR_ROOT is e.g. C:\Users\...\AppData\Local\Temp\memar
-$MEMAR_ROOT = Join-Path $env:TEMP "memar"
-if (-not (Test-Path (Join-Path $MEMAR_ROOT ".git"))) {
-  git clone --depth 1 https://github.com/GeniusesGroup/memar.git $MEMAR_ROOT
-}
-```
+On Git Bash/MSYS shells, pass bare names (`docs/cognition.md`), not leading-`/` paths — MSYS rewrites the latter into Windows paths before the script sees them.
 
-Prefer `git clone` over the GitHub REST API (unauthenticated API rate-limits quickly; clone does not).
-
-Then read only the needed file(s) with the agent's normal read/search tools — do not dump the whole repo into context. If already cloned earlier in the session, reuse it; do not reclone.
-
-If a referenced file is missing from the clone, say so and ask for it (it may be an unpublished draft) rather than fabricating content.
-
-### Path resolution (agents)
-Links in this skill and across Memar documentation use ordinary Markdown / Git path forms (`/docs/...`, `./foo.md`, `../bar.md`, etc.). For an agent, **every such path is relative to the Memar repository root** established above — not to the user's project workspace, not to this skill's directory, and not to the machine filesystem root.
-
-- A root-style path such as `/docs/cognition.md` means `{Memar root}/docs/cognition.md`.
-- A relative link inside a document (e.g. `./modeling.md` from `docs/system.md`) resolves against that document's directory **under the Memar root**, as Markdown/Git already imply — still never against the user's other project.
-
-When following hyperlinks between documents, keep resolving under that same Memar tree.
-
-## How to navigate between documents
-Do not guess filenames or rely on a memorized list:
-1. Start from `README.md` (or the relevant `docs/` entry point) for orientation.
-2. Follow each document's hyperlinks when Memar rules require related reading.
-
-This stays valid as new documents are added, unlike a hardcoded index.
-
-You do not need to read every document end-to-end. Use front matter (Title, Status, ID) and the Abstract to judge relevance, then jump to the needed section. Documents share one section structure (Abstract → Introduction → Explanation). Treat nothing before `Status: Final` as settled; detailed semantics live in the project's documentation specification.
+Only if the runtime has no Python: read the scripts' source (short, dependency-free, self-documenting) and reproduce the needed step with the tools available — first execution by Python's own agency, then source-reading, and only then a bare `git clone --depth 1` of https://github.com/GeniusesGroup/memar.git into a temp dir, reusing any existing checkout. A referenced file missing from the root is reported, not guessed at — it may be an unpublished draft.
