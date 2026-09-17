@@ -74,6 +74,8 @@ A non-exhaustive catalog of sections a research's author may include — nowhere
 #### Findings
 What the inquiry has established so far, as claim-shaped statements, each carrying inline attribution where authorship varies and cited evidence where evidence exists. Ordered by question when the research governs several. A finding that is genuinely tentative says so in its own statement — that is content; question-level standing is carried by the question statuses.
 
+Numeric estimates (including percentages and coverage estimates) are not measured data merely because they are expressed as numbers. Without an inspectable method and supporting evidence, they must not be cited as measured results. Qualitative judgments expressed numerically must be identified as estimates, regardless of whether their author is a person or an AI system.
+
 #### Open Questions
 Questions raised during the inquiry that it does not answer — including those a reviewer added. While the research is Active they live here; when it completes, each graduates to the base artifact's handoff or is explicitly dropped, so a live question is never buried inside a frozen record.
 

@@ -37,3 +37,19 @@
 - **Research as a Handoff variant** (rejected): a handoff is mutable state that retires when the discussion ends; a research is a durable record that persists after completion and can be cited as evidence by later changelog entries.
 - **A companion changelog for each research file** (rejected): the file's own statuses and participant record are its live state, and supersession is its correction mechanism — the same recursion stop the other companion facets apply.
 - **A paired practice document now** (deferred): unlike the Handoff facet, which consolidated three field-tested practice drafts, no research procedure has accumulated yet; the practice is anticipated work until real researches show the procedure.
+
+### Preserved the numeric-evidence safeguard when retiring the research-directory README
+- Type: Changed
+- Propagates to:
+  - content.md: Done — the numeric-claims reference now points to this specification's Findings section.
+  - content.changelog.md: Done — both research-status references now point to the distinction between research findings and adopted understanding.
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — requested, approved
+  - [Super Z](../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — drafted, proposed, applied
+
+#### What changed
+- The Findings section explicitly distinguishes numeric estimates from measured results: an inspectable method and supporting evidence are required before a numeric claim may be cited as measured data, regardless of its author's identity.
+- The obsolete README in the `researchs/` directory was removed after preserving its numeric-evidence safeguard and updating all three inbound links. Existing research files remain unchanged.
+
+#### Considered and not done
+- Duplicating the old attribution and adoption rules was unnecessary: Participants and the graduation path into the governing document already cover them. The old permission to abandon research without a formal deprecation process was not transferred because the current lifecycle preserves Complete and Withdrawn records and corrects them by supersession (Super Z — proposed; Omid Hekayati — approved).
