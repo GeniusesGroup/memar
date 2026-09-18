@@ -46,6 +46,8 @@ Memar's documentation is intentionally decentralized: each concern lives in one 
 
 Agents working the Memar way follow [`.agents/skills/memar/SKILL.md`](.agents/skills/memar/SKILL.md), which resolves and searches the live `docs/` tree through the bundled scripts rather than by memorized paths.
 
+Fair, public comparisons with projects often treated as substitutes for Memar live under [`comparisons/`](./comparisons/) — start with [comparisons/README.md](./comparisons/README.md).
+
 ## System Categories
 
 ### Computer
