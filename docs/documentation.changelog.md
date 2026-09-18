@@ -200,3 +200,20 @@ Fixed skeleton: four sections. Everything else optional, catalogued. Open questi
 #### Considered and not done
 - **A standing `Conventions` document (rejected)**: the draft was dissolved rather than registered. A container whose only membership criterion is "shared agreements" has no boundary on what enters it - the draft had accumulated a documentation naming rule, a citation-direction rule the folder READMEs already own, and three empty section headings of exactly the kind the Results-section round found to attract misrouted content over time - reproducing the shape already rejected on record for a generic `coding-style.md`.
 - **Placing the naming convention in `protocols/filesystem.md` (rejected)**: its thesis is that path-shaped names are not content's structure; the convention would have been read as that document endorsing the filesystem view it argues against.
+
+---
+
+### Written surface and Content Rule extensions
+- Time: 2026-09-18T14:30:00Z
+- Type: Changed
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — claimed, decided
+  - [Composer](../CONTRIBUTORS.md#composer) (Composer via Cursor) — drafted
+
+#### What changed
+- Registered cross-cutting [Written surface](./documentation.md#written-surface): no blank line between a section title and its body; no double blank runs; load-bearing logic stays linear; present-state writing when the reader has no prior durable snapshot to compare against. Rules are writing rules, not markup-protocol rules.
+- Extended [Content Rule](./documentation.md#content-rule-no-fabricated-or-redundant-provenance) with **No derivative inventories** — do not cache directory/script/comparison membership lists in READMEs; point at the live collection.
+- Placed followable steps in [documentation.practice.md](./documentation.practice.md) (not in documentation-practice.md, which governs the Practice facet schema).
+
+#### Deliberation
+- Blank line after a section title rejected (Omid Hekayati). Surface rules must not be Markdown-tied (Omid Hekayati). Membership indexes in pointer files rejected as invalidating caches (Omid Hekayati). Narrating "revised" against invisible prior text rejected (Omid Hekayati).
