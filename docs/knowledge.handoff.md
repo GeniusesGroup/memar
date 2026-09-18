@@ -27,6 +27,7 @@ Open work for `knowledge.md`. Entries are mutable current state — revised as e
 
 ## Anticipated Work
 
+- **Executable knowledge surfaces**: turn the Knowledge-and-Code split (prose contracts vs callable generators / language-server-style tools) into concrete patterns for Error and other protocols — without writing Practices that narrate each generated artifact by hand. Track progress in language repos (`memar-khayyam`, …), not only in this handoff.
 - **Content Domain Model**: [Content](./content.md) now defines Content, Semantic, Reference, and composition; the knowledge-side integration (how Knowledge units, Assertions, and Distinctions map onto Content and Relation) should be worked out against it.
 - **Task Domain Model**: defining Task, Decision, Discussion, Outcome and their relationships — possibly as compositions of more primitive concepts.
 - **Versioning Strategy**: how versioning works in a non-file-centric system (content versions vs. snapshot versions vs. logical timestamps).

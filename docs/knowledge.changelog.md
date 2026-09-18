@@ -147,3 +147,29 @@
 - **Zettelkasten Method (Luhmann)**: personal knowledge management based on atomic notes, links, and emergent structure. Influences [The Smallest Knowledge Unit Is Smaller Than You Think](./knowledge.md#the-smallest-knowledge-unit-is-smaller-than-you-think) and [Relationships Are First-Class Citizens](./knowledge.md#relationships-are-first-class-citizens). (Migrated from the same)
 - **Solid (Berners-Lee)**: web decentralization emphasizing personal data pods, content addressability, and granular permissions — a technical implementation of several of the base document's principles. (Migrated from the same)
 - **Communities of Practice (Wenger-Trayner)**: how groups learn together through shared practice — evidence for the process view of knowledge and for [Communication Channels Produce Knowledge but Are Not Knowledge Repositories](./knowledge.md#communication-channels-produce-knowledge-but-are-not-knowledge-repositories). (Migrated from the same)
+
+---
+
+### Continuous model, executable projections, durable writing
+- Time: 2026-09-18T12:20:00Z
+- Type: Changed
+- Cited:
+  - [comparisons/superpowers.md](../comparisons/superpowers.md) — Evidence: owner critique of treating marketplace/plugin skill packs, prose recipes for generative work, and reader-workaround documentation as substitutes for a continuous knowledge model.
+  - [Agency → Prompt Engineering and Harness Engineering](./agency.md#prompt-engineering-and-harness-engineering) — Depends_on: distribution and harness technique remain under Communication, not the knowledge model.
+- Propagates to:
+  - [.agents/installing.md](../.agents/installing.md) — Clarified: marketplace/plugin are delivery tax, not the mental model.
+  - [.agents/skills/README.md](../.agents/skills/README.md) — Recorded: failed split of Khayyam/Cognition into peer skills.
+  - [comparisons/README.md](../comparisons/README.md) — Points at these principles as standing assumptions for public comparisons.
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — claimed, decided
+  - [Composer](../CONTRIBUTORS.md#composer) (Composer via Cursor) — drafted
+
+#### What changed
+- Expanded [Knowledge and Code](./knowledge.md#knowledge-and-code) to separate prose contracts from executable generative services (language-server / tool-call style), using Error-module generation as the illustrative pattern rather than a Practice that narrates each concrete artifact.
+- Added [A Project Carries One Continuous Mental Model](./knowledge.md#a-project-carries-one-continuous-mental-model): distribution adapters may multiply; the internal model must not be partitioned into per-harness skill packs. Records Memar's failed experiments with a separate Khayyam skill and Cognition as a peer skill.
+- Added [Write for the Structure of the Subject, Not for Today's Reader Limits](./knowledge.md#write-for-the-structure-of-the-subject-not-for-todays-reader-limits): governing text must remain true as readers (including models) change capability; load-bearing logic must not live in decorative tables or digraphs that models misparse.
+
+#### Deliberation
+- Marketplace/plugin as the project's self-introduction, multi-skill fragmentation, prose-only generative recipes, and documentation aimed at temporary agent weaknesses were rejected as knowledge-model shapes (Omid Hekayati). The comparison with Superpowers was the occasion; the principles are stated domain-generally where they apply, and software-specifically under Knowledge and Code where generation is the issue.
+
+---
