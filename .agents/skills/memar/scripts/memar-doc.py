@@ -34,17 +34,22 @@ Subcommands
                          slugs, not a taxonomy) — this makes that rule cheap.
                          Extra args are extra regexes; files matching all are
                          listed (`path:all-matched`).
+  changelog-append FILE  Append one Changelog-facet entry to FILE (must be a
+                         `*.changelog.md`). Entry Markdown on stdin, or
+                         `--entry-file PATH`. Entry must begin with `### `.
+                         Oldest-first rule: always appends at end-of-file;
+                         peeks only at the file tail for `---` separator
+                         hygiene — does not require reading the changelog
+                         into an agent context. See documentation-changelog.md
+                         → Structure.
+  hour-id                Print whole UTC hours since the Unix epoch — the
+                         coarse value used when minting an Explanation-facet
+                         document's `ID` field.
 
 Root resolution: --root PATH, then $MEMAR_ROOT, then `memar-root.py`
 (which resolves the canonical temp clone). Only files under the root and
-under a `docs` directory are ever returned.
-
-Examples
-  python scripts/memar-doc.py path /docs/cognition.md
-  python scripts/memar-doc.py path ./modeling.md --from docs/system.md
-  python scripts/memar-doc.py meta /docs/framework.md
-  python scripts/memar-doc.py section /docs/framework.md "Goal-Oriented Frameworks and Purpose Space"
-  python scripts/memar-doc.py search "generics|polymorphism"
+under a `docs` directory are ever returned for path/meta/section/search/
+changelog-append. hour-id needs no document root.
 """
 from __future__ import annotations
 
@@ -53,6 +58,7 @@ import os
 import re
 import subprocess
 import sys
+import time
 from pathlib import Path
 
 # Windows consoles default to a legacy codepage (e.g. cp1252) while Memar
@@ -236,6 +242,53 @@ def section(text: str, heading: str) -> str | None:
     return None
 
 
+def changelog_append(path: Path, entry: str) -> None:
+    """Append one Changelog entry at EOF (oldest-first). Peeks only the tail."""
+    if path.suffixes[-2:] != [".changelog", ".md"] and not path.name.endswith(
+        ".changelog.md"
+    ):
+        # Accept both Path("x.changelog.md") forms across platforms.
+        if not path.name.endswith(".changelog.md"):
+            sys.exit(
+                f"error: changelog-append expects a *.changelog.md path, got {path.name}"
+            )
+    entry = entry.strip()
+    if not entry.startswith("### "):
+        sys.exit("error: changelog entry must begin with '### ' (an entry title)")
+
+    if not path.is_file():
+        sys.exit(f"error: not a file: {path}")
+
+    # Peek at most the last 512 bytes for separator hygiene — never load the
+    # whole changelog into memory for an append.
+    size = path.stat().st_size
+    with path.open("rb") as handle:
+        handle.seek(max(0, size - 512))
+        tail = handle.read().decode("utf-8", errors="replace")
+    tail_stripped = tail.rstrip()
+    needs_rule = not tail_stripped.endswith("---")
+
+    parts: list[str] = []
+    if size > 0 and not tail.endswith("\n"):
+        parts.append("\n")
+    if needs_rule:
+        if size > 0 and not tail_stripped.endswith("\n\n"):
+            if not tail.endswith("\n"):
+                parts.append("\n")
+            parts.append("\n")
+        parts.append("---\n\n")
+    elif size > 0 and not tail.endswith("\n\n"):
+        if tail.endswith("\n"):
+            parts.append("\n")
+        else:
+            parts.append("\n\n")
+    parts.append(entry)
+    parts.append("\n")
+
+    with path.open("a", encoding="utf-8", newline="\n") as handle:
+        handle.write("".join(parts))
+
+
 # ----------------------------------------------------------------- main
 
 def main() -> None:
@@ -262,7 +315,27 @@ def main() -> None:
     p_search = subparsers.add_parser("search", help="regex search the doc set")
     p_search.add_argument("patterns", nargs="+")
 
+    p_append = subparsers.add_parser(
+        "changelog-append",
+        help="append one oldest-first Changelog entry at end-of-file",
+    )
+    p_append.add_argument("file", help="path to a *.changelog.md")
+    p_append.add_argument(
+        "--entry-file",
+        default=None,
+        help="read entry Markdown from this file instead of stdin",
+    )
+
+    subparsers.add_parser(
+        "hour-id",
+        help="print UTC hour-count since epoch (Explanation document ID)",
+    )
+
     args = parser.parse_args()
+    if args.command == "hour-id":
+        print(int(time.time() // 3600))
+        return
+
     root = resolve_root(args.root)
 
     if args.command == "path":
@@ -321,6 +394,15 @@ def main() -> None:
                     ):
                         if patterns[0].search(line):
                             print(f"{path.relative_to(root)}:{number}:{line.strip()}")
+
+    elif args.command == "changelog-append":
+        path = resolve_ref(args.file, root, None)
+        if args.entry_file:
+            entry = Path(args.entry_file).expanduser().read_text(encoding="utf-8")
+        else:
+            entry = sys.stdin.read()
+        changelog_append(path, entry)
+        print(f"appended to {path}")
 
 
 if __name__ == "__main__":

@@ -6,10 +6,8 @@ Do not assume "agent" in this repository means "AI agent." A human role, an orga
 This file is loaded by [AGENTS.md](../AGENTS.md) at the start of every session in this workspace, so it is a pointer table only — everything operational lives one pointer away.
 
 ## What lives here
-| Path | Role |
-|---|---|
-| [`skills/memar/SKILL.md`](skills/memar/SKILL.md) | The Memar practice — how to discover and apply Memar's live documentation, including its bundled scripts. Load it whenever the session's work falls within its description; its description decides, not this file. |
-| [`commands.md`](commands.md) | Ready-to-paste commands with their one-line "why" — git history rules and the documentation script invocations. |
-| [`installing.md`](installing.md) | Distribution: the plugin manifests, per-tool installation steps, and what the plugin wrapper does and does not buy. Read only when installing or changing distribution. |
+- [`skills/memar/SKILL.md`](skills/memar/SKILL.md) — The Memar practice: how to discover and apply live documentation (bundled scripts document themselves via `--help`). Load when the session's work falls within its description.
+- [`commands/`](commands/) — Small executable helpers for host-tool constraints (not a paste catalog). See [`commands/README.md`](commands/README.md).
+- [`installing.md`](installing.md) — Plugin/marketplace distribution only. Read when installing or changing distribution.
 
 For work on this repository's documents, the skill's rules govern; this file adds none of its own.
