@@ -187,3 +187,40 @@ Open questions (dot-boundary criterion, entry-title uniqueness, historical-entry
 - The same discussion then extended the economy to commits: fast-committing small changes costs a permanent history entry, review weight, and attention that a trivial change cannot justify (Omid Hekayati — claimed).
 - One accumulation risk was raised and answered inside the rule rather than as a separate section: batching could become hoarding if trivial changes never catch a ride, so the rule states the session-end boundary explicitly — batching is a delay in recording, not a substitute for recording (Super Z — recorded; Omid Hekayati — accepted).
 - The two rules were added in one consolidated entry the same session, per the Session consolidation rule (Super Z — recorded).
+
+---
+
+### Append without loading; forbid newest-first insertion
+- Time: 2026-09-18T13:05:00Z
+- Type: Changed
+- Cited:
+  - Owner session — Evidence: agents repeatedly prepended changelog entries, forcing a full-file read; the Structure rule already said oldest-first but lacked an agent-facing append path.
+- Propagates to:
+  - .agents/skills/memar/scripts/memar-doc.py: Done — changelog-append subcommand.
+  - .agents/commands/: Done — paste catalog removed; executable helpers under commands/ (same session correction).
+  - .agents/skills/memar/SKILL.md: Done — navigation step 5.
+  - CONTRIBUTORS.md: Done — Composer identity added; Cursor remains under Tools.
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — claimed, decided
+  - [Composer](../CONTRIBUTORS.md#composer) (Composer via Cursor) — drafted
+
+#### What changed
+- Strengthened [Structure](./documentation-changelog.md#structure): oldest-first is mandatory; newest-first is forbidden; agents must not load a changelog into context solely to append.
+- Documented `memar-doc.py changelog-append` as the mechanical append path (see that script's `--help`; peeks only the file tail).
+- Clarified AI contributor recording: model Name in CONTRIBUTORS.md, host tool under Tools, entry field shape `{ModelName} via {ToolName}`.
+
+#### Deliberation
+- Prepending was identified as a recurring agent failure with real cost on large changelogs (Omid Hekayati — claimed). The fix is structural (append command + explicit forbid) rather than hoping writers re-read Structure (Composer — recorded; Omid Hekayati — decided).
+
+---
+
+### Same-session undone mistakes earn no entry
+- Time: 2026-09-18T14:30:00Z
+- Type: Changed
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — claimed, decided
+  - [Composer](../CONTRIBUTORS.md#composer) (Composer via Cursor) — drafted
+
+#### What changed
+- Extended [Trivial changes](./documentation-changelog.md#trivial-changes): a same-session wrong change that was reverted or relocated before any durable snapshot of the wrong state has nothing to audit — delete the entry; Session consolidation does not invent provenance for corrected keystroke history.
+- Documented `memar-doc.py changelog-append` as the mechanical append path without embedding a pasteable recipe catalog in Structure.
