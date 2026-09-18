@@ -53,3 +53,13 @@ Be clear-eyed about this, because the plugin wrapper earns less than it appears 
 3. **Namespaced invocation / clean uninstall** — where the host tool supports it.
 
 What it does **not** do: carry the documentation. The bundled `scripts/` resolve that gap at session time (`memar-root.py` clones or reuses), which is why the plugin remains worthwhile even though the clone still happens — the alternative, shipping doc copies inside the skill, violates the project's one-authoritative-source rule and would go stale.
+
+## What marketplace and plugin are not
+Host tools invent **marketplace** and **plugin** as their install vocabulary. Memar pays that tax so a session outside this repository can *discover* the single Memar practice. That is not how Memar models its own knowledge.
+
+- A marketplace card is not a mental model.
+- A plugin is not a partition of Memar into optional products.
+- Multiple plugins each shipping multiple skills is not how Memar is structured — and must not become the aspiration. Memar carries **one continuous mental model** in `docs/` (plus language implementations of its contracts). The skill folder is a **navigation practice** into that model, not a second copy of it and not a menu of peer frameworks ([Knowledge → A project carries one continuous mental model](../docs/knowledge.md#a-project-carries-one-continuous-mental-model)).
+- Failed shape: shipping Khayyam or Cognition as separate skills beside Memar. A fragment without the rest has no coherent practice; those concerns live as documents inside the shared medium.
+
+If a future host tool required a different adapter filename, that would be another distribution detail — not a reason to redesign Memar as a plugin catalog.

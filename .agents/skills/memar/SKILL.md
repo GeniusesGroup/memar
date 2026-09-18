@@ -37,7 +37,6 @@ Memar is the **framework the development is conducted within**, not a passive li
 
 ## Session economy with sub-agents
 This section is agent-specific (tool-dependent), so it lives here rather than in a repository Practice. When the runtime supports sub-agents:
-
 - Do not spend the main session's context on bounded exploration whose raw material you will not need after integration.
 - Keep local what requires the session's held model — target structure, judgment, final merge. Delegate bounded, self-contained discovery (e.g. "extract document X's concepts against this brief and report where they map") to a sub-agent; receive a report sized to what that delegated work needs; apply the merge yourself mechanically.
 - The brief must tell the sub-agent to discover documentation per this skill, not receive a content dump, and to return a structured report with acceptance criteria stated.
@@ -45,20 +44,8 @@ This section is agent-specific (tool-dependent), so it lives here rather than in
 - Prefer a **new** sub-agent with a short brief (paths + the passages it must judge) over **resuming** a long prior sub-agent thread: resume replays that thread's history into the bill again. Prefer a smaller model when the job is a second opinion, not primary drafting. Do not open whole base documents when the needed sections can be named by path and anchor.
 
 ## Documentation navigation
-Two standard-library Python scripts ship beside this file ([`scripts/`](scripts/)); they are the navigation mechanism. Invoke them; do not re-derive their logic or read them for usage — each documents itself via `--help`. Every path in Memar documentation is relative to the **Memar repository root**, never to the user's workspace, this skill's directory, or the filesystem root.
+Two scripts ship beside this file ([`scripts/`](scripts/)). They are the navigation mechanism. Invoke them; each documents its own interface via `--help`. Do **not** maintain a command catalog or pasteable recipe list in this skill — catalogs grow, go stale, and invite every later session to add "one more example." Paths in Memar documentation are relative to the **Memar repository root**, never to the user's workspace, this skill's directory, or the filesystem root.
 
-1. Root: if the workspace *is* `GeniusesGroup/memar`, that is the root. Otherwise `memar-root.py` resolves it (shallow-clones if missing) and prints the path — use that as `$MEMAR_ROOT` for the session; do not re-resolve after the first run.
-2. Relevance: `memar-doc.py meta FILE` prints a document's front matter + Abstract — judge from that before opening anything whole.
-3. Reading: `memar-doc.py section FILE HEADING` extracts exactly the needed section; follow documents' own hyperlinks (resolve via `memar-doc.py path REF --from FILE`) when Memar rules require related reading.
-4. Finding: `memar-doc.py search PATTERN...` searches full-text across the doc set — filenames are slugs, not a taxonomy, so never guess by filename. A `Status` earlier than `Final` means unsettled; section structure is uniformly Abstract → Introduction → Explanation.
+Resolve the root once per session with `memar-root.py` unless this workspace is already the Memar repository. Prefer `memar-doc.py` over hand-resolving links or reading whole documents: use it to judge relevance, extract one section, search the doc set, and append changelog entries at end-of-file (oldest-first — do not load a changelog solely to find where to insert). On shells that rewrite leading-`/` paths (Git Bash/MSYS), pass bare names (`docs/cognition.md`).
 
-```bash
-MEMAR_ROOT="$(python "$SKILL_DIR/scripts/memar-root.py")"     # once per session ($SKILL_DIR = this file's directory)
-python "$SKILL_DIR/scripts/memar-doc.py" meta docs/framework.md   # judge relevance cheaply
-python "$SKILL_DIR/scripts/memar-doc.py" section docs/framework.md "Goal-Oriented Frameworks and Purpose Space"
-python "$SKILL_DIR/scripts/memar-doc.py" search "polymorphism"    # full-text, not filename
-```
-
-On Git Bash/MSYS shells, pass bare names (`docs/cognition.md`), not leading-`/` paths — MSYS rewrites the latter into Windows paths before the script sees them.
-
-Only if the runtime has no Python: read the scripts' source (short, dependency-free, self-documenting) and reproduce the needed step with the tools available — first execution by Python's own agency, then source-reading, and only then a bare `git clone --depth 1` of https://github.com/GeniusesGroup/memar.git into a temp dir, reusing any existing checkout. A referenced file missing from the root is reported, not guessed at — it may be an unpublished draft.
+If Python is absent: read the script source and reproduce only the needed step — prefer the language runtime's own agency when it is available; inventing a parallel recipe catalog here is not the fallback.

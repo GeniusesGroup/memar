@@ -56,6 +56,12 @@
 - Models:
   - Grok 4.6
 
+## Composer
+- **Bio**: Cursor's agent model family used for coding-agent sessions in this project.
+- [Website](https://cursor.com)
+- Models:
+  - Composer
+
 ---
 ---
 
