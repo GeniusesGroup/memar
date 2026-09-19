@@ -1,0 +1,62 @@
+"@context": https://schema.org
+"@type":
+  - SoftwareApplication
+  - SoftwareSourceCode
+name: Memar
+alternateName: Memar / Khayyam
+version: "0.2.0"
+disambiguatingDescription: Memar / Khayyam via live documentation.
+description: >
+  A system-development framework as structure document: a structuralism
+  mental model for constructing, examining, and refining models of systems.
+abstract: >
+  Use Memar's approach in any project — not only inside this repository.
+  Operating practices for Memar and Khayyam discover live documentation from
+  the GeniusesGroup/memar root (workspace, sibling checkout, or shallow clone
+  named memar). Markdown and Git paths resolve against that root, not against
+  a skill install path. The bundled skill is a routing practice into that
+  tree, not a second copy of it.
+url: https://github.com/GeniusesGroup/memar
+sameAs: https://geniuses.group
+codeRepository: https://github.com/GeniusesGroup/memar
+discussionUrl: https://github.com/GeniusesGroup/memar/issues
+installUrl: https://raw.githubusercontent.com/GeniusesGroup/memar/main/.agents/scripts/install-agents.py
+license: https://github.com/GeniusesGroup/memar/blob/main/LEGAL
+inLanguage: en
+applicationCategory: development
+keywords:
+  - memar
+  - khayyam
+  - programming-language
+  - framework
+  - documentation
+featureList:
+  - Live documentation discovery from the Memar repository root
+  - Path resolution against that root rather than a skill install path
+  - One routing skill into a continuous documentation tree
+author:
+  "@type": Organization
+  name: Geniuses.Group
+  email: ict@geniuses.group
+  url: https://geniuses.group
+publisher:
+  "@type": Organization
+  name: Geniuses.Group
+  email: ict@geniuses.group
+  url: https://geniuses.group
+softwareHelp:
+  "@type": CreativeWork
+  name: documentation
+  description: Authoritative Memar documentation tree.
+  url: https://github.com/GeniusesGroup/memar/tree/main/docs
+hasPart:
+  - "@type": CreativeWork
+    name: memar-skill
+    alternateName: memar
+    description: >
+      Routing practice into the live documentation; not a second copy of it.
+    url: https://github.com/GeniusesGroup/memar/tree/main/.agents/skills/memar
+    encoding:
+      "@type": MediaObject
+      contentUrl: https://github.com/GeniusesGroup/memar/tree/main/.agents/skills/memar
+      encodingFormat: text/markdown

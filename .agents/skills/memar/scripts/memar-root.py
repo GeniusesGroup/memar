@@ -9,7 +9,7 @@ Behavior
   ships in (found by walking up from the script's location and the working
   directory until a directory holds README.md, docs/, and
   .agents/skills/memar/SKILL.md — a marker only a Memar checkout has, so a
-  skill-only plugin install never matches), then $MEMAR_ROOT, then a
+  skill-only copy never matches), then $MEMAR_ROOT, then a
   sibling checkout named `memar` next to the current project (so a machine
   that clones both `memar` and e.g. `organization` side-by-side can point
   at the local Memar without a temp clone), else a single canonical
