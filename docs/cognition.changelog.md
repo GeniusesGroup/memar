@@ -371,3 +371,34 @@ Dissolved every `#### Discussion` wrapper (the definition topic, Modes of Thinki
 - **Formalize conversation as Protocol now (rejected both critiques):** no demonstrated failure from its absence.
 - **Enumerate a bias/fallacy catalogue in the body (rejected):** only source-deference earned a named mention by a recorded project instance; further enumeration stays practice-layer and per-project.
 - **Regroup discourse norms by mode for navigation (deferred):** precedence addresses collision; mode-grouped navigation remains an open readability question (handoff).
+
+---
+
+### Working representation separated from medium language
+- Time: 2026-09-19T15:26:00Z
+- Type: Added
+- Propagates to:
+  - `cognition.practice.md`: Done — intake checkpoint for medium-language vs working-representation separation.
+  - `.agents/skills/memar/SKILL.md`: Rejected — Cognition remains the single home; skill already directs workers to load this document before reasoning-heavy work; no duplicated rule text.
+  - `documentation.md`: Rejected — Documentation Language already separates the durable English record from conversation; this change links to that rule rather than restating it.
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — claimed, decided
+  - [Composer](../CONTRIBUTORS.md#composer) (via Cursor) — argued, rewrote
+
+#### What changed
+- **Abstract claim (1)** now states that the medium's language is not identical with the representation in which a cognitive system does its best thinking.
+- **Awareness of the medium** names collapsing medium language into working representation as a medium-shaped failure of that discipline.
+- **Conversation model** records that natural-language media invite matching the medium language for internal operations even when it is not the system's strongest working representation.
+- **What Implementation Asymmetry Obliges** gains: operate in the system's strongest working representation; return through the medium in a form the counterpart can use — receive, transform, ask on translation ambiguity, return counterpart-usable (conversation language for replies; project documentation language for durable records).
+- Practice intake checkpoint added under Norm Application Points.
+
+#### Deliberation
+- The owner observed that addressing the agent in Persian pulled the model's thinking into Persian and degraded depth, and that other agents (e.g. OpenCode, GLM) that translate into a stronger working language then report back in the user's language produce markedly better output (Omid Hekayati — claimed).
+- The same session re-demonstrated the failure after the prescription was already stated: a reply that accepted the diagnosis still reasoned in Persian — evidence the failure is sticky enough to earn a standing obligation, not a one-off tip (Omid Hekayati — claimed).
+- Framing as AI etiquette ("always think in English") was rejected in favor of the general form: each cognitive system operates in its strongest working representation and returns through the medium in counterpart-usable form (Composer — argued; Omid Hekayati — decided the full plan: awareness extension, asymmetry obligation, practice checkpoint, changelog, abstract).
+- Output policy chosen: think in the stronger representation; write the conversational report in the user's language; keep durable documentation in English per the existing Documentation Language rule (Omid Hekayati — approved; Composer — recommended).
+
+#### Considered and not done
+- **Hard-code "always think in English" as the rule (rejected):** would name one current implementation's strength as the concept; the obligation is about strongest working representation, which varies by cognitive system.
+- **Add a separate discourse norm in addition to the asymmetry obligation (rejected for this round):** the failure is an implementation-asymmetry obligation under awareness of the medium; a bidirectional evaluation norm would restate without adding checkable content. Practice operationalizes the obligation at intake.
+- **Duplicate the rule into the memar skill (rejected):** same second-home drift rejected in the 2026-09-15 upgrade.
