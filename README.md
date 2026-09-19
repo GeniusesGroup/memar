@@ -44,9 +44,32 @@ Memar's documentation is intentionally decentralized: each concern lives in one 
 1. **Search full-text across the documents, not by filename.** File names are descriptive slugs, not a topic taxonomy — a concept can live under a name you would not guess. Judging relevance by filename alone will miss existing answers.
 2. **If a thorough search still does not resolve the ambiguity, open an issue.** Describe the specific ambiguity so it can be addressed.
 
-Agents working the Memar way follow [`.agents/skills/memar/SKILL.md`](.agents/skills/memar/SKILL.md), which resolves and searches the live `docs/` tree through the bundled scripts rather than by memorized paths.
+Agents working the Memar way follow [`.agents/skills/memar/SKILL.md`](.agents/skills/memar/SKILL.md), which resolves and searches the live `docs/` tree through the bundled scripts rather than by memorized paths. Using Memar outside this repository is [Using Memar in another project](#using-memar-in-another-project).
 
 Fair, public comparisons with projects often treated as substitutes for Memar live under [`comparisons/`](./comparisons/) — start with [comparisons/README.md](./comparisons/README.md).
+
+## Using Memar in another project
+Memar is a development framework, not a host-tool plugin. There is one skill: it routes into the live `docs/` tree; it does not carry a copy of the documentation.
+
+Install has two targets. You do not need a Memar checkout, a local IDE, or a clone of this repository. From the project you want Memar in (a subdirectory is fine), in any environment that can run Python against those files — a working copy, a cloud workspace, a codespace, or an agent session that already has the project — run both, or only the one you need. How to refresh later is each script's `--help`.
+
+**The project**, as [AGENTS.md](https://agents.md/) instructions:
+
+```
+python -c "import urllib.request; exec(urllib.request.urlopen('https://raw.githubusercontent.com/GeniusesGroup/memar/main/.agents/scripts/install-agents.py').read().decode())"
+```
+
+**Agent apps**, the skill folder those apps load:
+
+```
+python -c "import urllib.request; exec(urllib.request.urlopen('https://raw.githubusercontent.com/GeniusesGroup/memar/main/.agents/scripts/install-apps.py').read().decode())"
+```
+
+A web chatbot is still the agent-app target, with a weaker interface: only if that app lets you add a skill, and only as a skill file or pasted text, not as a GitHub plugin of this repository (a plugin payload here is `.agents/`; Memar's model lives in `docs/`). Check that app. Workspace or local agent apps are the better fit — Memar adds substantial cognitive load to the process and is not equally appropriate in every interface.
+
+```
+https://github.com/GeniusesGroup/memar/tree/main/.agents/skills/memar
+```
 
 ## System Categories
 
