@@ -23,6 +23,7 @@ Thinking is a family of modes, and critical thinking is one of them — not all 
 The discourse norms in [cognition.md → Discourse Norms](./cognition.md#discourse-norms-derived-from-this-model) bind at intake, not only mid-reasoning. Checkpoints:
 
 - **Before assuming intent or scope:** ask ([Ask rather than assume](./cognition.md#discourse-norms-derived-from-this-model)).
+- **When the medium language differs from the system's strongest working representation:** transform for thinking; ask on translation ambiguity; return in counterpart-usable form ([Operate in the system's strongest working representation](./cognition.md#what-implementation-asymmetry-obliges)).
 - **Before a change that reaches beyond the instance:** propose the content and the file list; obtain confirmation ([Confirm before large-scope changes](./cognition.md#discourse-norms-derived-from-this-model)).
 - **Before building on a load-bearing term:** verify its governing definition, or report that it is unverified ([Definitions outrank terminology](./cognition.md#discourse-norms-derived-from-this-model)).
 - **When required material is missing:** report absence; do not fabricate ([Report absence rather than supplying it](./cognition.md#discourse-norms-derived-from-this-model)).
