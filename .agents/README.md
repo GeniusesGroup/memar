@@ -3,11 +3,4 @@ An **agent** is any entity that acts on behalf of another system (person, organi
 
 Do not assume "agent" in this repository means "AI agent." A human role, an organizational function, or an AI system can all be agents, and content in this directory should be written so it applies to whichever kind of agent is actually reading or carrying out the work, not phrased as if an AI is always the one on the other end.
 
-This file is loaded by [AGENTS.md](../AGENTS.md) at the start of every session in this workspace, so it is a pointer table only — everything operational lives one pointer away.
-
-## What lives here
-- [`skills/memar/SKILL.md`](skills/memar/SKILL.md) — The Memar practice: how to discover and apply live documentation (bundled scripts document themselves via `--help`). Load when the session's work falls within its description.
-- [`commands/`](commands/) — Small executable helpers for host-tool constraints (not a paste catalog). See [`commands/README.md`](commands/README.md).
-- [`installing.md`](installing.md) — Plugin/marketplace distribution only. Read when installing or changing distribution.
-
-For work on this repository's documents, the skill's rules govern; this file adds none of its own.
+This directory is this project's agent configuration. It is not reserved for any one framework. What a session should load is declared in [AGENTS.md](../AGENTS.md). Discover what lives here by listing the directory; executable helpers under `scripts/` document themselves via `--help`.

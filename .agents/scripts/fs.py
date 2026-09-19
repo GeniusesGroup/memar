@@ -15,6 +15,14 @@ constraints Memar sessions keep violating when they improvise:
               delete. Agents that "deep delete" then need the file again burn
               tokens reconstructing it; trash keeps recovery cheap.
 
+  temp        Print the process temp directory, optionally joined with
+              extra path parts (the canonical place for a Memar checkout
+              is `temp memar`).
+
+  link        Make a directory symlink (a junction on Windows) from LINK
+              to TARGET. With --replace, trash LINK first if it already
+              exists and does not already resolve to TARGET.
+
 Usage is the interface. Do not duplicate these recipes as prose catalogs.
 """
 from __future__ import annotations
@@ -24,8 +32,13 @@ import os
 import shutil
 import subprocess
 import sys
+import tempfile
 import time
 from pathlib import Path
+
+
+def canonical_temp(*parts: str) -> Path:
+    return Path(tempfile.gettempdir()).joinpath(*parts)
 
 
 def cmd_tree(root: Path, *, files: bool = True) -> None:
@@ -115,7 +128,9 @@ def _trash_windows(path: Path) -> None:
         ]
 
     # Double-null-terminated path list required by SHFileOperation.
-    from_path = str(path.resolve()) + "\0\0"
+    # Do not resolve symlinks/junctions: the caller may be deleting a link
+    # at the canonical temp path, not the checkout it points at.
+    from_path = os.path.abspath(str(path)) + "\0\0"
     op = SHFILEOPSTRUCTW()
     op.hwnd = None
     op.wFunc = FO_DELETE
@@ -131,7 +146,7 @@ def _trash_windows(path: Path) -> None:
 
 
 def _trash_darwin(path: Path) -> None:
-    posix = str(path.resolve())
+    posix = os.path.abspath(str(path)).replace("\\", "/")
     script = f'tell application "Finder" to delete POSIX file "{posix}"'
     completed = subprocess.run(
         ["osascript", "-e", script],
@@ -164,25 +179,25 @@ def _trash_xdg(path: Path) -> None:
     info_dir = trash / "info"
     files_dir.mkdir(parents=True, exist_ok=True)
     info_dir.mkdir(parents=True, exist_ok=True)
-    resolved = path.resolve()
-    dest_name = resolved.name
+    original = os.path.abspath(str(path))
+    dest_name = Path(original).name
     dest = files_dir / dest_name
-    if dest.exists():
-        dest = files_dir / f"{resolved.stem}-{int(time.time())}{resolved.suffix}"
-    shutil.move(str(resolved), str(dest))
+    if dest.exists() or dest.is_symlink():
+        dest = files_dir / f"{Path(original).stem}-{int(time.time())}{Path(original).suffix}"
+    shutil.move(original, str(dest))
     info = info_dir / (dest.name + ".trashinfo")
     deletion_date = time.strftime("%Y-%m-%dT%H:%M:%S")
     info.write_text(
         "[Trash Info]\n"
-        f"Path={resolved}\n"
+        f"Path={original}\n"
         f"DeletionDate={deletion_date}\n",
         encoding="utf-8",
     )
 
 
 def soft_delete(path: Path) -> None:
-    path = path.resolve()
-    if not path.exists():
+    path = Path(os.path.abspath(str(path)))
+    if not path.is_symlink() and not path.exists():
         sys.exit(f"error: path does not exist: {path}")
     if os.name == "nt":
         _trash_windows(path)
@@ -196,6 +211,38 @@ def soft_delete(path: Path) -> None:
 def cmd_trash(paths: list[Path]) -> None:
     for path in paths:
         soft_delete(path)
+
+
+def ensure_dir_link(link: Path, target: Path, *, replace: bool = False) -> None:
+    target = target.resolve()
+    if not target.is_dir():
+        sys.exit(f"error: link target is not a directory: {target}")
+    link = Path(link)
+    if link.exists() or link.is_symlink():
+        try:
+            if link.resolve() == target:
+                return
+        except OSError:
+            pass
+        if not replace:
+            sys.exit(f"error: {link} already exists")
+        soft_delete(link)
+    link.parent.mkdir(parents=True, exist_ok=True)
+    try:
+        os.symlink(str(target), str(link), target_is_directory=True)
+    except OSError:
+        if os.name != "nt":
+            raise
+        completed = subprocess.run(
+            ["cmd", "/c", "mklink", "/J", str(link), str(target)],
+            check=False,
+            capture_output=True,
+            text=True,
+        )
+        if completed.returncode != 0:
+            err = (completed.stderr or completed.stdout or "").strip()
+            sys.exit(f"error: could not link {link} -> {target}\n{err}")
+    print(f"linked {link} -> {target}", file=sys.stderr)
 
 
 def main() -> None:
@@ -247,6 +294,28 @@ def main() -> None:
     )
     p_trash.add_argument("paths", nargs="+", type=Path)
 
+    p_temp = sub.add_parser(
+        "temp",
+        help="print tempfile.gettempdir(), optionally joined with names",
+    )
+    p_temp.add_argument(
+        "parts",
+        nargs="*",
+        help="path parts under the temp directory (e.g. memar)",
+    )
+
+    p_link = sub.add_parser(
+        "link",
+        help="directory symlink (junction on Windows) from LINK to TARGET",
+    )
+    p_link.add_argument("link", type=Path)
+    p_link.add_argument("target", type=Path)
+    p_link.add_argument(
+        "--replace",
+        action="store_true",
+        help="trash LINK first when it exists and is not already TARGET",
+    )
+
     args = parser.parse_args()
     if args.command == "tree":
         cmd_tree(args.root, files=not args.dirs_only)
@@ -254,6 +323,10 @@ def main() -> None:
         cmd_git_mv_glob(args.pattern, args.destination, apply=args.apply)
     elif args.command == "trash":
         cmd_trash(args.paths)
+    elif args.command == "temp":
+        print(canonical_temp(*args.parts))
+    elif args.command == "link":
+        ensure_dir_link(args.link, args.target, replace=args.replace)
 
 
 if __name__ == "__main__":
