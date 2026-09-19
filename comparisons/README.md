@@ -24,7 +24,7 @@ It exists so a reader can see, without sales tone, **why Memar was started** and
 These are owned in Memar's documentation; comparisons apply them rather than re-deriving them:
 - One continuous mental model as internal knowledge — not a menu of per-harness plugins that each ship a fragment ([Knowledge → A project carries one continuous mental model](../docs/knowledge.md#a-project-carries-one-continuous-mental-model)).
 - Executable projections where generation belongs in code services — not endless prose recipes for each concrete artifact ([Knowledge → Knowledge and Code](../docs/knowledge.md#knowledge-and-code)).
-- Distribution wrappers (marketplace, plugin manifests) are **delivery tax**, not the product ([Installing](../.agents/installing.md#what-marketplace-and-plugin-are-not)).
+- Memar is not distributed as host-tool plugins or marketplace cards; a consuming project installs a pointer ([Using Memar in another project](../README.md#using-memar-in-another-project)).
 - Prompt / harness technique sits under Communication, not under Agency's foundation ([Agency → Prompt Engineering and Harness Engineering](../docs/agency.md#prompt-engineering-and-harness-engineering)).
 
 Discover comparison files by listing this directory. Do not maintain a membership index here ([documentation.md → Content Rule](../docs/documentation.md#content-rule-no-fabricated-or-redundant-provenance)). One file per compared project, named after that project.

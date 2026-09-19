@@ -173,3 +173,26 @@
 - Marketplace/plugin as the project's self-introduction, multi-skill fragmentation, prose-only generative recipes, and documentation aimed at temporary agent weaknesses were rejected as knowledge-model shapes (Omid Hekayati). The comparison with Superpowers was the occasion; the principles are stated domain-generally where they apply, and software-specifically under Knowledge and Code where generation is the issue.
 
 ---
+
+
+### Install as a project pointer; drop host-tool plugin packaging
+- Time: 2026-09-19T09:57:00Z
+- Type: Changed
+- Cited:
+  - [schema.org](https://schema.org/) — Depends_on: identity vocabulary for `manifest.yaml` (SoftwareApplication, SoftwareSourceCode, and shared CreativeWork properties). CodeMeta was considered as a middle vocabulary and rejected: it is a citation crosswalk that restricts and extends schema.org for scientific software, which this file is not.
+- Propagates to:
+  - [AGENTS.md](../AGENTS.md): Done — session entry is now `.agents/memar/README.md`; `.agents/README.md` is a directory index, not loaded every session.
+  - [README.md](../README.md): Done — two install scripts (project via AGENTS.md, agent apps) plus a weaker chatbot path.
+  - [.agents/skills/README.md](../.agents/skills/README.md): Done — plugin/marketplace pointer removed.
+  - [comparisons/README.md](../comparisons/README.md): Done — standing principle retargeted off `installing.md`.
+  - `.agents/installing.md` and host-tool plugin/marketplace manifests: Done — removed.
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — claimed, decided
+  - [Grok](../CONTRIBUTORS.md#grok) (Grok 4.6 via Cursor) — drafted
+
+#### What changed
+- [A Project Carries One Continuous Mental Model](./knowledge.md#a-project-carries-one-continuous-mental-model) no longer treats marketplace/plugin packaging as a tax Memar still pays. Access is a pointer installed into a consuming project's instruction files, plus an optional user-level skill copy; the skill remains a routing practice into the live `docs/` tree.
+
+#### Considered and not done
+- **CodeMeta 3.1 as the manifest vocabulary**: it would have limited property choice, but it is an intermediary over schema.org aimed at scientific-software citation, with extra terms this project does not need (`readme`, `developmentStatus`, `issueTracker`) and a conventional filename (`codemeta.json`) this repository is not adopting.
+- **Keeping host-tool plugin manifests at the repository root**: they do not make Memar discoverable by name in official marketplaces; the user still has to add the GitHub repository by hand. They cluttered the root without changing how sessions load the practice.
