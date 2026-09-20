@@ -1,0 +1,8 @@
+# Logistics
+[Logistics](https://en.wikipedia.org/wiki/Logistics) is the part of supply chain management that deals with the efficient forward and reverse flow of goods, services, and related information from the point of origin to the point of consumption according to the needs of customers, and a logistician is a professional working in the field of logistics management. Logistics management is a component that holds the supply chain together. The resources managed in logistics may include tangible goods such as materials, equipment, and supplies, as well as food and other edible items. Military logistics is concerned with maintaining army supply lines with food, armaments, ammunition, and spare parts, apart from the transportation of troops themselves. Meanwhile, civil logistics deals with acquiring, moving, and storing raw materials, semi-finished goods, and finished goods. For organizations that provide garbage collection, mail deliveries, public utilities, and after-sales services, logistical problems must be addressed.
+
+Logistics deals with the movement of materials or products from one facility to another; it does not include material flow within production or assembly plants, such as production planning or single-machine scheduling.
+
+Logistics accounts for a significant amount of the operational costs of an organization or country. Logistical costs of organizations in the United States accounted for about 11% of the United States national gross domestic product (GDP) as of 1997. In the European Union, logistics costs were 8.8% to 11.5% of GDP as of 1993.
+
+Dedicated simulation software can model, analyze, visualize, and optimize logistic complexities. Minimizing resource use is a common motivation in all logistics fields.

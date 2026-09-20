@@ -1,0 +1,5 @@
+# Thing
+
+## Model
+
+- `(thing)-[:thing]->(---)`

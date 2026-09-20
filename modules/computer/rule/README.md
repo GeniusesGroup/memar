@@ -35,13 +35,14 @@ This module is the concrete home of that principle in the graph: a Rule is a nod
 ### Unresolved questions (not settled by this module; carried in Memar)
 
 These are carried as unresolved in the Memar document; this module must not silently pick an answer:
-- Internal representation of a Rule node's condition (declarative expression, external function reference, decision table, …).
+- Internal representation of a Rule node's condition (declarative expression, external function reference, decision table, .).
 - Conflict resolution when multiple Rules govern the same Code element (precedence, specificity, explicit override edge).
-- Temporal validity of a Rule (effective date, amendment, repeal) and its interaction with historical edges created under a now-superseded Rule — the auditability concern that matters most for tax and dispute-resolution domains.
+- Temporal validity of a Rule (effective date, amendment, repeal) and its interaction with historical edges created under a now-superseded Rule - the auditability concern that matters most for tax and dispute-resolution domains.
 - The precise Code/Rule boundary test (when a condition is "conditional enough" to warrant a Rule vs. an inherent constraint that stays Code).
 - Whether a Rule may attach to multiple independent events/triggers, or needs scope/ownership limits to prevent global-listener sprawl.
 - Idempotency and race handling when multiple Rules react to the same event (double-fire prevention, reaction ordering).
 - Authority and priority between competing Rules on the same trigger (who wins, who may override).
+- **Rule vs Law boundary** (from ../rights/rights-domain-boundaries.handoff.md — proposal awaiting review): a Law in `modules/rights/law` is a normative source determining what rights/obligations are possible, valid, forbidden, or enforceable; a Rule here is an executable conditional policy reacting to events. Where is the boundary — can a Law be realized as Rules, does a Law reference Rules, or are they disjoint layers? Related: the expert-system warning in [modules/management/../../../management/organizational-reasoning.handoff.md](../../management/organizational-reasoning.handoff.md) (diagnose first; a Rule must not hardcode a decision).
 
 ### Future possibilities
 
