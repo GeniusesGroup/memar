@@ -1,19 +1,20 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package cus
+package cus_p
 
 import (
-	"memar/protocol"
+	error_p "memar/process/error/protocol"
 
-	cp "org/modules/comment/protocol"
-	up "org/modules/user/protocol"
+	storage_p "memar/storage/protocol"
+	user_p "org/modules/identity/user/protocol"
+	cp "org/modules/knowledge/content/edges-loop/comment/protocol"
 )
 
 type StorageServices interface {
-	Save(dm DataModel) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm DataModel) (nv storage_p.NumberOfVersion, err error_p.Error)
 
-	Count(commentID cp.CommentUUID, userID up.UserUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(commentID cp.CommentUUID, userID up.UserUUID, vo protocol.VersionOffset) (dm DataModel, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(commentID cp.UUID, userID user_p.UUID) (nv storage_p.NumberOfVersion, err error_p.Error)
+	Get(commentID cp.UUID, userID user_p.UUID, vo storage_p.VersionOffset) (dm DataModel, nv storage_p.NumberOfVersion, err error_p.Error)
 
 	// TODO::: get view number
 }

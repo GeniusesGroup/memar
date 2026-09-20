@@ -1,9 +1,13 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package osp
+package shift_p
 
 import (
-	"memar/protocol"
+	task_p "org/modules/management/task/protocol"
 )
 
-type ShiftUUID protocol.UUID
+type Field_ShiftID interface {
+	ShiftID() UUID
+}
+
+type UUID task_p.UUID

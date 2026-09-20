@@ -3,8 +3,9 @@
 package services
 
 import (
+	"memar/authorization"
+	"memar/process/service"
 	"memar/protocol"
-	"memar/service"
 )
 
 var transferAppConnectionService = service.Service{
@@ -18,8 +19,8 @@ var transferAppConnectionService = service.Service{
 	Status:             protocol.Software_PreAlpha,
 
 	Authorization: authorization.Service{
-		CRUD:     authorization.CRUDRead,
-		UserType: protocol.UserType_All,
+		CRUD:     operation_p.ActionType_Read,
+		UserType: user_p.Type_All,
 	},
 
 	Detail: map[protocol.LanguageID]service.ServiceDetail{

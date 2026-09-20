@@ -1,16 +1,17 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package pap
+package ta_p
 
 import (
-	"memar/protocol"
+	error_p "memar/process/error/protocol"
 
-	pp "org/modules/project/protocol"
+	storage_p "memar/storage/protocol"
+	task_p "org/modules/management/task/protocol"
 )
 
 type StorageServices interface {
-	Save(dm DataModel) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm DataModel) (nv storage_p.NumberOfVersion, err error_p.Error)
 
-	Count(projectID pp.ProjectUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(projectID pp.ProjectUUID, vo protocol.VersionOffset) (dm DataModel, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(id task_p.UUID) (nv storage_p.NumberOfVersion, err error_p.Error)
+	Get(id task_p.UUID, vo storage_p.VersionOffset) (dm DataModel, nv storage_p.NumberOfVersion, err error_p.Error)
 }

@@ -3,8 +3,9 @@
 package services
 
 import (
+	"memar/authorization"
+	"memar/process/service"
 	"memar/protocol"
-	"memar/service"
 )
 
 var getStreamsIDsService = service.Service{
@@ -18,8 +19,8 @@ var getStreamsIDsService = service.Service{
 	Status:             protocol.Software_PreAlpha,
 
 	Authorization: authorization.Service{
-		CRUD:     authorization.CRUDRead,
-		UserType: protocol.UserTypeOwner,
+		CRUD:     operation_p.ActionType_Read,
+		UserType: user_p.TypeOwner,
 	},
 
 	Detail: map[protocol.LanguageID]service.ServiceDetail{

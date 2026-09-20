@@ -1,17 +1,17 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package cgp
+package cg_p
 
 import (
-	"memar/protocol"
+	error_p "memar/process/error/protocol"
 
-	gp "org/modules/group/protocol"
-	up "org/modules/user/protocol"
+	user_p "org/modules/identity/user/protocol"
+	group_p "org/modules/management/group/protocol"
 )
 
 type GUI_Widget_Conditions interface {
-	GroupID() gp.GroupUUID
-	UserID() up.UserUUID
+	group_p.Field_GroupID
+	user_p.Field_UserUUID
 	Text() string
 	DisableSending() bool
 	DisableReply() bool // TODO::: add more type like limit to mentioned users.
@@ -25,7 +25,7 @@ type GUI_Widget_Services interface {
 	// show object widget
 	Attach()
 
-	Send() (err protocol.Error)
+	Send() (err error_p.Error)
 	//
 	SendSticker()
 	AddEmoji()
@@ -34,6 +34,6 @@ type GUI_Widget_Services interface {
 	SortByMostSeen()
 
 	// Select()
-	// MarkAsUnRead(cID CommentUUID)
-	// SendReaction(cID CommentUUID)
+	// MarkAsUnRead(cID comment_p.UUID)
+	// SendReaction(cID comment_p.UUID)
 }

@@ -3,7 +3,7 @@
 package srpc
 
 import (
-	"memar/protocol"
+	net_p "memar/net/protocol"
 	"memar/syllab"
 )
 
@@ -19,6 +19,6 @@ func (f pingFrame) ID() int64 { return syllab.GetInt64(f, 0) }
 //memar:impl memar/protocol.Network_Frame
 func (f pingFrame) NextFrame() []byte { return f[8:] }
 
-func (f pingFrame) Do(sk protocol.Socket) (err protocol.Error) {
+func (f pingFrame) Do(sk net_p.Socket) (err error_p.Error) {
 	return
 }

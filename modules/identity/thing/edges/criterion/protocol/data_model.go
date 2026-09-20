@@ -3,10 +3,10 @@
 package tcp
 
 import (
-	request_p "memar/audit/request/protocol"
-	audit_time_p "memar/audit/time/protocol"
+	request_p "memar/process/request/protocol"
+	audit_time_p "memar/process/time/protocol"
 
-	task_p "org/modules/organization/task/protocol"
+	task_p "org/modules/management/task/protocol"
 )
 
 // DataModel indicate the domain record data fields.
@@ -18,5 +18,5 @@ type DataModel interface {
 	Field_Point
 
 	request_p.Field_RequestID
-	audit_time_p.Field_SaveTime
+	audit_time_p.Field_Request
 }

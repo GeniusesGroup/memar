@@ -11,6 +11,7 @@ import (
 	"memar/net/srpc"
 	"memar/protocol"
 	"memar/syllab"
+	user_p "org/modules/identity/user/protocol"/user/protocol"
 )
 
 var getPlatformErrorDetailService = service.Service{
@@ -24,8 +25,8 @@ var getPlatformErrorDetailService = service.Service{
 	Status:             protocol.Software_PreAlpha,
 
 	Authorization: authorization.Service{
-		CRUD:     authorization.CRUDRead,
-		UserType: protocol.UserType_All,
+		CRUD:     operation_p.ActionType_Read,
+		UserType: user_p.Type_All,
 	},
 
 	Detail: map[protocol.LanguageID]service.ServiceDetail{
@@ -41,7 +42,7 @@ var getPlatformErrorDetailService = service.Service{
 }
 
 // GetPlatformErrorDetailSRPC is sRPC handler of GetPlatformErrorDetail service.
-func GetPlatformErrorDetailSRPC(sk protocol.Socket) (err protocol.Error) {
+func GetPlatformErrorDetailSRPC(sk protocol.Socket) (err error_p.Error) {
 	var req = &getPlatformErrorDetailReq{}
 	err = req.FromSyllab(srpc.GetPayload(sk.IncomePayload))
 	if err != nil {
@@ -60,7 +61,7 @@ func GetPlatformErrorDetailSRPC(sk protocol.Socket) (err protocol.Error) {
 }
 
 // GetPlatformErrorDetailHTTP is HTTP handler of GetPlatformErrorDetail service.
-func GetPlatformErrorDetailHTTP(sk protocol.Socket, httpReq *http.Request, httpRes *http.Response) (err protocol.Error) {
+func GetPlatformErrorDetailHTTP(sk protocol.Socket, httpReq *http.Request, httpRes *http.Response) (err error_p.Error) {
 	var req = &getPlatformErrorDetailReq{}
 	err = req.FromJSON(httpReq.Body().Marshal())
 	if err != nil {
@@ -90,7 +91,7 @@ type getPlatformErrorDetailRes struct {
 	Syllab []byte
 }
 
-func getPlatformErrorDetail(sk protocol.Socket, req *getPlatformErrorDetailReq) (res *getPlatformErrorDetailRes, err protocol.Error) {
+func getPlatformErrorDetail(sk protocol.Socket, req *getPlatformErrorDetailReq) (res *getPlatformErrorDetailRes, err error_p.Error) {
 	var er = errors.GetByID(req.ErrorID)
 	res = &getPlatformErrorDetailRes{
 		JSON:   er.JSON,
@@ -130,7 +131,7 @@ func (req *getPlatformErrorDetailReq) LenAsSyllab() uint64 {
 	return uint64(req.LenOfSyllabStack() + req.LenOfSyllabHeap())
 }
 
-func (req *getPlatformErrorDetailReq) FromJSON(payload []byte) (remaining []byte, err protocol.Error) {
+func (req *getPlatformErrorDetailReq) FromJSON(payload []byte) (remaining []byte, err error_p.Error) {
 	var decoder = json.DecoderUnsafeMinified{Buf: payload}
 	for err == nil {
 		var keyName = decoder.DecodeKey()
@@ -148,7 +149,7 @@ func (req *getPlatformErrorDetailReq) FromJSON(payload []byte) (remaining []byte
 	return
 }
 
-func (req *getPlatformErrorDetailReq) ToJSON(payload []byte) (added []byte, err protocol.Error) {
+func (req *getPlatformErrorDetailReq) ToJSON(payload []byte) (added []byte, err error_p.Error) {
 	var encoder = json.Encoder{Buf: payload}
 
 	encoder.EncodeString(`{"ErrorID":`)
@@ -174,7 +175,7 @@ func (e *Error) ToSyllab(payload []byte, stackIndex, heapIndex uint32) (freeHeap
 }
 
 // JSONDecoder decode json to given Error
-func (e *Error) FromJSON(payload []byte) (remaining []byte, err protocol.Error) {
+func (e *Error) FromJSON(payload []byte) (remaining []byte, err error_p.Error) {
 	return
 }
 

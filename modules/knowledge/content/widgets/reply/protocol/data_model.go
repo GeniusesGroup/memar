@@ -3,18 +3,17 @@
 package crp
 
 import (
-	"memar/protocol"
+	request_p "memar/process/request/protocol"
+	audit_time_p "memar/process/time/protocol"
 
-	arp "org/modules/app-request/protocol"
-	cp "org/modules/comment/protocol"
+	comment_p "org/modules/knowledge/content/edges-loop/comment/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	CommentID() cp.CommentUUID
-	ReplyTo() cp.CommentUUID // Comment can be reply to other comment just in the same group.
+	comment_p.Field_CommentID
+	ReplyTo() comment_p.UUID // Comment can be reply to other comment just in the same group.
 
-	arp.AuditLogging
-	protocol.Storage_Versioned
-	protocol.Storage_SaveTime
+	request_p.Field_RequestID
+	audit_time_p.Field_Request
 }

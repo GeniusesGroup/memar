@@ -1,19 +1,20 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package fcp
+package card_p
 
 import (
-	"memar/iso"
-	"memar/protocol"
-	up "org/modules/user/protocol"
+	error_p "memar/process/error/protocol"
+
+	storage_p "memar/storage/protocol"
+	user_p "org/modules/identity/user/protocol"
 )
 
 type StorageServices interface {
-	Save(dm DataModel) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm DataModel) (nv storage_p.NumberOfVersion, err error_p.Error)
 
-	Count(financialCardID FinancialCardUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(financialCardID FinancialCardUUID, vo protocol.VersionOffset) (dm DataModel, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(financialCardID UUID) (nv storage_p.NumberOfVersion, err error_p.Error)
+	Get(financialCardID UUID, vo storage_p.VersionOffset) (dm DataModel, nv storage_p.NumberOfVersion, err error_p.Error)
 
-	FIND_FinancialCardIDs_BY_UserID(userID up.UserUUID, offset, limit uint64) (financialCardIDs []FinancialCardUUID, nv protocol.NumberOfVersion, err protocol.Error)
-	FIND_FinancialCardIDs_BY_CardNumber(cardNumber iso.Card) (financialCardIDs []FinancialCardUUID, err protocol.Error)
+	FIND_FinancialCardIDs_BY_UserID(userID user_p.UUID, offset, limit uint64) (financialCardIDs []UUID, nv storage_p.NumberOfVersion, err error_p.Error)
+	FIND_FinancialCardIDs_BY_CardNumber(cardNumber Card) (financialCardIDs []UUID, err error_p.Error)
 }

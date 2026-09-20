@@ -6,7 +6,7 @@ import (
 	er "memar/error"
 	"memar/protocol"
 
-	storage_p "org/modules/storage/protocol"
+	storage_p "memar/storage/protocol"
 )
 
 const domainEnglish = "Achaemenid"

@@ -3,7 +3,7 @@
 package voucher
 
 import (
-	fmp "org/modules/financial/money/protocol"
+	fmp "org/modules/economics/money/protocol"
 )
 
 type Field_Worth interface {

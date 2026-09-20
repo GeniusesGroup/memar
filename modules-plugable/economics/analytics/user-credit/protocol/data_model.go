@@ -3,21 +3,20 @@
 package fcp
 
 import (
-	"memar/protocol"
+	request_p "memar/process/request/protocol"
+	audit_time_p "memar/process/time/protocol"
 
-	arp "org/modules/app-request/protocol"
-	fcp "org/modules/financial-currency/protocol"
-	up "org/modules/user/protocol"
+	fmp "org/modules/economics/money/protocol"
+	user_p "org/modules/identity/user/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	UserID() up.UserUUID
-	CurrencyID() fcp.FinancialCurrencyUUID
-	Amount() protocol.MoneyAmount
-	Balance() protocol.MoneyAmount
+	user_p.Field_UserUUID
+	fcp.Field_FinancialCurrencyID
+	Amount() fmp.Amount
+	Balance() fmp.Amount
 
-	arp.AuditLogging
-	protocol.Storage_Versioned
-	protocol.Storage_SaveTime
+	request_p.Field_RequestID
+	audit_time_p.Field_Request
 }

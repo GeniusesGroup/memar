@@ -3,10 +3,10 @@
 package fma_p
 
 import (
-	request_p "memar/audit/request/protocol"
+	request_p "memar/process/request/protocol"
+	audit_time_p "memar/process/time/protocol"
 
 	form_p "org/modules/knowledge/form/protocol"
-	storage_p "org/modules/storage/primitive/protocol"
 )
 
 // DataModel indicate the domain record data fields.
@@ -15,5 +15,5 @@ type DataModel interface {
 	MaxAttempt() uint16
 
 	request_p.Field_RequestID
-	storage_p.Field_SaveTime
+	audit_time_p.Field_Request
 }

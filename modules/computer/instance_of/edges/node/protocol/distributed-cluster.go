@@ -1,9 +1,11 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package anp
+package node_p
 
 import (
-	"memar/protocol"
+	datatype_p "memar/computer/datatype/protocol"
+	error_p "memar/process/error/protocol"
+	record_p "memar/storage/record/protocol"
 )
 
 // CLU is default global protocol.Cluster like window global variable in browsers.
@@ -13,10 +15,10 @@ var CLU Cluster
 
 // Cluster store application nodes data and ready to return in many ways.
 type Cluster interface {
-	LocalNode() ApplicationNode
-	ReplicatedLocalNode() []ApplicationNode
+	LocalNode() DataModel
+	ReplicatedLocalNode() []DataModel
 
-	GetReplicatedNodes(node ApplicationNode) []ApplicationNode
-	GetNodeByID(nodeID NodeUUID) ApplicationNode
-	GetNodeByStorage(mediaTypeID protocol.MediaTypeID, uuid protocol.UUID) (node ApplicationNode, err protocol.Error)
+	GetReplicatedNodes(node DataModel) []DataModel
+	GetNodeByID(nodeID UUID) DataModel
+	GetNodeByStorage(dataTypeID datatype_p.ID, uuid record_p.UUID) (node DataModel, err error_p.Error)
 }

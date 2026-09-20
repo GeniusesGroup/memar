@@ -3,6 +3,7 @@
 package node
 
 import (
+	net_p "memar/net/protocol"
 	"memar/protocol"
 )
 
@@ -14,8 +15,7 @@ type Node struct {
 	ID              uint64
 	dataCenterID    [32]byte
 	storageCapacity uint64 // In bytes, Max 16EB(Exabyte) that more enough for one node capacity. 0 means service only node.
-	Sock            protocol.Socket
-	Status          protocol.ApplicationStatus
+	Sock            net_p.Socket
 }
 
 // Node is an individual machine running Ganjine

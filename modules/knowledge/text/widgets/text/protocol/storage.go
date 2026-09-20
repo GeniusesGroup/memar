@@ -1,20 +1,21 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package ltp
+package text_p
 
 import (
-	"memar/protocol"
+	error_p "memar/process/error/protocol"
 
-	lp "org/modules/language/protocol"
+	storage_p "memar/storage/protocol"
+	language_p "org/modules/knowledge/language-human/protocol"
 )
 
 type StorageServices interface {
-	Save(dm DataModel) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm DataModel) (nv storage_p.NumberOfVersion, err error_p.Error)
 
-	Count(textID TextUUID, language lp.LanguageUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(textID TextUUID, language lp.LanguageUUID, vo protocol.VersionOffset) (dm DataModel, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(textID UUID, language language_p.UUID) (nv storage_p.NumberOfVersion, err error_p.Error)
+	Get(textID UUID, language language_p.UUID, vo storage_p.VersionOffset) (dm DataModel, nv storage_p.NumberOfVersion, err error_p.Error)
 
-	// FIND_TextIDs_BY_Text(text string, offset, limit uint64) (textIDs []TextUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	// FIND_TextIDs_BY_Text(text string, offset, limit uint64) (textIDs []UUID, nv storage_p.NumberOfVersion, err error_p.Error)
 
-	ListLanguages(textID TextUUID, offset, limit uint64) (languages []lp.LanguageUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	ListLanguages(textID UUID, offset, limit uint64) (languages []language_p.UUID, nv storage_p.NumberOfVersion, err error_p.Error)
 }

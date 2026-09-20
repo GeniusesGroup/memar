@@ -3,21 +3,19 @@
 package usp
 
 import (
-	"memar/protocol"
+	request_p "memar/process/request/protocol"
+	audit_time_p "memar/process/time/protocol"
 
-	arp "org/modules/app-request/protocol"
-	up "org/modules/user/protocol"
+	user_p "org/modules/identity/user/protocol"
 )
 
 type DataModel interface {
 	ID() ID
 	URI() string // e.g. UUID of picture object.
-	UserID() up.UserUUID
-	Status() Status
+	user_p.Field_UserUUID
 
-	arp.AuditLogging
-	protocol.Storage_Versioned
-	protocol.Storage_SaveTime
+	request_p.Field_RequestID
+	audit_time_p.Field_Request
 }
 
 const shortenerPath = "/s"

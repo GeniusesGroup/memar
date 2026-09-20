@@ -3,12 +3,12 @@
 package discount
 
 import (
-	money_p "org/modules/financial/money/protocol"
+	money_p "org/modules/economics/money/protocol"
 	label_p "org/modules/knowledge/label/protocol"
 )
 
 type Label interface {
-	label_p.Field_LabelID
+	label_p.Field_LabelUUID
 	MinAmount() uint64        // Minimum number to buy to use discount
 	MaxAmount() uint64        // Maximum number to buy to use discount
 	MinPrice() money_p.Amount // Minimum price to buy to use discount

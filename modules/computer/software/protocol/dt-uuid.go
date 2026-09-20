@@ -1,9 +1,15 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package ap
+// software in computer science is written programs or procedures or rules and
+// associated documentation pertaining to the operation of a computer system and that are stored in read/write memory
+package software_p
 
 import (
-	"memar/protocol"
+	record_p "memar/storage/record/protocol"
 )
 
-type AppUUID protocol.UUID
+type Field_SoftwareID interface {
+	SoftwareID() UUID
+}
+
+type UUID record_p.UUID

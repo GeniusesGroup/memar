@@ -1,0 +1,262 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+package services
+
+import (
+	"encoding/base64"
+
+	"memar/authorization"
+	"memar/ganjine"
+	"memar/http"
+	"memar/json"
+	error_p "memar/process/error/protocol"
+	"memar/protocol"
+	"memar/srpc"
+	"memar/syllab"
+
+	user_p "org/modules/identity/user/protocol"
+)
+
+var authenticateAppConnectionService = service.Service{
+	URN:                "urn:giti:sabz.city:service:authenticate-app-connection",
+	Domain:             DomainName,
+	ID:                 13937242341617408691,
+	IssueDate:          1603174921,
+	ExpiryDate:         0,
+	ExpireInFavorOfURN: "",
+	ExpireInFavorOfID:  0,
+	Status:             protocol.Software_PreAlpha,
+
+	Authorization: authorization.Service{
+		CRUD:     authorization.CRUDUpdate,
+		UserType: user_p.Type_Unset,
+	},
+
+	Detail: map[protocol.LanguageID]service.ServiceDetail{
+		protocol.LanguageEnglish: {
+			Name: "Authenticate Application Connection",
+			Description: `Authenticate the person active app connection, can't use to authenticate connection for delegate purpose!
+Usually use in HTTP protocol!`,
+			TAGS: []string{"UserAppConnection", "Authentication"},
+		},
+		protocol.LanguagePersian: {
+			Name:        "تایید هوییت ارتباطی برنامه",
+			Description: "تایید هوییت ارتباطی برنامه",
+			TAGS:        []string{},
+		},
+	},
+
+	SRPCHandler: AuthenticateAppConnectionSRPC,
+	ServeHTTP:   AuthenticateAppConnectionHTTP,
+}
+
+// AuthenticateAppConnectionSRPC is sRPC handler of AuthenticateAppConnection service.
+func AuthenticateAppConnectionSRPC(st protocol.Stream) (err error_p.Error) {
+	var req = &authenticateAppConnectionReq{}
+	err = req.FromSyllab(srpc.GetPayload(st.IncomePayload))
+	if err != nil {
+		return
+	}
+
+	err = authenticateAppConnection(st, req)
+	// Check if any error occur in business logic
+	if err != nil {
+		return
+	}
+
+	st.OutcomePayload = make([]byte, srpc.MinLength)
+}
+
+// AuthenticateAppConnectionHTTP is HTTP handler of AuthenticateAppConnection service.
+func AuthenticateAppConnectionHTTP(st protocol.Stream, httpReq *http.Request, httpRes *http.Response) {
+	var req = &authenticateAppConnectionReq{}
+	err = req.FromJSON(httpReq.Body().Marshal())
+	if err != nil {
+		httpRes.SetStatus(http.StatusBadRequestCode, http.StatusBadRequestPhrase)
+		return
+	}
+
+	err = authenticateAppConnection(st, req)
+	// Check if any error occur in business logic
+	if err != nil {
+		httpRes.SetStatus(http.StatusBadRequestCode, http.StatusBadRequestPhrase)
+		return
+	}
+
+	httpRes.SetStatus(http.StatusOKCode, http.StatusOKPhrase)
+	var cookies = []http.SetCookie{
+		http.SetCookie{
+			Name:     http.CookieNameBaseConnID,
+			Value:    base64.RawStdEncoding.EncodeToString(st.Connection.ID[:]),
+			MaxAge:   "630720000", // = 20 year = 20*365*24*60*60
+			Secure:   true,
+			HTTPOnly: true,
+			SameSite: "Lax",
+		}, http.SetCookie{
+			Name:     http.CookieNameBaseUserID,
+			Value:    base64.RawStdEncoding.EncodeToString(st.Connection.UserID[:]),
+			MaxAge:   "630720000", // = 20 year = 20*365*24*60*60
+			Secure:   true,
+			HTTPOnly: false,
+			SameSite: "Lax",
+		},
+	}
+	if protocol.AppMode_Dev {
+		cookies[0].Secure = false
+		cookies[1].Secure = false
+	}
+	httpRes.Header.SetSetCookies(cookies)
+}
+
+type authenticateAppConnectionReq struct {
+	ThingID      [32]byte `json:",string"`
+	CaptchaID    [16]byte `json:",string"`
+	PersonID     [32]byte `json:",string"`
+	PasswordHash [32]byte `json:",string"`
+	OTP          uint32
+}
+
+func authenticateAppConnection(st protocol.Stream, req *authenticateAppConnectionReq) (err error_p.Error) {
+	err = st.Authorize()
+	if err != nil {
+		return
+	}
+
+	// Prevent DDos attack by do some easy process for user e.g. captcha is not good way!
+	err = phraseCaptchas.Check(req.CaptchaID)
+	if err != nil {
+		return
+	}
+
+	var pa = data.PersonAuthentication{
+		PersonID: req.PersonID,
+	}
+	err = pa.GetLastByPersonID()
+	if err != nil {
+		if err.Equal(ganjine.ErrRecordNotFound) {
+			return
+		}
+		err = ErrBadSituation
+		return
+	}
+
+	if req.PasswordHash != pa.PasswordHash {
+		err = ErrBadPasswordOrOTP
+		return
+	}
+	if pa.Status == data.PersonAuthenticationForceUse2Factor {
+		// TODO::: check OTP
+		// err = ErrBadPasswordOrOTP
+	}
+
+	if req.ThingID != [32]byte{} {
+		var conn = achaemenid.App.Connections.GetConnByUserIDThingID(pa.PersonID, req.ThingID)
+		if conn != nil {
+			st.Connection = conn
+			achaemenid.App.Connections.RegisterConnection(conn)
+			return
+		}
+	}
+
+	st.Connection.UserID = pa.PersonID
+	st.Connection.UserType = user_p.Type_Person
+	st.Connection.State = achaemenid.StateNew
+
+	achaemenid.App.Connections.SaveConn(st.Connection)
+	return
+}
+
+/*
+	Request Encoders & Decoders
+*/
+
+func (req *authenticateAppConnectionReq) FromSyllab(payload []byte, stackIndex uint32) {
+	if uint32(len(buf)) < req.LenOfSyllabStack() {
+		err = syllab.ErrShortArrayDecode
+		return
+	}
+
+	copy(req.ThingID[:], buf[0:])
+	copy(req.CaptchaID[:], buf[32:])
+	copy(req.PersonID[:], buf[48:])
+	copy(req.PasswordHash[:], buf[80:])
+	req.OTP = syllab.GetUInt32(buf, 112)
+	return
+}
+
+func (req *authenticateAppConnectionReq) ToSyllab(payload []byte, stackIndex, heapIndex uint32) (freeHeapIndex uint32) {
+	copy(buf[0:], req.ThingID[:])
+	copy(buf[32:], req.CaptchaID[:])
+	copy(buf[48:], req.PersonID[:])
+	copy(buf[80:], req.PasswordHash[:])
+	syllab.SetUInt32(buf, 112, req.OTP)
+	return
+}
+
+func (req *authenticateAppConnectionReq) LenOfSyllabStack() uint32 {
+	return 116
+}
+
+func (req *authenticateAppConnectionReq) LenOfSyllabHeap() (ln uint32) {
+	return
+}
+
+func (req *authenticateAppConnectionReq) LenAsSyllab() uint64 {
+	return uint64(req.LenOfSyllabStack() + req.LenOfSyllabHeap())
+}
+
+func (req *authenticateAppConnectionReq) FromJSON(payload []byte) (remaining []byte, err error_p.Error) {
+	var decoder = json.DecoderUnsafeMinified{Buf: payload}
+	for err == nil {
+		var keyName = decoder.DecodeKey()
+		switch keyName {
+		case "ThingID":
+			err = decoder.DecodeByteArrayAsBase64(req.ThingID[:])
+		case "CaptchaID":
+			err = decoder.DecodeByteArrayAsBase64(req.CaptchaID[:])
+		case "PersonID":
+			err = decoder.DecodeByteArrayAsBase64(req.PersonID[:])
+		case "PasswordHash":
+			err = decoder.DecodeByteArrayAsBase64(req.PasswordHash[:])
+		case "OTP":
+			var num uint64
+			num, err = decoder.DecodeUInt64()
+			req.OTP = uint32(num)
+		default:
+			err = decoder.NotFoundKeyStrict()
+		}
+
+		if decoder.End() {
+			return
+		}
+	}
+	return
+}
+
+func (req *authenticateAppConnectionReq) ToJSON(payload []byte) (added []byte, err error_p.Error) {
+	var encoder = json.Encoder{Buf: payload}
+
+	encoder.EncodeString(`{"ThingID":"`)
+	encoder.EncodeByteSliceAsBase64(req.ThingID[:])
+
+	encoder.EncodeString(`","CaptchaID":"`)
+	encoder.EncodeByteSliceAsBase64(req.CaptchaID[:])
+
+	encoder.EncodeString(`","PersonID":"`)
+	encoder.EncodeByteSliceAsBase64(req.PersonID[:])
+
+	encoder.EncodeString(`","PasswordHash":"`)
+	encoder.EncodeByteSliceAsBase64(req.PasswordHash[:])
+
+	encoder.EncodeString(`","OTP":`)
+	encoder.EncodeUInt64(uint64(req.OTP))
+
+	encoder.EncodeByte('}')
+	added = payload
+	return
+}
+
+func (req *authenticateAppConnectionReq) LenAsJSON() (ln int) {
+	ln = 239
+	return
+}

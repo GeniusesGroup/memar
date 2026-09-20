@@ -1,21 +1,21 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package anrp
+package nr_p
 
 import (
-	"memar/protocol"
+	request_p "memar/process/request/protocol"
+	audit_time_p "memar/process/time/protocol"
 
-	aap "org/modules/app-audit/protocol"
-	anp "org/modules/app-node/protocol"
+	instance_p "org/modules/computer/instance_of/protocol"
+	label_p "org/modules/knowledge/label/protocol"
 )
 
 type DataModel interface {
-	NodeID() anp.NodeUUID
-	Type() Type
+	instance_p.Field_InstanceUUID
+	Type() label_p.UUID
 	ResourceType() []ResourceType
 	ResourceAmount() []string
 
-	aap.AuditRequest
-	protocol.Storage_Versioned
-	protocol.Storage_SaveTime
+	request_p.Field_RequestID
+	audit_time_p.Field_Request
 }

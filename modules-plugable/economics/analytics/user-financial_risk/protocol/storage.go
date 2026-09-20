@@ -3,14 +3,15 @@
 package fsip
 
 import (
-	"memar/protocol"
+	error_p "memar/process/error/protocol"
 
-	up "org/modules/user/protocol"
+	storage_p "memar/storage/protocol"
+	user_p "org/modules/identity/user/protocol"
 )
 
 type StorageServices interface {
-	Save(dm DataModel) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm DataModel) (nv storage_p.NumberOfVersion, err error_p.Error)
 
-	Count(userID up.UserUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(userID up.UserUUID, vo protocol.VersionOffset) (dm DataModel, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(userID user_p.UUID) (nv storage_p.NumberOfVersion, err error_p.Error)
+	Get(userID user_p.UUID, vo storage_p.VersionOffset) (dm DataModel, nv storage_p.NumberOfVersion, err error_p.Error)
 }

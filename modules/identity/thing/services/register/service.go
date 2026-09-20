@@ -1,0 +1,25 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+package services
+
+import (
+	"libgo/protocol"
+	"libgo/service"
+
+	qdp "org/modules/quiddity-domain/protocol"
+)
+
+var Service ser
+
+type ser struct {
+	service.Service
+}
+
+func (s *ser) Init() {
+	s.Service.MediaType.Init(qdp.FindQuiddityByOrgIDURN, "", protocol.Software_PreAlpha, 1604939795)
+	s.Service.MediaType.SetDetail(protocol.LanguageEnglish,
+		"Register Quiddity",
+		"",
+		[]string{"Quiddity"})
+	s.Service.SetAuthorization(protocol.CRUDCreate, protocol.UserType_Org)
+}

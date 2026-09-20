@@ -7,6 +7,6 @@ import (
 )
 
 type DataModel interface {
-	Hour() utc.HourElapsed
+	utc.Field_HourElapsed
 	Count() uint64
 }

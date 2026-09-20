@@ -1,20 +1,21 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package cgp
+package cg_p
 
 import (
-	"memar/protocol"
+	error_p "memar/process/error/protocol"
 
-	cp "org/modules/comment/protocol"
-	gp "org/modules/group/protocol"
+	storage_p "memar/storage/protocol"
+	cp "org/modules/knowledge/content/edges-loop/comment/protocol"
+	group_p "org/modules/management/group/protocol"
 )
 
 type StorageServices interface {
-	Save(dm DataModel) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm DataModel) (nv storage_p.NumberOfVersion, err error_p.Error)
 
-	Count(groupID gp.GroupUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(groupID gp.GroupUUID, vo protocol.VersionOffset) (dm DataModel, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(groupID group_p.UUID) (nv storage_p.NumberOfVersion, err error_p.Error)
+	Get(groupID group_p.UUID, vo storage_p.VersionOffset) (dm DataModel, nv storage_p.NumberOfVersion, err error_p.Error)
 
-	FIND_GroupIDs_BY_CommentID(commentID cp.CommentUUID) (groupIDs []gp.GroupUUID, err protocol.Error)
-	LIST_CommentIDs_By_GroupID(groupID gp.GroupUUID, offset, limit uint64) (commentIDs []cp.CommentUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	FIND_GroupIDs_BY_CommentID(commentID cp.UUID) (groupIDs []group_p.UUID, err error_p.Error)
+	LIST_CommentIDs_By_GroupID(groupID group_p.UUID, offset, limit uint64) (commentIDs []cp.UUID, nv storage_p.NumberOfVersion, err error_p.Error)
 }

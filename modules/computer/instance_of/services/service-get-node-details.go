@@ -3,8 +3,8 @@
 package services
 
 import (
+	"memar/process/service"
 	"memar/protocol"
-	"memar/service"
 )
 
 // GetNodeDetailsService store details about GetNodeDetails service
@@ -19,8 +19,8 @@ var GetNodeDetailsService = service.Service{
 	Status:             protocol.Software_PreAlpha,
 
 	Authorization: authorization.Service{
-		CRUD:     authorization.CRUDRead,
-		UserType: protocol.UserType_App,
+		CRUD:     operation_p.ActionType_Read,
+		UserType: user_p.Type_App,
 	},
 
 	Detail: map[protocol.LanguageID]service.ServiceDetail{
@@ -44,7 +44,7 @@ func GetNodeDetailsSRPC(st protocol.Stream) {
 
 	var res *Node
 	res, err = GetNodeDetails(st)
-	// Check if any error occur in bussiness logic
+	// Check if any error occur in business logic
 	if err != nil {
 		return
 	}
@@ -53,7 +53,7 @@ func GetNodeDetailsSRPC(st protocol.Stream) {
 }
 
 // GetNodeDetails returns local node details or related error!
-func GetNodeDetails(st protocol.Stream) (res *Node, err protocol.Error) {
+func GetNodeDetails(st protocol.Stream) (res *Node, err error_p.Error) {
 	res, err = Cluster.GetLocalNodeDetail()
 	return
 }
@@ -67,7 +67,7 @@ type getServerNodeDetailsRes struct {
 	nodes []NodeDetails
 }
 
-func getServerNodeDetails(conn *Connection) (res *getServerNodeDetailsRes, err protocol.Error) {
+func getServerNodeDetails(conn *Connection) (res *getServerNodeDetailsRes, err error_p.Error) {
 	// Make new request-response streams
 	var st *Stream
 	st, err = conn.MakeOutcomeStream(0)
@@ -92,7 +92,7 @@ func (res *getServerNodeDetailsRes) FromSyllab(payload []byte, stackIndex uint32
 	return nil
 }
 
-func (n *Node) getNodeDetails(node protocol.ApplicationNode) (err protocol.Error) {
+func (n *Node) getNodeDetails(node protocol.ApplicationNode) (err error_p.Error) {
 	// Check if desire node is not a ganjine node!
 	if node.Conn == nil {
 		// err =

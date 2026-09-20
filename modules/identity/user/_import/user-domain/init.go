@@ -1,0 +1,10 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+package org
+
+const UserDomain_Service_Register = "urn:giti:user-domain.sabz.city:service:register"
+const UserDomain_Service_ChangeDomain = "urn:giti:user-domain.sabz.city:service:change-domain"
+const UserDomain_Service_Close = "urn:giti:user-domain.sabz.city:service:close"
+const UserDomain_Service_Reopen = "urn:giti:user-domain.sabz.city:service:reopen"
+const UserDomain_Service_Block = "urn:giti:user-domain.sabz.city:service:block"
+const UserDomain_Service_Unblock = "urn:giti:user-domain.sabz.city:service:unblock"

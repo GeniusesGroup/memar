@@ -1,0 +1,13 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+package money_p
+
+import (
+	currency_p "org/modules/identity/thing/edges/count_unit/labels/currency/protocol"
+)
+
+// Money is something generally accepted as a medium of exchange, a measure of value, or a means of payment
+type Money interface {
+	Field_Amount
+	currency_p.Field_FinancialCurrencyID
+}

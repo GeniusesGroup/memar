@@ -1,10 +1,12 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package protocol
+package net
 
 // Network_DataMetrics
 type Network_DataMetrics interface {
-	LastUsage() Time                     // Last use of the NetworkInterface
+	// commit.msg: Delete `timing` in favor of calendar-event
+	// LastUsage() time_p.Time              // Last use of the NetworkInterface
+
 	MaxBandwidth() uint64                // Byte/Second, NetworkInterface can limit to a fixed number
 	BytesSent() uint64                   // Counts the bytes of packets sent
 	PacketsSent() uint64                 // Counts sent packets
@@ -30,7 +32,10 @@ type Network_DataMetrics interface {
 
 // ConnectionMetrics
 type ConnectionMetrics interface {
-	LastUsage() Time                     // Last use of the connection
+
+	// commit.msg: Delete `timing` in favor of calendar-event
+	// LastUsage() time_p.Time              // Last use of the connection
+
 	MaxBandwidth() uint64                // Byte/Second and Connection can limit to a fixed number
 	BytesSent() uint64                   // Counts the bytes of packets sent
 	PacketsSent() uint64                 // Counts sent packets
@@ -58,7 +63,9 @@ type ConnectionMetrics interface {
 
 // ConnectionMetrics is an atomic counters.
 type ConnectionsMetrics interface {
-	LastUsage() Time            // Last use of the connection
+	// commit.msg: Delete `timing` in favor of calendar-event
+	// LastUsage() time_p.Time     // Last use of the connection
+
 	OpenCount() int64           // number of opened and pending open connections
 	GuestCount() int64          // number of opened connection for guest users
 	InUseCount() int64          // The number of connections currently in use.

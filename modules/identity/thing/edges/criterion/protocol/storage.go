@@ -3,10 +3,10 @@
 package tcp
 
 import (
-	error_p "memar/error/protocol"
+	error_p "memar/process/error/protocol"
 
-	tp "org/modules/organization/task/protocol"
-	storage_p "org/modules/storage/primitive/protocol"
+	storage_p "memar/storage/protocol"
+	tp "org/modules/management/task/protocol"
 )
 
 type StorageServices interface {

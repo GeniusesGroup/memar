@@ -1,9 +1,13 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package fcp
+package currency_p
 
 import (
-	"memar/protocol"
+	thing_p "org/modules/identity/thing/protocol"
 )
 
-type FinancialCurrencyUUID protocol.UUID
+type Field_FinancialCurrencyID interface {
+	FinancialCurrencyID() UUID
+}
+
+type UUID thing_p.UUID

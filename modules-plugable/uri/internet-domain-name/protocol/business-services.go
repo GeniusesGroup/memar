@@ -1,17 +1,17 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package udp
+package domain_p
 
 import (
-	"memar/protocol"
+	container_p "memar/computer/adt/container/protocol"
 
-	up "org/modules/user/protocol"
+	user_p "org/modules/identity/user/protocol"
 )
 
 type (
 	BS_Register_Request interface {
 		Domain() string
-		UserID() up.UserUUID // TODO::: get user id from connection??
+		user_p.Field_UserUUID // TODO::: get user id from connection??
 	}
 )
 
@@ -27,20 +27,18 @@ type (
 type (
 	BS_Get_Request interface {
 		Domain() string
-		VersionOffset() protocol.VersionOffset
 	}
-	BS_Get_Response1 = DataModel
-	BS_Get_Response2 protocol.NumberOfVersion
+	BS_Get_Response = DataModel
 )
 
 type (
 	BS_FindByUserID_Request interface {
-		UserID() up.UserUUID
-		protocol.Pagination
+		user_p.Field_UserUUID
+		container_p.Pagination_Offset_Request
 	}
 	BS_FindByUserID_Response interface {
 		Domains() []string
-		Numbers() uint64
+		container_p.Pagination_Response
 	}
 )
 
@@ -49,6 +47,6 @@ type (
 type (
 	BS_ChangeStatus_Request interface {
 		Domain() string
-		Status() Status
+		Field_Status
 	}
 )

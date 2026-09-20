@@ -1,9 +1,13 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package fcp
+package card_p
 
 import (
-	"memar/protocol"
+	thing_p "org/modules/identity/thing/protocol"
 )
 
-type FinancialCardUUID protocol.UUID
+type Field_CardID interface {
+	CardID() UUID
+}
+
+type UUID thing_p.UUID

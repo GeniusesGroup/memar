@@ -1,20 +1,19 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package cus
+package cus_p
 
 import (
-	"memar/protocol"
-
-	cp "org/modules/comment/protocol"
+	time_p "memar/time/protocol"
+	comment_p "org/modules/knowledge/content/edges-loop/comment/protocol"
 )
 
 type GUI_Widget_Conditions interface {
-	CommentID() cp.CommentUUID
+	comment_p.Field_CommentID
 	ViewNumberType() ViewNumberType
 	EnableReadBy() bool
 
 	viewNumber()
-	time() protocol.Time
+	time() time_p.Time
 }
 
 type GUI_Widget_Service interface {

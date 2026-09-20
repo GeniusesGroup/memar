@@ -1,0 +1,17 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+package department_p
+
+import (
+	event_p "memar/process/event/protocol"
+
+	thing_p "org/modules/identity/thing/protocol"
+	group_p "org/modules/management/group/protocol"
+)
+
+type Model interface {
+	thing_p.Model
+	group_p.Model
+
+	event_p.Target[DataModel]
+}

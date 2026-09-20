@@ -3,11 +3,11 @@
 
 package main
 
-// "org/modules/identity/quiddity"
+// "org/modules/identity/thing"
 
 // Init method use to register all available modules to the application.
 func Init() {
-	// quiddity.RegisterServices()
-	// quiddity.RegisterPages()
-	// quiddity.RegisterWidgets()
+	// thing.RegisterServices()
+	// thing.RegisterPages()
+	// thing.RegisterWidgets()
 }

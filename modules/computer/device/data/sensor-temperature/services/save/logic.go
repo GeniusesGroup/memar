@@ -1,6 +1,6 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package ip
+package st_p
 
 // Go programming language
 type SaveTemperatureRequest struct {

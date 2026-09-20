@@ -1,13 +1,13 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package ltp
+package text_p
 
 import (
-	cp "org/modules/comment/protocol"
+	comment_p "org/modules/knowledge/content/edges-loop/comment/protocol"
 )
 
 type GUI_Widget_Conditions interface {
-	CommentID() cp.CommentUUID //
+	comment_p.Field_CommentID //
 
 	// It can be same sa overflow in css values
 	Overflow()

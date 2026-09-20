@@ -6,6 +6,10 @@ import (
 	org_p "org/modules/identity/organization/protocol"
 )
 
+type Field_IssuerID interface {
+	IssuerID() org_p.UUID
+}
+
 // Field_OrganizationIssuerID use when need to indicate issuer of a record in a data model.
 type Field_OrganizationIssuerID interface {
 	OrganizationIssuer() org_p.UUID

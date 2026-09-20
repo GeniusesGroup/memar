@@ -4,7 +4,6 @@ package gds
 
 import (
 	"memar/json"
-	"memar/protocol"
 	"memar/syllab"
 )
 
@@ -43,7 +42,7 @@ func (req *Request) LenAsSyllab() uint64 {
 	return uint64(req.LenOfSyllabStack() + req.LenOfSyllabHeap())
 }
 
-func (req *Request) FromJSON(payload []byte) (remaining []byte, err protocol.Error) {
+func (req *Request) FromJSON(payload []byte) (remaining []byte, err error_p.Error) {
 	var decoder = json.DecoderUnsafeMinified{Buf: payload}
 	for err == nil {
 		var keyName = decoder.DecodeKey()
@@ -63,7 +62,7 @@ func (req *Request) FromJSON(payload []byte) (remaining []byte, err protocol.Err
 	return
 }
 
-func (req *Request) ToJSON(payload []byte) (added []byte, err protocol.Error) {
+func (req *Request) ToJSON(payload []byte) (added []byte, err error_p.Error) {
 	var encoder = json.Encoder{Buf: payload}
 
 	encoder.EncodeString(`{"ServiceID":`)

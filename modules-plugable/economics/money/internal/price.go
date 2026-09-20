@@ -1,0 +1,13 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+package money
+
+import (
+	currency_p "org/modules/identity/thing/edges/count_unit/labels/currency/protocol"
+)
+
+// Price indicate to store all information about price
+type Money struct {
+	Currency currency_p.UUID
+	Amount   Amount
+}

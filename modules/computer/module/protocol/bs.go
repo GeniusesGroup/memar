@@ -1,0 +1,40 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+package module_p
+
+import (
+	capsule_p "memar/computer/capsule/protocol"
+	datatype_p "memar/computer/datatype/protocol"
+	gui_p "memar/gui/protocol"
+	mediatype_p "memar/mediatype/protocol"
+	service_p "memar/operation/service/protocol"
+	error_p "memar/process/error/protocol"
+	string_p "memar/string/protocol"
+)
+
+// Modules is the interface that must implement by any Application.
+type Modules[STR string_p.String] interface {
+	// RegisterModule use to register application modules.
+	// Due to minimize performance impact, This method isn't safe to use concurrently and
+	// must register all module before use GetModule methods.
+	RegisterModule(m Module[STR])
+
+	Modules() []Module[STR]
+	GetModuleByID(id datatype_p.ID) (m Module[STR], err error_p.Error)
+	GetModuleByMediaType(mt string) (m Module[STR], err error_p.Error)
+}
+
+// Module is the interface that must implement by any struct to be a module.
+type Module[STR string_p.String] interface {
+	Source() STR // Domain, URL, ...
+	// Two type of depend on: use other module or wrapper for some modules to introduce as one package.
+	DependOn() []Module[STR]
+
+	Services() []service_p.Service
+	Pages() []gui_p.Page
+	// Widgets() []GUI
+
+	datatype_p.DataType
+	mediatype_p.MediaType
+	capsule_p.LifeCycle
+}

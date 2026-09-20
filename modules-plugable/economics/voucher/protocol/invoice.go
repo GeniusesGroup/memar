@@ -3,8 +3,8 @@
 package voucher
 
 import (
-	invoice_p "org/modules/financial/invoice/protocol"
-	money_p "org/modules/financial/money/protocol"
+	invoice_p "org/modules/economics/invoice/protocol"
+	money_p "org/modules/economics/money/protocol"
 )
 
 type Invoice_Condition interface {

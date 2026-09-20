@@ -1,21 +1,12 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package itvp
+package ig_p
 
 import (
-	"memar/protocol"
-
-	arp "org/modules/app-request/protocol"
-	ip "org/modules/invite/protocol"
+	time_p "memar/time/protocol"
 )
 
-// DataModel indicate the domain record data fields.
-type DataModel interface {
-	InviteID() ip.InviteUUID
-	Start() protocol.Time
-	End() protocol.Time
-
-	arp.AuditLogging
-	protocol.Storage_Versioned
-	protocol.Storage_SaveTime
+type TimeValidity interface {
+	Start() time_p.Time
+	End() time_p.Time
 }

@@ -3,34 +3,31 @@
 package upp
 
 import (
-	pp "org/modules/product/protocol"
+	product_p "org/modules/economics/product/protocol"
+	org_p "org/modules/identity/organization/protocol"
+	label_p "org/modules/knowledge/label/protocol"
+	text_p "org/modules/knowledge/text/protocol"
+	group_p "org/modules/management/group/protocol"
+	staff_p "org/modules/management/staff/protocol"
+	estate_p "org/modules/rights/estate/protocol"
 )
-
-type GUI_Page_UsedDomains interface {
-	// Product
-	// Quiddity
-	// Category
-	// Warehouse
-}
 
 type GUI_Page_HyperLinks interface {
 	NavigateToProductPage()
 }
 
 type GUI_Page_Conditions interface {
-	ProductType() pp.Type
-	OrgID()
+	product_p.Field_Type
+	org_p.Field_OrganizationID
 	OrgType() // Privilege, Official, county, ...
 	Brand()
-	CategoryID()
-	Text()
-	WarehouseID()
-	StaffID()
-	RoleID()
+	label_p.Field_LabelsUUID
+	text_p.Field_Text
+	estate_p.Field_EstateID
+	staff_p.Field_StaffID
+	group_p.Field_GroupID
 
-	Estate()             // MUST set user location as default
-	BuildingID()         // MUST set user location as default
-	BuildingLocationID() // MUST set user location as default
+	estate_p.Field_EstateID // MUST set user location as default
 
 	// Filter:
 	OutStock() bool // != InStock
@@ -40,8 +37,6 @@ type GUI_Page_Conditions interface {
 	Used() // New, MostlyNew, Refurbished, ...
 	// MostSell()
 	// MostViewed()
-	// Complement()
-	// Subsitute()
 	// Sort()
 	// WarehousePreference() close to me, send imidieatly
 	Status()

@@ -1,23 +1,21 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package icp
+package distribute_p
 
 import (
-	"memar/protocol"
-
-	arp "org/modules/app-request/protocol"
-	ip "org/modules/inventory/protocol"
+	request_p "memar/process/request/protocol"
+	audit_time_p "memar/process/time/protocol"
+	inventory_p "org/modules/gui/page-inventory/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	InventoryChangeID() InventoryChangeUUID
-	From() ip.InventoryUUID
-	To() ip.InventoryUUID // Can be zero for voiding products.
+	Field_DistributionID
+	From() inventory_p.UUID
+	To() inventory_p.UUID // Can be zero for voiding products.
 	Amount() int64        // this transaction
 	Priority() uint64
 
-	arp.AuditLogging
-	protocol.Storage_Versioned
-	protocol.Storage_SaveTime
+	request_p.Field_RequestID
+	audit_time_p.Field_Request
 }

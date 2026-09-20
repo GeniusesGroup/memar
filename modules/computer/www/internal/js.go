@@ -1,0 +1,176 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+package www
+
+import (
+	"bytes"
+	"strconv"
+	"strings"
+
+	"memar/file"
+	error_p "memar/process/error/protocol"
+	"memar/process/log"
+	storage_p "memar/storage/protocol"
+)
+
+// JS store data for its method
+type JS struct {
+	imports []storage_p.File
+	inlined map[string]storage_p.File
+}
+
+func (js *JS) checkInlined(srcJS storage_p.File) (inlined bool) {
+	_, inlined = js.inlined[srcJS.Metadata().Path()]
+	return
+}
+
+// AddJSToJS use to add a JS file to other!
+func (js *JS) addJSToJS(srcJS, desJS storage_p.File) {
+	if js.checkInlined(srcJS) {
+		return
+	}
+	js.inlined[srcJS.Metadata().Path()] = srcJS
+	var append, _ = srcJS.Data().Marshal()
+	desJS.Data().Append(append)
+}
+
+// AddJSToJSRecursively use to add JSS and all import to JS file!
+func (js *JS) addJSToJSRecursively(srcJS, desJS storage_p.File) {
+	if js.checkInlined(srcJS) {
+		return
+	}
+	// Tell other this file will add to desJS later!
+	js.inlined[srcJS.Metadata().Path()] = srcJS
+
+	var imports = make([]storage_p.File, 0, 16)
+	_ = js.extractJSImports(srcJS)
+	for _, imp := range imports {
+		js.addJSToJSRecursively(imp, desJS)
+	}
+	var append, _ = srcJS.Data().Marshal()
+	desJS.Data().Append(append)
+}
+
+func (js *JS) extractJSImportsRecursively(jsFile storage_p.File) (err error_p.Error) {
+	var lastImportIndex = len(js.imports)
+	_ = js.extractJSImports(jsFile)
+	for _, imp := range js.imports[lastImportIndex:] {
+		err = js.extractJSImportsRecursively(imp)
+	}
+	return
+}
+
+func (js *JS) extractJSImports(jsFile storage_p.File) (err error_p.Error) {
+	var jsData, _ = jsFile.Data().Marshal()
+	var importKeywordIndex, st, en int
+	for {
+		importKeywordIndex = bytes.Index(jsData, []byte("import "))
+		if importKeywordIndex == -1 {
+			break
+		}
+
+		// TODO::: check and don't parse dynamically import
+
+		// Find start and end of import file location!
+		st = importKeywordIndex + bytes.IndexByte(jsData[importKeywordIndex:], '\'') + 1
+		en = st + bytes.IndexByte(jsData[st:], '\'')
+		var importPath = string(jsData[st:en])
+		var importFile = file.FindByRelativeFrom(jsFile, importPath)
+		if importFile == nil {
+			if log.CNF_DevelopingMode {
+				log.Warn(&domain, importPath+" indicate as import in"+jsFile.Metadata().FileName()+"not found")
+			}
+			// err =
+		} else {
+			js.imports = append(js.imports, importFile)
+		}
+
+		copy(jsData[importKeywordIndex-1:], jsData[en+1:])
+		jsData = jsData[:len(jsData)-(en-importKeywordIndex)-2]
+	}
+	jsFile.Data().Unmarshal(jsData)
+	return
+}
+
+func localeAndMixJSFile(jsFile storage_p.File) (mixedData map[string][]byte) {
+	var js, _ = jsFile.Data().Marshal()
+	var jsFileNameWithoutExtension = jsFile.Metadata().FileNameWithoutExtension()
+
+	var lj = make(localize, 8)
+	var jsonFile, _ = jsFile.Metadata().ParentDirectory().File(jsFileNameWithoutExtension + ".json")
+	if log.CNF_DevelopingMode && jsonFile == nil {
+		log.Warn(&domain, jsFile.Metadata().FileName()+"Can't find JSON localize file, Localization skipped")
+		return
+	}
+
+	var cssFile, _ = jsFile.Metadata().ParentDirectory().File(jsFileNameWithoutExtension + ".css")
+	if log.CNF_DevelopingMode && cssFile == nil {
+		log.Warn(&domain, jsFile.Metadata().FileName()+"Can't find CSS style file, Mix CSS to JS file skipped")
+	}
+	if cssFile != nil {
+		var cssData, _ = cssFile.Data().Marshal()
+		js, _ = mixCSSToJS(js, cssData)
+	}
+
+	var jsonData, _ = jsonFile.Data().Marshal()
+	lj.jsonDecoder(jsonData)
+	mixedData, _ = localizeJSFile(js, lj)
+
+	var htmlFile, _ = jsFile.Metadata().ParentDirectory().File(jsFileNameWithoutExtension + ".html")
+	if log.CNF_DevelopingMode && htmlFile == nil {
+		log.Warn(&domain, jsFile.Metadata().FileName()+"Can't find HTML style file, Mix HTML to JS file skipped")
+	}
+	if htmlFile != nil {
+		var htmlData, _ = htmlFile.Data().Marshal()
+		var htmlMixedData, _ = localizeHTMLFile(htmlData, lj)
+		for lang, html := range htmlMixedData {
+			mixHTMLToJS(mixedData[lang], html)
+		}
+	}
+
+	for _, f := range jsFile.Metadata().ParentDirectory().FindFiles(jsFileNameWithoutExtension+"-template-", 0) {
+		var namesPart = strings.Split(f.Metadata().FileName(), "-template-")
+		var fData, _ = f.Data().Marshal()
+		var htmlMixedData, _ = localizeHTMLFile(fData, lj)
+		for lang, f := range htmlMixedData {
+			mixHTMLTemplateToJS(mixedData[lang], f, namesPart[1])
+		}
+	}
+
+	return
+}
+
+// localizeJSFile make and returns number of localize file by number of language indicate in JSON localize text
+func localizeJSFile(js []byte, lj localize) (mixedData map[string][]byte, err error_p.Error) {
+	mixedData = make(map[string][]byte, len(lj))
+	for lang, text := range lj {
+		mixedData[lang], _ = replaceLocalizeTextInJS(js, text)
+	}
+	return
+}
+
+func replaceLocalizeTextInJS(js []byte, text []string) (mixData []byte, err error_p.Error) {
+	mixData = make([]byte, 0, len(js))
+
+	var replacerIndex int
+	var bracketIndex int
+	for {
+		replacerIndex = bytes.Index(js, []byte("LocaleText["))
+		if replacerIndex < 0 {
+			mixData = append(mixData, js...)
+			return
+		}
+		mixData = append(mixData, js[:replacerIndex]...)
+		js = js[replacerIndex:]
+
+		bracketIndex = bytes.IndexByte(js, ']')
+		var textIndex, err = strconv.ParseUint(string(js[11:bracketIndex]), 10, 8)
+		if err != nil {
+			// err = "Index numbers in desire file is not valid, double check your file for bad structures"
+		} else {
+			mixData = append(mixData, text[textIndex]...)
+		}
+
+		js = js[bracketIndex+1:]
+	}
+}

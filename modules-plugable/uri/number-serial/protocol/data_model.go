@@ -3,20 +3,18 @@
 package irlp
 
 import (
-	"memar/protocol"
-
-	arp "org/modules/app-request/protocol"
-	ip "org/modules/inventory/protocol"
+	request_p "memar/process/request/protocol"
+	audit_time_p "memar/process/time/protocol"
+	inventory_p "org/modules/economics/inventory/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 // ProductInventory or good stock
 type DataModel interface {
-	InventoryID() ip.InventoryUUID
+	inventory_p.Field_InventoryID
 	SerialID_Start() string
 	SerialID_End() string
 
-	arp.AuditLogging
-	protocol.Storage_Versioned
-	protocol.Storage_SaveTime
+	request_p.Field_RequestID
+	audit_time_p.Field_Request
 }

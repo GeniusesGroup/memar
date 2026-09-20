@@ -3,21 +3,21 @@
 package ptip
 
 import (
-	"memar/protocol"
+	"memar/time/duration"
 
-	arp "org/modules/app-request/protocol"
-	pp "org/modules/product/protocol"
+	request_p "memar/process/request/protocol"
+	audit_time_p "memar/process/time/protocol"
+	product_p "org/modules/economics/product/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 // e.g. flight duration, doctor visit, carwash, ...
 type DataModel interface {
-	ProductID() pp.ProductUUID
-	Minimum() protocol.Duration  // Minimum time duration for this service
-	Expected() protocol.Duration // Expected time duration for this service
-	Maximum() protocol.Duration  // Maximum time duration for this service
+	product_p.Field_ProductID
+	Minimum() duration.Second  // Minimum time duration for this service
+	Expected() duration.Second // Expected time duration for this service
+	Maximum() duration.Second  // Maximum time duration for this service
 
-	arp.AuditLogging
-	protocol.Storage_Versioned
-	protocol.Storage_SaveTime
+	request_p.Field_RequestID
+	audit_time_p.Field_Request
 }

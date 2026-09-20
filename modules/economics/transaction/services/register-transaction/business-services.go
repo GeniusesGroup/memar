@@ -1,0 +1,36 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+package bookkeeping_p
+
+import (
+	decimal_p "memar/math/decimal/protocol"
+
+	account_p "org/modules/economics/account/protocol"
+)
+
+type (
+	BS_Transfer_Request interface {
+		account_p.Field_AccountID
+		AccountSideID() account_p.UUID // or AccountPartyID
+
+		decimal_p.Field_Quantity // This transaction
+	}
+)
+
+type (
+	BS_RecoverTransfer_Request interface{}
+)
+
+type (
+	BS_Get_Request interface {
+		account_p.Field_AccountID
+	}
+)
+
+type (
+	BS_GetByTime_Request interface{}
+)
+
+type (
+	BS_Find_Request interface{}
+)

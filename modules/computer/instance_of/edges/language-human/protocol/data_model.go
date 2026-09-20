@@ -3,19 +3,18 @@
 package anlp
 
 import (
-	"memar/protocol"
+	request_p "memar/process/request/protocol"
+	audit_time_p "memar/process/time/protocol"
 
-	aap "org/modules/app-audit/protocol"
-	anp "org/modules/app-node/protocol"
-	lp "org/modules/language/protocol"
+	instance_p "org/modules/computer/instance_of/protocol"
+	language_p "org/modules/knowledge/language-human/protocol"
 )
 
 type DataModel interface {
-	NodeID() anp.NodeUUID
-	Language() lp.LanguageUUID
+	instance_p.Field_InstanceUUID
+	language_p.Field_LanguageUUID
 	Status()
 
-	aap.AuditRequest
-	protocol.Storage_Versioned
-	protocol.Storage_SaveTime
+	request_p.Field_RequestID
+	audit_time_p.Field_Request
 }

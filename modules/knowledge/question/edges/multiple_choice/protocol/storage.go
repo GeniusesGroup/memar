@@ -3,14 +3,15 @@
 package qmcp
 
 import (
-	"memar/protocol"
+	error_p "memar/process/error/protocol"
 
-	qop "org/modules/question_option/protocol"
+	storage_p "memar/storage/protocol"
+	qop "org/modules/knowledge/question_option/protocol"
 )
 
 type StorageServices interface {
-	Save(dm DataModel) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm DataModel) (nv storage_p.NumberOfVersion, err error_p.Error)
 
-	Count(questionOptionID qop.QuestionOptionUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(questionOptionID qop.QuestionOptionUUID, vo protocol.VersionOffset) (dm DataModel, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(questionOptionID qop.UUID) (nv storage_p.NumberOfVersion, err error_p.Error)
+	Get(questionOptionID qop.UUID, vo storage_p.VersionOffset) (dm DataModel, nv storage_p.NumberOfVersion, err error_p.Error)
 }

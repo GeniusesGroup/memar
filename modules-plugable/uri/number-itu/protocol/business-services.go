@@ -1,33 +1,32 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package unp
+package un_p
 
 import (
-	"memar/protocol"
-
-	up "org/modules/user/protocol"
+	storage_p "memar/storage/protocol"
+	org_p "org/modules/identity/organization/protocol"
+	user_p "org/modules/identity/user/protocol"
 )
 
 type (
 	BS_Register_Request interface {
-		OrgID() up.UserUUID
-		Number() Number
+		org_p.Field_OrganizationID
+		Field_Number
 	}
 )
 
 type (
 	BS_Count_Request interface {
-		UserID() up.UserUUID
-		OrgID() up.UserUUID
+		user_p.Field_UserUUID
+		org_p.Field_OrganizationID
 	}
-	BS_Count_Response = protocol.NumberOfVersion
+	BS_Count_Response = storage_p.NumberOfVersion
 )
 
 type (
 	BS_Get_Request interface {
-		UserID() up.UserUUID
-		OrgID() up.UserUUID
-		VersionOffset() protocol.VersionOffset
+		user_p.Field_UserUUID
+		org_p.Field_OrganizationID
 	}
 	BS_Get_Response = DataModel
 )

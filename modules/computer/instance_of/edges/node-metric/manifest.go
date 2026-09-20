@@ -1,20 +1,23 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package achaemenid
+package anm_p
 
 import (
 	"crypto/sha512"
 
 	"memar/convert"
 	"memar/protocol"
+	"memar/time/duration"
+
+	society_p "org/modules/identity/society/protocol"
 )
 
 // Manifest store server manifest data
 // All string slice is multi language and in order by ManifestLanguages order
 type Manifest struct {
 	Society     string
-	SocietyUUID [32]byte
-	SocietyID   protocol.SocietyID
+	SocietyUUID society_p.UUID
+	SocietyID   society_p.SocietyID
 	DomainName  string
 	AppID       [32]byte // Hash of domain act as Application ID too
 	Email       string
@@ -43,7 +46,7 @@ type AppDetail struct {
 // TechnicalInfo store some technical information but may different from really server condition!
 type TechnicalInfo struct {
 	// Shutdown settings
-	ShutdownDelay protocol.Duration // the server will wait for at least this amount of time for active streams to finish!
+	ShutdownDelay duration.Second // the server will wait for at least this amount of time for active streams to finish!
 
 	// Minimum hardware specification for each instance of application.
 	CPUCores uint8  // Number
@@ -57,8 +60,8 @@ type TechnicalInfo struct {
 // NetworkInfo store some network information.
 type NetworkInfo struct {
 	// Application Overal rate limit
-	MaxOpenConnection     uint64            // The maximum number of concurrent connections the app may serve.
-	ConnectionIdleTimeout protocol.Duration // In seconds
+	MaxOpenConnection     uint64 // The maximum number of concurrent connections the app may serve.
+	ConnectionIdleTimeout duration.Second
 	// MaxStreamHeaderSize   uint64 // For stream protocols with variable header size like HTTP
 	// MaxStreamPayloadSize  uint64 // For stream protocols with variable payload size like sRPC, HTTP, ...
 
@@ -90,10 +93,10 @@ type NetworkInfo struct {
 // DeployInfo store some application deployment information.
 type DeployInfo struct {
 	// Distribution
-	DistributeOutOfSociety bool              // Allow to run service-only instance of app out of original society belong to.
-	DataCentersClass       uint8             // 0:FirstClass 256:Low-Quality default:5
-	MaxNodeNumber          uint32            // default:3
-	NodeFailureTimeOut     protocol.Duration // Max suggestion is 6 hour, other service only node replace failed node! not use in network failure, it is handy process!
+	DistributeOutOfSociety bool            // Allow to run service-only instance of app out of original society belong to.
+	DataCentersClass       uint8           // 0:FirstClass 256:Low-Quality default:5
+	MaxNodeNumber          uint32          // default:3
+	NodeFailureTimeOut     duration.Second // Max suggestion is 6 hour, other service only node replace failed node! not use in network failure, it is handy process!
 }
 
 // Manifest store Ganjine manifest data

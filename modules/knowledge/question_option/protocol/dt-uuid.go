@@ -1,9 +1,13 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package qop
+package qo_p
 
 import (
-	"memar/protocol"
+	thing_p "org/modules/identity/thing/protocol"
 )
 
-type QuestionOptionUUID protocol.UUID
+type Field_QuestionOptionID interface {
+	QuestionOptionID() UUID
+}
+
+type UUID thing_p.UUID

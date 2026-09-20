@@ -3,7 +3,7 @@
 package cdp
 
 import (
-	error_p "memar/error/protocol"
+	error_p "memar/process/error/protocol"
 
 	text_p "org/modules/knowledge/text/protocol"
 )

@@ -3,24 +3,23 @@
 package nap
 
 import (
-	"memar/protocol"
+	log_p "memar/process/log/protocol"
+	request_p "memar/process/request/protocol"
+	audit_time_p "memar/process/time/protocol"
 
-	arp "org/modules/app-request/protocol"
-	np "org/modules/node/protocol"
-	up "org/modules/user/protocol"
+	instance_p "org/modules/computer/instance_of/protocol"
+	bm_p "org/modules/computer/module/protocol"
+	user_p "org/modules/identity/user/protocol"
 )
 
 type DataModel interface {
-	UserID() up.UserUUID
-	NodeID() np.NodeUUID
+	user_p.Field_UserUUID
+	instance_p.Field_InstanceUUID
 	NotificationChannel()
-	DomainID() protocol.MediaTypeID
-	LogLevel() protocol.LogLevel
+	bm_p.Field_ModuleUUID
+	LogLevel() log_p.Level
 	// TODO::: other condition
 
-	arp.AuditLogging
-	protocol.Storage_Versioned
-	protocol.Storage_SaveTime
+	request_p.Field_RequestID
+	audit_time_p.Field_Request
 }
-
-// protocol.EventTarget

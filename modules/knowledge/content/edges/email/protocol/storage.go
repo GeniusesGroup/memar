@@ -3,10 +3,10 @@
 package email_p
 
 import (
-	error_p "memar/error/protocol"
+	error_p "memar/process/error/protocol"
 
-	cp "org/modules/knowledge/comment/protocol"
-	storage_p "org/modules/storage/primitive/protocol"
+	storage_p "memar/storage/protocol"
+	cp "org/modules/knowledge/content/protocol"
 )
 
 type StorageServices interface {

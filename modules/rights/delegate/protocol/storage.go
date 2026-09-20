@@ -1,23 +1,24 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package udp
+package delegate_p
 
 import (
-	"memar/protocol"
+	error_p "memar/process/error/protocol"
 
-	rp "org/modules/role/protocol"
-	up "org/modules/user/protocol"
+	storage_p "memar/storage/protocol"
+	rule_p "org/modules/computer/rule/protocol"
+	user_p "org/modules/identity/user/protocol"
 )
 
 type StorageServices interface {
-	Save(ud DataModel) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(ud DataModel) (nv storage_p.NumberOfVersion, err error_p.Error)
 
-	Count(givenUserID, gottenUserID up.UserUUID, roleID rp.RoleUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(givenUserID, gottenUserID up.UserUUID, roleID rp.RoleUUID, vo protocol.VersionOffset) (ud DataModel, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(givenUserID, gottenUserID user_p.UUID, rID rule_p.UUID) (nv storage_p.NumberOfVersion, err error_p.Error)
+	Get(givenUserID, gottenUserID user_p.UUID, rID rule_p.UUID, vo storage_p.VersionOffset) (ud DataModel, nv storage_p.NumberOfVersion, err error_p.Error)
 
-	ListRoles(givenUserID, gottenUserID up.UserUUID, offset, limit uint64) (roles []rp.RoleUUID, nv protocol.NumberOfVersion, err protocol.Error)
-	ListGottenUsers(roleID rp.RoleUUID, offset, limit uint64) (gottenUserIDs []up.UserUUID, nv protocol.NumberOfVersion, err protocol.Error)
-	ListGivenUsers(roleID rp.RoleUUID, offset, limit uint64) (givenUserIDs []up.UserUUID, nv protocol.NumberOfVersion, err protocol.Error)
-	ListGottenDelegateUsers(gottenUserID up.UserUUID, offset, limit uint64) (givenUserIDs []up.UserUUID, nv protocol.NumberOfVersion, err protocol.Error)
-	ListGivenDelegateUsers(givenUserID up.UserUUID, offset, limit uint64) (gottenUserID []up.UserUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	ListRoles(givenUserID, gottenUserID user_p.UUID, offset, limit uint64) (roles []rule_p.UUID, nv storage_p.NumberOfVersion, err error_p.Error)
+	ListGottenUsers(rID rule_p.UUID, offset, limit uint64) (gottenUserIDs []user_p.UUID, nv storage_p.NumberOfVersion, err error_p.Error)
+	ListGivenUsers(rID rule_p.UUID, offset, limit uint64) (givenUserIDs []user_p.UUID, nv storage_p.NumberOfVersion, err error_p.Error)
+	ListGottenDelegateUsers(gottenUserID user_p.UUID, offset, limit uint64) (givenUserIDs []user_p.UUID, nv storage_p.NumberOfVersion, err error_p.Error)
+	ListGivenDelegateUsers(givenUserID user_p.UUID, offset, limit uint64) (gottenUserID []user_p.UUID, nv storage_p.NumberOfVersion, err error_p.Error)
 }

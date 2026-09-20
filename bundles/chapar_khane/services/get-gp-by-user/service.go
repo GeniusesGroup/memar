@@ -3,10 +3,10 @@
 package ggbuService
 
 import (
-	cmd "memar/command"
-	"memar/datatype"
+	cmd "memar/operation/command"
+	"memar/computer/datatype"
 	"memar/mediatype"
-	"memar/service"
+	"memar/process/service"
 )
 
 var Service serv

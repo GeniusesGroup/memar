@@ -1,26 +1,24 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
 // User delegate means transfer power to someone. power is role access in softwares.
-package udp
+package delegate_p
 
 import (
-	"memar/protocol"
+	request_p "memar/process/request/protocol"
+	audit_time_p "memar/process/time/protocol"
 
-	aap "org/modules/app-audit/protocol"
-	rp "org/modules/role/protocol"
-	up "org/modules/user/protocol"
+	rule_p "org/modules/computer/rule/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	GivenUserID() up.UserUUID
-	GottenUserID() up.UserUUID
-	RoleID() rp.RoleUUID
-	Status() Status
+	Field_GivenDelegateUserID
+	Field_GottenDelegateUserID
+	// `RoleID == Null` means "given delegate was given back"
+	rule_p.Field_RuleUUID
 
-	aap.AuditRequest
-	protocol.Storage_Versioned
-	protocol.Storage_SaveTime
+	request_p.Field_RequestID
+	audit_time_p.Field_Request
 }
 
 // Service: delegate user can delegate its role to other. blocked this service by default.

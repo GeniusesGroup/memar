@@ -1,10 +1,14 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package lsp
+package skill_p
 
 import (
-	"memar/protocol"
+	thing_p "org/modules/identity/thing/protocol"
 )
 
-// SkillUUID
-type SkillUUID protocol.UUID
+type Field_SkillID interface {
+	SkillID() UUID
+}
+
+// UUID
+type UUID thing_p.UUID

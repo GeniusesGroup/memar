@@ -1,25 +1,28 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package unp
+package un_p
 
 import (
-	"memar/protocol"
+	request_p "memar/process/request/protocol"
+	audit_time_p "memar/process/time/protocol"
 
-	aap "org/modules/app-audit/protocol"
-	org "org/modules/org/protocol"
-	up "org/modules/user/protocol"
+	org "org/modules/identity/organization/protocol"
+	org_p "org/modules/identity/organization/protocol"
+	user_p "org/modules/identity/user/protocol"
 )
 
-// TODO::: need domain or any fields here to support for Numbers Authority (GOD mode)? e.g. [IANA](https://iana.org/)
+// TODO::: need domain or any fields here to support for Numbers Authority (GOD mode)?
+// [IANA](https://iana.org/)
+// https://en.wikipedia.org/wiki/Telephone_numbering_plan
+// ITU - https://en.wikipedia.org/wiki/International_Telecommunication_Union
+// https://en.wikipedia.org/wiki/North_American_Numbering_Plan
 
 type DataModel interface {
-	UserID() up.UserUUID
-	OrgID() org.OrgUUID
-	ProviderID() org.OrgUUID
-	Number() Number
-	Status() Status
+	user_p.Field_UserUUID
+	org_p.Field_OrganizationID
+	ProviderID() org.UUID
+	Field_Number
 
-	aap.AuditRequest
-	protocol.Storage_Versioned
-	protocol.Storage_SaveTime
+	request_p.Field_RequestID
+	audit_time_p.Field_Request
 }

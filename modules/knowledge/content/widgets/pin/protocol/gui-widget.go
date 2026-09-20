@@ -1,19 +1,19 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package cp
+package cp_p
 
 import (
-	cp "org/modules/comment/protocol"
-	gp "org/modules/group/protocol"
+	comment_p "org/modules/knowledge/content/edges-loop/comment/protocol"
+	group_p "org/modules/management/group/protocol"
 )
 
 type GUI_Widget_Conditions interface {
-	GroupID() gp.GroupUUID
+	group_p.Field_GroupID
 }
 
 type GUI_Widget_Service interface {
-	Pin(cID cp.CommentUUID)
-	Unpin(cID cp.CommentUUID)
+	Pin(cID comment_p.UUID)
+	Unpin(cID comment_p.UUID)
 
 	// jump to comment location in all comments in the group.
 	JumpToCommentPin()

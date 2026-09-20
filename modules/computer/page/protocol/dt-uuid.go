@@ -1,13 +1,13 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package bp_p
+package page_p
 
 import (
-	ut16 "memar/identifier/uuid-time-16byte"
+	thing_p "org/modules/identity/thing/protocol"
 )
 
-type Field_BusinessPageID interface {
-	BusinessPageID() PageUUID
+type Field_PageID interface {
+	PageID() UUID
 }
 
-type PageUUID ut16.UUID
+type UUID thing_p.UUID

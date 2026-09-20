@@ -4,14 +4,13 @@ package services
 
 import (
 	"memar/authorization"
-	er "memar/error"
-	"memar/net/http"
 	"memar/json"
-	lang "memar/language"
+	"memar/net/http"
 	"memar/net/srpc"
-	"memar/syllab"
+	operation_p "memar/process/operation/protocol"
+	"memar/process/service"
 	"memar/protocol"
-	"memar/service"
+	"memar/syllab"
 )
 
 var setConnectionThingIDService = service.Service{
@@ -25,8 +24,8 @@ var setConnectionThingIDService = service.Service{
 	Status:             protocol.Software_PerpetualBeta,
 
 	Authorization: authorization.Service{
-		CRUD:     authorization.CRUDCreate,
-		UserType: protocol.UserType_All,
+		CRUD:     operation_p.ActionType_Create,
+		UserType: user_p.Type_All,
 	},
 
 	Detail: map[protocol.LanguageID]service.ServiceDetail{
@@ -38,7 +37,7 @@ var setConnectionThingIDService = service.Service{
 	},
 
 	SRPCHandler: SetConnectionThingIDSRPC,
-	ServeHTTP: SetConnectionThingIDHTTP,
+	ServeHTTP:   SetConnectionThingIDHTTP,
 }
 
 // SetConnectionThingIDSRPC is sRPC handler of SetConnectionThingID service.
@@ -50,7 +49,7 @@ func SetConnectionThingIDSRPC(st protocol.Stream) {
 	}
 
 	err = setConnectionThingID(st, req)
-	// Check if any error occur in bussiness logic
+	// Check if any error occur in business logic
 	if err != nil {
 		return
 	}
@@ -68,7 +67,7 @@ func SetConnectionThingIDHTTP(st protocol.Stream, httpReq *http.Request, httpRes
 	}
 
 	err = setConnectionThingID(st, req)
-	// Check if any error occur in bussiness logic
+	// Check if any error occur in business logic
 	if err != nil {
 		httpRes.SetStatus(http.StatusBadRequestCode, http.StatusBadRequestPhrase)
 		return
@@ -81,7 +80,7 @@ type setConnectionThingIDReq struct {
 	ThingID [32]byte `json:",string"`
 }
 
-func setConnectionThingID(st protocol.Stream, req *setConnectionThingIDReq) (err protocol.Error) {
+func setConnectionThingID(st protocol.Stream, req *setConnectionThingIDReq) (err error_p.Error) {
 	if st.Connection.ThingID == [32]byte{} {
 		st.Connection.ThingID = req.ThingID
 	}
@@ -102,7 +101,7 @@ func (req *setConnectionThingIDReq) FromSyllab(payload []byte, stackIndex uint32
 	return
 }
 
-func (req *setConnectionThingIDReq) ToSyllab(payload []byte, stackIndex, heapIndex uint32) (freeHeapIndex uint32)
+func (req *setConnectionThingIDReq) ToSyllab(payload []byte, stackIndex, heapIndex uint32) (freeHeapIndex uint32) {
 	copy(buf[0:], req.ThingID[:])
 	return
 }
@@ -119,7 +118,7 @@ func (req *setConnectionThingIDReq) LenAsSyllab() uint64 {
 	return uint64(req.LenOfSyllabStack() + req.LenOfSyllabHeap())
 }
 
-func (req *setConnectionThingIDReq) FromJSON(payload []byte) (remaining []byte, err protocol.Error) {
+func (req *setConnectionThingIDReq) FromJSON(payload []byte) (remaining []byte, err error_p.Error) {
 	var decoder = json.DecoderUnsafeMinified{Buf: payload}
 	for err == nil {
 		var keyName = decoder.DecodeKey()
@@ -137,7 +136,7 @@ func (req *setConnectionThingIDReq) FromJSON(payload []byte) (remaining []byte, 
 	return
 }
 
-func (req *setConnectionThingIDReq) ToJSON(payload []byte) (added []byte, err protocol.Error) {
+func (req *setConnectionThingIDReq) ToJSON(payload []byte) (added []byte, err error_p.Error) {
 	var encoder = json.Encoder{Buf: payload}
 
 	encoder.EncodeString(`{"ThingID":"`)

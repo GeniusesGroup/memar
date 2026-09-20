@@ -7,7 +7,7 @@ import (
 	"context"
 	"net"
 
-	"memar/log"
+	"memar/process/log"
 	"memar/protocol"
 )
 
@@ -26,7 +26,7 @@ func (n *Nodes) LocalNode() protocol.ApplicationNode                { return n.l
 func (n *Nodes) GetNodeByID(nodeID uint64) protocol.ApplicationNode { return &n.Nodes[nodeID] }
 
 // Init use to get other node data and make connection to each of them
-func (n *Nodes) Init() (err protocol.Error) {
+func (n *Nodes) Init() (err error_p.Error) {
 	var goErr error
 
 	var localNode = Node{
@@ -115,7 +115,7 @@ func (n *Nodes) Init() (err protocol.Error) {
 	return
 }
 
-func (n *Nodes) Deinit() (err protocol.Error) {
+func (n *Nodes) Deinit() (err error_p.Error) {
 	// Notify other nodes
 	return
 }

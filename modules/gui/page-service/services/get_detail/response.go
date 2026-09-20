@@ -27,7 +27,7 @@ type Response struct {
 *********** Service Encoders & Decoders ***********
  */
 
-func (res *Response) FromSyllab() (err protocol.Error) {
+func (res *Response) FromSyllab() (err error_p.Error) {
 	return
 }
 
@@ -46,7 +46,7 @@ func (res *Response) LenAsSyllab() uint64 {
 	return uint64(res.LenOfSyllabStack() + res.LenOfSyllabHeap())
 }
 
-func (res *Response) jsonDecoder() (err protocol.Error) {
+func (res *Response) jsonDecoder() (err error_p.Error) {
 	json.Unmarshal(res.JSON, res)
 	return
 }

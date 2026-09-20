@@ -3,13 +3,13 @@
 package uaacuhp
 
 import (
-	"memar/time/utc"
+	"memar/time/earth"
 
-	up "org/modules/user/protocol"
+	user_p "org/modules/identity/user/protocol"
 )
 
 type DataModel interface {
-	UserID() up.UserUUID
-	Hour() utc.HourElapsed
+	user_p.Field_UserUUID
+	Hour() earth.Hour
 	OnlineCount() OnlineCount
 }

@@ -1,0 +1,139 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+package hs
+
+import (
+	errs "memar/net/http/errors"
+	http_p "memar/net/http/protocol"
+	net_p "memar/net/protocol"
+	servErrs "memar/operation/services/errors"
+	error_p "memar/process/error/protocol"
+	"memar/process/log"
+	servefiles_s "org/modules/computer/www/services/serve-files"
+)
+
+// Services store all application service
+var Services services_
+
+type services_ struct {
+	poolByRegisterTime []http_p.Handler
+	poolByURIPath      map[string]http_p.Handler
+}
+
+// Init use to initialize
+func (ss *services_) Init() (err error_p.Error) {
+	const poolSizes = 512
+	// TODO::: decide about poolSize by hardware
+
+	ss.poolByRegisterTime = make([]http_p.Handler, poolSizes)
+	ss.poolByURIPath = make(map[string]http_p.Handler, poolSizes)
+	return
+}
+func (ss *services_) Reinit() (err error_p.Error) {
+	// TODO:::
+	// for _, s := range ss.poolByURIPath {
+	// 	s.Reinit()
+	// }
+
+	return
+}
+func (ss *services_) Deinit() (err error_p.Error) {
+	// TODO:::
+	// for _, s := range ss.poolByURIPath {
+	// 	err = s.Deinit()
+	// 	// TODO::: easily return if occur any error??
+	// 	if err != nil {
+	// 		return
+	// 	}
+	// }
+
+	return
+}
+
+// ServeHTTP handle incoming HTTP request.
+// Developers can develope new one with its desire logic to more respect protocols like restful, ...
+func (ss *services_) ServeHTTP(sk net_p.Socket, httpReq http_p.Request, httpRes http_p.Response) (err error_p.Error) {
+	if !log.CNF_DevelopingMode && !HostSupportedService.ServeHTTP(sk, httpReq, httpRes) {
+		return
+	}
+
+	var path = httpReq.Path()
+	switch path {
+	case MuxService_Path:
+		err = MuxService.ServeHTTP(sk, httpReq, httpRes)
+	case LandingService_Path:
+		// TODO:::
+	default:
+		// serve by URL
+		var service http_p.Handler
+		service, err = ss.Get(path)
+		if service == nil {
+			// If application don't have any logic that support data on e.g. HTTP (restful, ...) we send platform GUI app for web
+			err = servefiles_s.Service.ServeHTTP(sk, httpReq, httpRes)
+		} else {
+			err = service.ServeHTTP(sk, httpReq, httpRes)
+		}
+	}
+
+	httpRes.AddContentLength()
+	if httpRes.Body() != nil {
+		// var mediaType = httpRes.Body().MediaType()
+		// if mediaType != "" {
+		// 	httpRes.AddContentType(mediaType)
+		// }
+		// var compressType = httpRes.Body().CompressType()
+		// if compressType != nil {
+		// 	httpRes.AddContentEncoding(compressType.ContentEncoding())
+		// }
+	}
+
+	// httpRes.H.Set(HeaderKey_AccessControlAllowOrigin, "*")
+	return
+}
+
+// Register use to register http services.
+// Due to minimize performance impact, This method isn't safe to use concurrently and
+// must register all service before use GetService methods.
+func (ss *services_) Register(s http_p.Handler) (err error_p.Error) {
+	if s.Path().IsEmpty() {
+		err = &servErrs.ErrServiceNotProvideIdentifier
+		return
+	}
+
+	ss.registerServiceByURI(s)
+	ss.poolByRegisterTime = append(ss.poolByRegisterTime, s)
+	return
+}
+
+// GetAll use to get all services registered.
+func (ss *services_) GetAll() []http_p.Handler { return ss.poolByRegisterTime }
+
+// GetServiceByURI use to get specific service handler by service URI path
+func (ss *services_) Get(uri string) (ser http_p.Handler, err error_p.Error) {
+	ser = ss.poolByURIPath[uri]
+	if ser == nil {
+		err = &errs.ErrNotFound
+	}
+	return
+}
+
+// Delete use to delete specific service in services list.
+func (ss *services_) Delete(s http_p.Handler) (err error_p.Error) {
+	delete(ss.poolByURIPath, s.Path())
+	// TODO::: delete from ss.poolByRegisterTime
+	return
+}
+
+func (ss *services_) registerServiceByURI(s http_p.Handler) (err error_p.Error) {
+	var serviceURI = s.Path()
+	if serviceURI != "" {
+		var exitingServiceByURI, _ = ss.Get(serviceURI)
+		if exitingServiceByURI != nil {
+			err = &servErrs.ErrServiceDuplicateIdentifier
+			log.Fatal(&servErrs.ErrServiceDuplicateIdentifier, "URI associated for service with `"+serviceURI+"` as URI, Used before for other service and not legal to reuse URI for other services\n")
+		} else {
+			ss.poolByURIPath[serviceURI] = s
+		}
+	}
+	return
+}

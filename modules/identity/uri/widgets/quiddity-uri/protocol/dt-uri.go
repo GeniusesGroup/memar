@@ -3,7 +3,9 @@
 package qu_p
 
 type Field_URI interface {
-	URI() URI // Locale name in the Computer world.
+	URI() URI
 }
 
+// Locale name in the Computer world.
+// Value generate by `uri` protocols that indicate in `modules/uri` or other protocols from other repositories.
 type URI []byte

@@ -3,18 +3,19 @@
 package ppp
 
 import (
-	"memar/protocol"
+	error_p "memar/process/error/protocol"
 
-	fcp "org/modules/financial-currency/protocol"
-	pp "org/modules/product/protocol"
+	storage_p "memar/storage/protocol"
+	fmp "org/modules/economics/money/protocol"
+	pp "org/modules/economics/product/protocol"
 )
 
 type StorageServices interface {
-	Save(dm DataModel) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm DataModel) (nv storage_p.NumberOfVersion, err error_p.Error)
 
-	Count(productID pp.ProductUUID, currencyID fcp.FinancialCurrencyUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(productID pp.ProductUUID, currencyID fcp.FinancialCurrencyUUID, vo protocol.VersionOffset) (dm DataModel, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(productID pp.UUID, currencyID fcp.UUID) (nv storage_p.NumberOfVersion, err error_p.Error)
+	Get(productID pp.UUID, currencyID fcp.UUID, vo storage_p.VersionOffset) (dm DataModel, nv storage_p.NumberOfVersion, err error_p.Error)
 
-	FIND_ProductIDs_BY_CurrencyID_AND_Price_RANGE(currencyID fcp.FinancialCurrencyUUID, minPrice, maxPrice protocol.MoneyAmount, offset, limit uint64) (productIDs []pp.ProductUUID, nv protocol.NumberOfVersion, err protocol.Error)
-	LIST_CurrencyIDs_BY_ProductID(productID pp.ProductUUID, offset, limit uint64) (currencyIDs []fcp.FinancialCurrencyUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	FIND_ProductIDs_BY_CurrencyID_AND_Price_RANGE(currencyID fcp.UUID, minPrice, maxPrice fmp.Amount, offset, limit uint64) (productIDs []pp.UUID, nv storage_p.NumberOfVersion, err error_p.Error)
+	LIST_CurrencyIDs_BY_ProductID(productID pp.UUID, offset, limit uint64) (currencyIDs []fcp.UUID, nv storage_p.NumberOfVersion, err error_p.Error)
 }

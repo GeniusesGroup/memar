@@ -1,16 +1,17 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package bs_p
+package service_p
 
 import (
-	org_p "org/modules/org/protocol"
-	storage_p "org/modules/storage/protocol"
+	container_p "memar/computer/adt/container/protocol"
+
+	org_p "org/modules/identity/organization/protocol"
 )
 
 type (
 	BS_GetDetail_Request interface {
 		org_p.Field_OrganizationID
-		storage_p.Pagination_Offset_Request
+		container_p.Pagination_Offset_Request
 	}
 
 	BS_GetDetail_Response interface {

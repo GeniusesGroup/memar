@@ -1,12 +1,15 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package uagcuhp
+package uagcuh_p
 
 import (
 	"memar/time/utc"
+
+	gender_p "org/modules/identity/taxon/edges/gender/protocol"
 )
 
 type DataModel interface {
-	Hour() utc.HourElapsed
+	gender_p.Field_GenderUUID
+	utc.Field_HourElapsed
 	GenderCount() uint64
 }

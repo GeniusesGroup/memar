@@ -3,5 +3,3 @@
 package uaarp
 
 type Rate uint64
-
-

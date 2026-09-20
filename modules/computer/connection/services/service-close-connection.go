@@ -4,8 +4,9 @@ package services
 
 import (
 	"memar/authorization"
+	operation_p "memar/process/operation/protocol"
+	"memar/process/service"
 	"memar/protocol"
-	"memar/service"
 )
 
 // CloseConnectionService store details about CloseConnection service
@@ -20,8 +21,8 @@ var CloseConnectionService = service.Service{
 	Status:             protocol.Software_PreAlpha,
 
 	Authorization: authorization.Service{
-		CRUD:     authorization.CRUDCreate,
-		UserType: protocol.UserType_All,
+		CRUD:     operation_p.ActionType_Create,
+		UserType: user_p.Type_All,
 	},
 
 	Detail: map[protocol.LanguageID]service.ServiceDetail{

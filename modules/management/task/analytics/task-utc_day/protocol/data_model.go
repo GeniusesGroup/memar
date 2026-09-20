@@ -1,19 +1,16 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package pap
+package ta_p
 
 import (
-	"memar/protocol"
+	request_p "memar/process/request/protocol"
+	audit_time_p "memar/process/time/protocol"
 	"memar/time/utc"
-
-	arp "org/modules/app-request/protocol"
-	pp "org/modules/project/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	ProjectID() pp.ProjectUUID
-	Day() utc.DayElapsed
+	utc.Field_DayElapsed
 
 	TotalTasks() uint64
 	CompletedTasks() uint64
@@ -21,7 +18,6 @@ type DataModel interface {
 	Progress() uint64
 	TaskOverDueTime() uint64 // due time
 
-	arp.AuditLogging
-	protocol.Storage_Versioned
-	protocol.Storage_SaveTime
+	request_p.Field_RequestID
+	audit_time_p.Field_Request
 }

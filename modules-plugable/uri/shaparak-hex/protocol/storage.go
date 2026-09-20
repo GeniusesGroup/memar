@@ -3,16 +3,17 @@
 package fcsp
 
 import (
-	"memar/protocol"
+	error_p "memar/process/error/protocol"
 
-	fcp "org/modules/financial-card/protocol"
+	storage_p "memar/storage/protocol"
+	fcp "org/modules/vertices/card/protocol"
 )
 
 type StorageServices interface {
-	Save(dm DataModel) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm DataModel) (nv storage_p.NumberOfVersion, err error_p.Error)
 
-	Count(cardID fcp.FinancialCardUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(cardID fcp.FinancialCardUUID, vo protocol.VersionOffset) (dm DataModel, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(cardID fcp.UUID) (nv storage_p.NumberOfVersion, err error_p.Error)
+	Get(cardID fcp.UUID, vo storage_p.VersionOffset) (dm DataModel, nv storage_p.NumberOfVersion, err error_p.Error)
 
-	FindByCardHexSHA1(cardHexSHA1 CardHexSHA1, offset, limit uint64) (cardIDs []fcp.FinancialCardUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	FindByCardHexSHA1(cardHexSHA1 CardHexSHA1, offset, limit uint64) (cardIDs []fcp.UUID, nv storage_p.NumberOfVersion, err error_p.Error)
 }

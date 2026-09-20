@@ -3,14 +3,15 @@
 package uataahp
 
 import (
-	"memar/protocol"
+	"memar/time/duration"
 	"memar/time/utc"
-	up "org/modules/user/protocol"
+
+	user_p "org/modules/identity/user/protocol"
 )
 
 type DataModel interface {
-	UserID() up.UserUUID
-	Day() utc.DayElapsed
-	TimeSpend() protocol.Duration
+	user_p.Field_UserUUID
+	utc.Field_DayElapsed
+	TimeSpend() duration.Second
 	Average() Average
 }

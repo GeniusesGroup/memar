@@ -3,10 +3,10 @@
 package uaachp
 
 import (
-	"memar/time/utc"
+	"memar/time/earth"
 )
 
 type DataModel interface {
-	Hour() utc.HourElapsed
+	Hour() earth.Hour
 	OnlineCounts() OnlineCount
 }

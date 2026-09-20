@@ -5,11 +5,11 @@ package uaarp
 import (
 	"memar/time/utc"
 
-	up "org/modules/user/protocol"
+	user_p "org/modules/identity/user/protocol"
 )
 
 type DataModel interface {
-	UserID() up.UserUUID
-	Hour() utc.HourElapsed
+	user_p.Field_UserUUID
+	utc.Field_HourElapsed
 	Rate() Rate
 }

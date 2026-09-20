@@ -16,7 +16,7 @@ type Manifest struct {
 	Name                []string
 	Description         []string
 	TermsOfService      []string
-	Licence             []string
+	License             []string
 	TAGS                []string // Use to categorized apps e.g. Music, GPS, ...
 	RequestedPermission []uint32 // ServiceIDs from PersiaOS services e.g. InternetInBackground, Notification, ...
 	TechnicalInfo       TechnicalInfo
@@ -27,7 +27,6 @@ type TechnicalInfo struct {
 	OS                   []string // PersiaOS, Linux, Windows, ...
 	ApplicationProtocols []string // sRPC, HTTP, ...
 	UseAI                bool     // false: Open the lot of security concerns || true: use more resource.
-	AuthorizationServer  string   // Domain name that have sRPC needed store connection data. default is "sabz.city"
 	// Shutdown settings
 	ShutdownDelay uint16 // the server will wait for at least this amount of time for active streams to finish!
 	// Server Overal rate limit

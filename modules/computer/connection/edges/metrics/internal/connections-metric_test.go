@@ -2,8 +2,4 @@
 
 package net
 
-import (
-	"memar/protocol"
-)
-
-var _ protocol.ConnectionsMetrics = &ConnectionsMetric{}
+var _ ConnectionsMetrics = &ConnectionsMetric{}

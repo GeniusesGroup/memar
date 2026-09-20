@@ -3,13 +3,14 @@
 package uaathp
 
 import (
-	"memar/protocol"
-	"memar/time/utc"
-	up "org/modules/user/protocol"
+	"memar/time/duration"
+	// "memar/time/utc"
+
+	user_p "org/modules/identity/user/protocol"
 )
 
 type DataModel interface {
-	UserID() up.UserUUID
-	Hour() utc.HourElapsed
-	TimeSpend() protocol.Duration
+	user_p.Field_UserUUID
+	// utc.Field_HourElapsed
+	TimeSpend() duration.Second
 }

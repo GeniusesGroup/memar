@@ -1,14 +1,14 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package bs_p
+package computer_service_p
 
 import (
-	service_p "memar/operation/service/protocol"
+	record_p "memar/storage/record/protocol"
 )
 
 type Field_ServiceID interface {
-	BusinessServiceID() ServiceUUID
+	BusinessServiceID() UUID
 }
 
 // Applications module service identifier e.g. Get(product), Register(content), ...
-type ServiceUUID service_p.ServiceID
+type UUID record_p.UUID

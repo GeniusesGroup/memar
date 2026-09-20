@@ -3,7 +3,7 @@
 package discount
 
 import (
-	fmp "org/modules/financial/money/protocol"
+	fmp "org/modules/economics/money/protocol"
 )
 
 type Invoice interface {

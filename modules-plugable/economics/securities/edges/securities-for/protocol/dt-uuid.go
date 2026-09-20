@@ -3,7 +3,7 @@
 package securities_p
 
 import (
-	account_p "org/modules/financial/account/protocol"
+	account_p "org/modules/economics/account/protocol"
 )
 
 type Field_SecuritiesAccountID interface {

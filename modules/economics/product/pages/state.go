@@ -1,0 +1,19 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+package product
+
+import (
+	"libgo/gui"
+	"libgo/protocol"
+)
+
+type State struct {
+	gui.PageState
+
+	dom      gui.DOM
+	som      gui.SOM
+	template gui.DOM
+}
+
+// CreateState build the page in the requested state or reuse old states with SafeToSilentClose()
+func (s *State) CreateState(url string) protocol.GUIPageState {}

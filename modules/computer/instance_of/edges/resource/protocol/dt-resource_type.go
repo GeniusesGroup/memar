@@ -1,5 +1,5 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package anrp
+package nr_p
 
 type ResourceType uint8

@@ -3,20 +3,28 @@
 package cop
 
 import (
-	"memar/protocol"
+	request_p "memar/process/request/protocol"
+	audit_time_p "memar/process/time/protocol"
 
-	arp "org/modules/app-request/protocol"
-	cp "org/modules/comment/protocol"
-	op "org/modules/object/protocol"
+	comment_p "org/modules/knowledge/content/edges-loop/comment/protocol"
+	op "org/modules/storage/object/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 // Object can be any such as image, video, voice, ...
 type DataModel interface {
-	CommentID() cp.CommentUUID
-	ObjectID() op.ObjectUUID
+	comment_p.Field_CommentID
+	ObjectID() []op.UUID
 
-	arp.AuditLogging
-	protocol.Storage_Versioned
-	protocol.Storage_SaveTime
+	request_p.Field_RequestID
+	audit_time_p.Field_Request
 }
+
+// Object types
+// TODO::: Just need `Type_File` and decide in GUI by object datatype??
+// Type_File
+// Type_Voice
+// Type_Image
+// Type_Video
+// Type_Album
+// Type_Sticker // gif

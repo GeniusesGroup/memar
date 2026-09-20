@@ -4,10 +4,10 @@ package request_p
 
 import (
 	// bm_p "org/modules/computer/module/protocol"
-	container_p "memar/adt/container/protocol"
+	container_p "memar/computer/adt/container/protocol"
 	request_p "memar/process/request/protocol"
 
-	service_p "org/modules/computer/service/protocol"
+	computer_service_p "org/modules/computer/service/protocol"
 	user_p "org/modules/identity/user/protocol"
 )
 
@@ -33,7 +33,7 @@ type (
 
 type (
 	SS_FIND_RequestIDs_BY_UserID_Request interface {
-		user_p.Field_UserID
+		user_p.Field_UserUUID
 		container_p.Pagination_Offset_Request
 	}
 
@@ -45,7 +45,7 @@ type (
 
 type (
 	SS_FIND_RequestIDs_BY_ServiceID_Request interface {
-		service_p.Field_ServiceID
+		computer_service_p.Field_ServiceID
 		container_p.Pagination_Offset_Request
 	}
 

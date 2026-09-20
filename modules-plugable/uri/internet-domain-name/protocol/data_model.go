@@ -1,22 +1,29 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package udp
+package domain_p
 
 import (
-	"memar/protocol"
+	request_p "memar/process/request/protocol"
+	audit_time_p "memar/process/time/protocol"
 
-	aap "org/modules/app-audit/protocol"
-	up "org/modules/user/protocol"
+	user_p "org/modules/identity/user/protocol"
 )
 
-// DataModel is unique name in the computer world. Country e.g. Iran, ... || Digital platforms e.g. Instagram, Facebook, Google, Github, Yahoo, ...
+// DataModel is unique name in the computer world. Country
+// e.g. Iran, ... || Digital platforms e.g. Instagram, Facebook, Google, Github, Yahoo, ...
 type DataModel interface {
-	Domain() string // unique name in the computer world
-	UserID() up.UserUUID
-	AcceptedProtocols() UserDomain_AP
-	Status() Status
+	Field_Name
+	user_p.Field_UserUUID
+	Field_Status
 
-	aap.AuditRequest
-	protocol.Storage_Versioned
-	protocol.Storage_SaveTime
+	request_p.Field_RequestID
+	audit_time_p.Field_Request
+}
+
+type DataModel1 interface {
+	Field_Name
+	user_p.Field_UserUUID
+
+	request_p.Field_RequestID
+	audit_time_p.Field_Request
 }

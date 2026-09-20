@@ -1,9 +1,9 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package channel_p
+package device_p
 
 import (
-	request_p "memar/audit/request/protocol"
+	request_p "memar/process/request/protocol"
 )
 
 type Service_Signal_Get_Request interface {

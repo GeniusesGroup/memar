@@ -1,0 +1,41 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+package lang
+
+import (
+	"reflect"
+	"unsafe"
+
+	lang_p "memar/language/protocol"
+)
+
+// UnsafeLanguagesSliceToByteSlice returns ...
+func UnsafeLanguagesSliceToByteSlice(req []lang_p.LanguageID) (res []byte) {
+	var reqStruct = (*reflect.SliceHeader)(unsafe.Pointer(&req))
+	var resStruct = (*reflect.SliceHeader)(unsafe.Pointer(&res))
+	resStruct.Data = reqStruct.Data
+	resStruct.Len = reqStruct.Len * 4
+	resStruct.Cap = reqStruct.Cap * 4
+	return
+}
+
+// UnsafeByteSliceToLanguagesSlice returns ...
+func UnsafeByteSliceToLanguagesSlice(req []byte) (res []lang_p.LanguageID) {
+	var reqStruct = (*reflect.SliceHeader)(unsafe.Pointer(&req))
+	var resStruct = (*reflect.SliceHeader)(unsafe.Pointer(&res))
+	resStruct.Data = reqStruct.Data
+	resStruct.Len = reqStruct.Len / 4
+	resStruct.Cap = reqStruct.Cap / 4
+	return
+}
+
+// Unsafe32ByteArraySliceToLanguagesSlice returns ...
+func Unsafe32ByteArraySliceToLanguagesSlice(req [][32]byte) (res []lang_p.LanguageID) {
+	var languages = make([][4]byte, len(req))
+	for i := 0; i < len(req); i++ {
+		copy(languages[i][:], req[i][:])
+	}
+
+	res = *(*[]lang_p.LanguageID)(unsafe.Pointer(&languages))
+	return
+}

@@ -3,7 +3,7 @@
 package estate_p
 
 import (
-	thing_p "org/modules/identity/thing/protocol"
+	record_p "memar/storage/record/protocol"
 )
 
 type Field_EstateID interface {
@@ -14,7 +14,8 @@ type Field_EstateIDs interface {
 	EstateIDs() []UUID
 }
 
-// UUID use to identify any estate part like
-// itself(sum of all), area, houses, buildings, buildings parts (e.g. apartment, ...), ...
-// use in Coordinate domain too, to get physical location.
-type UUID thing_p.UUID
+// UUID use to identify any estate
+//
+// use `physical_model` edge to store and show as map
+// use `coordinate_...` edge to get physical location.
+type UUID record_p.UUID

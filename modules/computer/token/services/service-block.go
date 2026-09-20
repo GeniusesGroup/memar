@@ -1,0 +1,138 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+package pa
+
+import (
+	"libgo/authorization"
+	"libgo/http"
+	"libgo/json"
+	"libgo/protocol"
+	"libgo/srpc"
+)
+
+var blockPersonService = service.Service{
+	URN:                "urn:giti:sabz.city:service:block-person",
+	Domain:             DomainName,
+	ID:                 17710188610470386972,
+	IssueDate:          1592390222,
+	ExpiryDate:         0,
+	ExpireInFavorOfURN: "",
+	ExpireInFavorOfID:  0,
+	Status:             protocol.Software_PreAlpha,
+
+	Authorization: authorization.Service{
+		CRUD:     authorization.CRUDUpdate,
+		UserType: protocol.UserType_All,
+	},
+
+	Detail: map[protocol.LanguageID]service.ServiceDetail{
+		Name:        "BlockPerson",
+		Description: "Just judges (justice service) can request to block a person and in many blocking level",
+		TAGS:        []string{"PersonAuthentication"},
+	},
+
+	SRPCHandler: BlockPersonSRPC,
+	ServeHTTP:   BlockPersonHTTP,
+}
+
+// BlockPersonSRPC is sRPC handler of BlockPerson service.
+func BlockPersonSRPC(st protocol.Stream) {
+	var req = &blockPersonReq{}
+	err = req.FromSyllab(srpc.GetPayload(st.IncomePayload))
+	if err != nil {
+		return
+	}
+
+	var res *blockPersonRes
+	res, err = blockPerson(st, req)
+	// Check if any error occur in business logic
+	if err != nil {
+		return
+	}
+
+	st.OutcomePayload = make([]byte, srpc.MinLength+res.LenAsSyllab())
+	res.ToSyllab(srpc.GetPayload(st.OutcomePayload))
+}
+
+// BlockPersonHTTP is HTTP handler of BlockPerson service.
+func BlockPersonHTTP(st protocol.Stream, httpReq *http.Request, httpRes *http.Response) {
+	var req = &blockPersonReq{}
+	err = req.FromJSON(httpReq.Body().Marshal())
+	if err != nil {
+		httpRes.SetStatus(http.StatusBadRequestCode, http.StatusBadRequestPhrase)
+		return
+	}
+
+	var res *blockPersonRes
+	res, err = blockPerson(st, req)
+	// Check if any error occur in business logic
+	if err != nil {
+		httpRes.SetStatus(http.StatusBadRequestCode, http.StatusBadRequestPhrase)
+		return
+	}
+
+	httpRes.SetStatus(http.StatusOKCode, http.StatusOKPhrase)
+	httpRes.SetBody(json.NewCodec(res))
+}
+
+type blockPersonReq struct{}
+
+type blockPersonRes struct{}
+
+func blockPerson(st protocol.Stream, req *blockPersonReq) (res *blockPersonRes, err protocol.Error) {
+	// TODO::: Authenticate request first by service policy.
+
+	err = st.Authorize()
+	if err != nil {
+		return
+	}
+
+	// Validate data here due to service use internally by other services!
+	err = req.validator()
+	if err != nil {
+		return
+	}
+
+	// have difference level of blocking
+	// just judges (justice service) can do this operation
+
+	res = &blockPersonRes{}
+
+	return
+}
+
+func (req *blockPersonReq) validator() (err protocol.Error) {
+	return
+}
+
+func (req *blockPersonReq) FromSyllab(payload []byte, stackIndex uint32) {
+	return
+}
+
+func (req *blockPersonReq) FromJSON(payload []byte) (remaining []byte, err protocol.Error) {
+	err = json.Unmarshal(buf, req)
+	return
+}
+
+func (res *blockPersonRes) ToSyllab(payload []byte, stackIndex, heapIndex uint32) (freeHeapIndex uint32) {
+	return
+}
+
+func (res *blockPersonRes) LenOfSyllabStack() uint32 {
+	return 0
+}
+
+func (res *blockPersonRes) LenOfSyllabHeap() (ln uint32) {
+	return
+}
+
+func (res *blockPersonRes) LenAsSyllab() uint64 {
+	return uint64(res.LenOfSyllabStack() + res.LenOfSyllabHeap())
+}
+
+func (res *blockPersonRes) ToJSON(payload []byte) (added []byte, err protocol.Error) {
+	var encoder = json.Encoder{Buf: payload}
+
+	buf, _ = json.Marshal(res)
+	return
+}

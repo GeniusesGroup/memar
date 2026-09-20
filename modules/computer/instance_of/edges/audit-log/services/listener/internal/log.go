@@ -3,8 +3,9 @@
 package log
 
 import (
-	"memar/log"
-	log_p "memar/log/protocol"
+	error_p "memar/process/error/protocol"
+	"memar/process/log"
+	log_p "memar/process/log/protocol"
 	"memar/protocol"
 )
 

@@ -1,22 +1,12 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package nwp
+package nw_p
 
 import (
-	"memar/protocol"
 	"memar/time/earth"
-	"memar/time/utc"
-
-	aap "org/modules/app-audit/protocol"
-	np "org/modules/notification/protocol"
 )
 
 type DataModel interface {
-	NotificationID() np.NotificationUUID
-	Week() utc.Weekdays
+	Week() earth.Weekdays
 	DayHours() earth.DayHours // what hours in above days notification serve
-
-	aap.AuditRequest
-	protocol.Storage_Versioned
-	protocol.Storage_SaveTime
 }

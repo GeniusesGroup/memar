@@ -1,19 +1,20 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package unp
+package un_p
 
 import (
-	"memar/protocol"
+	error_p "memar/process/error/protocol"
 
-	org "org/modules/org/protocol"
-	up "org/modules/user/protocol"
+	storage_p "memar/storage/protocol"
+	org "org/modules/identity/organization/protocol"
+	user_p "org/modules/identity/user/protocol"
 )
 
 type StorageServices interface {
-	Save(dm DataModel) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm DataModel) (nv storage_p.NumberOfVersion, err error_p.Error)
 
-	Count(userID up.UserUUID, orgID org.OrgUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(userID up.UserUUID, orgID org.OrgUUID, vo protocol.VersionOffset) (dm DataModel, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(userID user_p.UUID, orgID org.UUID) (nv storage_p.NumberOfVersion, err error_p.Error)
+	Get(userID user_p.UUID, orgID org.UUID, vo storage_p.VersionOffset) (dm DataModel, nv storage_p.NumberOfVersion, err error_p.Error)
 
-	FindByNumber(number uint64, offset, limit uint64) (userIDs []up.UserUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	FindByNumber(number uint64, offset, limit uint64) (userIDs []user_p.UUID, nv storage_p.NumberOfVersion, err error_p.Error)
 }

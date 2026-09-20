@@ -3,23 +3,24 @@
 package ecp
 
 import (
-	"memar/protocol"
+	time_p "memar/time/protocol"
 
-	arp "org/modules/app-request/protocol"
-	ekup "org/modules/edu-knowledge_unit/protocol"
-	up "org/modules/user/protocol"
+	request_p "memar/process/request/protocol"
+	audit_time_p "memar/process/time/protocol"
+
+	user_p "org/modules/identity/user/protocol"
+	eku_p "org/modules/knowledge/knowledge_unit/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	CertificateID() CertificateUUID
-	KnowledgeUnitID() ekup.EducationKnowledgeUnitUUID
-	IssuedByID() up.UserUUID // organization only??
-	IssuedForID() up.UserUUID
+	Field_CertificateID
+	eku_p.Field_KnowledgeUnitID
+	IssuedByID() user_p.UUID // organization only??
+	IssuedForID() user_p.UUID
 	Score() uint64
-	IssueTime() protocol.Time
+	IssueTime() time_p.Time
 
-	arp.AuditLogging
-	protocol.Storage_Versioned
-	protocol.Storage_SaveTime
+	request_p.Field_RequestID
+	audit_time_p.Field_Request
 }

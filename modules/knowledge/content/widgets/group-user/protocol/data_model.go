@@ -1,24 +1,29 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package cgp
+package cgup
 
 import (
-	"memar/protocol"
+	request_p "memar/process/request/protocol"
+	audit_time_p "memar/process/time/protocol"
 
-	arp "org/modules/app-request/protocol"
-	cp "org/modules/comment/protocol"
-	gp "org/modules/group/protocol"
-	up "org/modules/user/protocol"
+	user_p "org/modules/identity/user/protocol"
+	cg_p "org/modules/knowledge/comment-group/protocol"
+	comment_p "org/modules/knowledge/content/edges-loop/comment/protocol"
+	group_p "org/modules/management/group/protocol"
 )
 
-// DataModel indicate the domain record data fields.
-// each comment is immutable record and so use version mechanism to chain comments in a group.
-type DataModel interface {
-	UserID() up.UserUUID
-	GroupID() gp.GroupUUID
-	CommentID() cp.CommentUUID
+// When you see Paid partnership with... above a post in feed or in a story,
+// it means that the person who shared it has a commercial relationship with the business partner that's mentioned,
+// and that they were compensated in some way for the post.
+// PaidPartnership
 
-	arp.AuditLogging
-	protocol.Storage_Versioned
-	protocol.Storage_SaveTime
+// DataModel indicate the domain record data fields.
+type DataModel interface {
+	user_p.Field_UserUUID
+	group_p.Field_GroupID
+	cg_p.Field_CommentIndex
+	comment_p.Field_CommentID
+
+	request_p.Field_RequestID
+	audit_time_p.Field_Request
 }

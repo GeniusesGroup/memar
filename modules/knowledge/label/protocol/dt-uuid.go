@@ -6,12 +6,12 @@ import (
 	record_p "memar/storage/record/protocol"
 )
 
-type Field_LabelID interface {
-	LabelID() UUID
+type Field_LabelUUID interface {
+	LabelUUID() UUID
 }
 
-type Field_LabelsID interface {
-	LabelsID() []UUID
+type Field_LabelsUUID interface {
+	LabelsUUID() []UUID
 }
 
 type Field_Type interface {

@@ -1,19 +1,11 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package nldp
+package nld_p
 
 import (
-	"memar/protocol"
-	"memar/time/utc"
-
-	aap "org/modules/app-audit/protocol"
-	np "org/modules/notification/protocol"
+	time_p "memar/time/protocol"
 )
 
 type DataModel interface {
-	NotificationID() np.NotificationUUID
-	Last() utc.Time
-
-	aap.AuditRequest
-	protocol.Storage_SaveTime
+	LastDispatch() time_p.Time // e.g utc.Time
 }

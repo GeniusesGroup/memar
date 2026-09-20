@@ -3,12 +3,12 @@
 package gender_p
 
 import (
-	label_p "org/modules/knowledge/label/protocol"
+	record_p "memar/storage/record/protocol"
 )
 
-// Field_GenderID use when need to indicate the living thing gender
-type Field_GenderID interface {
-	GenderID() UUID
+// Field_GenderUUID use when need to indicate the living thing gender
+type Field_GenderUUID interface {
+	GenderUUID() UUID
 }
 
-type UUID label_p.UUID
+type UUID record_p.UUID

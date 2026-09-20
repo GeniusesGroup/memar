@@ -1,0 +1,54 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+package achaemenid
+
+import (
+	"golang.org/x/crypto/sha3"
+
+	"memar/convert"
+	lang_p "memar/language/protocol"
+	service_p "memar/operation/service/protocol"
+
+	app_p "org/modules/computer/app/protocol"
+	society_p "org/modules/identity/society/protocol"
+)
+
+// Manifest store server manifest data
+// All string slice is multi language and in order by ManifestLanguages order
+type Manifest struct {
+	Society     string
+	SocietyUUID society_p.UUID
+	SocietyID   society_p.SocietyID
+	domainName  string
+	appUUID     app_p.UUID
+	appID       uint16
+	email       string
+	icon        []byte
+	AppDetail   map[lang_p.LanguageID]AppDetail
+
+	RequestedPermission []service_p.ID // e.g. InternetInBackground, Notification, ...
+}
+
+//memar:impl memar/computer/language/object/protocol.LifeCycle
+func (ma *Manifest) init() {
+	var sha3 = sha3.Sum256(convert.UnsafeStringToByteSlice(ma.domainName))
+	copy(ma.appUUID[:], sha3[:])
+}
+
+type AppDetail struct {
+	Organization   string
+	Name           string
+	Description    string
+	TermsOfService string
+	License        string
+	TAGS           []string // Use to categorized apps e.g. Music, GPS, ...
+}
+
+//memar:impl memar/protocol.ApplicationManifest
+func (ma *Manifest) Icon() []byte             { return ma.icon }
+func (ma *Manifest) DomainName() string       { return ma.domainName }
+func (ma *Manifest) Email() string            { return ma.email }
+func (ma *Manifest) AppUUID() app_p.UUID      { return ma.appUUID }
+func (ma *Manifest) AppID() (appID uint16)    { return ma.appID }
+func (ma *Manifest) ContentPreferences()      {}
+func (ma *Manifest) PresentationPreferences() {}

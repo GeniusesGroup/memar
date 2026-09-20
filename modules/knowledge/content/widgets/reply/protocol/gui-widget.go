@@ -3,7 +3,7 @@
 package crp
 
 import (
-	cp "org/modules/comment/protocol"
+	comment_p "org/modules/knowledge/content/edges-loop/comment/protocol"
 )
 
 type GUI_Widget_HyperLinks interface {
@@ -12,7 +12,7 @@ type GUI_Widget_HyperLinks interface {
 }
 
 type GUI_Widget_Conditions interface {
-	CommentID() cp.CommentUUID //
+	comment_p.Field_CommentID //
 
 	replyNumber()
 }

@@ -1,33 +1,24 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package fat_p
+package bookkeeping_p
 
 import (
-	request_p "memar/audit/request/protocol"
-	audit_time_p "memar/audit/time/protocol"
+	request_p "memar/process/request/protocol"
+	audit_time_p "memar/process/time/protocol"
 
-	fa_p "org/modules/financial/account/protocol"
-	money_p "org/modules/financial/money/protocol"
-	ft_p "org/modules/financial/transaction/protocol"
+	fa_p "org/modules/economics/account/protocol"
+	ft_p "org/modules/economics/transaction/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	fa_p.Field_FinancialAccountID
+	fa_p.Field_AccountID
+	// TODO::: Add bookkeeping edge type
+	ft_p.Field_FinancialTransactionUUID
+
 	Field_TransactionIndex
-	ft_p.Field_FinancialTransactionID
-
-	money_p.Field_Amount
-
-	// Balance or ActualBalance or EffectiveBalance or CurrentBalance
-	// is the total of all the transactions on the account including any pending transactions.
-	Balance() money_p.Amount
-
-	// TODO::: below field seems to be a cache field not truth of source field!??
-	// AvailableBalance is actual balance minus any pending transactions
-	// e.g. block by justice, block for pending transaction, ...
-	AvailableBalance() money_p.Amount
+	Field_Balance
 
 	request_p.Field_RequestID
-	audit_time_p.Field_SaveTime
+	audit_time_p.Field_Request
 }

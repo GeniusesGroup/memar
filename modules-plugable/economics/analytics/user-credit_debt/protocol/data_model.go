@@ -3,23 +3,22 @@
 package fcdp
 
 import (
-	"memar/protocol"
+	request_p "memar/process/request/protocol"
+	audit_time_p "memar/process/time/protocol"
 
-	arp "org/modules/app-request/protocol"
-	fcp "org/modules/financial-currency/protocol"
-	up "org/modules/user/protocol"
+	money_p "org/modules/economics/money/protocol"
+	user_p "org/modules/identity/user/protocol"
 )
 
 // https://en.wikipedia.org/wiki/Credit_card_debt
 type DataModel interface {
-	UserID() up.UserUUID
-	CurrencyID() fcp.FinancialCurrencyUUID
-	Amount() protocol.MoneyAmount
-	Balance() protocol.MoneyAmount
+	user_p.Field_UserUUID
+	fcp.Field_FinancialCurrencyID
+	money_p.Field_Amount
+	Balance() money_p.Amount
 
-	arp.AuditLogging
-	protocol.Storage_Versioned
-	protocol.Storage_SaveTime
+	request_p.Field_RequestID
+	audit_time_p.Field_Request
 }
 
 // if long overdraft occur, user must pay fee. also can set preference to let system sell its shareholders to overcome of overdraft.

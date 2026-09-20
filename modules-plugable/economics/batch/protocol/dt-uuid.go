@@ -3,11 +3,12 @@
 package batch_p
 
 import (
-	account_p "org/modules/financial/account/protocol"
+	account_p "org/modules/economics/account/protocol"
 )
 
 type Field_BatchID interface {
-	ProductBatchID() UUID
+	BatchID() UUID
 }
 
+// DC abbreviation for distribution-center or Warehouse
 type UUID account_p.UUID

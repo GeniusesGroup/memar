@@ -1,0 +1,256 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+package services
+
+import (
+	"libgo/authorization"
+	er "libgo/error"
+	"libgo/http"
+	"libgo/json"
+	"libgo/srpc"
+	"libgo/syllab"
+)
+
+var findProductByQuiddityIDDcIDService = service.Service{
+	URN:                "urn:giti:sabz.city:service:find-product-by-quiddity-id-dc-id",
+	Domain:             DomainName,
+	ID:                 4710752122278166977,
+	IssueDate:          1610980759,
+	ExpiryDate:         0,
+	ExpireInFavorOfURN: "",
+	ExpireInFavorOfID:  0,
+	Status:             protocol.Software_PreAlpha,
+
+	Authorization: authorization.Service{
+		CRUD:     authorization.CRUDRead,
+		UserType: protocol.UserType_All,
+	},
+
+	Detail: map[protocol.LanguageID]service.ServiceDetail{
+		protocol.LanguageEnglish: {
+			Name:        "Find Product By Quiddity ID Dc ID",
+			Description: "",
+			TAGS:        []string{},
+		},
+	},
+
+	SRPCHandler: FindProductByQuiddityIDDcIDSRPC,
+	ServeHTTP: FindProductByQuiddityIDDcIDHTTP,
+}
+
+// FindProductByQuiddityIDDcIDSRPC is sRPC handler of FindProductByQuiddityIDDcID service.
+func FindProductByQuiddityIDDcIDSRPC(st protocol.Stream) {
+	var req = &findProductByQuiddityIDDcIDReq{}
+	err = req.FromSyllab(srpc.GetPayload(st.IncomePayload))
+	if err != nil {
+		return
+	}
+
+	var res *findProductByQuiddityIDDcIDRes
+	res, err = findProductByQuiddityIDDcID(st, req)
+	// Check if any error occur in business logic
+	if err != nil {
+		return
+	}
+
+	st.OutcomePayload = make([]byte, srpc.MinLength+res.LenAsSyllab())
+	res.ToSyllab(srpc.GetPayload(st.OutcomePayload))
+}
+
+// FindProductByQuiddityIDDcIDHTTP is HTTP handler of FindProductByQuiddityIDDcID service.
+func FindProductByQuiddityIDDcIDHTTP(st protocol.Stream, httpReq *http.Request, httpRes *http.Response) {
+	var req = &findProductByQuiddityIDDcIDReq{}
+	err = req.FromJSON(httpReq.Body().Marshal())
+	if err != nil {
+		httpRes.SetStatus(http.StatusBadRequestCode, http.StatusBadRequestPhrase)
+		return
+	}
+
+	var res *findProductByQuiddityIDDcIDRes
+	res, err = findProductByQuiddityIDDcID(st, req)
+	// Check if any error occur in business logic
+	if err != nil {
+		httpRes.SetStatus(http.StatusBadRequestCode, http.StatusBadRequestPhrase)
+		return
+	}
+
+	httpRes.SetStatus(http.StatusOKCode, http.StatusOKPhrase)
+	httpRes.SetBody(json.NewCodec(res))
+}
+
+type findProductByQuiddityIDDcIDReq struct {
+	QuiddityID [32]byte `json:",string"`
+	DCID       [32]byte `json:",string"`
+	Offset     uint64
+	Limit      uint64
+}
+
+type findProductByQuiddityIDDcIDRes struct {
+	RecordIDs [][32]byte `json:",string"`
+}
+
+func findProductByQuiddityIDDcID(st protocol.Stream, req *findProductByQuiddityIDDcIDReq) (res *findProductByQuiddityIDDcIDRes, err protocol.Error) {
+	err = st.Authorize()
+	if err != nil {
+		return
+	}
+	var pi = data.ProductInventory{
+		QuiddityID: req.QuiddityID,
+		DCID:       req.DCID,
+	}
+	var indexRes [][32]byte
+	indexRes, err = pi.FindRecordsIDsByQuiddityIDDCID(req.Offset, req.Limit)
+	if err != nil {
+		return
+	}
+
+	res = &findProductByQuiddityIDDcIDRes{
+		RecordIDs: indexRes,
+	}
+	return
+}
+
+/*
+	Request Encoders & Decoders
+*/
+
+func (req *findProductByQuiddityIDDcIDReq) FromSyllab(payload []byte, stackIndex uint32) {
+	if uint32(len(buf)) < req.LenOfSyllabStack() {
+		err = syllab.ErrShortArrayDecode
+		return
+	}
+
+	copy(req.QuiddityID[:], buf[0:])
+	copy(req.DCID[:], buf[32:])
+	req.Offset = syllab.GetUInt64(buf, 64)
+	req.Limit = syllab.GetUInt64(buf, 72)
+	return
+}
+
+func (req *findProductByQuiddityIDDcIDReq) ToSyllab(payload []byte, stackIndex, heapIndex uint32) (freeHeapIndex uint32) { {
+	copy(buf[0:], req.QuiddityID[:])
+	copy(buf[32:], req.DCID[:])
+	syllab.SetUInt64(buf, 64, req.Offset)
+	syllab.SetUInt64(buf, 72, req.Limit)
+	return
+}
+
+func (req *findProductByQuiddityIDDcIDReq) LenOfSyllabStack() uint32 {
+	return 80
+}
+
+func (req *findProductByQuiddityIDDcIDReq) LenOfSyllabHeap() (ln uint32) {
+	return
+}
+
+func (req *findProductByQuiddityIDDcIDReq) LenAsSyllab() uint64 {
+	return uint64(req.LenOfSyllabStack() + req.LenOfSyllabHeap())
+}
+
+func (req *findProductByQuiddityIDDcIDReq) FromJSON(payload []byte) (remaining []byte, err protocol.Error) {
+	var decoder = json.DecoderUnsafeMinified{Buf: payload}
+	for err == nil {
+		var keyName = decoder.DecodeKey()
+		switch keyName {
+		case "QuiddityID":
+			err = decoder.DecodeByteArrayAsBase64(req.QuiddityID[:])
+		case "DCID":
+			err = decoder.DecodeByteArrayAsBase64(req.DCID[:])
+		case "Offset":
+			req.Offset, err = decoder.DecodeUInt64()
+		case "Limit":
+			req.Limit, err = decoder.DecodeUInt64()
+		default:
+			err = decoder.NotFoundKeyStrict()
+		}
+
+		if decoder.End() {
+			return
+		}
+	}
+	return
+}
+
+func (req *findProductByQuiddityIDDcIDReq) ToJSON(payload []byte) (added []byte, err protocol.Error) {
+	var encoder = json.Encoder{Buf: payload}
+	encoder.EncodeString(`{"QuiddityID":"`)
+	encoder.EncodeByteSliceAsBase64(req.QuiddityID[:])
+	encoder.EncodeString(`","DCID":"`)
+	encoder.EncodeByteSliceAsBase64(req.DCID[:])
+	encoder.EncodeString(`","Offset":`)
+	encoder.EncodeUInt64(req.Offset)
+	encoder.EncodeString(`,"Limit":`)
+	encoder.EncodeUInt64(req.Limit)
+	encoder.EncodeByte('}')
+	return encoder.Buf
+}
+
+func (req *findProductByQuiddityIDDcIDReq) LenAsJSON() (ln int) {
+	ln += 172
+	return
+}
+
+/*
+	Response Encoders & Decoders
+*/
+
+func (res *findProductByQuiddityIDDcIDRes) FromSyllab(payload []byte, stackIndex uint32) {
+	if uint32(len(buf)) < res.LenOfSyllabStack() {
+		err = syllab.ErrShortArrayDecode
+		return
+	}
+
+	res.RecordIDs = syllab.UnsafeGet32ByteArraySlice(buf, 128)
+	return
+}
+
+func (res *findProductByQuiddityIDDcIDRes) ToSyllab(payload []byte, stackIndex, heapIndex uint32) (freeHeapIndex uint32) { {
+	syllab.Set32ByteArrayArray(buf, res.RecordIDs, 0, heapIndex)
+	return
+}
+
+func (res *findProductByQuiddityIDDcIDRes) LenOfSyllabStack() uint32 {
+	return 8
+}
+
+func (res *findProductByQuiddityIDDcIDRes) LenOfSyllabHeap() (ln uint32) {
+	ln = uint32(len(res.RecordIDs) * 32)
+	return
+}
+
+func (res *findProductByQuiddityIDDcIDRes) LenAsSyllab() uint64 {
+	return uint64(res.LenOfSyllabStack() + res.LenOfSyllabHeap())
+}
+
+func (res *findProductByQuiddityIDDcIDRes) FromJSON(payload []byte) (remaining []byte, err protocol.Error) {
+	var decoder = json.DecoderUnsafeMinified{Buf: payload}
+	for err == nil {
+		var keyName = decoder.DecodeKey()
+		switch keyName {
+		case "RecordIDs":
+			res.RecordIDs, err = decoder.Decode32ByteArraySliceAsBase64()
+		default:
+			err = decoder.NotFoundKeyStrict()
+		}
+
+		if decoder.End() {
+			return
+		}
+	}
+	return
+}
+
+func (res *findProductByQuiddityIDDcIDRes) ToJSON(payload []byte) (added []byte, err protocol.Error) {
+	var encoder = json.Encoder{Buf: payload}
+
+	encoder.EncodeString(`{"RecordIDs":[`)
+	encoder.Encode32ByteArraySliceAsBase64(res.RecordIDs)
+
+	encoder.EncodeString(`]}`)
+}
+
+func (res *findProductByQuiddityIDDcIDRes) LenAsJSON() (ln int) {
+	ln = len(res.RecordIDs) * 46
+	ln += 16
+	return
+}

@@ -7,16 +7,19 @@ import (
 	"sync"
 	"time"
 
-	"memar/connection"
-	"memar/protocol"
+	"memar/net/connection"
+	gp_memar "memar/net/gp"
+	error_p "memar/process/error/protocol"
+
+	user_p "org/modules/identity/user/protocol"
 )
 
 // Connections store pools of connection to retrieve in many ways
 type Connections struct {
 	mutex                      sync.Mutex
-	poolByPeerAddr             map[Addr]*Connection
+	poolByPeerAddr             map[gp_memar.Addr]*Connection
 	poolByUserIDDelegateUserID map[[32]byte]*Connection
-	poolByUserID               map[protocol.UserUUID][]*Connection
+	poolByUserID               map[user_p.UUID][]*Connection
 	poolByDomain               map[string]*Connection
 	poolByBlackList            map[Addr]*Connection // key is PeerAddr
 	shutdownSignal             chan struct{}
@@ -24,12 +27,12 @@ type Connections struct {
 	connection.ConnectionsMetric
 }
 
-//libgo:impl memar/protocol.ObjectLifeCycle
-func (c *Connections) Init() (err protocol.Error) {
+//memar:impl memar/computer/language/object/protocol.LifeCycle
+func (c *Connections) Init() (err error_p.Error) {
 	// TODO::: below numbers must calculate by hardware capacity!
 	c.poolByPeerAddr = make(map[Addr]*Connection, 16384)
 	c.poolByUserIDDelegateUserID = make(map[[32]byte]*Connection, 16384)
-	c.poolByUserID = make(map[protocol.UserUUID][]*Connection, 16384)
+	c.poolByUserID = make(map[user_p.UUID][]*Connection, 16384)
 	c.poolByDomain = make(map[string]*Connection, 16384)
 	c.poolByBlackList = make(map[Addr]*Connection, 256)
 	c.shutdownSignal = make(chan struct{})
@@ -37,10 +40,10 @@ func (c *Connections) Init() (err protocol.Error) {
 	go c.connectionIdleTimeoutSaveAndFree()
 	return
 }
-func (c *Connections) Reinit() (err protocol.Error) {
+func (c *Connections) Reinit() (err error_p.Error) {
 	return
 }
-func (c *Connections) Deinit() (err protocol.Error) {
+func (c *Connections) Deinit() (err error_p.Error) {
 	c.shutdownSignal <- struct{}{}
 
 	// TODO::: log or dispatch start event? dispatch in app or internal listeners?
@@ -57,7 +60,7 @@ func (c *Connections) Deinit() (err protocol.Error) {
 }
 
 // GetConnectionByPeerAddr get a connection by peer GP from connections pool.
-func (c *Connections) GetConnectionByPeerAddr(addr Addr) (conn *Connection, err protocol.Error) {
+func (c *Connections) GetConnectionByPeerAddr(addr Addr) (conn *Connection, err error_p.Error) {
 	conn = c.poolByPeerAddr[addr]
 	if conn == nil {
 		err = &connection.ErrNoConnection
@@ -67,7 +70,7 @@ func (c *Connections) GetConnectionByPeerAddr(addr Addr) (conn *Connection, err 
 
 // GetConnectionByUserIDDelegateUserID return the connection from pool or app storage.
 // A connection can use just by single app node, so user can't use same connection to connect other node before close connection on usage node.
-func (c *Connections) GetConnectionByUserIDDelegateUserID(userID, delegateUserID protocol.UserUUID) (conn *Connection, err protocol.Error) {
+func (c *Connections) GetConnectionByUserIDDelegateUserID(userID, delegateUserID user_p.UUID) (conn *Connection, err error_p.Error) {
 	conn = c.poolByUserIDDelegateUserID[c.userIDDelegateUserID(userID, delegateUserID)]
 	if conn == nil {
 		err = &connection.ErrNoConnection
@@ -76,7 +79,7 @@ func (c *Connections) GetConnectionByUserIDDelegateUserID(userID, delegateUserID
 }
 
 // GetConnectionsByUserID get the connections by peer userID||domainID from connections pool.
-func (c *Connections) GetConnectionsByUserID(userID protocol.UserUUID) (conn []*Connection, err protocol.Error) {
+func (c *Connections) GetConnectionsByUserID(userID user_p.UUID) (conn []*Connection, err error_p.Error) {
 	conn = c.poolByUserID[userID]
 	if conn == nil {
 		err = &connection.ErrNoConnection
@@ -85,7 +88,7 @@ func (c *Connections) GetConnectionsByUserID(userID protocol.UserUUID) (conn []*
 }
 
 // GetConnectionByDomain return the connection from pool or app storage if any exist.
-func (c *Connections) GetConnectionByDomain(domain string) (conn *Connection, err protocol.Error) {
+func (c *Connections) GetConnectionByDomain(domain string) (conn *Connection, err error_p.Error) {
 	conn = c.poolByDomain[domain]
 	if conn == nil {
 		err = &connection.ErrNoConnection
@@ -94,7 +97,7 @@ func (c *Connections) GetConnectionByDomain(domain string) (conn *Connection, er
 }
 
 // RegisterConnection register new connection in server connection pool
-func (c *Connections) RegisterConnection(conn *Connection) (err protocol.Error) {
+func (c *Connections) RegisterConnection(conn *Connection) (err error_p.Error) {
 	c.mutex.Lock()
 	defer c.mutex.Unlock()
 
@@ -109,11 +112,11 @@ func (c *Connections) RegisterConnection(conn *Connection) (err protocol.Error) 
 		c.poolByDomain[connDomain] = conn
 	}
 
-	if userID != protocol.UserUUID(AddrNil) {
+	if userID != user_p.UUID(AddrNil) {
 		c.poolByUserID[userID] = append(c.poolByUserID[userID], conn)
 	}
 
-	if conn.UserID().Type() == protocol.UserType_Unset {
+	if conn.UserID().Type() == user_p.Type_Unset {
 		c.ConnectionsMetric.GuestConnOpened()
 	} else {
 		c.ConnectionsMetric.ConnOpened()
@@ -122,14 +125,14 @@ func (c *Connections) RegisterConnection(conn *Connection) (err protocol.Error) 
 }
 
 // DeregisterConnection delete the given connection in connections pool
-func (c *Connections) DeregisterConnection(conn *Connection) (err protocol.Error) {
+func (c *Connections) DeregisterConnection(conn *Connection) (err error_p.Error) {
 	c.mutex.Lock()
 	defer c.mutex.Unlock()
 	err = c.deregisterConnection(conn)
 	return
 }
 
-func (c *Connections) deregisterConnection(conn *Connection) (err protocol.Error) {
+func (c *Connections) deregisterConnection(conn *Connection) (err error_p.Error) {
 	var userID = conn.UserID().UUID()
 
 	delete(c.poolByUserIDDelegateUserID, c.userIDDelegateUserID(userID, conn.DelegateUserID().UUID()))
@@ -150,7 +153,7 @@ func (c *Connections) deregisterConnection(conn *Connection) (err protocol.Error
 	}
 	c.poolByUserID[userID] = userConnections
 
-	if conn.UserID().Type() == protocol.UserType_Unset {
+	if conn.UserID().Type() == user_p.Type_Unset {
 		c.ConnectionsMetric.GuestConnClosed()
 	} else {
 		c.ConnectionsMetric.ConnClosed()
@@ -158,7 +161,7 @@ func (c *Connections) deregisterConnection(conn *Connection) (err protocol.Error
 	return
 }
 
-func (c *Connections) userIDDelegateUserID(userID, delegateUserID protocol.UserUUID) (userIDDelegateUserID [32]byte) {
+func (c *Connections) userIDDelegateUserID(userID, delegateUserID user_p.UUID) (userIDDelegateUserID [32]byte) {
 	copy(userIDDelegateUserID[:], userID[:])
 	copy(userIDDelegateUserID[16:], delegateUserID[:])
 	return

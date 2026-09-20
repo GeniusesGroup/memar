@@ -1,22 +1,21 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package esp
+package es_p
 
 import (
-	"memar/protocol"
+	request_p "memar/process/request/protocol"
+	audit_time_p "memar/process/time/protocol"
 
-	arp "org/modules/app-request/protocol"
-	org "org/modules/org/protocol"
-	up "org/modules/user/protocol"
+	org_p "org/modules/identity/organization/protocol"
+	user_p "org/modules/identity/user/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	OrgID() org.OrgUUID
-	UserID() up.UserUUID
+	org_p.Field_OrganizationID
+	user_p.Field_UserUUID
 	Score() uint64
 
-	arp.AuditLogging
-	protocol.Storage_Versioned
-	protocol.Storage_SaveTime
+	request_p.Field_RequestID
+	audit_time_p.Field_Request
 }

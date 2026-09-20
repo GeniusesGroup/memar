@@ -1,6 +1,6 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package generator
+package anm_p
 
 import (
 	"bytes"
@@ -35,7 +35,7 @@ import (
 
 	"memar/achaemenid"
 	lang "memar/language"
-	"memar/log"
+	"memar/process/log"
 	letsencrypt "github.com/GeniusesGroup/SDK/letsencrypt.org"
 )
 
@@ -89,7 +89,7 @@ func init() {
 		},
 	}
 
-	var err protocol.Error
+	var err error_p.Error
 
 	// Initialize server
 	achaemenid.App.Init()

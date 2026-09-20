@@ -1,22 +1,23 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package ekudp
+package kud_p
 
 import (
-	"memar/protocol"
+	"memar/time/duration"
 
-	arp "org/modules/app-request/protocol"
-	ekup "org/modules/edu-knowledge_unit/protocol"
+	request_p "memar/process/request/protocol"
+	audit_time_p "memar/process/time/protocol"
+
+	eku_p "org/modules/knowledge/knowledge_unit/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	KnowledgeUnitID() ekup.EducationKnowledgeUnitUUID
-	Minimum() protocol.Duration  // Minimum time duration to learn
-	Expected() protocol.Duration // Expected time duration to learn
-	Maximum() protocol.Duration  // Maximum time duration to learn
+	eku_p.Field_KnowledgeUnitID
+	Minimum() duration.Second  // Minimum time duration to learn
+	Expected() duration.Second // Expected time duration to learn
+	Maximum() duration.Second  // Maximum time duration to learn
 
-	arp.AuditLogging
-	protocol.Storage_Versioned
-	protocol.Storage_SaveTime
+	request_p.Field_RequestID
+	audit_time_p.Field_Request
 }

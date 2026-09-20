@@ -1,0 +1,36 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+package services
+
+import "libgo/achaemenid"
+
+// BuyNewProductReq is the request structure of BuyNewProduct()
+type BuyNewProductReq struct {
+	ProductID [16]byte
+}
+
+// BuyNewProduct :
+func BuyNewProduct(st *achaemenid.Stream, req *BuyNewProductReq) {
+
+	// change ThingID if it had been set!
+
+	var invoice Invoice
+	// Ready dbRequest for database layer.
+	dbRequest := usersdata.Request{
+		Keys: []string{"Invoice", logicRequest.InvoiceID},
+		Data: &invoice}
+	logicResponse.Error = usersdata.GetData(&dbRequest)
+	if logicResponse.Error != nil {
+		return &logicResponse
+	}
+
+	// User||Org who register an invoice can BuyNewProduct
+
+	// When an invoice BuyNewProduct must :
+	// - Check items available and price
+	// - decrease items availability in related MS
+	// - sum invoice items price, discount to prepare to pay by user
+	// - Check user balance or credit balance to allow.
+
+	return &logicResponse
+}

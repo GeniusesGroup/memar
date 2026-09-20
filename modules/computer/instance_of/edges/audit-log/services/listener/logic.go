@@ -3,25 +3,26 @@
 package services
 
 import (
+	event_p "memar/process/event/protocol"
 	"memar/protocol"
 )
 
 type Listeners struct {
-	all       []protocol.LogListener
-	listeners map[listenerKey]protocol.LogListener
+	all       []event_p.EventListener
+	listeners map[listenerKey]event_p.EventListener
 }
 
 type listenerKey struct {
-	level  protocol.LogType
-	domain string
+	level  log_p.Level
+	domain protocol.MediaType
 }
 
-func (l *Listeners) sendToListeners(event protocol.LogEvent) {
+func (l *Listeners) sendToListeners(event log_p.Event) {
 	var level = event.Level()
 	var domain = event.Domain()
 
 	for i := 0; i < len(l.all); i++ {
-		l.all[i].LogEventHandler(event)
+		l.all[i].EventHandler(event)
 	}
 
 	var key = listenerKey{
@@ -30,7 +31,7 @@ func (l *Listeners) sendToListeners(event protocol.LogEvent) {
 	}
 	var ls = l.listeners[key]
 	if ls != nil {
-		ls.LogEventHandler(event)
+		ls.EventHandler(event)
 	}
 
 	key = listenerKey{
@@ -39,21 +40,21 @@ func (l *Listeners) sendToListeners(event protocol.LogEvent) {
 	}
 	ls = l.listeners[key]
 	if ls != nil {
-		ls.LogEventHandler(event)
+		ls.EventHandler(event)
 	}
 
 	key = listenerKey{
-		// level:  protocol.LogEvent_Unset,
+		// level:  log_p.Level_Unset,
 		domain: domain,
 	}
 	ls = l.listeners[key]
 	if ls != nil {
-		ls.LogEventHandler(event)
+		ls.EventHandler(event)
 	}
 }
 
-func (l *Listeners) RegisterListener(level protocol.LogType, domain string, ll protocol.LogListener) (err protocol.Error) {
-	if level == protocol.LogEvent_Unset && domain == "" {
+func (l *Listeners) RegisterListener(level log_p.Level, domain protocol.MediaType, ll event_p.EventListener) (err error_p.Error) {
+	if level == log_p.Level_Unset && domain == nil {
 		l.all = append(l.all, ll)
 		return
 	}
@@ -67,8 +68,8 @@ func (l *Listeners) RegisterListener(level protocol.LogType, domain string, ll p
 	return
 }
 
-func (l *Listeners) DeregisterListener(level protocol.LogType, domain string, ll protocol.LogListener) (err protocol.Error) {
-	if level == protocol.LogEvent_Unset && domain == "" {
+func (l *Listeners) DeregisterListener(level log_p.Level, domain protocol.MediaType, ll event_p.EventListener) (err error_p.Error) {
+	if level == log_p.Level_Unset && domain == nil {
 		var ln = len(l.all)
 		for i := 0; i < ln; i++ {
 			if l.all[i] == ll {

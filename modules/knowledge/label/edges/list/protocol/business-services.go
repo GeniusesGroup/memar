@@ -1,0 +1,18 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+package list_p
+
+// services:
+// Last(labelID [16]byte, priority uint64) (ci labelItem, nv storage_p.NumberOfVersion, err error_p.Error)
+// ListItems(labelID [16]byte, offset, limit uint64) (items [][16]byte, nv storage_p.NumberOfVersion, err error_p.Error)
+
+// Application is the interface that must implement by any Application.
+// It introduce just local computing mechanism not network, storage, distributed, gui, ...
+type Application_Status interface {
+	// Status() ApplicationStatus
+
+	// Listen to the app state changes. Can return the channel instead of get as arg, but a channel listener can lost very fast app state changing.
+	// This is because when the first goroutine blocks the channel all other goroutines must wait in line. When the channel is unblocked,
+	// the state has already been received and removed from the channel so the next goroutine in line gets the next state value.
+	// NotifyStatus(notifyBy chan ApplicationStatus)
+}

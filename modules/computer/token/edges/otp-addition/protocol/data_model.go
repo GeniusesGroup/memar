@@ -2,20 +2,8 @@
 
 package pop
 
-import (
-	"memar/protocol"
-
-	arp "org/modules/app-request/protocol"
-	up "org/modules/user/protocol"
-)
-
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	PersonID() up.UserUUID
 	OTPPattern() []byte   // https://tools.ietf.org/html/rfc6238
 	OTPAdditional() int32 // easy to remember and must be 2 to 7 digit. https://en.wikipedia.org/wiki/Personal_identification_number
-
-	arp.AuditLogging
-	protocol.Storage_Versioned
-	protocol.Storage_SaveTime
 }

@@ -3,5 +3,3 @@
 package uataahp
 
 type Average uint64
-
-

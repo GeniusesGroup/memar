@@ -3,17 +3,18 @@
 package cgup
 
 import (
-	"memar/protocol"
+	error_p "memar/process/error/protocol"
 
-	gp "org/modules/group/protocol"
-	up "org/modules/user/protocol"
+	storage_p "memar/storage/protocol"
+	user_p "org/modules/identity/user/protocol"
+	group_p "org/modules/management/group/protocol"
 )
 
 type StorageServices interface {
-	Save(dm DataModel) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm DataModel) (nv storage_p.NumberOfVersion, err error_p.Error)
 
-	Count(userID up.UserUUID, groupID gp.GroupUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(userID up.UserUUID, groupID gp.GroupUUID, vo protocol.VersionOffset) (dm DataModel, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(userID user_p.UUID, groupID group_p.UUID) (nv storage_p.NumberOfVersion, err error_p.Error)
+	Get(userID user_p.UUID, groupID group_p.UUID, vo storage_p.VersionOffset) (dm DataModel, nv storage_p.NumberOfVersion, err error_p.Error)
 
-	FIND_GroupIDs_BY_UserID(userID up.UserUUID, offset, limit uint64) (groupIDs []gp.GroupUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	FIND_GroupIDs_BY_UserID(userID user_p.UUID, offset, limit uint64) (groupIDs []group_p.UUID, nv storage_p.NumberOfVersion, err error_p.Error)
 }

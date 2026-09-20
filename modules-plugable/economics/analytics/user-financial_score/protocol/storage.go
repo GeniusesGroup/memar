@@ -1,16 +1,15 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package fsp
+package score_p
 
 import (
-	"memar/protocol"
+	error_p "memar/process/error/protocol"
 
-	up "org/modules/user/protocol"
+	user_p "org/modules/identity/user/protocol"
 )
 
 type StorageServices interface {
-	Save(dm DataModel) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm DataModel) (err error_p.Error)
 
-	Count(userID up.UserUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(userID up.UserUUID, vo protocol.VersionOffset) (dm DataModel, nv protocol.NumberOfVersion, err protocol.Error)
+	Get(userID user_p.UUID) (dm DataModel, err error_p.Error)
 }

@@ -1,26 +1,22 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package itp
+package inventory_p
 
 import (
-	"memar/protocol"
-
-	arp "org/modules/app-request/protocol"
-	ip "org/modules/inventory/protocol"
+	decimal_p "memar/math/decimal/protocol"
+	request_p "memar/process/request/protocol"
+	audit_time_p "memar/process/time/protocol"
+	record_p "memar/storage/record/protocol"
 )
-
-// Some resource:
-// https://www.odoo.com/documentation/16.0/applications/inventory_and_mrp/inventory/management/lots_serial_numbers/lots.html
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	InventoryID() ip.InventoryUUID
+	Field_InventoryID
 	ReferenceType() ReferenceType
-	ReferenceID() protocol.UUID // Depend on ReferenceType()
-	Amount() int64              // this transaction
-	Stock() int64               // overall in each location
+	ReferenceID() record_p.UUID // Depend on ReferenceType()
+	Amount() decimal_p.Quantity // this transaction
+	Stock() decimal_p.Quantity  // overall in each location
 
-	arp.AuditLogging
-	protocol.Storage_Versioned
-	protocol.Storage_SaveTime
+	request_p.Field_RequestID
+	audit_time_p.Field_Request
 }

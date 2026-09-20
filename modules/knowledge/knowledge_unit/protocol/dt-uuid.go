@@ -1,9 +1,13 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package ekup
+package knowledge_unit_p
 
 import (
-	"memar/protocol"
+	text_p "org/modules/knowledge/text/protocol"
 )
 
-type EducationKnowledgeUnitUUID protocol.UUID
+type Field_KnowledgeUnitID interface {
+	KnowledgeUnitID() UUID
+}
+
+type UUID text_p.UUID

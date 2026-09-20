@@ -12,5 +12,5 @@ var (
 )
 
 func init() {
-	ErrWrongNumber.Init("domain/libgo.scm.geniuses.group; package=otp; type=error; name=wrong-number")
+	ErrWrongNumber.Init("domain/memar.scm.geniuses.group; package=otp; type=error; name=wrong-number")
 }

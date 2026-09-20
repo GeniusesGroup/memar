@@ -5,7 +5,7 @@ package discount
 import (
 	"memar/math/per"
 
-	fmp "org/modules/financial/money/protocol"
+	fmp "org/modules/economics/money/protocol"
 )
 
 type Value interface {

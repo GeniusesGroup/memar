@@ -3,21 +3,20 @@
 package psp
 
 import (
-	"memar/protocol"
+	request_p "memar/process/request/protocol"
+	audit_time_p "memar/process/time/protocol"
+	record_p "memar/storage/record/protocol"
 
-	arp "org/modules/app-request/protocol"
-	op "org/modules/object/protocol"
-	pp "org/modules/product/protocol"
+	product_p "org/modules/economics/product/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	ProductID() pp.ProductUUID
+	product_p.Field_ProductID
 	SeatCapacity() uint64 // max seat number
-	Type() Type
-	MapID() op.ObjectUUID // to show background and rows and seats. suggest use SVG format
+	Field_Type
+	MapID() record_p.UUID // to show background and rows and seats. suggest use SVG format
 
-	arp.AuditLogging
-	protocol.Storage_Versioned
-	protocol.Storage_SaveTime
+	request_p.Field_RequestID
+	audit_time_p.Field_Request
 }

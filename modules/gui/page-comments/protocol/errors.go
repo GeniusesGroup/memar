@@ -2,10 +2,6 @@
 
 package pcp
 
-import (
-	er "memar/error"
-)
-
 var (
-	ErrAccessIsDenied er.Error
+	ErrAccessIsDenied struct{}
 )

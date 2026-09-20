@@ -1,0 +1,209 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+package services
+
+import (
+	"crypto/sha512"
+
+	"libgo/achaemenid"
+	"libgo/authorization"
+	"libgo/ganjine"
+	"libgo/http"
+	"libgo/json"
+	"libgo/otp"
+	"libgo/protocol"
+	"libgo/service"
+	"libgo/srpc"
+	"libgo/syllab"
+)
+
+var registerPersonNumberService = service.Service{
+	URN:                "urn:giti:sabz.city:service:register-person-number",
+	Domain:             DomainName,
+	ID:                 9396906678934571571,
+	IssueDate:          1602687948,
+	ExpiryDate:         0,
+	ExpireInFavorOfURN: "",
+	ExpireInFavorOfID:  0,
+	Status:             protocol.Software_PreAlpha,
+
+	Authorization: authorization.Service{
+		CRUD:     authorization.CRUDCreate,
+		UserType: protocol.UserType_Person,
+	},
+
+	Name: map[protocol.LanguageID]string{
+		protocol.LanguageEnglish: "RegisterPersonNumber",
+	},
+	Description: map[protocol.LanguageID]string{
+		protocol.LanguageEnglish: "",
+	},
+	TAGS: []string{
+		"PersonNumber",
+	},
+
+	SRPCHandler: RegisterPersonNumberSRPC,
+	ServeHTTP:   RegisterPersonNumberHTTP,
+}
+
+// RegisterPersonNumberSRPC is sRPC handler of RegisterPersonNumber service.
+func RegisterPersonNumberSRPC(st protocol.Stream) {
+	var req = &registerPersonNumberReq{}
+	err = req.FromSyllab(srpc.GetPayload(st.IncomePayload))
+	if err != nil {
+		return
+	}
+
+	err = registerPersonNumber(st, req, false)
+	// Check if any error occur in business logic
+	if err != nil {
+		return
+	}
+
+	st.OutcomePayload = make([]byte, srpc.MinLength)
+}
+
+// RegisterPersonNumberHTTP is HTTP handler of RegisterPersonNumber service.
+func RegisterPersonNumberHTTP(st protocol.Stream, httpReq *http.Request, httpRes *http.Response) {
+	var req = &registerPersonNumberReq{}
+	err = req.FromJSON(httpReq.Body().Marshal())
+	if err != nil {
+		httpRes.SetStatus(http.StatusBadRequestCode, http.StatusBadRequestPhrase)
+		return
+	}
+
+	err = registerPersonNumber(st, req, false)
+	// Check if any error occur in business logic
+	if err != nil {
+		httpRes.SetStatus(http.StatusBadRequestCode, http.StatusBadRequestPhrase)
+		return
+	}
+
+	httpRes.SetStatus(http.StatusOKCode, http.StatusOKPhrase)
+}
+
+type registerPersonNumberReq struct {
+	PersonID    [32]byte `json:",string"` // UUID of registered user
+	PhoneNumber uint64
+	PhoneOTP    uint64
+}
+
+// unsafe must use internally by other services like register new person not network requests!
+func registerPersonNumber(st protocol.Stream, req *registerPersonNumberReq, unsafe bool) (err protocol.Error) {
+	if !unsafe {
+		if st.Connection.UserID != req.PersonID {
+			err = authorization.ErrUserNotAllow
+			return
+		}
+
+		err = st.Authorize()
+		if err != nil {
+			return
+		}
+
+		var otpReq = otp.GenerateTimeOTPReq{
+			Hasher:     sha512.New512_256(),
+			SecretKey:  smsOTPSecurityKey,
+			Additional: make([]byte, 8),
+			Period:     smsOTPPeriod,
+			Digits:     smsOTPDigits,
+		}
+		syllab.SetUInt64(otpReq.Additional, 0, req.PhoneNumber)
+		var timeOTP uint64
+		timeOTP, err = otp.GenerateTimeOTP(&otpReq)
+		if err != nil {
+			return
+		}
+		if req.PhoneOTP != timeOTP {
+			return otp.ErrWrongNumber
+		}
+	}
+
+	var pn = data.PersonNumber{
+		Number: req.PhoneNumber,
+	}
+	err = pn.GetLastByNumber()
+	if err != nil {
+		if err.Equal(ganjine.ErrRecordNotFound) {
+			err = nil
+		} else {
+			err = ErrBadSituation
+			return
+		}
+	}
+
+	if pn.PersonID != [32]byte{} || pn.Status == data.PersonNumberRegister {
+		err = ErrPersonNumberRegistered
+		return
+	} else if pn.Status == data.PersonNumberBlockedByJustice {
+		err = ErrBlockedByJustice
+		return
+	}
+
+	// TODO::: un-register last person number
+
+	pn = data.PersonNumber{
+		AppInstanceID:    achaemenid.App.Nodes.LocalNode.InstanceID,
+		UserConnectionID: st.Connection.ID,
+		PersonID:         req.PersonID,
+		Number:           req.PhoneNumber,
+		Status:           data.PersonNumberRegister,
+	}
+	err = pn.SaveNew()
+	return
+}
+
+func (req *registerPersonNumberReq) FromSyllab(payload []byte, stackIndex uint32) {
+	if uint32(len(buf)) < req.LenOfSyllabStack() {
+		err = syllab.ErrShortArrayDecode
+		return
+	}
+
+	copy(req.PersonID[:], buf[0:])
+	req.PhoneNumber = syllab.GetUInt64(buf, 16)
+	req.PhoneOTP = syllab.GetUInt64(buf, 24)
+	return
+}
+
+func (req *registerPersonNumberReq) LenOfSyllabStack() uint32 {
+	return 32
+}
+
+func (req *registerPersonNumberReq) FromJSON(payload []byte) (remaining []byte, err protocol.Error) {
+	var decoder = json.DecoderUnsafeMinified{Buf: payload}
+	for err == nil {
+		var keyName = decoder.DecodeKey()
+		switch keyName {
+		case "PersonID":
+			err = decoder.DecodeByteArrayAsBase64(req.PersonID[:])
+		case "PhoneNumber":
+			req.PhoneNumber, err = decoder.DecodeUInt64()
+		case "PhoneOTP":
+			req.PhoneOTP, err = decoder.DecodeUInt64()
+		default:
+			err = decoder.NotFoundKeyStrict()
+		}
+
+		if decoder.End() {
+			return
+		}
+	}
+	return
+}
+
+func (req *registerPersonNumberReq) ToJSON(payload []byte) (added []byte, err protocol.Error) {
+	var encoder = json.Encoder{Buf: payload}
+	encoder.EncodeString(`{"PersonID":"`)
+	encoder.EncodeByteSliceAsBase64(req.PersonID[:])
+	encoder.EncodeString(`","PhoneNumber":`)
+	encoder.EncodeUInt64(req.PhoneNumber)
+	encoder.EncodeString(`,"PhoneOTP":`)
+	encoder.EncodeUInt64(req.PhoneOTP)
+	encoder.EncodeByte('}')
+	return encoder.Buf
+}
+
+func (req *registerPersonNumberReq) LenAsJSON() (ln int) {
+	ln = 125
+	return
+}

@@ -1,0 +1,29 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+package org
+
+import (
+	urp "org/modules/user-request/protocol"
+
+	"libgo/protocol"
+)
+
+// Role indicate the domain record data fields.
+type Role interface {
+	RoleID() [16]byte    // quiddity domain
+	ParentID() [16]byte  // RoleID, Exist if it isn't top of the organization.
+	Time() protocol.Time // save time
+	RequestID() urp.UUID // user-request domain
+}
+
+// StorageServices indicate the domain storage services.
+type StorageServices interface {
+	Save(r Role) (nv protocol.NumberOfVersion, err protocol.Error)
+
+	Count(roleID [16]byte) (nv protocol.NumberOfVersion, err protocol.Error)
+	Get(roleID [16]byte, vo protocol.VersionOffset) (r Role, nv protocol.NumberOfVersion, err protocol.Error)
+
+	FindByParent(parentID [16]byte, offset, limit uint64) (roleIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
+
+	GetIDs(offset, limit uint64) (roleIDs [][16]byte, nv protocol.NumberOfVersion, err protocol.Error)
+}

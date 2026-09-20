@@ -1,24 +1,25 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package ekusp
+package kus_p
 
 import (
-	"memar/protocol"
+	"memar/time/duration"
 
-	arp "org/modules/app-request/protocol"
-	ekup "org/modules/edu-knowledge_unit/protocol"
-	up "org/modules/user/protocol"
+	request_p "memar/process/request/protocol"
+	audit_time_p "memar/process/time/protocol"
+
+	user_p "org/modules/identity/user/protocol"
+	ku_p "org/modules/knowledge/knowledge_unit/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	UserID() up.UserUUID
-	KnowledgeUnitID() ekup.EducationKnowledgeUnitUUID
-	GivenScoreID() up.UserUUID
-	LearnDuration() protocol.Duration
+	user_p.Field_UserUUID
+	ku_p.Field_KnowledgeUnitID
+	GivenScoreID() user_p.UUID
+	LearnDuration() duration.Second
 	Score() uint64
 
-	arp.AuditLogging
-	protocol.Storage_Versioned
-	protocol.Storage_SaveTime
+	request_p.Field_RequestID
+	audit_time_p.Field_Request
 }

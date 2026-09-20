@@ -1,21 +1,21 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package vaudp
+package vaud_p
 
 import (
+	request_p "memar/process/request/protocol"
+	audit_time_p "memar/process/time/protocol"
 	"memar/time/utc"
 
-	aap "org/modules/app-audit/protocol"
-	fmp "org/modules/financial-money/protocol"
-	sp "org/modules/storage/protocol"
+	fmp "org/modules/economics/money/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	Minute() utc.MinuteElapsed
+	utc.Field_MinuteElapsed
 	TotalIssued() uint64
-	TotalIssuedAmount() fmp.MoneyAmount
+	TotalIssuedAmount() fmp.Amount
 
-	aap.AuditRequest
-	sp.SaveTime
+	request_p.Field_RequestID
+	audit_time_p.Field_Request
 }

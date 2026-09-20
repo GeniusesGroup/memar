@@ -1,0 +1,223 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+package services
+
+import (
+	"libgo/authorization"
+	"libgo/http"
+	"libgo/json"
+	"libgo/protocol"
+	"libgo/service"
+	"libgo/srpc"
+	"libgo/syllab"
+)
+
+var getProductInventoryDCQuiddityNumberService = service.Service{
+	URN:                "urn:giti:sabz.city:service:get-product-inventory-dc-quiddity-number",
+	Domain:             DomainName,
+	ID:                 991866314702330546,
+	IssueDate:          1608125902,
+	ExpiryDate:         0,
+	ExpireInFavorOfURN: "",
+	ExpireInFavorOfID:  0,
+	Status:             protocol.Software_PreAlpha,
+
+	Authorization: authorization.Service{
+		CRUD:     authorization.CRUDRead,
+		UserType: protocol.UserType_All, // UserTypeOwner
+	},
+
+	Name: map[protocol.LanguageID]string{
+		protocol.LanguageEnglish: "Get Product Inventory DC Quiddity Number",
+	},
+	Description: map[protocol.LanguageID]string{
+		protocol.LanguageEnglish: "",
+	},
+	TAGS: []string{
+		"Product Inventory",
+	},
+
+	SRPCHandler: GetProductInventoryDCQuiddityNumberSRPC,
+	ServeHTTP:   GetProductInventoryDCQuiddityNumberHTTP,
+}
+
+// GetProductInventoryDCQuiddityNumberSRPC is sRPC handler of GetProductInventoryDCQuiddityNumber service.
+func GetProductInventoryDCQuiddityNumberSRPC(st protocol.Stream) {
+	var req = &getProductInventoryDCQuiddityNumberReq{}
+	err = req.FromSyllab(srpc.GetPayload(st.IncomePayload))
+	if err != nil {
+		return
+	}
+
+	var res *getProductInventoryDCQuiddityNumberRes
+	res, err = getProductInventoryDCQuiddityNumber(st, req)
+	// Check if any error occur in business logic
+	if err != nil {
+		return
+	}
+
+	st.OutcomePayload = make([]byte, srpc.MinLength+res.LenAsSyllab())
+	res.ToSyllab(srpc.GetPayload(st.OutcomePayload))
+}
+
+// GetProductInventoryDCQuiddityNumberHTTP is HTTP handler of GetProductInventoryDCQuiddityNumber service.
+func GetProductInventoryDCQuiddityNumberHTTP(st protocol.Stream, httpReq *http.Request, httpRes *http.Response) {
+	var req = &getProductInventoryDCQuiddityNumberReq{}
+	err = req.FromJSON(httpReq.Body().Marshal())
+	if err != nil {
+		httpRes.SetStatus(http.StatusBadRequestCode, http.StatusBadRequestPhrase)
+		return
+	}
+
+	var res *getProductInventoryDCQuiddityNumberRes
+	res, err = getProductInventoryDCQuiddityNumber(st, req)
+	// Check if any error occur in business logic
+	if err != nil {
+		httpRes.SetStatus(http.StatusBadRequestCode, http.StatusBadRequestPhrase)
+		return
+	}
+
+	httpRes.SetStatus(http.StatusOKCode, http.StatusOKPhrase)
+	httpRes.SetBody(json.NewCodec(res))
+}
+
+type getProductInventoryDCQuiddityNumberReq struct {
+	DCID [32]byte `json:",string"`
+}
+
+type getProductInventoryDCQuiddityNumberRes struct {
+	Number uint64
+}
+
+func getProductInventoryDCQuiddityNumber(st protocol.Stream, req *getProductInventoryDCQuiddityNumberReq) (res *getProductInventoryDCQuiddityNumberRes, err protocol.Error) {
+	var pi = data.ProductInventory{
+		DCID: req.DCID,
+	}
+	res = &getProductInventoryDCQuiddityNumberRes{}
+	res.Number, err = pi.GetProductInventoryDCQuiddityNumber()
+	return
+}
+
+/*
+	Request Encoders & Decoders
+*/
+
+func (req *getProductInventoryDCQuiddityNumberReq) FromSyllab(payload []byte, stackIndex uint32) {
+	if uint32(len(buf)) < req.LenOfSyllabStack() {
+		err = syllab.ErrShortArrayDecode
+		return
+	}
+
+	copy(req.DCID[:], buf[0:])
+	return
+}
+
+func (req *getProductInventoryDCQuiddityNumberReq) ToSyllab(payload []byte, stackIndex, heapIndex uint32) (freeHeapIndex uint32) {
+	copy(buf[0:], req.DCID[:])
+	return
+}
+
+func (req *getProductInventoryDCQuiddityNumberReq) LenOfSyllabStack() uint32 {
+	return 32
+}
+
+func (req *getProductInventoryDCQuiddityNumberReq) LenOfSyllabHeap() (ln uint32) {
+	return
+}
+
+func (req *getProductInventoryDCQuiddityNumberReq) LenAsSyllab() uint64 {
+	return uint64(req.LenOfSyllabStack() + req.LenOfSyllabHeap())
+}
+
+func (req *getProductInventoryDCQuiddityNumberReq) FromJSON(payload []byte) (remaining []byte, err protocol.Error) {
+	var decoder = json.DecoderUnsafeMinified{Buf: payload}
+	for err == nil {
+		var keyName = decoder.DecodeKey()
+		switch keyName {
+		case "DCID":
+			err = decoder.DecodeByteArrayAsBase64(req.DCID[:])
+		default:
+			err = decoder.NotFoundKeyStrict()
+		}
+
+		if decoder.End() {
+			return
+		}
+	}
+	return
+}
+
+func (req *getProductInventoryDCQuiddityNumberReq) ToJSON(payload []byte) (added []byte, err protocol.Error) {
+	var encoder = json.Encoder{Buf: payload}
+
+	encoder.EncodeString(`{"DCID":"`)
+	encoder.EncodeByteSliceAsBase64(req.DCID[:])
+	encoder.EncodeString(`"}`)
+	return encoder.Buf
+}
+
+func (req *getProductInventoryDCQuiddityNumberReq) LenAsJSON() (ln int) {
+	ln = 54
+	return
+}
+
+/*
+	Response Encoders & Decoders
+*/
+
+func (res *getProductInventoryDCQuiddityNumberRes) FromSyllab(payload []byte, stackIndex uint32) {
+	if uint32(len(buf)) < res.LenOfSyllabStack() {
+		err = syllab.ErrShortArrayDecode
+		return
+	}
+	res.Number = syllab.GetUInt64(buf, 0)
+	return
+}
+
+func (res *getProductInventoryDCQuiddityNumberRes) ToSyllab(payload []byte, stackIndex, heapIndex uint32) (freeHeapIndex uint32) {
+	syllab.SetUInt64(buf, 0, res.Number)
+	return
+}
+
+func (res *getProductInventoryDCQuiddityNumberRes) LenOfSyllabStack() uint32 {
+	return 8
+}
+
+func (res *getProductInventoryDCQuiddityNumberRes) LenOfSyllabHeap() (ln uint32) {
+	return
+}
+
+func (res *getProductInventoryDCQuiddityNumberRes) LenAsSyllab() uint64 {
+	return uint64(res.LenOfSyllabStack() + res.LenOfSyllabHeap())
+}
+
+func (res *getProductInventoryDCQuiddityNumberRes) FromJSON(payload []byte) (remaining []byte, err protocol.Error) {
+	var decoder = json.DecoderUnsafeMinified{Buf: payload}
+	for err == nil {
+		var keyName = decoder.DecodeKey()
+		switch keyName {
+		case "Number":
+			res.Number, err = decoder.DecodeUInt64()
+		default:
+			err = decoder.NotFoundKeyStrict()
+		}
+
+		if decoder.End() {
+			return
+		}
+	}
+	return
+}
+
+func (res *getProductInventoryDCQuiddityNumberRes) ToJSON(payload []byte) (added []byte, err protocol.Error) {
+	var encoder = json.Encoder{Buf: payload}
+	encoder.EncodeString(`{"Number":`)
+	encoder.EncodeUInt64(res.Number)
+	encoder.EncodeByte('}')
+	return encoder.Buf
+}
+
+func (res *getProductInventoryDCQuiddityNumberRes) LenAsJSON() (ln int) {
+	ln = 20
+	return
+}

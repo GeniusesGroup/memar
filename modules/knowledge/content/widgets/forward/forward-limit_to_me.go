@@ -1,6 +1,6 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package forward_off_l
+package forward_off
 
 // [comment, ---, forward_off] >>
 // [group, ---, forward_off] >> all comment in that group can't forward

@@ -1,0 +1,56 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+package service
+
+import (
+	"libgo/protocol"
+
+	org "../../protocol"
+)
+
+// UserDomain_Status indicate UserDomain record status
+type UserDomain_Status org.UserDomain_Status
+
+// ShortDetail returns localize short and long details for given status code
+func (oas UserDomain_Status) ShortDetail() (short string) {
+	switch protocol.AppLanguage {
+	case protocol.LanguageEnglish:
+		switch oas {
+		case org.UserDomain_Status_Unset:
+			short = "Unset"
+		case org.UserDomain_Status_Register:
+			short = "Register"
+		case org.UserDomain_Status_ChangedDomian:
+			short = "Change Domian"
+		case org.UserDomain_Status_Closed:
+			short = "Closed"
+		case org.UserDomain_Status_Blocked:
+			short = "Blocked"
+		default:
+			short = "Invalid Status"
+		}
+	}
+	return
+}
+
+// LongDetail returns localize long details for given status code
+func (oas UserDomain_Status) LongDetail() (long string) {
+	switch protocol.AppLanguage {
+	case protocol.LanguageEnglish:
+		switch oas {
+		case org.UserDomain_Status_Unset:
+			long = "Record status didn't set yet"
+		case org.UserDomain_Status_Register:
+			long = "User register and start in this society"
+		case org.UserDomain_Status_ChangedDomian:
+			long = "User change its domian to other domain from last change"
+		case org.UserDomain_Status_Closed:
+			long = "User closed and can't & don't have any further activity"
+		case org.UserDomain_Status_Blocked:
+			long = "User had been inactive and can't be use now"
+		default:
+			long = "Given status code is not valid for this type of record"
+		}
+	}
+	return
+}

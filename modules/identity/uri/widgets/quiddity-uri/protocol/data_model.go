@@ -3,9 +3,10 @@
 package qu_p
 
 import (
-	audit_p "org/modules/computer/audit/protocol"
-	quiddity_p "org/modules/identity/quiddity/protocol"
-	storage_p "org/modules/storage/primitive/protocol"
+	request_p "memar/process/request/protocol"
+	audit_time_p "memar/process/time/protocol"
+
+	thing_p "org/modules/identity/thing/protocol"
 )
 
 // DataModel indicate the domain record data fields.
@@ -14,8 +15,8 @@ import (
 // https://en.wikipedia.org/wiki/Electronic_Product_Code
 type DataModel interface {
 	Field_URI
-	quiddity_p.Field_QuiddityID
+	thing_p.Field_ThingUUID
 
-	audit_p.Field_RequestID
-	storage_p.Field_SaveTime
+	request_p.Field_RequestID
+	audit_time_p.Field_Request
 }

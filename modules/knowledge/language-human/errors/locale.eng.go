@@ -1,0 +1,25 @@
+//go:build lang_eng
+
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+package lang
+
+import (
+	"memar/detail"
+	"memar/protocol"
+)
+
+const domainEnglish = "Language"
+
+func init() {
+	ErrBadLanguage.SetDetail(detail.New(lang_p.LanguageEnglish, domainEnglish).
+		SetName("").
+		SetAbbreviation("").
+		SetAliases([]string{}).
+		SetSummary("Bad Language").
+		SetOverview("Not supported or bad language selected!").
+		SetUserNote("").
+		SetDevNote("").
+		SetTAGS([]string{})
+	)
+}

@@ -3,18 +3,18 @@
 package ssp
 
 import (
-	"memar/protocol"
+	request_p "memar/process/request/protocol"
+	audit_time_p "memar/process/time/protocol"
 
-	arp "org/modules/app-request/protocol"
-	sp "org/modules/staff/protocol"
+	fmp "org/modules/economics/money/protocol"
+	staff_p "org/modules/management/staff/protocol"
 )
 
 // DataModel is fixed negotiated salary that don't follow org||department||role salary rules.
 type DataModel interface {
-	StaffID() sp.StaffUUID
-	WeeklySalary() protocol.MoneyAmount
+	staff_p.Field_StaffID
+	WeeklySalary() fmp.Amount
 
-	arp.AuditLogging
-	protocol.Storage_Versioned
-	protocol.Storage_SaveTime
+	request_p.Field_RequestID
+	audit_time_p.Field_Request
 }

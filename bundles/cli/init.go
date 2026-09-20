@@ -1,16 +1,15 @@
-//go:build cmd
-
 /* For license and copyright information please see the LEGAL file in the code repository */
 // Auto-generated, edits may be overwritten
 
-package modules
+package main
 
 import (
-	cmd "memar/command"
 	"memar/detail"
 	"memar/mediatype"
+	cmd "memar/operation/command"
+	"memar/process/service"
 	"memar/protocol"
-	"memar/service"
+	user_p "org/modules/identity/user/protocol"
 )
 
 var RootCommand rootCommand
@@ -33,8 +32,8 @@ func (rc *rootCommand) Init() {
 func (s *rootCommand) FileExtension() string               { return "" }
 func (s *rootCommand) Status() protocol.SoftwareStatus     { return protocol.Software_Unset }
 func (s *rootCommand) ReferenceURI() string                { return "" }
-func (s *rootCommand) IssueDate() protocol.Time            { return nil }
-func (s *rootCommand) ExpiryDate() protocol.Time           { return nil }
+func (s *rootCommand) IssueDate() time_p.Time              { return nil }
+func (s *rootCommand) ExpiryDate() time_p.Time             { return nil }
 func (s *rootCommand) ExpireInFavorOf() protocol.MediaType { return nil }
 
 //memar:impl memar/protocol.Object
@@ -42,19 +41,19 @@ func (s *rootCommand) Fields() []protocol.Object_Member_Field   { return nil }
 func (s *rootCommand) Methods() []protocol.Object_Member_Method { return nil }
 
 //memar:impl protocol.Service
-func (s *rootCommand) URI() string                 { return "" }
-func (s *rootCommand) CRUDType() protocol.CRUD     { return protocol.CRUD_None }
-func (s *rootCommand) UserType() protocol.UserType { return protocol.UserType_Unset }
+func (s *rootCommand) URI() string                        { return "" }
+func (s *rootCommand) ActionType() operation_p.ActionType { return operation_p.ActionType_None }
+func (s *rootCommand) UserType() user_p.Type              { return user_p.Type_Unset }
 
 //memar:impl protocol.OperationImportance
 func (s *rootCommand) Priority() protocol.Priority { return protocol.Priority_Unset }
-func (s *rootCommand) Weight() protocol.Weight     { return protocol.Weight_Unset }
+func (s *rootCommand) Weight() operation_p.Weight  { return operation_p.Weight_Unset }
 
 //memar:impl protocol.ServiceDetails
 func (s *rootCommand) Request() protocol.Object  { return nil }
 func (s *rootCommand) Response() protocol.Object { return nil }
 
-//memar:impl memar/protocol.Quiddity
+//memar:impl
 func (s *rootCommand) Name() string         { return "organization" }
 func (c *rootCommand) Abbreviation() string { return "org" }
 func (s *rootCommand) Aliases() []string    { return []string{} }
@@ -63,7 +62,7 @@ func (s *rootCommand) Aliases() []string    { return []string{} }
 func (s *rootCommand) Runnable() bool { return false }
 
 //memar:impl memar/protocol.CommandHandler
-func (s *rootCommand) ServeCLA(arguments []string) (err protocol.Error) {
+func (s *rootCommand) ServeCLA(arguments []string) (err error_p.Error) {
 	err = cmd.ServeCLA(s, arguments)
 	return
 }

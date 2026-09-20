@@ -3,11 +3,11 @@
 package tax_p
 
 import (
-	ut16 "memar/identifier/uuid-time-16byte"
+	thing_p "org/modules/identity/thing/protocol"
 )
 
 type Field_TaxID interface {
-	TaxID() TaxUUID
+	TaxID() UUID
 }
 
-type TaxUUID ut16.UUID
+type UUID thing_p.UUID

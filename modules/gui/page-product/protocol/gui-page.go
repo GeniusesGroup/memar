@@ -3,7 +3,7 @@
 package upp
 
 import (
-	pp "org/modules/product/protocol"
+	product_p "org/modules/economics/product/protocol"
 )
 
 // /product?new
@@ -22,14 +22,14 @@ type GUI_Page_UsedDomains interface {
 	// Content
 	// User
 	// Group
-	// Quiddity
+	// thing
 }
 
 type GUI_Page_HyperLinks interface {
 }
 
 type GUI_Page_Conditions interface {
-	ProductID() pp.ProductUUID
+	product_p.Field_ProductID
 
 	Editable() bool
 }

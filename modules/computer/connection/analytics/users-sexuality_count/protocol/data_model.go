@@ -3,7 +3,7 @@
 package usacp
 
 import (
-	usp "org/modules/user-sexuality/protocol"
+	usp "org/modules/identity/user-sexuality/protocol"
 )
 
 type DataModel interface {

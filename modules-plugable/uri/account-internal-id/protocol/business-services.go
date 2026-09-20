@@ -3,23 +3,19 @@
 package fai
 
 import (
-	"memar/protocol"
-
-	fap "org/modules/financial-account/protocol"
+	account_p "org/modules/economics/account/protocol"
 )
 
 type (
 	BS_Register_Request interface {
-		AccountID() fap.FinancialAccountUUID
+		account_p.Field_AccountID
 		ID() ID
 	}
 )
 
 type (
 	BS_Get_Request interface {
-		AccountID() fap.FinancialAccountUUID
-		VersionOffset() protocol.VersionOffset
+		account_p.Field_AccountID
 	}
-	BS_Get_Response1 = DataModel
-	BS_Get_Response2 = protocol.NumberOfVersion
+	BS_Get_Response = DataModel
 )

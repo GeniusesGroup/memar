@@ -3,13 +3,13 @@
 package usacuhp
 
 import (
-	utc "memar/time/utc"
+	"memar/time/utc"
 
-	usp "org/modules/user-sexuality/protocol"
+	usp "org/modules/identity/user-sexuality/protocol"
 )
 
 type DataModel interface {
-	Hour() utc.HourElapsed
+	utc.Field_HourElapsed
 	Sexuality() usp.Sexuality
 	Count() Count
 }

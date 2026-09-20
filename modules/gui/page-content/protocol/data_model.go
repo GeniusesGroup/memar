@@ -1,22 +1,18 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package cp
+package content_p
 
 import (
-	"memar/protocol"
-
-	arp "org/modules/app-request/protocol"
-	ctp "org/modules/content-type/protocol"
-	up "org/modules/user/protocol"
+	request_p "memar/process/request/protocol"
+	audit_time_p "memar/process/time/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	ContentID() ContentUUID
-	UserID() up.UserUUID
-	ContentTypeID() ctp.ContentTypeUUID
+	Field_ContentID
+	// user_p.Field_UserID
+	// ct_p.Field_ContentTypeID
 
-	arp.AuditLogging
-	protocol.Storage_Versioned
-	protocol.Storage_SaveTime
+	request_p.Field_RequestID
+	audit_time_p.Field_Request
 }

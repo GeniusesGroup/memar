@@ -1,9 +1,17 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package qp
+package question_p
 
 import (
-	"memar/protocol"
+	thing_p "org/modules/identity/thing/protocol"
 )
 
-type QuestionUUID protocol.UUID
+type Field_QuestionID interface {
+	QuestionID() UUID
+}
+
+type Field_QuestionsID interface {
+	QuestionsID() []UUID
+}
+
+type UUID thing_p.UUID

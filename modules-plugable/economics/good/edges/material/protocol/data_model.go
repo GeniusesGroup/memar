@@ -1,28 +1,29 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package pm_p
 
 import (
-	"memar/protocol"
+	decimal_p "memar/math/decimal/protocol"
+	request_p "memar/process/request/protocol"
+	audit_time_p "memar/process/time/protocol"
 
-	arp "org/modules/app-request/protocol"
-	cp "org/modules/category/protocol"
-	pp "org/modules/product/protocol"
-	qrp "org/modules/quiddity-relation-type/protocol"
+	status_p "org/modules/fields/status/protocol"
 )
 
 // DataModel indicate the domain record data fields.
+// ProductMaterial store some key/value for a quiddity to describe it e.g. mobile-cpu, ...
+// TODO::: is it good idea to add detail manually by users?? or quiddity-model is better??
 type DataModel interface {
-	ProductID() pp.ProductUUID
-	Material_ProductID() pp.ProductUUID         // can be nil!
-	Material_CategoryID() cp.CategoryUUID       // can be nil!
-	RelationType() qrp.QuiddityRelationTypeUUID // Optional??
-	MinQuantity() uint64
-	BaseQuantity() uint64 // decimal >> 1.5 >> 1.2 >> 10 >> 0
-	MaxQuantity() uint64
-	Status() Status
+	// PrimaryNode is the product that material will related to it e.g. `Mobile`, `Pizza`
+	// SecondaryNode indicate material e.g. `cpu`, `Pizza cheese` and it can be substitute of this product
+	// Edge indicate material relation e.g `internal tool`, `Pizza topping`, ...
+	// graph_p.DataModel[product_p.UUID, product_p.UUID, label_p.UUID]
+	MinQuantity() decimal_p.Quantity
+	BaseQuantity() decimal_p.Quantity
+	MaxQuantity() decimal_p.Quantity
 
-	arp.AuditLogging
-	protocol.Storage_Versioned
-	protocol.Storage_SaveTime
+	status_p.Field_Status
+
+	request_p.Field_RequestID
+	audit_time_p.Field_Request
 }

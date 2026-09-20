@@ -3,11 +3,11 @@
 package inventory_p
 
 import (
-	pp "org/modules/product/protocol"
+	product_p "org/modules/economics/product/protocol"
 )
 
 type GUI_Widget_Conditions interface {
-	ProductUUID() pp.ProductUUID
+	product_p.Field_ProductID
 }
 
 type GUI_Widget_Service interface {

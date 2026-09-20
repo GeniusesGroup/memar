@@ -1,0 +1,46 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+package lang
+
+import (
+	lang_p "memar/language/protocol"
+	"memar/string/harf"
+)
+
+// LanguageDetail use to store other detail for a language
+type LanguageDetail struct {
+	ID          lang_p.LanguageID
+	NativeName  string
+	Description []string
+	Scripts     []harf.Script //
+}
+
+// LanguagesDetails store all available language in
+var LanguagesDetails = map[lang_p.LanguageID]LanguageDetail{
+	lang_p.LanguagePersian: {
+		ID:          lang_p.LanguagePersian,
+		Description: []string{"Persian", "پارسی"},
+		Scripts:     []harf.Script{harf.ScriptPersian},
+	},
+	lang_p.LanguageEnglish: {
+		ID:          lang_p.LanguageEnglish,
+		Description: []string{"English", "انگلیسی"},
+		Scripts:     []harf.Script{harf.ScriptLatin},
+	},
+	lang_p.LanguageRussian: {
+		ID:          lang_p.LanguageRussian,
+		Description: []string{"Russain"},
+		Scripts:     []harf.Script{harf.ScriptCyrillic},
+	},
+}
+
+// GetLanguageByISO return related Language by given ISO language tag!
+func GetLanguageByISO(iso string) lang_p.LanguageID {
+	// TODO:::
+	if iso == "en" {
+		return lang_p.LanguageEnglish
+	} else if iso == "fa" {
+		return lang_p.LanguagePersian
+	}
+	return lang_p.LanguageUnset
+}

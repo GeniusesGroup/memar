@@ -3,7 +3,7 @@
 package voucher
 
 import (
-	fc_p "org/modules/financial/currency/protocol"
+	fc_p "org/modules/economics/currency/protocol"
 )
 
 type Value interface {

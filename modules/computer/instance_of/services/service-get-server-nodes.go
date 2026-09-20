@@ -4,8 +4,8 @@ package services
 
 import (
 	"memar/net/srpc"
+	"memar/process/service"
 	"memar/protocol"
-	"memar/service"
 )
 
 var getServerNodesService = service.Service{
@@ -19,8 +19,8 @@ var getServerNodesService = service.Service{
 	Status:             protocol.Software_PreAlpha,
 
 	Authorization: authorization.Service{
-		CRUD:     authorization.CRUDRead,
-		UserType: protocol.UserType_All, // TODO::: ??
+		CRUD:     operation_p.ActionType_Read,
+		UserType: user_p.Type_All, // TODO::: ??
 	},
 
 	Detail: map[protocol.LanguageID]service.ServiceDetail{
@@ -38,7 +38,7 @@ var getServerNodesService = service.Service{
 func GetServerNodesSRPC(st protocol.Stream) {
 	var res *getServerNodesRes
 	res, err = getServerNodes(st)
-	// Check if any error occur in bussiness logic
+	// Check if any error occur in business logic
 	if err != nil {
 		return
 	}
@@ -51,7 +51,7 @@ type getServerNodesRes struct {
 	nodes []NodeDetails
 }
 
-func getServerNodes(st protocol.Stream) (res *getServerNodesRes, err protocol.Error) {
+func getServerNodes(st protocol.Stream) (res *getServerNodesRes, err error_p.Error) {
 	res = &getServerNodesRes{}
 	res.nodes = App.Nodes.GetServerNodeDetails()
 	return

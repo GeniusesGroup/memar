@@ -3,9 +3,9 @@
 package fr_p
 
 import (
-	error_p "memar/error/protocol"
+	error_p "memar/process/error/protocol"
 
-	storage_p "org/modules/storage/primitive/protocol"
+	storage_p "memar/storage/protocol"
 )
 
 type StorageServices interface {

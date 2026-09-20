@@ -3,18 +3,17 @@
 package fcsp
 
 import (
-	"memar/protocol"
+	request_p "memar/process/request/protocol"
+	audit_time_p "memar/process/time/protocol"
 
-	arp "org/modules/app-request/protocol"
-	fcp "org/modules/financial-card/protocol"
+	card_p "org/modules/vertices/card/protocol"
 )
 
 // store users bank account to distinguish user balances in desire indexes
 type DataModel interface {
-	FinancialCardID() fcp.FinancialCardUUID
+	card_p.Field_CardID
 	CardHexSHA1() CardHexSHA1
 
-	arp.AuditLogging
-	protocol.Storage_Versioned
-	protocol.Storage_SaveTime
+	request_p.Field_RequestID
+	audit_time_p.Field_Request
 }

@@ -1,0 +1,13 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+package gender_p
+
+import (
+	thing_p "org/modules/identity/thing/protocol"
+	label_p "org/modules/knowledge/label/protocol"
+)
+
+type Model interface {
+	thing_p.Model
+	label_p.Model
+}

@@ -1,0 +1,144 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+package pa
+
+import (
+	"libgo/authorization"
+	"libgo/http"
+	"libgo/json"
+	"libgo/protocol"
+	"libgo/srpc"
+)
+
+var changePersonPasswordService = service.Service{
+	URN:                "urn:giti:sabz.city:service:change-person-password",
+	Domain:             DomainName,
+	ID:                 9658482367037639777,
+	IssueDate:          1592389987,
+	ExpiryDate:         0,
+	ExpireInFavorOfURN: "",
+	ExpireInFavorOfID:  0,
+	Status:             protocol.Software_PreAlpha,
+
+	Authorization: authorization.Service{
+		CRUD:     authorization.CRUDUpdate,
+		UserType: protocol.UserType_All,
+	},
+
+	Detail: map[protocol.LanguageID]service.ServiceDetail{
+		Name:        "ChangePersonPassword",
+		Description: "Change password in active person connection not to recover account!",
+		TAGS:        []string{"PersonAuthentication"},
+	},
+
+	SRPCHandler: ChangePersonPasswordSRPC,
+	ServeHTTP:   ChangePersonPasswordHTTP,
+}
+
+// ChangePersonPasswordSRPC is sRPC handler of ChangePersonPassword service.
+func ChangePersonPasswordSRPC(st protocol.Stream) {
+	var req = &changePersonPasswordReq{}
+	err = req.FromSyllab(srpc.GetPayload(st.IncomePayload))
+	if err != nil {
+		return
+	}
+
+	var res *changePersonPasswordRes
+	res, err = changePersonPassword(st, req)
+	// Check if any error occur in business logic
+	if err != nil {
+		return
+	}
+
+	st.OutcomePayload = make([]byte, srpc.MinLength+res.LenAsSyllab())
+	res.ToSyllab(srpc.GetPayload(st.OutcomePayload))
+}
+
+// ChangePersonPasswordHTTP is HTTP handler of ChangePersonPassword service.
+func ChangePersonPasswordHTTP(st protocol.Stream, httpReq *http.Request, httpRes *http.Response) {
+	var req = &changePersonPasswordReq{}
+	err = req.FromJSON(httpReq.Body().Marshal())
+	if err != nil {
+		httpRes.SetStatus(http.StatusBadRequestCode, http.StatusBadRequestPhrase)
+		return
+	}
+
+	var res *changePersonPasswordRes
+	res, err = changePersonPassword(st, req)
+	// Check if any error occur in business logic
+	if err != nil {
+		httpRes.SetStatus(http.StatusBadRequestCode, http.StatusBadRequestPhrase)
+		return
+	}
+
+	httpRes.SetStatus(http.StatusOKCode, http.StatusOKPhrase)
+	httpRes.SetBody(json.NewCodec(res))
+}
+
+type changePersonPasswordReq struct {
+	OldPassword [32]byte `valid:"Password" json:",string"`
+	NewPassword [32]byte `valid:"Password" json:",string"`
+	OTP         uint32
+}
+
+type changePersonPasswordRes struct{}
+
+func changePersonPassword(st protocol.Stream, req *changePersonPasswordReq) (res *changePersonPasswordRes, err protocol.Error) {
+	// TODO::: Authenticate & Authorizing request first by service policy.
+
+	err = st.Authorize()
+	if err != nil {
+		return
+	}
+
+	// Validate data here due to service use internally by other services!
+	err = req.validator()
+	if err != nil {
+		return
+	}
+
+	// this service can use just for active user so we use st.Connection.OwnerID for personID
+	// This service can't use on Delegate connection so check st.Connection.DelegateUserID
+
+	// check OTP if it activated by user OTPPattern + OTPAdditional
+
+	res = &changePersonPasswordRes{}
+
+	return
+}
+
+func (req *changePersonPasswordReq) validator() (err protocol.Error) {
+	return
+}
+
+func (req *changePersonPasswordReq) FromSyllab(payload []byte, stackIndex uint32) {
+	return
+}
+
+func (req *changePersonPasswordReq) FromJSON(payload []byte) (remaining []byte, err protocol.Error) {
+	err = json.Unmarshal(buf, req)
+	return
+}
+
+func (res *changePersonPasswordRes) ToSyllab(payload []byte, stackIndex, heapIndex uint32) (freeHeapIndex uint32) {
+	return
+}
+
+func (res *changePersonPasswordRes) LenOfSyllabStack() uint32 {
+	return 0
+}
+
+func (res *changePersonPasswordRes) LenOfSyllabHeap() (ln uint32) {
+	return
+}
+
+func (res *changePersonPasswordRes) LenAsSyllab() uint64 {
+	return uint64(res.LenOfSyllabStack() + res.LenOfSyllabHeap())
+}
+
+func (res *changePersonPasswordRes) ToJSON(payload []byte) (added []byte, err protocol.Error) {
+	var encoder = json.Encoder{Buf: payload}
+
+	buf, _ = json.Marshal(res)
+	return
+}

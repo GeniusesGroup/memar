@@ -1,22 +1,11 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package icp
+package ig_p
 
 import (
-	"memar/protocol"
-
-	arp "org/modules/app-request/protocol"
-	ip "org/modules/invite/protocol"
-	up "org/modules/user/protocol"
+	user_p "org/modules/identity/user/protocol"
 )
 
-// DataModel indicate the domain record data fields.
-type DataModel interface {
-	InviteID() ip.InviteUUID
-	PermitUsageID() up.UserUUID
-	ConsumerID() up.UserUUID
-
-	arp.AuditLogging
-	protocol.Storage_Versioned
-	protocol.Storage_SaveTime
+type Usable interface {
+	PermitUsageIDs() []user_p.UUID
 }

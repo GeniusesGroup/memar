@@ -3,8 +3,8 @@
 package discount
 
 import (
-	product_p "org/modules/business/product/protocol"
-	fmp "org/modules/financial/money/protocol"
+	fmp "org/modules/economics/money/protocol"
+	product_p "org/modules/economics/product/protocol"
 )
 
 // DataModel or product sale indicate the domain record data fields.

@@ -3,19 +3,18 @@
 package fsip
 
 import (
-	"memar/protocol"
+	request_p "memar/process/request/protocol"
+	audit_time_p "memar/process/time/protocol"
 
-	arp "org/modules/app-request/protocol"
-	up "org/modules/user/protocol"
+	user_p "org/modules/identity/user/protocol"
 )
 
 // DataModel
 // Store user risk to prevent or detect frauds
 type DataModel interface {
-	UserID() up.UserUUID
+	user_p.Field_UserUUID
 	Score() int64
 
-	arp.AuditLogging
-	protocol.Storage_Versioned
-	protocol.Storage_SaveTime
+	request_p.Field_RequestID
+	audit_time_p.Field_Request
 }

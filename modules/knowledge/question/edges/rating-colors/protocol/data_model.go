@@ -3,18 +3,19 @@
 package qrcp
 
 import (
-	"memar/protocol"
+	picture_p "memar/picture/protocol"
 
-	arp "org/modules/app-request/protocol"
-	qp "org/modules/question/protocol"
+	request_p "memar/process/request/protocol"
+	audit_time_p "memar/process/time/protocol"
+
+	question_p "org/modules/knowledge/question/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	QuestionID() qp.QuestionUUID
-	Colors() []protocol.RGB
+	question_p.Field_QuestionID
+	Colors() []picture_p.RGB
 
-	arp.AuditLogging
-	protocol.Storage_Versioned
-	protocol.Storage_SaveTime
+	request_p.Field_RequestID
+	audit_time_p.Field_Request
 }

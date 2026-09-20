@@ -3,10 +3,12 @@
 package clap
 
 import (
-	"memar/protocol"
+	request_p "memar/process/request/protocol"
+	audit_time_p "memar/process/time/protocol"
+	record_p "memar/storage/record/protocol"
 
-	arp "org/modules/app-request/protocol"
-	cp "org/modules/comment/protocol"
+	bm_p "org/modules/computer/module/protocol"
+	comment_p "org/modules/knowledge/content/edges-loop/comment/protocol"
 )
 
 // It can point to any domain records e.g. product, invoice, ...
@@ -19,13 +21,12 @@ import (
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	CommentID() cp.CommentUUID      //
-	DomainID() protocol.MediaTypeID // use to detect comment GUI template
+	comment_p.Field_CommentID //
+	bm_p.Field_ModuleUUID     // use to detect comment GUI template
 	// TODO::: primary key may not be a single field!
-	RecordID() protocol.UUID // in above domain
+	RecordID() record_p.UUID // in above domain
 	RecordVersion() uint64   // VersionOffset
 
-	arp.AuditLogging
-	protocol.Storage_Versioned
-	protocol.Storage_SaveTime
+	request_p.Field_RequestID
+	audit_time_p.Field_Request
 }

@@ -3,19 +3,20 @@
 package anhp
 
 import (
-	"memar/protocol"
+	"memar/time/duration"
 
-	aap "org/modules/app-audit/protocol"
-	anp "org/modules/app-node/protocol"
+	request_p "memar/process/request/protocol"
+	audit_time_p "memar/process/time/protocol"
+
+	instance_p "org/modules/computer/instance_of/protocol"
 )
 
 type DataModel interface {
-	NodeID() anp.NodeUUID
-	SideNodeID() anp.NodeUUID
-	PingTime() protocol.Duration
-	JitterTime() protocol.Duration
+	instance_p.Field_InstanceUUID
+	SideNodeID() instance_p.UUID
+	PingTime() duration.NanoSecond
+	JitterTime() duration.NanoSecond
 
-	aap.AuditRequest
-	protocol.Storage_Versioned
-	protocol.Storage_SaveTime
+	request_p.Field_RequestID
+	audit_time_p.Field_Request
 }

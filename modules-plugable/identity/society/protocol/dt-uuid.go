@@ -1,9 +1,13 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package sp
+package society_p
 
 import (
-	"memar/protocol"
+	thing_p "org/modules/identity/thing/protocol"
 )
 
-type SocietyUUID protocol.UUID
+type Field_SocietyUUID interface {
+	SocietyUUID() UUID
+}
+
+type UUID thing_p.UUID

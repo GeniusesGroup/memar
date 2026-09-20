@@ -1,9 +1,13 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package np
+package notification_p
 
 import (
-	gp "org/modules/group/protocol"
+	group_p "org/modules/management/group/protocol"
 )
 
-type NotificationUUID gp.GroupUUID
+type Field_NotificationID interface {
+	NotificationID() NotificationUUID
+}
+
+type NotificationUUID group_p.UUID

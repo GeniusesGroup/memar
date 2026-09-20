@@ -4,8 +4,8 @@ package contract_p
 
 import (
 	module_p "org/modules/computer/module/protocol"
+	thing_p "org/modules/identity/thing/protocol"
 	label_p "org/modules/knowledge/label/protocol"
-	quiddity_p "org/modules/identity/quiddity/protocol"
 )
 
 type Field_Data interface {
@@ -15,6 +15,6 @@ type Field_Data interface {
 type Data struct {
 	label label_p.UUID
 	// This ID can point to `knowledge/text` module to store some human string.
-	id       quiddity_p.UUID
+	id       thing_p.UUID
 	moduleID module_p.UUID
 }

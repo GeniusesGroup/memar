@@ -1,0 +1,24 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+package captcha
+
+import (
+	"crypto/rand"
+
+	"libgo/achaemenid"
+	"libgo/captcha"
+	"libgo/service"
+)
+
+var (
+	captcha.Init()
+	phraseCaptchas = &captcha.DefaultPhraseCaptchas
+)
+
+// Init method use to initialize services and register them in the application.
+func Init() {
+	var err protocol.Error
+	var goErr error
+
+	protocol.App.Log(log.InfoEvent(domainEnglish, "Initialize Platform services ..."))
+}

@@ -15,7 +15,7 @@ import (
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	user_p.Field_UserID
+	user_p.Field_UserUUID
 
 	// Overall, while the order of keywords in a search query can influence search results,
 	// it is just one of many factors that search algorithm considers.
@@ -27,5 +27,5 @@ type DataModel interface {
 	// TODO::: pagination? Isn't a filter??
 
 	request_p.Field_RequestID
-	audit_time_p.Field_SaveTime
+	audit_time_p.Field_Request
 }

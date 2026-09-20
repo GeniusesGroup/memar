@@ -1,10 +1,10 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package upp
+package up_p
 
 import (
-	urup "org/modules/user-relation-user/protocol"
-	up "org/modules/user/protocol"
+	user_p "org/modules/identity/user/protocol"
+	label_p "org/modules/knowledge/label/protocol"
 )
 
 type GUI_Page_UsedDomains interface {
@@ -14,7 +14,7 @@ type GUI_Page_UsedDomains interface {
 	// Group
 	// List
 	// Timeline
-	// Quiddity
+	// thing
 
 	// TODO:::
 	// AccessibilityStatus
@@ -26,7 +26,7 @@ type GUI_Page_HyperLinks interface {
 }
 
 type GUI_Page_Conditions interface {
-	UserID() up.UserUUID //
+	user_p.Field_UserUUID //
 }
 
 type GUI_Page_Service interface {
@@ -38,7 +38,7 @@ type GUI_Page_Service interface {
 	RSSFeed()
 
 	// Same as follow
-	AddToFriendshipCycle(uid up.UserUUID, r urup.User_Relation)
+	AddToFriendshipCycle(uid user_p.UUID, relationType label_p.UUID)
 }
 
 type Notify_Type uint8

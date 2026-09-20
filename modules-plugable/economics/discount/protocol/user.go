@@ -7,5 +7,5 @@ import (
 )
 
 type User interface {
-	user_p.Field_UserID
+	user_p.Field_UserUUID
 }

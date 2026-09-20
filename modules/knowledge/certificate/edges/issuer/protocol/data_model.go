@@ -3,20 +3,17 @@
 package ecip
 
 import (
-	"memar/protocol"
+	request_p "memar/process/request/protocol"
+	audit_time_p "memar/process/time/protocol"
 
-	arp "org/modules/app-request/protocol"
-	ekup "org/modules/edu-knowledge_unit/protocol"
-	up "org/modules/user/protocol"
+	ku_p "org/modules/knowledge/knowledge_unit/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	IssuerID() up.UserUUID // organization only??
-	KnowledgeUnitID() ekup.EducationKnowledgeUnitUUID
+	ku_p.Field_KnowledgeUnitID
 	Score() uint64
 
-	arp.AuditLogging
-	protocol.Storage_Versioned
-	protocol.Storage_SaveTime
+	request_p.Field_RequestID
+	audit_time_p.Field_Request
 }

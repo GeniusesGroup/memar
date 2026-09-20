@@ -3,13 +3,13 @@
 package ugachp
 
 import (
-	"memar/time/utc"
+	utc "memar/time/utc"
 
-	ugp "org/modules/user-gender/protocol"
+	gender_p "org/modules/identity/taxon/edges/gender/protocol"
 )
 
 type DataModel interface {
-	Hour() utc.HourElapsed
-	Gender() ugp.Gender
+	utc.Field_MinuteElapsed
+	gender_p.Field_GenderUUID
 	GenderCount() uint64
 }

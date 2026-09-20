@@ -1,9 +1,13 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package icp
+package distribution_p
 
 import (
-	"memar/protocol"
+	transaction_p "org/modules/economics/transaction/protocol"
 )
 
-type InventoryChangeUUID = protocol.UUID
+type Field_DistributionID interface {
+	DistributionID() UUID
+}
+
+type UUID transaction_p.UUID

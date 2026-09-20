@@ -2,8 +2,8 @@
 
 package voucher
 
-type Field_Epoch interface {
-	Epoch() Epoch
+type Field_Each interface {
+	Each() Each
 }
 
 // Each time use

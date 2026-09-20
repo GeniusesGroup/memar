@@ -11,7 +11,7 @@ import (
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	text_p.Field_TextID
+	text_p.Field_TextUUID
 	Field_Type
 
 	request_p.Field_RequestID

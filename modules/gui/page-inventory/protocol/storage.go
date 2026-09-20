@@ -1,23 +1,24 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package itp
+package inventory_p
 
 import (
-	"memar/protocol"
+	error_p "memar/process/error/protocol"
 
-	eblp "org/modules/estate-building-location/protocol"
-	pp "org/modules/product/protocol"
+	storage_p "memar/storage/protocol"
+	pp "org/modules/economics/product/protocol"
+	estate_p "org/modules/rights/estate/protocol"
 )
 
 type StorageService interface {
-	// Save(p ProductInventory) (nv protocol.NumberOfVersion, err protocol.Error)
+	// Save(p ProductInventory) (nv storage_p.NumberOfVersion, err error_p.Error)
 
-	Lock(productID pp.ProductUUID, buildingLocationID eblp.BuildingLocationUUID) (dm DataModel, err protocol.Error)
-	Unlock(dm DataModel) (nv protocol.NumberOfVersion, err protocol.Error)
+	Lock(productID pp.UUID, eID estate_p.UUID) (dm DataModel, err error_p.Error)
+	Unlock(dm DataModel) (nv storage_p.NumberOfVersion, err error_p.Error)
 
-	Count(productID pp.ProductUUID, buildingLocationID eblp.BuildingLocationUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(productID pp.ProductUUID, buildingLocationID eblp.BuildingLocationUUID, vo protocol.VersionOffset) (dm DataModel, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(productID pp.UUID, eID estate_p.UUID) (nv storage_p.NumberOfVersion, err error_p.Error)
+	Get(productID pp.UUID, eID estate_p.UUID, vo storage_p.VersionOffset) (dm DataModel, nv storage_p.NumberOfVersion, err error_p.Error)
 
-	LIST_ProductIDs_BY_BuildingLocationID(buildingLocationID eblp.BuildingLocationUUID, offset, limit uint64) (productIDs []pp.ProductUUID, nv protocol.NumberOfVersion, err protocol.Error)
-	LIST_BuildingLocationIDs_BY_ProductID(productID pp.ProductUUID, offset, limit uint64) (buildingLocationIDs []eblp.BuildingLocationUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	LIST_ProductIDs_BY_EstateID(id estate_p.UUID, offset, limit uint64) (productIDs []pp.UUID, nv storage_p.NumberOfVersion, err error_p.Error)
+	LIST_EstateIDs_BY_ProductID(productID pp.UUID, offset, limit uint64) (IDs []estate_p.UUID, nv storage_p.NumberOfVersion, err error_p.Error)
 }

@@ -17,11 +17,11 @@ var (
 )
 
 func init() {
-	ErrNoNodeAvailable.Init("domain/libgo.scm.geniuses.group; package=node; type=error; name=no-node-available")
+	ErrNoNodeAvailable.Init("domain/memar.scm.geniuses.group; package=node; type=error; name=no-node-available")
 
 	// ErrContentAlreadyExist    .Init("This content was already exist")
 	// ErrCantPrepareStatement   .Init("Can't prepare a new statement to database")
 	// ErrStoringDataNotComplete .Init("We have some problem in storing your data in our databases. Send your request again! If error exist contact software administrators")
 	// ErrDatabaseConnectionError.Init("Could not connect to database")
-	// ErrDatabasePingOut        .Init("Error ocurred in Ping to database")
+	// ErrDatabasePingOut        .Init("Error occurred in Ping to database")
 }

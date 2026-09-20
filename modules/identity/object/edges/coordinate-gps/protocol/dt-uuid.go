@@ -1,10 +1,15 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package ggcp
+package coordinate_gps_p
 
 import (
-	"memar/protocol"
+	thing_p "org/modules/identity/thing/protocol"
 )
 
-// can be same as quiddity||user||invoice||area||building||building-location||staff||... domain
-type CoordinateUUID protocol.UUID
+type Field_CoordinateID interface {
+	CoordinateID() UUID
+}
+
+// device who send the coordinate
+// It can use and share for other usages as user||invoice||area||building||building-location||staff||... domains
+type UUID thing_p.UUID

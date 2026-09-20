@@ -1,9 +1,13 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package lp
+package language_p
 
 import (
-	"memar/protocol"
+	label_p "org/modules/knowledge/label/protocol"
 )
 
-type LanguageUUID protocol.Language
+type Field_LanguageUUID interface {
+	LanguageUUID() UUID
+}
+
+type UUID label_p.UUID

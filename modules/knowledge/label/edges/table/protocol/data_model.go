@@ -14,7 +14,7 @@ import (
 // TODO::: base on label or status or both??
 type DataModel interface {
 	Field_TableID
-	label_p.Field_LabelsID
+	label_p.Field_LabelsUUID
 
 	request_p.Field_RequestID
 	audit_time_p.Field_Request

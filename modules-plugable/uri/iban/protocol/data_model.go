@@ -3,19 +3,17 @@
 package faip
 
 import (
-	"memar/iso"
-	"memar/protocol"
+	request_p "memar/process/request/protocol"
+	audit_time_p "memar/process/time/protocol"
 
-	arp "org/modules/app-request/protocol"
-	fap "org/modules/financial-account/protocol"
+	account_p "org/modules/economics/account/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	AccountID() fap.FinancialAccountUUID
-	IBAN() iso.IBAN
+	account_p.Field_AccountID
+	IBAN() IBAN
 
-	arp.AuditLogging
-	protocol.Storage_Versioned
-	protocol.Storage_SaveTime
+	request_p.Field_RequestID
+	audit_time_p.Field_Request
 }

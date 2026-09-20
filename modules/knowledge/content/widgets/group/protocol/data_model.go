@@ -1,22 +1,22 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package cgp
+package cg_p
 
 import (
-	"memar/protocol"
+	request_p "memar/process/request/protocol"
+	audit_time_p "memar/process/time/protocol"
 
-	arp "org/modules/app-request/protocol"
-	cp "org/modules/comment/protocol"
-	gp "org/modules/group/protocol"
+	comment_p "org/modules/knowledge/content/edges-loop/comment/protocol"
+	group_p "org/modules/management/group/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 // each comment is immutable record and so use version mechanism to chain comments in a group.
 type DataModel interface {
-	GroupID() gp.GroupUUID
-	CommentID() cp.CommentUUID
+	group_p.Field_GroupID
+	Field_CommentIndex // TODO::: Need index or just order by time?? index need lock!
+	comment_p.Field_CommentID
 
-	arp.AuditLogging
-	protocol.Storage_Versioned
-	protocol.Storage_SaveTime
+	request_p.Field_RequestID
+	audit_time_p.Field_Request
 }

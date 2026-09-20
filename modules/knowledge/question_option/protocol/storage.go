@@ -1,16 +1,18 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package qop
+package qo_p
 
 import (
-	"memar/protocol"
+	error_p "memar/process/error/protocol"
+
+	storage_p "memar/storage/protocol"
 )
 
 type StorageServices interface {
-	Save(dm DataModel) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm DataModel) (nv storage_p.NumberOfVersion, err error_p.Error)
 
-	Count(questionOptionID QuestionOptionUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(questionOptionID QuestionOptionUUID, vo protocol.VersionOffset) (dm DataModel, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(questionOptionID UUID) (nv storage_p.NumberOfVersion, err error_p.Error)
+	Get(questionOptionID UUID, vo storage_p.VersionOffset) (dm DataModel, nv storage_p.NumberOfVersion, err error_p.Error)
 
-	FILTER_QuestionOptionIDs_BY_Type(t Type, offset, limit uint64) (questionOptionIDs []QuestionOptionUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	FILTER_QuestionOptionIDs_BY_Type(t Type, offset, limit uint64) (questionOptionIDs []UUID, nv storage_p.NumberOfVersion, err error_p.Error)
 }

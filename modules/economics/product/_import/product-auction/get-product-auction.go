@@ -1,0 +1,361 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+package services
+
+import (
+	"time"
+
+	"libgo/authorization"
+	"libgo/http"
+	"libgo/json"
+	"libgo/math"
+	"libgo/protocol"
+	"libgo/service"
+	"libgo/srpc"
+	"libgo/syllab"
+)
+
+var getProductAuctionService = service.Service{
+	URN:                "urn:giti:sabz.city:service:get-product-auction",
+	Domain:             DomainName,
+	ID:                 13491554684354584852,
+	IssueDate:          1605202870,
+	ExpiryDate:         0,
+	ExpireInFavorOfURN: "",
+	ExpireInFavorOfID:  0,
+	Status:             protocol.Software_PreAlpha,
+
+	Authorization: authorization.Service{
+		CRUD:     authorization.CRUDRead,
+		UserType: protocol.UserType_All,
+	},
+
+	Name: map[protocol.LanguageID]string{
+		protocol.LanguageEnglish: "Get Product Auction",
+	},
+	Description: map[protocol.LanguageID]string{
+		protocol.LanguageEnglish: "",
+	},
+	TAGS: []string{
+		"ProductAuction",
+	},
+
+	SRPCHandler: GetProductAuctionSRPC,
+	ServeHTTP:   GetProductAuctionHTTP,
+}
+
+// GetProductAuctionSRPC is sRPC handler of GetProductAuction service.
+func GetProductAuctionSRPC(st protocol.Stream) {
+	var req = &getProductAuctionReq{}
+	err = req.FromSyllab(srpc.GetPayload(st.IncomePayload))
+	if err != nil {
+		return
+	}
+
+	var res *getProductAuctionRes
+	res, err = getProductAuction(st, req)
+	// Check if any error occur in business logic
+	if err != nil {
+		return
+	}
+
+	st.OutcomePayload = make([]byte, srpc.MinLength+res.LenAsSyllab())
+	res.ToSyllab(srpc.GetPayload(st.OutcomePayload))
+}
+
+// GetProductAuctionHTTP is HTTP handler of GetProductAuction service.
+func GetProductAuctionHTTP(st protocol.Stream, httpReq *http.Request, httpRes *http.Response) {
+	var req = &getProductAuctionReq{}
+	err = req.FromJSON(httpReq.Body().Marshal())
+	if err != nil {
+		httpRes.SetStatus(http.StatusBadRequestCode, http.StatusBadRequestPhrase)
+		return
+	}
+
+	var res *getProductAuctionRes
+	res, err = getProductAuction(st, req)
+	// Check if any error occur in business logic
+	if err != nil {
+		httpRes.SetStatus(http.StatusBadRequestCode, http.StatusBadRequestPhrase)
+		return
+	}
+
+	httpRes.SetStatus(http.StatusOKCode, http.StatusOKPhrase)
+	httpRes.SetBody(json.NewCodec(res))
+}
+
+type getProductAuctionReq struct {
+	ID [32]byte `json:",string"`
+}
+
+type getProductAuctionRes struct {
+	WriteTime        time.Time
+	AppInstanceID    [32]byte `json:",string"`
+	UserConnectionID [32]byte `json:",string"`
+	OrgID            [32]byte `json:",string"`
+	QuiddityID       [32]byte `json:",string"`
+
+	// Price
+	Discount         math.PerMyriad
+	DCCommission     math.PerMyriad
+	SellerCommission math.PerMyriad
+
+	// Authorization
+	Authorization authorization.Product
+
+	Description string
+	Type        data.ProductAuctionType
+	Status      data.ProductAuctionStatus
+}
+
+func getProductAuction(st protocol.Stream, req *getProductAuctionReq) (res *getProductAuctionRes, err protocol.Error) {
+	var pa = data.ProductAuction{
+		ID: req.ID,
+	}
+	err = pa.GetLastByID()
+	if err != nil {
+		return
+	}
+
+	res = &getProductAuctionRes{
+		WriteTime: pa.WriteTime,
+
+		AppInstanceID:    pa.AppInstanceID,
+		UserConnectionID: pa.UserConnectionID,
+		OrgID:            pa.OrgID,
+		QuiddityID:       pa.QuiddityID,
+
+		// Price
+		Discount:         pa.Discount,
+		DCCommission:     pa.DCCommission,
+		SellerCommission: pa.SellerCommission,
+
+		// Authorization
+		Authorization: pa.Authorization,
+
+		Description: pa.Description,
+		Type:        pa.Type,
+		Status:      pa.Status,
+	}
+	return
+}
+
+/*
+	Request Encoders & Decoders
+*/
+
+func (req *getProductAuctionReq) FromSyllab(payload []byte, stackIndex uint32) {
+	// var add, ln uint32
+	// var tempSlice []byte
+
+	if uint32(len(buf)) < req.LenOfSyllabStack() {
+		err = syllab.ErrShortArrayDecode
+		return
+	}
+
+	copy(req.ID[:], buf[0:])
+	return
+}
+
+func (req *getProductAuctionReq) ToSyllab(payload []byte, stackIndex, heapIndex uint32) (freeHeapIndex uint32) {
+	copy(buf[0:], req.ID[:])
+	return
+}
+
+func (req *getProductAuctionReq) LenOfSyllabStack() uint32 {
+	return 32
+}
+
+func (req *getProductAuctionReq) LenOfSyllabHeap() (ln uint32) {
+	return
+}
+
+func (req *getProductAuctionReq) LenAsSyllab() uint64 {
+	return uint64(req.LenOfSyllabStack() + req.LenOfSyllabHeap())
+}
+
+func (req *getProductAuctionReq) FromJSON(payload []byte) (remaining []byte, err protocol.Error) {
+	var decoder = json.DecoderUnsafeMinified{Buf: payload}
+	for err == nil {
+		var keyName = decoder.DecodeKey()
+		switch keyName {
+		case "ID":
+			err = decoder.DecodeByteArrayAsBase64(req.ID[:])
+		default:
+			err = decoder.NotFoundKeyStrict()
+		}
+
+		if decoder.End() {
+			return
+		}
+	}
+	return
+}
+
+func (req *getProductAuctionReq) ToJSON(payload []byte) (added []byte, err protocol.Error) {
+	var encoder = json.Encoder{Buf: payload}
+
+	encoder.EncodeString(`{"ID":"`)
+	encoder.EncodeByteSliceAsBase64(req.ID[:])
+
+	encoder.EncodeString(`"}`)
+	return encoder.Buf
+}
+
+func (req *getProductAuctionReq) LenAsJSON() (ln int) {
+	ln = 52
+	return
+}
+
+/*
+	Response Encoders & Decoders
+*/
+
+func (res *getProductAuctionRes) FromSyllab(payload []byte, stackIndex uint32) {
+	if uint32(len(buf)) < res.LenOfSyllabStack() {
+		err = syllab.ErrShortArrayDecode
+		return
+	}
+
+	res.WriteTime = time.Time(syllab.GetInt64(buf, 0))
+	copy(res.AppInstanceID[:], buf[8:])
+	copy(res.UserConnectionID[:], buf[40:])
+	copy(res.OrgID[:], buf[72:])
+	copy(res.QuiddityID[:], buf[104:])
+
+	res.Discount = math.PerMyriad(syllab.GetUInt16(buf, 136))
+	res.DCCommission = math.PerMyriad(syllab.GetUInt16(buf, 138))
+	res.SellerCommission = math.PerMyriad(syllab.GetUInt16(buf, 140))
+
+	res.Authorization.FromSyllab(buf, 142)
+
+	res.Description = syllab.UnsafeGetString(buf, 142+res.Authorization.LenOfSyllabStack())
+	res.Type = data.ProductAuctionType(syllab.GetUInt8(buf, 150+res.Authorization.LenOfSyllabStack()))
+	res.Status = data.ProductAuctionStatus(syllab.GetUInt8(buf, 151+res.Authorization.LenOfSyllabStack()))
+	return
+}
+
+func (res *getProductAuctionRes) ToSyllab(payload []byte, stackIndex, heapIndex uint32) (freeHeapIndex uint32) {
+	syllab.SetInt64(buf, 0, int64(res.WriteTime))
+	copy(buf[8:], res.AppInstanceID[:])
+	copy(buf[40:], res.UserConnectionID[:])
+	copy(buf[72:], res.OrgID[:])
+	copy(buf[104:], res.QuiddityID[:])
+
+	syllab.SetUInt16(buf, 136, uint16(res.Discount))
+	syllab.SetUInt16(buf, 138, uint16(res.DCCommission))
+	syllab.SetUInt16(buf, 140, uint16(res.SellerCommission))
+
+	res.Authorization.ToSyllab(buf, 142)
+
+	heapIndex = syllab.SetString(buf, res.Description, 142+res.Authorization.LenOfSyllabStack(), heapIndex)
+	syllab.SetUInt8(buf, 150+res.Authorization.LenOfSyllabStack(), uint8(res.Type))
+	syllab.SetUInt8(buf, 151+res.Authorization.LenOfSyllabStack(), uint8(res.Status))
+	return
+}
+
+func (res *getProductAuctionRes) LenOfSyllabStack() uint32 {
+	return 152 + res.Authorization.LenOfSyllabStack()
+}
+
+func (res *getProductAuctionRes) LenOfSyllabHeap() (ln uint32) {
+	ln += res.Authorization.LenOfSyllabHeap()
+	ln += uint32(len(res.Description))
+	return
+}
+
+func (res *getProductAuctionRes) LenAsSyllab() uint64 {
+	return uint64(res.LenOfSyllabStack() + res.LenOfSyllabHeap())
+}
+
+func (res *getProductAuctionRes) FromJSON(payload []byte) (remaining []byte, err protocol.Error) {
+	var decoder = json.DecoderUnsafeMinified{Buf: payload}
+	for err == nil {
+		var keyName = decoder.DecodeKey()
+		switch keyName {
+		case "WriteTime":
+			var num int64
+			num, err = decoder.DecodeInt64()
+			res.WriteTime = time.Time(num)
+		case "AppInstanceID":
+			err = decoder.DecodeByteArrayAsBase64(res.AppInstanceID[:])
+		case "UserConnectionID":
+			err = decoder.DecodeByteArrayAsBase64(res.UserConnectionID[:])
+		case "OrgID":
+			err = decoder.DecodeByteArrayAsBase64(res.OrgID[:])
+		case "QuiddityID":
+			err = decoder.DecodeByteArrayAsBase64(res.QuiddityID[:])
+
+		case "Discount":
+			var num uint16
+			num, err = decoder.DecodeUInt16()
+			res.Discount = math.PerMyriad(num)
+		case "DCCommission":
+			var num uint16
+			num, err = decoder.DecodeUInt16()
+			res.DCCommission = math.PerMyriad(num)
+		case "SellerCommission":
+			var num uint16
+			num, err = decoder.DecodeUInt16()
+			res.SellerCommission = math.PerMyriad(num)
+
+		case "Authorization":
+			err = res.Authorization.JSONDecoder(&decoder)
+
+		case "Description":
+			res.Description, err = decoder.DecodeString()
+		case "Type":
+			var num uint8
+			num, err = decoder.DecodeUInt8()
+			res.Type = data.ProductAuctionType(num)
+		case "Status":
+			var num uint8
+			num, err = decoder.DecodeUInt8()
+			res.Status = data.ProductAuctionStatus(num)
+		default:
+			err = decoder.NotFoundKeyStrict()
+		}
+
+		if decoder.End() {
+			return
+		}
+	}
+	return
+}
+
+func (res *getProductAuctionRes) ToJSON(payload []byte) (added []byte, err protocol.Error) {
+	var encoder = json.Encoder{Buf: payload}
+	encoder.EncodeString(`{"WriteTime":`)
+	encoder.EncodeInt64(int64(res.WriteTime))
+	encoder.EncodeString(`,"AppInstanceID":"`)
+	encoder.EncodeByteSliceAsBase64(res.AppInstanceID[:])
+	encoder.EncodeString(`","UserConnectionID":"`)
+	encoder.EncodeByteSliceAsBase64(res.UserConnectionID[:])
+	encoder.EncodeString(`","OrgID":"`)
+	encoder.EncodeByteSliceAsBase64(res.OrgID[:])
+	encoder.EncodeString(`","QuiddityID":"`)
+	encoder.EncodeByteSliceAsBase64(res.QuiddityID[:])
+	encoder.EncodeString(`","Discount":`)
+	encoder.EncodeUInt16(uint16(res.Discount))
+	encoder.EncodeString(`,"DCCommission":`)
+	encoder.EncodeUInt16(uint16(res.DCCommission))
+	encoder.EncodeString(`,"SellerCommission":`)
+	encoder.EncodeUInt16(uint16(res.SellerCommission))
+	encoder.EncodeString(`,"Authorization":`)
+	encoder.Buf = res.Authorization.ToJSON(encoder.Buf)
+	encoder.EncodeString(`,"Description":"`)
+	encoder.EncodeString(res.Description)
+	encoder.EncodeString(`","Type":`)
+	encoder.EncodeUInt8(uint8(res.Type))
+	encoder.EncodeString(`,"Status":`)
+	encoder.EncodeUInt8(uint8(res.Status))
+	encoder.EncodeByte('}')
+	return encoder.Buf
+}
+
+func (res *getProductAuctionRes) LenAsJSON() (ln int) {
+	ln = len(res.Description)
+	ln += res.Authorization.LenAsJSON()
+	ln += 394
+	return
+}

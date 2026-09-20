@@ -3,14 +3,14 @@
 package user_p
 
 import (
-	quiddity_p "org/modules/identity/quiddity/protocol"
+	record_p "memar/storage/record/protocol"
 )
 
-type Field_UserID interface {
+type Field_UserUUID interface {
 	UserID() UUID
 }
 
 // Generated unique ID for the user
-type UUID quiddity_p.UUID
+type UUID record_p.UUID
 
 // Register new user

@@ -3,16 +3,11 @@
 package fcpp
 
 import (
-	"memar/protocol"
+	container_p "memar/computer/adt/container/protocol"
 
-	urup "org/modules/user-relation-user/protocol"
-	up "org/modules/user/protocol"
+	user_p "org/modules/identity/user/protocol"
+	label_p "org/modules/knowledge/label/protocol"
 )
-
-type GUI_Page_UsedDomains interface {
-	// User
-	// Quiddity
-}
 
 type GUI_Page_HyperLinks interface {
 	NavigateToUserPage()
@@ -20,17 +15,17 @@ type GUI_Page_HyperLinks interface {
 
 // /friendship_cycle?uid=uuuuuuu&ur=1&o=1&l=20
 type GUI_Page_Conditions interface {
-	UserID() up.UserUUID
-	RelationType() urup.User_Relation
+	user_p.Field_UserUUID
+	label_p.Field_LabelUUID
 
-	protocol.Pagination
+	container_p.Pagination_Offset_Request
 }
 
 type GUI_Page_Service interface {
 	DeleteUser()
 	MoveUser()
 
-	ShowFriendshipCycleList(r urup.User_Relation)
+	ShowFriendshipCycleList(relationType label_p.UUID)
 
 	ChangeViewLayout()
 	JumpToRootList()

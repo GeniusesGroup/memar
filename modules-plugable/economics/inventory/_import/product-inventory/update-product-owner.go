@@ -1,0 +1,147 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+package services
+
+import (
+	"libgo/authorization"
+	"libgo/http"
+	"libgo/json"
+	"libgo/protocol"
+	"libgo/service"
+	"libgo/srpc"
+)
+
+var updateProductOwnerService = service.Service{
+	URN:                "urn:giti:sabz.city:service:update-product-owner",
+	Domain:             DomainName,
+	ID:                 3481673445,
+	URI:                "",
+	IssueDate:          1608124535,
+	ExpiryDate:         0,
+	ExpireInFavorOfURN: "",
+	ExpireInFavorOfID:  0,
+	Status:             protocol.Software_PreAlpha,
+
+	Authorization: authorization.Service{
+		CRUD:     authorization.CRUDNone,
+		UserType: protocol.UserType_All,
+	},
+
+	Name: map[protocol.LanguageID]string{
+		protocol.LanguageEnglish: "Update Product Owner",
+	},
+	Description: map[protocol.LanguageID]string{
+		protocol.LanguageEnglish: "",
+	},
+	TAGS: []string{
+		"",
+	},
+
+	SRPCHandler: UpdateProductOwnerSRPC,
+	ServeHTTP:   UpdateProductOwnerHTTP,
+}
+
+// UpdateProductOwnerSRPC is sRPC handler of UpdateProductOwner service.
+func UpdateProductOwnerSRPC(st protocol.Stream) {
+	var req = &updateProductOwnerReq{}
+	err = req.FromSyllab(srpc.GetPayload(st.IncomePayload))
+	if err != nil {
+		return
+	}
+
+	err = updateProductOwner(st, req)
+	// Check if any error occur in business logic
+	if err != nil {
+		return
+	}
+
+	st.OutcomePayload = make([]byte, srpc.MinLength)
+}
+
+// UpdateProductOwnerHTTP is HTTP handler of UpdateProductOwner service.
+func UpdateProductOwnerHTTP(st protocol.Stream, httpReq *http.Request, httpRes *http.Response) {
+	var req = &updateProductOwnerReq{}
+	err = req.FromJSON(httpReq.Body().Marshal())
+	if err != nil {
+		httpRes.SetStatus(http.StatusBadRequestCode, http.StatusBadRequestPhrase)
+		return
+	}
+
+	err = updateProductOwner(st, req)
+	// Check if any error occur in business logic
+	if err != nil {
+		httpRes.SetStatus(http.StatusBadRequestCode, http.StatusBadRequestPhrase)
+		return
+	}
+
+	httpRes.SetStatus(http.StatusOKCode, http.StatusOKPhrase)
+}
+
+type updateProductOwnerReq struct {
+	ID               [32]byte `json:",string"`
+	DCID             [32]byte `json:",string"`
+	SellerID         [32]byte `json:",string"`
+	ProductAuctionID [32]byte `json:",string"`
+}
+
+func updateProductOwner(st protocol.Stream, req *updateProductOwnerReq) (err protocol.Error) {
+	err = st.Authorize()
+	if err != nil {
+		return
+	}
+
+	// var p = data.ProductInventory{
+	// 	ID: req.ID,
+	// }
+	// p.GetLastByID()
+
+	// TODO::: Service logic: Authenticate & Authorizing request first by service policy.
+
+	// TODO::: Remove me and write some code e.g. save a record and related indexes if you need!
+
+	return
+}
+
+/*
+	Request Encoders & Decoders
+*/
+
+func (req *updateProductOwnerReq) FromSyllab(payload []byte, stackIndex uint32) {
+	// TODO::: Use syllab generator to generate needed codes
+	return
+}
+
+func (req *updateProductOwnerReq) ToSyllab(payload []byte, stackIndex, heapIndex uint32) (freeHeapIndex uint32) {
+	// TODO::: Use syllab generator to generate needed codes
+}
+
+func (req *updateProductOwnerReq) LenOfSyllabStack() uint32 {
+	return 0 // fixed size data + variables data add&&len
+}
+
+func (req *updateProductOwnerReq) LenOfSyllabHeap() (ln uint32) {
+	// TODO::: Use syllab generator to generate needed codes
+	return
+}
+
+func (req *updateProductOwnerReq) LenAsSyllab() uint64 {
+	return uint64(req.LenOfSyllabStack() + req.LenOfSyllabHeap())
+}
+
+func (req *updateProductOwnerReq) FromJSON(payload []byte) (remaining []byte, err protocol.Error) {
+	// TODO::: Use json generator to have better performance!
+	err = json.Unmarshal(buf, req)
+	return
+}
+
+func (req *updateProductOwnerReq) ToJSON(payload []byte) (added []byte, err protocol.Error) {
+	var encoder = json.Encoder{Buf: payload}
+
+	// TODO::: Use json generator to have better performance!
+	buf, _ = json.Marshal(req)
+	return
+}
+
+func (req *updateProductOwnerReq) LenAsJSON() (ln int) {
+	return
+}

@@ -1,0 +1,22 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+package errs
+
+import (
+	er "memar/error"
+	"memar/errors"
+	error_p "memar/process/error/protocol"
+)
+
+var ErrBadResponse errBadResponse
+
+type errBadResponse struct{ er.Err }
+
+func (dt *errBadResponse) Init() (err error_p.Error) {
+	err = dt.Err.Init(domainBaseMediatype + "name=bad-response")
+	if err != nil {
+		return
+	}
+	err = errors.Register(dt)
+	return
+}

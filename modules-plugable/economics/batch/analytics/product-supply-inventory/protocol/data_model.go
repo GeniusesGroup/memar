@@ -7,14 +7,14 @@ package piap
 import (
 	"memar/time/utc"
 
-	eblp "org/modules/estate-building-location/protocol"
-	pp "org/modules/product/protocol"
+	product_p "org/modules/economics/product/protocol"
+	estate_p "org/modules/rights/estate/protocol"
 )
 
 type DataModel interface {
-	Day() utc.DayElapsed
+	utc.Field_DayElapsed
 
-	ProductID() pp.ProductUUID
-	BuildingLocationID() eblp.BuildingLocationUUID
+	product_p.Field_ProductID
+	estate_p.Field_EstateID
 	Amount()
 }

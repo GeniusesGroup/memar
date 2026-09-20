@@ -1,18 +1,19 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package icp
+package distribute_p
 
 import (
-	"memar/protocol"
+	error_p "memar/process/error/protocol"
 
-	pp "org/modules/product/protocol"
+	storage_p "memar/storage/protocol"
+	pp "org/modules/economics/product/protocol"
 )
 
 type StorageServices interface {
-	Save(dm DataModel) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm DataModel) (nv storage_p.NumberOfVersion, err error_p.Error)
 
-	Count(inventoryChangeID InventoryChangeUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(inventoryChangeID InventoryChangeUUID, vo protocol.VersionOffset) (dm DataModel, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(id UUID) (nv storage_p.NumberOfVersion, err error_p.Error)
+	Get(id UUID, vo storage_p.VersionOffset) (dm DataModel, nv storage_p.NumberOfVersion, err error_p.Error)
 
-	FIND_InventoryChangeIDs_BY_ProductID(productID pp.ProductUUID, offset, limit uint64) (inventoryChangeIDs []InventoryChangeUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	FIND_InventoryChangeIDs_BY_ProductID(productID pp.UUID, offset, limit uint64) (ids []UUID, nv storage_p.NumberOfVersion, err error_p.Error)
 }

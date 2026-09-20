@@ -3,7 +3,7 @@
 package invoice_p
 
 import (
-	rule_p "org/modules/business/rule/protocol"
+	rule_p "org/modules/computer/rule/protocol"
 )
 
 // Also usually known as shopping-cart, ... in GUI part of applications

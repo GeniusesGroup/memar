@@ -6,7 +6,7 @@ import (
 	request_p "memar/process/request/protocol"
 	audit_time_p "memar/process/time/protocol"
 
-	group_p "org/modules/organization/group/protocol"
+	group_p "org/modules/management/group/protocol"
 )
 
 // DataModel indicate the domain record data fields.
@@ -18,5 +18,5 @@ type DataModel interface {
 	Maximum() int32  // Maximum number of employees for this job position
 
 	request_p.Field_RequestID
-	audit_time_p.Field_Save
+	audit_time_p.Field_Request
 }

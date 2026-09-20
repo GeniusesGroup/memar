@@ -1,0 +1,248 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+package services
+
+import (
+	"libgo/authorization"
+	"libgo/http"
+	"libgo/json"
+	"libgo/protocol"
+	"libgo/srpc"
+	"libgo/syllab"
+)
+
+var findProductAuctionByDistributionCenterIDService = service.Service{
+	URN:                "urn:giti:sabz.city:service:find-product-auction-by-distribution-center-id",
+	Domain:             DomainName,
+	ID:                 13976095540093466846,
+	IssueDate:          1605202730,
+	ExpiryDate:         0,
+	ExpireInFavorOfURN: "",
+	ExpireInFavorOfID:  0,
+	Status:             protocol.Software_PreAlpha,
+
+	Authorization: authorization.Service{
+		CRUD:     authorization.CRUDRead,
+		UserType: protocol.UserType_All,
+	},
+
+	Detail: map[protocol.LanguageID]service.ServiceDetail{
+		Name:        "Find Product Auction By Distribution Center ID",
+		Description: "",
+		TAGS:        []string{"ProductAuction"},
+	},
+
+	SRPCHandler: FindProductAuctionByDistributionCenterIDSRPC,
+	ServeHTTP:   FindProductAuctionByDistributionCenterIDHTTP,
+}
+
+// FindProductAuctionByDistributionCenterIDSRPC is sRPC handler of FindProductAuctionByDistributionCenterID service.
+func FindProductAuctionByDistributionCenterIDSRPC(st protocol.Stream) {
+	var req = &findProductAuctionByDistributionCenterIDReq{}
+	err = req.FromSyllab(srpc.GetPayload(st.IncomePayload))
+	if err != nil {
+		return
+	}
+
+	var res *findProductAuctionByDistributionCenterIDRes
+	res, err = findProductAuctionByDistributionCenterID(st, req)
+	// Check if any error occur in business logic
+	if err != nil {
+		return
+	}
+
+	st.OutcomePayload = make([]byte, srpc.MinLength+res.LenAsSyllab())
+	res.ToSyllab(srpc.GetPayload(st.OutcomePayload))
+}
+
+// FindProductAuctionByDistributionCenterIDHTTP is HTTP handler of FindProductAuctionByDistributionCenterID service.
+func FindProductAuctionByDistributionCenterIDHTTP(st protocol.Stream, httpReq *http.Request, httpRes *http.Response) {
+	var req = &findProductAuctionByDistributionCenterIDReq{}
+	err = req.FromJSON(httpReq.Body().Marshal())
+	if err != nil {
+		httpRes.SetStatus(http.StatusBadRequestCode, http.StatusBadRequestPhrase)
+		return
+	}
+
+	var res *findProductAuctionByDistributionCenterIDRes
+	res, err = findProductAuctionByDistributionCenterID(st, req)
+	// Check if any error occur in business logic
+	if err != nil {
+		httpRes.SetStatus(http.StatusBadRequestCode, http.StatusBadRequestPhrase)
+		return
+	}
+
+	httpRes.SetStatus(http.StatusOKCode, http.StatusOKPhrase)
+	httpRes.SetBody(json.NewCodec(res))
+}
+
+type findProductAuctionByDistributionCenterIDReq struct {
+	DistributionCenterID [32]byte `json:",string"`
+	Offset               uint64
+	Limit                uint64
+}
+
+type findProductAuctionByDistributionCenterIDRes struct {
+	IDs [][32]byte `json:",string"`
+}
+
+func findProductAuctionByDistributionCenterID(st protocol.Stream, req *findProductAuctionByDistributionCenterIDReq) (res *findProductAuctionByDistributionCenterIDRes, err protocol.Error) {
+	var pa = data.ProductAuction{
+		Authorization: authorization.Product{
+			AllowUserID: req.DistributionCenterID,
+		},
+	}
+	var indexRes [][32]byte
+	indexRes, err = pa.FindIDsByAllowUserID(req.Offset, req.Limit)
+	if err != nil {
+		return
+	}
+
+	res = &findProductAuctionByDistributionCenterIDRes{
+		IDs: indexRes,
+	}
+	return
+}
+
+/*
+	Request Encoders & Decoders
+*/
+
+func (req *findProductAuctionByDistributionCenterIDReq) FromSyllab(payload []byte, stackIndex uint32) {
+	if uint32(len(buf)) < req.LenOfSyllabStack() {
+		err = syllab.ErrShortArrayDecode
+		return
+	}
+
+	copy(req.DistributionCenterID[:], buf[0:])
+	req.Offset = syllab.GetUInt64(buf, 32)
+	req.Limit = syllab.GetUInt64(buf, 40)
+	return
+}
+
+func (req *findProductAuctionByDistributionCenterIDReq) ToSyllab(payload []byte, stackIndex, heapIndex uint32) (freeHeapIndex uint32) {
+	copy(buf[0:], req.DistributionCenterID[:])
+	syllab.SetUInt64(buf, 32, req.Offset)
+	syllab.SetUInt64(buf, 40, req.Limit)
+	return
+}
+
+func (req *findProductAuctionByDistributionCenterIDReq) LenOfSyllabStack() uint32 {
+	return 48
+}
+
+func (req *findProductAuctionByDistributionCenterIDReq) LenOfSyllabHeap() (ln uint32) {
+	return
+}
+
+func (req *findProductAuctionByDistributionCenterIDReq) LenAsSyllab() uint64 {
+	return uint64(req.LenOfSyllabStack() + req.LenOfSyllabHeap())
+}
+
+func (req *findProductAuctionByDistributionCenterIDReq) FromJSON(payload []byte) (remaining []byte, err protocol.Error) {
+	var decoder = json.DecoderUnsafeMinified{Buf: payload}
+	for err == nil {
+		var keyName = decoder.DecodeKey()
+		switch keyName {
+		case "DistributionCenterID":
+			err = decoder.DecodeByteArrayAsBase64(req.DistributionCenterID[:])
+		case "Offset":
+			req.Offset, err = decoder.DecodeUInt64()
+		case "Limit":
+			req.Limit, err = decoder.DecodeUInt64()
+		default:
+			err = decoder.NotFoundKeyStrict()
+		}
+
+		if decoder.End() {
+			return
+		}
+	}
+	return
+}
+
+func (req *findProductAuctionByDistributionCenterIDReq) ToJSON(payload []byte) (added []byte, err protocol.Error) {
+	var encoder = json.Encoder{Buf: payload}
+
+	encoder.EncodeString(`{"DistributionCenterID":"`)
+	encoder.EncodeByteSliceAsBase64(req.DistributionCenterID[:])
+
+	encoder.EncodeString(`","Offset":`)
+	encoder.EncodeUInt64(req.Offset)
+
+	encoder.EncodeString(`,"Limit":`)
+	encoder.EncodeUInt64(req.Limit)
+
+	encoder.EncodeByte('}')
+	return encoder.Buf
+}
+
+func (req *findProductAuctionByDistributionCenterIDReq) LenAsJSON() (ln int) {
+	ln = 129
+	return
+}
+
+/*
+	Response Encoders & Decoders
+*/
+
+func (res *findProductAuctionByDistributionCenterIDRes) FromSyllab(payload []byte, stackIndex uint32) {
+	if uint32(len(buf)) < res.LenOfSyllabStack() {
+		err = syllab.ErrShortArrayDecode
+		return
+	}
+
+	res.IDs = syllab.UnsafeGet32ByteArraySlice(buf, 128)
+	return
+}
+
+func (res *findProductAuctionByDistributionCenterIDRes) ToSyllab(payload []byte, stackIndex, heapIndex uint32) (freeHeapIndex uint32) {
+	syllab.Set32ByteArrayArray(buf, res.IDs, 0, heapIndex)
+	return
+}
+
+func (res *findProductAuctionByDistributionCenterIDRes) LenOfSyllabStack() uint32 {
+	return 8
+}
+
+func (res *findProductAuctionByDistributionCenterIDRes) LenOfSyllabHeap() (ln uint32) {
+	ln = uint32(len(res.IDs) * 32)
+	return
+}
+
+func (res *findProductAuctionByDistributionCenterIDRes) LenAsSyllab() uint64 {
+	return uint64(res.LenOfSyllabStack() + res.LenOfSyllabHeap())
+}
+
+func (res *findProductAuctionByDistributionCenterIDRes) FromJSON(payload []byte) (remaining []byte, err protocol.Error) {
+	var decoder = json.DecoderUnsafeMinified{Buf: payload}
+	for err == nil {
+		var keyName = decoder.DecodeKey()
+		switch keyName {
+		case "IDs":
+			res.IDs, err = decoder.Decode32ByteArraySliceAsBase64()
+		default:
+			err = decoder.NotFoundKeyStrict()
+		}
+
+		if decoder.End() {
+			return
+		}
+	}
+	return
+}
+
+func (res *findProductAuctionByDistributionCenterIDRes) ToJSON(payload []byte) (added []byte, err protocol.Error) {
+	var encoder = json.Encoder{Buf: payload}
+
+	encoder.EncodeString(`{"IDs":[`)
+	encoder.Encode32ByteArraySliceAsBase64(res.IDs)
+
+	encoder.EncodeString(`]}`)
+}
+
+func (res *findProductAuctionByDistributionCenterIDRes) LenAsJSON() (ln int) {
+	ln = len(res.IDs) * 46
+	ln += 8
+	return
+}

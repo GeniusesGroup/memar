@@ -3,19 +3,18 @@
 package cmp
 
 import (
-	"memar/protocol"
+	request_p "memar/process/request/protocol"
+	audit_time_p "memar/process/time/protocol"
 
-	// arp "org/modules/app-request/protocol"
-	cp "org/modules/comment/protocol"
-	up "org/modules/user/protocol"
+	user_p "org/modules/identity/user/protocol"
+	comment_p "org/modules/knowledge/content/edges-loop/comment/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	UserID() up.UserUUID
-	CommentID() cp.CommentUUID
+	comment_p.Field_CommentID
+	UserIDs() []user_p.UUID
 
-	// arp.AuditLogging
-	protocol.Storage_Versioned
-	protocol.Storage_SaveTime
+	request_p.Field_RequestID
+	audit_time_p.Field_Request
 }

@@ -3,7 +3,7 @@
 package cugsp
 
 import (
-	cgp "org/modules/gui/widget-comment/group/protocol"
+	cgp "org/modules/knowledge/comment/widgets/group/protocol"
 )
 
 // DataModel indicate the domain record data fields.

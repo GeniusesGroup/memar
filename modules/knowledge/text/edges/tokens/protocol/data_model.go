@@ -12,11 +12,11 @@ import (
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	text_p.Field_TextID
+	text_p.Field_TextUUID
 	Field_Analyzer
 	language_p.Field_LanguageUUID
 	Tokens() []Token
 
 	request_p.Field_RequestID
-	audit_time_p.Field_SaveTime
+	audit_time_p.Field_Request
 }

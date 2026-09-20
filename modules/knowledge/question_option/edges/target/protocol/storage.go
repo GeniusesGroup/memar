@@ -3,14 +3,15 @@
 package qotp
 
 import (
-	"memar/protocol"
+	error_p "memar/process/error/protocol"
 
-	qp "org/modules/question/protocol"
+	storage_p "memar/storage/protocol"
+	qp "org/modules/knowledge/question/protocol"
 )
 
 type StorageServices interface {
-	Save(dm DataModel) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm DataModel) (nv storage_p.NumberOfVersion, err error_p.Error)
 
-	Count(questionOptionID qp.QuestionUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(questionOptionID qp.QuestionUUID, vo protocol.VersionOffset) (dm DataModel, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(questionOptionID qp.UUID) (nv storage_p.NumberOfVersion, err error_p.Error)
+	Get(questionOptionID qp.UUID, vo storage_p.VersionOffset) (dm DataModel, nv storage_p.NumberOfVersion, err error_p.Error)
 }

@@ -1,0 +1,17 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+package product_good_p
+
+import (
+	record_p "memar/storage/record/protocol"
+)
+
+type Field_ProductID interface {
+	ProductID() UUID
+}
+
+type Field_ProductsID interface {
+	ProductsID() []UUID
+}
+
+type UUID record_p.UUID

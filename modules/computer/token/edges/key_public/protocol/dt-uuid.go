@@ -1,9 +1,13 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package cpkp
+package public_key_p
 
 import (
-	"memar/protocol"
+	token_p "org/modules/computer/token/protocol"
 )
 
-type PublicKeyUUID protocol.UUID
+type Field_PublicKeyID interface {
+	PublicKeyID() UUID
+}
+
+type UUID token_p.UUID

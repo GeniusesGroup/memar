@@ -9,5 +9,5 @@ import (
 // Use to restrict the voucher on specific labels.
 type Labels interface {
 	Field_Each
-	label_p.Field_LabelsID
+	label_p.Field_LabelsUUID
 }

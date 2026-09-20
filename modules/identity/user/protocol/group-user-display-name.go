@@ -1,0 +1,12 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+package org
+
+// GroupUserDisplayName indicate the domain record data fields.
+// It is not unique and not replace of user ID. Just use to find user by desire name.
+type GroupUserDisplayName interface {
+	GroupID() [16]byte          // group domain.
+	UserID() [16]byte           // user-status domain
+	DisplayName() string        //
+	RequestID() UserRequestUUID // user-request domain
+}

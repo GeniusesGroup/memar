@@ -3,13 +3,15 @@
 package pcp
 
 import (
-	"memar/protocol"
+	error_p "memar/process/error/protocol"
+
+	user_p "org/modules/identity/user/protocol"
 )
 
 type Comments_GUI_Page_Conditions interface {
-	UserID()
+	user_p.Field_UserUUID
 }
 
 type Comments_GUI_Page_Services interface {
-	Filter() (err protocol.Error)
+	Filter() (err error_p.Error)
 }

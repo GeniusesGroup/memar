@@ -1,16 +1,16 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package cp
+package comment_p
 
 import (
-	"memar/protocol"
+	time_p "memar/time/protocol"
 )
 
 type GUI_Widget_Conditions interface {
-	CommentID() CommentUUID
+	Field_CommentID
 	EnablingForwarding() bool
 
-	time() protocol.Time
+	time() time_p.Time
 }
 
 type GUI_Widget_Service interface {

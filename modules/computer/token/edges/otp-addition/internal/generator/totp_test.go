@@ -7,6 +7,7 @@ import (
 	"encoding/binary"
 	"testing"
 
+	"memar/time/earth"
 	"memar/time/unix"
 )
 
@@ -17,7 +18,7 @@ func TestGenerateTimeOTP(t *testing.T) {
 		Hasher:     sha512.New512_256(),
 		SecretKey:  otpSecurityKey,
 		Additional: make([]byte, 8),
-		Period:     24 * unix.Hour,
+		Period:     earth.SecondInDay,
 		Digits:     6,
 	}
 	binary.LittleEndian.PutUint64(otpReq.Additional, 9171170268)
@@ -26,7 +27,7 @@ func TestGenerateTimeOTP(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	t.Error("OTP time:", unix.Now().ElapsedByDuration(otpReq.Period))
+	t.Error("OTP time:", unix.Now().ElapsedBySecond(otpReq.Period))
 	t.Error("OTP:", timeOTP)
 }
 

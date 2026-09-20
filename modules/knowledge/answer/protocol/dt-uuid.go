@@ -1,9 +1,13 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package qap
+package answer_p
 
 import (
-	"memar/protocol"
+	record_p "memar/storage/record/protocol"
 )
 
-type AnswerUUID protocol.UUID
+type Field_AnswerID interface {
+	AnswerID() AnswerUUID
+}
+
+type AnswerUUID record_p.UUID

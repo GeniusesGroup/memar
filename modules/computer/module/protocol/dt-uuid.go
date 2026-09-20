@@ -1,14 +1,15 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package bm_p
+package module_p
 
 import (
-	ut16 "memar/identifier/uuid-time-16byte"
+	record_p "memar/storage/record/protocol"
 )
 
-type Field_ModuleID interface {
-	BusinessModuleID() ModuleUUID
+type Field_ModuleUUID interface {
+	ModuleUUID() UUID
+	// DomainID() UUID
 }
 
 // Applications module identifier e.g. product, content, ... domain
-type ModuleUUID ut16.UUID
+type UUID record_p.UUID

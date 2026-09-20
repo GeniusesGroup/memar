@@ -1,0 +1,289 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+package org
+
+import (
+	"time"
+
+	"libgo/authorization"
+	"libgo/http"
+	"libgo/json"
+	"libgo/protocol"
+	"libgo/service"
+	"libgo/srpc"
+	"libgo/syllab"
+)
+
+var getOrganizationService = service.Service{
+	URN:                "urn:giti:sabz.city:service:get-organization",
+	Domain:             DomainName,
+	ID:                 13875294910848463087,
+	IssueDate:          1604475115,
+	ExpiryDate:         0,
+	ExpireInFavorOfURN: "",
+	ExpireInFavorOfID:  0,
+	Status:             protocol.Software_PreAlpha,
+
+	Authorization: authorization.Service{
+		CRUD:     authorization.CRUDRead,
+		UserType: protocol.UserType_All,
+	},
+
+	Name: map[protocol.LanguageID]string{
+		protocol.LanguageEnglish: "Get Organization",
+	},
+	Description: map[protocol.LanguageID]string{
+		protocol.LanguageEnglish: "",
+	},
+	TAGS: []string{
+		"OrganizationAuthentication",
+	},
+
+	SRPCHandler: GetOrganizationSRPC,
+	ServeHTTP:   GetOrganizationHTTP,
+}
+
+// GetOrganizationSRPC is sRPC handler of GetOrganization service.
+func GetOrganizationSRPC(st protocol.Stream) {
+	var req = &getOrganizationReq{}
+	err = req.FromSyllab(srpc.GetPayload(st.IncomePayload))
+	if err != nil {
+		return
+	}
+
+	var res *getOrganizationRes
+	res, err = getOrganization(st, req)
+	// Check if any error occur in business logic
+	if err != nil {
+		return
+	}
+
+	st.OutcomePayload = make([]byte, srpc.MinLength+res.LenAsSyllab())
+	res.ToSyllab(srpc.GetPayload(st.OutcomePayload))
+}
+
+// GetOrganizationHTTP is HTTP handler of GetOrganization service.
+func GetOrganizationHTTP(st protocol.Stream, httpReq *http.Request, httpRes *http.Response) {
+	var req = &getOrganizationReq{}
+	err = req.FromJSON(httpReq.Body().Marshal())
+	if err != nil {
+		httpRes.SetStatus(http.StatusBadRequestCode, http.StatusBadRequestPhrase)
+		return
+	}
+
+	var res *getOrganizationRes
+	res, err = getOrganization(st, req)
+	// Check if any error occur in business logic
+	if err != nil {
+		httpRes.SetStatus(http.StatusBadRequestCode, http.StatusBadRequestPhrase)
+		return
+	}
+
+	httpRes.SetStatus(http.StatusOKCode, http.StatusOKPhrase)
+	httpRes.SetBody(json.NewCodec(res))
+}
+
+type getOrganizationReq struct {
+	ID [32]byte `json:",string"`
+}
+
+type getOrganizationRes struct {
+	WriteTime        time.Time
+	AppInstanceID    [32]byte `json:",string"`
+	UserConnectionID [32]byte `json:",string"`
+
+	SocietyID    [32]byte `json:",string"`
+	QuiddityID   [32]byte `json:",string"`
+	ServicesType data.OrganizationAuthenticationType
+	Status       data.OrganizationAuthenticationStatus
+}
+
+func getOrganization(st protocol.Stream, req *getOrganizationReq) (res *getOrganizationRes, err protocol.Error) {
+	var oa = data.OrganizationAuthentication{
+		ID: req.ID,
+	}
+	err = oa.GetLastByID()
+	if err != nil {
+		return
+	}
+
+	res = &getOrganizationRes{
+		WriteTime:     oa.WriteTime,
+		AppInstanceID: oa.AppInstanceID,
+		// UserConnectionID: oa.UserConnectionID, TODO::: Due to HTTP use ConnectionID to authenticate connections can't enable it now!!
+
+		SocietyID:    oa.SocietyID,
+		QuiddityID:   oa.QuiddityID,
+		ServicesType: oa.ServicesType,
+		Status:       oa.Status,
+	}
+	return
+}
+
+/*
+	Request Encoders & Decoders
+*/
+
+func (req *getOrganizationReq) FromSyllab(payload []byte, stackIndex uint32) {
+	if uint32(len(buf)) < req.LenOfSyllabStack() {
+		err = syllab.ErrShortArrayDecode
+		return
+	}
+
+	copy(req.ID[:], buf[0:])
+	return
+}
+
+func (req *getOrganizationReq) ToSyllab(payload []byte, stackIndex, heapIndex uint32) (freeHeapIndex uint32) {
+	copy(buf[0:], req.ID[:])
+	return
+}
+
+func (req *getOrganizationReq) LenOfSyllabStack() uint32 {
+	return 32
+}
+
+func (req *getOrganizationReq) LenOfSyllabHeap() (ln uint32) {
+	return
+}
+
+func (req *getOrganizationReq) LenAsSyllab() uint64 {
+	return uint64(req.LenOfSyllabStack() + req.LenOfSyllabHeap())
+}
+
+func (req *getOrganizationReq) FromJSON(payload []byte) (remaining []byte, err protocol.Error) {
+	var decoder = json.DecoderUnsafeMinified{Buf: payload}
+	for err == nil {
+		var keyName = decoder.DecodeKey()
+		switch keyName {
+		case "ID":
+			err = decoder.DecodeByteArrayAsBase64(req.ID[:])
+		default:
+			err = decoder.NotFoundKeyStrict()
+		}
+
+		if decoder.End() {
+			return
+		}
+	}
+	return
+}
+
+func (req *getOrganizationReq) ToJSON(payload []byte) (added []byte, err protocol.Error) {
+	var encoder = json.Encoder{Buf: payload}
+
+	encoder.EncodeString(`{"ID":"`)
+	encoder.EncodeByteSliceAsBase64(req.ID[:])
+
+	encoder.EncodeString(`"}`)
+	return encoder.Buf
+}
+
+func (req *getOrganizationReq) LenAsJSON() (ln int) {
+	ln = 52
+	return
+}
+
+/*
+	Response Encoders & Decoders
+*/
+
+func (res *getOrganizationRes) FromSyllab(payload []byte, stackIndex uint32) {
+	if uint32(len(buf)) < res.LenOfSyllabStack() {
+		err = syllab.ErrShortArrayDecode
+		return
+	}
+
+	res.WriteTime = time.Time(syllab.GetInt64(buf, 0))
+	copy(res.AppInstanceID[:], buf[8:])
+	copy(res.UserConnectionID[:], buf[40:])
+	copy(res.SocietyID[:], buf[72:])
+	copy(res.QuiddityID[:], buf[104:])
+	res.ServicesType = data.OrganizationAuthenticationType(syllab.GetUInt8(buf, 136))
+	res.Status = data.OrganizationAuthenticationStatus(syllab.GetUInt8(buf, 137))
+	return
+}
+
+func (res *getOrganizationRes) ToSyllab(payload []byte, stackIndex, heapIndex uint32) (freeHeapIndex uint32) {
+	syllab.SetInt64(buf, 0, int64(res.WriteTime))
+	copy(buf[8:], res.AppInstanceID[:])
+	copy(buf[40:], res.UserConnectionID[:])
+	copy(buf[72:], res.SocietyID[:])
+	copy(buf[104:], res.QuiddityID[:])
+	syllab.SetUInt8(buf, 136, uint8(res.ServicesType))
+	syllab.SetUInt8(buf, 137, uint8(res.Status))
+	return
+}
+
+func (res *getOrganizationRes) LenOfSyllabStack() uint32 {
+	return 138
+}
+
+func (res *getOrganizationRes) LenOfSyllabHeap() (ln uint32) {
+	return
+}
+
+func (res *getOrganizationRes) LenAsSyllab() uint64 {
+	return uint64(res.LenOfSyllabStack() + res.LenOfSyllabHeap())
+}
+
+func (res *getOrganizationRes) FromJSON(payload []byte) (remaining []byte, err protocol.Error) {
+	var decoder = json.DecoderUnsafeMinified{Buf: payload}
+	for err == nil {
+		var keyName = decoder.DecodeKey()
+		switch keyName {
+		case "WriteTime":
+			var num int64
+			num, err = decoder.DecodeInt64()
+			res.WriteTime = time.Time(num)
+		case "AppInstanceID":
+			err = decoder.DecodeByteArrayAsBase64(res.AppInstanceID[:])
+		case "UserConnectionID":
+			err = decoder.DecodeByteArrayAsBase64(res.UserConnectionID[:])
+		case "SocietyID":
+			err = decoder.DecodeByteArrayAsBase64(res.SocietyID[:])
+		case "QuiddityID":
+			err = decoder.DecodeByteArrayAsBase64(res.QuiddityID[:])
+		case "ServicesType":
+			var num uint8
+			num, err = decoder.DecodeUInt8()
+			res.ServicesType = data.OrganizationAuthenticationType(num)
+		case "Status":
+			var num uint8
+			num, err = decoder.DecodeUInt8()
+			res.Status = data.OrganizationAuthenticationStatus(num)
+		default:
+			err = decoder.NotFoundKeyStrict()
+		}
+
+		if decoder.End() {
+			return
+		}
+	}
+	return
+}
+
+func (res *getOrganizationRes) ToJSON(payload []byte) (added []byte, err protocol.Error) {
+	var encoder = json.Encoder{Buf: payload}
+	encoder.EncodeString(`{"WriteTime":`)
+	encoder.EncodeInt64(int64(res.WriteTime))
+	encoder.EncodeString(`,"AppInstanceID":"`)
+	encoder.EncodeByteSliceAsBase64(res.AppInstanceID[:])
+	encoder.EncodeString(`","UserConnectionID":"`)
+	encoder.EncodeByteSliceAsBase64(res.UserConnectionID[:])
+	encoder.EncodeString(`","SocietyID":"`)
+	encoder.EncodeByteSliceAsBase64(res.SocietyID[:])
+	encoder.EncodeString(`","QuiddityID":"`)
+	encoder.EncodeByteSliceAsBase64(res.QuiddityID[:])
+	encoder.EncodeString(`","ServicesType":`)
+	encoder.EncodeUInt8(uint8(res.ServicesType))
+	encoder.EncodeString(`,"Status":`)
+	encoder.EncodeUInt8(uint8(res.Status))
+	encoder.EncodeByte('}')
+	return encoder.Buf
+}
+
+func (res *getOrganizationRes) LenAsJSON() (ln int) {
+	ln = 480
+	return
+}

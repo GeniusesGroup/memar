@@ -3,18 +3,17 @@
 package sip
 
 import (
-	"memar/protocol"
+	request_p "memar/process/request/protocol"
+	audit_time_p "memar/process/time/protocol"
 
-	arp "org/modules/app-request/protocol"
-	sp "org/modules/staff/protocol"
+	staff_p "org/modules/management/staff/protocol"
 )
 
 // TODO::: user-number??
 type DataModel interface {
-	StaffID() sp.StaffUUID
+	staff_p.Field_StaffID
 	ID() uint32
 
-	arp.AuditLogging
-	protocol.Storage_Versioned
-	protocol.Storage_SaveTime
+	request_p.Field_RequestID
+	audit_time_p.Field_Request
 }

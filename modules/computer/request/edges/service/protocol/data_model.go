@@ -1,0 +1,11 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+package request_p
+
+import (
+	"org/modules/computer/service/protocol"
+)
+
+type DataModel interface {
+	computer_service_p.Field_ServiceID
+}

@@ -1,0 +1,428 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+package pp
+
+import (
+	"time"
+
+	"libgo/authorization"
+	"libgo/http"
+	"libgo/json"
+	"libgo/math"
+	"libgo/price"
+	"libgo/protocol"
+	"libgo/service"
+	"libgo/srpc"
+	"libgo/syllab"
+)
+
+var getProductPriceService = service.Service{
+	URN:                "urn:giti:sabz.city:service:get-product-price",
+	Domain:             DomainName,
+	ID:                 3620614406374689542,
+	IssueDate:          1608092738,
+	ExpiryDate:         0,
+	ExpireInFavorOfURN: "",
+	ExpireInFavorOfID:  0,
+	Status:             protocol.Software_PreAlpha,
+
+	Authorization: authorization.Service{
+		CRUD:     authorization.CRUDRead,
+		UserType: protocol.UserType_All,
+	},
+
+	Name: map[protocol.LanguageID]string{
+		protocol.LanguageEnglish: "Get Product Price",
+	},
+	Description: map[protocol.LanguageID]string{
+		protocol.LanguageEnglish: "",
+	},
+	TAGS: []string{
+		"ProductPrice",
+	},
+
+	SRPCHandler: GetProductPriceSRPC,
+	ServeHTTP:   GetProductPriceHTTP,
+}
+
+// GetProductPriceSRPC is sRPC handler of GetProductPrice service.
+func GetProductPriceSRPC(st protocol.Stream) {
+	var req = &getProductPriceReq{}
+	err = req.FromSyllab(srpc.GetPayload(st.IncomePayload))
+	if err != nil {
+		return
+	}
+
+	var res *getProductPriceRes
+	res, err = getProductPrice(st, req)
+	// Check if any error occur in business logic
+	if err != nil {
+		return
+	}
+
+	st.OutcomePayload = make([]byte, srpc.MinLength+res.LenAsSyllab())
+	res.ToSyllab(srpc.GetPayload(st.OutcomePayload))
+}
+
+// GetProductPriceHTTP is HTTP handler of GetProductPrice service.
+func GetProductPriceHTTP(st protocol.Stream, httpReq *http.Request, httpRes *http.Response) {
+	var req = &getProductPriceReq{}
+	err = req.FromJSON(httpReq.Body().Marshal())
+	if err != nil {
+		httpRes.SetStatus(http.StatusBadRequestCode, http.StatusBadRequestPhrase)
+		return
+	}
+
+	var res *getProductPriceRes
+	res, err = getProductPrice(st, req)
+	// Check if any error occur in business logic
+	if err != nil {
+		httpRes.SetStatus(http.StatusBadRequestCode, http.StatusBadRequestPhrase)
+		return
+	}
+
+	httpRes.SetStatus(http.StatusOKCode, http.StatusOKPhrase)
+	httpRes.SetBody(json.NewCodec(res))
+}
+
+type getProductPriceReq struct {
+	QuiddityID [32]byte `json:",string"`
+}
+
+type getProductPriceRes struct {
+	WriteTime time.Time
+
+	AppInstanceID    [32]byte `json:",string"`
+	UserConnectionID [32]byte `json:",string"`
+	OrgID            [32]byte `json:",string"`
+
+	MaterialsPercent   math.PerMyriad
+	MaterialsCost      price.Amount
+	LaborPercent       math.PerMyriad
+	LaborCost          price.Amount
+	InvestmentsPercent math.PerMyriad
+	InvestmentsCost    price.Amount
+	TotalCost          price.Amount
+
+	Markup          math.PerMyriad
+	WholesaleProfit price.Amount
+	Margin          math.PerMyriad
+	RetailProfit    price.Amount
+
+	TaxPercent math.PerMyriad
+	Tax        price.Amount
+
+	Price price.Amount
+}
+
+func getProductPrice(st protocol.Stream, req *getProductPriceReq) (res *getProductPriceRes, err protocol.Error) {
+	var pp = data.ProductPrice{
+		QuiddityID: req.QuiddityID,
+	}
+	err = pp.GetLastByQuiddityID()
+	if err != nil {
+		return
+	}
+
+	res = &getProductPriceRes{
+		WriteTime: pp.WriteTime,
+
+		AppInstanceID:    pp.AppInstanceID,
+		UserConnectionID: pp.UserConnectionID,
+		OrgID:            pp.OrgID,
+
+		TaxPercent: pp.TaxPercent,
+		Tax:        pp.Tax,
+
+		Price: pp.Price,
+	}
+
+	if st.Connection.UserID == pp.OrgID {
+		res.MaterialsPercent = pp.MaterialsPercent
+		res.MaterialsCost = pp.MaterialsCost
+		res.LaborPercent = pp.LaborPercent
+		res.LaborCost = pp.LaborCost
+		res.InvestmentsPercent = pp.InvestmentsPercent
+		res.InvestmentsCost = pp.InvestmentsCost
+		res.TotalCost = pp.TotalCost
+
+		res.Markup = pp.Markup
+		res.WholesaleProfit = pp.WholesaleProfit
+		res.Margin = pp.Margin
+		res.RetailProfit = pp.RetailProfit
+	}
+	return
+}
+
+/*
+	Request Encoders & Decoders
+*/
+
+func (req *getProductPriceReq) FromSyllab(payload []byte, stackIndex uint32) {
+	if uint32(len(buf)) < req.LenOfSyllabStack() {
+		err = syllab.ErrShortArrayDecode
+		return
+	}
+
+	copy(req.QuiddityID[:], buf[0:])
+	return
+}
+
+func (req *getProductPriceReq) ToSyllab(payload []byte, stackIndex, heapIndex uint32) (freeHeapIndex uint32) {
+	copy(buf[0:], req.QuiddityID[:])
+	return
+}
+
+func (req *getProductPriceReq) LenOfSyllabStack() uint32 {
+	return 32
+}
+
+func (req *getProductPriceReq) LenOfSyllabHeap() (ln uint32) {
+	return
+}
+
+func (req *getProductPriceReq) LenAsSyllab() uint64 {
+	return uint64(req.LenOfSyllabStack() + req.LenOfSyllabHeap())
+}
+
+func (req *getProductPriceReq) FromJSON(payload []byte) (remaining []byte, err protocol.Error) {
+	var decoder = json.DecoderUnsafeMinified{Buf: payload}
+	for err == nil {
+		var keyName = decoder.DecodeKey()
+		switch keyName {
+		case "QuiddityID":
+			err = decoder.DecodeByteArrayAsBase64(req.QuiddityID[:])
+		default:
+			err = decoder.NotFoundKeyStrict()
+		}
+
+		if decoder.End() {
+			return
+		}
+	}
+	return
+}
+
+func (req *getProductPriceReq) ToJSON(payload []byte) (added []byte, err protocol.Error) {
+	var encoder = json.Encoder{Buf: payload}
+
+	encoder.EncodeString(`{"QuiddityID":"`)
+	encoder.EncodeByteSliceAsBase64(req.QuiddityID[:])
+
+	encoder.EncodeString(`"}`)
+	return encoder.Buf
+}
+
+func (req *getProductPriceReq) LenAsJSON() (ln int) {
+	ln = 56
+	return
+}
+
+/*
+	Response Encoders & Decoders
+*/
+
+func (res *getProductPriceRes) FromSyllab(payload []byte, stackIndex uint32) {
+	if uint32(len(buf)) < res.LenOfSyllabStack() {
+		err = syllab.ErrShortArrayDecode
+		return
+	}
+
+	res.WriteTime = time.Time(syllab.GetInt64(buf, 0))
+	copy(res.AppInstanceID[:], buf[8:])
+	copy(res.UserConnectionID[:], buf[40:])
+	copy(res.OrgID[:], buf[72:])
+
+	res.MaterialsPercent = math.PerMyriad(syllab.GetUInt16(buf, 104))
+	res.MaterialsCost = price.Amount(syllab.GetInt64(buf, 106))
+	res.LaborPercent = math.PerMyriad(syllab.GetUInt16(buf, 114))
+	res.LaborCost = price.Amount(syllab.GetInt64(buf, 116))
+	res.InvestmentsPercent = math.PerMyriad(syllab.GetUInt16(buf, 124))
+	res.InvestmentsCost = price.Amount(syllab.GetInt64(buf, 126))
+	res.TotalCost = price.Amount(syllab.GetInt64(buf, 134))
+	res.Markup = math.PerMyriad(syllab.GetUInt16(buf, 142))
+	res.WholesaleProfit = price.Amount(syllab.GetInt64(buf, 144))
+	res.Margin = math.PerMyriad(syllab.GetUInt16(buf, 152))
+	res.RetailProfit = price.Amount(syllab.GetInt64(buf, 154))
+
+	res.TaxPercent = math.PerMyriad(syllab.GetUInt16(buf, 162))
+	res.Tax = price.Amount(syllab.GetInt64(buf, 164))
+
+	res.Price = price.Amount(syllab.GetInt64(buf, 172))
+	return
+}
+
+func (res *getProductPriceRes) ToSyllab(payload []byte, stackIndex, heapIndex uint32) (freeHeapIndex uint32) {
+	syllab.SetInt64(buf, 0, int64(res.WriteTime))
+	copy(buf[8:], res.AppInstanceID[:])
+	copy(buf[40:], res.UserConnectionID[:])
+	copy(buf[72:], res.OrgID[:])
+
+	syllab.SetUInt16(buf, 104, uint16(res.MaterialsPercent))
+	syllab.SetInt64(buf, 106, int64(res.MaterialsCost))
+	syllab.SetUInt16(buf, 114, uint16(res.LaborPercent))
+	syllab.SetInt64(buf, 116, int64(res.LaborCost))
+	syllab.SetUInt16(buf, 124, uint16(res.InvestmentsPercent))
+	syllab.SetInt64(buf, 126, int64(res.InvestmentsCost))
+	syllab.SetInt64(buf, 134, int64(res.TotalCost))
+
+	syllab.SetUInt16(buf, 142, uint16(res.Markup))
+	syllab.SetInt64(buf, 144, int64(res.WholesaleProfit))
+	syllab.SetUInt16(buf, 152, uint16(res.Margin))
+	syllab.SetInt64(buf, 154, int64(res.RetailProfit))
+
+	syllab.SetUInt16(buf, 162, uint16(res.TaxPercent))
+	syllab.SetInt64(buf, 164, int64(res.Tax))
+
+	syllab.SetInt64(buf, 172, int64(res.Price))
+	return
+}
+
+func (res *getProductPriceRes) LenOfSyllabStack() uint32 {
+	return 180
+}
+
+func (res *getProductPriceRes) LenOfSyllabHeap() (ln uint32) {
+	return
+}
+
+func (res *getProductPriceRes) LenAsSyllab() uint64 {
+	return uint64(res.LenOfSyllabStack() + res.LenOfSyllabHeap())
+}
+
+func (res *getProductPriceRes) FromJSON(payload []byte) (remaining []byte, err protocol.Error) {
+	var decoder = json.DecoderUnsafeMinified{Buf: payload}
+	for err == nil {
+		var keyName = decoder.DecodeKey()
+		switch keyName {
+		case "WriteTime":
+			var num int64
+			num, err = decoder.DecodeInt64()
+			res.WriteTime = time.Time(num)
+		case "AppInstanceID":
+			err = decoder.DecodeByteArrayAsBase64(res.AppInstanceID[:])
+		case "UserConnectionID":
+			err = decoder.DecodeByteArrayAsBase64(res.UserConnectionID[:])
+		case "OrgID":
+			err = decoder.DecodeByteArrayAsBase64(res.OrgID[:])
+
+		case "MaterialsPercent":
+			var num uint16
+			num, err = decoder.DecodeUInt16()
+			res.MaterialsPercent = math.PerMyriad(num)
+		case "MaterialsCost":
+			var num int64
+			num, err = decoder.DecodeInt64()
+			res.MaterialsCost = price.Amount(num)
+		case "LaborPercent":
+			var num uint16
+			num, err = decoder.DecodeUInt16()
+			res.LaborPercent = math.PerMyriad(num)
+		case "LaborCost":
+			var num int64
+			num, err = decoder.DecodeInt64()
+			res.LaborCost = price.Amount(num)
+		case "InvestmentsPercent":
+			var num uint16
+			num, err = decoder.DecodeUInt16()
+			res.InvestmentsPercent = math.PerMyriad(num)
+		case "InvestmentsCost":
+			var num int64
+			num, err = decoder.DecodeInt64()
+			res.InvestmentsCost = price.Amount(num)
+		case "TotalCost":
+			var num int64
+			num, err = decoder.DecodeInt64()
+			res.TotalCost = price.Amount(num)
+
+		case "Markup":
+			var num uint16
+			num, err = decoder.DecodeUInt16()
+			res.Markup = math.PerMyriad(num)
+		case "WholesaleProfit":
+			var num int64
+			num, err = decoder.DecodeInt64()
+			res.WholesaleProfit = price.Amount(num)
+		case "Margin":
+			var num uint16
+			num, err = decoder.DecodeUInt16()
+			res.Margin = math.PerMyriad(num)
+		case "RetailProfit":
+			var num int64
+			num, err = decoder.DecodeInt64()
+			res.RetailProfit = price.Amount(num)
+
+		case "TaxPercent":
+			var num uint16
+			num, err = decoder.DecodeUInt16()
+			res.TaxPercent = math.PerMyriad(num)
+		case "Tax":
+			var num int64
+			num, err = decoder.DecodeInt64()
+			res.Tax = price.Amount(num)
+
+		case "Price":
+			var num int64
+			num, err = decoder.DecodeInt64()
+			res.Price = price.Amount(num)
+		default:
+			err = decoder.NotFoundKeyStrict()
+		}
+
+		if decoder.End() {
+			return
+		}
+	}
+	return
+}
+
+func (res *getProductPriceRes) ToJSON(payload []byte) (added []byte, err protocol.Error) {
+	var encoder = json.Encoder{Buf: payload}
+	encoder.EncodeString(`{"WriteTime":`)
+	encoder.EncodeInt64(int64(res.WriteTime))
+	encoder.EncodeString(`,"AppInstanceID":"`)
+	encoder.EncodeByteSliceAsBase64(res.AppInstanceID[:])
+	encoder.EncodeString(`","UserConnectionID":"`)
+	encoder.EncodeByteSliceAsBase64(res.UserConnectionID[:])
+	encoder.EncodeString(`","OrgID":"`)
+	encoder.EncodeByteSliceAsBase64(res.OrgID[:])
+
+	encoder.EncodeString(`","MaterialsPercent":`)
+	encoder.EncodeUInt16(uint16(res.MaterialsPercent))
+	encoder.EncodeString(`,"MaterialsCost":`)
+	encoder.EncodeInt64(int64(res.MaterialsCost))
+	encoder.EncodeString(`,"LaborPercent":`)
+	encoder.EncodeUInt16(uint16(res.LaborPercent))
+	encoder.EncodeString(`,"LaborCost":`)
+	encoder.EncodeInt64(int64(res.LaborCost))
+	encoder.EncodeString(`,"InvestmentsPercent":`)
+	encoder.EncodeUInt16(uint16(res.InvestmentsPercent))
+	encoder.EncodeString(`,"InvestmentsCost":`)
+	encoder.EncodeInt64(int64(res.InvestmentsCost))
+	encoder.EncodeString(`,"TotalCost":`)
+	encoder.EncodeInt64(int64(res.TotalCost))
+
+	encoder.EncodeString(`,"Markup":`)
+	encoder.EncodeUInt16(uint16(res.Markup))
+	encoder.EncodeString(`,"WholesaleProfit":`)
+	encoder.EncodeInt64(int64(res.WholesaleProfit))
+	encoder.EncodeString(`,"Margin":`)
+	encoder.EncodeUInt16(uint16(res.Margin))
+	encoder.EncodeString(`,"RetailProfit":`)
+	encoder.EncodeInt64(int64(res.RetailProfit))
+
+	encoder.EncodeString(`,"TaxPercent":`)
+	encoder.EncodeUInt16(uint16(res.TaxPercent))
+	encoder.EncodeString(`,"Tax":`)
+	encoder.EncodeInt64(int64(res.Tax))
+
+	encoder.EncodeString(`,"Price":`)
+	encoder.EncodeInt64(int64(res.Price))
+	encoder.EncodeByte('}')
+	return encoder.Buf
+}
+
+func (res *getProductPriceRes) LenAsJSON() (ln int) {
+	ln = 610
+	return
+}

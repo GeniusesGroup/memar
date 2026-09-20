@@ -1,0 +1,284 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+package pa
+
+import (
+	"crypto/sha256"
+	"crypto/sha512"
+	"strconv"
+
+	"libgo/achaemenid"
+	"libgo/authorization"
+	"libgo/http"
+	"libgo/json"
+	"libgo/otp"
+	"libgo/protocol"
+	"libgo/service"
+	"libgo/srpc"
+	"libgo/syllab"
+	"libgo/uuid"
+)
+
+var registerPersonService = service.Service{
+	URN:                "urn:giti:sabz.city:service:register-person",
+	Domain:             DomainName,
+	ID:                 18272881270888583381,
+	IssueDate:          1592316187,
+	ExpiryDate:         0,
+	ExpireInFavorOfURN: "",
+	ExpireInFavorOfID:  0,
+	Status:             protocol.Software_PreAlpha,
+
+	Authorization: authorization.Service{
+		CRUD:     authorization.CRUDCreate,
+		UserType: protocol.UserType_All,
+	},
+
+	Name: map[protocol.LanguageID]string{
+		protocol.LanguageEnglish: "Register Person",
+	},
+	Description: map[protocol.LanguageID]string{
+		protocol.LanguageEnglish: "register a new real person user in SabzCity platform.",
+	},
+	TAGS: []string{
+		"PersonAuthentication",
+	},
+
+	SRPCHandler: RegisterPersonSRPC,
+	ServeHTTP:   RegisterPersonHTTP,
+}
+
+// RegisterPersonSRPC is sRPC handler of RegisterPerson service.
+func RegisterPersonSRPC(st protocol.Stream) {
+	var req = &registerPersonReq{}
+	err = req.FromSyllab(srpc.GetPayload(st.IncomePayload))
+	if err != nil {
+		return
+	}
+
+	var res *registerPersonRes
+	res, err = registerPerson(st, req)
+	// Check if any error occur in business logic
+	if err != nil {
+		return
+	}
+
+	st.OutcomePayload = make([]byte, srpc.MinLength+res.LenAsSyllab())
+	res.ToSyllab(srpc.GetPayload(st.OutcomePayload))
+}
+
+// RegisterPersonHTTP is HTTP handler of RegisterPerson service.
+func RegisterPersonHTTP(st protocol.Stream, httpReq *http.Request, httpRes *http.Response) {
+	var req = &registerPersonReq{}
+	err = req.FromJSON(httpReq.Body().Marshal())
+	if err != nil {
+		httpRes.SetStatus(http.StatusBadRequestCode, http.StatusBadRequestPhrase)
+		return
+	}
+
+	var res *registerPersonRes
+	res, err = registerPerson(st, req)
+	// Check if any error occur in business logic
+	if err != nil {
+		httpRes.SetStatus(http.StatusBadRequestCode, http.StatusBadRequestPhrase)
+		return
+	}
+
+	httpRes.SetStatus(http.StatusOKCode, http.StatusOKPhrase)
+	httpRes.SetBody(json.NewCodec(res))
+}
+
+type registerPersonReq struct {
+	ThingID [32]byte `json:",string"`
+
+	PhoneNumber uint64
+	PhoneOTP    uint64
+	CaptchaID   [16]byte `json:",string"`
+
+	PasswordHash  [32]byte `json:",string"`
+	OTPAdditional int32
+}
+
+type registerPersonRes struct {
+	PersonID    [32]byte `json:",string"` // UUID of registered user
+	OTPPattern  [32]byte `json:",string"`
+	SecurityKey [32]byte `json:",string"`
+}
+
+func registerPerson(st protocol.Stream, req *registerPersonReq) (res *registerPersonRes, err protocol.Error) {
+	var otpReq = otp.GenerateTimeOTPReq{
+		Hasher:     sha512.New512_256(),
+		SecretKey:  smsOTPSecurityKey,
+		Additional: make([]byte, 8),
+		Period:     smsOTPPeriod,
+		Digits:     smsOTPDigits,
+	}
+	syllab.SetUInt64(otpReq.Additional, 0, req.PhoneNumber)
+	var timeOTP uint64
+	timeOTP, err = otp.GenerateTimeOTP(&otpReq)
+	if err != nil {
+		return
+	}
+
+	if st.Connection.UserType == protocol.UserType_Unset && req.PasswordHash != [32]byte{} {
+		// Prevent DDos attack by do some easy process for user e.g. captcha is not good way!
+		err = phraseCaptchas.Check(req.CaptchaID)
+		if err != nil {
+			return
+		}
+
+		if req.PhoneOTP != timeOTP {
+			return nil, otp.ErrWrongNumber
+		}
+	}
+
+	var pa = data.PersonAuthentication{
+		AppInstanceID:    achaemenid.App.Nodes.LocalNode.InstanceID,
+		UserConnectionID: st.Connection.ID,
+		PersonID:         uuid.Random32Byte(),
+		ReferentPersonID: st.Connection.UserID,
+		Status:           data.PersonAuthenticationNotForceUse2Factor,
+		PasswordHash:     req.PasswordHash,
+		OTPPattern:       uuid.Random32Byte(),
+		OTPAdditional:    req.OTPAdditional,
+		SecurityKey:      uuid.Random32Byte(),
+	}
+	if req.OTPAdditional != 0 {
+		pa.Status = data.PersonAuthenticationForceUse2Factor
+	}
+
+	if req.PasswordHash == [32]byte{} {
+		var passwordAsString []byte
+		strconv.AppendUint(passwordAsString, timeOTP, 10)
+		pa.PasswordHash = sha256.Sum256(passwordAsString)
+		// send otp as password to user
+		var sendOtpReq = sendOtpReq{
+			PhoneNumber: req.PhoneNumber,
+			Language:    protocol.LanguagePersian,
+		}
+		sendOtp(st, &sendOtpReq)
+		// can't do anything here if otp not deliver to user! user must recover account later!
+	}
+
+	var registerPersonNumberReq = registerPersonNumberReq{
+		PersonID:    pa.PersonID,
+		PhoneNumber: req.PhoneNumber,
+	}
+	err = registerPersonNumber(st, &registerPersonNumberReq, true)
+	if err != nil {
+		return
+	}
+
+	err = pa.SaveNew()
+	if err != nil {
+		// TODO::: can't easily return due to person number registered successfully!
+		return
+	}
+	if st.Connection.UserType == protocol.UserType_Unset {
+		st.Connection.UserID = pa.PersonID
+		st.Connection.UserType = protocol.UserType_Person
+		st.Connection.SetThingID(req.ThingID)
+	}
+
+	res = &registerPersonRes{
+		PersonID:    pa.PersonID,
+		OTPPattern:  pa.OTPPattern,
+		SecurityKey: pa.SecurityKey,
+	}
+	return
+}
+
+/*
+	Request Encoders & Decoders
+*/
+
+func (req *registerPersonReq) FromSyllab(payload []byte, stackIndex uint32) {
+	if uint32(len(buf)) < req.LenOfSyllabStack() {
+		err = syllab.ErrShortArrayDecode
+		return
+	}
+
+	copy(req.ThingID[:], buf[0:])
+	req.PhoneNumber = syllab.GetUInt64(buf, 32)
+	req.PhoneOTP = syllab.GetUInt64(buf, 40)
+	copy(req.CaptchaID[:], buf[48:])
+	copy(req.PasswordHash[:], buf[64:])
+	req.OTPAdditional = syllab.GetInt32(buf, 96)
+	return
+}
+
+func (req *registerPersonReq) LenOfSyllabStack() uint32 {
+	return 100
+}
+
+func (req *registerPersonReq) FromJSON(payload []byte) (remaining []byte, err protocol.Error) {
+	var decoder = json.DecoderUnsafeMinified{Buf: payload}
+	for err == nil {
+		var keyName = decoder.DecodeKey()
+		switch keyName {
+		case "ThingID":
+			err = decoder.DecodeByteArrayAsBase64(req.ThingID[:])
+		case "PhoneNumber":
+			req.PhoneNumber, err = decoder.DecodeUInt64()
+		case "PhoneOTP":
+			req.PhoneOTP, err = decoder.DecodeUInt64()
+		case "CaptchaID":
+			err = decoder.DecodeByteArrayAsBase64(req.CaptchaID[:])
+		case "PasswordHash":
+			err = decoder.DecodeByteArrayAsBase64(req.PasswordHash[:])
+		case "OTPAdditional":
+			req.OTPAdditional, err = decoder.DecodeInt32()
+		default:
+			err = decoder.NotFoundKeyStrict()
+		}
+
+		if decoder.End() {
+			return
+		}
+	}
+	return
+}
+
+/*
+	Response Encoders & Decoders
+*/
+
+func (res *registerPersonRes) ToSyllab(payload []byte, stackIndex, heapIndex uint32) (freeHeapIndex uint32) {
+	copy(buf[0:], res.PersonID[:])
+	copy(buf[32:], res.OTPPattern[:])
+	copy(buf[64:], res.SecurityKey[:])
+	return
+}
+
+func (res *registerPersonRes) LenOfSyllabStack() uint32 {
+	return 96
+}
+
+func (res *registerPersonRes) LenOfSyllabHeap() (ln uint32) {
+	return
+}
+
+func (res *registerPersonRes) LenAsSyllab() uint64 {
+	return uint64(res.LenOfSyllabStack() + res.LenOfSyllabHeap())
+}
+
+func (res *registerPersonRes) ToJSON(payload []byte) (added []byte, err protocol.Error) {
+	var encoder = json.Encoder{Buf: payload}
+
+	encoder.EncodeString(`{"PersonID":"`)
+	encoder.EncodeByteSliceAsBase64(res.PersonID[:])
+
+	encoder.EncodeString(`","OTPPattern":"`)
+	encoder.EncodeByteSliceAsBase64(res.OTPPattern[:])
+
+	encoder.EncodeString(`","SecurityKey":"`)
+	encoder.EncodeByteSliceAsBase64(res.SecurityKey[:])
+
+	encoder.EncodeString(`"}`)
+	return encoder.Buf
+}
+
+func (res *registerPersonRes) LenAsJSON() (ln int) {
+	ln = 177
+	return
+}

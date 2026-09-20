@@ -1,0 +1,20 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+package pm_p
+
+import (
+	gui_p "memar/gui/protocol"
+	request_p "memar/process/request/protocol"
+	audit_time_p "memar/process/time/protocol"
+
+	page_p "org/modules/computer/page/protocol"
+)
+
+// GUICategories indicate the domain record data fields.
+type GUICategories interface {
+	page_p.Field_PageID
+	gui_p.Page_Manifest
+
+	request_p.Field_RequestID
+	audit_time_p.Field_Request
+}

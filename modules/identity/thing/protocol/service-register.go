@@ -1,0 +1,14 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+package protocol
+
+import (
+	"libgo/protocol"
+)
+
+type (
+	Service_Register_Request interface {
+		QuiddityID() [16]byte
+		DomainID() protocol.MediaTypeID
+	}
+)

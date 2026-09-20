@@ -3,11 +3,11 @@
 package ggbuService
 
 import (
-	"memar/protocol"
+	net_p "memar/net/protocol"
 )
 
 // GetGPAddress use to make new connection by ECC algorithm.
-func GetGPAddress(sk protocol.Socket) {
+func GetGPAddress(sk net_p.Socket) {
 	// Make Connection.EncryptionKey by ECC algorithm with :
 	// req.UserPublicKey
 	// RunningServerData.PublicKeyCryptography.PrivateKey

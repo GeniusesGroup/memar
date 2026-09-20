@@ -3,9 +3,9 @@
 package discount
 
 import (
-	bp "org/modules/rights/building-location/protocol"
+	estate_p "org/modules/rights/estate/protocol"
 )
 
 type Location interface {
-	BuildingLocationID() bp.UUID
+	estate_p.Field_EstateID
 }

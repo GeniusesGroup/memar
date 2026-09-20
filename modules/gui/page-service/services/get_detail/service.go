@@ -4,7 +4,7 @@ package gds
 
 import (
 	"memar/net/srpc"
-	"memar/operation/service"
+	"memar/process/service"
 	"memar/operation/services"
 	"memar/protocol"
 )
@@ -23,7 +23,7 @@ type serv struct {
 	service.Service
 }
 
-func (ser *serv) DO(st protocol.Socket, req *Request) (res *Response, err protocol.Error) {
+func (ser *serv) DO(st protocol.Socket, req *Request) (res *Response, err error_p.Error) {
 	var reqService *service.Service
 	if req.ServiceID != 0 {
 		reqService, err = services.GetByID(req.ServiceID)
@@ -42,10 +42,10 @@ func (ser *serv) DO(st protocol.Socket, req *Request) (res *Response, err protoc
 	return
 }
 
-func (ser *serv) DoSRPC(req Request) (res Response, err protocol.Error) {
+func (ser *serv) DoSRPC(req Request) (res Response, err error_p.Error) {
 	return
 }
 
-func (ser *serv) DoHTTP(req Request) (res Response, err protocol.Error) {
+func (ser *serv) DoHTTP(req Request) (res Response, err error_p.Error) {
 	return
 }

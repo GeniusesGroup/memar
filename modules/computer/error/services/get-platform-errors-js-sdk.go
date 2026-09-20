@@ -7,9 +7,9 @@ import (
 	"memar/json"
 	"memar/net/http"
 	"memar/net/srpc"
+	"memar/protocol"
 	"memar/syllab"
-
-	"github.com/GeniusesGroup/libgo/protocol"
+	user_p "org/modules/identity/user/protocol"
 )
 
 var getPlatfromErrorsSDKService = service.Service{
@@ -23,8 +23,8 @@ var getPlatfromErrorsSDKService = service.Service{
 	Status:             protocol.Software_PreAlpha,
 
 	Authorization: authorization.Service{
-		CRUD:     authorization.CRUDRead,
-		UserType: protocol.UserType_All,
+		CRUD:     operation_p.ActionType_Read,
+		UserType: user_p.Type_All,
 	},
 
 	Detail: map[protocol.LanguageID]service.ServiceDetail{
@@ -40,7 +40,7 @@ var getPlatfromErrorsSDKService = service.Service{
 }
 
 // GetPlatfromErrorsSDKSRPC is sRPC handler of GetPlatfromErrorsSDK service.
-func GetPlatfromErrorsSDKSRPC(sk protocol.Socket) (err protocol.Error) {
+func GetPlatfromErrorsSDKSRPC(sk protocol.Socket) (err error_p.Error) {
 	var req = &getPlatfromErrorsSDKReq{}
 	err = req.FromSyllab(srpc.GetPayload(sk.IncomePayload))
 	if err != nil {
@@ -59,7 +59,7 @@ func GetPlatfromErrorsSDKSRPC(sk protocol.Socket) (err protocol.Error) {
 }
 
 // GetPlatfromErrorsSDKHTTP is HTTP handler of GetPlatfromErrorsSDK service.
-func GetPlatfromErrorsSDKHTTP(sk protocol.Socket, httpReq *http.Request, httpRes *http.Response) (err protocol.Error) {
+func GetPlatfromErrorsSDKHTTP(sk protocol.Socket, httpReq *http.Request, httpRes *http.Response) (err error_p.Error) {
 	var req = &getPlatfromErrorsSDKReq{}
 	err = req.FromJSON(httpReq.Body().Marshal())
 	if err != nil {
@@ -89,7 +89,7 @@ type getPlatfromErrorsSDKRes struct {
 	SDK []byte
 }
 
-func getPlatfromErrorsSDK(st protocol.Socket, req *getPlatfromErrorsSDKReq) (res *getPlatfromErrorsSDKRes, err protocol.Error) {
+func getPlatfromErrorsSDK(st protocol.Socket, req *getPlatfromErrorsSDKReq) (res *getPlatfromErrorsSDKRes, err error_p.Error) {
 	res = &getPlatfromErrorsSDKRes{
 		SDK: er.Errors.GetErrorsInJsFormat(req.Language),
 	}
@@ -127,7 +127,7 @@ func (req *getPlatfromErrorsSDKReq) LenAsSyllab() uint64 {
 	return uint64(req.LenOfSyllabStack() + req.LenOfSyllabHeap())
 }
 
-func (req *getPlatfromErrorsSDKReq) FromJSON(payload []byte) (remaining []byte, err protocol.Error) {
+func (req *getPlatfromErrorsSDKReq) FromJSON(payload []byte) (remaining []byte, err error_p.Error) {
 	var decoder = json.DecoderUnsafeMinified{Buf: payload}
 	for err == nil {
 		var keyName = decoder.DecodeKey()
@@ -147,7 +147,7 @@ func (req *getPlatfromErrorsSDKReq) FromJSON(payload []byte) (remaining []byte, 
 	return
 }
 
-func (req *getPlatfromErrorsSDKReq) ToJSON(payload []byte) (added []byte, err protocol.Error) {
+func (req *getPlatfromErrorsSDKReq) ToJSON(payload []byte) (added []byte, err error_p.Error) {
 	var encoder = json.Encoder{Buf: payload}
 
 	encoder.EncodeString(`{"Language":`)

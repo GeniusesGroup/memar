@@ -1,0 +1,15 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+package asset
+
+import (
+	"../price"
+)
+
+// FinancialCredit ---Read locale description in financialCreditStructure---
+type FinancialCredit struct {
+	RequestID [32]byte     // Request ObjectID to prove how this object created in the chain of other objects.
+	UserID    [32]byte     `index-hash:"RecordID"`
+	Amount    price.Amount // Some number base on currency is Decimal part e.g. 8099 >> 80.99$
+	Balance   price.Amount // Some number base on currency is Decimal part e.g. 8099 >> 80.99$
+}

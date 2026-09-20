@@ -1,23 +1,23 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package trd_p
+package tax_p
 
 import (
-	aa_p "org/modules/app-audit/protocol"
-	fm_p "org/modules/financial-money/protocol"
-	tax_p "org/modules/government-tax/protocol"
-	invoice_p "org/modules/invoice/protocol"
-	storage_p "org/modules/storage/protocol"
+	request_p "memar/process/request/protocol"
+	audit_time_p "memar/process/time/protocol"
+
+	invoice_p "org/modules/economics/invoice/protocol"
+	money_p "org/modules/economics/money/protocol"
 )
 
 // DataModel indicate the domain record data fields. each order is immutable record.
-type DataModel interface {
+type Invoice interface {
 	invoice_p.Field_InvoiceID
-	tax_p.Field_TaxID
+	Field_TaxID
 
-	fm_p.Field_Amount
-	// VAT() fmp.MoneyAmount // Total VAT user pay to its country government
+	money_p.Money
+	// VAT() money_p.Amount // Total VAT user pay to its country government
 
-	aa_p.Field_AuditRequest
-	storage_p.Field_SaveTime
+	request_p.Field_RequestID
+	audit_time_p.Field_Request
 }

@@ -3,12 +3,14 @@
 package org
 
 import (
-	"memar/protocol"
+	error_p "memar/process/error/protocol"
+
+	storage_p "memar/storage/protocol"
 )
 
 type StorageServices interface {
-	Save(gc GUICategories) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(gc GUICategories) (nv storage_p.NumberOfVersion, err error_p.Error)
 
-	Count() (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(vo protocol.VersionOffset) (gc GUICategories, nv protocol.NumberOfVersion, err protocol.Error)
+	Count() (nv storage_p.NumberOfVersion, err error_p.Error)
+	Get(vo storage_p.VersionOffset) (gc GUICategories, nv storage_p.NumberOfVersion, err error_p.Error)
 }

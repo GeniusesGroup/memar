@@ -13,7 +13,7 @@ import (
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	label_p.Field_LabelID
+	label_p.Field_LabelUUID
 
 	// always `logic_p.Empty() == false`
 	PrimaryNodeModuleID() module_p.UUID

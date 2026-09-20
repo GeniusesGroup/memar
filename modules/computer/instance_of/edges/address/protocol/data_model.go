@@ -3,21 +3,19 @@
 package anap
 
 import (
-	"memar/protocol"
+	request_p "memar/process/request/protocol"
+	audit_time_p "memar/process/time/protocol"
 
-	aap "org/modules/app-audit/protocol"
-	anp "org/modules/app-node/protocol"
+	instance_p "org/modules/computer/instance_of/protocol"
+	label_p "org/modules/knowledge/label/protocol"
 )
 
 type DataModel interface {
-	NodeID() anp.NodeUUID
-	AddressType() Type
+	instance_p.Field_InstanceUUID
+	label_p.Field_Type
 	Address() Address
 	AddressBinary() []byte
 
-	aap.AuditRequest
-	protocol.Storage_Versioned
-	protocol.Storage_SaveTime
+	request_p.Field_RequestID
+	audit_time_p.Field_Request
 }
-
-// protocol.EventTarget

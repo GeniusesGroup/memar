@@ -3,7 +3,11 @@
 package ecp
 
 import (
-	"memar/protocol"
+	thing_p "org/modules/identity/thing/protocol"
 )
 
-type CertificateUUID protocol.UUID
+type Field_CertificateID interface {
+	CertificateID() UUID
+}
+
+type UUID thing_p.UUID

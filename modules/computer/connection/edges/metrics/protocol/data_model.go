@@ -2,18 +2,11 @@
 
 package csp
 
-import (
-	"memar/protocol"
-
-	acp "org/modules/app-connection/protocol"
-	arp "org/modules/app-request/protocol"
-)
-
 // ConnectionMetrics
 type DataModel interface {
-	ConnectionID() acp.ConnectionUUID
+	// commit.msg: Delete `timing` in favor of calendar-event
+	// LastUsage() time_p.Time              // Last use of the connection
 
-	LastUsage() protocol.Time            // Last use of the connection
 	MaxBandwidth() uint64                // Byte/Second and Connection can limit to a fixed number
 	BytesSent() uint64                   // Counts the bytes of packets sent
 	PacketsSent() uint64                 // Counts sent packets
@@ -23,8 +16,4 @@ type DataModel interface {
 	NotRequestedPacketsReceived() uint64 // Counts not requested packets received for firewalling server from some attack types
 	SucceedStreamCount() uint64          // Count successful request
 	FailedStreamCount() uint64           // Count failed services call e.g. data validation failed, ...
-
-	arp.AuditLogging
-	protocol.Storage_Versioned
-	protocol.Storage_SaveTime
 }

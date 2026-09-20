@@ -5,11 +5,11 @@ package chapar
 import (
 	"sync"
 
-	"libgo/log"
-	"libgo/protocol"
+	"memar/process/log"
+	"memar/protocol"
 )
 
-// connections store pools of connection to retrieve in many ways!
+// connections store pools of connection to retrieve in many ways.
 // TODO::: add analytic methods
 type connections struct {
 	mutex           sync.Mutex
@@ -30,8 +30,8 @@ func (c *connections) init() {
 	}
 }
 
-// GetConnectionByPath get a connection by its path from connections pool!!
-func (c *connections) getConnectionByPath(path []byte) (conn protocol.NetworkLink_Connection, err protocol.Error) {
+// GetConnectionByPath get a connection by its path from connections pool.
+func (c *connections) getConnectionByPath(path []byte) (conn protocol.NetworkLink_Connection, err error_p.Error) {
 	conn = c.poolByPath[string(path)]
 	if conn == nil {
 		conn = &Connection{
@@ -42,7 +42,7 @@ func (c *connections) getConnectionByPath(path []byte) (conn protocol.NetworkLin
 	return
 }
 
-func (c *connections) getConnectionsByThingID(thingID [32]byte) (conn protocol.NetworkLink_Connection, err protocol.Error) {
+func (c *connections) getConnectionsByThingID(thingID [32]byte) (conn protocol.NetworkLink_Connection, err error_p.Error) {
 	conn = c.poolByThingID[thingID]
 	if conn == nil {
 		conn = &Connection{
@@ -91,5 +91,5 @@ func (c *connections) shutdown() {
 
 func (c *connections) activeConnectionsNumber() string {
 	// len(c.poolByThingID)
-	return
+	return ""
 }

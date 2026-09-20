@@ -3,10 +3,10 @@
 package fma_p
 
 import (
-	error_p "memar/error/protocol"
+	error_p "memar/process/error/protocol"
 
+	storage_p "memar/storage/protocol"
 	form_p "org/modules/knowledge/form/protocol"
-	storage_p "org/modules/storage/primitive/protocol"
 )
 
 type StorageServices interface {

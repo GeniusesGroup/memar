@@ -3,19 +3,18 @@
 package org
 
 import (
-	"memar/protocol"
+	request_p "memar/process/request/protocol"
+	audit_time_p "memar/process/time/protocol"
 
-	arp "org/modules/app-request/protocol"
-	lsp "org/modules/learn-skill/protocol"
-	up "org/modules/user/protocol"
+	user_p "org/modules/identity/user/protocol"
+	skill_p "org/modules/knowledge/skill/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	UserID() up.UserUUID
-	SkillID() lsp.SkillUUID
+	user_p.Field_UserUUID
+	skill_p.Field_SkillID
 
-	arp.AuditLogging
-	protocol.Storage_Versioned
-	protocol.Storage_SaveTime
+	request_p.Field_RequestID
+	audit_time_p.Field_Request
 }

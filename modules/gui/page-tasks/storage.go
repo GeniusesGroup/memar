@@ -1,0 +1,19 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+package task_p
+
+import (
+	error_p "memar/process/error/protocol"
+
+	storage_p "memar/storage/protocol"
+	user_p "org/modules/identity/user/protocol"
+)
+
+type StorageServices interface {
+	Save(dm Task) (nv storage_p.NumberOfVersion, err error_p.Error)
+
+	Count(taskID UUID) (nv storage_p.NumberOfVersion, err error_p.Error)
+	Get(taskID UUID, vo storage_p.VersionOffset) (dm Task, nv storage_p.NumberOfVersion, err error_p.Error)
+
+	FIND_TaskIDs_BY_UserID(userID user_p.UUID, offset, limit uint64) (taskIDs []UUID, nv storage_p.NumberOfVersion, err error_p.Error)
+}

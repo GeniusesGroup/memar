@@ -4,19 +4,20 @@ package qotp
 
 import (
 	"memar/math/per"
-	"memar/protocol"
+	"memar/time/duration"
 
-	arp "org/modules/app-request/protocol"
-	qop "org/modules/question_option/protocol"
+	request_p "memar/process/request/protocol"
+	audit_time_p "memar/process/time/protocol"
+
+	qo_p "org/modules/knowledge/question_option/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	QuestionOptionID() qop.QuestionOptionUUID
-	Target() per.Myriad           // =~ Goal
-	TimeFrame() protocol.Duration // =~ Interval, TimeSpan, TimeFrame, TimePeriod,
+	qo_p.Field_QuestionOptionID
+	Target() per.Myriad         // =~ Goal
+	TimeFrame() duration.Second // =~ Interval, TimeSpan, TimeFrame, TimePeriod,
 
-	arp.AuditLogging
-	protocol.Storage_Versioned
-	protocol.Storage_SaveTime
+	request_p.Field_RequestID
+	audit_time_p.Field_Request
 }

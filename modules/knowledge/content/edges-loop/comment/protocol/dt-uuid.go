@@ -3,11 +3,11 @@
 package comment_p
 
 import (
-	quiddity_p "org/modules/identity/quiddity/protocol"
+	content_p "org/modules/knowledge/content/protocol"
 )
 
 type Field_CommentID interface {
 	CommentID() UUID
 }
 
-type UUID quiddity_p.UUID
+type UUID content_p.UUID

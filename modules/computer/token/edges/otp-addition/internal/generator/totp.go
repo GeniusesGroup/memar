@@ -7,7 +7,8 @@ import (
 	"hash"
 	"math"
 
-	"memar/protocol"
+	error_p "memar/process/error/protocol"
+	"memar/time/duration"
 	"memar/time/unix"
 )
 
@@ -16,16 +17,16 @@ type GenerateTimeOTPReq struct {
 	Hasher     hash.Hash // e.g. sha512.New512_256()
 	SecretKey  []byte
 	Additional []byte
-	Period     protocol.Duration
+	Period     duration.Second
 	Digits     uint // number of integers in the OTP. Some apps expect this to be 6 digits, others support more.
 }
 
 // GenerateTimeOTP generate and returns
-func GenerateTimeOTP(req *GenerateTimeOTPReq) (otp uint64, err protocol.Error) {
+func GenerateTimeOTP(req *GenerateTimeOTPReq) (otp uint64, err error_p.Error) {
 	var buf = make([]byte, len(req.SecretKey)+len(req.Additional)+8)
 	copy(buf, req.SecretKey)
 	copy(buf[len(req.SecretKey):], req.Additional)
-	binary.LittleEndian.PutUint64(buf[len(req.SecretKey)+len(req.Additional):], uint64(unix.Now().ElapsedByDuration(req.Period)))
+	binary.LittleEndian.PutUint64(buf[len(req.SecretKey)+len(req.Additional):], uint64(unix.Now().ElapsedBySecond(req.Period)))
 
 	req.Hasher.Write(buf)
 	var hashSum = req.Hasher.Sum(nil)

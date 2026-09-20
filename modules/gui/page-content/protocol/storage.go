@@ -1,19 +1,20 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package cp
+package content_p
 
 import (
-	"memar/protocol"
+	error_p "memar/process/error/protocol"
 
-	up "org/modules/user/protocol"
+	storage_p "memar/storage/protocol"
+	user_p "org/modules/identity/user/protocol"
 )
 
 type StorageServices interface {
-	Save(dm DataModel) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm DataModel) (nv storage_p.NumberOfVersion, err error_p.Error)
 
-	Count(contentID ContentUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(contentID ContentUUID, vo protocol.VersionOffset) (dm DataModel, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(contentID UUID) (nv storage_p.NumberOfVersion, err error_p.Error)
+	Get(contentID UUID, vo storage_p.VersionOffset) (dm DataModel, nv storage_p.NumberOfVersion, err error_p.Error)
 
-	FIND_ContentIDs_BY_UserID(userID up.UserUUID, offset, limit uint64) (contentIDs []ContentUUID, nv protocol.NumberOfVersion, err protocol.Error)
-	GetIDs(offset, limit uint64) (contentIDs []ContentUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	FIND_ContentIDs_BY_UserID(userID user_p.UUID, offset, limit uint64) (contentIDs []UUID, nv storage_p.NumberOfVersion, err error_p.Error)
+	GetIDs(offset, limit uint64) (contentIDs []UUID, nv storage_p.NumberOfVersion, err error_p.Error)
 }

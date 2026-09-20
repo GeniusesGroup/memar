@@ -2,6 +2,10 @@
 
 package psp
 
+type Field_Type interface {
+	Type() Type
+}
+
 type Type uint8
 
 const (

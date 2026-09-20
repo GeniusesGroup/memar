@@ -5,7 +5,6 @@
 package errors
 
 import (
-	"memar/detail"
 	"memar/protocol"
 )
 

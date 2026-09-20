@@ -1,0 +1,747 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+package services
+
+import (
+	"fmt"
+	"strconv"
+
+	"libgo/achaemenid"
+	"libgo/authorization"
+	"libgo/http"
+	"libgo/json"
+	"libgo/price"
+	"libgo/protocol"
+	"libgo/sdk/asanak.com"
+	"libgo/service"
+	"libgo/srpc"
+	"libgo/syllab"
+)
+
+var registerProductInvoiceService = service.Service{
+	URN:                "urn:giti:sabz.city:service:register-product-invoice",
+	Domain:             DomainName,
+	ID:                 9545016661100944503,
+	URI:                "",
+	IssueDate:          1607014006,
+	ExpiryDate:         0,
+	ExpireInFavorOfURN: "",
+	ExpireInFavorOfID:  0,
+	Status:             protocol.Software_PreAlpha,
+
+	Authorization: authorization.Service{
+		CRUD:     authorization.CRUDCreate,
+		UserType: protocol.UserType_All ^ protocol.UserType_Unset,
+	},
+
+	Name: map[protocol.LanguageID]string{
+		protocol.LanguageEnglish: "Register Product Invoice",
+	},
+	Description: map[protocol.LanguageID]string{
+		protocol.LanguageEnglish: "",
+	},
+	TAGS: []string{
+		"",
+	},
+
+	SRPCHandler: RegisterProductInvoiceSRPC,
+	ServeHTTP:   RegisterProductInvoiceHTTP,
+}
+
+// RegisterProductInvoiceSRPC is sRPC handler of RegisterProductInvoice service.
+func RegisterProductInvoiceSRPC(st protocol.Stream) {
+	var req = &registerProductInvoiceReq{}
+	err = req.FromSyllab(srpc.GetPayload(st.IncomePayload))
+	if err != nil {
+		return
+	}
+
+	var res *registerProductInvoiceRes
+	res, err = registerProductInvoice(st, req)
+	// Check if any error occur in business logic
+	if err != nil {
+		return
+	}
+
+	st.OutcomePayload = make([]byte, srpc.MinLength+res.LenAsSyllab())
+	res.ToSyllab(srpc.GetPayload(st.OutcomePayload))
+}
+
+// RegisterProductInvoiceHTTP is HTTP handler of RegisterProductInvoice service.
+func RegisterProductInvoiceHTTP(st protocol.Stream, httpReq *http.Request, httpRes *http.Response) {
+	var req = &registerProductInvoiceReq{}
+	err = req.FromJSON(httpReq.Body().Marshal())
+	if err != nil {
+		httpRes.SetStatus(http.StatusBadRequestCode, http.StatusBadRequestPhrase)
+		return
+	}
+
+	var res *registerProductInvoiceRes
+	res, err = registerProductInvoice(st, req)
+	// Check if any error occur in business logic
+	if err != nil {
+		httpRes.SetStatus(http.StatusBadRequestCode, http.StatusBadRequestPhrase)
+		return
+	}
+
+	httpRes.SetStatus(http.StatusOKCode, http.StatusOKPhrase)
+	httpRes.SetBody(json.NewCodec(res))
+}
+
+type registerProductInvoiceReq struct {
+	UserID            [32]byte          `json:",string"` // Due to a seller can register invoice for any user
+	UserOTP           uint64            `validator:"optional"`
+	UserTransactionID [32]byte          `json:",string" validator:"optional"`
+	SenderDCID        [32]byte          `json:",string"`
+	ReceiverDCID      [32]byte          `json:",string"`
+	Language          protocol.Language // to send sms in desire language
+	Products          []registerProductInvoiceDetail
+}
+
+type registerProductInvoiceRes struct {
+	NotRegistered []registerProductInvoiceDetail
+}
+
+type registerProductInvoiceDetail struct {
+	QuiddityID           [32]byte              `json:",string"`
+	getProductPriceRes   *getProductPriceRes   //`json:"-" syllab:"-"`
+	ProductAuctionID     [32]byte              `json:",string"`
+	getProductAuctionRes *getProductAuctionRes //`json:"-" syllab:"-"`
+	Number               uint64
+	Status               registerProductInvoiceDetailStatus
+}
+
+func registerProductInvoice(st protocol.Stream, req *registerProductInvoiceReq) (res *registerProductInvoiceRes, err protocol.Error) {
+	err = st.Authorize()
+	if err != nil {
+		return
+	}
+
+	if req.UserID != [32]byte{} && (req.UserOTP == 0 && req.UserTransactionID == [32]byte{}) {
+		err = ErrProductInvoiceDelegate
+		return
+	}
+
+	if req.SenderDCID == [32]byte{} {
+		err = ErrProductInvoiceBadDC
+		return
+	}
+	// check if desire DC exist and active.
+	var oa = data.OrganizationAuthentication{
+		ID: req.SenderDCID,
+	}
+	err = oa.GetLastByID()
+	if err != nil {
+		return
+	}
+	if oa.Status == data.OrganizationStatusBlocked {
+		err = ErrBlockedByJustice
+		return
+	}
+
+	var (
+		sellerID [32]byte
+
+		totalProductNumber            uint64
+		totalPriceAmount              price.Amount
+		totalPayablePriceAmount       price.Amount
+		totalSellPriceAmount          price.Amount
+		totalTax                      price.Amount
+		totalDCCommission             price.Amount
+		totalSellerCommission         price.Amount
+		totalNotRegisteredPriceAmount price.Amount
+
+		ft           data.FinancialTransaction
+		ownerProduct data.ProductInventory
+		buyerProduct data.ProductInventory
+	)
+
+	res = &registerProductInvoiceRes{}
+
+	for _, pro := range req.Products {
+		var getProductPriceReq = getProductPriceReq{
+			QuiddityID: pro.QuiddityID,
+		}
+		pro.getProductPriceRes, err = getProductPrice(st, &getProductPriceReq)
+		// TODO::: handle error
+
+		var getProductAuctionReq = getProductAuctionReq{
+			ID: pro.ProductAuctionID,
+		}
+		pro.getProductAuctionRes, err = getProductAuction(st, &getProductAuctionReq)
+		// TODO::: handle error
+		// TODO::: authorize product auction e.g. allowUserID, ...
+
+		totalProductNumber += pro.Number
+		totalPriceAmount += (price.Amount(pro.Number) * (pro.getProductPriceRes.Price))
+		totalPayablePriceAmount += (price.Amount(pro.Number) * (pro.getProductPriceRes.Price - pro.getProductPriceRes.Price.PerMyriad(pro.getProductAuctionRes.Discount+sellPercent)))
+		totalTax += (price.Amount(pro.Number) * pro.getProductPriceRes.Tax)
+		totalDCCommission += (price.Amount(pro.Number) * pro.getProductPriceRes.Price.PerMyriad(pro.getProductAuctionRes.DCCommission))
+		totalSellerCommission += (price.Amount(pro.Number) * pro.getProductPriceRes.Price.PerMyriad(pro.getProductAuctionRes.SellerCommission))
+	}
+
+	totalSellPriceAmount = totalPriceAmount * sellPercent / 10000
+
+	if req.UserID == [32]byte{} {
+		req.UserID = st.Connection.UserID
+		sellerID = adminOrgID
+	} else {
+		sellerID = st.Connection.UserID
+
+		if req.UserTransactionID != [32]byte{} {
+			ft = data.FinancialTransaction{
+				RecordID: req.UserTransactionID,
+			}
+			err = ft.GetByRecordID()
+			if err != nil {
+				return
+			}
+			if ft.UserID != req.UserID || ft.Amount < totalPayablePriceAmount {
+				err = ErrProductInvoiceDelegateBadTransactionID
+				return
+			}
+		} else {
+			// TODO::: check given OTP
+		}
+	}
+
+	ft = data.FinancialTransaction{
+		UserID: req.UserID,
+	}
+	err = ft.Lock()
+	if err != nil {
+		return
+	}
+	if ft.Balance < totalPayablePriceAmount {
+		err = ErrFinancialTransactionBalance
+		return
+	}
+	ft = data.FinancialTransaction{
+		AppInstanceID: achaemenid.App.Nodes.LocalNode.InstanceID,
+		// UserConnectionID:      st.Connection.ID, can't uncomment this line due to HTTP use connectionID as authentication proccess!
+		UserID:                req.UserID,
+		ReferenceID:           sellerID,
+		ReferenceType:         data.FinancialTransactionInvoicePrice,
+		PreviousTransactionID: ft.RecordID,
+		Amount:                -totalPayablePriceAmount,
+		Balance:               ft.Balance - totalPayablePriceAmount,
+	}
+	err = ft.UnLock()
+	if err != nil {
+		return
+	}
+
+	for _, pro := range req.Products {
+		ownerProduct = data.ProductInventory{
+			QuiddityID: pro.QuiddityID,
+			DCID:       req.SenderDCID,
+		}
+		err = ownerProduct.LockByQuiddityIDDCID()
+
+		// if ownerProduct.Balance < int64(pro.Number) {
+		// 	var notRegisterProduct = registerProductInvoiceDetail{
+		// 		QuiddityID:           pro.QuiddityID,
+		// 		getProductPriceRes:   pro.getProductPriceRes,
+		// 		ProductAuctionID:     pro.ProductAuctionID,
+		// 		getProductAuctionRes: pro.getProductAuctionRes,
+		// 		Number:               pro.Number - uint64(ownerProduct.Balance),
+		// 		Status:               registerProductInvoiceDetailNotEnoughInventory,
+		// 	}
+		// 	res.NotRegistered = append(res.NotRegistered, notRegisterProduct)
+		// 	pro.Number = uint64(ownerProduct.Balance)
+		// }
+
+		ownerProduct = data.ProductInventory{
+			AppInstanceID:    achaemenid.App.Nodes.LocalNode.InstanceID,
+			UserConnectionID: st.Connection.ID,
+			OwnerID:          ownerProduct.OwnerID,
+			QuiddityID:       pro.QuiddityID,
+			Amount:           int64(pro.Number),
+			Balance:          ownerProduct.Balance - int64(pro.Number),
+
+			ReferenceID:      req.UserID,
+			DCID:             ownerProduct.DCID,
+			SellerID:         sellerID,
+			ProductAuctionID: pro.ProductAuctionID,
+			Status:           data.ProductInventoryChangeOwner,
+		}
+		err = ownerProduct.UnLockInInvoice()
+
+		buyerProduct = data.ProductInventory{
+			OwnerID:    req.UserID,
+			QuiddityID: pro.QuiddityID,
+		}
+		// TODO::: need lock here???
+		buyerProduct.GetLastByQuiddityIDOwnerID()
+		buyerProduct = data.ProductInventory{
+			AppInstanceID:    achaemenid.App.Nodes.LocalNode.InstanceID,
+			UserConnectionID: st.Connection.ID,
+			OwnerID:          req.UserID,
+			QuiddityID:       pro.QuiddityID,
+			Amount:           int64(pro.Number),
+			Balance:          buyerProduct.Amount + int64(pro.Number),
+
+			ReferenceID:      ownerProduct.DCID,
+			DCID:             req.ReceiverDCID,
+			SellerID:         sellerID,
+			ProductAuctionID: pro.ProductAuctionID,
+			Status:           data.ProductInventoryChangeOwner,
+		}
+		err = buyerProduct.SaveInInvoice()
+	}
+
+	// TODO::: handle below error nil deference
+	// for _, notRegisterProduct := range res.NotRegistered {
+	//  totalProductNumber -= notRegisterProduct.Number
+	// 	totalNotRegisteredPriceAmount += (price.Amount(notRegisterProduct.Number) * (notRegisterProduct.getProductPriceRes.Price - notRegisterProduct.getProductPriceRes.Price.PerMyriad(notRegisterProduct.getProductAuctionRes.Discount)))
+	// 	totalTax -= (price.Amount(notRegisterProduct.Number) * notRegisterProduct.getProductPriceRes.Tax)
+	// 	totalDCCommission -= (price.Amount(notRegisterProduct.Number) * notRegisterProduct.getProductPriceRes.Price.PerMyriad(notRegisterProduct.getProductAuctionRes.DCCommission))
+	// 	totalSellerCommission -= (price.Amount(notRegisterProduct.Number) * notRegisterProduct.getProductPriceRes.Price.PerMyriad(notRegisterProduct.getProductAuctionRes.SellerCommission))
+	// }
+
+	ft = data.FinancialTransaction{
+		UserID: adminOrgID,
+	}
+	err = ft.GetLastTransactionByUserID()
+	// TODO::: handle error
+	ft = data.FinancialTransaction{
+		AppInstanceID:         achaemenid.App.Nodes.LocalNode.InstanceID,
+		UserConnectionID:      st.Connection.ID,
+		UserID:                adminOrgID,
+		ReferenceID:           req.UserID,
+		ReferenceType:         data.FinancialTransactionInvoiceTax,
+		PreviousTransactionID: ft.RecordID,
+		Amount:                totalTax,
+		Balance:               ft.Balance + totalTax,
+	}
+	err = ft.SaveNew()
+	// TODO::: handle error
+
+	ft = data.FinancialTransaction{
+		UserID: req.SenderDCID,
+	}
+	err = ft.GetLastTransactionByUserID()
+	ft = data.FinancialTransaction{
+		AppInstanceID: achaemenid.App.Nodes.LocalNode.InstanceID,
+		// UserConnectionID:      st.Connection.ID,
+		UserID:                req.SenderDCID,
+		ReferenceID:           req.UserID,
+		ReferenceType:         data.FinancialTransactionInvoiceDCCommission,
+		PreviousTransactionID: ft.RecordID,
+		Amount:                totalDCCommission,
+		Balance:               ft.Balance + totalDCCommission,
+	}
+	err = ft.SaveNew()
+
+	ft = data.FinancialTransaction{
+		UserID: sellerID,
+	}
+	err = ft.GetLastTransactionByUserID()
+	ft = data.FinancialTransaction{
+		AppInstanceID: achaemenid.App.Nodes.LocalNode.InstanceID,
+		// UserConnectionID:      st.Connection.ID,
+		UserID:                sellerID,
+		ReferenceID:           req.UserID,
+		ReferenceType:         data.FinancialTransactionInvoiceSellerCommission,
+		PreviousTransactionID: ft.RecordID,
+		Amount:                totalSellerCommission,
+		Balance:               ft.Balance + totalSellerCommission,
+	}
+	err = ft.SaveNew()
+
+	if len(res.NotRegistered) > 0 {
+		ft = data.FinancialTransaction{
+			UserID: req.UserID,
+		}
+		err = ft.GetLastTransactionByUserID()
+		ft = data.FinancialTransaction{
+			AppInstanceID:         achaemenid.App.Nodes.LocalNode.InstanceID,
+			UserConnectionID:      st.Connection.ID,
+			UserID:                req.UserID,
+			ReferenceType:         data.FinancialTransactionInvoiceCorrection,
+			PreviousTransactionID: ft.RecordID,
+			Amount:                totalNotRegisteredPriceAmount,
+			Balance:               ft.Balance + totalNotRegisteredPriceAmount,
+		}
+		err = ft.SaveNew()
+	}
+
+	// Send user sms about invoice details
+	var pn = data.PersonNumber{
+		PersonID: req.UserID,
+	}
+	err = pn.GetLastByPersonID()
+	if err == nil {
+		var SendSMSReq = asanak.SendSMSReq{
+			Destination: []string{strconv.FormatUint(pn.Number, 10)},
+		}
+		// TODO::: below is not enough efficient code!! and it must comma seprated number due to platfrom official currency is fucked!!
+		// https://github.com/dustin/go-humanize/blob/master/comma.go
+		switch req.Language {
+		case protocol.LanguagePersian:
+			SendSMSReq.Message = []byte(fmt.Sprintf(smsInvoicePersian, totalPriceAmount-totalNotRegisteredPriceAmount, totalPayablePriceAmount-totalNotRegisteredPriceAmount, totalPriceAmount-totalNotRegisteredPriceAmount-totalPayablePriceAmount, totalSellPriceAmount, totalProductNumber))
+		default:
+			SendSMSReq.Message = []byte(fmt.Sprintf(smsInvoiceEnglish, totalPriceAmount-totalNotRegisteredPriceAmount, totalPayablePriceAmount-totalNotRegisteredPriceAmount, totalPriceAmount-totalNotRegisteredPriceAmount-totalPayablePriceAmount, totalSellPriceAmount, totalProductNumber))
+		}
+		smsProvider.SendSMS(&SendSMSReq)
+		// TODO::: Handle send sms returns??
+	}
+	return
+}
+
+/*
+	Request Encoders & Decoders
+*/
+
+func (req *registerProductInvoiceReq) FromSyllab(payload []byte, stackIndex uint32) {
+	var add, ln, i uint32
+
+	if uint32(len(buf)) < req.LenOfSyllabStack() {
+		err = syllab.ErrShortArrayDecode
+		return
+	}
+
+	copy(req.UserID[:], buf[0:])
+	req.UserOTP = syllab.GetUInt64(buf, 32)
+	copy(req.UserTransactionID[:], buf[40:])
+	copy(req.SenderDCID[:], buf[72:])
+	copy(req.ReceiverDCID[:], buf[104:])
+	req.Language = protocol.Language(syllab.GetUInt32(buf, 136))
+
+	add = syllab.GetUInt32(buf, 140)
+	ln = syllab.GetUInt32(buf, 144)
+	req.Products = make([]registerProductInvoiceDetail, ln)
+	for i = 0; i < ln; i++ {
+		req.Products[i].FromSyllab(buf, add)
+		add += req.Products[0].LenOfSyllabStack()
+	}
+	return
+}
+
+func (req *registerProductInvoiceReq) ToSyllab(payload []byte, stackIndex, heapIndex uint32) (freeHeapIndex uint32) {
+	var hi uint32 = req.LenOfSyllabStack() // Heap index || Stack size!
+	var i, ln uint32                       // len of strings, slices, maps, ...
+
+	copy(buf[0:], req.UserID[:])
+	syllab.SetUInt64(buf, 32, req.UserOTP)
+	copy(buf[40:], req.UserTransactionID[:])
+	copy(buf[72:], req.SenderDCID[:])
+	copy(buf[104:], req.ReceiverDCID[:])
+	syllab.SetUInt32(buf, 136, uint32(req.Language))
+
+	ln = uint32(len(req.Products))
+	syllab.SetUInt32(buf, 140, hi) // add
+	syllab.SetUInt32(buf, 144, ln) // ln
+	for i = 0; i < ln; i++ {
+		req.Products[i].ToSyllab(buf, hi)
+		hi += req.Products[0].LenOfSyllabStack()
+	}
+	return
+}
+
+func (req *registerProductInvoiceReq) LenOfSyllabStack() uint32 {
+	return 148
+}
+
+func (req *registerProductInvoiceReq) LenOfSyllabHeap() (ln uint32) {
+	var ln0 = len(req.Products)
+	if ln0 > 0 {
+		ln = uint32(ln0 * req.Products[0].LenAsSyllab())
+	}
+	return
+}
+
+func (req *registerProductInvoiceReq) LenAsSyllab() uint64 {
+	return uint64(req.LenOfSyllabStack() + req.LenOfSyllabHeap())
+}
+
+func (req *registerProductInvoiceReq) FromJSON(payload []byte) (remaining []byte, err protocol.Error) {
+	var decoder = json.DecoderUnsafe{
+		Buf: buf,
+	}
+	for err == nil {
+		var keyName = decoder.DecodeKey()
+		switch keyName {
+		case "UserID":
+			err = decoder.DecodeByteArrayAsBase64(req.UserID[:])
+		case "UserOTP":
+			req.UserOTP, err = decoder.DecodeUInt64()
+		case "UserTransactionID":
+			err = decoder.DecodeByteArrayAsBase64(req.UserTransactionID[:])
+		case "SenderDCID":
+			err = decoder.DecodeByteArrayAsBase64(req.SenderDCID[:])
+		case "ReceiverDCID":
+			err = decoder.DecodeByteArrayAsBase64(req.ReceiverDCID[:])
+		case "Language":
+			var num uint32
+			num, err = decoder.DecodeUInt32()
+			req.Language = protocol.Language(num)
+		case "Products":
+			req.Products = make([]registerProductInvoiceDetail, 0, 16) // TODO::: Is cap efficient enough?
+			var pro registerProductInvoiceDetail
+			for !decoder.CheckToken(']') {
+				// decoder.Offset(1) // due to have [	||	, at start that don't need it
+				err = pro.jsonDecoder(&decoder)
+				req.Products = append(req.Products, pro)
+				decoder.FindEndToken()
+			}
+		default:
+			err = decoder.NotFoundKeyStrict()
+		}
+
+		if len(decoder.Buf) < 4 {
+			return
+		}
+	}
+	return
+}
+
+func (req *registerProductInvoiceReq) ToJSON(payload []byte) (added []byte, err protocol.Error) {
+	var encoder = json.Encoder{Buf: payload}
+
+	encoder.EncodeString(`{"UserID":"`)
+	encoder.EncodeByteSliceAsBase64(req.UserID[:])
+	encoder.EncodeString(`","UserOTP":`)
+	encoder.EncodeUInt64(req.UserOTP)
+	encoder.EncodeString(`,"UserTransactionID":"`)
+	encoder.EncodeByteSliceAsBase64(req.UserTransactionID[:])
+	encoder.EncodeString(`","SenderDCID":"`)
+	encoder.EncodeByteSliceAsBase64(req.SenderDCID[:])
+	encoder.EncodeString(`","ReceiverDCID":"`)
+	encoder.EncodeByteSliceAsBase64(req.ReceiverDCID[:])
+	encoder.EncodeString(`,"Language":`)
+	encoder.EncodeUInt32(uint32(req.Language))
+
+	encoder.EncodeString(`","Products":[`)
+	for _, pro := range req.Products {
+		pro.ToJSON(&encoder)
+		encoder.AddTrailingComma()
+	}
+	encoder.RemoveTrailingComma()
+
+	encoder.EncodeString(`]}`)
+}
+
+func (req *registerProductInvoiceReq) LenAsJSON() (ln int) {
+	var ln0 = len(req.Products)
+	if ln0 > 0 {
+		ln = ln0 * req.Products[0].LenAsJSON()
+	}
+	ln = 287
+	return
+}
+
+/*
+	Response Encoders & Decoders
+*/
+
+func (res *registerProductInvoiceRes) FromSyllab(payload []byte, stackIndex uint32) {
+	var add, ln, i uint32
+
+	if uint32(len(buf)) < res.LenOfSyllabStack() {
+		err = syllab.ErrShortArrayDecode
+		return
+	}
+
+	add = syllab.GetUInt32(buf, 0)
+	ln = syllab.GetUInt32(buf, 4)
+	res.NotRegistered = make([]registerProductInvoiceDetail, ln)
+	for i = 0; i < ln; i++ {
+		res.NotRegistered[i].FromSyllab(buf, add)
+		add += res.NotRegistered[0].LenOfSyllabStack()
+	}
+
+	return
+}
+
+func (res *registerProductInvoiceRes) ToSyllab(payload []byte, stackIndex, heapIndex uint32) (freeHeapIndex uint32) {
+	var hi uint32 = res.LenOfSyllabStack() // Heap index || Stack size!
+	var i, ln uint32                       // len of strings, slices, maps, ...
+
+	ln = uint32(len(res.NotRegistered))
+	syllab.SetUInt32(buf, 0, hi) // add
+	syllab.SetUInt32(buf, 4, ln) // ln
+	for i = 0; i < ln; i++ {
+		res.NotRegistered[i].ToSyllab(buf, hi)
+		hi += res.NotRegistered[0].LenOfSyllabStack()
+	}
+
+	return
+}
+
+func (res *registerProductInvoiceRes) LenOfSyllabStack() uint32 {
+	return 8
+}
+
+func (res *registerProductInvoiceRes) LenOfSyllabHeap() (ln uint32) {
+	var ln0 = len(res.NotRegistered)
+	if ln0 > 0 {
+		ln = uint32(ln0 * res.NotRegistered[0].LenAsSyllab())
+	}
+	return
+}
+
+func (res *registerProductInvoiceRes) LenAsSyllab() uint64 {
+	return uint64(res.LenOfSyllabStack() + res.LenOfSyllabHeap())
+}
+
+func (res *registerProductInvoiceRes) FromJSON(payload []byte) (remaining []byte, err protocol.Error) {
+	var decoder = json.DecoderUnsafe{
+		Buf: buf,
+	}
+	for err == nil {
+		var keyName = decoder.DecodeKey()
+		switch keyName {
+		case "NotRegistered":
+			res.NotRegistered = make([]registerProductInvoiceDetail, 0, 8) // TODO::: Is cap efficient enough?
+			var pro registerProductInvoiceDetail
+			for !decoder.CheckToken(']') {
+				err = pro.jsonDecoder(&decoder)
+				res.NotRegistered = append(res.NotRegistered, pro)
+			}
+		default:
+			err = decoder.NotFoundKeyStrict()
+		}
+
+		if decoder.End() {
+			return
+		}
+	}
+	return
+}
+
+func (res *registerProductInvoiceRes) ToJSON(payload []byte) (added []byte, err protocol.Error) {
+	var encoder = json.Encoder{Buf: payload}
+
+	encoder.EncodeString(`{"NotRegistered":[`)
+	for _, pro := range res.NotRegistered {
+		pro.ToJSON(&encoder)
+		encoder.AddTrailingComma()
+	}
+	encoder.RemoveTrailingComma()
+
+	encoder.EncodeString(`]}`)
+}
+
+func (res *registerProductInvoiceRes) LenAsJSON() (ln int) {
+	var ln0 = len(res.NotRegistered)
+	if ln0 > 0 {
+		ln = ln0 * res.NotRegistered[0].LenAsJSON()
+	}
+	ln += 20
+	return
+}
+
+/*
+	Others Encoders & Decoders
+*/
+
+func (rpid *registerProductInvoiceDetail) FromSyllab(buf []byte, stackIndex uint32) (err protocol.Error) {
+	if uint32(len(buf)) < rpid.LenOfSyllabStack() {
+		err = syllab.ErrShortArrayDecode
+		return
+	}
+
+	copy(rpid.QuiddityID[:], buf[stackIndex:])
+	copy(rpid.ProductAuctionID[:], buf[stackIndex+32:])
+	rpid.Number = syllab.GetUInt64(buf, stackIndex+64)
+	rpid.Status = registerProductInvoiceDetailStatus(syllab.GetUInt8(buf, stackIndex+72))
+	return
+}
+
+func (rpid *registerProductInvoiceDetail) ToSyllab(buf []byte, stackIndex uint32) {
+	copy(buf[stackIndex:], rpid.QuiddityID[:])
+	copy(buf[stackIndex+32:], rpid.ProductAuctionID[:])
+	syllab.SetUInt64(buf, stackIndex+64, rpid.Number)
+	syllab.SetUInt8(buf, stackIndex+72, uint8(rpid.Status))
+	return
+}
+
+func (rpid *registerProductInvoiceDetail) LenOfSyllabStack() uint32 {
+	return 73
+}
+
+func (rpid *registerProductInvoiceDetail) LenOfSyllabHeap() (ln uint32) {
+	return
+}
+
+func (rpid *registerProductInvoiceDetail) LenAsSyllab() uint64 {
+	return uint64(rpid.LenOfSyllabStack() + rpid.LenOfSyllabHeap())
+}
+
+func (rpid *registerProductInvoiceDetail) jsonDecoder(decoder *json.DecoderUnsafe) (err protocol.Error) {
+	for err == nil {
+		var keyName = decoder.DecodeKey()
+		switch keyName {
+		case "QuiddityID":
+			err = decoder.DecodeByteArrayAsBase64(rpid.QuiddityID[:])
+		case "ProductAuctionID":
+			err = decoder.DecodeByteArrayAsBase64(rpid.ProductAuctionID[:])
+		case "Number":
+			rpid.Number, err = decoder.DecodeUInt64()
+		case "Status":
+			var num uint8
+			num, err = decoder.DecodeUInt8()
+			rpid.Status = registerProductInvoiceDetailStatus(num)
+		default:
+			err = decoder.NotFoundKeyStrict()
+		}
+
+		decoder.FindEndToken()
+		if decoder.Token == '}' {
+			decoder.Offset(1)
+			return
+		}
+	}
+	return
+}
+
+func (rpid *registerProductInvoiceDetail) ToJSON(payload []byte) (added []byte, err protocol.Error) {
+	var encoder = json.Encoder{Buf: payload}
+
+	encoder.EncodeString(`{"QuiddityID":"`)
+	encoder.EncodeByteSliceAsBase64(rpid.QuiddityID[:])
+	encoder.EncodeString(`","ProductAuctionID":"`)
+	encoder.EncodeByteSliceAsBase64(rpid.ProductAuctionID[:])
+	encoder.EncodeString(`","Number":`)
+	encoder.EncodeUInt64(rpid.Number)
+	encoder.EncodeString(`,"Status":`)
+	encoder.EncodeUInt8(uint8(rpid.Status))
+	encoder.EncodeByte('}')
+	return encoder.Buf
+}
+
+func (rpid *registerProductInvoiceDetail) LenAsJSON() (ln int) {
+	ln = 214
+	return
+}
+
+type registerProductInvoiceDetailStatus uint8
+
+const (
+	registerProductInvoiceDetailUnset registerProductInvoiceDetailStatus = iota
+	registerProductInvoiceDetailNotEnoughInventory
+	registerProductInvoiceDetailBadAuctionRequested
+)
+
+const smsInvoicePersian = `فروشگاه های زنجیره ای سبز
+
+مبلغ کل: %v ریال
+پرداختی: %v
+تخفیف: %v
+جشنواره: %v
+تعداد: %v
+
+جزییات در sabz.city/pis`
+
+const smsInvoiceEnglish = `Sabz Chain Store
+
+Total Price: %v
+Payed: %v
+Discount: %v
+Sell: %v
+No.: %v
+
+Details at sabz.city/pis`
+
+const sellPercent = 700

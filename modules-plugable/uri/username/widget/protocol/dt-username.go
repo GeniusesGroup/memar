@@ -1,0 +1,10 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+package un_p
+
+type Field_Username interface {
+    Username() Username
+}
+
+// It is not replace of user ID. It usually use to find user by their friends in more human friendly manner.
+type Username string

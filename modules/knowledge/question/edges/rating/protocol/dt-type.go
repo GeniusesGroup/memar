@@ -1,6 +1,10 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package qrp
+package question_rating_p
+
+type Field_Type interface {
+	QuestionRatingType() Type
+}
 
 type Type uint16
 
@@ -11,6 +15,8 @@ const (
 	Type_LikertScale_Range // bipolar scale
 	Type_Star
 	Type_Number
+
+	// TODO::: what is the difference between text(word) and label??
 	Type_Text
 	Type_Label
 

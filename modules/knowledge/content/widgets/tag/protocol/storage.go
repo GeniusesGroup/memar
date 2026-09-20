@@ -3,14 +3,16 @@
 package ctp
 
 import (
-	"memar/protocol"
+	error_p "memar/process/error/protocol"
+
+	storage_p "memar/storage/protocol"
+	text_p "org/modules/knowledge/text/protocol"
 )
 
 type StorageServices interface {
-	Save(dm DataModel) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm DataModel) (err error_p.Error)
 
-	Count(tag string) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(tag string, vo protocol.VersionOffset) (dm DataModel, nv protocol.NumberOfVersion, err protocol.Error)
+	Get(tag text_p.UUID, vo storage_p.VersionOffset) (dm DataModel, err error_p.Error)
 
 	// TODO:::
 }

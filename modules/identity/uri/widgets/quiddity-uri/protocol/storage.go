@@ -1,18 +1,18 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package qup
+package qu_p
 
 import (
-	"memar/protocol"
+	error_p "memar/process/error/protocol"
 
-	qp "org/modules/quiddity/protocol"
+	storage_p "memar/storage/protocol"
+	qp "org/modules/identity/thing/protocol"
 )
 
 type StorageServices interface {
-	Save(dm DataModel) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm DataModel) (err error_p.Error)
 
-	Count(uri []byte) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(uri []byte, vo protocol.VersionOffset) (dm DataModel, nv protocol.NumberOfVersion, err protocol.Error)
+	Get(uri URI) (dm DataModel, err error_p.Error)
 
-	FindByQuiddity(quiddityID qp.QuiddityUUID, offset, limit uint64) (uris [][]byte, nv protocol.NumberOfVersion, err protocol.Error)
+	FindByQuiddity(quiddityID qp.UUID, offset, limit uint64) (uris []URI, nv storage_p.NumberOfVersion, err error_p.Error)
 }

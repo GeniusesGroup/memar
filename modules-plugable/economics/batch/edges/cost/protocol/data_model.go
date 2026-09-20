@@ -1,35 +1,36 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package org
+package cost_p
 
 import (
 	"memar/math/per"
-	"memar/protocol"
 
-	arp "org/modules/app-request/protocol"
-	pp "org/modules/product/protocol"
+	request_p "memar/process/request/protocol"
+	audit_time_p "memar/process/time/protocol"
+	psb_p "org/modules/economics/batch/protocol"
+
+	fmp "org/modules/economics/money/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	ProductID() pp.ProductUUID //
+	psb_p.Field_BatchID
 
 	Materials() per.Myriad
-	MaterialsCost() protocol.MoneyAmount
+	MaterialsCost() fmp.Amount
 	Labor() per.Myriad
-	LaborCost() protocol.MoneyAmount
+	LaborCost() fmp.Amount
 	Investments() per.Myriad // Equipment
-	InvestmentsCost() protocol.MoneyAmount
-	TotalCost() protocol.MoneyAmount
+	InvestmentsCost() fmp.Amount
+	TotalCost() fmp.Amount
 
-	Markup() per.Myriad                    // the % added to the cost to determine the wholesale price
-	WholesaleProfit() protocol.MoneyAmount // The amount of wholesale markup
-	Margin() per.Myriad                    // the % of product price to determine the retail price
-	RetailProfit() protocol.MoneyAmount    // The amount of retail margin
+	Markup() per.Myriad          // the % added to the cost to determine the wholesale price
+	WholesaleProfit() fmp.Amount // The amount of wholesale markup
+	Margin() per.Myriad          // the % of product price to determine the retail price
+	RetailProfit() fmp.Amount    // The amount of retail margin
 
-	Cost() protocol.MoneyAmount
+	Cost() fmp.Amount
 
-	arp.AuditLogging
-	protocol.Storage_Versioned
-	protocol.Storage_SaveTime
+	request_p.Field_RequestID
+	audit_time_p.Field_Request
 }

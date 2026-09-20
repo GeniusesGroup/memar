@@ -3,8 +3,9 @@
 package chapar
 
 import (
-	"libgo/mediatype"
-	"libgo/protocol"
+	"memar/mediatype"
+	"memar/protocol"
+	time_p "memar/time/protocol"
 )
 
 /*
@@ -32,7 +33,7 @@ const (
 type Conn interface {
 	/* Connection data */
 	State() protocol.NetworkStatus
-	Weight() protocol.Weight
+	Weight() operation_p.Weight
 	MTU() int
 	PathToPeer() Path
 
@@ -42,7 +43,7 @@ type Conn interface {
 	ThingID() [16]byte
 
 	/* Metrics data */
-	LastUsage() protocol.Time           // Last use of this connection
+	LastUsage() time_p.Time             // Last use of this connection
 	bytesSent() uint64                  // Counts the bytes of frames payload sent.
 	framesSent() uint64                 // Counts sent frames.
 	bytesReceived() uint64              // Counts the bytes of frames payloads received.
@@ -66,11 +67,11 @@ func (c *Connection) saveConn() {
 */
 
 // GetLastByPath return last connection by given c.Path from storage if exist
-func (c *Connection) GetLastByPath() (err protocol.Error) {
+func (c *Connection) GetLastByPath() (err error_p.Error) {
 	return
 }
 
 // GetLastByThingID return last connection by given c.ThingID from storage if exist
-func (c *Connection) GetLastByThingID() (err protocol.Error) {
+func (c *Connection) GetLastByThingID() (err error_p.Error) {
 	return
 }

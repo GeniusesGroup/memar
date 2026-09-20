@@ -1,25 +1,17 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package fcp
+package card_p
 
 import (
-	"memar/iso"
-	"memar/protocol"
-
-	arp "org/modules/app-request/protocol"
-	up "org/modules/user/protocol"
+	request_p "memar/process/request/protocol"
+	audit_time_p "memar/process/time/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	FinancialCardID() FinancialCardUUID
-	Issuer() up.UserUUID //, any org user
-	UserID() up.UserUUID //, owner of the card
-	CardNumber() iso.Card
-	ExpireDate() protocol.Time
-	CVC() uint16
+	Field_CardID
+	CardNumber() Card
 
-	arp.AuditLogging
-	protocol.Storage_Versioned
-	protocol.Storage_SaveTime
+	request_p.Field_RequestID
+	audit_time_p.Field_Request
 }

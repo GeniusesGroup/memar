@@ -3,18 +3,17 @@
 package ggcap
 
 import (
-	"memar/protocol"
+	request_p "memar/process/request/protocol"
+	audit_time_p "memar/process/time/protocol"
 
-	arp "org/modules/app-request/protocol"	
-	ggcp "org/modules/geography-coordinate/protocol"
+	ggc_p "org/modules/geography/coordinate/protocol"
 )
 
 type DataModel interface {
-	CoordinateID() ggcp.CoordinateUUID
+	ggc_p.Field_CoordinateID
 	Distance() uint64     // km or ...
 	AverageSpeed() uint64 // km/h or ...
 
-	arp.AuditLogging
-	protocol.Storage_Versioned
-	protocol.Storage_SaveTime
+	request_p.Field_RequestID
+	audit_time_p.Field_Request
 }

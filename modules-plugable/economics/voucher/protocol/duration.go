@@ -4,10 +4,12 @@ package voucher
 
 import (
 	"memar/time/duration"
+	time_p "memar/time/protocol"
 )
 
 type Duration interface {
 	Field_Each
-	Field_Epoch
+	time_p.Field_Epoch
 	Duration() duration.Second // from Epoch()
 }
+

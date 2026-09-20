@@ -3,27 +3,19 @@
 package faip
 
 import (
-	"memar/iso"
-	"memar/protocol"
-
-	fap "org/modules/financial-account/protocol"
+	account_p "org/modules/economics/account/protocol"
 )
 
 type (
 	BS_Register_Request interface {
-		AccountID() fap.FinancialAccountUUID
-		IBAN() iso.IBAN
+		account_p.Field_AccountID
+		IBAN() IBAN
 	}
 )
 
 type (
 	BS_Get_Request interface {
-		AccountID() fap.FinancialAccountUUID
-		VersionOffset() protocol.VersionOffset
+		account_p.Field_AccountID
 	}
-	BS_Get_Response interface {
-		DataModel
-
-		Numbers() uint64
-	}
+	BS_Get_Response = DataModel
 )

@@ -3,7 +3,7 @@
 package meeting_p
 
 import (
-	task_p "org/modules/organization/task/protocol"
+	task_p "org/modules/management/task/protocol"
 )
 
 type Field_MeetingID interface {

@@ -3,14 +3,15 @@
 package prqp
 
 import (
-	"memar/protocol"
+	error_p "memar/process/error/protocol"
 
-	pp "org/modules/product/protocol"
+	storage_p "memar/storage/protocol"
+	pp "org/modules/economics/product/protocol"
 )
 
 type StorageServices interface {
-	Save(dm DataModel) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm DataModel) (nv storage_p.NumberOfVersion, err error_p.Error)
 
-	Count(productID pp.ProductUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(productID pp.ProductUUID, vo protocol.VersionOffset) (dm DataModel, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(productID pp.UUID) (nv storage_p.NumberOfVersion, err error_p.Error)
+	Get(productID pp.UUID, vo storage_p.VersionOffset) (dm DataModel, nv storage_p.NumberOfVersion, err error_p.Error)
 }

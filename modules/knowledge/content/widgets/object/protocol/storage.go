@@ -3,17 +3,17 @@
 package cop
 
 import (
-	"memar/protocol"
+	error_p "memar/process/error/protocol"
 
-	cp "org/modules/comment/protocol"
-	op "org/modules/object/protocol"
+	storage_p "memar/storage/protocol"
+	cp "org/modules/knowledge/content/edges-loop/comment/protocol"
+	op "org/modules/storage/object/protocol"
 )
 
 type StorageServices interface {
-	Save(dm DataModel) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm DataModel) (err error_p.Error)
 
-	Count(commentID cp.CommentUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(commentID cp.CommentUUID, vo protocol.VersionOffset) (dm DataModel, nv protocol.NumberOfVersion, err protocol.Error)
+	Get(commentID cp.UUID, vo storage_p.VersionOffset) (dm DataModel, err error_p.Error)
 
-	FIND_CommentIDs_BY_ObjectID(objectID op.ObjectUUID, offset, limit uint64) (commentIDs []cp.CommentUUID, nv protocol.NumberOfVersion, err protocol.Error)
+	FIND_CommentIDs_BY_ObjectID(objectID op.UUID, offset, limit uint64) (commentIDs []cp.UUID, num storage_p.NumberOfVersion, err error_p.Error)
 }

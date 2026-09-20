@@ -3,7 +3,7 @@
 package discount
 
 import (
-	user_p "memar/user/protocol"
+	user_p "org/modules/identity/user/protocol"
 )
 
 type UserType interface {

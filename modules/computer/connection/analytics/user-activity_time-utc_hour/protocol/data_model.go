@@ -1,16 +1,16 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package uaaap
+package uaaa_p
 
 import (
-	"memar/protocol"
-	"memar/time/utc"
+	"memar/time/duration"
+	"memar/time/earth"
 
-	up "org/modules/user/protocol"
+	user_p "org/modules/identity/user/protocol"
 )
 
 type DataModel interface {
-	UserID() up.UserUUID
-	Hour() utc.HourElapsed
-	Duration() protocol.Duration
+	user_p.Field_UserUUID
+	Hour() earth.Hour
+	Duration() duration.Second
 }

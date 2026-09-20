@@ -1,0 +1,384 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+package authorization
+
+import (
+	"memar/codec/syllab"
+	buffer_p "memar/computer/buffer/protocol"
+	datatype_p "memar/computer/datatype/protocol"
+	"memar/libgo/codec/json"
+	"memar/math/integer"
+	error_p "memar/process/error/protocol"
+	operation_p "memar/process/operation/protocol"
+	"memar/time/utc"
+
+	errs "org/modules/management/role/rules/access-control/errors"
+)
+
+// https://developers.cloudflare.com/cloudflare-one/policies/access/
+
+// AccessControl store needed data to authorize a request to a platform!
+// Use add methods due to arrays must store in sort for easy read and comparison
+// Some protocols: ABAC, ACL, RBAC, ... features for AccessControl fields,
+type AccessControl struct {
+	// Authorize Where:
+	AllowSocieties []uint32 // Part of GP address
+	DenySocieties  []uint32 // Part of GP address
+	AllowRouters   []uint32 // Part of GP address
+	DenyRouters    []uint32 // Part of GP address
+
+	// Authorize When:
+	AllowWeekdays utc.Weekdays // Any day of the week
+	DenyWeekdays  utc.Weekdays // Any day of the week
+	AllowDayHours utc.DayHours // Any hour of the day
+	DenyDayHours  utc.DayHours // Any hour of the day
+
+	// Authorize Which:
+	AllowServices []uint64               // ["ServiceID", "ServiceID"]
+	DenyServices  []uint64               // ["ServiceID", "ServiceID"]
+	AllowCRUD     operation_p.ActionType // CRUD == Create, Read, Update, Delete
+	DenyCRUD      operation_p.ActionType // CRUD == Create, Read, Update, Delete
+
+	// Authorize What:
+	// Authorize How:
+	// Authorize If:
+}
+
+// GiveFullAccess set some data to given AccessControl to be full access
+func (ac *AccessControl) GiveFullAccess() {
+	ac.AllowSocieties = nil
+	ac.DenySocieties = nil
+	ac.AllowRouters = nil
+	ac.DenyRouters = nil
+
+	ac.AllowWeekdays = utc.Weekdays_All
+	ac.DenyWeekdays = utc.Weekdays_None
+	ac.AllowDayHours = utc.DayHours_All
+	ac.DenyDayHours = utc.DayHours_None
+
+	ac.AllowServices = nil
+	ac.DenyServices = nil
+	ac.AllowCRUD = operation_p.ActionType_All
+	ac.DenyCRUD = operation_p.ActionType_None
+}
+
+// AuthorizeWhich authorize by ServiceID and CRUD that allow or denied by access control table!
+func (ac *AccessControl) AuthorizeWhich(serviceID datatype_p.ID, crud operation_p.ActionType) (err error_p.Error) {
+	if !ac.AllowCRUD.Check(crud) {
+		return &errs.CrudNotAllow
+	}
+
+	if ac.DenyCRUD.Check(crud) {
+		return &errs.CRUDDenied
+	}
+
+	var i int
+	var notAuthorize bool
+
+	var ln = len(ac.AllowServices)
+	if ln > 0 {
+		for i = 0; i < ln; i++ {
+			if ac.AllowServices[i] == uint64(serviceID) {
+				goto DS
+			} else {
+				notAuthorize = true
+			}
+		}
+		if notAuthorize {
+			return &errs.ServiceNotAllow
+		}
+	}
+
+DS:
+	ln = len(ac.DenyServices)
+	if ln > 0 {
+		for i = 0; i < ln; i++ {
+			if ac.DenyServices[i] == uint64(serviceID) {
+				return &errs.ServiceDenied
+			}
+		}
+	}
+
+	return
+}
+
+// AuthorizeWhen --
+func (ac *AccessControl) AuthorizeWhen(day utc.Weekdays, hours utc.DayHours) (err error_p.Error) {
+	if !ac.AllowWeekdays.Check(day) {
+		return &errs.DayNotAllow
+	}
+
+	if ac.DenyWeekdays.Check(day) {
+		return &errs.DayDenied
+	}
+
+	if !ac.AllowDayHours.Check(hours) {
+		return &errs.HourNotAllow
+	}
+
+	if ac.DenyDayHours.Check(hours) {
+		return &errs.HourDenied
+	}
+	return
+}
+
+// AuthorizeWhere --
+func (ac *AccessControl) AuthorizeWhere(societyID, RouterID uint32) (err error_p.Error) {
+	var i int
+	var notAuthorize bool
+
+	var ln = len(ac.AllowSocieties)
+	if ln > 0 {
+		for i = 0; i < ln; i++ {
+			if ac.AllowSocieties[i] == societyID {
+				goto DS
+			} else {
+				notAuthorize = true
+			}
+		}
+		if notAuthorize {
+			return &errs.NotAllowSociety
+		}
+	}
+
+DS:
+	ln = len(ac.DenySocieties)
+	if ln > 0 {
+		for i = 0; i < ln; i++ {
+			if ac.DenySocieties[i] == societyID {
+				return &errs.DeniedSociety
+			}
+		}
+	}
+
+	ln = len(ac.AllowRouters)
+	if ln > 0 {
+		for i = 0; i < ln; i++ {
+			if ac.AllowSocieties[i] == RouterID {
+				goto DR
+			} else {
+				notAuthorize = true
+			}
+		}
+		if notAuthorize {
+			return &errs.NotAllowRouter
+		}
+	}
+
+DR:
+	ln = len(ac.DenyRouters)
+	if ln > 0 {
+		for i = 0; i < ln; i++ {
+			if ac.DenyRouters[i] == RouterID {
+				return &errs.DeniedRouter
+			}
+		}
+	}
+
+	return
+}
+
+// AuthorizeWhat --
+func (ac *AccessControl) AuthorizeWhat() (err error_p.Error) {
+	// TODO::: can be implement?
+
+	// AllowRecords   [][16]byte // ["RecordUUID", "RecordUUID"]
+	// DenyRecords    [][16]byte // ["RecordUUID", "RecordUUID"]
+	return
+}
+
+// AuthorizeHow --
+func (ac *AccessControl) AuthorizeHow() (err error_p.Error) {
+	// TODO::: can be implement?
+
+	// How []string
+	return
+}
+
+// AuthorizeIf --
+func (ac *AccessControl) AuthorizeIf() (err error_p.Error) {
+	// TODO::: can be implement?
+
+	// If  []string
+	return
+}
+
+//memar:impl memar/protocol.Syllab
+//memar:syllab
+func (ac *AccessControl) FromSyllab(buf []byte, stackIndex uint32) {
+	ac.AllowSocieties = syllab.GetUInt32Array(buf, stackIndex)
+	ac.DenySocieties = syllab.GetUInt32Array(buf, stackIndex+8)
+	ac.AllowRouters = syllab.GetUInt32Array(buf, stackIndex+16)
+	ac.DenyRouters = syllab.GetUInt32Array(buf, stackIndex+24)
+
+	ac.AllowWeekdays = utc.Weekdays(syllab.GetUInt8(buf, stackIndex+32))
+	ac.DenyWeekdays = utc.Weekdays(syllab.GetUInt8(buf, stackIndex+33))
+	ac.AllowDayHours = utc.DayHours(syllab.GetUInt32(buf, stackIndex+34))
+	ac.DenyDayHours = utc.DayHours(syllab.GetUInt32(buf, stackIndex+38))
+
+	ac.AllowServices = syllab.GetUInt64Array(buf, stackIndex+42)
+	ac.DenyServices = syllab.GetUInt64Array(buf, stackIndex+50)
+	ac.AllowCRUD = operation_p.ActionType(syllab.GetUInt8(buf, stackIndex+58))
+	ac.DenyCRUD = operation_p.ActionType(syllab.GetUInt8(buf, stackIndex+59))
+}
+func (ac *AccessControl) ToSyllab(buf []byte, stackIndex, heapIndex uint32) (nextHeapAddr uint32) {
+	heapIndex = syllab.SetUInt32Array(buf, ac.AllowSocieties, stackIndex, heapIndex)
+	heapIndex = syllab.SetUInt32Array(buf, ac.DenySocieties, stackIndex+8, heapIndex)
+	heapIndex = syllab.SetUInt32Array(buf, ac.AllowRouters, stackIndex+16, heapIndex)
+	heapIndex = syllab.SetUInt32Array(buf, ac.DenyRouters, stackIndex+24, heapIndex)
+
+	syllab.SetUInt8(buf, stackIndex+32, uint8(ac.AllowWeekdays))
+	syllab.SetUInt8(buf, stackIndex+33, uint8(ac.DenyWeekdays))
+	syllab.SetUInt32(buf, stackIndex+34, uint32(ac.AllowDayHours))
+	syllab.SetUInt32(buf, stackIndex+38, uint32(ac.DenyDayHours))
+
+	heapIndex = syllab.SetUInt64Array(buf, ac.AllowServices, stackIndex+42, heapIndex)
+	heapIndex = syllab.SetUInt64Array(buf, ac.DenyServices, stackIndex+50, heapIndex)
+	syllab.SetUInt8(buf, stackIndex+58, uint8(ac.AllowCRUD))
+	syllab.SetUInt8(buf, stackIndex+59, uint8(ac.DenyCRUD))
+	return heapIndex
+}
+func (ac *AccessControl) LenOfSyllabStack() uint32 {
+	return 60 // 8+8+8+8+ 1+1+4+4+ 8+8+1+1
+}
+func (ac *AccessControl) LenOfSyllabHeap() (ln uint32) {
+	ln += uint32(len(ac.AllowSocieties) * 4)
+	ln += uint32(len(ac.DenySocieties) * 4)
+	ln += uint32(len(ac.AllowRouters) * 4)
+	ln += uint32(len(ac.DenyRouters) * 4)
+	ln += uint32(len(ac.AllowServices) * 8)
+	ln += uint32(len(ac.DenyServices) * 8)
+	return
+}
+func (ac *AccessControl) LenAsSyllab() uint64 {
+	return uint64(ac.LenOfSyllabStack() + ac.LenOfSyllabHeap())
+}
+
+//memar:impl memar/json_p.JSON
+func (ac *AccessControl) FromJSON(from buffer_p.Buffer) (err error_p.Error) {
+	var dec json.DecoderUnsafeMinified
+	err = dec.Init(from, json.DecodeOptions{})
+	if err != nil {
+		return
+	}
+	err = ac.JSONDecoder(&dec)
+	return
+}
+func (ac *AccessControl) ToJSON(destination buffer_p.Buffer) (err error_p.Error) {
+	var encoder json.Encoder
+	err = encoder.Init(destination, json.EncoderOptions{})
+	if err != nil {
+		return
+	}
+	err = ac.JSONEncoder(&encoder)
+	return
+}
+func (ac *AccessControl) LengthAsJSON() (ln int) {
+	ln = len(ac.AllowSocieties) * 11
+	ln += len(ac.DenySocieties) * 11
+	ln += len(ac.AllowRouters) * 11
+	ln += len(ac.DenyRouters) * 11
+	ln += len(ac.AllowServices) * 21
+	ln += len(ac.DenyServices) * 21
+	ln += 247
+	return
+}
+
+//memar:json
+func (ac *AccessControl) JSONDecoder(decoder *json.DecoderUnsafeMinified) (err error_p.Error) {
+	for err == nil {
+		var keyName = decoder.DecodeKey()
+		switch keyName {
+		case "AllowSocieties":
+			ac.AllowSocieties, err = decoder.Decode_Integer_U32SliceAsNumber()
+		case "DenySocieties":
+			ac.DenySocieties, err = decoder.Decode_Integer_U32SliceAsNumber()
+		case "AllowRouters":
+			ac.AllowRouters, err = decoder.Decode_Integer_U32SliceAsNumber()
+		case "DenyRouters":
+			ac.DenyRouters, err = decoder.Decode_Integer_U32SliceAsNumber()
+
+		case "AllowWeekdays":
+			var num integer.U8
+			num, err = decoder.Decode_Integer_U8()
+			ac.AllowWeekdays = utc.Weekdays(num)
+		case "DenyWeekdays":
+			var num integer.U8
+			num, err = decoder.Decode_Integer_U8()
+			ac.DenyWeekdays = utc.Weekdays(num)
+		case "AllowDayHours":
+			var num integer.U8
+			num, err = decoder.Decode_Integer_U8()
+			ac.AllowDayHours = utc.DayHours(num)
+		case "DenyDayHours":
+			var num integer.U8
+			num, err = decoder.Decode_Integer_U8()
+			ac.DenyDayHours = utc.DayHours(num)
+
+		case "AllowServices":
+			ac.AllowServices, err = decoder.Decode_Integer_U64SliceAsNumber()
+		case "DenyServices":
+			ac.DenyServices, err = decoder.Decode_Integer_U64SliceAsNumber()
+		case "AllowCRUD":
+			var num integer.U8
+			num, err = decoder.Decode_Integer_U8()
+			ac.AllowCRUD = operation_p.ActionType(num)
+		case "DenyCRUD":
+			var num integer.U8
+			num, err = decoder.Decode_Integer_U8()
+			ac.DenyCRUD = operation_p.ActionType(num)
+
+		default:
+			err = decoder.NotFoundKey()
+		}
+
+		decoder.FindEndToken()
+		if decoder.CheckToken('}') {
+			decoder.Offset(1)
+			return
+		}
+	}
+	return
+}
+func (ac *AccessControl) JSONEncoder(encoder *json.Encoder) (err error_p.Error) {
+	encoder.EncodeString(`{"AllowSocieties":[`)
+	encoder.EncodeUInt32SliceAsNumber(ac.AllowSocieties)
+
+	encoder.EncodeString(`],"DenySocieties":[`)
+	encoder.EncodeUInt32SliceAsNumber(ac.DenySocieties)
+
+	encoder.EncodeString(`],"AllowRouters":[`)
+	encoder.EncodeUInt32SliceAsNumber(ac.AllowRouters)
+
+	encoder.EncodeString(`],"DenyRouters":[`)
+	encoder.EncodeUInt32SliceAsNumber(ac.DenyRouters)
+
+	encoder.EncodeString(`],"AllowWeekdays":`)
+	encoder.Encode_Integer_U8(integer.U8(ac.AllowWeekdays))
+
+	encoder.EncodeString(`,"DenyWeekdays":`)
+	encoder.Encode_Integer_U8(integer.U8(ac.DenyWeekdays))
+
+	encoder.EncodeString(`,"AllowDayHours":`)
+	encoder.Encode_Integer_U64(integer.U64(ac.AllowDayHours))
+
+	encoder.EncodeString(`,"DenyDayHours":`)
+	encoder.Encode_Integer_U64(integer.U64(ac.DenyDayHours))
+
+	encoder.EncodeString(`,"AllowServices":[`)
+	encoder.EncodeUInt64SliceAsNumber(ac.AllowServices)
+
+	encoder.EncodeString(`],"DenyServices":[`)
+	encoder.EncodeUInt64SliceAsNumber(ac.DenyServices)
+
+	encoder.EncodeString(`],"AllowCRUD":`)
+	encoder.Encode_Integer_U8(integer.U8(ac.AllowCRUD))
+
+	encoder.EncodeString(`,"DenyCRUD":`)
+	encoder.Encode_Integer_U8(integer.U8(ac.DenyCRUD))
+
+	encoder.EncodeByte('}')
+	return
+}
+
+//memar:impl memar/protocol.CommandLineArguments

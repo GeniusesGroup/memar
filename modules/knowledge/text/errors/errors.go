@@ -14,7 +14,7 @@ var (
 )
 
 func init() {
-	ErrTextOverFlow.Init("domain/libgo.scm.geniuses.group; package=validators; type=error; name=text-over-flow")
-	ErrTextLack.Init("domain/libgo.scm.geniuses.group; package=validators; type=error; name=text-lack")
-	ErrTextIllegalCharacter.Init("domain/libgo.scm.geniuses.group; package=validators; type=error; name=text-illegal-character")
+	ErrTextOverFlow.Init("domain/memar.scm.geniuses.group; package=validators; type=error; name=text-over-flow")
+	ErrTextLack.Init("domain/memar.scm.geniuses.group; package=validators; type=error; name=text-lack")
+	ErrTextIllegalCharacter.Init("domain/memar.scm.geniuses.group; package=validators; type=error; name=text-illegal-character")
 }

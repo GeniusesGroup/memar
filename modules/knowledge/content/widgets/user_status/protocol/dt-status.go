@@ -1,6 +1,10 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package cus
+package cus_p
+
+type Field_Status interface {
+	Status() Status
+}
 
 type Status uint8
 

@@ -1,0 +1,13 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+package al_p
+
+import (
+	log_p "memar/process/log/protocol"
+)
+
+const (
+	// If any mode disabled, logger must not save that log type in desire node.
+	// But logger must Dispatch() it to any client requested any types even it is not enabled.
+	CNF_LogMode log_p.Level = log_p.Level_AllSet
+)

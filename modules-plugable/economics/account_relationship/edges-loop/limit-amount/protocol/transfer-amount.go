@@ -1,6 +1,6 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package ftp
+package account__limit_amount_p
 
 const (
 	// TODO::: it is depend on the currency, can't declared in this way!

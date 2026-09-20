@@ -3,7 +3,7 @@
 package voucher
 
 import (
-	pos_p "org/modules/business/pos/protocol"
+	pos_p "org/modules/economics/pos/protocol"
 )
 
 type POS interface {

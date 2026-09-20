@@ -4,11 +4,6 @@
 
 package errors
 
-import (
-	"memar/detail"
-	"memar/protocol"
-)
-
 const domainPersian = "اعتبارسنجی"
 
 func init() {

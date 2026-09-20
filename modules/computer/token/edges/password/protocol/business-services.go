@@ -1,9 +1,9 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package ppp
+package password_p
 
 import (
-	up "org/modules/user/protocol"
+	user_p "org/modules/identity/user/protocol"
 )
 
 type (
@@ -20,13 +20,14 @@ type (
 		PasswordHash() []byte
 	}
 )
+
 type (
 	BS_Confirm_Request interface {
-		PersonID() up.UserUUID
+		PersonID() user_p.UUID
 		PasswordHash() []byte
 	}
 	BS_Confirm_Response interface {
 		// Token() []byte
-		Status() Status
+		// Status() Status
 	}
 )

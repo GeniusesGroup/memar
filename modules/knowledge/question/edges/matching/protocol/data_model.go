@@ -3,19 +3,18 @@
 package qmp
 
 import (
-	"memar/protocol"
+	request_p "memar/process/request/protocol"
+	audit_time_p "memar/process/time/protocol"
 
-	arp "org/modules/app-request/protocol"
-	qp "org/modules/question/protocol"
-	qop "org/modules/question_option/protocol"
+	question_p "org/modules/knowledge/question/protocol"
+	qop "org/modules/knowledge/question_option/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	QuestionID() qp.QuestionUUID
-	Matches() []qop.QuestionOptionUUID
+	question_p.Field_QuestionID
+	Matches() []qop.UUID
 
-	arp.AuditLogging
-	protocol.Storage_Versioned
-	protocol.Storage_SaveTime
+	request_p.Field_RequestID
+	audit_time_p.Field_Request
 }

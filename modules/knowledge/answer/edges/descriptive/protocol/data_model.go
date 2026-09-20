@@ -1,22 +1,22 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package qadp
+package ad_p
 
 import (
-	"memar/protocol"
+	request_p "memar/process/request/protocol"
+	audit_time_p "memar/process/time/protocol"
 
-	arp "org/modules/app-request/protocol"
-	qap "org/modules/question_answer/protocol"
+	answer_p "org/modules/knowledge/answer/protocol"
+	text_p "org/modules/knowledge/text/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	AnswerID() qap.AnswerUUID
-	Answer() string
+	answer_p.Field_AnswerID
+	Answer() text_p.UUID
 
-	arp.AuditLogging
-	protocol.Storage_Versioned
-	protocol.Storage_SaveTime
+	request_p.Field_RequestID
+	audit_time_p.Field_Request
 }
 
 // QuestionAnswerDescriptive_Type_Anonymous

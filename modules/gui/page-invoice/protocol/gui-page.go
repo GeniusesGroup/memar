@@ -1,9 +1,10 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package crp
+package invoice_p
 
 import (
-	vp "org/modules/voucher/protocol"
+	rule_p "org/modules/computer/rule/protocol"
+	datatype_p "org/modules/computer/type/protocol"
 )
 
 type GUI_Page_UsedDomains interface {
@@ -16,8 +17,14 @@ type GUI_Page_Conditions interface {
 	New() bool
 	ProductID()
 	VoucherID()
+
+	// It CAN be `Item.PayablePrice` or `Item.SaveTime`
+	SortBy() datatype_p.UUID
 }
 
 type GUI_Page_Service interface {
-	RegisterVoucher(vid vp.VoucherUUID)
+	RegisterVoucher(id rule_p.UUID)
 }
+
+// QR code:::
+// PosID,InvoiceID

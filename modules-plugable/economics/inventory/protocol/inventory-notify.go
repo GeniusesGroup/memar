@@ -3,35 +3,35 @@
 package inventory_p
 
 import (
-	cl "memar/computer/language"
+	"memar/math/logic"
+	request_p "memar/process/request/protocol"
+	audit_time_p "memar/process/time/protocol"
 
-	aa_p "org/modules/app-audit/protocol"
-	np "org/modules/notification/protocol"
-	org_p "org/modules/org/protocol"
-	product_p "org/modules/product/protocol"
-	storage_p "org/modules/storage/protocol"
-	wp "org/modules/warehouse/protocol"
+	notification_p "org/modules/computer/notification/protocol"
+	product_p "org/modules/economics/product/protocol"
+	org_p "org/modules/identity/organization/protocol"
+	estate_p "org/modules/rights/estate/protocol"
 )
 
 // ProductInventoryNotify indicate the domain record data fields.
 type ProductInventoryNotify interface {
-	NotificationID() np.NotificationUUID // user only == timeline-user_notification / staff == any notification group
+	notification_p.Field_NotificationID // user only == timeline-user_notification / staff == any notification group
 	product_p.Field_ProductID
-	OrgID() []org_p.OrgUUID
-	WarehouseID() []wp.WarehouseUUID // user max 2, staff max 10
-	AmountOperator() []cl.ComparisonOperator
+	OrgID() []org_p.UUID
+	WarehouseID() []estate_p.UUID // user max 2, staff max 10
+	AmountOperator() []logic.ComparisonOperator
 	Amount() []int64
-	StockOperator() []cl.ComparisonOperator
+	StockOperator() []logic.ComparisonOperator
 	Stock() []int64
 
-	aa_p.Field_AuditRequest
-	storage_p.Field_SaveTime
+	request_p.Field_RequestID
+	audit_time_p.Field_Request
 }
 
 /*
-func UserLogic(warehouseID wp.WarehouseUUID, amount int64, stock int64) (notify bool) {
-	const desireOrgIDs = []OrgUUID{}
-	const warehouseIDs = []wp.WarehouseUUID{}
+func UserLogic(warehouseID wp.UUID, amount int64, stock int64) (notify bool) {
+	const desireOrgIDs = []org_p.UUID{}
+	const warehouseIDs = []warehouse_p.UUID{}
 	if Amount >= 10 {
 		return true
 	}

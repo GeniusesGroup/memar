@@ -3,12 +3,12 @@
 package inventory_p
 
 import (
-	ut16 "memar/identifier/uuid-time-16byte"
+	thing_p "org/modules/identity/thing/protocol"
 )
 
 type Field_InventoryID interface {
-	InventoryID() InventoryUUID
+	InventoryID() UUID
 }
 
-// InventoryUUID
-type InventoryUUID ut16.UUID
+// UUID is inventory identification or SKU
+type UUID thing_p.UUID

@@ -1,27 +1,25 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package acp
+package connection_p
 
 import (
-	"memar/protocol"
+	operation_p "memar/process/operation/protocol"
+	request_p "memar/process/request/protocol"
+	audit_time_p "memar/process/time/protocol"
 
-	aap "org/modules/app-audit/protocol"
-	cp "org/modules/computer/protocol"
-	cpkp "org/modules/cryptography-public_key/protocol"
-	up "org/modules/user/protocol"
+	token_p "org/modules/computer/token/protocol"
+	thing_p "org/modules/identity/thing/protocol"
 )
 
 // Connection or App2AppConnection indicate how connection create and save in time series data.
 // Each user pair with delegate-user has a chain that primary key is UserID+DelegateUserID
 type Connection interface {
-	ConnectionID() ConnectionUUID
-	UserID() up.UserUUID
-	DelegateUserID() up.UserUUID // Persons can delegate to things(as a user type)
-	ComputerID() cp.ComputerUUID
+	Field_ConnectionID
+	thing_p.Field_ThingUUID
 
 	/* Connection data */
 	MTU() int
-	Weight() protocol.Weight
+	Weight() operation_p.Weight
 
 	/* Peer data */
 	Addr() [16]byte
@@ -29,13 +27,20 @@ type Connection interface {
 
 	/* Security data */
 	// AccessControl() AccessControl
-	PublicKey() cpkp.PublicKeyUUID
+	token_p.Field_TokenID
 	CipherSuite() CipherSuite
 
-	// ClientType() string // persiaos, web, android, ios, ...
+	// ClientType() string // PersiaOS, web, android, ios, ...
 	// Geo()                // location of user or post
 
-	aap.AuditRequest
-	protocol.Storage_Versioned
-	protocol.Storage_SaveTime
+	request_p.Field_RequestID
+	audit_time_p.Field_Request
 }
+
+// type DataModel interface {
+// 	UserID() UserUUID
+// 	ApplicationID() ID
+// 	RuntimeConditional() bool
+// 	PolicyID() RuleUUID
+// 	PolicyDate() Time
+// }

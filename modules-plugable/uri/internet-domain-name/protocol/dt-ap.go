@@ -1,6 +1,6 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package udp
+package domain_p
 
 // UserDomain_AP is user domain accepted protocols
 type UserDomain_AP uint8

@@ -1,11 +1,13 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package cp
+package content_p
 
 import (
-	"memar/protocol"
+	thing_p "org/modules/identity/thing/protocol"
 )
 
-// ContentUUID
-// Use in quiddity domain too.
-type ContentUUID protocol.UUID
+type Field_ContentUUID interface {
+	ContentUUID() UUID
+}
+
+type UUID thing_p.UUID

@@ -3,16 +3,17 @@
 package fai
 
 import (
-	"memar/protocol"
+	error_p "memar/process/error/protocol"
 
-	fap "org/modules/financial-account/protocol"
+	storage_p "memar/storage/protocol"
+	account_p "org/modules/economics/account/protocol"
 )
 
 type StorageServices interface {
-	Save(dm DataModel) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm DataModel) (nv storage_p.NumberOfVersion, err error_p.Error)
 
-	Count(accountID fap.FinancialAccountUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(accountID fap.FinancialAccountUUID, vo protocol.VersionOffset) (dm DataModel, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(accountID account_p.UUID) (nv storage_p.NumberOfVersion, err error_p.Error)
+	Get(accountID account_p.UUID, vo storage_p.VersionOffset) (dm DataModel, nv storage_p.NumberOfVersion, err error_p.Error)
 
-	FIND_AccountIDs_BY_ID(id ID) (accountIDs []fap.FinancialAccountUUID, err protocol.Error)
+	FIND_AccountIDs_BY_ID(id ID) (accountIDs []account_p.UUID, err error_p.Error)
 }

@@ -5,9 +5,9 @@ package validators
 import (
 	"strings"
 
-	"memar/protocol"
+	error_p "memar/process/error/protocol"
 
-	"org/modules/language-text-editor/errors"
+	"org/modules/vertices/text-editor/errors"
 )
 
 // ValidateText escapes string for any bad data
@@ -33,7 +33,7 @@ TODO:::		"<img src="/images/empty.gif" onload="alert('test');this.parentNode.rem
 				org.Name = 'Test <script>alert(\'test\');this.parentNode.remove();console.log(thing.ID)" </script>'
 				<img src='x' onerror='alert(1)'>
 */
-func ValidateText(t string, min, max int) (err protocol.Error) {
+func ValidateText(t string, min, max int) (err error_p.Error) {
 	if len(t) < min {
 		return &errors.ErrTextLack
 	}

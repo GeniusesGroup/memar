@@ -3,22 +3,18 @@
 package crp
 
 import (
-	"memar/protocol"
+	container_p "memar/computer/adt/container/protocol"
 
-	cp "org/modules/comment/protocol"
+	comment_p "org/modules/knowledge/content/edges-loop/comment/protocol"
 )
-
-type GUI_Page_UsedDomains interface {
-	// Comment
-	// User
-}
 
 // /discussion?cid=ccccccc&purl=/task?tid=ttttttt
 type GUI_Page_Conditions interface {
-	CommentID() cp.CommentUUID
+	comment_p.Field_CommentID
 	PageURL() string
+	// User
 
-	protocol.Pagination
+	container_p.Pagination_Offset_Request
 }
 
 type GUI_Page_Service interface {

@@ -1,22 +1,23 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-package qoap
+package qoa_p
 
 import (
 	"memar/math/per"
-	"memar/protocol"
+	"memar/time/duration"
 
-	arp "org/modules/app-request/protocol"
-	qop "org/modules/question_option/protocol"
+	request_p "memar/process/request/protocol"
+	audit_time_p "memar/process/time/protocol"
+
+	qo_p "org/modules/knowledge/question_option/protocol"
 )
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	QuestionOptionID() qop.QuestionOptionUUID
+	qo_p.Field_QuestionOptionID
 	Progress() per.Myriad // =~ AmountOfProgress,  EarnGoal
-	TimeFrame() protocol.Duration
+	TimeFrame() duration.Second
 
-	arp.AuditLogging
-	protocol.Storage_Versioned
-	protocol.Storage_SaveTime
+	request_p.Field_RequestID
+	audit_time_p.Field_Request
 }

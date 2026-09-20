@@ -3,7 +3,7 @@
 package voucher
 
 import (
-	group_p "org/modules/organization/group/protocol"
+	group_p "org/modules/management/group/protocol"
 )
 
 type Groups interface {

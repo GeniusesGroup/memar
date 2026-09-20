@@ -1,0 +1,69 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+package services
+
+import (
+	"time"
+)
+
+// Profile Picture
+// We get in array. first pic is default one. user can send new array to replace old one.
+// Authorization
+// user can set to pictures object to have public access for any user or just friend or nobody.
+// This can be done in authorization-user MS.
+
+// SetPictureReq is the request structure of SetPicture()
+type SetPictureReq struct {
+	UserID    [16]byte `valid:"userID"`
+	PictureID [16]byte `valid:"objectID"`
+}
+
+// SetPicture use to set or update the user picture.
+func SetPicture(req *SetPictureReq) error {
+	//Ready dbRequest for database layer
+	var profileDetails Profile
+	dbRequest := usersdata.Request{
+		Keys: []string{"Profiles", req.UserID},
+		Data: &profileDetails}
+	logicResponse.Error = usersdata.GetData(&dbRequest)
+	if logicResponse.Error == errors.ContentNotExist {
+		profileDetails.Nickname = req.Nickname
+		profileDetails.Avatar = req.Avatar
+		profileDetails.Username.Username = req.Username
+
+		//Ready dbRequest for database layer
+		dbRequest = usersdata.Request{
+			Keys: []string{"Profiles", req.UserID},
+			Data: &profileDetails}
+		logicResponse.Error = usersdata.AddData(&dbRequest)
+
+		return &logicResponse
+	} else if logicResponse.Error != nil {
+		return &logicResponse
+	}
+
+	// Check user can edit username or not.
+	if profileDetails.Username.NextChange > time.Now().Unix() && req.Username != profileDetails.Username.Username {
+		logicResponse.Error = errors.UsernameLocked
+		return &logicResponse
+	}
+
+	// Check should we update "NextChange"?
+	if profileDetails.Username.Username != req.Username {
+		//user can change username just 1 per day due platform rules!
+		//Set next change for 24h later on successful operation!
+		profileDetails.Username.NextChange = time.Now().Add(24 * time.Hour).Unix()
+	}
+
+	profileDetails.Nickname = req.Nickname
+	profileDetails.Avatar = req.Avatar
+	profileDetails.Username.Username = req.Username
+
+	//Ready dbRequest for database layer
+	dbRequest = usersdata.Request{
+		Keys: []string{"Profiles", req.UserID},
+		Data: &profileDetails}
+	logicResponse.Error = usersdata.UpdateData(&dbRequest)
+
+	return nil
+}

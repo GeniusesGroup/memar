@@ -3,14 +3,15 @@
 package ssp
 
 import (
-	"memar/protocol"
+	error_p "memar/process/error/protocol"
 
-	sp "org/modules/staff/protocol"
+	storage_p "memar/storage/protocol"
+	sp "org/modules/management/staff/protocol"
 )
 
 type StorageServices interface {
-	Save(dm DataModel) (nv protocol.NumberOfVersion, err protocol.Error)
+	Save(dm DataModel) (nv storage_p.NumberOfVersion, err error_p.Error)
 
-	Count(staffID sp.StaffUUID) (nv protocol.NumberOfVersion, err protocol.Error)
-	Get(staffID sp.StaffUUID, vo protocol.VersionOffset) (dm DataModel, nv protocol.NumberOfVersion, err protocol.Error)
+	Count(staffID sp.UUID) (nv storage_p.NumberOfVersion, err error_p.Error)
+	Get(staffID sp.UUID, vo storage_p.VersionOffset) (dm DataModel, nv storage_p.NumberOfVersion, err error_p.Error)
 }

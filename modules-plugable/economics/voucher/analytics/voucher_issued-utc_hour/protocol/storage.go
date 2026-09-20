@@ -3,12 +3,12 @@
 package vacuh
 
 import (
-	"memar/protocol"
+	error_p "memar/process/error/protocol"
 	"memar/time/utc"
 )
 
 type StorageServices interface {
-	Save(dm DataModel) (err protocol.Error)
+	Save(dm DataModel) (err error_p.Error)
 
-	Get(hour utc.HourElapsed) (dm DataModel, err protocol.Error)
+	Get(hour utc.HourElapsed) (dm DataModel, err error_p.Error)
 }
