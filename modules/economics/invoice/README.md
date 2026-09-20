@@ -39,6 +39,6 @@ Raw proposals from comment notes inside edge `.go` files (comments remain in cod
 
 ### Item semantics - edges/item/protocol/data_model.go
 - **Idea**: ship service can be added as an invoice item; each item must be checked for reserve validity and an action taken at validity end.
-- **Review questions**: is reserve-validity expiry a rule (expiry rules producing transactions, per accounting-invariants #9) or item state?
+- **Review questions**: is reserve-validity expiry a rule (expiry rules producing transactions, per [rule.handoff.md](../../computer/rule/rule.handoff.md) §9) or item state?
 
 Status vocabulary is NOT restated here - the per-state folders under `edges/status/<state>/` are the single home for each status.

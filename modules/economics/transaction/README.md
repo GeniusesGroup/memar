@@ -14,10 +14,10 @@ A transaction is an abstraction of a request by one or more users for a bookkeep
 
 ## Policies (rules)
 
-- At most one source and one destination; larger business operations are several transactions linked by edges (invariant #2).
-- Both accounts of one transaction share the same count unit (invariant #4); cross-unit intent is two transactions linked by matching_system (invariant #5).
-- The source effect must precede the destination effect; the destination effect may be arbitrarily delayed or conditional (invariant #3).
-- No rollback: cancelling after a debit creates a compensating transaction (invariant #6).
+- At most one source and one destination; larger business operations are several transactions linked by edges ([transaction.handoff.md](transaction.handoff.md) §2).
+- Both accounts of one transaction share the same count unit ([account.handoff.md](../account/account.handoff.md) §4); cross-unit intent is two transactions linked by matching_system ([matching_system](../../../modules-plugable/economics/matching_system/README.md) §5).
+- The source effect must precede the destination effect; the destination effect may be arbitrarily delayed or conditional ([transaction.handoff.md](transaction.handoff.md) §3).
+- No rollback: cancelling after a debit creates a compensating transaction ([transaction.handoff.md](transaction.handoff.md) §6).
 - Statuses (draft, authorization, ...) come from the general status domain; a status change may trigger processes via rules — the kernel hard-codes no workflow.
 - Generic statuses like `issued`, `blocked`, `bounced` apply to ANY transaction, not just cheques: a transaction awaiting processing is "issued"; a court can block any of them; a failed fulfilment bounces with consequences (e.g. social-credit rules). Cheque-specific vocabulary is labels, not new lifecycle states.
 - Transactions relate to each other through edges (`followed_by`, `exchange`, `settles`, `endorsement_in_favor_of`, ...), most of them owned by pluggable modules.
@@ -33,11 +33,11 @@ A transaction is an abstraction of a request by one or more users for a bookkeep
 
 - Modeling Transaction as the operation itself (classical payment processing) was rejected: drafts, cancelled requests, and multi-day deferred deposits are first-class requirements (check, LC), and an operation-only model must fake them with extra concepts.
 - A transaction-owned status enum was rejected in favor of the general status domain, so organizations extend lifecycles without touching core.
-- Allowing multiple accounts per side was considered (classic accounting) and rejected — see invariant #2 rationale.
+- Allowing multiple accounts per side was considered (classic accounting) and rejected — see [transaction.handoff.md](transaction.handoff.md) §2 rationale.
 
 ### Prior art
 
-- Banking apps already show "requests/orders" separately from posted transactions — matches invariant #1.
+- Banking apps already show "requests/orders" separately from posted transactions — matches [transaction.handoff.md](transaction.handoff.md) §1.
 - Intent-based transaction proposals (DeFi): declare the outcome, let the system find the execution path.
 
 ### Unresolved questions

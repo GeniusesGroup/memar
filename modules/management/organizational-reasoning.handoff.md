@@ -16,7 +16,7 @@ Active — the positioning is endorsed in discussion but nothing is implemented 
 - Assistant's linear approval example — resolved: see the estate-side correction (approval ≠ certification); same pattern here: diagnosis replaces permission machinery.
 
 ## Open Questions
-1. Where do observations live — pluggable analytics over Task/Staff relations, or first-class recorded facts? (Connects to analytics-is-always-pluggable in `modules/economics/core-vs-pluggable.md`.) **Blocks** pipeline design.
+1. Where do observations live — pluggable analytics over Task/Staff relations, or first-class recorded facts? (Analytics is always pluggable: it produces discovered/derived data from acquired data and is never core — so observation-as-analytics would live under pluggable analytics, not management core.) **Blocks** pipeline design.
 2. How is a diagnosis represented — an artifact with cited observations? Who/what may produce one? **Blocks**.
 3. What authorizes an Action (e.g. posting a hiring Task) — delegation/rights, or new consent machinery? **Blocks**.
 4. Is the pipeline general infrastructure (finance, governance) or management-module private? — does not block the first worked example.
@@ -37,7 +37,7 @@ Active — the positioning is endorsed in discussion but nothing is implemented 
 - [`README.md`](README.md) — module home (Update if the positioning gets ratified)
 - [`../computer/rule/README.md`](../computer/rule/README.md) — Rule side of the diagnosis-not-rules decision (None)
 - [`task/edges/task-concept.md`](task/edges/task-concept.md) — Task side; unresolved #12 (capacity analysis) (None)
-- [`../economics/core-vs-pluggable.md`](../economics/core-vs-pluggable.md) — analytics placement criteria (None)
+- [`../../modules-plugable/economics/analytics/README.md`](../../modules-plugable/economics/analytics/README.md) — analytics is always pluggable (None)
 
 ## Notes
 - Source conversation retired; all durable content is here and in the artifacts above.

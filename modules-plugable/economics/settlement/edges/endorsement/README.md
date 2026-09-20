@@ -11,7 +11,7 @@ Endorsement refers to transfer transaction ownership to another entity, serving 
 ## Policies (rules)
 
 - a `transaction` CAN have more than one `endorsement` to split first transaction quantity.
-- Endorsement SUSPENDS the original transaction in favor of the new one; it never voids it (append-only history, invariant #6).
+- Endorsement SUSPENDS the original transaction in favor of the new one; it never voids it (append-only history, [transaction.handoff.md](../../../../modules/economics/transaction/transaction.handoff.md) §6).
 - Only the owner of the receiving account may invoke the endorsement process.
 
 ## Fields
@@ -24,7 +24,7 @@ Endorsement refers to transfer transaction ownership to another entity, serving 
 
 ### Rationale and alternatives
 
-- Modeling endorsement as editing the original transaction's destination was rejected: it breaks append-only audit (invariant #6) and misrepresents business truth.
+- Modeling endorsement as editing the original transaction's destination was rejected: it breaks append-only audit ([transaction.handoff.md](../../../../modules/economics/transaction/transaction.handoff.md) §6) and misrepresents business truth.
 - A separate `Payment Instrument` domain (the conventional finance answer) was rejected earlier in modeling: under the graph model, endorsement is just an edge + process over transactions, not a new core concept.
 
 ### Prior art

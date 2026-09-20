@@ -1,6 +1,6 @@
 # Bookkeeping
 
-The kernel edge between a transaction and an account: the realized effect of processing a transaction on one account. One transaction produces one bookkeeping record per affected account, possibly at different times (withdrawal first, deposit later — see invariant #3 in [accounting-invariants.md](../../../accounting-invariants.md)).
+The kernel edge between a transaction and an account: the realized effect of processing a transaction on one account. One transaction produces one bookkeeping record per affected account, possibly at different times (withdrawal first, deposit later — see ordering decision in [transaction.handoff.md](../../transaction/transaction.handoff.md) §3).
 
 ## Reference by UUID, not aggregates (cross-domain modeling rule)
 
@@ -34,18 +34,18 @@ Open question (deferred to the storage-engine session): whether the reverse trav
 
 ## Policies (rules)
 
-- Cardinality: one transaction produces one bookkeeping record per affected account — two for a from+to transaction, one while only the source effect has realized (invariant #3 deferral), zero if it is never processed past draft.
-- Sign convention: the effect's direction and sign come from WHICH side of the transaction the account sits on — an `account__from` record subtracts the quantity, an `account__to` record adds it. The edge direction is always transaction→account; quantity itself is never stored here (invariant #7).
-- There is no quantity field on this edge: booked quantity always equals the transaction's requested quantity (invariant #7). Any deviation (partial fill, fee, rule-altered amount) is a different transaction with its own bookkeeping.
-- A record is never edited or deleted. Reversal is a new bookkeeping record produced by a new (compensating) transaction (invariant #6).
-- The account's current balance is the `Balance` of its highest-index record; nothing stores balance on the account node (invariant #8).
+- Cardinality: one transaction produces one bookkeeping record per affected account — two for a from+to transaction, one while only the source effect has realized (§3 deferral in [transaction.handoff.md](../../transaction/transaction.handoff.md)), zero if it is never processed past draft.
+- Sign convention: the effect's direction and sign come from WHICH side of the transaction the account sits on — an `account__from` record subtracts the quantity, an `account__to` record adds it. The edge direction is always transaction→account; quantity itself is never stored here (§7 below).
+- There is no quantity field on this edge: booked quantity always equals the transaction's requested quantity (§7 below). Any deviation (partial fill, fee, rule-altered amount) is a different transaction with its own bookkeeping.
+- A record is never edited or deleted. Reversal is a new bookkeeping record produced by a new (compensating) transaction ([transaction.handoff.md](../../transaction/transaction.handoff.md) §6).
+- The account's current balance is the `Balance` of its highest-index record; nothing stores balance on the account node (§8 below).
 
 ## Fields
 
 - `Field_AccountID` — edge endpoint (account side), a UUID reference only.
 - `Field_FinancialTransactionUUID` — edge endpoint (transaction side). Part of the record's identity, not a cache: a ledger entry that cannot be traced to its originating transaction is worthless for audit.
 - `Field_TransactionIndex` — auto-increment ordinal of this record within its account's history; gives direct access to "the Nth booking of this account" without traversal.
-- `Field_Balance` — the account's balance resulting from this record. An immutable historical snapshot (append-only, never recomputed), kept so point-in-time balance is O(1). This is the accepted form of caching; it is categorically different from a mutable derived field like `AvailableBalance`, which was rejected as account state (invariant #8).
+- `Field_Balance` — the account's balance resulting from this record. An immutable historical snapshot (append-only, never recomputed), kept so point-in-time balance is O(1). This is the accepted form of caching; it is categorically different from a mutable derived field like `AvailableBalance`, which was rejected as account state (§8 below).
 - `Field_RequestID` + request audit time — which request produced this record.
 
 ## Discussion
@@ -65,12 +65,28 @@ Open question (deferred to the storage-engine session): whether the reverse trav
 
 - Double-entry ledgers record per-posting running balances on ledger pages — same idea, here as edge fields.
 
+### Load-bearing decisions migrated here (formerly accounting-invariants §§7–8 + backlog)
+
+#### 7. Booked quantity equals requested quantity
+The kernel never alters the quantity of a transaction at booking time. The requested quantity lives on the transaction record itself — `Transaction.Quantity` is the single source of truth; the `bookkeeping` edge stores no copy of it (repeating it there would be a redundant cache). Partial fulfilment, fees, or amount-changing conditions are separate transactions produced by rules/processors.
+
+#### 8. Balance snapshot is a record fact; availability is not account state
+Each `bookkeeping` record caches the resulting `Balance` — an immutable, historical fact of that record (accepted materialization; avoids O(n) recompute). `AvailableBalance`-style values are derived from mutable global constraints (legal blocks, pending reservations) and MUST NOT be stored as account fields; they are evaluated from rules (see `modules-plugable/economics/restriction`).
+
+#### Backlog — book edge state *(open remnants kept verbatim)*
+- **The `book` edge carries state** (quantity, balance, transaction index). Balance ("the balance resulting from this booking") is an immutable property of the bookkeeping record itself; **AvailableBalance** = actual minus pending transactions, and is *not* treated as fundamental truth until the precise effect of pending Transactions on the Account is defined. Open TODO: per-entry cached balance vs. recomputed-on-read from all transactions. *(open)*
+- Note: the backlog's "actual minus pending" formulation and the invariant's "derived from global constraints / restriction rules" formulation are both preserved; reconciling them is part of the AvailableBalance trust question on [account.handoff.md](../../account.handoff.md).
+
+#### Embedded graph engine *(direction — affects bookkeeping deployment)*
+- **Embedded graph engine (edge computing).** True domain autonomy when the graph engine compiles *into* each domain as a library rather than living in one central database; new requirements attach as new edges and evolve independently, and a domain can ship its own GUI without polluting a central model. *(direction)*
+
 ### Unresolved questions
 
-- Does the kernel ever allow booked quantity ≠ requested quantity? If yes, a `Field_Quantity` must return as record truth, not cache (invariant #7).
+- Does the kernel ever allow booked quantity ≠ requested quantity? #7 currently answers "no"; a real counterexample forces `Field_Quantity` back onto the bookkeeping edge as record truth, not cache.
 - Reversal test: must a compensating record ever point at a specific bookkeeping edge rather than the originating transaction? If yes, bookkeeping needs its own addressable identity.
 - Is `TransactionIndex` a domain contract (stable across storage engines, exposed in reports/APIs, meaningful to consumers) or a pure storage detail that the domain model must not promise?
 - Code comment inconsistency to fix: `dt-balance.go` currently describes Balance as "the total of all the transactions on the account including any pending transactions" — that contradicts the realized-effect semantics agreed here (a bookkeeping record is a booked fact, not a projection over pending state). The comment must be corrected in code.
+- AvailableBalance trust + pending-effect definition (shared with account/restriction).
 
 ### Future possibilities
 

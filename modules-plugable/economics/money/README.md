@@ -15,7 +15,7 @@ Money is pluggable: a count unit like any other. Currencies are declared through
 
 ### Rationale and alternatives
 
-- Money-as-core was rejected: transactions are unit-general (shares, kg, points); a money-first core was the legacy framing this redesign removed (see [core-vs-pluggable.md](../../../modules/economics/core-vs-pluggable.md)).
+- Money-as-core was rejected: transactions are unit-general (shares, kg, points); a money-first core was the legacy framing this redesign removed. Core-by-necessity (not prevalence) decides what stays in `modules/` — money fails that test.
 - Exchange rates rejected as stored facts: a rate is discovered/derived from past trades — a hint, not a guarantee — so it is analytics territory, not module state.
 - Per-currency precision as edges was rejected: it is a data-type property, hence internal packages. NOTE: precision is NOT display-only — decimal precision and rounding rules affect which operations are creditable/valid (an amount that rounds away is a real economic difference), so they are domain-affecting, not GUI concerns.
 

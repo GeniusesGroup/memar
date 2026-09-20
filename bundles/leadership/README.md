@@ -11,7 +11,7 @@
 
 ## Why a bundle and not a module
 
-"Leadership" is an **umbrella concept**, not an operational management concept. Per [core-vs-pluggable criteria](../../modules/economics/core-vs-pluggable.md), a module must own a complete capability (edges with identifiable semantics + processing, installable/removable as a unit; bare edges forbidden). No such capability exists here to own:
+"Leadership" is an **umbrella concept**, not an operational management concept. A module must own a complete capability (edges with identifiable semantics + processing, installable/removable as a unit; bare edges forbidden). No such capability exists here to own:
 
 - Delegation of authority → `modules/rights/delegate`
 - Mentorship / sponsorship relationships → `modules/identity/person/edges/social_connections` (mentor, mentee)
@@ -90,7 +90,6 @@ Rules for this bundle:
 - [`modules/management/group/README.md`](../../modules/management/group/README.md) — membership decomposition, oversight membership
 - [`modules/management/role/README.md`](../../modules/management/role/README.md) — roles as sets of behaviors/norms
 - [`modules/rights/README.md`](../../modules/rights/README.md) — delegation
-- [`modules/economics/core-vs-pluggable.md`](../../modules/economics/core-vs-pluggable.md) — module ownership criteria this bundle relies on
 
 ## Discussion
 

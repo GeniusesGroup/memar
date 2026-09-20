@@ -6,6 +6,10 @@ Drawing Product's boundary: against Sellable/Commercial Product, against physica
 ## Status
 Paused (2026-08-09) — resumed with the estate boundary work.
 
+## Decisions from Organization ideas backlog (2026-09-16)
+- **Product is anything the system sells — not "goods".** Tax is a product (bought under compulsion, with per-person pricing rules); insurance, healthcare services, charity sponsorship packages ("adopt a child for a month" is a product with a different output), API subscriptions. There is no organization — hospital, charity, government — without products; they differ in output, not in structure. *(decided)*
+- **Pricing is a module family, not one module.** A transportation service's price varies by city, hour, route, zone, demand — hundreds of independently evolving pricing modules for one organization (Uber example), all attached to the Product level while invoice-level rules (zeroing a user's bill) are a *different* level: an Invoice-level rule making the payable zero does not make the service's price zero. *(decided)*
+
 ## Decisions
 All Decided items are graduated into [`README.md`](README.md): "Confirmed positions" (≠ sellable, ≠ physical good, identity-before-production, one-product-many-sellers, parent/child without Variant, Product∩Content, dictionary definition as base, spec-like nodes are products, designer specification precision) and the Discussion section (rejected alternatives). Do not restate them here.
 

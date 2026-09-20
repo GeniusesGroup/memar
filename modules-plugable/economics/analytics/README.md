@@ -4,7 +4,7 @@ Cross-domain analytical modules over the economics core: knowledge produced from
 
 ## Policies (rules)
 
-- Analytics is always pluggable: it produces discovered/derived data from acquired data; an organization may install none of it (invariant #8's boundary; see [core-vs-pluggable.md](../../../modules/economics/core-vs-pluggable.md)).
+- Analytics is always pluggable: it produces discovered/derived data from acquired data; an organization may install none of it (availability boundary: [bookkeeping](../../../modules/economics/account/edges/bookkeeping/README.md) §8).
 - A query with its own types, events, storage, and processing is itself a module — no general SQL-style engine mediates it.
 - Name modules by the knowledge produced, not by the aggregation mechanics.
 - Time: modules work on the canonical `utc_minute` representation; converting a user's calendar expression (Persian/Gregorian day) into that representation is a higher layer's job, not a per-module concern.

@@ -20,7 +20,7 @@ Raw proposals from comment notes inside edge .go files (comments remain in code 
 
 ### Request states - edges/request-status.go
 - **Idea**: Approving (awaiting approval), Rejected, Processing (in progress/pending), Processed (completed), Failed, Canceled, Compensated.
-- **Review questions**: reconcile with memar process/request lifecycle; is Compensated the transaction-side link (accounting-invariants #6)?
+- **Review questions**: reconcile with memar process/request lifecycle; is Compensated the transaction-side link ([transaction.handoff.md](../../economics/transaction/transaction.handoff.md) §6)?
 
 ### Estate states - edges/estate-status.go
 - **Idea**: Reserved, Occupied, Vacant, Closed.

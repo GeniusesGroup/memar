@@ -11,7 +11,13 @@ The matching algorithms decide the efficiency and robustness of the order matchi
 
 A matching system is a pluggable module that decides whether and how multiple transaction requests can be related and fulfilled, according to the identities and rules that system recognizes. It is deliberately broader than a securities exchange: currency conversion, goods-for-goods, contract fulfillment, and organizational matching all use the same shape. `trade` describes an outcome of a matching system, not the system itself — which is why the module is not named `trade` (or `order`).
 
-The module owns: `trade`, `deal`, `exchange` edges; `all_or_none` and `instant_withdrawal` loop edges; `fill_or_kill` and `account__by` shortcuts. Cross-unit intent ("give 50$ to get 40€") is two same-unit transactions linked by `exchange` (invariants #4/#5 in [accounting-invariants.md](../../../modules/economics/accounting-invariants.md)).
+The module owns: `trade`, `deal`, `exchange` edges; `all_or_none` and `instant_withdrawal` loop edges; `fill_or_kill` and `account__by` shortcuts. Cross-unit intent ("give 50$ to get 40€") is two same-unit transactions linked by `exchange` (unit on account: [account.handoff.md](../../../modules/economics/account/account.handoff.md) §4; exchange rule below).
+
+## Cross-unit exchange (formerly accounting-invariants §5)
+
+**5. Cross-unit exchange is two transactions, not one.** "1000 EUR for 1500 USD" is two same-unit transactions linked by an exchange/deal relation (owned by this matching_system module). A single transaction never mixes units.
+
+Backlog restatement (verbatim): Cross-unit operations (1000 EUR ↔ 1000 kg iron) belong to a higher **Trade/Exchange** concept linking two homogeneous Transactions. *(decided)*
 
 ## Discussion
 

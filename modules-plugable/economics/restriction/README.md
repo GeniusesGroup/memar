@@ -1,6 +1,11 @@
 # Restriction
 
-Restriction is a pluggable module for global quantity constraints — e.g. a judicial order freezing 1000 units of a person's assets. The constraint targets a person/thing, NOT individual accounts: copying the amount onto every account of the target would multiply the constraint (100 accounts × 1000 ≠ 1000). This is why the legacy `AvailableBalance`-as-account-state model was rejected (invariant #8 in [accounting-invariants.md](../../../modules/economics/accounting-invariants.md)).
+Restriction is a pluggable module for global quantity constraints — e.g. a judicial order freezing 1000 units of a person's assets. The constraint targets a person/thing, NOT individual accounts: copying the amount onto every account of the target would multiply the constraint (100 accounts × 1000 ≠ 1000). This is why the legacy `AvailableBalance`-as-account-state model was rejected (account/bookkeeping decision: [account.handoff.md](../../../modules/economics/account/account.handoff.md), [bookkeeping](../../../modules/economics/account/edges/bookkeeping/README.md) §8).
+
+## Global-constraint decisions (from Organization ideas backlog)
+
+- **Global constraints are nodes with their own state.** A constraint targeting an aggregate (all of a person's assets — e.g. a legal hold) must be an independent node (target, demand, satisfied-so-far, remaining) that *observes* resources; duplicating its state onto each resource corrupts the aggregate effect. *(decided)*
+- **Constraint targets may be declared at a higher level** (a person, an organization) while the exact place of realization (which account) is determined later; never force early binding to an undetermined lower-level resource. *(decided)*
 
 ## Model
 
@@ -14,7 +19,7 @@ Current edges (under review; naming/shape not final):
 ## Policies (rules)
 
 - Applies to any count unit: money, shares, goods. The constraint is on a quantity, not on "funds".
-- Incoming transactions are processed normally; the restriction rule reacts by creating its own blocking transactions until satisfied. It never modifies or rolls back the triggering transaction (invariants #6, #9).
+- Incoming transactions are processed normally; the restriction rule reacts by creating its own blocking transactions until satisfied. It never modifies or rolls back the triggering transaction (compensation: [transaction.handoff.md](../../../modules/economics/transaction/transaction.handoff.md) §6; fees/rules: [rule.handoff.md](../../../modules/computer/rule/rule.handoff.md) §9).
 - A rule stays active until its target amount is satisfied; it must not assume the quantity already exists (e.g. it can wait for future deposits).
 - Release/unblock is a new compensating transaction, never a deletion.
 - A judge may block an amount without naming a destination account; destination-less constraints are valid.
@@ -31,7 +36,7 @@ Use cases this module must cover (each quantity-general, none legal-only): balan
 ### Rationale and alternatives
 
 - Per-account block edges carrying the amount were rejected: one judicial order of 1000 copied onto 100 accounts means 100,000 restrained — wrong semantics.
-- `AvailableBalance` as an account field was rejected as a mutable derived value (invariant #8); `total_blocked` lives in analytics instead.
+- `AvailableBalance` as an account field was rejected as a mutable derived value ([bookkeeping](../../../modules/economics/account/edges/bookkeeping/README.md) §8); `total_blocked` lives in analytics instead.
 - The name `restriction` was chosen over `hold` (banking-colored) and `lien`/`encumbrance` (law-colored): the same mechanism must serve non-legal cases like pending-transfer reservations.
 
 ### Prior art

@@ -11,8 +11,8 @@
 - e.g. User want to pay for a service based `invoice`, ...
 - e.g. pay by other org (bank) for an `invoice`
 - e.g. Move some `good` to other warehouse without any invoice.
-- At most one `account__to` per transaction (invariant #2 in [accounting-invariants.md](../../../accounting-invariants.md)).
+- At most one `account__to` per transaction (§2 in [transaction.handoff.md](../../transaction.handoff.md)).
 - May be absent at registration (matching/conditional transactions); once a bookkeeping record exists it MUST NOT change.
-- MUST share the `count_unit` of `account__from` (invariant #4).
+- MUST share the `count_unit` of `account__from` ([account.handoff.md](../../../account/account.handoff.md) §4).
 
 ## Fields

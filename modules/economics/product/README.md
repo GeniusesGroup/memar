@@ -1,5 +1,4 @@
 # Product
-
 In marketing, a [product](https://en.wikipedia.org/wiki/Product_(business)) is an object, or system, or service made available for consumer use as of the consumer demand; it is anything that can be offered to a domestic or an international market to satisfy the desire or need of a customer.[1] In retailing, products are often referred to as merchandise, and in manufacturing, products are bought as raw materials and then sold as finished goods. A service is also regarded as a type of product.
 
 ## Definition in Memar
@@ -69,4 +68,4 @@ Raw proposals from comment notes inside edge .go files (comments remain in code 
 - **Review questions**: map these onto the parent/child model in "Product relation to product" above - are all four the parent/child edge, or distinct relations (variant-of, spec-parent, ingredient-of)?
 ### Rule relations - edges/product-relation-rule.go
 - **Idea**: MealDeal / DiscountBundle (product is part of a discount bundle; rules may constrain the bundle, e.g. minimum buy number); Pricing rule (some services have more complex pricing logic than a product.Price field, e.g. transport).
-- **Review questions**: does the pricing rule duplicate accounting-invariants #9 (fees are rules producing transactions)?
+- **Review questions**: does the pricing rule duplicate [rule.handoff.md](../../computer/rule/rule.handoff.md) §9 (fees are rules producing transactions)?

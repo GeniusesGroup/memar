@@ -4,7 +4,7 @@ A pluggable module giving organizations a vocabulary of **reasons for creating a
 
 ## Why pluggable
 
-Which reasons an organization needs, and which rules govern each (who may enter/exit, when packaging is allowed), are organization-specific policies - per the core-vs-pluggable criteria (a difference in processing semantics -> pluggable; the calendar itself stays in the management core).
+Which reasons an organization needs, and which rules govern each (who may enter/exit, when packaging is allowed), are organization-specific policies: a difference in processing semantics → pluggable module; the calendar reason vocabulary itself stays attachable without forcing every organization to carry every reason. The calendar core (if any) stays in management; this module is pluggable.
 
 ## Edges
 
