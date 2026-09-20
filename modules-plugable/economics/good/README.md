@@ -1,6 +1,6 @@
 # Good
 
-A good is a physical/economic item tracked for inventory. It is pluggable, not core: each organization may draw the good/service boundary differently, and the accounting kernel works fine without any of them — a transaction over an account whose `count_unit` is "kg" needs no `good` node at all. What this module adds is inventory-facing semantics (`reserve-quantity`, `best_before`, `material`, `branch`) attached to products/stocks as capabilities.
+A good is a physical/economic item tracked for inventory. It is pluggable, not core: each organization may draw the good/service boundary differently, and the accounting kernel works fine without any of them — a transaction over an account whose `count_unit` is "kg" needs no `good` node at all. What this module adds is inventory-facing semantics (`reserve-quantity`, `best_before`, `material`, `branch`) attached to products/stocks as capabilities. Chosen ingredients on an invoice line ([item-ingredient](edges/item-ingredient/README.md)) are the same capability at order time, not Invoice kernel.
 
 ## Discussion
 

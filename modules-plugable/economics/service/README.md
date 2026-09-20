@@ -1,6 +1,6 @@
 # Service
 
-A service is a non-inventory economic offering (seat, timing-interval, number, multiple-use). Pluggable for the same reason as [good](../good/README.md): the kernel's unit-general bookkeeping does not need it; organizations differ in where "service" ends and "good" begins.
+A service is a non-inventory economic offering (seat, timing-interval, number, multiple-use). Pluggable for the same reason as [good](../good/README.md): the kernel's unit-general bookkeeping does not need it; organizations differ in where "service" ends and "good" begins. Invoice-line occupancy ([item-seat](edges/item-seat/README.md)) is this capability realized at claim time, not Invoice kernel.
 
 ## Discussion
 

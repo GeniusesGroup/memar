@@ -44,7 +44,7 @@ Canonical homes per the map in [`README.md`](README.md). Still cross-cutting her
 
 ## Related Artifacts
 - [`README.md`](README.md) — graduated positions and open questions (Update when decisions change)
-- [`edges/brand`](edges/brand/README.md) — brandless/definition products (Review)
+- [`../../../modules-plugable/economics/brand/edges/brand`](../../../modules-plugable/economics/brand/edges/brand/README.md) — brandless/definition products (Review)
 - [`../../../modules-plugable/economics/batch/README.md`](../../../modules-plugable/economics/batch/README.md) — batch identity questions (Review)
 - [`../../knowledge/content/edges-loop/course`](../../knowledge/content/edges-loop/course/README.md) — Product∩Content case (None)
 - [`../../identity/estate/estate.handoff.md`](../../identity/estate/estate.handoff.md) — the co-developed other side

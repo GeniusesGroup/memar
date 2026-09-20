@@ -1,6 +1,6 @@
 # Economics Analytics
 
-Cross-domain analytical modules over the economics core: knowledge produced from account/transaction/invoice data that belongs to no single domain (e.g. `pair_amount`, `user-credit`, `financial-risk`). Domain-specific analytics live inside their own pluggable modules instead (e.g. payroll analytics under payroll).
+Cross-domain analytical modules over the economics core: knowledge produced from account/transaction/invoice data that belongs to no single domain (e.g. `pair_amount`, `user-credit`, `financial-risk`, [invoice-totals](invoice-totals/README.md)). Domain-specific analytics live inside their own pluggable modules instead (e.g. payroll analytics under payroll; discount usage under [discount/analytics](../discount/analytics/price-payable/README.md)).
 
 ## Policies (rules)
 

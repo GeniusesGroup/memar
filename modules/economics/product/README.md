@@ -3,7 +3,7 @@ In marketing, a [product](https://en.wikipedia.org/wiki/Product_(business)) is a
 
 ## Definition in Memar
 
-Product is core by necessity: an invoice claims something, and that something must be identifiable and priceable. The test is a capability, not a relation: any node in the graph can become a product if it can be priced (`price`, `pricing` edges). Good and service are NOT core — each organization may draw those boundaries differently, so they are pluggable specializations. Multi-typing applies: a product node can simultaneously be a `thing` with a name, unit, or any other identity edge.
+Product is core by necessity: an invoice claims something, and that something must be identifiable and priceable. The test is a capability, not a relation: any node in the graph can become a product if it can be priced (`price`; independently evolving `pricing` lives in [pricing](../../../modules-plugable/economics/pricing/edges/pricing/README.md)). Good and service are NOT core — each organization may draw those boundaries differently, so they are pluggable specializations. Multi-typing applies: a product node can simultaneously be a `thing` with a name, unit, or any other identity edge.
 
 Confirmed positions from the boundary discussion (2026-08-05..09; argument and evidence in [product.handoff.md](product.handoff.md)):
 
@@ -11,7 +11,7 @@ Confirmed positions from the boundary discussion (2026-08-05..09; argument and e
 - **Product ≠ physical good.** A service is a product (the marketing definition above already says so) and may have no physical realization ever; "does it need physical realization?" is not a product boundary question.
 - **Product identity can precede production** — even the invoice (a car ordered today, delivered in six months has product identity from day one).
 - **A node can take Product and Content identities simultaneously** (an educational course; sold, freed, or role-restricted) — product being is the economic/asset-management lens, not a different object.
-- **Spec-like nodes are products**: the designer's "rebar A3, 4400 kg/cm²" node — brandless, producerless — is itself a product that other products may satisfy. See the [`brand`](edges/brand/README.md) edge questions.
+- **Spec-like nodes are products**: the designer's "rebar A3, 4400 kg/cm²" node — brandless, producerless — is itself a product that other products may satisfy. See the [`brand`](../../../modules-plugable/economics/brand/edges/brand/README.md) edge questions.
 
 ## Product relation to product
 

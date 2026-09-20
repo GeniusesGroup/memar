@@ -20,7 +20,7 @@ Active — party-role and core-vs-optional decided; invoice adjustment field nam
 ## Related Artifacts
 - [`README.md`](README.md)
 - [`../product/product.handoff.md`](../product/product.handoff.md)
-- [`../product/edges/pricing/README.md`](../product/edges/pricing/README.md)
+- [`../../../modules-plugable/economics/pricing/edges/pricing/README.md`](../../../modules-plugable/economics/pricing/edges/pricing/README.md)
 - Invoice party edges: [`edges/user-customer`](edges/user-customer/README.md), [`edges/user-buyer`](edges/user-buyer/README.md), [`edges/user-consumer`](edges/user-consumer/README.md)
 
 ## Notes

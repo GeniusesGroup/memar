@@ -29,4 +29,4 @@ Order settled in the modeling sessions (2026-08/09); each step's findings land i
 4. Keep [settlement](../../modules-plugable/economics/settlement/README.md) separated from clearing and matching; test against bank, warehouse, and securities scenarios.
 5. Re-review [invoice](invoice/README.md)/[product](product/README.md)/[money](../../modules-plugable/economics/money/README.md) against tax, rent, penalties, and rounding contracts.
 6. Then securities/custody, credit, payroll, analytics.
-7. Repo-wide placement audit (move early-development edges that fail core-by-necessity into `modules-plugable/`) — run as a dedicated session from the ephemeral working brief (gitignored); do not reintroduce a category-level doctrine file under `modules/`.
+7. Repo-wide placement audit (move early-development edges that fail core-by-necessity into `modules-plugable/`) — wave 1 landed POS, brand, service occupancy, good ingredients, discount analytics, pricing, invoice totals, and product-kind labels in those owning homes; remaining categories follow in later sessions. Do not reintroduce a category-level doctrine file under `modules/`.

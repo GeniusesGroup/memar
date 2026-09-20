@@ -1,4 +1,7 @@
 # Analytic
+
+Analytics produces discovered/derived knowledge; it is never core. This module left `modules/computer/` so computer foundations do not carry optional views. After leaving core, `analytic` is a capability name, not a mimic of a remaining kernel domain.
+
 [Analytic](https://en.wikipedia.org/wiki/Analytic) or reductive grammar in Computer science, a kind of formal grammar that works by successively reducing input strings to simpler forms.
 
 Analytics has two main purposes as knowledge discovery for [predictive](https://en.wikipedia.org/wiki/Predictive_analytics) and [descriptive](https://en.wikipedia.org/wiki/Descriptive_statistics).
