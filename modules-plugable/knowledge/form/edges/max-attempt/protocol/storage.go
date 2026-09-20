@@ -6,7 +6,7 @@ import (
 	error_p "memar/process/error/protocol"
 
 	storage_p "memar/storage/protocol"
-	form_p "org/modules/knowledge/form/protocol"
+	form_p "org/modules-plugable/knowledge/form/protocol"
 )
 
 type StorageServices interface {

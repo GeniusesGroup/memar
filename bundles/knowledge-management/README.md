@@ -33,12 +33,12 @@ Pluggable / temporary add-ons that the practice may install:
 
 GUI / projection (consumers of the same graph):
 
-- [`modules/gui`](../../modules/gui/) (+ [gui.handoff.md](../../modules/gui/gui.handoff.md))
+- [`modules-plugable/gui`](../../modules-plugable/gui/) (+ [gui.handoff.md](../../modules-plugable/gui/gui.handoff.md))
 
 Also composed / related (seed mapping — grow as sessions land):
 
 - `modules/knowledge/` siblings the practice may speak: knowledge_unit, question, answer, skill, label (alongside content, text, status already listed)
-- `modules/management/meeting`, `staff`, `department` — conversation→Task and personnel-transition preservation workflows
+- `modules-plugable/management/meeting`; `modules/management/staff`, `department` — conversation→Task and personnel-transition preservation workflows
 - `modules/identity/organization` — where the framing claim is argued against real org models
 
 ## Active design state

@@ -5,7 +5,7 @@ package distribute_p
 import (
 	request_p "memar/process/request/protocol"
 	audit_time_p "memar/process/time/protocol"
-	inventory_p "org/modules/gui/page-inventory/protocol"
+	inventory_p "org/modules-plugable/gui/page-inventory/protocol"
 )
 
 // DataModel indicate the domain record data fields.

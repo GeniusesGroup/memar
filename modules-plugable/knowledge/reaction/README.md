@@ -1,5 +1,7 @@
 ## Reaction
 
+Reaction (emoji, like, rate) is an optional overlay on content/users. Home: `modules-plugable/knowledge/reaction` — not kernel knowledge.
+
 ## Dictionary
 
 reaction  [rɪ'ækʃn]

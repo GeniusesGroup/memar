@@ -7,7 +7,7 @@ import (
 	request_p "memar/process/request/protocol"
 	audit_time_p "memar/process/time/protocol"
 
-	page_p "org/modules/computer/page/protocol"
+	page_p "org/modules-plugable/computer/page/protocol"
 )
 
 // GUICategories indicate the domain record data fields.

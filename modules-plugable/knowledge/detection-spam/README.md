@@ -1,5 +1,7 @@
 # Detection spam
 
+Spam checking and the `spam` classification of text belong here, not on kernel Text. Text remains the holding type; this capability attaches the checker, the label, and derived shortcuts.
+
 ## Policies (rules)
 
 - This rule will labeled the text by `checked`

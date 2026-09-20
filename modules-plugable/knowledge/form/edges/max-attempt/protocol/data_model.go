@@ -6,7 +6,7 @@ import (
 	request_p "memar/process/request/protocol"
 	audit_time_p "memar/process/time/protocol"
 
-	form_p "org/modules/knowledge/form/protocol"
+	form_p "org/modules-plugable/knowledge/form/protocol"
 )
 
 // DataModel indicate the domain record data fields.

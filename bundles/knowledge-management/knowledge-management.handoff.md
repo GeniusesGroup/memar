@@ -209,7 +209,7 @@ Smallest reusable knowledge unit (directional): any token (word, phrase, questio
 - [`../../modules/management/task/task.handoff.md`](../../modules/management/task/task.handoff.md) — Task as commit-message replacement, Decision-as-label, Change Set, Documentation/Practice/Agent Configuration
 - [`../../modules/management/timeline/timeline.handoff.md`](../../modules/management/timeline/timeline.handoff.md)
 - [`../../modules/knowledge/text/text.handoff.md`](../../modules/knowledge/text/text.handoff.md)
-- [`../../modules/gui/gui.handoff.md`](../../modules/gui/gui.handoff.md)
+- [`../../modules-plugable/gui/gui.handoff.md`](../../modules-plugable/gui/gui.handoff.md)
 - [`../../modules/management/vocabulary-discipline.handoff.md`](../../modules/management/vocabulary-discipline.handoff.md)
 - [`../../modules-plugable/knowledge/channel-comms/README.md`](../../modules-plugable/knowledge/channel-comms/README.md) — temporary editorial / geniuses.group channel framework
 - Memar `docs/knowledge.md` — concept (local Memar skill; do not fetch GitHub)
@@ -259,7 +259,7 @@ Cross-links (do not duplicate identical decided bullets already landed):
 - Content / Timeline / versioning / Code as Content / concurrency → [`../../modules/knowledge/content/content.handoff.md`](../../modules/knowledge/content/content.handoff.md)
 - Task as commit-message replacement / Decision-as-label / Change Set → [`../../modules/management/task/task.handoff.md`](../../modules/management/task/task.handoff.md)
 - Text / content-addressability → [`../../modules/knowledge/text/text.handoff.md`](../../modules/knowledge/text/text.handoff.md)
-- Multi-GUI / logical snapshots → [`../../modules/gui/gui.handoff.md`](../../modules/gui/gui.handoff.md)
+- Multi-GUI / logical snapshots → [`../../modules-plugable/gui/gui.handoff.md`](../../modules-plugable/gui/gui.handoff.md)
 
 ---
 
@@ -751,7 +751,7 @@ Cross-links:
 - Document blocks, knowledge capture, Comment, search hub, Content entry → [../../modules/knowledge/content/content.handoff.md](../../modules/knowledge/content/content.handoff.md)
 - Task composition over Group; Documentation/Practice/Agent Configuration → [../../modules/management/task/task.handoff.md](../../modules/management/task/task.handoff.md)
 - Text ownership of tokens → [../../modules/knowledge/text/text.handoff.md](../../modules/knowledge/text/text.handoff.md)
-- Multi-GUI acceptance test → [../../modules/gui/gui.handoff.md](../../modules/gui/gui.handoff.md)
+- Multi-GUI acceptance test → [../../modules-plugable/gui/gui.handoff.md](../../modules-plugable/gui/gui.handoff.md)
 - Git/filesystem half → [Discussion — Git, filesystem, and organizational knowledge](#discussion--git-filesystem-and-organizational-knowledge) (this handoff)
 
 ---

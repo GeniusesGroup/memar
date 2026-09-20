@@ -4,7 +4,10 @@
 Org product GUI / projection requirements and second-pass Semantic UI bullets: GUIs as consumers of a semantic content contract, catalog hygiene, AI-era discovery discipline, upper-document principles, and the org's place relative to Memar. Migrated from the Organization ideas backlog (2026-09-16) and second-pass audit.
 
 ## Status
-Active — multi-GUI / logical-snapshot decided; Semantic UI catalog ownership and org-vs-Memar UI placement remain open/direction.
+Active — multi-GUI / logical-snapshot decided; org GUI projections live in `modules-plugable/gui` (not kernel). Semantic UI catalog ownership and org-vs-Memar UI modeling remain open/direction.
+
+## Placement
+A GUI is a consumer of domain contracts, not a core-by-necessity domain: removing these pages does not force fabricating Account, User, Content, or Task. `bundles/gui` stays the runtime/composition host; this folder holds projection pages (`page-*`) only.
 
 ## Decisions
 
@@ -46,7 +49,7 @@ Active — multi-GUI / logical-snapshot decided; Semantic UI catalog ownership a
 - **The org product's own place relative to Memar is undecided** — recorded above. *(open for the org; the UI one specifically stays with its own repo)*
 
 ## Related Artifacts
-- [`../knowledge/content/content.handoff.md`](../knowledge/content/content.handoff.md)
+- [`../../modules/knowledge/content/content.handoff.md`](../../modules/knowledge/content/content.handoff.md)
 - Memar Semantic UI / content-modeling work (catalog stays Memar-side)
 
 ## Notes

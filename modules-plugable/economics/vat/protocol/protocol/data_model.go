@@ -6,7 +6,7 @@ import (
 	request_p "memar/process/request/protocol"
 	audit_time_p "memar/process/time/protocol"
 
-	government_p "org/bundles/government/protocol"
+	government_p "org/modules-plugable/identity/government/protocol"
 )
 
 // TODO::: change tax to a product instead of standalone model

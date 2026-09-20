@@ -17,3 +17,5 @@ A [state](https://en.wikipedia.org/wiki/State_(polity)) is a political entity th
 - Canada [Social insurance number](https://en.wikipedia.org/wiki/Social_insurance_number)
 - Yugoslavia [Unique Master Citizen Number](https://en.wikipedia.org/wiki/Unique_Master_Citizen_Number)
 - Denmark [Personal identification number](https://en.wikipedia.org/wiki/Personal_identification_number_(Denmark))
+
+This folder is a **composition bundle**: the umbrella word and country-URI index live here. Identifier schema is `modules-plugable/identity/government`; scheme folders are under `modules-plugable/uri/`. Subsidy is `modules-plugable/economics/subsidy`.
