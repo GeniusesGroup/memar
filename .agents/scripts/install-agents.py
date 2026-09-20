@@ -54,7 +54,9 @@ import runpy
 import tempfile
 import urllib.request
 
-SESSION = Path(tempfile.gettempdir()) / "memar" / ".agents" / "scripts" / "session.py"
+SESSION = (
+    Path(tempfile.gettempdir()) / "memar" / ".agents" / "scripts" / "session.py"
+).resolve()
 URL = {SESSION_URL!r}
 
 

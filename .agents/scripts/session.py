@@ -177,7 +177,10 @@ def main() -> None:
         _run_script(live, ["--quiet"] if args.quiet else [])
         return
     if not args.quiet:
-        print(root)
+        # Print the resolved real tree. Canonical temp may be a
+        # symlink/junction; agent runtimes that refuse unverified temp
+        # path strings still need a concrete checkout path to load.
+        print(root.resolve())
 
 
 if __name__ == "__main__":

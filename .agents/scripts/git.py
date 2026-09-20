@@ -19,11 +19,25 @@ Memar sessions keep violating when they improvise:
            common Git install locations on PATH. Other Memar scripts that
            need git call this instead of failing immediately.
 
+  stash    Park uncommitted work (tracked + untracked, not ignored) so a
+           later session can recover it. Prefer this — or an ordinary
+           commit — over discarding the working tree to tidy status.
+
+  restore  Refuse to discard uncommitted work by default. Host `git restore`
+           / checkout-of-paths / clean are what sessions use to "tidy"
+           status and lose WIP. This command exits non-zero unless the
+           caller passes an explicit irreversible confirmation token.
+           Presence of the subcommand is not permission to call it casually.
+
 This script needs git. If git is not already present, `ensure` tries to
 install it in the current environment rather than asking the caller to
 stop. Usage is the interface. Do not duplicate these recipes as prose
 catalogs. Do not use `git rm` in Memar sessions. Document-ID minting is
 not here — use memar-doc.py hour-id.
+
+`gitignore` only hides untracked paths; tracked files that match an ignore
+pattern still show as modifications — do not "fix" that by restoring them
+away.
 """
 from __future__ import annotations
 
@@ -184,6 +198,56 @@ def _tracked(path: Path) -> bool:
     return run_captured(["ls-files", "--error-unmatch", str(path)]).returncode == 0
 
 
+DISCARD_CONFIRM = "DISCARD-UNCOMMITTED"
+
+
+def _working_tree_dirty() -> bool:
+    """True when tracked or untracked-non-ignored paths differ from HEAD/index."""
+    porcelain = run_captured(["status", "--porcelain", "--untracked-files=normal"])
+    return bool(porcelain.stdout.strip())
+
+
+def cmd_stash(message: str | None) -> None:
+    """Park WIP recoverably. Does not include ignored files (use commit for those)."""
+    ensure_git()
+    if not _working_tree_dirty():
+        print("nothing to stash", file=sys.stderr)
+        return
+    args = ["stash", "push", "--include-untracked"]
+    if message:
+        args.extend(["-m", message])
+    run_git(args)
+    print(
+        "stashed tracked + untracked (not ignored).\n"
+        "Recover with `git stash pop` / `git stash apply` when ready.\n"
+        "Ignored paths were not included — commit those if they must survive.",
+        file=sys.stderr,
+    )
+
+
+def cmd_restore(paths: list[Path], confirm: str | None) -> None:
+    """Discard working-tree changes only with an explicit irreversible token."""
+    ensure_git()
+    if confirm != DISCARD_CONFIRM:
+        sys.exit(
+            "error: refusing to discard uncommitted work.\n"
+            "To tidy status without losing WIP: commit, or run "
+            "`git.py stash`.\n"
+            "gitignore does not hide tracked modifications.\n"
+            f"Irreversible discard requires --confirm {DISCARD_CONFIRM} "
+            "(do not pass that casually)."
+        )
+    if not paths:
+        sys.exit("error: restore requires one or more paths")
+    # Match host `git restore --worktree --source=HEAD` for the named paths only.
+    run_git(["restore", "--source=HEAD", "--worktree", "--"] + [str(p) for p in paths])
+    print(
+        "discarded working-tree changes for the named paths "
+        f"(confirmed {DISCARD_CONFIRM}).",
+        file=sys.stderr,
+    )
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(
         description=__doc__,
@@ -209,6 +273,28 @@ def main() -> None:
         help="install git if it is missing, then print the git executable",
     )
 
+    p_stash = sub.add_parser(
+        "stash",
+        help="stash tracked+untracked WIP (not ignored); prefer over discard",
+    )
+    p_stash.add_argument(
+        "-m",
+        "--message",
+        default=None,
+        help="optional stash message",
+    )
+
+    p_restore = sub.add_parser(
+        "restore",
+        help="refuse discard by default; needs --confirm DISCARD-UNCOMMITTED",
+    )
+    p_restore.add_argument("paths", nargs="+", type=Path)
+    p_restore.add_argument(
+        "--confirm",
+        default=None,
+        help=f"must be exactly {DISCARD_CONFIRM} to discard",
+    )
+
     args = parser.parse_args()
     if args.command == "rename":
         cmd_rename(args.source, args.destination)
@@ -216,6 +302,10 @@ def main() -> None:
         cmd_remove(args.paths)
     elif args.command == "ensure":
         cmd_ensure()
+    elif args.command == "stash":
+        cmd_stash(args.message)
+    elif args.command == "restore":
+        cmd_restore(args.paths, args.confirm)
 
 
 if __name__ == "__main__":
