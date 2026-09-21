@@ -1,0 +1,1 @@
+salary-earth-hourly.md
