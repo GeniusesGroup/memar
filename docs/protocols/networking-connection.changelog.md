@@ -45,3 +45,22 @@
 #### Considered and not done (from the removed document-level Drawbacks section)
 - **Exposing connection state widens the component's surface.** A component that hides state has a narrow interface by construction; one that exposes it must keep that exposure stable and correct. The framework takes this cost deliberately - invisibility is what produced the shadow-copy failures - but it is a cost. (Omid Hekayati)
 - **The realization does not exist yet.** The positions here are currently ahead of the code that would validate them; the socket arrangement, whatever its faults, is running infrastructure today. (Omid Hekayati)
+
+---
+
+### HTTP cookie/"stateless" instance moved to the HTTP position document
+- Time: 2026-09-21T15:36:36Z
+- Type: Changed
+- Propagates to:
+  - http.md: Done — owns the HTTP cookie versus "stateless" reconstruction.
+- Contributors:
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — requested, decided
+  - [Grok](../../CONTRIBUTORS.md#grok) (Grok 4.6 via Cursor) — applied
+
+#### What changed
+- Motivation, Methodology, and the closing evidence sentence no longer prosecute HTTP. Hidden connection state is stated as the general failure; the positive contract (state owned by the protocol's logic and exposed upward) is unchanged.
+- QUIC remains the existence proof for ownership-with-exposure.
+- The Event link in the paired handoff now points at `../process.md#events` (it previously went one directory too high).
+
+#### Considered and not done
+- **Keep HTTP cookies as this document's motivating example** (rejected): that writes the connection contract as "why not HTTP." (Omid Hekayati)

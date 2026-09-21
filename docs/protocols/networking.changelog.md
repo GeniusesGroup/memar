@@ -236,3 +236,22 @@ Dissolved the document-level `## Discussion` (Drawbacks, Rationale and alternati
 #### Related work
 - [Enlightra](https://enlightra.com/).
 - The OSI model's own layering, and the long practice of tunneling one layer over another (L2-over-L3 VPNs), show stacks being composed opportunistically — the [Layer presence](./networking.md#layer-presence) principle states explicitly what such practice implies: presence is per-link, never automatic.
+
+---
+
+### HTTP-shaped filter case moved to the HTTP position document
+- Time: 2026-09-21T15:36:36Z
+- Type: Changed
+- Propagates to:
+  - http.md: Done — owns the HTTP-shaped-traffic instance.
+- Contributors:
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — requested, decided
+  - [Grok](../../CONTRIBUTORS.md#grok) (Grok 4.6 via Cursor) — applied
+
+#### What changed
+- The HTTP-filter counter-argument (protocols riding on HTTP pass through filters; designing around a censor inherits the censor's lifetime) left this document. This document keeps the positive rule: a deployment constraint is not an architecture; the dependence check decides the wire shape.
+- The stance paragraph now names [http](./http.md) as the parallel position on HTTP, next to filesystem for storage.
+- A consumed-contract link points at http.md for the HTTP-shaped case of the deployment rule.
+
+#### Considered and not done
+- **Keep the HTTP-filter paragraph here as the worked example of the deployment rule** (rejected): protocol documents state what they recommend; HTTP critique gathers in http.md. (Omid Hekayati)

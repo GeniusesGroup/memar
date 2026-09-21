@@ -5,8 +5,8 @@ Open work for `protocols/networking.md`. Entries are mutable current state — r
 ## Open Questions
 
 ### The address carries only destination information
-- State: recovered 2026-09-17 from the same retired sRPC chat audit as [the sRPC handoff's design-rationale item](./sRPC.handoff.md). The chat's deeper principle, judged by both participants a candidate Memar architectural principle: an address should contain only the information required to determine the destination — request data does not belong in the routing address, and "two optional places for one concept" (query string vs payload, HTTP's collapse) is the smell to forbid; one concept, one representation, decided once per resource class. This is the principle behind the four-identity decomposition recorded in the sRPC handoff; it is recorded here because it is a networking-layer claim, not an sRPC frame-design detail.
-- Next: formalize as a Networking-layer principle (or route to the protocol-concept layer) when this document's principles section is next developed; until then the sRPC handoff's design-rationale entry is the authoritative record.
+- State: an address should contain only the information required to determine the destination — request data does not belong in the routing address; one concept, one representation, decided once per resource class. This remains a Networking-layer principle, not an sRPC frame-design detail. The HTTP appearance of the collapse (query versus payload, URL overload) now lives in [http.md](./http.md); sRPC's independent identities are stated as a positive contract in [sRPC.md](./sRPC.md#independent-identities).
+- Next: formalize as a Networking-layer principle (or route to the protocol-concept layer) when this document's principles section is next developed.
 
 ### The traditional-stack dependence check's home
 - State: whether the dependence check (use the host's embedded stack or not) needs its own practice document — the pattern [filesystem.practice.md](./filesystem.practice.md) set for storage — or folds into the protocol documents themselves. Not decided.
