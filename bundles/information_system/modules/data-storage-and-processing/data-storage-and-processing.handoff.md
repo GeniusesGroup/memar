@@ -25,4 +25,4 @@ Companion of `data-storage-and-processing.md`.
 1. Owner: answer Q1 — it is the named open arbitration at root data-storage-and-computing, and three other documents wait on its direction.
 2. Owner or delegate: draft the Q2 split rule in one paragraph (which data classes may leave the block, and under whose consent), regardless of how Q1 lands.
 3. Delegate: collect external PUE and heat-recovery benchmarks for megadatacenters so the Q1 deliberation can price the plant case against recorded evidence rather than asserted figures.
-4. Owner: after Q1, schedule the inbound-link fixups listed in the document's changelog Propagates-to entries (16 documents still point at this page's pre-upgrade Persian headings).
+4. Process residue (not an Open Question): changelog Propagates-to already says inbound heading links were Done (2026-09-15). The leftover "schedule inbound-link fixups" next-step is stale; a dedicated heading-fix pass can still audit the sixteen named inbound documents if any Persian heading remains.

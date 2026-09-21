@@ -46,3 +46,20 @@ Old-numbering references that predate the requirements migration could not be ma
 - Related-documents reciprocity additions: Water Supply and Security (via the ASR record) and Treatment and Return of Used Waters (via the Micro-MBR record), reflecting cross-references the migration created.
 - Legacy-refs: the one token recorded in the "Legacy unresolved cross-references" entry above stands unchanged in the phytoremediation-channel record as `legacy-ref (unresolved)`.
 
+
+---
+
+### Inbound boat-channel consumers retargeted here
+- Time: 2026-09-20T16:45:00Z
+- Type: clarified
+- Cited:
+  - [Water Bodies as Common Infrastructure — Handoff](water-bodies-as-common-infrastructure.handoff.md) - Relation: Evidence: consumers now declare the channel need toward this ledger.
+  - [Safe pedestrian deck on the roofs of the PRT guideways (Elevated Guideway Pedestrian Deck)](../form-and-land/which-plane-carries-which-flow.md#safe-pedestrian-deck-on-the-roofs-of-the-prt-guideways-elevated-guideway-pedestrian-deck) - Relation: Evidence: syn labelled "navigation corridors".
+  - [Multimodal boat-to-PRT transfer shafts clear of the ground floor (Vertical Waterway-to-Skytran Multimodal Shafts)](../movement/human-travel-network.md#multimodal-boat-to-prt-transfer-shafts-clear-of-the-ground-floor-vertical-waterway-to-skytran-multimodal-shafts) - Relation: Evidence: prereq labelled "boat-navigation channels between the 100 blocks".
+- Contributors:
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested (persist round-1 critiques)
+  - [Claude](../../../CONTRIBUTORS.md#claude) (Opus-5 via Cursor) — critiqued (round 1)
+  - [Grok](../../../CONTRIBUTORS.md#grok) (Grok 4.6 via Cursor) — recorded
+
+#### What changed
+- Handoff records two inbound consumers that had pointed at the block datacenter and now declare the boat-channel need toward [The network of waterways and in-settlement boat-navigation channels with secondary phytoremediation](water-bodies-as-common-infrastructure.md#the-network-of-waterways-and-in-settlement-boat-navigation-channels-with-secondary-phytoremediation). Movement Q5 still asks this ledger to confirm the channels as infrastructure. No body text of this page was rewritten.

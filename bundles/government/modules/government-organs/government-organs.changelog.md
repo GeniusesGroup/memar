@@ -47,3 +47,26 @@ The transfer audit found two lost constitutional doctrines that never reached th
 #### Deliberation
 - [The constitutional sanctions suite: suspension…](government-organs.md#the-constitutional-sanctions-suite-suspension-of-offending-organs-and-non-enforcement-of-offending-transactions-sanctions-suite) was read against the page's open question (verifier-as-function vs verifier-as-organ): the recovered suite neither decides nor begs it — suspension and non-enforcement run as platform states (the function reading's evidence) but the security ceiling names a register someone must police (the organ reading's evidence). Recorded so the owner decision sees the new texts; the decision itself stays open.
 - The Leader clause contradicts no existing record but completes the set the abstract left hanging ("who speaks for the software state to societies that have no software"): the office is now answered, not the verifier. The citizenship-loss end of the Leader's accountability is noted here for the membership page's no-ranking doctrine; see that document's recovery entry.
+
+---
+
+### Metrics disambiguation and verifier decision
+- Time: 2026-09-20T10:37:24Z
+- Type: clarified
+- Cited:
+  - [Form of Government Organs — Handoff](government-organs.handoff.md) - Relation: Evidence: Q3 was the arithmetic defect; Q1 was the owner ruling this session recorded.
+- Propagates to:
+  - governance/law-form-and-validity.md: Done — code-before-voting and product-price charges recorded on both pages.
+- Contributors:
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Grok](../../../CONTRIBUTORS.md#grok) (Grok 4.6 via Cursor) — rewrote
+
+#### What changed
+- Collision paragraph 1 now states that 100% and 90% are different quantities: the software record's 100% is physical offices and its own 90% is administrative cost; the protocol's 90% is staff/burden; the regulator's 80% is municipal headcount. Remaining people without offices do not contradict 100% office removal.
+- Handoff: Q3 moved to Ambiguities Resolved. Q1 graduated into the Abstract and the collision's verifier paragraph — verification is a process to automate as far as possible; residual human judgment is a stage of the process, not a reason to found a fee-paid verifier organ. The organ answer is the rejected alternative. Q1 left the handoff.
+- The software record's 30-day code-or-return metric is not current owner doctrine (same ruling as law-form). Q4 graduated: a record may enter voting only when complete, including executable code; an empty code field cannot leave draft. Q2 graduated: government law should not need a fee to operate; if a charge exists it is a named product with a price for work actually done, not a tax-like levy. Abstract and collision restated. Q2 and Q4 left the handoff.
+- Handoff records the round-1 residual: sanctions/Leader recovery did not fill the verifier cell; that matches the process ruling and is not reopened as an organ.
+
+#### Deliberation
+- Owner (2026-09-20): verification is a process that can improve over time and should be automated as far as possible. That closes the organ-versus-function binary toward function/process; the collision now states that ruling.
+- Owner (2026-09-20, later): does not now agree with the 30-day coding clock (same ruling as law-form). A record enters voting only when complete including executable code. Government laws should not need fees if possible; if a charge is needed it is a named product with a price for work done, not a tax. Tax is a product with a pricing rule but no corresponding good.

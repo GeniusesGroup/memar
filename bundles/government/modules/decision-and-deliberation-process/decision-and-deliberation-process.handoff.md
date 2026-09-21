@@ -14,6 +14,7 @@ Companion of `decision-and-deliberation-process.md`.
 ## Extensions / anticipated work
 - An "agenda matrix": rows = instruments (initiate, annotate, simulate, rank, count), columns = actors (citizens, parties, judges, synthetic minds, platforms) — one view of who may produce what, which is the artifact all four questions above feed into.
 - Keep the 3-judge concurrence / 50-senior-judge quorum in lockstep with governance/judiciary-and-dispute.md: one instrument cited twice; if either page's bench design changes, propagate.
+- Round-1 review (2026-09-20): membership now treats accuracy ranking and abstention-demotion as shareable ranks. Q3 remains whether this page's prediction-accuracy ledger is that rank or a different behavioral score. Deliberation already counts residents without demotion — confirm that counting is not a silent second rank.
 - If Q1 lands on a drafting monopoly over synthetic output, the enforcement point is the open-source platform's publication layer (the advisor's own prerequisite) — note the cross-page implication for information-systems/platform-custody-and-records.md.
 - C1. Review-round note (recovery audit, 2026-09-14): the Motivation ("the process they are five parts of") and the collision opener ("The five authority-and-instrument records") predate [Competing bill variants: every modifier…](decision-and-deliberation-process.md#competing-bill-variants-every-modifier-submits-a-new-version-on-a-proposal-graph-and-the-vote-between-rival-texts-reveals-the-winner-bill-variants-on-a-proposal-graph) per the entry's stated scope — critique whether the bill-variants record is a fourth instrument that touches the decision before it is made (and so belongs inside the inform/draft dispute) or an authority answer about who may re-draft, then fold the framing.
 
@@ -27,4 +28,4 @@ Companion of `decision-and-deliberation-process.md`.
 1. Owner: answer Q1 — every other machine-related question on this page resolves into it.
 2. Owner: rule Q2 with the judiciary page open alongside (shared quorum), so the constitution is written once.
 3. Owner: settle Q3 jointly with the membership-and-identity verdict — one ruling names what attestations an SSI may carry.
-4. Owner: schedule the inbound-link fixups listed in the document's changelog Propagates-to entries (security-and-resilience/securing-sensitive-spaces.md still points at this page's pre-upgrade Persian headings).
+4. Process residue (not an Open Question): changelog Propagates-to already says inbound heading links were Done (2026-09-15). The leftover "schedule inbound-link fixups" next-step is stale; a dedicated heading-fix pass can still audit security-and-resilience/securing-sensitive-spaces.md if any Persian heading remains.

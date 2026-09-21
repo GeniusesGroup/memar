@@ -59,3 +59,26 @@ The transfer audit found one lost movement answer and one transition clause. Add
 - The settlement's first-phase ordering from شهر سبز.docx — infrastructure-first phasing: warehouse and logistics capacity is built in the first execution phases because the settlement itself needs its flows from day one — considered for this page as a phasing answer and judged not an idea: it is a construction sequence and a business-plan line item (the same phasing is carried by the Sabz business plan), not an answer to "by what mix of modes shall people move"; recorded so the owner's staging preference survives in the ledger. Its logistics consequence belongs to movement/last-mile-of-goods.md, whose depot record the source itself names.
 - The same source's electric unicycle clause was not added as an approach: the settlement's fleet-ownership doctrine is already held by [Centralized long-dormancy parking hubs at…](transport-boundary-interface.md#centralized-long-dormancy-parking-hubs-at-the-entry-gates-with-compact-3-car-deep-stacking)'s shared-rental prerequisite and [Fast suspended personal-transport network at…](human-travel-network.md#fast-suspended-personal-transport-network-at-9-meters-height-prt--skytran--hyperloop)'s capsule logic, and a unicycle is a vehicle preference, not a network mode; it is named in [An identity-signaled network that manages…](human-travel-network.md#an-identity-signaled-network-that-manages-every-vehicle-and-assists-the-movement-of-disabled-and-blind-residents-assisted-accessibility-movement)'s flaw vocabulary (the bicycle as a registered road user) so the clause informs the ledger without becoming one.
 
+
+---
+
+### Settlement chooses the movement mix
+- Time: 2026-09-20T14:30:00Z
+- Type: clarified
+- Cited:
+  - [Human Travel Network — Handoff](human-travel-network.handoff.md) - Relation: Evidence: Q1 is the owner ruling this session recorded.
+  - [Which Plane Carries Which Flow](../form-and-land/which-plane-carries-which-flow.md) - Relation: Evidence: aerial height is a recommended minimum, not a statute.
+- Propagates to:
+  - form-and-land/which-plane-carries-which-flow.md: Done — plane law already left height to developers; this page now leaves the mode mix to the settlement.
+  - water-and-matter/water-bodies-as-common-infrastructure.md: Done — shaft now declares the boat-channel need toward the waterways record.
+- Contributors:
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Grok](../../../CONTRIBUTORS.md#grok) (Grok 4.6 via Cursor) — recorded
+  - [Claude](../../../CONTRIBUTORS.md#claude) (Opus-5 via Cursor) — critiqued (round 1)
+
+#### What changed
+- Handoff Q1 graduated into the Abstract and the collision's boarding paragraph: 6 m versus 9 m in the recovered records is not a protocol statute. Each town or village chooses its movement mix (including low-speed vehicles on rails or asphalt on a bridge, or inverted magnetic rail with a pedestrian-only bridge). Transfer-time and capacity figures belong to the mix that settlement chose; they are not a sample height the protocol must lock. Q1 left the handoff. Q2 reframed as capacity arithmetic for a chosen mix, not for a frozen height.
+- Shaft prereq labelled "boat-navigation channels between the 100 blocks" no longer points at the block datacenter; it points at the waterways record. Related documents now list that water-bodies record. Handoff records the underside-versus-roof pedestrian collision with the which-plane deck.
+
+#### Deliberation
+- Owner (2026-09-20): really depends on the town. One settlement may use a traditional structure with vehicles on rails or even on asphalt on a bridge (dedicated go-and-return, no parking, low speed, low cost). Another may use inverted magnetic rail so bridges are narrower and pedestrian-only, and those vehicle lines need not be autonomous.

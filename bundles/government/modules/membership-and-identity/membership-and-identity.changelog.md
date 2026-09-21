@@ -55,3 +55,28 @@ No approach text was added or amended on this page by the recovery pass; the ses
 #### Deliberation
 - The recovered constitution's ranking tiers were weighed against [A self-sovereign citizen identity with…](membership-and-identity.md#a-self-sovereign-citizen-identity-with-no-disciplinary-ranking-sovereign-digital-identity)'s no-ranking doctrine, both texts cited above. This is not a transfer loss but a source contradiction, and the audit's own convention forbids resolving it silently: the demotion clause is the strongest turnout engine in the source set (it makes the 50-percent-of-residents quanta bite), and [A self-sovereign citizen identity with…](membership-and-identity.md#a-self-sovereign-citizen-identity-with-no-disciplinary-ranking-sovereign-digital-identity)'s zero-file metric condemns exactly that mechanism (an activity-derived grade on every citizen, readable by the platform at every service gate — the disciplinary ranking the record names). The owner's later anti-ranking position is what the corpus currently carries, so the default answer (keep [A self-sovereign citizen identity with…](membership-and-identity.md#a-self-sovereign-citizen-identity-with-no-disciplinary-ranking-sovereign-digital-identity), treat the tier clause as superseded) is recorded as the first option in handoff Q5 without being adopted as a decision; the restoration answer is recorded with equal weight. The choice propagates: a restored demotion tier would amend [A self-sovereign citizen identity with…](membership-and-identity.md#a-self-sovereign-citizen-identity-with-no-disciplinary-ranking-sovereign-digital-identity), re-open the decision-page quanta as enforced attendance, and collide with the attestation-versus-accuracy questions already on this page's handoff (Q4); a kept no-ranking doctrine leaves the source clause dead-letter and answered. No verdict; the owner rules in the governance folder's decision session.
 
+
+---
+
+### Shared-rank rule recorded
+- Time: 2026-09-20T10:37:24Z
+- Type: clarified
+- Cited:
+  - [Membership and Identity — Handoff](membership-and-identity.handoff.md) - Relation: Evidence: Q1 is the owner ruling this session recorded.
+- Propagates to:
+  - governance/decision-and-deliberation-process.md: Done — consume note recorded; that page's Q3 still asks whether the accuracy ledger is the shared rank.
+  - governance/resident-matching-and-mobility.md: Done — consume note recorded; that page's Q2 still asks named applications versus aggregate shares.
+- Contributors:
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Grok](../../../CONTRIBUTORS.md#grok) (Grok 4.6 via Cursor) — recorded; transferred the round-1 governance critique
+
+#### What changed
+- Handoff Q1 graduated into the Abstract, the collision's ranking paragraph, and the identity record's Metrics: ranking is built in every organisation; the defect is an unshared rank. Every rank must be shared with the person's resident government and with governments related to that organisation. This is not "center only" and not "ranking forbidden everywhere". The former zero-file metric survives as a ban on a private file the home government cannot read. Q1 left the handoff.
+- Q4 and Q5 graduated: the set of ranks is open — accuracy ledgers, skill-quota matching, abstention-demotion, and any later metric are shareable ranks, not a closed list. Those items left the handoff.
+- Q2 graduated: member organisations do not start from zero; they are a behavioral fork of the governing organisation's stack unless they insist on rewriting it and then must answer the contradictions. Q4 graduated: the first governing organisation begins as choices by one or several people among already-existing material; a later organisation may fork (for example a Persia society using Geniuses.Group development), change, and attract citizens with a proposal of base laws. Collision restated. Q2 and Q4 left the handoff. Q3 (intelligence / synthetic mind) stays open with the owner's note that AI status was unclear when the clause was written and person-centric legislation may be the wrong grain.
+- Identity syn that pointed at slab-pouring "(preserved as migrated)" is now `legacy-ref (unresolved)` — same provenance class as law-form Q4; no named true target. Handoff records the four ranking consumers still to propagate.
+
+#### Deliberation
+- Owner (2026-09-20): ranks are made inside each organisation and must be shared with the person's home government and related governments.
+- Owner (2026-09-20, later): every rank is shareable; the set is not closed; later metrics may appear.
+- Owner (2026-09-20, later): member organisations are a behavioral fork of the government organisation; rewriting org-scale software is unreasonable unless they insist and then must answer contradictions. Keep the intelligence / synthetic-mind question open; add current information; do not close it with today's options. The first governing organisation begins as choices by one or several people among already-existing material (the Memar and Organisation repositories already selected among past options without inventing a new concept). A later government may fork, change, and propose base laws to attract citizens.

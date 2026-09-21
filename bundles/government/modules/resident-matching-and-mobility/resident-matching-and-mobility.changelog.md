@@ -55,3 +55,19 @@ The transfer audit found a lost owner idea for this requirement in the Yalda and
 #### Deliberation
 - Placement of the hotel-abolition idea was weighed between this page and the two complex-proposal pages: the source clause is about who counts as a resident and what stay length means (the binding question of this requirement), not about floor stock or the capsule cell — the physical instrument went to the dwelling page, the status doctrine here, cross-linked both ways.
 
+
+---
+
+### Shared-rank consume note and Dunbar owner
+- Time: 2026-09-20T16:45:00Z
+- Type: clarified
+- Cited:
+  - [Resident Matching and Mobility — Handoff](resident-matching-and-mobility.handoff.md) - Relation: Evidence: Q2 stays; membership now names skill-quota as a shareable rank.
+  - [Membership and Identity Changelog](membership-and-identity.changelog.md) - Relation: Evidence: that page's 2026-09-20 Pending propagate to this ledger.
+- Contributors:
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — decided (shared-rank rule)
+  - [Grok](../../../CONTRIBUTORS.md#grok) (Grok 4.6 via Cursor) — recorded
+
+#### What changed
+- Handoff no longer cites buildings/placement-and-routing-of-service-flows.md as the Dunbar-grain owner; that was a dead link. The 500-person module is carried by settlement-grain-and-scaling.md.
+- Handoff records that membership now treats skill-quota matching as a permitted shared rank. Q2 remains whether the census runs on named applications or on aggregate module shares.

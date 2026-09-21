@@ -51,3 +51,18 @@ The following analytical fields are reviewer-authored (Omid Hekayati has not yet
 
 #### Deliberation
 - The first pass stated that the co-working allocation "is cut from the same 20 per resident — gym, ballroom and office all bill one floor budget"; the second pass countered that no recorded text contains the containment — it is one of two possible rulings, and the requirement page should present the decision rather than pre-settle it, per the owner rule that a requirement never favors an answer. What tipped the presentation was the asymmetry the two answers expose: under containment the approaches' success metrics move against each other, which is exactly the conflict the document exists to surface. Separately, the first pass's hypothesis that the wind-corridor fields were a migration artifact was overturned by direct verification of the legacy record, whose own risk and anchor fields carry the misfiled text; nothing in the body changed because of it, since the same preservation conclusion follows either way — only the repair's address moved upstream.
+
+---
+
+### Round-1 density-pass classifications recorded
+- Time: 2026-09-20T16:45:00Z
+- Type: clarified, reviewed
+- Cited:
+  - [Service Placement Scale — Handoff](service-placement-scale.handoff.md) - Relation: Evidence: Q1–Q5 stay owner/evidence questions; the 2026-09-20 density pass classified them.
+- Contributors:
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested (persist round-1 critiques)
+  - [ChatGPT](../../../CONTRIBUTORS.md#chatgpt) (GPT-5.6-terra via Cursor) — critiqued (round 1)
+  - [Grok](../../../CONTRIBUTORS.md#grok) (Grok 4.6 via Cursor) — recorded
+
+#### What changed
+- Handoff Q1–Q5 now carry the density-pass classifications: Q1 recorded candidate is hybrid (basic per-building, specialized per-cluster) with 100% utilization as peak-capacity matching not uptime — not a ruling. Q2 cluster charter remains owner (vote, shortfall, exit). Q3 class INSUFFICIENT-EVIDENCE (no record hosts job-pool evidence). Q4 class PROVENANCE-DEFECT in the owner's legacy source; upstream DOCX is not in this repository. Q5 notes that co-living's communal 20 m² is not proven the same ledger as the mandated 20 m². No owner question closed.

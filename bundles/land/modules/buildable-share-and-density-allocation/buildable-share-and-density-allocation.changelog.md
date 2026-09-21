@@ -62,3 +62,28 @@ The following analytical fields are reviewer-authored (Omid Hekayati has not yet
 
 #### What changed
 The transfer audit found one lost owner idea touching this requirement, recovered from «یک قانون برای توسعه زمین‌ها» and National_Constitution.odt: the enforcement doctrine for the 20% cap that never reached the sheet — «نظارت پسینی نه پیشینی» (ex-post supervision, not ex-ante), with the sanction «تعلیق یا عدم پذیرش سازمانی که در قلمروی جغرافیایی مورد ادعای خود، حداکثر سطح اشغال را رعایت نکرده باشد» and the monthly satellite re-check of claimed territory. Added as a new approach, "Ex-post recognition enforcement: suspension or non-recognition of any organization that fails the coverage cap inside its own claimed territory (Ex-Post Recognition Enforcement)" — id (new; lowest free owner id, claimed this session). The Abstract's answer count and enumeration were extended to name it; no existing text was removed or softened. In the new record the Mechanism, Metrics, Prerequisites, Conventional-model flaw and Tags carry the owner's claims (translated, with the Persian sanctions clause and the slogan quoted in the original); Fit & substrate, Cognitive anchor, Narrative hook and the wording of the collision-neutral placement are reviewer-authored and unconfirmed.
+
+---
+
+### Membership-gated coverage recorded
+- Time: 2026-09-20T10:37:24Z
+- Type: clarified
+- Cited:
+  - [Buildable Share and Density Allocation — Handoff](buildable-share-and-density-allocation.handoff.md) - Relation: Evidence: Q5 is the owner ruling this session recorded.
+- Contributors:
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Grok](../../../CONTRIBUTORS.md#grok) (Grok 4.6 via Cursor) — recorded
+  - [ChatGPT](../../../CONTRIBUTORS.md#chatgpt) (GPT-5.6-terra via Cursor) — critiqued (round 1)
+
+#### What changed
+- Handoff Q5 graduated into the cap's Mechanism and Fit: the 20% cap binds organisations that join the society's governing organisation, and joining requires the intended built structure already in place. Existing micro-plot fabric is not annexed as-is. Fit's Dual—transitional tag names that joining condition.
+- Handoff Q1 graduated into the quota Mechanism, Abstract, and collision: the quota counts the whole site as open (ground under buildings included), so 1 hectare holds 400 people (10,000 / 25), not 320 from the uncovered 80%. Open space is not a tree-planting mandate. The 20% cap independently limits footprint and is a ceiling on a developed, joined site, not a fill-quota for the planet. Collision arithmetic restated: 5 ha → 2,000 residents; a 50,000-person sample needs 125 ha, not 150. Q1 and Q5 left the handoff.
+- Q2 graduated as two decisions: the general 80% is use-neutral open space; the orchard record is a separate irrigated-canopy bargain.
+- Q8 graduated: the third phrase is duty and liability of the building's owning organisation (the governing organisation provides no effluent service); not a numeric peak-load lock and not a captive-sale mandate. Release Mechanism restated. Q2 and Q8 left the handoff.
+- Q3 graduated: joined-settlement open ground is wall-less and commons-like for movement; entering a building still requires identity; approach may be monitored and organisation rules apply. Q4 graduated: 20% is a Geniuses.Group proposal, amendable like other laws, not an unalterable constitution-tree clause; "constitution" is a category label; the useful constraint is that a new law must not contradict an existing one. Q6 graduated: permanent residence is not a few days and is not a dwelling-size test; borderline abuse is for enforcement, fairness and ethics. Cap and quota Mechanisms restated. Q3, Q4 and Q6 left the handoff. Q7 (document voice) remains — owner found both framings unclear; separately said a document that decides occupancy should explain the related topics and the why of 20%. Attributed reviewer option from the density pass is now on that question (requirement page favors no answer; keep comparative as attributed claims); not a ruling.
+
+#### Deliberation
+- Owner (2026-09-20): a fine-grained building that wants membership brings its defects with it unless it is rebuilt to the intended structure and registered. Asked why 400 rather than 320; then confirmed whole-site counting because the ground floor under buildings is itself open — 1 hectare = 400 people, and the two locks bind different quantities.
+- Owner (2026-09-20, later): 80% open is not a duty to plant trees; climates differ; no site may exceed 20% structural occupancy; 20% must not be read as occupying a fifth of all land. Self-sufficiency is to be written, but not as a captive sale to residents; the owning organisation provides services and carries liability; the governing organisation does not.
+- Owner (2026-09-20, later): open ground of a joined settlement is wall-less and commons-like; no building entry without identity; approach may be monitored. 20% is a proposal for changing thinking, not unalterable; another government might choose other numbers; constitution is only a categorizing label; new law must not contradict existing law. Permanent is not a few days and not a dwelling-size test; do not be strict — enforcement, fairness and ethics cover abuse.
+- Owner (2026-09-20, later): the document-voice question stayed unclear (including the phrase used for the orchard instrument). Separately: when a document decides occupancy it should explain the related topics and the why of 20%.

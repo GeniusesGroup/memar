@@ -53,3 +53,19 @@ The following analytical fields are reviewer-authored (Omid Hekayati has not yet
 
 #### Deliberation
 - The first pass held that the deck record and the crust "are one act stated twice" and that the curtain "touches no soil"; the second pass countered both — one plaza has one floor, and both the paving clause and the crust claim it, while the curtain's captured dust must land somewhere — and the deposition coupling (curtain output as crust feedstock or lattice silt) is the general concern the first pass's surface-disjointness framing had concealed. What tipped the balance was routing every claim through one physical surface: once deck, lattice, crust and curtain output are read on the same square meter, the allocation cannot be presented as free coexistence, so the harmony sentence was narrowed and two owner decisions (Q5, Q6) named instead.
+
+---
+
+### Guideway underside versus deck roof recorded
+- Time: 2026-09-20T16:45:00Z
+- Type: clarified
+- Cited:
+  - [Ground Surface Treatment — Handoff](ground-surface-treatment.handoff.md) - Relation: Evidence: the underside pedestrian domain is this page's recovered prereq.
+  - [Safe pedestrian deck on the roofs of the PRT guideways (Elevated Guideway Pedestrian Deck)](which-plane-carries-which-flow.md#safe-pedestrian-deck-on-the-roofs-of-the-prt-guideways-elevated-guideway-pedestrian-deck) - Relation: Evidence: recovered Mechanism puts the walk on the roof.
+- Contributors:
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested (persist round-1 critiques)
+  - [Claude](../../../CONTRIBUTORS.md#claude) (Opus-5 via Cursor) — critiqued (round 1)
+  - [Grok](../../../CONTRIBUTORS.md#grok) (Grok 4.6 via Cursor) — recorded
+
+#### What changed
+- Handoff records the leftover plane/grain-pass collision: this page's soil-protection prereq puts pedestrians on the guideway underside; the which-plane deck record puts them on the roof. Neither recovered Mechanism was rewritten.

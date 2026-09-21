@@ -57,3 +57,17 @@ Old-numbering references that predate the requirements migration could not be ma
 - (Qwen) The reviewer-authored Hyrcanian anchor was challenged for silent premise-import — Caspian-rainforest succession is offered as the memory of the mechanism, but its rainfall does not travel to a site whose own records describe desert beyond the perimeter — and the anchor's implication was bounded in the body and handoff rather than the anchor text rewritten.
 - (Qwen) Pass-1's self-critique ("the two records may be closer than the binary allows") was partially counter-argued: whatever the "semi-natural" hedge does to the gardening concept, the water conflict is quantitative and survives the hedge, so the binary staging is not merely reviewer sharpening; the self-critique stands in the handoff, but the collision section now names a disagreement the records cannot both answer.
 
+
+---
+
+### School-walk hook retargeted off origin-destination soil
+- Time: 2026-09-20T11:02:42Z
+- Type: Fixed
+- Cited:
+  - [Which Plane Carries Which Flow](which-plane-carries-which-flow.md) - Relation: Depends_on: the ground-plane ruling (origin-destination aloft; 0 m recreation and wildlife) is what this hook now obeys.
+- Contributors:
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Grok](../../../CONTRIBUTORS.md#grok) (Grok 4.6 via Cursor) — rewrote
+
+#### What changed
+- The tame-animal forest record's narrative hook no longer treats the walk to school as a ground-plane path. The 100-hectare courtyard remains play and wildlife; origin-destination travel between buildings does not travel on soil.

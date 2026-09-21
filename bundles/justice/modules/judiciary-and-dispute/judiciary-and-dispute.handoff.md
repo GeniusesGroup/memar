@@ -11,11 +11,14 @@ Companion of `judiciary-and-dispute.md`.
 ## Decisions
 - (none; no verdict recorded.)
 
+## Ambiguities Resolved
+- Neighbourhood-council syn labelled "the 500-person Dunbar number" pointed at slab-clearing. Re-pointed to [Fractal scalability from a single 500-person block to a 1-million megapolis (Fractal Scalability & Elastic Aggregation)](../form-and-land/settlement-grain-and-scaling.md#fractal-scalability-from-a-single-500-person-block-to-a-1-million-megapolis-fractal-scalability--elastic-aggregation). Fit parenthetical that said the idea was "carried by Placement and Routing of Service Flows" now names Settlement Grain and Scaling. Related documents follow that syn.
+
 ## Extensions / anticipated work
 - A mixed-case rule (commercial + commons + constitutional overlay on one quarrel) — if the owner lands Q1 on the ladder, this rule is its first clause; draftable as a shared section with economy/payment-rails-and-service-charging.md, since the escrow mechanics live there.
 - The 50-senior-judge quorum recurs verbatim in governance/decision-and-deliberation-process.md (party-bill constitutionality review): if either record's bench design is revised, propagate; treat as one instrument cited twice, not two instruments.
 - The commitment-token enforcement of [Neighbourhood-level decentralized arbitration protocol based on collective wisdom](judiciary-and-dispute.md#neighbourhood-level-decentralized-arbitration-protocol-based-on-collective-wisdom) depends on the society value token carried by economy/payment-rails-and-service-charging.md; that dependency is declared in the syn line — if the token's design changes, that guarantee is the first casualty to re-examine.
-- The 500-person block is an idea referenced from other records (Dunbar grain), never a premise of this page; if the module's size is revisited anywhere, the elders' council's electorate changes with it — track, do not assume.
+- The 500-person block is an idea referenced from settlement-grain-and-scaling.md, never a premise of this page; if the module's size is revisited there, the elders' council's electorate changes with it — track, do not assume.
 - C1. Review-round note (recovery audit, 2026-09-14): the Motivation's "The three answers were authored..." predates [Proportional fault: every harm to…](judiciary-and-dispute.md#proportional-fault-every-harm-to-a-natural-person-is-apportioned-by-fault-shares-and-claimant-organizations-carry-10-to-40-percent-with-their-named-members-proportional-fault) per the entry — critique whether proportional fault is a fourth venue's share of the same adjudication question or a liability doctrine that rides beneath all three venues, and fold the framing.
 
 ## Assumptions
@@ -28,4 +31,4 @@ Companion of `judiciary-and-dispute.md`.
 1. Owner: answer Q1 (ladder or rivals) — every other question on this page is an implementation of one of its two answers.
 2. Owner: rule Q3 for the platform record while its verdict is open, so the Fit caution and the Mechanism absolutism stop traveling together.
 3. Delegate: draft the precedence and restitution clause Q2 requires, for both readings of Q1, so the ruling can adopt one without writing new law.
-4. Owner: schedule the inbound-link fixups listed in the document's changelog Propagates-to entries (economy/permitted-intermediation.md, economy/payment-rails-and-service-charging.md still point at this page's pre-upgrade Persian headings).
+4. Process residue (not an Open Question): changelog Propagates-to already says inbound heading links were Done (2026-09-15). The leftover "Owner: schedule inbound-link fixups" next-step is stale; a dedicated heading-fix pass can still audit economy/permitted-intermediation.md and economy/payment-rails-and-service-charging.md if any Persian heading remains.

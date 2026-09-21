@@ -52,3 +52,19 @@ The transfer audit found two lost items for this requirement. Extended in place:
 
 #### Considered and not done
 - Compulsory voting with a demotion penalty for abstaining from law votes (National_Constitution.odt: «عدم شرکت اعضا در رای گیری قوانین جامعه باعث کاهش رتبه اجتماعی و مالی فرد می شود») — considered as a turnout instrument for this page's quanta and not added here: the penalty presumes the social-and-financial ranking tiers the membership requirement answers with [A self-sovereign citizen identity with…](membership-and-identity.md#a-self-sovereign-citizen-identity-with-no-disciplinary-ranking-sovereign-digital-identity)'s opposite doctrine, so the clause is recorded in governance/membership-and-identity.md's handoff as an open owner question rather than as text of this page.
+
+---
+
+### Shared-rank consume note on accuracy ranking
+- Time: 2026-09-20T16:45:00Z
+- Type: clarified
+- Cited:
+  - [Decision and Deliberation Process — Handoff](decision-and-deliberation-process.handoff.md) - Relation: Evidence: Q3 stays; membership now names accuracy ranking as a shareable rank.
+  - [Membership and Identity Changelog](membership-and-identity.changelog.md) - Relation: Evidence: that page's 2026-09-20 Pending propagate to this ledger.
+- Contributors:
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — decided (shared-rank rule)
+  - [Grok](../../../CONTRIBUTORS.md#grok) (Grok 4.6 via Cursor) — recorded
+
+#### What changed
+- Handoff records that membership now treats accuracy ranking and abstention-demotion as shareable ranks. Q3 remains whether this page's prediction-accuracy ledger is that rank or a different behavioral score.
+- Stale "schedule inbound-link fixups" next-step reclassified as process residue: changelog Propagates-to already said Done (2026-09-15).

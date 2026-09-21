@@ -26,4 +26,4 @@ Companion of `education-path.md`.
 1. Owner: answer Q1 (containment or succession) — it is the page's one question with two answers.
 2. Owner or delegate: draft the Q2 transfer clause at settlement scale for the owner's ruling alongside the service-placement record.
 3. Owner: settle Q3 (selection device) with the labor-market record the campus synergy cites, before the campus metrics are auditable.
-4. Owner: schedule the inbound-link fixups listed in the document's changelog Propagates-to entries (economy/reward-cooperation-thrift.md, economy/land-housing-tenure.md, living-and-culture/recreation-and-culture-venues.md still point at this page's pre-upgrade Persian headings).
+4. Process residue (not an Open Question): changelog Propagates-to already says inbound heading links were Done (2026-09-15). The leftover "schedule inbound-link fixups" next-step is stale; a dedicated heading-fix pass can still audit economy/reward-cooperation-thrift.md, economy/land-housing-tenure.md, and living-and-culture/recreation-and-culture-venues.md if any Persian heading remains.

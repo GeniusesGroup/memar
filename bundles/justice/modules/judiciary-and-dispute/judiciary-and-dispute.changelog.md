@@ -50,3 +50,20 @@ The transfer audit found constitutional clauses of this requirement that never r
 
 #### Considered and not done
 - None recovered as rejected for this page in the transfer audit; the Constitution draft's 5-percent flat goods-and-services tax (the funding answer for the same government this suite sanctions) is recorded in economy/payment-rails-and-service-charging.md's changelog, where it collides with the no-blind-levies rule.
+
+---
+
+### Dunbar syn retargeted to grain
+- Time: 2026-09-20T16:45:00Z
+- Type: Fixed, clarified
+- Cited:
+  - [Judiciary and Dispute Resolution — Handoff](judiciary-and-dispute.handoff.md) - Relation: Evidence: the dead Dunbar-to-slab syn was queued as a leftover of the 2026-09-20 plane/grain pass.
+  - [Fractal scalability from a single 500-person block to a 1-million megapolis (Fractal Scalability & Elastic Aggregation)](../form-and-land/settlement-grain-and-scaling.md#fractal-scalability-from-a-single-500-person-block-to-a-1-million-megapolis-fractal-scalability--elastic-aggregation) - Relation: Evidence: the labelled owner of the 500-person cohort.
+- Contributors:
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested (persist round-1 critiques)
+  - [Claude](../../../CONTRIBUTORS.md#claude) (Opus-5 via Cursor) — critiqued (round 1)
+  - [Grok](../../../CONTRIBUTORS.md#grok) (Grok 4.6 via Cursor) — recorded
+
+#### What changed
+- Neighbourhood-council syn labelled "the 500-person Dunbar number" no longer points at slab-clearing. It points at the grain page's fractal 500-person cohort. Fit no longer says Placement and Routing of Service Flows carries that idea. Related documents follow.
+- Stale "schedule inbound-link fixups" next-step reclassified as process residue: changelog Propagates-to already said Done (2026-09-15). Same class also on education-path, continuous-health-watch, and data-storage-and-processing handoffs.

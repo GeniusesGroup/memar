@@ -27,4 +27,4 @@ Companion of `continuous-health-watch.md`.
 1. Owner: answer Q1 (one program or three) — it is the page's one question with two answers.
 2. Owner: rule Q3 (centre incentive structure) with the wellness record open; the endpoints' platform dependency waits on it.
 3. Owner: settle Q4 jointly with the membership-and-identity verdict — the lifestyle clause needs its health-data boundary stated once.
-4. Owner: schedule the inbound-link fixups listed in the document's changelog Propagates-to entries (six documents still point at this page's pre-upgrade Persian headings).
+4. Process residue (not an Open Question): changelog Propagates-to already says inbound heading links were Done (2026-09-15). The leftover "schedule inbound-link fixups" next-step is stale; a dedicated heading-fix pass can still audit the six named inbound documents if any Persian heading remains.

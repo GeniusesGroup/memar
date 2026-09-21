@@ -34,3 +34,19 @@ The following analytical fields are reviewer-authored (Omid Hekayati has not yet
 - "Ecological soil monitoring and self-repair system after the decayed fabric is drained": Fit & substrate
 
 The deflation engine and the 20/80 rule are rendered as linked ideas of this and other documents (markdown links in Prerequisites, Syn and the collision section), never as premises. Links into `land-housing-tenure.md` were rewritten to that document's new English anchors in the same pass. No unresolved legacy references remain in this document's body.
+
+---
+
+### Grain cap no longer voids the magnet
+- Time: 2026-09-20T16:45:00Z
+- Type: clarified
+- Cited:
+  - [Bubble Drain and Fabric Renewal — Handoff](bubble-drain-and-renewal.handoff.md) - Relation: Evidence: the 50-thousand cell cap was never structural grain law.
+  - [Settlement Grain and Scaling Changelog](../form-and-land/settlement-grain-and-scaling.changelog.md) - Relation: Evidence: that page's 2026-09-20 propagate named this conflict.
+- Contributors:
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — decided (grain: no structural 50-thousand cap)
+  - [Claude](../../../CONTRIBUTORS.md#claude) (Opus-5 via Cursor) — critiqued (round 1)
+  - [Grok](../../../CONTRIBUTORS.md#grok) (Grok 4.6 via Cursor) — recorded
+
+#### What changed
+- Handoff records that a hard 50-thousand cell cap would have voided this engine's 500k–1M orchard magnet; grain now treats 50 thousand as a commercial-plan number, so that supposed conflict is gone. Q1 merge of the two engines stays open.

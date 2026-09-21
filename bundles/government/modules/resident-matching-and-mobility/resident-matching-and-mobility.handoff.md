@@ -14,7 +14,8 @@ Companion of `resident-matching-and-mobility.md`.
 ## Extensions / anticipated work
 - The reward question Q1 leaves open — would vital-skilled citizens consent, unrewarded, to quota-directed moves — invites a fee-for-mobility instrument; if drafted, it belongs with economy/payment-rails-and-service-charging.md, not here (the network/consumer dependency rule).
 - Cross-link the churn ceiling (Q3) with the wellness and education records this page already cites: both assume stable 500–2000 populations for their station and campus metrics; if fluidity churns faster than they assumed, their numbers move.
-- The 500-person module is an idea carried by other documents (Dunbar grain in buildings/placement-and-routing-of-service-flows.md), referenced here as the records referenced it — if the module's size is revised upstream, both answers on this page recompute.
+- The 500-person module is an idea carried by settlement-grain-and-scaling.md, referenced here as the records referenced it — if the module's size is revised there, both answers on this page recompute. Do not cite buildings/placement-and-routing-of-service-flows.md for Dunbar grain; that was a dead link.
+- Round-1 review (2026-09-20): membership now treats skill-quota matching as a permitted shared rank. Q2 remains whether the census is run on named applications or on aggregate module shares — the shared-rank rule does not by itself choose that metering.
 - C1. Review-round note (recovery audit, 2026-09-14): the hotel-abolition doctrine was housed here as a status rule and its physical instrument sent to the dwelling page (changelog Deliberation) — critique whether "no hotel, one continuum of stays" answers this page's binding/mobility question or is a service-placement/demand question (its [Medical tourism and long-stay care…](../living-and-culture/continuous-health-watch.md#medical-tourism-and-long-stay-care-as-the-hospitals-designed-demand-imported-recovery) consumer reads it as designed demand), and whether the two-page split of one clause is the right seam.
 
 ## Assumptions
@@ -25,6 +26,6 @@ Companion of `resident-matching-and-mobility.md`.
 
 ## Proposed Next Steps
 1. Owner: answer Q1 (constraint or target) — it is the page's one question with two answers.
-2. Owner: settle Q2 jointly with the membership page's no-ranking ruling; the skill census cannot be designed before that wall is placed.
+2. Owner: settle Q2 jointly with the membership page's shared-rank ruling; the skill census cannot be designed before that wall is placed.
 3. Delegate: collect the churn arithmetic (Q3): mean residence term implied by the under-2-hour premise and the records this page cites; report as a table for the owner.
 4. Owner: confirm the Q4 re-links so the two legacy-refs can be resolved or closed with reasons in the cleanup gate.
