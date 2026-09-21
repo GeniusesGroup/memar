@@ -1,0 +1,29 @@
+# Recreation and Culture Venues — Handoff
+
+Companion of `recreation-and-culture-venues.md`.
+
+## Open Questions
+1. **Owner ruling on carried-over fields (three records).** [Agritourism and eco-discovery on the controlled farm (Greenhouse Agritourism)](recreation-and-culture-venues.md#agritourism-and-eco-discovery-on-the-controlled-farm-greenhouse-agritourism)'s Fit speaks of sensors and source-level waste separation, and its anchor of Zurich's smart bins — properties of a waste-instrument record, not of tourism; [Multi-sport village and specialized and water sports zones (Central Multi-Sport Complex)](recreation-and-culture-venues.md#multi-sport-village-and-specialized-and-water-sports-zones-central-multi-sport-complex)'s Fit and anchor speak of paper deeds, notary offices and Estonia's digital registry. The fields were preserved verbatim (translated) and new hooks were authored from the mechanisms alone. Do the carried-over fields stay (and the venues are judged on them), or is their provenance confirmed as a migration accident so that Fit and anchor can be re-derived? *(Why: three of five records currently cannot be adjudicated on their own analytical fields; the same defect pattern is open in land-housing-tenure's endowment record. Blocking: yes for any verdict on the two affected venues.)*
+2. **Land and carbon: who meters the five venues against the coverage bargain?** The sports village claims outdoor provision "several times the country's urban standards"; the park claims centralized allocation; the hall claims a 50,000-person economic scale — all open ground in the 20/80 and settlement-grain ledgers, which are ideas of the form-and-land records, linked, never assumed. Does this document owe a land-budget metric (hectares of leisure per resident) to be checked against the 25-square-meter open-space quota's host record, or is the leisure program explicitly exempt from coverage arithmetic? *(Why: without a meter, every venue here is a claim on the cap another document owns. Blocking: no for the venues individually; yes for the folder set's land arithmetic.)*
+3. **Which meter judges the dome — watts, trips, or coverage?** The holo-dome's three metrics are 40-percent travel reduction, under 300 watts per hour, and "full coverage of holiday leisure time"; the park's are thousands per day and 100-percent weekend coverage. The two 100-percent/full-coverage claims cannot both hold on the same Saturday. Which venue is the weekend's default, and does the dome count its success as substitution (trips avoided) or addition (hours served)? *(Why: the collision section shows the two instruments price opposite behaviors; the answer routes to whoever owns the calendar — no record in this folder does. Blocking: yes for the dome's metrics.)*
+4. **The farm pays, the rest spend — is the venue portfolio fiscally coherent?** Agritourism's 15-to-25-percent gross income is the document's only revenue; the hall, park and village are budget lines under the fee-for-service regime (an idea of the payment-rails records, linked). Are the venues funded by their ticketing and the services fee — the record's own sports-provision and coverage metrics imply demand — or by the exergic fund's capital lines (a monetary-folder idea)? *(Why: the only funded venue is the one that sells itself; the rest have no revenue clause. Blocking: yes for any implementation order across the five records.)*
+5. **Reviewer critique — attendance and "hundreds of thousands" figures are unverified.** The agritourism metric ("hundreds of thousands of tourists and researchers annually"), the park's "thousands per day" and the sports village's "under 7 minutes from the farthest point" have no baseline or instrument in this document (the 7-minute figure is checkable against the PRT record's network claims — an idea of another document). *(Why: numeric self-check passed — every source number survives — but survival is not verification; the cleanup gate should confirm none of these were invented by the record store's own drafting. Blocking: no.)*
+
+## Decisions
+- (none; no verdict recorded.)
+
+## Extensions / anticipated work
+- If Q2 lands on a land-budget metric, host it in this document and cross-link both form-and-land records; the network/consumer doctrine (open ground is the network's rule, leisure declares its need) fixes the direction: the venue records declare, the coverage records decide.
+- The sports village and the dome both reference the artificial lake and the service floors; a venue-calendar extension (shared booking across hall, park, village, dome) is a plausible single record if the owner wants one.
+- The performing-arts hub's "native art" clause invites a culture-programming record this folder set does not yet have; flagging rather than inventing it.
+
+## Assumptions
+- Freed working hours are large enough to overflow all five venues — the shared premise of the park, dome and hall mechanism texts; it belongs to the labor and automation records and is treated as an idea, never a premise (stability: Weak).
+- The artificial lake, the Atna farm, the solar updraft chimney and the PRT network exist as recorded elsewhere; all four are prerequisites here and under audit there (stability: Weak).
+- "Country's urban standards" for sports provision is an external benchmark whose numeric content no record here states (stability: Unexamined).
+
+## Proposed Next Steps
+1. Owner: dispose of Q1 (carried-over fields on three records) — it is the cleanup-gate defect this pass was tasked to surface.
+2. Owner: answer Q3 (dome as substitute or addition) jointly with the park record's calendar.
+3. Delegatable: check the 7-minute access claim against the movement folder's PRT network record and report here.
+4. Delegatable: source the "hundreds of thousands" and "thousands per day" figures in the migration record store before it is frozen, to distinguish owner-asserted targets from drafting artifacts.
