@@ -1,0 +1,1 @@
+in-fabric-thermal-buffer.md
