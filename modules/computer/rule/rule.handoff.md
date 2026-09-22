@@ -22,6 +22,7 @@ Rationale: fee as a second destination was rejected — it breaks one-source/one
 - **Fee is a policy, not a baked-in transaction.** Three shapes were examined: (1) fee as its own Transaction, (2) an extra destination inside the same Transaction, (3) a Rule/Process that conditionally generates a second Transaction per policy — fee-on-attempt / fee-on-success / fee-on-failure / after-authorization / after-settlement. Option (3) preferred because it does not jam the fee into the Transaction concept. *(decided)*
 - **Modules like Discount are event-attached:** something must emit the event and the module listens; no new Event data model is needed — a Type declares itself an EventTarget and uses the existing request/response models. *(decided)*
 - **Core never knows Rule** (placement criterion, owned here as a Rule-domain consumer rule): Core domains do not reference the rule domain directly; generic edges (e.g. `(transaction)-[:condition_is]->(rule)`) connect subjects to rule nodes, and the rules-engine decides semantics. *(decided)*
+- **A law is typically realized as Rule nodes.** [Law](../../rights/law/law.md) is the signed instrument; this module's Rule is how it executes. They are layers. The Rule set named by a law's `computer_code` is inside that law's payload digest, so adding a Rule after voting is a new law. *(decided — owner, law-type review 2026-09-21)*
 
 ## Open Questions
 - Unresolved Memar-owned Rule representation / conflict-resolution / temporal validity questions remain in Memar — do not silently answer them here (see README).

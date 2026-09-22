@@ -1,5 +1,5 @@
 # Group
-`Group` sits under the `management` domain (persons, other groups, or even whole organizations can be members). The conceptual `Organization` vs. `Group` distinction is settled and documented in [`modules/identity/organization`](../../identity/organization/README.md#organization-vs-group-conceptual-level); this file carries only the structural questions still open after source inspection.
+`Group` sits under the `management` domain (persons, other groups, or even whole organizations can be members). The conceptual `Organization` vs. `Group` distinction is settled and documented in [`modules/identity/organization`](../../identity/organization/organization.md#organization-vs-group-conceptual-level); this file carries only the structural questions still open after source inspection.
 
 ## Decisions from Organization ideas backlog (2026-09-16)
 

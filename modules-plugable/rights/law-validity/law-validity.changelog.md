@@ -1,4 +1,4 @@
-# Law Form and Validity Changelog
+# Law Validity Changelog
 
 ## Changelog
 
@@ -66,3 +66,40 @@ SC sweep: every approach heading carries its strippable section-title handles su
 #### Deliberation
 - Owner authorised applying documentation repairs (2026-09-20). Owner also ruled that sunset is not votes-versus-laws: "information comes from the vote and attaches to the law too." The Fit/syn edits landed; the Abstract and collision carry that ruling after the owner confirmed the restatement.
 - Owner (2026-09-20, later): does not now agree with the 30-day figure; any law may remain in voting as long as the community keeps it there. A record enters voting only when complete including executable code; empty code stays draft. Constitution is a categorizing label, not a superior tree; the useful constraint is that a new law must not contradict an existing one. Civic maturity is an event (accepting the laws / joining), not a birthday. Silence is not assent.
+
+### Type stripped; page is duration only
+- Time: 2026-09-21T13:50:07Z
+- Type: clarified, Fixed
+- Cited:
+  - [Law](../../../modules/rights/law/law.md) - Relation: Depends_on: the kernel type this page must not restate
+  - [Law Changelog](../../../modules/rights/law/law.changelog.md) - Relation: Evidence: traditional article-and-note critique and the form rules (computer-code gate, constitution-as-label, non-contradiction) live there
+- Propagates to:
+  - `modules/rights/law/law.md`: Done — type is the sole home of form
+  - Inbound four-facet syn on decision-and-deliberation, government-organs, judiciary-and-dispute, narrating-the-system: Done — they cite the kernel type
+- Contributors:
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested
+  - [Grok](../../../CONTRIBUTORS.md#grok) (Grok 4.6 via Cursor) — rewrote
+
+#### What changed
+Title is Law Validity. Abstract, Motivation, and the problem statement ask only duration and substrate. The four-facet heading remains as a stub pointing at kernel [Law](../../../modules/rights/law/law.md) so inbound anchors do not break; its mechanism, metrics, and conventional-model-flaw prose are not repeated here. Collision no longer legislates the coding gate or constitution-as-label. Syn and related-docs that meant the type now point at the kernel; related-docs that meant duration stay on this page with corrected local paths.
+
+#### Deliberation
+Owner originally required the definition of law to live in Organization, not as a society requirement. The import of this page still carried that definition as a rival approach. This session applies that split now that the file lives here. The two sunset records, Deconstruction Cost, civic maturity as an event, and silence-is-not-assent stay — they are statutes about duration, written on the type.
+
+### Moved to modules-plugable/rights
+- Time: 2026-09-21T14:25:00Z
+- Type: moved
+- Cited:
+  - [Law Changelog](../../../modules/rights/law/law.changelog.md) - Relation: Evidence: owner: duration is a general organisational capability, not a government-bundle statute
+- Propagates to:
+  - inbound syn on land-housing-tenure: Done
+  - `modules/rights/law/law.md` and companions: Done
+- Contributors:
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Grok](../../../CONTRIBUTORS.md#grok) (Grok 4.6 via Cursor) — moved, retargeted links
+
+#### What changed
+`git mv bundles/government/modules/law-validity modules-plugable/rights/law-validity`. History of the folder is preserved. Relative links inside the module and inbound links were retargeted. The page remains duration and sunset, not the law type. Deconstruction Cost and civic-maturity-as-event stay as approaches on this module; they are still instance-shaped, not kernel.
+
+#### Deliberation
+Owner: placing this under a government bundle treated a reusable concept as a local opinion and diminished it. Plugable is the layer for optional capabilities many organisations need. Kernel remains the law *type*. Overlap with kernel TTL is not yet examined (law research 001).

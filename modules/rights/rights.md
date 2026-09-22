@@ -9,6 +9,7 @@ Rights covers the normative layer of organizations: law, ownership, contract, ca
 - **Rights come first; ownership/legal relations arise from rights** (Omid, confirmed in the estate session) — ownership is not the primitive that grants rights.
 
 Topics:
+- [law/law.md](law/law.md) — the law *type* (text plus companions; frozen once voting). Proposed statutes are instances; they live as modules of the bundle that enforces them ([Bundles](../../bundles/bundles.md)).
 - [normative-bootstrap.handoff.md](normative-bootstrap.handoff.md) — founding laws of an organization: the Law / Consent / Source-of-Authority question raised by bootstrapping new organization instances inside the software.
 - [rights-domain-boundaries.handoff.md](rights-domain-boundaries.handoff.md) — a **proposal awaiting review** for the internal boundary of the rights domain (Ownership / Contract / Law / Obligation / Permission? / Authority? / Liability?).
 

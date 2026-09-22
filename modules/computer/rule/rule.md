@@ -26,6 +26,7 @@ This module is the concrete home of that principle in the graph: a Rule is a nod
 ### Rationale and alternatives
 
 - Rule-as-graph-node over a hardcoded `if` or an external config file: keeps "what is governed by Rule X" answerable by graph traversal and lets organizations install/remove policies without touching Code.
+- **A law is typically realized as Rule nodes.** The instrument people sign is [Law](../../rights/law/law.md); this module is how that instrument executes. They are layers, not islands. See that type for freeze-at-voting (the Rule set is inside the law's payload digest).
 - Engine kept separate from data (interpreter vs data): this module stores Rule nodes only; evaluation is another component's job.
 
 ### Prior art
@@ -42,7 +43,6 @@ These are carried as unresolved in the Memar document; this module must not sile
 - Whether a Rule may attach to multiple independent events/triggers, or needs scope/ownership limits to prevent global-listener sprawl.
 - Idempotency and race handling when multiple Rules react to the same event (double-fire prevention, reaction ordering).
 - Authority and priority between competing Rules on the same trigger (who wins, who may override).
-- **Rule vs Law boundary** (from ../rights/rights-domain-boundaries.handoff.md — proposal awaiting review): a Law in `modules/rights/law` is a normative source determining what rights/obligations are possible, valid, forbidden, or enforceable; a Rule here is an executable conditional policy reacting to events. Where is the boundary — can a Law be realized as Rules, does a Law reference Rules, or are they disjoint layers? Related: the expert-system warning in [modules/management/../../../management/organizational-reasoning.handoff.md](../../management/organizational-reasoning.handoff.md) (diagnose first; a Rule must not hardcode a decision).
 
 ### Future possibilities
 
