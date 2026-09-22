@@ -18,4 +18,4 @@ A [state](https://en.wikipedia.org/wiki/State_(polity)) is a political entity th
 - Yugoslavia [Unique Master Citizen Number](https://en.wikipedia.org/wiki/Unique_Master_Citizen_Number)
 - Denmark [Personal identification number](https://en.wikipedia.org/wiki/Personal_identification_number_(Denmark))
 
-This folder is a **composition bundle**: the umbrella word and country-URI index live here. Identifier schema is `modules-plugable/identity/government`; scheme folders are under `modules-plugable/uri/`. Subsidy is `modules-plugable/economics/subsidy`.
+This folder is a **composition plus bundle modules**. It uses kernel types (including [`modules/rights/law`](../../modules/rights/law/law.md) and [`modules/economics`](../../modules/economics/economics.md)) and also introduces standing rules under [`modules/`](modules/) — organs, membership, civic economic policy, and other statutes that apply when this composition is in the image. Identifier schema remains `modules-plugable/identity/government`; scheme folders remain under `modules-plugable/uri/`. Subsidy remains `modules-plugable/economics/subsidy`. See [`bundles.md`](../bundles.md).

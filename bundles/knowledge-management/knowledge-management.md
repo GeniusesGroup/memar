@@ -10,7 +10,7 @@ Three layers in this repository:
 |---|---|---|
 | **Core / kernel** | `modules/` | Domains that are core-by-necessity: removing one would force fabricating or distorting another foundational concept. |
 | **Pluggable** | `modules-plugable/` | Independently modeled capabilities that attach to core (or to each other) through explicit relationships; installable/removable as a whole. |
-| **Bundle** | `bundles/` | A named composition of several modules toward a higher-level requirement (e.g. bank, leadership, knowledge-management). The umbrella word lives here; the semantics live in the real modules. |
+| **Bundle** | `bundles/` | A named composition toward a higher-level requirement. Some bundles only point at kernel and pluggable modules (this one, leadership). Some also introduce `bundles/<name>/modules/` — the base rules of that composition. See [`bundles.md`](../bundles.md). |
 
 **Knowledge management** fails core-by-necessity: Content, Text, Task, Timeline, Status, Group, and related domains already hold the graph. KM does not introduce a new foundational quantity or holding type. It also fails as a *single* pluggable module: the practice spans creation workflows, tacit↔explicit conversion, sector adoption, change management, channel import, task-centric history, and multi-GUI projections — many capabilities, not one edge+processor. Like **bank** (compose account, transaction, settlement, …) or **leadership** (compose delegate, role, group, …), KM is the upstream composition that answers "how does this organization manage knowledge?" without reifying the umbrella as a fake kernel entity.
 
