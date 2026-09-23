@@ -74,6 +74,8 @@ The type document now states its claim in an Abstract and names the article-and-
 #### Deliberation
 The earlier entry left a Pending propagation to Memar. That corpus is gone from Memar; what remained was the imported bundle module still carrying the type as an "approach". Completing the original split — type here, duration there — is this session's work, not a new model.
 
+---
+
 ### Model list removed; type critique opened; duration moved to plugable
 - Time: 2026-09-21T14:25:00Z
 - Type: Fixed, Added, moved
@@ -97,6 +99,8 @@ Owner: time and validity of a law is not a Geniuses.Group bundle opinion; many o
 
 Owner: the traditional-model changelog was not the requested critique of *this* repository's law type. That critique is research 001, not yet reviewed.
 
+---
+
 ### Bundle→plugable wholesale pass closed
 - Time: 2026-09-21T14:29:00Z
 - Type: clarified
@@ -113,6 +117,8 @@ The remaining-candidates Partial from the previous entry is closed. Only duratio
 
 #### Deliberation
 Owner: review everything transferred to bundles; move general capabilities with `git mv`. The pass found no second wholesale candidate. Splits wait for owner confirmation and live on the bundles handoff.
+
+---
 
 ### Freeze at voting; executive guarantee; Rules as realization; comment-labels; politics
 - Time: 2026-09-21T16:20:00Z
@@ -167,6 +173,8 @@ Grok: politics without a "shared binding outcome among people who disagree" qual
 - Treat Law and Rule as disjoint islands — rejected by owner.
 - Put the politics definition only inside law.md — rejected: politics is broader than law.
 
+---
+
 ### Traditional order set aside; status folders; politics left kernel
 - Time: 2026-09-22T07:10:00Z
 - Type: clarified, Added, moved
@@ -206,6 +214,8 @@ Grok: politics is not kernel. No type. The critiques of the owner's sentence are
 - Write revealed-vote into the type — not done: ideation, and it must not become ballot-weight.
 - Keep politics under `modules/management/` — rejected: the path claimed kernel without a type.
 
+---
+
 ### Catalogs leave the law type
 - Time: 2026-09-22T08:05:00Z
 - Type: clarified, moved
@@ -229,6 +239,8 @@ Owner: founding tests and contract drafts belong in a plugable module that can a
 Owner: like and dislike are the critique. A signature is the vote. The two can run in the same period. A person may delegate; the delegate's signature on each proposition is visible; the person may replace that one signature and keep the appointment for the rest.
 
 Owner: politics stays under the nearest category. The science weighs conflicting interests among agents. The host example and the road example are the definition. Governance stays a separate topic.
+
+---
 
 ### Domain statuses restored; drafts split per concept
 - Time: 2026-09-22T08:20:00Z
@@ -256,5 +268,40 @@ Owner: one founding module will overflow with drafts and laws. Each concept, suc
 
 Owner: delegation is already `modules/rights/delegate`. The open gap is the one-proposition signature while the appointment continues, against a record whose empty rule means the whole appointment was given back.
 
+---
 
+### Published reading, statutes, and what stays out of the type
+- Time: 2026-09-23T05:00:00Z
+- Type: Added, clarified
+- Cited:
+  - [Law Research 002](law.research.002.md) - Relation: Evidence: published accounts, and the placement that survived owner review
+  - [Laws](../../../modules-plugable/rights/laws/laws.md) - Relation: Evidence: basic statutes, including when a contract yields to a law
+  - [Claims](../../../modules-plugable/rights/claims/claims.md) - Relation: Evidence: optional kinds of dispute, not the case type
+  - [Supersedes](../../identity/thing/edges/supersedes/supersedes.md) - Relation: Depends_on: a record taking another's place is one relation
+  - [Human code](edges/human_code/human_code.md) - Relation: Evidence: the human-language sentence
+- Propagates to:
+  - `modules/rights/law/law.handoff.md`: Done
+  - `modules/rights/contract/contract.handoff.md`: Done — shared companions left open
+  - `modules/identity/thing/edges/supersedes/`: Done
+- Contributors:
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested, reviewed, decided
+  - [Grok](../../../CONTRIBUTORS.md#grok) (Grok 4.7 via Cursor) — researched, wrote
+  - [Gemini](../../../CONTRIBUTORS.md#gemini) (Gemini 3.8 flash via Cursor) — criticised an early placement
 
+#### What changed
+- [law.research.002.md](law.research.002.md) records the external reading. [law.md](law.md) does not point at a research.
+- The human-language sentence is human code. The machine-checkable form is computer code. The word code alone is not an edge name.
+- What a vote does to another law is not this type. It is an optional edge in [claims](../../../modules-plugable/rights/claims/claims.md).
+- When a contract yields to a law is a statute in [laws](../../../modules-plugable/rights/laws/laws.md), not this type.
+- A record that takes another's place uses [supersedes](../../identity/thing/edges/supersedes/supersedes.md) on thing.
+- [law.md](law.md) states the node as one signed instrument. The legal order is which instruments are in force. Human code and computer code state the position the instrument creates. The goal does not outrank those two. A computer-code form that no input can satisfy is not signed. The human code in the payload is how a signer reads the law. Critique scenarios stay outside the digest.
+- "Constitution" is a comment label, not a second kind of law. The same cycle applies to every instrument. The type is not limited to the government of a society: an organization's articles of association are a law of this type.
+- The words commenters attach are registered in [law labels](../../../modules-plugable/rights/law-labels/law-labels.md). The attachment edge stays the label domain's. Rank words are not registered.
+- Whether a law supersedes a contract is the statute [law supersedes contract](../../../modules-plugable/rights/laws/law-supersedes-contract/law-supersedes-contract.md), not the type.
+
+#### Deliberation
+Owner: the earlier critique of this type did not read sources outside the organization. An explanation states what is settled and does not point at a research. Two laws that contradict do not both execute; the remedy is the organization's dispute, not a court choosing between two laws in force. No-retroactivity and the standing of a contract against a law are statutes, not the type. Kinds of dispute are not the case type. The bare name code is ambiguous between the human sentence and the machine form.
+
+The reading did not settle whether law and contract share one computer-code edge, or whether contract terms are human code. Those stay on the handoffs.
+
+---
