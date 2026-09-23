@@ -175,7 +175,7 @@ Open questions (dot-boundary criterion, entry-title uniqueness, historical-entry
   - gui.changelog.md: Done — the "SDK link corrected" entry removed under the new rule; the fix itself had already landed and remains in version control.
 - Contributors:
   - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — claimed, decided
-  - [Super Z](../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash via ZCode) — recorded
+  - [Super Z](../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash via [ZCode](../CONTRIBUTORS.md#zcode)) — recorded
 
 #### What changed
 - The specification gained `Trivial changes`: a change with nothing to audit — broken-link repair, typo fix, cosmetic correction — receives no entry; the diff is the whole record. Two boundaries accompany it: a change that starts disclosing something worth auditing is no longer trivial and earns an entry; and a trivial fix made alongside a substantive change rides inside that session's consolidated entry instead of earning its own.
@@ -202,7 +202,7 @@ Open questions (dot-boundary criterion, entry-title uniqueness, historical-entry
   - CONTRIBUTORS.md: Done — Composer identity added; Cursor remains under Tools.
 - Contributors:
   - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — claimed, decided
-  - [Composer](../CONTRIBUTORS.md#composer) (Composer via Cursor) — drafted
+  - [Composer](../CONTRIBUTORS.md#composer) (Composer via [Cursor](../CONTRIBUTORS.md#cursor)) — drafted
 
 #### What changed
 - Strengthened [Structure](./documentation-changelog.md#structure): oldest-first is mandatory; newest-first is forbidden; agents must not load a changelog into context solely to append.
@@ -219,7 +219,7 @@ Open questions (dot-boundary criterion, entry-title uniqueness, historical-entry
 - Type: Changed
 - Contributors:
   - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — claimed, decided
-  - [Composer](../CONTRIBUTORS.md#composer) (Composer via Cursor) — drafted
+  - [Composer](../CONTRIBUTORS.md#composer) (Composer via [Cursor](../CONTRIBUTORS.md#cursor)) — drafted
 
 #### What changed
 - Extended [Trivial changes](./documentation-changelog.md#trivial-changes): a same-session wrong change that was reverted or relocated before any durable snapshot of the wrong state has nothing to audit — delete the entry; Session consolidation does not invent provenance for corrected keystroke history.
@@ -237,7 +237,7 @@ Open questions (dot-boundary criterion, entry-title uniqueness, historical-entry
   - CONTRIBUTORS.md: Done — model entries gained correspondence `[eMail]` records, Tools entries gained `Co-authored-by:` trailer records, the Template gained the field shape, and the For AI agents section was removed as relocated into this specification.
 - Contributors:
   - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — requested, decided
-  - [Mimo](../CONTRIBUTORS.md#mimo) (mimo-v2.6-flash via OpenCode) — researched, drafted
+  - [Mimo](../CONTRIBUTORS.md#mimo) (mimo-v2.6-flash via [OpenCode](../CONTRIBUTORS.md#opencode)) — researched, drafted
 
 #### What changed
 - CONTRIBUTORS.md: every model entry now carries its organization's public correspondence address; every Tools entry carries the exact `Co-authored-by:` trailer its agent appends to commits, only where one is officially published (Gemini, Grok and Buffy publish none, so no record was invented); the Template gained the `Co-authored-by: Name <email>` field shape.
@@ -246,3 +246,28 @@ Open questions (dot-boundary criterion, entry-title uniqueness, historical-entry
 #### Deliberation
 - Trailers were first recorded under model entries, then moved once a trailer was recognized as the host agent's identity — matching this specification's own rule that the host tool is recorded under Tools, not under the model Name (Omid Hekayati — claimed, decided).
 - Keeping the guidance inside CONTRIBUTORS.md would have duplicated convention beside data; it now lives in this section, and the example points at the live file instead of caching its shape (Omid Hekayati — decided; Mimo — agreed, applied).
+
+---
+
+### CONTRIBUTORS.md restructured to person headings; brands and tools subordinated
+
+- Time: 2026-09-23T12:57:22Z
+- Type: Changed
+- Cited:
+  - Owner session — Evidence: legal entity names, contacts, and trailers of the fourteen entities verified against official terms, privacy, and contact pages; the Super Z brand has no official public source and is recorded as a project-local name.
+- Propagates to:
+  - CONTRIBUTORS.md: Done — restructured to person `##` headings with brands and tools as owning-entity `###` sections; `# Tools` removed.
+  - docs/documentation-changelog.md: Done — § CONTRIBUTORS.md, the host-tool and commit-time sentences, and the entry field's `via` updated to the person rule.
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Mimo](../CONTRIBUTORS.md#mimo) (mimo-v2.6-flash via [OpenCode](../CONTRIBUTORS.md#opencode)) — researched, drafted
+
+#### What changed
+- CONTRIBUTORS.md: every `##` heading is now a person — natural or legal — carrying a short recognizable name with a `Full Legal Name` bullet, and an `Alias Legal Name` bullet only where more than one entity could claim the contribution (OpenAI, Zhipu, Xiaomi); former brand headings (ChatGPT, Claude, Gemini, Super Z, Qwen, Grok, Composer, Mimo, Meta AI) and every former Tools heading (VS Code, Codex, ZCode, OpenCode, Cursor, Hermes, Buffy) became `###` sections under their owning person with all historical slugs preserved, Copilot's trailer moved from under VS Code to its own `###` under GitHub, correspondence emails deduplicated to their single most specific owner, and the `# Tools` section removed; every `###` section gained a one-line `Bio` stating what it is, and the Template was rebuilt to the real two-level shape — person bullets at `##`, a `### {Brand}` shape carrying Models, and a `### {Tool}` shape carrying the `Co-authored-by:` trailer where it actually lives.
+- This specification's CONTRIBUTORS.md section: the heading rule now describes persons with `Full Legal Name`/`Alias Legal Name` and `###` subordination of brands and tools; "recorded in Tools below" became "its own `###` section under the owning entity"; commit-time trailers are recorded "in the owning tool's `###` section only"; the entry field's `via` keeps the tool's own name as its label, linked to that tool's `###` section inside the owning entity's entry (template line included); each `###` section now opens with a one-line `Bio` stating what the section is.
+- Existing `Contributors` bullets across the repository were migrated to the linked shape — 65 tool names linked as `via [{ToolName}](…#{tool})` across 31 files — and seven `CONTRIBUTORS.md` links carrying a wrong `../../` prefix were corrected to resolve to the file; forms with no recorded section (`via the OpenCode agent`, six occurrences) and inline-code spans were left untouched, by a dry-run-first, idempotent migration script.
+
+#### Deliberation
+- The three propositions — every `##` a person with brands as `###` sub-sections, `# Tools` dropped, and `via` retargeted to the owning entity — were taken to consultation and adopted after a counter-opinion on answering-brand linking was weighed (Omid Hekayati — claimed, argued, decided).
+- Heading form (short name with a `Full Legal Name` bullet, `Alias Legal Name` only under doubt) and `via` label = tool name were fixed by a question round rather than guessed (Omid Hekayati — decided).
+- Review feedback: `###` sections like ZCode were opaque about what they are, and the Template misplaced `Co-authored-by:` at person level — a one-line `Bio` was added to every `###` section and the Template rebuilt to the real person/brand/tool structure (Omid Hekayati — requested, decided; Mimo — applied).
