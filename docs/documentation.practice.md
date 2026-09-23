@@ -16,7 +16,7 @@ Apply [documentation.md → Written surface](./documentation.md#written-surface)
 When work produces something durable, route it by type — do not invent a side note:
 1. Anticipated claim of a document → that document's Abstract ([Results routing](./documentation.md#results-routing)).
 2. Derived consequences of adopting a design → Implications (optional section on the Explanation facet).
-3. Observed change to an artifact → append one entry at end-of-file to the paired `.changelog.md` (oldest-first; use `memar-doc.py changelog-append`, do not preload the whole changelog to find the insertion point). Same-session undone mistakes with no lasting design change get **no** entry ([Trivial changes](./documentation-changelog.md#trivial-changes)).
+3. Observed change to an artifact → one entry on the paired `.changelog.md` for the whole session, not one entry per edit ([Session consolidation](./documentation-changelog.md#session-consolidation)). Append at end-of-file, oldest-first; use `memar-doc.py changelog-append`, do not preload the whole changelog to find the insertion point. If this session already has an entry on that file, extend it. Same-session undone mistakes with no lasting design change get **no** entry ([Trivial changes](./documentation-changelog.md#trivial-changes)).
 4. Open questions and anticipated work → the paired `.handoff.md`.
 5. A deliberate inquiry (including a negative result) → a `.research.<NNN>.md` companion.
 
@@ -24,6 +24,12 @@ When work produces something durable, route it by type — do not invent a side 
 - New or revised Explanation document → [documentation-explanation.practice.md](./documentation-explanation.practice.md).
 - New Practice companion (`.practice.md`) → [documentation-practice.practice.md](./documentation-practice.practice.md).
 - Handoff produce/consume → [documentation-handoff.practice.md](./documentation-handoff.practice.md).
+
+## Which file the doer reads
+When the task is to carry out work a practice already covers:
+1. Read that practice and follow it.
+2. Open the paired explanation only if a step names a section to check, or the task is to change the explanation.
+3. Do not re-derive the procedure from the explanation when the practice states the steps.
 
 ## No derivative inventories
 Do not add membership indexes of directories, script sets, or comparison folders to READMEs or other pointer files. Point at the collection; let the reader list it ([Content Rule](./documentation.md#content-rule-no-fabricated-or-redundant-provenance)).

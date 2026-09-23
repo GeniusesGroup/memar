@@ -1,6 +1,6 @@
 ---
 name: modeling
-description: Defines the concrete, step-by-step procedure for running a Memar modeling session — discovering a model from scratch, refining an existing one, or critically reviewing a model (including one published by another organization) — the checklists and workflow that modeling.md's principles govern but intentionally does not itself contain.
+description: Defines the concrete, step-by-step procedure for running a Memar modeling session — discovering a model from scratch, refining an existing one, or critically reviewing a model (including one published by another organization) — and for placing a new edge or relation. Use this file to do the work. Open modeling.md only when a step names a section to check.
 ---
 
 # Modeling Practice
@@ -93,6 +93,14 @@ For each edge or loop-edge:
 3. Is its cardinality correct and justified?
 4. Is its direction meaningful? Would the reverse direction also be valid, or even more natural?
 5. If it is a shortcut edge, can it still be re-derived from other edges already in the graph — has it drifted into becoming a source of truth?
+
+## Placing a relation
+When adding an edge or loop-edge, follow these steps. Do not open [modeling.md](./modeling.md) to reconstruct them. Open [A Relation Several Domains Need Is Defined Once](./modeling.md#a-relation-several-domains-need-is-defined-once) only to check that the statement there still matches this procedure.
+1. Name the relation in one sentence, apart from the domain that raised it.
+2. Search the graph for a relation that already does that job, including under another name.
+3. Ask which other domains need that same relation. The question is about the relation, not about the event that creates it in the domain under discussion.
+4. If several domains need it, define it once in the domain that already covers every record those domains are. A shared status marker — draft on a law, a contract, a comment, an invoice — is defined once with the shared statuses. A record taking another's place is defined once on thing. A relation only one domain needs stays in that domain.
+5. Leave each domain the rule for when its own records may take the shared relation. Do not copy the edge into each domain.
 
 ## Single Responsibility Check
 Each node should represent one coherent idea. Signs of a mixed responsibility:

@@ -477,3 +477,22 @@ Dissolved every Discussion wrapper and the document-level Discussion; drawback s
 - The aggregation topic's decomposition guidance now cites [Module Identity and Responsibility](./modularity.md#module-identity-and-responsibility) — the base-layer statement of the same test — instead of [Composition Depth as a Decomposition Signal](./khayyam/method.md#composition-depth-as-a-decomposition-signal-no-expression-chaining) in the Khayyam method document, which itself derives the principle from System and Modularity and only enforces it syntactically at the language layer.
 - Reason: a base document never cites the language layer as the authority for its own principles; the language document's own text already names System and Modularity as the conceptual sources, so the base citation is the correct direction. The language layer's syntactic enforcement is named in prose, without a link, as ownership.
 - Same-session context: the formerly cited document moved from `docs/khayyam-method.md` to `docs/khayyam/method.md` when the Khayyam layer received its own folder; the re-anchoring makes the citation direction correct regardless of that placement.
+
+### A shared relation is defined once
+- Time: 2026-09-23T06:20:00Z
+- Type: Added
+- Cited:
+  - [Modeling → One Authoritative Location per Concern's Data](./modeling.md#one-authoritative-location-per-concerns-data) - Relation: Depends_on: one concern has one authoritative home; a relation copied per domain is that failure
+  - [Modeling Practice → Placing a relation](./modeling.practice.md#placing-a-relation) - Relation: Depends_on: the steps a doer follows
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — required the test, and that the doer read it in the practice
+  - [Grok](../CONTRIBUTORS.md#grok) (Grok 4.7 via Cursor) — wrote
+
+#### What changed
+- [Modeling](./modeling.md) states that a relation several domains need is defined once, in the domain that already covers those records. A shared status marker such as draft stays with the shared statuses. A record taking another's place is defined once on thing. A relation only one domain needs stays in that domain. Each domain keeps the rule for when its own records may take the shared relation.
+- [modeling.practice.md](./modeling.practice.md) carries the steps for placing a relation. The doer follows those steps and opens the explanation only to check that the statement still matches.
+
+#### Deliberation
+Owner: when an edge is about to be created, ask whether other domains need it, as with draft. If they do, place it generally — for a relation between records, under thing — so it is not copied into each domain. The check of modeling.md found the one-location rule for a concern's data, and no statement of this test for a relation. Content's current direction, one identity with change events rather than a new node per edit, is a domain that does not thereby need the successor edge.
+
+Owner: the steps belong in the practice. An agent doing the work reads the practice, not the explanation, unless a step names a section to check.

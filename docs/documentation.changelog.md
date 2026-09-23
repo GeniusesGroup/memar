@@ -217,3 +217,19 @@ Fixed skeleton: four sections. Everything else optional, catalogued. Open questi
 
 #### Deliberation
 - Blank line after a section title rejected (Omid Hekayati). Surface rules must not be Markdown-tied (Omid Hekayati). Membership indexes in pointer files rejected as invalidating caches (Omid Hekayati). Narrating "revised" against invisible prior text rejected (Omid Hekayati).
+
+---
+
+### The doer follows the practice
+- Time: 2026-09-23T06:30:00Z
+- Type: Added
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — required the reading rule
+  - [Grok](../CONTRIBUTORS.md#grok) (Grok 4.7 via Cursor) — wrote
+
+#### What changed
+- [documentation.practice.md](./documentation.practice.md) states that work a practice already covers is done by reading that practice. The paired explanation is opened when a step names a section to check, or when the task is to change the explanation.
+- The changelog step states session consolidation: one session produces one entry on a base artifact. A later edit in that session extends the entry.
+
+#### Deliberation
+Owner: an executing agent does not need to read the explanatory document to carry out a rule that the practice can state. The practice files already existed for that split, and they did not say so as a reading rule. The modeling session wrote a relation rule into the explanation and did not add the steps to the practice.

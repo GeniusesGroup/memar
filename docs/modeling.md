@@ -384,6 +384,13 @@ As with several other implementation-adjacent questions that surface during mode
 
 
 
+### A Relation Several Domains Need Is Defined Once
+Before a relation is placed inside one domain, ask which other domains need that same relation. The question is about the relation, not about the event that creates it in the domain under discussion.
+
+When several domains need it, the relation is defined once, in the domain that already covers every record those domains are. A marker such as draft, which a law, a contract, a comment, and an invoice can all carry, is defined once with the other shared statuses. A connection from the record that takes another's place to the record it replaces is defined once on thing, because a law, a contract, a product that replaces another, and an estate that is the one now realized can all need that connection. A relation only one domain needs stays in that domain.
+
+Each domain still owns the rule for when its own records may take the shared relation. The shared home owns the relation. It does not own those rules. Copying the relation into each domain produces several edges for one concern. That is the failure [One Authoritative Location per Concern's Data](#one-authoritative-location-per-concerns-data) already names, applied here to a relation.
+
 ### Extensible Behavior Belongs to Pluggable Modules
 Not every requirement that touches a concept belongs inside that concept's own model. The full architectural treatment of this — what a pluggable Module is, why *pluggable* does not mean *dynamically loaded plugin*, and why the provisional term Rule names a Module's optional relationship to another Module rather than a conditional expression — now lives in [Modularity](./modularity.md#pluggable-behavior). This section keeps only the modeling-level consequence and the `Invoice` illustration this document has used since before that document existed.
 
