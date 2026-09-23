@@ -87,21 +87,11 @@ The same economy applies one level up, to the repository's commit history: **a t
 ### CONTRIBUTORS.md
 A single, project-wide file — not paired to any one artifact — listing every contributor across the whole project. Each contributor gets their own `##` heading, named after them (e.g. `## Omid Hekayati`), directly linkable from any changelog entry (`../CONTRIBUTORS.md#omid-hekayati`) instead of repeating identity data in every file. Underneath, an open, non-exhaustive list of bullets — `URI` (one or more: email, personal site, a social profile), `Donate` (a tip/coffee link), a short optional `Bio`, or anything else a contributor wants recorded about themselves. This list is not closed; a contributor may add a bullet field for themselves that isn't one of these examples.
 
-```markdown
-## Omid Hekayati
-- URI: mailto:omid@geniuses.group
-- URI: https://geniuses.group
-- Donate: https://...
-- Bio: Lead architect of the Memar framework.
-
-## Claude
-- Models:
-  - [claude-opus-5]()
-  - [claude-sonnet-5]()
-  - [claude-fable-5]()
-```
+For an example, this repository's own [CONTRIBUTORS.md](../CONTRIBUTORS.md) at the repository root is the reference: field shapes and entries are read from it directly rather than copied here, so no duplicated, cached copy of the data exists to drift out of sync.
 
 For an AI contributor, only `Name` and the officially documented `Model` identifier are recorded here as stable facts. Models are listed chronologically, oldest first, with each new model appended at the end — the same append-only convention as changelog entries, so adding a model never requires re-sorting. A model may carry a link to its official documentation page where one exists and has been verified. The host tool (Cursor, ZCode, Claude Code, …) is recorded in Tools below, not under the model Name. `Effort`, and anything else that can genuinely vary between one contribution and the next, belongs inline in that specific changelog entry's own `Contributors` bullet instead, using the entry-field shape `{ModelName} via {ToolName}` (e.g. "Claude (claude-sonnet-5 via Cursor, extended thinking) — rewrote"), not here.
+
+Of the open bullet fields, two carry conventions an AI contributor needs at commit time. `[eMail]` is the contributor's public correspondence address. `Co-authored-by:` holds the exact git trailer in `Name <email>` form — angle brackets required, since GitHub links a co-author only in that form — and is recorded under Tools entries only: the trailer is the host agent's commit identity, not the model's. Which model actually ran stays out of this file: it is recorded in each changelog entry's `Contributors` bullet as `{ModelName} via {ToolName}`. An agent committing in this repository appends the trailer of the tool it runs through; a tool with no `Co-authored-by:` bullet publishes no official trailer, and none may be invented.
 
 The same preservation rule as elsewhere applies: while a contributor is still actively working on any unfinished (non-`Final`) artifact, they may add or extend their own entry here; no one edits another's entry.
 

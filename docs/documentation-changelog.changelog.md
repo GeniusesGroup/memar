@@ -224,3 +224,25 @@ Open questions (dot-boundary criterion, entry-title uniqueness, historical-entry
 #### What changed
 - Extended [Trivial changes](./documentation-changelog.md#trivial-changes): a same-session wrong change that was reverted or relocated before any durable snapshot of the wrong state has nothing to audit — delete the entry; Session consolidation does not invent provenance for corrected keystroke history.
 - Documented `memar-doc.py changelog-append` as the mechanical append path without embedding a pasteable recipe catalog in Structure.
+
+---
+
+### CONTRIBUTORS.md contact and Co-authored-by records; spec example replaced with a live-file pointer
+
+- Time: 2026-09-23T08:09:51Z
+- Type: Added
+- Cited:
+  - Owner session — Evidence: correspondence emails and Co-authored-by trailers verified against official vendor contact pages, official tool repositories, and real attributed commits.
+- Propagates to:
+  - CONTRIBUTORS.md: Done — model entries gained correspondence `[eMail]` records, Tools entries gained `Co-authored-by:` trailer records, the Template gained the field shape, and the For AI agents section was removed as relocated into this specification.
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — requested, decided
+  - [Mimo](../CONTRIBUTORS.md#mimo) (mimo-v2.6-flash via OpenCode) — researched, drafted
+
+#### What changed
+- CONTRIBUTORS.md: every model entry now carries its organization's public correspondence address; every Tools entry carries the exact `Co-authored-by:` trailer its agent appends to commits, only where one is officially published (Gemini, Grok and Buffy publish none, so no record was invented); the Template gained the `Co-authored-by: Name <email>` field shape.
+- This specification's CONTRIBUTORS.md section: the inline example block was replaced by a pointer to the repository's own CONTRIBUTORS.md so no duplicated, cached copy of the data exists to drift, and a new commit-time paragraph fixes the conventions — `[eMail]` as correspondence address, trailers in exact `Name <email>` form under Tools entries only, model attribution recorded only in changelog `Contributors` bullets as `{ModelName} via {ToolName}`, and never inventing a missing trailer.
+
+#### Deliberation
+- Trailers were first recorded under model entries, then moved once a trailer was recognized as the host agent's identity — matching this specification's own rule that the host tool is recorded under Tools, not under the model Name (Omid Hekayati — claimed, decided).
+- Keeping the guidance inside CONTRIBUTORS.md would have duplicated convention beside data; it now lives in this section, and the example points at the live file instead of caching its shape (Omid Hekayati — decided; Mimo — agreed, applied).
