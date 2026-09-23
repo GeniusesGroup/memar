@@ -452,3 +452,15 @@ Dissolved every `#### Discussion` wrapper (How to identify a Type, Definition of
 
 #### Deliberation
 - Citations run down: a base document never links into `khayyam/`, so the realization account lives on the realization side, where the citation direction is legal (Omid Hekayati — decided).
+
+---
+
+### Withdrew the swapped efficacy and impressible gloss
+- Time: 2026-09-23T08:43:30Z
+- Type: Fixed
+- Contributors:
+  - [Grok](../CONTRIBUTORS.md#grok) (Grok 4.7 via [Cursor](../CONTRIBUTORS.md#cursor)) — reviewed, applied
+
+#### What changed
+- The Method bullet names the receiver, the influencing variables, and the influenced variables. The labels `efficacy` (here: output) and `impressible` (here: input) are recorded only in this entry; the Khayyam method signature had glossed the same two labels as arguments and returns.
+- A method belongs to a parent type named in its signature. A call on that type, or on a variable of that type, does not drop the parent from the signature (Omid Hekayati — decided).

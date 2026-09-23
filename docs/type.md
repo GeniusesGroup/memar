@@ -156,8 +156,8 @@ This is what separates a Method from an ordinary expression or statement inside 
 
 The key implications:
 - Methods can be imported, referenced, and composed like any other Type.
-- A method's contract includes its receiver type, its efficacy (output) variables, and its impressible (input) variables.
-- Methods without a `self` reference are type-level (static) behaviors; methods with `self` are instance-level behaviors. This distinction is governed by the presence of `self` in the signature, not by a separate keyword.
+- A method's contract includes its receiver type, its influencing variables, and its influenced variables.
+- A method belongs to a parent type. That parent is part of the method's signature. A call may be on that type, or on a variable of that type. The parent is not omitted from the signature in either case.
 - Body-less methods serve two purposes: defining the required signature for an Abstraction (contract), or signaling FFI (the implementation will be provided externally during linking).
 - A Method can carry other Methods — one method may compose or delegate to others, forming executable behavior trees.
 

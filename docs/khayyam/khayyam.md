@@ -65,7 +65,7 @@ tp {name} [Type] [subtype defined value]
 Khayyam allows developers to indicate first-level [encapsulation-pattern](./encapsulation.md) by using `cp`.
 - `tp {name} cp { ___ }`
 - Capsule structure CAN include some other data types inside itself.
-- Each field in a capsule is written as `fieldName fieldType` on each line.
+- Each field in a capsule is written as `fieldName fieldType` on each line. A one-token line in the same block is a bare abstraction name: the capsule composes that abstraction, the same shape an `ab` block uses for composition. What the named abstraction then requires is that abstraction's own specification ([Encapsulation → Capsule Structure and Privacy](./encapsulation.md#capsule-structure-and-privacy)).
 - Khayyam only allows access to inner data types via methods (functions). There are no data fields to expose.
 
 #### Method
@@ -74,8 +74,8 @@ Khayyam allows developers to indicate first-level [encapsulation-pattern](./enca
 - `tp {name} mt (self {owner}) (influencing variables...) (influenced variables...) { }`
 - **Pass-by-Reference & State Protection:** All arguments passed into a method and all values returned from a method are passed strictly by reference. Explicit copy is a capsule method, not an assignment operator — see [Variable in Khayyam](./variable.md). The protocol-level copy and teardown rules this grammar realizes are in [Memory](../protocols/memory.md).
 - **Inherent Encapsulation:** Even though capsules are passed by reference, their internal state remains strictly protected. Because Khayyam enforces that all data fields are entirely hidden, a receiving method cannot directly mutate the passed capsule's fields. State mutation can ONLY occur if the passed capsule explicitly exposes a behavior (method) that allows it, rendering keywords like `const` or `mut` architecturally obsolete.
-- Devs MUST separate `type_owner`, `efficacy (args)`, and `impressible (returns)` by using `()` to indicate all of them even when empty. Consider that all of them are the same in underlying layers, and this rule is just to improve code readability.
-- Devs CAN write pure standalone functions in this way; there is no limitation.
+- Devs MUST separate the owner, the influencing variables, and the influenced variables by using `()` to indicate all of them even when empty. Consider that all of them are the same in underlying layers, and this rule is just to improve code readability. The groups are the ones in the signature pattern above, defined in [Method in Khayyam → Influencing and Influenced Variables](./method.md#influencing-and-influenced-variables-not-inputs-and-outputs).
+- The owner group names the parent type. `tp Sum mt (self W32) (a W32, b W32) (total W32, err Error)`.
 - Dev can use any naming for type owner naming, BUT suggest using `self` as the base point to other members in the type.
   - `tp Set mt (self Key) (key String) (err Error) {}`
 - **Body-less Methods (FFI & Contracts):** A method can be defined without a body (`{}`). This is legitimately used in two scenarios:
@@ -84,9 +84,9 @@ Khayyam allows developers to indicate first-level [encapsulation-pattern](./enca
 
 ##### Method Invocation Rules
 - **Uniform Invocation Syntax:** Khayyam strictly uses a single dot (`.`) operator for all method calls. The language intentionally rejects secondary tokens (such as `::`) to maintain syntax minimalism.
-- **Context-Driven Semantics:** The distinction between static behavior and instance behavior is governed by the presence of the `self` reference in the method signature, enforced by the compiler (not the linter):
-  - **Type-Level (Static) Invocation:** Methods defined without a `self` reference belong to the type's blueprint. They MUST be invoked directly through the type identifier (e.g., `tp.Create()`). Invoking a type-level method on a variable instance (`vr.Create()`) is a compile-time error.
-  - **Instance-Level Invocation:** Methods defined with a `self` reference require an active memory capsule. They MUST be invoked through a variable instance (e.g., `vr.Mutate()`). Invoking an instance-level method directly on the type identifier (`tp.Mutate()`) is a compile-time error.
+- **Context-Driven Semantics:** The owner group names the parent type. Both call groups are written.
+  - **Call on the parent type:** `tp Sum mt (self W32) (a W32, b W32) (total W32, err Error)` is called `W32.Sum(a, b)(total, err)`. The body does not invoke `self`.
+  - **Call on a variable of the parent type:** `tp Set mt (self Key) (value String) (err Error)` is called `k.Set(value)(err)`. When the parent type is a method, the receiver is that method ([Method → A method implements an abstraction by methods of its own](./method.md#a-method-implements-an-abstraction-by-methods-of-its-own)).
 
 
 #### Abstraction
@@ -212,6 +212,8 @@ One of the strongest aspects of Khayyam is its apparent focus on preventing arch
 In most languages, naming is a style preference. In Khayyam, it is enforced by the language itself: magic numbers are forbidden, primitives must be wrapped in named capsules (`W32`, not `int`), and generic containers are replaced by domain-specific names (`UserRegistry`, not `Map<ID, User>`).
 
 This means that in a Khayyam codebase, it is structurally impossible to write opaque code even if a developer tries. The grammar is designed to make the architect's intent visible at every call site.
+
+Human-facing text — a description, a name a person reads — is a value a method writes into an influenced variable. The type that owns the behavior owns that text, so another language is another method on that type, not a prose line above the declaration. Localized names and descriptions are the same family [Type → Human-facing identity](../type.md#human-facing-identity) already places on the Type. The method that returns the text, and the owner it is attached to, are not yet a worked signature; see the paired handoff.
 
 This is not a one-time mechanism to be decided and then documented elsewhere — it is an ongoing tension that recurs every time a new naming rule, keyword, or grammar constraint is considered. Because of that, it stays part of this document, the same document every new construct is considered against, rather than being extracted into a separate style-guide document that would only drift from whatever this document actually specifies.
 

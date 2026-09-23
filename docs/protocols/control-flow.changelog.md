@@ -169,3 +169,17 @@ This problem closely parallels `Result`/`Option` combinator naming in Rust (`.is
 #### Deliberation
 - A protocol-level rule must not take a Khayyam-specific fact as its reason; an instance link after a language-neutral reason is legitimate (Omid Hekayati — decided).
 - The global-function-without-receiver topic is closed — rejected — with type-level invocation as its recorded resolution (Omid Hekayati — decided).
+
+---
+
+### Type-level illustration writes both call groups
+- Time: 2026-09-23T10:20:00Z
+- Type: Fixed
+- Cited:
+  - [Khayyam](../khayyam/khayyam.md) — Reference: Method Invocation Rules, the type-level call `W32.Sum(a, b)(total, err)`.
+- Contributors:
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Grok](../../CONTRIBUTORS.md#grok) (Grok 4.7 via [Cursor](../../CONTRIBUTORS.md#cursor)) — applied
+
+#### What changed
+- The type-level direction in the success/failure candidates is illustrated by `W32.Sum(a, b)(total, err)`, a call on the type identifier with both groups written.

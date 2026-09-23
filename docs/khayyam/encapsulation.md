@@ -70,6 +70,8 @@ tp {name} cp { ___ }
 
 Each field in a capsule is written as `fieldName fieldType` on its own line. Fields are always private — there is no visibility modifier, no `public`/`private` keyword, and no way to expose a field directly. The only way to read or modify a capsule's internal state is through methods attached to that capsule.
 
+A one-token line in the same block is a bare abstraction name. The capsule composes that abstraction, the same shape an abstraction block uses when it lists the abstractions it includes. The line allocates no state. What the composition requires — a tooling signal, compiler-supplied methods, or the abstraction's own method set — is defined by the abstraction named on that line. [`abstraction_p.Implements`](../protocols/abstraction-implements.md#declaring-and-discovering-intent) and [Metaprogramming → Reflective Programming](./metaprogramming.md#reflective-programming) are two such abstractions.
+
 This absolute privacy rule is not a default that can be overridden; it is a structural guarantee of the language. A capsule author cannot accidentally expose a field, and a consumer cannot access a field even if the author intended to expose it through some other mechanism. All access must go through methods, making the capsule's public interface its complete and only contract.
 
 A capsule structure can include other data types inside itself, allowing composition:

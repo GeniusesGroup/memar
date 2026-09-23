@@ -162,3 +162,39 @@ Completed the migration an earlier pass had started (this document already follo
 #### What changed
 - Capsule Structure and Privacy now states that a linter or companion generator MAY write `get`/`set` methods into explicit source when requested, and MUST NOT synthesize a public surface the author never asked for — content relocated from the retired Khayyam-shelf linter document.
 
+
+---
+
+### Bare name in a capsule body recorded as an open production
+- Time: 2026-09-23T08:43:30Z
+- Type: Fixed
+- Cited:
+  - [abstraction_p.Implements](../protocols/abstraction-implements.md) — Reference: the `ErrServiceNotFound` example places a bare `Implements` in a `cp` body.
+  - [Metaprogramming in Khayyam](./metaprogramming.md) — Reference: the `UserRecord` example places a bare `Structural` in a `cp` body.
+- Propagates to:
+  - khayyam.md: Done — the capsule bullet states the same one-token composition line.
+- Contributors:
+  - [Grok](../../CONTRIBUTORS.md#grok) (Grok 4.7 via [Cursor](../../CONTRIBUTORS.md#cursor)) — reviewed, applied
+
+#### What changed
+- A one-token line in a capsule body is a bare abstraction name. The capsule composes that abstraction, on the same shape an `ab` block uses. The line allocates no state. What the composition requires is defined by the named abstraction. The `Implements` and `Structural` examples are that line.
+
+#### Considered and not done
+- **Leaving the one-token line unspecified (rejected)**: those examples were already the language's own illustrations of composing an abstraction into a capsule. A field line is two tokens; the one-token line is the composition form.
+
+---
+
+### A field-shaped value is one type plus one generator-facing method
+- Time: 2026-09-23T10:20:00Z
+- Type: Fixed
+- Cited:
+  - [abstraction_p.Implements](../protocols/abstraction-implements.md) — Depends_on: the author states implementation intent; a generator writes the method bodies.
+- Contributors:
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Grok](../../CONTRIBUTORS.md#grok) (Grok 4.7 via [Cursor](../../CONTRIBUTORS.md#cursor)) — applied
+
+#### What changed
+- The `Field_UserUUID` procedure — one type, one method naming what a code generator implements — is in [Khayyam practice](./khayyam.practice.md), not in this document. This document keeps the language rule: access to a field is a method, and a generator may write those methods into source when requested.
+
+#### Considered and not done
+- **A hand-written pair of abstractions for every field (rejected)**: that repeats the generator's job in every file. The author names the intent once (Omid Hekayati — decided).

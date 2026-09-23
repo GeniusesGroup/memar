@@ -35,10 +35,10 @@ tp {name} mt (self {owner_type}) ({influencing variables}...) ({influenced varia
 ```
 
 #### Key Rules
-- A method declared without an owner at all (no `self`) is a plain, receiver-less standalone function.
+- The owner group names the method's parent type. `tp Sum mt (self W32) (a W32, b W32) (total W32, err Error)`.
 - **Pass-by-Reference and State Protection**: Every variable passed to a method — the owner, each influencing variable, and each influenced variable alike — is passed strictly by reference. When the owner or a variable is a capsule, even though it is passed by reference, its internal state remains strictly protected because all data fields are entirely hidden: a receiving method cannot directly mutate a passed capsule's fields, and state mutation can only occur if the passed capsule explicitly exposes a behavior (method) that allows it. (See [Influencing and Influenced Variables](#influencing-and-influenced-variables-not-inputs-and-outputs) for why "arguments" and "return values" are not the right names for these two groups.)
 - **Parenthesized Separation**: Developers must separate the owner, influencing variables, and influenced variables by using `()` to indicate all three groups, even if empty. All three are the same at the underlying layers — each is just a variable reference; this rule exists to improve code readability.
-- **Standalone Functions**: Developers can write pure standalone functions by omitting the `self` parameter — there is no limitation requiring a receiver.
+- **Call on the parent type**: `W32.Sum(a, b)(total, err)`. The name before the dot is the parent type in `self`. Inside the body, `self` is not invoked.
 - **Recommended Naming**: Developers can use any naming for the owner parameter, but `self` is suggested as the base point to reference other members of whatever type owns the method.
 
 Example:
@@ -49,15 +49,29 @@ tp Set mt (self Key) (key String) (err Error) {}
 #### Method Invocation Rules
 Khayyam strictly uses a single dot (`.`) operator for all method calls. The language intentionally rejects secondary tokens (such as `::`) to maintain syntax minimalism.
 
-The distinction between static behavior and instance behavior is governed by the presence of the `self` reference in the method signature, enforced by the compiler:
+Every method names its parent type in the owner group. The call writes both groups. Two shapes:
 
-- **Type-Level (Static) Invocation**: Methods defined without a `self` reference belong to the type's blueprint. They must be invoked directly through the type identifier (e.g., `tp.Create()`). Invoking a type-level method on a variable instance (`vr.Create()`) is a compile-time error.
-- **Instance-Level Invocation**: Methods defined with a `self` reference require an active memory instance of the owner type. They must be invoked through a variable instance (e.g., `vr.Mutate()`). Invoking an instance-level method directly on the type identifier (`tp.Mutate()`) is a compile-time error.
+```khayyam
+tp Sum mt (self W32) (a W32, b W32) (total W32, err Error)
+W32.Sum(a, b)(total, err)
+```
 
-This dispatch model ensures that the boundary between type-level and instance-level behavior is always visible in the method signature, not hidden behind a `static` keyword or a naming convention.
+`W32` before the dot is the parent type named by `self`. `(a, b)` influences. `(total, err)` is influenced. The body of `Sum` does not invoke `self`.
+
+```khayyam
+tp Set mt (self Key) (value String) (err Error)
+k.Set(value)(err)
+```
+
+`k` is a variable of the parent type. The body of `Set` works on that instance.
+
+When the parent type is itself a method, the receiver is that method, and the call still writes both groups.
 
 #### Type-level arguments for `sc` and `mt`
-An argument position may be satisfied by a `vr` of the declared type or, for the subtypes `sc` and `mt`, by the type itself passed as a type-level argument. The compiler resolves which reading applies from the callee's signature; there is no ambiguity at the AST. Passing a bare type where a capsule or abstraction *value* is expected is meaningful only for `sc`/`mt`; elsewhere it is a governance smell the [Linter](../protocols/linter.md) may flag, not a syntax error. Passing an `mt` value in closure style — capturing state as an implicit capsule — is discouraged; see [Closures as Implicit Capsule Syntax](./encapsulation.md#closures-as-implicit-capsule-syntax).
+A method's influencing group may receive a `vr`, an `sc`, or an `mt`. The compiler distinguishes the three from the callee's signature and performs the behavior that position requires. A `vr` is an instance of a capsule or an abstraction. An `sc` is a code scope: a library method that drives a scope receives that scope here ([Khayyam → Scope](./khayyam.md#scope)). An `mt` is a method. Passing a bare type where a capsule or abstraction value is expected is a governance smell the [Linter](../protocols/linter.md) may flag. Passing an `mt` in closure style — capturing state as an implicit capsule — is discouraged; see [Closures as Implicit Capsule Syntax](./encapsulation.md#closures-as-implicit-capsule-syntax).
+
+#### A method implements an abstraction by methods of its own
+A method can implement an abstraction. It does so by defining methods whose owner is that method. Those methods are the method's own behavior: they state what it does internally. The method can present that implementation to tooling by composing an intent abstraction, as a capsule does with [`abstraction_p.Implements`](../protocols/abstraction-implements.md). Asynchrony is one such abstraction, decided at the method's definition; see [Agency → Definition-Site Over Call-Site](./agency.md#definition-site-over-call-site).
 
 #### Body-less Methods (FFI and Contracts)
 A method can be defined without a body (`{}`). This is legally used in two scenarios:
@@ -74,7 +88,7 @@ Khayyam does not repeat this: instead of naming a method's variables by which en
 - **Influencing variable** — a variable that influences what the method does. This is what other languages call an "argument" or "input," but named for its actual role (it has *influence* — it affects the outcome) rather than for its position in a call.
 - **Influenced variable** — a variable that is changed by the method as a side effect of the call. This is what other languages call a "return value" or "output," but named for its actual role — it is *impressionable* by this call — rather than for its position in the call.
 
-These are relational categories, not fixed properties of a variable. The same `vr` can be an influencing variable in one method call and an influenced variable in another; the grammar's two parenthesized groups (`(influencing variables...)`, `(influenced variables...)`) simply declare, per call, which role each variable is playing this time.
+These are relational categories, not fixed properties of a variable. The same `vr` can be an influencing variable in one method call and an influenced variable in another; the grammar's two parenthesized groups (`(influencing variables...)`, `(influenced variables...)`) declare, per call, which role each variable is playing this time.
 
 #### The Open Question: A Variable That Is Both
 A genuine unresolved case is a variable that plays both roles in the very same call. Consider `sk Socket` in a method that reads configuration values off `sk` (making it an influencing variable for that part of the method) and also calls `sk.Close()` before returning (making it an influenced variable, since the socket's own internal closed-state has now changed as a side effect of this call). There is currently no settled notation for declaring this dual role explicitly — a variable can only be written into one of the two parenthesized groups today, whichever the author judges primary.
@@ -86,7 +100,7 @@ In Khayyam, functions and methods are not separate concepts. There is no `fn`/`f
 
 Consider `Sum(a, b)`, which looks like the cleanest possible example of a function needing no type identity at all. In practice it rarely stays that simple: what happens on overflow — does it saturate, wrap, or return an error? What if `a` and `b` are different numeric types — coerce, or reject? These aren't hypothetical edge cases; they are the actual behavioral questions an addition operation has, and they don't have one universal answer — they have an answer *per numeric type*. Once that's visible, `Sum`'s real identity stops being a mystery: it was never identity-less, it belongs to whichever type's arithmetic it is — `W32.Sum`, `I64.Sum`, `Decimal_64_64.Sum` — each with its own overflow policy and its own combination rules. The apparent standalone function was quietly borrowing behavior a type already owned; it just hadn't been asked to admit it yet.
 
-This is the actual case for having no `fn`/`func` keyword: not "a capsule is the only allowed shape," but "a behavior that seems to need no owner almost always turns out to need one, once you look closely enough — usually the type of one of its own influencing or influenced variables." A "function" is, structurally, just a method (`mt`) attached to whichever type actually owns the behavior; a receiver-less method (no `self`) remains available for the genuinely rare case where no owner applies at all — and a dedicated `fn`/`func` keyword plus access-modifier keywords (the conventional approach) was rejected as an unnecessary second category of declaration syntax on top of a model that already covers this case.
+This is the actual case for having no `fn`/`func` keyword: not "a capsule is the only allowed shape," but "a behavior that seems to need no owner almost always turns out to need one, once you look closely enough — usually the type of one of its own influencing or influenced variables." A "function" is, structurally, just a method (`mt`) attached to whichever type actually owns the behavior: `tp Sum mt (self W32) (a W32, b W32) (total W32, err Error)`, called as `W32.Sum(a, b)(total, err)`. A dedicated `fn`/`func` keyword plus access-modifier keywords was rejected as an unnecessary second category of declaration syntax on top of a model that already covers this case.
 
 #### Example
 Once in a while, a behavior really doesn't belong to any existing type — a one-off helper with no natural home. This is the case a small, purpose-built capsule with a `Do`-style method exists for — a fallback for the genuinely ownerless case, not the default first move:
@@ -96,9 +110,12 @@ Once in a while, a behavior really doesn't belong to any existing type — a one
 tp When mt (self TimeHelper) (d NanoSecondDuration) (t MonotonicTime) {}
 
 // use in this manner:
+vr helper TimeHelper
 vr t1 monotonic.Time
-TimeHelper.When(d)(t1)
+helper.When(d)(t1)
 ```
+
+`When` names its parent type: `(self TimeHelper)`. The call is `helper.When(d)(t1)`.
 
 This is not a rejection of pure, standalone-function-style logic — it is fully supported — it is simply always expressed as a method, and, wherever possible, attached to the type the behavior actually belongs to (as `Sum` belongs to `W32`) rather than to a fresh wrapper capsule invented for the occasion. The wrapper-capsule-plus-`Do` pattern above is what's left over once that search comes up genuinely empty.
 

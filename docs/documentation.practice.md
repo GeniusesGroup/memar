@@ -10,7 +10,7 @@ Apply [documentation.md → Written surface](./documentation.md#written-surface)
 1. Put the first line of a section's body on the line immediately under the section title — no blank line after the title.
 2. Use a single blank line between blocks inside a section only when paragraph separation is needed; never two or more consecutive blank lines.
 3. Write normative rules as sentences or numbered steps under section titles. Do not put load-bearing rules in grid layouts or diagram blocks that only work when rendered as graphics; short non-normative lookup grids are allowed.
-4. When no prior durable snapshot of the document is available to the reader, state findings as present content — do not narrate "revised" or "formerly" against text the reader cannot open.
+4. State the current rule in the body as what holds. Do not narrate "revised," "formerly," "retired," "withdrawn," or "is not the rule" against a formulation the edit replaced — that sentence belongs in the paired changelog (`What changed` for the outcome, `Considered and not done` for a rejected alternative). This applies whether or not a prior snapshot exists. The snapshot only changes whether a reader could open the old text; it does not license leaving the removed formulation in the body as a negation.
 
 ## Results and companions
 When work produces something durable, route it by type — do not invent a side note:

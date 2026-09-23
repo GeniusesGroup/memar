@@ -291,3 +291,18 @@ This cost is partially mitigated by two factors. First, Khayyam's ecosystem incl
 #### Deliberation
 - One review treated "contract model" as ordinary guarantee vocabulary and dissolved it (Grok — reviewed). The other treated it as the same conflation the compiler-facing pass had just removed from this document (Gemini — reviewed). The applied reading follows the document's own decision that contract stays the Protocol concept: the paragraph is about Khayyam's abstraction model, and the two phrases were the retired name.
 - The parametric sketch presented the same `Process` as the corrected pair while still returning only `(err Error)`; examples are fixed in place, so the signatures now match (Grok — reviewed).
+
+---
+
+### Generic-replacement example dropped `fn`; open set no longer means a plugin loaded at runtime
+- Time: 2026-09-23T08:43:30Z
+- Type: Fixed
+- Cited:
+  - [Method in Khayyam](./method.md) — Depends_on: there is no `fn` keyword.
+  - [Type](../type.md) — Depends_on: Structure Is Fixed by Definition excludes a candidate set that arrives only while the system runs.
+- Contributors:
+  - [Grok](../../CONTRIBUTORS.md#grok) (Grok 4.7 via [Cursor](../../CONTRIBUTORS.md#cursor)) — reviewed, applied
+
+#### What changed
+- "What You Will Not Do" no longer offers `fn process(h: Hasher)` as the form the programmer writes. The positive example is an ordinary `mt` with the same `Process` signature as the corrected pair earlier in the document.
+- Dynamic dispatch's open set is a call site whose reachable capsules are not a closed list the compiler can see, while every candidate already exists in the program's definition. A capsule or method body loaded only at runtime is not an open-set case.

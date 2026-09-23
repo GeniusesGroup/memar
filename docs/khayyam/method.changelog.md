@@ -142,3 +142,24 @@
 #### Deliberation
 - The critique disposal that offered atomic read-modify-write as a case where split loses atomicity was rejected: reading and writing a `Counter` inside one atomic method is exactly the dedicated-method-with-clear-abstraction shape, not dual-role at the call site (Omid Hekayati — decided).
 - Dual-role remains a defect-finding signal, not a feature to notate; other languages do not emphasize it, and Khayyam deliberately does (Omid Hekayati — decided).
+
+---
+
+### Invocation example matched to the instance rule; two attachment questions left open
+- Time: 2026-09-23T08:43:30Z
+- Type: Fixed
+- Propagates to:
+  - method.handoff.md: Done — the no-self attachment question and the method-owned receiver question are removed. The rulings are in the body (handoff: no entry of its own).
+- Contributors:
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Grok](../../CONTRIBUTORS.md#grok) (Grok 4.7 via [Cursor](../../CONTRIBUTORS.md#cursor)) — applied
+
+#### What changed
+- The helper example is `tp When mt (self TimeHelper) (d NanoSecondDuration) (t MonotonicTime)` called `helper.When(d)(t1)`.
+- `Sum` is `tp Sum mt (self W32) (a W32, b W32) (total W32, err Error)`, called `W32.Sum(a, b)(total, err)`. The parent type stays in `self`. The body does not invoke `self`. `Set` is `tp Set mt (self Key) (value String) (err Error)`, called `k.Set(value)(err)` (Omid Hekayati — decided).
+- A method's influencing group may receive a `vr`, an `sc`, or an `mt`. The compiler distinguishes the three. A code scope is received this way by the library method that drives it (Omid Hekayati — decided).
+- A method implements an abstraction by defining methods whose owner is that method. It may present that implementation through an intent abstraction such as `abstraction_p.Implements` (Omid Hekayati — decided).
+
+#### Considered and not done
+- **A method with no parent type, written `tp Sum mt () (...)` (rejected)**: the owner group names the parent type. Calling on that type does not delete `self` from the signature. Inside the body of that call, `self` is not invoked (Omid Hekayati — decided).
+- **Requiring a `vr` whose type is a Method before a method-owned method can be invoked (rejected)**: a `vr` names a capsule or an abstraction. An `mt` receiver is the method itself, and the compiler tells an `mt` from a `vr` (Omid Hekayati — decided).

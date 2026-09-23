@@ -200,3 +200,20 @@
 
 #### Considered and not done
 - **Leaving the heading and adding only a parenthetical gloss (rejected)**: the heading is the anchor abstraction.md and the handoff follow, so the collision would remain at the link target.
+
+---
+
+### A method shows asynchronous behavior by implementing that abstraction
+- Time: 2026-09-23T08:43:30Z
+- Type: Fixed
+- Propagates to:
+  - agency.handoff.md: Done — the declaration-form question is removed (handoff: no entry of its own).
+- Contributors:
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Grok](../../CONTRIBUTORS.md#grok) (Grok 4.7 via [Cursor](../../CONTRIBUTORS.md#cursor)) — applied
+
+#### What changed
+- Asynchronous behavior is an abstraction the method implements by defining that abstraction's methods on itself. The method may compose an intent abstraction such as `abstraction_p.Implements` so tooling can see the implementation. The open question is removed from the handoff.
+
+#### Considered and not done
+- **A tag slot on the method signature, a bare name in an `mt` body, a marker method as the only form, or a convention with no declaration (rejected)**: the method implements the abstraction with methods of its own, and may present that fact through an intent abstraction (Omid Hekayati — decided).

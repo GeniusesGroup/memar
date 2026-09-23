@@ -452,3 +452,24 @@ Considered placing the topic in `khayyam-runtime.md` instead, since Unikernel is
 
 #### Deliberation
 - Both reviews of the staged transfer found the same residue: Type's defined-contract vocabulary names a Type's guarantees, not an inheritance plane, and Protocol vs Contract reserves *contract* for parties, obligations, and commitments (Grok — reviewed; Gemini — reviewed).
+
+---
+
+### Retired the swapped efficacy labels; pointed at two open grammar questions
+- Time: 2026-09-23T08:43:30Z
+- Type: Fixed
+- Cited:
+  - [Method in Khayyam](./method.md) — Depends_on: influencing and influenced are the signature groups this document's pattern already names.
+- Propagates to:
+  - type.md: Done — the opposite efficacy/impressible gloss is withdrawn there.
+- Contributors:
+  - [Grok](../../CONTRIBUTORS.md#grok) (Grok 4.7 via [Cursor](../../CONTRIBUTORS.md#cursor)) — reviewed, applied
+  - [Meta AI](../../CONTRIBUTORS.md#meta-ai) (muse-spark-1.3 via [Cursor](../../CONTRIBUTORS.md#cursor)) — reviewed
+
+#### What changed
+- The method bullet names the owner, the influencing variables, and the influenced variables. The labels `efficacy` and `impressible` are recorded only here: this document had glossed them as arguments and returns, and Type had glossed them as outputs and inputs (Grok — applied).
+- `Sum` is `tp Sum mt (self W32) (a W32, b W32) (total W32, err Error)`, called `W32.Sum(a, b)(total, err)`. `Set` is called `k.Set(value)(err)`. The parent type stays in `self` (Omid Hekayati — decided).
+- Human-facing text is a value a method writes into an influenced variable. The method's signature is an open question in the handoff (Omid Hekayati — decided the placement; the signature remains open).
+- When `self`'s owner is a method, the receiver is that method. The method implements an abstraction by defining methods on itself (Omid Hekayati — decided).
+- A one-token line in a capsule body is a bare abstraction name the capsule composes (Grok — applied).
+- The practice cheat sheet's calls use the same two groups after the receiver (Grok — applied).

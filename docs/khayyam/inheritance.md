@@ -116,7 +116,7 @@ Embedding a capsule inside another capsule does not expose the inner capsule's m
 If a host capsule needs to expose a behavior of an embedded capsule, the developer must explicitly define a method on the host capsule and transparently delegate the call to the embedded instance. The compiler verifies that the delegation call exists in the host capsule's source code.
 
 **Rule: Abstraction Conformance Is Structural.**
-A capsule satisfies an abstraction if it implements all methods declared by that abstraction with identical signatures. The compiler validates this during assignment or parameter passing where an abstraction type is expected. Missing or mismatched methods result in a strict compile-time error.
+A capsule satisfies an abstraction if it implements every method declared by that abstraction. For each such method, the influencing-variable types must match exactly, the influenced-variable types must match exactly or by covariant return as specified in [Polymorphism → Covariant Return Types](./polymorphism.md#covariant-return-types), and the implementing method's receiver is the capsule, not the abstraction. The same rule is stated from the satisfaction side in [Abstraction Realization (Implicit Satisfaction)](./abstraction.md#abstraction-realization-implicit-satisfaction). The compiler validates this during assignment or parameter passing where an abstraction type is expected. Missing or mismatched methods result in a strict compile-time error.
 
 **Rule: Abstractions Have No Behavior.**
 An abstraction (`ab`) cannot contain method bodies, state, or default implementations. Methods declared by an abstraction are signatures only. This is enforced at the parser level.

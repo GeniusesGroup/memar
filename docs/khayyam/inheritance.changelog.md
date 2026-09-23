@@ -123,3 +123,17 @@
 
 #### What changed
 - The Abstraction Purity bullet now says Khayyam's abstractions are pure *behavioral specifications* — no logic, no state, no predefined method bodies — rather than pure contracts.
+
+---
+
+### Abstraction conformance no longer requires identical signatures
+- Time: 2026-09-23T08:43:30Z
+- Type: Fixed
+- Cited:
+  - [Abstraction in Khayyam](./abstraction.md) — Depends_on: Abstraction Realization already states exact influencing types, covariant influenced types, and a capsule receiver.
+  - [Polymorphism in Khayyam](./polymorphism.md) — Reference: Covariant Return Types is the specification the influenced-type clause points at.
+- Contributors:
+  - [Grok](../../CONTRIBUTORS.md#grok) (Grok 4.7 via [Cursor](../../CONTRIBUTORS.md#cursor)) — reviewed, applied
+
+#### What changed
+- Compiler Rules → Abstraction Conformance Is Structural no longer says a capsule satisfies an abstraction only with identical signatures. Influencing-variable types must match exactly, influenced-variable types must match exactly or by covariant return, and the receiver is the implementing capsule.

@@ -174,3 +174,21 @@
 #### Deliberation
 - The critique that MathEval's compile-time checking sat uneasily beside the operator ban was answered by the ruling that MathEval is not language grammar but a replaceable library example, same category as regex (Omid Hekayati — decided).
 - The constructor/init bootstrap critique was accepted as an open question: how the compiler reads values from code (the lexer reading `vr` as a token without string semantics) is not concluded (Omid Hekayati — decided).
+
+---
+
+### File-level initialization has no stated home for its call
+- Time: 2026-09-23T08:50:00Z
+- Type: Fixed
+- Propagates to:
+  - variable.handoff.md: Done — the file-level initialization question is removed. The first-instance question stays (handoff: no entry of its own).
+- Contributors:
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Grok](../../CONTRIBUTORS.md#grok) (Grok 4.7 via [Cursor](../../CONTRIBUTORS.md#cursor)) — applied
+
+#### What changed
+- A file-level `vr` is a declaration. Its initial state is established by the compiler and by source that code generation emits, the same placement as program boot: [Compiler → Entry and lifecycle are not grammar](../protocols/compiler.md#entry-and-lifecycle-are-not-grammar). The question is removed from the handoff.
+- A `vr` declaration names a capsule or an abstraction. A method's influencing group may also receive an `sc` or an `mt`.
+
+#### Considered and not done
+- **An `init` function in the grammar (rejected)**: Go uses `init` for this. Khayyam keeps lifecycle out of the grammar, the same decision as `main`. Code generation and the compiler do the work (Omid Hekayati — decided).

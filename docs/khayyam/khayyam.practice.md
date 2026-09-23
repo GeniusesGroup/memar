@@ -53,8 +53,9 @@ tp {name} mt (self {type_owner}) ({args}...) ({returns}...) { ___ }
 - No `const`/`mut` — mutation only through an exposed mutating method.
 - Body-less method = abstraction specification signature, or FFI stub against an external `.s`/`.o` implementation.
 - Calls always use a single `.` — never `::`.
-- No `self` in signature → static, call via `TypeName.Method()`. `self` present → instance, call via `varName.Method()`.
-- A method's synchronous or asynchronous nature is declared at its own definition (an abstraction tag), never chosen by the caller. There is no `go`/`async`/`await` keyword.
+- The signature names the parent type: `tp Sum mt (self W32) (a W32, b W32) (total W32, err Error)`. The call on that type is `W32.Sum(a, b)(total, err)`. The body does not invoke `self`. A call on a variable of the parent type is `k.Set(value)(err)` for `tp Set mt (self Key) (value String) (err Error)`.
+- An influencing position may be a `vr`, an `sc`, or an `mt`. The compiler distinguishes them. A method can implement an abstraction by defining methods on itself, and can present that fact with an intent abstraction such as `abstraction_p.Implements`.
+- A method's synchronous or asynchronous nature is an abstraction the method implements by defining methods on itself, never a choice at the call. There is no `go`/`async`/`await` keyword.
 
 ### Abstraction (pure behavioral specification)
 ```khayyam
@@ -86,8 +87,8 @@ For the mechanical-translation posture — a structural mapping, not a redesign.
 | From (typical)               | To (Khayyam)                                                               |
 | ---------------------------- | -------------------------------------------------------------------------- |
 | `struct`/`class` fields      | `cp` with hidden fields, accessor/mutator methods                          |
-| free function                | `mt` with no `self`                                                        |
-| method on a type             | `mt` with `self {type_owner}`                                              |
+| free function                | `mt` whose parent type is in `self`, called on that type: `W32.Sum(a, b)(total, err)` for `tp Sum mt (self W32) (a W32, b W32) (total W32, err Error)`. The body does not invoke `self`. |
+| method on a type             | `mt` with `self {type_owner}`, called on a variable of that type: `k.Set(value)(err)` |
 | `interface`/`trait`          | `ab`                                                                       |
 | generic function `f<T>(x T)` | rewrite around required behavior (an `ab`) instead of a type parameter     |
 | `x = y` / mutation           | a method call that explicitly performs the mutation                        |
@@ -95,6 +96,9 @@ For the mechanical-translation posture — a structural mapping, not a redesign.
 | `go`/`async`/`await`         | no equivalent — tag the method itself at its definition, not the call site |
 
 If a construct doesn't map cleanly (closures, macros, generics-heavy code), don't invent syntax — fetch the documented replacement pattern via `memar` SKILL before proposing one.
+
+## Field-shaped values
+A value such as `Field_UserUUID` is one type. On that type, write one method that names which other abstractions a code generator implements for it, per [abstraction_p.Implements](../protocols/abstraction-implements.md). The generator writes those methods. This is a generation procedure, not a Khayyam keyword.
 
 ## Rules worth applying even when not asked
 For the full-design-treatment posture:

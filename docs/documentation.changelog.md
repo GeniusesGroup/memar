@@ -233,3 +233,23 @@ Fixed skeleton: four sections. Everything else optional, catalogued. Open questi
 
 #### Deliberation
 Owner: an executing agent does not need to read the explanatory document to carry out a rule that the practice can state. The practice files already existed for that split, and they did not say so as a reading rule. The modeling session wrote a relation rule into the explanation and did not add the steps to the practice.
+
+---
+
+### The body affirms what holds; removed formulations stay in the changelog
+- Time: 2026-09-23T09:05:00Z
+- Type: Fixed
+- Cited:
+  - [Documentation — Explanation](./documentation-explanation.md) — Depends_on: Relevance discipline already sends a negated alternative to the changelog because a reader loading the body treats a negation as a live claim.
+- Propagates to:
+  - documentation.practice.md: Done — the written-surface step states the same rule, including when a prior snapshot exists.
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — requested
+  - [Grok](../CONTRIBUTORS.md#grok) (Grok 4.7 via [Cursor](../CONTRIBUTORS.md#cursor)) — applied
+
+#### What changed
+- Written surface gains a bullet: a body sentence states the current rule. The replaced wording, the dropped label, and the rejected alternative are changelog content. A sentence whose job is to warn the reader off a previous formulation does not stay in the body, whether or not a prior snapshot of that formulation exists.
+- The practice's written-surface step carries the same instruction.
+
+#### Deliberation
+- The present-state bullet covered only the case where the reader cannot open a prior snapshot. That left a reading on which, once a snapshot exists, the body may narrate "X is retired" and "Y is not the rule." A Khayyam edit did exactly that with two signature labels after replacing them. The relevance discipline already forbids a negated alternative in the body; the written-surface rule did not say so in the step an editor follows (Omid Hekayati — requested; Grok — applied).

@@ -4,6 +4,9 @@ Open work for `abstraction.md`. Entries are mutable current state — revised as
 
 ## Open Questions
 
+### Does Khayyam allow an abstraction with no methods?
+Open. The form is `tp Name ab` with no methods attached to it. Whether a concept that requires no behavior is a finished model is a modeling question, in [Modeling Handoff → A concept that requires no behavior](../modeling.handoff.md#a-concept-that-requires-no-behavior). This question is only the language's: is that form legal Khayyam?
+
 ### Is structural satisfaction sufficient, or does it need an intentional-satisfaction mechanism?
 This is the central open question, carried forward from the two documents `abstraction.md` absorbs, with several sub-questions:
 - Should this be resolved before Khayyam leaves Draft-equivalent status for the abstraction model, given how disruptive option (b) or (c) below would be if decided later?

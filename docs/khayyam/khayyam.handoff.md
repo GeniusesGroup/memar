@@ -51,6 +51,12 @@ Now that philosophy and syntax reference live in one document — the way *Behav
 - State: recovered 2026-09-16 from the same audit. The Error & ADT session identified that the file-inclusion contract ([RFC 000013](../protocols/filesystem.md) era, now stated in [Khayyam → Import Mechanism](./khayyam.md#import-mechanism-in)) does not address mutual `in` inclusion between files, and recorded that this gates the stdlib bootstrap question above. The [Modularity in Khayyam](./modularity.handoff.md#cyclic-module-dependencies) handoff owns the *module-level* cycle decision; the *file-inclusion-level* cycle question has no tracked owner and was never carried into a handoff.
 - Next: decide with the Import Mechanism's next revision, or fold into the module-cycle decision whichever layer the ruling actually belongs to.
 
+### Which method returns human-facing text, and on which owner?
+[Self-Documenting Code and Naming](./khayyam.md#self-documenting-code-and-naming) states that a description or a human-readable name is a value a method writes into an influenced variable, so another language is another method on the same type. The signature of that method, and whether the owner is the type being described or a companion type, is not worked. Examples in this document set still use `//` lines; those lines are not that method.
+
+### Translating a Go tree before memar-khayyam exists
+A file-by-file translation of an existing Go module, ahead of the Khayyam implementation repository, produces sources that have to choose among incompatible sketches. The settled points for a later pass, already stated in the language documents, are: a protocol is an abstraction; a field-shaped value is one type plus one method that names what a code generator implements ([Encapsulation → Capsule Structure and Privacy](./encapsulation.md#capsule-structure-and-privacy)); human-facing text is a method result, as above. Writing a migration map and translating a large module are not the next step. A set of about 179 empty Go files was named as movable into place; they are not in this workspace, so they were not moved.
+
 ## Anticipated Work
 
 - A dedicated **Target Platform Implications** document: defining the hosted-mode specification, enumerating the OS abstractions required for productive development outside a unikernel, and specifying the boundary between unikernel-native and hosted-mode behavior. (From the *Execution Semantics Philosophy* topic's retired Future possibilities; the document-level Future possibilities recorded none, so it migrated nothing.)

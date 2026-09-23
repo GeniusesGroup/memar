@@ -4,6 +4,9 @@ Open work for `modeling.md`. Entries are mutable current state — revised as ea
 
 ## Open Questions
 
+### A concept that requires no behavior
+Whether a concept with no required behavior is a finished model, or is always an unfinished one, is open. Khayyam's separate question — whether the language allows an abstraction with no methods — is in [Abstraction in Khayyam Handoff](./khayyam/abstraction.handoff.md#does-khayyam-allow-an-abstraction-with-no-methods).
+
 ### Models Are Not Reality
 1. Should Memar prescribe specific modeling formalisms, or remain formalism-agnostic?
 2. How should models be versioned and evolved alongside the systems they describe?

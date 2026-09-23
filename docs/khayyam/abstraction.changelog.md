@@ -157,3 +157,21 @@ Alternatives: (a) keep the identical-receiver wording and change examples to use
 - The critique that abstraction examples read as if primitives were legal signature types was accepted as an example/docs defect (Omid Hekayati — decided).
 - Collapsing "abstraction" into "contract," and hedging wrong examples as "illustrative, ignore what they fail to answer," were rejected on review: fix the example; do not instruct the reader to look past it (Omid Hekayati — decided).
 - The owner stated that contract is a distinct architecture concept (what parties commit to each other) while abstraction merely declares behavior; the body text is aligned to that distinction (Omid Hekayati — decided).
+
+---
+
+### Whether an abstraction with no methods is legal stays a Khayyam question
+- Time: 2026-09-23T10:20:00Z
+- Type: Fixed
+- Propagates to:
+  - abstraction.handoff.md: Done — the open question is whether Khayyam allows an abstraction with no methods (handoff: no entry of its own).
+  - modeling.handoff.md: Done — whether a concept with no required behavior is a finished model is recorded there.
+- Contributors:
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Grok](../../CONTRIBUTORS.md#grok) (Grok 4.7 via [Cursor](../../CONTRIBUTORS.md#cursor)) — applied
+
+#### What changed
+- The Khayyam body does not judge empty abstractions. The language question — whether `tp Name ab` with no methods is legal — is open in the abstraction handoff. Whether a concept with no required behavior is a finished model is in the modeling handoff.
+
+#### Considered and not done
+- **Stating in the Khayyam body that an empty abstraction is unfinished modeling (rejected)**: that is a modeling question. Khayyam's question is whether the form is legal (Omid Hekayati — decided).
