@@ -108,3 +108,18 @@
 - **Swift Protocols with Extensions:** Swift protocols can be extended with default implementations via protocol extensions. This allows behavior injection that is invisible at the conforming type's definition site. Khayyam rejects this pattern. (Migrated from the retired document-level Prior art)
 - **Kotlin Open Classes:** Kotlin marks classes as `open` to allow inheritance, with `final` as the default. This is a more conservative approach than Java's, but still allows behavior transfer when opted in. Khayyam does not provide behavior transfer between capsules at all. (Migrated from the retired document-level Prior art)
 - **Zig Comptime and Delegation:** Zig has no inheritance and relies on explicit composition and compile-time code generation. This aligns closely with Khayyam's approach and validates the feasibility of a behavior-transfer-free design in a systems programming language. (Migrated from the retired document-level Prior art)
+
+---
+
+### Abstraction purity restated as behavioral specification
+- Time: 2026-09-23T05:38:39Z
+- Type: Fixed
+- Cited:
+  - [Protocol](../protocol.md) — Depends_on: Protocol vs Contract.
+  - [Abstraction in Khayyam](./abstraction.md) — Reference: pure-specification wording.
+- Contributors:
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Mimo](../../CONTRIBUTORS.md#mimo) (mimo-v2.6-flash via OpenCode) — applied
+
+#### What changed
+- The Abstraction Purity bullet now says Khayyam's abstractions are pure *behavioral specifications* — no logic, no state, no predefined method bodies — rather than pure contracts.

@@ -63,3 +63,18 @@ The body already conformed to `documentation-explanation.md` (Abstract; Introduc
 - Rust's macro system and the C preprocessor are the primary prior art being rejected for macros. Languages and ecosystems that instead rely on external code generators emitting plain source (e.g. Go's `go generate` convention, or Protocol Buffers' code generation step) are closer in spirit to Khayyam's chosen approach. Notably, Rust — which also has no built-in reflection — leans on its macro system (e.g. `serde`'s derive macros) to cover needs Khayyam covers instead through opt-in reflection (see [Reflective Programming](./metaprogramming.md#reflective-programming)); rejecting macros without offering some other release valve for that category of need would leave a real gap. (Migrated from the Rejection of Syntactic Macros topic's retired Prior art)
 - Java's `Class`/`getClass()` and Go's `reflect` package are the primary prior art for universal, always-on reflection, rejected here in favor of an opt-in model. Rust deliberately has no reflection and relies on derive macros (`serde`, `Debug`) for the same category of need — a useful contrast, since Khayyam rejects Rust's macro-based solution too but, unlike Rust, retains a non-macro path to the same underlying need. C#'s attribute-plus-reflection combination is closer to a hidden-by-default, opt-out model (nearly everything is reflectable unless deliberately hidden) — the inverse of Khayyam's opt-in-by-default stance. (Migrated from the Reflective Programming topic's retired Prior art)
 - Taken as a whole, this document's stance — support the underlying need (introspection) while rejecting the specific mechanisms (decorators, macros, universal reflection) that would make it invisible or unconditional — mirrors the pattern already established by [`abstraction_p.Implements`](../protocols/abstraction-implements.md): solve the tooling problem with an ordinary, opt-in, composed method, not a language feature. (Migrated from the retired document-level Prior art, whose pointer that individual prior art is documented per topic is thereby superseded by the three bullets above, which reproduce it)
+
+---
+
+### Abstraction's contract wording replaced with requires/specification
+- Time: 2026-09-23T05:38:39Z
+- Type: Fixed
+- Cited:
+  - [Abstraction in Khayyam](./abstraction.md) — Reference: pure-specification wording.
+  - [Protocol](../protocol.md) — Depends_on: Protocol vs Contract.
+- Contributors:
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Mimo](../../CONTRIBUTORS.md#mimo) (mimo-v2.6-flash via OpenCode) — applied
+
+#### What changed
+- The compiler/runtime reflection sentence now says the concrete implementation is provided for whatever the abstraction *requires*, not whatever that abstraction's *contract* requires.

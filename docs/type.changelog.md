@@ -55,7 +55,7 @@ The seven entries below are migrated from `type.md`'s former `## Change Rational
 - Cited:
   - [Modeling](./modeling.md) — Depends_on: Type is the result of correct modeling; the concept of Type cannot be understood independently of the modeling process that identifies what should exist as a Type, and Modeling establishes that abstractions are justified by independent responsibilities, not by data.
   - [Encapsulation in Khayyam](./khayyam/encapsulation.md) — Reference: specifies how Capsule and Method manifest in Khayyam — Sovereign Encapsulation, method invocation rules, and the rejection of tuples and consumer-side mutability keywords.
-  - [Abstraction in Khayyam](./khayyam/abstraction.md) — Reference: specifies pure contracts, implicit structural satisfaction, rejection of default implementations, and abstraction composition.
+  - [Abstraction in Khayyam](./khayyam/abstraction.md) — Reference: specifies pure behavioral specifications, implicit structural satisfaction, rejection of default implementations, and abstraction composition.
   - [Inheritance in Khayyam](./khayyam/inheritance.md) — Reference: inheritance is a relationship between abstractions, not between capsules — behavior transfer rejected, abstraction extension supported.
   - [Polymorphism in Khayyam](./khayyam/polymorphism.md) — Reference: classifies the polymorphism forms Khayyam supports through abstraction conformance — inclusion, parametric, and ad-hoc — and the rejection of generic syntax.
   - [Khayyam](./khayyam/khayyam.md) — Reference: documents the recurring principles (Behavior Over Type Identity, Domain Modeling, Syntactic Atomicity) that the Type concept in Khayyam instantiates, and is the canonical specification of Khayyam's type subtypes and their syntax.
@@ -408,3 +408,47 @@ Dissolved every `#### Discussion` wrapper (How to identify a Type, Definition of
 - The Method definition's "In the Khayyam model" attribution became "In this document's model": Method-as-Type is this document's position, which Khayyam realizes, not a property borrowed from the language.
 - The Abstraction composition sentence dropped the "Khayyam's mechanism" attribution: requirement extension is the mechanism defined here; `ab` composition is its realization.
 - No definitional content changed — the definitions already stood independently of Khayyam (the Abstract and Introduction had stated that separation explicitly since the document's consolidation); the edits remove the remaining points where realization vocabulary and language-layer state tracking sat inside definition sections.
+
+---
+
+### Abstraction category reworded from contract to specification
+- Time: 2026-09-23T05:38:39Z
+- Type: Fixed
+- Cited:
+  - [Protocol](./protocol.md) — Depends_on: Protocol vs Contract defines a contract as parties, obligations, and commitments.
+  - [Abstraction in Khayyam](./khayyam/abstraction.md) — Reference: the document-level correction this entry extends to the Type model.
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Mimo](../CONTRIBUTORS.md#mimo) (mimo-v2.6-flash via OpenCode) — applied
+
+#### What changed
+- The Abstract's Khayyam-manifestation sentence now says Abstraction *specifies required behavior*, not *specifies a contract*.
+- The Abstraction category section heading is now "Type as Specification"; its definition says Type-level *behavioral specification*.
+- Body occurrences tied to the Abstraction category now say specification: fulfilling an Abstraction's specification, compound specifications, specification-level abstraction boundary, implementation-agnostic specification, pure behavioral specifications, and the specification/implementation line for default implementations.
+- The four-category justification, the keyword-mapping table's role cell, and the mapping prose now say pure behavioral specification where the role is Abstraction.
+- The Manifestation in Khayyam bullet is now "Abstraction as pure specification" with the same body wording.
+- The paired type.practice.md category row was aligned; the citation annotation in type.changelog.md's companion-documents entry was updated to match what abstraction.md now specifies.
+- Type's own *defined contract* vocabulary (identity/contract as a Type's guarantees), capsule public-interface contract wording, and historical changelog narratives were deliberately left untouched — separate vocabulary questions.
+
+#### Deliberation
+- Contract remains a distinct architecture concept; the Abstraction category only declares required behavior (Omid Hekayati — decided).
+
+---
+
+### Manifestation in Khayyam section transferred to the Khayyam specification
+- Time: 2026-09-23T07:07:01Z
+- Type: refactor
+- Propagates to:
+  - khayyam/khayyam.md: Done — the realization bullets now live there under "Type Principles Realized", citing down to this document and the companion documents.
+  - type.handoff.md: Done — the bootstrapping entry's upward links replaced with plain-text path references (handoff: no entry of its own).
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Mimo](../CONTRIBUTORS.md#mimo) (mimo-v2.6-flash via OpenCode) — applied
+
+#### What changed
+- The "Manifestation in Khayyam" section moved wholesale to `khayyam/khayyam.md` as "Type Principles Realized": No primitive types, Sovereign Encapsulation (the duplicate bullet pair merged during the move), the `tp` keyword, Method as Type, Abstraction as pure specification, Inheritance between Abstractions, and Behavior over type identity. Nothing was dropped — the destination carries the itemized account, with companion links added.
+- The Introduction's boundary sentence no longer anchors a local Manifestation section; it now states that how Khayyam realizes these principles is recorded in that language's own documents — prose, no hyperlink: principles first, language second.
+- The Scope paragraph and the Concepts Outlive Their Labels paragraph lost their upward hyperlinks into `khayyam/`; the Khayyam specification and the Khayyam inheritance specification are named in prose.
+
+#### Deliberation
+- Citations run down: a base document never links into `khayyam/`, so the realization account lives on the realization side, where the citation direction is legal (Omid Hekayati — decided).

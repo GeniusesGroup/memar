@@ -230,3 +230,64 @@ This cost is partially mitigated by two factors. First, Khayyam's ecosystem incl
 
 #### Deliberation
 - The ruling — Polymorphism is not a subset or perfection of Abstraction, and the citation must read "references/uses" — was given in the vr-ab review session but never reached this document; recorded here when the session's chat file was pruned from `chats-context/` (Omid Hekayati — ruled).
+
+---
+
+### Hasher and VersionedSerializer examples: abstractions declared; primitive returns replaced
+- Time: 2026-09-23T04:38:49Z
+- Type: Fixed
+- Cited:
+  - [Abstraction in Khayyam](./abstraction.md) — Reference: What You Cannot Do — primitive capsules and concrete capsules do not appear in abstraction-owned method signatures; the paired note there points to this correction.
+- Contributors:
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Mimo](../../CONTRIBUTORS.md#mimo) (mimo-v2.6-flash via OpenCode) — applied
+
+#### What changed
+- The `tp Hash mt (self Hasher) (data Bytes) (h W64)` example now returns `(d Digest, err Error)` — matching the `Process` call site — and declares `tp Digest ab`; `W64` as a method-signature return type violated the abstraction-signature rule.
+- The `tp Version mt (self VersionedSerializer) () (v W32)` example now returns `(v VersionInfo)` and declares `tp VersionInfo ab` for the same reason.
+- Both polymorphism examples now declare every abstraction they reference (`Hasher`, `Bytes`, `Digest`, `Error`) in the example itself, use consistent influenced-variable names, and the extension topic heading says "richer abstractions" rather than "richer contracts" — contract is a distinct concept (parties, obligations, commitments).
+
+#### Deliberation
+- The critique that these examples contradicted the language's own no-primitive-in-abstraction-signature rule was accepted: the examples were wrong, not the rule (Omid Hekayati — decided).
+- Examples must be fixed in place, not labeled illustrative-and-may-not-answer (Omid Hekayati — decided).
+
+---
+
+### Compiler-facing residue renamed from contracts to abstractions
+- Time: 2026-09-23T05:38:39Z
+- Type: Fixed
+- Cited:
+  - [Protocol](../protocol.md) — Depends_on: Protocol vs Contract — developer/compiler wording no longer uses "contract".
+  - [Abstraction in Khayyam](./abstraction.md) — Reference: the compiler-facing carrier named here is an abstraction, not a contract.
+- Contributors:
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Mimo](../../CONTRIBUTORS.md#mimo) (mimo-v2.6-flash via OpenCode) — applied
+
+#### What changed
+- The design position now says compile-time facts are expressed through explicit *compiler-visible declarations*, not explicit contracts between the developer and the compiler.
+- The compile-time-facts bullet says compiler-visible *abstractions*, matching its own follow-on sentence ("define an abstraction").
+- The closing residue sentence says optimization *abstractions* and a dedicated document on *compiler-facing abstractions*, not optimization contracts / compiler contracts.
+- The paired handoff's Open Question heading and body were renamed to match (handoff is mutable state — no separate entry).
+
+#### Deliberation
+- The compiler and the developer do not hold reciprocal obligations toward each other in the Protocol vs Contract sense; the carrier of compile-time facts is an abstraction the compiler reads (Omid Hekayati — decided).
+
+---
+
+### Parametric Process sketch matched to Hash; host-language "contract model" retired
+- Time: 2026-09-23T08:28:49Z
+- Type: Fixed
+- Cited:
+  - [Protocol](../protocol.md) — Depends_on: Protocol vs Contract — *contract* is parties, obligations, and commitments, not the name of Khayyam's polymorphism model.
+  - [Abstraction in Khayyam](./abstraction.md) — Reference: an abstraction is a behavioral specification, not a contract.
+- Contributors:
+  - [Grok](../../CONTRIBUTORS.md#grok) (Grok 4.7 via Cursor) — reviewed, applied
+  - [Gemini](../../CONTRIBUTORS.md#gemini) (Gemini 3.8 flash via Cursor) — reviewed
+
+#### What changed
+- The parametric-polymorphism `Process` sketch now returns `(d Digest, err Error)`, the same signature as the corrected `Process`/`Hash` pair earlier in the document.
+- The closed-vs-open paragraph now says a host language lacking Khayyam's abstraction model, rather than a "contract model" or "contract-based abstraction."
+
+#### Deliberation
+- One review treated "contract model" as ordinary guarantee vocabulary and dissolved it (Grok — reviewed). The other treated it as the same conflation the compiler-facing pass had just removed from this document (Gemini — reviewed). The applied reading follows the document's own decision that contract stays the Protocol concept: the paragraph is about Khayyam's abstraction model, and the two phrases were the retired name.
+- The parametric sketch presented the same `Process` as the corrected pair while still returning only `(err Error)`; examples are fixed in place, so the signatures now match (Grok — reviewed).

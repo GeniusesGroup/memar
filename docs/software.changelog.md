@@ -37,3 +37,18 @@
 
 #### Deliberation
 - The supersession was directed in the ecosystem de-ambiguation session: the audit showed the corpus's ecosystem uses conforming to the structural sense, and the owner approved the definition and the reference fixes together (Omid Hekayati — decided).
+
+---
+
+### IEEE 1012 row's Khayyam hyperlink removed per citation direction
+- Time: 2026-09-23T07:07:01Z
+- Type: Fixed
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Mimo](../CONTRIBUTORS.md#mimo) (mimo-v2.6-flash via OpenCode) — applied
+
+#### What changed
+- The Software verification and validation row now reads "abstraction conformance in the Khayyam documents is the compile-time verification face". The claim is unchanged; the upward hyperlink into `khayyam/abstraction.md` is removed.
+
+#### Deliberation
+- A base document never links into `khayyam/` — plain-text naming only (Omid Hekayati — decided).

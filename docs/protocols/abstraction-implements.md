@@ -8,7 +8,7 @@ ID: 495413
 # abstraction_p.Implements — A Tooling-Facing Implementation-Intent Declaration
 
 ## Abstract
-`abstraction_p.Implements` is a minimal, generic, exported abstraction — a single body-less method, `Implements()` — that any Khayyam abstraction MAY optionally compose into its own definition. Its sole purpose is to give codegen tools, linters, and compilers a uniform, structural, discoverable signal that a capsule intends to implement that specific abstraction, even before the capsule's implementation is complete. This is strictly a tooling-facing convenience, not a runtime type-safety or anti-misuse mechanism. Khayyam's abstraction satisfaction remains, and is intended to remain, purely structural (per [khayyam.md](../khayyam/khayyam.md)'s "Contract-First Approach"); this document does not change that, and adoption is entirely opt-in per abstraction.
+`abstraction_p.Implements` is a minimal, generic, exported abstraction — a single body-less method, `Implements()` — that any Khayyam abstraction MAY optionally compose into its own definition. Its sole purpose is to give codegen tools, linters, and compilers a uniform, structural, discoverable signal that a capsule intends to implement that specific abstraction, even before the capsule's implementation is complete. This is strictly a tooling-facing convenience, not a runtime type-safety or anti-misuse mechanism. Khayyam's abstraction satisfaction remains, and is intended to remain, purely structural (per [abstraction.md](../khayyam/abstraction.md)'s implicit structural satisfaction); this document does not change that, and adoption is entirely opt-in per abstraction.
 
 ## Introduction
 

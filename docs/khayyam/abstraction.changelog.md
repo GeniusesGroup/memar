@@ -136,3 +136,24 @@ Alternatives: (a) keep the identical-receiver wording and change examples to use
 - **TypeScript — Structural Typing (Compile-Time Only).** TypeScript's type system uses structural typing for interface satisfaction, closely mirroring Go's model. TypeScript interfaces can describe object shapes, and any object with matching properties satisfies the interface. TypeScript has no default method implementations (its interfaces are purely type-level, erased at runtime). The accidental-satisfaction risk exists but is less practically concerning because TypeScript interfaces are not used as runtime dispatch mechanisms. Khayyam's abstractions, by contrast, have runtime implications (VTable generation), making accidental satisfaction a potentially more serious issue. (Migrated from the retired document-level Prior art.)
 - **Zig — No Built-in Interfaces (Comptime-Based Alternatives).** Zig takes the most radical minimalist approach: it has no interface or trait mechanism at all. Generic behavior is achieved through `comptime` (compile-time code execution) and duck typing at the generic function level. This provides maximum simplicity but shifts the entire burden of polymorphism to the developer. Khayyam's design occupies a middle ground: it provides a first-class abstraction type for cleaner API contracts while keeping the language grammar minimal. (Migrated from the retired document-level Prior art.)
 - **Haskell — Typeclasses (Nominal, No Defaults in the Language Core).** Haskell's typeclasses use nominal typing with explicit `instance` declarations. Typeclasses in their pure form carry no default implementations (though GHC extensions add them). Haskell's approach is closest to a "pure contract" model, and it demonstrates that nominal typing and zero-cost abstraction can coexist. However, Haskell's typeclass resolution happens at compile time through a separate mechanism (instance resolution), which is a form of implicit behavior that Khayyam's explicit delegation model avoids. (Migrated from the retired document-level Prior art.)
+
+---
+
+### Element and Error declared as abstractions in the Read/Close example
+- Time: 2026-09-23T04:38:49Z
+- Type: Fixed
+- Cited:
+  - [Polymorphism in Khayyam](./polymorphism.md) — Reference: the primitive-return examples corrected there under this same review round.
+- Contributors:
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Mimo](../../CONTRIBUTORS.md#mimo) (mimo-v2.6-flash via OpenCode) — applied
+
+#### What changed
+- The Read/Close example now declares `tp Element ab` and `tp Error ab` alongside `tp Reader ab`, so the signature types in the example are defined in the example itself.
+- The following prose states that `Element` and `Error` in these examples are abstractions — declared behavior, not capsule types — and that only abstractions may appear in an abstraction-owned method signature; earlier polymorphism examples that showed a primitive there have been corrected in the paired changelog.
+- The document's conflation of abstraction with contract is corrected against [Protocol vs Contract](../protocol.md#protocol-vs-contract): Abstract, What Is an Abstraction, Motivation bullets, What You Cannot Do, and Rejection of Default Implementations now say *behavioral specification* / *declaration of required behavior* rather than *pure contract* / *contractual agreement* / *Contract-First*; the IDL opening states explicitly that an abstraction is not a contract (no parties, obligations, commitments). An intermediate wording of the example paragraph had called abstractions "contracts" and told the reader to treat non-answering examples as illustrative; both were corrected on the owner's review.
+
+#### Deliberation
+- The critique that abstraction examples read as if primitives were legal signature types was accepted as an example/docs defect (Omid Hekayati — decided).
+- Collapsing "abstraction" into "contract," and hedging wrong examples as "illustrative, ignore what they fail to answer," were rejected on review: fix the example; do not instruct the reader to look past it (Omid Hekayati — decided).
+- The owner stated that contract is a distinct architecture concept (what parties commit to each other) while abstraction merely declares behavior; the body text is aligned to that distinction (Omid Hekayati — decided).

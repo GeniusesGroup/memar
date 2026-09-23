@@ -50,25 +50,33 @@ Polymorphism, at its core, means "one operation, many types" — the ability for
 1. **Writing code that accepts any abstraction-conforming capsule (Inclusion/Subtype Polymorphism)**
 This is the primary form of polymorphism in Khayyam. You write a method that accepts an abstraction type as its parameter. Any capsule that satisfies that abstraction can be passed in:
 ```khayyam
+tp Hasher ab
+tp Bytes ab
+tp Digest ab
+tp Error ab
+
 // A method that works with ANY hasher — this is polymorphism
-tp Process mt (self Service) (h Hasher, data Bytes) (err Error) {
-    h.Hash(data)(err)
+tp Process mt (self Service) (h Hasher, data Bytes) (d Digest, err Error) {
+    h.Hash(data)(d, err)
 }
 ```
 Whether `Process` receives a `Sha256Hasher`, a `Md5Hasher`, or a `SaltyHasher` (which extends `Hasher`), the code works. The compiler decides, at each call site, whether to inline the specific hash implementation (monomorphization) or use a VTable (dynamic dispatch). You don't write different code for each case.
 
-2. **Composing abstractions to create richer contracts (Abstraction Extension)**
+2. **Composing abstractions to create richer abstractions (Abstraction Extension)**
 You can build more specific abstractions by including other abstractions. This creates a subtyping relationship where a capsule conforming to the more specific abstraction is automatically usable wherever the more general one is expected:
 ```khayyam
-tp Hasher ab {}
+tp Hasher ab
+tp Bytes ab
+tp Digest ab
+tp Error ab
 
-tp Hash mt (self Hasher) (data Bytes) (h W64)
+tp Hash mt (self Hasher) (data Bytes) (d Digest, err Error)
 
 tp SaltyHasher ab {
     Hasher
 }
 
-tp Salt mt (self SaltyHasher) () (h Bytes)
+tp Salt mt (self SaltyHasher) () (s Bytes)
 ```
 A `SaltyHasher` can be passed to any function expecting a `Hasher`, because it includes `Hasher`'s requirements. This is inheritance in its correct sense: requirements flow, behavior does not. The implementing capsule owns every method it defines.
 
@@ -179,7 +187,9 @@ tp Serialize mt (self Serializer) (data Bytes) (out Bytes) (err Error)
 tp VersionedSerializer ab {
     Serializer
 }
-tp Version mt (self VersionedSerializer) () (v W32)
+tp VersionInfo ab
+
+tp Version mt (self VersionedSerializer) () (v VersionInfo)
 ```
 
 A capsule conforming to `VersionedSerializer` can be passed to any function expecting a `Serializer`. The subtyping relationship is established at the abstraction level through declarative inclusion — no behavior is transferred, only requirements.
@@ -211,7 +221,7 @@ An important theoretical observation, supported by recent research, is that **in
 This is relevant to Khayyam because it means that the absence of explicit generic syntax does not necessarily mean a loss of expressive power. When a developer writes:
 
 ```khayyam
-tp Process mt (self Service) (h Hasher, data Bytes) (err Error) { /* ... */ }
+tp Process mt (self Service) (h Hasher, data Bytes) (d Digest, err Error) { /* ... */ }
 ```
 
 This is, in effect, a universally quantified function: "for all types `H` that satisfy `Hasher`, this method works." The compiler can monomorphize this for each known `H` — achieving the same result as if the developer had written `Process<H: Hasher>(h: H)` — without the type-parameter syntax.
@@ -257,7 +267,7 @@ The type safety that `<T>` provides in other languages is achieved here through 
 Because Khayyam has no type inference (variables must be explicitly typed — see [Explicit Types](./variable.md#explicit-types)) and relies on strict linters, passing an incorrect capsule type to a container method's `Add()` triggers an immediate linting error. This provides the same type-safety guarantee that generic type parameters provide in other languages, but through a different enforcement mechanism: rather than the compiler rejecting `list<Int>.add("string")` via type-parameter constraints, the Khayyam linter rejects `connectionList.Add(service)` because the method signature of `ConnectionList.Add()` explicitly accepts only `Connection` capsules.
 
 #### Closed vs. Open Type Parameters — Why "How Many Layers" Is the Wrong Test
-When evaluating whether a generic-like parameter is safe to keep in a host language lacking Khayyam's contract model, the relevant question is not how many call layers separate the definition from its use, but whether the parameter is **closed** or **open** at its point of definition. A closed parameter is one the defining package itself binds to a fixed, framework-owned type (e.g. a container operation defined in terms of `Element`, where `Element` is always resolved by the framework, never chosen anew by each caller) — this carries no propagation cost, regardless of how many layers exist below or above it. An open parameter is one whose concrete binding is deferred to the caller (e.g. `Encoder[BUF any]`, where `BUF` must be supplied by whoever constructs an `Encoder`) — this is virulent by construction: every intermediate layer between the parameter's origin and its final concrete binding must either propagate the same open parameter or collapse it early via type erasure. Whether that path happens to be one layer or five is incidental; what matters is whether the parameter ever reaches call sites (e.g. business-logic service implementations) that must remain readable and free of type-system bookkeeping. See the memar-go [Elimination of Open Generic Type Parameters](https://github.com/GeniusesGroup/memar-go/blob/main/.agents/docs/Elimination_of_Open_Generic_Type_Parameters.md) document for an empirical account of this failure mode observed across three call layers (buffer → encoder/string → socket → business handler) in a host language lacking contract-based abstraction.
+When evaluating whether a generic-like parameter is safe to keep in a host language lacking Khayyam's abstraction model, the relevant question is not how many call layers separate the definition from its use, but whether the parameter is **closed** or **open** at its point of definition. A closed parameter is one the defining package itself binds to a fixed, framework-owned type (e.g. a container operation defined in terms of `Element`, where `Element` is always resolved by the framework, never chosen anew by each caller) — this carries no propagation cost, regardless of how many layers exist below or above it. An open parameter is one whose concrete binding is deferred to the caller (e.g. `Encoder[BUF any]`, where `BUF` must be supplied by whoever constructs an `Encoder`) — this is virulent by construction: every intermediate layer between the parameter's origin and its final concrete binding must either propagate the same open parameter or collapse it early via type erasure. Whether that path happens to be one layer or five is incidental; what matters is whether the parameter ever reaches call sites (e.g. business-logic service implementations) that must remain readable and free of type-system bookkeeping. See the memar-go [Elimination of Open Generic Type Parameters](https://github.com/GeniusesGroup/memar-go/blob/main/.agents/docs/Elimination_of_Open_Generic_Type_Parameters.md) document for an empirical account of this failure mode observed across three call layers (buffer → encoder/string → socket → business handler) in a host language lacking that abstraction model.
 
 #### Dynamic Dispatch Reducibility
 Whether dynamic dispatch is *always* reducible to a compile-time-resolved form was initially raised as an open dispute. For Memar it resolves in the affirmative from the base layer's own principles: dispatch among candidates may defer to runtime, but the candidate set and every candidate's implementation must already be spelled out in source — [Explicit Behavior Ownership](../type.md#explicit-behavior-ownership) permits no behavior the source does not define — and a genuinely runtime-only type selection, whose target set or implementation arrives while the system runs, would mint structure in execution, which [Structure Is Fixed by Definition](../type.md#structure-is-fixed-by-definition) excludes outright. Selection within the established closure is execution (the base principle's first boundary clause), not structural change.
@@ -270,12 +280,12 @@ The question most often raised against Khayyam's design takes a form like "what 
 
 In current mainstream languages, type parameters have become a general-purpose communication channel between the developer and the compiler. When a language lacks proper abstraction mechanisms for conveying compile-time facts (dimension constraints, memory layout hints, optimization metadata), the only available channel is the type system — so developers encode everything into type parameters. This is not a strength of generic syntax; it is a consequence of lacking alternatives.
 
-**Khayyam's design position:** Compile-time facts should be expressed through explicit contracts between the developer and the compiler (e.g., a capsule satisfying a compiler-visible abstraction that declares its dimension, storage strategy, and optimization properties), not by overloading type identity with non-identity information. Whether additional compiler-facing abstractions are required is a tooling design question, not a justification for generic type syntax.
+**Khayyam's design position:** Compile-time facts should be expressed through explicit compiler-visible declarations (e.g., a capsule satisfying a compiler-visible abstraction that declares its dimension, storage strategy, and optimization properties), not by overloading type identity with non-identity information. Whether additional compiler-facing abstractions are required is a tooling design question, not a justification for generic type syntax.
 
 This separates three concerns that generic syntax conflates:
 
 - **Polymorphic reuse** — fully provided through abstraction conformance and Smart Compilation. This is settled.
-- **Compile-time facts** (dimensions, layout constraints, optimization hints) — should be expressed through dedicated compiler-visible contracts, not by encoding them into type identity. If a compiler needs information from the developer to perform optimization, the correct response is to define an abstraction for that specific compiler-facing concept, not to repurpose type parameters as a general-purpose information channel.
+- **Compile-time facts** (dimensions, layout constraints, optimization hints) — should be expressed through dedicated compiler-visible abstractions, not by encoding them into type identity. If a compiler needs information from the developer to perform optimization, the correct response is to define an abstraction for that specific compiler-facing concept, not to repurpose type parameters as a general-purpose information channel.
 - **Rule verification** (dimension and unit compatibility, state machine transitions, protocol constraints) — should be modeled as rules or constraints, not as type identity. A matrix multiplication requiring compatible dimensions is a rule about the operation, not an identity property of the matrix type.
 
-The remaining work is not about whether generic syntax is required (it is not, for polymorphism), but about what specific compiler-facing abstractions Khayyam needs to define for compile-time facts and optimization contracts. This is a tooling design question that belongs to a dedicated document on compiler contracts, not to this polymorphism-focused document.
+The remaining work is not about whether generic syntax is required (it is not, for polymorphism), but about what specific compiler-facing abstractions Khayyam needs to define for compile-time facts and optimization abstractions. This is a tooling design question that belongs to a dedicated document on compiler-facing abstractions, not to this polymorphism-focused document.

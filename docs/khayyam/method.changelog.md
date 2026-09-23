@@ -123,3 +123,22 @@
 #### What changed
 - Method Invocation Rules now state that an argument position may be a `vr` or, for `sc`/`mt`, the type itself; a bare type where a capsule/abstraction value is expected is a linter-flaggable smell, not a syntax error. Relocated from the retired Khayyam-shelf linter document.
 
+
+---
+
+### Dual-role signal stated as owner position; Counter atomic counter-class withdrawn
+- Time: 2026-09-23T04:38:49Z
+- Type: Changed
+- Propagates to:
+  - method.handoff.md: Open — owner position recorded; the atomic `Counter.Increment` counter-class against the split hypothesis withdrawn.
+- Contributors:
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Mimo](../../CONTRIBUTORS.md#mimo) (mimo-v2.6-flash via OpenCode) — applied
+
+#### What changed
+- The Open Question topic now states the owner position: a variable needing both roles in the same call is a *signal* that something is crooked somewhere — a prompt to find and fix the underlying modeling problem, deliberately emphasized where other languages do not, because the fix makes the code readable. Atomic read-modify-write is explicitly not a counter-example: that case gets a dedicated method that owns the atomic operation as its own clear abstraction; the call site never needs dual-role notation for it. No strong concrete example has yet been found where dual role survives as correct modeling rather than as the signal.
+- The handoff withdraws the earlier `Counter.Increment` counter-class that had argued dual-role might be *required*.
+
+#### Deliberation
+- The critique disposal that offered atomic read-modify-write as a case where split loses atomicity was rejected: reading and writing a `Counter` inside one atomic method is exactly the dedicated-method-with-clear-abstraction shape, not dual-role at the call site (Omid Hekayati — decided).
+- Dual-role remains a defect-finding signal, not a feature to notate; other languages do not emphasize it, and Khayyam deliberately does (Omid Hekayati — decided).

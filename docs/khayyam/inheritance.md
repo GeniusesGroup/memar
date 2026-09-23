@@ -23,7 +23,7 @@ Beyond terminology, allowing behavior to appear in a capsule without being defin
 
 - **Hidden Behavior Paths:** Behavior transfer creates methods in a capsule that are not defined in that capsule's source code. The compiler must traverse external sources to determine the full method set, complicating escape analysis and other static analyses.
 - **Linear Escape Analysis:** Khayyam's compiler relies on perfectly linear escape analysis for memory optimization. Methods acquired from external sources that access parent state create non-local references that break this linearity.
-- **Abstraction Purity:** Khayyam's abstractions are pure contracts — no logic, no state, no predefined method bodies. Allowing behavior to be transferred from abstractions (via default implementations) would collapse this purity.
+- **Abstraction Purity:** Khayyam's abstractions are pure behavioral specifications — no logic, no state, no predefined method bodies. Allowing behavior to be transferred from abstractions (via default implementations) would collapse this purity.
 
 ## Explanation
 

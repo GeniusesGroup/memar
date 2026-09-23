@@ -90,3 +90,18 @@ Conceptually closest to Rust's explicit `impl Trait for Type` announcing intent 
 #### Drawbacks (from the retired body Discussion)
 - Adds one extra, functionally-inert method to every abstraction and capsule that opts in.
 - Provides no runtime guarantee of any kind — purely informational. A capsule can declare `Implements` intent and never complete it, or complete it and later forget to keep the declaration, with no language-level consequence either way; tooling correctness depends on this declaration being kept honest, which is a discipline/process concern, not something this document enforces.
+
+---
+
+### Contract-First Approach reference retargeted to abstraction.md
+- Time: 2026-09-23T05:38:39Z
+- Type: Fixed
+- Cited:
+  - [Abstraction in Khayyam](../khayyam/abstraction.md) — Reference: implicit structural satisfaction is specified there; this document now points at it instead of a heading khayyam.md no longer carries.
+  - [Protocol](../protocol.md) — Depends_on: Protocol vs Contract.
+- Contributors:
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Mimo](../../CONTRIBUTORS.md#mimo) (mimo-v2.6-flash via OpenCode) — applied
+
+#### What changed
+- The structural-satisfaction sentence now cites abstraction.md's implicit structural satisfaction rather than khayyam.md's "Contract-First Approach" — that named heading no longer exists in khayyam.md, so the old link was dangling.

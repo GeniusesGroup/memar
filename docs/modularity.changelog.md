@@ -211,3 +211,19 @@ Added a pointer from "Rules as a Provisional Term" to modeling.md's new "Separat
 #### Related work
 - The discussion of modularity in software has appeared in object-oriented design, component systems, structured programming, package systems, service-oriented architecture, microservices, and Domain-Driven Design. These traditions provide useful mechanisms and observations but do not supply a single definition of Module that is independent of their implementation assumptions. Domain-Driven Design's Core Domain is a particularly relevant case: the term is commonly presented as if criticality were an intrinsic property of a domain, which invites the same confusion this document argues against - a Module's essential or optional status is relative to a particular System's purpose, not an inherent property of the Module itself. (Migrated from the document-level retired Prior art.)
 - Memar treats prior architectural terminology as evidence and material for comparison rather than as authority over the definitions used by the project. (Migrated from the same section.)
+
+---
+
+### Khayyam upward links removed — citation direction enforced
+- Time: 2026-09-23T07:07:01Z
+- Type: Fixed
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Mimo](../CONTRIBUTORS.md#mimo) (mimo-v2.6-flash via OpenCode) — applied
+
+#### What changed
+- "Conceptual Relationships Are Not Runtime Coupling" no longer hyperlinks Modularity in Khayyam: language-level cycle restrictions belong to the language layer, and each language's own modularity document records them — named in prose, not cited upward via hyperlink.
+- The closing section's pointer to the Khayyam modularity treatment is now the plain phrase "the language's own modularity document"; the application that document records is still named, only not linked.
+
+#### Deliberation
+- Citation direction rule: a base document never links into `khayyam/` — not even as an instance pointer; plain-text naming only (Omid Hekayati — decided).

@@ -6,12 +6,12 @@ ID: "495493"
 ---
 
 # Abstraction in Khayyam
-Abstractions in Khayyam occupy a conceptual space closely related to [IDL (Interface Description Language)](https://en.wikipedia.org/wiki/Interface_description_language) as used in protocol packages: both describe behavioral contracts that specify *what* is required without prescribing implementation details. Just as an IDL defines the data and operations exchanged between parties in a protocol, a Khayyam abstraction defines the method signatures a capsule must expose — serving as the language-level counterpart to a protocol specification.
+Abstractions in Khayyam occupy a conceptual space closely related to [IDL (Interface Description Language)](https://en.wikipedia.org/wiki/Interface_description_language) as used in protocol packages: both describe behavioral requirements that specify *what* is required without prescribing implementation details. Just as an IDL defines the data and operations of a protocol's exchanges, a Khayyam abstraction defines the method signatures a capsule must expose — the language-level counterpart of a protocol's declared requirements. (The abstraction itself is not a contract: it names required behavior, not parties, obligations, or commitments — see [Protocol vs Contract](../protocol.md#protocol-vs-contract).)
 
 This document consolidates all design decisions, resolved policies, and open questions related to the `ab` (abstraction) type in Khayyam into a single authoritative document. It supersedes two prior, now-absorbed drafts — one on intentional abstraction satisfaction, one on the rejection of default implementations — and merges them with the existing DX Scaffolding content into one cohesive specification.
 
 ## Abstract
-Khayyam's abstraction (`ab`) is a **pure contract mechanism** with three resolved design properties and one open question:
+Khayyam's abstraction (`ab`) is a **pure behavioral specification** with three resolved design properties and one open question:
 
 1. **No executable logic.** An abstraction contains no method bodies — it describes *what* is required, never supplies *how*. Default implementations (as in Rust traits or Java `default` interface methods) are explicitly rejected.
 2. **No generic syntax.** Abstractions carry no type parameters. Polymorphism classification and the rejection of generic syntax are documented in [Polymorphism in Khayyam](./polymorphism.md).
@@ -31,23 +31,23 @@ Khayyam needs a single, coherent abstraction model that is consistent with its c
 
 - **Preserve syntactic minimalism.** Introducing generic syntax, explicit implementation keywords, or inheritance-like mechanisms adds grammar surface area that conflicts with the language's design goals.
 - **Enable zero-cost abstraction where possible.** When the compiler knows the concrete type behind an abstraction, it should be able to inline the call — eliminating VTable overhead entirely — without the developer writing different code.
-- **Maintain the pure-contract invariant.** An abstraction must never silently provide behavior, as this reintroduces the implicit routing and inheritance problems that Khayyam was designed to avoid.
+- **Maintain the pure-specification invariant.** An abstraction must never silently provide behavior, as this reintroduces the implicit routing and inheritance problems that Khayyam was designed to avoid.
 - **Support organizational scalability.** In large codebases, developers need tooling assistance (scaffolding, validation, proactive warnings) to work with abstractions without the language itself growing heavier.
 
 #### Concrete Pain Points Addressed
 - **Go's accidental satisfaction problem.** In Go's structural typing system, any type with matching method signatures accidentally satisfies an interface. For marker-like abstractions (e.g., a small `Error` interface), an unrelated capsule can qualify without its author ever intending this. This document records this risk as an open question specific to Khayyam.
 - **Rust's `impl` ceremony.** Rust requires explicit `impl Trait for Type` declarations at every implementation site. While this eliminates accidental satisfaction, it adds boilerplate that scales linearly with the number of abstraction-capsule pairs — in tension with Khayyam's minimalism goals for the common case.
 - **Java/C# generic syntax complexity.** Explicit type parameters (`<T>`) force developers to expose implementation details that violate the principle of information hiding. Khayyam avoids this by carrying no type parameters on abstractions — see [Polymorphism in Khayyam](./polymorphism.md) for the full polymorphism classification and rationale.
-- **Default method inheritance confusion.** Rust's default trait methods and Java's `default` interface methods silently provide behavior from an abstraction, blurring the line between contract and implementation and making the execution path harder to reason about at compile time.
+- **Default method inheritance confusion.** Rust's default trait methods and Java's `default` interface methods silently provide behavior from an abstraction, blurring the line between specification and implementation and making the execution path harder to reason about at compile time.
 
 ## Explanation
 
 ### What Is an Abstraction in Khayyam?
-Think of an abstraction as a **behavioral specification** — a promise that a capsule will respond to certain method calls. The abstraction itself is inert: it has no state, no logic, and no runtime presence. It exists purely as a compile-time contract.
+Think of an abstraction as a **behavioral specification** — a declaration that a capsule will respond to certain method calls. The abstraction itself is inert: it has no state, no logic, and no runtime presence. It exists purely as a compile-time declaration of required behavior — not a contract: it creates no parties, no reciprocal obligations, and no commitments (see [Protocol vs Contract](../protocol.md#protocol-vs-contract)).
 
 When you write `tp Reader ab`, you are telling the compiler: "There exists a concept called `Reader`. I will define the methods it requires separately. Any capsule that provides those methods can be used wherever a `Reader` is expected."
 
-Khayyam treats abstraction as a pure contractual agreement. An abstraction represents behavior: if it requires an `Element`, it simply accepts `Element`. Any capsule that satisfies this interface is valid. The abstraction does not care about the concrete capsule's internal structure — it only cares about the behavioral contract. This "Contract-First Approach" means abstractions are implementation-agnostic by construction.
+Khayyam treats abstraction as a one-sided declaration of required behavior. An abstraction represents behavior: if it requires an `Element`, it simply accepts `Element`. Any capsule that provides those methods is valid. The abstraction does not care about the concrete capsule's internal structure — it only cares about the declared behavioral surface. This means abstractions are implementation-agnostic by construction.
 
 ### Defining an Abstraction
 An abstraction is defined with the `ab` subtype keyword. The required methods are defined independently, attached to the abstraction type as their receiver:
@@ -59,9 +59,15 @@ tp Reader ab
 // Define the methods it requires (body-less signatures)
 tp Read mt (self Reader) (data Element) (err Error)
 tp Close mt (self Reader) () (err Error)
+
+// Abstractions referenced by those signatures
+tp Element ab
+tp Error ab
 ```
 
-An abstraction can also **compose other abstractions** by listing them inside its block. This is Khayyam's equivalent of interface inheritance — but purely contractual, with no behavior inherited:
+In these examples `Element` and `Error` are abstractions — declared behavior, not capsule types. Per *What You Cannot Do*, only abstractions may appear in an abstraction-owned method signature; a primitive capsule (`W32`, `W64`, …) or a concrete capsule there is invalid, and earlier polymorphism examples that showed one have been corrected in the paired changelog.
+
+An abstraction can also **compose other abstractions** by listing them inside its block. This is Khayyam's equivalent of interface inheritance — declared requirements compose, with no behavior inherited:
 
 ```khayyam
 tp Error ab {
@@ -88,11 +94,11 @@ vr r Reader
 r.CopyFrom(myFileReader)()  // validated at compile time — `r = myFileReader` is not Khayyam syntax.
 ```
 
-See *Agency Beyond Concurrency* in [Agency in Khayyam](./agency.md#agency-beyond-concurrency-intentional-vs-accidental-contract-satisfaction) for what this design choice means read through Agency's vocabulary.
+See *Agency Beyond Concurrency* in [Agency in Khayyam](./agency.md#agency-beyond-concurrency-intentional-vs-accidental-abstraction-satisfaction) for what this design choice means read through Agency's vocabulary.
 
 ### What You Cannot Do
-- You **cannot** put a method body inside an abstraction definition. Abstractions are pure contracts.
-- You **cannot** use a capsule type as an argument or return type in an abstraction's method signature — only other abstractions are allowed, ensuring the contract remains implementation-agnostic.
+- You **cannot** put a method body inside an abstraction definition. Abstractions declare required behavior only.
+- You **cannot** use a capsule type as an argument or return type in an abstraction's method signature — only other abstractions are allowed, ensuring the specification remains implementation-agnostic.
 - You **cannot** explicitly declare "I implement this abstraction" using any keyword. Satisfaction is structural.
 - You **cannot** define default implementations in an abstraction. Shared behavior must use explicit delegation to an ordinary capsule.
 
@@ -125,11 +131,11 @@ Khayyam does not introduce any explicit syntax or keyword (such as `impl` or `im
 This design mirrors Go's interface satisfaction model at the language level. It eliminates the boilerplate of explicit implementation declarations (Rust's `impl Trait for Type`) and keeps the language grammar minimal. However, it also inherits Go's known risk of **accidental satisfaction**: an unrelated capsule can accidentally satisfy a small, marker-like abstraction if its method signatures happen to match — see [Abstraction in Khayyam Handoff](./abstraction.handoff.md) for the status of this risk. For example, if a `FileLogger` capsule happens to define a `String()` method with the correct signature, it could accidentally qualify as a `Stringer` abstraction without its author ever intending this relationship. The risk is most acute for small abstractions with one or two methods, where signature collision is statistically more likely; for large abstractions with many methods, accidental satisfaction is practically impossible.
 
 ### Rejection of Default Implementations
-Khayyam explicitly **rejects** default method implementations (also known as "default trait methods" in Rust or "default interface methods" in Java 8+). An abstraction (`ab`) is a pure contract with no executable logic of its own.
+Khayyam explicitly **rejects** default method implementations (also known as "default trait methods" in Rust or "default interface methods" in Java 8+). An abstraction (`ab`) is a pure behavioral declaration with no executable logic of its own.
 
-**Rationale:** Allowing executable logic inside an abstraction violates its contractual purity in two ways:
+**Rationale:** Allowing executable logic inside an abstraction violates its purity as a declaration of required behavior in two ways:
 
-1. **It breaks the "what, not how" invariant.** An abstraction should describe *what* behavior is required, never silently supply *how* that behavior is implemented. When an abstraction contains a method body, it becomes a partial implementation — a hybrid that is neither a clean contract nor a clean type, making the execution path harder to reason about.
+1. **It breaks the "what, not how" invariant.** An abstraction should describe *what* behavior is required, never silently supply *how* that behavior is implemented. When an abstraction contains a method body, it becomes a partial implementation — a hybrid that is neither a clean specification nor a clean type, making the execution path harder to reason about.
 2. **It introduces implicit, dynamic routing behavior.** Default methods create a form of implicit inheritance: the method body lives in the abstraction, but executes in the context of the concrete capsule. This reintroduces the same class-hierarchy confusion that composition-over-inheritance patterns were designed to avoid, and it clouds compile-time optimization because the compiler can no longer assume the call target is a simple VTable entry or a monomorphized concrete method.
 
 **The alternative — explicit delegation:** Shared behavior across multiple capsules lives in an ordinary capsule, and each implementer explicitly delegates to it. This is one line of boilerplate per implementation site, but it keeps the execution model completely transparent:

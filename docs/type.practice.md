@@ -23,7 +23,7 @@ Categories are semantic roles, not a hierarchy:
 |---|---|---|
 | owning state + behavior operating on it | Capsule | `cp` |
 | callable behavior (first-class) | Method | `mt` |
-| pure contract, no bodies, no defaults | Abstraction | `ab` |
+| pure specification, no bodies, no defaults | Abstraction | `ab` |
 | establishing a visibility/ownership/isolation boundary | Scope | `sc` |
 
 Do not justify a fifth category unless the candidate role is irreducible to specialization, composition, or usage pattern of these four. A keyword in another language (`struct`, `trait`, `namespace`, ...) does not imply a distinct foundational concept.

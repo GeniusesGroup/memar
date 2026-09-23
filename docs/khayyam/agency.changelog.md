@@ -159,3 +159,44 @@
 #### Related work
 - **Erlang/BEAM (migrated from the *Agency Beyond Concurrency* topic's retired Discussion wrapper)**: BEAM's process model and user-space green-thread scheduling are the closest prior art for definition-driven, syntax-light concurrency at scale; read through Agency, BEAM's own "process" is itself a named execution-Agent representation, not unlike what a future Khayyam Worker/Actor library would provide, except BEAM commits to it at the language level while Khayyam leaves the choice to a library.
 - **Go's goroutines (migrated from the same wrapper)**: popularized lightweight user-space threads but still couple their creation to a dedicated keyword (`go`), which Khayyam avoids.
+
+---
+
+### Definition-site tag: caller-observation and library-owned behavior stated
+- Time: 2026-09-23T04:38:49Z
+- Type: Fixed
+- Contributors:
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Mimo](../../CONTRIBUTORS.md#mimo) (mimo-v2.6-flash via OpenCode) — applied
+
+#### What changed
+- Definition-Site Over Call-Site now states that the async tag does not change what a caller observes: a call remains a statement whose influenced variables are written when the statement completes (definite assignment and uniform call syntax survive); what changes is how the owning library and its scheduler realize the method — behavior defined by that library, changeable by swapping the library, never by changing Khayyam's syntax.
+- The topic closes with each such library specifying its own method's behavior. An intermediate wording that hedged the examples as "illustrative, answering every question" was removed on owner review: a wrong example is fixed, not disclaimed.
+
+#### Deliberation
+- The call-site-semantics critique (unanswered in two disposal attempts) was resolved at the rule level by the ruling that sync/async behavior belongs to each method's library, not to the language (Omid Hekayati — decided).
+- The illustrative-examples hedge was rejected as the wrong remedy for example gaps (Omid Hekayati — decided).
+
+---
+
+### Abstraction satisfaction no longer worded as contract satisfaction
+- Time: 2026-09-23T08:28:49Z
+- Type: Fixed
+- Cited:
+  - [Abstraction in Khayyam](./abstraction.md) — Depends_on: an abstraction names required behavior; it is not a contract.
+  - [Protocol](../protocol.md) — Depends_on: Protocol vs Contract.
+- Propagates to:
+  - abstraction.md: Done — the inbound anchor now names abstraction satisfaction.
+  - agency.handoff.md: Done — both inbound anchors retargeted (handoff: no entry of its own).
+- Contributors:
+  - [Grok](../../CONTRIBUTORS.md#grok) (Grok 4.7 via Cursor) — reviewed, applied
+  - [Gemini](../../CONTRIBUTORS.md#gemini) (Gemini 3.8 flash via Cursor) — reviewed
+
+#### What changed
+- The Agency Beyond Concurrency heading and its closing question now say satisfying an abstraction, not satisfying a contract. The intentional-undertaking point is unchanged: structural match is still distinguished from a declared commitment, and the document still takes no position on abstraction.md's three options.
+
+#### Deliberation
+- One review dissolved the heading as Agency's undertaking vocabulary, not a redefinition of Abstraction (Grok — reviewed). The other treated "satisfying a contract" as the retired abstraction-as-contract collocation on a section whose subject is abstraction satisfaction (Gemini — reviewed). The applied reading keeps the undertaking point and drops the word *contract*, because abstraction.md already defines an abstraction as naming required behavior rather than parties, obligations, or commitments.
+
+#### Considered and not done
+- **Leaving the heading and adding only a parenthetical gloss (rejected)**: the heading is the anchor abstraction.md and the handoff follow, so the collision would remain at the link target.

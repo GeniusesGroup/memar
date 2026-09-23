@@ -128,6 +128,8 @@ Khayyam provides no mathematical or logical operators (`+`, `-`, `==`, `*`). All
 
 Where another language would write `c = a + b`, Khayyam code calls a method directly on the domain capsule: `a.Add(b)(c, err)`. For simple operations, this method lives directly on the relevant domain capsule (e.g. a `Money` capsule exposing its own `Add`/`Sum` method, which can also enforce domain rules like currency matching while it's at it). For complex formulas where writing nested method calls would be unwieldy, developers may instead pass the formula as a string to a specialized evaluator capsule (e.g. `MathEval.FromString("x = (-b + sqrt(b^2 - 4ac)) / 2a")`). When the parameters to such a formula are compile-time constants, the compiler evaluates the deterministic, pure logic at compile time automatically — the same way a regex engine pre-compiles its automaton from a literal pattern — so this is not a runtime-only escape hatch; it carries the same compile-time guarantees as the direct method-call form whenever its inputs are known statically.
 
+Like a regular-expression engine in other languages, `MathEval` is an illustrative *library* pattern, not part of Khayyam's grammar: a library may accept its own sub-language for formulas too dense to express as hand-written method calls, and may be replaced by a better formula library later without any change to the syntax. The grammar-level operator ban is untouched by this pattern; how much checking a given evaluator performs is that library's own contract (the paired handoff carries that open question).
+
 #### Mechanism Summary
 - No `+`, `-`, `*`, `==`, or similar tokens exist in the grammar.
 - Arithmetic and comparison are always explicit capsule methods with explicit error outputs.

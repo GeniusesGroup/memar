@@ -116,3 +116,20 @@ This document is now structured per `documentation-explanation.md`: YAML front m
 - Khayyam itself has no special linter rules; the protocol did not previously say how rules are authored (Omid Hekayati — claimed).
 - Two aspects stay distinct: how a linter works, and the rules it checks — the latter belong to subject documents (Omid Hekayati — decided).
 
+
+---
+
+### Methodology provenance reframed: exercised first, stated independently
+- Time: 2026-09-23T07:07:01Z
+- Type: Fixed
+- Cited:
+  - [Khayyam](../khayyam/khayyam.md) — Reference: the language whose documents exercised the compiler/linter split first; the link is provenance, not derivation.
+- Contributors:
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Mimo](../../CONTRIBUTORS.md#mimo) (mimo-v2.6-flash via OpenCode) — applied
+
+#### What changed
+- The Methodology no longer says the split was "lifted out of" Khayyam's documents — wording that read as normative derivation from a language into a protocol. It now records that Khayyam's documents exercised the split first and that this protocol states it independently as a language-neutral contract, because the line is a protocol concern, not a grammar and not any one language's property. The Khayyam link remains as provenance.
+
+#### Deliberation
+- A protocol rule must never read as if a Khayyam-specific fact were its reason; provenance links are legitimate, derivation wording is not (Omid Hekayati — decided).

@@ -364,3 +364,91 @@ Considered placing the topic in `khayyam-runtime.md` instead, since Unikernel is
 #### Deliberation
 - These notes were deliberately kept out of the Memory protocol so that protocol stays language-independent; deleting the shelf without placing them would have lost realization content (Omid Hekayati — decided).
 
+
+---
+
+### migration_guide.md removed from the language document set
+- Time: 2026-09-23T04:38:49Z
+- Type: Removed
+- Propagates to:
+  - khayyam.handoff.md: Done — the stdlib-bootstrap entry's pointer to the migration guide was reworded to a plain-text note that an earlier promotional migration note (removed) covered ecosystem onboarding, not first-capsule ordering.
+- Contributors:
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Mimo](../../CONTRIBUTORS.md#mimo) (mimo-v2.6-flash via OpenCode) — applied
+
+#### What changed
+- `docs/khayyam/migration_guide.md` was deleted. It was an old, promotional, agent-authored document (porting difficulty matrix, transpiler strategy, cross-language comparison matrix) that did not meet this folder's membership criterion — it did not specify a construct or concern of the Khayyam language itself — and its presence contradicted the language documents' own tone and scope.
+- The sole inbound reference (khayyam.handoff.md's stdlib-bootstrap entry) was fixed before deletion; no other tracked document cited it.
+
+#### Deliberation
+- Ruled to delete rather than rewrite: the document is promotional and not language documentation; fixing the bootstrap-ordering contradiction by rewriting it was considered, then superseded by removal from the language docs (Omid Hekayati — decided).
+
+#### Considered and not done
+- **Rewrite in place to fix the contradiction with the no-hidden-primitive ruling (considered, rejected)**: even a corrected migration guide would remain ecosystem-marketing content outside this folder's criterion; removal is the cleaner boundary.
+
+---
+
+### Abstraction wording aligned with Protocol vs Contract
+- Time: 2026-09-23T05:38:39Z
+- Type: Fixed
+- Cited:
+  - [Protocol](../protocol.md) — Depends_on: Protocol vs Contract defines a contract as parties, obligations, and commitments; an abstraction names required behavior only.
+  - [Abstraction in Khayyam](./abstraction.md) — Reference: the document-level conflation was corrected there first; this entry extends that correction to this document.
+- Contributors:
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Mimo](../../CONTRIBUTORS.md#mimo) (mimo-v2.6-flash via OpenCode) — applied
+
+#### What changed
+- The Abstraction paragraph now says abstractions are pure *behavioral specifications*, not pure contracts; the methods that fulfill this specification are defined outside it.
+- The composition-example comment says sub-typing/behavioral dependency, not contractual dependency.
+- Both Grammar Refuses Protocol Semantics mentions say the `ab` construct authors *specifications*, not contracts.
+- Companion practice/handoff/polymorphism/metaprogramming/inheritance/type wording was aligned in the same pass; changelog narratives were left as history.
+
+#### Deliberation
+- Contract remains a distinct architecture concept (parties commit to each other); abstraction only declares behavior (Omid Hekayati — decided).
+
+---
+
+### Type Principles Realized received from type.md; folder citation rule tightened
+- Time: 2026-09-23T07:07:01Z
+- Type: Added
+- Cited:
+  - [Type](../type.md) — Depends_on: the base-layer principles these realizations instantiate (Type as semantic entity, nominal identity, four categories of Type, owned rules).
+  - [Type vs Implementation Type](../type.md#type-vs-implementation-type) — Reference: the ascent problem the no-primitive-types rule eliminates at the language level.
+- Propagates to:
+  - khayyam/README.md: Done — the Citation direction paragraph no longer allows a base instance-pointer hyperlink; upward mentions of Khayyam from base are plain-text only.
+  - docs/README.md: Done — the `khayyam/` section's citation clause now says plain-text name only, never via hyperlink, and its folder pointer is an inline-code path.
+  - khayyam.handoff.md: Done — the stdlib-bootstrap entry's `type.md#manifestation-in-khayyam` link retargeted here to Type Principles Realized (handoff: no entry of its own).
+  - type.handoff.md: Done — upward links replaced with plain-text path references (handoff: no entry of its own).
+- Contributors:
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Mimo](../../CONTRIBUTORS.md#mimo) (mimo-v2.6-flash via OpenCode) — applied
+
+#### What changed
+- khayyam.md gains "Type Principles Realized": the seven-item realization account transferred from type.md's former Manifestation in Khayyam section, with the duplicate Sovereign Encapsulation bullet merged and each item linking to its companion document or the relevant base section.
+- khayyam/README.md's citation rule now forbids upward hyperlinks entirely — the former instance-pointer exception is removed; a base document may name Khayyam in prose only.
+- docs/README.md's `khayyam/` entry describes base citation as plain-text-only, and its `khayyam/README.md` pointer is an inline-code path rather than a hyperlink.
+
+#### Deliberation
+- Transfer, not delete; citation direction runs down (Omid Hekayati — decided).
+
+#### Considered and not done
+- **Creating `docs/khayyam/type.md` as the transfer destination (considered, rejected)**: every Manifestation bullet already has a dedicated companion (encapsulation, method, abstraction, inheritance, polymorphism) or belongs in khayyam.md's own philosophy sections (no primitive types, the `tp` keyword); a new document would either duplicate that material — the drift failure mode this document set has already retired documents to escape — or exist as a thin link stub. Recorded here so the question does not reopen without new material to justify a separate document (Omid Hekayati — decided).
+
+---
+
+### Transferred inheritance bullet aligned off "contract layer"
+- Time: 2026-09-23T08:28:49Z
+- Type: Fixed
+- Cited:
+  - [Type](../type.md) — Depends_on: inheritance between Abstractions is requirement extension, not a separate contract plane.
+  - [Abstraction in Khayyam](./abstraction.md) — Reference: an abstraction is a behavioral specification, not a contract.
+- Contributors:
+  - [Grok](../../CONTRIBUTORS.md#grok) (Grok 4.7 via Cursor) — reviewed, applied
+  - [Gemini](../../CONTRIBUTORS.md#gemini) (Gemini 3.8 flash via Cursor) — reviewed
+
+#### What changed
+- The Inheritance bullet under Type Principles Realized now places inheritance in the specification layer — requirement extension between Abstractions — rather than in a "contract layer" opposed to the state layer of Capsules.
+
+#### Deliberation
+- Both reviews of the staged transfer found the same residue: Type's defined-contract vocabulary names a Type's guarantees, not an inheritance plane, and Protocol vs Contract reserves *contract* for parties, obligations, and commitments (Grok — reviewed; Gemini — reviewed).

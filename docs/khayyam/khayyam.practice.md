@@ -51,17 +51,17 @@ tp {name} mt (self {type_owner}) ({args}...) ({returns}...) { ___ }
 - All three parentheses always written, even when empty.
 - Args/returns passed strictly by reference; no by-value.
 - No `const`/`mut` — mutation only through an exposed mutating method.
-- Body-less method = abstraction contract signature, or FFI stub against an external `.s`/`.o` implementation.
+- Body-less method = abstraction specification signature, or FFI stub against an external `.s`/`.o` implementation.
 - Calls always use a single `.` — never `::`.
 - No `self` in signature → static, call via `TypeName.Method()`. `self` present → instance, call via `varName.Method()`.
 - A method's synchronous or asynchronous nature is declared at its own definition (an abstraction tag), never chosen by the caller. There is no `go`/`async`/`await` keyword.
 
-### Abstraction (pure contract)
+### Abstraction (pure behavioral specification)
 ```khayyam
 tp Reader ab
 tp Read mt (self Reader) (data Element) (err Error)   // defined independently, body-less
 ```
-- No logic, state, or bodies. Methods fulfilling the contract are defined outside it.
+- No logic, state, or bodies. Methods fulfilling the specification are defined outside it.
 - Compose via a `{}` block at the definition site.
 - May only use other abstractions as args/returns — never concrete capsules.
 - No generics syntax (`<T>`, `[T]`). Covariant returns + compiler-chosen dispatch replace it.

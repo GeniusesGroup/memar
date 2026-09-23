@@ -150,3 +150,22 @@ Any chosen pair adds two more standard method names developers must learn and us
 Other languages answer that same question — how does execution continue after failure? — with different mechanisms, each a different point in the same trade-off space between visibility, verbosity, and compiler involvement: exceptions unwind the call stack via `throw`/`catch` (Java, Python, JS); Rust's `Result<T, E>` makes failure an ordinary return value inspected via pattern matching, with `?` as sugar for propagating it upward; Go returns an explicit `(value, error)` pair checked with `if err != nil`; and a panic/recover pair combines an abrupt halt with an opt-in unwinding mechanism (Go, and Khayyam's own `PANIC()`). Khayyam has no `try-catch`, `panic`/`recover`, or `?`-operator syntax of its own. Errors are always ordinary, explicit output values (capsules implementing the `Error` abstraction), and abrupt halts are an ordinary standard-library method call (e.g. `PANIC()`), not a compiler directive — closest in spirit to Go's explicit returns, but with the "did you check it" discipline shifted from mandatory boilerplate to the Linter.
 
 This problem closely parallels `Result`/`Option` combinator naming in Rust (`.is_ok()`, `.map_err()`, `.unwrap_or_else()`) and JavaScript Promise's `.then()`/`.catch()` pairing, both of which were considered as background context but not adopted directly, since Khayyam has neither a generic `Result<T, E>` type ([Khayyam polymorphism](../khayyam/polymorphism.md)) nor Promise-style chaining ([Composition Depth as a Decomposition Signal](../khayyam/method.md#composition-depth-as-a-decomposition-signal-no-expression-chaining) rejects expression chaining).
+
+---
+
+### Candidate rejections restated language-neutrally; closures parallel demoted to instance
+- Time: 2026-09-23T07:07:01Z
+- Type: Fixed
+- Cited:
+  - [Khayyam](../khayyam/khayyam.md) — Reference: instance of the missing-package-qualification gap, and source of the type-level (`tp.Create()`) resolution form named in the candidate.
+- Contributors:
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Mimo](../../CONTRIBUTORS.md#mimo) (mimo-v2.6-flash via OpenCode) — applied
+
+#### What changed
+- The `IfFailed`/`IfSucceeded` rejection now leads with the language-neutral reason: a global function name carries no inherent domain context without an explicit receiver. Khayyam's lack of a package/namespace concept follows afterward as that language's instance of the gap, and the replacement direction — type-level (static) invocation, a method defined without `self` invoked on the type identifier — is recorded as where the global-function question closed. Naming the pair itself stays open.
+- The `ELSE` paragraph now states the hidden-state-binding principle at protocol level: a construct must carry its dependencies in its own arguments rather than reach for state implied by position or surrounding text. Khayyam's rejection of closures is kept as an instance of that rule, explicitly not its authority.
+
+#### Deliberation
+- A protocol-level rule must not take a Khayyam-specific fact as its reason; an instance link after a language-neutral reason is legitimate (Omid Hekayati — decided).
+- The global-function-without-receiver topic is closed — rejected — with type-level invocation as its recorded resolution (Omid Hekayati — decided).

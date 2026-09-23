@@ -5,7 +5,10 @@ Open work for `variable.md`. Entries are mutable current state — revised as ea
 ## Open Questions
 
 ### Does the standard `MathEval` evaluator type-check formula operands at compile time?
-- State: Whether the standard `MathEval.FromString()`-style evaluator performs full compile-time type-checking of formula operands (preventing nonsensical cross-type operations like adding incompatible domain quantities), or only validates syntax while deferring type errors to runtime, is not yet settled for the recommended framework implementation. (From the Domain-Driven-Arithmetic topic.)
+- State: Whether the standard `MathEval.FromString()`-style evaluator performs full compile-time type-checking of formula operands (preventing nonsensical cross-type operations like adding incompatible domain quantities), or only validates syntax while deferring type errors to runtime, is not yet settled for the recommended framework implementation. (From the Domain-Driven-Arithmetic topic.) The body's Domain-Driven Arithmetic topic now records (review 2026-09-22) that `MathEval` is an illustrative *library* pattern — a regex-style sub-language the language grammar neither defines nor type-checks — so the remaining question is only how much checking the standard evaluator library itself performs, not a grammar-level rule.
+
+### How does the compiler obtain the first instance's values from source?
+- State: open (review 2026-09-22). `vr` declaration separates name/type from initialization; creation goes through capsule behavior — but how the *first* instance a capsule bootstrap needs is populated from source literals is not settled. The lexer reads a literal token (e.g. `42`) as a token without requiring string semantics on it; whether/how the compiler or an early library interprets that token into an instance of a named capsule (no primitive types exist to fall back on) is undecided, and is entangled with the stdlib first-capsule ordering question in [Khayyam's handoff](./khayyam.handoff.md#stdlib-bootstrap-ordering-under-the-no-hidden-primitive-rule).
 
 ### Can a file export a variable under an alias?
 - State: Whether a file can export a variable under a different name than its declaration name (aliasing) is not currently addressed. (From the Variable-Scope-and-Visibility topic.)

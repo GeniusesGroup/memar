@@ -155,3 +155,22 @@
 #### What changed
 - Recorded, from the audit of a now-pruned `chats-context` session file, three wording changes proposed for the Abstract/Overview during the vr-ab review round that were not adopted, so they are not silently re-argued: (1) weakening "creates a named reference to an instance of a type" to "establishes a named relationship with a type" pending the Type model's settlement; (2) replacing "reference" altogether — "a variable binds a name to a typed entity" — to avoid importing reference-semantics assumptions from mainstream languages; (3) removing the "provides access to the same instance" sentence as an identity/resource-model claim the variable document should not make.
 - The body retains its original wording; the concern behind (3) is defused by the Resource Lifecycle retarget above, which assigns storage and copy semantics to the Memory protocol, while the instance-sharing statement remains a grammar-level fact about pass-by-reference.
+
+---
+
+### MathEval recorded as library pattern; first-instance value reading left open
+- Time: 2026-09-23T04:38:49Z
+- Type: Fixed
+- Propagates to:
+  - variable.handoff.md: Open — narrowed the MathEval entry to evaluator-library checking only; added the open question on how the compiler obtains the first instance's values from source.
+- Contributors:
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Mimo](../../CONTRIBUTORS.md#mimo) (mimo-v2.6-flash via OpenCode) — applied
+
+#### What changed
+- Domain-Driven Arithmetic now states explicitly that `MathEval` is an illustrative *library* pattern (regex-style sub-language for dense formulas), not part of Khayyam's grammar: the operator ban is untouched, and how much operand type-checking an evaluator performs is that library's own contract.
+- The body's existing pointer to the paired handoff for the standard evaluator's compile-time type-checking question remains; the handoff entry is narrowed accordingly and a new open question records the unsettled mechanism for reading the first instance's values from source (lexer token vs. string semantics; entangled with stdlib first-capsule ordering).
+
+#### Deliberation
+- The critique that MathEval's compile-time checking sat uneasily beside the operator ban was answered by the ruling that MathEval is not language grammar but a replaceable library example, same category as regex (Omid Hekayati — decided).
+- The constructor/init bootstrap critique was accepted as an open question: how the compiler reads values from code (the lexer reading `vr` as a token without string semantics) is not concluded (Omid Hekayati — decided).
