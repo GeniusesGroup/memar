@@ -11,7 +11,7 @@ Open work for `lexer.md`. Entries are mutable current state — revised as each 
 ## Open Questions
 
 ### What makes something a lexical unit?
-- State: moved 2026-09-11 from the retired Unresolved questions (item 1). The minimal contract every consumer can rely on, which data is optional per consumer, and whether the contract splits into a core plus per-consumer profiles (compiler vs analysis vs model consumers). The body names this the design session's central task (see [What a Lexer is](./lexer.md#what-a-lexer-is)).
+- State: moved 2026-09-11 from the retired Unresolved questions (item 1). The minimal contract every consumer can rely on, which data is optional per consumer, and whether the contract splits into a core plus per-consumer profiles (compiler vs analysis vs model consumers). The body names this the design session's central task (see [What a Lexer is](./lexer.md#what-a-lexer-is)). Structure candidates now on the table also include the tagged-union payload pattern (a unit as kind-plus-payload variants) alongside the industry `{kind, text, position}` shape.
 - Next: settle in the dedicated design session (see Anticipated Work).
 
 ### What information may a lexical model provide about a unit?
@@ -51,11 +51,11 @@ Open work for `lexer.md`. Entries are mutable current state — revised as each 
 - Next: see Sibling abstractions for frequency/significance observations under Anticipated Work.
 
 ### Do non-substring units need a derived-from relationship?
-- State: moved 2026-09-11 from the retired Unresolved questions (item 11). If any model ever produces non-substring units, do they need an explicit relationship to the source? Currently not admitted at the core.
+- State: moved 2026-09-11 from the retired Unresolved questions (item 11). If any model ever produces non-substring units, do they need an explicit relationship to the source? Currently not admitted at the core. The standing test case for non-substring output is Unicode grapheme clusters (combining marks, ZWJ sequences): one cluster grounds in multiple source extents at once.
 - Next: revisit if a real model requires non-substring output.
 
 ### Does the end-of-input signal ride the delivery channel?
-- State: moved 2026-09-11 from the retired Unresolved questions (item 12). Settled in principle: end-of-input is a signal, not a unit — the grounding principle excludes it, and the survey shows both resolutions in production (EOF-as-token in most compilers, EOF-as-side-channel in Tree-sitter and Rust proc-macros), so a protocol keeping it a signal is viable. Open: whether the signal rides the same delivery channel as units or a separate one.
+- State: moved 2026-09-11 from the retired Unresolved questions (item 12). Settled in principle: end-of-input is a signal, not a unit — the grounding principle excludes it, and the survey shows both resolutions in production (EOF-as-token in most compilers, EOF-as-side-channel in Tree-sitter and Rust proc-macros), so a protocol keeping it a signal is viable. Open: whether the signal rides the same delivery channel as units or a separate one. The waived Appendix-D async-streaming question lands here too: the delivery contract must also state the async/streaming interface shape — the intake-side half of the same case (chunked arrival) is already registered in [Lifecycle](./lexer.md#lifecycle-the-lexical-capsule).
 - Next: settle with the delivery contract.
 
 ### What is the shape and ownership of the consumer feedback channel?
@@ -71,7 +71,7 @@ Open work for `lexer.md`. Entries are mutable current state — revised as each 
 - Next: deferred to the security discussion of the design session.
 
 ### Where does the trivia policy live?
-- State: moved 2026-09-11 from the retired Unresolved questions (item 16). Which of the surveyed policies (filter, flag-on-next-unit, separate channel, first-class trivia, trivia-as-units, grammar-controlled) the protocol must permit, and whether the policy is a model-level choice or a per-consumption view — see [Trivia](./lexer.md#trivia).
+- State: moved 2026-09-11 from the retired Unresolved questions (item 16). Which of the surveyed policies (filter, flag-on-next-unit, separate channel, first-class trivia, trivia-as-units, grammar-controlled) the protocol must permit, and whether the policy is a model-level choice or a per-consumption view — see [Trivia](./lexer.md#trivia). Two further cases sharpen it: folding whitespace — RFC 5322's folding is unfolded by the specification itself before interpretation, so at least one grammar-controlled handling is mandatory rather than optional — and adjacency flags (Rust's `Spacing::Joint`/`Alone`), another member of the flag family where whitespace is observed without becoming a unit.
 - Next: settle in the design session.
 
 ### What shape does a lexical error take?
@@ -87,7 +87,7 @@ Open work for `lexer.md`. Entries are mutable current state — revised as each 
 - Next: settle with the change contract and result-identity assumptions.
 
 ### Where does input preprocessing live?
-- State: moved 2026-09-11 from the retired Unresolved questions (item 20). Where do byte→character decoding, newline normalization, and malformed-sequence replacement live — in the Source abstraction, an explicit preprocessing step, or capsule initialization — and against which stream (raw or preprocessed) are positions defined? The lossless/lossy distinction that keeps this outside position 9 of [Working positions](./lexer.md#working-positions) is recorded there.
+- State: moved 2026-09-11 from the retired Unresolved questions (item 20). Where do byte→character decoding, newline normalization, and malformed-sequence replacement live — in the Source abstraction, an explicit preprocessing step, or capsule initialization — and against which stream (raw or preprocessed) are positions defined? The lossless/lossy distinction that keeps this outside [Working positions](./lexer.md#working-positions) is recorded in [What the research established](./lexer.md#what-the-research-established). Two boundary cases from the waived findings: HTML character-reference decoding (`&amp;` → `&`) — the HTML5 tokenizer performs it inside recognition, testing whether text-transforms belong to preprocessing or to model rules; and the UTF-8/default-encoding question, which is this question's byte-decoding first item — the waived Unicode-support note is covered here rather than separately.
 - Next: settle in the design session.
 
 ## Anticipated Work

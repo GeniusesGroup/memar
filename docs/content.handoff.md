@@ -11,7 +11,7 @@ Open work for `content.md`. Entries are mutable current state — revised as eac
 ## Open Questions
 
 ### Are navigate/embed/execute properties of the Reference edge, or consumer-determined?
-- State: moved 2026-09-11 from the Reference topic's retired Discussion wrapper. Nothing in the topic settles whether the different things a consumer might do upon encountering a Reference ("navigate," "embed," "execute") are properties of the edge itself (e.g., a `mode` field) or entirely determined by the consuming Thing's own rules.
+- State: moved 2026-09-11 from the Reference topic's retired Discussion wrapper. Nothing in the topic settles whether the different things a consumer might do upon encountering a Reference ("navigate," "embed," "execute") are properties of the edge itself (e.g., a `mode` field) or entirely determined by the consuming Thing's own rules. The related-work survey's Topic Maps associations-with-roles idea — recorded in [content.changelog.md](./content.changelog.md)'s research-deletion entry — is the kind of relation-role vocabulary that would land in exactly this question if revived.
 - Next: test against concrete cross-modal cases as the Interaction concern develops.
 
 ### What scope does Lexical Token uniqueness actually take?
@@ -81,9 +81,5 @@ Open work for `content.md`. Entries are mutable current state — revised as eac
 - Next: run when documentation-method work next touches the authoring format.
 
 ### Cross-modal rendering experiments
-- State: from the retired Future possibilities. Take a single Semantic Graph instance through both a GUI renderer and a VUI renderer, to empirically test whether the Semantic/Interaction/Rendering separation claimed throughout actually holds under real multi-modal pressure.
+- State: from the retired Future possibilities. Take a single Semantic Graph instance through both a GUI renderer and a VUI renderer, to empirically test whether the Semantic/Interaction/Rendering separation claimed throughout actually holds under real multi-modal pressure. A design-system-level variant was also proposed during research — one design system's tokens taken through multiple renderers — recorded in [content.changelog.md](./content.changelog.md)'s research-deletion entry.
 - Next: depends on the first renderer implementations.
-
-### Independent verification of the AI-generated prior-art survey
-- State: from the retired Future possibilities. Particularly the unresolved CKML entry, before any of its conclusions are relied upon elsewhere.
-- Next: primary-source review of the CKML entry.

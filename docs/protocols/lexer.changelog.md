@@ -31,8 +31,8 @@
 - Time: 2026-08-13T08:16:00Z
 - Type: Added
 - Cited:
-  - [researchs/lexer - deepseek.md](../../researchs/lexer%20-%20deepseek.md) — Evidence: the survey report commissioned for this topic.
-  - [researchs/Lexer - z.ai.eng.md](../../researchs/Lexer%20-%20z.ai.eng.md) — Evidence: the survey-plus-synthesis report (36+ systems, four families) commissioned for this topic.
+  - DeepSeek lexer survey report (source file deleted 2026-09-23 after its final transfer audit) — Evidence: the survey report commissioned for this topic.
+  - z.ai lexer survey-plus-synthesis report (source file deleted 2026-09-23 after its final transfer audit) — Evidence: the survey-plus-synthesis report (36+ systems, four families) commissioned for this topic.
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — requested, reviewed
 
@@ -52,7 +52,7 @@
 - Time: 2026-08-15T05:43:00Z
 - Type: Added
 - Cited:
-  - [researchs/Lexer - z.ai.eng.md](../../researchs/Lexer%20-%20z.ai.eng.md) — Evidence: source of the rejected universal-token-core and four-stage-pipeline proposals examined in these sessions.
+  - z.ai lexer survey-plus-synthesis report (source file deleted 2026-09-23 after its final transfer audit) — Evidence: source of the rejected universal-token-core and four-stage-pipeline proposals examined in these sessions.
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — claimed, argued
   - [ChatGPT](../../CONTRIBUTORS.md#chatgpt) — reviewed, argued
@@ -96,7 +96,7 @@
   - [Lexical analysis (Wikipedia)](https://en.wikipedia.org/wiki/Lexical_analysis) — Reference: the terminology entry point for the lexeme/token/pattern/token-type vocabulary this document already uses as evidence.
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — requested
-  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash, via the OpenCode agent) — edited
+  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash, via [OpenCode](../../CONTRIBUTORS.md#opencode)) — edited
 
 #### What changed
 - The Wikipedia Lexical Analysis reference, previously present only as a Prior-art bullet, is now linked inline at the two reader-facing points where a reader first needs it: once in *What a Lexer is* (naming the subject-matter process the protocol abstracts over), once in *Lexical Unit and naming* (the lexeme/token/pattern vocabulary under critique) (Super Z — edited).
@@ -112,7 +112,7 @@
 - Type: Fixed
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — requested
-  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash, via the OpenCode agent) — audited, applied
+  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash, via [OpenCode](../../CONTRIBUTORS.md#opencode)) — audited, applied
 
 #### What changed
 - Both transcripts were compared against the document claim by claim, and five gaps were closed:
@@ -131,17 +131,17 @@
 - Time: 2026-09-06T11:40:00Z
 - Type: Added
 - Cited:
-  - [researchs/Lexer - z.ai.eng.md](../../researchs/Lexer%20-%20z.ai.eng.md) — Evidence: the 36+-system synthesis behind the new positions (trivia, errors, preprocessing, context-carrying models, per-type registries, delivery forms, lexer-earning-its-keep conditions).
-  - [researchs/lexer - deepseek.md](../../researchs/lexer%20-%20deepseek.md) — Evidence: the survey behind the C lexer-hack lesson, the source-ownership recommendation, and the Unicode support note.
+  - z.ai lexer survey-plus-synthesis report (source file deleted 2026-09-23 after its final transfer audit) — Evidence: the 36+-system synthesis behind the new positions (trivia, errors, preprocessing, context-carrying models, per-type registries, delivery forms, lexer-earning-its-keep conditions).
+  - DeepSeek lexer survey report (source file deleted 2026-09-23 after its final transfer audit) — Evidence: the survey behind the C lexer-hack lesson, the source-ownership recommendation, and the Unicode support note.
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — directed
-  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash, via the OpenCode agent) — audited, applied.
+  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash, via [OpenCode](../../CONTRIBUTORS.md#opencode)) — audited, applied.
 
 #### What changed
 - The three research reports were compared against the document finding by finding.
 - Adopted into the body:
   - parser-driven lexing as a fourth architecture (position 3)
-  - the lossless-preprocessing versus lossy-normalization distinction in position 9 (decoding, newline normalization, and malformed-sequence replacement are Source-side and specification-mandated in HTML5/CSS - not the normalization the position excludes)
+  - the lossless-preprocessing versus lossy-normalization distinction in [What the research established](./lexer.md#what-the-research-established) (decoding, newline normalization, and malformed-sequence replacement are Source-side and specification-mandated in HTML5/CSS - not the normalization the position excludes)
   - the lexer-earning-its-keep decision rule in Domain and consumers
   - the C lexer-hack and Clang annotation-token evidence in Boundary principles
   - the context-carrying-models verdict in The Lexical Model (Python INDENT/DEDENT, YAML, HTML5 modes, JSX, CommonMark whole-document references) with the passive/active question converted to a settled direction
@@ -196,4 +196,40 @@
 - **Grounding-principle cost.** Excluding invented units means designs that want `INDENT`-style or `EOF` tokens must build them above the Lexer. Some compiler consumers will find that less convenient than the industry norm, and the protocol should be honest that this is a deliberate cost.
 - **Immutability cost.** A consumer holding long-lived capsules across a specification upgrade must manage an identity swap (old capsule ends, new capsule begins) rather than mutate in place.
 - **Absent topics (self-audit).** Three dimensions the founding sessions never named and this document only registered after the commissioned research — trivia, lexical errors, and input preprocessing — are present as open questions but lack settled positions. If any of them turns out to load-bearing for the minimal contract (they plausibly are: errors especially), the design session's scope grows accordingly.
-- **Evidence asymmetry.** The commissioned research's per-family detail lives in external reports (and the four per-family source files behind them are referenced by paths that no longer exist in this repository — `/home/z/my-project/research/...`). A reader auditing a claim adopted from the survey must trust the summary here or the two reports in `researchs/`; the primary-source traceability the survey itself advertises is not preserved in this repository.
+- **Evidence asymmetry.** The commissioned research's per-family detail lived in external reports (the four per-family source files behind them were referenced by paths that never existed in this repository — `/home/z/my-project/research/...`), and the two report files themselves were deleted 2026-09-23 after their final transfer audit. A reader auditing a claim adopted from the survey must trust the summary here; the primary-source traceability the survey itself advertises is no longer available in this repository at all.
+
+---
+
+### Research sources deleted after final transfer audit
+- Time: 2026-09-23T14:20:00Z
+- Type: Removed
+- Contributors:
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — requested
+  - [Mimo](../../CONTRIBUTORS.md#mimo) (mimo-v2.6-flash via [OpenCode](../../CONTRIBUTORS.md#opencode)) — audited, applied
+
+#### What changed
+- All three commissioned lexer research files — the DeepSeek survey, the z.ai English survey-plus-synthesis report, and its Persian translation (a duplicate carrying no unique content) — were audited finding-by-finding against `lexer.md`, this changelog, and the paired handoff, then deleted along with the rest of the research directory.
+- The Evidence citations in this file's earlier entries were repointed to plain report names without paths; the Evidence-asymmetry Drawback was updated to record that the reports themselves are gone and this document's summaries are now the only surviving record.
+- Two provenance errors repaired in passing: this file's research-integration entry claimed the survey's Unicode support note was adopted into the body, but no UTF-8/default-encoding or raw-byte sentence ever reached `lexer.md` — the claim overstated the audit result and the note is waived, not adopted; and both that entry and the handoff's preprocessing question pointed at position 9 for the lossless/lossy distinction, which in fact lives in [What the research established](./lexer.md#what-the-research-established) — pointers fixed.
+- The following research findings received no disposition during the audits and are waived with the sources' deletion — recorded here so the waiver itself is examinable: non-Latin token inflation (3–5× vs English) and tokenizer-choice impact on downstream model performance (DeepSeek, LLM Tokenization Challenges); Artichoke's coroutine-based lazy lexer as lazy-generation evidence (DeepSeek, compiler review); MIME/HTTP folded-header handling and RFC822-specific tokens (DeepSeek, MIME/HTTP headers); "token kind is always an integer enum" with Go/V8 range-sentinel grouping (z.ai, compiler-lexer summary and convergence analysis); the position that incremental lexing should be second-class, with its only-Roslyn-and-Tree-sitter evidence (z.ai, final opinions) — the opposite direction stands, since change reporting is a contract-level obligation in this document; five of eight Appendix-D open questions (numerical benchmarks, LLM-runtime integration, cross-language implementation differences, Unicode edge cases, async streaming interface); RFC 5322 folding-whitespace handling; the catastrophic-backtracking warning for URI-style regular expressions; the SVG/MathML shared-lexer lesson; entity/character-reference decoding as a lexer-side concern; Rust's `Spacing::Joint`/`Alone` adjacency pattern; Tree-sitter's external-scanner escape hatch; the tagged-union token payload pattern; and two opinions never adopted — lenient error recovery as default (the document keeps the recovery posture open) and the mode stack as most flexible (the document keeps the context-shape question open).
+
+---
+
+### Waiver examination — dispositions for the deleted-research findings
+- Time: 2026-09-23T15:30:00Z
+- Type: Added
+- Contributors:
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — directed
+  - [Mimo](../../CONTRIBUTORS.md#mimo) (mimo-v2.6-flash via [OpenCode](../../CONTRIBUTORS.md#opencode)) — examined, dispositioned, applied
+
+#### What changed
+- Every finding waived by this file's research-deletion entry received an explicit disposition — each verdict on merits, so no waiver stands bare:
+  - **Adopted into the body (3):** the catastrophic-backtracking ([ReDoS](https://en.wikipedia.org/wiki/ReDoS)) constraint on regex-form rules, added at the compile-once condition in [The Lexical Model](./lexer.md#the-lexical-model); SVG/MathML foreign content as the HTML example's concrete mid-parse lexical switch, added in [Examples the abstraction must express](./lexer.md#examples-the-abstraction-must-express); and opaque scanner code such as Tree-sitter's external scanners added to the technique list of position 6 in [Working positions](./lexer.md#working-positions).
+  - **Enriched into handoff open questions (5 State additions carrying 7 findings):** the tagged-union payload pattern → *What makes something a lexical unit?*; grapheme clusters as the non-substring test case → *derived-from relationship*; the async-streaming interface shape → *end-of-input signal / delivery contract*; RFC 5322 folding whitespace and Rust's `Spacing::Joint`/`Alone` adjacency flags → *trivia policy*; HTML character-reference decoding and the UTF-8/default-encoding note → *input preprocessing*.
+  - **Waivers upheld with reason:** non-Latin token inflation and tokenizer-choice impact (numeric/impact claims unsourced after source deletion; benchmarks are implementation-stage work); Artichoke's lazy lexer (already covered by position 11's lazy-or-eager delivery and V8's lazy pre-parsing in Related work); integer-enum kind with Go/V8 range sentinels (kind representation is implementation detail below the decisions-not-representations contract); numerical benchmarks, LLM-runtime integration, and cross-language implementation differences (implementation-stage / out of scope / inherent to the protocol-versus-implementation split); and lenient-error-recovery-as-default and mode-stack-as-most-flexible (both opinions already kept open — the recovery posture in the handoff's lexical-error question, stacked modes among the context-shape candidates).
+  - **Already dispositioned, confirmed:** incremental lexing as second-class — the opposite stands, since change reporting is a contract-level obligation ([Change contract](./lexer.md#change-contract)).
+- One companion fact recorded with the above: the waived Unicode-support note is not independent — byte→character decoding is the input-preprocessing question's first item, so that question carries it.
+
+#### Deliberation
+- The examination answers the deletion entry's own condition ("recorded here so the waiver itself is examinable"): each upheld waiver now carries the reason that sustains it (Mimo — examined).
+- No claim from the deleted reports was promoted into the body without a public, still-verifiable anchor (ReDoS, HTML5 foreign content, Tree-sitter, RFC 5322, Rust, Unicode) — the Evidence-asymmetry drawback bars the deleted sources as citation (Mimo — applied).
