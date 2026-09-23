@@ -3,6 +3,9 @@
 ## rules
 - Judges just set arbitrator for contracts and follow the case for any law broken situations.
 
+## Kinds of case
+This domain is the dispute node. A kind of dispute — theft, a conflicting law, an update of a law — is not part of that node. Those edges are optional and live in [claims](../../../modules-plugable/rights/claims/claims.md). An organization includes the ones it hears.
+
 ## Domain status and naming
 The Case / Dispute Resolution domain is only partially modeled. Candidate umbrella name: `Case`. It is explicitly NOT directly connected to `Organization` - it connects to transactional domains like `Invoice` instead.
 
@@ -16,4 +19,4 @@ Related but distinct: the enforcement/coercion capability question (who can enfo
 - **Does Liability live here?** (from the rights domain-boundaries proposal - awaiting review): the chain `Event --gives_rise_to--> Liability --creates--> Obligation` connects a damaging event to an obligation and then to a transaction. Is Liability a case/judiciary matter owned by this domain, or a rights-level concept that cases merely *establish*? The chain would connect rights, process, and accounting without collapsing them - decide who owns each link.
 - How does a Case reference the Rule(s) allegedly violated, given the Rule temporal-validity question is unresolved (Memar `docs/modeling.md` -> Separating Structure (Code) from Policy (Rule))?
 - How does resolution of a Case interact with the enforcement-capability model?
-- Contradiction to resolve: this domain was recorded as "not yet modeled", yet `edges/` already contains `kidnap`, `stolen`, `illegal`, `settlement_for` and case-relation types. Are those a started model, placeholders, or misplacements?
+- **Settlement for, and case-relation-user.** Particular accusations now live in [claims](../../../modules-plugable/rights/claims/claims.md). [Settlement for](edges/settlement_for/settlement_for.md) still names what a dispute settles. Is that part of this type, or another optional kind? `case-relation-user.go` still sits in this folder.
