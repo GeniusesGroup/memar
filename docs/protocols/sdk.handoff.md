@@ -13,8 +13,8 @@ Open work for `protocols/sdk.md`. Entries are mutable current state — revised 
 - Next: recover the diagrams' content into prose, then design the strategy surface.
 
 ### Delivery and versioning
-- State: one declaration revision yields substitutable SDK deliverables per language — the identity position — but nothing is settled about delivery (package publication, repository layout per `memar-{language}`) or about how SDK versions track declaration revisions and how consumers pin them.
-- Next: design the delivery and versioning rules; check against the implementation-repositories structure in [protocols/README.md](./README.md).
+- State: one declaration revision yields substitutable SDK deliverables per consumer language — the identity position — but nothing is settled about delivery (package publication, the local module layout under [`modules/`](../../modules/), or consumer-side placement) or about how SDK versions track declaration revisions and how consumers pin them.
+- Next: design the delivery and versioning rules; check against the local module placement in [protocols/README.md](./README.md).
 
 ### Generation mechanics
 - State: generation is the declared mechanism and compile-time generation the position for compiled languages; the generator's architecture (one generator with per-language backends, templates, or AST-level output) is open, as is the balance between per-language idiomatic quality and uniform shape across languages.
@@ -29,7 +29,7 @@ Open work for `protocols/sdk.md`. Entries are mutable current state — revised 
 - Next: settle with the GUI and Modeling documents during the design session.
 
 ### How "part of the module's protocol realization" binds concretely
-- State: position 9 makes the delivered client face a conformance obligation of the module ([Part of the module, not beside it](./sdk.md#part-of-the-module-not-beside-it)); what enforces that obligation is undesigned — whether a module's protocol declaration is invalid without its client face, whether conformance is checked at release, and how it interacts with the implementation-repositories structure in [protocols/README.md](./README.md).
+- State: position 9 makes the delivered client face a conformance obligation of the module ([Part of the module, not beside it](./sdk.md#part-of-the-module-not-beside-it)); what enforces that obligation is undesigned — whether a module's protocol declaration is invalid without its client face, whether conformance is checked at release, and how it interacts with the local module placement in [protocols/README.md](./README.md).
 - Next: decide in the design session; the check belongs to a linter-conformance discussion if the protocol declaration carries it.
 
 ### The local/network realization decision surface
@@ -37,7 +37,7 @@ Open work for `protocols/sdk.md`. Entries are mutable current state — revised 
 - Next: design after the declaration-artifact question settles; touches sRPC's transport role directly.
 
 ### Correctness ownership of non-generated consumption paths
-- State: the declared interface binds no consumer language ([Working positions](./sdk.md#working-positions) 7) — FFI against a delivered SDK and ports are legitimate consumption paths (the founding example: a Go caller consuming a module whose SDK is delivered in Khayyam). Whether a consumer-made port inherits any ownership or support claim from the module, or is simply the consumer's own code over the same declared interface, is undecided.
+- State: the declared interface binds no consumer language ([Working positions](./sdk.md#working-positions) 7) — FFI against a delivered SDK and ports are legitimate external consumption paths (the founding example: an external Go caller consuming a module whose SDK is delivered in Khayyam). Whether a consumer-made port inherits any ownership or support claim from the module, or is simply the consumer's own code over the same declared interface, is undecided.
 - Next: settle in the design session; likely a boundary statement rather than machinery.
 
 ### The agreement artifact for delegation

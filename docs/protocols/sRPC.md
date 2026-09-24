@@ -16,7 +16,7 @@ sRPC (Syllab Remote Procedure Call) is Memar's application protocol: frames that
 Application-layer calls fail when the protocol itself is the cost: finding a service among a server's services requires extra lookup work, and the protocol forces extra data onto every exchange. They fail again when routing, handler, operation, and request instance share one representation, so none of them can be addressed, matched, or adapted on its own. This protocol exists to keep lookup and forced exchange small, and to keep those four as distinct fields. Human readability of the wire is not a goal.
 
 ### Methodology
-Frame type numbers live in the [Networking](./networking.md) registry; this document specifies field layout and peer rules for those frames. Guest-adaptation forms — the HTTP URI multiplexer under [Service ID](#service-id), an HTTP `Error-ID` header under [Error ID](#error-id) — are consumed contracts with [HTTP](./http.md), not this protocol's addressing model. Implementations are not listed here; they live in the `memar-{language}` repositories named from [Protocols](./README.md).
+Frame type numbers live in the [Networking](./networking.md) registry; this document specifies field layout and peer rules for those frames. Guest-adaptation forms — the HTTP URI multiplexer under [Service ID](#service-id), an HTTP `Error-ID` header under [Error ID](#error-id) — are consumed contracts with [HTTP](./http.md), not this protocol's addressing model. Implementations are not listed here; Memar's implementation modules live under [`modules/`](../../modules/) in this repository.
 
 ## Explanation
 

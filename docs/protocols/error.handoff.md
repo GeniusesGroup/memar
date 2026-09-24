@@ -8,8 +8,8 @@ Open work for `protocols/error.md`. Entries are mutable current state — revise
 - State: whether a naming convention (a prefix or suffix distinguishing errors "safe to propagate as-is" from errors that "must be translated before crossing a boundary") should be introduced is undecided; if introduced, it becomes a follow-up document referencing error.md.
 - Next: evaluate against real error families once the framework's first services exist.
 
-### `IsEqual`'s `MediaType()` comparison
-- State: the generic `error.IsEqual` helper compares both `DataTypeID()` and `MediaType()`. If `MediaType` is a fixed, type-level property (every instance of a given `DataTypeID` always reports the same `MediaType`), this check is redundant and should be dropped. If `MediaType` can genuinely vary per-instance for the same `DataTypeID`, this reopens the "identity is `DataTypeID` alone" principle stated under error.md's [Identity and equality](./error.md#identity-and-equality) and needs to be resolved explicitly. Not yet decided.
+### A realization's `IsEqual` and `MediaType()` comparison
+- State: a realization's convenience comparison helper may compare both `DataTypeID()` and `MediaType()`. If `MediaType` is a fixed, type-level property (every instance of a given `DataTypeID` always reports the same `MediaType`), this check is redundant and should be dropped. If `MediaType` can genuinely vary per-instance for the same `DataTypeID`, this reopens the "identity is `DataTypeID` alone" principle stated under error.md's [Identity and equality](./error.md#identity-and-equality) and needs to be resolved explicitly.
 - Next: resolve explicitly against the `DataType` model's media-type rules.
 
 ### `ExpireInFavorOf`
@@ -17,11 +17,11 @@ Open work for `protocols/error.md`. Entries are mutable current state — revise
 - Next: review `datatype_p.Details`, then decide keep/drop.
 
 ### `ADT`'s `IsNull`/`IsEmpty` semantics for a value like `Error`
-- State: Khayyam's `Error` canonically requires all three `ADT` methods (see error.md's [ADT composition](./error.md#adt-composition--the-full-adt-family-at-the-canonicalkhayyam-level)); Go's realization narrows to `Nil` alone for Go-specific reasons and is not a template for other backends. What `IsNull`/`IsEmpty` should actually mean for `Error` remains open, tracked in a dedicated ADT/Khayyam session and its own document.
+- State: the canonical `Error` contract supplies all three `ADT` methods (see error.md's [ADT composition](./error.md#adt-composition--the-full-adt-family-at-the-canonical-level)); what `IsNull`/`IsEmpty` should actually mean for `Error` remains open, tracked in a dedicated ADT session and its own document.
 - Next: joint session with the `ADT` capsule family's dedicated document.
 
-### Khayyam's capsule composition and method-reuse model, in general (not specific to `Error`)
-- State: an earlier draft of error.md's composition example incorrectly implied that composing `Error` into a concrete capsule automatically promotes its methods, the way Go's struct embedding does. Khayyam has no such automatic inheritance: composition is containment only, and a containing capsule must explicitly implement and forward each method itself. The full implications of this (how concrete errors are actually meant to be authored, what role code generation plays versus a possible future language-level reuse mechanism) need their own dedicated document, since the relevant information is currently scattered across [khayyam.md](../khayyam/khayyam.md)'s capsule and abstraction-composition sections rather than settled in one place. Not specific to `Error`, but `Error` is the concrete motivating case that surfaced it.
+### A realization's capsule composition and method-reuse model, in general (not specific to `Error`)
+- State: the Khayyam realization's composition example treats a composed capsule as containment, with each method explicitly implemented and forwarded. The full implications of this (how concrete errors are authored, what role code generation plays, and whether a future language-level reuse mechanism is useful) need their own dedicated document, since the relevant information is currently scattered across [khayyam.md](../khayyam/khayyam.md)'s capsule and abstraction-composition sections rather than settled in one place. `Error` is the concrete motivating case that surfaced it.
 - Next: dedicated document in the Khayyam set.
 
 ### Whether the optional capability-interface set (`Internal`, `Temporary`, `Timeout`) is complete

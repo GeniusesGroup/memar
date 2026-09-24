@@ -34,7 +34,7 @@ Highly regular, atomic syntax can feel verbose to experienced developers who rel
 ### Which forms of ambiguity are most harmful to long-term system maintainability?
 (From the *Syntactic Atomicity and Semantic Clarity* topic's retired Discussion.)
 
-### The precise boundary between "what Khayyam specifies" and "what a Khayyam implementation provides" still needs worked examples before it can be considered settled.
+### The precise boundary between "what Khayyam specifies" and "what a Khayyam toolchain or module provides" still needs worked examples before it can be considered settled.
 See [Khayyam Is Not Its Own Compiler or Runtime](./khayyam.md#khayyam-is-not-its-own-compiler-or-runtime). (Document-level, from the removed `## Discussion`.)
 
 ### Is there a size or complexity threshold at which splitting a specific topic back out into its own dedicated document becomes worthwhile?
@@ -54,8 +54,8 @@ Now that philosophy and syntax reference live in one document — the way *Behav
 ### Which method returns human-facing text, and on which owner?
 [Self-Documenting Code and Naming](./khayyam.md#self-documenting-code-and-naming) states that a description or a human-readable name is a value a method writes into an influenced variable, so another language is another method on the same type. The signature of that method, and whether the owner is the type being described or a companion type, is not worked. Examples in this document set still use `//` lines; those lines are not that method.
 
-### Translating a Go tree before memar-khayyam exists
-A file-by-file translation of an existing Go module, ahead of the Khayyam implementation repository, produces sources that have to choose among incompatible sketches. The settled points for a later pass, already stated in the language documents, are: a protocol is an abstraction; a field-shaped value is one type plus one method that names what a code generator implements ([Encapsulation → Capsule Structure and Privacy](./encapsulation.md#capsule-structure-and-privacy)); human-facing text is a method result, as above. Writing a migration map and translating a large module are not the next step. A set of about 179 empty Go files was named as movable into place; they are not in this workspace, so they were not moved.
+### Translating a Go tree before the Khayyam toolchain matures
+A file-by-file translation of an existing Go module, ahead of a working Khayyam toolchain, produces sources that have to choose among incompatible sketches. The settled points for a later pass, already stated in the language documents, are: a protocol is an abstraction; a field-shaped value is one type plus one method that names what a code generator implements ([Encapsulation → Capsule Structure and Privacy](./encapsulation.md#capsule-structure-and-privacy)); human-facing text is a method result, as above. Writing a migration map and translating a large module are not the next step. A set of about 179 empty Go files was named as movable into place; they are not in this workspace, so they were not moved.
 
 ## Anticipated Work
 

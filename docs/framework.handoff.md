@@ -47,9 +47,6 @@ How should progress toward the goal stated in *Memar's Purpose Space: From Knowl
 ### Goal statement in the README for non-software instantiations
 Should the goal statement be reflected in the README's System Categories for Memar's non-software instantiations (buildings, organizations, society), or does the chain apply only to cognitive systems?
 
-### Recording the memar-go generics-elimination event as citable evidence
-The [memar-go generics elimination](https://github.com/GeniusesGroup/memar-go/blob/main/.agents/docs/Elimination_of_Open_Generic_Type_Parameters.md) event cited under *Memar's Framework* as evidence is documented in the `memar-go` repository, not in this project's own documentation system. If this event is meant to stand as citable evidence for the document's core claim, it may deserve its own short record (in `memar-go`'s own changelog, or referenced from there) rather than remaining a parenthetical description in [framework.md](./framework.md).
-
 ### Design-space treatment for Memar's non-software categories
 *Memar's Framework: Design Space Over Implementation Layers* ([framework.md](./framework.md#memars-framework-design-space-over-implementation-layers)) scopes itself explicitly to Memar's Computer (software) system category, per the project README's System Categories. Memar's other, non-software system categories do not yet have a comparable design-space treatment anywhere. Whether they need one, and if so whether it belongs in [framework.md](./framework.md) as a sibling topic or somewhere else entirely, is open.
 

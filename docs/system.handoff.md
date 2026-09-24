@@ -12,7 +12,7 @@ Open work for `system.md`. Entries are mutable current state — revised as each
 
 ### Structure
 1. Does "the arrangement of a system's parts" warrant a dedicated, formally defined concept of its own within Memar, and if so, what should it be called? Until this is resolved, [Structure](./system.md#structure)'s definition can only state what it excludes, not what the excluded concept positively is.
-2. How does Structure relate to the layout-related vocabulary already in use elsewhere in Memar (for example, package and module layout in memar-go), and should `system.md`'s Structure be renamed if it turns out to conflict with established usage rather than merely with general-industry usage?
+2. How does Structure relate to the layout-related vocabulary already in use elsewhere in Memar (for example, package and module layout in existing software systems), and should `system.md`'s Structure be renamed if it turns out to conflict with established usage rather than merely with general-industry usage?
 
 ### Architecture
 1. Should Memar develop a more formal framework for assessing the architectural weight of a decision, or is the [proportional-impact heuristic](./system.md#architectural-weight-as-a-spectrum) sufficient?

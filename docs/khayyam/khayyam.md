@@ -148,7 +148,7 @@ Building a compiler or runtime is a separate concern with its own design space, 
 
 Keeping compiler and runtime implementation outside Khayyam's own scope as separate systems that consume Khayyam's specification, built by teams whose incentives are implementation correctness and performance rather than syntax convenience — is therefore not an incidental scoping choice. It is a structural safeguard against the specific failure mode described above.
 
-This has a direct consequence for how Khayyam's own documents should be scoped: a proposal to add syntax "to make the compiler's job easier" or "because other languages do it this way" is, by this principle, a signal to examine the proposal skeptically rather than a reason to adopt it. The precise boundary between "what Khayyam specifies" and "what a Khayyam implementation provides" still needs worked examples before this can be considered settled — see the paired handoff's [Open Questions](./khayyam.handoff.md#open-questions).
+This has a direct consequence for how Khayyam's own documents should be scoped: a proposal to add syntax "to make the compiler's job easier" or "because other languages do it this way" is, by this principle, a signal to examine the proposal skeptically rather than a reason to adopt it. The precise boundary between "what Khayyam specifies" and "what a Khayyam toolchain or module provides" still needs worked examples before this can be considered settled — see the paired handoff's [Open Questions](./khayyam.handoff.md#open-questions).
 
 ### Separation of Syntax and Governance: A Principle
 

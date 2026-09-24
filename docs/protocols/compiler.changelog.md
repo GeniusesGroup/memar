@@ -76,7 +76,7 @@
   - [protocols/lexer.md](../protocols/lexer.md) — Reference: the first Future-possibilities item pointing at the lexer protocol is now satisfied by a real document; the readiness-review item below generalizes the same gate to the whole compiler effort.
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — directed, reviewed
-  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash, via the OpenCode agent) — applied
+  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash, via [OpenCode](../../CONTRIBUTORS.md#opencode)) — applied
 
 #### What changed
 - Three Future-possibilities entries added, transferring the implementation-start decisions from the design chat:
@@ -97,7 +97,7 @@
   - khayyam-compiler.handoff.md: Created - open questions and anticipated work moved there.
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) - requested
-  - [OpenCode](../../CONTRIBUTORS.md#opencode) (qwen3.8-flash) - moved
+  - [Qwen](../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via [OpenCode](../../CONTRIBUTORS.md#opencode)) - moved
 
 #### What changed
 - The body retains only the fixed top-level sections `Abstract`, `Introduction`, `Explanation`, `Results`; the document-level `## Discussion` is gone.
@@ -153,7 +153,7 @@
   - lexer.md: none — already a consumed protocol; historical changelog links left as provenance.
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — claimed, decided
-  - [Grok](../../CONTRIBUTORS.md#grok) (Grok 4.6 via Cursor) — rewrote
+  - [Grok](../../CONTRIBUTORS.md#grok) (Grok 4.6 via [Cursor](../../CONTRIBUTORS.md#cursor)) — rewrote
 
 #### What changed
 - The document is now the Compiler protocol: a compiler consumes a language specification and produces a target representation; it is not identified with one language or one target (native, JavaScript, WebAssembly).
@@ -165,3 +165,37 @@
 - Compiler is not uniquely Khayyam-to-machine-code; a precise definition is needed so other uses (Khayyam to JS) share it (Omid Hekayati — claimed).
 - The document must move to the protocols folder as a general concept (Omid Hekayati — decided).
 
+---
+
+### Repository and realization placement settled — Khayyam modules live here
+- Time: 2026-09-24T12:35:12Z
+- Type: Decision
+- Propagates to:
+  - compiler.handoff.md: Done — the repository-question bullet is removed and the first JavaScript prototype points to the local `modules/khayyam/` toolchain.
+  - content.md: Done — implementation is separated from the language itself, and the Khayyam modules are identified as one current realization.
+  - filesystem.md: Done — the local Khayyam-backed modules serve as the implementation example.
+  - giti.md: Done — the protocol remains language-independent and names the local Khayyam modules as its current realization surface.
+  - protocols/README.md: Done — implementation modules are placed under this repository's `modules/`, with language-independent protocol meaning and a language choice made at realization time.
+  - docs/README.md and docs/khayyam/README.md: Done — Khayyam's local realization is located in this repository.
+  - knowledge.handoff.md: Done — executable knowledge work points to this repository's `modules/`.
+  - khayyam.handoff.md and khayyam.md: Done — the language/toolchain boundary is stated in terms of a Khayyam toolchain or module.
+  - .agents/skills/memar/SKILL.md: Done — implementation discovery is routed to local `modules/`, and the protocol's language independence is stated.
+  - README.md, framework.md, knowledge.md, software.md, and comparisons/superpowers.md: Done — the local Khayyam realization is described without making it a prerequisite for Memar's concepts or protocols.
+  - protocols/sRPC.md, protocols/tdd.md, protocols/error.md, protocols/error.handoff.md, and protocols/syllab.md: Done — implementation details are scoped to their realization while the main documents state language-independent rules directly.
+  - protocols/abstraction-implements.md and protocols/control-flow.md: Done — the protocol contracts are stated independently, with Khayyam retained as a realization example.
+  - dependency-management.handoff.md, sdk.handoff.md, protocol.handoff.md, and system.handoff.md: Done — local module dependencies and external-consumer questions remain open without making a programming language a prerequisite.
+  - framework.handoff.md, type.md, khayyam/polymorphism.md, and protocols/immutable_infrastructure.handoff.md: Done — external-repository citations are removed from live documents; their conclusions are stated directly and provenance remains in changelog history.
+  - modules/khayyam/README.md, modules/khayyam/execution.md, and modules/khayyam/execution.handoff.md: Done — placement, build paths, and handoff language describe the local toolchain and `modules/` tree.
+  - modules/computer/runtime/protocol/blocking.kh, modules/computer/runtime/protocol/concurrency.kh, modules/process/control-flow/protocol/if.kh, and modules/process/control-flow/protocol/panic-recovery.kh: Done — executable Khayyam declarations are staged as local material; empty and copied host-language drafts remain outside the repository change.
+  - .gitignore: Done — the local Khayyam build directory is excluded.
+- Contributors:
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Mimo](../../CONTRIBUTORS.md#mimo) (mimo-v2.6-flash via [OpenCode](../../CONTRIBUTORS.md#opencode)) — applied
+  - Space Bunny Alpha (space-bunny via [OpenCode](../../CONTRIBUTORS.md#opencode)) — audited, applied
+
+#### What changed
+- The repository question recorded on 2026-09-06 is closed as final: Khayyam has no dedicated repository. Its language documents and the current local Khayyam toolchain plan and modules now live in this repository; the earlier "for now" formulation is superseded by this settled arrangement.
+- Memar's concepts and protocols remain language-independent. Khayyam is one local realization, not a prerequisite or a default that defines every Memar detail.
+- Live references to the former `memar-khayyam` repository were replaced with the local realization language. Where outside evidence informed a claim, the conclusion is now stated directly in the main document and the provenance remains in changelog history.
+- The scratch `main.kh`, empty placeholders, and copied host-language drafts used to inspect the former repository remain outside this staged repository change; the staged repository change contains the Khayyam toolchain plan, the executable Khayyam declarations selected for this change, and the documentation and scope corrections.
+- The transferred Khayyam content was placed under `modules/` rather than `libs/`; local paths and the build-output ignore rule follow that placement.

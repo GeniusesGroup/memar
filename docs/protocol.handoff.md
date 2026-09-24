@@ -20,9 +20,9 @@ Open work for `protocol.md`. Entries are mutable current state — revised as ea
 - State: protocols are fundamentally static specifications. Should there ever be optional runtime conformance verification? Generally no, but some domains (e.g., security protocols) might benefit. This is a tooling question that interacts with the [EBO principle](./type.md#explicit-behavior-ownership).
 - Next: revisit with the conformance document (see Anticipated Work).
 
-### Multi-Language Protocol Compatibility
-- State: if a protocol is used across language boundaries, how should its specification be encoded? This touches on tooling and specification formats but is beyond protocol.md's scope.
-- Next: revisit when the first cross-language protocol realization ships.
+### External-Consumer Protocol Compatibility
+- State: when an external project consumes a protocol across a language boundary, how should its specification be encoded? This is a question about the consumer's realization, while Memar's protocol definition remains language-independent; it touches on tooling and specification formats beyond protocol.md's scope.
+- Next: revisit when the first external interoperability requirement is concrete.
 
 ### Protocol vs Specification Identity
 - State: is a protocol identical to its specification, or does the conceptual protocol exist independently of any written document? protocol.md leans toward treating them as distinct (the protocol is the rules governing a process; the specification is the document describing those rules) but acknowledges the question is unresolved.

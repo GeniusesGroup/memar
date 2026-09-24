@@ -28,7 +28,7 @@ After examination by two agents — Composer (via Cursor) and GLM 5.3 Flash — 
 A **software development methodology for coding agents**: composable skills, session-start bootstrap, and a brainstorm → plan → implement → review → finish chain. Domain knowledge of the host product is not the payload; **session process ritual** is. Distribution is a multi-harness plugin/marketplace matrix.
 
 ### Memar (self-definition)
-A **domain-agnostic system-development framework**: shared definitions and practices for developing systems (software, hardware, organizations, …). One discovery practice loads **live documentation**; cognition and agency norms govern exchange. Contracts are realized in language repositories. Plugin manifests are **delivery tax**, not the mental model.
+A **domain-agnostic system-development framework**: shared definitions and practices for developing systems (software, hardware, organizations, …). One discovery practice loads **live documentation**; cognition and agency norms govern exchange. Contracts are realized by the implementation modules in this repository. Plugin manifests are **delivery tax**, not the mental model.
 
 ### Category error
 - Superpowers ≈ how a coding agent should behave in a session
@@ -61,14 +61,14 @@ Memar already overlaps some *concerns* (ask / confirm, handoff, TDD as process d
 - Spike / bounded / architectural scale → implied by confirm-before-large-scope; name later if useful; never block clarifying questions.
 
 ### Reject for Memar
-- Marketplace / multi-plugin / multi-skill as how the project *is* — one continuous mental model ([Knowledge](../docs/knowledge.md#a-project-carries-one-continuous-mental-model)); failed Memar trials: separate Khayyam skill, Cognition as peer skill.
+- Marketplace / multi-plugin / multi-skill as how the project *is* — one continuous mental model ([Knowledge](../knowledge.md#a-project-carries-one-continuous-mental-model)); failed Memar trials: separate Khayyam skill, Cognition as peer skill.
 - Harness-coverage race as a Memar goal — Agency is not harness theory.
 - Heavy persuasion bootstrap — burns context; fights ask-before-assume.
-- Prose Practices that belong in executable modules — contracts in docs; generation in language servers / tools agents call ([Knowledge and Code](../docs/knowledge.md#knowledge-and-code)).
+- Prose Practices that belong in executable modules — contracts in docs; generation in language servers / tools agents call ([Knowledge and Code](../knowledge.md#knowledge-and-code)).
 - Software-only Iron Laws (worktree, PR menus, toolchain defaults) as core.
-- Grid layouts or diagram blocks as carriers of normative logic — including preferring `dot` graphs for models; Memar keeps load-bearing logic linear ([Written surface](../docs/documentation.md#written-surface)).
+- Grid layouts or diagram blocks as carriers of normative logic — including preferring `dot` graphs for models; Memar keeps load-bearing logic linear ([Written surface](../documentation.md#written-surface)).
 - ALL-CAPS pressure language and absolute rules without co-located reason.
-- Command/recipe catalogs in the Memar skill or growing paste files — scripts document themselves; host helpers are small executables, not prose dumps; no membership indexes of script or comparison folders ([Content Rule](../docs/documentation.md#content-rule-no-fabricated-or-redundant-provenance)).
+- Command/recipe catalogs in the Memar skill or growing paste files — scripts document themselves; host helpers are small executables, not prose dumps; no membership indexes of script or comparison folders ([Content Rule](../documentation.md#content-rule-no-fabricated-or-redundant-provenance)).
 
 ### Already owned
 Documentation-as-truth with discovery scripts; Handoff (agent-general); mid-session tangents; TDD generalized via Process expectations and checks; sub-agent session economy; critique norms.

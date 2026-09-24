@@ -12,9 +12,9 @@ Open work for `protocols/dependency-management.md`. Entries are mutable current 
 - State: VCS-native references handle authentication through the VCS's own credentials, but the team workflow (CI credentials, read-only mirrors) is unwritten.
 - Next: write it down when the first private-dependency consumer appears.
 
-### The framework's own repository consumption mode
-- State: whether the memar-* repositories consume each other via this mechanism from day one, or begin with direct source inclusion and migrate, is a project-management decision not yet made.
-- Next: decide when the first cross-repository implementation dependency appears.
+### The framework's own module consumption mode
+- State: whether modules within this repository consume one another via this mechanism from day one, or begin with direct source inclusion and migrate, is a project-management decision not yet made.
+- Next: decide when the first implementation dependency between modules appears.
 
 ## Anticipated Work
 

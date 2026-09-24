@@ -130,11 +130,11 @@ type Capsule struct {
 - Use to indicate length of data in the heap of packet.
 
 ## Code Generations
-It is very simple encoder base on code-generation for encode/decode process but also can marshal/un-marshal use by some runtime functions that we strongly don't suggest them!
-Like our other documents, We suggest do logics in compile time not runtime to improve performance and efficiency. Syllab architecture is so simple that can easily implement by code generation not marshalling or un-marshalling in runtime!
+It is a simple encoder based on code generation for encode/decode processes, while runtime marshalling and unmarshalling are available as implementation choices.
+Syllab's architecture favors compile-time logic and code generation to improve performance and efficiency.
 
-## Supported Programming Languages
-It is so simple protocol that can easily encode, decode & generate code in any programming language! We implement it on some language like [C](), [Go](https://github.com/GeniusesGroup/libgo/blob/master/syllab), [JavaScript]() and more in progress ...
+## Realization
+It is a language-independent encoding and code-generation protocol. A realization can target the language and runtime chosen by the system that hosts it.
 
 ## Inspired of
 - https://github.com/alecthomas/go_serialization_benchmarks
