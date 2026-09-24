@@ -7,3 +7,11 @@
 ## Policies (rules)
 
 - allowed vertices: text
+
+## Open questions
+
+- query-as-edge vs query-as-service-request; filter semantics.
+
+## Source
+
+> Source: `modules/knowledge/text/edges-loop/query/protocol/data_model.go` and `modules/knowledge/text/edges-loop/query/protocol/dt-precision.go` (in code).

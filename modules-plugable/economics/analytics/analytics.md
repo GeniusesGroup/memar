@@ -32,3 +32,15 @@ Cross-domain analytical modules over the economics core: knowledge produced from
 ### Future possibilities
 
 - A shared calendar-interpretation module above all time-bucketed analytics.
+
+## Idea backlog
+
+Nothing below is ratified.
+
+### Financial analysis
+- **Idea**: a financial-analysis protocol producing reports "use for cost-accounting, Retention rate, ...", report granularity "can make report Daily, Monthly, Yearly, ..."; record fields `PredictionTime uint64` ("Time need to use or deliver, can also use in budget analysis or prebuy!") and `Importance uint8` ("Use in budget analysis").
+- **Review questions**: are PredictionTime/Importance inputs this protocol stores, or budget facts read across from [budget](../budget/budget.md)? Does "financial analysis" stay one module or split by the knowledge produced (cost accounting vs retention — name modules by the knowledge produced)? The folder now holds only an empty `financial-analysis/protocol/` skeleton — instantiate the module, or fold the fields into an existing analytics module?
+
+### Campaign analytic
+- **Idea**: knowledge about how an advertising campaign performed.
+- **Review questions**: is that knowledge its own module (name it by the knowledge, not by a GUI page), or a report inside an existing analytics module?

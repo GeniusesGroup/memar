@@ -47,6 +47,17 @@ A GUI is a consumer of domain contracts, not a core-by-necessity domain: removin
 ## Open Questions
 - Whether a *new* upper document is warranted at all versus the domain being a plain instance of memar's `modeling.md` — decide per domain by what it genuinely adds. *(open; owner leaned "a document that only restates modeling.md must not exist")*
 - **The org product's own place relative to Memar is undecided** — recorded above. *(open for the org; the UI one specifically stays with its own repo)*
+- **Process automation: need a domain or a bot?** *(open; TODO from the `page-automating-processes` note — see [Idea backlog](#idea-backlog-from-code-comments) below)*
+
+## Idea backlog
+
+### Process automation: need a domain or a bot?
+- **Idea**: a note in the `page-automating-processes` page protocol — "process automation", with the author's direction "MOVED IT TO GUI": is process automation its own domain (a capability owning automation semantics) or a bot/projection the GUI only renders?
+- **Review questions**: domain or bot — does process automation have identity, lifecycle, authorization, and processing that no existing module owns (module candidate), or is it composition over known modules rendered as a GUI page? If it graduates, what is its entry point — GUI (current home) or the capability being automated? Does an existing page already cover it ([page-process](page-process/page-process.md))?
+
+### Page sketches that were domain notes
+- **Idea**: three page folders held domain notes rather than a projection: content reads (by type, by time, by user and type) now sit on [content](../../modules/knowledge/content/content.md); playlist, bookmark, content list, post list, and list-to-list now sit on [list](../../modules/knowledge/label/edges/list/list.md); campaign performance now sits on [economics analytics](../economics/analytics/analytics.md).
+- **Review questions**: a later GUI page may render any of those. The page consumes the domain. It does not own the words.
 
 ## Related Artifacts
 - [`../../modules/knowledge/content/content.handoff.md`](../../modules/knowledge/content/content.handoff.md)

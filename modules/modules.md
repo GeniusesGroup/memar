@@ -26,8 +26,15 @@ In graph theory, a [loop](https://en.wikipedia.org/wiki/Loop_(graph_theory)) (al
 
 Just some limited labels can be top or quiddity Levels labels. We MUST think very deeply to add any label here e.g. `project` is just a label for `task` and MUST NOT add as thing level label.
 
-
 `TODO:::` Each UUID can use in more than one vertex category.
 e.g. `product` UUID is as `text` UUID for a product.
 e.g. `product` UUID use as `group` for a product as default chat timeline (comments)
 If above is true, we can assume that default text as `loop edge` is title for each vertex.
+
+## Idea backlog
+
+Nothing below is ratified.
+
+### Module manifest
+- **Idea**: a published module carries a manifest: name, description, documentation URL, git repository, files to include and exclude, compilers (name and version), install and uninstall scripts, and requirements split into direct, indirect, and test-only.
+- **Review questions**: is that manifest a document of this repository's module layout, or a package format of its own? The sketch nested a full module descriptor inside each direct requirement. Does a requirement name an existing module, or copy that module's manifest?

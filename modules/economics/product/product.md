@@ -17,7 +17,7 @@ Confirmed positions from the boundary discussion (2026-08-05..09; argument and e
 
 We need this module due to some product have many relation product e.g. same product have different color or size! Because each specific product **MUST** track individually for e.g. price or inventory.
 
-Open question (from [product.handoff.md](product.handoff.md)): the confirmed model is **parent/child products without a Variant/SKU entity** — same shoe differing only in size = parent product + one child *product* per size (same for car color/trim). Children are independent product nodes; the parent is itself a product even with no direct realization/transaction. Still open: is the product-to-product relation a single parent/child edge, or do several relations hide here (variant-of, spec-parent, bundle-component)?
+Open question (from [product.handoff.md](product.handoff.md)): the confirmed model is **parent/child products without a Variant/SKU entity** — same shoe differing only in size = parent product + one child *product* per size (same for car color/trim). Children are independent product nodes; the parent is itself a product even with no direct realization/transaction. Still open: is the product-to-product relation a single parent/child edge, or do several relations hide here — split for review across the per-edge docs [variant](edges/variant/variant.md), [optional](edges/optional/optional.md), [material](edges/material/material.md), [supplier](edges/supplier/supplier.md).
 
 ## Part Number
 
@@ -51,21 +51,5 @@ For example, when specifying a screw, it is easier to refer to "HSC0424PP" than 
 
 - Product taxonomy (category, variant) as pluggable modules over the core.
 
-## Idea backlog from edge code comments
+Bundle attachment is [packages](../../../modules-plugable/economics/discount/packages/packages.md). Pricing that evolves on its own is [pricing](../../../modules-plugable/economics/pricing/edges/pricing/pricing.md).
 
-Raw proposals from comment notes inside edge .go files (comments remain in code as source). Review discipline per modules/management/vocabulary-discipline.handoff.md. Nothing below is ratified. These intersect the confirmed positions above - review must reconcile.
-
-### Type flags - edges/product.go
-- **Idea**: one Type flag-space splitting Good vs Service. Good flags: Inventory (owner-tracked capital goods: book, mobile, car), Custom (made on buyer requirements, product-ingredient), BestBefore (daily consumption goods), CustomIngredient. Service structure comment: TimeService (consultation in chat or real life), ActService (guarding, maintenance, cleaning), Transport; service flags TimeValidity, Transport, Shipping, Content (digital data), Timing, TimingInterval, MultipleUse (gym), Duration, Number (cinema, concert, transport), Area, Place (doctor-room, gym, station, airport), Seat, Provider_Staff, Provider_Role, Share (panic-room ticket). Common: ReserveValidity, ReserveQuantity (max one person can reserve before paying), PreSale (marked ?? - unresolved), NeedApprove (product-role), NeedPrescription (medical goods, not user-addable to invoice), InvoiceSell / OrderSell, SellLimit_Role / SellLimit_Group / SellLimit_User.
-- **Review questions**: is the Good/Service split a flag pair or two identity lenses (per the confirmed multi-typing position above)? Do SellLimit flags belong here or to the rule domain? PreSale semantics unresolved (marked ?? in code).
-
-### Product relations - edges/product-relation-group.go, product-relation-staff.go, product-relation-user.go, product-relation-content.go
-- **Idea**: product-to-group labels (Comment, QA, Buyers; Provider = product operator supplying a service; SellLimit to specific groups; coordinate lookup via RoleID); product-to-staff (SellLimit to specific staff, Provider, coordinate via StaffID); product-to-user; product-to-content. Coordinate-by-role/staff appears repeatedly - a UI concern leaking into labels?
-- **Review questions**: do Provider/SellLimit duplicate role and delegation machinery? Is coordinate lookup a GUI concern to strip from the model?
-
-### Product-to-product relations - edges/product-relation-product.go
-- **Idea**: same product, different provider (owner, price); same product, different attributes; Optional; Material or Ingredient.
-- **Review questions**: map these onto the parent/child model in "Product relation to product" above - are all four the parent/child edge, or distinct relations (variant-of, spec-parent, ingredient-of)?
-### Rule relations - edges/product-relation-rule.go
-- **Idea**: MealDeal / DiscountBundle (product is part of a discount bundle; rules may constrain the bundle, e.g. minimum buy number); Pricing rule (some services have more complex pricing logic than a product.Price field, e.g. transport).
-- **Review questions**: does the pricing rule duplicate [rule.handoff.md](../../computer/rule/rule.handoff.md) §9 (fees are rules producing transactions)?

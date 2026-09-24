@@ -25,10 +25,3 @@ A service is a non-inventory economic offering (seat, timing-interval, number, m
 ### Future possibilities
 
 - A `schedulable` capability module unifying service seats, device channels, and estate spaces.
-
-## Idea backlog from edge code comments
-
-Raw proposals from comment notes in `edges/*.go` (comments remain in code as source). Nothing below is ratified.
-
-- **Constraint shapes** (multiple-use, number, timing-interval, product-relation-estate): max-uses per buyer; min/max/MaxInvoiceByBuy counts (cinema minimum seats to play a movie, hotel per-buyer limit); min/expected/max timing (flight duration, doctor visit); place semantics: LimitTo (specific area: taxi, stations) vs ExactLocation (POS variant) - service area vs exact point.
-- **Review questions**: is this one general capacity/limit pattern shared with inventory/restriction, or per-edge data? LimitTo vs ExactLocation connects to the estate spatial-relations question.

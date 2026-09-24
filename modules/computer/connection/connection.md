@@ -33,10 +33,8 @@ Typical session management tasks in a desktop environment include keeping track 
 
 - A connection can use just by single app node, so user can't use same connection to connect other node before close connection on usage node. In the other words it means hardware MUST NOT let user copy tokens to other devices.
 
-## Idea backlog from edge code comments
+## Status
 
-Raw proposals from comment notes inside edge .go files (comments remain in code as source). Review discipline per modules/management/vocabulary-discipline.handoff.md. Nothing below is ratified.
-
-### Connection metrics - edges/metrics/
-- **Idea**: metrics fields (MaxBandwidth, BytesSent/PacketsSent, BytesReceived/PacketsReceived, FailedPacketsReceived and NotRequestedPacketsReceived for firewalling against attack types, SucceedStreamCount/FailedStreamCount). A commit note proposes deleting the timing field in favor of calendar-event. Callback hooks sketched in bs_.go: StreamSucceed, StreamFailed, PacketReceived(packetLength), PacketSent(packetLength).
-- **Review questions**: is timing really replaced by calendar-event? Are failed-packet counters firewall policy or engine detail?
+### Connection status
+- **Idea**: socket-session status labels — `New`: session not saved to storage yet; `Loaded`: session loaded from storage; `Unregistered`: no description in source.
+- **Review questions**: is persistence state owned by this module's stored session, or by [token](../token/token.md) session storage? Should `Unregistered` be defined or dropped as an empty label? Who transitions the labels — storage on save/load, or an explicit service call?

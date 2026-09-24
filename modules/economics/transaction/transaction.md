@@ -50,11 +50,21 @@ A transaction is an abstraction of a request by one or more users for a bookkeep
 
 - Transaction-chain views (`followed_by`/`settles`/`exchange`) as a GUI widget module over the graph.
 
-## Idea backlog from edge code comments
+## Idea backlog
 
-Raw proposal from comment notes inside edge .go files (comments remain in code as source). Review discipline per modules/management/vocabulary-discipline.handoff.md. Nothing below is ratified.
+Review discipline per modules/management/vocabulary-discipline.handoff.md. Nothing below is ratified. Non-edge sources (`services/`, `status/`) stay here; edge sources live in the per-edge docs above.
 
-### Reference types - edges-shortcut/transaction.go
-- **Idea**: reference-type labels for transactions: TransactionFee, Prize, Donate, Charity, Tip, Commission, Reward, Profit, Credit, Loan, BadDebt (debt default), Installment, Compensation, RentalFee, Bill, Asset, Stock, Invoice (both buy and refund via ReturnInvoice). Explicitly rejected in comments (digital-era banking, no cash support): RevolvingFund, SameBankTransfer, ForeignBankTransfer, POSTransfer, WebTransfer - "not the goal, just the way of transaction that can be checked by RequestID".
-- **Budget labels**: Materials, Labor, Investments (Equipment), Markup (the % added to cost for wholesale price), WholesaleProfit, Margin (the % of product price for retail price), RetailProfit, Cost.
-- **Review questions**: do reference types belong to the reference edge (transaction_reference_is) as labels, or to the originating domains? Are budget labels the budget module's data? The Item-ingredient and item-seat business-service comments (listing query services) are data-model pass material.
+**Idea** — Transaction query service: "User can limit search by tags, currencies, ..." — `GET apis.sabz.city/financial/v1/{User-UUID}/transaction/?limit=10`.
+**Review questions**: which capability owns this query surface - the kernel exposes no such API; is filtering an analytics/query pluggable (analytics is always pluggable) or a transaction read service?
+
+**Idea** — User balance service: "Get user ballance in specific currency." - balance formats: Final, Blocked, Usabable.
+**Review questions**: Final balance is the bookkeeping snapshot (see [bookkeeping](../account/edges/bookkeeping/README.md) §8) - are Blocked/Usabable availability evaluations owned by restriction rules rather than stored state? Does the per-currency view cross into matching_system?
+
+**Idea** — Transfer service: "Transfer money to other as any type e.g. to approve an invoice, gift".
+**Review questions**: does "any type" ride on the reference-type labels (now in the [reference](edges/reference/reference.md) doc) or on a dedicated transfer capability? Converges with open #1 Transfer-vs-Transaction in [transaction.handoff.md](transaction.handoff.md).
+
+**Idea** — Transfer-to-other-user: immutability constraints - "User can't redo||change|| ... to transaction." and "Currency change can't be in transaction request."; plus a tentative flow - "Transfer can be from blocked balance by justice MS. To do this I think we must unblock first and transfer amount."
+**Review questions**: do no-edit and fixed-currency belong to the kernel (immutable request) or to rule evaluation? For blocked-balance transfer - is unblock-then-transfer a restriction rule producing follow-up transactions (Core never knows Rule), and how does it bear on open #1 Transfer-vs-Transaction in [transaction.handoff.md](transaction.handoff.md)?
+
+**Idea** — Status labels: candidate status labels - Pending, Expired, Cancelled, Voided; plus budget statuses Executed, Inspected.
+**Review questions**: statuses come from the general status domain (Policies above; open #4 in [transaction.handoff.md](transaction.handoff.md)) - which labels are kernel defaults and which are organizational? Are budget statuses the budget module's vocabulary instead?

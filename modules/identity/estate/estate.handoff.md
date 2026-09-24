@@ -23,7 +23,7 @@ Additional Tentative design insights (not yet governing any module; graduates wh
 Full map with canonical homes lives in [`README.md`](README.md). The blocking ones for definition work:
 - Identity-continuity criterion (wall-moving case; who changed it) — **blocks** the definition.
 - What makes a Thing *take* the Estate identity (waterfall case: is an unmodeled waterfall an estate?) — **blocks**.
-- Spatial relations: first-class edges or derived observations — **blocks** edge design (see [`edges/estate-relation-estate`](edges/estate-relation-estate/README.md)).
+- Spatial relations: first-class edges or derived observations — **blocks** edge design (see [`edges/estate`](edges/estate/README.md)).
 - Virtual-estate hypothesis and movable-objects question — inform but do not block.
 
 ## Assumptions
@@ -42,7 +42,7 @@ None — deliberately. The definition is expected to emerge from the boundary-ca
 
 ## Related Artifacts
 - [`README.md`](README.md) — graduated positions (Update when decisions change)
-- [`edges/estate-relation-estate`](edges/estate-relation-estate/README.md), [`edges/relation-neighborhood`](edges/relation-neighborhood/README.md), [`edges/type-building`](edges/type-building/README.md) — edge-level questions (Review during suite)
+- [`edges/estate`](edges/estate/README.md), [`edges/neighborhood`](edges/neighborhood/README.md), [`edges/type-building`](edges/type-building/README.md) — edge-level questions (Review during suite)
 - [`../../identity/object/edges/movable`](../object/edges/movable/README.md) — movable-vs-estate rule conflict (Update during suite)
 - [`../../economics/product/product.handoff.md`](../../economics/product/product.handoff.md) — co-developed Product boundary
 - [`../../rights/law/README.md`](../../rights/law/README.md) — territorial rules / founding law side

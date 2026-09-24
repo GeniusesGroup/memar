@@ -6,7 +6,6 @@ A lookout or look-out is a person in charge of the observation of hazards. The t
 
 It is not just a [NVR]() but also an AI assistant to manage any estate for many aspect of security.
 
-
 ## Protocols
 - [ONVIF protocol- Open Network Video Interface Forum](https://www.onvif.org/)
 - 
@@ -35,7 +34,6 @@ It is not just a [NVR]() but also an AI assistant to manage any estate for many 
 - https://gitlab.com/hoyle.hoyle/pynvr
 ### JS
 - https://gitlab.com/Shinobi-Systems/Shinobi
-
 
 ## Commercials Vendors
 - https://kamivision.com/

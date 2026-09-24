@@ -23,7 +23,6 @@ Management is about Planning and Organizing
 ### PHP
 - https://github.com/ProcessMaker/processmaker
 
-
 ## Topics
 - Vision vs. Goals vs. Projects vs. Tasks
 

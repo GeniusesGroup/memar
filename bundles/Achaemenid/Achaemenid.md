@@ -3,10 +3,10 @@ The same when we write a letter, we don't think about how it will be delivered, 
 
 ## Advantages
 - Full control of network and app layer protocols and their handlers.
-- 
+-
 
 ## Supported Protocol
-All information get from [IANA Resources](https://www.iana.org) like [IP Protocols](https://www.iana.org/assignments/protocol-numbers/protocol-numbers.xhtml), [Transport Protocols](https://www.iana.org/assignments/service-names-port-numbers/service-names-port-numbers.xhtml), ... But we don't support all of them now and some will never support due many problem in their architecture. Also we introduce new whole [network](./Giti.md) with lot of improvement in privacy and performance!
+All information get from [IANA Resources](https://www.iana.org) like [IP Protocols](https://www.iana.org/assignments/protocol-numbers/protocol-numbers.xhtml), [Transport Protocols](https://www.iana.org/assignments/service-names-port-numbers/service-names-port-numbers.xhtml), ... But we don't support all of them now and some will never support due many problem in their architecture. Also we introduce new whole network (./Giti.md) with lot of improvement in privacy and performance!
 
 ### GP - Giti Protocol
 - Each Application lease 16bit range GP from OS router!
@@ -14,9 +14,9 @@ All information get from [IANA Resources](https://www.iana.org) like [IP Protoco
 
 ## Supported usage!
 Achaemenid implementation must support at least three way as:
-- API As a Service : Call needed service functions (APIs) from generator repository(folder).
-- Version Controls : Part of CI/CD process like tests codes!
-- CLI : Call needed API by user friendly commands!
+- API As a Service: Call needed service functions (APIs) from generator repository(folder).
+- Version Controls: Part of CI/CD process like tests codes!
+- CLI: Call needed API by user friendly commands!
 
 ## Rules
 To write better business logic read these advices! A lot of way exist to handle service versions like  [Git Basics - Tagging](https://git-scm.com/book/en/v2/Git-Basics-Tagging), [Semantic Versioning](https://semver.org/) But we decide very innovative way explain below.
@@ -65,8 +65,8 @@ We just cache HTTP GET method. we must work to cache other get method.
 - Track for changed IP more than twice in little time! It may connection information had been leaked!
 
 ## Done in autogenerate layers
-- Serialize and deserialize data format like json, xml, binary, ... would be faster up to 5x because of not use of reflection   
-  e.g. https://github.com/mailru/easyjson , https://github.com/pquerna/ffjson
+- Serialize and deserialize data format like json, xml, binary, ... would be faster up to 5x because of not use of reflection
+  e.g. https://github.com/mailru/easyjson, https://github.com/pquerna/ffjson
 - Check & validate request data
 - Make handlers to receive data and call service functions.
 - Make API documentation in many standards e.g. OpenAPI(Swagger), ...
@@ -80,3 +80,15 @@ We just cache HTTP GET method. we must work to cache other get method.
 
 ## Achaemenid word meaning
 ["Achaemenid"](https://en.wikipedia.org/wiki/Satrap) (Persian: ساتراپ) were the governors of the provinces of the ancient Median and Achaemenid Empires and in several of their successors, such as in the Sasanian Empire and the Hellenistic empires
+
+## Idea backlog
+
+Nothing below is ratified. Prefer existing homes over inventing new modules.
+
+### AI flag
+- **Idea**: AI flag: `false` — open the lot of security concerns; `true` — use more resource.
+- **Review questions**: bundle test - this bundle owns no kernel schema; the flag is a parameter (parameters vs semantics), so which composed capability owns AI enablement, and does the security-vs-resource trade-off become configuration or rule there rather than a bundle field?
+
+### Firewall
+- **Idea**: deep learning algorithms: we use and share trained model between servers and help to improve it; count broken packets to detect any type of attack like DDoS; send signal to gateway router to block Attacker IP addresses; each connection can use just by one device, so if 2 device send packet on different IP it means attack or mobile IP!!
+- **Review questions**: bundle test - detection and blocking semantics belong to a composed capability (networking/security), never the bundle itself; who owns the broken-packet thresholds, the router block signal, and the one-device-per-connection rule (rule domain vs service processing)?

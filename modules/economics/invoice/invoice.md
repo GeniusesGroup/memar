@@ -23,7 +23,7 @@ An invoice is a statement of what is claimable between parties: a seller's asser
 
 ### Unresolved questions
 
-- Invoice lifecycle (issued/partially-paid/voided/expired) is documented per state in `edges/status/<state>/` - reconcile with the general status domain.
+- Invoice lifecycle (issued/partially-paid/voided/expired) is documented per state in `status/<state>/` - reconcile with the general status domain.
 - Can an invoice exist with zero products (a pure claim)?
 - Partial payment: multiple settling transactions against one invoice - is the "partially paid" state invoice-side or analytics-side?
 
@@ -31,14 +31,22 @@ An invoice is a statement of what is claimable between parties: a seller's asser
 
 - Invoice-transaction settlement tracking as an analytics module.
 
-## Idea backlog from edge code comments
+## Idea backlog
 
-Raw proposals from comment notes inside edge `.go` files (comments remain in code as source). Review discipline per modules/management/vocabulary-discipline.handoff.md. Nothing below is ratified.
+Review discipline per modules/management/vocabulary-discipline.handoff.md. Nothing below is ratified.
 
 **Deferred to a dedicated data-model pass**: real structs (item/summary price chains, bookkeeping storage) are not ideated here; only their idea comments are listed below.
 
-### Item semantics - edges/item/protocol/data_model.go
-- **Idea**: ship service can be added as an invoice item; each item must be checked for reserve validity and an action taken at validity end.
-- **Review questions**: is reserve-validity expiry a rule (expiry rules producing transactions, per [rule.handoff.md](../../computer/rule/rule.handoff.md) §9) or item state?
+Status vocabulary is NOT restated here - the per-state folders under `status/<state>/` are the single home for each status.
 
-Status vocabulary is NOT restated here - the per-state folders under `edges/status/<state>/` are the single home for each status.
+### POS-Bank invoice services
+- **Idea**: "send request from POS to Bank to approve the invoice" - approval as an external party handshake over the invoice, not an invoice-kernel action.
+- **Review questions**: does bank approval become an invoice status/rule condition (rule domain - Core never knows Rule) or stay inside a pluggable POS-banking capability? Who may set it, and what does it trigger?
+
+### POS-Bank invoice detail
+- **Idea**: "send request from POS to Bank to get invoice detail".
+- **Review questions**: plain read of an invoice the parties already share (service/GUI, no model change) versus a distinct claim/acknowledgement that would need an edge of its own?
+
+### Invoice analytical query
+- **Idea**: query endpoint `/invoice-analytical?ids=123,456,789&type=total_discount&` aggregating invoice facts such as `total_discount`.
+- **Review questions**: analytics is always pluggable - does this surface live in a pluggable analytics capability instead of the invoice kernel? Does `total_discount` derive from pricing/discount rules rather than invoice state?

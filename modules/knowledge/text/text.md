@@ -40,19 +40,9 @@ The best quality scientific observations are both accurate and precise.
 - https://en.wikipedia.org/wiki/Lexicon
 - https://en.wikipedia.org/wiki/Lexical_semantics
 
-## Idea backlog from edge code comments
+## Idea backlog
 
-Raw proposals from comment notes inside edge .go files (comments remain in code as source). Review discipline per modules/management/vocabulary-discipline.handoff.md. Nothing below is ratified.
+Review discipline per modules/management/vocabulary-discipline.handoff.md. Nothing below is ratified.
 
-### Token index - edges/tokens/protocol/dt-token.go
-- **Idea**: token detail for indexing (Google calls it a "Hit List"): TextUUID, token offset in sentence/text, first-character offsets, Weight (tokens in larger/bolder font weighted higher), ScoreInSentence/ScoreInText/RankingScore, commented-out BackLinksNumbers (citations). TODO: removing stop words?
-- **Review questions**: is stop-word removal an analyzer concern (dt-analyzer) rather than storage? Do weights/scores belong to analytics (pluggable)?
-
-### Text types - edges-loop/types.go
-
-The full original file is restored verbatim at `edges-loop/types.go` (Localization proposal, PERSON/GPE entity notes, and the complete POS tag list). Do not summarize it - review it in place.
-
-- **Review questions**: is Localization a text type or a query-time behavior? Does the POS tag list become a uri/label vocabulary?
-### Query - edges-loop/query/protocol/data_model.go, dt-precision.go
-- **Idea**: query model storing the user, raw text (comment: keyword order is just one factor; location, history, and page quality also matter), with open TODOs: is a query a text edge or a comment edge? Is ModuleID a filter? Is pagination a filter? Precision tuning as uint8 following the Elastic App Search precision values.
-- **Review questions**: query-as-edge vs query-as-service-request; filter semantics.
+- **Idea**: two levels of index service — user level and global level — must have a strong authorization model. The one proposed solution recorded in the source (both services private, callable only by other services, not by users) "seems not work": a user may change her last choice, e.g. make her content private/public many times in her life, so a static private-to-services stance cannot hold. Still unresolved.
+- **Review questions**: GUI/services-layer concern, not a core edge — who enforces visibility for user-level vs global indexes (per-content ACL re-checked per query)? Does the answer live in this module's services or in the pluggable [search-analytic](../../../modules-plugable/knowledge/analytics/search-analytic/) capability? Strong authorization expressed as rules (core never knows rule) or service-layer checks?

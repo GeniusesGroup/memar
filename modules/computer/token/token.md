@@ -10,3 +10,11 @@ In computer science, a [session identifier](https://en.wikipedia.org/wiki/Sessio
 ## Usage
 
 These rules base on `computer/token` domain
+
+## Idea backlog from service code comments
+
+Review discipline per modules/management/vocabulary-discipline.handoff.md. Nothing below is ratified.
+
+### Account deactivation
+- **Idea**: full user deletion is not realistic because of legal complexity, so instead the register service must warn the user about deactivation rather than promise deletion.
+- **Review questions**: is the sign-up warning an identity/registration concern ([user](../../identity/user/user.md)) while this module only revokes credentials on deactivation? Does deactivate-vs-delete need a user status that token merely reacts to? Who owns the legal-retention policy — the rule domain or [rights](../../rights/rights.md)?

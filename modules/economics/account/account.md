@@ -37,6 +37,7 @@ An account is the bookkeeping holder of one countable quantity. It is not financ
 
 - Should the account expose a cached "last index" pointer for O(1) balance reads, or is that purely an engine detail?
 - `Field_AccountID` and the account UUID type carry legacy "financial" framing; rename pending.
+- Words such as Real and Personal are labels on an account, registered in [account labels](../../../modules-plugable/economics/account-labels/account-labels.md). They are not kinds of account.
 
 ### Future possibilities
 

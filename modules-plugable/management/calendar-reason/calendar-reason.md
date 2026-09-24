@@ -6,10 +6,6 @@ A pluggable module giving organizations a vocabulary of **reasons for creating a
 
 Which reasons an organization needs, and which rules govern each (who may enter/exit, when packaging is allowed), are organization-specific policies: a difference in processing semantics → pluggable module; the calendar reason vocabulary itself stays attachable without forcing every organization to carry every reason. The calendar core (if any) stays in management; this module is pluggable.
 
-## Edges
-
-Loop-edges under `edges-loop/`: cooking, event, enter, enter-manual, exit, exit-manual, start, start-manual, end, end-manual, packaging.
-
 ## Open questions
 
 - Are the `-manual` variants distinct reasons or the same reasons with an input-method attribute?

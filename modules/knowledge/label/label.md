@@ -23,14 +23,5 @@ v.
 
 Originally, taxonomy referred only to the classification of organisms on the basis of shared characteristics. Today it also has a more general sense. It may refer to the classification of things or concepts, as well as to the principles underlying such work. Thus a taxonomy can be used to organize species, documents, videos or anything else.
 
-## Idea backlog from edge code comments
+Registries of what a particular word means live outside this module. This module keeps the attachment `(thing)-[:label]`. The registries are [law labels](../../../modules-plugable/rights/law-labels/law-labels.md), [thing labels](../../../modules-plugable/knowledge/thing-labels/thing-labels.md), and [account labels](../../../modules-plugable/economics/account-labels/account-labels.md).
 
-Raw proposals from comment notes inside edge .go files (comments remain in code as source). Review discipline per modules/management/vocabulary-discipline.handoff.md. Nothing below is ratified.
-
-### Label scoping - edges/label-allowed/protocol/data_model.go
-- **Idea**: PrimaryNodeModuleID (always non-empty) and SecondaryNodeModuleID (empty means the label may be used in label-relation-other) - labels are module-scoped by which nodes they may attach to.
-- **Review questions**: is module-scoping enforced at registration time or per-assignment?
-
-### Label list services - edges/list/protocol/business-services.go, list/services/set/init.go
-- **Idea**: service sketches Last(labelID, priority) and ListItems(labelID, offset, limit) returning items with NumberOfVersion. Governance TODO: who may update an existing label - e.g. justice assigns a label to a transaction in a systematic process, so only other processes must change this label, not any user.
-- **Review questions**: is label-update authority a rights rule (processes vs users)? Does priority ordering conflict with the repository hour-timing hints?

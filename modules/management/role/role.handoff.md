@@ -72,6 +72,7 @@ Active — directions decided; several items remain candidate org rules pending 
 ## Related Artifacts
 - [`README.md`](README.md)
 - [`../staff/staff.handoff.md`](../staff/staff.handoff.md)
+- Per-edge doc: [`edges/group/group.md`](edges/group/group.md) — role↔group label edge; overlap with the group parent edge flagged there.
 - Memar `agency.md`
 
 ## Notes

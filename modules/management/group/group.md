@@ -1,10 +1,9 @@
 # Group
-`Group` sits under the `management` domain (persons, other groups, or even whole organizations can be members). The conceptual `Organization` vs. `Group` distinction is settled and documented in [`modules/identity/organization`](../../identity/organization/organization.md#organization-vs-group-conceptual-level); this file carries only the structural questions still open after source inspection.
+`Group` sits under the `management` domain (persons, other groups, or even whole organizations can be members). The conceptual `Organization` vs. `Group` distinction is settled and documented in [`modules/identity/organization`](../../identity/organization/organization.md); this file carries only the structural questions still open after source inspection.
 
 ## Decisions from Organization ideas backlog (2026-09-16)
 
 - Task is not primitive: modeled as an additive entity over **Group** — participant/member management belongs to Group, not Task; Task itself is also a Content (needs human text, images, audio). *(decided — Group is the org repo's own concept; no Memar-side owner)*
-
 
 ## Resolved via source inspection
 - **Department ↔ Group typing link**: `department_p.Model` embeds both `thing_p.Model` and `group_p.Model` (Go interface embedding) — Department is a Group (and a Thing) at the compile-time type level, not just conceptually. `label.go` additionally defines `department` as an edge label from Group, documented (in a comment marked "Policy (rule)") for organizational-chart display and staff-join purposes.
@@ -49,3 +48,17 @@
 - A family unit
 - A government agency
 - A university committee with an external organization as an oversight member
+
+## Idea backlog
+
+Review discipline per [vocabulary-discipline.handoff.md](../vocabulary-discipline.handoff.md). Nothing below is ratified.
+
+### Group deletion
+- **Idea**: only users of ancestor groups may delete a child group — "Just Father (father of father, ...) groups users can delete their childs.".
+- **Review questions**: ancestor-chain deletion — group processing or an authorization rule (core never knows Rule)? Depends on the parent hierarchy edge [parent](edges/parent/parent.md) and the cycle guards in unresolved #4 above.
+
+### Org group listing
+- **Idea**: listing an organization's groups must use Offset && Limit; sketch in the comment: `GET apis.sabz.city/groups/v1/{organizationID}/group/` → `["12587954126", "12587954135"]`.
+- **Review questions**: pagination convention shared by listing services — any modeling content, or service-layer only?
+
+Per-edge doc under [edges](edges/): [parent](edges/parent/parent.md) — group hierarchy edge (verdict: correct here).

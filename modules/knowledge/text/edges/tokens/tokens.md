@@ -13,3 +13,11 @@ Lexical tokenization is conversion of a text into (semantically or syntactically
 ## Policies (rules)
 
 - Each analyzer can carry specific data
+
+## Open questions
+
+- is stop-word removal an analyzer concern (dt-analyzer) rather than storage? Do weights/scores belong to analytics (pluggable)?
+
+## Source
+
+> Source: `modules/knowledge/text/edges/tokens/protocol/dt-token.go` (in code).

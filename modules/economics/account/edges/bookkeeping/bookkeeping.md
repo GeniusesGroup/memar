@@ -1,6 +1,6 @@
 # Bookkeeping
 
-The kernel edge between a transaction and an account: the realized effect of processing a transaction on one account. One transaction produces one bookkeeping record per affected account, possibly at different times (withdrawal first, deposit later — see ordering decision in [transaction.handoff.md](../../transaction/transaction.handoff.md) §3).
+The kernel edge between a transaction and an account: the realized effect of processing a transaction on one account. One transaction produces one bookkeeping record per affected account, possibly at different times (withdrawal first, deposit later — see ordering decision in [transaction.handoff.md](../../../transaction/transaction.handoff.md) §3).
 
 ## Reference by UUID, not aggregates (cross-domain modeling rule)
 
@@ -34,10 +34,10 @@ Open question (deferred to the storage-engine session): whether the reverse trav
 
 ## Policies (rules)
 
-- Cardinality: one transaction produces one bookkeeping record per affected account — two for a from+to transaction, one while only the source effect has realized (§3 deferral in [transaction.handoff.md](../../transaction/transaction.handoff.md)), zero if it is never processed past draft.
+- Cardinality: one transaction produces one bookkeeping record per affected account — two for a from+to transaction, one while only the source effect has realized (§3 deferral in [transaction.handoff.md](../../../transaction/transaction.handoff.md)), zero if it is never processed past draft.
 - Sign convention: the effect's direction and sign come from WHICH side of the transaction the account sits on — an `account__from` record subtracts the quantity, an `account__to` record adds it. The edge direction is always transaction→account; quantity itself is never stored here (§7 below).
 - There is no quantity field on this edge: booked quantity always equals the transaction's requested quantity (§7 below). Any deviation (partial fill, fee, rule-altered amount) is a different transaction with its own bookkeeping.
-- A record is never edited or deleted. Reversal is a new bookkeeping record produced by a new (compensating) transaction ([transaction.handoff.md](../../transaction/transaction.handoff.md) §6).
+- A record is never edited or deleted. Reversal is a new bookkeeping record produced by a new (compensating) transaction ([transaction.handoff.md](../../../transaction/transaction.handoff.md) §6).
 - The account's current balance is the `Balance` of its highest-index record; nothing stores balance on the account node (§8 below).
 
 ## Fields
@@ -91,3 +91,10 @@ Each `bookkeeping` record caches the resulting `Balance` — an immutable, histo
 ### Future possibilities
 
 - Materialized balance checkpoints every N records for very long accounts (pure engine optimization).
+
+## Placement
+
+- **Verdict: stays in this core module.** Bookkeeping is the account kernel's single edge — core-by-necessity holds: without the realized transaction→account effect the kernel would have to fabricate a surrogate link between a transaction's request and an account's state, distorting both foundational concepts ([account.md](../../account.md): "The kernel of this domain is exactly one edge").
+- The migrated source is this edge's own `protocol/` stub (package `bookkeeping_p`, no processing claimed elsewhere) — nothing moves under "a pluggable owns its complete capability". Not analytics (no derived or discovered data), and it carries no rule knowledge: booked quantities and availability are evaluated by rules, not stored as kernel semantics (§7–§8 above; [restriction](../../../../../modules-plugable/economics/restriction/restriction.md)).
+- Request-side semantics (ordering, compensation, cause) stay with [transaction.handoff.md](../../../transaction/transaction.handoff.md) §§3/6/10 — bookkeeping only records them; the kernel never learns rule logic (Core never knows Rule).
+

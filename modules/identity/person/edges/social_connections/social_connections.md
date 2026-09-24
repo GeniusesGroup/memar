@@ -29,10 +29,26 @@ We trust them enough to leave our children with them.
 - **KnownNames:** Usually < 1500
 - **KnownFaces:** Usually < 5000
 
-## Idea backlog from edge code comments
+## Model
 
-Raw proposals from comment notes inside edge .go files (comments remain in code as source). Review discipline per modules/management/vocabulary-discipline.handoff.md. Nothing below is ratified.
+- Candidate (unconfirmed) social-graph label set from this folder's relation file: Follow, Blocked, Muted; ReferentUser or Introducer; DelegateTo / DelegateFrom (user delegation to this app in other apps); notification Reason labels keyed to friendship cycles (`Reason_1stFriendshipCycle` ... `Reason_UserFollow`).
+- Nothing ratified: endpoints, direction, and which of these are stored edges vs annotations are open (see below).
 
-### Social-graph relation labels - edges/social_connections/user-relation-user.go
-- **Idea**: Follow (used to make or start making friendship), Blocked, Muted; ReferentUser or Introducer; DelegateTo / DelegateFrom (about user delegation to this app in other apps); notification-reason labels keyed to friendship cycles (Reason_1stFriendshipCycle ... Reason_UserFollow).
-- **Review questions**: do DelegateTo/DelegateFrom duplicate the rights/delegate machinery? Do cycle reasons duplicate the derived connection-1st/2nd/3rd edges (see the section above)? Where do Blocked/Muted live relative to the group module's blocked edge?
+## Policies (rules)
+
+- Follow is "used to make or start making friendship".
+- `Reason_1stFriendshipCycle`: "new comment from friend of user".
+- `Reason_UserFollow`: "just user follow other, not any friend relationship".
+
+## Placement
+
+- **Correct here** — the social-graph relation labels belong to the social-connections family this folder owns: entry point is creating a user–user relation (Follow starts the same capability as [friendship](friendship/friendship.md)), and the derived connection-degree caches ([connection-1st](../../edges-shortcut/connection-1st/connection-1st.md) ...) recompute from these base relations — labels and that maintenance stay together (a module keeps its complete capability; prefer this existing home).
+- **DelegateTo / DelegateFrom are the exception under review**: "user delegation to this org(app) in other orgs(apps)" overlaps the existing [rights/delegate](../../../../rights/delegate/delegate.md) machinery — if delegation is real, its complete capability already has a home there; do not fork it here (prefer existing homes).
+- Cycle `Reason_*` labels: notification keys without recorded triggers must not become bare edges — either they are annotations on events (no edge) or they need who-emits/what-it-triggers semantics first (no bare edges).
+
+## Open questions
+
+- Do DelegateTo/DelegateFrom duplicate the rights/delegate machinery? Do Blocked/Muted collide with the group module's blocked edge? Do cycle `Reason_*` labels duplicate the derived connection-1st/2nd/3rd edges?
+- Separate edges vs purpose labels on one relation (parameters vs semantics)?
+- Direction and naming unconfirmed — nothing ratified.
+

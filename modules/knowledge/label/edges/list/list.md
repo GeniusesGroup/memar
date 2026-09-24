@@ -20,3 +20,13 @@
 - Read in this model: label(MyGuitarPlayList) belong to user(Omid)
 - ["MyGuitarPlayList", "Persia", "belongs_to_org"]
 - Read in this model: label(MyGuitarPlayList) born in in org(Persia)
+
+## Open questions
+
+- is label-update authority a rights rule (processes vs users)? Does priority ordering conflict with the repository hour-timing hints?
+- Playlist, bookmark, content list, and post list are names of lists, not new node kinds. A list may also relate to a list. Is that a second edge, or a list used as the thing inside `(label)-[:list]->(thing)`?
+
+## Source
+
+> Source: `modules/knowledge/label/edges/list/protocol/business-services.go` (in code).
+

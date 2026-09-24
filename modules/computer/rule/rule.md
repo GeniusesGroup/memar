@@ -1,5 +1,5 @@
 # Rules protocols
-Use `rule` domain to save protocols to call them in 
+Use `rule` domain to save protocols to call them in
 - When desire `Event` dispatched
 - When any service(usually called by user e.g. voucher) ask to run
 - in repeatable manner e.g. every one minute, everyday, ...
@@ -36,7 +36,7 @@ This module is the concrete home of that principle in the graph: a Rule is a nod
 ### Unresolved questions (not settled by this module; carried in Memar)
 
 These are carried as unresolved in the Memar document; this module must not silently pick an answer:
-- Internal representation of a Rule node's condition (declarative expression, external function reference, decision table, .).
+- Internal representation of a Rule node's condition (declarative expression, external function reference, decision table,.).
 - Conflict resolution when multiple Rules govern the same Code element (precedence, specificity, explicit override edge).
 - Temporal validity of a Rule (effective date, amendment, repeal) and its interaction with historical edges created under a now-superseded Rule - the auditability concern that matters most for tax and dispute-resolution domains.
 - The precise Code/Rule boundary test (when a condition is "conditional enough" to warrant a Rule vs. an inherent constraint that stays Code).
@@ -47,3 +47,11 @@ These are carried as unresolved in the Memar document; this module must not sile
 ### Future possibilities
 
 - A rule-scoping convention (which events a Rule may bind, who owns it) informed by the economics consumers (`transaction/condition_is`, `restriction/restricted_rule`, fee rules).
+
+## Idea backlog
+
+Review discipline per modules/management/vocabulary-discipline.handoff.md. Nothing below is ratified.
+
+### Rule storage
+- **Idea**: a service to get rules by specific FieldID and/or FieldValue with a specific label — e.g. find all discount rules matching the user with ID `123456` — and it needs a strong cache, because every user opening the products page must see discounts computed by many matching rules (location, labels, ...).
+- **Review questions**: is field-indexed lookup a query service this module owns (storage stays with the rule domain), or derived data (analytics is always pluggable)? Who refreshes the cache when a Rule changes — rule storage here, or each consumer? Does the products-page computation already belong to [discount](../../../modules-plugable/economics/discount/discount.md), with this storage only serving the rules-engine?

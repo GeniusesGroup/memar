@@ -5,7 +5,6 @@ Count uint or [count interface]() or [Classifier](https://en.wikipedia.org/wiki/
 
 - currency, Hz, core / gram, liter, ...
 
-
 <!--
 https://en.wikipedia.org/wiki/International_System_of_Units
 e.g. Hz, core, gram, liter, number, ...

@@ -1,9 +1,9 @@
 # Calendar
 Calendar records time-stamped entries (events, work periods) for persons and organizations.
 
-## Idea backlog from edge code comments
+## Idea backlog
 
-Raw proposals from comment notes inside edge .go files (comments remain in code as source). Review discipline per [vocabulary-discipline.handoff.md](../vocabulary-discipline.handoff.md). Nothing below is ratified.
+Review discipline per [vocabulary-discipline.handoff.md](../vocabulary-discipline.handoff.md). Nothing below is ratified.
 
 ### Reason edges - moved to the pluggable module
 

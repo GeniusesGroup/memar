@@ -37,7 +37,7 @@ Pluggable policies and preferences between accounts (or between an account and a
 
 - Named beneficiary lists as sibling edges once more relationship needs surface.
 
-## Idea backlog from edge code comments
+## Idea backlog
 
 Raw proposal from comment note in `edges-loop/limit-amount/protocol/transfer-amount.go`. Nothing below is ratified.
 
