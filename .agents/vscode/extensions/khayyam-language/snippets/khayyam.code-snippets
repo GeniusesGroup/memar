@@ -1,0 +1,75 @@
+{
+  // 
+  // Top level keywords
+  // 
+  "Define a variable": {
+    "prefix": "vr",
+    "body": "vr ${1:Name} ${2:Type}\n",
+    "description": "Create a new variable"
+  },
+  "Define a type": {
+    "prefix": "tp",
+    "body": "tp ${1:Name} ",
+    "description": "Create a new type definition block"
+  },
+  "Include Address (in)": {
+    "prefix": "in",
+    "body": "in \"${1:FileURI}\"\n",
+    "description": "Link a tp|vr to a file URI"
+  },
+  "Define Capsule (cp)": {
+    "prefix": "cp",
+    "body": "cp {\n\t$0\n}\n",
+    "description": "Define a capsule"
+  },
+  "Define Method (mt)": {
+    "prefix": "mt",
+    "body": "mt ($1) ($2) ($3, err Error) {\n\t$0\n}\n",
+    "description": "Define a method for a capsule"
+  },
+  "Define Abstract (ab)": {
+    "prefix": "ab",
+    "body": "ab {$0}\n",
+    "description": "Define an abstract capability or interface"
+  },
+  "[Code] Scope (sc)": {
+    "prefix": "sc",
+    "body": "sc ${1:LocationLabel} {\n\t$0\n}\n",
+    "description": "Define to wrap a code scope"
+  },
+  // 
+  // 
+  // "Helpers"
+  // 
+  // 
+  "Include variable": {
+    "prefix": "vri",
+    "body": "vr ${1:Name} in \"${2:FileURI}\"\n",
+    "description": "Snippet to define an include variable"
+  },
+  "Include type": {
+    "prefix": "tpi",
+    "body": "tp ${1:Name} in \"${2:FileURI}\"\n",
+    "description": "Snippet to define an include type"
+  },
+  "Capsule type": {
+    "prefix": "tpc",
+    "body": "tp ${1:Name} cp {\n\t$0\n}\n",
+    "description": "Snippet to define a capsule type"
+  },
+  "Method type": {
+    "prefix": "tpm",
+    "body": "tp ${1:Name} mt ($2) ($3) ($4, err Error) {\n\t$5\n}\n",
+    "description": "Snippet to define a method type"
+  },
+  "Abstraction type": {
+    "prefix": "tpa",
+    "body": "tp ${1:Name} ab {$0}\n",
+    "description": "Snippet to define an abstraction type"
+  },
+  "Code scope type": {
+    "prefix": "tps",
+    "body": "tp ${1:Name} sc {\n\t$0\n}\n",
+    "description": "Snippet to define a code scope type"
+  },
+}
