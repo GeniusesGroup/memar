@@ -104,4 +104,4 @@ sequenceDiagram
 
 - [type.md](./type.md) — why: principles, definitions, and rejected alternatives.
 - [modeling.practice.md](./modeling.practice.md) — upstream procedure that decides what concepts exist.
-- [error.md](./protocols/error.md) — worked application to the Error family, cited as an example the Error protocol applies this practice's identity model to, not as a rule source.
+- [error.md](docs/protocols/process/error.md) — worked application to the Error family, cited as an example the Error protocol applies this practice's identity model to, not as a rule source.

@@ -1,6 +1,6 @@
 # Reevaluating the Filesystem as a Fundamental Modeling Primitive Handoff
 
-Open work for `protocols/filesystem.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](../documentation-handoff.md) for what a handoff is.
+Open work for `protocols/memory/filesystem.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](../documentation-handoff.md) for what a handoff is.
 
 ## Open Questions
 

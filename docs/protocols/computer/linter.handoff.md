@@ -26,7 +26,7 @@ Paused — rewrite applied, not committed as of the pause; owner review incomple
 - Confidence: Explored-but-unresolved.
 - What was proposed: a protocol-layer document where suggested (non-binding, organization-overridable) governance rules are authored — the owner's sketch name was `khayyam-suggested_rules.md` in `docs/protocols/`.
 - Naming constraint if it is created: the protocols folder already carries the category, so a `khayyam-` prefix would re-create the shelf-as-claim problem this session existed to remove. Candidate filename: `suggested_rules.md` (underscore as one conceptual term). Khayyam-specific *instances* of a suggestion cite the language's realization; they do not own the catalog.
-- Criteria for membership, still to design: a rule that an organization may adopt or drop without forking a language or a subject document; each entry names the subject it relates to and the check's tier; the [Linter](./linter.md) protocol stays the mechanism (how a linter works, how a rule is authored, configuration), not the catalogue of suggestions.
+- Criteria for membership, still to design: a rule that an organization may adopt or drop without forking a language or a subject document; each entry names the subject it relates to and the check's tier; the [Linter](../computer/linter.md) protocol stays the mechanism (how a linter works, how a rule is authored, configuration), not the catalogue of suggestions.
 
 ## Open Questions
 
@@ -36,17 +36,17 @@ Paused — rewrite applied, not committed as of the pause; owner review incomple
 - Path: next session decides the home first, then moves or keeps the three landings as a single pass. Do not add more suggested rules to subject documents until this is decided.
 
 ### The rule-authorship notation
-- State: required members of a governance rule are stated in [Linter](./linter.md) (subject, tier, default, override); the notation — a configuration schema, a capability interface, or a Syllab-level annotation — is not. If `suggested_rules.md` is created, the notation is that document's problem as much as this one's.
+- State: required members of a governance rule are stated in [Linter](../computer/linter.md) (subject, tier, default, override); the notation — a configuration schema, a capability interface, or a Syllab-level annotation — is not. If `suggested_rules.md` is created, the notation is that document's problem as much as this one's.
 - Next: design after the catalog-versus-scatter decision.
 
 ### Should fold state persist per-file, per-project, or reset per session?
-Whether fold state should persist per-file, per-project, or reset per session is an IDE UX decision not settled by [Linter → Tooling may present structure first](./linter.md#tooling-may-present-structure-first).
+Whether fold state should persist per-file, per-project, or reset per session is an IDE UX decision not settled by [Linter → Tooling may present structure first](../computer/linter.md#tooling-may-present-structure-first).
 
 ### Should the SHOULD-level body folding degrade for very small files?
 Whether the SHOULD-level structural folding should degrade for very small files is an IDE UX decision not settled here.
 
 ### Is "local directory" the right boundary unit for the Orphan Rule?
-Whether "local directory" is the right unit for the orphan-rule realization in [Modularity in Khayyam](../khayyam/modularity.md) — as opposed to a repository root, an explicitly declared ownership file, or a linter configuration map — is not settled; the directory heuristic is simple but arbitrary at monorepo scale.
+Whether "local directory" is the right unit for the [orphan extension](../../../modules/khayyam/rules/orphan-extension/orphan-extension.md) rule — as opposed to a repository root, an explicitly declared ownership file, or a linter configuration map — is not settled; the directory heuristic is simple but arbitrary at monorepo scale.
 
 ### Should generated setters default to bare assignment or route through a validation hook?
 Whether generated setters should default to bare assignment or to routing through a validation hook the capsule declares is not settled. Placement of the generation assist itself is in doubt pending the catalog-versus-scatter question above.
@@ -68,11 +68,11 @@ Should the boundary unit for the orphan rule (directory vs. repository vs. decla
 
 ## Related Artifacts
 
-- [Linter](./linter.md) — Update after the catalog decision.
+- [Linter](../computer/linter.md) — Update after the catalog decision.
 - [Encapsulation in Khayyam](../khayyam/encapsulation.md) — Review: `get`/`set` MAY paragraph may move.
-- [Modularity in Khayyam](../khayyam/modularity.md) — Review: orphan-rule MAY/MUST paragraph may move.
+- [orphan extension](../../../modules/khayyam/rules/orphan-extension/orphan-extension.md) — Review: boundary unit open question above.
 - [Method in Khayyam](../khayyam/method.md) — Review: type-as-argument suggested diagnostic may move.
-- [Memory](./memory.md), [Compiler](./compiler.md), [Runtime](./runtime.md) — Review; owner critiques pending.
+- [Memory](../memory/memory.md), [Compiler](../computer/compiler.md), [Runtime](../computer/runtime.md) — Review; owner critiques pending.
 - Working tree: the rewrite is uncommitted; a fresh session should `git status` before further edits.
 
 ## Anticipated Work
@@ -80,5 +80,5 @@ Should the boundary unit for the orphan rule (directory vs. repository vs. decla
 - The rule-authorship notation.
 - A reference linter configuration, shipped with the first tooling release, encoding flow-correctness checks as defaults-on and conventions as opt-in sets.
 - An extension point for organization-defined diagnostics.
-- A conformance suite for linter implementations, mirroring the compiler-side suite proposed in [Compiler Handoff](./compiler.handoff.md).
+- A conformance suite for linter implementations, mirroring the compiler-side suite proposed in [Compiler Handoff](../computer/compiler.handoff.md).
 - If created: the suggested-rules catalog and the move of the three maybe-sentences into it.

@@ -91,10 +91,10 @@ The entries below consolidate the document's former front-matter provenance (`Ap
 - Time: 2026-09-03T00:00:00Z
 - Type: refactor
 - Propagates to:
-  - khayyam-control_flow.md: Done — both `error.md` links repointed to `./protocols/error.md`.
+  - khayyam-control_flow.md: Done — both `error.md` links repointed to `./protocols/process/error.md`.
   - khayyam-control_flow.changelog.md: Done — both historical `error.md` references repointed to the new path, content unchanged.
-  - khayyam-metaprogramming.md: Done — both `abstraction-implements.md` links repointed to `./protocols/abstraction-implements.md` (that document's relocation was registered in its own changelog).
-  - type.practice.md: Done — the `error.md` link repointed to `./protocols/error.md`.
+  - khayyam-metaprogramming.md: Done — both `abstraction-implements.md` links repointed to `./protocols/computer/abstraction-implements.md` (that document's relocation was registered in its own changelog).
+  - type.practice.md: Done — the `error.md` link repointed to `./protocols/process/error.md`.
   - chapar.changelog.md: Done — the historical `error.md` reference repointed to the new path, content unchanged.
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — directed, decided

@@ -1,6 +1,6 @@
 # The Error Handoff
 
-Open work for `protocols/error.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](../documentation-handoff.md) for what a handoff is. Questions from topics untouched in the 2026-09 session migrate here progressively, per the documentation method's progressive-migration rule.
+Open work for `protocols/process/error.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](../documentation-handoff.md) for what a handoff is. Questions from topics untouched in the 2026-09 session migrate here progressively, per the documentation method's progressive-migration rule.
 
 ## Open Questions
 
@@ -9,7 +9,7 @@ Open work for `protocols/error.md`. Entries are mutable current state — revise
 - Next: evaluate against real error families once the framework's first services exist.
 
 ### A realization's `IsEqual` and `MediaType()` comparison
-- State: a realization's convenience comparison helper may compare both `DataTypeID()` and `MediaType()`. If `MediaType` is a fixed, type-level property (every instance of a given `DataTypeID` always reports the same `MediaType`), this check is redundant and should be dropped. If `MediaType` can genuinely vary per-instance for the same `DataTypeID`, this reopens the "identity is `DataTypeID` alone" principle stated under error.md's [Identity and equality](./error.md#identity-and-equality) and needs to be resolved explicitly.
+- State: a realization's convenience comparison helper may compare both `DataTypeID()` and `MediaType()`. If `MediaType` is a fixed, type-level property (every instance of a given `DataTypeID` always reports the same `MediaType`), this check is redundant and should be dropped. If `MediaType` can genuinely vary per-instance for the same `DataTypeID`, this reopens the "identity is `DataTypeID` alone" principle stated under error.md's [Identity and equality](../process/error.md#identity-and-equality) and needs to be resolved explicitly.
 - Next: resolve explicitly against the `DataType` model's media-type rules.
 
 ### `ExpireInFavorOf`
@@ -17,7 +17,7 @@ Open work for `protocols/error.md`. Entries are mutable current state — revise
 - Next: review `datatype_p.Details`, then decide keep/drop.
 
 ### `ADT`'s `IsNull`/`IsEmpty` semantics for a value like `Error`
-- State: the canonical `Error` contract supplies all three `ADT` methods (see error.md's [ADT composition](./error.md#adt-composition--the-full-adt-family-at-the-canonical-level)); what `IsNull`/`IsEmpty` should actually mean for `Error` remains open, tracked in a dedicated ADT session and its own document.
+- State: the canonical `Error` contract supplies all three `ADT` methods (see error.md's [ADT composition](../process/error.md#adt-composition--the-full-adt-family-at-the-canonical-level)); what `IsNull`/`IsEmpty` should actually mean for `Error` remains open, tracked in a dedicated ADT session and its own document.
 - Next: joint session with the `ADT` capsule family's dedicated document.
 
 ### A realization's capsule composition and method-reuse model, in general (not specific to `Error`)

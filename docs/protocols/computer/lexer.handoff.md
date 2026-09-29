@@ -11,7 +11,7 @@ Open work for `lexer.md`. Entries are mutable current state — revised as each 
 ## Open Questions
 
 ### What makes something a lexical unit?
-- State: moved 2026-09-11 from the retired Unresolved questions (item 1). The minimal contract every consumer can rely on, which data is optional per consumer, and whether the contract splits into a core plus per-consumer profiles (compiler vs analysis vs model consumers). The body names this the design session's central task (see [What a Lexer is](./lexer.md#what-a-lexer-is)). Structure candidates now on the table also include the tagged-union payload pattern (a unit as kind-plus-payload variants) alongside the industry `{kind, text, position}` shape.
+- State: moved 2026-09-11 from the retired Unresolved questions (item 1). The minimal contract every consumer can rely on, which data is optional per consumer, and whether the contract splits into a core plus per-consumer profiles (compiler vs analysis vs model consumers). The body names this the design session's central task (see [What a Lexer is](../computer/lexer.md#what-a-lexer-is)). Structure candidates now on the table also include the tagged-union payload pattern (a unit as kind-plus-payload variants) alongside the industry `{kind, text, position}` shape.
 - Next: settle in the dedicated design session (see Anticipated Work).
 
 ### What information may a lexical model provide about a unit?
@@ -23,11 +23,11 @@ Open work for `lexer.md`. Entries are mutable current state — revised as each 
 - Next: draft the terminology section in the design session; it is the prerequisite for settling any name.
 
 ### How does the Lexical Model express context?
-- State: moved 2026-09-11 from the retired Unresolved questions (item 4). The passive-versus-active direction is settled — context-carrying recognition is the rule, not the exception (see [The Lexical Model](./lexer.md#the-lexical-model)). The remaining question is the protocol shape: modes (stacked, bitmask), tracked model state, whole-source context requirements (CommonMark-style), and what each means for type design, competition, and incremental updates.
+- State: moved 2026-09-11 from the retired Unresolved questions (item 4). The passive-versus-active direction is settled — context-carrying recognition is the rule, not the exception (see [The Lexical Model](../computer/lexer.md#the-lexical-model)). The remaining question is the protocol shape: modes (stacked, bitmask), tracked model state, whole-source context requirements (CommonMark-style), and what each means for type design, competition, and incremental updates.
 - Next: settle the shape in the design session.
 
 ### What accompanies a capsule replacement?
-- State: moved 2026-09-11 from the retired Unresolved questions (item 5). The model-lifetime question is settled — a capsule is permanently bound to the model supplied at initialization, and a different model means a new capsule (see [Lifecycle](./lexer.md#lifecycle-the-lexical-capsule)); mutation of a capsule's model was examined and rejected. The residual question is about the transition only: when a consumer ends one capsule and initializes a new one over the same source under a different model, does anything accompany the switch — for example a diff-style report between the old and new capsule's lexical results — or is the switch silent, with consumers simply reading the new capsule's result?
+- State: moved 2026-09-11 from the retired Unresolved questions (item 5). The model-lifetime question is settled — a capsule is permanently bound to the model supplied at initialization, and a different model means a new capsule (see [Lifecycle](../computer/lexer.md#lifecycle-the-lexical-capsule)); mutation of a capsule's model was examined and rejected. The residual question is about the transition only: when a consumer ends one capsule and initializes a new one over the same source under a different model, does anything accompany the switch — for example a diff-style report between the old and new capsule's lexical results — or is the switch silent, with consumers simply reading the new capsule's result?
 - Next: settle in the design session's capsule work.
 
 ### What is the matching-behavior abstraction?
@@ -44,7 +44,7 @@ Open work for `lexer.md`. Entries are mutable current state — revised as each 
 
 ### Does the Source side stay character-based?
 - State: moved 2026-09-11 from the retired Unresolved questions (item 9). Does the source side stay character-based (character/code point/byte) or generalize to non-character units (visual symbols/regions)? The answer decides whether graphic notations such as standard musical notation are in scope — to be decided by argument, not assumption.
-- Next: settle in the design session; standard musical notation is the standing test case (see [Domain scope](./lexer.md#domain-scope)).
+- Next: settle in the design session; standard musical notation is the standing test case (see [Domain scope](../computer/lexer.md#domain-scope)).
 
 ### Where do weight and frequency observations live?
 - State: moved 2026-09-11 from the retired Unresolved questions (item 10). The direction is settled: outside the unit, in sibling concepts — and the research supplies the concrete candidate shapes: per-type registries holding corpus-level statistics (frequency, document frequency, IDF, Zipf rank — spaCy's Lexeme, Clang's `IdentifierInfo`, Rust's interning) and per-context analyses holding runtime-computed properties (embeddings, attention, logits — properties of a (model, input) pair, never of the unit; see also the five unrelated meanings of "weight" in LLMs). Open: which of these belong to *this* module versus text/NLP sibling modules, and where TF-style (unit, document) observations live.
@@ -55,7 +55,7 @@ Open work for `lexer.md`. Entries are mutable current state — revised as each 
 - Next: revisit if a real model requires non-substring output.
 
 ### Does the end-of-input signal ride the delivery channel?
-- State: moved 2026-09-11 from the retired Unresolved questions (item 12). Settled in principle: end-of-input is a signal, not a unit — the grounding principle excludes it, and the survey shows both resolutions in production (EOF-as-token in most compilers, EOF-as-side-channel in Tree-sitter and Rust proc-macros), so a protocol keeping it a signal is viable. Open: whether the signal rides the same delivery channel as units or a separate one. The waived Appendix-D async-streaming question lands here too: the delivery contract must also state the async/streaming interface shape — the intake-side half of the same case (chunked arrival) is already registered in [Lifecycle](./lexer.md#lifecycle-the-lexical-capsule).
+- State: moved 2026-09-11 from the retired Unresolved questions (item 12). Settled in principle: end-of-input is a signal, not a unit — the grounding principle excludes it, and the survey shows both resolutions in production (EOF-as-token in most compilers, EOF-as-side-channel in Tree-sitter and Rust proc-macros), so a protocol keeping it a signal is viable. Open: whether the signal rides the same delivery channel as units or a separate one. The waived Appendix-D async-streaming question lands here too: the delivery contract must also state the async/streaming interface shape — the intake-side half of the same case (chunked arrival) is already registered in [Lifecycle](../computer/lexer.md#lifecycle-the-lexical-capsule).
 - Next: settle with the delivery contract.
 
 ### What is the shape and ownership of the consumer feedback channel?
@@ -63,7 +63,7 @@ Open work for `lexer.md`. Entries are mutable current state — revised as each 
 - Next: settle in the design session.
 
 ### How are lexical results modeled in the graph?
-- State: moved 2026-09-11 from the retired Unresolved questions (item 14). The `tokens_by`/`tokenize` candidate, the tokenizer node's identity (Module vs dedicated tokenization concept), inverse-relationship questions, and whether an individual unit ever becomes a node. The per-type registry evidence (spaCy, Clang, Rust — see [Lexical Unit and naming](./lexer.md#lexical-unit-and-naming)) independently supports the shared-dictionary instinct.
+- State: moved 2026-09-11 from the retired Unresolved questions (item 14). The `tokens_by`/`tokenize` candidate, the tokenizer node's identity (Module vs dedicated tokenization concept), inverse-relationship questions, and whether an individual unit ever becomes a node. The per-type registry evidence (spaCy, Clang, Rust — see [Lexical Unit and naming](../computer/lexer.md#lexical-unit-and-naming)) independently supports the shared-dictionary instinct.
 - Next: settle with the general modeling discipline (see [Modeling](../modeling.md), in particular the attribute-or-edge test).
 
 ### What is the trust posture for client-side lexing of untrusted input?
@@ -71,11 +71,11 @@ Open work for `lexer.md`. Entries are mutable current state — revised as each 
 - Next: deferred to the security discussion of the design session.
 
 ### Where does the trivia policy live?
-- State: moved 2026-09-11 from the retired Unresolved questions (item 16). Which of the surveyed policies (filter, flag-on-next-unit, separate channel, first-class trivia, trivia-as-units, grammar-controlled) the protocol must permit, and whether the policy is a model-level choice or a per-consumption view — see [Trivia](./lexer.md#trivia). Two further cases sharpen it: folding whitespace — RFC 5322's folding is unfolded by the specification itself before interpretation, so at least one grammar-controlled handling is mandatory rather than optional — and adjacency flags (Rust's `Spacing::Joint`/`Alone`), another member of the flag family where whitespace is observed without becoming a unit.
+- State: moved 2026-09-11 from the retired Unresolved questions (item 16). Which of the surveyed policies (filter, flag-on-next-unit, separate channel, first-class trivia, trivia-as-units, grammar-controlled) the protocol must permit, and whether the policy is a model-level choice or a per-consumption view — see [Trivia](../computer/lexer.md#trivia). Two further cases sharpen it: folding whitespace — RFC 5322's folding is unfolded by the specification itself before interpretation, so at least one grammar-controlled handling is mandatory rather than optional — and adjacency flags (Rust's `Spacing::Joint`/`Alone`), another member of the flag family where whitespace is observed without becoming a unit.
 - Next: settle in the design session.
 
 ### What shape does a lexical error take?
-- State: moved 2026-09-11 from the retired Unresolved questions (item 17). Are recognition failures units (model-defined error kinds grounded in extents), separate diagnostics with their own spans, or both — and is the recovery posture (recover-and-continue versus strict-abort) a model decision or a capsule decision? Whatever the answer, alignment with Memar's [Error](./error.md) protocol must be checked.
+- State: moved 2026-09-11 from the retired Unresolved questions (item 17). Are recognition failures units (model-defined error kinds grounded in extents), separate diagnostics with their own spans, or both — and is the recovery posture (recover-and-continue versus strict-abort) a model decision or a capsule decision? Whatever the answer, alignment with Memar's [Error](../process/error.md) protocol must be checked.
 - Next: settle in the design session, with the Error-protocol conformance check.
 
 ### Must the lexical result round-trip to the source?
@@ -87,7 +87,7 @@ Open work for `lexer.md`. Entries are mutable current state — revised as each 
 - Next: settle with the change contract and result-identity assumptions.
 
 ### Where does input preprocessing live?
-- State: moved 2026-09-11 from the retired Unresolved questions (item 20). Where do byte→character decoding, newline normalization, and malformed-sequence replacement live — in the Source abstraction, an explicit preprocessing step, or capsule initialization — and against which stream (raw or preprocessed) are positions defined? The lossless/lossy distinction that keeps this outside [Working positions](./lexer.md#working-positions) is recorded in [What the research established](./lexer.md#what-the-research-established). Two boundary cases from the waived findings: HTML character-reference decoding (`&amp;` → `&`) — the HTML5 tokenizer performs it inside recognition, testing whether text-transforms belong to preprocessing or to model rules; and the UTF-8/default-encoding question, which is this question's byte-decoding first item — the waived Unicode-support note is covered here rather than separately.
+- State: moved 2026-09-11 from the retired Unresolved questions (item 20). Where do byte→character decoding, newline normalization, and malformed-sequence replacement live — in the Source abstraction, an explicit preprocessing step, or capsule initialization — and against which stream (raw or preprocessed) are positions defined? The lossless/lossy distinction that keeps this outside [Working positions](../computer/lexer.md#working-positions) is recorded in [What the research established](../computer/lexer.md#what-the-research-established). Two boundary cases from the waived findings: HTML character-reference decoding (`&amp;` → `&`) — the HTML5 tokenizer performs it inside recognition, testing whether text-transforms belong to preprocessing or to model rules; and the UTF-8/default-encoding question, which is this question's byte-decoding first item — the waived Unicode-support note is covered here rather than separately.
 - Next: settle in the design session.
 
 ## Anticipated Work

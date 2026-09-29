@@ -197,7 +197,7 @@
 - Time: 2026-09-06T00:00:00Z
 - Type: Added
 - Propagates to:
-  - protocols/sRPC.md: Done — Open Questions section added there in the same pass, asking for the wire-level cancellation contract and pointing back here.
+  - protocols/net/sRPC.md: Done — Open Questions section added there in the same pass, asking for the wire-level cancellation contract and pointing back here.
 - Contributors:
   - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — claimed, argued
   - [Super Z](../CONTRIBUTORS.md#super-z) — reviewed, argued, rewrote
@@ -288,7 +288,7 @@
 - **Adopting one of the scholarly definitions (e.g. growth of problem-solving power) as the topic's definition (rejected)**: they are rival characterizations of what a development aims at, and the umbrella stance exists precisely so the topic does not adjudicate them; each becomes relevant only when a concrete development's model must fix its target stage and progress measure.
 
 #### Deliberation
-- Omid's review of the day's edits raised three points; the first and third are recorded in this entry — the second, the scope of the TDD protocol document, was accepted in the same pass and is recorded in [tdd.changelog.md](./protocols/tdd.changelog.md)'s corresponding entry (Omid Hekayati).
+- Omid's review of the day's edits raised three points; the first and third are recorded in this entry — the second, the scope of the TDD protocol document, was accepted in the same pass and is recorded in [tdd.changelog.md](docs/protocols/tdd.changelog.md)'s corresponding entry (Omid Hekayati).
 - On the first point, Omid objected that Motivation had come to read like a changelog entry rather than a motivation; the objection was accepted without reservation and the trim was made (Omid Hekayati).
 - On the third point, Omid argued the word Development itself warrants no root-document concept under the project's standard against umbrella concepts at the root: it introduces nothing of its own and merely connects principles that already exist, the way OOP is an umbrella over encapsulation and the like, and that thinkers attach rival definitions to the word anyway (e.g. "increase of the system's problem-solving power") (Omid Hekayati).
 - The resolution adopted keeps the topic (it was already written as an adoption of the word's established general meaning, adding no structure) but states the umbrella character explicitly, so future edits test additions against the umbrella rule instead of letting content accrete (Super Z — proposed; Omid Hekayati — accepted).

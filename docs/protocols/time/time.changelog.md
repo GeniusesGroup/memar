@@ -46,3 +46,36 @@
 
 #### Considered and not done (from the removed document-level Drawbacks section)
 - **Separation has a real ergonomic cost: the common case ("give me now, compare it to later") now names two abstractions where the ecosystem names one** — accepted deliberately, because the bundling cost is paid by every API forever while the ergonomic cost is paid by every call site once — and tooling mitigates the latter, nothing mitigates the former. (Omid Hekayati)
+
+---
+
+### A contract states a duration, not a unit; two duration and timer questions carried here
+- Time: 2026-09-29T10:40:00Z
+- Type: Changed
+- Cited:
+  - [Documentation → Content Rule](../documentation.md#content-rule-no-fabricated-or-redundant-provenance) - Premise: content lives in one authoritative home and is linked, not restated.
+- Contributors:
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) - decided: code under `modules/` introduces itself, and a code folder carries only a README
+  - Auto (model not recorded) via [Cursor](../../CONTRIBUTORS.md#cursor) - applied
+
+#### What changed
+- `time.md → A contract states a duration, not a unit`: a new section carrying the owner's statement that defining a timer does not force a dependency on a unit of time, and the rule that every contract over a span states a Duration and leaves the unit to the implementation. It came from the module document `modules/time/time.md`, which was deleted under the owner's decision above.
+- `time.handoff.md`: two questions from the deleted module handoff `modules/time/time.handoff.md` — whether a common concept over the duration units exists, and whether a contract needs a timer that also reports the instant it fires at. The civil-conversion question now records that `modules/time/utc/` and `modules/time/earth/` already hold civil-calendar declarations.
+
+#### Considered and not done
+- Carrying the module handoff's question whether `duration/` and `timer/` each want a main document: the owner's decision that a code folder carries only a README answers it.
+- Carrying the module document's statement that civil conversion and formatting are not held in the module: the calendar declarations under `modules/time/` contradict it.
+- Moving the module document's duration table and its section on how a capsule satisfies an abstraction: the table describes code, and the section restates Abstraction in Khayyam and Encapsulation in Khayyam.
+
+---
+
+### Realization membership and README symlink
+- Time: 2026-09-29T11:17:00Z
+- Type: Changed
+- Contributors:
+  - Auto (model not recorded) via [Cursor](../../CONTRIBUTORS.md#cursor) - applied
+
+#### What changed
+- `time.md`: realization membership for `modules/time/`.
+- `time.handoff.md`: numeric counterpart link repointed to `math.handoff.md`.
+- `modules/time/README.md`: replaced with a symbolic link to `../../docs/protocols/time/time.md`.

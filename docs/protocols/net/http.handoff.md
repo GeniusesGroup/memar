@@ -1,6 +1,6 @@
 # Reevaluating HTTP as a Default Application Protocol Handoff
 
-Open work for `protocols/http.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](../documentation-handoff.md) for what a handoff is.
+Open work for `protocols/net/http.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](../documentation-handoff.md) for what a handoff is.
 
 ## Topic & Purpose
 Memar's position on depending on HTTP as an inherited application-protocol surface: the URL's collapsed jobs, the GET-shaped navigation constraint, cookie reconstruction of hidden connection state, and guest use for locators and the existing Internet.
@@ -18,7 +18,7 @@ Active
 ## Open Questions
 
 ### Where the address-only-destination principle is written in Networking
-- State: the general rule (an address contains only destination information; request data does not belong in the routing address) remains a Networking-layer claim. This document owns the HTTP instance (query versus payload, URL overload). [networking.handoff.md](./networking.handoff.md) still tracks formalizing the principle in networking.md.
+- State: the general rule (an address contains only destination information; request data does not belong in the routing address) remains a Networking-layer claim. This document owns the HTTP instance (query versus payload, URL overload). [networking.handoff.md](../net/networking.handoff.md) still tracks formalizing the principle in networking.md.
 - Next: when networking.md next grows a principles section, write the positive rule there and keep this document as the HTTP appearance.
 
 ### Locators as Content versus a future locator protocol

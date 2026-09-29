@@ -1,6 +1,6 @@
 # Networking Connection Handoff
 
-Open work for `protocols/networking-connection.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](../documentation-handoff.md) for what a handoff is.
+Open work for `protocols/net/networking-connection.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](../documentation-handoff.md) for what a handoff is.
 
 ## Open Questions
 
@@ -9,7 +9,7 @@ Open work for `protocols/networking-connection.md`. Entries are mutable current 
 - Next: joint session with the Event topic.
 
 ### Per-exchange explicit bounds
-- State: whether the caller-meaningful time-bound case needs a dedicated parameter convention in [sRPC](./sRPC.md), or remains an application-level modeling choice.
+- State: whether the caller-meaningful time-bound case needs a dedicated parameter convention in [sRPC](../net/sRPC.md), or remains an application-level modeling choice.
 - Next: decide when the first caller-meaningful-bound service is designed.
 
 ### Quantifying the per-connection resource argument
@@ -17,7 +17,7 @@ Open work for `protocols/networking-connection.md`. Entries are mutable current 
 - Next: benchmark during the userspace transport work.
 
 ### A terminology entry for "stateless"
-- State: given how much confusion the hidden-state arrangement has produced, whether "stateless" deserves an explicit entry in [terminology.md](../terminology.md) is undecided. The HTTP instance of the slogan versus cookie reconstruction now lives in [http.md](./http.md); this question is about the general term.
+- State: given how much confusion the hidden-state arrangement has produced, whether "stateless" deserves an explicit entry in [terminology.md](../terminology.md) is undecided. The HTTP instance of the slogan versus cookie reconstruction now lives in [http.md](../net/http.md); this question is about the general term.
 - Next: propose during the next terminology revision.
 
 ## Anticipated Work

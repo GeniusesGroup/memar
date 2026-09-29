@@ -4,12 +4,12 @@ description: Use when implementing a Chapar data-link switch, a Chapar endpoint 
 ---
 
 # Implementing Chapar
-All steps below are imperative restatements of normative behavior defined in [chapar.md](./chapar.md). Do not introduce behavior absent from that document.
+All steps below are imperative restatements of normative behavior defined in [chapar.md](../net/chapar.md). Do not introduce behavior absent from that document.
 
 ## Implement a switch
 1. On frame receipt, parse the header: `FrameType`, `HopCount`, `Next Hop`, `First Hop Port Number`, then the hop-port list.
 2. Stamp the physical port the frame arrived on into the frame — this is the port-rewrite rule and is mandatory at every hop, before any forwarding decision.
-3. If `HopCount == 0x00` (Broadcast): the header carries the full 255-slot hop-port space with zero-length data in each slot; forward (flood) without declaring any next port. Never interpret why the Broadcast was sent — its semantics live in an [sRPC](./sRPC.md) service call elsewhere in the same packet.
+3. If `HopCount == 0x00` (Broadcast): the header carries the full 255-slot hop-port space with zero-length data in each slot; forward (flood) without declaring any next port. Never interpret why the Broadcast was sent — its semantics live in an [sRPC](../net/sRPC.md) service call elsewhere in the same packet.
 4. If `HopCount` is `0x01`–`0xFF` (Unicast): verify the declared port for the current hop matches the physical arrival port, advance `Next Hop` past your stamped position, then send on the newly indicated port only.
 5. Keep no state between frames: no MAC-style address table, no recently-seen-frame cache, nothing content-addressable. A switch that needs to search a dynamically-updated table to forward is implementing the wrong protocol.
 6. Do not prevent forwarding loops specially: a Unicast frame cannot loop (its path is fixed in its header); a Broadcast copy is bounded by its declared path and is dropped as a stray frame once it reaches the end of it.
@@ -17,11 +17,11 @@ All steps below are imperative restatements of normative behavior defined in [ch
 
 ## Send Unicast (endpoint)
 1. Obtain the full hop-port path first — via [Discovery](#discovery) plus path composition below. There is no way to send before holding the path.
-2. Build the header: FrameType per [networking rules](./networking.md); Hop Count = number of intermediate hops (`0x01`–`0xFF`; a Unicast frame has at least one hop); Next Hop = the hop index to execute next; First Hop Port Number = source port (in P2P it is also the destination port); append one byte per hop.
+2. Build the header: FrameType per [networking rules](../net/networking.md); Hop Count = number of intermediate hops (`0x01`–`0xFF`; a Unicast frame has at least one hop); Next Hop = the hop index to execute next; First Hop Port Number = source port (in P2P it is also the destination port); append one byte per hop.
 3. Transmit on the first-hop port.
 
 ## Participate in Discovery
-1. Announce (shared, multi-node segments only): send a one-way Broadcast frame with `HopCount == 0x00` and all 255 slots zero-filled, carrying the Discovery [sRPC](./sRPC.md) service call elsewhere in the same packet. It is fire-and-forget — no response is defined on that stream. Announce at join time; stay silent afterward and announce again only when an upper-layer failure indication requires a fresh path. Every announcement is structurally identical, first or refresh.
+1. Announce (shared, multi-node segments only): send a one-way Broadcast frame with `HopCount == 0x00` and all 255 slots zero-filled, carrying the Discovery [sRPC](../net/sRPC.md) service call elsewhere in the same packet. It is fire-and-forget — no response is defined on that stream. Announce at join time; stay silent afterward and announce again only when an upper-layer failure indication requires a fresh path. Every announcement is structurally identical, first or refresh.
 2. Attached to your coordinator over a dedicated association (wireless cell, single wired uplink)? Skip flooding entirely: register with that coordinator via sRPC over the link. No Chapar header is needed on a link that performs no switching; after a failure indication, re-register the same way.
 3. React (optional for ordinary nodes; ChaparKhane MUST, for broadcast announcements on shared segments): initiate a fresh Unicast frame to the announcer using the accumulated reverse path from the received announcement, reversed. Never answer as a coupled RPC response on the announcer's stream — a reaction is its own, separately-identified communication.
 4. Treat every stored reverse path as ephemeral and receiver-relative: it reflects the topology at capture time and is only meaningful from where you hold it. Never copy another party's path bytes for your own use, and never assume a path survives a topology change.

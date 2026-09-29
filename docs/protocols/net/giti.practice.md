@@ -4,12 +4,12 @@ description: Use when implementing, deploying, or operating any GP network compo
 ---
 
 # GP Practices
-Procedures for operating GP networks. [giti.md](./giti.md) owns the protocol — frames, addressing, and normative rules — and says nothing here binds it; each practice below is a working procedure, expected to evolve with experience, and none defines a GP frame, field, or rule.
+Procedures for operating GP networks. [giti.md](../net/giti.md) owns the protocol — frames, addressing, and normative rules — and says nothing here binds it; each practice below is a working procedure, expected to evolve with experience, and none defines a GP frame, field, or rule.
 
 ## Run a GP software router (ChaparKhane role)
-1. Implement the router as an ordinary application holding an exclusive entitlement to its network hardware — under [OS](./os.md) a router is a service, not a sanctified OS subsystem.
-2. Carry GP packets over [Chapar](./chapar.md) as the link-layer protocol; every inter-router edge must be a real physical or wireless hop.
-3. Apply the [Inter-society delivery](./giti.md#inter-society-delivery) ladder locally: forward to a directly connected destination router when connected; hand off to any router of the destination society when the destination router itself is not; relay only under an explicit prior agreement — never as a default.
+1. Implement the router as an ordinary application holding an exclusive entitlement to its network hardware — under [OS](../computer/os.md) a router is a service, not a sanctified OS subsystem.
+2. Carry GP packets over [Chapar](../net/chapar.md) as the link-layer protocol; every inter-router edge must be a real physical or wireless hop.
+3. Apply the [Inter-society delivery](../net/giti.md#inter-society-delivery) ladder locally: forward to a directly connected destination router when connected; hand off to any router of the destination society when the destination router itself is not; relay only under an explicit prior agreement — never as a default.
 4. Enforce the source-validation invariant before forwarding: reject any packet whose claimed source could not legitimately originate traffic through the path it arrived on.
 5. Choose the society's interior organization freely — spread across border routers, dedicated core routers taking hand-offs from the rest, or any tested arrangement fitted to the society's physical realities; routing the society's own 32-bit router space is a design problem to solve, test, and refine, not a rule to follow.
 6. Treat QoS scheduling, path selection among multiple valid coordinators, and internal pipelining as free implementation choices — the protocol fixes outcomes, not mechanisms.
@@ -23,6 +23,6 @@ Procedures for operating GP networks. [giti.md](./giti.md) owns the protocol —
 
 ## Edge cases and failure modes
 - Destination GP address not registered, or not requesting Internet reachability: drop the packet; do not invent a delivery.
-- The Internet bridge rides UDP: no Chapar-grade ingress validation holds on that path; apply the [source validation](./giti.md#standard-services) invariant wherever a GP router processes the packet.
-- A Thing-level destination that never requested App-level delivery: its device app's own rules decide — forward as usual, or report as an incident (see giti's [Whether a Thing-level destination accepts unsolicited App-level frames](./giti.handoff.md#whether-a-thing-level-destination-accepts-unsolicited-app-level-frames) on mixed-level communication).
+- The Internet bridge rides UDP: no Chapar-grade ingress validation holds on that path; apply the [source validation](../net/giti.md#standard-services) invariant wherever a GP router processes the packet.
+- A Thing-level destination that never requested App-level delivery: its device app's own rules decide — forward as usual, or report as an incident (see giti's [Whether a Thing-level destination accepts unsolicited App-level frames](../net/giti.handoff.md#whether-a-thing-level-destination-accepts-unsolicited-app-level-frames) on mixed-level communication).
 - No agreed intermediary exists and no direct connection is possible: the packet is undeliverable at this layer; do not flood or guess — recovery belongs to upper layers.

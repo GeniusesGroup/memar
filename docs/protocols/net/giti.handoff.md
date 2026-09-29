@@ -11,11 +11,11 @@ Open work for `giti.md`. Entries are mutable current state — revised as each i
 ## Open Questions
 
 ### Which standard services harden into protocol-level services?
-- State: moved 2026-09-11 from the retired Unresolved questions. The [Standard services](./giti.md#standard-services) topic records the capability needs but deliberately leaves the roster decision to ChaparKhane's development — which needs harden into protocol-level services, which stay implementation concerns, and (for those that harden) their identifiers, payload schemas, and message flows all remain to be specified.
+- State: moved 2026-09-11 from the retired Unresolved questions. The [Standard services](../net/giti.md#standard-services) topic records the capability needs but deliberately leaves the roster decision to ChaparKhane's development — which needs harden into protocol-level services, which stay implementation concerns, and (for those that harden) their identifiers, payload schemas, and message flows all remain to be specified.
 - Next: settle when the ChaparKhane role itself is developed.
 
 ### Ownership proof
-- State: moved 2026-09-11 from the retired Unresolved questions. The address rules state every Society/Router/Thing/App owns a true 32-byte identifier beneath its temporary GP locator — but nothing specifies how ownership is *proven*, i.e., how a temp address binds to its true identity for authentication. This is deliberately unsettled: fixing one binding scheme now would foreclose better ones. Two structural facts keep the gap smaller than IPv6's, where no path exists at all — every Router range has an identifiable organization behind it (recorded in the body's attack-reporting topic), and the coordination capabilities above are meant to carry attestation once defined. Still open, and pressing precisely because source validation and attack reporting consume it. Connects to the certificate/provisioning track noted in [Chapar](./chapar.md)'s Discovery discussion.
+- State: moved 2026-09-11 from the retired Unresolved questions. The address rules state every Society/Router/Thing/App owns a true 32-byte identifier beneath its temporary GP locator — but nothing specifies how ownership is *proven*, i.e., how a temp address binds to its true identity for authentication. This is deliberately unsettled: fixing one binding scheme now would foreclose better ones. Two structural facts keep the gap smaller than IPv6's, where no path exists at all — every Router range has an identifiable organization behind it (recorded in the body's attack-reporting topic), and the coordination capabilities above are meant to carry attestation once defined. Still open, and pressing precisely because source validation and attack reporting consume it. Connects to the certificate/provisioning track noted in [Chapar](../net/chapar.md)'s Discovery discussion.
 - Next: settle together with the ingress-attestation question below and Chapar's certificate/provisioning track.
 
 ### Ingress attestation for source validation
@@ -23,15 +23,15 @@ Open work for `giti.md`. Entries are mutable current state — revised as each i
 - Next: design on the same track as ownership proof.
 
 ### Whether a Thing-level destination accepts unsolicited App-level frames
-- State: moved 2026-09-11 from the retired Unresolved questions. Under [OS](./os.md) a Thing's hypervisor and network driver are themselves independent applications that may hold App IDs, so a Thing speaking at Thing level presents a **default app** — the device's network driver, which is the application endpoint (recorded in the body's Frame architecture). The convention left open is the policy, not the mechanism: whether a Thing-level destination with no expected app accepts unsolicited App-level frames or must treat them as [incident reports](./giti.md#standard-services) is the device app's own rule, decided per device, not fixed by this protocol.
+- State: moved 2026-09-11 from the retired Unresolved questions. Under [OS](../computer/os.md) a Thing's hypervisor and network driver are themselves independent applications that may hold App IDs, so a Thing speaking at Thing level presents a **default app** — the device's network driver, which is the application endpoint (recorded in the body's Frame architecture). The convention left open is the policy, not the mechanism: whether a Thing-level destination with no expected app accepts unsolicited App-level frames or must treat them as [incident reports](../net/giti.md#standard-services) is the device app's own rule, decided per device, not fixed by this protocol.
 - Next: per-device decisions; revisit only if device practice converges on a protocol-level default.
 
 ### Society identifier allocation mechanism
-- State: moved 2026-09-11 from the retired Unresolved questions. The [Society identifier allocation](./giti.md#standard-services) capability fixes the shape (governing-app announcement → temporary range → collective agreement for permanence); the exact agreement mechanism and temporary-range administration remain open.
+- State: moved 2026-09-11 from the retired Unresolved questions. The [Society identifier allocation](../net/giti.md#standard-services) capability fixes the shape (governing-app announcement → temporary range → collective agreement for permanence); the exact agreement mechanism and temporary-range administration remain open.
 - Next: specify when the standard-services roster question above is settled.
 
 ### Inter-society routing economy
-- State: moved 2026-09-11 from the retired Unresolved questions. When the agreed-intermediary shape of [Inter-society delivery](./giti.md#inter-society-delivery) is exercised, how is the relaying society's routing cost paid — per packet, per agreement period, per capacity committed? GP records that mediation is a contract and leaves the payment model open, since it depends on the digital-economy concepts this project has not yet specified.
+- State: moved 2026-09-11 from the retired Unresolved questions. When the agreed-intermediary shape of [Inter-society delivery](../net/giti.md#inter-society-delivery) is exercised, how is the relaying society's routing cost paid — per packet, per agreement period, per capacity committed? GP records that mediation is a contract and leaves the payment model open, since it depends on the digital-economy concepts this project has not yet specified.
 - Next: depends on the digital-economy concepts being specified.
 
 ### The Achaemenid document

@@ -7,7 +7,7 @@
 - Type: Added
 - Cited:
   - [Control Flow in Khayyam](../khayyam/control_flow.md) — Depends_on: this document builds on the precedent set by that document of keeping behavioral policies as ordinary library-driven mechanisms rather than new syntax.
-  - [The Error](./error.md) — Depends_on: cited by title in the former front matter as "Error Handling: Library-Driven and Syntax-Free", without a resolvable URI; the reference now targets the canonical Error document. The former front matter's `Extends` and `Conflicts with` fields were empty.
+  - [The Error](../process/error.md) — Depends_on: cited by title in the former front matter as "Error Handling: Library-Driven and Syntax-Free", without a resolvable URI; the reference now targets the canonical Error document. The former front matter's `Extends` and `Conflicts with` fields were empty.
 - Contributors: none recorded — the former front matter carried `Author(s): []`; no attribution was reconstructed beyond what the source recorded.
 
 #### What changed
@@ -74,16 +74,16 @@ The document was retitled from "Conditional Method Naming Convention (Presence/A
 - Propagates to:
   - khayyam/khayyam.md: Done — the grammar-level facts (no flow keywords or logical operators; the inert `sc` primitive) remain there with the Scope pointer retargeted to this document; the principle section's negative-illustration paragraph migrated into this entry.
   - khayyam/compiler.md: Done — the three pointers into the retired document retargeted (language-side reasoning to Khayyam's *The Grammar Refuses Protocol Semantics*; the goto-draft retirement and the design-cost reasoning to this entry; the intrinsics/event contract question already owned by the compiler handoff).
-  - khayyam/encapsulation.md, khayyam/metaprogramming.md, khayyam/README.md, protocols/abstraction-implements.md, protocols/README.md: Done — pointers retargeted to this document.
+  - khayyam/encapsulation.md, khayyam/metaprogramming.md, khayyam/README.md, protocols/computer/abstraction-implements.md, protocols/README.md: Done — pointers retargeted to this document.
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided the merge, the negatives-to-changelog doctrine, and the content destinations
   - [Super Z](../../CONTRIBUTORS.md#super-z) — analyzed, migrated
 
 #### What changed
 - The positive design content of the retired document now lives in this document's body: **Library-Defined Control Flow** (the premise, the generic `IF`/`ELSE` form, the preferred domain-specific form with the `OnPresent`/`OnAbsent` worked example, the mechanism summary), **Structured and Unstructured Flow as Libraries** (both paradigms as equal library constructs on the same primitives, substrate-independence), and **Error Propagation** (the framing, the explicit-output declaration, and the No-Hidden-Control-Flow / No-Core-Level-Panics / Linter-Over-Syntax positions). The propagation-mechanisms survey (exceptions, `Result<T,E>`, Go's pair, panic/recover) joined Prior art; the standard-library `GOTO` package and the richer domain-conditional library joined Future possibilities.
-- The retired document's handoff lost nothing: the versioned intrinsics/event contract was already owned by the compiler handoff's open question and anticipated work; the conditional-vocabulary naming question and the two further unresolved questions are owned by this document's newly created paired handoff; the error-path naming-and-layering pointer is owned by [The Error](./error.md).
+- The retired document's handoff lost nothing: the versioned intrinsics/event contract was already owned by the compiler handoff's open question and anticipated work; the conditional-vocabulary naming question and the two further unresolved questions are owned by this document's newly created paired handoff; the error-path naming-and-layering pointer is owned by [The Error](../process/error.md).
 - The error-typing recommendation (single-cause concrete output, multi-cause abstract output) is subsumed by The Error's Multi-cause returns section, which already owns it; no separate statement is kept.
-- In the same session the body completed its migration to the three-section skeleton: the content-free Results placeholder was dropped, and the Discussion section retired — the Drawbacks record and the Prior-art surveys are preserved in this entry (below), and the Unresolved questions and Future possibilities moved to the newly created paired handoff ([control-flow.handoff.md](./control-flow.handoff.md)).
+- In the same session the body completed its migration to the three-section skeleton: the content-free Results placeholder was dropped, and the Discussion section retired — the Drawbacks record and the Prior-art surveys are preserved in this entry (below), and the Unresolved questions and Future possibilities moved to the newly created paired handoff ([control-flow.handoff.md](../process/control-flow.handoff.md)).
 
 #### Migrated reasoning (negative content, recorded here per the negatives-to-changelog doctrine — bodies carry current positive state only)
 
@@ -183,3 +183,33 @@ This problem closely parallels `Result`/`Option` combinator naming in Rust (`.is
 
 #### What changed
 - The type-level direction in the success/failure candidates is illustrated by `W32.Sum(a, b)(total, err)`, a call on the type identifier with both groups written.
+
+---
+
+### Owner of the control-flow forms opened as a question; per-form layout not treated as the protocol
+- Time: 2026-09-28T08:30:00Z
+- Type: clarified
+- Cited:
+  - [Method in Khayyam](../khayyam/method.md) — Depends_on: Method Invocation Rules, every method names its parent type and a call writes the receiver and both groups.
+  - [Type](../type.md) — Evidence: Scope counts a namespace or module-visibility boundary among its realizations.
+  - [Khayyam Rule — Code Scope Placement](../../modules/khayyam/rules/scope-placement/scope-placement.md) — Conflicts: this toolchain refuses a top-level `sc`, and its handoff records that no document says what a file-level scope is.
+- Propagates to:
+  - modules/khayyam/core/test/matrix.test.ts: Done — the archive row for `modules/process/control-flow/protocol/if.kh` still expects refusal but no longer pins the `name-not-exported` label, so the draft's first fault is not frozen as its answer; the label stays asserted by the inline row that reproduces the draft's import shape.
+  - modules/process/control-flow/README.md: Done — points at this document and the open owner question.
+  - modules/process/control-flow/protocol/if.kh: Rejected — left as the draft negative the M1 inputs decision in [execution.handoff.md](../../modules/khayyam/execution.handoff.md) names; rewriting it would presuppose the owner answer.
+- Contributors:
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — requested, raised the `tp CF sc` hypothesis
+  - [Cursor](../../CONTRIBUTORS.md#cursor) (Auto agent; model not recorded) — analyzed, applied
+
+#### What changed
+- The generic-form topic states that the forms are one family over the branch-grouping primitive whose distribution across types and files is a realization's layout, that in Khayyam each form is a method with a parent type called with both groups written, and that the examples' owner-less calls and `in` lines stand in until the owner is settled.
+- The handoff opens *Which type owns the control-flow forms, and what category is it?*, carrying the four spellings in the repository, the evidence for and against `tp CF sc`, and the question for the owner.
+
+#### Deliberation
+- The protocol of each module is developed and relatively finalized before anything depends on it, and nothing depends on a non-final control-flow type (Omid Hekayati — directed).
+- The forms may not be one type per file and may all sit under `tp CF sc` (Omid Hekayati — raised, not decided).
+- `tp CF sc` is not written as a declaration because the language documents do not say what a file-level scope is and the toolchain refuses one; the question goes to the owner instead of being settled by a new type (Cursor — analyzed).
+
+#### Considered and not done
+- **Writing `tp CF sc` with `IF`/`ELSE` methods under it now**: would settle the owner's category and override the scope placement ruling without a document that gives a file-level scope a meaning.
+- **Dropping the `if.kh` archive row from the matrix**: the M1 inputs decision names `if.kh` as a negative input; the row keeps the refusal and releases only the label.

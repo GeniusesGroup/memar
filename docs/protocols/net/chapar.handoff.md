@@ -1,6 +1,6 @@
 # Chapar Handoff
 
-Open work for `protocols/chapar.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](../documentation-handoff.md) for what a handoff is.
+Open work for `protocols/net/chapar.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](../documentation-handoff.md) for what a handoff is.
 
 ## Open Questions
 
@@ -10,7 +10,7 @@ Open work for `protocols/chapar.md`. Entries are mutable current state — revis
 - Next: decide at the sRPC/Discovery-service level; the trust-anchor provisioning question is expected to be resolved by the certificate/provisioning document track noted under Anticipated Work. (Migrated from the Discovery topic's retired `Unresolved questions` in chapar.md.)
 
 ### The "best switch" CAM-table ceiling figure
-- State: a precise, sourced figure (specific switch model and vendor documentation) for the CAM ceiling cited in [State model compared with Ethernet](./chapar.md#state-model-compared-with-ethernet) has not been confirmed; the body carries the figure as an order-of-magnitude ceiling pending a source.
+- State: a precise, sourced figure (specific switch model and vendor documentation) for the CAM ceiling cited in [State model compared with Ethernet](../net/chapar.md#state-model-compared-with-ethernet) has not been confirmed; the body carries the figure as an order-of-magnitude ceiling pending a source.
 - Next: add a specific vendor-product source, or keep treating the figure as an order of magnitude. (Migrated from the State-model topic's retired `Unresolved questions` in chapar.md.)
 
 ### Should this document be split again if its length becomes a real reading burden?

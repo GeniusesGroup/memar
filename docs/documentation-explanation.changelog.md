@@ -216,7 +216,7 @@ All retired wrapper titles are removed from the pattern; documents written under
   - README.md, .agents/skills/memar/SKILL.md: Done - stale structure lines corrected (trivial; no paired changelogs).
   - 45 base documents, Results section removed same-session under the owner's directive, applied through sub-agents; per the owner's ruling a removal this mechanical carries no per-document changelog entry - this consolidated list is the record. Top-level (17): documentation-handoff.md, documentation-changelog.md, documentation-research.md, documentation-practice.md, framework.md, knowledge.md, process.md, protocol.md, software.md, system.md, thinking.md, terminology.md, modularity.md, modeling.md, type.md, content.md, agency.md. Protocols (15): lexer.md, giti.md, chapar.md, sdk.md, concurrency.md, dependency-management.md, networking.md, networking-connection.md, os.md, time.md, abstraction-implements.md, error.md, memory.md, filesystem.md, immutable_infrastructure.md. Khayyam (13, under docs/khayyam/): abstraction.md, agency.md, compiler.md, encapsulation.md, inheritance.md, khayyam.md, linter.md, metaprogramming.md, method.md, modularity.md, polymorphism.md, runtime.md, variable.md.
   - Four carried non-placeholder content and were routed, not deleted: agency.md (watch-items to the handoff's Open Questions), filesystem.md (external literature evidence inline at the claims it supports), immutable_infrastructure.md (deferral note to the handoff's Anticipated Work), error.md (validation note inline at the Boundary translation claim). The paired handoffs and filesystem.md's inline evidence carry their own provenance lines; the 26 per-document changelog entries first appended for this pass were removed on the same ruling.
-  - protocols/control-flow.md: Done through the concurrent session's own commit (be9c260), which dropped its Results placeholder under this decision; docs/khayyam/control_flow.md was retired and deleted outright with that session, needing no migration. content.md's earlier blocker (its changelog being off-limits) dissolved with the no-entry ruling.
+  - protocols/process/control-flow.md: Done through the concurrent session's own commit (be9c260), which dropped its Results placeholder under this decision; docs/khayyam/control_flow.md was retired and deleted outright with that session, needing no migration. content.md's earlier blocker (its changelog being off-limits) dissolved with the no-entry ruling.
 - Contributors:
   - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - argued, directed
   - [Super Z](../CONTRIBUTORS.md#super-z) (GLM 5.3) - researched, argued, wrote
@@ -260,7 +260,7 @@ The skeleton is three fixed sections; an Explanation-facet document carries no `
 - Type: Changed
 - Propagates to:
   - documentation-explanation.practice.md: Done — body-writing step gains an explicit filter before leaving Abstract/Motivation/Methodology.
-  - protocols/tdd.md: Done — Methodology cleaned as the triggering instance; entry in [protocols/tdd.changelog.md](./protocols/tdd.changelog.md).
+  - protocols/tdd.md: Done — Methodology cleaned as the triggering instance; entry in [protocols/tdd.changelog.md](docs/protocols/tdd.changelog.md).
 - Contributors:
   - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — objected, directed the governing-doc upgrade
   - Cursor/Composer — drafted

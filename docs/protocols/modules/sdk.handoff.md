@@ -1,6 +1,6 @@
 # SDK Handoff
 
-Open work for `protocols/sdk.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](../documentation-handoff.md) for what a handoff is.
+Open work for `protocols/modules/sdk.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](../documentation-handoff.md) for what a handoff is.
 
 ## Open Questions
 
@@ -29,19 +29,19 @@ Open work for `protocols/sdk.md`. Entries are mutable current state — revised 
 - Next: settle with the GUI and Modeling documents during the design session.
 
 ### How "part of the module's protocol realization" binds concretely
-- State: position 9 makes the delivered client face a conformance obligation of the module ([Part of the module, not beside it](./sdk.md#part-of-the-module-not-beside-it)); what enforces that obligation is undesigned — whether a module's protocol declaration is invalid without its client face, whether conformance is checked at release, and how it interacts with the local module placement in [protocols/README.md](./README.md).
+- State: position 9 makes the delivered client face a conformance obligation of the module ([Part of the module, not beside it](../modules/sdk.md#part-of-the-module-not-beside-it)); what enforces that obligation is undesigned — whether a module's protocol declaration is invalid without its client face, whether conformance is checked at release, and how it interacts with the local module placement in [protocols/README.md](./README.md).
 - Next: decide in the design session; the check belongs to a linter-conformance discussion if the protocol declaration carries it.
 
 ### The local/network realization decision surface
-- State: both invocation kinds are behind one call surface, and the backing realization is a delivery decision ([Local and network invocation](./sdk.md#local-and-network-invocation)); who makes that decision per call — the SDK's generator, the module's packaging, deployment configuration, or a runtime resolution — and whether a consumer can ever observe or force one kind, is open. The security framing (execution crossing out of the consumer's agency space under the module's control) suggests some crossings must be non-bypassable, but the mechanism is not designed.
+- State: both invocation kinds are behind one call surface, and the backing realization is a delivery decision ([Local and network invocation](../modules/sdk.md#local-and-network-invocation)); who makes that decision per call — the SDK's generator, the module's packaging, deployment configuration, or a runtime resolution — and whether a consumer can ever observe or force one kind, is open. The security framing (execution crossing out of the consumer's agency space under the module's control) suggests some crossings must be non-bypassable, but the mechanism is not designed.
 - Next: design after the declaration-artifact question settles; touches sRPC's transport role directly.
 
 ### Correctness ownership of non-generated consumption paths
-- State: the declared interface binds no consumer language ([Working positions](./sdk.md#working-positions) 7) — FFI against a delivered SDK and ports are legitimate external consumption paths (the founding example: an external Go caller consuming a module whose SDK is delivered in Khayyam). Whether a consumer-made port inherits any ownership or support claim from the module, or is simply the consumer's own code over the same declared interface, is undecided.
+- State: the declared interface binds no consumer language ([Working positions](../modules/sdk.md#working-positions) 7) — FFI against a delivered SDK and ports are legitimate external consumption paths (the founding example: an external Go caller consuming a module whose SDK is delivered in Khayyam). Whether a consumer-made port inherits any ownership or support claim from the module, or is simply the consumer's own code over the same declared interface, is undecided.
 - Next: settle in the design session; likely a boundary statement rather than machinery.
 
 ### The agreement artifact for delegation
-- State: the delegation position requires a pre-existing agreement between the parties — both hold the same declared process, neither redefines it mid-execution ([The call as delegation](./sdk.md#the-call-as-delegation)). What that agreement *is* as an artifact is open: is it the service's declaration itself, a transaction/integrity agreement beside it (the transfer example's bookkeeping rule), or something the Agency document's [Contracts](../agency.md#contracts) topic should own generally? How integrity rules (all-or-nothing transitions) are declared so the generated SDK and the executing side enforce the same one is undesigned.
+- State: the delegation position requires a pre-existing agreement between the parties — both hold the same declared process, neither redefines it mid-execution ([The call as delegation](../modules/sdk.md#the-call-as-delegation)). What that agreement *is* as an artifact is open: is it the service's declaration itself, a transaction/integrity agreement beside it (the transfer example's bookkeeping rule), or something the Agency document's [Contracts](../agency.md#contracts) topic should own generally? How integrity rules (all-or-nothing transitions) are declared so the generated SDK and the executing side enforce the same one is undesigned.
 - Next: design jointly with Agency's Contracts topic and the Error protocol's transaction-adjacent rules.
 
 ### Whether the serving side becomes an Agent identity
@@ -49,6 +49,7 @@ Open work for `protocols/sdk.md`. Entries are mutable current state — revised 
 - Next: settle with the Agency document's [`agent_for`](../agency.md#the-agent_for-relationship) treatment during the design session.
 
 ## Anticipated Work
+- **Generate a service from its name and path** — owner position (2026-09-29): a Memar server capability that materializes a service given only its name and module path, without hand-authored Rule text or Practices narrating each artifact. Relates to [Knowledge → Knowledge and Code](../../knowledge.md#knowledge-and-code) (generative work belongs in callable services). No `docs/` document yet defines the Memar server; nearest record is [Khayyam execution handoff → Rule model](../../../modules/khayyam/execution.handoff.md).
 - The dedicated design session that turns this document into the protocol proper: the minimal obligation set, the declaration artifact, the generation pipeline, delivery and versioning.
-- Propagation: media-type.md's goal line gains a link to this document when it stabilizes (Pending in [sdk.changelog.md](./sdk.changelog.md)); gui.md's "service contract" phrase may adopt the declaration vocabulary (Pending in [sdk.changelog.md](./sdk.changelog.md)).
+- Propagation: media-type.md's goal line gains a link to this document when it stabilizes (Pending in [sdk.changelog.md](../modules/sdk.changelog.md)); gui.md's "service contract" phrase may adopt the declaration vocabulary (Pending in [sdk.changelog.md](../modules/sdk.changelog.md)).
 - A naming review if the ecosystem word SDK proves too broad for the protocol's narrowed subject; any rename graduates through the changelog with full propagation (gui.md, media-type.md, process.md all use the word).

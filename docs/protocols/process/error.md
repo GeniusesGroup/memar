@@ -42,7 +42,7 @@ tp Error ab {
 }
 ```
 
-A concrete error composes `Error` — the exact mechanics of how a concrete capsule obtains `Error`'s method implementations from a shared parent capsule are intentionally NOT shown here. In the Khayyam realization, placing one capsule inside another via composition is containment only, and the containing capsule must explicitly implement and forward each method itself. That question — the realization's capsule composition and reuse model in general, not specific to `Error` — is tracked as its own future document (see this document's [handoff](./error.handoff.md)); this document does not assume an answer to it.
+A concrete error composes `Error` — the exact mechanics of how a concrete capsule obtains `Error`'s method implementations from a shared parent capsule are intentionally NOT shown here. In the Khayyam realization, placing one capsule inside another via composition is containment only, and the containing capsule must explicitly implement and forward each method itself. That question — the realization's capsule composition and reuse model in general, not specific to `Error` — is tracked as its own future document (see this document's [handoff](../process/error.handoff.md)); this document does not assume an answer to it.
 
 In a realization that makes forwarding explicit, each concrete error's forwarding methods are written explicitly. That model keeps behavior visible: no implicit resolution chain needs tracing, no complex inheritance relationship forms behind a developer's back, and a capsule's actual behavior is directly readable in its own file. Code generation and other tooling can supply the repetitive work while preserving that visibility.
 
@@ -51,7 +51,7 @@ Each embedded abstraction contributes a specific, non-overlapping responsibility
 
 - **`DataType`** supplies the type-level identity machinery — `Field_ID` (whose value is what `DataTypeID()` returns), `Field_LifeCycle` (recording whether a type is `Experimental`, `Stable`, `Deprecated`, or `EndOfLife`), the `Detail` and `Quiddity` text bundles, and the optional `ExpireInFavorOf` pointer discussed under [Identity and equality](#identity-and-equality). Without `DataType`, `Error` would have no canonical identifier to compare across processes.
 - **`Field_MediaType`** supplies the serialization envelope label used when an error's `DataTypeID` (and nothing else) is transmitted across a network boundary. It is what allows a remote receiver to dispatch on the *kind* of error without needing the full concrete type's method set in scope.
-- **`ADT`** supplies the null-state family (`IsNil` / `IsNull` / `IsEmpty`). The canonical `Error` contract supplies all three; the question of what `IsNull`/`IsEmpty` should mean for a value whose entire purpose is identity (rather than data) is left to a dedicated ADT session and tracked in this document's [handoff](./error.handoff.md).
+- **`ADT`** supplies the null-state family (`IsNil` / `IsNull` / `IsEmpty`). The canonical `Error` contract supplies all three; the question of what `IsNull`/`IsEmpty` should mean for a value whose entire purpose is identity (rather than data) is left to a dedicated ADT session and tracked in this document's [handoff](../process/error.handoff.md).
 - **`ImplementsError`** is the tooling-facing declaration described in its own topic below — a single plain method that lets a code generator discover intent before a capsule structurally qualifies as an `Error`.
 
 ### Optional capability interfaces
@@ -99,7 +99,7 @@ tp Find mt (self Service) (id ID) (result Result) (err Error)
 
 Identity is `DataTypeID()` alone (via `datatype_p.Field_ID`, part of `DataType`). `Error` does not declare an `Equivalence` method. A realization may provide a convenience comparison helper, such as an implementation-package-level `IsEqual`, where an explicit comparison is useful; the helper does not add a second identity source.
 
-Whether `ExpireInFavorOf` itself is still needed at all is tracked in this document's [handoff](./error.handoff.md) — it may be fully redundant, since `Field_LifeCycle` already records a type's lifecycle stage (including an `EndOfLife` state), but `ExpireInFavorOf` answers a different question (*which type replaces this one*) that `LifeCycle` alone does not.
+Whether `ExpireInFavorOf` itself is still needed at all is tracked in this document's [handoff](../process/error.handoff.md) — it may be fully redundant, since `Field_LifeCycle` already records a type's lifecycle stage (including an `EndOfLife` state), but `ExpireInFavorOf` answers a different question (*which type replaces this one*) that `LifeCycle` alone does not.
 
 ### Boundary discipline
 Two distinct boundary disciplines apply to `Error`, and they are easy to conflate. The first governs what an `Error` value may *carry* across a process or network boundary. The second governs what an `Error` value may *be* (which vocabulary it may speak) when it crosses from a diagnostic layer to an actionable one inside a single process. Both must be respected.
@@ -109,7 +109,7 @@ Only `DataTypeID` crosses a network or process boundary. A concrete error's own 
 
 What arrives on the other side of that boundary is, concretely, a numeric identifier — not a human-language message. A single-locale text string is the wrong currency for a contract crossing machines and organizations: it cannot be compared or dispatched on reliably, it forces every receiver into string matching, and it binds the wire format to one rendering of one audience's vocabulary. An integer identifier is stable, locale-independent, cheap to compare, and lets each receiving side resolve the identifier into its own local text bundle (the `Detail` fields above) for whichever audience it faces. The text an error carries belongs at the ends of the wire, resolved per audience; the identifier is what travels.
 
-Dynamic, per-call data that a caller genuinely needs (for example, a retry-after duration) does not belong inside `Error` at all; it belongs in a separate, not-yet-designed sibling output returned alongside `Error` (tracked in this document's [handoff](./error.handoff.md), out of this document's scope). The discipline is strict: if a piece of data must travel with an error to a remote receiver, it must be encoded in a *new* `DataTypeID` (i.e. a new concrete error type), not appended as a field on an existing one.
+Dynamic, per-call data that a caller genuinely needs (for example, a retry-after duration) does not belong inside `Error` at all; it belongs in a separate, not-yet-designed sibling output returned alongside `Error` (tracked in this document's [handoff](../process/error.handoff.md), out of this document's scope). The discipline is strict: if a piece of data must travel with an error to a remote receiver, it must be encoded in a *new* `DataTypeID` (i.e. a new concrete error type), not appended as a field on an existing one.
 
 #### Immutability: an Error is a fixed contract member, not an accumulating envelope
 An `Error` value is immutable by construction: identity is the `DataTypeID`, there are no per-instance fields that participate in the contract, and nothing about a concrete error changes after it is created. This is not an incidental property but a consequence of the identity model — and it puts this protocol deliberately at odds with the wrap-and-enrich convention that dominates the broader ecosystem (Go's `%w` wrapping, exception chaining with attached context, middleware decorating errors as they bubble up). In that convention, each layer appends its own context to the error as it passes through, so the error an upper layer finally receives is an accretion of every intermediate layer's annotations.
@@ -205,7 +205,7 @@ The following clarifications apply to the rule's scope:
 - **Translation is required when vocabularies diverge.** The signal is: "does the caller need to understand anything about how this capsule is implemented to react correctly to this error?" If yes, the error is in the wrong vocabulary and must be translated before crossing the boundary.
 - **The logging capsule is not prescribed.** The specific shape of `TransactionFailureLog`, the log sink type, and the telemetry pipeline are framework/library concerns left to the Memar recommended logging capsules or to organization-specific replacements. This document specifies the *discipline* (the decision to enrich and persist at the boundary), not the mechanism.
 
-A companion document specifying the concrete API of the recommended Memar logging capsule (the shape of `TransactionFailureLog`, the `Logger` interface, and standard context-attachment methods) is the natural next step once this boundary-translation discipline itself is finalized — tracked in this document's [handoff](./error.handoff.md).
+A companion document specifying the concrete API of the recommended Memar logging capsule (the shape of `TransactionFailureLog`, the `Logger` interface, and standard context-attachment methods) is the natural next step once this boundary-translation discipline itself is finalized — tracked in this document's [handoff](../process/error.handoff.md).
 
 ### Detail and Quiddity fields — two audiences, not one
 
@@ -220,7 +220,7 @@ A companion document specifying the concrete API of the recommended Memar loggin
 
 `Error`'s canonical composition embeds the full `ADT` family (`IsNil`/`IsNull`/`IsEmpty`), not just `Nil`. Each realization supplies that family; the host language determines how absence is represented without changing the canonical contract.
 
-What genuinely remains open, and is **not** resolved by this correction, is the deeper semantic question: what `IsNull`/`IsEmpty` actually *mean* for a value whose entire purpose is identity, not data. That question belongs to the `ADT` capsule family's own dedicated document, tracked separately (see this document's [handoff](./error.handoff.md)), and this document does not attempt to answer it — only to state that the canonical `Error` contract requires all three methods.
+What genuinely remains open, and is **not** resolved by this correction, is the deeper semantic question: what `IsNull`/`IsEmpty` actually *mean* for a value whose entire purpose is identity, not data. That question belongs to the `ADT` capsule family's own dedicated document, tracked separately (see this document's [handoff](../process/error.handoff.md)), and this document does not attempt to answer it — only to state that the canonical `Error` contract requires all three methods.
 
 ### `ImplementsError` — a tooling-facing declaration, not a safety mechanism
 

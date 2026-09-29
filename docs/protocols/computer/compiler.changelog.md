@@ -33,7 +33,7 @@
 - Time: 2026-08-27T00:00:00Z
 - Type: Changed
 - Cited:
-  - [Khayyam Runtime Specification](./runtime.md) — Reference: the same `unsafe` runtime-patching description
+  - [Khayyam Runtime Specification](../computer/runtime.md) — Reference: the same `unsafe` runtime-patching description
   - [Polymorphism in Khayyam](./polymorphism.md) — Reference: the Dynamic Dispatch Reducibility note that expects reducibility under Immutable Infrastructure
 - Contributors:
   - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — rewrote
@@ -73,7 +73,7 @@
 - Time: 2026-09-06T10:30:00Z
 - Type: Added
 - Cited:
-  - [protocols/lexer.md](../protocols/lexer.md) — Reference: the first Future-possibilities item pointing at the lexer protocol is now satisfied by a real document; the readiness-review item below generalizes the same gate to the whole compiler effort.
+  - [protocols/computer/lexer.md](../protocols/computer/lexer.md) — Reference: the first Future-possibilities item pointing at the lexer protocol is now satisfied by a real document; the readiness-review item below generalizes the same gate to the whole compiler effort.
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — directed, reviewed
   - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash, via [OpenCode](../../CONTRIBUTORS.md#opencode)) — applied
@@ -118,7 +118,7 @@
 - **Evaluate nothing at compile time (rejected; migrated from the same topic)**: loses the pre-compilation guarantee and pushes genuinely static configuration cost into every runtime startup.
 - **Make runtime module replacement a first-class, always-available capability (rejected; migrated from the `Change Logic in Runtime (Unsafe)` topic's retired Rationale and alternatives)**: contradicts Immutable Infrastructure as the default deployment model — no runtime addition of capability without recompilation — and would normalize the uncontrolled capability evolution that principle exists to prevent.
 - **Omit the capability entirely (rejected; migrated from the same topic)**: microservice-style module turnover has genuine uses; removing it entirely would push adopters toward out-of-band binary manipulation with no audit story at all.
-- **Keep it opt-in and tagged `unsafe` (chosen; migrated from the same topic as the recorded decision)**: the capability exists, is visibly dangerous at the call site, and sits outside the normal path — the same shape as the [runtime-side resolution](./runtime.md#change-logic-in-runtime-unsafe) of this topic.
+- **Keep it opt-in and tagged `unsafe` (chosen; migrated from the same topic as the recorded decision)**: the capability exists, is visibly dangerous at the call site, and sits outside the normal path — the same shape as the [runtime-side resolution](../computer/runtime.md#change-logic-in-runtime-unsafe) of this topic.
 - **Fold compiler decisions into [Khayyam](./khayyam.md) (rejected; migrated from the retired document-level Rationale and alternatives)**: Khayyam's own Methodology keeps that document a short overview that links outward; implementation directives there would couple language evolution to implementation detail and grow exactly the document the language spec deliberately keeps small.
 - **Leave compiler behavior unspecified (rejected; migrated from the same block)**: the handoff from language to implementation is Khayyam's central architectural move; leaving the receiving side undocumented means each compiler team re-derives — or silently ignores — the philosophy the handoff exists to preserve, reproducing the convenience-pressure failure mode the separation was designed to prevent.
 
@@ -181,10 +181,10 @@
   - khayyam.handoff.md and khayyam.md: Done — the language/toolchain boundary is stated in terms of a Khayyam toolchain or module.
   - .agents/skills/memar/SKILL.md: Done — implementation discovery is routed to local `modules/`, and the protocol's language independence is stated.
   - README.md, framework.md, knowledge.md, software.md, and comparisons/superpowers.md: Done — the local Khayyam realization is described without making it a prerequisite for Memar's concepts or protocols.
-  - protocols/sRPC.md, protocols/tdd.md, protocols/error.md, protocols/error.handoff.md, and protocols/syllab.md: Done — implementation details are scoped to their realization while the main documents state language-independent rules directly.
-  - protocols/abstraction-implements.md and protocols/control-flow.md: Done — the protocol contracts are stated independently, with Khayyam retained as a realization example.
+  - protocols/net/sRPC.md, protocols/tdd.md, protocols/process/error.md, protocols/process/error.handoff.md, and protocols/codec/syllab.md: Done — implementation details are scoped to their realization while the main documents state language-independent rules directly.
+  - protocols/computer/abstraction-implements.md and protocols/process/control-flow.md: Done — the protocol contracts are stated independently, with Khayyam retained as a realization example.
   - dependency-management.handoff.md, sdk.handoff.md, protocol.handoff.md, and system.handoff.md: Done — local module dependencies and external-consumer questions remain open without making a programming language a prerequisite.
-  - framework.handoff.md, type.md, khayyam/polymorphism.md, and protocols/immutable_infrastructure.handoff.md: Done — external-repository citations are removed from live documents; their conclusions are stated directly and provenance remains in changelog history.
+  - framework.handoff.md, type.md, khayyam/polymorphism.md, and protocols/runtime/immutable_infrastructure.handoff.md: Done — external-repository citations are removed from live documents; their conclusions are stated directly and provenance remains in changelog history.
   - modules/khayyam/README.md, modules/khayyam/execution.md, and modules/khayyam/execution.handoff.md: Done — placement, build paths, and handoff language describe the local toolchain and `modules/` tree.
   - modules/computer/runtime/protocol/blocking.kh, modules/computer/runtime/protocol/concurrency.kh, modules/process/control-flow/protocol/if.kh, and modules/process/control-flow/protocol/panic-recovery.kh: Done — executable Khayyam declarations are staged as local material; empty and copied host-language drafts remain outside the repository change.
   - .gitignore: Done — the local Khayyam build directory is excluded.

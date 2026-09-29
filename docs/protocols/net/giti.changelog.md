@@ -7,8 +7,8 @@
 - Type: merged
 - Cited:
   - [Documentation — Explanation](../documentation-explanation.md) — Reference: the Explanation-facet structure this rewrite follows, including its prefix-free/layer-free file-naming rule that decided the filename.
-  - [Networking](./networking.md) — Depends_on: GP frames ride Networking's packet model; the self-describing-frame and Layer presence principles are referenced rather than restated.
-  - [Chapar - Data Link Protocol](./chapar.md) — Reference: supplies the ChaparKhane router/coordinator role and the link-layer carrier this document suggests.
+  - [Networking](../net/networking.md) — Depends_on: GP frames ride Networking's packet model; the self-describing-frame and Layer presence principles are referenced rather than restated.
+  - [Chapar - Data Link Protocol](../net/chapar.md) — Reference: supplies the ChaparKhane router/coordinator role and the link-layer carrier this document suggests.
 - Propagates to:
   - networking-osi_3-Giti-Network.md: Done — all content merged here; file removed.
   - giti.md (legacy read-me): Done — this very file was the second source; its entire content is merged and superseded by this rewrite.
@@ -30,7 +30,7 @@ The protocol documentation previously lived in two pre-method files: the origina
 - Time: 2026-08-26T09:36:34Z
 - Type: revised
 - Cited:
-  - [Networking](./networking.md) — Depends_for: owns the new Commercial components topic this document points at.
+  - [Networking](../net/networking.md) — Depends_for: owns the new Commercial components topic this document points at.
 - Propagates to:
   - networking.md: Done — the authoritative Commercial components topic added there.
   - README.md (repository root): Done — one-sentence pointer to that topic added.
@@ -100,8 +100,8 @@ Replaced the abbreviated bullet with the full design: two-tier consensus (intra-
 - Time: 2026-08-31T17:29:51Z
 - Type: revised
 - Cited:
-  - [Networking](./networking.md) — Depends_on: the two GP frame types are registered there (4 GP-Thing, 5 GP-App); the self-describing-frame rule is what lets a FrameType announce its own address layout.
-  - [Chapar - Data Link Protocol](./chapar.md) — Reference: supplies the physically-adjacent-hop carriage model that inter-society delivery sits one abstraction above.
+  - [Networking](../net/networking.md) — Depends_on: the two GP frame types are registered there (4 GP-Thing, 5 GP-App); the self-describing-frame rule is what lets a FrameType announce its own address layout.
+  - [Chapar - Data Link Protocol](../net/chapar.md) — Reference: supplies the physically-adjacent-hop carriage model that inter-society delivery sits one abstraction above.
 - Propagates to:
   - networking.md: Done — registry row 4 renamed GP-Thing, row 5 added as GP-App; Edge computing topic added.
   - README.md (repository root): Rejected — no statement outside the protocol documents depends on the address layout.
@@ -152,9 +152,9 @@ New topic under Hardware in networking.md: total network cost is the sum of tran
 - Time: 2026-08-31T19:26:46Z
 - Type: revised
 - Cited:
-  - [Giti — Practice](./giti.practice.md) — Extends_by: the Internet-bridge procedure moved out of this document now lives there as the Practice facet.
-  - [Networking](./networking.md) — Depends_on: owns the Place in the stack overview this document no longer restates.
-  - [OS](./os.md) — Reference: its unikernel reading (the hypervisor and drivers as parts of the system; an OS image as an app binary) grounds the mixed-level communication resolution.
+  - [Giti — Practice](../net/giti.practice.md) — Extends_by: the Internet-bridge procedure moved out of this document now lives there as the Practice facet.
+  - [Networking](../net/networking.md) — Depends_on: owns the Place in the stack overview this document no longer restates.
+  - [OS](../computer/os.md) — Reference: its unikernel reading (the hypervisor and drivers as parts of the system; an OS image as an app binary) grounds the mixed-level communication resolution.
 - Propagates to:
   - giti.practice.md: Done — created; the Transition from the Internet topic's procedure restated as steps.
   - networking.md: Done — Place in the stack moved there as the stack-wide overview; this document no longer restates it.
@@ -177,8 +177,8 @@ Four moves in one pass. Transition from the Internet left this document for giti
 - Time: 2026-09-01T16:16:25Z
 - Type: revised
 - Cited:
-  - [Giti — Practice](./giti.practice.md) — Extends_by: broadened from the single Internet-bridge topic into the general GP-practices document.
-  - [OS](./os.md) — Depends_for: its Networking topic now answers the driver-as-app cost objection (isolation by granting, NIC-direct delivery) that this document's mixed-level ruling rests on.
+  - [Giti — Practice](../net/giti.practice.md) — Extends_by: broadened from the single Internet-bridge topic into the general GP-practices document.
+  - [OS](../computer/os.md) — Depends_for: its Networking topic now answers the driver-as-app cost objection (isolation by granting, NIC-direct delivery) that this document's mixed-level ruling rests on.
 - Propagates to:
   - giti.practice.md: Done — rewritten as the general GP practices document (router operation, Internet bridge, edge cases).
   - os.md: Done — Networking topic gained the cost-objection paragraph (paired entry in os.changelog.md).
@@ -201,7 +201,7 @@ Inter-society delivery was rewritten around local routing knowledge — the thre
 - Time: 2026-08-31T19:26:46Z
 - Type: created
 - Cited:
-  - [Giti (GP)](./giti.md) — Depends_on: the transition rules giti.practice.md restates as imperative steps; it owns the protocol, the practice file owns the deployment procedure.
+  - [Giti (GP)](../net/giti.md) — Depends_on: the transition rules giti.practice.md restates as imperative steps; it owns the protocol, the practice file owns the deployment procedure.
   - [Documentation — Practice](../documentation-practice.md) — Reference: the Practice-facet schema the practice file follows (frontmatter exactly `name` and `description`; imperative body; edge cases).
 - Contributors:
   - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — applied.
@@ -213,7 +213,7 @@ Created giti.practice.md carrying the Internet-bridge procedure (listen on UDP 8
 - Time: 2026-09-01T16:16:25Z
 - Type: revised
 - Cited:
-  - [Giti (GP)](./giti.md) — Depends_on: the procedures here are imperative restatements of protocol rules giti.md deliberately leaves open (implementation choices, deployment steps).
+  - [Giti (GP)](../net/giti.md) — Depends_on: the procedures here are imperative restatements of protocol rules giti.md deliberately leaves open (implementation choices, deployment steps).
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided
   - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — applied.
@@ -228,7 +228,7 @@ The document was rewritten as "GP Practices": a general procedures file for oper
 - Time: 2026-09-02T06:06:19Z
 - Type: revised
 - Cited:
-  - [Giti — Practice](./giti.practice.md) — Extends_by: receives the interior-organization freedom as router-operation guidance.
+  - [Giti — Practice](../net/giti.practice.md) — Extends_by: receives the interior-organization freedom as router-operation guidance.
 - Propagates to:
   - giti.practice.md: Done — router procedure gained the interior-organization step; its standard-services links repointed.
 - Contributors:
@@ -271,9 +271,9 @@ This document and its companions (practice, changelog) moved from `docs/` to `do
   - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM 5.3) - applied
 
 #### What changed
-- The document-level `## Discussion` section was retired from [giti.md](./giti.md) under the Relevance-discipline routing, leaving nothing behind except retargeted pointers.
+- The document-level `## Discussion` section was retired from [giti.md](../net/giti.md) under the Relevance-discipline routing, leaving nothing behind except retargeted pointers.
 - Prior art — direct ancestors and peers, decentralized-network projects consulted, articles and ideas drawn on, and the reference topology diagram — is preserved in this entry below as Related work; no premise in the body depends on it.
-- The Unresolved questions list (seven entries; the source numbered two of them "6.") moved to the newly created [giti.handoff.md](./giti.handoff.md) as Open Questions. The facts each question restates already live in the body topics they cite (Standard services, Frame architecture, Society registration, Inter-society delivery, Attack reporting) and stayed there as premise evidence.
+- The Unresolved questions list (seven entries; the source numbered two of them "6.") moved to the newly created [giti.handoff.md](../net/giti.handoff.md) as Open Questions. The facts each question restates already live in the body topics they cite (Standard services, Frame architecture, Society registration, Inter-society delivery, Attack reporting) and stayed there as premise evidence.
 - The Future possibilities list moved to the handoff as Anticipated Work — four short items restated in their State lines, and the society-level blocking design with its full recorded wording preserved in its item.
 - No Drawbacks or Rationale-and-alternatives blocks existed in the retired section, so no Considered-and-not-done section is recorded in this entry.
 - The handoff was created, not extended: giti had no handoff file before this migration.

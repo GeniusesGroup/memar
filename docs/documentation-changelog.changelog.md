@@ -170,7 +170,7 @@ Open questions (dot-boundary criterion, entry-title uniqueness, historical-entry
 - Time: 2026-09-09T06:02:23Z
 - Type: Added
 - Cited:
-  - [SDK](./protocols/sdk.changelog.md) — Evidence: the triggering case — a link-repair entry in gui.changelog.md whose whole content restated a one-line diff — was flagged in the SDK protocol's own changelog while its propagation record was being written.
+  - [SDK](docs/protocols/modules/sdk.changelog.md) — Evidence: the triggering case — a link-repair entry in gui.changelog.md whose whole content restated a one-line diff — was flagged in the SDK protocol's own changelog while its propagation record was being written.
 - Propagates to:
   - gui.changelog.md: Done — the "SDK link corrected" entry removed under the new rule; the fix itself had already landed and remains in version control.
 - Contributors:

@@ -77,7 +77,7 @@
 
 #### What changed
 - Created `tdd.practice.md` as the paired Practice facet, per the owner's direction that the protocol must not stay reasons-only: the procedure a development step follows — naming the process and intent, writing the expectations in checkable form before enactment, choosing the check's form by domain (executed test where possible, observation procedure where not), enacting the smallest increment, and running the check with recorded disposition — plus where the expectation lives (the another-agent-could-run-the-check test), a failure-modes table, the inquiry and post-hoc-verification boundary routing carried from [Process → Expectations and Checks](../process.md#expectations-and-checks), and per-scale guidance (function, feature, system). Steps carry links to the base document's topics and are not re-argued there.
-- The base document's Abstract gained one sentence pointing at the practice, following the pattern [filesystem.md](./filesystem.md) set with its companion practice.
+- The base document's Abstract gained one sentence pointing at the practice, following the pattern [filesystem.md](../memory/filesystem.md) set with its companion practice.
 - The practice's Boundary section names the reported defect as the inquiry case's recurring instance and links [Process → Defect Resolution as an Inquiry](../process.md#defect-resolution-as-an-inquiry), so a defect investigation routes through that topic and only the concluding fix runs this practice's cycle.
 - Per the changelog scope rule, the practice companion shares this ledger and receives no changelog of its own.
 

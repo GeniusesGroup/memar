@@ -218,7 +218,7 @@ Considered leaving the "Terminology Governance document" Future possibility in p
 - Propagates to:
   - protocol.handoff.md: Created - open questions and future possibilities moved there.
 - Contributors:
-  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — moved
+  - [Super Z](../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — moved
 
 #### What changed
 - The body's fixed top-level sections are now `Abstract`, `Introduction`, `Explanation`, `Results` only (Super Z - applied the finalized documentation method).

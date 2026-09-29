@@ -20,7 +20,7 @@ The ecosystem's most-loved concurrency features are pleasant to *start* with and
 3. **Kernel-space threading as the default substrate.** Systems that map every logical activity onto an OS thread inherit the kernel scheduler's costs (context switches, stack sizes, syscalls) for concurrency that is entirely logical; user-space threading — multiplexing many logical activities onto few kernel threads — is the entire point of the modern runtime designs, and treating it as optional re-pays the cost it exists to remove.
 
 ### Methodology
-Positions were formed alongside [Memory](./memory.md) and [Networking](./networking.md)'s position on the traditional network stack, checked against a mainstream language's channel implementation source (read through its pre-generics era, where the ring-buffer machinery was directly visible) and against production-scale server experience. The concept-level treatment in [process.md](../process.md) is treated as given here; this document adds only what a framework must realize and constrain.
+Positions were formed alongside [Memory](../memory/memory.md) and [Networking](../net/networking.md)'s position on the traditional network stack, checked against a mainstream language's channel implementation source (read through its pre-generics era, where the ring-buffer machinery was directly visible) and against production-scale server experience. The concept-level treatment in [process.md](../process.md) is treated as given here; this document adds only what a framework must realize and constrain.
 
 ## Explanation
 

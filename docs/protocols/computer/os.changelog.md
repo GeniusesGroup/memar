@@ -128,7 +128,7 @@ The merge follows the project's rule that pre-Final documents consolidate withou
 - The isolation-first principle: OS-level-virtualization tools (containers and the like) appeared because isolation guarantees were missing, and the fix belongs at the layer that owns isolation — added as a rejected alternative in the traditional-view topic.
 - Resource entitlements: exclusive access is granted through declared per-application bounds (a minimum and a maximum) used for arbitration and accounting — the OS says *how much*, never *how* — added to the decomposition topic's guarantees bullet.
 - Device-class neutrality: the same OS serves servers, clients, and routers without an OS-level device concept — no editions, no device taxonomy — added to the Networking topic alongside routing-as-an-application and the OS's delivery-only constraint (it neither interprets nor alters what passes through).
-- [sRPC](./sRPC.md) joined [Chapar](./chapar.md) as an example of protocols built above the guarantees.
+- [sRPC](../net/sRPC.md) joined [Chapar](../net/chapar.md) as an example of protocols built above the guarantees.
 - The Relationship-to-PersiaOS topic was rewritten to state the new framing: PersiaOS is a project on the architecture, its document is project-level, and the architect-level claims it carried have been absorbed here.
 - Claims deliberately not transferred: the "Users Manager" (superseded by the principals position in Identity), OS-level packet scheduling (now an unresolved question about policy versus arbitration), the POSIX placeholder, and the Giti/GP protocol and firewall specifics (project decisions, not architect-level).
 
@@ -171,7 +171,7 @@ The merge follows the project's rule that pre-Final documents consolidate withou
 - Time: 2026-09-01T16:16:25Z
 - Type: revised
 - Cited:
-  - [Giti (GP)](./giti.md) — Reference: the GP redesign discussion raised the objection (a driver as an independent app seemingly multiplying processing cost) while resolving mixed-level endpoint addressing through this document's model.
+  - [Giti (GP)](../net/giti.md) — Reference: the GP redesign discussion raised the objection (a driver as an independent app seemingly multiplying processing cost) while resolving mixed-level endpoint addressing through this document's model.
 - Propagates to:
   - giti.md: Done — its mixed-level communication ruling references this topic's answer.
 - Contributors:
@@ -283,4 +283,4 @@ Dissolved every `#### Discussion` wrapper (the boundary topic, the kernel-layer 
 - **State each requirement wherever it first becomes relevant (rejected; migrated from the document-level retired `Rationale and alternatives`)**: scattering a requirement's capability and constraint across topics is exactly how the traditional view's assumptions survive a critique — one topic per requirement keeps each answer checkable and referenceable as a whole.
 
 #### Considered and not done (from the removed document-level Drawbacks section)
-- **Organizing by requirement area rather than by traditional component means a reader arriving with a traditional name — "threads", "filesystem", "network stack" — must map it to the requirement topic that owns it.** The mitigation is deliberate: each such name is answered exactly once, in the topic that states the area's capability and constraint, and the cross-references to the concept's own governing document ([Process](../process.md), [Chapar](./chapar.md)) carry the reader the rest of the way. Where no Memar document governs a name — "filesystem" is the current case — the word carries its general meaning, per [Terminology → The Default Meaning of an Unreferenced Term](../terminology.md#the-default-meaning-of-an-unreferenced-term).
+- **Organizing by requirement area rather than by traditional component means a reader arriving with a traditional name — "threads", "filesystem", "network stack" — must map it to the requirement topic that owns it.** The mitigation is deliberate: each such name is answered exactly once, in the topic that states the area's capability and constraint, and the cross-references to the concept's own governing document ([Process](../process.md), [Chapar](../net/chapar.md)) carry the reader the rest of the way. Where no Memar document governs a name — "filesystem" is the current case — the word carries its general meaning, per [Terminology → The Default Meaning of an Unreferenced Term](../terminology.md#the-default-meaning-of-an-unreferenced-term).
