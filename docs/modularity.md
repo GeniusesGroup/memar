@@ -142,13 +142,11 @@ The test is asymmetric by design. Removing a foundational Concept degrades the e
 "Fabrication" and "distortion" remain qualitative judgments, and borderline candidates — those sitting between specialization and foundation — can be argued either way by motivated reasoning. The test narrows and disciplines the debate; it does not replace the judgment at its center.
 
 ### Rules as a Provisional Term
-The term *Rule* is commonly used for many different concepts. In software ecosystems it often refers to a conditional expression, a validation predicate, a policy object, or a component executed by a Rule Engine. None of these meanings is sufficient to define the architectural concept under discussion here.
+The general concept of Rule — what it is, who introduces it, where executable Rules live (`rules/` beside `protocol/`), and how Rule relates to linters and rule engines — is defined in [Rule](./rule.md). This section states only the **modular** consequence.
 
-In the modularity model, what has informally been called a Rule may itself be a Module with an optional relationship to another Module. Its distinguishing characteristic is not that it contains an `if` statement or that it is processed by a Rule Engine. It is that the behavior it represents can be attached to an existing Module without becoming part of that Module's essential identity.
+In the modularity model, a Rule may itself be a Module with an optional relationship to another Module. Its distinguishing characteristic is not that it contains an `if` statement or that it is processed by a rule engine. It is that the behavior it represents can be attached to an existing Module without becoming part of that Module's essential identity.
 
-The term remains provisional because the project has not yet established that *Rule* is the best name for this role. The architectural property must therefore not depend on the word. A future terminology document may replace it without changing the underlying model.
-
-A separate modeling-level framing treats Rule as a first-class graph node connected by an edge to the structure it governs (see [Separating Structure (Code) from Policy (Rule)](./modeling.md#separating-structure-code-from-policy-rule)). Whether the module framing and the graph-node framing are two views of one concept is an open question recorded in that document's [handoff](./modeling.handoff.md#separating-structure-code-from-policy-rule); this document takes no position on it.
+A separate modeling-level framing treats Rule as a first-class graph node connected by an edge to the structure it governs (see [Separating Structure (Code) from Policy (Rule)](./modeling.md#separating-structure-code-from-policy-rule)). Whether the module framing and the graph-node framing are two views of one concept is an open question recorded in that document's [handoff](./modeling.handoff.md#separating-structure-code-from-policy-rule) and in [Rule → handoff](./rule.handoff.md); this document takes no position on it.
 
 #### Scope Matters
 An extension can act at different levels without becoming the same behavior.
@@ -217,7 +215,7 @@ Module shares tools such as abstraction and encapsulation with several other Mem
 | Responsibility | A part's Purpose expressed relative to the larger System containing it |
 | Protocol | Declarative rules that govern one or more Processes within a System |
 | Process | Progression, interaction, and change over time |
-| Rule (provisional) | Behavior attachable to a Module without becoming part of its essential identity |
+| Rule | Behavior attachable to a Module without becoming part of its essential identity; see [Rule](./rule.md) |
 | Module | A System considered as a bounded part of a larger System, identified by its Responsibility |
 
 This document does not yet place Module relative to every System-level concept in Memar — Framework in particular is not addressed here even though it was raised as a candidate for the same level as Module during the discussion that led to this document. That omission is intentional rather than an oversight; see [Open Questions in the paired handoff](./modularity.handoff.md#open-questions).

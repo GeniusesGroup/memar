@@ -129,7 +129,7 @@
 - Time: 2026-09-15T13:00:00Z
 - Type: Changed
 - Cited:
-  - [Memory](../protocols/memory.md) — Consumed contract: allocation, reclamation, teardown, allocators.
+  - [Memory](../protocols/memory/memory.md) — Consumed contract: allocation, reclamation, teardown, allocators.
   - [Khayyam](./khayyam.md) — Realization: How Khayyam realizes Memory.
 - Propagates to:
   - variable.handoff.md: Done — two resource-management open questions removed; the protocol and Khayyam topic are the homes.
@@ -138,7 +138,7 @@
   - [Cursor](../../CONTRIBUTORS.md#cursor) (Composer) — applied
 
 #### What changed
-- Body pointers that deferred storage and lifecycle to a "future document on resource management" now point at [Memory](../protocols/memory.md) and [Khayyam → How Khayyam realizes Memory](./khayyam.md#how-khayyam-realizes-memory).
+- Body pointers that deferred storage and lifecycle to a "future document on resource management" now point at [Memory](../protocols/memory/memory.md) and [Khayyam → How Khayyam realizes Memory](./khayyam.md#how-khayyam-realizes-memory).
 - The `Resource Lifecycle (Deferred)` heading loses the deferral; the topic states the governance/syntax split and links out.
 
 #### Deliberation
@@ -187,8 +187,21 @@
   - [Grok](../../CONTRIBUTORS.md#grok) (Grok 4.7 via [Cursor](../../CONTRIBUTORS.md#cursor)) — applied
 
 #### What changed
-- A file-level `vr` is a declaration. Its initial state is established by the compiler and by source that code generation emits, the same placement as program boot: [Compiler → Entry and lifecycle are not grammar](../protocols/compiler.md#entry-and-lifecycle-are-not-grammar). The question is removed from the handoff.
+- A file-level `vr` is a declaration. Its initial state is established by the compiler and by source that code generation emits, the same placement as program boot: [Compiler → Entry and lifecycle are not grammar](../protocols/computer/compiler.md#entry-and-lifecycle-are-not-grammar). The question is removed from the handoff.
 - A `vr` declaration names a capsule or an abstraction. A method's influencing group may also receive an `sc` or an `mt`.
 
 #### Considered and not done
 - **An `init` function in the grammar (rejected)**: Go uses `init` for this. Khayyam keeps lifecycle out of the grammar, the same decision as `main`. Code generation and the compiler do the work (Omid Hekayati — decided).
+
+---
+
+### Variable naming conventions relocated to rules catalog
+- Time: 2026-09-29T16:00:00Z
+- Type: Changed
+- Propagates to:
+  - [identifier naming](../../modules/khayyam/rules/identifier-naming/identifier-naming.md): Done
+- Contributors:
+  - Auto (model not recorded) via [Cursor](../../CONTRIBUTORS.md#cursor) - applied
+
+#### What changed
+- [Naming Conventions](./variable.md#naming-conventions) and the domain-meaning sentence under [Self-Documenting Code and No Magic Numbers](./variable.md#self-documenting-code-and-no-magic-numbers) replaced with links to [identifier naming](../../modules/khayyam/rules/identifier-naming/identifier-naming.md).

@@ -102,6 +102,15 @@ See *Agency Beyond Concurrency* in [Agency in Khayyam](./agency.md#agency-beyond
 - You **cannot** explicitly declare "I implement this abstraction" using any keyword. Satisfaction is structural.
 - You **cannot** define default implementations in an abstraction. Shared behavior must use explicit delegation to an ordinary capsule.
 
+### A Concept Is an Abstraction; a Concrete Instance Is a Capsule
+A name that carries a concept is declared as an abstraction, and a concrete instance of that concept — a width, a unit, one representation of a value — is declared as a capsule. `Error`, `Duration`, `Signed`, and `Boolean` name concepts and are abstractions; `I32`, `Second`, and `Bool` are concrete and are capsules, each an instance of its concept by satisfying it ([Abstraction Realization](#abstraction-realization-implicit-satisfaction)). Neither is declared as the other.
+
+Which of the two a signature names follows from who owns the signature:
+1. A signature owned by an abstraction names the concept — `Signed` for a signed integer of any width, `Duration` for a span in any unit, `Boolean` for a truth value — because it may name abstractions only ([What You Cannot Do](#what-you-cannot-do)).
+2. A signature owned by a capsule may name a capsule, including the capsule itself.
+
+What a contract names is the concept; the unit or width it is measured in is the implementation's to choose, finer-grained, and never a floor the contract must meet. An implementation is free to be more precise than what it is asked for, and asking for less is what keeps it so: a contract that fixed a unit or a width would make every implementation of it exactly that resolution, for no gain in meaning. What the contract keeps is the magnitude asked for — the span, the count — and it loses only the measure that magnitude is expressed in.
+
 ### Sharing Behavior Across Implementations
 If multiple capsules need to share common behavior (e.g., a default "presence check" implementation reused by multiple types implementing the same abstraction), Khayyam requires **explicit delegation** rather than default implementations. You define the shared behavior in an ordinary capsule, and each implementing capsule explicitly delegates to it:
 
@@ -151,19 +160,10 @@ tp Validate mt (self UserRecord) (result Bool) (err Error) {
 }
 ```
 
-**Tooling support for boilerplate reduction:** The elimination of repetitive delegation boilerplate is offloaded to organizational Linter and Scaffolding tooling. A Linter rule can:
-- Detect when a capsule partially implements an abstraction's method set
-- Auto-generate the missing delegation lines (scaffolding)
-- Verify that the delegation call targets the correct shared capsule
-- Warn if a developer appears to be hand-duplicating shared logic instead of delegating
-
-This ensures the final source code remains 100% explicit, linear, and free of compiler magic, while the development workflow remains ergonomic.
+Delegation boilerplate reduction and abstraction-satisfaction assists for this repository are organizational rules in [abstraction scaffolding](../../modules/khayyam/rules/abstraction-scaffolding/abstraction-scaffolding.md).
 
 ### Abstraction Validation and DX Scaffolding
-Because the language syntax avoids explicit implementation keywords, the burden of developer assistance shifts entirely to the Linter and associated tooling. This is consistent with Khayyam's philosophy of keeping the language grammar minimal and delegating governance to organizational tooling (the Memar framework). One concrete cost follows from this shift: without explicit `impl` declarations, discovering which capsules satisfy a given abstraction requires a tool-assisted graph traversal rather than a simple text search for `impl AbstractionName`, and the Linter and IDE tooling must provide this capability. This is a tooling burden, not a language burden, but it is a real cost in ecosystem maturity — a new Khayyam project will have less mature tooling than a new Rust project where `impl` blocks are trivially searchable.
-
-- **Scaffolding**: When a developer intends to implement an abstraction (detected via context or explicit linter hints), the Linter provides automated code generation to scaffold all missing method signatures with empty bodies.
-- **Proactive Warnings**: The Linter analyzes the codebase and issues warnings if a capsule partially implements an abstraction's method set in a context where it is clearly expected to satisfy that abstraction, preventing unexpected compilation failures.
+Because the language syntax avoids explicit implementation keywords, discovering which capsules satisfy a given abstraction requires a tool-assisted graph traversal rather than a simple text search for `impl AbstractionName`. That is a tooling burden, not a language burden, but it is a real cost in ecosystem maturity — a new Khayyam project will have less mature tooling than a new Rust project where `impl` blocks are trivially searchable. What the linter may generate or verify is stated in [abstraction scaffolding](../../modules/khayyam/rules/abstraction-scaffolding/abstraction-scaffolding.md).
 
 ### Behavior Over Type Identity
 This may be the most important principle to have emerged from Khayyam's polymorphism discussions generally, not only from this document's own scope. Traditional generic systems frequently focus on type identity — `T`, `K`, `V` — as the central mechanism for abstraction. Khayyam instead emphasizes required behavior: the essential question is "what capabilities are required?" rather than "what concrete type is this?" This is the same question [*What Is an Abstraction in Khayyam?*](#what-is-an-abstraction-in-khayyam), above, already answers for abstraction satisfaction specifically; stated here as the more general principle behind it, since it recurred across discussions of generics, parametric polymorphism, containers, algorithms, and infrastructure components alike, not only abstraction satisfaction. A possible formulation: algorithms should declare the behaviors they require, not the concrete type identities they happen to operate on.

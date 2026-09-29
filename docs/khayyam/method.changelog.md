@@ -115,7 +115,7 @@
 - Time: 2026-09-15T09:00:00Z
 - Type: Changed
 - Cited:
-  - [Linter](../protocols/linter.md) — Consumed contract: the check is governance; this document owns the grammar.
+  - [Linter](../protocols/computer/linter.md) — Consumed contract: the check is governance; this document owns the grammar.
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided (rule home is the subject's document)
   - [Grok](../../CONTRIBUTORS.md#grok) (Grok 4.6 via Cursor) — applied
@@ -163,3 +163,18 @@
 #### Considered and not done
 - **A method with no parent type, written `tp Sum mt () (...)` (rejected)**: the owner group names the parent type. Calling on that type does not delete `self` from the signature. Inside the body of that call, `self` is not invoked (Omid Hekayati — decided).
 - **Requiring a `vr` whose type is a Method before a method-owned method can be invoked (rejected)**: a `vr` names a capsule or an abstraction. An `mt` receiver is the method itself, and the compiler tells an `mt` from a `vr` (Omid Hekayati — decided).
+
+---
+
+### Receiver naming and type-as-argument governance relocated to rules
+- Time: 2026-09-29T16:00:00Z
+- Type: Changed
+- Propagates to:
+  - [receiver parameter naming](../../modules/khayyam/rules/receiver-parameter-naming/receiver-parameter-naming.md): Done
+  - [type as argument](../../modules/khayyam/rules/type-as-argument/type-as-argument.md): Done
+- Contributors:
+  - Auto (model not recorded) via [Cursor](../../CONTRIBUTORS.md#cursor) - applied
+
+#### What changed
+- [Method Structure](./method.md#method-structure): `self` suggestion links to [receiver parameter naming](../../modules/khayyam/rules/receiver-parameter-naming/receiver-parameter-naming.md).
+- [Type-level arguments for `sc` and `mt`](./method.md#type-level-arguments-for-sc-and-mt): governance smells link to [type as argument](../../modules/khayyam/rules/type-as-argument/type-as-argument.md).

@@ -126,22 +126,9 @@ An abstraction (`ab`) cannot contain method bodies, state, or default implementa
 **Anti-Lazy Inheritance Check:**
 The linter blocks any patterns or workarounds that attempt to create implicit method promotion hooks. If a developer writes code that appears to be attempting to use behavior transfer (e.g. embedding a capsule and then calling its methods as if they were native), the linter flags this.
 
-**Smart Remediation:**
-When a compilation error occurs due to a missing method that actually exists within an embedded capsule, the linter detects this structural configuration and suggests the exact explicit delegation method to the developer. For example, if `TcpServer` tries to call `.Log()` but only its internal `Logger` has `Log`, the linter suggests:
+**Smart remediation and abstraction scaffolding:** stated in [abstraction scaffolding](../../modules/khayyam/rules/abstraction-scaffolding/abstraction-scaffolding.md).
 
-```
-Method 'Log' is not defined on TcpServer.
-The embedded Logger has this method. Add explicit delegation:
-  tp Log mt (self TcpServer) (msg String) (err Error) { ... }
-```
-
-**Abstraction Validation and DX Scaffolding:**
-Since Khayyam avoids explicit implementation keywords (no `impl` or `implements`), the linter assists developers in satisfying abstractions:
-- **Scaffolding:** When a developer intends to implement an abstraction (detected via context or explicit linter hints), the linter provides automated code generation to scaffold all missing method signatures with empty bodies. This reduces the boilerplate of explicit implementation without introducing hidden behavior.
-- **Proactive Warnings:** The linter analyzes the codebase and issues warnings if a capsule partially implements an abstraction's method set in a context where it is clearly expected to satisfy that abstraction, preventing unexpected compilation failures.
-
-**Orphan Rule (Monkey Patching Prevention):**
-Khayyam relies on the file system for modularity (no `package` keyword). Syntactically, it is possible to import a type and attach new methods to it in another file. The linter differentiates between extending a *local directory type* (permitted for file-splitting) and mutating a *distant/external library type* (which triggers a strict warning or error). This prevents unpredictable monkey patching — a form of hidden behavior acquisition where methods appear on a type without being defined in its original source. If external extension is needed, the developer must use composition (wrapping the external capsule in a local one).
+**Orphan extension:** cross-directory method attachment is governed by the [orphan extension](../../modules/khayyam/rules/orphan-extension/orphan-extension.md) rule.
 
 ### Interaction with Smart Compilation
 Khayyam's compiler decides whether to handle abstractions at compile time (monomorphization, zero-cost abstraction when exact capsules are known) or at runtime (dynamic dispatch when underlying capsules are hidden). This decision is based on the dependency graph, not on any behavior transfer mechanism.

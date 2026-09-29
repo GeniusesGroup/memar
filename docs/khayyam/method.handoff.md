@@ -12,6 +12,11 @@ Open work for `method.md`. Entries are mutable current state — revised as each
 ### Detecting a mutated influencing variable
 - Whether the compiler or linter should (or even can, without deeper static analysis) detect when a variable declared in the influencing group is, in fact, being mutated inside the method body via one of its own exposed methods — surfacing exactly the dual-role case above as a warning.
 
+### May one unit declare the same method name under two owners?
+- State: raised by the memar-go port. Until 2026-09-26 `modules/time/timer/protocol/timer.kh` declared `Init`, `Start`, `Reset`, and `Stop` under both `Timer` and the Go monomorphization `Timer_Time_Timer_Status`; the monomorphization was removed as a declaration that existed only because Go instantiated a generic, so no file exhibits the case now and the question is open in general. The receiver distinguishes the calls, and this document's `Sum` precedent ([Method Invocation Rules](./method.md#method-invocation-rules)) is the same shape, but no document says whether a unit may declare one method name twice.
+- Question for the owner: may one unit declare the same bare method name under two different owners?
+- Blocks: the toolchain's naming. Until it is answered the port's bridge emits the second method under a prefixed name, which the [receiver method names rule](../../modules/khayyam/rules/receiver-method-names/receiver-method-names.handoff.md) records as a report and not a name.
+
 ## Anticipated Work
 
 - A linter rule that flags an influencing variable receiving a call to one of its own known-mutating methods, prompting the author to either move it to the influenced group or consider splitting the method, once the dual-role question above is resolved. (From the Influencing and Influenced Variables topic's retired Future possibilities; the document-level Discussion restated the same rule.)

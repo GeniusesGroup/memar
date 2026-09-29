@@ -154,7 +154,7 @@ Completed the migration an earlier pass had started (this document already follo
 - Time: 2026-09-15T09:00:00Z
 - Type: Changed
 - Cited:
-  - [Linter](../protocols/linter.md) — Consumed contract: assistance writes source on request.
+  - [Linter](../protocols/computer/linter.md) — Consumed contract: assistance writes source on request.
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided (rule home is the subject's document)
   - [Grok](../../CONTRIBUTORS.md#grok) (Grok 4.6 via Cursor) — applied
@@ -169,7 +169,7 @@ Completed the migration an earlier pass had started (this document already follo
 - Time: 2026-09-23T08:43:30Z
 - Type: Fixed
 - Cited:
-  - [abstraction_p.Implements](../protocols/abstraction-implements.md) — Reference: the `ErrServiceNotFound` example places a bare `Implements` in a `cp` body.
+  - [abstraction_p.Implements](../protocols/computer/abstraction-implements.md) — Reference: the `ErrServiceNotFound` example places a bare `Implements` in a `cp` body.
   - [Metaprogramming in Khayyam](./metaprogramming.md) — Reference: the `UserRecord` example places a bare `Structural` in a `cp` body.
 - Propagates to:
   - khayyam.md: Done — the capsule bullet states the same one-token composition line.
@@ -188,7 +188,7 @@ Completed the migration an earlier pass had started (this document already follo
 - Time: 2026-09-23T10:20:00Z
 - Type: Fixed
 - Cited:
-  - [abstraction_p.Implements](../protocols/abstraction-implements.md) — Depends_on: the author states implementation intent; a generator writes the method bodies.
+  - [abstraction_p.Implements](../protocols/computer/abstraction-implements.md) — Depends_on: the author states implementation intent; a generator writes the method bodies.
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided
   - [Grok](../../CONTRIBUTORS.md#grok) (Grok 4.7 via [Cursor](../../CONTRIBUTORS.md#cursor)) — applied
@@ -198,3 +198,75 @@ Completed the migration an earlier pass had started (this document already follo
 
 #### Considered and not done
 - **A hand-written pair of abstractions for every field (rejected)**: that repeats the generator's job in every file. The author names the intent once (Omid Hekayati — decided).
+
+---
+
+### Primitive Capsule Specification maps `int32` to `I32`
+- Time: 2026-09-28T14:34:08Z
+- Type: Fixed
+- Cited:
+  - [Math Handoff → Does the tower hold widths the reference does not declare?](./math.handoff.md#does-the-tower-hold-widths-the-reference-does-not-declare) - Premise: the owner ruled the pairing a slip.
+  - [Math Handoff → Does the tower hold widths the reference does not declare?](./math.handoff.md#does-the-tower-hold-widths-the-reference-does-not-declare) - Premise: a signed 32-bit integer is `I32`.
+- Contributors:
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) - decided
+  - Auto (model not recorded) via [Cursor](../../CONTRIBUTORS.md#cursor) - applied
+
+#### What changed
+- [Primitive Capsule Specification](./encapsulation.md#primitive-capsule-specification) names `I32` wherever it named `W32`, and its gloss reads "signed 32-bit".
+- The handoff question is marked answered and kept, with the owner's note that an Integer module may exist under names from the scientific protocols.
+
+#### Considered and not done
+- Rewriting the example as `uint32` → `W32`: the owner chose `I32`.
+- Declaring an Integer module: allowed by the ruling, not requested.
+
+---
+
+### Numeric and truth-value capsules stated in Primitive Capsule Specification; numeric questions and the owner's earlier notes carried here
+- Time: 2026-09-29T10:40:00Z
+- Type: Changed
+- Cited:
+  - [Math Handoff → Does the tower hold widths the reference does not declare?](../protocols/math/math.handoff.md#does-the-tower-hold-widths-the-reference-does-not-declare) - Premise: the owner's answers of 2026-09-28 on 16-bit signed, complex, platform-sized, address-sized, byte, and rune.
+  - Commits `d08db25` (2023-06-06) and `0ea0d86` (2024-10-12) of this repository, `Khayyam.md` - Evidence: the owner's original text of the notes on library-implemented types, and its removal from the language specification.
+- Contributors:
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) - decided: code under `modules/` introduces itself, and language rules go to `docs/khayyam/`
+  - Auto (model not recorded) via [Cursor](../../CONTRIBUTORS.md#cursor) - applied
+
+#### What changed
+- [Primitive Capsule Specification](./encapsulation.md#primitive-capsule-specification): the migration example maps `int32` to `I32`; value equality (`Equal`) and logical equivalence (`Equivalence`) keep two names as a Khayyam language rule. The number tower and kinds that are not numeric widths moved to [Math → The number tower](../protocols/math/math.md#the-number-tower), [Memory → Address-sized integers are not numeric widths](../protocols/memory/memory.md#address-sized-integers-are-not-numeric-widths), and [Characters Codec → Characters and octets are not numeric widths](../protocols/codec/characters-codec.md#characters-and-octets-are-not-numeric-widths).
+- Numeric open questions, the owner's earlier notes, and numeric implementation residue moved to [Math Handoff](../protocols/math/math.handoff.md); this changelog's 2026-09-28 entry cites that handoff for the same ruling.
+
+#### Considered and not done
+- Copying the owner's notes in the wording the module document gave them: that wording was edited; the owner's own text is in git history and is the one copied.
+- Placing the owner's notes in this document's body: their permanent placement is the owner's decision.
+
+---
+
+### Get/Set prefix restriction removed from Naming Conventions; open question linked
+- Time: 2026-09-29T12:00:00Z
+- Type: Changed
+- Cited:
+  - Commit `40c13e36` (2026-07-18), `RFCs/khayyam-encapsulation.md` - Evidence: introduced the Get/Set prefix discouragement under the owner's account.
+  - [Method Verb Phrases handoff](../../modules/khayyam/rules/method-verb-phrases/method-verb-phrases.handoff.md) - Propagates to: open question on whether Get/Set prefixes are discouraged.
+- Contributors:
+  - Auto (model not recorded) via [Cursor](../../CONTRIBUTORS.md#cursor) - applied
+
+#### What changed
+- [Naming Conventions](./encapsulation.md#naming-conventions): removed the line discouraging `Get...` / `Set...` prefixes; linked the open question to [Method Verb Phrases handoff](../../modules/khayyam/rules/method-verb-phrases/method-verb-phrases.handoff.md). Verb-phrase guidance now points at the new [method verb phrases rule](../../modules/khayyam/rules/method-verb-phrases/method-verb-phrases.md).
+
+#### Considered and not done
+- Removing the `GetTimeout` / `SetTimeout` examples in [Capsules and Methods at a Glance](./encapsulation.md#capsules-and-methods-at-a-glance): those illustrate method syntax, not naming policy.
+
+---
+
+### Organizational naming conventions relocated to rules catalog
+- Time: 2026-09-29T16:00:00Z
+- Type: Changed
+- Propagates to:
+  - [identifier naming](../../modules/khayyam/rules/identifier-naming/identifier-naming.md): Done — capsule, field, and domain naming conventions.
+  - [abstraction naming heuristic](../../modules/khayyam/rules/abstraction-naming-heuristic/abstraction-naming-heuristic.md): Done — abstraction framing heuristic.
+- Contributors:
+  - Auto (model not recorded) via [Cursor](../../CONTRIBUTORS.md#cursor) - applied
+
+#### What changed
+- [Naming Conventions](./encapsulation.md#naming-conventions): capsule, abstraction, and field bullets replaced with links to organizational rules; method-names bullet retained (Get/Set open question unchanged).
+- [Closures as Implicit Capsule Syntax](./encapsulation.md#closures-as-implicit-capsule-syntax): throwaway-capsule naming concern links to [identifier naming](../../modules/khayyam/rules/identifier-naming/identifier-naming.md).

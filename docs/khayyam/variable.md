@@ -108,7 +108,7 @@ Explicit type declarations require more keystrokes per variable than inferred ty
 ### No Assignment Operators
 Khayyam completely eliminates assignment operators (like `=`). The primary reason is syntactic atomicity: conventional `=` silently fuses several distinct operations — binding a name, mutating state, and, depending on the language, copying — into a single, overloaded token, leaving the reader to infer from context which operation is actually taking place. Khayyam's broader design principle requires every statement to perform exactly one, explicitly named operation; a single character cannot satisfy that requirement, so Khayyam routes every state change through a named capsule method instead.
 
-Variables represent logical references to type instances; passing a variable to a method provides access to the same instance. The language structurally prevents any implicit deep or shallow copying through its syntax — the storage and copying model is a protocol concern owned by [Memory](../protocols/memory.md), not by this document's grammar.
+Variables represent logical references to type instances; passing a variable to a method provides access to the same instance. The language structurally prevents any implicit deep or shallow copying through its syntax — the storage and copying model is a protocol concern owned by [Memory](../protocols/memory/memory.md), not by this document's grammar.
 
 This rule has far-reaching implications: it means that state changes are always mediated by capsule methods, never by direct assignment. A variable's reference never silently changes to point to a different capsule instance — any such change requires an explicit method call that makes the operation visible in the source code.
 
@@ -146,7 +146,7 @@ A variable in Khayyam does not represent a storage location or a raw memory regi
 This means:
 - **A variable's type determines its behavioral contract.** Since the type is always a named type, the variable's capabilities are fully discoverable from that type's public interface — no reflection, no runtime type queries, no `instanceof` needed.
 
-This design is a direct consequence of the "Separation of Syntax and Governance" philosophy: the variable syntax (`vr`) handles identity and reference, while the type definition handles behavior. The storage and lifecycle model is owned by [Memory](../protocols/memory.md); this document does not restate it.
+This design is a direct consequence of the "Separation of Syntax and Governance" philosophy: the variable syntax (`vr`) handles identity and reference, while the type definition handles behavior. The storage and lifecycle model is owned by [Memory](../protocols/memory/memory.md); this document does not restate it.
 
 > **Scope clarification — code-level `vr` vs. capsule field.** A common misreading treats `vr x W32` inside a method body and `Timeout Duration` inside `tp AppConfig cp { … }` as the same “variable” concern. They are governed at different levels. A code-level `vr` is bound once at declaration to its declared type; “rebinding the name to a different instance” is not a `vr`-level operation — state change is performed by calling a method on the bound instance. Questions of whether a name can be rebound, and whether a field can be rebound to a different instance, belong to the capsule level (field rebinding *is* mutation, gated by [Sovereign Encapsulation](./encapsulation.md#sovereign-encapsulation)), not to `vr` as such. This document clarifies the distinction rather than adding a general rebinding rule at the `vr` level.
 
@@ -155,7 +155,7 @@ Developers coming from value-semantic languages (C, C++, Go) may initially expec
 ### Variable Scope and Visibility
 Variables in Khayyam can be declared at two distinct scopes:
 
-1. **File-level variables**: declared at the top level of a `.kh` file. These serve as module-level constants, singletons, or shared configuration values. A file-level variable is accessible within its own file and can be imported by other files via the `in` keyword. The declaration is the grammar's part. The variable's initial state is established by the compiler and by source that code generation emits. [Compiler → Entry and lifecycle are not grammar](../protocols/compiler.md#entry-and-lifecycle-are-not-grammar) places boot and lifecycle outside the grammar; file-level initialization is that same work.
+1. **File-level variables**: declared at the top level of a `.kh` file. These serve as module-level constants, singletons, or shared configuration values. A file-level variable is accessible within its own file and can be imported by other files via the `in` keyword. The declaration is the grammar's part. The variable's initial state is established by the compiler and by source that code generation emits. [Compiler → Entry and lifecycle are not grammar](../protocols/computer/compiler.md#entry-and-lifecycle-are-not-grammar) places boot and lifecycle outside the grammar; file-level initialization is that same work.
 
 2. **Method-body variables**: declared inside a method's body. These are local references that exist for the duration of the method's execution. They are not accessible outside the method and cannot be imported by other files.
 
@@ -174,19 +174,15 @@ The file-as-module model means that a file with many exported variables can beco
 ### Self-Documenting Code and No Magic Numbers
 In traditional languages, developers often write raw formulas like `if a == b + 1` and rely on comments to explain what `1` means. Khayyam forces developers to eliminate magic numbers by requiring that every value be wrapped in a named capsule with a descriptive name. By declaring an explicit variable for `1` with a descriptive name before using it in a method call, the code becomes inherently self-documenting at the declaration site, eliminating the need for redundant comments.
 
-Because variables require explicit types, the source code preserves the concepts introduced during modeling. A variable declaration should reveal a domain concept, not merely a machine representation. This is the variable-level manifestation of Khayyam's broader self-documenting architecture principle (stated in [Khayyam → Self-Documenting Code and Naming](./khayyam.md#self-documenting-code-and-naming)).
+Because variables require explicit types, the source code preserves the concepts introduced during modeling. This is the variable-level manifestation of Khayyam's broader self-documenting architecture principle (stated in [Khayyam → Self-Documenting Code and Naming](./khayyam.md#self-documenting-code-and-naming)); domain-meaningful variable naming for this repository is an [identifier naming](../../modules/khayyam/rules/identifier-naming/identifier-naming.md) convention.
 
 The boundary between "enforced clarity" and "forced verbosity" is not always clear. A capsule called `RetryCounter` adds clarity; a capsule called `LoopIndex` may not. The language does not currently provide a mechanism for teams to adjust this boundary — it is enforced uniformly by the grammar.
 
 #### Naming Conventions
-Variable names in Khayyam should reflect their domain purpose, not their type or implementation detail. Because every variable already carries an explicit type annotation, the name is free to focus on the *why* rather than the *what*. Suggested conventions (non-binding, enforceable via linter configuration):
-
-- **Domain-meaningful names**: `vr MaxRetries W8` is preferred over `vr Count W8` or `vr N W8`.
-- **No type-redundant prefixes**: since the type is always explicit, Hungarian-notation-style prefixes (`vr intCount W8`) are unnecessary and discouraged.
-- **Constant-like variables**: file-level variables that serve as module constants should use PascalCase (e.g., `vr MaxTimeout Duration`), matching the capsule naming convention.
+Variable naming conventions for this repository are stated in [identifier naming](../../modules/khayyam/rules/identifier-naming/identifier-naming.md).
 
 ### Constants as Capsule-Returned Values
 The constant model in Khayyam is fully specified in [Encapsulation in Khayyam](./encapsulation.md), section "Constants as Capsule-Returned Values". In summary: a constant is a variable returned by a capsule method that cannot change after first initialization — an organizational and architectural rule enforced by the capsule's own design (not exposing a mutating method), not by a dedicated compiler keyword. From the variable's perspective, a constant is declared and initialized like any other variable; the immutability guarantee is inherited from the capsule's behavioral contract.
 
 ### Resource Lifecycle
-The storage model and resource lifecycle for variable-backed instances are not variable-syntax concerns. A variable does not need to know whether its instance lives in an Arena, a Pool, or on the stack — that is a governance decision, not a syntax concern. Allocation, reclamation, teardown, and allocator libraries are owned by [Memory](../protocols/memory.md). How this language realizes those requirements — no raw pointers, no `nil` keyword, conventional `Deinit()`/`Free()` and `IsNull()` surfaces — is stated in [Khayyam → How Khayyam realizes Memory](./khayyam.md#how-khayyam-realizes-memory).
+The storage model and resource lifecycle for variable-backed instances are not variable-syntax concerns. A variable does not need to know whether its instance lives in an Arena, a Pool, or on the stack — that is a governance decision, not a syntax concern. Allocation, reclamation, teardown, and allocator libraries are owned by [Memory](../protocols/memory/memory.md). How this language realizes those requirements — no raw pointers, no `nil` keyword, conventional `Deinit()`/`Free()` and `IsNull()` surfaces — is stated in [Khayyam → How Khayyam realizes Memory](./khayyam.md#how-khayyam-realizes-memory).

@@ -42,7 +42,7 @@ Open work for `polymorphism.md`. Entries are mutable current state — revised a
 ### Dedicated compiler-facing abstractions document
 
 - State: [polymorphism.md](./polymorphism.md) closes its Matrix analysis by assigning the compile-time-facts and optimization-abstractions residue "to a dedicated document on compiler-facing abstractions" — the named successor had no tracked work item until this entry; the document itself has not been drafted and no owner was assigned.
-- Next: draft when the compiler-facing abstractions the Matrix section names (dimensions, layout constraints, optimization hints) have their first real consumer; coordinate with [Compiler](../protocols/compiler.md).
+- Next: draft when the compiler-facing abstractions the Matrix section names (dimensions, layout constraints, optimization hints) have their first real consumer; coordinate with [Compiler](../protocols/computer/compiler.md).
 
 ### Residual inheritance-wording re-audit
 - State: the vr-ab review session closed with an open suggestion to re-audit this document (and `abstraction.md`) for surviving "inheritance" phrasing that conflicts with the extension-not-inheritance terminology established in [Type → Explicit Behavior Ownership](../type.md#explicit-behavior-ownership); the pass was never run.

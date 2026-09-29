@@ -175,3 +175,34 @@ Alternatives: (a) keep the identical-receiver wording and change examples to use
 
 #### Considered and not done
 - **Stating in the Khayyam body that an empty abstraction is unfinished modeling (rejected)**: that is a modeling question. Khayyam's question is whether the form is legal (Omid Hekayati — decided).
+
+---
+
+### A concept is an abstraction and a concrete instance a capsule; the `Bool`/`Boolean` question carried here
+- Time: 2026-09-29T10:40:00Z
+- Type: Changed
+- Cited:
+  - [Documentation → Content Rule](../documentation.md#content-rule-no-fabricated-or-redundant-provenance) - Premise: a rule stated in two documents is given one home.
+- Contributors:
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) - decided: code under `modules/` introduces itself, and language rules go to `docs/khayyam/`
+  - Auto (model not recorded) via [Cursor](../../CONTRIBUTORS.md#cursor) - applied
+
+#### What changed
+- [A Concept Is an Abstraction; a Concrete Instance Is a Capsule](./abstraction.md#a-concept-is-an-abstraction-a-concrete-instance-is-a-capsule): a new section stating that a name carrying a concept is an abstraction and a concrete width, unit, or value representation is a capsule; that the owner of a signature decides whether it names the concept or a capsule; and why a contract that names the concept loses nothing. The rule was stated twice, in the module documents `modules/math/math.md` and `modules/time/time.md`, both deleted.
+- `abstraction.handoff.md`: the `Bool`/`Boolean` question and runtime-signature residue moved to [Math Handoff](../protocols/math/math.handoff.md) and [Runtime Handoff](../protocols/computer/runtime.handoff.md) respectively.
+
+#### Considered and not done
+- Stating the rule in [Encapsulation in Khayyam](./encapsulation.md) as well: it is one rule, and Primitive Capsule Specification links here instead.
+
+---
+
+### Abstraction scaffolding relocated to rules catalog
+- Time: 2026-09-29T16:00:00Z
+- Type: Changed
+- Propagates to:
+  - [abstraction scaffolding](../../modules/khayyam/rules/abstraction-scaffolding/abstraction-scaffolding.md): Done
+- Contributors:
+  - Auto (model not recorded) via [Cursor](../../CONTRIBUTORS.md#cursor) - applied
+
+#### What changed
+- Tooling-support and DX scaffolding bullets replaced with links to [abstraction scaffolding](../../modules/khayyam/rules/abstraction-scaffolding/abstraction-scaffolding.md).

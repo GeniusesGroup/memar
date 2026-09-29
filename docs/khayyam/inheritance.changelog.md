@@ -137,3 +137,29 @@
 
 #### What changed
 - Compiler Rules → Abstraction Conformance Is Structural no longer says a capsule satisfies an abstraction only with identical signatures. Influencing-variable types must match exactly, influenced-variable types must match exactly or by covariant return, and the receiver is the implementing capsule.
+
+---
+
+### Orphan extension rule relocated to rules catalog
+- Time: 2026-09-29T16:00:00Z
+- Type: Changed
+- Propagates to:
+  - [orphan extension](../../modules/khayyam/rules/orphan-extension/orphan-extension.md): Done
+- Contributors:
+  - Auto (model not recorded) via [Cursor](../../CONTRIBUTORS.md#cursor) - applied
+
+#### What changed
+- [Linter Rules → Orphan extension](./inheritance.md#linter-rules): monkey-patching governance text replaced with a link to [orphan extension](../../modules/khayyam/rules/orphan-extension/orphan-extension.md).
+
+---
+
+### Abstraction scaffolding relocated from Linter Rules
+- Time: 2026-09-29T20:30:00Z
+- Type: Changed
+- Propagates to:
+  - [abstraction scaffolding](../../modules/khayyam/rules/abstraction-scaffolding/abstraction-scaffolding.md): Done
+- Contributors:
+  - Auto (model not recorded) via [Cursor](../../CONTRIBUTORS.md#cursor) - applied
+
+#### What changed
+- [Linter Rules](./inheritance.md#linter-rules): smart remediation and abstraction-scaffolding bullets replaced with a link to [abstraction scaffolding](../../modules/khayyam/rules/abstraction-scaffolding/abstraction-scaffolding.md).
