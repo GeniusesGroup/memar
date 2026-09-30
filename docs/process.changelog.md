@@ -288,7 +288,7 @@
 - **Adopting one of the scholarly definitions (e.g. growth of problem-solving power) as the topic's definition (rejected)**: they are rival characterizations of what a development aims at, and the umbrella stance exists precisely so the topic does not adjudicate them; each becomes relevant only when a concrete development's model must fix its target stage and progress measure.
 
 #### Deliberation
-- Omid's review of the day's edits raised three points; the first and third are recorded in this entry — the second, the scope of the TDD protocol document, was accepted in the same pass and is recorded in [tdd.changelog.md](docs/protocols/tdd.changelog.md)'s corresponding entry (Omid Hekayati).
+- Omid's review of the day's edits raised three points; the first and third are recorded in this entry — the second, the scope of the TDD protocol document (now protocols/process/test.md), was accepted in the same pass and is recorded in [test.changelog.md](docs/protocols/process/test.changelog.md)'s corresponding entry (Omid Hekayati).
 - On the first point, Omid objected that Motivation had come to read like a changelog entry rather than a motivation; the objection was accepted without reservation and the trim was made (Omid Hekayati).
 - On the third point, Omid argued the word Development itself warrants no root-document concept under the project's standard against umbrella concepts at the root: it introduces nothing of its own and merely connects principles that already exist, the way OOP is an umbrella over encapsulation and the like, and that thinkers attach rival definitions to the word anyway (e.g. "increase of the system's problem-solving power") (Omid Hekayati).
 - The resolution adopted keeps the topic (it was already written as an adoption of the word's established general meaning, adding no structure) but states the umbrella character explicitly, so future edits test additions against the umbrella rule instead of letting content accrete (Super Z — proposed; Omid Hekayati — accepted).
@@ -299,8 +299,8 @@
 - Time: 2026-09-16T00:00:00Z
 - Type: Added
 - Propagates to:
-  - protocols/tdd.md: Done — its concept-level core relocated here; the protocol document rewritten to consume the new topic.
-  - protocols/tdd.changelog.md: Done — relocation entry recorded there.
+  - protocols/process/test.md (recorded then as protocols/tdd.md): Done — its concept-level core relocated here; the protocol document rewritten to consume the new topic.
+  - protocols/process/test.changelog.md (recorded then as protocols/tdd.changelog.md): Done — relocation entry recorded there.
   - process.handoff.md: Done — open questions and the Development graduation criterion recorded there.
 - Contributors:
   - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — claimed, argued, approved
@@ -314,7 +314,7 @@
 #### Considered and not done
 - **Giving Development its own document at docs/ root (rejected for now)**: the concept's warranted content — definition, per-topic inheritance from Process, pointer to Agency's Development section, governance note — fits a topic without residue; a standalone document would currently be a canopy over concepts that all already have homes. The graduation criterion is recorded in the paired handoff's Anticipated Work; the same path brought Process itself out of `system.md` when its topic outgrew the parent. (Omid Hekayati)
 - **Placing a Development document under protocols/ (rejected)**: the protocols directory's membership criterion is a contract, rule set, or encoding format; Development is the *process under governance*, not a rule set — TDD is the rule set. A protocol-layer document would also have had to define the Development concept itself, a concept-document job the folder's README excludes. (Omid Hekayati)
-- **Leaving the expectations/check concept in the TDD protocol document (rejected)**: the concept is domain-independent and definitional — a check presupposes a process model whose expectations precede its instances — so its home is the base layer. Keeping it in the protocol document would force base documents to cite a protocol layer for a general meaning, which the layering's citation rule forbids. (Omid Hekayati)
+- **Leaving the expectations/check concept in the TDD protocol document (rejected; that document's content now lives in protocols/process/test.md)**: the concept is domain-independent and definitional — a check presupposes a process model whose expectations precede its instances — so its home is the base layer. Keeping it in the protocol document would force base documents to cite a protocol layer for a general meaning, which the layering's citation rule forbids. (Omid Hekayati)
 
 ---
 
@@ -322,8 +322,8 @@
 - Time: 2026-09-16T00:00:00Z
 - Type: Added
 - Propagates to:
-  - protocols/tdd.practice.md: Done — the Boundary section names the reported defect as the inquiry case's recurring instance and links this topic.
-  - protocols/tdd.changelog.md: Done — the retarget recorded in its session entry.
+  - protocols/process/test.practice.md (recorded then as protocols/tdd.practice.md): Done — the Boundary section names the reported defect as the inquiry case's recurring instance and links this topic.
+  - protocols/process/test.changelog.md (recorded then as protocols/tdd.changelog.md): Done — the retarget recorded in its session entry.
   - process.handoff.md: Done — the topic's open questions and its protocol-layer graduation criterion recorded there.
 - Contributors:
   - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — requested, decided
@@ -349,8 +349,8 @@
 - Time: 2026-09-16T13:30:00Z
 - Type: Changed
 - Propagates to:
-  - protocols/tdd.md: Done — consumes the clarified vocabulary; defect and one-shot routing already through the practice.
-  - protocols/tdd.changelog.md: Done — paired review entry recorded there.
+  - protocols/process/test.md (recorded then as protocols/tdd.md): Done — consumes the clarified vocabulary; defect and one-shot routing already through the practice.
+  - protocols/process/test.changelog.md (recorded then as protocols/tdd.changelog.md): Done — paired review entry recorded there.
   - process.handoff.md: Done — Expectations and Checks Q2 updated; defect definition note and vocabulary Q3 added.
 - Contributors:
   - [Claude](../CONTRIBUTORS.md#claude) (Opus-5 via [Cursor](../CONTRIBUTORS.md#cursor)) — claimed, argued (independent critique)
@@ -363,6 +363,6 @@
 
 #### Deliberation
 - Independent critiques were solicited from Claude (Opus-5) and ChatGPT (GPT-5.6-terra) under Cognition's consult-other-cognitive-systems norm; both ranked the test/check overload and the defect/Failure conflation as load-bearing (Cursor/Composer — ran; both models — claimed).
-- The one-shot boundary's absence was traced to the relocation pass that moved the concept core from TDD into Process; restoring it here, not only in the protocol, follows the same ownership rule that relocated the core (Claude Opus-5 — claimed; Cursor/Composer — applied).
+- The one-shot boundary's absence was traced to the relocation pass that moved the concept core from the TDD document (now protocols/process/test.md) into Process; restoring it here, not only in the protocol, follows the same ownership rule that relocated the core (Claude Opus-5 — claimed; Cursor/Composer — applied).
 
 ---

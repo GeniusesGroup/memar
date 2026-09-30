@@ -1,148 +1,54 @@
-# TDD Realization Changelog
+# Test Changelog
 
 ## Changelog
 
-### Initial draft — TDD as written input/output expectations before enactment
-- Time: 2026-09-16T00:00:00Z
+### Protocol drafted, and the TDD document absorbed into it
+- Time: 2026-09-30T00:00:00Z
 - Type: Added
+- Cited:
+  - [../../process.md](../../process.md) - Depends_on: the concept document that owns the definition of an expectation and a check, and already states that they precede enactment.
+  - [test.research.001.md](./test.research.001.md) - Evidence: no language specification and no standards body mandates any test layout, naming rule, or discovery scheme, which is what makes a placement condition a Rule rather than a standard.
+  - [test.research.002.md](./test.research.002.md) - Evidence: the 1975 error taxonomy grounding the ordering in reach; the ecosystem's own account of TDD as a Test driving development *in place of* a specification; the absence of any documented descent from that literature to TDD; and Basili and Selby's disclosure that uncommented programs made their code reading a worst case.
+  - [../../documentation-explanation.md → Merging before Final](../../documentation-explanation.md) - Depends_on: the rule authorizing the absorption below, since both documents were `Draft`.
+  - [../computer/linter.md](../computer/linter.md) - Depends_on: the authorship rule that keeps the structural conditions out of this document.
+  - [../../modeling.md](../../modeling.md) - Extends: the principle that commitments become explicit before they become costly.
+  - [../../khayyam/khayyam.md](../../khayyam/khayyam.md) - Depends_on: the mechanism a type's human-facing text is written by, and the grammar that makes opaque code structurally impossible.
 - Contributors:
-  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — claimed, argued, reviewed
-  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash via [Buffy](../../CONTRIBUTORS.md#buffy)) — drafted
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) - raised the placement question and ruled that the structural conditions are Rules rather than protocol text; asked whether the TDD document should be deleted and its content absorbed here; corrected the framing of the ordering and that a Test is not limited to code; ruled that a comment is not the destination for why a decision was made, and supplied the `sc` case; and ruled that the skill must bind non-software work too
+  - Auto (model not recorded) - drafted both documents, conducted both researches from primary texts, wrote the rules and the tooling, and carried out the absorption
+- Propagates to:
+  - [test.practice.md](./test.practice.md): Added - the paired procedure, carrying two units: the development cycle and the Test artifact.
+  - [test.handoff.md](./test.handoff.md): Added - open state, including the questions carried over from the absorbed document.
+  - [test.research.001.md](./test.research.001.md): Added - how language ecosystems arrange tests, and who owns each convention.
+  - [test.research.002.md](./test.research.002.md): Added - the testing literature written before TDD, read from primary texts, with its negative results recorded.
+  - [../../../modules/process/test/](../../../modules/process/test/): Added - the module realizing this protocol, carrying the placement and naming Rules this document points to.
+  - [../../../AGENTS.md](../../../AGENTS.md): Done - a section stating that text is not to be put into a file through a shell, with the command that does it instead.
+  - [../../../.agents/scripts/memar-documentation.py](../../../.agents/scripts/memar-documentation.py): Done - gained `write`, `edit`, and `check`, because a document silently damaged by an encoding round trip is the failure this session produced twice.
+  - [../../../.agents/scripts/README.md](../../../.agents/scripts/README.md): Done - gained a section on putting text into a file, and one on what a subfolder there is for.
+  - [../../../.agents/scripts/tests/install.py](../../../.agents/scripts/tests/install.py): Done - the installer's Tests moved out of the folder that owns what they check, into one named for the role, and the suite still passes.
+  - [../../../.agents/skills/memar/SKILL.md](../../../.agents/skills/memar/SKILL.md): Updated - a development step now binds to a Test written first.
+  - [../ddd.md](../ddd.md): Done - its TDD relationship entry retargeted, since a document that no longer exists cannot be a sibling case.
+  - [../ddd.handoff.md](../ddd.handoff.md): Done - its pointer to the expectation-and-check step retargeted.
+  - [../../process.handoff.md](../../process.handoff.md): Done - its two links retargeted here and to this document's handoff.
+  - [../../process.changelog.md](../../process.changelog.md): Done - the link the absorption invalidated retargeted, and its historical entries on the absorbed document annotated.
+  - [../../documentation-explanation.changelog.md](../../documentation-explanation.changelog.md): Done - annotated alongside its existing pointer to the removed changelog.
+  - [../comparisons/superpowers.md](../../comparisons/superpowers.md): Done - three lines that attributed a Memar protocol to a name that no longer names one retargeted.
+  - [../../documentation-changelog.md](../../documentation-changelog.md) - Reference: within one working session an entry may still be revised, which is why this session's six drafts are one entry.
 
 #### What changed
-- The initial draft states TDD as a domain-independent discipline derived from [Process](../process.md): before a process is enacted, the expectations for its input and output are written. TDD is the instance where the process is software development and the written expectation takes a machine-checkable form.
-- The definition is grounded in the process concept rather than in software testing, so that canopy concepts such as the user story resolve to the same artifact: a process's written input and output expectations — not a documentation genre beside the code.
-- The scope section states where the discipline binds, where it does not, and why: exploratory processes (expectations written for the inquiry itself), already-enacted processes (verification work, not the discipline), and non-repeatable processes (the first benefit stands; the check is unavailable, not voided).
+- Added [test.md](./test.md), stating the Test as the written expectations of a named Process, produced before the work and kept as a standing part of the system that owes them. It separates the Test from the check and from the runner, states the obligation a system carries over the parts of its protocol surface whose expectations are decidable, what a Test may assume, what a passing suite does and does not establish, and the routing among development under the discipline, verification, and inquiry. It states no structural rule and points to the Rules that carry them instead.
+- Added [The Expectation Is Written Before the Work](./test.md#the-expectation-is-written-before-the-work), grounding the ordering in reach: a check drawing only on an implementation cannot distinguish a wrong implementation from a wrong specification, because it has nothing else to compare against, so writing the expectation first is what lets a check reach the errors of understanding. The order within a step is stated as model, then protocol or abstraction, then Test, then enactment, on the ground that a Test written against an enactment with no stated contract has already decided the contract by producing the enactment.
+- Added [The Form the Expectation Takes Is the Domain's](./test.md#the-form-the-expectation-takes-is-the-domains): a building's employer's requirement is a Process's expectations, and a drawing or a building-information model is how that requirement is written, because it is the form this domain's checks can be applied to and it moves a disagreement out of the reading of a sentence and into the comparison of a thing both parties can see.
+- Added [A Test Is Documentation, and Comment Is the Last Place to Look](./test.md#a-test-is-documentation-and-comment-is-the-last-place-to-look), as a destination map rather than a ranking of two: what must hold is a Test; what a thing is and what a reader needs to read belongs to the thing's own declarations, which is the mechanism the language document describes and the grammar enforces; why a decision was made belongs to the artifact's structured companion, chosen by the facet that owns that kind of statement; and a comment is what remains when none of those can hold, which this repository's comment policy records as a fallback the direction of travel is away from.
+- Added [The Ecosystem's Name for This Is TDD, and This Protocol Does Not Adopt It](./test.md#the-ecosystems-name-for-this-is-tdd-and-this-protocol-does-not-adopt-it), recording the name once and the reasons the protocol declines it: TDD names a practice this protocol applies beyond software, and Beck's own formulation puts a Test in place of a specification where this document makes a Test the specification.
+- Absorbed `tdd.md` and its practice, handoff, and changelog, then removed them. The four topics it owned moved across; the development cycle became [The Cycle](./test.practice.md) in the practice beside the procedure for the artifact; the three questions its absorption does not answer were carried into [test.handoff.md](./test.handoff.md) and the two its absorption does were removed.
+- Corrected a framing error found while reading the primary texts. An earlier draft placed Dijkstra's conclusion about what a check can conclude beside this document's coverage obligation and described it as a limit upon that obligation, conflating two questions: why the expectation must be written first, whose ground is reach, and what a check can conclude, whose answer is that only the expectation's own statement. EWD 249 does not address the first — it declines design methodology by name — and nothing in the literature weakens it.
+- Added [What Would Take This Further, and What Would Not](./test.md#what-would-take-this-further-and-what-would-not), so that a reader who meets the result that a test can be a proof does not suspect the document of having missed it, with the reason it does not apply here: what licenses the conclusion is a proved property of the selection, which is a stronger object than a Test this protocol defines.
+- Moved 54 archived Test artifacts into a `tests/` folder in the module that owns each, dropped the `_test` marker from their names, and moved the installer's Test suite to `.agents/scripts/tests/`.
 
 #### Considered and not done
-- **Teaching the discipline through worked examples (rejected)**: a demonstration is a surface pattern an executing agent can imitate without its reason, and imitation of a case's surface is what misleads when the next case differs. The document gives reasons and relationships; the absence of examples is an explicit decision of this draft, not an omission. (Omid Hekayati)
-- **Defining TDD by the red-green-refactor cycle or by test code (rejected)**: the cycle, frameworks, and file layouts are enactment mechanisms of one possible realization. Defining the discipline by its most common mechanism would repeat the mechanism-first error process.md names. (Omid Hekayati)
-
-#### Deliberation
-- Omid's stated motivation, carried into the document's own Motivation: before anyone knows how a process must be carried out, they already hold its input and output expectations tacitly, in temporary memory — so the discipline is simply making that holding explicit and shared *first*, rather than leaving it private and exempt from checking.
-- The root of the discipline in the word *process* — which has its own document — was claimed as the reason the definition stays domain-independent, and is what grounds the user-story reading.
-
----
-
-### Relocation — concept core moved to process.md; document rewritten as the software adoption
-- Time: 2026-09-16T00:00:00Z
-- Type: Changed
-- Propagates to:
-  - process.md: Done — new topics *Expectations and Checks* and *Development as a Process*; entry in its changelog.
-  - process.changelog.md: Done — the addition entry recorded there.
-  - process.handoff.md: Done — open questions and the Development graduation criterion recorded there.
-- Contributors:
-  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — claimed, argued, decided
-  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash via [Buffy](../../CONTRIBUTORS.md#buffy)) — drafted
-
-#### What changed
-- The concept-level core of the initial draft — expectations written before enactment, the check as the comparison of an instance against stated expectations, why tacit holding fails, the post-hoc and inquiry boundaries — moved to [Process → Expectations and Checks](../process.md#expectations-and-checks), where Omid located it: without the process model, testing has no subject, so the concept is Process's property, not TDD's. This document was rewritten to consume that topic and keep only what is Memar's own: the adoption of the name, the mechanism separation, the user-story reading, and the scope (Super Z — applied).
-- New first topic *What Memar Adopts* states the adoption and the name's role: the ecosystem's word is kept to reach the developers who carry it, while definitions stay anchored to the concept layer (Super Z — drafted; Omid — approved).
-- Scope restated to cover Memar's non-software system categories and Memar's own documentation production.
-- A *Development as a Process* topic was added to `process.md` in the same pass, defining Development per its established general meaning — a process of stage-by-degree advancement — so this protocol's governing relationship to development runs through the concept layer instead of resting on an undefined word (Omid — argued; Super Z — drafted).
-
-#### Considered and not done
-- **Keeping the concept core in this protocol document (rejected)**: the concept is domain-independent and definitional; keeping it here would force base documents to cite a protocol layer for a general meaning, which the layering's citation rule forbids, and would entangle the concept with TDD's name — the conflation the discipline exists to prevent. (Omid Hekayati)
-- **A Development document at docs/ root or under protocols/ (rejected for now)**: the concept's warranted content fits a topic in `process.md` without residue, and Development is the process under governance rather than a rule set, so it fails the protocols folder's membership criterion. Graduation criterion recorded in `process.handoff.md` (Omid Hekayati).
-
----
-
-### Scope generalized from software to systems, per Omid's review
-- Time: 2026-09-16T00:00:00Z
-- Type: Changed
-- Contributors:
-  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — reviewed, argued, decided
-  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash via [Buffy](../../CONTRIBUTORS.md#buffy)) — drafted
-
-#### What changed
-- The document's stated scope was generalized from "the development of software" to "the development of systems" — Development taken in the full generality [Process → Development as a Process](../process.md#development-as-a-process) defines. The Abstract, *What Memar Adopts*, and *Scope* were rewritten accordingly (Super Z — applied).
-- The name's role was made explicit: TDD is the word software's ecosystem gave the discipline, and its home territory remains software — the place where the check most often takes a machine-applicable form. Memar keeps the name to reach the developers who carry it while the discipline itself binds every domain: a checkout counter being designed for a store and a mobile phone being brought to production are under the same ordering as a function, their expectations written before the work and checked after (Omid Hekayati — argued; Super Z — drafted).
-- The *Scope* topic now states what varies across domains: the form the check can take, never whether the ordering binds.
-
-#### Deliberation
-- Omid's review of the relocation pass objected to scoping the adoption to software: though the draft's wording had addressed development generally without noticing, a physical product (a mobile phone) or a piece of store equipment being designed (a checkout counter) needs its expectations stated just as much — and whenever anything is to be developed, its input and output expectations exist implicitly in the development's path even unwritten, so the discipline's demand is only that they not be left implicit: "don't fool ourselves; write them from the start" — since no system can be developed without knowing what is wanted from it. Limiting the word to anything narrower than System would repeat the narrowing this project has repeatedly pushed back against (Omid Hekayati).
-- The objection was accepted in full; the earlier draft's software-leaning phrasing was an artifact of the name's origin, not a considered position, and the rewrite keeps the name while removing the boundary it appeared to draw (Super Z — recorded; Omid Hekayati — the decision).
-
----
-
-### Practice companion created; Abstract pointer and Boundary retarget added
-- Time: 2026-09-16T00:00:00Z
-- Type: Added
-- Propagates to:
-  - process.md: Done — the *Defect Resolution as an Inquiry* topic the Boundary retarget links is added there; entry recorded in [process.changelog.md](../process.changelog.md).
-  - process.handoff.md: Done — the topic's open questions and graduation criterion recorded there.
-- Contributors:
-  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — requested, decided
-  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash via [Buffy](../../CONTRIBUTORS.md#buffy)) — drafted
-
-#### What changed
-- Created `tdd.practice.md` as the paired Practice facet, per the owner's direction that the protocol must not stay reasons-only: the procedure a development step follows — naming the process and intent, writing the expectations in checkable form before enactment, choosing the check's form by domain (executed test where possible, observation procedure where not), enacting the smallest increment, and running the check with recorded disposition — plus where the expectation lives (the another-agent-could-run-the-check test), a failure-modes table, the inquiry and post-hoc-verification boundary routing carried from [Process → Expectations and Checks](../process.md#expectations-and-checks), and per-scale guidance (function, feature, system). Steps carry links to the base document's topics and are not re-argued there.
-- The base document's Abstract gained one sentence pointing at the practice, following the pattern [filesystem.md](../memory/filesystem.md) set with its companion practice.
-- The practice's Boundary section names the reported defect as the inquiry case's recurring instance and links [Process → Defect Resolution as an Inquiry](../process.md#defect-resolution-as-an-inquiry), so a defect investigation routes through that topic and only the concluding fix runs this practice's cycle.
-- Per the changelog scope rule, the practice companion shares this ledger and receives no changelog of its own.
-
-#### Considered and not done
-- **Importing worked examples into the practice (rejected)**: the base document's exclusion of examples is an explicit decision, and the practice's steps are the followable form of the reasons, not a second place for demonstrations. (Omid Hekayati)
-
-#### Deliberation
-- The owner's direction: the base document deliberately excludes worked examples — a demonstration is a surface pattern to imitate — but the discipline must still be followable; the practice carries the followable procedure without importing examples, so the exclusion stands while the agent-level question "what do I actually do at the start of a development step?" has a home (Omid Hekayati).
-- The defect-routing addition follows the owner's approved plan for the Defect Resolution topic: the practice names the situation's home rather than carrying its own debugging guidance (Omid Hekayati — decided; Super Z — applied).
-
----
-
-### Review pass — vocabulary, ownership of expectations, membership framing, handoff
-- Time: 2026-09-16T13:30:00Z
-- Type: Changed
-- Propagates to:
-  - process.md: Done — check/expectation vocabulary, verification restatement, one-shot boundary, defect-as-check-verdict; entry in [process.changelog.md](../process.changelog.md).
-  - process.handoff.md: Done — Expectations Q2/Q3 and Defect Q2 updated.
-  - protocols/README.md: Done — third membership kind (development protocols) and the no-implementing-repository exception.
-  - protocols/tdd.handoff.md: Done — created with open questions from this pass.
-  - protocols/tdd.practice.md: Done — steps and failure modes retargeted to the new topics.
-- Contributors:
-  - [Claude](../../CONTRIBUTORS.md#claude) (Opus-5 via [Cursor](../../CONTRIBUTORS.md#cursor)) — claimed, argued (independent critique)
-  - [ChatGPT](../../CONTRIBUTORS.md#chatgpt) (GPT-5.6-terra via [Cursor](../../CONTRIBUTORS.md#cursor)) — claimed, argued (independent critique)
-  - Cursor/Composer — reviewed, drafted, integrated
-
-#### What changed
-- Abstract: promoted the membership warrant — this protocol governs the *development* process (conforming participant: the development agent), distinct from protocols that govern processes inside the built system.
-- New topic *Whose Expectations Are Written*: the written expectation is of the **developed** process; the development step's expectation is derivative (its output is an instance satisfying those expectations); one check serves both.
-- *Test Is Not Its Implementation*: aligned with Process's check/expectation split — this document uses *test* for the written-expectation artifact only; grounded the another-agent-could-run-the-check criterion in the base (moved up from being practice-only).
-- *A User Story…*: retitled and tightened — the story *is* the developed process's expectation artifact (not "or should be"; not "development process or system process"); "canopy" replaced by "umbrella requirements concepts."
-- *Scope*: states that for a development, Process's "conformance matters" condition always holds; restores the one-shot boundary as a consumed case; Modeling relationship notes that the written expectation's authority derives from the model.
-- Practice: step 1 names the process being developed; step 3 obliges the two pre-work facts (checkable; not already satisfied) rather than mandating a failing run; failure-modes table gains the wrong-subject row; Boundary carries the one-shot case.
-- Created `tdd.handoff.md` for Draft-status open questions (vocabulary enrichment, user-story ownership, inquiry-boundary live test, one-shot protocol enrichment).
-- `protocols/README.md`: third membership kind + exception that development protocols have no `memar-{language}` implementation (their followable form is the Practice companion).
-
-#### Considered and not done
-- **Coining a Memar-native name to replace TDD (rejected again)**: the reach argument from the scope-generalization pass still holds; vocabulary fixes address the confusion without renaming. (Both critiques noted the name's friction; Cursor/Composer — kept per prior decision.)
-- **Moving the another-agent criterion into Process (rejected)**: it is a protocol-layer operational test on the written artifact under this discipline, not a new process concept. (GPT-5.6-terra — raised as ownership risk; Cursor/Composer — kept in TDD.)
-
-#### Deliberation
-- Independent critiques from Claude (Opus-5) and ChatGPT (GPT-5.6-terra) under Cognition's consultation norm converged on test/check overload, missing handoff, and whose-expectations ambiguity as load-bearing; membership-kind and red-green re-import ranked next (Cursor/Composer — ran both; integrated the ranked set).
-- The "or" in the user-story topic was treated as a definitional float, not a stylistic hedge: deleting it and naming the developed process as the sole subject closes the float without inventing a requirements document (Claude Opus-5 — claimed; Cursor/Composer — applied).
-
----
-
-### Correction — no special-case protocol framing; Methodology cleaned; code tests affirmed
-- Time: 2026-09-16T14:00:00Z
-- Type: Changed
-- Propagates to:
-  - protocols/README.md: Done — removed the third membership kind and the "no implementing repository" exception added in the prior review pass.
-  - documentation-explanation.md / documentation-explanation.practice.md: Done — Relevance discipline sharpened against Abstract/Motivation/Methodology audit filler; entries in [documentation-explanation.changelog.md](../documentation-explanation.changelog.md).
-- Contributors:
-  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — objected, decided
-  - Cursor/Composer — corrected
-
-#### What changed
-- Abstract: removed the "Unlike Memar's other protocols…" warrant that treated TDD as a unique exception among protocols.
-- *What Memar Adopts* / *Test Is Not Its Implementation* / user-story paragraph / practice step 3: corrected the drift that read as if computer-code tests were optional or non-constitutive of software work — the discipline is not *limited* to code; where code is what is developed, test code is the ordinary demanded realization; language packages (including future Khayyam / `memar-{language}` helpers) are welcome mechanisms, not excluded.
-- *Relationship → Protocol*: reframed without contrast-to-others — like Error, the governed process may appear in development work, across systems, or as system behavior toward others.
-- *Methodology*: stripped session dates, participant narrative, and changelog pointers; kept only the standing method (consumes Process/Protocol; definitions at concept layer; examples excluded as a standing rule).
-- `protocols/README.md`: reverted the third membership kind and the Exception that claimed development protocols have no `memar-{language}` implementation.
-
-#### Deliberation
-- Owner objected that TDD is not uniquely exceptional among protocols (Error likewise travels between systems, is used in development, and can be part of a system's outward behavior), and that "not limited to computer code" was never "computer code needs no tests" (Omid Hekayati).
-- Owner objected that Methodology had absorbed changelog content (session/review narrative) that does not help a later reader understand TDD; the Relevance discipline already forbade it and was violated (Omid Hekayati — objected; Cursor/Composer — acknowledged and corrected, and sharpened the governing Explanation docs so the misroute is named).
-
----
+- **Keeping a short protocol document under the TDD name as a pointer.** It would preserve the vocabulary practitioners arrive with, and would make this document depend on a name whose established meaning — a Test as a driver in place of a specification — differs from what this document states. A reader who knows the word finds it named in one topic here.
+- **Moving the ordering into [Process → Expectations and Checks](../../process.md#expectations-and-checks).** The concept layer already states that expectations precede enactment, and that is where the definition belongs. What it does not state is the reach argument for why a development must do it, and a claim about what a check can detect is a protocol-layer claim about the artifact the check reads.
+- **Writing that comments should be eliminated.** The one measured statement on the question runs the other way. The claim is scoped to the subset a Test can carry.
+- **Romanticizing the older literature.** The sources are admitted on what they argue and how well they argue it, never on their date; the caution that an idea's antiquity is independent of its merit, with this repository's own example of an inherited idea nobody ever named as a mistake, is recorded in the research rather than assumed away.
+- **Correcting the absorbed document's changelog into this one wholesale.** Its load-bearing rejections are recorded here as considered-and-not-done; per [Merging before Final](../../documentation-explanation.md) no citation entry points at the abandoned document, and per the changelog facet its history does not become a second home for the same decisions.

@@ -260,7 +260,7 @@ The skeleton is three fixed sections; an Explanation-facet document carries no `
 - Type: Changed
 - Propagates to:
   - documentation-explanation.practice.md: Done — body-writing step gains an explicit filter before leaving Abstract/Motivation/Methodology.
-  - protocols/tdd.md: Done — Methodology cleaned as the triggering instance; entry in [protocols/tdd.changelog.md](docs/protocols/tdd.changelog.md).
+  - protocols/process/test.md (recorded then as protocols/process/tdd.md): Done — Methodology cleaned as the triggering instance; entry in [test.changelog.md](docs/protocols/process/test.changelog.md). That document was subsequently absorbed into `test.md` and its changelog folded into that document's.
 - Contributors:
   - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — objected, directed the governing-doc upgrade
   - Cursor/Composer — drafted
@@ -272,4 +272,4 @@ The skeleton is three fixed sections; an Explanation-facet document carries no `
 - Practice companion: step 4 gains the same filter as an executable check, linking the named misroute.
 
 #### Deliberation
-- The triggering instance was `tdd.md`'s Methodology absorbing who-argued / review-pass / see-changelog material after a vocabulary review — content that does not help a later reader understand TDD (Omid Hekayati — objected). The governing specification's Relevance discipline already stated the criterion; what was missing was a named failure mode agents keep repeating, plus Optional-section wording that no longer invites "how we wrote it" into Methodology (Omid Hekayati — directed; Cursor/Composer — applied).
+- The triggering instance was the Methodology of `test.md`'s predecessor (recorded then as `tdd.md`) absorbing who-argued / review-pass / see-changelog material after a vocabulary review — content that does not help a later reader understand TDD (Omid Hekayati — objected). The governing specification's Relevance discipline already stated the criterion; what was missing was a named failure mode agents keep repeating, plus Optional-section wording that no longer invites "how we wrote it" into Methodology (Omid Hekayati — directed; Cursor/Composer — applied).
