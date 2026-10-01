@@ -1,0 +1,16 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Arguments in "modules/lib/process/command/protocol/arguments.kh"
+tp Error in "modules/process/error/protocol/error.kh"
+
+// Codec is implement by operation request and response.
+tp Command_Codec ab {
+    Command_Encoder
+    Command_Decoder
+}
+
+tp Command_Decoder ab
+tp FromCLA mt (self Command_Decoder) (args Arguments) (remaining Arguments, err Error)
+
+tp Command_Encoder ab
+tp ToCLA mt (self Command_Encoder) () (args Arguments, err Error)

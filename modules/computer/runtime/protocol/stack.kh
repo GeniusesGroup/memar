@@ -1,0 +1,8 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/codec/string/protocol/string.kh"
+
+tp Stack ab
+// if log need to trace, specially in panic situation.
+// In Go USUALLY fill by `debug.Stack()`
+tp RuntimeStack mt (self Stack) () (s String)

@@ -1,0 +1,47 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+tp Capsule_LifeCycle in "modules/computer/capsule/protocol/life_cycle_contract.kh"
+tp Observer_FrameType in "modules/net/protocol/frame-type.observers.kh"
+tp Observer_NetworkAddresses in "modules/net/protocol/address.observers.kh"
+tp FrameWriter in "modules/net/protocol/frame-writer.kh"
+tp OSI_Transport_Options in "modules/net/protocol/osi_4-transport-options.kh"
+
+// OSI_Transport provides services such as connection-oriented communication, reliability, flow control.
+// It must also implement chunks managing like sRPC, QUIC, TCP, UDP, ...
+tp OSI_Transport ab {
+    Capsule_LifeCycle
+    Observer_FrameType
+    Observer_NetworkAddresses
+    OSI_Transport_LowLevelAPIs
+}
+
+// OSI_Transport_LowLevelAPIs is low level APIs, don't use them in the services layer, if you don't know how it can be effect the application.
+// It will use in chunks managing packages e.g. sRPC, TCP, UDP, ... or protocols wrappers e.g. QUIC, HTTPv2, ...
+tp OSI_Transport_LowLevelAPIs ab {
+    FrameWriter
+    OSI_Transport_Options
+}
+
+// TODO(go-migrate):
+/*
+package net_p
+
+import (
+	capsule_p "memar/computer/capsule/protocol"
+	error_p "memar/process/error/protocol"
+	"memar/time/duration"
+)
+
+/*
+**********************************************************************************
+Transport (OSI Layer 4: Transport)
+
+https://en.wikipedia.org/wiki/Transport_layer
+**********************************************************************************
+* /
+
+// OSI_Transport provides services such as connection-oriented communication, reliability, flow control.
+// It must also implement chunks managing like sRPC, QUIC, TCP, UDP, ...
+type OSI_Transport interface {
+	Field_NetworkAddresses // string form of address e.g. `PortID`, `StreamID` (for example, "tcp://443", "srpc://1254872653")
+}
+*/

@@ -1,0 +1,9 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Observer_Datatype_ID in "modules/computer/datatype/protocol/id.observers.kh"
+tp Observer_Datatype_ID_Base64 in "modules/computer/datatype/protocol/id.observers.kh"
+
+tp Identifiers ab {
+    Observer_Datatype_ID
+    Observer_Datatype_ID_Base64
+}

@@ -1,0 +1,59 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+// TODO(go-migrate):
+/*
+package cmd
+
+import "io"
+
+type aPlusBWayCLIRequest struct {
+	sliceLength int
+	numbers     []int32
+
+	r       io.Reader
+	rawBuf  []byte
+	readBuf []byte
+}
+
+func (a *aPlusBWayCLIRequest) ReadFrom(r io.Reader) (n int64, err error) {
+	a.r = r
+	a.rawBuf = make([]byte, 1024) // 1024 is max standard input
+
+	err = a.readMore()
+	if err != nil {
+		return
+	}
+	// err = a.sliceLengthInputDecoder()
+	// if err != nil {
+	// 	return
+	// }
+
+	// err = a.integersInputDecoder()
+	return
+}
+
+// decode input string data by "Input" section of https://open.kattis.com/problems/aplusb
+func (a *aPlusBWayCLIRequest) readMore() (err error) {
+	var writeAt int
+	if len(a.readBuf) != 0 {
+		writeAt = len(a.readBuf)
+		copy(a.rawBuf[0:], a.readBuf[:])
+	}
+
+	var i int
+	i, err = a.r.Read(a.rawBuf[writeAt:])
+	if err != nil {
+		return
+	}
+	a.readBuf = a.rawBuf[:i]
+	return
+}
+
+// dropCR drops a terminal \r from the data.
+func dropCR(data []byte) []byte {
+	if len(data) > 0 && data[len(data)-1] == '\r' {
+		return data[0 : len(data)-1]
+	}
+	return data
+}
+*/

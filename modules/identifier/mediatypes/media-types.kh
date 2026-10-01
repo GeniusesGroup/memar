@@ -1,0 +1,98 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+vr mts mediaTypes
+
+tp mediaTypes cp {
+}
+
+// RegisterMediaType register given MediaType to the application
+
+// From media-types_test.go:
+
+// TODO(go-migrate): the Go name mediaTypes is kept bare; it differs from the protocol's MediaTypes (modules/identifier/mediatypes/protocol/media-types.kh) only by case and prefix, so confirm the name.
+// TODO(go-migrate): [under "// RegisterMediaType register given MediaType to the application"] impl body uses if, &&, panic, map assignment, and a local var; none has a Khayyam form yet (control flow is a library, not grammar); a body-less mt on a cp means FFI, so the declaration stays commented; proposed `tp mediaTypes_Register mt (self mediaTypes) (mediaType Parsed) (err Error)`. Note the impl takes mediatype_p.Parsed while the protocol Register takes mediatype_p.GetMediaType.
+// TODO(go-migrate): [under "// From media-types_test.go:"] compile-time assertion that mediaTypes implements the protocol MediaTypes; Khayyam has no such form yet (the corpus marks implementations with //memar:impl comments), and the Go impl's Register(mediatype_p.Parsed) does not match the protocol's Register(mediatype_p.GetMediaType), so the assertion would not hold as written.
+// TODO(go-migrate): memar/modules/identifier/mediatypes/media-types.go
+/*
+package mediatypes
+
+import (
+	datatype_p "memar/computer/datatype/protocol"
+	mediatype_p "memar/identifier/mediatype/protocol"
+	error_p "memar/process/error/protocol"
+)
+
+func Register(mt mediatype_p.MediaType) (err error_p.Error) { return mts.Register(mt) }
+func ByMediaType(mediaType string) (mt mediatype_p.MediaType, err error_p.Error) {
+	return mts.GetByMediaType(mediaType)
+}
+func ByID(id datatype_p.ID) (mt mediatype_p.MediaType, err error_p.Error) {
+	return mts.GetByID(id)
+}
+func ByFileExtension(ex string) (mt mediatype_p.MediaType, err error_p.Error) {
+	return mts.GetByFileExtension(ex)
+}
+
+var mts = mediaTypes{
+	poolByMediaType:     map[string]mediatype_p.MediaType{},
+	poolByID:            map[datatype_p.ID]mediatype_p.MediaType{},
+	poolByFileExtension: map[string]mediatype_p.MediaType{},
+}
+
+type mediaTypes struct {
+	poolByMediaType     map[string]mediatype_p.MediaType
+	poolByID            map[datatype_p.ID]mediatype_p.MediaType
+	poolByFileExtension map[string]mediatype_p.MediaType
+}
+
+// RegisterMediaType register given MediaType to the application
+func (mts *mediaTypes) Register(mt mediatype_p.Parsed) (err error_p.Error) {
+	// TODO::: change panics to error
+	if mt.MainType().IsEmpty() && mt.SubType().IsEmpty() {
+		panic("Mediatype doesn't has main and sub type. Can't register empty mediatype.")
+	}
+
+	// TODO::: lock??
+	mts.poolByMediaType[mt.MediaType()] = mt
+	mts.poolByID[mt.ID()] = mt
+	var fe = mt.FileExtension()
+	if !fe.IsEmpty() {
+		mts.poolByFileExtension[fe] = mt
+	}
+	return
+}
+
+func (mts *mediaTypes) GetByMediaType(mediaType string) (mt mediatype_p.MediaType, err error_p.Error) {
+	mt = mts.poolByMediaType[mediaType]
+	// if mt == nil {
+	// // err = &errs.ErrNotFound
+	// }
+	return
+}
+
+func (mts *mediaTypes) GetByID(id datatype_p.ID) (mt mediatype_p.MediaType, err error_p.Error) {
+	mt = mts.poolByID[id]
+	// if mt == nil {
+	// // err = &errs.ErrNotFound
+	// }
+	return
+}
+func (mts *mediaTypes) GetByFileExtension(ex string) (mt mediatype_p.MediaType, err error_p.Error) {
+	mt = mts.poolByFileExtension[ex]
+	// if mt == nil {
+	// // err = &errs.ErrNotFound
+	// }
+	return
+}
+*/
+
+// TODO(go-migrate): memar/modules/identifier/mediatypes/media-types_test.go
+/*
+package mediatypes
+
+import (
+	mts_p "memar/identifier/mediatypes/protocol"
+)
+
+var _ mts_p.MediaTypes = &mts
+*/

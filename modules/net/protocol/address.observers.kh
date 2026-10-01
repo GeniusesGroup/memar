@@ -1,0 +1,11 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp NetworkAddress in "modules/net/protocol/address.kh"
+
+// Addr represents a network end point address.
+// They can be any layer 2 or 3 or 4 or even socket!
+tp Observer_NetworkAddresses ab
+// GetLocalAddr or Source address
+tp GetLocalAddr mt (self Observer_NetworkAddresses) () (n NetworkAddress)
+// GetRemoteAddr or Destination address
+tp GetRemoteAddr mt (self Observer_NetworkAddresses) () (n NetworkAddress)

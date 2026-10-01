@@ -1,0 +1,18 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp ScreenType ab
+
+// TODO(go-migrate):
+/*
+package gui_p
+
+type ScreenType uint8
+
+const (
+	ScreenType_Unset ScreenType = iota
+	ScreenType_Primary
+	ScreenType_Secondary
+	ScreenType_Extend
+	ScreenType_Duplicate
+)
+*/

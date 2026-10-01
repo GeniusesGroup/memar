@@ -1,0 +1,21 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+// What a Khayyam-written compiler needs fifth: a behaviour as a value. A reader
+// hands each declaration it read to whoever asked for it, and an emitter hands
+// each declaration back a body to compile; a library that takes a behaviour — a
+// visitor, a reducer, a fold — is the ordinary shape of that.
+//
+// The language's position: a method's influencing group may receive a `vr`, an
+// `sc`, or an `mt` (docs/khayyam/method.md → Type-level arguments for `sc` and
+// `mt`), so a method is a legal argument; nothing states how a name writes one.
+
+tp Text cp {
+}
+
+tp Emit mt (self Text) (body Method) () {
+    body.Run()()
+}
+
+tp Run mt (self Text) () () {
+    self.Print()()
+}

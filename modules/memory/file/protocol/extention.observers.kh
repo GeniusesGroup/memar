@@ -1,0 +1,7 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Extension in "modules/memory/file/protocol/extention.kh"
+
+tp Observer_Extension ab
+// GetFileExtension return extension name without a period or space or ...
+tp GetFileExtension mt (self Observer_Extension) () (e Extension)

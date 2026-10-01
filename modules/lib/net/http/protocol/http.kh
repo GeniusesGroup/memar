@@ -1,0 +1,39 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Observer_HTTP_Body in "modules/lib/net/http/protocol/body.observers.kh"
+tp Mutator_Body in "modules/lib/net/http/protocol/body.mutators.kh"
+tp Net_Header in "modules/lib/net/http/protocol/header.kh"
+tp PseudoHeader_Request in "modules/lib/net/http/protocol/pseudo_header.kh"
+tp PseudoHeader_Response in "modules/lib/net/http/protocol/pseudo_header.kh"
+
+// Request indicate HTTP request semantic.
+//
+// Other frameworks:
+// https://developer.mozilla.org/en-US/docs/Web/API/Request
+tp HTTP_Request ab {
+    PseudoHeader_Request
+    Net_Header
+    Observer_HTTP_Body
+    Mutator_Body
+}
+
+// Response indicate HTTP response semantic.
+//
+// Other frameworks:
+// https://developer.mozilla.org/en-US/docs/Web/API/Response
+tp HTTP_Response ab {
+    PseudoHeader_Response
+    Net_Header
+    Observer_HTTP_Body
+    Mutator_Body
+}
+
+// TODO(go-migrate):
+/*
+package http_p
+
+// Other frameworks:
+// - https://www.php-fig.org/psr/psr-7/
+// - https://nodejs.org/api/http.html#requestgetheaders
+
+*/

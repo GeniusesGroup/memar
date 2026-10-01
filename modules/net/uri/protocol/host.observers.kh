@@ -1,0 +1,6 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp URI_Host in "modules/net/uri/protocol/host.kh"
+
+tp Observer_Host ab
+tp GetHost mt (self Observer_Host) () (h URI_Host)

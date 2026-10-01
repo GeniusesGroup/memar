@@ -1,0 +1,15 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp NumberOfElement in "modules/computer/adt/container/protocol/length.kh"
+tp Error in "modules/process/error/protocol/error.kh"
+tp Net_Socket_2 in "modules/net/protocol/socket.kh"
+
+tp Frame ab
+// FrameLen or FrameLength
+tp FrameLength mt (self Frame) () (n NumberOfElement)
+
+tp NextFrame mt (self Frame) () (f Frame)
+
+tp Net_Frame_Process mt (self Frame) (sk Net_Socket_2) (err Error)
+
+tp Net_Frame_Do mt (self Frame) (sk Net_Socket_2) (err Error)

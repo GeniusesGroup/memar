@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Boolean in "modules/math/boolean/protocol/boolean.kh"
+tp Error in "modules/process/error/protocol/error.kh"
+tp String in "modules/codec/string/protocol/string.kh"
+
+// https://en.wikipedia.org/wiki/Integer_(computer_science)
+tp Signed ab
+//memar:impl memar/math/logic/protocol.Equivalence
+tp Signed_Equal mt (self Signed) (with Signed) (b Boolean)
+
+//memar:impl memar/codec/string/protocol.Stringer
+tp ToString mt (self Signed) () (str String, err Error)
+
+tp FromString mt (self Signed) (str String) (err Error)
+
+// TODO(go-migrate):
+/*
+package math_p
+
+// Signed is a constraint that permits any signed integer type.
+// If future releases of Go add new predeclared signed integer types, this constraint will be modified to include them.
+type Signed interface {
+	~int | ~int8 | ~int16 | ~int32 | ~int64
+}
+*/

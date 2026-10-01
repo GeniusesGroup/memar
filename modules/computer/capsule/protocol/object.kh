@@ -1,0 +1,17 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Observer_Capsule_Fields in "modules/computer/capsule/protocol/field.observers.kh"
+tp ADT in "modules/computer/adt/protocol/adt.kh"
+tp DataType in "modules/computer/datatype/protocol/data-type.kh"
+tp Observer_Function_Methods in "modules/computer/function/protocol/method.observers.kh"
+
+tp Computer_Capsule ab {
+    Observer_Capsule_Fields
+    Observer_Function_Methods
+    DataType
+// LifeCycle
+// Authorization
+
+// logic_p.Equivalence[Capsule]
+    ADT
+}

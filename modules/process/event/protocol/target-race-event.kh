@@ -1,0 +1,12 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Error in "modules/process/error/protocol/error.kh"
+tp EventListener_Race_Event in "modules/process/event/protocol/event-listener-race-event.kh"
+tp Race_Event in "modules/process/race/protocol/event.kh"
+
+tp Target_Race_Event ab
+tp Process_Target_Race_Event_AddEventListener mt (self Target_Race_Event) (callback EventListener_Race_Event) (err Error)
+
+tp Process_Target_Race_Event_RemoveEventListener mt (self Target_Race_Event) (callback EventListener_Race_Event) (err Error)
+
+tp Process_Target_Race_Event_DispatchEvent mt (self Target_Race_Event) (event Race_Event) (err Error)

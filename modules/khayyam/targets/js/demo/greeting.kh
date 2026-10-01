@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+// A program that needs no library control flow, which is what the plan's third
+// goal asks for. What it does is compose: it holds a capsule with a field, and a
+// method of its own that reaches the field and calls on the value held there.
+// The behaviour it calls is body-less on a concrete capsule, which is the
+// language's own signal that the implementation comes from the link phase
+// (docs/khayyam/khayyam.md → Method), so the host supplies the behaviour and the
+// value, and the program supplies the shape of the calls.
+
+tp Text cp {
+    text Text
+}
+
+tp Print mt (self Text) () ()
+
+tp Greeter cp {
+    greeting Text
+}
+
+tp Announce mt (self Greeter) () ()
+
+tp Greet mt (self Greeter) (greeting Text) () {
+    self.Announce()()
+    greeting.Print()()
+}

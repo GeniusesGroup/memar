@@ -1,0 +1,24 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Computer_Buffer in "modules/computer/buffer/protocol/buffer.kh"
+tp NumberOfElement in "modules/computer/adt/container/protocol/length.kh"
+tp Error in "modules/process/error/protocol/error.kh"
+// Reversed is a container level operation.
+
+tp Replace_Elements ab
+
+tp Replace_Elements_Computer_Buffer ab
+// Replace_Elements is like `Replace()` but in container level.
+// Copy the CONTAINER if you need the original one.
+tp Container_Replace_Elements_Computer_Buffer_Replace_Elements mt (self Replace_Elements_Computer_Buffer) (old Computer_Buffer, new Computer_Buffer, nl NumberOfElement) (err Error)
+
+// Split_Element is a container level operation.
+
+// TODO(go-migrate):
+/*
+type Replace_Elements[CONTAINER any] interface {
+	Replace_Elements(old, new CONTAINER, nl NumberOfElement) (err error_p.Error)
+}
+*/

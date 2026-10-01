@@ -1,0 +1,8 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Boolean in "modules/math/boolean/protocol/boolean.kh"
+
+tp Error_Timeout ab
+// Timeout return true when the error cause by timeout operation not `internal` process error.
+// It can be `Temporary` or even `permanent` situation when process allowed time not enough to completed
+tp Error_Timeout_Timeout mt (self Error_Timeout) () (b Boolean)

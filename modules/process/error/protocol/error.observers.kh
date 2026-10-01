@@ -1,0 +1,6 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Error in "modules/process/error/protocol/error.kh"
+
+tp Observer_Error ab
+tp GetError mt (self Observer_Error) () (e Error)

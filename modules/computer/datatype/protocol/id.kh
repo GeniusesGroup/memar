@@ -1,0 +1,13 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+// ID use as a way to distinguish data-types as domains.
+// Use first 64bit of `datatype_p.UUID`
+tp Datatype_ID ab
+
+// TODO(go-migrate):
+/*
+package datatype_p
+
+// ID use as a way to distinguish data-types as domains.
+// Use first 64bit of `datatype_p.UUID`
+type ID uint64
+*/

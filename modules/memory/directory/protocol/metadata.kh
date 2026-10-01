@@ -1,0 +1,28 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+tp NumberOfElement in "modules/computer/adt/container/protocol/length.kh"
+tp File_Metadata in "modules/memory/file/protocol/metadata.kh"
+
+// Metadata is the interface that must implement by any file and directory.
+tp Directory_Metadata ab {
+    File_Metadata
+}
+tp DirNumber mt (self Directory_Metadata) () (n NumberOfElement)
+
+tp FileNumber mt (self Directory_Metadata) () (n NumberOfElement)
+
+// TODO(go-migrate):
+/*
+package directory_p
+
+import (
+	container_p "memar/computer/adt/container/protocol"
+	error_p "memar/process/error/protocol"
+	file_p "memar/storage/file/protocol"
+)
+
+// Metadata is the interface that must implement by any file and directory.
+type Metadata interface {
+	DirNumber() container_p.NumberOfElement  // return number of directory save in this directory
+	FileNumber() container_p.NumberOfElement // return number of file save in this directory
+}
+*/

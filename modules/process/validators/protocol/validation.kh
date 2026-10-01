@@ -1,0 +1,7 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Error in "modules/process/error/protocol/error.kh"
+
+// **ATTENTION**::: strongly suggest use capsule_p.Assignment to prevent invalid state at first place.
+tp Validation ab
+tp Validate mt (self Validation) () (err Error)

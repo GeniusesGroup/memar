@@ -1,0 +1,11 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Error in "modules/process/error/protocol/error.kh"
+tp Signed in "modules/math/integer/protocol/signed.kh"
+
+tp Scheduler_Waiting ab
+tp AddToWaitList mt (self Scheduler_Waiting) (id Signed) (err Error)
+
+tp NotifyWaitList mt (self Scheduler_Waiting) (id Signed) (err Error)
+
+tp Wait mt (self Scheduler_Waiting) () (id Signed, er Error)

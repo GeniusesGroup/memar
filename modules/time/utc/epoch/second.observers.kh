@@ -1,0 +1,6 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp SecondEpoch in "modules/time/utc/epoch/second.kh"
+
+tp Observer_SecondEpoch ab
+tp GetSecondEpoch mt (self Observer_SecondEpoch) () (s SecondEpoch)

@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Error in "modules/process/error/protocol/error.kh"
+
+// In computer science, reference counting is a programming technique of storing the number of references,
+// pointers, or handles to a resource, such as an object, a block of memory, disk space, and others.
+//
+// In garbage collection algorithms, reference counts may be used to deallocate objects that are no longer needed.
+//
+// https://en.wikipedia.org/wiki/Reference_counting
+// https://doc.rust-lang.org/std/rc/struct.Rc.html
+tp ReferenceCounting ab
+tp IncrementReference mt (self ReferenceCounting) () (err Error)
+
+tp DecrementReference mt (self ReferenceCounting) () (err Error)
+
+// TODO(go-migrate):
+/*
+package reference_p
+
+import (
+	error_p "memar/process/error/protocol"
+)
+
+//  weak_count
+*/

@@ -1,0 +1,57 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+// EventListener Usually implement on some kind of services that:
+// - Carry log event to desire node and show on screen e.g. in control room of the organization
+// - Notify to related person about critical log that must check as soon as possible by pager, sms, email, web notification, user GUI app, ...
+// - Local GUI application to notify the developers in `log.CNF_DevelopingMode`
+tp EventListener ab
+
+// TODO(go-migrate): EventListener is declared in modules/process/event/protocol/event-listener.kh, which lacks this member; transfer only writes modules/process/event/protocol/event-target.kh.
+// TODO(go-migrate):
+/*
+package event_p
+
+import (
+	error_p "memar/process/error/protocol"
+)
+
+// EventListener Usually implement on some kind of services that:
+// - Carry log event to desire node and show on screen e.g. in control room of the organization
+// - Notify to related person about critical log that must check as soon as possible by pager, sms, email, web notification, user GUI app, ...
+// - Local GUI application to notify the developers in `log.CNF_DevelopingMode`
+type EventListener[E Event] interface {
+	// It CAN be Blocking(Synchronous) & Non-Blocking, means It CAN block the caller in any ways.
+	// **Strongly suggest just use blocking if you force by strong logic requirements like authorization**
+	EventHandler(event E)
+
+	//
+	// EventListener can implement some functionality like:::
+	//
+
+	// It will part of process and can change the flow of the desire event.
+	// Some consideration:
+	// 	- Target can prevent in `AddEventListener` to register sync listener.
+	// 	- May be `Event` dispatcher don't implement `Event.DefaultPrevented()` and not let you to change the flow.
+	// 	- Just if `Event.Cancelable()`` is `true`, listener can change the flow.
+	// Synchronous() bool
+
+	// - AddEventListener: Capture indicating that events of this type will be dispatched to the registered listener
+	// before being dispatched to any Target beneath it in the target tree.
+	// - RemoveEventListener: Capture that specifies whether the EventListener to be removed is registered as a capturing listener or not.
+	// Capture() bool
+
+	// Once indicating that the listener should be invoked at most once after being added.
+	// If true, the listener would be automatically removed when invoked.
+	// Once() bool
+
+	// Passive() is the same logic as Synchronous()
+	// Passive indicates that the function specified by listener will never call preventDefault().
+	// If a passive listener does call preventDefault(), the user agent will do nothing other than generate a warning log.
+	// See Improving scrolling performance with passive listeners to learn more.
+	// Passive() bool
+
+	// The listener will be removed when receive true on AbortSignal channel.
+	// It is not free lunch, so we decide to not support it. Developers can use RemoveEventListener() to remove any listener explicitly.
+	// AbortSignal() chan bool
+}
+*/

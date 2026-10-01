@@ -1,0 +1,20 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Container_Element in "modules/computer/adt/container/protocol/element.kh"
+tp NumberOfElement in "modules/computer/adt/container/protocol/length.kh"
+tp Error in "modules/process/error/protocol/error.kh"
+tp Character in "modules/codec/string/protocol/character.kh"
+
+// Reversed is a container level operation.
+
+tp Container_Add ab
+// Add will add the given elements to the container in a location decided by the container logic.
+tp Add mt (self Container_Add) (el Container_Element) (nAdd NumberOfElement, err Error)
+
+tp Add_String_Character ab
+// Add will add the given elements to the container in a location decided by the container logic.
+tp Container_Add_String_Character_Add mt (self Add_String_Character) (el Character) (nAdd NumberOfElement, err Error)
+
+// Append is an element operation

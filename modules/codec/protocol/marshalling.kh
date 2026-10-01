@@ -1,0 +1,27 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Observer_Codec_Length in "modules/codec/protocol/length.observers.kh"
+tp Codec_Length in "modules/codec/protocol/length.kh"
+tp Computer_Buffer in "modules/computer/buffer/protocol/buffer.kh"
+tp DataType in "modules/computer/datatype/protocol/data-type.kh"
+tp Error in "modules/process/error/protocol/error.kh"
+tp Observer_MediaType in "modules/identifier/mediatype/protocol/media-type.observers.kh"
+
+tp Codec_Marshalling ab {
+    Codec_Unmarshaler
+    Codec_Marshaler
+    DataType
+    Observer_MediaType
+}
+
+// Unmarshaler is the interface that wraps the Unmarshal method.
+tp Codec_Unmarshaler ab
+// Unmarshal reads and decode data from given slice until end of needed data or occur error.
+tp Codec_Unmarshaler_Unmarshal mt (self Codec_Unmarshaler) (source Computer_Buffer) (n Codec_Length, err Error)
+
+// Marshaler is the interface that wraps the Marshal & Observer_Length methods.
+tp Codec_Marshaler ab {
+    Observer_Codec_Length
+}
+// Marshal write serialized(encoded) data to given slice from len to max cap and save marshal state for future call.
+tp Codec_Marshaler_Marshal mt (self Codec_Marshaler) (destination Computer_Buffer) (n Codec_Length, err Error)

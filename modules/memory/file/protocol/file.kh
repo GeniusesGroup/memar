@@ -1,0 +1,19 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+tp Mutator_File in "modules/memory/file/protocol/file.mutators.kh"
+
+tp Observer_File_Data in "modules/memory/file/protocol/data.observers.kh"
+tp Observer_File_Metadata in "modules/memory/file/protocol/metadata.observers.kh"
+// File is the descriptor interface that must implement by any to be an file.
+// File owner is one app so it must handle concurrent protection internally not by file it self.
+// A file other apps use is still owned by one app; the others reach it through that app's SDK, not
+// through an OS-level shared tree (docs/protocols/computer/os.md#storage-block-abstractions-not-filesystems,
+// docs/protocols/modules/sdk.md#local-and-network-invocation). Which app serves shared files is a default-app
+// choice (docs/protocols/computer/os.md), not part of this protocol.
+//
+// https://en.wikipedia.org/wiki/Computer_file
+tp Storage_File ab {
+    Observer_File_Metadata
+    Observer_File_Data
+    Mutator_File
+}
+

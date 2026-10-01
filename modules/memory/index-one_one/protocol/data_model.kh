@@ -1,0 +1,14 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp IndexOneOne_Key in "modules/memory/index-one_one/protocol/dt-key.kh"
+tp Observer_RequestID in "modules/process/request/protocol/dt-uuid.observers.kh"
+tp Storage_Observer_RecordUUID in "modules/memory/record/protocol/dt-uuid.observers.kh"
+tp Observer_Time_Request in "modules/process/time/protocol/dt-request.observers.kh"
+
+// Store to know all request created by specific rule.
+tp IndexOneOne_DataModel ab {
+    IndexOneOne_Key
+    Storage_Observer_RecordUUID
+    Observer_RequestID
+    Observer_Time_Request
+}

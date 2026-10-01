@@ -1,0 +1,24 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+// What a Khayyam-written compiler needs first: the text of the unit it is
+// compiling. The language has no primitive type, so a text is a capsule whose
+// methods come from outside, and a compiler that cannot see its own input's
+// characters cannot begin. This probe asks the only question that matters here —
+// can a program's own code reach a character of a text it holds — and the
+// answer the target gives is recorded in bootstrap.test.ts.
+//
+// The language's position: no primitive types, and every value is wrapped in a
+// named capsule (docs/khayyam/khayyam.md → Type Principles Realized).
+
+tp Character cp {
+}
+
+tp Text cp {
+}
+
+tp CharacterAt mt (self Text) (at Count) (character Character)
+
+tp Count cp {
+}
+
+vr zero Count

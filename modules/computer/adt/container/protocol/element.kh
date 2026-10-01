@@ -1,0 +1,19 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+// Element is whatever a raw ADT hosts. The host requires no behavior of its guest:
+// the guest owns its own identity and memory rules.
+// Because it requires nothing, every type satisfies it; that is why it belongs only
+// in the element and value positions of the raw ADT protocols.
+// A domain protocol never takes or returns it: a domain concept that holds elements is its own
+// type whose methods take and return the domain element type (docs/khayyam/polymorphism.md).
+tp Container_Element ab
+
+// TODO(go-migrate):
+/*
+package container_p
+
+// Element is describe
+type Element interface {
+	// TODO:::
+}
+*/

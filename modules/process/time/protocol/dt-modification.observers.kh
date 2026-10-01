@@ -1,0 +1,7 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Time in "modules/time/protocol/time.kh"
+
+// Time of the data is modifying.
+tp Observer_Time_Modification ab
+tp GetModificationTime mt (self Observer_Time_Modification) () (t Time)

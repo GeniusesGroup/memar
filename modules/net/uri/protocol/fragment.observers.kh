@@ -1,0 +1,6 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp URI_Fragment in "modules/net/uri/protocol/fragment.kh"
+
+tp Observer_Fragment ab
+tp GetFragment mt (self Observer_Fragment) () (f URI_Fragment)

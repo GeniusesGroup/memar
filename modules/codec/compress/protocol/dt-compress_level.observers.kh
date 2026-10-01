@@ -1,0 +1,6 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp CompressLevel in "modules/codec/compress/protocol/dt-compress_level.kh"
+
+tp Observer_CompressLevel ab
+tp GetCompressLevel mt (self Observer_CompressLevel) () (c CompressLevel)

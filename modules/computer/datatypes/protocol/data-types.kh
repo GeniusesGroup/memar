@@ -1,0 +1,9 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp DataType in "modules/computer/datatype/protocol/data-type.kh"
+tp Datatype_ID in "modules/computer/datatype/protocol/id.kh"
+tp Error in "modules/process/error/protocol/error.kh"
+
+tp DataTypes_Map ab
+tp DataTypes_Map_Register mt (self DataTypes_Map) (dt DataType) (err Error)
+tp DataTypes_Map_GetByID mt (self DataTypes_Map) (id Datatype_ID) (dt DataType, err Error)

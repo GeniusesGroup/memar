@@ -1,0 +1,12 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Observer_Host in "modules/net/uri/protocol/host.observers.kh"
+tp Observer_Port in "modules/net/uri/protocol/port.observers.kh"
+tp Observer_UserInfo in "modules/net/uri/protocol/user_info.observers.kh"
+
+// URI Authority >> [ userinfo "@" ] host [ ":" port ]
+tp Observer_Authority ab {
+    Observer_UserInfo
+    Observer_Host
+    Observer_Port
+}

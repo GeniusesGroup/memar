@@ -1,0 +1,12 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Event in "modules/process/event/protocol/event.kh"
+tp Stack in "modules/computer/runtime/protocol/stack.kh"
+tp Observer_ThreadID in "modules/computer/runtime/thread/protocol/id.observers.kh"
+
+// Event is race report event
+tp Race_Event ab {
+    Observer_ThreadID
+    Stack
+    Event
+}

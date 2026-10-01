@@ -1,0 +1,55 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Observer_DataType in "modules/computer/datatype/protocol/data-type.observers.kh"
+tp Observer_Time in "modules/time/protocol/time.observers.kh"
+tp Logic_Equivalence in "modules/math/logic/protocol/equivalence.kh"
+tp Boolean in "modules/math/boolean/protocol/boolean.kh"
+
+tp Equivalence mt (self Event) (with Event) (b Boolean)
+
+// Events CAN be any data-type in any domain.
+// Event are runtime data-types that DON't need to store in storage layer.
+//
+// Events dispatch after base logic that make this Event.
+// e.g. When a service request want to serve, a handler receive the request and decide to save the request for auditing
+// after validate request codec and save request, a related event dispatch.
+// This service can provide some mechanism to change the flow of request processing
+//
+// Other frameworks:
+// https://www.w3.org/TR/DOM-Level-3-Events/#event-flow
+// https://developer.mozilla.org/en-US/docs/Web/API/Event
+// https://developer.mozilla.org/en-US/docs/Web/Events
+// https://learn.microsoft.com/en-us/dotnet/api/system.componentmodel.eventdescriptor
+tp Event ab {
+    Observer_DataType
+    Observer_Time
+    Logic_Equivalence
+}
+
+// TODO(go-migrate):
+/*
+package event_p
+
+import (
+	datatype_p "memar/computer/datatype/protocol"
+	logic_p "memar/math/logic/protocol"
+	time_p "memar/time/protocol"
+)
+
+// Events CAN be any data-type in any domain.
+// Event are runtime data-types that DON't need to store in storage layer.
+// 
+// Events dispatch after base logic that make this Event.
+// e.g. When a service request want to serve, a handler receive the request and decide to save the request for auditing
+// after validate request codec and save request, a related event dispatch.
+// This service can provide some mechanism to change the flow of request processing
+//
+// Other frameworks:
+// https://www.w3.org/TR/DOM-Level-3-Events/#event-flow
+// https://developer.mozilla.org/en-US/docs/Web/API/Event
+// https://developer.mozilla.org/en-US/docs/Web/Events
+// https://learn.microsoft.com/en-us/dotnet/api/system.componentmodel.eventdescriptor
+type Event interface {
+	logic_p.Equivalence[Event]
+}
+*/

@@ -1,0 +1,23 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/join
+// Join is an operation
+tp Join ab
+
+// TODO(go-migrate):
+/*
+package string_p
+
+import (
+	error_p "memar/process/error/protocol"
+	string_p "memar/codec/string/protocol"
+)
+
+// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/join
+// Join is an operation
+type Join[STR string_p.String] interface {
+	// The join() method of Array instances creates and returns a new string by concatenating all of the elements in this array,
+	// separated by commas or a specified separator string.
+	Join(sep STR, con ...STR) (s STR, err error_p.Error)
+}
+*/

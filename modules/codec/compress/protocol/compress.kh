@@ -1,0 +1,20 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp CompressOptions in "modules/codec/compress/protocol/compress-options.kh"
+tp Observer_ContentEncoding in "modules/codec/compress/protocol/dt-content_encoding.observers.kh"
+tp Computer_Buffer in "modules/computer/buffer/protocol/buffer.kh"
+tp DataType in "modules/computer/datatype/protocol/data-type.kh"
+tp Error in "modules/process/error/protocol/error.kh"
+tp Observer_MediaType in "modules/identifier/mediatype/protocol/media-type.observers.kh"
+tp Observer_Extension in "modules/memory/file/protocol/extention.observers.kh"
+
+// CompressType is standard shape of any compress coding type
+tp CompressType ab {
+    Observer_ContentEncoding
+    DataType
+    Observer_MediaType
+    Observer_Extension
+}
+tp Compress mt (self CompressType) (raw Computer_Buffer, options CompressOptions) (compressed Computer_Buffer, err Error)
+
+tp Decompress mt (self CompressType) (compressed Computer_Buffer) (raw Computer_Buffer, err Error)

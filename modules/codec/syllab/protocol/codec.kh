@@ -1,0 +1,29 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Computer_Buffer in "modules/computer/buffer/protocol/buffer.kh"
+tp Error in "modules/process/error/protocol/error.kh"
+tp Index_Heap in "modules/codec/syllab/protocol/index.kh"
+tp Index_Stack in "modules/codec/syllab/protocol/index.kh"
+tp Observer_Syllab_Lengths in "modules/codec/syllab/protocol/length.observers.kh"
+
+// Codec is
+tp CodecSyllab_Codec ab {
+    Syllab_Encoder
+    Syllab_Decoder
+}
+
+tp Syllab_Decoder ab
+// CheckSyllab usually just check GetSyllabStackLength not greater than len of given payload. and call just before decode payload.
+tp CheckSyllab mt (self Syllab_Decoder) (source Computer_Buffer) (err Error)
+
+// FromSyllab ready given payload for get accessors methods.
+// - Due to strongly suggest to use fields get accessors methods, below method just change under hood buffer if it isn't struct.
+// - It can return GetSyllabStackLength()-1 as end of stack in payload, but it will be runtime logic. compiler can inline and do -1 in compile time easily.
+tp FromSyllab mt (self Syllab_Decoder) (source Computer_Buffer, stackIndex Index_Stack) (err Error)
+
+tp Syllab_Encoder ab {
+    Observer_Syllab_Lengths
+}
+// ToSyllab encode the struct pointer to Syllab format
+// in non embed struct usually `stackIndex = 0` & `heapIndex = self.GetSyllabStackLength()` as heap start index || end of stack size.
+tp ToSyllab mt (self Syllab_Encoder) (destination Computer_Buffer, stackIndex Index_Stack, heapIndex Index_Heap) (freeHeapIndex Index_Heap, err Error)

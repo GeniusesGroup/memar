@@ -1,0 +1,7 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Buffer_Index in "modules/computer/buffer/protocol/index.kh"
+
+tp Mutator_Indexes ab
+tp Buffer_Mutator_Indexes_SetReadIndex mt (self Mutator_Indexes) (ri Buffer_Index) ()
+tp Buffer_Mutator_Indexes_SetWriteIndex mt (self Mutator_Indexes) (wi Buffer_Index) ()

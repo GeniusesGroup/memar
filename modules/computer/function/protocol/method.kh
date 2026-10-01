@@ -1,0 +1,9 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+tp Computer_Function in "modules/computer/function/protocol/function.kh"
+tp DataType in "modules/computer/datatype/protocol/data-type.kh"
+
+// Method
+tp Method ab {
+    Computer_Function
+}
+tp Receiver mt (self Method) () (d DataType)

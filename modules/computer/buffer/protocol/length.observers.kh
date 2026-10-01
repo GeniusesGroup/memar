@@ -1,0 +1,7 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Buffer_Length in "modules/computer/buffer/protocol/length.kh"
+
+tp Observer_Buffer_Lengths ab
+// GetUnreadLength returns how many bytes are not read(GetReadIndex to GetWriteIndex) in the buffer.
+tp GetUnreadLength mt (self Observer_Buffer_Lengths) () (l Buffer_Length)

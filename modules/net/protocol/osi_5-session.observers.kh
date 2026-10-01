@@ -1,0 +1,6 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp OSI_Session in "modules/net/protocol/osi_5-session.kh"
+
+tp Observer_OSI_Session ab
+tp GetOSISessionLayer mt (self Observer_OSI_Session) () (s OSI_Session)

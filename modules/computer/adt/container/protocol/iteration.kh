@@ -1,0 +1,30 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Container_ElementIndex in "modules/computer/adt/container/protocol/index.kh"
+tp Container_Iterate in "modules/computer/adt/container/protocol/iterate.kh"
+tp Iterate_DataType in "modules/computer/adt/container/protocol/iterate.kh"
+tp Iterate_Module_Path in "modules/computer/adt/container/protocol/iterate.kh"
+tp Iterate_String_Character in "modules/computer/adt/container/protocol/iterate.kh"
+tp Error in "modules/process/error/protocol/error.kh"
+
+// https://github.com/golang/go/discussions/54245
+//
+// Iteration or Iterable
+//
+// Other protocols:::
+// https://www.typescriptlang.org/docs/handbook/symbols.html#symboliterator
+tp Container_Iteration ab
+// It can return `Iterate` errors or internal `Iteration` errors.
+tp Iteration mt (self Container_Iteration) (startIndex Container_ElementIndex, iterator Container_Iterate) (err Error)
+
+tp Iteration_DataType ab
+// It can return `Iterate` errors or internal `Iteration` errors.
+tp Container_Iteration_DataType_Iteration mt (self Iteration_DataType) (startIndex Container_ElementIndex, iterator Iterate_DataType) (err Error)
+
+tp Iteration_Module_Path ab
+// It can return `Iterate` errors or internal `Iteration` errors.
+tp Container_Iteration_Module_Path_Iteration mt (self Iteration_Module_Path) (startIndex Container_ElementIndex, iterator Iterate_Module_Path) (err Error)
+
+tp Iteration_String_Character ab
+// It can return `Iterate` errors or internal `Iteration` errors.
+tp Container_Iteration_String_Character_Iteration mt (self Iteration_String_Character) (startIndex Container_ElementIndex, iterator Iterate_String_Character) (err Error)

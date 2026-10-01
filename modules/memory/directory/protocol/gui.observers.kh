@@ -1,0 +1,7 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Error in "modules/process/error/protocol/error.kh"
+tp Storage_Directory in "modules/memory/directory/protocol/directory.kh"
+
+tp Observer_File_GUI ab
+tp GetParentDirectory mt (self Observer_File_GUI) () (dir Storage_Directory, err Error)

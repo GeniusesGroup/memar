@@ -1,0 +1,55 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+tp Capsule_LifeCycle in "modules/computer/capsule/protocol/life_cycle_contract.kh"
+tp Error in "modules/process/error/protocol/error.kh"
+tp Observer_DialogueType in "modules/net/protocol/session-dialogue.observers.kh"
+tp Observer_FrameType in "modules/net/protocol/frame-type.observers.kh"
+tp Observer_SessionID in "modules/net/protocol/session-id.observers.kh"
+tp FrameWriter in "modules/net/protocol/frame-writer.kh"
+
+// The session layer provides the mechanism for opening, closing and managing a session between end-user application processes,
+tp OSI_Session ab {
+    Capsule_LifeCycle
+// session data
+    Observer_SessionID
+    Observer_DialogueType
+    OSI_Session_LowLevelAPIs
+    Observer_FrameType
+}
+
+// Session_LowLevelAPIs is low level APIs, don't use them in the services layer, if you don't know how it can be effect the application.
+// Multiplexing is the main service of the session layer in the OSI model. But it is part of the transport layer in the TCP/IP model.
+tp OSI_Session_LowLevelAPIs ab {
+    FrameWriter
+}
+// Just once, must deregister the socket and notify peer in some proper way.
+tp Close mt (self OSI_Session_LowLevelAPIs) () (err Error)
+
+// Just once
+tp Revoke mt (self OSI_Session_LowLevelAPIs) () (err Error)
+
+// TODO(go-migrate):
+/*
+package net_p
+
+import (
+	capsule_p "memar/computer/capsule/protocol"
+	error_p "memar/process/error/protocol"
+)
+
+/*
+**********************************************************************************
+Transport (OSI Layer 5: Session)
+
+https://en.wikipedia.org/wiki/Session_layer
+https://en.wikipedia.org/wiki/Session_(computer_science)
+**********************************************************************************
+* /
+
+// The session layer provides the mechanism for opening, closing and managing a session between end-user application processes,
+type OSI_Session interface {
+	// Init(dt OSI_Session_DialogueType)
+
+	/* session data * /
+
+}
+*/

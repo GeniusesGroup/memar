@@ -1,0 +1,520 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Error in "modules/process/error/protocol/error.kh"
+
+// Authorize is part of operation process logic
+tp Authorize ab
+tp authorize mt (self Authorize) () (e Error)
+
+// TODO(js-idea): archived memar-js JavaScript, not Khayyam and not a migration
+// Unverified idea from the retired memar-js repository (archive commit 27e013d, last pushed 2026-01-06). Kept as a thought only: the architect has moved on since, so this may contradict the current design.
+// source: memar-js/net/connection/connection.js
+//
+// const connection = {
+//     status: {},
+//     type: {},
+// }
+//
+// /**
+//  * return connection status as text indicate in Achaemenid server standard.
+//  * @param {number} id 
+//  */
+// connection.status.GetNameByID = function (id) {
+//     switch (id) {
+//         case 0:
+//             return "LocaleText[0]"
+//         case 1:
+//             return "LocaleText[1]"
+//         case 2:
+//             return "LocaleText[2]"
+//         case 3:
+//             return "LocaleText[3]"
+//         case 4:
+//             return "LocaleText[4]"
+//     }
+// }
+//
+// /**
+//  * return connection type as text in achaemenid server standard.
+//  * @param {number} id 
+//  */
+// connection.type.GetNameByID = function (id) {
+//     switch (id) {
+//         case 0:
+//             return "LocaleText[5]"
+//         case 1:
+//             return "LocaleText[6]"
+//         case 2:
+//             return "LocaleText[7]"
+//         case 3:
+//             return "LocaleText[8]"
+//         case 4:
+//             return "LocaleText[9]"
+//         case 5:
+//             return "LocaleText[10]"
+//     }
+// }
+
+// TODO(js-idea): archived memar-js JavaScript, not Khayyam and not a migration
+// Unverified idea from the retired memar-js repository (archive commit 27e013d, last pushed 2026-01-06). Kept as a thought only: the architect has moved on since, so this may contradict the current design.
+// source: memar-js/net/connection/connection.json
+// {
+//     "en": [
+//         "Unset",
+//         "Issued",
+//         "Update",
+//         "Expired",
+//         "Revoked",
+//         "Unset",
+//         "Guest",
+//         "Registered",
+//         "Person",
+//         "Org",
+//         "App"
+//     ],
+//     "fa": [
+//         "تنظیم نشده",
+//         "صادر شده",
+//         "بروزرسانی شده",
+//         "منقضی شده",
+//         "باطل شده",
+//         "تنظیم نشده",
+//         "مهمان",
+//         "ثبت نام شده",
+//         "شخص حقیقی",
+//         "شخص حقوقی",
+//         "برنامه"
+//     ]
+// }
+
+// TODO(js-idea): archived memar-js JavaScript, not Khayyam and not a migration
+// Unverified idea from the retired memar-js repository (archive commit 27e013d, last pushed 2026-01-06). Kept as a thought only: the architect has moved on since, so this may contradict the current design.
+// source: memar-js/process/operation/authorization.js
+//
+// const authorization = {
+//     CRUD: {},
+//     UserType: {}
+// }
+
+// TODO(js-idea): archived memar-js JavaScript, not Khayyam and not a migration
+// Unverified idea from the retired memar-js repository (archive commit 27e013d, last pushed 2026-01-06). Kept as a thought only: the architect has moved on since, so this may contradict the current design.
+// source: memar-js/process/operation/crud.js
+//
+// // CRUDs
+// const CRUDNone = 0 //             0b00000000
+// const CRUDCreate = 1 //           0b00000001
+// const CRUDRead = 2 //             0b00000010
+// // CRUDCreateRead = 3 //          0b00000011
+// const CRUDUpdate = 4 //           0b00000100
+// // CRUDCreateUpdate = 5 //        0b00000101
+// // CRUDReadUpdate = 6 //          0b00000110
+// // CRUDCreateReadUpdate = 7 //    0b00000111
+// const CRUDDelete = 8 //           0b00001000
+// // CRUDCreateDelete = 9 //        0b00001001
+// // CRUDReadDelete = 10 //         0b00001010
+// // CRUDCreateReadDelete = 11 //   0b00001011
+// // CRUDUpdateDelete =  12 //      0b00001100
+// // CRUDCreateUpdateDelete = 13 // 0b00001101
+// // CRUDReadUpdateDelete = 14 //   0b00001110
+// const CRUDAll = 255 //            0b11111111
+//
+// /**
+//  * Set given crud to given CRUD!
+//  * @param {number} crud 
+//  * 
+//  * e.g. c = authorization.CRUD.Set(CRUDCreate|CRUDDelete)
+//  */
+// authorization.CRUD.Set = function (crud) {
+//     return crud
+// }
+//
+// /**
+//  * Check check given crud exist in given CRUD!
+//  * @param {number} cruds
+//  * @param {number} crud 
+//  */
+// authorization.CRUD.Check = function (cruds, crud) {
+//     if (crud & cruds == crud) {
+//         return true
+//     }
+//     return false
+// }
+//
+// /**
+//  * return authorization CRUD short detail text
+//  * @param {number} id 
+//  */
+// authorization.CRUD.GetShortDetailByID = function (id) {
+//     switch (id) {
+//         case CRUDNone:
+//             return "LocaleText[0]"
+//         case CRUDCreate:
+//             return "LocaleText[2]"
+//         case CRUDRead:
+//             return "LocaleText[4]"
+//         case CRUDUpdate:
+//             return "LocaleText[6]"
+//         case CRUDDelete:
+//             return "LocaleText[8]"
+//         case CRUDAll:
+//             return "LocaleText[10]"
+//         default:
+//             return "LocaleText[12]"
+//     }
+// }
+//
+// /**
+//  * return authorization CRUD long detail text
+//  * @param {number} id 
+//  */
+// authorization.CRUD.GetLongDetailByID = function (id) {
+//     switch (id) {
+//         case CRUDNone:
+//             return "LocaleText[1]"
+//         case CRUDCreate:
+//             return "LocaleText[3]"
+//         case CRUDRead:
+//             return "LocaleText[5]"
+//         case CRUDUpdate:
+//             return "LocaleText[7]"
+//         case CRUDDelete:
+//             return "LocaleText[9]"
+//         case CRUDAll:
+//             return "LocaleText[11]"
+//         default:
+//             return "LocaleText[13]"
+//     }
+// }
+
+// TODO(js-idea): archived memar-js JavaScript, not Khayyam and not a migration
+// Unverified idea from the retired memar-js repository (archive commit 27e013d, last pushed 2026-01-06). Kept as a thought only: the architect has moved on since, so this may contradict the current design.
+// source: memar-js/process/operation/user.js
+//
+// // User Types
+// const UserType_Unset = 0b00000000 // None - Owner of the data with any user type
+// const UserType_Person = 0b00000010
+// const UserType_Thing = 0b00000100 // any device or robot with specific intelligence - AI
+// const UserType_Org = 0b00001000
+// const UserType_App = 0b00010000
+// // const UserType_Registered = 0b11111110 // to not indicate user type
+// const UserType_All = 0b11111111
+//
+// /**
+//  * Set given user to given UserType!
+//  * @param {number} users any above UserType constant
+//  * 
+//  * User logical operator OR| to add many types together e.g. ut = protocol.UserType.Set(UserType_Person|UserType_Thing)
+//  * 
+//  * User logical operator XOR^ to remove a UserType from base e.g. ut = protocol.UserType.Set(UserType_All^UserType_Thing)
+//  * 
+//  * User logical operator NOT^ to reverse a UserType to accept all expect it self! e.g. ut.Set(^UserType_Thing)
+//  */
+// protocol.UserType.Set = function (users) {
+//     return users
+// }
+//
+// // Check check given user type exist in given UserType!
+// protocol.UserType.Check = function (user, UserType) {
+//     if (user & UserType != user) {
+//         throw Application.GetErrorByID(2605698703) // ErrUserNotAllow
+//     }
+// }
+//
+// // CheckReverse check given users type exist in given UserType!
+// protocol.UserType.CheckReverse = function (users, UserType) {
+//     if (UserType & users != UserType) {
+//         throw Application.GetErrorByID(2605698703) // ErrUserNotAllow
+//     }
+// }
+//
+// /**
+//  * return connection type as text in achaemenid server standard.
+//  * @param {number} id 
+//  */
+// protocol.UserType.GetDetailsByID = function (id) {
+//     switch (id) {
+//         case UserType_Unset:
+//             return "LocaleText[5]"
+//         case UserType_Person:
+//             return "LocaleText[8]"
+//         case UserType_Org:
+//             return "LocaleText[9]"
+//         case UserType_App:
+//             return "LocaleText[10]"
+//         case UserType_Thing:
+//             return "LocaleText[11]"
+//         case UserType_All:
+//             return "LocaleText[12]"
+//     }
+// }
+
+// TODO(js-idea): archived memar-js JavaScript, not Khayyam and not a migration
+// Unverified idea from the retired memar-js repository (archive commit 27e013d, last pushed 2026-01-06). Kept as a thought only: the architect has moved on since, so this may contradict the current design.
+// source: memar-js/process/operation/user.json
+// {
+//     "en": [
+//         "",
+//         "",
+//         "",
+//         "",
+//         "",
+//         "Unset",
+//         "Guest",
+//         "Registered",
+//         "Person",
+//         "Organization",
+//         "Application",
+//         "Artificial intelligence",
+//         "All User Type"
+//     ],
+//     "fa": [
+//         "",
+//         "",
+//         "",
+//         "",
+//         "",
+//         "تنظیم نشده",
+//         "مهمان",
+//         "ثبت نام شده",
+//         "شخص حقیقی",
+//         "شخص حقوقی",
+//         "برنامه",
+//         "هوش مصنوعی",
+//         "همه نوع کاربر"
+//     ]
+// }
+
+// TODO(js-idea): archived memar-js source, not Khayyam and not a migration
+// Unverified idea from the retired memar-js repository (archive commit 27e013d, last pushed 2026-01-06). Kept as a thought only: the architect has moved on since, so this may contradict the current design.
+// source: memar-js/process/operation/authorization.js
+//
+// const authorization = {
+//     CRUD: {},
+//     UserType: {}
+// }
+
+// TODO(js-idea): archived memar-js source, not Khayyam and not a migration
+// Unverified idea from the retired memar-js repository (archive commit 27e013d, last pushed 2026-01-06). Kept as a thought only: the architect has moved on since, so this may contradict the current design.
+// source: memar-js/process/operation/crud.js
+//
+// // CRUDs
+// const CRUDNone = 0 //             0b00000000
+// const CRUDCreate = 1 //           0b00000001
+// const CRUDRead = 2 //             0b00000010
+// // CRUDCreateRead = 3 //          0b00000011
+// const CRUDUpdate = 4 //           0b00000100
+// // CRUDCreateUpdate = 5 //        0b00000101
+// // CRUDReadUpdate = 6 //          0b00000110
+// // CRUDCreateReadUpdate = 7 //    0b00000111
+// const CRUDDelete = 8 //           0b00001000
+// // CRUDCreateDelete = 9 //        0b00001001
+// // CRUDReadDelete = 10 //         0b00001010
+// // CRUDCreateReadDelete = 11 //   0b00001011
+// // CRUDUpdateDelete =  12 //      0b00001100
+// // CRUDCreateUpdateDelete = 13 // 0b00001101
+// // CRUDReadUpdateDelete = 14 //   0b00001110
+// const CRUDAll = 255 //            0b11111111
+//
+// /**
+//  * Set given crud to given CRUD!
+//  * @param {number} crud 
+//  * 
+//  * e.g. c = authorization.CRUD.Set(CRUDCreate|CRUDDelete)
+//  */
+// authorization.CRUD.Set = function (crud) {
+//     return crud
+// }
+//
+// /**
+//  * Check check given crud exist in given CRUD!
+//  * @param {number} cruds
+//  * @param {number} crud 
+//  */
+// authorization.CRUD.Check = function (cruds, crud) {
+//     if (crud & cruds == crud) {
+//         return true
+//     }
+//     return false
+// }
+//
+// /**
+//  * return authorization CRUD short detail text
+//  * @param {number} id 
+//  */
+// authorization.CRUD.GetShortDetailByID = function (id) {
+//     switch (id) {
+//         case CRUDNone:
+//             return "LocaleText[0]"
+//         case CRUDCreate:
+//             return "LocaleText[2]"
+//         case CRUDRead:
+//             return "LocaleText[4]"
+//         case CRUDUpdate:
+//             return "LocaleText[6]"
+//         case CRUDDelete:
+//             return "LocaleText[8]"
+//         case CRUDAll:
+//             return "LocaleText[10]"
+//         default:
+//             return "LocaleText[12]"
+//     }
+// }
+//
+// /**
+//  * return authorization CRUD long detail text
+//  * @param {number} id 
+//  */
+// authorization.CRUD.GetLongDetailByID = function (id) {
+//     switch (id) {
+//         case CRUDNone:
+//             return "LocaleText[1]"
+//         case CRUDCreate:
+//             return "LocaleText[3]"
+//         case CRUDRead:
+//             return "LocaleText[5]"
+//         case CRUDUpdate:
+//             return "LocaleText[7]"
+//         case CRUDDelete:
+//             return "LocaleText[9]"
+//         case CRUDAll:
+//             return "LocaleText[11]"
+//         default:
+//             return "LocaleText[13]"
+//     }
+// }
+
+// TODO(js-idea): archived memar-js source, not Khayyam and not a migration
+// Unverified idea from the retired memar-js repository (archive commit 27e013d, last pushed 2026-01-06). Kept as a thought only: the architect has moved on since, so this may contradict the current design.
+// source: memar-js/process/operation/crud.json
+// {
+//     "en": [
+//         "None",
+//         "",
+//         "Create",
+//         "",
+//         "Read",
+//         "",
+//         "Update",
+//         "",
+//         "Delete",
+//         "",
+//         "All CRUD",
+//         "",
+//         "Bad-Set",
+//         ""
+//     ],
+//     "fa": [
+//         "هیچ کدام",
+//         "",
+//         "نوشتن",
+//         "",
+//         "خواندن",
+//         "",
+//         "بروزرسانی",
+//         "",
+//         "پاک کردم",
+//         "",
+//         "همه موارد",
+//         "",
+//         "ناصحیح",
+//         ""
+//     ]
+// }
+
+// TODO(js-idea): archived memar-js source, not Khayyam and not a migration
+// Unverified idea from the retired memar-js repository (archive commit 27e013d, last pushed 2026-01-06). Kept as a thought only: the architect has moved on since, so this may contradict the current design.
+// source: memar-js/process/operation/user.js
+//
+// // User Types
+// const UserType_Unset = 0b00000000 // None - Owner of the data with any user type
+// const UserType_Person = 0b00000010
+// const UserType_Thing = 0b00000100 // any device or robot with specific intelligence - AI
+// const UserType_Org = 0b00001000
+// const UserType_App = 0b00010000
+// // const UserType_Registered = 0b11111110 // to not indicate user type
+// const UserType_All = 0b11111111
+//
+// /**
+//  * Set given user to given UserType!
+//  * @param {number} users any above UserType constant
+//  * 
+//  * User logical operator OR| to add many types together e.g. ut = protocol.UserType.Set(UserType_Person|UserType_Thing)
+//  * 
+//  * User logical operator XOR^ to remove a UserType from base e.g. ut = protocol.UserType.Set(UserType_All^UserType_Thing)
+//  * 
+//  * User logical operator NOT^ to reverse a UserType to accept all expect it self! e.g. ut.Set(^UserType_Thing)
+//  */
+// protocol.UserType.Set = function (users) {
+//     return users
+// }
+//
+// // Check check given user type exist in given UserType!
+// protocol.UserType.Check = function (user, UserType) {
+//     if (user & UserType != user) {
+//         throw Application.GetErrorByID(2605698703) // ErrUserNotAllow
+//     }
+// }
+//
+// // CheckReverse check given users type exist in given UserType!
+// protocol.UserType.CheckReverse = function (users, UserType) {
+//     if (UserType & users != UserType) {
+//         throw Application.GetErrorByID(2605698703) // ErrUserNotAllow
+//     }
+// }
+//
+// /**
+//  * return connection type as text in achaemenid server standard.
+//  * @param {number} id 
+//  */
+// protocol.UserType.GetDetailsByID = function (id) {
+//     switch (id) {
+//         case UserType_Unset:
+//             return "LocaleText[5]"
+//         case UserType_Person:
+//             return "LocaleText[8]"
+//         case UserType_Org:
+//             return "LocaleText[9]"
+//         case UserType_App:
+//             return "LocaleText[10]"
+//         case UserType_Thing:
+//             return "LocaleText[11]"
+//         case UserType_All:
+//             return "LocaleText[12]"
+//     }
+// }
+
+// TODO(js-idea): archived memar-js source, not Khayyam and not a migration
+// Unverified idea from the retired memar-js repository (archive commit 27e013d, last pushed 2026-01-06). Kept as a thought only: the architect has moved on since, so this may contradict the current design.
+// source: memar-js/process/operation/user.json
+// {
+//     "en": [
+//         "",
+//         "",
+//         "",
+//         "",
+//         "",
+//         "Unset",
+//         "Guest",
+//         "Registered",
+//         "Person",
+//         "Organization",
+//         "Application",
+//         "Artificial intelligence",
+//         "All User Type"
+//     ],
+//     "fa": [
+//         "",
+//         "",
+//         "",
+//         "",
+//         "",
+//         "تنظیم نشده",
+//         "مهمان",
+//         "ثبت نام شده",
+//         "شخص حقیقی",
+//         "شخص حقوقی",
+//         "برنامه",
+//         "هوش مصنوعی",
+//         "همه نوع کاربر"
+//     ]
+// }

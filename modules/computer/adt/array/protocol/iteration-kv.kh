@@ -1,0 +1,12 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Iterate_KV in "modules/computer/adt/array/protocol/iterate-kv.kh"
+tp Iterate_KV_String_String in "modules/computer/adt/array/protocol/iterate-kv.kh"
+tp Container_ElementIndex in "modules/computer/adt/container/protocol/index.kh"
+tp Error in "modules/process/error/protocol/error.kh"
+
+tp Array_Iteration_KV ab
+tp Iteration_KV mt (self Array_Iteration_KV) (startIndex Container_ElementIndex, iterator Iterate_KV) (err Error)
+
+tp Iteration_KV_String_String ab
+tp Array_Iteration_KV_String_String_Iteration_KV mt (self Iteration_KV_String_String) (startIndex Container_ElementIndex, iterator Iterate_KV_String_String) (err Error)

@@ -1,0 +1,27 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Boolean in "modules/math/boolean/protocol/boolean.kh"
+tp Duration in "modules/time/duration/protocol/duration.kh"
+tp Error in "modules/process/error/protocol/error.kh"
+
+tp OSI_Transport_Options ab
+tp SetLinger mt (self OSI_Transport_Options) (d Duration) (e Error)
+
+tp SetKeepAlivePeriod mt (self OSI_Transport_Options) (d Duration) (e Error)
+
+tp SetNoDelay mt (self OSI_Transport_Options) (noDelay Boolean) (e Error)
+
+// TODO(go-migrate):
+/*
+package net_p
+
+import (
+	error_p "memar/process/error/protocol"
+	"memar/time/duration"
+)
+
+type OSI_Transport_Options interface {
+	// release any underling data reference until call time without need to release socket itself
+	Discard(n int) (discarded int, err error_p.Error)
+}
+*/

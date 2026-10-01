@@ -1,0 +1,76 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp ADT in "modules/computer/adt/protocol/adt.kh"
+tp Container_Accessor in "modules/computer/adt/container/protocol/accessor.kh"
+tp Accessor_DataType in "modules/computer/adt/container/protocol/accessor.kh"
+tp Accessor_String_Character in "modules/computer/adt/container/protocol/accessor.kh"
+tp Assignment_String_Character in "modules/computer/adt/container/protocol/assignment.kh"
+tp Container_Clear in "modules/computer/adt/container/protocol/clear.kh"
+tp Observer_Container_AvailableLength in "modules/computer/adt/container/protocol/length.observers.kh"
+tp Observer_Container_Capacity in "modules/computer/adt/container/protocol/length.observers.kh"
+tp Observer_Container_ExpectedLength in "modules/computer/adt/container/protocol/length.observers.kh"
+tp Observer_Container_OccupiedLength in "modules/computer/adt/container/protocol/length.observers.kh"
+tp Container_Resize in "modules/computer/adt/container/protocol/resize.kh"
+tp Container_Reversed in "modules/computer/adt/container/protocol/reversed.kh"
+tp Container_Sorted in "modules/computer/adt/container/protocol/sorted.kh"
+
+tp Computer_Container ab {
+    ADT
+
+    Container_Accessor
+
+    Container_Clear
+    Container_Reversed
+    Container_Sorted
+    Container_Resize
+    Observer_Container_Capacity
+    Observer_Container_OccupiedLength
+    Observer_Container_AvailableLength
+}
+
+tp String_Character ab {
+    ADT
+    Accessor_String_Character
+    Assignment_String_Character
+    Container_Clear
+    Container_Reversed
+    Container_Sorted
+    Container_Resize
+    Observer_Container_Capacity
+    Observer_Container_OccupiedLength
+    Observer_Container_AvailableLength
+}
+
+tp READONLY ab {
+    ADT
+
+    Container_Accessor
+
+    Observer_Container_ExpectedLength
+}
+
+tp READONLY_DataType ab {
+    ADT
+    Accessor_DataType
+    Observer_Container_ExpectedLength
+}
+
+// TODO(go-migrate):
+/*
+package container_p
+
+import (
+	adt_p "memar/computer/adt/protocol"
+)
+
+type Container[ELEMENT Element] interface {
+	Accessor[ELEMENT]
+	Assignment[ELEMENT]
+
+	// Field_ExpectedLength
+}
+
+type Container_READONLY[ELEMENT Element] interface {
+	Accessor[ELEMENT]
+}
+*/

@@ -1,0 +1,9 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Error in "modules/process/error/protocol/error.kh"
+tp File_Data in "modules/memory/file/protocol/data.kh"
+
+tp Observer_File_Data ab
+// File descriptor is just a capsule that need to read data from other sources,
+// So this field get call can return error.
+tp GetFileData mt (self Observer_File_Data) () (d File_Data, err Error)

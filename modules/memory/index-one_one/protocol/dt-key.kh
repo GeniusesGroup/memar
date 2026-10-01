@@ -1,0 +1,16 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+// Key MUST be in similar to urn style to have global unique key.
+// Maybe a dev use `car` in both `key_value` and `text` domain,
+// so made key in this manner: `kv:????`, `txt:????`, ...
+tp IndexOneOne_Key ab
+
+// TODO(go-migrate):
+/*
+package pehrest_p
+
+// Key MUST be in similar to urn style to have global unique key.
+// Maybe a dev use `car` in both `key_value` and `text` domain,
+// so made key in this manner: `kv:????`, `txt:????`, ...
+type Key []byte
+*/

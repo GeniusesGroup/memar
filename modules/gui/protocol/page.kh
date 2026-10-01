@@ -1,0 +1,676 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp PageState in "modules/gui/protocol/page-state.kh"
+tp Page_Manifest in "modules/gui/protocol/page-manifest.kh"
+
+// Page indicate what is a GUI page.
+tp Page ab {
+    Page_Manifest
+}
+
+tp ActiveState mt (self Page) () (pageState PageState)
+
+// Below methods are custom methods that must implement in each page not gui library.
+
+// CreateState build the page in the requested state or reuse old states with SafeToSilentClose()
+// CreateState(uri URI) PageState
+
+// it is raw version of the page DOM. suggest to write HTML in a dedicated html file and have compile-time parser.
+// - Due to multi page state mechanism and separate concern(content vs logic), don't support inline event handlers in HTML files
+// dom() DOM
+// it is raw version of the page SOM
+// som() SOM
+// it is raw version of the page templates DOM e.g. products-template-card.html
+// template(name string) DOM
+
+// TODO(go-migrate):
+/*
+package gui_p
+
+// Page indicate what is a GUI page.
+type Page interface {
+	ActiveStates() []PageState
+
+	// Below methods are custom methods that must implement in each page not gui library.
+
+	// CreateState build the page in the requested state or reuse old states with SafeToSilentClose()
+	// CreateState(uri URI) PageState
+
+	// it is raw version of the page DOM. suggest to write HTML in a dedicated html file and have compile-time parser.
+	// - Due to multi page state mechanism and separate concern(content vs logic), don't support inline event handlers in HTML files
+	// dom() DOM
+	// it is raw version of the page SOM
+	// som() SOM
+	// it is raw version of the page templates DOM e.g. products-template-card.html
+	// template(name string) DOM
+}
+*/
+
+// TODO(js-idea): archived memar-js source, not Khayyam and not a migration
+// Unverified idea from the retired memar-js repository (archive commit 27e013d, last pushed 2026-01-06). Kept as a thought only: the architect has moved on since, so this may contradict the current design.
+// source: memar-js/gui/page.js
+//
+// import * as mediatype from "../mediatype"
+//
+// /**
+//  * See https://github.com/GeniusesGroup/libgo/blob/main/protocol/gui-page.go GUIPage interface for comments
+//  */
+// class Page extends mediatype.MediaType {
+//     Robots() { return this._robots }
+//     Icon() { return this._icon }
+//     Info() { return this._info }
+//     RelatedPages() { return this._relatedPages }
+//
+//     Path() { return this._path } // page url path for routing
+//     AcceptedCondition(key) { return this._acceptedConditions[key] }
+//
+//     ActiveState() { return this._activateState }
+//     ActiveStates() { return this._activateStates }
+//
+//     // HTML: () => ``,
+//     // CSS: '',
+//     // Templates: {},
+// }
+
+// TODO(js-idea): archived memar-js source, not Khayyam and not a migration
+// Unverified idea from the retired memar-js repository (archive commit 27e013d, last pushed 2026-01-06). Kept as a thought only: the architect has moved on since, so this may contradict the current design.
+// source: memar-js/gui/society.js
+//
+// Giti.Society = {
+//     poolByID: {},
+//     poolByName: {},
+//     societies: [
+//         {
+//             ID: 1,
+//             Name: "LocaleText[0]",
+//             Description: "LocaleText[1]",
+//             Picture: "",
+//         },
+//         {
+//             ID: 2,
+//             Name: "LocaleText[2]",
+//             Description: "LocaleText[3]",
+//             Picture: "",
+//         },
+//     ]
+// }
+//
+// Giti.Society.GetByID = function (id) {
+//     return this.poolByID[id]
+// }
+//
+// Giti.Society.GetByName = function (name) {
+//     return this.poolByName[name]
+// }
+//
+// Giti.Society.GetAllAsOptions = function () {
+//     let options = ""
+//     for (let s of this.societies) {
+//         options += `<option value="${s.Name}">${s.ID}</option>`
+//     }
+//     return options
+// }
+//
+// // function init() {
+// for (let s of Giti.Society.societies) {
+//     Giti.Society.poolByID[s.ID] = s
+//     Giti.Society.poolByName[s.Name] = s
+// }
+// // }
+
+// TODO(js-idea): archived memar-js source, not Khayyam and not a migration
+// Unverified idea from the retired memar-js repository (archive commit 27e013d, last pushed 2026-01-06). Kept as a thought only: the architect has moved on since, so this may contradict the current design.
+// source: memar-js/gui/society.json
+// {
+//     "en": [
+//         "Persia",
+//         "",
+//         "Iran",
+//         ""
+//     ],
+//     "fa": [
+//         "پارس",
+//         "",
+//         "ایران",
+//         ""
+//     ]
+// }
+
+// TODO(js-idea): archived memar-js source, not Khayyam and not a migration
+// Unverified idea from the retired memar-js repository (archive commit 27e013d, last pushed 2026-01-06). Kept as a thought only: the architect has moved on since, so this may contradict the current design.
+// source: memar-js/widgets/localize/content-preferences.css
+//
+// article {
+//     position: relative;
+//     max-width: 600px;
+//     text-align: center;
+//     padding: 2%;
+//     margin: 1% auto;
+//     left: 0;
+//     right: 0;
+// }
+//
+// .card div {
+//     padding-bottom: 4%;
+// }
+
+// TODO(js-idea): archived memar-js source, not Khayyam and not a migration
+// Unverified idea from the retired memar-js repository (archive commit 27e013d, last pushed 2026-01-06). Kept as a thought only: the architect has moved on since, so this may contradict the current design.
+// source: memar-js/widgets/localize/content-preferences.html
+// <!-- For license and copyright information please see LEGAL file in repository -->
+//
+// <article>
+//     <header>
+//         <h1>${LocaleText[0]}</h1>
+//     </header>
+//
+//     <div>
+//         <div>
+//             <input type="text" id="language" list=languages value="${OS.User.ContentPreferences.Language.nativeName}"
+//                    onchange="contentPreferencesWidget.ChangeLanguage(this)"
+//                    onfocus="this.value=''"
+//                    validityMessage-Default="${LocaleText[4]}">
+//             <label for="language">${LocaleText[1]}</label>
+//             <datalist id=languages>${language.GetAppSupportedAsOptions()}</datalist>
+//         </div>
+//
+//         <div>
+//             <input type="text" id="region" list="countries" value="${OS.User.ContentPreferences.Region.nativeName}"
+//                    onchange="contentPreferencesWidget.ChangeRegion(this)"
+//                    onfocus="this.value=''"
+//                    validityMessage-Default="${LocaleText[5]}">
+//             <label for="region">${LocaleText[2]}</label>
+//             <datalist id="countries">${region.GetAppSupportedAsOptions()}</datalist>
+//         </div>
+//
+//         <!-- ${CurrencySelectWidget.ConnectedCallback(transferPaymentPage.Options.CurrencySelect)} -->
+//         <div>
+//             <input type="text" id="currency" list="currencies" value="${OS.User.ContentPreferences.Currency.nativeName}"
+//                    onchange="contentPreferencesWidget.ChangeCurrency(this)"
+//                    onfocus="this.value=''"
+//                    validityMessage-Default="${LocaleText[6]}">
+//             <label for="currency">${LocaleText[3]}</label>
+//             <datalist id="currencies">${currency.GetAppSupportedAsOptions()}</datalist>
+//         </div>
+//     </div>
+// </article>
+
+// TODO(js-idea): archived memar-js source, not Khayyam and not a migration
+// Unverified idea from the retired memar-js repository (archive commit 27e013d, last pushed 2026-01-06). Kept as a thought only: the architect has moved on since, so this may contradict the current design.
+// source: memar-js/widgets/localize/content-preferences.js
+//
+// import '../language/language.js'
+// import '../region/region.js'
+// import '../price/currency.js'
+//
+// /**
+//  * 
+//  * https://tools.ietf.org/html/bcp47
+//  */
+// const contentPreferencesWidget = {
+//     URN: {
+//         URN: "",
+//         ID: "",
+//         Name: "content-preferences",
+//     },
+//     HTML: () => ``,
+//     CSS: '',
+//     Templates: {},
+//     Options: {},
+// }
+// Application.RegisterWidget(contentPreferencesWidget)
+//
+// contentPreferencesWidget.ConnectedCallback = function () {
+//     pageStylesElement.insertAdjacentHTML("beforeend", this.CSS)
+//     return this.HTML()
+// }
+//
+// contentPreferencesWidget.DisconnectedCallback = function () {
+// }
+//
+// contentPreferencesWidget.ChangeLanguage = function (element) {
+//     const lang = language.GetSupportedByNativeName(element.value)
+//     if (lang) {
+//         OS.User.ContentPreferences.Languages = [lang.iso639_1]
+//         OS.User.ContentPreferences.Language = lang
+//         element.warnValidity("")
+//         element.focusNext()
+//     } else {
+//         element.warnValidity()
+//         return
+//     }
+// }
+//
+// contentPreferencesWidget.ChangeRegion = function (element) {
+//     const reg = region.GetSupportedByNativeName(element.value)
+//     if (reg) {
+//         OS.User.ContentPreferences.Regions = [reg.iso3166_1_a3]
+//         OS.User.ContentPreferences.Region = reg
+//         element.warnValidity("")
+//         element.focusNext()
+//     } else {
+//         element.warnValidity()
+//         return
+//     }
+// }
+//
+// contentPreferencesWidget.ChangeCurrency = function (element) {
+//     const cur = currency.GetSupportedByNativeName(element.value)
+//     if (cur) {
+//         OS.User.ContentPreferences.Currency = [cur.iso4217]
+//         OS.User.ContentPreferences.Currency = cur
+//         element.warnValidity("")
+//         element.focusNext()
+//     } else {
+//         element.warnValidity()
+//         return
+//     }
+// }
+//
+// contentPreferencesWidget.currencyWidgetCallback = function (cur) {
+//     OS.User.ContentPreferences.Currency = [cur.iso4217]
+//     OS.User.ContentPreferences.Currency = cur
+// }
+//
+// contentPreferencesWidget.Options.CurrencySelect = {
+//     identifier: "contentPreferencesWidget.Options.CurrencySelect",
+//     callback: contentPreferencesWidget.currencyWidgetCallback,
+//     appSupported: true,
+// }
+
+// TODO(js-idea): archived memar-js source, not Khayyam and not a migration
+// Unverified idea from the retired memar-js repository (archive commit 27e013d, last pushed 2026-01-06). Kept as a thought only: the architect has moved on since, so this may contradict the current design.
+// source: memar-js/widgets/localize/content-preferences.json
+// {
+//     "en": [
+//         "Content Preferences",
+//         "Language",
+//         "Region",
+//         "Currency",
+//         "Not supported or bad language selected!",
+//         "Not supported or bad region selected!",
+//         "Not supported or bad currency selected!"
+//     ],
+//     "fa": [
+//         "ترجیحات محتوا",
+//         "زبان",
+//         "منطقه یا کشور",
+//         "واحد پول - ارز",
+//         "زبان انتخاب شده صحیح نمی باشد یا توسط نرم افزار پشتیبانی نمی شود",
+//         "منطقه یا کشور انتخاب شده صحیح نمی باشد یا توسط نرم افزار پشتیبانی نمی شود",
+//         "ارز انتخاب شده صحیح نمی باشد یا توسط نرم افزار پشتیبانی نمی شود"
+//     ]
+// }
+
+// TODO(js-idea): archived memar-js source, not Khayyam and not a migration
+// Unverified idea from the retired memar-js repository (archive commit 27e013d, last pushed 2026-01-06). Kept as a thought only: the architect has moved on since, so this may contradict the current design.
+// source: memar-js/widgets/localize/currency-select.css
+// (no content)
+
+// TODO(js-idea): archived memar-js source, not Khayyam and not a migration
+// Unverified idea from the retired memar-js repository (archive commit 27e013d, last pushed 2026-01-06). Kept as a thought only: the architect has moved on since, so this may contradict the current design.
+// source: memar-js/widgets/localize/currency-select.html
+// <!-- For license and copyright information please see LEGAL file in repository -->
+//
+// <input type="text" id="currencyWidgetInput" list="currenciesList"
+//        value="${localStorage.getItem('LastCurrencyInCurrencySelectWidget') || ''}"
+//        onkeydown="CurrencySelectWidget.onKeyDownInputElement(this, ${options.identifier})"
+//        onchange="CurrencySelectWidget.onChangeInputElement(this, ${options.identifier})"
+//        validityMessage-Default="${LocaleText[0]}"
+//        oninvalid="this.warnValidity()" />
+// <label for="currencyWidgetInput">${LocaleText[1]}</label>
+// <datalist id="currenciesList">
+//     ${options.appSupported ? CurrencySelectWidget.GetAppSupportedAsOptions() : CurrencySelectWidget.GetAllAsOptions() }
+// </datalist>
+
+// TODO(js-idea): archived memar-js source, not Khayyam and not a migration
+// Unverified idea from the retired memar-js repository (archive commit 27e013d, last pushed 2026-01-06). Kept as a thought only: the architect has moved on since, so this may contradict the current design.
+// source: memar-js/widgets/localize/currency-select.js
+//
+// import '../price/currency.js'
+//
+// const CurrencySelectWidget = {
+//     URN: {
+//         URN: "",
+//         ID: "",
+//         Name: "currency-select",
+//     },
+//     Conditions: {},
+//     HTML: (options) => ``,
+//     CSS: '',
+// }
+// Application.RegisterWidget(CurrencySelectWidget)
+//
+// CurrencySelectWidget.ConnectedCallback = function (options) {
+//     pageStylesElement.insertAdjacentHTML("beforeend", this.CSS)
+//     return CurrencySelectWidget.HTML(options)
+// }
+//
+// CurrencySelectWidget.DisconnectedCallback = function () { }
+//
+// CurrencySelectWidget.onKeyDownInputElement = function (element, optionsIdentifier) {
+//     if (event.keyCode === 13) { // event.key === 'Enter'
+//         let cur
+//         if (optionsIdentifier.appSupported) {
+//             cur = currency.GetSupportedByNativeName(element.value)
+//         } else {
+//             cur = currency.GetByNativeName(element.value)
+//         }
+//         if (cur) {
+//             optionsIdentifier.callback(cur)
+//             element.warnValidity("")
+//             element.focusNext()
+//             localStorage.setItem('LastCurrencyInCurrencySelectWidget', cur.ID)
+//         } else {
+//             element.warnValidity()
+//             return
+//         }
+//     }
+// }
+//
+// CurrencySelectWidget.onChangeInputElement = function (element, optionsIdentifier) {
+//     let cur
+//     if (optionsIdentifier.appSupported) {
+//         cur = currency.GetSupportedByNativeName(element.value)
+//     } else {
+//         cur = currency.GetByNativeName(element.value)
+//     }
+//     if (cur) {
+//         optionsIdentifier.callback(cur)
+//         element.warnValidity("")
+//         element.focusNext()
+//         localStorage.setItem('LastCurrencyInCurrencySelectWidget', cur.ID)
+//     } else {
+//         element.warnValidity()
+//         return
+//     }
+// }
+//
+// CurrencySelectWidget.GetAllAsOptions = function () {
+//     if (!this.allOptions) {
+//         this.allOptions = ""
+//         for (let c of currency.currencies) {
+//             this.allOptions += `<option value="${c.nativeName}">${c.englishName}</option>`
+//         }
+//     }
+//     return this.allOptions
+// }
+//
+// CurrencySelectWidget.GetAppSupportedAsOptions = function () {
+//     if (!this.supportedOptions) {
+//         this.supportedOptions = ""
+//         for (let c of currency.currencies) {
+//             if (!Application.ContentPreferences.Currencies.includes(c.iso4217)) continue
+//             this.supportedOptions += `<option value="${c.nativeName}">${c.englishName}</option>`
+//         }
+//     }
+//     return this.supportedOptions
+// }
+
+// TODO(js-idea): archived memar-js source, not Khayyam and not a migration
+// Unverified idea from the retired memar-js repository (archive commit 27e013d, last pushed 2026-01-06). Kept as a thought only: the architect has moved on since, so this may contradict the current design.
+// source: memar-js/widgets/localize/currency-select.json
+// {
+//     "en": [
+//         "Not supported or bad currency selected!",
+//         "Currency"
+//     ],
+//     "fa": [
+//         "ارز انتخاب شده صحیح نمی باشد یا توسط نرم افزار پشتیبانی نمی شود",
+//         "ارز"
+//     ]
+// }
+
+// TODO(js-idea): archived memar-js source, not Khayyam and not a migration
+// Unverified idea from the retired memar-js repository (archive commit 27e013d, last pushed 2026-01-06). Kept as a thought only: the architect has moved on since, so this may contradict the current design.
+// source: memar-js/widgets/localize/presentation-preferences.css
+//
+// article#presentation-preferences {
+//     position: relative;
+//     max-width: 600px;
+//     text-align: center;
+//     padding: 2%;
+//     margin: 1% auto;
+//     left: 0;
+//     right: 0;
+// }
+
+// TODO(js-idea): archived memar-js source, not Khayyam and not a migration
+// Unverified idea from the retired memar-js repository (archive commit 27e013d, last pushed 2026-01-06). Kept as a thought only: the architect has moved on since, so this may contradict the current design.
+// source: memar-js/widgets/localize/presentation-preferences.html
+// <!-- For license and copyright information please see LEGAL file in repository -->
+//
+// <article id="presentation-preferences">
+//     <header>
+//         <h1>${LocaleText[1]}</h1>
+//     </header>
+//
+//     <div>
+//         <!-- Change design language by user special day like birthday, wedding, ... -->
+//         <select id="designLanguage" onchange="presentationPreferencesWidget.SetDesignLanguage(this.value)" value="${OS.User.PresentationPreferences.DesignLanguage}">
+//             <option value="material">Material</option>
+//             <option value="flat" disabled>Flat</option>
+//             <option value="fluent" disabled>Fluent</option>
+//             <option value="ant" disabled>Ant</option>
+//             <option value="ibm" disabled>IBM</option>
+//             <option value="semantic" disabled>Semantic</option>
+//         </select>
+//         <label for="designLanguage">${LocaleText[2]}</label>
+//
+//         <select id="colorScheme" onchange="presentationPreferencesWidget.SetColorScheme(this.value)" value="${OS.User.PresentationPreferences.ColorScheme}">
+//             <option value="no-preference">${LocaleText[5]}</option>
+//             <option value="light">${LocaleText[6]}</option>
+//             <option value="dark">${LocaleText[7]}</option>
+//         </select>
+//         <label for="colorScheme">${LocaleText[3]}</label>
+//
+//         <select id="font" onchange="presentationPreferencesWidget.SetPrimaryFont(this.value)" .value=${OS.User.PresentationPreferences.PrimaryFontFamily}>
+//             <option value='Roboto'>Roboto</option>
+//         </select>
+//         <label for="font">${LocaleText[4]}</label>
+//     </div>
+// </article>
+
+// TODO(js-idea): archived memar-js source, not Khayyam and not a migration
+// Unverified idea from the retired memar-js repository (archive commit 27e013d, last pushed 2026-01-06). Kept as a thought only: the architect has moved on since, so this may contradict the current design.
+// source: memar-js/widgets/localize/presentation-preferences.js
+//
+// const presentationPreferencesWidget = {
+//     URN: {
+//         URN: "",
+//         ID: "",
+//         Name: "presentation-preferences",
+//     },
+//     HTML: () => ``,
+//     CSS: '',
+//     Templates: {}
+// }
+// Application.RegisterWidget(presentationPreferencesWidget)
+//
+// presentationPreferencesWidget.ConnectedCallback = function () {
+//     pageStylesElement.insertAdjacentHTML("beforeend", this.CSS)
+//     return this.HTML()
+// }
+//
+// presentationPreferencesWidget.DisconnectedCallback = function () {
+// }
+//
+// presentationPreferencesWidget.SetDesignLanguage = function (dl) {
+//     OS.User.PresentationPreferences.DesignLanguage = dl
+//     Application.LoadDesignLanguageStyles()
+// }
+//
+// presentationPreferencesWidget.SetColorScheme = function (cs) {
+//     OS.User.PresentationPreferences.ColorScheme = cs
+//     Application.LoadColorScheme()
+// }
+//
+// presentationPreferencesWidget.SetPrimaryFont = function (pf) {
+//     OS.User.PresentationPreferences.PrimaryFontFamily = pf
+//     Application.LoadFontFamilies()
+// }
+
+// TODO(js-idea): archived memar-js source, not Khayyam and not a migration
+// Unverified idea from the retired memar-js repository (archive commit 27e013d, last pushed 2026-01-06). Kept as a thought only: the architect has moved on since, so this may contradict the current design.
+// source: memar-js/widgets/localize/presentation-preferences.json
+// {
+//     "en": [
+//         "",
+//         "Presentation Preferences",
+//         "Pick a design language",
+//         "Pick a color style",
+//         "Pick a font",
+//         "Automatic (Browser or OS preference)",
+//         "Light",
+//         "Dark"
+//     ],
+//     "fa": [
+//         "",
+//         "ترجیحات ظاهری",
+//         "زبان طراحی را انتخاب کنید",
+//         "ترکیب رنگی را انتخاب کنید",
+//         "فونت را انتخاب کنید",
+//         "خودکار - ترجیح مشخص شده در مرورگر یا سیستم عامل",
+//         "روشن",
+//         "تیره"
+//     ]
+// }
+
+// TODO(js-idea): archived memar-js source, not Khayyam and not a migration
+// Unverified idea from the retired memar-js repository (archive commit 27e013d, last pushed 2026-01-06). Kept as a thought only: the architect has moved on since, so this may contradict the current design.
+// source: memar-js/widgets/localize/suggest-language.css
+//
+// dialog#suggestLanguage {
+//     position: fixed;
+//     max-width: 600px;
+//     text-align: center;
+//     margin: 1% auto;
+//     left: 0;
+//     right: 0;
+//     top: 0;
+// }
+//
+// dialog#suggestLanguage div {
+//     padding-bottom: 0px;
+// }
+
+// TODO(js-idea): archived memar-js source, not Khayyam and not a migration
+// Unverified idea from the retired memar-js repository (archive commit 27e013d, last pushed 2026-01-06). Kept as a thought only: the architect has moved on since, so this may contradict the current design.
+// source: memar-js/widgets/localize/suggest-language.html
+// <!-- For license and copyright information please see LEGAL file in repository -->
+//
+// <div class="disabledBackground"></div>
+// <dialog type="modal" id="suggestLanguage" open>
+//     <header>${text[0]}</header>
+//     <div>
+//         <p>${text[1]}</p>
+//         <a href="/localize">
+//             <p>${text[2]}</p>
+//         </a>
+//
+//         <!-- TODO : May suggested language is not user native so user can't understand dialog usage or even clos it!  -->
+//         <!-- User should have ability to change dialog text language manually||english -->
+//     </div>
+//     <footer>
+//         <button type="button" onclick="suggestLanguageWidget.ChangeLanguage()">
+//             <label>${text[3]}</label>
+//         </button>
+//         <button type="button" onclick="suggestLanguageWidget.DismissDialog()">
+//             <label>${text[4]}</label>
+//         </button>
+//     </footer>
+// </dialog>
+
+// TODO(js-idea): archived memar-js source, not Khayyam and not a migration
+// Unverified idea from the retired memar-js repository (archive commit 27e013d, last pushed 2026-01-06). Kept as a thought only: the architect has moved on since, so this may contradict the current design.
+// source: memar-js/widgets/localize/suggest-language.js
+//
+// import '../language/language.js'
+// import '../region/region.js'
+// import '../error/error.js'
+//
+// /**
+//  * Guess and suggest in stateless localization about change language to its native lang by IP location!
+//  */
+// const suggestLanguageWidget = {
+//     URN: {
+//         URN: "",
+//         ID: "",
+//         Name: "suggest-language",
+//     },
+//     Text: {
+//         "en": [
+//             "Suggest edit app language",
+//             "We think your region's language is English, If you wish to change app language to English please confirm",
+//             "You can change language in localize page in future",
+//             "Confirm",
+//             "Dismiss"
+//         ],
+//         "fa": [
+//             "پیشنهاد اصلاح زبان نرم افزار",
+//             "ما فکر می کنیم زبان منطقه شما فارسی می باشد، در صورت تمایل به تغییر زبان نرم افزار به فارسی تائید کنید",
+//             "در آینده می توانید زبان مورد نظر خود را در صفحه محلی سازی تغییر دهید",
+//             "تغییر زبان",
+//             "رد کردن",
+//         ],
+//         "ar": [
+//             "اقتراح تعديل لغة التطبيق",
+//             "نعتقد أن لغة منطقتك هي اللغة العربية ، إذا كنت ترغب في تغيير لغة التطبيق إلى اللغة العربية ، يرجى التأكيد",
+//             "",
+//             "تؤكد",
+//             "رفض"
+//         ],
+//         "fr": [
+//             "Suggérer modifier la langue de l'application",
+//             "Nous pensons que la langue de votre région est le français. Si vous souhaitez modifier la langue de l'application en français, veuillez confirmer",
+//             "",
+//             "Confirmer",
+//             "Rejeter"
+//         ],
+//     },
+//     HTML: (text) => ``,
+//     CSS: '',
+//     Templates: {}
+// }
+// Application.RegisterWidget(suggestLanguageWidget)
+//
+// suggestLanguageWidget.ConnectedCallback = async function () {
+//     try {
+//         // Guess language and region by user IP location and set related localeText!
+//
+//         const res = await fetch('https://ipapi.co/json')
+//         const jsonRes = await res.json()
+//
+//         this.guessedLanguage = jsonRes.languages.split(",")[0].split("-")[0]
+//         this.guessedRegion = jsonRes.country
+//         if (this.guessedLanguage !== OS.User.ContentPreferences.Language.iso639_1 && Application.ContentPreferences.Languages.includes(this.guessedLanguage)) {
+//             const LocaleText = this.Text[this.guessedLanguage]
+//
+//             this.suggestLanguageElement = window.document.createElement("div")
+//             this.suggestLanguageElement.innerHTML = this.HTML(LocaleText)
+//             const suggestLanguageStyle = window.document.createElement("style")
+//             suggestLanguageStyle.innerHTML = this.CSS
+//             this.suggestLanguageElement.appendChild(suggestLanguageStyle)
+//
+//             window.document.documentElement.appendChild(this.suggestLanguageElement)
+//         }
+//     } catch (err) {
+//         Err.NotifyAnyToUser(err)
+//     }
+// }
+//
+// suggestLanguageWidget.DisconnectedCallback = function () {
+// }
+//
+// suggestLanguageWidget.DismissDialog = function () {
+//     this.suggestLanguageElement.remove()
+// }
+//
+// suggestLanguageWidget.ChangeLanguage = function () {
+//     OS.User.ContentPreferences.Language = language.poolByISO639_1[suggestLanguageWidget.guessedLanguage]
+//     OS.User.ContentPreferences.Region = region.poolByISO3166_1_a2[suggestLanguageWidget.guessedRegion]
+//
+//     const url = new URL(window.location.href)
+//     url.searchParams.set('hl', suggestLanguageWidget.guessedLanguage + "-" + suggestLanguageWidget.guessedRegion)
+//     window.location.replace(url)
+// }

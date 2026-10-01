@@ -1,0 +1,32 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Observer_Codec_Length in "modules/codec/protocol/length.observers.kh"
+tp Computer_Buffer in "modules/computer/buffer/protocol/buffer.kh"
+tp DataType in "modules/computer/datatype/protocol/data-type.kh"
+tp Error in "modules/process/error/protocol/error.kh"
+tp Observer_MediaType in "modules/identifier/mediatype/protocol/media-type.observers.kh"
+
+// Codec wraps some other interfaces that need an data structure be a codec.
+// Protocols that have just one specific logic NEED to implement this interface e.g. HTTP, MP3, AVI, ...
+// Others can implement other Codec e.g. Syllab, JSON, XML, HTML, CSS, ...
+// https://en.wikipedia.org/wiki/Codec
+tp Codec ab {
+    Codec_Decoder
+    Codec_Encoder
+    DataType
+    Observer_MediaType
+}
+
+// Decoder is the interface that wraps the Decode method.
+tp Codec_Decoder ab
+// Decode read and decode data until end of needed data or occur error.
+// Unlike io.ReadFrom() it isn't read until EOF and just read needed data.
+tp Decode mt (self Codec_Decoder) (source Computer_Buffer) (err Error)
+
+// Encoder is the interface that wraps the Encode & Observer_Length methods.
+tp Codec_Encoder ab {
+    Observer_Codec_Length
+}
+// Encode writes serialized(encoded) data to destination until there's no more data to write.
+// Return any error that occur in buffer logic e.g. timeout error in socket, ...
+tp Encode mt (self Codec_Encoder) (destination Computer_Buffer) (err Error)

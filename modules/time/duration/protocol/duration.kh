@@ -1,0 +1,9 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Stringer_To in "modules/codec/string/protocol/stringer.kh"
+
+// A Duration represents the elapsed time between two instants as an int64 nanosecond count.
+// The representation limits the largest representable duration to approximately 290 earth years.
+tp Duration ab {
+    Stringer_To
+}

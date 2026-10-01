@@ -1,0 +1,9 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Array_Dynamic in "modules/computer/adt/array/protocol/dynamic.kh"
+tp Storage_UUID in "modules/memory/record/protocol/dt-uuid.kh"
+
+tp Storage_Observer_RecordUUID ab
+tp GetRecordUUID mt (self Storage_Observer_RecordUUID) () (u Storage_UUID)
+tp Storage_Observer_RecordsUUID ab
+tp GetRecordsUUID mt (self Storage_Observer_RecordsUUID) () (d Array_Dynamic)

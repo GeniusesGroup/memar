@@ -1,0 +1,11 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+// Quantity or Amount
+tp Decimal_Quantity ab
+
+// TODO(go-migrate):
+/*
+package decimal_p
+
+// Quantity or Amount
+type Quantity Decimal
+*/

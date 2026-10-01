@@ -1,0 +1,234 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+tp Capsule_LifeCycle in "modules/computer/capsule/protocol/life_cycle_contract.kh"
+tp DataType in "modules/computer/datatype/protocol/data-type.kh"
+tp Observer_MediaType in "modules/identifier/mediatype/protocol/media-type.observers.kh"
+tp Observer_Request in "modules/process/request/protocol/request.observers.kh"
+tp Observer_Response in "modules/process/response/protocol/response.observers.kh"
+tp Observer_ActionType in "modules/process/operation/protocol/action.observers.kh"
+tp Observer_OperationID in "modules/process/operation/protocol/id.observers.kh"
+tp Importance in "modules/process/operation/protocol/importance.kh"
+
+// Service is the interface that must implement by any struct to be a service.
+tp Service ab {
+    Capsule_LifeCycle
+    Observer_OperationID
+    Observer_ActionType
+    Importance
+    Observer_Request
+    Observer_Response
+    DataType
+    Observer_MediaType
+}
+
+// TODO(go-migrate):
+/*
+package service_p
+
+import (
+	capsule_p "memar/computer/capsule/protocol"
+	datatype_p "memar/computer/datatype/protocol"
+	mediatype_p "memar/identifier/mediatype/protocol"
+	operation_p "memar/process/operation/protocol"
+	request_p "memar/process/request/protocol"
+	response_p "memar/process/response/protocol"
+)
+
+// Service is the interface that must implement by any struct to be a service.
+type Service interface {
+	// operation_p.Authorize
+
+}
+*/
+
+// TODO(js-idea): archived memar-js source, not Khayyam and not a migration
+// Unverified idea from the retired memar-js repository (archive commit 27e013d, last pushed 2026-01-06). Kept as a thought only: the architect has moved on since, so this may contradict the current design.
+// source: memar-js/process/service/service.js
+//
+// /**
+//  * The service structure
+//  * @property {string} Domain
+//  * @property {bigint} ID
+//  * @property {bigint} IssueDate
+//  * @property {bigint} ExpireDate
+//  * @property {string} ExpireInFavorOf
+//  * @property {bigint} ExpireInFavorOfID
+//  * @property {string} Status https://en.wikipedia.org/wiki/Software_release_life_cycle
+//  * @property {Authorization} Authorization
+//  * @property {string} Name 
+//  * @property {string} Description
+//  * @property {string[]} TAGS
+//  * 
+//  * @property {function} ServeHTTP GetProduct
+//
+//  * @typedef {Object} Authorization is the service structure
+//  * @property {number} CRUDRead
+//  * @property {number} UserType_All UserTypeOwner
+//  */
+// const Service = {
+//     URN: {
+//         URN: "",
+//         ID: "",
+//         Domain: "",
+//         Scope: "service",
+//         Name: "",
+//     },
+//     ID: 0,
+//     IssueDate: 0,
+//     ExpireDate: 0,
+//     ExpireInFavorOfURN: "",
+//     ExpireInFavorOfID: 0,
+//     Status: 0, // e.g. Software_PreAlpha more on https://en.wikipedia.org/wiki/Software_release_life_cycle
+//
+//     Authorization: {
+//         CRUD: CRUDRead,
+//         UserType: UserType_All, // UserTypeOwner
+//     },
+//
+//     Detail: {
+//         Name: "Service Name",
+//         Description: "Service Description",
+//         TAGS: [],
+//     },
+//
+//     DoHTTP: null,
+// }
+
+// TODO(js-idea): archived memar-js source, not Khayyam and not a migration
+// Unverified idea from the retired memar-js repository (archive commit 27e013d, last pushed 2026-01-06). Kept as a thought only: the architect has moved on since, so this may contradict the current design.
+// source: memar-js/process/service/services.js
+//
+// Application.services = {
+//     poolByID: {},
+//     poolByURN: {},
+//     poolByURI: {},
+// }
+//
+// /**
+//  * register given service in many ways such as register in PoolByID
+//  * @param {Service} service 
+//  */
+// Application.RegisterService = function (service) {
+//     this.poolByID[service.ID] = service
+//     this.poolByURN[service.URN] = service
+//     this.poolByURI[service.URI] = service
+// }
+//
+// /**
+//  * register given service in many ways such as register in PoolByID
+//  * @param {Service} service 
+//  */
+// Application.DeleteService = function (service) {
+//     delete this.poolByID[service.ID]
+//     delete this.poolByURN[service.URN]
+//     delete this.poolByURI[service.URI]
+// }
+//
+// Application.GetServiceByID = function (id) {
+//     return this.services.poolByID[id]
+// }
+//
+// Application.GetServiceByURN = function (urn) {
+//     return this.services.poolByURN[urn]
+// }
+//
+// Application.GetServiceByURI = function (uri) {
+//     return this.services.poolByURI[uri]
+// }
+//
+// Application.CallServiceByID = function (id, req) {
+//     return this.poolByID[id].ServeHTTP(req)
+// }
+//
+// Application.CallServiceByURN = function (urn, req) {
+//     return this.poolByURN[urn].ServeHTTP(req)
+// }
+
+// TODO(js-idea): archived memar-js source, not Khayyam and not a migration
+// Unverified idea from the retired memar-js repository (archive commit 27e013d, last pushed 2026-01-06). Kept as a thought only: the architect has moved on since, so this may contradict the current design.
+// source: memar-js/process/services/init.js
+//
+// /* For license and copyright information please see LEGAL file in repository */
+// // Auto-generated, edits will be overwritten
+//
+// DomainName = "achaemenid.protocol"
+
+// TODO(js-idea): archived memar-js source, not Khayyam and not a migration
+// Unverified idea from the retired memar-js repository (archive commit 27e013d, last pushed 2026-01-06). Kept as a thought only: the architect has moved on since, so this may contradict the current design.
+// source: memar-js/process/services/set-connection-thing-id.js
+//
+// /* For license and copyright information please see LEGAL file in repository */
+// // Auto-generated, edits will be overwritten
+//
+// Application.RegisterService({
+//     URN: "urn:giti:achaemenid.protocol:service:set-connection-thing-id",
+//     ID: 3530667464632943931,
+//     IssueDate: 1604844006,
+//     ExpireDate: 0,
+//     ExpireInFavorOfURN: "",
+//     ExpireInFavorOfID: 0,
+//     Status: SoftwareStatePerpetualBeta, // https://en.wikipedia.org/wiki/Software_release_life_cycle
+//
+//     Authorization: {
+//         CRUD: CRUDCreate,
+//         UserType: UserTypeAll,
+//     },
+//
+//     Name: "LocaleText[0]",
+//     Description: "LocaleText[1]",
+//     TAGS: [
+//         "",
+//     ],
+//
+//     DoHTTP: SetConnectionThingID,
+// })
+//
+// /**
+//  * @typedef {Object} SetConnectionThingIDReq is the request structure of GetProductAuction()
+//  * @property {string} ThingID [32]byte that encode||decode as base64
+//  */
+//
+// /**
+//  * 
+//  * @param {SetConnectionThingIDReq} req
+//  */
+// async function SetConnectionThingID(req) {
+//     const httpReq = new Request('/m?3530667464632943931', {
+//         method: MethodPOST,
+//         // compress: true,
+//         credentials: 'same-origin',
+//         headers: {
+//             'Content-Type': 'application/json'
+//         },
+//         body: JSON.stringify(req)
+//     })
+//
+//     try {
+//         var httpRes = await fetch(httpReq)
+//     } catch (err) {
+//         throw Err.ConvertToErr(err)
+//     }
+//
+//     switch (httpRes.status) {
+//         case 200:
+//         case 201:
+//             return
+//         case 400:
+//         case 500:
+//         default:
+//             throw httpRes.GetError()
+//     }
+// }
+
+// TODO(js-idea): archived memar-js source, not Khayyam and not a migration
+// Unverified idea from the retired memar-js repository (archive commit 27e013d, last pushed 2026-01-06). Kept as a thought only: the architect has moved on since, so this may contradict the current design.
+// source: memar-js/process/services/set-connection-thing-id.json
+// {
+//     "en": [
+//         "Set Connection Thing ID",
+//         "This service just valid until TCP||UDP support"
+//     ],
+//     "fa": [
+//         "ثبت شناسه دستگاه برای اتصال فعلی",
+//         "این سرویس فقط تا زمانی که کتابخانه فرماندار از پروتکل های مربوطه پشتیبانی کند اعتبار خواهد داشت"
+//     ]
+// }

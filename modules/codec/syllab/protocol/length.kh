@@ -1,0 +1,19 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+tp Syllab_Length ab
+
+tp Length_Stack ab
+
+tp Length_Heap ab
+
+// TODO(go-migrate):
+/*
+package syllab_p
+
+import (
+	container_p "memar/computer/adt/container/protocol"
+)
+
+type Length = container_p.NumberOfElement
+type Length_Stack = container_p.NumberOfElement
+type Length_Heap = container_p.NumberOfElement
+*/

@@ -1,0 +1,9 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp JSON_Length in "modules/lib/codec/json/protocol/length.kh"
+
+// Observer_Length is same as codec_p.Observer_Length in many ways
+tp Observer_JSON_Length ab
+// JSON_Length return whole calculated length of JSON encoded of the struct
+// It is NOT include of first and last curly braces as `{}`
+tp GetJSONLength mt (self Observer_JSON_Length) () (l JSON_Length)

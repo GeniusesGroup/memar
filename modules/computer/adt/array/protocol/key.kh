@@ -1,0 +1,10 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Logic_Equivalence in "modules/math/logic/protocol/equivalence.kh"
+
+// Key is what an associative array tells its entries apart by: each possible key appears at most once.
+// Telling two keys apart is the key's own behavior, never the array's; hashing or ordering
+// is how a realization finds a key faster, not what a key is.
+tp Array_Key ab {
+    Logic_Equivalence
+}

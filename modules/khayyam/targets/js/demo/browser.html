@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Khayyam greeting — JavaScript target</title>
+  </head>
+  <body>
+    <h1>Khayyam greeting</h1>
+    <p>
+      The artifact below was compiled from
+      <code>modules/khayyam/targets/js/demo/greeting.kh</code> and is loaded as an
+      ES module, with no bundler and no build step on this page. What it does is
+      compose two capsules; the behaviour of each is body-less on a concrete
+      capsule, so this page supplies it.
+    </p>
+    <pre id="out">running…</pre>
+    <script type="module">
+      // This page is the host, and nothing more: it loads what the build wrote,
+      // hands the unit the implementations of its body-less methods, and makes the
+      // call the entry request names. Entry and lifecycle are the host's
+      // configuration and not the language's
+      // (docs/protocols/compiler.md → Entry and lifecycle are not grammar). The
+      // same contract is written for Node in src/run.ts, which the Node demo
+      // host uses; the two hosts answer the same program.
+      const out = document.getElementById("out");
+      out.textContent = "";
+
+      const DEMO = "modules/khayyam/targets/js/demo/greeting.kh";
+      const manifest = await (
+        await fetch(new URL("../build/manifest.json", import.meta.url))
+      ).json();
+      // A URI is written from the repository root, and this page is served from
+      // the repository root, so what a unit's path says is what a host opens.
+      const urlOf = (path) => new URL(`/${path}`, location.origin);
+
+      const program = await import(urlOf(manifest.units[DEMO]));
+      // A field is a variable, so the host hands the value over and the capsule
+      // holds the slot; and every variable of a call is that slot, so the entry
+      // is called with one.
+      const greeting = new program.Text({ text: "Hello, Khayyam" });
+
+      program.supply({
+        "Greeter$Announce": () => {
+          out.textContent += "The host says hello.\n";
+        },
+        "Text$Print": (self) => {
+          out.textContent += `${self.text.value}\n`;
+        },
+      });
+
+      const entry = program["Greeter$Greet"];
+      entry(new program.Greeter(), { value: greeting });
+    </script>
+  </body>
+</html>

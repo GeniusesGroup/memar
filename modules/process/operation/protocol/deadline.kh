@@ -1,0 +1,19 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Error in "modules/process/error/protocol/error.kh"
+tp Time in "modules/time/protocol/time.kh"
+
+// Deadline is the interface to show how an operation must implement deadline e.g. network socket, ...
+tp Deadline ab {
+    Deadline_Read
+    Deadline_Write
+}
+// SetDeadline sets the read and write deadlines associated with the connection.
+// It is equivalent to calling both SetReadDeadline and SetWriteDeadline.
+tp SetDeadline mt (self Deadline) (t Time) (e Error)
+
+tp Deadline_Read ab
+tp SetReadDeadline mt (self Deadline_Read) (t Time) (e Error)
+
+tp Deadline_Write ab
+tp SetWriteDeadline mt (self Deadline_Write) (t Time) (e Error)

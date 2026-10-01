@@ -1,0 +1,40 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Error in "modules/process/error/protocol/error.kh"
+tp CF in "modules/control-flow"
+vr external_vr in "FileURI"
+
+// tp incl in "in"
+
+tp Capsule cp {}
+tp n ab {}
+
+tp Test mt (a AT) (b BT, c CT) (d DT, err Error) {}
+
+tp Omid mt () (a arguments) () {
+    goto end
+    tp loop sc {
+        if "d>1" {
+            vr
+        }
+    }
+}
+
+vr vr1 VR1
+vr vr2 VR2
+
+//
+tp ttt mt (self Capsule) (arg1 capsuleType) (capsuleName capsuleType, err Error) {
+    vr index U32
+
+    CF.IF(condition, ifProcess, external_vr)
+    tp ifProcess sc {
+        if a.GreaterThan("2") {
+
+        }
+    }
+    CF.ELSE(elseProcess)
+    tp elseProcess sc {
+    }
+    err.Clone()
+}

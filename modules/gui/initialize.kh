@@ -1,0 +1,17 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp GUI_Application_2 in "modules/gui/application.kh"
+
+// Initialize use to initialize application object
+tp Initialize mt (self GUI_Application_2) () () {}
+
+// TODO(go-migrate): [tp Initialize] Go body is empty and is ported as an empty body `{}`; khayyam.md → Method writes "without a body (`{}`)" for the FFI form, so confirm an empty body is not read as external.
+// TODO(go-migrate):
+/*
+package gui
+
+// Initialize use to initialize application object
+func (a *Application) Initialize() {
+
+}
+*/

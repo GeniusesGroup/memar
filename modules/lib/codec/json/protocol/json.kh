@@ -1,0 +1,31 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Computer_Buffer in "modules/computer/buffer/protocol/buffer.kh"
+tp Error in "modules/process/error/protocol/error.kh"
+tp Observer_JSON_Length in "modules/lib/codec/json/protocol/length.observers.kh"
+
+// Codec JSON is the interface that must implement by any struct that can be a JSON object.
+// Standards by https://www.json.org/json-en.html
+// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON
+//
+// Decode:
+// - The input can be assumed to be a valid encoding of a JSON value.
+// - FromJSON must declare as comment that it copy the JSON data or not, if it wishes to retain the data after returning.
+// - By convention, to approximate the behavior of Unmarshal itself, Unmarshaler implement FromJSON([]byte("null")) as a no-op.
+//
+// Encode:
+// - Some types can't encode to JSON like large integers, ... and get error on runtime or code generator phase.
+tp JSON_Codec ab {
+    JSON_Decoder
+    JSON_Encoder
+}
+
+tp JSON_Decoder ab
+// FromJSON decode JSON to the desire structure. API is same as `codec.Decode()`
+tp FromJSON mt (self JSON_Decoder) (source Computer_Buffer) (err Error)
+
+tp JSON_Encoder ab {
+    Observer_JSON_Length
+}
+// FromJSON encode the structure to JSON format. API is same as `codec.Encoder()`
+tp ToJSON mt (self JSON_Encoder) (destination Computer_Buffer) (err Error)

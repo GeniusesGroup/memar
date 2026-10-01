@@ -1,0 +1,77 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Computer_Buffer in "modules/computer/buffer/protocol/buffer.kh"
+tp Error in "modules/process/error/protocol/error.kh"
+tp Storage_Block in "modules/memory/block/protocol/block.kh"
+tp String in "modules/codec/string/protocol/string.kh"
+tp Character in "modules/codec/string/protocol/character.kh"
+
+// Copy is implicit, inexpensive, and cannot be re-implemented (memcpy).
+// The Copy trait represents values that can be safely duplicated via memcpy:
+// things like reassignments and passing an argument by-value to a function are always memcpys, and so for Copy types,
+// the compiler understands that it doesn't need to consider those a move.
+// every Copy type is also required to be Clone
+tp Marker_Copy ab
+
+tp Copy_String_Character ab
+// Returns a copy of the itself
+tp Marker_Copy_String_Character_Copy mt (self Copy_String_Character) () (c Character, err Error)
+
+// Performs copy-assignment from source
+tp Marker_Copy_String_Character_CopyFrom mt (self Copy_String_Character) (source Character) (err Error)
+
+// Performs copy-assignment to destination
+tp Marker_Copy_String_Character_CopyTo mt (self Copy_String_Character) (destination Character) (err Error)
+
+tp Copy_String ab
+// Returns a copy of the itself
+tp Marker_Copy_String_Copy mt (self Copy_String) () (c String, err Error)
+
+// Performs copy-assignment from source
+tp Marker_Copy_String_CopyFrom mt (self Copy_String) (source String) (err Error)
+
+// Performs copy-assignment to destination
+tp Marker_Copy_String_CopyTo mt (self Copy_String) (destination String) (err Error)
+
+tp Copy_Computer_Buffer ab
+// Returns a copy of the itself
+tp Marker_Copy_Computer_Buffer_Copy mt (self Copy_Computer_Buffer) () (c Computer_Buffer, err Error)
+
+// Performs copy-assignment from source
+tp Marker_Copy_Computer_Buffer_CopyFrom mt (self Copy_Computer_Buffer) (source Computer_Buffer) (err Error)
+
+// Performs copy-assignment to destination
+tp Marker_Copy_Computer_Buffer_CopyTo mt (self Copy_Computer_Buffer) (destination Computer_Buffer) (err Error)
+
+tp Copy_Storage_Block ab
+// Returns a copy of the itself
+tp Marker_Copy_Storage_Block_Copy mt (self Copy_Storage_Block) () (c Storage_Block, err Error)
+
+// Performs copy-assignment from source
+tp Marker_Copy_Storage_Block_CopyFrom mt (self Copy_Storage_Block) (source Storage_Block) (err Error)
+
+// Performs copy-assignment to destination
+tp Marker_Copy_Storage_Block_CopyTo mt (self Copy_Storage_Block) (destination Storage_Block) (err Error)
+
+// TODO(go-migrate):
+/*
+package marker_p
+
+import (
+	error_p "memar/process/error/protocol"
+)
+
+// Copy is implicit, inexpensive, and cannot be re-implemented (memcpy).
+// The Copy trait represents values that can be safely duplicated via memcpy:
+// things like reassignments and passing an argument by-value to a function are always memcpys, and so for Copy types,
+// the compiler understands that it doesn't need to consider those a move.
+// every Copy type is also required to be Clone
+type Copy[T any] interface {
+	// Returns a copy of the itself
+	Copy() (c T, err error_p.Error)
+	// Performs copy-assignment from source
+	CopyFrom(source T) (err error_p.Error)
+	// Performs copy-assignment to destination
+	CopyTo(destination T) (err error_p.Error)
+}
+*/

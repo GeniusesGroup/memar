@@ -1,0 +1,56 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+tp Boolean in "modules/math/boolean/protocol/boolean.kh"
+tp String in "modules/codec/string/protocol/string.kh"
+
+// ActionType indicate all ActionType.
+// Famous action types are CRUD(Create, Read, Update, Delete)
+// https://en.wikipedia.org/wiki/Create,_read,_update_and_delete
+// It will usually use in authorization process to authorize operations.
+tp Operation_ActionType ab
+// Set given ActionType to the AT.
+// e.g. c.Set(ActionType_Create|ActionType_Delete)
+tp Operation_ActionType_Set mt (self Operation_ActionType) (with Operation_ActionType) ()
+
+// Check check given ActionType exist in the AT!
+tp Operation_ActionType_Check mt (self Operation_ActionType) (with Operation_ActionType) (exist Boolean)
+
+// String return name of crud in app language.
+tp Operation_ActionType_String mt (self Operation_ActionType) () (s String)
+
+// TODO(go-migrate):
+/*
+package operation_p
+
+// ActionType indicate all ActionType.
+// Famous action types are CRUD(Create, Read, Update, Delete)
+// https://en.wikipedia.org/wiki/Create,_read,_update_and_delete
+// It will usually use in authorization process to authorize operations.
+type ActionType uint64
+
+// Set given ActionType to the AT.
+// e.g. c.Set(ActionType_Create|ActionType_Delete)
+func (at *ActionType) Set(with ActionType) {
+	*at = with
+}
+
+// Check check given ActionType exist in the AT!
+func (at ActionType) Check(with ActionType) (exist bool) {
+	return with&at == with
+}
+
+const ActionType_None ActionType = 0
+
+// Action types
+// Can mix by binary OR e.g. ActionType_Create|ActionType_Read
+const (
+	ActionType_Create ActionType = (1 << iota)
+	ActionType_Read
+	ActionType_Update
+	ActionType_Delete
+	ActionType_List // Find, Filter
+	ActionType_Notify
+	ActionType_Approve
+
+	ActionType_All ActionType = 0b1111111111111111111111111111111111111111111111111111111111111111
+)
+*/

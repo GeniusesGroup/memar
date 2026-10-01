@@ -1,0 +1,6 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+// Async indicate any object need to run in a new thread,
+// due to have blocking mechanism in its logic.
+tp Runtime_Async ab
+tp DoAsync mt (self Runtime_Async) () ()

@@ -1,0 +1,30 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Domain in "modules/modules/app/protocol/dt-domain.kh"
+tp Boolean in "modules/math/boolean/protocol/boolean.kh"
+tp String in "modules/codec/string/protocol/string.kh"
+
+tp BS_Init_Request ab
+tp App_BS_Init_Request_Domain mt (self BS_Init_Request) () (d Domain)
+tp TemplateURI mt (self BS_Init_Request) () (s String)
+tp Blank mt (self BS_Init_Request) () (b Boolean)
+
+tp BS_Init_Response ab
+
+// TODO(go-migrate):
+/*
+package ap
+
+type (
+	BS_Init_Request interface {
+		Domain() Domain
+		TemplateURI() string // org(organization), society(government), aggregator-org, game(or sub type of org??)
+		Blank() bool         // raw (with little predefined codes)
+	}
+
+	BS_Init_Response interface {
+		Path() []string  // path with file name start from project root
+		Files() [][]byte // files data
+	}
+)
+*/

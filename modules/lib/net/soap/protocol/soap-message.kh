@@ -1,0 +1,11 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Message_Body in "modules/lib/net/soap/protocol/soap-message-body.kh"
+tp Message_Header in "modules/lib/net/soap/protocol/soap-message-header.kh"
+
+tp Message ab
+tp Header_Soap mt (self Message) () (h Message_Header)
+tp Body_Soap mt (self Message) () (b Message_Body)
+
+tp Header mt (self Message) () (h Message_Header)
+tp Body mt (self Message) () (b Message_Body)

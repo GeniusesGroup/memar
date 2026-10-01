@@ -1,0 +1,31 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Boolean in "modules/math/boolean/protocol/boolean.kh"
+tp Command_Handler in "modules/lib/process/command/protocol/command-handler.kh"
+tp DataType in "modules/computer/datatype/protocol/data-type.kh"
+tp Observer_MediaType in "modules/identifier/mediatype/protocol/media-type.observers.kh"
+tp Process_Request in "modules/process/request/protocol/request.kh"
+tp Process_Response in "modules/process/response/protocol/response.kh"
+tp String in "modules/codec/string/protocol/string.kh"
+
+// Command is the interface that must implement by any struct to be a command service
+// It is old user interface, In `uni-kernel` and `Graphic UI` it is useless because there is no `terminal` and `shell`.
+// TODO::: Deprecate in favor of service??
+//
+// https://en.wikipedia.org/wiki/Command-line_interface
+tp Libgo_Command ab {
+    Command_Handler
+    DataType
+    Observer_MediaType
+    Process_Request
+    Process_Response
+}
+// RunnableCommand reports whether the command can be run; otherwise it is a documentation pseudo-command
+tp RunnableCommand mt (self Libgo_Command) () (b Boolean)
+
+// ParentCommand return the parent command for this command.
+// It can be nill for the root command.
+tp Libgo_Command_ParentCommand mt (self Libgo_Command) () (c Libgo_Command)
+
+// SubCommand return a sub command by its name or alias that must use intelligent suggestion
+tp Libgo_Command_SubCommand mt (self Libgo_Command) (name String) (c Libgo_Command)

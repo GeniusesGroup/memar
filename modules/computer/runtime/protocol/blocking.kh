@@ -1,0 +1,9 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Bool in "modules/math/boolean/boolean.kh"
+
+// Blocking indicate a method will be block the caller for some reason,
+// such as read data from other source than RAM, ...
+tp Blocking ab
+
+tp IsBlocking mt (self Blocking) () (blocked Bool)

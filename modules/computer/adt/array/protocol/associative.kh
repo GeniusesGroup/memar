@@ -1,0 +1,95 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Array_Iteration_KV in "modules/computer/adt/array/protocol/iteration-kv.kh"
+tp Array_Keys in "modules/computer/adt/array/protocol/keys.kh"
+tp Array_Lookup in "modules/computer/adt/array/protocol/lookup.kh"
+tp Array_Put in "modules/computer/adt/array/protocol/put.kh"
+tp Array_Remove in "modules/computer/adt/array/protocol/remove.kh"
+tp Array_Values in "modules/computer/adt/array/protocol/values.kh"
+tp Observer_Container_Capacity in "modules/computer/adt/container/protocol/length.observers.kh"
+tp Observer_Container_OccupiedLength in "modules/computer/adt/container/protocol/length.observers.kh"
+
+// In computer science, an associative array, map, symbol table, or dictionary is an abstract data type that
+// stores a collection of (key, value) pairs, such that each possible key appears at most once in the collection.
+// In mathematical terms, an associative array is a function with finite domain.
+// https://en.wikipedia.org/wiki/Associative_array
+// It is the raw host: keys are `Array_Key`s and values are `Container_Element`s.
+// Only raw ADT protocols take or return it. A domain value that maps keys to values
+// (a Go `map[K]V` field or result) is its own named type whose methods take `K` and return `V`
+// (`UserRegistry`, not `Map<ID, User>`); its realization may keep an `Associative` as a field.
+tp Associative ab {
+    Array_Put
+    Array_Lookup
+    Array_Remove
+    Array_Keys
+    Array_Values
+
+    Array_Iteration_KV
+
+    Observer_Container_Capacity
+    Observer_Container_OccupiedLength
+}
+
+// TODO(go-migrate): Array_Iteration_KV is declared in modules/computer/adt/array/protocol/iteration-kv.kh, which lacks this member; transfer only writes modules/computer/adt/array/protocol/associative.kh.
+// TODO(go-migrate): Iterate_KV is declared in modules/computer/adt/array/protocol/iterate-kv.kh, which lacks this member; transfer only writes modules/computer/adt/array/protocol/associative.kh.
+// TODO(go-migrate): Array_Put is declared in modules/computer/adt/array/protocol/put.kh, which lacks this member; transfer only writes modules/computer/adt/array/protocol/associative.kh.
+// TODO(go-migrate): Array_Lookup is declared in modules/computer/adt/array/protocol/lookup.kh, which lacks this member; transfer only writes modules/computer/adt/array/protocol/associative.kh.
+// TODO(go-migrate): Array_Remove is declared in modules/computer/adt/array/protocol/remove.kh, which lacks this member; transfer only writes modules/computer/adt/array/protocol/associative.kh.
+// TODO(go-migrate): Array_Keys is declared in modules/computer/adt/array/protocol/keys.kh, which lacks this member; transfer only writes modules/computer/adt/array/protocol/associative.kh.
+// TODO(go-migrate): Array_Values is declared in modules/computer/adt/array/protocol/values.kh, which lacks this member; transfer only writes modules/computer/adt/array/protocol/associative.kh.
+// TODO(go-migrate):
+/*
+package array_p
+
+import (
+	container_p "memar/computer/adt/container/protocol"
+	error_p "memar/process/error/protocol"
+)
+
+// In computer science, an associative array, map, symbol table, or dictionary is an abstract data type that
+// stores a collection of (key, value) pairs, such that each possible key appears at most once in the collection.
+// In mathematical terms, an associative array is a function with finite domain.
+// https://en.wikipedia.org/wiki/Associative_array
+type Associative[KEY comparable, VALUE any] interface {
+	Put[KEY, VALUE]
+	Lookup[KEY, VALUE]
+	Remove[KEY]
+	Keys[KEY]
+	Values[VALUE]
+
+	Iteration_KV[KEY, VALUE]
+}
+
+type Iteration_KV[K, V any] interface {
+	Iteration_KV(startIndex container_p.ElementIndex, iterator Iterate_KV[K, V]) (err error_p.Error)
+}
+
+type Iterate_KV[K, V any] interface {
+	// Iterate or traverse
+	// In each iteration if err != nil, iteration will be stopped
+	Iterate(index container_p.ElementIndex, key K, value V) (err error_p.Error)
+}
+
+type Put[KEY, VALUE any] interface {
+	// Put or Insert()
+	Put(key KEY, value VALUE) (err error_p.Error)
+}
+
+type Lookup[KEY comparable, VALUE any] interface {
+	Lookup(key KEY) (value VALUE, err error_p.Error)
+}
+
+type Remove[KEY comparable] interface {
+	Remove(key KEY) (err error_p.Error)
+}
+
+type Keys[KEY any] interface {
+	// Keys return all keys
+	Keys() (keys []KEY, err error_p.Error)
+}
+
+type Values[VALUE any] interface {
+	// Values return all values
+	Values() (values []VALUE, err error_p.Error)
+}
+*/

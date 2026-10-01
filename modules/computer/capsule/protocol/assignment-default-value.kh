@@ -1,0 +1,7 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Error in "modules/process/error/protocol/error.kh"
+
+tp Assignment_DefaultValue ab
+// SetDefaultValue CAN return some types of error e.g. READONLY capsule.
+tp SetDefaultValue mt (self Assignment_DefaultValue) () (err Error)

@@ -1,0 +1,10 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Observer_Password in "modules/net/uri/protocol/password.observers.kh"
+tp Observer_Username in "modules/net/uri/protocol/username.observers.kh"
+
+// URI Userinfo >> "username[:password]"
+tp Observer_UserInfo ab {
+    Observer_Username
+    Observer_Password
+}

@@ -1,0 +1,8 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Error in "modules/process/error/error.kh"
+
+
+tp IF mt (self CF) (condition Condition, execute labelType) (err Error) {
+
+}

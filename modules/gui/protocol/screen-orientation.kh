@@ -1,0 +1,19 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp ScreenOrientation ab
+
+// TODO(go-migrate):
+/*
+package gui_p
+
+type ScreenOrientation uint8
+
+const (
+	// ScreenOrientation_Any or Unset or Natural allows the window to be freely orientated.
+	ScreenOrientation_Any ScreenOrientation = iota
+	// ScreenOrientation_Landscape constrains the window to landscape orientations.
+	ScreenOrientation_Landscape
+	// ScreenOrientation_Portrait constrains the window to portrait orientations.
+	ScreenOrientation_Portrait
+)
+*/

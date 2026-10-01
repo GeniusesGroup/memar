@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp DomainName in "modules/modules/module/protocol/dt-domain_name.kh"
+tp Observer_URI_Path in "modules/net/uri/protocol/path.observers.kh"
+
+tp BS_Update_Request ab {
+    Observer_URI_Path
+}
+tp Module_BS_Update_Request_Name mt (self BS_Update_Request) () (d DomainName)
+
+// TODO(go-migrate):
+/*
+package mp
+
+import (
+	uri_p "memar/net/uri/protocol"
+)
+
+type (
+	BS_Update_Request interface {
+		Name() DomainName
+		uri_p.Field_Path
+		// Transport() []string
+	}
+)
+*/

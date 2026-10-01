@@ -1,0 +1,28 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+// What a Khayyam-written compiler needs third: an instance it made itself. The
+// language states that declaring a variable does not say how the capsule is
+// created or initialized — "creation and initialization remain responsibilities
+// of capsule behavior" (docs/khayyam/variable.md → Overview) — and a method body
+// can only call methods, declare variables, declare scopes, and return, so what
+// a body does to satisfy that responsibility is the question.
+//
+// The language's position: no literal, no operator, and no construction form
+// (docs/khayyam/khayyam.md → Separation of Syntax and Governance, A Principle:
+// a bare numeric literal 41 may not appear as a value without a named capsule).
+
+tp Count cp {
+}
+
+tp Holder cp {
+}
+
+tp Fresh mt (self Holder) (count Count) () {
+    vr made Count
+    self.Make()(made)
+    self.Fill(made)()
+}
+
+tp Make mt (self Holder) () (made Count)
+
+tp Fill mt (self Holder) (count Count) ()

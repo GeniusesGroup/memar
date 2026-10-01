@@ -1,0 +1,419 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Nil in "modules/computer/adt/protocol/nil.kh"
+tp DataType in "modules/computer/datatype/protocol/data-type.kh"
+tp Observer_MediaType in "modules/identifier/mediatype/protocol/media-type.observers.kh"
+
+// Error is base behaviors that any Error capsule must implement.
+// Error MUST NOT mix with `Log Event`.
+// Error has static data for any client, to tell about system fault situation when processing client request.
+// Log event carry on static and dynamic data for developers, to indicate system fault situation, and help them troubleshoot potential bugs.
+//
+// Equality between two Error values is determined solely by comparing their DataTypeID() (via datatype_p.Observer_ID,
+// itself part of datatype_p.DataType). A dedicated Equivalence method is intentionally NOT part of this
+// abstraction: Error carries no per-instance dynamic field meaningful to compare beyond "which error occurred",
+// so a separate equivalence check would only duplicate the DataTypeID comparison under a second name. See
+// the "error" package's IsEqual for a generic, interface-level comparison helper.
+tp Error ab {
+    ImplementsError
+    DataType
+    Observer_MediaType
+// Error embeds adt_p.Nil only, as a Go-specific realization — not because Error's canonical (memar-level)
+// definition only needs Nil. Khayyam's Error requires the full adt_p.ADT family (IsNil/IsNull/IsEmpty); Go's
+// narrowing to Nil is legitimate specifically because Go variables are true pointers with a real nil value,
+// while Khayyam variables are always references (no pointer/nil concept the same way), so Go's memar-go
+// realization can rely on a plain pointer-nil check where Khayyam cannot. This divergence is analogous to
+// ImplementsError's domain-specific naming (RFC 495413): a per-backend realization choice, not a change to
+// the abstraction's canonical composition. See RFC 495442 for the full reasoning, and the dedicated ADT
+// session (not yet held) for what IsNull/IsEmpty should actually mean for a value like Error.
+    Nil
+}
+
+// ImplementsError is Error's own domain-specific realization of the general, tooling-facing
+// abstraction_p.Implements pattern (see RFC 495413). A distinct name (ImplError, rather than the fully
+// generic Implements()) is used so a single capsule can unambiguously declare intent for several different
+// abstractions at once, each under its own distinctly-named method — a shared, generic Implements() alone
+// cannot indicate which abstraction is being claimed once more than one is in play.
+//
+// This is a disambiguation convenience only. It provides no stronger safety or "sealing" guarantee than the
+// generic abstraction_p.Implements would, in either Go or Khayyam: deliberately embedding a shared marker
+// struct and deliberately writing this same empty method independently are equally trivial for anyone
+// intent on misrepresenting a type. An earlier draft (RFC 495414, now Rejected) explored a Go-specific
+// unexported/embedded-marker version claiming a stronger, compiler-enforced guarantee; that claim did not
+// hold up and was withdrawn, which is why this method is a plain exported method with no required embedding.
+tp ImplementsError ab
+tp ImplError mt (self ImplementsError) () ()
+
+// TODO(go-migrate):
+/*
+package error_p
+
+import (
+	adt_p "memar/computer/adt/protocol"
+	datatype_p "memar/computer/datatype/protocol"
+	mediatype_p "memar/identifier/mediatype/protocol"
+)
+
+// Error is base behaviors that any Error capsule must implement.
+// Error MUST NOT mix with `Log Event`.
+// Error has static data for any client, to tell about system fault situation when processing client request.
+// Log event carry on static and dynamic data for developers, to indicate system fault situation, and help them troubleshoot potential bugs.
+//
+// Equality between two Error values is determined solely by comparing their DataTypeID() (via datatype_p.Field_ID,
+// itself part of datatype_p.DataType). A dedicated Equivalence method is intentionally NOT part of this
+// abstraction: Error carries no per-instance dynamic field meaningful to compare beyond "which error occurred",
+// so a separate equivalence check would only duplicate the DataTypeID comparison under a second name. See
+// the "error" package's IsEqual for a generic, interface-level comparison helper.
+type Error interface {
+	// Below methods comment in favor of log_p.Event_Message interface.
+	// Error() string
+	// string_p.Stringer
+}
+*/
+
+// TODO(js-idea): archived memar-js JavaScript, not Khayyam and not a migration
+// Unverified idea from the retired memar-js repository (archive commit 27e013d, last pushed 2026-01-06). Kept as a thought only: the architect has moved on since, so this may contradict the current design.
+// source: memar-js/process/error/error.js
+//
+// import './errors.js'
+// import './error-errors.js'
+// import '../widgets/notification/pop-up.js'
+// import '../widgets/notification/center.js'
+// import * as mediatype from "../../identifier/mediatype/mediatype.js"
+//
+// class Err extends mediatype.MediaType {
+//     /**
+//      * 
+//      * @param {string} id BigINT
+//      * @param {string} mediatype 
+//      */
+//     constructor(id, mediatype) {
+//         super(id, mediatype)
+//         this._name = 'Memar Error'
+//     }
+//
+//     /**
+//      * New will make new Err, register it on related pools and return it!
+//      * @param {string} id BigINT
+//      * @param {string} mediatype 
+//      * @return {Err}
+//      */
+//     static New(id, mediatype) {
+//         const persiaError = new Err(id, mediatype)
+//         Application.RegisterError(persiaError)
+//         return persiaError
+//     }
+//
+//     Name() { return this._name }
+//
+//     /**
+//      * Notify error to user by graphic, sound and vibration (Haptic Feedback)
+//      */
+//     Notify() {
+//         // TODO::: 
+//         console.log(this)
+//
+//         HTMLAudioElement.Beep(500, 100, 5)
+//         window.navigator.vibrate(100)
+//
+//         popUpNotificationWidget.New(this.Detail.Domain + " - " + this.Detail.Summary, this.Detail.Overview, popUpNotificationWidgetTypeError)
+//         // centerNotificationWidget.New(this.Detail.Summary, this.Detail.Overview + "<hr />" + this.ID, centerNotificationWidgetTypeError)
+//     }
+//
+//     // Equal compare two Error.
+//     Equal(err) {
+//         if (this._id == err._id) {
+//             return true
+//         }
+//         return false
+//     }
+//
+//     /**
+//      * Use to notify any type of error to user by graphic, sound and vibration!!
+//      * @param {Err|Error|string|number} err 
+//      */
+//     static NotifyAnyToUser(err) {
+//         const persiaError = this.ConvertToErr(err)
+//         this.Notify(persiaError)
+//     }
+//
+//     /**
+//      * 
+//      * @param {Err|Error|string|number} err 
+//      * @return {Err} related error
+//      */
+//     static ConvertToErr(err) {
+//         // TODO::: new more check here for error type!
+//         // TODO::: toast a dialog about error not alert
+//         switch (err.constructor) {
+//             case Err:
+//                 return err
+//             case Number:
+//                 err = Application.GetErrorByID(err)
+//                 if (!err) err = ErrErrorNotFound
+//                 return err
+//             case String:
+//                 if (isNaN(err)) {
+//                     return ErrBrowserStringError
+//                 } else {
+//                     err = Application.GetErrorByID(err)
+//                     if (!err) err = ErrErrorNotFound
+//                     return err
+//                 }
+//             // case NetworkError:
+//             case TypeError:
+//                 switch (err.message) {
+//                     case "Failed to fetch":
+//                         return Application.GetErrorByID(4224326328) // No Connection
+//                     default:
+//                         return ErrBrowserTypeError
+//                 }
+//             // case EvalError:
+//             // case InternalError:
+//             // case RangeError:
+//             // case ReferenceError:
+//             // case SyntaxError:
+//             // case URIError:
+//             case Error:
+//                 switch (err.message) {
+//                     default:
+//                         return ErrBrowserError
+//                 }
+//             default:
+//                 return ErrUnknownError
+//         }
+//     }
+// }
+
+// TODO(js-idea): archived memar-js JavaScript, not Khayyam and not a migration
+// Unverified idea from the retired memar-js repository (archive commit 27e013d, last pushed 2026-01-06). Kept as a thought only: the architect has moved on since, so this may contradict the current design.
+// source: memar-js/process/service/service.js
+//
+// /**
+//  * The service structure
+//  * @property {string} Domain
+//  * @property {bigint} ID
+//  * @property {bigint} IssueDate
+//  * @property {bigint} ExpireDate
+//  * @property {string} ExpireInFavorOf
+//  * @property {bigint} ExpireInFavorOfID
+//  * @property {string} Status https://en.wikipedia.org/wiki/Software_release_life_cycle
+//  * @property {Authorization} Authorization
+//  * @property {string} Name 
+//  * @property {string} Description
+//  * @property {string[]} TAGS
+//  * 
+//  * @property {function} ServeHTTP GetProduct
+//
+//  * @typedef {Object} Authorization is the service structure
+//  * @property {number} CRUDRead
+//  * @property {number} UserType_All UserTypeOwner
+//  */
+// const Service = {
+//     URN: {
+//         URN: "",
+//         ID: "",
+//         Domain: "",
+//         Scope: "service",
+//         Name: "",
+//     },
+//     ID: 0,
+//     IssueDate: 0,
+//     ExpireDate: 0,
+//     ExpireInFavorOfURN: "",
+//     ExpireInFavorOfID: 0,
+//     Status: 0, // e.g. Software_PreAlpha more on https://en.wikipedia.org/wiki/Software_release_life_cycle
+//
+//     Authorization: {
+//         CRUD: CRUDRead,
+//         UserType: UserType_All, // UserTypeOwner
+//     },
+//
+//     Detail: {
+//         Name: "Service Name",
+//         Description: "Service Description",
+//         TAGS: [],
+//     },
+//
+//     DoHTTP: null,
+// }
+
+// TODO(js-idea): archived memar-js source, not Khayyam and not a migration
+// Unverified idea from the retired memar-js repository (archive commit 27e013d, last pushed 2026-01-06). Kept as a thought only: the architect has moved on since, so this may contradict the current design.
+// source: memar-js/process/error/error-errors.js
+//
+// import './error.js'
+//
+// const ErrErrorNotFound = Err.New("13345944438338031009", "urn:giti:error.protocol:error:not-found").SetDetail("LocaleText[0]", "LocaleText[1]", "LocaleText[2]")
+// const ErrBrowserStringError =  Err.New(0, "urn:giti:chrome.google:error:temp-error").SetDetail("String", "Error", err)
+// const ErrBrowserTypeError =  Err.New(0, "urn:giti:chrome.google:error:temp-error").SetDetail("Browser", "Error", err)
+// const ErrBrowserError =  Err.New(0, "urn:giti:chrome.google:error:temp-error").SetDetail("Browser", "Error", err)
+// const ErrUnknownError =  Err.New(0, "urn:giti:chrome.google:error:temp-error").SetDetail("Unknown", "Error", err)
+
+// TODO(js-idea): archived memar-js source, not Khayyam and not a migration
+// Unverified idea from the retired memar-js repository (archive commit 27e013d, last pushed 2026-01-06). Kept as a thought only: the architect has moved on since, so this may contradict the current design.
+// source: memar-js/process/error/error-errors.json
+// {
+//     "en": [
+//         "Error",
+//         "Not Found",
+//         "An error occurred but it is not registered yet to show more detail to you!"
+//     ],
+//     "fa": [
+//         "خطا",
+//         "یافت نشد",
+//         "خطایی رخ داده است ولی جزییات آن خطا برای نمایش به شما ثبت نشده است"
+//     ]
+// }
+
+// TODO(js-idea): archived memar-js source, not Khayyam and not a migration
+// Unverified idea from the retired memar-js repository (archive commit 27e013d, last pushed 2026-01-06). Kept as a thought only: the architect has moved on since, so this may contradict the current design.
+// source: memar-js/process/error/error.js
+//
+// import './errors.js'
+// import './error-errors.js'
+// import '../widgets/notification/pop-up.js'
+// import '../widgets/notification/center.js'
+// import * as mediatype from "../../identifier/mediatype/mediatype.js"
+//
+// class Err extends mediatype.MediaType {
+//     /**
+//      * 
+//      * @param {string} id BigINT
+//      * @param {string} mediatype 
+//      */
+//     constructor(id, mediatype) {
+//         super(id, mediatype)
+//         this._name = 'Memar Error'
+//     }
+//
+//     /**
+//      * New will make new Err, register it on related pools and return it!
+//      * @param {string} id BigINT
+//      * @param {string} mediatype 
+//      * @return {Err}
+//      */
+//     static New(id, mediatype) {
+//         const persiaError = new Err(id, mediatype)
+//         Application.RegisterError(persiaError)
+//         return persiaError
+//     }
+//
+//     Name() { return this._name }
+//
+//     /**
+//      * Notify error to user by graphic, sound and vibration (Haptic Feedback)
+//      */
+//     Notify() {
+//         // TODO::: 
+//         console.log(this)
+//
+//         HTMLAudioElement.Beep(500, 100, 5)
+//         window.navigator.vibrate(100)
+//
+//         popUpNotificationWidget.New(this.Detail.Domain + " - " + this.Detail.Summary, this.Detail.Overview, popUpNotificationWidgetTypeError)
+//         // centerNotificationWidget.New(this.Detail.Summary, this.Detail.Overview + "<hr />" + this.ID, centerNotificationWidgetTypeError)
+//     }
+//
+//     // Equal compare two Error.
+//     Equal(err) {
+//         if (this._id == err._id) {
+//             return true
+//         }
+//         return false
+//     }
+//
+//     /**
+//      * Use to notify any type of error to user by graphic, sound and vibration!!
+//      * @param {Err|Error|string|number} err 
+//      */
+//     static NotifyAnyToUser(err) {
+//         const persiaError = this.ConvertToErr(err)
+//         this.Notify(persiaError)
+//     }
+//
+//     /**
+//      * 
+//      * @param {Err|Error|string|number} err 
+//      * @return {Err} related error
+//      */
+//     static ConvertToErr(err) {
+//         // TODO::: new more check here for error type!
+//         // TODO::: toast a dialog about error not alert
+//         switch (err.constructor) {
+//             case Err:
+//                 return err
+//             case Number:
+//                 err = Application.GetErrorByID(err)
+//                 if (!err) err = ErrErrorNotFound
+//                 return err
+//             case String:
+//                 if (isNaN(err)) {
+//                     return ErrBrowserStringError
+//                 } else {
+//                     err = Application.GetErrorByID(err)
+//                     if (!err) err = ErrErrorNotFound
+//                     return err
+//                 }
+//             // case NetworkError:
+//             case TypeError:
+//                 switch (err.message) {
+//                     case "Failed to fetch":
+//                         return Application.GetErrorByID(4224326328) // No Connection
+//                     default:
+//                         return ErrBrowserTypeError
+//                 }
+//             // case EvalError:
+//             // case InternalError:
+//             // case RangeError:
+//             // case ReferenceError:
+//             // case SyntaxError:
+//             // case URIError:
+//             case Error:
+//                 switch (err.message) {
+//                     default:
+//                         return ErrBrowserError
+//                 }
+//             default:
+//                 return ErrUnknownError
+//         }
+//     }
+// }
+
+// TODO(js-idea): archived memar-js source, not Khayyam and not a migration
+// Unverified idea from the retired memar-js repository (archive commit 27e013d, last pushed 2026-01-06). Kept as a thought only: the architect has moved on since, so this may contradict the current design.
+// source: memar-js/process/error/errors.js
+//
+// import './error.js'
+//
+// Application.errors = {
+//     _poolByID: {},
+//     _poolByMediaType: {}
+// }
+//
+// /**
+//  * 
+//  * @param {Err} err 
+//  */
+// Application.RegisterError = function (err) {
+//     this._poolByID[id] = err
+//     this._poolByMediaType[urn] = err
+// }
+//
+// /**
+//  * 
+//  * @param {string} id ID of desire error
+//  * @return {Err} related error by given id, if exist
+//  */
+// Application.GetErrorByID = function (id) {
+//     return this.errors._poolByID[id]
+// }
+//
+// /**
+//  * 
+//  * @param {string} mt MediaType of desire error
+//  * @return {Err} related error by given mt, if exist 
+//  */
+// Application.GetErrorByMediaType = function (mt) {
+//     return this.errors._poolByMediaType[mt]
+// }

@@ -1,0 +1,35 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp DataType in "modules/computer/datatype/protocol/data-type.kh"
+tp Logic_Equivalence in "modules/math/logic/protocol/equivalence.kh"
+tp Boolean in "modules/math/boolean/protocol/boolean.kh"
+tp Stringer_To in "modules/codec/string/protocol/stringer.kh"
+
+// Epoch is the interface that must implement by any time capsule.
+// It is base on Epoch and Second terms to work anywhere (in any planet in the universe).
+// https://en.wikipedia.org/wiki/Epoch
+tp Epoch ab {
+    DataType
+    Stringer_To
+    Logic_Equivalence
+}
+
+tp Equivalence mt (self Epoch) (with Epoch) (b Boolean)
+
+// TODO(go-migrate):
+/*
+package time_p
+
+import (
+	datatype_p "memar/computer/datatype/protocol"
+	logic_p "memar/math/logic/protocol"
+	string_p "memar/codec/string/protocol"
+)
+
+// Epoch is the interface that must implement by any time capsule.
+// It is base on Epoch and Second terms to work anywhere (in any planet in the universe).
+// https://en.wikipedia.org/wiki/Epoch
+type Epoch interface {
+	logic_p.Equivalence[Epoch]
+}
+*/

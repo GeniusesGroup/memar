@@ -1,0 +1,414 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+// TODO(go-migrate):
+/*
+package cmd
+
+// case "interactive":
+// TODO::: cli interactive mode
+
+/*
+import (
+	"fmt"
+	"os"
+	"path/filepath"
+	"time"
+
+	"libgo/file"
+	"libgo/json"
+	"libgo/protocol"
+	"libgo/syllab"
+	"libgo/www"
+)
+
+// Some mutable folder name!
+const (
+	FolderNameDataStore = "data"
+	FolderNameGUI       = "gui"
+	FolderNameServices  = "services"
+	FolderNameSecret    = "secret"
+
+	FolderNameGUIPages    = "pages"
+	FolderNameGUILandings = "landings"
+	FolderNameGUIWidgets  = "widgets"
+
+	FolderNameJSSDK = "sdk-js"
+	FolderNameGOSDK = "sdk-go"
+)
+
+var (
+	// ServiceRootLocation is location of repository root folder.
+	ServiceRootLocation string
+)
+
+func init() {
+	// Indicate ServiceRootLocation
+	var ex, err = os.Executable()
+	if err != nil {
+		panic(err)
+		return
+	}
+	ServiceRootLocation = filepath.Dir(ex)
+
+	log.Init("giti-cli", 24*60*60)
+}
+
+// TODO::: improve architecture by split main function
+func main() {
+	fmt.Println("-------------------------------------------------------------------------------------")
+	fmt.Println("-------------------------------------------------------------------------------------")
+	fmt.Println("******************************* Libgo Interactive CLI *******************************")
+	fmt.Println("-------------------------------------------------------------------------------------")
+	fmt.Println("-------------------------------------------------------------------------------------")
+	fmt.Println("Version:", version)
+	fmt.Println("You may help us and create issue:")
+	fmt.Println("https://github.com/GeniusesGroup/libgo/issues/new")
+	fmt.Println("For more information, see:")
+	fmt.Println("https://github.com/GeniusesGroup/libgo/")
+	var start = time.Now()
+	fmt.Println("Code generate start at", start)
+
+	// TODO:::
+	// services.CompleteJson()
+	//go:generate libgo -service=complete-json -force_update -destination=github.com/GeniusesGroup/libgo/service.go -package=services
+
+	fmt.Println("-------------------------------------------------------------------------------------")
+	fmt.Println("CLI app run duration:", time.Since(start))
+	fmt.Println("See you soon!")
+}
+
+// TODO::: improve architecture by split main function!
+func interactive() {
+	var goErr error
+	var err protocol.Error
+
+	defer log.SaveToStorage()
+
+	fmt.Println(domainEnglish, "-------------------------------------------------------------------------------------")
+	fmt.Println(domainEnglish, "-------------------------------------------------------------------------------------")
+	fmt.Println(domainEnglish, "******************************* Interactive Giti CLI ********************************")
+	fmt.Println(domainEnglish, "-------------------------------------------------------------------------------------")
+	fmt.Println(domainEnglish, "-------------------------------------------------------------------------------------")
+	fmt.Println(domainEnglish, "Version:", version)
+	fmt.Println(domainEnglish, "You may help us and create issue:")
+	fmt.Println(domainEnglish, "https://github.com/GeniusesGroup/libgo/issues/new")
+	fmt.Println(domainEnglish, "For more information, see:")
+	fmt.Println(domainEnglish, "https://github.com/GeniusesGroup/libgo/")
+	var start = time.Now()
+	fmt.Println(domainEnglish, "Code generate start at", start)
+	fmt.Println(domainEnglish, "Service root location is at", ServiceRootLocation)
+
+	var repo = file.NewFolder("", ServiceRootLocation, false)
+	goErr = repo.Update()
+	if goErr != nil {
+		panic("Read repository face this error: " + goErr.Error())
+	}
+
+	fmt.Println(domainEnglish, "-------------------------------------------------------------------------------------")
+	fmt.Println(domainEnglish, "****************************** Available CLI services *******************************")
+	fmt.Println(domainEnglish, "-------------------------------------------------------------------------------------")
+	fmt.Println(domainEnglish, "0		: Nothing DO!!! Prevent mistakes!!!")
+	fmt.Println(domainEnglish, "1		: Quit without save changes")
+	fmt.Println(domainEnglish, "2		: Save changes and quit")
+	fmt.Println(domainEnglish, "3		: Save changes without quit")
+	fmt.Println(domainEnglish, "*************** Common Services *************** ")
+	fmt.Println(domainEnglish, "10	: Add project template to repository")
+	fmt.Println(domainEnglish, " *************** Achaemenid Services *************** ")
+	fmt.Println(domainEnglish, "30	: Add new Achaemenid service file to ./services/ folder")
+	fmt.Println(domainEnglish, "31	: Update exiting Achaemenid file in ./services/ folder")
+	fmt.Println(domainEnglish, "32	: Make Achaemenid service GO-SDK")
+	fmt.Println(domainEnglish, "33	: Make Achaemenid service JS-SDK")
+	fmt.Println(domainEnglish, "40	: Make www assets file from gui folder")
+	fmt.Println(domainEnglish, " *************** Ganjine Services *************** ")
+	fmt.Println(domainEnglish, "50	: Add new Ganjine file to ./datastore/ folder")
+	fmt.Println(domainEnglish, "51	: Update exiting Ganjine file in ./datastore/ folder")
+	fmt.Println(domainEnglish, " *************** GUI Services *************** ")
+	fmt.Println(domainEnglish, "70	: Add new GUI raw page")
+	fmt.Println(domainEnglish, " *************** Syllab Services *************** ")
+	fmt.Println(domainEnglish, "80	: Update Syllab encoder||decoder methods in the file")
+	fmt.Println(domainEnglish, " *************** JSON Services *************** ")
+	fmt.Println(domainEnglish, "90	: Update JSON encoder||decoder methods in the file")
+
+Choose:
+	fmt.Println(domainEnglish, "-------------------------------------------------------------------------------------")
+	fmt.Println(domainEnglish, "Enter desire CLI service ID:")
+	var requestedService uint
+	_, goErr = fmt.Scanln(&requestedService)
+	if goErr != nil {
+		fmt.Println(domainEnglish, "Unable to parse given ID:", goErr)
+		goto Choose
+	}
+	fmt.Println(domainEnglish, "You choose:", requestedService)
+
+	switch requestedService {
+	case 0:
+		fmt.Println(domainEnglish, "Nothing DO in this ID to prevent often mistakes enter multi times!!!")
+		goto Choose
+	case 1:
+		goto Exit
+	case 2:
+		goErr = repo
+		if goErr != nil {
+			fmt.Println(domainEnglish, "Unable to write to repo:", goErr)
+		}
+		fmt.Println(domainEnglish, "All changes write to disk as you desire!")
+		goto Exit
+	case 3:
+		goErr = repo
+		if goErr != nil {
+			fmt.Println(domainEnglish, "Unable to write to repo:", goErr)
+		}
+		fmt.Println(domainEnglish, "All changes write to disk as you desire!")
+
+	// *************** Common Services ***************
+	case 10:
+		_, goErr := MakeNewProject(&MakeNewProjectReq{Repo: repo})
+		if goErr != nil {
+			fmt.Println(domainEnglish, "Add project template to repository face this error:", goErr)
+		}
+		fmt.Println(domainEnglish, "Add project template had been succeed!!")
+	case 11:
+		// res, err := ag.UpdateProjectTemplate(&ReqUpdateProjectTemplate002{readRepo})
+		// if err != nil {
+		// 	fmt.Println(domainEnglish, "Update project template error:", err)
+		// }
+		// repo = res.Repo
+
+	// *************** Achaemenid Services ***************
+	case 30:
+		fmt.Println(domainEnglish, "Enter desire service name in ```kebab-case``` like ```register-person```")
+		var serviceName string
+		fmt.Scanln(&serviceName)
+		fmt.Println(domainEnglish, "Desire name: ", serviceName)
+
+		var file = file.File{
+			Name: serviceName,
+		}
+		goErr = ag.MakeNewServiceFile(&file)
+		if goErr != nil {
+			fmt.Println(domainEnglish, "Add new Achaemenid service template face this error:", goErr)
+			break
+		}
+		repo.Dependencies[FolderNameServices].SetFile(&file)
+		fmt.Println(domainEnglish, "Add new Achaemenid service had been succeed!!")
+	case 31:
+		fmt.Println(domainEnglish, "Enter desire full file name with extension!")
+		var fileName string
+		fmt.Scanln(&fileName)
+		fmt.Println(domainEnglish, "Desire file name: ", fileName)
+
+		var file = repo.FindFileRecursively(fileName)
+		if file == nil {
+			fmt.Println(domainEnglish, "Desire file name not exist in repo!!")
+			break
+		}
+
+		goErr = ag.UpdateServiceFile(file)
+		if goErr != nil {
+			fmt.Println(domainEnglish, "Update Achaemenid service file face this error:", goErr)
+		}
+		fmt.Println(domainEnglish, "Update exiting Achaemenid file had been succeed!!")
+	case 32:
+		fmt.Println(domainEnglish, "Enter desire full file name with extension!")
+		var fileName string
+		fmt.Scanln(&fileName)
+		fmt.Println(domainEnglish, "Desire file name: ", fileName)
+
+		var file = repo.FindFileRecursively(fileName)
+		if file == nil {
+			fmt.Println(domainEnglish, "Desire file name not exist in repo!!")
+			break
+		}
+
+		file, goErr = ag.MakeGoSDK(file)
+		if goErr != nil {
+			fmt.Println(domainEnglish, "Make Achaemenid service GO-SDK face this error:", goErr)
+		}
+		repo.Dependencies[FolderNameGOSDK].SetFile(file)
+		fmt.Println(domainEnglish, "Make Achaemenid service Go-SDK had been succeed!!")
+	case 33:
+		fmt.Println(domainEnglish, "Enter desire full file name with extension!")
+		var fileName string
+		fmt.Scanln(&fileName)
+		fmt.Println(domainEnglish, "Desire file name: ", fileName)
+
+		var file = repo.FindFileRecursively(fileName)
+		if file == nil {
+			fmt.Println(domainEnglish, "Desire file name not exist in repo!!")
+			break
+		}
+
+		var jsFile, jsonFile protocol.File
+		jsFile, jsonFile, goErr = ag.MakeJSSDK(file)
+		if goErr != nil {
+			fmt.Println(domainEnglish, "Make Achaemenid service JS-SDK face this error:", goErr)
+			break
+		}
+		repo.Dependencies[FolderNameJSSDK].SetFiles(jsFile, jsonFile)
+		fmt.Println(domainEnglish, "Make Achaemenid service JS-SDK had been succeed!!")
+	case 40:
+		var file = file.File{}
+		goErr = www.MakeAssetsFile(repo, &file)
+		if goErr != nil {
+			fmt.Println(domainEnglish, "Make www assets file from gui folder face this error:", goErr)
+			break
+		}
+		repo.SetFile(&file)
+		fmt.Println(domainEnglish, "Make www assets file from gui folder had been succeed!!")
+
+	// *************** Ganjine Services ***************
+	case 50:
+		fmt.Println(domainEnglish, "Enter desire structure name in ```kebab-case``` like ```person-authentication```")
+		var sName string
+		fmt.Scanln(&sName)
+		fmt.Println(domainEnglish, "Desire name: ", sName)
+
+		var file = file.File{
+			Name: sName,
+		}
+		goErr = gg.MakeNewDatastoreFile(&file)
+		if goErr != nil {
+			fmt.Println(domainEnglish, "Add new Ganjine file template face this error:", goErr)
+			break
+		}
+		repo.Dependencies[FolderNameDataStore].SetFile(&file)
+		fmt.Println(domainEnglish, "Add new structure had been succeed!!")
+	case 51:
+		fmt.Println(domainEnglish, "Enter desire full file name with extension!")
+		var fileName string
+		fmt.Scanln(&fileName)
+		fmt.Println(domainEnglish, "Desire file name: ", fileName)
+
+		var file = repo.FindFileRecursively(fileName)
+		if file == nil {
+			fmt.Println(domainEnglish, "Desire file name not exist in repo!!")
+			break
+		}
+
+		goErr = gg.UpdateDatastoreFile(file)
+		if goErr != nil {
+			fmt.Println(domainEnglish, "Update Structure file face this error:", goErr)
+		}
+		fmt.Println(domainEnglish, "Update exiting Ganjine file had been succeed!!")
+
+		// *************** GUI Services ***************
+	case 70:
+		fmt.Println(domainEnglish, "Enter desire full page name like 'store'")
+		var pageName string
+		fmt.Scanln(&pageName)
+		fmt.Println(domainEnglish, "Desire page name: ", pageName)
+
+		var jsFile = file.File{Name: pageName}
+		var htmlFile file.File
+		var cssFile file.File
+		var jsonFile file.File
+
+		goErr = www.MakeNewPage(&jsFile, &htmlFile, &cssFile, &jsonFile)
+		if goErr != nil {
+			fmt.Println(domainEnglish, "Add new GUI raw page face this error:", goErr)
+		}
+		repo.Dependencies[FolderNameGUI].Dependencies[FolderNameGUIPages].SetFile(&jsFile)
+		repo.Dependencies[FolderNameGUI].Dependencies[FolderNameGUIPages].SetFile(&htmlFile)
+		repo.Dependencies[FolderNameGUI].Dependencies[FolderNameGUIPages].SetFile(&cssFile)
+		repo.Dependencies[FolderNameGUI].Dependencies[FolderNameGUIPages].SetFile(&jsonFile)
+		// res.JS.Rename(req.ScopeName + ".js")
+		// res.JS.Unmarshal(jsBuf.Bytes())
+
+		// res.HTML.Rename(req.ScopeName + ".html")
+		// res.HTML.Unmarshal(*(*[]byte)(unsafe.Pointer(&htmlPageFile)))
+
+		// res.CSS.Rename(req.ScopeName + ".css")
+		// res.CSS.Unmarshal(*(*[]byte)(unsafe.Pointer(&cssPageFile)))
+
+		// res.JSON.Rename(req.ScopeName + ".json")
+		// res.JSON.Unmarshal(*(*[]byte)(unsafe.Pointer(&jsonPageFile)))
+		fmt.Println(domainEnglish, "Add new GUI raw page had been succeed!!")
+
+	// *************** Syllab Services ***************
+	case 80:
+		fmt.Println(domainEnglish, "Enter desire full file name with extension:")
+		var cmd string
+		fmt.Scanln(&cmd)
+		fmt.Println(domainEnglish, "Desire file name: ", cmd)
+
+		var file = repo.FindFileRecursively(cmd)
+		if file == nil {
+			fmt.Println(domainEnglish, "Desire file name not exist in repo!!")
+			break
+		}
+
+		var sgo = syllab.GenerationOptions{
+			ForceUpdate: true,
+		}
+		fmt.Println(domainEnglish, "Use unsafe codes means don't copy data from given payload||buffer and just point to it for decoding fields! buffer can't GC until decoded struct free!")
+		fmt.Println(domainEnglish, "Use unsafe codes Y|N :")
+		fmt.Scanln(&cmd)
+		fmt.Println(domainEnglish, "You choose: ", cmd)
+		if cmd == "y" || cmd == "Y" {
+			sgo.UnSafe = true
+		}
+
+		err = syllab.CompleteMethods(file, &sgo)
+		if err != nil {
+			fmt.Println(domainEnglish, "Update Syllab encoder||decoder face this error:", err)
+		}
+		fmt.Println(domainEnglish, "Update Syllab encoder||decoder had been succeed!!")
+
+		// *************** JSON Services ***************
+	case 90:
+		fmt.Println(domainEnglish, "Enter desire full file name with extension:")
+		var cmd string
+		fmt.Scanln(&cmd)
+		fmt.Println(domainEnglish, "Desire file name: ", cmd)
+
+		var file = repo.FindFileRecursively(cmd)
+		if file == nil {
+			fmt.Println(domainEnglish, "Desire file name not exist in repo!!")
+			break
+		}
+
+		var jgo = json.GenerationOptions{
+			ForceUpdate: true,
+		}
+
+		fmt.Println(domainEnglish, "Just accept minified encoded data to decode Y|N :")
+		fmt.Scanln(&cmd)
+		fmt.Println(domainEnglish, "You choose: ", cmd)
+		if cmd == "y" || cmd == "Y" {
+			jgo.Minified = true
+		}
+
+		fmt.Println(domainEnglish, "Strict mode to decode data Y|N :")
+		fmt.Scanln(&cmd)
+		fmt.Println(domainEnglish, "You choose: ", cmd)
+		if cmd == "y" || cmd == "Y" {
+			jgo.Strict = true
+		}
+
+		fmt.Println(domainEnglish, "Use unsafe codes Y|N :")
+		fmt.Scanln(&cmd)
+		fmt.Println(domainEnglish, "You choose: ", cmd)
+		if cmd == "y" || cmd == "Y" {
+			jgo.UnSafe = true
+		}
+
+		err = json.CompleteMethods(file, &jgo)
+		if err != nil {
+			fmt.Println(domainEnglish, "Update JSON encoder||decoder safe face this error:", err)
+		}
+		fmt.Println(domainEnglish, "Update JSON encoder||decoder safe had been succeed!!")
+
+	default:
+		fmt.Println(domainEnglish, "Nothing DO in given ID to prevent often mistakes enter bad ID!!!")
+		goto Choose
+	}
+
+	goto Choose
+
+Exit:
+	fmt.Println(domainEnglish, "-------------------------------------------------------------------------------------")
+	fmt.Println(domainEnglish, "CLI app run duration:", time.Since(start))
+	fmt.Println(domainEnglish, "See you soon!")
+}
+* /
+*/

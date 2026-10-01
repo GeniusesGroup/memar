@@ -1,0 +1,18 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Boolean in "modules/math/boolean/protocol/boolean.kh"
+tp NumberOfElement in "modules/computer/adt/container/protocol/length.kh"
+tp Error in "modules/process/error/protocol/error.kh"
+// Reversed is a container level operation.
+
+tp Container_Resize ab
+tp Container_Resize_Resize mt (self Container_Resize) (ln NumberOfElement) (e Error)
+
+tp Resized mt (self Container_Resize) () (b Boolean)
+
+// Resizable returns true if the container(buffer, ...) can be resized, or false if not.
+tp Resizable mt (self Container_Resize) () (b Boolean)
+
+// Compare is a container level operation.

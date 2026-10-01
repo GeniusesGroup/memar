@@ -1,0 +1,6 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp BlockNumber in "modules/memory/block/protocol/block.kh"
+
+tp Observer_BlockNumber ab
+tp GetBlockNumber mt (self Observer_BlockNumber) () (b BlockNumber)

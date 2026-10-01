@@ -1,0 +1,42 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Add_String_Character in "modules/computer/adt/container/protocol/add.kh"
+tp Append_String_Character in "modules/computer/adt/container/protocol/append.kh"
+tp Insert_String_Character in "modules/computer/adt/container/protocol/insert.kh"
+tp Pop_String_Character in "modules/computer/adt/container/protocol/pop.kh"
+tp Prepend_String_Character in "modules/computer/adt/container/protocol/prepend.kh"
+tp Push_String_Character in "modules/computer/adt/container/protocol/push.kh"
+tp Replace_String_Character in "modules/computer/adt/container/protocol/replace.kh"
+tp SetElements_String_Character in "modules/computer/adt/container/protocol/set-elements.kh"
+
+// Assignment is the interface that wraps the assignment methods.
+tp Container_Assignment ab
+
+tp Assignment_String_Character ab {
+    SetElements_String_Character
+    Push_String_Character
+    Pop_String_Character
+    Insert_String_Character
+    Add_String_Character
+    Append_String_Character
+    Prepend_String_Character
+    Replace_String_Character
+}
+
+// TODO(go-migrate):
+/*
+package container_p
+
+// Assignment is the interface that wraps the assignment methods.
+type Assignment[ELEMENT Element] interface {
+	SetElements[ELEMENT]
+
+	Push[ELEMENT]
+	Pop[ELEMENT]
+	Insert[ELEMENT]
+	Add[ELEMENT]
+	Append[ELEMENT]
+	Prepend[ELEMENT]
+	Replace[ELEMENT]
+}
+*/

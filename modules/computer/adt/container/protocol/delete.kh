@@ -1,0 +1,12 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Container_Limit in "modules/computer/adt/container/protocol/pagination.kh"
+tp Container_Offset in "modules/computer/adt/container/protocol/pagination.kh"
+tp Error in "modules/process/error/protocol/error.kh"
+
+// Delete is an operation that just mark as empty
+tp Container_Delete ab
+// Delete will just mark desire container location as empty to let other write operations CAN store data
+// if offset is 0 means it is from start of container.
+// if limit is 0 means to end of container.
+tp Container_Delete_Delete mt (self Container_Delete) (offset Container_Offset, limit Container_Limit) (err Error)

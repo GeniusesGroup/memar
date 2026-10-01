@@ -1,0 +1,9 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+tp ThreadID ab
+
+// TODO(go-migrate):
+/*
+package thread_p
+
+type ThreadID uint64
+*/

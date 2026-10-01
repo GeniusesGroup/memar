@@ -1,0 +1,76 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+// TODO(go-migrate):
+/*
+package json
+
+import (
+	"encoding/json"
+
+	// json_errs "memar/libgo/codec/json/errors"
+	error_p "memar/process/error/protocol"
+)
+
+/*
+	********************PAY ATTENTION:*******************
+	We don't suggest use these codec instead use Codec and autogenerate needed code before compile time
+	and reduce runtime process to improve performance of the app and gain better performance from this protocol!
+* /
+
+/*
+Field int `json:"{Name},{Option}"`
+Options:
+- Name		Other name than field name. Must be first option.
+- dash(-)	Don't encode||decode field!
+- omitempty Encode||Decode only field not nil!
+- string	base64 string! Use when array||slice numbers is not represent meaningful data. Also encode|decode numbers as string with "".
+- tuple		must assign to all fields to encode|decode as tuple array instead key-value object!
+
+Examples of struct field tags and their meanings:
+Field int `json:"myName"`           // Field appears in JSON as key "myName".
+Field int `json:"myName,omitempty"` // Field appears in JSON as key "myName" and the field is omitted from the object if its value is empty.
+Field int `json:",omitempty"`       // Field appears in JSON as key "Field" (the default), but the field is skipped if empty.
+Field int `json:"-"`                // Field is ignored by this package.
+Field int `json:"-,"`               // Field appears in JSON as key "-".
+* /
+
+// Marshal encodes the value of s to the buffer in runtime.
+func Marshal(s any) (p []byte, err error_p.Error) {
+	// TODO::: make better algorithm instead of below
+	var goErr error
+	p, goErr = json.Marshal(s)
+	if goErr != nil {
+		// err = &json_errs.EncodedCorrupted
+		return
+	}
+	return
+}
+
+// Unmarshal decode payload and stores the result in the value pointed to by s in runtime.
+func Unmarshal(p []byte, s any) (err error_p.Error) {
+	// TODO::: make better algorithm instead of below
+	var goErr error = json.Unmarshal(p, s)
+	if goErr != nil {
+		// err = &json_errs.EncodedCorrupted
+		return
+	}
+	return
+}
+
+// RunTimeCodec is a wrapper to use anywhere need codec_p.Codec interface instead of json_p.JSON interface
+type RunTimeCodec struct {
+	t       any
+	decoder any
+	encoder any
+	len     int
+}
+
+func NewRunTimeCodec(t any) (codec *RunTimeCodec) {
+	codec = &RunTimeCodec{
+		t: t,
+		// len: json.JSON_Length(),
+	}
+	// codec.encoder.buf = make([]byte, 0, codec.len)
+	return
+}
+*/

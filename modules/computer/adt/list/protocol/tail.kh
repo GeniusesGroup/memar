@@ -1,0 +1,9 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Container_Element in "modules/computer/adt/container/protocol/element.kh"
+tp Error in "modules/process/error/protocol/error.kh"
+
+tp List_Tail ab
+// Tail will return last element of the container.
+// an operation for referring to the list consisting of all the components of a list except for its first (this is called the "tail" of the list.)
+tp Tail mt (self List_Tail) () (el Container_Element, err Error)

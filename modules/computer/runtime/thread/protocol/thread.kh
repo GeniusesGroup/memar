@@ -1,0 +1,35 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Duration in "modules/time/duration/protocol/duration.kh"
+tp Computer_Runtime in "modules/computer/runtime/protocol/runtime.kh"
+tp Scheduler_Waiting in "modules/computer/runtime/thread/protocol/scheduler-waiting.kh"
+
+tp Runtime_Thread ab {
+// Execution_Exception
+    Scheduler_Waiting
+    Computer_Runtime
+}
+tp Sleep mt (self Runtime_Thread) (d Duration) ()
+
+// TODO(go-migrate):
+/*
+package thread_p
+
+import (
+	runtime_p "memar/computer/runtime/protocol"
+	error_p "memar/process/error/protocol"
+	"memar/time/duration"
+)
+
+type Thread interface {
+	// Defer(where ??, v any)
+
+}
+
+// Even when a package uses panic internally, its external API still presents explicit error return values.
+// TODO::: Is it good idea to have these logics? Why not just Errors??
+// type Execution_Exception interface {
+// 	Panic(e Event)
+// 	Recover() (e Event)
+// }
+*/

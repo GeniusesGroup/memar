@@ -1,0 +1,86 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Computer_Buffer in "modules/computer/buffer/protocol/buffer.kh"
+tp Error in "modules/process/error/protocol/error.kh"
+tp Storage_Block in "modules/memory/block/protocol/block.kh"
+tp Storage_Page in "modules/memory/page/protocol/page.kh"
+tp String in "modules/codec/string/protocol/string.kh"
+tp Character in "modules/codec/string/protocol/character.kh"
+
+// Clone is explicit, may be expensive, and may be re-implement arbitrarily.
+// Clone is designed for arbitrary duplications:
+// a Clone implementation for a type T can do arbitrarily complicated operations required to create a new T.
+// It is a normal trait (other than being in the prelude), and so requires being used like a normal trait, with method calls, etc.
+tp Marker_Clone ab
+
+tp Clone_String_Character ab
+// Returns a clone of the itself
+tp Marker_Clone_String_Character_Clone mt (self Clone_String_Character) () (c Character, err Error)
+
+// Performs clone-assignment from source
+tp Marker_Clone_String_Character_CloneFrom mt (self Clone_String_Character) (source Character) (err Error)
+
+// Performs clone-assignment to destination
+tp Marker_Clone_String_Character_CloneTo mt (self Clone_String_Character) (destination Character) (err Error)
+
+tp Clone_String ab
+// Returns a clone of the itself
+tp Marker_Clone_String_Clone mt (self Clone_String) () (c String, err Error)
+
+// Performs clone-assignment from source
+tp Marker_Clone_String_CloneFrom mt (self Clone_String) (source String) (err Error)
+
+// Performs clone-assignment to destination
+tp Marker_Clone_String_CloneTo mt (self Clone_String) (destination String) (err Error)
+
+tp Clone_Computer_Buffer ab
+// Returns a clone of the itself
+tp Marker_Clone_Computer_Buffer_Clone mt (self Clone_Computer_Buffer) () (c Computer_Buffer, err Error)
+
+// Performs clone-assignment from source
+tp Marker_Clone_Computer_Buffer_CloneFrom mt (self Clone_Computer_Buffer) (source Computer_Buffer) (err Error)
+
+// Performs clone-assignment to destination
+tp Marker_Clone_Computer_Buffer_CloneTo mt (self Clone_Computer_Buffer) (destination Computer_Buffer) (err Error)
+
+tp Clone_Storage_Block ab
+// Returns a clone of the itself
+tp Marker_Clone_Storage_Block_Clone mt (self Clone_Storage_Block) () (c Storage_Block, err Error)
+
+// Performs clone-assignment from source
+tp Marker_Clone_Storage_Block_CloneFrom mt (self Clone_Storage_Block) (source Storage_Block) (err Error)
+
+// Performs clone-assignment to destination
+tp Marker_Clone_Storage_Block_CloneTo mt (self Clone_Storage_Block) (destination Storage_Block) (err Error)
+
+tp Clone_Storage_Page ab
+// Returns a clone of the itself
+tp Marker_Clone_Storage_Page_Clone mt (self Clone_Storage_Page) () (c Storage_Page, err Error)
+
+// Performs clone-assignment from source
+tp Marker_Clone_Storage_Page_CloneFrom mt (self Clone_Storage_Page) (source Storage_Page) (err Error)
+
+// Performs clone-assignment to destination
+tp Marker_Clone_Storage_Page_CloneTo mt (self Clone_Storage_Page) (destination Storage_Page) (err Error)
+
+// TODO(go-migrate):
+/*
+package marker_p
+
+import (
+	error_p "memar/process/error/protocol"
+)
+
+// Clone is explicit, may be expensive, and may be re-implement arbitrarily.
+// Clone is designed for arbitrary duplications:
+// a Clone implementation for a type T can do arbitrarily complicated operations required to create a new T.
+// It is a normal trait (other than being in the prelude), and so requires being used like a normal trait, with method calls, etc.
+type Clone[T any] interface {
+	// Returns a clone of the itself
+	Clone() (c T, err error_p.Error)
+	// Performs clone-assignment from source
+	CloneFrom(source T) (err error_p.Error)
+	// Performs clone-assignment to destination
+	CloneTo(destination T) (err error_p.Error)
+}
+*/

@@ -1,0 +1,15 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Storage_Observer_RecordUUID in "modules/memory/record/protocol/dt-uuid.observers.kh"
+tp GUI_Widget_Conditions ab {
+    Storage_Observer_RecordUUID
+}
+
+// TODO(go-migrate):
+/*
+package record_p
+
+type GUI_Widget_Conditions interface {
+	// show folders and files
+}
+*/

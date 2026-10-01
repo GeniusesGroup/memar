@@ -1,0 +1,13 @@
+{
+  "name": "khayyam-toolchain",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test \"core/test/*.test.ts\" \"display/test/*.test.ts\" \"lsp/test/*.test.ts\" \"targets/*/test/*.test.ts\" && node --test \"targets/*/test/*.check.ts\"",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "26.6.3",
+    "typescript": "7.0.2"
+  }
+}

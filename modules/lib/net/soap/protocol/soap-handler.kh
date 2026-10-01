@@ -1,0 +1,10 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Error in "modules/process/error/protocol/error.kh"
+tp Message in "modules/lib/net/soap/protocol/soap-message.kh"
+tp Net_Socket_2 in "modules/net/protocol/socket.kh"
+tp String in "modules/codec/string/protocol/string.kh"
+
+tp Soap_Handler ab
+tp Action mt (self Soap_Handler) () (s String)
+tp ServeSOAP mt (self Soap_Handler) (sk Net_Socket_2, req Message, res Message) (err Error)

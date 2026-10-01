@@ -1,0 +1,9 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/codec/string/protocol/string.kh"
+
+tp Observer_HTTP_Status ab
+tp GetStatusCode mt (self Observer_HTTP_Status) () (s String)
+// The Reason-Phrase is indeed optional.
+// HTTP/2 and HTTP/3 even dropped it entirely.
+tp GetReasonPhrase mt (self Observer_HTTP_Status) () (s String)

@@ -1,0 +1,7 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Weight in "modules/process/operation/protocol/weight.kh"
+
+tp Observer_Weight ab
+// Use to queue requests by its weights in the same priority
+tp GetWeight mt (self Observer_Weight) () (w Weight)

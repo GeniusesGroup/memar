@@ -1,0 +1,11 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Error in "modules/process/error/protocol/error.kh"
+
+// GUI indicate how Error capsule must act in GUI applications.
+//
+// GUI can use also in CLI apps by e.g. use `//go:build gui` tag,
+// But strongly suggest DON'T think in this way and just use `Log` concept
+tp GUI ab
+// Notify error to user by graphic, sound and vibration (Haptic Feedback)
+tp Notify mt (self GUI) () (err Error)

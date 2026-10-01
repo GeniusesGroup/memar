@@ -1,0 +1,28 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+// ScreenMode is the window mode (ScreenMode.Option sets it).
+// Note that mode can be changed programmatically as well as by the user
+// clicking on the minimize/maximize buttons on the window's title bar.
+tp ScreenMode ab
+
+// TODO(go-migrate):
+/*
+package gui_p
+
+// ScreenMode is the window mode (ScreenMode.Option sets it).
+// Note that mode can be changed programmatically as well as by the user
+// clicking on the minimize/maximize buttons on the window's title bar.
+type ScreenMode uint8
+
+const (
+	ScreenMode_Unset ScreenMode = iota
+	// Screened is the normal window mode with any OS specific window decorations.
+	ScreenMode_Screened
+	// FullScreen is the full screen window mode.
+	ScreenMode_FullScreen
+	// Minimized is for systems where the window can be minimized to an icon.
+	ScreenMode_Minimized
+	// Maximized is for systems where the window can be made to fill the available monitor area.
+	ScreenMode_Maximized
+)
+*/

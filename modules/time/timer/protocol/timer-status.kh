@@ -1,0 +1,12 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Boolean in "modules/math/boolean/protocol/boolean.kh"
+
+// Timer_Status is the cell a timer's active status is held in and changed through.
+// It is atomic operation and a state read from it can be changed just after you get the status.
+// due to use atomic must use uint32
+tp Timer_Status ab
+
+tp Load mt (self Timer_Status) () (s Timer_Status)
+tp Store mt (self Timer_Status) (status Timer_Status) ()
+tp CompareAndSwap mt (self Timer_Status) (old Timer_Status, new Timer_Status) (swapped Boolean)

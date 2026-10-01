@@ -1,0 +1,6 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp HourEpoch in "modules/time/utc/epoch/hour.kh"
+
+tp Observer_HourEpoch ab
+tp GetHourEpoch mt (self Observer_HourEpoch) () (h HourEpoch)

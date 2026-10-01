@@ -1,0 +1,13 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+// TODO(go-migrate): full original Go source follows
+// --- go-source: memar-go/math/boolean/const.go sha256:50dc7c9e6ee0385efab1e626f2ba148d1d2161bf0ee410158a0c297f9284e490 ---
+// /* For license and copyright information please see the LEGAL file in the code repository */
+//
+// package boolean
+//
+// const (
+// 	True  Boolean = true  // 1
+// 	False Boolean = false // 0
+// )
+// --- end go-source: memar-go/math/boolean/const.go ---

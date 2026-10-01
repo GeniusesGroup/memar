@@ -1,0 +1,27 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+// In logic and mathematics, statements are said to be logically equivalent if they have the same truth value in every model.
+// It will use when qualities that are comparable.
+// https://en.wikipedia.org/wiki/Logical_equivalence
+// Logical_Connective_Equivalent
+tp Logic_Equivalence ab
+
+// TODO(go-migrate):
+/*
+package logic_p
+
+// In logic and mathematics, statements are said to be logically equivalent if they have the same truth value in every model.
+// It will use when qualities that are comparable.
+// https://en.wikipedia.org/wiki/Logical_equivalence
+// Logical_Connective_Equivalent
+type Equivalence[T any] interface {
+	// The statement P≡Q asserts the logical equivalence of P and Q
+	// The statement P⟺Q asserts the (not necessarily logical) equivalence of P and Q.
+	// It is not equal(=) sign
+	// For example, the sentences 0=0 and 32=9 are mathematically but not logically equivalent.
+	Equivalence(with T) bool
+	// TODO::: Equal() or Equals() or Equivalence() or EQV()
+	// Equal(with T) bool
+	// EQV(with T) bool
+}
+*/

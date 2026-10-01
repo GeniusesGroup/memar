@@ -1,0 +1,20 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Array_Dynamic in "modules/computer/adt/array/protocol/dynamic.kh"
+tp CompressType in "modules/codec/compress/protocol/compress.kh"
+tp Datatype_ID in "modules/computer/datatype/protocol/id.kh"
+tp Error in "modules/process/error/protocol/error.kh"
+tp String in "modules/codec/string/protocol/string.kh"
+
+tp Codec_CompressTypes ab
+tp Codec_CompressTypes_Register mt (self Codec_CompressTypes) (ct CompressType) (err Error)
+
+tp Codec_CompressTypes_GetByID mt (self Codec_CompressTypes) (id Datatype_ID) (ct CompressType, err Error)
+
+tp Codec_CompressTypes_GetByMediaType mt (self Codec_CompressTypes) (mt_ String) (ct CompressType, err Error)
+
+tp GetByFileExtension mt (self Codec_CompressTypes) (ex String) (ct CompressType, err Error)
+
+tp GetByContentEncoding mt (self Codec_CompressTypes) (ce String) (ct CompressType, err Error)
+
+tp Codec_CompressTypes_ContentEncodings mt (self Codec_CompressTypes) () (d Array_Dynamic)

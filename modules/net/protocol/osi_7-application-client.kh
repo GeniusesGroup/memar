@@ -1,0 +1,25 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Operation_Timeout in "modules/process/operation/protocol/timeout.kh"
+
+tp OSI_Application_Client ab {
+    Operation_Timeout
+}
+
+// TODO(go-migrate):
+/*
+package net_p
+
+import (
+	operation_p "memar/process/operation/protocol"
+)
+
+type OSI_Application_Client interface {
+	// SendBidirectionalRequest()
+	// SendUnidirectionalRequest()
+
+	// Due to each application handler wants its signature, implement it as a pure function inside each package.
+	// srpc.Client.SendBidirectionalRequest(sk Socket, sr Service, req Codec) (res Codec, err error_p.Error)
+	// http.Client.SendBidirectionalRequest(sk Socket, sr Service, httpReq *Request) (httpRes *Response, err error_p.Error)
+}
+*/

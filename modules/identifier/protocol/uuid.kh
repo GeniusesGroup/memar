@@ -1,0 +1,17 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Identifier_ID in "modules/identifier/protocol/id.kh"
+
+tp UUID_Hash ab
+
+// first 64bit of UUID
+tp Identifier_UUID_Hash_ID mt (self UUID_Hash) () (i Identifier_ID)
+
+// TODO(go-migrate):
+/*
+package identifier_p
+
+type UUID_Hash interface {
+	UUID() [32]byte // Hash of a record data
+}
+*/

@@ -1,0 +1,32 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+// The owner ruled on the one question this toolchain was holding open, and the
+// ruling is about shape rather than about a line in a compiler: a capsule's state
+// changes through a method of that capsule, and every other method goes through
+// that one. Nothing a method could be given to write directly is worth admitting,
+// because a body that reaches for one is a body whose logic is written badly — and
+// the endorsed shape needs nothing more than what [state.kh](./state.kh) already
+// compiles, where the field reaches the method that writes it.
+//
+// So the call below is refused, and it is refused on purpose rather than held
+// open: a call writes into a name the body binds, and whether a field is one of
+// those names is a rule of this level and not a claim the documents make. The
+// first call in the body is the same shape written on a name the body does bind,
+// and it is what the second one would be if the field were a local.
+
+tp Count cp {
+}
+
+tp Cursor cp {
+    position Count
+}
+
+tp Next mt (self Cursor) (step Count) (moved Count) {
+    return
+}
+
+tp Advance mt (self Cursor) (step Count) (moved Count) {
+    vr local Count
+    self.Next(local)(local)
+    self.Next(local)(self.position)
+}

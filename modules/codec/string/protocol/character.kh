@@ -1,0 +1,33 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Logic_Equivalence in "modules/math/logic/protocol/equivalence.kh"
+tp Boolean in "modules/math/boolean/protocol/boolean.kh"
+tp Clone_String_Character in "modules/computer/adt/marker/protocol/clone.kh"
+tp Copy_String_Character in "modules/computer/adt/marker/protocol/copy.kh"
+
+tp Equivalence mt (self Character) (with Character) (b Boolean)
+
+// Character is base of any character encoding
+tp Character ab {
+    Logic_Equivalence
+    Clone_String_Character
+    Copy_String_Character
+}
+
+// TODO(go-migrate):
+/*
+package string_p
+
+import (
+	marker_p "memar/computer/adt/marker/protocol"
+	logic_p "memar/math/logic/protocol"
+)
+
+// Character is base of any character encoding
+type Character interface {
+	logic_p.Equivalence[Character]
+
+	marker_p.Clone[Character]
+	marker_p.Copy[Character]
+}
+*/

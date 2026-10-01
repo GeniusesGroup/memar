@@ -1,0 +1,21 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Container_Element in "modules/computer/adt/container/protocol/element.kh"
+tp Error in "modules/process/error/protocol/error.kh"
+tp Queue_Dequeue in "modules/computer/adt/queue/protocol/dequeue.kh"
+tp Queue_Enqueue in "modules/computer/adt/queue/protocol/enqueue.kh"
+
+// Queue is queue data structure.
+// https://en.wikipedia.org/wiki/Queue_(abstract_data_type)
+tp Computer_Queue ab {
+    Queue_Dequeue
+    Queue_Enqueue
+}
+
+// Enqueue adding an element to the rear of the queue.
+// NOT RECOMMENDED but implementation CAN just call `Prepend()`
+tp Enqueue mt (self Queue_Enqueue) (el Container_Element) (err Error)
+
+// Dequeue removing an element from the front of queue and return it.
+// NOT RECOMMENDED but implementation CAN just call `Pop()`
+tp Dequeue mt (self Queue_Dequeue) () (el Container_Element, err Error)

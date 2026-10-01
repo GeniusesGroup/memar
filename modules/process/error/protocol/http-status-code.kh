@@ -1,0 +1,16 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/codec/string/protocol/string.kh"
+
+// TODO::: Do really need this here? be consider HTTP is not part of `memar` and it is bad practice to translate errors to status code
+tp HTTP_StatusCode ab
+tp Error_HTTP_StatusCode mt (self HTTP_StatusCode) () (s String)
+
+// TODO(go-migrate):
+/*
+package error_p
+
+// Belows are some other error behaviors that Errors capsule CAN implement,
+// but any error package can introduce new behaviors for any purpose.
+
+*/

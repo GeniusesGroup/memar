@@ -1,0 +1,22 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+// BiConditional is a relation between two propositions that is true only when both propositions are simultaneously true or false
+// https://en.wikipedia.org/wiki/Logical_biconditional
+// Logical_Connective_Equivalent
+tp BiConditional ab
+
+// TODO(go-migrate):
+/*
+package logic_p
+
+// BiConditional is a relation between two propositions that is true only when both propositions are simultaneously true or false
+// https://en.wikipedia.org/wiki/Logical_biconditional
+// Logical_Connective_Equivalent
+type BiConditional[T any] interface {
+	// BiConditional is represented by ↔
+	// This means that that P↔Q  is either analytically (in an axiom system) or synthetically true,
+	// i.e., that P and Q have the same truth value in the given interpretation.
+	BiConditional(with T) bool
+	// BIC()
+}
+*/

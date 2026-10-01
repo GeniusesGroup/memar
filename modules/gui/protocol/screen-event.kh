@@ -1,0 +1,8 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp ScreenEvent ab
+
+// absolute?: boolean;
+// alpha?: number | null;
+// beta?: number | null;
+// gamma?: number | null;

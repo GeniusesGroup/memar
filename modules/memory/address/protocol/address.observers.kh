@@ -1,0 +1,9 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp MemoryAddress in "modules/memory/address/protocol/address.kh"
+tp Memory_Pointer in "modules/memory/address/protocol/address.kh"
+
+tp Observer_MemoryAddress ab
+tp GetMemoryAddress mt (self Observer_MemoryAddress) () (m MemoryAddress)
+tp Observer_Memory_Pointer ab
+tp GetPointer mt (self Observer_Memory_Pointer) () (p Memory_Pointer)

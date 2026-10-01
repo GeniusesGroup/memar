@@ -1,0 +1,25 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Duration in "modules/time/duration/protocol/duration.kh"
+tp Stringer in "modules/codec/string/protocol/stringer.kh"
+tp Observer_Epoch in "modules/time/protocol/epoch.observers.kh"
+
+// Time is the interface that must implement by any time capsule.
+// It is base on Epoch and Second terms to work anywhere (in any planet in the universe).
+tp Time ab {
+    Observer_Epoch
+}
+
+// From Epoch
+// Usually Duration == duration.Second
+tp SecondElapsed mt (self Time) () (d Duration)
+
+// From second
+// Duration == duration.NanoInSecond
+tp NanoInSecondElapsed mt (self Time) () (d Duration)
+
+// Time_Stringer is base on other factor than Time like timezone, ...
+tp Time_Stringer ab {
+// Stringer MUST include factors like timezone, ...
+    Stringer
+}

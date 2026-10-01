@@ -1,0 +1,11 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Error in "modules/process/error/protocol/error.kh"
+tp Net_FrameType in "modules/net/protocol/frame-type.kh"
+tp PacketListener in "modules/net/protocol/packet-listener.kh"
+
+tp PacketTarget ab
+// TODO::: just accept FrameType? other conditions? some thing like Regex??
+tp AddPacketListener mt (self PacketTarget) (fID Net_FrameType, callback PacketListener) (err Error)
+
+tp RemovePacketListener mt (self PacketTarget) (fID Net_FrameType, callback PacketListener) (err Error)

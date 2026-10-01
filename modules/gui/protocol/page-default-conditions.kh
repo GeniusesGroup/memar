@@ -1,0 +1,8 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Boolean in "modules/math/boolean/protocol/boolean.kh"
+
+tp Page_DefaultConditions ab
+
+tp Editable mt (self Page_DefaultConditions) () (b Boolean)
+// MarketingUTM

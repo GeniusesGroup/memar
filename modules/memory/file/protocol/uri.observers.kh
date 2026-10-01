@@ -1,0 +1,22 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Observer_Authority in "modules/net/uri/protocol/authority.observers.kh"
+tp Observer_Extension in "modules/memory/file/protocol/extention.observers.kh"
+tp Observer_Name in "modules/memory/file/protocol/name.observers.kh"
+tp Observer_Scheme in "modules/net/uri/protocol/scheme.observers.kh"
+tp Observer_URI_Path in "modules/net/uri/protocol/path.observers.kh"
+tp Storage_URI in "modules/memory/file/protocol/uri.kh"
+
+tp Observer_File_URI ab
+// URI Return full file URI
+tp GetFileURI mt (self Observer_File_URI) () (u Storage_URI)
+tp Observer_File_URI_Parsed ab {
+// always return "file"
+    Observer_Scheme
+// TODO::: Is it ok to have `port` in authority?
+    Observer_Authority
+// File location from root directory include file name if not point to a directory.
+    Observer_URI_Path
+    Observer_Name
+    Observer_Extension
+}

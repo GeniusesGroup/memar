@@ -1,0 +1,17 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Message_Fault ab
+
+// TODO(go-migrate):
+/*
+package soap_p
+
+type Message_Fault interface {
+	// XMLName xml.Name `xml:"soap:Fault"`
+	// Code    string   `xml:"Code"`
+	// Reason  string   `xml:"Reason"`
+	// Node    string   `xml:"Node,omitempty"`
+	// Role    string   `xml:"Role,omitempty"`
+	// Detail  string   `xml:"Detail,omitempty"`
+}
+*/

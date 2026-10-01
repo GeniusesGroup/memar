@@ -1,0 +1,7 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Boolean in "modules/math/boolean/protocol/boolean.kh"
+
+tp Null ab
+// IsNull report is the Element has value(data set before) or not.
+tp IsNull mt (self Null) () (b Boolean)

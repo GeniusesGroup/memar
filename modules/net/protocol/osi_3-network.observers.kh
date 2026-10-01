@@ -1,0 +1,6 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp OSI_Network in "modules/net/protocol/osi_3-network.kh"
+
+tp Observer_OSI_Network ab
+tp GetOSINetworkLayer mt (self Observer_OSI_Network) () (n OSI_Network)

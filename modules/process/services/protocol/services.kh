@@ -1,0 +1,22 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Array_Dynamic in "modules/computer/adt/array/protocol/dynamic.kh"
+tp Error in "modules/process/error/protocol/error.kh"
+tp Operation_ID in "modules/process/operation/protocol/id.kh"
+tp Service in "modules/process/service/protocol/service.kh"
+tp String in "modules/codec/string/protocol/string.kh"
+
+// Services use to register services to get them in a desire way e.g. sid in http query.
+tp Process_Services ab
+// Register use to register application services.
+// Due to minimize performance impact, This method isn't safe to use concurrently and
+// must register all service before use GetService methods.
+tp Process_Services_Register mt (self Process_Services) (s Service) (err Error)
+
+tp Process_Services_Delete mt (self Process_Services) (s Service) (err Error)
+
+tp Process_Services_GetByID mt (self Process_Services) (oID Operation_ID) (ser Service, err Error)
+
+tp Process_Services_GetByMediaType mt (self Process_Services) (mt_ String) (ser Service, err Error)
+
+tp Process_Services_Services mt (self Process_Services) () (d Array_Dynamic)

@@ -1,0 +1,450 @@
+{
+  "specification": "Khayyam display contract",
+  "version": "3.0.0",
+  "status": "Proposed",
+  "scope": "How a Khayyam source is displayed to whoever reads it. A reader may be a person in an editor, a person on a code-hosting page, or a person reading a rendered document; the same contract governs all three, and nothing here is a setting of any one tool. It does not govern the language's syntax, semantics, or governance - it governs only the reading of what the language already states.",
+  "authority": {
+    "language": "docs/khayyam/khayyam.md (Explanation -> Keywords -> Language Keyword in a Glance; Import Mechanism (in); Type; Capsule; Method; Abstraction; Scope; Variable)",
+    "categories": "docs/khayyam/khayyam.md (Type Principles Realized) - Capsule, Abstraction, Method and Scope are four categories of one concept, Type, and the subtype keyword names the category",
+    "compositionBlock": "docs/khayyam/encapsulation.md (Capsule Structure and Privacy) and docs/khayyam/khayyam.md (Capsule) - a field line is `fieldName fieldType`; a one-token line in the same block is a bare abstraction name",
+    "identityVocabulary": "modules/khayyam/core/src/sr.ts - the toolchain's semantic representation already names these identities (CapsuleDecl, AbstractionDecl, MethodDecl, ScopeDecl, TypeInclude, VarInclude, Field, Param, VarDecl, Subtype); a role name is the display name of one of them"
+  },
+  "consumers": [
+    "Any renderer that highlights Khayyam, including a TextMate grammar driven by a highlighter",
+    "A Khayyam language server, through LSP semantic tokens",
+    "A person reading the source directly, who is the reason any of this exists"
+  ],
+  "principles": [
+    "A role names what an identifier IS, never where it appears. The same identity carries the same role at every position in every file.",
+    "Two roles are two identities. A theme is expected to give each role its own value; the specification never states a value.",
+    "The specification names roles, kinds, attributes, and variable names. A theme supplies the value for each variable. This is the separation CSS custom properties make: the name is declared once, the value is provided by whoever renders.",
+    "The first attribute is color because color is the channel a reader of code can always rely on. Further attributes are added only where a second channel carries a distinction color cannot."
+  ],
+
+  "attributeSchema": {
+    "description": "The display attributes a role may carry. `color` is the first attribute; the schema is a map so further attributes can be added without changing the structure of a role. Every attribute listed here must be given a value for every role - an attribute is either a real channel for every role or it is not in the schema.",
+    "addingAnAttribute": "Add a key to `attributeSchema.attributes` with a `type`, a `required` flag, and its value form. Every role's `attributes` gains a variable for it. No existing role entry changes shape, and no theme has to be rewritten: an attribute that a theme has no opinion about takes the empty value, which means 'this attribute says nothing here'.",
+    "attributes": {
+      "color": {
+        "type": "themeVariable",
+        "required": true,
+        "valueForm": "A CSS-style hex triple such as #RRGGBB.",
+        "description": "The foreground value the theme supplies for this role. This is the channel that marks what a name is."
+      },
+      "fontStyle": {
+        "type": "themeVariable",
+        "required": true,
+        "valueForm": "A style name, a comma-separated list of style names (for example `italic`, `bold`), or the empty value, which means 'this attribute says nothing here'.",
+        "description": "The weight or slant the theme supplies for this role. This is the channel that marks how a name entered the file. The empty value is a real value, not a missing one."
+      }
+    },
+    "deliberateExclusions": {
+      "fontSize": {
+        "included": false,
+        "recordedCritique": "A proposal was made to render keywords smaller and lighter for readability. Size is recorded here as a discouraged attribute for displaying code: a reader scanning a code listing tracks shape and contrast far more reliably than absolute size, and a size change both destroys the monospaced alignment the language depends on to be read at all, and makes a role's presence depend on a difference a reader may not notice. Weight and color are the channels that read reliably, and identity confusion - the actual difficulty this contract exists to solve - is a question of which role a name carries, not of how large it is drawn.",
+        "consequence": "fontSize is not in the attribute schema, so no theme can supply a value for it, and a theme that names it is an error."
+      }
+    }
+  },
+
+  "themeContract": {
+    "statement": "A theme MUST supply a value for every role-attribute pair in this specification. Every value is keyed by role AND attribute: the variable name for a value is `khayyam.<role>.<attribute>`, so a role that carries two attributes has two independent variables and a theme can answer each separately.",
+    "contrastFloor": "Every value a theme states for the `color` attribute meets or exceeds 4.5:1 against the background that same theme states for itself, and no role holds an exemption from it. `comment` is a value like every other: a comment that recedes by being hard to read is not receding, it is missing. The floor is one number for the whole palette because a palette with two floors is a palette where a reader cannot tell which roles are allowed to be hard to read. What the floor does not say is how two values above it are told apart, which is a question about the roles' distinctness and answered by the role list and not here.",
+    "errors": [
+      "A theme that omits a value for a role-attribute pair is an ERROR, not a fallback to a default. A missing value means the reader cannot tell whether the role is unstyled or unrecognized. The one legitimate value that says 'nothing to say' is written out explicitly, as the empty value.",
+      "A theme that supplies a value for a role this specification does not define is an ERROR.",
+      "A theme that supplies a value for an attribute this specification does not define is an ERROR. In particular, a value for fontSize is an ERROR, because size is a discouraged channel for code (see attributeSchema.deliberateExclusions).",
+      "A theme that states a `color` value below the contrast floor above, measured against its own background, is an ERROR. There is no lower floor for one role.",
+      "A theme MAY give two roles the same value for the same attribute. Whether two roles are too alike to tell apart is a question about the roles' distinctness, which the role list answers, and not a question the theme can be asked to enforce."
+    ],
+    "variableNaming": "khayyam.<role>.<attribute> - the role first, because the role is the identity being displayed, and the attribute second, because the same role may be rendered differently on each channel.",
+    "valueForm": "Any value the host accepts for the attribute, as declared per attribute in the attribute schema."
+  },
+
+  "fontStyleChannel": {
+    "purpose": "So that a theme is not choosing style values arbitrarily, this contract assigns the second channel one meaning: it says how a name entered this file.",
+    "rule": "A name that entered this file from another file is italic. A name that entered this file from outside the method it appears in is bold. Every other role takes the empty value, because for them color already carries the whole distinction.",
+    "consequence": "In the dark sheet `included-type` and `included-variable` are italic, `method-argument` is bold, and the other eighteen roles take the empty value. The light sheet takes one more: `comment` is italic there, which is what tells a comment apart from the identifier-reference a use site that cannot be resolved stands in, and the empty value beside it is that sheet's own reading of how much the channel is worth on a white background. `method-local` is among the empty in both, and the emptiness is the rule's own answer rather than a gap in it: a name declared inside the body it appears in entered that body from neither another file nor outside it, so neither style is true of it, and the whole of that role's distinction from `variable` is therefore carried by color. A theme that finds this reading unhelpful is free to choose otherwise - the value is the theme's, this is only the reason the shipped ones chose what they chose."
+  },
+
+  "classification": {
+    "statement": "A role names an identity; a KIND says what kind of thing that identity is. The kind is a separate question from the role's name, from where the name came from, and from how wide its validity is, and a host that already classifies tokens can only be told the second of those. So every role states its kind, and a kind is one of exactly three answers: the standard type the host registers that this role is a kind of; this language's own root, declared with no standard counterpart and with the reason why; or the host's own standard type under the role's own name, which is a kind the host already registers and which is therefore declared nowhere.",
+    "whyItIsSeparate": "The twenty-one roles are a re-derivation of a classification the host already publishes, and the re-derivation spread three questions into one column: what kind of thing a name is, where it came from, and whether it is valid. A super type carries the first and nothing else. What it does not carry, and what this contract names as residue rather than spreading across new kinds, is origin - a name that arrived by inclusion against one declared here - and validity - a name valid for a whole file against one valid for a method body.",
+    "kinds": {
+      "standardType": "A name the host registers as a token type. It is read out of the host's own product, not from a list written here, and a role naming one is refused if the host does not register it. A realization states it by contributing the role as a semantic token type whose `superType` is that name, which is what makes a reader's own rule for the standard class reach our roles.",
+      "root": "This language's own kind, with no standard counterpart. A root's type hierarchy is exactly itself, so no rule keyed on a standard type ever reaches it and a theme's value for it is mandatory rather than a formality. A root is a real result and not a failure: it is what the language adds to the host's vocabulary. It declares no super type anywhere, because a super type is the only thing that would make it reachable, and a host told a root is a kind of a standard type has been told something false.",
+      "isItsOwnName": "The role's own name IS the host's standard type for that kind - `keyword`, `method`, `variable`, `comment`, `string` - so the kind needs no declaration and none is given. Declaring one would REPLACE the host's own entry for that name: the host's `registerTokenType` overwrites the registration, renumbers the type, and gives the token-styling schema a property of our own for it; and declaring `keyword` a kind of `keyword` makes the host's `getTypeHierarchy` walk a cycle that never ends, because it starts at the name, pushes the super type, looks the super type up, and finds the same entry again. So a role of this shape is registered nowhere and its kind is carried by the name itself."
+    },
+    "howAHostReachesIt": "A host builds a token's type hierarchy by walking the super types a provider declared, so a role with a super type is styled by any theme that styles the standard type, whether or not it ever heard of Khayyam. Matching is by score and the score is `100 - depth`, plus 10 when the rule's key names a language: a rule keyed a role's own name sits at depth 0 and scores 100, a reader's rule for the standard type sits one entry deeper and scores 99, and a style is written when a rule's score is greater than OR EQUAL to the one already held. The value this contract states therefore wins, and a foreign theme's value for the standard class still reaches the role as a floor beneath it. The check states this arithmetic in the host's own numbers rather than asserting it.",
+    "theFourRoots": "The host's classification has no counterpart for a Scope, for a use the resolver could not resolve, or for a form the language refuses. The first is the fourth category of Type and the host's `type` is a generic type rather than that category; the second is a statement about the resolver's reach and not a kind of name; the third two are statements about what the language refuses, which the host answers with a diagnostic and a grammar scope rather than with a token type at all. Whether these four are roles at all is the owner's question and is carried as open state in the handoff; this contract declares them and the check reads them, so either answer is one edit away and nothing else in the tree has to move.",
+    "residue": [
+      "Origin. `included-type` and `type-reference` are one kind (`type`) and differ only in where the name came from; so do `included-variable` and `variable`. The host's eight modifiers have nothing for it, so origin is carried by the palette's lightness and chroma and by the `fontStyleChannel` above.",
+      "Validity. `variable` and `method-local` are one kind (`variable`) and differ only in how wide the name's validity is. The host's modifiers have no `local` and no `private`, so a Capsule's field's privacy is residue in the same way.",
+      "Position. `method-argument-type` and `method-owner-type` are one kind (`type`) and differ only in which parenthesis of a signature they stand in. The language requires the three groups to be separated and the contract keeps the two roles because a reader must be able to tell them; nothing in the host's classification distinguishes them."
+    ],
+    "authority": "A super type is a claim about what kind of thing a name is, and that is a claim about the LANGUAGE, not about this display contract. Whether docs/khayyam/ says, of its own Type categories and its two variable declarations, which of them are kinds of which is not answered here and is the owner's; this contract states the claim it needs and cites the language document each role comes from."
+  },
+
+  "palette": {
+    "statement": "The contract states no value. What it states is the rule a value is derived from, so that a theme is a derivation rather than a choice, and so that a check can fail a value that breaks a rule and not only a value that is missing.",
+    "hueIsKind": "One hue per kind, so a reader can see a family. Two roles of one kind carry the same hue; two roles of different kinds are told apart by at least 20 degrees of hue or at least 12 L*, and never by both failing. A kind whose values carry chroma below 0.05 has no hue a reader can resolve, and is told apart from a chromatic kind by at least 0.025 of chroma or 8 L*, and from another kind of its own lane by at least 8 L*.",
+    "lightnessAndSaturationArePosition": "Origin, and declaration against use, are carried by lightness and saturation and NEVER by hue. Two roles of one kind that do not share a value differ by at least 8 L* and by at least 0.005 of chroma. The direction is fixed: a name that arrived by inclusion sits further from the sheet's background than one declared here, and is the less saturated of the two.",
+    "warmBand": "The band from 15 to 120 degrees of OKLCH hue at a chroma of 0.05 or above - red through orange to yellow-green - belongs to the two refusal roles and to nothing else. Warm means error and nothing else, and this is the interval the check reads.",
+    "floor": "Every `color` value meets or exceeds the `themeContract.contrastFloor` of 4.5:1 against the background THAT theme states for itself, read from that theme's own base chain and not assumed.",
+    "method": "Every value is built in OKLCH, converted to sRGB, and refused outside the sRGB gamut rather than clipped; contrast is the WCAG 2.x relative-luminance ratio against that theme's own `editor.background`; a colour-vision deficiency is estimated with the Machado, Oliveira and Fernandes (2009) matrices at severity 1.0 applied in linear RGB, written to 8 bits and read back, and measured in CIE L*a*b* (D65) as dE76. The dE76 figures are an estimate of what a reader perceives and not a measurement of it, and every number is reproducible from the OKLCH triples the two theme files state.",
+    "recordedDichromacyPairs": {
+      "rule": "Two roles of the same family are at least dE76 10 apart under each of the three simulations, UNLESS the contract records the pair and the reason here. A pair that fails silently is the defect; a pair that fails with a stated reason is a decision, and this list is where the decisions are. A record names two ROLES and a pair of roles is a pair of VALUES: three roles of one kind may share one value, and a decision about two of them is a decision about the two colours, so a third role carrying the same value as a recorded one is covered by that record.",
+      "pairs": [
+        {
+          "theme": "dark",
+          "pair": "file-uri/identifier-reference",
+          "worst": "tritanopia 9.5",
+          "reason": "Both stand in the neutral lane - a path an inclusion routes to, and a use this file cannot resolve - and the lane is a four-step lightness ladder, so what separates them is 16 L* and the shape of the two: one is inside quotes on an inclusion line, the other is a bare identifier standing where a name is used."
+        },
+        {
+          "theme": "dark",
+          "pair": "identifier-reference/string",
+          "worst": "protanopia 9.3",
+          "reason": "The lane's brightest and its third step, 9 L* apart. `string` is reserved - the language has no string literal - so a `string` and an `identifier-reference` never stand in the same file and a reader is never asked to tell them apart."
+        },
+        {
+          "theme": "dark",
+          "pair": "capsule/abstraction",
+          "worst": "deuteranopia 9.3",
+          "reason": "Kind `class` at hue 212 and kind `interface` at hue 313, 101 degrees apart and 11 L* apart, and deuteranopia collapses the blue-violet part of the arc they are separated along. The subtype keyword on the same line is the position that states which of a Type's four categories a name belongs to, and a position is not a colour."
+        },
+        {
+          "theme": "dark",
+          "pair": "abstraction/type-reference",
+          "worst": "deuteranopia 8.9",
+          "reason": "An Abstraction (kind `interface`) and a Type named in a type position (kind `type`), 68 degrees apart and 11 L* apart. The position separates them: an Abstraction is a declaration, opened by `ab`, and a type reference is a use in a `vr` or a bare line of a composition block. The same record covers `method-argument-type` and `method-owner-type`, which carry this role's one value."
+        }
+      ]
+    }
+  },
+
+  "containerScopes": {
+    "description": "Structural scopes a realization may attach to delimit a region. They carry no value, no theme supplies one, and a reader never sees them styled; they exist so a realization can apply finer rules inside a region. Every scope a realization emits is either a role's scope or listed here.",
+    "scopes": []
+  },
+
+  "roles": [
+    {
+      "name": "keyword",
+      "kind": {
+        "standardType": "keyword",
+        "isItsOwnName": true,
+        "statement": "A reserved word of the language. The role's own name is the host's own standard type for that kind, so it is registered nowhere and the kind is carried by the name."
+      },
+      "origin": "owner",
+      "identity": "A reserved word of the language: `tp` or `vr`.",
+      "appliesTo": "The `tp` and `vr` tokens that open a declaration.",
+      "implementedBy": "grammar-scope",
+      "scopes": ["keyword.control.khayyam"],
+      "attributes": { "color": "khayyam.keyword.color", "fontStyle": "khayyam.keyword.fontStyle" }
+    },
+    {
+      "name": "subtype",
+      "kind": {
+        "standardType": "keyword",
+        "statement": "A reserved word of the language that also names a Type's category or routes an inclusion. A subtype keyword is a keyword; what it names is a position, not a kind."
+      },
+      "origin": "owner",
+      "identity": "The subtype keyword that names a Type's category, or routes an inclusion.",
+      "appliesTo": "`in`, `cp`, `mt`, `ab`, `sc` - the five subtype keywords (docs/khayyam/khayyam.md, Type).",
+      "implementedBy": "grammar-scope",
+      "scopes": ["keyword.control.subtype.khayyam"],
+      "attributes": { "color": "khayyam.subtype.color", "fontStyle": "khayyam.subtype.fontStyle" },
+      "note": "A distinct role from `keyword` so a theme MAY style it apart, but the owner accepts one color for all Khayyam keywords, so the shipped theme gives it the same color as `keyword`. The scope sits under `keyword.control`, so a theme that styles keywords generically still reaches it."
+    },
+    {
+      "name": "included-type",
+      "kind": {
+        "standardType": "type",
+        "statement": "A Type. What makes this one an included one is where the name came from, which a super type cannot express: this role and `type-reference` are one kind, and the palette separates them by lightness and by the italic."
+      },
+      "origin": "owner (named \"included identifier\")",
+      "identity": "A Type whose name arrived in this file through Type Inclusion.",
+      "appliesTo": "The name in `tp {name} in \"{path}\"` (docs/khayyam/khayyam.md, Import Mechanism - Type Inclusion; modules/khayyam/core/src/sr.ts - TypeInclude).",
+      "implementedBy": "grammar-scope",
+      "scopes": ["entity.name.import.khayyam"],
+      "attributes": { "color": "khayyam.included-type.color", "fontStyle": "khayyam.included-type.fontStyle" }
+    },
+    {
+      "name": "included-variable",
+      "kind": {
+        "standardType": "variable",
+        "statement": "A Variable. What makes this one an included one is where the name came from, which a super type cannot express: this role and `variable` are one kind, and the palette separates them by lightness and by the italic."
+      },
+      "origin": "owner (named \"included identifier\", split by inclusion form)",
+      "identity": "A Variable whose name arrived in this file through Variable Inclusion.",
+      "appliesTo": "The name in `vr {name} in \"{path}\"` (docs/khayyam/khayyam.md, Import Mechanism - Variable Inclusion; modules/khayyam/core/src/sr.ts - VarInclude).",
+      "implementedBy": "grammar-scope",
+      "scopes": ["variable.other.import.khayyam"],
+      "attributes": { "color": "khayyam.included-variable.color", "fontStyle": "khayyam.included-variable.fontStyle" }
+    },
+    {
+      "name": "file-uri",
+      "kind": {
+        "standardType": "string",
+        "statement": "A string. The language calls it a file URI and a path, and a super type says it is a quoted literal and nothing about that it is a source-level path."
+      },
+      "origin": "owner (named \"file URL\")",
+      "identity": "The path an inclusion routes to.",
+      "appliesTo": "The quoted `{path}` of an `in` inclusion. The language calls this a file URI and a path, and holds that an `in` address is a source-level path, not a network locator (docs/khayyam/modularity.md, Inclusion Is Not Module Definition) - so the role is not named `url`.",
+      "implementedBy": "grammar-scope",
+      "scopes": ["string.quoted.double.file-uri.khayyam"],
+      "attributes": { "color": "khayyam.file-uri.color", "fontStyle": "khayyam.file-uri.fontStyle" }
+    },
+    {
+      "name": "capsule",
+      "kind": {
+        "standardType": "class",
+        "statement": "A class, in the host's sense of a stateful declared type. A Capsule is one of four categories of Type, and the category is what the subtype keyword beside the name says; a super type carries the kind and not the category."
+      },
+      "origin": "proposed (split of the owner's \"type\", by Type category)",
+      "identity": "A Capsule: a stateful Type, declared here.",
+      "appliesTo": "The name in `tp {name} cp { ... }` (docs/khayyam/khayyam.md, Capsule; sr.ts - CapsuleDecl).",
+      "implementedBy": "grammar-scope",
+      "scopes": ["entity.name.class.khayyam"],
+      "attributes": { "color": "khayyam.capsule.color", "fontStyle": "khayyam.capsule.fontStyle" }
+    },
+    {
+      "name": "abstraction",
+      "kind": {
+        "standardType": "interface",
+        "statement": "An interface, in the host's sense of a behavioral specification. An Abstraction is the second of four categories of Type, and the category is what the subtype keyword beside the name says."
+      },
+      "origin": "proposed (split of the owner's \"type\")",
+      "identity": "An Abstraction: a behavioral specification Type, declared here.",
+      "appliesTo": "The name in `tp {name} ab { ... }` (docs/khayyam/khayyam.md, Abstraction; sr.ts - AbstractionDecl).",
+      "implementedBy": "grammar-scope",
+      "scopes": ["entity.name.interface.khayyam"],
+      "attributes": { "color": "khayyam.abstraction.color", "fontStyle": "khayyam.abstraction.fontStyle" }
+    },
+    {
+      "name": "method",
+      "kind": {
+        "standardType": "method",
+        "isItsOwnName": true,
+        "statement": "A method, in the host's sense of a callable member. The role's own name is the host's own standard type for that kind, so it is registered nowhere. What a super type could not have said is that a Method is a Type, and that a call site and a declaration are one identity."
+      },
+      "origin": "owner (\"local method identifier\" and \"method call identifier\" are this one identity)",
+      "identity": "A Method: a callable Type, wherever it appears.",
+      "appliesTo": "The name in `tp {name} mt (...)` and the method name at a call site. A call is `receiver.Method(args)(outs)`, and the single dot operator is the language's only invocation form (docs/khayyam/khayyam.md, Method Invocation Rules), so the name before the opening parenthesis at a call site is a Method.",
+      "implementedBy": "grammar-scope",
+      "scopes": ["entity.name.function.khayyam"],
+      "attributes": { "color": "khayyam.method.color", "fontStyle": "khayyam.method.fontStyle" },
+      "note": "The owner listed the declaration and the call site as two items; they are one identity and therefore one role, which is what stops a method from changing color between them."
+    },
+    {
+      "name": "scope",
+      "kind": {
+        "root": true,
+        "because": "A Scope is the fourth category of Type, and the host's `type` is a generic type rather than that category: naming this role under `type` would tell a reader's own rule for every Type that a Scope is any Type, which is the claim this contract exists to stop. Nothing in the host's twenty-four types names a delimited area of action, so the role is this language's own root, its hierarchy is exactly itself, and a theme's value for it is mandatory rather than a formality.",
+        "statement": "A Scope. This language's own kind, with no standard counterpart."
+      },
+      "origin": "proposed (split of the owner's \"type\")",
+      "identity": "A Scope: a Type that delimits an area of action, declared here.",
+      "appliesTo": "The name in `tp {name} sc { ... }` (docs/khayyam/khayyam.md, Scope; sr.ts - ScopeDecl).",
+      "implementedBy": "grammar-scope",
+      "scopes": ["entity.name.scope.khayyam"],
+      "attributes": { "color": "khayyam.scope.color", "fontStyle": "khayyam.scope.fontStyle" }
+    },
+    {
+      "name": "type-reference",
+      "kind": {
+        "standardType": "type",
+        "statement": "A Type. That this file does not state the category is a property of the file and not of the name, and a super type cannot express it: this role and `included-type` are one kind, separated by lightness and by the italic."
+      },
+      "origin": "proposed",
+      "identity": "A Type named in a type position, whose category and origin this file does not state.",
+      "appliesTo": "The type of a `vr` declaration, and a one-token line in a `cp` or `ab` block, which is a bare abstraction name and therefore a type reference (docs/khayyam/encapsulation.md, Capsule Structure and Privacy).",
+      "implementedBy": "grammar-scope",
+      "scopes": ["entity.name.type.khayyam"],
+      "attributes": { "color": "khayyam.type-reference.color", "fontStyle": "khayyam.type-reference.fontStyle" }
+    },
+    {
+      "name": "variable",
+      "kind": {
+        "standardType": "variable",
+        "isItsOwnName": true,
+        "statement": "A variable, in the host's sense of a declared name a reader owns. The role's own name is the host's own standard type for that kind, so it is registered nowhere. What a super type could not have said is that the validity is the whole file: `method-local` is one kind with this role and a narrower validity, and the host's modifiers have no `local`."
+      },
+      "origin": "owner (\"local file identifier\")",
+      "identity": "A Variable declared by a `vr` declaration at file level in this file.",
+      "appliesTo": "The name in `vr {name} {type}` standing at file level, and every use of that name in this file (docs/khayyam/khayyam.md, Variable; sr.ts - VarDecl). A `vr` inside a method body is `method-local`, and a use this file binds to nothing is `identifier-reference`.",
+      "implementedBy": "grammar-scope",
+      "scopes": ["variable.other.khayyam"],
+      "attributes": { "color": "khayyam.variable.color", "fontStyle": "khayyam.variable.fontStyle" },
+      "note": "Until the owner's split of 2026-09-28 this one role covered a `vr` at file level and in a body alike, and its `appliesTo` said so. Two declarations with two different scopes of validity are two identities, and one role cannot hold both; the file-level declaration keeps this role's name and its scope. The grammar cannot tell the two positions apart and still emits this role's scope for a `vr` standing in a body, which is one of the positions where the two mechanisms disagree (see `method-local` and profiles.textmate.identity)."
+    },
+    {
+      "name": "method-local",
+      "kind": {
+        "standardType": "variable",
+        "statement": "A variable. A name a method body declares is a Variable exactly as a name at file level is, and what separates the two is how wide the validity is - one kind, not two - which the host's modifiers cannot express and which the palette carries by lightness and chroma."
+      },
+      "origin": "proposed (the owner's split of one role into a file-level and a body declaration, 2026-09-28; the name is this toolchain's own, reached from this contract's vocabulary and not from any consumer's)",
+      "identity": "A Variable declared by a `vr` declaration inside a method body, and of no wider validity than that body.",
+      "appliesTo": "The name in a `vr {name} {type}` standing inside a method body, and every use of that name inside that same body. A `vr` at file level is `variable`, and a use this file binds to nothing is `identifier-reference` (docs/khayyam/khayyam.md, Variable and Method; sr.ts - VarDecl).",
+      "implementedBy": "server-only",
+      "serverOnlyBecause": "No TextMate scope can carry this role, because a TextMate grammar matches one line at a time and holds no symbol table: the line that opens the method body is not on the line the `vr` stands on, so `vr index U32` is the same line of text whether it is inside a body or at file level, and the grammar has no way to tell. The distinction is between two declarations that differ only by the block they stand in, and a one-line matcher cannot see a block. A language server holds the whole document and does know which block a declaration stands in, so this role is the server's alone (profiles.textmate.identity, profiles.lsp.identity).",
+      "attributes": { "color": "khayyam.method-local.color", "fontStyle": "khayyam.method-local.fontStyle" },
+      "note": "The name is built from this contract's own vocabulary and not from a consumer's: `method-` is the prefix this contract already gives the three roles a method body introduces, and `method-argument` is the exact sibling that names the other way a name reaches a body - from outside it rather than from inside it - so the pair reads as a set and a reader who learns one learns the other. The word `local` is deliberately not used: this contract's own `variable` entry records the owner's name for the file-level declaration as \"local file identifier\", and reusing the word for the body declaration would make one word mean two scopes in one contract. What the LANGUAGE calls these two declarations, and whether it distinguishes them at all, is not stated here: that is a question for the language's own documents and for the owner, and the toolchain does not answer it (execution.handoff.md, The server's own naming for its roles). The empty fontStyle is this contract's own fontStyleChannel rather than a gap in it, and it is what leaves color and chroma alone to carry the distinction from `variable`."
+    },
+    {
+      "name": "method-argument",
+      "kind": {
+        "standardType": "parameter",
+        "statement": "A parameter, in the host's sense of a name a signature introduces. The host's `declaration` modifier would mark the signature and not every use, and the legend this contract names carries no modifier, so the kind is what the type says and the rest is the palette's bold."
+      },
+      "origin": "owner",
+      "identity": "An influencing or influenced variable named in a method signature.",
+      "appliesTo": "A name in the second or third parenthesis of `tp {name} mt (self {owner}) (influencing) (influenced)` (docs/khayyam/khayyam.md, Method; sr.ts - Param).",
+      "implementedBy": "grammar-scope",
+      "scopes": ["variable.parameter.khayyam"],
+      "attributes": { "color": "khayyam.method-argument.color", "fontStyle": "khayyam.method-argument.fontStyle" }
+    },
+    {
+      "name": "method-argument-type",
+      "kind": {
+        "standardType": "type",
+        "statement": "A Type. That it is an argument's declared type is a position, and a super type expresses kind and not position: this role and `method-owner-type` are one kind, told apart by the parentheses they stand in."
+      },
+      "origin": "owner",
+      "identity": "The declared type of a method argument.",
+      "appliesTo": "The type beside an argument name in a method signature.",
+      "implementedBy": "grammar-scope",
+      "scopes": ["entity.name.type.parameter.khayyam"],
+      "attributes": { "color": "khayyam.method-argument-type.color", "fontStyle": "khayyam.method-argument-type.fontStyle" }
+    },
+    {
+      "name": "method-owner-type",
+      "kind": {
+        "standardType": "type",
+        "statement": "A Type. That it is the owner is a position, and a super type expresses kind and not position: this role and `method-argument-type` are one kind, told apart by the parentheses they stand in."
+      },
+      "origin": "proposed",
+      "identity": "The owner type a method is attached to.",
+      "appliesTo": "The type in the first parenthesis, `(self {owner})`. The language requires the owner, the influencing and the influenced groups to be separated (docs/khayyam/khayyam.md, Method), so this is a distinct position from an argument's type.",
+      "implementedBy": "grammar-scope",
+      "scopes": ["entity.name.type.owner.khayyam"],
+      "attributes": { "color": "khayyam.method-owner-type.color", "fontStyle": "khayyam.method-owner-type.fontStyle" }
+    },
+    {
+      "name": "capsule-field",
+      "kind": {
+        "standardType": "property",
+        "statement": "A property, in the host's sense of a member of a declared type. That the field is private to its Capsule is residue: the host's modifiers have no `private`, so the privacy is the language's and the palette carries it as this kind's own lightness."
+      },
+      "origin": "proposed",
+      "identity": "A Capsule's field, which is private to the Capsule.",
+      "appliesTo": "The name in a `fieldName fieldType` line inside a `cp` block (docs/khayyam/encapsulation.md, Capsule Structure and Privacy; sr.ts - Field).",
+      "implementedBy": "grammar-scope",
+      "scopes": ["variable.other.field.khayyam"],
+      "attributes": { "color": "khayyam.capsule-field.color", "fontStyle": "khayyam.capsule-field.fontStyle" }
+    },
+    {
+      "name": "identifier-reference",
+      "kind": {
+        "root": true,
+        "because": "It names what the resolver could not resolve, and a statement about a resolver's reach is not a kind of name: the host's twenty-four types classify what a name IS, and this role says that this file does not know. Nothing in the host's list names an unresolved use, so the role is this language's own root, its hierarchy is exactly itself, and a theme's value for it is mandatory rather than a formality.",
+        "statement": "Not a kind of name at all, and stated as such. This language's own root."
+      },
+      "origin": "proposed",
+      "identity": "A bare identifier whose binding the realization cannot state: a use of a variable, an argument, a field, or an included name.",
+      "appliesTo": "Any identifier in a use position. Its purpose is negative and load-bearing: it must NOT read as a local declaration, so a reader is not told an included name or an argument is this file's own local.",
+      "implementedBy": "grammar-scope",
+      "scopes": ["variable.other.reference.khayyam"],
+      "attributes": { "color": "khayyam.identifier-reference.color", "fontStyle": "khayyam.identifier-reference.fontStyle" },
+      "note": "The textmate profile cannot narrow this; the lsp profile replaces it with the resolved role (for example `included-type` at the use of an included name). It is the one role the two profiles agree on for every use site, which is why a realization that answers nothing still leaves a use readable as a use rather than as a declaration."
+    },
+    {
+      "name": "comment",
+      "kind": {
+        "standardType": "comment",
+        "isItsOwnName": true,
+        "statement": "A comment, in the host's sense of text marked as not code. The role's own name is the host's own standard type for that kind, so it is registered nowhere."
+      },
+      "origin": "proposed",
+      "identity": "Text the author marked as not code.",
+      "appliesTo": "`// ...` and `/* ... */`, in any script.",
+      "implementedBy": "grammar-scope",
+      "scopes": ["comment.line.double-slash.khayyam", "comment.block.slash-star.khayyam"],
+      "attributes": { "color": "khayyam.comment.color", "fontStyle": "khayyam.comment.fontStyle" },
+      "note": "The two markers are this repository's toolchain's choice, under its own comment-forms rule, not a form the language states; the role names the text a reader is told is not code, and a realization whose own comment rule differs emits this role over whatever markers it recognizes. The scanner's and this grammar's agreement is that realization's, not the contract's. This role holds no exemption from the theme's contrast floor (themeContract): a comment that recedes by being hard to read is not receding, it is missing."
+    },
+    {
+      "name": "string",
+      "kind": {
+        "standardType": "string",
+        "isItsOwnName": true,
+        "statement": "A string, in the host's sense of a quoted literal. The role's own name is the host's own standard type for that kind, so it is registered nowhere. The role is reserved: the language has no string literal today."
+      },
+      "origin": "proposed",
+      "identity": "A quoted literal that is not an inclusion's file URI.",
+      "appliesTo": "No form in the current grammar. The language has no string literal - human-facing text is a value a method writes into an influenced variable (docs/khayyam/khayyam.md, Self-Documenting Code and Naming). The role exists so a quoted form has no unstyled fallback if one is added.",
+      "implementedBy": "grammar-scope",
+      "scopes": ["string.quoted.double.khayyam"],
+      "attributes": { "color": "khayyam.string.color", "fontStyle": "khayyam.string.fontStyle" },
+      "status": "reserved"
+    },
+    {
+      "name": "invalid-number",
+      "kind": {
+        "root": true,
+        "because": "The host's `number` is the class for a number the language admits, and this role is a statement about a form the language REFUSES, which the host answers with a diagnostic and a grammar scope rather than with a token type at all. Declaring it under `number` would give a reader's own rule for every number in every language a rule reaching a refused form.",
+        "statement": "A form the language does not admit. This language's own root, and one of the two roles the warm band belongs to."
+      },
+      "origin": "proposed",
+      "identity": "A bare number, which the language does not admit: values are wrapped in named Capsules and a magic number is refused (docs/khayyam/khayyam.md, No primitive types).",
+      "appliesTo": "A numeric literal standing where no Type names it.",
+      "implementedBy": "grammar-scope",
+      "scopes": ["invalid.illegal.numeric.khayyam"],
+      "attributes": { "color": "khayyam.invalid-number.color", "fontStyle": "khayyam.invalid-number.fontStyle" }
+    },
+    {
+      "name": "invalid-operator",
+      "kind": {
+        "root": true,
+        "because": "The host's `operator` is the class for an operator the language admits, and this role is a statement about a form the language REFUSES, which the host answers with a diagnostic and a grammar scope rather than with a token type at all. Declaring it under `operator` would give a reader's own rule for every operator in every language a rule reaching a refused character.",
+        "statement": "A form the language does not admit. This language's own root, and one of the two roles the warm band belongs to."
+      },
+      "origin": "proposed",
+      "identity": "An operator character the language does not admit. Khayyam has no assignment operator and no arithmetic operators in the grammar; the only operator is the dot of invocation.",
+      "appliesTo": "An operator character outside a file URI.",
+      "implementedBy": "grammar-scope",
+      "scopes": ["invalid.illegal.operator.khayyam"],
+      "attributes": { "color": "khayyam.invalid-operator.color", "fontStyle": "khayyam.invalid-operator.fontStyle" }
+    }
+  ],
+
+  "profiles": {
+    "description": "How each realization mechanism discharges this specification, and where a mechanism cannot.",
+    "textmate": {
+      "mechanism": "A TextMate grammar assigns a scope name to each part of a line. Each role names the scope(s) its realization must emit; a theme maps scopes to values.",
+      "identity": "A TextMate grammar matches one line at a time and holds no symbol table, so a role can only be assigned where the SYNTAX determines the identity: at a declaration site, where the subtype keyword names the category, and in a method signature.",
+      "limits": [
+        "At a use site the binding of a bare identifier is not recoverable, so it carries `identifier-reference`. Under this profile an argument, a declared variable and an included name are indistinguishable once used.",
+        "A back-reference captured by a rule cannot be re-matched inside the same construct in vscode-textmate (verified: a nested rule using a back-reference silently disables the construct's whole pattern list). So an identity cannot be carried from a signature into a body, or from an inclusion into a body.",
+        "The same limit takes a role away entirely where the whole distinction is the block a declaration stands in: a `vr` in a method body and a `vr` at file level are one line of text, and the line that opens the body is not on it, so a grammar cannot tell `variable` from `method-local` and emits `variable`'s scope for both. A role declared `server-only` is this limit's name in the contract rather than a gap in a realization, and no grammar work removes it."
+      ]
+    },
+    "lsp": {
+      "mechanism": "A language server resolves each identifier to its declaration and emits an LSP semantic token. The role is the resolved identity, and a client maps roles to theme values.",
+      "identity": "Full: every use site carries the role of the declaration it resolves to, which is what the textmate profile cannot do. It is also the only profile that can answer a role no scope can carry, because it holds the document whole and a declaration's block is a fact about the document rather than about the line.",
+      "alignment": "The standard semantic token types are a subset of what this specification needs, and a host that classifies tokens can only be told a role's kind by declaring it: a realization contributes the role as a semantic token type whose super type is the standard type in the role's `kind`. That declaration is what makes a reader's own rule for the standard class reach our roles at all, because a rule's key is matched against the token's whole type hierarchy and a type that declares no super type has a hierarchy of exactly itself. `classification` says which of the twenty-one declare one, which four are this language's own roots and are declared nowhere, and which five stand as a standard type of their own name and are registered nowhere because registering them would replace the host's own entry. Where a role has no standard counterpart, this specification is authoritative. The list the host registers is not the list the protocol's specification names - this host registers `member` and not `modifier`, and no `defaultLibrary` - so a decision about which names exist is made against the host's own list, read out of the host's own product."
+    }
+  },
+
+  "conformance": {
+    "howARoleIsImplemented": "Every role states `implementedBy`, and the statement has exactly two answers. `grammar-scope` means a scope carries the role: the role names that scope, and a grammar emits it. `server-only` means no scope can carry the role: the role names none, and it says why in `serverOnlyBecause`. A role that states neither is an ERROR, and so is one that states one and then contradicts it - a server-only role that names a scope, or a grammar-scope role that carries a reason for being server-only. The distinction is a property of what the role IS and not of any realization, so it belongs here rather than in a consumer: it is the one thing a consumer has to know before it can tell whether it is able to answer the role at all, and a consumer that answers only what syntax determines must be able to name the roles it cannot rather than guess a scope for them.",
+    "howAKindIsDeclared": "Every role states `kind`, and the statement has exactly three answers, all of them in `classification`. A realization states a standard-type kind by contributing the role in `contributes.semanticTokenTypes` with that super type and a non-empty description. It states a root by contributing nothing, and a role whose kind is its own name by contributing nothing; either contribution is an ERROR, the first because a root has no standard counterpart and the second because the host already registers that name and registering it again replaces the host's own entry. A role that states no kind, one that states both a root and a standard type, and a root that gives no reason are all ERRORs.",
+    "realizationMust": "Emit every role's scope for the parts the role describes, and emit no scope this specification does not name. A role that declares itself server-only names no scope, because none can carry it: the realization that answers it is the one that can see the document whole, and a realization that cannot leaves it to that one rather than guessing a scope of its own. Leaving a role's scope unemitted is not the same as abandoning the role - the grammar answers every use site with `identifier-reference` and a server-only role is a role the grammar is not expected to answer.",
+    "themeMust": "Supply a value for every role-attribute pair, keyed `khayyam.<role>.<attribute>`, derived from `palette` rather than chosen, and for the extension's own themes mirror those values onto the scopes the host theme format uses. A role that declares itself server-only names no scope, so there is nothing to mirror onto: its value reaches a host that styles semantic tokens directly, and no TextMate scope carries it.",
+    "verification": "The extension's scripts/verify-roles.mjs checks this file against the realization in that extension, against every theme the extension ships, against the manifest's own declarations, and against the HOST'S OWN REGISTERED CLASSIFICATION read out of the host's own product, and reports the two-way split in its own verdict. Run it after changing any of the five. What it now checks that it did not: every role's `kind` against the token types the host registers; the manifest's `semanticTokenTypes` against the contract's kinds in both directions; each theme's values against `palette` - the contrast floor measured against that theme's own background, the warm band, one hue per kind, lightness and chroma within a kind, and the recorded colour-vision pairs; the legend against the roles; and the score that decides which value a reader sees, stated as arithmetic rather than as a claim.",
+    "hostRequired": "Reading the host's classification from the host is the point, so the check REFUSES when it cannot find the host's bundle rather than falling back to a list written into it. It looks under the install paths of the product and `KHAYYAM_HOST_BUNDLE` names one file outright. A check that could not read the host would agree with any contract, which is the defect this exists to catch.",
+    "driftPolicy": "This file is authoritative. When a realization and this file disagree, this file wins and the realization is corrected; when a new display distinction is wanted, a role is added here first. A new kind is a claim about the language and is the owner's to rule on (`classification.authority`)."
+  }
+}

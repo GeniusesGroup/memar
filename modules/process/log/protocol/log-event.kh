@@ -1,0 +1,15 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Event in "modules/process/event/protocol/event.kh"
+tp Event_Level in "modules/process/log/protocol/event-level.kh"
+tp Event_Message in "modules/process/log/protocol/event-message.kh"
+tp Stack in "modules/computer/runtime/protocol/stack.kh"
+
+// Event just suggest base structure, Additional data can structure in `Message` field as describe in many RFCs e.g.
+// https://datatracker.ietf.org/doc/html/rfc5424
+tp ProcessLog_Event ab {
+    Event
+    Event_Level
+    Event_Message
+    Stack
+}

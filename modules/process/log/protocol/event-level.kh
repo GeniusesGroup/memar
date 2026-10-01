@@ -1,0 +1,8 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Level in "modules/process/log/protocol/level.kh"
+
+// Event_Level will implement by any capsule that CAN be a log event.
+// Usually implement by `log event` capsules.
+tp Event_Level ab
+tp LogLevel mt (self Event_Level) () (l Level)

@@ -1,0 +1,24 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Error in "modules/process/error/protocol/error.kh"
+tp Iterator in "modules/computer/adt/hash_table/protocol/iterator.kh"
+
+tp HashTable_Iteration ab
+// It can return `Iterate` errors or internal `Iteration` errors.
+tp Iteration mt (self HashTable_Iteration) (iterator Iterator) (err Error)
+
+// TODO(go-migrate): Iterator is declared in modules/computer/adt/hash_table/protocol/iterator.kh, which lacks this member; transfer only writes modules/computer/adt/hash_table/protocol/iteration.kh.
+// TODO(go-migrate):
+/*
+package hashTable_p
+
+import (
+	error_p "memar/process/error/protocol"
+)
+
+type Iterator[K Key[K], V Value] interface {
+	// Iterate or traverse
+	// In each iteration if err != nil, iteration will be stopped
+	Iterate(key K, value V) (err error_p.Error)
+}
+*/

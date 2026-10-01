@@ -1,0 +1,119 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Capsule_LifeCycle in "modules/computer/capsule/protocol/life_cycle_contract.kh"
+tp Computer_Buffer in "modules/computer/buffer/protocol/buffer.kh"
+tp NumberOfElement in "modules/computer/adt/container/protocol/length.kh"
+tp Error in "modules/process/error/protocol/error.kh"
+tp W16 in "modules/math/integer/unsigned-16.kh"
+tp W32 in "modules/math/integer/unsigned-32.kh"
+tp W64 in "modules/math/integer/unsigned-64.kh"
+
+// Hash is the common interface implemented by all hash functions.
+//
+// Hash implementations in the standard library (e.g. hash/crc32 and
+// crypto/sha256) implement the encoding.BinaryMarshaler and
+// encoding.BinaryUnmarshaler interfaces. Marshaling a hash implementation
+// allows its internal state to be saved and used for additional processing
+// later, without having to re-write the data previously written to the hash.
+// The hash state may contain portions of the input in its original form,
+// which users are expected to handle for any possible security implications.
+//
+// Some other languages:
+// - https://doc.rust-lang.org/stable/std/hash/trait.Hasher.html
+tp Crypto_Hash ab {
+    Capsule_LifeCycle
+}
+// Init(source Buffer) Error
+// Reinit resets the Hash to its initial state.
+tp Reinit mt (self Crypto_Hash) (source Computer_Buffer) (e Error)
+
+// HashLength returns the number of bytes Sum will return.
+tp HashLength mt (self Crypto_Hash) () (n NumberOfElement)
+
+// BlockLength returns the hash's underlying block size.
+// The Write method must be able to accept any amount
+// of data, but it may operate more efficiently if all writes
+// are a multiple of the block size.
+tp BlockLength mt (self Crypto_Hash) () (n NumberOfElement)
+
+// Hash16 is the common interface implemented by all 16-bit hash functions.
+tp Hash16 ab
+// Hash
+tp Sum16 mt (self Hash16) () (w W16)
+
+// Hash32 is the common interface implemented by all 32-bit hash functions.
+tp Hash32 ab
+// Hash
+tp Sum32 mt (self Hash32) () (w W32)
+
+// Hash64 is the common interface implemented by all 64-bit hash functions.
+tp Hash64 ab
+// Hash
+tp Sum64 mt (self Hash64) () (w W64)
+
+// Hash128 is the common interface implemented by all 128-bit hash functions.
+tp Hash128 ab
+
+// Hash160 is the common interface implemented by all 160-bit hash functions.
+tp Hash160 ab
+
+// Hash256 is the common interface implemented by all 256-bit hash functions.
+tp Hash256 ab
+
+// Hash512 is the common interface implemented by all 512-bit hash functions.
+tp Hash512 ab
+
+// TODO(go-migrate):
+/*
+package hash_p
+
+import (
+	container_p "memar/computer/adt/container/protocol"
+	buffer_p "memar/computer/buffer/protocol"
+	capsule_p "memar/computer/capsule/protocol"
+	error_p "memar/process/error/protocol"
+)
+
+// Hash is the common interface implemented by all hash functions.
+//
+// Hash implementations in the standard library (e.g. hash/crc32 and
+// crypto/sha256) implement the encoding.BinaryMarshaler and
+// encoding.BinaryUnmarshaler interfaces. Marshaling a hash implementation
+// allows its internal state to be saved and used for additional processing
+// later, without having to re-write the data previously written to the hash.
+// The hash state may contain portions of the input in its original form,
+// which users are expected to handle for any possible security implications.
+//
+// Some other languages:
+// - https://doc.rust-lang.org/stable/std/hash/trait.Hasher.html
+type Hash interface {
+	// Sum returns the resulting hash slice with `HashLength()` length.
+	// It does not change the underlying hash state.
+	Sum() []byte
+
+}
+
+// Hash128 is the common interface implemented by all 128-bit hash functions.
+type Hash128 interface {
+	// Hash
+	Sum128() [16]byte
+}
+
+// Hash160 is the common interface implemented by all 160-bit hash functions.
+type Hash160 interface {
+	// Hash
+	Sum160() [20]byte
+}
+
+// Hash256 is the common interface implemented by all 256-bit hash functions.
+type Hash256 interface {
+	// Hash
+	Sum256() [32]byte
+}
+
+// Hash512 is the common interface implemented by all 512-bit hash functions.
+type Hash512 interface {
+	// Hash
+	Sum512() [64]byte
+}
+*/

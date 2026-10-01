@@ -1,0 +1,154 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+tp Codec_Stringer in "modules/lib/codec/string/protocol/stringer.kh"
+
+tp NetworkAddress ab {
+    Codec_Stringer
+}
+
+// TODO(js-idea): archived memar-js source, not Khayyam and not a migration
+// Unverified idea from the retired memar-js repository (archive commit 27e013d, last pushed 2026-01-06). Kept as a thought only: the architect has moved on since, so this may contradict the current design.
+// source: memar-js/net/connection/connection.js
+//
+// const connection = {
+//     status: {},
+//     type: {},
+// }
+//
+// /**
+//  * return connection status as text indicate in Achaemenid server standard.
+//  * @param {number} id 
+//  */
+// connection.status.GetNameByID = function (id) {
+//     switch (id) {
+//         case 0:
+//             return "LocaleText[0]"
+//         case 1:
+//             return "LocaleText[1]"
+//         case 2:
+//             return "LocaleText[2]"
+//         case 3:
+//             return "LocaleText[3]"
+//         case 4:
+//             return "LocaleText[4]"
+//     }
+// }
+//
+// /**
+//  * return connection type as text in achaemenid server standard.
+//  * @param {number} id 
+//  */
+// connection.type.GetNameByID = function (id) {
+//     switch (id) {
+//         case 0:
+//             return "LocaleText[5]"
+//         case 1:
+//             return "LocaleText[6]"
+//         case 2:
+//             return "LocaleText[7]"
+//         case 3:
+//             return "LocaleText[8]"
+//         case 4:
+//             return "LocaleText[9]"
+//         case 5:
+//             return "LocaleText[10]"
+//     }
+// }
+
+// TODO(js-idea): archived memar-js source, not Khayyam and not a migration
+// Unverified idea from the retired memar-js repository (archive commit 27e013d, last pushed 2026-01-06). Kept as a thought only: the architect has moved on since, so this may contradict the current design.
+// source: memar-js/net/connection/connection.json
+// {
+//     "en": [
+//         "Unset",
+//         "Issued",
+//         "Update",
+//         "Expired",
+//         "Revoked",
+//         "Unset",
+//         "Guest",
+//         "Registered",
+//         "Person",
+//         "Org",
+//         "App"
+//     ],
+//     "fa": [
+//         "تنظیم نشده",
+//         "صادر شده",
+//         "بروزرسانی شده",
+//         "منقضی شده",
+//         "باطل شده",
+//         "تنظیم نشده",
+//         "مهمان",
+//         "ثبت نام شده",
+//         "شخص حقیقی",
+//         "شخص حقوقی",
+//         "برنامه"
+//     ]
+// }
+
+// TODO(js-idea): archived memar-js source, not Khayyam and not a migration
+// Unverified idea from the retired memar-js repository (archive commit 27e013d, last pushed 2026-01-06). Kept as a thought only: the architect has moved on since, so this may contradict the current design.
+// source: memar-js/net/ipv6/addr.js
+//
+// const IP = {
+//     base64: {},
+// }
+//
+// IP.String = function (ip) {
+//     if (ip.length < 16) return ""
+//     let IPString = ""
+//     if (ip[0] === 0 && ip[1] === 0 && ip[2] === 0 && ip[3] === 0 && ip[4] === 0 && ip[5] === 0 && ip[6] === 0 && ip[7] === 0 && ip[8] === 0) {
+//         // IPv4
+//         IPString += ip[12]
+//         IPString += "."
+//         IPString += ip[13]
+//         IPString += "."
+//         IPString += ip[14]
+//         IPString += "."
+//         IPString += ip[15]
+//     } else if (ip[4] === 0 && ip[5] === 0 && ip[6] === 0 && ip[7] === 0 && ip[8] === 0 && ip[9] === 0 && ip[10] === 0 && ip[11] === 0 && ip[12] === 0 && ip[13] === 0 && ip[14] === 0 && ip[15] === 0) {
+//         // IPv4
+//         IPString += ip[0]
+//         IPString += "."
+//         IPString += ip[1]
+//         IPString += "."
+//         IPString += ip[2]
+//         IPString += "."
+//         IPString += ip[3]
+//     } else if (ip[4] === 0 && ip[5] === 0 && ip[6] === 0 && ip[3] === 0 && ip[4] === 0 && ip[5] === 0 && ip[6] === 0 && ip[7] === 0 && ip[8] === 0 && ip[9] === 0) {
+//         // IPv6
+//         // for (let i = 0; i < 16; i += 2) {
+//         //     if i == e0 {
+//         //         b = append(b, ':', ':')
+//         //         i = e1
+//         //         if i >= IPv6len {
+//         //             break
+//         //         }
+//         //     } else if i > 0 {
+//         //         b = append(b, ':')
+//         //     }
+//         //     b = appendHex(b, (uint32(p[i])<<8)|uint32(p[i+1]))
+//         // }
+//     }
+//     return IPString
+// }
+//
+// IP.base64.Encode = function (ip) {
+//     return base64.stdWithoutPadding.Encode(ip)
+// }
+//
+// IP.base64.Decode = function (base64) {
+//     const byteCharacters = atob(base64)
+//     const ip = new Array(16)
+//     for (let i = 0; i < 16; i++) {
+//         ip[i] = byteCharacters.charCodeAt(i)
+//     }
+//     return ip
+// }
+//
+// IP.base64.String = function (base64) {
+//     if (!base64) return ""
+//     const ip = IP.base64.Decode(base64)
+//     const IPString = IP.String(ip)
+//     return IPString
+// }

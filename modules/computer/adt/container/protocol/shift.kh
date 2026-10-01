@@ -1,0 +1,15 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Container_Element in "modules/computer/adt/container/protocol/element.kh"
+tp Error in "modules/process/error/protocol/error.kh"
+// Reversed is a container level operation.
+
+tp Container_Shift ab
+// The shift() method removes the element at the zeroth index and shifts the values at consecutive indexes down,
+// then returns the removed value.
+// The Pop() method has similar behavior to shift(), but applied to the last element in a container.
+tp Shift mt (self Container_Shift) () (el Container_Element, err Error)
+
+// Insert is an element operation

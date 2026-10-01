@@ -1,0 +1,9 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Packet in "modules/net/protocol/packet.kh"
+
+// PacketListener
+// It isn't just for hardware network packet, It is use for any requirements e.g. IPC, D-Bus, ...
+tp Net_PacketListener_2 ab
+// Non-Blocking, means It must not block the caller in any ways.
+tp NetworkPacketHandler mt (self Net_PacketListener_2) (np Packet) ()

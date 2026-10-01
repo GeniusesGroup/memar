@@ -1,0 +1,8 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Net_SocketStatus in "modules/net/protocol/status.kh"
+
+tp Mutator_SocketStatus ab
+// SetStatus is low level API that must use very carefully and usually in not services layer.
+// It is Non-Blocking operation. Change status of socket and send notification on socket StateChannel.
+tp Net_Mutator_SocketStatus_SetStatus mt (self Mutator_SocketStatus) (ns Net_SocketStatus) ()

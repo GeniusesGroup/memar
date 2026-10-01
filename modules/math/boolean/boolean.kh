@@ -1,0 +1,77 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Error in "modules/process/error/protocol/error.kh"
+tp String in "modules/codec/string/protocol/string.kh"
+
+// Bool is one truth value: 1 = true and 0 = false.
+// https://en.wikipedia.org/wiki/Boolean_datatype
+//
+// Bool is an implementation, not the contract: a contract that needs a truth value names the
+// abstraction `Boolean` in "modules/math/boolean/protocol/boolean.kh". Whether Bool also carries
+// conjunction, disjunction, and negation over `Boolean` is therefore this capsule's choice, not a
+// protocol rule; without them Bool does not satisfy `Boolean`.
+tp Bool cp {
+}
+// Equivalence is the logic operation of "modules/math/logic/protocol/equivalence.kh", not the
+// value equality the integer widths name `Equal`.
+//memar:impl memar/math/logic/protocol.Equivalence
+tp Bool_Equivalence mt (self Bool) (with Bool) (b Bool)
+
+//memar:impl memar/codec/string/protocol.Stringer
+tp ToString mt (self Bool) () (str String, err Error)
+
+tp FromString mt (self Bool) (str String) (err Error)
+
+//memar:impl memar/codec/string/ascii/protocol.Stringer
+tp Bool_ToASCII mt (self Bool) () (str String, err Error)
+
+tp Bool_FromASCII mt (self Bool) (str String) (err Error)
+
+// TODO(go-migrate): full original Go source follows
+// --- go-source: memar-go/math/boolean/boolean.go sha256:690975aca9be671c0c0c347fcc70463b11c9d0b240a10f09f2c2edb0da2ddddc ---
+/*
+package boolean
+
+import (
+	error_p "memar/process/error/protocol"
+)
+
+// Boolean algebra is a branch of mathematics that deals with operations on logical values with binary variables.
+// The Boolean variables are represented as binary numbers to represent truths: 1 = true and 0 = false.
+// https://en.wikipedia.org/wiki/Boolean_datatype
+// https://en.wikipedia.org/wiki/Boolean_algebra
+// https://en.wikipedia.org/wiki/Boolean_algebra_(structure)
+type Boolean bool
+
+//memar:impl memar/math/logic/protocol.Equivalence
+func (b *Boolean) Equal(with Boolean) Boolean {
+	return *b == with
+}
+
+//memar:impl memar/codec/string/protocol.Stringer
+func (b *Boolean) ToString() (str string, err error_p.Error) { return b.ToASCII() }
+func (b *Boolean) FromString(str string) (err error_p.Error) { return b.FromASCII(str) }
+
+//memar:impl memar/codec/string/ascii/protocol.Stringer
+func (b *Boolean) ToASCII() (str string, err error_p.Error) {
+	if *b {
+		str = "true"
+	} else {
+		str = "false"
+	}
+	return
+}
+func (b *Boolean) FromASCII(str string) (err error_p.Error) {
+	switch str {
+	case "true", "TRUE", "True":
+		*b = true
+	case "false", "FALSE", "False":
+		*b = false
+	default:
+		// TODO:::
+		// err =
+	}
+	return
+}
+*/
+// --- end go-source: memar-go/math/boolean/boolean.go ---

@@ -1,0 +1,7 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Process_Request in "modules/process/request/protocol/request.kh"
+
+// Observer_Request ...
+tp Observer_Request ab
+tp GetRequest mt (self Observer_Request) () (r Process_Request)

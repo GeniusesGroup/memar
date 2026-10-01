@@ -1,0 +1,446 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Boolean in "modules/math/boolean/protocol/boolean.kh"
+
+tp Existence ab
+tp Heap mt (self Existence) () (b Boolean)
+
+// TODO(js-idea): archived memar-js source, not Khayyam and not a migration
+// Unverified idea from the retired memar-js repository (archive commit 27e013d, last pushed 2026-01-06). Kept as a thought only: the architect has moved on since, so this may contradict the current design.
+// source: memar-js/os/loader.js
+//
+// import * as timer from '../timer/sleep.js'
+//
+// // https://en.wikipedia.org/wiki/Loader_(computing)
+// OS.loader = {
+//     name: "",
+// }
+//
+// OS.LoaderName = function () { return OS.loader.name }
+//
+// OS.loader.SuggestUpgrade = function () {
+//     if (!('serviceWorker' in navigator)
+//         || (typeof HTMLDialogElement === 'undefined')
+//         || (typeof Storage === "undefined")
+//         || (typeof RTCPeerConnection === 'undefined')
+//         || !window.indexedDB
+//         || !('mediaDevices' in navigator)) {
+//
+//         popUpNotificationWidget.New(
+//             "BAD BROWSER!!!!!!",
+//             "You use '" + this.Name() + "' that it can cause serious problem while use this platform! We suggest use latest chrome version",
+//             popUpNotificationWidgetTypeError
+//         )
+//         // centerNotificationWidget.New("LocaleText[54]", "LocaleText[55]", centerNotificationWidgetTypeError)
+//     }
+// }
+//
+// OS.loader.detectName = function () {
+//     let ua = navigator.userAgent.toLowerCase()
+//     let regExpMatchArray
+//
+//     if (regExpMatchArray = ua.match(/msie ([\d.]+)/)) this.name = 'IE: ' + regExpMatchArray[1]
+//     else if (regExpMatchArray = ua.match(/firefox\/([\d.]+)/)) this.name = 'Firefox: ' + regExpMatchArray[1]
+//     else if (regExpMatchArray = ua.match(/chrome\/([\d.]+)/)) this.name = 'Chrome: ' + regExpMatchArray[1]
+//     else if (regExpMatchArray = ua.match(/opera.([\d.]+)/)) this.name = 'Opera: ' + regExpMatchArray[1]
+//     else if (regExpMatchArray = ua.match(/version\/([\d.]+).*safari/)) this.name = 'Safari: ' + regExpMatchArray[1]
+// }
+//
+// /**
+//  * Add some meta and link tag to header if user not install web app yet for not supported Application!!
+//  */
+// OS.loader.PWA = function () {
+//     // Register service-worker.js
+//     // service-worker will be removed as soon as we can find other solution to control app by main function!
+//     if ('serviceWorker' in navigator) {
+//         navigator.serviceWorker.register('/sw-' + OS.User.ContentPreferences.Language.iso639_1 + '.js', { scope: "/" })
+//             .then(reg => {
+//                 reg.onupdatefound = async function () {
+//                     // TODO::: promote a dialog to user to update app by click update!
+//                     await timer.Sleep(1000)
+//                     location.reload()
+//                 }
+//             })
+//     }
+//
+//     if (window.matchMedia('(display-mode: browser)').matches) this.UpdateManifest()
+// }
+//
+// /**
+//  * Add some meta and link tag to header of dom!
+//  */
+// OS.loader.UpdateManifest = function () {
+//     // Warn users about console self attack.
+//     console.log('%cWARNING!', 'background:yellow; color:red; font-size:x-large')
+//     console.log(`%c\nUsing this console may allow attackers to impersonate you and steal your information using an attack called Self-XSS. Do not enter or paste code that you do not understand. \n`, 'font-size:large')
+//     // Attention developer to join GeniusesGroup open source
+//     console.log('%cJoin GeniusesGroup open source Platform: https://github.com/GeniusesGroup', 'background:green;color:white;font-size:large')
+//
+//     // Add icon
+//     const icon = document.createElement('link')
+//     icon.rel = "icon"
+//     icon.href = Application.Icon
+//     window.document.head.appendChild(icon)
+//
+//     // Add iOS meta tags and icons
+//     const appleTitle = document.createElement('meta')
+//     appleTitle.name = "apple-mobile-web-app-title"
+//     appleTitle.content = Application.Info.Name
+//     window.document.head.appendChild(appleTitle)
+//
+//     const appleCapable = document.createElement('meta')
+//     appleCapable.name = "apple-mobile-web-app-capable"
+//     appleCapable.content = "yes"
+//     window.document.head.appendChild(appleCapable)
+//
+//     const appleBarStyle = document.createElement('meta')
+//     appleBarStyle.name = "apple-mobile-web-app-status-bar-style"
+//     appleBarStyle.content = Application.PresentationPreferences.ThemeColor
+//     window.document.head.appendChild(appleBarStyle)
+//
+//     const appleIcon = document.createElement('link')
+//     appleIcon.rel = "apple-touch-icon"
+//     appleIcon.href = Application.Icon
+//     window.document.head.appendChild(appleIcon)
+//
+//     // Add Chrome meta tags and icons
+//     const appName = document.createElement('meta')
+//     appName.name = "application-name"
+//     appName.content = Application.Info.Name
+//     window.document.head.appendChild(appName)
+//
+//     const appCapable = document.createElement('meta')
+//     appCapable.name = "mobile-web-app-capable"
+//     appCapable.content = "yes"
+//     window.document.head.appendChild(appCapable)
+//
+//     const appTheme = document.createElement('meta')
+//     appTheme.name = "theme-color"
+//     appTheme.content = Application.PresentationPreferences.ThemeColor
+//     window.document.head.appendChild(appTheme)
+//
+//     // Add WebManifest
+//     const manifest = {
+//         name: Application.Info.Name,
+//         short_name: Application.Info.ShortName,
+//         description: Application.Info.Description,
+//         // theme_color: Application.PresentationPreferences.ThemeColor,
+//         display: Application.PresentationPreferences.Display,
+//         orientation: Application.PresentationPreferences.Orientation,
+//         start_url: window.location.origin + OS.User.HomePage + "?utm_source=PWA&utm_medium=HomeScreen",
+//         icons: [{ "sizes": "512x512", "type": "image/png", src: window.location.origin + Application.Icon }],
+//         shortcuts: [],
+//     }
+//     for (let pageID of Application.MostUsedPages) {
+//         const page = Application.GetPageByPath(pageID)
+//         manifest.shortcuts.push({
+//             "name": page.Info.Name,
+//             "url": window.location.origin + page.Path,
+//             "description": page.Info.Description,
+//         })
+//     }
+//     const manifestElement = document.createElement('link')
+//     manifestElement.rel = "manifest"
+//     manifestElement.href = "data:application/manifest+json," + JSON.stringify(manifest)
+//     window.document.head.appendChild(manifestElement)
+// }
+
+// TODO(js-idea): archived memar-js source, not Khayyam and not a migration
+// Unverified idea from the retired memar-js repository (archive commit 27e013d, last pushed 2026-01-06). Kept as a thought only: the architect has moved on since, so this may contradict the current design.
+// source: memar-js/os/os.js
+//
+// import './loader.js'
+// import './thing.js'
+// import './user.js'
+// import './users.js'
+// import '../language/language.js'
+//
+// // https://en.wikipedia.org/wiki/Operating_System
+// const OS = {
+//     name: "",
+//     firstTimeRun: false,
+// }
+//
+// OS.Init = async function () {
+//     await this.thing.init()
+//     this.users.init()
+//     language.SetLangAndDir()
+//     this.loader.detectName()
+//     this.loader.SuggestUpgrade()
+//     this.loader.PWA()
+// }
+//
+// OS.Shutdown = function () {
+//     this.users.save()
+// }
+//
+// OS.OSName = function () { return this.name }
+
+// TODO(js-idea): archived memar-js source, not Khayyam and not a migration
+// Unverified idea from the retired memar-js repository (archive commit 27e013d, last pushed 2026-01-06). Kept as a thought only: the architect has moved on since, so this may contradict the current design.
+// source: memar-js/os/sw.js
+//
+// const staticCacheName = 'app'
+//
+// self.addEventListener('install', event => {
+//     caches.delete(staticCacheName)
+//     caches.open(staticCacheName).then(cache => cache.add('/main.html'))
+//     self.skipWaiting()
+// })
+//
+// self.addEventListener("activate", event => {
+//     self.clients.claim()
+// })
+//
+// self.addEventListener('fetch', event => {
+//     // Let the browser do its default thing for non-GET requests.
+//     if (event.request.method != 'GET') return
+//
+//     if (event.request.mode === 'navigate') event.respondWith(responseNavigate(event))
+// })
+//
+// async function responseNavigate(event) {
+//     const res = await caches.match('/main.html')
+//     // If browser cache delete and service worker still get fetch must return 
+//     if (!res) return fetch('/main.html')
+//     return res
+// }
+
+// TODO(js-idea): archived memar-js source, not Khayyam and not a migration
+// Unverified idea from the retired memar-js repository (archive commit 27e013d, last pushed 2026-01-06). Kept as a thought only: the architect has moved on since, so this may contradict the current design.
+// source: memar-js/os/thing.js
+//
+// import '../codec/base64/base64.js'
+// import '../http/cookie.js'
+// import './sdk/Achaemenid/set-connection-thing-id.js'
+//
+// const thingGuestID = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+//
+// OS.thing = {
+//     id: thingGuestID,
+//     rtc: {
+//         connection: null,
+//         id: "",
+//     },
+// }
+//
+// OS.ThingID = function () { return this.thing.id }
+//
+// OS.thing.init = async function () {
+//     const thingID = localStorage.getItem('ThingID')
+//     if (thingID) {
+//         this.id = thingID
+//     } else {
+//         await this.rtc.generateID()
+//         if (this.rtc.id) this.id = await base64.stdWithoutPadding.HashTo32Byte(this.rtc.id)
+//         this.save()
+//     }
+//     await this.checkCookie()
+// }
+//
+// OS.thing.checkCookie = async function () {
+//     if (this.id === thingGuestID) return
+//
+//     let thingID = cookie.GetByName(HTTPCookieNameThingID)
+//     if (!thingID || thingID !== this.id) {
+//         cookie.SetCookie({
+//             Name: HTTPCookieNameThingID,
+//             Value: this.id,
+//             MaxAge: "630720000",
+//             // Secure: true,
+//         })
+//
+//         // SetConnectionThingIDReq is the request structure of SetConnectionThingID()
+//         const SetConnectionThingIDReq = {
+//             "ThingID": this.id,
+//         }
+//         try {
+//             await SetConnectionThingID(SetConnectionThingIDReq)
+//         } catch (err) {
+//             err.Notify()
+//         }
+//     }
+// }
+//
+// OS.thing.save = function () {
+//     localStorage.setItem('ThingID', this.id)
+// }
+//
+// OS.thing.rtc.onIceCandidate = async function (event) {
+//     if (OS.thing.rtc.connection.iceGatheringState === 'complete') {
+//         if (!OS.thing.rtc.id) {
+//             OS.thing.rtc.rejecter('This browser is not supported, so cannot provide a unique, static ID for this machine.')
+//         }
+//         OS.thing.rtc.connection.close()
+//         OS.thing.rtc.connection = null
+//         return
+//     }
+//
+//     if (!event.candidate) return
+//
+//     // For Chrome
+//     if (event.candidate.foundation) {
+//         OS.thing.rtc.id = event.candidate.foundation
+//         OS.thing.rtc.resolver(event.candidate.foundation)
+//         return
+//     }
+//
+//     if (event.candidate.candidate) {
+//         // For Safari
+//         const matches = (/^candidate:(\d+)\s/).exec(event.candidate.candidate)
+//         if (!matches || matches[1].length < 2) return
+//
+//         OS.thing.rtc.id = matches[1]
+//         OS.thing.rtc.resolver(matches[1])
+//         return
+//     }
+// }
+//
+// OS.thing.rtc.startRTCConnection = async function () {
+//     this.connection = new RTCPeerConnection()
+//     this.connection.onicecandidate = this.onIceCandidate
+//
+//     // TODO::: For Safari but causes an error on firefox.
+//     try {
+//         const stream = document.createElement('canvas').captureStream()
+//         stream.getTracks().forEach((track) => this.connection.addTrack(track))
+//     } catch (err) {
+//         OS.thing.rtc.rejecter(err)
+//     }
+//
+//     const offer = await this.connection.createOffer({
+//         offerToReceiveAudio: 1,
+//         offerToReceiveVideo: 1
+//     })
+//     await this.connection.setLocalDescription(offer)
+// }
+//
+// OS.thing.rtc.generateID = async function () {
+//     if (!RTCPeerConnection) {
+//         throw new Error(`This browser doesn't support WebRTC, so cannot provide a unique, static ID for this machine.`)
+//     }
+//     return new Promise((resolve, reject) => {
+//         this.rtc.resolver = resolve
+//         this.rtc.rejecter = reject
+//         this.rtc.startRTCConnection()
+//     })
+// }
+
+// TODO(js-idea): archived memar-js source, not Khayyam and not a migration
+// Unverified idea from the retired memar-js repository (archive commit 27e013d, last pushed 2026-01-06). Kept as a thought only: the architect has moved on since, so this may contradict the current design.
+// source: memar-js/os/user.js
+//
+// const GuestUserID = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" // Guest UserID == [32]byte{}
+// const AdminUserID = "gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+//
+// OS.User = {
+//     ID: GuestUserID,
+//     // Type: UserType_Unset,
+//     DelegateUserID: "",
+//     DelegateUserType: "",
+//     DelegateConnID: "",
+//     Name: "Guest User",
+//     Number: 982140000000,
+//     Picture: "/images/not-login-user.svg",
+//     ContentPreferences: {
+//         Languages: ["en"],
+//         Regions: ["gb"],
+//         Currencies: [""],
+//     },
+//     PresentationPreferences: {
+//         DesignLanguage: "material",
+//         Contrast: "",
+//         ColorScheme: "no-preference",
+//         InvertedColors: false,
+//         ReducedMotion: false,
+//         ReducedTransparency: false,
+//         PrimaryFontFamily: "Roboto",
+//         SecondaryFontFamily: "",
+//     },
+//     HomePage: "",
+//     MostUsedPages: null, // []
+//     // Misc or miscellaneous key use by any page or widget to store needed persistent locale data
+//     Misc: {}
+// }
+//
+// OS.completeGuestUser = function() {
+//     language.SuggestLanguage()
+//     language.SupportedLanguagesAlternateLink()
+// }
+
+// TODO(js-idea): archived memar-js source, not Khayyam and not a migration
+// Unverified idea from the retired memar-js repository (archive commit 27e013d, last pushed 2026-01-06). Kept as a thought only: the architect has moved on since, so this may contradict the current design.
+// source: memar-js/os/users.js
+//
+// import '../http/cookie.js'
+//
+// OS.users = {}
+//
+// /**
+//  * read active users state from browser localStorage.
+//  * return true if it is first time app run from this browser
+//  */
+// OS.users.init = function () {
+//     const activePersonID = cookie.GetByName(HTTPCookieNameBaseUserID)
+//     const activeDelegateID = cookie.GetByName(HTTPCookieNameDelegateUserID)
+//
+//     const savedUser = localStorage.getItem(activePersonID + activeDelegateID)
+//     const user = JSON.parse(savedUser)
+//     if (!user) {
+//         if (activePersonID == GuestUserID) OS.completeGuestUser()
+//         else user = this.newUser()
+//         OS.firstTimeRun = true
+//     }
+//     OS.User = user
+//     OS.User.ContentPreferences.Language = language.poolByISO639_1[OS.User.ContentPreferences.Languages[0]] || language.poolByISO639_1[Application.ContentPreferences.Languages[0]]
+//     OS.User.ContentPreferences.Region = region.poolByISO3166_1_a3[OS.User.ContentPreferences.Regions[0]] || region.poolByISO3166_1_a3[Application.ContentPreferences.Regions[0]]
+//     OS.User.ContentPreferences.Currency = currency.poolByISO4217[OS.User.ContentPreferences.Currencies[0]] || currency.poolByISO4217[Application.ContentPreferences.Currencies[0]]
+// }
+//
+// OS.users.loadPersonsID = function () {
+//     const savedUsersID = localStorage.getItem('PersonsID')
+//     const usersID = JSON.parse(savedUsersID)
+//     if (!Array.isArray(usersID)) return []
+//     return usersID
+// }
+//
+// OS.users.loadDelegateUsersID = function () {
+//     const savedDelegateUsersID = localStorage.getItem('DelegateUsersID')
+//     const delegateUsersID = JSON.parse(savedDelegateUsersID)
+//     if (!Array.isArray(delegateUsersID)) return []
+//     return delegateUsersID
+// }
+//
+// /**
+//  * 
+//  * @param {string} personID
+//  * @param {string} delegateUserID
+//  */
+// OS.users.newUser = function (personID, delegateUserID) {
+//     if (delegateUserID) {
+//         const delegateUsersID = this.loadDelegateUsersID()
+//         delegateUsersID.push(personID + delegateUserID)
+//         localStorage.setItem('DelegateUsersID', JSON.stringify(delegateUsersID))
+//     } else {
+//         const personsID = this.loadPersonsID()
+//         delegateUsersID.push(personID)
+//         localStorage.setItem('PersonsID', JSON.stringify(delegateUsersID))
+//     }
+//     return {
+//         ID: personID,
+//         // UserType: UserType_Person,
+//         DelegateUserID: delegateUserID,
+//         // DelegateUserType: UserType_Org,
+//         Name: "Undefined",
+//         Picture: "/images/not-login-user.svg",
+//         ContentPreferences: OS.User.ContentPreferences || Application.ContentPreferences,
+//         PresentationPreferences: OS.User.PresentationPreferences || Application.PresentationPreferences,
+//         HomePage: Application.HomePage,
+//     }
+// }
+//
+// OS.users.save = async function () {
+//     // TODO::: If user clear cache, ignore saving??
+//     if (!cookie.GetByName(HTTPCookieNameBaseUserID)) return
+//     localStorage.setItem(OS.User.ID + OS.User.DelegateUserID, JSON.stringify(OS.User))
+// }

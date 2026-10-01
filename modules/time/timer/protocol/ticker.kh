@@ -1,0 +1,29 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Duration in "modules/time/duration/protocol/duration.kh"
+tp Error in "modules/process/error/protocol/error.kh"
+
+// Ticker is the interface that must implement by any ticker.
+// Implement object of Timer can also be a ticker,
+// just Start() method of timer is same as Tick(d, 0).
+// Reset() just change the interval not first tick duration.
+tp Ticker ab
+// Tick will add timer to default timing mechanism like TimingHeap, TimingWheel, ...
+tp Tick mt (self Ticker) (first Duration, interval Duration) (err Error)
+
+// TODO(go-migrate):
+/*
+package timer_p
+
+import (
+	error_p "memar/process/error/protocol"
+	"memar/time/duration"
+)
+
+// Ticker is the interface that must implement by any ticker.
+// Implement object of Timer can also be a ticker,
+// just Start() method of timer is same as Tick(d, 0).
+// Reset() just change the interval not first tick duration.
+type Ticker /*[DUR duration_p.Duration]* / interface {
+}
+*/

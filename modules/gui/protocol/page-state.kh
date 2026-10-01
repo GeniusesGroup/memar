@@ -1,0 +1,226 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+
+
+tp Boolean in "modules/math/boolean/protocol/boolean.kh"
+
+tp Error in "modules/process/error/protocol/error.kh"
+
+tp DOM in "modules/gui/protocol/dom.kh"
+
+tp Page in "modules/gui/protocol/page.kh"
+
+tp Screen in "modules/gui/protocol/screen.kh"
+
+tp ScreenMode in "modules/gui/protocol/screen-mode.kh"
+
+tp ScreenOrientation in "modules/gui/protocol/screen-orientation.kh"
+
+tp SOM in "modules/gui/protocol/som.kh"
+
+tp Picture_Image in "modules/codec/picture/protocol/image.kh"
+
+tp String in "modules/codec/string/protocol/string.kh"
+
+tp WindowType in "modules/gui/protocol/window-type.kh"
+
+
+
+// PageState is like window in browsers and each page state has its own window
+
+tp PageState ab {
+
+    PageState_Fields
+
+    PageState_Methods
+
+}
+
+
+
+tp PageState_Fields ab
+
+tp GUI_PageState_Fields_Page mt (self PageState_Fields) () (p Page)
+
+
+
+tp Title mt (self PageState_Fields) () (s String)
+
+
+
+tp Description mt (self PageState_Fields) () (s String)
+
+
+
+// Path + Parameters + Fragments
+
+tp URL mt (self PageState_Fields) () (s String)
+
+
+
+tp GUI_PageState_Fields_Fragment mt (self PageState_Fields) () (s String)
+
+
+
+// DOM as Document-Object-Model will render to user screen
+
+// Same as Document interface of the Web declare in browsers in many ways but split not related concern to other interfaces
+
+// like Document.URI that not belong to this interface and relate to PageState because we develope multi page app not web page
+
+// Element
+
+tp GUI_PageState_Fields_DOM mt (self PageState_Fields) () (d DOM)
+
+
+
+tp GUI_PageState_Fields_SOM mt (self PageState_Fields) () (s SOM)
+
+
+
+// The picture of the page in current state, use in social linking and SwitcherPage()
+
+tp GUI_PageState_Fields_Thumbnail mt (self PageState_Fields) () (i Picture_Image)
+
+
+
+tp State mt (self PageState_Fields) () (s ScreenMode)
+
+
+
+tp GUI_PageState_Fields_Type mt (self PageState_Fields) () (w WindowType)
+
+
+
+tp PageState_Methods ab
+
+// Activate() or Show() Called call to render page in this state (brings to front).
+
+// Also can call to move the page state to other screen
+
+
+
+// Deactivate() or Minimize() Called before this state wants to remove from the render tree (brings to back)
+
+// Errors:
+
+// - NotApproveToLeave: let the caller know user of the GUI app let page in this state bring to back.
+
+// - HadActiveDialog: or hadActiveOverlay help navigator works in better way.
+
+// 		e.g. for some keyboard event like back button in android OS to close dialog not pop previous page state to front
+
+tp Deactivate mt (self PageState_Methods) () (err Error)
+
+
+
+// force to refresh
+
+tp Refresh mt (self PageState_Methods) () (err Error)
+
+
+
+tp SafeToSilentClose mt (self PageState_Methods) () (b Boolean)
+
+
+
+// Remove render tree from screen and close DOM and SOM and archive it.
+
+// But do clean logic after some time e.g. 10sec maybe user close by mistake click action
+
+tp Close mt (self PageState_Methods) () (err Error)
+
+
+
+// DynamicElements struct {}
+
+
+
+tp PageState_ActivateOptions cp {
+
+    Screen Screen
+
+    // It will effect just on this app and this page state only, not OS level.
+
+    Orientation ScreenOrientation
+
+    WindowType WindowType
+
+    // force to bring to front immediately
+
+    PopUp Boolean
+
+}
+
+
+
+// TODO(go-migrate): [under "// Also can call to move the page state to other screen"] PageState_ActivateOptions is a Go struct (a cp here) and khayyam.md → Abstraction says an abstraction's methods use abstractions, not capsules, as arguments; decide whether the options become an ab or the signature changes. Proposed `tp GUI_PageState_Methods_Activate mt (self PageState_Methods) (options PageState_ActivateOptions) (err Error)`.
+
+// TODO(go-migrate):
+
+/*
+
+package gui_p
+
+
+
+import (
+
+	error_p "memar/process/error/protocol"
+
+	picture_p "memar/codec/picture/protocol"
+
+	time_p "memar/time/protocol"
+
+)
+
+
+
+type PageState_Fields interface {
+
+	Conditions() map[string]any
+
+
+
+	ActiveDates() []time_p.Time // first is CreateDate and last is EndDate(When Close() called)
+
+}
+
+
+
+type PageState_Methods interface {
+
+	// Activate() or Show() Called call to render page in this state (brings to front).
+
+	// Also can call to move the page state to other screen
+
+	Activate(options PageState_ActivateOptions) (err error_p.Error)
+
+
+
+	// DynamicElements struct {}
+
+}
+
+*/
+
+// TODO(js-idea): archived memar-js source, not Khayyam and not a migration
+// Unverified idea from the retired memar-js repository (archive commit 27e013d, last pushed 2026-01-06). Kept as a thought only: the architect has moved on since, so this may contradict the current design.
+// source: memar-js/gui/page-state.js
+//
+// const pageState = {
+//     Page: null,
+//     Title: "",
+//     Description: "",
+//     Conditions: { // As engine standard, URL parameters use as page Conditions to show information
+//         id: "", // e.g. RecordID to display information on page
+//     },
+//     Fragment: "", // As standard, URL hash use as page State to show information from that state
+//     ActiveDate: 0,
+//     EndDate: 0,
+// }
+//
+// pageState.Finish = function() {}
+//
+// page.ActivatePage(state) = function () { } // will activate the page to bring it front for user with requested state.
+// page.DeactivatePage() = function () { } // will deactivate the page to bring it to back to allow other page being active.

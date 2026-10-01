@@ -1,0 +1,84 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Container_Contain in "modules/computer/adt/container/protocol/contain.kh"
+tp Contain_DataType in "modules/computer/adt/container/protocol/contain.kh"
+tp Contain_Module_Path in "modules/computer/adt/container/protocol/contain.kh"
+tp Contain_String_Character in "modules/computer/adt/container/protocol/contain.kh"
+tp Container_Count in "modules/computer/adt/container/protocol/length.kh"
+tp Count_DataType in "modules/computer/adt/container/protocol/length.kh"
+tp Count_Module_Path in "modules/computer/adt/container/protocol/length.kh"
+tp Count_String_Character in "modules/computer/adt/container/protocol/length.kh"
+tp Container_GetElement in "modules/computer/adt/container/protocol/get-element.kh"
+tp GetElement_DataType in "modules/computer/adt/container/protocol/get-element.kh"
+tp GetElement_Module_Path in "modules/computer/adt/container/protocol/get-element.kh"
+tp GetElement_String_Character in "modules/computer/adt/container/protocol/get-element.kh"
+tp Container_Index in "modules/computer/adt/container/protocol/index.kh"
+tp Index_DataType in "modules/computer/adt/container/protocol/index.kh"
+tp Index_Module_Path in "modules/computer/adt/container/protocol/index.kh"
+tp Index_String_Character in "modules/computer/adt/container/protocol/index.kh"
+tp Container_Iteration in "modules/computer/adt/container/protocol/iteration.kh"
+tp Iteration_DataType in "modules/computer/adt/container/protocol/iteration.kh"
+tp Iteration_Module_Path in "modules/computer/adt/container/protocol/iteration.kh"
+tp Iteration_String_Character in "modules/computer/adt/container/protocol/iteration.kh"
+tp Container_Peek in "modules/computer/adt/container/protocol/peek.kh"
+tp Peek_DataType in "modules/computer/adt/container/protocol/peek.kh"
+tp Peek_Module_Path in "modules/computer/adt/container/protocol/peek.kh"
+tp Peek_String_Character in "modules/computer/adt/container/protocol/peek.kh"
+
+// Accessor is the interface that wraps the Accessor methods.
+tp Container_Accessor ab {
+    Container_GetElement
+
+    Container_Peek
+
+    Container_Index
+    Container_Count
+    Container_Contain
+
+    Container_Iteration
+}
+
+tp Container_Accessor_Module_Path ab {
+    GetElement_Module_Path
+    Peek_Module_Path
+    Index_Module_Path
+    Count_Module_Path
+    Contain_Module_Path
+    Iteration_Module_Path
+}
+
+tp Accessor_DataType ab {
+    GetElement_DataType
+    Peek_DataType
+    Index_DataType
+    Count_DataType
+    Contain_DataType
+    Iteration_DataType
+}
+
+tp Accessor_String_Character ab {
+    GetElement_String_Character
+    Peek_String_Character
+    Index_String_Character
+    Count_String_Character
+    Contain_String_Character
+    Iteration_String_Character
+}
+
+// TODO(go-migrate):
+/*
+package container_p
+
+// Accessor is the interface that wraps the Accessor methods.
+type Accessor[ELEMENT Element] interface {
+	GetElement[ELEMENT]
+
+	Peek[ELEMENT]
+
+	Index[ELEMENT]
+	Count[ELEMENT]
+	Contain[ELEMENT]
+	
+	Iteration[ELEMENT]
+}
+*/

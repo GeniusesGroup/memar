@@ -1,0 +1,18 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Message_Fault in "modules/lib/net/soap/protocol/soap-message-fault.kh"
+tp String in "modules/codec/string/protocol/string.kh"
+
+tp Message_Body ab
+tp Action mt (self Message_Body) () (s String)
+tp Fault mt (self Message_Body) () (f Message_Fault)
+
+// TODO(go-migrate):
+/*
+package soap_p
+
+type Message_Body interface {
+	// XMLName xml.Name    `xml:"soap:Body"`
+	Payload() interface{}
+}
+*/

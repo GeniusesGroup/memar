@@ -1,0 +1,49 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+// What a Khayyam-written compiler needs second: a place to put what it has read
+// so far. A compiler is a state machine over a text — a position, a symbol
+// table, an output being built — and a program can only hold state in a field
+// its own methods reach.
+//
+// The language's position: fields are always private and the only way to read or
+// modify a capsule's internal state is through methods attached to that capsule
+// (docs/khayyam/encapsulation.md → Capsule Structure and Privacy), and a
+// receiving method cannot touch a passed capsule's fields
+// (docs/khayyam/khayyam.md → Method). What a body's statement may write is not
+// stated anywhere, so what the owner has settled is what a field is *for*: it is
+// a variable, and a variable is handed to a method. The rule that a body may
+// reach `self.field` is a rule of this toolchain rather than a claim about the
+// language, and the refusal the two lines below used to meet is that rule
+// working.
+//
+// What this probe shows: a capsule holds a position, a method of that capsule
+// reaches its own field and makes a call on the value it holds, and a method of
+// that capsule hands its field to the method that writes it — which is the shape
+// the owner's ruling names, and which needs no more of the language than a field
+// read and a variable handed over. The write itself lands in
+// [run.test.ts](../test/run.test.ts), where a host supplies the method that writes
+// and the test reads the field back.
+
+tp Count cp {
+}
+
+tp Increment mt (self Count) (by Count) ()
+
+tp Store mt (self Cursor) (value Count) (stored Count)
+
+tp Cursor cp {
+    position Count
+    length Count
+}
+
+tp Advance mt (self Cursor) (step Count) (moved Count) {
+    self.position.Increment(step)()
+}
+
+tp Bump mt (self Cursor) (step Count) (moved Count) {
+    self.Store(step)(step)
+}
+
+tp Move mt (self Cursor) (step Count) (moved Count) {
+    self.Bump(self.position, step)()
+}

@@ -1,0 +1,10 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Datatype_ID in "modules/computer/datatype/protocol/id.kh"
+tp String in "modules/codec/string/protocol/string.kh"
+
+tp Observer_Datatype_ID ab
+tp GetDataTypeID mt (self Observer_Datatype_ID) () (i Datatype_ID)
+tp Observer_Datatype_ID_Base64 ab
+// GetDataTypeIDBase64 return Base64 of ID
+tp GetDataTypeIDBase64 mt (self Observer_Datatype_ID_Base64) () (s String)

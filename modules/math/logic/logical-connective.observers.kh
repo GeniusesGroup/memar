@@ -1,0 +1,7 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Logical_Connective in "modules/math/logic/logical-connective.kh"
+
+// TODO::: We MUST change below logic to interface and methods!
+tp Observer_Logical_Connective ab
+tp GetLogicalConnective mt (self Observer_Logical_Connective) () (c Logical_Connective)

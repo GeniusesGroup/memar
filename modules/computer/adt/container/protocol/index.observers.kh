@@ -1,0 +1,7 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Container_ElementIndex in "modules/computer/adt/container/protocol/index.kh"
+
+tp Observer_Container_LastElementIndex ab
+// GetLastElementIndex return the location of last element in the container.
+tp GetLastElementIndex mt (self Observer_Container_LastElementIndex) () (e Container_ElementIndex)

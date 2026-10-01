@@ -1,0 +1,7 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp PageNumber in "modules/memory/page/protocol/page.kh"
+
+tp Observer_PageNumber ab
+// TODO::: on bad page e.g. bad sector return 0 or have error?
+tp GetPageNumber mt (self Observer_PageNumber) () (p PageNumber)

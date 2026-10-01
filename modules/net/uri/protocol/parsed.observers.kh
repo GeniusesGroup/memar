@@ -1,0 +1,15 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Observer_Authority in "modules/net/uri/protocol/authority.observers.kh"
+tp Observer_Fragment in "modules/net/uri/protocol/fragment.observers.kh"
+tp Observer_Query in "modules/net/uri/protocol/query.observers.kh"
+tp Observer_Scheme in "modules/net/uri/protocol/scheme.observers.kh"
+tp Observer_URI_Path in "modules/net/uri/protocol/path.observers.kh"
+
+tp Observer_URI_Parsed ab {
+    Observer_Scheme
+    Observer_Authority
+    Observer_URI_Path
+    Observer_Query
+    Observer_Fragment
+}

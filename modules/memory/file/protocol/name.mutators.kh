@@ -1,0 +1,8 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Error in "modules/process/error/protocol/error.kh"
+tp File_Name in "modules/memory/file/protocol/name.kh"
+
+tp Mutator_Rename ab
+// Usually it MUST call by upper function that call change the directory database information.
+tp File_Mutator_Rename_Rename mt (self Mutator_Rename) (newName File_Name) (err Error)

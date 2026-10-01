@@ -1,0 +1,25 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+// The other half of the same question, and the probe that says the five beside
+// this one are findings rather than a blanket refusal: what a body can already
+// do. A scope is a declaration, a driver is a statement, a method call carries a
+// value into an argument and receives what the call wrote into a slot, and
+// `return` leaves a method early. Everything a Khayyam library in this target is
+// made of is here.
+
+tp Text cp {
+}
+
+tp Print mt (self Text) () ()
+
+tp Ask mt (self Text) (answer Text) (asked Text) {
+    return
+}
+
+tp Do mt (self Text) (what Text) () {
+    tp Then sc {
+        self.Print()()
+    }
+    vr askedText Text
+    self.Ask(what)(askedText)
+}

@@ -1,0 +1,13 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+tp Operation_ID ab
+
+// TODO(go-migrate):
+/*
+package operation_p
+
+import (
+	datatype_p "memar/computer/datatype/protocol"
+)
+
+type ID = datatype_p.ID
+*/

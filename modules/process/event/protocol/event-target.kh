@@ -1,0 +1,38 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Error in "modules/process/error/protocol/error.kh"
+tp Event in "modules/process/event/protocol/event.kh"
+tp EventListener in "modules/process/event/protocol/event-listener.kh"
+
+// Target is a interface implemented to receive events and may have listeners for them.
+//
+// It MUST implement for each data-type in each domain that need to dispatch,
+// It means method only accept that data-type event not any other one.
+//
+// Other frameworks:
+// https://developer.mozilla.org/en-US/docs/Web/API/Target
+tp Target ab
+// DispatchEvent() or Raise() invokes event handlers synchronously(immediately).
+// All applicable event handlers are called and return before DispatchEvent() returns.
+// The terms "notify clients", "send notifications", "trigger notifications", and "fire notifications" are used interchangeably with DispatchEvent.
+// Unlike web APIs, developers can check event.DefaultPrevented() after return, we don't return any data.
+//
+// Other frameworks:
+// https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/dispatchEvent
+//
+// Raise(event E) (err error_p.Error)
+tp DispatchEvent mt (self Target) (event Event) (err Error)
+
+// Appends an event listener for events whose type attribute value is type.
+// The callback argument sets the callback that will be invoked when the event is dispatched.
+// The event listener is appended to target's event listener list and is not appended if it has the same type, callback, and capture.
+//
+// Other frameworks:
+// https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener
+tp AddEventListener mt (self Target) (callback EventListener) (err Error)
+
+// Removes the event listener in target's event listener list with the same type, callback, and options.
+//
+// Other frameworks:
+// https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/removeEventListener
+tp RemoveEventListener mt (self Target) (callback EventListener) (err Error)

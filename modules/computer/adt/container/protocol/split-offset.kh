@@ -1,0 +1,18 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Container_Element in "modules/computer/adt/container/protocol/element.kh"
+tp Container_ElementIndex in "modules/computer/adt/container/protocol/index.kh"
+tp NumberOfElement in "modules/computer/adt/container/protocol/length.kh"
+tp Error in "modules/process/error/protocol/error.kh"
+tp String in "modules/codec/string/protocol/string.kh"
+// Reversed is a container level operation.
+
+tp Split_Offset ab
+// When `Get` returns limit > len(p), it returns a non-nil error explaining why more bytes were not returned.
+tp SplitByOffset mt (self Split_Offset) (offset Container_ElementIndex, limit NumberOfElement) (split Container_Element, err Error)
+
+tp Split_Offset_String_String_Character ab
+// When `Get` returns limit > len(p), it returns a non-nil error explaining why more bytes were not returned.
+tp Container_Split_Offset_String_String_Character_SplitByOffset mt (self Split_Offset_String_String_Character) (offset Container_ElementIndex, limit NumberOfElement) (split String, err Error)

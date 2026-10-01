@@ -1,0 +1,13 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Error in "modules/process/error/protocol/error.kh"
+tp Identifier_MediaType in "modules/identifier/mediatype/protocol/media-type.kh"
+tp String in "modules/codec/string/protocol/string.kh"
+
+tp MediaTypes ab
+
+tp Identifier_MediaTypes_Register mt (self MediaTypes) (mediaType Identifier_MediaType) (err Error)
+tp Identifier_MediaTypes_GetByMediaType mt (self MediaTypes) (mediaType String) (identifierMediaType Identifier_MediaType, err Error)
+tp Identifier_MediaTypes_GetByFileExtension mt (self MediaTypes) (ex String) (identifierMediaType Identifier_MediaType, err Error)
+
+// TODO(go-migrate): [tp Identifier_MediaTypes_Register] the Go parameter and result named `mt` are a Khayyam keyword, so they were renamed to mediaType / identifierMediaType; confirm the names.

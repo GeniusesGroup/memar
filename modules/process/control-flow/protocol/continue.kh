@@ -1,0 +1,4 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+// Early next iteration Some languages provide a construct that jumps control to the beginning of the loop body for the next iteration;
+// for example, continue (most common), skip, cycle (Fortran), or next (Perl and Ruby).

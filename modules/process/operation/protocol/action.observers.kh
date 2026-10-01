@@ -1,0 +1,6 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Operation_ActionType in "modules/process/operation/protocol/action.kh"
+
+tp Observer_ActionType ab
+tp GetActionType mt (self Observer_ActionType) () (a Operation_ActionType)

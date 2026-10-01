@@ -1,0 +1,23 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+// https://en.wikipedia.org/wiki/Logical_disjunction
+// Logical_Connective_OR
+//
+// Some other languages:
+// - https://doc.rust-lang.org/stable/std/ops/trait.BitOr.html
+tp Disjunction ab
+
+// TODO(go-migrate):
+/*
+package logic_p
+
+// https://en.wikipedia.org/wiki/Logical_disjunction
+// Logical_Connective_OR
+//
+// Some other languages:
+// - https://doc.rust-lang.org/stable/std/ops/trait.BitOr.html
+type Disjunction[T, RES any] interface {
+	Disjunction(with T) (res RES)
+	// OR()
+}
+*/

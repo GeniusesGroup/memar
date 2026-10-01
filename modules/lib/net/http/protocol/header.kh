@@ -1,0 +1,22 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+tp Iteration_KV_String_String in "modules/computer/adt/array/protocol/iteration-kv.kh"
+tp String in "modules/codec/string/protocol/string.kh"
+
+// Header indicate HTTP header semantic.
+// STR MUST just include ASCII characters.
+//
+// Other frameworks:
+// https://developer.mozilla.org/en-US/docs/Web/API/Headers
+tp Net_Header ab
+tp Header_Get mt (self Net_Header) (key String) (value String)
+
+tp Header_Add mt (self Net_Header) (key String, value String) ()
+
+// Header_Set is same as Header_Del() >> Header_Add()
+tp Header_Set mt (self Net_Header) (key String, value String) ()
+
+tp Header_Del mt (self Net_Header) (key String) ()
+
+// some header fields such as "Set-Cookie", "WWW-Authenticate", "Proxy-Authenticate" break multiple values
+// separate by comma and use multi line same key! implementations MUST provide iteration mechanism over all header fields.
+tp Header_Iteration mt (self Net_Header) () (s Iteration_KV_String_String)

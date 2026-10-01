@@ -1,0 +1,14 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Boolean in "modules/math/boolean/protocol/boolean.kh"
+
+// Other protocols:::
+// https://www.typescriptlang.org/docs/handbook/utility-types.html#requiredtype
+tp Capsule_Optional ab
+// Base on data or function false means:
+// - data required and must be exist.
+// 		e.g. user gender is optional, user email is not optional
+// - Function (usually a service) MUST be successful in chain of calls or MUST rollback all calls.
+// 		e.g. SendSMS is optional but WithdrawMoney is not optional in TransferMoney chain
+// 		SendSMS is not optional in SendOTP chain
+tp Capsule_Optional_Optional mt (self Capsule_Optional) () (b Boolean)

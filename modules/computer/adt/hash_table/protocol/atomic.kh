@@ -1,0 +1,15 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Container_Element in "modules/computer/adt/container/protocol/element.kh"
+tp Error in "modules/process/error/protocol/error.kh"
+tp HashTable_Key in "modules/computer/adt/hash_table/protocol/key.kh"
+
+tp HashTable_AtomicAccessor ab
+tp Load mt (self HashTable_AtomicAccessor) (key HashTable_Key) (value Container_Element, err Error)
+
+tp Store mt (self HashTable_AtomicAccessor) (key HashTable_Key, value Container_Element) (err Error)
+
+tp Swap mt (self HashTable_AtomicAccessor) (key HashTable_Key, value Container_Element) (old Container_Element, err Error)
+
+// err return more than swapped(bool)
+tp CompareAndSwap mt (self HashTable_AtomicAccessor) (key HashTable_Key, old Container_Element, new Container_Element) (err Error)

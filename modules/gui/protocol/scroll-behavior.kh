@@ -1,0 +1,18 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+// Specifies the scrolling animate behavior
+tp Scroll_Behavior ab
+
+// TODO(go-migrate):
+/*
+package gui_p
+
+// Specifies the scrolling animate behavior
+type Scroll_Behavior uint8
+
+const (
+	Scroll_Behavior_Auto Scroll_Behavior = iota
+	Scroll_Behavior_Smoothly
+	Scroll_Behavior_Instantly // instantly in a single jump
+)
+*/

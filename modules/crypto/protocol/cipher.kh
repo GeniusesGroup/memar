@@ -1,0 +1,44 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Codec in "modules/codec/protocol/codec.kh"
+tp Computer_Buffer in "modules/computer/buffer/protocol/buffer.kh"
+tp Crypto_CipherSuite in "modules/crypto/protocol/cipher-suite.kh"
+tp Error in "modules/process/error/protocol/error.kh"
+tp Signed in "modules/math/integer/protocol/signed.kh"
+
+// Cipher represents an implementation for a cipher
+tp Cipher ab
+tp Crypto_Cipher_CipherSuite mt (self Cipher) () (c Crypto_CipherSuite)
+
+tp PublicKey mt (self Cipher) () (c Codec)
+
+// A BlockCipher represents an implementation of block cipher
+// using a given key. It provides the capability to encrypt
+// or decrypt individual blocks. The mode implementations
+// extend that capability to streams of blocks.
+tp BlockCipher ab
+// BlockSize returns the cipher's block size.
+tp BlockSize mt (self BlockCipher) () (s Signed)
+
+// Encrypt encrypts the first block in src into dst.
+// Dst and src must overlap entirely or not at all.
+tp Encrypt mt (self BlockCipher) (dst Computer_Buffer, src Computer_Buffer) (err Error)
+
+// Decrypt decrypts the first block in src into dst.
+// Dst and src must overlap entirely or not at all.
+tp Decrypt mt (self BlockCipher) (dst Computer_Buffer, src Computer_Buffer) (err Error)
+
+// A Stream represents a stream cipher.
+tp StreamCipher ab
+// XORKeyStream XORs each byte in the given slice with a byte from the
+// cipher's key stream. Dst and src must overlap entirely or not at all.
+//
+// If len(dst) < len(src), XORKeyStream should panic. It is acceptable
+// to pass a dst bigger than src, and in that case, XORKeyStream will
+// only update dst[:len(src)] and will not touch the rest of dst.
+//
+// Multiple calls to XORKeyStream behave as if the concatenation of
+// the src buffers was passed in a single run. That is, Stream
+// maintains state and does not reset at each XORKeyStream call.
+tp XORKeyStream mt (self StreamCipher) (dst Computer_Buffer, src Computer_Buffer) (err Error)
+

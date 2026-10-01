@@ -1,0 +1,7 @@
+
+
+// Usually use for aligned atomic operations
+// https://github.com/mysql/mysql-server/blob/trunk/sql/memory/aligned_atomic.h
+
+// Calculates and returns the size of the CPU cache line.
+cache_line_size()

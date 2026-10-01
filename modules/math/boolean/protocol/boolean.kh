@@ -1,0 +1,55 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Conjunction in "modules/math/logic/protocol/conjunction.kh"
+tp Disjunction in "modules/math/logic/protocol/disjunction.kh"
+tp Logic_Equivalence in "modules/math/logic/protocol/equivalence.kh"
+tp Negation in "modules/math/logic/protocol/negation.kh"
+
+// Boolean algebra is a branch of mathematics that deals with operations on logical values with binary variables.
+// The Boolean variables are represented as binary numbers to represent truths: 1 = true and 0 = false.
+// https://en.wikipedia.org/wiki/Boolean_datatype
+// https://en.wikipedia.org/wiki/Boolean_algebra
+// https://en.wikipedia.org/wiki/Boolean_algebra_(structure)
+//
+// Some other languages:
+// - https://doc.rust-lang.org/stable/std/primitive.bool.html
+tp Conjunction mt (self Boolean) (with Boolean) (res Boolean)
+
+tp Disjunction mt (self Boolean) (with Boolean) (res Boolean)
+
+tp Equivalence mt (self Boolean) (with Boolean) (b Boolean)
+
+tp Negation mt (self Boolean) (p Boolean) (ap Boolean)
+
+tp Boolean ab {
+    Conjunction
+    Disjunction
+    Logic_Equivalence
+    Negation
+}
+
+// TODO(go-migrate): full original Go source follows
+// --- go-source: memar-go/math/boolean/protocol/boolean.go sha256:acc906ca4792762843f8d5606b7da4082ba8bd18f7d9cd46aa74941e6eb4605b ---
+/*
+package boolean_p
+
+import (
+	logic_p "memar/math/logic/protocol"
+)
+
+// Boolean algebra is a branch of mathematics that deals with operations on logical values with binary variables.
+// The Boolean variables are represented as binary numbers to represent truths: 1 = true and 0 = false.
+// https://en.wikipedia.org/wiki/Boolean_datatype
+// https://en.wikipedia.org/wiki/Boolean_algebra
+// https://en.wikipedia.org/wiki/Boolean_algebra_(structure)
+//
+// Some other languages:
+// - https://doc.rust-lang.org/stable/std/primitive.bool.html
+type Boolean[B any] interface { // B any, commented as Boolean in the original
+	logic_p.Conjunction[B, B]
+	logic_p.Disjunction[B, B]
+	logic_p.Equivalence[B]
+	logic_p.Negation[B]
+}
+*/
+// --- end go-source: memar-go/math/boolean/protocol/boolean.go ---

@@ -1,0 +1,6 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp URI_Scheme in "modules/net/uri/protocol/scheme.kh"
+
+tp Observer_Scheme ab
+tp GetScheme mt (self Observer_Scheme) () (s URI_Scheme)

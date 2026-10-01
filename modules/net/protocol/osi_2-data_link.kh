@@ -1,0 +1,35 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+tp Capsule_LifeCycle in "modules/computer/capsule/protocol/life_cycle_contract.kh"
+tp Observer_FrameType in "modules/net/protocol/frame-type.observers.kh"
+tp Observer_NetworkAddresses in "modules/net/protocol/address.observers.kh"
+tp FrameWriter in "modules/net/protocol/frame-writer.kh"
+
+// OSI_DataLink use to network hardware devices in a computers or connect two or more computers.
+tp OSI_DataLink ab {
+    Capsule_LifeCycle
+    Observer_FrameType
+    Observer_NetworkAddresses
+    FrameWriter
+}
+
+// TODO(go-migrate):
+/*
+package net_p
+
+import (
+	capsule_p "memar/computer/capsule/protocol"
+)
+
+/*
+**********************************************************************************
+Link - (OSI Layer 2: Data Link) - Device to Device Connection
+
+https://en.wikipedia.org/wiki/Data_link_layer
+**********************************************************************************
+* /
+
+// OSI_DataLink use to network hardware devices in a computers or connect two or more computers.
+type OSI_DataLink interface {
+	Field_NetworkAddresses // string form of address (for example, "MAC://aa:bb:cc:dd:ee:ff", "Chapar://[1:242:20]")
+}
+*/

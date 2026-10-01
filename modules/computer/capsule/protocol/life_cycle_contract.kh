@@ -1,0 +1,8 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Error in "modules/process/error/protocol/error.kh"
+
+// Capsule_LifeCycle carries teardown only. Initialization and re-initialization are each capsule's own
+// named methods with its own domain arguments (docs/khayyam/variable.md#overview).
+tp Capsule_LifeCycle ab
+tp Deinit mt (self Capsule_LifeCycle) () (err Error)

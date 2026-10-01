@@ -1,0 +1,17 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp WindowType ab
+
+// TODO(go-migrate):
+/*
+package gui_p
+
+type WindowType uint8
+
+const (
+	WindowType_Unset      WindowType = 0
+	WindowType_Resizeable WindowType = (1 << iota) // has resizeable frame
+	WindowType_GLASSY                              // glassy window
+	WindowType_ALPHA                               // transparent window
+)
+*/

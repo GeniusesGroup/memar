@@ -1,0 +1,287 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Empty in "modules/computer/adt/protocol/empty.kh"
+tp Nil in "modules/computer/adt/protocol/nil.kh"
+tp Null in "modules/computer/adt/protocol/null.kh"
+
+// Abstract data types are theoretical entities, used (among other things) to simplify the description of abstract algorithms,
+// to classify and evaluate data structures, and to formally describe the type systems of programming languages.
+// Primitive data types are a form of Abstract data type. It is just that they are provided by the language makers.
+// https://en.wikipedia.org/wiki/Abstract_data_type
+// It is a special DataType. So all ADT implementors MUST be a DataType too, But not reverse.
+// Means not all DataType need to implements ADT
+tp ADT ab {
+    Empty
+    Nil
+    Null
+}
+
+// TODO(js-idea): archived memar-js source, not Khayyam and not a migration
+// Unverified idea from the retired memar-js repository (archive commit 27e013d, last pushed 2026-01-06). Kept as a thought only: the architect has moved on since, so this may contradict the current design.
+// source: memar-js/adt/number.js
+//
+// import { NumberToPersianLetter } from '../persian/letter.js'
+//
+// Number.prototype.AsPersianLetter = function () {
+//     return NumberToPersianLetter(parseFloat(this).toString())
+// }
+
+// TODO(js-idea): archived memar-js source, not Khayyam and not a migration
+// Unverified idea from the retired memar-js repository (archive commit 27e013d, last pushed 2026-01-06). Kept as a thought only: the architect has moved on since, so this may contradict the current design.
+// source: memar-js/adt/object.js
+//
+// /**
+//  * copyFrom use to copy an object by structure and values from other object!
+//  * @param {object} src
+//  */
+// Object.prototype.copyFrom = function (src) {
+//     /**
+//      * if conflict set to true it means copy objects have conflicts in all or some keys or values
+//      */
+//     let conflict = false
+//
+//     for (let key in this) {
+//         if (typeof src[key] === "undefined") {
+//             conflict = true
+//             continue
+//         }
+//
+//         if (typeof this[key] === 'object') {
+//             if (typeof src[key] !== 'object') {
+//                 conflict = true
+//                 continue
+//             }
+//
+//             copyObject(src[key], this[key])
+//         } else {
+//             this[key] = src[key]
+//         }
+//     }
+//
+//     return conflict
+// }
+
+// TODO(js-idea): archived memar-js source, not Khayyam and not a migration
+// Unverified idea from the retired memar-js repository (archive commit 27e013d, last pushed 2026-01-06). Kept as a thought only: the architect has moved on since, so this may contradict the current design.
+// source: memar-js/language/persian/digit.js
+//
+// const persianNumbers = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹']
+// const persianNumbersToEnglish = { '۰': '0', '۱': '1', '۲': '2', '۳': '3', '۴': '4', '۵': '5', '۶': '6', '۷': '7', '۸': '8', '۹': '9' }
+//
+// function EnglishToPersianDigits(num) {
+//     return persianNumbers[num]
+// }
+//
+// function PersianToEnglishDigits(num) {
+//     // TODO::: other solution: https://stackoverflow.com/a/58157015/8285181
+//     // const p2e = s => s.replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d))
+//     return persianNumbersToEnglish[num] || num
+// }
+
+// TODO(js-idea): archived memar-js source, not Khayyam and not a migration
+// Unverified idea from the retired memar-js repository (archive commit 27e013d, last pushed 2026-01-06). Kept as a thought only: the architect has moved on since, so this may contradict the current design.
+// source: memar-js/language/persian/letter.js
+//
+// // https://github.com/mahmoud-eskandari/NumToPersian/blob/master/src/num2persian.js
+// /**
+//  * Main function
+//  * @param input
+//  * @returns {string}
+//  * @constructor
+//  */
+// function NumberToPersianLetter(input) {
+//     // Clear Non digits
+//     input = input.toString().replace(/[^0-9.-]/g, '')
+//     let isNegative = false
+//     const floatParse = parseFloat(input)
+//     // return zero if this isn't a valid number
+//     if (isNaN(floatParse)) {
+//         return zero
+//     }
+//     // check for zero
+//     if (floatParse === 0) {
+//         return zero
+//     }
+//     // set negative flag:true if the number is less than 0
+//     if (floatParse < 0) {
+//         isNegative = true
+//         input = input.replace(/-/g, '')
+//     }
+//
+//     // Declare Parts
+//     let decimalPart = ''
+//     let integerPart = input
+//     let pointIndex = input.indexOf('.')
+//     // Check for float numbers form string and split Int/Dec
+//     if (pointIndex > -1) {
+//         integerPart = input.substring(0, pointIndex)
+//         decimalPart = input.substring(pointIndex + 1, input.length)
+//     }
+//
+//     if (integerPart.length > 66) {
+//         return 'خارج از محدوده'
+//     }
+//
+//     // Split to sections
+//     const slicedNumber = prepareNumber(integerPart)
+//     // Fetch Sections and convert
+//     const out = []
+//     for (let i = 0; i < slicedNumber.length; i += 1) {
+//         const converted = tinyNumToWord(slicedNumber[i])
+//         if (converted !== '') {
+//             out.push(converted + letters[4][slicedNumber.length - (i + 1)])
+//         }
+//     }
+//
+//     // Convert Decimal part
+//     if (decimalPart.length > 0) {
+//         decimalPart = convertDecimalPart(decimalPart)
+//     }
+//
+//     return (isNegative ? negative : '') + out.join(delimiter) + decimalPart
+// }
+//
+// const delimiter = ' و ',
+//     zero = 'صفر',
+//     negative = 'منفی ',
+//     letters = [
+//         ['', 'یک', 'دو', 'سه', 'چهار', 'پنج', 'شش', 'هفت', 'هشت', 'نه'],
+//         ['ده', 'یازده', 'دوازده', 'سیزده', 'چهارده', 'پانزده', 'شانزده', 'هفده', 'هجده', 'نوزده', 'بیست'],
+//         ['', '', 'بیست', 'سی', 'چهل', 'پنجاه', 'شصت', 'هفتاد', 'هشتاد', 'نود'],
+//         ['', 'یکصد', 'دویست', 'سیصد', 'چهارصد', 'پانصد', 'ششصد', 'هفتصد', 'هشتصد', 'نهصد'],
+//         ['', ' هزار', ' میلیون', ' میلیارد', ' بیلیون', ' بیلیارد', ' تریلیون', ' تریلیارد',
+//             ' کوآدریلیون', ' کادریلیارد', ' کوینتیلیون', ' کوانتینیارد', ' سکستیلیون', ' سکستیلیارد', ' سپتیلیون',
+//             ' سپتیلیارد', ' اکتیلیون', ' اکتیلیارد', ' نانیلیون', ' نانیلیارد', ' دسیلیون', ' دسیلیارد'
+//         ],
+//     ],
+//     decimalSuffixes = [
+//         '',
+//         'دهم',
+//         'صدم',
+//         'هزارم',
+//         'ده‌هزارم',
+//         'صد‌هزارم',
+//         'میلیونوم',
+//         'ده‌میلیونوم',
+//         'صدمیلیونوم',
+//         'میلیاردم',
+//         'ده‌میلیاردم',
+//         'صد‌‌میلیاردم'
+//     ]
+//
+// /**
+//  * Clear number and split to 3 sections
+//  * @param {*} num
+//  */
+// function prepareNumber(num) {
+//     let out = num
+//     if (typeof out === 'number') {
+//         out = out.toString()
+//     }
+//
+//     //make first part 3 chars
+//     if (out.length % 3 === 1) {
+//         out = `00${out}`
+//     } else if (out.length % 3 === 2) {
+//         out = `0${out}`
+//     }
+//     // Explode to array
+//     return out.replace(/\d{3}(?=\d)/g, '$&*').split('*')
+// }
+//
+// //tinyNumToWord convert 3tiny parts to word
+// function tinyNumToWord(num) {
+//     // return zero
+//     if (parseInt(num, 0) === 0) {
+//         return ''
+//     }
+//     const parsedInt = parseInt(num, 0)
+//     if (parsedInt < 10) {
+//         return letters[0][parsedInt]
+//     }
+//     if (parsedInt <= 20) {
+//         return letters[1][parsedInt - 10]
+//     }
+//     if (parsedInt < 100) {
+//         const one = parsedInt % 10
+//         const ten = (parsedInt - one) / 10
+//         if (one > 0) {
+//             return letters[2][ten] + delimiter + letters[0][one]
+//         }
+//         return letters[2][ten]
+//     }
+//     const one = parsedInt % 10
+//     const hundreds = (parsedInt - (parsedInt % 100)) / 100
+//     const ten = (parsedInt - ((hundreds * 100) + one)) / 10
+//     const out = [letters[3][hundreds]]
+//     const secondPart = ((ten * 10) + one)
+//
+//     if (secondPart === 0) {
+//         return out.join(delimiter)
+//     }
+//
+//     if (secondPart < 10) {
+//         out.push(letters[0][secondPart])
+//     } else if (secondPart <= 20) {
+//         out.push(letters[1][secondPart - 10])
+//     } else {
+//         out.push(letters[2][ten])
+//         if (one > 0) {
+//             out.push(letters[0][one])
+//         }
+//     }
+//
+//     return out.join(delimiter)
+// }
+//
+//
+// /**
+//  * Convert Decimal part
+//  * @param decimalPart
+//  * @returns {string}
+//  * @constructor
+//  */
+// function convertDecimalPart(decimalPart) {
+//     // Clear right zero
+//     decimalPart = decimalPart.replace(/0*$/, "")
+//
+//     if (decimalPart === '') {
+//         return ''
+//     }
+//
+//     if (decimalPart.length > 11) {
+//         decimalPart = decimalPart.substr(0, 11)
+//     }
+//     return ' ممیز ' + NumberToPersianLetter(decimalPart) + ' ' + decimalSuffixes[decimalPart.length]
+// }
+
+// TODO(js-idea): archived memar-js source, not Khayyam and not a migration
+// Unverified idea from the retired memar-js repository (archive commit 27e013d, last pushed 2026-01-06). Kept as a thought only: the architect has moved on since, so this may contradict the current design.
+// source: memar-js/language/persian/string.js
+//
+// import { EnglishToPersianDigits, PersianToEnglishDigits } from './digit.js'
+// import { NumberToPersianLetter } from './letter.js'
+//
+// String.prototype.DigitsToPersian = function () {
+//     return this.replace(/[0-9]/g, EnglishToPersianDigits)
+// }
+//
+// String.prototype.DigitsToEnglish = function () {
+//     return this.replace(/[^0-9.]/g, PersianToEnglishDigits)
+// }
+//
+// String.prototype.AsPersianDigit = function () {
+//     return EnglishToPersianDigits(this)
+// }
+//
+// String.prototype.AsEnglishDigits = function (num) {
+//     return PersianToEnglishDigits(this)
+// }
+//
+// String.prototype.DigitsToPersianLetter = function () {
+//     // return this.replace(/[0-9]/g, NumberToPersianLetter)
+// }
+//
+// String.prototype.AsPersianLetter = function () {
+//     return NumberToPersianLetter(this)
+// }

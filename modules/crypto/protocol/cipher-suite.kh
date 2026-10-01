@@ -1,0 +1,25 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp DataType in "modules/computer/datatype/protocol/data-type.kh"
+tp String in "modules/codec/string/protocol/string.kh"
+
+// https://en.wikipedia.org/wiki/Cipher_suite
+tp Crypto_CipherSuite ab {
+    DataType
+}
+tp Crypto_CipherSuite_CipherSuite mt (self Crypto_CipherSuite) () (s String)
+
+// TODO(go-migrate):
+/*
+package crypto_p
+
+import (
+	datatype_p "memar/computer/datatype/protocol"
+	string_p "memar/codec/string/protocol"
+)
+
+// https://en.wikipedia.org/wiki/Cipher_suite
+type CipherSuite interface {
+	CipherSuite() string_p.String // e.g. TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+}
+*/

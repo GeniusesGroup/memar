@@ -1,0 +1,6 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Storage_File in "modules/memory/file/protocol/file.kh"
+
+tp Observer_File ab
+tp GetFile mt (self Observer_File) () (f Storage_File)

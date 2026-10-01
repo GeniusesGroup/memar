@@ -1,0 +1,17 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Error in "modules/process/error/protocol/error.kh"
+tp File_Name in "modules/memory/file/protocol/name.kh"
+tp URI_Path in "modules/net/uri/protocol/path.kh"
+
+// = Call GetFile() and write `Metadata`&`Data`
+tp Mutator_Directory_Helpers ab
+tp Mutator_Directory_Helpers_Copy mt (self Mutator_Directory_Helpers) (uriPath URI_Path, newURIPath URI_Path) (err Error)
+// = Call Copy() and Delete()
+tp Mutator_Directory_Helpers_Move mt (self Mutator_Directory_Helpers) (uriPath URI_Path, newURIPath URI_Path) (err Error)
+// = Call GetFile() and Delete()
+// It will return two types of errors, `GetFile()` and `Delete()` errors
+tp Mutator_Directory_Helpers_DeleteByPath mt (self Mutator_Directory_Helpers) (uriPath URI_Path) (err Error)
+// or PermanentlyDelete make invisible by call both `Delete()` in directory and file to remove from directory index and nvm.
+tp Mutator_Directory_Helpers_Remove mt (self Mutator_Directory_Helpers) (name File_Name) (err Error)
+tp Mutator_Directory_Helpers_RemoveByPath mt (self Mutator_Directory_Helpers) (uriPath URI_Path) (err Error)

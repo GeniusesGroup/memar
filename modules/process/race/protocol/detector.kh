@@ -1,0 +1,52 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Error in "modules/process/error/protocol/error.kh"
+tp Target_Race_Event in "modules/process/event/protocol/target-race-event.kh"
+tp String in "modules/codec/string/protocol/string.kh"
+
+tp Detector ab {
+    Target_Race_Event
+}
+
+// Static means when something is done not at Runtime but could be done anytime e.g. commit, PR, pre-compile, compile, ...
+//
+// https://en.wikipedia.org/wiki/Static_program_analysis
+tp Detector_Static ab {
+    Detector
+}
+tp AnalyzeVariable mt (self Detector_Static) (ast String, varName String) (err Error)
+
+// Dynamic means when something is done at Runtime
+//
+// https://en.wikipedia.org/wiki/Dynamic_program_analysis
+tp Detector_Dynamic ab {
+    Detector
+}
+// Enable re-enables(Start) handling(Monitoring) of race events in the current thread.
+tp Enable mt (self Detector_Dynamic) () (err Error)
+
+// Disable disables handling of race synchronization events in the current thread.
+tp Disable mt (self Detector_Dynamic) () (err Error)
+
+// TODO(go-migrate):
+/*
+package race_p
+
+import (
+	error_p "memar/process/error/protocol"
+	event_p "memar/process/event/protocol"
+)
+
+type Detector interface {
+	event_p.Target[Event]
+}
+
+// Static means when something is done not at Runtime but could be done anytime e.g. commit, PR, pre-compile, compile, ...
+//
+// https://en.wikipedia.org/wiki/Static_program_analysis
+type Detector_Static interface {
+	// DetectRaces use to `Analyze` programs for data races.
+	// TODO::: Need options?? e.g. ignorePatterns, AccessType, ProgrammingLanguage, ...
+	DetectRaces(ast string, options any) (err error_p.Error)
+}
+*/

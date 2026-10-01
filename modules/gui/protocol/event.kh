@@ -1,0 +1,414 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Boolean in "modules/math/boolean/protocol/boolean.kh"
+tp Error in "modules/process/error/protocol/error.kh"
+tp Event in "modules/process/event/protocol/event.kh"
+
+// Event usually can be any other domain records that store in storage layer.
+// https://www.w3.org/TR/DOM-Level-3-Events/#event-flow
+// https://developer.mozilla.org/en-US/docs/Web/API/Event
+// https://developer.mozilla.org/en-US/docs/Web/Events
+tp GUI_Event_2 ab {
+    Event
+    Event_State
+    Event_Methods
+}
+
+tp Event_State ab
+
+// Returns true or false depending on how event was initialized.
+// True if event goes through its target's ancestors in reverse tree order, and false otherwise.
+// When set to true, options's capture prevents callback from being invoked when the event's eventPhase attribute value is BUBBLING_PHASE.
+// When false (or not present), callback will not be invoked when event's eventPhase attribute value is CAPTURING_PHASE.
+// Either way, callback will be invoked if event's eventPhase attribute value is AT_TARGET.
+// When set to true, options's passive indicates that the callback will not cancel the event by invoking preventDefault().
+// This is used to enable performance optimizations described in § 2.8 Observing event listeners.
+// When set to true, options's once indicates that the callback will only be invoked once after which the event listener will be removed.
+tp Bubbles mt (self Event_State) () (b Boolean)
+
+// Indicates whether or not the event was initiated by the browser (after a user click, for instance) or by a script (using an event creation method, for example).
+// IsTrusted() bool
+
+// Returns true or false depending on how event was initialized. Its return value does not always carry meaning,
+// but true can indicate that part of the operation during which event was dispatched, can be canceled by invoking the preventDefault() method.
+// It also means subscribers receive events in asynchronous or synchronous manner. true means synchronous manner.
+tp Cancelable mt (self Event_State) () (b Boolean)
+
+// Returns true if preventDefault() was invoked successfully to indicate cancellation, and false otherwise.
+tp DefaultPrevented mt (self Event_State) () (b Boolean)
+
+tp Event_Methods ab
+
+// If invoked when the cancelable attribute value is true, and while executing a listener for the event with passive set to false,
+// signals to the operation that caused event to be dispatched that it needs to be canceled.
+tp PreventDefault mt (self Event_Methods) () (err Error)
+
+// TODO(go-migrate): GUI_Event_2 is the bridge's counter fallback, not a chosen name: Go gui_p.Event (memar/gui/protocol) and the impl struct gui.Event (modules/gui/event.go, ported as GUI_Event in modules/gui/event.kh) both qualify to GUI_Event; pick the protocol's real name.
+// TODO(go-migrate):
+/*
+package gui_p
+
+import (
+	error_p "memar/process/error/protocol"
+	event_p "memar/process/event/protocol"
+)
+
+// Event usually can be any other domain records that store in storage layer.
+// https://www.w3.org/TR/DOM-Level-3-Events/#event-flow
+// https://developer.mozilla.org/en-US/docs/Web/API/Event
+// https://developer.mozilla.org/en-US/docs/Web/Events
+type Event interface {
+	event_p.Event
+	Event_State
+	Event_Methods
+}
+
+*/
+
+// TODO(js-idea): archived memar-js source, not Khayyam and not a migration
+// Unverified idea from the retired memar-js repository (archive commit 27e013d, last pushed 2026-01-06). Kept as a thought only: the architect has moved on since, so this may contradict the current design.
+// source: memar-js/widgets/notification/center.js
+//
+// /**
+//  * 
+//  */
+// const centerNotificationWidget = {
+//     URN: {
+//         URN: "",
+//         ID: "",
+//         Name: "notification-center",
+//     },
+//     Conditions: {},
+//     HTML: (details) => ``,
+//     CSS: '',
+//     Templates: {},
+//     Queue: [],
+// }
+// Application.RegisterWidget(centerNotificationWidget)
+//
+// /**
+//  * 
+//  * @param {object} options 
+//  */
+// centerNotificationWidget.ConnectedCallback = function (options) {
+//     this.popUpElement = document.createElement("div")
+//     this.popUpElement.id = "pop-up-widget"
+//     document.documentElement.appendChild(this.popUpElement)
+//
+//     const popUpNotificationWidgetStyle = document.createElement("style")
+//     popUpNotificationWidgetStyle.id = "pop-up-widget-style"
+//     popUpNotificationWidgetStyle.innerHTML = this.CSS
+//     document.head.appendChild(popUpNotificationWidgetStyle)
+// }
+//
+// centerNotificationWidget.DisconnectedCallback = function () {
+// }
+//
+// /**
+//  * 
+//  * @param {string} title 
+//  * @param {string} message 
+//  * @param {string} type 
+//  */
+// centerNotificationWidget.New = function (title, message, type) {
+//
+// }
+//
+// const centerNotificationWidgetTypeInfo = 0
+// const centerNotificationWidgetTypeWarning = 1
+// const centerNotificationWidgetTypeError = 2
+// const centerNotificationWidgetTypeSuccess = 3
+
+// TODO(js-idea): archived memar-js source, not Khayyam and not a migration
+// Unverified idea from the retired memar-js repository (archive commit 27e013d, last pushed 2026-01-06). Kept as a thought only: the architect has moved on since, so this may contradict the current design.
+// source: memar-js/widgets/notification/force-leave-page.css
+//
+// dialog#forceLeavePageDialog {
+//     position: fixed;
+//     max-width: 600px;
+//     text-align: center;
+//     margin: 1% auto;
+//     left: 0;
+//     right: 0;
+//     top: 0;
+// }
+
+// TODO(js-idea): archived memar-js source, not Khayyam and not a migration
+// Unverified idea from the retired memar-js repository (archive commit 27e013d, last pushed 2026-01-06). Kept as a thought only: the architect has moved on since, so this may contradict the current design.
+// source: memar-js/widgets/notification/force-leave-page.html
+// <!-- For license and copyright information please see LEGAL file in repository -->
+//
+// <dialog type="modal" id="forceLeavePageDialog">
+//     <header>${LocaleText[0]}</header>
+//     <div>
+//         <p>${LocaleText[1]}</p>
+//         <p>${LocaleText[2]}</p>
+//     </div>
+//     <footer>
+//         <button type="button" onclick="forceLeavePageWidget.forceLeave = false">
+//             <label>${LocaleText[3]}</label>
+//         </button>
+//         <button type="button" onclick="forceLeavePageWidget.forceLeave = true">
+//             <label>${LocaleText[4]}</label>
+//         </button>
+//     </footer>
+// </dialog>
+
+// TODO(js-idea): archived memar-js source, not Khayyam and not a migration
+// Unverified idea from the retired memar-js repository (archive commit 27e013d, last pushed 2026-01-06). Kept as a thought only: the architect has moved on since, so this may contradict the current design.
+// source: memar-js/widgets/notification/force-leave-page.js
+//
+// /**
+//  * 
+//  * https://tools.ietf.org/html/bcp47
+//  */
+// const forceLeavePageWidget = {
+//     URN: {
+//         URN: "",
+//         ID: "",
+//         Name: "force-leave-page",
+//     },
+//     HTML: () => ``,
+//     CSS: '',
+//     Templates: {}
+// }
+// Application.RegisterWidget(forceLeavePageWidget)
+//
+// forceLeavePageWidget.ConnectedCallback = async function () {
+//     if (!this.dialogElement) {
+//         this.dialogElement = window.document.createElement("div")
+//         this.dialogElement.innerHTML = this.HTML()
+//         const style = window.document.createElement("style")
+//         style.innerHTML = this.CSS
+//         this.dialogElement.appendChild(style)
+//
+//         window.document.documentElement.appendChild(this.dialogElement)
+//     }
+//
+//     document.getElementById('forceLeavePageDialog').toggle()
+//
+//     while (this.forceLeave !== true && this.forceLeave !== false) {
+//         await time.Sleep(500)
+//     }
+//
+//     document.getElementById('forceLeavePageDialog').toggle()
+//     let answer = this.forceLeave
+//     this.forceLeave = null
+//     return answer
+// }
+//
+// forceLeavePageWidget.DisconnectedCallback = function () {
+// }
+
+// TODO(js-idea): archived memar-js source, not Khayyam and not a migration
+// Unverified idea from the retired memar-js repository (archive commit 27e013d, last pushed 2026-01-06). Kept as a thought only: the architect has moved on since, so this may contradict the current design.
+// source: memar-js/widgets/notification/force-leave-page.json
+// {
+//     "en": [
+//         "Changes not saved yet!",
+//         "Some data in page not saved yet and leave page or reload request cause data loss!",
+//         "Are you sure about your request??",
+//         "Stay",
+//         "Leave Anyway"
+//     ],
+//     "fa": [
+//         "تغییرات هنوز ذخیره نشده اند",
+//         "مقداری از داده های اضافه شده یا تغییر داده شده در صفحه ذخیره نشده اند!",
+//         "آیا از درخواست خود مطمین هستید؟؟",
+//         "ماندن",
+//         "ترک"
+//     ]
+// }
+
+// TODO(js-idea): archived memar-js source, not Khayyam and not a migration
+// Unverified idea from the retired memar-js repository (archive commit 27e013d, last pushed 2026-01-06). Kept as a thought only: the architect has moved on since, so this may contradict the current design.
+// source: memar-js/widgets/notification/pop-up.css
+//
+// #pop-up-widget {
+//     position: fixed;
+//     display: flex;
+//     top: 0;
+//     bottom: 0;
+//     left: 0;
+//     right: 0;
+//     padding: 0.5rem;
+//     overflow: hidden;
+//     z-index: 1052;
+//     pointer-events: none;
+// }
+//
+// #pop-up-widget * {
+//     pointer-events: auto;
+// }
+//
+// dialog[role=alert] {
+//     display: inline-flex;
+//     flex-direction: row;
+//     position: relative;
+//     align-self: flex-end;
+//     margin: unset;
+//     /* width: 5rem; */
+//     height: 5rem;
+//     align-items: center;
+//     cursor: pointer;
+// }
+//
+// dialog[type=Info] {
+//     background-color: deepskyblue;
+// }
+//
+// dialog[type=Warning] {
+//     background-color: yellow;
+// }
+//
+// dialog[type=Error] {
+//     background-color: red;
+// }
+//
+// dialog[type=Success] {
+//     background-color: green;
+// }
+//
+// dialog[role=alert] header {
+//     display: flex;
+//     align-items: center;
+//     margin: unset;
+//     padding: unset;
+// }
+//
+// dialog[role=alert] h1 {
+//     margin: unset;
+//     font-size: 1rem;
+// }
+//
+// dialog[role=alert] p {
+//     margin: unset;
+//     font-size: .8rem;
+// }
+//
+// dialog[role=alert] div {
+//     padding: 5px;
+//     height: 100%;
+//     background-color: var(--color--surface);
+//     opacity: 0.9;
+// }
+
+// TODO(js-idea): archived memar-js source, not Khayyam and not a migration
+// Unverified idea from the retired memar-js repository (archive commit 27e013d, last pushed 2026-01-06). Kept as a thought only: the architect has moved on since, so this may contradict the current design.
+// source: memar-js/widgets/notification/pop-up.html
+// <!-- For license and copyright information please see LEGAL file in repository -->
+//
+// <dialog type="${details.TypeAsString}" role="alert" class="no-print"
+//         onclick="popUpNotificationWidget.Next(true)" open>
+//     <i class="icons-font">${details.Icon}</i>
+//     <div>
+//         <header>
+//             <h1>${details.Title}</h1>
+//         </header>
+//
+//         <p>${details.Message}</p>
+//     </div>
+// </dialog>
+
+// TODO(js-idea): archived memar-js source, not Khayyam and not a migration
+// Unverified idea from the retired memar-js repository (archive commit 27e013d, last pushed 2026-01-06). Kept as a thought only: the architect has moved on since, so this may contradict the current design.
+// source: memar-js/widgets/notification/pop-up.js
+//
+// /**
+//  * 
+//  */
+// const popUpNotificationWidget = {
+//     URN: {
+//         URN: "",
+//         ID: "",
+//         Name: "notification-pop-up",
+//     },
+//     Conditions: {
+//         Duration: 10000, // 10 sec
+//     },
+//     HTML: (details) => ``,
+//     CSS: '',
+//     Templates: {},
+//     Queue: [],
+// }
+// Application.RegisterWidget(popUpNotificationWidget)
+//
+// /**
+//  * 
+//  * @param {object} options 
+//  */
+// popUpNotificationWidget.ConnectedCallback = function (options) {
+//     this.popUpElement = document.createElement("div")
+//     this.popUpElement.id = "pop-up-widget"
+//     document.documentElement.appendChild(this.popUpElement)
+//
+//     const popUpNotificationWidgetStyle = document.createElement("style")
+//     popUpNotificationWidgetStyle.id = "pop-up-widget-style"
+//     popUpNotificationWidgetStyle.innerHTML = this.CSS
+//     document.head.appendChild(popUpNotificationWidgetStyle)
+//
+//     if (options.Duration) this.Conditions.Duration = options.Duration
+// }
+//
+// popUpNotificationWidget.DisconnectedCallback = function () {
+// }
+//
+// /**
+//  * 
+//  * @param {string} title 
+//  * @param {string} message 
+//  * @param {number} type send one of the const in end of this file
+//  */
+// popUpNotificationWidget.New = function (title, message, type) {
+//     let details = {
+//         Title: title,
+//         Message: message,
+//         Type: type,
+//     }
+//
+//     switch (type) {
+//         case popUpNotificationWidgetTypeInfo:
+//             details.Icon = "info"
+//             details.TypeAsString = "Info"
+//             break
+//         case popUpNotificationWidgetTypeWarning:
+//             details.Icon = "warning"
+//             details.TypeAsString = "Warning"
+//             break
+//         case popUpNotificationWidgetTypeError:
+//             details.Icon = "cancel"
+//             details.TypeAsString = "Error"
+//             break
+//         case popUpNotificationWidgetTypeSuccess:
+//             details.Icon = "done"
+//             details.TypeAsString = "Success"
+//             break
+//         default:
+//             details.Icon = "notifications"
+//             details.TypeAsString = "Notifications"
+//             break
+//     }
+//
+//     this.Queue.push(this.HTML(details))
+//     popUpNotificationWidget.Next()
+// }
+//
+// popUpNotificationWidget.Next = function (timer) {
+//     if (timer) {
+//         popUpNotificationWidget.popUpElement.innerText = ""
+//     }
+//
+//     if (!popUpNotificationWidget.popUpElement.innerHTML && popUpNotificationWidget.Queue.length !== 0) {
+//         popUpNotificationWidget.popUpElement.innerHTML = popUpNotificationWidget.Queue.shift()
+//         popUpNotificationWidget.ResetTimer()
+//     }
+// }
+//
+// popUpNotificationWidget.ResetTimer = function () {
+//     setTimeout(popUpNotificationWidget.Next, popUpNotificationWidget.Conditions.Duration, true)
+// }
+//
+// const popUpNotificationWidgetTypeInfo = 0
+// const popUpNotificationWidgetTypeWarning = 1
+// const popUpNotificationWidgetTypeError = 2
+// const popUpNotificationWidgetTypeSuccess = 3

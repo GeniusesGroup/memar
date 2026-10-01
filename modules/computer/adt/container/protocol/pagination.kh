@@ -1,0 +1,34 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+tp Observer_Limit in "modules/computer/adt/container/protocol/pagination.observers.kh"
+tp Observer_Offset in "modules/computer/adt/container/protocol/pagination.observers.kh"
+
+tp NumberOfElement in "modules/computer/adt/container/protocol/length.kh"
+
+tp Container_Offset ab
+
+
+tp Container_Limit ab
+
+
+tp Pagination_Offset_Request ab {
+    Observer_Offset
+    Observer_Limit
+}
+
+tp Pagination_Cursor_Request ab {
+    Observer_Limit
+}
+tp Location mt (self Pagination_Cursor_Request) () ()
+
+tp Pagination_Response ab
+tp TotalNumber mt (self Pagination_Response) () (n NumberOfElement)
+
+// TODO(go-migrate):
+/*
+package container_p
+
+type Offset = ElementIndex
+
+type Limit = NumberOfElement
+
+*/

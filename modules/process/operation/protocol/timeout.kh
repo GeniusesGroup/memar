@@ -1,0 +1,19 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Duration in "modules/time/duration/protocol/duration.kh"
+tp Error in "modules/process/error/protocol/error.kh"
+
+// Timeout is the interface to show how an operation must implement timeout e.g. network socket, ...
+tp Operation_Timeout ab {
+    Timeout_Read
+    Timeout_Write
+}
+// SetTimeout sets the read and write deadlines associated with the connection.
+// It is equivalent to calling both SetReadTimeout and SetWriteTimeout.
+tp SetTimeout mt (self Operation_Timeout) (d Duration) (e Error)
+
+tp Timeout_Read ab
+tp SetReadTimeout mt (self Timeout_Read) (d Duration) (e Error)
+
+tp Timeout_Write ab
+tp SetWriteTimeout mt (self Timeout_Write) (d Duration) (e Error)

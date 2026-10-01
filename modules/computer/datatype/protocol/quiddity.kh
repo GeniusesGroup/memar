@@ -1,0 +1,62 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+
+
+tp String in "modules/codec/string/protocol/string.kh"
+
+
+
+// Quiddity is the essence that makes something the kind of thing it is and makes it different from any other.
+
+//
+
+// Abbreviation and Aliases are human-lookup conveniences only (e.g. helping a manager find a type under a name
+
+// they happen to remember, even if imperfectly). Neither is guaranteed unique and neither may be used for
+
+// dispatch, equality, or any mechanism requiring a guaranteed-unique identifier — that role belongs to DataTypeID.
+
+tp Quiddity ab
+
+tp Name mt (self Quiddity) () (s String)
+
+
+
+tp Abbreviation mt (self Quiddity) () (s String)
+
+
+
+// TODO(go-migrate):
+
+/*
+
+package datatype_p
+
+
+
+// Quiddity is the essence that makes something the kind of thing it is and makes it different from any other.
+
+//
+
+// Abbreviation and Aliases are human-lookup conveniences only (e.g. helping a manager find a type under a name
+
+// they happen to remember, even if imperfectly). Neither is guaranteed unique and neither may be used for
+
+// dispatch, equality, or any mechanism requiring a guaranteed-unique identifier — that role belongs to DataTypeID.
+
+type Quiddity interface {
+
+	Name() string         // e.g. initialize
+
+	Abbreviation() string // e.g. init
+
+	// These are not suggested to the user in the shell completion,
+
+	// but accepted if entered manually.
+
+	Aliases() []string // e.g. []string{"initialise", "create"}
+
+}
+
+*/
+

@@ -1,0 +1,7 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Priority in "modules/process/operation/protocol/priority.kh"
+
+tp Observer_Priority ab
+// Use to queue requests by its priority
+tp GetPriority mt (self Observer_Priority) () (p Priority)

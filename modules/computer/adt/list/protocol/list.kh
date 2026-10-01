@@ -1,0 +1,30 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Computer_Container in "modules/computer/adt/container/protocol/container.kh"
+tp Container_Element in "modules/computer/adt/container/protocol/element.kh"
+tp Error in "modules/process/error/protocol/error.kh"
+tp List_Head in "modules/computer/adt/list/protocol/head.kh"
+tp List_Tail in "modules/computer/adt/list/protocol/tail.kh"
+
+// list or sequence is an abstract data type that represents a finite number of ordered values,
+// where the same value may occur more than once.
+// An instance of a list is a computer representation of the mathematical concept of a tuple or finite sequence;
+// the (potentially) infinite analog of a list is a stream.
+// Lists are a basic example of containers, as they contain other values.
+// If the same value occurs multiple times, each occurrence is considered a distinct item.
+// https://en.wikipedia.org/wiki/List_(abstract_data_type)
+// Other Languages:
+// - https://docs.python.org/3/tutorial/datastructures.html
+tp ADT_List ab {
+    List_Head
+    List_Tail
+
+    Computer_Container
+}
+
+// Head will return first element of the container.
+tp Head mt (self List_Head) () (el Container_Element, err Error)
+
+// Tail will return last element of the container.
+// an operation for referring to the list consisting of all the components of a list except for its first (this is called the "tail" of the list.)
+tp Tail mt (self List_Tail) () (el Container_Element, err Error)

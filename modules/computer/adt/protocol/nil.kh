@@ -1,0 +1,7 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Boolean in "modules/math/boolean/protocol/boolean.kh"
+
+tp Nil ab
+// IsNil report is pointer to the Element valid or not.
+tp IsNil mt (self Nil) () (b Boolean)

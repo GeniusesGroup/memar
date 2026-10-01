@@ -1,0 +1,7 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Computer_Buffer in "modules/computer/buffer/protocol/buffer.kh"
+
+tp Observer_Net_Socket_Buffers ab
+tp GetSendBuffer mt (self Observer_Net_Socket_Buffers) () (b Computer_Buffer)
+tp GetReceiveBuffer mt (self Observer_Net_Socket_Buffers) () (b Computer_Buffer)

@@ -1,0 +1,6 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/codec/string/protocol/string.kh"
+
+tp Identifier_UUID32_Base64 ab
+tp Identifier_UUID32_Base64_UUID32_Base64 mt (self Identifier_UUID32_Base64) () (s String)

@@ -1,0 +1,6 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Net_FrameType in "modules/net/protocol/frame-type.kh"
+
+tp Observer_FrameType ab
+tp GetFrameType mt (self Observer_FrameType) () (f Net_FrameType)

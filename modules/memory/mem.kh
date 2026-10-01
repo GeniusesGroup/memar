@@ -1,0 +1,31 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+// Go sketch that stood in the declaration area; no Khayyam declaration exists for it yet (it needs a pointer type and the word widths).
+// // It will add to beginning of every struct that scape to heap in compile time!
+// // scape to heap means variable address (not copy of variable!) pass to other stack scope by functions arg or return!
+// type mem struct {
+//     addr      ptr
+//     ref_count [8]W
+//     size      [8]W
+// }
+//
+// // allocates the specified number of bytes and does not initialize the memory allocated!
+// func (m *mem) allocate() {}
+//
+// // increases or decreases the size of the specified block of memory, moving it if necessary
+// func (m *mem) re_allocate() {}
+//
+// // releases the specified block of memory back to the system by force!!
+// func (m *mem) de_allocate() {}
+//
+// // initializes mem addr by mem size to zero!
+// func (m *mem) zero_initialize() {}
+//
+// // check and releases the specified block of memory back to the system if ref_count==0
+// func (m *mem) free() {}
+//
+// func (m *mem) reference_count() {}
+//
+// func (m *mem) increment_reference_count() {}
+//
+// func (m *mem) decrement_reference_count() {}

@@ -1,0 +1,1222 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Boolean in "modules/math/boolean/protocol/boolean.kh"
+tp Element_Status in "modules/gui/protocol/element-status.kh"
+tp Element_Type in "modules/gui/protocol/element-type.kh"
+tp Scroll in "modules/gui/protocol/scroll.kh"
+tp Signed in "modules/math/integer/protocol/signed.kh"
+tp String in "modules/codec/string/protocol/string.kh"
+
+// Element
+tp GUI_Element ab {
+    // event_p.Target[Element]
+    // https://developer.mozilla.org/en-US/docs/Web/API/Element/clientHeight
+    Scroll
+}
+
+// It must be unique e.g. product
+tp GUI_Element_Name mt (self GUI_Element) () (s String)
+
+tp GUI_Element_Type_2 mt (self GUI_Element) () (t Element_Type)
+
+tp GUI_Element_Status_2 mt (self GUI_Element) () (s Element_Status)
+
+tp HTML mt (self GUI_Element) (outer Boolean) (s String)
+
+tp GUI_Element_Text mt (self GUI_Element) () (s String)
+
+// Create new element as copy of existing element, new element is a full (deep) copy of the element and
+// is disconnected initially from the DOM.
+tp GUI_Element_Clone mt (self GUI_Element) () (e GUI_Element)
+
+tp GUI_Element_CloneTo mt (self GUI_Element) (dom GUI_Element) ()
+
+tp GUI_Element_GetElementById mt (self GUI_Element) (id String) (e GUI_Element)
+
+tp GUI_Element_GetElementsByName mt (self GUI_Element) (name String) (e GUI_Element)
+
+tp GUI_Element_GetElementsByClassName mt (self GUI_Element) (class String) (e GUI_Element)
+
+tp GUI_Element_GetElementsByTagName mt (self GUI_Element) (tag String) (e GUI_Element)
+
+tp GUI_Element_GetElementsByTagNameNS mt (self GUI_Element) (tag String) (e GUI_Element)
+
+tp HasFocus mt (self GUI_Element) () (b Boolean)
+
+tp GUI_Element_Append mt (self GUI_Element) (e GUI_Element) ()
+
+tp GUI_Element_Prepend mt (self GUI_Element) (e GUI_Element) ()
+
+tp GUI_Element_ParentElement mt (self GUI_Element) () (e GUI_Element)
+
+tp GUI_Element_NthChild mt (self GUI_Element) (n Signed) (e GUI_Element)
+// NextSibling()
+// PreviousSibling()
+// RemoveChild()
+// ReplaceChild()
+
+// CaptureEvents()
+// CreateEvent()
+// ReleaseEvents()
+
+// TODO(js-idea): archived memar-js JavaScript, not Khayyam and not a migration
+// Unverified idea from the retired memar-js repository (archive commit 27e013d, last pushed 2026-01-06). Kept as a thought only: the architect has moved on since, so this may contradict the current design.
+// source: memar-js/gui/elements/button.js
+//
+// /**
+//  * 
+//  * https://www.w3.org/TR/wai-aria-practices/examples/toolbar/toolbar.html
+//  */
+// HTMLButtonElement.prototype.toggle = function () {
+//     if (this.checked === true) {
+//         this.toggleAttribute("checked")
+//         this.toggleAttribute("aria-pressed")
+//         this.toggleAttribute("aria-checked")
+//         this.checked = false
+//     } else {
+//         this.toggleAttribute("checked")
+//         this.toggleAttribute("aria-pressed")
+//         this.toggleAttribute("aria-checked")
+//         this.checked = true
+//     }
+// }
+
+// TODO(js-idea): archived memar-js JavaScript, not Khayyam and not a migration
+// Unverified idea from the retired memar-js repository (archive commit 27e013d, last pushed 2026-01-06). Kept as a thought only: the architect has moved on since, so this may contradict the current design.
+// source: memar-js/gui/elements/dialog.js
+//
+// document.activeDialogElement = null
+//
+// HTMLDialogElement.prototype.toggle = function () {
+//     if (this.open == true) {
+//         this.close()
+//         document.activeDialogElement = null
+//
+//         // document.removeEventListener("click", HTMLDialogElement.prototype.handleBackdropClick)
+//     } else {
+//         if (this.getAttribute("type") === "modal") this.showModal()
+//         else this.show()
+//         document.activeDialogElement = this
+//
+//         // const onBackdropClick = this.getAttribute("onBackdropClick")
+//         // if (onBackdropClick) {
+//         //     this.onBackdropClick = onBackdropClick
+//         //     time.Sleep(1000)
+//         //     document.addEventListener("click", HTMLDialogElement.prototype.handleBackdropClick)
+//         // }
+//     }
+// }
+//
+// HTMLDialogElement.prototype.handleBackdropClick = function (event) {
+//     const onBackdropClick = document.activeDialogElement.onBackdropClick
+//     if (onBackdropClick) {
+//         console.log(event)
+//         console.log(document.activeDialogElement.contains(event.target))
+//         console.log(event.target.closest("dialog"))
+//         if (!document.activeDialogElement.contains(event.target)) { // or use: event.target.closest(selector) === null
+//             const funcName = onBackdropClick.split("this.")
+//             if (funcName.length = 2) {
+//                 document.activeDialogElement[funcName[1]]()
+//             } else {
+//                 window[onBackdropClick]()
+//             }
+//         }
+//     }
+// }
+
+// TODO(js-idea): archived memar-js JavaScript, not Khayyam and not a migration
+// Unverified idea from the retired memar-js repository (archive commit 27e013d, last pushed 2026-01-06). Kept as a thought only: the architect has moved on since, so this may contradict the current design.
+// source: memar-js/gui/elements/element.js
+//
+// /**
+//  * Get next focusable element for any usage!
+//  * @returns {HTMLElement}
+//  */
+// HTMLElement.prototype.nextFocusableElement = function () {
+//     // add all elements we want to include in our selection
+//     const focusableElementsQuery = "a[href], area[href], input, select, textarea, button, iframe, object, embed, [tabindex='0'], [contenteditable], audio[controls], video[controls]"
+//
+//     const focusableElements = document.querySelectorAll(focusableElementsQuery)
+//     for (var i = 0; i < focusableElements.length; i++) {
+//         if (focusableElements[i] === this) {
+//             i++
+//             break
+//         }
+//     }
+//     // TODO::: improve check tags attributes
+//     for (; i < focusableElements.length; i++) {
+//         if (!focusableElements[i].disabled && !focusableElements[i].hidden) {
+//             return focusableElements[i]
+//         }
+//     }
+// }
+//
+// HTMLElement.prototype.focusNext = function () {
+//     const nextFocusableElement = this.nextFocusableElement()
+//     if (nextFocusableElement) nextFocusableElement.focus()
+// }
+//
+// /**
+//  * 
+//  * @param {Err} error Error protocol(interface)
+//  */
+// HTMLElement.prototype.warnValidityError = function (error) {
+//     this.setCustomValidity(error.Detail.Overview)
+//     this.reportValidity()
+//     HTMLAudioElement.Beep(400, 100, 5)
+//     window.navigator.vibrate(60)
+// }
+//
+// /**
+//  * 
+//  * @param {string=} [type=Default] name of related validity message that set in html attributes e.g. <input validityMessage-{{type}}="" />
+//  * 
+//  * https://developer.mozilla.org/en-US/docs/Web/API/HTMLSelectElement/checkValidity
+//  * https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement/reportValidity
+//  */
+// HTMLElement.prototype.warnValidity = function (type) {
+//     if (type === "") {
+//         this.setCustomValidity("")
+//     } else {
+//         let validity = this.validity
+//         let name = "Default"
+//         if (validity.badInput) {
+//             name = "BadInput"
+//             // } else if (validity.customError) {
+//             //     name = "CustomError"
+//         } else if (validity.patternMismatch) {
+//             name = "PatternMismatch"
+//         } else if (validity.rangeOverflow) {
+//             name = "RangeOverflow"
+//         } else if (validity.rangeUnderflow) {
+//             name = "RangeUnderflow"
+//         } else if (validity.stepMismatch) {
+//             name = "StepMismatch"
+//         } else if (validity.tooLong) {
+//             name = "TooLong"
+//         } else if (validity.tooShort) {
+//             name = "TooShort"
+//         } else if (validity.typeMismatch) {
+//             name = "TypeMismatch"
+//         } else if (validity.valueMissing) {
+//             name = "ValueMissing"
+//         } else if (type) {
+//             name = type
+//         }
+//
+//         const customMessage = this.getAttribute("validityMessage-" + name)
+//         if (customMessage) {
+//             this.setCustomValidity(customMessage)
+//         } else {
+//             this.setCustomValidity(this.validityMessages[name])
+//         }
+//
+//         HTMLAudioElement.Beep(400, 100, 5)
+//         // TODO::: Vibrate device
+//     }
+//     this.reportValidity()
+// }
+//
+// // https://developer.mozilla.org/en-US/docs/Web/API/ValidityState
+// HTMLElement.validityMessages = {
+//     "BadInput": "",
+//     "PatternMismatch": "",
+//     "RangeOverflow": "",
+//     "RangeUnderflow": "",
+//     "StepMismatch": "",
+//     "TooLong": "",
+//     "TooShort": "",
+//     "TypeMismatch": "",
+//     "ValueMissing": "",
+//     "Default": "",
+// }
+
+// TODO(js-idea): archived memar-js source, not Khayyam and not a migration
+// Unverified idea from the retired memar-js repository (archive commit 27e013d, last pushed 2026-01-06). Kept as a thought only: the architect has moved on since, so this may contradict the current design.
+// source: memar-js/gui/elements/button.js
+//
+// /**
+//  * 
+//  * https://www.w3.org/TR/wai-aria-practices/examples/toolbar/toolbar.html
+//  */
+// HTMLButtonElement.prototype.toggle = function () {
+//     if (this.checked === true) {
+//         this.toggleAttribute("checked")
+//         this.toggleAttribute("aria-pressed")
+//         this.toggleAttribute("aria-checked")
+//         this.checked = false
+//     } else {
+//         this.toggleAttribute("checked")
+//         this.toggleAttribute("aria-pressed")
+//         this.toggleAttribute("aria-checked")
+//         this.checked = true
+//     }
+// }
+
+// TODO(js-idea): archived memar-js source, not Khayyam and not a migration
+// Unverified idea from the retired memar-js repository (archive commit 27e013d, last pushed 2026-01-06). Kept as a thought only: the architect has moved on since, so this may contradict the current design.
+// source: memar-js/gui/elements/dialog.js
+//
+// document.activeDialogElement = null
+//
+// HTMLDialogElement.prototype.toggle = function () {
+//     if (this.open == true) {
+//         this.close()
+//         document.activeDialogElement = null
+//
+//         // document.removeEventListener("click", HTMLDialogElement.prototype.handleBackdropClick)
+//     } else {
+//         if (this.getAttribute("type") === "modal") this.showModal()
+//         else this.show()
+//         document.activeDialogElement = this
+//
+//         // const onBackdropClick = this.getAttribute("onBackdropClick")
+//         // if (onBackdropClick) {
+//         //     this.onBackdropClick = onBackdropClick
+//         //     time.Sleep(1000)
+//         //     document.addEventListener("click", HTMLDialogElement.prototype.handleBackdropClick)
+//         // }
+//     }
+// }
+//
+// HTMLDialogElement.prototype.handleBackdropClick = function (event) {
+//     const onBackdropClick = document.activeDialogElement.onBackdropClick
+//     if (onBackdropClick) {
+//         console.log(event)
+//         console.log(document.activeDialogElement.contains(event.target))
+//         console.log(event.target.closest("dialog"))
+//         if (!document.activeDialogElement.contains(event.target)) { // or use: event.target.closest(selector) === null
+//             const funcName = onBackdropClick.split("this.")
+//             if (funcName.length = 2) {
+//                 document.activeDialogElement[funcName[1]]()
+//             } else {
+//                 window[onBackdropClick]()
+//             }
+//         }
+//     }
+// }
+
+// TODO(js-idea): archived memar-js source, not Khayyam and not a migration
+// Unverified idea from the retired memar-js repository (archive commit 27e013d, last pushed 2026-01-06). Kept as a thought only: the architect has moved on since, so this may contradict the current design.
+// source: memar-js/gui/elements/element.js
+//
+// /**
+//  * Get next focusable element for any usage!
+//  * @returns {HTMLElement}
+//  */
+// HTMLElement.prototype.nextFocusableElement = function () {
+//     // add all elements we want to include in our selection
+//     const focusableElementsQuery = "a[href], area[href], input, select, textarea, button, iframe, object, embed, [tabindex='0'], [contenteditable], audio[controls], video[controls]"
+//
+//     const focusableElements = document.querySelectorAll(focusableElementsQuery)
+//     for (var i = 0; i < focusableElements.length; i++) {
+//         if (focusableElements[i] === this) {
+//             i++
+//             break
+//         }
+//     }
+//     // TODO::: improve check tags attributes
+//     for (; i < focusableElements.length; i++) {
+//         if (!focusableElements[i].disabled && !focusableElements[i].hidden) {
+//             return focusableElements[i]
+//         }
+//     }
+// }
+//
+// HTMLElement.prototype.focusNext = function () {
+//     const nextFocusableElement = this.nextFocusableElement()
+//     if (nextFocusableElement) nextFocusableElement.focus()
+// }
+//
+// /**
+//  * 
+//  * @param {Err} error Error protocol(interface)
+//  */
+// HTMLElement.prototype.warnValidityError = function (error) {
+//     this.setCustomValidity(error.Detail.Overview)
+//     this.reportValidity()
+//     HTMLAudioElement.Beep(400, 100, 5)
+//     window.navigator.vibrate(60)
+// }
+//
+// /**
+//  * 
+//  * @param {string=} [type=Default] name of related validity message that set in html attributes e.g. <input validityMessage-{{type}}="" />
+//  * 
+//  * https://developer.mozilla.org/en-US/docs/Web/API/HTMLSelectElement/checkValidity
+//  * https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement/reportValidity
+//  */
+// HTMLElement.prototype.warnValidity = function (type) {
+//     if (type === "") {
+//         this.setCustomValidity("")
+//     } else {
+//         let validity = this.validity
+//         let name = "Default"
+//         if (validity.badInput) {
+//             name = "BadInput"
+//             // } else if (validity.customError) {
+//             //     name = "CustomError"
+//         } else if (validity.patternMismatch) {
+//             name = "PatternMismatch"
+//         } else if (validity.rangeOverflow) {
+//             name = "RangeOverflow"
+//         } else if (validity.rangeUnderflow) {
+//             name = "RangeUnderflow"
+//         } else if (validity.stepMismatch) {
+//             name = "StepMismatch"
+//         } else if (validity.tooLong) {
+//             name = "TooLong"
+//         } else if (validity.tooShort) {
+//             name = "TooShort"
+//         } else if (validity.typeMismatch) {
+//             name = "TypeMismatch"
+//         } else if (validity.valueMissing) {
+//             name = "ValueMissing"
+//         } else if (type) {
+//             name = type
+//         }
+//
+//         const customMessage = this.getAttribute("validityMessage-" + name)
+//         if (customMessage) {
+//             this.setCustomValidity(customMessage)
+//         } else {
+//             this.setCustomValidity(this.validityMessages[name])
+//         }
+//
+//         HTMLAudioElement.Beep(400, 100, 5)
+//         // TODO::: Vibrate device
+//     }
+//     this.reportValidity()
+// }
+//
+// // https://developer.mozilla.org/en-US/docs/Web/API/ValidityState
+// HTMLElement.validityMessages = {
+//     "BadInput": "",
+//     "PatternMismatch": "",
+//     "RangeOverflow": "",
+//     "RangeUnderflow": "",
+//     "StepMismatch": "",
+//     "TooLong": "",
+//     "TooShort": "",
+//     "TypeMismatch": "",
+//     "ValueMissing": "",
+//     "Default": "",
+// }
+
+// TODO(js-idea): archived memar-js source, not Khayyam and not a migration
+// Unverified idea from the retired memar-js repository (archive commit 27e013d, last pushed 2026-01-06). Kept as a thought only: the architect has moved on since, so this may contradict the current design.
+// source: memar-js/gui/widgets.js
+//
+// Application.widgets = {
+//     poolByURNName: {}
+// }
+//
+// /**
+//  * register given widget in giti
+//  * @param {object} widget 
+//  */
+// Application.RegisterWidget = function (widget) {
+//     this.widgets.poolByURNName[widget.URN.Name] = widget
+// }
+//
+// Application.GetWidgetByURNName = function (urnName) {
+//     return this.widgets.poolByURNName[urnName]
+// }
+
+// TODO(js-idea): archived memar-js source, not Khayyam and not a migration
+// Unverified idea from the retired memar-js repository (archive commit 27e013d, last pushed 2026-01-06). Kept as a thought only: the architect has moved on since, so this may contradict the current design.
+// source: memar-js/widgets/barcode/barcode-reader.css
+// (no content)
+
+// TODO(js-idea): archived memar-js source, not Khayyam and not a migration
+// Unverified idea from the retired memar-js repository (archive commit 27e013d, last pushed 2026-01-06). Kept as a thought only: the architect has moved on since, so this may contradict the current design.
+// source: memar-js/widgets/barcode/barcode-reader.html
+// <button type="toggle" class="icon" title="${LocaleText[0]}" onclick="barcodeReaderWidget.toggleReaderButton(this)">
+//     <i class="icons-font">line_weight</i>
+// </button class="icon">
+
+// TODO(js-idea): archived memar-js source, not Khayyam and not a migration
+// Unverified idea from the retired memar-js repository (archive commit 27e013d, last pushed 2026-01-06). Kept as a thought only: the architect has moved on since, so this may contradict the current design.
+// source: memar-js/widgets/barcode/barcode-reader.js
+//
+// import * as timer from '../timer/sleep.js'
+//
+// const barcodeReaderWidget = {
+//     URN: {
+//         URN: "",
+//         ID: "",
+//         Name: "barcode-reader",
+//     },
+//     Conditions: {},
+//     HTML: () => ``,
+//     CSS: '',
+//     Templates: {},
+// }
+// Application.RegisterWidget(barcodeReaderWidget)
+//
+// /**
+//  * 
+//  * @param {object} options
+//  */
+// barcodeReaderWidget.ConnectedCallback = function (options) {
+//     // if (!options.InputElementID) options.ViewerElementID = "barcodeReaderWidgetInput"
+//     if (!options.ignoreIfFocusOn) options.ignoreIfFocusOn = false // do not handle scans if the currently focused element matches this selector or object
+//     if (!options.avgTimeByChar) options.avgTimeByChar = 150 // 0.15 sec as Average time (ms) between 2 chars. Used to differentiate between keyboard typing and scanning
+//     if (!options.minLength) options.minLength = 8 // Minimum length for a scanning
+//     if (!options.Formats) options.Formats = [ZBar.SymbolTypes.EAN13]
+//     if (!options.prefixKeyCodes) options.prefixKeyCodes = [] // Chars to remove and means start of scanning
+//     if (!options.suffixKeyCodes) options.suffixKeyCodes = [9, 13] // Chars to remove and means end of scanning! 9=tab & 13=enter
+//     function test(string) {
+//         HTMLAudioElement.Beep(200, 100, 5)
+//     }
+//     if (!options.CallBackResults) options.CallBackResults = test
+//     this.Options = options
+//
+//     this.barcodeString = ""
+//
+//     pageStylesElement.insertAdjacentHTML("beforeend", this.CSS)
+//     return this.HTML()
+// }
+//
+// barcodeReaderWidget.DisconnectedCallback = function () {
+//     this.disableScanner()
+// }
+//
+// barcodeReaderWidget.toggleReaderButton = function (element) {
+//     if (element.checked) {
+//         this.disableScanner()
+//     } else {
+//         this.enableScanner()
+//     }
+//     element.toggle()
+//     element.blur()
+// }
+//
+// barcodeReaderWidget.enableScanner = function () {
+//     document.addEventListener("keydown", barcodeReaderWidget.keydownListener)
+//     document.addEventListener("paste", barcodeReaderWidget.pasteListener)
+// }
+//
+// barcodeReaderWidget.disableScanner = function () {
+//     document.removeEventListener('keydown', barcodeReaderWidget.keydownListener)
+//     document.removeEventListener("paste", barcodeReaderWidget.pasteListener)
+// }
+//
+// barcodeReaderWidget.handleBarcodeString = function () {
+//     if (this.barcodeString.length >= this.Options.minLength) {
+//         if (this.Options.InputElementID) {
+//             const element = document.getElementById(this.Options.InputElementID)
+//             if (element) {
+//                 element.value = this.barcodeString
+//             }
+//         }
+//         this.Options.CallBackResults(this.barcodeString)
+//     }
+//
+//     // reset for next reading
+//     this.barcodeString = ""
+// }
+//
+// barcodeReaderWidget.keydownListener = async function (event) {
+//     const targetName = event.target.localName
+//     if (targetName === 'input') {
+//         return
+//     }
+//
+//     const keyCode = event.keyCode
+//     for (let kc of barcodeReaderWidget.Options.prefixKeyCodes) {
+//         if (kc === keyCode) {
+//             return
+//         }
+//     }
+//     for (let kc of barcodeReaderWidget.Options.suffixKeyCodes) {
+//         if (kc === keyCode) {
+//             barcodeReaderWidget.handleBarcodeString()
+//             return
+//         }
+//     }
+//
+//     // case keyCode >= 48 && keyCode <= 90: // numbers and letters
+//     // case keyCode >= 96 && keyCode <= 105: // numbers on numeric keypad
+//     // case keyCode >= 106 && keyCode <= 111: // operations on numeric keypad (+, -, etc.)
+//     if (keyCode >= 48 && keyCode <= 111) {
+//         barcodeReaderWidget.barcodeString += event.key // String.fromCharCode(event.which)
+//     } else {
+//         return
+//     }
+//
+//     const len = barcodeReaderWidget.barcodeString.length
+//     await timer.Sleep(barcodeReaderWidget.Options.avgTimeByChar)
+//
+//     if (barcodeReaderWidget.barcodeString.length === len) {
+//         barcodeReaderWidget.handleBarcodeString()
+//     }
+// }
+//
+// barcodeReaderWidget.pasteListener = function (event) {
+//     const targetName = event.target.localName
+//     if (targetName === 'input') {
+//         return
+//     }
+//
+//     barcodeReaderWidget.barcodeString = (event.clipboardData || window.clipboardData).getData('text')
+//     barcodeReaderWidget.handleBarcodeString()
+// }
+
+// TODO(js-idea): archived memar-js source, not Khayyam and not a migration
+// Unverified idea from the retired memar-js repository (archive commit 27e013d, last pushed 2026-01-06). Kept as a thought only: the architect has moved on since, so this may contradict the current design.
+// source: memar-js/widgets/barcode/barcode-reader.json
+// {
+//     "en": [
+//         "Find Barcode by Barcode-Reader Device"
+//     ],
+//     "fa": [
+//         "پیدا کردن بارکد با دستگاه بارکدخوان"
+//     ]
+// }
+
+// TODO(js-idea): archived memar-js source, not Khayyam and not a migration
+// Unverified idea from the retired memar-js repository (archive commit 27e013d, last pushed 2026-01-06). Kept as a thought only: the architect has moved on since, so this may contradict the current design.
+// source: memar-js/widgets/barcode/camera-scanner.css
+//
+// video.barcodeCameraScannerWidget {
+//     width: 100%;
+//     height: 100%;
+// }
+
+// TODO(js-idea): archived memar-js source, not Khayyam and not a migration
+// Unverified idea from the retired memar-js repository (archive commit 27e013d, last pushed 2026-01-06). Kept as a thought only: the architect has moved on since, so this may contradict the current design.
+// source: memar-js/widgets/barcode/camera-scanner.html
+// <button type="toggle" class="icon" title="${LocaleText[0]}" onclick="barcodeCameraScannerWidget.toggleScannerButton(this)">
+//     <i class="icons-font">image_search</i>
+// </button class="icon">
+// <button type="toggle" class="icon" title="${LocaleText[1]}" onclick="barcodeCameraScannerWidget.toggleViewer(this)">
+//     <i class="icons-font">videocam</i>
+// </button class="icon">
+
+// TODO(js-idea): archived memar-js source, not Khayyam and not a migration
+// Unverified idea from the retired memar-js repository (archive commit 27e013d, last pushed 2026-01-06). Kept as a thought only: the architect has moved on since, so this may contradict the current design.
+// source: memar-js/widgets/barcode/camera-scanner.js
+//
+// import './zbar.js'
+//
+// const barcodeCameraScannerWidget = {
+//     URN: {
+//         URN: "",
+//         ID: "",
+//         Name: "barcode-camera-scanner",
+//     },
+//     Conditions: {},
+//     HTML: () => ``,
+//     CSS: '',
+//     Templates: {},
+// }
+// Application.RegisterWidget(barcodeCameraScannerWidget)
+//
+// /**
+//  * 
+//  * @param {object} options
+//  */
+// barcodeCameraScannerWidget.ConnectedCallback = function (options) {
+//     if (!options.ViewerElementID) options.ViewerElementID = "barcodeCameraScannerWidgetViewer"
+//     if (!options.ScanPeriod) options.ScanPeriod = 50 // 0.05 sec
+//     if (!options.ScanDelay) options.ScanDelay = 2000 // 2 sec, set to delay from last successful scan
+//     if (!options.Formats) options.Formats = [ZBar.SymbolTypes.EAN13]
+//     if (!options.ResolutionWidth) options.ResolutionWidth = 1920 // FHD is enough on many barcode
+//     if (!options.ResolutionHeight) options.ResolutionHeight = 1280 // FHD is enough on many barcode
+//     /**
+//      * just call when new barcode detected || pass more than options.ScanDelay
+//      * @param {ZBarSymbol[]} ZBarSymbols 
+//      */
+//     function test(ZBarSymbols) {
+//         HTMLAudioElement.Beep(200, 100, 5)
+//         // for (let res of ZBarSymbols) {
+//         // }
+//     }
+//     if (!options.CallBackResults) options.CallBackResults = test
+//     this.Options = options
+//
+//     if (!this.video) {
+//         this.video = document.createElement('video')
+//         this.video.playsinline = true
+//         this.video.hidden = true
+//         this.video.className = "barcodeCameraScannerWidget"
+//     }
+//     if (!this.canvas) {
+//         this.canvas = document.createElement('canvas')
+//     }
+//
+//     pageStylesElement.insertAdjacentHTML("beforeend", this.CSS)
+//     return this.HTML()
+// }
+//
+// barcodeCameraScannerWidget.DisconnectedCallback = function () {
+//     this.disableScanner()
+// }
+//
+// barcodeCameraScannerWidget.toggleViewer = function (element) {
+//     if (!this.viewerEnabled && !this.scannerEnabled) {
+//         // TODO::: toast related error
+//         return
+//     }
+//
+//     if (!this.video) {
+//         // TODO::: toast related error
+//         return
+//     }
+//
+//     const barcodeViewerElement = document.getElementById(this.Options.ViewerElementID)
+//     if (!barcodeViewerElement) {
+//         // TODO::: toast related error
+//         return
+//     }
+//
+//     const videoElement = barcodeViewerElement.getElementsByTagName("video")
+//     if (videoElement.length === 0) {
+//         barcodeViewerElement.appendChild(this.video)
+//     }
+//
+//     element.toggle()
+//     if (this.video.hidden) {
+//         this.viewerEnabled = true
+//         this.video.hidden = false
+//         // this.video.play()
+//     } else {
+//         this.viewerEnabled = false
+//         this.video.hidden = true
+//         // this.video.pause()
+//     }
+// }
+//
+// barcodeCameraScannerWidget.toggleScannerButton = function (element) {
+//     if (element.checked) {
+//         this.disableScanner()
+//         if (this.viewerEnabled) this.toggleViewer(element.nextSibling)
+//     } else {
+//         this.enableScanner()
+//     }
+//     element.toggle()
+// }
+//
+// /**
+//  * 
+//  * get last result by call `let results = barcodeCameraScannerWidget.scanner.getResults()`
+//  */
+// barcodeCameraScannerWidget.enableScanner = async function () {
+//     if (!this.imageScanner) {
+//         this.imageScanner = await ZBar.GetDefaultScanner()
+//         this.imageScanner.setConfig(ZBar.SymbolTypes.NONE, ZBar.ConfigTypes.ENABLE, 0)
+//         for (let type of this.Options.Formats) {
+//             this.imageScanner.setConfig(type, ZBar.ConfigTypes.ENABLE, 1)
+//         }
+//         // this.imageScanner.enableCache(true)
+//     }
+//
+//     if (this.scannerEnabled) return
+//     this.scannerEnabled = true
+//
+//     try {
+//         this.mediaStream = await navigator.mediaDevices.getUserMedia({
+//             audio: false,
+//             video: {
+//                 facingMode: { ideal: "environment" },
+//                 width: { ideal: this.Options.ResolutionWidth },
+//                 height: { ideal: this.Options.ResolutionHeight },
+//                 // frameRate: { ideal: 60 }
+//             }
+//         })
+//         this.video.srcObject = this.mediaStream
+//         await this.video.play()
+//
+//         // const mediaStreamTrack = this.mediaStream.getVideoTracks()[0]
+//         // this.imageCapture = new ImageCapture(mediaStreamTrack)
+//     } catch (err) {
+//         // OverconstrainedError : constraint: "facingMode"
+//         Err.NotifyAnyToUser(err)
+//         this.scannerEnabled = false
+//         return
+//     }
+//
+//     while (this.scannerEnabled) {
+//         const res = await this.zbarScaner()
+//         if (res.length === 0) {
+//             await time.Sleep(this.Options.ScanPeriod)
+//         } else {
+//             this.Options.CallBackResults(res)
+//             await time.Sleep(this.Options.ScanDelay)
+//         }
+//     }
+// }
+//
+// barcodeCameraScannerWidget.disableScanner = async function () {
+//     this.scannerEnabled = false
+//     if (this.mediaStream) {
+//         // destroy camera usage
+//         for (let track of this.mediaStream.getTracks()) {
+//             track.stop()
+//         }
+//     }
+// }
+//
+// barcodeCameraScannerWidget.zbarScaner = async function () {
+//     // TODO::: write benchmark to test below!
+//     // const imageBlob = await this.imageCapture.takePhoto()
+//     // const imageBitmap = await createImageBitmap(imageBlob)
+//     // this.canvas.width = imageBitmap.width
+//     // this.canvas.height = imageBitmap.height
+//     // const ctx = this.canvas.getContext('2d')
+//     // ctx.drawImage(imageBitmap, 0, 0, imageBitmap.width, imageBitmap.height)
+//     // const imgData = ctx.getImageData(0, 0, imageBitmap.width, imageBitmap.height)
+//     // const res = await ZBar.ScanRGBABuffer(imgData.data.buffer, imageBitmap.width, imageBitmap.height, this.imageScanner)
+//
+//     // TODO::: write benchmark to test below! It seems not efficient vs direct use `this.video` in canvas!
+//     // const imageBitmap = await this.imageCapture.grabFrame()
+//     // this.canvas.width = imageBitmap.width
+//     // this.canvas.height = imageBitmap.height
+//     // const ctx = this.canvas.getContext('2d')
+//     // ctx.drawImage(imageBitmap, 0, 0, imageBitmap.width, imageBitmap.height)
+//     // const imgData = ctx.getImageData(0, 0, imageBitmap.width, imageBitmap.height)
+//     // const res = await ZBar.ScanRGBABuffer(imgData.data.buffer, imageBitmap.width, imageBitmap.height, this.imageScanner)
+//
+//     // TODO::: change ZBar Image class to pass directly imageBitmap if `new ImageCapture(track).grabFrame()` more efficient!
+//     // const imageBlob = await this.imageCapture.takePhoto()
+//     // const res = await ZBar.ScanImage(imageBlob, this.imageScanner)
+//
+//     const width = this.video.videoWidth
+//     const height = this.video.videoHeight
+//     this.canvas.width = width
+//     this.canvas.height = height
+//     const ctx = this.canvas.getContext('2d')
+//     ctx.drawImage(this.video, 0, 0, width, height)
+//     const imgData = ctx.getImageData(0, 0, width, height)
+//     const res = await ZBar.ScanRGBABuffer(imgData.data.buffer, width, height, this.imageScanner)
+//
+//     return res
+// }
+
+// TODO(js-idea): archived memar-js source, not Khayyam and not a migration
+// Unverified idea from the retired memar-js repository (archive commit 27e013d, last pushed 2026-01-06). Kept as a thought only: the architect has moved on since, so this may contradict the current design.
+// source: memar-js/widgets/barcode/camera-scanner.json
+// {
+//     "en": [
+//         "Find barcode by device camera",
+//         "View camera"
+//     ],
+//     "fa": [
+//         "پیدا کردن بارکد با دوربین دستگاه",
+//         "نمایش دوربین"
+//     ]
+// }
+
+// TODO(js-idea): archived memar-js source, not Khayyam and not a migration
+// Unverified idea from the retired memar-js repository (archive commit 27e013d, last pushed 2026-01-06). Kept as a thought only: the architect has moved on since, so this may contradict the current design.
+// source: memar-js/widgets/barcode/zbar.js
+//
+// import '../error/error.js'
+// import './zbar-v0.wasm'
+//
+// /**
+//  * 
+//  * use compiled version of ZBar web-asembly(zbar.wasm) from: https://github.com/samsam2310/zbar.wasm
+//  * 
+//  * Other open-source resources: 
+//  * https://github.com/jjhbw/barcode-scanner-webassembly
+//  * 
+//  * Other Paid Resources:
+//  * https://github.com/Dynamsoft/javascript-barcode
+//  * https://docs.scandit.com/4.3/web/index.html
+//  */
+// const ZBar = {
+//     lastGrowTimestamp: 0,
+//
+//     /**
+//      * ZBar Symbol Types
+//      * 
+//      * http://zbar.sourceforge.net/api/zbar_8h.html#f7818ad6458f9f40362eecda97acdcb0
+//      */
+//     SymbolTypes: {
+//         NONE: 0, // no symbol decoded
+//         PARTIAL: 1, // intermediate status
+//         EAN8: 8, // EAN-8
+//         UPCE: 9, // UPC-E
+//         ISBN10: 10, // ISBN-10 (from EAN-13). @since 0.4
+//         UPCA: 12,// UPC-A
+//         EAN13: 13,// EAN-13
+//         ISBN13: 14, // ISBN-13 (from EAN-13). @since 0.4
+//         I25: 25,// Interleaved 2 of 5. @since 0.4
+//         CODE39: 39, // Code 39. @since 0.4
+//         PDF417: 57, // PDF417. @since 0.6
+//         QRCODE: 64, // QR Code. @since 0.10
+//         CODE128: 128,// Code 128
+//         SYMBOL: 255, // 0x00ff     mask for base symbol type
+//         ADDON2: 512,// 0x0200     2-digit add-on flag
+//         ADDON5: 1280, // 0x0500    5-digit add-on flag
+//         ADDON: 1792,// 0x0700     add-on flag mask
+//     },
+//
+//     /**
+//      * ZBar Config Types
+//      * 
+//      * http://zbar.sourceforge.net/api/zbar_8h.html#b1d0c464ecc4444928574c638f392136
+//      */
+//     ConfigTypes: {
+//         ENABLE: 0, // enable symbology/feature 
+//         ADD_CHECK: 1, // enable check digit when optional 
+//         EMIT_CHECK: 2, // return check digit when present 
+//         ASCII: 3, // enable full ASCII character set 
+//         NUM: 4, // number of boolean decoder configs 
+//
+//         MIN_LEN: 32, // 0x20   minimum data length for valid decode 
+//         MAX_LEN: 33, //        maximum data length for valid decode 
+//
+//         UNCERTAINTY: 64, // 0x40   required video consistency frames 
+//
+//         POSITION: 128, // 0x80     enable scanner to collect position data 
+//
+//         X_DENSITY: 256, // 0x100   image scanner vertical scan density 
+//         Y_DENSITY: 257, //         image scanner horizontal scan density
+//     }
+// }
+//
+// /**
+//  * 
+//  * @returns {ImageScanner} instance
+//  */
+// ZBar.GetInstance = async function () {
+//     // TODO::: Check and fix not call in app start!
+//     // console.log("Called")
+//     if (!ZBar.Instance) {
+//         let HEAP32 = new Int32Array()
+//
+//         const clock_gettime = (clk_id, tp) => {
+//             const now = Date.now()
+//             HEAP32[tp >> 2] = (now / 1e3) | 0
+//             HEAP32[(tp + 4) >> 2] = ((now % 1e3) * 1e3 * 1e3) | 0
+//             return 0
+//         }
+//
+//         const emscripten_notify_memory_growth = (idx) => {
+//             if (ZBar.lastGrowTimestamp) {
+//                 console.info('zbar.wasm: Memory Grow: ', ZBar.Instance.memory.buffer.byteLength)
+//             }
+//             ZBar.lastGrowTimestamp = Date.now()
+//             HEAP32 = new Int32Array(ZBar.Instance.memory.buffer)
+//         }
+//
+//         const importObj = {
+//             env: {
+//                 clock_gettime,
+//                 emscripten_notify_memory_growth
+//             }
+//         }
+//
+//         // Load related WASM file
+//         try {
+//             const output = await WebAssembly.instantiateStreaming(fetch('zbar-v0.wasm'), importObj)
+//             ZBar.Instance = output.instance.exports
+//             emscripten_notify_memory_growth(0)
+//         } catch (err) {
+//             // TODO::: toast better error text for non IT experts!
+//             Err.NotifyAnyToUser(err)
+//             return
+//         }
+//     }
+//     return ZBar.Instance
+// }
+//
+//
+// /**
+//  * Get Last Memory Grow Timestamp
+//  */
+// ZBar.GetMemoryGrowTimestamp = function () {
+//     return ZBar.lastGrowTimestamp
+// }
+//
+// /**
+//  * C++ interface
+//  */
+// class CppObject {
+//     constructor(ptr, inst) {
+//         this.ptr = ptr
+//         this.inst = inst
+//     }
+//     checkAlive() {
+//         if (this.ptr)
+//             return
+//         throw Error('Call after destroyed')
+//     }
+//     getPointer() {
+//         this.checkAlive()
+//         return this.ptr
+//     }
+// }
+//
+// /**
+//  * Image Scanner
+//  */
+// class ImageScanner extends CppObject {
+//     static async create() {
+//         const inst = await ZBar.GetInstance()
+//         const ptr = inst.ImageScanner_create()
+//         return new this(ptr, inst)
+//     }
+//     destroy() {
+//         this.checkAlive()
+//         this.inst.ImageScanner_destory(this.ptr)
+//         this.ptr = 0
+//     }
+//     /**
+//      * ZBar by default enable all symbol types. you can set config by this method. e.g.
+//      * 
+//      * Disable All Types: scanner.setConfig(ZBar.SymbolTypes.NONE, ZBar.ConfigTypes.ENABLE, 0)
+//      * 
+//      * Enable EAN13 type: scanner.setConfig(ZBar.SymbolTypes.EAN13, ZBar.ConfigTypes.ENABLE, 1)
+//      * 
+//      * @param {ZBar.SymbolTypes} symbolType 
+//      * @param {ZBar.ConfigTypes} config 
+//      * @param {number} value 0 || 1
+//      */
+//     setConfig(symbolType, configType, value) {
+//         this.checkAlive()
+//         return this.inst.ImageScanner_set_config(this.ptr, symbolType, configType, value)
+//     }
+//     enableCache(enable = true) {
+//         this.checkAlive()
+//         this.inst.ImageScanner_enable_cache(this.ptr, enable)
+//     }
+//     recycleImage(image) {
+//         this.checkAlive()
+//         this.inst.ImageScanner_recycle_image(this.ptr, image.getPointer())
+//     }
+//     getResults() {
+//         this.checkAlive()
+//         const res = this.inst.ImageScanner_get_results(this.ptr)
+//         return ZBarSymbol.createSymbolsFromPtr(res, this.inst.memory.buffer)
+//     }
+//     /**
+//      * 
+//      * @param {Image} image 
+//      */
+//     scan(image) {
+//         this.checkAlive()
+//         return this.inst.ImageScanner_scan(this.ptr, image.getPointer())
+//     }
+// }
+//
+// /**
+//  * Image
+//  */
+// class Image extends CppObject {
+//     static async createFromGrayBuffer(width, height, dataBuf, sequence_num = 0) {
+//         const inst = await ZBar.GetInstance()
+//         const heap = new Uint8Array(inst.memory.buffer)
+//         const data = new Uint8Array(dataBuf)
+//         const len = width * height
+//         if (len !== data.byteLength) {
+//             throw Error('dataBuf does not match width and height')
+//         }
+//         const buf = inst.malloc(len)
+//         heap.set(data, buf)
+//         const ptr = inst.Image_create(width, height, 0x30303859 /* Y800 */, buf, len, sequence_num)
+//         return new this(ptr, inst)
+//     }
+//     static async createFromRGBABuffer(width, height, dataBuf, sequence_num = 0) {
+//         const inst = await ZBar.GetInstance()
+//         const heap = new Uint8Array(inst.memory.buffer)
+//         const data = new Uint8Array(dataBuf)
+//         const len = width * height
+//         if (len * 4 !== data.byteLength) {
+//             throw Error('dataBuf does not match width and height')
+//         }
+//         const buf = inst.malloc(len)
+//         for (let i = 0; i < len; ++i) {
+//             const r = data[i * 4]
+//             const g = data[i * 4 + 1]
+//             const b = data[i * 4 + 2]
+//             heap[buf + i] = (r * 19595 + g * 38469 + b * 7472) >> 16
+//         }
+//         const ptr = inst.Image_create(width, height, 0x30303859 /* Y800 */, buf, len, sequence_num)
+//         return new this(ptr, inst)
+//     }
+//     destroy() {
+//         this.checkAlive()
+//         this.inst.Image_destory(this.ptr)
+//         this.ptr = 0
+//     }
+//     getSymbols() {
+//         this.checkAlive()
+//         const res = this.inst.Image_get_symbols(this.ptr)
+//         return ZBarSymbol.createSymbolsFromPtr(res, this.inst.memory.buffer)
+//     }
+// }
+//
+//
+// /**
+//  * ZBar Type Pointer ...
+//  */
+// class ZBarTypePointer {
+//     constructor(ptr, buf) {
+//         this.ptr = ptr
+//         this.ptr32 = ptr >> 2
+//         this.buf = buf
+//         this.HEAP8 = new Int8Array(buf)
+//         this.HEAPU32 = new Uint32Array(buf)
+//         this.HEAP32 = new Int32Array(buf)
+//     }
+// }
+//
+// /**
+//  * ZBar Symbol Pointer ...
+//  */
+// class ZBarSymbolPtr extends ZBarTypePointer {
+//     get type() {
+//         return this.HEAPU32[this.ptr32]
+//     }
+//     get data() {
+//         const len = this.HEAPU32[this.ptr32 + 2]
+//         const ptr = this.HEAPU32[this.ptr32 + 3]
+//         return Int8Array.from(this.HEAP8.subarray(ptr, ptr + len))
+//     }
+//     get points() {
+//         const len = this.HEAPU32[this.ptr32 + 5]
+//         const ptr = this.HEAPU32[this.ptr32 + 6]
+//         const ptr32 = ptr >> 2
+//         const res = []
+//         for (let i = 0; i < len; ++i) {
+//             const x = this.HEAP32[ptr32 + i * 2]
+//             const y = this.HEAP32[ptr32 + i * 2 + 1]
+//             res.push({ x, y })
+//         }
+//         return res
+//     }
+//     get next() {
+//         const ptr = this.HEAPU32[this.ptr32 + 8]
+//         if (!ptr)
+//             return null
+//         return new ZBarSymbolPtr(ptr, this.buf)
+//     }
+//     get time() {
+//         return this.HEAPU32[this.ptr32 + 10]
+//     }
+//     get cacheCount() {
+//         return this.HEAP32[this.ptr32 + 11]
+//     }
+//     get quality() {
+//         return this.HEAP32[this.ptr32 + 12]
+//     }
+// }
+//
+// /**
+//  * ZBar Symbol Set Pointer ...
+//  */
+// class ZBarSymbolSetPtr extends ZBarTypePointer {
+//     get head() {
+//         const ptr = this.HEAPU32[this.ptr32 + 2]
+//         if (!ptr)
+//             return null
+//         return new ZBarSymbolPtr(ptr, this.buf)
+//     }
+// }
+//
+// /**
+//  * ZBar Symbol ...
+//  */
+// class ZBarSymbol {
+//     constructor(ptr) {
+//         this.type = ptr.type
+//         this.data = ptr.data
+//         this.points = ptr.points
+//         this.time = ptr.time
+//         this.cacheCount = ptr.cacheCount
+//         this.quality = ptr.quality
+//     }
+//     static createSymbolsFromPtr(ptr, buf) {
+//         if (ptr == 0)
+//             return []
+//         const set = new ZBarSymbolSetPtr(ptr, buf)
+//         let symbol = set.head
+//         const res = []
+//         while (symbol !== null) {
+//             res.push(new ZBarSymbol(symbol))
+//             symbol = symbol.next
+//         }
+//         return res
+//     }
+//     decode(encoding) {
+//         const decoder = new TextDecoder(encoding)
+//         return decoder.decode(this.data)
+//     }
+//     typeName() {
+//         switch (this.type) {
+//             case ZBar.SymbolTypes.NONE:
+//                 return "None"
+//             case ZBar.SymbolTypes.PARTIAL:
+//                 return "PARTIAL"
+//             case ZBar.SymbolTypes.EAN8:
+//                 return "EAN8"
+//             case ZBar.SymbolTypes.UPCE:
+//                 return "UPCE"
+//             case ZBar.SymbolTypes.ISBN10:
+//                 return "ISBN10"
+//             case ZBar.SymbolTypes.UPCA:
+//                 return "UPCA"
+//             case ZBar.SymbolTypes.EAN13:
+//                 return "EAN13"
+//             case ZBar.SymbolTypes.ISBN13:
+//                 return "ISBN13"
+//             case ZBar.SymbolTypes.I25:
+//                 return "I25"
+//             case ZBar.SymbolTypes.CODE39:
+//                 return "CODE39"
+//             case ZBar.SymbolTypes.PDF417:
+//                 return "PDF417"
+//             case ZBar.SymbolTypes.QRCODE:
+//                 return "QRCODE"
+//             case ZBar.SymbolTypes.CODE128:
+//                 return "CODE128"
+//             case ZBar.SymbolTypes.SYMBOL:
+//                 return "SYMBOL"
+//             case ZBar.SymbolTypes.ADDON2:
+//                 return "ADDON2"
+//             case ZBar.SymbolTypes.ADDON5:
+//                 return "ADDON5"
+//             case ZBar.SymbolTypes.ADDON:
+//                 return "ADDON"
+//         }
+//     }
+// }
+//
+// /**
+//  * Exports ZBar methods
+//  */
+//
+// ZBar.defaultScannerPromise = ImageScanner.create()
+//
+// ZBar.GetDefaultScanner = async function () {
+//     return await ZBar.defaultScannerPromise
+// }
+//
+// /**
+//  * Scan Image
+//  * @param {Image} image 
+//  * @param {ImageScanner} scanner 
+//  */
+// ZBar.ScanImage = async function (image, scanner) {
+//     const res = scanner.scan(image)
+//     if (res <= 0) return []
+//     return image.getSymbols()
+// }
+//
+// ZBar.ScanGrayBuffer = async (buffer, width, height, scanner) => {
+//     const image = await Image.createFromGrayBuffer(width, height, buffer)
+//     const res = await ZBar.ScanImage(image, scanner)
+//     image.destroy()
+//     return res
+// }
+//
+// ZBar.ScanRGBABuffer = async (buffer, width, height, scanner) => {
+//     const image = await Image.createFromRGBABuffer(width, height, buffer)
+//     const res = await ZBar.ScanImage(image, scanner)
+//     image.destroy()
+//     return res
+// }

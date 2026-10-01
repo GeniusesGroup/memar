@@ -1,0 +1,35 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+tp Container_Element in "modules/computer/adt/container/protocol/element.kh"
+tp Container_Limit in "modules/computer/adt/container/protocol/pagination.kh"
+tp Container_Offset in "modules/computer/adt/container/protocol/pagination.kh"
+tp DataType in "modules/computer/datatype/protocol/data-type.kh"
+tp Error in "modules/process/error/protocol/error.kh"
+tp Module_Path in "modules/modules/module/protocol/dt-path.kh"
+tp Character in "modules/codec/string/protocol/character.kh"
+
+// ElementIndex is related to `NumberOfElement`
+// ElementIndex can refer to any location of memory blocks in byte or 8bit number.
+tp Container_ElementIndex ab
+tp Increment mt (self Container_ElementIndex) () ()
+
+tp Decrement mt (self Container_ElementIndex) () ()
+
+tp Container_Index ab
+// Index return the location of given element in the container.
+tp Index mt (self Container_Index) (el Container_Element, offset Container_Offset, limit Container_Limit) (ei Container_ElementIndex, err Error)
+
+tp Index_DataType ab
+// Index return the location of given element in the container.
+tp Container_Index_DataType_Index mt (self Index_DataType) (el DataType, offset Container_Offset, limit Container_Limit) (ei Container_ElementIndex, err Error)
+
+tp Index_Module_Path ab
+// Index return the location of given element in the container.
+tp Container_Index_Module_Path_Index mt (self Index_Module_Path) (el Module_Path, offset Container_Offset, limit Container_Limit) (ei Container_ElementIndex, err Error)
+
+tp Index_String_Character ab
+// Index return the location of given element in the container.
+tp Container_Index_String_Character_Index mt (self Index_String_Character) (el Character, offset Container_Offset, limit Container_Limit) (ei Container_ElementIndex, err Error)
+
+tp Container_LastIndex in "modules/computer/adt/container/protocol/last-index.kh"
+// LastIndex return the location of given element in the container from end of container.
+tp LastIndex mt (self Container_LastIndex) (el Container_Element) (ei Container_ElementIndex, err Error)

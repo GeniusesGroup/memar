@@ -1,0 +1,24 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Capsule_LifeCycle in "modules/computer/capsule/protocol/life_cycle_contract.kh"
+
+tp Chapar_Connections ab {
+    Capsule_LifeCycle
+}
+
+// TODO(go-migrate):
+/*
+package chapar
+
+import (
+	capsule_p "memar/computer/capsule/protocol"
+	error_p "memar/process/error/protocol"
+)
+
+type Connections interface {
+	GetConnectionByPath(path []byte) (conn *Connection, err error_p.Error)
+
+	RegisterConnection(conn *Connection) (err error_p.Error)
+	DeregisterConnection(conn *Connection) (err error_p.Error)
+}
+*/

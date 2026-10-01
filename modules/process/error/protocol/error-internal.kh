@@ -1,0 +1,9 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Boolean in "modules/math/boolean/protocol/boolean.kh"
+
+tp Error_Internal ab
+// Who cause the error?
+// Internal	: means calling process logic has runtime bugs like HTTP server error status codes ( 500 – 599 ).
+// Caller	: Opposite of internal that indicate caller give some data that cause the error like HTTP client error status codes ( 400 – 499 )
+tp Error_Internal_Internal mt (self Error_Internal) () (b Boolean)

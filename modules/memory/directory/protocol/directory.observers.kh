@@ -1,0 +1,10 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Error in "modules/process/error/protocol/error.kh"
+tp File_Name in "modules/memory/file/protocol/name.kh"
+tp Storage_File in "modules/memory/file/protocol/file.kh"
+tp URI_Path in "modules/net/uri/protocol/path.kh"
+
+tp Observer_Directory_Helpers ab
+tp GetFileByPath mt (self Observer_Directory_Helpers) (uriPath URI_Path) (file Storage_File, err Error)
+tp FindFile mt (self Observer_Directory_Helpers) (partName File_Name) (file Storage_File, err Error)

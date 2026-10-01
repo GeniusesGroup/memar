@@ -1,0 +1,546 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+tp Details in "modules/computer/datatype/protocol/detail.kh"
+
+tp Identifiers in "modules/computer/datatype/protocol/identifiers.kh"
+
+tp Observer_Datatype_LifeCycle in "modules/computer/datatype/protocol/life-cycle.observers.kh"
+
+tp String in "modules/codec/string/protocol/string.kh"
+
+tp DataType ab {
+
+    Identifiers
+
+    Observer_Datatype_LifeCycle
+
+    DataType_Details
+
+}
+
+tp DataType_Details ab {
+
+    Details
+
+}
+
+tp ReferenceURI mt (self DataType_Details) () (s String)
+
+tp IssueDate mt (self DataType_Details) () (s String)
+
+tp ExpiryDate mt (self DataType_Details) () (s String)
+
+tp ExpireInFavorOf mt (self DataType_Details) () (d DataType)
+
+// TODO(js-idea): archived memar-js source, not Khayyam and not a migration
+// Unverified idea from the retired memar-js repository (archive commit 27e013d, last pushed 2026-01-06). Kept as a thought only: the architect has moved on since, so this may contradict the current design.
+// source: memar-js/README.md
+// > [!IMPORTANT]
+// > **Archived implementation snapshot.** This repository is preserved for possible future resumption, not production readiness. Known build and migration issues remain intentionally unresolved. Transferring architecture ideas is a separate workflow and is not part of this archive. The project may be resumed later, including by an automated development agent.
+//
+// # Memar - JavaScript version
+// `Memar` as a `JS language library` is a repository wrapper to store all implementation of [Memar](https://github.com/GeniusesGroup/memar) and others protocols and algorithms to make a digital software more easily in better performance.
+//
+// ## Graphic user interface (GUI) engine in JavaScript
+// ### Usage
+// - Import `/gui/application.js` in main JS file of app
+// - Initialize `Application` object with app details data
+// - Initialize application `pages` and `services` from their directories
+// - call `Application.Start()`
+// - Use `OS` and `Application` global object data any where like `window`
+//
+// ## Other good javascript library
+// - https://github.com/lit/lit
+// - https://github.com/nextapps-de/mikado
+
+// TODO(js-idea): archived memar-js source, not Khayyam and not a migration
+// Unverified idea from the retired memar-js repository (archive commit 27e013d, last pushed 2026-01-06). Kept as a thought only: the architect has moved on since, so this may contradict the current design.
+// source: memar-js/price/amount.js
+//
+// // https://github.com/dinerojs/dinero.js
+// const amount = {}
+//
+// amount.InputElement = function (element) {
+//     return this.poolByNativeName[nativeName]
+// }
+//
+// amount.String = function (num) {
+//     parts = this.value.split('.')
+//     return this.poolByNativeName[nativeName]
+// }
+//
+// amount.Number = function (num) {
+//     return this.poolByNativeName[nativeName]
+// }
+
+// TODO(js-idea): archived memar-js source, not Khayyam and not a migration
+// Unverified idea from the retired memar-js repository (archive commit 27e013d, last pushed 2026-01-06). Kept as a thought only: the architect has moved on since, so this may contradict the current design.
+// source: memar-js/price/currency.js
+//
+// const currency = {
+//     poolByID: {},
+//     poolByISO4217: {},
+//     poolByNativeName: {},
+// }
+//
+// /**
+//  * 
+//  * @param {number} num 
+//  * @param {number} currencyID 
+//  */
+// currency.String = function (num, currencyID) {
+//     if (!num) num = 0
+//     if (currencyID) return num.toLocaleString() + " " + this.poolByID[currencyID].symbol
+//
+//     // TODO::: convert currencyID if not same as user wanted!
+//     return num.toLocaleString() + " " + OS.User.ContentPreferences.Currency.symbol
+// }
+//
+// /**
+//  * 
+//  * @param {number} num 
+//  * @param {number} currencyID 
+//  */
+// currency.StringRound = function (num, currencyID) {
+//     return this.String(Math.ceil(num), currencyID)
+// }
+//
+// currency.GetByNativeName = function (nativeName) {
+//     return this.poolByNativeName[nativeName]
+// }
+//
+// currency.GetSupportedByNativeName = function (nativeName) {
+//     const cur = this.poolByNativeName[nativeName]
+//     if (!cur) return null
+//     if (!Application.ContentPreferences.Currencies.includes(cur.iso4217)) return null
+//     return cur
+// }
+//
+// currency.GetAppSupportedAsOptions = function () {
+//     let options = ""
+//     for (let c of this.currencies) {
+//         if (!Application.ContentPreferences.Currencies.includes(c.iso4217)) continue
+//         options += `<option value="${c.nativeName}">${c.englishName}</option>`
+//     }
+//     return options
+// }
+//
+// /**
+//  * 
+//  * ID is iso4217_num
+//  * https://en.wikipedia.org/wiki/ISO_4217
+//  */
+// currency.currencies = [
+//     {
+//         ID: 7337,
+//         englishName: "Persia Derik",
+//         nativeName: "Persia Derik",
+//         iso4217: "PRD",
+//         symbol: "D",
+//     }, {
+//         ID: 364,
+//         englishName: "Iranian rial",
+//         nativeName: "ریال ایران",
+//         iso4217: "IRR",
+//         symbol: "ريال",
+//     }, {
+//         ID: 0,
+//         englishName: "Iranian toman",
+//         nativeName: "تومان ایران‎",
+//         iso4217: "IRT",
+//         symbol: "تومان‎",
+//     }, {
+//         ID: 978,
+//         englishName: "Euro",
+//         nativeName: "Euro",
+//         iso4217: "EUR",
+//         symbol: "€",
+//     }, {
+//         ID: 784,
+//         englishName: "United Arab Emirates dirham",
+//         nativeName: "درهم إماراتي",
+//         iso4217: "AED",
+//         symbol: "د.إ",
+//     }, {
+//         ID: 840,
+//         englishName: "United States Dollar",
+//         nativeName: "United States Dollar",
+//         iso4217: "USD",
+//         symbol: "$",
+//     },
+// ]
+//
+// // function init() {
+// for (let c of currency.currencies) {
+//     currency.poolByID[c.ID] = c
+//     currency.poolByISO4217[c.iso4217] = c
+//     currency.poolByNativeName[c.nativeName] = c
+// }
+// // }
+
+// TODO(js-idea): archived memar-js source, not Khayyam and not a migration
+// Unverified idea from the retired memar-js repository (archive commit 27e013d, last pushed 2026-01-06). Kept as a thought only: the architect has moved on since, so this may contradict the current design.
+// source: memar-js/region/region.js
+//
+// import './regions.js'
+//
+// const region = {
+//     poolByISO3166_1_num: {},
+//     poolByISO3166_1_a2: {},
+//     poolByISO3166_1_a3: {},
+//     poolByNativeName: {},
+// }
+//
+// // function init() {
+// for (let r of Regions) {
+//     region.poolByISO3166_1_num[r.iso3166_1_num] = r
+//     region.poolByISO3166_1_a2[r.iso3166_1_a2] = r
+//     region.poolByISO3166_1_a3[r.iso3166_1_a3] = r
+//     region.poolByNativeName[r.nativeName] = r
+// }
+// // }
+//
+// region.GetByNativeName = function (nativeName) {
+//     return this.poolByNativeName[nativeName]
+// }
+//
+// region.GetSupportedByNativeName = function (nativeName) {
+//     const reg = this.poolByNativeName[nativeName]
+//     if (!reg) return null
+//     if (!Application.ContentPreferences.Regions.includes(reg.iso3166_1_a3)) return null
+//     return reg
+// }
+//
+// region.GetAllAsOptions = function () {
+//     let options = ""
+//     for (let r of Regions) {
+//         options += `<option value="${r.nativeName}">${r.englishName}</option>`
+//     }
+//     return options
+// }
+//
+// region.GetAppSupportedAsOptions = function () {
+//     let options = ""
+//     for (let r of Regions) {
+//         if (!Application.ContentPreferences.Regions.includes(r.iso3166_1_a3)) continue
+//         options += `<option value="${r.nativeName}">${r.englishName}</option>`
+//     }
+//     return options
+// }
+
+// TODO(js-idea): archived memar-js source, not Khayyam and not a migration
+// Unverified idea from the retired memar-js repository (archive commit 27e013d, last pushed 2026-01-06). Kept as a thought only: the architect has moved on since, so this may contradict the current design.
+// source: memar-js/region/regions.js
+//
+// // https://en.wikipedia.org/wiki/ISO_3166-1
+// // https://nuget.pkg.github.com/annexare/Countries/blob/master/data/countries.json
+// const Regions = [
+//     {
+//         englishName: "Afghanistan",
+//         nativeName: "افغانستان",
+//         phone: "93",
+//         iso3166_1_a2: "AF",
+//         iso3166_1_a3: "AFG",
+//         iso3166_1_num: "004",
+//         continent: "AS",
+//         capital: "Kabul",
+//         currency: "AFN",
+//         languages: ["ps", "uz", "tk"]
+//     }, {
+//         englishName: "Australia",
+//         nativeName: "Australia",
+//         phone: "61",
+//         iso3166_1_a2: "AU",
+//         iso3166_1_a3: "AUS",
+//         iso3166_1_num: "036",
+//         continent: "OC",
+//         capital: "Canberra",
+//         currency: "AUD",
+//         languages: ["en"]
+//     }, {
+//         englishName: "Azerbaijan",
+//         nativeName: "Azərbaycan",
+//         phone: "994",
+//         iso3166_1_a2: "AZ",
+//         iso3166_1_a3: "AZE",
+//         iso3166_1_num: "031",
+//         continent: "AS",
+//         capital: "Baku",
+//         currency: "AZN",
+//         languages: ["az"]
+//     }, {
+//         englishName: "Bahrain",
+//         nativeName: "‏البحرين",
+//         phone: "973",
+//         iso3166_1_a2: "BH",
+//         iso3166_1_a3: "BHR",
+//         iso3166_1_num: "048",
+//         continent: "AS",
+//         capital: "Manama",
+//         currency: "BHD",
+//         languages: ["ar"]
+//     }, {
+//         englishName: "Canada",
+//         nativeName: "Canada",
+//         phone: "1",
+//         iso3166_1_a2: "CA",
+//         iso3166_1_a3: "CAN",
+//         iso3166_1_num: "124",
+//         continent: "NA",
+//         capital: "Ottawa",
+//         currency: "CAD",
+//         languages: ["en", "fr"]
+//     }, {
+//         englishName: "China",
+//         nativeName: "中国",
+//         phone: "86",
+//         iso3166_1_a2: "CN",
+//         iso3166_1_a3: "CHN",
+//         iso3166_1_num: "156",
+//         continent: "AS",
+//         capital: "Beijing",
+//         currency: "CNY",
+//         languages: ["zh"]
+//     }, {
+//         englishName: "Denmark",
+//         nativeName: "Danmark",
+//         phone: "45",
+//         iso3166_1_a2: "DK",
+//         iso3166_1_a3: "DNK",
+//         iso3166_1_num: "208",
+//         continent: "EU",
+//         capital: "Copenhagen",
+//         currency: "DKK",
+//         languages: ["da"]
+//     }, {
+//         englishName: "Egypt",
+//         nativeName: "مصر‎",
+//         phone: "20",
+//         iso3166_1_a2: "EG",
+//         iso3166_1_a3: "EGY",
+//         iso3166_1_num: "818",
+//         continent: "AF",
+//         capital: "Cairo",
+//         currency: "EGP",
+//         languages: ["ar"]
+//     }, {
+//         englishName: "Finland",
+//         nativeName: "Suomi",
+//         phone: "358",
+//         iso3166_1_a2: "FI",
+//         iso3166_1_a3: "FIN",
+//         iso3166_1_num: "246",
+//         continent: "EU",
+//         capital: "Helsinki",
+//         currency: "EUR",
+//         languages: ["fi", "sv"]
+//     }, {
+//         englishName: "France",
+//         nativeName: "France",
+//         phone: "33",
+//         iso3166_1_a2: "FR",
+//         iso3166_1_a3: "FRA",
+//         iso3166_1_num: "250",
+//         continent: "EU",
+//         capital: "Paris",
+//         currency: "EUR",
+//         languages: ["fr"]
+//     }, {
+//         englishName: "Germany",
+//         nativeName: "Deutschland",
+//         phone: "49",
+//         iso3166_1_a2: "DE",
+//         iso3166_1_a3: "DEU",
+//         iso3166_1_num: "276",
+//         continent: "EU",
+//         capital: "Berlin",
+//         currency: "EUR",
+//         languages: ["de"]
+//     }, {
+//         englishName: "Hong Kong",
+//         nativeName: "香港",
+//         phone: "852",
+//         iso3166_1_a2: "HK",
+//         iso3166_1_a3: "HKG",
+//         iso3166_1_num: "344",
+//         continent: "AS",
+//         capital: "City of Victoria",
+//         currency: "HKD",
+//         languages: ["zh", "en"]
+//     }, {
+//         englishName: "India",
+//         nativeName: "भारत",
+//         phone: "91",
+//         iso3166_1_a2: "IN",
+//         iso3166_1_a3: "IND",
+//         iso3166_1_num: "356",
+//         continent: "AS",
+//         capital: "New Delhi",
+//         currency: "INR",
+//         languages: ["hi", "en"]
+//     }, {
+//         englishName: "Iran",
+//         nativeName: "ایران",
+//         iso3166_1_a2: "IR",
+//         iso3166_1_a3: "IRN",
+//         iso3166_1_num: "364",
+//         phone: "98",
+//         continent: "AS",
+//         capital: "Tehran",
+//         currency: "IRR",
+//         languages: ["fa"]
+//     }, {
+//         englishName: "Iraq",
+//         nativeName: "العراق",
+//         phone: "964",
+//         iso3166_1_a2: "IQ",
+//         iso3166_1_a3: "IRQ",
+//         iso3166_1_num: "368",
+//         continent: "AS",
+//         capital: "Baghdad",
+//         currency: "IQD",
+//         languages: ["ar", "ku"]
+//     }, {
+//         englishName: "Jordan",
+//         nativeName: "الأردن",
+//         phone: "962",
+//         iso3166_1_a2: "JO",
+//         iso3166_1_a3: "JOR",
+//         iso3166_1_num: "400",
+//         continent: "AS",
+//         capital: "Amman",
+//         currency: "JOD",
+//         languages: ["ar"]
+//     }, {
+//         englishName: "Kuwait",
+//         nativeName: "الكويت",
+//         phone: "965",
+//         iso3166_1_a2: "KW",
+//         iso3166_1_a3: "JKWT",
+//         iso3166_1_num: "414",
+//         continent: "AS",
+//         capital: "Kuwait City",
+//         currency: "KWD",
+//         languages: ["ar"]
+//     }, {
+//         englishName: "Lebanon",
+//         nativeName: "لبنان",
+//         phone: "961",
+//         iso3166_1_a2: "LB",
+//         iso3166_1_a3: "LBN",
+//         iso3166_1_num: "422",
+//         continent: "AS",
+//         capital: "Beirut",
+//         currency: "LBP",
+//         languages: ["ar", "fr"]
+//     }, {
+//         englishName: "Oman",
+//         nativeName: "عمان",
+//         phone: "968",
+//         iso3166_1_a2: "OM",
+//         iso3166_1_a3: "OMN",
+//         iso3166_1_num: "512",
+//         continent: "AS",
+//         capital: "Muscat",
+//         currency: "OMR",
+//         languages: ["ar"]
+//     }, {
+//         englishName: "Pakistan",
+//         nativeName: "Pakistan",
+//         phone: "92",
+//         iso3166_1_a2: "PK",
+//         iso3166_1_a3: "PAK",
+//         iso3166_1_num: "586",
+//         continent: "AS",
+//         capital: "Islamabad",
+//         currency: "PKR",
+//         languages: ["en", "ur"]
+//     }, {
+//         englishName: "Persia",
+//         nativeName: "پارس",
+//         iso3166_1_a2: "PR",
+//         iso3166_1_a3: "PER",
+//         iso3166_1_num: "",
+//         phone: "",
+//         continent: "",
+//         capital: "",
+//         currency: "DER",
+//         languages: ["per"]
+//     }, {
+//         englishName: "Qatar",
+//         nativeName: "قطر",
+//         phone: "974",
+//         iso3166_1_a2: "QA",
+//         iso3166_1_a3: "QAT",
+//         iso3166_1_num: "634",
+//         continent: "AS",
+//         capital: "Doha",
+//         currency: "QAR",
+//         languages: ["ar"]
+//     }, {
+//         englishName: "Russia",
+//         nativeName: "Россия",
+//         phone: "7",
+//         iso3166_1_a2: "RU",
+//         iso3166_1_a3: "RUS",
+//         iso3166_1_num: "643",
+//         continent: "EU",
+//         capital: "Moscow",
+//         currency: "RUB",
+//         languages: ["ru"]
+//     }, {
+//         englishName: "Saudi Arabia",
+//         nativeName: "العربية السعودية",
+//         phone: "966",
+//         iso3166_1_a2: "SA",
+//         iso3166_1_a3: "SAU",
+//         iso3166_1_num: "682",
+//         continent: "AS",
+//         capital: "Riyadh",
+//         currency: "SAR",
+//         languages: ["ar"]
+//     }, {
+//         englishName: "Turkey",
+//         nativeName: "Türkiye",
+//         phone: "90",
+//         iso3166_1_a2: "TR",
+//         iso3166_1_a3: "TUR",
+//         iso3166_1_num: "792",
+//         continent: "AS",
+//         capital: "Ankara",
+//         currency: "TRY",
+//         languages: ["tr"]
+//     }, {
+//         englishName: "United Arab Emirates",
+//         nativeName: "دولة الإمارات العربية المتحدة",
+//         iso3166_1_a2: "AE",
+//         iso3166_1_a3: "ARE",
+//         iso3166_1_num: "784",
+//         phone: "971",
+//         continent: "AS",
+//         capital: "Abu Dhabi",
+//         currency: "AED",
+//         languages: ["ar"]
+//     }, {
+//         englishName: "United Kingdom",
+//         nativeName: "United Kingdom",
+//         iso3166_1_a2: "GB",
+//         iso3166_1_a3: "GBR",
+//         iso3166_1_num: "826",
+//         phone: "44",
+//         continent: "EU",
+//         capital: "London",
+//         currency: "GBP",
+//         languages: ["en"]
+//     }, {
+//         englishName: "United States",
+//         nativeName: "United States",
+//         iso3166_1_a2: "US",
+//         iso3166_1_a3: "USA",
+//         iso3166_1_num: "364",
+//         phone: "1",
+//         continent: "NA",
+//         capital: "Washington D.C.",
+//         currency: "USD,USN,USS",
+//         languages: ["en"]
+//     },
+// ]

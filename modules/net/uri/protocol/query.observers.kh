@@ -1,0 +1,6 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Net_Query in "modules/net/uri/protocol/query.kh"
+
+tp Observer_Query ab
+tp GetQuery mt (self Observer_Query) () (q Net_Query)

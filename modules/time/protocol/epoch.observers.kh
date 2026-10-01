@@ -1,0 +1,6 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Epoch in "modules/time/protocol/epoch.kh"
+
+tp Observer_Epoch ab
+tp GetEpoch mt (self Observer_Epoch) () (e Epoch)

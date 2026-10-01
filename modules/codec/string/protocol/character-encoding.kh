@@ -1,0 +1,16 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+// character encoding used for electronic communication.
+tp String_CharacterEncoding ab
+
+// TODO(go-migrate):
+/*
+package string_p
+
+import (
+	datatype_p "memar/computer/datatype/protocol"
+)
+
+// character encoding used for electronic communication.
+type CharacterEncoding datatype_p.ID
+*/

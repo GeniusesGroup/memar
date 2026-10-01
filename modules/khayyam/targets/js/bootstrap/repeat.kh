@@ -1,0 +1,27 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+// What a Khayyam-written compiler needs fourth: repetition. A reader reads one
+// declaration at a time until the unit ends, and a body's four commands carry no
+// form that repeats one of them — the grammar ships no control-flow keyword, and
+// the Control Flow protocol builds looping as a library over the realization's
+// underlying primitives
+// (docs/protocols/process/control-flow.md → The Preferred Form: Domain-Specific
+// Conditional Methods: "a realization can provide low-level compiler-intrinsic
+// jump methods for repetition and use its collection-iteration contract").
+//
+// So the question is not whether a loop exists in the grammar — it does not, and
+// that is settled — but whether a program can be written to drive one.
+
+tp Text cp {
+}
+
+tp Cursor cp {
+}
+
+tp Reader cp {
+}
+
+tp Next mt (self Reader) (cursor Cursor) (more Text) {
+    tp KeepGoing sc {
+    }
+}

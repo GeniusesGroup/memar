@@ -1,0 +1,23 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+tp Codec in "modules/codec/protocol/codec.kh"
+tp DataType in "modules/computer/datatype/protocol/data-type.kh"
+
+// Response indicate response type that MUST use by any other types.
+tp Process_Response ab {
+    DataType
+    Codec
+}
+
+// TODO(go-migrate):
+/*
+package response_p
+
+import (
+	codec_p "memar/codec/protocol"
+	datatype_p "memar/computer/datatype/protocol"
+)
+
+// Field_Response ...
+type Field_Response/*[RES Response]* / interface {
+}
+*/

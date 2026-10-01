@@ -1,0 +1,7 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Computer_DataTypes in "modules/computer/datatypes/protocol/dt-data-types.kh"
+
+tp Authorization ab
+// LimitToUseBy or ImportableBy
+tp Capsule_Authorization_LimitToUseBy mt (self Authorization) () (d Computer_DataTypes)

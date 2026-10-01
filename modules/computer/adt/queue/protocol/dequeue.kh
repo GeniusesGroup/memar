@@ -1,0 +1,5 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+// Dequeue is an element operation
+// https://en.wikipedia.org/wiki/Queue_(abstract_data_type)
+tp Queue_Dequeue ab

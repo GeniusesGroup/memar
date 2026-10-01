@@ -1,0 +1,9 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Error in "modules/process/error/protocol/error.kh"
+tp MemoryAddress in "modules/memory/address/protocol/address.kh"
+
+tp Mutator_SetMemoryAddress ab
+// SetMemoryAddress is unsafe method and it is better to use in rare cases.
+// Conversion of a T1 to Pointer to T2.
+tp SetMemoryAddress mt (self Mutator_SetMemoryAddress) (mAdd MemoryAddress) (err Error)

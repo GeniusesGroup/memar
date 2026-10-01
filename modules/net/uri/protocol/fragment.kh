@@ -1,0 +1,9 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+tp URI_Fragment ab
+
+// TODO(go-migrate):
+/*
+package uri_p
+
+type Fragment string
+*/

@@ -1,0 +1,25 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Container_Element in "modules/computer/adt/container/protocol/element.kh"
+tp Container_ElementIndex in "modules/computer/adt/container/protocol/index.kh"
+tp NumberOfElement in "modules/computer/adt/container/protocol/length.kh"
+tp Error in "modules/process/error/protocol/error.kh"
+tp Character in "modules/codec/string/protocol/character.kh"
+
+// Reversed is a container level operation.
+
+tp Container_SetElements ab
+// Set will copy element to the container at given offset.
+// Clients can execute parallel `Set` calls on the same destination if the ranges do not overlap.
+tp SetElements mt (self Container_SetElements) (offset Container_ElementIndex, el Container_Element) (nAdd NumberOfElement, err Error)
+
+tp SetElements_String_Character ab
+// Set will copy element to the container at given offset.
+// Clients can execute parallel `Set` calls on the same destination if the ranges do not overlap.
+tp Container_SetElements_String_Character_SetElements mt (self SetElements_String_Character) (offset Container_ElementIndex, el Character) (nAdd NumberOfElement, err Error)
+
+// Push is an element operation
+// https://en.wikipedia.org/wiki/Stack_(abstract_data_type)
+// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/push

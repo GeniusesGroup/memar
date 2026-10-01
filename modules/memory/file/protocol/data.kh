@@ -1,0 +1,65 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+tp Computer_Buffer in "modules/computer/buffer/protocol/buffer.kh"
+tp File_Data ab {
+    Computer_Buffer
+}
+
+// TODO(js-idea): archived memar-js source, not Khayyam and not a migration
+// Unverified idea from the retired memar-js repository (archive commit 27e013d, last pushed 2026-01-06). Kept as a thought only: the architect has moved on since, so this may contradict the current design.
+// source: memar-js/storage/file/read-write.js
+//
+// /**
+//  * 
+//  * @param {Blob} blob 
+//  * @param {string} fileName 
+//  */
+// function FileSaver(blob, fileName) {
+//     const url = URL.createObjectURL(blob)
+//     const a = document.createElement('a')
+//     a.download = fileName
+//     a.href = url
+//     a.click()
+//     window.URL.revokeObjectURL(url)
+// }
+//
+// async function FileReader() {
+//
+//     function loadFile() {
+//         var input, file, fr;
+//
+//         if (typeof window.FileReader !== 'function') {
+//             bodyAppend("p", "The file API isn't supported on this browser yet.");
+//             return;
+//         }
+//
+//         input = document.getElementById('fileinput');
+//         if (!input) {
+//             bodyAppend("p", "Um, couldn't find the file input element.");
+//         }
+//         else if (!input.files) {
+//             bodyAppend("p", "This browser doesn't seem to support the `files` property of file inputs.");
+//         }
+//         else if (!input.files[0]) {
+//             bodyAppend("p", "Please select a file before clicking 'Load'");
+//         }
+//         else {
+//             file = input.files[0];
+//             fr = new FileReader();
+//             fr.onload = receivedText;
+//             fr.readAsText(file);
+//         }
+//
+//         function receivedText() {
+//             showResult(fr, "Text");
+//
+//             fr = new FileReader();
+//             fr.onload = receivedBinary;
+//             fr.readAsBinaryString(file);
+//         }
+//
+//         function receivedBinary() {
+//             showResult(fr, "Binary");
+//         }
+//     }
+//
+// }

@@ -1,0 +1,9 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Error in "modules/process/error/protocol/error.kh"
+
+tp ReadLocker ab
+// Be aware that the requested `thread` which call `Lock()` CAN `yield`!
+tp RLock mt (self ReadLocker) () (err Error)
+
+tp RUnlock mt (self ReadLocker) () (err Error)

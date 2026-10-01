@@ -1,0 +1,17 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Container_Element in "modules/computer/adt/container/protocol/element.kh"
+tp Error in "modules/process/error/protocol/error.kh"
+tp HashTable_Key in "modules/computer/adt/hash_table/protocol/key.kh"
+tp Module_Path in "modules/modules/module/protocol/dt-path.kh"
+
+tp HashTable_Accessor ab
+// err return more than exist(bool)
+tp Get mt (self HashTable_Accessor) (key HashTable_Key) (value Container_Element, err Error)
+
+tp Put mt (self HashTable_Accessor) (key HashTable_Key, value Container_Element) (err Error)
+
+tp Remove mt (self HashTable_Accessor) (key HashTable_Key) (err Error)
+
+tp HashTable_Accessor_Module_Path ab
+tp HashTable_Accessor_Module_Path_Remove mt (self HashTable_Accessor_Module_Path) (key Module_Path) (err Error)

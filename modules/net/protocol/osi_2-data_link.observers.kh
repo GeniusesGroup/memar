@@ -1,0 +1,6 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp OSI_DataLink in "modules/net/protocol/osi_2-data_link.kh"
+
+tp Observer_OSI_DataLink ab
+tp GetOSIDataLinkLayer mt (self Observer_OSI_DataLink) () (d OSI_DataLink)

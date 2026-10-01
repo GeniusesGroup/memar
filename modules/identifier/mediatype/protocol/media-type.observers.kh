@@ -1,0 +1,6 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Identifier_MediaType in "modules/identifier/mediatype/protocol/media-type.kh"
+
+tp Observer_MediaType ab
+tp GetMediaType mt (self Observer_MediaType) () (m Identifier_MediaType)

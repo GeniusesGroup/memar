@@ -1,0 +1,14 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp BS_Import_Request ab
+
+// TODO(go-migrate):
+/*
+package mp
+
+type (
+	BS_Import_Request interface {
+		ModulesURI() []string
+	}
+)
+*/

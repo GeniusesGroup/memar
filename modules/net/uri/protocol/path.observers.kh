@@ -1,0 +1,6 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp URI_Path in "modules/net/uri/protocol/path.kh"
+
+tp Observer_URI_Path ab
+tp GetPath mt (self Observer_URI_Path) () (p URI_Path)

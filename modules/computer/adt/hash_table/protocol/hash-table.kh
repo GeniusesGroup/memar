@@ -1,0 +1,50 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Capsule_LifeCycle in "modules/computer/capsule/protocol/life_cycle_contract.kh"
+tp ADT in "modules/computer/adt/protocol/adt.kh"
+tp Container_Clear in "modules/computer/adt/container/protocol/clear.kh"
+tp Observer_Container_Capacity in "modules/computer/adt/container/protocol/length.observers.kh"
+tp Observer_Container_OccupiedLength in "modules/computer/adt/container/protocol/length.observers.kh"
+tp NumberOfElement in "modules/computer/adt/container/protocol/length.kh"
+tp Error in "modules/process/error/protocol/error.kh"
+tp HashTable_Accessor in "modules/computer/adt/hash_table/protocol/accessor.kh"
+tp HashTable_AtomicAccessor in "modules/computer/adt/hash_table/protocol/atomic.kh"
+tp HashTable_Iteration in "modules/computer/adt/hash_table/protocol/iteration.kh"
+
+tp ADT_HashTable ab {
+    Capsule_LifeCycle
+    HashTable_Accessor
+    HashTable_AtomicAccessor
+    HashTable_Iteration
+    ADT
+    Observer_Container_Capacity
+    Observer_Container_OccupiedLength
+    Container_Clear
+}
+tp ADT_HashTable_Init mt (self ADT_HashTable) (capacity NumberOfElement) (err Error)
+
+// TODO(go-migrate):
+/*
+package hashTable_p
+
+import (
+	container_p "memar/computer/adt/container/protocol"
+	adt_p "memar/computer/adt/protocol"
+	marker_p "memar/computer/adt/marker/protocol"
+	capsule_p "memar/computer/capsule/protocol"
+	hash_p "memar/crypto/hash/protocol"
+	logic_p "memar/math/logic/protocol"
+	error_p "memar/process/error/protocol"
+)
+
+// func New[K Key, V Value](capacity container_p.NumberOfElement) *HashTable[K, V]
+
+type HashTable[K Key[K], V Value] interface {
+	Accessor[K, V]
+	AtomicAccessor[K, V]
+	Iteration[K, V]
+
+	marker_p.Copy[HashTable[K, V]]
+	marker_p.Clone[HashTable[K, V]]
+}
+*/

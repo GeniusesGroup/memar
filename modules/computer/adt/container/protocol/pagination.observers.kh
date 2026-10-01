@@ -1,0 +1,9 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Container_Limit in "modules/computer/adt/container/protocol/pagination.kh"
+tp Container_Offset in "modules/computer/adt/container/protocol/pagination.kh"
+
+tp Observer_Offset ab
+tp GetOffset mt (self Observer_Offset) () (o Container_Offset)
+tp Observer_Limit ab
+tp GetLimit mt (self Observer_Limit) () (l Container_Limit)

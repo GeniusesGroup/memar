@@ -1,0 +1,24 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Observer_Edge in "modules/computer/adt/graph/protocol/dt-edge.observers.kh"
+tp Observer_PrimaryNode in "modules/computer/adt/graph/protocol/dt-node-primary.observers.kh"
+tp Observer_SecondaryNode in "modules/computer/adt/graph/protocol/dt-node-secondary.observers.kh"
+
+// https://en.wikipedia.org/wiki/Graph_(abstract_data_type)
+tp ADT_Graph ab {
+    Observer_PrimaryNode
+    Observer_SecondaryNode
+    Observer_Edge
+}
+
+// TODO(go-migrate):
+/*
+package graph_p
+
+// https://en.wikipedia.org/wiki/Graph_(abstract_data_type)
+type Graph[pID, sID, eID any] interface {
+	Field_PrimaryNode[pID]
+	Field_SecondaryNode[sID]
+	Field_Edge[eID]
+}
+*/

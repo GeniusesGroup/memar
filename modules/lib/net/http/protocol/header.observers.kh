@@ -1,0 +1,6 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Net_Header in "modules/lib/net/http/protocol/header.kh"
+
+tp Observer_HTTP_Header ab
+tp GetHTTPHeader mt (self Observer_HTTP_Header) () (h Net_Header)

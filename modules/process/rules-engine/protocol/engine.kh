@@ -1,0 +1,37 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Error in "modules/process/error/protocol/error.kh"
+tp RulesEngine_Decision in "modules/process/rules-engine/protocol/decision.kh"
+tp String in "modules/codec/string/protocol/string.kh"
+
+tp RulesEngine_Engine ab
+tp RulesEngine_Engine_GetDecision mt (self RulesEngine_Engine) (key String) (d RulesEngine_Decision, e Error)
+tp Dispose mt (self RulesEngine_Engine) () ()
+
+// TODO(go-migrate):
+/*
+package bre_p
+
+import (
+	"encoding/json"
+)
+
+// https://github.com/gorules/zen-go/blob/master/zen.go
+
+type EvaluationOptions struct {
+	Trace    bool
+	MaxDepth uint8
+}
+
+type EvaluationResponse struct {
+	Performance string
+	Result      json.RawMessage
+	Trace       *json.RawMessage
+}
+
+type Engine interface {
+	Evaluate(key string, context any) (*EvaluationResponse, error)
+	EvaluateWithOpts(key string, context any, options EvaluationOptions) (*EvaluationResponse, error)
+	CreateDecision(data []byte) (Decision, error)
+}
+*/

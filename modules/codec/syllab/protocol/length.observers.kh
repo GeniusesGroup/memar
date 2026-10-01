@@ -1,0 +1,15 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Length_Heap in "modules/codec/syllab/protocol/length.kh"
+tp Length_Stack in "modules/codec/syllab/protocol/length.kh"
+tp Syllab_Length in "modules/codec/syllab/protocol/length.kh"
+
+// Observer_Lengths is same as codec_p.Observer_Length in many ways
+tp Observer_Syllab_Lengths ab
+// Syllab_Length return whole calculated length of Syllab encoded of the struct
+// default is simple as `return (self.GetSyllabStackLength() + self.GetSyllabHeapLength())`
+tp GetSyllabLength mt (self Observer_Syllab_Lengths) () (l Syllab_Length)
+// GetSyllabStackLength return calculated stack length of Syllab encoded of the struct
+tp GetSyllabStackLength mt (self Observer_Syllab_Lengths) () (s Length_Stack)
+// GetSyllabHeapLength return calculated heap length of Syllab encoded of the struct
+tp GetSyllabHeapLength mt (self Observer_Syllab_Lengths) () (h Length_Heap)

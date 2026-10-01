@@ -1,0 +1,19 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+// Reversed is a container level operation.
+
+tp Concat ab
+
+tp Concat_String ab
+
+tp Concat_Computer_Buffer ab
+
+// TODO(go-migrate):
+/*
+// Concat is a container level operation.
+type Concat[CONTAINER any] interface {
+	Concat(con ...CONTAINER) (new CONTAINER, err error_p.Error)
+}
+*/

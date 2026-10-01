@@ -1,0 +1,19 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp NumberOfElement in "modules/computer/adt/container/protocol/length.kh"
+
+// Capacity in (computer science) the amount of information (in bytes) that can be stored.
+tp Observer_Container_Capacity ab
+// GetCapacity return a length that underlying implementor can store desire elements such as byte.
+// TODO::: on bad page e.g. bad sector return 0 or have error?
+tp GetCapacity mt (self Observer_Container_Capacity) () (n NumberOfElement)
+tp Observer_Container_OccupiedLength ab
+// GetOccupiedLength return a length that occupied in the container before this method call.
+tp GetOccupiedLength mt (self Observer_Container_OccupiedLength) () (n NumberOfElement)
+tp Observer_Container_AvailableLength ab
+// GetAvailableLength or EmptyLength() or RemainingLength() returns how a length that are unused or can be set.
+tp GetAvailableLength mt (self Observer_Container_AvailableLength) () (n NumberOfElement)
+// ExpectedLength indicate min and max expected length.
+tp Observer_Container_ExpectedLength ab
+tp GetMinLength mt (self Observer_Container_ExpectedLength) () (n NumberOfElement)
+tp GetMaxLength mt (self Observer_Container_ExpectedLength) () (n NumberOfElement)

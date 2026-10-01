@@ -1,0 +1,6 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Record_Data in "modules/memory/record/protocol/dt-data.kh"
+
+tp Observer_Record_Data ab
+tp GetRecordData mt (self Observer_Record_Data) () (d Record_Data)

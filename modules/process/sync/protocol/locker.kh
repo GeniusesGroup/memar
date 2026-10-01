@@ -1,0 +1,11 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Error in "modules/process/error/protocol/error.kh"
+
+// Lock use to reach strict consistency.
+// Be aware that strict consistency MUST be in all process details not just in storage layer.
+tp Locker ab
+// Be aware that the requested `thread` which call `Lock()` CAN `yield`!
+tp Sync_Locker_Lock mt (self Locker) () (err Error)
+
+tp Sync_Locker_Unlock mt (self Locker) () (err Error)

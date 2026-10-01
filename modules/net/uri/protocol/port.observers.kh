@@ -1,0 +1,6 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp URI_Port in "modules/net/uri/protocol/port.kh"
+
+tp Observer_Port ab
+tp GetPort mt (self Observer_Port) () (p URI_Port)
