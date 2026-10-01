@@ -1,0 +1,14 @@
+# Text files are LF in the working tree, on every machine.
+#
+# Without this, the bytes of a committed file depend on the `core.autocrlf` of
+# whoever clones it. That is not theoretical: with autocrlf=true on Windows, a
+# fresh checkout rewrote the display layer's manifest and themes with CRLF, and
+# `display/test/generator-output.test.ts`, which compares the generator's
+# output to those files byte for byte, failed on the clone while passing in the
+# working copy it was written in.
+#
+# `text=auto` keeps git's binary detection, so a .wasm or an image is untouched;
+# `eol=lf` fixes the one convention for everything it decides is text.
+# Symlink blobs (mode 120000, the folder READMEs) are unaffected: git writes
+# them as links and applies no conversion.
+* text=auto eol=lf
