@@ -620,9 +620,61 @@ def _anchor_slug(heading: str) -> str:
     """The fragment a Markdown heading produces, as GitHub and most renderers make it."""
     slug = re.sub(r"`([^`]*)`", r"\1", heading)
     slug = re.sub(r"\[([^\]]*)\]\([^)]*\)", r"\1", slug)
-    slug = re.sub(r"[*_~]", "", slug)
+    # `*` and `~` are emphasis markers and go; `_` is not punctuation to a
+    # renderer, so `The agent_for Relationship` must slug to
+    # `the-agent_for-relationship` and not to `the-agentfor-relationship`.
+    slug = re.sub(r"[*~]", "", slug)
     slug = re.sub(r"[^\w\s-]", "", slug.lower())
-    return re.sub(r"\s+", "-", slug.strip())
+    # Each whitespace character becomes its own hyphen, not each run of them: a
+    # heading whose punctuation was just dropped leaves two spaces where the
+    # punctuation stood, and `Scope - Type` must slug to `scope--type`. A run
+    # collapses to one hyphen here and every such link reads as broken.
+    return re.sub(r"\s", "-", slug.strip())
+
+
+def _headings_by_fragment(visible: str, text: str) -> set[str]:
+    """Every fragment a heading produces, disambiguators included.
+
+    Which lines are headings is read from `visible`, so a `#` inside a fenced
+    block is not one; each such line's fragment is then taken from `text`, since
+    a heading's own code span is part of its text and only its backticks go.
+
+    Two headings that slug alike get GitHub's suffix on the second and later
+    ones, so a document with two `## LLM Wiki` sections answers to
+    `llm-wiki` and `llm-wiki-1`; a set of slugs alone knows only the first.
+    """
+    seen: dict[str, int] = {}
+    fragments = set()
+    raw_lines = text.split("\n")
+    for number, line in enumerate(visible.split("\n")):
+        match = re.fullmatch(r"#{1,6}\s+(.*?)\s*#*\s*", line)
+        if not match:
+            continue
+        heading = raw_lines[number] if number < len(raw_lines) else match.group(1)
+        heading = re.sub(r"^#{1,6}\s+", "", heading).rstrip()
+        slug = _anchor_slug(heading)
+        if not slug:
+            continue
+        count = seen.get(slug, 0)
+        seen[slug] = count + 1
+        fragments.add(slug if count == 0 else f"{slug}-{count}")
+    return fragments
+
+
+def _without_code(text: str) -> str:
+    """`text` with the inside of code spans and fenced blocks blanked out.
+
+    Offsets and line breaks are preserved, so a position in the result is the
+    same position in the original. A `](#x)` written inside backticks is text
+    about links, not a link, and a `# comment` inside a fence is not a heading;
+    neither may be read as either.
+    """
+    def blank(match: re.Match[str]) -> str:
+        return re.sub(r"[^\n]", " ", match.group(0))
+
+    fenced = re.compile(r"(?ms)^(```|~~~).*?^\1[ \t]*$")
+    spans = re.compile(r"(?s)(`+)(?:(?!\1).)*?\1")
+    return spans.sub(blank, fenced.sub(blank, text))
 
 
 def check_file(path: Path) -> list[str]:
@@ -682,12 +734,10 @@ def check_file(path: Path) -> list[str]:
                     f"line {text[: blank_after.start()].count(chr(10)) + 1}: blank "
                     "line between a heading and its body"
                 )
-        if "](#" in text:
-            present = {
-                _anchor_slug(h)
-                for h in re.findall(r"(?m)^#{1,6}\s+(.*?)\s*#*\s*$", text)
-            }
-            for match in re.finditer(r"\]\(#([^)]*)\)", text):
+        visible = _without_code(text)
+        if "](#" in visible:
+            present = _headings_by_fragment(visible, text)
+            for match in re.finditer(r"\]\(#([^)]*)\)", visible):
                 if match.group(1) not in present:
                     problems.append(
                         f"line {text[: match.start()].count(chr(10)) + 1}: in-page "
