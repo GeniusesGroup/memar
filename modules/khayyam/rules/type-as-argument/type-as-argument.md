@@ -2,7 +2,7 @@
 Title: "Khayyam Rule — Type as Argument"
 Status: Draft
 Start Date: 2026-09-29
-ID: 510449
+ID: "497406"
 ---
 
 # Khayyam Rule — Type as Argument

@@ -2,7 +2,7 @@
 Title: "Khayyam Rule — Result Parameter Names"
 Status: Draft
 Start Date: 2026-09-28
-ID: 510446
+ID: "497379"
 ---
 
 # Khayyam Rule — Result Parameter Names

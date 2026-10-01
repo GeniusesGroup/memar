@@ -9,4 +9,4 @@ Active — rule added 2026-09-29 from [rules-in-docs audit](../../../../chats-co
 | --- | --- | --- |
 | [receiver-parameter-naming.md](./receiver-parameter-naming.md) | Base — the rule | Keep in sync |
 | [Khayyam → Type → Method](../../../../docs/khayyam/khayyam.md#method) | Depends_on — any owner name allowed | None (read) |
-| [Method in Khayyam → Method Structure](./method.md#method-structure) | Depends_on — recommended naming bullet former home | Link only |
+| [Method in Khayyam → Method Structure](../../../../docs/khayyam/method.md#method-structure) | Depends_on — recommended naming bullet former home | Link only |

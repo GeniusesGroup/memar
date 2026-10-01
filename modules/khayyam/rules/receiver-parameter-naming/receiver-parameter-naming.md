@@ -2,17 +2,17 @@
 Title: "Khayyam Rule — Receiver Parameter Naming"
 Status: Draft
 Start Date: 2026-09-29
-ID: 510446
+ID: "497403"
 ---
 
 # Khayyam Rule — Receiver Parameter Naming
-Khayyam's rules live one rule per folder under [`modules/khayyam/rules/`](../README.md), and this is the rule for the name of the owner parameter in a method signature. It is a governance rule of this repository: [Khayyam → Type → Method](../../../../docs/khayyam/khayyam.md#method) and [Method in Khayyam → Method Structure](./method.md#method-structure) state that any name is allowed in the owner group; this rule states what this repository suggests.
+Khayyam's rules live one rule per folder under [`modules/khayyam/rules/`](../README.md), and this is the rule for the name of the owner parameter in a method signature. It is a governance rule of this repository: [Khayyam → Type → Method](../../../../docs/khayyam/khayyam.md#method) and [Method in Khayyam → Method Structure](../../../../docs/khayyam/method.md#method-structure) state that any name is allowed in the owner group; this rule states what this repository suggests.
 
 ## The rule
 The owner parameter in `(self {owner})` may use any identifier the grammar accepts. This repository suggests `self` as the name, so method bodies reference the receiver consistently and readers recognize the owner parameter at a glance.
 
 ## Why it exists
-The owner group is required for readability ([Method in Khayyam → Method Structure](./method.md#method-structure)); the grammar does not fix its spelling. A single conventional name reduces friction when moving between files and when tooling generates method bodies.
+The owner group is required for readability ([Method in Khayyam → Method Structure](../../../../docs/khayyam/method.md#method-structure)); the grammar does not fix its spelling. A single conventional name reduces friction when moving between files and when tooling generates method bodies.
 
 ## Keep it or drop it
 An organization may require `self`, forbid it, or use another convention (`this`, `receiver`, a domain-specific name). The grammar is unchanged either way.

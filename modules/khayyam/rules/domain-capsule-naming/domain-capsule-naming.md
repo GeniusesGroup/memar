@@ -2,7 +2,7 @@
 Title: "Khayyam Rule — Domain Capsule Naming"
 Status: Draft
 Start Date: 2026-09-29
-ID: 510448
+ID: "497405"
 ---
 
 # Khayyam Rule — Domain Capsule Naming

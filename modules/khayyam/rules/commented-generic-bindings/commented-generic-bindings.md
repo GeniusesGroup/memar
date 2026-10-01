@@ -2,7 +2,7 @@
 Title: "Khayyam Rule — Commented Generic Bindings"
 Status: Draft
 Start Date: 2026-09-28
-ID: 510445
+ID: "497378"
 ---
 
 # Khayyam Rule — Commented Generic Bindings

@@ -2,7 +2,7 @@
 Title: "Khayyam Rule — Orphan Extension"
 Status: Draft
 Start Date: 2026-09-29
-ID: 510450
+ID: "497408"
 ---
 
 # Khayyam Rule — Orphan Extension

@@ -2,7 +2,7 @@
 Title: "Khayyam Rule — Method Separation"
 Status: Draft
 Start Date: 2026-09-28
-ID: 510443
+ID: "497376"
 ---
 
 # Khayyam Rule — Method Separation

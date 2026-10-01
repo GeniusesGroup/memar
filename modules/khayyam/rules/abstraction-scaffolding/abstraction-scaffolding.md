@@ -2,7 +2,7 @@
 Title: "Khayyam Rule — Abstraction Scaffolding"
 Status: Draft
 Start Date: 2026-09-29
-ID: 510451
+ID: "497409"
 ---
 
 # Khayyam Rule — Abstraction Scaffolding

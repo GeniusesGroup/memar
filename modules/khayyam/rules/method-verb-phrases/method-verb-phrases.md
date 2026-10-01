@@ -2,7 +2,7 @@
 Title: "Khayyam Rule — Method Verb Phrases"
 Status: Draft
 Start Date: 2026-09-29
-ID: 510442
+ID: "497400"
 ---
 
 # Khayyam Rule — Method Verb Phrases

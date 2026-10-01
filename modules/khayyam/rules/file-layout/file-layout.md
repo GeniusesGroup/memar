@@ -2,7 +2,7 @@
 Title: "Khayyam Rule — File Layout"
 Status: Draft
 Start Date: 2026-09-29
-ID: 510445
+ID: "497402"
 ---
 
 # Khayyam Rule — File Layout

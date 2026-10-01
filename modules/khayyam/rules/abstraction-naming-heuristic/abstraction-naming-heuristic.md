@@ -2,7 +2,7 @@
 Title: "Khayyam Rule — Abstraction Naming Heuristic"
 Status: Draft
 Start Date: 2026-09-29
-ID: 510444
+ID: "497401"
 ---
 
 # Khayyam Rule — Abstraction Naming Heuristic
