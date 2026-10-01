@@ -2,80 +2,177 @@
   "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
   "name": "Khayyam",
   "scopeName": "source.khayyam",
+  "comment": "Display roles are specified in modules/khayyam/display/display.json and explained in modules/khayyam/display/display.md; that contract is authoritative and governs how Khayyam is displayed to any reader, not only in an editor. Each rule below names the roles it serves in its `comment`. Rules are ordered so the most specific form of a line wins: an inclusion, then a declaration that opens a block, then a method declaration that carries its signature, then the generic rules.",
   "patterns": [
     { "include": "#comments" },
+    { "include": "#inclusion" },
+    { "include": "#capsule-declaration" },
+    { "include": "#abstraction-declaration" },
+    { "include": "#method-declaration" },
+    { "include": "#scope-declaration" },
+    { "include": "#variable-declaration" },
+    { "include": "#method-call" },
+    { "include": "#subtype-keywords" },
+    { "include": "#keywords" },
     { "include": "#strings" },
-    { "include": "#import-declaration" },
-    { "include": "#vr-declaration" },
-    { "include": "#tp-declaration" },
-    { "include": "#keywords-control" },
-    { "include": "#typed-pairs" },
     { "include": "#illegal-numbers" },
     { "include": "#illegal-operators" },
     { "include": "#identifiers" }
   ],
   "repository": {
-    "import-declaration": {
+    "inclusion": {
+      "comment": "Roles: keyword, included-type, included-variable, subtype, file-uri. Type Inclusion and Variable Inclusion (docs/khayyam/khayyam.md, Import Mechanism).",
       "patterns": [
         {
-          "match": "\\b(tp)\\s+([a-zA-Z_][a-zA-Z0-9_]*)\\s+(in)\\b",
+          "match": "\\b(tp)[^\\S\\n]+([\\p{L}_][\\p{L}\\p{Nd}_]*)[^\\S\\n]+(in)\\b[^\\S\\n]*(\"[^\"]*\")",
           "captures": {
             "1": { "name": "keyword.control.khayyam" },
-            "2": { "name": "entity.name.type.khayyam" },
-            "3": { "name": "keyword.control.import.khayyam" }
-          },
-          "comment": "Matches 'tp Name in' -> tp(Purple) Name(Green) in(Purple)"
+            "2": { "name": "entity.name.import.khayyam" },
+            "3": { "name": "keyword.control.subtype.khayyam" },
+            "4": { "name": "string.quoted.double.file-uri.khayyam" }
+          }
         },
         {
-          "match": "\\b(vr)\\s+([a-zA-Z_][a-zA-Z0-9_]*)\\s+(in)\\b",
+          "match": "\\b(vr)[^\\S\\n]+([\\p{L}_][\\p{L}\\p{Nd}_]*)[^\\S\\n]+(in)\\b[^\\S\\n]*(\"[^\"]*\")",
           "captures": {
             "1": { "name": "keyword.control.khayyam" },
-            "2": { "name": "variable.other.khayyam" },
-            "3": { "name": "keyword.control.import.khayyam" }
-          },
-          "comment": "Matches 'vr name in' -> vr(Purple) name(Blue/White) in(Purple)"
+            "2": { "name": "variable.other.import.khayyam" },
+            "3": { "name": "keyword.control.subtype.khayyam" },
+            "4": { "name": "string.quoted.double.file-uri.khayyam" }
+          }
         }
       ]
     },
-    "vr-declaration": {
-      "match": "\\b(vr)\\s+([a-zA-Z_][a-zA-Z0-9_]*)\\s+([a-zA-Z_][a-zA-Z0-9_]*)\\b",
+    "capsule-declaration": {
+      "comment": "Roles: keyword, subtype, capsule, capsule-field, type-reference. A capsule is `tp {name} cp { ... }`; its body is field lines `fieldName fieldType` plus one-token lines that are bare abstraction names, which are type references (docs/khayyam/khayyam.md, Capsule; docs/khayyam/encapsulation.md, Capsule Structure and Privacy). The second rule is the same declaration without a block, so the name keeps its role while the block is still being typed.",
+      "patterns": [
+        {
+          "begin": "\\b(tp)[^\\S\\n]+([\\p{L}_][\\p{L}\\p{Nd}_]*)[^\\S\\n]+(cp)\\b[^\\S\\n]*\\{",
+          "beginCaptures": {
+            "1": { "name": "keyword.control.khayyam" },
+            "2": { "name": "entity.name.class.khayyam" },
+            "3": { "name": "keyword.control.subtype.khayyam" }
+          },
+          "end": "\\}",
+          "patterns": [
+            { "include": "#comments" },
+            {
+              "comment": "Role: capsule-field. A name followed by another name on the line is a field.",
+              "match": "\\b([\\p{L}_][\\p{L}\\p{Nd}_]*)(?=[^\\S\\n]+[\\p{L}_])",
+              "captures": {
+                "1": { "name": "variable.other.field.khayyam" }
+              }
+            },
+            {
+              "comment": "Role: type-reference. The field's type, or a bare abstraction name on its own line.",
+              "match": "\\b([\\p{L}_][\\p{L}\\p{Nd}_]*)\\b",
+              "captures": {
+                "1": { "name": "entity.name.type.khayyam" }
+              }
+            }
+          ]
+        },
+        {
+          "match": "\\b(tp)[^\\S\\n]+([\\p{L}_][\\p{L}\\p{Nd}_]*)[^\\S\\n]+(cp)\\b",
+          "captures": {
+            "1": { "name": "keyword.control.khayyam" },
+            "2": { "name": "entity.name.class.khayyam" },
+            "3": { "name": "keyword.control.subtype.khayyam" }
+          }
+        }
+      ]
+    },
+    "abstraction-declaration": {
+      "comment": "Roles: keyword, subtype, abstraction, type-reference. An abstraction is `tp {name} ab { ... }` and every line in its block is a bare abstraction name, so every identifier there is a type reference. The block is optional in the language, so the second rule carries the same roles for the bodiless form.",
+      "patterns": [
+        {
+          "begin": "\\b(tp)[^\\S\\n]+([\\p{L}_][\\p{L}\\p{Nd}_]*)[^\\S\\n]+(ab)\\b[^\\S\\n]*\\{",
+          "beginCaptures": {
+            "1": { "name": "keyword.control.khayyam" },
+            "2": { "name": "entity.name.interface.khayyam" },
+            "3": { "name": "keyword.control.subtype.khayyam" }
+          },
+          "end": "\\}",
+          "patterns": [
+            { "include": "#comments" },
+            {
+              "match": "\\b([\\p{L}_][\\p{L}\\p{Nd}_]*)\\b",
+              "captures": {
+                "1": { "name": "entity.name.type.khayyam" }
+              }
+            }
+          ]
+        },
+        {
+          "match": "\\b(tp)[^\\S\\n]+([\\p{L}_][\\p{L}\\p{Nd}_]*)[^\\S\\n]+(ab)\\b",
+          "captures": {
+            "1": { "name": "keyword.control.khayyam" },
+            "2": { "name": "entity.name.interface.khayyam" },
+            "3": { "name": "keyword.control.subtype.khayyam" }
+          }
+        }
+      ]
+    },
+    "method-declaration": {
+      "comment": "Roles: keyword, subtype, method, method-owner-type, method-argument, method-argument-type. The three parenthesised groups are the owner, the influencing and the influenced variables (docs/khayyam/khayyam.md, Method). Groups 5-12 are the influencing group and 13-20 the influenced group, alternating argument name and argument type, four pairs each. A fifth pair in a group is left uncaptured, and its names take the identifier-reference role; the largest group in the corpus holds three pairs.",
+      "match": "\\b(tp)[^\\S\\n]+([\\p{L}_][\\p{L}\\p{Nd}_]*)[^\\S\\n]+(mt)\\b[^\\S\\n]+\\((?:[^()]*\\b([\\p{L}_][\\p{L}\\p{Nd}_]*)\\b[^()]*)?\\)[^\\S\\n]+\\((?:([\\p{L}_][\\p{L}\\p{Nd}_]*)[^\\S\\n]+([\\p{L}_][\\p{L}\\p{Nd}_]*)(?:,[^\\S\\n]+)?(?:([\\p{L}_][\\p{L}\\p{Nd}_]*)[^\\S\\n]+([\\p{L}_][\\p{L}\\p{Nd}_]*)(?:,[^\\S\\n]+)?(?:([\\p{L}_][\\p{L}\\p{Nd}_]*)[^\\S\\n]+([\\p{L}_][\\p{L}\\p{Nd}_]*)(?:,[^\\S\\n]+)?(?:([\\p{L}_][\\p{L}\\p{Nd}_]*)[^\\S\\n]+([\\p{L}_][\\p{L}\\p{Nd}_]*))?)?)?)?(?:,[^\\S\\n]+[\\p{L}_][\\p{L}\\p{Nd}_]*[^\\S\\n]+[\\p{L}_][\\p{L}\\p{Nd}_]*)*\\)[^\\S\\n]+\\((?:([\\p{L}_][\\p{L}\\p{Nd}_]*)[^\\S\\n]+([\\p{L}_][\\p{L}\\p{Nd}_]*)(?:,[^\\S\\n]+)?(?:([\\p{L}_][\\p{L}\\p{Nd}_]*)[^\\S\\n]+([\\p{L}_][\\p{L}\\p{Nd}_]*)(?:,[^\\S\\n]+)?(?:([\\p{L}_][\\p{L}\\p{Nd}_]*)[^\\S\\n]+([\\p{L}_][\\p{L}\\p{Nd}_]*)(?:,[^\\S\\n]+)?(?:([\\p{L}_][\\p{L}\\p{Nd}_]*)[^\\S\\n]+([\\p{L}_][\\p{L}\\p{Nd}_]*))?)?)?)?",
+      "captures": {
+        "1": { "name": "keyword.control.khayyam" },
+        "2": { "name": "entity.name.function.khayyam" },
+        "3": { "name": "keyword.control.subtype.khayyam" },
+        "4": { "name": "entity.name.type.owner.khayyam" },
+        "5": { "name": "variable.parameter.khayyam" },
+        "6": { "name": "entity.name.type.parameter.khayyam" },
+        "7": { "name": "variable.parameter.khayyam" },
+        "8": { "name": "entity.name.type.parameter.khayyam" },
+        "9": { "name": "variable.parameter.khayyam" },
+        "10": { "name": "entity.name.type.parameter.khayyam" },
+        "11": { "name": "variable.parameter.khayyam" },
+        "12": { "name": "entity.name.type.parameter.khayyam" },
+        "13": { "name": "variable.parameter.khayyam" },
+        "14": { "name": "entity.name.type.parameter.khayyam" },
+        "15": { "name": "variable.parameter.khayyam" },
+        "16": { "name": "entity.name.type.parameter.khayyam" },
+        "17": { "name": "variable.parameter.khayyam" },
+        "18": { "name": "entity.name.type.parameter.khayyam" },
+        "19": { "name": "variable.parameter.khayyam" },
+        "20": { "name": "entity.name.type.parameter.khayyam" }
+      }
+    },
+    "scope-declaration": {
+      "comment": "Roles: keyword, subtype, scope. A code scope is `tp {name} sc { ... }` (docs/khayyam/khayyam.md, Scope).",
+      "match": "\\b(tp)[^\\S\\n]+([\\p{L}_][\\p{L}\\p{Nd}_]*)[^\\S\\n]+(sc)\\b",
+      "captures": {
+        "1": { "name": "keyword.control.khayyam" },
+        "2": { "name": "entity.name.scope.khayyam" },
+        "3": { "name": "keyword.control.subtype.khayyam" }
+      }
+    },
+    "variable-declaration": {
+      "comment": "Roles: keyword, variable, type-reference. `vr {name} {type}` (docs/khayyam/khayyam.md, Variable). The name takes `variable`, which is the role for a declaration at FILE LEVEL. A `vr` standing inside a method body is `method-local`, and this rule cannot tell the two apart: it matches one line at a time, and the line that opened the body is not on the line the `vr` stands on. The contract therefore declares `method-local` server-only, and this rule's claim at a body's `vr` is a position claim rather than a resolved one - the language server answers the same characters with `method-local`, and the editor's merge gives the server's answer precedence wherever the server answers.",
+      "match": "\\b(vr)[^\\S\\n]+([\\p{L}_][\\p{L}\\p{Nd}_]*)[^\\S\\n]+([\\p{L}_][\\p{L}\\p{Nd}_]*)\\b",
       "captures": {
         "1": { "name": "keyword.control.khayyam" },
         "2": { "name": "variable.other.khayyam" },
         "3": { "name": "entity.name.type.khayyam" }
-      },
-      "comment": "Matches 'vr name type' -> vr(Purple) name(Blue/White) type(Green)"
-    },
-    "tp-declaration": {
-      "match": "\\b(tp)\\s+([a-zA-Z_][a-zA-Z0-9_]*)\\b",
-      "captures": {
-        "1": { "name": "keyword.control.khayyam" },
-        "2": { "name": "entity.name.type.khayyam" }
       }
     },
-    "keywords-control": {
-      "patterns": [
-        {
-          "name": "keyword.control.khayyam",
-          "match": "\\b(in|cp|mt|ab|sc)\\b"
-        }
-      ]
-    },
-    "typed-pairs": {
-      "match": "\\b([a-zA-Z_][a-zA-Z0-9_]*)\\s+([a-zA-Z_][a-zA-Z0-9_]*)\\b",
+    "method-call": {
+      "comment": "Role: method. The dot operator is the language's only invocation form, so the name before the opening parenthesis at a call site is a Method and carries the same role as its declaration (docs/khayyam/khayyam.md, Method Invocation Rules).",
+      "match": "\\.\\s*([\\p{L}_][\\p{L}\\p{Nd}_]*)(?=[^\\S\\n]*\\()",
       "captures": {
-        "1": { "name": "variable.parameter.khayyam" },
-        "2": { "name": "entity.name.type.khayyam" }
-      },
-      "comment": "Matches any 'name type' pair, like inside method args (mt) -> name(Blue/White) type(Green)"
+        "1": { "name": "entity.name.function.khayyam" }
+      }
     },
-    "identifiers": {
-      "patterns": [
-        {
-          "name": "variable.other.readwrite.khayyam",
-          "match": "\\b[a-zA-Z_][a-zA-Z0-9_]*\\b"
-        }
-      ]
+    "subtype-keywords": {
+      "comment": "Role: subtype. The five subtype keywords wherever they appear without a declaration to attach to.",
+      "name": "keyword.control.subtype.khayyam",
+      "match": "\\b(in|cp|mt|ab|sc)\\b"
+    },
+    "keywords": {
+      "comment": "Role: keyword. `tp` and `vr` are reserved words (docs/khayyam/khayyam.md, Language Keyword in a Glance).",
+      "name": "keyword.control.khayyam",
+      "match": "\\b(tp|vr)\\b"
     },
     "comments": {
       "patterns": [
@@ -91,35 +188,25 @@
       ]
     },
     "strings": {
-      "patterns": [
-        {
-          "name": "string.quoted.double.khayyam",
-          "begin": "\"",
-          "end": "\"",
-          "patterns": [
-            {
-              "name": "constant.character.escape.khayyam",
-              "match": "\\\\."
-            }
-          ]
-        }
-      ]
+      "comment": "Role: string. The language has no string literal, so this rule has no form to match today; it exists so a quoted form has no unstyled fallback if one is added.",
+      "name": "string.quoted.double.khayyam",
+      "begin": "\"",
+      "end": "\""
     },
     "illegal-numbers": {
-      "patterns": [
-        {
-          "name": "invalid.illegal.numeric.khayyam",
-          "match": "\\b\\d+(\\.\\d+)?\\b"
-        }
-      ]
+      "comment": "Role: invalid-number. A bare number is not a value the language admits (docs/khayyam/khayyam.md, No primitive types).",
+      "name": "invalid.illegal.numeric.khayyam",
+      "match": "\\b\\d+(\\.\\d+)?\\b"
     },
     "illegal-operators": {
-      "patterns": [
-        {
-          "name": "invalid.illegal.operator.khayyam",
-          "match": "(\\+|\\-|\\*|\\/|\\=|\\==|\\!|\\<|\\>)"
-        }
-      ]
+      "comment": "Role: invalid-operator. The grammar admits no operator character; the dot of invocation is the only one.",
+      "name": "invalid.illegal.operator.khayyam",
+      "match": "(\\+|\\-|\\*|\\/|\\=|\\==|\\!|\\<|\\>)"
+    },
+    "identifiers": {
+      "comment": "Role: identifier-reference. An identifier begins with a letter or '_', then letters, digits or '_', in any script (docs/khayyam/khayyam.md, Identifiers). A bare identifier here is a use whose binding this profile cannot state, so it must not read as a local declaration.",
+      "name": "variable.other.reference.khayyam",
+      "match": "\\b[\\p{L}_][\\p{L}\\p{Nd}_]*\\b"
     }
   }
 }

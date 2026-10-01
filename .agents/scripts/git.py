@@ -13,12 +13,6 @@ Memar sessions keep violating when they improvise:
            path to the OS Recycle Bin / Trash via fs.py trash, then stages
            the disappearance with `git add -u` so the index matches.
 
-  ensure   Make `git` usable in this process. If it is missing from PATH,
-           try to install it with the environment's package manager
-           (winget/choco/scoop, brew, apt/dnf/pacman/apk) and refresh
-           common Git install locations on PATH. Other Memar scripts that
-           need git call this instead of failing immediately.
-
   stash    Park uncommitted work (tracked + untracked, not ignored) so a
            later session can recover it. Prefer this — or an ordinary
            commit — over discarding the working tree to tidy status.
@@ -29,11 +23,13 @@ Memar sessions keep violating when they improvise:
            caller passes an explicit irreversible confirmation token.
            Presence of the subcommand is not permission to call it casually.
 
-This script needs git. If git is not already present, `ensure` tries to
-install it in the current environment rather than asking the caller to
-stop. Usage is the interface. Do not duplicate these recipes as prose
-catalogs. Do not use `git rm` in Memar sessions. Document-ID minting is
-not here — use memar-doc.py hour-id.
+This script needs git, and says so plainly if it is missing. It does not install
+git: the Memar bootstrap (`install.sh` / `install.ps1` in this folder) is the one
+place that puts git and Python on a machine, and a second implementation of that
+here is a second answer to a question with one answer. Usage is the interface.
+Do not duplicate these recipes as prose catalogs. Do not use `git rm` in Memar
+sessions. Document-ID minting is not here — use `memar-documentation.py hour-id`
+in this folder.
 
 `gitignore` only hides untracked paths; tracked files that match an ignore
 pattern still show as modifications — do not "fix" that by restoring them
@@ -42,15 +38,28 @@ away.
 from __future__ import annotations
 
 import argparse
-import os
 import shutil
 import subprocess
 import sys
 from pathlib import Path
 
+GIT_MISSING = (
+    "error: `git` is not on PATH. Run the Memar bootstrap for this machine "
+    "(install.sh on POSIX, install.ps1 on Windows) — it installs git — then "
+    "run this again."
+)
+
+
+def _git() -> str:
+    """The git executable, or the one command that provides it."""
+    found = shutil.which("git")
+    if found is None:
+        sys.exit(GIT_MISSING)
+    return found
+
 
 def run_git(args: list[str]) -> None:
-    completed = subprocess.run(["git", *args], check=False)
+    completed = subprocess.run([_git(), *args], check=False)
     if completed.returncode != 0:
         sys.exit(completed.returncode)
 
@@ -59,107 +68,13 @@ def run_captured(
     args: list[str], cwd: Path | None = None
 ) -> subprocess.CompletedProcess[str]:
     return subprocess.run(
-        ["git", *args],
+        [_git(), *args],
         cwd=str(cwd) if cwd else None,
         capture_output=True,
         text=True,
         encoding="utf-8",
         errors="replace",
     )
-
-
-def _git_extra_dirs() -> list[Path]:
-    if os.name == "nt":
-        return [
-            Path(r"C:\Program Files\Git\cmd"),
-            Path(r"C:\Program Files (x86)\Git\cmd"),
-            Path.home() / "AppData" / "Local" / "Programs" / "Git" / "cmd",
-        ]
-    return [
-        Path("/usr/bin"),
-        Path("/usr/local/bin"),
-        Path("/opt/homebrew/bin"),
-    ]
-
-
-def augment_git_path() -> None:
-    path = os.environ.get("PATH", "")
-    parts = [p for p in path.split(os.pathsep) if p]
-    known = set(parts)
-    for extra in _git_extra_dirs():
-        exe = extra / ("git.exe" if os.name == "nt" else "git")
-        if extra.is_dir() and exe.is_file() and str(extra) not in known:
-            parts.insert(0, str(extra))
-            known.add(str(extra))
-    os.environ["PATH"] = os.pathsep.join(parts)
-
-
-def git_on_path() -> bool:
-    augment_git_path()
-    return shutil.which("git") is not None
-
-
-def _install_git() -> None:
-    attempts: list[list[str]] = []
-    if os.name == "nt":
-        if shutil.which("winget"):
-            attempts.append(
-                [
-                    "winget",
-                    "install",
-                    "--id",
-                    "Git.Git",
-                    "-e",
-                    "--accept-package-agreements",
-                    "--accept-source-agreements",
-                ]
-            )
-        if shutil.which("choco"):
-            attempts.append(["choco", "install", "git", "-y"])
-        if shutil.which("scoop"):
-            attempts.append(["scoop", "install", "git"])
-    elif sys.platform == "darwin":
-        if shutil.which("brew"):
-            attempts.append(["brew", "install", "git"])
-    else:
-        if shutil.which("apt-get"):
-            attempts.append(["apt-get", "install", "-y", "git"])
-            attempts.append(["sudo", "apt-get", "install", "-y", "git"])
-        if shutil.which("dnf"):
-            attempts.append(["dnf", "install", "-y", "git"])
-        if shutil.which("pacman"):
-            attempts.append(["pacman", "-S", "--noconfirm", "git"])
-        if shutil.which("apk"):
-            attempts.append(["apk", "add", "git"])
-    if not attempts:
-        print(
-            "error: no package manager found to install git",
-            file=sys.stderr,
-        )
-        return
-    for cmd in attempts:
-        print(f"trying: {' '.join(cmd)}", file=sys.stderr)
-        completed = subprocess.run(cmd, check=False)
-        if completed.returncode == 0:
-            return
-
-
-def ensure_git() -> None:
-    if git_on_path():
-        return
-    print("git is not on PATH; trying to install it", file=sys.stderr)
-    _install_git()
-    if git_on_path():
-        return
-    sys.exit(
-        "error: `git` is not on PATH and could not be installed in this "
-        "environment. Install Git, then re-run."
-    )
-
-
-def cmd_ensure() -> None:
-    ensure_git()
-    print(shutil.which("git"))
 
 
 def cmd_rename(source: Path, destination: Path) -> None:
@@ -209,7 +124,6 @@ def _working_tree_dirty() -> bool:
 
 def cmd_stash(message: str | None) -> None:
     """Park WIP recoverably. Does not include ignored files (use commit for those)."""
-    ensure_git()
     if not _working_tree_dirty():
         print("nothing to stash", file=sys.stderr)
         return
@@ -227,7 +141,6 @@ def cmd_stash(message: str | None) -> None:
 
 def cmd_restore(paths: list[Path], confirm: str | None) -> None:
     """Discard working-tree changes only with an explicit irreversible token."""
-    ensure_git()
     if confirm != DISCARD_CONFIRM:
         sys.exit(
             "error: refusing to discard uncommitted work.\n"
@@ -268,11 +181,6 @@ def main() -> None:
     )
     p_remove.add_argument("paths", nargs="+", type=Path)
 
-    sub.add_parser(
-        "ensure",
-        help="install git if it is missing, then print the git executable",
-    )
-
     p_stash = sub.add_parser(
         "stash",
         help="stash tracked+untracked WIP (not ignored); prefer over discard",
@@ -300,8 +208,6 @@ def main() -> None:
         cmd_rename(args.source, args.destination)
     elif args.command == "remove":
         cmd_remove(args.paths)
-    elif args.command == "ensure":
-        cmd_ensure()
     elif args.command == "stash":
         cmd_stash(args.message)
     elif args.command == "restore":

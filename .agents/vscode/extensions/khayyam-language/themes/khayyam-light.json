@@ -1,0 +1,265 @@
+{
+  "name": "Memar Light",
+  "type": "light",
+  "comment": "Every value in this sheet is derived from the contract's own `palette` rules, not chosen: one hue per kind, so a reader sees a family; lightness and chroma carrying origin and validity, never hue; the warm band from 15 to 120 degrees of OKLCH hue reserved for the two refusals and nothing else. Every value is measured against this sheet's own background, #FFFFFF, which the base states and this sheet does not restate. This sheet is designed for that background and shares no value with the dark one. Its hue balance is its own, and the reason is measured rather than preferred: on white the sRGB gamut holds chroma in two regions only, green (about 125 to 175 degrees) and blue through violet to magenta (about 250 to 350), and holds almost none in the cyan and blue-cyan arc at any lightness dark enough to read - so the sheet spends its arc where the gamut has colour, and spends the cyan arc on the one value that is bold and does not need its colour found. Because the floor against white caps a value at CIE L* 49.9, kinds are told apart by a fifteen-rung lightness ladder as much as by hue, which is what the dark sheet does not have to do. The measurement, and the absence of any colour-vision pair this sheet has to record, are in modules/khayyam/display/display.json under `palette`.",
+  "include": "./light_modern.json",
+  "khayyamDisplay": {
+    "khayyam.keyword.color": "#3A750F",
+    "khayyam.keyword.fontStyle": "",
+    "khayyam.subtype.color": "#3A750F",
+    "khayyam.subtype.fontStyle": "",
+    "khayyam.capsule.color": "#043256",
+    "khayyam.capsule.fontStyle": "",
+    "khayyam.abstraction.color": "#820D71",
+    "khayyam.abstraction.fontStyle": "",
+    "khayyam.method.color": "#771BF4",
+    "khayyam.method.fontStyle": "",
+    "khayyam.scope.color": "#A828D1",
+    "khayyam.scope.fontStyle": "",
+    "khayyam.type-reference.color": "#1769D7",
+    "khayyam.type-reference.fontStyle": "",
+    "khayyam.method-argument-type.color": "#1769D7",
+    "khayyam.method-argument-type.fontStyle": "",
+    "khayyam.method-owner-type.color": "#1769D7",
+    "khayyam.method-owner-type.fontStyle": "",
+    "khayyam.included-type.color": "#1750A0",
+    "khayyam.included-type.fontStyle": "italic",
+    "khayyam.included-variable.color": "#0A4336",
+    "khayyam.included-variable.fontStyle": "italic",
+    "khayyam.variable.color": "#147D66",
+    "khayyam.variable.fontStyle": "",
+    "khayyam.capsule-field.color": "#073818",
+    "khayyam.capsule-field.fontStyle": "",
+    "khayyam.method-local.color": "#165F4E",
+    "khayyam.method-local.fontStyle": "",
+    "khayyam.method-argument.color": "#00444B",
+    "khayyam.method-argument.fontStyle": "bold",
+    "khayyam.identifier-reference.color": "#373E45",
+    "khayyam.identifier-reference.fontStyle": "",
+    "khayyam.comment.color": "#6B7378",
+    "khayyam.comment.fontStyle": "italic",
+    "khayyam.file-uri.color": "#4E5860",
+    "khayyam.file-uri.fontStyle": "",
+    "khayyam.string.color": "#21262A",
+    "khayyam.string.fontStyle": "",
+    "khayyam.invalid-number.color": "#7E0B14",
+    "khayyam.invalid-number.fontStyle": "",
+    "khayyam.invalid-operator.color": "#92540F",
+    "khayyam.invalid-operator.fontStyle": ""
+  },
+  "tokenColors": [
+    {
+      "comment": "Roles: keyword, subtype. `keyword` and `subtype` are one kind, keyword, and share this value because they share a kind; the palette separates the kinds of this family by hue, never this one by lightness.",
+      "scope": [
+        "keyword.control.khayyam",
+        "keyword.control.subtype.khayyam"
+      ],
+      "settings": {
+        "foreground": "#3A750F"
+      }
+    },
+    {
+      "comment": "Role: capsule. A Capsule: a stateful Type, declared here. Its kind is a kind of the host's standard type 'class', and the value is that kind's hue at the lightness this role's position in its own kind calls for.",
+      "scope": "entity.name.class.khayyam",
+      "settings": {
+        "foreground": "#043256"
+      }
+    },
+    {
+      "comment": "Role: abstraction. An Abstraction: a behavioral specification Type, declared here. Its kind is a kind of the host's standard type 'interface', and the value is that kind's hue at the lightness this role's position in its own kind calls for.",
+      "scope": "entity.name.interface.khayyam",
+      "settings": {
+        "foreground": "#820D71"
+      }
+    },
+    {
+      "comment": "Role: method. A Method: a callable Type, wherever it appears. Its kind is the host's own standard type 'method', which this role's own name already is, and the value is that kind's hue at the lightness this role's position in its own kind calls for.",
+      "scope": "entity.name.function.khayyam",
+      "settings": {
+        "foreground": "#771BF4"
+      }
+    },
+    {
+      "comment": "Role: scope. A Scope: a Type that delimits an area of action, declared here. Its kind is this language's own root, declared with no standard counterpart, and the value is that kind's hue at the lightness this role's position in its own kind calls for.",
+      "scope": "entity.name.scope.khayyam",
+      "settings": {
+        "foreground": "#A828D1"
+      }
+    },
+    {
+      "comment": "Role: type-reference. A Type named in a type position, whose category and origin this file does not state. Its kind is a kind of the host's standard type 'type', and the value is that kind's hue at the lightness this role's position in its own kind calls for.",
+      "scope": "entity.name.type.khayyam",
+      "settings": {
+        "foreground": "#1769D7"
+      }
+    },
+    {
+      "comment": "Role: method-argument-type. The declared type of a method argument. Its kind is a kind of the host's standard type 'type', and the value is that kind's hue at the lightness this role's position in its own kind calls for.",
+      "scope": "entity.name.type.parameter.khayyam",
+      "settings": {
+        "foreground": "#1769D7"
+      }
+    },
+    {
+      "comment": "Role: method-owner-type. The owner type a method is attached to. Its kind is a kind of the host's standard type 'type', and the value is that kind's hue at the lightness this role's position in its own kind calls for.",
+      "scope": "entity.name.type.owner.khayyam",
+      "settings": {
+        "foreground": "#1769D7"
+      }
+    },
+    {
+      "comment": "Role: included-type. A Type whose name arrived in this file through Type Inclusion. Its kind is a kind of the host's standard type 'type', and the value is that kind's hue at the lightness this role's position in its own kind calls for.",
+      "scope": "entity.name.import.khayyam",
+      "settings": {
+        "foreground": "#1750A0",
+        "fontStyle": "italic"
+      }
+    },
+    {
+      "comment": "Role: included-variable. A Variable whose name arrived in this file through Variable Inclusion. Its kind is a kind of the host's standard type 'variable', and the value is that kind's hue at the lightness this role's position in its own kind calls for.",
+      "scope": "variable.other.import.khayyam",
+      "settings": {
+        "foreground": "#0A4336",
+        "fontStyle": "italic"
+      }
+    },
+    {
+      "comment": "Role: variable. A Variable declared by a `vr` declaration at file level in this file. Its kind is the host's own standard type 'variable', which this role's own name already is, and the value is that kind's hue at the lightness this role's position in its own kind calls for.",
+      "scope": "variable.other.khayyam",
+      "settings": {
+        "foreground": "#147D66"
+      }
+    },
+    {
+      "comment": "Role: capsule-field. A Capsule's field, which is private to the Capsule. Its kind is a kind of the host's standard type 'property', and the value is that kind's hue at the lightness this role's position in its own kind calls for.",
+      "scope": "variable.other.field.khayyam",
+      "settings": {
+        "foreground": "#073818"
+      }
+    },
+    {
+      "comment": "Role: method-argument. An influencing or influenced variable named in a method signature. Its kind is a kind of the host's standard type 'parameter', and the value is that kind's hue at the lightness this role's position in its own kind calls for.",
+      "scope": "variable.parameter.khayyam",
+      "settings": {
+        "foreground": "#00444B",
+        "fontStyle": "bold"
+      }
+    },
+    {
+      "comment": "Role: identifier-reference. A bare identifier whose binding the realization cannot state: a use of a variable, an argument, a field, or an included name. Its kind is this language's own root, declared with no standard counterpart, and the value is that kind's hue at the lightness this role's position in its own kind calls for.",
+      "scope": "variable.other.reference.khayyam",
+      "settings": {
+        "foreground": "#373E45"
+      }
+    },
+    {
+      "comment": "Role: comment. Text the author marked as not code. Its kind is the host's own standard type 'comment', which this role's own name already is, and the value is that kind's hue at the lightness this role's position in its own kind calls for.",
+      "scope": [
+        "comment.line.double-slash.khayyam",
+        "comment.block.slash-star.khayyam"
+      ],
+      "settings": {
+        "foreground": "#6B7378",
+        "fontStyle": "italic"
+      }
+    },
+    {
+      "comment": "Role: file-uri. The path an inclusion routes to. Its kind is a kind of the host's standard type 'string', and the value is that kind's hue at the lightness this role's position in its own kind calls for.",
+      "scope": "string.quoted.double.file-uri.khayyam",
+      "settings": {
+        "foreground": "#4E5860"
+      }
+    },
+    {
+      "comment": "Role: string. A quoted literal that is not an inclusion's file URI. Its kind is the host's own standard type 'string', which this role's own name already is, and the value is that kind's hue at the lightness this role's position in its own kind calls for.",
+      "scope": "string.quoted.double.khayyam",
+      "settings": {
+        "foreground": "#21262A"
+      }
+    },
+    {
+      "comment": "Role: invalid-number. A bare number, which the language does not admit: values are wrapped in named Capsules and a magic number is refused (docs/khayyam/khayyam.md, No primitive types). Its kind is this language's own root, declared with no standard counterpart, and the value is that kind's hue at the lightness this role's position in its own kind calls for.",
+      "scope": "invalid.illegal.numeric.khayyam",
+      "settings": {
+        "foreground": "#7E0B14"
+      }
+    },
+    {
+      "comment": "Role: invalid-operator. An operator character the language does not admit. Khayyam has no assignment operator and no arithmetic operators in the grammar; the only operator is the dot of invocation. Its kind is this language's own root, declared with no standard counterpart, and the value is that kind's hue at the lightness this role's position in its own kind calls for.",
+      "scope": "invalid.illegal.operator.khayyam",
+      "settings": {
+        "foreground": "#92540F"
+      }
+    }
+  ],
+  "semanticHighlighting": true,
+  "semanticTokenColors": {
+    "keyword": {
+      "foreground": "#3A750F"
+    },
+    "subtype": {
+      "foreground": "#3A750F"
+    },
+    "included-type": {
+      "foreground": "#1750A0",
+      "fontStyle": "italic"
+    },
+    "included-variable": {
+      "foreground": "#0A4336",
+      "fontStyle": "italic"
+    },
+    "file-uri": {
+      "foreground": "#4E5860"
+    },
+    "capsule": {
+      "foreground": "#043256"
+    },
+    "abstraction": {
+      "foreground": "#820D71"
+    },
+    "method": {
+      "foreground": "#771BF4"
+    },
+    "scope": {
+      "foreground": "#A828D1"
+    },
+    "type-reference": {
+      "foreground": "#1769D7"
+    },
+    "variable": {
+      "foreground": "#147D66"
+    },
+    "method-local": {
+      "foreground": "#165F4E"
+    },
+    "method-argument": {
+      "foreground": "#00444B",
+      "fontStyle": "bold"
+    },
+    "method-argument-type": {
+      "foreground": "#1769D7"
+    },
+    "method-owner-type": {
+      "foreground": "#1769D7"
+    },
+    "capsule-field": {
+      "foreground": "#073818"
+    },
+    "identifier-reference": {
+      "foreground": "#373E45"
+    },
+    "comment": {
+      "foreground": "#6B7378",
+      "fontStyle": "italic"
+    },
+    "string": {
+      "foreground": "#21262A"
+    },
+    "invalid-number": {
+      "foreground": "#7E0B14"
+    },
+    "invalid-operator": {
+      "foreground": "#92540F"
+    }
+  }
+}

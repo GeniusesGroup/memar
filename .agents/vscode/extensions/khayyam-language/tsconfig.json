@@ -1,0 +1,15 @@
+{
+	"compilerOptions": {
+		"allowJs": true,
+		"checkJs": true,
+		"strict": true,
+		"noImplicitAny": true,
+		"noEmit": true,
+		"module": "node16",
+		"moduleResolution": "node16",
+		"target": "es2022",
+		"lib": ["es2022"],
+		"types": ["node", "vscode"]
+	},
+	"include": ["scripts/**/*.js", "scripts/**/*.mjs"]
+}

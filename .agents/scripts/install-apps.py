@@ -4,11 +4,19 @@
 Does not write AGENTS.md or `.agents/memar/` — that is install-agents.py
 (the https://agents.md/ project pointer).
 
-  python -c "import urllib.request; exec(urllib.request.urlopen('https://raw.githubusercontent.com/GeniusesGroup/memar/main/.agents/scripts/install-apps.py').read().decode())"
+The skill is copied from the Memar checkout that $MEMAR_ROOT names, read by
+`install.py` in this folder, which is also where the writing of that variable
+lives. This script never copies the repository anywhere else. The skill carries
+no scripts: the navigation script it names lives in the checkout, in
+`.agents/scripts/`, and is reached there rather than copied here.
 
-Needs Python 3 and network access to GitHub. Needs git only when no
-usable Memar checkout is already present. If git is missing, git.py
-tries to install it.
+Run it from the Memar checkout, with the file beside it:
+
+  python .agents/scripts/install-apps.py
+
+Needs Python 3 and a Memar checkout on this machine. If MEMAR_ROOT is unset this
+script says so and points at the install script; it does not clone the
+repository to find one.
 
   (none)             every detected agent app
   cursor|claude|codex|opencode|agents
@@ -20,19 +28,12 @@ Usage is the interface. Do not duplicate these recipes as prose catalogs.
 from __future__ import annotations
 
 import argparse
-import runpy
 import shutil
 import sys
-import tempfile
-import urllib.request
 from pathlib import Path
 
-THIS = "install-apps.py"
-SESSION_URL = (
-    "https://raw.githubusercontent.com/GeniusesGroup/memar/main"
-    "/.agents/scripts/session.py"
-)
-SKILL_IGNORE = shutil.ignore_patterns("__pycache__", "*.pyc", ".DS_Store")
+import install
+
 APP_DIRS = {
     "agents": lambda: Path.home() / ".agents",
     "cursor": lambda: Path.home() / ".cursor",
@@ -40,25 +41,6 @@ APP_DIRS = {
     "codex": lambda: Path.home() / ".codex",
     "opencode": lambda: Path.home() / ".config" / "opencode",
 }
-
-
-def _on_disk() -> bool:
-    try:
-        parent = Path(__file__).resolve().parent
-    except NameError:
-        return False
-    if not (parent / "session.py").is_file():
-        return False
-    if str(parent) not in sys.path:
-        sys.path.insert(0, str(parent))
-    return True
-
-
-def _utf8_stdio() -> None:
-    for stream in (sys.stdout, sys.stderr):
-        reconfigure = getattr(stream, "reconfigure", None)
-        if reconfigure is not None:
-            reconfigure(encoding="utf-8", errors="replace")
 
 
 def skill_dest_for_app(app: str) -> Path:
@@ -96,22 +78,19 @@ def skill_destinations(*, existing_only: bool, app: str | None) -> list[Path]:
     return unique
 
 
-def copy_skill(dest: Path, *, dry_run: bool) -> None:
-    import session
-
-    source = session.ensure_memar_root() / ".agents" / "skills" / "memar"
+def copy_skill(source: Path, dest: Path, *, dry_run: bool) -> None:
     if dry_run:
         print(f"dry-run: copy {source} -> {dest}")
         return
     dest.parent.mkdir(parents=True, exist_ok=True)
     if dest.exists():
         shutil.rmtree(dest)
-    shutil.copytree(source, dest, ignore=SKILL_IGNORE)
+    shutil.copytree(source, dest, ignore=install.NEVER_COPIED)
     print(f"copied skill -> {dest}")
 
 
 def main() -> None:
-    _utf8_stdio()
+    install.use_utf8_stdio()
     apps = ", ".join(APP_DIRS)
     parser = argparse.ArgumentParser(
         description=__doc__,
@@ -149,25 +128,15 @@ def main() -> None:
     dests = skill_destinations(existing_only=existing_only, app=app)
     if existing_only and not dests:
         sys.exit("error: no existing Memar skill copies found to update")
+    # install.py is the only thing that reads where Memar lives on this machine,
+    # and this is the one read whose answer is reported and acted on.
+    root = install.resolve_root()
+    print(f"Memar resolves to {root}")
+    source = root / ".agents" / "skills" / "memar"
     for dest in dests:
-        copy_skill(dest, dry_run=args.dry_run)
+        copy_skill(source, dest, dry_run=args.dry_run)
 
 
 if __name__ == "__main__":
-    if not _on_disk():
-        ns = {"__name__": "memar_session"}
-        exec(
-            compile(urllib.request.urlopen(SESSION_URL).read(), SESSION_URL, "exec"),
-            ns,
-        )
-        ns["ensure_memar_root"]()
-        live = (
-            Path(tempfile.gettempdir())
-            / "memar"
-            / ".agents"
-            / "scripts"
-            / THIS
-        )
-        runpy.run_path(str(live), run_name="__main__")
-        raise SystemExit(0)
     main()
+

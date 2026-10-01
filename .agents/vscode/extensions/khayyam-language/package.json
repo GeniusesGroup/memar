@@ -20,6 +20,10 @@
     "type": "git",
     "url": "https://github.com/GeniusesGroup/memar.git"
   },
+  "scripts": {
+    "verify": "node scripts/verify-roles.mjs",
+    "typecheck": "node ../../../../modules/khayyam/node_modules/typescript/bin/tsc -p tsconfig.json"
+  },
   "contributes": {
     "languages": [
       {
@@ -51,6 +55,18 @@
         "path": "./snippets/khayyam.code-snippets"
       }
     ],
+    "themes": [
+      {
+        "label": "Memar Dark",
+        "uiTheme": "vs-dark",
+        "path": "./themes/khayyam-dark.json"
+      },
+      {
+        "label": "Memar Light",
+        "uiTheme": "vs",
+        "path": "./themes/khayyam-light.json"
+      }
+    ],
     "configurationDefaults": {
       "[khayyam]": {
         "editor.insertSpaces": false,
@@ -58,8 +74,361 @@
         "editor.formatOnSaveMode": "file",
         "editor.codeActionsOnSave": {
           "source.organizeImports": "explicit"
+        },
+        "editor.semanticHighlighting.enabled": true,
+        "editor.tokenColorCustomizations": {
+          "textMateRules": [
+            {
+              "comment": "Role: keyword (from khayyam-dark.json)",
+              "scope": [
+                "keyword.control.khayyam"
+              ],
+              "settings": {
+                "foreground": "#70B87B"
+              }
+            },
+            {
+              "comment": "Role: subtype (from khayyam-dark.json)",
+              "scope": [
+                "keyword.control.subtype.khayyam"
+              ],
+              "settings": {
+                "foreground": "#70B87B"
+              }
+            },
+            {
+              "comment": "Role: included-type (from khayyam-dark.json)",
+              "scope": [
+                "entity.name.import.khayyam"
+              ],
+              "settings": {
+                "foreground": "#95CAFC",
+                "fontStyle": "italic"
+              }
+            },
+            {
+              "comment": "Role: included-variable (from khayyam-dark.json)",
+              "scope": [
+                "variable.other.import.khayyam"
+              ],
+              "settings": {
+                "foreground": "#86D7BB",
+                "fontStyle": "italic"
+              }
+            },
+            {
+              "comment": "Role: file-uri (from khayyam-dark.json)",
+              "scope": [
+                "string.quoted.double.file-uri.khayyam"
+              ],
+              "settings": {
+                "foreground": "#93A9AF"
+              }
+            },
+            {
+              "comment": "Role: capsule (from khayyam-dark.json)",
+              "scope": [
+                "entity.name.class.khayyam"
+              ],
+              "settings": {
+                "foreground": "#0095B7"
+              }
+            },
+            {
+              "comment": "Role: abstraction (from khayyam-dark.json)",
+              "scope": [
+                "entity.name.interface.khayyam"
+              ],
+              "settings": {
+                "foreground": "#9978CF"
+              }
+            },
+            {
+              "comment": "Role: method (from khayyam-dark.json)",
+              "scope": [
+                "entity.name.function.khayyam"
+              ],
+              "settings": {
+                "foreground": "#B0C1FF"
+              }
+            },
+            {
+              "comment": "Role: scope (from khayyam-dark.json)",
+              "scope": [
+                "entity.name.scope.khayyam"
+              ],
+              "settings": {
+                "foreground": "#CC8AC9"
+              }
+            },
+            {
+              "comment": "Role: type-reference (from khayyam-dark.json)",
+              "scope": [
+                "entity.name.type.khayyam"
+              ],
+              "settings": {
+                "foreground": "#67AAE9"
+              }
+            },
+            {
+              "comment": "Role: variable (from khayyam-dark.json)",
+              "scope": [
+                "variable.other.khayyam"
+              ],
+              "settings": {
+                "foreground": "#019D7B"
+              }
+            },
+            {
+              "comment": "Role: method-argument (from khayyam-dark.json)",
+              "scope": [
+                "variable.parameter.khayyam"
+              ],
+              "settings": {
+                "foreground": "#6DD9D5",
+                "fontStyle": "bold"
+              }
+            },
+            {
+              "comment": "Role: method-argument-type (from khayyam-dark.json)",
+              "scope": [
+                "entity.name.type.parameter.khayyam"
+              ],
+              "settings": {
+                "foreground": "#67AAE9"
+              }
+            },
+            {
+              "comment": "Role: method-owner-type (from khayyam-dark.json)",
+              "scope": [
+                "entity.name.type.owner.khayyam"
+              ],
+              "settings": {
+                "foreground": "#67AAE9"
+              }
+            },
+            {
+              "comment": "Role: capsule-field (from khayyam-dark.json)",
+              "scope": [
+                "variable.other.field.khayyam"
+              ],
+              "settings": {
+                "foreground": "#96B069"
+              }
+            },
+            {
+              "comment": "Role: identifier-reference (from khayyam-dark.json)",
+              "scope": [
+                "variable.other.reference.khayyam"
+              ],
+              "settings": {
+                "foreground": "#ADC3C2"
+              }
+            },
+            {
+              "comment": "Role: comment (from khayyam-dark.json)",
+              "scope": [
+                "comment.line.double-slash.khayyam",
+                "comment.block.slash-star.khayyam"
+              ],
+              "settings": {
+                "foreground": "#7C8891"
+              }
+            },
+            {
+              "comment": "Role: string (from khayyam-dark.json)",
+              "scope": [
+                "string.quoted.double.khayyam"
+              ],
+              "settings": {
+                "foreground": "#CBDBDF"
+              }
+            },
+            {
+              "comment": "Role: invalid-number (from khayyam-dark.json)",
+              "scope": [
+                "invalid.illegal.numeric.khayyam"
+              ],
+              "settings": {
+                "foreground": "#ED5350"
+              }
+            },
+            {
+              "comment": "Role: invalid-operator (from khayyam-dark.json)",
+              "scope": [
+                "invalid.illegal.operator.khayyam"
+              ],
+              "settings": {
+                "foreground": "#FEB98B"
+              }
+            }
+          ]
+        },
+        "editor.semanticTokenColorCustomizations": {
+          "enabled": true,
+          "rules": {
+            "keyword": {
+              "foreground": "#70B87B"
+            },
+            "subtype": {
+              "foreground": "#70B87B"
+            },
+            "included-type": {
+              "foreground": "#95CAFC",
+              "fontStyle": "italic"
+            },
+            "included-variable": {
+              "foreground": "#86D7BB",
+              "fontStyle": "italic"
+            },
+            "file-uri": {
+              "foreground": "#93A9AF"
+            },
+            "capsule": {
+              "foreground": "#0095B7"
+            },
+            "abstraction": {
+              "foreground": "#9978CF"
+            },
+            "method": {
+              "foreground": "#B0C1FF"
+            },
+            "scope": {
+              "foreground": "#CC8AC9"
+            },
+            "type-reference": {
+              "foreground": "#67AAE9"
+            },
+            "variable": {
+              "foreground": "#019D7B"
+            },
+            "method-local": {
+              "foreground": "#5CB99B"
+            },
+            "method-argument": {
+              "foreground": "#6DD9D5",
+              "fontStyle": "bold"
+            },
+            "method-argument-type": {
+              "foreground": "#67AAE9"
+            },
+            "method-owner-type": {
+              "foreground": "#67AAE9"
+            },
+            "capsule-field": {
+              "foreground": "#96B069"
+            },
+            "identifier-reference": {
+              "foreground": "#ADC3C2"
+            },
+            "comment": {
+              "foreground": "#7C8891"
+            },
+            "string": {
+              "foreground": "#CBDBDF"
+            },
+            "invalid-number": {
+              "foreground": "#ED5350"
+            },
+            "invalid-operator": {
+              "foreground": "#FEB98B"
+            }
+          }
         }
       }
-    }
+    },
+    "configuration": {
+      "title": "Khayyam",
+      "properties": {
+        "khayyam.languageServer.path": {
+          "type": "string",
+          "default": "",
+          "description": "Path to the Khayyam language server (server.ts). Leave empty to use the server that ships with this repository."
+        },
+        "khayyam.contractPath": {
+          "type": "string",
+          "default": "",
+          "description": "Path to the Khayyam display contract (display.json). Leave empty to use the contract that ships with this repository."
+        }
+      }
+    },
+    "commands": [
+      {
+        "command": "khayyam.showOutput",
+        "title": "Khayyam: Show Language Server Log",
+        "category": "Khayyam"
+      }
+    ],
+    "semanticTokenTypes": [
+      {
+        "id": "subtype",
+        "superType": "keyword",
+        "description": "A reserved word of the language that also names a Type's category or routes an inclusion. A subtype keyword is a keyword; what it names is a position, not a kind."
+      },
+      {
+        "id": "included-type",
+        "superType": "type",
+        "description": "A Type. What makes this one an included one is where the name came from, which a super type cannot express: this role and `type-reference` are one kind, and the palette separates them by lightness and by the italic."
+      },
+      {
+        "id": "included-variable",
+        "superType": "variable",
+        "description": "A Variable. What makes this one an included one is where the name came from, which a super type cannot express: this role and `variable` are one kind, and the palette separates them by lightness and by the italic."
+      },
+      {
+        "id": "file-uri",
+        "superType": "string",
+        "description": "A string. The language calls it a file URI and a path, and a super type says it is a quoted literal and nothing about that it is a source-level path."
+      },
+      {
+        "id": "capsule",
+        "superType": "class",
+        "description": "A class, in the host's sense of a stateful declared type. A Capsule is one of four categories of Type, and the category is what the subtype keyword beside the name says; a super type carries the kind and not the category."
+      },
+      {
+        "id": "abstraction",
+        "superType": "interface",
+        "description": "An interface, in the host's sense of a behavioral specification. An Abstraction is the second of four categories of Type, and the category is what the subtype keyword beside the name says."
+      },
+      {
+        "id": "type-reference",
+        "superType": "type",
+        "description": "A Type. That this file does not state the category is a property of the file and not of the name, and a super type cannot express it: this role and `included-type` are one kind, separated by lightness and by the italic."
+      },
+      {
+        "id": "method-local",
+        "superType": "variable",
+        "description": "A variable. A name a method body declares is a Variable exactly as a name at file level is, and what separates the two is how wide the validity is - one kind, not two - which the host's modifiers cannot express and which the palette carries by lightness and chroma."
+      },
+      {
+        "id": "method-argument",
+        "superType": "parameter",
+        "description": "A parameter, in the host's sense of a name a signature introduces. The host's `declaration` modifier would mark the signature and not every use, and the legend this contract names carries no modifier, so the kind is what the type says and the rest is the palette's bold."
+      },
+      {
+        "id": "method-argument-type",
+        "superType": "type",
+        "description": "A Type. That it is an argument's declared type is a position, and a super type expresses kind and not position: this role and `method-owner-type` are one kind, told apart by the parentheses they stand in."
+      },
+      {
+        "id": "method-owner-type",
+        "superType": "type",
+        "description": "A Type. That it is the owner is a position, and a super type expresses kind and not position: this role and `method-argument-type` are one kind, told apart by the parentheses they stand in."
+      },
+      {
+        "id": "capsule-field",
+        "superType": "property",
+        "description": "A property, in the host's sense of a member of a declared type. That the field is private to its Capsule is residue: the host's modifiers have no `private`, so the privacy is the language's and the palette carries it as this kind's own lightness."
+      }
+    ]
+  },
+  "main": "./scripts/client.js",
+  "activationEvents": [
+    "onLanguage:khayyam",
+    "onCommand:khayyam.showOutput"
+  ],
+  "devDependencies": {
+    "@types/node": "26.6.3",
+    "@types/vscode": "^1.95.0"
   }
 }

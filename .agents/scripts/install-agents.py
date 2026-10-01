@@ -1,18 +1,30 @@
 #!/usr/bin/env python3
 """Install Memar into a project as https://agents.md/ instructions.
 
-Writes AGENTS.md (a ## Memar section) and `.agents/memar/` so a session
-reads that README and runs the Python file beside it. Does not copy the
-skill into agent apps — that is install-apps.py.
+Writes two things: a one-line `## Memar` section in the project's AGENTS.md
+pointing at `.agents/memar/README.md`, and that README. AGENTS.md is not the
+place for how to install Memar — it is read on every session and needs only to
+say which file to read; the README beside it carries the substance.
 
-Fetch and run from the project (a subdirectory is fine; this walks up to
-the version-control root):
+It places no script and no Python file in the project: the bootstrap for the
+machine is fetched from the Memar repository at the point of use, and a copy per
+repository is unmaintainable — every change here would have to be re-copied into
+every project by hand.
 
-  python -c "import urllib.request; exec(urllib.request.urlopen('https://raw.githubusercontent.com/GeniusesGroup/memar/main/.agents/scripts/install-agents.py').read().decode())"
+Where Memar lives on this machine is one thing: the MEMAR_ROOT environment
+variable, written at install time by `.agents/scripts/install.py` and read by
+everything, including the test this script asks that file for rather than
+carrying: whether a folder is the Memar repository, which is what keeps the
+Memar repository's own hand-written README from being replaced by this text.
 
-Needs Python 3 and network access to GitHub. Needs git only when no
-usable Memar checkout is already present. If git is missing, git.py
-tries to install it.
+Run it from the project you want Memar in, a subdirectory being fine — this walks
+up to the version-control root — with the Memar checkout's own copy beside it:
+
+  python "$MEMAR_ROOT/.agents/scripts/install-agents.py"
+
+Needs Python 3 and a Memar checkout on this machine. It never resolves MEMAR_ROOT
+itself and never installs anything: the machine is settled before this runs, and
+the README it writes says what to run when it is not.
 
   (none)    install into the current project
   update    refresh an existing project install
@@ -22,79 +34,58 @@ Usage is the interface. Do not duplicate these recipes as prose catalogs.
 from __future__ import annotations
 
 import argparse
+import os
 import re
-import runpy
 import sys
-import tempfile
-import urllib.request
 from pathlib import Path
 
-THIS = "install-agents.py"
-SESSION_URL = (
-    "https://raw.githubusercontent.com/GeniusesGroup/memar/main"
-    "/.agents/scripts/session.py"
+import install
+
+PUBLISH_BRANCH = "main"
+SCRIPTS_RAW = (
+    f"https://raw.githubusercontent.com/GeniusesGroup/memar/{PUBLISH_BRANCH}/.agents/scripts"
 )
+# The point-of-use command, per platform: fetch the bootstrap from the publishing
+# branch and run it where it stands. Both addresses are built from the one base
+# this script publishes under, so the command a consumer is told to run cannot
+# name a different branch than the one this file ships on.
+WINDOWS_BOOTSTRAP = (
+    "powershell -ExecutionPolicy Bypass -Command \"& ([scriptblock]::Create((irm "
+    f"{SCRIPTS_RAW}/install.ps1)))\""
+)
+POSIX_BOOTSTRAP = f'sh -c "$(curl -fsSL {SCRIPTS_RAW}/install.sh)" install.sh'
+# One path, used both as the file written and as the link AGENTS.md points at, so
+# the pointer cannot name a file that is not there.
+CONSUMER_README = Path(".agents") / "memar" / "README.md"
 MEMAR_HEADING = "## Memar"
 AGENTS_H1 = "# Repository instructions"
 AGENTS_SECTION_BODY = (
     "Before any other work in a session, read "
-    "[`.agents/memar/README.md`](.agents/memar/README.md)."
+    f"[`{CONSUMER_README.as_posix()}`]({CONSUMER_README.as_posix()})."
 )
-CONSUMER_README = """# Memar
-Run [session.py](./session.py) beside this file before any other work. It prints the Memar checkout to load. Then open `.agents/skills/memar/SKILL.md` from that path and use the scripts beside it.
-"""
-PROJECT_SESSION = f'''#!/usr/bin/env python3
-"""Print the Memar checkout this session should load.
-
-Canonical Memar is the process temp directory plus a folder named memar.
-This file only invokes that copy.
-"""
-from pathlib import Path
-import runpy
-import tempfile
-import urllib.request
-
-SESSION = (
-    Path(tempfile.gettempdir()) / "memar" / ".agents" / "scripts" / "session.py"
-).resolve()
-URL = {SESSION_URL!r}
-
-
-def main() -> None:
-    if SESSION.is_file():
-        runpy.run_path(str(SESSION), run_name="__main__")
-        return
-    exec(compile(urllib.request.urlopen(URL).read(), URL, "exec"), {{"__name__": "__main__"}})
-
-
-if __name__ == "__main__":
-    main()
-'''
+# The substance, in the document AGENTS.md points at rather than in AGENTS.md.
+README_BODY = (
+    "`MEMAR_ROOT` names the Memar checkout on this machine. If it is unset, run "
+    "the bootstrap from Memar's repository — it makes sure git and Python are "
+    "here, then installs Memar and writes that variable:\n\n"
+    "```\n"
+    f"{WINDOWS_BOOTSTRAP}   # Windows\n"
+    f"{POSIX_BOOTSTRAP}   # POSIX\n"
+    "```\n\n"
+    "Then restart your program: a program of your own that is already running "
+    "keeps the value it was started with, while the scripts in the checkout that "
+    "variable names read the platform's record of it and see it at once. Load "
+    "`.agents/skills/memar/SKILL.md` from the checkout that variable names, and use "
+    "the scripts in its `.agents/scripts/`. To put Memar into another project, run "
+    "`install-agents.py` from that checkout, in that project."
+)
+CONSUMER_README_TEXT = f"# Memar\n{README_BODY}\n"
 AGENTS_DIR_README = """# Agents
 This directory holds configuration and practices for agents working on this project. It is not reserved for any one framework. What a session should load is declared in [AGENTS.md](../AGENTS.md). Discover what lives here by listing the directory.
 """
 HEADING_RE = re.compile(r"(?m)^## Memar[ \t]*$")
 NEXT_HEADING_RE = re.compile(r"(?m)^#{1,2}[ \t]+\S")
 VCS_MARKERS = (".git", ".hg", ".svn", ".fossil", ".bzr", "_darcs", ".pijul")
-
-
-def _on_disk() -> bool:
-    try:
-        parent = Path(__file__).resolve().parent
-    except NameError:
-        return False
-    if not (parent / "session.py").is_file():
-        return False
-    if str(parent) not in sys.path:
-        sys.path.insert(0, str(parent))
-    return True
-
-
-def _utf8_stdio() -> None:
-    for stream in (sys.stdout, sys.stderr):
-        reconfigure = getattr(stream, "reconfigure", None)
-        if reconfigure is not None:
-            reconfigure(encoding="utf-8", errors="replace")
 
 
 def _has_vcs_marker(path: Path) -> bool:
@@ -170,13 +161,13 @@ def write_text(path: Path, text: str, *, dry_run: bool) -> None:
         print(text, end="" if text.endswith("\n") else "\n")
         return
     path.parent.mkdir(parents=True, exist_ok=True)
+    # newline="\n": the text is written on whichever platform ran this, not the
+    # one that will read it.
     path.write_text(text, encoding="utf-8", newline="\n")
     print(f"wrote {path}")
 
 
 def cmd_install(*, dry_run: bool, require_existing: bool) -> None:
-    import session
-
     target = resolve_project_dir(Path.cwd())
     agents = target / "AGENTS.md"
     if require_existing:
@@ -189,26 +180,32 @@ def cmd_install(*, dry_run: bool, require_existing: bool) -> None:
     else:
         updated = upsert_memar_section("")
     write_text(agents, updated, dry_run=dry_run)
-    if not session.is_usable_memar(target):
+    # The Memar repository installs itself, and its .agents/memar/README.md is
+    # written by hand to point at its own skill; it must not be replaced by the
+    # text written for a project that has to fetch Memar first.
+    if not install.is_memar_repository(target):
         write_text(
-            target / ".agents" / "memar" / "README.md",
-            CONSUMER_README,
-            dry_run=dry_run,
-        )
-        write_text(
-            target / ".agents" / "memar" / "session.py",
-            PROJECT_SESSION,
+            target / CONSUMER_README,
+            CONSUMER_README_TEXT,
             dry_run=dry_run,
         )
     agents_index = target / ".agents" / "README.md"
     if not agents_index.is_file():
         write_text(agents_index, AGENTS_DIR_README, dry_run=dry_run)
     if not dry_run:
-        session.ensure_memar_root()
+        recorded = os.environ.get("MEMAR_ROOT", "").strip()
+        if not recorded:
+            print(
+                "MEMAR_ROOT is not set, so Memar is not on this machine yet; the "
+                "bootstrap this project now points at installs it",
+                file=sys.stderr,
+            )
+        else:
+            print(f"MEMAR_ROOT is set to {recorded}")
 
 
 def main() -> None:
-    _utf8_stdio()
+    install.use_utf8_stdio()
     parser = argparse.ArgumentParser(
         description=__doc__,
         formatter_class=argparse.RawDescriptionHelpFormatter,
@@ -231,20 +228,4 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    if not _on_disk():
-        ns = {"__name__": "memar_session"}
-        exec(
-            compile(urllib.request.urlopen(SESSION_URL).read(), SESSION_URL, "exec"),
-            ns,
-        )
-        ns["ensure_memar_root"]()
-        live = (
-            Path(tempfile.gettempdir())
-            / "memar"
-            / ".agents"
-            / "scripts"
-            / THIS
-        )
-        runpy.run_path(str(live), run_name="__main__")
-        raise SystemExit(0)
     main()
