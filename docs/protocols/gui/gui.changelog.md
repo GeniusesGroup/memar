@@ -6,8 +6,8 @@
 - Time: 2026-09-06T00:00:00Z
 - Type: Expanded
 - Contributors:
-  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — claimed, argued
-  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — reviewed, rewrote
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — claimed, argued
+  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — reviewed, rewrote
 
 #### What changed
 - The GUI protocol gained its architectural position: three-way separation, widget-based model, protocol-level page state and history, single routing authority, SDK-mediated service access, and once-generated shared validation.

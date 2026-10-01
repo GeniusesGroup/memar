@@ -219,7 +219,7 @@ Considered leaving the Discussion section's philosophical framing intact on the 
 - Time: 2026-09-06T10:30:00Z
 - Type: Fixed
 - Cited:
-  - [Khayyam Runtime Specification](./runtime.md) — Reference: the runtime-side realization of the execution-semantics alignment, now linked from the restored topic so the principle and its one concrete realization stay distinct.
+  - [Khayyam Runtime Specification](../protocols/computer/runtime.md) — Reference: the runtime-side realization of the execution-semantics alignment, now linked from the restored topic so the principle and its one concrete realization stay distinct.
   - commit `091333a` (2026-07-13, `RFCs/khayyam.md`) — Evidence: this topic was added to the language document on 2026-07-13, directly after the session that drafted it, and was removed on 2026-07-18 during the Encapsulation/Variable restructure (`f73c633`) without being migrated anywhere.
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — directed, decided

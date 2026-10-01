@@ -14,8 +14,8 @@
   - persia_os.md: Pending — should reference this document for the OS-boundary principle and the kernel-model spectrum instead of restating kernel-concept material locally (its current architecture section lists the concepts without the principle behind them).
   - unikernel.md: Done — content fully absorbed into this document (topics, implementation links, and the ACM citation); file deleted. It never had Explanation-facet form (no front matter or ID), so no Superseded pointer was created, per the merge rule for pre-Final documents.
 - Contributors:
-  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — claimed, argued
-  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — drafted
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — claimed, argued
+  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — drafted
 
 #### What changed
 - Created the merged Explanation-facet document `os.md` (titled "OS — Guarantees and Kernel Models"), as Draft, restructuring the two source notes under the Explanation facet.
@@ -35,8 +35,8 @@ The merge follows the project's rule that pre-Final documents consolidate withou
 - Propagates to:
   - persia_os.md: Pending — its "User Manager" and POSIX-adjacent framing may need reexamination against the decomposition and identity topics in this document; its kernel-concept list should also gain the hypervisor position.
 - Contributors:
-  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — argued
-  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — drafted
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — argued
+  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — drafted
 
 #### What changed
 - The document was extended in four moves.
@@ -64,8 +64,8 @@ The merge follows the project's rule that pre-Final documents consolidate withou
 - Propagates to:
   - none — self-contained restructuring of this document (the persia_os.md pending from earlier entries is unchanged).
 - Contributors:
-  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — argued
-  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — drafted
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — argued
+  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — drafted
 
 #### What changed
 - Four structural changes.
@@ -90,8 +90,8 @@ The merge follows the project's rule that pre-Final documents consolidate withou
 - Propagates to:
   - persia_os.md: Pending — unchanged from earlier entries.
 - Contributors:
-  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — argued
-  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — drafted
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — argued
+  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — drafted
 
 #### What changed
 - The document was rewritten around requirement areas instead of historical narrative.
@@ -120,8 +120,8 @@ The merge follows the project's rule that pre-Final documents consolidate withou
 - Propagates to:
   - persia_os.md: Pending — re-scoped as a project-level document: PersiaOS is a project on the architecture delivering applications, not part of the architect's documentation; its document should be rewritten as a project brief referencing this one for every architect-level claim, keeping only its project-specific decisions.
 - Contributors:
-  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — argued
-  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — drafted
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — argued
+  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — drafted
 
 #### What changed
 - The PersiaOS project document was reviewed claim by claim and four architect-level insights transferred, each corrected to current thinking.
@@ -146,8 +146,8 @@ The merge follows the project's rule that pre-Final documents consolidate withou
 - Propagates to:
   - persia_os.md: Pending — unchanged from earlier entries.
 - Contributors:
-  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — argued
-  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — drafted
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — argued
+  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — drafted
 
 #### What changed
 - Added the topic "Famous names: VM, container, and what they actually are" — each famous name read as a packaging or compatibility choice of the traditional bundle, with the container stated sharpest: a container does not close the neighbor problem, because kernel-side memory (network buffers, page cache, connection state) is shared and unaccounted, and the traditional remedy of blunt limits does not remove the sharing, it throttles the input — an application forced to refuse work it had the resources to perform.
@@ -175,8 +175,8 @@ The merge follows the project's rule that pre-Final documents consolidate withou
 - Propagates to:
   - giti.md: Done — its mixed-level communication ruling references this topic's answer.
 - Contributors:
-  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided
-  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — applied.
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — applied.
 
 #### What changed
 - The Networking topic gained the paragraph dissolving the driver-as-app cost objection: isolation costs, not per-packet mediation — no context switch on the packet path, and a direct NIC-memory grant into the destination application's buffers as the permitted cheaper path that traditional kernel-mediated stacks never take.
@@ -192,8 +192,8 @@ The merge follows the project's rule that pre-Final documents consolidate withou
 - Propagates to:
   - none — the source discussion (chats-context/unikernel - deepseek.md) had its other arguments absorbed on 2026-08-28; this entry closes the remaining three, after which the source file is retired.
 - Contributors:
-  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — argued
-  - [Qwen](../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via [OpenCode](../../CONTRIBUTORS.md#opencode)) — drafted.
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — argued
+  - [Qwen](../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via [OpenCode](../../../CONTRIBUTORS.md#opencode)) — drafted.
 
 #### What changed
 - Three additions close out the source discussion.
@@ -212,8 +212,8 @@ The merge follows the project's rule that pre-Final documents consolidate withou
 - Time: 2026-09-03T00:00:00Z
 - Type: refactor
 - Contributors:
-  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) - directed, decided
-  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) - moved.
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) - directed, decided
+  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) - moved.
 
 #### What changed
 - This document and its changelog moved from `docs/` to `docs/protocols/` - the home of Memar's own protocol specifications. Relative links to concept documents at `docs/` root (agency, modularity, process) were adjusted for the added depth; no content change.
@@ -229,8 +229,8 @@ The merge follows the project's rule that pre-Final documents consolidate withou
 - Propagates to:
   - networking.md: Done — the network-side half of the position (the full examination, justified dependences, userspace direction, filtration counter-argument) lives there as its new topic, recorded in that document's changelog in the same pass.
 - Contributors:
-  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — reviewed, decided
-  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — rewrote
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — reviewed, decided
+  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — rewrote
 
 #### What changed
 - The Networking topic gained the OS-side statement of the position: a traditional OS's embedded network stack is inherited, not examined, by the systems that run on it, and a Memar system reads it as one realization of transport to be checked rather than adopted by default.
@@ -250,7 +250,7 @@ The merge follows the project's rule that pre-Final documents consolidate withou
 - Propagates to:
   - os.handoff.md: Created - all open questions and future possibilities moved there.
 - Contributors:
-  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) - moved
+  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) - moved
 
 #### What changed
 - The body's fixed top-level sections are now `Abstract`, `Introduction`, `Explanation`, `Results` only (Super Z - applied the finalized documentation method).
@@ -271,7 +271,7 @@ Dissolved every `#### Discussion` wrapper (the boundary topic, the kernel-layer 
 - **Rebut each famous name in its own catalogue entry (rejected for now; migrated from the famous-names topic's retired `Rationale and alternatives`)**: the demystification generalizes into a test — which guarantee does this name provide, and which meaning does it define? A maintained catalogue of rebuttals would age; the test does not.
 - **Keep the traditional component names but redefine them (rejected; migrated from the decomposition topic's retired `Rationale and alternatives`)**: redefining "user" or "process" while keeping the word invites the old meaning back through every reader's prior associations. Where a traditional word's meaning genuinely changes, this document describes the thing rather than reusing the label; naming is revisited once the concepts stabilize.
 - **Declare the default apps outside the OS's concern entirely (rejected; migrated from the decomposition topic's retired `Rationale and alternatives`)**: they are outside the OS's *guarantees*, but an OS distribution still has to ship something that starts and manages applications — the point is their status (ordinary, replaceable apps), not their absence.
-- **Answer concurrency questions in os.md (rejected; migrated from the Compute topic's retired `Rationale and alternatives`)**: this document's neighbor, [Process](../process.md), already governs them — concurrency is treated there as a property of how a process's parts may progress, with locking and synchronization as possible mechanisms selected only after the process is understood. Restating or specializing those answers here would risk contradicting them, and the OS layer must not carry concurrency meaning the process layer has not assigned to it.
+- **Answer concurrency questions in os.md (rejected; migrated from the Compute topic's retired `Rationale and alternatives`)**: this document's neighbor, [Process](../../process.md), already governs them — concurrency is treated there as a property of how a process's parts may progress, with locking and synchronization as possible mechanisms selected only after the process is understood. Restating or specializing those answers here would risk contradicting them, and the OS layer must not carry concurrency meaning the process layer has not assigned to it.
 - **Keep threads at the OS level as the price of preemption (rejected for now; migrated from the Compute topic's retired `Rationale and alternatives`)**: preemption is a guarantee-side mechanism (taking the core back is exclusive-access enforcement), but the core-time entitlement is a thinner preemptible unit than the thread; what the traditional thread adds beyond it — identities, priorities, signal delivery — is policy and meaning.
 - **Keep a filesystem in the OS because applications expect one (rejected; migrated from the Storage topic's retired `Rationale and alternatives`)**: an expectation formed by the traditional bundle is not a requirement. An application that wants tree semantics carries the library that provides them — exactly as a unikernel does — and pays only for the semantics it uses.
 - **Push block arbitration into each application entirely (rejected; migrated from the Storage topic's retired `Rationale and alternatives`)**: exclusive access to raw devices is a guarantee the OS must arbitrate — two applications cannot both hold the same blocks. The position is not "no OS in storage" but "no storage meaning in the OS": the OS stops at exclusive, bounded block grants.
@@ -283,4 +283,4 @@ Dissolved every `#### Discussion` wrapper (the boundary topic, the kernel-layer 
 - **State each requirement wherever it first becomes relevant (rejected; migrated from the document-level retired `Rationale and alternatives`)**: scattering a requirement's capability and constraint across topics is exactly how the traditional view's assumptions survive a critique — one topic per requirement keeps each answer checkable and referenceable as a whole.
 
 #### Considered and not done (from the removed document-level Drawbacks section)
-- **Organizing by requirement area rather than by traditional component means a reader arriving with a traditional name — "threads", "filesystem", "network stack" — must map it to the requirement topic that owns it.** The mitigation is deliberate: each such name is answered exactly once, in the topic that states the area's capability and constraint, and the cross-references to the concept's own governing document ([Process](../process.md), [Chapar](../net/chapar.md)) carry the reader the rest of the way. Where no Memar document governs a name — "filesystem" is the current case — the word carries its general meaning, per [Terminology → The Default Meaning of an Unreferenced Term](../terminology.md#the-default-meaning-of-an-unreferenced-term).
+- **Organizing by requirement area rather than by traditional component means a reader arriving with a traditional name — "threads", "filesystem", "network stack" — must map it to the requirement topic that owns it.** The mitigation is deliberate: each such name is answered exactly once, in the topic that states the area's capability and constraint, and the cross-references to the concept's own governing document ([Process](../../process.md), [Chapar](../net/chapar.md)) carry the reader the rest of the way. Where no Memar document governs a name — "filesystem" is the current case — the word carries its general meaning, per [Terminology → The Default Meaning of an Unreferenced Term](../../terminology.md#the-default-meaning-of-an-unreferenced-term).

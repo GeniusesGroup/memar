@@ -6,15 +6,15 @@
 - Time: 2026-08-26T05:29:13Z
 - Type: merged
 - Cited:
-  - [Documentation — Explanation](../documentation-explanation.md) — Reference: its merge-before-Final rules governed which ID the merged document kept and prohibited new citations pointing at the absorbed pre-Final documents.
+  - [Documentation — Explanation](../../documentation-explanation.md) — Reference: its merge-before-Final rules governed which ID the merged document kept and prohibited new citations pointing at the absorbed pre-Final documents.
   - [The Error](../process/error.md) — Reference: declared as `Depends_on` by absorbed document `001002` (Chapar Broadcast: Scope, Privacy Rationale, and Known Risks); on verification no body-level dependency on it survives in the merged content, so it is recorded here rather than linked from the base document.
 - Propagates to:
   - networking.md: Done — its link target `./chapar.md` is unchanged; verified no edit needed.
   - sRPC.md: Done — its link target `./chapar.md` is unchanged; verified no edit needed.
   - README.md (repository root): Done — its link target `./docs/chapar.md` is unchanged; verified no edit needed.
 - Contributors:
-  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — requested
-  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — rewrote
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested
+  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — rewrote
 
 #### What changed
 - The Chapar documentation previously consisted of five files written under the older documentation method: this base specification plus four companion documents (`001000` chapar-introduction-goals-and-topology.md, `001001` chapar-vs-ethernet-rationale.md, `001002` chapar-broadcast-scope-and-known-risks.md, `001003` chapar-discovery-and-path-establishment.md), each carrying rich front matter (`Applied to`, `Citations`, `Depends_on`, `Extends`) pointing at specific sections of the base spec; all four were Draft.
@@ -35,12 +35,12 @@
 - Type: added
 - Cited:
   - [Chapar - Data Link Protocol](../net/chapar.md) — Depends_on: every step in chapar.practice.md restates normative behavior defined here; the procedures are meaningless without it.
-  - [Documentation — Practice](../documentation-practice.md) — Reference: the schema followed (name/description-only front matter, imperative style).
+  - [Documentation — Practice](../../documentation-practice.md) — Reference: the schema followed (name/description-only front matter, imperative style).
 - Propagates to:
   - chapar.md: Done — the practice file derives only from behavior already normative here; nothing needed to change in the spec.
 - Contributors:
-  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — requested
-  - [Super Z](../../CONTRIBUTORS.md#super-z) — wrote
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested
+  - [Super Z](../../../CONTRIBUTORS.md#super-z) — wrote
 
 #### What changed
 - `chapar.practice.md` was created alongside the consolidated base specification during the same consolidation that merged the four companion documents into `chapar.md`.
@@ -53,12 +53,12 @@
 - Time: 2026-08-26T06:11:59Z
 - Type: revised
 - Cited:
-  - [Documentation — Explanation](../documentation-explanation.md) — Reference: its definitions of Motivation (the problem/friction) and Methodology (how the content was actually arrived at) governed the rewrite and the boundary between the two sections.
+  - [Documentation — Explanation](../../documentation-explanation.md) — Reference: its definitions of Motivation (the problem/friction) and Methodology (how the content was actually arrived at) governed the rewrite and the boundary between the two sections.
 - Propagates to:
   - chapar.practice.md: Rejected — this revision changed ordering, Introduction prose, and rationale expansions only; no normative statement the procedures restate was altered.
 - Contributors:
-  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — requested, reviewed
-  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — rewrote
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested, reviewed
+  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — rewrote
 
 #### What changed
 - Methodology was rewritten from a documentation-production narrative (which belonged in this changelog and is now only here) into the design-inquiry narrative it should have been: decomposing what any data-link switching scheme must decide — where forwarding knowledge lives, how a sender bootstraps its first path, what bounds a frame's lifetime — and studying where Ethernet/datagram switching, circuit switching (telephone exchanges, ATM, Frame Relay), and flood-based ad hoc route discovery each place that knowledge; Chapar's design is presented as the synthesis of those placements, checked numerically against topology-capacity and header-cost figures.
@@ -82,8 +82,8 @@
   - Discovery (upper-layer identity note): Pending — awaiting approval of a note stating that stable identity binding above this layer is a universal layering property shared with Ethernet (ARP/name services), not specific to Chapar.
   - State model compared with Ethernet (depth scoping sentence): Pending — awaiting approval of one sentence recording that both protocols hand off to layer 3 beyond shallow-to-medium depth, with Chapar reaching that hand-off point on cheaper hardware.
 - Contributors:
-  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided
-  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — applied
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — applied
 
 #### What changed
 - Three rulings from critical review were applied.
@@ -108,8 +108,8 @@
   - Discovery (upper-layer identity note): Done — added with the universal framing the owner required.
   - State model compared with Ethernet (depth scoping): Done — expanded beyond the drafted single sentence at the owner's request, so the critique cannot resurface.
 - Contributors:
-  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided
-  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — applied
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — applied
 
 #### What changed
 - The core correction was written in as an architectural principle: a Chapar header appears only where a link feeds a switching function.
@@ -134,8 +134,8 @@
   - networking.md: Done — principle generalized there under Layer presence; switch-class definitions and hardware rationale now owned there.
   - chapar.practice.md: Rejected — procedures restate Chapar-level behavior only; the extracted material (generic switch-class definitions, media-existence principle) was never procedural content here.
 - Contributors:
-  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — requested, decided
-  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — applied
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested, decided
+  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — applied
 
 #### What changed
 - Three pieces moved out of this document into [Networking](../net/networking.md), which was rewritten under the current method with the two sibling files merged in.
@@ -154,8 +154,8 @@
 - Time: 2026-09-03T00:00:00Z
 - Type: refactor
 - Contributors:
-  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) - directed, decided
-  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) - moved.
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) - directed, decided
+  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) - moved.
 
 #### What changed
 - This document and its companions (practice, changelog) moved from `docs/` to `docs/protocols/` - the new home for Memar's own protocol specifications.
@@ -172,8 +172,8 @@
 - Propagates to:
   - chapar.handoff.md: Created - open questions and anticipated work moved there.
 - Contributors:
-  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) - requested
-  - [Qwen](../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via [OpenCode](../../CONTRIBUTORS.md#opencode)) - moved
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) - requested
+  - [Qwen](../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via [OpenCode](../../../CONTRIBUTORS.md#opencode)) - moved
 
 #### What changed
 - The body's fixed top-level sections are now `Abstract`, `Introduction`, `Explanation`, `Results` only: the document-level `## Discussion` and all five topic-level `#### Discussion` wrappers (Frame types, Discovery, Rules, Goals and Non-Goals, State model compared with Ethernet) are retired; no `Discussion`, `Drawbacks`, `Rationale and alternatives`, `Prior art`, `Unresolved questions`, or `Future possibilities` wrapper heading survives in the body.

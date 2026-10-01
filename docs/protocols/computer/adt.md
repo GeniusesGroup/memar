@@ -13,7 +13,7 @@ This document records what the repository already establishes about abstract dat
 ## Explanation
 
 ### Raw ADT protocols
-Container, array, list, graph, hash table, queue, stack, and marker protocols are declared under [`modules/computer/adt/`](../../modules/computer/adt/).
+Container, array, list, graph, hash table, queue, stack, and marker protocols are declared under [`modules/computer/adt/`](../../../modules/computer/adt/).
 
 ### Established translations
 - A dynamically sized ordered run — a slice in the reference corpus — is realized as `Array_Dynamic` ([`modules/computer/adt/array/protocol/dynamic.kh`](../../../modules/computer/adt/array/protocol/dynamic.kh)).

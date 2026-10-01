@@ -6,8 +6,8 @@
 - Time: 2026-09-06T00:00:00Z
 - Type: Added
 - Contributors:
-  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — claimed, argued
-  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — reviewed, rewrote
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — claimed, argued
+  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — reviewed, rewrote
 
 #### What changed
 - The initial draft established three realization rules — user-space-thread substrate, channels-as-signals (never channel-as-store), pooled execution units — plus the substrate-hostile-operation obligation for framework libraries.
@@ -29,8 +29,8 @@
 - Propagates to:
   - concurrency.handoff.md: Done - anticipated work recorded there under `Anticipated Work`.
 - Contributors:
-  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) - claimed, decided
-  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) - moved
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) - claimed, decided
+  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) - moved
 
 #### What changed
 - The body's `Discussion` wrappers dissolved entirely, per the finalized documentation method (documentation-explanation.changelog.md, same date) (Omid Hekayati - decided; Super Z - applied).

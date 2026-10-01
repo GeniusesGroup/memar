@@ -6,8 +6,8 @@
 - Time: 2026-09-06T00:00:00Z
 - Type: Added
 - Contributors:
-  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — claimed, argued
-  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — reviewed, rewrote
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — claimed, argued
+  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — reviewed, rewrote
 
 #### What changed
 - Initial Draft stating three rules — copy/ownership semantics are contract members, the boundary copy default is stated rather than folklore, allocation claims are measurement claims — with the header-copy and pooling-library evidence that motivates them.
@@ -27,8 +27,8 @@
 - Time: 2026-09-06T00:00:00Z
 - Type: Changed
 - Contributors:
-  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — claimed, argued, corrected
-  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — reviewed, argued, rewrote
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — claimed, argued, corrected
+  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — reviewed, argued, rewrote
 
 #### What changed
 - The document now moves definition-first: memory defined as the class of all state-retaining capacities.
@@ -37,7 +37,7 @@
 - The reclamation question is shown inescapable: manager inescapable, collector optional; cost moves, never disappears.
 - The reclamation mechanisms are classified, with runtime tracing GC as one family among several.
 - The contract rules of the initial draft are retained unchanged as the document's second half.
-- The concept-vs-label pattern this rejection exercises was written into [type.md](../type.md) as "Concepts Outlive Their Labels" (Super Z).
+- The concept-vs-label pattern this rejection exercises was written into [type.md](../../type.md) as "Concepts Outlive Their Labels" (Super Z).
 
 #### Deliberation
 - The initial draft's jump into "management" without definitions was judged a writing defect, and the restructure was directed: define memory first, then manage it (Omid Hekayati — directed).
@@ -45,7 +45,7 @@
 - The correct classifier for memory is **volatility** — volatile, semi-volatile, non-volatile per the standard taxonomy — not the ecosystem's memory/storage two-name split, which is rejected outright, including its attribution to the von Neumann architecture tradition (Omid Hekayati).
 - The GC concept is misplaced in the ecosystem: **no language with dynamic allocation escapes the reclamation question** — what languages like Rust actually distance themselves from is *runtime GC mechanisms*, and their ownership scheme is itself automatic reclamation requiring its own tooling, so the mechanisms marketed as "GC" must be classified as one subcategory (runtime GC mechanisms) under the broader spread, or the term becomes incoherent (Omid Hekayati).
 - The framing argument from the OS document: a founding layer grants bounded memory entitlements, never per-variable allocation services — so the manager inside the grant is the system's own, and reclamation policy is meaning defined above the guarantee boundary (Omid Hekayati).
-- It was directed that the OOP/FP concept-vs-label pattern be recorded in [type.md](../type.md) rather than only alluded to here (Omid Hekayati — directed).
+- It was directed that the OOP/FP concept-vs-label pattern be recorded in [type.md](../../type.md) rather than only alluded to here (Omid Hekayati — directed).
 - Strong counter-argument against his own positions was requested before acceptance (Omid Hekayati — requested).
 - The claims were verified and strengthened before recording (Super Z — verified).
 - The von Neumann attribution was corrected: the architecture's stored-program core is a *unification* of instruction and data memory; the two-name split is a later industry convention, making the rejection stronger, not weaker (Super Z — corrected).
@@ -62,8 +62,8 @@
 - Time: 2026-09-06T00:00:00Z
 - Type: Changed
 - Contributors:
-  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — reviewed, decided
-  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — rewrote
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — reviewed, decided
+  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — rewrote
 
 #### What changed
 - The document's body now contains only positions, arguments, and their verification discipline; every trace of where and with whom the positions were formed lives in the changelog.
@@ -86,8 +86,8 @@
 - Propagates to:
   - memory.handoff.md: Created — the volatility-vocabulary and notation questions moved there.
 - Contributors:
-  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided
-  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — moved, folded
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — moved, folded
 
 #### What changed
 - The Boundary-discipline topic's Prior art (the fault-boundary-translation echo of DDD and clean-architecture literature; the enrichment-before-logging step's grounding in observability engineering) is premise evidence for the translation rule and stays inline with the rule.
@@ -106,8 +106,8 @@
 - Propagates to:
   - memory.handoff.md: Done - anticipated work recorded there under `Anticipated Work`.
 - Contributors:
-  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) - claimed, decided
-  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) - moved
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) - claimed, decided
+  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) - moved
 
 #### What changed
 - The body's `Discussion` wrappers dissolved entirely, per the finalized documentation method (documentation-explanation.changelog.md, same date) (Omid Hekayati - decided; Super Z - applied).
@@ -145,15 +145,15 @@
   - control-flow.md: Done — presence/absence candidate retargeted to Absence is a type's contract.
   - agency.md / agency.handoff.md: Done — safety-trade-off and teardown-path pointers retargeted.
 - Contributors:
-  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — claimed, decided
-  - [Grok](../../CONTRIBUTORS.md#grok) (Grok 4.6 via [Cursor](../../CONTRIBUTORS.md#cursor)) — rewrote
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — claimed, decided
+  - [Grok](../../../CONTRIBUTORS.md#grok) (Grok 4.6 via [Cursor](../../../CONTRIBUTORS.md#cursor)) — rewrote
 
 #### What changed
 - The document now carries a third movement: reclamation, teardown, and layout optimization are toolchain and library concerns, not language-syntax concerns, and the same requirements bind a C or Go toolchain without those languages growing new grammar.
 - Automation of path-complete release, when a toolchain performs it, emits explicit source the program includes — a generated file, a temporary compilation unit, or a checked-in companion — rather than hidden insertion or lifetime annotations in the author's source.
 - Safety checks are governance, relaxable by organization; uninitialized reads remain a compiler or linter refusal of existence; allocators are libraries; layout optimization is a separable orchestration concern stated as a long-term goal; emptiness is a type's contract term, not a universal machine condition.
 - Methodology no longer defers reclamation-mechanism choice to a Khayyam-shelf document.
-- `memory_model.md` and its handoff are retired and deleted. Grammar facts that document mixed in (`vr` as logical reference, no assignment operator, pass-by-reference) already live in [Khayyam](../khayyam/khayyam.md) and [Variable](../khayyam/variable.md).
+- `memory_model.md` and its handoff are retired and deleted. Grammar facts that document mixed in (`vr` as logical reference, no assignment operator, pass-by-reference) already live in [Khayyam](../../khayyam/khayyam.md) and [Variable](../../khayyam/variable.md).
 
 #### Deliberation
 - A Khayyam-shelf memory-model document implies the language owns memory management, which the grammar-refusal principle contradicts (Omid Hekayati — claimed).
@@ -173,16 +173,16 @@
 - Time: 2026-09-15T13:00:00Z
 - Type: Changed
 - Cited:
-  - [Khayyam](../khayyam/khayyam.md) — Realization: no raw pointers, no `nil` keyword, `Deinit()`/`Free()`/`IsNull()` conventions, escape-analysis and PGO placement.
-  - [Variable](../khayyam/variable.md) — Realization: Resource Lifecycle no longer defers to a missing document.
+  - [Khayyam](../../khayyam/khayyam.md) — Realization: no raw pointers, no `nil` keyword, `Deinit()`/`Free()`/`IsNull()` conventions, escape-analysis and PGO placement.
+  - [Variable](../../khayyam/variable.md) — Realization: Resource Lifecycle no longer defers to a missing document.
 - Propagates to:
   - memory.handoff.md: Done — compatibility-contract future possibility and generated-name candidate recorded.
   - khayyam.md: Done — `How Khayyam realizes Memory` topic added; Variable bullets gain pointer/`nil` facts.
   - variable.md / variable.handoff.md: Done — Resource Lifecycle retargeted here; deferred open questions removed.
   - khayyam.changelog.md / variable.changelog.md: Done — paired entries.
 - Contributors:
-  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided
-  - [Composer](../../CONTRIBUTORS.md#composer) (Composer via [Cursor](../../CONTRIBUTORS.md#cursor)) — applied
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Composer](../../../CONTRIBUTORS.md#composer) (Composer via [Cursor](../../../CONTRIBUTORS.md#cursor)) — applied
 
 #### What changed
 - The audit of the retired shelf file found managerial positions already absorbed, but Khayyam-specific mechanisms and the variable-layer deferral still had no live home; those gaps are closed without reopening a shelf document.
@@ -193,7 +193,7 @@
 - `variable.md`'s "future document on resource management" was the old shelf by another name; after retirement it would have been a dangling deferral (Omid Hekayati — claimed).
 
 #### Considered and not done
-- **Re-creating a Khayyam `memory_model.md` only for realization notes (rejected again)**: a short topic under [Khayyam](../khayyam/khayyam.md) is enough; a separate file would re-shelf the misreading.
+- **Re-creating a Khayyam `memory_model.md` only for realization notes (rejected again)**: a short topic under [Khayyam](../../khayyam/khayyam.md) is enough; a separate file would re-shelf the misreading.
 - **Editing historical changelog links that still name `memory_model.md` (not done)**: left as provenance, matching the Control Flow merger's practice.
 
 ---
@@ -204,8 +204,8 @@
 - Cited:
   - [Math Handoff → Does the tower hold widths the reference does not declare?](../math/math.handoff.md#does-the-tower-hold-widths-the-reference-does-not-declare) - Premise: the owner ruled that Go `uintptr` belongs to the memory domain, not to the numeric tower.
 - Contributors:
-  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) - decided
-  - Auto (model not recorded) via [Cursor](../../CONTRIBUTORS.md#cursor) - recorded
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) - decided
+  - Auto (model not recorded) via [Cursor](../../../CONTRIBUTORS.md#cursor) - recorded
 
 #### What changed
 - `memory.handoff.md`: a question on which memory declaration receives `uintptr` — `MemoryAddress`, `Memory_Pointer`, or a concept of its own — with the reference's two uses.
@@ -219,7 +219,7 @@
 - Time: 2026-09-29T10:40:00Z
 - Type: Fixed
 - Contributors:
-  - Auto (model not recorded) via [Cursor](../../CONTRIBUTORS.md#cursor) - applied
+  - Auto (model not recorded) via [Cursor](../../../CONTRIBUTORS.md#cursor) - applied
 
 #### What changed
 - `memory.handoff.md → Where does an address-sized integer (uintptr) go?` and this changelog's 2026-09-28 entry cite the owner's ruling at [Math Handoff → Does the tower hold widths the reference does not declare?](../math/math.handoff.md#does-the-tower-hold-widths-the-reference-does-not-declare).
@@ -232,7 +232,7 @@
 - Cited:
   - [Math](../math/math.md) - Premise: protocol layer owns the number tower.
 - Contributors:
-  - Auto (model not recorded) via [Cursor](../../CONTRIBUTORS.md#cursor) - applied
+  - Auto (model not recorded) via [Cursor](../../../CONTRIBUTORS.md#cursor) - applied
 
 #### What changed
 - `memory.md`: address-sized integers are not numeric widths.
@@ -247,8 +247,8 @@
 - Cited:
   - [Modularity Changelog](../../modularity.changelog.md) - Premise: allocator file placement belongs with the memory module, not the Modularity concept.
 - Contributors:
-  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided
-  - Auto (model not recorded) via [Cursor](../../CONTRIBUTORS.md#cursor) — applied
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - Auto (model not recorded) via [Cursor](../../../CONTRIBUTORS.md#cursor) — applied
 
 #### What changed
 - `memory.handoff.md`: "Where do `heap.kh` and `mem.kh` belong?" moved from `docs/modularity.handoff.md`.

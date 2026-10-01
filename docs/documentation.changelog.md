@@ -181,7 +181,7 @@ Fixed skeleton: four sections. Everything else optional, catalogued. Open questi
 - Type: Changed
 - Cited:
   - [Documentation — Explanation](./documentation-explanation.md) - Reference: the two rules specific to that specification's front matter (the slug derives from `Title`; the name is stable once `Final`) stay stated there, while the separator structure moved here.
-  - [Filesystem](docs/protocols/memory/filesystem.md) - Reference: the rejected alternative home, cited because its own thesis is the reason for the rejection.
+  - [Filesystem](./protocols/memory/filesystem.md) - Reference: the rejected alternative home, cited because its own thesis is the reason for the rejection.
 - Propagates to:
   - documentation-explanation.md: Done - its `File` topic's superseded filename wording ("hyphenated, no number, no domain prefix") replaced by a pointer to [File Naming](./documentation.md#file-naming); that wording contradicted the practice the convention now describes, since directories carry the category and digits appear inside conceptual terms (`osi_1`) and in Research ordinals by design.
 - Contributors:

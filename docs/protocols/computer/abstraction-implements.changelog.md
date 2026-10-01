@@ -8,8 +8,8 @@
 - Cited:
   - [Control Flow in Khayyam](../khayyam/control_flow.md) — Depends_on: this document builds on the precedent set by that document of keeping behavioral policies as ordinary library-driven mechanisms rather than new syntax.
 - Contributors:
-  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — claimed
-  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash, effort: Medium — extended thinking enabled) — drafted
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — claimed
+  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash, effort: Medium — extended thinking enabled) — drafted
 
 #### What changed
 - Defined `abstraction_p.Implements` — a single body-less `Implements()` method any Khayyam abstraction MAY opt into composing — as a tooling-facing signal letting codegen tools discover an incomplete capsule's implementation intent before it structurally satisfies its target abstraction.
@@ -32,8 +32,8 @@
 - Propagates to:
   - khayyam-metaprogramming.md: Done — both `abstraction-implements.md` links repointed to `./protocols/computer/abstraction-implements.md`.
 - Contributors:
-  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — directed, decided
-  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — moved
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — directed, decided
+  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — moved
 
 #### What changed
 - This document moved from `docs/` into the framework-contracts subdirectory (`docs/abstractions/`, since renamed `docs/protocols/`) — a subdirectory whose membership criterion (recorded in its README) is: documents specifying Memar's own framework-level contracts.
@@ -49,13 +49,13 @@
 - Time: 2026-09-03T00:00:00Z
 - Type: refactor
 - Contributors:
-  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — requested
-  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — rewrote
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested
+  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — rewrote
 
 #### What changed
 - The document previously followed the legacy RFC body structure (`Summary / Motivation / Guide-level explanation / Reference-level explanation / Drawbacks / Rationale and alternatives / Prior art / Unresolved questions / Future possibilities`) with `Applied to`, `Citations`, and `Contributor(s)` front matter.
 - Migration mapping, with every load-bearing claim preserved without summarizing: Summary became the Abstract; Motivation kept its role under Introduction; Guide-level explanation became the Explanation topic *Declaring and discovering intent*; Reference-level explanation became the topic *Semantics and constraints*; Drawbacks, Rationale and alternatives, Prior art, Unresolved questions, and Future possibilities moved to the document-wide Discussion.
-- Plain-text references were converted to real hyperlinks per the Internal Cross-References convention (the Contract-First Approach mention now links [khayyam.md](../khayyam/khayyam.md); the Prior-art precedent mention now links [khayyam-control_flow.md](../khayyam/control_flow.md)).
+- Plain-text references were converted to real hyperlinks per the Internal Cross-References convention (the Contract-First Approach mention now links [khayyam.md](../../khayyam/khayyam.md); the Prior-art precedent mention now links [khayyam-control_flow.md](../khayyam/control_flow.md)).
 - The former `Applied to`, `Citations`, and `Contributor(s)` front-matter fields moved into this file (entries above); the base document retains only identity front matter.
 - No position changed.
 
@@ -68,11 +68,11 @@
 - Time: 2026-09-11T08:29:10Z
 - Type: Changed
 - Cited:
-  - [Documentation — Explanation](../documentation-explanation.md) — Depends_on: the three-section skeleton and the Relevance-discipline routing this migration applies are defined by the Explanation facet's governing specification.
-  - [Documentation — Handoff](../documentation-handoff.md) — Depends_on: any open work created by this migration follows the Handoff facet's specification.
+  - [Documentation — Explanation](../../documentation-explanation.md) — Depends_on: the three-section skeleton and the Relevance-discipline routing this migration applies are defined by the Explanation facet's governing specification.
+  - [Documentation — Handoff](../../documentation-handoff.md) — Depends_on: any open work created by this migration follows the Handoff facet's specification.
 - Contributors:
-  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) - directed
-  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM 5.3) - applied
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) - directed
+  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM 5.3) - applied
 
 #### What changed
 - The document-wide `## Discussion` section was retired; the body now carries only the three-section skeleton (Abstract / Introduction / Explanation), with nothing new folded inline — every Discussion block routed to this entry or to the handoff.
@@ -97,11 +97,11 @@ Conceptually closest to Rust's explicit `impl Trait for Type` announcing intent 
 - Time: 2026-09-23T05:38:39Z
 - Type: Fixed
 - Cited:
-  - [Abstraction in Khayyam](../khayyam/abstraction.md) — Reference: implicit structural satisfaction is specified there; this document now points at it instead of a heading khayyam.md no longer carries.
-  - [Protocol](../protocol.md) — Depends_on: Protocol vs Contract.
+  - [Abstraction in Khayyam](../../khayyam/abstraction.md) — Reference: implicit structural satisfaction is specified there; this document now points at it instead of a heading khayyam.md no longer carries.
+  - [Protocol](../../protocol.md) — Depends_on: Protocol vs Contract.
 - Contributors:
-  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided
-  - [Mimo](../../CONTRIBUTORS.md#mimo) (mimo-v2.6-flash via [OpenCode](../../CONTRIBUTORS.md#opencode)) — applied
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Mimo](../../../CONTRIBUTORS.md#mimo) (mimo-v2.6-flash via [OpenCode](../../../CONTRIBUTORS.md#opencode)) — applied
 
 #### What changed
 - The structural-satisfaction sentence now cites abstraction.md's implicit structural satisfaction rather than khayyam.md's "Contract-First Approach" — that named heading no longer exists in khayyam.md, so the old link was dangling.

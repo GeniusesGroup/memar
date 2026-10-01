@@ -44,6 +44,6 @@ What time *is* — whether it is a fundamental dimension of the systems being mo
 The separation direction is visible across the ecosystem: language runtimes that grew a second, monotonic clock alongside their civil-clock type after real-world clock-smearing failures; the split between timestamp representations and calendar libraries in systems programming; and distributed-systems literature's careful distinction between physical-clock time and event ordering (Lamport and after) — the strongest evidence that "time" is more than one concern and that ordering is the part systems can actually depend on.
 
 ### Realization membership
-A declaration belongs under [`modules/time/`](../../modules/time/) when its subject is time itself: an instant and the epoch or clock it is read against, a span, a calendar that reckons instants into human or astronomical units, or a mechanism that waits on an instant or a span.
+A declaration belongs under [`modules/time/`](../../../modules/time/) when its subject is time itself: an instant and the epoch or clock it is read against, a span, a calendar that reckons instants into human or astronomical units, or a mechanism that waits on an instant or a span.
 
 It does not belong there when its subject is the number a span is counted in; that is [`modules/math/`](../../../modules/math/README.md).

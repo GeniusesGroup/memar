@@ -238,7 +238,7 @@ Added a pointer from "Rules as a Provisional Term" to modeling.md's new "Separat
   - Auto (model not recorded) via [Cursor](../CONTRIBUTORS.md#cursor) - applied
 
 #### What changed
-- `modularity.handoff.md`: the ADT module-placement question moved to [Abstract Data Types Handoff](../protocols/computer/adt.handoff.md#do-the-abstract-data-types-belong-under-computer-or-under-math); its path now ends in a README for `modules/computer/adt/` or a widened criterion in [Math → Realization membership](../protocols/math/math.md#realization-membership).
+- `modularity.handoff.md`: the ADT module-placement question moved to [Abstract Data Types Handoff](./protocols/computer/adt.handoff.md#do-the-abstract-data-types-belong-under-computer-or-under-math); its path now ends in a README for `modules/computer/adt/` or a widened criterion in [Math → Realization membership](./protocols/math/math.md#realization-membership).
 
 ---
 

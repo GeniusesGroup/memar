@@ -11,7 +11,7 @@ It exists so a reader can see, without sales tone, **why Memar was started** and
 ## What this folder is not
 - Not a rejection list or a scoreboard.
 - Not a claim that other projects are "bad." Many are strong at what they set out to do.
-- Not a substitute for Memar's live documentation. After a comparison, work still runs through [`docs/`](../docs/) and [`.agents/skills/memar/SKILL.md`](../../.agents/skills/memar/SKILL.md).
+- Not a substitute for Memar's live documentation. After a comparison, work still runs through [`docs/`](../) and [`.agents/skills/memar/SKILL.md`](../../.agents/skills/memar/SKILL.md).
 
 ## Fairness rules
 1. **State the other project's self-definition first** — judge it against its own purpose before measuring it against Memar.

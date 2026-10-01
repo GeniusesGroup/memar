@@ -6,12 +6,12 @@
 - Time: 2026-08-27T00:00:00Z
 - Type: Fixed
 - Cited:
-  - [Encapsulation in Khayyam](./encapsulation.md) — Depends_on: Sovereign Encapsulation that makes fields structurally private
+  - [Encapsulation in Khayyam](../../khayyam/encapsulation.md) — Depends_on: Sovereign Encapsulation that makes fields structurally private
   - [Control Flow in Khayyam](./control_flow.md) — Depends_on: the compiler-event abstraction that analysis libraries subscribe to
-  - [Method in Khayyam](./method.md) — Reference: `sc`/`mt` as argument positions
+  - [Method in Khayyam](../../khayyam/method.md) — Reference: `sc`/`mt` as argument positions
 - Contributors:
-  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — requested, clarified
-  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — rewrote
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested, clarified
+  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — rewrote
 
 #### What changed
 Corrects `Boilerplate Generation`: direct field read/write outside the capsule’s own methods is a **linter error** (previously misworded as “compiler throw compile error”); the compiler already makes fields structurally private. Adds two new suggested-rule sections (current state, not historical): `Type-as-Argument for `sc`/`mt`` — syntax allows a variable or, for `sc`/`mt`, the type itself as a type-level argument (compiler distinguishes from the expected type in the callee’s signature without ambiguity); linter should flag a bare type where a capsule/abstraction value is expected and discourage `mt`-as-value in closure style. And `Compiler Event Abstraction for Analysis` — the compiler emits `sc` entry/exit and jump events; DAA/linter should treat `sc` as the common denominator, not `IF` names. Both are *suggested* diagnostics, not language-level restrictions. For closure-style `mt` values, the existing discouragement is kept via the linter, consistent with `Closures as Implicit Capsule Syntax`.
@@ -29,11 +29,11 @@ Corrects `Boilerplate Generation`: direct field read/write outside the capsule�
 - Time: 2026-08-30T00:00:00Z
 - Type: refactor
 - Cited:
-  - [Documentation — Explanation](../documentation-explanation.md) — Depends_on: the structure this migration follows — YAML front matter, the `Abstract → Introduction → Explanation → Results → Discussion` body, and the per-topic Discussion pattern — is that specification's, applied to this document for the first time.
-  - [Khayyam - Programming Language](./khayyam.md) — Reference: *Separation of Syntax and Governance*, which supplies the framing for the new Abstract, Motivation, and Discussion content — the linter is where governance lives, so this document's implementer-facing framing leans on that principle more heavily than its two siblings do.
+  - [Documentation — Explanation](../../documentation-explanation.md) — Depends_on: the structure this migration follows — YAML front matter, the `Abstract → Introduction → Explanation → Results → Discussion` body, and the per-topic Discussion pattern — is that specification's, applied to this document for the first time.
+  - [Khayyam - Programming Language](../../khayyam/khayyam.md) — Reference: *Separation of Syntax and Governance*, which supplies the framing for the new Abstract, Motivation, and Discussion content — the linter is where governance lives, so this document's implementer-facing framing leans on that principle more heavily than its two siblings do.
 - Contributors:
-  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — requested, clarified
-  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — rewrote
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested, clarified
+  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — rewrote
 
 #### What changed
 This document is now structured per `documentation-explanation.md`: YAML front matter added (Status: Proposed; Start Date 2026-06-22 from the file's first commit; ID 495025 — ordered after `khayyam-compiler.md`'s 495024, which shares the same Start Date, per the ID spec's retroactive-numbering provision); Abstract, Motivation, per-topic Discussion sections, Results, and a document-wide Discussion added. New framing topic `Suggested Diagnostics` groups the diagnostics that are explicitly *not* language restrictions (the former `Linters`, `Type-as-Argument for sc/mt`, and `Compiler Event Abstraction` sections) under one heading that states their shared character; `Boilerplate Generation` stays a separate topic. No rule content was removed: Auto-Folding (MUST) and Structural Overview (SHOULD), the Orphan Rule with its local/distant-type distinction and composition escape hatch, getter/setter generation, the linter-error-not-compiler-error field-access wording, type-as-argument meaningfulness, and `sc`-as-common-denominator for DAA are all preserved. The new Discussion content is derived from Khayyam's own philosophy documents rather than new design decisions — in particular, the guard against the linter quietly becoming a second compiler, and the recognition that this document concentrates responsibilities other languages give their compiler (the safety trade-off already acknowledged in `khayyam-control_flow.md` and `khayyam-memory_model.md`). New open questions recorded: per-rule classification of MUST-defaults vs. suggested; the Orphan Rule's boundary unit (directory vs. repository vs. declared ownership); the promotion path for suggested diagnostics.
@@ -54,8 +54,8 @@ This document is now structured per `documentation-explanation.md`: YAML front m
 - Propagates to:
   - khayyam-linter.handoff.md: Created - open questions and anticipated work moved there.
 - Contributors:
-  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) - requested
-  - [Qwen](../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via [OpenCode](../../CONTRIBUTORS.md#opencode)) - moved
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) - requested
+  - [Qwen](../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via [OpenCode](../../../CONTRIBUTORS.md#opencode)) - moved
 
 #### What changed
 - Every `Discussion` wrapper is dissolved — the four per-topic wrappers (IDE Behavior & Visual Formatting, Cross-file Methods — The Orphan Rule, Boilerplate Generation, Suggested Diagnostics) and the document-level `## Discussion`; the body now carries only the fixed top-level sections Abstract, Introduction, Explanation, Results.
@@ -77,7 +77,7 @@ This document is now structured per `documentation-explanation.md`: YAML front m
 - **Provide no assist (rejected; migrated from the same topic)**: without a generation assist the accessor requirement becomes heavy boilerplate, and boilerplate fatigue is exactly the pressure that produces demands to reopen field exposure — the failure this rule exists to prevent.
 - **Promote the suggested diagnostics to language rules (rejected; migrated from the Suggested Diagnostics topic's retired Rationale and alternatives)**: each would either deny existence (ontology — the compiler's side of the line) or harden one organization's flow preference into universal law. The type-as-argument case is the concrete example: the language deliberately leaves which types may be passed as type-arguments unrestricted, keeping syntax generic and placing the meaningfulness rule in tooling.
 - **Scatter the suggested diagnostics across the construct documents they relate to (rejected; migrated from the same topic)**: each construct document states its own language-level semantics; collecting the tooling-side diagnostics in one place keeps the governance layer reviewable as a whole, and keeps the construct documents free of implementation advice that could drift from actual linter behavior.
-- **Fold tooling rules into the construct documents ([Khayyam](./khayyam.md), [Encapsulation](./encapsulation.md), [Control Flow](./control_flow.md), ...) (rejected; migrated from the document-level retired Rationale and alternatives)**: each construct document states what the language does and why; sprinkling IDE and linter behavior through them would blur the syntax/governance line the documents exist to demonstrate, and would couple language-document stability to tooling decisions that change far more often.
+- **Fold tooling rules into the construct documents ([Khayyam](../../khayyam/khayyam.md), [Encapsulation](../../khayyam/encapsulation.md), [Control Flow](./control_flow.md), ...) (rejected; migrated from the document-level retired Rationale and alternatives)**: each construct document states what the language does and why; sprinkling IDE and linter behavior through them would blur the syntax/governance line the documents exist to demonstrate, and would couple language-document stability to tooling decisions that change far more often.
 - **Keep linter behavior unspecified (rejected; migrated from the same section)**: governance is the linter's entire job under Khayyam's architecture; leaving it undocumented makes each implementation's policy an accident of whichever team built it, and quietly converts "governance is tunable" into "governance is whatever the default build does."
 - **A dedicated document per tool — linter.md, ide.md, lsp.md (rejected for now; migrated from the same section)**: at the current stage the tooling surface is one coherent set of recommendations; splitting it would multiply cross-referencing overhead before there are distinct implementations to govern. Revisit if the IDE and linter concerns genuinely diverge.
 
@@ -103,12 +103,12 @@ This document is now structured per `documentation-explanation.md`: YAML front m
   - khayyam/encapsulation.md: Done — requested accessor generation.
   - khayyam/method.md: Done — type-level `sc`/`mt` argument grammar.
 - Contributors:
-  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — claimed, decided
-  - [Grok](../../CONTRIBUTORS.md#grok) (Grok 4.6 via [Cursor](../../CONTRIBUTORS.md#cursor)) — rewrote
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — claimed, decided
+  - [Grok](../../../CONTRIBUTORS.md#grok) (Grok 4.6 via [Cursor](../../../CONTRIBUTORS.md#cursor)) — rewrote
 
 #### What changed
 - The document is now the Linter protocol: what a linter is, the compiler/linter split, that a rule lives in its subject's document, required members of a governance rule pending notation, configuration and override, event consumption, and that assistance writes source on request.
-- Khayyam-syntax diagnostics left this body: orphan rule to [Modularity in Khayyam](../khayyam/modularity.md), accessor generation to [Encapsulation](../khayyam/encapsulation.md), type-as-argument to [Method](../khayyam/method.md) with a pointer from [Khayyam](../khayyam/khayyam.md), command-newline/lowering to Khayyam. Declaration-block folding stayed here as a general tooling assist ([Tooling may present structure first](../computer/linter.md#tooling-may-present-structure-first)); the Khayyam-specific `tp ... in ...` forms are realization facts of that language's declaration shape, not this protocol.
+- Khayyam-syntax diagnostics left this body: orphan rule to [Modularity in Khayyam](../../khayyam/modularity.md), accessor generation to [Encapsulation](../../khayyam/encapsulation.md), type-as-argument to [Method](../../khayyam/method.md) with a pointer from [Khayyam](../../khayyam/khayyam.md), command-newline/lowering to Khayyam. Declaration-block folding stayed here as a general tooling assist ([Tooling may present structure first](../computer/linter.md#tooling-may-present-structure-first)); the Khayyam-specific `tp ... in ...` forms are realization facts of that language's declaration shape, not this protocol.
 - Status returns to Draft because the authorship notation is unsettled.
 - Title is "Linter"; the changelog heading follows.
 
@@ -122,10 +122,10 @@ This document is now structured per `documentation-explanation.md`: YAML front m
 - Time: 2026-09-23T07:07:01Z
 - Type: Fixed
 - Cited:
-  - [Khayyam](../khayyam/khayyam.md) — Reference: the language whose documents exercised the compiler/linter split first; the link is provenance, not derivation.
+  - [Khayyam](../../khayyam/khayyam.md) — Reference: the language whose documents exercised the compiler/linter split first; the link is provenance, not derivation.
 - Contributors:
-  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided
-  - [Mimo](../../CONTRIBUTORS.md#mimo) (mimo-v2.6-flash via [OpenCode](../../CONTRIBUTORS.md#opencode)) — applied
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Mimo](../../../CONTRIBUTORS.md#mimo) (mimo-v2.6-flash via [OpenCode](../../../CONTRIBUTORS.md#opencode)) — applied
 
 #### What changed
 - The Methodology no longer says the split was "lifted out of" Khayyam's documents — wording that read as normative derivation from a language into a protocol. It now records that Khayyam's documents exercised the split first and that this protocol states it independently as a language-neutral contract, because the line is a protocol concern, not a grammar and not any one language's property. The Khayyam link remains as provenance.

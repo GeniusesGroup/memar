@@ -7,12 +7,12 @@ The entries below consolidate the document's former front-matter provenance (`Ap
 - Time: unknown (historical import)
 - Type: Added
 - Cited:
-  - [Khayyam](../khayyam/khayyam.md) — Reference: source of truth for the syntax of every code example in this document (`tp`/`mt`/`vr`/`cp`/`ab`/`sc` keywords, capsule composition, abstraction composition, body-less methods as contracts).
+  - [Khayyam](../../khayyam/khayyam.md) — Reference: source of truth for the syntax of every code example in this document (`tp`/`mt`/`vr`/`cp`/`ab`/`sc` keywords, capsule composition, abstraction composition, body-less methods as contracts).
 - Contributors:
-  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — claimed, argued
-  - [Gemini](../../CONTRIBUTORS.md#gemini) (3.1 Pro, extended thinking) — drafted, argued
-  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.2) — drafted, argued
-  - [Claude](../../CONTRIBUTORS.md#claude) (claude-sonnet-5, extended thinking) — reviewed.
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — claimed, argued
+  - [Gemini](../../../CONTRIBUTORS.md#gemini) (3.1 Pro, extended thinking) — drafted, argued
+  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.2) — drafted, argued
+  - [Claude](../../../CONTRIBUTORS.md#claude) (claude-sonnet-5, extended thinking) — reviewed.
 
 #### What changed
 - Defined `Error`'s composition (`DataType`, `Field_MediaType`, `ADT`, `ImplementsError`) and its method composition and boundary-crossing discipline, identity by `DataTypeID()` alone, the rejection of `Equivalence` and of sealed-interface markers, the optional capability-interface pattern (`Internal`/`Temporary`/`Timeout`), the `ImplementsError` naming rationale, and the multi-cause return convention (Omid Hekayati — authored the core design decisions).
@@ -32,7 +32,7 @@ The entries below consolidate the document's former front-matter provenance (`Ap
 - Time: unknown (historical import)
 - Type: Added
 - Contributors:
-  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — claimed
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — claimed
 
 #### What changed
 - Authored in parallel as a standalone document, since absorbed into this one, defining the boundary-translation discipline — the Capture → Persist → Re-express discipline; the two-audience distinction between `Error` (caller-facing contract) and Log (operator-facing forensic event); the corollary that user-domain outcomes must not be modeled as log events; and the worked financial-transaction example demonstrating the rule.
@@ -44,8 +44,8 @@ The entries below consolidate the document's former front-matter provenance (`Ap
 - Time: unknown (historical import — first committed together on 2026-07-24)
 - Type: refactor
 - Contributors:
-  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — directed
-  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.2) — rewrote
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — directed
+  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.2) — rewrote
 
 #### What changed
 - Merged the *Error vs. Log* boundary-translation rules into the *Error Abstraction* document, on the recognition that they answer two halves of one question — what an `Error` *is*, and what it is allowed to do when it leaves its origin layer — and that forcing readers to load two documents produced the same scattering problem the documentation specification was written to eliminate (Omid Hekayati — decided the merge once both halves were recognized as one question).
@@ -61,11 +61,11 @@ The entries below consolidate the document's former front-matter provenance (`Ap
 - Propagates to:
   - type.md: Done — the principle this document depends on now lives there as "Stateless Types"; see type.changelog.md for its dissolution record.
 - Contributors:
-  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — directed
-  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — rewrote.
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — directed
+  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — rewrote.
 
 #### What changed
-- Error was the motivating case of the dissolved *Static Concepts Must Be Types* document (495421); that document's principle now lives in [Type](../type.md).
+- Error was the motivating case of the dissolved *Static Concepts Must Be Types* document (495421); that document's principle now lives in [Type](../../type.md).
 - Nine references were repointed with no content change: the front-matter `Citations` entry, the Abstract's assumption statement, Multi-cause returns, both code-generator Future-possibilities notes, Enforcement (including the `Err` naming-convention pointer, which now targets type.practice.md), Drawback 1, the generic-`Init` rejection rationale, and Prior art (which now names only the memar-go companion analysis directly, since the base document it used to cite alongside that companion is gone) (Omid Hekayati — directed dissolving pre-facet micro-documents so citations point at Type and Modeling generally; Super Z — rewrote).
 - Recorded for a future pass, so the outstanding work is searchable: this document still carries legacy `Applied to`/`Citations`/`Contributors` front matter and a `## Change Rationale` section from before the Facet split, and is due for its own Explanation-facet migration like the rest of the set.
 
@@ -75,8 +75,8 @@ The entries below consolidate the document's former front-matter provenance (`Ap
 - Time: 2026-08-25T00:00:00Z
 - Type: refactor
 - Contributors:
-  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — requested
-  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — rewrote.
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested
+  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — rewrote.
 
 #### What changed
 - Continuing the documentation-correction pass onto this document itself, the body already conformed to `documentation-explanation.md` (Abstract; Introduction with Motivation and Methodology; topic-first Explanation with per-topic Discussion bundles; Results; document-wide Discussion); the remaining work was provenance and identity.
@@ -96,8 +96,8 @@ The entries below consolidate the document's former front-matter provenance (`Ap
   - type.practice.md: Done — the `error.md` link repointed to `./protocols/process/error.md`.
   - chapar.changelog.md: Done — the historical `error.md` reference repointed to the new path, content unchanged.
 - Contributors:
-  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — directed, decided
-  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — moved, rewrote
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — directed, decided
+  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — moved, rewrote
 
 #### What changed
 - This document and its changelog moved from `docs/` into the framework-contracts subdirectory (`docs/abstractions/`, since renamed `docs/protocols/`) — a subdirectory whose membership criterion (recorded in its README) is: documents specifying Memar's own framework-level contracts, as distinct from the conceptual foundation documents at `docs/` root. These documents are the source of truth for their protocols, not executable code; implementations live in the `memar-{language}` repositories. No content change; no new dependency or citation introduced (Omid Hekayati — decided that documents defining a Memar framework-level abstraction or contract get their own subdirectory under `docs/`, so that base documents referencing the abstraction layer do so deliberately rather than by accident; the subdirectory was later renamed `docs/protocols/` when its membership widened to Memar's protocol specifications — see the renaming entry below; Super Z — relocated this document and its changelog, adjusted internal relative links for the new depth, repointed the inbound references listed above).
@@ -108,8 +108,8 @@ The entries below consolidate the document's former front-matter provenance (`Ap
 - Time: 2026-09-06T00:00:00Z
 - Type: Expanded
 - Contributors:
-  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — claimed, argued
-  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — reviewed, rewrote
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — claimed, argued
+  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — reviewed, rewrote
 
 #### What changed
 - Boundary discipline gained three additions: an explicit Bug/Error/Log-Event three-entity distinction grounding why the error contract must not absorb forensic bookkeeping; a stated rationale for the numeric-identifier wire format (stability, dispatch, locale-independence, per-audience text resolution at the ends); and a new Immutability topic stating the protocol's deliberate break from the ecosystem's wrap-and-enrich convention, with the rejected convention's strongest argument (trace preservation) answered by pointing at the Capture → Persist → Re-express steps as the place diagnostic data actually lives.
@@ -131,7 +131,7 @@ The entries below consolidate the document's former front-matter provenance (`Ap
 - Propagates to:
   - error.handoff.md: Done - all open questions and future-possibilities content moved there.
 - Contributors:
-  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — moved
+  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — moved
 
 #### What changed
 - The body's fixed top-level sections are now `Abstract`, `Introduction`, `Explanation`, `Results` only (Super Z - applied the finalized documentation method).
@@ -152,7 +152,7 @@ Dissolved every `#### Discussion` wrapper (Identity and equality, Boundary trans
 - **Sealed-interface marker method (rejected; migrated from the ImplementsError topic's retired `Rationale and alternatives`)**: examined in detail and found to provide no guarantee beyond a plain exported method. The marker added ceremony (one extra embedded struct per concrete type, in a specific package) without adding any real protection — a determined bad actor can embed the marker just as trivially as they can write the plain method.
 - **The fully generic `Implements()` name, with no domain suffix (rejected; migrated from the ImplementsError topic's retired `Rationale and alternatives`)**: a capsule declaring intent for more than one abstraction at once would have no way to indicate *which* declaration was for which abstraction. The `ImplError` name resolves that ambiguity at zero cost.
 - **No tooling-facing declaration at all (rejected; migrated from the ImplementsError topic's retired `Rationale and alternatives`)**: a code generator scaffolding a large capsule from a `.kh` definition would have no signal that an incomplete capsule is *meant* to become an `Error`, and would be forced to wait until every required method is hand-written before it could recognize the capsule as conforming. The declaration shifts intent-discovery to the earliest possible moment.
-- **Single generic `Error` capsule with an `Init` method (rejected; migrated from the document-level retired `Rationale and alternatives`)**: the central rejected alternative of the [Type](../type.md) identity principle, applied here to `Error` specifically — the concept motivating case for that principle in the first place. Demotes identity from the type system to runtime data; incompatible with covariant returns and with the optional capability-interface pattern (both depend on distinct concrete types).
+- **Single generic `Error` capsule with an `Init` method (rejected; migrated from the document-level retired `Rationale and alternatives`)**: the central rejected alternative of the [Type](../../type.md) identity principle, applied here to `Error` specifically — the concept motivating case for that principle in the first place. Demotes identity from the type system to runtime data; incompatible with covariant returns and with the optional capability-interface pattern (both depend on distinct concrete types).
 - **A single `Category()` enum for classification (rejected in favor of optional capability interfaces; migrated from the document-level retired `Rationale and alternatives`)**: a closed enum forces every error into one bucket along one axis; `Internal`/`Temporary`/`Timeout` capture genuinely orthogonal dimensions (an error can be any combination) more accurately than a single tag could, and remain fully optional per concrete error rather than mandatory.
 - **Keeping the Error composition rules and the boundary-translation rules in separate documents (rejected; migrated from the document-level retired `Rationale and alternatives`)**: the two are halves of the same question — what an `Error` *is* and what an `Error` is *allowed to do* when it leaves its origin layer. Forcing a reader to load two documents to assemble a single mental model produced the same scattering problem this project's documentation specification was written to eliminate.
 
@@ -165,7 +165,7 @@ Dissolved every `#### Discussion` wrapper (Identity and equality, Boundary trans
 - **`ExpireInFavorOf` as an implicit equivalence relation** — a related, briefly considered design, using `ExpireInFavorOf() DataType` (from `datatype_p.Details`) so a deprecated error could be treated as "equal to" its replacement — was rejected as misleading: conflating "this type is being phased out in favor of that one" with "these two values are the same" is a category error. (Already recorded above; the body now keeps only the live question pointer.)
 
 #### Considered and not done (from the removed document-level Drawbacks section)
-- **Type proliferation** — a system with many distinct error concepts will contain many distinct type definitions; the general trade-off is recorded with the identity principle itself in [Type](../type.md). Mitigated by code generation (the `abstraction_p.Implements` pattern); the framework's position is that this is an intended, correct consequence, not a flaw.
+- **Type proliferation** — a system with many distinct error concepts will contain many distinct type definitions; the general trade-off is recorded with the identity principle itself in [Type](../../type.md). Mitigated by code generation (the `abstraction_p.Implements` pattern); the framework's position is that this is an intended, correct consequence, not a flaw.
 - **Two design threads remain genuinely open** (now in the paired handoff) — this document should not be read as completely closing the `Error` abstraction's design, only as the current, consolidated, best understanding.
 - **`ADT`'s `IsNull`/`IsEmpty` semantics for `Error` are not yet defined** — the methods are required (canonically, in Khayyam), but what they should actually return for a value like `Error` is deferred to the dedicated ADT session. Go's realization sidesteps this by using only `Nil`, which is a legitimate, narrower backend-specific choice, not a resolution of the underlying question.
 - **Boundary translation cannot be linted structurally** — stated inline under the Boundary-translation topic. This shifts the burden of verifying the rule onto semantic review or AI-assisted static analysis, neither of which is yet built.

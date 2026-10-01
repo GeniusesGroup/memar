@@ -6,7 +6,7 @@
 - Time: 2026-07-21T09:39:49Z
 - Type: Added
 - Cited:
-  - [Reevaluating the Filesystem as a Fundamental Modeling Primitive](docs/protocols/memory/filesystem.md) — Depends_on: this specification builds upon the filesystem critique to establish positive principles for knowledge modeling.
+  - [Reevaluating the Filesystem as a Fundamental Modeling Primitive](./protocols/memory/filesystem.md) — Depends_on: this specification builds upon the filesystem critique to establish positive principles for knowledge modeling.
   - [The Knowledge-Creating Company](https://hbr.org/1991/07/the-knowledge-creating-company) — Reference: Nonaka & Takeuchi's foundational work on organizational knowledge creation (SECI), the process view of knowledge this framework adopts.
   - [Semantic File Systems](https://dl.acm.org/doi/10.1145/121132.121138) — Reference: Gifford et al.'s demonstration that attribute-based access outperforms hierarchical access for information-rich content.
   - [Unikernels: Library Operating Systems for the Cloud](https://anil.recoil.org/papers/2013-asplos-mirage.pdf) — Reference: evidence that general-purpose filesystems are not universal requirements, supporting filesystem-as-optional-capability.
@@ -154,12 +154,12 @@
 - Time: 2026-09-18T12:20:00Z
 - Type: Changed
 - Cited:
-  - [comparisons/superpowers.md](../comparisons/superpowers.md) — Evidence: owner critique of treating marketplace/plugin skill packs, prose recipes for generative work, and reader-workaround documentation as substitutes for a continuous knowledge model.
+  - [comparisons/superpowers.md](./comparisons/superpowers.md) — Evidence: owner critique of treating marketplace/plugin skill packs, prose recipes for generative work, and reader-workaround documentation as substitutes for a continuous knowledge model.
   - [Agency → Prompt Engineering and Harness Engineering](./agency.md#prompt-engineering-and-harness-engineering) — Depends_on: distribution and harness technique remain under Communication, not the knowledge model.
 - Propagates to:
   - [.agents/installing.md](../.agents/installing.md) — Clarified: marketplace/plugin are delivery tax, not the mental model.
   - [.agents/skills/README.md](../.agents/skills/README.md) — Recorded: failed split of Khayyam/Cognition into peer skills.
-  - [comparisons/README.md](../comparisons/README.md) — Points at these principles as standing assumptions for public comparisons.
+  - [comparisons/README.md](./comparisons/README.md) — Points at these principles as standing assumptions for public comparisons.
 - Contributors:
   - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — claimed, decided
   - [Composer](../CONTRIBUTORS.md#composer) (Composer via [Cursor](../CONTRIBUTORS.md#cursor)) — drafted
@@ -183,7 +183,7 @@
   - [AGENTS.md](../AGENTS.md): Done — session entry is now `.agents/memar/README.md`; `.agents/README.md` is a directory index, not loaded every session.
   - [README.md](../README.md): Done — two install scripts (project via AGENTS.md, agent apps) plus a weaker chatbot path.
   - [.agents/skills/README.md](../.agents/skills/README.md): Done — plugin/marketplace pointer removed.
-  - [comparisons/README.md](../comparisons/README.md): Done — standing principle retargeted off `installing.md`.
+  - [comparisons/README.md](./comparisons/README.md): Done — standing principle retargeted off `installing.md`.
   - `.agents/installing.md` and host-tool plugin/marketplace manifests: Done — removed.
 - Contributors:
   - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — claimed, decided

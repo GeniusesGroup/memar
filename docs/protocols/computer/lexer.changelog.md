@@ -6,9 +6,9 @@
 - Time: 2026-08-12T11:30:00Z
 - Type: Added
 - Cited:
-  - [Khayyam Compiler Directives](../khayyam/compiler.md) — Depends_on: the compiler-side Future-possibilities note that called for this abstraction to be specified as an independent protocol before any compiler consumes it; this document is the realization of that note.
+  - [Khayyam Compiler Directives](./compiler.md) — Depends_on: the compiler-side Future-possibilities note that called for this abstraction to be specified as an independent protocol before any compiler consumes it; this document is the realization of that note.
 - Contributors:
-  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — directed, claimed
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — directed, claimed
 
 #### What changed
 - Created as the initial seed document.
@@ -34,7 +34,7 @@
   - DeepSeek lexer survey report (source file deleted 2026-09-23 after its final transfer audit) — Evidence: the survey report commissioned for this topic.
   - z.ai lexer survey-plus-synthesis report (source file deleted 2026-09-23 after its final transfer audit) — Evidence: the survey-plus-synthesis report (36+ systems, four families) commissioned for this topic.
 - Contributors:
-  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — requested, reviewed
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested, reviewed
 
 #### What changed
 - Two external reports entered the record as evidence, deliberately subordinate to the concept work.
@@ -54,14 +54,14 @@
 - Cited:
   - z.ai lexer survey-plus-synthesis report (source file deleted 2026-09-23 after its final transfer audit) — Evidence: source of the rejected universal-token-core and four-stage-pipeline proposals examined in these sessions.
 - Contributors:
-  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — claimed, argued
-  - [ChatGPT](../../CONTRIBUTORS.md#chatgpt) — reviewed, argued
-  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM, research producer — also produced the DeepSeek survey report, for which no contributor entry exists) — Reference
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — claimed, argued
+  - [ChatGPT](../../../CONTRIBUTORS.md#chatgpt) — reviewed, argued
+  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM, research producer — also produced the DeepSeek survey report, for which no contributor entry exists) — Reference
 
 #### What changed
 - The document's whole conceptual core was established and the base document rewritten to record it: thirteen working positions; the definition of the Lexer and the consumer contract; boundary principles (no boundary assumptions; grounding in observable extents); the Lexical Model with identity and immutability; the Lexical Type with matching behavior and inter-type relationships; unit/naming separation with classification kept out of the unit core; the delivery/memory split; the change contract; the `Lexical` capsule lifecycle; graph-modeling candidates; domain scope; the candidate concept inventory; the research-evidence disposition (adopted findings vs examined-and-rejected proposals).
 - The z.ai research report's synthesis was the evidence base examined and partly rejected in these sessions; the DeepSeek survey report likewise.
-- The document also migrated to the current Explanation-facet structure (Abstract / Introduction / Explanation / Results / Discussion) with a paired changelog, per [documentation-explanation.md](../documentation-explanation.md).
+- The document also migrated to the current Explanation-facet structure (Abstract / Introduction / Explanation / Results / Discussion) with a paired changelog, per [documentation-explanation.md](../../documentation-explanation.md).
 
 #### Deliberation
 - The founding positions were authored across four sessions (Omid Hekayati — claimed):
@@ -95,8 +95,8 @@
 - Cited:
   - [Lexical analysis (Wikipedia)](https://en.wikipedia.org/wiki/Lexical_analysis) — Reference: the terminology entry point for the lexeme/token/pattern/token-type vocabulary this document already uses as evidence.
 - Contributors:
-  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — requested
-  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash via [OpenCode](../../CONTRIBUTORS.md#opencode)) — edited
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested
+  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash via [OpenCode](../../../CONTRIBUTORS.md#opencode)) — edited
 
 #### What changed
 - The Wikipedia Lexical Analysis reference, previously present only as a Prior-art bullet, is now linked inline at the two reader-facing points where a reader first needs it: once in *What a Lexer is* (naming the subject-matter process the protocol abstracts over), once in *Lexical Unit and naming* (the lexeme/token/pattern vocabulary under critique) (Super Z — edited).
@@ -111,8 +111,8 @@
 - Time: 2026-09-06T11:10:00Z
 - Type: Fixed
 - Contributors:
-  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — requested
-  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash via [OpenCode](../../CONTRIBUTORS.md#opencode)) — audited, applied
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested
+  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash via [OpenCode](../../../CONTRIBUTORS.md#opencode)) — audited, applied
 
 #### What changed
 - Both transcripts were compared against the document claim by claim, and five gaps were closed:
@@ -134,8 +134,8 @@
   - z.ai lexer survey-plus-synthesis report (source file deleted 2026-09-23 after its final transfer audit) — Evidence: the 36+-system synthesis behind the new positions (trivia, errors, preprocessing, context-carrying models, per-type registries, delivery forms, lexer-earning-its-keep conditions).
   - DeepSeek lexer survey report (source file deleted 2026-09-23 after its final transfer audit) — Evidence: the survey behind the C lexer-hack lesson, the source-ownership recommendation, and the Unicode support note.
 - Contributors:
-  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — directed
-  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash via [OpenCode](../../CONTRIBUTORS.md#opencode)) — audited, applied.
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — directed
+  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash via [OpenCode](../../../CONTRIBUTORS.md#opencode)) — audited, applied.
 
 #### What changed
 - The three research reports were compared against the document finding by finding.
@@ -166,11 +166,11 @@
 - Time: 2026-09-11T08:29:10Z
 - Type: Changed
 - Cited:
-  - [Documentation — Explanation](../documentation-explanation.md) — Depends_on: the three-section skeleton and the Relevance-discipline routing this migration applies are defined by the Explanation facet's governing specification.
-  - [Documentation — Handoff](../documentation-handoff.md) — Depends_on: any open work created by this migration follows the Handoff facet's specification.
+  - [Documentation — Explanation](../../documentation-explanation.md) — Depends_on: the three-section skeleton and the Relevance-discipline routing this migration applies are defined by the Explanation facet's governing specification.
+  - [Documentation — Handoff](../../documentation-handoff.md) — Depends_on: any open work created by this migration follows the Handoff facet's specification.
 - Contributors:
-  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) - directed
-  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM 5.3) - applied
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) - directed
+  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM 5.3) - applied
 
 #### What changed
 - The base document's `## Discussion` section was retired and its five subsections routed per the Relevance-discipline routing.
@@ -204,8 +204,8 @@
 - Time: 2026-09-23T14:20:00Z
 - Type: Removed
 - Contributors:
-  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — requested
-  - [Mimo](../../CONTRIBUTORS.md#mimo) (mimo-v2.6-flash via [OpenCode](../../CONTRIBUTORS.md#opencode)) — audited, applied
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested
+  - [Mimo](../../../CONTRIBUTORS.md#mimo) (mimo-v2.6-flash via [OpenCode](../../../CONTRIBUTORS.md#opencode)) — audited, applied
 
 #### What changed
 - All three commissioned lexer research files — the DeepSeek survey, the z.ai English survey-plus-synthesis report, and its Persian translation (a duplicate carrying no unique content) — were audited finding-by-finding against `lexer.md`, this changelog, and the paired handoff, then deleted along with the rest of the research directory.
@@ -219,8 +219,8 @@
 - Time: 2026-09-23T15:30:00Z
 - Type: Added
 - Contributors:
-  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — directed
-  - [Mimo](../../CONTRIBUTORS.md#mimo) (mimo-v2.6-flash via [OpenCode](../../CONTRIBUTORS.md#opencode)) — examined, dispositioned, applied
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — directed
+  - [Mimo](../../../CONTRIBUTORS.md#mimo) (mimo-v2.6-flash via [OpenCode](../../../CONTRIBUTORS.md#opencode)) — examined, dispositioned, applied
 
 #### What changed
 - Every finding waived by this file's research-deletion entry received an explicit disposition — each verdict on merits, so no waiver stands bare:

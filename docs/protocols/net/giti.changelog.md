@@ -6,7 +6,7 @@
 - Time: 2026-08-26T09:13:01Z
 - Type: merged
 - Cited:
-  - [Documentation — Explanation](../documentation-explanation.md) — Reference: the Explanation-facet structure this rewrite follows, including its prefix-free/layer-free file-naming rule that decided the filename.
+  - [Documentation — Explanation](../../documentation-explanation.md) — Reference: the Explanation-facet structure this rewrite follows, including its prefix-free/layer-free file-naming rule that decided the filename.
   - [Networking](../net/networking.md) — Depends_on: GP frames ride Networking's packet model; the self-describing-frame and Layer presence principles are referenced rather than restated.
   - [Chapar - Data Link Protocol](../net/chapar.md) — Reference: supplies the ChaparKhane router/coordinator role and the link-layer carrier this document suggests.
 - Propagates to:
@@ -16,8 +16,8 @@
   - sRPC.md: Done — GP example link repointed.
   - README.md (repository root): Done — GP link repointed to `./docs/giti.md`, which also repairs its previously broken relative path.
 - Contributors:
-  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — requested
-  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — rewrote
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested
+  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — rewrote
 
 #### What changed
 The protocol documentation previously lived in two pre-method files: the original Giti read-me (`giti.md` — vision, stack overview, societies, security posture, transition plan, related-work lists) and the GP specification (`networking-osi_3-Giti-Network.md` — goals, frame format, addresses, routing architecture). Both were undated and carried dead links. The two were consolidated into this single Explanation-facet document without summarization, with every design statement preserved and IPv6 kept as the recorded measuring stick. The filename question was resolved per the current method's own rule (`<slug>.md`, no number, no domain prefix) and for consistency with the Layer presence principle — a layer number in a filename would encode exactly the fixed-layer assumption that principle rejects — giving `giti.md`, parallel to `chapar.md`; umbrella-prefixing Chapar under networking was rejected on the same rule. Repairs made in passing: the `ChaparKhane.md` links (a document that never existed) now point at the ChaparKhane role's home in chapar.md; the `chapa.md` typo became chapar.md; `PersiaOS.md` case-corrected to persia_os.md; the legacy "Transport (OSI Layer 3)" mislabel corrected to Network; the dangling Achaemenid links replaced with a plain-text mention and an Unresolved questions entry since no such document exists; the empty standard-services roster flagged inline and as an open question alongside the unrecorded ownership-proof mechanism for the true 32-byte identities — the latter noted as especially pressing because two of the document's own IP criticisms target that exact weakness.
@@ -35,8 +35,8 @@ The protocol documentation previously lived in two pre-method files: the origina
   - networking.md: Done — the authoritative Commercial components topic added there.
   - README.md (repository root): Done — one-sentence pointer to that topic added.
 - Contributors:
-  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided
-  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — applied.
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — applied.
 
 #### What changed
 Methodology was replaced: the consolidation story (already recorded here in the previous entry) left the base document, and the section now records the design's actual origin — the inversion of IP's unit of connection from devices to applications, the derivation of the five-level address hierarchy from global application-to-application routing without a registrar, and IPv6 as the standing measuring stick each mechanism had to answer. The commercial clarification was authored into Networking under Commercial components and referenced from this document's stack-placement paragraph and the repository root README.
@@ -52,8 +52,8 @@ Methodology was replaced: the consolidation story (already recorded here in the 
   - README.md (repository root): Done — Commercial components content moved into README's existing Enterprise section; this document's pointer repointed there.
   - networking.md: Done — its temporary Commercial components topic removed; ownership of the statement now belongs to README.
 - Contributors:
-  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided
-  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — applied.
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — applied.
 
 #### What changed
 Five revisions. The stack-placement pointer now targets README's Enterprise section, which absorbed the full commercial-components statement (and shed a dangling empty bullet). Attack reporting gained its governing stance: no definitive attestation/blocking scheme is fixed on purpose, with GP's structural advantage over IP recorded — organizational ownership of Router ranges makes reports terminate at accountable parties where IP's origins dissolve behind VPNs. Standard services were elevated: they carry attack reporting, reputation, blocking coordination, and identity attestation, making them the highest-priority open work. Routing architecture opens with a scoping note — this layer owes addressing and routability only; inter-planetary delivery belongs to lower layers and topology. Quality of Service points at ChaparKhane as the deliberately-unspecified implementation home. Unresolved question 2 was reframed accordingly: binding remains open by choice, with the gap explicitly smaller than IPv6's rather than inherited-equal.
@@ -72,8 +72,8 @@ Five revisions. The stack-placement pointer now targets README's Enterprise sect
 - Propagates to:
   - None — this is a future direction recorded for the first time.
 - Contributors:
-  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — ruled
-  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — wrote.
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — ruled
+  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — wrote.
 
 #### What changed
 Added the society-level blocking design to Future possibilities: de-peering via route withdrawal (BGP-style, simplified by small deliberately-peered society graph), signed incident reports carried on mandatory sRPC services with Chapar-stamped evidence, VPN bypass structural failure because egress lands in an identifiable org-owned range, graduated escalation (warn → rate-limit → partial/full withdrawal → re-entry via signed attestation). Recorded as an option, not a fixed rule, consistent with the deliberate openness stance.
@@ -87,8 +87,8 @@ Added the society-level blocking design to Future possibilities: de-peering via 
 - Propagates to:
   - None — future direction expanded in place.
 - Contributors:
-  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — ruled
-  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — applied.
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — ruled
+  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — applied.
 
 #### What changed
 Replaced the abbreviated bullet with the full design: two-tier consensus (intra-society agreement then inter-society propagation), structural VPN bypass failure explanation (egress through identifiable org-owned range), graduated escalation (warn → rate-limit → partial/full withdrawal → re-entry), and the two-tier consensus model matching the owner's description. Still recorded as an option, not a fixed rule.
@@ -106,9 +106,9 @@ Replaced the abbreviated bullet with the full design: two-tier consensus (intra-
   - networking.md: Done — registry row 4 renamed GP-Thing, row 5 added as GP-App; Edge computing topic added.
   - README.md (repository root): Rejected — no statement outside the protocol documents depends on the address layout.
 - Contributors:
-  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — requested, decided
-  - [ChatGPT](../../CONTRIBUTORS.md#chatgpt) — collaborated
-  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — applied
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested, decided
+  - [ChatGPT](../../../CONTRIBUTORS.md#chatgpt) — collaborated
+  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — applied
 
 #### What changed
 The address stopped being a fixed 128-bit five-level blob inherited (through IPv6's example) before its capacity was questioned, and became a locator hierarchy whose every field is justified by its scope's operational capacity. Frame architecture: one 21-byte Thing Routing Frame (Society + Router + Thing per side) and one 25-byte App Routing Frame (Society + Router + Thing + App per side), self-contained and never rewritten in flight, with the FrameType announcing the layout. GP address topic rewritten around the locator-not-identity principle and the sizing rule; a dedicated topic records that planetary location is society-level topology knowledge, never address data, so interplanetary reachability is a routing problem rather than an addressing dimension. IPv6-comparison section rewritten: the old IANA /16 interoperation contract is dropped as unnecessary (Internet interoperation is packet-level tunneling, noted in the Transition topic). Society registration gained the logical-routing-domain statement (routers anywhere, no layer-2 adjacency required). Standard services roster filled with four named capabilities as sRPC calls — resolving the long-standing empty-roster debt. Routing architecture gained the Inter-society delivery topic (direct vs. mediated, Society+Router granularity, last-delivering-society responsibility, physical-vs-responsibility hop distinction). Local network rewritten to state honestly that router-less networks cannot back their locators. Attack reporting references the two-recipient model. Unresolved questions re-rostered: contract-level service specification, ingress attestation for source validation, and the mixed-level (Thing↔App) communication ruling replace the resolved roster and IANA questions; a scope-implied-short-frames extension point recorded under Future possibilities.
@@ -136,9 +136,9 @@ The address stopped being a fixed 128-bit five-level blob inherited (through IPv
 - Propagates to:
   - giti.md: Done — its Frame architecture topic points at this principle so header economy is never read as license for gratuitous data movement.
 - Contributors:
-  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided
-  - [ChatGPT](../../CONTRIBUTORS.md#chatgpt) — collaborated
-  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — applied.
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [ChatGPT](../../../CONTRIBUTORS.md#chatgpt) — collaborated
+  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — applied.
 
 #### What changed
 New topic under Hardware in networking.md: total network cost is the sum of transmission, routing, and state, so minimizing a header is not minimizing the network; data movement must be justified, execution and storage belong at the edge where locality pays, the ecosystem's tooling should make the local choice the easy choice, and no topology is imposed on applications. GP's frame architecture cross-references it.
@@ -159,9 +159,9 @@ New topic under Hardware in networking.md: total network cost is the sum of tran
   - giti.practice.md: Done — created; the Transition from the Internet topic's procedure restated as steps.
   - networking.md: Done — Place in the stack moved there as the stack-wide overview; this document no longer restates it.
 - Contributors:
-  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided
-  - [ChatGPT](../../CONTRIBUTORS.md#chatgpt) — collaborated
-  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — applied.
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [ChatGPT](../../../CONTRIBUTORS.md#chatgpt) — collaborated
+  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — applied.
 
 #### What changed
 Four moves in one pass. Transition from the Internet left this document for giti.practice.md (with the IPv6-comparison pointer repointed and a one-line pointer left in Implementation and status). Place in the stack left for Networking, where the stack overview belongs to all protocols instead of Giti restating it as if it owned the stack; the software-router code-generation sentence stayed here in Implementation and status. The standard services roster gained Society identifier allocation as service five, fixing the allocation shape while leaving the agreement mechanism open — and the Society registration topic and Unresolved question 5 now reference it. Unresolved question 4 was rewritten from open problem to resolved principle with only the lease-default convention open: a Thing-level endpoint is its hypervisor or driver, itself an app under os.md that may hold an App ID.
@@ -183,9 +183,9 @@ Four moves in one pass. Transition from the Internet left this document for giti
   - giti.practice.md: Done — rewritten as the general GP practices document (router operation, Internet bridge, edge cases).
   - os.md: Done — Networking topic gained the cost-objection paragraph (paired entry in os.changelog.md).
 - Contributors:
-  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided
-  - [ChatGPT](../../CONTRIBUTORS.md#chatgpt) — collaborated
-  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — applied.
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [ChatGPT](../../../CONTRIBUTORS.md#chatgpt) — collaborated
+  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — applied.
 
 #### What changed
 Inter-society delivery was rewritten around local routing knowledge — the three-rung ladder (direct to destination router → hand-off to the destination society's router, which owns completion → agreed-intermediary relay as a contract, never a default), with the digital-economy routing-cost question recorded as Unresolved question 6. The practice document was generalized and decoupled: giti.md no longer links to it anywhere. Terminology was aligned: "first users" → "first apps"; service-number assignment moved out of GP's scope into sRPC's. Unresolved question 4 was completed per the default-app reading: the Thing-level endpoint's effective app is the driver, and the deliver-vs-report decision belongs to the device app's rules.
@@ -202,9 +202,9 @@ Inter-society delivery was rewritten around local routing knowledge — the thre
 - Type: created
 - Cited:
   - [Giti (GP)](../net/giti.md) — Depends_on: the transition rules giti.practice.md restates as imperative steps; it owns the protocol, the practice file owns the deployment procedure.
-  - [Documentation — Practice](../documentation-practice.md) — Reference: the Practice-facet schema the practice file follows (frontmatter exactly `name` and `description`; imperative body; edge cases).
+  - [Documentation — Practice](../../documentation-practice.md) — Reference: the Practice-facet schema the practice file follows (frontmatter exactly `name` and `description`; imperative body; edge cases).
 - Contributors:
-  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — applied.
+  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — applied.
 
 #### What changed
 Created giti.practice.md carrying the Internet-bridge procedure (listen on UDP 80; deliver the whole GP packet to the registered app's GP address only when it exists and requested Internet reachability; full App-level addresses at both ends inside the tunneled frame), restated as imperative steps with edge cases, including the honesty note that the UDP path carries no Chapar-grade ingress validation and the scaffolding note that the practice ends where native paths begin. The protocol itself keeps no copy of the procedure.
@@ -215,8 +215,8 @@ Created giti.practice.md carrying the Internet-bridge procedure (listen on UDP 8
 - Cited:
   - [Giti (GP)](../net/giti.md) — Depends_on: the procedures here are imperative restatements of protocol rules giti.md deliberately leaves open (implementation choices, deployment steps).
 - Contributors:
-  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided
-  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — applied.
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — applied.
 
 #### What changed
 The document was rewritten as "GP Practices": a general procedures file for operating GP networks whose topics grow over time. It now carries the router-operation procedure (ChaparKhane role as an ordinary app holding a hardware entitlement; the Inter-society delivery ladder applied locally; the source-validation invariant; QoS/path/pipelining as free choices) alongside the Internet-bridge procedure, with shared edge cases. giti.md holds no links to this file — the protocol document states the protocol; this file states the procedures. Provenance for the practice document lives in this changelog, per the ruling that practice documents carry no changelog of their own.
@@ -232,9 +232,9 @@ The document was rewritten as "GP Practices": a general procedures file for oper
 - Propagates to:
   - giti.practice.md: Done — router procedure gained the interior-organization step; its standard-services links repointed.
 - Contributors:
-  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided
-  - [ChatGPT](../../CONTRIBUTORS.md#chatgpt) — collaborated
-  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — applied.
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [ChatGPT](../../../CONTRIBUTORS.md#chatgpt) — collaborated
+  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — applied.
 
 #### What changed
 Standard services was restructured from a five-service roster into a five-capability needs list, with an explicit paragraph deferring the roster decision to ChaparKhane's development under the least-protocol-interference principle and the IP/BGP precedent recorded as evidence; the "first apps (`== 0`)" semantics left the document with the roster decision. Society registration gained the interior-organization freedom paragraph (border-spread or core-router concentration are examples, not rules — nothing interior changes a frame on the wire). All internal references were realigned: needs wording in the registry/accountability/UQ pointers, UQ1 rewritten around the deferral, and the practice document's router procedure gained the corresponding step. The consolidated changelog policy was completed: giti.practice.changelog.md is deleted and its two entries live here.
@@ -251,8 +251,8 @@ Standard services was restructured from a five-service roster into a five-capabi
 - Time: 2026-09-03T00:00:00Z
 - Type: refactor
 - Contributors:
-  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) - directed, decided
-  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) - moved.
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) - directed, decided
+  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) - moved.
 
 #### What changed
 This document and its companions (practice, changelog) moved from `docs/` to `docs/protocols/` - the new home for Memar's own protocol specifications. Relative links to documentation-system documents and to Khayyam documents at `docs/` root were adjusted for the added depth; no content change.
@@ -264,11 +264,11 @@ This document and its companions (practice, changelog) moved from `docs/` to `do
 - Time: 2026-09-11T08:29:10Z
 - Type: Changed
 - Cited:
-  - [Documentation — Explanation](../documentation-explanation.md) — Depends_on: the three-section skeleton and the Relevance-discipline routing this migration applies are defined by the Explanation facet's governing specification.
-  - [Documentation — Handoff](../documentation-handoff.md) — Depends_on: any open work created by this migration follows the Handoff facet's specification.
+  - [Documentation — Explanation](../../documentation-explanation.md) — Depends_on: the three-section skeleton and the Relevance-discipline routing this migration applies are defined by the Explanation facet's governing specification.
+  - [Documentation — Handoff](../../documentation-handoff.md) — Depends_on: any open work created by this migration follows the Handoff facet's specification.
 - Contributors:
-  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) - directed
-  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM 5.3) - applied
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) - directed
+  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM 5.3) - applied
 
 #### What changed
 - The document-level `## Discussion` section was retired from [giti.md](../net/giti.md) under the Relevance-discipline routing, leaving nothing behind except retargeted pointers.

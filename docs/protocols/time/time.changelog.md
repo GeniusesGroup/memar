@@ -6,8 +6,8 @@
 - Time: 2026-09-06T00:00:00Z
 - Type: Added
 - Contributors:
-  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — claimed, argued
-  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — reviewed, rewrote
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — claimed, argued
+  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — reviewed, rewrote
 
 #### What changed
 - Initial Draft created, recording the interface-shaped position: time's framework presence is a small ordering/comparison contract plus three separable satellite concerns; mutability ruled out; the definitional question kept genuinely open (Omid Hekayati).
@@ -30,8 +30,8 @@
 - Propagates to:
   - time.handoff.md: Done - anticipated work recorded there under `Anticipated Work`.
 - Contributors:
-  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) - claimed, decided
-  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) - moved
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) - claimed, decided
+  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) - moved
 
 #### What changed
 - The body's `Discussion` wrappers dissolved entirely, per the finalized documentation method (documentation-explanation.changelog.md, same date) (Omid Hekayati - decided; Super Z - applied).
@@ -53,10 +53,10 @@
 - Time: 2026-09-29T10:40:00Z
 - Type: Changed
 - Cited:
-  - [Documentation → Content Rule](../documentation.md#content-rule-no-fabricated-or-redundant-provenance) - Premise: content lives in one authoritative home and is linked, not restated.
+  - [Documentation → Content Rule](../../documentation.md#content-rule-no-fabricated-or-redundant-provenance) - Premise: content lives in one authoritative home and is linked, not restated.
 - Contributors:
-  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) - decided: code under `modules/` introduces itself, and a code folder carries only a README
-  - Auto (model not recorded) via [Cursor](../../CONTRIBUTORS.md#cursor) - applied
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) - decided: code under `modules/` introduces itself, and a code folder carries only a README
+  - Auto (model not recorded) via [Cursor](../../../CONTRIBUTORS.md#cursor) - applied
 
 #### What changed
 - `time.md → A contract states a duration, not a unit`: a new section carrying the owner's statement that defining a timer does not force a dependency on a unit of time, and the rule that every contract over a span states a Duration and leaves the unit to the implementation. It came from the module document `modules/time/time.md`, which was deleted under the owner's decision above.
@@ -73,7 +73,7 @@
 - Time: 2026-09-29T11:17:00Z
 - Type: Changed
 - Contributors:
-  - Auto (model not recorded) via [Cursor](../../CONTRIBUTORS.md#cursor) - applied
+  - Auto (model not recorded) via [Cursor](../../../CONTRIBUTORS.md#cursor) - applied
 
 #### What changed
 - `time.md`: realization membership for `modules/time/`.

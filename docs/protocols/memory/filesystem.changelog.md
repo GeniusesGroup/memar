@@ -6,14 +6,14 @@
 - Time: 2026-07-19T20:26:35Z
 - Type: Added
 - Cited:
-  - [Documentation](../documentation.md) — Reference: this specification is informed by the Documentation framework's analysis of document types as profiles rather than independent structures.
-  - [Knowledge](../knowledge.md) — Depends_on: this critique and that specification are companion documents with opposite polarity (critique vs. principles); the positive knowledge-modeling principles this critique enables are stated there.
+  - [Documentation](../../documentation.md) — Reference: this specification is informed by the Documentation framework's analysis of document types as profiles rather than independent structures.
+  - [Knowledge](../../knowledge.md) — Depends_on: this critique and that specification are companion documents with opposite polarity (critique vs. principles); the positive knowledge-modeling principles this critique enables are stated there.
   - [Semantic File Systems](https://dl.acm.org/doi/10.1145/121132.121138) — Reference: Gifford et al.'s demonstration that attribute-based (semantic) access outperforms hierarchical (directory-tree) access for information-rich content; primary academic support for the classification critique.
   - [Unikernels: Library Operating Systems for the Cloud](https://anil.recoil.org/papers/2013-asplos-mirage.pdf) — Reference: Madhavapeddy et al.'s evidence that general-purpose filesystems are not universal requirements, supporting the filesystem-is-optional argument.
 - Contributors:
-  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — claimed, decided
-  - [ChatGPT](../../CONTRIBUTORS.md#chatgpt) (GPT-5.5, medium effort) — reviewed, argued
-  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM 5.2, deep think max) — researched, rewrote
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — claimed, decided
+  - [ChatGPT](../../../CONTRIBUTORS.md#chatgpt) (GPT-5.5, medium effort) — reviewed, argued
+  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM 5.2, deep think max) — researched, rewrote
 
 #### What changed
 - The first draft established the core critique that the filesystem is a storage model improperly used as a knowledge model (Omid Hekayati — the critique).
@@ -31,8 +31,8 @@
 - Time: 2026-07-20T00:00:00Z
 - Type: Changed
 - Contributors:
-  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — claimed, decided
-  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM 5.2, deep think max) — argued, rewrote
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — claimed, decided
+  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM 5.2, deep think max) — argued, rewrote
 
 #### What changed
 - Addressed architectural critiques by reframing Git as a "repair mechanism" over filesystem flaws rather than an independent tool.
@@ -54,8 +54,8 @@
 - Time: 2026-07-21T00:00:00Z
 - Type: Changed
 - Contributors:
-  - [Claude](../../CONTRIBUTORS.md#claude) (Claude Sonnet 5, medium effort with thinking) — reviewed, argued
-  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — reviewed, decided
+  - [Claude](../../../CONTRIBUTORS.md#claude) (Claude Sonnet 5, medium effort with thinking) — reviewed, argued
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — reviewed, decided
 
 #### What changed
 - The document text was reconciled against reviewer critiques that had been raised in discussion but not yet applied; the unincorporated critiques were identified by reviewing the full chat history against the resulting document (Claude).
@@ -77,8 +77,8 @@
   - A Tale of Two Abstractions: The Case for Object Storage (Bittman et al., HotStorage '19) — Reference: file and object abstractions coexist because they optimize for different use cases — filesystem is one valid projection among many. (Named in the document's Prior art without a URI; none is recorded here rather than guessed.)
   - [The Knowledge-Creating Company](https://hbr.org/1991/07/the-knowledge-creating-company) — Reference: the SECI model's tacit/explicit distinction informs the Knowledge vs. Document position.
 - Contributors:
-  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM 5.2, deep think max) — researched, rewrote
-  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — claimed
+  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM 5.2, deep think max) — researched, rewrote
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — claimed
 
 #### What changed
 - Fourth revision round: citations deepened with corrected URIs and additional new academic sources.
@@ -100,8 +100,8 @@
 - Propagates to:
   - knowledge.md: Done — the `Pending` propagation recorded in knowledge.changelog.md (this document's own format migration) is closed by this entry.
 - Contributors:
-  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — requested
-  - [Qwen](../../CONTRIBUTORS.md#qwen) (Qwen3.8-Flash) — rewrote
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested
+  - [Qwen](../../../CONTRIBUTORS.md#qwen) (Qwen3.8-Flash) — rewrote
 
 #### What changed
 - Front matter reduced to Title/Status/Start Date/ID: the six `Citations`, the four-entry `Contributors` roster, and the dead `Applied to` field were absorbed into the entries above, and the top-level `## Change Rationale` section moved here as its four entries (its four numbered rounds became the four entries above, dated approximately by inferred round and commit history — the open question `documentation-changelog.md` names for migrated historical entries; the initial draft's time is the real commit time).
@@ -119,12 +119,12 @@
 - Time: 2026-09-05T13:40:00Z
 - Type: Added
 - Cited:
-  - [Framework](../framework.md) — Reference: the explicit-decision-over-defaults standard the practice's Recording section applies.
+  - [Framework](../../framework.md) — Reference: the explicit-decision-over-defaults standard the practice's Recording section applies.
 - Propagates to:
   - `protocols/README.md`: Done — the membership criterion now names the second kind of document this one is (Memar's position on an external protocol surface), so the placement question does not recur at the folder level either.
 - Contributors:
-  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — claimed, decided
-  - [Qwen](../../CONTRIBUTORS.md#qwen) (Qwen3.8-Flash) — drafted, rewrote
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — claimed, decided
+  - [Qwen](../../../CONTRIBUTORS.md#qwen) (Qwen3.8-Flash) — drafted, rewrote
 
 #### What changed
 - Added the first Explanation topic, "Memar's Stance on the Filesystem Protocol Surface": the document's protocols/ membership (a position on an external protocol surface, not a general concept) and its practical function — the filesystem as a high-level library whose inclusion is a per-concern decision, with the critique topics as the evidence for the check.
@@ -145,8 +145,8 @@
 - Propagates to:
   - filesystem.handoff.md: Created - open questions and anticipated work moved there.
 - Contributors:
-  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) - requested
-  - [Qwen](../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via [OpenCode](../../CONTRIBUTORS.md#opencode)) - moved
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) - requested
+  - [Qwen](../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via [OpenCode](../../../CONTRIBUTORS.md#opencode)) - moved
 
 #### What changed
 - The body's fixed top-level sections are now `Abstract`, `Introduction`, `Explanation`, `Results` only: the document-level `## Discussion` — with its `Drawbacks`, `Rationale and alternatives`, `Prior art`, `Possible questions`, `Unresolved questions`, and `Future possibilities` subsections — is retired; no `Discussion`, `Drawbacks`, `Rationale and alternatives`, `Prior art`, `Unresolved questions`, or `Future possibilities` heading survives in the body. This document carried no topic-level Discussion wrappers, so none needed dissolving.

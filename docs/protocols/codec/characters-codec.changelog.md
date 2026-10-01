@@ -8,7 +8,7 @@
 - Cited:
   - [Math Handoff → Does the tower hold widths the reference does not declare?](../math/math.handoff.md#does-the-tower-hold-widths-the-reference-does-not-declare) - Premise: owner ruling item (e) on byte, rune, and character abstractions.
 - Contributors:
-  - Auto (model not recorded) via [Cursor](../../CONTRIBUTORS.md#cursor) - applied
+  - Auto (model not recorded) via [Cursor](../../../CONTRIBUTORS.md#cursor) - applied
 
 #### What changed
 - `characters-codec.md`: new section stating that characters and octets are not numeric widths and naming the existing character abstractions in the corpus.

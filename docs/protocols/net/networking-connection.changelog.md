@@ -6,8 +6,8 @@
 - Time: 2026-09-06T00:00:00Z
 - Type: Added
 - Contributors:
-  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — claimed, argued
-  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — reviewed, rewrote
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — claimed, argued
+  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — reviewed, rewrote
 
 #### What changed
 - Initial Draft defining the connection concept in Networking's packet model and the framework's core rule: connection state is owned by the component that runs the protocol logic and is exposed to layers above; timeouts and liveness are the owning component's budgets; blocking-read as an interface failure, not a property of networking (Omid Hekayati).
@@ -27,8 +27,8 @@
 - Propagates to:
   - networking-connection.handoff.md: Done - anticipated work recorded there under `Anticipated Work`.
 - Contributors:
-  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) - claimed, decided
-  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) - moved
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) - claimed, decided
+  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) - moved
 
 #### What changed
 - The body's `Discussion` wrappers dissolved entirely, per the finalized documentation method (documentation-explanation.changelog.md, same date) (Omid Hekayati - decided; Super Z - applied).
@@ -54,8 +54,8 @@
 - Propagates to:
   - http.md: Done — owns the HTTP cookie versus "stateless" reconstruction.
 - Contributors:
-  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — requested, decided
-  - [Grok](../../CONTRIBUTORS.md#grok) (Grok 4.6 via [Cursor](../../CONTRIBUTORS.md#cursor)) — applied
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested, decided
+  - [Grok](../../../CONTRIBUTORS.md#grok) (Grok 4.6 via [Cursor](../../../CONTRIBUTORS.md#cursor)) — applied
 
 #### What changed
 - Motivation, Methodology, and the closing evidence sentence no longer prosecute HTTP. Hidden connection state is stated as the general failure; the positive contract (state owned by the protocol's logic and exposed upward) is unchanged.

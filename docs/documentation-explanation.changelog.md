@@ -260,7 +260,7 @@ The skeleton is three fixed sections; an Explanation-facet document carries no `
 - Type: Changed
 - Propagates to:
   - documentation-explanation.practice.md: Done — body-writing step gains an explicit filter before leaving Abstract/Motivation/Methodology.
-  - protocols/process/test.md (recorded then as protocols/process/tdd.md): Done — Methodology cleaned as the triggering instance; entry in [test.changelog.md](docs/protocols/process/test.changelog.md). That document was subsequently absorbed into `test.md` and its changelog folded into that document's.
+  - protocols/process/test.md (recorded then as protocols/process/tdd.md): Done — Methodology cleaned as the triggering instance; entry in [test.changelog.md](./protocols/process/test.changelog.md). That document was subsequently absorbed into `test.md` and its changelog folded into that document's.
 - Contributors:
   - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — objected, directed the governing-doc upgrade
   - Cursor/Composer — drafted

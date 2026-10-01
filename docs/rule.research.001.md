@@ -23,7 +23,7 @@ Complete
   - External terminology (SBVR, Business Rules Group, production-rule literature, Ross). Memar's existing internal usage in modularity, modeling, linter, and Khayyam rules. Excludes implementation survey of specific products (Drools, OPA) beyond illustrative mention.
 
 ## Participants
-- [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — `Questioner`, `Goal-setter`
+- [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — `Questioner`, `Goal-setter`
 - Cursor agent — `Researcher` — `Not yet reviewed`
 
 ## Methodology

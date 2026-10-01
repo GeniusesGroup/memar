@@ -10,7 +10,7 @@
   - [sRPC](../net/sRPC.md) — Depends_for: the four-identity collapse and the "re-encoded URL" caution originated as lost sRPC design rationale; the HTTP critique moves here so sRPC can state its independent identities as a positive contract.
   - [Networking Connection](../net/networking-connection.md) — Depends_for: the "stateless HTTP" versus cookie reconstruction instance moves here so the connection document can state state-ownership without prosecuting HTTP.
   - [Networking](../net/networking.md) — Depends_for: the HTTP-shaped-traffic filter case moves here; Networking keeps the general rule that a deployment constraint is not an architecture.
-  - [Content](../content.md) — Depends_on: Reference vs. Locator is the reason shareable addresses survive this critique.
+  - [Content](../../content.md) — Depends_on: Reference vs. Locator is the reason shareable addresses survive this critique.
   - [RFC 3986](https://www.rfc-editor.org/rfc/rfc3986) — Evidence: URI syntax as the locator job.
   - [RFC 9110](https://www.rfc-editor.org/rfc/rfc9110) — Evidence: HTTP semantics, including that GET content is not well-defined and that `303` exists for POST-to-GET handoff.
   - [RFC 6265](https://www.rfc-editor.org/rfc/rfc6265) — Evidence: cookies as specified persistent state against the "stateless" slogan.
@@ -23,8 +23,8 @@
   - sRPC.md: Done — independent-identities rationale added as a positive contract; http-uri form framed as adapter.
   - sRPC.handoff.md: Done — URL-critique open question graduated into this document and into sRPC's positive rationale.
 - Contributors:
-  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — claimed, decided, requested
-  - [Grok](../../CONTRIBUTORS.md#grok) (Grok 4.6 via [Cursor](../../CONTRIBUTORS.md#cursor)) — argued, drafted
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — claimed, decided, requested
+  - [Grok](../../../CONTRIBUTORS.md#grok) (Grok 4.6 via [Cursor](../../../CONTRIBUTORS.md#cursor)) — argued, drafted
 
 #### What changed
 - Created `http.md` as Memar's position on depending on HTTP: guest interoperability library, not the foundation of application, session, or addressing models.
@@ -60,8 +60,8 @@
   - http.practice.md: Done — criterion 2 no longer attributes "destination only" to Content; criterion 5 includes header-bearing handoff; cache-key anti-pattern added.
   - http.handoff.md: Rejected — no new open question; the additions are body claims, not unsettled work.
 - Contributors:
-  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — requested
-  - [Grok](../../CONTRIBUTORS.md#grok) (Grok 4.6 via [Cursor](../../CONTRIBUTORS.md#cursor)) — reviewed, applied
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested
+  - [Grok](../../../CONTRIBUTORS.md#grok) (Grok 4.6 via [Cursor](../../../CONTRIBUTORS.md#cursor)) — reviewed, applied
 
 #### What changed
 - Abstract tightened around the claim (URL overload, non-locator credential channels, locator leakage, check-not-ban) rather than previewing every topic as a tour.
@@ -72,7 +72,7 @@
 - Guest use states the filesystem-parallel explicitly: a shareable HTTP URL may project a Memar address; it must not become the address.
 - Implications added as forced consequences of adopting the position.
 - Inbound sRPC link now targets `#independent-identities` as well as `#service-id`.
-- Content citations now target the real heading [Reference as a Relation, Not a Property](../content.md#reference-as-a-relation-not-a-property); `#reference-vs-locator` was not a heading.
+- Content citations now target the real heading [Reference as a Relation, Not a Property](../../content.md#reference-as-a-relation-not-a-property); `#reference-vs-locator` was not a heading.
 
 #### Considered and not done
 - **Leave the Networking-principle "not yet in the body" sentence in Methodology** (rejected): that is working state, not method. (Grok)

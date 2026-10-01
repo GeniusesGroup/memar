@@ -8,8 +8,8 @@
 - Propagates to:
   - process.md: Done — the *Requests, Cancellation, and Timeout* topic added there in the same pass; its first unresolved question defers the wire-level cancellation contract to this document.
 - Contributors:
-  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — claimed, argued
-  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — reviewed, rewrote
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — claimed, argued
+  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — reviewed, rewrote
 
 #### What changed
 - Added two new sections: *Position on Message Brokers* and *Open Questions* (the wire-level cancellation contract deferred from process.md's context critique).
@@ -29,8 +29,8 @@
   - http.md: Done — owns the URL's four-identity collapse as prior-art critique.
   - sRPC.handoff.md: Done — the address/identity open question graduated.
 - Contributors:
-  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — requested, decided
-  - [Grok](../../CONTRIBUTORS.md#grok) (Grok 4.6 via [Cursor](../../CONTRIBUTORS.md#cursor)) — applied
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested, decided
+  - [Grok](../../../CONTRIBUTORS.md#grok) (Grok 4.6 via [Cursor](../../../CONTRIBUTORS.md#cursor)) — applied
 
 #### What changed
 - Added *Independent identities*: routing, service, operation, and request as distinct representations — the missing design rationale, stated as this protocol's positive contract rather than as a critique of HTTP.
@@ -46,15 +46,15 @@
 - Time: 2026-09-21T16:15:56Z
 - Type: refactor
 - Cited:
-  - [Documentation — Explanation](../documentation-explanation.md) — Reference: the Explanation-facet skeleton, Relevance discipline, and Progressive migration this rewrite follows.
-  - [Documentation](../documentation.md) — Reference: written surface, content rule (no derivative inventories), and citation direction used to drop the languages list and keep implementations out of the protocol body.
+  - [Documentation — Explanation](../../documentation-explanation.md) — Reference: the Explanation-facet skeleton, Relevance discipline, and Progressive migration this rewrite follows.
+  - [Documentation](../../documentation.md) — Reference: written surface, content rule (no derivative inventories), and citation direction used to drop the languages list and keep implementations out of the protocol body.
 - Propagates to:
   - http.md: Done — inbound links `./sRPC.md#service-id` and `./sRPC.md` still resolve; heading texts that produce `#service-id`, `#service-frame`, and the Service Frame `Time` mention were kept; no edit required.
   - networking.handoff.md: Done — inbound link `./sRPC.md#independent-identities` still resolves; no edit required.
   - sRPC.handoff.md: Done — Close-Stream `Reason` / Error ID recorded as an open question; the cancellation contract and library-broker wire-shape questions kept; the Process cancellation link path corrected from `../../process.md` to `../process.md`.
 - Contributors:
-  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — requested, decided
-  - [Grok](../../CONTRIBUTORS.md#grok) (Grok 4.6 via [Cursor](../../CONTRIBUTORS.md#cursor)) — applied
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested, decided
+  - [Grok](../../../CONTRIBUTORS.md#grok) (Grok 4.6 via [Cursor](../../../CONTRIBUTORS.md#cursor)) — applied
 
 #### What changed
 - `sRPC.md` was brought in line with the current Explanation-facet method: YAML front matter (Title, Status: Draft, Start Date, ID), then `# Title` / `Abstract` / `Introduction` (Motivation, Methodology) / `Explanation` topics only. Protocol mechanics were preserved: frames, fields, even/odd identifier split, acknowledgement scheme, message-broker position, independent-identities rationale, and the http-uri multiplexer as a guest adapter.

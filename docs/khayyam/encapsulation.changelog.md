@@ -204,8 +204,8 @@ Completed the migration an earlier pass had started (this document already follo
 - Time: 2026-09-28T14:34:08Z
 - Type: Fixed
 - Cited:
-  - [Math Handoff → Does the tower hold widths the reference does not declare?](./math.handoff.md#does-the-tower-hold-widths-the-reference-does-not-declare) - Premise: the owner ruled the pairing a slip.
-  - [Math Handoff → Does the tower hold widths the reference does not declare?](./math.handoff.md#does-the-tower-hold-widths-the-reference-does-not-declare) - Premise: a signed 32-bit integer is `I32`.
+  - [Math Handoff → Does the tower hold widths the reference does not declare?](../protocols/math/math.handoff.md#does-the-tower-hold-widths-the-reference-does-not-declare) - Premise: the owner ruled the pairing a slip.
+  - [Math Handoff → Does the tower hold widths the reference does not declare?](../protocols/math/math.handoff.md#does-the-tower-hold-widths-the-reference-does-not-declare) - Premise: a signed 32-bit integer is `I32`.
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) - decided
   - Auto (model not recorded) via [Cursor](../../CONTRIBUTORS.md#cursor) - applied

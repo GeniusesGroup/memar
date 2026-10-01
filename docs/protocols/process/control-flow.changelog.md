@@ -19,8 +19,8 @@ Opened two still-open design questions about library-driven conditional methods:
 - Time: 2026-09-03T00:00:00Z
 - Type: refactor
 - Contributors:
-  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — directed, decided
-  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — moved
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — directed, decided
+  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — moved
 
 #### What changed
 This document moved from `docs/` into the framework-contracts subdirectory (`docs/abstractions/`, since renamed `docs/protocols/` — see the entry below). No content change accompanied the move itself; relative links to khayyam-control_flow.md, khayyam-memory_model.md, and khayyam-polymorphism.md were adjusted for the added depth. The link to the Error document required no path change — both documents now share the directory.
@@ -34,8 +34,8 @@ This document moved from `docs/` into the framework-contracts subdirectory (`doc
 - Time: 2026-09-03T00:00:00Z
 - Type: refactor
 - Contributors:
-  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — requested
-  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — rewrote
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested
+  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — rewrote
 
 #### What changed
 The document previously followed the legacy RFC body structure (`Summary / Motivation / Guide-level explanation / Reference-level explanation / Drawbacks / Rationale and alternatives / Prior art / Unresolved questions / Future possibilities`) with `Applied to`, duplicated `Citations`, and `Author(s)` front matter. Migration mapping, with every load-bearing claim preserved without summarizing: Summary became the Abstract; Motivation kept its role under Introduction; Guide-level explanation split into the two Explanation topics *Two etymologically distinct roots, not base-plus-negation* and *Candidates for the success/failure branching pair* (the candidates, with their rejection reasons, are the second topic's content); the one-line Reference-level explanation ("Not yet finalized — pending resolution") folded into the second topic's lead, since document-wide Unresolved questions carry the same pending state; Drawbacks, Prior art, Unresolved questions, and Future possibilities moved to the document-wide Discussion. The former `Rationale and alternatives` section was a pointer back to the guide-level alternatives, which now live in the candidates topic — nothing was lost by folding it, and no document-wide Rationale entry was added because the document-wide Discussion had no additional rationale content. The former `Applied to`, duplicate `Citations`, and `Author(s)` front-matter fields moved into this file (entries above). No position changed.
@@ -53,8 +53,8 @@ The document previously followed the legacy RFC body structure (`Summary / Motiv
 - Propagates to:
   - khayyam-control_flow.md: Done — its Unresolved questions note referencing the "(not yet a separate document)" discussion updated to reference this document by name.
 - Contributors:
-  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided
-  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — rewrote
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — rewrote
 
 #### What changed
 The document was retitled from "Conditional Method Naming Convention (Presence/Absence Pattern)" to "Control Flow" (ID unchanged — a title change that widens scope at Draft status, not a new document). The Abstract was rewritten to state the widened scope: the framework-level home for Memar's control-flow protocol, with Khayyam's control-flow document as the language-level rationale layer beneath it. The two existing topics (naming convention, branching-pair candidates) survive unchanged in position; a new topic, *Topics to be developed here*, registers the planned growth areas — the conditional-pair protocol as an abstraction contract, iteration/loop-shaped control flow, and halting semantics — without pre-deciding their content. The filename changed from `conditional_naming_convention.md` to `control-flow.md`; this changelog file follows (`control-flow.changelog.md`) and was retitled accordingly.
@@ -76,8 +76,8 @@ The document was retitled from "Conditional Method Naming Convention (Presence/A
   - khayyam/compiler.md: Done — the three pointers into the retired document retargeted (language-side reasoning to Khayyam's *The Grammar Refuses Protocol Semantics*; the goto-draft retirement and the design-cost reasoning to this entry; the intrinsics/event contract question already owned by the compiler handoff).
   - khayyam/encapsulation.md, khayyam/metaprogramming.md, khayyam/README.md, protocols/computer/abstraction-implements.md, protocols/README.md: Done — pointers retargeted to this document.
 - Contributors:
-  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided the merge, the negatives-to-changelog doctrine, and the content destinations
-  - [Super Z](../../CONTRIBUTORS.md#super-z) — analyzed, migrated
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — decided the merge, the negatives-to-changelog doctrine, and the content destinations
+  - [Super Z](../../../CONTRIBUTORS.md#super-z) — analyzed, migrated
 
 #### What changed
 - The positive design content of the retired document now lives in this document's body: **Library-Defined Control Flow** (the premise, the generic `IF`/`ELSE` form, the preferred domain-specific form with the `OnPresent`/`OnAbsent` worked example, the mechanism summary), **Structured and Unstructured Flow as Libraries** (both paradigms as equal library constructs on the same primitives, substrate-independence), and **Error Propagation** (the framing, the explicit-output declaration, and the No-Hidden-Control-Flow / No-Core-Level-Panics / Linter-Over-Syntax positions). The propagation-mechanisms survey (exceptions, `Result<T,E>`, Go's pair, panic/recover) joined Prior art; the standard-library `GOTO` package and the richer domain-conditional library joined Future possibilities.
@@ -144,7 +144,7 @@ Any chosen pair adds two more standard method names developers must learn and us
 #### Related work (from the retired body Discussion)
 Other languages answer that same question — how does execution continue after failure? — with different mechanisms, each a different point in the same trade-off space between visibility, verbosity, and compiler involvement: exceptions unwind the call stack via `throw`/`catch` (Java, Python, JS); Rust's `Result<T, E>` makes failure an ordinary return value inspected via pattern matching, with `?` as sugar for propagating it upward; Go returns an explicit `(value, error)` pair checked with `if err != nil`; and a panic/recover pair combines an abrupt halt with an opt-in unwinding mechanism (Go, and Khayyam's own `PANIC()`). Khayyam has no `try-catch`, `panic`/`recover`, or `?`-operator syntax of its own. Errors are always ordinary, explicit output values (capsules implementing the `Error` abstraction), and abrupt halts are an ordinary standard-library method call (e.g. `PANIC()`), not a compiler directive — closest in spirit to Go's explicit returns, but with the "did you check it" discipline shifted from mandatory boilerplate to the Linter.
 
-This problem closely parallels `Result`/`Option` combinator naming in Rust (`.is_ok()`, `.map_err()`, `.unwrap_or_else()`) and JavaScript Promise's `.then()`/`.catch()` pairing, both of which were considered as background context but not adopted directly, since Khayyam has neither a generic `Result<T, E>` type ([Khayyam polymorphism](../khayyam/polymorphism.md)) nor Promise-style chaining ([Composition Depth as a Decomposition Signal](../khayyam/method.md#composition-depth-as-a-decomposition-signal-no-expression-chaining) rejects expression chaining).
+This problem closely parallels `Result`/`Option` combinator naming in Rust (`.is_ok()`, `.map_err()`, `.unwrap_or_else()`) and JavaScript Promise's `.then()`/`.catch()` pairing, both of which were considered as background context but not adopted directly, since Khayyam has neither a generic `Result<T, E>` type ([Khayyam polymorphism](../../khayyam/polymorphism.md)) nor Promise-style chaining ([Composition Depth as a Decomposition Signal](../../khayyam/method.md#composition-depth-as-a-decomposition-signal-no-expression-chaining) rejects expression chaining).
 
 ---
 
@@ -152,10 +152,10 @@ This problem closely parallels `Result`/`Option` combinator naming in Rust (`.is
 - Time: 2026-09-23T07:07:01Z
 - Type: Fixed
 - Cited:
-  - [Khayyam](../khayyam/khayyam.md) — Reference: instance of the missing-package-qualification gap, and source of the type-level (`tp.Create()`) resolution form named in the candidate.
+  - [Khayyam](../../khayyam/khayyam.md) — Reference: instance of the missing-package-qualification gap, and source of the type-level (`tp.Create()`) resolution form named in the candidate.
 - Contributors:
-  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided
-  - [Mimo](../../CONTRIBUTORS.md#mimo) (mimo-v2.6-flash via [OpenCode](../../CONTRIBUTORS.md#opencode)) — applied
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Mimo](../../../CONTRIBUTORS.md#mimo) (mimo-v2.6-flash via [OpenCode](../../../CONTRIBUTORS.md#opencode)) — applied
 
 #### What changed
 - The `IfFailed`/`IfSucceeded` rejection now leads with the language-neutral reason: a global function name carries no inherent domain context without an explicit receiver. Khayyam's lack of a package/namespace concept follows afterward as that language's instance of the gap, and the replacement direction — type-level (static) invocation, a method defined without `self` invoked on the type identifier — is recorded as where the global-function question closed. Naming the pair itself stays open.
@@ -171,10 +171,10 @@ This problem closely parallels `Result`/`Option` combinator naming in Rust (`.is
 - Time: 2026-09-23T10:20:00Z
 - Type: Fixed
 - Cited:
-  - [Khayyam](../khayyam/khayyam.md) — Reference: Method Invocation Rules, the type-level call `W32.Sum(a, b)(total, err)`.
+  - [Khayyam](../../khayyam/khayyam.md) — Reference: Method Invocation Rules, the type-level call `W32.Sum(a, b)(total, err)`.
 - Contributors:
-  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided
-  - [Grok](../../CONTRIBUTORS.md#grok) (Grok 4.7 via [Cursor](../../CONTRIBUTORS.md#cursor)) — applied
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Grok](../../../CONTRIBUTORS.md#grok) (Grok 4.7 via [Cursor](../../../CONTRIBUTORS.md#cursor)) — applied
 
 #### What changed
 - The type-level direction in the success/failure candidates is illustrated by `W32.Sum(a, b)(total, err)`, a call on the type identifier with both groups written.
@@ -185,16 +185,16 @@ This problem closely parallels `Result`/`Option` combinator naming in Rust (`.is
 - Time: 2026-09-28T08:30:00Z
 - Type: clarified
 - Cited:
-  - [Method in Khayyam](../khayyam/method.md) — Depends_on: Method Invocation Rules, every method names its parent type and a call writes the receiver and both groups.
-  - [Type](../type.md) — Evidence: Scope counts a namespace or module-visibility boundary among its realizations.
-  - [Khayyam Rule — Code Scope Placement](../../modules/khayyam/rules/scope-placement/scope-placement.md) — Conflicts: this toolchain refuses a top-level `sc`, and its handoff records that no document says what a file-level scope is.
+  - [Method in Khayyam](../../khayyam/method.md) — Depends_on: Method Invocation Rules, every method names its parent type and a call writes the receiver and both groups.
+  - [Type](../../type.md) — Evidence: Scope counts a namespace or module-visibility boundary among its realizations.
+  - [Khayyam Rule — Code Scope Placement](../../../modules/khayyam/rules/scope-placement/scope-placement.md) — Conflicts: this toolchain refuses a top-level `sc`, and its handoff records that no document says what a file-level scope is.
 - Propagates to:
   - modules/khayyam/core/test/matrix.test.ts: Done — the archive row for `modules/process/control-flow/protocol/if.kh` still expects refusal but no longer pins the `name-not-declared` label, so the draft's first fault is not frozen as its answer; the label stays asserted by the inline row that reproduces the draft's import shape.
   - modules/process/control-flow/README.md: Done — points at this document and the open owner question.
-  - modules/process/control-flow/protocol/if.kh: Rejected — left as the draft negative the M1 inputs decision in [execution.handoff.md](../../modules/khayyam/execution.handoff.md) names; rewriting it would presuppose the owner answer.
+  - modules/process/control-flow/protocol/if.kh: Rejected — left as the draft negative the M1 inputs decision in [execution.handoff.md](../../../modules/khayyam/execution.handoff.md) names; rewriting it would presuppose the owner answer.
 - Contributors:
-  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — requested, raised the `tp CF sc` hypothesis
-  - [Cursor](../../CONTRIBUTORS.md#cursor) (Auto agent; model not recorded) — analyzed, applied
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested, raised the `tp CF sc` hypothesis
+  - [Cursor](../../../CONTRIBUTORS.md#cursor) (Auto agent; model not recorded) — analyzed, applied
 
 #### What changed
 - The generic-form topic states that the forms are one family over the branch-grouping primitive whose distribution across types and files is a realization's layout, that in Khayyam each form is a method with a parent type called with both groups written, and that the examples' owner-less calls and `in` lines stand in until the owner is settled.
