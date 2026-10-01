@@ -6,10 +6,10 @@
 - Time: 2026-09-21T15:36:36Z
 - Type: Added
 - Cited:
-  - [Reevaluating the Filesystem as a Fundamental Modeling Primitive](./filesystem.md) — Extends: this document is the same kind of protocol-folder member — Memar's position on an external protocol surface — applied to HTTP rather than to POSIX/VFS.
-  - [sRPC](./sRPC.md) — Depends_for: the four-identity collapse and the "re-encoded URL" caution originated as lost sRPC design rationale; the HTTP critique moves here so sRPC can state its independent identities as a positive contract.
-  - [Networking Connection](./networking-connection.md) — Depends_for: the "stateless HTTP" versus cookie reconstruction instance moves here so the connection document can state state-ownership without prosecuting HTTP.
-  - [Networking](./networking.md) — Depends_for: the HTTP-shaped-traffic filter case moves here; Networking keeps the general rule that a deployment constraint is not an architecture.
+  - [Reevaluating the Filesystem as a Fundamental Modeling Primitive](../memory/filesystem.md) — Extends: this document is the same kind of protocol-folder member — Memar's position on an external protocol surface — applied to HTTP rather than to POSIX/VFS.
+  - [sRPC](../net/sRPC.md) — Depends_for: the four-identity collapse and the "re-encoded URL" caution originated as lost sRPC design rationale; the HTTP critique moves here so sRPC can state its independent identities as a positive contract.
+  - [Networking Connection](../net/networking-connection.md) — Depends_for: the "stateless HTTP" versus cookie reconstruction instance moves here so the connection document can state state-ownership without prosecuting HTTP.
+  - [Networking](../net/networking.md) — Depends_for: the HTTP-shaped-traffic filter case moves here; Networking keeps the general rule that a deployment constraint is not an architecture.
   - [Content](../content.md) — Depends_on: Reference vs. Locator is the reason shareable addresses survive this critique.
   - [RFC 3986](https://www.rfc-editor.org/rfc/rfc3986) — Evidence: URI syntax as the locator job.
   - [RFC 9110](https://www.rfc-editor.org/rfc/rfc9110) — Evidence: HTTP semantics, including that GET content is not well-defined and that `303` exists for POST-to-GET handoff.
@@ -24,7 +24,7 @@
   - sRPC.handoff.md: Done — URL-critique open question graduated into this document and into sRPC's positive rationale.
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — claimed, decided, requested
-  - [Grok](../../CONTRIBUTORS.md#grok) (Grok 4.6 via Cursor) — argued, drafted
+  - [Grok](../../CONTRIBUTORS.md#grok) (Grok 4.6 via [Cursor](../../CONTRIBUTORS.md#cursor)) — argued, drafted
 
 #### What changed
 - Created `http.md` as Memar's position on depending on HTTP: guest interoperability library, not the foundation of application, session, or addressing models.
@@ -61,7 +61,7 @@
   - http.handoff.md: Rejected — no new open question; the additions are body claims, not unsettled work.
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — requested
-  - [Grok](../../CONTRIBUTORS.md#grok) (Grok 4.6 via Cursor) — reviewed, applied
+  - [Grok](../../CONTRIBUTORS.md#grok) (Grok 4.6 via [Cursor](../../CONTRIBUTORS.md#cursor)) — reviewed, applied
 
 #### What changed
 - Abstract tightened around the claim (URL overload, non-locator credential channels, locator leakage, check-not-ban) rather than previewing every topic as a tour.

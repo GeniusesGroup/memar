@@ -110,7 +110,7 @@ Alternatives: (a) keep the identical-receiver wording and change examples to use
   - khayyam-abstraction.handoff.md: Created - open questions and anticipated work moved there.
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) - requested
-  - [OpenCode](../../CONTRIBUTORS.md#opencode) (qwen3.8-flash) - moved
+  - [Qwen](../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via [OpenCode](../../CONTRIBUTORS.md#opencode)) - moved
 
 #### What changed
 - The body's fixed top-level sections are now Abstract, Introduction, Explanation, Results; the document-level `## Discussion` and its Drawbacks, Rationale and alternatives, Prior art, Unresolved questions, and Future possibilities subsections no longer appear in the body (no topic-level Discussion wrappers remained).
@@ -146,7 +146,7 @@ Alternatives: (a) keep the identical-receiver wording and change examples to use
   - [Polymorphism in Khayyam](./polymorphism.md) — Reference: the primitive-return examples corrected there under this same review round.
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided
-  - [Mimo](../../CONTRIBUTORS.md#mimo) (mimo-v2.6-flash via OpenCode) — applied
+  - [Mimo](../../CONTRIBUTORS.md#mimo) (mimo-v2.6-flash via [OpenCode](../../CONTRIBUTORS.md#opencode)) — applied
 
 #### What changed
 - The Read/Close example now declares `tp Element ab` and `tp Error ab` alongside `tp Reader ab`, so the signature types in the example are defined in the example itself.

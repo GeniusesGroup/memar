@@ -10,17 +10,18 @@ description: >
   A system-development framework as structure document: a structuralism
   mental model for constructing, examining, and refining models of systems.
 abstract: >
-  Use Memar's approach in any project — not only inside this repository.
-  Operating practices for Memar and Khayyam discover live documentation from
-  the GeniusesGroup/memar root (workspace, sibling checkout, or shallow clone
-  named memar). Markdown and Git paths resolve against that root, not against
-  a skill install path. The bundled skill is a routing practice into that
-  tree, not a second copy of it.
+  Memar's model is a live documentation tree, and the agent configuration under
+  .agents/ is a router into it rather than a second copy: a skill, one
+  navigation tool, and the installers. Document paths in that tree are written
+  relative to the Memar repository root, which one environment variable names on
+  the machine where the work happens.
 url: https://github.com/GeniusesGroup/memar
 sameAs: https://geniuses.group
 codeRepository: https://github.com/GeniusesGroup/memar
 discussionUrl: https://github.com/GeniusesGroup/memar/issues
-installUrl: https://raw.githubusercontent.com/GeniusesGroup/memar/main/.agents/scripts/install-agents.py
+installUrl:
+  - https://raw.githubusercontent.com/GeniusesGroup/memar/main/.agents/scripts/install.sh
+  - https://raw.githubusercontent.com/GeniusesGroup/memar/main/.agents/scripts/install.ps1
 license: https://github.com/GeniusesGroup/memar/blob/main/LEGAL
 inLanguage: en
 applicationCategory: development

@@ -1,5 +1,4 @@
 # Knowledge Handoff
-
 Open work for `knowledge.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](./documentation-handoff.md) for what a handoff is.
 
 ## Open Questions

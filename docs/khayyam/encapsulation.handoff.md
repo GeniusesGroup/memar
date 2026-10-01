@@ -1,5 +1,4 @@
 # Encapsulation in Khayyam Handoff
-
 Open work for `encapsulation.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](../documentation-handoff.md) for what a handoff is.
 
 ## Open Questions
@@ -27,7 +26,6 @@ Open work for `encapsulation.md`. Entries are mutable current state — revised 
 The 2026-09-15 pass landed "a linter MAY write accessors on request" in [Capsule Structure and Privacy](./encapsulation.md). That sentence is a suggested tooling rule, not a fact of encapsulation. Whether it stays, or moves to a protocol-layer suggested-rules catalog, is owned by [Linter Handoff → Do suggested rules get a catalog document](../protocols/computer/linter.handoff.md#do-suggested-rules-get-a-catalog-document-stay-in-subject-documents-or-split-by-kind). Do not add more maybe-rules here until that is decided.
 
 ## Anticipated Work
-
 - A linter mode that detects capsules with "trivial getter" methods (methods that simply return a field value without transformation) and suggests whether they indicate a missing domain abstraction or are genuinely appropriate. (From the Capsule-Structure-and-Privacy topic.)
 - A formal specification document for each primitive capsule, defining its behavioral guarantees, overflow semantics, serialization contract, and range semantics, serving as the reference for both compiler implementation and migration guidance. (From the Primitive-Capsule-Specification topic.)
 - A standard library of commonly-needed capsules (e.g., `Pair`, `Result`, `Option`, `Range`) that provide named, domain-specific alternatives to tuples and generic containers, following the naming and design conventions documented in the base document. (Document-level.)

@@ -82,7 +82,7 @@
   - khayyam-inheritance.handoff.md: Created - open questions and anticipated work moved there.
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) - requested
-  - [OpenCode](../../CONTRIBUTORS.md#opencode) (qwen3.8-flash) - moved
+  - [Qwen](../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via [OpenCode](../../CONTRIBUTORS.md#opencode)) - moved
 
 #### What changed
 - The base document's body now carries only the four fixed top-level sections: Abstract, Introduction, Explanation, Results; the document-level `## Discussion` and the topic-level Discussion wrapper under "Capsule Composition Without Method Promotion" are gone.
@@ -119,7 +119,7 @@
   - [Abstraction in Khayyam](./abstraction.md) — Reference: pure-specification wording.
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided
-  - [Mimo](../../CONTRIBUTORS.md#mimo) (mimo-v2.6-flash via OpenCode) — applied
+  - [Mimo](../../CONTRIBUTORS.md#mimo) (mimo-v2.6-flash via [OpenCode](../../CONTRIBUTORS.md#opencode)) — applied
 
 #### What changed
 - The Abstraction Purity bullet now says Khayyam's abstractions are pure *behavioral specifications* — no logic, no state, no predefined method bodies — rather than pure contracts.

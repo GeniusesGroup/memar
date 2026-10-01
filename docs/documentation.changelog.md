@@ -11,7 +11,7 @@ This document records why and how `documentation.md` changed over time. See [Doc
   - [Anthropic Claude skill-creator](https://github.com/anthropics/skills/blob/main/skills/skill-creator/SKILL.md) — Reference: one of three independently-designed real Skill-file conventions examined as evidence for the Practice facet's governing schema.
   - [OpenAI Codex skill-creator](https://github.com/openai/skills/blob/main/skills/.system/skill-creator/SKILL.md) — Reference: second independently-converged real Skill-file convention, explicitly listing inclusion of auxiliary documentation inside a skill as an anti-pattern.
   - [Microsoft skill-creator](https://github.com/microsoft/skills/blob/main/.github/skills/skill-creator/SKILL.md) — Reference: third independently-converged real Skill-file convention, sharing the same core schema despite layering additional SDK-specific structure on top.
-  - [Dependency Resolution via File URI and Companion Manifest](./khayyam-dependency_resolution.md) — Reference: the Explanation facet's use of URI for contributor identity and citations follows the same File URI approach already established for dependency resolution.
+  - [Dependency Resolution via File URI and Companion Manifest](./khayyam/modularity.md) — Reference: the Explanation facet's use of URI for contributor identity and citations follows the same File URI approach already established for dependency resolution, in the document that absorbed that one.
 - Contributors:
   - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — argued, directed, proposed
   - [Super Z](../CONTRIBUTORS.md#super-z) — rewrote
@@ -181,7 +181,7 @@ Fixed skeleton: four sections. Everything else optional, catalogued. Open questi
 - Type: Changed
 - Cited:
   - [Documentation — Explanation](./documentation-explanation.md) - Reference: the two rules specific to that specification's front matter (the slug derives from `Title`; the name is stable once `Final`) stay stated there, while the separator structure moved here.
-  - [Filesystem](./protocols/filesystem.md) - Reference: the rejected alternative home, cited because its own thesis is the reason for the rejection.
+  - [Filesystem](docs/protocols/memory/filesystem.md) - Reference: the rejected alternative home, cited because its own thesis is the reason for the rejection.
 - Propagates to:
   - documentation-explanation.md: Done - its `File` topic's superseded filename wording ("hyphenated, no number, no domain prefix") replaced by a pointer to [File Naming](./documentation.md#file-naming); that wording contradicted the practice the convention now describes, since directories carry the category and digits appear inside conceptual terms (`osi_1`) and in Research ordinals by design.
 - Contributors:
@@ -199,7 +199,7 @@ Fixed skeleton: four sections. Everything else optional, catalogued. Open questi
 
 #### Considered and not done
 - **A standing `Conventions` document (rejected)**: the draft was dissolved rather than registered. A container whose only membership criterion is "shared agreements" has no boundary on what enters it - the draft had accumulated a documentation naming rule, a citation-direction rule the folder READMEs already own, and three empty section headings of exactly the kind the Results-section round found to attract misrouted content over time - reproducing the shape already rejected on record for a generic `coding-style.md`.
-- **Placing the naming convention in `protocols/filesystem.md` (rejected)**: its thesis is that path-shaped names are not content's structure; the convention would have been read as that document endorsing the filesystem view it argues against.
+- **Placing the naming convention in `protocols/memory/filesystem.md` (rejected)**: its thesis is that path-shaped names are not content's structure; the convention would have been read as that document endorsing the filesystem view it argues against.
 
 ---
 
@@ -208,7 +208,7 @@ Fixed skeleton: four sections. Everything else optional, catalogued. Open questi
 - Type: Changed
 - Contributors:
   - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — claimed, decided
-  - [Composer](../CONTRIBUTORS.md#composer) (Composer via Cursor) — drafted
+  - [Composer](../CONTRIBUTORS.md#composer) (Composer via [Cursor](../CONTRIBUTORS.md#cursor)) — drafted
 
 #### What changed
 - Registered cross-cutting [Written surface](./documentation.md#written-surface): no blank line between a section title and its body; no double blank runs; load-bearing logic stays linear; present-state writing when the reader has no prior durable snapshot to compare against. Rules are writing rules, not markup-protocol rules.
@@ -225,7 +225,7 @@ Fixed skeleton: four sections. Everything else optional, catalogued. Open questi
 - Type: Added
 - Contributors:
   - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — required the reading rule
-  - [Grok](../CONTRIBUTORS.md#grok) (Grok 4.7 via Cursor) — wrote
+  - [Grok](../CONTRIBUTORS.md#grok) (Grok 4.7 via [Cursor](../CONTRIBUTORS.md#cursor)) — wrote
 
 #### What changed
 - [documentation.practice.md](./documentation.practice.md) states that work a practice already covers is done by reading that practice. The paired explanation is opened when a step names a section to check, or when the task is to change the explanation.

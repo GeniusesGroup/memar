@@ -39,7 +39,6 @@ The design was reached by inverting the unit of connection. Instead of IP's ques
 - GP routers can be network coordinators alongside being a gateway
 
 ### Frame architecture
-
 GP defines two routing frames, one per destination level: a frame that delivers to a **Thing**, and a frame that delivers to an **App** on a Thing. Which level a destination actually has is a property of the destination, not of the topology between the peers — a single-application device (a lamp, a sensor, a camera) presents its application at Thing level, its network driver *is* the application's endpoint, and no App frame is ever needed to reach it. A packet carries at most one GP routing frame, because the App frame is self-contained: it repeats the full Thing hierarchy instead of depending on a Thing frame elsewhere in the packet, so app-level delivery pays the Thing-level bytes exactly once. Frames are never rewritten, expanded, or compressed in flight — what the sender emits is what every intermediary sees, and what the packet signature covers.
 
 The `FrameType` itself announces which destination level the frame addresses and therefore which address layout follows — a reader dispatches on the first byte before parsing anything else, per [Networking](../net/networking.md)'s self-describing-frame rule.

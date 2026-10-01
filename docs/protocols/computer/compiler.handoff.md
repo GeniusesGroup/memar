@@ -1,6 +1,5 @@
 # Compiler Handoff
-
-Open work for `compiler.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](../documentation-handoff.md) for what a handoff is.
+Open work for `compiler.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](../../documentation-handoff.md) for what a handoff is.
 
 ## Open Questions
 
@@ -17,10 +16,9 @@ The designation mechanism itself — a naming convention, an `ab` contract, or a
 What the `unsafe` tag concretely gates — a compiler refusal unless explicitly enabled, a linter rule, or both — and how a patching operation is audited, are not yet specified. Shared with [Runtime](../computer/runtime.handoff.md).
 
 ### Language-versus-implementation boundary, with worked examples
-The precise boundary between "what a language specifies" and "what a compiler of that language provides" still needs worked examples before it can be considered settled — shared with [Khayyam's open question on the same boundary](../khayyam/khayyam.handoff.md#the-precise-boundary-between-what-khayyam-specifies-and-what-a-khayyam-toolchain-or-module-provides-still-needs-worked-examples-before-it-can-be-considered-settled).
+The precise boundary between "what a language specifies" and "what a compiler of that language provides" still needs worked examples before it can be considered settled — shared with [Khayyam's open question on the same boundary](../../khayyam/khayyam.handoff.md#the-precise-boundary-between-what-khayyam-specifies-and-what-a-khayyam-toolchain-or-module-provides-still-needs-worked-examples-before-it-can-be-considered-settled).
 
 ## Anticipated Work
-
 - A conformance test suite a compiler realization can run against, turning each requirement from review-time guidance into a checkable contract.
 - A dedicated specification for the compiler's emitted analysis events, before the first analysis tool depends on the contract.
 - The Lexer protocol is already split out: [lexer.md](../computer/lexer.md). Remaining frontend questions (input, output, responsibility boundary, contract with a given backend) stay here until a dedicated frontend protocol is justified.

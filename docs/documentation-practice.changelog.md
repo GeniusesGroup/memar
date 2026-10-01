@@ -64,3 +64,17 @@ Per the decision to move all provenance (citations, contributor attribution, cro
 
 #### Decision
 Open work (Skill-file conventions beyond the cited examples; optional-section catalog candidates) moved to the paired handoff. (Omid Hekayati - approved)
+
+---
+
+### Rejected positions given a deletion procedure
+- Time: 2026-09-27T09:38:12Z
+- Type: Added
+- Propagates to:
+  - AGENTS.md: Done - the four rules that restated this document and the Changelog facet's governing specification were removed, leaving the pointer to this document and its facets.
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - claimed, decided
+
+#### What changed
+- A `## Rejected positions` section was added to `documentation.practice.md`, giving the treatment of a rejected position three steps: the entry, section, or sentence whose claim is that position is deleted rather than annotated or kept as history; the alternative genuinely examined and not taken gets one `Considered and not done` line in the surviving entry; and the decision's positive statement stays in the document that holds the claim, with the changelog recording the outcome rather than the position it replaced.
+- The restated copies those steps replace in `AGENTS.md` are gone: which fields a changelog entry carries and what it must not narrate is stated by [documentation-changelog.md → Structure](./documentation-changelog.md#structure) and [Trivial changes](./documentation-changelog.md#trivial-changes); where an examined alternative goes is [Considered and not done](./documentation-changelog.md#considered-and-not-done); what a body affirms and where a replaced formulation belongs is [documentation.md → Written surface](./documentation.md#written-surface); the folder README convention was already this document's own `## Folder READMEs` section.

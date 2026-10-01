@@ -51,27 +51,25 @@ vr MaxTimeout in "net/config"
 
 This syntax makes a source-level dependency explicit. It does not assert that a file is a Module, that a directory is a package, or that a path identifies a versioned distribution artifact. Those are separate representations and resolution concerns. Keeping `in` limited to inclusion prevents the grammar from acquiring rules about hosting, registries, versions, transport protocols, or organizational layout.
 
-A type included with `in` may have further methods (`mt`) attached in another file of the same local directory — that is how a capsule splits across files without a `package` keyword. Attaching a method to a type imported from an external library or a different domain directory is still *syntax-legal* and is a governance failure: it is monkey-patching. The [Linter](../protocols/linter.md) MUST, in the reference configuration, warn or error on that attachment; the repair is composition (wrap the external capsule in a local one), not a grammar restriction. The local/distant boundary is directory-based by default and is organization-overridable — see the linter handoff.
+A type included with `in` may have further methods (`mt`) attached in another file of the same local directory — that is how a capsule splits across files without a `package` keyword. Cross-directory method attachment is governed by the [orphan extension](../../modules/khayyam/rules/orphan-extension/orphan-extension.md) rule.
 
 ### Naming Without Package Context
-Khayyam has no package-level namespace or package-level encapsulation. A name must therefore state its own domain meaning rather than relying on a package prefix to supply the missing context. `Parent()` is ambiguous when seen alone; `ParentCommand()` or `ParentElement()` communicates the intended concept directly.
-
-This is not a claim that names never collide or that a file path is irrelevant to reading code. It is a rule about where meaning must be carried: a package prefix must not be the only explanation of an otherwise vague name. The `in` declaration identifies the source of an included entity, while the entity's own name remains responsible for expressing what it is.
-
-The practical concern is not merely aesthetic. A package can make `Parent()` appear adequate only because a reader is expected to supply the package context mentally. That context can be absent in review, search results, generated documentation, or an AI-assisted analysis. `ParentCommand()` and `ParentElement()` preserve the distinction in the entity name itself.
-
-Carrying meaning in entity names rather than prefixes increases the naming discipline required of every Type and Method and can make migration from package-oriented codebases feel more verbose.
+Khayyam has no package-level namespace or package-level encapsulation. A name must state its own domain meaning rather than relying on a package prefix to supply missing context — an organizational convention stated in [identifier naming](../../modules/khayyam/rules/identifier-naming/identifier-naming.md) and [qualified names](../../modules/khayyam/rules/qualified-names/qualified-names.md).
 
 ### Dependency Resolution and Companion Manifest
-An `in` address is a source-level path, not a network locator or a version declaration. Consequently, version selection, source discovery, integrity verification, caching, and conflict resolution do not belong in the `in` grammar.
+The value an `in` declaration carries is a URI, and the language says that much and no more: it fixes no scheme for it. Several URI schemes serve — a path relative to the repository root, an opaque identifier the manifest maps — and which one a project uses is dependency management's decision, not the language's. The scheme and the means of resolution are declared by the module manifest; since the manifest is itself a requirement, it must provide dependency management rather than leave it implicit. How this repository writes and resolves `in` URIs is stated in [import address](../../modules/khayyam/rules/import-address/import-address.md).
+
+Consequently, version selection, source discovery, integrity verification, caching, and conflict resolution do not belong in the `in` grammar. A spelling rule for the URI would not keep the grammar small either; it would move a resolution policy into it, since a rule about what a URI must look like is only ever a rule about which URIs a particular resolver can serve. How firmly a given tool requires a given spelling is that tool's rule — [Import Address → The rule](../../modules/khayyam/rules/import-address/import-address.md#the-rule) — where the base this repository's toolchain resolves from is recorded beside it.
 
 The need for a resolution layer remains real even when Khayyam does not offer it as language syntax. For example, two parts of a project can require different versions of the same imported source, and a build can require integrity verification through pinning or hashes. The question is therefore where this work belongs, not whether it exists. The answer proposed here is the framework and tooling layer.
 
-The preferred direction is a companion manifest at the framework/tooling layer. It may resolve import roots such as `memar/` to concrete source locations and versions or hashes, while leaving the source syntax unchanged:
+The preferred direction is a companion manifest at the framework/tooling layer. It maps an import root such as `modules/` to a concrete source location, and to versions or hashes, while leaving the source syntax unchanged:
 
 ```khayyam
-tp TcpConn in "memar/net/tcp"
+tp TcpConn in "modules/net/tcp"
 ```
+
+Because the scheme is the manifest's to interpret, the same declaration may be written with a different scheme in a different project without any source change: a repository using opaque identifiers writes `tp TcpConn in "kha-3f9c-…"`, and the manifest maps it. Neither spelling is more correct at the language level; the manifest is what makes one of them resolve.
 
 Until a manifest format and resolver exist, the design identifies the correct responsibility boundary without answering operational cases such as conflicting version requirements, offline cache policy, or integrity failure handling.
 

@@ -134,8 +134,8 @@
 - Time: 2026-09-15T09:00:00Z
 - Type: Changed
 - Cited:
-  - [Linter](./linter.md) — Consumed contract: safety checks are governance this protocol states and that protocol checks.
-  - [Compiler](./compiler.md) — Consumed contract: uninitialized reads are ontology; teardown automation may emit source.
+  - [Linter](../computer/linter.md) — Consumed contract: safety checks are governance this protocol states and that protocol checks.
+  - [Compiler](../computer/compiler.md) — Consumed contract: uninitialized reads are ontology; teardown automation may emit source.
 - Propagates to:
   - memory.handoff.md: Done — Khayyam-shelf relocation item closed; generated-source convention and binary-mutation questions recorded.
   - memory_model.md: Done — retired and deleted; managerial positions absorbed here.
@@ -146,7 +146,7 @@
   - agency.md / agency.handoff.md: Done — safety-trade-off and teardown-path pointers retargeted.
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — claimed, decided
-  - [Grok](../../CONTRIBUTORS.md#grok) (Grok 4.6 via Cursor) — rewrote
+  - [Grok](../../CONTRIBUTORS.md#grok) (Grok 4.6 via [Cursor](../../CONTRIBUTORS.md#cursor)) — rewrote
 
 #### What changed
 - The document now carries a third movement: reclamation, teardown, and layout optimization are toolchain and library concerns, not language-syntax concerns, and the same requirements bind a C or Go toolchain without those languages growing new grammar.
@@ -182,7 +182,7 @@
   - khayyam.changelog.md / variable.changelog.md: Done — paired entries.
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided
-  - [Cursor](../../CONTRIBUTORS.md#cursor) (Composer) — applied
+  - [Composer](../../CONTRIBUTORS.md#composer) (Composer via [Cursor](../../CONTRIBUTORS.md#cursor)) — applied
 
 #### What changed
 - The audit of the retired shelf file found managerial positions already absorbed, but Khayyam-specific mechanisms and the variable-layer deferral still had no live home; those gaps are closed without reopening a shelf document.
@@ -195,3 +195,60 @@
 #### Considered and not done
 - **Re-creating a Khayyam `memory_model.md` only for realization notes (rejected again)**: a short topic under [Khayyam](../khayyam/khayyam.md) is enough; a separate file would re-shelf the misreading.
 - **Editing historical changelog links that still name `memory_model.md` (not done)**: left as provenance, matching the Control Flow merger's practice.
+
+---
+
+### The address-sized integer is carried as a memory-domain question
+- Time: 2026-09-28T14:34:08Z
+- Type: Added
+- Cited:
+  - [Math Handoff → Does the tower hold widths the reference does not declare?](../math/math.handoff.md#does-the-tower-hold-widths-the-reference-does-not-declare) - Premise: the owner ruled that Go `uintptr` belongs to the memory domain, not to the numeric tower.
+- Contributors:
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) - decided
+  - Auto (model not recorded) via [Cursor](../../CONTRIBUTORS.md#cursor) - recorded
+
+#### What changed
+- `memory.handoff.md`: a question on which memory declaration receives `uintptr` — `MemoryAddress`, `Memory_Pointer`, or a concept of its own — with the reference's two uses.
+
+#### Considered and not done
+- Mapping `uintptr` onto `MemoryAddress` or `Memory_Pointer` now: no document ties either to it, so the choice is left to the owner.
+
+---
+
+### The address-sized integer ruling is cited at its new home
+- Time: 2026-09-29T10:40:00Z
+- Type: Fixed
+- Contributors:
+  - Auto (model not recorded) via [Cursor](../../CONTRIBUTORS.md#cursor) - applied
+
+#### What changed
+- `memory.handoff.md → Where does an address-sized integer (uintptr) go?` and this changelog's 2026-09-28 entry cite the owner's ruling at [Math Handoff → Does the tower hold widths the reference does not declare?](../math/math.handoff.md#does-the-tower-hold-widths-the-reference-does-not-declare).
+
+---
+
+### Numeric tower content moved to protocol documents
+- Time: 2026-09-29T11:17:00Z
+- Type: Changed
+- Cited:
+  - [Math](../math/math.md) - Premise: protocol layer owns the number tower.
+- Contributors:
+  - Auto (model not recorded) via [Cursor](../../CONTRIBUTORS.md#cursor) - applied
+
+#### What changed
+- `memory.md`: address-sized integers are not numeric widths.
+- `memory.handoff.md`: ruling citation repointed to `math.handoff.md`.
+- This changelog's 2026-09-28 entry: `Cited` link repointed to `math.handoff.md`.
+
+---
+
+### `heap.kh` and `mem.kh` placement relocated from Modularity handoff
+- Time: 2026-09-29T14:00:00Z
+- Type: Changed
+- Cited:
+  - [Modularity Changelog](../../modularity.changelog.md) - Premise: allocator file placement belongs with the memory module, not the Modularity concept.
+- Contributors:
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - Auto (model not recorded) via [Cursor](../../CONTRIBUTORS.md#cursor) — applied
+
+#### What changed
+- `memory.handoff.md`: "Where do `heap.kh` and `mem.kh` belong?" moved from `docs/modularity.handoff.md`.

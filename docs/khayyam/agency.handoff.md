@@ -1,5 +1,4 @@
 # Agency in Khayyam Handoff
-
 Open work for `agency.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](../documentation-handoff.md) for what a handoff is.
 
 ## Open Questions
@@ -17,5 +16,4 @@ Khayyam does not yet have a standard-library representation for an execution Age
 Whether Khayyam should adopt an intentional-satisfaction mechanism at all — and if so, which of [Abstraction in Khayyam](./abstraction.md)'s three candidate options — is that document's own open question, not `agency.md`'s; [Agency Beyond Concurrency](./agency.md#agency-beyond-concurrency-intentional-vs-accidental-abstraction-satisfaction) states what Agency's vocabulary adds to it without resolving it.
 
 ## Anticipated Work
-
 - A standard-library representation of an execution Agent is the most direct next step `agency.md` points toward, but its name, API, and design are deliberately not proposed there — doing so would prescribe a mechanism the same way a `go` keyword or an `async`/`await` pair does, only in prose instead of grammar. That design work belongs to Khayyam's own compiler/runtime documentation, informed by [Agency → Execution Agent](../agency.md) and [Process → Concurrency](../process.md#concurrency) rather than by `agency.md` naming a shape in advance. (Migrated from the retired *Future possibilities*.)

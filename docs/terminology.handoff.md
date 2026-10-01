@@ -1,5 +1,4 @@
 # Terminology Handoff
-
 Open work for `terminology.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](./documentation-handoff.md) for what a handoff is.
 
 ## Open Questions
@@ -32,7 +31,6 @@ Can terminology quality be objectively evaluated, or is evaluation of terminolog
 At what point, if any, should AI-assisted review (see [On Independent Verification, Today](./terminology.md#on-independent-verification-today)) be considered to have been superseded by sustained human external review, and how would Memar recognize that point when it arrives?
 
 ## Anticipated Work
-
 - A Word-Weight Rebalancing mechanism for AI systems (see [AI Implications](./terminology.md#ai-implications)), specifying concretely how a Memar document's Definitions would be loaded as higher-precedence context, how conflicts with a person's own usage would be surfaced, and how the mechanism's actual effect would be evaluated rather than assumed.
 - Framework-wide terminology registry.
 - Automated terminology conflict detection.

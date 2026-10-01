@@ -17,7 +17,6 @@ The purpose of this document is not to classify words for their own sake. The pu
 Memar distinguishes between three layers of terminology — Scientific Terms, Technology Terms, and Business Terms — and recommends that learning, modeling, and architectural reasoning begin from the most fundamental layer available. This three-layer model is a deliberate simplification. A more granular model is possible; Memar adopts the simpler model because a workable, memorable classification that developers will actually use during real reviews is worth more, in practice, than a taxonomically perfect one that nobody applies.
 
 ### Core Principle
-
 > Architectural quality is bounded by mental-model quality.
 
 > Mental-model quality is bounded by terminology quality.
@@ -29,7 +28,6 @@ Therefore:
 > Terminology is an architectural dependency.
 
 Consequently, terminology decisions should be reviewed with the same seriousness as architectural decisions — the same scrutiny that would be applied to a choice of data model or a service boundary should be applied to the choice of the word used to describe that data model or that boundary.
-
 
 ## Introduction
 
@@ -71,7 +69,6 @@ Representative examples of this substitution:
 
 Once these substitutions occur, architectural reasoning becomes constrained by implementations rather than guided by concepts. The remainder of this document exists to give Memar contributors a working vocabulary and a working discipline for noticing when this has happened, and for reversing it before it hardens into architecture.
 
-
 #### Terminology Debt
 Terminology Debt occurs when a system, document, team, organization, or ecosystem accumulates ambiguous, overloaded, implementation-centric, product-centric, or commercially-driven terminology that obscures the underlying concepts those terms were originally meant to name.
 
@@ -111,7 +108,6 @@ The words used to describe a problem influence:
 
 Terminology is therefore an active participant in system design, not a passive record of decisions already made elsewhere. Two teams solving the identical problem, but describing it with different vocabularies, will frequently arrive at meaningfully different architectures — not because one team is wrong, but because the vocabulary each team used made different parts of the solution space visible.
 
-
 ### Concept-First Thinking
 Memar promotes Concept-First Thinking: the discipline of understanding a problem at increasing levels of concreteness, in a fixed order, rather than jumping directly to the most concrete level available.
 
@@ -126,7 +122,6 @@ Each layer should be understood before moving to the next. The goal is not to av
 A concept should remain valid even if all current technologies implementing it disappeared tomorrow. A technology should be replaceable without invalidating the concept it implements. The more fundamental a concept is, the longer its expected lifespan tends to be — a relational join has outlived, and will likely continue to outlive, any particular database engine's implementation of it.
 
 For this reason, Memar encourages investing learning effort into concepts before investing effort into technologies. This is not a claim that technology-specific knowledge is worthless; it is a claim about sequencing and about which knowledge is more durable and therefore merits earlier investment.
-
 
 ### Tool-First Thinking
 Tool-First Thinking reverses the preferred sequence:
@@ -152,7 +147,6 @@ A useful heuristic:
 > If a technology disappears tomorrow, the concept should still make sense.
 
 If the concept disappears together with the technology — if a developer genuinely cannot describe what they were trying to achieve without referring to the specific tool — the concept was likely never understood independently of that tool in the first place. This heuristic is a fast, practical test a contributor can apply to their own understanding before relying on it architecturally.
-
 
 ### Definition vs Explanation
 A definition and an explanation serve different purposes and should not be confused. A **Definition** establishes the identity and boundary of a concept. Its purpose is to answer:
@@ -239,7 +233,6 @@ Memar and the wider Memar/Khayyam ecosystem are, at the time of this document, a
 
 Given this, Memar currently treats structured critical review by independent AI systems — systems trained on broad, cross-disciplinary public knowledge, and with no organizational stake in Geniuses Group or in any particular document being accepted — as a working, interim form of independent scrutiny. This is explicitly not treated as equivalent to institutional peer review. AI-assisted review can surface internal inconsistency, missing counterexamples, unexamined assumptions, and relevant existing terminology or research the author was not aware of; it does not provide the sociological functions that give peer review much of its force — independent replication, competing incentives, professional accountability within a field, or scrutiny from someone who might actually be motivated to find the definition wrong. AI-assisted review is therefore a provisional mechanism, to be supplemented, and eventually superseded, by sustained human external review as and when the Memar community grows enough to provide it. A document that has only undergone AI-assisted review should be understood as having met a real but lower bar of "public scrutiny" than one that has also survived critique from humans outside Geniuses Group, and this document does not claim otherwise.
 
-
 #### Technology Terms
 **Definition:** Technology, for the purposes of this document, is **the application of knowledge — techniques, skills, methods, and processes — to develop (create or modify) systems, whether those systems are tools, artifacts, or bodies of engineering knowledge, in order to achieve a specific goal**. A Technology Term is, correspondingly, a term that names such an applied system, technique, or engineering approach, rather than the underlying concept that system was built to realize.
 
@@ -260,7 +253,6 @@ Many technology terms represent decades of accumulated practical experience, and
 
 For example: a relation is not defined by SQL. A graph is not defined by a graph database. A process is not defined by an operating system. A protocol is not defined by a specific implementation framework. Technology can provide useful, even excellent, implementations of a concept; it should not become the source of conceptual truth for that concept.
 
-
 #### Business Terms
 **Definition:** Business terminology includes commercial labels, industry narratives, consulting vocabulary, ecosystem movements, product families, and marketing-oriented abstractions. Business terminology is frequently optimized for adoption, market expansion, ecosystem growth, branding, communication efficiency, or product positioning, rather than for conceptual precision.
 
@@ -279,14 +271,12 @@ Memar does not claim these terms are wrong or useless; many contain valuable ide
 
 Memar does not assume malicious intent on the part of anyone who coins or popularizes a business term. However, conceptual precision is often simply not the primary optimization target of business terminology, and a business term may become successful precisely *because* multiple groups can interpret it differently — ambiguity can widen a term's appeal even as it narrows its usefulness for precise reasoning. The result is often an illusion of shared understanding: multiple participants use the same word while silently referring to different concepts, and the mismatch only surfaces later, once it has already shaped incompatible decisions.
 
-
 ### OOP Warning
 Object-Oriented Programming (OOP) deserves special attention as a worked case of Business/Technology terminology collapse, because it is one of the most consequential examples in software history.
 
 Different languages, frameworks, books, vendors, and communities use OOP to mean substantially different things: classes, objects, encapsulation, inheritance, polymorphism, interfaces, message passing, design patterns, SOLID, and a long tail of language-specific conventions have all, at various points and in various communities, been treated as *the* defining property of OOP. As a result, OOP is no longer a precise conceptual term; it has become an ecosystem term, closer in kind to Agile or DevOps than to a scientific concept. Two developers may both sincerely claim to be discussing OOP while referring to substantially different ideas, and a disagreement between them about whether some design "is" or "is not" OOP is frequently a disagreement about vocabulary rather than about the design itself.
 
 For this reason, Memar discourages using OOP as a starting point for learning concepts such as Abstraction, Identity, Classification, Modularity, or Composition. Those concepts should be studied directly, at the Scientific layer, before evaluating how any particular technology or ecosystem — OOP included — has chosen to interpret them. The concept is more fundamental than the ecosystem that references it; learning should begin with the concept, and only afterward should technology-specific interpretations be evaluated against it.
-
 
 ### Concept vs. Representation: Conceptual Leakage
 A pattern recurs across this document's examples — Graph vs. Graph Database, Relation vs. Table, Container vs. Docker, Heat Pump vs. Air Conditioner: a broad, durable concept gets replaced, in everyday practice, by one narrow, popular representation of it. Memar calls this pattern **conceptual leakage**: the boundary between a concept and one of its implementations or representations erodes, until practitioners can no longer describe the concept without describing the representation, and properties that are specific to the representation get silently attributed to the concept as a whole.
@@ -301,7 +291,6 @@ This particular direction of leakage — a general concept being understood only
 
 Memar's response to conceptual leakage is not to wait for a term's usage to "settle," and not to track the term's "lifecycle" as though the concept itself were unstable — the leakage exists entirely in usage, not in the concept, and the concept was never actually in motion. The correct response is the same one this document applies throughout its worked examples: whenever a familiar, product-associated term is encountered, deliberately reconstruct its underlying concept from first principles — as this document does with Heat Pump, Graph, and Relation below — before relying on the term to reason architecturally.
 
-
 ### Architectural Rule
 When learning, modeling, or making architectural decisions, Memar contributors should follow this order:
 
@@ -315,7 +304,6 @@ When learning, modeling, or making architectural decisions, Memar contributors s
 Reversing this order should require explicit justification — it is not forbidden, since real projects sometimes have real constraints (an existing technology commitment, a hard deadline) that legitimately force the order to be reversed, but the reversal should be a visible, acknowledged decision rather than an invisible default.
 
 This rule does not prohibit the use of products, technologies, frameworks, or tools; Memar itself will eventually run on all of these. Instead, it defines the preferred *direction* of reasoning. The objective is to ensure that solutions emerge from the problem space rather than forcing the problem to fit a preselected solution.
-
 
 ### Examples
 
@@ -333,12 +321,10 @@ This difference in framing is not merely semantic; it exposes architectural oppo
 
 The product-oriented term narrows the solution space. The concept-oriented term expands it.
 
-
 #### Graph vs. Graph Database
 A graph is not a graph database. Graph concepts — vertices, edges, paths, cycles, connectivity, traversal, rewriting — exist independently of any storage engine, and predate every graph database currently on the market by decades. Graphs can be used for modeling, analysis, reasoning, transformation, and simulation, in contexts that have nothing to do with persistent storage at all.
 
 Reasoning should begin with graph theory and graph transformation concepts before evaluating storage technologies. When "Graph" becomes synonymous with "Graph Database," architectural discussions become constrained by storage concerns — indexing strategy, query language, transactional guarantees — instead of by the conceptual structure of the actual problem. The concept becomes subordinate to one particular implementation of it. Memar considers this inversion undesirable, for the same reasons discussed in "Concept vs. Representation" above.
-
 
 #### Container vs. Docker
 Containers and process-isolation concepts exist independently of Docker, and existed as research and production ideas (chroot, jails, namespaces, control groups) well before Docker packaged them into a widely adopted product. Products frequently become substitutes for the concepts they implement; once this occurs, architectural reasoning becomes constrained by the product's specific ecosystem rather than by the underlying problem the product was built to solve.
@@ -352,12 +338,10 @@ This case is a useful reminder that even the underlying concept, once reconstruc
 
 A number of Linux kernel features aimed at stronger container-level isolation have historically been simplified or removed specifically because a fully correct, low-overhead implementation of the stronger guarantee turned out not to be achievable at acceptable cost. Therefore, even the reconstructed concept of a container should not be treated as an absolute abstraction boundary; architectural reasoning should remain grounded in the actual mechanisms involved (namespaces, cgroups, the shared kernel), not in the marketing-level promise of "isolation" that either Docker or the general term "container" might seem to offer at first glance.
 
-
 #### Cloud
 Cloud is a representative example of a highly adopted term with weak conceptual precision. The term may refer to infrastructure, virtualization, distributed systems, network services, utility billing models, managed services, or platform services — or, most commonly, some unstated combination of these, decided differently by whoever happens to be using the word at the time.
 
 Popularity should not be mistaken for conceptual clarity. The widespread use of a term does not guarantee that all participants attach the same meaning to it; two people can agree enthusiastically that a system "should be cloud-native" while picturing entirely different architectures. Cloud is therefore a useful reminder that adoption and precision are not the same axis, and that a term can score highly on one while scoring poorly on the other. The "as-a-Service" family of terms that has grown up around Cloud (IaaS, PaaS, SaaS, and an ever-expanding list of others) tends to make this worse rather than better, since each new "-aaS" label further fragments an already imprecise term into an even larger set of loosely bounded sub-labels, with no widely agreed boundary between adjacent ones.
-
 
 ### Science as Methodology
 Memar does not claim that science is always correct. Memar claims that science is currently the strongest known methodology for constructing reliable knowledge — a pragmatic claim, not an ideological one.
@@ -365,7 +349,6 @@ Memar does not claim that science is always correct. Memar claims that science i
 Science is preferred because it provides mechanisms for error detection, criticism, reproducibility, validation, revision, and knowledge accumulation that no competing methodology currently matches across all of those dimensions simultaneously. If an alternative methodology claims superiority, it should demonstrate stronger capabilities in knowledge generation, validation, error detection, reproducibility, and long-term reliability than science currently offers. Until such a methodology exists, scientific terminology remains the preferred starting point for learning and architectural reasoning within Memar.
 
 This preference should not be interpreted as a claim that every scientific model is correct, nor that everything Memar labels a "Scientific Term" has been validated to the standard of a mature academic field (see "On Independent Verification, Today," above, for Memar's current, honestly limited, position on that question). It is a claim that the scientific process currently provides the strongest available framework for evaluating correctness, and that Memar's own terminology work should be held to that framework's standard as closely as the project's current resources allow.
-
 
 ### AI Implications
 AI systems, including this document's own AI contributors, learn from text in proportion to how much of that text exists, not in proportion to how precise or well-validated that text is. This creates a plausible hypothesis: popular terminology may receive disproportionate weight in an AI system's responses compared to precise, less-frequently-discussed terminology, simply because the volume of marketing material, blog posts, and casual technical writing produced about a popular product term (Docker, Cloud) vastly exceeds the volume of rigorous material produced about the underlying concept (process isolation, distributed infrastructure) that the product term has come to stand in for.

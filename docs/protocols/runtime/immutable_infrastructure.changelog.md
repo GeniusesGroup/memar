@@ -85,7 +85,7 @@
   - immutable_infrastructure.handoff.md: Created - open questions and anticipated work moved there.
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) - requested
-  - [OpenCode](../../CONTRIBUTORS.md#opencode) (qwen3.8-flash) - moved
+  - [Qwen](../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via [OpenCode](../../CONTRIBUTORS.md#opencode)) - moved
 
 #### What changed
 - The body's top-level sections are now Abstract, Introduction, Explanation, Results only; the `## Discussion` section was removed.

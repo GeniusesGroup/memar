@@ -6,7 +6,7 @@
 - Time: 2026-07-21T09:39:49Z
 - Type: Added
 - Cited:
-  - [Reevaluating the Filesystem as a Fundamental Modeling Primitive](./protocols/filesystem.md) — Depends_on: this specification builds upon the filesystem critique to establish positive principles for knowledge modeling.
+  - [Reevaluating the Filesystem as a Fundamental Modeling Primitive](docs/protocols/memory/filesystem.md) — Depends_on: this specification builds upon the filesystem critique to establish positive principles for knowledge modeling.
   - [The Knowledge-Creating Company](https://hbr.org/1991/07/the-knowledge-creating-company) — Reference: Nonaka & Takeuchi's foundational work on organizational knowledge creation (SECI), the process view of knowledge this framework adopts.
   - [Semantic File Systems](https://dl.acm.org/doi/10.1145/121132.121138) — Reference: Gifford et al.'s demonstration that attribute-based access outperforms hierarchical access for information-rich content.
   - [Unikernels: Library Operating Systems for the Cloud](https://anil.recoil.org/papers/2013-asplos-mirage.pdf) — Reference: evidence that general-purpose filesystems are not universal requirements, supporting filesystem-as-optional-capability.
@@ -72,7 +72,7 @@
   - `docs/system.md`: Done — Knowledge and Science now defers the detailed treatment to this document.
   - `docs/thinking.md`: Done — the 4E link retargeted to `./knowledge.md`.
   - `docs/agency.md`: Done — Knowledge Management mentions hyperlinked to this document; the glossary's Knowledge entry defers to it.
-  - `docs/protocols/filesystem.md`: Done — stale citation title and URI fixed (the URI had broken in the protocols/ relocation); the "Principle 5" reference made name-based so renumbering cannot break it; and the document itself migrated to the Explanation-facet structure with a paired changelog in the same pass.
+  - `docs/protocols/memory/filesystem.md`: Done — stale citation title and URI fixed (the URI had broken in the protocols/ relocation); the "Principle 5" reference made name-based so renumbering cannot break it; and the document itself migrated to the Explanation-facet structure with a paired changelog in the same pass.
   - `docs/framework.md`: Done — new *Memar's Purpose Space: From Knowledge to Agency* topic states the chain and Memar's goal definition.
   - `README.md`: Done — Goals section now states the purpose chain and links to Framework.
   - Organization project (`GeniusesGroup/organization`): Done — seed document `docs/knowledge-management.md` created carrying the extracted KM-discipline content, with session context transferred to its `____Chats/`. Pending — the dedicated design session there that turns the seed into a real document.
@@ -112,7 +112,7 @@
   - knowledge.handoff.md: Created - open questions and anticipated work moved there.
 - Contributors:
   - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - requested
-  - [OpenCode](../CONTRIBUTORS.md#opencode) (qwen3.8-flash) - moved
+  - [Qwen](../CONTRIBUTORS.md#qwen) (qwen3.8-flash via [OpenCode](../CONTRIBUTORS.md#opencode)) - moved
 
 #### What changed
 - The body now carries only the fixed top-level sections Abstract, Introduction, Explanation, Results; the document-level `## Discussion` section and its five subsections (`Drawbacks`, `Rationale and alternatives`, `Prior art`, `Unresolved questions`, `Future possibilities`) are retired from it.
@@ -162,7 +162,7 @@
   - [comparisons/README.md](../comparisons/README.md) — Points at these principles as standing assumptions for public comparisons.
 - Contributors:
   - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — claimed, decided
-  - [Composer](../CONTRIBUTORS.md#composer) (Composer via Cursor) — drafted
+  - [Composer](../CONTRIBUTORS.md#composer) (Composer via [Cursor](../CONTRIBUTORS.md#cursor)) — drafted
 
 #### What changed
 - Expanded [Knowledge and Code](./knowledge.md#knowledge-and-code) to separate prose contracts from executable generative services (language-server / tool-call style), using Error-module generation as the illustrative pattern rather than a Practice that narrates each concrete artifact.
@@ -173,7 +173,6 @@
 - Marketplace/plugin as the project's self-introduction, multi-skill fragmentation, prose-only generative recipes, and documentation aimed at temporary agent weaknesses were rejected as knowledge-model shapes (Omid Hekayati). The comparison with Superpowers was the occasion; the principles are stated domain-generally where they apply, and software-specifically under Knowledge and Code where generation is the issue.
 
 ---
-
 
 ### Install as a project pointer; drop host-tool plugin packaging
 - Time: 2026-09-19T09:57:00Z
@@ -188,7 +187,7 @@
   - `.agents/installing.md` and host-tool plugin/marketplace manifests: Done — removed.
 - Contributors:
   - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — claimed, decided
-  - [Grok](../CONTRIBUTORS.md#grok) (Grok 4.6 via Cursor) — drafted
+  - [Grok](../CONTRIBUTORS.md#grok) (Grok 4.6 via [Cursor](../CONTRIBUTORS.md#cursor)) — drafted
 
 #### What changed
 - [A Project Carries One Continuous Mental Model](./knowledge.md#a-project-carries-one-continuous-mental-model) no longer treats marketplace/plugin packaging as a tax Memar still pays. Access is a pointer installed into a consuming project's instruction files, plus an optional user-level skill copy; the skill remains a routing practice into the live `docs/` tree.

@@ -76,7 +76,7 @@
   - [protocols/computer/lexer.md](../protocols/computer/lexer.md) — Reference: the first Future-possibilities item pointing at the lexer protocol is now satisfied by a real document; the readiness-review item below generalizes the same gate to the whole compiler effort.
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — directed, reviewed
-  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash, via [OpenCode](../../CONTRIBUTORS.md#opencode)) — applied
+  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash via [OpenCode](../../CONTRIBUTORS.md#opencode)) — applied
 
 #### What changed
 - Three Future-possibilities entries added, transferring the implementation-start decisions from the design chat:
@@ -181,7 +181,7 @@
   - khayyam.handoff.md and khayyam.md: Done — the language/toolchain boundary is stated in terms of a Khayyam toolchain or module.
   - .agents/skills/memar/SKILL.md: Done — implementation discovery is routed to local `modules/`, and the protocol's language independence is stated.
   - README.md, framework.md, knowledge.md, software.md, and comparisons/superpowers.md: Done — the local Khayyam realization is described without making it a prerequisite for Memar's concepts or protocols.
-  - protocols/net/sRPC.md, protocols/tdd.md, protocols/process/error.md, protocols/process/error.handoff.md, and protocols/codec/syllab.md: Done — implementation details are scoped to their realization while the main documents state language-independent rules directly.
+  - protocols/net/sRPC.md, protocols/process/test.md (recorded then as protocols/tdd.md), protocols/process/error.md, protocols/process/error.handoff.md, and protocols/codec/syllab.md: Done — implementation details are scoped to their realization while the main documents state language-independent rules directly.
   - protocols/computer/abstraction-implements.md and protocols/process/control-flow.md: Done — the protocol contracts are stated independently, with Khayyam retained as a realization example.
   - dependency-management.handoff.md, sdk.handoff.md, protocol.handoff.md, and system.handoff.md: Done — local module dependencies and external-consumer questions remain open without making a programming language a prerequisite.
   - framework.handoff.md, type.md, khayyam/polymorphism.md, and protocols/runtime/immutable_infrastructure.handoff.md: Done — external-repository citations are removed from live documents; their conclusions are stated directly and provenance remains in changelog history.
@@ -191,7 +191,7 @@
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided
   - [Mimo](../../CONTRIBUTORS.md#mimo) (mimo-v2.6-flash via [OpenCode](../../CONTRIBUTORS.md#opencode)) — applied
-  - Space Bunny Alpha (space-bunny via [OpenCode](../../CONTRIBUTORS.md#opencode)) — audited, applied
+  - [Space Bunny Alpha](../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../CONTRIBUTORS.md#opencode)) — audited, applied
 
 #### What changed
 - The repository question recorded on 2026-09-06 is closed as final: Khayyam has no dedicated repository. Its language documents and the current local Khayyam toolchain plan and modules now live in this repository; the earlier "for now" formulation is superseded by this settled arrangement.

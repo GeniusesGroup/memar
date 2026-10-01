@@ -55,7 +55,7 @@ This document is now structured per `documentation-explanation.md`: YAML front m
   - khayyam-linter.handoff.md: Created - open questions and anticipated work moved there.
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) - requested
-  - [OpenCode](../../CONTRIBUTORS.md#opencode) (qwen3.8-flash) - moved
+  - [Qwen](../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via [OpenCode](../../CONTRIBUTORS.md#opencode)) - moved
 
 #### What changed
 - Every `Discussion` wrapper is dissolved — the four per-topic wrappers (IDE Behavior & Visual Formatting, Cross-file Methods — The Orphan Rule, Boilerplate Generation, Suggested Diagnostics) and the document-level `## Discussion`; the body now carries only the fixed top-level sections Abstract, Introduction, Explanation, Results.
@@ -88,7 +88,7 @@ This document is now structured per `documentation-explanation.md`: YAML front m
 - Code-folding as a default view for structure-first reading is common in IDEs (Visual Studio's region folding, JetBrains' structural collapse), though rarely as opinionated about *what* the default view should teach. The stronger precedent for "contracts before implementation" is interface-first file organization in Go's idiom of reading a file's declarations top-down; the folding rule makes that reading order mechanical rather than customary. (Migrated from the IDE Behavior & Visual Formatting topic's retired Prior art)
 - Rust's orphan rule is the closest mainstream mechanism, but it is compiler-enforced — a language-level ontology decision Khayyam explicitly declines to make. Go's prohibition on defining methods on types from other packages is similarly structural. C#'s extension methods and Kotlin's extension functions permit external extension as an ordinary, visible-language feature — evidence that extension itself is not inherently unsafe, but that its *governance* is where the design decision belongs. Khayyam takes the middle path: syntactically free, governed by default. (Migrated from the Cross-file Methods — The Orphan Rule topic's retired Prior art)
 - Java's IDE-generated getter/setter convention is the direct precedent, including its well-known failure mode (bean-shaped classes whose encapsulation is nominal). Go's explicit-methods-only culture shows the opposite pole: no generation, maximal ceremony. Khayyam's position is the middle one — generation is available and expected, but each generated method enters the source and the capsule's contract as if hand-written. (Migrated from the Boilerplate Generation topic's retired Prior art)
-- Go's `vet` and `staticcheck` occupy the same tier: official-tooling diagnostics that encode community consensus without being language rules. The naming/type-suggestion requirements mirror LSP-based assists in modern IDEs generally. The `sc`-as-common-denominator rule is Khayyam-specific, mirroring the compiler's own event contract (see the compiler-side treatment under [Control Flow via `sc` and Jump Primitives](./compiler.md#control-flow-via-sc-and-jump-primitives)). (Migrated from the Suggested Diagnostics topic's retired Prior art)
+- Go's `vet` and `staticcheck` occupy the same tier: official-tooling diagnostics that encode community consensus without being language rules. The naming/type-suggestion requirements mirror LSP-based assists in modern IDEs generally. The `sc`-as-common-denominator rule is Khayyam-specific, mirroring the compiler's own event contract (see the compiler-side treatment under [Control Flow via `sc` and Jump Primitives](../computer/compiler.md#control-flow-via-sc-and-jump-primitives)). (Migrated from the Suggested Diagnostics topic's retired Prior art)
 - Go is the closest structural precedent: a deliberately minimal language paired with official tooling (`gofmt`, `vet`) that carries community standards the grammar does not. The difference is degree — Go's tooling is conventionally important, while Khayyam's linter is architecturally load-bearing by design, holding responsibilities (safety enforcement, orphan governance) that Go's compiler or Rust's compiler own structurally. This inversion is Khayyam's own; the prior art establishes the pattern, not the weight. (Migrated from the document-level retired Prior art)
 
 ---
@@ -104,18 +104,17 @@ This document is now structured per `documentation-explanation.md`: YAML front m
   - khayyam/method.md: Done — type-level `sc`/`mt` argument grammar.
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — claimed, decided
-  - [Grok](../../CONTRIBUTORS.md#grok) (Grok 4.6 via Cursor) — rewrote
+  - [Grok](../../CONTRIBUTORS.md#grok) (Grok 4.6 via [Cursor](../../CONTRIBUTORS.md#cursor)) — rewrote
 
 #### What changed
 - The document is now the Linter protocol: what a linter is, the compiler/linter split, that a rule lives in its subject's document, required members of a governance rule pending notation, configuration and override, event consumption, and that assistance writes source on request.
-- Khayyam-syntax diagnostics left this body: orphan rule to [Modularity in Khayyam](../khayyam/modularity.md), accessor generation to [Encapsulation](../khayyam/encapsulation.md), type-as-argument to [Method](../khayyam/method.md) with a pointer from [Khayyam](../khayyam/khayyam.md), command-newline/lowering to Khayyam. Declaration-block folding stayed here as a general tooling assist ([Tooling may present structure first](./linter.md#tooling-may-present-structure-first)); the Khayyam-specific `tp ... in ...` forms are realization facts of that language's declaration shape, not this protocol.
+- Khayyam-syntax diagnostics left this body: orphan rule to [Modularity in Khayyam](../khayyam/modularity.md), accessor generation to [Encapsulation](../khayyam/encapsulation.md), type-as-argument to [Method](../khayyam/method.md) with a pointer from [Khayyam](../khayyam/khayyam.md), command-newline/lowering to Khayyam. Declaration-block folding stayed here as a general tooling assist ([Tooling may present structure first](../computer/linter.md#tooling-may-present-structure-first)); the Khayyam-specific `tp ... in ...` forms are realization facts of that language's declaration shape, not this protocol.
 - Status returns to Draft because the authorship notation is unsettled.
 - Title is "Linter"; the changelog heading follows.
 
 #### Deliberation
 - Khayyam itself has no special linter rules; the protocol did not previously say how rules are authored (Omid Hekayati — claimed).
 - Two aspects stay distinct: how a linter works, and the rules it checks — the latter belong to subject documents (Omid Hekayati — decided).
-
 
 ---
 
@@ -126,7 +125,7 @@ This document is now structured per `documentation-explanation.md`: YAML front m
   - [Khayyam](../khayyam/khayyam.md) — Reference: the language whose documents exercised the compiler/linter split first; the link is provenance, not derivation.
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided
-  - [Mimo](../../CONTRIBUTORS.md#mimo) (mimo-v2.6-flash via OpenCode) — applied
+  - [Mimo](../../CONTRIBUTORS.md#mimo) (mimo-v2.6-flash via [OpenCode](../../CONTRIBUTORS.md#opencode)) — applied
 
 #### What changed
 - The Methodology no longer says the split was "lifted out of" Khayyam's documents — wording that read as normative derivation from a language into a protocol. It now records that Khayyam's documents exercised the split first and that this protocol states it independently as a language-neutral contract, because the line is a protocol concern, not a grammar and not any one language's property. The Khayyam link remains as provenance.

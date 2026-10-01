@@ -1,6 +1,5 @@
 # Time Handoff
-
-Open work for `protocols/time/time.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](../documentation-handoff.md) for what a handoff is.
+Open work for `protocols/time/time.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](../../documentation-handoff.md) for what a handoff is.
 
 ## Open Questions
 
@@ -31,8 +30,12 @@ Open work for `protocols/time/time.md`. Entries are mutable current state — re
 - State: currently the separation rule is the permanent home; whether a dedicated concept document earns its place is undecided.
 - Next: revisit when the representation design starts.
 
-## Anticipated Work
+### What protects a time-limited value from a clock that moves?
+- State: this document keeps monotonicity out of the contract on purpose, listing it among the richer semantics that belong to [networking](../net/networking.md) and [process](../../process.md) rather than being smuggled into the Instant contract, and the representation itself is open above. The owner's position, recovered 2026-09-30 from an audit of Omid Hekayati's Go-community Telegram-group messages (Gommunity), is that this deferral is safe for instants that record *when* something happened and unsafe for a value whose validity is a window: a one-time code, a signed grant, a session bound to a deadline. Measured against an origin outside the system's control — a unix-epoch instant corrected by time synchronization or set by a user — such a window can be extended or ended without any elapsed real time passing, which turns a validity period into a request. The owner's stated instrument is a monotonic source, whose origin is the system's own start.
+- Question for the owner: is this a rule of this protocol — a contract that bounds validity states which source its deadline is measured against — or a rule each protocol repeats where it issues something expiring? And can the requirement be stated as a constraint on the contract while [The Instant representation](#the-instant-representation) stays open, or does it wait for that answer?
+- Next: state it before the first expiring credential is designed; [SDK → The agreement artifact for delegation](../modules/sdk.handoff.md#the-agreement-artifact-for-delegation) and the revocation question beside it are the first cases that would need it, and a contract written without the answer has no way to say which clock it trusts.
 
+## Anticipated Work
 - The Instant representation design.
 - The distributed-ordering treatment alongside the networking protocols.
 - The definitional discussion's own record, if the project chooses to publish it.

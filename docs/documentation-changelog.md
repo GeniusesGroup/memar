@@ -31,11 +31,10 @@ A boundary note on the pattern: the companion rule keys on the **dot** — `mode
 
 This is the same recursion stop the facet already applies to changelog files themselves (a `.changelog.md` file gets no companion changelog), extended one step: a practice companion is not an independent artifact whose history stands apart from the thing it procedures — it is the base topic's how-to half, and its changes usually follow from the base document's changes, so one ledger keeps that causal link locally visible instead of splitting it across two files that must reference each other.
 
-
 ### Structure
 All entries live under a single `## Changelog` heading - never one `##` per entry - so the top-level heading list stays small and stable even as entries accumulate indefinitely. Entries are ordered chronologically, **oldest first**, so a contributor appends the next entry at the **end of the file** without searching for an insertion point. Newest-first ordering is forbidden: it forces every writer to read or rewrite the head of a growing file, and it is the failure mode this rule exists to prevent. Each entry is a `###` with a short, descriptive title (not a timestamp). Directly under the title, a short list of metadata bullets - mirroring how a document's own YAML front matter holds its short, structured facts separately from its prose body; an entry's bullets are that same idea at entry scale. Actual content follows as real `####` headings, since it's prose, not metadata.
 
-**Appending without loading the file.** An agent writing a new entry must not open the changelog into context to discover where the entry goes — the answer is always end-of-file. Prefer `memar-doc.py changelog-append` (interface via that script's `--help`), which writes mechanically and only peeks at the file's tail for separator hygiene. Reading a prior entry remains legitimate when the work itself needs that history; reading the whole changelog solely to append is not.
+**Appending without loading the file.** An agent writing a new entry must not open the changelog into context to discover where the entry goes — the answer is always end-of-file. Prefer `memar-documentation.py changelog-append` (the script lives at `../.agents/scripts/memar-documentation.py`; interface via its `--help`), which writes mechanically and only peeks at the file's tail for separator hygiene. Reading a prior entry remains legitimate when the work itself needs that history; reading the whole changelog solely to append is not.
 
 ```
 ## Changelog

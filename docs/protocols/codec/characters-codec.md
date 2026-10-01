@@ -34,7 +34,7 @@ Each script get a byte to encode their characters. English as ASCII always start
 - **Numbering characters**: Do we need each human language introduce number character? It is GUI problem not character codec problem to display numbers in desire language format base on the number context.
 
 ## Characters and octets are not numeric widths
-A character and an octet are not numeric widths. Each encoding declares its own character capsule satisfying the character abstraction, and an octet — an encoding unit — is a different concept from an unsigned 8-bit width even where the bits are the same, because different meanings are different types. There is no `rune` container capsule: the concept is `String_Character` in [`modules/codec/string/protocol/character.kh`](../../modules/codec/string/protocol/character.kh), and encodings declare their own character capsules (for example `UTF8_Char` and `ASCII_Char`). A byte is not silently an unsigned 8-bit width.
+A character and an octet are not numeric widths. Each encoding declares its own character capsule satisfying the character abstraction, and an octet — an encoding unit — is a different concept from an unsigned 8-bit width even where the bits are the same, because different meanings are different types. There is no `rune` container capsule: the concept is `String_Character` in [`modules/codec/string/protocol/character.kh`](../../../modules/codec/string/protocol/character.kh), and encodings declare their own character capsules (for example `UTF8_Char` and `ASCII_Char`). A byte is not silently an unsigned 8-bit width.
 
 ## Others
 - [ASCII](https://en.wikipedia.org/wiki/ASCII)

@@ -187,7 +187,7 @@ Added a pointer from "Rules as a Provisional Term" to modeling.md's new "Separat
   - modularity.handoff.md: Created - open questions and anticipated work moved there.
 - Contributors:
   - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - requested
-  - [OpenCode](../CONTRIBUTORS.md#opencode) (qwen3.8-flash) - moved
+  - [Qwen](../CONTRIBUTORS.md#qwen) (qwen3.8-flash via [OpenCode](../CONTRIBUTORS.md#opencode)) - moved
 
 #### What changed
 - The body's fixed top-level sections are now Abstract, Introduction, Explanation, and Results only; the document-level `## Discussion` and the three topic-level `#### Discussion` wrappers (under Foundational Concepts Should Remain Few, What Earns Foundational Status, and Capability Completeness) are gone.
@@ -219,7 +219,7 @@ Added a pointer from "Rules as a Provisional Term" to modeling.md's new "Separat
 - Type: Fixed
 - Contributors:
   - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — decided
-  - [Mimo](../CONTRIBUTORS.md#mimo) (mimo-v2.6-flash via OpenCode) — applied
+  - [Mimo](../CONTRIBUTORS.md#mimo) (mimo-v2.6-flash via [OpenCode](../CONTRIBUTORS.md#opencode)) — applied
 
 #### What changed
 - "Conceptual Relationships Are Not Runtime Coupling" no longer hyperlinks Modularity in Khayyam: language-level cycle restrictions belong to the language layer, and each language's own modularity document records them — named in prose, not cited upward via hyperlink.
@@ -227,3 +227,55 @@ Added a pointer from "Rules as a Provisional Term" to modeling.md's new "Separat
 
 #### Deliberation
 - Citation direction rule: a base document never links into `khayyam/` — not even as an instance pointer; plain-text naming only (Omid Hekayati — decided).
+
+---
+
+### Where the abstract data types belong is carried here
+- Time: 2026-09-29T10:40:00Z
+- Type: Changed
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - decided: code under `modules/` introduces itself, and a code folder carries only a README
+  - Auto (model not recorded) via [Cursor](../CONTRIBUTORS.md#cursor) - applied
+
+#### What changed
+- `modularity.handoff.md`: the ADT module-placement question moved to [Abstract Data Types Handoff](../protocols/computer/adt.handoff.md#do-the-abstract-data-types-belong-under-computer-or-under-math); its path now ends in a README for `modules/computer/adt/` or a widened criterion in [Math → Realization membership](../protocols/math/math.md#realization-membership).
+
+---
+
+### Top-level `modules/storage/` renamed to `modules/memory/`
+- Time: 2026-09-29T13:00:00Z
+- Type: Changed
+- Propagates to:
+  - docs/protocols/: Pending — inner `storage/memory/` allocator placement still open in the handoff.
+- Contributors:
+  - Auto (model not recorded) via [Cursor](../CONTRIBUTORS.md#cursor) - applied
+
+#### What changed
+- `modularity.handoff.md`: the top-level rename question is resolved — `modules/storage/` is now `modules/memory/`; former inner `storage/memory/` content is split into `reference/` and `address/` with `heap.kh` and `mem.kh` interim at module root pending owner choice of `allocator/` vs `heap/`.
+
+---
+- Time: 2026-09-29T11:30:00Z
+- Type: Added
+- Propagates to:
+  - docs/protocols/: Pending — folder categorization waits on owner answers to the fourteen `modules/` tree questions.
+- Contributors:
+  - Auto (model not recorded) via [Cursor](../CONTRIBUTORS.md#cursor) - applied
+
+#### What changed
+- `modularity.handoff.md`: fourteen open questions from a critique of the `modules/` first-level category tree were raised here — storage/memory inversion, duplicate runtime homes, type categories under `computer/`, plural registry folders, `process/time` membership, duplicated identity types, split concurrency, foreign protocols outside `lib/`, `lib/` duplicates, mixed domain/implementation axes, `modules/modules` naming, `time/` axis mixing, minor naming inconsistencies, and `modules/README.md` drift. Each entry states evidence, a proposed change, and that it is not yet approved by the owner.
+
+---
+
+### Repository layout questions raised on the Modularity handoff are out of scope for it
+- Time: 2026-09-29T14:00:00Z
+- Type: Changed
+- Propagates to:
+  - docs/protocols/README.handoff.md: Done — the provisional `docs/protocols/` category-folder note lives there.
+  - docs/protocols/memory/memory.handoff.md: Done — `heap.kh` / `mem.kh` placement is a question about the memory module, so it lives with that module.
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — decided: Modularity handoff carries Modularity-concept questions only
+  - Auto (model not recorded) via [Cursor](../CONTRIBUTORS.md#cursor) — applied
+
+#### What changed
+- `modularity.handoff.md`: the fourteen repository folder-layout questions were raised on this document in error — where a question about the `modules/` tree is answered is the owner's, and no document in this repository is the home for a cross-cutting layout question. Only the Modularity-concept questions and anticipated work remain here; the `heap.kh` / `mem.kh` question, which is about one module, went to that module's handoff, and the `docs/protocols/` category-folder note to that folder's own handoff.
+- No handoff was created for `modules/README.md`. A layer that realizes specifications is not a base artifact that carries a Changelog or Handoff companion, so the questions stay unrecorded until the owner answers where they belong.

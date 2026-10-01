@@ -1,8 +1,7 @@
 # Type Changelog
 
 ## Changelog
-
-The seven entries below are migrated from `type.md`'s former `## Change Rationale` section. They were developed across research sessions between the document's Start Date (2026-07-19) and its first commit (2026-07-20); individual timestamps were never recorded, so each carries `Time: unknown` and only their relative order is reliable. Contributor attribution follows the surviving records — the former front-matter `Contributors` field plus each revision's own description — which pinned some rounds to specific reviewers and left the applier unrecorded; where history did not name who applied a change, no applier is invented here. The former front-matter `Citations` list is carried on the entry that added it (fourth revision, below); the two citations the base document's own readers still need — its dependency on Modeling and its pointers to the Khayyam companion documents — now live as ordinary links in the base document's body instead.
+The first seven entries below are migrated from `type.md`'s former `## Change Rationale` section. They were developed across research sessions between the document's Start Date (2026-07-19) and its first commit (2026-07-20); individual timestamps were never recorded, so each carries `Time: unknown` and only their relative order is reliable. Contributor attribution follows the surviving records — the former front-matter `Contributors` field plus each revision's own description — which pinned some rounds to specific reviewers and left the applier unrecorded; where history did not name who applied a change, no applier is invented here. The former front-matter `Citations` list is carried on the entry that added it (fourth revision, below); the two citations the base document's own readers still need — its dependency on Modeling and its pointers to the Khayyam companion documents — now live as ordinary links in the base document's body instead.
 
 ### Initial draft
 - Time: unknown (historical import)
@@ -301,7 +300,7 @@ The seven entries below are migrated from `type.md`'s former `## Change Rational
 - Type: Added
 - Contributors:
   - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — claimed, argued
-  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — reviewed, rewrote
+  - [Super Z](../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — reviewed, rewrote
 
 #### What changed
 - New topic stating the concept-over-label discipline in both directions — wholesale vocabulary rejection losing wrapped concepts, and name multiplication splitting one concept into apparent kinds — with the FP/OOP encapsulation case as the recorded example and the framework's own rejections as the exercised pattern.
@@ -319,7 +318,7 @@ The seven entries below are migrated from `type.md`'s former `## Change Rational
 - Propagates to:
   - type.handoff.md: Created - open questions and future possibilities moved there.
 - Contributors:
-  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — moved
+  - [Super Z](../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — moved
 
 #### What changed
 - The body's fixed top-level sections are now `Abstract`, `Introduction`, `Explanation`, `Results` only (Super Z - applied the finalized documentation method).
@@ -419,7 +418,7 @@ Dissolved every `#### Discussion` wrapper (How to identify a Type, Definition of
   - [Abstraction in Khayyam](./khayyam/abstraction.md) — Reference: the document-level correction this entry extends to the Type model.
 - Contributors:
   - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — decided
-  - [Mimo](../CONTRIBUTORS.md#mimo) (mimo-v2.6-flash via OpenCode) — applied
+  - [Mimo](../CONTRIBUTORS.md#mimo) (mimo-v2.6-flash via [OpenCode](../CONTRIBUTORS.md#opencode)) — applied
 
 #### What changed
 - The Abstract's Khayyam-manifestation sentence now says Abstraction *specifies required behavior*, not *specifies a contract*.
@@ -443,7 +442,7 @@ Dissolved every `#### Discussion` wrapper (How to identify a Type, Definition of
   - type.handoff.md: Done — the bootstrapping entry's upward links replaced with plain-text path references (handoff: no entry of its own).
 - Contributors:
   - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — decided
-  - [Mimo](../CONTRIBUTORS.md#mimo) (mimo-v2.6-flash via OpenCode) — applied
+  - [Mimo](../CONTRIBUTORS.md#mimo) (mimo-v2.6-flash via [OpenCode](../CONTRIBUTORS.md#opencode)) — applied
 
 #### What changed
 - The "Manifestation in Khayyam" section moved wholesale to `khayyam/khayyam.md` as "Type Principles Realized": No primitive types, Sovereign Encapsulation (the duplicate bullet pair merged during the move), the `tp` keyword, Method as Type, Abstraction as pure specification, Inheritance between Abstractions, and Behavior over type identity. Nothing was dropped — the destination carries the itemized account, with companion links added.
@@ -464,3 +463,36 @@ Dissolved every `#### Discussion` wrapper (How to identify a Type, Definition of
 #### What changed
 - The Method bullet names the receiver, the influencing variables, and the influenced variables. The labels `efficacy` (here: output) and `impressible` (here: input) are recorded only in this entry; the Khayyam method signature had glossed the same two labels as arguments and returns.
 - A method belongs to a parent type named in its signature. A call on that type, or on a variable of that type, does not drop the parent from the signature (Omid Hekayati — decided).
+
+---
+
+### The Scope section states placement as the realization's, and names no tool
+- Time: 2026-09-26T10:50:00Z
+- Type: Changed
+- Cited:
+  - [Khayyam — Scope](./khayyam/khayyam.md#scope) — Evidence: the inertness claim the toolchain's placement rule rests on, which is a claim about what a code scope is.
+- Propagates to:
+  - modules/khayyam/rules/scope-placement/: Done — the rule's document states what the rule is and what it does not claim, and its handoff records that this section is the level at which a need for a boundary no realization reaches would be reconsidered.
+  - modules/khayyam/execution.handoff.md: Done — its `tp` rulings entry carries the `sc` placement ruling, naming the rule folder for the limit and this section for the level at which a need for a boundary outside a Method would be reconsidered.
+  - docs/khayyam/khayyam.handoff.md: Done — the placement item that cited what this section says has left that file, its record having landed in the rule, the toolchain handoff, and both changelogs.
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) — applied
+
+#### What changed
+- The Scope section's third paragraph is replaced. Where it named Khayyam's current syntax and handed the placement question to the Khayyam specification and its governing linters, it now says that placement is a property of the realization rather than of the category, names the levels those realizations sit at, and says which level a given language chooses is that language's own to state.
+- The section names no tool. A base document states what is certain about the category, and which toolchain keeps which placement rule is that toolchain's rule — recorded at `modules/khayyam/rules/scope-placement/`, whose handoff records that this section is the level at which a need for a boundary outside a Method would be reconsidered.
+- The question a reader of the category has is answered at the level the category is defined: the realizations named above sit at different levels, so placement belongs to the realization, and a need for a boundary at a level no realization reaches yet is a question for this section.
+
+#### Considered and not done
+- **The placement question carried here as a standing request**: a reader of the category is told what the placement limit is not inherent to, and which rule holds it — [Code Scope Placement → Keep it or drop it](../modules/khayyam/rules/scope-placement/scope-placement.md#keep-it-or-drop-it) (Omid Hekayati — decided).
+- **Naming the toolchain's rule here by hyperlink**: a base document never cites a document under the language folder, not even as a linked pointer, and the citation-direction rule is not the reason for this one — a base document does not carry a tool's rule in any wording, prose or link.
+- **Forwarding the placement question to a realization's specification**: a base document does not forward a question to a realization it may not cite, and this section is the level at which the question is answerable.
+
+#### Deliberation
+- The owner placed the placement question at this level deliberately: the category already names the realizations a lifted limitation would let a language express, so a document that describes them is the one that can also decide whether the limit stands. Recorded here because it changes where the question is answerable, not only what it is (Omid Hekayati — decided).
+- Two distinct questions meet at this section and are decided apart: a base document's restraint about citing downward, and a base document's silence about tools. The second is decided too, and what it excludes is the claim only a rule-holder can make (Omid Hekayati — decided).
+- What the section now carries is the claim a reader of the category needs and no other layer can make — the realizations sit at different levels, so placement belongs to the realization (Space Bunny Alpha).
+
+#### Decision
+- A base document states what the category is, and stops there. Which toolchain keeps which placement rule is that toolchain's rule; and a need for a boundary that no current realization reaches is a question for this section, which is where the category is defined.

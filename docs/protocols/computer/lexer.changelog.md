@@ -1,4 +1,4 @@
-﻿# Lexer Changelog
+# Lexer Changelog
 
 ## Changelog
 
@@ -96,7 +96,7 @@
   - [Lexical analysis (Wikipedia)](https://en.wikipedia.org/wiki/Lexical_analysis) — Reference: the terminology entry point for the lexeme/token/pattern/token-type vocabulary this document already uses as evidence.
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — requested
-  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash, via [OpenCode](../../CONTRIBUTORS.md#opencode)) — edited
+  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash via [OpenCode](../../CONTRIBUTORS.md#opencode)) — edited
 
 #### What changed
 - The Wikipedia Lexical Analysis reference, previously present only as a Prior-art bullet, is now linked inline at the two reader-facing points where a reader first needs it: once in *What a Lexer is* (naming the subject-matter process the protocol abstracts over), once in *Lexical Unit and naming* (the lexeme/token/pattern vocabulary under critique) (Super Z — edited).
@@ -112,7 +112,7 @@
 - Type: Fixed
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — requested
-  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash, via [OpenCode](../../CONTRIBUTORS.md#opencode)) — audited, applied
+  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash via [OpenCode](../../CONTRIBUTORS.md#opencode)) — audited, applied
 
 #### What changed
 - Both transcripts were compared against the document claim by claim, and five gaps were closed:
@@ -135,7 +135,7 @@
   - DeepSeek lexer survey report (source file deleted 2026-09-23 after its final transfer audit) — Evidence: the survey behind the C lexer-hack lesson, the source-ownership recommendation, and the Unicode support note.
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — directed
-  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash, via [OpenCode](../../CONTRIBUTORS.md#opencode)) — audited, applied.
+  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash via [OpenCode](../../CONTRIBUTORS.md#opencode)) — audited, applied.
 
 #### What changed
 - The three research reports were compared against the document finding by finding.

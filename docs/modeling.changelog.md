@@ -200,7 +200,6 @@ Deliberately avoided the title "Code vs. Rule" for the pluggable-module section,
 #### Deliberation
 - It was pointed out that a reader who models something using only this document, without knowledge of process.md, could reasonably assume "process" carries its ordinary ecosystem-default meaning here rather than Memar's formal definition — this document should not let that ambiguity stand (Omid Hekayati).
 
-
 ### Modeling review and vocabulary cleanup
 - Time: 2026-08-15T00:00:00Z
 - Type: Changed
@@ -332,10 +331,10 @@ Deliberately avoided the title "Code vs. Rule" for the pluggable-module section,
 - Time: 2026-09-06T00:00:00Z
 - Type: Changed
 - Propagates to:
-  - protocols/memory.md: Done — the definitional vocabulary this section now leans on (memory as one class, volatility categories, the dichotomy rejection, the cache-as-derived-copy reading) added there in the same pass; see memory.changelog.md.
+  - protocols/memory/memory.md: Done — the definitional vocabulary this section now leans on (memory as one class, volatility categories, the dichotomy rejection, the cache-as-derived-copy reading) added there in the same pass; see memory.changelog.md.
 - Contributors:
   - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — reviewed, decided
-  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — rewrote
+  - [Super Z](../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — rewrote
 
 #### What changed
 - The rule's force is unchanged — one concern's authoritative data has one location, and a derived copy is never a second authority — but its vocabulary now comes from the Memory document's definitions instead of the ecosystem's storage split, and no product or technology name appears in the section.
@@ -353,14 +352,14 @@ Deliberately avoided the title "Code vs. Rule" for the pluggable-module section,
 - Type: Changed
 - Contributors:
   - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — reviewed, decided
-  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — rewrote
+  - [Super Z](../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — rewrote
 
 #### What changed
 - The reference now runs one way: memory.md (protocol layer) cites modeling.md (concept layer) for the rule; modeling.md no longer cites any protocol document. The section is shorter, tool-free, and self-contained at the modeling level.
 - The section was shrunk to the rule, the derived-copy reading, the two recurring violations stated without links, and the general modeling-time guidance (the question surfaces during modeling; either Memar's libraries and protocol documents carry the answer, or the organization builds its own library against them); the shadow-tier working-out, the dichotomy link, and the volatility vocabulary were moved into memory.md, which now holds the full treatment; the one direction that remains was kept (memory.md citing this section as the modeling-level statement of the rule) (Super Z).
 
 #### Deliberation
-- It was identified that the section's direct links into `protocols/memory.md` created a bidirectional reference between a root concept document and a protocol document, which is unstable — memory's document is developed *on* modeling's method, so the dependency runs one way only (Omid Hekayati).
+- It was identified that the section's direct links into `protocols/memory/memory.md` created a bidirectional reference between a root concept document and a protocol document, which is unstable — memory's document is developed *on* modeling's method, so the dependency runs one way only (Omid Hekayati).
 - Two options were directed — move the memory document to root, or state the rule abstractly here with the working-out owned by the protocol documents — and the second was chosen: modeling keeps the rule and names the boundary; the protocol documents keep the definitions and the worked-out failures (Omid Hekayati).
 
 ---
@@ -486,7 +485,7 @@ Dissolved every Discussion wrapper and the document-level Discussion; drawback s
   - [Modeling Practice → Placing a relation](./modeling.practice.md#placing-a-relation) - Relation: Depends_on: the steps a doer follows
 - Contributors:
   - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — required the test, and that the doer read it in the practice
-  - [Grok](../CONTRIBUTORS.md#grok) (Grok 4.7 via Cursor) — wrote
+  - [Grok](../CONTRIBUTORS.md#grok) (Grok 4.7 via [Cursor](../CONTRIBUTORS.md#cursor)) — wrote
 
 #### What changed
 - [Modeling](./modeling.md) states that a relation several domains need is defined once, in the domain that already covers those records. A shared status marker such as draft stays with the shared statuses. A record taking another's place is defined once on thing. A relation only one domain needs stays in that domain. Each domain keeps the rule for when its own records may take the shared relation.

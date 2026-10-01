@@ -1,5 +1,4 @@
 # Domain-Driven Design Handoff
-
 Open work for `protocols/ddd.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](../documentation-handoff.md) for what a handoff is.
 
 ## Open Questions
@@ -17,7 +16,6 @@ Open work for `protocols/ddd.md`. Entries are mutable current state — revised 
 1. [`protocols/README.md`](./README.md) currently names two kinds. This document argues placement as rules for development conducted under a circulated design name. Widen the README criterion, or restated membership under an existing clause? *(This is a `protocols/` folder question, not a documentation-method question. Blocking: no — the document stands on its conformance topic either way.)*
 
 ## Anticipated Work
-
 - When convenient, retarget body prior-art in `modeling.md` that attributes model-first commitments upward to Evans so the body reads as Memar's position (changelog keeps the provenance) — not because naming Domain-Driven Design is forbidden, but because prior art must not read as authority.
 - If the multiple-models critique needs more than a bullet — e.g. a stated re-derivation-path obligation — that content belongs to Modeling, not here; this document would then cite it.
 - If bounded context is defined or replaced, retarget the absence row and live prose.

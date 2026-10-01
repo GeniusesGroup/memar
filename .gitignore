@@ -1,0 +1,24 @@
+# Directories
+_obj
+/images/
+chats-context/
+____*
+*____
+.freebuff
+__pycache__/
+
+# external packages folder
+vendor/
+*bundle.*
+*-old
+
+# Go
+*.go
+
+# Python
+*.py[cod]
+
+# Khayyam toolchain build output
+/modules/khayyam/targets/js/build/
+node_modules/
+

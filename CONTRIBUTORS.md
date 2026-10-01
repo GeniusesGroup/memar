@@ -189,3 +189,18 @@
 ### Buffy
 - **Bio**: Buffy is the coding agent behind the Freebuff desktop client (Codebuff).
 - [Website](https://codebuff.com)
+
+## Stealth Models
+- **Bio**: An independent field guide to the AI models released under a codename before their developer is disclosed; the codenames this project has run under are recorded below.
+- [Website](https://stealthmodels.com/)
+
+### Ox Alpha
+- **Bio**: A codename a model was previewed under before its identity was disclosed. The codename is not itself a model, so no model is listed here; the contributions made under it are recorded in this repository under the name it was revealed as.
+- [Website](https://stealthmodels.com/ox-alpha/)
+- Revealed as GLM-5.3-Flash under [Super Z](#super-z) brand.
+
+### Space Bunny Alpha
+- **Bio**: The model published under the codename Space Bunny Alpha and served through OpenCode; the identifier this project runs it under is recorded below, and the developer behind the codename has not been disclosed.
+- [Website](https://spacebunnyalpha.com/)
+- Models:
+  - space-bunny

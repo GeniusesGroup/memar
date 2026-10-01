@@ -280,7 +280,6 @@ This document and its companions (practice, changelog) moved from `docs/` to `do
 - Two in-body `[Unresolved questions](#unresolved-questions)` pointers in giti.md (GP address; Inter-society delivery) were repointed to the handoff items they name, since the anchor they targeted retired with the section; giti.practice.md's mixed-level-communication pointer was repointed to the handoff item likewise.
 
 #### Related work (from the retired Prior art)
-
 Direct ancestors and peers:
 - [Application-Layer Traffic Optimization (ALTO) Protocol](https://www.rfc-editor.org/rfc/rfc7285.html)
 - [QUIC](https://en.wikipedia.org/wiki/QUIC) — [RFC 9000 — QUIC: A UDP-Based Multiplexed and Secure Transport](https://datatracker.ietf.org/doc/html/rfc9000)

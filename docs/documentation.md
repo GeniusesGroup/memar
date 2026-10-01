@@ -30,12 +30,10 @@ Documentation content must be current truth, not archaeology. Four rules apply t
 - **No redundant restatement.** When content exists in its authoritative home, other documents link to it instead of repeating it — repetition is where documents go to drift apart.
 - **No derivative inventories.** Do not write a membership list, index, or table that merely mirrors a live collection (a directory's files, a script folder's commands, a set of comparison essays) when that membership is discoverable from the collection itself. Such prose is a cache: the next addition invalidates it and forces a second edit for no new judgment. Point the reader at the authoritative location (list the directory; invoke the tool's `--help`) instead. A list that carries *selection judgment* absent from the source (why these few of many matter) is content, not a cache — and must state the selection criterion rather than pretend to be an inventory.
 
-
 ### Facet
 A **Facet** is a named category of documentation content, defined by the reader's relationship to it: what the reader is expected to *do* with the content. Each facet has its own governing specification — a separate document that defines what structure, fields, and conventions documents of that facet must follow. The facet itself is the meta-layer: it names the category, states what makes it distinct, and points to its specification.
 
 The core observation is that documentation content is not homogeneous: a reader studying a specification to understand a design, a reader following a procedure to accomplish a task, a reader consulting a history to audit changes, a reader reading a record to resume a paused discussion, and a reader examining an inquiry to evaluate it are doing five categorically different things, and the structure that serves each best is not the same. Forcing all five into one shared schema means either overburdening the simpler kinds with apparatus they don't need, or under-equipping the richer kinds with structure they do. The Facet concept resolves this by naming each kind upfront and giving it its own governing specification.
-
 
 ### Facets currently defined
 Five facets are defined as of this document's current revision. Each is specified in its own document, following the Explanation facet's own structure — meaning that the specifications of all five facets are themselves Explanation-facet documents.
@@ -78,10 +76,8 @@ The Research facet follows the same companion-file convention as the Changelog a
 ### Which facet does a document belong to?
 The decision is made by the document's author, guided by the document's *primary purpose*: if a reader is expected to study it to understand something, it is Explanation; if a reader is expected to follow it to accomplish something, it is Practice; if a reader is expected to consult it to audit how a paired artifact changed over time, it is Changelog; if a reader is expected to read it to resume a paused discussion across a session boundary, it is Handoff; if a reader is expected to examine it to evaluate a deliberate inquiry into a stated question, it is Research. Most documents are unambiguous. When the boundary is unclear — for example, a document that contains both analytical content and a step-by-step procedure — the author should ask which purpose dominates: if the procedure is the document's reason for existing and the analysis exists only to support it, the document is Practice (with the analytical portion treated as context-setting within the procedure). If the analysis is the document's reason for existing and a brief procedure is included only as an illustrative example, the document is Explanation.
 
-
 ### Extensibility
 The facet system is designed to be extensible without structural upheaval. New facets may be added by writing a new governing specification document (itself an Explanation-facet document) and registering it here. The current five-facet model covers the reader relationships observed in this project so far: studying to understand, following to accomplish, consulting to audit history, reading to resume a paused discussion, and examining to evaluate a deliberate inquiry. If a future document type demonstrates a need that fits none of these five, a sixth facet could be added following the same pattern, with no change to the facet concept itself or to the existing facet specifications.
-
 
 ### Relationship between this document and its facet specifications
 This document (`documentation.md`) is the entry point and meta-layer. It defines what facets are, names them, and explains extensibility. It does not itself specify the structure of any facet — that is each facet's own governing document's job. The six files form a hierarchy:
@@ -115,7 +111,6 @@ A citation is a structured reference to another document or external source, rec
 - `Superseded`: this document obsoletes the cited work. When a document is superseded, both sides update: the older document's `Status` becomes `Superseded` with a `Superseded_by` entry pointing forward; the newer document adds a `Superseded` entry pointing back.
 - `Superseded_by`: the inverse — this document is obsoleted by the cited work.
 - `Evidence`: the cited work is what supports a proposition made in this document. Distinct from `Reference` (cited for context only) and `Depends_on` (a structural dependency). Use `Evidence` when the source is the empirical or argumentative basis for a claim, but the claim does not structurally depend on the source existing.
-
 
 ### URI
 A URI is a string identifier as defined by [RFC 3986](https://datatracker.ietf.org/doc/html/rfc3986). Two forms are used throughout this project's documentation:

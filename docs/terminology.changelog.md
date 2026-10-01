@@ -128,7 +128,7 @@ Precisely defined Comprehensive and Exclusive as the two directions of necessary
 - Cited:
   - `docs/vocabulary.md` (deleted) — Evidence: the retired document's own state motivated the rule; it held only two external links (connection-oriented/connectionless, consumed by chapar.md's Ethernet-comparison discussion) and no membership criterion, no front matter, and no changelog of its own, so it had begun functioning as an unmanaged catch-all — the exact failure mode an ungoverned vocabulary list invites.
 - Propagates to:
-  - `docs/vocabulary.md`: Done — deleted. Its two links moved into [networking.md](./protocols/networking.md)'s Layer presence topic (the classification question is a cross-layer networking concern, not a layer-2 protocol's); the RFC-process paragraph it carried was RFC-era boilerplate rather than governed content, so it died with the file without loss — the substance of that paragraph (a consistent, reviewed path for changes to enter the project's documentation, with statuses that say what may be depended on) is specified authoritatively in [documentation-explanation.md](./documentation-explanation.md)'s Status section, and its remaining wording was generic GitHub pull-request boilerplate.
+  - `docs/vocabulary.md`: Done — deleted. Its two links moved into [networking.md](docs/protocols/net/networking.md)'s Layer presence topic (the classification question is a cross-layer networking concern, not a layer-2 protocol's); the RFC-process paragraph it carried was RFC-era boilerplate rather than governed content, so it died with the file without loss — the substance of that paragraph (a consistent, reviewed path for changes to enter the project's documentation, with statuses that say what may be depended on) is specified authoritatively in [documentation-explanation.md](./documentation-explanation.md)'s Status section, and its remaining wording was generic GitHub pull-request boilerplate.
   - thinking.md: Done — the Discourse Norms' definitions-outrank-terminology entry previously pointed to vocabulary.md as a lookup home; it now points to this document's new section instead.
 - Contributors:
   - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — claimed, decided
@@ -154,7 +154,7 @@ Precisely defined Comprehensive and Exclusive as the two directions of necessary
   - terminology.handoff.md: Created - open questions and anticipated work moved there.
 - Contributors:
   - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - requested
-  - [OpenCode](../CONTRIBUTORS.md#opencode) (qwen3.8-flash) - moved
+  - [Qwen](../CONTRIBUTORS.md#qwen) (qwen3.8-flash via [OpenCode](../CONTRIBUTORS.md#opencode)) - moved
 
 #### What changed
 - The `terminology.md` body now carries only the fixed four top-level sections (Abstract, Introduction, Explanation, Results); the `## Discussion` heading and its subsections — `Drawbacks`, `Rationale and alternatives` (with its five `Why…` entries), `Prior art`, `Unresolved questions`, `Future possibilities` — no longer exist in the document.

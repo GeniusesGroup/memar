@@ -127,7 +127,6 @@ A Contract implies **parties, obligations, and commitments**. When two organizat
 This distinction is not merely academic. In software design, conflating "protocol" with "contract" leads to assumptions about bilateral obligations that don't exist. A Memar Protocol is a one-sided specification: it declares requirements that govern a process, and any entity that satisfies those requirements conforms to the protocol — no negotiation needed. The contract question (who is obligated to whom, and what happens if obligations are not met) is a separate concern that exists at a different layer.
 
 ### Protocol vs Standard
-
 The word "standard" is one of the most consistently misused terms in both technical and non-technical discourse. Clarifying its precise meaning is essential because the misuse is not harmless — it obscures a real distinction.
 
 **Standard (precise definition):** A standard is a **third-party attestation** that an organization has **institutionalized** specific protocols within its processes. A standard is not a document, not a specification, and not a protocol. It is a certification — a statement from a qualified external body that protocols X, Y, and Z have been verified as operational within the certified organization's processes.
@@ -166,7 +165,6 @@ This distinction is visible in practice:
 Whether a protocol and its specification are identical remains an open philosophical question, but for practical purposes in Memar, they are treated as distinct: the protocol is the conceptual entity (the rules governing a process); the specification is its documentation (the text describing those rules). The methodology produces the protocol; the specification records it.
 
 ### Protocol vs API Specification
-
 Within software engineering specifically, "protocol" and "API specification" are used almost interchangeably in casual discussion — "the API spec" and "the protocol" are often treated as two names for the same artifact. The general Protocol vs Specification distinction above applies here directly, but the API case deserves its own treatment, both because the conflation is extremely common in practice and because it is the specific instance the Terminology document's Motivation section points to as an example of a broader terminology failure (see the Terminology document).
 
 An API specification — an OpenAPI/Swagger document, a gRPC `.proto` file, a GraphQL schema, a WSDL file — is a document, in a particular machine-readable or human-readable format, describing one particular interface's endpoints, message shapes, and invocation conventions. It is a specification in the sense already defined: it can, in principle, be produced simply by writing it down in the required format, and two people working independently could easily produce two different, non-equivalent API specifications while both intending to describe the same underlying interaction rules.
@@ -210,7 +208,6 @@ A Protocol is an interaction model whose conformance can be verified. This adds 
 No final decision among these candidates has been reached. The document adopts Candidate C as the working hypothesis while acknowledging the question remains open. The process and system components established in this document apply regardless of which candidate is ultimately chosen.
 
 ### Formal Definition (Language-Level Illustration)
-
 The following is an illustration of how the general concept of Protocol manifests at the programming language level. This is not the general definition — it is one specific instance of how a language can give structural form to the protocol concept.
 
 A Protocol `P` is defined as a named set of declarations `{ sig1, sig2, ..., sigN }`, where each signature `sig` specifies a requirement — a method name, its parameters, and its expected return. These declarations specify *requirements* that any implementing entity must provide. A Protocol has no bodies, implementations, or data fields.
@@ -266,7 +263,6 @@ A major concern that emerged during these discussions is that many software conv
 In the protocol domain, terms like "protocol inheritance" or "sub-protocol" are often used when what is actually meant is protocol extension or protocol composition. These are fundamentally different from the inheritance mechanisms found in object-oriented languages, which transfer both structure and behavior. By being precise about terminology, we avoid importing flawed conceptual models from existing language ecosystems.
 
 ### Protocol-Specific Allowed and Rejected Patterns
-
 | **Pattern** | **Status** | **Comment** |
 |---------|----------|----------|
 | Protocol with no method bodies | **Allowed** | Pure protocol declaration. |

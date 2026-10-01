@@ -7,11 +7,11 @@
 - Type: merged
 - Cited:
   - [Documentation — Explanation](../documentation-explanation.md) — Reference: the Explanation-facet structure this rewrite follows.
-  - [Chapar - Data Link Protocol](./chapar.md) — Extends_by: Chapar's media-existence discussion was found during critical review to be an instance of a general principle; that principle now lives here (Layer presence) and Chapar references it.
+  - [Chapar - Data Link Protocol](../net/chapar.md) — Extends_by: Chapar's media-existence discussion was found during critical review to be an instance of a general principle; that principle now lives here (Layer presence) and Chapar references it.
 - Propagates to:
-  - networking-frames.md: Done — content merged into [Special signature frame](#special-signature-frame) and [Padding frame](#padding-frame); file removed.
-  - networking-hardware.md: Done — content merged into [Hardware](#hardware); file removed.
-  - chapar.md: Done — general principle extracted to Layer presence; Chapar references it instead of restating it; its capacity table link repointed from the removed hardware file to [Hardware](#hardware).
+  - networking-frames.md: Done — content merged into [Special signature frame](networking.md#special-signature-frame) and [Padding frame](networking.md#padding-frame); file removed.
+  - networking-hardware.md: Done — content merged into [Hardware](networking.md#hardware); file removed.
+  - chapar.md: Done — general principle extracted to Layer presence; Chapar references it instead of restating it; its capacity table link repointed from the removed hardware file to [Hardware](networking.md#hardware).
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — requested, decided
   - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — rewrote
@@ -52,7 +52,7 @@
 - Time: 2026-08-26T09:03:51Z
 - Type: revised
 - Cited:
-  - [Media Type Extension](./media-type.md) — Reference: its 64-bit hash-derived identifier definition supplied the recorded rationale for why FrameType deliberately does not reuse it.
+  - [Media Type Extension](../identifier/media-type.md) — Reference: its 64-bit hash-derived identifier definition supplied the recorded rationale for why FrameType deliberately does not reuse it.
 - Propagates to:
   - chapar.md: Rejected — its capacity-table link to this document's Hardware topic is now satisfied by the added wireless-addressing rationale; nothing else it states depends on these revisions.
 - Contributors:
@@ -112,7 +112,7 @@
 - Time: 2026-08-31T17:29:51Z
 - Type: revised
 - Cited:
-  - [Giti (GP)](./giti.md) — Depends_on: owns both GP frame definitions this registry now names, and points back at this document's Edge computing topic from its frame architecture.
+  - [Giti (GP)](../net/giti.md) — Depends_on: owns both GP frame definitions this registry now names, and points back at this document's Edge computing topic from its frame architecture.
   - `chats-context/giti - chatgpt.md` — Reference: the recorded design review behind the GP redesign this change follows.
 - Propagates to:
   - giti.md: Done — defines both frames and cross-references Edge computing.
@@ -135,7 +135,7 @@
 - Time: 2026-08-31T19:26:46Z
 - Type: revised
 - Cited:
-  - [Giti (GP)](./giti.md) — Extends: the stack overview topic moved here from Giti, which no longer restates a private copy; the low-capacity shape completes the answer to the small-media question raised during GP's redesign.
+  - [Giti (GP)](../net/giti.md) — Extends: the stack overview topic moved here from Giti, which no longer restates a private copy; the low-capacity shape completes the answer to the small-media question raised during GP's redesign.
 - Propagates to:
   - giti.md: Done — its Place in the stack topic removed; it references this document's overview.
   - giti.practice.md: Done — created as GP's Practice facet during the same pass; its record lives in giti.changelog.md.
@@ -157,7 +157,7 @@
 - Time: 2026-09-03T00:00:00Z
 - Type: revised
 - Cited:
-  - [Media Type Extension](./media-type.md) — Reference: the source of the identifier this topic's removed rationale compared against. Its MediaTypeID is a 64-bit, hash-derived (first 64 bits of SHA3-256 over the structure), registrar-free identifier — that scheme was the comparison basis when FrameType's one-byte, centrally-registered registry was decided. The comparison itself now lives only in this entry; the base document states the decision without arguing why the other scheme does not fit.
+  - [Media Type Extension](../identifier/media-type.md) — Reference: the source of the identifier this topic's removed rationale compared against. Its MediaTypeID is a 64-bit, hash-derived (first 64 bits of SHA3-256 over the structure), registrar-free identifier — that scheme was the comparison basis when FrameType's one-byte, centrally-registered registry was decided. The comparison itself now lives only in this entry; the base document states the decision without arguing why the other scheme does not fit.
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided
   - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — applied.
@@ -205,7 +205,7 @@
 - The earlier standalone-document decision was recorded in the topic's own Rationale so the reversal is explicit rather than silent.
 
 #### Deliberation
-- The standalone position document "Memar's Position on the Kernel Network Stack" was judged ill-fitting and misworded: its use of "kernel" conflicted with this documentation set's own definition ([OS](./os.md) establishes kernel as a layer concept of any system, not an OS-exclusive component), and the position's two halves belong to the two documents that already own them (Omid Hekayati).
+- The standalone position document "Memar's Position on the Kernel Network Stack" was judged ill-fitting and misworded: its use of "kernel" conflicted with this documentation set's own definition ([OS](../computer/os.md) establishes kernel as a layer concept of any system, not an OS-exclusive component), and the position's two halves belong to the two documents that already own them (Omid Hekayati).
 - It was directed that the standalone document be dissolved and its content folded into this document and into os.md (Omid Hekayati).
 
 ---
@@ -226,8 +226,8 @@ Dissolved the document-level `## Discussion` (Drawbacks, Rationale and alternati
 
 #### Considered and not done
 - **Keep the three legacy files separate (rejected)**: the split followed no reader need — the packet model, its frame kinds, and the hardware considerations are consulted together; the separation produced dead links (`networking-frame-signature.md`) and duplicated switch-class definitions across files.
-- **Leave the layer-presence principle inside [Chapar](./chapar.md) (rejected)**: it is not Chapar's rule — it binds every layer and every future protocol; keeping it there would force unrelated protocols to cite a layer-2 specification to justify their own absence.
-- **Stating the traditional-stack position as a standalone document (rejected on review; migrated from the position topic's inline considered-and-rejected paragraph)**: the stance has two owners — the OS-side half belonging to [OS](./os.md), which had already stated it, and the network-side half belonging here; keeping a third file meant saying everything twice and coining a "kernel" meaning that OS's own definition contradicts.
+- **Leave the layer-presence principle inside [Chapar](../net/chapar.md) (rejected)**: it is not Chapar's rule — it binds every layer and every future protocol; keeping it there would force unrelated protocols to cite a layer-2 specification to justify their own absence.
+- **Stating the traditional-stack position as a standalone document (rejected on review; migrated from the position topic's inline considered-and-rejected paragraph)**: the stance has two owners — the OS-side half belonging to [OS](../computer/os.md), which had already stated it, and the network-side half belonging here; keeping a third file meant saying everything twice and coining a "kernel" meaning that OS's own definition contradicts.
 - **Folding the entire position into OS (rejected; migrated from the same paragraph)**: the position binds protocol documents and systems that may run on any host; it is a networking position, not only an OS-contract position.
 
 #### Considered and not done (from the removed document-level Drawbacks section)
@@ -235,7 +235,7 @@ Dissolved the document-level `## Discussion` (Drawbacks, Rationale and alternati
 
 #### Related work
 - [Enlightra](https://enlightra.com/).
-- The OSI model's own layering, and the long practice of tunneling one layer over another (L2-over-L3 VPNs), show stacks being composed opportunistically — the [Layer presence](./networking.md#layer-presence) principle states explicitly what such practice implies: presence is per-link, never automatic.
+- The OSI model's own layering, and the long practice of tunneling one layer over another (L2-over-L3 VPNs), show stacks being composed opportunistically — the [Layer presence](../net/networking.md#layer-presence) principle states explicitly what such practice implies: presence is per-link, never automatic.
 
 ---
 
@@ -246,11 +246,11 @@ Dissolved the document-level `## Discussion` (Drawbacks, Rationale and alternati
   - http.md: Done — owns the HTTP-shaped-traffic instance.
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — requested, decided
-  - [Grok](../../CONTRIBUTORS.md#grok) (Grok 4.6 via Cursor) — applied
+  - [Grok](../../CONTRIBUTORS.md#grok) (Grok 4.6 via [Cursor](../../CONTRIBUTORS.md#cursor)) — applied
 
 #### What changed
 - The HTTP-filter counter-argument (protocols riding on HTTP pass through filters; designing around a censor inherits the censor's lifetime) left this document. This document keeps the positive rule: a deployment constraint is not an architecture; the dependence check decides the wire shape.
-- The stance paragraph now names [http](./http.md) as the parallel position on HTTP, next to filesystem for storage.
+- The stance paragraph now names [http](../net/http.md) as the parallel position on HTTP, next to filesystem for storage.
 - A consumed-contract link points at http.md for the HTTP-shaped case of the deployment rule.
 
 #### Considered and not done

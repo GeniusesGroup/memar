@@ -1,5 +1,4 @@
 # Variable in Khayyam Handoff
-
 Open work for `variable.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](../documentation-handoff.md) for what a handoff is.
 
 ## Open Questions
@@ -31,7 +30,6 @@ Open work for `variable.md`. Entries are mutable current state — revised as ea
 - State: Are there framework-specific rules for variable naming, scoping, or lifecycle that extend beyond the language-level rules documented in `variable.md`? (From the retired document-level Unresolved questions.)
 
 ## Anticipated Work
-
 - A linter auto-completion mode that proposes the full type annotation as the developer types, reducing the mechanical cost of explicit typing without compromising readability. (From the Explicit-Types topic.)
 - A formal specification for compile-time type-checking of `MathEval`-style formula operands, resolving the open question above by defining exactly which cross-type operand errors the standard evaluator is guaranteed to catch before runtime. (From the Domain-Driven-Arithmetic topic.)
 - A linter rule that detects capsule names that are unlikely to carry domain meaning (e.g., names that are synonyms for primitive operations like `Counter`, `Index`, `Flag`) and suggests merging them into their parent capsule's domain. (From the Self-Documenting-Code topic.)

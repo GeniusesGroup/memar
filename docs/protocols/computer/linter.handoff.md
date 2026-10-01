@@ -1,6 +1,5 @@
 # Linter Handoff
-
-Open work for `linter.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](../documentation-handoff.md) for what a handoff is.
+Open work for `linter.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](../../documentation-handoff.md) for what a handoff is.
 
 ## Topic & Purpose
 Resume the 2026-09-15 toolchain-layer rewrite (memory, linter, compiler, runtime moved into `docs/protocols/` and rewritten as language-independent protocols). The originating session's context is full; the owner still has critiques of that rewrite that have not all been stated. This file carries the one critique that was stated, plus the state the next session must not re-derive.
@@ -31,7 +30,7 @@ Paused — rewrite applied, not committed as of the pause; owner review incomple
 ## Open Questions
 
 ### Do suggested rules get a catalog document, stay in subject documents, or split by kind?
-- Why it matters: the session's scatter already landed `get`/`set` generation in [encapsulation.md](../khayyam/encapsulation.md), the orphan rule in [modularity.md](../khayyam/modularity.md), and type-as-argument in [method.md](../khayyam/method.md). If the catalog is chosen, those MAY/SHOULD sentences move; the subject's facts stay. If scatter is kept, subject documents remain mixed fact-and-maybe.
+- Why it matters: the session's scatter already landed `get`/`set` generation in [encapsulation.md](../../khayyam/encapsulation.md), the orphan rule in [modularity.md](../../khayyam/modularity.md), and type-as-argument in [method.md](../../khayyam/method.md). If the catalog is chosen, those MAY/SHOULD sentences move; the subject's facts stay. If scatter is kept, subject documents remain mixed fact-and-maybe.
 - Blocks continuation of further suggested-rule content: yes.
 - Path: next session decides the home first, then moves or keeps the three landings as a single pass. Do not add more suggested rules to subject documents until this is decided.
 
@@ -55,28 +54,24 @@ Whether generated setters should default to bare assignment or to routing throug
 Should the boundary unit for the orphan rule (directory vs. repository vs. declared ownership) be configurable per organization, and what does the default configuration ship as?
 
 ## Assumptions
-
 - The 2026-09-15 rewrite of Memory, Compiler, and Runtime is still under owner review; further unstated critiques exist. Stability: Unexamined — do not treat those three rewrites as accepted until the owner says so.
 - Historical changelog pointers to retired paths stay as provenance. Stability: Strong.
 
 ## Proposed Next Steps
-
 1. New session. Read this handoff completely before editing. Do not continue the rewrite in the exhausted session's context.
 2. Take the remaining owner critiques of Memory / Compiler / Runtime first if they are ready — those documents were rewritten in the same pass and have not been reviewed.
 3. Decide catalog versus scatter for suggested rules (the open question above) before moving any more MAY/SHOULD sentences.
 4. If the catalog is chosen: propose `docs/protocols/suggested_rules.md` with replacement-ready English text and the list of files that would lose their maybe-sentences; wait for approval before applying.
 
 ## Related Artifacts
-
 - [Linter](../computer/linter.md) — Update after the catalog decision.
-- [Encapsulation in Khayyam](../khayyam/encapsulation.md) — Review: `get`/`set` MAY paragraph may move.
+- [Encapsulation in Khayyam](../../khayyam/encapsulation.md) — Review: `get`/`set` MAY paragraph may move.
 - [orphan extension](../../../modules/khayyam/rules/orphan-extension/orphan-extension.md) — Review: boundary unit open question above.
-- [Method in Khayyam](../khayyam/method.md) — Review: type-as-argument suggested diagnostic may move.
+- [Method in Khayyam](../../khayyam/method.md) — Review: type-as-argument suggested diagnostic may move.
 - [Memory](../memory/memory.md), [Compiler](../computer/compiler.md), [Runtime](../computer/runtime.md) — Review; owner critiques pending.
 - Working tree: the rewrite is uncommitted; a fresh session should `git status` before further edits.
 
 ## Anticipated Work
-
 - The rule-authorship notation.
 - A reference linter configuration, shipped with the first tooling release, encoding flow-correctness checks as defaults-on and conventions as opt-in sets.
 - An extension point for organization-defined diagnostics.

@@ -55,7 +55,7 @@
   - http.md: Done — owns the HTTP cookie versus "stateless" reconstruction.
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — requested, decided
-  - [Grok](../../CONTRIBUTORS.md#grok) (Grok 4.6 via Cursor) — applied
+  - [Grok](../../CONTRIBUTORS.md#grok) (Grok 4.6 via [Cursor](../../CONTRIBUTORS.md#cursor)) — applied
 
 #### What changed
 - Motivation, Methodology, and the closing evidence sentence no longer prosecute HTTP. Hidden connection state is stated as the general failure; the positive contract (state owned by the protocol's logic and exposed upward) is unchanged.

@@ -6,7 +6,7 @@
 - Time: 2026-08-27T00:00:00Z
 - Type: Changed
 - Cited:
-  - [Khayyam Compiler Directives](./compiler.md) — Reference: the same `unsafe` runtime-patching description there
+  - [Khayyam Compiler Directives](../computer/compiler.md) — Reference: the same `unsafe` runtime-patching description there
   - [Polymorphism in Khayyam](./polymorphism.md) — Reference: the Dynamic Dispatch Reducibility note that expects reducibility under Immutable Infrastructure
 - Contributors:
   - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — rewrote
@@ -50,7 +50,7 @@
   - khayyam-runtime.handoff.md: Created - open questions and anticipated work moved there.
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) - requested
-  - [OpenCode](../../CONTRIBUTORS.md#opencode) (qwen3.8-flash) - moved
+  - [Qwen](../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via [OpenCode](../../CONTRIBUTORS.md#opencode)) - moved
 
 #### What changed
 - The body now carries only the fixed top-level sections — `Abstract`, `Introduction`, `Explanation`, `Results`: the document-level `## Discussion` and both topic-level `#### Discussion` wrappers (under Concurrency and Execution Model and Change Logic in Runtime (Unsafe)) are retired; no other body content changed.
@@ -64,7 +64,7 @@
 - **User-space framework ownership (chosen; migrated from the same topic as the recorded decision)**: scheduling and synchronization become ordinary capsules — visible in imports, swappable per domain, and governable by linter policy like any other library decision.
 - **Make runtime module replacement a first-class, always-available capability (rejected; migrated from the Change Logic in Runtime (Unsafe) topic's retired Rationale and alternatives)**: would contradict Immutable Infrastructure as the default deployment model — no runtime addition of capability without recompilation — and normalize the uncontrolled capability evolution that principle exists to prevent.
 - **Omit the capability entirely (rejected; migrated from the same topic)**: microservice-style module turnover has genuine uses; removing it entirely would push adopters toward out-of-band binary manipulation with no audit story at all.
-- **Keep it opt-in and tagged `unsafe` (chosen; migrated from the same topic as the recorded decision)**: the capability exists, is visibly dangerous at the call site, and sits outside the normal path — the same shape as the [compiler-side resolution](./compiler.md#change-logic-in-runtime-unsafe) of this topic.
+- **Keep it opt-in and tagged `unsafe` (chosen; migrated from the same topic as the recorded decision)**: the capability exists, is visibly dangerous at the call site, and sits outside the normal path — the same shape as the [compiler-side resolution](../computer/compiler.md#change-logic-in-runtime-unsafe) of this topic.
 - **Declare no runtime document at all (rejected; migrated from the retired document-level Rationale and alternatives)**: Khayyam genuinely does not dictate a runtime — but leaving the execution layer entirely unspecified hands the last, least-visible layer of the stack to whoever implements it first, with no record of how the framework is expected to honor the philosophy. The magic-prevention argument that justifies keeping the compiler out of the language applies equally here, one layer down.
 - **Elevate this document to "the Khayyam runtime" (rejected; migrated from the same section)**: would convert a reference architecture into a de-facto language requirement, contradicting the runtime-agnostic stance the document itself opens with. Its Status and framing remain that of one framework's design, consumable and replaceable.
 - **Fold runtime concerns into [Khayyam](./khayyam.md) (rejected; migrated from the same section)**: Khayyam's own Methodology keeps that document a short overview linking outward; execution-layer detail there would couple language evolution to framework implementation choices.
@@ -100,11 +100,11 @@
   - concurrency.md: none — substrate remains there; this document hosts it and does not restate it.
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — claimed, decided
-  - [Grok](../../CONTRIBUTORS.md#grok) (Grok 4.6 via Cursor) — rewrote
+  - [Grok](../../CONTRIBUTORS.md#grok) (Grok 4.6 via [Cursor](../../CONTRIBUTORS.md#cursor)) — rewrote
 
 #### What changed
 - The document is now the Runtime protocol: the environment in which already-established structure is exercised — execution time, not definition time — and not identified with a language virtual machine. OS, unikernel, WASM host, JavaScript engine, and a language library are named as kinds of runtime.
-- User-space scheduling, channels-as-signals, and pooling are not restated; they are [Concurrency](./concurrency.md)'s. This document places those mechanics as libraries a runtime hosts. Core-pinning is not a Runtime MUST — if it is required, that is a concurrency-realization extension.
+- User-space scheduling, channels-as-signals, and pooling are not restated; they are [Concurrency](../computer/concurrency.md)'s. This document places those mechanics as libraries a runtime hosts. Core-pinning is not a Runtime MUST — if it is required, that is a concurrency-realization extension.
 - The `unsafe` hatch remains the execution-side escape from Structure Is Fixed by Definition.
 - Status returns to Draft. Title is "Runtime".
 
@@ -115,3 +115,15 @@
 #### Considered and not done
 - **Renaming to avoid the word Runtime (not done)**: the filename keeps history; the body now states the breadth the word must carry. A later title change remains open if the word still misleads.
 
+---
+
+### Bool runtime signatures moved from Abstraction Handoff
+- Time: 2026-09-29T11:17:00Z
+- Type: Changed
+- Cited:
+  - [Abstraction in Khayyam Handoff](../khayyam/abstraction.handoff.md) - Premise: runtime-owned anticipated work belongs here.
+- Contributors:
+  - Auto (model not recorded) via [Cursor](../../CONTRIBUTORS.md#cursor) - applied
+
+#### What changed
+- `runtime.handoff.md`: anticipated work on `IsAsync` and `IsBlocking` still naming the `Bool` capsule, moved from `abstraction.handoff.md`.

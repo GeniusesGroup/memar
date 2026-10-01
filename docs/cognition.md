@@ -111,7 +111,6 @@ The disciplines class is open in the same way. The two kinds are jointly necessa
 
 **Modes as combinations.** With the two layers named, a mode is a stable combination of operations governed by disciplines — e.g., critical thinking runs on decomposition (of claims into premises), criterion application (of evidence standards), and discrepancy noticing (of unsupported steps), under awareness of assumptions; analogical thinking runs on mapping and instantiation under awareness of the medium's baggage. Mode overlaps are thereby predicted rather than merely tolerated: two modes overlap when they share operations. This restates, one layer down, what the grouping notes say at the mode level — and it answers the open question this document's handoff carries: strategy, disposition, and phase are different descriptions of the same material — a strategy is a chosen sequence over operations, a disposition is a tendency to exercise a mode, and a phase is a stage of a process that emphasizes some operations over others.
 
-
 ### Grounding: Cognition and the 4E Framing
 The model above is grounded in cognitive science, and this document treats that field as the scientific layer its own model must stay consistent with and deepen against. One framing is recorded now because it directly affects how Memar should think about thinkers:
 

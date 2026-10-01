@@ -170,7 +170,6 @@ Four things are not a Test, and each is mistaken for one often enough to be wort
 - **Not a claim about the developers' conduct.** A suite's state is evidence about a system. Whether the expectations were written before the work is established by the discipline the ecosystem's TDD, recorded under its own topic requires, not by a passing run, and a green suite produced after the fact is verification however thoroughly it passes.
 
 ### Relationship to Other Concepts
-
 **The ecosystem's Test-Driven Development.** [The Ecosystem's Name for This Is TDD](#the-ecosystems-name-for-this-is-tdd-and-this-protocol-does-not-adopt-it) states what this document takes from that tradition and what it declines. Its content is not restated here, and the divergence it records is the reason this document is independent of the name rather than a specialization of it.
 
 **Process.** The concept layer, consumed and not restated. This document's entire content is downstream of [Process → Expectations and Checks](../../process.md#expectations-and-checks) and [Process → Development as a Process](../../process.md#development-as-a-process): a Test exists because a Process has expectations that precede its instances, and a system owes Tests because development produces instances of Processes whose expectations were decidable in advance. What the protocol layer adds is the obligation and the form; what Process supplies is the reason a check has a subject at all.

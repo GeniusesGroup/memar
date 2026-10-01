@@ -112,7 +112,7 @@ Completed the migration an earlier pass had started (this document already follo
   - khayyam-encapsulation.handoff.md: Created - open questions and anticipated work moved there.
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) - requested
-  - [OpenCode](../../CONTRIBUTORS.md#opencode) (qwen3.8-flash) - moved
+  - [Qwen](../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via [OpenCode](../../CONTRIBUTORS.md#opencode)) - moved
 
 #### What changed
 - The body's fixed top-level sections are now Abstract, Introduction, Explanation, Results only; the document-level `## Discussion` and every topic-level `#### Discussion` wrapper were dissolved, and no Drawbacks, Rationale and alternatives, Prior art, Unresolved questions, or Future possibilities heading remains anywhere in the body.
@@ -157,11 +157,10 @@ Completed the migration an earlier pass had started (this document already follo
   - [Linter](../protocols/computer/linter.md) — Consumed contract: assistance writes source on request.
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided (rule home is the subject's document)
-  - [Grok](../../CONTRIBUTORS.md#grok) (Grok 4.6 via Cursor) — applied
+  - [Grok](../../CONTRIBUTORS.md#grok) (Grok 4.6 via [Cursor](../../CONTRIBUTORS.md#cursor)) — applied
 
 #### What changed
 - Capsule Structure and Privacy now states that a linter or companion generator MAY write `get`/`set` methods into explicit source when requested, and MUST NOT synthesize a public surface the author never asked for — content relocated from the retired Khayyam-shelf linter document.
-
 
 ---
 

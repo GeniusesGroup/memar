@@ -24,7 +24,6 @@ Exactly two fields, both required:
 
 No other fields. All three cited conventions agree on this independently; Anthropic's and OpenAI's both state it as an explicit rule, not an informal habit.
 
-
 ### Progressive disclosure
 A Skill file loads in three levels, each larger and rarer than the last:
 1. **Metadata** (`name` + `description`, roughly 100 words) — always in context.

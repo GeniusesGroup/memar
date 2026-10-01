@@ -120,3 +120,23 @@ Brought `content.md` in line with the current Explanation-facet specification:
 #### Considered and not done
 - UML state machines as the formal foundation for behavioral intent — rejected: the body's Event direction went to Observable/Dispatchable instead.
 - OWL as an expressiveness layer — skipped: too expressive, wrong abstraction level.
+
+---
+
+### What a host's own mechanism costs a realization
+- Time: 2026-09-28T09:56:00Z
+- Type: Added
+- Propagates to:
+  - modules/khayyam/display/display.handoff.md: Done — the same four constraints, each with the code it was read out of, and the standing item that they are why the realization is an adapter
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — directed
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) — recorded
+
+#### What changed
+- The Theme / Role-to-Rendering Mapping topic gains [What a Host's Own Mechanism Costs a Realization](./content.md#what-a-hosts-own-mechanism-costs-a-realization): four constraints a host imposes on a realization, each stated as that host's behaviour and as what it costs us, read out of one host's own source (the editor this project's Khayyam display contract is realized in) — the field-by-field merge of grammar and semantic tokens and the discard of a token no style resolves; a token type that may not carry a separator, with the type hierarchy it is matched against; a `[name]` key in a colour customization being a theme key rather than a language key; and a setting whose default defers the decision whether semantic highlighting is computed at all to the theme.
+- The consequence is stated once in the same subsection: the display contract is renderer-independent, every renderer is a realization of it, and where a host's mechanism is incomplete the translation belongs in the host's own files rather than in what the contract says — the toolchain's own documents already carry that as a decision, and this document now points at them.
+- No code, contract, theme, grammar, or toolchain file was changed, and no light/dark strategy for the editor was settled; the constraints are recorded as constraints, not as a design for one realization.
+
+#### Considered and not done
+- Generalising the four constraints into a claim about hosts in general — rejected: each is a fact about one host's implementation, and the architecture-level statement is the adapter position, not a taxonomy of hosts.
+- Settling the editor's light/dark strategy in this document — not taken: it is the owner's open decision about one realization, and an architecture document that settled it would make the contract a property of that host again.

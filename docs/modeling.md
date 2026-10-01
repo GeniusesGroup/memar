@@ -382,8 +382,6 @@ The modeling failures this rule prevents are worked out in the framework's proto
 
 As with several other implementation-adjacent questions that surface during modeling — retention properties, reclamation, connection lifetimes, time — the rule itself belongs to modeling while its working-out belongs to the framework: either Memar's own libraries and protocol documents carry the answer, or the organization developing the system reads those documents and builds its own library against them. Modeling records the question and the boundary; the protocol documents answer it.
 
-
-
 ### A Relation Several Domains Need Is Defined Once
 Before a relation is placed inside one domain, ask which other domains need that same relation. The question is about the relation, not about the event that creates it in the domain under discussion.
 

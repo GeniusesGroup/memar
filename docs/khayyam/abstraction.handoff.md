@@ -1,5 +1,4 @@
 # Abstraction in Khayyam Handoff
-
 Open work for `abstraction.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](../documentation-handoff.md) for what a handoff is.
 
 ## Open Questions
@@ -42,7 +41,6 @@ When an abstraction's behavioral specification changes — a new method is added
 The vr-ab review session closed with an open suggestion to re-audit this document (and `polymorphism.md`) for surviving "inheritance" phrasing that conflicts with the extension-not-inheritance terminology established in [Type → Explicit Behavior Ownership](../type.md#explicit-behavior-ownership); the pass was never run.
 
 ## Anticipated Work
-
 - **Compiler-generated dispatch metadata.** Once the intentional-satisfaction question is resolved (in any direction), the compiler could emit metadata files (e.g. a JSON manifest) listing every capsule and the abstractions it satisfies — valuable for IDE tooling (jump-to-implementation, find-all-satisfiers), cross-language compiler backends (generating `impl` blocks for Rust, `implements` for Java), and documentation generation (automated "implemented by" pages per abstraction).
 - **Abstraction-level documentation annotations.** A future document could define a convention (not a language feature) for attaching documentation, examples, or invariants to an abstraction — similar to Rust's doc comments on traits or Go's interface documentation conventions. An organizational tooling concern, not a grammar change.
 - **Composable abstraction constraints.** A future extension could allow organizations to define "abstraction constraints" — predicates a given abstraction's satisfiers must meet (e.g. "any capsule satisfying `Serializable` must also satisfy `Clone`") — enforced at the Linter level and expressed as configuration, not language syntax.

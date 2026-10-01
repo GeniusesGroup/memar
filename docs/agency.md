@@ -228,7 +228,6 @@ Roles arise from relationships, and the same System may move between them. A com
 The transition matters for modeling: "observer" and "agent" are positions relative to a relationship, not permanent types of the System occupying them. A patient who studies a hospital's complaint procedure and then files a complaint has not changed kind; the same System has moved from one role to another as new relationships formed. Modeling either role as an intrinsic property of the System freezes what is usually a fluid, repeatable shift.
 
 ### The `agent_for` Relationship
-
 `agent_for` is a relationship between systems.
 
 It should therefore be modeled as an edge rather than as a node unless a separate requirement establishes that the relationship itself must be represented as an entity.
@@ -342,7 +341,6 @@ Therefore:
 This distinction should be preserved unless future modeling demonstrates that an independent Agent concept is necessary.
 
 ### Principal
-
 A **Principal** is a system on whose behalf another system acts.
 
 Principal is therefore relational.
@@ -372,7 +370,6 @@ The resulting structure must not be interpreted as requiring only human principa
 The model is intentionally system-general.
 
 ### Nested Agency
-
 An Agent may itself be a system capable of delegating responsibility to another Agent.
 
 Therefore:
@@ -398,7 +395,6 @@ This is one reason why Agent should not be modeled as a special immutable entity
 The same system can occupy multiple positions simultaneously.
 
 #### Multi-Agent Systems
-
 Multiple Agents may cooperate within a shared system.
 
 A multi-agent system can contain:
@@ -435,7 +431,6 @@ Principal
 The graph expresses the structure more directly than a flat list of Agents.
 
 #### Agency and Internal Systems
-
 An Agent may itself contain multiple internal systems.
 
 For example:
@@ -481,17 +476,14 @@ System
 Such recursion should be considered normal rather than exceptional.
 
 ### Intrinsic and Delegated Agency
-
 The distinction between intrinsic and delegated agency is useful, but it should not be interpreted as two fundamentally different kinds of agency.
 
 #### Intrinsic agency
-
 A system acts toward objectives without another system assigning that particular responsibility.
 
 Examples include a human pursuing a personal objective or an autonomous system pursuing an internally established objective.
 
 #### Delegated agency
-
 A system acts on behalf of another system.
 
 The principal establishes some responsibility, objective, authority, or expectation, while the Agent determines at least part of the execution.
@@ -612,7 +604,6 @@ This order prevents a lock, queue, mailbox, scheduler, or transactional mechanis
 A Single Writer arrangement, an Actor-style mailbox, or a Worker assigned to a partition can each be useful realizations of this principle. None should be mistaken for the principle itself.
 
 ### Delegation
-
 Delegation is a mechanism through which a system assigns responsibility, authority, or an objective to another system.
 
 Delegation is therefore a fundamental aspect of Agency rather than an independent domain that must necessarily be modeled separately.
@@ -653,7 +644,6 @@ The Principal defines or establishes part of the problem space.
 The Agent operates within that space.
 
 ### Responsibility
-
 Responsibility defines what an Agent is expected to take care of or accomplish.
 
 Responsibility should not be confused with:
@@ -694,7 +684,6 @@ Agency therefore requires more than merely naming an Agent.
 The surrounding conditions of agency must also be coherent.
 
 ### Authority
-
 Authority defines the scope within which an Agent is permitted or entitled to make decisions or take actions.
 
 Authority is not equivalent to responsibility.
@@ -718,7 +707,6 @@ Authority may also be revoked or changed.
 Therefore, Agency should account for the temporal and contextual nature of authority.
 
 ### Capability
-
 Capability describes what a system is able to do.
 
 Capability is not responsibility.
@@ -738,7 +726,6 @@ These concepts may interact, but they should not be merged.
 A coherent delegation generally requires sufficient alignment between them.
 
 ### Goals and Purpose
-
 Agency involves directed action.
 
 Directed action normally requires some notion of purpose, objective, goal, or desired state.
@@ -783,7 +770,6 @@ The surrounding Agent may use:
 Therefore, a prompt is not synonymous with Agency.
 
 ### Execution
-
 Agency becomes observable through action.
 
 Execution describes how an Agent transforms responsibility, goals, knowledge, capabilities, and constraints into actions and outcomes.
@@ -814,7 +800,6 @@ The implementation differs.
 The conceptual structure does not necessarily need to differ.
 
 #### Agency Is Not Command Execution
-
 A simplistic model of an Agent is:
 
 ```text
@@ -856,7 +841,6 @@ It also explains why AI Agent engineering should not be reduced to prompt constr
 Prompting is one representation mechanism inside a much larger agentive system.
 
 ### Decision-Making
-
 Decision-making is a central manifestation of agency.
 
 However, Agency does not require unrestricted decision-making.
@@ -884,7 +868,6 @@ Therefore, escalation is not necessarily a failure of agency.
 It may be a designed part of the Agent's authority boundary.
 
 ### Context
-
 An Agent cannot reliably act without some context relevant to its responsibility.
 
 Context may include:
@@ -916,7 +899,6 @@ The problem is not necessarily the intelligence of the Agent.
 The problem may be insufficiently specified agency.
 
 ### Knowledge
-
 Knowledge influences what an Agent can understand, decide, and execute.
 
 Knowledge may exist:
@@ -941,7 +923,6 @@ The same principle applies to AI Agents.
 An AI system may appear highly capable while lacking the domain knowledge required to perform a particular responsibility reliably.
 
 #### Agency and Knowledge Flow
-
 A system's effective Agency depends partly on how knowledge flows between its participants.
 
 A healthy system allows knowledge to move across relevant boundaries.
@@ -976,7 +957,6 @@ This is one reason [knowledge management](./knowledge.md) is not merely an admin
 It is part of the infrastructure through which collective Agency operates.
 
 ### Agency and Knowledge Management
-
 Many failures attributed to AI Agents are not fundamentally AI problems.
 
 They may be manifestations of weaknesses in:
@@ -1006,7 +986,6 @@ The phenomenon is not inherently new.
 AI can merely make it more visible and more scalable.
 
 #### Cognitive Debt and Agency
-
 Cognitive Debt can emerge when a system repeatedly accepts outputs without developing sufficient understanding of the reasoning, assumptions, or knowledge behind those outputs.
 
 This is not unique to AI.
@@ -1024,7 +1003,6 @@ But the deeper problem may be:
 This connects Agency directly to [Knowledge Management](./knowledge.md).
 
 ### Contracts
-
 A Contract establishes expectations between participants.
 
 A contract may define:
@@ -1046,7 +1024,6 @@ Software interfaces, organizational agreements, and machine-readable policies ma
 Therefore, contractual structure should be understood conceptually before its representation is selected.
 
 #### Acceptance Criteria
-
 An Agent cannot reliably determine whether it has successfully completed a responsibility if success is undefined.
 
 Acceptance criteria provide a way to establish what constitutes an acceptable outcome.
@@ -1085,7 +1062,6 @@ The resulting ambiguity should not automatically be classified as a failure of t
 It may be a failure in delegation or specification.
 
 ### Communication
-
 Agency frequently requires communication between systems.
 
 Communication may transfer:
@@ -1119,7 +1095,6 @@ It changes the information available to the Agent.
 Therefore, writing is part of the mechanism through which agency is coordinated.
 
 #### Writing as Delegation
-
 A written request is often a mechanism for delegating work.
 
 Therefore, writing quality directly affects delegation quality.
@@ -1154,7 +1129,6 @@ This illustrates a general principle:
 > **The more important an entity is to a delegated task, the more important it is to identify that entity explicitly.**
 
 #### The Cost of Ambiguity
-
 When an instruction is ambiguous, the Agent must infer missing information.
 
 Inference is not inherently bad.
@@ -1176,7 +1150,6 @@ Therefore, effective delegation does not mean eliminating all inference.
 It means eliminating **unnecessary inference**.
 
 ### Documentation as an Agency Mechanism
-
 Documentation should not be treated merely as an archival activity.
 
 Documentation externalizes knowledge that would otherwise remain inside individual systems.
@@ -1200,7 +1173,6 @@ Consequently:
 > **Documentation is one of the mechanisms through which knowledge becomes available to Agency beyond the individual Agent.**
 
 ### Trust
-
 Agency creates a need for trust.
 
 A Principal must determine whether an Agent can be trusted to:
@@ -1228,7 +1200,6 @@ A highly trusted Agent may still require verification for high-impact actions.
 Similarly, a low-trust Agent may require extensive supervision.
 
 #### Verification and Validation
-
 Verification asks whether the Agent's behavior or output conforms to defined requirements.
 
 Validation asks whether the result actually satisfies the intended need.
@@ -1252,7 +1223,6 @@ This is another reason why Agency cannot be reduced to execution.
 The Principal and other participants remain responsible for defining and validating the problem itself.
 
 ### Accountability
-
 Accountability concerns who is answerable for decisions and outcomes.
 
 Accountability should not automatically be assigned to the Agent merely because the Agent performed the action.
@@ -1272,7 +1242,6 @@ This is particularly important for organizations using AI.
 Delegating execution to an AI Agent does not necessarily transfer organizational accountability to the AI.
 
 ### Human Agency
-
 Humans are examples of systems capable of agency.
 
 Human agency can be:
@@ -1299,7 +1268,6 @@ These roles arise from relationships and context.
 They do not necessarily define separate entity types.
 
 ### Organizational Agency
-
 An organization can also exhibit agency.
 
 An organization can:
@@ -1323,7 +1291,6 @@ Therefore:
 > **The boundary of an Agent does not necessarily coincide with the boundary of a biological individual.**
 
 ### Software Agency
-
 Software can act as an Agent when it performs actions toward objectives within defined capabilities and constraints.
 
 Examples include:
@@ -1344,7 +1311,6 @@ The distinction depends on the conceptual responsibility and action boundary bei
 Therefore, not every automated component should automatically be called an Agent.
 
 ### AI Agency
-
 AI Agency is Agency manifested through systems containing artificial intelligence.
 
 An AI Agent may include:
@@ -1389,7 +1355,6 @@ This is analogous to the distinction between a human brain and the entire human 
 The intelligence-producing component is not necessarily identical to the Agent as a whole.
 
 #### Model, Mind, and Body Analogy
-
 A useful conceptual analogy for AI systems is the distinction between:
 
 - Model
@@ -1442,7 +1407,6 @@ Its purpose is to prevent a common category error:
 > **The intelligence-producing mechanism is not necessarily the Agent itself.**
 
 ### Hybrid Agency
-
 Agency may be distributed across multiple kinds of systems.
 
 For example:
@@ -1486,7 +1450,6 @@ The same principles of:
 remain applicable.
 
 ### Agency and Organizational Boundaries
-
 Organizations frequently establish artificial boundaries around responsibilities.
 
 Such boundaries can be useful.
@@ -1509,7 +1472,6 @@ It becomes harmful when it prevents communication or implies that knowledge outs
 Agency therefore requires attention to the boundaries around responsibility and knowledge.
 
 ### False Taxonomies
-
 A recurring problem in technology ecosystems is the creation of classifications that are useful for a local purpose but become mistaken for models of reality.
 
 A classification is not necessarily wrong merely because it is artificial.
@@ -1542,7 +1504,6 @@ The same pattern recurs across the technology ecosystem well beyond Frontend and
 These are noted here as instances of the same pattern, not analyzed in depth — a full treatment of any one of them belongs in a document about that specific concept, not in Agency.
 
 ### Historical Continuity
-
 AI Agent terminology should not erase the conceptual history of Agency.
 
 Concepts such as:
@@ -1568,7 +1529,6 @@ Instead:
 This allows accumulated knowledge to remain available.
 
 ### Why AI Does Not Create the Underlying Problem
-
 Many problems associated with AI Agents existed before AI.
 
 Examples include:
@@ -1593,7 +1553,6 @@ Therefore:
 Replacing an AI tool may change the symptoms without changing the underlying system.
 
 ### Interaction With an Agent
-
 Effective interaction with an Agent requires more than issuing commands.
 
 The interaction should establish enough information for the Agent to perform its responsibility.
@@ -1624,7 +1583,6 @@ This is why learning how to interact with AI Agents should not begin with AI-spe
 It should begin with understanding Agency.
 
 ### Prompt Engineering and Harness Engineering
-
 Prompt Engineering and Harness Engineering may describe useful practices.
 
 However, they should not be mistaken for the foundational theory of interaction with Agents.
@@ -1650,7 +1608,6 @@ Agency
 Therefore, AI-specific techniques should be evaluated according to the agentive model rather than becoming substitutes for it.
 
 ### Agency and Development
-
 Software development itself can be understood as a network of Agents.
 
 For example:
@@ -1694,7 +1651,6 @@ Each level introduces:
 This provides a more general model for understanding AI-assisted development.
 
 ### Agency and System Design
-
 Agency should be considered when modeling any system in which one component or participant acts on behalf of another.
 
 Relevant questions include:
@@ -1720,10 +1676,7 @@ These questions are more fundamental than selecting a particular agent framework
 
 ### Common Modeling Errors
 
-
-
 #### Treating AI Agent as the Primitive
-
 Incorrect conceptual direction:
 
 ```text
@@ -1743,7 +1696,6 @@ AI Agent
 ```
 
 #### Treating Agent as a Separate Entity Type
-
 A person does not become a new entity merely because they become an Agent.
 
 A software system does not necessarily become a different entity either.
@@ -1751,7 +1703,6 @@ A software system does not necessarily become a different entity either.
 The agentive role may emerge from the relationship.
 
 #### Treating `agent_for` as an Entity
-
 If the relationship can be represented directly as:
 
 ```text
@@ -1761,27 +1712,22 @@ A ── agent_for ──► B
 there is no reason to create an intermediate `AgentFor` node merely because the relationship has a name.
 
 #### Confusing Capability With Authority
-
 Being able to perform an action does not mean being permitted to perform it.
 
 #### Confusing Authority With Responsibility
-
 Being permitted to act does not mean being responsible for the outcome.
 
 #### Confusing Autonomy With Agency
-
 A system can exercise autonomy within an agentive relationship.
 
 Delegation and autonomy are not opposites.
 
 #### Confusing the AI Model With the AI Agent
-
 The model is a component of some AI Agents.
 
 It is not necessarily the complete Agent.
 
 #### Treating Prompt Engineering as the Theory of Agent Interaction
-
 Prompts are one communication mechanism.
 
 They do not define the complete structure of Agency.
@@ -1838,7 +1784,6 @@ Likewise, one Agent may be responsible for many domain entities. Modeling a sepa
 An Execution Agent may be responsible for a process partition without representing another System in a Principal relationship. The distinction should remain explicit so that representational Agency and execution responsibility do not collapse into one relationship.
 
 #### Treating Organizational Problems as AI Problems
-
 An AI Agent can reveal failures in:
 
 - knowledge management,
@@ -1851,7 +1796,6 @@ An AI Agent can reveal failures in:
 Replacing the AI tool may therefore leave the underlying problem unchanged.
 
 ### Agency and Boundaries
-
 Agency always operates within some boundary.
 
 A boundary may define:
@@ -1872,43 +1816,33 @@ Therefore, a meaningful description of an Agent should include not only what it 
 This is particularly important when Agents interact.
 
 ### Failure of Agency
-
 Agency can fail in multiple ways.
 
 #### Specification failure
-
 The responsibility is ambiguous.
 
 #### Context failure
-
 The Agent lacks necessary information.
 
 #### Knowledge failure
-
 The relevant knowledge is unavailable or incorrect.
 
 #### Capability failure
-
 The Agent cannot perform the required action.
 
 #### Authority failure
-
 The Agent is responsible but lacks permission.
 
 #### Constraint conflict
-
 The required outcome conflicts with applicable constraints.
 
 #### Communication failure
-
 Information is lost or misunderstood between participants.
 
 #### Evaluation failure
-
 The output is accepted without adequate validation.
 
 #### Accountability failure
-
 No participant is clearly responsible for evaluating or owning the outcome.
 
 These failures should not automatically be attributed to the Agent itself.
@@ -1916,7 +1850,6 @@ These failures should not automatically be attributed to the Agent itself.
 The failure may exist elsewhere in the agentive system.
 
 ### Agency as a Systemic Property
-
 Agency should therefore be evaluated as part of a system rather than only at the Agent boundary.
 
 A useful abstraction is:
@@ -1948,7 +1881,6 @@ It expresses the principle that effective Agency is systemic.
 A highly capable Agent placed inside a poorly designed system may still produce poor outcomes.
 
 ### Implications for AI Agent Adoption
-
 Organizations adopting AI Agents should not begin only by asking:
 
 > Which AI Agent should we use?
@@ -1971,7 +1903,6 @@ They should also ask:
 Without these questions, AI adoption can increase execution speed without increasing organizational capability.
 
 ### The Broader Principle
-
 The central lesson of Agency is not about AI.
 
 It is about understanding how systems act.
@@ -1993,7 +1924,6 @@ Therefore:
 > **The principles governing effective interaction with Agents should be more durable than the technologies through which Agents are implemented.**
 
 ### Relation to Memar
-
 Agency should be treated as a foundational conceptual area within Memar.
 
 It connects naturally to several other concepts:
@@ -2023,83 +1953,64 @@ In particular, Agency should not become a container into which every concept rel
 Its scope should remain centered on the capacity and structure of systems that act.
 
 ### Terminology
-
 The following terminology principles should be maintained. This list has been extended from an earlier draft to cover every concept that receives its own topic above; the earlier version defined Agency, Agent, Principal, `agent_for`, Delegation, Responsibility, Authority, Capability, Context, Knowledge, and Autonomy, but left Trust, Contract, Accountability, Execution, Decision-Making, Goal, and Communication undefined here despite each having a full topic elsewhere in this document — an inconsistency between the glossary and the body that is corrected below.
 
 The following terminology principles should be maintained:
 
 #### Agency
-
 The capacity or condition through which a system can act intentionally toward objectives within defined capabilities, knowledge, authority, and constraints.
 
 #### Agent
-
 A system that exhibits Agency, especially a system occupying the agent position in an agentive relationship.
 
 #### Principal
-
 A system on whose behalf another system acts.
 
 #### `agent_for`
-
 A relationship connecting a system acting as an Agent to a system for which it acts.
 
 #### Delegation
-
 The assignment or transfer of responsibility, authority, or objectives from one system to another.
 
 #### Responsibility
-
 The domain of outcomes or activities for which an Agent is expected to act.
 
 #### Authority
-
 The permitted scope of decisions or actions available to an Agent.
 
 #### Capability
-
 What a system is able to do.
 
 #### Context
-
 Information and conditions relevant to the Agent's current action.
 
 #### Knowledge
-
 Understanding available to a System to support interpretation, decision, and action; the concept itself is defined in [Knowledge](./knowledge.md), building on the foundational definition in [System → Knowledge and Science](./system.md#knowledge-and-science).
 
 #### Autonomy
-
 The degree to which an Agent can determine or execute actions without direct specification of each individual action.
 
 These definitions remain subject to refinement as the conceptual model develops.
 
 #### Goal / Purpose
-
 A desired outcome or objective toward which an Agent's action is directed; may originate with a Principal (as a delegated objective) or be self-generated (as an intrinsic objective) — see [Goals and Purpose](#goals-and-purpose) and [Intrinsic and Delegated Agency](#intrinsic-and-delegated-agency).
 
 #### Execution
-
 The process through which an Agent transforms responsibility, goals, knowledge, capabilities, and constraints into actions and outcomes, including interpretation, planning, decision-making, action, observation, adaptation, and evaluation — see [Execution](#execution).
 
 #### Decision-Making
-
 The exercise of choice by an Agent within a bounded decision space, which may include escalation to the Principal for decisions outside that boundary — see [Decision-Making](#decision-making).
 
 #### Trust
-
 A Principal's assessment of whether an Agent can be relied upon to interpret responsibility correctly, respect constraints, make appropriate decisions, and report failures — distinct from Verification, Validation, Observation, and Audit — see [Trust](#trust).
 
 #### Contract
-
 A structure establishing expectations between participants, which may define responsibility, authority, obligations, constraints, expected outcomes, acceptance criteria, failure conditions, and escalation procedures; not necessarily a legal document — see [Contracts](#contracts).
 
 #### Accountability
-
 Who is answerable for decisions and outcomes; not automatically assigned to the Agent merely because the Agent performed the action, and must be modeled separately from Agency — see [Accountability](#accountability).
 
 #### Communication
-
 The transfer of goals, responsibility, authority, context, knowledge, feedback, results, warnings, or requests for escalation between participants in an agentive relationship — see [Communication](#communication).
 
 #### Execution Agent
@@ -2139,7 +2050,6 @@ Until the open questions, recorded in the [Agency Handoff](./agency.handoff.md),
 26. **Distinguish `agent_for` from execution responsibility so that representation and processing do not collapse into one relationship.**
 
 ### Conclusion
-
 Agency is broader than AI.
 
 Agent is broader than AI Agent.

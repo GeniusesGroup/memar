@@ -47,3 +47,21 @@
 #### Considered and not done (from the removed document-level Drawbacks section)
 - **The position trades ecosystem compatibility for self-containment: a team whose other projects use package managers must maintain two dependency vocabularies** — the accepted trade. (Omid Hekayati)
 - **The position inherits the VCS's ergonomics problems as its own** — this document treats that as honesty (the mechanism is what it is) while acknowledging that a purpose-built tool could smooth it without becoming a resolver. (Omid Hekayati)
+
+---
+
+### The manifest's identity and reachability, added to a document that names the VCS as the mechanism
+- Time: 2026-09-30T00:00:00Z
+- Type: Changed
+- Ruling: owner, 2026-09-29
+- Contributors:
+  - opencode (space-bunny-free) - applied
+
+#### What changed
+- The 2026-09-29 rulings that bear on this document were recorded in its [handoff](./dependency-management.handoff.md) rather than in its body: the base an address is resolved from is the manifest of the module that wrote it; a manifest says everything about its own module in four obligations and is complete; a fault in one is a fault in the whole module; and its name is `memar.manifest.{format}`. They are in the handoff because they **collide with this document's stated position** — its Abstract names the version-control repository as the dependency mechanism and a manifest as machinery Memar's default does not require — and a reader of the body would meet a settled design and no sign of the conflict. The possible reconciliation, a manifest declaring identity and reachability while the VCS pins revisions, is recorded there as a question and is not adopted.
+- A module claims an address by a pattern rather than by a row per declaration, and either a whole framework or each of its parts may be a module. The precedence question this raises, what answers when a whole's claim and a part's claim both cover one address, is recorded as open, along with the receiver's reading that a claim should be a path-shaped pattern rather than a regular expression — offered for the owner to accept or overrule, and not adopted.
+- No sentence of this document's body changed, and nothing here supersedes its position.
+
+#### Considered and not done
+- **Writing the four obligations and the manifest's name into this document's body.** Considered and not done, because the rulings have not been reconciled with the position the body states, and stating them as current design would hide that. The alternative was to revise the position in place, which is a change to a protocol document and the owner's to make.
+- **Creating a new document for the manifest.** Considered and not done: this document is already the subject, at ID 496870 since 2026-09-06. A second dependency document would have split one subject across two files and left a later session choosing between them.

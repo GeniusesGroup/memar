@@ -193,7 +193,7 @@ The merge follows the project's rule that pre-Final documents consolidate withou
   - none — the source discussion (chats-context/unikernel - deepseek.md) had its other arguments absorbed on 2026-08-28; this entry closes the remaining three, after which the source file is retired.
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — argued
-  - [Qwen](../../CONTRIBUTORS.md#qwen) (qwen3.8-flash) — drafted.
+  - [Qwen](../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via [OpenCode](../../CONTRIBUTORS.md#opencode)) — drafted.
 
 #### What changed
 - Three additions close out the source discussion.

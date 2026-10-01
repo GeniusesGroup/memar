@@ -80,7 +80,7 @@
   - khayyam-variable.handoff.md: Created - open questions and anticipated work moved there.
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) - requested
-  - [OpenCode](../../CONTRIBUTORS.md#opencode) (qwen3.8-flash) - moved
+  - [Qwen](../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via [OpenCode](../../CONTRIBUTORS.md#opencode)) - moved
 
 #### What changed
 - The body's fixed top-level sections are now Abstract, Introduction, Explanation, Results only; the document-level `## Discussion` and all eight topic-level `#### Discussion` wrappers are dissolved.
@@ -165,7 +165,7 @@
   - variable.handoff.md: Open — narrowed the MathEval entry to evaluator-library checking only; added the open question on how the compiler obtains the first instance's values from source.
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided
-  - [Mimo](../../CONTRIBUTORS.md#mimo) (mimo-v2.6-flash via OpenCode) — applied
+  - [Mimo](../../CONTRIBUTORS.md#mimo) (mimo-v2.6-flash via [OpenCode](../../CONTRIBUTORS.md#opencode)) — applied
 
 #### What changed
 - Domain-Driven Arithmetic now states explicitly that `MathEval` is an illustrative *library* pattern (regex-style sub-language for dense formulas), not part of Khayyam's grammar: the operator ban is untouched, and how much operand type-checking an evaluator performs is that library's own contract.

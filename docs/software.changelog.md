@@ -45,7 +45,7 @@
 - Type: Fixed
 - Contributors:
   - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — decided
-  - [Mimo](../CONTRIBUTORS.md#mimo) (mimo-v2.6-flash via OpenCode) — applied
+  - [Mimo](../CONTRIBUTORS.md#mimo) (mimo-v2.6-flash via [OpenCode](../CONTRIBUTORS.md#opencode)) — applied
 
 #### What changed
 - The Software verification and validation row now reads "abstraction conformance in the Khayyam documents is the compile-time verification face". The claim is unchanged; the upward hyperlink into `khayyam/abstraction.md` is removed.

@@ -2,7 +2,7 @@
 Title: "Knowledge"
 Status: Draft
 Start Date: 2026-07-20
-ID: 510421
+ID: "495696"
 ---
 
 # Knowledge
@@ -26,7 +26,7 @@ The pattern recurs regardless of domain:
 
 A hospital losing a care protocol because a retiring nurse "took the procedure in her head" is structurally identical to a software company losing architectural rationale because the lead developer left and only the code remains. These are not domain-specific problems; they are manifestations of a single failure — treating the representation as the thing represented.
 
-Within Memar specifically, the immediate trigger was a series of architectural discussions about whether File and Directory should remain first-class primitives for modeling knowledge in modern systems (see [Reevaluating the Filesystem](docs/protocols/memory/filesystem.md)). Those discussions revealed deeper questions:
+Within Memar specifically, the immediate trigger was a series of architectural discussions about whether File and Directory should remain first-class primitives for modeling knowledge in modern systems (see [Reevaluating the Filesystem](../docs/protocols/memory/filesystem.md)). Those discussions revealed deeper questions:
 
 - Why do organizations produce vast amounts of data but cannot retrieve knowledge when needed?
 - Why does every team eventually build its own wiki structure, only to abandon it?
@@ -49,7 +49,6 @@ This analysis synthesizes four sources: academic research on knowledge organizat
 ## Explanation
 
 ### Definition
-
 **Data**: raw symbols, bytes, characters without interpreted meaning.
 ```
 42

@@ -1,5 +1,4 @@
 # Type Handoff
-
 Open work for `type.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](./documentation-handoff.md) for what a handoff is.
 
 ## Open Questions
@@ -48,7 +47,6 @@ Open work for `type.md`. Entries are mutable current state — revised as each i
 - Next: tracked in the Abstraction document; revisit here when it moves.
 
 ## Anticipated Work
-
 - **Refinement types for invariants**: an SMT solver could check simple invariants at compile time.
 - **Formal specification of the satisfaction mechanism**: once design decisions are made, the Capsule/Abstraction bridge could be specified formally.
 - **Gradual typing at boundaries**: a mechanism for converting between semantic Types and structural types at API boundaries.

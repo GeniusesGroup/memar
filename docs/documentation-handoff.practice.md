@@ -4,13 +4,11 @@ description: defines how a handoff between sessions is produced and consumed
 ---
 
 # Documentation — Handoff Practice
-
 > **Purpose:** This practice defines how a handoff is produced at the end of a session and how it is consumed at the start of the next one. It is the procedural companion to [documentation-handoff.md](./documentation-handoff.md), which defines what a handoff is, why its structure is what it is, and the risks it controls — that document is assumed reading, and its rules are not restated here.
 
 ---
 
 ## When This Practice Applies
-
 Produce a handoff when a session ends with any of these true:
 
 - the discussion reached decisions or resolutions worth preserving
@@ -31,7 +29,6 @@ The lists above govern session end. A tangent detected mid-session is a separate
 ---
 
 ## Mid-Session Tangents
-
 A **tangent** is a request that opens a development thread whose context the current session will not otherwise need. Clarifying questions and small edits related to the session's topic are not tangents.
 
 When a tangent appears mid-session, produce the handoff at once rather than at session end:
@@ -44,7 +41,6 @@ When a tangent appears mid-session, produce the handoff at once rather than at s
 ---
 
 ## Producing a Handoff
-
 1. **Inventory the session against the skeleton.** Walk the section list in [documentation-handoff.md → Structure](./documentation-handoff.md#structure) and ask, for each: did this session produce anything in this category? This walk is the selection-asymmetry control — omissions happen section by section, visibly, not by habit.
 2. **Mark confidence while it is fresh.** Assign each decision its confidence level (Decided / Tentative / Explored-but-unresolved / Deferred) and each assumption its stability (Strong / Weak / Unexamined) before the session's actual certainty fades — category drift (tentative hardening into decided) is the most common distillation error, and it happens in the minutes after the discussion, not later.
 3. **Capture reasoning with every decision.** What options existed, what criteria were used, what tipped the balance. A decision without reasoning cannot be safely revised or defended by the receiving session.
@@ -54,14 +50,12 @@ When a tangent appears mid-session, produce the handoff at once rather than at s
 7. **Self-check against the reader who was not there.** Re-read the draft as the next session will: could a session with no memory of this discussion pick up every thread from this file alone? Anything answered "no" goes back to step 3.
 
 ### Placement
-
 - Handoffs paired with a governed base document live beside it (`<base>.handoff.md` next to `<base>.md`).
 - Handoffs for discussions not yet tied to a governed document live in the project's conversation-records location (`chats-context/`), named `YYYY-MM-DD-topic-name.md`, one topic per file — a multi-topic discussion is split into one handoff per topic so each can resume, conclude, and retire independently.
 
 ---
 
 ## Consuming a Handoff
-
 At the start of a session that continues from a handoff:
 
 1. **Read it completely before responding.** A partial read defeats the artifact — the sections are interdependent (an assumption may qualify a decision; an open question may block a next step).
@@ -77,7 +71,6 @@ At the start of a session that continues from a handoff:
 ---
 
 ## Quality Checklist
-
 Before closing a handoff, verify:
 
 - [ ] Every decision carries reasoning and a confidence level
@@ -93,7 +86,6 @@ Before closing a handoff, verify:
 ---
 
 ## Relation to Other Artifacts
-
 | Artifact | Connection |
 |----------|-----------|
 | [documentation-handoff.md](./documentation-handoff.md) | Governing specification — the concept, structure, and rationale this practice follows |

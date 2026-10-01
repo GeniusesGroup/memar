@@ -108,7 +108,6 @@ The alternative is to use **abstractions** and **explicit delegation**. Instead 
 This is functionally equivalent to Template Method but preserves explicit ownership: every method is defined in the capsule whose source code contains it. The alternative is more verbose than the pattern it replaces, and developers must learn it.
 
 ### Compiler Rules
-
 **Rule: No Implicit Behavior Acquisition.**
 Embedding a capsule inside another capsule does not expose the inner capsule's methods to the outer scope automatically. The compiler treats the inner capsule's methods as private to that capsule, even when accessed from the containing capsule's methods.
 
@@ -122,7 +121,6 @@ A capsule satisfies an abstraction if it implements every method declared by tha
 An abstraction (`ab`) cannot contain method bodies, state, or default implementations. Methods declared by an abstraction are signatures only. This is enforced at the parser level.
 
 ### Linter Rules
-
 **Anti-Lazy Inheritance Check:**
 The linter blocks any patterns or workarounds that attempt to create implicit method promotion hooks. If a developer writes code that appears to be attempting to use behavior transfer (e.g. embedding a capsule and then calling its methods as if they were native), the linter flags this.
 

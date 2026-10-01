@@ -1,5 +1,4 @@
 # Modularity Handoff
-
 Open work for `modularity.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](./documentation-handoff.md) for what a handoff is.
 
 ## Open Questions
@@ -32,7 +31,6 @@ Open work for `modularity.md`. Entries are mutable current state — revised as 
 - With one endpoint, with both, or in an independent third home? Hosting chosen mainly for repository convenience encodes false conceptual ownership; see the counterpart open question under [Modeling → Edge Types and Their Traditional Counterparts](./modeling.handoff.md#edge-types-and-their-traditional-counterparts).
 
 ## Anticipated Work
-
 - A dedicated treatment may later define the relationship between Module, Optional Module, Protocol, EventTarget, and the provisional Rule concept in more formal graph terms. (From the document-level retired Future possibilities.)
 - A future document may define how modular boundaries can be reviewed independently of implementation structure, including checks for responsibility coherence, uncontrolled knowledge, unnecessary coupling, and accidental deployment-driven boundaries. (From the same section.)
 - Once this document is stable, documents that currently define modularity-related behavior locally — including `modeling.md`, `khayyam/modularity.md`, `framework.md`, and `protocol.md` — should be reduced where appropriate and reference this document instead. Each should retain only the consequences specific to its own concerns rather than redefining Module independently. (From the same section.)

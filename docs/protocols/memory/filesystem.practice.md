@@ -4,13 +4,11 @@ description: replaces the default assumption that a system needs a filesystem wi
 ---
 
 # Filesystem Practice
-
 > **Purpose:** This practice operationalizes [filesystem.md](../memory/filesystem.md): it turns that document's warning — set aside the default that you necessarily need a filesystem — into a followable check with explicit criteria. The critique and its arguments live in the base document and are not restated here; each criterion below links to the topic that argues it.
 
 ---
 
 ## The Default to Suspend
-
 *"Every software system has a filesystem; architecture questions start inside it."*
 
 Under Memar's stance ([filesystem.md → Memar's Stance on the Filesystem Protocol Surface](../memory/filesystem.md#memars-stance-on-the-filesystem-protocol-surface)), the filesystem is a high-level library whose inclusion is a decision. This practice is that decision procedure.
@@ -18,7 +16,6 @@ Under Memar's stance ([filesystem.md → Memar's Stance on the Filesystem Protoc
 ---
 
 ## When to Run the Check
-
 Run it when any of these appears in the work:
 
 - a new system (software, hardware, organization) is being designed and files, paths, or folders show up in the draft model;
@@ -30,7 +27,6 @@ Run it when any of these appears in the work:
 ---
 
 ## The Need Check
-
 Answer each question about **one concern at a time** — the answer may differ per concern within the same system. Do not answer for "the system" as a whole.
 
 1. **What kind of thing is being stored?**
@@ -54,13 +50,11 @@ Answer each question about **one concern at a time** — the answer may differ p
 ---
 
 ## Recording the Decision
-
-The outcome — full dependency, projection-only, or none — must be an explicit, recorded decision, not a silent default: Memar's framework standard is that no aspect of the design space may be assumed by default; every assumption must be the outcome of an explicit decision ([Framework → Goal-Oriented Frameworks and Purpose Space](../framework.md#goal-oriented-frameworks-and-purpose-space)). Record it where the project's decisions live (a Task or Decision artifact), with the answers above as its rationale.
+The outcome — full dependency, projection-only, or none — must be an explicit, recorded decision, not a silent default: Memar's framework standard is that no aspect of the design space may be assumed by default; every assumption must be the outcome of an explicit decision ([Framework → Goal-Oriented Frameworks and Purpose Space](../../framework.md#goal-oriented-frameworks-and-purpose-space)). Record it where the project's decisions live (a Task or Decision artifact), with the answers above as its rationale.
 
 ---
 
 ## Anti-patterns
-
 - Designing the domain model to fit a directory layout.
 - Encoding metadata in filenames or paths.
 - Treating "the compiler needs files at the build boundary" as "the system needs a filesystem at the model boundary."

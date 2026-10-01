@@ -1,5 +1,4 @@
 # Method in Khayyam Handoff
-
 Open work for `method.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](../documentation-handoff.md) for what a handoff is.
 
 ## Open Questions
@@ -18,5 +17,4 @@ Open work for `method.md`. Entries are mutable current state — revised as each
 - Blocks: the toolchain's naming. Until it is answered the port's bridge emits the second method under a prefixed name, which the [receiver method names rule](../../modules/khayyam/rules/receiver-method-names/receiver-method-names.handoff.md) records as a report and not a name.
 
 ## Anticipated Work
-
 - A linter rule that flags an influencing variable receiving a call to one of its own known-mutating methods, prompting the author to either move it to the influenced group or consider splitting the method, once the dual-role question above is resolved. (From the Influencing and Influenced Variables topic's retired Future possibilities; the document-level Discussion restated the same rule.)

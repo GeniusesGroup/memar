@@ -1,6 +1,5 @@
 # OS Handoff
-
-Open work for `protocols/computer/os.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](../documentation-handoff.md) for what a handoff is.
+Open work for `protocols/computer/os.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](../../documentation-handoff.md) for what a handoff is.
 
 ## Open Questions
 
@@ -12,7 +11,7 @@ Open work for `protocols/computer/os.md`. Entries are mutable current state — 
 - Next: state the position; it gates the "controlled interaction with hardware" definition (see Anticipated Work).
 
 ### What makes a domain non-removable
-- State: the criterion for a domain's non-removability (the kernel-layer reading's membership test) needs the same discipline this project applies to foundational concepts elsewhere — see [Modularity](../modularity.md)'s foundational-status test — and has not yet been adapted to the kernel-layer reading.
+- State: the criterion for a domain's non-removability (the kernel-layer reading's membership test) needs the same discipline this project applies to foundational concepts elsewhere — see [Modularity](../../modularity.md)'s foundational-status test — and has not yet been adapted to the kernel-layer reading.
 - Next: adapt Modularity's foundational-status test to the kernel layer.
 
 ### UEFI runtime services after boot
@@ -40,11 +39,11 @@ Open work for `protocols/computer/os.md`. Entries are mutable current state — 
 - Next: settle alongside the founding layers' duty partition.
 
 ### What the guarantee side owes a waiting execution
-- State: what does the guarantee side owe an execution that must wait — for a device to complete, a timer to expire, another entitlement's slice to end? A completion mechanism exists within the guarantees (controlled hardware interaction), but its exact shape must be worked out together with [Process](../process.md)'s treatment of progression, and must not violate its principles.
+- State: what does the guarantee side owe an execution that must wait — for a device to complete, a timer to expire, another entitlement's slice to end? A completion mechanism exists within the guarantees (controlled hardware interaction), but its exact shape must be worked out together with [Process](../../process.md)'s treatment of progression, and must not violate its principles.
 - Next: joint session with the Process document.
 
 ### Parallelism within one address space
-- State: can parallelism within one address space be expressed as several core-time entitlements over one address space — and should that be modeled through [Process](../process.md)'s Worker concept rather than a new OS-level unit?
+- State: can parallelism within one address space be expressed as several core-time entitlements over one address space — and should that be modeled through [Process](../../process.md)'s Worker concept rather than a new OS-level unit?
 - Next: decide with the Process document and the concurrency realization work.
 
 ### Scheduling policy's residence
@@ -60,7 +59,7 @@ Open work for `protocols/computer/os.md`. Entries are mutable current state — 
 - Next: argue through with the networking realization work.
 
 ### Principal's relationship to Agency's Principal
-- State: what relationship holds between a principal in os.md and the Principal concept in [Agency](../agency.md)? The two documents use the same word for related but not yet reconciled concepts; the reconciliation is its own session.
+- State: what relationship holds between a principal in os.md and the Principal concept in [Agency](../../agency.md)? The two documents use the same word for related but not yet reconciled concepts; the reconciliation is its own session.
 - Next: dedicated reconciliation session.
 
 ### Nanos's boundary-principle compliance
@@ -76,7 +75,6 @@ Open work for `protocols/computer/os.md`. Entries are mutable current state — 
 - Next: PersiaOS's own decision; revisit the dedicated-document question then.
 
 ## Anticipated Work
-
 - If the device-driver question is resolved, os.md gains a topic defining what "controlled interaction with hardware" means precisely enough to implement against.
 - If new requirement areas emerge that no topic covers, they join the same pattern — one topic, one capability-and-constraint statement — rather than growing the existing topics sideways.
 - The lock-in that sustains the traditional bundle is a cost asymmetry: leaving costs more than enduring. If the cost of redefining and rebuilding abstractions keeps falling — AI agents producing library-level meaning against the guarantees fast enough that rewriting becomes cheaper than hacking around the bundle — the asymmetry erodes and the ecosystem objection to the boundary principle loses force over time. This is recorded as a possibility the architecture should not price out, not as a prediction its positions depend on.

@@ -49,7 +49,7 @@
 
 #### What changed
 - The Findings section explicitly distinguishes numeric estimates from measured results: an inspectable method and supporting evidence are required before a numeric claim may be cited as measured data, regardless of its author's identity.
-- The obsolete README in the `researchs/` directory was removed after preserving its numeric-evidence safeguard and updating all three inbound links. Existing research files remain unchanged.
+- The obsolete README in the research directory was removed after preserving its numeric-evidence safeguard and updating all three inbound links. Existing research files remained unchanged at that time; they were deleted 2026-09-23 after their final transfer audit.
 
 #### Considered and not done
 - Duplicating the old attribution and adoption rules was unnecessary: Participants and the graduation path into the governing document already cover them. The old permission to abandon research without a formal deprecation process was not transferred because the current lifecycle preserves Complete and Withdrawn records and corrects them by supersession (Super Z — proposed; Omid Hekayati — approved).

@@ -1,5 +1,4 @@
 # Rule Handoff
-
 Open work for `rule.md`. See [documentation-handoff.md](./documentation-handoff.md) for what a handoff is.
 
 ## Open Questions
@@ -17,11 +16,9 @@ Open work for `rule.md`. See [documentation-handoff.md](./documentation-handoff.
 Should `modules/process/rule/` and `modules/process/rules-engine/` gain a protocol-level specification under `docs/protocols/process/`, or remain implementation surfaces cited from `rule.md`?
 
 ## Follow-up work: relocate document-level rules
-
 Inventory of normative rule passages still stated at document level (not moved in this session). Each entry: anchor, short quote, proposed `rules/` target. Count: **32** entries.
 
 ### `docs/khayyam/`
-
 | Anchor | Quote (abbrev.) | Proposed `rules/` folder |
 | --- | --- | --- |
 | [inheritance.md#compiler-rules](./khayyam/inheritance.md#compiler-rules) → No Implicit Behavior Acquisition | "Embedding a capsule … does not expose the inner capsule's methods … automatically." | `modules/khayyam/rules/no-implicit-behavior-acquisition/` |
@@ -31,7 +28,6 @@ Inventory of normative rule passages still stated at document level (not moved i
 | [inheritance.md#linter-rules](./khayyam/inheritance.md#linter-rules) → Anti-Lazy Inheritance Check | "blocks any patterns … attempting to create implicit method promotion hooks" | `modules/khayyam/rules/anti-lazy-inheritance/` |
 
 ### `docs/protocols/process/`
-
 | Anchor | Quote (abbrev.) | Proposed `rules/` folder |
 | --- | --- | --- |
 | [error.md#enforcement-of-the-each-error-is-its-own-type-rule](./protocols/process/error.md#enforcement-of-the-each-error-is-its-own-type-rule) | "`Err` prefix with the remainder in PascalCase" naming convention | `modules/process/error/rules/err-prefix-naming/` |
@@ -39,7 +35,6 @@ Inventory of normative rule passages still stated at document level (not moved i
 | [control-flow.md#library-defined-control-flow](./protocols/process/control-flow.md#library-defined-control-flow) → IF/ELSE pairing | "`ELSE` always takes an explicit reference back to the same condition value it pairs with" | `modules/process/control-flow/rules/else-explicit-condition-reference/` |
 
 ### `docs/protocols/computer/`
-
 | Anchor | Quote (abbrev.) | Proposed `rules/` folder |
 | --- | --- | --- |
 | [compiler.md#runtime-mutation-of-the-artifact-is-unsafe](./protocols/computer/compiler.md#runtime-mutation-of-the-artifact-is-unsafe) | "MUST be tagged `unsafe`" for runtime binary patch capability | `modules/computer/compiler/rules/runtime-mutation-unsafe/` |
@@ -48,7 +43,6 @@ Inventory of normative rule passages still stated at document level (not moved i
 | [linter.md#how-a-governance-rule-is-authored](./protocols/computer/linter.md#how-a-governance-rule-is-authored) | Required members: Subject, Tier, Default, Override | `modules/computer/linter/rules/governance-rule-schema/` (meta-rule for rule shape) |
 
 ### `docs/protocols/memory/`
-
 | Anchor | Quote (abbrev.) | Proposed `rules/` folder |
 | --- | --- | --- |
 | [memory.md#teardown-is-explicit-and-automation-writes-source](./protocols/memory/memory.md#teardown-is-explicit-and-automation-writes-source) | "every execution path … must invoke … release" | `modules/computer/capsule/rules/explicit-teardown-paths/` |
@@ -59,7 +53,6 @@ Inventory of normative rule passages still stated at document level (not moved i
 | [memory.md#allocation-claims-are-measurement-claims](./protocols/memory/memory.md#allocation-claims-are-measurement-claims) | allocation claims "stated with the measurement that supports them" | `modules/computer/capsule/rules/allocation-claims-measured/` |
 
 ### `docs/protocols/net/`
-
 | Anchor | Quote (abbrev.) | Proposed `rules/` folder |
 | --- | --- | --- |
 | [chapar.md#rules](./protocols/net/chapar.md#rules) (HopCount encoding) | "`0x00` is reserved exclusively as the Broadcast sentinel" | `modules/net/chapar/rules/hopcount-broadcast-sentinel/` |
@@ -70,7 +63,6 @@ Inventory of normative rule passages still stated at document level (not moved i
 | [chapar.md#rules](./protocols/net/chapar.md#rules) (Terminal drop) | "Unicast frame whose Next Hop points past the last hop-port entry … is dropped" | `modules/net/chapar/rules/terminal-unicast-drop/` |
 
 ### `docs/type*.md` and other `docs/` roots
-
 | Anchor | Quote (abbrev.) | Proposed `rules/` folder |
 | --- | --- | --- |
 | [type.md#structure-is-fixed-by-definition](./type.md#structure-is-fixed-by-definition) | "no concept introduction … can be minted into a running system" | `modules/computer/datatype/rules/structure-fixed-at-definition/` (ontology-tier; may remain concept-only) |
@@ -111,7 +103,7 @@ Plan only — read each rule, classify, move nothing. Counts over the 24 rules i
 Additional generation not yet a separate rule but named in owner position (2026-09-29): **observer/mutator naming generation** (`Observer_X`/`Mutator_X` families) — today implemented in `abstraction_bridge.py observer-names`; should become a Memar server service, while [observer-mutator](../modules/computer/adt/rules/observer-mutator/observer-mutator.md) remains the governance condition for naming shape.
 
 ### (c) Genuinely Khayyam — keep under `modules/khayyam/rules/`
-[comment-forms](../modules/khayyam/rules/comment-forms/comment-forms.md), [scope-placement](../modules/khayyam/rules/scope-placement/scope-placement.md), [unresolved-import](../modules/khayyam/rules/unresolved-import/unresolved-import.md), [name-not-exported](../modules/khayyam/rules/name-not-exported/name-not-exported.md), [kind-mismatch](../modules/khayyam/rules/kind-mismatch/kind-mismatch.md), [unbound-type-name](../modules/khayyam/rules/unbound-type-name/unbound-type-name.md), [identifier-naming](../modules/khayyam/rules/identifier-naming/identifier-naming.md), [abstraction-naming-heuristic](../modules/khayyam/rules/abstraction-naming-heuristic/abstraction-naming-heuristic.md), [qualified-names](../modules/khayyam/rules/qualified-names/qualified-names.md), [receiver-parameter-naming](../modules/khayyam/rules/receiver-parameter-naming/receiver-parameter-naming.md), [domain-capsule-naming](../modules/khayyam/rules/domain-capsule-naming/domain-capsule-naming.md), [type-as-argument](../modules/khayyam/rules/type-as-argument/type-as-argument.md), [orphan-extension](../modules/khayyam/rules/orphan-extension/orphan-extension.md), [receiver-method-names](../modules/khayyam/rules/receiver-method-names/receiver-method-names.md), [method-verb-phrases](../modules/khayyam/rules/method-verb-phrases/method-verb-phrases.md).
+[comment-forms](../modules/khayyam/rules/comment-forms/comment-forms.md), [scope-placement](../modules/khayyam/rules/scope-placement/scope-placement.md), [unresolved-import](../modules/khayyam/rules/unresolved-import/unresolved-import.md), [name-not-declared](../modules/khayyam/rules/name-not-declared/name-not-declared.md), [kind-mismatch](../modules/khayyam/rules/kind-mismatch/kind-mismatch.md), [unbound-type-name](../modules/khayyam/rules/unbound-type-name/unbound-type-name.md), [identifier-naming](../modules/khayyam/rules/identifier-naming/identifier-naming.md), [abstraction-naming-heuristic](../modules/khayyam/rules/abstraction-naming-heuristic/abstraction-naming-heuristic.md), [qualified-names](../modules/khayyam/rules/qualified-names/qualified-names.md), [receiver-parameter-naming](../modules/khayyam/rules/receiver-parameter-naming/receiver-parameter-naming.md), [domain-capsule-naming](../modules/khayyam/rules/domain-capsule-naming/domain-capsule-naming.md), [type-as-argument](../modules/khayyam/rules/type-as-argument/type-as-argument.md), [orphan-extension](../modules/khayyam/rules/orphan-extension/orphan-extension.md), [receiver-method-names](../modules/khayyam/rules/receiver-method-names/receiver-method-names.md), [method-verb-phrases](../modules/khayyam/rules/method-verb-phrases/method-verb-phrases.md).
 
 ## Anticipated work
 1. Relocate inventory entries per module owner review (priority: Khayyam compiler rules, Chapar wire rules, Error naming).

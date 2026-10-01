@@ -8,15 +8,12 @@ description: Defines the concrete procedure for applying Memar's Type model when
 > **Nature:** This is a *Practice* — a method commonly used for this type of work, not a claim about knowledge, skill, or capability.
 
 ## Route modeling questions first
-
 If the open question is "is this a concept at all, or merely information about another thing?" stop here. That decision belongs to [Modeling](./modeling.md) and its session procedure in [modeling.practice.md](./modeling.practice.md). Family resemblance to known static-concept families (errors, permissions, status codes) never bypasses that test — run it per candidate.
 
 ## Qualifying as a Type
-
 A candidate qualifies only if it satisfies type.md's criteria: independent identity named by domain participants, its own lifecycle (definition, composition, specialization, execution — not only runtime create/destroy), rules or invariants that belong to it specifically, and participation in relationships as an endpoint with its own identity. In the gray zone ask "does this carry an independent responsibility?", never "can we name this?". Explicitly reject candidates that are attributes/values of another Type, implementation mechanisms, runtime infrastructure, organizational groupings, or transient computational states. Illustration: two apartments differing only in color are one Type; the ownership relation between an apartment and a person may itself be a Type, because it carries independent meaning.
 
 ## Choosing a category
-
 Categories are semantic roles, not a hierarchy:
 
 | If the Type's role is... | Category | Declared with |
@@ -29,7 +26,6 @@ Categories are semantic roles, not a hierarchy:
 Do not justify a fifth category unless the candidate role is irreducible to specialization, composition, or usage pattern of these four. A keyword in another language (`struct`, `trait`, `namespace`, ...) does not imply a distinct foundational concept.
 
 ## Mapping concepts onto realizations
-
 1. One concept → one named entity. Nominal identity: never merge semantically distinct concepts because their structures match; never split one concept because structures differ.
 2. Instance variation within one concept → data fields on its realization, not new Types. (If a member of a static family later acquires genuine per-instance data, that one capsule graduates to a data carrier; the static members of the family remain distinct Types.)
 3. Stateless concepts → still Types, each MUST be its own named entity. Detection test: every distinguishable fact about it is fixed at definition time (all method outputs are compile-time constants), and two variables of the type are indistinguishable. Never represent such concepts as a name string, tag value, or enum inside one shared container initialized at runtime (the generic-`Init` pattern) — that demotes identity from compile time to runtime comparison:
@@ -48,7 +44,6 @@ Gray zones in step 3:
 - A pragmatic exception (externally-defined specification with an open-ended set of variants) may justify a shared variant-carrying type — record the exception explicitly where used.
 
 ## Behavior ownership
-
 Every method must have exactly one visible owner. Before touching shared behavior, answer locally from source alone:
 
 1. Where was this behavior defined?
@@ -94,14 +89,12 @@ sequenceDiagram
 - A metadata family not covered above? Same rule, no exceptions: choose the carrier by audience — tools and logic → first-class constructs; humans and volume → companion artifacts — then record the decision in the governing document (here or in type.md) so the family joins the recorded set. The question is never "what keyword expresses this?".
 
 ## Edge cases and failure modes
-
 - **Optional-field accumulation smell**: a realization growing fields meaningful only for some instances signals merged concerns — route back to modeling, do not patch with optionals.
 - **Structural-typing habits** from languages like TypeScript: structural match/similarity has no identity force here.
 - **Runtime concept registration pressure** (plugins, dynamic failure modes): a registry admitting new concepts at runtime violates both rules the practice's layer carries — [Structure Is Fixed by Definition](./type.md#structure-is-fixed-by-definition) (the running system cannot mint structure) and step 3's forbidden pattern (concept identity demoted from compile time to runtime comparison inside a mutable shared container). Any registry mechanism must therefore be deliberately designed, never assumed, and must pass the modeling test for every concept it admits.
 - **Enforcement today is heuristic**: structural linters can flag missing-field/`Init` patterns; the authoritative checkpoint is the code generator's input layer, where static/dynamic intent is explicit by construction.
 
 ## References
-
 - [type.md](./type.md) — why: principles, definitions, and rejected alternatives.
 - [modeling.practice.md](./modeling.practice.md) — upstream procedure that decides what concepts exist.
-- [error.md](docs/protocols/process/error.md) — worked application to the Error family, cited as an example the Error protocol applies this practice's identity model to, not as a rule source.
+- [error.md](../docs/protocols/process/error.md) — worked application to the Error family, cited as an example the Error protocol applies this practice's identity model to, not as a rule source.

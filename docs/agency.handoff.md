@@ -1,5 +1,4 @@
 # Agency Handoff
-
 Open work for `agency.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](./documentation-handoff.md) for what a handoff is.
 
 ## Open Questions
@@ -58,7 +57,6 @@ This is a genuine reflexive question rather than a rhetorical one: the process t
 - Next: evaluate each new document written against this one for whether the principles required exception or restatement; record findings in this handoff and route any resulting change through a changelog entry.
 
 ## Anticipated Work
-
 - Define `role.md`, `permission.md`, and `contract.md` if they prove dense enough to warrant their own documents — concepts mentioned during the discussion that produced this document as ones that may eventually reference Agency rather than redefine it; consistent with the Delegation decision in [Delegation](./agency.md#delegation), the same "can it be defined without first defining Agency?" test should be applied to each before splitting it out. (From the document-level Future possibilities.)
 - Produce a worked example connecting this document to `type.md` — resolving the open question [How does Agent/System/Principal relate to Khayyam's Type categories?](#how-does-agentsystemprincipal-relate-to-khayyams-type-categories) about where System, Agent, and Principal sit relative to Capsule, Method, Abstraction, and Scope — which would let later documents stop treating that relationship as an open question. (From the document-level Future possibilities.)
 - State a positive composition rule for how Delegation, Responsibility, Authority, Capability, Context, Knowledge, and Trust combine into a coherent delegation, replacing the current pairwise non-equivalence statements (recorded as a drawback in the [Agency Changelog](./agency.changelog.md)) with something closer to a checklist or a formal condition. (From the document-level Future possibilities.)

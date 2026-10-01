@@ -6,16 +6,16 @@
 - Time: 2026-09-08T16:20:34Z
 - Type: Added
 - Cited:
-  - [GUI](./gui.md) — Reference: the GUI protocol already states the consumer-prohibition rule for graphical clients and relies on SDK-mediated access; this document generalizes the rule to every consumer and grounds that assumption.
-  - [Media Type](./media-type.md) — Reference: declares "Easily generate SDK in any programing language" as a goal; this document supplies the concept that goal points at.
-  - [Error](./error.md) — Reference: the numeric error-coding discipline the SDK's boundary mapping adopts.
+  - [GUI](../gui/gui.md) — Reference: the GUI protocol already states the consumer-prohibition rule for graphical clients and relies on SDK-mediated access; this document generalizes the rule to every consumer and grounds that assumption.
+  - [Media Type](../identifier/media-type.md) — Reference: declares "Easily generate SDK in any programing language" as a goal; this document supplies the concept that goal points at.
+  - [Error](../process/error.md) — Reference: the numeric error-coding discipline the SDK's boundary mapping adopts.
   - [Process](../process.md) — Reference: already names the SDK among legitimate retry initiators; consistent with the responsibility allocation recorded here, nothing changed there.
 - Propagates to:
   - gui.md: Done — the broken SDK link in the architecture position corrected to `./sdk.md` (cosmetic link repair; no changelog entry there, per the Changelog facet's trivial-repair rule).
   - media-type.md: Pending — the "Easily generate SDK" goal line gains a forward link to this document when the SDK document stabilizes.
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — claimed, argued
-  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash via ZCode) — extracted, recorded
+  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash via [ZCode](../../CONTRIBUTORS.md#zcode)) — extracted, recorded
 
 #### What changed
 - Created as the concept record of Memar's SDK protocol: what an SDK is (the client-side deliverable realizing the service's contract, derived from the contract declaration, one deliverable per consumer language) and what it is not (a specification; a general utility library).
@@ -26,7 +26,7 @@
 #### Related work
 - OpenAPI (formerly Swagger) — the dominant specification-first delivery the position rejects as the default: an interface document handed to consumers, leaving client production to every consuming organization — and, in the intra-organizational case, to the frontend team generating its own client from the backend's document.
 - gRPC — the ecosystem's closest approach: stub code generated from interface definitions, delivered by the service side; assessed in the founding discussions as not having displaced specification-first delivery.
-- GraphQL — service-side aggregation examined and rejected as the default answer to over-/under-fetching (see [Aggregation and the cache](./sdk.md#aggregation-and-the-cache) in the base document).
+- GraphQL — service-side aggregation examined and rejected as the default answer to over-/under-fetching (see [Aggregation and the cache](../modules/sdk.md#aggregation-and-the-cache) in the base document).
 - Repository pattern — identified in the founding discussions as derived from the SDK pattern: the same independent-access-layer shape applied to data access.
 - Vendor platform kits (hardware/OS vendors' toolsets) — the ecosystem's broad "SDK" usage, quoted as background in the founding discussions; a different sense from this protocol's subject.
 
@@ -60,11 +60,11 @@
   - [Agency](../agency.md) — Depends_on: the delegation position is stated through Agency's Principal, Delegation, Execution Agent, and Contracts machinery.
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — claimed, argued
-  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash via ZCode) — recorded
+  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash via [ZCode](../../CONTRIBUTORS.md#zcode)) — recorded
 
 #### What changed
 - Four working positions added (9–12): the SDK as part of the module's own protocol realization; two invocation kinds (local, network) behind one call surface; opaque process invocation; the network call as delegation under a pre-existing agreement.
-- Four topic sections recorded: [Part of the module, not beside it](./sdk.md#part-of-the-module-not-beside-it), [Local and network invocation](./sdk.md#local-and-network-invocation), [Invoking a process](./sdk.md#invoking-a-process), [The call as delegation](./sdk.md#the-call-as-delegation) — the last carrying the founding transfer example (debit 1,000 / credit 10,000) as the integrity test case.
+- Four topic sections recorded: [Part of the module, not beside it](../modules/sdk.md#part-of-the-module-not-beside-it), [Local and network invocation](../modules/sdk.md#local-and-network-invocation), [Invoking a process](../modules/sdk.md#invoking-a-process), [The call as delegation](../modules/sdk.md#the-call-as-delegation) — the last carrying the founding transfer example (debit 1,000 / credit 10,000) as the integrity test case.
 - The relationships section now covers concept documents as well as protocols; Modularity, Process, and Agency entries added. The Abstract updated to carry the four anchorings.
 
 #### Deliberation
@@ -81,12 +81,12 @@
 - Type: Expanded
 - Cited:
   - [Protocol](../protocol.md) — Depends_on: the [Protocol vs Contract](../protocol.md#protocol-vs-contract) distinction grounds the vocabulary rejection — a contract is a legal concept carrying parties and obligations; the SDK's subject is a declared interface, and calling it a contract imports obligations that do not exist here.
-  - [Networking](./networking.md) — Depends_on: the invocation reframing relies on Networking's scope position — a network exists wherever two computing entities exchange data ([Scope](./networking.md#scope)), not only between machines.
+  - [Networking](../net/networking.md) — Depends_on: the invocation reframing relies on Networking's scope position — a network exists wherever two computing entities exchange data ([Scope](../net/networking.md#scope)), not only between machines.
 - Propagates to:
   - gui.md: Pending — the architecture position's "keeps the service contract in exactly one place" phrase may adopt the declaration vocabulary when the SDK document stabilizes.
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — claimed, argued
-  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash via ZCode) — recorded
+  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash via [ZCode](../../CONTRIBUTORS.md#zcode)) — recorded
 
 #### What changed
 - The word "contract" removed from the base document's current vocabulary — replaced by the service's declaration / declared interface — throughout: the definition, the derivation paragraph, positions 7–9, the responsibility chain, the specification boundary, and the error topic.

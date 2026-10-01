@@ -1,6 +1,5 @@
 # The Error Handoff
-
-Open work for `protocols/process/error.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](../documentation-handoff.md) for what a handoff is. Questions from topics untouched in the 2026-09 session migrate here progressively, per the documentation method's progressive-migration rule.
+Open work for `protocols/process/error.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](../../documentation-handoff.md) for what a handoff is. Questions from topics untouched in the 2026-09 session migrate here progressively, per the documentation method's progressive-migration rule.
 
 ## Open Questions
 
@@ -21,7 +20,7 @@ Open work for `protocols/process/error.md`. Entries are mutable current state �
 - Next: joint session with the `ADT` capsule family's dedicated document.
 
 ### A realization's capsule composition and method-reuse model, in general (not specific to `Error`)
-- State: the Khayyam realization's composition example treats a composed capsule as containment, with each method explicitly implemented and forwarded. The full implications of this (how concrete errors are authored, what role code generation plays, and whether a future language-level reuse mechanism is useful) need their own dedicated document, since the relevant information is currently scattered across [khayyam.md](../khayyam/khayyam.md)'s capsule and abstraction-composition sections rather than settled in one place. `Error` is the concrete motivating case that surfaced it.
+- State: the Khayyam realization's composition example treats a composed capsule as containment, with each method explicitly implemented and forwarded. The full implications of this (how concrete errors are authored, what role code generation plays, and whether a future language-level reuse mechanism is useful) need their own dedicated document, since the relevant information is currently scattered across [khayyam.md](../../khayyam/khayyam.md)'s capsule and abstraction-composition sections rather than settled in one place. `Error` is the concrete motivating case that surfaced it.
 - Next: dedicated document in the Khayyam set.
 
 ### Whether the optional capability-interface set (`Internal`, `Temporary`, `Timeout`) is complete
@@ -32,12 +31,16 @@ Open work for `protocols/process/error.md`. Entries are mutable current state �
 - State: the intended home for dynamic, per-call data like a retry-after duration, returned alongside `Error` — out of error.md's scope, tracked separately.
 - Next: design once the first service needs retry-after data.
 
+### Does Memar need a Trace concern beside Error and Log?
+- State: this document draws the Error/Log line and rejects the other convention — enriching the error at each layer until the story can be reconstructed — as a category confusion, on the ground that reconstructing the operational context is the forensic record's job ([Immutability: an Error is a fixed contract member, not an accumulating envelope](../process/error.md#immutability-an-error-is-a-fixed-contract-member-not-an-accumulating-envelope)). The owner's own working position, recovered 2026-09-30 from an audit of Omid Hekayati's Go-community Telegram-group messages, agrees with the placement rather than adding a third entity: tracing is a logging concern, not error handling — the timing, dependency, and call-path data a trace carries belongs beside the log record, not inside the contract returned to a caller. No document in `docs/` carries a Trace concept, a span, or a correlation identity; [Protocol](../../protocol.md) gives "all API responses must include a correlation ID" as an example of a Policy rather than a concept, and [Chapar](../net/chapar.md#misbehavior-traceability) uses traceability for link-layer fault localization, which is a different subject.
+- Question for the owner: does a Trace concern earn a place in the Error protocol's boundary model at all, and if it does, is it a third entity beside Error and Log or a discipline inside Log with only the correlation identity named separately?
+- Next: decide together with the logging-capsule API companion document below, which is where a correlation-carrying context would have to be specified. The sources state no span model, sampling policy, or retention rule, so what is undecided is the concept's existence and its boundary, not its shape; nothing else in the corpus depends on the answer.
+
 ### Whether a structured Memar logging capsule API should be specified
 - State: a companion document specifying the concrete API of the recommended Memar logging capsule (the shape of `TransactionFailureLog`, the `Logger` interface, and standard context-attachment methods) is the natural next step once the boundary-translation discipline is finalized; also the natural home for the `Error` family's code-generator input format (how a `.kh`/DSL definition of an error's metadata maps to the generated concrete type).
 - Next: draft once the boundary-translation discipline is finalized and the broader `abstraction_p.Implements` pattern settles.
 
 ## Anticipated Work
-
 - The companion logging-capsule API document (shape of `TransactionFailureLog`, the `Logger` interface, standard context-attachment methods), once the boundary-translation discipline is finalized.
 - A dedicated document for the `Error` family's code generator input format, specifying how a `.kh`/DSL definition of an error's metadata maps to the generated concrete type, once the broader `abstraction_p.Implements` pattern is finalized.
 - Once the ADT session concludes, revisit error.md's composition if `Nil` alone proves insufficient.

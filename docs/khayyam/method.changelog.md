@@ -76,7 +76,7 @@
   - khayyam-method.handoff.md: Created - open questions and anticipated work moved there.
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) - requested
-  - [OpenCode](../../CONTRIBUTORS.md#opencode) (qwen3.8-flash) - moved
+  - [Qwen](../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via [OpenCode](../../CONTRIBUTORS.md#opencode)) - moved
 
 #### What changed
 - The body now carries only the fixed top-level sections Abstract, Introduction, Explanation, Results: the document-level `## Discussion` section was removed, and the four topic-level `#### Discussion` wrappers — under Method Structure, Influencing and Influenced Variables, No Dedicated fn/func Keyword, and Composition Depth as a Decomposition Signal — were dissolved, every block relocated or verified already carried by the body, none lost.
@@ -118,11 +118,10 @@
   - [Linter](../protocols/computer/linter.md) — Consumed contract: the check is governance; this document owns the grammar.
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided (rule home is the subject's document)
-  - [Grok](../../CONTRIBUTORS.md#grok) (Grok 4.6 via Cursor) — applied
+  - [Grok](../../CONTRIBUTORS.md#grok) (Grok 4.6 via [Cursor](../../CONTRIBUTORS.md#cursor)) — applied
 
 #### What changed
 - Method Invocation Rules now state that an argument position may be a `vr` or, for `sc`/`mt`, the type itself; a bare type where a capsule/abstraction value is expected is a linter-flaggable smell, not a syntax error. Relocated from the retired Khayyam-shelf linter document.
-
 
 ---
 
@@ -133,7 +132,7 @@
   - method.handoff.md: Open — owner position recorded; the atomic `Counter.Increment` counter-class against the split hypothesis withdrawn.
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided
-  - [Mimo](../../CONTRIBUTORS.md#mimo) (mimo-v2.6-flash via OpenCode) — applied
+  - [Mimo](../../CONTRIBUTORS.md#mimo) (mimo-v2.6-flash via [OpenCode](../../CONTRIBUTORS.md#opencode)) — applied
 
 #### What changed
 - The Open Question topic now states the owner position: a variable needing both roles in the same call is a *signal* that something is crooked somewhere — a prompt to find and fix the underlying modeling problem, deliberately emphasized where other languages do not, because the fix makes the code readable. Atomic read-modify-write is explicitly not a counter-example: that case gets a dedicated method that owns the atomic operation as its own clear abstraction; the call site never needs dual-role notation for it. No strong concrete example has yet been found where dual role survives as correct modeling rather than as the signal.

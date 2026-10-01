@@ -12,4 +12,4 @@
   - Auto (model not recorded) via [Cursor](../CONTRIBUTORS.md#cursor) — applied
 
 #### What changed
-- `README.handoff.md`: created. The note that category folders under `docs/protocols/` are provisional moved from `docs/modularity.handoff.md`; it now points at the [Modules handoff](../../modules/README.handoff.md) for pending `modules/` tree answers.
+- `README.handoff.md`: created. The note that category folders under `docs/protocols/` are provisional moved from `docs/modularity.handoff.md`.

@@ -4,13 +4,11 @@ description: replaces the default assumption that a system is an HTTP applicatio
 ---
 
 # HTTP Practice
-
 > **Purpose:** This practice operationalizes [http.md](../net/http.md): it turns that document's warning — set aside the default that you necessarily need HTTP as the application protocol — into a followable check with explicit criteria. The critique and its arguments live in the base document and are not restated here; each criterion below links to the topic that argues it.
 
 ---
 
 ## The Default to Suspend
-
 *"Every application is an HTTP API; cross-origin session handoff is a GET whose query string carries the token."*
 
 Under Memar's stance ([http.md → Memar's Stance on the HTTP Protocol Surface](../net/http.md#memars-stance-on-the-http-protocol-surface)), HTTP is a high-level interoperability library whose inclusion is a decision. This practice is that decision procedure.
@@ -18,7 +16,6 @@ Under Memar's stance ([http.md → Memar's Stance on the HTTP Protocol Surface](
 ---
 
 ## When to Run the Check
-
 Run it when any of these appears in the work:
 
 - a new service, SDK, or application protocol is being designed and "the URL" or "the endpoint" shows up as the addressing model;
@@ -30,14 +27,13 @@ Run it when any of these appears in the work:
 ---
 
 ## The Need Check
-
 Answer each question about **one concern at a time** — the answer may differ per concern within the same system. Do not answer for "the system" as a whole.
 
 1. **Which of the three jobs is this string doing?**
    Locator, request data, and credential are different jobs ([Three Jobs Collapsed into One String](../net/http.md#three-jobs-collapsed-into-one-string)). If the same string is doing more than one, split them. A shareable locator may remain HTTP; the request and the credential may not ride it.
 
 2. **Must a human or another system share this address?**
-   Yes → a locator is justified ([Content → Reference vs. Locator](../content.md#reference-as-a-relation-not-a-property)); mint one that holds destination information only, not request data or credentials ([Three Jobs Collapsed into One String](../net/http.md#three-jobs-collapsed-into-one-string)). No → do not invent a URL in order to have somewhere to put parameters.
+   Yes → a locator is justified ([Content → Reference vs. Locator](../../content.md#reference-as-a-relation-not-a-property)); mint one that holds destination information only, not request data or credentials ([Three Jobs Collapsed into One String](../net/http.md#three-jobs-collapsed-into-one-string)). No → do not invent a URL in order to have somewhere to put parameters.
 
 3. **Is the consumer a browser document, a native process, or a machine protocol?**
    Browser document or existing-Internet peer → HTTP as guest surface may win ([Guest Use: HTTP as Interoperability, Not as Model](../net/http.md#guest-use-http-as-interoperability-not-as-model)). Machine protocol between Memar peers → do not copy URL structure into the new protocol ([Four Identities Collapsed into One String](../net/http.md#four-identities-collapsed-into-one-string), [sRPC](../net/sRPC.md)).
@@ -54,13 +50,11 @@ Answer each question about **one concern at a time** — the answer may differ p
 ---
 
 ## Recording the Decision
-
-The outcome — HTTP as guest surface for named concerns, projection-only (locators and browsers), or none — must be an explicit, recorded decision, not a silent default: Memar's framework standard is that no aspect of the design space may be assumed by default; every assumption must be the outcome of an explicit decision ([Framework → Goal-Oriented Frameworks and Purpose Space](../framework.md#goal-oriented-frameworks-and-purpose-space)). Record it where the project's decisions live (a Task or Decision artifact), with the answers above as its rationale.
+The outcome — HTTP as guest surface for named concerns, projection-only (locators and browsers), or none — must be an explicit, recorded decision, not a silent default: Memar's framework standard is that no aspect of the design space may be assumed by default; every assumption must be the outcome of an explicit decision ([Framework → Goal-Oriented Frameworks and Purpose Space](../../framework.md#goal-oriented-frameworks-and-purpose-space)). Record it where the project's decisions live (a Task or Decision artifact), with the answers above as its rationale.
 
 ---
 
 ## Anti-patterns
-
 - Putting a session token, Bearer token, or one-time ticket in a query string or URI fragment and calling the remaining risk "acceptable TTL."
 - Putting a credential in a GET URI that caches will key on.
 - Designing a new RPC as path segments plus query keys.

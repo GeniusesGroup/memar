@@ -2,7 +2,7 @@
 Title: "Math"
 Status: Draft
 Start Date: 2026-09-29
-ID: 497411
+ID: "497410"
 ---
 
 # Math
@@ -33,9 +33,9 @@ Four kinds of value are not numeric widths, even where their bits look like one:
 A declaration belongs under [`modules/math/`](../../modules/math/) when its subject is a number or a truth value: a magnitude, an operation over magnitudes, a truth value, or the logic over truth values.
 
 It does not belong there when its subject is something measured or encoded in numbers:
-- a span or an instant of time — [`modules/time/`](../../modules/time/README.md);
+- a span or an instant of time — [`modules/time/`](../../../modules/time/README.md);
 - a position among elements, which is a container's concept — [`modules/computer/adt/`](../../modules/computer/adt/);
-- an address in memory — [`modules/memory/address/`](../../modules/memory/address/README.md);
+- an address in memory — [`modules/memory/address/`](../../../modules/memory/address/README.md);
 - a character or an octet of an encoding — [`modules/codec/`](../../modules/codec/).
 
 Open questions on the tower, common numeric abstractions, and owner notes on library-implemented types are tracked in the paired [handoff](../math/math.handoff.md).

@@ -1,5 +1,4 @@
 # Cognition Handoff
-
 Open work for `cognition.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](./documentation-handoff.md) for what a handoff is.
 
 ## Open Questions
@@ -52,7 +51,6 @@ Open work for `cognition.md`. Entries are mutable current state — revised as e
 - Claimants: Claude (Opus-5) claimed the sharper seam; ChatGPT (GPT-5.6-terra) claimed several norms were underived from the conversation model alone; the body now states that honestly; Omid Hekayati decided the boundary cut and the consult-other-systems norm.
 
 ## Anticipated Work
-
 - The mode list grows as Memar's work demonstrates dependence on further modes, each addition argued in this document's changelog; the operations and disciplines lists grow the same way, one layer down.
 - **TizFekri vocabulary survey:** map the TizFekri institute's practice vocabulary (پرورش مهارت‌های اجرایی، پرسشگری/استدلال‌ورزی/تصمیم‌گیری نقادانه، دلیل آوردن و نقد دلایل، «باهم اندیشیدن» و «با هم ساختن»، #اندیشیدن_آموختنی_است) against this document's modes, operations, and disciplines — including the new *consult other cognitive systems* norm against باهم اندیشیدن / با هم ساختن; the survey decides whether any mapping earns a place in the body or stays a reference.
 - **Runs-on reader test:** watch whether the Runs-on clauses and the use-threshold sentence actually reduce mode ambiguity for working sessions; revise wording where a clause still requires interpretation.

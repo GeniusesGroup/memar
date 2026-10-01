@@ -151,6 +151,6 @@ Memar's stance: **the broker's mechanism belongs in a library inside the applica
 Two further notes are attached to this position:
 
 - The sync/async client models brokers offer are both cost-irrational in the same way: either the client's logic is structured around the broker's session (sync), or the broker is trusted to have persisted before the client continues (async) — losing data precisely when the acknowledgement meant nothing. Both models are artifacts of the broker being a separate process; a library-owned broker dissolves the trade-off by letting the application's own storage be the durability point.
-- The producer-consumer independence principle ([Process → Events](../process.md#events)) is untouched by this position: making the broker mechanism a library does not couple producers to consumers — it only relocates who runs the machinery.
+- The producer-consumer independence principle ([Process → Events](../../process.md#events)) is untouched by this position: making the broker mechanism a library does not couple producers to consumers — it only relocates who runs the machinery.
 
 Open work on this protocol — the wire-level cancellation contract, and the wire-shape agreement this position's delivery machinery needs — is tracked in the paired [handoff](../net/sRPC.handoff.md).

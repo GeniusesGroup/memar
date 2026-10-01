@@ -131,7 +131,6 @@ Ask:
 - Are there relationships that are implied by the requirement but not yet represented?
 
 ## Common Modeling Anti-Patterns
-
 | Anti-pattern | Description | Detection |
 |---|---|---|
 | God concept | One node that means almost everything | Connected to nearly everything; vague, hard-to-state definition |

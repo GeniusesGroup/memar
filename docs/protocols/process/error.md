@@ -8,7 +8,7 @@ ID: 495440
 # The Error
 
 ## Abstract
-`Error` is the framework's abstraction for a distinct, identifiable fault condition returned by a fallible operation. This document defines what `Error` is composed of, how its identity and equality work, what crosses a process/network boundary and what does not, how tooling can discover a capsule's intent to implement it, and how an error's vocabulary must be translated whenever it crosses from a diagnostic layer into an actionable one. It absorbs — without summarizing — the boundary-discipline rule previously tracked as a separate document ("Error vs. Log") so that the full Error lifecycle, from composition through cross-boundary behavior, lives in one place. It assumes, and does not re-argue, the principle established in [Type](../type.md) that a static concept (no per-instance dynamic data) must be its own distinct type: every concrete error (`ErrServiceNotFound`, `ErrTransactionUnavailable`, …) is generated as its own type, never instantiated from a shared generic `Error` capsule via an `Init` method.
+`Error` is the framework's abstraction for a distinct, identifiable fault condition returned by a fallible operation. This document defines what `Error` is composed of, how its identity and equality work, what crosses a process/network boundary and what does not, how tooling can discover a capsule's intent to implement it, and how an error's vocabulary must be translated whenever it crosses from a diagnostic layer into an actionable one. It absorbs — without summarizing — the boundary-discipline rule previously tracked as a separate document ("Error vs. Log") so that the full Error lifecycle, from composition through cross-boundary behavior, lives in one place. It assumes, and does not re-argue, the principle established in [Type](../../type.md) that a static concept (no per-instance dynamic data) must be its own distinct type: every concrete error (`ErrServiceNotFound`, `ErrTransactionUnavailable`, …) is generated as its own type, never instantiated from a shared generic `Error` capsule via an `Init` method.
 
 ## Introduction
 
@@ -32,7 +32,6 @@ The content was arrived at through: sustained design discussion across multiple 
 ## Explanation
 
 ### Composition
-
 ```khayyam
 tp Error ab {
     DataType
@@ -86,7 +85,7 @@ tp Retry mt (self SomeService) (req Request) (result Result) (err Error) {
 The point is that the dispatch is by *type*, not by string comparison or an enum field, and that a concrete error remains free to declare *none* of these capabilities when none apply.
 
 ### Multi-cause returns
-A method that can fail in more than one way returns the `Error` abstraction; a method with exactly one possible failure cause returns that concrete type directly (a covariant-return consequence of the underlying [Type](../type.md) identity principle):
+A method that can fail in more than one way returns the `Error` abstraction; a method with exactly one possible failure cause returns that concrete type directly (a covariant-return consequence of the underlying [Type](../../type.md) identity principle):
 
 ```khayyam
 tp Authorize mt (self Service) (token Token) (result AuthResult) (err ErrPermissionDenied)
@@ -96,7 +95,6 @@ tp Find mt (self Service) (id ID) (result Result) (err Error)
 `Authorize` can fail in exactly one way (the token does not authorize), so its error type is the concrete `ErrPermissionDenied` — the caller can dispatch on the type directly and the realization's covariant-return support gives this no runtime cost. `Find`, by contrast, can fail for several distinct reasons (not found, storage unavailable, timeout, permission denied) and so returns the abstraction; the caller uses the realization's type inspection to recover the specific cause.
 
 ### Identity and equality
-
 Identity is `DataTypeID()` alone (via `datatype_p.Field_ID`, part of `DataType`). `Error` does not declare an `Equivalence` method. A realization may provide a convenience comparison helper, such as an implementation-package-level `IsEqual`, where an explicit comparison is useful; the helper does not add a second identity source.
 
 Whether `ExpireInFavorOf` itself is still needed at all is tracked in this document's [handoff](../process/error.handoff.md) — it may be fully redundant, since `Field_LifeCycle` already records a type's lifecycle stage (including an `EndOfLife` state), but `ExpireInFavorOf` answers a different question (*which type replaces this one*) that `LifeCycle` alone does not.
@@ -196,7 +194,6 @@ tp RecordTransaction mt (self TransactionService) (req TransactionRequest) (err 
 The caller of `RecordTransaction` — typically a GUI or an upstream business service — only ever sees `ErrTransactionTemporarilyUnavailable`. It never sees that the underlying cause was a storage connectivity issue, a serialization failure, or a timeout; those distinctions are irrelevant to what the GUI needs to do, which is usually "tell the user and perhaps allow retry." The full diagnostic detail, meanwhile, is fully preserved in the log record, correlated with `TransactionID`, ready for an operator to investigate. The boundary-translation discipline has been validated against the financial-transaction worked example in this section; it has not yet been exercised at scale across a real production codebase.
 
 ##### When translation is — and is not — required
-
 Translation at a meaningful boundary consists of the three steps above (Capture → Persist → Re-express), executed in that order, at the first layer where the incoming error's vocabulary no longer matches the outgoing layer's domain.
 
 The following clarifications apply to the rule's scope:
@@ -208,7 +205,6 @@ The following clarifications apply to the rule's scope:
 A companion document specifying the concrete API of the recommended Memar logging capsule (the shape of `TransactionFailureLog`, the `Logger` interface, and standard context-attachment methods) is the natural next step once this boundary-translation discipline itself is finalized — tracked in this document's [handoff](../process/error.handoff.md).
 
 ### Detail and Quiddity fields — two audiences, not one
-
 `Error` inherits, via `DataType`, a bundle of locale-resolved text fields (`Summary`, `Overview`, `UserActionNote`, `DevActionNote`, `TAGS`, `Domain`, from `Detail`; `Name`, `Abbreviation`, `Aliases`, from `Quiddity`). These serve two distinct audiences and must not be conflated:
 
 - **Type documentation** (`Summary`, `Overview`, `Domain`, `TAGS`): describes the concept in general, read independently of any specific occurrence — for example a manager reviewing what a service can fail with. `Domain`, specifically, is a locale-translated, display-oriented grouping label for humans; it is NOT a stable, programmatically-safe classification signal (that role belongs to the optional capability interfaces above, which are type-safe and locale-independent).
@@ -217,13 +213,11 @@ A companion document specifying the concrete API of the recommended Memar loggin
 `Aliases` and `Abbreviation` are human-lookup conveniences only, never unique and never usable for dispatch or equality — `DataTypeID` is the only identifier with that guarantee. A concrete, confirmed use case for `Aliases` on `Error` specifically: a support agent searching for an error by a user's vaguely-remembered wording over the phone.
 
 ### ADT composition — the full `ADT` family at the canonical level
-
 `Error`'s canonical composition embeds the full `ADT` family (`IsNil`/`IsNull`/`IsEmpty`), not just `Nil`. Each realization supplies that family; the host language determines how absence is represented without changing the canonical contract.
 
 What genuinely remains open, and is **not** resolved by this correction, is the deeper semantic question: what `IsNull`/`IsEmpty` actually *mean* for a value whose entire purpose is identity, not data. That question belongs to the `ADT` capsule family's own dedicated document, tracked separately (see this document's [handoff](../process/error.handoff.md)), and this document does not attempt to answer it — only to state that the canonical `Error` contract requires all three methods.
 
 ### `ImplementsError` — a tooling-facing declaration, not a safety mechanism
-
 `Error` embeds `ImplementsError`, requiring a single, plain implementation-intent declaration (for example, a method named `ImplError()` in a realization). This is `Error`'s own domain-specific realization of the general, tooling-facing `abstraction_p.Implements` pattern: it lets a code generator discover a capsule's intent to become an `Error` before the capsule structurally qualifies (i.e. before every other method is written), which the full method-set alone cannot do for an incomplete capsule. The domain-specific name (rather than the fully generic `Implements()`) exists so a capsule declaring intent for more than one abstraction at once can indicate *which* declaration is for which abstraction.
 
 ```khayyam
@@ -245,7 +239,7 @@ tp ImplError mt (self ErrServiceNotFound) () () {
 This method provides **no safety or "sealed interface" guarantee**. `abstraction_p.Implements` and its domain-specific realizations exist purely to help tooling, not to guard against misuse.
 
 ### Enforcement of the "each Error is its own type" rule
-Per the [Type](../type.md) identity principle, every concrete error is its own distinct type, generated (not hand-authored, in the common case) by a code generator that reads `ImplementsError`-declared, incomplete capsules and scaffolds the remaining `Error` methods. The suggested (non-binding) naming convention for this family is the `Err` prefix with the remainder in PascalCase (`ErrServiceNotFound`, `ErrTransactionUnavailable`); this document is that convention's home. Its status — a topic's explicitly non-binding convention, enforced if at all by per-organization linter configuration — is the kind defined in [documentation-explanation.md → Conventions](../documentation-explanation.md#conventions).
+Per the [Type](../../type.md) identity principle, every concrete error is its own distinct type, generated (not hand-authored, in the common case) by a code generator that reads `ImplementsError`-declared, incomplete capsules and scaffolds the remaining `Error` methods. The suggested (non-binding) naming convention for this family is the `Err` prefix with the remainder in PascalCase (`ErrServiceNotFound`, `ErrTransactionUnavailable`); this document is that convention's home. Its status — a topic's explicitly non-binding convention, enforced if at all by per-organization linter configuration — is the kind defined in [documentation-explanation.md → Conventions](../../documentation-explanation.md#conventions).
 
 This rule is the load-bearing one that everything else in this document depends on. Without it:
 
@@ -254,4 +248,4 @@ This rule is the load-bearing one that everything else in this document depends 
 - The optional capability-interface pattern would collapse too, because there would be no distinct concrete types to compose capabilities onto.
 - Identity-by-`DataTypeID` would degenerate to "all errors share one `DataTypeID`", making the equality discussion meaningless.
 
-A reader who finds the "every error is its own type" claim surprising, or who wants the full argument for it, should read [Type](../type.md) directly; this document does not re-argue it.
+A reader who finds the "every error is its own type" claim surprising, or who wants the full argument for it, should read [Type](../../type.md) directly; this document does not re-argue it.

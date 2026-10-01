@@ -203,7 +203,7 @@ Considered creating a dedicated `memar.md` to hold Memar's project-level identit
   - framework.handoff.md: Created - open questions and anticipated work moved there.
 - Contributors:
   - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - requested
-  - [OpenCode](../CONTRIBUTORS.md#opencode) (qwen3.8-flash) - moved
+  - [Qwen](../CONTRIBUTORS.md#qwen) (qwen3.8-flash via [OpenCode](../CONTRIBUTORS.md#opencode)) - moved
 
 #### What changed
 - The body's fixed top-level sections are now Abstract, Introduction, Explanation, and Results only; the top-level `## Discussion` and the nested Discussion wrappers under the Framework-as-Description, Framework-and-Sub-Framework, Memar's-Framework, and Memar's-Purpose-Space topics are retired.

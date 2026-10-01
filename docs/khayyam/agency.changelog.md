@@ -141,7 +141,7 @@
   - khayyam-agency.handoff.md: Created - open questions and anticipated work moved there.
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) - requested
-  - [OpenCode](../../CONTRIBUTORS.md#opencode) (qwen3.8-flash) - moved
+  - [Qwen](../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via [OpenCode](../../CONTRIBUTORS.md#opencode)) - moved
 
 #### What changed
 - The body's fixed top-level sections are now Abstract, Introduction, Explanation, Results only: the document-level `## Discussion` and the nested `#### Discussion` wrapper under the *Agency Beyond Concurrency* topic are retired.
@@ -167,7 +167,7 @@
 - Type: Fixed
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided
-  - [Mimo](../../CONTRIBUTORS.md#mimo) (mimo-v2.6-flash via OpenCode) — applied
+  - [Mimo](../../CONTRIBUTORS.md#mimo) (mimo-v2.6-flash via [OpenCode](../../CONTRIBUTORS.md#opencode)) — applied
 
 #### What changed
 - Definition-Site Over Call-Site now states that the async tag does not change what a caller observes: a call remains a statement whose influenced variables are written when the statement completes (definite assignment and uniform call syntax survive); what changes is how the owning library and its scheduler realize the method — behavior defined by that library, changeable by swapping the library, never by changing Khayyam's syntax.
@@ -189,8 +189,8 @@
   - abstraction.md: Done — the inbound anchor now names abstraction satisfaction.
   - agency.handoff.md: Done — both inbound anchors retargeted (handoff: no entry of its own).
 - Contributors:
-  - [Grok](../../CONTRIBUTORS.md#grok) (Grok 4.7 via Cursor) — reviewed, applied
-  - [Gemini](../../CONTRIBUTORS.md#gemini) (Gemini 3.8 flash via Cursor) — reviewed
+  - [Grok](../../CONTRIBUTORS.md#grok) (Grok 4.7 via [Cursor](../../CONTRIBUTORS.md#cursor)) — reviewed, applied
+  - [Gemini](../../CONTRIBUTORS.md#gemini) (Gemini 3.8 flash via [Cursor](../../CONTRIBUTORS.md#cursor)) — reviewed
 
 #### What changed
 - The Agency Beyond Concurrency heading and its closing question now say satisfying an abstraction, not satisfying a contract. The intentional-undertaking point is unchanged: structural match is still distinguished from a declared commitment, and the document still takes no position on abstraction.md's three options.

@@ -202,7 +202,7 @@
   - system.handoff.md: Created - open questions and anticipated work moved there.
 - Contributors:
   - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - requested
-  - [OpenCode](../CONTRIBUTORS.md#opencode) (qwen3.8-flash) - moved
+  - [Qwen](../CONTRIBUTORS.md#qwen) (qwen3.8-flash via [OpenCode](../CONTRIBUTORS.md#opencode)) - moved
 
 #### What changed
 - The body's fixed top-level sections are now Abstract, Introduction, Explanation, Results only; every Discussion wrapper was dissolved — the document-level `## Discussion` and nine topic-level wrappers (System, Structure, Process, Architecture, Technology, Knowledge and Science, Abstraction, Implementation, Relationships Between Concepts) — with each block's content either folded inline at the claim it supports or relocated below and to the paired handoff, nothing dropped.
@@ -265,7 +265,7 @@
   - software.md: Done — "software ecosystem" read through the definition; the founding interim ban superseded (software.changelog.md).
   - software.handoff.md: Done — the ecosystem terminology-decision item removed as graduated.
   - terminology.md: Done — one informational pointer at the governance section's Memar-ecosystem use.
-  - framework.md, protocols/networking.md, khayyam-runtime.md: Done — claim-bearing Memar-ecosystem uses anchored.
+  - framework.md, protocols/net/networking.md, khayyam-runtime.md: Done — claim-bearing Memar-ecosystem uses anchored.
   - modularity.md: Done — the one semantic divergence the audit found reworded.
 - Contributors:
   - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — argued, decided

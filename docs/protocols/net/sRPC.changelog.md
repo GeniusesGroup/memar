@@ -30,12 +30,12 @@
   - sRPC.handoff.md: Done — the address/identity open question graduated.
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — requested, decided
-  - [Grok](../../CONTRIBUTORS.md#grok) (Grok 4.6 via Cursor) — applied
+  - [Grok](../../CONTRIBUTORS.md#grok) (Grok 4.6 via [Cursor](../../CONTRIBUTORS.md#cursor)) — applied
 
 #### What changed
 - Added *Independent identities*: routing, service, operation, and request as distinct representations — the missing design rationale, stated as this protocol's positive contract rather than as a critique of HTTP.
 - The http-uri multiplexer form is framed as a guest adapter, not as addressing.
-- A consumed-contract link points at [http](./http.md) for Memar's position on depending on HTTP.
+- A consumed-contract link points at [http](../net/http.md) for Memar's position on depending on HTTP.
 
 #### Considered and not done
 - **Write the URL critique into this protocol document's rationale layer** (rejected): that was the previous handoff's next step; it would keep sRPC narrating HTTP. The critique belongs in http.md. (Omid Hekayati)
@@ -54,7 +54,7 @@
   - sRPC.handoff.md: Done — Close-Stream `Reason` / Error ID recorded as an open question; the cancellation contract and library-broker wire-shape questions kept; the Process cancellation link path corrected from `../../process.md` to `../process.md`.
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — requested, decided
-  - [Grok](../../CONTRIBUTORS.md#grok) (Grok 4.6 via Cursor) — applied
+  - [Grok](../../CONTRIBUTORS.md#grok) (Grok 4.6 via [Cursor](../../CONTRIBUTORS.md#cursor)) — applied
 
 #### What changed
 - `sRPC.md` was brought in line with the current Explanation-facet method: YAML front matter (Title, Status: Draft, Start Date, ID), then `# Title` / `Abstract` / `Introduction` (Motivation, Methodology) / `Explanation` topics only. Protocol mechanics were preserved: frames, fields, even/odd identifier split, acknowledgement scheme, message-broker position, independent-identities rationale, and the http-uri multiplexer as a guest adapter.

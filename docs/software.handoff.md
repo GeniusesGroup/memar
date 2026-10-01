@@ -1,5 +1,4 @@
 # Software Handoff
-
 Open work for `software.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](./documentation-handoff.md) for what a handoff is.
 
 ## Open Questions
@@ -18,5 +17,4 @@ Whether a software system includes its data, its deployment environment, and its
 The IEEE numbers cited (730, 828, 829, 830, 1012, 1016, 1028, 1058, 1063) reflect the classic family; several have been superseded by joint ISO/IEC/IEEE revisions (e.g. 830 by 29148, 829 by 29119-3, 1063 by 26514) — verify each at citation time in the dedicated session before relying on any successor mapping.
 
 ## Anticipated Work
-
-- Dedicated session to refine the definition and produce the lifecycle treatment — the direction the [Immutable Infrastructure handoff](docs/protocols/runtime/immutable_infrastructure.handoff.md) points to as the home for deployment/change governance's lifecycle working-out.
+- Dedicated session to refine the definition and produce the lifecycle treatment — the direction the [Immutable Infrastructure handoff](../docs/protocols/runtime/immutable_infrastructure.handoff.md) points to as the home for deployment/change governance's lifecycle working-out.

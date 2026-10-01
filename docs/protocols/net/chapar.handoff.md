@@ -1,6 +1,5 @@
 # Chapar Handoff
-
-Open work for `protocols/net/chapar.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](../documentation-handoff.md) for what a handoff is.
+Open work for `protocols/net/chapar.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](../../documentation-handoff.md) for what a handoff is.
 
 ## Open Questions
 
@@ -14,11 +13,10 @@ Open work for `protocols/net/chapar.md`. Entries are mutable current state — r
 - Next: add a specific vendor-product source, or keep treating the figure as an order of magnitude. (Migrated from the State-model topic's retired `Unresolved questions` in chapar.md.)
 
 ### Should this document be split again if its length becomes a real reading burden?
-- State: carried from the document-level retired `Unresolved questions` in chapar.md, mirroring the open question in [documentation-explanation.handoff.md](../documentation-explanation.handoff.md) about its own consolidated structure (where that question now lives).
+- State: carried from the document-level retired `Unresolved questions` in chapar.md, mirroring the open question in [documentation-explanation.handoff.md](../../documentation-explanation.handoff.md) about its own consolidated structure (where that question now lives).
 - Next: revisit if length measurably hurts reading or session loading.
 
 ## Anticipated Work
-
 - A future ChaparKhane-focused document could specify its path-directory service (pull, push, or both) in detail — that design is independent of anything decided in chapar.md. (Migrated from the Discovery topic's retired `Future possibilities` in chapar.md.)
 - A future Discovery-service document could specify a signed-response scheme for Discovery (see Open Questions above), including how the initial trust anchor is provisioned for low-cost devices at scale. This connects to a separate, larger planned document track (in the Organization private repository) covering manufacturer-issued default device certificates and organizational ownership transfer — that track is where the trust-anchor provisioning question is expected to be resolved, not here. (Migrated from the Discovery topic's retired `Future possibilities` in chapar.md.)
 - If a specific deployment (e.g., a large greenhouse or industrial site) hits a hard requirement that a Non-Goal in chapar.md currently excludes, that should become its own document proposing a targeted extension, rather than reopening chapar.md; individual Non-Goals may need their own follow-up document if a future requirement forces reconsideration (e.g., a real deployment needing layer-2 fault tolerance badly enough to revisit the multi-path decision). No follow-up specific to the Goals and Non-Goals topic is open at the time of writing. (Migrated from the Goals and Non-Goals topic's retired `Unresolved questions` and `Future possibilities` in chapar.md.)

@@ -46,7 +46,6 @@ The problem is structural, not incidental. A `List<Connection>` cannot carry any
 Polymorphism, at its core, means "one operation, many types" — the ability for a single piece of code to work with values of different types. The key insight, often missed, is that this is not a single mechanism. There are several fundamentally different ways to achieve it, each with distinct tradeoffs. Khayyam supports the key polymorphic forms — parametric, inclusion/subtype, and ad-hoc — but achieves them through its own unified mechanism (abstraction conformance) rather than through the separate syntaxes that mainstream languages use for each form. What Khayyam rejects is not the polymorphic *capability*, but specific *syntaxes* that conflict with its design principles.
 
 ### The Two Polymorphism Mechanisms You Will Use in Khayyam
-
 1. **Writing code that accepts any abstraction-conforming capsule (Inclusion/Subtype Polymorphism)**
 This is the primary form of polymorphism in Khayyam. You write a method that accepts an abstraction type as its parameter. Any capsule that satisfies that abstraction can be passed in:
 ```khayyam
@@ -136,7 +135,6 @@ Polymorphism
 Additionally, the academic literature recognizes **row polymorphism** (structural polymorphism on records/structs, found in ML-like languages) as a distinct form that enables extensible record types.
 
 ### Khayyam's Position in This Taxonomy
-
 **Supported:**
 
 | Form | Mechanism in Khayyam | Notes |
@@ -157,7 +155,6 @@ Additionally, the academic literature recognizes **row polymorphism** (structura
 ### How Inclusion Polymorphism Works in Detail
 
 #### Basic Subtyping Through Conformance
-
 When a capsule satisfies an abstraction, it becomes a subtype of that abstraction in the type system. This is the Liskov Substitution Principle in action: any code written to work with the abstraction must also work correctly with any conforming capsule.
 
 ```khayyam
@@ -177,7 +174,6 @@ tp CopyAll mt (self Service) (src Reader, dst Writer) (err Error) {
 ```
 
 #### Subtyping Through Abstraction Extension
-
 When abstraction `B` includes abstraction `A`, `B` is a subtype of `A`. Any capsule conforming to `B` is automatically a subtype of `A` as well:
 
 ```khayyam
@@ -195,7 +191,6 @@ tp Version mt (self VersionedSerializer) () (v VersionInfo)
 A capsule conforming to `VersionedSerializer` can be passed to any function expecting a `Serializer`. The subtyping relationship is established at the abstraction level through declarative inclusion — no behavior is transferred, only requirements.
 
 #### Covariant Return Types
-
 If an abstraction method returns abstraction `A`, a conforming capsule may return capsule `B` (as long as `B` satisfies `A`). This is a natural consequence of the structural satisfaction model:
 
 ```khayyam
@@ -207,7 +202,6 @@ tp Create mt (self CarFactory) () (product Car) { /* Car satisfies Product */ }
 ```
 
 #### The Compiler's Role: Dispatch Strategy
-
 The specific machine-code mechanism used for each polymorphic call site is determined by the compiler's Smart Compilation strategy. The compiler analyzes the **reachability graph** of each abstraction usage site to determine the implementation strategy:
 
 - **Monomorphization (compile-time):** If the compiler can trace every possible concrete capsule that could satisfy the abstraction at a given usage site (a **closed set**), it inlines the specific method. Zero runtime cost. The polymorphism exists only at the type-checking level; at the machine-code level, the call is a direct jump to the concrete method.

@@ -6,7 +6,7 @@ Open questions and anticipated work for the Lexer protocol concept document (`le
 ## Status
 Active
 
-Open work for `lexer.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](../documentation-handoff.md) for what a handoff is.
+Open work for `lexer.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](../../documentation-handoff.md) for what a handoff is.
 
 ## Open Questions
 
@@ -64,7 +64,7 @@ Open work for `lexer.md`. Entries are mutable current state — revised as each 
 
 ### How are lexical results modeled in the graph?
 - State: moved 2026-09-11 from the retired Unresolved questions (item 14). The `tokens_by`/`tokenize` candidate, the tokenizer node's identity (Module vs dedicated tokenization concept), inverse-relationship questions, and whether an individual unit ever becomes a node. The per-type registry evidence (spaCy, Clang, Rust — see [Lexical Unit and naming](../computer/lexer.md#lexical-unit-and-naming)) independently supports the shared-dictionary instinct.
-- Next: settle with the general modeling discipline (see [Modeling](../modeling.md), in particular the attribute-or-edge test).
+- Next: settle with the general modeling discipline (see [Modeling](../../modeling.md), in particular the attribute-or-edge test).
 
 ### What is the trust posture for client-side lexing of untrusted input?
 - State: moved 2026-09-11 from the retired Unresolved questions (item 15). The security posture for lexing untrusted input in a client before submission — including input-expansion attacks (XML entity expansion, decompression bombs) that a lexing layer over untrusted bytes must not amplify.

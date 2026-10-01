@@ -34,7 +34,6 @@ What a filename encodes — which separator marks the category, which the concep
 A short, unique, human-readable name for the document, in double quotes. It is the source of the filename slug. A title change that alters the concept is a new document with a new `ID`; a title change that merely rephrases the same concept is a minor revision of the same document.
 
 ### Status
-
 | Status | Meaning | Safe to depend on? |
 | --- | --- | --- |
 | **Draft** | Direction is not yet settled; real, unresolved questions remain, recorded in the document's paired handoff. | No |
@@ -51,7 +50,6 @@ Additional rules:
 - Moving a Final document's substance requires a new, superseding document, not an in-place edit.
 - A reconsidered Rejected idea becomes a new document with its own number, referencing the rejected one via a `Superseded` entry in the paired Changelog's `Cited` field (see [documentation-changelog.md → Cited](./documentation-changelog.md#cited)).
 - `Status` reflects canonical-documentation status only, never informal or practical usage. A document can be in active, wide practical use while still `Proposed`; that does not change its `Status`. (This document is itself an example: in active use as the working specification while `Proposed`.)
-
 
 ### Start Date
 The calendar date (`YYYY-MM-DD`, UTC) the document file was first drafted. Set once, never changed. Should agree with the date implied by `ID`, since both are meant to be captured at the same moment.
@@ -76,7 +74,6 @@ This rule applies only pre-Final; once Final, merging requires a new, supersedin
 **Storage representation.** Out of scope here — an implementation detail.
 
 **Lookup.** Full-text search for `ID:`, or the README index (Number, Title, Status).
-
 
 ### Body sections
 The body follows the front-matter, as a fixed set of top-level (`##`) sections in order: `Abstract`, `Introduction`, `Explanation`. No document may introduce a new top-level section beside these without a change to this specification itself. Everything else a document needs is an optional building block from [Optional Sections](#optional-sections) - placed by the author wherever fits, at whatever heading depth the location calls for. The fixed three are the skeleton; the catalog is the flesh.

@@ -330,9 +330,9 @@ Dissolved every `#### Discussion` wrapper (the definition topic, Modes of Thinki
   - `.agents/.codex-plugin/plugin.json`: Done — "read Thinking" retargeted to "read Cognition".
 - Contributors:
   - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — claimed (consult-other-cognitive-systems; skill needs no new rules), decided (apply the multi-model set plus the consultation norm; keep norms in the base)
-  - [Claude](../CONTRIBUTORS.md#claude) (Opus-5 via Cursor) — claimed, argued (independent critique package)
-  - [ChatGPT](../CONTRIBUTORS.md#chatgpt) (GPT-5.6-terra via Cursor) — claimed, argued (independent critique package)
-  - [Cursor](../CONTRIBUTORS.md#cursor) (Composer) — rewrote
+  - [Claude](../CONTRIBUTORS.md#claude) (Opus-5 via [Cursor](../CONTRIBUTORS.md#cursor)) — claimed, argued (independent critique package)
+  - [ChatGPT](../CONTRIBUTORS.md#chatgpt) (GPT-5.6-terra via [Cursor](../CONTRIBUTORS.md#cursor)) — claimed, argued (independent critique package)
+  - [Composer](../CONTRIBUTORS.md#composer) (Composer via [Cursor](../CONTRIBUTORS.md#cursor)) — rewrote
 
 #### What changed
 - **Abstract and Methodology wording:** the over-strong "derivable from a model of cognition itself" claim was narrowed to grounding chiefly in the conversation model, with honesty that not every norm is a pure derivation from that model alone (ChatGPT claimed the overreach; Claude claimed the live seam is conversation-plus-norms vs modes/operations reference layer).
@@ -383,7 +383,7 @@ Dissolved every `#### Discussion` wrapper (the definition topic, Modes of Thinki
   - `documentation.md`: Rejected — Documentation Language already separates the durable English record from conversation; this change links to that rule rather than restating it.
 - Contributors:
   - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — claimed, decided
-  - [Composer](../CONTRIBUTORS.md#composer) (via Cursor) — argued, rewrote
+  - [Composer](../CONTRIBUTORS.md#composer) (via [Cursor](../CONTRIBUTORS.md#cursor)) — argued, rewrote
 
 #### What changed
 - **Abstract claim (1)** now states that the medium's language is not identical with the representation in which a cognitive system does its best thinking.

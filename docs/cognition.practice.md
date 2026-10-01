@@ -4,13 +4,11 @@ description: defines how the thinking modes and their elementary operations are 
 ---
 
 # Cognition Practice
-
 > **Purpose:** This practice defines how the thinking modes of [Cognition](./cognition.md) are exercised in Memar's actual work, starting with the one whose procedure is most developed: critical evaluation. The concept, the modes, the elementary operations and awareness disciplines beneath them, and the discourse norms live in [cognition.md](./cognition.md) — that document is assumed reading, and its rules are not restated here.
 
 ---
 
 ## Where Critique Sits
-
 Thinking is a family of modes, and critical thinking is one of them — not all of it ([cognition.md → Modes of Thinking](./cognition.md#modes-of-thinking)). Two consequences govern this practice's scope:
 
 1. **Critique is a component of writing, not a separate phase for evaluating finished things.** Documentation work exercises all the modes together: producing a document from scratch is creative, abstract, and structural work — and critical examination of one's own claims is one component of that writing, applied while drafting, not a ritual bolted on afterward. The same holds for modeling ([modeling.practice.md](./modeling.practice.md) owns that exercise). This practice covers critique when it is the *dominant* activity — an explicit evaluation of a proposal, model, or design.
@@ -19,7 +17,6 @@ Thinking is a family of modes, and critical thinking is one of them — not all 
 ---
 
 ## Norm Application Points
-
 The discourse norms in [cognition.md → Discourse Norms](./cognition.md#discourse-norms-derived-from-this-model) bind at intake, not only mid-reasoning. Checkpoints:
 
 - **Before assuming intent or scope:** ask ([Ask rather than assume](./cognition.md#discourse-norms-derived-from-this-model)).
@@ -36,7 +33,6 @@ Procedure detail for confirm-before-large-scope and for conceptual-root question
 ---
 
 ## Working With the Operations Layer
-
 A mode's Runs-on clause ([cognition.md → Elementary Operations and Awareness Disciplines](./cognition.md#elementary-operations-and-awareness-disciplines)) tells you which operations the mode exercises — use it when the mode's *name* is not enough to decide what to actually do. Per the base document's use threshold: begin from the material's lack, not from mode-label matching.
 
 - **When you cannot tell which mode a task needs, work at the operation level.** Ask what the material lacks — a whole un-examined (decompose), alternatives un-weighed (compare and apply criteria), a field never closed (commit), a model no one has tested against instances (instantiate) — and run the operation the lack names. The mode follows.
@@ -46,7 +42,6 @@ A mode's Runs-on clause ([cognition.md → Elementary Operations and Awareness D
 ---
 
 ## Named-Error Checks
-
 Knowing that an argument has slipped is part of doing the work, not an optional refinement ([cognition.md → Named Errors](./cognition.md#named-errors-biases-and-fallacies)). The body document owns the two error classes; this practice carries the checks an exercise runs against them:
 
 - **Sender-side, before issuing material:** re-read the claim for the bias signatures the operations layer names — discrepancy noticing that only confirms (confirmation bias), ordering pinned to the first input (anchoring), comparison over a surviving-only sample (survivorship bias), criterion application that substitutes the counterpart's framing for independent evaluation (source-deference / agreement pressure). One named check per issued claim is the minimum; the discipline that carries it is awareness of assumptions.
@@ -57,7 +52,6 @@ Knowing that an argument has slipped is part of doing the work, not an optional 
 ---
 
 ## When to Critique
-
 Apply this practice when:
 
 - a new proposal, model, or design is presented
@@ -69,7 +63,6 @@ Apply this practice when:
 ---
 
 ## The Conceptual Stack
-
 Every proposal has layers, and the value of a critique depends on how deep it operates:
 
 ```
@@ -85,7 +78,6 @@ Most surface-level critiques operate only on Layer 1. Valuable critique operates
 ---
 
 ## Procedure
-
 1. **Understand before critiquing.** Restate the proposal in your own words; identify the problem it attempts to solve and the definitions it relies on; ask clarifying questions where ambiguous. **Do not critique what you have not understood** — and per the discourse norms, prefer a question to an assumption at exactly this step. When the subject arrived as a criticism of something else, keep three statuses distinct before you act: what was *reported*, what root you *inferred* (your extension until confirmed), and what generalization the giver *confirmed*.
 2. **Identify explicit and implicit assumptions.** For each: mark whether it is stated or unstated, assess its stability from inspectable material (strong evidence / weak / unexamined), and evaluate what follows if it is false. Common hidden assumptions worth checking: that industry terminology is correct; that the current implementation reflects the true domain structure; that the proposal's prerequisites exist; that existing boundaries are natural rather than accidental.
 3. **Check internal consistency.** Definitions used consistently throughout; no term carrying two meanings in different contexts; no circular dependencies among proposed relationships; no contradiction of the model's own stated principles.
@@ -95,7 +87,6 @@ Most surface-level critiques operate only on Layer 1. Valuable critique operates
 ---
 
 ## Quality Standards
-
 **A critique must include at least one of:**
 
 - a stronger explanation for the same observations
@@ -125,7 +116,6 @@ A superficial objection to a deeply-reasoned model is not merely unhelpful — i
 ---
 
 ## Output Format
-
 When critique is the session's deliverable, structure it as:
 
 ```markdown
@@ -152,7 +142,6 @@ verify you critiqued the actual proposal, not a misreading of it]
 ---
 
 ## Anti-Patterns
-
 | Anti-Pattern | Description | Instead |
 |-------------|-------------|---------|
 | Terminology policing | Objecting to word choice while agreeing on meaning | Focus on definitions, not labels |
@@ -164,7 +153,6 @@ verify you critiqued the actual proposal, not a misreading of it]
 ---
 
 ## Relation to Other Artifacts
-
 | Artifact | Connection |
 |----------|-----------|
 | [cognition.md](./cognition.md) | Governing concept — the cognition frame, the thinking modes, the elementary operations and awareness disciplines, the named-error classes, and the discourse norms this practice operationalizes |

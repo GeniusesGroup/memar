@@ -1,5 +1,4 @@
 # System Handoff
-
 Open work for `system.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](./documentation-handoff.md) for what a handoff is.
 
 ## Open Questions
@@ -48,7 +47,6 @@ Open work for `system.md`. Entries are mutable current state — revised as each
 3. Should the conceptual graph's edge types be formalized into a notation that other documents can reference?
 
 ## Anticipated Work
-
 - Add more words like "pattern", "paradigm", "thinking tools", ...
 - A dedicated document for **Constraint** as a first-class concept, since both Framework and Architecture depend on it and the distinction between domain-level and system-level constraints may warrant deeper formal treatment.
 - A dedicated concept (name to be determined) for "the arrangement of a system's parts" — the composition/assembly concept that [Structure](./system.md#structure) explicitly excludes but that Memar has not yet formally named (see [Structure's open questions](#structure)).

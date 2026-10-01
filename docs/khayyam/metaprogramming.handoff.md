@@ -1,5 +1,4 @@
 # Metaprogramming in Khayyam Handoff
-
 Open work for `metaprogramming.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](../documentation-handoff.md) for what a handoff is.
 
 ## Open Questions
@@ -17,5 +16,4 @@ Open work for `metaprogramming.md`. Entries are mutable current state — revise
 - State: untested by the drafting. Whether runtime-modifying reflection (not just inspection) is in scope for Khayyam at all, or whether the document's position should be inspection-only by design — the drafting leaned on inspection-oriented examples throughout and has not tested the modification case.
 
 ## Anticipated Work
-
 - A standard `reflect_p` package defining the canonical reflection-facing abstraction(s), analogous to `abstraction_p.Implements`, once real tooling needs (serialization, ORMs, debuggers) clarify what shape it should take. (From the Reflective Programming topic's retired `Future possibilities`; the retired document-level `Future possibilities` entry pointed to this same item.)

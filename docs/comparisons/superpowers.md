@@ -1,5 +1,4 @@
 # Comparison: Memar and Superpowers
-
 After examination by two agents — Composer (via Cursor) and GLM 5.3 Flash — against the Superpowers and Memar's live `docs/` and `.agents/skills/memar`, the results below are the joint finding. Owner positions from that thread are included where they decide the filter.
 
 **Compared project:** [obra/superpowers](https://github.com/obra/superpowers)  
@@ -49,14 +48,14 @@ Real strengths relative to Memar's surface — observations, not a shopping list
 8. Host-repo plan/spec path convention with checkbox-sized steps.
 9. Persuasion engineering against rationalization (Red Flags, Iron Laws, hard gates).
 
-Memar already overlaps some *concerns* (ask / confirm, handoff, TDD as process discipline, thrifty sub-agents) without shipping them as that skill library. Claiming Memar has "almost no codified operations" overstates the gap: Cognition, Handoff, modeling practice, TDD practice, and documentation practices are operational — they are not a Superpowers-shaped pack.
+Memar already overlaps some *concerns* (ask / confirm, handoff, the Test discipline as process discipline, thrifty sub-agents) without shipping them as that skill library. Claiming Memar has "almost no codified operations" overstates the gap: Cognition, Handoff, modeling practice, TDD practice, and documentation practices are operational — they are not a Superpowers-shaped pack.
 
 ## 3. Adoption filter
 
 ### Absorb by strengthening existing homes
 - Design sign-off before large enactment → Cognition (already). Clearer routing into modeling/handoff if needed; no mandatory brainstorm skill.
 - Inspectable plans for large changes → ordinary documentation results by facet; not a forced `docs/superpowers/` tree; not "junior with no judgment" theater.
-- Evidence before claiming done → Process / TDD (expectations before enactment; machine-checkable checks where possible). Not Iron-Law deletion rituals aimed at today's agent weakness.
+- Evidence before claiming done → Process / Test (expectations before enactment; machine-checkable checks where possible). Not Iron-Law deletion rituals aimed at today's agent weakness.
 - Explicit review → Cognition Practice and modeling review; not a separate review-skill pack.
 - Spike / bounded / architectural scale → implied by confirm-before-large-scope; name later if useful; never block clarifying questions.
 
@@ -71,7 +70,7 @@ Memar already overlaps some *concerns* (ask / confirm, handoff, TDD as process d
 - Command/recipe catalogs in the Memar skill or growing paste files — scripts document themselves; host helpers are small executables, not prose dumps; no membership indexes of script or comparison folders ([Content Rule](../documentation.md#content-rule-no-fabricated-or-redundant-provenance)).
 
 ### Already owned
-Documentation-as-truth with discovery scripts; Handoff (agent-general); mid-session tangents; TDD generalized via Process expectations and checks; sub-agent session economy; critique norms.
+Documentation-as-truth with discovery scripts; Handoff (agent-general); mid-session tangents; the discipline generalized via Process expectations and checks; sub-agent session economy; critique norms.
 
 ## 4. Problems and limits in Superpowers
 Stated without calling the project worthless — failure modes when it is treated as a development framework:
@@ -92,7 +91,7 @@ Neighboring projects built around **tool-era problems** (early chatbots, then ha
 3. **One model, many projections** — adapters may multiply; the model must not fragment into skill packs.
 4. **Text and code each where they belong** — concepts in docs; generative work in callable services.
 5. **Write for the subject's structure** — durable concepts, not patches for last year's model limits.
-6. **TDD as Process** — expectations of input/output written before enactment; not "unit-test Iron Law." Umbrella words like user-story read as system expectations, not as a separate mythology.
+6. **Test as Process discipline** — expectations of input/output written before enactment; not "unit-test Iron Law." Umbrella words like user-story read as system expectations, not as a separate mythology.
 
 Using Superpowers-like session discipline *while* developing inside Memar can be coherent. Replacing Memar with Superpowers is not — unless the only goal is agent etiquette for small software changes.
 
@@ -100,7 +99,7 @@ Using Superpowers-like session discipline *while* developing inside Memar can be
 Filtered agreement across both agents and owner positions:
 
 **Do / keep doing**
-- Hold TDD on Process (expectations and checks) + `tdd` protocol/practice — the Memar answer to "start from the test," without Superpowers packaging.
+- Hold the discipline on Process (expectations and checks) + `test` protocol/practice — the Memar answer to "start from the test," without Superpowers packaging.
 - Keep written-surface and documentation practice thin; keep discovery scripts as the navigation mechanism (`--help`, no recipe catalog in the skill).
 - Keep this `comparisons/` folder as the public fair answer to "why not X?"
 

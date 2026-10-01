@@ -30,7 +30,7 @@
 - Time: 2026-09-03T00:00:00Z
 - Type: refactor
 - Propagates to:
-  - khayyam-metaprogramming.md: Done — both `abstraction-implements.md` links repointed to `./protocols/abstraction-implements.md`.
+  - khayyam-metaprogramming.md: Done — both `abstraction-implements.md` links repointed to `./protocols/computer/abstraction-implements.md`.
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — directed, decided
   - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — moved
@@ -76,8 +76,8 @@
 
 #### What changed
 - The document-wide `## Discussion` section was retired; the body now carries only the three-section skeleton (Abstract / Introduction / Explanation), with nothing new folded inline — every Discussion block routed to this entry or to the handoff.
-- The Discussion's Drawbacks record and Prior-art survey are preserved in this entry below; its Rationale-and-alternatives items are recorded under Considered and not done. The one hyperlink in the migrated content (the Prior-art paragraph's [Control Flow](./control-flow.md) reference) needed no retargeting — this file shares the base document's directory.
-- The Unresolved questions' open item (no formal criterion for "complex enough to warrant this" beyond abstraction-author judgment) moved to the newly created paired handoff ([abstraction-implements.handoff.md](./abstraction-implements.handoff.md)) as an Open Question, and the Future possibilities item (extension with parameters or a return value) became that handoff's Anticipated Work.
+- The Discussion's Drawbacks record and Prior-art survey are preserved in this entry below; its Rationale-and-alternatives items are recorded under Considered and not done. The one hyperlink in the migrated content (the Prior-art paragraph's [Control Flow](../process/control-flow.md) reference) needed no retargeting — this file shares the base document's directory.
+- The Unresolved questions' open item (no formal criterion for "complex enough to warrant this" beyond abstraction-author judgment) moved to the newly created paired handoff ([abstraction-implements.handoff.md](../computer/abstraction-implements.handoff.md)) as an Open Question, and the Future possibilities item (extension with parameters or a return value) became that handoff's Anticipated Work.
 - The Unresolved questions' Resolved item (Error adopting the pattern via its own domain-specific realization) was dropped rather than migrated: it restates the resolution already graduated into the body's Semantics and constraints — the domain-specific-name MAY, the disambiguation reason, and Error's `ImplementsError`/`ImplError()` example.
 
 #### Considered and not done (migrated from the retired Rationale and alternatives)
@@ -85,7 +85,7 @@
 - **Domain-specific-only declarations, no shared generic base (considered, not chosen as the sole approach):** every abstraction defining its own uniquely-named `Implements`-analog (as `Error`'s `ImplError` does) loses the ability for a single, generic codegen/linter pass to discover "which capsules across the whole codebase declare some implementation intent" without already knowing which specific abstraction to look for. This document does not preclude a specific abstraction from *additionally* defining its own distinctly-named realization (as `Error` does) for disambiguation when multiple abstractions might be claimed at once — the two are complementary, not mutually exclusive, and neither is "stronger" than the other in terms of guarantee.
 
 #### Related work (from the retired Prior art)
-Conceptually closest to Rust's explicit `impl Trait for Type` announcing intent ahead of the compiler's completeness check, but expressed as an ordinary composed method rather than new syntax, consistent with the [Control Flow](./control-flow.md) protocol's precedent of keeping such capabilities library-driven rather than syntax-driven.
+Conceptually closest to Rust's explicit `impl Trait for Type` announcing intent ahead of the compiler's completeness check, but expressed as an ordinary composed method rather than new syntax, consistent with the [Control Flow](../process/control-flow.md) protocol's precedent of keeping such capabilities library-driven rather than syntax-driven.
 
 #### Drawbacks (from the retired body Discussion)
 - Adds one extra, functionally-inert method to every abstraction and capsule that opts in.
@@ -101,7 +101,7 @@ Conceptually closest to Rust's explicit `impl Trait for Type` announcing intent 
   - [Protocol](../protocol.md) — Depends_on: Protocol vs Contract.
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided
-  - [Mimo](../../CONTRIBUTORS.md#mimo) (mimo-v2.6-flash via OpenCode) — applied
+  - [Mimo](../../CONTRIBUTORS.md#mimo) (mimo-v2.6-flash via [OpenCode](../../CONTRIBUTORS.md#opencode)) — applied
 
 #### What changed
 - The structural-satisfaction sentence now cites abstraction.md's implicit structural satisfaction rather than khayyam.md's "Contract-First Approach" — that named heading no longer exists in khayyam.md, so the old link was dangling.

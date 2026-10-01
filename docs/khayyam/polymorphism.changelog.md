@@ -146,13 +146,11 @@ Generic syntax is one historical solution for expressing parametric reuse, but i
 This reframing is important because it explains why adding generic syntax to Khayyam would be regressive even if the syntax itself were minimal and clean: the problem is not the angle brackets, it is the behavior-ownership structure that generic syntax imposes on every container, algorithm, and data structure that uses it.
 
 ##### Why Generic Syntax Breaks Encapsulation: The Anemic Domain Model and EBO Perspectives
-
 Adding generic syntax (the mainstream default) was rejected because it structurally permits domain logic to live outside the type it concerns, which conflicts with Khayyam's encapsulation principle more directly than almost any other common language feature.
 
 An additional principled foundation comes from the Explicit Behavior Ownership principle ([Type — Explicit Behavior Ownership](../type.md#explicit-behavior-ownership)). Generic type parameters introduce ownership ambiguity: a method such as `List<T>.Add(T item)` is defined in the generic template but appears on every parameterized instantiation (`List<Connection>`, `List<Service>`, etc.). The implementation is not visible at the point of use — it lives in the template, not in the concrete type's source. This violates EBO's visibility requirement: answering "where was this behavior defined?" when looking at `List<Connection>` requires navigating to a separate generic template and understanding parameter substitution. The domain-specific capsule approach (e.g., `ConnectionList` with its own explicitly defined methods) satisfies both encapsulation and EBO simultaneously.
 
 ##### Alternative Considered: Zig-Style Comptime Duck Typing
-
 Zig's approach to polymorphism is radically minimalist: there is no abstraction or interface mechanism. Instead, functions take types as compile-time parameters, and the compiler checks at each instantiation whether the type supports the required operations. This is essentially C++-style template duck typing without the syntax.
 
 While philosophically aligned with Khayyam's minimalism, this approach was rejected because:
@@ -240,7 +238,7 @@ This cost is partially mitigated by two factors. First, Khayyam's ecosystem incl
   - [Abstraction in Khayyam](./abstraction.md) — Reference: What You Cannot Do — primitive capsules and concrete capsules do not appear in abstraction-owned method signatures; the paired note there points to this correction.
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided
-  - [Mimo](../../CONTRIBUTORS.md#mimo) (mimo-v2.6-flash via OpenCode) — applied
+  - [Mimo](../../CONTRIBUTORS.md#mimo) (mimo-v2.6-flash via [OpenCode](../../CONTRIBUTORS.md#opencode)) — applied
 
 #### What changed
 - The `tp Hash mt (self Hasher) (data Bytes) (h W64)` example now returns `(d Digest, err Error)` — matching the `Process` call site — and declares `tp Digest ab`; `W64` as a method-signature return type violated the abstraction-signature rule.
@@ -261,7 +259,7 @@ This cost is partially mitigated by two factors. First, Khayyam's ecosystem incl
   - [Abstraction in Khayyam](./abstraction.md) — Reference: the compiler-facing carrier named here is an abstraction, not a contract.
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided
-  - [Mimo](../../CONTRIBUTORS.md#mimo) (mimo-v2.6-flash via OpenCode) — applied
+  - [Mimo](../../CONTRIBUTORS.md#mimo) (mimo-v2.6-flash via [OpenCode](../../CONTRIBUTORS.md#opencode)) — applied
 
 #### What changed
 - The design position now says compile-time facts are expressed through explicit *compiler-visible declarations*, not explicit contracts between the developer and the compiler.
@@ -281,8 +279,8 @@ This cost is partially mitigated by two factors. First, Khayyam's ecosystem incl
   - [Protocol](../protocol.md) — Depends_on: Protocol vs Contract — *contract* is parties, obligations, and commitments, not the name of Khayyam's polymorphism model.
   - [Abstraction in Khayyam](./abstraction.md) — Reference: an abstraction is a behavioral specification, not a contract.
 - Contributors:
-  - [Grok](../../CONTRIBUTORS.md#grok) (Grok 4.7 via Cursor) — reviewed, applied
-  - [Gemini](../../CONTRIBUTORS.md#gemini) (Gemini 3.8 flash via Cursor) — reviewed
+  - [Grok](../../CONTRIBUTORS.md#grok) (Grok 4.7 via [Cursor](../../CONTRIBUTORS.md#cursor)) — reviewed, applied
+  - [Gemini](../../CONTRIBUTORS.md#gemini) (Gemini 3.8 flash via [Cursor](../../CONTRIBUTORS.md#cursor)) — reviewed
 
 #### What changed
 - The parametric-polymorphism `Process` sketch now returns `(d Digest, err Error)`, the same signature as the corrected `Process`/`Hash` pair earlier in the document.

@@ -16,13 +16,13 @@ Synthesizes the standalone "Decorators Rejection" and "Rejection of Syntactic Ma
 - Time: 2026-09-03T00:00:00Z
 - Type: refactor
 - Cited:
-  - [The Error](../protocols/error.md) — Evidence: the document formerly cited under the title "Error Handling: Library-Driven and Syntax-Free" now exists in this document set under this path, closing the stale open question that recorded it as not yet supplied.
+  - [The Error](../protocols/process/error.md) — Evidence: the document formerly cited under the title "Error Handling: Library-Driven and Syntax-Free" now exists in this document set under this path, closing the stale open question that recorded it as not yet supplied.
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — requested
   - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — rewrote.
 
 #### What changed
-The body already conformed to `documentation-explanation.md` (Abstract; Introduction with Motivation and Methodology; topic-first Explanation with per-topic Discussion bundles; Discussion); the migration work was provenance and staleness. The legacy `## Change Rationale` section moved into this file (entry above), per the rule that provenance lives in the paired changelog. The Results section received the standard placeholder. Document-wide Unresolved question 2 — which recorded the Error-handling document as "not yet been supplied to this document set for review" — was removed as stale: that document now exists as [The Error](../protocols/error.md). The body's link to `abstraction-implements.md` had already been repointed to its new `protocols/` location in the relocation pass recorded in that document's changelog. No position changed.
+The body already conformed to `documentation-explanation.md` (Abstract; Introduction with Motivation and Methodology; topic-first Explanation with per-topic Discussion bundles; Discussion); the migration work was provenance and staleness. The legacy `## Change Rationale` section moved into this file (entry above), per the rule that provenance lives in the paired changelog. The Results section received the standard placeholder. Document-wide Unresolved question 2 — which recorded the Error-handling document as "not yet been supplied to this document set for review" — was removed as stale: that document now exists as [The Error](../protocols/process/error.md). The body's link to `abstraction-implements.md` had already been repointed to its new `protocols/` location in the relocation pass recorded in that document's changelog. No position changed.
 
 #### Deliberation
 - Review of the documents touched by the abstractions-directory change for conformance with the current documentation method, applying the progressive-migration rule, was requested (Omid Hekayati — requested).
@@ -36,7 +36,7 @@ The body already conformed to `documentation-explanation.md` (Abstract; Introduc
   - khayyam-metaprogramming.handoff.md: Created - open questions and anticipated work moved there.
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) - requested
-  - [OpenCode](../../CONTRIBUTORS.md#opencode) (qwen3.8-flash) - moved
+  - [Qwen](../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via [OpenCode](../../CONTRIBUTORS.md#opencode)) - moved
 
 #### What changed
 - The body's fixed top-level sections are now Abstract, Introduction, Explanation, Results only; the document-level `## Discussion` and the four nested `Rationale and alternatives`, `Prior art`, `Unresolved questions`, `Future possibilities` subsection headings are gone from the body, as are the three topic-level `#### Discussion` wrappers (Decorators Rejection, Rejection of Syntactic Macros, Reflective Programming) dissolved at every heading level per the wave-1 precedent.
@@ -44,7 +44,7 @@ The body already conformed to `documentation-explanation.md` (Abstract; Introduc
 - The prior-art / comparative surveys from all four `Prior art` subsections are preserved in this entry's `Related work`.
 - Reflective Programming's four open questions and its anticipated `reflect_p` package moved to the paired handoff (`## Open Questions`, `## Anticipated Work`).
 - The document-level `Unresolved questions` and `Future possibilities` entries were not carried as separate items: each was a pointer whose full substance is the Reflective Programming question and anticipated-work item migrated to the handoff.
-- The Decorators Rejection topic's `Unresolved questions` block — recording the "Error Handling: Library-Driven and Syntax-Free" citation as not yet supplied — was not carried forward: the 2026-09-03 migration entry above already records this same question as stale and closed by the document's arrival as [The Error](../protocols/error.md), so migrating it to the handoff would have resurrected a resolved question.
+- The Decorators Rejection topic's `Unresolved questions` block — recording the "Error Handling: Library-Driven and Syntax-Free" citation as not yet supplied — was not carried forward: the 2026-09-03 migration entry above already records this same question as stale and closed by the document's arrival as [The Error](../protocols/process/error.md), so migrating it to the handoff would have resurrected a resolved question.
 - The empty placeholders ("None at this time", "None recorded yet" ×2) were removed with no destination; no premise-evidence inline folds were required — no retired block carried a fact supporting a retained body claim that the claim did not already carry itself.
 
 #### Considered and not done
@@ -62,7 +62,7 @@ The body already conformed to `documentation-explanation.md` (Abstract; Introduc
 - Python decorators and Java/C# annotations are the primary prior art being rejected for decorators. Languages without a decorator mechanism (C, Go) instead rely on explicit wrapper functions/structs for the same cross-cutting needs, which is closer to Khayyam's chosen approach. (Migrated from the Decorators Rejection topic's retired Prior art)
 - Rust's macro system and the C preprocessor are the primary prior art being rejected for macros. Languages and ecosystems that instead rely on external code generators emitting plain source (e.g. Go's `go generate` convention, or Protocol Buffers' code generation step) are closer in spirit to Khayyam's chosen approach. Notably, Rust — which also has no built-in reflection — leans on its macro system (e.g. `serde`'s derive macros) to cover needs Khayyam covers instead through opt-in reflection (see [Reflective Programming](./metaprogramming.md#reflective-programming)); rejecting macros without offering some other release valve for that category of need would leave a real gap. (Migrated from the Rejection of Syntactic Macros topic's retired Prior art)
 - Java's `Class`/`getClass()` and Go's `reflect` package are the primary prior art for universal, always-on reflection, rejected here in favor of an opt-in model. Rust deliberately has no reflection and relies on derive macros (`serde`, `Debug`) for the same category of need — a useful contrast, since Khayyam rejects Rust's macro-based solution too but, unlike Rust, retains a non-macro path to the same underlying need. C#'s attribute-plus-reflection combination is closer to a hidden-by-default, opt-out model (nearly everything is reflectable unless deliberately hidden) — the inverse of Khayyam's opt-in-by-default stance. (Migrated from the Reflective Programming topic's retired Prior art)
-- Taken as a whole, this document's stance — support the underlying need (introspection) while rejecting the specific mechanisms (decorators, macros, universal reflection) that would make it invisible or unconditional — mirrors the pattern already established by [`abstraction_p.Implements`](../protocols/abstraction-implements.md): solve the tooling problem with an ordinary, opt-in, composed method, not a language feature. (Migrated from the retired document-level Prior art, whose pointer that individual prior art is documented per topic is thereby superseded by the three bullets above, which reproduce it)
+- Taken as a whole, this document's stance — support the underlying need (introspection) while rejecting the specific mechanisms (decorators, macros, universal reflection) that would make it invisible or unconditional — mirrors the pattern already established by [`abstraction_p.Implements`](../protocols/computer/abstraction-implements.md): solve the tooling problem with an ordinary, opt-in, composed method, not a language feature. (Migrated from the retired document-level Prior art, whose pointer that individual prior art is documented per topic is thereby superseded by the three bullets above, which reproduce it)
 
 ---
 
@@ -74,7 +74,7 @@ The body already conformed to `documentation-explanation.md` (Abstract; Introduc
   - [Protocol](../protocol.md) — Depends_on: Protocol vs Contract.
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided
-  - [Mimo](../../CONTRIBUTORS.md#mimo) (mimo-v2.6-flash via OpenCode) — applied
+  - [Mimo](../../CONTRIBUTORS.md#mimo) (mimo-v2.6-flash via [OpenCode](../../CONTRIBUTORS.md#opencode)) — applied
 
 #### What changed
 - The compiler/runtime reflection sentence now says the concrete implementation is provided for whatever the abstraction *requires*, not whatever that abstraction's *contract* requires.

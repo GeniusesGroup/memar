@@ -133,7 +133,7 @@ Considered merging the "Agency Before Synchronization" chain and process.md's Co
   - agency.handoff.md: Created - open questions and anticipated work moved there.
 - Contributors:
   - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - requested
-  - [OpenCode](../CONTRIBUTORS.md#opencode) (qwen3.8-flash) - moved
+  - [Qwen](../CONTRIBUTORS.md#qwen) (qwen3.8-flash via [OpenCode](../CONTRIBUTORS.md#opencode)) - moved
 
 #### What changed
 - The body's fixed top-level sections are now Abstract, Introduction, Explanation, Results only: the document-level `## Discussion` (Drawbacks, Rationale and alternatives, Prior art, Unresolved questions, Future possibilities) and all eight topic-level `#### Discussion` wrappers are retired; no Discussion content remains in the body.

@@ -28,12 +28,12 @@ This skill does not bundle the spec. Fetch `khayyam.md` via the **`memar`** skil
 |         |          | `ab`    | abstraction      |
 |         |          | `sc`    | scope            |
 
-Everything at the top level is either a **Type** (`tp`) or a **Variable** (`vr`). No `namespace`/`package` — the file system is the source of truth, `in` routes to a file path.
+Everything at the top level is either a **Type** (`tp`) or a **Variable** (`vr`). No `namespace`/`package` — an `in` value is an address, and the language fixes no spelling for it: the scheme it is written in and the base it resolves from are not the language's to settle, and how firmly a tool requires a given spelling is that tool's rule ([Import Address → The rule](../../modules/khayyam/rules/import-address/import-address.md#the-rule)). What the corpus happens to do today is write its addresses as paths from the repository root, `modules/…`; that is a spelling this repository adopted, not the base, and the rule above is where the base is stated.
 
 ### Import
 ```khayyam
-tp TcpConn in "net/tcp"          // import a type (capsule/abstraction/method)
-vr MaxTimeout in "net/config"    // import a variable/constant/singleton
+tp TcpConn in "modules/net/tcp.kh"          // import a type (capsule/abstraction/method)
+vr MaxTimeout in "modules/net/config.kh"    // import a variable/constant/singleton
 ```
 
 ### Capsule (encapsulation)
@@ -72,7 +72,7 @@ tp Read mt (self Reader) (data Element) (err Error)   // defined independently, 
 ```khayyam
 tp {name} sc { ___ }
 ```
-Control-flow (`IF`, `LOOP`, `GOTO`, etc.) is library-built, not language keywords. Only valid inside a method body.
+Control-flow (`IF`, `LOOP`, `GOTO`, etc.) is library-built, not language keywords. The language states no placement for a `sc`; where one may be declared in the sources this repository's toolchain accepts is that toolchain's rule, and an organization may keep it or drop it ([Code Scope Placement → The rule](../../modules/khayyam/rules/scope-placement/scope-placement.md#the-rule)).
 
 ### Variable
 ```khayyam
@@ -98,15 +98,7 @@ For the mechanical-translation posture — a structural mapping, not a redesign.
 If a construct doesn't map cleanly (closures, macros, generics-heavy code), don't invent syntax — fetch the documented replacement pattern via `memar` SKILL before proposing one.
 
 ## Field-shaped values
-A value such as `Field_UserUUID` is one type. On that type, write one method that names which other abstractions a code generator implements for it, per [abstraction_p.Implements](../protocols/abstraction-implements.md). The generator writes those methods. This is a generation procedure, not a Khayyam keyword.
+A value such as `Field_UserUUID` is one type. On that type, write one method that names which other abstractions a code generator implements for it, per [abstraction_p.Implements](../protocols/computer/abstraction-implements.md). The generator writes those methods. This is a generation procedure, not a Khayyam keyword.
 
 ## Rules worth applying even when not asked
-For the full-design-treatment posture:
-
-- Prefer behavior-based abstractions over type-identity-based designs.
-- Wrap primitive values in named capsules; don't use raw `string`/`int`/`bool` for business values (`W32`, not `int`; `UserRegistry`, not `Map<ID, User>`).
-- Don't create `Utils`/`Helpers`/`Common` capsules — place responsibility in domain-meaningful capsules.
-- No magic numbers, no opaque generic containers — name what a value means.
-- One syntactic construct per semantic intent.
-
-These are direction, not exhaustive settled mechanisms — if a concrete case isn't covered above, fetch the relevant document via `memar` SKILL rather than inventing an answer.
+For the full-design-treatment posture, apply grammar-enforced modeling (no magic numbers, wrapped primitives, one construct per intent — see [Khayyam → Self-Documenting Code and Naming](./khayyam.md#self-documenting-code-and-naming)) and organizational rules in [identifier naming](../../modules/khayyam/rules/identifier-naming/identifier-naming.md) and [domain capsule naming](../../modules/khayyam/rules/domain-capsule-naming/domain-capsule-naming.md). If a concrete case isn't covered, fetch the relevant document via `memar` SKILL rather than inventing an answer.

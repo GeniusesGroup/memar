@@ -16,7 +16,7 @@ All steps below are imperative restatements of normative behavior defined in [ch
 7. Implement as a Blocking Switch (transmit blocks the sender until success) or a Non-blocking Switch (queue frames under congestion); either class is valid.
 
 ## Send Unicast (endpoint)
-1. Obtain the full hop-port path first — via [Discovery](#discovery) plus path composition below. There is no way to send before holding the path.
+1. Obtain the full hop-port path first — via [Participate in Discovery](#participate-in-discovery) plus path composition below. There is no way to send before holding the path.
 2. Build the header: FrameType per [networking rules](../net/networking.md); Hop Count = number of intermediate hops (`0x01`–`0xFF`; a Unicast frame has at least one hop); Next Hop = the hop index to execute next; First Hop Port Number = source port (in P2P it is also the destination port); append one byte per hop.
 3. Transmit on the first-hop port.
 

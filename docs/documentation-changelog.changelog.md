@@ -228,7 +228,6 @@ Open questions (dot-boundary criterion, entry-title uniqueness, historical-entry
 ---
 
 ### CONTRIBUTORS.md contact and Co-authored-by records; spec example replaced with a live-file pointer
-
 - Time: 2026-09-23T08:09:51Z
 - Type: Added
 - Cited:
@@ -250,7 +249,6 @@ Open questions (dot-boundary criterion, entry-title uniqueness, historical-entry
 ---
 
 ### CONTRIBUTORS.md restructured to person headings; brands and tools subordinated
-
 - Time: 2026-09-23T12:57:22Z
 - Type: Changed
 - Cited:
@@ -271,3 +269,43 @@ Open questions (dot-boundary criterion, entry-title uniqueness, historical-entry
 - The three propositions — every `##` a person with brands as `###` sub-sections, `# Tools` dropped, and `via` retargeted to the owning entity — were taken to consultation and adopted after a counter-opinion on answering-brand linking was weighed (Omid Hekayati — claimed, argued, decided).
 - Heading form (short name with a `Full Legal Name` bullet, `Alias Legal Name` only under doubt) and `via` label = tool name were fixed by a question round rather than guessed (Omid Hekayati — decided).
 - Review feedback: `###` sections like ZCode were opaque about what they are, and the Template misplaced `Co-authored-by:` at person level — a one-line `Bio` was added to every `###` section and the Template rebuilt to the real person/brand/tool structure (Omid Hekayati — requested, decided; Mimo — applied).
+
+---
+
+### Stealth models recorded in CONTRIBUTORS.md; attribution shape and character encoding repaired
+- Time: 2026-09-30T06:12:02Z
+- Type: Changed
+- Cited:
+  - [Stealth Models](https://stealthmodels.com/) - Evidence: the field guide that publishes models under a codename before their developer is disclosed, the entity under which this project records the codenames it ran under.
+  - [Space Bunny Alpha](https://spacebunnyalpha.com/) - Evidence: the codename's own guide, its OpenCode connection, and the unconfirmed state of the developer behind it.
+  - [Ox Alpha](https://stealthmodels.com/ox-alpha/) - Evidence: the codename's own guide and the reveal that ties the codename to the model recorded under `Super Z`.
+- Propagates to:
+  - CONTRIBUTORS.md: Done — `## Stealth Models` gained its `Bio` and two `###` sections, `Ox Alpha` carrying only a `Revealed as` field pointing at the section its contributions are recorded under, and `Space Bunny Alpha` carrying the identifier this project runs the model under.
+  - docs/type.changelog.md, docs/content.changelog.md, docs/khayyam/khayyam.changelog.md, docs/khayyam/modularity.changelog.md, docs/protocols/computer/compiler.changelog.md, docs/protocols/token.changelog.md, modules/khayyam/display/display.research.001.md, modules/khayyam/targets/js/target.changelog.md: Done — every bullet that named the host tool where the model belonged now names the model and links to its `###` section.
+  - modules/khayyam/display/display.research.002.md: Done — its Researcher line named the host tool and no model; the owner confirmed which model wrote the record, so the line names it.
+  - docs/khayyam/abstraction.changelog.md, docs/khayyam/agency.changelog.md, docs/khayyam/encapsulation.changelog.md, docs/khayyam/inheritance.changelog.md, docs/khayyam/method.changelog.md, docs/khayyam/variable.changelog.md: Done — `[OpenCode] (qwen3.8-flash)` became `[Qwen] (qwen3.8-flash via [OpenCode])`.
+  - modules/khayyam/execution.research.001.md: Done — the Researcher line naming the host tool with `mimo-v2.6-flash` now names Mimo.
+  - docs/protocols/computer/os.changelog.md: Done — a `[Qwen] (qwen3.8-flash)` bullet with no host tool gained the `via` field every other bullet of that model carries.
+  - docs/documentation.changelog.md, docs/type.changelog.md, docs/khayyam/agency.changelog.md, docs/khayyam/encapsulation.changelog.md, docs/khayyam/khayyam.changelog.md, docs/khayyam/method.changelog.md, docs/khayyam/polymorphism.changelog.md, docs/protocols/process/control-flow.changelog.md: Done — 24 bullets whose `via` field named the host tool as plain text now link it to that tool's `###` section.
+  - docs/protocols/computer/lexer.changelog.md, docs/protocols/computer/compiler.changelog.md: Done — the stray comma inside `(GLM-5.3-Flash, via OpenCode)` removed, so the entry field reads as the shape this specification states.
+  - docs/protocols/token.changelog.md: Done — its `Pending` propagation for a missing contributor entry is now `Done`.
+  - docs/protocols/token.md, modules/khayyam/lsp/lsp.handoff.md, modules/khayyam/lsp/test/definition-across-inclusion.test.ts, modules/khayyam/lsp/test/definition-fixture.ts, modules/khayyam/rules/lifecycle-method-names/lifecycle-method-names.md, modules/khayyam/rules/lifecycle-method-names/lifecycle-method-names.handoff.md: Done — text written through a byte-level decode that mangled every non-ASCII character; the em dashes, arrows, and quotation marks across the six files restored to the characters they stand for.
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — claimed, decided
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) — drafted, applied
+
+#### What changed
+- CONTRIBUTORS.md: `## Stealth Models` now states what the field guide is, and the two codenames this project ran under sit under it as `###` sections. `Ox Alpha` carries a `Revealed as` field pointing at `Super Z` and no `Models` list, because a codename is not a model: the contributions made while it stood for a model are recorded in this repository under the name it was revealed as, and a reader arriving at either name needs the other. `Space Bunny Alpha` carries the one identifier this project runs the model under. The label a bullet carries is the codename or brand, so `#space-bunny-alpha` and `#ox-alpha` are the anchors its bullets resolve to.
+- Nine attribution bullets across eight files named the host tool or the legal person where the model belonged, and one of them named a section that does not exist. Each now names the model and links to its `###` section, with the host tool kept in the `via` field: `[OpenCode] (opencode/space-bunny-free)`, `[OpenCode] (space-bunny-free via OpenCode)`, `[Space Bunny Free](#space-bunny-free)`, `[Anomaly Innovations](…#anomaly-innovations) (space-bunny-free via OpenCode)`, and `Space Bunny Alpha (space-bunny via OpenCode)` all became `[Space Bunny Alpha](…#space-bunny-alpha) ({ModelName} via [OpenCode](…#opencode))`. The three prose attributions that named the host tool inline — `opencode/space-bunny-free` — now name the model, which is the form this specification's inline-attribution paragraph uses.
+- Seven bullets in the Khayyam folder carried `[OpenCode] (qwen3.8-flash)`, one research record's Researcher line carried `[OpenCode]` with `mimo-v2.6-flash`, and a second research record's Researcher line named the host tool with no model at all; each now names its model.
+- Twenty-four bullets across eleven files left the host tool in the `via` field as plain text where this specification states the label stays the tool's own name linked to its `###` section; each now carries that link, and one `[Qwen]` bullet that recorded no host at all gained the field.
+- Six files carried every em dash, arrow, and curly quotation mark as the two- and three-character sequence a byte-level decode produces. Each was restored from that sequence back to the character it stands for, and the repository now holds no sequence of that shape outside build output.
+- docs/protocols/token.changelog.md's propagation for the contributor entry this session's work needed was `Pending`; it is `Done`.
+
+#### Considered and not done
+- A `Full Legal Name` bullet for Stealth Models — rejected: the site describes itself as an independent field guide from the team behind Demodokos and names no person or company, so any entry would be invented.
+- Putting the codename back into the entries that ran under it, and linking the `(ox-alpha)` prose attributions in `type.changelog.md` to the new section — not taken: the owner keeps the revealed name in the entries and the codename in this file, so each side points at the other once.
+- Repairing the character encoding inside `modules/khayyam/targets/js/build/` — not taken: that is generated output, not a source file, and the next build rewrites it.
+- Linking the host tool inside the prose of `superpowers.md`, `sdk.changelog.md`, and `chapar.md` — not taken: those sentences are narrative rather than `Contributors` bullets, so the entry field's shape does not govern them.
+- Linking the `space-bunny` identifier to a documentation page — rejected: OpenCode's model documentation names no page for it, and the field guide's own page is already the section's `Website`.
+

@@ -1,6 +1,5 @@
 # Reevaluating the Filesystem as a Fundamental Modeling Primitive Handoff
-
-Open work for `protocols/memory/filesystem.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](../documentation-handoff.md) for what a handoff is.
+Open work for `protocols/memory/filesystem.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](../../documentation-handoff.md) for what a handoff is.
 
 ## Open Questions
 
@@ -27,7 +26,6 @@ Open work for `protocols/memory/filesystem.md`. Entries are mutable current stat
 - State: a repository bundles several distinct concerns — access control, context, grouping, versioning boundary, discovery boundary — into a single physical container. It is not yet established whether these concerns are inherently coupled, or whether "Repository" would simply re-emerge as an *emergent* grouping (e.g., all Content linked to a shared context node) once the underlying model no longer requires a physical container to enforce them. (Migrated from the base document's retired `Possible questions` list, where it was the one question left unanswered.)
 
 ## Anticipated Work
-
 - Future documents must explore alternative primitives for Content and Task modeling that are not bound by file boundaries or tree structures. (Migrated from the base document's retired `Future possibilities`.)
 - A dedicated document is needed to redefine versioning not as a repository-wide physical snapshot, but as a logical consequence of task and decision evolution. (Migrated from the base document's retired `Future possibilities`.)
 - **Content Identity Mechanisms**: how ContentUUID or content-addressable identifiers replace file paths as stable references without sacrificing usability. (Migrated from the base document's retired `Future possibilities`.)

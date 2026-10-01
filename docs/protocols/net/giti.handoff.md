@@ -6,7 +6,7 @@ Open questions and anticipated work for the Giti (GP) protocol document (`giti.m
 ## Status
 Active
 
-Open work for `giti.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](../documentation-handoff.md) for what a handoff is.
+Open work for `giti.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](../../documentation-handoff.md) for what a handoff is.
 
 ## Open Questions
 

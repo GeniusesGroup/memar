@@ -6,7 +6,7 @@ Open questions and anticipated work for the `abstraction_p.Implements` document 
 ## Status
 Active
 
-Open work for `abstraction-implements.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](../documentation-handoff.md) for what a handoff is.
+Open work for `abstraction-implements.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](../../documentation-handoff.md) for what a handoff is.
 
 ## Open Questions
 

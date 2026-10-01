@@ -1,7 +1,6 @@
 # The Error Changelog
 
 ## Changelog
-
 The entries below consolidate the document's former front-matter provenance (`Applied to`, `Citations`, `Contributors`) and its former `## Change Rationale` section. The source records did not carry per-phase timestamps; all three historical phases predate the document's first commit (2026-07-24), so each carries `Time: unknown`. Contributor attribution follows the former `Contributors` field, whose Works lists were not pinned to phases; each contributor is listed under the phase their recorded contribution belongs to.
 
 ### Initial draft — the Error Abstraction document (495440)

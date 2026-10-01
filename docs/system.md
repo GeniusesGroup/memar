@@ -60,7 +60,6 @@ This has a direct consequence for how this document, and Memar's documents gener
 
 Readers who have not previously encountered systems theory or systems thinking are encouraged to read at least an introductory treatment of the field — von Bertalanffy's *General System Theory* or Meadows's *Thinking in Systems* are reasonable starting points — not because this document requires specialist knowledge, but because the intuition that "almost everything can be viewed as a System" is easier to apply correctly, without either over- or under-using it, once it has been encountered outside the specific context of Memar.
 
-
 ### Concepts at a Glance
 Before the detailed definitions, a brief orientation to how the key concepts relate:
 
@@ -76,7 +75,6 @@ Before the detailed definitions, a brief orientation to how the key concepts rel
 - An **ecosystem** is a System whose constituents are themselves Systems, interacting within a shared environment, where no design fixes the Structure of the whole — it emerges from the interactions.
 
 These concepts are not independent. They form a web of relationships — directional influences, mutual dependencies, and co-equal pairings — rather than a linear chain or hierarchy. Science produces knowledge; knowledge is applied as technology; technology enables system development; and systems are shaped by both framework and architecture as co-equal aspects. But these directional influences are only one dimension of the picture: modeling, abstraction, and process operate across the entire structure, and every concept influences others in ways that cannot be captured by a single ordering. Each concept exists in relation to the others, and understanding any one of them precisely requires understanding its relationships to the rest.
-
 
 ### System
 A **system** is a collection of interacting elements organized to achieve one or more purposes.
@@ -208,7 +206,6 @@ Technology should therefore be understood as applied knowledge rather than as a 
 This definition is consistent with the Technology Terms layer in the Terminology document, which defines technology as "the application of knowledge — techniques, skills, methods, and processes — to develop systems, whether those systems are tools, artifacts, or bodies of engineering knowledge, in order to achieve a specific goal." It extends that definition by making explicit that the systems technology develops are not limited to physical or computational artifacts. A legal system, a governance process, a method of scientific peer review, a classroom pedagogy, and a cultural norm of polite disagreement are all systems, and the knowledge used to create, maintain, or evolve them is technology.
 
 #### The Scope of Technology
-
 The breadth of this definition may initially appear to stretch the word "technology" beyond its everyday usage, where it typically connotes devices, software, or industrial processes. However, the broader usage is well-established in the philosophy of technology and in the academic study of technological systems. Ellul ("The Technological Society," 1964) treats technology as "the totality of methods rationally arrived at and having absolute efficiency in every field of human activity." Mumford ("Technics and Civilization," 1934) distinguishes between "technics" (the body of techniques and methods) and the specific artifacts those techniques produce. Both perspectives treat technology as fundamentally about *how* things are done — the knowledge, methods, and processes — rather than about the specific things that result.
 
 Within Memar, this broader view has practical consequences. It means that:
@@ -257,7 +254,6 @@ Modeling is the activity by which such representations are constructed, validate
 
 The conceptual definitions of Model and Abstraction are established in this document, since both are used pervasively across the entire conceptual graph and cannot wait on a document that depends on this one. The full treatment of Modeling as an ongoing architectural activity — how Memar performs, validates, and evolves models in practice — is defined in the [Modeling document](./modeling.md), which builds on the definitions established here.
 
-
 ### Abstraction
 An **abstraction** is a simplified representation of a selected aspect of reality that preserves information relevant to a particular purpose while deliberately omitting information that is not.
 
@@ -298,7 +294,6 @@ A framework's core identity, per this document and the Framework document, is th
 
 **Framework as Aspect.** When a System S is built within a framework F, F's description functions as an aspect of S — specifically, the part of S's Structure that S inherited from F rather than chose for itself. This is what "Framework and Architecture are co-equal aspects of a System" means: S's Structure is partly shaped by decisions made within S (Architecture) and partly shaped by constraints inherited from F (Framework-as-aspect). Whether this relationship is best described as F becoming "an aspect of" S, or as F constraining S's Structure from outside without F entering S in any sense, is an open question the Framework document leaves for future revision (see the Framework document's [open questions](./framework.handoff.md#open-questions)) rather than one this document settles.
 This mirrors the pattern already established for Architecture: the concept's definition does not require System-hood, but a sufficiently rich, ongoing instance of the concept may be modeled as a System when that lens is useful for reasoning about it. The relationship is also not one-to-one: a single framework can be an aspect of many different Systems simultaneously (Khayyam is an aspect of the Structure of every system built with it) while, from its own vantage point and only when the System lens is applied to it, remaining one System.
-
 
 ### Implementation
 An **implementation** is a concrete realization of a system's design, expressed in specific technologies, languages, and tools.

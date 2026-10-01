@@ -139,7 +139,6 @@ Like every other method call in Khayyam, `a.Add(b)(c, err)` is a statement, not 
 
 Even trivial arithmetic requires a method call rather than an infix operator, which is significantly more verbose than virtually every other language in existence. For formulas passed as strings, type-checking of the formula's inner operands (e.g. preventing `Money + Duration`) depends on the specific evaluator capsule's implementation rather than being a language-level guarantee — this is currently an open design question for the standard `MathEval` implementation specifically (see [Variable in Khayyam Handoff](./variable.handoff.md)).
 
-
 ### Variable as Logical Reference
 A variable in Khayyam does not represent a storage location or a raw memory region. It represents a logical reference to an instance of a type. The storage model is an implementation concern; the language model concerns identity and access. The reference mechanism itself — how a name's identity and access are technically realized — is a distinct, implementation-level concept with its own specification, deferred to a future document; this document treats it only as a language-level primitive.
 

@@ -1,5 +1,4 @@
 # Protocol Handoff
-
 Open work for `protocol.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](./documentation-handoff.md) for what a handoff is.
 
 ## Open Questions
@@ -45,7 +44,6 @@ Open work for `protocol.md`. Entries are mutable current state — revised as ea
 - Next: decide when the first external conformance claim is made about a Memar protocol.
 
 ## Anticipated Work
-
 - **Protocol Conformance document:** a dedicated document defining how conformance to a protocol is verified, including the role of testing, formal verification, and tooling.
 - **Protocol Relationships document:** a dedicated document formalizing the taxonomy of protocol relationships (extension, refinement, composition) and the rules governing each.
 - **Protocol Versioning document:** a dedicated document addressing how protocols evolve, deprecate, and maintain compatibility.

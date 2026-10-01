@@ -46,30 +46,12 @@ Memar's documentation is intentionally decentralized: each concern lives in one 
 
 Agents working the Memar way follow [`.agents/skills/memar/SKILL.md`](.agents/skills/memar/SKILL.md), which resolves and searches the live `docs/` tree through the bundled scripts rather than by memorized paths. Using Memar outside this repository is [Using Memar in another project](#using-memar-in-another-project).
 
-Fair, public comparisons with projects often treated as substitutes for Memar live under [`comparisons/`](./comparisons/) — start with [comparisons/README.md](./comparisons/README.md).
+Fair, public comparisons with projects often treated as substitutes for Memar live under [`docs/comparisons/`](./docs/comparisons/) — start with [docs/comparisons/README.md](./docs/comparisons/README.md).
 
 ## Using Memar in another project
 Memar is a development framework, not a host-tool plugin. There is one skill: it routes into the live `docs/` tree; it does not carry a copy of the documentation.
 
-Install has two targets. You do not need a Memar checkout, a local IDE, or a clone of this repository. From the project you want Memar in (a subdirectory is fine), in any environment that can run Python against those files — a working copy, a cloud workspace, a codespace, or an agent session that already has the project — run both, or only the one you need. How to refresh later is each script's `--help`.
-
-**The project**, as [AGENTS.md](https://agents.md/) instructions:
-
-```
-python -c "import urllib.request; exec(urllib.request.urlopen('https://raw.githubusercontent.com/GeniusesGroup/memar/main/.agents/scripts/install-agents.py').read().decode())"
-```
-
-**Agent apps**, the skill folder those apps load:
-
-```
-python -c "import urllib.request; exec(urllib.request.urlopen('https://raw.githubusercontent.com/GeniusesGroup/memar/main/.agents/scripts/install-apps.py').read().decode())"
-```
-
-A web chatbot is still the agent-app target, with a weaker interface: only if that app lets you add a skill, and only as a skill file or pasted text, not as a GitHub plugin of this repository (a plugin payload here is `.agents/`; Memar's model lives in `docs/`). Check that app. Workspace or local agent apps are the better fit — Memar adds substantial cognitive load to the process and is not equally appropriate in every interface.
-
-```
-https://github.com/GeniusesGroup/memar/tree/main/.agents/skills/memar
-```
+What someone needs in order to use it — getting Memar into a project or an agent app, what the executable helpers in [`.agents/scripts/`](./.agents/scripts/) are for, and the one environment variable that says where Memar lives on a machine — is the subject of [`.agents/scripts/README.md`](./.agents/scripts/README.md). Each of those scripts declares its own interface, and those declarations, not prose anywhere else, are the authority.
 
 ## System Categories
 
@@ -82,7 +64,7 @@ It will provide ZeroOps(zero operations), edge computing, ... that let you devel
 - Provide complete framework to develop any purpose distributed application with **low||no code**.
 
 #### Transition period
-Since Memar introduces technologies needed in software development and operation, including the [Khayyam](./docs/khayyam/khayyam.md) language, an [OS](./docs/protocols/os.md), and protocols such as [Chapar](./docs/protocols/chapar.md) and [Giti-Protocol](./docs/protocols/giti.md), an organization adopting Memar may choose the language and runtime that fit its existing stack and migration plan. Memar's concepts and protocols remain independent of any one programming language; Khayyam is one realization hosted in this repository.
+Since Memar introduces technologies needed in software development and operation, including the [Khayyam](./docs/khayyam/khayyam.md) language, an [OS](./docs/protocols/computer/os.md), and protocols such as [Chapar](./docs/protocols/net/chapar.md) and [Giti-Protocol](./docs/protocols/net/giti.md), an organization adopting Memar may choose the language and runtime that fit its existing stack and migration plan. Memar's concepts and protocols remain independent of any one programming language; Khayyam is one realization hosted in this repository.
 
 **But remember we don't suggest using this method in starting new projects.**
 

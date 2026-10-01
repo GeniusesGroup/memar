@@ -1,5 +1,4 @@
 # Modeling Handoff
-
 Open work for `modeling.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](./documentation-handoff.md) for what a handoff is.
 
 ## Open Questions
@@ -84,7 +83,6 @@ Whether a concept with no required behavior is a finished model, or is always an
 3. What is the recommended approach when a team inherits a legacy system with no existing model? Should they model from scratch and migrate, or incrementally extract the model from the existing codebase?
 
 ## Anticipated Work
-
 - A future document could define a lightweight graph notation tailored to Memar's modeling needs, designed to be expressive enough for architectural discovery while remaining simple enough to be sketched on a whiteboard or in a plain-text editor. (From the Graphs-as-a-Modeling-Tool topic.)
 - A future document should define an abstraction-justification checklist — a set of questions that, when answered for a given concept, produce a clear recommendation on whether it deserves an independent abstraction. This would reduce the subjectivity inherent in the current "responsibility-driven" judgment. (From the Concept-Existence topic.)
 - A future document could formalize the loop-edge-to-node promotion mechanism as part of a broader graph notation, addressing how classification-in-progress is represented during a modeling session versus how it is finalized once a label is promoted. (From the Classification topic.)
