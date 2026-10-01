@@ -1,0 +1,34 @@
+# Modules Handoff
+Open state for [README.md](./README.md). See the repository's [documentation-handoff.md](../docs/documentation-handoff.md) for what a handoff is.
+
+## Status
+Active. The first-level categorization under `modules/` was decided by transfer and by reading, not by an argument recorded anywhere: the questions below were raised in a port session, lived only in that session's working notes, and were lost with them. They are restored here on 2026-10-01 from what those notes preserved, each against the tree as it stands now. Nothing here is decided; every entry is the owner's.
+
+## Open Questions — the first-level tree
+- **`runtime/` against `computer/runtime/`.** Both exist. `modules/computer/runtime/` holds `protocol/`, `scheduler/` and `thread/`; `modules/runtime/` holds one folder, `flow/`, whose README states a question rather than a subject ("`## [{panic, recover}, {try, catch}, ...]`" under the title Flow). README.md places "the runtime and its mechanisms" under `modules/computer/runtime/`, which `modules/lib/lib.md:25` also does. Is `modules/runtime/` the general runtime and `computer/runtime` its mechanisms, or is one of them misfiled?
+- **Where the type categories are realized.** `modules/computer/datatypes/` and `modules/computer/datatype/` both exist, beside `modules/computer/datatypes/protocol/data-types.kh` and `modules/computer/datatype/protocol/*.kh`. One of the two spellings is wrong, and the choice of which is a decision about the layer's vocabulary.
+- **The registry folders.** `modules/modules/` holds the module system itself — `module/`, `service/`, `app/`, `error/`, `impl/`, `locale/`, `data-type/`, `gui/`, `validators/`, `syllab/` — and its own `____bug/`, `____json/`, `____storage/` scratch trees, which `.gitignore`'s `*____` keeps out of version control. Which of these are members and which are scratch is not stated anywhere.
+- **`modules/modules` as a name.** The folder's subject is the module system, inside a folder already named `modules`. Whether it is `modules/modules`, `modules/module-system`, or something else is undecided.
+- **Identity's ownership.** `modules/identifier/` holds identity, per `modules/lib/lib.md:25`, but the `UUID` name is claimed by four modules at once — `computer/datatype/protocol`, `identifier/record/protocol`, `memory/record/protocol`, `process/request/protocol` (live `reemit --dry-run`, 2026-10-01). The qualified-names rule records the two-module form of this question; the four-module form is wider.
+- **Where the concurrency primitives live.** `modules/computer/runtime/` holds `thread/` and `scheduler/`; `docs/protocols/runtime/immutable_infrastructure.md` and `docs/protocols/computer/concurrency.md` both reach into this area. No document states which of runtime, process, or computer owns a primitive.
+- **`lib/`'s membership.** See its own questions below.
+- **The `computer/` against `hardware/` boundary.** `modules/hardware/` holds one folder, `cpu/`, with three files: `core.kh` (a capsule whose Go clue block records a body-less assembly function), `core.s` (that assembly, 123 bytes), and `cache.txt` (a Go snippet for `cache_line_size`). Whether a CPU is hardware, a computer, or neither is stated nowhere.
+- **`time/`'s mixed axes.** `modules/time/` holds `astronomy/`, `earth/`, `mars/`, `unix/`, `utc/`, `epoch/`, `monotonic/`, `duration/`, `protocol/`, `timer/`, `timing-wheel/` — calendar systems, epoch families, monotonic clocks, timers and a wheel in one folder. `docs/protocols/time/time.handoff.md` carries the open question about `time/monotonic.Time` having no declaring protocol file.
+- **Minor naming inconsistencies.** Several, recorded only as a category: `datatype` against `datatypes` above, `____gen.kh` and `____make-error-js-sdk.kh` beside conventional siblings, `sRPC` and `immutable_infrastructure` against kebab-case and snake_case neighbours. None is worth a decision on its own; the question is whether one convention is chosen for the layer and applied.
+- **Three questions the notes counted but did not name.** The session record says fourteen and preserved eleven. The remaining three are not recoverable from anything in this repository, so they are absent here rather than reconstructed. Anyone who remembers them should add them.
+
+## Open Questions — `lib/`
+`modules/lib/lib.md` is the only document that governs this folder, and it is an implementation-layer document at Status Draft; `docs/` does not mention `lib/` at all. Three findings, measured on 2026-10-01:
+- **"The module holds no Go and claims no Go" against 209 of its 233 `.kh` files carrying a Go clue block.** `lib.md:27` says it. The blocks are the port's archive and are committed deliberately (see [go-clue-residue.handoff.md](khayyam/rules/go-clue-residue/go-clue-residue.handoff.md)), so the sentence is now a claim about intent that the tree contradicts on its face. Either the sentence is reworded to name the archive, or the folder's claim is withdrawn.
+- **Three second-level folders the document does not account for.** `lib.md:32` says three protocol families are held; on disk `modules/lib/` has six second-level folders — `adaptors/`, `codec/`, `identifier/`, `net/`, `parser/`, `process/` — of which `adaptors/`, `identifier/` and `parser/` appear in no table row and in no argument. Their own READMEs are absent. Which of them earns the folder is undecided.
+- **`libgo` surviving in the corpus is not a defect.** The port record noted that six files still carry the old module name. Measured: 52 tracked, non-scratch `.kh` files contain the string, and in 50 of them every occurrence is inside a `/* … */` Go clue block, which is archive text. The two exceptions are a leftover port note (`modules/lib/net/http/protocol/handler.kh:58`) and a `TODO(go-migrate)` marker naming its own source path (`modules/lib/process/command/flag.kh:3`). No import resolves to `libgo` anywhere.
+
+## Related Artifacts
+| Artifact | Relation | Action |
+| --- | --- | --- |
+| [README.md](./README.md) | Base — the layer's membership criterion | Keep in sync with each answer |
+| [lib.md](./lib/lib.md) | Member — the only document that governs `lib/`, at Status Draft | Owner review pending |
+| [lib.handoff.md](./lib/lib.handoff.md) | Member — `lib/`'s own open state | Cross-reference, do not duplicate |
+| [go-clue-residue.handoff.md](khayyam/rules/go-clue-residue/go-clue-residue.handoff.md) | Decides — the Go clue blocks are committed, not withheld | None (read) |
+| [qualified-names.handoff.md](khayyam/rules/qualified-names/qualified-names.handoff.md) | Decides — the naming collisions behind the identity and `Boolean` questions | None (read) |
+| [time.handoff.md](../docs/protocols/time/time.handoff.md) | Reference — `time/monotonic.Time` has no declaring protocol file | Keep in sync |
