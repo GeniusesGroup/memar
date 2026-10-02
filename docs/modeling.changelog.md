@@ -495,3 +495,28 @@ Dissolved every Discussion wrapper and the document-level Discussion; drawback s
 Owner: when an edge is about to be created, ask whether other domains need it, as with draft. If they do, place it generally — for a relation between records, under thing — so it is not copied into each domain. The check of modeling.md found the one-location rule for a concern's data, and no statement of this test for a relation. Content's current direction, one identity with change events rather than a new node per edit, is a domain that does not thereby need the successor edge.
 
 Owner: the steps belong in the practice. An agent doing the work reads the practice, not the explanation, unless a step names a section to check.
+
+---
+
+### The decomposition worked outside software
+- Time: 2026-10-02T00:00:00Z
+- Type: Added
+- Propagates to:
+  - docs/system.md: Rejected — no change. The worked case leans on *Responsibility*, *When Is a Responsibility Coherent?*, and *Boundary* as this document already states them; it adds no claim about those definitions and no fourth one for a system to satisfy.
+  - docs/framework.md: Done — nothing to change in its own text, and its pointer to this document's governing topics is unaffected; the worked case is what its claim that Memar's concepts are language-independent now rests on in this document rather than on assertion.
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — claimed, decided
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) — drafted, applied
+
+#### What changed
+- A `The Same Decomposition Outside Software` subsection was added under *Domain Decomposition over Aggregate-Root Modeling*, working the argument's own terms — concern, Responsibility, behavioral boundary, lifecycle, use case — on a monumental tower rather than on a software model. It is the only place in this document where the decomposition is demonstrated outside a codebase, and it is placed inside the section it qualifies rather than in a section of its own, because it is that section's argument carried across a boundary and not a new rule.
+- The worked case states why the argument transfers: the definitions it rests on are `System → Responsibility`, which states a Responsibility as a Purpose viewed from a containing System, and `System → When Is a Responsibility Coherent?`, which states what about a Responsibility can be checked. Neither mentions an implementation, so nothing in the decomposition requires one.
+- Six concerns are worked, each identified by the test the section gives rather than by being named as a component: ground treatment, structural shell, vertical circulation, masonry supply and provenance, environmental behaviour as a measured performance property, and egress capacity under an authority with its own revision schedule. The subsection states that none of them is a part of a tower in the sense a brick is, because each has a lifecycle that would have been discoverable had the tower never been proposed.
+- The case then shows the section's central claim arriving unprompted: no canonical aggregator exists, and three compositions — construction-phase, operations, and public-visit — each assemble overlapping concerns and are named for the use case they serve. A reader looking for the tower is told that its absence is the method working.
+- The distinction between a concern and its output is carried across and identified as the translation's hardest test: a structural check returns a load figure, the figure is not the concern, and the concern is the verification of the load path — what is claimed, against what evidence, at what interval, and who may revise the claim. The subsection notes that a model filing the figure as the concern has decomposed the tower into measurements, exactly as filing `ActiveUserID` as the concern decomposes an interface into a return value.
+- The subsection closes on what the construction case does not settle: the composition layer is identifiable in software by convention, and for a tower its counterpart is the set of activities and parties through which the concerns are delivered, which nothing in this document's method names. It records that these are identifiable at all, and that the identification is as contestable as any other boundary decision, as belonging to the observer who places it.
+
+#### Considered and not done
+- A second worked case, on an organization rather than a physical artifact — rejected: one case establishes that the argument is not about code, and a second would add length without adding reach. Where the remaining gap lies is recorded below rather than papered over with another example.
+- Naming the composition layer for non-software systems — rejected: that is the same undecided concept `system.md` records as an open question in *Structure*, and this document does not settle by drafting what another document left open by decision.
+- Writing the transfer as a principle ("the decomposition applies to any system") — rejected: a principle this general would restate the argument rather than test it, and the subsection's own contribution is that it worked the argument rather than asserting its scope. The claim being supported is better served by one case that holds than by a sentence that cannot fail.
