@@ -23,3 +23,9 @@ Active — applied 2026-09-28 to the ported corpus under `modules/` (excluding `
 | [qualified-names.md](../qualified-names/qualified-names.md) | Depends_on — how a Go name maps to its Khayyam counterpart | None (read) |
 | [targets/go/abstraction_bridge.py](../../targets/go/abstraction_bridge.py) | Implements — `tidy --rule go-clue-residue` | Keep in sync |
 | [targets/go/test_abstraction_bridge.py](../../targets/go/test_abstraction_bridge.py) | Implements — the `Tidy` tests | Keep in sync |
+
+## The transfer's record, measured
+The transfer's own ledger was never committed — it lived in a working folder outside version control and was verified by a script that read it. Both are gone as of 2026-10-02, so what they established is written down here. This is the record's content, not a new claim, and it is what the open question above has no home for.
+- **Every placed JavaScript source is in the corpus byte for byte.** Re-run against the committed tree on 2026-10-02, after the corpus was committed and after 99 files were given a final newline: 102 sources verbatim, 0 problems, across 32 destination files. The tool that established this is discarded; git now holds the blocks, and the blocks name their sources, so the record survives in the corpus rather than beside it.
+- **Twenty units of the Go reference were investigated for missing text; sixteen are closed.** Seven were `.md` files whose fate the documentation review decided, and nine were `.go` files later split into separate files, where the only absent lines are a package clause, an interface's shell, and members the port converted to `tp`. The four that remain open are the ones named above.
+- **The Go reference is recoverable and the JavaScript reference is recoverable.** `memar-go` is archived with a remote at `GeniusesGroup/memar-go` and `memar-js` at archive commit `27e013d`, last pushed 2026-01-06. Neither ledger was the only copy of anything except its own bookkeeping.
