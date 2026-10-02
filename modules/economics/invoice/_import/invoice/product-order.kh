@@ -1,0 +1,24 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+// TODO(go-migrate):
+/*
+package data
+
+type productOrder struct {
+	RequestID  [32]byte // user-request domain
+	OwnerID    [32]byte `index-hash:"QuiddityID[daily,not-exist]"` // Who belong to! Just org can be first owner!
+	QuiddityID [32]byte `index-hash:"RecordID[pair,OwnerID,daily],RecordID[pair,DCID,daily],DCID[not-exist]"`
+	Amount     int64    // Number||Gram||Liter	this transaction
+	Stock      int64    // Number||Gram||Liter	overall
+
+	RecordType             ProductInventoryStatus
+	ReferenceID            [32]byte // data base on RecordType
+	DCID                   [32]byte `index-hash:"QuiddityID[not-exist]"` // DistributionCenterID same as OrgID
+	ProductPriceRecordID   [32]byte
+	ProductAuctionRecordID [32]byte `index-hash:"ProductAuction.ID:RecordID[daily]"` // can be 0 for just change owner without any auction or price but very rare situation!
+	SellerID               [32]byte `index-hash:"RecordID[daily]"`                   // OrdererID, who places the order usually use for prescription(drug order) or sales agent!
+}
+
+// ProductOrder ---Read locale description in ProductOrderStructure---
+type ProductOrder []byte
+*/

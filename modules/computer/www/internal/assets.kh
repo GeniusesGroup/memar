@@ -1,0 +1,70 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+// TODO(go-migrate):
+/*
+package www
+
+import (
+	"fmt"
+
+	cts "memar/compress-types"
+	error_p "memar/process/error/protocol"
+	"memar/process/log"
+	storage_p "memar/storage/protocol"
+)
+
+const (
+	guiDirectoryName      = "gui"
+	mainHTMLDirectoryName = "main-html"
+)
+
+type Assets struct {
+	GUI         storage_p.Directory
+	MainHTMLDir storage_p.Directory // files name is just language in iso format e.g. "en", "fa",
+	// OldBrowsers storage_p.Directory // files name is just language in iso format e.g. "en", "fa",
+}
+
+//memar:impl memar/computer/language/object/protocol.LifeCycle
+func (a *Assets) Init(gui storage_p.Directory) (err error_p.Error) {
+	a.GUI = gui
+	a.MainHTMLDir, err = a.GUI.Directory(mainHTMLDirectoryName)
+	if err != nil {
+		return
+	}
+	a.update()
+
+	return
+}
+func (a *Assets) Reinit() (err error_p.Error) {
+	a.update()
+	return
+}
+func (a *Assets) Deinit() (err error_p.Error) {
+	// TODO:::
+	return
+}
+
+// ReloadByCLI block function and must call by separate goroutine, otherwise it can block other app logic.
+func (a *Assets) ReloadByCLI() {
+	defer log.PanicHandler()
+
+reload:
+	log.Info(&domain, "Write '''R''' & press '''Enter''' key to reload GUI changes")
+	var non string
+	fmt.Scanln(&non)
+	if non == "R" || non == "r" {
+		a.update()
+	} else {
+		log.Warn(&domain, "Requested command not found")
+	}
+	goto reload
+}
+
+// Update use to add needed repo files that get from disk or network to the assets.
+func (a *Assets) update() {
+	var c combine
+	c.Init(a.GUI, cts.ContentEncodings())
+	c.update()
+	log.Info(&domain, "GUI assets successfully updated and ready to serve")
+}
+*/

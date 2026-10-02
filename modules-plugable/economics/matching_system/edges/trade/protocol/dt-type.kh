@@ -1,0 +1,44 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+// TODO(go-migrate):
+/*
+package trade_p
+
+type Field_Type interface {
+	Type() Type
+}
+
+type Type uint8
+
+const (
+	Type_Unset   Type = iota
+	Type_Regular      // price rules
+	Type_Trade        // trade rules
+
+	Type_Duration
+
+	// Whole order must be filled for matching deal or order must cancelled on timeout
+	// If this flag absent, allow matching engine to deal part of order.
+	// https://en.wikipedia.org/wiki/All_or_none
+	// an order that must be executed in its entirety, or not executed at all
+	Type_AllOrNone
+
+	// https://en.wikipedia.org/wiki/Immediate_or_cancel
+	// an order that must be executed immediately, a partial fulfillment is possible.
+	// Type_ImmediateOrCancel = !Type_AllOrNone & Type_Duration
+	//
+
+	// https://en.wikipedia.org/wiki/Fill_or_kill
+	// an order that must be executed immediately"—a few seconds, customarily—in its entirety;
+	// otherwise, the entire order is cancelled; no partial fulfillments are allowed.
+	// Type_FillOrKill = Type_AllOrNone & Type_Duration
+)
+
+// https://en.wikipedia.org/wiki/Order_(exchange)
+const (
+	// stop-loss orders guarantee execution
+	Type_StopLoss Type = iota
+	// stop-limit orders guarantee price
+	Type_StopLimit
+)
+*/

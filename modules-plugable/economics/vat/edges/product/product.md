@@ -10,7 +10,7 @@
 
 ## Placement
 
-- **Correct here — the tax-product link is instantiated from the tax capability** (placement by entry point; source `vat/edges/tax-relation-product.go`, deleted at `334d6e2c` 2026-09-09; pluggable owns complete capability — edge + rate/exemption logic that reads it live together).
+- **Correct here — the tax-product link is instantiated from the tax capability** (placement by entry point; source `vat/edges/tax-relation-product.go` (no such file yet), deleted at `334d6e2c` 2026-09-09; pluggable owns complete capability — edge + rate/exemption logic that reads it live together).
 - **Not core `product`:** the product kernel stays priceability; taxability is jurisdiction semantics an org removes with this module (removable ⇒ pluggable; core never knows Rule — who-may-exempt is rule material).
 - **Not a new module:** the relation reuses the existing catalog (parameters vs semantics ⇒ one tax capability plus configuration; prefer existing homes over inventing new modules).
 

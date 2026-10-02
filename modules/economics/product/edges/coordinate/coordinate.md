@@ -3,7 +3,7 @@
 ## Model
 
 - Not a graph edge — a *lookup recipe*: resolve RoleID → related UserIDs → each user's Coordinate (domain location).
-- Coordinate data already has homes: [geography-coordinate](../../../../../modules-plugable/identity/analytics/geography-coordinate/protocol/data_model.go) (identity analytics) and the provider/user location edge [coordinate-gps](../../../../identity/object/edges/coordinate-gps/protocol/data_model.go). The `Type_Transport` flag in [product.go](../product.go) shows the same concern surfacing as "InvoiceID use to retrieve coordinate domain".
+- Coordinate data already has homes: [geography-coordinate](../../../../../modules-plugable/identity/analytics/geography-coordinate/protocol/data_model.kh) (identity analytics) and the provider/user location edge [coordinate-gps](../../../../identity/object/edges/coordinate-gps/protocol/data_model.kh). The `Type_Transport` flag in [product.kh](../product.kh) shows the same concern surfacing as "InvoiceID use to retrieve coordinate domain".
 
 ## Policies (rules)
 

@@ -1,0 +1,37 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+// TODO(go-migrate):
+/*
+package services
+
+import "libgo/achaemenid"
+
+// EditConnectionReq is the request structure of EditPersonConnection()
+type EditConnectionReq struct {
+	EncryptionKey [32]byte `valid:"PublicKey"`
+	ExpireAt      uint64
+	Description   string // User custom text to identify connection easily.
+	AccessControl achaemenid.AccessControl
+}
+
+// EditPersonConnection use to edit connection details just by own connection!
+func EditPersonConnection(st *achaemenid.Stream, req *EditConnectionReq) {
+	/*
+		---------- Authorization ----------
+	* /
+
+	st.AuthorizeWhich()
+	st.AuthorizeWhere()
+	if st.Err != nil {
+		return
+	}
+
+	/*
+		---------- Bussiness logic ----------
+	* /
+
+	// Find Connection by cst.Connection.OwnerID & cst.Connection.ConnectionID
+
+	return
+}
+*/

@@ -3,7 +3,7 @@
 ## Model
 
 - Candidate (unconfirmed): `(product)-[:material]->(product)` — "Material or Ingredient": one product is material/ingredient of another ("category of products can be a material for a product", e.g. any `topping cheese` is a material for a `pizza`).
-- Vocabulary note: `CommonIngredient` (source flag name; the Good flag `Type_CustomIngredient` in [product.go](../product.go) is the adjacent live flag).
+- Vocabulary note: `CommonIngredient` (source flag name; the Good flag `Type_CustomIngredient` in [product.kh](../product.kh) is the adjacent live flag).
 
 ## Policies (rules)
 

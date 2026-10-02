@@ -2,8 +2,8 @@
 
 ## Model
 
-- Candidate (unconfirmed): rating scale label vocabulary — the source recorded only `labels:` followed by five bare labels (see [Source](#source)); attachment presumably rides the rating edge's labels field ([rating-labels](../rating-labels/protocol/data_model.go)).
-- Sibling scale structures already in this folder: `Type_LikertScale_Emoji` / `Type_LikertScale_Color` / `Type_LikertScale_Range` / `Type_Star` / `Type_Number` in [protocol/dt-type.go](protocol/dt-type.go).
+- Candidate (unconfirmed): rating scale label vocabulary — the source recorded only `labels:` followed by five bare labels (see [Source](#source)); attachment presumably rides the rating edge's labels field ([rating-labels](../rating-labels/protocol/data_model.kh)).
+- Sibling scale structures already in this folder: `Type_LikertScale_Emoji` / `Type_LikertScale_Color` / `Type_LikertScale_Range` / `Type_Star` / `Type_Number` in [dt-type.kh](protocol/dt-type.kh).
 
 ## Policies (rules)
 
@@ -19,6 +19,6 @@
 
 - Which scale family consumes these five labels — the verbal Likert ladder (vs the emoji / color / range / star / number siblings in this folder)?
 - Closed kernel vocabulary or organizational-open (org-defined scales)?
-- Relation to the `Type_Rating` answer-shape flag in [question.go](../question.go) and the standing review in [question.md](../../question.md)?
+- Relation to the `Type_Rating` answer-shape flag in `question.go (no such file yet)` and the standing review in [question.md](../../question.md)?
 - Is the ordering (Worse < Bad < Normal < Good < Excellent) stored on the edge, or derived from label configuration?
 

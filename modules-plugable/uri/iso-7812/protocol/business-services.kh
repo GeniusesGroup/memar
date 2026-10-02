@@ -1,0 +1,30 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+// TODO(go-migrate):
+/*
+package card_p
+
+import (
+	error_p "memar/process/error/protocol"
+	time_p "memar/time/protocol"
+
+	account_p "org/modules/economics/account/protocol"
+)
+
+type (
+	BS_Register_Request interface {
+		account_p.Field_AccountID
+		CardNumber() Card
+		ExpireDate() time_p.Time
+		CVC() uint16
+	}
+)
+
+type (
+	BS_Get_Request interface {
+		account_p.Field_AccountID
+	}
+	BS_Get_Response1 = DataModel
+	BS_Get_Response2 = error_p.Error
+)
+*/

@@ -1,0 +1,60 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+// TODO(go-migrate):
+/*
+package errs
+
+import (
+	"memar/computer/datatype"
+	datatype_p "memar/computer/datatype/protocol"
+	er "memar/error"
+	"memar/errors"
+	error_p "memar/process/error/protocol"
+)
+
+var BadRequest badRequest
+
+type badRequest struct {
+	datatype.Detail
+}
+
+func (dt *badRequest) Init() (err error_p.Error) {
+	err = errors.Register(dt)
+	return
+}
+
+//memar:impl memar/protocol.MediaType
+func (dt *badRequest) MediaType() string { return domainBaseMediatype + "bad_request" }
+
+//memar:impl memar/error/protocol.Internal
+func (dt *badRequest) Internal() bool { return false }
+
+//memar:impl memar/error/protocol.Temporary
+func (dt *badRequest) Temporary() bool { return false }
+
+//memar:impl memar/error/protocol.Timeout
+func (dt *badRequest) Timeout() bool { return false }
+
+//memar:impl memar/datatype/protocol.DataType_ID
+func (dt *badRequest) DataTypeID() datatype_p.ID { return 0 }
+func (dt *badRequest) DataTypeID_Base64() string { return "" }
+
+//memar:impl memar/datatype/protocol.DataType_Details
+func (dt *badRequest) LifeCycle() datatype_p.LifeCycle      { return datatype_p.LifeCycle_Unset }
+func (dt *badRequest) ReferenceURI() string                 { return "" }
+func (dt *badRequest) IssueDate() string                    { return "" }
+func (dt *badRequest) ExpiryDate() string                   { return "" }
+func (dt *badRequest) ExpireInFavorOf() datatype_p.DataType { return nil }
+
+//memar:impl memar/computer/language/primitive/protocol.Equivalence
+func (dt *badRequest) Equal(with error_p.Error) bool { return er.IsEqual(dt, with) }
+
+//memar:impl memar/adt/protocol.Empty
+func (dt *badRequest) IsEmpty() bool { return dt.IsNil() && dt.IsNull() }
+
+//memar:impl memar/adt/protocol.Nil
+func (dt *badRequest) IsNil() bool { return dt == nil }
+
+//memar:impl memar/adt/protocol.Null
+func (dt *badRequest) IsNull() bool { return dt.DataTypeID() == 0 }
+*/

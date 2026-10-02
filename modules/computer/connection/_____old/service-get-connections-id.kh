@@ -1,0 +1,50 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+// TODO(go-migrate):
+/*
+package services
+
+import "libgo/achaemenid"
+
+// just for AppID & UserID & DelegateUserID
+
+// GetConnectionsIDReq is the request structure of GetConnectionsID()
+type GetConnectionsIDReq struct {
+}
+
+// GetConnectionsIDRes is the response structure of GetConnectionsID()
+type GetConnectionsIDRes struct {
+	ConnectionID [][16]byte
+}
+
+// GetConnectionsID use to get all related connection id to specific user.
+func GetConnectionsID(st *achaemenid.Stream, req *GetConnectionsIDReq) (*GetConnectionsIDRes, error) {
+	/*
+		---------- Authorization ----------
+	* /
+
+	// Delegate user can't get connections ID for any user!
+	if cst.Connection.OwnerID != cst.Connection.DelegateUserID {
+		// return
+	}
+
+	cst.AuthorizeWhich()
+	cst.AuthorizeWhere()
+	if cst.Err != nil {
+		return nil, cst.Err
+	}
+
+	/*
+		---------- Bussiness logic ----------
+	* /
+	var (
+		res GetConnectionsIDRes
+		err error
+	)
+
+	// Find for Connections ID with cst.Connection.OwnerID as:
+	// Connection.OwnerID || Connection.DelegateUserID || Connection.AppID
+
+	return &res, err
+}
+*/

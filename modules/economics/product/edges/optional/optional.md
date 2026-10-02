@@ -18,5 +18,5 @@
 
 - Status of the relation vs a distinct `optional` edge — which is it?
 - Map onto the parent/child model in [product.md](../../product.md): optional face of parent/child, or bundle-slot semantics (converge with [packages](../../../../../modules-plugable/economics/discount/packages/packages.md))?
-- Relation to `Type_PreSale` / reserve flags in [product.go](../product.go) — unrelated, or one "commitment level" vocabulary?
+- Relation to `Type_PreSale` / reserve flags in [product.kh](../product.kh) — unrelated, or one "commitment level" vocabulary?
 

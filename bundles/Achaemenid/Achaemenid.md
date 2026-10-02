@@ -31,7 +31,7 @@ You must follow this rules:
 - Achaemenid respect given ID by you to services indicate in ServiceDetail! But if it is empty(0) it will calculate it from hash of ServiceName! Due to hash collision, maybe force you to change ServiceName or indicate ID handy!
 - Don't delete unneeded services files, just change related ServiceDetail like ExpireDate and status! and never ever use old service name for new service with different service structure!
 ---- SO DON'T REUSE OLD ID EVEN IF YOU DON'T NEED THEM EVER! ----
-- You can change service structure before you indicate service is StableRelease in ServiceDetail! So don't changed it after it, Always make new service if you want change service structure by for example add `V1` to end of service name and dedicated file e.g. `register-new-person-v1.go`!
+- You can change service structure before you indicate service is StableRelease in ServiceDetail! So don't changed it after it, Always make new service if you want change service structure by for example add `V1` to end of service name and dedicated file e.g. `register-new-person-v1.go` (no such file yet)!
 - As always use full detail name for service names(function). You can add random or specific ID to end of service name for reusability of that name.
 
 ### DataStore:

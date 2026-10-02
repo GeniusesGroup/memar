@@ -1,0 +1,16 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+// TODO(go-migrate):
+/*
+package ac_p
+
+import (
+	error_p "memar/process/error/protocol"
+)
+
+type AccessControl interface {
+	// Authorize request by data in the session for many access control like service, time, location, ...
+	// Dev must extend this method in each service by it uses.
+	Authorize() (err error_p.Error)
+}
+*/

@@ -1,0 +1,25 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+// TODO(go-migrate):
+/*
+package tokens_p
+
+import (
+	request_p "memar/process/request/protocol"
+	audit_time_p "memar/process/time/protocol"
+
+	language_p "org/modules/knowledge/language-human/protocol"
+	text_p "org/modules/knowledge/text/protocol"
+)
+
+// DataModel indicate the domain record data fields.
+type DataModel interface {
+	text_p.Field_TextUUID
+	Field_Analyzer
+	language_p.Field_LanguageUUID
+	Tokens() []Token
+
+	request_p.Field_RequestID
+	audit_time_p.Field_Request
+}
+*/

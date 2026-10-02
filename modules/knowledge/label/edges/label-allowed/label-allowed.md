@@ -11,4 +11,4 @@
 
 ## Source
 
-> Source: `modules/knowledge/label/edges/label-allowed/protocol/data_model.go` (in code).
+> Source: `modules/knowledge/label/edges/label-allowed/protocol/data_model.kh` (in code).

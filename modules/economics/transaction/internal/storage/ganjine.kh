@@ -1,0 +1,270 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+// TODO(go-migrate):
+/*
+package ft
+
+import (
+	"bytes"
+	"io"
+	"time"
+
+	"golang.org/x/crypto/sha3"
+
+	"libgo/ganjine"
+	"libgo/mediatype"
+	"libgo/pehrest"
+	"libgo/price"
+	"libgo/protocol"
+	"libgo/society"
+	"libgo/syllab"
+)
+
+var Storage = storage{}
+
+type storage struct{}
+
+const (
+	storageMediaTypeID uint64 = 1198465900463527754
+)
+
+var FinancialTransactionMediaType = mediatype.New("domain/org.protocol.financial-transaction+syllab", "").
+	SetInfo(protocol.Software_PreAlpha, 1599291620, "").
+	SetDetail(protocol.LanguageEnglish, "Financial Transaction",
+		`store each financial transaction and last user balance`,
+		[]string{}).
+	Expired(0, nil)
+
+/*
+	-- Get Methods --
+* /
+
+func (s *storage) GetByRecordID(recordID [32]byte) (ft FinancialTransaction, err protocol.Error) {
+	var object protocol.Object
+	object, err = protocol.App.ObjectDirectory().Get(recordID, storageMediaTypeID)
+	ft = FinancialTransaction(object.Data().Marshal())
+	return
+}
+
+// GetLastTransactionByUserID method find and read last version of record by given UserID.
+func (s *storage) GetLastTransactionByUserID(userID [32]byte) (ft FinancialTransaction, err protocol.Error) {
+	ft.WriteTime = time.Now()
+	var indexRequest = pehrest.HashGetValuesReq{
+		IndexKey: ft.hashUserIDForRecordIDDaily(),
+		Offset:   18446744073709551615,
+		Limit:    1,
+	}
+	var indexRes *pehrest.HashGetValuesRes
+	for ft.WriteTime > 1608422400 { // 1608422400 = 12/20/2020 @ 12:00am (UTC) as Persian Yalda day that platfrom starts!
+		indexRes, err = psdk.HashGetValues(&indexRequest)
+		if err == nil {
+			break
+		}
+		ft.WriteTime -= (24 * 60 * 60) // daily
+		indexRequest.IndexKey = ft.hashUserIDForRecordIDDaily()
+	}
+	if err != nil {
+		return
+	}
+
+	ft.RecordID = indexRes.IndexValues[0]
+	err = ft.GetByRecordID()
+	return
+}
+
+/*
+	-- Search Methods --
+* /
+
+// FindRecordIDsByUserIDWriteTime find RecordsIDs by given UserID + WriteTime(round to daily)
+func (s *storage) FindRecordIDsByUserIDWriteTime(userID [32]byte, time int64, offset, limit uint64) (IDs [][32]byte, err protocol.Error) {
+	var indexReq = &pehrest.HashGetValuesReq{
+		IndexKey: ft.hashUserIDForRecordIDDaily(),
+		Offset:   offset,
+		Limit:    limit,
+	}
+	var indexRes *pehrest.HashGetValuesRes
+	indexRes, err = psdk.HashGetValues(indexReq)
+	IDs = indexRes.IndexValues
+	return
+}
+
+// FinancialTransaction is
+type FinancialTransaction []byte
+
+type financialTransaction struct {
+	RequestID       [16]byte
+	AccountID       [16]byte
+	SenderAccountID [16]byte
+	Reference       [16]byte
+	Amount          price.Amount
+	Balance         price.Amount
+	TransactionType society.FinancialTransactionType
+}
+
+func (ft *FinancialTransaction) Init() { *ft = make([]byte, ft.LenAsSyllab()) }
+
+func (ft FinancialTransaction) AppInstanceID() (appInsID [32]byte)  { copy(appInsID[:], ft[0:]); return }
+func (ft FinancialTransaction) UserConnectionID() (connID [32]byte) { copy(connID[:], ft[32:]); return }
+func (ft FinancialTransaction) UserID() (uID [32]byte)              { copy(uID[:], ft[64:]); return }
+func (ft FinancialTransaction) ReferenceID() (refID [32]byte)       { copy(refID[:], ft[96:]); return }
+func (ft FinancialTransaction) ReferenceType() org.FinancialTransactionType {
+	return org.FinancialTransactionType(syllab.GetUInt8(payload, 128))
+}
+func (ft FinancialTransaction) PreviousTransactionID() (ptID [32]byte) {
+	copy(ptID[:], ft[129:])
+	return
+}
+func (ft FinancialTransaction) Amount() price.Amount {
+	return price.Amount(syllab.GetInt64(payload, 161))
+}
+func (ft FinancialTransaction) Balance() price.Amount {
+	return price.Amount(syllab.GetUInt64(payload, 169))
+}
+
+func (ft FinancialTransaction) SetAppInstanceID(appInsID [32]byte)  { copy(payload[0:], appInsID[:]) }
+func (ft FinancialTransaction) SetUserConnectionID(connID [32]byte) { copy(payload[32:], connID[:]) }
+func (ft FinancialTransaction) SetUserID(uID [32]byte)              { copy(payload[64:], uID[:]) }
+func (ft FinancialTransaction) SetReferenceID(refID [32]byte)       { copy(payload[96:], refID[:]) }
+func (ft FinancialTransaction) SetReferenceType(ftt FinancialTransactionType) {
+	syllab.SetUInt8(payload, 128, uint8(ftt))
+}
+func (ft FinancialTransaction) SetPreviousTransactionID(ptID [32]byte) { copy(payload[129:], ptID[:]) }
+func (ft FinancialTransaction) SetAmount(am price.Amount)              { syllab.SetInt64(payload, 161, int64(am)) }
+func (ft FinancialTransaction) SetBalance(am price.Amount)             { syllab.SetInt64(payload, 169, int64(am)) }
+
+// Save write entire FinancialTransaction record with all indexes to the storage!
+func (ft FinancialTransaction) Save() (err protocol.Error) {
+	var metadata protocol.ObjectMetadata
+	metadata, err = protocol.App.ObjectDirectory().Save(ft)
+	if err != nil {
+		return
+	}
+
+	ft.IndexUserIDForRecordIDDaily()
+	return
+}
+
+/*
+	-- Transactions Methods --
+* /
+
+// Lock read last RecordID and lock userID to set in-time transactions!
+func (ft *FinancialTransaction) Lock(userID [32]byte) (err protocol.Error) {
+	// TODO::: real lock!
+	ft.WriteTime = time.Now()
+	err = ft.GetLastTransactionByUserID()
+	if err.Equal(ganjine.ErrRecordNotFound) {
+		err = nil
+	}
+	return
+}
+
+// UnLock will unlock userID to let other services set new in-time transaction records!
+func (ft *FinancialTransaction) UnLock() (err protocol.Error) {
+	// TODO::: real unlock!
+	err = ft.SaveNew()
+	if err != nil {
+		return
+	}
+	return
+}
+
+/*
+	-- PRIMARY INDEXES --
+* /
+
+// IndexUserIDForRecordIDDaily index ft.UserID on daily base to retrieve record fast later.
+func (ft *FinancialTransaction) IndexUserIDForRecordIDDaily() {
+	var indexRequest = pehrest.HashSetValueReq{
+		Type:       ganjine.RequestTypeBroadcast,
+		IndexKey:   ft.hashUserIDForRecordIDDaily(),
+		IndexValue: ft.RecordID,
+	}
+	var err = psdk.HashSetValue(&indexRequest)
+	if err != nil {
+		// TODO::: we must retry more due to record wrote successfully!
+	}
+}
+
+func (ft *FinancialTransaction) hashUserIDForRecordIDDaily() (hash [32]byte) {
+	const field = "UserID"
+	var buf = make([]byte, 48+len(field)) // 8+32+8
+	syllab.SetUInt64(buf, 0, storageMediaTypeID)
+	copy(buf[8:], ft.UserID[:])
+	syllab.SetInt64(buf, 40, ft.WriteTime.RoundToDay())
+	copy(buf[48:], field)
+	return sha3.Sum256(buf)
+}
+
+/*
+	-- SECONDARY INDEXES --
+* /
+
+// ??
+
+/*
+	-- LIST FIELDS --
+* /
+
+// ??
+
+/*
+	Codecs
+* /
+
+// methods to implements protocol.Codec interface
+func (ft *FinancialTransaction) MediaType() protocol.MediaType {
+	return &society.FinancialTransactionMediaType
+}
+func (ft *FinancialTransaction) CompressType() protocol.CompressType { return nil }
+func (ft *FinancialTransaction) Decode(source protocol.Codec) (err protocol.Error) {
+	var buf bytes.Buffer
+	var _, goErr = io.Copy(&buf, reader)
+	if goErr != nil {
+		// err =
+		return
+	}
+	var payload = buf.Bytes()
+	err = ft.Unmarshal(payload)
+	return
+}
+func (ft *FinancialTransaction) Encode(writer protocol.Writer) (err protocol.Error) {
+	_, err = ft.WriteTo(writer)
+	return
+}
+func (ft *FinancialTransaction) Len() int { return int(ft.LenAsSyllab()) }
+func (ft *FinancialTransaction) Unmarshal(data []byte) (err protocol.Error) {
+	err = ft.CheckSyllab(data)
+	if err != nil {
+		return
+	}
+	*ft = data
+	return
+}
+func (ft *FinancialTransaction) Marshal() (data []byte) { return *ft }
+func (ft *FinancialTransaction) MarshalTo(data []byte) []byte {
+	var ln = len(data)
+	data = data[:ln+ft.Len()]
+	copy(data[ln:], ft)
+	return data
+}
+
+// methods to implements protocol.Syllab interface
+func (ft *FinancialTransaction) CheckSyllab(payload []byte) (err protocol.Error) {
+	if uint32(len(payload)) < ft.LenOfSyllabStack() {
+		err = syllab.ErrShortArrayDecode
+		return
+	}
+}
+func (ft *FinancialTransaction) FromSyllab(payload []byte, stackIndex uint32) {
+	*ft = payload[stackIndex : uint64(stackIndex)+ft.LenAsSyllab()]
+}
+func (ft *FinancialTransaction) ToSyllab(payload []byte, stackIndex, heapIndex uint32) (freeHeapIndex uint32) {
+	copy(payload[stackIndex:], ft)
+	return heapIndex
+}
+func (ft *FinancialTransaction) LenAsSyllab() (ln uint64)      { return 177 }
+func (ft *FinancialTransaction) LenOfSyllabStack() (ln uint32) { return 177 }
+func (ft *FinancialTransaction) LenOfSyllabHeap() (ln uint32)  { return }
+*/

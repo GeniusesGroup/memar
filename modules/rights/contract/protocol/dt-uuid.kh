@@ -1,0 +1,19 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+// TODO(go-migrate):
+/*
+package contract_p
+
+import (
+	group_p "org/modules/management/group/protocol"
+)
+
+type Field_ContractID interface {
+	ContractID() UUID
+}
+
+// UUID is group to support many functionality like chats, expert opinion, ...
+type UUID group_p.UUID
+
+// Service: fulfill the obligation
+*/

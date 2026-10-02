@@ -12,7 +12,7 @@
 
 ## Placement
 
-- **Correct here — the form module owns its own type vocabulary** (source `form/edges/form.go`, in code; a flag-space is parameters, not processing — parameters vs semantics ⇒ one form capability plus per-organization kind configuration; no new module).
+- **Correct here — the form module owns its own type vocabulary** (source `form/edges/form.go` (no such file yet), in code; a flag-space is parameters, not processing — parameters vs semantics ⇒ one form capability plus per-organization kind configuration; no new module).
 - **Not core knowledge:** form is the optional questionnaire layer; Question/Answer/Text hold the knowledge graph without it (stated in [form.md](../../form.md)) — the flags travel with the pluggable.
 - Kind flags like `Type_Quiz` connect to relation edges in the same module ([knowledge-unit](../knowledge-unit/knowledge-unit.md)) — one capability keeping flag and edge together, never "flag here, edge there".
 

@@ -1,0 +1,69 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+// TODO(go-migrate):
+/*
+package services
+
+import (
+	"time"
+
+)
+
+// RegisterPersonConnectionReq is the request structure of RegisterPersonConnection()
+type RegisterPersonConnectionReq struct {
+	ConnectionID   [16]byte `valid:"UUID"`
+	AppID          [16]byte `valid:"UUID"`
+	OwnerID        [16]byte `valid:"UUID"`
+	DelegateUserID [16]byte `valid:"UUID"`
+	ExpireAt       uint64
+	Description    string // User custom text to identify connection easily.
+	AccessControl  achaemenid.AccessControl
+	UserPublickey  [32]byte `valid:"UUID"`
+	ThingID        [16]byte `valid:"UUID"`
+	ThingPublicKey [32]byte `valid:"PublicKey"`
+	UserSignature  [32]byte `valid:"Signature"`
+	ThingSignature [32]byte `valid:"Signature"`
+}
+
+// RegisterPersonConnection :
+func RegisterPersonConnection(st *achaemenid.Stream, req *RegisterPersonConnectionReq) {
+	/*
+		---------- Authorization ----------
+	* /
+
+	st.AuthorizeWhich()
+	st.AuthorizeWhere()
+	if st.Err != nil {
+		return
+	}
+
+	/*
+		---------- Bussiness logic ----------
+	* /
+
+	// Check exist not expired connection with same req.AppID & req.OwnerID & req.DelegateUser
+	// If exist return related error
+
+	// Approve OwnerID & UserPublickey & ThingID from PersonAuthentication.sabz.city
+	// Approve UserSignature
+
+	// Approve ThingID & ThingPublicKey from Things.sabz.city
+	// Approve ThingSignature
+
+	connectionData := ganjine.Connection{
+		ConnectionID:   req.ConnectionID,
+		AppID:          req.AppID,
+		OwnerID:        req.OwnerID,
+		DelegateUserID: req.DelegateUserID,
+		EncryptionKey:  req.EncryptionKey,
+		IssueAt:        uint64(time.Now().Nanosecond()),
+		ExpireAt:       req.ExpireAt,
+		Description:    req.Description,
+		AccessControl:  req.AccessControl,
+	}
+
+	// send connectionData to PersiaDB
+
+	return
+}
+*/

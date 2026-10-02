@@ -2,7 +2,7 @@
 
 ## Model
 
-- Candidate (unconfirmed): resource type labels `Desired`, `Actual` (iota `Type_*` flags in package `label`) typing the node's resource edge — see the sibling resource concept (protocol `ResourceType` / `ResourceAmount`) in [../resource/](../resource/).
+- Candidate (unconfirmed): resource type labels `Desired`, `Actual` (iota `Type_*` flags in package `label`) typing the node's resource edge — see the sibling resource concept (protocol `ResourceType` / `ResourceAmount`) in [](../resource/).
 
 ## Policies (rules)
 
@@ -16,5 +16,5 @@
 ## Open questions
 
 - Is Desired/Actual a general pattern (also usable for estate/production)?
-- Same edge as the [../resource/](../resource/) concept folder, or a separate typed facet?
+- Same edge as the [](../resource/) concept folder, or a separate typed facet?
 

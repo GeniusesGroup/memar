@@ -1,0 +1,37 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+// TODO(go-migrate):
+/*
+package services
+
+import "libgo/achaemenid"
+
+// just for AppID & UserID & DelegateUserID
+
+// RevokeConnectionReq is the request structure of RevokeConnection()
+type RevokeConnectionReq struct {
+	ConnectionID [16]byte
+}
+
+// RevokeConnection use to revoke the connection.
+func RevokeConnection(st *achaemenid.Stream, req *RevokeConnectionReq) error {
+	/*
+		---------- Authorization ----------
+	* /
+	cst.AuthorizeWhich()
+	cst.AuthorizeWhere()
+	if cst.Err != nil {
+		return cst.Err
+	}
+
+	/*
+		---------- Bussiness logic ----------
+	* /
+
+	// Revoke req.ConnectionID with cst.Connection.OwnerID = Connection.OwnerID
+
+	// Send signal to all related appID to revoke connectionID.
+
+	return nil
+}
+*/

@@ -3,7 +3,7 @@
 ## Model
 
 - Candidate (unconfirmed): `(package)-[:bundles]->(product)` / `(product)-[:bundled_in]->(package)` — "related product is part of a discount bundle".
-- Structural seed already in code: `mealDeal` holds chosen `products` (each with `maxNum`) and `categories` (label UUIDs, each with `maxNum`) — see [protocol/business-services.go](protocol/business-services.go).
+- Structural seed already in code: `mealDeal` holds chosen `products` (each with `maxNum`) and `categories` (label UUIDs, each with `maxNum`) — see [business-services.kh](protocol/business-services.kh).
 
 ## Policies (rules)
 
@@ -12,7 +12,7 @@
 
 ## Placement
 
-- **Pluggable — home is `modules-plugable/economics/discount/packages` (already correct).** Meal-deal/package is a removable marketing capability that *attaches* to products; discount already owns the complete capability (edge + processing + [protocol](protocol/business-services.go)) — see [discount.md](../discount.md).
+- **Pluggable — home is `modules-plugable/economics/discount/packages` (already correct).** Meal-deal/package is a removable marketing capability that *attaches* to products; discount already owns the complete capability (edge + processing + [protocol](protocol/business-services.kh)) — see [discount.md](../discount.md).
 - **Not core `product`** and **not a new module**: product only carries a structural bundle attachment (same shape as [customable](../../../../modules/economics/product/edges/customable/customable.md)); bundle rules and enforcement stay inside discount (a pluggable keeps its complete enforcement).
 - The generic product-side attachment, if kept, mirrors `customable`: `(product)-[:bundled_in]->(package)` maintained by discount — never bundle logic in the kernel.
 

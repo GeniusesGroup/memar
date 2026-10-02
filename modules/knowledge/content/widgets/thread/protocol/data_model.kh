@@ -1,0 +1,18 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+// TODO(go-migrate):
+/*
+package w_thread_p
+
+import (
+	"memar/time/duration"
+
+	group_p "org/modules/management/group/protocol"
+)
+
+// DataModel indicate the domain record data fields.
+type DataModel interface {
+	group_p.Field_GroupID
+	ArchiveThreadAfter() duration.Second
+}
+*/

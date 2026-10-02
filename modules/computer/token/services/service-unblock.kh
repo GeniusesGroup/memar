@@ -1,0 +1,140 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+// TODO(go-migrate):
+/*
+package pa
+
+import (
+	"libgo/authorization"
+	"libgo/http"
+	"libgo/json"
+	"libgo/protocol"
+	"libgo/service"
+	"libgo/srpc"
+)
+
+var unblockPersonService = service.Service{
+	URN:                "urn:giti:sabz.city:service:unblock-person",
+	Domain:             DomainName,
+	ID:                 8566143390220741880,
+	IssueDate:          1592391153,
+	ExpiryDate:         0,
+	ExpireInFavorOfURN: "",
+	ExpireInFavorOfID:  0,
+	Status:             protocol.Software_PreAlpha,
+
+	Authorization: authorization.Service{
+		CRUD:     authorization.CRUDUpdate,
+		UserType: protocol.UserType_Person,
+	},
+
+	Name: map[protocol.LanguageID]string{
+		protocol.LanguageEnglish: "UnblockPerson",
+	},
+	Description: map[protocol.LanguageID]string{
+		protocol.LanguageEnglish: "Just judges (justice service) can request to un-block a person and in many un-blocking level",
+	},
+	TAGS: []string{
+		"PersonAuthentication",
+	},
+
+	SRPCHandler: UnblockPersonSRPC,
+	ServeHTTP:   UnblockPersonHTTP,
+}
+
+// UnblockPersonSRPC is sRPC handler of UnblockPerson service.
+func UnblockPersonSRPC(st protocol.Stream) {
+	var req = &unblockPersonReq{}
+	err = req.FromSyllab(srpc.GetPayload(st.IncomePayload))
+	if err != nil {
+		return
+	}
+
+	var res *unblockPersonRes
+	res, err = unblockPerson(st, req)
+	// Check if any error occur in business logic
+	if err != nil {
+		return
+	}
+
+	st.OutcomePayload = make([]byte, srpc.MinLength+res.LenAsSyllab())
+	res.ToSyllab(srpc.GetPayload(st.OutcomePayload))
+}
+
+// UnblockPersonHTTP is HTTP handler of UnblockPerson service.
+func UnblockPersonHTTP(st protocol.Stream, httpReq *http.Request, httpRes *http.Response) {
+	var req = &unblockPersonReq{}
+	err = req.FromJSON(httpReq.Body().Marshal())
+	if err != nil {
+		httpRes.SetStatus(http.StatusBadRequestCode, http.StatusBadRequestPhrase)
+		return
+	}
+
+	var res *unblockPersonRes
+	res, err = unblockPerson(st, req)
+	// Check if any error occur in business logic
+	if err != nil {
+		httpRes.SetStatus(http.StatusBadRequestCode, http.StatusBadRequestPhrase)
+		return
+	}
+
+	httpRes.SetStatus(http.StatusOKCode, http.StatusOKPhrase)
+	httpRes.SetBody(json.NewCodec(res))
+}
+
+type unblockPersonReq struct{}
+
+type unblockPersonRes struct{}
+
+func unblockPerson(st protocol.Stream, req *unblockPersonReq) (res *unblockPersonRes, err protocol.Error) {
+	err = st.Authorize()
+	if err != nil {
+		return
+	}
+	// Validate data here due to service use internally by other services!
+	err = req.validator()
+	if err != nil {
+		return
+	}
+
+	res = &unblockPersonRes{}
+
+	return
+}
+
+func (req *unblockPersonReq) validator() (err protocol.Error) {
+	return
+}
+
+func (req *unblockPersonReq) FromSyllab(payload []byte, stackIndex uint32) {
+	return
+}
+
+func (req *unblockPersonReq) FromJSON(payload []byte) (remaining []byte, err protocol.Error) {
+	err = json.Unmarshal(buf, req)
+	return
+}
+
+func (res *unblockPersonRes) ToSyllab(payload []byte, stackIndex, heapIndex uint32) (freeHeapIndex uint32) {
+
+}
+
+func (res *unblockPersonRes) LenOfSyllabStack() uint32 {
+	return 0
+}
+
+func (res *unblockPersonRes) LenOfSyllabHeap() (ln uint32) {
+	return
+}
+
+func (res *unblockPersonRes) LenAsSyllab() uint64 {
+	return uint64(res.LenOfSyllabStack() + res.LenOfSyllabHeap())
+}
+
+func (res *unblockPersonRes) ToJSON(payload []byte) (added []byte, err protocol.Error) {
+	var encoder = json.Encoder{Buf: payload}
+
+	buf, _ = json.Marshal(res)
+	return
+}
+*/

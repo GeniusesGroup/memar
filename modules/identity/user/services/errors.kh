@@ -1,0 +1,22 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+// TODO(go-migrate):
+/*
+package services
+
+import (
+	er "libgo/error"
+	"libgo/protocol"
+)
+
+const domainEnglish = "Sabz.City"
+const domainPersian = "شهرسبز"
+
+// Errors
+var (
+	ErrPersonNumberRegistered = er.New("urn:giti:sabz.city:error:person-number-registered").SetDetail(protocol.LanguageEnglish, domainEnglish, "Person Number Registered",
+		"Given person number to register new person on platform already registered",
+		"",
+		"").Save()
+)
+*/

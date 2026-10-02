@@ -1,0 +1,15 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+// TODO(go-migrate):
+/*
+package discount
+
+import (
+	fmp "org/modules/economics/money/protocol"
+)
+
+type Invoice interface {
+	MinPrice() fmp.Amount // Minimum invoice price
+	MinAmount() uint64    // Minimum invoice product numbers
+}
+*/

@@ -1,0 +1,27 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+// TODO(go-migrate):
+/*
+package rrr_p
+
+import (
+	error_p "memar/process/error/protocol"
+	request_p "memar/process/request/protocol"
+
+	// bm_p "org/modules/computer/module/protocol"
+	computer_service_p "org/modules/computer/service/protocol"
+	user_p "org/modules/identity/user/protocol"
+)
+
+// StorageServices indicates the domain storage layer services.
+type StorageServices interface {
+	Save(dm DataModel) (err error_p.Error)
+
+	Get(requestID request_p.UUID) (dm DataModel, err error_p.Error)
+
+	FIND_RequestIDs_BY_UserID(userID user_p.UUID, offset, limit uint64) (requestIDs []request_p.UUID, err error_p.Error)
+	FIND_RequestIDs_BY_ServiceID(serviceID computer_service_p.UUID, offset, limit uint64) (requestIDs []request_p.UUID, err error_p.Error)
+
+	// FILTER_RequestIDs_BY_DomainID(domainID bm_p.UUID, offset, limit uint64) (requestIDs []request_p.UUID, err error_p.Error)
+}
+*/

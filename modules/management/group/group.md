@@ -6,7 +6,7 @@
 - Task is not primitive: modeled as an additive entity over **Group** — participant/member management belongs to Group, not Task; Task itself is also a Content (needs human text, images, audio). *(decided — Group is the org repo's own concept; no Memar-side owner)*
 
 ## Resolved via source inspection
-- **Department ↔ Group typing link**: `department_p.Model` embeds both `thing_p.Model` and `group_p.Model` (Go interface embedding) — Department is a Group (and a Thing) at the compile-time type level, not just conceptually. `label.go` additionally defines `department` as an edge label from Group, documented (in a comment marked "Policy (rule)") for organizational-chart display and staff-join purposes.
+- **Department ↔ Group typing link**: `department_p.Model` embeds both `thing_p.Model` and `group_p.Model` (Go interface embedding) — Department is a Group (and a Thing) at the compile-time type level, not just conceptually. `label.go` (no such file yet) additionally defines `department` as an edge label from Group, documented (in a comment marked "Policy (rule)") for organizational-chart display and staff-join purposes.
 - **Containment membership vs. oversight membership — resolved direction**: proper modeling decomposes relationships into several small, single-purpose edges (e.g., membership + role as separate edges) rather than overloading one generic edge. A combined/derived-lookup edge ("edges-shortcut") may exist purely as a traversal optimization, but must never become the primary source of truth or influence core design.
 
 ## Discussion

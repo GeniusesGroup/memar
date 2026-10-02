@@ -11,7 +11,7 @@
 
 ## Placement
 
-- **Correct here — home is this `edges-loop/text` doc, beside the source `edges-loop/text.go`.** The kinds are bare labels for the module's own `text` loop-edge; parameters-vs-semantics: which kinds exist is vocabulary of the text module, not a separate capability and not a rule (core never knows rule — a rules-engine enters only if kinds gate processing).
+- **Correct here — home is this `edges-loop/text` doc, beside the source `edges-loop/text.go` (no such file yet).** The kinds are bare labels for the module's own `text` loop-edge; parameters-vs-semantics: which kinds exist is vocabulary of the text module, not a separate capability and not a rule (core never knows rule — a rules-engine enters only if kinds gate processing).
 - Taxonomy reconciliation is an open question below, not a move: the sibling [text_type](../../edges/text_type/text_type.md) edge ("Each text MUST have a specific type") may be the proper owner of Poem/Scientific/Skill as type values — converge onto that existing home if ratified; either way nothing leaves the text module.
 
 ## Open questions

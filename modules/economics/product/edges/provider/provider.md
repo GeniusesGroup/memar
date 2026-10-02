@@ -2,7 +2,7 @@
 
 ## Model
 
-- Candidate (unconfirmed): `(product)-[:provider]->(staff|role)` — the product operator; flags `Type_Provider_Staff` / `Type_Provider_Role` sit in [product.go](../product.go) under *Services flags*.
+- Candidate (unconfirmed): `(product)-[:provider]->(staff|role)` — the product operator; flags `Type_Provider_Staff` / `Type_Provider_Role` sit in [product.kh](../product.kh) under *Services flags*.
 - The group-file reading may instead be a supplying group (source lived in the product-to-group relation file).
 - Invoice keeps its own party edge: `(invoice)-[:provider]->(user)` — see [user-provider](../../../invoice/edges/user-provider/user-provider.md) ("a rule set this relation and that rule call a staff not random user").
 
@@ -14,7 +14,7 @@
 ## Placement
 
 - **Not core-by-necessity:** products stay priceable and invoice-able without a provider edge (removable capability ⇒ fails the core test).
-- **Proposed: `modules-plugable/economics/service`** — the provider flags already live in product.go inside the *Services* flag block; the complete capability (who supplies/operates a service product, with its assignment processing) belongs together with the other service edges (`seat`, `timing-interval`, …) under [service](../../../../../modules-plugable/economics/service/). Entry point: instantiation happens when the product is supplied as a service, not in the product kernel.
+- **Proposed: `modules-plugable/economics/service`** — the provider flags already live in ../product.kh inside the *Services* flag block; the complete capability (who supplies/operates a service product, with its assignment processing) belongs together with the other service edges (`seat`, `timing-interval`, …) under [service](../../../../../modules-plugable/economics/service/). Entry point: instantiation happens when the product is supplied as a service, not in the product kernel.
 
 ## Open questions
 

@@ -1,0 +1,93 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+// TODO(go-migrate):
+/*
+package user
+
+import (
+	"testing"
+
+	user_p "org/modules/identity/user/protocol"
+)
+
+func Test_CheckUserType(t *testing.T) {
+	type args struct {
+		baseUsers user_p.Type
+		user      user_p.Type
+	}
+	tests := []struct {
+		name     string
+		args     args
+		WantBool bool
+	}{
+		{
+			name: "test1",
+			args: args{
+				baseUsers: user_p.Type_All,
+				user:      user_p.Type_App,
+			},
+			WantBool: true,
+		}, {
+			name: "test2",
+			args: args{
+				baseUsers: user_p.Type_Person,
+				user:      user_p.Type_Person,
+			},
+			WantBool: true,
+		}, {
+			name: "test3",
+			args: args{
+				baseUsers: user_p.Type_Person,
+				user:      user_p.Type_App,
+			},
+			WantBool: false,
+		}, {
+			name: "test4",
+			args: args{
+				baseUsers: user_p.Type_Unset,
+				user:      user_p.Type_Person,
+			},
+			WantBool: false,
+		}, {
+			name: "test5",
+			args: args{
+				baseUsers: user_p.Type_All ^ user_p.Type_Guest,
+				user:      user_p.Type_Guest,
+			},
+			WantBool: false,
+		}, {
+			name: "test6",
+			args: args{
+				baseUsers: ^user_p.Type_Guest,
+				user:      user_p.Type_Guest,
+			},
+			WantBool: false,
+		}, {
+			name: "test7",
+			args: args{
+				baseUsers: user_p.Type_Person | user_p.Type_Thing,
+				user:      user_p.Type_Person,
+			},
+			WantBool: true,
+		},
+		// TODO:::
+		// {
+		// name: "test8",
+		// args: args{
+		// baseUsers: ^user_p.Type_Guest,
+		// user:      user_p.Type_Unset,
+		// },
+		// WantBool: false,
+		// },
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			var exist = CheckUserType(tt.args.baseUsers, tt.args.user)
+			if exist != tt.WantBool {
+				t.Errorf("CheckUserType() Base = %b, Checked by = %b", tt.args.baseUsers, tt.args.user)
+				t.Errorf("CheckUserType() on %v return %v, want %v", tt.name, exist, tt.WantBool)
+			}
+		})
+	}
+}
+*/

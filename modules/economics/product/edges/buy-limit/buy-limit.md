@@ -23,6 +23,6 @@
 
 - Per-user limit vs org-wide embargo? "limit user not buy before year" — whose year, whose limit?
 - Boundary semantics: calendar year, product release year, or arbitrary timestamp?
-- Does the same mechanism cover `Type_PreSale` (flag marked `??` in [product.go](../product.go))? If yes, flag + edge must converge — one capability, not two.
+- Does the same mechanism cover `Type_PreSale` (flag marked `??` in [product.kh](../product.kh))? If yes, flag + edge must converge — one capability, not two.
 - Decide rule-attachment vs own module *before* any Khayyam migration (empty abstraction must not convert).
 

@@ -1,0 +1,22 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+// TODO(go-migrate):
+/*
+package qdp
+
+import (
+	error_p "memar/process/error/protocol"
+
+	storage_p "memar/storage/protocol"
+	qp "org/modules/knowledge/question/protocol"
+)
+
+type StorageServices interface {
+	Save(dm DataModel) (nv storage_p.NumberOfVersion, err error_p.Error)
+
+	Count(questionID qp.UUID) (nv storage_p.NumberOfVersion, err error_p.Error)
+	Get(questionID qp.UUID, vo storage_p.VersionOffset) (dm DataModel, nv storage_p.NumberOfVersion, err error_p.Error)
+
+	FILTER_QuestionIDs_BY_Type(t Type, offset, limit uint64) (questionIDs []qp.UUID, nv storage_p.NumberOfVersion, err error_p.Error)
+}
+*/

@@ -3,12 +3,12 @@
 ## Model
 
 - Candidate (unconfirmed): `(staff)-[:attendance]->(estate)` — the staff–estate relation labeled "Attendance" (source was a staff-to-estate label file).
-- The attendance record already has structure in the staff module: `StaffAttendance` (StaffID, Type, AttendanceTime, Time, RequestID) — see [_import/staff-attendance.go](../../_import/staff-attendance.go).
+- The attendance record already has structure in the staff module: `StaffAttendance` (StaffID, Type, AttendanceTime, Time, RequestID) — see [../../edges-loop/staff-attendance.kh](../../_import/staff-attendance.kh).
 
 ## Policies (rules)
 
 - Label: `Attendance`.
-- Attendance types already coded in the staff module ([edges-loop/staff-attendance.go](../../edges-loop/staff-attendance.go)): Enter, Exit, ManualEnter, ManualExit, Start, End.
+- Attendance types already coded in the staff module ([staff-attendance.kh](../../edges-loop/staff-attendance.kh)): Enter, Exit, ManualEnter, ManualExit, Start, End.
 
 ## Placement
 

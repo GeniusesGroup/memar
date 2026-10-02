@@ -1,0 +1,41 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+// TODO(go-migrate):
+/*
+package money
+
+import (
+	"reflect"
+	"testing"
+
+	"memar/math/per"
+)
+
+func TestAmount_Root(t *testing.T) {
+	type args struct {
+		per per.Myriad
+	}
+	tests := []struct {
+		name string
+		a    Amount
+		args args
+		want Amount
+	}{
+		{
+			name: "test1",
+			a:    209000,
+			args: args{
+				per: 9,
+			},
+			want: 17257,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := tt.a.Root(tt.args.per); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("Amount.Root() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+*/

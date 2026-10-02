@@ -1,0 +1,27 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+// TODO(go-migrate):
+/*
+package pa
+
+import (
+	er "libgo/error"
+	"libgo/protocol"
+)
+
+const domainEnglish = "Sabz.City"
+const domainPersian = "شهرسبز"
+
+// Errors
+var (
+	ErrBlockedPerson = er.New("urn:giti:sabz.city:error:blocked-person").SetDetail(protocol.LanguageEnglish, domainEnglish, "Blocked Person",
+		"Given request from a person that blocked for some reason! So can't proccess the request",
+		"",
+		"").Save()
+
+	ErrBadPasswordOrOTP = er.New("urn:giti:sabz.city:error:bad-password-or-otp").SetDetail(protocol.LanguageEnglish, domainEnglish, "Bad Password or OTP",
+		"Given person password or OTP is not valid and can't use for requested service",
+		"",
+		"").Save()
+)
+*/

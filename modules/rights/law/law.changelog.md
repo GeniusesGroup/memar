@@ -90,7 +90,7 @@ The earlier entry left a Pending propagation to Memar. That corpus is gone from 
   - [Grok](../../../CONTRIBUTORS.md#grok) (Grok 4.6 via Cursor) — rewrote, argued
 
 #### What changed
-`### Model` left [law.md](law.md); relations stay in `edges/` and `edges/aggregation.go`. [law.research.001.md](law.research.001.md) records a critique of this type (explanation-append, computer-code gate, mandatory guarantee, non-contradiction, rival-node cost, consent-as-edge, unbounded labels, duration placement). Duration of votes and laws moved by `git mv` to `modules-plugable/rights/law-validity`.
+`### Model` left [law.md](law.md); relations stay in `edges/` and `edges/aggregation.kh`. [law.research.001.md](law.research.001.md) records a critique of this type (explanation-append, computer-code gate, mandatory guarantee, non-contradiction, rival-node cost, consent-as-edge, unbounded labels, duration placement). Duration of votes and laws moved by `git mv` to `modules-plugable/rights/law-validity`.
 
 #### Deliberation
 Owner: a Model heading on a domain document is a cache of the live edge set and goes stale. Point at the files; do not index them.

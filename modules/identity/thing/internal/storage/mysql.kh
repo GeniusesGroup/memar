@@ -1,0 +1,39 @@
+//go:build mysql
+
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+// TODO(go-migrate):
+/*
+package storage
+
+import (
+	"database/sql"
+
+	"memar/protocol"
+
+	qdp "quiddity-domain/protocol"
+)
+
+var Storage mysql
+var _ dp.StorageServices = &storage
+
+type mysql struct {
+	db *sql.DB
+}
+
+func (s *mysql) Save(r qdp.QuiddityDomain) (err protocol.Error) {
+	const query = "INSERT INTO QuiddityDomain VALUES (?, ?, ?, ?)"
+	_, err = s.db.Exec(query, r.QuiddityID(), r.DomainID(), r.RequestID(), r.Time())
+	return
+}
+
+func (s *mysql) Get(quiddityID [16]byte) (q qdp.QuiddityDomain, err protocol.Error) {
+	const query = "SELECT * FROM QuiddityDomain WHERE QuiddityID = ?"
+	var rows *sql.Rows
+	rows, err = s.db.Query(query, quiddityID)
+	// TODO:::
+	return
+}
+
+// 192/
+*/

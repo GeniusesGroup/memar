@@ -23,4 +23,4 @@
 
 ## Source
 
-> Source: `modules-plugable/computer/page/edges/code/protocol/data_model.go` (in code).
+> Source: `modules-plugable/computer/page/edges/code/protocol/data_model.kh` (in code).

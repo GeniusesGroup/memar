@@ -15,5 +15,5 @@
 ## Open questions
 
 - Is this the placement for name/address resolution (URI domain overlap)?
-- Relation to the sibling [../address/](../address/) concept folder (typed `Address` payload) — one concept or two?
+- Relation to the sibling [](../address/) concept folder (typed `Address` payload) — one concept or two?
 

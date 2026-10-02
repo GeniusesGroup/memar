@@ -2,7 +2,7 @@
 
 ## Model
 
-- Candidate (unconfirmed): employment lifecycle status set on staff: `Status_Hire`, `Status_Fire`, `Status_End` (code constants in [edges-loop/staff-status.go](../../edges-loop/staff-status.go)).
+- Candidate (unconfirmed): employment lifecycle status set on staff: `Status_Hire`, `Status_Fire`, `Status_End` (code constants in [staff-status.kh](../../edges-loop/staff-status.kh)).
 - Shift states `Status_Active` / `Status_Inactive` are commented out of the set and marked `Shift` — not staff lifecycle as recorded.
 
 ## Policies (rules)
@@ -13,7 +13,7 @@
 ## Placement
 
 - **Correct here — the employment lifecycle is the staff capability's own** (module skeleton: `staff/edges-loop/`; hire/fire/end are what staff exists to record; prefer existing homes over inventing new modules).
-- The source still lives in code at [edges-loop/staff-status.go](../../edges-loop/staff-status.go) (cited as `edges/staff-status.go`; moved into `edges-loop/` by commit be2f0810) — this doc records the vocabulary, the code stays untouched.
+- The source lives in code at [staff-status.kh](../../edges-loop/staff-status.kh) (originally `edges/staff-status.go`, moved into `edges-loop/` by commit be2f0810) — this doc records the vocabulary, the code stays untouched.
 - Commented-out shift states belong to [shift](../../../shift/shift.md) if ever ratified — the code itself marks them `Shift`; keep lifecycle (staff) and shift (shift) separate.
 
 ## Open questions

@@ -2,7 +2,7 @@
 
 ## Model
 
-- Live flag-space on the product record (not a graph edge): one `Type uint64` iota in [product.go](../product.go) splitting **Good vs Service** (`Type_Good` — "if flag not set means product is service"; `Type_Unset` — "usually for good kind").
+- Live flag-space on the product record (not a graph edge): one `Type uint64` iota in [product.kh](../product.kh) splitting **Good vs Service** (`Type_Good` — "if flag not set means product is service"; `Type_Unset` — "usually for good kind").
 - **Common flags:** `Type_ReserveValidity`, `Type_ReserveQuantity` (max one person can reserve before paying), `Type_PreSale` (marked `??` — unresolved), `Type_NeedApprove` (base on product-role), `Type_NeedPrescription` (medical goods; can't be added by users to invoice), `Type_InvoiceSell`, `Type_OrderSell`, `Type_SellLimit_Role` / `Type_SellLimit_Group` / `Type_SellLimit_User`.
 - **Good flags:** `Type_Inventory` (owner-tracked capital goods: book, mobile, car), `Type_Custom` (made on buyer requirements, product-ingredient), `Type_BestBefore` (daily consumption goods), `Type_CustomIngredient`.
 - **Service flags** (structure comment: TimeService — consultation in chat or real life; ActService — guarding, maintenance, cleaning; Transport): `Type_TimeValidity`, `Type_Transport` ("indicate InvoiceID use to retrieve coordinate domain"), `Type_Shipping`, `Type_Content` (digital data), `Type_Timing`, `Type_TimingInterval`, `Type_MultipleUse` (gym), `Type_Duration`, `Type_Number` (cinema, concert, transport), `Type_Area`, `Type_Place` (doctor-room, gym, station/bus/train/airport), `Type_Seat` (cinema, concert, transport), `Type_Provider_Staff`, `Type_Provider_Role`, `Type_Share` (panic-room ticket).
@@ -29,4 +29,4 @@
 
 ## Source
 
-> Source: `modules/economics/product/edges/product.go` (in code).
+> Source: `modules/economics/product/edges/product.kh` (in code).

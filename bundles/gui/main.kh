@@ -1,0 +1,55 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+// TODO(go-migrate):
+/*
+package main
+
+import (
+	"memar/achaemenid"
+	"memar/log"
+	_ "memar/os"
+	"memar/protocol"
+)
+
+func init() {
+	protocol.App = &achaemenid.App
+
+	achaemenid.App.Manifest = achaemenid.Manifest{
+		DomainName: "sabz.city",
+		Email:      "ict@sabz.city",
+		Icon:       "",
+		AppDetail: map[protocol.LanguageID]achaemenid.AppDetail{
+			protocol.LanguageEnglish: {
+				Organization:   "Iran Society",
+				Name:           "Iran",
+				Description:    "This Platform make to test idea about future e-societies instead regular known societies! Please contact development team about any idea",
+				TermsOfService: "https://iran.sabz.city/terms?hl=en",
+				Licence:        "https://iran.sabz.city/licence?hl=en",
+				TAGS:           []string{"Society", "Innovative", "Government", "Life", "Life Style"},
+			},
+			protocol.LanguagePersian: {
+				Organization:   "جامعه ایران",
+				Name:           "ایران",
+				Description:    "این پلتفرم برای اهداف تست ایده ها پیرامون آینده تشکیل جامعه ها به صورت مجازی بجای جامعه های فیزیکی می باشد. خواهشمندیم در صورت هر گونه پیشنهاد یا انتقاد تیم توسعه را در جریان بگذارید",
+				TermsOfService: "https://iran.sabz.city/terms?hl=fa",
+				Licence:        "https://iran.sabz.city/licence?hl=fa",
+				TAGS:           []string{"جامعه", "ابتکاری", "حکومت", "زندگی", "سبک زندگی"},
+			},
+		},
+	}
+
+	// Initialize application
+	achaemenid.App.Init()
+
+	// Connect to other nodes or become first node
+	log.FatalError(app.Nodes.Init())
+
+	// Ganjine initialize
+	log.FatalError(app.Cluster.Init())
+}
+
+func main() {
+
+	achaemenid.App.Start()
+}
+*/

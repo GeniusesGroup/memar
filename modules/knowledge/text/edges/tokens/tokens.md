@@ -20,4 +20,4 @@ Lexical tokenization is conversion of a text into (semantically or syntactically
 
 ## Source
 
-> Source: `modules/knowledge/text/edges/tokens/protocol/dt-token.go` (in code).
+> Source: `modules/knowledge/text/edges/tokens/protocol/dt-token.kh` (in code).

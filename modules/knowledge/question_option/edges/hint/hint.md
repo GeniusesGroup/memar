@@ -3,7 +3,7 @@
 ## Model
 
 - Candidate (unconfirmed): `(question_option)-[:hint]->(question)` — the source carried the relation stem "question_option-relation-question" with the note "use for options not descriptive type." and the label `Hint` (direction per the file name; not ratified).
-- The same Hint note also exists on the question-to-question relation (`QuestionQuestionRelation_Type_Hint // use for options not descriptive type.`) in [_import/question-relation-question.go](../../../_import/question-relation-question.go) — one concept recorded twice.
+- The same Hint note also exists on the question-to-question relation (`QuestionQuestionRelation_Type_Hint // use for options not descriptive type.`) in [question-relation-question.kh](../../../_import/question-relation-question.kh) — one concept recorded twice.
 
 ## Policies (rules)
 

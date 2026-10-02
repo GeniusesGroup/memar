@@ -5,65 +5,11 @@ ____*
 *____
 .agents/skills/memar
 
-# Prerequisites
-*.d
-
-# Object files
-*.o
-*.ko
-*.obj
-*.elf
-
-# Linker output
-*.ilk
-*.map
-*.exp
-
-# Precompiled Headers
-*.gch
-*.pch
-
-# Libraries
-*.lib
-*.a
-*.la
-*.lo
-assets--g.go
-
-# Shared objects (inc. Windows DLLs)
-*.dll
-*.so
-*.so.*
-*.dylib
-
-# Executables
-/bin
-*.exe
-*.out
-*.app
-*.i*86
-*.x86_64
-*.hex
-
-# Debug files
-*.dSYM/
-*.su
-*.idb
-*.pdb
-
-# Architecture specific extensions/prefixes
-*.[568vq]
-[568vq].out
-
-*.cgo1.go
-*.cgo2.c
-_cgo_defun.c
-_cgo_gotypes.go
-_cgo_export.*
-
-*.prof
-
-# external packages folder
-vendor/
-*bundle.*
-*-old
+# The underscore rules above hide scratch trees. Two of those trees held Go
+# sources that had to migrate with everything else, and their Khayyam files are
+# tracked despite the rules:
+!modules/computer/connection/_____old/
+!modules/knowledge/text/internal/matn_____
+# Scratch under ____Chats/ stays untracked on purpose. Its Go sources were
+# migrated on disk so no Go is left in the checkout, but they are not part of
+# the repository.

@@ -16,4 +16,4 @@
 
 ### Widget status
 - **Idea**: a username status vocabulary starting from `Reserved` — a name held before it is usable.
-- **Review questions**: is `Reserved` one status of the general status domain, or a username-private lifecycle (reserve → verify → release)? Who may reserve, and what does a Reserved name block in resolution/registration (no bare edges)? Does it connect to the registration flow in [protocol/service-register.go](protocol/service-register.go)?
+- **Review questions**: is `Reserved` one status of the general status domain, or a username-private lifecycle (reserve → verify → release)? Who may reserve, and what does a Reserved name block in resolution/registration (no bare edges)? Does it connect to the registration flow in [service-register.kh](protocol/service-register.kh)?

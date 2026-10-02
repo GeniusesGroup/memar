@@ -24,5 +24,5 @@
 
 ## Source
 
-> Source: `modules-plugable/economics/good/edges/best_before/protocol/service-set.go` (in code).
+> Source: `modules-plugable/economics/good/edges/best_before/protocol/service-set.kh` (in code).
 

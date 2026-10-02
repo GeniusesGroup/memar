@@ -1,0 +1,72 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+// TODO(go-migrate):
+/*
+package captcha
+
+import (
+	er "libgo/error"
+	"libgo/protocol"
+)
+
+const domainEnglish = "Captcha"
+const domainPersian = "کپچا"
+
+// package errors
+var (
+	ErrNotFound       er.Error
+	ErrExpired        er.Error
+	ErrAnswerNotValid er.Error
+	ErrNotSolved      er.Error
+)
+
+func init() {
+	ErrNotFound.Init("domain/captcha.protocol; type=error; name=not-found")
+	ErrNotFound.SetDetail(protocol.LanguageEnglish, domainEnglish, "Not Found",
+		"Captcha not exist, Try new one",
+		"",
+		"",
+		nil)
+	ErrNotFound.SetDetail(protocol.LanguagePersian, domainPersian, "یافت نشد",
+		"کپچای مورد نظر یافت نشد، یکی دیگر را امتحان کنید",
+		"",
+		"",
+		nil)
+
+	ErrExpired.Init("domain/captcha.protocol; type=error; name=expired")
+	ErrExpired.SetDetail(protocol.LanguageEnglish, domainEnglish, "Expired",
+		"Captcha Expired, Try new one",
+		"",
+		"",
+		nil)
+	ErrExpired.SetDetail(protocol.LanguagePersian, domainPersian, "منقضی شده است",
+		"کپچای مورد نظر منقضی شده است، یکی دیگر را امتحان کنید",
+		"",
+		"",
+		nil)
+
+	ErrAnswerNotValid.Init("domain/captcha.protocol; type=error; name=answer-not-valid")
+	ErrAnswerNotValid.SetDetail(protocol.LanguageEnglish, domainEnglish, "Answer Not Valid",
+		"Given answer for captcha not valid, Try again",
+		"",
+		"",
+		nil)
+	ErrAnswerNotValid.SetDetail(protocol.LanguagePersian, domainPersian, "جواب غیر صحیح",
+		"جواب ارسالی برای کپچای مورد نظر صحیح نمی باشد، دوباره تلاش کنید",
+		"",
+		"",
+		nil)
+
+	ErrNotSolved.Init("domain/captcha.protocol; type=error; name=not-solved")
+	ErrNotSolved.SetDetail(protocol.LanguageEnglish, domainEnglish, "Not Solved",
+		"Captcha not solved yet, Solve it before use it to prove human being",
+		"",
+		"",
+		nil)
+	ErrNotSolved.SetDetail(protocol.LanguagePersian, domainPersian, "حل نشده است",
+		"قبل از ارسال درخواست با اشاره به این کپچا شما می بایستی کپچا را حل کنید",
+		"",
+		"",
+		nil)
+}
+*/

@@ -1,0 +1,50 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+// TODO(go-migrate):
+/*
+package services
+
+import (
+	"fmt"
+	"reflect"
+	"testing"
+
+	"libgo/protocol"
+)
+
+func Test_registerProductInvoiceReq_jsonDecoder(t *testing.T) {
+	type args struct {
+		buf []byte
+	}
+	tests := []struct {
+		name    string
+		req     *registerProductInvoiceReq
+		args    args
+		wantErr protocol.Error
+	}{
+		{
+			name: "test1",
+			req:  &registerProductInvoiceReq{},
+			args: args{
+				buf: []byte(`{"UserID":"gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA","UserOTP":1524,"UserTransactionID":"gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA","SenderDCID":"gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA","ReceiverDCID":"gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA","Products":[{"QuiddityID":"gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA","ProductAuctionID":"gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA","Number":1,"Status":5},{"QuiddityID":"ggAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA","ProductAuctionID":"ggAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA","Number":10,"Status":50}]}`),
+			},
+		},
+		{
+			name: "test2",
+			req:  &registerProductInvoiceReq{},
+			args: args{
+				buf: []byte(`{"UserID":"p8dAHVaQoslDkXK84UHw9qN14A0o5QfuDek6Wkotqo8","UserOTP":0,"UserTransactionID":"lS94HqZkufKBge88ve7LFI5JEZk1sjLW3PmYiU+VWbo","SenderDCID":"cfiiAF6pxrG15E50WcmqWGOJj7eutxifP04LOwPIEEg","Language":5,"Products":[{"QuiddityID":"1X7kJDTpA9qQFbS9iTBw7LD9u7qDp0RTddzwxrGxzF4","ProductAuctionID":"uk8Vm5UTL6VJ4zDhocoavrxmhxeUs9cAy9mZg4W3qrI","Number":1},{"QuiddityID":"ROBx6PR5BuNHmy6MGDSZ/3YZyb3F9e+0KdIUKE/JLQY","ProductAuctionID":"kQ5I6iZO4s1SzHiHzZ6IwyYoyl7qp9HPjVb4QFviv8A","Number":2},{"QuiddityID":"f7eDBuLMUQvZswEYaDCUPaNBlTnLJfGCHBmOiMqRh84","ProductAuctionID":"Dm0dRBx6bUVAKR4+tVJ3UU9Ti7vo2mSBIj4ySxVyXDA","Number":1},{"QuiddityID":"3wxmTN6rHtmjTw+7/LK9C9MZ/r7+QPtNtqiPQmY7/cs","ProductAuctionID":"tikN1JbFDCiE11+BmdAL4xkd9XRJaXfS7KOzLvPY6l8","Number":1},{"QuiddityID":"P3wJ3MngImEWj9luZBxfzXGCGaGfmrbRz1KvpJbxPSQ","ProductAuctionID":"G6rVK5VGZsODEvIkbe7WBG+gh6nHczn6vO6Ta8raW7Q","Number":1},{"QuiddityID":"BYAtSB3kKWTraAiFrVSwMk8hehxjrSwxF552KJkqIis","ProductAuctionID":"4+9FDPzwYThuiHQBv1HlG2kb/beIh9ZtcB/L+pm/UZc","Number":1},{"QuiddityID":"ZRvMKXmwg1TQhnyOtPSCvdtwRFRR7cTENSrNFOcorGM","ProductAuctionID":"MTQGqBP9MJoXEgjIgfF+Et7xuBjxOnAT7H5x8gWAc5A","Number":1},{"QuiddityID":"Iu6Rr7+dVhuYDaZAdPL2h4Z3roZYuLrcJHvTxcUJVg4","ProductAuctionID":"2/PiJHlTUzS2bvI0FqILvFQVvspNAt5ZVpIxyDZeSDw","Number":1},{"QuiddityID":"Du3HXkwjMi4k+HnGV+kbmFJhqziANN68VoxeW0PXelQ","ProductAuctionID":"QZvjMp2MHoM1Sg9B0C5wjjLhmfNCf91Dy9LEA49a0hM","Number":1},{"QuiddityID":"PkZL6MfwIGyiVyGlOBYXipBMg4wTpIpGu9NQJUJSoTU","ProductAuctionID":"Pf2SwTwGGY1W9hX7PJ5nQpmGaGAKZ9qKT72SsjdTdI4","Number":1},{"QuiddityID":"1ftve8l6vO5Lu/iXGWYW6QllMSJEBgPu6KyD+eJJdk8","ProductAuctionID":"Lv0DGDgwxMLXhrJsQ5IWxEls+skYwbrQfYzs6B60dQQ","Number":1},{"QuiddityID":"v3eMSok4yb/fSpgKL09V6R9rYpcROLS3TbG6l2hTKlA","ProductAuctionID":"IMbolQbQdeZNuHQfRtZlbFpQwMijp5AaUgtqZjdtCrg","Number":1},{"QuiddityID":"2W9xgMqLL5zFS59VMdEK4Guyj0TWhk3gHoTSvVKutcY","ProductAuctionID":"eCSbGNjRkho3/WN8k4rS4Gi6mp0JNwmc++eHWuyvr/E","Number":1},{"QuiddityID":"yIeg/8ZEtpnyc7g+cnCY5x+fC3YgeaycVZJtOoQuPKc","ProductAuctionID":"6tjXOK+/qJMxLh3uPYj1fuXgsfQjoGrI4Jjp2O73TIM","Number":1},{"QuiddityID":"mp6aaBuB9whW0qfhhRdwkPvs1TFoXbpFO+KPwXEIrVw","ProductAuctionID":"NuenEcCCOoe7v07Sj34TtmbJzriOcZTyi0kUHzUgNkk","Number":1}]}`),
+			},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if gotErr := tt.req.FromJSON(tt.args.buf); !reflect.DeepEqual(gotErr, tt.wantErr) {
+				t.Errorf("registerProductInvoiceReq.jsonDecoder() = %v, want %v", gotErr, tt.wantErr)
+			}
+			fmt.Println(*tt.req)
+		})
+	}
+	fmt.Println(len(`{"UserID":"p8dAHVaQoslDkXK84UHw9qN14A0o5QfuDek6Wkotqo8","UserOTP":0,"UserTransactionID":"ap4epYIqSYeHTeCNKmlkWa//WR/rYCXTPTrD/NN5kNs","SenderDCID":"cfiiAF6pxrG15E50WcmqWGOJj7eutxifP04LOwPIEEg","Language":5,"Products":[{"QuiddityID":"1X7kJDTpA9qQFbS9iTBw7LD9u7qDp0RTddzwxrGxzF4","ProductAuctionID":"uk8Vm5UTL6VJ4zDhocoavrxmhxeUs9cAy9mZg4W3qrI","Number":1},{"QuiddityID":"ROBx6PR5BuNHmy6MGDSZ/3YZyb3F9e+0KdIUKE/JLQY","ProductAuctionID":"kQ5I6iZO4s1SzHiHzZ6IwyYoyl7qp9HPjVb4QFviv8A","Number":2},{"QuiddityID":"f7eDBuLMUQvZswEYaDCUPaNBlTnLJfGCHBmOiMqRh84","ProductAuctionID":"Dm0dRBx6bUVAKR4+tVJ3UU9Ti7vo2mSBIj4ySxVyXDA","Number":1},{"QuiddityID":"3wxmTN6rHtmjTw+7/LK9C9MZ/r7+QPtNtqiPQmY7/cs","ProductAuctionID":"tikN1JbFDCiE11+BmdAL4xkd9XRJaXfS7KOzLvPY6l8","Number":1},{"QuiddityID":"P3wJ3MngImEWj9luZBxfzXGCGaGfmrbRz1KvpJbxPSQ","ProductAuctionID":"G6rVK5VGZsODEvIkbe7WBG+gh6nHczn6vO6Ta8raW7Q","Number":1},{"QuiddityID":"BYAtSB3kKWTraAiFrVSwMk8hehxjrSwxF552KJkqIis","ProductAuctionID":"4+9FDPzwYThuiHQBv1HlG2kb/beIh9ZtcB/L+pm/UZc","Number":1},{"QuiddityID":"ZRvMKXmwg1TQhnyOtPSCvdtwRFRR7cTENSrNFOcorGM","ProductAuctionID":"MTQGqBP9MJoXEgjIgfF+Et7xuBjxOnAT7H5x8gWAc5A","Number":1},{"QuiddityID":"Iu6Rr7+dVhuYDaZAdPL2h4Z3roZYuLrcJHvTxcUJVg4","ProductAuctionID":"2/PiJHlTUzS2bvI0FqILvFQVvspNAt5ZVpIxyDZeSDw","Number":1},{"QuiddityID":"Du3HXkwjMi4k+HnGV+kbmFJhqziANN68VoxeW0PXelQ","ProductAuctionID":"QZvjMp2MHoM1Sg9B0C5wjjLhmfNCf91Dy9LEA49a0hM","Number":1},{"QuiddityID":"PkZL6MfwIGyiVyGlOBYXipBMg4wTpIpGu9NQJUJSoTU","ProductAuctionID":"Pf2SwTwGGY1W9hX7PJ5nQpmGaGAKZ9qKT72SsjdTdI4","Number":1},{"QuiddityID":"1ftve8l6vO5Lu/iXGWYW6QllMSJEBgPu6KyD+eJJdk8","ProductAuctionID":"Lv0DGDgwxMLXhrJsQ5IWxEls+skYwbrQfYzs6B60dQQ","Number":1},{"QuiddityID":"v3eMSok4yb/fSpgKL09V6R9rYpcROLS3TbG6l2hTKlA","ProductAuctionID":"IMbolQbQdeZNuHQfRtZlbFpQwMijp5AaUgtqZjdtCrg","Number":1},{"QuiddityID":"2W9xgMqLL5zFS59VMdEK4Guyj0TWhk3gHoTSvVKutcY","ProductAuctionID":"eCSbGNjRkho3/WN8k4rS4Gi6mp0JNwmc++eHWuyvr/E","Number":1},{"QuiddityID":"yIeg/8ZEtpnyc7g+cnCY5x+fC3YgeaycVZJtOoQuPKc","ProductAuctionID":"6tjXOK+/qJMxLh3uPYj1fuXgsfQjoGrI4Jjp2O73TIM","Number":1},{"QuiddityID":"mp6aaBuB9whW0qfhhRdwkPvs1TFoXbpFO+KPwXEIrVw","ProductAuctionID":"NuenEcCCOoe7v07Sj34TtmbJzriOcZTyi0kUHzUgNkk","Number":1}]}`))
+}
+*/

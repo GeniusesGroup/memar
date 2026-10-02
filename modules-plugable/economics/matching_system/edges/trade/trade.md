@@ -4,7 +4,7 @@ Add watcher to specific transactions to check min or max to make a deal (sell/bu
 ## Model
 
 - `[transaction-[:trade_by]->(market{rule})`
-- Trade-order record fields ([protocol/data_model.go](protocol/data_model.go)): `OrderID`, `Level uint8` ("usually 3 level trade order"), `HighPrice protocol.MoneyAmount // SaveProfit e.g. 45$, -102$`, `LowPrice protocol.MoneyAmount // StopLoss e.g. 43$, -95$`, `Type Type`.
+- Trade-order record fields ([data_model.kh](protocol/data_model.kh)): `OrderID`, `Level uint8` ("usually 3 level trade order"), `HighPrice protocol.MoneyAmount // SaveProfit e.g. 45$, -102$`, `LowPrice protocol.MoneyAmount // StopLoss e.g. 43$, -95$`, `Type Type`.
 
 ## Policies (rules)
 
@@ -15,7 +15,7 @@ Add watcher to specific transactions to check min or max to make a deal (sell/bu
 - if user want to limit price, must fill order-price record otherwise market price will choose for the deals.
 - "can be zero to prevent sell on profit(cover order) or stopping loss" — zero `HighPrice`/`LowPrice` means no cover/stop at that level.
 
-## Order-type vocabulary ([protocol/dt-type.go](protocol/dt-type.go))
+## Order-type vocabulary ([dt-type.kh](protocol/dt-type.kh))
 
 - `Type_Regular // price rules`, `Type_Trade // trade rules`, `Type_Duration`.
 - `Type_AllOrNone` — "Whole order must be filled for matching deal or order must cancelled on timeout"; absent flag "allow matching engine to deal part of order" (https://en.wikipedia.org/wiki/All_or_none).
@@ -35,11 +35,11 @@ Add watcher to specific transactions to check min or max to make a deal (sell/bu
 ## Open questions
 
 - Are order types rules over the trade edge or trade-edge types? (Receiving [matching_system.md](../../matching_system.md) review question — type flags asserted above; confirm against how the engine selects behavior.)
-- Does Auction need a matching-engine protocol rather than a label? Auction/Vickrey/GTC appear only in the domain backlog prose (and market prose in [matching_system.md](../../matching_system.md) intro — "auction where matching is done at fixed intervals"), NOT in the cited `protocol/*.go` sources — no code source of record; record provenance before ratifying (StopLoss/StopLimit/IOC ARE in `dt-type.go`).
+- Does Auction need a matching-engine protocol rather than a label? Auction/Vickrey/GTC appear only in the domain backlog prose (and market prose in [matching_system.md](../../matching_system.md) intro — "auction where matching is done at fixed intervals"), NOT in the cited `protocol/*.kh` sources — no code source of record; record provenance before ratifying (StopLoss/StopLimit/IOC ARE in `protocol/dt-type.kh`).
 - `fill_or_kill`/`all_or_none` as types here vs their loop-edge siblings — type flag and loop edge: one meaning, two expressions? (Domain Unresolved also asks fill_or_kill vs all_or_none: genuine difference or duplicate labels?)
 - `Type` const blocks: StopLoss/StopLimit restart `iota` in a second block (values overlap `Type_Unset`=0) — naming/values quirk to resolve at implementation pass.
 
 ## Source
 
-> Source: `modules-plugable/economics/matching_system/edges/trade/protocol/dt-type.go` and `.../protocol/data_model.go` (in code).
+> Source: `modules-plugable/economics/matching_system/edges/trade/protocol/dt-type.kh` and `protocol/data_model.kh` (in code).
 

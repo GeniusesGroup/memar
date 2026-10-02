@@ -1,0 +1,28 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+// TODO(go-migrate):
+/*
+package tax_p
+
+import (
+	request_p "memar/process/request/protocol"
+	audit_time_p "memar/process/time/protocol"
+	product_p "org/modules/economics/product/protocol"
+
+	invoice_p "org/modules/economics/invoice/protocol"
+	money_p "org/modules/economics/money/protocol"
+)
+
+// DataModel indicate the domain record data fields. each order is immutable record.
+type product interface {
+	invoice_p.Field_InvoiceID
+	product_p.Field_ProductID
+	Field_TaxID
+
+	money_p.Money
+	// VAT() money_p.Amount // Total VAT user pay to its country government
+
+	request_p.Field_RequestID
+	audit_time_p.Field_Request
+}
+*/

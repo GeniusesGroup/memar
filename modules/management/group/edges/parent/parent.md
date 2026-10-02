@@ -8,7 +8,7 @@
 ## Policies (rules)
 
 - Use to categorize and graph groups
-- GUI projection: "Show in SameLevel, UpperLevel, LowerLevel" and "Provide drag and drop to change the groups relation" (from source gui.go).
+- GUI projection: "Show in SameLevel, UpperLevel, LowerLevel" and "Provide drag and drop to change the groups relation" (from source ../../../../knowledge/question/widgets/question/gui.kh).
 
 ## Placement
 

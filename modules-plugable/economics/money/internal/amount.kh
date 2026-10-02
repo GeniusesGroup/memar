@@ -1,0 +1,45 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+// TODO(go-migrate):
+/*
+package money
+
+import (
+	"strconv"
+
+	"memar/math/per"
+)
+
+// Amount indicate to store price amount
+// Some number part base on currency is Decimal part e.g. 8099 >> 80.99$
+type Amount int64
+
+// String return amount in string format
+func (a Amount) String(decimalNumber int) string {
+	return strconv.FormatInt(int64(a), 10)
+}
+
+// PerCent return PerCent amount of given amount.
+func (a Amount) PerCent(per per.Cent) Amount {
+	// return a - Amount(per.Calculate(uint64(a)))
+	return (a * Amount(per)) / 100
+}
+
+// PerMille return PerMille amount of given amount.
+func (a Amount) PerMille(per per.Mille) Amount {
+	// return a - Amount(per.Calculate(uint64(a)))
+	return (a * Amount(per)) / 1000
+}
+
+// PerMyriad return PerMyriad amount of given amount.
+func (a Amount) PerMyriad(per per.Myriad) Amount {
+	// return a - Amount(per.Calculate(uint64(a)))
+	return (a * Amount(per)) / 10000
+}
+
+// Root return Root amount of given amount by given PerMyriad.
+func (a Amount) Root(per per.Myriad) Amount {
+	return ((a / (100 + Amount(per))) * 100)
+	// return ((a / (100 + Amount(per))) * 100) * Amount(per)
+}
+*/

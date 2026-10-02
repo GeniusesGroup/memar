@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+// TODO(go-migrate):
+/*
+package kud_p
+
+import (
+	"memar/time/duration"
+
+	request_p "memar/process/request/protocol"
+	audit_time_p "memar/process/time/protocol"
+
+	eku_p "org/modules/knowledge/knowledge_unit/protocol"
+)
+
+// DataModel indicate the domain record data fields.
+type DataModel interface {
+	eku_p.Field_KnowledgeUnitID
+	Minimum() duration.Second  // Minimum time duration to learn
+	Expected() duration.Second // Expected time duration to learn
+	Maximum() duration.Second  // Maximum time duration to learn
+
+	request_p.Field_RequestID
+	audit_time_p.Field_Request
+}
+*/

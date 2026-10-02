@@ -2,13 +2,13 @@
 
 ## Model
 
-- `(invoice_item)-[:invoice_item_seat]->(---)` — target unconfirmed: [protocol/data_model.go](protocol/data_model.go) keys the record on `Field_InvoiceItemID` + `Field_SeatID` ([protocol/dt-seat_id.go](protocol/dt-seat_id.go), a `uint64`) — a seat id on the item today; a `(seat)` node only if/when the resource-side seat record ([../seat/](../seat/)) is referenced directly.
+- `(invoice_item)-[:invoice_item_seat]->(---)` — target unconfirmed: [data_model.kh](protocol/data_model.kh) keys the record on `Field_InvoiceItemID` + `Field_SeatID` ([dt-seat_id.kh](protocol/dt-seat_id.kh), a `uint64`) — a seat id on the item today; a `(seat)` node only if/when the resource-side seat record ([](../seat/)) is referenced directly.
 - Query services: `FIND_InvoiceIDs_BY_ProductIDAndSeatID`, `FIND_InvoiceIDs_BY_SeatID_AND_Status`, `FILTER_InvoiceIDs_BY_Status`.
 
 ## Policies (rules)
 
 - "service: reserve seat" — an invoice line holds a seat; occupancy is answered through invoice lines by (product, seat), by seat+status, or by status alone.
-- Live protocol note widens the meaning: "It can also use to order buyers e.g. patient in doctor clinic" ([protocol/data_model.go](protocol/data_model.go)) — the seat may name a person-slot, not only a chair.
+- Live protocol note widens the meaning: "It can also use to order buyers e.g. patient in doctor clinic" ([data_model.kh](protocol/data_model.kh)) — the seat may name a person-slot, not only a chair.
 - No who-may-create / what-it-triggers rules recorded in the source; reserve/release semantics unconfirmed.
 
 ## Placement
@@ -20,7 +20,7 @@
 
 ## Open questions
 
-- Seat id vs seat node: when does `dt-seat_id.go`'s `uint64` become a referenced seat entity (capacity, `MapID` SVG layout in [../seat/protocol/data_model.go](../seat/protocol/data_model.go))?
+- Seat id vs seat node: when does `protocol/dt-seat_id.kh`'s `uint64` become a referenced seat entity (capacity, `MapID` SVG layout in [data_model.kh](../seat/protocol/data_model.kh))?
 - Relation to the `Type_Seat` product flag — flag-plus-edge duplication (same review as Provider/SellLimit in [product.md](../../../../../modules/economics/product/product.md))?
 - `Status` used by these queries: protocol-local status or the general status domain?
 - [transaction.md](../../../../../modules/economics/transaction/transaction.md) filed these listings as "data-model pass material" — keep or drop at the pass?

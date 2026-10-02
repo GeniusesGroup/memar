@@ -11,4 +11,4 @@ The modeling definition is deliberately **not settled yet** — narrative, hypot
 - **What may become an estate is runtime policy** of each organization (e.g. whether an electrical switch qualifies) — never hard-coded; this domain's job is defining which edges an estate must/can take.
 - **Out of this domain**: Ownership and Law (→ `modules/rights`), Address (→ URI domain), GPS/coordinates (→ location/URI domains; see `object/edges/coordinate-gps`).
 
-Boundary questions shared with Product (furniture, museum, designs) are co-tracked in [../../economics/product/product.handoff.md](../../economics/product/product.handoff.md).
+Boundary questions shared with Product (furniture, museum, designs) are co-tracked in [product.handoff.md](../../economics/product/product.handoff.md).

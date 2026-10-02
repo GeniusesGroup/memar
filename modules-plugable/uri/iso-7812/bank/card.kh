@@ -1,0 +1,33 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+// TODO(go-migrate):
+/*
+package bank
+
+import (
+	"memar/validators"
+
+	card_p "org/modules/uri/iso-7812/protocol"
+)
+
+// https://en.wikipedia.org/wiki/ISO/IEC_7812
+type Card string
+
+// Major industry identifier
+// convert character to its numerical values
+func (card Card) MII() card_p.CardMII { return card_p.CardMII(card[0]) }
+
+// Issuer identification number (IIN)
+// TODO::: how to return 8 number length IIN??
+func (card Card) IIN() string { return string(card[0:6]) }
+
+// Individual account identification
+func (card Card) Account() string { return string(card[6 : len(card)-2]) }
+
+// The final digit is a check digit which is calculated using the Luhn algorithm, defined in Annex B of ISO/IEC 7812-1.
+func (card Card) CheckDigit() byte { return card[len(card)-1] }
+
+func (card Card) IsValid() (ok bool) {
+	return validators.LuhnAlgorithm(string(card))
+}
+*/

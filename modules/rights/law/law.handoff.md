@@ -25,7 +25,7 @@ Active — the type states the signed instrument, what is in force, and what is 
 
 ## Ambiguities Resolved
 - **Where instance statutes live after the society corpus left Memar.** Settlement-specific statutes are modules of the bundle that enforces them. Duration/sunset is not one of those; it is plugable.
-- **`### Model` on a domain document.** A Cypher/edge list is a cache of `edges/` and `aggregation.go`. Removed from [law.md](law.md).
+- **`### Model` on a domain document.** A Cypher/edge list is a cache of `edges/` and `edges/aggregation.kh`. Removed from [law.md](law.md).
 - **Wholesale bundle→plugable.** Only duration left government. Membership and judiciary are split questions on [bundles.handoff.md](../../../bundles/bundles.handoff.md).
 - **Post-vote explanation-append.** Not an owner rule. It was Grok's inference from "later precision appends to interpretation." Once voting starts, nothing in the payload changes. *(How: owner this session, answering research 001 finding 1.)*
 - **Empty computer_code as the only draft gate.** Too strong a reading of one example. Any empty required companion keeps the record in draft. *(How: owner this session.)*
@@ -58,7 +58,7 @@ Active — the type states the signed instrument, what is in force, and what is 
 - Do not open `law-priority` or a separate retroactivity module. Basic statutes are [laws](../../../modules-plugable/rights/laws/laws.md). Kinds of dispute are [claims](../../../modules-plugable/rights/claims/claims.md).
 
 ## Assumptions
-- The five-field interface in `edges/aggregation.go` is the intended schema, not a sketch. Stability: Strong.
+- The five-field interface in `edges/aggregation.kh` is the intended schema, not a sketch. Stability: Strong.
 - Human-readable law bodies are Text-domain nodes via `human_code_is` / `goal_is` / … Stability: Strong.
 - Among instruments in force, computer-code forms do not contradict. A proposal is not in force until an update claim succeeds and the new instrument supersedes the earlier one. Stability: Decided.
 - Grok's vote-count recommendation (keep artifact, omit from live tally) is not an owner decision. Stability: Unexamined as owner intent.

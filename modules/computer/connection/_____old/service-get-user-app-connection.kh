@@ -1,0 +1,522 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+// TODO(go-migrate):
+/*
+package services
+
+import (
+	"time"
+
+	ip "libgo/IP"
+	"libgo/authorization"
+	"libgo/gp"
+	"libgo/http"
+	"libgo/json"
+	"libgo/protocol"
+	"libgo/service"
+	"libgo/srpc"
+	"libgo/syllab"
+)
+
+var getUserAppConnectionService = service.Service{
+	URN:                "urn:giti:sabz.city:service:get-user-app-connection",
+	Domain:             DomainName,
+	ID:                 14329798783525919230,
+	IssueDate:          1603802112,
+	ExpiryDate:         0,
+	ExpireInFavorOfURN: "",
+	ExpireInFavorOfID:  0,
+	Status:             protocol.Software_PreAlpha,
+
+	Authorization: authorization.Service{
+		CRUD:     authorization.CRUDRead,
+		UserType: user_p.Type_All ^ user_p.Type_Unset,
+	},
+
+	Name: map[protocol.LanguageID]string{
+		protocol.LanguageEnglish: "Get User App Connection",
+	},
+	Description: map[protocol.LanguageID]string{
+		protocol.LanguageEnglish: "",
+	},
+	TAGS: []string{
+		"UserAppConnection",
+	},
+
+	SRPCHandler: GetUserAppConnectionSRPC,
+	ServeHTTP:   GetUserAppConnectionHTTP,
+}
+
+// GetUserAppConnectionSRPC is sRPC handler of GetUserAppConnection service.
+func GetUserAppConnectionSRPC(st protocol.Stream) {
+	var req = &getUserAppConnectionReq{}
+	err = req.FromSyllab(srpc.GetPayload(st.IncomePayload))
+	if err != nil {
+		return
+	}
+
+	var res *getUserAppConnectionRes
+	res, err = getUserAppConnection(st, req)
+	// Check if any error occur in business logic
+	if err != nil {
+		return
+	}
+
+	st.OutcomePayload = make([]byte, srpc.MinLength+res.LenAsSyllab())
+	res.ToSyllab(srpc.GetPayload(st.OutcomePayload))
+}
+
+// GetUserAppConnectionHTTP is HTTP handler of GetUserAppConnection service.
+func GetUserAppConnectionHTTP(st protocol.Stream, httpReq *http.Request, httpRes *http.Response) {
+	var req = &getUserAppConnectionReq{}
+	err = req.FromJSON(httpReq.Body().Marshal())
+	if err != nil {
+		httpRes.SetStatus(http.StatusBadRequestCode, http.StatusBadRequestPhrase)
+		return
+	}
+
+	var res *getUserAppConnectionRes
+	res, err = getUserAppConnection(st, req)
+	// Check if any error occur in business logic
+	if err != nil {
+		httpRes.SetStatus(http.StatusBadRequestCode, http.StatusBadRequestPhrase)
+		return
+	}
+
+	httpRes.SetStatus(http.StatusOKCode, http.StatusOKPhrase)
+	httpRes.SetBody(json.NewCodec(res))
+}
+
+type getUserAppConnectionReq struct {
+	ID [32]byte `json:",string"`
+}
+
+type getUserAppConnectionRes struct {
+	WriteTime        time.Time
+	AppInstanceID    [32]byte `json:",string"`
+	UserConnectionID [32]byte `json:",string"`
+	Status           data.UserAppConnectionStatus
+	Description      string // User custom text to identify connection easily.
+
+	/* Connection data * /
+	ID     [32]byte `json:",string"`
+	Weight operation_p.Weight
+
+	/* Peer data * /
+	// Peer Location
+	GPAddr  gp.Addr  `json:",string"`
+	IPAddr  ip.Addr  `json:",string"`
+	ThingID [32]byte `json:",string"`
+	// Peer Identifiers
+	UserID           [32]byte `json:",string"`
+	UserType         user_p.Type
+	DelegateUserID   [32]byte `json:",string"`
+	DelegateUserType user_p.Type
+
+	/* Security data * /
+	PeerPublicKey [32]byte `json:",string"`
+	AccessControl authorization.AccessControl
+
+	// Metrics data
+	LastUsage             time.Time // Last use of this connection
+	PacketPayloadSize     uint16    // Always must respect max frame size, so usually packets can't be more than 8192Byte!
+	MaxBandwidth          uint64    // Peer must respect this, otherwise connection will terminate and GP go to black list!
+	ServiceCallCount      uint64    // Count successful or unsuccessful request.
+	BytesSent             uint64    // Counts the bytes of payload data sent.
+	PacketsSent           uint64    // Counts sent packets.
+	BytesReceived         uint64    // Counts the bytes of payload data Receive.
+	PacketsReceived       uint64    // Counts received packets.
+	FailedPacketsReceived uint64    // Counts failed packets receive for firewalling server from some attack types!
+	FailedServiceCall     uint64    // Counts failed service call e.g. data validation failed, ...
+}
+
+func getUserAppConnection(st protocol.Stream, req *getUserAppConnectionReq) (res *getUserAppConnectionRes, err error_p.Error) {
+	err = st.Authorize()
+	if err != nil {
+		return
+	}
+
+	var uac = data.UserAppConnection{
+		ID: req.ID,
+	}
+	err = uac.GetLastByID()
+	if err != nil {
+		return
+	}
+
+	if st.Connection.UserID != uac.UserID && st.Connection.UserID != uac.DelegateUserID {
+		err = authorization.ErrUserNotAllow
+		return
+	}
+
+	res = &getUserAppConnectionRes{
+		WriteTime:        uac.WriteTime,
+		AppInstanceID:    achaemenid.App.Nodes.LocalNode.InstanceID,
+		UserConnectionID: uac.ID,
+		Status:           data.UserAppConnectionUpdate,
+		Description:      uac.Description,
+
+		/* Connection data * /
+		ID:     uac.ID, // TODO::: Due to HTTP use ConnectionID to authenticate connections enable it now!!??
+		Weight: uac.Weight,
+
+		/* Peer data * /
+		// Peer Location
+		GPAddr:  uac.GPAddr,
+		IPAddr:  uac.IPAddr,
+		ThingID: uac.ThingID,
+		// Peer Identifiers
+		UserID:           uac.UserID,
+		UserType:         uac.UserType,
+		DelegateUserID:   uac.DelegateUserID,
+		DelegateUserType: uac.DelegateUserType,
+
+		/* Security data * /
+		PeerPublicKey: uac.PeerPublicKey,
+		AccessControl: uac.AccessControl,
+
+		// Metrics data
+		LastUsage:             uac.LastUsage,
+		PacketPayloadSize:     uac.PacketPayloadSize,
+		MaxBandwidth:          uac.MaxBandwidth,
+		ServiceCallCount:      uac.ServiceCallCount,
+		BytesSent:             uac.BytesSent,
+		PacketsSent:           uac.PacketsSent,
+		BytesReceived:         uac.BytesReceived,
+		PacketsReceived:       uac.PacketsReceived,
+		FailedPacketsReceived: uac.FailedPacketsReceived,
+		FailedServiceCall:     uac.FailedServiceCall,
+	}
+
+	return
+}
+
+/*
+	Request Encoders & Decoders
+* /
+
+func (req *getUserAppConnectionReq) FromSyllab(payload []byte, stackIndex uint32) {
+	if uint32(len(buf)) < req.LenOfSyllabStack() {
+		err = syllab.ErrShortArrayDecode
+		return
+	}
+
+	copy(req.ID[:], buf[0:])
+	return
+}
+
+func (req *getUserAppConnectionReq) ToSyllab(payload []byte, stackIndex, heapIndex uint32) (freeHeapIndex uint32) {
+	copy(buf[0:], req.ID[:])
+}
+
+func (req *getUserAppConnectionReq) LenOfSyllabStack() uint32 {
+	return 32
+}
+
+func (req *getUserAppConnectionReq) LenOfSyllabHeap() (ln uint32) {
+	return
+}
+
+func (req *getUserAppConnectionReq) LenAsSyllab() uint64 {
+	return uint64(req.LenOfSyllabStack() + req.LenOfSyllabHeap())
+}
+
+func (req *getUserAppConnectionReq) FromJSON(payload []byte) (remaining []byte, err error_p.Error) {
+	var decoder = json.DecoderUnsafeMinified{Buf: payload}
+	for err == nil {
+		var keyName = decoder.DecodeKey()
+		switch keyName {
+		case "ID":
+			err = decoder.DecodeByteArrayAsBase64(req.ID[:])
+		default:
+			err = decoder.NotFoundKeyStrict()
+		}
+
+		if decoder.End() {
+			return
+		}
+	}
+	return
+}
+
+func (req *getUserAppConnectionReq) ToJSON(payload []byte) (added []byte, err error_p.Error) {
+	var encoder = json.Encoder{Buf: payload}
+
+	encoder.EncodeString(`{"ID":"`)
+	encoder.EncodeByteSliceAsBase64(req.ID[:])
+
+	encoder.EncodeString(`"}`)
+	return encoder.Buf
+}
+
+func (req *getUserAppConnectionReq) LenAsJSON() (ln int) {
+	ln = 52
+	return
+}
+
+/*
+	Response Encoders & Decoders
+* /
+
+func (res *getUserAppConnectionRes) FromSyllab(payload []byte, stackIndex uint32) {
+	if uint32(len(buf)) < res.LenOfSyllabStack() {
+		err = syllab.ErrShortArrayDecode
+		return
+	}
+
+	res.WriteTime = time.Time(syllab.GetInt64(buf, 0))
+	copy(res.AppInstanceID[:], buf[8:])
+	copy(res.UserConnectionID[:], buf[40:])
+	res.Status = data.UserAppConnectionStatus(syllab.GetUInt8(buf, 72))
+	res.Description = syllab.UnsafeGetString(buf, 73)
+	copy(res.ID[:], buf[81:])
+	res.Weight = achaemenid.Weight(syllab.GetUInt8(buf, 113))
+
+	copy(res.GPAddr[:], buf[114:])
+	copy(res.IPAddr[:], buf[128:])
+	copy(res.ThingID[:], buf[144:])
+	copy(res.UserID[:], buf[176:])
+	res.UserType = user_p.Type(syllab.GetUInt8(buf, 208))
+	copy(res.DelegateUserID[:], buf[209:])
+	res.DelegateUserType = user_p.Type(syllab.GetUInt8(buf, 241))
+
+	copy(res.PeerPublicKey[:], buf[242:])
+	res.AccessControl.FromSyllab(buf, 274)
+
+	res.LastUsage = time.Time(syllab.GetInt64(buf, 274+res.AccessControl.LenOfSyllabStack()))
+	res.PacketPayloadSize = syllab.GetUInt16(buf, 282+res.AccessControl.LenOfSyllabStack())
+	res.MaxBandwidth = syllab.GetUInt64(buf, 284+res.AccessControl.LenOfSyllabStack())
+	res.ServiceCallCount = syllab.GetUInt64(buf, 292+res.AccessControl.LenOfSyllabStack())
+	res.BytesSent = syllab.GetUInt64(buf, 300+res.AccessControl.LenOfSyllabStack())
+	res.PacketsSent = syllab.GetUInt64(buf, 308+res.AccessControl.LenOfSyllabStack())
+	res.BytesReceived = syllab.GetUInt64(buf, 316+res.AccessControl.LenOfSyllabStack())
+	res.PacketsReceived = syllab.GetUInt64(buf, 324+res.AccessControl.LenOfSyllabStack())
+	res.FailedPacketsReceived = syllab.GetUInt64(buf, 332+res.AccessControl.LenOfSyllabStack())
+	res.FailedServiceCall = syllab.GetUInt64(buf, 340+res.AccessControl.LenOfSyllabStack())
+	return
+}
+
+func (res *getUserAppConnectionRes) ToSyllab(payload []byte, stackIndex, heapIndex uint32) (freeHeapIndex uint32) {
+	// buf = make([]byte, res.LenAsSyllab()+offset)
+	// var i, ln uint32 // len of strings, slices, maps, ...
+
+	syllab.SetInt64(buf, 0, int64(res.WriteTime))
+	copy(buf[8:], res.AppInstanceID[:])
+	copy(buf[40:], res.UserConnectionID[:])
+	syllab.SetUInt8(buf, 72, uint8(res.Status))
+	heapIndex = syllab.SetString(buf, res.Description, 73, heapIndex)
+	copy(buf[81:], res.ID[:])
+	syllab.SetUInt8(buf, 113, uint8(res.Weight))
+
+	copy(buf[114:], res.GPAddr[:])
+	copy(buf[128:], res.IPAddr[:])
+	copy(buf[144:], res.ThingID[:])
+	copy(buf[176:], res.UserID[:])
+	syllab.SetUInt8(buf, 208, uint8(res.UserType))
+	copy(buf[209:], res.DelegateUserID[:])
+	syllab.SetUInt8(buf, 241, uint8(res.DelegateUserType))
+
+	copy(buf[242:], res.PeerPublicKey[:])
+	res.AccessControl.ToSyllab(buf, 274, heapIndex)
+
+	syllab.SetInt64(buf, 274+res.AccessControl.LenOfSyllabStack(), int64(res.LastUsage))
+	syllab.SetUInt16(buf, 282+res.AccessControl.LenOfSyllabStack(), res.PacketPayloadSize)
+	syllab.SetUInt64(buf, 284+res.AccessControl.LenOfSyllabStack(), res.MaxBandwidth)
+	syllab.SetUInt64(buf, 292+res.AccessControl.LenOfSyllabStack(), res.ServiceCallCount)
+	syllab.SetUInt64(buf, 300+res.AccessControl.LenOfSyllabStack(), res.BytesSent)
+	syllab.SetUInt64(buf, 308+res.AccessControl.LenOfSyllabStack(), res.PacketsSent)
+	syllab.SetUInt64(buf, 316+res.AccessControl.LenOfSyllabStack(), res.BytesReceived)
+	syllab.SetUInt64(buf, 324+res.AccessControl.LenOfSyllabStack(), res.PacketsReceived)
+	syllab.SetUInt64(buf, 332+res.AccessControl.LenOfSyllabStack(), res.FailedPacketsReceived)
+	syllab.SetUInt64(buf, 340+res.AccessControl.LenOfSyllabStack(), res.FailedServiceCall)
+	return
+}
+
+func (res *getUserAppConnectionRes) LenOfSyllabStack() uint32 {
+	return 348 + res.AccessControl.LenOfSyllabStack()
+}
+
+func (res *getUserAppConnectionRes) LenOfSyllabHeap() (ln uint32) {
+	ln += uint32(len(res.Description))
+	ln += res.AccessControl.LenOfSyllabHeap()
+	return
+}
+
+func (res *getUserAppConnectionRes) LenAsSyllab() uint64 {
+	return uint64(res.LenOfSyllabStack() + res.LenOfSyllabHeap())
+}
+
+func (res *getUserAppConnectionRes) FromJSON(payload []byte) (remaining []byte, err error_p.Error) {
+	var decoder = json.DecoderUnsafeMinified{Buf: payload}
+	for err == nil {
+		var keyName = decoder.DecodeKey()
+		switch keyName {
+		case "WriteTime":
+			var num int64
+			num, err = decoder.DecodeInt64()
+			res.WriteTime = time.Time(num)
+		case "AppInstanceID":
+			err = decoder.DecodeByteArrayAsBase64(res.AppInstanceID[:])
+		case "UserConnectionID":
+			err = decoder.DecodeByteArrayAsBase64(res.UserConnectionID[:])
+		case "Status":
+			var num uint8
+			num, err = decoder.DecodeUInt8()
+			res.Status = data.UserAppConnectionStatus(num)
+		case "Description":
+			res.Description, err = decoder.DecodeString()
+		case "ID":
+			err = decoder.DecodeByteArrayAsBase64(res.ID[:])
+		case "Weight":
+			var num uint8
+			num, err = decoder.DecodeUInt8()
+			res.Weight = achaemenid.Weight(num)
+		case "GPAddr":
+			err = decoder.DecodeByteArrayAsBase64(res.GPAddr[:])
+		case "IPAddr":
+			err = decoder.DecodeByteArrayAsBase64(res.IPAddr[:])
+		case "ThingID":
+			err = decoder.DecodeByteArrayAsBase64(res.ThingID[:])
+		case "UserID":
+			err = decoder.DecodeByteArrayAsBase64(res.UserID[:])
+		case "UserType":
+			var num uint8
+			num, err = decoder.DecodeUInt8()
+			res.UserType = user_p.Type(num)
+		case "DelegateUserID":
+			err = decoder.DecodeByteArrayAsBase64(res.DelegateUserID[:])
+		case "DelegateUserType":
+			var num uint8
+			num, err = decoder.DecodeUInt8()
+			res.DelegateUserType = user_p.Type(num)
+		case "PeerPublicKey":
+			err = decoder.DecodeByteArrayAsBase64(res.PeerPublicKey[:])
+
+		case "AccessControl":
+			err = res.AccessControl.JSONDecoder(&decoder)
+
+		case "LastUsage":
+			var num int64
+			num, err = decoder.DecodeInt64()
+			res.LastUsage = time.Time(num)
+		case "PacketPayloadSize":
+			res.PacketPayloadSize, err = decoder.DecodeUInt16()
+		case "MaxBandwidth":
+			res.MaxBandwidth, err = decoder.DecodeUInt64()
+		case "ServiceCallCount":
+			res.ServiceCallCount, err = decoder.DecodeUInt64()
+		case "BytesSent":
+			res.BytesSent, err = decoder.DecodeUInt64()
+		case "PacketsSent":
+			res.PacketsSent, err = decoder.DecodeUInt64()
+		case "BytesReceived":
+			res.BytesReceived, err = decoder.DecodeUInt64()
+		case "PacketsReceived":
+			res.PacketsReceived, err = decoder.DecodeUInt64()
+		case "FailedPacketsReceived":
+			res.FailedPacketsReceived, err = decoder.DecodeUInt64()
+		case "FailedServiceCall":
+			res.FailedServiceCall, err = decoder.DecodeUInt64()
+		default:
+			err = decoder.NotFoundKeyStrict()
+		}
+
+		if decoder.End() {
+			return
+		}
+	}
+	return
+}
+
+func (res *getUserAppConnectionRes) ToJSON(payload []byte) (added []byte, err error_p.Error) {
+	var encoder = json.Encoder{Buf: payload}
+
+	encoder.EncodeString(`{"WriteTime":`)
+	encoder.EncodeInt64(int64(res.WriteTime))
+
+	encoder.EncodeString(`,"AppInstanceID":"`)
+	encoder.EncodeByteSliceAsBase64(res.AppInstanceID[:])
+
+	encoder.EncodeString(`","UserConnectionID":"`)
+	encoder.EncodeByteSliceAsBase64(res.UserConnectionID[:])
+
+	encoder.EncodeString(`","Status":`)
+	encoder.EncodeUInt8(uint8(res.Status))
+
+	encoder.EncodeString(`,"Description":"`)
+	encoder.EncodeString(res.Description)
+
+	encoder.EncodeString(`","ID":"`)
+	encoder.EncodeByteSliceAsBase64(res.ID[:])
+
+	encoder.EncodeString(`","Weight":`)
+	encoder.EncodeUInt8(uint8(res.Weight))
+
+	encoder.EncodeString(`,"GPAddr":"`)
+	encoder.EncodeByteSliceAsBase64(res.GPAddr[:])
+
+	encoder.EncodeString(`","IPAddr":"`)
+	encoder.EncodeByteSliceAsBase64(res.IPAddr[:])
+
+	encoder.EncodeString(`","ThingID":"`)
+	encoder.EncodeByteSliceAsBase64(res.ThingID[:])
+
+	encoder.EncodeString(`","UserID":"`)
+	encoder.EncodeByteSliceAsBase64(res.UserID[:])
+
+	encoder.EncodeString(`","UserType":`)
+	encoder.EncodeUInt8(uint8(res.UserType))
+
+	encoder.EncodeString(`,"DelegateUserID":"`)
+	encoder.EncodeByteSliceAsBase64(res.DelegateUserID[:])
+
+	encoder.EncodeString(`","DelegateUserType":`)
+	encoder.EncodeUInt8(uint8(res.DelegateUserType))
+
+	encoder.EncodeString(`,"PeerPublicKey":"`)
+	encoder.EncodeByteSliceAsBase64(res.PeerPublicKey[:])
+
+	encoder.EncodeString(`","AccessControl":`)
+	res.AccessControl.JSONEncoder(&encoder)
+
+	encoder.EncodeString(`,"LastUsage":`)
+	encoder.EncodeInt64(int64(res.LastUsage))
+
+	encoder.EncodeString(`,"PacketPayloadSize":`)
+	encoder.EncodeUInt64(uint64(res.PacketPayloadSize))
+
+	encoder.EncodeString(`,"MaxBandwidth":`)
+	encoder.EncodeUInt64(res.MaxBandwidth)
+
+	encoder.EncodeString(`,"ServiceCallCount":`)
+	encoder.EncodeUInt64(res.ServiceCallCount)
+
+	encoder.EncodeString(`,"BytesSent":`)
+	encoder.EncodeUInt64(res.BytesSent)
+
+	encoder.EncodeString(`,"PacketsSent":`)
+	encoder.EncodeUInt64(res.PacketsSent)
+
+	encoder.EncodeString(`,"BytesReceived":`)
+	encoder.EncodeUInt64(res.BytesReceived)
+
+	encoder.EncodeString(`,"PacketsReceived":`)
+	encoder.EncodeUInt64(res.PacketsReceived)
+
+	encoder.EncodeString(`,"FailedPacketsReceived":`)
+	encoder.EncodeUInt64(res.FailedPacketsReceived)
+
+	encoder.EncodeString(`,"FailedServiceCall":`)
+	encoder.EncodeUInt64(res.FailedServiceCall)
+
+	encoder.EncodeByte('}')
+	return encoder.Buf
+}
+
+func (res *getUserAppConnectionRes) LenAsJSON() (ln int) {
+	ln = len(res.Description)
+	ln += res.AccessControl.LenAsJSON()
+	ln += 1127
+	return
+}
+*/

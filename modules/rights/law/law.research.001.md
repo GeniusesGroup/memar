@@ -26,7 +26,7 @@ Active
 - [Grok](../../../CONTRIBUTORS.md#grok) (Grok 4.6 via Cursor) — Researcher
 
 ## Methodology
-First pass: single reasoning against [law.md](law.md) as then written, `edges/aggregation.go`, vote edges, [law-validity](../../../modules-plugable/rights/law-validity/law-validity.md), Memar modeling, and the law changelog. Findings were arguments, not measured results.
+First pass: single reasoning against [law.md](law.md) as then written, `edges/aggregation.kh`, vote edges, [law-validity](../../../modules-plugable/rights/law-validity/law-validity.md), Memar modeling, and the law changelog. Findings were arguments, not measured results.
 
 Second pass: owner review of those findings. Several findings were inferences the owner never granted. The first-pass text is kept below so the misread is auditable; the Owner review is the standing outcome.
 

@@ -1,0 +1,25 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+// TODO(go-migrate):
+/*
+package tcp
+
+import (
+	request_p "memar/process/request/protocol"
+	audit_time_p "memar/process/time/protocol"
+
+	task_p "org/modules/management/task/protocol"
+)
+
+// DataModel indicate the domain record data fields.
+// a basis for comparison; a reference point against which other things can be evaluated
+// the ideal in terms of which something can be judged
+type DataModel interface {
+	task_p.Field_TaskID
+	Field_Type
+	Field_Point
+
+	request_p.Field_RequestID
+	audit_time_p.Field_Request
+}
+*/

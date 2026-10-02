@@ -22,4 +22,4 @@
 
 ## Source
 
-> Source: `modules/economics/invoice/edges/item/protocol/data_model.go` (in code).
+> Source: `modules/economics/invoice/edges/item/protocol/data_model.kh` (in code).

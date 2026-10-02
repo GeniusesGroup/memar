@@ -1,9 +1,0 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
-
-package status_p
-
-// Just some status edges CAN be use in other edges relation
-// Deleted, Optional, Hidden
-type Field_Status interface {
-	Status() UUID
-}

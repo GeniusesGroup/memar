@@ -85,7 +85,7 @@ Each `bookkeeping` record caches the resulting `Balance` — an immutable, histo
 - Does the kernel ever allow booked quantity ≠ requested quantity? #7 currently answers "no"; a real counterexample forces `Field_Quantity` back onto the bookkeeping edge as record truth, not cache.
 - Reversal test: must a compensating record ever point at a specific bookkeeping edge rather than the originating transaction? If yes, bookkeeping needs its own addressable identity.
 - Is `TransactionIndex` a domain contract (stable across storage engines, exposed in reports/APIs, meaningful to consumers) or a pure storage detail that the domain model must not promise?
-- Code comment inconsistency to fix: `dt-balance.go` currently describes Balance as "the total of all the transactions on the account including any pending transactions" — that contradicts the realized-effect semantics agreed here (a bookkeeping record is a booked fact, not a projection over pending state). The comment must be corrected in code.
+- Code comment inconsistency to fix: `protocol/dt-balance.kh` currently describes Balance as "the total of all the transactions on the account including any pending transactions" — that contradicts the realized-effect semantics agreed here (a bookkeeping record is a booked fact, not a projection over pending state). The comment must be corrected in code.
 - AvailableBalance trust + pending-effect definition (shared with account/restriction).
 
 ### Future possibilities

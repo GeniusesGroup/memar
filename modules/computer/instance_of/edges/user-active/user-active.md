@@ -3,7 +3,7 @@
 ## Model
 
 - `(software_instance)-[:user_active]->(user)`
-- Candidate (unconfirmed): code shape seed — `OperatingSystem_User` interface exposing `ActiveUser()` and `Users()`, each user carrying `ID` + `SocietyID` — see [users.go](users.go).
+- Candidate (unconfirmed): code shape seed — `OperatingSystem_User` interface exposing `ActiveUser()` and `Users()`, each user carrying `ID` + `SocietyID` — see [users.kh](users.kh).
 
 ## Policies (rules)
 
@@ -20,4 +20,4 @@
 
 ## Source
 
-> Source: `modules/computer/instance_of/edges/user-active/users.go` (in code).
+> Source: `modules/computer/instance_of/edges/user-active/users.kh` (in code).

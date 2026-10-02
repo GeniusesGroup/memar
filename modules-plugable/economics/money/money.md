@@ -38,5 +38,5 @@ Money is pluggable: a count unit like any other. Currencies are declared through
 Nothing below is ratified.
 
 ### Planned package errors
-- **Idea**: planned package errors `ErrBadCurrency`, `ErrInvalidTerminalID`, `ErrNotEnoughBalance`, each initialized with a URI — `domain/memar.scm.geniuses.group; package=money; type=error; name=bad-currency` / ` ... name=invalid-terminal-id` / ` ... name=not-enough-balance` (the whole file was commented-out scaffolding; the locale files remain in [errors/locale.eng.go](errors/locale.eng.go)).
+- **Idea**: planned package errors `ErrBadCurrency`, `ErrInvalidTerminalID`, `ErrNotEnoughBalance`, each initialized with a URI — `domain/memar.scm.geniuses.group; package=money; type=error; name=bad-currency` / ` ... name=invalid-terminal-id` / ` ... name=not-enough-balance` (the whole file was commented-out scaffolding; the locale files remain in [locale.eng.kh](errors/locale.eng.kh)).
 - **Review questions**: who raises each error — this module's amount/precision code, or consuming services (a *terminal* is a POS concept, not money representation; see [pos](../pos/pos.md))? Is the error set closed at these three or open for extension?

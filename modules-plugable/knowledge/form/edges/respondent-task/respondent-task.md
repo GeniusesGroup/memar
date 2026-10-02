@@ -3,7 +3,7 @@
 ## Model
 
 - Candidate (unconfirmed): `(form_respondent)-[:relation]->(task)` — respondent-to-task link (direction unconfirmed) carrying labels `Creator`, `Pending`.
-- Respondent identity already has a home in this module: [respondent/protocol/data_model.go](../../respondent/protocol/data_model.go).
+- Respondent identity already has a home in this module: [respondent/protocol/data_model.go (no such file yet)](../../respondent/protocol/data_model.kh).
 
 ## Policies (rules)
 

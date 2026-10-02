@@ -28,5 +28,5 @@
 
 ## Source
 
-> Source: `modules/knowledge/label/edges/list/protocol/business-services.go` (in code).
+> Source: `modules/knowledge/label/edges/list/protocol/business-services.kh` (in code).
 

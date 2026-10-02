@@ -15,5 +15,5 @@
 ## Open questions
 
 - What semantics would app-to-module ownership carry (manifest, deployment, dependency)?
-- Does the existing [manifest](../manifest/protocol/data_model.go) edge already cover app-to-module structure instead of a new edge?
+- Does the existing [manifest](../manifest/protocol/data_model.kh) edge already cover app-to-module structure instead of a new edge?
 

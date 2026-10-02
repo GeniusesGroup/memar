@@ -27,4 +27,4 @@
 
 ## Source
 
-> Source: `modules-plugable/economics/good/edges/material/protocol/data_model.go` (in code).
+> Source: `modules-plugable/economics/good/edges/material/protocol/data_model.kh` (in code).

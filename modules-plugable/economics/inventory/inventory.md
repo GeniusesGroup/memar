@@ -18,4 +18,4 @@ Nothing below is ratified.
 
 ### Index write retry
 - **Idea**: unresolved TODO recurring in both primary index setters — the record write already succeeded, so a failed index write must be retried: "TODO::: we must retry more due to record wrote successfully!" (today the error is only logged, debug-gated by `protocol.AppDebugMode`).
-- **Review questions**: retry owner — storage layer, [protocol/inventory-notify.go](protocol/inventory-notify.go), or a rule/event? Does the daily secondary index need the same guarantee?
+- **Review questions**: retry owner — storage layer, [inventory-notify.kh](protocol/inventory-notify.kh), or a rule/event? Does the daily secondary index need the same guarantee?

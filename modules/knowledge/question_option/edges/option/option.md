@@ -3,7 +3,7 @@
 ## Model
 
 - Candidate (unconfirmed): `(question_option)-[:relation]->(question_option)` — a relation between options (presumably of the same question); the source recorded only the relation stem plus one gating note. Label name and direction unrecorded.
-- Gating flag documented beside it: `Type_Criterion` — "It will effect on other option analytical." ([protocol/dt-type.go](../../protocol/dt-type.go)).
+- Gating flag documented beside it: `Type_Criterion` — "It will effect on other option analytical." ([dt-type.kh](../../protocol/dt-type.kh)).
 
 ## Policies (rules)
 

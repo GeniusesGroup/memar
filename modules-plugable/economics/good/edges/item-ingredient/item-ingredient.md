@@ -2,7 +2,7 @@
 
 ## Model
 
-- `(invoice_item)-[:invoice_item_ingredient]->(---)` — target candidate (unconfirmed): the protocol keys the record on `Field_InvoiceID` + `Field_InvoiceItemID` + `IngredientID product_p.UUID` + quantity + status, i.e. the ingredient is typed as a product UUID — see [protocol/data_model.go](protocol/data_model.go).
+- `(invoice_item)-[:invoice_item_ingredient]->(---)` — target candidate (unconfirmed): the protocol keys the record on `Field_InvoiceID` + `Field_InvoiceItemID` + `IngredientID product_p.UUID` + quantity + status, i.e. the ingredient is typed as a product UUID — see [data_model.kh](protocol/data_model.kh).
 - Query services: `LIST_ProductIDs_BY_InvoiceID` (product IDs an invoice claims) and `LIST_IngredientIDs_BY_InvoiceID_AND_ProductID` (ingredient IDs chosen on one invoice line for one product).
 
 ## Policies (rules)
@@ -21,6 +21,6 @@
 
 - Endpoint: protocol types `IngredientID` as a product UUID and also carries `Field_LabelUUID` — ingredient-as-product vs ingredient-as-label ([knowledge/label](../../../../../modules/knowledge/label/label.md))?
 - Recipe vs choice: product-level [material](../material/) (the base/ingredient model) versus this order-time choice — one capability observed at two times, or two distinct edges?
-- Status lifecycle (`Field_Status`, [protocol/dt-status.go](protocol/dt-status.go)) — who moves it and what triggers the move (no-bare-edges test)?
+- Status lifecycle (`Field_Status`, [dt-status.kh](protocol/dt-status.kh)) — who moves it and what triggers the move (no-bare-edges test)?
 - [transaction.md](../../../../../modules/economics/transaction/transaction.md) filed these listings as "data-model pass material" — do they survive the pass as this edge's protocol API?
 

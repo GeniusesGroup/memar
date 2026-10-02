@@ -11,7 +11,7 @@
 ## Placement
 
 - **Core `instance_of` keeps node-type vocab — node identity is core-by-necessity for the running-instance concept, and a label list is a parameter (parameters vs semantics ⇒ one module + configuration), so no module is warranted.**
-- Doc filed in the pre-existing concept folder `edges/node/` (it already owns the node [protocol](protocol/data_model.go)); no `edges/types/` folder was needed — basename `node` does not collide with the module folder `instance_of` (judgment, reported).
+- Doc filed in the pre-existing concept folder `edges/node/` (it already owns the node [protocol](protocol/data_model.kh)); no `edges/types/` folder was needed — basename `node` does not collide with the module folder `instance_of` (judgment, reported).
 
 ## Open questions
 

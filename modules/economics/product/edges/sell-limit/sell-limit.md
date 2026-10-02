@@ -2,7 +2,7 @@
 
 ## Model
 
-- Candidate (unconfirmed): `(product)-[:sell_limit_is]->(group)` / `->(role)` / `->(user)` — mirrors the `Type_SellLimit_Group` / `Type_SellLimit_Role` / `Type_SellLimit_User` flags in [product.go](../product.go).
+- Candidate (unconfirmed): `(product)-[:sell_limit_is]->(group)` / `->(role)` / `->(user)` — mirrors the `Type_SellLimit_Group` / `Type_SellLimit_Role` / `Type_SellLimit_User` flags in [product.kh](../product.kh).
 
 ## Policies (rules)
 

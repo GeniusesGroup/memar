@@ -26,4 +26,4 @@
 
 ## Source
 
-> Source: `modules-plugable/economics/batch/edges/cost/protocol/data_model.go` (in code).
+> Source: `modules-plugable/economics/batch/edges/cost/protocol/data_model.kh` (in code).

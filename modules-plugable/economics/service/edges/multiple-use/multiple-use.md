@@ -24,4 +24,4 @@
 
 ## Source
 
-> Source: `modules-plugable/economics/service/edges/multiple-use/protocol/data_model.go` (in code).
+> Source: `modules-plugable/economics/service/edges/multiple-use/protocol/data_model.kh` (in code).

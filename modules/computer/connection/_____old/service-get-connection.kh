@@ -1,0 +1,49 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+// TODO(go-migrate):
+/*
+package services
+
+import "libgo/achaemenid"
+
+// GetConnectionReq is the request structure of GetConnection()
+type GetConnectionReq struct {
+	ConnectionID [16]byte
+}
+
+// GetConnectionRes is the response structure of GetConnection()
+type GetConnectionRes struct {
+	achaemenid.Connection
+}
+
+// GetConnection use to get related connection data.
+func GetConnection(st *achaemenid.Stream, req *GetConnectionReq) (*GetConnectionRes, error) {
+	/*
+		---------- Authorization ----------
+	* /
+
+	// Delegate user can't get connection info for any user! specially org connections!
+	if cst.Connection.OwnerID != cst.Connection.DelegateUserID {
+		// return
+	}
+
+	cst.AuthorizeWhich()
+	cst.AuthorizeWhere()
+	if cst.Err != nil {
+		return nil, cst.Err
+	}
+
+	/*
+		---------- Bussiness logic ----------
+	* /
+	var (
+		res GetConnectionRes
+		err error
+	)
+
+	// Check req.ConnectionID exist with same cst.Connection.OwnerID as:
+	// Connection.OwnerID || Connection.DelegateUserID || Connection.AppID
+
+	return &res, err
+}
+*/

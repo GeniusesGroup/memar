@@ -1,0 +1,27 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+// TODO(go-migrate):
+/*
+package graph_p
+
+import (
+	audit_time_p "memar/process/time/protocol"
+
+	user_p "org/modules/identity/user/protocol"
+	text_p "org/modules/knowledge/text/protocol"
+)
+
+type Service_Register_Request interface {
+	user_p.Field_UserUUID
+	text_p.Field_TextUUID
+	// We use `username` label and request can't indicate it.
+	// label_p.Field_LabelID
+
+	// Edge additional data
+	// e.g. Field_RelationPriority
+	// e.g. PerMyriad() per.Myriad // 0 means unset e.g. equal to other tasks in the project
+	// e.g. Field_RelationDesirability
+
+	audit_time_p.Field_Request
+}
+*/

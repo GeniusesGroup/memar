@@ -27,4 +27,4 @@
 
 ## Source
 
-> Source: `modules-plugable/knowledge/reaction/edges/reaction/protocol/data_model.go` (in code).
+> Source: `modules-plugable/knowledge/reaction/edges/reaction/protocol/data_model.kh` (in code).

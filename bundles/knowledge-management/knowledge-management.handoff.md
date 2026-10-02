@@ -748,10 +748,10 @@ Preserves the second half of the knowledge-management brainstorm dialectic in fu
 Provenance: ephemeral chat deleted after migration. Do not cite ____Chats/.
 
 Cross-links:
-- Document blocks, knowledge capture, Comment, search hub, Content entry → [../../modules/knowledge/content/content.handoff.md](../../modules/knowledge/content/content.handoff.md)
-- Task composition over Group; Documentation/Practice/Agent Configuration → [../../modules/management/task/task.handoff.md](../../modules/management/task/task.handoff.md)
-- Text ownership of tokens → [../../modules/knowledge/text/text.handoff.md](../../modules/knowledge/text/text.handoff.md)
-- Multi-GUI acceptance test → [../../modules-plugable/gui/gui.handoff.md](../../modules-plugable/gui/gui.handoff.md)
+- Document blocks, knowledge capture, Comment, search hub, Content entry → [content.handoff.md](../../modules/knowledge/content/content.handoff.md)
+- Task composition over Group; Documentation/Practice/Agent Configuration → [task.handoff.md](../../modules/management/task/task.handoff.md)
+- Text ownership of tokens → [text.handoff.md](../../modules/knowledge/text/text.handoff.md)
+- Multi-GUI acceptance test → [gui.handoff.md](../../modules-plugable/gui/gui.handoff.md)
 - Git/filesystem half → [Discussion — Git, filesystem, and organizational knowledge](#discussion--git-filesystem-and-organizational-knowledge) (this handoff)
 
 ---

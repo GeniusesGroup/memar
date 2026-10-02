@@ -1,9 +1,0 @@
-/* For license and copyright information please see the LEGAL file in the code repository */
-
-package pin_p
-
-// DataModel indicate the domain record data fields.
-type DataModel interface {
-	FixedPin1() uint32
-	FixedPin2() uint32
-}

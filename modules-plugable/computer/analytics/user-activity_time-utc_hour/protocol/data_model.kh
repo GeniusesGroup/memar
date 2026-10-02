@@ -1,0 +1,19 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+// TODO(go-migrate):
+/*
+package uaaa_p
+
+import (
+	"memar/time/duration"
+	"memar/time/earth"
+
+	user_p "org/modules/identity/user/protocol"
+)
+
+type DataModel interface {
+	user_p.Field_UserUUID
+	Hour() earth.Hour
+	Duration() duration.Second
+}
+*/

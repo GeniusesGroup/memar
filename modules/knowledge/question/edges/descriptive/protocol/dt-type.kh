@@ -1,0 +1,32 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+// TODO(go-migrate):
+/*
+package qdp
+
+type Type uint8
+
+const (
+	Type_Unset Type = iota
+	Type_Text
+	Type_Textarea
+
+	Type_Color
+
+	Type_Date
+	Type_Time
+	Type_Year
+	Type_Month
+	Type_Week
+
+	Type_Password
+	Type_Email
+	Type_TelNumber
+	Type_URL
+	Type_File
+
+	Type_Number
+	Type_Number_Decimal
+	Type_NumberRange
+)
+*/

@@ -1,0 +1,18 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+// TODO(go-migrate):
+/*
+package services
+
+import "libgo/achaemenid"
+
+// ConnectForeignPlatformReq is the request structure of ConnectForeignPlatform()
+type ConnectForeignPlatformReq struct {
+}
+
+// ConnectForeignPlatform use to connect user foreign account platform to SabzCity account.
+func ConnectForeignPlatform(st *achaemenid.Stream, req *ConnectForeignPlatformReq) error {
+
+	return nil
+}
+*/
