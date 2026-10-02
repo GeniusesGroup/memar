@@ -6,7 +6,7 @@
 - Time: 2026-06-30T00:00:00Z
 - Type: Added
 - Cited:
-  - [Control Flow in Khayyam](./control_flow.md) — Depends_on: this document builds on the precedent set by that document of keeping behavioral policies as ordinary library-driven mechanisms rather than new syntax.
+  - [Control Flow in Khayyam](../protocols/process/control-flow.md) — Depends_on: this document builds on the precedent set by that document of keeping behavioral policies as ordinary library-driven mechanisms rather than new syntax.
   - [Framework](../framework.md) — Depends_on.
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — claimed, argued

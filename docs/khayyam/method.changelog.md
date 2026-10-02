@@ -8,7 +8,7 @@
 - Cited:
   - [Khayyam - Programming Language](./khayyam.md) — Reference: the canonical specification defines the `mt` subtype and the method signature grammar this document elaborates and motivates.
   - [Encapsulation in Khayyam](./encapsulation.md) — Depends_on: Method Structure relies on the capsule model — Capsule Structure and Privacy, Sovereign Encapsulation — defined there, for its common-case examples and for the state-protection guarantee described under Pass-by-Reference and State Protection. Encapsulation in Khayyam references this document back for the method-signature mechanics.
-  - [Logic in Khayyam](./control_flow.md) — Reference: Logic in Khayyam's IF/ELSE model relies on the same pass-by-reference, explicit-influenced-variable mechanic specified here under Method Structure — no chaining, in either document, is a consequence of that mechanic.
+  - [Logic in Khayyam](../protocols/process/control-flow.md) — Reference: Logic in Khayyam's IF/ELSE model relies on the same pass-by-reference, explicit-influenced-variable mechanic specified here under Method Structure — no chaining, in either document, is a consequence of that mechanic.
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — claimed
   - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM 5.2, medium effort) — rewrote

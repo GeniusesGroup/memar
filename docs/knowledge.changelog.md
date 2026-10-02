@@ -64,7 +64,7 @@
 - Type: Changed
 - Cited:
   - [System](./system.md) — Depends_for: the foundational one-line definition of Knowledge lives there; this document is now the detailed treatment it defers to, following the precedent of Protocol.
-  - [Thinking](./thinking.md) — Reference: thinking is the activity whose material knowledge is; the 4E section of that document already depends on this one.
+  - [Thinking](./cognition.md) — Reference: thinking is the activity whose material knowledge is; the 4E section of that document already depends on this one.
   - [Agency](./agency.md) — Reference: agency acts on models built from knowledge; its Knowledge Management topics now link here.
   - [Framework](./framework.md) — Reference: the knowledge→thinking→intelligence→agency→goals chain this document's Concept Web topic links to is owned by Framework's Purpose Space topic.
   - [Content](./content.md) — Reference: the Content/Relation domain model that the knowledge-side integration must be worked out against.
@@ -157,7 +157,7 @@
   - [comparisons/superpowers.md](./comparisons/superpowers.md) — Evidence: owner critique of treating marketplace/plugin skill packs, prose recipes for generative work, and reader-workaround documentation as substitutes for a continuous knowledge model.
   - [Agency → Prompt Engineering and Harness Engineering](./agency.md#prompt-engineering-and-harness-engineering) — Depends_on: distribution and harness technique remain under Communication, not the knowledge model.
 - Propagates to:
-  - [.agents/installing.md](../.agents/installing.md) — Clarified: marketplace/plugin are delivery tax, not the mental model.
+  - [.agents/scripts/README.md](../.agents/scripts/README.md) — Clarified: marketplace/plugin are delivery tax, not the mental model.
   - [.agents/skills/README.md](../.agents/skills/README.md) — Recorded: failed split of Khayyam/Cognition into peer skills.
   - [comparisons/README.md](./comparisons/README.md) — Points at these principles as standing assumptions for public comparisons.
 - Contributors:

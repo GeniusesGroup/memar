@@ -6,7 +6,7 @@
 - Time: 2026-07-11T00:00:00Z
 - Type: Added
 - Cited:
-  - [Control Flow in Khayyam](./control_flow.md) — Depends_on: this document builds on the precedent set by that document of keeping behavioral policies as ordinary library-driven mechanisms rather than new syntax.
+  - [Control Flow in Khayyam](../protocols/process/control-flow.md) — Depends_on: this document builds on the precedent set by that document of keeping behavioral policies as ordinary library-driven mechanisms rather than new syntax.
 - Propagates to:
   - khayyam.md: Reference — this document elaborates and motivates `khayyam.md#Abstraction`.
 - Contributors:
@@ -46,7 +46,7 @@
 - A structural artifact — two "Unresolved questions" items that were actually full sub-topics with their own nested Discussion blocks — is resolved by moving their substantive content into Explanation and their actual open questions into this document's own Discussion.
 - Former "Unresolved questions" items 4 ("Abstraction Design and Over-Abstraction Risk") and 5 ("Abstraction Stability and Versioning") were moved into the document-level Discussion's own Unresolved questions, since their substantive prose was genuine Explanation-level content, not merely restatements of an open question.
 - Front-matter `Citations`, `Contributor(s)`, and `Applied to` were moved into this changelog.
-- Every occurrence of "RFC" referring to Memar's own documents was replaced with "document," linking to [Polymorphism in Khayyam](./polymorphism.md) and [Control Flow in Khayyam](./control_flow.md) where those documents actually exist, and describing the two now-superseded, absorbed drafts ("Intentional Abstraction Satisfaction," "Rejection of Default Implementations") in plain text without a link, since they no longer exist as separate documents.
+- Every occurrence of "RFC" referring to Memar's own documents was replaced with "document," linking to [Polymorphism in Khayyam](./polymorphism.md) and [Control Flow in Khayyam](../protocols/process/control-flow.md) where those documents actually exist, and describing the two now-superseded, absorbed drafts ("Intentional Abstraction Satisfaction," "Rejection of Default Implementations") in plain text without a link, since they no longer exist as separate documents.
 - "Behavior Over Type Identity" and "A Note on Parametric Polymorphism" are added, migrated from `khayyam-design_philosophy.md`, which is being retired; this document keeps only the abstraction-satisfaction-relevant portion of that content, since the more general vision-level material in the source document belongs elsewhere. The additions connect the already-present "Pure Contract Philosophy" to the more general principle behind it and to why Khayyam needs fewer of the classic parametric-polymorphism patterns (`identity<T>()`, `swap<T>()`, `Option<T>`, `Result<T,E>`) than languages that motivated them by constraints Khayyam does not have.
 
 #### Deliberation

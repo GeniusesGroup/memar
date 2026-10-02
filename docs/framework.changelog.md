@@ -171,7 +171,7 @@ Considered creating a dedicated `memar.md` to hold Memar's project-level identit
 - Type: Added
 - Cited:
   - [Knowledge](./knowledge.md) — Reference: owns the first link of the chain; its Concept Web topic defers the chain statement to this document.
-  - [Thinking](./thinking.md) — Reference: the activity whose material knowledge is and whose quality intelligence names.
+  - [Thinking](./cognition.md) — Reference: the activity whose material knowledge is and whose quality intelligence names.
   - [Agency](./agency.md) — Reference: the exercise of intelligence toward objectives.
 - Propagates to:
   - README.md: Done — the Goals section now points to this statement instead of standing alone; the four engineering bullets are labeled as means.

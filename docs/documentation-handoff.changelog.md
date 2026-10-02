@@ -11,7 +11,7 @@
   - `documentation-conversation_handoff.practice.md`: Done — absorbed (the practice's trigger lists, confidence vocabulary, decision-with-rationale requirements, nuance-preservation rules, both-sides usage guidance, and metadata conventions) and the file deleted. Superseded by this document and its paired practice.
   - `documentation-conversation_continuity_notes.practice.md`: Done — absorbed (the stub's task list: handoff files between conversations, decision recording, open-question recording, assumption recording — all four now mandated structure) and the file deleted.
   - `documentation-review.practice.md`: Done — absorbed into the paired practice file's graduation step (propose-don't-modify-without-approval; exact-section + replacement-ready English text; the resolve-an-ambiguity test; the five improvement types; the text-quality requirements) and the file deleted. Its per-type markdown proposal templates, output-format wrapper, and detailed review checklists were dropped as over-specified scaffolding — recorded here so the judgment is revisitable rather than silent.
-  - [thinking.md](./thinking.md): Done — the boundary note that pointed to the retired `documentation-review.practice.md` now points to [Documentation](./documentation.md) as the documentation system's entry point.
+  - [thinking.md](./cognition.md): Done — the boundary note that pointed to the retired `documentation-review.practice.md` now points to [Documentation](./documentation.md) as the documentation system's entry point.
   - `documentation-critique.practice.md`: Done — its "Relation to Other Practices" rows referencing the two retired practices updated to the merged practice.
 - Contributors:
   - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — claimed, decided

@@ -7,11 +7,11 @@
 - Type: Added
 - Cited:
   - [Khayyam - Programming Language](./khayyam.md) — Reference: The canonical specification defines capsule, method, and abstraction syntax that this document elaborates and motivates.
-  - [Khayyam Design Philosophy](./khayyam-design_philosophy.md) — Reference: The philosophy document recorded the recurring principles (behavior over type identity, domain modeling, syntactic atomicity) underpinning the encapsulation design decisions recorded here. *(That document has since been fully retired and deleted; its content was absorbed into khayyam.md and khayyam-abstraction.md — see khayyam.changelog.md. This citation is preserved as historical provenance only.)*
+  - Khayyam Design Philosophy — Reference: The philosophy document recorded the recurring principles (behavior over type identity, domain modeling, syntactic atomicity) underpinning the encapsulation design decisions recorded here. *(That document has since been fully retired and deleted; its content was absorbed into khayyam.md and khayyam-abstraction.md — see khayyam.changelog.md. This citation is preserved as historical provenance only.)*
   - [Abstraction in Khayyam](./abstraction.md) — Reference: The abstraction mechanism is specified separately. This document records the encapsulation guarantees (capsules hide all internal state, all interaction occurs through methods) that make the abstraction model possible.
   - [Polymorphism in Khayyam](./polymorphism.md) — Reference: Polymorphism classification and dispatch strategy are specified separately. This document defines the capsule-level boundaries that constrain polymorphic behavior.
   - [Method in Khayyam](./method.md) — Reference: Method as Callable Capsule — the mechanical spec of the method signature itself (pass-by-reference, parenthesized separation, static-vs-instance invocation, body-less methods) — previously lived in this document's Explanation section and has moved there, since a capsule is an abstraction over `vr`/`mt`, not the other way around. This document now depends on that spec rather than restating it.
-  - [Control Flow in Khayyam](./control_flow.md) — Reference: The Code Scope (`sc`) topic previously lived in this document's Explanation section and has moved there, since code scopes are structurally the mechanism control-flow libraries (IF/ELSE/LOOP) are built on, not a capsule-level concern.
+  - [Control Flow in Khayyam](../protocols/process/control-flow.md) — Reference: The Code Scope (`sc`) topic previously lived in this document's Explanation section and has moved there, since code scopes are structurally the mechanism control-flow libraries (IF/ELSE/LOOP) are built on, not a capsule-level concern.
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — claimed
   - [ChatGPT](../../CONTRIBUTORS.md#chatgpt) (GPT-5.5, medium effort) — critically reviewed
@@ -46,7 +46,7 @@
 - Contributors: not recorded per-change in the source section
 
 #### What changed
-A capsule is an abstraction layered over `vr` and `mt`, not an independent primitive — so content specific to those underlying concepts should be defined in their own documents and only referenced here. Accordingly: "Method as Callable Capsule" (including its Method Invocation Rules and Body-less Methods subsections) moved to [Method in Khayyam](./method.md); "Code Scope" moved to [Control Flow in Khayyam](./control_flow.md), since `sc` is structurally the mechanism control-flow libraries are built on rather than a capsule-level concern. The Abstract and front-matter Citations were updated to reference both documents instead of restating their content.
+A capsule is an abstraction layered over `vr` and `mt`, not an independent primitive — so content specific to those underlying concepts should be defined in their own documents and only referenced here. Accordingly: "Method as Callable Capsule" (including its Method Invocation Rules and Body-less Methods subsections) moved to [Method in Khayyam](./method.md); "Code Scope" moved to [Control Flow in Khayyam](../protocols/process/control-flow.md), since `sc` is structurally the mechanism control-flow libraries are built on rather than a capsule-level concern. The Abstract and front-matter Citations were updated to reference both documents instead of restating their content.
 
 ### Closures merge
 - Time: 2026-07-15T00:00:00Z (approximated; original time not recorded)

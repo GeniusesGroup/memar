@@ -196,7 +196,7 @@ Considered leaving the Discussion section's philosophical framing intact on the 
 - Type: Changed
 - Cited:
   - [Variable in Khayyam](./variable.md) — Reference: magic-number example for the “lint can be disabled” argument
-  - [Memory Model](./memory_model.md) — Reference: linter-enforced safety as the contrasting flow-policy example
+  - [Memory Model](../protocols/memory/memory.md) — Reference: linter-enforced safety as the contrasting flow-policy example
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — requested, clarified
   - [Super Z](../../CONTRIBUTORS.md#super-z) — rewrote
@@ -301,7 +301,7 @@ Considered placing the topic in `khayyam-runtime.md` instead, since Unikernel is
 - Added the *The Grammar Refuses Protocol Semantics* principle to the Explanation, between *Separation of Syntax and Governance* and *Execution Semantics Philosophy*: a construct enters the grammar only when its semantics can be stated without adopting any protocol's definitions; where a construct's meaning would require protocol-owned definitions, the grammar refuses the construct, and the need is met through the language's generic mechanisms (ordinary values and explicit outputs, explicit imports, library-provided methods, the `ab` construct for authoring contracts).
 - The principle states as a rule what the per-construct documents already enacted individually (no error-handling syntax, no memory primitives, no concurrency keywords, no standard-library shapes in the grammar) and fixes the boundary as protocol-level, not concept-level: base-layer modeling concepts (`tp` for Type, `sc` for Scope) remain expressible, because the grammar supplies the declaration mechanism, not a specific contract.
 - Names the framework-independence consequence: protocols are owned by the governance framework above the language (Memar today, another framework tomorrow); baking one in would reduce the language to that framework's syntax extension.
-- Trigger: the language–protocol relationship had been stated per construct but never as a general rule, and a documentation-set review misread [Control Flow in Khayyam](./control_flow.md)'s citation of [The Error](../protocols/process/error.md) as a grammar-level dependency. The general statement closes that misreading path; the folder role statement ([README.md](./README.md)) carries the citation-layer version of the same statement.
+- Trigger: the language–protocol relationship had been stated per construct but never as a general rule, and a documentation-set review misread [Control Flow in Khayyam](../protocols/process/control-flow.md)'s citation of [The Error](../protocols/process/error.md) as a grammar-level dependency. The general statement closes that misreading path; the folder role statement ([README.md](./README.md)) carries the citation-layer version of the same statement.
 
 ---
 

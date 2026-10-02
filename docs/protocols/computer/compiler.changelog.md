@@ -6,7 +6,7 @@
 - Time: 2026-08-27T00:00:00Z
 - Type: Fixed
 - Cited:
-  - [Control Flow in Khayyam](./control_flow.md) — Depends_on: `sc` and event abstraction that the compiler exposes
+  - [Control Flow in Khayyam](../process/control-flow.md) — Depends_on: `sc` and event abstraction that the compiler exposes
   - [Variable in Khayyam](../../khayyam/variable.md) — Reference: domain-driven arithmetic and `FromString` human-readable text concerns
 - Contributors:
   - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested
@@ -118,7 +118,7 @@
 - **Evaluate nothing at compile time (rejected; migrated from the same topic)**: loses the pre-compilation guarantee and pushes genuinely static configuration cost into every runtime startup.
 - **Make runtime module replacement a first-class, always-available capability (rejected; migrated from the `Change Logic in Runtime (Unsafe)` topic's retired Rationale and alternatives)**: contradicts Immutable Infrastructure as the default deployment model — no runtime addition of capability without recompilation — and would normalize the uncontrolled capability evolution that principle exists to prevent.
 - **Omit the capability entirely (rejected; migrated from the same topic)**: microservice-style module turnover has genuine uses; removing it entirely would push adopters toward out-of-band binary manipulation with no audit story at all.
-- **Keep it opt-in and tagged `unsafe` (chosen; migrated from the same topic as the recorded decision)**: the capability exists, is visibly dangerous at the call site, and sits outside the normal path — the same shape as the [runtime-side resolution](../computer/runtime.md#change-logic-in-runtime-unsafe) of this topic.
+- **Keep it opt-in and tagged `unsafe` (chosen; migrated from the same topic as the recorded decision)**: the capability exists, is visibly dangerous at the call site, and sits outside the normal path — the same shape as the [runtime-side resolution](./runtime.md#mutating-a-running-artifact-is-unsafe) of this topic.
 - **Fold compiler decisions into [Khayyam](../../khayyam/khayyam.md) (rejected; migrated from the retired document-level Rationale and alternatives)**: Khayyam's own Methodology keeps that document a short overview that links outward; implementation directives there would couple language evolution to implementation detail and grow exactly the document the language spec deliberately keeps small.
 - **Leave compiler behavior unspecified (rejected; migrated from the same block)**: the handoff from language to implementation is Khayyam's central architectural move; leaving the receiving side undocumented means each compiler team re-derives — or silently ignores — the philosophy the handoff exists to preserve, reproducing the convenience-pressure failure mode the separation was designed to prevent.
 

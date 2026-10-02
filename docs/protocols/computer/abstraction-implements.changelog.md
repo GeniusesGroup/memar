@@ -6,7 +6,7 @@
 - Time: unknown (historical import — drafted 2026-07-08 per the document's Start Date; this changelog was created at migration time, so the entry is reconstructed from the former front matter; [Omid Hekayati]'s `claimed` attribution was recorded there without a stated contribution description)
 - Type: Added
 - Cited:
-  - [Control Flow in Khayyam](../khayyam/control_flow.md) — Depends_on: this document builds on the precedent set by that document of keeping behavioral policies as ordinary library-driven mechanisms rather than new syntax.
+  - [Control Flow in Khayyam](../../protocols/process/control-flow.md) — Depends_on: this document builds on the precedent set by that document of keeping behavioral policies as ordinary library-driven mechanisms rather than new syntax.
 - Contributors:
   - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — claimed
   - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash, effort: Medium — extended thinking enabled) — drafted
@@ -55,7 +55,7 @@
 #### What changed
 - The document previously followed the legacy RFC body structure (`Summary / Motivation / Guide-level explanation / Reference-level explanation / Drawbacks / Rationale and alternatives / Prior art / Unresolved questions / Future possibilities`) with `Applied to`, `Citations`, and `Contributor(s)` front matter.
 - Migration mapping, with every load-bearing claim preserved without summarizing: Summary became the Abstract; Motivation kept its role under Introduction; Guide-level explanation became the Explanation topic *Declaring and discovering intent*; Reference-level explanation became the topic *Semantics and constraints*; Drawbacks, Rationale and alternatives, Prior art, Unresolved questions, and Future possibilities moved to the document-wide Discussion.
-- Plain-text references were converted to real hyperlinks per the Internal Cross-References convention (the Contract-First Approach mention now links [khayyam.md](../../khayyam/khayyam.md); the Prior-art precedent mention now links [khayyam-control_flow.md](../khayyam/control_flow.md)).
+- Plain-text references were converted to real hyperlinks per the Internal Cross-References convention (the Contract-First Approach mention now links [khayyam.md](../../khayyam/khayyam.md); the Prior-art precedent mention now links [khayyam-control_flow.md](../../protocols/process/control-flow.md)).
 - The former `Applied to`, `Citations`, and `Contributor(s)` front-matter fields moved into this file (entries above); the base document retains only identity front matter.
 - No position changed.
 

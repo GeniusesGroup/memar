@@ -4,7 +4,7 @@ This document records why and how `documentation-explanation.md` changed over ti
 ## Changelog
 
 ### Historical entries (pre-Changelog-facet)
-- Time: unknown (historical import — only relative order is known; see [Documentation — Changelog → Unresolved questions](./documentation-changelog.md#unresolved-questions) for why no timestamp was invented)
+- Time: unknown (historical import — only relative order is known; see [Documentation — Changelog → Unresolved questions](./documentation-changelog.handoff.md#open-questions) for why no timestamp was invented)
 - Cited:
   - [Diátaxis](https://diataxis.fr/) — Reference: cited historically (entry 13) as prior art for separating procedural content from reference/explanation content. This citation is preserved here as historical record; it is not repeated in the base document's own text going forward, per the current rule that argumentative citations live only in the changelog.
   - [Architecture Decisions: Demystifying Architecture](https://github.com/architecture-decision-record/architecture-decision-record/blob/main/locales/en/templates/decision-record-template-by-jeff-tyree-and-art-akerman/index.md) — Reference: cited historically (entry 12) as independent evidence that separately-designed, single-purpose templates converge on the same underlying concerns under different names. A widely-cited independent architecture-decision-record template, examined as evidence that independently-designed templates for a single document purpose (here, ADR) still converge on the same handful of underlying concerns (claim, rationale, alternatives, consequences, related decisions) as this specification's own Optional Sections catalog, just under different names.

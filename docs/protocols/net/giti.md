@@ -157,7 +157,7 @@ Physical hops and inter-society responsibility hops are different counts and mus
 [Mobile GP](https://en.wikipedia.org/wiki/Mobile_IP) allows location-independent routing of GP packets across the network. This specification sets no rules for mobility implementation itself: mobility is achieved by having a proper topology in your society network and data link layer.
 
 #### Quality of Service
-QoS must be handled in routers, not protocol packets — consistent with the congestion treatment in [Networking — Hardware](../net/networking.md#hardware). How routers actually schedule, queue, and prioritize is a ChaparKhane implementation concern — a commercial component (see [Enterprise](../../README.md#enterprise)) — deliberately left unspecified here so that neither creativity nor the product is constrained by premature rules.
+QoS must be handled in routers, not protocol packets — consistent with the congestion treatment in [Networking — Hardware](../net/networking.md#hardware). How routers actually schedule, queue, and prioritize is a ChaparKhane implementation concern — a commercial component (see [Enterprise](../../../README.md#enterprise)) — deliberately left unspecified here so that neither creativity nor the product is constrained by premature rules.
 
 #### Local network
 When no GP router exists in a network, GP cannot be used properly. Nodes can still fill the Society and Router fields with arbitrary data and send Thing-level packets to other nodes, but peers cannot prove their identities strongly to each other — which this shape states honestly, since nothing in such a network backs the locator it claims.

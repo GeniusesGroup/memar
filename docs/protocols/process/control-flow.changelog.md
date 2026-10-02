@@ -6,7 +6,7 @@
 - Time: unknown (historical import — drafted 2026-06-30 per the document's Start Date; this changelog was created at migration time, so the entry is reconstructed from the former front matter)
 - Type: Added
 - Cited:
-  - [Control Flow in Khayyam](../khayyam/control_flow.md) — Depends_on: this document builds on the precedent set by that document of keeping behavioral policies as ordinary library-driven mechanisms rather than new syntax.
+  - [Control Flow in Khayyam](./control-flow.md) — Depends_on: this document builds on the precedent set by that document of keeping behavioral policies as ordinary library-driven mechanisms rather than new syntax.
   - [The Error](../process/error.md) — Depends_on: cited by title in the former front matter as "Error Handling: Library-Driven and Syntax-Free", without a resolvable URI; the reference now targets the canonical Error document. The former front matter's `Extends` and `Conflicts with` fields were empty.
 - Contributors: none recorded — the former front matter carried `Author(s): []`; no attribution was reconstructed beyond what the source recorded.
 
@@ -49,7 +49,7 @@ The document previously followed the legacy RFC body structure (`Summary / Motiv
 - Time: 2026-09-03T00:00:00Z
 - Type: revised
 - Cited:
-  - [Control Flow in Khayyam](../khayyam/control_flow.md) — Extends_by: that document's Unresolved questions carried the note that the naming-convention discussion was "not yet a separate document"; its library-driven-conditional rationale is the language-level layer beneath this document's protocol layer.
+  - [Control Flow in Khayyam](./control-flow.md) — Extends_by: that document's Unresolved questions carried the note that the naming-convention discussion was "not yet a separate document"; its library-driven-conditional rationale is the language-level layer beneath this document's protocol layer.
 - Propagates to:
   - khayyam-control_flow.md: Done — its Unresolved questions note referencing the "(not yet a separate document)" discussion updated to reference this document by name.
 - Contributors:
@@ -106,7 +106,7 @@ The drawback of this model is narrower than it first looks, but not a fake one. 
 
 **The Linter-dependence drawback** (from the retired document's Error Propagation topic):
 
-Without compiler-enforced syntax (like Rust's `?` or Go's required `if err != nil` pattern that at least makes ignoring an error visually obvious), the actual discipline of "every error gets handled" depends entirely on Linter configuration and developer diligence — see [Memory Model](../khayyam/memory_model.md) for the equivalent trade-off in memory safety. A team running a weak or disabled Linter could silently drop errors with no language-level safety net at all.
+Without compiler-enforced syntax (like Rust's `?` or Go's required `if err != nil` pattern that at least makes ignoring an error visually obvious), the actual discipline of "every error gets handled" depends entirely on Linter configuration and developer diligence — see [Memory Model](../memory/memory.md) for the equivalent trade-off in memory safety. A team running a weak or disabled Linter could silently drop errors with no language-level safety net at all.
 
 **Covariant Error Returns** (from the same topic; subsumed by The Error's Multi-cause returns, which already owns the single-cause-concrete / multi-cause-abstract rule — recorded here so the position is not lost):
 

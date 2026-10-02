@@ -7,7 +7,7 @@
 - Type: Added
 - Cited:
   - [Khayyam — Programming Language](./khayyam.md) — Reference: defines the canonical `vr` declaration syntax, `in` inclusion syntax, and logical-reference semantics elaborated here.
-  - [Khayyam Design Philosophy](./khayyam-design_philosophy.md) — Reference: provides the self-documenting-code, syntactic-atomicity, and domain-modeling principles used to motivate the variable design. *(That document has since been fully retired and deleted; its content was absorbed into khayyam.md and khayyam-abstraction.md — see khayyam.changelog.md. This citation is preserved as historical provenance only.)*
+  - Khayyam Design Philosophy — Reference: provides the self-documenting-code, syntactic-atomicity, and domain-modeling principles used to motivate the variable design. *(That document has since been fully retired and deleted; its content was absorbed into khayyam.md and khayyam-abstraction.md — see khayyam.changelog.md. This citation is preserved as historical provenance only.)*
   - [Type](../type.md) — Depends_on: variables name instances of types, and the type model determines which kinds of type may be referenced.
   - [Encapsulation in Khayyam](./encapsulation.md) — Reference: defines the capsule-owned behavioral contract, including the constant model and the rule that mutability is not a variable-level property.
   - [Abstraction in Khayyam](./abstraction.md) — Reference: defines the abstraction category that may be named in a variable declaration.
