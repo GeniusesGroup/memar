@@ -64,8 +64,11 @@ Subcommands
                          or CRLF line endings, a missing final newline, and
                          the fingerprints of mojibake; and for Markdown, two
                          blank lines in a row, a blank line between a heading
-                         and its body, and an in-page `#anchor` with no
-                         matching heading. A directory is walked. Any path, not
+                         and its body, an `#anchor` with no matching heading
+                         in the document it names — the same one for an
+                         in-page link, and the named one for a link to
+                         another document — and a relative link whose target
+                         does not exist. A directory is walked. Any path, not
                          only one inside this repository. Exits 1 if anything
                          is reported.
 
@@ -677,8 +680,76 @@ def _without_code(text: str) -> str:
     return spans.sub(blank, fenced.sub(blank, text))
 
 
-def check_file(path: Path) -> list[str]:
+# A link this checker cannot judge by looking at the filesystem: a URI with a
+# scheme (`https:`, `mailto:`) and a protocol-relative `//host/path`. A leading
+# `/` is a site-root reference, which resolves against a server rather than
+# against the document's own folder, so it is not a file this run can see.
+_EXTERNAL_LINK = re.compile(r"^(?:[a-z][a-z0-9+.-]*:|//)", re.IGNORECASE)
+
+
+def _fragments_of(path: Path, cache: dict[str, set[str] | None]) -> set[str] | None:
+    """Every heading fragment `path` answers to, or None when it cannot be read.
+
+    Cached per run because a doc set links to the same governing documents
+    hundreds of times, and a checker that re-reads each of them per link turns a
+    whole-tree run into hundreds of redundant reads. None rather than an empty
+    set when the read fails, so an unreadable target is not reported as a
+    document whose headings happen to be missing.
+    """
+    key = str(path)
+    if key not in cache:
+        try:
+            text = path.read_text(encoding="utf-8")
+        except (OSError, UnicodeDecodeError):
+            cache[key] = None
+        else:
+            cache[key] = _headings_by_fragment(_without_code(text), text)
+    return cache[key]
+
+
+def _relative_link_problems(path: Path, visible: str, cache: dict) -> list[str]:
+    """Every relative link in a Markdown document that does not resolve.
+
+    Both halves of a link are checked, because both break the same way and a
+    document moved one folder deep takes its links' paths and their anchors with
+    it: the file the link names, and the heading inside that file.
+    """
+    problems: list[str] = []
+    for match in re.finditer(r"\]\(([^)\s]+)\)", visible):
+        link = match.group(1)
+        if _EXTERNAL_LINK.match(link):
+            continue
+        file_part, _, fragment = link.partition("#")
+        if not file_part:
+            continue  # in-page; the caller's own anchor pass owns it
+        if file_part.startswith("/"):
+            continue  # site-root, not a path relative to this document
+        target = path.parent / file_part
+        line = visible[: match.start()].count("\n") + 1
+        if not target.exists():
+            problems.append(
+                f"line {line}: relative link {file_part} does not exist. A link "
+                "to a document that is not there cannot be followed, and moving "
+                "a document is what breaks one silently: nothing about the "
+                "link changes, only the folder it was written from."
+            )
+            continue
+        if not fragment or not target.is_file() or target.suffix.lower() != ".md":
+            continue
+        present = _fragments_of(target, cache)
+        if present is not None and fragment not in present:
+            problems.append(
+                f"line {line}: relative link {link} names no heading in "
+                f"{file_part}. The file is there and the anchor is not, so a "
+                "reader lands on the document rather than on the part of it "
+                "the link was written to point at."
+            )
+    return problems
+
+
+def check_file(path: Path, link_cache: dict | None = None) -> list[str]:
     """Report what is wrong with a text file. Empty list means clean."""
+    cache: dict = {} if link_cache is None else link_cache
     problems: list[str] = []
     try:
         raw = path.read_bytes()
@@ -743,6 +814,7 @@ def check_file(path: Path) -> list[str]:
                         f"line {text[: match.start()].count(chr(10)) + 1}: in-page "
                         f"anchor #{match.group(1)} has no matching heading in this file"
                     )
+        problems.extend(_relative_link_problems(path, visible, cache))
     return problems
 
 
@@ -758,8 +830,9 @@ def cmd_check(args: argparse.Namespace, root: Path) -> None:
         else:
             files.append(resolved)
     total = 0
+    link_cache: dict = {}
     for path in files:
-        problems = check_file(path)
+        problems = check_file(path, link_cache)
         total += len(problems)
         try:
             shown = path.relative_to(root)
