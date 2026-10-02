@@ -63,6 +63,21 @@ Each of these is a fact about the current declarations, verified on 2026-10-02, 
 - **The rule that governed the retirement**, from the same README: a full Go, C, or Rust rewrite comes after writing something in Khayyam; whatever Khayyam lacks gets rewritten in Go; once Khayyam has everything, the Go repository is a full rewrite. The README states the shift in its own terms — `memar-go` began with transfer and simplification, dropping `R&D` functions and conditions, and `memar-c` and `memar-rust` shared that aim — and that the emphasis is now on implementation quality. It also states that `memar-js`, which could have served a faster crossing, is retired, while `memar` was implemented in `memar-khayyam` and `memar-organization`.
 - **What the transfer did not reach.** The same README records that the complete rewrite of `memar-go` in Khayyam had been done, but that those writings were a smaller subgroup which did not survive into the current archive — present in `memar-go`, `memar-js` and `memar`, and absent from `memar-khayyam`. The README itself was recovered by the owner from a real address on 2026-10-01, moments before it was deleted from disk; nothing in either repository holds it.
 
+## Subjects with no home, parked in the nearest folder that exists
+Six archived subjects were filed where the architecture has no place for them, on the reasoning that the nearest existing home is better than none. **None of the six is a decision to keep them there.**
+| Archived subject | Parked at | Why it is not the architect's subject |
+| --- | --- | --- |
+| `price/currency.js`, `price/amount.js` | `modules/computer/datatype/protocol/data-type.kh:57,77` | Value is the consuming domain's to define. `docs/content.md:136` uses `Price` as an example of a field carrying a real type and never defines it |
+| `region/region.js`, `regions.js` | `data-type.kh:182,232` | No document in `docs/` mentions a geographic or administrative region — and none forbids one either. Note the word already means something else here: `docs/content.md:119,127` and `docs/content.handoff.md:58` use *region* for a rectangular area of an image, so the parked subject and the governing document would be talking about different things under one word |
+| `language/language.js`, `languages.js` | `modules/computer/datatype/protocol/detail.kh:68,215` | `docs/type.md` rejects external translation keyed by a string and leaves a general `Text` to the modelling layer |
+| `language/persian/digit.js`, `letter.js` | `modules/computer/adt/protocol/adt.kh:66,83` | The same objection, reached from the ADT side rather than the datatype side — which is itself the question: one subject, two temporary homes |
+
+Two further findings from the JS transfer that no document records, and neither is settled:
+- **A guest identity the corpus can see and cannot name.** `modules/computer/runtime/protocol/existence.kh:25,227,230,244` carries an archived browser identity built from an `RTCPeerConnection` capability probe, a `localStorage`/cookie-persisted `ThingID`, and a hash — while `docs/protocols/net/giti.md:101` puts thing-scope identifiers in the hypervisor's hands ("each app gets a unique mutable identifier from the hypervisor (thing scope)"). Nothing declares `Thing`. This is a case the archive covers and the documents do not, and the two disagree about who issues the identifier.
+- **A numeric ID space with two subjects in it.** `detail.kh:218-226` puts `LanguageMachine = 1`, `LanguageMathematics = 2`, `LanguageMusical = 3`, `LanguageSign = 4` in the same numbers as `LanguagePersian = 5`, `LanguageEnglish = 6`, `LanguageRussian = 7`. Nothing in this repository or in the Go archive gives those four a home, and a sign language beside a machine language under one enumeration is a claim about what a language is that no document makes.
+
+One recorded finding was measured and dismissed: the JS transfer noted that `user_p.Type` is declared nowhere while generators reference it. Every occurrence is inside an archived Go block — `modules/modules/syllab/services/go-methods/service-generate-go-syllab-methods.kh:20` is a line of Go `import` syntax inside the block that opens at `:5`. No live declaration references it, so nothing dangles.
+
 ## Related Artifacts
 | Artifact | Relation | Action |
 | --- | --- | --- |
