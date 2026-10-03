@@ -1,5 +1,32 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
+tp Duration in "memar/modules/time/duration/protocol/duration.kh"
+tp Field_InstanceUUID in "org/modules/computer/instance_of/protocol/dt-uuid.kh"
+tp Observer_RequestID in "memar/modules/process/request/protocol/dt-uuid.observers.kh"
+tp Observer_Time_Request in "memar/modules/process/time/protocol/dt-request.observers.kh"
+tp ThingUUID in "org/modules/identity/thing/protocol/dt-uuid.kh"
+
+tp Observer_Health_SideNodeID ab
+
+tp GetSideNodeID mt (self Observer_Health_SideNodeID) () (i ThingUUID)
+
+tp Observer_Health_PingTime ab
+
+tp GetPingTime mt (self Observer_Health_PingTime) () (d Duration)
+
+tp Observer_Health_JitterTime ab
+
+tp GetJitterTime mt (self Observer_Health_JitterTime) () (d Duration)
+
+tp NodeHealthDataModel ab {
+	Field_InstanceUUID
+	Observer_Health_SideNodeID
+	Observer_Health_PingTime
+	Observer_Health_JitterTime
+	Observer_RequestID
+	Observer_Time_Request
+}
+
 // TODO(go-migrate):
 /*
 package anhp

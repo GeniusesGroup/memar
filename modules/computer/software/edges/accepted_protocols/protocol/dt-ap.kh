@@ -1,5 +1,25 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
+tp Boolean in "memar/modules/math/boolean/protocol/boolean.kh"
+
+tp Observer_AcceptedEmail ab
+
+tp GetAcceptedEmail mt (self Observer_AcceptedEmail) () (b Boolean)
+
+tp Observer_AcceptedSMS ab
+
+tp GetAcceptedSMS mt (self Observer_AcceptedSMS) () (b Boolean)
+
+tp Observer_AcceptedPhoneCall ab
+
+tp GetAcceptedPhoneCall mt (self Observer_AcceptedPhoneCall) () (b Boolean)
+
+tp Field_AcceptedProtocols ab {
+	Observer_AcceptedEmail
+	Observer_AcceptedSMS
+	Observer_AcceptedPhoneCall
+}
+
 // TODO(go-migrate):
 /*
 package domain_p

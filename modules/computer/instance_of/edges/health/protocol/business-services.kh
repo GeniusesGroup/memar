@@ -1,5 +1,20 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
+tp Duration in "memar/modules/time/duration/protocol/duration.kh"
+tp Field_TimeToLive in "org/modules/identity/time/edges/ttl/protocol/ttl.kh"
+
+tp BS_Ping_Request ab {
+	Field_TimeToLive
+}
+
+tp Observer_RoundTripTime ab
+
+tp GetRoundTripTime mt (self Observer_RoundTripTime) () (d Duration)
+
+tp BS_Ping_Response ab {
+	Observer_RoundTripTime
+}
+
 // TODO(go-migrate):
 /*
 package anhp

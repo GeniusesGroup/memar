@@ -1,5 +1,15 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
+tp Array_Dynamic in "memar/modules/computer/adt/array/protocol/dynamic.kh"
+
+tp Signature ab {
+	Array_Dynamic
+}
+
+tp Field_Signature ab
+
+tp GetSignature mt (self Field_Signature) () (s Signature)
+
 // TODO(go-migrate):
 /*
 package signature_p

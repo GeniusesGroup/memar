@@ -1,5 +1,37 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
+tp Array_Dynamic in "memar/modules/computer/adt/array/protocol/dynamic.kh"
+tp Field_InstanceUUID in "org/modules/computer/instance_of/protocol/dt-uuid.kh"
+tp Field_LabelType in "org/modules/knowledge/label/protocol/dt-uuid.kh"
+tp Observer_RequestID in "memar/modules/process/request/protocol/dt-uuid.observers.kh"
+tp Observer_Time_Request in "memar/modules/process/time/protocol/dt-request.observers.kh"
+tp ResourceType in "org/modules/computer/instance_of/edges/resource/protocol/dt-resource_type.kh"
+
+tp Array_ResourceType ab {
+	Array_Dynamic
+}
+
+tp Array_ResourceAmount ab {
+	Array_Dynamic
+}
+
+tp Observer_Resource_Type ab
+
+tp GetResourceTypes mt (self Observer_Resource_Type) () (r Array_ResourceType)
+
+tp Observer_Resource_Amount ab
+
+tp GetResourceAmounts mt (self Observer_Resource_Amount) () (a Array_ResourceAmount)
+
+tp NodeResourceDataModel ab {
+	Field_InstanceUUID
+	Field_LabelType
+	Observer_Resource_Type
+	Observer_Resource_Amount
+	Observer_RequestID
+	Observer_Time_Request
+}
+
 // TODO(go-migrate):
 /*
 package nr_p

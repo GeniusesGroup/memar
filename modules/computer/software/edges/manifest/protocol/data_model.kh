@@ -1,5 +1,36 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
+tp Array_Dynamic in "memar/modules/computer/adt/array/protocol/dynamic.kh"
+tp String in "memar/modules/codec/string/protocol/string.kh"
+tp U16 in "memar/modules/math/integer/unsigned-16.kh"
+
+tp ApplicationManifest_Icon ab {
+	Array_Dynamic
+}
+
+tp Observer_ApplicationManifest_Icon ab
+
+tp GetIcon mt (self Observer_ApplicationManifest_Icon) () (i ApplicationManifest_Icon)
+
+tp Observer_ApplicationManifest_DomainName ab
+
+tp GetDomainName mt (self Observer_ApplicationManifest_DomainName) () (s String)
+
+tp Observer_ApplicationManifest_Email ab
+
+tp GetEmail mt (self Observer_ApplicationManifest_Email) () (e String)
+
+tp Observer_ApplicationManifest_LocalID ab
+
+tp GetLocalID mt (self Observer_ApplicationManifest_LocalID) () (i U16)
+
+tp ApplicationManifestDataModel ab {
+	Observer_ApplicationManifest_Icon
+	Observer_ApplicationManifest_DomainName
+	Observer_ApplicationManifest_Email
+	Observer_ApplicationManifest_LocalID
+}
+
 // TODO(go-migrate):
 /*
 package ap_p
