@@ -1,5 +1,17 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
+tp Field_ProductID in "org/modules/economics/product/protocol/dt-uuid.kh"
+
+tp Invoice_ItemGUIWidget_Conditions ab {
+	Field_ProductID
+}
+
+tp Invoice_ItemGUIWidget_Service ab
+
+tp IncrementProductNumber mt (self Invoice_ItemGUIWidget_Service) () ()
+
+tp DecrementProductNumber mt (self Invoice_ItemGUIWidget_Service) () ()
+
 // TODO(go-migrate):
 /*
 package item_p

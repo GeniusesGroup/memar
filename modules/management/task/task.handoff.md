@@ -55,6 +55,31 @@ From the Task section *(open)* bullet above, plus consolidated list items about 
 2. Full Task edge/label taxonomy including Decision-as-label semantics.
 4. Logical-snapshot tooling, and whether any real need for global-state entities survives.
 
+## Khayyam conversion (2026-10-03)
+
+### Status
+Protocol layer converted. [`protocol/dt-uuid.kh`](protocol/dt-uuid.kh) is the only source in the domain that carried declarations, and it **accepts** against the Khayyam frontend (verified against a root where both `org/…` and `memar/…` resolve).
+
+### Decisions
+
+- **A task's identity is the thing domain's identity.** *(Decided.)* The Go source wrote `type UUID group_p.UUID`, a named-type re-declaration two links from the owner. Khayyam has no alias form, so the file includes `ThingUUID` and `Array_ThingUUID` from `org/modules/identity/thing/protocol/dt-uuid.kh` and declares no `TaskUUID`. Sixth domain to reach this conclusion (`user`, `time`, `uri`, `calendar`, `group`, now `task`); `department`, `staff` and `shift` reach it in the same wave. The Go comment — "It is base on group to support some group rules e.g. invite, …" — is the reason this domain must *not* mint its own identity, and it now reads as an argument for the opposite of what it was attached to.
+- **`Field_TaskID` + `TaskID`, `Field_TasksID` + `TasksIDs`.** *(Decided.)* The Go already used the `_ID` spelling, so the sweep's `Field_X`+`X` rename does not apply here; the plural accessor's `TasksIDs` is the corpus spelling (`EdgesIDs`, `EstateIDs`, `LabelsIDs`). Result parameters `t` and `a` follow `Field_EdgeID` / `Field_EstateID`.
+- **`edges-loop/status/task-status.kh` was left unconverted.** *(Decided.)* It holds four `iota` label constants and no type, function, or interface — vocabulary, which is data. Same disposition as the other label-only edge files in this tree.
+- **`_import/task/{init-gui,init-server,module}.kh` were left unconverted.** *(Decided.)* `_import/` is the legacy `package org` / `libgo/protocol` shim tree; its declarations re-state identities `protocol/dt-uuid.kh` owns, and no `_import` file has been converted in any wave.
+- **No `TaskModel` was written.** *(Decided.)* There is no Go `Model` interface in the domain and no requirement beyond identity to compose one. [`task.md`](task.md) and this handoff both say "Task is not primitive: modeled as an additive entity over Group" and "Task itself is also a Content" — two different requirements, one of which points at a domain (content) that has not declared a model this file could compose. Writing `TaskModel` over identity alone would be the empty extension point rule 6 names; writing it over `GroupModel` + `TextModel` would ratify an unratified decision. See Open Questions.
+
+### Open Questions raised by the conversion
+
+- **`TaskModel`'s two candidate requirements are both unratified, and they point at two different domains.** "Additive over Group" says `GroupModel`; "also a Content" says a content model. `modules/knowledge/content/` has no `protocol/model.kh` in the tree, so the second requirement has nothing to name. Deciding `TaskModel` is blocked on a decision this domain has not made, not on a missing declaration.
+- **`edges-loop/status/task-status.kh` is a status set in the right folder already, but the mechanism is open.** `Status_ReadyForDevelopment / Status_InProgress / Status_Close / Status_Success` sits under `edges-loop/`, which the migration map's Phase 0 review lists as the correct home for statuses, so unlike several `knowledge/question` edges this one is *not* misfiled. What is open is whether these are statuses at all: [`../group/group.md`](../group/group.md) unresolved #1 (static embedding vs runtime type upgrade) and [`edges-loop/task-labels/task-labels.md`](edges-loop/task-labels/task-labels.md) ("Scrum/XP/rejection states: recorded as *labels*, not core statuses") both bear on it. If they are labels, the file belongs with the other label vocabulary and not as a status set.
+- **`edges-loop/table/table.md` and `edges-loop/task-labels/task-labels.md` document something the folder cannot hold.** Both record, from their own sources, that a board is "a visual aid … in GUI" and a *projection* (projection ⊘ domain model). `table.md`'s own Model line says "Not a domain edge … no candidate edge". An `edges-loop/` folder for a non-edge is the folder-kind error the Phase 0 review is about; the fix is a move, which is not this conversion's to make.
+- **The `Minimum`/`Expected`/`Maximum` triple is now claimed twice in the corpus.** [`../group/edges/membership-term-member_limit/protocol/data_model.kh`](../group/edges/membership-term-member_limit/protocol/data_model.kh) was converted this wave to `Observer_GroupMemberLimit_Minimum` / `_Expected` / `_Maximum`, because `modules/knowledge/knowledge_unit/edges/duration/protocol/data_model.kh` declares the identical three method names over `duration.Second` and the bare names are therefore ambiguous. Whoever converts knowledge_unit must take the qualified spellings or recognise the two records as one abstraction.
+- **`Field_TaskID` unblocks two other domains, and both are outside this one.** `modules/identity/thing/edges/criterion/protocol/{data_model,storage}.kh` both import `task_p.Field_TaskID` / `task_p.UUID` and are the reason this file was in the blocker list; they now have the name to import. `modules/knowledge/text/widgets/text/protocol/gui-widget.kh` needs `comment_p.Field_CommentID`, which is not this domain's to provide.
+
+### Related Artifacts added
+- [`protocol/dt-uuid.kh`](protocol/dt-uuid.kh) — the identity surface; includes the thing domain's declaration.
+- [`../group/group.handoff.md`](../group/group.handoff.md) — the same identity conclusion reached one domain up, and the record of why `rights/contract` and `rights/case` no longer reach the group through an alias.
+
 ## Related Artifacts
 - [`README.md`](README.md)
 - [`edges/task-concept.md`](edges/task-concept.md)

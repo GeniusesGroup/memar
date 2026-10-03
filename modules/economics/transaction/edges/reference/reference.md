@@ -30,3 +30,7 @@ Candidate label set on `transaction_reference_is` (unconfirmed placement: labels
 - Are the budget labels the budget module's data instead (converge with [budget](../../../../../modules-plugable/economics/budget/budget.md) Open questions — one home for the shared Materials/Labor list)?
 - The Item-ingredient and item-seat business-service comments (listing query services) are data-model pass material.
 
+## Code correspondence
+
+`protocol/data_model.kh` holds the edge record's only declarations: `Field_TransactionID` (transaction endpoint), `Field_ThingUUID` (the referenced thing), `Field_LabelID` (the reason label). The label vocabulary in "Reference types" above is **not** in code — the source that carried it was a comment-only file whose content was moved into this document in Phase 0 and whose `.go` was removed. Nothing else in the reference edge is declared, so the candidate list above currently has no owner in either direction.
+

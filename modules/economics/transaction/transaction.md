@@ -44,7 +44,6 @@ A transaction is an abstraction of a request by one or more users for a bookkeep
 
 - Which of `account__to` (core) vs `account__by` (matching_system) owns "the account the user wants to receive into"? `account__from` README still describes optional `takes` semantics with pre-matching_system naming; reconcile.
 - Canonical status list (draft, authorization, ...): which are kernel defaults, which are organizational?
-- `Field_FinancialTransactionUUID` keeps a legacy "financial" prefix although the domain is unit-general; rename pending.
 
 ### Future possibilities
 

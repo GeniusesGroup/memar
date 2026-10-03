@@ -52,7 +52,7 @@ No transaction exists without a reason (`transaction_reference_is` to any `thing
 2. Should #10 (every transaction has a cause) be enforced as a mandatory edge or stay a convention?
 3. Which of `account__to` (core) vs `account__by` (matching_system) owns "the account the user wants to receive into"?
 4. Canonical status list (draft, authorization, ...): which are kernel defaults, which are organizational? (Status domain ownership — see [`../../knowledge/status/status.handoff.md`](../../knowledge/status/status.handoff.md).)
-5. `Field_FinancialTransactionUUID` keeps a legacy "financial" prefix although the domain is unit-general; rename pending.
+5. ~~`Field_FinancialTransactionUUID` keeps a legacy "financial" prefix~~ — **closed 2026-10-03 by the Khayyam conversion**: the field is now `Field_TransactionID` (accessor `TransactionID`), valued as `ThingUUID` imported from `identity/thing`. See "Khayyam conversion" below.
 
 ## Assumptions
 - One-source/one-destination (#2) is the org's kernel choice under pressure-test, not claimed as universal accounting truth until open #1 is closed.
@@ -93,3 +93,24 @@ No transaction exists without a reason (`transaction_reference_is` to any `thing
 
 ## Notes
 - Provenance: former `accounting-invariants.md` §§1–3, 6, 10 + Discussion fragments that attach to Transaction; Organization ideas backlog Bookkeeping/Process bullets listed under Decisions.
+
+## Khayyam conversion (2026-10-03)
+
+Converted: `protocol/dt-uuid.kh`, `protocol/data_model.kh`, `protocol/model.kh`, `protocol/storage.kh`, `edges/account-from/protocol/data_model.kh`, `edges/reference/protocol/data_model.kh`. All six return `accept` from the Khayyam frontend.
+
+Decisions:
+
+- **`Field_FinancialTransactionUUID` → `Field_TransactionID`**, accessor `TransactionID`, valued as `ThingUUID` imported from `org/modules/identity/thing/protocol/dt-uuid.kh`. This closes open #5 and the same bullet in [transaction.md](transaction.md). The Go's `type UUID record_p.UUID` was **not** carried over as a domain-local `TransactionUUID ab`: the established conversion shape (rule, module, taxon, estate, text, ownership, label) is to import `ThingUUID` rather than declare an empty per-domain UUID abstraction, which rule 6 forbids. No `.kh` outside this domain imported the old name; the only importer, [`../account/edges/bookkeeping/protocol/data_model.kh`](../account/edges/bookkeeping/protocol/data_model.kh), was updated in the same pass.
+- **`TransactionModel` composes memar's `Target`**, dropping Go's `Target[DataModel]` type parameter. Khayyam has no generic syntax, so "a transaction target dispatches only transaction events" is no longer expressed at the type level — recorded below rather than papered over.
+- **`TransactionStorage` carries one method**, `ListAccountSideIDsByAccountID`, the only uncommented entry in the Go `StorageServices`. `Save` and `Find_TransactionID_BY_AccountIDs` stay commented in the clue block; the latter carries the Go author's own `TODO:::` ("is it worth to uncomment?"). `[]fa_p.UUID` became `Array_ThingUUID` (the named array type imported from `identity/thing`), not a Go `[]T` re-declaration.
+
+Left unconverted, with reasons:
+
+- `services/errors.kh`, `services/service-register.kh`, `services/service-get-transaction.kh`, `services/service-find-transactions-by-day.kh`, `services/register-transaction/business-services.kh`, `internal/storage/ganjine.kh` — **old, non-architectural code** under the migration map's disposition table, not conversion candidates. They are a pre-kernel per-user `FinancialTransaction` record: a hand-rolled `[]byte` capsule with manual Syllab/JSON codecs, a daily-hash index over `libgo/pehrest`, `libgo/ganjine` object-directory storage, a `Lock`/`UnLock` pair whose own comments read `// TODO::: real lock!`, and a SEP POS integration keyed on the first two characters of a `PosID` string. They also model `UserID` + `Amount` + `Balance` on the transaction itself — exactly the duplication [bookkeeping.md](../account/edges/bookkeeping/bookkeeping.md) §7/§8 removed, and exactly the `financial` framing open #5 was about. Disposition: delete or re-model from [transaction.md](transaction.md), not convert.
+- `edges/account-to/` and `edges/conditional/` — documentation only, no protocol sources in the tree.
+
+Open from this pass:
+
+- **`TransactionModel` no longer constrains its events.** Either memar grows a per-data-type target abstraction, or the transaction domain states in prose that only transaction events reach a transaction target.
+- **`edges/account-from`'s record declares only `Observer_Quantity`.** The edge is `(transaction)-[:account__from]->(account)`, but neither endpoint appears in `TransactionAccountFromDataModel`, so the record cannot be traced to the transaction or the account it moved quantity for. The Go had the same gap (only `decimal_p.Field_Quantity`), so this is a source gap, not a conversion loss. The same edge has no `account-to` counterpart file, so the two sides are not modelled symmetrically.
+- **`edges/account-from` / `account-to` naming.** The documents call the two sides *from*/*to* while the Go package for the from side is `gives_p` and the prose still uses the pre-matching_system `takes` wording ([transaction.md](transaction.md) open #1). No code decision was taken.

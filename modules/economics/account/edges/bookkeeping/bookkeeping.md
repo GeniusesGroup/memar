@@ -4,7 +4,7 @@ The kernel edge between a transaction and an account: the realized effect of pro
 
 ## Reference by UUID, not aggregates (cross-domain modeling rule)
 
-Discovered in this domain, general enough to govern all of Memar: **domain models MUST NOT embed or return each other's types.** A cross-domain link is held as a UUID reference only; a separate service resolves UUID → record when the full object is needed. This edge is the working example: it holds `Field_AccountID` and `Field_FinancialTransactionUUID` — UUIDs, nothing more. Account does not carry Transaction objects; Transaction does not carry Account objects.
+Discovered in this domain, general enough to govern all of Memar: **domain models MUST NOT embed or return each other's types.** A cross-domain link is held as a UUID reference only; a separate service resolves UUID → record when the full object is needed. This edge is the working example: it holds `Field_AccountID` and `Field_TransactionID` — UUIDs, nothing more. Account does not carry Transaction objects; Transaction does not carry Account objects.
 
 Why (from the Account & Transaction modeling session, 2026-08):
 
@@ -43,7 +43,7 @@ Open question (deferred to the storage-engine session): whether the reverse trav
 ## Fields
 
 - `Field_AccountID` — edge endpoint (account side), a UUID reference only.
-- `Field_FinancialTransactionUUID` — edge endpoint (transaction side). Part of the record's identity, not a cache: a ledger entry that cannot be traced to its originating transaction is worthless for audit.
+- `Field_TransactionID` — edge endpoint (transaction side). Part of the record's identity, not a cache: a ledger entry that cannot be traced to its originating transaction is worthless for audit. (Declared `Field_FinancialTransactionUUID` in the Go record; renamed on conversion — see [account.handoff.md](../../account.handoff.md).)
 - `Field_TransactionIndex` — auto-increment ordinal of this record within its account's history; gives direct access to "the Nth booking of this account" without traversal.
 - `Field_Balance` — the account's balance resulting from this record. An immutable historical snapshot (append-only, never recomputed), kept so point-in-time balance is O(1). This is the accepted form of caching; it is categorically different from a mutable derived field like `AvailableBalance`, which was rejected as account state (§8 below).
 - `Field_RequestID` + request audit time — which request produced this record.
@@ -58,7 +58,7 @@ Open question (deferred to the storage-engine session): whether the reverse trav
 ### Rationale and alternatives
 
 - Book as a separate node was considered (earlier diagrams drew it between Engine and Account) and rejected: nothing needs to reference a bookkeeping record except through its transaction, so an edge with fields is sufficient.
-- `Field_FinancialTransactionUUID` is the transaction-side endpoint of the edge (a UUID reference, per the reference-by-UUID rule above), not a cache — it is the audit traceability requirement.
+- `Field_TransactionID` is the transaction-side endpoint of the edge (a UUID reference, per the reference-by-UUID rule above), not a cache — it is the audit traceability requirement.
 - `Field_Balance` is an accepted cache (O(1) point-in-time reads); it is a historical fact of this record, never recomputed.
 
 ### Prior art
@@ -85,7 +85,7 @@ Each `bookkeeping` record caches the resulting `Balance` — an immutable, histo
 - Does the kernel ever allow booked quantity ≠ requested quantity? #7 currently answers "no"; a real counterexample forces `Field_Quantity` back onto the bookkeeping edge as record truth, not cache.
 - Reversal test: must a compensating record ever point at a specific bookkeeping edge rather than the originating transaction? If yes, bookkeeping needs its own addressable identity.
 - Is `TransactionIndex` a domain contract (stable across storage engines, exposed in reports/APIs, meaningful to consumers) or a pure storage detail that the domain model must not promise?
-- Code comment inconsistency to fix: `protocol/dt-balance.kh` currently describes Balance as "the total of all the transactions on the account including any pending transactions" — that contradicts the realized-effect semantics agreed here (a bookkeeping record is a booked fact, not a projection over pending state). The comment must be corrected in code.
+- Code comment inconsistency to fix: `protocol/dt-balance.kh` currently describes Balance as "the total of all the transactions on the account including any pending transactions" — that contradicts the realized-effect semantics agreed here (a bookkeeping record is a booked fact, not a projection over pending state). The comment must be corrected in code. *(Still open: the Khayyam conversion deliberately did not carry the Go comment into the `.kh`, so the wrong description now lives only in the Go clue block. The wording above — "the account's balance resulting from this record" — is the text that should replace it.)*
 - AvailableBalance trust + pending-effect definition (shared with account/restriction).
 
 ### Future possibilities

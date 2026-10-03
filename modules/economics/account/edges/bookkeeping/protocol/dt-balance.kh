@@ -1,5 +1,11 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
+tp Decimal_Quantity in "memar/modules/math/decimal/protocol/dt-quantity.kh"
+
+tp Field_Balance ab
+
+tp Balance mt (self Field_Balance) () (b Decimal_Quantity)
+
 // TODO(go-migrate):
 /*
 package bookkeeping_p

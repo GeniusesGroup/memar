@@ -1,5 +1,13 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
+tp Event in "memar/modules/process/event/protocol/event.kh"
+tp Field_TransactionID in "org/modules/economics/transaction/protocol/dt-uuid.kh"
+
+tp TransactionDataModel ab {
+	Event
+	Field_TransactionID
+}
+
 // TODO(go-migrate):
 /*
 package transaction_p

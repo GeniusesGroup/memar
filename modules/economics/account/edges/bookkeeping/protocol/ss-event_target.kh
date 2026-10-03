@@ -1,5 +1,18 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
+tp BookkeepingDataModel in "org/modules/economics/account/edges/bookkeeping/protocol/data_model.kh"
+tp Event in "memar/modules/process/event/protocol/event.kh"
+tp Target in "memar/modules/process/event/protocol/event-target.kh"
+
+tp BookkeepingEventTarget_Event ab {
+	BookkeepingDataModel
+	Event
+}
+
+tp BookkeepingEventTarget ab {
+	Target
+}
+
 // TODO(go-migrate):
 /*
 package bookkeeping_p

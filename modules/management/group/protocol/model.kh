@@ -1,5 +1,15 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
+tp ThingModel in "org/modules/identity/thing/protocol/model.kh"
+tp UserModel in "org/modules/identity/user/protocol/model.kh"
+tp Target in "memar/modules/process/event/protocol/event-target.kh"
+
+tp GroupModel ab {
+	ThingModel
+	UserModel
+	Target
+}
+
 // TODO(go-migrate):
 /*
 package group_p

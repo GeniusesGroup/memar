@@ -1,5 +1,11 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
+tp Container_ElementIndex in "memar/modules/computer/adt/container/protocol/index.kh"
+
+tp Field_TransactionIndex ab
+
+tp TransactionIndex mt (self Field_TransactionIndex) () (i Container_ElementIndex)
+
 // TODO(go-migrate):
 /*
 package bookkeeping_p
