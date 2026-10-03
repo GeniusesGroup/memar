@@ -25,3 +25,11 @@ Originally, taxonomy referred only to the classification of organisms on the bas
 
 Registries of what a particular word means live outside this module. This module keeps the attachment `(thing)-[:label]`. The registries are [law labels](../../../modules-plugable/rights/law-labels/law-labels.md), [thing labels](../../../modules-plugable/knowledge/thing-labels/thing-labels.md), and [account labels](../../../modules-plugable/economics/account-labels/account-labels.md).
 
+## Type
+
+A label's type is itself a label: a record says what kind of thing it is by carrying the label that types it, and the words of that label live in the same registries as any other. `Scrum Board` is a label whose type is the `table` label; `text-type` types the labels that classify a text.
+
+## Text
+
+The text of a label is indicated in the [text](../text/text.md) domain. Nothing here carries the words of a label, so a label record here and its readable text are reached through two domains.
+
