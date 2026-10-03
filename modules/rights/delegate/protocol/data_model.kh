@@ -1,6 +1,16 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-// User delegate means transfer power to someone. power is role access in softwares.
+tp Field_GivenDelegateUserID in "org/modules/rights/delegate/protocol/dt-user-given_delegate.kh"
+tp Field_GottenDelegateUserID in "org/modules/rights/delegate/protocol/dt-user-gotten_delegate.kh"
+tp Observer_RequestID in "memar/modules/process/request/protocol/dt-uuid.observers.kh"
+tp Observer_Time_Request in "memar/modules/process/time/protocol/dt-request.observers.kh"
+
+tp DelegateDataModel ab {
+	Field_GivenDelegateUserID
+	Field_GottenDelegateUserID
+	Observer_RequestID
+	Observer_Time_Request
+}
 
 // TODO(go-migrate):
 /*

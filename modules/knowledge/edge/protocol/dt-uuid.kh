@@ -1,5 +1,16 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
+tp ThingUUID in "org/modules/identity/thing/protocol/dt-uuid.kh"
+tp Array_ThingUUID in "org/modules/identity/thing/protocol/dt-uuid.kh"
+
+tp Field_EdgeID ab
+
+tp EdgeID mt (self Field_EdgeID) () (t ThingUUID)
+
+tp Field_EdgesID ab
+
+tp EdgesIDs mt (self Field_EdgesID) () (a Array_ThingUUID)
+
 // TODO(go-migrate):
 /*
 package edge_p
