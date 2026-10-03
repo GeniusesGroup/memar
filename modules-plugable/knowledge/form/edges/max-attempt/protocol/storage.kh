@@ -1,5 +1,19 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
+tp Error in "memar/modules/process/error/protocol/error.kh"
+tp FormMaxAttemptDataModel in "org/modules-plugable/knowledge/form/edges/max-attempt/protocol/data_model.kh"
+tp NumberOfVersion in "memar/modules/memory/protocol/version.kh"
+tp ThingUUID in "org/modules/identity/thing/protocol/dt-uuid.kh"
+tp VersionOffset in "memar/modules/memory/protocol/version.kh"
+
+tp FormMaxAttemptStorage ab
+
+tp Save mt (self FormMaxAttemptStorage) (dm FormMaxAttemptDataModel) (n NumberOfVersion, e Error)
+
+tp Count mt (self FormMaxAttemptStorage) (t ThingUUID) (n NumberOfVersion, e Error)
+
+tp Get mt (self FormMaxAttemptStorage) (t ThingUUID, vo VersionOffset) (dm FormMaxAttemptDataModel, n NumberOfVersion, e Error)
+
 // TODO(go-migrate):
 /*
 package fma_p

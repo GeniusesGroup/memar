@@ -1,5 +1,21 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
+tp Field_AccountID in "org/modules/economics/account/protocol/dt-uuid.kh"
+tp Field_CVC in "org/modules-plugable/uri/iso-7812/protocol/card.kh"
+tp Field_CardNumber in "org/modules-plugable/uri/iso-7812/protocol/data_model.kh"
+tp Field_ExpireDate in "org/modules-plugable/uri/iso-7812/protocol/card.kh"
+
+tp BS_Register_Request ab {
+	Field_AccountID
+	Field_CardNumber
+	Field_ExpireDate
+	Field_CVC
+}
+
+tp BS_Get_Request ab {
+	Field_AccountID
+}
+
 // TODO(go-migrate):
 /*
 package card_p

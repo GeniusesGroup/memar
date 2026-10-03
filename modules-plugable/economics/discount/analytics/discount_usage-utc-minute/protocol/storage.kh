@@ -1,5 +1,18 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
+tp Error in "memar/modules/process/error/protocol/error.kh"
+tp NumberOfVersion in "memar/modules/memory/protocol/version.kh"
+tp VersionOffset in "memar/modules/memory/protocol/version.kh"
+tp DiscountUsageUtcMinuteDataModel in "org/modules-plugable/economics/discount/analytics/discount_usage-utc-minute/protocol/data_model.kh"
+
+tp DiscountUsageUtcMinuteStorage ab
+
+tp Save mt (self DiscountUsageUtcMinuteStorage) (dm DiscountUsageUtcMinuteDataModel) (nv NumberOfVersion, err Error)
+
+tp Count mt (self DiscountUsageUtcMinuteStorage) () (nv NumberOfVersion, err Error)
+
+tp Get mt (self DiscountUsageUtcMinuteStorage) (vo VersionOffset) (dm DiscountUsageUtcMinuteDataModel, nv NumberOfVersion, err Error)
+
 // TODO(go-migrate):
 /*
 package ivaump

@@ -1,5 +1,15 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
+tp U8 in "memar/modules/math/integer/unsigned-8.kh"
+
+tp Voucher_InvoiceType ab {
+	U8
+}
+
+tp Field_InvoiceType ab
+
+tp InvoiceType mt (self Field_InvoiceType) () (t Voucher_InvoiceType)
+
 // TODO(go-migrate):
 /*
 package voucher

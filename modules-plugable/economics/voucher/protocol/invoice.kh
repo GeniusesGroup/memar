@@ -1,5 +1,31 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
+tp Amount in "org/modules-plugable/economics/money/protocol/dt-money-amout.kh"
+tp Field_Each in "org/modules-plugable/economics/voucher/protocol/dt-each.kh"
+tp Field_InvoiceID in "org/modules/economics/invoice/protocol/dt-uuid.kh"
+tp Field_InvoiceType in "org/modules-plugable/economics/voucher/protocol/dt-invoice-type.kh"
+tp U64 in "memar/modules/math/integer/unsigned-64.kh"
+
+tp Voucher_Invoice_Condition ab {
+	Field_Each
+}
+
+tp MinPrice mt (self Voucher_Invoice_Condition) () (a Amount)
+
+tp MinAmount mt (self Voucher_Invoice_Condition) () (n U64)
+
+tp Voucher_Invoice_ID ab {
+	Field_InvoiceID
+}
+
+tp Voucher_Invoice_Type ab {
+	Field_InvoiceType
+}
+
+tp Voucher_Invoice_MaxUsage ab
+
+tp MaximumInvoice mt (self Voucher_Invoice_MaxUsage) () (n U64)
+
 // TODO(go-migrate):
 /*
 package voucher

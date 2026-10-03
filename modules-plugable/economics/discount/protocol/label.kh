@@ -1,5 +1,24 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
+tp U64 in "memar/modules/math/integer/unsigned-64.kh"
+tp Amount in "org/modules-plugable/economics/money/protocol/dt-money-amout.kh"
+tp Discount_Type in "org/modules-plugable/economics/discount/protocol/dt-type.kh"
+tp Field_LabelID in "org/modules/knowledge/label/protocol/dt-uuid.kh"
+
+tp Discount_Label ab {
+	Field_LabelID
+}
+
+tp MinAmount mt (self Discount_Label) () (n U64)
+
+tp MaxAmount mt (self Discount_Label) () (n U64)
+
+tp MinPrice mt (self Discount_Label) () (a Amount)
+
+tp MinStock mt (self Discount_Label) () (n U64)
+
+tp Type mt (self Discount_Label) () (t Discount_Type)
+
 // TODO(go-migrate):
 /*
 package discount

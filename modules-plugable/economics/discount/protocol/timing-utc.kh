@@ -1,5 +1,14 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
+tp DayHours in "memar/modules/time/utc/dayhour.kh"
+tp Weekdays in "memar/modules/time/utc/weekday.kh"
+
+tp Discount_TimingUTC ab
+
+tp AllowedWeekdays mt (self Discount_TimingUTC) () (w Weekdays)
+
+tp AllowedDayHours mt (self Discount_TimingUTC) () (h DayHours)
+
 // TODO(go-migrate):
 /*
 package discount

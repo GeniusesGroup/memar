@@ -1,0 +1,28 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp U16 in "memar/modules/math/integer/unsigned-16.kh"
+
+tp Discount_Type ab {
+	U16
+}
+
+// TODO(go-migrate):
+/*
+package discount
+
+type LabelType uint16
+
+const (
+	LabelType_Unset     LabelType = 0           //
+	LabelType_Mandatory LabelType = (1 << iota) // != optional
+	LabelType_Pair                              //
+)
+
+type Type uint16
+
+const (
+	Type_Unset     Type = 0           //
+	Type_Mandatory Type = (1 << iota) // != optional
+	Type_Pair                         //
+)
+*/

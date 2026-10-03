@@ -1,5 +1,28 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
+tp Array_ThingUUID in "org/modules/identity/thing/protocol/dt-uuid.kh"
+tp Card in "org/modules-plugable/uri/iso-7812/protocol/card.kh"
+tp CardDataModel in "org/modules-plugable/uri/iso-7812/protocol/data_model.kh"
+tp Container_Limit in "memar/modules/computer/adt/container/protocol/pagination.kh"
+tp Container_Offset in "memar/modules/computer/adt/container/protocol/pagination.kh"
+tp Error in "memar/modules/process/error/protocol/error.kh"
+tp NumberOfVersion in "memar/modules/memory/protocol/version.kh"
+tp ThingUUID in "org/modules/identity/thing/protocol/dt-uuid.kh"
+tp UserUUID in "org/modules/identity/user/protocol/dt-uuid.kh"
+tp VersionOffset in "memar/modules/memory/protocol/version.kh"
+
+tp CardStorage ab
+
+tp Save mt (self CardStorage) (dm CardDataModel) (n NumberOfVersion, e Error)
+
+tp Count mt (self CardStorage) (financialCardID ThingUUID) (n NumberOfVersion, e Error)
+
+tp Get mt (self CardStorage) (financialCardID ThingUUID, vo VersionOffset) (dm CardDataModel, n NumberOfVersion, e Error)
+
+tp FIND_FinancialCardIDs_BY_UserID mt (self CardStorage) (userID UserUUID, offset Container_Offset, limit Container_Limit) (financialCardIDs Array_ThingUUID, n NumberOfVersion, e Error)
+
+tp FIND_FinancialCardIDs_BY_CardNumber mt (self CardStorage) (cardNumber Card) (financialCardIDs Array_ThingUUID, e Error)
+
 // TODO(go-migrate):
 /*
 package card_p

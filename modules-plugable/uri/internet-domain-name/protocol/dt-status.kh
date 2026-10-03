@@ -1,5 +1,15 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
+tp U8 in "memar/modules/math/integer/unsigned-8.kh"
+
+tp DomainStatus ab {
+	U8
+}
+
+tp Field_DomainStatus ab
+
+tp GetDomainStatus mt (self Field_DomainStatus) () (s DomainStatus)
+
 // TODO(go-migrate):
 /*
 package domain_p

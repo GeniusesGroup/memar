@@ -1,5 +1,63 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
+tp Array_ThingUUID in "org/modules/identity/thing/protocol/dt-uuid.kh"
+tp Field_OrganizationUUID in "org/modules/identity/organization/protocol/dt-uuid.kh"
+tp Field_UserUUID in "org/modules/identity/user/protocol/dt-uuid.kh"
+tp Field_Username in "org/modules-plugable/uri/username/widget/protocol/dt-username.kh"
+tp Pagination_Offset_Request in "memar/modules/computer/adt/container/protocol/pagination.kh"
+tp Pagination_Response in "memar/modules/computer/adt/container/protocol/pagination.kh"
+tp String in "memar/modules/codec/string/protocol/string.kh"
+
+tp BS_Register_Request ab {
+	Field_UserUUID
+	Field_Username
+}
+
+tp BS_Count_Request ab {
+	Field_UserUUID
+}
+
+tp BS_Get_Request ab {
+	Field_UserUUID
+}
+
+tp BS_FindByUsername_Request ab {
+	Field_Username
+	Pagination_Offset_Request
+}
+
+tp BS_FindByUsername_Response ab {
+	Pagination_Response
+}
+
+tp UserIDs mt (self BS_FindByUsername_Response) () (u Array_ThingUUID)
+
+tp Field_ProtocolType ab
+
+tp ProtocolType mt (self Field_ProtocolType) () (p String)
+
+tp BS_SendManualVerification_Request ab {
+	Field_UserUUID
+	Field_OrganizationUUID
+	Field_Username
+	Field_ProtocolType
+}
+
+tp Field_VerificationToken ab
+
+tp Token mt (self Field_VerificationToken) () (t String)
+
+tp BS_VerifyManually_Request ab {
+	Field_UserUUID
+	Field_OrganizationUUID
+	Field_Username
+	Field_VerificationToken
+}
+
+tp BS_ChangeStatus_Request ab {
+	Field_Username
+}
+
 // TODO(go-migrate):
 /*
 package un_p

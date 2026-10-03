@@ -1,5 +1,30 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
+tp Character in "memar/modules/codec/string/protocol/character.kh"
+tp Field_UserUUID in "org/modules/identity/user/protocol/dt-uuid.kh"
+tp Observer_RequestID in "memar/modules/process/request/protocol/dt-uuid.observers.kh"
+tp Observer_Time_Creation in "memar/modules/process/time/protocol/dt-creation.observers.kh"
+tp ThingUUID in "org/modules/identity/thing/protocol/dt-uuid.kh"
+tp UserUUID in "org/modules/identity/user/protocol/dt-uuid.kh"
+tp Versioned in "memar/modules/memory/protocol/version.kh"
+
+tp Field_ReactionTo ab
+
+tp ReactionTo mt (self Field_ReactionTo) () (t ThingUUID)
+
+tp Field_ReactionType ab
+
+tp ReactionType mt (self Field_ReactionType) () (c Character)
+
+tp ReactionDataModel ab {
+	Field_UserUUID
+	Field_ReactionTo
+	Field_ReactionType
+	Observer_RequestID
+	Observer_Time_Creation
+	Versioned
+}
+
 // TODO(go-migrate):
 /*
 package rp

@@ -1,5 +1,15 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
+tp Container_ElementIndex in "memar/modules/computer/adt/container/protocol/index.kh"
+tp Error in "memar/modules/process/error/protocol/error.kh"
+tp VoucherIssuedUtcHourDataModel in "org/modules-plugable/economics/voucher/analytics/voucher_issued-utc_hour/protocol/data_model.kh"
+
+tp VoucherIssuedUtcHourStorage ab
+
+tp Save mt (self VoucherIssuedUtcHourStorage) (dm VoucherIssuedUtcHourDataModel) (err Error)
+
+tp Get mt (self VoucherIssuedUtcHourStorage) (h Container_ElementIndex) (dm VoucherIssuedUtcHourDataModel, err Error)
+
 // TODO(go-migrate):
 /*
 package vacuh

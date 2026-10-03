@@ -1,5 +1,14 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
+tp U64 in "memar/modules/math/integer/unsigned-64.kh"
+tp Amount in "org/modules-plugable/economics/money/protocol/dt-money-amout.kh"
+
+tp Discount_Invoice ab
+
+tp MinPrice mt (self Discount_Invoice) () (a Amount)
+
+tp MinAmount mt (self Discount_Invoice) () (n U64)
+
 // TODO(go-migrate):
 /*
 package discount

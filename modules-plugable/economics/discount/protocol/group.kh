@@ -1,5 +1,11 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
+tp Field_GroupID in "org/modules/management/group/protocol/dt-uuid.kh"
+
+tp Discount_Group ab {
+	Field_GroupID
+}
+
 // TODO(go-migrate):
 /*
 package discount

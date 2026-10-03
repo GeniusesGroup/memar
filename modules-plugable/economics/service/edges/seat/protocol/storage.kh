@@ -1,5 +1,28 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
+tp Array_ThingUUID in "org/modules/identity/thing/protocol/dt-uuid.kh"
+tp Container_Limit in "memar/modules/computer/adt/container/protocol/pagination.kh"
+tp Container_Offset in "memar/modules/computer/adt/container/protocol/pagination.kh"
+tp Error in "memar/modules/process/error/protocol/error.kh"
+tp NumberOfVersion in "memar/modules/memory/protocol/version.kh"
+tp SeatDataModel in "org/modules-plugable/economics/service/edges/seat/protocol/data_model.kh"
+tp Service_Seat_Type in "org/modules-plugable/economics/service/edges/seat/protocol/dt-type.kh"
+tp Storage_UUID in "memar/modules/memory/record/protocol/dt-uuid.kh"
+tp ThingUUID in "org/modules/identity/thing/protocol/dt-uuid.kh"
+tp VersionOffset in "memar/modules/memory/protocol/version.kh"
+
+tp SeatStorage ab
+
+tp Save mt (self SeatStorage) (dm SeatDataModel) (nv NumberOfVersion, err Error)
+
+tp Count mt (self SeatStorage) (productID ThingUUID) (nv NumberOfVersion, err Error)
+
+tp Get mt (self SeatStorage) (productID ThingUUID, vo VersionOffset) (dm SeatDataModel, nv NumberOfVersion, err Error)
+
+tp FindProductIDsByMapID mt (self SeatStorage) (mapID Storage_UUID, offset Container_Offset, limit Container_Limit) (productIDs Array_ThingUUID, nv NumberOfVersion, err Error)
+
+tp FilterProductIDsBySeatType mt (self SeatStorage) (t Service_Seat_Type, offset Container_Offset, limit Container_Limit) (productIDs Array_ThingUUID, nv NumberOfVersion, err Error)
+
 // TODO(go-migrate):
 /*
 package psp

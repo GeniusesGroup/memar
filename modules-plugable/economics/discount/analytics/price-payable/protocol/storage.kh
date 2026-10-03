@@ -1,5 +1,19 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
+tp Error in "memar/modules/process/error/protocol/error.kh"
+tp NumberOfVersion in "memar/modules/memory/protocol/version.kh"
+tp ThingUUID in "org/modules/identity/thing/protocol/dt-uuid.kh"
+tp VersionOffset in "memar/modules/memory/protocol/version.kh"
+tp PricePayableDataModel in "org/modules-plugable/economics/discount/analytics/price-payable/protocol/data_model.kh"
+
+tp PricePayableStorage ab
+
+tp Save mt (self PricePayableStorage) (dm PricePayableDataModel) (nv NumberOfVersion, err Error)
+
+tp Count mt (self PricePayableStorage) (productID ThingUUID, countUnitID ThingUUID) (nv NumberOfVersion, err Error)
+
+tp Get mt (self PricePayableStorage) (productID ThingUUID, countUnitID ThingUUID, vo VersionOffset) (dm PricePayableDataModel, nv NumberOfVersion, err Error)
+
 // TODO(go-migrate):
 /*
 package pppp

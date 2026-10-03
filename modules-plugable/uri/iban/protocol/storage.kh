@@ -1,5 +1,22 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
+tp Error in "memar/modules/process/error/protocol/error.kh"
+tp IBAN in "org/modules-plugable/uri/iban/protocol/iban.kh"
+tp IBANDataModel in "org/modules-plugable/uri/iban/protocol/data_model.kh"
+tp NumberOfVersion in "memar/modules/memory/protocol/version.kh"
+tp ThingUUID in "org/modules/identity/thing/protocol/dt-uuid.kh"
+tp VersionOffset in "memar/modules/memory/protocol/version.kh"
+
+tp IBANStorage ab
+
+tp Save mt (self IBANStorage) (dm IBANDataModel) (n NumberOfVersion, e Error)
+
+tp Count mt (self IBANStorage) (t ThingUUID) (n NumberOfVersion, e Error)
+
+tp Get mt (self IBANStorage) (t ThingUUID, vo VersionOffset) (dm IBANDataModel, n NumberOfVersion, e Error)
+
+tp FIND_AccountIDs_BY_IBAN mt (self IBANStorage) (i IBAN) (t ThingUUID, e Error)
+
 // TODO(go-migrate):
 /*
 package faip

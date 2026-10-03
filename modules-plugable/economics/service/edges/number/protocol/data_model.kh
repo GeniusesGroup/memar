@@ -1,5 +1,31 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
+tp Decimal_Quantity in "memar/modules/math/decimal/protocol/dt-quantity.kh"
+tp Field_ProductID in "org/modules/economics/product/protocol/dt-uuid.kh"
+tp Observer_RequestID in "memar/modules/process/request/protocol/dt-uuid.observers.kh"
+tp Observer_Time_Request in "memar/modules/process/time/protocol/dt-request.observers.kh"
+
+tp Observer_Number_Minimum ab
+
+tp GetMinimum mt (self Observer_Number_Minimum) () (q Decimal_Quantity)
+
+tp Observer_Number_Maximum ab
+
+tp GetMaximum mt (self Observer_Number_Maximum) () (q Decimal_Quantity)
+
+tp Observer_Number_MaximumInvoiceByBuy ab
+
+tp GetMaximumInvoiceByBuy mt (self Observer_Number_MaximumInvoiceByBuy) () (q Decimal_Quantity)
+
+tp NumberDataModel ab {
+	Field_ProductID
+	Observer_Number_Minimum
+	Observer_Number_Maximum
+	Observer_Number_MaximumInvoiceByBuy
+	Observer_RequestID
+	Observer_Time_Request
+}
+
 // TODO(go-migrate):
 /*
 package pnp

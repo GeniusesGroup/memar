@@ -1,5 +1,13 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
+tp Time in "memar/modules/time/protocol/time.kh"
+
+tp Discount_TimeValidity ab
+
+tp Start mt (self Discount_TimeValidity) () (t Time)
+
+tp End mt (self Discount_TimeValidity) () (t Time)
+
 // TODO(go-migrate):
 /*
 package discount

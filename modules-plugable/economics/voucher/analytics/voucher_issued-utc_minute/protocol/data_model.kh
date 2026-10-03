@@ -1,5 +1,27 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
+tp U64 in "memar/modules/math/integer/unsigned-64.kh"
+tp Amount in "org/modules-plugable/economics/money/protocol/dt-money-amout.kh"
+tp Observer_MinuteElapsed in "memar/modules/time/utc/duration-minute.observers.kh"
+tp Observer_RequestID in "memar/modules/process/request/protocol/dt-uuid.observers.kh"
+tp Observer_Time_Request in "memar/modules/process/time/protocol/dt-request.observers.kh"
+
+tp Observer_VoucherIssuedUtcMinute_TotalIssued ab
+
+tp GetTotalIssued mt (self Observer_VoucherIssuedUtcMinute_TotalIssued) () (n U64)
+
+tp Observer_VoucherIssuedUtcMinute_TotalIssuedAmount ab
+
+tp GetTotalIssuedAmount mt (self Observer_VoucherIssuedUtcMinute_TotalIssuedAmount) () (a Amount)
+
+tp VoucherIssuedUtcMinuteDataModel ab {
+	Observer_MinuteElapsed
+	Observer_VoucherIssuedUtcMinute_TotalIssued
+	Observer_VoucherIssuedUtcMinute_TotalIssuedAmount
+	Observer_RequestID
+	Observer_Time_Request
+}
+
 // TODO(go-migrate):
 /*
 package vaud_p

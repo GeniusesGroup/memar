@@ -1,5 +1,15 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
+tp U16 in "memar/modules/math/integer/unsigned-16.kh"
+
+tp GroupPolicy ab {
+	U16
+}
+
+tp Field_GroupPolicy ab
+
+tp GetGroupPolicy mt (self Field_GroupPolicy) () (p GroupPolicy)
+
 // TODO(go-migrate):
 /*
 package group_authorization

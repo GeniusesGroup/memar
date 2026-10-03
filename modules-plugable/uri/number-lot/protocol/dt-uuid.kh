@@ -1,5 +1,11 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
+tp ThingUUID in "org/modules/identity/thing/protocol/dt-uuid.kh"
+
+tp Field_LotID ab
+
+tp LotID mt (self Field_LotID) () (t ThingUUID)
+
 // TODO(go-migrate):
 /*
 package lot_p

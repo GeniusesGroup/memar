@@ -1,5 +1,91 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
+tp String in "memar/modules/codec/string/protocol/string.kh"
+tp U32 in "memar/modules/math/integer/unsigned-32.kh"
+
+tp Field_Continent ab
+
+tp Continent mt (self Field_Continent) () (c String)
+
+tp Field_Country ab
+
+tp Country mt (self Field_Country) () (c String)
+
+tp Field_State ab
+
+tp State mt (self Field_State) () (s String)
+
+tp Field_Province ab
+
+tp Province mt (self Field_Province) () (p String)
+
+tp Field_Region ab
+
+tp Region mt (self Field_Region) () (r String)
+
+tp Field_City ab
+
+tp City mt (self Field_City) () (c String)
+
+tp Field_District ab
+
+tp District mt (self Field_District) () (d String)
+
+tp Field_Boulevard ab
+
+tp Boulevard mt (self Field_Boulevard) () (b String)
+
+tp Field_MainStreet ab
+
+tp MainStreet mt (self Field_MainStreet) () (m String)
+
+tp Field_Street ab
+
+tp Street mt (self Field_Street) () (s String)
+
+tp Field_MainAlley ab
+
+tp MainAlley mt (self Field_MainAlley) () (m String)
+
+tp Field_Alley ab
+
+tp Alley mt (self Field_Alley) () (a String)
+
+tp Field_Building ab
+
+tp Building mt (self Field_Building) () (b String)
+
+tp Field_Block ab
+
+tp Block mt (self Field_Block) () (b String)
+
+tp Field_Postal ab
+
+tp Postal mt (self Field_Postal) () (p U32)
+
+tp Field_ZipCode ab
+
+tp ZipCode mt (self Field_ZipCode) () (z U32)
+
+tp AddressDataModel ab {
+	Field_Continent
+	Field_Country
+	Field_State
+	Field_Province
+	Field_Region
+	Field_City
+	Field_District
+	Field_Boulevard
+	Field_MainStreet
+	Field_Street
+	Field_MainAlley
+	Field_Alley
+	Field_Building
+	Field_Block
+	Field_Postal
+	Field_ZipCode
+}
+
 // TODO(go-migrate):
 /*
 package address_p

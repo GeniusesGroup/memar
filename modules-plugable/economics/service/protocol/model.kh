@@ -1,5 +1,13 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
+tp ProductModel in "org/modules/economics/product/protocol/model.kh"
+tp ThingModel in "org/modules/identity/thing/protocol/model.kh"
+
+tp ServiceModel ab {
+	ThingModel
+	ProductModel
+}
+
 // TODO(go-migrate):
 /*
 package product_service_p

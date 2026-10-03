@@ -1,5 +1,18 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
+tp Error in "memar/modules/process/error/protocol/error.kh"
+tp NumberOfVersion in "memar/modules/memory/protocol/version.kh"
+tp VersionOffset in "memar/modules/memory/protocol/version.kh"
+tp DiscountUsageUtcDayDataModel in "org/modules-plugable/economics/discount/analytics/discount_usage-utc-day/protocol/data_model.kh"
+
+tp DiscountUsageUtcDayStorage ab
+
+tp Save mt (self DiscountUsageUtcDayStorage) (dm DiscountUsageUtcDayDataModel) (nv NumberOfVersion, err Error)
+
+tp Count mt (self DiscountUsageUtcDayStorage) () (nv NumberOfVersion, err Error)
+
+tp Get mt (self DiscountUsageUtcDayStorage) (vo VersionOffset) (dm DiscountUsageUtcDayDataModel, nv NumberOfVersion, err Error)
+
 // TODO(go-migrate):
 /*
 package ivaudp

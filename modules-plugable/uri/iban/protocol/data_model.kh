@@ -1,5 +1,21 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
+tp Field_AccountID in "org/modules/economics/account/protocol/dt-uuid.kh"
+tp IBAN in "org/modules-plugable/uri/iban/protocol/iban.kh"
+tp Observer_RequestID in "memar/modules/process/request/protocol/dt-uuid.observers.kh"
+tp Observer_Time_Request in "memar/modules/process/time/protocol/dt-request.observers.kh"
+
+tp Field_AccountIBAN ab
+
+tp AccountIBAN mt (self Field_AccountIBAN) () (i IBAN)
+
+tp IBANDataModel ab {
+	Field_AccountID
+	Field_AccountIBAN
+	Observer_RequestID
+	Observer_Time_Request
+}
+
 // TODO(go-migrate):
 /*
 package faip
