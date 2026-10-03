@@ -1,10 +1,10 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-tp Target in "memar/modules/process/event/protocol/event-target.kh"
+tp EventTarget in "memar/modules/process/event/protocol/event-target.kh"
 tp ThingModel in "org/modules/identity/thing/protocol/model.kh"
 
 tp TransactionModel ab {
-	Target
+	EventTarget
 	ThingModel
 }
 

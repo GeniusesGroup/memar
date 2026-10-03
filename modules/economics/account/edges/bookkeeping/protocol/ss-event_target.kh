@@ -2,7 +2,7 @@
 
 tp BookkeepingDataModel in "org/modules/economics/account/edges/bookkeeping/protocol/data_model.kh"
 tp Event in "memar/modules/process/event/protocol/event.kh"
-tp Target in "memar/modules/process/event/protocol/event-target.kh"
+tp EventTarget in "memar/modules/process/event/protocol/event-target.kh"
 
 tp BookkeepingEventTarget_Event ab {
 	BookkeepingDataModel
@@ -10,7 +10,7 @@ tp BookkeepingEventTarget_Event ab {
 }
 
 tp BookkeepingEventTarget ab {
-	Target
+	EventTarget
 }
 
 // TODO(go-migrate):

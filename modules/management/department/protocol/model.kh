@@ -2,12 +2,12 @@
 
 tp ThingModel in "org/modules/identity/thing/protocol/model.kh"
 tp GroupModel in "org/modules/management/group/protocol/model.kh"
-tp Target in "memar/modules/process/event/protocol/event-target.kh"
+tp EventTarget in "memar/modules/process/event/protocol/event-target.kh"
 
 tp DepartmentModel ab {
 	ThingModel
 	GroupModel
-	Target
+	EventTarget
 }
 
 // TODO(go-migrate):
