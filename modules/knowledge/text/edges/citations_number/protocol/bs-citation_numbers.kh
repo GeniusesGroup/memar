@@ -1,5 +1,16 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
+tp ThingUUID in "org/modules/identity/thing/protocol/dt-uuid.kh"
+tp U64 in "memar/modules/math/integer/unsigned-64.kh"
+
+tp BS_TextCitationNumber_Request ab
+
+tp GetTextID mt (self BS_TextCitationNumber_Request) () (id ThingUUID)
+
+tp BS_TextCitationNumber_Response ab
+
+tp GetBackLinksNumber mt (self BS_TextCitationNumber_Response) () (n U64)
+
 // TODO(go-migrate):
 /*
 package qrq_p

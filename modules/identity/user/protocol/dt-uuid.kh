@@ -1,17 +1,24 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-// Behavioral specification of a user-UUID value.
-// Exists because an abstraction-owned method may only reference abstractions
-// as influencing/influenced variables — never a concrete capsule.
-// Protocol files carry abstractions only; the concrete UUID capsule belongs
-// to the implementation layer, not here.
-// Open: currently empty, so structural satisfaction is vacuous; decide whether
-// it must require behavior (render/compare) before real implementers appear.
 tp UserUUID ab
 
-// Anything that can tell which user it belongs to.
 tp Field_UserUUID ab
 
-tp UserID mt (self Field_UserUUID) () (UserUUID)
+tp UserID mt (self Field_UserUUID) () (i UserUUID)
 
-// Register new user — TODO::: not yet designed; was a dangling comment in the Go source.
+// TODO(go-migrate):
+/*
+package user_p
+
+import (
+	thing_p "org/modules/identity/thing/protocol"
+)
+
+type Field_UserUUID interface {
+	UserID() UUID
+}
+
+// UUID can be same with any other UUID domains e.g. thing, ...
+// It MUST be unique ID in all domains.
+type UUID thing_p.UUID
+*/

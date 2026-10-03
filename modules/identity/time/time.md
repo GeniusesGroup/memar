@@ -18,3 +18,7 @@ e.g. what hours in a day and days in weekday in utc time week the task active (e
 duration or two record as start and end??
 - It CAN use as any duration type such as `duration.Second` or `duration.Field_Second`
 - `Duration() duration.Second // from Epoch()`
+
+## Identity
+
+A time's identity is the thing domain's identity. This domain declares no UUID concept of its own and no capsule for one; a record that names a time states that requirement in its own vocabulary and takes the identity type from `thing`.

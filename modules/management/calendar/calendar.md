@@ -1,6 +1,12 @@
 # Calendar
 Calendar records time-stamped entries (events, work periods) for persons and organizations.
 
+## Identity
+
+A calendar's identity is the thing domain's identity. This domain declares no UUID concept of its own; it includes the thing domain's declaration and keeps only the requirement that a calendar record can be named (`Field_CalendarID` with its accessor `CalendarID`).
+
+The reason is the one the Go source recorded: a calendar record's ID is *usually some other domain's UUID* — an `invoice`, `form`, `department`, `role`, `task`, `user`, `production`, `batch`. The calendar does not mint identity; it is a time-stamped reading attached to whatever thing already has one. That is why the identity type is imported rather than declared.
+
 ## Idea backlog
 
 Review discipline per [vocabulary-discipline.handoff.md](../vocabulary-discipline.handoff.md). Nothing below is ratified.

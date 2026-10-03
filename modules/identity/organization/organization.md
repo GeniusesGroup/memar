@@ -18,5 +18,13 @@ A [juridical person](https://en.wikipedia.org/wiki/Juridical_person) is a legal 
 - **External conventions not binding**: external industry conventions for the word (e.g., SaaS "Organization = tenant") are not treated as binding on this project's internal definition, as long as the internal definition is coherent and consistently applied.
 - **Tenant-collision concern resolved**: the deployment model is a unikernel. A possible future multi-tenant hosting layer (for organizations that don't want to self-host and only care about the GUI) is deliberately named **"Government"** — not "Organization" or "Tenant" — because providing governance/hosting-of-others is precisely a government's function in this framework's own vocabulary. This keeps the business-domain `Organization` node and the hosting/tenancy boundary conceptually and structurally separate.
 
+## Protocol
+
+- **The organization does not own an identifier of its own.** The identifier of an organization is the identity-domain UUID — the same identifier concept a user and every other thing carries, which the [thing](../thing/README.md) domain documents as the base identifier of all domains and which the [graph](../../storage/graph/README.md) data model types its vertices by. This domain's protocol *includes* that identifier; it does not declare a second one beside it.
+- **Two identity fields on an organization's records**, each an abstraction whose body is generated rather than written:
+  - `Field_OrganizationUUID` — the organization the record belongs to.
+  - `Field_OrganizationOwnerID` — the organization that owns the record, for a data model that needs to indicate the owner.
+- An organization is any collective, non-person identity — company, society, government, NGO, institute. The kind of organization is not part of the identifier; where a record says which kind, that is a label on the organization, not a type of its UUID.
+
 ## Organization vs. Group (conceptual level)
 `Organization` is a higher-order concept than `Group` — effectively "a group of groups." An organization can contain multiple departments; departments are modeled as groups; groups can themselves contain persons, other groups, or even other organizations as members (e.g., a university committee can have another organization as an external oversight member). Architecturally: `User`/`Organization` sit under the `identity` domain; `Group` sits under the `management` domain. This distinction is considered clear and settled. The remaining structural/implementation questions live in [`modules/management/group`](../../management/group/README.md).
