@@ -1,5 +1,11 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
+tp Criterion_Point ab
+
+tp Field_Criterion_Point ab
+
+tp Point mt (self Field_Criterion_Point) () (p Criterion_Point)
+
 // TODO(go-migrate):
 /*
 package tcp

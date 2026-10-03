@@ -1,5 +1,11 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
+tp LabelModel in "org/modules/knowledge/label/protocol/model.kh"
+
+tp SexualityModel ab {
+	LabelModel
+}
+
 // TODO(go-migrate):
 /*
 package sexuality_p

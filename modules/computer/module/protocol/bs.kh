@@ -1,5 +1,51 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
+tp Array_Dynamic in "memar/modules/computer/adt/array/protocol/dynamic.kh"
+tp Capsule_LifeCycle in "memar/modules/computer/capsule/protocol/life_cycle_contract.kh"
+tp String in "memar/modules/codec/string/protocol/string.kh"
+tp DataType in "memar/modules/computer/datatype/protocol/data-type.kh"
+tp Datatype_ID in "memar/modules/computer/datatype/protocol/id.kh"
+tp Identifier_MediaType in "memar/modules/identifier/mediatype/protocol/media-type.kh"
+tp Page in "memar/modules/gui/protocol/page.kh"
+tp Service in "memar/modules/process/service/protocol/service.kh"
+tp Error in "memar/modules/process/error/protocol/error.kh"
+
+tp Array_Module ab {
+	Array_Dynamic
+}
+
+tp Array_Page ab {
+	Array_Dynamic
+}
+
+tp Array_Service ab {
+	Array_Dynamic
+}
+
+tp Module ab {
+	DataType
+	Identifier_MediaType
+	Capsule_LifeCycle
+}
+
+tp Source mt (self Module) () (s String)
+
+tp DependOn mt (self Module) () (d Array_Module)
+
+tp Pages mt (self Module) () (p Array_Page)
+
+tp Services mt (self Module) () (s Array_Service)
+
+tp Computer_Modules ab
+
+tp RegisterModule mt (self Computer_Modules) (m Module) ()
+
+tp Modules mt (self Computer_Modules) () (m Array_Module)
+
+tp GetModuleByID mt (self Computer_Modules) (id Datatype_ID) (m Module, err Error)
+
+tp GetModuleByMediaType mt (self Computer_Modules) (mediaType Identifier_MediaType) (m Module, err Error)
+
 // TODO(go-migrate):
 /*
 package module_p

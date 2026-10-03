@@ -1,5 +1,16 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
+tp Array_ThingUUID in "org/modules/identity/thing/protocol/dt-uuid.kh"
+tp ThingUUID in "org/modules/identity/thing/protocol/dt-uuid.kh"
+
+tp Field_EstateID ab
+
+tp EstateID mt (self Field_EstateID) () (t ThingUUID)
+
+tp Field_EstateIDs ab
+
+tp EstateIDs mt (self Field_EstateIDs) () (a Array_ThingUUID)
+
 // TODO(go-migrate):
 /*
 package estate_p
