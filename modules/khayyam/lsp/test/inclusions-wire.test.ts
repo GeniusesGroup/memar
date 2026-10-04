@@ -62,9 +62,16 @@ test("a fault of reading and a claim nothing accounts for are published together
   // A file with a character the grammar has no form for AND an address that resolves to
   // nothing: one is reading, the other is a claim, and a reader who saw only the first
   // would think the file was whole.
+  //
+  // The `>` is the whole of the faulted line, which is what keeps this document about those
+  // two answers: a name before the `>` would survive the scan and be read as an entry of the
+  // capsule block, so the document would also be naming a type nothing in it answers, and a
+  // third label would stand in for a thing this test is not about.
+  // ([goal-unbound-type-name.test.ts](./goal-unbound-type-name.test.ts) is where a name beside
+  // a fault of reading is published.)
   const files = tree();
   t.after(() => discard(files));
-  const source = ['tp Bool in "math/nowhere.kh"', "tp A cp {", "    what>", "}", ""].join("\n");
+  const source = ['tp Bool in "math/nowhere.kh"', "tp A cp {", "    >", "}", ""].join("\n");
   const server = await holding(source, { uri: files.uri });
   t.after(() => server.stop());
   const published = await server.firstPublishedFor(files.uri);

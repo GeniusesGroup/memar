@@ -31,4 +31,4 @@ tp ColorDepth mt (self Screen) () (s Signed)
 
 tp Orientation mt (self Screen) () (s ScreenOrientation)
 
-// event_p.Target[GUIScreen]
+// event_p.EventTarget[GUIScreen]

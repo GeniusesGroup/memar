@@ -37,7 +37,7 @@ tp ScrollLeft mt (self Scroll) () (s Signed)
 // 		overflow-x: scroll;		/* Show horizontal scrollbar */
 tp Scrollbars mt (self Scroll) () (x Boolean, y Boolean)
 
-// event_p.Target[Scroll]
+// event_p.EventTarget[Scroll]
 
 tp Scroll_Options cp {
     Behavior Scroll_Behavior
@@ -55,6 +55,6 @@ type Scroll interface {
 	// https://developer.mozilla.org/en-US/docs/Web/API/Window/scroll
 	Scroll(x, y int, options Scroll_Options)
 
-	// event_p.Target[Scroll]
+	// event_p.EventTarget[Scroll]
 }
 */

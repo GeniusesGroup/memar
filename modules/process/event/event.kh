@@ -1,5 +1,28 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
+tp DataType in "modules/computer/datatype/protocol/data-type.kh"
+tp Time in "modules/time/protocol/time.kh"
+
+// An Event is a runtime occurrence and not a stored record: it carries the identity its DataType
+// supplies and the time it occurred, and nothing else the protocol requires. Where the contract is
+// stated: `docs/protocols/process/event.md` -> What an Event Is.
+//
+//memar:impl memar/process/event/protocol.Event
+tp Event cp {
+    dt DataType
+    time Time
+}
+
+//memar:impl memar/computer/datatype/protocol.Observer_DataType
+tp GetDataType mt (self Event) () (d DataType)
+
+//memar:impl memar/time/protocol.Observer_Time
+tp GetTime mt (self Event) () (t Time)
+
+// Initialization is the capsule's own behavior carrying its own domain arguments, which is what
+// `CapsuleLifeCycle` states when it declines to name an `Init` of its own.
+tp Init mt (self Event) (dt DataType, time Time) ()
+
 // TODO(go-migrate):
 /*
 package event
@@ -18,18 +41,6 @@ type Event struct {
 	dt   datatype_p.DataType
 	time unix.Time
 }
-
-//memar:impl memar/computer/capsule/protocol.LifeCycle
-func (self *Event) Init(dt datatype_p.DataType, time unix.Time) {
-	self.dt = dt
-	self.time = time
-}
-
-//memar:impl memar/datatype/protocol.Field_DataType
-func (self *Event) DataType() datatype_p.DataType { return self.dt }
-
-//memar:impl memar/time/protocol.Field_Time
-func (self *Event) Time() time_p.Time { return &self.time }
 
 //memar:impl memar/math/logic/protocol.Equivalence
 func (self *Event) Equivalence(with event_p.Event) bool { return self.DataType() == with.DataType() }

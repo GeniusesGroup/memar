@@ -1,0 +1,46 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+// The Test for the `EventListener` Process. Its expectations are stated in
+// `docs/protocols/process/event.md` under The EventListener contract, Why capture, once, passive, and
+// synchrony are not members, and Dispatch -> A dispatch does not carry its handlers' failures, and are
+// cited with each one below; nothing here is stated from the sources.
+//
+// The language this module is written in has no runner and no assertion form, so an expectation here
+// is written as what must hold together with the observation that would decide it. Nothing in this
+// file has been observed; each expectation is open until an observer reports what the observation
+// found.
+
+// E1 — The contract has exactly one mandatory member: a listener that cannot be handed the occurrence
+// is not a listener.
+// Stated at: `docs/protocols/process/event.md` -> The EventListener contract, which writes the
+// abstraction as `tp EventListener ab` over `EventHandler` and calls the restraint the protocol's
+// claim rather than an omission.
+// Decided by: read `modules/process/event/protocol/event-listener.kh` and read every `tp {name} mt`
+// whose owner group names `EventListener`. One such declaration decides for E1. Two decide against it,
+// and so does a composition block naming any other abstraction.
+
+// E2 — That one member is handed an `Event` and hands nothing back.
+// Stated at: `docs/protocols/process/event.md` -> The EventListener contract, for the declaration, and
+// -> A dispatch does not carry its handlers' failures, for what an empty influenced group is for.
+// Decided by: read the two groups after the owner group of the declaration E1 read. One influencing
+// variable of the abstraction E1 read and no influenced variable decides for E2. A method carrying an
+// influenced variable decides against it, because a handler returning something is a handler whose
+// failure its dispatch would then have to account for.
+
+// E3 — `capture`, `once`, `passive`, a synchrony declaration, and an abort signal are not members:
+// each is a property of one registration rather than of a listener.
+// Stated at: `docs/protocols/process/event.md` -> Why capture, once, passive, and synchrony are not
+// members, which names the five and assigns each to the registration.
+// Decided by: read the declaration E1 read and confirm it is the only member, then read
+// `modules/process/event/protocol/` for a second declaration whose owner group names `EventListener`.
+// Nothing beyond E1's single member decides for E3. A second member, or any member naming one of the
+// five, decides against it.
+
+// E4 — A listener is handed one occurrence, and the identity and time of that occurrence are already
+// answered before the handler runs.
+// Stated at: `docs/protocols/process/event.md` -> What a listener may assume about the occurrence.
+// Decided by: read what `modules/process/event/protocol/event.kh` composes for the `Event` abstraction,
+// and read the two accessors `modules/process/event/event.kh` declares on its own capsule. `Event`
+// composing `Observer_DataType` and `Observer_Time`, with both accessors answered from the capsule's
+// own state and never from the dispatch, decides for E4. An answer reached from the dispatch decides
+// against it.

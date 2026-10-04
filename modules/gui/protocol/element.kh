@@ -9,7 +9,7 @@ tp String in "modules/codec/string/protocol/string.kh"
 
 // Element
 tp GUI_Element ab {
-    // event_p.Target[Element]
+    // event_p.EventTarget[Element]
     // https://developer.mozilla.org/en-US/docs/Web/API/Element/clientHeight
     Scroll
 }

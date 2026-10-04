@@ -7,11 +7,17 @@
 // as a success. So a change that contradicts the declared capability is refused and the
 // text stands, and every answer afterwards is about the text the server actually holds.
 import { contradictsDeclaredChange, type Change } from "./capabilities.ts";
-import { diagnosticOf, inclusionDiagnostic, refusalDiagnostic } from "./diagnostics.ts";
+import {
+  diagnosticOf,
+  inclusionDiagnostic,
+  refusalDiagnostic,
+  unboundNameDiagnostic,
+} from "./diagnostics.ts";
 import type { Reach } from "./definition.ts";
 import { inclusionFindings } from "./inclusions.ts";
 import { analyse } from "./semantic.ts";
 import { notify } from "./transport.ts";
+import { unboundNameFindings } from "./unbound-names.ts";
 
 const documents = new Map<string, string>();
 
@@ -29,24 +35,35 @@ export function text(uri: string): string | undefined {
   return documents.get(uri);
 }
 
-/** What the frontend could not read of the document this server holds, and what the files
- *  behind its inclusions do not account for. One publication carries both, and neither
- *  stands for the other: the first is a fault of reading and the second is a claim this
- *  toolchain could not confirm, so a document with one and not the other must not read as
- *  though it had the other.
+/** What the frontend could not read of the document this server holds, what the files behind
+ *  its inclusions do not account for, and what its own names do not answer. One publication
+ *  carries all three, and none stands for another: the first is a fault of reading, the second
+ *  is a claim this toolchain could not confirm, and the third is a type name the document uses
+ *  and nothing in it supplies — so a document with one and not the others must not read as
+ *  though it had the others.
  *
- *  The two together are the whole of what a reader is told about a file. A reader shown a
+ *  Each of the three is the toolchain's own question asked of one file, and the last is asked
+ *  with the gate's own walk of the references rather than with a walk of this folder's own, so
+ *  the two analysers cannot come to different answers about the same name
+ *  ([unbound-names.ts](./unbound-names.ts)). The order is the order of the three questions, not
+ *  the order of the lines: a reader is told what reading cost first, then what could not be
+ *  confirmed, then what does not bind.
+ *
+ *  The three together are the whole of what a reader is told about a file. A reader shown a
  *  confident set of roles over a file whose inclusions name nothing was, until the second
  *  existed, shown a file the toolchain had no trouble with — and a go-to-definition on one
- *  of its names found nothing, which reads as a file with no declarations in it.
- *  @param uri the document
- *  @param reach how the addresses this document writes are resolved */
+ *  of its names found nothing, which reads as a file with no declarations in it. A name that
+ *  binds to nothing is the same silence one layer in: the file reads whole, every role is
+ *  answered, and the signature is about a type that is not there.
+ * @param uri the document
+ * @param reach how the addresses this document writes are resolved */
 export function diagnosticsFor(uri: string, reach: Reach): object[] | undefined {
   const held = documents.get(uri);
   if (held === undefined) return undefined;
   return [
     ...analyse(held).faults.map(diagnosticOf),
     ...inclusionFindings(uri, held, reach).map(inclusionDiagnostic),
+    ...unboundNameFindings(held).map(unboundNameDiagnostic),
   ];
 }
 

@@ -1,0 +1,33 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp ADT_List in "modules/computer/adt/list/protocol/list.kh"
+tp Error in "modules/process/error/protocol/error.kh"
+tp Event in "modules/process/event/protocol/event.kh"
+tp EventListener in "modules/process/event/protocol/event-listener.kh"
+tp EventTarget in "modules/process/event/protocol/event-target.kh"
+tp Locker in "modules/process/sync/protocol/locker.kh"
+
+// Race_EventTarget receives `Event` and does with it what a race detector does, which begins with
+// establishing whether the occurrence is a race report at all. The signature is the capability's
+// own rather than a narrowed one, because a capsule satisfies an abstraction only when its
+// influencing types match exactly — `docs/khayyam/abstraction.md` -> Abstraction Realization
+// (Implicit Satisfaction) — so a method taking `Race_Event` would satisfy nothing and would leave
+// this capsule unable to be a `Detector`. Where the contract is stated:
+// `docs/protocols/process/event.md` -> The EventTarget capability.
+//
+// The mutual exclusion is held across the dispatch and across every change to the listener set, so a
+// handler that registers against this target from inside a dispatch waits for that dispatch to end.
+//
+//memar:impl memar/process/event/protocol.EventTarget
+tp Race_EventTarget cp {
+    sync Locker
+    ls ADT_List
+}
+
+tp Init mt (self Race_EventTarget) () (err Error)
+
+tp DispatchEvent mt (self Race_EventTarget) (event Event) (err Error)
+
+tp AddEventListener mt (self Race_EventTarget) (callback EventListener) (err Error)
+
+tp RemoveEventListener mt (self Race_EventTarget) (callback EventListener) (err Error)

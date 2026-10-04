@@ -5,8 +5,6 @@ tp Observer_Time in "modules/time/protocol/time.observers.kh"
 tp Logic_Equivalence in "modules/math/logic/protocol/equivalence.kh"
 tp Boolean in "modules/math/boolean/protocol/boolean.kh"
 
-tp Equivalence mt (self Event) (with Event) (b Boolean)
-
 // Events CAN be any data-type in any domain.
 // Event are runtime data-types that DON't need to store in storage layer.
 //
@@ -26,30 +24,27 @@ tp Event ab {
     Logic_Equivalence
 }
 
+// `Logic_Equivalence` in "modules/math/logic/protocol/equivalence.kh" declares the abstraction and
+// no method, so there is nothing here for a realization to satisfy. What it should compare is open:
+// `docs/protocols/process/event.handoff.md` -> What does `Logic_Equivalence` over two Event
+// occurrences answer?
+//
 // TODO(go-migrate):
 /*
-package event_p
+package logic_p
 
-import (
-	datatype_p "memar/computer/datatype/protocol"
-	logic_p "memar/math/logic/protocol"
-	time_p "memar/time/protocol"
-)
-
-// Events CAN be any data-type in any domain.
-// Event are runtime data-types that DON't need to store in storage layer.
-// 
-// Events dispatch after base logic that make this Event.
-// e.g. When a service request want to serve, a handler receive the request and decide to save the request for auditing
-// after validate request codec and save request, a related event dispatch.
-// This service can provide some mechanism to change the flow of request processing
-//
-// Other frameworks:
-// https://www.w3.org/TR/DOM-Level-3-Events/#event-flow
-// https://developer.mozilla.org/en-US/docs/Web/API/Event
-// https://developer.mozilla.org/en-US/docs/Web/Events
-// https://learn.microsoft.com/en-us/dotnet/api/system.componentmodel.eventdescriptor
-type Event interface {
-	logic_p.Equivalence[Event]
+// In logic and mathematics, statements are said to be logically equivalent if they have the same truth value in every model.
+// It will use when qualities that are comparable.
+// https://en.wikipedia.org/wiki/Logical_equivalence
+// Logical_Connective_Equivalent
+type Equivalence[T any] interface {
+	// The statement P↔Q asserts the logical equivalence of P and Q
+	// The statement P↔Q asserts the (not necessarily logical) equivalence of P and Q.
+	// It is not equal(=) sign
+	// For example: the sentences 0=0 and 32=9 are mathematically but not logically equivalent.
+	Equivalence(with T) bool
+	// TODO::: Equal() or Equals() or Equivalence() or EQV()
+	// Equal(with T) bool
+	// EQV(with T) bool
 }
 */

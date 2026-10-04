@@ -26,7 +26,7 @@ const SOURCE = [
   'tp Error in "math/boolean.kh"', //         0  a type that arrived by an address
   "tp Capsule cp {}", //                          1  a declaration this file makes
   'vr external_vr in "math/boolean.kh"', //     2  a variable that arrived by one
-  "tp Run mt (self Capsule) (n U8) () {", //     3  a parameter
+  "tp Run mt (self Capsule) (n Error) () {", //   3  a parameter
   "\tvr scratch Capsule", //                      4  a declaration in a body
   "\tscratch.Copy(n)(external_vr)", //           5  a body naming three of them
   "}",
@@ -58,11 +58,11 @@ test("the three names this document declares reach the places they are declared 
   // is a letter that occurs earlier in the line — in `Run` — so it is found from the
   // parentheses the signature writes it in.
   const parameter = {
-    start: { line: 3, character: at(3, "(n U8)") + 1 },
-    end: { line: 3, character: at(3, "(n U8)") + 2 },
+    start: { line: 3, character: at(3, "(n Error)") + 1 },
+    end: { line: 3, character: at(3, "(n Error)") + 2 },
   };
   assert.deepEqual(await ask(5, at(5, "n)")), { uri: files.uri, range: parameter });
-  assert.deepEqual(await ask(3, at(3, "(n U8)") + 1), { uri: files.uri, range: parameter });
+  assert.deepEqual(await ask(3, at(3, "(n Error)") + 1), { uri: files.uri, range: parameter });
   // A declaration's own name, asked at the declaration and at a use of it: one place.
   assert.deepEqual(await ask(1, at(1, "Capsule")), { uri: files.uri, range: here(1, "Capsule") });
   assert.deepEqual(await ask(3, at(3, "Capsule")), await ask(1, at(1, "Capsule")));

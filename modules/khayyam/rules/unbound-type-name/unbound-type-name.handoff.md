@@ -4,6 +4,9 @@ Open state for [unbound-type-name.md](./unbound-type-name.md). See the repositor
 ## Status
 Active — decided 2026-09-25 as the fourth outcome, added to the three rerouted ones; recorded as a rule 2026-09-26.
 
+## Decisions
+- **The editor's diagnostic surface asks the question too** — Decided (2026-10-03). [lsp/src/unbound-names.ts](../../lsp/src/unbound-names.ts) walks `referencedTypes` ([core/src/sr.ts](../../core/src/sr.ts)) and the visible set `analyzeImports` ([core/src/frontend.ts](../../core/src/frontend.ts)) builds, so the server and the gate cannot disagree about a name; the walk is not a walk of the server's own over signatures, because that would be a second definition of a type reference. The rule's document already stated the check, so nothing in it changed — a rule living in a rules folder is a record, and this is the case where the record and the toolchain agreed before the toolchain asked. What is now true that was not: the gate reaches this question only after every `in` in the unit is accounted for, so on a repository whose imports do not resolve the editor is the only surface that asks it.
+
 ## Open Questions
 - **Qualified references carry no check.** `pkg.Type` is skipped, so a program may name a type through a qualifier the toolchain never resolves. This is the largest known gap in the toolchain's checking, and it is not a rule question but a semantics question: what a qualifier denotes has never been decided, and the [qualified names rule](../qualified-names/qualified-names.md) assumes a reading this resolver does not yet implement.
 - **Method bodies are opaque, so names inside them are unchecked.** The parser carries a `mt` body as text until M3, which means a body's references are invisible to this rule. The rule is therefore currently weaker than its own text, and the matrix row it rests on comes from a signature rather than a body.

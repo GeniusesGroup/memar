@@ -12,6 +12,7 @@
 // broken.
 import type { Fault, RefusalReason } from "../../core/src/sr.ts";
 import type { Finding } from "./inclusions.ts";
+import type { UnboundName } from "./unbound-names.ts";
 
 const SAYS: Record<RefusalReason, string> = {
   "unexpected-character":
@@ -103,6 +104,39 @@ export function inclusionDiagnostic(finding: Finding): object {
       "Nothing else in this file is affected: every role and every definition is still " +
       "answered from what the file declared, because a role says what the file says and " +
       "not what the files behind its URIs confirm.",
+  };
+}
+
+/** One diagnostic per place a document names a type nothing in it answers, which is the third
+ *  kind of thing a publication carries and is not a fault of reading either: the document was
+ *  read whole, and what it says names something its own names do not supply.
+ *
+ *  It is said under the label the gate refuses a unit under, because it is the same question
+ *  asked of one file rather than of a whole closure — the same names, walked by the same
+ *  function, so a reader told it here is told the thing the build would have refused with. The
+ *  sentence says what is missing rather than only what is wrong, because the two repairs are
+ *  different: a declaration that stands in another file wants an `in`, and a name that was
+ *  renamed wants the rename finished. It ends by saying what is still answered, which is the
+ *  half a reader would otherwise have to check by looking at every other line.
+ * @see [unbound-names.ts](./unbound-names.ts) for the walk, and for the two questions it
+ *  deliberately does not ask */
+export function unboundNameDiagnostic(finding: UnboundName): object {
+  return {
+    range: {
+      start: { line: finding.line - 1, character: finding.character },
+      end: { line: finding.line - 1, character: finding.character + finding.length },
+    },
+    severity: 1,
+    code: "unbound-type-name",
+    source: "khayyam",
+    message:
+      `unbound-type-name at line ${finding.line} — "${finding.name}" is ` +
+      `${SAYS["unbound-type-name"]}: nothing in this file declares it and no "in" declaration ` +
+      "brings it in, so either its declaration stands in a file this one does not bring in, or " +
+      "it was renamed in one place and not in the other. These are the names the compiler gate " +
+      "refuses a unit over, so this is the toolchain's own reading and not this server's. " +
+      "Nothing else in this file is affected: every role and every definition is still answered " +
+      "from what the file declared.",
   };
 }
 

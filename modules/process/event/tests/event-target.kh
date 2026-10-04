@@ -1,0 +1,80 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+// The Test for the `EventTarget` Process. Its expectations are stated in
+// `docs/protocols/process/event.md` under The EventTarget capability, Dispatch, and A target accepts
+// only the kind of event it declared, and are cited with each one below; nothing here is stated from
+// the sources.
+//
+// The language this module is written in has no runner and no assertion form, and a method body is
+// opaque text to this repository's compiler, so an expectation here is written as what must hold
+// together with the observation that would decide it. Nothing in this file has been observed; each
+// expectation is open until an observer reports what the observation found, and an expectation whose
+// observation needs an executable realization says so.
+
+// E1 — The capability is three methods, and a fourth is not part of it.
+// Stated at: `docs/protocols/process/event.md` -> The EventTarget capability, which states the
+// contract as `DispatchEvent`, `AddEventListener`, and `RemoveEventListener`.
+// Decided by: read `modules/process/event/protocol/event-target.kh` and read every `tp {name} mt`
+// whose owner group names `EventTarget`. Three such declarations decide for E1. A fourth decides
+// against it.
+
+// E2 — Each of the three returns `Error`, the dispatch takes an `Event`, and the two registration
+// methods take an `EventListener`.
+// Stated at: `docs/protocols/process/event.md` -> The EventTarget capability, which gives each of the
+// three a signature and states that the `Error` is the abstraction rather than a concrete type
+// because each of the three may fail for more than one reason.
+// Decided by: read the influenced group of each of the three declarations E1 read, and compare it
+// with the signature the document writes beside the abstraction. Three influenced groups naming
+// `Error` decide for E2; an influenced group naming a concrete error type decides against it, because
+// a caller that must branch on the reason is given the abstraction's inspection instead.
+
+// E3 — This protocol declares the three abstractions and no specialization of any of them; the
+// specialization belongs to the module that exposes the capability.
+// Stated at: `docs/protocols/process/event.md` -> A target accepts only the kind of event it declared,
+// which says a module built on the Event concept must not be able to add a declaration to the Event
+// protocol by needing one.
+// Decided by: read every declaration under `modules/process/event/protocol/` and look for one whose
+// composition block names `Event`, `EventListener`, or `EventTarget`. None decides for E3. One
+// decides against it, and it decides against E3 whatever its module says.
+
+// E4 — Every target in the sources satisfies `EventTarget` on all three methods, by method name and
+// not by any declaration saying so.
+// Stated at: `docs/protocols/process/event.md` -> A target accepts only the kind of event it declared,
+// which says the specialization satisfies the capability because satisfaction is structural and by
+// method name; the criterion is `docs/khayyam/abstraction.md` -> Abstraction Realization.
+// Decided by: find the specialization the sources hold for a kind of event, then read the capsule
+// realizing it and compare each of its three methods with the three E1 read, by name, by the number
+// of influencing variables, and by the influenced variables and their types in order. Three matching
+// methods decide for E4 on that capsule. One method that differs in any of those decides against it,
+// whatever the receiver of either declaration is. The specialization this repository holds is
+// `Race_EventTarget` in `modules/process/race/protocol/event-target-race-event.kh`, realized by the
+// capsule in `modules/process/race/race-event-target.kh`; that the two live in the race module rather
+// than in this one is what E3 requires, and whether the race module owes a Test of its own for the
+// abstraction it declares is an open question for the owner rather than one this Test settles.
+
+// E5 — A dispatch sees the listener set as it stood when the dispatch began: a listener added during
+// a dispatch is first seen by a later dispatch, and a listener removed during a dispatch is still
+// handed that one.
+// Stated at: `docs/protocols/process/event.md` -> A dispatch's listener set is the set the dispatch
+// started with, which says this is decidable from the outside and names how.
+// Decided by: dispatch one occurrence to a target holding a listener that, from inside its own
+// handler, adds a second listener to that same target and records how many times each ran; then
+// dispatch again and record the same two counts. One invocation of the first listener and one of the
+// second across the two dispatches decide for E5. A second invocation of the first listener within the
+// first dispatch decides against it.
+// Not available in this repository today: the observation needs an executable realization, and this
+// module has no method bodies and no runner. The expectation is stated because the obligation is
+// over what is decidable before enactment and not over what is executable today.
+
+// E6 — The order a target visits its listeners in is not part of this Process's contract, and a
+// listener may not assume it is called first or last, or called at all for a dispatch that reached
+// no listener.
+// Stated at: `docs/protocols/process/event.md` -> What a listener may assume about the occurrence,
+// which names the four assumptions the contract refuses, three of which are what E6 states; and ->
+// Why capture, once, passive, and synchrony are not members, which declines to fix a position in a
+// dispatch and assigns such a question to the mechanism.
+// Decided by: read the contract E1 read and look for any declaration that fixes an order, a position,
+// or a guarantee of invocation. None decides for E6; one does decide against it. The document states
+// the question as open at `docs/protocols/process/event.handoff.md` -> In what order does a target
+// visit its listeners, and is that order promised?, so a ruling there revises E6 rather than deciding
+// it.
