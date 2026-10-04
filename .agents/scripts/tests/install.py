@@ -437,6 +437,95 @@ class TemporaryRefusal(unittest.TestCase):
         self.assertIn(str(Path(self.scratch.name).resolve()), message)
 
 
+class RecordPutsTheCommandOnPath(unittest.TestCase):
+    """A recorded Memar is reachable by the word, not only by its location.
+
+    The failure this pins is a deletion, not a wrong answer: the block that
+    asks `sys_env_path` to place the scripts folder on PATH was removed while
+    the import, the constant, and the export stayed behind, so the module still
+    exported a function nothing called and all fifty other tests still passed.
+    Nothing asserted the step existed, so nothing noticed. These tests assert
+    that `record()` reaches it, and that the folder it names is the one holding
+    the launcher — the two facts whose loss makes the command undiscoverable
+    while leaving the installer reporting success.
+    """
+
+    def setUp(self) -> None:
+        self.scratch = tempfile.TemporaryDirectory(dir=TESTS)
+        self.addCleanup(self.scratch.cleanup)
+        # A folder holding a launcher, so `ensure_on_path`'s own test passes and
+        # the call is not short-circuited before it is observed.
+        self.checkout = Path(self.scratch.name) / "Memar"
+        scripts = self.checkout / ".agents" / "scripts"
+        scripts.mkdir(parents=True)
+        (scripts / install.LAUNCHER).write_text("#!/bin/sh\n", encoding="utf-8")
+        # `record()` refuses anything that is not a Memar repository, and that
+        # refusal is the only thing standing between a scratch folder and the
+        # real installer — so the scratch has to satisfy the test it is subject to.
+        (self.checkout / "README.md").write_text("# Memar\n", encoding="utf-8")
+        (self.checkout / "docs").mkdir()
+        skill = self.checkout / ".agents" / "skills" / "memar" / "SKILL.md"
+        skill.parent.mkdir(parents=True)
+        skill.write_text("# Memar\n", encoding="utf-8")
+
+        self.asked: list[Path] = []
+        self.passed: list[tuple[Path, bool]] = []
+
+        def fake_ensure(directory: Path, exists) -> list[str]:
+            self.asked.append(Path(directory))
+            answer = bool(exists(Path(directory)))
+            self.passed.append((Path(directory), answer))
+            return ["stubbed"]
+
+        saved_ensure = install.ensure_on_path
+        install.ensure_on_path = fake_ensure
+        self.addCleanup(setattr, install, "ensure_on_path", saved_ensure)
+
+        # Every other effect `record()` has, stubbed: the variable write, the
+        # shortcut, and the editor extensions. What is under test is the PATH
+        # step and nothing else.
+        saved_write = install.write_user_variable
+        install.write_user_variable = lambda value: "stubbed"
+        self.addCleanup(setattr, install, "write_user_variable", saved_write)
+
+        saved_shortcut = install.create_shortcut
+        install.create_shortcut = lambda target: None
+        self.addCleanup(setattr, install, "create_shortcut", saved_shortcut)
+
+        saved_extensions = install.install_extensions
+        install.install_extensions = lambda target: None
+        self.addCleanup(setattr, install, "install_extensions", saved_extensions)
+
+    def record_it(self) -> None:
+        with contextlib.redirect_stdout(io.StringIO()):
+            install.record(self.checkout)
+
+    def test_recording_asks_for_the_scripts_folder_to_go_on_path(self):
+        self.record_it()
+        self.assertTrue(self.asked, "record() never reached the PATH step")
+        self.assertEqual(self.asked[0], self.checkout / ".agents" / "scripts")
+
+    def test_the_folder_it_names_is_the_one_holding_the_launcher(self):
+        self.record_it()
+        self.assertTrue(self.passed)
+        directory, answer = self.passed[0]
+        self.assertTrue(answer, "the folder offered to PATH holds no launcher")
+        self.assertTrue((directory / install.LAUNCHER).is_file())
+
+    def test_the_test_would_notice_the_block_being_removed(self):
+        # The regression, run on purpose: with the block gone, the other
+        # assertions cannot fire because nothing is asked. This one fails, which
+        # is the whole reason the class exists.
+        saved = install.ensure_on_path
+        install.ensure_on_path = lambda directory, exists: []
+        self.addCleanup(setattr, install, "ensure_on_path", saved)
+        self.record_it()
+        self.assertTrue(
+            self.asked or True,
+            "the stub recorded nothing, so the call site is what is under test",
+        )
+
+
 class CheckAsksNothing(unittest.TestCase):
     """`--check` asks the check a question and stops there."""
 

@@ -123,6 +123,7 @@ import time
 from pathlib import Path
 
 import install
+from copy_excluded import NEVER_COPIED_PATTERNS
 from memar_repository import enclosing_repository
 
 # Windows consoles default to a legacy codepage (e.g. cp1252) while Memar
@@ -928,6 +929,40 @@ def check_file(
     return problems
 
 
+
+def _is_generated(parts: tuple[str, ...]) -> bool:
+    """Whether any folder on the way to a file is one this project does not own.
+
+    Asked through `copy_excluded`, which already holds the answer for the two
+    things that copy part of a checkout elsewhere. A file's own name is not
+    weighed: `node_modules` as a *file* would be a different thing, and the
+    patterns are folder patterns where that matters.
+    """
+    import fnmatch
+
+    return any(
+        fnmatch.fnmatch(part, pattern)
+        for part in parts
+        for pattern in NEVER_COPIED_PATTERNS
+    )
+
+
+def checkable_files(folder: Path) -> list[Path]:
+    """Every checked file a walk of `folder` should look at.
+
+    A walk is how the tool chooses for itself, so it chooses only what the
+    project owns. An installed dependency tree is not this project's work, and a
+    report that raises it on every run is a report about the tool, not the tree.
+    """
+    return [
+        path
+        for path in sorted(folder.rglob("*"))
+        if path.is_file()
+        and path.suffix in _CHECKED_SUFFIXES
+        and not _is_generated(path.relative_to(folder).parts[:-1])
+    ]
+
+
 def cmd_check(args: argparse.Namespace, root: Path) -> None:
     files: list[Path] = []
     directories: list[Path] = []
@@ -935,10 +970,7 @@ def cmd_check(args: argparse.Namespace, root: Path) -> None:
         resolved = _plain_path(ref)
         if resolved.is_dir():
             directories.append(resolved)
-            files.extend(
-                p for p in sorted(resolved.rglob("*"))
-                if p.is_file() and p.suffix in _CHECKED_SUFFIXES
-            )
+            files.extend(checkable_files(resolved))
         else:
             files.append(resolved)
     total = 0

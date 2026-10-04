@@ -474,5 +474,64 @@ class ChangelogAppendKeepsTheFilesConvention(LinkFixture):
         self.assertGreater(len(path.read_bytes()), len(first))
 
 
+class WalkLooksOnlyAtWhatTheProjectOwns(LinkFixture):
+    """A folder run skips what a copy of this project never carries.
+
+    An installed dependency tree is not this repository's work, and a report that
+    raises the same problems inside it on every run is a report about the tool
+    rather than about the tree — after long enough it is a report nobody reads.
+    The patterns come from `copy_excluded`, which already holds that answer for
+    the two things that copy part of a checkout elsewhere; a second list here
+    would be a second answer to one question.
+
+    Naming a file explicitly still checks it. A walk is how the tool chooses for
+    itself; a named path is a decision somebody already made.
+    """
+
+    def install(self, relative: str, text: str = "x") -> Path:
+        path = self.root / relative
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(text, encoding="utf-8", newline="\n")
+        return path
+
+    def test_a_dependency_tree_is_not_walked(self) -> None:
+        self.install("node_modules/dep/package.json", '{"name": "dep"}\n')
+        self.install("notes.md", "# Notes\n")
+        walked = [p.relative_to(self.root).as_posix()
+                  for p in memar_documentation.checkable_files(self.root)]
+        self.assertIn("notes.md", walked)
+        self.assertFalse([p for p in walked if p.startswith("node_modules/")], walked)
+
+    def test_a_generated_folder_is_not_walked(self) -> None:
+        for name in ("__pycache__", ".DS_Store"):
+            with self.subTest(name=name):
+                self.install(f"{name}/thing.py", "x = 1\n")
+                walked = [p.relative_to(self.root).as_posix()
+                          for p in memar_documentation.checkable_files(self.root)]
+                self.assertFalse([p for p in walked if p.startswith(name)], walked)
+
+    def test_a_file_inside_an_owned_folder_is_still_walked(self) -> None:
+        self.install("src/deep/module.py", "x = 1\n")
+        walked = [p.relative_to(self.root).as_posix()
+                  for p in memar_documentation.checkable_files(self.root)]
+        self.assertIn("src/deep/module.py", walked)
+
+    def test_a_named_file_is_checked_whatever_folder_it_is_in(self) -> None:
+        # The distinction the whole rule turns on: a walk chooses, a name does not.
+        path = self.install("node_modules/dep/broken.md", "# T\n\n\nbody\n")
+        self.assertTrue(self.problems(path))
+
+    def test_the_patterns_are_the_ones_the_folder_already_states(self) -> None:
+        # A copy of the list here would be a second answer to one question.
+        from copy_excluded import NEVER_COPIED_PATTERNS
+
+        self.assertEqual(
+            set(memar_documentation.NEVER_COPIED_PATTERNS),
+            set(NEVER_COPIED_PATTERNS),
+        )
+        for pattern in ("__pycache__", "*.pyc", ".DS_Store", "node_modules"):
+            self.assertIn(pattern, NEVER_COPIED_PATTERNS)
+
+
 if __name__ == "__main__":
     unittest.main()

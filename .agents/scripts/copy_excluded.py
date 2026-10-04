@@ -10,4 +10,8 @@ from __future__ import annotations
 
 import shutil
 
-NEVER_COPIED = shutil.ignore_patterns("__pycache__", "*.pyc", ".DS_Store", "node_modules")
+# The patterns are named as well as compiled, because a second thing in this
+# folder has to answer the same question and a second copy of the answer is
+# how the two would come to disagree.
+NEVER_COPIED_PATTERNS = ("__pycache__", "*.pyc", ".DS_Store", "node_modules")
+NEVER_COPIED = shutil.ignore_patterns(*NEVER_COPIED_PATTERNS)
