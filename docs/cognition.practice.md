@@ -19,14 +19,15 @@ Thinking is a family of modes, and critical thinking is one of them — not all 
 ## Norm Application Points
 The discourse norms in [cognition.md → Discourse Norms](./cognition.md#discourse-norms-derived-from-this-model) bind at intake, not only mid-reasoning. Checkpoints:
 
-- **Before assuming intent or scope:** ask ([Ask rather than assume](./cognition.md#discourse-norms-derived-from-this-model)).
+- **Before assuming intent or scope:** ask ([Ask rather than assume](./cognition.md#ask-rather-than-assume)).
 - **When the medium language differs from the system's strongest working representation:** transform for thinking; ask on translation ambiguity; return in counterpart-usable form ([Operate in the system's strongest working representation](./cognition.md#what-implementation-asymmetry-obliges)).
-- **Before a change that reaches beyond the instance:** propose the content and the file list; obtain confirmation ([Confirm before large-scope changes](./cognition.md#discourse-norms-derived-from-this-model)).
-- **Before building on a load-bearing term:** verify its governing definition, or report that it is unverified ([Definitions outrank terminology](./cognition.md#discourse-norms-derived-from-this-model)).
-- **When required material is missing:** report absence; do not fabricate ([Report absence rather than supplying it](./cognition.md#discourse-norms-derived-from-this-model)).
-- **When a shared artifact conflicts with stronger evidence:** report the conflict; do not silently propagate or silently override ([Treat shared artifacts as claims](./cognition.md#discourse-norms-derived-from-this-model)).
-- **When conceptual depth is high and other cognitive systems are available:** consult them before settling ([Consult other cognitive systems](./cognition.md#discourse-norms-derived-from-this-model)).
-- **When generalizing a received criticism:** keep reported / inferred / confirmed distinct; label the inferred root as the receiver's extension until the giver confirms ([conceptual-root with provenance](./cognition.md#discourse-norms-derived-from-this-model)).
+- **Before a change that reaches beyond the instance:** propose the content and the file list; obtain confirmation ([Confirm before large-scope changes](./cognition.md#confirm-before-large-scope-changes)).
+- **Before building on a load-bearing term:** verify its governing definition, or report that it is unverified ([Definitions outrank terminology](./cognition.md#definitions-outrank-terminology)).
+- **When required material is missing:** report absence; do not fabricate ([Report absence rather than supplying it](./cognition.md#report-absence-rather-than-supplying-it)).
+- **When a lookup matches nothing:** say what was searched; read the documents owning the subject before calling it a gap ([Report absence rather than supplying it](./cognition.md#report-absence-rather-than-supplying-it)).
+- **When a shared artifact conflicts with stronger evidence:** report the conflict; do not silently propagate or silently override ([Treat shared artifacts as claims](./cognition.md#treat-shared-artifacts-as-claims-under-the-same-evaluation-not-as-absolute-authority)).
+- **When conceptual depth is high and other cognitive systems are available:** consult them before settling ([Consult other cognitive systems](./cognition.md#consult-other-cognitive-systems-when-conceptual-depth-warrants-it)).
+- **When generalizing a received criticism:** keep reported / inferred / confirmed distinct; label the inferred root as the receiver's extension until the giver confirms ([conceptual-root with provenance](./cognition.md#receive-criticism-at-its-conceptual-root-not-only-its-instance--with-provenance-labeled)).
 
 Procedure detail for confirm-before-large-scope and for conceptual-root questioning lives here as practice; the norms themselves stay in the base document.
 
@@ -149,6 +150,7 @@ verify you critiqued the actual proposal, not a misreading of it]
 | Yes-but agreement | Stating agreement then undermining it | Either agree or critique, honestly |
 | Shotgun objection | Listing many weak objections | Find one strong one, or none |
 | Critique for show | Critiquing because it is expected | Critique only when you have value to add |
+| Empty search reported as absence | Turning a lookup that matched nothing into a claim that the project holds no such rule | Name what was searched; read the documents owning the subject before claiming a gap |
 
 ---
 
