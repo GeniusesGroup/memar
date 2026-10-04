@@ -53,3 +53,24 @@
 
 #### Considered and not done
 - Duplicating the old attribution and adoption rules was unnecessary: Participants and the graduation path into the governing document already cover them. The old permission to abandon research without a formal deprecation process was not transferred because the current lifecycle preserves Complete and Withdrawn records and corrects them by supersession (Super Z — proposed; Omid Hekayati — approved).
+
+---
+
+### Separate a question's origin from a citation
+- Time: 2026-10-04T13:27:43Z
+- Propagates to:
+  - documentation.md: Reference - the rule this section defers to was added in the same session
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - decided
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny-free via [OpenCode](../CONTRIBUTORS.md#opencode)) - claimed, argued
+
+#### What changed
+- `### Methodology` now states that a question's origin is recorded without being cited: attributing where a question came from gives that source no standing and lets it carry no conclusion, and a finding the consulted sources do not support is stated as the inquiry's own reasoning rather than as something those sources establish.
+- The section already required the sources consulted to be named and already deferred to the citation rule; what it did not say is what happens when the source that raised the question is one the citation rule would not accept.
+
+#### Considered and not done
+- The clause was not placed in `### Participants` (Space Bunny Alpha — argued). That section records the thinking systems who raised questions, not the sources they read, so the question and the source are different items and only the question belongs there.
+- No `Evidence` relation was added for an origin, and no requirement was added that a research name the material it read but did not rely on (Space Bunny Alpha — argued). The Methodology already requires the sources consulted to be stated, and a source of no standing is named there by class rather than by name.
+
+#### Deliberation
+The new `Source standing` rule in `documentation.md` sends a question's origin to this facet's `Participants` and leaves the consequence unstated here, which left the two documents able to disagree about whether an origin supports a finding (Space Bunny Alpha — argued). The gap was closed on the owner's authorization to complete the propagation the same session rather than leave it open (Omid Hekayati — decided).

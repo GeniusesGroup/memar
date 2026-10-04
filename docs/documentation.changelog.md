@@ -253,3 +253,98 @@ Owner: an executing agent does not need to read the explanatory document to carr
 
 #### Deliberation
 - The present-state bullet covered only the case where the reader cannot open a prior snapshot. That left a reading on which, once a snapshot exists, the body may narrate "X is retired" and "Y is not the rule." A Khayyam edit did exactly that with two signature labels after replacing them. The relevance discipline already forbids a negated alternative in the body; the written-surface rule did not say so in the step an editor follows (Omid Hekayati — requested; Grok — applied).
+
+---
+
+### A model's document is named after the concept it models
+- Time: 2026-10-03T00:00:00Z
+- Type: Added
+- Cited:
+  - [Modeling → Expected Output of a Modeling Session](./modeling.md#expected-output-of-a-modeling-session) - Depends_on: the document that now carries the reduced claim and points here for the rule
+  - [Khayyam Rules Catalog](../modules/khayyam/rules/README.md) - Evidence: "Each rule has its own folder, holding a main document named after the rule" - the one kind of artifact in this repository that already kept the rule, and the precedent it is drawn from
+  - [Documentation Practice → Folder READMEs](./documentation.practice.md#folder-readmes) - Depends_on: the folder-README rule that makes a folder's main document addressable by a path a reader types
+- Propagates to:
+  - docs/modeling.md: Done - the rule it stated is now a pointer here, and its Abstract and *Expected Output of a Modeling Session* carry the reduced claim.
+  - docs/modeling.practice.md: Done - its closing pointer goes here.
+  - docs/modeling.changelog.md: Done - the entry recording the rename now cites the rule's home.
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - required
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) - drafted, applied
+
+#### What changed
+- [File Naming](./documentation.md#file-naming) gains the rule: a document that states a model is named after the concept the model is about; the folder holding it is named for the responsibility whose model it is and the document takes that same name beside it - `modules/computer/binding/binding.md`, `modules/process/construction/construction.md`, `modules/process/control-flow/control-flow.md` - and every companion record takes the same base name. Nothing in such a name carries the kind of document, since the dot already carries the facet key and the base name already carries the subject, which is the one misplacement this document's own separator system exists to prevent.
+- The topic states the rule's purpose, which is addressing rather than tidiness: the smallest mistake in addressing a model - the wrong folder segment, or a path rebuilt from memory - should reach nothing rather than reach a real document about a different concept. The evidence is the repository's own: 41 of its 115 base documents already carry their own folder's name, all 26 folders under `modules/khayyam/rules/` do because that catalog states the rule for its own case, and two pairs of base documents share a base name across folders, so a wrong subject path resolves to no file rather than to a neighbour - which is what makes the subject name the cheaper of the two costs.
+- Two boundaries are stated with it: the rule reaches a document that is a folder's main model and not working state left beside the documents a session read, which takes `<base>.handoff.md`; and it does not bind the front-matter `Title`, which stays free to read as the model *of* the concept.
+- The Abstract already listed what this topic covers - "how a document's name encodes its category, concept, and facet" - so it needed no change, and none was made.
+
+#### Considered and not done
+- **A separate topic for it inside this document.** The topic that names a model after its concept is a naming rule, and this document's subject is naming; a second topic would have left the rule's owner and its reader in different places for no gain.
+- **Extending the rule to every base document in the repository.** It is stated for a model's document. The two pairs of base documents that share a base name across folders are recorded as the reason a wrong subject path resolves to nothing there rather than renamed on the strength of a rule that does not reach them.
+- **Fixing the counts into a permanent statement.** They are measurements of this repository now and were re-measured for this entry; a later document changes them, and the entry above records that re-measuring is owed whenever either number is cited.
+
+#### Deliberation
+- Owner: a documentation rule - such as what a name is - has nothing to do with `docs/modeling.md` and should really be settled in `docs/documentation.md`. The rule had been added to `Modeling` as a way of making it mandatory; mandatory and owned are separate questions, and the topic it was added to was the wrong owner for a rule about file names.
+
+---
+
+### An empty result changes nothing, and the check reports open work
+- Time: 2026-10-04T05:35:11Z
+- Type: Added
+- Cited:
+  - [Comparison: Memar and GitHub Spec Kit](./comparisons/spec-kit.md) - **Reference**: the comparison whose adoption filter produced these changes. GitHub Spec Kit's `/converge` requires that a converged run leave `tasks.md` byte-for-byte unchanged with no empty Convergence header and report a fixed string; its `check_extension_version_bump.py` turns "please remember to bump" into a merge requirement, with the rationale recorded as a shipped bug class.
+- Propagates to:
+  - [.agents/scripts/memar-documentation.py](../.agents/scripts/memar-documentation.py): Done - the propagation report and the newline fix below. That file carries no changelog of its own.
+  - [.agents/scripts/README.md](../.agents/scripts/README.md): Done - what `check` reports on a folder run, the one question it pointedly does not judge, and the `memar` launcher that reaches it by one word. That file carries no changelog of its own.
+  - [.agents/scripts/tests/memar-documentation.py](../.agents/scripts/tests/memar-documentation.py): Done - five classes of tests for the report, plus five for the append convention. A Test belongs in the folder of the module that owns what it tests, per [Test Placement](../modules/process/test/rules/test-placement/test-placement.md).
+  - [documentation.practice.md](./documentation.practice.md): None needed - [Trivial changes](./documentation-changelog.md#trivial-changes) already covers the changelog-entry case, and the new rule is the same economy stated at the level of the artifact rather than the entry; the practice's own step 4 already sends a session with no lasting design change to no entry at all.
+  - [documentation-explanation.md](./documentation-explanation.md): None needed - the rule concerns what a check writes, not what a document is.
+  - [cognition.changelog.md](./cognition.changelog.md): None needed - the norm change in that entry does not rest on this one.
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - directed, decided
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny-free via [OpenCode](../CONTRIBUTORS.md#opencode)) - drafted, tested
+
+#### What changed
+- [Written surface](./documentation.md#written-surface) gains a rule: an empty result leaves the medium unchanged. A report, review, check, or convergence with nothing to report produces no artifact — no empty section, no placeholder heading, no empty changelog entry, no file created to hold a result that is not there. [Trivial changes](./documentation-changelog.md#trivial-changes) already says a session whose edits leave no lasting design change gets no entry; this carries the same economy up from the entry to every artifact a check might write, which is where it was missing. The rule is stated with a second reason as well as the tidiness one, because tidiness is not what makes it load-bearing: a loop whose success condition is "nothing was found" needs the nothing to be observable, or the party running it cannot distinguish a completed check from one that has not run and goes on producing work to fill the gap. The observable form of finding nothing is that the shared medium is exactly as it was.
+- `memar-documentation.py check`, given a folder, prints the `Propagates to` entries left `Pending` across the document set in their own section, apart from the problems. The facet calls `Pending` a searchable state on purpose, and nothing could search it: `search` excludes changelog files because their content is history rather than current truth, which is the correct call for concept search and left the work-list with no surface at all. At the inspected tree the section reports 61 open propagations, which is the honest size of the queue the facet's design implies and which no surface had shown before.
+- The state is read from the entry's own field rather than from the word's presence in a line, so a description mentioning `Pending` while reporting work already done is not read as an obligation, and the sources' `Pending deletion` and `Pending at absorb time` are both read as the open state they are. `Done` and `Rejected` are not reported: `Rejected` closes the search result permanently by the facet's own definition, and a section that kept raising decided matters would train a reader to skip it.
+- A ledger is told from a specification by its stem ending in `.changelog`. `cognition.changelog.md` records entries in the field; `documentation-changelog.md` specifies the field and carries a heading, the field name, and a sample line in the field's own shape. Testing on the file-name suffix alone read the second as the first and reported the project's own rules as its outstanding work.
+- `changelog_append` now writes the newline convention the file already holds rather than a fixed one, and normalizes a CRLF entry into an LF file. The append was found through the check this entry's first change strengthens: appending to this repository's own `cognition.changelog.md`, which holds CRLF, wrote an LF tail and made `check` report mixed line endings on the file — the tool the [practice](./documentation.practice.md) tells every contributor to append with, causing the defect it is the authority for detecting. The changelog was returned to its own convention, and five tests now hold the behavior from both sides.
+- [.agents/scripts/README.md](../.agents/scripts/README.md) states what the folder run reports, why the section is printed apart from the problems, and how a ledger is told from a specification — that file being the folder's authority on its own interface. It also gains the `memar` launcher as the folder's fourth kind of file: a command that routes to this folder's tools and adds nothing, so a caller reaches Memar by one word without learning a path or a filename, and so the skill that names this folder can name a word instead of a location. Access multiplies; the implementation does not.
+
+#### Considered and not done
+- **Checking whether a body holds a rejected alternative belonging in a changelog entry (rejected, and kept as a negative result):** it is not decidable from the text. `documentation-changelog.md` is the document that specifies the field, so it carries a section by the field's own name in its own body, correctly placed; the specification of where records go and a record of one differ only in what the text is *for*. A threshold that separated them — heading depth, a bullet beside the heading, the file's name — either fires on this repository's own governing document or misses a record written the other way, and a check permanently red on a correct file is one a reader learns to skip. An implementation was written, run against the tree, caught by the check on the specification, and removed on that evidence rather than tuned. The hazard is real and named at [Relevance discipline](./documentation-explanation.md#relevance-discipline); the tests pin the two shapes a future attempt must not misjudge, so the question is not reopened blind.
+- **Making an undischarged propagation decide `check`'s exit code (rejected):** every routine run would be red on work predating the run, and a gate that is always open is not a gate. The section prints on every folder run so it cannot be missed, and its count is in the summary line.
+- **A flag that makes the section a gate for a caller that wants one (not taken):** a `Pending` entry is a fact about a queue, and which queue entries a given run should be blocked on is a project decision rather than a tool default. Leaving it as a report keeps the tool from holding an opinion the project has not stated.
+- **Widening the report to every open obligation the script could find (rejected):** the remaining candidates are the same non-decidable class, and a check that reports guesses is worse than one that reports only what it can know.
+
+---
+
+### Add a source standing test to the citation rule
+- Time: 2026-10-04T13:27:43Z
+- Propagates to:
+  - documentation-research.md: Done - `Methodology` now states that a question's origin is recorded without being cited, so the standing of an origin is never mistaken for the standing of a conclusion
+  - rule.research.001.md: Done - its vocabulary sources no longer carry `Evidence` or a URL, and the specification it did not read is named as a limitation
+  - documentation-handoff.research.001.md: Done - the vendor's account of its own product is `Reference`, and the finding states what it rests on instead
+  - knowledge.changelog.md: Done - the relation of a tertiary compilation and a social-media post recorded earlier is restated there
+  - content.changelog.md: Done - the same restatement for the post that entry cites
+  - process.research.001.md: Reference - the session-identity half of that record became [Handoff Research 001](./documentation-handoff.research.001.md) before this rule was written
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - decided
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny-free via [OpenCode](../CONTRIBUTORS.md#opencode)) - claimed, argued
+
+#### What changed
+- `### Citations` gained a **Source standing** paragraph and a companion paragraph on recording an origin without citing it.
+- Whether a source may be recorded at all is now settled before whether it is worth recording, as two independent tests: the terms of use or license must permit the use being made of the work, and the source must hold standing for the relation claimed of it.
+- Where permission is unclear the citation is withheld and the record states that the material was observed without naming it. Naming a source can create an attribution obligation the project has not agreed to, which is a second and independent reason the default is not to record one.
+- Sources of no standing are named as a class: a personal site, a blog, a social-media or network post, a chat channel, a conference-hallway or corridor remark, a vendor's marketing or "best practices" page, an AI-generated summary of any of these, and a tertiary compilation such as an encyclopedia article. None may be cited with `Evidence`, `Depends_on`, or `Extends`, and no proposition rests on one. A tertiary compilation is a pointer toward the primary sources behind it.
+- The reasons are the two the owner gave: naming confers a standing the source has not earned whatever words are borrowed from it, and it tells the reader the proposition was reached by that source when the reasoning is Memar's own.
+- Sources that pass both tests are named: standards bodies and formal specifications; peer-reviewed work; a published book of record; primary technical documentation of an artifact for claims about its observable behavior; and this project's own published record.
+- A question may be raised by any source, including one of no standing, and that origin is recorded in the Research facet's Participants or in the paired handoff. What such an origin may never do is carry a conclusion: the recording document states the reasoning in its own words and either supports the conclusion from a source that passes both tests or marks the conclusion as its own.
+
+#### Considered and not done
+- A blanket prohibition on reading sources of no standing was rejected (Omid Hekayati — decided). The rule is about what a document records, not what may be read; the reading that prompted the rule is the reason it is needed.
+- A rule against naming an informal source at all, including as `Reference`, was rejected as wider than the harm (Space Bunny Alpha — argued). Not naming is the default where permission is unclear, and a source of no standing may still be recorded for a reader who needs to know what was considered.
+- Placing the rule beside the existing Content Rule on provenance was considered and not done (Space Bunny Alpha — argued): it governs citations rather than fabrication, and the cross-cutting band this document already carries is where citation practice lives.
+
+#### Deliberation
+The owner proposed the rule as a prohibition on citing informal sources (Omid Hekayati — claimed), and the first pass reproduced that shape as a standing test (Space Bunny Alpha — claimed). The owner then separated two concerns the first pass had merged: whether a source may be read, which is unrestricted, and whether naming one is safe, which is a question about rights and attribution as much as about credibility (Omid Hekayati — claimed). Wikipedia was put to the same test and found to fail on standing rather than on rights — its text is openly licensed and quotable with attribution, which is why the rule is written as two tests rather than one (Space Bunny Alpha — argued).

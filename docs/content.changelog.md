@@ -172,3 +172,22 @@ Brought `content.md` in line with the current Explanation-facet specification:
 - **Recording the recommendation that diagrams be requested from a model as a rejected option, and opening a second research for this exchange**: neither done. A negative finding has its home in a Research record, and that record exists and is cited here; the exchange added consequences and a classification to findings it had already reached without altering a conclusion or leaving a question open, so its own questions stand.
 - **The practice as a Practice document**: not taken. The practice in question — asking for a diagram beside a plan to see whether the plan's path is right — is a way of working inside a session, and the record already states its standing: [Modeling → Graphs Are Not Documentation Artifacts](./modeling.md#graphs-are-not-documentation-artifacts) gives a graph the status of a working tool rather than a deliverable. Naming it again in a Practice would duplicate that.
 - **The objection that a chain of delegated stages leaves nobody who chose**: out of scope here, and not recorded in this section. It concerns who may decide rather than how meaning is carried, and it was examined against [Agency → Agency and Knowledge Management](./agency.md#agency-and-knowledge-management), [Cognition → Discourse Norms](./cognition.md#discourse-norms-derived-from-this-model), and [Modeling → Expected Output of a Modeling Session](./modeling.md#expected-output-of-a-modeling-session), each of which already states the rule such a chain would violate.
+
+---
+
+### Restate the relation of a source recorded before the standing rule
+- Time: 2026-10-04T13:27:43Z
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - decided
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny-free via [OpenCode](../CONTRIBUTORS.md#opencode)) - claimed, argued, applied
+
+#### What changed
+No entry above is edited. This entry states the relation one of them recorded, under [Documentation → Citations → Source standing](./documentation.md#citations) as that rule now reads.
+- The social-media post cited in *A rendering is checked by eye, and names the reader it is for* is recorded with the `Reference` relation, not `Evidence`. A post of that kind is admitted as the claim being weighed and as the occasion for the question, which is what that entry already said in its own words; the conclusion rests on the notation examined in the section itself, and the entry said so too.
+
+#### Considered and not done
+- Relabelling the entry in place was rejected (Space Bunny Alpha — argued). A changelog is append-only, and an entry rewritten after the fact cannot be distinguished from one that was written that way; restating the relation here keeps the earlier text intact and the correction visible.
+- Removing the post from the record was rejected (Space Bunny Alpha — argued). Recording where a question came from is legitimate and the entry records it honestly; what was wrong was the relation, not the record.
+
+#### Deliberation
+The rule added in [Documentation → Citations](./documentation.md#citations) was applied against the whole doc set rather than only against the session that wrote it, and this citation was among the four it does not accept (Space Bunny Alpha — argued). An entry of an earlier session cannot be rewritten, so the correction is recorded here (Omid Hekayati — decided).

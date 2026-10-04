@@ -247,3 +247,23 @@
 #### Considered and not done
 - **A footnote rather than a sentence in the principle statement (rejected):** the qualification is not incidental to the claim. The claim's force depends on the Task being a unit rather than an event, and a reader who reads *Task* as Memar's undefined-but-defaulted word is reading a different claim.
 - **Restating the class's reasoning here (rejected):** the Content Rule's prohibition on redundant restatement, and the reasoning belongs with the class rather than beside each of its two members.
+
+---
+
+### Restate the relation of two sources recorded before the standing rule
+- Time: 2026-10-04T13:27:43Z
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - decided
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny-free via [OpenCode](../CONTRIBUTORS.md#opencode)) - claimed, argued, applied
+
+#### What changed
+No entry above is edited. This entry states the relation two of them recorded, under [Documentation → Citations → Source standing](./documentation.md#citations) as that rule now reads.
+- The tertiary compilation cited in *Scale what the record owes a reader by what misreading it costs* is recorded with the `Reference` relation, not `Evidence`. A tertiary compilation is a pointer toward primary sources, and the entry's own text already said that no claim in the document rests on it alone; the body text it supported does not carry the claim it was cited for.
+- The social-media post cited in that entry and in *A rendering is checked by eye, and names the reader it is for* is recorded with the `Reference` relation, not `Evidence`. A post of that kind is admitted as the claim being weighed and as the occasion for the question, which is what both entries already said in their own words; the conclusions rest on the notation examined in the documents themselves.
+
+#### Considered and not done
+- Relabelling the two entries in place was rejected (Space Bunny Alpha — argued). A changelog is append-only, and an entry rewritten after the fact cannot be distinguished from one that was written that way; restating the relation here keeps the earlier text intact and the correction visible.
+- Withdrawing the social-media post from the record entirely was rejected (Space Bunny Alpha — argued). Recording where a question came from is legitimate and both entries record it honestly; what was wrong was the relation, not the record.
+
+#### Deliberation
+The rule added in [Documentation → Citations](./documentation.md#citations) was applied against the whole doc set rather than only against the session that wrote it, and four citations across four records were found that the rule does not accept (Space Bunny Alpha — argued). Two were in records this session owns and were corrected there: `rule.research.001.md`, whose vocabulary sources support nothing and whose specification was never read, and `documentation-handoff.research.001.md`, whose vendor article is a vendor's account of its own product. The other two sit in changelogs written by earlier sessions and are corrected by this entry instead (Omid Hekayati — decided).
