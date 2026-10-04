@@ -225,3 +225,25 @@
 - **Adopting a controlled vocabulary for Memar's written record**: rejected. [Terminology → Terminology Authority and Governance](./terminology.md#terminology-authority-and-governance) governs the terms Memar has defined and disclaims ordinary language, and [cognition.practice.md](./cognition.practice.md) lists terminology policing — objecting to word choice while agreeing on meaning — among the critiques that are not critique. A dictionary-bound register would also freeze the questions this project keeps open, several of which are open precisely because no name has been settled yet.
 - **A separate principle section for the cost weighting, with its own Principle statement**: not taken. The weighting qualifies the section it was found through rather than standing beside it, and a second section would have split one principle into two summaries of each other.
 - **An interactive HTML or generated-video rendering of Memar documents**: not taken, and not recorded here. The rendering side of that question belongs to [Content → Authoring Syntax vs. Semantic Graph](./content.md#authoring-syntax-vs-semantic-graph), which already states that the Graph is reached by many independent Renderers; whether this project wants such renderers is an open question, and the occasion does not settle it.
+
+---
+
+### The Task is named as deliberately undefined where it carries weight
+- Time: 2026-10-04T00:00:00Z
+- Type: Changed
+- Cited:
+  - [Terminology → A Term Deliberately Left Open](./terminology.md#a-term-deliberately-left-open) - **Reference**: the class and its single member, decided in the session that recorded them.
+- Propagates to:
+  - [terminology.md](./terminology.md): Done - the class this site points at.
+  - [documentation-changelog.md](./documentation-changelog.md): Done - the `Tasks` field marks its own use the same way.
+  - [documentation.practice.md](./documentation.practice.md): None needed - the practice's Research procedure sends an inquiry's outcome to its base changelog, which is where this entry is.
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - decided the position this site records
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny-free via [OpenCode](../CONTRIBUTORS.md#opencode)) - drafted
+
+#### What changed
+- [Task-Centric Knowledge Evolution](./knowledge.md#task-centric-knowledge-evolution) states, at the principle statement that makes the Task the primary unit of knowledge evolution, that the word carries its ordinary sense and is deliberately not defined by Memar, with a link to [A Term Deliberately Left Open](./terminology.md#a-term-deliberately-left-open). The passage is one of the two places where the word does real work in Memar, and it is read far more often than the facet that now governs the term; a reader arriving here first met the principle without the qualification, and a reader who took the ordinary sense as Memar's had adopted a definition Memar never made.
+
+#### Considered and not done
+- **A footnote rather than a sentence in the principle statement (rejected):** the qualification is not incidental to the claim. The claim's force depends on the Task being a unit rather than an event, and a reader who reads *Task* as Memar's undefined-but-defaulted word is reading a different claim.
+- **Restating the class's reasoning here (rejected):** the Content Rule's prohibition on redundant restatement, and the reasoning belongs with the class rather than beside each of its two members.

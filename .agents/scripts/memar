@@ -1,0 +1,99 @@
+#!/usr/bin/env python3
+"""memar — the one command a person or an agent types to reach Memar.
+
+    memar <anything>            the documentation tool (search, section, check, …)
+    memar install [anything]    record where Memar lives on this machine
+    memar --help                what this routes to, and where
+
+This file routes and nothing else. Every verb it accepts belongs to a tool that
+declares its own interface, and that declaration — not this file — stays the
+authority for what the verb accepts and what it prints. A router that restated
+either would be a second interface for one behavior, and the two would drift.
+
+The name is the whole of the design. A framework whose entry point is a path
+into a scripts folder asks every caller to know where it lives and what it is
+called; `memar` asks for neither, so the same word works in a shell, in an
+agent's command, in a CI step, and in a document that tells a reader what to
+type. What that buys is not a shorter skill file on its own — it is that the
+skill can be a routing sentence instead of a description of a filesystem.
+
+Two launchers carry this file: this one, executable where a file may be, and
+`memar.cmd` beside it for a Windows shell that will not run a file without a
+known extension. Both hand the same arguments to the same interpreter.
+"""
+
+from __future__ import annotations
+
+import subprocess
+import sys
+from pathlib import Path
+
+SCRIPTS = Path(__file__).resolve().parent
+if str(SCRIPTS) not in sys.path:
+    sys.path.insert(0, str(SCRIPTS))
+
+from console import use_utf8_stdio
+
+DOCUMENTATION = SCRIPTS / "memar-documentation.py"
+INSTALLER = SCRIPTS / "install.py"
+
+# The one word that sends an invocation to the installer. Everything else is the
+# documentation tool's, because that is where every other question a reader or
+# an agent brings belongs. The installer answers "where does Memar live on this
+# machine", which is asked once per machine and never per question.
+INSTALL_VERB = "install"
+
+USAGE = f"""memar — reach Memar by one word
+
+  memar <subject>              find where a subject is defined
+  memar section <doc> <head>   print one named section
+  memar search <regex>...      search the documentation set
+  memar check <path>...        report encoding, surface, link, and obligation problems
+  memar install                record where Memar lives on this machine
+  memar install --check PATH   say whether PATH would be refused, and stop
+  memar --help                 this text
+
+Every verb above is declared by the tool that implements it; run
+`memar <verb> --help` for that tool's own interface. `memar` routes and adds
+nothing, so what a verb accepts is never this file's to change.
+"""
+
+
+def route(argv: list[str]) -> tuple[Path, list[str]]:
+    """Which tool an invocation belongs to, and the arguments it receives.
+
+    Pure, so the routing is testable without running either tool: a test that
+    has to execute the documentation set to learn where an argument went is a
+    test of the documentation set.
+    """
+    if argv and argv[0] == INSTALL_VERB:
+        return INSTALLER, argv[1:]
+    return DOCUMENTATION, list(argv)
+
+
+def main(argv: list[str] | None = None) -> int:
+    use_utf8_stdio()
+    args = list(sys.argv[1:] if argv is None else argv)
+    if args and args[0] in ("--help", "-h", "help"):
+        # The router's own help describes the routing. `memar <verb> --help`
+        # reaches the tool, which is where a verb's interface is declared.
+        sys.stdout.write(USAGE)
+        return 0
+    target, forwarded = route(args)
+    if not target.is_file():
+        sys.stderr.write(
+            f"memar: {target.name} is not beside this launcher, so the verb "
+            "cannot be routed. Re-fetch Memar rather than working around it.\n"
+        )
+        return 2
+    # No environment is prepared here, and none is needed. The tool knows which
+    # repository it is inside — two levels up from its own file — so a caller
+    # reaches the documentation without the location variable being set, and a
+    # machine that has registered a different checkout for its projects keeps
+    # reaching that one for them.
+    completed = subprocess.run([sys.executable, str(target), *forwarded])
+    return completed.returncode
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

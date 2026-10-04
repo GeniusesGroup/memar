@@ -18,6 +18,8 @@ For each development step:
 
 2. **Write the expectations, in checkable form, before the work** — following **The Artifact** below, which is the procedure for one Test. The expectations are of the developed process, not of the developers' procedure ([test.md → The Expectation Is Written Before the Work](./test.md#the-expectation-is-written-before-the-work)). Establish two facts as you go: that the expectation is genuinely checkable, and that it is not already satisfied. Running the check before the work is the usual way to establish both; the obligation is the two facts, not the run.
 
+   A check that fails for the wrong reason names the artifact that owns the repair, so the finding is actionable without a second reading of the document set. There are two findings and they have different destinations: an expectation that turned out to be wrong or incomplete is repaired in the document that states the contract, and the repair is recorded there as a change rather than made silently here; a contract that holds but is not yet enacted is repaired by the work, and the artifact that owes it is the one whose expectations are unsatisfied. Naming the wrong one sends the next participant to correct a document that was right, which costs more than the finding was worth.
+
 3. **Enact the smallest increment that could satisfy the expectation.** The work is judged against the written expectation only. Enlarging the step's intent mid-flight is not enactment; it is a new expectation — return to step 2 and record it.
 
 4. **Run the check and record the disposition.**

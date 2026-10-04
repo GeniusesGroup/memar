@@ -52,3 +52,25 @@
 - **Writing that comments should be eliminated.** The one measured statement on the question runs the other way. The claim is scoped to the subset a Test can carry.
 - **Romanticizing the older literature.** The sources are admitted on what they argue and how well they argue it, never on their date; the caution that an idea's antiquity is independent of its merit, with this repository's own example of an inherited idea nobody ever named as a mistake, is recorded in the research rather than assumed away.
 - **Correcting the absorbed document's changelog into this one wholesale.** Its load-bearing rejections are recorded here as considered-and-not-done; per [Merging before Final](../../documentation-explanation.md) no citation entry points at the abandoned document, and per the changelog facet its history does not become a second home for the same decisions.
+
+---
+
+### A failing check names the artifact that owes the repair
+- Time: 2026-10-04T00:00:00Z
+- Type: Added
+- Cited:
+  - [Comparison: Memar and GitHub Spec Kit](../../comparisons/spec-kit.md) - **Reference**: whose Adapt filter produced the item. Spec Kit's `/analyze` is strictly read-only and its Next Actions name the owning command per finding class, under the doctrine "return to the earlier step that owns them and fix them at the source".
+- Propagates to:
+  - [test.md](./test.md): None needed - [What a Passing Suite Establishes](./test.md#what-a-passing-suite-establishes) already separates what a run proves from the claim that the work is finished; this is the reporting form of that separation, not a new claim.
+  - [documentation.md](../../documentation.md): None needed - no artifact-structure rule changes.
+- Contributors:
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) - decided
+  - [Space Bunny Alpha](../../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny-free via [OpenCode](../../../CONTRIBUTORS.md#opencode)) - drafted
+
+#### What changed
+- [The Cycle](./test.practice.md#the-cycle) gains a clause on what a failing check hands back. A check that fails for the wrong reason names the artifact that owns the repair, and the two failures have different destinations: an expectation that turned out to be wrong or incomplete is repaired in the document that states the contract, recorded there as a change rather than made silently; a contract that holds but is not yet enacted is repaired by the work, and the artifact that owes it is the one whose expectations are unsatisfied.
+- The clause states why the distinction is load-bearing rather than tidy: naming the wrong one sends the next participant to correct a document that was right, which costs more than the finding was worth. This is the disposition step the practice already required, given a destination.
+
+#### Considered and not done
+- **A machine-readable result carrying the destination (not taken):** the obligation is on what a report says, and a format is the tool's decision. A participant whose check returns only a boolean still owes the sentence.
+- **Naming the destination in `test.md` rather than the practice (rejected):** the practice is where steps are stated, and this is one more of them. The base protocol owns the claims; the practice owns the procedure that reports on them.

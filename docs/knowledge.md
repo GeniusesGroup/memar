@@ -201,7 +201,7 @@ When someone asks "Why does this code look like this?" six months later, the ans
 
 This does not mean snapshots are useless. They remain valuable for reproducible builds, deployment state, forensics, regulatory audits, and legal holds. But for **knowledge** — understanding why things are the way they are, what was considered, what was rejected — task-centric history is strictly more informative.
 
-**Principle statement**: The primary unit of knowledge evolution is the Task (or its equivalent: Decision, Investigation, Experiment, Case Review), not the Snapshot or Commit. Version history should be derivable from task evolution, not the reverse.
+**Principle statement**: The primary unit of knowledge evolution is the Task (or its equivalent: Decision, Investigation, Experiment, Case Review), not the Snapshot or Commit. Version history should be derivable from task evolution, not the reverse. The word *Task* is used here in its ordinary sense and is deliberately not defined by Memar: the concept is larger than this framework, and [Terminology → A Term Deliberately Left Open](./terminology.md#a-term-deliberately-left-open) states where its definition is being developed and why the name is left open.
 
 #### Knowledge Requires Explicit Context Recovery
 Every representation of knowledge loses context. The question is not whether context is lost, but whether the system provides mechanisms to **recover** it:

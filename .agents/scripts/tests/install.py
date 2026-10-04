@@ -78,7 +78,12 @@ SIBLING_SURFACE = ("use_utf8_stdio", "is_memar_repository", "resolve_root", "NEV
 UNCHANGED_HELP = {
     "install-apps.py": "d40610366c74da88f88d405b9c259669deb2b0c048380570eea46a7fd3b40c1a",
     "install-agents.py": "6f1024de7ccb48ac96975b3aa0452a2a61d02b19db74d18f9e536ec86fa32200",
-    "memar-documentation.py": "88b1bb7957c811d3489a6f796c24d7fec4eac68038aef48b3efdd3ffc30f006e",
+    # `memar-documentation.py`'s pin moved when `check` gained the obligation
+    # report and said so in its own help. Refreshed deliberately, with the
+    # change recorded in docs/documentation.changelog.md, not because a test
+    # went red — a refreshed pin is exactly the thing that is worthless if it
+    # is refreshed on sight.
+    "memar-documentation.py": "5e5c9ef2767677c3df53e068905ee13306d4b5e2fd7f4ec2d8535f878442e1e6",
 }
 # install.py's own options, in the order argparse prints them, with the argument
 # each one takes. Obtaining the checkout is the bootstrap's, so what is left here

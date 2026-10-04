@@ -94,6 +94,7 @@ from copy_excluded import NEVER_COPIED
 from editor_extension import install_extensions
 from memar_repository import is_memar_repository, not_a_repository
 from sys_desktop_shortcut import create_shortcut
+from sys_env_path import ensure_on_path
 from sys_env_location import (
     VARIABLE,
     recorded_root,
@@ -107,6 +108,7 @@ from sys_fs_target import default_target, full_path, refuse_temporary, temporary
 
 __all__ = [
     "NEVER_COPIED",
+    "LAUNCHER",
     "VARIABLE",
     "is_memar_repository",
     "not_a_repository",
@@ -114,8 +116,12 @@ __all__ = [
     "recorded_value",
     "refuse_bogus_value",
     "resolve_root",
+    "resolve_root_or_here",
     "use_utf8_stdio",
 ]
+
+
+LAUNCHER = "memar"
 
 
 def temporary_consequence() -> str:
@@ -176,10 +182,39 @@ def record(target: Path) -> None:
     if made:
         note(made)
 
+    step("The memar command")
+    for line in ensure_on_path(
+        target / ".agents" / "scripts",
+        lambda d: (d / LAUNCHER).is_file(),
+    ):
+        note(line)
+
     step("Editor extensions")
     install_extensions(target)
 
     step(f"Memar is registered at {target}")
+
+
+def resolve_root_or_here() -> Path:
+    """The recorded location when there is one, otherwise this checkout.
+
+    Two questions with two answers, which is why the fallback lives here and not
+    in `resolve_root`. A *consuming project* holds no Memar checkout of its own
+    and must be told where this machine keeps one; that is what the variable
+    exists for, and `resolve_root` refuses rather than guess, because a session
+    that quietly puts a repository on the machine produces a location nothing
+    else agrees on. A tool *running inside a checkout* already knows where it is
+    — two levels up from this file — and asking it to consult a variable asks a
+    question it cannot get wrong. So the two callers are separated rather than
+    one of them made to guess: the installer never falls back, and a reader of
+    the documentation never needs to be told.
+
+    The recorded location wins when it is set and names a repository, so a
+    project that fetched Memar keeps reaching the checkout the installer chose
+    for it rather than whichever checkout happened to invoke the tool.
+    """
+    recorded = recorded_root()
+    return recorded if recorded is not None else checkout_root()
 
 
 def register(path: str) -> None:

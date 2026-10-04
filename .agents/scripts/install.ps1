@@ -42,7 +42,8 @@ What it does, in order, printing each step:
      that decides anything about Memar, including whether Memar is already here:
      it reports an existing install and stops, reports a value that names no
      Memar repository and leaves it alone, refuses a folder under the temporary
-     directory, and otherwise writes MEMAR_ROOT, makes the shortcut, and
+     directory, and otherwise writes MEMAR_ROOT, makes the shortcut, puts the
+     \memar\ command on the user's PATH, and
      installs the editor extensions that checkout ships.
 
 One mechanism decides where Memar lives: the MEMAR_ROOT environment variable,

@@ -40,7 +40,8 @@
 #      here: it reports an existing install and stops, reports a value that
 #      names no Memar repository and leaves it alone, refuses a folder under the
 #      temporary directory, and otherwise writes MEMAR_ROOT, makes the shortcut,
-#      and installs the editor extensions that checkout ships.
+#      puts the \memar\ command on the user's PATH, and installs the editor
+#      extensions that checkout ships.
 #
 # One mechanism decides where Memar lives: the MEMAR_ROOT environment variable,
 # written at install time by the installer and read literally by everything. No

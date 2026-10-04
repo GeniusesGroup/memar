@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""Tests for `check`'s judgement of the links a document makes.
+"""Tests for `check`'s judgement of the links a document makes and of the
+obligations a document set has recorded but not yet discharged.
 
     python .agents/scripts/tests/memar-documentation.py
 
@@ -39,6 +40,29 @@ What is pinned, and what each pin is for:
                       differently only by where it is, never by what it says.
   ExternalIsNotJudged A URI with a scheme, and a site-root path, are not files
                       this run can resolve and are left alone.
+
+  PendingPropagation   A `Propagates to` entry in state `Pending` is
+                      outstanding work the facet defined a searchable state
+                      for, and this is the only surface that reports it:
+                      `search` excludes changelog files by design, so the
+                      work-list is otherwise invisible.
+  SettledPropagation  `Done` and `Rejected` are closed states by the facet's
+                      own definition, `Rejected` permanently, and neither is
+                      outstanding work. Reporting them would train a reader to
+                      ignore the section.
+  PropagationIsAField The state is read from the entry's own field, so a
+                      sentence that merely mentions `Pending` is not an open
+                      obligation.
+  LedgerNotSpec      `documentation-changelog.md` specifies the field and shows
+                      its shape; `cognition.changelog.md` records entries in it.
+                      Reading the first as the second reports the project's own
+                      rules as its outstanding work.
+  RejectedInABody    Whether a body holds a rejected-alternative record is not
+  IsNotJudged        decidable from the text, and is deliberately not checked.
+                      The specification of the field and a record in the field
+                      differ only in what the text is for. The class is pinned
+                      in `RejectedInABodyIsNotJudged` so the question is not
+                      reopened blind.
 """
 
 from __future__ import annotations
@@ -261,6 +285,193 @@ class InPageAnchorStillJudged(LinkFixture):
         self.assertEqual(len(found), 2, found)
         self.assertTrue(any("in-page anchor" in p for p in found))
         self.assertTrue(any("names no heading" in p for p in found))
+
+
+class PendingPropagation(LinkFixture):
+    ENTRY = (
+        "# Log\n\n## Changelog\n\n### A change\n"
+        "- Propagates to:\n"
+        "  - [modeling.md](./modeling.md): Pending - its local reasoning should\n"
+        "    reference this document instead.\n"
+    )
+
+    def write_entry(self, text: str = ENTRY) -> Path:
+        return self.write("docs/cognition.changelog.md", text)
+
+    def found(self) -> list[tuple[Path, int, str]]:
+        path = self.write_entry()
+        return memar_documentation.undischarged_propagations([path])
+
+    def test_a_pending_entry_is_reported(self) -> None:
+        found = self.found()
+        self.assertEqual(len(found), 1, found)
+        self.assertIn("modeling.md", found[0][2])
+        self.assertEqual(found[0][1], 7)
+
+    def test_the_report_names_the_entry_not_only_the_file(self) -> None:
+        found = self.found()
+        self.assertIn("Pending", found[0][2])
+        self.assertIn("cognition.changelog.md", found[0][2])
+
+    def test_a_wrapped_continuation_line_is_not_a_second_entry(self) -> None:
+        found = self.found()
+        self.assertEqual(len(found), 1, found)
+
+    def test_a_file_without_the_field_reports_nothing(self) -> None:
+        path = self.write("docs/cognition.md", "# Cognition\n- Propagates to nothing\n")
+        self.assertEqual(memar_documentation.undischarged_propagations([path]), [])
+
+    def test_a_field_named_beside_the_artifact_is_not_an_entry(self) -> None:
+        # The label appears in prose, not as the entry's own field.
+        path = self.write("docs/cognition.changelog.md",
+                          "# Log\nSee the Propagates to field for the states.\n")
+        self.assertEqual(memar_documentation.undischarged_propagations([path]), [])
+
+    def test_a_non_changelog_file_is_not_scanned(self) -> None:
+        path = self.write("docs/cognition.md", "# Cognition\n- other.md: Pending - owed\n")
+        self.assertEqual(memar_documentation.undischarged_propagations([path]), [])
+
+    def test_the_facet_specification_is_not_read_as_a_ledger(self) -> None:
+        # `documentation-changelog.md` is the document that specifies the field,
+        # so it carries the heading, the example, and a sample line in the field's
+        # own shape. It is a specification, and a check reading it as a ledger
+        # would report the project's own rules as its outstanding work.
+        path = self.write(
+            "docs/documentation-changelog.md",
+            "# Documentation Changelog\n\n## Changelog\n\n### Structure\n"
+            "- Propagates to:\n  - {Other artifact}: Pending - {what needs to happen}\n",
+        )
+        self.assertEqual(memar_documentation.undischarged_propagations([path]), [])
+
+    def test_a_state_word_later_in_the_description_is_not_the_state(self) -> None:
+        path = self.write(
+            "docs/cognition.changelog.md",
+            "# Log\n- Propagates to:\n"
+            "  - modeling.md: Done - the entry it removed was Pending until this run.\n",
+        )
+        self.assertEqual(memar_documentation.undischarged_propagations([path]), [])
+
+    def test_a_pending_state_written_as_a_phrase_is_still_pending(self) -> None:
+        # The facet's own sources write `Pending deletion` and `Pending at
+        # absorb time`; both are open, and a check that missed them would
+        # under-report against the material that exists.
+        path = self.write(
+            "docs/cognition.changelog.md",
+            "# Log\n- Propagates to:\n"
+            "  - protocol.per.md: Pending deletion - fully superseded by this document.\n",
+        )
+        self.assertEqual(len(memar_documentation.undischarged_propagations([path])), 1)
+
+
+class SettledPropagation(LinkFixture):
+    def settled(self, state: str) -> list[tuple[Path, int, str]]:
+        path = self.write(
+            "docs/cognition.changelog.md",
+            f"# Log\n- Propagates to:\n  - modeling.md: {state} - why it was or was not done\n",
+        )
+        return memar_documentation.undischarged_propagations([path])
+
+    def test_done_is_not_outstanding(self) -> None:
+        self.assertEqual(self.settled("Done"), [])
+
+    def test_rejected_is_not_outstanding(self) -> None:
+        # `Rejected` closes the search result permanently; reporting it would
+        # put a decided matter back on the list every run.
+        self.assertEqual(self.settled("Rejected"), [])
+
+    def test_the_states_are_distinguished_in_the_matching_not_by_exclusion(self) -> None:
+        path = self.write(
+            "docs/cognition.changelog.md",
+            "# Log\n- Propagates to:\n"
+            "  - one.md: Pending - owed\n"
+            "  - two.md: Done - landed\n"
+            "  - three.md: Rejected - considered and deliberately not done\n"
+            "  - four.md: Partial - some of it landed\n",
+        )
+        found = memar_documentation.undischarged_propagations([path])
+        self.assertEqual(len(found), 1, found)
+        self.assertIn("one.md", found[0][2])
+
+
+class RejectedInABodyIsNotJudged(LinkFixture):
+    """The negative result, pinned so a later session does not retry it blind.
+
+    Whether a body holds a rejected-alternative record is not decidable from
+    the text: the document that *specifies* the field carries a section by the
+    field's name in its own body. So no such check exists, and these two tests
+    say which way each candidate shape is expected to fall if one is ever
+    written — the specification's own heading, and a body naming the field's
+    home — rather than leaving the question open again.
+    """
+
+    def test_the_facet_specification_carries_the_heading_and_is_clean(self) -> None:
+        # This is the shape that ruled the check out: a real section of a real
+        # document, correctly placed, and indistinguishable by pattern from the
+        # violation the check was meant to catch.
+        path = self.write(
+            "docs/documentation-changelog.md",
+            "# Documentation Changelog\n## Optional Sections\n"
+            "#### Considered and not done\n- alternatives examined and rejected\n",
+        )
+        self.assertEqual(self.problems(path), [])
+
+    def test_a_body_naming_the_fields_home_is_clean(self) -> None:
+        path = self.write(
+            "docs/cognition.md",
+            "# Cognition\n## Rules\nA rejected alternative belongs in the changelog "
+            "entry's `Considered and not done` section.\n",
+        )
+        self.assertEqual(self.problems(path), [])
+
+
+class ChangelogAppendKeepsTheFilesConvention(LinkFixture):
+    """The appended bytes must be the ones the file already holds.
+
+    The practice tells every contributor to append through this script, and
+    `check` reports mixed line endings. An append that wrote the host's
+    convention rather than the file's would therefore be the tool causing the
+    very defect it is the authority for detecting.
+    """
+
+    ENTRY = "### A change\n- What changed: nothing an entry can say.\n"
+
+    def ledger(self, newline: str) -> Path:
+        path = self.root / "docs" / "cognition.changelog.md"
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_bytes(
+            ("# Log\n\n## Changelog\n\n### Earlier\n- older.\n").encode("utf-8")
+            .replace(b"\n", newline.encode("ascii"))
+        )
+        return path
+
+    def test_a_crlf_ledger_gains_no_lf(self) -> None:
+        path = self.ledger("\r\n")
+        memar_documentation.changelog_append(path, self.ENTRY)
+        self.assertEqual(self.problems(path), [])
+
+    def test_an_lf_ledger_gains_no_crlf(self) -> None:
+        path = self.ledger("\n")
+        memar_documentation.changelog_append(path, self.ENTRY)
+        self.assertEqual(self.problems(path), [])
+
+    def test_a_crlf_entry_written_into_an_lf_ledger_is_normalized(self) -> None:
+        path = self.ledger("\n")
+        memar_documentation.changelog_append(path, self.ENTRY.replace("\n", "\r\n"))
+        self.assertEqual(self.problems(path), [])
+
+    def test_the_entry_is_still_appended_after_the_earlier_one(self) -> None:
+        path = self.ledger("\r\n")
+        memar_documentation.changelog_append(path, self.ENTRY)
+        text = path.read_bytes().decode("utf-8")
+        self.assertLess(text.index("### Earlier"), text.index("### A change"))
+        self.assertIn("---", text)
+
+    def test_the_appended_entry_is_not_written_over_an_existing_one(self) -> None:
+        path = self.ledger("\r\n")
+        memar_documentation.changelog_append(path, self.ENTRY)
+        first = path.read_bytes()
+        memar_documentation.changelog_append(path, self.ENTRY)
+        self.assertGreater(len(path.read_bytes()), len(first))
 
 
 if __name__ == "__main__":

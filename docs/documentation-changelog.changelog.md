@@ -309,3 +309,30 @@ Open questions (dot-boundary criterion, entry-title uniqueness, historical-entry
 - Linking the host tool inside the prose of `superpowers.md`, `sdk.changelog.md`, and `chapar.md` — not taken: those sentences are narrative rather than `Contributors` bullets, so the entry field's shape does not govern them.
 - Linking the `space-bunny` identifier to a documentation page — rejected: OpenCode's model documentation names no page for it, and the field guide's own page is already the section's `Website`.
 
+---
+
+### Approval requires a reviewer who did not do the work
+- Time: 2026-10-04T00:00:00Z
+- Type: Added
+- Cited:
+  - [Comparison: Memar and GitHub Spec Kit](./comparisons/spec-kit.md) - **Reference**: whose Adapt filter produced the item. Spec Kit's `/converge` states "completion claims are not evidence" for its progress markers, which Memar had as a principle for expectations and not as a rule about who may judge a change.
+- Propagates to:
+  - [documentation-changelog.practice.md](./documentation-changelog.practice.md): Done - the procedure that carries out the rule, kept beside the facet rather than in any agent skill, because the conditions bind whoever writes the entry and a rule that lives in the tooling disappears with the tooling.
+  - [.agents/skills/memar/SKILL.md](../.agents/skills/memar/SKILL.md): Done - one clause naming which reviewer this runtime supplies, and nothing else. The first draft of this work put the whole rule there, which was wrong in a way worth recording: it made a facet's obligation depend on a skill that a future server or MCP transport would not have. That file carries no changelog of its own.
+  - [terminology.md](./terminology.md): None needed - [On Independent Verification, Today](./terminology.md#on-independent-verification-today) already says what an internal audit is worth against an outside institution, and this entry cites that limit rather than restating it.
+  - [documentation-explanation.md](./documentation-explanation.md): None needed - no document-structure rule changes.
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - decided the two-role arrangement
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny-free via [OpenCode](../CONTRIBUTORS.md#opencode)) - drafted
+
+#### What changed
+- [Contributors (entry field)](./documentation-changelog.md#contributors-entry-field) gains [Approval Requires a Reviewer Who Did Not Do the Work](./documentation-changelog.md#approval-requires-a-reviewer-who-did-not-do-the-work). `approved` is separated from the rest of the open role vocabulary because it is the one tag that judges the entry's own correctness rather than describing a contribution, and three conditions now hold it: the reviewer did not do the work, the reviewer returns a verdict naming what it ran and what the run returned, and no verdict means no `approved` - a withheld verdict goes into the entry with its reason, and an unapproved entry is the correct state for unchecked work rather than a gap to tidy.
+- An approved entry therefore names two roles where an unapproved one names only the first: the party that did the work and the party that said it holds. The section states why that separation is the whole content of the tag, since without it `approved` records that someone was satisfied, which the word "satisfied" already says.
+- The section states what the tag is not. An audit by a party that did not do the work, using evidence it ran itself, is the strongest scrutiny available inside one collaboration, and this is not a certificate: the tag records that a second party checked, not that the work is correct in general.
+- [Documentation Changelog Practice → Recording an approval](./documentation-changelog.practice.md#recording-an-approval) states how the rule is satisfied: which changes are worth reviewing at all, the four things a review request carries (the claim quoted from `What changed`, the evidence as a command to be run, the boundaries, and the verdict asked for), the three outcomes and what each does to the entry, and why a changed claim goes to a different reviewer rather than back to the same one. It also states who reviews: independence from the work is the requirement, not a roster, so where a runtime offers no second cognitive system the honest outcome is no `approved`.
+
+#### Considered and not done
+- **Letting the session's own agent approve from its session report (rejected by the owner):** the session report is written by the party the approval would judge, so it is the unverified claim wearing a verified one's name. This is the point Spec Kit's `/converge` makes about its own checkboxes, applied to the party rather than to the marker.
+- **Adding a third role - an owner who issues the certificate after the internal audit (not added):** the two-role form the owner described is what is implemented. Whether an outside signature is wanted on top of it is a separate question and would be a change to [Terminology " + chr(0x2192) + " On Independent Verification, Today](./terminology.md#on-independent-verification-today), not to this field.
+- **A closed role taxonomy for the vocabulary (rejected for now, unchanged):** the section still says the vocabulary is open. Fixing it is a separate decision, and the approval rule does not depend on it.
+- **Requiring the reviewer to be a different *kind* of participant (a human, or a specific model) (rejected):** what the rule needs is independence from the work, not a roster. Naming a roster would make the tag unavailable whenever the roster is unavailable, which is most of the time.

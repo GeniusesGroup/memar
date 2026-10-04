@@ -366,3 +366,28 @@
 - The one-shot boundary's absence was traced to the relocation pass that moved the concept core from the TDD document (now protocols/process/test.md) into Process; restoring it here, not only in the protocol, follows the same ownership rule that relocated the core (Claude Opus-5 — claimed; Cursor/Composer — applied).
 
 ---
+
+### Work decomposition: an inquiry that corrected its own question
+- Time: 2026-10-04T00:00:00Z
+- Type: Added
+- Cited:
+  - [Process Research 001 " + chr(0x2014) + " Decomposing a Development](./process.research.001.md) - **Reference**: the inquiry this entry records. Two questions, both answered.
+- Propagates to:
+  - [process.md](./process.md): Prepared and held back - the promotion the inquiry recommends touches a document this one and others reference, so it is the owner's to authorize.
+  - [software.md](./software.md): Prepared and held back - the IEEE 1058 row's "owed" is right for project management as an activity and misleading read as a concept in waiting; no change has been made to that table.
+  - [terminology.md](./terminology.md): None needed from this entry - the word *Task*, which the inquiry found undefined and weighted, was settled there by the owner's decision, recorded in that document's own changelog.
+  - [documentation-handoff.md](./documentation-handoff.md): None needed from this entry - the question of identifying a session became [Handoff Research 001](./documentation-handoff.research.001.md) and is recorded beside its own facet.
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - questioned, decided the scoping framing
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny-free via [OpenCode](../CONTRIBUTORS.md#opencode)) - researched, drafted, wrote the record
+
+#### What changed
+- [Process Research 001](./process.research.001.md) is opened against this document, on whether Memar owns work decomposition and whether the absence of a per-feature artifact set is scoping or omission. Both questions are answered.
+- **Decomposition is already true of Memar and is filed where nothing cites it.** [Test Practice " + chr(0x2192) + " Scaling](./protocols/process/test.practice.md) defines *one development step* as the unit whose expectations can be stated in one pass, and lists a function, a defect fix, a document section, a feature, a protocol contract, and a piece of store equipment in one breath " + chr(0x2014) + " the evidence that the unit is already domain-independent. Since [Development as a Process](./process.md#development-as-a-process) holds that a development's content is exactly the Process topics above and adds no structure of its own, every attribute a decomposed unit needs is already carried at both scales. The recommendation is therefore a promotion: one paragraph in Process citing the practice rather than restating it. Not applied " + chr(0x2014) + " it changes a document many others reference.
+- **The absence is a scoping decision, not a gap.** [Process and Workflow](./process.md#process-and-workflow) separates a process from a representation of it; [Modeling](./modeling.md) makes the model the artifact; [Documentation Explanation](./documentation-explanation.md) declines a template per purpose for the whole document system. Memar states the path and declines only the finished delivery, which is where [Enterprise](../README.md#enterprise) begins.
+- **The inquiry narrowed as it ran.** It began as three questions and ended as two here: the word *Task* was answered by the owner into [Terminology](./terminology.md), and identifying a session proved to be a question about a record rather than about this concept, and became [Handoff Research 001](./documentation-handoff.research.001.md). A research is paired to the artifact whose subject it is, and leaving either here would have made a concept document answer for a subject it does not own.
+
+#### Considered and not done
+- **Promoting the decomposition into `process.md` in this session (held back):** it changes a document many others reference, and the finding that it needs no new concept is an argument for its safety, not an authorization.
+- **Rewriting the IEEE 1058 row in `software.md` (held back):** the row's content is defensible read one way and misleading read the other, and which reading the project means is the owner's to say.
+- **Keeping the session and Task questions in this record (rejected):** both have subjects this document does not own, and a research that sprawls teaches a reader that the base artifact governs things it does not.

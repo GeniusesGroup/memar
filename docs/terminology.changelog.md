@@ -198,3 +198,64 @@ Precisely defined Comprehensive and Exclusive as the two directions of necessary
 - Writing the rule into `cognition.md`'s discourse norms instead — rejected: the norms govern how a discussion is conducted, and this is a rule about a term's referent, which is what this document governs. A cross-reference is cheaper than a second statement.
 - Naming the concept "the arrangement of a system's parts" needs, so a correction has a word to offer — rejected: the name is the owner's open question in `system.handoff.md`, and a terminology document inventing the term its own companion document records as undecided would settle by drafting what was left open by decision.
 - Leaving *Word-Weight Rebalancing* untouched on the ground that its hedge already covers the case — rejected: its hedge covers the *mechanism*, and listing the correction among the items "left open" told a reader the correction itself was unsettled. Two statements in one document contradicting each other is the drift this document exists to prevent.
+
+---
+
+### Corpus vs. The Sources: a body of source is not a body of text
+- Time: 2026-10-04T06:38:54Z
+- Type: Added
+- Cited:
+  - [Documentation — File Naming](./documentation.md#file-naming) — `Reference`: the criteria a name is chosen by — it communicates meaning, preserves conceptual boundaries, avoids implementation-specific vocabulary, and stays stable over time
+  - [Terminology — The Default Meaning of an Unreferenced Term](./terminology.md#the-default-meaning-of-an-unreferenced-term) — `Reference`: the rule this ruling relies on, that a word no document defines carries exactly its general meaning
+  - [Terminology — Correcting a Term Used Against Its Definition](./terminology.md#correcting-a-term-used-against-its-definition) — `Reference`: the correction names the word and not the reasoning, and the observation stands
+- Propagates to:
+  - modules/README.md: Done — the topic *The sources, and what they are not* states what this repository's sources are, what standing the owner has given them, and what the name does not claim
+  - modules/README.changelog.md: Done — created to carry that change
+  - docs/system.md: Rejected — no change. *System → Ecosystem* records the framework's own collective nouns, and this term names one repository's source tree, not a System any framework document defines
+  - docs/cognition.md: Rejected — no change. *Definitions outrank terminology* already routes a reader of an undefined word here; this entry is what such a reader now finds
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) — drafted, applied
+
+#### What changed
+- A worked case, *Corpus vs. The Sources*, states the distinction the word had been blurring. *Corpus* is a word about language — a body of written text gathered so something can be examined across it — and that sense is an ordinary dictionary sense that needs no definition. A body of program source is a different thing: nothing about it is text to be sampled for frequency, and nothing about it comes from a language's literature. What it is, plainly, is **the sources**.
+- The case states why the distinction is not cosmetic. *Corpus* reads as a settled, collected, whole body of material — something a claim may appeal to — so naming a half-finished conversion "the corpus" lends it that standing by the word alone. **The sources is the neutral name**: it says what the files are and claims nothing about whether they are worth arguing from. A project that has ruled its sources to be neither evidence nor premise says so in its own documents; the name does not say it for it and is not chosen to.
+
+#### Considered and not done
+- Naming the concept in a base document of any project — rejected: *the sources* is a repository's own name for its own tree. What belongs here is the rule about the word and the standing it lends, both of which hold for any project; what the thing is belongs to the project, and is recorded in `modules/README.md` instead.
+- Defining *the sources* as a Scientific Term — rejected: it would claim a falsifiable boundary the repository has not drawn, and a Definition is supposed to fix one.
+- **Archive** — rejected: it fits only the Go and JavaScript blocks carried inside the source files, which the repository already calls *the two archives*, so the name would name a part and be read as the whole.
+- **Residue** — rejected: it is the owner's verdict written into the name, and the repository already uses it for the narrower thing — the `// TODO(go-migrate):` clue blocks the port left — so the wider use would collide.
+- **Library** — rejected: it claims a standing the owner has explicitly refused, in the same sentence the tree's neutrality depends on.
+- **The port** — rejected: the port is the attempt, and the sources are what the attempt left. It also collides with `modules/go-port/`, whose subject is the work, and it launders the argumentative use — a sentence resting on what the sources happen to contain would read as a fact about the port rather than a caution about a residue.
+- Correcting the word in the architecture documents' substance — rejected: the owner has ruled it out. The rename changes how the concept is addressed; it does not re-argue the documents that already record the ruling.
+
+---
+
+### Task is used, never defined, and says so on purpose
+- Time: 2026-10-04T00:00:00Z
+- Type: Added
+- Cited:
+  - [Process Research 001 — Work Decomposition](./process.research.001.md) - **Reference**: the inquiry whose Question 3 asked whether a Memar document should own a definition for *Task*, and whose finding was that no document did while three documents leaned on the word.
+- Propagates to:
+  - [knowledge.md](./knowledge.md): Done - [Task-Centric Knowledge Evolution](./knowledge.md#task-centric-knowledge-evolution) now marks its use and links here.
+  - [documentation-changelog.md](./documentation-changelog.md): Done - the `Tasks` field's deferral now names this position rather than standing alone as a refusal to model one.
+  - [README.md](../README.md): None needed - the Enterprise scope this entry points at is already the README's own subject.
+  - [terminology.handoff.md](./terminology.handoff.md): None needed - no question this entry answers was carried there.
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - claimed the position across earlier sessions, decided
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny-free via [OpenCode](../CONTRIBUTORS.md#opencode)) - drafted, argued
+
+#### What changed
+- [Terminology](./terminology.md) gains [A Term Deliberately Left Open](./terminology.md#a-term-deliberately-left-open), a class of term alongside the defined and the merely-unreferenced ones. A term in this class is used in Memar's documents, never defined by one, marked as the deliberate use it is at each appearance, and defined where the work on the concept is actually being done. The section states why the class exists at all: for a concept larger than the framework, the ordinary meaning is not thinner than Memar's would be but misleading, because it arrives carrying the settled, familiar shape of the concept and a reader who takes it as Memar's has adopted a definition no Memar document made.
+- The section states the cost of naming a term into the class rather than leaving it implicit. Memar's documents then use a word the framework does not own, and a reader who wants the concept must leave the framework to get it; the price is accepted because the alternative is that a framework needing a settled word takes the word, and in taking it settles by definition the part of the design space the word names — before the work that would have explored that space has been done. The concept then grows in spite of its own name rather than because of it. The GitHub vocabulary stands as the illustration of the pattern: the ordinary tracker sense was fixed early under the name *issue*, and the wider structural reading was not afterwards available to anything built on it.
+- The class has a membership test rather than a membership by memory, and it is narrow: the concept must be larger than the framework's current scope, work on it must be happening in a scope outside this repository, and defining it here must narrow a design space that work has not explored. A term that merely lacks a definition, or whose concept Memar recognizes but has not named, is not in the class — [Correcting a Term Used Against Its Definition](./terminology.md#correcting-a-term-used-against-its-definition) and the handoff's open questions answer those.
+- **Task is the class's one member.** The concept is one of the general-purpose graph domains the [Organization](https://github.com/GeniusesGroup/organization) project develops as the identity and structural core for any collective entity, alongside groups, departments, and staff, and Memar's Enterprise scope is where a built answer to it is delivered. Two Memar passages carry weight on the word — [Knowledge → Task-Centric Knowledge Evolution](./knowledge.md#task-centric-knowledge-evolution) and this facet's `Tasks` entry field — and both now link here, so each reads as chosen rather than as an oversight waiting to be corrected.
+- Until this entry, the position existed only as a judgment held across earlier sessions and written down nowhere. Under [Cognition → Definitions outrank terminology](./cognition.md#definitions-outrank-terminology) an undefined term carries its ordinary general meaning, so *Task* meant three different things in three passages with nothing marking the difference: the ordinary sense of a thing one process asks another to perform, the primary unit of knowledge evolution, and an entry in a tracker nobody here has chosen. A reader resolving any of them had been given an answer by accident.
+
+#### Considered and not done
+- **Defining Task in Memar (rejected by the owner):** the concept is larger than the framework and is being developed as a domain model elsewhere; fixing it here would close a design space that work has not explored, which is the whole reason the class exists.
+- **Letting the ordinary meaning stand unremarked, on the ground that the default rule already covers it (rejected):** the default rule is what made the ambiguity harmful. It hands a reader a settled definition of a concept the framework has never examined, and it does so silently.
+- **Removing the word from Memar's passages and using `decision` or `investigation` instead (not taken):** it would leave the knowledge-evolution principle weaker, since the passage's point is that a *task* is the unit rather than a snapshot, and the parenthetical already shows the concept generalising past any one of them. The section states the ordinary sense explicitly at the site, which is the smaller cost and the reversible one.
+- **Naming a broader class of terms (rejected):** the class is defined by a three-part test, not by a mood about avoiding definitions. A wider class would take in ordinary words that simply need no definition, and would make the section a licence rather than an exception.
+- **Writing the definition here and marking it Enterprise's (rejected):** a definition in Memar is a definition in Memar. Marking a section as belonging elsewhere does not stop the next reader, or the next agent, from citing it.

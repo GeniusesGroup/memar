@@ -123,6 +123,7 @@ import time
 from pathlib import Path
 
 import install
+from memar_repository import enclosing_repository
 
 # Windows consoles default to a legacy codepage (e.g. cp1252) while Memar
 # docs are UTF-8; force UTF-8 output so printing content never crashes.
@@ -422,8 +423,18 @@ def changelog_append(path: Path, entry: str) -> None:
     parts.append(entry)
     parts.append("\n")
 
-    with path.open("a", encoding="utf-8", newline="\n") as handle:
-        handle.write("".join(parts))
+    # The file's own convention, not this machine's. Appending with a fixed one
+    # is how a changelog that held CRLF for a year gains an LF tail from the
+    # first append made on a host whose default differs — and `check` then
+    # reports mixed line endings on the tool the documentation tells every
+    # contributor to append with. The entry is normalized first so that a
+    # contributor's CRLF does not survive as a stray CR inside an LF file.
+    entry_text = "".join(parts).replace("\r\n", "\n").replace("\r", "\n")
+    newline = detect_newline(path) if size else "\n"
+    if newline != "\n":
+        entry_text = entry_text.replace("\n", newline)
+    with path.open("a", encoding="utf-8", newline="") as handle:
+        handle.write(entry_text)
 
 
 # ----------------------------------------------------------------- commands
@@ -502,6 +513,25 @@ def cmd_changelog_append(args: argparse.Namespace, root: Path) -> None:
 
 def cmd_hour_id() -> None:
     print(int(time.time() // 3600))
+
+
+def cmd_root(args: argparse.Namespace, root: Path) -> None:
+    """Print where Memar is, and nothing else.
+
+    A program that needs to find Memar has three ways to learn where it is, and
+    this is the one that survives all of them. A recorded environment variable
+    answers only when the program was started after the install and after the
+    shell read it; a path typed into a configuration answers only while that
+    configuration is intact. Asking the installed command answers by definition,
+    because the command is the thing installed — the same reason `go env GOROOT`
+    is how a program asks a Go toolchain where it lives rather than reading a
+    variable the toolchain also writes.
+
+    One line on stdout and nothing else, so it can be captured by substitution
+    without parsing. A caller that wants prose asks a person; a caller that wants
+    a path wants the path.
+    """
+    print(root)
 
 
 # ------------------------------------------------------------ write commands
@@ -747,8 +777,88 @@ def _relative_link_problems(path: Path, visible: str, cache: dict) -> list[str]:
     return problems
 
 
-def check_file(path: Path, link_cache: dict | None = None) -> list[str]:
-    """Report what is wrong with a text file. Empty list means clean."""
+# ------------------------------------------- obligations, not defects
+
+# A changelog entry's `Propagates to` field names another artifact and the state
+# of the work the change implies there (documentation-changelog.md -> Propagates
+# to). `Pending` is the one open state; `Done` and `Rejected` are closed, and
+# `Rejected` is closed permanently. Nothing in this script reported the open
+# ones: `search` excludes changelog files, because their content is history
+# rather than current truth, which is right for concept search and leaves the
+# work-list with no surface at all.
+#
+# The state is read from the entry's own field — the first segment after the
+# artifact's colon — so a sentence that mentions `Pending` while describing
+# something else is not read as an obligation. `Pending deletion` and `Pending
+# at absorb time` are how the sources write the same state, and both are open.
+_PROPAGATION_OPEN = re.compile(
+    r"(?m)^[ \t]*[-*][ \t]+\S.*?:[ \t]*Pending(?![A-Za-z])"
+)
+
+# A ledger is named `<base>.changelog.md`, so its stem ends in `.changelog`. The
+# document that *specifies* the facet is named `documentation-changelog.md` and
+# shows the same section headings, the same `Propagates to` example, and the
+# same field names — testing on `endswith(".changelog.md")` reads that
+# specification as a ledger full of obligations.
+def _is_changelog_ledger(path: Path) -> bool:
+    return path.stem.endswith(".changelog")
+
+# A rejected alternative's home is the `Considered and not done` section of a
+# changelog entry, and whether a body holds such a record is deliberately not
+# checked here. It is not a question about text: `documentation-changelog.md` is
+# the document that specifies the field, so it carries a section by that name in
+# its own body, and the specification of where records go differs from a record
+# only in what the text is for. Any threshold that separates them — heading
+# depth, a bullet beside the heading, the file's name — fires on the project's
+# own governing document or misses a record written the other way, and a check
+# that stands permanently red on a correct file is one a reader learns to skip.
+# The hazard the rule addresses is real and named at
+# documentation-explanation.md -> Relevance discipline; it is answered by
+# writing the record in the changelog, not by a pattern.
+
+
+def undischarged_propagations(paths: list[Path]) -> list[tuple[Path, int, str]]:
+    """Every `Propagates to` entry left `Pending`, as (file, line, report).
+
+    Changelog files only, since that is where the field is defined. Returns
+    rather than raises: a `Pending` entry is correct content of the file that
+    holds it, so this is a work-list and not a defect, and a caller that counts
+    defects must not count these.
+    """
+    found: list[tuple[Path, int, str]] = []
+    for path in paths:
+        if path.suffix.lower() != ".md" or not _is_changelog_ledger(path):
+            continue
+        try:
+            text = path.read_text(encoding="utf-8")
+        except (OSError, UnicodeDecodeError):
+            continue
+        visible = _without_code(text)
+        for match in _PROPAGATION_OPEN.finditer(visible):
+            line = visible[: match.start()].count("\n") + 1
+            artifact = match.group(0).lstrip(" \t-*").rstrip()
+            found.append((path, line, f"{path.name} {line}: {artifact} — not yet done"))
+    return found
+
+
+def check_file(
+    path: Path,
+    link_cache: dict | None = None,
+    memar_rules: bool = True,
+) -> list[str]:
+    """Report what is wrong with a text file. Empty list means clean.
+
+    `memar_rules` decides whether the Markdown rules are applied at all. They are
+    Memar's own conventions — no blank line under a heading, linear load-bearing
+    logic, a relative link that resolves — and a file in a project that has not
+    adopted Memar is not a Memar document, so a missing blank line there is not a
+    defect and reporting it tells the owner their repository is wrong for a
+    reason they never agreed to. The encoding and newline rules are different:
+    they hold for every text file in every project, because a shell damages a
+    file the same way whatever the file is for. So the two sets are separated by
+    a flag rather than by a list, and the caller decides by asking
+    `memar_repository` whether the folder is a Memar repository.
+    """
     cache: dict = {} if link_cache is None else link_cache
     problems: list[str] = []
     try:
@@ -787,7 +897,7 @@ def check_file(path: Path, link_cache: dict | None = None) -> list[str]:
             )
     for hint in _mojibake_hints(text):
         problems.append("likely mojibake: " + hint)
-    if path.suffix == ".md":
+    if path.suffix == ".md" and memar_rules:
         if re.search(r"\n\s*\n\s*\n", text):
             match = re.search(r"\n\s*\n\s*\n", text)
             problems.append(
@@ -820,9 +930,11 @@ def check_file(path: Path, link_cache: dict | None = None) -> list[str]:
 
 def cmd_check(args: argparse.Namespace, root: Path) -> None:
     files: list[Path] = []
+    directories: list[Path] = []
     for ref in args.files:
         resolved = _plain_path(ref)
         if resolved.is_dir():
+            directories.append(resolved)
             files.extend(
                 p for p in sorted(resolved.rglob("*"))
                 if p.is_file() and p.suffix in _CHECKED_SUFFIXES
@@ -831,8 +943,17 @@ def cmd_check(args: argparse.Namespace, root: Path) -> None:
             files.append(resolved)
     total = 0
     link_cache: dict = {}
+    # Whether Memar's own Markdown conventions apply is a fact about the folder,
+    # asked through the module that holds the test rather than assumed from the
+    # caller: Memar checks a consuming project as a project, not as a set of
+    # documents that failed to become Memar documents.
+    memar_rules = args.memar_rules
+    if memar_rules is None:
+        memar_rules = enclosing_repository(
+            directories[0] if directories else files[0]
+        ) is not None
     for path in files:
-        problems = check_file(path, link_cache)
+        problems = check_file(path, link_cache, memar_rules)
         total += len(problems)
         try:
             shown = path.relative_to(root)
@@ -845,10 +966,33 @@ def cmd_check(args: argparse.Namespace, root: Path) -> None:
             print(f"{shown}:")
             for problem in problems:
                 print(f"  - {problem}")
+    # Reported apart from the problems, and only when a folder was named: the
+    # state lives in the files a walk already collected, and a `Pending` entry
+    # is the correct content of the changelog that holds it. Counting it as a
+    # defect would make every routine run red on work that predates the run, and
+    # a gate that is always red is not a gate.
+    outstanding: list[tuple[Path, int, str]] = []
+    if directories:
+        outstanding = undischarged_propagations(files)
+    if outstanding:
+        print("\nundischarged propagations:")
+        for _, _, report in outstanding:
+            print(f"  - {report}")
     print(
         f"\nchecked {len(files)} file{'s' if len(files) != 1 else ''}, "
         f"{total} problem{'s' if total != 1 else ''}"
+        + (
+            f", {len(outstanding)} undischarged propagation"
+            f"{'s' if len(outstanding) != 1 else ''}"
+            if outstanding
+            else ""
+        )
     )
+    if not memar_rules:
+        print(
+            "not a Memar repository, so Memar's Markdown conventions were not "
+            "applied: encoding, newlines, and decoding damage only"
+        )
     if total:
         raise SystemExit(1)
 
@@ -894,6 +1038,11 @@ def main() -> None:
         help="print UTC hour-count since epoch (Explanation document ID)",
     )
 
+    subparsers.add_parser(
+        "root",
+        help="print where Memar is installed, for a program that needs to find it",
+    )
+
     p_write = subparsers.add_parser(
         "write",
         help="write a text file as UTF-8 without a BOM, preserving its newlines",
@@ -936,11 +1085,26 @@ def main() -> None:
 
     p_check = subparsers.add_parser(
         "check",
-        help="report encoding, newline, and written-surface problems in text files",
+        help="report encoding, newline, and written-surface problems in text "
+             "files; a folder also reports undischarged propagations",
     )
     p_check.add_argument("files", nargs="+", help="files or folders (any path)")
     p_check.add_argument(
         "-v", "--verbose", action="store_true", help="also print clean files"
+    )
+    p_check.add_argument(
+        "--memar-rules",
+        dest="memar_rules",
+        action="store_true",
+        default=None,
+        help="apply Memar's Markdown conventions; the default asks whether the "
+             "folder is a Memar repository",
+    )
+    p_check.add_argument(
+        "--no-memar-rules",
+        dest="memar_rules",
+        action="store_false",
+        help="apply only the rules that hold for any text file",
     )
 
     args = parser.parse_args()
@@ -950,10 +1114,12 @@ def main() -> None:
         cmd_hour_id()
         return
 
-    root = install.resolve_root()
+    root = install.resolve_root_or_here()
 
     if args.command == "path":
         cmd_path(args, root)
+    elif args.command == "root":
+        cmd_root(args, root)
     elif args.command == "meta":
         cmd_meta(args, root)
     elif args.command == "section":

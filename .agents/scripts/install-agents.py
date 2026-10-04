@@ -64,10 +64,23 @@ AGENTS_SECTION_BODY = (
     f"[`{CONSUMER_README.as_posix()}`]({CONSUMER_README.as_posix()})."
 )
 # The substance, in the document AGENTS.md points at rather than in AGENTS.md.
+# It leads with the command, because that is the entry point this repository uses
+# and a project handed a path into a scripts folder is handed another shape of
+# the same framework; the path beside it is the fallback for a machine whose PATH
+# does not carry the command, and both forms are stated so a reader knows which
+# one applies to them rather than having to guess.
 README_BODY = (
-    "`MEMAR_ROOT` names the Memar checkout on this machine. If it is unset, run "
-    "the bootstrap from Memar's repository — it makes sure git and Python are "
-    "here, then installs Memar and writes that variable:\n\n"
+    "`memar` is how this machine reaches Memar: one word, no path, no variable. "
+    "Every question about Memar's documentation goes through it, and `memar "
+    "install` records where Memar lives here. Run `memar --help` for what it "
+    "accepts.\n\n"
+    "Where `memar` is not on PATH, the same tools are the files in the checkout "
+    "that `MEMAR_ROOT` names, the one recorded location of a Memar checkout on "
+    "this machine: `\"$MEMAR_ROOT/.agents/scripts/memar-documentation.py\"` is "
+    "what the command routes to, and `\"$MEMAR_ROOT/.agents/scripts/install.py\"` "
+    "is the installer. If `MEMAR_ROOT` is unset as well, run the bootstrap from "
+    "Memar's repository — it makes sure git and Python are here, then installs "
+    "Memar and writes that variable:\n\n"
     "```\n"
     f"{WINDOWS_BOOTSTRAP}   # Windows\n"
     f"{POSIX_BOOTSTRAP}   # POSIX\n"
