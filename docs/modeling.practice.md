@@ -20,6 +20,17 @@ Before critiquing or extending anything:
 
 Produce a neutral restatement of what the model appears to say before judging any part of it.
 
+## Stepping Back From the Requirement
+What reaches a modeler is usually the last link of a chain someone else has already reasoned through: what is unsatisfactory, what might improve it, one way that might improve it, and the last piece of that way. Before spending a session on it, spend one exchange on the links above it — a model built for the wrong problem is not repaired by a better decomposition:
+
+- If this is done, what becomes better — and for whom?
+- If this is answered, what is the larger question this piece was part of?
+- Whose problem is it?
+
+Any one of the three is enough to reopen the problem, and each is answerable in a sentence. The answers may leave the requirement exactly as stated, in which case they cost one exchange and the work proceeds. They may instead show that what the requester proposes answers a problem nobody has stated yet, that the person who lives with the outcome is not the requester, or that what is asked to improve is a symptom whose cause lies upstream. A proposed mechanism is a candidate answer, not a statement of what is wrong — the same status [Testing an Assumption](#testing-an-assumption) gives a node named in passing.
+
+When the person who raised the requirement cannot be asked, the requirement is still answered, in two layers: the first gives exactly what was asked for, and the second states the reading of the underlying problem that answer assumes, together with the route it implies. The first layer keeps the request intact; the second makes the assumption inspectable, so a reader who disagrees can set it aside without discarding the work built on it. Silently choosing one of the two is what leaves a reader unable to tell which part of the result was asked for.
+
 ## Starting a New Requirement
 When there is no existing model to read — only an unstructured requirement, a lengthy specification document, a stakeholder interview, or an undocumented system — ask, before proposing any node:
 
@@ -31,7 +42,7 @@ When there is no existing model to read — only an unstructured requirement, a 
 - Which of the concepts under discussion are derived or contextual views of another concept, rather than fundamental concerns in their own right?
 - What relationships connect these concepts, and what do those relationships encode?
 
-These questions do not replace the fuller procedure below — they exist to give a modeler a starting point rather than a blank page. The wording supplied by a requirement, stakeholder, or existing model is evidence to investigate, not an authoritative model boundary. A proposed concept should remain provisional until its responsibility, relationships, and behavioral consequences have been examined.
+These questions take the requirement as the problem itself, which [Stepping Back From the Requirement](#stepping-back-from-the-requirement) has already put in question; they do not replace the fuller procedure below, and they exist to give a modeler a starting point rather than a blank page. The wording supplied by a requirement, stakeholder, or existing model is evidence to investigate, not an authoritative model boundary. A proposed concept should remain provisional until its responsibility, relationships, and behavioral consequences have been examined.
 
 ## The Modeling Workflow
 A modeling or review session typically follows this workflow:

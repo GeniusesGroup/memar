@@ -52,9 +52,6 @@ The lenses are complementary rather than competing: each reveals aspects the oth
 ### Initial Discovery Questions
 Understanding what a model is (see above) does not by itself tell a modeler where to begin when facing an unstructured requirement — a lengthy specification document, a stakeholder interview, or an existing but undocumented system. The concrete entry-point questions a modeler asks before proposing any node are execution practice rather than architectural definition, and are not restated here. Answering them produces the first provisional candidates that the rest of the modeling process (see [Challenging Proposed Concepts](#challenging-proposed-concepts)) then interrogates, tests, and refines.
 
-### Initial Discovery Questions
-Understanding what a model is (see above) does not by itself tell a modeler where to begin when facing an unstructured requirement — a lengthy specification document, a stakeholder interview, or an existing but undocumented system. The concrete entry-point questions a modeler asks before proposing any node are execution practice rather than architectural definition, and are not restated here. Answering them produces the first provisional candidates that the rest of the modeling process (see [Challenging Proposed Concepts](#challenging-proposed-concepts)) then interrogates, tests, and refines.
-
 ### The Model as the Primary Artifact
 Modeling in Memar means discovering the natural structure of a domain before writing any implementation code. The output of modeling is not a database schema, not an API definition, and not a class hierarchy — it is a graph of concerns, responsibilities, and relationships that reveals where the real architectural boundaries lie.
 

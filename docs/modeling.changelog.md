@@ -520,3 +520,69 @@ Owner: the steps belong in the practice. An agent doing the work reads the pract
 - A second worked case, on an organization rather than a physical artifact — rejected: one case establishes that the argument is not about code, and a second would add length without adding reach. Where the remaining gap lies is recorded below rather than papered over with another example.
 - Naming the composition layer for non-software systems — rejected: that is the same undecided concept `system.md` records as an open question in *Structure*, and this document does not settle by drafting what another document left open by decision.
 - Writing the transfer as a principle ("the decomposition applies to any system") — rejected: a principle this general would restate the argument rather than test it, and the subsection's own contribution is that it worked the argument rather than asserting its scope. The claim being supported is better served by one case that holds than by a sentence that cannot fail.
+
+---
+
+### A model's document is named after the concept it models; the rule was first stated here, then moved to Documentation, and the rename was carried out
+- Time: 2026-10-03T00:00:00Z
+- Type: Changed
+- Cited:
+  - [Documentation → File Naming](./documentation.md#file-naming) - Depends_on: the rule this session adopted, its purpose as an addressing safeguard, the two boundaries that fix it - that nothing in the name carries the kind of document, and that the front-matter `Title` stays free to read as the model *of* the concept - and the measurements stated with it
+  - [Documentation Practice → Folder READMEs](./documentation.practice.md#folder-readmes) - Depends_on: a folder's main document is the target of that folder's `README.md`, which is a path a reader types and a tool resolves
+  - [Khayyam Rules Catalog](../modules/khayyam/rules/README.md) - Evidence: the one kind of artifact in the repository that already kept this rule - "Each rule has its own folder, holding a main document named after the rule" - which is the precedent the rule was drawn from
+- Propagates to:
+  - docs/documentation.md: Done - the rule, its evidence, and its boundaries are stated in that document's `File Naming` topic.
+  - docs/modeling.md: Done - the deleted topic is replaced by one claim under `Expected Output of a Modeling Session`, and the Abstract carries the same reduction.
+  - docs/modeling.practice.md: Done - its closing pointer now goes to `Documentation` rather than to a topic of this document.
+  - modules/computer/binding/ and modules/process/construction/: Pending - each holds a main document and so takes a `README.md` that is a symbolic link to it, and neither link exists. A link is recorded by `git update-index --add --cacheinfo 120000,<hash>,<readme>`, a git operation, so the two links are owed and are recorded here rather than created.
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - required, decided
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) - drafted, applied
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny-free via [OpenCode](../CONTRIBUTORS.md#opencode)) - merged this session's two records into this one
+
+#### What changed
+- [Documentation → File Naming](./documentation.md#file-naming) states that a document which is a model is named after the concept the model is about; a folder holding that document is named for the responsibility whose model it is, and the document takes that same name beside it — `modules/computer/binding/binding.md`, `modules/process/construction/construction.md`, `modules/process/control-flow/control-flow.md` — and every companion record takes the same base name (`binding.handoff.md`).
+- The rule is mandatory rather than a preference, and its purpose is stated with it: the smallest mistake in addressing a model — the wrong folder segment, or a path rebuilt from memory — should reach nothing rather than reach a real document about a different concept. A fixed name removes that safeguard, because one file name shared by every model folder leaves a wrong folder segment resolving to a real document, two paths differing only in the segment a mistake gets wrong. A subject name carries the mirror risk instead, that a path mistake lands in a neighbouring folder, and in this repository's naming density that is the cheaper cost.
+- Six files were renamed: three model documents and their three handoff companions — `modules/computer/binding/model.md` to `binding.md`, `modules/process/construction/model.md` to `construction.md`, `modules/process/control-flow/model.md` to `control-flow.md`, each `model.handoff.md` onto the same base. No folder holds a `model.md`.
+- Eleven files' links into the renamed documents were repaired, each re-pointed at the document that now holds the claim rather than at a path that merely exists.
+- **Where the rule was first put.** The rule was first stated as a topic of this document, *A Model's Document Is Named After the Concept It Models*, on the owner's ruling that it be mandatory rather than a preference. The ground was addressing: a fixed file name across every model folder means the smallest mistake in building a path reaches a real document about a different concept, which is the failure a reader cannot see.
+- **The placement was then corrected, and the rule now lives in `Documentation`.** On the owner's later ruling that a documentation rule — what a name is — has nothing to say in a modeling document and belongs where a file name's meaning is settled, the topic was removed from this document and the rule stated in [Documentation → File Naming](./documentation.md#file-naming), inside the topic whose own subject is what a file name carries and what a document's kind is. The rule was moved rather than duplicated: a rule stated in two documents is stated twice, and the two copies have no owner to settle the drift between them.
+- **What this document says in its place.** One claim, under *Expected Output of a Modeling Session*: understanding that has not been written down has not been delivered, so a session that reached it ends by writing the documents its understanding produced — the abstractions, concerns, relationships, constraints, boundaries, and supporting documents its output consists of — one document per model, each placed and named under the rule `Documentation` owns. The Abstract carries the same reduction, and the practice companion's closing line points at `Documentation` rather than at a topic of this document. An empty topic titled for the rule was not left behind as a pointer: a topic named for a rule this document no longer owns asserts an ownership the owner has withdrawn.
+- **The measurements were re-measured and moved with the rule.** The figures that came with it — 41 of the repository's 115 base documents carrying their own folder's name, and every folder under [`modules/khayyam/rules/`](../modules/khayyam/rules/README.md) doing so because that catalog states the rule for its own case — were re-measured against the tree as it stands after these renames and are stated where the rule now lives. They are measurements of this repository at this moment, not properties of the rule, and re-measuring them is owed whenever either number is cited.
+
+#### What it does not claim
+- It does not claim the rule reaches every base document in the repository. It reaches a document that is a folder's main model; it does not reach a model a session leaves beside the documents it read rather than in a folder of its own, and it does not bind the front-matter `Title`.
+- It does not claim the three renamed documents changed. Only their names and the links into them changed; no claim inside any of the three was touched by this session.
+- It does not claim the measurements are evidence for the rule. They record what this repository looks like when measured, and the rule holds whichever number they give.
+
+#### Considered and not done
+- **Renaming only the base documents and leaving the folders' own `README.md` files as real files.** A folder with a main document takes its `README.md` as a symbolic link to that document, and a README that is a text file naming its target is a text file that points at a sibling, not a link, whatever it says inside. Two of the three folders have no `README.md` at all and one already carries a link, so what is owed is two links; a link is recorded by `git update-index --add --cacheinfo 120000,…`, which is a git operation and was not performed. The two are recorded as owed above rather than created, and the owner confirmed on the same day that they are owed rather than waived: a folder whose main document is now concept-named and which has no README is a folder a reader cannot enter by the path the rule establishes.
+- **Keeping `model.md` beside the concept-named document as a second entry point.** The rule refuses it: the facet system has one separator for the facet key and one home for the subject, and a general word standing where the subject belongs is the one misplacement that system exists to prevent.
+- **Extending the rule to every base document in the repository.** Two pairs of base documents share a base name with another across folders, and a wrong subject path there resolves to no file rather than to a neighbour; they were recorded rather than renamed.
+
+---
+
+### Ask what a requirement is a piece of before modeling it
+- Time: 2026-10-04T13:27:43Z
+- Cited:
+  - [Process Research 002](./process.research.002.md) - Evidence: the coverage survey behind the change and the review of this document's own scoping decision
+- Propagates to:
+  - modeling.md: Reference - its decision to keep entry-point questions in Practice was reviewed and upheld; no change
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - decided
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny-free via [OpenCode](../CONTRIBUTORS.md#opencode)) - claimed
+
+#### What changed
+- A new section, *Stepping Back From the Requirement*, precedes *Starting a New Requirement*: stepping back from what reached the modeler is a step earlier than decomposing it.
+- It states what reaches a modeler as the last link of a chain someone else reasoned through, and adds the three questions that reach the links above it: what becomes better if this is done and for whom, what larger question this piece was part of, and whose problem it is.
+- It states that the answers may leave the requirement exactly as stated, in which case they cost one exchange, and that they may instead show the proposed mechanism answers a problem nobody has stated yet, that the person living with the outcome is not the requester, or that what is asked to improve is a symptom whose cause lies upstream.
+- It states the two-layer answer for the case where the requester cannot be asked: the first layer gives exactly what was asked for, the second states the reading of the underlying problem that answer assumes.
+- The section anchors the existing claim that a requirement's wording is evidence to investigate by giving it the same standing for a proposed mechanism.
+
+#### Considered and not done
+- The step-back questions were not added to `modeling.md` (Omid Hekayati — decided). That document twice declines to carry entry-point questions as execution practice rather than architectural definition; the survey reviewed the decision and found it sound, and a conduct question added beside it would contradict the scoping the document states about itself.
+- They were not added to `process.md` either, which is where they were first proposed (Space Bunny Alpha — argued; Omid Hekayati — upheld the boundary): a document that states what a process is does not say how a modeling session is opened.
+- Naming the origin of these questions in this file was not done (Space Bunny Alpha — argued). Per [Documentation → Citations → Source standing](./documentation.md#citations), the questions were raised from material of no standing; it is recorded as the inquiry's origin in [Process Research 002](./process.research.002.md#question-and-goals) instead.
+
+#### Deliberation
+The questions were proposed for the concept document first, on the reasoning that a document about modeling should state what a modeler must establish before the work (Space Bunny Alpha — argued). The owner corrected the direction on the boundary between what a document defines and what a procedure follows, and the questions moved to this companion (Omid Hekayati — decided). A second proposal would have added the causal decomposition and the finish-line rule to `process.md` in the same change; it was rejected on the same boundary and its two questions are open in the handoffs instead (Omid Hekayati — decided).

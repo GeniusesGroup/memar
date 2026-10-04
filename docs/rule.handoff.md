@@ -15,6 +15,12 @@ Open work for `rule.md`. See [documentation-handoff.md](./documentation-handoff.
 ### Rule-engine protocol document
 Should `modules/process/rule/` and `modules/process/rules-engine/` gain a protocol-level specification under `docs/protocols/process/`, or remain implementation surfaces cited from `rule.md`?
 
+### Retiring a Rule
+Nothing in Memar governs the removal of a constraint: no document obliges a retiring party to establish what problem the Rule was introduced for, what it was holding true, or whether that problem still exists. `rule.md` defines a Rule as an authored, replaceable claim and a constraint as one kind of Rule, so a Rule, a mandatory step, a compatibility branch, and a legacy guard are one shape — but the concept has no practice companion, and the three positions a retiring party could take (the problem remains and this is still the right answer to it; the problem remains and something else answers it better now; the problem no longer exists) are stated nowhere. Tracked from [Process Research 002](./process.research.002.md).
+
+### Vocabulary findings recorded from sources of no standing
+[Rule Research 001](./rule.research.001.md) states what the SBVR and Business Rules Group vocabularies say, and read them from industry-community articles and a tertiary compilation rather than from the specification that defines them. Those sources carry no standing under [Documentation → Citations → Source standing](./documentation.md#citations), so the findings are this repository's own reading and are marked provisional. Whether they should be resolved against the OMG specification, or withdrawn as prior art that no document relies upon — `rule.md` derives its definition from this repository's own practice — is unanswered.
+
 ## Follow-up work: relocate document-level rules
 Inventory of normative rule passages still stated at document level (not moved in this session). Each entry: anchor, short quote, proposed `rules/` target. Count: **32** entries.
 

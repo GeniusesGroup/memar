@@ -391,3 +391,28 @@
 - **Promoting the decomposition into `process.md` in this session (held back):** it changes a document many others reference, and the finding that it needs no new concept is an argument for its safety, not an authorization.
 - **Rewriting the IEEE 1058 row in `software.md` (held back):** the row's content is defensible read one way and misleading read the other, and which reading the project means is the owner's to say.
 - **Keeping the session and Task questions in this record (rejected):** both have subjects this document does not own, and a research that sprawls teaches a reader that the base artifact governs things it does not.
+
+---
+
+### Require an inquiry's candidates to compete
+- Time: 2026-10-04T13:27:43Z
+- Cited:
+  - [Process Research 002](./process.research.002.md) - Evidence: the coverage survey behind the change and the boundary decision behind what was left out
+- Propagates to:
+  - process.handoff.md: Done - two open questions added under *Defect Resolution as an Inquiry* and one under *Expectations and Checks*
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - decided
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny-free via [OpenCode](../CONTRIBUTORS.md#opencode)) - claimed, argued
+
+#### What changed
+- *Defect Resolution as an Inquiry* gained a paragraph stating two properties of an inquiry's evidence: its candidate causes are held in the plural, and every candidate names the observation that would refute it.
+- The paragraph also separates an observation from a claim about what it means as two items in the record, and states why the distinction is load-bearing here — a cause supported only by being consistent with the observations available has not been checked against the stated model, so *Expectations and Checks* has no verdict to return for it.
+- Both properties were already positions of this document, expressed in the vocabulary of awareness and never made into a requirement the evidence has to satisfy. What the paragraph removes is the structural permission for a single-cause answer, which the topic's own return value previously allowed.
+
+#### Considered and not done
+- Organizing the candidates as a causal tree across separately asked questions was not added (Space Bunny Alpha — argued; Omid Hekayati — upheld the boundary). Whether one incident is asked about along four separate questions is conduct, and this document states what an inquiry is.
+- Adding the point at which a change would keep a class of these from arising as a decision the inquiry returns was not added (Space Bunny Alpha — argued; Omid Hekayati — upheld the boundary). Whether a single generating cause is the right outcome of an inquiry is a question about this topic's own definition, and it is open.
+- Neither was placed in another document on the owner's correction that a concept document must not prescribe how a process is carried out; both went to the handoff unanswered.
+
+#### Deliberation
+The change was first proposed as a wider import — the causal decomposition, the tree, and the intervention point together, on the reasoning that a document owning *Intent* and the inquiry is the natural home for the disciplines qualifying them (Space Bunny Alpha — argued). The owner rejected the direction and restated the boundary: this document explains the concept of a process, and how a development or a defect investigation is carried out is not that (Omid Hekayati — decided). The epistemic half survived the correction, because it specifies what the topic already required; the structural half did not, and went to the handoff as questions (Space Bunny Alpha — argued).
