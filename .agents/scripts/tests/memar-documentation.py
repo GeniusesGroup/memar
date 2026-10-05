@@ -533,5 +533,148 @@ class WalkLooksOnlyAtWhatTheProjectOwns(LinkFixture):
             self.assertIn(pattern, NEVER_COPIED_PATTERNS)
 
 
+class BacklinksAreResolvedPaths(LinkFixture):
+    """`backlinks` answers which documents link here, and nothing else.
+
+    A mention without a link is not a backlink; a link inside code is text
+    about links; a link naming a file that is not there matches nothing; and
+    the target's own self-links are not incoming links. What is pinned, and
+    what each pin is for:
+
+      LinkerListed        A document linking here is reported with its line
+                        and fragment — the whole point, which is letting an
+                        agent changing a document see who depends on it.
+      SelfIsNotIncoming  The target's own in-page links are navigation, not
+                        dependence; counting them would report every
+                        sectioned document as its own dependent.
+      MentionIsNotALink  Prose naming a filename is not a reference an agent
+                        can follow, so it must not appear in the answer.
+      MissingSpelling   A link whose spelling names no file matches nothing
+                        rather than matching nearly — the near-miss is a
+                        `check` finding, not a backlink.
+      CodeIsNotALink    The same text in backticks or a fenced block is
+                        quoted, not linked.
+      LonelyReportsNone A document nothing links to reports just that, so
+                        the verb stays an answer rather than an empty run.
+    """
+
+    def make_tree(self) -> Path:
+        self.write("docs/target.md", "# Target\n## Part\n")
+        self.write("docs/a.md", "# A\nSee [T](./target.md#part).\n")
+        self.write("docs/b.md", "# B\nSee [T](./target.md).\n")
+        self.write("docs/unrelated.md", "# U\nNo links here.\n")
+        return self.root / "docs" / "target.md"
+
+    def docs(self) -> list[Path]:
+        return sorted((self.root / "docs").glob("*.md"))
+
+    def test_linkers_are_listed_with_line_and_fragment(self) -> None:
+        target = self.make_tree()
+        found = memar_documentation.find_backlinks(target, self.docs())
+        self.assertEqual(
+            found,
+            [
+                (self.root / "docs" / "a.md", 2, "part"),
+                (self.root / "docs" / "b.md", 2, ""),
+            ],
+        )
+
+    def test_self_links_are_not_incoming(self) -> None:
+        target = self.make_tree()
+        self.write("docs/target.md", "# Target\n## Part\nSee [P](#part).\n")
+        found = memar_documentation.find_backlinks(target, self.docs())
+        self.assertEqual(len(found), 2, found)
+
+    def test_a_mention_without_a_link_is_not_a_backlink(self) -> None:
+        target = self.make_tree()
+        self.write("docs/c.md", "# C\ntarget.md is discussed a lot here.\n")
+        found = memar_documentation.find_backlinks(target, self.docs())
+        self.assertEqual(len(found), 2, found)
+
+    def test_a_link_naming_a_missing_spelling_matches_nothing(self) -> None:
+        target = self.make_tree()
+        self.write("docs/c.md", "# C\nSee [T](./targte.md).\n")
+        found = memar_documentation.find_backlinks(target, self.docs())
+        self.assertEqual(len(found), 2, found)
+
+    def test_a_link_inside_code_is_text_about_links(self) -> None:
+        target = self.make_tree()
+        self.write("docs/c.md", "# C\n`[T](./target.md)`\n")
+        found = memar_documentation.find_backlinks(target, self.docs())
+        self.assertEqual(len(found), 2, found)
+
+    def test_nothing_linking_reports_nothing(self) -> None:
+        self.make_tree()
+        lonely = self.write("docs/lonely.md", "# Lonely\n")
+        self.assertEqual(memar_documentation.find_backlinks(lonely, self.docs()), [])
+
+    def test_cmd_prints_linker_hits_per_target(self) -> None:
+        from argparse import Namespace
+
+        self.make_tree()
+        with contextlib.redirect_stdout(io.StringIO()) as printed:
+            memar_documentation.cmd_backlinks(
+                Namespace(files=["docs/target.md"]), self.root
+            )
+        out = printed.getvalue()
+        self.assertIn(f"== {Path('docs/target.md')} ==", out)
+        self.assertIn(f"{Path('docs/a.md')}:2#part", out)
+        self.assertIn(f"{Path('docs/b.md')}:2", out)
+        self.assertNotIn("unrelated", out)
+
+
+class ObligationsAreQueryable(LinkFixture):
+    """`obligations` prints the Pending work-list as path:line hits.
+
+    The states are already pinned under PendingPropagation and
+    SettledPropagation; what is pinned here is only the query shape: one hit
+    per line with the repository-relative path first, the whole set by
+    default, and a named subset when files are given.
+    """
+
+    def test_pending_entries_print_as_path_line_hits(self) -> None:
+        from argparse import Namespace
+
+        self.write(
+            "docs/cognition.changelog.md",
+            "# Log\n- Propagates to:\n  - modeling.md: Pending - owed\n",
+        )
+        with contextlib.redirect_stdout(io.StringIO()) as printed:
+            memar_documentation.cmd_obligations(Namespace(files=[]), self.root)
+        self.assertIn(
+            f"{Path('docs/cognition.changelog.md')}:3: modeling.md: Pending \u2014 not yet done",
+            printed.getvalue(),
+        )
+
+    def test_settled_entries_print_nothing_outstanding(self) -> None:
+        from argparse import Namespace
+
+        self.write(
+            "docs/cognition.changelog.md",
+            "# Log\n- Propagates to:\n  - modeling.md: Done - landed\n",
+        )
+        with contextlib.redirect_stdout(io.StringIO()) as printed:
+            memar_documentation.cmd_obligations(Namespace(files=[]), self.root)
+        self.assertIn("(no undischarged obligations)", printed.getvalue())
+
+    def test_named_files_narrow_the_read(self) -> None:
+        from argparse import Namespace
+
+        self.write(
+            "docs/a.changelog.md",
+            "# Log\n- Propagates to:\n  - x.md: Pending - owed\n",
+        )
+        self.write(
+            "docs/b.changelog.md",
+            "# Log\n- Propagates to:\n  - y.md: Pending - owed\n",
+        )
+        with contextlib.redirect_stdout(io.StringIO()) as printed:
+            memar_documentation.cmd_obligations(
+                Namespace(files=["docs/a.changelog.md"]), self.root
+            )
+        out = printed.getvalue()
+        self.assertIn("x.md: Pending", out)
+        self.assertNotIn("y.md", out)
+
 if __name__ == "__main__":
     unittest.main()

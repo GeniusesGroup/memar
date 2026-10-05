@@ -32,9 +32,19 @@ Subcommands
                          `path:line:text` hit per line. Memar's rule is to
                          search full-text, not by filename (filenames are
                          slugs, not a taxonomy) — this makes that rule cheap.
-                         Extra args are extra regexes; files matching all are
-                         listed (`path:all-matched`).
-  changelog-append FILE  Append one Changelog-facet entry to FILE (must be a
+                          Extra args are extra regexes; files matching all are
+                          listed (`path:all-matched`).
+   backlinks FILE [...]  List the documents linking to each FILE — incoming
+                          links as `linker:line`, so an agent changing a
+                          document can see who depends on it without
+                          grepping the tree. Identity is the resolved path,
+                          never the prose: a mention without a link is not
+                          a backlink.
+   obligations [FILE]    List undischarged `Propagates to: Pending` entries —
+                          the work-list `check` prints apart — as one
+                          `path:line: entry` hit per line. No arguments means
+                          the whole doc set.
+   changelog-append FILE  Append one Changelog-facet entry to FILE (must be a
                          `*.changelog.md`). Entry Markdown on stdin, or
                          `--entry-file PATH`. Entry must begin with `### `.
                          Oldest-first rule: always appends at end-of-file;
@@ -500,6 +510,104 @@ def cmd_search(args: argparse.Namespace, root: Path) -> None:
                 for number, line in enumerate(text.splitlines(), start=1):
                     if patterns[0].search(line):
                         print(f"{path.relative_to(root)}:{number}:{line.strip()}")
+
+
+_LINK_TARGET = re.compile(r"\]\(([^)\s]+)\)")
+
+
+def _outgoing_file_links(path: Path) -> list[tuple[str, str, int]]:
+    """Every relative file link `path` makes, as (file part, fragment, line).
+
+    The same walk the checker judges, collected instead of judged: external,
+    site-root, and in-page links are not links to another document and are
+    left out here as they are there.
+    """
+    try:
+        text = path.read_text(encoding="utf-8")
+    except (OSError, UnicodeDecodeError):
+        return []
+    visible = _without_code(text)
+    found: list[tuple[str, str, int]] = []
+    for match in _LINK_TARGET.finditer(visible):
+        link = match.group(1)
+        if _EXTERNAL_LINK.match(link):
+            continue
+        file_part, _, fragment = link.partition("#")
+        if not file_part or file_part.startswith("/"):
+            continue
+        line = visible[: match.start()].count("\n") + 1
+        found.append((file_part, fragment, line))
+    return found
+
+
+def find_backlinks(target: Path, docs: list[Path]) -> list[tuple[Path, int, str]]:
+    """Every document in `docs` linking to `target`, as (linker, line, fragment).
+
+    Identity is the resolved path, so a document reached by two spellings is
+    still one target, and a link naming a file that is no longer there stops
+    matching instead of matching wrongly. Comparison is by path, never by
+    prose: a mention without a link is not a backlink, and the target's own
+    self-links are not incoming links.
+    """
+    wanted = target.resolve()
+    found: list[tuple[Path, int, str]] = []
+    for doc in docs:
+        resolved_doc = doc.resolve()
+        if resolved_doc == wanted:
+            continue
+        for file_part, fragment, line in _outgoing_file_links(doc):
+            try:
+                if (doc.parent / file_part).resolve() == wanted:
+                    found.append((doc, line, fragment))
+            except OSError:
+                continue
+    return sorted(found, key=lambda hit: (str(hit[0]), hit[1]))
+
+
+def cmd_backlinks(args: argparse.Namespace, root: Path) -> None:
+    for file_ref in args.files:
+        target = resolve_ref(file_ref, root, None)
+        try:
+            shown = target.relative_to(root)
+        except ValueError:
+            shown = target
+        print(f"== {shown} ==")
+        hits = find_backlinks(target, doc_files(root))
+        if not hits:
+            print("(no incoming links)")
+        for linker, line, fragment in hits:
+            where = f"#{fragment}" if fragment else ""
+            try:
+                linker_shown = linker.relative_to(root)
+            except ValueError:
+                linker_shown = linker
+            print(f"{linker_shown}:{line}{where}")
+        print()
+
+
+def cmd_obligations(args: argparse.Namespace, root: Path) -> None:
+    if args.files:
+        paths = [resolve_ref(ref, root, None) for ref in args.files]
+    else:
+        # The whole doc set's ledgers — not `doc_files`, which is the search
+        # corpus and excludes changelogs by design.
+        docs_dir = root / "docs"
+        if not docs_dir.is_dir():
+            sys.exit(f"error: no docs directory under {root}")
+        paths = sorted(
+            path for path in docs_dir.rglob("*.md") if _is_changelog_ledger(path)
+        )
+    found = undischarged_propagations(paths)
+    if not found:
+        print("(no undischarged obligations)")
+        return
+    for path, line, report in found:
+        try:
+            shown = path.relative_to(root)
+        except ValueError:
+            shown = path
+        _, _, entry = report.partition(": ")
+        print(f"{shown}:{line}: {entry}")
 
 
 def cmd_changelog_append(args: argparse.Namespace, root: Path) -> None:
@@ -1054,6 +1162,22 @@ def main() -> None:
     p_search = subparsers.add_parser("search", help="regex search the doc set")
     p_search.add_argument("patterns", nargs="+")
 
+    p_backlinks = subparsers.add_parser(
+        "backlinks", help="list the documents linking to each file"
+    )
+    p_backlinks.add_argument("files", nargs="+")
+
+    p_obligations = subparsers.add_parser(
+        "obligations",
+        help="list undischarged Propagates-to entries as path:line hits",
+        description="List undischarged `Propagates to: Pending` entries — the "
+                    "work-list `check` prints apart — as one `path:line: "
+                    "entry` hit per line. No arguments means the whole doc set.",
+    )
+    p_obligations.add_argument(
+        "files", nargs="*", help="files to read (default: the whole doc set)"
+    )
+
     p_append = subparsers.add_parser(
         "changelog-append",
         help="append one oldest-first Changelog entry at end-of-file",
@@ -1174,6 +1298,10 @@ def main() -> None:
         cmd_section(args, root)
     elif args.command == "search":
         cmd_search(args, root)
+    elif args.command == "backlinks":
+        cmd_backlinks(args, root)
+    elif args.command == "obligations":
+        cmd_obligations(args, root)
     elif args.command == "changelog-append":
         cmd_changelog_append(args, root)
     elif args.command == "write":
