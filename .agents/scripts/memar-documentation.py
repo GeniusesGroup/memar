@@ -1078,6 +1078,10 @@ def main() -> None:
     p_write = subparsers.add_parser(
         "write",
         help="write a text file as UTF-8 without a BOM, preserving its newlines",
+        description="Put text into FILE as UTF-8 with no BOM, keeping the "
+                    "file's own line endings (LF for a new file) and "
+                    "guaranteeing a final newline. Prefer this to any shell's "
+                    "own text handling.",
     )
     p_write.add_argument("file", help="path to write (any path, not only in this repo)")
     p_write.add_argument(
@@ -1100,6 +1104,9 @@ def main() -> None:
     p_edit = subparsers.add_parser(
         "edit",
         help="replace exact text in a file, refusing an absent or ambiguous match",
+        description="Replace exact text in FILE, refusing an absent or "
+                    "ambiguous match. Same encoding and newline guarantees as "
+                    "write; removes a BOM if it finds one.",
     )
     p_edit.add_argument("file", help="path to edit (any path, not only in this repo)")
     p_edit.add_argument("--old", default=None, help="text to replace")
@@ -1119,6 +1126,15 @@ def main() -> None:
         "check",
         help="report encoding, newline, and written-surface problems in text "
              "files; a folder also reports undischarged propagations",
+        description="Report what is wrong with text files: a UTF-8 BOM, "
+                    "invalid UTF-8, a U+FFFD replacement character, mixed or "
+                    "CRLF line endings, a missing final newline, and the "
+                    "fingerprints of mojibake; and for Markdown, two blank "
+                    "lines in a row, a blank line between a heading and its "
+                    "body, an anchor with no matching heading, and a relative "
+                    "link whose target does not exist. Given a folder it also "
+                    "reports undischarged propagations, printed apart and not "
+                    "counted as problems.",
     )
     p_check.add_argument("files", nargs="+", help="files or folders (any path)")
     p_check.add_argument(

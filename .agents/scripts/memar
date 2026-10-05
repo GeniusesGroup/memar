@@ -53,6 +53,10 @@ USAGE = f"""memar — reach Memar by one word
   memar install --check PATH   say whether PATH would be refused, and stop
   memar --help                 this text
 
+bash, Git Bash, and zsh run `memar` directly; `cmd.exe` and PowerShell run
+`memar.cmd`, the same launcher for a shell that will not run a file without
+a known extension.
+
 Every verb above is declared by the tool that implements it; run
 `memar <verb> --help` for that tool's own interface. `memar` routes and adds
 nothing, so what a verb accepts is never this file's to change.

@@ -19,6 +19,7 @@ It exists so a reader can see, without sales tone, **why Memar was started** and
 3. **Credit strengths without borrowing their packaging** — useful ideas may graduate into Memar's model; harness rituals, marketplace shapes, and persuasion copy usually do not.
 4. **Prefer durable claims** — write what remains true as models and tools change; avoid advice that only patches today's agent weaknesses.
 5. **Keep load-bearing logic linear** — do not encode norms in grids or diagram blocks; use section titles and linear lists ([Written surface](../../docs/documentation.md#written-surface), [Knowledge → Write for the structure of the subject](../../docs/knowledge.md#write-for-the-structure-of-the-subject-not-for-todays-reader-limits)).
+6. **A comparison carries no changelog** — the file is its own record and is corrected in place, with its reasons stated inside. What graduates from it into Memar's model is recorded in the owning document's ledger, never here.
 
 ## Standing principles these comparisons assume
 These are owned in Memar's documentation; comparisons apply them rather than re-deriving them:
