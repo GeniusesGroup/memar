@@ -1,4 +1,6 @@
-# Process Research 002 — The Problem Behind a Request
+# Process Audit 002 — The Problem Behind a Request
+This file is an **audit** of this project's own documents, not a Research. The four disciplines it examined were raised from published notes read outside the repository, but the method was a coverage survey of Memar's own sections against them, and [What Qualifies as an Inquiry Worth This Facet](./documentation-research.md#what-qualifies-as-an-inquiry-worth-this-facet) asks for a method this project's vocabulary does not already supply as well as for material from outside it. It is kept under its own name because the changelog entries that carried its boundary decisions cite it ([Process Changelog](./process.changelog.md), [Modeling Changelog](./modeling.changelog.md)), and its Open Questions live in the base handoffs.
+
 ## Table of Contents
 - [Status](#status)
 - [Question and Goals](#question-and-goals)
@@ -25,7 +27,7 @@ Active
 
 ## Participants
 - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — `Questioner`, `Goal-setter`; raised the four disciplines, and decided the boundary question (Question 5) and the scope correction recorded under Findings
-- [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny-free via [OpenCode](../CONTRIBUTORS.md#opencode)) — `Researcher`, `Reviewer` (Approved, with the open questions recorded)
+- [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) — `Researcher`, `Reviewer` (Approved, with the open questions recorded)
 
 ## Methodology
 **Questions 1–4.** A survey of Memar's live `docs/` on 2026-10-04, reading the sections that bear on each discipline — [Process → Mechanism-First Reasoning](./process.md#mechanism-first-reasoning), *Intent*, *Expectations and Checks*, and *Defect Resolution as an Inquiry*; [Modeling → Initial Discovery Questions](./modeling.md#initial-discovery-questions) and *Assumptions Are Modeling Targets*; [Modeling Practice](./modeling.practice.md) in full; [Cognition → Discourse Norms](./cognition.md#discourse-norms-derived-from-this-model) and [Knowledge](./knowledge.md) — followed by regex searches of the whole doc set for each notion a discipline would need (`root cause`, `five whys`, `hypothesis`, `intervention`, `desired state`, `guard condition`, `baseline`, `acceptance criterion`, `legacy`, `reversib`, `metric`, `indicator`, `problem statement`). Prior art was not consulted for these four questions: each is answered from Memar's own model, and what Memar does not say is a fact about Memar that no external source can settle.

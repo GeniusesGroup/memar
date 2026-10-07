@@ -62,7 +62,7 @@
   - documentation.md: Reference - the rule this section defers to was added in the same session
 - Contributors:
   - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - decided
-  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny-free via [OpenCode](../CONTRIBUTORS.md#opencode)) - claimed, argued
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) - claimed, argued
 
 #### What changed
 - `### Methodology` now states that a question's origin is recorded without being cited: attributing where a question came from gives that source no standing and lets it carry no conclusion, and a finding the consulted sources do not support is stated as the inquiry's own reasoning rather than as something those sources establish.
@@ -74,3 +74,75 @@
 
 #### Deliberation
 The new `Source standing` rule in `documentation.md` sends a question's origin to this facet's `Participants` and leaves the consequence unstated here, which left the two documents able to disagree about whether an origin supports a finding (Space Bunny Alpha — argued). The gap was closed on the owner's authorization to complete the propagation the same session rather than leave it open (Omid Hekayati — decided).
+
+---
+
+### The Findings-confidence entry leaves the research handoff; the catalog states where tentativeness lives
+- Time: 2026-10-04T18:19:38Z
+- Type: Fixed
+- Propagates to:
+  - documentation-research.handoff.md: Done - the entry asking whether Findings need their own confidence vocabulary was removed; Optional Sections -> Findings states that a finding's tentativeness is carried by its own statement (handoff: no entry of its own).
+- Contributors:
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) - argued, applied
+
+#### What changed
+- The entry asking whether Findings need their own confidence vocabulary, distinct from the Handoff facet's decision confidences, left `## Open Questions`: [documentation-research.md -> Optional Sections -> Findings](./documentation-research.md#findings) places the standing where it is already written - "A finding that is genuinely tentative says so in its own statement - that is content; question-level standing is carried by the question statuses."
+- The handoff's *Proposed Next Steps* line naming this decision was left in place (Space Bunny Alpha - argued): its content is not solely this question, since the same line also schedules whether enough accumulated practice exists to begin this facet's paired Practice document.
+
+#### Considered and not done
+- A findings-level confidence vocabulary was not added to the body (Space Bunny Alpha - argued). The catalog states where a finding's standing is expressed, and the entry's own trigger - accumulated real researches showing whether wording suffices - had not been reached.
+
+---
+
+### The membership criterion now requires material from outside this project, and three near-misses are named
+- Time: 2026-10-07T05:10:00Z
+- Type: Changed
+- Cited:
+  - [Comparison: Memar and Hindsight](./comparisons/hindsight.001.md) - Evidence: two threads it opened that were investigated against this project's own documents only, with no source from outside them.
+  - [Comparison: Memar and Tensorus](./comparisons/tensorus.001.md) - Evidence: the sibling thread, merged with the above rather than tracked twice.
+- Propagates to:
+  - knowledge.handoff.md: Done - the three live threads from the removed record now live there, with what the investigation established recorded so it is not repeated.
+  - comparisons/hindsight.001.md: Done - both threads now state their disposition inline.
+  - comparisons/tensorus.001.md: Done - its thread states the shared disposition and points at the handoff.
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - decided
+  - [Space Bunny](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) - argued, drafted, applied
+
+#### What changed
+- The Abstract definition of a research gains its third qualifier - conducted with material from outside this project - and the topic [What Qualifies as an Inquiry Worth This Facet](./documentation-research.md#what-qualifies-as-an-inquiry-worth-this-facet) states the criterion as the check a session performs before opening a research file, with the test: if every source consulted is a document of this project, the work is an audit of this project's own record.
+- Three near-misses are named with where each belongs instead: an open question written up belongs in the base artifact's handoff; an inventory of what this project's documents already say is an audit whose claims belong in a changelog entry or a handoff; a written record of the reasoning behind a decision already made is decision-shaping context and belongs in that decision's changelog entry.
+- Two records written earlier the same day under the looser reading were removed rather than kept: a supersession-inquiry record and a required-fields audit, both conducted entirely against this project's own documents. What the first had established is preserved in [knowledge.handoff.md](./knowledge.handoff.md), where its open threads now live; what the second found - that no required field among the six facet specifications' and CONTRIBUTORS.md's forces an invented value - is recorded as the disposition inside [the Hindsight comparison](./comparisons/hindsight.001.md) where the question was raised.
+
+#### Considered and not done
+- **Re-judging the seven research records that predate this criterion** (not taken): documentation-handoff.research.001.md, knowledge.research.001.md and process.research.001.md cite material from outside this project and meet it; documentation-research.md's own record, ramework.research.001.md, knowledge.audit.002.md, process.audit.002.md and 
+ule.research.001.md cite none, and would not meet the criterion as now stated. Whether they are re-opened, re-titled, or left as the record of a practice that has since tightened is the owner's ruling, and it is recorded as an open question in [documentation-research.handoff.md](./documentation-research.handoff.md) rather than decided here.
+- **A lighter artifact for internal audits** (not taken): an audit has a real home in principle - the changelog entry of the change it produces - and an audit that produces no change has none. Creating a facet for it would add a sixth reader relationship for a category that has appeared twice and produced no change; the criterion above is the cheaper correction.
+- **Keeping the two removed records as historical files** (rejected): a file under this name claims an inquiry happened; these two did not, and the diff plus this entry are the record.
+
+---
+
+### Three internal audits re-filed under their own name, and the audit form given a rule
+- Time: 2026-10-07T05:45:00Z
+- Type: Changed
+- Cited:
+  - [documentation-research.handoff.md](./documentation-research.handoff.md) - Premise: the open question this entry closes, and the error it corrects.
+- Propagates to:
+  - framework.audit.001.md: Done - renamed from framework.research.001.md; retitled, with one paragraph stating what the file is.
+  - knowledge.audit.002.md: Done - renamed from knowledge.research.002.md on its own Methodology's statement that no external prior art was consulted.
+  - process.audit.002.md: Done - renamed from process.research.002.md; its sources were external, its method a survey of this repository.
+  - rule.research.001.md: None needed - it meets the criterion and is untouched.
+  - framework.changelog.md: Done - three propagation targets and one citation retargeted.
+  - knowledge.changelog.md, process.changelog.md, modeling.changelog.md, process.handoff.md, documentation-research.changelog.md, documentation-research.handoff.md, comparisons/spec-kit.001.md, comparisons/tensorus.001.md: Done - inbound links retargeted.
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - decided
+  - [Space Bunny](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) - argued, drafted, applied
+
+#### What changed
+- Three records that consulted only this repository's own documents, or whose method was a survey of them, were renamed from <base>.research.<NNN>.md to <base>.audit.<NNN>.md, retitled, and given one paragraph after the heading stating what the file is, why the facet does not govern it, and why it is kept. Nothing was deleted: each one's findings are cited by the changelog entries that carried them, and deleting a cited record to satisfy a naming rule would trade a false label for a broken reference.
+- [What Qualifies as an Inquiry Worth This Facet](./documentation-research.md#what-qualifies-as-an-inquiry-worth-this-facet) gained the audit form as a named case: a file named <base>.audit.<NNN>.md, stating in one paragraph what was checked and against what, carrying no status lifecycle, and owing no companion changelog because the changes it produced are recorded where they landed. Its questions live in the base artifact's handoff, as a research's do.
+- An error was corrected rather than inherited. The earlier note in documentation-research.handoff.md named rule.research.001.md as failing the criterion, on the strength of a count of URLs in each record; its sources are the SBVR and Business Rules Group vocabularies and the production-rule literature, cited by name, so it meets the criterion and was left alone. The renames were made only after re-reading each record's own Methodology section - which is the check the criterion asks a session to perform before opening a file, applied to files that already existed.
+
+#### Considered and not done
+- **Deleting the three records instead** (rejected): each is cited by changelog entries that carried its findings, and the same rule that forbids a research claiming an inquiry that did not happen would leave a broken reference if the answer were erasure.
+- **Re-opening the three as real inquiries with an external source named** (not taken): that is new work rather than a repair, and an inquiry written to satisfy a criterion is the failure mode the criterion exists to catch.
+- **Giving the audit form a full specification, as a sixth facet** (rejected): an audit's reader relationship is the reader of a coverage survey, which no facet describes, and the three records were produced once each with no shared procedure to specify. The one-paragraph rule is the whole requirement the evidence supports; whether audits recur is held open in the handoff.

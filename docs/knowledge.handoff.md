@@ -3,26 +3,18 @@ Open work for `knowledge.md`. Entries are mutable current state — revised as e
 
 ## Open Questions
 
-### What IS the minimum viable knowledge unit?
-- The granularity principle argues for fine units, but practical experience is needed to identify the optimal balance between expressiveness and complexity. Is the unit a Concept? An Assertion? A property change? Does the answer vary by domain?
-
-### Can snapshot-style state ever be completely eliminated?
-- For legal holds, regulatory compliance, financial audits, and clinical trials, point-in-time global state is a genuine requirement. Is there a hybrid model where logical snapshots coexist with task-centric evolution?
-
-### How do we handle concurrent knowledge modification without locking semantics?
-- If two people simultaneously edit the definition of a protocol or a standard, how do we reconcile? (This is the same fundamental problem as database concurrency, not unique to knowledge graphs.)
-
-### Are there domains where hierarchical classification IS actually optimal?
-- The classification principle argues against single hierarchies universally, but configuration management, biological taxonomy, and library classification may be sufficiently hierarchical that tree projection IS the natural knowledge model. Where is the crossover point?
-
-### Does the Task concept itself decompose further?
-- If Task is not primitive, what is? How far down does decomposition go before reaching truly atomic knowledge primitives?
-
 ### How do cultural factors affect principle adoption?
 - Research indicates that national culture, professional norms, and organizational climate significantly impact knowledge-sharing behavior. Do the principles need cultural localization, or are they genuinely universal? (The localization question, as a practice, belongs to the Organization project; it is recorded in `knowledge.md` because it tests the domain-independence claim.)
 
-### What is the entry point into a knowledge system, and what does a concept hub carry?
-- The source session surveyed entry patterns (a repository's README-as-index, a wiki page, a forum thread, a social timeline, a search result) and judged each to assume one projection as *the* entry — a directory-listing entry like README.md was rejected as a word left undefined rather than a described concept. The working direction was that the entry is a Concept — a hub holding its definition together with its related Decisions, Tasks, Discussions, Rules, and Implementations — surfaced as Content (identity from the text/lexical side, description from the content concern), never as a page. The direction has not been brought down to a principle: `knowledge.md` says knowledge units are finer than documents but says nothing about how a concept is entered.
+### Supersession: which home owns the obligation, and is it a norm or a check?
+Three questions raised by the two October comparisons, investigated against this project's own documents, and left open. What the investigation established, so the next session need not repeat it:
+- **The shape is already stated, in this document's base.** "The revision that holds stands in the governing document, and the reasoning of the one that does not stays readable as Considered and not done" ([Knowledge → Task-Centric Knowledge Evolution](./knowledge.md#task-centric-knowledge-evolution)) — a standing answer, a bidirectional citation pair, and an unedited ledger entry. It is distinct from both rewrite-in-place and raw append.
+- **A retiring handoff is a cousin of that shape, not the shape.** Its own practice rewrites affected sections, calls itself "a living state-capture, not an append-only history", and graduates by deletion.
+- **No facet owns the obligation.** Its three parts sit in three documents of different kinds — the `Superseded` / `Superseded_by` relation vocabulary in [Documentation → Citations](./documentation.md#citations), the append-only rule in [Documentation — Changelog → Structure](./documentation-changelog.md#structure), and one sentence in [System → Reconciling Conflicting Decisions](./system.md#reconciling-conflicting-decisions). That sentence is the only statement of the obligation in the whole doc set, and a writer producing a changelog entry will not meet it.
+- **What is missing is a required field, and its three parts are all optional today.** Surviving evidence goes in `Cited` under the `Evidence` relation; the reason for the drop goes in the optional `Considered and not done`; provenance is the entry's own `Time` and `Contributors`. Recoverability therefore holds only because entries are appended, and *which evidence survived* is reconstructed by the reader, once per case, by reasoning backward from prose written to state an outcome. [Modeling → Modeling State Change as Events](./modeling.md#modeling-state-change-as-events-not-destructive-updates) states the same shape as a property of any concern's state, and [Rule → What a Rule Is](./rule.md#what-a-rule-is) is one artifact kind where replaceability is named in the definition — the precedent an answer would follow.
+- Open: whether the obligation should be a norm Changelog states or a check it performs. Nothing read distinguishes a superseding entry from any other entry mechanically, and [Documentation → Written surface](./documentation.md#written-surface) makes a check that finds nothing silent by design. Deciding between a norm and a check is the owner's.
+- Open: whether the `Superseded` relation should be restated at claim granularity, so a claim replaced inside a surviving document is expressible the way a replaced document is. Its wording is document-scoped, and `Status` does not move when the document survives. Adding a relation to [Documentation → Citations](./documentation.md#citations) is a change to a cross-cutting vocabulary, which is why it is a question and not a change.
+- Open: whether a supersession record inherits the handoff's confidence vocabulary. Nothing consulted connects the two.
 
 ## Anticipated Work
 - **Executable knowledge surfaces**: turn the Knowledge-and-Code split (prose contracts vs callable generators / language-server-style tools) into concrete patterns for Error and other protocols — without writing Practices that narrate each generated artifact by hand. Track progress in this repository's `modules/`, not only in this handoff.

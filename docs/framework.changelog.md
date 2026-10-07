@@ -230,3 +230,133 @@ Considered creating a dedicated `memar.md` to hold Memar's project-level identit
 - **Singularity (Microsoft Research)**: an OS research project that co-designed the language (Sing#) and the OS from shared first principles, rather than fitting a language onto an existing OS. (Migrated from the Memar's-Framework topic's retired Prior art)
 - **Erlang/BEAM**: a language+runtime that is, in practice, its own OS-like substrate — the BEAM VM defines process scheduling, memory isolation, and fault tolerance in ways that make the underlying OS largely irrelevant to application code. (Migrated from the Memar's-Framework topic's retired Prior art)
 - **General-purpose OS + framework combinations** (Spring Boot on JVM on Linux, Rails on Ruby on Linux): the conventional prior art being explicitly rejected, not because they are bad engineering for their context, but because their inherited-assumption problem is well-documented and the cost of navigating it is visible in every large codebase that has lived long enough. (Migrated from the Memar's-Framework topic's retired Prior art)
+
+---
+
+### Framework handoff: constraints-versus-flexibility question removed
+
+- Time: 2026-10-04T18:17:13Z
+- Type: Fixed
+- Propagates to:
+  - framework.handoff.md: Done — the "Balancing framework constraints against architectural flexibility" open question was deleted; `framework.md` already answers it (handoff: no entry of its own).
+- Contributors:
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) — argued, applied
+
+#### What changed
+- `docs/framework.handoff.md` no longer carries the open question "Balancing framework constraints against architectural flexibility". Its answer is already in the governing document: [Framework → Framework as Description → The Co-Equal Relationship](./framework.md#the-co-equal-relationship) states that Framework and Architecture are "two distinct, co-equal aspects of a System", and distinguishes framework constraints as *domain-level* from architecture constraints as *system-level* — the framework fixes what kinds of solutions are allowed, the architecture chooses which one, so the two are not competing claims on the same space.
+- No other open question in that handoff was touched.
+
+#### Considered and not done
+- Adding the answer to the handoff as a resolved entry, or marking the question "Answered": a handoff records what a discussion still stands at, and a rule already landed in its governing document must not be duplicated there — the copy is what drifts. The question therefore leaves the artifact without a trace, per [Documentation Handoff → Decisions and Open Questions](./documentation-handoff.md#optional-sections).
+- Deleting an `## Anticipated Work` line: the two lines nearest the deleted question (framework goals as a named section, goals-as-design-space notation) schedule different work and stay.
+
+---
+
+### A framework's goal is the Purpose of the system it describes
+- Time: 2026-10-04T21:40:00Z
+- Type: Changed
+- Cited:
+  - [System](./system.md) - Consumed definitions: Purpose (a system exists toward one or more purposes, in a functional rather than teleological sense) and Responsibility (Purpose viewed from the vantage point of a containing System), including the coherence criterion applied to it.
+- Propagates to:
+  - framework.handoff.md: Done - the framework-goals-versus-Purpose-and-Responsibility open question is removed; the answer is the body's.
+- Contributors:
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) — argued, drafted, applied
+
+#### What changed
+- [Goal-Oriented Frameworks and Purpose Space](./framework.md#goal-oriented-frameworks-and-purpose-space) states what a framework's goal is: the **Purpose** of the system the framework describes, stated for a *hypothetical* system, and stated by a framework that is itself realized as that System's own Purpose. It states that a framework's goal is never a Responsibility — a Responsibility is a Purpose seen from a containing System, and neither the framework nor the system it describes is contained by the other.
+- The paragraph sits with the section's residential-building example of goals that determine which constraints are imposed, ahead of the paragraph narrowing the discussion to development frameworks, because the relation holds for frameworks in general.
+- The handoff's open question "Framework goals versus System Purpose and Responsibility" is removed; [framework.md](./framework.md) now checks its own use of "goal" against both definitions.
+
+#### Considered and not done
+- A framework's goal as a third concept, distinct from both Purpose and Responsibility - rejected: the goals this section's own examples state ("optimize for communal living," "minimize per-unit construction cost") are what the described systems are for, which is Purpose in [System → Key Properties](./system.md#system) terms.
+- A framework's goal as a Responsibility of the framework itself - rejected: [When Is a Responsibility Coherent?](./system.md#when-is-a-responsibility-coherent) asks whether a part has an independent behavioral boundary and lifecycle, and a goal stated in a description is put to no such test; the framework's own processes are bound by the consistency requirement this section already states, not by a Responsibility.
+- Ruling on whether a realized framework's goal is its own Purpose rather than the described system's - not taken as a separate claim: the case is Memar, where the stated goal is a capability of Memar itself and the aim of systems built within it, so the body states the coincidence rather than choosing between the two readings.
+- Restating System's Purpose and Responsibility definitions inline - rejected: [System](./system.md#system) holds both, and a restatement would duplicate them.
+
+---
+
+### The event-taxonomy cluster's link repaired after the question it names was answered
+- Time: 2026-10-04T18:55:00Z
+- Type: Fixed
+- Propagates to:
+  - framework.audit.001.md: Done — mechanical link repair; the frozen record's findings, participants, and status are unchanged (Action: None).
+- Contributors:
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) — applied
+
+#### What changed
+- The `A-07` event-taxonomy cluster in [Framework Research 001](./framework.audit.001.md) linked to the entry that cluster became in `process.handoff.md`. That entry has since been answered by [Event → What an Event Is](./protocols/process/event.md#what-an-event-is) and removed, so the research's link named an anchor that no longer existed; it now names the section that answers it. The cluster's own claim — that a durable fact, a contract message between components, and a runtime signal are three different things sharing one word in ordinary use — is unchanged.
+- A frozen research accepts a mechanical repair without reopening the record.
+
+#### Considered and not done
+- **Reinstating a heading in `process.handoff.md` to preserve the old anchor (rejected)**: an empty heading is barred, and a heading invented to keep a link resolvable would put a section in a handoff that records no open state.
+- **Rewriting the cluster's prose to say the question is closed (rejected)**: that is the superseding-research mechanism, and a research this narrow does not warrant one; the link alone needed repair.
+
+---
+
+### The framework states its boundary on authentication, session, and authorization
+- Time: 2026-10-05T09:07:04Z
+- Type: Changed
+- Propagates to:
+  - framework.handoff.md: Done — the open question "Does Memar need authentication, session, and authorization protocols?" is removed; [What the Framework Does Not Specify](./framework.md#what-the-framework-does-not-specify) now states what holds.
+  - framework.audit.001.md: Done — cluster `A-16` now names [Framework → What the Framework Does Not Specify](./framework.md#what-the-framework-does-not-specify); the frozen record's findings, participants, and status are unchanged (Action: None).
+  - protocols/modules/sdk.handoff.md: Done — the entry "Revocation and integrity of a delegated credential" names the same section in its `Next:` and its `State:` now records that the credential's vocabulary and revocation mechanism belong to the system that owns them, with the question kept open and its substance intact.
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) — argued, drafted, applied
+
+#### What changed
+- [framework.md](./framework.md) gains *What the Framework Does Not Specify*, stating that authentication, session, and authorization are three protocols the framework leaves to the system that needs them and the project that builds it — each with its own subject, its own conformance rules, and its own path of evolution — and that Memar's architecture-level vocabulary carries neither a `user` nor a `group` concept. What the guarantee layer needs is a principal a privilege boundary can attach to, with no resemblance to a person, a service, or a device assumed on its behalf; the section points at [OS → Identity: principals, not users](./protocols/computer/os.md#identity-principals-not-users) for that statement rather than repeating it.
+- `framework.handoff.md`: that open question is removed. It carried a large amount of recovered owner reasoning — that the three are separate concerns and a session is not authentication, that a project should use what the lower layers already provide rather than invent a per-request scheme, that machine-to-machine trust is a certificate from the domain's own authority, that a dependency is trusted whole or not at all, and that the owner's own platform direction was a structure with no administrator — none of which is lost, because the ruling disposes of the question those positions were gathered against: specifying the mechanisms is not the framework's work. The subject remains available to whichever project does specify them.
+
+#### Considered and not done
+- **Write authentication, session, and authorization as framework protocol documents (rejected)**: each carries detail that only the system deciding to authenticate, to hold a session, or to admit an action can settle, and a specification written above that decision would freeze one project's answer into a constraint on every system built within Memar. The framework's contribution is the boundary that keeps the three apart, which is what the body now states.
+- **Introduce a `user` or `group` concept at architecture level so the three subjects have something to attach to (rejected)**: `user` names an assembly of independent concerns — a name, a home directory, a login shell, a credential — made by one tradition, and adopting the word would carry that assembly's answers into every design conversation that used it. The guarantee side needs only something a privilege boundary can attach to, and [OS → Identity: principals, not users](./protocols/computer/os.md#identity-principals-not-users) already states what that is without the label.
+- **Carry the security sense of *token* into the framework (rejected)**: the collision the removed handoff entry recorded against [Token → What a Token Is](./protocols/token.md#what-a-token-is) mattered only if a credential vocabulary were introduced here. With the mechanisms left to their owners, no such vocabulary is introduced, so nothing collides and the term stays with the document that owns it.
+- **Naming the `organization` repository in the body (rejected)**: the boundary is a statement about what the framework specifies, not about which project first exercises it; naming a consumer project's path would tie the framework's own subject to one consumer's structure.
+
+---
+
+### The aspect reading already keeps a framework outside the System it shapes
+- Time: 2026-10-05T11:52:00Z
+- Type: Changed
+- Cited:
+  - [System](./system.md) - Consumed definitions: Structure (the set of capabilities and limitations a System exposes and enforces) and Structure Is Not the Arrangement of Parts, plus the Meta-Principle's statement that a description characterizing a System is not itself inside it.
+- Propagates to:
+  - framework.handoff.md: Done - the open question on relabeling the Framework-as-Aspect edge is removed; the answer is the body's.
+  - system.md: Pending - [System → Framework as Aspect, and Framework Considered as a System](./system.md#framework-as-aspect-and-framework-considered-as-a-system) still calls the choice between the aspect reading and constraining-from-outside an open question the Framework document leaves for future revision, and points its reader at framework.handoff.md#open-questions for it; that sentence needs to name the section that settles it.
+- Contributors:
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) — argued, drafted, applied
+
+#### What changed
+- [Explicit and Implicit Frameworks](./framework.md#explicit-and-implicit-frameworks) states what a framework contributes to a System: a share of that System's Structure — the capabilities and constraints the System inherited rather than chose for itself — and Structure is a description of capabilities and constraints, not the arrangement of a system's parts. An aspect of a description is therefore not a part placed inside the System it describes: the framework stays outside, and what enters is the share of Structure its description accounts for.
+- `framework.handoff.md` no longer carries the entry "Relabeling the Framework-as-Aspect edge". Its other entries, including the questions about separate edge types for Purpose Space and Constraint Space, a labeled framework property on `constrained_by`, and a Framework-to-Model edge, are untouched.
+
+#### Considered and not done
+- **Introducing a distinct `constrains` edge type in place of the aspect relation (rejected)**: the concern the removed entry raised was that "is an aspect of" might be read as placing the framework inside the System. Structure is a description of capabilities and constraints and not an arrangement of parts, so the aspect is already a share of a description rather than a part inside a system; a second edge name would name the same fact a second time, in a document that would then carry two labels for one relationship.
+- **Moving the ruling into system.md instead of the Framework document (rejected)**: the edge type belongs to [System's conceptual graph](./system.md#edge-types-what-kinds-of-relationships-exist), which that document owns, and the Framework document is where the entry placed the question. The sentence in System that still calls it open is recorded above as a pending propagation rather than edited from outside its owner's file.
+- **Settling the adjacent edge-type questions in the same pass (not taken)**: nothing in this resolution decides whether Purpose Space and Constraint Space deserve two edges, whether `constrained_by` needs a framework/sub-framework label, or whether Framework-to-Model belongs in the graph. Those turn on whether a reader misreads the graph as it stands, and [System's own position](./system.md#edge-types-what-kinds-of-relationships-exist) is that the edge taxonomy is a working one, sufficient to prevent the most common misreadings and not yet a complete formalism.
+
+---
+
+### The specificity requirement scoped to one level, and the ground for leaving three mechanisms unlisted
+- Time: 2026-10-05T12:20:00Z
+- Type: Changed
+- Cited:
+  - [Protocol](./protocol.md) - Consumed definitions: Who Defines a Protocol (a protocol is meaningful at the level of the system that offers it; each definer's account is decidable where it is offered; plurality of definers is what makes convergence on the real requirement objective rather than hypothetical).
+  - [System](./system.md) - Consumed definitions: Boundary (an organization's own draw is its own Boundary) and Key Properties.
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) — argued, drafted, applied
+
+#### What changed
+- [Goal-Oriented Frameworks and Purpose Space](./framework.md#goal-oriented-frameworks-and-purpose-space) gains a paragraph after the goal-specificity requirement: "The specificity requirement is about one level: readers disagreeing about what a framework's own goals mean is the failure it exists to prevent. Different organizations developing different models and protocols for the same subject matter is not that failure. Each such answer is stated at the level of the organization that develops it and is internally coherent there ([Protocol → Who Defines a Protocol](./protocol.md#who-defines-a-protocol)), and their plurality is what makes the concept they are each modelling identifiable rather than assumed — a goal specific enough to bind readers of one framework does not and cannot bind what other frameworks decide to model."
+- [What the Framework Does Not Specify](./framework.md#what-the-framework-does-not-specify) closes its first paragraph with the ground the subject-distinctness argument does not reach: "Each is left because the level at which it is meaningful is the level of the organization that offers it ([Protocol → Who Defines a Protocol](./protocol.md#who-defines-a-protocol)), and Memar is not that level for any of them."
+
+#### Deliberation
+- Both passages were identified in an earlier read-only pass of this session by the same participant now applying them, which surveyed `docs/` for passages that a reader of the rulings would have to reconcile against; the rulings those passages now cite were made elsewhere in this session, and the second of them was applied to this same document earlier in the wave.
+- The specificity requirement was read as stated for one framework's readers rather than for all readers of all frameworks. Read universally it forbids the divergence the plurality ruling endorses, and it forbids it in the one place a framework most needs the latitude — its own goals, which the section's residential-building example already shows two frameworks satisfying incompatibly.
+- The clause added to *What the Framework Does Not Specify* names the organizational level rather than the three subjects' distinctness, because subject-distinctness was already argued from and does not by itself explain why the framework declines to specify them: a distinct subject with a specified answer would still not be the framework's to specify. The paragraph says neither that authentication is unlike other protocols nor that it is like them; it says where the decision to specify one belongs.
+- The word *hypothetical* was deliberately avoided in both sentences. [The Nature of Framework](./framework.md#the-nature-of-framework) defines it as "assumed before realization," explicitly not "imaginary or unrealizable," and Protocol's topic uses it in the everyday sense. Writing "objective rather than hypothetical" here would have put two senses of a defined term in one document, so the sentence says "identifiable rather than assumed" instead.
+- Neither handoff entry was removed. "Formalizing framework goals as a named section" asks whether the goals need a section of their own, and "Conflicting framework goals" asks how a framework resolves goals pulling against each other; a paragraph saying which level the specificity requirement binds does not answer either, and the second is a question this document's residential-building example already makes sharp rather than settles.
+
+---

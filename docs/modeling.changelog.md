@@ -538,7 +538,7 @@ Owner: the steps belong in the practice. An agent doing the work reads the pract
 - Contributors:
   - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - required, decided
   - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) - drafted, applied
-  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny-free via [OpenCode](../CONTRIBUTORS.md#opencode)) - merged this session's two records into this one
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) - merged this session's two records into this one
 
 #### What changed
 - [Documentation → File Naming](./documentation.md#file-naming) states that a document which is a model is named after the concept the model is about; a folder holding that document is named for the responsibility whose model it is, and the document takes that same name beside it — `modules/computer/binding/binding.md`, `modules/process/construction/construction.md`, `modules/process/control-flow/control-flow.md` — and every companion record takes the same base name (`binding.handoff.md`).
@@ -565,12 +565,12 @@ Owner: the steps belong in the practice. An agent doing the work reads the pract
 ### Ask what a requirement is a piece of before modeling it
 - Time: 2026-10-04T13:27:43Z
 - Cited:
-  - [Process Research 002](./process.research.002.md) - Evidence: the coverage survey behind the change and the review of this document's own scoping decision
+  - [Process Research 002](./process.audit.002.md) - Evidence: the coverage survey behind the change and the review of this document's own scoping decision
 - Propagates to:
   - modeling.md: Reference - its decision to keep entry-point questions in Practice was reviewed and upheld; no change
 - Contributors:
   - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - decided
-  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny-free via [OpenCode](../CONTRIBUTORS.md#opencode)) - claimed
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) - claimed
 
 #### What changed
 - A new section, *Stepping Back From the Requirement*, precedes *Starting a New Requirement*: stepping back from what reached the modeler is a step earlier than decomposing it.
@@ -582,7 +582,259 @@ Owner: the steps belong in the practice. An agent doing the work reads the pract
 #### Considered and not done
 - The step-back questions were not added to `modeling.md` (Omid Hekayati — decided). That document twice declines to carry entry-point questions as execution practice rather than architectural definition; the survey reviewed the decision and found it sound, and a conduct question added beside it would contradict the scoping the document states about itself.
 - They were not added to `process.md` either, which is where they were first proposed (Space Bunny Alpha — argued; Omid Hekayati — upheld the boundary): a document that states what a process is does not say how a modeling session is opened.
-- Naming the origin of these questions in this file was not done (Space Bunny Alpha — argued). Per [Documentation → Citations → Source standing](./documentation.md#citations), the questions were raised from material of no standing; it is recorded as the inquiry's origin in [Process Research 002](./process.research.002.md#question-and-goals) instead.
+- Naming the origin of these questions in this file was not done (Space Bunny Alpha — argued). Per [Documentation → Citations → Source standing](./documentation.md#citations), the questions were raised from material of no standing; it is recorded as the inquiry's origin in [Process Research 002](./process.audit.002.md#question-and-goals) instead.
 
 #### Deliberation
 The questions were proposed for the concept document first, on the reasoning that a document about modeling should state what a modeler must establish before the work (Space Bunny Alpha — argued). The owner corrected the direction on the boundary between what a document defines and what a procedure follows, and the questions moved to this companion (Omid Hekayati — decided). A second proposal would have added the causal decomposition and the finish-line rule to `process.md` in the same change; it was rejected on the same boundary and its two questions are open in the handoffs instead (Omid Hekayati — decided).
+
+---
+
+### Sufficient maturity is a gate, not a judgment call
+- Time: 2026-10-04T00:00:00Z
+- Type: Changed
+- Cited:
+  - [System → What Architecture Is Not](./system.md#what-architecture-is-not) - Considered: the gate was checked against this claim, which holds that architecture is not a phase, and was bounded so that it does not contradict it
+  - [Rule → Which Module a Rule Belongs To](./rule.md#which-module-a-rule-belongs-to) - Evidence: the subject test that decides a module's home, which the gate's first consequence applies to a folder rather than to a document
+- Propagates to:
+  - modeling.handoff.md: Done - *The Model as the Primary Artifact* item 1 is recorded as settled and points here; item 2 is narrowed to what the gate leaves open
+  - ../.agents/skills/memar/SKILL.md: Done - one working rule added that sends an agent to this gate before code is written, and names the bootstrap exception
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - decided
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) - claimed
+
+#### What changed
+- `modeling.practice.md` gains an eighth step in *The Modeling Workflow*: before code is written for a requirement, state the module it belongs to and that module's contract, and record the questions that stating it raised. The step carries the independence test with it, since a module's home follows its subject and the subject is not known until the requirement has been decomposed far enough to answer whether it is one requirement or several.
+- The section gains a paragraph giving the gate three consequences: the bootstrap exception, named and bounded to the code the language itself needs to compile and run; the gate's own width, which asks which module's contract must exist before code is committed to that module and does not hold that architecture is finished before implementation begins; and a module's contents as a standing report on whether the gate was taken, which is a reason to stop and decompose rather than a licence to add to a folder.
+- `modeling.handoff.md` records the threshold question as settled by this gate, and states why `modeling.md`'s own wording stays at "should" and "majority": that document states an architectural position, and this companion states the procedure this repository follows.
+- The memar skill gains one working rule, beside its existing ones for Cognition and Test, that sends an agent to this gate before code is written and reports an unstated module back rather than proceeding.
+
+#### Considered and not done
+- The gate was not added to `modeling.md` (Omid Hekayati - decided). That document twice declines to carry execution practice as architectural definition, and a gate that a session can be refused by is a procedure rather than a position; the same boundary the step-back questions were moved across for the same reason.
+- The rule was not stated in the memar skill as its own text (Omid Hekayati - decided). The skill holds agent-specific content only, and a second statement of one principle in a third place is the overlap this repository already has to audit elsewhere.
+- `modeling.md`'s "Modeling Before Implementation" was not reworded from "should" to a gate (Space Bunny Alpha - argued). Doing so would make the concept document state this repository's procedure, which is what the companion is for.
+
+---
+
+### The exception is claimed, not self-certified
+- Time: 2026-10-04T00:00:00Z
+- Type: Changed
+- Cited:
+  - [Terminology → Terminology Authority and Governance](./terminology.md#terminology-authority-and-governance) - Considered: whether a practice companion may give a word a bounded sense of its own, which is what naming the exception as a category would have done
+- Propagates to:
+  - modeling.handoff.md: Done - the settled entry restated so that it no longer names a category
+  - ../.agents/skills/memar/SKILL.md: Done - the working rule now names the documents rather than the exception, in the form the other intake rules take
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - decided
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) - claimed
+
+#### What changed
+- The eighth step's exception is no longer a named category. `modeling.practice.md` previously called the code that exists only so a language can be compiled and run "bootstrap code" and told a session to label it as such where it stands; the paragraph now states the bound without the label and states that the exception is not a category an implementation may place itself in — a session claims it, and the claim is the owner's to accept or refuse.
+- The paragraph now says what keeps the exception from becoming a general licence: work whose subject is anything other than a language's own ability to run is a mechanism that has not been modeled yet, and the gate reports it back rather than exempting it.
+- The skill's working rule names [Modeling](https://github.com/GeniusesGroup/memar/blob/main/docs/modeling.md) and [Modeling Practice](https://github.com/GeniusesGroup/memar/blob/main/docs/modeling.practice.md) the way the intake rules name [Cognition](https://github.com/GeniusesGroup/memar/blob/main/docs/cognition.md), rather than pointing at one section anchor and repeating the exception's wording. The gate is now reached through the documents that state it, and the skill line carries no part of it.
+
+#### Considered and not done
+- The word "bootstrap" was not redefined, narrowed further, or replaced (Omid Hekayati - decided). The repository already uses it for a plan phase that carries no definition, for a compiler probe folder, for the state in which a language's first library capsules have no primitive to build on, and for a network's first path; a practice companion that bound it to one narrow meaning would collide with all four, and the audit that found them is recorded in the session's report rather than as a Terminology entry, because no document claims the word as a Memar definition to revise.
+- The exception was not widened to "any code written before its module's contract is stated" (Space Bunny Alpha - argued). That reading is wider than the bound it replaced rather than narrower, and it would exempt exactly the case the gate exists to report: code whose subject is a mechanism nobody has modeled yet.
+
+---
+
+### Three handoff entries removed; their answers were already in the governing documents
+- Time: 2026-10-04T18:17:58Z
+- Type: Fixed
+- Propagates to:
+  - modeling.handoff.md: Done — the derived-concept-that-grows question, the settled-gate entry, and the pluggable-Rule-coherence question left the open list; each answer already lived in modeling.md, modeling.practice.md, or this changelog (handoff: no entry of its own).
+- Contributors:
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) — argued, applied
+
+#### What changed
+- `Concept Existence vs. Model Existence` no longer carries the question of what happens to a concept that starts as derived and later evolves to carry independent responsibilities. [Modeling → Classification Emerges From Rules and Relations, Not From Intrinsic Labels](./modeling.md#classification-emerges-from-rules-and-relations-not-from-intrinsic-labels) answers it in its second gray zone: such a graduation from label to node is legitimate, but it is a modeling decision to be made explicitly at each evolution point under the same test, never assumed silently in either direction. That test is the independent-responsibility test the same section had already applied to promotion, so the question is answered by the document, not by a second one.
+- `The Model as the Primary Artifact` no longer carries the entry marking "sufficient" settled as a gate rather than a judgment call. The gate and its three consequences are in [Modeling Practice → The Modeling Workflow](./modeling.practice.md#the-modeling-workflow) — "The eighth step is a gate rather than a preference, and three things follow from it" — and this changelog's *Sufficient maturity is a gate, not a judgment call* entry already records that this handoff's item was settled and narrowed. The item sat in the open list only because the handoff was a living state capture that no later pass updated; the remaining item in that section is the part the gate leaves open.
+- `Extensible Behavior Belongs to Pluggable Modules` no longer asks whether `system.md`'s coherence test is sufficient for deciding when variations must become pluggable Rule modules. This changelog's *Coordination pass with system.md, process.md, and modularity.md* records that the question was resolved there, since `system.md` now states the general test explicitly. The surviving item in that section — how a concept declares its attachment points without an anticipatory contract — is untouched and stays open.
+- Nothing in `modeling.md` or `modeling.practice.md` changed. All three answers were already where their governing documents hold them; this session only removed the handoff's duplicate of settled state, per [Handoff → Open Questions](./documentation-handoff.md#open-questions), where an entry leaves the artifact once its rule has landed in the governing document and the changelog records the decision.
+- The remaining items in the three sections keep their text; where deletion left a single numbered item, its ordinal was corrected from `2.` to `1.`.
+
+#### Considered and not done
+- **Marking the three entries as answered in place rather than deleting them.** A handoff is mutable current state, and its settled design lives in the governing document and the changelog; an "Answered" marker would keep a copy of that design in the artifact that most needs to stay short, and the copy would drift.
+- **Rewording the surviving sibling items to absorb the removed context.** The gate entry and the coherence entry carried qualifications the neighbouring open items lean on; the neighbours already point at the documents that hold those qualifications, so rewriting them would restate a governing document inside the handoff.
+
+---
+
+### One handoff question closed; five left standing
+- Time: 2026-10-04T18:30:13Z
+- Type: Fixed
+- Propagates to:
+  - modeling.handoff.md: Done — the caching-an-expensive-discovered-value question left the open list; the shortcut-edge discipline already answers it (handoff: no entry of its own).
+- Contributors:
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) — argued, applied
+
+#### What changed
+- `Acquired Data vs. Discovered Data` no longer carries the question of when a discovered value that is expensive to recompute may also be persisted as a cached, non-authoritative copy. [Modeling → Edge Types and Their Traditional Counterparts](./modeling.md#edge-types-and-their-traditional-counterparts) answers both halves of it in its shortcut-edge bullet: a shortcut edge "exists purely to make an already-derivable traversal cheaper to compute" — the point at which persisting it is legitimate — and it "is only ever a cache of a fact derivable from other edges already in the graph", to be "modeled and named in a way that makes clear it is not itself authoritative", being "discovered, not acquired, and ... always remain re-derivable from the edges that produced it". That bullet already names [Acquired vs. Discovered data](./modeling.md#acquired-data-vs-discovered-data) as the discipline it carries over, so the answer was written into the same document whose section raised the question.
+- Nothing in `modeling.md` or `modeling.practice.md` changed. The section heading went with its only item, since the open list is current state and an emptied section carries none.
+
+#### Considered and not done
+- **The criteria separating a history-worthy state change from a safely destructive one (`Modeling State Change as Events, Not Destructive Updates`) was left open.** [Modeling → Modeling State Change as Events, Not Destructive Updates](./modeling.md#modeling-state-change-as-events-not-destructive-updates) answers a weaker question than the entry asks: it places the inherently time-series case and the overwritten-value case under one concern, and states that overwriting "is a decision with real, often unintended, architectural consequences, and that decision should be made deliberately during modeling". That is a requirement to decide consciously, not a criterion telling a modeler which changes may safely be overwritten; the missing sentence would have to say what makes a change's history architecturally significant rather than safely discardable.
+- **Caching an evaluated constraint result (`Constraints Belongs to the Constraining Concern`, second item) was left open.** The shortcut-edge bullet never mentions constraint evaluation; treating the cache of a computed result as simply one more shortcut edge restates the passage in other words rather than saying what would have to hold of a constraint result for that cache to qualify — the missing sentence would have to state the conditions under which an evaluated result of external constraints may be persisted and still re-derivable.
+- **Where the rule-engine lives and how it queries the graph (`Separating Structure (Code) from Policy (Rule)`, sixth item) was left open.** The section settles the first half — execution "belongs to a separate rule-engine component that reads Rule nodes from the graph", and traversal of the model, not reading code, must answer "which entities are subject to Rule X" — but says nothing about efficient querying at the scale this framework targets, which is the other half of the entry; the missing sentence would have to say how the engine finds the applicable Rules and instances at that scale.
+- **Whether an ordinary edge carries its own addressable identity (`Edge identity and reification`) was left open.** [Type → Type and Relations](./type.md#type-and-relations) says only that graph-based domain models are those "where both Nodes and Edges may carry independent meaning", and that a relation "may itself need to become a Type once it has properties like start/end dates or status" — the promotion path the entry already accounts for, not the addressing of an edge where it stands; the missing sentence would have to say whether an unpromoted edge can be named and used as the endpoint of another edge.
+- **Approach for a team inheriting a legacy system with no model (`Document-level`, third item) was left open.** [Modeling Practice](./modeling.practice.md)'s opening says discovering, refining, and reviewing "are not separate activities" sharing one procedure, which places an undocumented system among the starting points without saying whether to model from scratch and migrate or to extract the model incrementally from the codebase; the missing sentence would have to state that recommended approach. The entry's own Anticipated Work already carries the legacy transition path as future work, which is the same gap seen from the other side.
+- **Marking the closed entry as answered in place rather than deleting it.** A handoff is current state, and its settled design belongs to the governing document and this changelog; an "Answered" marker would keep a second copy of that design in the artifact that most needs to stay short, and the copy would drift. Per [Handoff → What a Handoff Is](./documentation-handoff.md#what-a-handoff-is), the entry graduates out and this entry carries the record.
+
+---
+
+### Three handoff questions closed: behaviorless concepts, formalism, and the lens signal
+- Time: 2026-10-04T20:14:25Z
+- Type: Changed
+- Cited:
+  - [System → When Is a Responsibility Coherent?](./system.md#when-is-a-responsibility-coherent) — Evidence: the narrowed checkable test the lens signal is taken from.
+- Propagates to:
+  - modeling.handoff.md: Done — the "A concept that requires no behavior" entry was deleted in full, item 1 under *Models Are Not Reality* and item 2 under *One Reality, Multiple Abstraction Lenses* were deleted, and the surviving items in those two sections were renumbered to `1.`.
+- Contributors:
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) — argued, drafted, applied
+
+#### What changed
+- [Concept Existence vs. Model Existence](./modeling.md#concept-existence-vs-model-existence) now states that behavior is one criterion among several and its absence settles nothing; that a concept whose own rules, lifecycle, validation requirements, or architectural responsibilities are independent is a finished model even where it prescribes no behavior; and that a concept with none of these is a derived representation or contextual view rather than an unfinished model. The sentences sit inside the paragraph that states the criterion, between that criterion and the name test the paragraph already carried. The `A concept that requires no behavior` entry left `modeling.handoff.md`; the Khayyam question it pointed at — whether `tp Name ab` is a legal form — is the language's, and stays open in [Abstraction in Khayyam Handoff](./khayyam/abstraction.handoff.md#does-khayyam-allow-an-abstraction-with-no-methods).
+- [What a Model Is](./modeling.md#what-a-model-is) now closes its claim about the medium: the agnosticism is a position rather than a silence, no notation and no method is prescribed, and the reason is that the obligations a model must meet — a stated purpose, selection by that purpose, and an explicit account of what it omits — are stated independently of the medium. Item 1 under `Models Are Not Reality` in the handoff is deleted and item 2 renumbered to `1.`; the notation question under `Graphs as a Modeling Tool` and the methodology question under `Modeling Before Implementation` each name a specific formalism this sentence deliberately leaves unchosen, and both stay open.
+- [One Reality, Multiple Abstraction Lenses](./modeling.md#one-reality-multiple-abstraction-lenses) gains the observable signal its "usually" lacked: the distinction turns on independent changeability, not on the lens, and two structures observed through one lens are two concerns when each can be changed, replaced, extended, or reasoned about without the other changing for reasons unconnected to its own purpose. Where that test fails, the two differ only by lens and are one concern counted twice. Item 2 under that heading is deleted and item 1 renumbered to `1.`, leaving open whether the lenses are ever named formally.
+
+#### Considered and not done
+- **Restating the abstraction criterion as a numbered list of independent tests (rejected):** the paragraph already carries the disjunction, and a list would imply each term is separately sufficient, which is not what "only when it represents an autonomous concern with its own rules, behavior, lifecycle, validation requirements, or architectural responsibilities" claims.
+- **Deciding whether Khayyam's method-less `tp Name ab` form is legal (rejected):** that is the language's question and it stays open in the Khayyam handoff; a modeling position does not settle a grammar.
+- **Closing the notation and methodology sibling questions with the same sentence (rejected):** a position that no formalism is prescribed does not settle whether one should ever be, which is what each of those entries asks.
+- **Naming the lens signal "the lens test" (rejected):** the section states that the lenses are not entities inside the produced model, and a coined name would give them standing the section denies.
+
+---
+
+### Six open questions answered in place; one answered elsewhere
+- Time: 2026-10-04T20:35:35Z
+- Type: Changed
+- Cited:
+  - [System → When Is a Responsibility Coherent?](./system.md#when-is-a-responsibility-coherent) — Evidence: the coherence test and its stated concern, which decide where a boundary may move
+  - [Modularity → Capability Completeness](./modularity.md#capability-completeness) — Evidence: the Module that introduces a relationship owns what makes it meaningful, and the answer this document's handoff entry now defers to
+  - [Encapsulation in Khayyam → Sovereign Encapsulation](./khayyam/encapsulation.md#sovereign-encapsulation) — Evidence: the rule that already denies a consumer any route into a capsule's fields
+  - [Content → Authoring Syntax vs. Semantic Graph](./content.md#authoring-syntax-vs-semantic-graph) — Considered: many independent Renderers reaching one graph, which is what makes notation a rendering choice
+- Propagates to:
+  - modeling.handoff.md: Done — six entries removed across five sections, one section removed entirely, and the endpoint-hosting entry removed as answered elsewhere
+- Contributors:
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) — argued, drafted, applied
+
+#### What changed
+- `modeling.md` → *Graphs Are Not Documentation Artifacts* states what a graph asserts — which concerns are nodes, which relationships are edges, and what each edge claims — as unchanged whether the graph is sketched, tabulated, or written out, and that Memar therefore prescribes no notation: one may be offered as a rendering among several, never as the condition a graph must meet to be read. `modeling.handoff.md` *Graphs as a Modeling Tool* no longer asks whether a notation should be prescribed; the merging question remains.
+- *Graph Stability as an Indicator of Model Maturity* now separates the two kinds of change: expected refinement changes a boundary's realization, fundamental restructuring moves a boundary, and a move is judged by the coherence test in [System → When Is a Responsibility Coherent?](./system.md#when-is-a-responsibility-coherent) against a stated concern — what is expected to vary, for whom, under which future change. The handoff entry that asked for the distinction is gone.
+- *Classification Emerges From Rules and Relations, Not From Intrinsic Labels* now states what a modeler counts before the independent-responsibility test can be run: repetition carrying its own consistent rules, together with a relation that opens wherever the label applies. `Status` repeats widely and carries neither, which is why frequency alone decides nothing. The handoff entry asking for that pre-test signal is gone.
+- *Domain Decomposition over Aggregate-Root Modeling* now states where a validation that differs between two aggregators of the same concerns belongs: either the concern itself — meaning the model conflated two concerns — or a Rule that attaches, never an aggregator's body. The handoff entry asking whether the abstractions or the aggregators handle it is gone.
+- [Type → Explicit Behavior Ownership](./type.md#explicit-behavior-ownership) → *The Ownership Graph* states that an aggregator grants no abstraction access to another's internal state: the two are reached only by explicit delegation. [Encapsulation in Khayyam → Sovereign Encapsulation](./khayyam/encapsulation.md#sovereign-encapsulation) already denies the route, so what remains for a linter is a governance diagnostic rather than a new check on reachability. The handoff entry asking for a convention or lint rule is gone, and with it the *Domain Decomposition over Aggregate-Root Modeling* heading, whose two entries both left.
+- *Extensible Behavior Belongs to Pluggable Modules* now states the declaration's form — a reference edge named after the concern it acts on, saying where behavior may attach and never what shape it takes — and settles what an attaching Rule must provide on the Module that introduced the capability, per [Modularity → Capability Completeness](./modularity.md#capability-completeness). The handoff's *Extensible Behavior Belongs to Pluggable Modules* section is removed, that entry having been its only content.
+- `modeling.handoff.md` *Edge Types and Their Traditional Counterparts* no longer asks which Module hosts a relationship whose endpoints belong to different Modules. That document has answered it; the answer lives in [Modularity → Capability Completeness](./modularity.md#capability-completeness), and neither `modularity.md` nor `modularity.handoff.md` was touched here.
+
+#### Considered and not done
+- The *Anticipated Work* bullet proposing a lightweight graph notation was kept. An offered notation is what that bullet describes, and deleting it would close work this decision leaves open.
+- No threshold count of label recurrences was introduced. A number would settle by tally what the classification section settles by rules, and would freeze the case of a label that appears twice and still opens a relation.
+- The aggregator was not given a context-aware validation seam. That would make each aggregator a second owner of the same check, which [Modularity → Capability Completeness](./modularity.md#capability-completeness) forbids.
+- No lint rule was named. [Encapsulation in Khayyam → Sovereign Encapsulation](./khayyam/encapsulation.md#sovereign-encapsulation) leaves enforcement policy to the compiler and linter layer, and a concept document states no diagnostic it has not established itself.
+- No abstract attachment interface or required annotation was introduced for a host to declare. That is the anticipatory contract the section exists to avoid; how several Rules attaching to one point are resolved stays open under *Separating Structure (Code) from Policy (Rule)*.
+- No pass condition or threshold was added alongside the refinement/restructuring distinction. [System → When Is a Responsibility Coherent?](./system.md#when-is-a-responsibility-coherent) already holds that two observers may reasonably disagree once the concern is stated, and a sharper rule would contradict it.
+
+---
+
+### The Code/Rule section joins its graph lens to the module lens
+- Time: 2026-10-05T08:59:05Z
+- Propagates to:
+  - modeling.handoff.md: Done - the item asking whether the two framings are one concept removed and the remaining items renumbered; the internal representation of a Rule's condition, conflict resolution among Rules, Rule temporal validity, the Code/Rule boundary test and the rule engine's architecture left open
+  - rule.md: Done - the settled two-lens statement lives there, and this section keeps only what the graph lens owes a model
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) — argued, drafted, applied
+
+#### What changed
+- `### Separating Structure (Code) from Policy (Rule)` keeps its graph-level requirement — a Rule is a first-class node, connected by an edge to the Code element it governs, so that "which entities are subject to Rule X" is answerable by traversal — and now states that the same Rule is a Module developed on its own in the architectural sense ([Modularity → Rules as a Provisional Term](./modularity.md#rules-as-a-provisional-term)), that both statements are of one concept ([Rule → One Concept, Two Lenses](./rule.md#one-concept-two-lenses)), that neither lens is primary, and what each lens owes.
+- `### Extensible Behavior Belongs to Pluggable Modules` no longer describes Rule as a provisional term; it names the concept as carried both as a node in the model and as a Module developed on its own.
+- `modeling.handoff.md` no longer carries the item that set the two framings against each other, and the item asking whether a Rule is itself content the model must represent is left open on its own terms.
+
+#### Considered and not done
+- **Replacing the graph-node requirement with the module framing**: rejected. A Rule a model can traverse to and from and a Rule with a boundary of its own are different requirements, and either one alone leaves work the other lens cannot do — which is why the ruling settles both rather than choosing between them (Space Bunny Alpha — argued).
+- **Adding a fourth edge kind for Rule nodes**: not done. The edge taxonomy is open in the handoff over what an ordinary edge is addressable in its own right, and adding a kind here would answer that question by naming rather than by ruling.
+- **Restating the two lenses in full in this document**: rejected. The graph lens's consequence is what this section states; the module lens's belongs to Modularity.
+
+#### Deliberation
+This document had been carrying the graph framing at full strength while explicitly declining to reconcile it with Modularity's, which left the Code/Rule topic resting on a description its sibling document was hedging (Space Bunny Alpha — argued). Joining the two lenses here — each owning its own obligation, neither primary — lets the topic stand on a settled concept and leaves its genuinely open questions, the representation of a Rule's condition, conflict resolution, temporal validity and the Code/Rule boundary test, as questions about a thing now defined rather than about a framing still in dispute (Omid Hekayati — decided).
+
+---
+
+### Six open questions closed by the definitions this document already holds
+- Time: 2026-10-05T09:36:18Z
+- Type: Changed
+- Cited:
+  - [Modeling → What a Model Is](./modeling.md#what-a-model-is) — Evidence: "Memar prescribes no formalism — neither notation nor method — because the obligations a model must meet are stated independently of its medium", which is what leaves the discovery technique open
+  - [Modeling → Challenging Proposed Concepts](./modeling.md#challenging-proposed-concepts) — Evidence: the challenge every candidate meets whatever surfaced it, on which the technique-agnostic position rests
+  - [Modeling → Classification Emerges From Rules and Relations, Not From Intrinsic Labels](./modeling.md#classification-emerges-from-rules-and-relations-not-from-intrinsic-labels) — Evidence: promotion as a decision "made explicitly at each evolution point under the same test, never assumed silently", and the statement that a classification is not an intrinsic property of a node
+  - [Modeling → Acquired Data vs. Discovered Data](./modeling.md#acquired-data-vs-discovered-data) — Evidence: acquired data "cannot be recomputed from anything else already in the model", which is what distinguishes the state change worth keeping from the one that may overwrite
+  - [Modeling → Modeling State Change as Events, Not Destructive Updates](./modeling.md#modeling-state-change-as-events-not-destructive-updates) — Evidence: a correction is "a new fact that references the effect it corrects, never a deletion or rewriting of the history", which is what carries to a Rule's amendment and repeal
+  - [Modeling → Modeling Produces Conceptual Abstractions, Not Implementation Structures](./modeling.md#modeling-produces-conceptual-abstractions-not-implementation-structures) — Evidence: realizations belong to later architectural and implementation work, which is what makes a mechanism choice a non-question at modeling time
+- Propagates to:
+  - modeling.handoff.md: Done — six entries removed across five sections and the survivors renumbered; the remaining twenty-seven entries are carried to the owner as open
+- Contributors:
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) — argued, drafted, applied
+
+#### What changed
+- `modeling.md` → *Modeling Before Implementation* states that Memar fixes the criteria a candidate concept must survive, not the technique that surfaces it, and that event storming, domain storytelling, and a team's own habit are equally acceptable discovery routes. Two handoff entries asked this — the *Modeling Before Implementation* item and the *Document-level* item about prescribed workshops — and both are gone.
+- *Classification Emerges From Rules and Relations, Not From Intrinsic Labels* now states what a label's promotion does to the relationships the label carried: promotion moves the label, not what the label carried, so a loop-edge is re-examined at the promotion point and becomes an edge to the new node only by passing the same independent-responsibility test the label had to pass. The handoff entry asking whether those relationships migrate automatically is gone.
+- *Modeling State Change as Events, Not Destructive Updates* now states the deciding question for a change worth preserving as history: whether overwriting discards an acquired fact, since a value the model can derive again is discovered and replacing it costs nothing, while a previous value nothing can recompute is acquired and the change that destroys it is an event the model keeps. The handoff entry asking for those criteria is gone.
+- *Separating Structure (Code) from Policy (Rule)* now states that a Rule's amendment and repeal are state changes to a concern, recorded as a new fact referencing what it corrects, and that an edge created while a Rule was in force is read against the Rule that created it. The handoff entry asking how temporal validity is tracked and how it meets historical edges is gone; the dedicated Rule sub-model stays under *Anticipated Work*.
+- *Edge Types and Their Traditional Counterparts* now states that there is no mechanism to choose at modeling time: the classification is a claim about the domain, stated once as a loop-edge, and whether a realization enforces it statically at compile time or dynamically at runtime is an implementation decision. The handoff entry carrying the unvalidated static-versus-dynamic hypothesis is gone.
+- `modeling.handoff.md` no longer asks whether Memar prescribes a modeling methodology, in either of the two places it asked it.
+
+#### Considered and not done
+- A rule stating *which* techniques qualify was not written. Any such list would be an enumeration of the criteria's implementations, and would fix the design space of how a session works before the practice companion has been examined against real sessions.
+- The unvalidated working hypothesis was not adopted as a rule with softened wording. "Static when the type is always and definitionally the parent" asserts an intrinsic type relationship, which the classification section denies; the resolution keeps the claim in the model and leaves the enforcement mechanism to the realization.
+- No threshold, count, or scoring instrument was added anywhere. The session count in *Graph Stability as an Indicator of Model Maturity*, the measurability of the abstraction criterion, and the observability of the early indicators all remain open precisely because a number would settle by tally what this document settles by responsibility.
+- An opt-in capability interface for state history was not introduced. The record now states the criterion that decides the question, and whether the concern is exposed as a capability belongs to the protocol layer rather than to this document.
+- Nothing was written about sqlc or ent. Both are registered instances whose examination is still owed, and answering them from the definitions above would apply a rule to an unexamined case and report the examination as done.
+
+---
+
+### A model states Types, and the no-formalism position keeps its subject
+- Time: 2026-10-05T17:15:06Z
+- Type: Changed
+- Cited:
+  - [Type → Abstract](./type.md#abstract) — Evidence: "every semantic entity is a Type: a semantic entity that has no Type is not an entity this framework can state", and that mathematics — type theory — is the language a system's semantics are stated in
+  - [Type → Type Beyond Programming Languages](./type.md#type-beyond-programming-languages) — Evidence: "Where a system's semantics are described in a human language instead, that description is a report of the system's Types, not a substitute for stating them"
+  - [Type → Type vs Implementation Type](./type.md#type-vs-implementation-type) — Evidence: "A counterpart across that boundary is either modeled as Types or is not modeled at all", which is what the authoritative-location rule now scopes itself against
+- Propagates to:
+  - modeling.handoff.md: Done — the *Concept Existence vs. Model Existence* entry is narrowed to the independence half it still asks about
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) — argued, drafted, applied
+
+#### What changed
+- *What a Model Is* now says that a model states a system's semantics and that every system is modelable in mathematics, which in this framework is type theory, then keeps the medium-plurality position with its subject intact: Memar prescribes no notation and no method **for how a model is constructed or read**, so the three obligations the paragraph protected — a stated purpose, selection by that purpose, and an explicit account of what it omits — stand unchanged. What the paragraph no longer says is that a natural-language description of a business process is a model; it says such a description reports that system's Types rather than substituting for stating them, while the equation, the diagram, and the prose account all remain carriers of a model.
+- *Concept Existence vs. Model Existence* now states that a concept has semantic identity and so is a Type, and that the separate question is whether it earns a model element of its own or is stated as an attribute, derived representation, or contextual view of another Type. The section still supplies what `type.md`'s admission criterion cites it for — the independent-responsibility test that decides whether a concept is an element in its own right.
+- *One Authoritative Location per Concern's Data* now scopes its own rule: one location per concern **within one model**, and another organization's model of the same concept is authoritative at its own level rather than being a derived copy of this one, because it is a counterpart whose Types are declared in its own right and what crosses the boundary is that counterpart's model, not a replica of this model's data.
+- `modeling.handoff.md`'s *Concept Existence vs. Model Existence* entry is narrowed: the existence half is recorded as settled, and the entry now asks only for the criteria beyond independent responsibility and lifecycle, plus their measurability.
+
+#### Considered and not done
+- The technique-agnostic position in *Modeling Before Implementation* was left exactly as it is. Event storming, domain storytelling, and a team's own habit surface candidates; what a candidate must become is now stated as a Type, and neither half of the ruling says how a session gets there.
+- The unresolved line asking for formal criteria determining when a concept becomes an independent abstraction was not rewritten. It asks about independence, which is untouched here; narrowing it belongs with whoever rules on the independence criteria the handoff still asks for.
+- Nothing was written about a graph's notation. *What a Model Is* now separates the language a model's semantics are stated in from the medium a model is read in, and `modeling.handoff.md` still asks how graphs from different sessions are merged or compared; that question is unaffected and stays open.
+
+#### Deliberation
+The report that produced these findings read *What a Model Is* as offering a natural-language description as itself a model, and read that as incompatible with a document declaring mathematics the layer in which semantics are stated. The owner's ruling required the obligations to survive untouched, and they do: only the example that carried the tension changed shape, from an assertion that prose is a model to the statement that prose reports Types. The two readings of *Concept Existence vs. Model Existence* were settled the same way — the section keeps its role as the source of the independence criterion, and the sentence that let a concept exist with no Type is replaced by one that names what is actually separate (Omid Hekayati — decided). The authoritative-location rule reached the same session from the other direction: read maximally it makes every other organization's state of the same concept a derived copy, which a boundary whose counterpart is modeled as Types in its own right does not support, so the rule was scoped to one model rather than withdrawn (Space Bunny Alpha — argued, drafted, applied).
+
+---
+
+### The maturity gate is written before implementation, not encouraged at it
+- Time: 2026-10-05T17:39:20Z
+- Type: Changed
+- Cited:
+  - [Test → The Expectation Is Written Before the Work](./protocols/process/test.md#the-expectation-is-written-before-the-work) — Premise: the protocol-layer statement of the same ordering — the written form of a named Process's expectations is produced before the enactment judged against it, its ground is reach, and no development is one for which stating the expectation first is optional
+- Contributors:
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) — argued, drafted, applied
+
+#### What changed
+- *Modeling Before Implementation* no longer opens with "Modeling should reach a sufficient level of maturity before implementation begins" and closes with "For this reason, Memar encourages extensive exploration at the modeling stage before committing to implementation decisions". Both are replaced by a statement of the bar as something written first and of what the bar consists in: "The bar a model must clear before implementation begins is stated before implementation begins, and what it consists in is written down with it: the criteria a proposed model must survive ([Challenging Proposed Concepts](./modeling.md#challenging-proposed-concepts)) and how much unresolved disagreement it may still carry." The paragraph now requires the exploration that reaches that bar and leaves the route that produces it unprescribed, which is the position the section's own closing paragraph already held and which the encouragement never carried. The cost rationale sentence between the two remains as it was.
+- The three obligations this section already states are untouched: a proposed model is continuously challenged against the same criteria used throughout modeling, a proposed model is examined against existing concepts before implementation begins, and the majority of conceptual consolidation happens before implementation rather than after it.
+- This discharges the `Pending` propagation recorded in [`test.changelog.md`](./protocols/process/test.changelog.md) at line 127, under the entry titled *The floor carries what an expectation must reach, and a green run reports what the party establishes* — "its maturity gate carries the parallel clause the floor sentence just shed; the exact wording is reported to that file's owner rather than edited here". The maturity gate is this document's, it is named there, and it now states the ordering the protocol states; no wording was added to that file and its `Pending` line is left standing, it being outside this change's ownership.
+
+#### Considered and not done
+- **Naming a threshold, a count, or a scoring instrument (not done)**: the bar is said to consist in the criteria and in how much unresolved disagreement a proposed model may still carry, and a number would settle by tally what this document settles by responsibility. The same ground is recorded in this file's entry of 2026-10-05T09:36:18Z, and nothing here contradicts it.
+- **Requiring that a proposed model carry no unresolved disagreement (not done)**: what the bar names is the amount of unresolved disagreement it may still carry, so this clause is what admits such a model and bounds the amount rather than what forbids it. What that amount is for a given domain belongs to whoever sets the bar, not to this paragraph.
+- **Stating the bar as a formality of stages (rejected)**: the reason a bar must be written before implementation is the cost that follows implementation, not a sequence of approvals, and a stage formality would let the writing happen without the bar's content being settled.
