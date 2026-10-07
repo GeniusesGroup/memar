@@ -15,10 +15,14 @@ left for a reader to find two names that differ by one character.
 from __future__ import annotations
 
 import os
+import re
 import time
 from itertools import count
 
 _minted = count()
+# The form new_session_id mints, read back by whatever has to tell a session's
+# folder from another folder beside it.
+_MINTED_FORM = re.compile(r"^\d+-[0-9a-f]+-[0-9a-f]+$")
 
 
 def new_session_id() -> str:
@@ -29,3 +33,8 @@ def new_session_id() -> str:
     clocks produce on back-to-back calls.
     """
     return f"{os.getpid()}-{time.time_ns():x}-{next(_minted):x}"
+
+
+def is_session_id(name: str) -> bool:
+    """Whether NAME has the form new_session_id mints."""
+    return _MINTED_FORM.match(name) is not None

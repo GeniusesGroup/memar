@@ -41,6 +41,27 @@ What is pinned, and what each pin is for:
                      trip to the trash rather than the files it held; a trash
                      that fails leaves the folder where it was, because a
                      failed recovery is not a successful close.
+  IdleSessionsReaped `new` moves to the trash every session folder nothing
+                     inside has changed in for the idle limit, so no session
+                     has to spend a message asking for its own close. Idle is
+                     measured over every file inside, because a folder's own
+                     time does not change when a nested file is edited. Only
+                     folders named as this tool names a session are reaped,
+                     never the one being opened or continued. The limit is the
+                     number `SESSION_IDLE_DAYS` in the tool's own file. The
+                     caller is not told what was reaped: that was not their
+                     session. A folder that will not go does not stop the new
+                     session from opening.
+  SweptOnceADay      Only the first `new` of a day walks the session folders;
+                     every later one that day reads one small file and stops,
+                     because a person opening dozens of sessions a day would
+                     otherwise walk hundreds of folders each time.
+  SessionLog         Opening, closing, reaping, and each day's sweep are
+                     recorded as one line each in the scratch root's session
+                     log, which is where a person looks for a folder that is no
+                     longer there. The day's sweep also moves lines older than
+                     four idle limits out of the log and into the trash, so the
+                     log stays small and nothing in it is lost for good.
 
 Usage is the interface. Do not duplicate these recipes as prose catalogs.
 """
@@ -54,8 +75,10 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import time
 import unittest
 import unittest.mock
+from datetime import datetime, timedelta, timezone
 from importlib.machinery import SourceFileLoader
 from pathlib import Path
 
@@ -185,7 +208,15 @@ class HelpCarriesTheWhy(Fixture):
         completed = run_help()
         self.assertEqual(completed.returncode, 0)
         text = completed.stdout.decode("utf-8").replace("\r\n", "\n")
-        for phrase in ("memar session new", "memar session close", "--session-id", "person who started", "recycle bin"):
+        for phrase in (
+            "memar session new",
+            "memar session close",
+            "--session-id",
+            "person who started",
+            "recycle bin",
+            f"{session_tool.SESSION_IDLE_DAYS} days",
+            "Once a day",
+        ):
             self.assertIn(phrase, text)
 
     def test_the_help_does_not_carry_the_implementation(self) -> None:
@@ -265,6 +296,203 @@ class RecoverableClose(Fixture):
             with self.assertRaises(OSError):
                 session_tool.close_session(sid)
         self.assertTrue(path.is_dir())
+
+
+DAY = 24 * 60 * 60
+# Ids in the form this tool mints, so the reaper recognizes them as sessions.
+IDLE = "1111-18dc000000000001-0"
+OTHER = "2222-18dc000000000002-0"
+
+
+def make_idle(path: Path, days: float) -> None:
+    """Set every time inside PATH, and PATH's own, to DAYS ago."""
+    when = time.time() - days * DAY
+    for entry in sorted(path.rglob("*"), key=lambda p: len(p.parts), reverse=True):
+        os.utime(entry, (when, when))
+    os.utime(path, (when, when))
+
+
+class ScratchWithTrash(Fixture):
+    """A scratch root with session folders of chosen ages and a stand-in trash."""
+
+    def setUp(self) -> None:
+        super().setUp()
+        self.temp = self.fake_root / memar_fs.TEMP_DIRNAME
+        self.temp.mkdir(parents=True, exist_ok=True)
+        self.trashed: list[Path] = []
+
+        # The platform trash is not this suite's to call. The stand-in records
+        # the path and removes it, inside this scratch.
+        def move_aside(path: Path) -> None:
+            self.trashed.append(Path(path))
+            if Path(path).is_dir():
+                shutil.rmtree(path)
+            else:
+                Path(path).unlink()
+
+        self.trash = unittest.mock.patch.object(session_tool, "soft_delete", side_effect=move_aside)
+        self.trash.start()
+        self.addCleanup(self.trash.stop)
+
+    def folder(self, name: str, idle_days: float, *, recent_file: bool = False) -> Path:
+        path = self.temp / name
+        (path / "work").mkdir(parents=True)
+        (path / "work" / "notes.md").write_text("# Notes\n", encoding="utf-8", newline="\n")
+        make_idle(path, idle_days)
+        if recent_file:
+            os.utime(path / "work" / "notes.md", None)
+        return path
+
+    def run_new(self, *arguments: str, new_day: bool = True) -> tuple[str, str]:
+        if new_day:
+            (self.temp / session_tool.SWEPT_MARKER_NAME).unlink(missing_ok=True)
+        out, err = io.StringIO(), io.StringIO()
+        with contextlib.redirect_stdout(out), contextlib.redirect_stderr(err):
+            code = session_tool.main(["new", *arguments])
+        self.assertEqual(code, 0)
+        return out.getvalue(), err.getvalue()
+
+
+class IdleSessionsReaped(ScratchWithTrash):
+    def test_a_session_idle_past_the_limit_goes_to_the_trash(self) -> None:
+        idle = self.folder(IDLE, 8)
+        self.run_new()
+        self.assertEqual(self.trashed, [idle])
+
+    def test_a_session_inside_the_limit_is_kept(self) -> None:
+        kept = self.folder(IDLE, 6)
+        self.run_new()
+        self.assertEqual(self.trashed, [])
+        self.assertTrue(kept.is_dir())
+
+    def test_a_file_changed_deep_inside_keeps_the_session(self) -> None:
+        # The folder's own time is old; only the nested file is recent. That is
+        # what a session editing its notes looks like on Windows.
+        kept = self.folder(IDLE, 8, recent_file=True)
+        self.run_new()
+        self.assertEqual(self.trashed, [])
+        self.assertTrue(kept.is_dir())
+
+    def test_only_folders_named_as_sessions_are_reaped(self) -> None:
+        for name in ("images", "memar-edit-locks", "s-old"):
+            self.folder(name, 30)
+        self.run_new()
+        self.assertEqual(self.trashed, [])
+
+    def test_the_session_being_continued_is_never_reaped(self) -> None:
+        kept = self.folder(IDLE, 30)
+        self.run_new("--session-id", IDLE)
+        self.assertEqual(self.trashed, [])
+        self.assertTrue(kept.is_dir())
+
+    def test_the_limit_is_the_number_in_the_tools_file(self) -> None:
+        self.assertEqual(session_tool.SESSION_IDLE_DAYS, 7)
+        self.assertNotIn("os.environ", Path(session_tool.__file__).read_text(encoding="utf-8"))
+        with unittest.mock.patch.object(session_tool, "SESSION_IDLE_DAYS", 10):
+            self.folder(IDLE, 8)
+            older = self.folder(OTHER, 11)
+            self.run_new()
+        self.assertEqual(self.trashed, [older])
+
+    def test_the_caller_is_not_told_what_was_reaped(self) -> None:
+        self.folder(IDLE, 8)
+        out, err = self.run_new()
+        self.assertEqual(len(self.trashed), 1)
+        self.assertNotIn(IDLE, out + err)
+
+    def test_a_folder_that_will_not_go_does_not_stop_the_new_session(self) -> None:
+        stuck = self.folder(IDLE, 8)
+        idle = self.folder(OTHER, 8)
+        self.trash.stop()
+
+        def refuse_one(path: Path) -> None:
+            if Path(path) == stuck:
+                raise SystemExit(f"error: Recycle Bin move failed: {path}")
+            self.trashed.append(Path(path))
+            shutil.rmtree(path)
+
+        with unittest.mock.patch.object(session_tool, "soft_delete", side_effect=refuse_one):
+            self.run_new()
+        self.trash.start()
+        self.assertEqual(self.trashed, [idle])
+        self.assertTrue(stuck.is_dir())
+
+
+class SweptOnceADay(ScratchWithTrash):
+    def test_a_later_new_on_the_same_day_does_not_sweep(self) -> None:
+        self.run_new()
+        idle = self.folder(IDLE, 8)
+        with unittest.mock.patch.object(session_tool, "last_change") as walked:
+            self.run_new(new_day=False)
+        walked.assert_not_called()
+        self.assertEqual(self.trashed, [])
+        self.assertTrue(idle.is_dir())
+
+    def test_the_first_new_of_the_next_day_sweeps_again(self) -> None:
+        self.run_new()
+        idle = self.folder(IDLE, 8)
+        marker = self.temp / session_tool.SWEPT_MARKER_NAME
+        marker.write_text("2000-01-01\n", encoding="utf-8", newline="\n")
+        self.run_new(new_day=False)
+        self.assertEqual(self.trashed, [idle])
+        self.assertNotEqual(marker.read_text(encoding="utf-8"), "2000-01-01\n")
+
+
+class SessionLog(ScratchWithTrash):
+    def log(self) -> str:
+        return (self.temp / session_tool.SESSION_LOG_NAME).read_text(encoding="utf-8")
+
+    def events(self) -> list[tuple[str, str]]:
+        return [tuple(line.split("\t")[1:3]) for line in self.log().splitlines()]
+
+    def test_opening_and_closing_are_recorded(self) -> None:
+        self.run_new("--session-id", OTHER)
+        with contextlib.redirect_stdout(io.StringIO()):
+            session_tool.main(["close", "--session-id", OTHER])
+        self.assertIn(("opened", OTHER), self.events())
+        self.assertIn(("closed", OTHER), self.events())
+
+    def test_the_log_keeps_four_idle_limits(self) -> None:
+        self.assertEqual(session_tool.LOG_KEEP_DAYS, 4 * session_tool.SESSION_IDLE_DAYS)
+
+    def test_old_lines_leave_the_log_for_the_trash(self) -> None:
+        now = datetime.now(timezone.utc)
+        old = (now - timedelta(days=session_tool.LOG_KEEP_DAYS + 1)).isoformat(timespec="seconds")
+        recent = (now - timedelta(days=1)).isoformat(timespec="seconds")
+        log = self.temp / session_tool.SESSION_LOG_NAME
+        log.write_text(
+            f"{old}\topened\t{IDLE}\t\n{recent}\topened\t{OTHER}\t\nnot a record\n",
+            encoding="utf-8",
+            newline="\n",
+        )
+        moved: list[str] = []
+        self.trash.stop()
+
+        def keep_what_was_moved(path: Path) -> None:
+            if Path(path).is_file():
+                moved.append(Path(path).read_text(encoding="utf-8"))
+                Path(path).unlink()
+
+        with unittest.mock.patch.object(session_tool, "soft_delete", side_effect=keep_what_was_moved):
+            self.run_new()
+        self.trash.start()
+        self.assertEqual(moved, [f"{old}\topened\t{IDLE}\t\n"])
+        text = self.log()
+        self.assertNotIn(old, text)
+        self.assertIn(f"{recent}\topened\t{OTHER}", text)
+        self.assertIn("not a record", text)
+
+    def test_each_days_sweep_is_recorded_once(self) -> None:
+        self.run_new()
+        self.run_new(new_day=False)
+        self.assertEqual([event for event, _ in self.events() if event == "swept"], ["swept"])
+
+    def test_a_reap_is_recorded_with_how_long_it_was_idle(self) -> None:
+        self.folder(IDLE, 8)
+        self.run_new("--session-id", OTHER)
+        reaped = [line.split("\t") for line in self.log().splitlines() if f"\treaped\t{IDLE}" in line]
+        self.assertEqual(len(reaped), 1)
+        self.assertIn("idle", reaped[0][3])
 
 
 class MintedIdUnique(unittest.TestCase):
