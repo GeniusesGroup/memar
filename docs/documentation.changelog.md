@@ -291,17 +291,17 @@ Owner: an executing agent does not need to read the explanatory document to carr
 - Time: 2026-10-04T05:35:11Z
 - Type: Added
 - Cited:
-  - [Comparison: Memar and GitHub Spec Kit](./comparisons/spec-kit.md) - **Reference**: the comparison whose adoption filter produced these changes. GitHub Spec Kit's `/converge` requires that a converged run leave `tasks.md` byte-for-byte unchanged with no empty Convergence header and report a fixed string; its `check_extension_version_bump.py` turns "please remember to bump" into a merge requirement, with the rationale recorded as a shipped bug class.
+  - [Comparison: Memar and GitHub Spec Kit](./comparisons/spec-kit.001.md) - **Reference**: the comparison whose adoption filter produced these changes. GitHub Spec Kit's `/converge` requires that a converged run leave `tasks.md` byte-for-byte unchanged with no empty Convergence header and report a fixed string; its `check_extension_version_bump.py` turns "please remember to bump" into a merge requirement, with the rationale recorded as a shipped bug class.
 - Propagates to:
-  - [.agents/scripts/memar-documentation.py](../.agents/scripts/memar-documentation.py): Done - the propagation report and the newline fix below. That file carries no changelog of its own.
+  - [.agents/scripts/memar-documentation.py](../.agents/scripts/memar-content.py): Done - the propagation report and the newline fix below. That file carries no changelog of its own.
   - [.agents/scripts/README.md](../.agents/scripts/README.md): Done - what `check` reports on a folder run, the one question it pointedly does not judge, and the `memar` launcher that reaches it by one word. That file carries no changelog of its own.
-  - [.agents/scripts/tests/memar-documentation.py](../.agents/scripts/tests/memar-documentation.py): Done - five classes of tests for the report, plus five for the append convention. A Test belongs in the folder of the module that owns what it tests, per [Test Placement](../modules/process/test/rules/test-placement/test-placement.md).
+  - [.agents/scripts/tests/memar-documentation.py](../.agents/scripts/tests/memar-content.py): Done - five classes of tests for the report, plus five for the append convention. A Test belongs in the folder of the module that owns what it tests, per [Test Placement](../modules/process/test/rules/test-placement/test-placement.md).
   - [documentation.practice.md](./documentation.practice.md): None needed - [Trivial changes](./documentation-changelog.md#trivial-changes) already covers the changelog-entry case, and the new rule is the same economy stated at the level of the artifact rather than the entry; the practice's own step 4 already sends a session with no lasting design change to no entry at all.
   - [documentation-explanation.md](./documentation-explanation.md): None needed - the rule concerns what a check writes, not what a document is.
   - [cognition.changelog.md](./cognition.changelog.md): None needed - the norm change in that entry does not rest on this one.
 - Contributors:
   - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - directed, decided
-  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny-free via [OpenCode](../CONTRIBUTORS.md#opencode)) - drafted, tested
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) - drafted, tested
 
 #### What changed
 - [Written surface](./documentation.md#written-surface) gains a rule: an empty result leaves the medium unchanged. A report, review, check, or convergence with nothing to report produces no artifact — no empty section, no placeholder heading, no empty changelog entry, no file created to hold a result that is not there. [Trivial changes](./documentation-changelog.md#trivial-changes) already says a session whose edits leave no lasting design change gets no entry; this carries the same economy up from the entry to every artifact a check might write, which is where it was missing. The rule is stated with a second reason as well as the tidiness one, because tidiness is not what makes it load-bearing: a loop whose success condition is "nothing was found" needs the nothing to be observable, or the party running it cannot distinguish a completed check from one that has not run and goes on producing work to fill the gap. The observable form of finding nothing is that the shared medium is exactly as it was.
@@ -330,7 +330,7 @@ Owner: an executing agent does not need to read the explanatory document to carr
   - process.research.001.md: Reference - the session-identity half of that record became [Handoff Research 001](./documentation-handoff.research.001.md) before this rule was written
 - Contributors:
   - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - decided
-  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny-free via [OpenCode](../CONTRIBUTORS.md#opencode)) - claimed, argued
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) - claimed, argued
 
 #### What changed
 - `### Citations` gained a **Source standing** paragraph and a companion paragraph on recording an origin without citing it.
@@ -348,3 +348,84 @@ Owner: an executing agent does not need to read the explanatory document to carr
 
 #### Deliberation
 The owner proposed the rule as a prohibition on citing informal sources (Omid Hekayati — claimed), and the first pass reproduced that shape as a standing test (Space Bunny Alpha — claimed). The owner then separated two concerns the first pass had merged: whether a source may be read, which is unrestricted, and whether naming one is safe, which is a question about rights and attribution as much as about credibility (Omid Hekayati — claimed). Wikipedia was put to the same test and found to fail on standing rather than on rights — its text is openly licensed and quotable with attribution, which is why the rule is written as two tests rather than one (Space Bunny Alpha — argued).
+
+---
+
+### The bound against redundant reading governs what the doer reads, not only what a document may list
+- Time: 2026-10-04T00:00:00Z
+- Cited:
+  - [Content Rule: No Fabricated or Redundant Provenance](./documentation.md#content-rule-no-fabricated-or-redundant-provenance) - Evidence: the bound this section already carried, extended from what a document may list to what a session reads
+- Propagates to:
+  - ../.agents/skills/memar/SKILL.md: Done - the three skill rules this section now states were removed from the skill, leaving the skill with the section as its authority
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - decided
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) - claimed
+
+#### What changed
+- *No derivative inventories* now states three rules about what a session reads, beside the rule about what a document may list: do not enumerate a document set the task does not require, where a folder's README is its index rather than the folder's documents opened one by one; do not restart discovery once the knowledge the task needs is already in context; and do not read a task's documents merely because this practice is in force.
+- The three corresponding rules were removed from the memar skill, which had been their only home.
+
+#### Considered and not done
+- The three rules were not given a section of their own (Space Bunny Alpha - argued). They are the same bound the section already carried, applied to the reader rather than to the writer, and a second section would restate one rule under two headings.
+- The rules were not placed in [Cognition](./cognition.md) (Omid Hekayati - decided). Two of the three govern session economy rather than reasoning, and Cognition's own boundary paragraph states that norms specific to producing documentation are owned by the documentation system's specifications.
+- The skill's session-economy rules were not moved at the same time (Space Bunny Alpha - argued). They are obligations and runtime facts mixed in one section, and [Documentation Changelog](./documentation-changelog.md) already settles the shape of that mixture - the obligation belongs beside the facet and only the runtime-dependent fact stays in the skill. Where the obligations go has no home yet, so the split is carried as an open question rather than performed.
+
+---
+
+### Three entries leave the documentation handoff, each answered by the meta-layer body
+- Time: 2026-10-04T18:19:38Z
+- Type: Fixed
+- Propagates to:
+  - documentation.handoff.md: Done - the mixed-facet, citation-relation-boundary, and further-reader-relationship entries were removed; the meta-layer body already answers each (handoff: no entry of its own).
+- Contributors:
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) - argued, applied
+
+#### What changed
+- *Mixed-facet documents* left `## Open Questions`: [Documentation -> Which facet does a document belong to?](./documentation.md#which-facet-does-a-document-belong-to) already decides the case - a document carrying both facets' content is settled by which purpose dominates.
+- *Citations: Reference versus Depends_on boundary* left `## Open Questions`: [Documentation -> Citations -> Relation vocabulary](./documentation.md#citations) gives each relation its condition, and `Evidence` is stated as distinct from `Reference` (context only) and `Depends_on` (a structural dependency).
+- *Further reader relationships* left `## Anticipated Work`: [Documentation -> Extensibility](./documentation.md#extensibility) already states that a document type fitting none of the five reader relationships would be met by adding a sixth facet following the same pattern, and how the Handoff and Research facets were each added this way is recorded in the surviving *Facet growth* item.
+
+#### Considered and not done
+- The `Reference` / `Depends_on` boundary was not sharpened in the body, and no implementability axis was added to the relation vocabulary (Space Bunny Alpha - argued). The vocabulary states each relation's condition, so the handoff entry was a request to restate what the section says; adding an axis would change a settled body rather than close an entry.
+- No exception for genuinely mixed-content documents was added to the facet-selection guidance (Space Bunny Alpha - argued). The dominant-purpose test decides any real case, and a standing exception would invite exactly the ambiguity the test exists to remove.
+- The *Facet registry* entry and the other remaining entries were left in the handoff (Space Bunny Alpha - argued): each asks something the meta-layer's body does not state.
+---
+
+### Rejected positions given a deletion procedure
+- Time: 2026-09-27T09:38:12Z
+- Type: Added
+- Propagates to:
+  - AGENTS.md: Done - the four rules that restated this document and the Changelog facet's governing specification were removed, leaving the pointer to this document and its facets.
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - claimed, decided
+
+#### What changed
+- A `## Rejected positions` section was added to `documentation.practice.md`, giving the treatment of a rejected position three steps: the entry, section, or sentence whose claim is that position is deleted rather than annotated or kept as history; the alternative genuinely examined and not taken gets one `Considered and not done` line in the surviving entry; and the decision's positive statement stays in the document that holds the claim, with the changelog recording the outcome rather than the position it replaced.
+- The restated copies those steps replace in `AGENTS.md` are gone: which fields a changelog entry carries and what it must not narrate is stated by [documentation-changelog.md → Structure](./documentation-changelog.md#structure) and [Trivial changes](./documentation-changelog.md#trivial-changes); where an examined alternative goes is [Considered and not done](./documentation-changelog.md#considered-and-not-done); what a body affirms and where a replaced formulation belongs is [documentation.md → Written surface](./documentation.md#written-surface); the folder README convention was already this document's own `## Folder READMEs` section.
+- This entry was first written on the wrong file, `documentation-practice.changelog.md`, and was moved here by the changelog routing audit.
+
+---
+
+### Register the Comparison kind, and state its location rule as a rule rather than as this project's placement
+- Time: 2026-10-07T04:20:00Z
+- Type: Changed
+- Cited:
+  - [Documentation — Comparison](./documentation-comparison.md) — Added: the governing specification this entry registers; its Method requirements are the reason two of this document's rules now name a clause they did not before.
+  - [Comparison: Memar and Tensorus](./comparisons/tensorus.001.md) — Evidence: triple marking, and a self-audit no entry point reaches.
+  - [Comparison: Memar and Hindsight](./comparisons/hindsight.001.md) — Evidence: a project publishing its own failure catalog.
+- Propagates to:
+  - documentation.md: Done — the fifth Content Rule clause and the Comparison registration landed here; the clause was stated because two comparisons in one day found the same gap in prose, code, and entry points.
+  - docs/README.md: Done — the folder entry already covers where essays live; no restatement added.
+  - README.md: Reference - the public pointer already names the specification.
+  - .agents/skills/memar/SKILL.md: None needed - the skill routes by content search and discovery commands, so a registered document is reachable without naming it.
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) — argued, drafted, applied
+
+#### What changed
+- A new section, [Comparison: a document kind outside the facets](./documentation.md#comparison-a-document-kind-outside-the-facets), registers the comparison essay beside the facet specifications and states why its artifacts belong to no facet. It exists so that an agent searching this document for how a kind of document is governed finds the answer instead of concluding the five facets are exhaustive.
+
+#### Considered and not done
+- **Adding the comparison essays to the facet table above** (rejected): the table is a facet registry, and a comparison is explicitly not a facet; registering it there would make the table claim something the method denies.
+- **A Comparison Practice facet companion** (not taken): no comparison procedure has accumulated beyond what the specification states, so the practice is anticipated work until a comparison is written that needs steps the specification does not carry.
+- **Indexing the essays in this document** (rejected): a membership list of live files is the derivative inventory the Content Rule's fourth clause forbids.

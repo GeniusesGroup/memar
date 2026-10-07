@@ -180,7 +180,7 @@
   - knowledge.handoff.md: Done — executable knowledge work points to this repository's `modules/`.
   - khayyam.handoff.md and khayyam.md: Done — the language/toolchain boundary is stated in terms of a Khayyam toolchain or module.
   - .agents/skills/memar/SKILL.md: Done — implementation discovery is routed to local `modules/`, and the protocol's language independence is stated.
-  - README.md, framework.md, knowledge.md, software.md, and comparisons/superpowers.md: Done — the local Khayyam realization is described without making it a prerequisite for Memar's concepts or protocols.
+  - README.md, framework.md, knowledge.md, software.md, and comparisons/superpowers.001.md: Done — the local Khayyam realization is described without making it a prerequisite for Memar's concepts or protocols.
   - protocols/net/sRPC.md, protocols/process/test.md (recorded then as protocols/tdd.md), protocols/process/error.md, protocols/process/error.handoff.md, and protocols/codec/syllab.md: Done — implementation details are scoped to their realization while the main documents state language-independent rules directly.
   - protocols/computer/abstraction-implements.md and protocols/process/control-flow.md: Done — the protocol contracts are stated independently, with Khayyam retained as a realization example.
   - dependency-management.handoff.md, sdk.handoff.md, protocol.handoff.md, and system.handoff.md: Done — local module dependencies and external-consumer questions remain open without making a programming language a prerequisite.
@@ -199,3 +199,137 @@
 - Live references to the former `memar-khayyam` repository were replaced with the local realization language. Where outside evidence informed a claim, the conclusion is now stated directly in the main document and the provenance remains in changelog history.
 - The scratch `main.kh`, empty placeholders, and copied host-language drafts used to inspect the former repository remain outside this staged repository change; the staged repository change contains the Khayyam toolchain plan, the executable Khayyam declarations selected for this change, and the documentation and scope corrections.
 - The transferred Khayyam content was placed under `modules/` rather than `libs/`; local paths and the build-output ignore rule follow that placement.
+
+---
+
+### The compiler's obligation to flow management stated
+- Time: 2026-10-03T11:40:44Z
+- Type: Added
+- Cited:
+  - [Control Flow](../process/control-flow.md) - Depends_on: its Library-Defined Control Flow and Structured and Unstructured Flow as Libraries sections are what the guarantee list and the guarantee-versus-freedom line are written against, and its Error Propagation section is where a mid-scope return is named without saying what it returns from.
+  - [Type](../../type.md) - Depends_on: the Scope category is what makes visibility a property of a boundary's own rules, which is the rule the seventh and sixth guarantees state for a branch body.
+  - [Memory](../memory/memory.md) - Depends_for: the refusal of an uninitialized read is what makes deciding which paths reach a use a compiler obligation rather than a library's.
+  - [Khayyam](../../khayyam/khayyam.md) - Reference: the Scope section's inertness statement is the primitive every guarantee is about, and the Method section's body-less-method form is what the first finding quotes.
+  - [The JavaScript target's emitter](../../../modules/khayyam/targets/js/src/emit.ts) - Evidence: the scope-to-nested-function lowering, the call-to-call lowering, the `return` emitted inside that function, and the refusal of a scope as a receiver, measured as facts about one realization.
+  - [The JavaScript target's link map](../../../modules/khayyam/targets/js/link_map.json) - Evidence: the map is empty, which is what makes the deciding half of a conditional unsupplied.
+  - [Control Flow Model](../../../modules/process/control-flow/control-flow.md) - Reference: the consumer whose need each guarantee answers, and the model that holds the driver question open.
+  - [Construction Model](../../../modules/process/construction/construction.md) - Reference: the consumer whose per-path reachability need is the analysis half of this obligation.
+  - [Binding Model](../../../modules/computer/binding/binding.md) - Reference: the consumer whose provisioning need is the third of the three named needs.
+- Propagates to:
+  - compiler.handoff.md: Done - three open questions carry the mechanism, the decision's provenance, and the mid-scope return, plus one anticipated conformance check.
+  - ../khayyam/khayyam.md: Rejected - the guarantee about what a branch body may see belongs to the compiler's obligation and not to the language documents, which is the placement the owner ruled.
+  - ../process/control-flow.md: Pending - its conditional-pair topic can state a driver contract against named guarantees rather than against a mechanism; which mechanism serves the drive stays open there as it does here.
+  - ../../../modules/process/control-flow/control-flow.md: Pending - its driver question is answered on the guarantee side and remains open only on the mechanism side.
+  - ../../../modules/process/construction/construction.md: Pending - its one dependency on the control-flow model is now a stated obligation, and the compiler in this repository does not yet meet it.
+  - ../../../modules/computer/binding/binding.md: Pending - its provisioning need is stated; the address convention stays that model's own.
+  - ../computer/linter.md: Done - branch exclusivity depends on events this document makes a constraint on the mechanism as well as on the events. [see linter.md:53-54]
+- Contributors:
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) - decided
+  - [Space Bunny Alpha](../../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../../CONTRIBUTORS.md#opencode)) - claimed, wrote
+
+#### What changed
+- `compiler.md` gained five topics under Explanation: the compiler's obligation to flow management, the branch body a flow-control module receives, what this obligation does not decide, what no option delivers, the statement that this repository's implementation is not this protocol, and the statement that a protocol may be written for an obligation nothing discharges.
+- Each of three consumers' needs is stated in one sentence and classified. The control-flow module's need, the construction module's need, and the binding module's need are guarantees; the mechanism that serves them is a freedom. The test that draws the line is stated: a guarantee is a property of what a drive means, and a freedom is a property of how it is served.
+- Seven guarantees about the object a flow-control module receives are stated as meaning: what it is, what driving it does, what a second driving does, what it returns, whether it is the same object across calls, what it may see of its enclosing method, and what happens to it when the enclosing method returns. The fourth is stated as open, and the visibility half of the sixth is stated here rather than in any language document.
+- Four mechanisms a compiler might serve a drive by are named as options - a call, a jump, a step of a state machine, a returned continuation - each with what choosing it would commit the compiler to. No preference is stated and none is implied by the order.
+- Two findings are recorded. The deciding half of a conditional is unimplemented and no option covers it: the decision is a body-less method the link map holds no entry for, which leaves a dilemma between the compiler's refusal to privilege a library by name and a library whose decision has no supplied implementation. And what a `return` written inside a body returns from is unstated by every document and answered differently by every option.
+- The sentence in The compiler recognizes language primitives, not library names that attributed a jump lowering to a Khayyam realization is replaced by a statement of where the primitive is described and where the guarantees about it live. The lowered mechanism now appears only under the topic that names it as this repository's implementation.
+- The Abstract names the obligation, the guarantees, and the withheld mechanism. The Methodology records that the obligation was derived from its consumers and that each guarantee was checked to hold under every option named.
+
+#### Considered and not done
+- Selecting one of the four mechanisms. The owner has not stated what abstraction the compiler places at the disposal of flow-management modules, and a protocol that chose would foreclose the realizations this document exists to keep open. The options are named with their commitments instead.
+- Writing the visibility guarantee into the language documents. The guarantee about what a branch body may see was placed here because it is a guarantee about what the compiler must keep true, and because a language document stating it would read as a claim about how a scope is compiled.
+- A separate protocol document for this obligation. It was written into `compiler.md` because the sentence it replaces stood in that topic as the compiler's only statement about the branch-grouping primitive, and because a guarantee the reader must hold alongside the primitive's definition belongs beside it.
+- The obligation inside the Control Flow protocol. That protocol owns what a flow construct means and is explicit that it governs a process independently of any one language; the compiler's obligation is a claim about a compiler, and the compiler protocol already owns what a compiler may recognize and how it reports.
+- Reopening the analysis-event schema. It is already an open item under The compiler emits analysis events, and this change only adds a constraint that the events be derivable from whatever serves a drive.
+
+#### Decision
+- The owner ruled that a scope may refer to any outer name while its own variables are not visible outside, because it may never execute (Omid Hekayati). That ruling is stated in `compiler.md` as the sixth guarantee, and the decision it settles — where the rule lives — is the one this change applied: the protocol, not the language documents.
+- No mechanism was chosen, and the document says so in its own body rather than leaving the absence to be inferred from the omission (Space Bunny Alpha).
+
+---
+
+### The question a `return` command posed is withdrawn
+- Time: 2026-10-03T00:00:00Z
+- Type: Removed
+- Propagates to:
+  - [Khayyam → Scope](../../khayyam/khayyam.md#scope): Done — the language document now states that the grammar has no keyword for leaving a method early.
+  - [Control Flow Model → `return` is a command, not a method](../../../modules/process/control-flow/control-flow.md): Pending — that section's reason for keeping the exit out of the library is a reason the library no longer needs. Not this session's file to write.
+  - [Control Flow Rule — Method Exit](../../../modules/process/control-flow/rules/method-exit/method-exit.md): Done — its third bullet cites `:72` and `:81` for the question this entry removes. Not this session's file to write. [see method-exit.md:28]
+  - [The Construction model](../../../modules/process/construction/construction.md): Pending — it states a body may hold four commands and counts two of them as the substrate its construction library needs. Not this session's file to write.
+- Contributors:
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Space Bunny Alpha](../../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../../CONTRIBUTORS.md#opencode)) — applied
+
+#### What changed
+- [What this obligation does not decide](./compiler.md#what-this-obligation-does-not-decide) lists two further open questions rather than three: what a body hands back to its driver, and whether a body may be re-entered at a point other than its start. The third — what a `return` written inside a body returns from — is gone from the list and from the paired [handoff entry](./compiler.handoff.md) that carried it as its own question.
+- The **A call** option no longer commits the compiler to the fate of a `return`, since that fate was a property of a command the language does not have.
+- [What no option delivers](./compiler.md#what-no-option-delivers) states one finding rather than two, and the finding is now that what leaves a method early is a library's business: a language may realize it as a command of the grammar and the language this repository develops does not, so the question becomes one a library answers by declaring it. The seven guarantees are unchanged and no option states it.
+- [The implementation in this repository is not this protocol](./compiler.md#the-implementation-in-this-repository-is-not-this-protocol) is re-measured against the toolchain as it now stands: the JavaScript target lowers a scope to a nested function (`emit.ts:423-428`) and a call to a call (`emit.ts:464`), refuses a scope used as a receiver, holds an empty link map, and its frontend carries three commands for a body — declare, scope, invoke — with no jump among them (`core/src/body.ts:15-24`). It no longer emits a `return` inside the function it lowers a scope to.
+- What is untouched. Guarantee 7 — what happens to a body when the enclosing method returns — still holds on its own terms: a body's meaning ends with the execution that declared it. The **A jump** option's reference to [Control Flow → Error Propagation](../process/control-flow.md#error-propagation) naming a mid-scope return as ordinary control flow is about that protocol's own operation, not about a command of a grammar.
+
+#### Considered and not done
+- **Restating the question as "what does the exit method mean".** The removal could have been followed by a replacement question naming the library's method. Not done: the guarantee-versus-freedom test this document states applies to it too, and what such a method would mean is a fact about the library's declaration rather than about how a compiler serves a drive. Where a reader needs it, the [method-exit Rule](../../../modules/process/control-flow/rules/method-exit/method-exit.md) already says the exit operation's target is specified by where its own declaration says it lands (Omid Hekayati — decided).
+- **Rewriting the seven guarantees to name the loss.** A guarantee that assumed a body could end early would have had to be withdrawn, and none does: each of the seven is stated as what a drive means and holds under all four options without it (Omid Hekayati — decided).
+
+---
+
+### The eight implementation-prescription removals given their proper homes
+- Time: 2026-10-04T09:00:00Z
+- Type: Added
+- Cited:
+  - [Inheritance in Khayyam — Changelog](../../khayyam/inheritance.changelog.md) — Evidence: entry "Compiler and linter prescriptions removed from the inheritance document" (`:169`), quotes the removed *Interaction with Smart Compilation* section at `:186` and the two compiler-analysis arguments it overlapped at `:182`.
+  - [Polymorphism in Khayyam — Changelog](../../khayyam/polymorphism.changelog.md) — Evidence: the removed dispatch-strategy section at `:326`, the removed cross-language-compilation bullet at `:321`, the closed/open-set definition that survives at `:306`, and the entry's own *Considered and not done* at `:334`.
+  - [Abstraction in Khayyam — Changelog](../../khayyam/abstraction.changelog.md) — Evidence: the removed zero-cost requirement at `:221` and the removed default-implementation optimization clause at `:225`.
+  - [Encapsulation in Khayyam — Changelog](../../khayyam/encapsulation.changelog.md) — Evidence: the removed *Reduced Optimization Surface* claim at `:287`.
+  - [Method in Khayyam — Changelog](../../khayyam/method.changelog.md) — Evidence: the removed method-ownership expectation at `:225`.
+  - [Variable in Khayyam — Changelog](../../khayyam/variable.changelog.md) — Evidence: the removed file-level-initialization sentence at `:223` and its pending propagation to this document at `:216`.
+  - [Polymorphism in Khayyam — Handoff](../../khayyam/polymorphism.handoff.md) — Evidence: the surviving definition of *devirtualization* at `:18`, used to state what the elided part of the inheritance removal meant.
+  - [The JavaScript target](../../../modules/khayyam/targets/js/target.md) — Reference: `:60` states this repository's realization's answer to the same question.
+- Propagates to:
+  - [Khayyam → Abstraction](../../khayyam/abstraction.md), [Polymorphism](../../khayyam/polymorphism.md), [Inheritance](../../khayyam/inheritance.md), [Encapsulation](../../khayyam/encapsulation.md), [Variable](../../khayyam/variable.md), [Method](../../khayyam/method.md): Rejected — restoring the sentences in the language documents was the position the owner's ruling removed them from; they are stated here instead, in a language that does not name one language's constructs.
+  - [The JavaScript target](../../../modules/khayyam/targets/js/target.md): Reference — it already states the realization's own mechanism, which this document points at rather than restates.
+  - [docs/modularity.md](../../modularity.md): Done — the name-collision reasoning the same audit removed, which is not this document's subject.
+- Contributors:
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested, ruled
+  - [Space Bunny Alpha](../../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../../CONTRIBUTORS.md#opencode)) — applied, classified
+
+#### What changed
+- A new topic, [How a call against a declared specification may be served](../computer/compiler.md#how-a-call-against-a-declared-specification-may-be-served), states as a **freedom** what the audit removed from two language documents: the closed/open distinction a compiler applies at a call site; inlining the concrete implementation for a closed site (*monomorphization*); generating a dispatch structure and emitting one indirection per call for an open site; and *devirtualization* as a further step of the same freedom rather than a second decision a language defers. Its third item states that **zero-cost abstraction is promised by nothing** — the removed claim that "when the compiler knows the concrete type behind an abstraction, it should be able to inline the call — eliminating VTable overhead entirely — without the developer writing different code" is quoted as one compiler's freedom and one language's expectation, not a property a module may be written against.
+- The same topic's closing paragraph carries the removed **cross-language compilation** bullet as a **rationale**: a compiler whose target is itself a language must decide at each such site which of the target's mechanisms to emit, and the closed/open distinction is the classification that makes that decision answerable. Which target mechanism corresponds to which case is left to a realization.
+- A new topic, [What a Language's Discipline Gives and Costs](../computer/compiler.md#what-a-languages-discipline-gives-and-costs), holds three **rationales and observations**, stated as binding on no compiler: that a language refusing acquired behavior keeps a call's target single, with the removed clause that allowing it "clouds compile-time optimization because the compiler can no longer assume the call target is a simple VTable entry or a monomorphized concrete method"; that named, explicitly declared state is more consistently analyzable than an implicitly captured environment whose shape varies per use, with the removed claim's own hedge that the two are equivalent in the worst case; and that a language reaching a value only through a declared operation never hands a compiler a chain to resolve, which is the escape-analysis claim the inheritance document carried.
+- [Entry and lifecycle are not grammar](../computer/compiler.md#entry-and-lifecycle-are-not-grammar) gained the **freedom** the variable document's removal left open: where a declaration standing outside any operation's body receives its first instance, and from what source, is the realization's — guaranteed none, forbidden none, and never a feature of the grammar.
+- [The implementation in this repository is not this protocol](../computer/compiler.md#the-implementation-in-this-repository-is-not-this-protocol) now points at the target's own statement that it resolves a call by the receiver's declared type and refuses a call whose receiver is typed as an abstraction, so the realization's mechanism is cited where the realization keeps it.
+- The Abstract states both new topics and the new freedom, so the enumeration a reader gets from it matches the body.
+- **The eighth removal was found by reading the audit's own propagation ledgers, not from the summary this session began with.** The seven items named in the request account for the compiler destinations recorded at [`abstraction.changelog.md:216`](../../khayyam/abstraction.changelog.md), [`inheritance.changelog.md:175`](../../khayyam/inheritance.changelog.md), [`polymorphism.changelog.md:314`](../../khayyam/polymorphism.changelog.md), and [`khayyam.changelog.md:629`](../../khayyam/khayyam.changelog.md). The eighth is [`variable.changelog.md:216`](../../khayyam/variable.changelog.md) — "where a file-level variable's first instance is established, and from what source" — recorded there as pending against this document's entry-and-lifecycle topic and discharged nowhere until now.
+- **The inheritance removal is the one record that is incomplete, and its text was re-derived rather than reconstructed from the summary.** Its changelog quote elides two passages with `[...]` (`inheritance.changelog.md:186`), so the optimization claims it named — perfectly linear escape analysis, devirtualization, inlining — were taken from the two places the same audit recorded them whole: the Motivation arguments at `inheritance.changelog.md:182`, which carry the escape-analysis substance verbatim, and the polymorphism handoff at `polymorphism.handoff.md:18`, which defines devirtualization. What the elisions hid and no document in the repository now holds is the wording of the introduction to that optimization list; the three named items are what survived into the protocol, and nothing was invented to fill the gaps.
+
+#### Considered and not done
+- **The method-ownership expectation.** The removed claim that "abstraction composition in particular is central to Memar-style design, so methods attached to abstractions should be plentiful" (`method.changelog.md:225`) was not placed here. It is not a guarantee, a freedom, or a rationale of this protocol's subject: it is an expectation about how much of a language's method surface attaches to specifications rather than to concrete kinds, which is a fact about a language and its use. Its facet is a Practice companion — `docs/khayyam/khayyam.practice.md`, whose reader is an agent writing code in that language — and that file was not this session's to write. It is recorded here so that the second search for it finds the judgment rather than only the removal.
+- **Restoring the removed sentences as they stood.** Each was rewritten into a language that names no construct of one language, because a protocol states what must hold for every compiler rather than what Khayyam's compiler does. The removed wording is quoted in the body where the claim is load-bearing (zero-cost abstraction, the clouds-optimization clause) and lives in full in the language documents' changelogs.
+- **Naming a mechanism.** The freedom states what a compiler may do and not what it should do, and the closed/open distinction is stated as a criterion rather than as a rule that a site be closed. Stating it as a rule would have been a mechanism in a guarantee's clothes, which is the third discipline under [The implementation in this repository is not this protocol](../computer/compiler.md#the-implementation-in-this-repository-is-not-this-protocol).
+- **The rest of the same audit's unplaced removals.** Reading all nine of its entries turned up four more removals recorded with no destination, none of them this document's subject and none of them placed here: the green-thread scheduling account removed from the agency document (pending against [Runtime → Concurrency is hosted, not defined, here](../computer/runtime.md#concurrency-is-hosted-not-defined-here)), the method-naming bullet removed from the encapsulation document (pending against this repository's identifier-naming rule), the compile-time evaluation of string formulas removed from the variable document (already answered by [Designated pure operations may run at compile time](../computer/compiler.md#designated-pure-operations-may-run-at-compile-time)), and the container type-safety check removed from the polymorphism document (pending against [Linter](../computer/linter.md)). Each keeps its own recorded owner; none is restated here, and none is closed by this entry.
+
+#### Decision
+- A language document states what a construct is and not how a compiler lowers it, and the compiler protocol owns what a compiler is; these eight claims are therefore stated there, each marked as the guarantee, freedom, or rationale the protocol's own test requires (Omid Hekayati — decided).
+- Base documents take none of them. The name-collision reasoning went to [`docs/modularity.md`](../../modularity.md) instead, stated in terms of Responsibility and identity that hold for any kind of development, because the audit's own removal record named that document as its destination (`khayyam.changelog.md:630`) and `khayyam.md`'s Import Mechanism still points there (`khayyam.md:62`).
+
+---
+
+### Review-only enforcement reframed as an unchecked requirement rather than an accepted form of enforcement
+- Time: 2026-10-05T17:24:41Z
+- Type: Changed
+- Contributors:
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Space Bunny Alpha](../../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../../CONTRIBUTORS.md#opencode)) — argued, drafted, applied
+
+#### What changed
+- The last sentence of [Methodology](./compiler.md#methodology) no longer says the directives are "currently enforced by review against this document — there is no conformance suite yet". It now says the directives are stated so that a party that did not write them can decide each against a named input, and that no suite running today is a gap in this project's checking rather than a limit on what the protocol decides.
+
+#### Deliberation
+- The edit was proposed in this session's earlier read-only sweep of `docs/` against the ruling and applied once it landed here. The sweep's reasoning is the record's: a Protocol is meaningful only where a procedure settles its conformance, and a sentence presenting review as the standing form of enforcement described the private-reading case the ruling names as the failure (Space Bunny Alpha).
+- The distinction the replacement draws is between what the document decides and what this project has built to check it, and it is drawn without claiming a suite exists: the conformance suite remains Anticipated Work in `compiler.handoff.md`, and nothing here moved it (Space Bunny Alpha).
+
+#### Considered and not done
+- **Deleting the sentence outright (rejected)**: the fact that no suite runs is current state a reader needs, and the Relevance discipline keeps current state in the body. What changed is the shape of the fact, not its presence.
+- **Also reframing the matching sentences in `runtime.md` and its changelog (rejected)**: that document carries the same shape and is not this session's to write. It is named here so the residue is visible rather than lost.

@@ -195,7 +195,7 @@ Considered leaving the "Terminology Governance document" Future possibility in p
   - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — requested
   - [Super Z](../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — reviewed, applied
 - Propagates to:
-  - protocol.per.md: Pending deletion — fully superseded by this document; no further changes should reference it.
+  - protocol.per.md: Done — item-by-item review recorded in this entry confirmed all substantive content present here in evolved form, transferred the two genuinely missing items, and the file is deleted (merged into this English document in language unification, not merely dropped).
 
 #### What changed
 - The Persian draft was compared against this document item by item.
@@ -250,3 +250,124 @@ Dissolved the Protocols-and-External-Observers topic's `#### Discussion` and the
 - **Domain-Specific Protocols**: ACORD (insurance data exchange), HL7/FHIR (healthcare data exchange — HL7 v2 text-based; FHIR a RESTful API protocol with JSON/XML schemas), SWIFT MT/MX (interbank transfer message formats), OPC UA (industrial IoT device interoperability).
 - **API and Specification Ecosystems**: OpenAPI is a specification *of* protocols; the GraphQL specification defines a protocol for the data-fetching process.
 - **Programming Language Constructs (partial equivalents)**: Swift `protocol` (method requirements without implementations); Go `interface` (method sets, but embedding allows implicit satisfaction, blurring the ownership boundary); Rust traits (default method implementations go beyond pure protocol declaration); Java interfaces (originally pure; Java 8 default methods moved away from protocol purity); CORBA IDL and Protocol Buffers (language-agnostic interface definition languages).
+
+---
+
+### The Protocol vs Specification Identity question closed by protocol.md
+- Time: 2026-10-04T18:21:13Z
+- Type: Fixed
+- Propagates to:
+  - protocol.handoff.md: Done — the "Protocol vs Specification Identity" open question was deleted; its answer already stands in `protocol.md` (handoff: no entry of its own).
+- Contributors:
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) — argued, applied
+
+#### What changed
+- `protocol.handoff.md` no longer carries the open question "Protocol vs Specification Identity" ("is a protocol identical to its specification, or does the conceptual protocol exist independently of any written document?"). [Protocol → Protocol vs Specification](./protocol.md#protocol-vs-specification) already answers it for this framework's purposes: "for practical purposes in Memar, they are treated as distinct: the protocol is the conceptual entity (the rules governing a process); the specification is its documentation", and the body names why the two cannot coincide — a protocol "requires a methodology for its production", so the methodology produces the protocol and the specification records it.
+- What the body still calls an open philosophical question — whether a protocol and its specification are identical in general — is not the handoff's question: the handoff asked how Memar treats them, and the body had already ruled. Its `Next: settle during the next ontology review` line was the only place the undecided reading was recorded, and it left with the entry.
+- [protocol.md](./protocol.md) is unchanged: the answer was already in its body, and the graduation is a matter of the handoff stopping restating it.
+
+#### Considered and not done
+- Narrowing the question rather than deleting it — not taken, as a reworded version of the same inquiry. What would remain undecided is the philosophical question the body already names as outside its practical ruling, and a handoff entry phrased that way would schedule a question no document asks as work.
+- Marking the entry Answered rather than deleting it — not taken. A resolved question is state the base document now carries; a marker here would duplicate the answer and guarantee drift.
+- Recording the residual philosophical question in [Terminology](./terminology.md)'s own open work — not taken. Whether protocol and specification are identical in general is a question about Memar's own vocabulary, but nothing in this session examined it, and attributing an unexamined direction to a document this session did not touch would put a claim in someone else's record.
+
+---
+
+### Protocol scope across Modules and authorities, and the vocabulary the Standard definition governs
+- Time: 2026-10-05T09:53:19Z
+- Type: Added
+- Propagates to:
+  - protocol.handoff.md: Done — the cross-module and cross-organizational entry's unresolved clause removed, the external-consumer entry deleted as already answered, and the Standard-boundary entry's answered residual replaced by the two residues that remain
+  - terminology.md: Pending — whether the Standard definition's consequence for Memar's own vocabulary is restated as a statement of Terminology's own, and whether a dedicated document for it is wanted, is not this document's to decide
+- Contributors:
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) — argued, drafted, applied
+
+#### What changed
+- `### Protocol, Process, and System` now states that a Protocol's boundary is the process it governs rather than the Module that process passes through: a process crossing several Modules is one process, and the Protocol governing it is one Protocol rather than one per Module.
+- `### Conformance` now states that conformance is measured for each participant against the Protocol's own rules and never jointly, because a Protocol requires no predefined parties and needs no negotiation to be entered, and that where the participants belong to authorities governing neither of them together, what is owed between them is a Contract and belongs at a different layer.
+- `### Protocol vs Standard` carries a fifth consequence: Memar's own vocabulary follows the same definition, so a library this framework ships is described by what it is and is not called a *standard library*, and nothing Memar produces is a standard until a third party attests to it.
+- `protocol.handoff.md` no longer carries "External-Consumer Protocol Compatibility". *Protocol vs API Specification* already answers how the consumer's specification is encoded: it is "the document that, once the protocol is settled, records it for a particular audience and toolchain", and the same section holds that two specifications in different formats and technology-level conventions can describe one protocol, which is the cross-language case the entry asked about.
+- The cross-module entry's State no longer carries the note that Modularity's definition did not by itself resolve it, and the Standard-boundary entry keeps only what is still open.
+
+#### Considered and not done
+- **Answering the cross-module half by pointing at Modularity alone**: not taken. Modularity says a process may cross several Modules; what a Protocol does about that is Protocol's own claim, and the derivation needed the Protocol–Process–System chain that only this document states.
+- **Leaving the coordination half as an open question**: rejected. A Protocol declares requirements that any entity satisfies without negotiating with a counterparty, and conformance is the measure of whether those requirements are satisfied regardless of how; a bilateral question between two authorities is a Contract, which this document already keeps at a different layer. The remaining institutional question — who attests — is the entry below it, and it stays open.
+- **Writing the vocabulary consequence into *Terminology***: not done, that document is not this session's to write, and the two residues are recorded in `protocol.handoff.md` as that session's work.
+- **Restoring the Standard-boundary entry's account of the retired knowledge note it recovered**: not done. The note's Protocol/Standard split and its conformance-from-label point are carried in the body, and a handoff entry is not where the history of how they got there belongs.
+
+---
+
+### Verifiable Interaction Model adopted as what a Protocol is
+- Time: 2026-10-05T16:43:58Z
+- Type: Changed
+- Cited:
+  - [Law](https://github.com/GeniusesGroup/organization/blob/dev/modules/rights/law/law.md) — Evidence: a realized instrument in this project family's `organization` repository in which one law node carries a human-language sentence and a machine-checkable form of the same norm, a form that no input can satisfy is not opened for a signature, the words names people attach are labels beside a comment, and specific statutes are instances of the node — a model written for a concept with nothing about that concept assumed in advance.
+- Propagates to:
+  - protocol.handoff.md: Done — the "Ontology Finalization" entry deleted, the "Protocol Conformance Measurement" entry deleted as settled by derivation, and the "Cross-Module and Cross-Organizational Protocols" entry narrowed to what the definers claim leaves open.
+  - modeling.md: Pending — whether the definers claim as it applies to a model offered for a concept is restated as Modeling's own is not this document's to decide.
+  - comparisons/llm-wiki.001.md: Pending — its survey of what Memar contributes to the Protocol concept says checkable conformance "remains a working hypothesis and open question in the current Proposed document", which is no longer what this document holds.
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) — argued, drafted, applied
+
+#### What changed
+- The Abstract and [Protocol → What is a Protocol?](./protocol.md#what-is-a-protocol) now define a Protocol as a named set of declarative rules that govern one or more processes within a system **and that can be checked against a stated input**, the Abstract also carrying the boundary: requirements no procedure can settle are an opinion rather than a Protocol.
+- "What is a Protocol?" carries four inseparable components instead of three — Rules, Process, System, and **Verifiability**, the last stated as the condition the rules are written to meet: each requirement names what a participant does or produces, so a party that did not write the Protocol can take a stated input, compare it against the requirement, and reach the same verdict as any other party on that input.
+- [Protocol → Protocol Properties](./protocol.md#protocol-properties) gains a **Verifiable** property and loses its preamble's hedge. The property is stated so that reproducibility governs rather than remaining a matter of dispute: where each reader supplies their own account of what a rule requires, no implementation can be shown to conform and none can be shown to violate it, and what has been written is a position rather than a Protocol.
+- [Protocol → Conformance](./protocol.md#conformance) now states that conformance is a decidable question and not a judgment — the Protocol states the input a participant presents, and the deciding party runs a procedure over that input without having written the rules — and that the input need not be machine-readable while the requirement must say what holding it looks like.
+- New topic [Protocol → Who Defines a Protocol](./protocol.md#who-defines-a-protocol): a Protocol is meaningful at the level of the system that offers it and one organization's protocol is not the measure of another's; different organizations may develop different protocols for one process and each is judged against its own rules; plurality of definers is what makes convergence on the process objective rather than hypothetical; and a protocol written for a concept presupposes nothing about that concept beyond the requirements it states.
+- The Introduction's framing of the document's own question no longer presents it as an open question, and the "Protocol Ontology Candidates" topic was removed with the paragraph that adopted Candidate C as a working hypothesis while the question remained open.
+- `protocol.handoff.md` no longer carries "Ontology Finalization" or "Protocol Conformance Measurement". The tooling question the second entry deferred to — how conformance is verified, by tests, formal verification, or other tooling — remains in that file's Anticipated Work under the Protocol Conformance document.
+
+#### Deliberation
+- Today's functional models fail because they do not evaluate: legal science's offered models being the standing example, where every party may hold its own reading of the same norm and none can be shown to be wrong. Reproducibility is to govern, not be a matter of dispute, and a protocol whose conformance no procedure can settle is a proposal rather than a protocol (Omid Hekayati — decided).
+- The premise behind that ruling is a working instance, not an illustration assembled for it: in `organization`, `modules/rights/law/law.md`, one law node carries a human-language sentence and a machine-checkable form of the same norm, a form that no input can satisfy is not opened for a signature, names people attach while commenting are labels on comments, and specific statutes are instances of the node — a model developed for a concept with nothing about it assumed in advance (Omid Hekayati).
+- The same ruling holds, at the same time, that a protocol or model offered for a concept is meaningful at the level of the organization that offers it, that different organizations may develop different models and protocols for the same concept, and that this plurality is what makes convergence on the real concept objective rather than a set of hypotheses (Omid Hekayati).
+- The second half was located here rather than in Modeling or Framework because meaning at the level of the offering system is what this document's Protocol–Process–System chain already makes Protocol's scope: the System is what gives a protocol its scope, so a statement about the level at which a protocol means is a statement about Protocol. The model half of the ruling was left to Modeling (Space Bunny Alpha).
+- What decided the handoff's conformance-measurement entry: the falsifiability requirement is what states what adequate conformance verification is, so the entry's conditional ("if Candidate C is adopted") no longer has a condition, and what remained of it — the tooling — is Anticipated Work (Space Bunny Alpha).
+
+#### Considered and not done
+- **Candidate A — Protocol as Rule Set (rejected).** "Rule set" discriminates nothing: a style guide is a rule set, and so is a preference stated as a sentence. A rule set with no process to govern is inert, and under the adopted requirement it is unverifiable as well — with no process there is no stated input to decide the rules against, so no implementation can be shown to conform or to fail.
+- **Candidate B — Protocol as Interaction Model (rejected).** Naming the interaction introduces process and system only implicitly, which leaves a protocol easy to read as free of the context that gives it scope. It also stops one requirement short: an account of who interacts with whom, with no falsifiability requirement attached, leaves every participant's own reading in place — the failure the ruling identifies in today's functional models.
+- **Keeping the three candidates in the body as a survey of the field**: not done. A comparison of rejected alternatives serves the reader auditing how the current state came to be rather than the reader understanding it, so it belongs in this entry.
+- **Placing the definers claim in Modeling or Framework**: not done, for the reason recorded above; the protocol half is this document's own claim and the model half is recorded as `Pending` for Modeling.
+- **Narrowing the "Protocol Conformance Measurement" entry instead of deleting it**: not done. Its document-level half is settled by the falsifiability requirement now stated in the body, and its tooling half is already Anticipated Work; a narrowed entry would restate the first and duplicate the second.
+- **Correcting the survey sentence in `comparisons/llm-wiki.001.md`**: not done, that file is not this session's to write; it is recorded as `Pending` above.
+
+#### Decision
+- Candidate C, the Verifiable Interaction Model, is what a Protocol is; Candidates A and B are not. Reproducibility governs, and a protocol that no procedure can settle is a proposal (Omid Hekayati).
+- The falsifiability requirement is stated concretely, in the form this document's vocabulary allows: requirements are stated so that a party that did not write them can decide, from a stated input, whether an implementation satisfies them.
+- A Protocol is meaningful at the level of the system that offers it, different organizations may develop different protocols for one process, and that plurality is what makes convergence objective rather than hypothetical; the claim is recorded here for protocols, with its model half left to Modeling (Omid Hekayati, recorded by Space Bunny Alpha).
+
+---
+
+### Conformance widened past signatures; decidability replaces production method as the specification boundary
+- Time: 2026-10-05T17:24:41Z
+- Type: Changed
+- Propagates to:
+  - protocols/README.md: Done — its membership criterion now states decidability and admits a protocol another organization offers for the same process.
+  - protocols/ddd.md: Done — its conformance rule no longer turns on whether a commitment "can be explained from that current model".
+  - protocols/computer/compiler.md: Done — the review-only enforcement sentence in *Methodology* now says what the directives decide and what is merely unchecked.
+  - protocol.handoff.md: Done — the "Cross-Module and Cross-Organizational Protocols" entry carries the body's two answers and keeps only the coordination residue.
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) — argued, drafted, applied
+
+#### What changed
+- [Protocol → Conformance](./protocol.md#conformance) no longer defines conformance by a biconditional over signatures. An entity conforms when, against the stated input the Protocol names, it satisfies every requirement the Protocol declares; signatures are the instance verified statically, and the stated observable output the instance where the Protocol declares process behavior instead.
+- The same topic gains one paragraph naming the definer: the deciding party applies the rules of the protocol actually named, and where two organizations offer protocols for one process each is decided against its own requirements and neither is the measure of the other. It points at *Who Defines a Protocol* rather than restating it.
+- [Protocol → Protocol vs Specification](./protocol.md#protocol-vs-specification) no longer makes production methodology the deeper difference. Decidability is, and it is independent of production method: a text written carelessly whose requirements name what a participant does or produces is a protocol, and a text produced by the most disciplined method available whose requirements can only be read is a specification. The `ab` bullet and the topic's closing sentence follow, so that what the protocol requires now decides what the specification records.
+- The *Scientific method* bullet under [Protocol → Protocol Across Domains](./protocol.md#protocol-across-domains) states its requirements in decidable terms — a hypothesis names the observation that would refute it, an experiment is re-enactable from its stated steps, controls, and criteria, a conclusion is admissible only with the evidence recorded beside it.
+- The *Diplomatic protocol* bullet keeps the example and now uses it for the boundary rather than for latitude: a dress requirement stated as "clean and formally appropriate" names no observable a third party could check, so the text is guidance rather than a Protocol.
+- [Protocol → Formal Definition](./protocol.md#formal-definition-language-level-illustration) closes on "declarative requirements that govern a process and whose conformance a party can decide" rather than "declarative rules governing a process".
+- `protocol.handoff.md` no longer asks either half of its cross-module/cross-organization question; the entry records the boundary paragraph in *Protocol, Process, and System* and *Who Defines a Protocol* as the answers, with pointers, and keeps the coordination-mechanism residue with its `Next:`.
+
+#### Deliberation
+- All six body edits were proposed in this session's earlier read-only sweep of `docs/` against the ruling and applied once it landed here. The reasoning is that sweep's, not a fresh discovery, and it is recorded because the ruling says which definition governs and not which of these passages were still carrying the older account (Space Bunny Alpha).
+- The discriminator move is the one that could not be read off the ruling alone. Methodology remains a Protocol property and is still stated; what changed is that it stopped being the thing that makes a text a protocol, which this topic had asserted in bold and which the `ab` bullet had then rested on by saying the constraint guarantees the output is a protocol (Space Bunny Alpha).
+- The definers paragraph was added to *Conformance* rather than left to *Who Defines a Protocol* because that topic settles whose protocol governs and does not say which rules a deciding party applies when two organizations each have one; the paragraph states the consequence once and points back (Space Bunny Alpha).
+
+#### Considered and not done
+- **Rewriting the *Methodologically produced* property to drop methodology (rejected)**: the ruling does not touch how a protocol comes to be, and deleting the property would discard a distinction the document earns elsewhere. What it no longer does is decide protocol status, and that is now said in the one place that had asserted otherwise.
+- **Sorting the *Protocol Across Domains* examples by decidability (rejected)**: every other example in that topic already names requirements a third party can check; one bullet is corrected in place, and a sort would restate what the corrected bullet now shows.
+- **Narrowing the *Abstract*'s cross-domain claim (rejected)**: it holds that the definition must remain valid across diplomacy and the other domains, and after these edits it does — the boundary the diplomatic bullet draws is the definition's own, not an exception to it.

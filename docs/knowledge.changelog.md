@@ -154,7 +154,7 @@
 - Time: 2026-09-18T12:20:00Z
 - Type: Changed
 - Cited:
-  - [comparisons/superpowers.md](./comparisons/superpowers.md) — Evidence: owner critique of treating marketplace/plugin skill packs, prose recipes for generative work, and reader-workaround documentation as substitutes for a continuous knowledge model.
+  - [comparisons/superpowers.001.md](./comparisons/superpowers.001.md) — Evidence: owner critique of treating marketplace/plugin skill packs, prose recipes for generative work, and reader-workaround documentation as substitutes for a continuous knowledge model.
   - [Agency → Prompt Engineering and Harness Engineering](./agency.md#prompt-engineering-and-harness-engineering) — Depends_on: distribution and harness technique remain under Communication, not the knowledge model.
 - Propagates to:
   - [.agents/scripts/README.md](../.agents/scripts/README.md) — Clarified: marketplace/plugin are delivery tax, not the mental model.
@@ -239,7 +239,7 @@
   - [documentation.practice.md](./documentation.practice.md): None needed - the practice's Research procedure sends an inquiry's outcome to its base changelog, which is where this entry is.
 - Contributors:
   - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - decided the position this site records
-  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny-free via [OpenCode](../CONTRIBUTORS.md#opencode)) - drafted
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) - drafted
 
 #### What changed
 - [Task-Centric Knowledge Evolution](./knowledge.md#task-centric-knowledge-evolution) states, at the principle statement that makes the Task the primary unit of knowledge evolution, that the word carries its ordinary sense and is deliberately not defined by Memar, with a link to [A Term Deliberately Left Open](./terminology.md#a-term-deliberately-left-open). The passage is one of the two places where the word does real work in Memar, and it is read far more often than the facet that now governs the term; a reader arriving here first met the principle without the qualification, and a reader who took the ordinary sense as Memar's had adopted a definition Memar never made.
@@ -254,7 +254,7 @@
 - Time: 2026-10-04T13:27:43Z
 - Contributors:
   - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - decided
-  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny-free via [OpenCode](../CONTRIBUTORS.md#opencode)) - claimed, argued, applied
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) - claimed, argued, applied
 
 #### What changed
 No entry above is edited. This entry states the relation two of them recorded, under [Documentation → Citations → Source standing](./documentation.md#citations) as that rule now reads.
@@ -267,3 +267,91 @@ No entry above is edited. This entry states the relation two of them recorded, u
 
 #### Deliberation
 The rule added in [Documentation → Citations](./documentation.md#citations) was applied against the whole doc set rather than only against the session that wrote it, and four citations across four records were found that the rule does not accept (Space Bunny Alpha — argued). Two were in records this session owns and were corrected there: `rule.research.001.md`, whose vocabulary sources support nothing and whose specification was never read, and `documentation-handoff.research.001.md`, whose vendor article is a vendor's account of its own product. The other two sit in changelogs written by earlier sessions and are corrected by this entry instead (Omid Hekayati — decided).
+
+---
+
+### Knowledge handoff: granularity and snapshot-hybrid questions removed
+
+- Time: 2026-10-04T18:17:13Z
+- Type: Fixed
+- Propagates to:
+  - knowledge.handoff.md: Done — the "What IS the minimum viable knowledge unit?" and "Can snapshot-style state ever be completely eliminated?" open questions were deleted; `knowledge.md` already answers both (handoff: no entry of its own).
+- Contributors:
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) — argued, applied
+
+#### What changed
+- `docs/knowledge.handoff.md` no longer carries the open question on the minimum viable knowledge unit. Its answer is in [Knowledge → The Smallest Knowledge Unit Is Smaller Than You Think](./knowledge.md#the-smallest-knowledge-unit-is-smaller-than-you-think): units are representable "at the granularity of individual concepts, assertions, and distinctions", the list extends from Concept and Assertion to Distinction, Pattern, Rule, and Question, and the principle statement closes the domain-dependence half of the question with "The choice of granularity should be driven by the use case, not by storage convenience."
+- The same handoff no longer carries the open question on whether snapshot-style state can ever be eliminated, nor its hybrid-model follow-up. [Knowledge → Task-Centric Knowledge Evolution](./knowledge.md#task-centric-knowledge-evolution) already holds both positions at once: knowledge history is organized around the Task rather than the snapshot, and snapshots "remain valuable for reproducible builds, deployment state, forensics, regulatory audits, and legal holds" — precisely the legal-hold, audit, and clinical cases the question named, so the coexistence the question asked for is stated, not merely permitted.
+- No other open question in that handoff was touched.
+
+#### Considered and not done
+- Rewriting the entries as resolved entries, or marking them "Answered": a handoff holds current state, and a rule already recorded in its governing document must not be restated there — the duplicate is what drifts. Both questions leave without a marker, per [Documentation Handoff → Optional Sections](./documentation-handoff.md#optional-sections).
+- Deleting the `## Anticipated Work` line on **Versioning Strategy**: it asks how versioning works in a non-file-centric system — content versions, snapshot versions, logical timestamps — which is broader than the coexistence of snapshot state with task-centric evolution, so it stays as work still owed.
+- Narrowing the **Versioning Strategy** line to exclude the snapshot half, since that half is now settled: the line's own question — how versioning works where there are no files — is not what the deleted question asked, and rewording it would be an edit the closed question does not justify.
+
+---
+
+### Hierarchy is a projection, not the crossover's location
+- Time: 2026-10-04T20:14:25Z
+- Type: Changed
+- Propagates to:
+  - knowledge.handoff.md: Done — the open question on where hierarchical classification is actually optimal was deleted; the answer is in the governing document.
+- Contributors:
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) — argued, drafted, applied
+
+#### What changed
+- [Classification Should Not Be Confined to a Single Hierarchy](./knowledge.md#classification-should-not-be-confined-to-a-single-hierarchy) gains a paragraph stating that a tree remains a legitimate projection where membership is genuinely single-parent — configuration baselines, taxonomic ranks, library classification — but that it is a projection and not the knowledge model: identity stays independent of position there as elsewhere, and a second taxonomy is added beside the tree rather than replacing it. The paragraph locates the crossover in the first question whose answer requires crossing facets rather than in a class of domains, and qualifies the section's Principle statement instead of excepting itself from it.
+- `knowledge.handoff.md` no longer carries the entry "Are there domains where hierarchical classification IS actually optimal?". Its other four entries — concurrent knowledge modification, Task decomposition, cultural factors, and the concept-hub entry point — are untouched.
+
+#### Considered and not done
+- **Naming configuration management, biological taxonomy, and library classification as domains where hierarchy is optimal (rejected):** the record cannot establish that membership in those domains is in fact single-parent. An assertion about them would be domain knowledge the principle does not rest on, and it would place the crossover in exactly the class of domains the paragraph's own sentence denies.
+- **Rewriting the deleted entry as a settled entry (rejected):** a handoff holds current state, and a rule recorded in the governing document must not be restated there — the duplicate is what drifts.
+
+---
+
+### Concurrent modification, the entry point, and Task decomposition resolved from what the principles already hold
+- Time: 2026-10-05T11:40:00Z
+- Type: Changed
+- Cited:
+  - [Terminology](./terminology.md) - Consumed definitions: Terminology Authority and Governance (one authoritative home per Definition, and the governing document where two disagree) and A Term Deliberately Left Open (Task as a term used but never defined in Memar).
+  - [Changelog](./documentation-changelog.md) - Consumed structure: Considered and not done, the home for reasoning examined and not applied.
+- Propagates to:
+  - knowledge.handoff.md: Done - three open questions removed: concurrent knowledge modification without locking semantics, whether the Task concept decomposes further, and the entry point into a knowledge system.
+- Contributors:
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) — argued, drafted, applied
+
+#### What changed
+- [Task-Centric Knowledge Evolution](./knowledge.md#task-centric-knowledge-evolution) gains a paragraph stating that concurrent modification is reconciled as what it is: two changes to one definition arriving at once are two decisions about the same invariant rather than two writes to one text, the invariant has one authoritative home, and what is reconciled is the claim and not the file — the revision that holds stands in the governing document, and the reasoning of the one that does not stays readable as Considered and not done.
+- [The Smallest Knowledge Unit Is Smaller Than You Think](./knowledge.md#the-smallest-knowledge-unit-is-smaller-than-you-think) gains a paragraph stating that an entry into a knowledge system is one of its units surfaced rather than a page — a concept carrying its definition together with the context that unit holds — and that a listing, a wiki page, or a search result remains a valid projection of that entry.
+- `knowledge.handoff.md` no longer carries three entries. "How do we handle concurrent knowledge modification without locking semantics?" and "What is the entry point into a knowledge system, and what does a concept hub carry?" are answered by the two paragraphs above. "Does the Task concept itself decompose further?" is answered by [Terminology → A Term Deliberately Left Open](./terminology.md#a-term-deliberately-left-open): Task is a term used but never defined in Memar, and what a Task is structurally, what states it has, and how one is identified belong to the project developing it. Its remaining entry, on cultural factors in principle adoption, is untouched.
+- The removed entry-point entry's registered candidate source, a wiki system named Genera, stays unregistered. No primary source for it has been read, so under [Documentation → Citations](./documentation.md#citations) it may prompt a question but may never carry a conclusion; the one thing it was registered to settle — whether that system's entry is a page or a unit surfaced — is settled here without it.
+
+#### Considered and not done
+- **Answering the entry-point question from a named external system (rejected)**: the handoff recorded the candidate and withheld its link until a primary source is read. A conclusion resting on an unread source is a claim the record cannot defend, and the conclusion the entry was reaching for follows from two principles this document already states.
+- **Naming a concept-hub type, or an entry-point pattern beside it (rejected)**: a Type carries the four elements [Terminology Authority and Governance](./terminology.md#terminology-authority-and-governance) requires before a term has authority, and the paragraph states what the entry carries without adding a word the framework would then have to govern.
+- **Defining Task here as Memar's own primitive, so the decomposition question could close in this document (rejected)**: [A Term Deliberately Left Open](./terminology.md#a-term-deliberately-left-open) states the price of taking the word — the concept cannot grow past the shape the framework's convenience gave it — and names the project where Task's structure is being worked out.
+- **Adding a locking or merge-semantics section beside the new paragraph (rejected)**: such a section would state a mechanism over the artifact rather than over the unit of evolution, which is the thing the paragraph identifies as what gets reconciled.
+- **Restating the entry-point conclusion in `knowledge.handoff.md` as a settled entry (rejected)**: a handoff holds current state, and a rule the governing document now carries must not be duplicated there.
+
+---
+
+### The domain-independence evidence named as one observer's route, and organizational knowledge management released from one project
+- Time: 2026-10-05T12:20:00Z
+- Type: Changed
+- Cited:
+  - [Protocol](./protocol.md) - Consumed definitions: Who Defines a Protocol (each definer's account is decidable at the level of the organization that offers it; plurality of definers is what makes convergence objective rather than hypothetical).
+  - [Terminology](./terminology.md) - Consumed definitions: A Term Deliberately Left Open (what a Task is structurally belongs to the project developing it, not to the framework) and Terminology Authority and Governance.
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) — argued, drafted, applied
+
+#### What changed
+- [Methodology](./knowledge.md#methodology) now names its warrant for domain-independence as one observer's, and records the stronger route beside it: "That is one observer's route to that conclusion, and the record should name it as such rather than let it read as the only available one. The stronger route is that separate organizations have arrived at these failures and the principles addressing them independently; each states its account at the level of the organization that developed it ([Protocol → Who Defines a Protocol](./protocol.md#who-defines-a-protocol)), and their agreement where they overlap is what identifies the concept they are each modelling rather than leaving it assumed."
+- The scope boundary under [Knowledge in Memar's Concept Web](./knowledge.md#knowledge-in-memars-concept-web) now reads that knowledge management as an organizational discipline "belongs to whichever project is developing it; the Organization project is where that development is happening, not where the concept is owned."
+
+#### Deliberation
+- Both passages were identified in an earlier read-only pass of this session by the same participant now applying them, which surveyed `docs/` for passages in tension with the organizational-plurality ruling; that ruling was made elsewhere in this session and applied to the Protocol document earlier in the wave.
+- The Methodology sentence was left standing and named rather than replaced. The cross-domain observation is real evidence and this document performed it; dropping it in favour of independent arrivals would replace a warrant the record holds with one it does not yet hold, since no second organization's independently arrived-at account of these principles has been read.
+- The scope-boundary sentence was read as naming where the work happens rather than where the concept lives, because that is what the surrounding clause does elsewhere: it routes creation workflows, tacit-to-explicit conversion practice, sector adoption patterns, and change management out of this document. Ownership language would have said the concept has one home, which is the claim the change removes.
+- The open question "How do cultural factors affect principle adoption?" stays. It asks whether the principles need cultural localization, and what this entry records is which warrant supports their universality — a different question, and one the entry's own wording keeps open by stating the independent-arrival route as stronger without asserting that it has been satisfied.
+- The Anticipated Work entries on migration and the Task domain model are untouched; both still name the Organization project as where that work is done, which this change now reads the same way.

@@ -296,7 +296,7 @@ Open questions (dot-boundary criterion, entry-title uniqueness, historical-entry
 
 #### What changed
 - CONTRIBUTORS.md: `## Stealth Models` now states what the field guide is, and the two codenames this project ran under sit under it as `###` sections. `Ox Alpha` carries a `Revealed as` field pointing at `Super Z` and no `Models` list, because a codename is not a model: the contributions made while it stood for a model are recorded in this repository under the name it was revealed as, and a reader arriving at either name needs the other. `Space Bunny Alpha` carries the one identifier this project runs the model under. The label a bullet carries is the codename or brand, so `#space-bunny-alpha` and `#ox-alpha` are the anchors its bullets resolve to.
-- Nine attribution bullets across eight files named the host tool or the legal person where the model belonged, and one of them named a section that does not exist. Each now names the model and links to its `###` section, with the host tool kept in the `via` field: `[OpenCode] (opencode/space-bunny-free)`, `[OpenCode] (space-bunny-free via OpenCode)`, `[Space Bunny Free](#space-bunny-free)`, `[Anomaly Innovations](…#anomaly-innovations) (space-bunny-free via OpenCode)`, and `Space Bunny Alpha (space-bunny via OpenCode)` all became `[Space Bunny Alpha](…#space-bunny-alpha) ({ModelName} via [OpenCode](…#opencode))`. The three prose attributions that named the host tool inline — `opencode/space-bunny-free` — now name the model, which is the form this specification's inline-attribution paragraph uses.
+- Nine attribution bullets across eight files named the host tool or the legal person where the model belonged, and one of them named a section that does not exist. Each now names the model and links to its `###` section, with the host tool kept in the `via` field: `[OpenCode] (opencode/space-bunny)`, `[OpenCode] (space-bunny via OpenCode)`, `[Space Bunny Free](#space-bunny)`, `[Anomaly Innovations](…#anomaly-innovations) (space-bunny via OpenCode)`, and `Space Bunny Alpha (space-bunny via OpenCode)` all became `[Space Bunny Alpha](…#space-bunny-alpha) ({ModelName} via [OpenCode](…#opencode))`. The three prose attributions that named the host tool inline — `opencode/space-bunny` — now name the model, which is the form this specification's inline-attribution paragraph uses.
 - Seven bullets in the Khayyam folder carried `[OpenCode] (qwen3.8-flash)`, one research record's Researcher line carried `[OpenCode]` with `mimo-v2.6-flash`, and a second research record's Researcher line named the host tool with no model at all; each now names its model.
 - Twenty-four bullets across eleven files left the host tool in the `via` field as plain text where this specification states the label stays the tool's own name linked to its `###` section; each now carries that link, and one `[Qwen]` bullet that recorded no host at all gained the field.
 - Six files carried every em dash, arrow, and curly quotation mark as the two- and three-character sequence a byte-level decode produces. Each was restored from that sequence back to the character it stands for, and the repository now holds no sequence of that shape outside build output.
@@ -315,7 +315,7 @@ Open questions (dot-boundary criterion, entry-title uniqueness, historical-entry
 - Time: 2026-10-04T00:00:00Z
 - Type: Added
 - Cited:
-  - [Comparison: Memar and GitHub Spec Kit](./comparisons/spec-kit.md) - **Reference**: whose Adapt filter produced the item. Spec Kit's `/converge` states "completion claims are not evidence" for its progress markers, which Memar had as a principle for expectations and not as a rule about who may judge a change.
+  - [Comparison: Memar and GitHub Spec Kit](./comparisons/spec-kit.001.md) - **Reference**: whose Adapt filter produced the item. Spec Kit's `/converge` states "completion claims are not evidence" for its progress markers, which Memar had as a principle for expectations and not as a rule about who may judge a change.
 - Propagates to:
   - [documentation-changelog.practice.md](./documentation-changelog.practice.md): Done - the procedure that carries out the rule, kept beside the facet rather than in any agent skill, because the conditions bind whoever writes the entry and a rule that lives in the tooling disappears with the tooling.
   - [.agents/skills/memar/SKILL.md](../.agents/skills/memar/SKILL.md): Done - one clause naming which reviewer this runtime supplies, and nothing else. The first draft of this work put the whole rule there, which was wrong in a way worth recording: it made a facet's obligation depend on a skill that a future server or MCP transport would not have. That file carries no changelog of its own.
@@ -323,7 +323,7 @@ Open questions (dot-boundary criterion, entry-title uniqueness, historical-entry
   - [documentation-explanation.md](./documentation-explanation.md): None needed - no document-structure rule changes.
 - Contributors:
   - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - decided the two-role arrangement
-  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny-free via [OpenCode](../CONTRIBUTORS.md#opencode)) - drafted
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) - drafted
 
 #### What changed
 - [Contributors (entry field)](./documentation-changelog.md#contributors-entry-field) gains [Approval Requires a Reviewer Who Did Not Do the Work](./documentation-changelog.md#approval-requires-a-reviewer-who-did-not-do-the-work). `approved` is separated from the rest of the open role vocabulary because it is the one tag that judges the entry's own correctness rather than describing a contribution, and three conditions now hold it: the reviewer did not do the work, the reviewer returns a verdict naming what it ran and what the run returned, and no verdict means no `approved` - a withheld verdict goes into the entry with its reason, and an unapproved entry is the correct state for unchecked work rather than a gap to tidy.
@@ -336,3 +336,39 @@ Open questions (dot-boundary criterion, entry-title uniqueness, historical-entry
 - **Adding a third role - an owner who issues the certificate after the internal audit (not added):** the two-role form the owner described is what is implemented. Whether an outside signature is wanted on top of it is a separate question and would be a change to [Terminology " + chr(0x2192) + " On Independent Verification, Today](./terminology.md#on-independent-verification-today), not to this field.
 - **A closed role taxonomy for the vocabulary (rejected for now, unchanged):** the section still says the vocabulary is open. Fixing it is a separate decision, and the approval rule does not depend on it.
 - **Requiring the reviewer to be a different *kind* of participant (a human, or a specific model) (rejected):** what the rule needs is independence from the work, not a roster. Naming a roster would make the tag unavailable whenever the roster is unavailable, which is most of the time.
+
+---
+
+### The dot-boundary entry leaves the changelog handoff; Changelog scope states the criterion
+- Time: 2026-10-04T18:19:38Z
+- Type: Fixed
+- Propagates to:
+  - documentation-changelog.handoff.md: Done - the companion-naming dot-boundary entry was removed; Changelog scope states the criterion and names the counter-example (handoff: no entry of its own).
+- Contributors:
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) - argued, applied
+
+#### What changed
+- *The dot-boundary criterion for companion naming* left `## Open Questions`: [documentation-changelog.md -> Changelog scope](./documentation-changelog.md#changelog-scope) gives the criterion and its counter-example - "the companion rule keys on the **dot** ... and does not reach hyphenated standalone documents that merely end in 'practice' or similar", with `documentation-practice.md` named as the standing counter-example.
+
+#### Considered and not done
+- A derivability test for a hypothetical name falling between the two patterns was not added to the section (Space Bunny Alpha - argued). The section already states the discriminator and the exclusion, so a name is classified by a stated rule rather than by case-by-case judgment; no real case exists from which a further criterion could be derived.
+
+---
+
+### A verdict is the reviewer's comparison; a command is its strongest evidence, not the only admissible one
+- Time: 2026-10-05T17:20:58Z
+- Type: Changed
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) — argued, drafted, applied
+
+#### What changed
+- [Approval Requires a Reviewer Who Did Not Do the Work](./documentation-changelog.md#approval-requires-a-reviewer-who-did-not-do-the-work), condition 2, defines a verdict as the reviewer's own comparison of what now holds against what the entry claims, naming what it examined and what it found, and naming a command and its output where one can show the claim false. A verdict may rest on reading alone where reading decides the claim; what still disqualifies an opinion is that it names nothing examined.
+- That condition now says in terms what keeps the tag from becoming self-certification: the first condition, the reviewer's independence from the work, not the presence of a command. The tag is narrowed only in what a verdict may rest on.
+- The closing paragraph's "using evidence it ran itself" becomes "over evidence it gathered and weighed itself", so the document no longer describes every audit as command-backed when condition 2 no longer requires one.
+- [documentation-changelog.practice.md → Recording an approval](./documentation-changelog.practice.md#recording-an-approval) follows: step 1 no longer rules a reading-decided change out of review, only out of the second party's usual cost; step 2's evidence bullet asks for the command where one exists and the passages to read where reading decides, and a brief naming neither now produces the bare opinion that establishes nothing; and the *Permitted* outcome asks the entry to record what the verdict examined and found, so a later reader weighs the same evidence and reaches the verdict in its own mind rather than re-running in place of judging.
+- [documentation-changelog.practice.md → What this is not](./documentation-changelog.practice.md#what-this-is-not) carries the same correction to its first sentence.
+
+#### Considered and not done
+- Weakening condition 1, or making a reviewer of a reading-decided change cheaper to skip: the load-bearing half of the tag is that the party that did the work may not judge it, and nothing here touches that. An opinion remains worthless when it names nothing examined, so the tag records a comparison rather than a feeling.
+- Dropping the requirement that an approved entry record what was examined: without it the later reader inherits the verdict instead of the evidence, which is the substitution this change was made to stop.

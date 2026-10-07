@@ -20,7 +20,7 @@ Active
 
 ## Participants
 - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) → `Questioner`, `Goal-setter`
-- [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny-free via [OpenCode](../CONTRIBUTORS.md#opencode)) → `Researcher`, `Reviewer` (Approved, with the open questions recorded)
+- [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) → `Researcher`, `Reviewer` (Approved, with the open questions recorded)
 
 ## Methodology
 A pass over the primary sources on 2026-10-04: RFC 9562 (UUID versions 1, 6, 7, 8 and §6 on distributed generation), the ULID specification, the KSUID README, the W3C Trace Context recommendation, Anthropic's published context-engineering article, the Claude Code session and architecture documentation, LangGraph's checkpointer and persistence documentation, tmux(1), `git interpret-trailers`(1), the Conventional Commits specification, GitHub's issue-linking documentation, the Twelve-Factor App's disposability section, and the specification project's own PowerShell sources. Each claim below carries its source; reasoning from a source is marked as such.
@@ -74,7 +74,7 @@ A pass over the primary sources on 2026-10-04: RFC 9562 (UUID versions 1, 6, 7, 
 - [Documentation Handoff](./documentation-handoff.md): the facet whose record this identity would annotate. No change made.
 - [Documentation](./documentation.md): where a session field's facet ownership would be stated if the owner adopts one. No change made.
 - [Process Research 001](./process.research.001.md): the inquiry this half was split out of, and the reason for the split.
-- [Comparison: Memar and GitHub Spec Kit](./comparisons/spec-kit.md): recorded the absence this research answers.
+- [Comparison: Memar and GitHub Spec Kit](./comparisons/spec-kit.001.md): recorded the absence this research answers.
 
 ## Notes
 This research was split out of [Process Research 001](./process.research.001.md) after its first two questions were answered. A research is paired to the base artifact whose subject it is, and the two halves of the original inquiry did not share one: decomposition is a question about the Process concept, while identifying a session is a question about the record that survives one. Keeping both under `process.md` would have made a concept document answer for a records mechanism it does not own.

@@ -379,7 +379,7 @@
   - [documentation-handoff.md](./documentation-handoff.md): None needed from this entry - the question of identifying a session became [Handoff Research 001](./documentation-handoff.research.001.md) and is recorded beside its own facet.
 - Contributors:
   - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - questioned, decided the scoping framing
-  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny-free via [OpenCode](../CONTRIBUTORS.md#opencode)) - researched, drafted, wrote the record
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) - researched, drafted, wrote the record
 
 #### What changed
 - [Process Research 001](./process.research.001.md) is opened against this document, on whether Memar owns work decomposition and whether the absence of a per-feature artifact set is scoping or omission. Both questions are answered.
@@ -397,12 +397,12 @@
 ### Require an inquiry's candidates to compete
 - Time: 2026-10-04T13:27:43Z
 - Cited:
-  - [Process Research 002](./process.research.002.md) - Evidence: the coverage survey behind the change and the boundary decision behind what was left out
+  - [Process Research 002](./process.audit.002.md) - Evidence: the coverage survey behind the change and the boundary decision behind what was left out
 - Propagates to:
   - process.handoff.md: Done - two open questions added under *Defect Resolution as an Inquiry* and one under *Expectations and Checks*
 - Contributors:
   - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - decided
-  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny-free via [OpenCode](../CONTRIBUTORS.md#opencode)) - claimed, argued
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) - claimed, argued
 
 #### What changed
 - *Defect Resolution as an Inquiry* gained a paragraph stating two properties of an inquiry's evidence: its candidate causes are held in the plural, and every candidate names the observation that would refute it.
@@ -416,3 +416,161 @@
 
 #### Deliberation
 The change was first proposed as a wider import — the causal decomposition, the tree, and the intervention point together, on the reasoning that a document owning *Intent* and the inquiry is the natural home for the disciplines qualifying them (Space Bunny Alpha — argued). The owner rejected the direction and restated the boundary: this document explains the concept of a process, and how a development or a defect investigation is carried out is not that (Omid Hekayati — decided). The epistemic half survived the correction, because it specifies what the topic already required; the structural half did not, and went to the handoff as questions (Space Bunny Alpha — argued).
+
+---
+
+### Six open questions closed by passages already in the record
+- Time: 2026-10-04T00:00:00Z
+- Type: Fixed
+- Propagates to:
+  - process.handoff.md: Done — six entries removed from *Open Questions*; each answer already stood in a document the handoff pointed to, and the two that were never open in it were dropped (handoff: no entry of its own).
+  - process.md: Done — *Definition* and *Process Definition and Process Instance* already carry the two definitional answers; no edit was needed.
+  - protocols/process/event.md: Done — *What an Event Is* and *What an Event Is Not* already answer the categories and envelope-identity questions; no edit was needed.
+  - protocols/process/error.md: Done — *Immutability* already states the boundary an event envelope would have to respect; no edit was needed.
+  - protocols/net/sRPC.md: Done — *Requests, Cancellation, and Timeout* and *Position on Message Brokers* already hold the deferred wire contract and the settled delivery position; no edit was needed.
+- Contributors:
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) — argued, applied
+
+#### What changed
+- Under *Definition*, two questions left the handoff: whether temporal progression is intrinsic to the definition, and whether a Process can exist conceptually without an enactment. Both answers are already carried by [process.md → *Definition*](./process.md#definition) and [process.md → *Process Definition and Process Instance*](./process.md#process-definition-and-process-instance), and no body text changed.
+- The *Process Definition and Process Instance* heading left *Open Questions* with its single entry; the section now exists only in `process.md`, so the handoff carries no duplicate of it.
+- Under *Events*, the question of named categories of event left the handoff, answered by [event.md → *What an Event Is*](./protocols/process/event.md#what-an-event-is) — every kind of event is its own abstraction — together with *What an Event Is Not*, which separates an event from a command, from a continuation, and from its representation.
+- The question of an event's own envelope identity left the same section, answered by the same section: `Event` composes `Observer_DataType`, `Observer_Time`, and `Logic_Equivalence`, and nothing else the protocol requires, so a payload rides on the kind's own declaration rather than in a widened base contract; [error.md → *Immutability*](./protocols/process/error.md#immutability-an-error-is-a-fixed-contract-member-not-an-accumulating-envelope) marks the same log-stream boundary that makes per-request data a record's business rather than a contract member's.
+- The wire-level cancellation contract left *Requests, Cancellation, and Timeout*. It was never a Process question: [sRPC's handoff → *The wire-level cancellation contract*](./protocols/net/sRPC.handoff.md) records that Process defers it there, and this changelog's `Requests, Cancellation, and Timeout` entry records the condition under which the topic graduates into a protocol document.
+- The delivery-semantics entry left the same section together with it, and the *Events* heading went with all three of its entries. The entry's own position — that delivery semantics stay where they already sit — is what [sRPC.md → *Position on Message Brokers*](./protocols/net/sRPC.md#position-on-message-brokers) states: the broker's mechanism belongs in a library inside the application's own architecture, not in a separate standalone service.
+- No base document body was edited, and no entry was left behind as a record of its own removal.
+
+#### Considered and not done
+- Rewriting the two definitional answers into `process.md` as sharper statements was not done (Space Bunny Alpha — argued). The definition already names "a bounded progression of related activities, interactions, or changes", and *Process Definition and Process Instance* already states that a process model must not be confused with any single execution of it; a second wording would be the duplicate the handoff facet exists to prevent.
+- Adding an envelope-identity statement to `event.md`, so the question would be answered in prose rather than by the composition alone, was not done (Space Bunny Alpha — argued). The section states what the composition contains and what follows from it, and a separate envelope would reintroduce the accumulating-envelope shape `error.md` rejects.
+- Naming the three non-event cases the owner's discussions grouped under the word event — the SDK's delegation case, the coordination signal, and the log record — was not done (Space Bunny Alpha — argued). Each is already owned by the protocol that owns it, which is the outcome the question asked to choose between.
+- Moving the delivery-semantics position into `process.md` was not done (Space Bunny Alpha — argued). It concerns sRPC's placement of the broker mechanism, not the Process concept, and its home is already the section that argues it.
+
+---
+
+### Three handoff questions closed by answers the record already carries
+- Time: 2026-10-04T18:30:57Z
+- Type: Fixed
+- Propagates to:
+  - process.handoff.md: Done — the Check-document, Defect-document, and State/Transition questions left the handoff, each already answered by a recorded criterion or by the body they belong to (handoff: no entry of its own).
+- Contributors:
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) — argued, applied
+
+#### What changed
+- Three entries left [process.handoff.md](./process.handoff.md)'s Open Questions; each was already decided by text the record carries, so no body edit was made.
+- *Whether **Check** warrants its own concept document* — answered by the self-standing test recorded in [agency.changelog.md → Considered and not done](./agency.changelog.md#considered-and-not-done): "volume is not the criterion Memar uses for whether something is an independent Concept", the relevant question being whether the concept can be defined without first defining its parent. [Expectations and Checks](./process.md#expectations-and-checks) answers that question for Check — "a check presupposes a process — a model whose expectations precede its instances" — and the entry's own worry, recurrence across testing, inspection, review, and auditing, is volume, which that criterion excludes.
+- *Whether **Defect** warrants its own concept document* — the same recorded test, applied to [Defect Resolution as an Inquiry](./process.md#defect-resolution-as-an-inquiry): "The concept presupposes the expectation — behavior can be contrary only to something stated". Defect is a negative check verdict, so its definition is available only where a stated expectation and the check that returns a verdict are already defined.
+- *Whether State and Transition are intrinsic concepts of Process or useful modeling dimensions that apply only to some processes* — answered by [Process Modeling](./process.md#process-modeling): a useful model *may* identify "relevant state, meaningful transitions", and "Not every process requires all of these elements", so neither is required of a process rather than intrinsic to it.
+
+#### Considered and not done
+- **Closing the Request, Process/Protocol, Workflow, and Observation questions on the passages named for them** — [Process Is Not a Mechanism](./process.md#process-is-not-a-mechanism), [Protocol, Process, and System](./protocol.md#protocol-process-and-system), [Process and Workflow](./process.md#process-and-workflow), and [System → When Is a Responsibility Coherent?](./system.md#when-is-a-responsibility-coherent) each state something true beside those four questions: that a request is an interaction and not a process, that the general System/Process theory is covered in full elsewhere, that a workflow is one possible representation of a process, and where the general observed-property relationship is stated. None of them states whether the concept in question can be defined without first defining Process, and none says whether further documentation of it is or is not required; restating them as answers would be answering a weaker question than the handoff asks, so the entries stay open.
+
+---
+
+### Development decomposition stated once, in Process
+- Time: 2026-10-05T05:30:00Z
+- Type: Added
+- Cited:
+  - [Process Research 001](./process.research.001.md) - **Reference**: the inquiry that found decomposition already owned in Test Practice Scaling and recommended promotion by citation rather than restatement.
+  - [Comparison: Memar and GitHub Spec Kit](./comparisons/spec-kit.001.md) - **Reference**: the second-opinion footprint that showed `decompos*` naming four concepts across 50 files, of which only work-decomposition was disputed.
+- Propagates to:
+  - [process.md](./process.md): Done - new `Development decomposition` subsection under Development as a Process.
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - directed, decided
+  - [Meta AI](../CONTRIBUTORS.md#meta-ai) (muse-spark via [OpenCode](../CONTRIBUTORS.md#opencode)) - argued, applied
+
+#### What changed
+- `process.md` now states work-decomposition once: a development decomposes into developments each with its own intent, participants, state, and written expectations; composition is containment without loss of identity, explicitly not a tree; scale changes how much an expectation states, never whether first. It cites Test Practice Scaling for the operational unit and Composition, Workflow, and Documentation Explanation for the exclusions (no phase sequence, no per-artifact templates, no progress in artifact). Memar owns how a development decomposes; the concrete per-feature set belongs to consuming projects, finished delivery to Enterprise.
+- The remaining three senses (cognitive operation, domain decomposition, lexical decomposition) were deliberately left where their homes already state them; the per-file pointer list is queued for owning sessions rather than applied here.
+
+#### Considered and not done
+- Promoting the research's paragraph verbatim (rejected): the research text restates what Test Practice already holds; the subsection cites instead of restating, per the Content Rule.
+- A single home for all four senses (rejected): one home for cognitive, domain, work, and lexical decomposition would be a category error.
+
+---
+
+### Definition, defect lifecycle, and caller abandonment settled
+- Time: 2026-10-05T09:41:56Z
+- Type: Added
+- Propagates to:
+  - process.handoff.md: Done — four entries left Open Questions (under Definition, Expectations and Checks, Defect Resolution as an Inquiry, and Requests, Cancellation, and Timeout); one was already answered by the record and three were derived from held principles.
+  - protocols/net/sRPC.md: Partial — the conceptual half of its open wire-level cancellation contract is now stated in Process (a caller that stops waiting decides nothing; the process decides, in its own state); the wire-level contract itself is sRPC's to state.
+- Contributors:
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) — argued, drafted, applied
+
+#### What changed
+- [Definition](./process.md#definition) now states that no ordering property belongs to the definition in any strength: a process may impose order on some activities and none on others and is a process either way, so such a property narrows nothing about what a process is, and what a process does constrain about ordering is stated with the conditions that constrain it.
+- [Defect Resolution as an Inquiry](./process.md#defect-resolution-as-an-inquiry) now states that the lifecycle a defect passes through is not a process model of its own — each of its states is a condition or an outcome of a process as State and Transition and Outcomes describe them, applied to the defect situation — and that which states a given defect-reporting arrangement uses is that arrangement's own to state, in the protocol that defines it.
+- [Requests, Cancellation, and Timeout → Cancellation from outside the executing body](./process.md#cancellation-from-outside-the-executing-body) now states that a caller that stops waiting has ended its own interaction and decided nothing about the process, that whether the higher-level process is cancelled, continues elsewhere, or continues with this attempt detached from it is decided by the process under the rules that govern it, and that the decision is recorded in the process's own state rather than in the abandoned attempt.
+- The handoff's question on the boundary between expectations stated for the inquiry process and expectations for the inquiry's subject left *Expectations and Checks* with no body edit: the boundary is already stated once, as the three things an inquiry must produce, and [Test → Test, Verification, and Inquiry](./protocols/process/test.md#test-verification-and-inquiry) routes its three cases on that same statement, so the worked treatment the question weighed is the topic's own. The mirror in `test.handoff.md` is untouched.
+- The *Definition* heading left *Open Questions* with no entries left under it.
+
+#### Considered and not done
+- Deciding whether a check's expectations must carry a baseline and a declared limit on what may get worse (still open under Expectations and Checks), and whether every Process must have an identifiable intent (still open under Intent): neither is forced by a held principle, and both change what other documents require, so they are the owner's to decide.
+- Restating the boundary between inquiry expectations and subject expectations as a sharper rule in the body: the Defect Resolution topic already states it and Test already routes on it; a second wording would be the duplicate the handoff facet exists to prevent.
+- Listing the defect lifecycle's states by name (reported, confirmed, resolved, rejected, deferred): those are the words a defect-reporting arrangement uses, and fixing them here would settle vocabulary the protocol that defines that arrangement owns.
+
+---
+
+### The evaluation of a process is Test's discipline, unsoftened
+- Time: 2026-10-05T00:00:00Z
+- Type: Added
+- Propagates to:
+  - [process.handoff.md](./process.handoff.md): Done — the *Expectations and Checks* question on whether a check's expectations must carry a baseline and a declared limit on what may get worse left the handoff; the ruling decides it, and the four-roles entry beside it stays open.
+  - [protocols/process/test.md](./protocols/process/test.md): Done — the same obligation stated where the protocol layer states it, per its companion entry.
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) — argued, drafted, applied
+
+#### What changed
+- [Expectations and Checks](./process.md#expectations-and-checks) now states that evaluating a process instance is a cognitive act performed with Test's discipline as written, by every party in its own mind — author, reviewer, auditor, a later session's agent — and that no party holds a laxer version than another. A tool's green run is evidence the party weighs, never a substitute for the act, and the absence of a mechanical comparison is no ground for a lighter standard: where no runner exists the comparison is made anyway, by the party that owes it.
+- The same topic now states the consequence for how an expectation is written: an expectation whose form does not reach what the discipline needs in order to reach a verdict cannot yield one, so an expectation states the model it is judged against, the instance it is judged on, and, for a check whose subject can degrade, the limit on how much worse that instance may be on the way. Where the subject cannot degrade, the expectation states the state that must hold at the end, which is the state the instance is measured against — the discipline's own requirement of such a domain, not a release from it.
+- What the discipline fixes is what an expectation must reach, not the shape it takes: the form remains the domain's, and the topic says so rather than introducing a record schema.
+- The handoff's baseline-and-declared-limit entry is deleted, heading line included, with no marker left behind. Its numbering does not shift, since the surviving entry keeps the number it was tracked under.
+
+#### Deliberation
+- Omid Hekayati ruled, in Persian: "As to how a process is to be evaluated, if it is to be evaluated it must be shaped in the mind of every party by the strictness of that very document test, and we must not weaken anything. If I have misunderstood again, explain it again so I can state my opinion more precisely."
+- Space Bunny Alpha read the ruling as bearing on two things at once, and the reading was adopted without hedging in the documents: the discipline every party applies when it evaluates an instance, and the obligation that an expectation be decidable under that discipline rather than merely present. The ruling's two halves are one requirement — a discipline applied strictly to an expectation too thin to decide against cannot be applied at all — so the topic states them as consecutive paragraphs rather than as separate rules.
+- The ruling was checked against the topics around it before being applied. *Defect Resolution as an Inquiry* already requires that a candidate cause be checked against the stated model, so nothing there needed restating and the topic's two handoff questions stay open: the ruling decides how an evaluation is performed, not what an inquiry returns. The *four overloaded roles* entry under the same handoff section was left exactly as it stands, being a question about vocabulary rather than about strictness.
+- A three-field record schema was considered and not taken. The obligation falls on the expectation being decidable and on the discipline being applied unsoftened; a fixed field list would fix a shape the domain owns, which is what [Test → The Form the Expectation Takes Is the Domain's](./protocols/process/test.md#the-form-the-expectation-takes-is-the-domains) already denies.
+
+#### Considered and not done
+- Restating the ruling in *Defect Resolution as an Inquiry*, where an inquiry's own expectations are stated: not done, since the topic already routes on the same ordering and a second wording would be the duplicate the handoff facet exists to prevent.
+- Naming the words *baseline*, *finish line*, and *guard condition* for the limit an expectation carries: not done; the ruling decides what the expectation must state, and fixing vocabulary for a guard concept the document set has never used is a separate question.
+
+---
+
+### A cause is checked against the defect's whole stated expectation, not its model alone
+- Time: 2026-10-05T17:20:58Z
+- Type: Changed
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) — argued, drafted, applied
+
+#### What changed
+- [Defect Resolution as an Inquiry](./process.md#defect-resolution-as-an-inquiry) now judges a candidate cause against the defect's expectations as *Expectations and Checks* states them — the model, the instance, and the limit on how much worse it may be — rather than against the stated model alone. A cause supported only by consistency with the observations available still has no verdict; what changed is that a comparison reaching the model and nothing else could not have produced one either.
+
+#### Considered and not done
+- [Development decomposition](./process.md#development-decomposition) closes with "scale changes how much an expectation states, never whether it is stated first", which carries the same clause this entry removes from the inquiry: read alone, it lets an expectation at small scale state less than the discipline needs to decide. Left as found rather than edited, since it was not in this change's scope; the replacement is reported to this document's owner.
+- The softer "a process that cannot be re-enacted still benefits from written expectations before it runs" under *Expectations and Checks*, which stands against Test's "it states its expectations before it runs": reported, not edited.
+
+---
+
+### The one-shot enactment and the scaled expectation say what the discipline requires
+- Time: 2026-10-05T17:39:20Z
+- Type: Changed
+- Cited:
+  - [Test → The Expectation Is Written Before the Work](./protocols/process/test.md#the-expectation-is-written-before-the-work) - Evidence: "a process that cannot be re-enacted is not thereby exempt: it states its expectations before it runs, and the fact that the check afterward may be unavailable limits the check's availability, not the ordering"
+  - [Test → The Form the Expectation Takes Is the Domain's](./protocols/process/test.md#the-form-the-expectation-takes-is-the-domains) - Evidence: varying the form does not vary what a Test must reach, so what scale may reduce is how much an expectation states and never whether it states what the discipline needs in order to decide
+- Contributors:
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) - argued, drafted, applied
+
+#### What changed
+- *Expectations and Checks*'s third boundary no longer says that a process which cannot be re-enacted "still benefits from written expectations before it runs". Such a process now "states its expectations before it runs, like any other; that the check after enactment may be unavailable or only partially available limits the check's availability, not the ordering, and does not exempt the process from stating what it was meant to receive and produce" — the disposition [Test → The Expectation Is Written Before the Work](./protocols/process/test.md#the-expectation-is-written-before-the-work) states for the same case, in this document's own vocabulary of the check, the model, and the instance. The boundary's other two cases, an enactment that is itself the means of discovery, and verification, are untouched.
+- *Development decomposition* closes with "scale changes how much an expectation states, never whether it reaches what the discipline needs in order to decide", in place of "never whether it is stated first". The two are not the same clause: what an expectation is stated first for is reach, and read alone the former clause left room for a small-scale expectation to state less than a verdict requires. The rest of the paragraph - containment and dependence without loss of identity, explicitly not a tree, and the operational unit stated in Test Practice - is unchanged.
+- These two passages discharge the two items this file's entry of 2026-10-05T17:20:58Z recorded as found and reported rather than edited, at its lines 554 and 555. Those lines stand as written: they record what was true before this change, and the propagation they point at has now been applied here.
+
+#### Considered and not done
+- **Rewriting the two bullets in the entry of 2026-10-05T17:20:58Z (rejected)**: entries here are appended and not rewritten, so what that entry recorded about its own scope is left as that entry stated it; a later entry is where the application is recorded.
+- **Adding a "how much unresolved disagreement may a scaled expectation carry" rule here (not done)**: what the clause now varies is how much an expectation states and what it must reach, and a number would fix a shape the domain owns - the same ground this file's entry of 2026-10-05T00:00:00Z took when it declined to name vocabulary or a field list for the limit an expectation carries.
+- **Editing the same clause in [test.practice.md → The Cycle](./protocols/process/test.practice.md#the-cycle) (not done)**: it carries the identical wording, and that file was outside this change's scope. Whether the practice layer states the same corrected clause is its own decision, taken where the practice companion is edited.
