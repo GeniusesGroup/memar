@@ -230,13 +230,13 @@ Dissolved every `#### Discussion` wrapper (the definition topic, Modes of Thinki
 - Time: 2026-09-14T20:30:00Z
 - Type: Changed
 - Cited:
-  - Sternberg, R. J. (1985). *Beyond IQ: A Triarchic Theory of Human Intelligence* (local copy: `chats-context/thinking/`) — Evidence: the two-tier structure the operations/disciplines layer continues — "I have identified seven metacomponents" (executive processes: deciding the problem, selecting lower-order components, selecting a representation, selecting a strategy) over performance components, with the analogical-reasoning set enumerated as "encoding and response components … and inference, mapping, application, comparison, and justification components"; mapping defined as forming the higher-order relation between the two halves of an analogy. The document's mapping operation and awareness-disciplines class are the Memar-form counterparts; no component name was imported.
-  - Guilford, J. P. (1967). *The Nature of Human Intelligence* (local copy: `chats-context/thinking/`) — Evidence: convergent production "is in the area of logical deductions … the prevailing function when the input information is sufficient to determine a unique answer" (the convergent mode's entry, verified at primary source this round); and "evaluation is defined as a process of comparing a product of information with known information according to logical criteria" — comparison under criteria is Guilford's own definition of evaluation, grounding the criterion-application operation.
+  - Sternberg, R. J. (1985). *Beyond IQ: A Triarchic Theory of Human Intelligence* — Evidence: the two-tier structure the operations/disciplines layer continues — "I have identified seven metacomponents" (executive processes: deciding the problem, selecting lower-order components, selecting a representation, selecting a strategy) over performance components, with the analogical-reasoning set enumerated as "encoding and response components … and inference, mapping, application, comparison, and justification components"; mapping defined as forming the higher-order relation between the two halves of an analogy. The document's mapping operation and awareness-disciplines class are the Memar-form counterparts; no component name was imported.
+  - Guilford, J. P. (1967). *The Nature of Human Intelligence* — Evidence: convergent production "is in the area of logical deductions … the prevailing function when the input information is sufficient to determine a unique answer" (the convergent mode's entry, verified at primary source this round); and "evaluation is defined as a process of comparing a product of information with known information according to logical criteria" — comparison under criteria is Guilford's own definition of evaluation, grounding the criterion-application operation.
   - Gick, M. L., & Holyoak, K. J. (1980). "Analogical Problem Solving." *Cognitive Psychology*, 12 — Evidence (primary-source numbers, closing this entry's predecessor's open qualifier): spontaneous transfer of a memorized analogous story, without a hint, occurred for 43% of subjects (20% with distractor stories in recall) versus 76% eventually succeeding once a hint was given; Duncker's own subjects produced the dispersion solution 2 of 42 times. The warrant for the analogical mode's closing contrast — deliberate search outperforms waiting to notice — now rests on verified numbers.
-  - Miyake, A., Friedman, N. P., Emerson, M. J., Witzki, A. H., Howerter, A., & Wager, T. D. (2000). "The unity and diversity of executive functions." *Cognitive Psychology*, 41 (local copy: `chats-context/thinking/`) — Evidence: the latent-variable decomposition into Shifting, Updating, and Inhibition under a common unity factor — the control layer itself decomposes into separable elementary functions, which is the operations layer's claim about thinking's control side.
-  - Facione, P. (1990). *Critical Thinking: A Statement of Expert Consensus for Purposes of Educational Assessment and Instruction* (the APA Delphi Report; local copy: `chats-context/thinking/`) — Evidence (primary source, closing the predecessor's partial verification): the panel's conceptualization "in terms of two dimensions: cognitive skills and affective dispositions"; a 61% majority held the dispositions part of critical thinking's very meaning; Table 5's dispositions carry 83% consensus. The skills/dispositions distinction is the field-side counterpart of the operations/disciplines two-kind layer.
-  - Moseley, D., Elliott, J., Gregson, G., Higgins, S., Miller, N., & Newton, D. (2005). "Thinking skills frameworks for use in education and training." *British Educational Research Journal*, 31(8) (local copy: `chats-context/thinking/`) — Evidence: the systematic review evaluated 35 frameworks (55 identified), organized by "identifying common features as well as differences between frameworks" — the field's vocabularies diverge over recurring functions, the published form of the mode-names-mislead motivation.
-  - Gentner, D. (1983). "Structure-Mapping: A Theoretical Framework for Analogy." *Cognitive Science*, 7 (local copies: `chats-context/thinking/`) — Evidence: analogy's interpretation as implicit rules mapping knowledge about a base domain into a target, over relations rather than surface attributes — the structure-mapping tradition the mapping operation continues.
+  - Miyake, A., Friedman, N. P., Emerson, M. J., Witzki, A. H., Howerter, A., & Wager, T. D. (2000). "The unity and diversity of executive functions." *Cognitive Psychology*, 41 — Evidence: the latent-variable decomposition into Shifting, Updating, and Inhibition under a common unity factor — the control layer itself decomposes into separable elementary functions, which is the operations layer's claim about thinking's control side.
+  - Facione, P. (1990). *Critical Thinking: A Statement of Expert Consensus for Purposes of Educational Assessment and Instruction* (the APA Delphi Report) — Evidence (primary source, closing the predecessor's partial verification): the panel's conceptualization "in terms of two dimensions: cognitive skills and affective dispositions"; a 61% majority held the dispositions part of critical thinking's very meaning; Table 5's dispositions carry 83% consensus. The skills/dispositions distinction is the field-side counterpart of the operations/disciplines two-kind layer.
+  - Moseley, D., Elliott, J., Gregson, G., Higgins, S., Miller, N., & Newton, D. (2005). "Thinking skills frameworks for use in education and training." *British Educational Research Journal*, 31(8) — Evidence: the systematic review evaluated 35 frameworks (55 identified), organized by "identifying common features as well as differences between frameworks" — the field's vocabularies diverge over recurring functions, the published form of the mode-names-mislead motivation.
+  - Gentner, D. (1983). "Structure-Mapping: A Theoretical Framework for Analogy." *Cognitive Science*, 7 — Evidence: analogy's interpretation as implicit rules mapping knowledge about a base domain into a target, over relations rather than surface attributes — the structure-mapping tradition the mapping operation continues.
 - Propagates to:
   - thinking.practice.md: Done — reshaped in the same session (the owner ruled the practice redesign belongs here, not in the separate upgrade session): the purpose line and front-matter description now name the operations layer; a new "Working With the Operations Layer" section operationalizes the Runs-on clauses (work at operation level when the mode name is insufficient, name the operation to make a critique checkable, switch to discipline level when drifting); a new "Named-Error Checks" section carries the sender-side bias signatures, the receiver-side fallacy forms, the both-paths به غلط rule, and the grow-per-project-not-from-generic-catalogs guidance — the named-error catalog work the body assigns to the practice layer.
   - thinking.handoff.md: Done — settled items left the handoff per its open-state-only rule (the mode-concept question, resolved by the operations layer, and the definition-naming record among them); the intra-system question was re-scoped with the biases/fallacies vocabulary; the TizFekri vocabulary survey item and the Runs-on reader test were added.
@@ -253,7 +253,7 @@ Dissolved every `#### Discussion` wrapper (the definition topic, Modes of Thinki
 - The predecessor entry's Gick & Holyoak citation qualifier ("quantitative pattern not independently re-verified") is discharged by this entry's primary-source verification.
 
 #### Deliberation
-- The owner asked why, after all the research, the primitives had landed only in the handoff; the honest answer recorded: the split followed his own apply-the-set/primitives-ride-the-upgrade-session decision and the confirm-before-large-scope-changes norm, but the primary-source pass that would have justified starting the rebuild was blocked on sources he then supplied — all eight works, downloaded to `chats-context/thinking/` — after which he converted this session into the rebuild session (Omid Hekayati — argued, decided).
+- The owner asked why, after all the research, the primitives had landed only in the handoff; the honest answer recorded: the split followed his own apply-the-set/primitives-ride-the-upgrade-session decision and the confirm-before-large-scope-changes norm, but the primary-source pass that would have justified starting the rebuild was blocked on sources he then supplied — all eight works, downloaded by the owner and read from that copy — after which he converted this session into the rebuild session (Omid Hekayati — argued, decided).
 - Every Evidence citation was re-verified against the local primary texts this round, replacing the secondary-source links where the primary copy exists; the two gaps the secondary round left open — Gick & Holyoak's quantitative pattern and Facione's dispositions attribution — both closed at primary source (Super Z — verified).
 - The thinking-as-process redefinition was proposed by the owner as a consequence of the named-errors framing: with errors defined, thinking can be seen as a system's process — and he noted the learning coupling as a likely designed-in characteristic of cognitive systems generally, offering an AI agent's mid-reasoning memory construction as the instance. The redefinition conforms the reused term *process* to its governing definition ([Process](./process.md)) and records the coupling as an observed characteristic, not a designed requirement (Omid Hekayati — claimed; Super Z — drafted).
 - The named-errors proposal arrived with the owner's dual framing — both Persian definitions built on به غلط, marking that both classes derail the path of thinking and of dialogue alike — and with his own reservation that the errors might not sit at the same rank as the awareness disciplines; the reservation was sustained: errors are not disciplines but the negative space of both layers, a third content class, with the intra-system/inter-system split mapping onto the conversation model's two sides (Omid Hekayati — claimed, argued).
@@ -438,17 +438,17 @@ Dissolved every `#### Discussion` wrapper (the definition topic, Modes of Thinki
 - Time: 2026-10-04T05:35:11Z
 - Type: Changed
 - Cited:
-  - [Comparison: Memar and GitHub Spec Kit](./comparisons/spec-kit.md) - **Reference**: the comparison whose adoption filter produced this change. GitHub Spec Kit's `/specify` bounds its clarification markers at three and orders them by impact; its `/clarify` caps the session at five questions and states a recommendation with its reason. Both were read against this document's norms, and the piece worth taking turned out to be the half the source project does not emphasize.
+  - [Comparison: Memar and GitHub Spec Kit](./comparisons/spec-kit.001.md) - **Reference**: the comparison whose adoption filter produced this change. GitHub Spec Kit's `/specify` bounds its clarification markers at three and orders them by impact; its `/clarify` caps the session at five questions and states a recommendation with its reason. Both were read against this document's norms, and the piece worth taking turned out to be the half the source project does not emphasize.
   - [Framework → Goal-Oriented Frameworks and Purpose Space](./framework.md#goal-oriented-frameworks-and-purpose-space) - **Extends by**: the consistency requirement the project README's new section now answers.
 - Propagates to:
   - [cognition.practice.md](./cognition.practice.md): Done - three changes, all recorded here because a practice companion is not an independent artifact whose history stands apart: the deferral checkpoint under Norm Application Points, the hard-rule-versus-ranking paragraph under Quality Standards, and the interactive-reply checkpoint the comparison's Adapt filter produced. A practice companion is not an independent artifact whose history stands apart, so both changes are recorded here rather than in a ledger of their own.
   - [README.md](../README.md): Done - a new section stating where Memar stops and where the work continues, which is the disclosure instance of the consistency requirement this entry's second change concerns. That file carries no changelog of its own.
   - [framework.md](./framework.md): None needed - the consistency requirement already states what the README section answers; the answer is not a new claim about the framework.
   - [.agents/skills/memar/SKILL.md](../.agents/skills/memar/SKILL.md): None needed - the skill's intake rules are stated as pointers into this document and inherit the norm's new shape without naming it.
-  - [.agents/scripts/memar-documentation.py](../.agents/scripts/memar-documentation.py), [.agents/scripts/README.md](../.agents/scripts/README.md): None needed - nothing in this change alters a document's written surface, and the check that reports open work is recorded in the [Documentation Changelog](./documentation-changelog.md).
+  - [.agents/scripts/memar-documentation.py](../.agents/scripts/memar-content.py), [.agents/scripts/README.md](../.agents/scripts/README.md): None needed - nothing in this change alters a document's written surface, and the check that reports open work is recorded in the [Documentation Changelog](./documentation-changelog.md).
 - Contributors:
   - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - directed, decided
-  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny-free via [OpenCode](../CONTRIBUTORS.md#opencode)) - drafted
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) - drafted
 
 #### What changed
 - [Ask rather than assume](./cognition.md#ask-rather-than-assume) is now two clauses rather than one, and they govern different things. Asking carries no budget: no cap on the number of questions turns the norm into a licence to proceed on an unstated premise, which is the failure it exists to prevent, and a question whose answer the material already implies is not diligence. Deferral carries one. Where an ambiguity is set aside rather than asked — the answer is not yet reachable, the counterpart is unavailable, the exchange must proceed — that deferral is a fact about the work, and it is recorded where it can be found again: the paired handoff's open questions, each naming the ambiguity it is rather than the topic it sits near, so that a reader six sessions later meets the unresolved question and not the subject it neighbours. The deferred set is ordered, so that what was set aside can be read in the order it will cost: an ambiguity that changes what the work *is* outranks one that changes how a part of it is done, and one that touches a premise the model rests on outranks one that touches a detail.
@@ -465,3 +465,81 @@ Dissolved every `#### Discussion` wrapper (the definition topic, Modes of Thinki
 - **Restating the deferral rule in the Memar skill (rejected):** the same second-home drift rejected in the 2026-09-15 and 2026-10-04 upgrades. The skill routes into this document; it does not carry a copy.
 - **Naming the source project in the norm's text (rejected):** the norm states what holds, and a comparative essay is where the comparison lives. A governing document that cited a neighbor for each of its clauses would make the neighbor load-bearing for the rule's meaning.
 - **Extending the README section to cover every document set that has not reached `Final` (rejected):** that is a coverage measure, and the section is an answer to a question about the framework's own practice. Where the framework has not settled something, the section says the question is open; where it has settled nothing at all, [Report absence](./cognition.md#report-absence-rather-than-supplying-it) is the norm that applies.
+
+---
+
+### A large change has a second moment, after it exists
+- Time: 2026-10-04T00:00:00Z
+- Cited:
+  - [Practice facet](./documentation-practice.md) - Reference: the split this entry follows, where an obligation lives beside the facet and only the runtime-dependent fact stays in the agent's own configuration
+- Propagates to:
+  - ../.agents/skills/memar/SKILL.md: Done - the clause this norm now carries was removed from the skill's large-scope rule, which had been its only home
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - decided
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) - claimed
+
+#### What changed
+- *Confirm before large-scope changes* now states the moment after the change exists: hold the applied result open for the counterpart's review and apply the feedback it carries, and that approval of a plan is not review of its outcome. Its failure-prevented clause gained the second failure alongside the first.
+- The clause was removed from the memar skill, which had been its only home, so that the skill points at the norm rather than carrying one of its two halves.
+
+#### Considered and not done
+- The second moment was not stated as a separate norm (Space Bunny Alpha - argued). It governs the same act at the same altitude and splitting it would let a session satisfy one half and ignore the other, which is the failure the clause now names.
+- The post-application obligation was not extended to the other discourse norms (Space Bunny Alpha - argued). Whether each norm has a second moment is a question this entry does not answer, and answering it for one norm by analogy would be the same over-reach the entry corrects.
+
+---
+
+### Four open questions retired to sections that already answer them
+- Time: 2026-10-04T18:18:05Z
+- Type: Fixed
+- Propagates to:
+  - cognition.handoff.md: Done - four open-question entries removed; the answers already stand in `cognition.md` (handoff: no entry of its own).
+- Contributors:
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) - argued, applied
+
+#### What changed
+- *Are the four functional groups the right partition?* left the handoff; [Grouping Notes](./cognition.md#grouping-notes) already holds the answer — the groups are a navigation aid, revised when they stop being useful.
+- *The 4E grounding's adoption depth* left the handoff; [Grounding: Cognition and the 4E Framing](./cognition.md#grounding-cognition-and-the-4e-framing) already holds it — the extended claim is what Memar depends on, and the embodied, embedded, and enacted claims are recorded as context, not yet operationalized.
+- *The other cognitive processes* left the handoff; [What Cognition Is](./cognition.md#what-cognition-is) already names perception, attention, memory, and learning as coupled processes and states that the others are named here so that later work on them finds its home under this concept.
+- *The medium's role as its own topic* left the handoff; [A Conversation as Two Cognitive Systems Connected Through a Medium](./cognition.md#a-conversation-as-two-cognitive-systems-connected-through-a-medium) already states that medium properties do not belong in the document beyond their recognition and the obligations they trigger.
+
+#### Considered and not done
+- *Which further modes belong here* stays open. No section of `cognition.md` states a criterion for admitting a further mode; the growth rule the question depends on is the changelog argument rule, and nothing in the document has yet earned its application.
+- The handoff's `## Anticipated Work` lines were left untouched; none of them scheduled only these four questions.
+
+---
+
+### The mode list's current verdict recorded against the criterion the body already states
+
+- Time: 2026-10-05T10:12:46Z
+- Type: Changed
+- Propagates to:
+  - cognition.handoff.md: Done - the *Which further modes belong here* entry left Open Questions. The criterion that answers it was already in the body; what was missing was the criterion applied to the entry's own candidates, which is what this change records.
+- Contributors:
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) - argued, drafted, applied
+
+#### What changed
+- [Grouping Notes](./cognition.md#grouping-notes) now carries the membership criterion's current verdict rather than only the criterion: no further mode earns a place at present, because the ecosystem's named inferential types decompose into stable combinations of the elementary operations named beneath them rather than adding a function none of them serves, and the judgment of evidence quality and strength of claim is already the Critical mode's.
+
+#### Considered and not done
+- **Continuing to leave *Which further modes belong here* open (rejected)**: the 2026-10-04 entry *Four open questions retired to sections that already answer them* left this question open on the stated ground that no section of the document states a criterion for admitting a further mode. That ground no longer holds: the 2026-09-15 operations layer named the membership criterion at both layers and stated that the document does not grow by adopting every named "X thinking" the ecosystem produces, so the criterion exists and the entry's own candidates can be tested against it.
+- **Writing the verdict as a standing rule rather than a current one (rejected)**: the same paragraph holds that the membership criterion is fixed while the boundary drawing is not, and that the groups are revised when they stop being useful. A verdict stated for the modes as they stand keeps that revisability; a permanent rule would contradict the paragraph it sits in.
+- **Adding an entry for probabilistic thinking's quantitative form (rejected)**: the entry's own test was a document depending on explicit probabilities, calibration, or expected-value trade-offs, and no document in the set yet does. An entry would claim a function no work exercises, which is the named failure mode this layer was built to remove.
+- **Regrouping the discourse norms by mode in the same pass (rejected)**: it is a separate open question with its own costs, and folding it in would have coupled a navigation decision to a membership decision the body settles on different grounds.
+
+---
+
+### Keep reading and concluding separate
+- Time: 2026-10-07T03:45:00Z
+- Type: Changed
+- Cited:
+  - [Documentation — Comparison → Hindsight](./comparisons/hindsight.001.md) - Evidence: Hindsight's disposition traits shaping reflect without touching recall; a participant's mission must govern its answers, never its evidence.
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) — argued, drafted, applied
+
+#### What changed
+- [What Implementation Asymmetry Obliges](./cognition.md#what-implementation-asymmetry-obliges) gains an obligation: standing instructions, dispositions, and the current task shape what may be concluded, never what the material is; the counterpart that reads back must receive the material that was read.
+
+#### Considered and not done
+- **Phrase it as a new discourse norm rather than an asymmetry obligation** (rejected): the failure — reporting wanted material as read material — is precisely an asymmetry failure; norms bind at intake, while this binds every read.
+

@@ -360,3 +360,20 @@ Considered creating a dedicated `memar.md` to hold Memar's project-level identit
 - Neither handoff entry was removed. "Formalizing framework goals as a named section" asks whether the goals need a section of their own, and "Conflicting framework goals" asks how a framework resolves goals pulling against each other; a paragraph saying which level the specificity requirement binds does not answer either, and the second is a question this document's residential-building example already makes sharp rather than settles.
 
 ---
+
+---
+
+### A consistency claim needs a public failure statement
+- Time: 2026-10-07T03:45:00Z
+- Type: Changed
+- Cited:
+  - [Documentation — Comparison → Hindsight](./comparisons/hindsight.001.md) - Evidence: Hindsight publishes its own failure catalog; a development framework without a maintained record of where its goals are not applied has an unfalsifiable consistency claim.
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) — argued, drafted, applied
+
+#### What changed
+- [Goal-Oriented Frameworks and Purpose Space](./framework.md#goal-oriented-frameworks-and-purpose-space) gains a paragraph: the consistency requirement binds the framework's public self-report, and a maintained statement of where it applies its goals — and where it does not, including tried-and-abandoned disciplines — is anticipated work recorded here as a requirement, not a report. [README → Where Memar Stops](../README.md#where-memar-stops-and-where-work-continues) carries the one-line pointer to it.
+
+#### Considered and not done
+- **Writing the failure statement itself now (deferred)**: the honest record cannot be produced in this session without performative narrative; the requirement is stated, and the statement is anticipated work rather than prose.

@@ -23,16 +23,16 @@
   - [test.research.002.md](./test.research.002.md): Added - the testing literature written before TDD, read from primary texts, with its negative results recorded.
   - [../../../modules/process/test/](../../../modules/process/test/): Added - the module realizing this protocol, carrying the placement and naming Rules this document points to.
   - [../../../AGENTS.md](../../../AGENTS.md): Done - a section stating that text is not to be put into a file through a shell, with the command that does it instead.
-  - [../../../.agents/scripts/memar-documentation.py](../../../.agents/scripts/memar-documentation.py): Done - gained `write`, `edit`, and `check`, because a document silently damaged by an encoding round trip is the failure this session produced twice.
+  - [../../../.agents/scripts/memar-documentation.py](../../../.agents/scripts/memar-content.py): Done - gained `write`, `edit`, and `check`, because a document silently damaged by an encoding round trip is the failure this session produced twice.
   - [../../../.agents/scripts/README.md](../../../.agents/scripts/README.md): Done - gained a section on putting text into a file, and one on what a subfolder there is for.
-  - [../../../.agents/scripts/tests/install.py](../../../.agents/scripts/tests/install.py): Done - the installer's Tests moved out of the folder that owns what they check, into one named for the role, and the suite still passes.
+  - [../../../.agents/scripts/tests/install.py](../../../.agents/scripts/tests/memar-install.py): Done - the installer's Tests moved out of the folder that owns what they check, into one named for the role, and the suite still passes.
   - [../../../.agents/skills/memar/SKILL.md](../../../.agents/skills/memar/SKILL.md): Updated - a development step now binds to a Test written first.
   - [../ddd.md](../ddd.md): Done - its TDD relationship entry retargeted, since a document that no longer exists cannot be a sibling case.
   - [../ddd.handoff.md](../ddd.handoff.md): Done - its pointer to the expectation-and-check step retargeted.
   - [../../process.handoff.md](../../process.handoff.md): Done - its two links retargeted here and to this document's handoff.
   - [../../process.changelog.md](../../process.changelog.md): Done - the link the absorption invalidated retargeted, and its historical entries on the absorbed document annotated.
   - [../../documentation-explanation.changelog.md](../../documentation-explanation.changelog.md): Done - annotated alongside its existing pointer to the removed changelog.
-  - [../comparisons/superpowers.md](../../comparisons/superpowers.md): Done - three lines that attributed a Memar protocol to a name that no longer names one retargeted.
+  - [../comparisons/superpowers.001.md](../../comparisons/superpowers.001.md): Done - three lines that attributed a Memar protocol to a name that no longer names one retargeted.
   - [../../documentation-changelog.md](../../documentation-changelog.md) - Reference: within one working session an entry may still be revised, which is why this session's six drafts are one entry.
 
 #### What changed
@@ -59,13 +59,13 @@
 - Time: 2026-10-04T00:00:00Z
 - Type: Added
 - Cited:
-  - [Comparison: Memar and GitHub Spec Kit](../../comparisons/spec-kit.md) - **Reference**: whose Adapt filter produced the item. Spec Kit's `/analyze` is strictly read-only and its Next Actions name the owning command per finding class, under the doctrine "return to the earlier step that owns them and fix them at the source".
+  - [Comparison: Memar and GitHub Spec Kit](../../comparisons/spec-kit.001.md) - **Reference**: whose Adapt filter produced the item. Spec Kit's `/analyze` is strictly read-only and its Next Actions name the owning command per finding class, under the doctrine "return to the earlier step that owns them and fix them at the source".
 - Propagates to:
   - [test.md](./test.md): None needed - [What a Passing Suite Establishes](./test.md#what-a-passing-suite-establishes) already separates what a run proves from the claim that the work is finished; this is the reporting form of that separation, not a new claim.
   - [documentation.md](../../documentation.md): None needed - no artifact-structure rule changes.
 - Contributors:
   - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) - decided
-  - [Space Bunny Alpha](../../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny-free via [OpenCode](../../../CONTRIBUTORS.md#opencode)) - drafted
+  - [Space Bunny Alpha](../../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../../CONTRIBUTORS.md#opencode)) - drafted
 
 #### What changed
 - [The Cycle](./test.practice.md#the-cycle) gains a clause on what a failing check hands back. A check that fails for the wrong reason names the artifact that owns the repair, and the two failures have different destinations: an expectation that turned out to be wrong or incomplete is repaired in the document that states the contract, recorded there as a change rather than made silently; a contract that holds but is not yet enacted is repaired by the work, and the artifact that owes it is the one whose expectations are unsatisfied.
@@ -74,3 +74,88 @@
 #### Considered and not done
 - **A machine-readable result carrying the destination (not taken):** the obligation is on what a report says, and a format is the tool's decision. A participant whose check returns only a boolean still owes the sentence.
 - **Naming the destination in `test.md` rather than the practice (rejected):** the practice is where steps are stated, and this is one more of them. The base protocol owns the claims; the practice owns the procedure that reports on them.
+
+---
+
+### The umbrella reading is declared standing
+- Time: 2026-10-05T05:30:00Z
+- Type: Changed
+- Cited:
+  - [Comparison: Memar and GitHub Spec Kit](../../comparisons/spec-kit.001.md) - **Reference**: the requirements-home fork and its domain-generality constraint.
+- Propagates to:
+  - [test.md](./test.md): Done - one standing-interpretation sentence at the section's close.
+- Contributors:
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) - directed, decided
+  - [Meta AI](../../../CONTRIBUTORS.md#meta-ai) (muse-spark via [OpenCode](../../../CONTRIBUTORS.md#opencode)) - argued, applied
+
+#### What changed
+- The umbrella-requirement section now states its own standing: no separate requirements document is planned, and a narrated desire stating checkable expectations satisfies the protocol in whatever artifact the domain's checks apply to. No structural rule added; building, bill-of-quantities, and acceptance-schedule examples keep first-class standing beside the user story.
+
+---
+
+### The party's own mind holds the discipline, and an expectation must let it decide
+- Time: 2026-10-05T00:00:00Z
+- Type: Added
+- Propagates to:
+  - [test.md](./test.md): Done — two places: the check's own description, and what an expectation must reach under the form clause.
+  - [process.handoff.md](../../process.handoff.md): Done — the mirror handoff's baseline-and-declared-limit question was closed from the concept layer; the four-roles question under the same section stays open, as does its mirror here.
+- Contributors:
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Space Bunny Alpha](../../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../../CONTRIBUTORS.md#opencode)) — argued, drafted, applied
+
+#### What changed
+- [Test, Check, and Runner](./test.md#test-check-and-runner) now states what performing the comparison is: a cognitive act, held to this document as written by every party that judges an instance and to nothing laxer than this document states, whatever evidence that party uses and whether or not anything ran. A green run, a review, and an inspection are named as evidence the party weighs; none of them is the comparison.
+- [The Form the Expectation Takes Is the Domain's](./test.md#the-form-the-expectation-takes-is-the-domains) gains the clause the form clause had been missing — what the discipline needs in order to decide. Varying the form does not vary what a Test must reach, because the party holding this document decides rather than a mechanism: a Test states the model it is checked against, the instance it is checked on, and, where the checked subject can degrade, the limit on how much worse that instance may be on the way. Where the subject cannot degrade, the Test states the state that must hold at the end, and that state is the one the instance is measured against — this discipline's own requirement of such a domain, not an exemption from it.
+- The clause ends by keeping the form the domain's: these are what an expectation has to reach, not fields it has to fill, and an artifact reaching them in its own vocabulary satisfies the protocol.
+
+#### Deliberation
+- Omid Hekayati ruled, in Persian: "As to how a process is to be evaluated, if it is to be evaluated it must be shaped in the mind of every party by the strictness of that very document test, and we must not weaken anything. If I have misunderstood again, explain it again so I can state my opinion more precisely." The ruling names this document as the measure, so the protocol layer states both halves it owns: the discipline the party applies, and the decidability the expectation must carry to be judged by it.
+- Space Bunny Alpha placed the two statements at the two places that already own them rather than in a new section: the check's description for the discipline, the form clause for what an expectation must reach. A new section would have repeated both owners.
+- The three things an expectation must reach were stated as reach, not as a schema, per the ruling's own second half: nothing may be weakened, but the shape stays the domain's, which is what this section already denies. A mandated field list would have hardened a form the section exists to leave open.
+- Whether the ruling reaches [Test, Verification, and Inquiry](./test.md#test-verification-and-inquiry) was examined and answered no: verification is this document's own boundary, stated before the ruling, and a verification's artifact still carrying Test's obligations is not a licence to evaluate with a laxer standard — that sentence is recorded below as found, not edited.
+
+#### Considered and not done
+- Binding the discipline on *inquiry* processes beyond what this document already states for them: an inquiry's expectations are its evidence, decision, and record, and the ruling adds no fourth thing to them.
+- Adding a worked example of a degrading subject and its declared limit: not taken; this document states no structural rule, and an example would fix a shape the domain owns.
+
+---
+
+### The floor carries what an expectation must reach, and a green run reports what the party establishes
+- Time: 2026-10-05T17:20:58Z
+- Type: Changed
+- Propagates to:
+  - [modeling.md](../../modeling.md): Pending - its maturity gate carries the parallel clause the floor sentence just shed; the exact wording is reported to that file's owner rather than edited here.
+- Contributors:
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Space Bunny Alpha](../../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../../CONTRIBUTORS.md#opencode)) — argued, drafted, applied
+
+#### What changed
+- [A Test Is Part of the System That Owes It](./test.md#a-test-is-part-of-the-system-that-owes-it) states the floor in the terms the discipline needs: a system has met this protocol when, for every decidable expectation, it holds a Test reaching the model, the instance, and — where the subject can degrade — the limit on how much worse it may be. Having a Test per decidable expectation is no longer by itself the completion criterion, because a Test can exist for an expectation too thin to decide.
+- [Test, Check, and Runner](./test.md#test-check-and-runner) keeps the substitution this section exists to stop while restoring what a run is entitled to be: a green suite reports that the checks it performed passed, and what that report may not stand in for is the comparison itself or anything about the Test or the runner beyond what the run performed. It remains evidence the judging party weighs, bounded by the next section, and the party decides what follows.
+- [What a Passing Suite Establishes](./test.md#what-a-passing-suite-establishes) now has the establishing on the right side: a green run reports the one thing, and what establishes it is the party's act of comparison, which no run performs for it. The three substitutions the section rules out are unchanged and now follow from that difference rather than from the run's own verb.
+- [The Form the Expectation Takes Is the Domain's](./test.md#the-form-the-expectation-takes-is-the-domains) received the smaller edit rather than a restatement. Its form paragraph already ended with a paragraph stating what a Test must reach, so the sentence claiming that only "the ordering and the checkable form" bind contradicted the paragraph after it; it now defers to that reach and says the checkable form is a domain's way of carrying it, never a substitute for it.
+- [test.practice.md → The Artifact](./test.practice.md#the-artifact), step 3, extends the another-agent test past intelligibility: the reader must also find the model, the instance, and the degradation limit, and an expectation that leaves a reader asking what would count as met is not yet stated.
+- [test.practice.md → Scaling](./test.practice.md#scaling) no longer makes the artifact the mechanically checkable subset at feature scale. Every expectation of the Process is in the artifact; the mechanically checkable subset carries the discipline by run and the rest by the party that owes the check.
+- [test.practice.md → Boundary: When a Test Is Not the Artifact](./test.practice.md#boundary-when-a-test-is-not-the-artifact) states that the non-executable record satisfies the standing while its verdict is the party's act rather than a runner's — the standing was never the verdict, and the absence of a runner is not a release from the standard.
+
+#### Considered and not done
+- Adding the three things an expectation must reach to the obligation's first boundary, over Processes not lines: that bullet is about what is enumerated, and repeating the reach there would say the same thing a third time in one section.
+- Editing the clause "scale changes how much an expectation states, never whether it is stated first", which appears in [test.practice.md → The Cycle](./test.practice.md#the-cycle) and again in [process.md → Development decomposition](../../process.md#development-decomposition): both were outside this change's scope and are reported instead.
+
+---
+
+### Test tiers with labeled seams
+- Time: 2026-10-07T03:45:00Z
+- Type: Changed
+- Cited:
+  - [Documentation — Comparison → Hindsight](../../comparisons/hindsight.001.md) - Evidence: Hindsight's three eval tiers (deterministic blackbox, scheduled real-model judged, external benchmark) — each with its verdict party and its tier. A verdict that borrows authority from a stronger tier manufactures evidence.
+- Contributors:
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Space Bunny Alpha](../../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../../CONTRIBUTORS.md#opencode)) — argued, drafted, applied
+
+#### What changed
+- [Scaling](./test.practice.md#scaling) gains a *Tiers with labeled seams* subsection: deterministic checks on every change, model-dependent checks on a schedule, and single-home benchmarks; each tier states which party produces its verdict, and no tier borrows a stronger tier's authority.
+
+#### Considered and not done
+- **A fixed CI schedule** (not taken): the tiering states which party runs which tier and why, and leaves cadence to the consuming project's runner rather than inventing one cadence here.
+
