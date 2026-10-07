@@ -406,26 +406,22 @@ The owner proposed the rule as a prohibition on citing informal sources (Omid He
 
 ---
 
-### Register the Comparison kind, and state its location rule as a rule rather than as this project's placement
-- Time: 2026-10-07T04:20:00Z
+---
+
+---
+
+### Owed and planned capability marked in all three places
+- Time: 2026-10-07T03:45:00Z
 - Type: Changed
 - Cited:
-  - [Documentation — Comparison](./documentation-comparison.md) — Added: the governing specification this entry registers; its Method requirements are the reason two of this document's rules now name a clause they did not before.
-  - [Comparison: Memar and Tensorus](./comparisons/tensorus.001.md) — Evidence: triple marking, and a self-audit no entry point reaches.
-  - [Comparison: Memar and Hindsight](./comparisons/hindsight.001.md) — Evidence: a project publishing its own failure catalog.
-- Propagates to:
-  - documentation.md: Done — the fifth Content Rule clause and the Comparison registration landed here; the clause was stated because two comparisons in one day found the same gap in prose, code, and entry points.
-  - docs/README.md: Done — the folder entry already covers where essays live; no restatement added.
-  - README.md: Reference - the public pointer already names the specification.
-  - .agents/skills/memar/SKILL.md: None needed - the skill routes by content search and discovery commands, so a registered document is reachable without naming it.
+  - [Documentation — Comparison](./documentation-comparison.md) - Evidence: its Method requirements, added in the same session from the tensorus and hindsight comparisons.
 - Contributors:
   - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — decided
   - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) — argued, drafted, applied
 
 #### What changed
-- A new section, [Comparison: a document kind outside the facets](./documentation.md#comparison-a-document-kind-outside-the-facets), registers the comparison essay beside the facet specifications and states why its artifacts belong to no facet. It exists so that an agent searching this document for how a kind of document is governed finds the answer instead of concluding the five facets are exhaustive.
+- [Content Rule](./documentation.md#content-rule-no-fabricated-or-redundant-provenance) gains a fifth rule: owed or planned capability is marked in prose, by a quiescent default in code, and by a pointer at the entry point; a claim implied by one surface and absent from the others is a fabrication in the rule's first sense.
 
 #### Considered and not done
-- **Adding the comparison essays to the facet table above** (rejected): the table is a facet registry, and a comparison is explicitly not a facet; registering it there would make the table claim something the method denies.
-- **A Comparison Practice facet companion** (not taken): no comparison procedure has accumulated beyond what the specification states, so the practice is anticipated work until a comparison is written that needs steps the specification does not carry.
-- **Indexing the essays in this document** (rejected): a membership list of live files is the derivative inventory the Content Rule's fourth clause forbids.
+- **A requirement that check enforces it** (deferred): content check could later verify that owed rows, disabled defaults, and entry-point notes co-occur; decided against adding enforcement now, so the norm stands on its reasoning first.
+
