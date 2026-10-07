@@ -204,3 +204,8 @@
 - [Website](https://spacebunnyalpha.com/)
 - Models:
   - space-bunny
+
+### Fledge Alpha
+- [Website](https://stealthmodels.com/fledge-alpha/)
+- Models:
+  - fledge-alpha

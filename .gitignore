@@ -1,9 +1,5 @@
 # Directories
-_obj
-/images/
-chats-context/
-____*
-*____
+temp
 .freebuff
 __pycache__/
 

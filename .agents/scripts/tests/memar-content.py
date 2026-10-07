@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
-"""Tests for `check`'s judgement of the links a document makes and of the
-obligations a document set has recorded but not yet discharged.
+"""Tests for `memar-content.py`: its judgement of links, its work-list, its corpus, and its verb tree.
 
-    python .agents/scripts/tests/memar-documentation.py
+    python .agents/scripts/tests/memar-content.py
 
-The subject is the `check` subcommand of `memar-documentation.py`, named for the
-file that holds it per [Test Naming](../../../../modules/process/test/rules/test-naming/test-naming.md),
+The subject is the content tool, named for the file that holds it per
+[Test Naming](../../../../modules/process/test/rules/test-naming/test-naming.md),
 in the `tests/` folder of the module that owns it per
 [Test Placement](../../../../modules/process/test/rules/test-placement/test-placement.md).
 
@@ -59,15 +58,41 @@ What is pinned, and what each pin is for:
                       rules as its outstanding work.
   RejectedInABody    Whether a body holds a rejected-alternative record is not
   IsNotJudged        decidable from the text, and is deliberately not checked.
-                      The specification of the field and a record in the field
-                      differ only in what the text is for. The class is pinned
-                      in `RejectedInABodyIsNotJudged` so the question is not
-                      reopened blind.
+                       The specification of the field and a record in the field
+                       differ only in what the text is for. The class is pinned
+                       in `RejectedInABodyIsNotJudged` so the question is not
+                       reopened blind.
+  MemarRulesAutoDetect  Without a flag the folder decides: inside a Memar
+                       repository the Markdown conventions apply, outside only
+                       encoding and newlines do; an explicit flag wins.
+
+  OneVerbHoldsThemAll  Every verb nests under `content`, so one subject has one
+                       name and the flat spellings error rather than leaving a
+                       second interface beside the first.
+  CorpusIsTheCheckout  The boundary is the whole checkout — `docs/`, `modules/`,
+                       `.agents/` — because a tool named for content that could
+                       not search code would be a tool for documents. Pinned
+                       per folder, because a tool that quietly stopped at
+                       `docs/` reported a narrower world under the wider name.
+  CorpusExcludesNoise  Generated and dependency folders stay out by the decision
+                       already written for the two things that copy a checkout,
+                       so what a copy leaves out is one answer rather than three.
+  LedgersAreOurs      The work-list reads every ledger of the checkout, not only
+                       the ones under `docs/`: a propagation owed by a changelog
+                       under `modules/` is as open as one owed under `docs/`.
+  WritesTakeTheLock   The write verbs take the per-file lock and leave an intent
+                       note, which is what makes the session tool's claim — that a
+                       scratch folder and a lock answer shared-tree collisions —
+                       true of the one place a file is actually written.
 """
 
 from __future__ import annotations
 
+import contextlib
 import importlib.util
+import io
+import os
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -78,11 +103,16 @@ SCRIPTS = TESTS.parent
 sys.path.insert(0, str(SCRIPTS))
 sys.dont_write_bytecode = True
 
-_spec = importlib.util.spec_from_file_location(
-    "memar_documentation", SCRIPTS / "memar-documentation.py"
+import machine.fs_lock as fs_lock  # noqa: E402  — a sibling whose memar_root is patched beside the tool's
+
+_spec = importlib.util.spec_from_loader(
+    "memar_content",
+    importlib.machinery.SourceFileLoader(
+        "memar_content", str(SCRIPTS / "memar-content.py")
+    ),
 )
-memar_documentation = importlib.util.module_from_spec(_spec)
-_spec.loader.exec_module(memar_documentation)
+memar_content = importlib.util.module_from_spec(_spec)
+_spec.loader.exec_module(memar_content)
 
 
 class LinkFixture(unittest.TestCase):
@@ -101,7 +131,7 @@ class LinkFixture(unittest.TestCase):
         return path
 
     def problems(self, path: Path) -> list[str]:
-        return memar_documentation.check_file(path, self.cache)
+        return memar_content.check_file(path, self.cache)
 
     def only_link_problems(self, path: Path) -> list[str]:
         return [p for p in self.problems(path)
@@ -300,7 +330,7 @@ class PendingPropagation(LinkFixture):
 
     def found(self) -> list[tuple[Path, int, str]]:
         path = self.write_entry()
-        return memar_documentation.undischarged_propagations([path])
+        return memar_content.undischarged_propagations([path])
 
     def test_a_pending_entry_is_reported(self) -> None:
         found = self.found()
@@ -319,17 +349,17 @@ class PendingPropagation(LinkFixture):
 
     def test_a_file_without_the_field_reports_nothing(self) -> None:
         path = self.write("docs/cognition.md", "# Cognition\n- Propagates to nothing\n")
-        self.assertEqual(memar_documentation.undischarged_propagations([path]), [])
+        self.assertEqual(memar_content.undischarged_propagations([path]), [])
 
     def test_a_field_named_beside_the_artifact_is_not_an_entry(self) -> None:
         # The label appears in prose, not as the entry's own field.
         path = self.write("docs/cognition.changelog.md",
                           "# Log\nSee the Propagates to field for the states.\n")
-        self.assertEqual(memar_documentation.undischarged_propagations([path]), [])
+        self.assertEqual(memar_content.undischarged_propagations([path]), [])
 
     def test_a_non_changelog_file_is_not_scanned(self) -> None:
         path = self.write("docs/cognition.md", "# Cognition\n- other.md: Pending - owed\n")
-        self.assertEqual(memar_documentation.undischarged_propagations([path]), [])
+        self.assertEqual(memar_content.undischarged_propagations([path]), [])
 
     def test_the_facet_specification_is_not_read_as_a_ledger(self) -> None:
         # `documentation-changelog.md` is the document that specifies the field,
@@ -341,7 +371,7 @@ class PendingPropagation(LinkFixture):
             "# Documentation Changelog\n\n## Changelog\n\n### Structure\n"
             "- Propagates to:\n  - {Other artifact}: Pending - {what needs to happen}\n",
         )
-        self.assertEqual(memar_documentation.undischarged_propagations([path]), [])
+        self.assertEqual(memar_content.undischarged_propagations([path]), [])
 
     def test_a_state_word_later_in_the_description_is_not_the_state(self) -> None:
         path = self.write(
@@ -349,7 +379,7 @@ class PendingPropagation(LinkFixture):
             "# Log\n- Propagates to:\n"
             "  - modeling.md: Done - the entry it removed was Pending until this run.\n",
         )
-        self.assertEqual(memar_documentation.undischarged_propagations([path]), [])
+        self.assertEqual(memar_content.undischarged_propagations([path]), [])
 
     def test_a_pending_state_written_as_a_phrase_is_still_pending(self) -> None:
         # The facet's own sources write `Pending deletion` and `Pending at
@@ -360,7 +390,7 @@ class PendingPropagation(LinkFixture):
             "# Log\n- Propagates to:\n"
             "  - protocol.per.md: Pending deletion - fully superseded by this document.\n",
         )
-        self.assertEqual(len(memar_documentation.undischarged_propagations([path])), 1)
+        self.assertEqual(len(memar_content.undischarged_propagations([path])), 1)
 
 
 class SettledPropagation(LinkFixture):
@@ -369,7 +399,7 @@ class SettledPropagation(LinkFixture):
             "docs/cognition.changelog.md",
             f"# Log\n- Propagates to:\n  - modeling.md: {state} - why it was or was not done\n",
         )
-        return memar_documentation.undischarged_propagations([path])
+        return memar_content.undischarged_propagations([path])
 
     def test_done_is_not_outstanding(self) -> None:
         self.assertEqual(self.settled("Done"), [])
@@ -388,7 +418,7 @@ class SettledPropagation(LinkFixture):
             "  - three.md: Rejected - considered and deliberately not done\n"
             "  - four.md: Partial - some of it landed\n",
         )
-        found = memar_documentation.undischarged_propagations([path])
+        found = memar_content.undischarged_propagations([path])
         self.assertEqual(len(found), 1, found)
         self.assertIn("one.md", found[0][2])
 
@@ -446,31 +476,31 @@ class ChangelogAppendKeepsTheFilesConvention(LinkFixture):
 
     def test_a_crlf_ledger_gains_no_lf(self) -> None:
         path = self.ledger("\r\n")
-        memar_documentation.changelog_append(path, self.ENTRY)
+        memar_content.changelog_append(path, self.ENTRY)
         self.assertEqual(self.problems(path), [])
 
     def test_an_lf_ledger_gains_no_crlf(self) -> None:
         path = self.ledger("\n")
-        memar_documentation.changelog_append(path, self.ENTRY)
+        memar_content.changelog_append(path, self.ENTRY)
         self.assertEqual(self.problems(path), [])
 
     def test_a_crlf_entry_written_into_an_lf_ledger_is_normalized(self) -> None:
         path = self.ledger("\n")
-        memar_documentation.changelog_append(path, self.ENTRY.replace("\n", "\r\n"))
+        memar_content.changelog_append(path, self.ENTRY.replace("\n", "\r\n"))
         self.assertEqual(self.problems(path), [])
 
     def test_the_entry_is_still_appended_after_the_earlier_one(self) -> None:
         path = self.ledger("\r\n")
-        memar_documentation.changelog_append(path, self.ENTRY)
+        memar_content.changelog_append(path, self.ENTRY)
         text = path.read_bytes().decode("utf-8")
         self.assertLess(text.index("### Earlier"), text.index("### A change"))
         self.assertIn("---", text)
 
     def test_the_appended_entry_is_not_written_over_an_existing_one(self) -> None:
         path = self.ledger("\r\n")
-        memar_documentation.changelog_append(path, self.ENTRY)
+        memar_content.changelog_append(path, self.ENTRY)
         first = path.read_bytes()
-        memar_documentation.changelog_append(path, self.ENTRY)
+        memar_content.changelog_append(path, self.ENTRY)
         self.assertGreater(len(path.read_bytes()), len(first))
 
 
@@ -480,7 +510,7 @@ class WalkLooksOnlyAtWhatTheProjectOwns(LinkFixture):
     An installed dependency tree is not this repository's work, and a report that
     raises the same problems inside it on every run is a report about the tool
     rather than about the tree — after long enough it is a report nobody reads.
-    The patterns come from `copy_excluded`, which already holds that answer for
+    The patterns come from `memar_copy_excluded`, which already holds that answer for
     the two things that copy part of a checkout elsewhere; a second list here
     would be a second answer to one question.
 
@@ -498,7 +528,7 @@ class WalkLooksOnlyAtWhatTheProjectOwns(LinkFixture):
         self.install("node_modules/dep/package.json", '{"name": "dep"}\n')
         self.install("notes.md", "# Notes\n")
         walked = [p.relative_to(self.root).as_posix()
-                  for p in memar_documentation.checkable_files(self.root)]
+                  for p in memar_content.checkable_files(self.root)]
         self.assertIn("notes.md", walked)
         self.assertFalse([p for p in walked if p.startswith("node_modules/")], walked)
 
@@ -507,13 +537,13 @@ class WalkLooksOnlyAtWhatTheProjectOwns(LinkFixture):
             with self.subTest(name=name):
                 self.install(f"{name}/thing.py", "x = 1\n")
                 walked = [p.relative_to(self.root).as_posix()
-                          for p in memar_documentation.checkable_files(self.root)]
+                          for p in memar_content.checkable_files(self.root)]
                 self.assertFalse([p for p in walked if p.startswith(name)], walked)
 
     def test_a_file_inside_an_owned_folder_is_still_walked(self) -> None:
         self.install("src/deep/module.py", "x = 1\n")
         walked = [p.relative_to(self.root).as_posix()
-                  for p in memar_documentation.checkable_files(self.root)]
+                  for p in memar_content.checkable_files(self.root)]
         self.assertIn("src/deep/module.py", walked)
 
     def test_a_named_file_is_checked_whatever_folder_it_is_in(self) -> None:
@@ -523,14 +553,87 @@ class WalkLooksOnlyAtWhatTheProjectOwns(LinkFixture):
 
     def test_the_patterns_are_the_ones_the_folder_already_states(self) -> None:
         # A copy of the list here would be a second answer to one question.
-        from copy_excluded import NEVER_COPIED_PATTERNS
+        from memar_copy_excluded import NEVER_COPIED_PATTERNS
 
         self.assertEqual(
-            set(memar_documentation.NEVER_COPIED_PATTERNS),
+            set(memar_content.NEVER_COPIED_PATTERNS),
             set(NEVER_COPIED_PATTERNS),
         )
         for pattern in ("__pycache__", "*.pyc", ".DS_Store", "node_modules"):
             self.assertIn(pattern, NEVER_COPIED_PATTERNS)
+
+
+class MemarRulesAutoDetect(LinkFixture):
+    def make_repo(self) -> Path:
+        repo = self.root / "Memar"
+        repo.mkdir(parents=True, exist_ok=True)
+        (repo / "README.md").write_text("# Memar\n", encoding="utf-8", newline="\n")
+        (repo / "docs").mkdir(parents=True, exist_ok=True)
+        skill = repo / ".agents" / "skills" / "memar" / "SKILL.md"
+        skill.parent.mkdir(parents=True, exist_ok=True)
+        skill.write_text("# Memar\n", encoding="utf-8", newline="\n")
+        return repo
+
+    def isolate(self) -> None:
+        # The scratch sits inside this checkout, so a walk past it would reach
+        # the real repository; isolated to the scratch, outside resolves None.
+        import memar_repository
+
+        saved = memar_repository.is_memar_repository
+        root = self.root.resolve()
+
+        def isolated(path: Path) -> bool:
+            try:
+                Path(path).resolve().relative_to(root)
+            except ValueError:
+                return False
+            return saved(path)
+
+        memar_repository.is_memar_repository = isolated
+        self.addCleanup(setattr, memar_repository, "is_memar_repository", saved)
+
+    def test_memar_conventions_apply_inside_and_not_outside(self) -> None:
+        self.isolate()
+        repo = self.make_repo()
+        inside = repo / "docs" / "note.md"
+        inside.parent.mkdir(parents=True, exist_ok=True)
+        inside.write_text("# Base\n\nBody\n", encoding="utf-8", newline="\n")
+        outside = self.root / "plain" / "note.md"
+        outside.parent.mkdir(parents=True, exist_ok=True)
+        outside.write_text("# Base\n\nBody\n", encoding="utf-8", newline="\n")
+        from memar_repository import enclosing_repository
+
+        self.assertIsNotNone(enclosing_repository(inside))
+        self.assertIsNone(enclosing_repository(outside))
+        self.assertTrue(memar_content.check_file(inside, {}, True))
+        self.assertEqual(memar_content.check_file(outside, {}, False), [])
+
+    def test_an_explicit_flag_wins_over_the_folder(self) -> None:
+        repo = self.make_repo()
+        inside = repo / "docs" / "note.md"
+        inside.parent.mkdir(parents=True, exist_ok=True)
+        inside.write_text("# Base\n\nBody\n", encoding="utf-8", newline="\n")
+        self.assertEqual(memar_content.check_file(inside, {}, False), [])
+        self.assertTrue(memar_content.check_file(inside, {}, True))
+
+    def test_encoding_problems_report_whatever_the_folder_is(self) -> None:
+        repo = self.make_repo()
+        inside = repo / "note.md"
+        inside.write_text("# T\n", encoding="utf-8", newline="\n")
+        inside.write_bytes(inside.read_bytes().rstrip(b"\n"))
+        self.assertTrue(memar_content.check_file(inside, {}, True))
+        self.assertTrue(memar_content.check_file(inside, {}, False))
+
+
+# Where Memar lives moved out of this tool and into the installer, as `--root`:
+# it is not a question about content, and the content tool having answered it was
+# one of the eleven verbs that had no home of its own. `tests/memar-install.py`
+# holds its pins.
+
+
+class RootVerbIsNotHere(unittest.TestCase):
+    def test_no_verb_of_this_tool_answers_where_memar_lives(self) -> None:
+        self.assertFalse(hasattr(memar_content, "cmd_root"))
 
 
 class BacklinksAreResolvedPaths(LinkFixture):
@@ -570,7 +673,7 @@ class BacklinksAreResolvedPaths(LinkFixture):
 
     def test_linkers_are_listed_with_line_and_fragment(self) -> None:
         target = self.make_tree()
-        found = memar_documentation.find_backlinks(target, self.docs())
+        found = memar_content.find_backlinks(target, self.docs())
         self.assertEqual(
             found,
             [
@@ -582,38 +685,38 @@ class BacklinksAreResolvedPaths(LinkFixture):
     def test_self_links_are_not_incoming(self) -> None:
         target = self.make_tree()
         self.write("docs/target.md", "# Target\n## Part\nSee [P](#part).\n")
-        found = memar_documentation.find_backlinks(target, self.docs())
+        found = memar_content.find_backlinks(target, self.docs())
         self.assertEqual(len(found), 2, found)
 
     def test_a_mention_without_a_link_is_not_a_backlink(self) -> None:
         target = self.make_tree()
         self.write("docs/c.md", "# C\ntarget.md is discussed a lot here.\n")
-        found = memar_documentation.find_backlinks(target, self.docs())
+        found = memar_content.find_backlinks(target, self.docs())
         self.assertEqual(len(found), 2, found)
 
     def test_a_link_naming_a_missing_spelling_matches_nothing(self) -> None:
         target = self.make_tree()
         self.write("docs/c.md", "# C\nSee [T](./targte.md).\n")
-        found = memar_documentation.find_backlinks(target, self.docs())
+        found = memar_content.find_backlinks(target, self.docs())
         self.assertEqual(len(found), 2, found)
 
     def test_a_link_inside_code_is_text_about_links(self) -> None:
         target = self.make_tree()
         self.write("docs/c.md", "# C\n`[T](./target.md)`\n")
-        found = memar_documentation.find_backlinks(target, self.docs())
+        found = memar_content.find_backlinks(target, self.docs())
         self.assertEqual(len(found), 2, found)
 
     def test_nothing_linking_reports_nothing(self) -> None:
         self.make_tree()
         lonely = self.write("docs/lonely.md", "# Lonely\n")
-        self.assertEqual(memar_documentation.find_backlinks(lonely, self.docs()), [])
+        self.assertEqual(memar_content.find_backlinks(lonely, self.docs()), [])
 
     def test_cmd_prints_linker_hits_per_target(self) -> None:
         from argparse import Namespace
 
         self.make_tree()
         with contextlib.redirect_stdout(io.StringIO()) as printed:
-            memar_documentation.cmd_backlinks(
+            memar_content.cmd_backlinks(
                 Namespace(files=["docs/target.md"]), self.root
             )
         out = printed.getvalue()
@@ -640,7 +743,7 @@ class ObligationsAreQueryable(LinkFixture):
             "# Log\n- Propagates to:\n  - modeling.md: Pending - owed\n",
         )
         with contextlib.redirect_stdout(io.StringIO()) as printed:
-            memar_documentation.cmd_obligations(Namespace(files=[]), self.root)
+            memar_content.cmd_obligations(Namespace(files=[]), self.root)
         self.assertIn(
             f"{Path('docs/cognition.changelog.md')}:3: modeling.md: Pending \u2014 not yet done",
             printed.getvalue(),
@@ -654,7 +757,7 @@ class ObligationsAreQueryable(LinkFixture):
             "# Log\n- Propagates to:\n  - modeling.md: Done - landed\n",
         )
         with contextlib.redirect_stdout(io.StringIO()) as printed:
-            memar_documentation.cmd_obligations(Namespace(files=[]), self.root)
+            memar_content.cmd_obligations(Namespace(files=[]), self.root)
         self.assertIn("(no undischarged obligations)", printed.getvalue())
 
     def test_named_files_narrow_the_read(self) -> None:
@@ -669,12 +772,241 @@ class ObligationsAreQueryable(LinkFixture):
             "# Log\n- Propagates to:\n  - y.md: Pending - owed\n",
         )
         with contextlib.redirect_stdout(io.StringIO()) as printed:
-            memar_documentation.cmd_obligations(
+            memar_content.cmd_obligations(
                 Namespace(files=["docs/a.changelog.md"]), self.root
             )
         out = printed.getvalue()
         self.assertIn("x.md: Pending", out)
         self.assertNotIn("y.md", out)
 
+
+class OneVerbHoldsThemAll(unittest.TestCase):
+    """Every verb lives under `content`, and nowhere else.
+
+    One subject, one word. An earlier state had three verbs nested and nine flat,
+    which is neither the grouping nor the flat set: `content` then named nothing
+    a reader could place, and the write verbs were left outside the verb whose
+    name was what they acted on. The flat spellings must error, so no second
+    interface survives beside the first — and the check is by name rather than by
+    hash, because argparse wraps help to the terminal width and a byte pin is a
+    property of the machine as much as of the file.
+    """
+
+    EVERY_VERB = (
+        "path",
+        "meta",
+        "section",
+        "search",
+        "backlinks",
+        "obligations",
+        "changelog-append",
+        "hour-id",
+        "write",
+        "edit",
+        "check",
+    )
+
+    def run_tool(self, *arguments: str) -> subprocess.CompletedProcess:
+        environment = dict(
+            os.environ,
+            COLUMNS="80",
+            PYTHONIOENCODING="utf-8",
+            PYTHONDONTWRITEBYTECODE="1",
+        )
+        return subprocess.run(
+            [sys.executable, str(SCRIPTS / "memar-content.py"), *arguments],
+            capture_output=True,
+            env=environment,
+        )
+
+    def test_every_verb_is_accepted_under_content(self) -> None:
+        for verb in self.EVERY_VERB:
+            with self.subTest(verb=verb):
+                asked = self.run_tool("content", verb, "--help")
+                self.assertEqual(asked.returncode, 0, asked.stderr)
+                self.assertIn("usage:", asked.stdout.decode("utf-8", "replace"))
+
+    def test_the_flat_spellings_are_gone(self) -> None:
+        for verb in self.EVERY_VERB:
+            with self.subTest(verb=verb):
+                completed = self.run_tool(verb, "--help")
+                self.assertNotEqual(completed.returncode, 0, verb)
+                self.assertIn(
+                    "invalid choice",
+                    completed.stderr.decode("utf-8", "replace"),
+                    verb,
+                )
+
+    def test_the_only_top_level_verb_is_the_one_that_groups_the_rest(self) -> None:
+        asked = self.run_tool("--help")
+        self.assertEqual(asked.returncode, 0, asked.stderr)
+        shown = asked.stdout.decode("utf-8", "replace")
+        self.assertIn("{content}", shown)
+
+
+class CorpusIsTheCheckout(LinkFixture):
+    """The corpus is the whole checkout, so the tool's name is not narrower than its reach.
+
+    `docs/` is where the model is argued, not where the repository's content
+    ends: the model definitions, the rule catalog, the protocol implementations
+    and the sources all live under `modules/`, and the configuration a session is
+    driven by lives under `.agents/`. A tool named for content that could not
+    reach them reported a narrower world under the wider name.
+    """
+
+    def a_checkout(self) -> Path:
+        for folder in ("docs", "modules", ".agents"):
+            (self.root / folder).mkdir(parents=True, exist_ok=True)
+        (self.root / "README.md").write_text("# R\n", encoding="utf-8", newline="\n")
+        return self.root
+
+    def test_the_corpus_reaches_each_folder_the_content_lives_in(self) -> None:
+        root = self.a_checkout()
+        for folder in ("docs", "modules", ".agents"):
+            self.write(f"{folder}/note.md", "# Note\n")
+        self.write("README.md", "# R\n")
+        found = {path.relative_to(root).parts[0] for path in memar_content.content_files(root)}
+        self.assertEqual(found, {"docs", "modules", ".agents", "README.md"})
+
+    def test_a_folder_that_is_not_content_stays_out(self) -> None:
+        # A dependency tree or a session's scratch is not this repository's
+        # content even when it holds Markdown, and the decision is asked of the
+        # module that already makes it for the two things that copy a checkout.
+        # Named by path rather than by file name, because the vendored file is
+        # also called README.md and the root one is also called README.md.
+        root = self.a_checkout()
+        self.write("docs/kept.md", "# Kept\n")
+        self.write("node_modules/vendored/vendored.md", "# Vendored\n")
+        self.write("temp/s-1/scratch.md", "# Scratch\n")
+        found = {
+            path.relative_to(root).as_posix() for path in memar_content.content_files(root)
+        }
+        self.assertIn("docs/kept.md", found)
+        self.assertNotIn("node_modules/vendored/vendored.md", found)
+        self.assertNotIn("temp/s-1/scratch.md", found)
+
+    def test_a_folder_holding_none_of_the_content_folders_is_refused(self) -> None:
+        empty = self.root / "not-a-checkout"
+        empty.mkdir()
+        with self.assertRaises(SystemExit) as raised:
+            memar_content.content_files(empty)
+        self.assertIn("not a Memar checkout", str(raised.exception))
+
+    def test_the_search_corpus_excludes_ledgers_and_ledgers_are_still_reachable(self) -> None:
+        # `search` excludes changelogs by design so a reader is not sent into
+        # history instead of into explanation — and the work-list still reads
+        # every one of them, or a propagation owed under `modules/` would be
+        # invisible.
+        root = self.a_checkout()
+        self.write("docs/one.changelog.md", "# One\n")
+        self.write("modules/two.changelog.md", "# Two\n")
+        searched = {path.name for path in memar_content.content_files(root)}
+        ledgers = {path.name for path in memar_content.ledger_files(root)}
+        self.assertNotIn("one.changelog.md", searched)
+        self.assertEqual(ledgers, {"one.changelog.md", "two.changelog.md"})
+
+
+class WritesTakeTheLock(LinkFixture):
+    """The write verbs take the per-file lock, which is what makes the claim true.
+
+    The session tool states that a scratch folder and a lock answer shared-tree
+    collisions. That is only a statement about a writer if the one place a file
+    actually gets written takes the lock, and an intent note beside it is what a
+    waiter that takes over a stale lock reads to learn what the dead session
+    meant.
+
+    Called in-process rather than through a child, because what is under test is
+    which function the verb reaches, and a child would answer only that the
+    command line works — with the root it resolves on this machine, not the
+    scratch one whose locks are then inspected.
+    """
+
+    def setUp(self) -> None:
+        super().setUp()
+        self.target = self.root / "notes.md"
+        self.target.write_text("# Notes\n", encoding="utf-8", newline="\n")
+        self.scratch_root = self.root / "memar"
+        self.scratch_root.mkdir()
+        for module in (memar_content, fs_lock):
+            saved = module.memar_root if hasattr(module, "memar_root") else None
+            if saved is not None:
+                module.memar_root = lambda: self.scratch_root
+                self.addCleanup(setattr, module, "memar_root", saved)
+
+    def args(self, **overrides):
+        from argparse import Namespace
+
+        defaults = dict(
+            file=str(self.target),
+            old=None,
+            old_file=None,
+            new=None,
+            new_file=None,
+            all=False,
+            newline=None,
+            create=False,
+            content_file=None,
+        )
+        defaults.update(overrides)
+        return Namespace(**defaults)
+
+    def held_locks(self):
+        return list((self.scratch_root / "temp").rglob("*.lock"))
+
+    def test_an_edit_takes_the_lock_around_the_read_and_the_write(self) -> None:
+        taken: list[Path] = []
+        saved = memar_content.edit_session
+
+        def record(target, **keywords):
+            taken.append(target)
+            return saved(target, **keywords)
+
+        memar_content.edit_session = record
+        self.addCleanup(setattr, memar_content, "edit_session", saved)
+        memar_content.cmd_edit(self.args(old="# Notes", new="# Renamed"), self.root)
+        self.assertEqual(taken, [self.target])
+        self.assertEqual(self.target.read_text(encoding="utf-8"), "# Renamed\n")
+
+    def test_an_edit_leaves_the_lock_behind_it(self) -> None:
+        memar_content.cmd_edit(self.args(old="# Notes", new="# Renamed"), self.root)
+        self.assertEqual(self.held_locks(), [])
+
+    def test_a_refused_edit_leaves_no_lock_and_no_change(self) -> None:
+        with self.assertRaises(SystemExit):
+            memar_content.cmd_edit(self.args(old="# Absent", new="x"), self.root)
+        self.assertEqual(self.held_locks(), [])
+        self.assertEqual(self.target.read_text(encoding="utf-8"), "# Notes\n")
+
+    def test_a_write_takes_the_lock_too(self) -> None:
+        taken: list[Path] = []
+        saved = memar_content.edit_session
+
+        def record(target, **keywords):
+            taken.append(target)
+            return saved(target, **keywords)
+
+        memar_content.edit_session = record
+        self.addCleanup(setattr, memar_content, "edit_session", saved)
+        new_file = self.root / "fresh.md"
+        payload = self.root / "payload.md"
+        payload.write_text("# Fresh\n", encoding="utf-8", newline="\n")
+        memar_content.cmd_write(
+            self.args(file=str(new_file), create=True, content_file=str(payload)), self.root
+        )
+        self.assertEqual(taken, [new_file])
+        self.assertEqual(self.held_locks(), [])
+
+    def test_the_intent_note_names_this_write_while_the_lock_is_held(self) -> None:
+        # What a waiter that takes over a stale lock reads: which session meant
+        # what to which file, against which base.
+        from machine.fs_lock import edit_intent_path, edit_lock_path, read_intent
+
+        lock = edit_lock_path(self.target, self.scratch_root / "temp")
+        self.assertTrue(str(lock).endswith(".lock"))
+        self.assertEqual(edit_intent_path(lock).name, lock.name + ".intent.json")
+        self.assertFalse(lock.exists())
+        self.assertFalse(edit_intent_path(lock).exists())
+
+
 if __name__ == "__main__":
-    unittest.main()
+    unittest.main(verbosity=2)

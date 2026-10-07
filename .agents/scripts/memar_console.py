@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""How a script in this folder reports and stops.
+"""memar_console.py — how a script in this folder reports and stops.
 
 One place, so that every step line looks like every other step line, and so
 that a failure is reported as a message rather than as a traceback a person

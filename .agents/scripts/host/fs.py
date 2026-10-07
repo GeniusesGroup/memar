@@ -1,8 +1,15 @@
 #!/usr/bin/env python3
-"""Memar-constrained filesystem helpers.
+"""host/fs.py — a filesystem operation with the constraint a session keeps violating.
 
-Host tools already list and delete files. This script exists for the
-constraints Memar sessions keep violating when they improvise:
+**Two audiences, two texts, and this file is where each lives.** `DESCRIPTION`
+below is what `--help` prints, and the per-verb `help=` strings beside each
+argument are what `fs.py <verb> --help` prints. Both are addressed to whoever is
+about to run one of these — usually an agent that has just been about to do the
+unconstrained thing. Everything from here down is addressed to whoever opens this
+file.
+
+The host tool already lists and deletes files; this file is the constraint, not
+the capability. Three of them, each against a habit free-form shell habits form:
 
   tree        List a directory tree with ASCII box characters (agent-log
               friendly), similar intent to Windows `tree /F /A`.
@@ -15,13 +22,16 @@ constraints Memar sessions keep violating when they improvise:
               delete. Agents that "deep delete" then need the file again burn
               tokens reconstructing it; trash keeps recovery cheap.
 
-  temp        Print the process temp directory, optionally joined with
-              extra path parts. Scratch space only: Memar itself lives at its
-              permanent install location, never under temp.
-
   link        Make a directory symlink (a junction on Windows) from LINK
               to TARGET. With --replace, trash LINK first if it already
               exists and does not already resolve to TARGET.
+
+There is deliberately no command here that prints the operating system's
+temporary directory. Session scratch has one home, `<memar-root>/temp/`, and it
+is reached through the session tool; an OS temp directory is wiped by other
+applications while sessions last days. A command whose output is the path the
+scratch rule forbids is a command that invites the failure the rule exists to
+stop, so the absence is the constraint.
 
 Usage is the interface. Do not duplicate these recipes as prose catalogs.
 """
@@ -31,14 +41,32 @@ import argparse
 import os
 import subprocess
 import sys
-import tempfile
 from pathlib import Path
 
-import sys_fs_trash
+SCRIPTS = Path(__file__).resolve().parent.parent
+if str(SCRIPTS) not in sys.path:
+    sys.path.insert(0, str(SCRIPTS))
 
+from machine.fs_trash import soft_delete
 
-def canonical_temp(*parts: str) -> Path:
-    return Path(tempfile.gettempdir()).joinpath(*parts)
+DESCRIPTION = """host/fs.py — filesystem operations that are safe to undo
+
+The operating system already lists and deletes files. These are the same
+operations with the constraint a session keeps wanting to skip:
+
+  tree          list a directory tree, as ASCII branches
+  git-mv-glob   move matching paths into a folder, through git so history follows
+  trash         move a path to the recycle bin instead of deleting it
+  link          make a directory link
+
+`trash` exists because a delete you cannot undo is a delete you cannot take
+back: if the file turns out to be needed, the recycle bin still has it.
+`git-mv-glob` prints what it would move and does nothing until you pass
+`--apply`, so a mistaken glob is visible before it is real.
+
+There is no command here that prints the OS temporary directory. Session scratch
+belongs in your session folder — run `memar session new` and work there.
+"""
 
 
 def cmd_tree(root: Path, *, files: bool = True) -> None:
@@ -106,7 +134,7 @@ def cmd_git_mv_glob(pattern: str, destination: Path, *, apply: bool) -> None:
 
 def cmd_trash(paths: list[Path]) -> None:
     for path in paths:
-        sys_fs_trash.soft_delete(path)
+        soft_delete(path)
 
 
 def ensure_dir_link(link: Path, target: Path, *, replace: bool = False) -> None:
@@ -122,7 +150,7 @@ def ensure_dir_link(link: Path, target: Path, *, replace: bool = False) -> None:
             pass
         if not replace:
             sys.exit(f"error: {link} already exists")
-        sys_fs_trash.soft_delete(link)
+        soft_delete(link)
     link.parent.mkdir(parents=True, exist_ok=True)
     try:
         os.symlink(str(target), str(link), target_is_directory=True)
@@ -141,9 +169,9 @@ def ensure_dir_link(link: Path, target: Path, *, replace: bool = False) -> None:
     print(f"linked {link} -> {target}", file=sys.stderr)
 
 
-def main() -> None:
+def main() -> int:
     parser = argparse.ArgumentParser(
-        description=__doc__,
+        description=DESCRIPTION,
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
     sub = parser.add_subparsers(dest="command", required=True)
@@ -190,16 +218,6 @@ def main() -> None:
     )
     p_trash.add_argument("paths", nargs="+", type=Path)
 
-    p_temp = sub.add_parser(
-        "temp",
-        help="print tempfile.gettempdir(), optionally joined with names",
-    )
-    p_temp.add_argument(
-        "parts",
-        nargs="*",
-        help="path parts under the temp directory (e.g. work)",
-    )
-
     p_link = sub.add_parser(
         "link",
         help="directory symlink (junction on Windows) from LINK to TARGET",
@@ -219,11 +237,10 @@ def main() -> None:
         cmd_git_mv_glob(args.pattern, args.destination, apply=args.apply)
     elif args.command == "trash":
         cmd_trash(args.paths)
-    elif args.command == "temp":
-        print(canonical_temp(*args.parts))
     elif args.command == "link":
         ensure_dir_link(args.link, args.target, replace=args.replace)
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())

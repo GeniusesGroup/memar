@@ -1,128 +1,62 @@
 #!/usr/bin/env python3
-"""memar-documentation.py — resolve, read, and search Memar documentation.
+"""memar-content.py — the written content of a Memar checkout: read it, relate it, audit it, write it.
 
-For agents: instead of resolving Markdown links by hand and hoping the
-file exists, ask this script. Every path Memar documentation uses —
-`/docs/...`, `./foo.md`, `../bar.md`, anchors — is relative to the Memar
-repository root (never to the user's project or the machine root).
+Reached as `memar content`, and every verb is under that one word. Usage is the
+interface; `--help` and `memar content <verb> --help` are this folder's
+authority for what each verb accepts. What is left here is what a help text
+cannot carry: why this tool exists, what its boundary is, and what it cannot do.
 
-Subcommands
-  path REF [REF ...]     Resolve reference(s) to absolute file paths.
-                         REF may be a root-style path (`/docs/cognition.md`),
-                         a document-relative link with `--from FILE`, or a
-                         bare name (`cognition.md`, `docs/cognition.md` —
-                         resolved against the root; prefer bare names on
-                         Git Bash/MSYS shells, which rewrite leading-`/`
-                         arguments into Windows paths before this script
-                         sees them). `#anchor` and `?section` suffixes are
-                         split off and echoed, not validated. Prints one
-                         absolute path per line.
-  meta FILE [FILE ...]   Print front matter (--- YAML block or H1 line) plus
-                         the Abstract — the relevance-judging unit, so an
-                         agent can decide what to read without opening
-                         whole files.
-  section FILE HEADING   Print one section: the text under a heading whose
-                         title matches HEADING (case-insensitive, level-2 or
-                         deeper), up to the next heading of the same or
-                         higher level. Great for "read only the needed part".
-  search PATTERN         Full-text regex search across the explanatory /
-                         practice surface of the doc set (not handoff,
-                         changelog, or research companions — those are
-                         opened only when explicitly named or linked), one
-                         `path:line:text` hit per line. Memar's rule is to
-                         search full-text, not by filename (filenames are
-                         slugs, not a taxonomy) — this makes that rule cheap.
-                          Extra args are extra regexes; files matching all are
-                          listed (`path:all-matched`).
-   backlinks FILE [...]  List the documents linking to each FILE — incoming
-                          links as `linker:line`, so an agent changing a
-                          document can see who depends on it without
-                          grepping the tree. Identity is the resolved path,
-                          never the prose: a mention without a link is not
-                          a backlink.
-   obligations [FILE]    List undischarged `Propagates to: Pending` entries —
-                          the work-list `check` prints apart — as one
-                          `path:line: entry` hit per line. No arguments means
-                          the whole doc set.
-   changelog-append FILE  Append one Changelog-facet entry to FILE (must be a
-                         `*.changelog.md`). Entry Markdown on stdin, or
-                         `--entry-file PATH`. Entry must begin with `### `.
-                         Oldest-first rule: always appends at end-of-file;
-                         peeks only at the file tail for `---` separator
-                         hygiene — does not require reading the changelog
-                         into an agent context. See documentation-changelog.md
-                         → Structure.
-  hour-id                Print whole UTC hours since the Unix epoch — the
-                         coarse value used when minting an Explanation-facet
-                         document's `ID` field.
-  write FILE             Put text into FILE as UTF-8 with **no BOM**, keeping
-                         the file's own line endings (LF for a new file) and
-                         guaranteeing a final newline. Text on stdin, or
-                         `--content-file PATH`. `--create` is required to add
-                         a file that does not exist. Any path, not only one
-                         inside this repository. This is the way to write a
-                         document from a shell; see `check` for why.
-  edit FILE              Replace exact text in FILE. `--old`/`--new`, or
-                         `--old-file`/`--new-file` when the text is long or
-                         contains non-ASCII characters a command line may
-                         mangle. Refuses to write when `--old` is absent or
-                         occurs more than once (override with `--all`), and
-                         removes a BOM if it finds one. Same encoding and
-                         newline guarantees as `write`.
-  check FILE|DIR...      Report what is wrong with text files: a UTF-8 BOM,
-                         invalid UTF-8, a U+FFFD replacement character, mixed
-                         or CRLF line endings, a missing final newline, and
-                         the fingerprints of mojibake; and for Markdown, two
-                         blank lines in a row, a blank line between a heading
-                         and its body, an `#anchor` with no matching heading
-                         in the document it names — the same one for an
-                         in-page link, and the named one for a link to
-                         another document — and a relative link whose target
-                         does not exist. A directory is walked. Any path, not
-                         only one inside this repository. Exits 1 if anything
-                         is reported.
+**The boundary is the whole checkout, not `docs/`.** The written content of a
+Memar repository is not only its Markdown: `modules/` holds the model
+definitions, the rules, the protocol implementations, and `.kh` sources, and
+`.agents/` holds the configuration a session is driven by. A tool named for
+content that could not search code would be a tool for documents. So `search`,
+`backlinks`, `obligations`, and the Memar half of `check` all read across the
+checkout, and the folders a reader does not want are excluded rather than the
+ones they happen to live in. See [Lib → The rule](../modules/lib/lib.md#the-rule)
+for the shape of that reasoning applied elsewhere: the subject decides the
+folder, and a name that states a narrower subject than the file serves is a
+name that will be believed.
 
-Why the write subcommands exist. Reading a file and writing it back is where
-a document gets silently damaged, and the damage is invisible until someone
-reads a character the round trip destroyed. The mechanism on Windows
-PowerShell 5.1 is specific: `Get-Content` has no encoding argument, so it
-detects a file's encoding from a byte-order mark and falls back to the console
-codepage when there is none. Memar's documents are UTF-8 **without** a BOM —
-correctly, since a BOM becomes part of the first line for every tool that
-reads the file as text — which is exactly the case that loses. Measured here:
-round-tripping a BOM-less UTF-8 file through `Get-Content -Raw` and
-`Set-Content -Encoding UTF8` destroys every non-ASCII character, while the
-same round trip over a file that had a BOM preserves them. So the rule is not
-"PowerShell mangles Unicode" in general; it is that a correctly-encoded
-document is the one this shell cannot read.
+**Where a reference resolves.** Every path Memar's own documents use —
+`/docs/...`, `./foo.md`, `../bar.md`, anchors — is relative to the checkout
+root, never to the reading machine or a consuming project. On shells that
+rewrite a leading `/` into a Windows path before the program sees it (Git
+Bash/MSYS), pass a bare repo-relative name (`docs/cognition.md`).
 
-These subcommands read UTF-8 strictly (an invalid file is an error, never a
-silent substitution), write UTF-8 without a BOM, preserve the file's own line
-endings rather than the platform's, refuse an empty or ambiguous write, and
-offer `check` so damage that already happened is reported instead of
-inherited. Use them instead of Get-Content/Set-Content, `echo`, `Out-File`, or
-any other shell-level text round trip.
+**Why the write verbs exist.** Reading a file and writing it back is where a
+document gets silently damaged, and the damage is invisible until someone reads
+a character the round trip destroyed. The mechanism on Windows PowerShell 5.1 is
+specific: `Get-Content` has no encoding argument, so it detects a file's
+encoding from a byte-order mark and falls back to the console codepage when
+there is none. Memar's files are UTF-8 **without** a BOM — correctly, since a
+BOM becomes part of the first line for every tool that reads the file as text —
+which is exactly the case that loses. Measured here: round-tripping a BOM-less
+UTF-8 file through `Get-Content -Raw` and `Set-Content -Encoding UTF8` destroys
+every non-ASCII character, while the same round trip over a file that had a BOM
+preserves them. So the rule is not "PowerShell mangles Unicode" in general; it
+is that a correctly-encoded document is the one this shell cannot read. The
+verbs here write UTF-8 with no BOM, keep the file's own line endings rather than
+the platform's, guarantee a final newline, and refuse an empty or an ambiguous
+write — and `check` reports the damage that already happened rather than letting
+a later session inherit it. Mojibake is still valid UTF-8, so no checker can see
+all of it; what survives is the fingerprint of the mis-decode, reported as a
+hint rather than a verdict.
 
-The one thing no script here can do is repair text on its way in. On this
-machine a PowerShell 5.1 pipe to a native program, a command-line argument,
-and `Out-File` each lose every non-ASCII character, and setting
-`$OutputEncoding` or `[Console]::OutputEncoding` first does not recover them —
-the loss happens before this process starts. So for text that is not pure
-ASCII, pass it as a file (`--content-file`, `--old-file`, `--new-file`) or
-write the file with a tool that writes it directly, and reserve stdin for
-ASCII. What arrives is what gets written; that is the point of the command,
-and it is also its limit.
+**What it cannot do.** It cannot repair text on its way in. On this machine a
+PowerShell 5.1 pipe to a native program, a command-line argument, and `Out-File`
+each lose every non-ASCII character before this process starts, and setting
+`$OutputEncoding` or `[Console]::OutputEncoding` first does not recover them. For
+text that is not pure ASCII, hand it a file (`--content-file`, `--old-file`,
+`--new-file`) or use a file-write tool that writes it directly, and reserve stdin
+for ASCII. What arrives is what gets written; that is the point of the verb and
+also its limit.
 
-One more limit, stated plainly because it is why prevention and not detection
-is the design: mojibake is still valid UTF-8, so no checker can see all of it.
-What survives as a fingerprint is the shape of the mis-decode, and `check`
-reports the common patterns as hints rather than as verdicts.
-
-The Memar root is not decided here: `install.py`, in the same folder, is the one
-place that reads $MEMAR_ROOT and this script asks it. Only files under the root
-and under a `docs` directory are ever returned for
-path/meta/section/search/changelog-append. hour-id needs no document root, and
-write/edit/check take a plain path of their own.
+**The Memar root is not decided here.** `machine/env_location.py` is the one place
+that reads the location variable, and `machine/fs_memar.py` resolves the root from
+it; this tool asks that module and nothing decides for itself. Minting a
+document ID asks the clock rather than the checkout, so it works on a machine
+that has not installed Memar at all.
 """
 from __future__ import annotations
 
@@ -132,13 +66,16 @@ import sys
 import time
 from pathlib import Path
 
-import install
-from copy_excluded import NEVER_COPIED_PATTERNS
+from memar_console import fail, use_utf8_stdio
+from memar_copy_excluded import NEVER_COPIED_PATTERNS
 from memar_repository import enclosing_repository
+from machine.fs_lock import edit_session
+from machine.fs_memar import memar_root
+from memar_session import new_session_id
 
 # Windows consoles default to a legacy codepage (e.g. cp1252) while Memar
-# docs are UTF-8; force UTF-8 output so printing content never crashes.
-install.use_utf8_stdio()
+# files are UTF-8; force UTF-8 output so printing content never crashes.
+use_utf8_stdio()
 
 # Companion facets that are *not* the explanatory surface. Blind `search`
 # is for finding what to study or follow; these companions are reached only
@@ -155,7 +92,33 @@ install.use_utf8_stdio()
 _SEARCH_EXCLUDED_SUFFIXES = (".handoff.md", ".changelog.md")
 _RESEARCH_COMPANION = re.compile(r"\.research\.\d+\.md$", re.IGNORECASE)
 
-# ------------------------------------------------------------- docs set
+# What counts as the checkout's content: the written files a reader of this
+# repository might be looking for. Markdown is the documentation surface and
+# `.kh` the model surface; a `.py` or a `.ts` is searched and checked because it
+# is content of the repository and not of a third party, and a consuming
+# project gets the same rule for its own files.
+CONTENT_SUFFIXES = (".md", ".kh")
+
+# The one corpus. `docs/` is where the model is argued, not where the
+# repository's content ends: `modules/` holds the model definitions, the rule
+# catalog, and the protocol implementations, `.agents/` holds the configuration
+# a session is driven by, and both are read by the same questions. A tool named
+# for content that stopped at `docs/` would be a tool for documents wearing the
+# name of the larger thing. Folders excluded from the corpus are named here
+# rather than inferred, so what a verb cannot see is stated in one place.
+# TODO(2026-10-06): if a fifth verb-group ever arrives, or the knowledge-graph
+# server needs a module boundary under `modules/`, this file's subject may
+# warrant more than one file. It is one subject today — the written content of a
+# checkout — and the size is not a reason on its own.
+_CORPUS_DIRS = ("docs", "modules", ".agents")
+_CORPUS_FILES = ("README.md", "AGENTS.md")
+# The session scratch root is inside the checkout and holds whatever a session
+# left there, so a corpus walk must not read it. It is named here rather than
+# derived, because `temp` is this tool's own home and a rule that inferred it
+# would change whenever a new folder appeared.
+_SCRATCH_DIRNAME = "temp"
+
+# ------------------------------------------------------------- content set
 
 
 def _excluded_from_search(path: Path) -> bool:
@@ -165,13 +128,64 @@ def _excluded_from_search(path: Path) -> bool:
     return _RESEARCH_COMPANION.search(name) is not None
 
 
-def doc_files(root: Path) -> list[Path]:
-    docs_dir = root / "docs"
-    if not docs_dir.is_dir():
-        sys.exit(f"error: no docs directory under {root}")
-    return sorted(
-        path for path in docs_dir.rglob("*.md") if not _excluded_from_search(path)
-    )
+def content_files(root: Path) -> list[Path]:
+    """Every written file of the checkout that a reader may want to search.
+
+    The folders `_CORPUS_DIRS` names, plus the root documents `_CORPUS_FILES`
+    names, walked for Markdown and the source extensions this repository is
+    written in. Generated and dependency trees are excluded by name rather than
+    by a pattern, so a folder that is not content stays out even when it holds
+    `.md` files — an editor's bundled README is not this repository's content.
+
+    Never a silent partial answer: a checkout with none of these folders is
+    refused rather than reported as an empty corpus.
+    """
+    found: list[Path] = []
+    present = [root / name for name in _CORPUS_DIRS]
+    if not any(directory.is_dir() for directory in present):
+        sys.exit(
+            f"error: {root} holds none of "
+            f"{', '.join(_CORPUS_DIRS)}, so it is not a Memar checkout"
+        )
+    for directory in present:
+        if not directory.is_dir():
+            continue
+        for path in directory.rglob("*"):
+            if not path.is_file() or path.suffix.lower() not in CONTENT_SUFFIXES:
+                continue
+            if _excluded_from_search(path):
+                continue
+            folders = path.relative_to(root).parts[:-1]
+            if _SCRATCH_DIRNAME in folders or _is_generated(folders):
+                continue
+            found.append(path)
+    for name in _CORPUS_FILES:
+        candidate = root / name
+        if candidate.is_file():
+            found.append(candidate)
+    return sorted(found)
+
+
+def ledger_files(root: Path) -> list[Path]:
+    """Every changelog ledger of the checkout, whatever folder holds it.
+
+    A ledger is not excluded from the corpus by virtue of being a ledger: an
+    undischarged propagation owed by a changelog written under `modules/` is as
+    open as one written under `docs/`, and a work-list that reads half the
+    ledgers reports half the work.
+    """
+    found: list[Path] = []
+    for directory in (root / name for name in _CORPUS_DIRS):
+        if not directory.is_dir():
+            continue
+        for path in directory.rglob("*.changelog.md"):
+            if not path.is_file():
+                continue
+            folders = path.relative_to(root).parts[:-1]
+            if _SCRATCH_DIRNAME in folders or _is_generated(folders):
+                continue
+            found.append(path)
+    return sorted(found)
 
 
 # -------------------------------------------------------------- resolve
@@ -501,7 +515,7 @@ def cmd_section(args: argparse.Namespace, root: Path) -> None:
 
 def cmd_search(args: argparse.Namespace, root: Path) -> None:
     patterns = [re.compile(pattern, re.IGNORECASE) for pattern in args.patterns]
-    for path in doc_files(root):
+    for path in content_files(root):
         text = read_text(path)
         if all(pattern.search(text) for pattern in patterns):
             if len(patterns) > 1:
@@ -572,7 +586,7 @@ def cmd_backlinks(args: argparse.Namespace, root: Path) -> None:
         except ValueError:
             shown = target
         print(f"== {shown} ==")
-        hits = find_backlinks(target, doc_files(root))
+        hits = find_backlinks(target, content_files(root))
         if not hits:
             print("(no incoming links)")
         for linker, line, fragment in hits:
@@ -589,14 +603,12 @@ def cmd_obligations(args: argparse.Namespace, root: Path) -> None:
     if args.files:
         paths = [resolve_ref(ref, root, None) for ref in args.files]
     else:
-        # The whole doc set's ledgers — not `doc_files`, which is the search
-        # corpus and excludes changelogs by design.
-        docs_dir = root / "docs"
-        if not docs_dir.is_dir():
-            sys.exit(f"error: no docs directory under {root}")
-        paths = sorted(
-            path for path in docs_dir.rglob("*.md") if _is_changelog_ledger(path)
-        )
+        # Every ledger of the checkout, not only the docs/ ones: an
+        # undischarged propagation owed by a changelog under `modules/` is as
+        # open as one owed under `docs/`, and a work-list that reads half the
+        # ledgers reports half the work. `content_files` excludes ledgers from
+        # the search corpus by design, so the ledgers are collected separately.
+        paths = ledger_files(root)
     found = undischarged_propagations(paths)
     if not found:
         print("(no undischarged obligations)")
@@ -624,26 +636,18 @@ def cmd_hour_id() -> None:
     print(int(time.time() // 3600))
 
 
-def cmd_root(args: argparse.Namespace, root: Path) -> None:
-    """Print where Memar is, and nothing else.
-
-    A program that needs to find Memar has three ways to learn where it is, and
-    this is the one that survives all of them. A recorded environment variable
-    answers only when the program was started after the install and after the
-    shell read it; a path typed into a configuration answers only while that
-    configuration is intact. Asking the installed command answers by definition,
-    because the command is the thing installed — the same reason `go env GOROOT`
-    is how a program asks a Go toolchain where it lives rather than reading a
-    variable the toolchain also writes.
-
-    One line on stdout and nothing else, so it can be captured by substitution
-    without parsing. A caller that wants prose asks a person; a caller that wants
-    a path wants the path.
-    """
-    print(root)
-
-
 # ------------------------------------------------------------ write commands
+
+
+def _writer_id() -> str:
+    """Who this write is, for the intent note a waiter may have to read.
+
+    One id per process. The session folder a session owns already carries its
+    own id, and a write is a single act of one process, so a second option here
+    would be a flag the caller must remember to pass for a note only a waiter in
+    an unusual failure reads.
+    """
+    return new_session_id()
 
 
 def _plain_path(ref: str) -> Path:
@@ -674,7 +678,19 @@ def cmd_write(args: argparse.Namespace, root: Path) -> None:
         _, had_bom = read_utf8_strict(path)
         if had_bom:
             print(f"note: {path.name} had a BOM; the write removes it")
-    size = write_utf8(path, text, newline)
+    # Held across the write, and released however this ends. The whole text
+    # arrives at once, so there is nothing to re-derive: the lock is here to
+    # keep another cooperating session from writing the same file between this
+    # session's decision to write it and the bytes reaching disk. It is
+    # advisory — a file-write tool does not take it — and the intent note is
+    # what a waiter that takes over a stale lock reads to learn what this
+    # session meant to do to this file and against which base.
+    with edit_session(
+        path,
+        session_id=_writer_id(),
+        plan_summary=f"write {len(text)} bytes to {path.name}",
+    ):
+        size = write_utf8(path, text, newline)
     verb = "rewrote" if existed else "wrote"
     print(f"{verb} {path} ({size} bytes, utf-8, no BOM, {newline!r} newlines)")
 
@@ -683,7 +699,6 @@ def cmd_edit(args: argparse.Namespace, root: Path) -> None:
     path = _plain_path(args.file)
     if not path.is_file():
         sys.exit(f"error: not a file: {path}")
-    text, had_bom = read_utf8_strict(path)
     old = (
         Path(args.old_file).expanduser().read_bytes().decode("utf-8")
         if args.old_file
@@ -696,21 +711,33 @@ def cmd_edit(args: argparse.Namespace, root: Path) -> None:
     )
     if old == "":
         sys.exit("error: --old must not be empty; it would match everywhere")
-    found = text.count(old)
-    if found == 0:
-        sys.exit(
-            f"error: --old does not occur in {path.name}. Nothing was written.\n"
-            "  Check the exact text, including line endings and any dash character."
-        )
-    if found > 1 and not args.all:
-        sys.exit(
-            f"error: --old occurs {found} times in {path.name}. Nothing was written.\n"
-            "  Give more surrounding context to make it unique, or pass --all."
-        )
-    if had_bom:
-        print(f"note: {path.name} had a BOM; the write removes it")
-    newline = args.newline or detect_newline(path)
-    write_utf8(path, text.replace(old, new), newline)
+    # Read, match, and write all inside the lock. This is the one place the
+    # plan and the base can disagree — the caller believes the file contains
+    # exactly `--old`, and that belief is checked against the file as it is at
+    # the moment of the write rather than against a copy read before another
+    # session could have written. The refusal below is the check; the lock is
+    # what keeps the copy it reads and the bytes it writes one interval.
+    with edit_session(
+        path,
+        session_id=_writer_id(),
+        plan_summary=f"replace {len(old)} chars with {len(new)} in {path.name}",
+    ):
+        text, had_bom = read_utf8_strict(path)
+        found = text.count(old)
+        if found == 0:
+            sys.exit(
+                f"error: --old does not occur in {path.name}. Nothing was written.\n"
+                "  Check the exact text, including line endings and any dash character."
+            )
+        if found > 1 and not args.all:
+            sys.exit(
+                f"error: --old occurs {found} times in {path.name}. Nothing was written.\n"
+                "  Give more surrounding context to make it unique, or pass --all."
+            )
+        if had_bom:
+            print(f"note: {path.name} had a BOM; the write removes it")
+        newline = args.newline or detect_newline(path)
+        write_utf8(path, text.replace(old, new), newline)
     print(f"edited {path} ({found} replacement{'s' if found > 1 else ''})")
 
 
@@ -718,8 +745,10 @@ def cmd_edit(args: argparse.Namespace, root: Path) -> None:
 
 # The prose rules are Memar's written-surface rules (documentation.md -> Written
 # surface) and apply to Markdown only; the encoding and newline rules apply to
-# every text file in the tree.
-_CHECKED_SUFFIXES = (".md", ".kh", ".py", ".ts", ".json", ".yaml", ".yml", ".txt", ".ps1", ".sh", ".bat")
+# every text file in the tree. The suffixes are the ones this repository is
+# actually written in — a tool named for content that refused to check its own
+# source would be checking documents and not content.
+CHECKED_SUFFIXES = (".md", ".kh", ".py", ".ts", ".json", ".yaml", ".yml", ".txt", ".ps1", ".sh", ".bat", ".cmd")
 
 # Mojibake left behind by a read/write round trip through a codepage that is
 # not UTF-8 is still *valid* UTF-8, so nothing above can see it: the bytes were
@@ -1041,8 +1070,8 @@ def check_file(
 def _is_generated(parts: tuple[str, ...]) -> bool:
     """Whether any folder on the way to a file is one this project does not own.
 
-    Asked through `copy_excluded`, which already holds the answer for the two
-    things that copy part of a checkout elsewhere. A file's own name is not
+    Asked through `memar_copy_excluded`, which already holds the answer for the
+    two things that copy part of a checkout elsewhere. A file's own name is not
     weighed: `node_modules` as a *file* would be a different thing, and the
     patterns are folder patterns where that matters.
     """
@@ -1066,7 +1095,7 @@ def checkable_files(folder: Path) -> list[Path]:
         path
         for path in sorted(folder.rglob("*"))
         if path.is_file()
-        and path.suffix in _CHECKED_SUFFIXES
+        and path.suffix in CHECKED_SUFFIXES
         and not _is_generated(path.relative_to(folder).parts[:-1])
     ]
 
@@ -1139,46 +1168,73 @@ def cmd_check(args: argparse.Namespace, root: Path) -> None:
 
 # ----------------------------------------------------------------- main
 
-def main() -> None:
+def main() -> int:
     parser = argparse.ArgumentParser(
-        description="Resolve, read, and search Memar documentation."
+        description="The written content of a Memar checkout: read it, relate it, "
+                    "audit it, write it.",
+        epilog=(
+            "To find your way in: `memar content path <reference>` turns a "
+            "reference into the file it means, `memar content search <term>` "
+            "looks through the whole checkout, and `memar content obligations` "
+            "lists what a change has not yet been carried to. Ask any verb with "
+            "--help and it says what it accepts."
+        ),
+        formatter_class=argparse.RawDescriptionHelpFormatter,
     )
     subparsers = parser.add_subparsers(dest="command", required=True)
 
-    p_path = subparsers.add_parser("path", help="resolve references to absolute paths")
+    p_content = subparsers.add_parser(
+        "content",
+        help="read, relate, audit, and write the checkout's content",
+        description="The written content of a Memar checkout. Every verb is "
+                    "here: one subject, one word. `path` and `search` are "
+                    "where to start.",
+    )
+    content_subparsers = p_content.add_subparsers(
+        dest="content_command", required=True
+    )
+
+    p_path = content_subparsers.add_parser(
+        "path", help="resolve references to absolute paths"
+    )
     p_path.add_argument("refs", nargs="+")
     p_path.add_argument(
         "--from", dest="from_file", default=None,
         help="document whose directory relative refs resolve against",
     )
 
-    p_meta = subparsers.add_parser("meta", help="print front matter and Abstract")
+    p_meta = content_subparsers.add_parser(
+        "meta", help="print front matter and Abstract"
+    )
     p_meta.add_argument("files", nargs="+")
 
-    p_section = subparsers.add_parser("section", help="print one named section")
+    p_section = content_subparsers.add_parser("section", help="print one named section")
     p_section.add_argument("file")
     p_section.add_argument("heading")
 
-    p_search = subparsers.add_parser("search", help="regex search the doc set")
+    p_search = content_subparsers.add_parser(
+        "search", help="regex search the content of the checkout"
+    )
     p_search.add_argument("patterns", nargs="+")
 
-    p_backlinks = subparsers.add_parser(
+    p_backlinks = content_subparsers.add_parser(
         "backlinks", help="list the documents linking to each file"
     )
     p_backlinks.add_argument("files", nargs="+")
 
-    p_obligations = subparsers.add_parser(
+    p_obligations = content_subparsers.add_parser(
         "obligations",
         help="list undischarged Propagates-to entries as path:line hits",
         description="List undischarged `Propagates to: Pending` entries — the "
                     "work-list `check` prints apart — as one `path:line: "
-                    "entry` hit per line. No arguments means the whole doc set.",
+                    "entry` hit per line. No arguments means every ledger of "
+                    "the checkout, not only the ones under `docs/`.",
     )
     p_obligations.add_argument(
-        "files", nargs="*", help="files to read (default: the whole doc set)"
+        "files", nargs="*", help="files to read (default: every ledger)"
     )
 
-    p_append = subparsers.add_parser(
+    p_append = content_subparsers.add_parser(
         "changelog-append",
         help="append one oldest-first Changelog entry at end-of-file",
     )
@@ -1189,23 +1245,20 @@ def main() -> None:
         help="read entry Markdown from this file instead of stdin",
     )
 
-    subparsers.add_parser(
+    content_subparsers.add_parser(
         "hour-id",
         help="print UTC hour-count since epoch (Explanation document ID)",
     )
 
-    subparsers.add_parser(
-        "root",
-        help="print where Memar is installed, for a program that needs to find it",
-    )
-
-    p_write = subparsers.add_parser(
+    p_write = content_subparsers.add_parser(
         "write",
         help="write a text file as UTF-8 without a BOM, preserving its newlines",
         description="Put text into FILE as UTF-8 with no BOM, keeping the "
                     "file's own line endings (LF for a new file) and "
                     "guaranteeing a final newline. Prefer this to any shell's "
-                    "own text handling.",
+                    "own text handling. The write is taken under the per-file "
+                    "lock, so a cooperating session writing the same file is "
+                    "serialized rather than interleaved.",
     )
     p_write.add_argument("file", help="path to write (any path, not only in this repo)")
     p_write.add_argument(
@@ -1225,12 +1278,14 @@ def main() -> None:
         help="required to create a file that does not exist yet",
     )
 
-    p_edit = subparsers.add_parser(
+    p_edit = content_subparsers.add_parser(
         "edit",
         help="replace exact text in a file, refusing an absent or ambiguous match",
         description="Replace exact text in FILE, refusing an absent or "
                     "ambiguous match. Same encoding and newline guarantees as "
-                    "write; removes a BOM if it finds one.",
+                    "write; removes a BOM if it finds one. The read, the match, "
+                    "and the write happen under the per-file lock, so the text "
+                    "matched is the text written to.",
     )
     p_edit.add_argument("file", help="path to edit (any path, not only in this repo)")
     p_edit.add_argument("--old", default=None, help="text to replace")
@@ -1246,7 +1301,7 @@ def main() -> None:
     )
     p_edit.add_argument("--newline", choices=["lf", "crlf"], default=None)
 
-    p_check = subparsers.add_parser(
+    p_check = content_subparsers.add_parser(
         "check",
         help="report encoding, newline, and written-surface problems in text "
              "files; a folder also reports undischarged propagations",
@@ -1280,41 +1335,42 @@ def main() -> None:
     )
 
     args = parser.parse_args()
-    # hour-id asks the clock, not the doc set, so it needs no root: a session
-    # that has not installed Memar can still mint a document ID.
-    if args.command == "hour-id":
+    # Minting a document ID asks the clock, not the checkout, so it needs no
+    # root: a session that has not installed Memar can still mint one.
+    if args.content_command == "hour-id":
         cmd_hour_id()
         return
 
-    root = install.resolve_root_or_here()
+    # The root is asked of the module that resolves it, and resolved once for
+    # the whole run: a verb that re-asked would be a verb that could disagree
+    # with the verb beside it.
+    root = memar_root()
 
-    if args.command == "path":
+    if args.content_command == "path":
         cmd_path(args, root)
-    elif args.command == "root":
-        cmd_root(args, root)
-    elif args.command == "meta":
+    elif args.content_command == "meta":
         cmd_meta(args, root)
-    elif args.command == "section":
+    elif args.content_command == "section":
         cmd_section(args, root)
-    elif args.command == "search":
+    elif args.content_command == "search":
         cmd_search(args, root)
-    elif args.command == "backlinks":
+    elif args.content_command == "backlinks":
         cmd_backlinks(args, root)
-    elif args.command == "obligations":
+    elif args.content_command == "obligations":
         cmd_obligations(args, root)
-    elif args.command == "changelog-append":
+    elif args.content_command == "changelog-append":
         cmd_changelog_append(args, root)
-    elif args.command == "write":
+    elif args.content_command == "write":
         cmd_write(args, root)
-    elif args.command == "edit":
+    elif args.content_command == "edit":
         if args.old is None and args.old_file is None:
             sys.exit("error: edit needs --old or --old-file")
         if args.new is None and args.new_file is None:
             sys.exit("error: edit needs --new or --new-file")
         cmd_edit(args, root)
-    elif args.command == "check":
+    elif args.content_command == "check":
         cmd_check(args, root)
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())

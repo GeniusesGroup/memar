@@ -5,7 +5,8 @@ Never a permanent delete. Agents that "deep delete" then need the file again
 burn tokens reconstructing it; the trash keeps recovery cheap.
 
 Each platform's trash is a different mechanism under one act, so the three
-implementations live here and `fs.py` keeps the `trash` command that calls them.
+implementations live here and `host/fs.py` keeps the `trash` command that calls
+them.
 
 Usage is the interface. Do not duplicate these recipes as prose catalogs.
 """

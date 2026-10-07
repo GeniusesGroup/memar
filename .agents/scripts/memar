@@ -1,14 +1,22 @@
 #!/usr/bin/env python3
 """memar — the one command a person or an agent types to reach Memar.
 
-    memar <anything>            the documentation tool (search, section, check, …)
-    memar install [anything]    record where Memar lives on this machine
-    memar --help                what this routes to, and where
+    memar <verb>              what it routes to; run `memar --help`
+    memar --help              this text
 
 This file routes and nothing else. Every verb it accepts belongs to a tool that
 declares its own interface, and that declaration — not this file — stays the
 authority for what the verb accepts and what it prints. A router that restated
 either would be a second interface for one behavior, and the two would drift.
+
+**Two audiences, two texts, and this file is where each lives.** `memar --help`
+is addressed to a person who has Memar and wants to know what it is and what it
+does for them, so it says that and stops; the design below is addressed to
+whoever opens this file, and it is here rather than in the help output because a
+person running the command has no use for how the router is built. What is
+between those two is the error a DevActionNote exists to prevent: help text
+that explains the implementation is no longer help, and the implementer reading
+it learns nothing they cannot get from the file itself.
 
 The name is the whole of the design. A framework whose entry point is a path
 into a scripts folder asks every caller to know where it lives and what it is
@@ -17,9 +25,17 @@ agent's command, in a CI step, and in a document that tells a reader what to
 type. What that buys is not a shorter skill file on its own — it is that the
 skill can be a routing sentence instead of a description of a filesystem.
 
+**What it routes to is what Memar itself does**, and nothing else: installing
+Memar, opening a session's scratch folder, and the content of a checkout. A
+tool that constrains a host tool the framework has no claim to does not belong
+here — see [`host/README.md`](./host/README.md) for why the path carries that
+claim instead.
+
 Two launchers carry this file: this one, executable where a file may be, and
 `memar.cmd` beside it for a Windows shell that will not run a file without a
 known extension. Both hand the same arguments to the same interpreter.
+
+Usage is the interface. Do not duplicate these recipes as prose catalogs.
 """
 
 from __future__ import annotations
@@ -32,47 +48,52 @@ SCRIPTS = Path(__file__).resolve().parent
 if str(SCRIPTS) not in sys.path:
     sys.path.insert(0, str(SCRIPTS))
 
-from console import use_utf8_stdio
+from memar_console import use_utf8_stdio
 
-DOCUMENTATION = SCRIPTS / "memar-documentation.py"
-INSTALLER = SCRIPTS / "install.py"
+CONTENT = SCRIPTS / "memar-content.py"
+INSTALLER = SCRIPTS / "memar-install.py"
+SESSION = SCRIPTS / "memar-session.py"
 
-# The one word that sends an invocation to the installer. Everything else is the
-# documentation tool's, because that is where every other question a reader or
-# an agent brings belongs. The installer answers "where does Memar live on this
-# machine", which is asked once per machine and never per question.
+# One word per tool, and each is asked once per machine or once per session
+# rather than once per question. `install` records where Memar lives, which is
+# the question a machine has once; `session` opens and closes a scratch folder,
+# which is the question a session has once. Everything else a reader brings
+# belongs to the content tool, because Memar's written content is where every
+# other question is answered.
 INSTALL_VERB = "install"
+SESSION_VERB = "session"
+CONTENT_VERB = "content"
 
-USAGE = f"""memar — reach Memar by one word
+USAGE = """memar — Memar, a development framework whose model is written down
 
-  memar <subject>              find where a subject is defined
-  memar section <doc> <head>   print one named section
-  memar search <regex>...      search the documentation set
-  memar check <path>...        report encoding, surface, link, and obligation problems
-  memar install                record where Memar lives on this machine
-  memar install --check PATH   say whether PATH would be refused, and stop
-  memar --help                 this text
+Memar keeps its model of software design, its rules, and its language sources
+as documents in a checkout, and this is the one command that reaches them.
 
-bash, Git Bash, and zsh run `memar` directly; `cmd.exe` and PowerShell run
-`memar.cmd`, the same launcher for a shell that will not run a file without
-a known extension.
+  memar install ...     put Memar on this machine, and into this project
+  memar session ...     open the scratch folder one piece of work gets
+  memar content ...     ask a question of what Memar has written
 
-Every verb above is declared by the tool that implements it; run
-`memar <verb> --help` for that tool's own interface. `memar` routes and adds
-nothing, so what a verb accepts is never this file's to change.
+To look rather than ask: `memar content path` says where this checkout is, and
+`memar content search <term>` looks through it. Ask any verb with `--help` and it
+says what it accepts.
 """
 
 
 def route(argv: list[str]) -> tuple[Path, list[str]]:
     """Which tool an invocation belongs to, and the arguments it receives.
 
-    Pure, so the routing is testable without running either tool: a test that
-    has to execute the documentation set to learn where an argument went is a
-    test of the documentation set.
+    Pure, so the routing is testable without running any tool: a test that has
+    to execute a tool to learn where an argument went is a test of that tool.
     """
     if argv and argv[0] == INSTALL_VERB:
         return INSTALLER, argv[1:]
-    return DOCUMENTATION, list(argv)
+    if argv and argv[0] == SESSION_VERB:
+        return SESSION, argv[1:]
+    # Fail-closed: falling back to the content tool is allowed for every
+    # non-install invocation (including bare and including `content` itself, which
+    # its own tool declares); a missing tool file must error exit 2 below, never
+    # guess another script.
+    return CONTENT, list(argv)
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -84,6 +105,8 @@ def main(argv: list[str] | None = None) -> int:
         sys.stdout.write(USAGE)
         return 0
     target, forwarded = route(args)
+    # Fail-closed: a tool file not beside this launcher must error exit 2;
+    # re-fetch Memar rather than routing around the missing file.
     if not target.is_file():
         sys.stderr.write(
             f"memar: {target.name} is not beside this launcher, so the verb "
@@ -92,9 +115,12 @@ def main(argv: list[str] | None = None) -> int:
         return 2
     # No environment is prepared here, and none is needed. The tool knows which
     # repository it is inside — two levels up from its own file — so a caller
-    # reaches the documentation without the location variable being set, and a
-    # machine that has registered a different checkout for its projects keeps
-    # reaching that one for them.
+    # reaches the content without the location variable being set, and a machine
+    # that has registered a different checkout for its projects keeps reaching
+    # that one for them.
+    # Fail-closed: this checkout fallback is allowed only for a tool running
+    # inside its own checkout; a caller needing the recorded location must ask
+    # `memar install --root` and error, never walk or guess here.
     completed = subprocess.run([sys.executable, str(target), *forwarded])
     return completed.returncode
 

@@ -1,27 +1,27 @@
 #!/usr/bin/env python3
-"""Copy the Memar skill into local AI agent apps.
+"""memar-install-apps.py — copy the Memar skill into local AI agent apps.
 
-Does not write AGENTS.md or `.agents/memar/` — that is install-agents.py
+**Two audiences, two texts, and this file is where each lives.** `DESCRIPTION`
+below is what `--help` prints: it is addressed to whoever wants an agent app to
+know Memar, and it says what is copied and where it goes. Everything from here
+down is addressed to whoever opens this file.
+
+Does not write AGENTS.md or `.agents/memar/` — that is `memar-install-agents.py`
 (the https://agents.md/ project pointer).
 
-The skill is copied from the Memar checkout that $MEMAR_ROOT names, read by
-`install.py` in this folder, which is also where the writing of that variable
-lives. This script never copies the repository anywhere else. The skill carries
-no scripts: the navigation script it names lives in the checkout, in
-`.agents/scripts/`, and is reached there rather than copied here.
+The skill is copied from the Memar checkout that the location variable names,
+which `machine/env_location.py` is the one module that reads. This script never
+copies the repository anywhere else. The skill carries no scripts: what it names
+lives in the checkout, in `.agents/scripts/`, and is reached there rather than
+copied here.
 
 Run it from the Memar checkout, with the file beside it:
 
-  python .agents/scripts/install-apps.py
+  python .agents/scripts/memar-install-apps.py
 
-Needs Python 3 and a Memar checkout on this machine. If MEMAR_ROOT is unset this
-script says so and points at the install script; it does not clone the
+Needs Python 3 and a Memar checkout on this machine. If the variable is unset
+this script says so and points at the install step; it does not clone the
 repository to find one.
-
-  (none)             every detected agent app
-  cursor|claude|codex|opencode|agents
-                     one app only (error if that app's directory is missing)
-  update             refresh existing skill copies
 
 Usage is the interface. Do not duplicate these recipes as prose catalogs.
 """
@@ -32,7 +32,9 @@ import shutil
 import sys
 from pathlib import Path
 
-import install
+from memar_console import use_utf8_stdio
+from memar_copy_excluded import NEVER_COPIED
+from machine.env_location import resolve_root
 
 APP_DIRS = {
     "agents": lambda: Path.home() / ".agents",
@@ -85,15 +87,34 @@ def copy_skill(source: Path, dest: Path, *, dry_run: bool) -> None:
     dest.parent.mkdir(parents=True, exist_ok=True)
     if dest.exists():
         shutil.rmtree(dest)
-    shutil.copytree(source, dest, ignore=install.NEVER_COPIED)
+    shutil.copytree(source, dest, ignore=NEVER_COPIED)
     print(f"copied skill -> {dest}")
 
 
-def main() -> None:
-    install.use_utf8_stdio()
+DESCRIPTION = """memar-install-apps — teach a local AI agent app how Memar works
+
+Copies the Memar skill into the agent apps on this machine, so an agent working
+in this project is told to read Memar's own documents rather than to guess.
+
+Each app is a folder under your home directory; only the apps already installed
+here are touched, and the skill document is what is copied — the tooling it
+names stays in the Memar checkout and is run from there.
+
+`memar install` already does this for you; run it directly when you want the app
+layer and nothing else.
+
+    (none)                     every agent app found on this machine
+    cursor|claude|codex|opencode|agents
+                               one app only
+    update                     refresh copies already there
+"""
+
+
+def main() -> int:
+    use_utf8_stdio()
     apps = ", ".join(APP_DIRS)
     parser = argparse.ArgumentParser(
-        description=__doc__,
+        description=DESCRIPTION,
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
     parser.add_argument(
@@ -128,15 +149,17 @@ def main() -> None:
     dests = skill_destinations(existing_only=existing_only, app=app)
     if existing_only and not dests:
         sys.exit("error: no existing Memar skill copies found to update")
-    # install.py is the only thing that reads where Memar lives on this machine,
-    # and this is the one read whose answer is reported and acted on.
-    root = install.resolve_root()
+    # Asked of the module that owns the variable and refuses to guess when it
+    # names no repository, because a session that quietly put a checkout on the
+    # machine would produce a location nothing else agrees on.
+    root = resolve_root()
     print(f"Memar resolves to {root}")
     source = root / ".agents" / "skills" / "memar"
     for dest in dests:
         copy_skill(source, dest, dry_run=args.dry_run)
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())
 

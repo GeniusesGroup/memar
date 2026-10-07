@@ -1,0 +1,225 @@
+#!/usr/bin/env python3
+"""Tests for where an editor's extensions land, in `machine/editor_extension.py`.
+
+    python .agents/scripts/machine/tests/editor_extension.py
+
+The subject is the placement of an extension, per
+[Test Naming](../../../../modules/process/test/rules/test-naming/test-naming.md),
+in the `tests/` folder of the shelf that owns it per
+[Test Placement](../../../../modules/process/test/rules/test-placement/test-placement.md).
+
+Nothing here writes to the machine. The editor's extensions folder is patched
+onto a scratch folder inside this one, and the checkout the extensions are read
+from is a second scratch folder holding manifests written by the test; both are
+removed with the temporary directories that hold them. No editor is started and
+nothing under the real `~/.vscode` is read or written.
+
+What is pinned, and what each pin is for:
+
+  FolderNameFromManifest  The folder name is `<publisher>.<name>-<version>`
+                          read from the extension's own manifest, so nothing
+                          here names an extension or a version and a new
+                          extension needs no edit to this module.
+  RefusesAnUnnamedOne     A manifest with no publisher, name, or version names
+                          no installable extension, and is refused by name
+                          rather than skipped past into a silent no-op.
+  SecondRunWritesOver     An installed folder is replaced, because a change in
+                          the checkout that does not reach the editor is a
+                          change that is not installed.
+  NoEditorIsSkipped       An editor folder that is not there is reported and
+                          left alone, rather than created: writing into a folder
+                          no editor reads leaves litter, not an extension.
+  NoExtensionIsNotAFault  A checkout that ships no extension is reported, not
+                          an error, because installing Memar does not require
+                          an editor.
+  OnlyManifestsAreTaken   Not every folder under the extensions folder is an
+                          extension, so one with no manifest is passed over.
+
+Usage is the interface. Do not duplicate these recipes as prose catalogs.
+"""
+from __future__ import annotations
+
+import contextlib
+import io
+import json
+import os
+import sys
+import tempfile
+import unittest
+import unittest.mock
+from pathlib import Path
+
+TESTS = Path(__file__).resolve().parent
+# This suite lives in the `tests/` folder of the shelf that owns its subject, so
+# the scripts folder is two levels up and the checkout it resolves against is two
+# above that. Running a file puts its OWN folder on the module search path and not
+# its parent's, which is the one line this needs and the reason it carries one.
+SCRIPTS = TESTS.parent.parent
+CHECKOUT = SCRIPTS.parent.parent
+sys.path.insert(0, str(SCRIPTS))
+sys.dont_write_bytecode = True
+
+import machine.editor_extension as extension
+
+
+class Fixture(unittest.TestCase):
+    """A checkout that ships one extension, and an editor folder to copy it into."""
+
+    def setUp(self) -> None:
+        self.notes = io.StringIO()
+        self.checkout = tempfile.TemporaryDirectory(dir=TESTS)
+        self.addCleanup(self.checkout.cleanup)
+        self.checkout_root = Path(self.checkout.name)
+        self.editor = tempfile.TemporaryDirectory(dir=TESTS)
+        self.addCleanup(self.editor.cleanup)
+        self.editor_root = Path(self.editor.name)
+
+        self.sources = self.checkout_root / extension.EXTENSIONS_RELATIVE
+        self.sources.mkdir(parents=True)
+        patch = unittest.mock.patch.object(extension, "editor_extensions_dir", lambda: self.editor_root)
+        self.addCleanup(patch.stop)
+        patch.start()
+        printer = unittest.mock.patch("builtins.print", self.notes.write)
+        self.addCleanup(printer.stop)
+        printer.start()
+
+    def add_extension(self, folder: str, **fields: object) -> Path:
+        """Write one extension manifest into the checkout and return its folder."""
+        source = self.sources / folder
+        source.mkdir(parents=True, exist_ok=True)
+        manifest = {
+            "publisher": fields.get("publisher", "Memar"),
+            "name": fields.get("name", folder),
+            "version": fields.get("version", "1.0.0"),
+            "main": "./extension.js",
+        }
+        for absent in (key for key, value in fields.items() if value is None):
+            del manifest[absent]
+        (source / extension.MANIFEST_NAME).write_text(
+            json.dumps(manifest), encoding="utf-8"
+        )
+        return source
+
+    def said(self, fragment: str) -> bool:
+        return fragment in self.notes.getvalue()
+
+
+class FolderNameFromManifest(unittest.TestCase):
+    """The editor's own name for the folder, read rather than written here."""
+
+    def test_the_publisher_name_and_version_make_the_folder_name(self) -> None:
+        with tempfile.TemporaryDirectory(dir=TESTS) as scratch:
+            manifest = Path(scratch) / extension.MANIFEST_NAME
+            manifest.write_text(
+                json.dumps({"publisher": "Memar", "name": "khayyam", "version": "2.1.0"}),
+                encoding="utf-8",
+            )
+            self.assertEqual(extension.extension_folder_name(manifest), "memar.khayyam-2.1.0")
+
+    def test_a_publisher_with_dots_loses_them(self) -> None:
+        # The editor compares folder names literally, so a publisher that keeps a
+        # dot would never match what the marketplace installed under.
+        with tempfile.TemporaryDirectory(dir=TESTS) as scratch:
+            manifest = Path(scratch) / extension.MANIFEST_NAME
+            manifest.write_text(
+                json.dumps({"publisher": "Memar.Foundation", "name": "khayyam", "version": "1.0.0"}),
+                encoding="utf-8",
+            )
+            self.assertEqual(extension.extension_folder_name(manifest), "memarfoundation.khayyam-1.0.0")
+
+
+class RefusesAnUnnamedOne(Fixture):
+    """A manifest that names no installable extension is said so, by field."""
+
+    def test_each_missing_field_is_refused_by_its_own_name(self) -> None:
+        with tempfile.TemporaryDirectory(dir=TESTS) as scratch:
+            manifest = Path(scratch) / extension.MANIFEST_NAME
+            for absent in ("publisher", "name", "version"):
+                fields = {"publisher": "Memar", "name": "khayyam", "version": "1.0.0"}
+                del fields[absent]
+                manifest.write_text(json.dumps(fields), encoding="utf-8")
+                with self.subTest(absent=absent):
+                    with self.assertRaises(SystemExit) as raised:
+                        extension.extension_folder_name(manifest)
+                    self.assertIn(absent, str(raised.exception))
+
+    def test_a_manifest_that_is_not_json_is_refused_with_the_reason(self) -> None:
+        with tempfile.TemporaryDirectory(dir=TESTS) as scratch:
+            manifest = Path(scratch) / extension.MANIFEST_NAME
+            manifest.write_text("{not json", encoding="utf-8")
+            with self.assertRaises(SystemExit) as raised:
+                extension.extension_folder_name(manifest)
+            self.assertIn(str(manifest), str(raised.exception))
+
+
+class SecondRunWritesOver(Fixture):
+    """The installed folder is the installer's own copy, so it is refreshed."""
+
+    def test_the_installed_file_becomes_the_checkouts(self) -> None:
+        # The folder name carries the version, so a version bump lands beside the
+        # old folder and the editor keeps both, as it does for any other install.
+        # What this pin is about is the same version: the file inside it changed.
+        self.add_extension("khayyam")
+        (self.sources / "khayyam" / "rules.txt").write_text("first", encoding="utf-8")
+        extension.install_extensions(self.checkout_root)
+        installed = self.editor_root / "memar.khayyam-1.0.0"
+        self.assertEqual((installed / "rules.txt").read_text(encoding="utf-8"), "first")
+
+        (self.sources / "khayyam" / "rules.txt").write_text("second", encoding="utf-8")
+        extension.install_extensions(self.checkout_root)
+
+        self.assertEqual((installed / "rules.txt").read_text(encoding="utf-8"), "second")
+        self.assertTrue(self.said("memar.khayyam-1.0.0 refreshed"))
+
+    def test_the_first_run_says_installed_and_the_second_says_refreshed(self) -> None:
+        # One word each, because an operator reading the output cannot tell from
+        # "installed" alone whether anything changed on this run.
+        self.add_extension("khayyam")
+        extension.install_extensions(self.checkout_root)
+        self.assertTrue(self.said("memar.khayyam-1.0.0 installed"))
+        self.assertFalse(self.said("refreshed"))
+        extension.install_extensions(self.checkout_root)
+        self.assertTrue(self.said("refreshed"))
+
+
+class NoEditorIsSkipped(Fixture):
+    """An editor that is not installed leaves no folder behind."""
+
+    def test_the_editor_folder_is_not_created(self) -> None:
+        self.add_extension("khayyam")
+        missing = self.editor_root / "no-editor-here"
+        with unittest.mock.patch.object(extension, "editor_extensions_dir", lambda: missing):
+            extension.install_extensions(self.checkout_root)
+        self.assertFalse(missing.exists())
+        self.assertTrue(self.said("no editor on this machine"))
+
+
+class NoExtensionIsNotAFault(Fixture):
+    """Installing Memar does not require shipping an editor extension."""
+
+    def test_a_checkout_without_the_folder_is_reported_not_raised(self) -> None:
+        without = self.checkout_root / "elsewhere"
+        without.mkdir()
+        extension.install_extensions(without)
+        self.assertTrue(self.said("no editor extension to install"))
+
+    def test_an_empty_extensions_folder_installs_nothing(self) -> None:
+        extension.install_extensions(self.checkout_root)
+        self.assertEqual(list(self.editor_root.iterdir()), [])
+
+
+class OnlyManifestsAreTaken(Fixture):
+    """Not every folder under the extensions folder is an extension."""
+
+    def test_a_folder_with_no_manifest_is_passed_over(self) -> None:
+        self.add_extension("khayyam")
+        (self.sources / "notes").mkdir()
+        extension.install_extensions(self.checkout_root)
+        self.assertEqual(
+            sorted(path.name for path in self.editor_root.iterdir()),
+            ["memar.khayyam-1.0.0"],
+        )
+
+
+if __name__ == "__main__":
+    unittest.main(verbosity=2)

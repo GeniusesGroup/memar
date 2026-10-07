@@ -1,8 +1,14 @@
 #!/usr/bin/env python3
-"""Memar-constrained git helpers.
+"""host/git.py — a git operation with the constraint a session keeps violating.
 
-Host tools already speak git. This script exists only for the constraints
-Memar sessions keep violating when they improvise:
+**Two audiences, two texts, and this file is where each lives.** `DESCRIPTION`
+below is what `--help` prints, and the per-verb `help=` strings beside each
+argument are what `git.py <verb> --help` prints. Both are addressed to whoever is
+about to run one of these — usually an agent holding uncommitted work. Everything
+from here down is addressed to whoever opens this file.
+
+The host tool already speaks git. This file is the constraint, not the
+capability:
 
   rename   Move/rename a *tracked* path with `git mv`, never plain mv.
            Commit that rename by itself before editing content — a mixed
@@ -10,7 +16,7 @@ Memar sessions keep violating when they improvise:
 
   remove   Stop tracking a path without `git rm`. `git rm` deletes in a way
            that is hard to recover from. This command sends the working-tree
-           path to the OS Recycle Bin / Trash via fs.py trash, then stages
+           path to the OS Recycle Bin / Trash via `fs.py trash`, then stages
            the disappearance with `git add -u` so the index matches.
 
   stash    Park uncommitted work (tracked + untracked, not ignored) so a
@@ -23,17 +29,18 @@ Memar sessions keep violating when they improvise:
            caller passes an explicit irreversible confirmation token.
            Presence of the subcommand is not permission to call it casually.
 
-This script needs git, and says so plainly if it is missing. It does not install
-git: the Memar bootstrap (`install.sh` / `install.ps1` in this folder) is the one
-place that puts git and Python on a machine, and a second implementation of that
-here is a second answer to a question with one answer. Usage is the interface.
-Do not duplicate these recipes as prose catalogs. Do not use `git rm` in Memar
-sessions. Document-ID minting is not here — use `memar-documentation.py hour-id`
-in this folder.
+This file needs git, and says so plainly if it is missing. It does not install
+git: the Memar bootstrap (`install.sh` / `install.ps1` in the folder above this
+one) is the one place that puts git and Python on a machine, and a second
+implementation of that here is a second answer to a question with one answer.
+Document-ID minting is not here either — it is a content verb, under `memar
+content`.
 
 `gitignore` only hides untracked paths; tracked files that match an ignore
 pattern still show as modifications — do not "fix" that by restoring them
 away.
+
+Usage is the interface. Do not duplicate these recipes as prose catalogs.
 """
 from __future__ import annotations
 
@@ -42,6 +49,32 @@ import shutil
 import subprocess
 import sys
 from pathlib import Path
+
+DESCRIPTION = """host/git.py — git operations that do not lose work
+
+Git already does all of this. These do it with the constraint a session keeps
+wanting to skip:
+
+  rename    move a tracked file or folder, with history following it
+  remove    stop tracking a path, sending it to the recycle bin first
+  stash     set uncommitted work aside where a later session can get it
+  restore   give uncommitted work back, and refuse to throw it away unasked
+
+`remove` does not delete: the file goes to the recycle bin, so it is still there
+if it turns out to be needed. `restore` will not discard anything unless you
+pass an explicit confirmation, because "tidy the status" is how uncommitted work
+is most often lost — if you want it set aside, `stash` is the command for that.
+
+One thing git does that looks like a bug: a file that matches `.gitignore` but
+is already tracked still shows up as modified. Ignoring does not untrack, and
+restoring it away is not the fix.
+"""
+
+SCRIPTS = Path(__file__).resolve().parent.parent
+if str(SCRIPTS) not in sys.path:
+    sys.path.insert(0, str(SCRIPTS))
+
+from memar_console import use_utf8_stdio
 
 GIT_MISSING = (
     "error: `git` is not on PATH. Run the Memar bootstrap for this machine "
@@ -161,9 +194,10 @@ def cmd_restore(paths: list[Path], confirm: str | None) -> None:
     )
 
 
-def main() -> None:
+def main() -> int:
+    use_utf8_stdio()
     parser = argparse.ArgumentParser(
-        description=__doc__,
+        description=DESCRIPTION,
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
     sub = parser.add_subparsers(dest="command", required=True)
@@ -212,7 +246,8 @@ def main() -> None:
         cmd_stash(args.message)
     elif args.command == "restore":
         cmd_restore(args.paths, args.confirm)
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())

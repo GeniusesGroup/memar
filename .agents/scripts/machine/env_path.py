@@ -1,12 +1,12 @@
 """The user's PATH, read from the record and written to deliberately.
 
-Split out of `install.py` because the concern is not Memar's: what a machine's
-PATH says, and how a program asks to be added to it, is the same question for
-anything installed on that machine, and the day a second thing wants to be on it
-is the day the answer must not be written again. `install.py` is the one place
-that decides *about Memar*; this is the one place that decides *about the
-machine's environment*, and the installer asks it the same way it asks
-`memar_repository` whether a folder qualifies.
+Split out of `memar-install.py` because the concern is not Memar's: what a
+machine's PATH says, and how a program asks to be added to it, is the same
+question for anything installed on that machine, and the day a second thing
+wants to be on it is the day the answer must not be written again.
+`memar-install.py` is the one place that decides *about Memar*; this is the one
+place that decides *about the machine's environment*, and the installer asks it
+the same way it asks `memar_repository` whether a folder qualifies.
 
 Two facts about PATH drive everything here. It is **per-process**: a shell
 opened before a change does not see it, which is why the installer says so

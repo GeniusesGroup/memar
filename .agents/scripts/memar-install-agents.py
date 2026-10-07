@@ -1,5 +1,10 @@
 #!/usr/bin/env python3
-"""Install Memar into a project as https://agents.md/ instructions.
+"""memar-install-agents.py — put Memar into a project as https://agents.md/ instructions.
+
+**Two audiences, two texts, and this file is where each lives.** `DESCRIPTION`
+below is what `--help` prints: it is addressed to whoever wants Memar in a
+project and says what lands there and what does not. Everything from here down
+is addressed to whoever opens this file.
 
 Writes two things: a one-line `## Memar` section in the project's AGENTS.md
 pointing at `.agents/memar/README.md`, and that README. AGENTS.md is not the
@@ -11,35 +16,33 @@ machine is fetched from the Memar repository at the point of use, and a copy per
 repository is unmaintainable — every change here would have to be re-copied into
 every project by hand.
 
-Where Memar lives on this machine is one thing: the MEMAR_ROOT environment
-variable, written at install time by `.agents/scripts/install.py` and read by
-everything, including the test this script asks that file for rather than
-carrying: whether a folder is the Memar repository, which is what keeps the
-Memar repository's own hand-written README from being replaced by this text.
+Where Memar lives on this machine is one thing, and this file asks rather than
+decides: `machine/env_location.py` is the one module that reads the location
+variable, and `memar_repository.py` holds the test of what a Memar repository is
+— which is what keeps the Memar repository's own hand-written README from being
+replaced by the text written for a project that has to fetch Memar first.
 
 Run it from the project you want Memar in, a subdirectory being fine — this walks
 up to the version-control root — with the Memar checkout's own copy beside it:
 
-  python "$MEMAR_ROOT/.agents/scripts/install-agents.py"
+  python "$MEMAR_ROOT/.agents/scripts/memar-install-agents.py"
 
-Needs Python 3 and a Memar checkout on this machine. It never resolves MEMAR_ROOT
-itself and never installs anything: the machine is settled before this runs, and
-the README it writes says what to run when it is not.
-
-  (none)    install into the current project
-  update    refresh an existing project install
+Needs Python 3 and a Memar checkout on this machine. It never installs anything:
+the machine is settled before this runs, and the README it writes says what to
+run when it is not.
 
 Usage is the interface. Do not duplicate these recipes as prose catalogs.
 """
 from __future__ import annotations
 
 import argparse
-import os
 import re
 import sys
 from pathlib import Path
 
-import install
+from memar_console import use_utf8_stdio
+from memar_repository import is_memar_repository
+from machine.env_location import VARIABLE, recorded_value
 
 PUBLISH_BRANCH = "main"
 SCRIPTS_RAW = (
@@ -72,15 +75,14 @@ AGENTS_SECTION_BODY = (
 README_BODY = (
     "`memar` is how this machine reaches Memar: one word, no path, no variable. "
     "Every question about Memar's documentation goes through it, and `memar "
-    "install` records where Memar lives here. Run `memar --help` for what it "
-    "accepts.\n\n"
+    "install` puts Memar here. Run `memar --help` for what it accepts, and "
+    "`memar <verb> --help` for one verb's own interface — this text does not "
+    "repeat either.\n\n"
     "Where `memar` is not on PATH, the same tools are the files in the checkout "
     "that `MEMAR_ROOT` names, the one recorded location of a Memar checkout on "
-    "this machine: `\"$MEMAR_ROOT/.agents/scripts/memar-documentation.py\"` is "
-    "what the command routes to, and `\"$MEMAR_ROOT/.agents/scripts/install.py\"` "
-    "is the installer. If `MEMAR_ROOT` is unset as well, run the bootstrap from "
-    "Memar's repository — it makes sure git and Python are here, then installs "
-    "Memar and writes that variable:\n\n"
+    "this machine, and their own `--help` declares them. If `MEMAR_ROOT` is "
+    "unset as well, run the bootstrap from Memar's repository — it makes sure "
+    "git and Python are here, then installs Memar and writes that variable:\n\n"
     "```\n"
     f"{WINDOWS_BOOTSTRAP}   # Windows\n"
     f"{POSIX_BOOTSTRAP}   # POSIX\n"
@@ -88,9 +90,9 @@ README_BODY = (
     "Then restart your program: a program of your own that is already running "
     "keeps the value it was started with, while the scripts in the checkout that "
     "variable names read the platform's record of it and see it at once. Load "
-    "`.agents/skills/memar/SKILL.md` from the checkout that variable names, and use "
-    "the scripts in its `.agents/scripts/`. To put Memar into another project, run "
-    "`install-agents.py` from that checkout, in that project."
+    "`.agents/skills/memar/SKILL.md` from the checkout that variable names, and "
+    "reach the rest through `memar`. To put Memar into another project, run "
+    "`memar install` there."
 )
 CONSUMER_README_TEXT = f"# Memar\n{README_BODY}\n"
 AGENTS_DIR_README = """# Agents
@@ -196,7 +198,7 @@ def cmd_install(*, dry_run: bool, require_existing: bool) -> None:
     # The Memar repository installs itself, and its .agents/memar/README.md is
     # written by hand to point at its own skill; it must not be replaced by the
     # text written for a project that has to fetch Memar first.
-    if not install.is_memar_repository(target):
+    if not is_memar_repository(target):
         write_text(
             target / CONSUMER_README,
             CONSUMER_README_TEXT,
@@ -206,21 +208,43 @@ def cmd_install(*, dry_run: bool, require_existing: bool) -> None:
     if not agents_index.is_file():
         write_text(agents_index, AGENTS_DIR_README, dry_run=dry_run)
     if not dry_run:
-        recorded = os.environ.get("MEMAR_ROOT", "").strip()
+        # Asked of the module that owns the variable, so a session opened
+        # before it was written does not conclude Memar was never installed and
+        # send this project to the bootstrap a second time.
+        recorded = recorded_value()
         if not recorded:
             print(
-                "MEMAR_ROOT is not set, so Memar is not on this machine yet; the "
+                f"{VARIABLE} is not set, so Memar is not on this machine yet; the "
                 "bootstrap this project now points at installs it",
                 file=sys.stderr,
             )
         else:
-            print(f"MEMAR_ROOT is set to {recorded}")
+            print(f"{VARIABLE} is set to {recorded}")
 
 
-def main() -> None:
-    install.use_utf8_stdio()
+DESCRIPTION = """memar-install-agents — let a project know Memar exists
+
+Writes two things into the project you run this from:
+
+  - a `## Memar` line in its AGENTS.md, saying which file to read;
+  - that file, `.agents/memar/README.md`, which carries the substance.
+
+Nothing else is placed there. No script and no Python file — a project's copy of
+Memar's tooling would go stale on every change here, so the tooling is fetched
+from the Memar repository when it is needed instead.
+
+Run this from the project, or any folder inside it. `memar install` already does
+this for you; run it directly when you want the project layer and nothing else.
+
+    (none)      put Memar into the current project
+    update      refresh a project that already has it
+"""
+
+
+def main() -> int:
+    use_utf8_stdio()
     parser = argparse.ArgumentParser(
-        description=__doc__,
+        description=DESCRIPTION,
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
     parser.add_argument(
@@ -238,7 +262,8 @@ def main() -> None:
     if args.command not in (None, "update"):
         sys.exit("error: unknown command; expected omitted or update")
     cmd_install(dry_run=args.dry_run, require_existing=args.command == "update")
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())

@@ -1,69 +1,25 @@
 <#
 .SYNOPSIS
-Put Memar on this machine, and record where it lives.
+Put Memar on this machine.
 
 .DESCRIPTION
-This is the bootstrap, and the only file of Memar meant to be run on its own.
-It assumes nothing but PowerShell. Every other file in the folder is written to
-be run from a Memar checkout, with its siblings on disk beside it, so this
-script's own job is to obtain that checkout and then run it from there.
+  .\install.ps1                     install into Memar in your home
+  .\install.ps1 -Path C:\Memar      install into a folder you name
+  .\install.ps1 -Register C:\src\memar
+                                   use a Memar checkout you already have
+  .\install.ps1 -Check C:\Temp\Memar
+                                   would a folder be refused? installs nothing
 
-  Install (clone) Memar into a folder you name, or into Memar in your home:
+What it does: makes sure git and Python are here, obtains a Memar checkout, and
+hands the run to Memar's installer, which puts Memar on this machine, into the
+project you are in, and into the AI agent apps on this machine. Each step prints
+what it did. Running it again is safe and costs nothing.
 
-      .agents\scripts\install.ps1                 # Memar in your home
-      .agents\scripts\install.ps1 -Path C:\Memar
+What you must do afterwards: restart your shell and your editor, because where
+Memar lives is written as an environment variable and a program already running
+when it was written does not read it.
 
-  Register a Memar folder that already exists, without moving or copying
-  anything:
-
-      .agents\scripts\install.ps1 -Register C:\Users\you\GeniusesGroup\memar
-
-  Ask whether a folder would be refused, without installing anything:
-
-      .agents\scripts\install.ps1 -Check C:\Temp\Memar
-
-What it does, in order, printing each step:
-
-  1. Prerequisites - git and Python. If the platform offers a package manager
-     that has them, it installs them; if it does not, it says so and stops.
-  2. The architecture - Memar is a git checkout, so this step obtains one: a
-     `git clone --depth 1` of the repository into Memar in your home, a
-     `git pull` of the checkout already in a folder you named, or a checkout that
-     is already here and is used as it is. A run that named no folder fetches
-     nothing when it can find a checkout to run from, because whether Memar is
-     already on this machine is a question for the installer to ask against the
-     record, and not for this script to answer from the copy of the variable this
-     session holds. No file of the architecture is fetched over the network and
-     none is run from memory, so a first run costs one clone and nothing else. A
-     folder you named that already holds something else is refused, and nothing
-     is deleted.
-  3. The installer - install.py, run from the checkout step 2 settled on, with
-     the rest of the architecture beside it. The installer is the only thing
-     that decides anything about Memar, including whether Memar is already here:
-     it reports an existing install and stops, reports a value that names no
-     Memar repository and leaves it alone, refuses a folder under the temporary
-     directory, and otherwise writes MEMAR_ROOT, makes the shortcut, puts the
-     \memar\ command on the user's PATH, and
-     installs the editor extensions that checkout ships.
-
-One mechanism decides where Memar lives: the MEMAR_ROOT environment variable,
-written at install time by the installer and read literally by everything. No
-per-OS location, no second resolution order, no fallback - this script decides
-where the checkout is, and never whether one is a Memar repository nor what the
-record of the variable says: both belong to the installer, which asks the
-modules that hold them.
-
-Memar is never installed into a temporary directory: a copy there is
-machine-local and does not survive, and the installer refuses such a target.
-
--Check obtains nothing, so it needs an architecture to ask: this script answers
-with the checkout it is in, or the one the variable names. A machine that has
-neither has no answer to give, and this script says so and stops.
-
-MEMAR_ROOT takes effect for programs started *after* it is written. Other
-programs - your editor, your shell, this session's parent - must be restarted
-before they see it: a running program does not read a new value. This script's
-own output does not need restarting.
+Exit status: 0 when MEMAR_ROOT points at a Memar repository, 1 otherwise.
 
 .PARAMETER Path
 Clone Memar into this folder and register it. Default: Memar in your home
@@ -81,6 +37,50 @@ cloned and nothing is written.
 
 .PARAMETER Help
 Print this text.
+
+.NOTES
+The rest of this file is addressed to whoever opens it. Everything here is why
+the run is shaped this way; a person installing Memar has no use for it, and
+printing it to them would make the help output a second copy of it that nobody
+maintains.
+
+This is the bootstrap, and the only file of Memar meant to be run on its own.
+It assumes nothing but PowerShell. Every other file in the folder is written to
+be run from a Memar checkout, with its siblings on disk beside it, so this
+script's own job is to obtain that checkout and then run it from there.
+
+What it does, in order, printing each step:
+
+  1. Prerequisites - git and Python. If the platform offers a package manager
+     that has them, it installs them; if it does not, it says so and stops.
+  2. The architecture - Memar is a git checkout, so this step obtains one: a
+     `git clone --depth 1` of the repository into Memar in your home, a
+     `git pull` of the checkout already in a folder you named, or a checkout that
+     is already here and is used as it is. A run that named no folder fetches
+     nothing when it can find a checkout to run from, because whether Memar is
+     already on this machine is a question for the installer to ask against the
+     record, and not for this script to answer from the copy of the variable this
+     session holds. No file of the architecture is fetched over the network and
+     none is run from memory, so a first run costs one clone and nothing else. A
+     folder you named that already holds something else is refused, and nothing
+     is deleted.
+  3. The installer - memar-install.py, run from the checkout step 2 settled on, with
+     the rest of the architecture beside it. What it decides and reports is
+     declared by its own help; run it with --help for that interface.
+
+One mechanism decides where Memar lives: the MEMAR_ROOT environment variable,
+written at install time by the installer and read literally by everything. No
+per-OS location, no second resolution order, no fallback - this script decides
+where the checkout is, and never whether one is a Memar repository nor what the
+record of the variable says: both belong to the installer, which asks the
+modules that hold them.
+
+-Check obtains nothing, so it needs an architecture to ask: this script answers
+with the checkout it is in, or the one the variable names. A machine that has
+neither has no answer to give, and this script says so and stops.
+
+Restart is declared by the installer's own help. This script's
+own output does not need restarting.
 #>
 [CmdletBinding()]
 param(
@@ -97,7 +97,7 @@ $RepositoryUrl = "https://github.com/GeniusesGroup/memar.git"
 $BootstrapUrl = "https://raw.githubusercontent.com/GeniusesGroup/memar/main/.agents/scripts/install.ps1"
 # Where the installer lives inside a checkout, and where this bootstrap lives
 # inside one. The pair is what makes "the architecture is here" one question.
-$ArchitectureEntry = ".agents/scripts/install.py"
+$ArchitectureEntry = ".agents/scripts/memar-install.py"
 $BootstrapEntry = "install.ps1"
 # The folder a run that named none obtains the architecture into. The installer's
 # own target module holds the same name, and the two are pinned to each other.
@@ -151,12 +151,17 @@ if ($Help) {
     if (-not $PSCommandPath) {
         Fail "-Help needs this file; fetch it from $BootstrapUrl and run it from there."
     }
-    # The comment-based help block at the top of this file is the documentation;
-    # print it (minus the block delimiters) rather than maintaining a second copy.
+# The comment-based help block at the top of this file is the documentation;
+    # print it up to .NOTES (minus the block delimiters) rather than maintaining a
+    # second copy. Everything from .NOTES down is addressed to whoever opens this
+    # file, which is the same boundary the POSIX bootstrap draws with its blank
+    # line — one rule, two shells.
     $text = Get-Content -LiteralPath $PSCommandPath
     $end = ($text | Select-String -Pattern "^#>" | Select-Object -First 1).LineNumber
     if (-not $end) { $end = 2 }
-    $text[1..($end - 2)] | ForEach-Object { $_ -replace "^#\.", "." -replace "^# ?", "" } | Write-Host
+    $notes = ($text[1..($end - 2)] | Select-String -Pattern "^\.NOTES" | Select-Object -First 1).LineNumber
+    $take = if ($notes) { $notes - 1 } else { $end - 2 }
+    $text[1..$take] | ForEach-Object { $_ -replace "^\#\.", "." -replace "^# ?", "" } | Write-Host
     exit 0
 }
 
@@ -228,7 +233,7 @@ $OwnCheckout = $null
 if ($PSCommandPath) {
     $Here = Split-Path -Parent $PSCommandPath
     if ((Test-Path -LiteralPath (Join-Path $Here $BootstrapEntry) -PathType Leaf) -and
-        (Test-Path -LiteralPath (Join-Path $Here "install.py") -PathType Leaf)) {
+        (Test-Path -LiteralPath (Join-Path $Here "memar-install.py") -PathType Leaf)) {
         $OwnCheckout = Split-Path -Parent (Split-Path -Parent $Here)
     }
 }

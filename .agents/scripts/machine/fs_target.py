@@ -1,16 +1,23 @@
 #!/usr/bin/env python3
-"""The folder a run would use, and the one place that refuses a temporary one.
+"""machine/fs_target.py — the folder a run would use, and the one place that refuses a temporary one.
 
 A refusal is only useful if it names the directory it was decided against, so
 the directory is asked once here and the same answer decides and reports. There
 is no second opinion to drift from the first.
+
+`INSTALL_DIRNAME` is what a default install is called, and it lives here because
+this is the module that answers "which folder would a run use" — the install
+folder's name is that answer, not a string another module should reach for when
+it needs a word to put in a file name.
 """
 from __future__ import annotations
 
 import os
+import sys
 from pathlib import Path
 
-from console import fail
+
+from memar_console import fail
 
 INSTALL_DIRNAME = "Memar"
 

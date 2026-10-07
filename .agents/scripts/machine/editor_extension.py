@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""The editor extensions this checkout ships, put where the editor reads them.
+"""editor_extension.py — the editor extensions this checkout ships, put where the editor reads them.
 
 A Khayyam extension without Memar on the machine resolves nothing: it has no
 location to read the documentation tree from. So installing the extension is
@@ -25,8 +25,8 @@ import json
 import shutil
 from pathlib import Path
 
-from console import fail, note
-from copy_excluded import NEVER_COPIED
+from memar_console import fail, note
+from memar_copy_excluded import NEVER_COPIED
 
 # Editor extensions this repository ships, found by listing this folder rather
 # than by name: a new extension is a new folder here and nothing else to change.

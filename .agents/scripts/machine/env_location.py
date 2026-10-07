@@ -18,9 +18,11 @@ from __future__ import annotations
 
 import os
 import re
+import sys
 from pathlib import Path
 
-from console import fail, note
+
+from memar_console import fail, note
 from memar_repository import is_memar_repository, not_a_repository
 
 VARIABLE = "MEMAR_ROOT"

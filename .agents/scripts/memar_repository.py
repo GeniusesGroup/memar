@@ -42,6 +42,9 @@ def enclosing_repository(start: Path) -> Path | None:
     are written under.
     """
     current = start if start.is_dir() else start.parent
+    # Fail-closed: the ancestor walk is allowed only to find the repository a
+    # path already sits inside (nearest qualifying ancestor wins); when none
+    # qualifies it must return None and the caller must error, never guess.
     for candidate in (current, *current.parents):
         if is_memar_repository(candidate):
             return candidate

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Tests for what install-agents.py writes into a consuming project.
+"""Tests for what memar-install-agents.py writes into a consuming project.
 
-    python .agents/scripts/tests/install-agents.py
+    python .agents/scripts/tests/memar-install-agents.py
 
 What is pinned, and what each pin is for:
 
@@ -9,13 +9,18 @@ What is pinned, and what each pin is for:
                       A path into a scripts folder is another shape of the same
                       framework, so what a project is left holding names the
                       command first, and names no path ahead of it.
-  ReadmeNamesBothForms  The command is not on every machine's PATH, so the text
-                      says both — the command, and the script under the recorded
-                      location — and says which machine has which.
+  HelpCarriesTheRest   The command is not on every machine's PATH, so the text
+                      points at the recorded location for the machines that lack
+                      it — and points at `--help` rather than naming an
+                      interface of its own, because a second copy of what a tool
+                      prints is the copy that drifts.
   KeptReachable         Reaching Memar by a command does not retire the way a
                       machine with neither the command nor the variable gets it:
                       the variable, the bootstrap, and the restart it asks for
                       all stay.
+  ReadingOnePlace       The location is read through the module that owns it, so
+                      a session opened before the value was written does not
+                      send this project to the bootstrap a second time.
 
 The run is a dry run in a scratch folder outside this checkout, and only what it
 printed is read: a scratch inside this repository would be installed into this
@@ -52,7 +57,7 @@ class ReachedByTheCommand(unittest.TestCase):
         self.scratch = tempfile.TemporaryDirectory()
         self.addCleanup(self.scratch.cleanup)
         completed = subprocess.run(
-            [sys.executable, str(SCRIPTS / "install-agents.py"), "--dry-run"],
+            [sys.executable, str(SCRIPTS / "memar-install-agents.py"), "--dry-run"],
             cwd=self.scratch.name,
             capture_output=True,
             env=dict(os.environ, PYTHONIOENCODING="utf-8", PYTHONDONTWRITEBYTECODE="1"),
@@ -93,10 +98,22 @@ class ReachedByTheCommand(unittest.TestCase):
         self.assertIn(CONSUMER_README, section)
         self.assertNotIn(".py", section)
 
-    def test_the_text_states_the_command_and_the_path_beside_it(self):
+    def test_the_text_points_at_the_recorded_location_and_at_help(self):
         body = self.written(CONSUMER_README)
-        self.assertLess(body.index("`memar`"), body.index("$MEMAR_ROOT"))
-        self.assertIn("$MEMAR_ROOT/.agents/scripts/memar-documentation.py", body)
+        self.assertLess(body.index("`memar`"), body.index("MEMAR_ROOT"))
+        # Each tool's own `--help` is the authority for what it accepts, so the
+        # text names the word and declares no interface of its own.
+        self.assertIn("--help", body)
+        self.assertNotIn("content check", body)
+        self.assertNotIn("install-agents.py", body)
+
+    def test_the_location_is_read_through_the_module_that_owns_it(self):
+        # Not through `os.environ`, which is the copy a session opened before
+        # the value was written may not hold: that is how a project gets told
+        # Memar is not on this machine when it is.
+        source = (SCRIPTS / "memar-install-agents.py").read_text(encoding="utf-8")
+        self.assertNotIn("os.environ.get", source)
+        self.assertIn("recorded_value()", source)
 
     def test_a_machine_with_neither_the_command_nor_the_variable_is_still_answered(self):
         body = self.written(CONSUMER_README)
