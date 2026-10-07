@@ -12,9 +12,10 @@
 # the project you are in, and into the AI agent apps on this machine. Each step
 # prints what it did. Running it again is safe and costs nothing.
 #
-# What you must do afterwards: restart your shell and your editor, because where
-# Memar lives is written as an environment variable and a program already
-# running when it was written does not read it.
+# What you must do afterwards: this script prints one command this program can
+# run at once, so it does not need a restart to load the skill, and you still
+# restart your shell and your editor before they see `memar` on PATH, because a
+# program already running when the variable was written does not read it.
 #
 # Options:
 #   --path PATH      clone Memar into PATH and register it (default: ~/Memar, or
@@ -64,8 +65,9 @@
 # answers with the checkout it is in, or the one the variable names. A machine
 # that has neither has no answer to give, and this script says so and stops.
 #
-# Restart is declared by the installer's own help. This script's
-# own output does not need restarting.
+# After a successful install this script prints one command the program that
+# ran it can execute at once. That command is printed here, not written into a
+# consuming project, because it is allowed to change.
 
 set -eu
 
@@ -356,4 +358,12 @@ case "$mode" in
         set -- --register "$checkout"
         ;;
 esac
-exec "$PYTHON" "$checkout/$ARCHITECTURE_ENTRY" "$@"
+code=0
+"$PYTHON" "$checkout/$ARCHITECTURE_ENTRY" "$@" || code=$?
+if [ "$code" -eq 0 ] && [ "$mode" != "check" ]; then
+cat <<END
+This program can go on without a restart. Load the skill by running the next line on its own:
+"$PYTHON" "$checkout/.agents/scripts/memar-content.py" path .agents/skills/memar/SKILL.md
+END
+fi
+exit "$code"

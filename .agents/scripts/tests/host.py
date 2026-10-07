@@ -87,11 +87,6 @@ class NothingIsPermanent(unittest.TestCase):
             with self.subTest(name=name):
                 source = read(name).lower()
                 for forbidden in ("unlink(", "os.remove", "rmtree(", "shutil.rm"):
-                    if forbidden == "rmtree(":
-                        # A whole folder's worth, and only of a session's own
-                        # scratch folder — the one deletion here that is not a
-                        # host trash, because a session closes by removing its own.
-                        continue
                     self.assertNotIn(forbidden, source)
 
     def test_the_recoverable_delete_is_the_one_the_fs_shelf_uses(self) -> None:

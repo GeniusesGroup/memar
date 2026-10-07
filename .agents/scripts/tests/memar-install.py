@@ -45,7 +45,9 @@ SiblingSurface    Each sibling imports the module that owns the concern it needs
                       the documented ways of naming a folder are still accepted,
                       --check still asks its question and writes nothing, and
                       the help says what to run and what is owed afterwards
-                      rather than walking through which step clones.
+                      rather than walking through which step clones. A
+                      successful run also prints the one command this program
+                      runs next; that command is the run's own output.
   PathStaysIdempotent  PATH is read from the record and the session, duplicates
                       and empty parts do not duplicate the entry, and a second
                       run adds nothing.
@@ -142,7 +144,17 @@ IN_MEMORY = re.compile(r"sys\.modules|ModuleType|exec\(compile")
 # The one line in each bootstrap that starts the architecture. PowerShell reads
 # names without regard to case, so its line is matched the way PowerShell reads
 # it; the shell's is not, because a shell does.
-SH_RUN = re.compile(r'^exec "\$PYTHON" "\$checkout/\$ARCHITECTURE_ENTRY" "\$@"$', re.MULTILINE)
+SH_RUN = re.compile(
+    r'^"\$PYTHON" "\$checkout/\$ARCHITECTURE_ENTRY" "\$@" \|\| code=\$\?$',
+    re.MULTILINE,
+)
+# Printed once, by a successful run, and not written into a consuming project.
+# The program that ran the bootstrap can execute the next line at once; a copy
+# of that instruction in the project would keep the old one after it changed.
+CONTINUATION = (
+    "This program can go on without a restart. "
+    "Load the skill by running the next line on its own:"
+)
 PS_RUN = re.compile(
     r"^& \$python \(Join-Path \$checkout \$ArchitectureEntry\) @forwarded$",
     re.MULTILINE | re.IGNORECASE,
@@ -559,6 +571,23 @@ class StartsFromTheCheckout(unittest.TestCase):
     def source(self, bootstrap: str) -> str:
         return (SCRIPTS / bootstrap).read_text(encoding="utf-8")
 
+    def test_a_successful_run_prints_how_this_program_goes_on(self):
+        # One sentence, the same in both files, and one command after it. The
+        # command names the checkout this run settled and the interpreter it
+        # used, so this program can load the skill without waiting for a
+        # restart to put `memar` on PATH. It is printed here rather than
+        # written into a consuming project, because the command is allowed to
+        # change and a project would keep the old one.
+        for bootstrap in BOOTSTRAPS:
+            text = self.source(bootstrap)
+            self.assertEqual(text.count(CONTINUATION), 1, bootstrap)
+            self.assertIn("memar-content.py", text)
+            self.assertIn("path .agents/skills/memar/SKILL.md", text)
+            command = text.split(CONTINUATION, 1)[1].lstrip("\n")
+            command = command.split("\n", 1)[0]
+            self.assertIn("memar-content.py", command, bootstrap)
+            self.assertNotIn("\n", command)
+
     def test_the_installer_is_started_one_way_and_from_the_checkout(self):
         for bootstrap, pattern in (("install.sh", SH_RUN), ("install.ps1", PS_RUN)):
             self.assertEqual(len(pattern.findall(self.source(bootstrap))), 1, bootstrap)
@@ -651,6 +680,9 @@ class FirstRunInterface(unittest.TestCase):
         for option in ("--path", "--register", "--check"):
             self.assertIn(option, shown)
         self.assertIn("restart your shell", shown)
+        # The command this program runs next is the run's output, not the help.
+        # Help still says a shell and an editor that are already open restart.
+        self.assertNotIn(CONTINUATION, shown)
 
     def test_the_help_does_not_carry_the_runs_mechanism(self):
         shown = printed(self.sh("--help"))
@@ -701,6 +733,7 @@ class FirstRunInterface(unittest.TestCase):
         asked = self.sh("--check", str(kept))
         self.assertEqual(asked.returncode, 0, printed(asked, "stderr"))
         self.assertIn("not refused", printed(asked))
+        self.assertNotIn(CONTINUATION, printed(asked))
         self.assertFalse(kept.exists())
 
 class HelpUnchanged(unittest.TestCase):

@@ -8,11 +8,13 @@ part of installing Memar, not a separate errand to remember afterwards.
 It is copied out of the checkout the installer just settled on — the Memar that
 was installed brings its own extension — and the folder name it lands under is
 read from that extension's own manifest, so nothing here names an extension or
-a version. A second run writes the checkout's extension over the installed one,
-because the folder was the installer's own copy and a change in the checkout has
-to reach the editor: skipping an existing folder left a stale client running
-while the checkout held the new one, and the editor showed the old behaviour
-with the new code on disk. So the editor is brought to the checkout, every run.
+a version. A second run moves the installed folder to the trash and writes the
+checkout's extension in its place, because the folder was the installer's own
+copy and a change in the checkout has to reach the editor: skipping an existing
+folder left a stale client running while the checkout held the new one, and the
+editor showed the old behaviour with the new code on disk. The old folder goes
+to the trash rather than being deleted, so a local edit can be taken back. So
+the editor is brought to the checkout, every run.
 
 When extensions reach a marketplace this step changes shape, not purpose. A
 marketplace install reaches the network and writes into somebody's editor, so it
@@ -27,6 +29,7 @@ from pathlib import Path
 
 from memar_console import fail, note
 from memar_copy_excluded import NEVER_COPIED
+from machine.fs_trash import soft_delete
 
 # Editor extensions this repository ships, found by listing this folder rather
 # than by name: a new extension is a new folder here and nothing else to change.
@@ -62,11 +65,12 @@ def extension_folder_name(manifest: Path) -> str:
 def install_extensions(checkout: Path) -> None:
     """Put the editor extensions this checkout ships into the editor.
 
-    The copy already there is the installer's own, so it is written over rather
-    than spared: a change in the checkout that does not reach the editor is a
-    change that is not installed, and the editor keeps serving the code it was
-    given first. That is the whole of the reason, and the reason the step is
-    repeated on every run instead of only on the first.
+    The copy already there is the installer's own, so it is moved to the trash
+    and the checkout's copy is written in its place: a change in the checkout
+    that does not reach the editor is a change that is not installed, and a
+    local edit in the old folder can be taken back from the trash. That is the
+    whole of the reason, and the reason the step is repeated on every run
+    instead of only on the first.
     """
     source_root = checkout / EXTENSIONS_RELATIVE
     if not source_root.is_dir():
@@ -85,7 +89,7 @@ def install_extensions(checkout: Path) -> None:
         target = installed / name
         first_time = not target.is_dir()
         if not first_time:
-            shutil.rmtree(target)
+            soft_delete(target)
         shutil.copytree(source, target, ignore=NEVER_COPIED)
         verb = "installed" if first_time else "refreshed"
         note(f"{name} {verb} at {target}")

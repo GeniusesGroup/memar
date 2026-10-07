@@ -56,7 +56,13 @@ WINDOWS_BOOTSTRAP = (
     "powershell -ExecutionPolicy Bypass -Command \"& ([scriptblock]::Create((irm "
     f"{SCRIPTS_RAW}/install.ps1)))\""
 )
-POSIX_BOOTSTRAP = f'sh -c "$(curl -fsSL {SCRIPTS_RAW}/install.sh)" install.sh'
+# A failed fetch must not look like success. `sh -c "$(curl …)"` runs an empty
+# script and exits 0 when curl fails, so the command stops unless the fetch
+# produced a script.
+POSIX_BOOTSTRAP = (
+    "sh -c 'c=$(curl -fsSL "
+    f"{SCRIPTS_RAW}/install.sh); test -n \"$c\" && exec sh -c \"$c\" install.sh'"
+)
 # One path, used both as the file written and as the link AGENTS.md points at, so
 # the pointer cannot name a file that is not there.
 CONSUMER_README = Path(".agents") / "memar" / "README.md"
@@ -67,32 +73,21 @@ AGENTS_SECTION_BODY = (
     f"[`{CONSUMER_README.as_posix()}`]({CONSUMER_README.as_posix()})."
 )
 # The substance, in the document AGENTS.md points at rather than in AGENTS.md.
-# It leads with the command, because that is the entry point this repository uses
-# and a project handed a path into a scripts folder is handed another shape of
-# the same framework; the path beside it is the fallback for a machine whose PATH
-# does not carry the command, and both forms are stated so a reader knows which
-# one applies to them rather than having to guess.
 README_BODY = (
-    "`memar` is how this machine reaches Memar: one word, no path, no variable. "
-    "Every question about Memar's documentation goes through it, and `memar "
-    "install` puts Memar here. Run `memar --help` for what it accepts, and "
-    "`memar <verb> --help` for one verb's own interface — this text does not "
-    "repeat either.\n\n"
-    "Where `memar` is not on PATH, the same tools are the files in the checkout "
-    "that `MEMAR_ROOT` names, the one recorded location of a Memar checkout on "
-    "this machine, and their own `--help` declares them. If `MEMAR_ROOT` is "
-    "unset as well, run the bootstrap from Memar's repository — it makes sure "
-    "git and Python are here, then installs Memar and writes that variable:\n\n"
-    "```\n"
-    f"{WINDOWS_BOOTSTRAP}   # Windows\n"
-    f"{POSIX_BOOTSTRAP}   # POSIX\n"
+    "This project is developed within Memar's framework.\n\n"
+    "Load the Memar skill at the start of every session: run `memar content "
+    "path .agents/skills/memar/SKILL.md`, then load and follow the file it "
+    "prints.\n\n"
+    "If `memar` is not on PATH, Memar is not available to this program yet. "
+    "Run the bootstrap for your platform:\n\n"
+    "Windows:\n\n"
+    "```powershell\n"
+    f"{WINDOWS_BOOTSTRAP}\n"
     "```\n\n"
-    "Then restart your program: a program of your own that is already running "
-    "keeps the value it was started with, while the scripts in the checkout that "
-    "variable names read the platform's record of it and see it at once. Load "
-    "`.agents/skills/memar/SKILL.md` from the checkout that variable names, and "
-    "reach the rest through `memar`. To put Memar into another project, run "
-    "`memar install` there."
+    "macOS or Linux:\n\n"
+    "```sh\n"
+    f"{POSIX_BOOTSTRAP}\n"
+    "```"
 )
 CONSUMER_README_TEXT = f"# Memar\n{README_BODY}\n"
 AGENTS_DIR_README = """# Agents

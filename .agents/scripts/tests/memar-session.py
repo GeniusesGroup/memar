@@ -9,32 +9,38 @@ in the `tests/` folder of the module that owns it per
 [Test Placement](../../../../modules/process/test/rules/test-placement/test-placement.md).
 
 Nothing here writes to the machine. The Memar root the tool resolves is
-patched onto a scratch folder inside this one and removed again; session
-folders, locks, and intent notes land there and are removed with it. The one
-subprocess run asks for `--help` only, which writes nothing.
+patched onto a scratch folder — this one by default, the `MEMAR_TEST_SCRATCH`
+folder when that variable points at one that already exists — and removed
+again; session folders, locks, and intent notes land there and are removed with
+it. The one subprocess run asks for `--help` only, which writes nothing.
 
 What is pinned, and what each pin is for:
 
   CreatesFolder      `new` ensures <temp>/<id>/ and prints its id and
                      path, so every session works inside its own folder and
                      nothing lands in git by accident.
-RerunIsIdempotent  Reusing one session id keeps the folder as is and reports
-                      the same id and path again.
+  RerunIsIdempotent  Reusing one session id keeps the folder as is and reports
+                     the same id and path again.
   UnresolvableRoot   With neither a recorded location nor a checkout to run
-                      inside, the tool errors rather than guessing a folder.
-  HelpCarriesTheWhy   `memar session --help` says what to run and what to do
-                      at the end of the work, and says nothing about how the
-                      folder is arranged: the mechanism is a DevActionNote, and
-                      a caller reading it in help output is reading the module
-                      docstring a second time, one step removed from where it
-                      can be maintained. The why is pinned to the docstring.
+                     inside, the tool errors rather than guessing a folder.
+  HelpCarriesTheWhy  `memar session --help` says what to run and what to do
+                     at the end of the work, and says nothing about how the
+                     folder is arranged: the mechanism is a DevActionNote, and
+                     a caller reading it in help output is reading the module
+                     docstring a second time, one step removed from where it
+                     can be maintained. The why is pinned to the docstring.
   LockSharesThisRoot The lock and intent files land under the same <root>/temp/
-                      root the session folders share, and closing one session's
-                      folder cannot reach the lock directory beside it. How a
-                      lock behaves is pinned in `machine/tests/fs_lock.py`, which
-                      owns it.
+                     root the session folders share, and closing one session's
+                     folder cannot reach the lock directory beside it. How a
+                     lock behaves is pinned in `machine/tests/fs_lock.py`, which
+                     owns it.
   MintedIdUnique     Two ids minted without a session differ, so two sessions
-                      opening a shared scratch root cannot land on one folder.
+                     opening a shared scratch root cannot land on one folder.
+  RecoverableClose   `close` hands the folder to recoverable storage instead of
+                     destroying it, so a session closed by mistake costs one
+                     trip to the trash rather than the files it held; a trash
+                     that fails leaves the folder where it was, because a
+                     failed recovery is not a successful close.
 
 Usage is the interface. Do not duplicate these recipes as prose catalogs.
 """
@@ -44,6 +50,7 @@ import contextlib
 import importlib.util
 import io
 import os
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -90,7 +97,7 @@ def run_help() -> subprocess.CompletedProcess:
 
 class Fixture(unittest.TestCase):
     def setUp(self) -> None:
-        self.scratch = tempfile.TemporaryDirectory(dir=TESTS)
+        self.scratch = tempfile.TemporaryDirectory(dir=os.environ.get("MEMAR_TEST_SCRATCH", TESTS))
         self.addCleanup(self.scratch.cleanup)
         self.fake_root = Path(self.scratch.name)
         # One patch, applied once: the locks resolve through the same root
@@ -178,7 +185,7 @@ class HelpCarriesTheWhy(Fixture):
         completed = run_help()
         self.assertEqual(completed.returncode, 0)
         text = completed.stdout.decode("utf-8").replace("\r\n", "\n")
-        for phrase in ("memar session new", "memar session close", "--session-id"):
+        for phrase in ("memar session new", "memar session close", "--session-id", "person who started", "recycle bin"):
             self.assertIn(phrase, text)
 
     def test_the_help_does_not_carry_the_implementation(self) -> None:
@@ -222,11 +229,42 @@ class LockSharesThisRoot(Fixture):
         # The scratch root is shared; a session's own folder is not the world.
         # Reaping one must not be able to reach the lock directory beside it.
         sid, path = session_tool.ensure_session("s-3")
-        closed, closed_path, removed = session_tool.close_session(sid)
+        with unittest.mock.patch.object(session_tool, "soft_delete") as trash:
+            closed, closed_path, removed = session_tool.close_session(sid)
         self.assertTrue(removed)
         self.assertEqual(closed_path, Path(path))
-        self.assertFalse(Path(path).exists())
+        trash.assert_called_once_with(path)
         self.assertTrue(self.fake_root.is_dir())
+
+
+class RecoverableClose(Fixture):
+    def test_close_moves_the_folder_with_its_contents_to_recoverable_storage(self) -> None:
+        sid, path = session_tool.ensure_session("s-recover")
+        marker = path / "notes.md"
+        marker.write_text("# Keep me\n", encoding="utf-8", newline="\n")
+        bin_path = self.fake_root / "recycle-bin"
+        bin_path.mkdir()
+
+        def move_to_bin(source: Path) -> None:
+            shutil.move(str(source), str(bin_path / source.name))
+
+        with unittest.mock.patch.object(session_tool, "soft_delete", side_effect=move_to_bin) as trash:
+            closed, closed_path, removed = session_tool.close_session(sid)
+            self.assertEqual((closed, closed_path, removed), (sid, path, True))
+            trash.assert_called_once_with(path)
+            self.assertFalse(path.exists())
+            self.assertEqual((bin_path / sid / "notes.md").read_text(encoding="utf-8"), "# Keep me\n")
+            self.assertEqual(session_tool.close_session(sid), (sid, path, False))
+            trash.assert_called_once()
+            shutil.move(str(bin_path / sid), str(path))
+            self.assertEqual(marker.read_text(encoding="utf-8"), "# Keep me\n")
+
+    def test_failed_trash_leaves_the_folder_in_place(self) -> None:
+        sid, path = session_tool.ensure_session("s-failed")
+        with unittest.mock.patch.object(session_tool, "soft_delete", side_effect=OSError("trash unavailable")):
+            with self.assertRaises(OSError):
+                session_tool.close_session(sid)
+        self.assertTrue(path.is_dir())
 
 
 class MintedIdUnique(unittest.TestCase):

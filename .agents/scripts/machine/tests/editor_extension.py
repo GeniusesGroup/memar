@@ -25,7 +25,9 @@ What is pinned, and what each pin is for:
                           rather than skipped past into a silent no-op.
   SecondRunWritesOver     An installed folder is replaced, because a change in
                           the checkout that does not reach the editor is a
-                          change that is not installed.
+                          change that is not installed. The folder already
+                          there is moved to the trash first, so a local edit
+                          can be taken back.
   NoEditorIsSkipped       An editor folder that is not there is reported and
                           left alone, rather than created: writing into a folder
                           no editor reads leaves litter, not an extension.
@@ -43,6 +45,7 @@ import contextlib
 import io
 import json
 import os
+import shutil
 import sys
 import tempfile
 import unittest
@@ -82,6 +85,14 @@ class Fixture(unittest.TestCase):
         printer = unittest.mock.patch("builtins.print", self.notes.write)
         self.addCleanup(printer.stop)
         printer.start()
+        # The platform trash is not this test's to call. The stand-in only
+        # removes the path, inside this scratch, so the new copy can land.
+        def _aside(path: Path) -> None:
+            shutil.rmtree(path)
+
+        trash = unittest.mock.patch.object(extension, "soft_delete", side_effect=_aside)
+        self.addCleanup(trash.stop)
+        trash.start()
 
     def add_extension(self, folder: str, **fields: object) -> Path:
         """Write one extension manifest into the checkout and return its folder."""
@@ -180,6 +191,22 @@ class SecondRunWritesOver(Fixture):
         self.assertFalse(self.said("refreshed"))
         extension.install_extensions(self.checkout_root)
         self.assertTrue(self.said("refreshed"))
+
+    def test_a_second_run_moves_the_installed_folder_to_the_trash(self) -> None:
+        # The folder is the installer's own earlier copy, and it may hold a
+        # local edit. Replacing it deletes that edit unless the old folder is
+        # moved to the trash first. The stand-in removes the path so the copy
+        # can land; the platform's trash is not this test's to call.
+        self.add_extension("khayyam")
+        extension.install_extensions(self.checkout_root)
+        installed = self.editor_root / "memar.khayyam-1.0.0"
+        with unittest.mock.patch.object(extension, "soft_delete", side_effect=shutil.rmtree) as trash:
+            extension.install_extensions(self.checkout_root)
+        trash.assert_called_once_with(installed)
+        source = Path(extension.__file__).read_text(encoding="utf-8")
+        self.assertNotIn("rmtree", source)
+        self.assertNotIn("unlink(", source)
+        self.assertIn("soft_delete", source)
 
 
 class NoEditorIsSkipped(Fixture):

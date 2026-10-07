@@ -35,6 +35,7 @@ from pathlib import Path
 from memar_console import use_utf8_stdio
 from memar_copy_excluded import NEVER_COPIED
 from machine.env_location import resolve_root
+from machine.fs_trash import soft_delete
 
 APP_DIRS = {
     "agents": lambda: Path.home() / ".agents",
@@ -86,7 +87,9 @@ def copy_skill(source: Path, dest: Path, *, dry_run: bool) -> None:
         return
     dest.parent.mkdir(parents=True, exist_ok=True)
     if dest.exists():
-        shutil.rmtree(dest)
+        # An earlier copy may hold a local edit. Move it to the trash, so the
+        # edit can be taken back, then write the checkout's skill.
+        soft_delete(dest)
     shutil.copytree(source, dest, ignore=NEVER_COPIED)
     print(f"copied skill -> {dest}")
 

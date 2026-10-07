@@ -3,7 +3,7 @@
 
 **Two audiences, two texts, and this file is where each lives.** `DESCRIPTION`
 below is what `memar session --help` prints: it is addressed to whoever is about
-to do one piece of work and says what to run and what to do at the end of it.
+to open a session and says what to run and when its starter may close it.
 Everything from here down is addressed to whoever opens this file. A person
 opening a scratch folder does not need to know which module resolves the temp
 root, and help output that told them would be a second, worse copy of this.
@@ -24,13 +24,12 @@ while sessions last days (the OS-temp wiped risk). The temp root resolves as the
 recorded location else the checkout the tool runs inside; when neither resolves
 this fails closed and guesses nothing.
 
-Lifecycle. A session removes its own folder when it ends cleanly. A folder left
-behind is an orphan, and orphans stay visible under their named ids — that
-visibility is what a mystery scratch file never had, so orphans are reaped by
-owner decision, never silently. One folder is never shared across sessions:
---session-id reuses an id only to continue the same logical session, and sharing
-one folder between distinct sessions reintroduces the unattributed mixing this
-tool exists to remove.
+Lifecycle. A session moves its folder to the OS trash when its starter declares
+it finished. A folder left behind stays visible under its named id until then;
+orphans are reaped by owner decision, never silently. One folder is never shared
+across sessions: --session-id reuses an id only to continue the same logical
+session. Sharing one folder between distinct sessions reintroduces the
+unattributed mixing this tool exists to remove.
 
 TODO(owner): the fate of the orphans — whether a session age reaps them, whether
 `memar content` lists them as an obligation, or whether they are left for a
@@ -44,13 +43,12 @@ Usage is the interface. Do not duplicate these recipes as prose catalogs.
 from __future__ import annotations
 
 import argparse
-import shutil
-import sys
 from pathlib import Path
 
 
 from memar_console import note, use_utf8_stdio
 from machine.fs_memar import session_dir
+from machine.fs_trash import soft_delete
 from memar_session import new_session_id
 
 NEW_COMMAND = "new"
@@ -69,16 +67,16 @@ def ensure_session(session_id: str | None = None) -> tuple[str, Path]:
 
 
 def close_session(session_id: str) -> tuple[str, Path, bool]:
-    """Remove one session's folder. Idempotent: a missing folder is already clean.
+    """Trash one session's folder. Idempotent: a missing folder is already closed.
 
-    Returns the id, its path, and whether anything was removed. Removal is
-    confined to the session folder by construction — session_dir refuses
-    anything shaped like a path, so no call can reach outside the temp root.
+    Returns the id, its path, and whether anything was moved to recoverable
+    storage. The target is confined to the session folder by construction:
+    session_dir refuses anything shaped like a path.
     """
     path = session_dir(session_id)
-    if not path.exists():
+    if not path.exists() and not path.is_symlink():
         return session_id, path, False
-    shutil.rmtree(path)
+    soft_delete(path)
     return session_id, path, True
 
 
@@ -88,12 +86,12 @@ Work inside this folder, not in the checkout: the files you write while working
 belong to your session, not to the repository.
 
     memar session new      open a folder and print its id and path
-    memar session close    remove it, when the work is done
+    memar session close    move it to the OS recycle bin / Trash
 
 `new` prints an id and a path; pass that id back as `--session-id` to continue
-the same piece of work later. `close` removes the folder, so run it when the
-work ends cleanly — a folder left behind stays on disk under its id for someone
-to judge, which is deliberate rather than a leak.
+the same session later. Close only when the person who started the session
+declares the work finished, never after just one reply or task. Until then the
+folder stays; `close` moves it to recoverable storage.
 """
 
 
@@ -110,7 +108,7 @@ def main(argv: list[str] | None = None) -> int:
         default=None,
         help="reuse this session id instead of minting one (rerun is idempotent)",
     )
-    closer = verbs.add_parser(CLOSE_COMMAND, help="remove one session folder when the session ends cleanly")
+    closer = verbs.add_parser(CLOSE_COMMAND, help="move a finished session folder to the OS recycle bin / Trash")
     closer.add_argument("--session-id", required=True, help="the session id to close")
     args = parser.parse_args(argv)
     if args.verb == NEW_COMMAND:
@@ -119,7 +117,7 @@ def main(argv: list[str] | None = None) -> int:
         note(f"path: {path}")
     else:
         sid, path, removed = close_session(args.session_id)
-        note(f"{'closed' if removed else 'already clean'}: {sid}")
+        note(f"{'closed' if removed else 'already closed'}: {sid}")
         note(f"path: {path}")
     return 0
 
