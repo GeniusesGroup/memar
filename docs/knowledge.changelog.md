@@ -355,3 +355,30 @@ The rule added in [Documentation → Citations](./documentation.md#citations) wa
 - The scope-boundary sentence was read as naming where the work happens rather than where the concept lives, because that is what the surrounding clause does elsewhere: it routes creation workflows, tacit-to-explicit conversion practice, sector adoption patterns, and change management out of this document. Ownership language would have said the concept has one home, which is the claim the change removes.
 - The open question "How do cultural factors affect principle adoption?" stays. It asks whether the principles need cultural localization, and what this entry records is which warrant supports their universality — a different question, and one the entry's own wording keeps open by stating the independent-arrival route as stronger without asserting that it has been satisfied.
 - The Anticipated Work entries on migration and the Task domain model are untouched; both still name the Organization project as where that work is done, which this change now reads the same way.
+
+---
+
+### Material with no producing decision: a placement survey, and what Knowledge already holds
+- Time: 2026-10-07T06:25:00Z
+- Type: Added
+- Cited:
+  - [Comparison: Memar and GitHub Spec Kit](./comparisons/spec-kit.001.md) - Evidence: the comparison whose separate-research items raised the question, and whose account of the categories this survey inherited rather than re-read.
+- Propagates to:
+  - knowledge.handoff.md: Done - the survey's five open questions now live there.
+  - documentation.md: Reference - the Content Rule was the first candidate home and was set aside on its own scope statement; nothing changed there.
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - questioner, goal-setter
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) - researcher
+
+#### What changed
+- No document changed. What this entry records is a survey and its negative result: whether Memar needs a named category for material that exists in the shared medium without any decision having produced it, and if so what kind of thing that category would be.
+
+#### Surveyed
+- **Placement.** Knowledge is the base artifact, because the question's subject is the provenance of material in the medium, which is that document's declared subject. Process disqualifies itself in its own Abstract - it is concerned with behavior and progression, "not with the static existence of things" - and a category for material that exists is a category of static existence. The Content Rule cannot host it without changing its stated scope, since the medium holds modules, code, and generated artifacts as well as documents; that assumption was the survey's first and did not survive the rule's own scope statement. `docs/protocols/` is not the home per its own membership criterion.
+- **What Knowledge already holds, which is most of the answer.** The Decision is already the primary unit of knowledge evolution; the knowledge unit is already defined as more than the artifact, so material with no producing decision is describable in that vocabulary today as a unit that is only its artifact; Attribution is already a first-class relation type; and a Rule is already required to be authored, for one class of artifact.
+- **The nearest named condition is adjacent, not covering.** Context decay is about context lost, not context never held - the artifact had a decision whose rationale has since decayed, where material with no producing decision never had one to lose.
+- **Two adjacent rules that do not reach the case.** The empty-result rule governs what a check adds, not what it finds; and a change judged too small to audit receives no entry, which is a different situation from material that is not a change at all.
+
+#### Considered and not done
+- **Proposing the category** (not taken): the survey establishes where such a category would have to live and what it would collide with, and the question of whether Memar needs one at all is unasked by any document consulted. That is a decision for the owner, and it is now a question in [Knowledge Handoff](./knowledge.handoff.md) rather than a claim in a record.
+

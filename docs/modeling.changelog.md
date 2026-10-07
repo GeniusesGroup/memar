@@ -565,7 +565,7 @@ Owner: the steps belong in the practice. An agent doing the work reads the pract
 ### Ask what a requirement is a piece of before modeling it
 - Time: 2026-10-04T13:27:43Z
 - Cited:
-  - [Process Research 002](./process.audit.002.md) - Evidence: the coverage survey behind the change and the review of this document's own scoping decision
+  - [Process Research 002](./process.changelog.md) - Evidence: the coverage survey behind the change and the review of this document's own scoping decision
 - Propagates to:
   - modeling.md: Reference - its decision to keep entry-point questions in Practice was reviewed and upheld; no change
 - Contributors:
@@ -582,7 +582,7 @@ Owner: the steps belong in the practice. An agent doing the work reads the pract
 #### Considered and not done
 - The step-back questions were not added to `modeling.md` (Omid Hekayati — decided). That document twice declines to carry entry-point questions as execution practice rather than architectural definition; the survey reviewed the decision and found it sound, and a conduct question added beside it would contradict the scoping the document states about itself.
 - They were not added to `process.md` either, which is where they were first proposed (Space Bunny Alpha — argued; Omid Hekayati — upheld the boundary): a document that states what a process is does not say how a modeling session is opened.
-- Naming the origin of these questions in this file was not done (Space Bunny Alpha — argued). Per [Documentation → Citations → Source standing](./documentation.md#citations), the questions were raised from material of no standing; it is recorded as the inquiry's origin in [Process Research 002](./process.audit.002.md#question-and-goals) instead.
+- Naming the origin of these questions in this file was not done (Space Bunny Alpha — argued). Per [Documentation → Citations → Source standing](./documentation.md#citations), the questions were raised from material of no standing; it is recorded as the inquiry's origin in [Process Changelog - the four disciplines surveyed against Process, Modeling, and their practices](./process.changelog.md#four-disciplines-surveyed-against-process-modeling-and-their-practices) instead.
 
 #### Deliberation
 The questions were proposed for the concept document first, on the reasoning that a document about modeling should state what a modeler must establish before the work (Space Bunny Alpha — argued). The owner corrected the direction on the boundary between what a document defines and what a procedure follows, and the questions moved to this companion (Omid Hekayati — decided). A second proposal would have added the causal decomposition and the finish-line rule to `process.md` in the same change; it was rejected on the same boundary and its two questions are open in the handoffs instead (Omid Hekayati — decided).

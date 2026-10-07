@@ -397,7 +397,7 @@
 ### Require an inquiry's candidates to compete
 - Time: 2026-10-04T13:27:43Z
 - Cited:
-  - [Process Research 002](./process.audit.002.md) - Evidence: the coverage survey behind the change and the boundary decision behind what was left out
+  - [Process Research 002](./process.changelog.md) - Evidence: the coverage survey behind the change and the boundary decision behind what was left out
 - Propagates to:
   - process.handoff.md: Done - two open questions added under *Defect Resolution as an Inquiry* and one under *Expectations and Checks*
 - Contributors:
@@ -574,3 +574,33 @@ The change was first proposed as a wider import — the causal decomposition, th
 - **Rewriting the two bullets in the entry of 2026-10-05T17:20:58Z (rejected)**: entries here are appended and not rewritten, so what that entry recorded about its own scope is left as that entry stated it; a later entry is where the application is recorded.
 - **Adding a "how much unresolved disagreement may a scaled expectation carry" rule here (not done)**: what the clause now varies is how much an expectation states and what it must reach, and a number would fix a shape the domain owns - the same ground this file's entry of 2026-10-05T00:00:00Z took when it declined to name vocabulary or a field list for the limit an expectation carries.
 - **Editing the same clause in [test.practice.md → The Cycle](./protocols/process/test.practice.md#the-cycle) (not done)**: it carries the identical wording, and that file was outside this change's scope. Whether the practice layer states the same corrected clause is its own decision, taken where the practice companion is edited.
+
+---
+
+### Four disciplines surveyed against Process, Modeling, and their practices
+- Time: 2026-10-07T06:25:00Z
+- Type: Added
+- Cited:
+  - [Comparison: Memar and GitHub Spec Kit](./comparisons/spec-kit.001.md) - Evidence: the coverage-survey practice this entry's `Surveyed` section is the first use of.
+- Propagates to:
+  - process.handoff.md: Done - the threads not already carried there are added.
+  - rule.handoff.md: Reference - already carries the retirement question this survey raised.
+  - modeling.practice.md, process.md: Reference - the two changes this survey produced are recorded in their own entries.
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - questioner, goal-setter, decided
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) - researcher, argued
+
+#### What changed
+- No document changed in this entry. Two changes this survey produced are recorded where they landed: the three step-back questions and the two-layer answer in [Modeling Practice → Stepping back from the requirement](./modeling.practice.md#stepping-back-from-the-requirement), and the inquiry's evidence conditions in [Process → Defect Resolution as an Inquiry](./process.md#defect-resolution-as-an-inquiry).
+
+#### Surveyed
+- **Mechanism-first reasoning is already owned**, in principle by [Process → Mechanism-First Reasoning](./process.md#mechanism-first-reasoning) and in practice by [Modeling → Assumptions Are Modeling Targets](./modeling.md#assumptions-are-modeling-targets): a requester's wording is evidence to investigate, not an authoritative model boundary. The gap was that the entry-point questions existed nowhere, and it was scoped out on purpose - [Modeling](./modeling.md) twice declines them as execution practice.
+- **The epistemic half of defect inquiry was owned and under-specified.** The inquiry's confirmation failure was already named; what was missing was that one candidate cause was structurally permitted, so a tidy linear account passed every test Memar states. The two properties now stated follow from positions the document already held.
+- **Retiring a constraint is owned by nothing.** The nearest statements are three habits - [Agency → Historical Continuity](./agency.md), [Knowledge → Definition](./knowledge.md#definition)'s canonical "why was this architecture chosen?" question, and [Modularity](./modularity.md)'s judgment of a Module's removal by its consequence - and none of them obliges anyone to answer before deleting. The three fates a retiring party can already distinguish are distinguishable; the obligation is what is missing. This is a fact worth having rather than a gap to fill, and the question of whose practice companion would own the procedure is now in [Rule Handoff](./rule.handoff.md).
+- **A pattern worth recording, because it is the failure mode a framework is most likely to have**: this survey and the one before it both ended in the same place - the concept was already owned, and what was missing was a home for conduct or a condition implied by a rule already written. Reading a technique as a missing document.
+
+#### Considered and not done
+- **Organizing an inquiry's causes as a tree across separately asked questions** (not taken; held in [Process Handoff](./process.handoff.md)): a concept document states what an inquiry is, not the procedure a team follows while running one.
+- **The intervention point as a decision the inquiry returns** (not taken): whether a single generating cause is the right outcome is a question about the topic's definition, not an application of it.
+- **The informal notes that prompted the four disciplines are named nowhere in this entry**, which is the rule the survey produced, applied to itself: [Documentation → Citations](./documentation.md#citations) requires both a rights test and a standing test before a source is recorded, and these notes are the strongest case for why - a source of no standing can be the right thing to have read and still the wrong thing to have written down.
+

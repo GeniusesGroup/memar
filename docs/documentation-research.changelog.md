@@ -114,7 +114,7 @@ The new `Source standing` rule in `documentation.md` sends a question's origin t
 - Two records written earlier the same day under the looser reading were removed rather than kept: a supersession-inquiry record and a required-fields audit, both conducted entirely against this project's own documents. What the first had established is preserved in [knowledge.handoff.md](./knowledge.handoff.md), where its open threads now live; what the second found - that no required field among the six facet specifications' and CONTRIBUTORS.md's forces an invented value - is recorded as the disposition inside [the Hindsight comparison](./comparisons/hindsight.001.md) where the question was raised.
 
 #### Considered and not done
-- **Re-judging the seven research records that predate this criterion** (not taken): documentation-handoff.research.001.md, knowledge.research.001.md and process.research.001.md cite material from outside this project and meet it; documentation-research.md's own record, ramework.research.001.md, knowledge.audit.002.md, process.audit.002.md and 
+- **Re-judging the seven research records that predate this criterion** (not taken): documentation-handoff.research.001.md, knowledge.research.001.md and process.research.001.md cite material from outside this project and meet it; documentation-research.md's own record, ramework.research.001.md, knowledge.changelog.md, process.changelog.md and 
 ule.research.001.md cite none, and would not meet the criterion as now stated. Whether they are re-opened, re-titled, or left as the record of a practice that has since tightened is the owner's ruling, and it is recorded as an open question in [documentation-research.handoff.md](./documentation-research.handoff.md) rather than decided here.
 - **A lighter artifact for internal audits** (not taken): an audit has a real home in principle - the changelog entry of the change it produces - and an audit that produces no change has none. Creating a facet for it would add a sixth reader relationship for a category that has appeared twice and produced no change; the criterion above is the cheaper correction.
 - **Keeping the two removed records as historical files** (rejected): a file under this name claims an inquiry happened; these two did not, and the diff plus this entry are the record.
@@ -127,9 +127,9 @@ ule.research.001.md cite none, and would not meet the criterion as now stated. W
 - Cited:
   - [documentation-research.handoff.md](./documentation-research.handoff.md) - Premise: the open question this entry closes, and the error it corrects.
 - Propagates to:
-  - framework.audit.001.md: Done - renamed from framework.research.001.md; retitled, with one paragraph stating what the file is.
-  - knowledge.audit.002.md: Done - renamed from knowledge.research.002.md on its own Methodology's statement that no external prior art was consulted.
-  - process.audit.002.md: Done - renamed from process.research.002.md; its sources were external, its method a survey of this repository.
+  - framework.audit.001.md: Done - renamed from framework.changelog.md; retitled, with one paragraph stating what the file is.
+  - knowledge.changelog.md: Done - renamed from knowledge.changelog.md on its own Methodology's statement that no external prior art was consulted.
+  - process.changelog.md: Done - renamed from process.changelog.md; its sources were external, its method a survey of this repository.
   - rule.research.001.md: None needed - it meets the criterion and is untouched.
   - framework.changelog.md: Done - three propagation targets and one citation retargeted.
   - knowledge.changelog.md, process.changelog.md, modeling.changelog.md, process.handoff.md, documentation-research.changelog.md, documentation-research.handoff.md, comparisons/spec-kit.001.md, comparisons/tensorus.001.md: Done - inbound links retargeted.
@@ -146,3 +146,32 @@ ule.research.001.md cite none, and would not meet the criterion as now stated. W
 - **Deleting the three records instead** (rejected): each is cited by changelog entries that carried its findings, and the same rule that forbids a research claiming an inquiry that did not happen would leave a broken reference if the answer were erasure.
 - **Re-opening the three as real inquiries with an external source named** (not taken): that is new work rather than a repair, and an inquiry written to satisfy a criterion is the failure mode the criterion exists to catch.
 - **Giving the audit form a full specification, as a sixth facet** (rejected): an audit's reader relationship is the reader of a coverage survey, which no facet describes, and the three records were produced once each with no shared procedure to specify. The one-paragraph rule is the whole requirement the evidence supports; whether audits recur is held open in the handoff.
+
+---
+
+### The audit form withdrawn; a survey and a rejected claim are recorded in the changelog instead
+- Time: 2026-10-07T06:40:00Z
+- Type: Fixed
+- Cited:
+  - [Documentation — Changelog](./documentation-changelog.md) - Depends_on: the facet that already owns comparative prior-art surveys, and whose membership this entry widens.
+- Propagates to:
+  - framework.changelog.md: Done - the Go-group claim survey's residue recorded, with Surveyed and Examined and not adopted.
+  - knowledge.changelog.md: Done - the placement survey's result recorded; its five open questions moved to knowledge.handoff.md.
+  - process.changelog.md: Done - the four-discipline survey's result recorded; its uncarried threads moved to process.handoff.md.
+  - documentation-research.handoff.md: Done - the open question narrowed to the one the reversal actually leaves.
+  - framework.audit.001.md, knowledge.audit.002.md, process.audit.002.md: Done - removed, their substance carried by the three entries above.
+  - documentation-research.md: Done - the audit-form paragraph removed; where such a survey belongs is now stated in the criterion topic as the changelog.
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - decided
+  - [Space Bunny](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) - argued, applied
+
+#### What changed
+- The audit form is withdrawn. The previous entry introduced <base>.audit.<NNN>.md and this one reverses it, because the facet the form duplicated already existed: [Documentation — Changelog](./documentation-changelog.md) declares comparative prior-art surveys and decision-shaping context to be its own content classes, and every one of the three records had its reasoning in the very entries that carried their findings.
+- What was genuinely missing is now stated in the specification that owns it. A new topic, [Changelog membership](./documentation-changelog.md#changelog-membership-what-may-be-recorded-here), holds that an entry records an event bearing on the artifact's state and that the event need not be a change to its text - among them a survey whose negative result is the finding, which is the case no other facet admitted. The boundary is the test each case passes: still to be done is a handoff entry; settled, settled-against, or already held is recorded here. A survey that produced open questions records the survey in the ledger and the questions in the handoffs that own them.
+- Two catalog sections were added for it: [Surveyed](./documentation-changelog.md#surveyed), what was checked against what and what the check found, stated so a later session does not repeat it; and [Examined and not adopted](./documentation-changelog.md#examined-and-not-adopted), material examined and deliberately not carried with its reason - a case that had no home at all, because a rejected claim produces no change to hang from.
+- The three records are removed and their residue carried by three entries. The Go-group audit's residue was the largest: twenty-six claim clusters checked against the documents, twelve already carried, eleven becoming open questions in ten handoffs, five categories of claim examined and not adopted, and the deletion condition that let the raw exports be removed. Two artifacts gained handoff files in that session and the questions remain live there.
+- Where such material belongs is now said once, in the criterion topic: an internal survey is recorded in the changelog of the artifact it examines.
+
+#### Considered and not done
+- **Renaming the Changelog facet to Audit** (rejected, and the question is the owner's if it returns): "audit" already names the reader relationship this facet serves - a reader auditing how the current state came to be - and would now also name one of its own sections, so the facet would point at its contents rather than at its subject. What the practice actually lacked was membership, not a name; if a rename is ever wanted, History is the accurate generalization, because the facet's subject is how the state came to be whether or not this session changed it.
+- **Registering the audit form in documentation.md instead** (not taken): it would register a second non-facet artifact kind on the strength of three instances whose residue the changelog already had a home for, which is the implicit-convention state the facet system exists to eliminate.
