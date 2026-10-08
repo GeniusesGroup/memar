@@ -29,6 +29,15 @@ capability:
            caller passes an explicit irreversible confirmation token.
            Presence of the subcommand is not permission to call it casually.
 
+  undelete Bring a path back from a commit, into the index and the working
+           tree both. `restore` is the opposite operation and does not do this:
+           it gives committed work back to HEAD by *discarding* what is
+           uncommitted. A session that deletes a tracked path and then needs
+           it again has neither `remove` (which goes forward) nor `restore`
+           (which goes to HEAD by throwing work away), and falls back to
+           hand-written `git restore --source --staged --worktree`, which is
+           the same class of un-verbbed git the other verbs exist to replace.
+
 This file needs git, and says so plainly if it is missing. It does not install
 git: the Memar bootstrap (`install.sh` / `install.ps1` in the folder above this
 one) is the one place that puts git and Python on a machine, and a second
@@ -59,11 +68,13 @@ wanting to skip:
   remove    stop tracking a path, sending it to the recycle bin first
   stash     set uncommitted work aside where a later session can get it
   restore   give uncommitted work back, and refuse to throw it away unasked
+  undelete  bring a deleted or untracked-back path back from a commit
 
 `remove` does not delete: the file goes to the recycle bin, so it is still there
 if it turns out to be needed. `restore` will not discard anything unless you
 pass an explicit confirmation, because "tidy the status" is how uncommitted work
 is most often lost — if you want it set aside, `stash` is the command for that.
+`undelete` is neither of those: it recovers, and it says what it recovered.
 
 One thing git does that looks like a bug: a file that matches `.gitignore` but
 is already tracked still shows up as modified. Ignoring does not untrack, and
@@ -194,6 +205,44 @@ def cmd_restore(paths: list[Path], confirm: str | None) -> None:
     )
 
 
+def cmd_undelete(paths: list[Path], source: str) -> None:
+    """Bring paths back from `source` (HEAD by default) into index and tree.
+
+    Both stages, always: a path staged as deleted is still absent from the
+    index, so restoring only the working tree would leave a file on disk that
+    git still believes is gone — the state that makes the next commit silently
+    re-delete it.
+    """
+    for path in paths:
+        listed = run_captured(["ls-tree", source, "--", str(path)])
+        if listed.returncode != 0 or not listed.stdout.strip():
+            sys.exit(
+                f"error: {path} is not in {source}, so there is nothing to bring back"
+            )
+        state = run_captured(["ls-files", "--stage", "--", str(path)]).stdout.strip()
+        before = state if state else "absent from index"
+        print(f"recovering {path} from {source} (index was: {before})", file=sys.stderr)
+        run_git(
+            [
+                "restore",
+                f"--source={source}",
+                "--staged",
+                "--worktree",
+                "--",
+                str(path),
+            ]
+        )
+        after = run_captured(["ls-files", "--stage", "--", str(path)]).stdout.strip()
+        if not after:
+            sys.exit(f"error: {path} did not come back into the index")
+        print(f"recovered: {after}", file=sys.stderr)
+    print(
+        "Recovered into the index and the working tree. Nothing was committed, and\n"
+        "nothing else in the index or the tree was touched.",
+        file=sys.stderr,
+    )
+
+
 def main() -> int:
     use_utf8_stdio()
     parser = argparse.ArgumentParser(
@@ -237,6 +286,19 @@ def main() -> int:
         help=f"must be exactly {DISCARD_CONFIRM} to discard",
     )
 
+    p_undelete = sub.add_parser(
+        "undelete",
+        help="bring a deleted path back from a commit, into index and worktree",
+    )
+    p_undelete.add_argument("paths", nargs="+", type=Path)
+    p_undelete.add_argument(
+        "--from",
+        dest="source",
+        default="HEAD",
+        metavar="REV",
+        help="the commit to bring the path back from (default: HEAD)",
+    )
+
     args = parser.parse_args()
     if args.command == "rename":
         cmd_rename(args.source, args.destination)
@@ -246,6 +308,8 @@ def main() -> int:
         cmd_stash(args.message)
     elif args.command == "restore":
         cmd_restore(args.paths, args.confirm)
+    elif args.command == "undelete":
+        cmd_undelete(args.paths, args.source)
     return 0
 
 
