@@ -1268,10 +1268,10 @@ def main() -> int:
         help="write a text file as UTF-8 without a BOM, preserving its newlines",
         description="Put text into FILE as UTF-8 with no BOM, keeping the "
                     "file's own line endings (LF for a new file) and "
-                    "guaranteeing a final newline. Prefer this to any shell's "
-                    "own text handling. The write is taken under the per-file "
-                    "lock, so a cooperating session writing the same file is "
-                    "serialized rather than interleaved.",
+                    "guaranteeing a final newline. Never put text into a file "
+                    "through a shell's own text handling. The write is taken "
+                    "under the per-file lock, so a cooperating session writing "
+                    "the same file is serialized rather than interleaved.",
     )
     p_write.add_argument("file", help="path to write (any path, not only in this repo)")
     p_write.add_argument(

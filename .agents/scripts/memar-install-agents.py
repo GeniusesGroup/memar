@@ -7,7 +7,8 @@ project and says what lands there and what does not. Everything from here down
 is addressed to whoever opens this file.
 
 Writes two things: a one-line `## Memar` section in the project's AGENTS.md
-pointing at `.agents/memar/README.md`, and that README. AGENTS.md is not the
+pointing at `.agents/memar/README.md`, and that README — and, when the project
+has none, the index of the `.agents/` folder they sit in. AGENTS.md is not the
 place for how to install Memar — it is read on every session and needs only to
 say which file to read; the README beside it carries the substance.
 

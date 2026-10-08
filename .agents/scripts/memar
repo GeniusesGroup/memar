@@ -76,6 +76,10 @@ as documents in a checkout, and this is the one command that reaches them.
 To look rather than ask: `memar content path` says where this checkout is, and
 `memar content search <term>` looks through it. Ask any verb with `--help` and it
 says what it accepts.
+
+Before deleting, moving, restoring, or committing files, or putting text into a
+file, read the scripts README — .agents/scripts/README.md in the checkout
+`memar content path` names — and act as it says.
 """
 
 
