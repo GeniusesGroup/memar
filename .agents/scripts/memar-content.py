@@ -344,6 +344,14 @@ def detect_newline(path: Path) -> str:
     return "\n"
 
 
+NEWLINE_FLAGS = {"lf": "\n", "crlf": "\r\n"}
+
+
+def chosen_newline(flag: str | None, path: Path) -> str:
+    """The line ending a --newline flag names, or the file's own without one."""
+    return NEWLINE_FLAGS[flag] if flag else detect_newline(path)
+
+
 def write_utf8(path: Path, text: str, newline: str = "\n") -> int:
     """Write text as UTF-8, no BOM, with the given newline. Returns bytes."""
     if newline != "\n":
@@ -675,7 +683,7 @@ def cmd_write(args: argparse.Namespace, root: Path) -> None:
         )
     text = content_from(args, sys.stdin.read())
     refuse_empty(path, text, "write")
-    newline = args.newline or detect_newline(path)
+    newline = chosen_newline(args.newline, path)
     existed = path.is_file()
     if existed:
         _, had_bom = read_utf8_strict(path)
@@ -739,7 +747,7 @@ def cmd_edit(args: argparse.Namespace, root: Path) -> None:
             )
         if had_bom:
             print(f"note: {path.name} had a BOM; the write removes it")
-        newline = args.newline or detect_newline(path)
+        newline = chosen_newline(args.newline, path)
         write_utf8(path, text.replace(old, new), newline)
     print(f"edited {path} ({found} replacement{'s' if found > 1 else ''})")
 

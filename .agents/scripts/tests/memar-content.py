@@ -997,6 +997,25 @@ class WritesTakeTheLock(LinkFixture):
         self.assertEqual(taken, [new_file])
         self.assertEqual(self.held_locks(), [])
 
+    def test_a_newline_flag_writes_the_line_ending_it_names(self) -> None:
+        # The flag is a name; the file gets the bytes the name stands for,
+        # never the name itself.
+        payload = self.root / "payload.md"
+        payload.write_text("# A\n\nB\n", encoding="utf-8", newline="\n")
+        for flag, expected in (("crlf", b"# A\r\n\r\nB\r\n"), ("lf", b"# A\n\nB\n")):
+            with self.subTest(flag=flag):
+                memar_content.cmd_write(
+                    self.args(content_file=str(payload), newline=flag), self.root
+                )
+                self.assertEqual(self.target.read_bytes(), expected)
+
+    def test_an_edit_with_a_newline_flag_writes_the_line_ending_it_names(self) -> None:
+        self.target.write_text("# Notes\n\nBody\n", encoding="utf-8", newline="\n")
+        memar_content.cmd_edit(
+            self.args(old="Body", new="Text", newline="crlf"), self.root
+        )
+        self.assertEqual(self.target.read_bytes(), b"# Notes\r\n\r\nText\r\n")
+
     def test_the_intent_note_names_this_write_while_the_lock_is_held(self) -> None:
         # What a waiter that takes over a stale lock reads: which session meant
         # what to which file, against which base.
