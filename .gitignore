@@ -1,9 +1,6 @@
 # Folders
-_obj
-images/
 ____*
-*____
-.agents/skills/memar
+temp
 
 # The underscore rules above hide scratch trees. Two of those trees held Go
 # sources that had to migrate with everything else, and their Khayyam files are

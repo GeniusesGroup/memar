@@ -158,6 +158,7 @@ Active migration / seed — awaiting dedicated design session. Framing claim not
 - Cultural localization of KM adoption practices. *(open — seed)*
 - Exact durable name for the "explain reality" documentation family (Explanation is role-accurate; may not be final nature-word). *(open — Memar)*
 - Whether Practice facet later splits (e.g. Tutorial vs How-to per Diátaxis) and Explanation vs Reference. *(open — Memar; extensibility noted)*
+- Knowledge-orientation service over the live corpus (graph technique: typed extraction, communities, read-only query, MCP serving): which capabilities the `memar` command gains in-repo versus what this bundle designs as product — extraction over code, clustering, serving, sector workflows. `backlinks` and `obligations` landed in Memar's script on 2026-10-05 as management-first increments and are the in-repo floor the service builds on, not duplicates. Memar's part–whole reading and the "deadly silence" verdict are recorded in Memar `docs/comparisons/graphify.md`. *(open — from 2026-10-05 session; design here, not in Memar)*
 
 ## Assumptions
 
@@ -189,6 +190,7 @@ Smallest reusable knowledge unit (directional): any token (word, phrase, questio
 5. Keep filesystem / Git principle critique flowing to Memar docs as needed; keep entity definitions and org practice here — do not merge Memar into Organization drafts.
 6. Continue Content/Task/Timeline definition sessions (canonical definitions remain the blocking modeling work under the modules).
 7. Keep Discussion sections below until their durable claims graduate into Explanation docs or module handoffs.
+8. Specify the orientation-service slice for this bundle: typed extraction over code and document sources, community analysis, read-only query and serving — with Memar-side `backlinks`/`obligations` as the floor, not the ceiling. Open sub-questions: (a) first-sources scope — which sources earn extraction first (Khayyam `.kh`/`.ts`? which languages next, and what earns a language its extractor?); (b) extraction-confidence vocabulary — standardize per-edge EXTRACTED/INFERRED-style marking, or keep it per-projection?; (c) serving shape — CLI-only, MCP stdio, or shared HTTP serving, and which consumers each serves? *(open — from 2026-10-05 session; design here, not in Memar)*
 
 ### Reading order for the dedicated session *(from seed)*
 

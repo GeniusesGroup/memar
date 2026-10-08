@@ -21,7 +21,7 @@ A `modules` folder means **base rules of this container**. The container supplie
 - `modules-plugable/` at repo root — optional capabilities of Organization; still modules, scoped as installable.
 - `bundles/<bundle>/modules/` — base rules of that bundle. Present in the image only when the bundle is. They may be law-nodes with computer code, task graphs, content, or other types already defined in the kernel; they are still *modules of the bundle* because they are that composition's standing rules.
 
-The same word is not a collision. It is the same role at two scales, the way `protocol/` inside a module is that module's protocol, not Memar's `docs/protocols/`.
+The same word is not a collision. It is the same role at two scales, the way `protocol/` inside a module is that module's protocol, not the protocols Memar specifies under `docs/modules/`.
 
 ### What a bundle may own
 A bundle always names a composition. It may also introduce modules. Those are not exclusive:

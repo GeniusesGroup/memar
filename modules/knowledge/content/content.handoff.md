@@ -46,7 +46,7 @@ Active — most Content & Timeline / relations / Code-as-Content decisions decid
 
 ### Concurrency (offline multi-actor) — merge-conflict / semantic unit
 
-- Concurrent modification survives removal of files/Git — chain-store problem: offline and online branches selling the same last item within the checkout window, with the branch network dropping offline so stock counts are unverifiable; the org must model "two actors modified reality on different observations — now what?" as its own requirement (locks vs. reconciliation — the org's decision). *(open problem)*
+- Concurrent modification survives removal of files/Git — chain-store problem: offline and online branches selling the same last item within the checkout window, with the branch network dropping offline so stock counts are unverifiable; the org must model "two actors modified reality on different observations — now what?" as its own requirement. *(decided direction 2026-10-05, owner)* One clear path: ordered change requires lock. Designate a unique changer per entity (single writer) and route every change for that entity to its changer; scale by consistent hashing of entity identity over changer nodes (worked precedent: per-account lock with accounts mapped to nodes, record traveling as event). Time/version-stamp acceptance is not impossible but high-cost, and rejected as the default. Mechanism, not model: the lock/queue never becomes the responsibility model itself.
 - "Merge conflict" is a same-file artifact, not a behavior problem: the org's unit of conflict should be the semantic unit, not the byte container. *(decided)*
 - Monorepo-vs-multi-repo arguments are wasted energy. *(decided)*
 
@@ -60,7 +60,7 @@ From Content & Timeline and Versioning passages above (status tags preserved on 
 7. Search-entry UX contract: how a term resolves to a hub and how specialized views are reached.
 8. Whether Repository-shaped grouping re-emerges as an emergent property or stays a plain context node.
 
-Also: Offline/multi-actor concurrency semantics (store-inventory class problem) without locks-by-default. *(consolidated #6 — open problem; prefer this handoff for the merge-conflict/semantic-unit home)*
+Also: Offline/multi-actor concurrency semantics (store-inventory class problem) — decided direction 2026-10-05, owner: serialize through per-entity lock (unique changer, consistent-hash routing), not timestamp reconciliation; mechanism detail open. *(prefer this handoff for the merge-conflict/semantic-unit home)*
 
 ## Related Artifacts
 - [`README.md`](README.md)
