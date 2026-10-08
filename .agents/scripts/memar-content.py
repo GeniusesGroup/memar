@@ -1199,7 +1199,9 @@ def main() -> int:
         help="read, relate, audit, and write the checkout's content",
         description="The written content of a Memar checkout. Every verb is "
                     "here: one subject, one word. `path` and `search` are "
-                    "where to start.",
+                    "where to start. A `/docs/...` link in a Memar document is "
+                    "relative to the checkout; on a shell that rewrites a "
+                    "leading `/` (Git Bash/MSYS), pass it without the slash.",
     )
     content_subparsers = p_content.add_subparsers(
         dest="content_command", required=True

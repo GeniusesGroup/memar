@@ -507,6 +507,22 @@ class MintedIdUnique(unittest.TestCase):
     def test_two_minted_ids_differ(self) -> None:
         self.assertNotEqual(memar_session.new_session_id(), memar_session.new_session_id())
 
+    def test_a_name_sort_is_creation_order(self) -> None:
+        # The clock leads, so any file listing sorted by name lists sessions in
+        # the order they were opened, and the date is readable off the name.
+        import time
+
+        minted = memar_session.new_session_id()
+        self.assertRegex(minted, r"^\d{8}T\d{6}Z-")
+        self.assertTrue(minted.startswith(time.strftime("%Y%m%d", time.gmtime())))
+        self.assertLess("20261008T082722Z-99999-0", "20261008T082723Z-1-0")
+        self.assertTrue(memar_session.is_session_id(minted))
+
+    def test_a_folder_named_in_the_earlier_form_is_still_a_session(self) -> None:
+        # Folders opened before the clock came first must still be reaped.
+        self.assertTrue(memar_session.is_session_id("34852-18dc8080b906c944-0"))
+        self.assertFalse(memar_session.is_session_id("repo_tree.md"))
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)

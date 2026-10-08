@@ -238,7 +238,10 @@ belong to your session, not to the repository.
     memar session close    move it to the OS recycle bin / Trash
 
 `new` prints an id and a path; pass that id back as `--session-id` to continue
-the same session later.
+the same session later. The path is absolute and lies in Memar's own checkout,
+also when you work in another project: use it as printed, and never make a
+folder of the same name in your project instead. If your file tool cannot reach
+it, write there through `memar content write`.
 
 Write only inside your own folder; reading another session's folder is fine.
 
