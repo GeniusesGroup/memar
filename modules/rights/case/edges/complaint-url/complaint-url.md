@@ -7,6 +7,7 @@
 ## Policies (rules)
 
 - URL parameters: `tel` (complainant telephone), `orgID` (organization) — an identification/routing sketch only; no who-may-submit/what-it-triggers semantics recorded (no bare edges).
+- Phase-0 draft: a complaint (shekvaieh) is a tag or label that groups claim types, not this URL and not the [case](../../case.md). See [complaint](../complaint/complaint.md).
 
 ## Placement
 
@@ -18,5 +19,4 @@
 
 - Does `orgID` select the *receiving* organization (routing) or the *accused* organization?
 - Does complaint intake feed [claims](../../../../../modules-plugable/rights/claims/claims.md) (particular accusations), or open a bare [Case](../../case.md)?
-- The domain backlog attributed this sketch to `case.go` (no such file yet), but no tracked copy of that comment ever lived there — is the cited source mislabeled (the only tracked copy sat in a POS page-label file)?
-
+- The domain backlog attributed this sketch to `case.go`, but no tracked copy of that comment ever lived there — is the cited source mislabeled (the only tracked copy sat in a POS page-label file)?
