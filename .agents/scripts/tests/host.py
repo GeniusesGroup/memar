@@ -3,7 +3,8 @@
 
     python .agents/scripts/tests/host.py
 
-Nothing here deletes anything. The trash verbs are asserted by what they refuse
+Nothing here deletes anything but the scratch repository the commit tests make
+for themselves beside this file. The trash verbs are asserted by what they refuse
 and by what they would do, and the one path the suite would have had to remove
 is never created: a test that trashes a real file proves a platform API works,
 which is the platform's test, and the failure mode it leaves behind is a file
@@ -35,6 +36,10 @@ What is pinned, and what each pin is for:
   ShelfIsNotRouted       Neither file is a `memar` verb, and the path carries
                          that claim: these constrain the host's tools, which is
                          not a thing Memar offers.
+  CommitTakesOnlyWhatItNames
+                         A commit in a shared tree carries the paths it names
+                         and nothing another session staged, and a fold never
+                         rewrites what is already upstream.
 """
 
 from __future__ import annotations
@@ -205,6 +210,100 @@ class ShelfIsNotRouted(unittest.TestCase):
         readme = (HOST / "README.md").read_text(encoding="utf-8")
         self.assertIn("not under `memar`", readme)
         self.assertIn("host tool", readme.lower())
+
+
+class CommitTakesOnlyWhatItNames(unittest.TestCase):
+    def setUp(self) -> None:
+        import tempfile
+
+        scratch = tempfile.TemporaryDirectory(
+            dir=TESTS, prefix="tmp-host-commit-", ignore_cleanup_errors=True
+        )
+        self.addCleanup(scratch.cleanup)
+        self.repo = Path(scratch.name)
+        self.git("init", "-q", "-b", "main")
+        self.git("config", "user.name", "Test")
+        self.git("config", "user.email", "test@example.org")
+        self.git("config", "core.autocrlf", "false")
+        for name in ("mine.md", "theirs.md", "shared.md"):
+            self.put(name, "base\n")
+        self.git("add", ".")
+        self.git("commit", "-q", "-m", "base")
+        self.base = self.git("rev-parse", "HEAD")
+        self.message = self.repo / ".git" / "message.txt"
+        self.message.write_text("subject\n", encoding="utf-8", newline="\n")
+
+    def git(self, *args: str) -> str:
+        import subprocess
+
+        return subprocess.run(
+            ["git", "-C", str(self.repo), *args],
+            capture_output=True, text=True, check=True,
+        ).stdout.strip()
+
+    def put(self, name: str, text: str) -> None:
+        (self.repo / name).write_text(text, encoding="utf-8", newline="\n")
+
+    def commit(self, *args: str):
+        import subprocess
+
+        return subprocess.run(
+            [sys.executable, str(HOST / "git.py"), "commit", "-F", str(self.message), *args],
+            cwd=self.repo, capture_output=True, text=True,
+        )
+
+    def test_a_named_path_is_committed_and_another_sessions_staging_stays_staged(self) -> None:
+        self.put("mine.md", "mine\n")
+        self.put("theirs.md", "theirs\n")
+        self.git("add", "theirs.md")
+        done = self.commit("mine.md")
+        self.assertEqual(done.returncode, 0, done.stderr)
+        self.assertEqual(self.git("show", "--name-only", "--format=", "HEAD"), "mine.md")
+        self.assertEqual(self.git("diff", "--cached", "--name-only"), "theirs.md")
+        self.assertEqual(self.git("status", "--porcelain", "--", "mine.md"), "")
+
+    def test_a_path_someone_else_staged_is_refused(self) -> None:
+        self.put("theirs.md", "theirs\n")
+        self.git("add", "theirs.md")
+        done = self.commit("theirs.md")
+        self.assertNotEqual(done.returncode, 0)
+        self.assertIn("staged change", done.stderr)
+        self.assertEqual(self.git("rev-parse", "HEAD"), self.base)
+
+    def test_a_fold_replaces_the_last_commit_and_leaves_out_a_change_unstaged(self) -> None:
+        self.put("mine.md", "mine\n")
+        self.put("shared.md", "shared\n")
+        self.git("commit", "-q", "-am", "second")
+        done = self.commit("--fold", "1", "--leave-out", "shared.md")
+        self.assertEqual(done.returncode, 0, done.stderr)
+        self.assertEqual(self.git("rev-parse", "HEAD^"), self.base)
+        self.assertEqual(self.git("show", "HEAD:mine.md"), "mine")
+        self.assertEqual(self.git("show", "HEAD:shared.md"), "base")
+        self.assertEqual(self.git("diff", "--cached", "--name-only"), "")
+        self.assertEqual(self.git("diff", "--name-only"), "shared.md")
+
+    def test_a_prepared_file_commits_only_its_own_hunk(self) -> None:
+        self.put("shared.md", "base\nmine\ntheirs\n")
+        prepared = self.repo / ".git" / "shared.prepared"
+        prepared.write_text("base\nmine\n", encoding="utf-8", newline="\n")
+        done = self.commit("--as", f"shared.md={prepared}")
+        self.assertEqual(done.returncode, 0, done.stderr)
+        self.assertEqual(self.git("show", "HEAD:shared.md"), "base\nmine")
+        self.assertEqual(
+            (self.repo / "shared.md").read_text(encoding="utf-8"), "base\nmine\ntheirs\n"
+        )
+        self.assertEqual(self.git("diff", "--cached", "--name-only"), "")
+
+    def test_a_fold_reaching_upstream_is_refused(self) -> None:
+        self.put("mine.md", "mine\n")
+        self.git("commit", "-q", "-am", "second")
+        self.git("branch", "published")
+        self.git("branch", "--set-upstream-to=published")
+        before = self.git("rev-parse", "HEAD")
+        done = self.commit("--fold", "1")
+        self.assertNotEqual(done.returncode, 0)
+        self.assertIn("published history", done.stderr)
+        self.assertEqual(self.git("rev-parse", "HEAD"), before)
 
 
 def _load(name: str, file: str):

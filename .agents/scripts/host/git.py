@@ -38,6 +38,20 @@ capability:
            hand-written `git restore --source --staged --worktree`, which is
            the same class of un-verbbed git the other verbs exist to replace.
 
+  commit   Commit named paths, and only them, in a tree other sessions share.
+           Host `git commit` commits the shared index, which holds whatever
+           another session staged, and an agent runtime may rewrite any
+           command spelled `git commit…` into exactly that — one rewrote
+           `git commit-tree` and committed another session's staged renames.
+           This builds the tree in a private index under `.git/`, writes the
+           commit object with `hash-object`, moves the branch with
+           `update-ref` against the commit it expects, and then updates the
+           shared index for the committed paths alone. `--fold` replaces the
+           last unpushed commits with the one it writes; `--leave-out` keeps a
+           path's change out of that fold; `--as` commits a prepared file as
+           a path, which is how one session's hunk is committed out of a file
+           another session is also editing. Hooks do not run.
+
 This file needs git, and says so plainly if it is missing. It does not install
 git: the Memar bootstrap (`install.sh` / `install.ps1` in the folder above this
 one) is the one place that puts git and Python on a machine, and a second
@@ -54,6 +68,7 @@ Usage is the interface. Do not duplicate these recipes as prose catalogs.
 from __future__ import annotations
 
 import argparse
+import os
 import shutil
 import subprocess
 import sys
@@ -69,12 +84,16 @@ wanting to skip:
   stash     set uncommitted work aside where a later session can get it
   restore   give uncommitted work back, and refuse to throw it away unasked
   undelete  bring a deleted or untracked-back path back from a commit
+  commit    commit only the paths you name, leaving what others staged alone
 
 `remove` does not delete: the file goes to the recycle bin, so it is still there
 if it turns out to be needed. `restore` will not discard anything unless you
 pass an explicit confirmation, because "tidy the status" is how uncommitted work
 is most often lost — if you want it set aside, `stash` is the command for that.
 `undelete` is neither of those: it recovers, and it says what it recovered.
+`commit` is for a working tree other sessions share: plain `git commit` takes
+everything staged, theirs included, and so does any rewrite of it your runtime
+makes. The commits a `--fold` replaces stay reachable through `git reflog`.
 
 One thing git does that looks like a bug: a file that matches `.gitignore` but
 is already tracked still shows up as modified. Ignoring does not untrack, and
@@ -243,6 +262,137 @@ def cmd_undelete(paths: list[Path], source: str) -> None:
     )
 
 
+def _plumb(
+    args: list[str], root: Path, env: dict | None = None, data: bytes | None = None
+) -> str:
+    completed = subprocess.run(
+        [_git(), "-C", str(root), *args], input=data, capture_output=True, env=env
+    )
+    if completed.returncode != 0:
+        said = completed.stderr.decode("utf-8", "replace").strip()
+        sys.exit(f"error: git {' '.join(args)} failed: {said}")
+    return completed.stdout.decode("utf-8").strip()
+
+
+def _in_repo(path: Path, root: Path) -> str:
+    try:
+        return path.resolve().relative_to(root).as_posix()
+    except ValueError:
+        sys.exit(f"error: {path} is not inside the repository at {root}")
+
+
+def _tree_entry(rev: str, path: str, root: Path) -> str:
+    """`mode sha` of path in rev, or empty when rev does not hold it."""
+    listed = _plumb(["ls-tree", rev, "--", path], root)
+    return listed.split("\t")[0].replace(" blob ", " ") if listed else ""
+
+
+def cmd_commit(
+    paths: list[Path],
+    prepared: list[str],
+    leave_out: list[Path],
+    fold: int,
+    message_file: Path,
+) -> None:
+    """Commit the named paths alone, without the shared index and without porcelain."""
+    toplevel = run_captured(["rev-parse", "--show-toplevel"])
+    if toplevel.returncode != 0:
+        sys.exit("error: not inside a git repository")
+    root = Path(toplevel.stdout.strip()).resolve()
+    if fold < 0:
+        sys.exit("error: --fold counts commits and cannot be negative")
+    if not paths and not prepared and not fold:
+        sys.exit("error: name a path, an --as, or a --fold; there is nothing to commit")
+    if leave_out and not fold:
+        sys.exit("error: --leave-out only means something inside a --fold")
+
+    head = _plumb(["rev-parse", "HEAD"], root)
+    parent = _plumb(["rev-parse", f"HEAD~{fold}"], root) if fold else head
+    if fold:
+        if _plumb(["rev-list", "--min-parents=2", f"{parent}..{head}"], root):
+            sys.exit(f"error: the last {fold} commits include a merge; this does not fold merges")
+        upstream = run_captured(["rev-parse", "--verify", "--quiet", "@{upstream}"], cwd=root)
+        oldest = _plumb(["rev-parse", f"HEAD~{fold - 1}"], root)
+        if upstream.returncode == 0 and run_captured(
+            ["merge-base", "--is-ancestor", oldest, upstream.stdout.strip()], cwd=root
+        ).returncode == 0:
+            sys.exit(
+                f"error: {oldest[:12]} is already on {upstream.stdout.strip()[:12]} upstream; "
+                "folding it would rewrite published history"
+            )
+
+    named: dict[str, Path | None] = {_in_repo(p, root): None for p in paths}
+    for pair in prepared:
+        target, separator, source = pair.partition("=")
+        if not separator or not target or not source:
+            sys.exit(f"error: --as takes PATH=FILE, not {pair!r}")
+        source_path = Path(source).expanduser().resolve()
+        if not source_path.is_file():
+            sys.exit(f"error: --as source is not a file: {source}")
+        named[_in_repo(Path(target), root)] = source_path
+    left = [_in_repo(p, root) for p in leave_out]
+    for path in [*named, *left]:
+        if run_captured(["diff", "--cached", "--quiet", "HEAD", "--", path], cwd=root).returncode:
+            sys.exit(
+                f"error: {path} has a staged change that HEAD does not hold — another "
+                "session's, or yours from host git. Nothing was committed. Commit "
+                "or unstage it first; this verb will not decide whose it is."
+            )
+
+    git_dir = _plumb(["rev-parse", "--absolute-git-dir"], root)
+    private = dict(os.environ, GIT_INDEX_FILE=f"{git_dir}/memar-host-commit.index")
+    _plumb(["read-tree", head], root, env=private)
+    for path in left:
+        entry = _tree_entry(parent, path, root)
+        if entry:
+            mode, sha = entry.split()
+            _plumb(["update-index", "--add", "--cacheinfo", f"{mode},{sha},{path}"], root, env=private)
+        else:
+            _plumb(["update-index", "--force-remove", "--", path], root, env=private)
+    for path, source in named.items():
+        if source is not None:
+            sha = _plumb(["hash-object", "-w", "--path", path, str(source)], root)
+            entry = _tree_entry(head, path, root)
+            mode = entry.split()[0] if entry else "100644"
+            _plumb(["update-index", "--add", "--cacheinfo", f"{mode},{sha},{path}"], root, env=private)
+        elif (root / path).exists():
+            _plumb(["add", "--", path], root, env=private)
+        else:
+            _plumb(["update-index", "--force-remove", "--", path], root, env=private)
+    tree = _plumb(["write-tree"], root, env=private)
+    if tree == _plumb(["rev-parse", f"{parent}^{{tree}}"], root):
+        sys.exit("error: the result is the tree the parent already has; nothing to commit")
+
+    message = message_file.read_bytes().decode("utf-8").replace("\r\n", "\n").strip()
+    if not message:
+        sys.exit(f"error: {message_file} is empty; a commit needs a message")
+    body = (
+        f"tree {tree}\nparent {parent}\n"
+        f"author {_plumb(['var', 'GIT_AUTHOR_IDENT'], root)}\n"
+        f"committer {_plumb(['var', 'GIT_COMMITTER_IDENT'], root)}\n\n{message}\n"
+    )
+    made = _plumb(["hash-object", "-t", "commit", "-w", "--stdin"], root, data=body.encode("utf-8"))
+    _plumb(["update-ref", "-m", f"host/git.py commit (fold {fold})", "HEAD", made, head], root)
+
+    for path in [*named, *left]:
+        entry = _tree_entry(made, path, root)
+        if entry:
+            mode, sha = entry.split()
+            _plumb(["update-index", "--add", "--cacheinfo", f"{mode},{sha},{path}"], root)
+        else:
+            _plumb(["update-index", "--force-remove", "--", path], root)
+
+    print(made)
+    print(_plumb(["diff", "--stat", parent, made], root), file=sys.stderr)
+    replaced = f"; it replaces {fold} commit(s), recoverable from git reflog as {head[:12]}" if fold else ""
+    print(
+        f"committed {made[:12]} on {parent[:12]}{replaced}.\n"
+        "The shared index was updated for the committed paths only; whatever "
+        "else was staged is still staged.",
+        file=sys.stderr,
+    )
+
+
 def main() -> int:
     use_utf8_stdio()
     parser = argparse.ArgumentParser(
@@ -299,6 +449,44 @@ def main() -> int:
         help="the commit to bring the path back from (default: HEAD)",
     )
 
+    p_commit = sub.add_parser(
+        "commit",
+        help="commit only the named paths; the shared index keeps others' staging",
+    )
+    p_commit.add_argument(
+        "paths", nargs="*", type=Path, help="paths to commit as they are in the working tree"
+    )
+    p_commit.add_argument(
+        "-F",
+        "--message-file",
+        required=True,
+        type=Path,
+        help="the commit message, read from a file (write it with a file tool)",
+    )
+    p_commit.add_argument(
+        "--as",
+        dest="prepared",
+        action="append",
+        default=[],
+        metavar="PATH=FILE",
+        help="commit FILE's content as PATH: your hunk in a file others also edit",
+    )
+    p_commit.add_argument(
+        "--fold",
+        type=int,
+        default=0,
+        metavar="N",
+        help="replace the last N unpushed commits with this one",
+    )
+    p_commit.add_argument(
+        "--leave-out",
+        action="append",
+        default=[],
+        type=Path,
+        metavar="PATH",
+        help="inside a --fold, keep PATH as the new parent has it; its change stays unstaged",
+    )
+
     args = parser.parse_args()
     if args.command == "rename":
         cmd_rename(args.source, args.destination)
@@ -310,6 +498,8 @@ def main() -> int:
         cmd_restore(args.paths, args.confirm)
     elif args.command == "undelete":
         cmd_undelete(args.paths, args.source)
+    elif args.command == "commit":
+        cmd_commit(args.paths, args.prepared, args.leave_out, args.fold, args.message_file)
     return 0
 
 
