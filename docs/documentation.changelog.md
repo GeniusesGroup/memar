@@ -181,7 +181,7 @@ Fixed skeleton: four sections. Everything else optional, catalogued. Open questi
 - Type: Changed
 - Cited:
   - [Documentation — Explanation](./documentation-explanation.md) - Reference: the two rules specific to that specification's front matter (the slug derives from `Title`; the name is stable once `Final`) stay stated there, while the separator structure moved here.
-  - [Filesystem](./protocols/memory/filesystem.md) - Reference: the rejected alternative home, cited because its own thesis is the reason for the rejection.
+  - [Filesystem](./modules/lib/memory/filesystem.md) - Reference: the rejected alternative home, cited because its own thesis is the reason for the rejection.
 - Propagates to:
   - documentation-explanation.md: Done - its `File` topic's superseded filename wording ("hyphenated, no number, no domain prefix") replaced by a pointer to [File Naming](./documentation.md#file-naming); that wording contradicted the practice the convention now describes, since directories carry the category and digits appear inside conceptual terms (`osi_1`) and in Research ordinals by design.
 - Contributors:
@@ -261,7 +261,7 @@ Owner: an executing agent does not need to read the explanatory document to carr
 - Type: Added
 - Cited:
   - [Modeling → Expected Output of a Modeling Session](./modeling.md#expected-output-of-a-modeling-session) - Depends_on: the document that now carries the reduced claim and points here for the rule
-  - [Khayyam Rules Catalog](../modules/khayyam/rules/README.md) - Evidence: "Each rule has its own folder, holding a main document named after the rule" - the one kind of artifact in this repository that already kept the rule, and the precedent it is drawn from
+  - [Khayyam Rules Catalog](../bundles/khayyam/rules/README.md) - Evidence: "Each rule has its own folder, holding a main document named after the rule" - the one kind of artifact in this repository that already kept the rule, and the precedent it is drawn from
   - [Documentation Practice → Folder READMEs](./documentation.practice.md#folder-readmes) - Depends_on: the folder-README rule that makes a folder's main document addressable by a path a reader types
 - Propagates to:
   - docs/modeling.md: Done - the rule it stated is now a pointer here, and its Abstract and *Expected Output of a Modeling Session* carry the reduced claim.
@@ -425,3 +425,19 @@ The owner proposed the rule as a prohibition on citing informal sources (Omid He
 #### Considered and not done
 - **A requirement that check enforces it** (deferred): content check could later verify that owed rows, disabled defaults, and entry-point notes co-occur; decided against adding enforcement now, so the norm stands on its reasoning first.
 
+---
+
+### A folder README carries no changelog and no handoff
+- Time: 2026-10-07T15:14:08Z
+- Type: Added
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — decided
+  - Auto (model not recorded) via [Cursor](../CONTRIBUTORS.md#cursor) — drafted, applied
+
+#### What changed
+- [Folder READMEs](./documentation.practice.md#folder-readmes) gains a sixth step: a README has no `README.changelog.md` and no `README.handoff.md`. A decision about a folder is written into the README as the rule it now is; open work about a folder goes to the handoff of the module or document whose subject it is.
+- Applied to the two READMEs that had companions. `docs/modules/README.md` took the one reason worth keeping into its body — why specification and realization are two trees — and that categories are not final. The open state of `modules/README.handoff.md` moved to the handoffs that own each subject: the category layout to [Modularity Handoff](./modularity.handoff.md#the-category-layout-of-this-repository), the archive findings to `modules/go-port/go-port.handoff.md`, `lib/`'s findings to `modules/lib/lib.handoff.md`, and the end-of-file convention to `modules/khayyam/rules/file-layout/file-layout.handoff.md`.
+
+#### Considered and not done
+- **Keeping a handoff beside a README that holds real open work** (rejected by the owner): the open work was always about some module's subject, and filed under the folder's index it had no owner to answer it.
+- **Moving the count of broken links under `modules/`** (not done): `memar content check` reports it whenever it is run, so an entry restating the count would only go stale.

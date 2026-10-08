@@ -22,7 +22,7 @@
   },
   "scripts": {
     "verify": "node scripts/verify-roles.mjs",
-    "typecheck": "node ../../../../modules/khayyam/node_modules/typescript/bin/tsc -p tsconfig.json"
+    "typecheck": "node ../../../../bundles/khayyam/node_modules/typescript/bin/tsc -p tsconfig.json"
   },
   "contributes": {
     "languages": [

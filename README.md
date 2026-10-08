@@ -74,7 +74,7 @@ It will provide ZeroOps(zero operations), edge computing, ... that let you devel
 - Provide complete framework to develop any purpose distributed application with **low||no code**.
 
 #### Transition period
-Since Memar introduces technologies needed in software development and operation, including the [Khayyam](./docs/khayyam/khayyam.md) language, an [OS](./docs/protocols/computer/os.md), and protocols such as [Chapar](./docs/protocols/net/chapar.md) and [Giti-Protocol](./docs/protocols/net/giti.md), an organization adopting Memar may choose the language and runtime that fit its existing stack and migration plan. Memar's concepts and protocols remain independent of any one programming language; Khayyam is one realization hosted in this repository.
+Since Memar introduces technologies needed in software development and operation, including the [Khayyam](./docs/khayyam/khayyam.md) language, an [OS](./docs/modules/computer/os.md), and protocols such as [Chapar](./docs/modules/net/chapar.md) and [Giti-Protocol](./docs/modules/net/giti.md), an organization adopting Memar may choose the language and runtime that fit its existing stack and migration plan. Memar's concepts and protocols remain independent of any one programming language; Khayyam is one realization hosted in this repository.
 
 **But remember we don't suggest using this method in starting new projects.**
 

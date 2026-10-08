@@ -8,7 +8,7 @@
 // which range.
 //
 // A role says what a name is and a definition says where it is declared at
-// (modules/khayyam/lsp/src/definition.ts). This is only the second, and the answer carries
+// (bundles/khayyam/lsp/src/definition.ts). This is only the second, and the answer carries
 // nothing else: no name, no role, and no answer at all for a name nothing declares. Both
 // of those are the server's own answers and neither is translated here — an answer this
 // cannot read is refused by name, because a request that failed and a name that has no

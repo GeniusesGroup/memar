@@ -8,8 +8,9 @@ cannot carry: why this tool exists, what its boundary is, and what it cannot do.
 
 **The boundary is the whole checkout, not `docs/`.** The written content of a
 Memar repository is not only its Markdown: `modules/` holds the model
-definitions, the rules, the protocol implementations, and `.kh` sources, and
-`.agents/` holds the configuration a session is driven by. A tool named for
+definitions, the rules, the protocol implementations, and `.kh` sources,
+`bundles/` holds what runs or aggregates those modules, and `.agents/` holds
+the configuration a session is driven by. A tool named for
 content that could not search code would be a tool for documents. So `search`,
 `backlinks`, `obligations`, and the Memar half of `check` all read across the
 checkout, and the folders a reader does not want are excluded rather than the
@@ -101,8 +102,10 @@ CONTENT_SUFFIXES = (".md", ".kh")
 
 # The one corpus. `docs/` is where the model is argued, not where the
 # repository's content ends: `modules/` holds the model definitions, the rule
-# catalog, and the protocol implementations, `.agents/` holds the configuration
-# a session is driven by, and both are read by the same questions. A tool named
+# catalog, and the protocol implementations, `bundles/` holds what runs or
+# aggregates them (the Khayyam toolchain with its rules among them), `.agents/`
+# holds the configuration a session is driven by, and all are read by the same
+# questions. A tool named
 # for content that stopped at `docs/` would be a tool for documents wearing the
 # name of the larger thing. Folders excluded from the corpus are named here
 # rather than inferred, so what a verb cannot see is stated in one place.
@@ -110,7 +113,7 @@ CONTENT_SUFFIXES = (".md", ".kh")
 # server needs a module boundary under `modules/`, this file's subject may
 # warrant more than one file. It is one subject today — the written content of a
 # checkout — and the size is not a reason on its own.
-_CORPUS_DIRS = ("docs", "modules", ".agents")
+_CORPUS_DIRS = ("docs", "modules", "bundles", ".agents")
 _CORPUS_FILES = ("README.md", "AGENTS.md")
 # The session scratch root is inside the checkout and holds whatever a session
 # left there, so a corpus walk must not read it. It is named here rather than

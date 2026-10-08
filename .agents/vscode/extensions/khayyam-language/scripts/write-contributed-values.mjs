@@ -7,7 +7,7 @@
 // `editor.tokenColorCustomizations.textMateRules` and the same default's
 // `editor.semanticTokenColorCustomizations.rules`. The values are the dark sheet's,
 // because a language-scoped default has no theme dimension - one value per role,
-// stated once (modules/khayyam/display/display.handoff.md, Decisions). The other sheet
+// stated once (bundles/khayyam/display/display.handoff.md, Decisions). The other sheet
 // is valued by scripts/verify-roles.mjs and rendered by nothing, which that script's
 // own report says.
 //
@@ -114,7 +114,7 @@ const SHEET = "khayyam-dark.json";
  *  @param {string} p
  *  @returns {unknown} */
 const read = (p) => JSON.parse(readFileSync(p, "utf8"));
-const contract = /** @type {DisplayContract} */ (read(join(repositoryRoot, "modules", "khayyam", "display", "display.json")));
+const contract = /** @type {DisplayContract} */ (read(join(repositoryRoot, "bundles", "khayyam", "display", "display.json")));
 const given = process.argv[2];
 const manifestPath = given === undefined ? join(extensionRoot, "package.json") : resolve(given);
 const root = process.argv[3] === undefined ? extensionRoot : resolve(process.argv[3]);

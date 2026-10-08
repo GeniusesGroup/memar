@@ -1,7 +1,7 @@
 {
   "name": "Memar Dark",
   "type": "dark",
-  "comment": "Every value in this sheet is derived from the contract's own `palette` rules, not chosen: one hue per kind, so a reader sees a family; lightness and chroma carrying origin and validity, never hue; the warm band from 15 to 120 degrees of OKLCH hue reserved for the two refusals and nothing else. Every value is measured against this sheet's own background, #1F1F1F, which the base states and this sheet does not restate. The two refusal values are the ones display.research.001.md F3 proposed and they are kept unchanged; every other value here is new, because hue now follows the kind and the kind is what the contract states. The measurement, and the eleven colour-vision pairs the contract records with a reason, are in modules/khayyam/display/display.json under `palette`.",
+  "comment": "Every value in this sheet is derived from the contract's own `palette` rules, not chosen: one hue per kind, so a reader sees a family; lightness and chroma carrying origin and validity, never hue; the warm band from 15 to 120 degrees of OKLCH hue reserved for the two refusals and nothing else. Every value is measured against this sheet's own background, #1F1F1F, which the base states and this sheet does not restate. The two refusal values are the ones display.research.001.md F3 proposed and they are kept unchanged; every other value here is new, because hue now follows the kind and the kind is what the contract states. The measurement, and the eleven colour-vision pairs the contract records with a reason, are in bundles/khayyam/display/display.json under `palette`.",
   "include": "./dark_modern.json",
   "khayyamDisplay": {
     "khayyam.keyword.color": "#70B87B",

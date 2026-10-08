@@ -2,7 +2,7 @@
   "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
   "name": "Khayyam",
   "scopeName": "source.khayyam",
-  "comment": "Display roles are specified in modules/khayyam/display/display.json and explained in modules/khayyam/display/display.md; that contract is authoritative and governs how Khayyam is displayed to any reader, not only in an editor. Each rule below names the roles it serves in its `comment`. Rules are ordered so the most specific form of a line wins: an inclusion, then a declaration that opens a block, then a method declaration that carries its signature, then the generic rules.",
+  "comment": "Display roles are specified in bundles/khayyam/display/display.json and explained in bundles/khayyam/display/display.md; that contract is authoritative and governs how Khayyam is displayed to any reader, not only in an editor. Each rule below names the roles it serves in its `comment`. Rules are ordered so the most specific form of a line wins: an inclusion, then a declaration that opens a block, then a method declaration that carries its signature, then the generic rules.",
   "patterns": [
     { "include": "#comments" },
     { "include": "#inclusion" },

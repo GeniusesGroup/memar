@@ -1,8 +1,8 @@
 // Runs the checks and prints the verdict.
 //
 // What the extension contributes is one claim, and this run holds every side of it to
-// the display contract (modules/khayyam/display/display.json, documented in
-// modules/khayyam/display/display.md): the contract's own shape, which mechanism answers
+// the display contract (bundles/khayyam/display/display.json, documented in
+// bundles/khayyam/display/display.md): the contract's own shape, which mechanism answers
 // each role, every scope the grammar emits, the manifest's declarations, the legend the
 // server actually advertises, and the language-scoped default the editor layers over the
 // active theme. Its own last line is the verdict, and a run that refuses something says
@@ -99,7 +99,7 @@ const rel = (p) => relative(repositoryRoot, p).replace(/\\/g, "/");
 const shown = (p) => (p.startsWith(repositoryRoot) ? rel(p) : p);
 
 const given = process.argv[2];
-const specPath = given === undefined ? join(repositoryRoot, "modules", "khayyam", "display", "display.json") : resolve(given);
+const specPath = given === undefined ? join(repositoryRoot, "bundles", "khayyam", "display", "display.json") : resolve(given);
 const givenManifest = process.argv[3];
 const manifestPath = givenManifest === undefined ? join(extensionRoot, "package.json") : resolve(givenManifest);
 /** A contributed theme's `path` is resolved against an extension root, which the third
@@ -574,7 +574,7 @@ const { hierarchyOf, scoreOf } = matchingOf(host, declaredTypes);
  *  token's one-name hierarchy does not contain it. The editor gives such a token no
  *  style and drops it while merging the grammar's tokens in, so the request succeeds,
  *  the tokens arrive, and nothing is drawn. */
-const legendPath = join(repositoryRoot, "modules", "khayyam", "lsp", "src", "contract.ts");
+const legendPath = join(repositoryRoot, "bundles", "khayyam", "lsp", "src", "contract.ts");
 const LEGEND = await import(pathToFileURL(legendPath).href)
   .then(
     /** @param {{ LEGEND?: string[] }} module @returns {string[] | null} */

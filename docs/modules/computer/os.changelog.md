@@ -1,0 +1,359 @@
+# OS — Guarantees and Kernel Models Changelog
+
+## Changelog
+
+### Initial draft consolidating the OS-boundary note and the unikernel notes
+- Time: 2026-08-28T12:06:35Z
+- Type: Added
+- Cited:
+  - [Unikernels: The Rise of the Virtual Library Operating System](https://dl.acm.org/doi/book/10.1145/3442482) — Reference: absorbed from the pre-merge `unikernel.md` note, with its reason preserved — demonstrates that general-purpose filesystems are not universally required, though not necessarily obsolete everywhere.
+  - [Exokernel: An Operating System Architecture for Application-Level Resource Management (SOSP '97)](https://www.ece.cmu.edu/~ganger/papers/exo-sosp97/exo-sosp97.html) — Evidence: supports the guarantee/meaning separation — a kernel providing only secure multiplexing of hardware, with all abstractions in library operating systems, is implementable.
+  - [nanos](https://github.com/nanovms/nanos) — Reference: a maintained open-source unikernel, used as an existence proof that the unikernel position is implementable (not an endorsement).
+  - [NanoVMs](https://nanovms.com/) — Reference: the commercial provider of Nanos, recorded alongside it for the same reason.
+- Propagates to:
+  - persia_os.md: Pending — should reference this document for the OS-boundary principle and the kernel-model spectrum instead of restating kernel-concept material locally (its current architecture section lists the concepts without the principle behind them).
+  - unikernel.md: Done — content fully absorbed into this document (topics, implementation links, and the ACM citation); file deleted. It never had Explanation-facet form (no front matter or ID), so no Superseded pointer was created, per the merge rule for pre-Final documents.
+- Contributors:
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — claimed, argued
+  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — drafted
+
+#### What changed
+- Created the merged Explanation-facet document `os.md` (titled "OS — Guarantees and Kernel Models"), as Draft, restructuring the two source notes under the Explanation facet.
+- It states the OS responsibility-boundary principle (the OS provides foundational guarantees; higher-level systems define meaning), then presents monolithic, microkernel, exokernel, and unikernel as positions on a single spectrum ordered by how much meaning the kernel defines — with the unikernel as the endpoint (library OS compiled into a single application image).
+- The pre-merge `os.md` principle and the fragmentary `unikernel.md` material (implementation and provider links, the ACM citation, the general-purpose-filesystem finding) were absorbed unchanged in substance; no gaps were filled with invention — the device-driver placement, the microkernel's satisfaction of the boundary principle, unikernel guarantees without other tenants, and Nanos's conformance to the principle are recorded as unresolved questions.
+
+#### Deliberation
+- The original OS-boundary principle and the unikernel notes this document consolidates were authored (Omid Hekayati).
+- The merge and upgrade were directed (Omid Hekayati).
+
+#### Considered and not done
+The merge follows the project's rule that pre-Final documents consolidate without new citations pointing to abandoned ones — both source notes predated Explanation-facet form, so nothing was formally superseded. Keeping the documents separate was rejected because the unikernel note's subject is a position on the boundary the OS note defines; their separation was an artifact of note-taking history, not of the subject matter. Choosing a kernel position for the project's own OS was deliberately kept out of scope — that is an architecture decision belonging to PersiaOS's document, which is flagged as Pending in Propagates to.
+
+### Added the hypervisor position and the de-traditionalization topics
+- Time: 2026-08-28T12:33:36Z
+- Type: Added
+- Propagates to:
+  - persia_os.md: Pending — its "User Manager" and POSIX-adjacent framing may need reexamination against the decomposition and identity topics in this document; its kernel-concept list should also gain the hypervisor position.
+- Contributors:
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — argued
+  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — drafted
+
+#### What changed
+- The document was extended in four moves.
+- The machine-model spectrum gained the hypervisor, and the topic was renamed from "kernel models" to "machine models", since a hypervisor is not a kernel: it multiplexes whole machines, guarantees tenant isolation, defines almost no meaning beyond the virtual-hardware shape, and pairs naturally with unikernels.
+- A new topic argues the traditional OS view — from mainframe systems to Linux's "just a kernel" framing — is not wrong but deeply misleading, because it presents a historical bundle of guarantees, standard abstractions, default applications, and identity conventions as essence.
+- A decomposition topic re-derives the partition without that presupposition, using the test "would removing this component break a guarantee — or only a habit?": what survives are the guarantees; the rest falls into default applications (launcher, shell, init, login manager — ordinary user-level apps with no special OS-level abstraction), traditional abstractions that belong to systems above, and identity conventions that reduce to principals for privilege boundaries — the traditional "user" is a bundle, not a concept.
+- An execution topic argues the OS-level resource is the core (a core-time entitlement over an address space — process-like, but stripped of the traditional process's bundled meaning), that the thread is a traditional abstraction rather than an OS concept, and that concurrency is not a question the OS must answer.
+- The open questions left by each of the new topics were added.
+
+#### Deliberation
+- The missing hypervisor position on the spectrum was identified (Omid Hekayati).
+- The traditional OS view — including the "Linux is just a kernel" framing — was challenged as misleading rather than wrong (Omid Hekayati).
+- A presupposition-free decomposition of the OS was requested (Omid Hekayati).
+- The launcher example and the objection to the traditional user concept were supplied (Omid Hekayati).
+- It was proposed to test whether the CPU core suffices in place of the thread, with concurrency not assumed to be the OS's problem (Omid Hekayati).
+
+#### Considered and not done
+- **Add the hypervisor as its own separate document (rejected)**: it answers the same guarantee/meaning question as the other models and belongs on their spectrum; a separate document would re-derive the boundary principle for no added precision.
+- **Frame the traditional-view critique as "the traditional view is wrong" (rejected)**: the bundle demonstrably works; the precise defect is that its shape is history read as essence, which misleads architects — wording chosen to keep the claim defensible.
+- **Keep thread/scheduler analysis out until a runtime document exists (rejected)**: the thread presupposition is one of the strongest ways the traditional bundle re-enters an architecture, so marking it non-essential at the concept level — with the open questions stated — belongs in this document now.
+
+### Restructured: kernel as a layer concept, founding layers, process-aligned execution
+- Time: 2026-08-28T12:56:51Z
+- Type: Revised
+- Propagates to:
+  - none — self-contained restructuring of this document (the persia_os.md pending from earlier entries is unchanged).
+- Contributors:
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — argued
+  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — drafted
+
+#### What changed
+- Four structural changes.
+- The Methodology now opens by stating the document's method: identify the requirements that genuinely need an answer and argue where the better place to answer each one is — the traditional components appear only as evidence, never as the starting taxonomy.
+- The machine-model spectrum topic was replaced by "The kernel is a layer concept, not an OS-exclusive one": a kernel is any system's foundational layer carrying its non-removable domains; a unikernel's "OS image" is an application binary carrying its own kernel as libraries; the four traditional structuring names are kept as recorded answers to where a system's kernel lives, with their OS-exclusive presupposition dropped.
+- A new topic, "The OS's founding layers: firmware, bootloader, hypervisor", reads the hypervisor as part of the OS — the layer carrying its most foundational duties — and brings the bootloader, UEFI, and legacy BIOS inside the OS layer as parts of the system's agency, under a duty-accounting discipline (each founding layer gets only duties that cannot be answered higher, with UEFI's accumulation of duties as the cautionary example).
+- The execution topic now defers to Process: the thread's rejection is grounded in process.md's "a thread is not a process" and process-before-mechanism principles, concurrency questions are explicitly routed to process.md's method rather than answered here, and the OS-level claims are narrowed to the guarantee side (core-time entitlement over an address space).
+
+#### Deliberation
+- The methodology was required to state the requirements-first method explicitly (Omid Hekayati).
+- It was established that the kernel is not OS-exclusive — any system's foundational layer carrying its non-removable domains is a kernel, and a unikernel OS image is really an app binary — making the hypervisor's placement inside the structuring list misleading and the list's ordering presupposition-laden (Omid Hekayati).
+- The execution/concurrency treatment was required to align with process.md's approach rather than risk violating it (Omid Hekayati).
+- The hypervisor was read as part of the OS carrying its most foundational duties, with the bootloader, UEFI, and legacy BIOS examined as part of the system's agency and of the OS layer (Omid Hekayati).
+
+#### Considered and not done
+- **Keep the hypervisor in the structuring list with the ordering defended (rejected)**: the user's objection stands — the members of that list answer different questions, and the ordering embedded past presuppositions the document elsewhere commits to exposing rather than reproducing.
+- **Rewrite the concurrency analysis independently of process.md (rejected)**: this project's documents form one model; an OS document that re-derives concurrency on its own terms would inevitably drift against Process's settled rulings. Deference here is the same cross-document consistency discipline process.md itself applied to system.md.
+
+### Rewritten by requirement area; history and provenance removed from the body
+- Time: 2026-08-28T13:27:51Z
+- Type: Revised
+- Propagates to:
+  - persia_os.md: Pending — unchanged from earlier entries.
+- Contributors:
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — argued
+  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — drafted
+
+#### What changed
+- The document was rewritten around requirement areas instead of historical narrative.
+- Motivation, Methodology, and Abstract were rewritten.
+- Every reference to the paired changelog and to the document's own past (source notes, earlier revisions, merge decisions) was removed from the body — the body now states the current design only; this file remains the sole record of how it got here.
+- The document was renamed to the plain "OS".
+- A passage was added stating that each system's kernel layer carries its own internal categorization: core functional domains as that system's kernel-category modules, joined in unikernel-shaped systems by the OS duties compiled in as libraries.
+- Two new requirement topics were added: Storage (a filesystem is an upper-level abstraction; the OS grants an exclusive, bounded block abstraction per application — per OS image — exactly as it does for volatile memory, and does not interfere with how non-volatile memory is organized) and Networking (the OS provides exclusive, privilege-bounded access to network hardware and frame delivery; connection, protocol, and transport semantics are upper-level meaning, with routing itself possible as an application).
+- Identity was extracted from the decomposition topic into its own topic (principals, not users, with the relationship to Agency's Principal left open).
+- The decomposition topic now serves as the classification method pointing into the per-concept topics, and the document-level Discussion was rewritten without history-based content.
+
+#### Deliberation
+- The rename to the plain "OS" was directed so the title carries no presupposition (Omid Hekayati).
+- It was ruled that the main document must never reference the changelog or its own past, since history carries no information for a reader of the current design and only adds cognitive cost (Omid Hekayati).
+- The kernel layer's per-system internal categorization was asked to be stated (core functional domains as one module category, with unikernel-supplied OS modules joining that category) (Omid Hekayati).
+- The filesystem was required to be stated precisely as an upper-level abstraction, with the OS providing a per-image block abstraction exactly analogous to memory management and no interference in how non-volatile memory is organized (Omid Hekayati).
+- The document was requested to be rewritten by requirement area — one coherent capability-and-constraint statement per requirement — so that someone asking "build an OS under this architecture" receives a complete answer with no old-world default (Omid Hekayati).
+
+#### Considered and not done
+- **Keep the merge history in the body as context (rejected)**: the user's ruling is adopted as the document's convention — the body answers "what is the design", not "how did it get here"; past-state questions belong to this file, where they cost a reader who wants history nothing and cost a reader who does not everything.
+- **Fold Storage/Networking content into the boundary topic instead of separate topics (rejected)**: scattering each requirement's answer across topics is what made the previous revision hard to use as an implementation brief; one topic per requirement, each stating capability and constraint, is the form the document's own test demands — could a reader build an OS from it without importing the old world's defaults.
+
+### Absorbed the architect-level content from the PersiaOS project document
+- Time: 2026-08-28T13:46:01Z
+- Type: Revised
+- Propagates to:
+  - persia_os.md: Pending — re-scoped as a project-level document: PersiaOS is a project on the architecture delivering applications, not part of the architect's documentation; its document should be rewritten as a project brief referencing this one for every architect-level claim, keeping only its project-specific decisions.
+- Contributors:
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — argued
+  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — drafted
+
+#### What changed
+- The PersiaOS project document was reviewed claim by claim and four architect-level insights transferred, each corrected to current thinking.
+- The isolation-first principle: OS-level-virtualization tools (containers and the like) appeared because isolation guarantees were missing, and the fix belongs at the layer that owns isolation — added as a rejected alternative in the traditional-view topic.
+- Resource entitlements: exclusive access is granted through declared per-application bounds (a minimum and a maximum) used for arbitration and accounting — the OS says *how much*, never *how* — added to the decomposition topic's guarantees bullet.
+- Device-class neutrality: the same OS serves servers, clients, and routers without an OS-level device concept — no editions, no device taxonomy — added to the Networking topic alongside routing-as-an-application and the OS's delivery-only constraint (it neither interprets nor alters what passes through).
+- [sRPC](../net/sRPC.md) joined [Chapar](../net/chapar.md) as an example of protocols built above the guarantees.
+- The Relationship-to-PersiaOS topic was rewritten to state the new framing: PersiaOS is a project on the architecture, its document is project-level, and the architect-level claims it carried have been absorbed here.
+- Claims deliberately not transferred: the "Users Manager" (superseded by the principals position in Identity), OS-level packet scheduling (now an unresolved question about policy versus arbitration), the POSIX placeholder, and the Giti/GP protocol and firewall specifics (project decisions, not architect-level).
+
+#### Deliberation
+- It was ruled that PersiaOS's document no longer belongs at the architect level, since PersiaOS is a project delivering apps on the architecture, not a part of the architect (Omid Hekayati).
+- A review of the old document was asked for, with anything of value transferred here, under explicit caution that the document is very old and may contradict the current architectural thinking (Omid Hekayati).
+
+#### Considered and not done
+- **Transfer the old document's claims verbatim (rejected)**: the review's purpose was to filter, not to copy — several claims (device-class bundles like "Users Manager", OS-level scheduling policy, isolation by tooling) predate and contradict positions this document has since argued for; transferring them unchanged would re-import the very presuppositions the document exists to exclude.
+- **Leave the PersiaOS document in place untouched (rejected for now)**: its re-scoping into a project document is its own transition, recorded as Pending rather than executed here, since where project documents live is a project decision.
+
+### Added the famous-names demystification and the strong arguments from an external review discussion
+- Time: 2026-08-28T14:16:09Z
+- Type: Revised
+- Propagates to:
+  - persia_os.md: Pending — unchanged from earlier entries.
+- Contributors:
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — argued
+  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — drafted
+
+#### What changed
+- Added the topic "Famous names: VM, container, and what they actually are" — each famous name read as a packaging or compatibility choice of the traditional bundle, with the container stated sharpest: a container does not close the neighbor problem, because kernel-side memory (network buffers, page cache, connection state) is shared and unaccounted, and the traditional remedy of blunt limits does not remove the sharing, it throttles the input — an application forced to refuse work it had the resources to perform.
+- The discussion's arguments were evaluated claim by claim and the strong ones absorbed into the existing topics rather than a new survey.
+- The argument that the traditional bundle's dominance is sociological and economic evidence (timing, licensing, network-effect lock-in), not architectural evidence — added to the traditional-view topic.
+- QUIC as the strongest recent confirmation that meaning is forced to escape the traditional kernel rather than be defined by it — added to the Networking topic's prior art.
+- The para-virtualization and hardware-partitioning counter to the standard "drivers must live in the kernel" objection (VirtIO, SR-IOV show device access can be a narrow, semantics-free interface) — added to the boundary topic's driver question.
+- Providers' DPU/SmartNIC offloading as continued evidence that label-based isolation is incomplete — added to the famous-names topic's prior art.
+- Observability-without-traditional-abstractions was already carried by the implementations topic and was not duplicated.
+
+#### Deliberation
+- A new topic was asked for, stating that the industry's famous names (virtual machine, container, POSIX) carry no intrinsic value in this architecture and mislead when treated as concepts the OS must own (Omid Hekayati).
+- The container analysis was supplied: much of what appears isolated is not (kernel-side memory such as network buffers is shared and unaccounted), and the traditional remedy of blunt limits (capping file descriptors, shrinking buffers) throttles the input instead of removing the sharing, wasting the other resources (Omid Hekayati).
+- A discussion was supplied containing arguments to be evaluated and absorbed where strong (Omid Hekayati).
+
+#### Considered and not done
+- **Give each famous name its own catalogue entry maintained over time (rejected)**: a catalogue of rebuttals ages; the underlying test does not — which guarantee does this name provide, and which meaning does it define? The topic states the test and applies it, rather than accumulating per-name entries.
+- **Absorb the discussion's arguments as a quoted external position (rejected)**: provenance belongs to this file; the body states arguments on their own merits, wherever they were first heard.
+
+### Answered the app-status cost objection for drivers and frame delivery in the Networking topic
+- Time: 2026-09-01T16:16:25Z
+- Type: revised
+- Cited:
+  - [Giti (GP)](../net/giti.md) — Reference: the GP redesign discussion raised the objection (a driver as an independent app seemingly multiplying processing cost) while resolving mixed-level endpoint addressing through this document's model.
+- Propagates to:
+  - giti.md: Done — its mixed-level communication ruling references this topic's answer.
+- Contributors:
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — applied.
+
+#### What changed
+- The Networking topic gained the paragraph dissolving the driver-as-app cost objection: isolation costs, not per-packet mediation — no context switch on the packet path, and a direct NIC-memory grant into the destination application's buffers as the permitted cheaper path that traditional kernel-mediated stacks never take.
+- The topic's unresolved question (frame delivery as a default app holding the NIC entitlement) stays open, but the cost argument against that reading is now answered in advance.
+
+#### Deliberation
+- The cost objection was required to be answered here, not in the protocol document, and the answer ruled structural: the isolation mechanism that separates applications is the same one that grants hardware access, so no kernel↔app context switch sits on the packet path; and one step beyond traditional models, the NIC's memory can be granted into the destination application's address space so packet data lands there directly — without the kernel copying it or even observing each packet (Omid Hekayati).
+- Security was ruled to be supplied by exclusive granting, not by kernel mediation of every packet (Omid Hekayati).
+
+### Absorbed the three remaining arguments from the unikernel-history discussion
+- Time: 2026-09-03T10:09:38Z
+- Type: Revised
+- Propagates to:
+  - none — the source discussion had its other arguments absorbed on 2026-08-28; this entry closes the remaining three, after which the source file was retired.
+- Contributors:
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — argued
+  - [Qwen](../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via [OpenCode](../../../CONTRIBUTORS.md#opencode)) — drafted.
+
+#### What changed
+- Three additions close out the source discussion.
+- The traditional-view topic's prior art gained hardware economics in its list of sociological causes (one machine per application was unaffordable before virtualization made the deployment shape cheap).
+- And the orchestration case as a concrete illustration of commercial shaping — a provider open-sourcing a simplified reimplementation of its internal cluster manager, the industry investing in the released tool's complexity, the internal fleets reportedly staying on the predecessor — stated as observable behavior, with the motive question left unsettled per the topic's own reading rule.
+- The document-level Future possibilities gained the cost-asymmetry argument: the bundle's lock-in holds only while leaving costs more than enduring, and falling redefinition cost — AI agents producing library-level meaning against the guarantees — erodes that asymmetry; recorded as a possibility, not a dependency.
+
+#### Deliberation
+- The 1991 hardware-economics cause of the traditional kernel's victory was required to be recorded beside the other sociological causes (Omid Hekayati).
+- The AI-agent argument — falling redefinition cost eroding the network-effect lock-in — was required to be recorded as a future possibility (Omid Hekayati).
+- The Borg/Kubernetes orchestration case was required to be recorded as observable behavior consistent with the commercial-shaping principle, without settling the provider's motives (Omid Hekayati).
+
+---
+
+### Relocated to `docs/protocols/`
+- Time: 2026-09-03T00:00:00Z
+- Type: refactor
+- Contributors:
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) - directed, decided
+  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) - moved.
+
+#### What changed
+- This document and its changelog moved from `docs/` to `docs/protocols/` - the home of Memar's own protocol specifications. Relative links to concept documents at `docs/` root (agency, modularity, process) were adjusted for the added depth; no content change.
+
+#### Deliberation
+- This document is expected to grow into the protocol specification of Memar's own operating system (to be developed in the persiaos repository), so it belongs with the protocol documents; it enters at Draft status and matures in place toward its full protocol form, like the other members of the folder (Omid Hekayati).
+
+---
+
+### Transition-period networking position added to the Networking topic
+- Time: 2026-09-06T00:00:00Z
+- Type: Added
+- Propagates to:
+  - networking.md: Done — the network-side half of the position (the full examination, justified dependences, userspace direction, filtration counter-argument) lives there as its new topic, recorded in that document's changelog in the same pass.
+- Contributors:
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — reviewed, decided
+  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — rewrote
+
+#### What changed
+- The Networking topic gained the OS-side statement of the position: a traditional OS's embedded network stack is inherited, not examined, by the systems that run on it, and a Memar system reads it as one realization of transport to be checked rather than adopted by default.
+- The transition-period paragraph states how a Memar system treats a traditional host's embedded stack — a compatibility library consulted where its constraints are acceptable, routed around where they are not, never the foundation — with the full position deferred to networking.md rather than restated.
+- The topic's existing "Ship a network stack with the OS (rejected)" ruling is the permanent-form of the same judgment; the new paragraph covers the transition period before Memar's own OS exists.
+- The standalone document was dissolved and its inbound references repointed.
+
+#### Deliberation
+- The standalone position document "Memar's Position on the Kernel Network Stack" (created earlier the same day) was judged misworded against this document's own kernel definition — this document establishes kernel as a layer concept of any system, so reserving "kernel network stack" for the traditional OS-embedded stack creates exactly the confusion this document's terminology discipline forbids (Omid Hekayati).
+- It was directed that the position be folded into networking.md with the OS-side half stated here (Omid Hekayati).
+
+---
+
+### Documentation-method migration completed: Discussion wrappers, Rationale, Prior art, Unresolved questions, Future possibilities dissolved per the finalized method
+- Time: 2026-09-07T00:00:00Z
+- Type: refactor
+- Propagates to:
+  - os.handoff.md: Created - all open questions and future possibilities moved there.
+- Contributors:
+  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) - moved
+
+#### What changed
+- The body's fixed top-level sections are now `Abstract`, `Introduction`, `Explanation`, `Results` only (Super Z - applied the finalized documentation method).
+- The document-level `Drawbacks` and `Rationale and alternatives` content preserved below; `Unresolved questions` and `Future possibilities` moved to the paired handoff (Super Z).
+
+Dissolved every `#### Discussion` wrapper (the boundary topic, the kernel-layer topic, the founding-layers topic, the traditional-view topic, the famous-names topic, the decomposition topic, Compute, Storage, Networking, Identity, Implementations, PersiaOS) and the document-level `## Discussion`; premise evidence (exokernel, end-to-end, unikernel literature, QUIC, capability systems, thin-firmware practice, microVM/DPU behavior, lock-in sociology) folded inline into its topics; rejected alternatives, document-level Drawbacks, open questions, and future possibilities relocated without loss (Super Z).
+
+#### Considered and not done
+- **Let the OS define the standard abstractions (rejected for this project; migrated from the boundary topic's retired `Rationale and alternatives`)**: this is what traditional operating systems do — the socket, the POSIX process, the general-purpose filesystem — and every system built on top inherits those abstractions' assumptions whether or not they fit. Under the boundary principle, an abstraction needed by a higher-level system is defined by that system and implemented against the guarantees, so the assumptions stay where the meaning is.
+- **Put the hypervisor inside the structuring list (rejected; migrated from the kernel-layer topic's retired `Rationale and alternatives`)**: the list then reads as one spectrum, but its members answer different questions — the structuring names answer where a system's kernel lives, while the hypervisor is one of the OS's founding layers. The conflation is the same defect the traditional-view critique names: past presuppositions read as present essence.
+- **Discard the four structuring names entirely (rejected; migrated from the kernel-layer topic's retired `Rationale and alternatives`)**: despite their presuppositions, they are the best-recorded evidence for where kernel domains can live, and each encodes a real trade. Discarding them would force this document to re-derive those trades from nothing; keeping them with the question made explicit loses nothing.
+- **Treat firmware and the bootloader as outside the OS's scope (rejected; migrated from the founding-layers topic's retired `Rationale and alternatives`)**: they execute before any kernel and shape what every later layer can guarantee — a privilege boundary the firmware does not enforce cannot be created retroactively above it. Excluding them would leave the OS's guarantees resting on layers whose duties this document never examined.
+- **Settle the founding layers' exact duty partition in os.md (rejected for now; migrated from the founding-layers topic's retired `Rationale and alternatives`)**: which duty belongs to firmware versus bootloader versus hypervisor is a real design task that must be argued duty by duty. The document records the discipline and the candidate duties; the partition is deferred until it can be argued against real hardware, not invented in the abstract.
+- **Say the traditional view is simply wrong (rejected; migrated from the traditional-view topic's retired `Rationale and alternatives`)**: it is not — it is a working, battle-tested bundle, and dismissing it wholesale would discard the parts that genuinely belong at the OS level. "Misleading" is the precise defect: the bundle misleads exactly where it is read as essence rather than as history.
+- **Leave the traditional framing unexamined and only define our own boundary (rejected; migrated from the traditional-view topic's retired `Rationale and alternatives`)**: unexamined, the bundle returns through the back door — every component list, every "OS feature" checklist, and most OS literature start from it, so an architecture that does not explicitly mark the bundle as tradition will re-import it item by item.
+- **Solve isolation gaps by inventing new tools (rejected; migrated from the traditional-view topic's retired `Rationale and alternatives`)**: OS-level-virtualization tools — containers and the like — appeared because isolation guarantees were missing, and they bundle those guarantees with a particular choice of abstractions on top. The problems they solve belong to the layer that owns isolation; once the founding layers provide isolation as a guarantee, such tools become unnecessary rather than improved.
+- **Adopt the industry names as concepts of this architecture (rejected; migrated from the famous-names topic's retired `Rationale and alternatives`)**: the names encode the traditional bundle's answers — using them as primitives imports those answers through every design conversation, which is precisely the import path this document exists to close.
+- **Rebut each famous name in its own catalogue entry (rejected for now; migrated from the famous-names topic's retired `Rationale and alternatives`)**: the demystification generalizes into a test — which guarantee does this name provide, and which meaning does it define? A maintained catalogue of rebuttals would age; the test does not.
+- **Keep the traditional component names but redefine them (rejected; migrated from the decomposition topic's retired `Rationale and alternatives`)**: redefining "user" or "process" while keeping the word invites the old meaning back through every reader's prior associations. Where a traditional word's meaning genuinely changes, this document describes the thing rather than reusing the label; naming is revisited once the concepts stabilize.
+- **Declare the default apps outside the OS's concern entirely (rejected; migrated from the decomposition topic's retired `Rationale and alternatives`)**: they are outside the OS's *guarantees*, but an OS distribution still has to ship something that starts and manages applications — the point is their status (ordinary, replaceable apps), not their absence.
+- **Answer concurrency questions in os.md (rejected; migrated from the Compute topic's retired `Rationale and alternatives`)**: this document's neighbor, [Process](../../process.md), already governs them — concurrency is treated there as a property of how a process's parts may progress, with locking and synchronization as possible mechanisms selected only after the process is understood. Restating or specializing those answers here would risk contradicting them, and the OS layer must not carry concurrency meaning the process layer has not assigned to it.
+- **Keep threads at the OS level as the price of preemption (rejected for now; migrated from the Compute topic's retired `Rationale and alternatives`)**: preemption is a guarantee-side mechanism (taking the core back is exclusive-access enforcement), but the core-time entitlement is a thinner preemptible unit than the thread; what the traditional thread adds beyond it — identities, priorities, signal delivery — is policy and meaning.
+- **Keep a filesystem in the OS because applications expect one (rejected; migrated from the Storage topic's retired `Rationale and alternatives`)**: an expectation formed by the traditional bundle is not a requirement. An application that wants tree semantics carries the library that provides them — exactly as a unikernel does — and pays only for the semantics it uses.
+- **Push block arbitration into each application entirely (rejected; migrated from the Storage topic's retired `Rationale and alternatives`)**: exclusive access to raw devices is a guarantee the OS must arbitrate — two applications cannot both hold the same blocks. The position is not "no OS in storage" but "no storage meaning in the OS": the OS stops at exclusive, bounded block grants.
+- **Keep log-as-file because observability tooling expects it (rejected; migrated from the Storage topic's retired `Rationale and alternatives`)**: the traditional log is the filesystem's meaning pushed into observability — structured events flattened into an unstructured byte stream, then re-structured downstream by dedicated tooling. Under the Storage topic's position, an application's diagnostic output is storage meaning defined above the OS: events as events, delivered to whoever observes them, needing no file at all.
+- **Ship a network stack with the OS (rejected; migrated from the Networking topic's retired `Rationale and alternatives`)**: a stack is a bundle of protocol meanings — transport semantics, addressing conventions, naming — that every application then inherits whether or not they fit. The traditional stack exists because the traditional bundle pushed meaning down; under the boundary principle, each system selects or defines its protocols above the guarantees.
+- **Keep "user" but redefine it (rejected; migrated from the Identity topic's retired `Rationale and alternatives`)**: reusing the word invites the traditional meaning back through every reader's prior associations; this document describes the thing without the label, and naming is revisited once the concept stabilizes.
+- **Drop identity from the OS entirely (rejected; migrated from the Identity topic's retired `Rationale and alternatives`)**: privilege boundaries need something to attach to; without principals, exclusive access control has no subject.
+- **Organize by the traditional component list (rejected; migrated from the document-level retired `Rationale and alternatives`)**: the list is the bundle this document argues against; using it as the table of contents would make the old taxonomy the navigation model even where the text rejects it.
+- **State each requirement wherever it first becomes relevant (rejected; migrated from the document-level retired `Rationale and alternatives`)**: scattering a requirement's capability and constraint across topics is exactly how the traditional view's assumptions survive a critique — one topic per requirement keeps each answer checkable and referenceable as a whole.
+
+#### Considered and not done (from the removed document-level Drawbacks section)
+- **Organizing by requirement area rather than by traditional component means a reader arriving with a traditional name — "threads", "filesystem", "network stack" — must map it to the requirement topic that owns it.** The mitigation is deliberate: each such name is answered exactly once, in the topic that states the area's capability and constraint, and the cross-references to the concept's own governing document ([Process](../../process.md), [Chapar](../net/chapar.md)) carry the reader the rest of the way. Where no Memar document governs a name — "filesystem" is the current case — the word carries its general meaning, per [Terminology → The Default Meaning of an Unreferenced Term](../../terminology.md#the-default-meaning-of-an-unreferenced-term).
+
+---
+
+### The OS responsibility-boundary question closes as already ruled
+- Time: 2026-10-04T20:54:04Z
+- Type: Changed
+- Propagates to:
+  - os.changelog.md: Done — the ruling is already recorded under Considered and not done in the 2026-09-07 migration entry; no action needed there.
+- Contributors:
+  - [Space Bunny Alpha](../../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../../CONTRIBUTORS.md#opencode)) — argued, applied
+
+#### What changed
+- `os.handoff.md`: the open question "The OS responsibility boundary" is removed. Whether the OS defines the standard abstractions was ruled — rejected for this project — and the handoff entry carried that ruling's own words rather than a decision still to come; the ruling itself lives in this file under Considered and not done in the 2026-09-07 migration entry.
+- No other entry moved: the eighteen questions that remain are untouched, including the device-driver position that gates the "controlled interaction with hardware" topic and the founding layers' duty partition.
+
+---
+
+### Non-removability criterion adapted from Modularity's foundational-status test
+- Time: 2026-10-04T21:41:00Z
+- Type: Changed
+- Propagates to:
+  - os.handoff.md: Done — the open question "What makes a domain non-removable" is removed; the criterion it asked for now holds in os.md.
+- Contributors:
+  - [Space Bunny Alpha](../../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../../CONTRIBUTORS.md#opencode)) — argued, drafted, applied
+
+#### What changed
+- The kernel-layer topic's closing paragraph now states the membership test rather than naming the discipline alone: a candidate domain is examined by attempting to express what it covers through the domains the kernel already carries; only pressure to fabricate or distort another kernel-category domain earns it a place in the kernel category, and difficulty and verbosity are not evidence; the requirements judged are the ones the system actually has; a gap an independently modeled capability fills by attaching to existing Concepts — a relationship, Rule, or Optional Module — leaves the domain above the kernel.
+- Which domains are non-removable remains each system's own judgment, and the kernel category still grows by composition rather than by tradition; what changed is that the judgment now has a stated method — [Modularity](../../modularity.md#what-earns-foundational-status)'s, applied at the kernel layer — instead of a gesture toward one held elsewhere.
+- The document continues to enumerate no kernel contents.
+
+#### Considered and not done
+- **Restate Modularity's test in full, including its asymmetry and its qualitative-judgment caveat (rejected)**: the kernel layer needs the test's operative moves, and Modularity remains the authority for its own qualifications; a fuller restatement here would be a second, weaker copy of a test that already carries its own guards.
+
+---
+
+### The Identity topic cross-links the framework's boundary
+- Time: 2026-10-05T09:07:04Z
+- Type: Changed
+- Propagates to:
+  - os.handoff.md: Done — the entry "Principal's relationship to Agency's Principal" is kept but narrowed to the residue; its `Next:` is unchanged.
+- Contributors:
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Space Bunny Alpha](../../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../../CONTRIBUTORS.md#opencode)) — argued, drafted, applied
+
+#### What changed
+- The [Identity: principals, not users](./os.md#identity-principals-not-users) topic closes by pointing at [Framework → What the Framework Does Not Specify](../../framework.md#what-the-framework-does-not-specify), so that what an architecture does with principals above the guarantee layer has one governing statement and the two documents cannot drift into saying different things about where identity stops being the OS's business.
+- `os.handoff.md`: the principal-reconciliation entry stays open, narrowed. What the Identity topic and the framework boundary together answer is that neither document's principal is a `user` or a `group`, so the reconciliation cannot be reached by mapping either concept onto an account or a bundle of accounts. What remains is whether the OS-level principal and the Agency-level Principal are the same concept, two facets of one, or distinct concepts sharing a word — and, if one concept, which document owns its definition. Its `Next:` (a dedicated reconciliation session) is preserved unchanged.
+
+#### Considered and not done
+- **Removing the principal-reconciliation entry outright (rejected)**: the framework boundary settles what the two concepts are not; it says nothing about what relationship holds between them, and the two documents define them against different concerns — a privilege boundary's attachment point here, a system acted on behalf of in [Agency](../../agency.md). Closing the entry would retire an open question on the strength of an answer to a different one.
+- **Restating the framework boundary in this topic (rejected)**: one statement of the boundary, in the document that owns it; the link is what keeps the two from drifting.
+
+---
+
+### Open-question pass over the founding-layer duties: the boot path answered, four entries narrowed to their residue
+- Time: 2026-10-05T09:40:57Z
+- Type: Changed
+- Propagates to:
+  - os.md: Pending — four sentences, one per narrowed entry, are named as each entry's residue; none is written.
+- Contributors:
+  - [Space Bunny Alpha](../../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../../CONTRIBUTORS.md#opencode)) — argued, drafted, applied
+
+#### What changed
+- `os.handoff.md`: "The boot path's status" removed. os.md's founding-layers topic already names "serving as the first enforcement point of exclusive hardware access (all of them)" among the founding layers' duties, which answers the entry's own question — the first code that enforces the guarantees is a founding-layer duty, and therefore guarantee machinery rather than a default app. The entry graduated out; the passage carries the answer and this entry carries the record.
+- `os.handoff.md`: "Device drivers on the guarantee/meaning boundary" narrowed. The guarantee-versus-meaning test stated in the decomposition topic answers the mixed case rather than leaving it open: only the guarantee half of a driver is a founding-layer duty, and the device-semantics half fails the test. What remains is the sentence stating that split and naming the founding layer's device surface, which is what the entry's gated "controlled interaction with hardware" topic waits on.
+- `os.handoff.md`: "Parallelism within one address space" narrowed. The Compute topic already states that concurrency is not an OS-level question and that the OS must not presuppose [Process](../../process.md)'s answers, so the question's second half is settled: parallelism within one address space is [Process](../../process.md)'s Worker concept, not a new OS-level unit. What remains is whether an entitlement is granted per application or per execution, which the document leaves at "per application".
+- `os.handoff.md`: "Scheduling policy's residence" narrowed. The "how much, never how" rule for entitlements, read with the Compute topic's statement that multiplexing is a guarantee while how executions relate is meaning, settles that scheduling policy is not an OS duty. What remains is the half of the entry's phrasing no passage answers: what the arbiter is told, by whom, and whether taking a core back needs any policy of its own.
+- `os.handoff.md`: "Storage throughput arbitration" narrowed. The same rule, read with the Networking topic's arbitration of network hardware by entitlements, settles that bandwidth is an entitlement like core time and that throughput policy is meaning above. What remains is the sentence naming bandwidth as one of the bounds a storage entitlement declares; the Storage topic grants block ranges exclusively and says nothing about throughput.
+- No other entry moved. The remaining eleven entries — UEFI runtime services, the hypervisor's trust chain, the bundle-critique generalization, multi-tenancy, vocabulary, the waiting-execution obligation, frame delivery, the principal reconciliation, Nanos, observability, and PersiaOS's kernel-structuring answer — carry no residue a stated principle settles, and are untouched.
+
+#### Considered and not done
+- **Writing the four residue sentences into os.md (not done this session)**: the work this session was scoped to the companion files; each sentence is recorded as its entry's residue and as the pending propagation above, so the next session writes one sentence per entry instead of re-deriving it.
+- **Deleting the entries whose answers follow from a stated principle (rejected)**: a handoff carries what a session did not settle as well as what it did, and a residue that looks derivable is exactly the residue a later session re-derives. Each narrowed entry now names the passage that settles the rest and the one thing the passage does not reach.

@@ -1,7 +1,7 @@
 // Khayyam language extension: starts the language server and serves the roles it
 // answers with.
 //
-// The display contract (modules/khayyam/display/display.json) stays the single
+// The display contract (bundles/khayyam/display/display.json) stays the single
 // source of truth. The server reads it and advertises each role's NAME as its
 // semantic-token legend, and a name is the token type the editor matches a styling
 // rule against; the value for each role is stated by the manifest's own
@@ -20,8 +20,8 @@ const vscode = require("vscode");
 
 const { definitionRequest, readTarget } = require("./definition.js");
 
-const SERVER_RELATIVE = ["modules", "khayyam", "lsp", "src", "server.ts"];
-const CONTRACT_RELATIVE = ["modules", "khayyam", "display", "display.json"];
+const SERVER_RELATIVE = ["bundles", "khayyam", "lsp", "src", "server.ts"];
+const CONTRACT_RELATIVE = ["bundles", "khayyam", "display", "display.json"];
 
 /**
  * What the server pushes in the one notification this client acts on: a
@@ -317,7 +317,7 @@ function serverCandidates() {
     candidates.push({ where: "MEMAR_ROOT", file: path.join(process.env.MEMAR_ROOT, ...SERVER_RELATIVE) });
     candidates.push({
       where: "MEMAR_ROOT (built)",
-      file: path.join(process.env.MEMAR_ROOT, "modules", "khayyam", "lsp", "dist", "server.js"),
+      file: path.join(process.env.MEMAR_ROOT, "bundles", "khayyam", "lsp", "dist", "server.js"),
     });
   }
   return candidates;
@@ -1083,8 +1083,8 @@ async function activate(context) {
       // delta of zero from nothing, so it is the case that needs the rule rather than the
       // exception — a walk that treats every character as a difference drifts by one
       // token per line from the second one on, and the position it arrives at is a
-      // position the server never heard of. Measured 2026-09-29 on [`main.kh`](../../../../main.kh):
-      // a name on its eighth line was read as sitting at character 42 of a line that is
+      // position the server never heard of. Measured 2026-09-29 on `main.kh`, the owner's
+      // local scratch file: a name on its eighth line was read as sitting at character 42 of a line that is
       // eighteen characters long.
       let at = 0;
       let line = 0;

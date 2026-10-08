@@ -70,7 +70,7 @@ What is pinned, and what each pin is for:
                        name and the flat spellings error rather than leaving a
                        second interface beside the first.
   CorpusIsTheCheckout  The boundary is the whole checkout — `docs/`, `modules/`,
-                       `.agents/` — because a tool named for content that could
+                       `bundles/`, `.agents/` — because a tool named for content that could
                        not search code would be a tool for documents. Pinned
                        per folder, because a tool that quietly stopped at
                        `docs/` reported a narrower world under the wider name.
@@ -184,7 +184,7 @@ class MovedDocument(LinkFixture):
         # The shape that actually shipped broken: one hop short of the root,
         # which resolves to a file that was never there.
         self.write("CONTRIBUTORS.md", "# Contributors\n")
-        path = self.write("docs/protocols/net/http.changelog.md",
+        path = self.write("docs/modules/net/networking.changelog.md",
                           "# Log\n- [Owner](../../CONTRIBUTORS.md#owner)\n")
         found = self.only_link_problems(path)
         self.assertEqual(len(found), 1, found)
@@ -192,7 +192,7 @@ class MovedDocument(LinkFixture):
 
     def test_the_same_link_from_the_right_depth_is_not_reported(self) -> None:
         self.write("CONTRIBUTORS.md", "# Contributors\n### Owner\n")
-        path = self.write("docs/protocols/net/http.changelog.md",
+        path = self.write("docs/modules/net/networking.changelog.md",
                           "# Log\n- [Owner](../../../CONTRIBUTORS.md#owner)\n")
         self.assertEqual(self.only_link_problems(path), [])
 
@@ -849,24 +849,25 @@ class CorpusIsTheCheckout(LinkFixture):
 
     `docs/` is where the model is argued, not where the repository's content
     ends: the model definitions, the rule catalog, the protocol implementations
-    and the sources all live under `modules/`, and the configuration a session is
-    driven by lives under `.agents/`. A tool named for content that could not
-    reach them reported a narrower world under the wider name.
+    and the sources all live under `modules/`, what runs or aggregates them
+    under `bundles/`, and the configuration a session is driven by lives under
+    `.agents/`. A tool named for content that could not reach them reported a
+    narrower world under the wider name.
     """
 
     def a_checkout(self) -> Path:
-        for folder in ("docs", "modules", ".agents"):
+        for folder in ("docs", "modules", "bundles", ".agents"):
             (self.root / folder).mkdir(parents=True, exist_ok=True)
         (self.root / "README.md").write_text("# R\n", encoding="utf-8", newline="\n")
         return self.root
 
     def test_the_corpus_reaches_each_folder_the_content_lives_in(self) -> None:
         root = self.a_checkout()
-        for folder in ("docs", "modules", ".agents"):
+        for folder in ("docs", "modules", "bundles", ".agents"):
             self.write(f"{folder}/note.md", "# Note\n")
         self.write("README.md", "# R\n")
         found = {path.relative_to(root).parts[0] for path in memar_content.content_files(root)}
-        self.assertEqual(found, {"docs", "modules", ".agents", "README.md"})
+        self.assertEqual(found, {"docs", "modules", "bundles", ".agents", "README.md"})
 
     def test_a_folder_that_is_not_content_stays_out(self) -> None:
         # A dependency tree or a session's scratch is not this repository's

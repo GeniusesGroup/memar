@@ -22,7 +22,7 @@ A position the owner has rejected is not a record, and the work it generates is 
 When work produces something durable, route it by type — do not invent a side note:
 1. Anticipated claim of a document → that document's Abstract ([Results routing](./documentation.md#results-routing)).
 2. Derived consequences of adopting a design → Implications (optional section on the Explanation facet).
-3. Observed change to an artifact → one entry on the paired `.changelog.md` for the whole session, not one entry per edit ([Session consolidation](./documentation-changelog.md#session-consolidation)). Append at end-of-file, oldest-first; use `memar-documentation.py changelog-append` (at `../.agents/scripts/memar-documentation.py`), do not preload the whole changelog to find the insertion point. If this session already has an entry on that file, extend it. Same-session undone mistakes with no lasting design change get **no** entry ([Trivial changes](./documentation-changelog.md#trivial-changes)).
+3. Observed change to an artifact → one entry on the paired `.changelog.md` for the whole session, not one entry per edit ([Session consolidation](./documentation-changelog.md#session-consolidation)). Append at end-of-file, oldest-first; use `memar content changelog-append`, do not preload the whole changelog to find the insertion point. If this session already has an entry on that file, extend it. Same-session undone mistakes with no lasting design change get **no** entry ([Trivial changes](./documentation-changelog.md#trivial-changes)).
 4. Open questions and anticipated work → the paired `.handoff.md`.
 5. A deliberate inquiry (including a negative result) → a `.research.<NNN>.md` companion.
 
@@ -38,7 +38,10 @@ When the task is to carry out work a practice already covers:
 3. Do not re-derive the procedure from the explanation when the practice states the steps.
 
 ## No derivative inventories
-Do not add membership indexes of directories, script sets, or comparison folders to READMEs or other pointer files. Point at the collection; let the reader list it ([Content Rule](./documentation.md#content-rule-no-fabricated-or-redundant-provenance)).
+Do not add membership indexes of directories, script sets, or comparison folders to READMEs or other pointer files. Point at the collection; let the reader list it ([Content Rule](./documentation.md#content-rule-no-fabricated-or-redundant-provenance)). The same bound governs what the doer reads while doing the work:
+1. Do not enumerate a document set the task does not require. Listing documents because they exist is an inventory, and where a folder's `README.md` is its index, the reader is served by that index — not by the folder's documents opened one by one.
+2. Do not restart discovery on every turn. Once the knowledge the task needs is already in context, working from it is not a shortcut around the discovery rule; the discovery has been done.
+3. Do not read a task's documents merely because this practice is in force. A task unrelated to Memar's concepts is served by doing that work, not by paging through `docs/` first.
 
 ## Folder READMEs
 A folder that has a main document beside it takes its `README.md` as a symbolic link to that document. A folder with no main document keeps a real `README.md` carrying content of its own. Apply this on every README a change creates, moves, or rewrites:
@@ -52,3 +55,4 @@ A folder that has a main document beside it takes its `README.md` as a symbolic 
    ```
    Confirm with `git ls-files -s -- <readme>`, which must report `120000`; a mode of `100644` means the file is a text file and the link was never recorded. The same procedure works where symlinks are supported, and is the one to use on a host that refuses them.
 5. For a folder with no main document, write the README as a real file carrying real content: what the folder is for and what belongs in it, stated without restating what the files already say ([No derivative inventories](#no-derivative-inventories)).
+6. Give a README no companions: no `README.changelog.md` and no `README.handoff.md`. A decision about a folder — its criterion, its layout — is recorded in the README as the rule it now is, not as the history of how it was reached, because such a decision is rarely reversed and its reasons are the rule's own. Open work about a folder is work on the module or document whose subject it is, and goes in that one's handoff.
