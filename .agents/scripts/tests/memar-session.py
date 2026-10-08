@@ -12,7 +12,8 @@ Nothing here writes to the machine. The Memar root the tool resolves is
 patched onto a scratch folder — this one by default, the `MEMAR_TEST_SCRATCH`
 folder when that variable points at one that already exists — and removed
 again; session folders, locks, and intent notes land there and are removed with
-it. The one subprocess run asks for `--help` only, which writes nothing.
+it. The subprocesses run ask for `--help` and for git's top-level only, which
+write nothing.
 
 What is pinned, and what each pin is for:
 
@@ -21,14 +22,28 @@ What is pinned, and what each pin is for:
                      nothing lands in git by accident.
   RerunIsIdempotent  Reusing one session id keeps the folder as is and reports
                      the same id and path again.
+  TitleRequired      A folder gets its plan.md from `--title`, so `new` refuses
+                     to mint a session, or take up a folder with no plan.md,
+                     without one; a title is one line, and a folder that has a
+                     plan is continued without one.
+  PlanWritten        `new` writes plan.md as front matter, the title, and one
+                     open section with Request, Steps, and Next, in UTF-8 with
+                     LF and no BOM, and never overwrites a plan that is there:
+                     it is the record the next session continues from.
+  SessionList        `list` shows every session folder newest first, with its
+                     title, project, sections counted per status, and path;
+                     TEXT filters over title, project, and section headings;
+                     a folder without a readable plan is still listed, marked.
   UnresolvableRoot   With neither a recorded location nor a checkout to run
                      inside, the tool errors rather than guessing a folder.
-  HelpCarriesTheWhy  `memar session --help` says what to run and what to do
-                     at the end of the work, and says nothing about how the
-                     folder is arranged: the mechanism is a DevActionNote, and
-                     a caller reading it in help output is reading the module
-                     docstring a second time, one step removed from where it
-                     can be maintained. The why is pinned to the docstring.
+  HelpCarriesTheWhy  `memar session --help` says what to run, the shape of
+                     plan.md and how another session continues from it, and
+                     what to do at the end of the work, and says nothing
+                     about how the folder is arranged: the mechanism is a
+                     DevActionNote, and a caller reading it in help output is
+                     reading the module docstring a second time, one step
+                     removed from where it can be maintained. The why is
+                     pinned to the docstring.
   LockSharesThisRoot The lock and intent files land under the same <root>/temp/
                      root the session folders share, and closing one session's
                      folder cannot reach the lock directory beside it. How a
@@ -71,6 +86,7 @@ import contextlib
 import importlib.util
 import io
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -102,6 +118,10 @@ _spec = importlib.util.spec_from_loader(
 )
 session_tool = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(session_tool)
+
+# A folder with no plan.md is opened only with a title, so every test that
+# opens one brings this.
+TITLE = "Test the session tool"
 
 
 def run_help() -> subprocess.CompletedProcess:
@@ -136,7 +156,7 @@ class Fixture(unittest.TestCase):
 
 class CreatesFolder(Fixture):
     def test_creates_the_folder_and_returns_its_id_and_path(self) -> None:
-        sid, path = session_tool.ensure_session("s-1")
+        sid, path = session_tool.ensure_session("s-1", TITLE)
         self.assertEqual(sid, "s-1")
         self.assertTrue(Path(path).is_dir())
         self.assertEqual(Path(path), self.fake_root / "temp" / "s-1")
@@ -147,14 +167,14 @@ class CreatesFolder(Fixture):
         # command a caller actually types.
         out = io.StringIO()
         with contextlib.redirect_stdout(out):
-            code = session_tool.main(["new", "--session-id", "s-2"])
+            code = session_tool.main(["new", "--session-id", "s-2", "--title", TITLE])
         self.assertEqual(code, 0)
         text = out.getvalue()
         self.assertIn("s-2", text)
         self.assertIn(str(self.fake_root / "temp" / "s-2"), text)
 
     def test_mints_an_id_when_none_is_given(self) -> None:
-        sid, path = session_tool.ensure_session()
+        sid, path = session_tool.ensure_session(title=TITLE)
         self.assertTrue(sid)
         self.assertTrue(path.is_dir())
         self.assertEqual(path, self.fake_root / "temp" / sid)
@@ -163,12 +183,12 @@ class CreatesFolder(Fixture):
         for bad in ("a/b", "a\\b", "..", ".", ""):
             with self.subTest(bad=bad):
                 with self.assertRaises(SystemExit):
-                    session_tool.ensure_session(bad)
+                    session_tool.ensure_session(bad, TITLE)
 
 
 class RerunIsIdempotent(Fixture):
     def test_rerun_keeps_the_folder_and_reports_the_same_path(self) -> None:
-        first_id, first_path = session_tool.ensure_session("s-9")
+        first_id, first_path = session_tool.ensure_session("s-9", TITLE)
         marker = first_path / "notes.md"
         marker.write_text("# Notes\n", encoding="utf-8", newline="\n")
         second_id, second_path = session_tool.ensure_session("s-9")
@@ -177,13 +197,97 @@ class RerunIsIdempotent(Fixture):
         self.assertTrue(marker.is_file())
 
 
+class TitleRequired(Fixture):
+    def minted_folders(self) -> list[str]:
+        temp = self.fake_root / memar_fs.TEMP_DIRNAME
+        if not temp.is_dir():
+            return []
+        return [entry.name for entry in temp.iterdir() if memar_session.is_session_id(entry.name)]
+
+    def test_a_new_session_needs_a_title(self) -> None:
+        for title in (None, "", "   "):
+            with self.subTest(title=title):
+                with self.assertRaises(SystemExit):
+                    session_tool.ensure_session(title=title)
+        self.assertEqual(self.minted_folders(), [])
+
+    def test_the_command_refuses_new_without_a_title(self) -> None:
+        with contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(io.StringIO()):
+            with self.assertRaises(SystemExit):
+                session_tool.main(["new"])
+        self.assertEqual(self.minted_folders(), [])
+
+    def test_a_folder_without_a_plan_needs_a_title(self) -> None:
+        bare = self.fake_root / memar_fs.TEMP_DIRNAME / "s-bare"
+        bare.mkdir(parents=True)
+        with self.assertRaises(SystemExit):
+            session_tool.ensure_session("s-bare")
+        self.assertFalse((bare / session_tool.PLAN_NAME).exists())
+        session_tool.ensure_session("s-bare", TITLE)
+        self.assertTrue((bare / session_tool.PLAN_NAME).is_file())
+
+    def test_a_folder_with_a_plan_is_continued_without_one(self) -> None:
+        sid, path = session_tool.ensure_session("s-plan", TITLE)
+        self.assertEqual(session_tool.ensure_session("s-plan"), (sid, path))
+
+    def test_a_title_is_one_line(self) -> None:
+        for title in ("two\nlines", "two\r\nlines", "carriage\rreturn"):
+            with self.subTest(title=title):
+                with self.assertRaises(SystemExit):
+                    session_tool.ensure_session("s-lines", title)
+        self.assertFalse((self.fake_root / memar_fs.TEMP_DIRNAME / "s-lines").exists())
+
+
+OPENED = r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z"
+
+
+class PlanWritten(Fixture):
+    def test_the_plan_is_front_matter_the_title_and_one_open_section(self) -> None:
+        _, path = session_tool.ensure_session("s-plan", TITLE)
+        raw = (path / session_tool.PLAN_NAME).read_bytes()
+        self.assertFalse(raw.startswith(b"\xef\xbb\xbf"))
+        self.assertNotIn(b"\r", raw)
+        text = raw.decode("utf-8")
+        title = re.escape(TITLE)
+        self.assertRegex(text, rf"\A---\ntitle: {title}\nopened: {OPENED}\nproject: .+\n---\n# {title}\n")
+        project = Path(re.search(r"^project: (.+)$", text, re.MULTILINE).group(1))
+        self.assertTrue(project.is_absolute())
+        self.assertEqual(project, session_tool.project_root())
+        body = text.split("---\n", 2)[2]
+        self.assertEqual(
+            [line for line in body.splitlines() if line],
+            [f"# {TITLE}", f"## {TITLE}", "Status: open", "### Request", "### Steps", "### Next"],
+        )
+
+    def test_continuing_never_overwrites_the_plan(self) -> None:
+        sid, path = session_tool.ensure_session("s-keep", TITLE)
+        plan = path / session_tool.PLAN_NAME
+        kept = plan.read_text(encoding="utf-8") + "\n## A second request\nStatus: done\n"
+        plan.write_text(kept, encoding="utf-8", newline="\n")
+        session_tool.ensure_session(sid)
+        session_tool.ensure_session(sid, "Another title")
+        self.assertEqual(plan.read_text(encoding="utf-8"), kept)
+
+    def test_the_project_is_the_git_top_level_else_the_current_folder(self) -> None:
+        found = subprocess.CompletedProcess([], 0, stdout=f"{self.fake_root}\n", stderr="")
+        refused = subprocess.CompletedProcess([], 128, stdout="", stderr="not a git repository")
+        for outcome, expected in (
+            ({"return_value": found}, self.fake_root.resolve()),
+            ({"return_value": refused}, Path.cwd()),
+            ({"side_effect": FileNotFoundError("git")}, Path.cwd()),
+        ):
+            with self.subTest(expected=expected):
+                with unittest.mock.patch.object(session_tool.subprocess, "run", **outcome):
+                    self.assertEqual(session_tool.project_root(), expected)
+
+
 class UnresolvableRoot(unittest.TestCase):
     def test_errors_rather_than_guessing(self) -> None:
         with unittest.mock.patch.object(
             memar_fs, "memar_root", side_effect=SystemExit("error: no root")
         ):
             with self.assertRaises(SystemExit):
-                session_tool.ensure_session("s-1")
+                session_tool.ensure_session("s-1", TITLE)
 
 
 class HelpCarriesTheWhy(Fixture):
@@ -219,6 +323,31 @@ class HelpCarriesTheWhy(Fixture):
         ):
             self.assertIn(phrase, text)
 
+    def test_the_help_gives_the_plan_and_how_to_continue_from_it(self) -> None:
+        completed = run_help()
+        text = completed.stdout.decode("utf-8").replace("\r\n", "\n")
+        for phrase in (
+            "--title",
+            "plan.md",
+            "title: TITLE",
+            "opened:",
+            "project:",
+            "its own `##` section",
+            "added as requests arrive",
+            "the first message may already hold several",
+            "Status: open",
+            "open, blocked, or done",
+            "### Request",
+            "### Steps",
+            "### Next",
+            "local or delegated",
+            "no status of its own",
+            "memar session list TEXT",
+            "memar session new --session-id ID",
+            "read its plan.md",
+        ):
+            self.assertIn(phrase, text)
+
     def test_the_help_does_not_carry_the_implementation(self) -> None:
         completed = run_help()
         text = completed.stdout.decode("utf-8").replace("\r\n", "\n")
@@ -228,7 +357,7 @@ class HelpCarriesTheWhy(Fixture):
     def test_the_why_is_in_the_file_the_implementer_reads(self) -> None:
         # Not a second copy: the module's own docstring, which is the one text
         # addressed to whoever opens it.
-        for phrase in ("shared-tree collisions", "advisory locks", "intent notes"):
+        for phrase in ("shared-tree collisions", "advisory locks", "intent notes", "disputed", "handoff"):
             self.assertIn(phrase, session_tool.__doc__)
 
 
@@ -259,7 +388,7 @@ class LockSharesThisRoot(Fixture):
     def test_closing_this_sessions_folder_leaves_the_lock_root_alone(self) -> None:
         # The scratch root is shared; a session's own folder is not the world.
         # Reaping one must not be able to reach the lock directory beside it.
-        sid, path = session_tool.ensure_session("s-3")
+        sid, path = session_tool.ensure_session("s-3", TITLE)
         with unittest.mock.patch.object(session_tool, "soft_delete") as trash:
             closed, closed_path, removed = session_tool.close_session(sid)
         self.assertTrue(removed)
@@ -270,7 +399,7 @@ class LockSharesThisRoot(Fixture):
 
 class RecoverableClose(Fixture):
     def test_close_moves_the_folder_with_its_contents_to_recoverable_storage(self) -> None:
-        sid, path = session_tool.ensure_session("s-recover")
+        sid, path = session_tool.ensure_session("s-recover", TITLE)
         marker = path / "notes.md"
         marker.write_text("# Keep me\n", encoding="utf-8", newline="\n")
         bin_path = self.fake_root / "recycle-bin"
@@ -291,7 +420,7 @@ class RecoverableClose(Fixture):
             self.assertEqual(marker.read_text(encoding="utf-8"), "# Keep me\n")
 
     def test_failed_trash_leaves_the_folder_in_place(self) -> None:
-        sid, path = session_tool.ensure_session("s-failed")
+        sid, path = session_tool.ensure_session("s-failed", TITLE)
         with unittest.mock.patch.object(session_tool, "soft_delete", side_effect=OSError("trash unavailable")):
             with self.assertRaises(OSError):
                 session_tool.close_session(sid)
@@ -348,7 +477,7 @@ class ScratchWithTrash(Fixture):
             (self.temp / session_tool.SWEPT_MARKER_NAME).unlink(missing_ok=True)
         out, err = io.StringIO(), io.StringIO()
         with contextlib.redirect_stdout(out), contextlib.redirect_stderr(err):
-            code = session_tool.main(["new", *arguments])
+            code = session_tool.main(["new", *arguments, "--title", TITLE])
         self.assertEqual(code, 0)
         return out.getvalue(), err.getvalue()
 
@@ -493,6 +622,87 @@ class SessionLog(ScratchWithTrash):
         reaped = [line.split("\t") for line in self.log().splitlines() if f"\treaped\t{IDLE}" in line]
         self.assertEqual(len(reaped), 1)
         self.assertIn("idle", reaped[0][3])
+
+
+OLDEST = "20261001T000000Z-1-0"
+MIDDLE = "20261002T000000Z-1-0"
+NEWEST = "20261003T000000Z-1-0"
+
+
+def plan_text(title: str, project: str, sections: list[tuple[str, str]]) -> str:
+    lines = ["---", f"title: {title}", "opened: 2026-10-01T00:00:00Z", f"project: {project}", "---", f"# {title}", ""]
+    for heading, status in sections:
+        lines += [f"## {heading}", f"Status: {status}", "", "### Request", "", "### Steps", "", "### Next", ""]
+    return "\n".join(lines)
+
+
+class SessionList(Fixture):
+    def setUp(self) -> None:
+        super().setUp()
+        self.temp = self.fake_root / memar_fs.TEMP_DIRNAME
+        self.temp.mkdir(parents=True, exist_ok=True)
+
+    def session(self, sid: str, plan: str | None = None) -> Path:
+        path = self.temp / sid
+        path.mkdir()
+        if plan is not None:
+            (path / session_tool.PLAN_NAME).write_text(plan, encoding="utf-8", newline="\n")
+        return path
+
+    def run_list(self, *arguments: str) -> str:
+        out = io.StringIO()
+        with contextlib.redirect_stdout(out):
+            code = session_tool.main(["list", *arguments])
+        self.assertEqual(code, 0)
+        return out.getvalue()
+
+    def listed(self, text: str) -> list[str]:
+        """The ids in TEXT, in order: each entry's first line is the one not indented."""
+        return [line.split()[0] for line in text.splitlines() if line and not line.startswith(" ")]
+
+    def test_sessions_are_listed_newest_first_and_only_sessions(self) -> None:
+        for sid in (MIDDLE, IDLE, NEWEST, OLDEST):
+            self.session(sid, plan_text(sid, "/work", []))
+        for name in ("images", "memar-edit-locks", "s-old"):
+            self.session(name)
+        (self.temp / session_tool.SESSION_LOG_NAME).write_text("", encoding="utf-8")
+        # The earlier id form carries no clock and predates every dated id.
+        self.assertEqual(self.listed(self.run_list()), [NEWEST, MIDDLE, OLDEST, IDLE])
+
+    def test_an_entry_shows_title_project_sections_by_status_and_path(self) -> None:
+        sections = [("Parse", "open"), ("Lex", "done"), ("Emit", "open"), ("Wait for review", "blocked")]
+        path = self.session(NEWEST, plan_text("Parser: phase two", "C:/work/parser", sections))
+        text = self.run_list()
+        self.assertIn(f"{NEWEST}  Parser: phase two", text)
+        self.assertIn("project: C:/work/parser", text)
+        self.assertIn("sections: 2 open, 1 blocked, 1 done", text)
+        self.assertIn(f"path: {path}", text)
+
+    def test_a_plan_new_wrote_is_listed_with_one_open_section(self) -> None:
+        session_tool.ensure_session(NEWEST, TITLE)
+        text = self.run_list()
+        self.assertIn(f"{NEWEST}  {TITLE}", text)
+        self.assertIn("sections: 1 open", text)
+
+    def test_text_filters_over_title_project_and_headings_in_any_case(self) -> None:
+        self.session(OLDEST, plan_text("Ship the parser", "/work/parser", [("Parse", "open")]))
+        self.session(MIDDLE, plan_text("Fix login", "/work/website", [("Reset the PASSWORD form", "done")]))
+        self.session(NEWEST, plan_text("Write docs", "/work/docs", [("Write docs", "open")]))
+        self.session("20261004T000000Z-1-0")
+        self.assertEqual(self.listed(self.run_list("PARSER")), [OLDEST])
+        self.assertEqual(self.listed(self.run_list("Website")), [MIDDLE])
+        self.assertEqual(self.listed(self.run_list("password")), [MIDDLE])
+        self.assertEqual(self.listed(self.run_list("nothing like it")), [])
+
+    def test_a_folder_without_a_readable_plan_is_listed_and_marked(self) -> None:
+        bare = self.session(OLDEST)
+        self.session(MIDDLE, "# Notes only\n\n## A request\nStatus: open\n")
+        text = self.run_list()
+        self.assertEqual(self.listed(text), [MIDDLE, OLDEST])
+        self.assertIn(f"{OLDEST}  {session_tool.NO_PLAN}", text)
+        self.assertIn(f"path: {bare}", text)
+        self.assertIn(f"{MIDDLE}  {session_tool.NO_FRONT_MATTER}", text)
+        self.assertIn("sections: 1 open", text)
 
 
 class MintedIdUnique(unittest.TestCase):

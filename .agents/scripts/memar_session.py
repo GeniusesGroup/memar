@@ -43,3 +43,12 @@ def new_session_id() -> str:
 def is_session_id(name: str) -> bool:
     """Whether NAME has a form new_session_id mints or has minted."""
     return bool(_MINTED_FORM.match(name) or _EARLIER_FORM.match(name))
+
+
+def is_dated_session_id(name: str) -> bool:
+    """Whether NAME has the form minted now, whose name sort is creation order.
+
+    An id in the earlier form carries no clock, and was minted before any id
+    that does.
+    """
+    return bool(_MINTED_FORM.match(name))
