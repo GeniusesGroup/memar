@@ -441,3 +441,23 @@ The owner proposed the rule as a prohibition on citing informal sources (Omid He
 #### Considered and not done
 - **Keeping a handoff beside a README that holds real open work** (rejected by the owner): the open work was always about some module's subject, and filed under the folder's index it had no owner to answer it.
 - **Moving the count of broken links under `modules/`** (not done): `memar content check` reports it whenever it is run, so an entry restating the count would only go stale.
+
+---
+
+### Source standing admits a vendor's report of its own shipped product; every citation keeps Memar's reasoning its own
+- Time: 2026-10-10T09:01:01Z
+- Type: Changed
+- Cited:
+  - [Comparison: Memar and the Model Context Protocol](./comparisons/mcp.001.md) - Reference: the essay whose two vendor posts, Anthropic's and Cloudflare's reports of their own shipped products, occasioned the change.
+- Propagates to:
+  - docs/comparisons/mcp.001.md: Done - its Method clause on the two vendor posts points to Source standing as the rule that admits them.
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — decided
+  - Auto (model not recorded) via [Cursor](../CONTRIBUTORS.md#cursor) — drafted, applied
+
+#### What changed
+- [Citations → Source standing](./documentation.md#citations): the list of sources without standing names a personal site or blog; a vendor's own technical documentation or engineering report of a product it ships is primary documentation of that product, supporting claims about what the product does, what it ships, and what the vendor reports measuring, each measurement stated as the vendor's report and never as a general result. The license test is unchanged: a work whose terms do not permit the use is not cited.
+- The same paragraph states provenance for every citation, whatever its standing: a citation supports a claim about what its source itself shows or did and never presents Memar's reasoning as reached by that source; Memar's positions are stated as Memar's, and an outside source that agrees with one is never framed as its origin.
+
+#### Decision
+- The owner (Omid Hekayati, 2026-10-10) softened the rule so it does not read as a ban on citing a vendor's own report of its own product, keeping both his standing concerns explicit: a source whose terms do not permit the use is not cited, and no citation may let anyone later claim that Memar took its ideas from that source.
