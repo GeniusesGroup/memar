@@ -147,3 +147,43 @@
 
 #### What changed
 - The document and its companions moved from `docs/modules/modules/sdk.*` to `docs/modules/process/service-sdk.*`. An SDK is a service's own deliverable, and the services that generate one (`make-sdk-go`, `make-sdk-js`, `make-sdk-ts`, `make-sdk-c`) moved in the same change to `modules/process/service/services/`. Every relative link was re-derived and every link into this document re-pointed. No content change.
+
+---
+
+### MCP placed at the specification-first edge; the agent-consumer positions graduated
+- Time: 2026-10-10T06:51:44Z
+- Type: Added
+- Cited:
+  - [MCP Architecture overview, revision 2026-07-28](https://modelcontextprotocol.io/docs/2026-07-28/learn/architecture) - Evidence: MCP's primary documentation, for its observable shape only — its SDKs are "SDKs for different programming languages that implement MCP", and a tool's `inputSchema` is "A JSON Schema that defines the expected input parameters".
+  - [The MCP comparison](../../comparisons/mcp.001.md) - Reference: the essay that carries the argument the new paragraph states in brief.
+  - [The Type](../computer/type.md#type-details-and-human-facing-identity) - Depends_on: the type details Working position 14 and its paragraph rest on.
+  - [Documentation — Handoff → Relationship to the Other Facets](../../documentation-handoff.md#relationship-to-the-other-facets) - Reference: a handoff does not hold settled design, so the ruled positions left it for this body.
+- Propagates to:
+  - docs/comparisons/mcp.001.md: Done - the essay landed in the same session, and the paragraph's link resolves.
+  - service-sdk.handoff.md: Done - *The agent as an SDK consumer* keeps a pointer to the new home, the WASM delivery form, the question for the owner, the tentative Prompts extension, and Next.
+  - docs/modules/net/sRPC.md: Done - the wire's side of the same ruling is its goal 4, recorded in its own changelog.
+  - docs/comparisons/mcp.001.md, *Reject*: Done - Resources' home is Working position 14 and What an SDK is; Prompts' tentative home stays the handoff.
+  - docs/comparisons/mcp.001.md, *Memar's own positions* item 2: Done - its Home names Working positions 13 and 14, with the WASM delivery form and the Prompts line still in the handoff entry.
+  - modules/lib/lib.handoff.md, *MCP as a guest adapter*: Done - the self-description link points to What an SDK is.
+  - docs/comparisons/mcp.001.md, line citations: Done - each citation of the moved lines, the section 11 second-opinion record's included, now names the line its sentence sits at: `service-sdk.md:51`–`:54` as `:53`–`:56`, `:57` as `:59`, `:68` as `:72`, and `:113` as `:119`.
+- Contributors:
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) - decided
+  - Auto (model not recorded) via [Cursor](../../../CONTRIBUTORS.md#cursor) - applied
+
+#### What changed
+- `service-sdk.md` → [What an SDK is not](service-sdk.md#what-an-sdk-is-not) gains one paragraph after its two boundary cases: MCP is an instance of the specification-first default and meets both edges at once — its server describes each tool's input as JSON Schema text that the language model, as consumer, re-derives each call from, and its SDKs are per-language implementations of the protocol, general-purpose client libraries for a protocol and not one service's delivered interface. The paragraph links the comparison essay for the argument.
+- Two positions graduated from [SDK Handoff → The agent as an SDK consumer](service-sdk.handoff.md#the-agent-as-an-sdk-consumer) into the body, appended as Working positions 13 and 14 so that no number cited elsewhere moves.
+- Working position 13: a consumer reads the service as text on its own side — the delivered SDK and the details its types carry — while every exchange on the wire keeps its binary form; an AI agent is a consumer like any other, bound by positions 1 and 4 unchanged. A new paragraph under [Local and network invocation](service-sdk.md#local-and-network-invocation) elaborates it: a protocol is designed for every participant of an exchange and the network it crosses, so text on the wire would charge every exchange — bandwidth, and serialization and parse work at both ends — for a need the SDK meets locally.
+- Working position 14: a resource is a typed value reached through an SDK call, not a primitive apart from calls; every type describes itself, so no type is ambiguous and the consumer's text about the service comes from the types the SDK carries. A new paragraph under [What an SDK is](service-sdk.md#what-an-sdk-is) elaborates it, linking [Type → Type details and human-facing identity](../computer/type.md#type-details-and-human-facing-identity) and the Khayyam `Details` declaration in `detail.kh`.
+- [Relationship to other protocols](service-sdk.md#relationship-to-other-protocols) gains a Type bullet.
+- `service-sdk.handoff.md` → *The agent as an SDK consumer*: the graduated content is replaced by a pointer to Working positions 13 and 14; the question for the owner no longer calls the consumer position "above".
+- `service-sdk.handoff.md` → *The agent as an SDK consumer*, delivery form: containment of a delivered SDK is recorded as the consumer's connection policy, with WASM the preferred form and not a precondition; the question for the owner narrows to how the WASM bundle relates to Working position 7. [The MCP comparison](../../comparisons/mcp.001.md), section 4 item 4, gains one sentence stating the consumer-side domain check beside WASM's sandbox.
+
+#### Examined and not adopted
+- The vendor reports that MCP servers are being rebuilt as typed code the agent imports — Anthropic's "Code execution with MCP" and Cloudflare's "Code Mode" — are not stated or cited in the body. Each is taken as its vendor's primary documentation of its own product, supporting only claims about what that vendor built and reports measuring (owner ruling, 2026-10-10; [Documentation → Citations](../../documentation.md#citations) admits primary technical documentation of an artifact for claims about that artifact). They stay out of this body because [the MCP comparison](../../comparisons/mcp.001.md) carries that argument, not for want of standing.
+
+#### Decision
+- MCP is named here as a counter-example measured against this document's own positions, not as a source this document learned from (owner ruling, 2026-10-10).
+- Working positions 13 and 14 graduate from the handoff by the owner's ruling of 2026-10-10; both positions are his (Omid Hekayati). His reason for position 13: a protocol is designed for all its participants, not one; binary on the wire saves the whole network's resources — bandwidth, and the serialization and parse work at both ends of every exchange — which at scale is not small, and the industry's move from REST to gRPC is the precedent that wire cost matters. The precedent is recorded here and not in the body, which would need a source for it.
+- Instructions to a model on using a service (MCP's Prompts) are not graduated: that extension of position 14 is the session's, not ruled on by the owner, and stays tentative in the handoff.
+- An SDK delivered as ordinary source code rather than WASM is not a critical risk (owner ruling, Omid Hekayati, 2026-10-10). What a consumer expects of a connection is a specific domain fixed outside the SDK — it expects to reach google.com to search — and the consumer itself, such as the agent application, checks that expectation at a layer such as TLS, the peer's verified identity, so any connection the SDK's code attempts to another domain is blocked. Containment is the consumer's connection policy; WASM stays his preferred form. How the WASM bundle relates to Working position 7 stays open in the handoff.

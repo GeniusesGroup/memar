@@ -27,6 +27,7 @@ sRPC models routing, service, operation, and request as distinct representations
 1. Minimum overhead to find a service among a server's services.
 2. Minimum data exchange forced by the protocol.
 3. Easy understanding by a human is not a goal.
+4. The wire serves every participant of an exchange and the network it crosses, not one consumer: its binary form saves bandwidth and the serialization and parse work at both ends of every exchange. A consumer's need for text — a person's or an AI agent's — is met on its own side by the service's delivered [SDK](../process/service-sdk.md), not by the wire.
 
 ### Frames
 Each packet may carry many frames, as long as the packet respects the network MTU. Every frame has a fixed first field named `Type`, a signed 8-bit integer. `Type` occupies the same identification role as [MediaTypeID](../identifier/media-type.md) but is not a 64-bit unsigned integer: it is one byte here, to keep per-frame overhead small. Frame numbers are registered in the [Networking](networking.md) document.

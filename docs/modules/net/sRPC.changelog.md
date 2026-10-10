@@ -74,3 +74,24 @@
 - **Keep the supported-languages inventory in the body** (rejected): empty and stale links are a derivative inventory; the protocol document is not an implementation catalog. (Omid Hekayati)
 - **Create `sRPC.practice.md`** (rejected): the base document contains no followable procedure that must migrate. (Omid Hekayati)
 - **Invent cancellation or library-broker wire frames in this pass** (rejected): documentation-method migration, not a protocol redesign. (Omid Hekayati)
+
+---
+
+### The wire serves every participant; a consumer's text is the delivered SDK
+- Time: 2026-10-10T07:22:51Z
+- Type: Added
+- Propagates to:
+  - service-sdk.md: Done — the consumer's side of the same ruling stands there as Working position 13 and under *Local and network invocation*, which links this goal.
+  - service-sdk.handoff.md: Done — *The agent as an SDK consumer* no longer holds the position and points to its homes, this goal among them.
+  - docs/comparisons/mcp.001.md: Done — each citation of the moved lines, the section 11 second-opinion record's included, now names the line its sentence sits at: `sRPC.md:135` as `:136` and `:141` as `:142`.
+  - bundles/khayyam/targets/go/target.research.001.md: Done — its citations now name `sRPC.md:136` for `:135` and `:139` for `:138`.
+- Contributors:
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - Auto (model not recorded) via [Cursor](../../../CONTRIBUTORS.md#cursor) — applied
+
+#### What changed
+- *Goals and non-goals* gains goal 4: the wire serves every participant of an exchange and the network it crosses, not one consumer — its binary form saves bandwidth and the serialization and parse work at both ends of every exchange — and a consumer's need for text, a person's or an AI agent's, is met on its own side by the service's delivered [SDK](../process/service-sdk.md), not by the wire.
+- Goals 1–3 are unchanged, so references to them by line or number still hold.
+
+#### Decision
+- The goal graduates by owner ruling (Omid Hekayati, 2026-10-10) from [SDK Handoff → The agent as an SDK consumer](../process/service-sdk.handoff.md#the-agent-as-an-sdk-consumer), where it had stood as his position: a protocol is designed for all its participants, not one; binary on the wire saves the whole network's resources, which at scale is not small, and the industry's move from REST to gRPC is the precedent that wire cost matters. The precedent stays in this record; the body states only the goal.
