@@ -1,3 +1,5 @@
+# For license and copyright information please see the LEGAL file in the code repository
+
 <#
 .SYNOPSIS
 Put Memar on this machine.
@@ -11,9 +13,10 @@ Put Memar on this machine.
                                    would a folder be refused? installs nothing
 
 What it does: makes sure git and Python are here, obtains a Memar checkout, and
-hands the run to Memar's installer, which puts Memar on this machine, into the
-project you are in, and into the AI agent apps on this machine. Each step prints
-what it did. Running it again is safe and costs nothing.
+hands the run to Memar's installer, `memar install`, which puts Memar on this
+machine, into the project you are in, and into the AI agent apps on this
+machine. Each step prints what it did. Running it again is safe and costs
+nothing.
 
 What you must do afterwards: this script prints one command this program can
 run at once, so it does not need a restart to load the skill, and you still
@@ -65,9 +68,18 @@ What it does, in order, printing each step:
      none is run from memory, so a first run costs one clone and nothing else. A
      folder you named that already holds something else is refused, and nothing
      is deleted.
-  3. The installer - memar-install.py, run from the checkout step 2 settled on, with
-     the rest of the architecture beside it. What it decides and reports is
-     declared by its own help; run it with --help for that interface.
+  3. The installer - `memar install`, run through the launcher of the checkout
+     step 2 settled on, with the rest of the architecture beside it. What it
+     decides and reports is declared by its own help; run `memar install
+     --help` for that interface.
+
+The launcher asks the daily update before every verb it routes, and the
+hand-off keeps it from starting one: MEMAR_NO_AUTO_UPDATE=1 is set for the
+installer's process alone, and put back as it was afterwards, because this
+script may be running inside the caller's own session. An update started
+mid-install would fetch into a checkout the install has not recorded yet - or
+into the one recorded before it - and refresh the skill copies and editor
+extensions the install is writing at the same moment.
 
 One mechanism decides where Memar lives: the MEMAR_ROOT environment variable,
 written at install time by the installer and read literally by everything. No
@@ -97,9 +109,10 @@ Set-StrictMode -Version Latest
 
 $RepositoryUrl = "https://github.com/GeniusesGroup/memar.git"
 $BootstrapUrl = "https://raw.githubusercontent.com/GeniusesGroup/memar/main/.agents/scripts/install.ps1"
-# Where the installer lives inside a checkout, and where this bootstrap lives
-# inside one. The pair is what makes "the architecture is here" one question.
-$ArchitectureEntry = ".agents/scripts/memar-install.py"
+# Where the launcher the installer is reached through lives inside a checkout,
+# and where this bootstrap lives inside one. The pair is what makes "the
+# architecture is here" one question.
+$ArchitectureEntry = ".agents/scripts/memar"
 $BootstrapEntry = "install.ps1"
 # The folder a run that named none obtains the architecture into. The installer's
 # own target module holds the same name, and the two are pinned to each other.
@@ -153,17 +166,25 @@ if ($Help) {
     if (-not $PSCommandPath) {
         Fail "-Help needs this file; fetch it from $BootstrapUrl and run it from there."
     }
-# The comment-based help block at the top of this file is the documentation;
-    # print it up to .NOTES (minus the block delimiters) rather than maintaining a
-    # second copy. Everything from .NOTES down is addressed to whoever opens this
-    # file, which is the same boundary the POSIX bootstrap draws with its blank
-    # line — one rule, two shells.
-    $text = Get-Content -LiteralPath $PSCommandPath
-    $end = ($text | Select-String -Pattern "^#>" | Select-Object -First 1).LineNumber
-    if (-not $end) { $end = 2 }
-    $notes = ($text[1..($end - 2)] | Select-String -Pattern "^\.NOTES" | Select-Object -First 1).LineNumber
-    $take = if ($notes) { $notes - 1 } else { $end - 2 }
-    $text[1..$take] | ForEach-Object { $_ -replace "^\#\.", "." -replace "^# ?", "" } | Write-Host
+    # The comment-based help block near the top of this file is the
+    # documentation; print it from .SYNOPSIS up to .NOTES rather than keeping a
+    # second copy. Everything from .NOTES down is addressed to whoever opens
+    # this file. The block is found by its keywords, not by a line number, so
+    # whatever header sits above it does not shift what is printed.
+    $text = @(Get-Content -LiteralPath $PSCommandPath)
+    $start = -1
+    $end = $text.Count
+    for ($i = 0; $i -lt $text.Count; $i++) {
+        if ($start -lt 0) {
+            if ($text[$i] -match "^\.SYNOPSIS") { $start = $i }
+        } elseif ($text[$i] -match "^(\.NOTES|#>)") {
+            $end = $i
+            break
+        }
+    }
+    if ($start -lt 0) { Fail "this file has lost its help block; fetch it again from $BootstrapUrl." }
+    while ($end -gt $start -and -not $text[$end - 1].Trim()) { $end-- }
+    $text[$start..($end - 1)] | Write-Host
     exit 0
 }
 
@@ -229,18 +250,18 @@ function ConvertTo-AbsolutePath([string]$Value) {
 # --- 2. the architecture ---------------------------------------------------
 
 # The checkout this script is in, when it is a file in one: this file and the
-# installer beside it are how a checkout is recognized from the outside, and
+# launcher beside it are how a checkout is recognized from the outside, and
 # two levels up from the scripts folder is the repository root.
 $OwnCheckout = $null
 if ($PSCommandPath) {
     $Here = Split-Path -Parent $PSCommandPath
     if ((Test-Path -LiteralPath (Join-Path $Here $BootstrapEntry) -PathType Leaf) -and
-        (Test-Path -LiteralPath (Join-Path $Here "memar-install.py") -PathType Leaf)) {
+        (Test-Path -LiteralPath (Join-Path $Here "memar") -PathType Leaf)) {
         $OwnCheckout = Split-Path -Parent (Split-Path -Parent $Here)
     }
 }
 
-# The architecture is at ROOT when the installer is inside it. Not the question
+# The architecture is at ROOT when the launcher is inside it. Not the question
 # whether ROOT is a Memar repository: that belongs to the installer.
 function Test-Architecture([string]$Root) {
     if (-not $Root) { return $false }
@@ -333,12 +354,18 @@ switch ($Mode) {
     { $_ -in @("install", "register") } { $forwarded = @("--register", $Checkout) }
 }
 
-& $python (Join-Path $Checkout $ArchitectureEntry) @forwarded
-$code = $LASTEXITCODE
+$autoUpdate = $env:MEMAR_NO_AUTO_UPDATE
+$env:MEMAR_NO_AUTO_UPDATE = "1"
+try {
+    & $python (Join-Path $Checkout $ArchitectureEntry) install @forwarded
+    $code = $LASTEXITCODE
+} finally {
+    $env:MEMAR_NO_AUTO_UPDATE = $autoUpdate
+}
 if ($code -eq 0 -and $Mode -ne "check") {
     Write-Output @"
 This program can go on without a restart. Load the skill by running the next line on its own:
-& "$python" "$Checkout\.agents\scripts\memar-content.py" path .agents/skills/memar/SKILL.md
+& "$python" "$Checkout\.agents\scripts\memar" content path .agents/skills/memar/SKILL.md
 "@
 }
 exit $code

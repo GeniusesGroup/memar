@@ -1,3 +1,5 @@
+@REM For license and copyright information please see the LEGAL file in the code repository
+
 @echo off
 setlocal
 REM Installing the Khayyam Language extension for VS Code.

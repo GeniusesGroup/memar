@@ -1,16 +1,18 @@
 #!/usr/bin/env python3
+# For license and copyright information please see the LEGAL file in the code repository
+
 """Tests for the user's PATH, read from the record and written to deliberately.
 
-    python .agents/scripts/env_path/tests/env_path.py
+    python .agents/scripts/machine/tests/env_path.py
 
 The subject is `machine/env_path.py`, named for the file that holds it per
-[Test Naming](../../../../../modules/process/test/rules/test-naming/test-naming.md),
+[Test Naming](../../../../modules/process/test/rules/test-naming/test-naming.md),
 in the `tests/` folder of the shelf that owns it per
-[Test Placement](../../../../../modules/process/test/rules/test-placement/test-placement.md).
+[Test Placement](../../../../modules/process/test/rules/test-placement/test-placement.md).
 
 A check of a file this suite does not own belongs beside the file that owns it,
 not here: what the installer does with these answers is pinned in
-`tests/memar-install.py`. The classes here reach the installer's own binding of
+`services/tests/install.py`. The classes here reach the installer's own binding of
 the shelf rather than the shelf's, because the installer's binding is the one
 the run calls, and they stay with the module rather than with the caller.
 Nothing here writes to the machine — the platform's own record is read but never
@@ -39,32 +41,24 @@ CHECKOUT = SCRIPTS.parent.parent
 sys.path.insert(0, str(SCRIPTS))
 sys.dont_write_bytecode = True
 
-import machine.env_path as env_path
-import importlib.util
-from importlib.machinery import SourceFileLoader
+from machine.fs_test_scratch import suite_scratch
 
-# The installer is a command, so its name carries a hyphen and no import can
-# reach it; the loader is named rather than inferred for the same reason the
-# launcher's own test names one.
-_spec = importlib.util.spec_from_loader(
-    "memar_install", SourceFileLoader("memar_install", str(SCRIPTS / "memar-install.py"))
-)
-memar_install = importlib.util.module_from_spec(_spec)
-_spec.loader.exec_module(memar_install)
+import machine.env_path as env_path
+import services.install_machine as machine_layer
 
 
 class RecordPutsTheCommandOnPath(unittest.TestCase):
     """The installer asks for the scripts folder and nowhere else."""
 
     def setUp(self) -> None:
-        self.scratch = tempfile.TemporaryDirectory(dir=TESTS)
+        self.scratch = tempfile.TemporaryDirectory(dir=suite_scratch())
         self.addCleanup(self.scratch.cleanup)
         # A folder holding a launcher, so `ensure_on_path`'s own test passes and
         # the call is not short-circuited before it is observed.
         self.checkout = Path(self.scratch.name) / "Memar"
         scripts = self.checkout / ".agents" / "scripts"
         scripts.mkdir(parents=True)
-        (scripts / memar_install.LAUNCHER).write_text("#!/bin/sh\n", encoding="utf-8")
+        (scripts / machine_layer.LAUNCHER).write_text("#!/bin/sh\n", encoding="utf-8")
         # `record()` refuses anything that is not a Memar repository, and that
         # refusal is the only thing standing between a scratch folder and the
         # real installer — so the scratch has to satisfy the test it is subject to.
@@ -83,24 +77,24 @@ class RecordPutsTheCommandOnPath(unittest.TestCase):
             self.passed.append((Path(directory), answer))
             return ["stubbed"]
 
-        saved_ensure = memar_install.ensure_on_path
-        memar_install.ensure_on_path = fake_ensure
-        self.addCleanup(setattr, memar_install, "ensure_on_path", saved_ensure)
+        saved_ensure = machine_layer.ensure_on_path
+        machine_layer.ensure_on_path = fake_ensure
+        self.addCleanup(setattr, machine_layer, "ensure_on_path", saved_ensure)
 
         # Every other effect `record()` has, stubbed: the variable write and
         # the editor extensions. What is under test is the PATH
         # step and nothing else.
-        saved_write = memar_install.write_user_variable
-        memar_install.write_user_variable = lambda value: "stubbed"
-        self.addCleanup(setattr, memar_install, "write_user_variable", saved_write)
+        saved_write = machine_layer.write_user_variable
+        machine_layer.write_user_variable = lambda value: "stubbed"
+        self.addCleanup(setattr, machine_layer, "write_user_variable", saved_write)
 
-        saved_extensions = memar_install.install_extensions
-        memar_install.install_extensions = lambda target: None
-        self.addCleanup(setattr, memar_install, "install_extensions", saved_extensions)
+        saved_extensions = machine_layer.install_extensions
+        machine_layer.install_extensions = lambda target: None
+        self.addCleanup(setattr, machine_layer, "install_extensions", saved_extensions)
 
     def record_it(self) -> None:
         with contextlib.redirect_stdout(io.StringIO()):
-            memar_install.record(self.checkout)
+            machine_layer.record(self.checkout)
 
     def test_recording_asks_for_the_scripts_folder_to_go_on_path(self):
         self.record_it()
@@ -112,15 +106,15 @@ class RecordPutsTheCommandOnPath(unittest.TestCase):
         self.assertTrue(self.passed)
         directory, answer = self.passed[0]
         self.assertTrue(answer, "the folder offered to PATH holds no launcher")
-        self.assertTrue((directory / memar_install.LAUNCHER).is_file())
+        self.assertTrue((directory / machine_layer.LAUNCHER).is_file())
 
     def test_the_test_would_notice_the_block_being_removed(self):
         # The regression, run on purpose: with the block gone, the other
         # assertions cannot fire because nothing is asked. This one fails, which
         # is the whole reason the class exists.
-        saved = memar_install.ensure_on_path
-        memar_install.ensure_on_path = lambda directory, exists: []
-        self.addCleanup(setattr, memar_install, "ensure_on_path", saved)
+        saved = machine_layer.ensure_on_path
+        machine_layer.ensure_on_path = lambda directory, exists: []
+        self.addCleanup(setattr, machine_layer, "ensure_on_path", saved)
         self.record_it()
         self.assertTrue(
             self.asked or True,
@@ -131,7 +125,7 @@ class PathStaysIdempotent(unittest.TestCase):
     """PATH is read from the record and the session, and never doubled."""
 
     def setUp(self) -> None:
-        self.scratch = tempfile.TemporaryDirectory(dir=TESTS)
+        self.scratch = tempfile.TemporaryDirectory(dir=suite_scratch())
         self.addCleanup(self.scratch.cleanup)
         self.directory = Path(self.scratch.name) / "scripts"
         self.directory.mkdir()

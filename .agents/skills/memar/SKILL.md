@@ -23,16 +23,18 @@ Memar is reached by one of two routes.
 
 ## Session and plan
 - Before any other work, open a session through Memar ([Reaching Memar Server](#reaching-memar-server)), and keep all scratch in its folder; nowhere else — not the OS temporary directory, and not a scratch place the runtime offers.
+- One session holds one task, and its plan holds that task's own acceptance check; a further task — another request, or one delegated — gets a session of its own, linked to the session it came from.
 - A runtime's own to-do list or plan mode may track steps inside this context, but it is not the session's plan: it ends with the context, and the plan has to outlive it.
 - Intake binds before work ([Cognition Practice → Norm Application Points](/docs/cognition.practice.md#norm-application-points)) and ends in the written plan, made before reading the material the work is about. Decide each step in it local or delegated by the test under [Delegation](#delegation); a step the plan did not foresee takes the same test before it starts.
 
 ## Context window and compaction
 - After any compaction or summary of the context — announced or not; a context that opens with a summary has been compacted — re-read this file and the session's plan: a summary drops rules and decisions that still bind. What was read before a compaction and not since is unverified reading ([What Implementation Asymmetry Obliges](/docs/cognition.md#what-implementation-asymmetry-obliges)).
 - The session's context is a budget as well as each step's: tool output, reports, and the conversation accumulate across steps that each passed the test. Ask a command for the least output that answers — a test run's summary line, a diff's stat.
-- Once the context is past about half the window, as the runtime reports it or as estimated from what was taken in, take no further step locally: delegate it, or hand the open sections of the plan to a new session.
+- Once the context is past about half the window, as the runtime reports it or as estimated from what was taken in, take no further step locally: delegate it, or hand what remains of this session's task to a new session linked to this one.
 
 ## Delegation
 - Delegate a step, with its acceptance check, when it would read more than three files, take in any one file, diff, or output over about 20 KB — measure before reading — or rerun a script until it comes out clean; keep only the report. The sections this file links and the passages a report cites, read at the cited lines, do not count. A step that crosses the line midway is delegated from there.
+- A sub-agent is used when that test calls for one, or when tasks run in parallel; a delegated task's sub-agent works in a session of its own, linked to the delegating one.
 - Editing a file exempts no step: an edit that carries out a decision already taken — code and its tests, a document change whose content is settled — is delegated by the same test, and only an edit that is itself the decision stays local.
 - Keep local the target's structure — built from reports, not from a survey — the decisions over findings, and the merge. Judgment exercised while producing a finding is delegable with its criteria, so calling a step judgment never keeps it local.
 - Do not delegate work whose intermediate context is the deliverable, or work that needs the session's decision between its steps; where such work exceeds the size test, split it at those decisions and delegate the parts between.

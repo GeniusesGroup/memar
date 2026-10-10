@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# For license and copyright information please see the LEGAL file in the code repository
+
 """The one variable that says where Memar lives: read it, write it, resolve it.
 
 A user-level environment variable is written to the place the platform keeps it
@@ -22,8 +24,8 @@ import sys
 from pathlib import Path
 
 
-from memar_console import fail, note
-from memar_repository import is_memar_repository, not_a_repository
+from machine.console import fail, note
+from machine.fs_memar_repository import is_memar_repository, not_a_repository
 
 VARIABLE = "MEMAR_ROOT"
 # On Windows the user's environment is this one registry key, and both the read

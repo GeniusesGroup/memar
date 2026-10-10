@@ -1,3 +1,5 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
 // The host's own classification, read out of the installed product.
 //
 // A provider's own type is styled by a rule keyed that type, whatever else a theme

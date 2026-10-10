@@ -1,16 +1,18 @@
 #!/usr/bin/env python3
+# For license and copyright information please see the LEGAL file in the code repository
+
 """Tests for the folder a run would use, and the one place that refuses a temporary one.
 
-    python .agents/scripts/target/tests/fs_target.py
+    python .agents/scripts/machine/tests/fs_target.py
 
 The subject is `machine/fs_target.py`, named for the file that holds it per
-[Test Naming](../../../../../modules/process/test/rules/test-naming/test-naming.md),
+[Test Naming](../../../../modules/process/test/rules/test-naming/test-naming.md),
 in the `tests/` folder of the shelf that owns it per
-[Test Placement](../../../../../modules/process/test/rules/test-placement/test-placement.md).
+[Test Placement](../../../../modules/process/test/rules/test-placement/test-placement.md).
 
 A check of a file this suite does not own belongs beside the file that owns it,
 not here: what the installer does with these answers is pinned in
-`tests/memar-install.py`. The classes here reach the installer's own binding of
+`services/tests/install.py`. The classes here reach the installer's own binding of
 the shelf rather than the shelf's, because the installer's binding is the one
 the run calls, and they stay with the module rather than with the caller.
 Nothing here writes to the machine — the platform's own record is read but never
@@ -37,25 +39,17 @@ CHECKOUT = SCRIPTS.parent.parent
 sys.path.insert(0, str(SCRIPTS))
 sys.dont_write_bytecode = True
 
-import machine.fs_target as target
-import importlib.util
-from importlib.machinery import SourceFileLoader
+from machine.fs_test_scratch import suite_scratch
 
-# The installer is a command, so its name carries a hyphen and no import can
-# reach it; the loader is named rather than inferred for the same reason the
-# launcher's own test names one.
-_spec = importlib.util.spec_from_loader(
-    "memar_install", SourceFileLoader("memar_install", str(SCRIPTS / "memar-install.py"))
-)
-memar_install = importlib.util.module_from_spec(_spec)
-_spec.loader.exec_module(memar_install)
+import machine.fs_target as target
+import services.install_machine as machine_layer
 
 
 class TemporaryRefusal(unittest.TestCase):
     """Every refusal names the directory the check actually used, and one function decides."""
 
     def setUp(self) -> None:
-        self.scratch = tempfile.TemporaryDirectory(dir=TESTS)
+        self.scratch = tempfile.TemporaryDirectory(dir=suite_scratch())
         self.addCleanup(self.scratch.cleanup)
         self.saved_temp = os.environ.get("TEMP")
         os.environ["TEMP"] = self.scratch.name
@@ -108,13 +102,13 @@ class TemporaryRefusal(unittest.TestCase):
             decided.append((str(path), consequence))
             raise RuntimeError("refused")
 
-        saved = memar_install.refuse_temporary
-        memar_install.refuse_temporary = recorder
-        self.addCleanup(setattr, memar_install, "refuse_temporary", saved)
+        saved = machine_layer.refuse_temporary
+        machine_layer.refuse_temporary = recorder
+        self.addCleanup(setattr, machine_layer, "refuse_temporary", saved)
         with self.assertRaises(RuntimeError):
-            memar_install.register(str(Path(self.scratch.name) / "Memar"))
+            machine_layer.register(str(Path(self.scratch.name) / "Memar"))
         with self.assertRaises(RuntimeError):
-            memar_install.check(str(Path(self.scratch.name) / "Memar"))
+            machine_layer.check(str(Path(self.scratch.name) / "Memar"))
         self.assertEqual(len(decided), 2)
         self.assertEqual({path for path, _ in decided}, {str(Path(self.scratch.name) / "Memar")})
         for _, consequence in decided:

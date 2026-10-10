@@ -1,39 +1,39 @@
 #!/usr/bin/env python3
-"""memar-install-apps.py — copy the Memar skill into local AI agent apps.
+# For license and copyright information please see the LEGAL file in the code repository
 
-**Two audiences, two texts, and this file is where each lives.** `DESCRIPTION`
-below is what `--help` prints: it is addressed to whoever wants an agent app to
-know Memar, and it says what is copied and where it goes. Everything from here
-down is addressed to whoever opens this file.
+"""services/install_apps.py — the agent-app layer of `memar install`: the Memar skill copied into local AI agent apps.
 
-Does not write AGENTS.md or `.agents/memar/` — that is `memar-install-agents.py`
-(the https://agents.md/ project pointer).
+Does not write AGENTS.md or `.agents/memar/` — that is `install_project` (the
+https://agents.md/ project pointer).
 
 The skill is copied from the Memar checkout that the location variable names,
-which `machine/env_location.py` is the one module that reads. This script never
+which `machine/env_location.py` is the one module that reads. This layer never
 copies the repository anywhere else. The skill carries no scripts: what it names
 lives in the checkout, in `.agents/scripts/`, and is reached there rather than
-copied here.
+copied here. If the variable names no repository this layer says so and points
+at the install step; it does not clone the repository to find one.
 
-Run it from the Memar checkout, with the file beside it:
-
-  python .agents/scripts/memar-install-apps.py
-
-Needs Python 3 and a Memar checkout on this machine. If the variable is unset
-this script says so and points at the install step; it does not clone the
-repository to find one.
+`warn_stale` is how a copy that has fallen behind the checkout is noticed: a copy
+is written once and the skill keeps changing, and an agent reading an old one
+acts on rules that are gone. Which copies exist is decided here, what a copy
+leaves out by `machine/fs_copy_excluded.py`, and whether one still matches by
+`machine/fs_copy.py`. `memar update` asks it through `services/update_copies.py`
+and relays its lines, one per stale copy and none when every copy matches, and
+with `--apply` asks `into_apps` for the existing copies only, which rewrites only
+the copies that differ. Its lines name `memar update --apply` rather than this
+layer: a bare `memar install` would also write into the project the caller
+stands in.
 
 Usage is the interface. Do not duplicate these recipes as prose catalogs.
 """
 from __future__ import annotations
 
-import argparse
 import shutil
 import sys
 from pathlib import Path
 
-from memar_console import use_utf8_stdio
-from memar_copy_excluded import NEVER_COPIED
+from machine.fs_copy_excluded import NEVER_COPIED
+from machine.fs_copy import differs
 from machine.env_location import resolve_root
 from machine.fs_trash import soft_delete
 
@@ -94,75 +94,54 @@ def copy_skill(source: Path, dest: Path, *, dry_run: bool) -> None:
     print(f"copied skill -> {dest}")
 
 
-DESCRIPTION = """memar-install-apps — teach a local AI agent app how Memar works
-
-Copies the Memar skill into the agent apps on this machine, so an agent working
-in this project is told to read Memar's own documents rather than to guess.
-
-Each app is a folder under your home directory; only the apps already installed
-here are touched, and the skill document is what is copied — the tooling it
-names stays in the Memar checkout and is run from there.
-
-`memar install` already does this for you; run it directly when you want the app
-layer and nothing else.
-
-    (none)                     every agent app found on this machine
-    cursor|claude|codex|opencode|agents
-                               one app only
-    update                     refresh copies already there
-"""
+def stale_copies(source: Path) -> list[Path]:
+    """The skill copies already in agent apps that differ from SOURCE; none when SOURCE is absent."""
+    stale: list[Path] = []
+    if not source.is_dir():
+        return stale
+    for dest in skill_destinations(existing_only=True, app=None):
+        try:
+            if differs(source, dest, NEVER_COPIED):
+                stale.append(dest)
+        except OSError:
+            stale.append(dest)
+    return stale
 
 
-def main() -> int:
-    use_utf8_stdio()
-    apps = ", ".join(APP_DIRS)
-    parser = argparse.ArgumentParser(
-        description=DESCRIPTION,
-        formatter_class=argparse.RawDescriptionHelpFormatter,
-    )
-    parser.add_argument(
-        "--dry-run",
-        action="store_true",
-        help="print copies without touching the filesystem",
-    )
-    parser.add_argument(
-        "command",
-        nargs="?",
-        default=None,
-        help=(
-            "omitted: all detected agent apps; "
-            f"an app name ({apps}): that app only; "
-            "'update': refresh existing copies"
-        ),
-    )
-    args = parser.parse_args()
-    existing_only = False
-    app: str | None = None
-    if args.command is None:
-        pass
-    elif args.command == "update":
-        existing_only = True
-    elif args.command in APP_DIRS:
-        app = args.command
-    else:
-        sys.exit(
-            f"error: unknown command {args.command!r}; "
-            f"expected omitted, update, or an app name ({apps})"
-        )
+# The one command that refreshes what Memar installed; a stale line names it.
+REFRESH = "memar update --apply"
+
+
+def checkout_skill() -> Path:
+    """The skill in the checkout the location variable names.
+
+    Asked of the module that owns the variable and refuses to guess when it
+    names no repository, because a session that quietly put a checkout on the
+    machine would produce a location nothing else agrees on.
+    """
+    return resolve_root() / ".agents" / "skills" / "memar"
+
+
+def warn_stale(source: Path) -> None:
+    """One line per stale copy, naming the command that refreshes them."""
+    for dest in stale_copies(source):
+        print(f"stale: the Memar skill at {dest} differs from the checkout's; refresh with: {REFRESH}")
+
+
+def into_apps(*, dry_run: bool = False, app: str | None = None, existing_only: bool = False) -> None:
+    """Copy the checkout's skill into every agent app found, or into APP only; with EXISTING_ONLY refresh the copies that differ."""
     dests = skill_destinations(existing_only=existing_only, app=app)
     if existing_only and not dests:
         sys.exit("error: no existing Memar skill copies found to update")
-    # Asked of the module that owns the variable and refuses to guess when it
-    # names no repository, because a session that quietly put a checkout on the
-    # machine would produce a location nothing else agrees on.
-    root = resolve_root()
-    print(f"Memar resolves to {root}")
-    source = root / ".agents" / "skills" / "memar"
+    source = checkout_skill()
+    print(f"Memar resolves to {source.parents[2]}")
     for dest in dests:
-        copy_skill(source, dest, dry_run=args.dry_run)
-    return 0
-
-
-if __name__ == "__main__":
-    raise SystemExit(main())
+        try:
+            current = existing_only and not differs(source, dest, NEVER_COPIED)
+        except OSError:
+            current = False
+        if current:
+            print(f"already current: {dest}")
+            continue
+        copy_skill(source, dest, dry_run=dry_run)
 

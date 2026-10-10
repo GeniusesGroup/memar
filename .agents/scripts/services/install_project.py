@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
-"""memar-install-agents.py — put Memar into a project as https://agents.md/ instructions.
+# For license and copyright information please see the LEGAL file in the code repository
 
-**Two audiences, two texts, and this file is where each lives.** `DESCRIPTION`
-below is what `--help` prints: it is addressed to whoever wants Memar in a
-project and says what lands there and what does not. Everything from here down
-is addressed to whoever opens this file.
+"""services/install_project.py — the project layer of `memar install`: Memar put into a project as https://agents.md/ instructions.
+
+Named for the surface it writes into, the project, rather than for the agents
+file it writes there: the other two layers of `memar install` are named for
+theirs, the machine and the agent apps.
 
 Writes two things: a one-line `## Memar` section in the project's AGENTS.md
 pointing at `.agents/memar/README.md`, and that README — and, when the project
@@ -19,31 +20,25 @@ every project by hand.
 
 Where Memar lives on this machine is one thing, and this file asks rather than
 decides: `machine/env_location.py` is the one module that reads the location
-variable, and `memar_repository.py` holds the test of what a Memar repository is
-— which is what keeps the Memar repository's own hand-written README from being
+variable, and `machine/fs_memar_repository.py` holds the test of what a Memar
+repository is — which is what keeps the Memar repository's own hand-written README from being
 replaced by the text written for a project that has to fetch Memar first.
 
-Run it from the project you want Memar in, a subdirectory being fine — this walks
-up to the version-control root — with the Memar checkout's own copy beside it:
-
-  python "$MEMAR_ROOT/.agents/scripts/memar-install-agents.py"
-
-Needs Python 3 and a Memar checkout on this machine. It never installs anything:
-the machine is settled before this runs, and the README it writes says what to
-run when it is not.
+It writes into the project `memar install` is run from, a subdirectory being
+fine — this walks up to the version-control root. It never installs anything
+else: the machine is settled before this runs, and the README it writes says
+what to run when it is not.
 
 Usage is the interface. Do not duplicate these recipes as prose catalogs.
 """
 from __future__ import annotations
 
-import argparse
 import re
 import sys
 from pathlib import Path
 
-from memar_console import use_utf8_stdio
-from memar_repository import is_memar_repository
 from machine.env_location import VARIABLE, recorded_value
+from machine.fs_memar_repository import is_memar_repository
 
 PUBLISH_BRANCH = "main"
 SCRIPTS_RAW = (
@@ -160,10 +155,6 @@ def upsert_memar_section(content: str) -> str:
     return middle
 
 
-def has_memar_section(content: str) -> bool:
-    return HEADING_RE.search(content) is not None
-
-
 def write_text(path: Path, text: str, *, dry_run: bool) -> None:
     if not text.endswith("\n"):
         text += "\n"
@@ -178,14 +169,10 @@ def write_text(path: Path, text: str, *, dry_run: bool) -> None:
     print(f"wrote {path}")
 
 
-def cmd_install(*, dry_run: bool, require_existing: bool) -> None:
+def into_project(*, dry_run: bool = False) -> None:
+    """Put Memar into the project the current directory is in."""
     target = resolve_project_dir(Path.cwd())
     agents = target / "AGENTS.md"
-    if require_existing:
-        if not agents.is_file() or not has_memar_section(
-            agents.read_text(encoding="utf-8")
-        ):
-            sys.exit("error: Memar is not installed in this project")
     if agents.is_file():
         updated = upsert_memar_section(agents.read_text(encoding="utf-8"))
     else:
@@ -216,50 +203,3 @@ def cmd_install(*, dry_run: bool, require_existing: bool) -> None:
             )
         else:
             print(f"{VARIABLE} is set to {recorded}")
-
-
-DESCRIPTION = """memar-install-agents — let a project know Memar exists
-
-Writes two things into the project you run this from:
-
-  - a `## Memar` line in its AGENTS.md, saying which file to read;
-  - that file, `.agents/memar/README.md`, which carries the substance.
-
-Nothing else is placed there. No script and no Python file — a project's copy of
-Memar's tooling would go stale on every change here, so the tooling is fetched
-from the Memar repository when it is needed instead.
-
-Run this from the project, or any folder inside it. `memar install` already does
-this for you; run it directly when you want the project layer and nothing else.
-
-    (none)      put Memar into the current project
-    update      refresh a project that already has it
-"""
-
-
-def main() -> int:
-    use_utf8_stdio()
-    parser = argparse.ArgumentParser(
-        description=DESCRIPTION,
-        formatter_class=argparse.RawDescriptionHelpFormatter,
-    )
-    parser.add_argument(
-        "--dry-run",
-        action="store_true",
-        help="print writes without touching the filesystem",
-    )
-    parser.add_argument(
-        "command",
-        nargs="?",
-        default=None,
-        help="omitted: install into the current project; 'update': refresh",
-    )
-    args = parser.parse_args()
-    if args.command not in (None, "update"):
-        sys.exit("error: unknown command; expected omitted or update")
-    cmd_install(dry_run=args.dry_run, require_existing=args.command == "update")
-    return 0
-
-
-if __name__ == "__main__":
-    raise SystemExit(main())

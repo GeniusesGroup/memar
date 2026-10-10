@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
-"""memar_copy_excluded.py — what a copy of Memar never carries.
+# For license and copyright information please see the LEGAL file in the code repository
+
+"""machine/fs_copy_excluded.py — what a copy of Memar never carries.
 
 Interpreter output, dependency trees and host noise: never part of what a copy
 means. A development tree belongs in the checkout that typechecks the extension,

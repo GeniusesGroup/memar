@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
-"""Tests for what memar-install-agents.py writes into a consuming project.
+# For license and copyright information please see the LEGAL file in the code repository
 
-    python .agents/scripts/tests/memar-install-agents.py
+"""Tests for what the project layer, `services/install_project.py`, writes into a consuming project.
+
+    python .agents/scripts/services/tests/install_project.py
 
 The README it writes is pinned whole, because it is fixed text: a wording
 change is an edit of two files, never a drift one of them absorbs alone. Inside
@@ -23,30 +25,37 @@ The location is read through the module that owns it, so a session opened
 before the value was written does not send this project to the bootstrap a
 second time.
 
-The dry run happens in a scratch folder of its own — given a `.git` so that it
-is a project root wherever it sits, and placed by `MEMAR_TEST_SCRATCH` when
-that variable is set (a folder that already exists) — and only what it printed
-is read: a scratch inside this repository would be installed into this
+The layer is asked in this process, as `memar install` asks it, from inside a
+scratch folder of its own — given a `.git` so that it is a project root wherever
+it sits, and made under the folder `machine/fs_test_scratch.py` names. The
+dry run writes nothing, and only what it printed is read: a scratch inside this repository would be installed into this
 repository, which deliberately keeps its own hand-written `.agents/memar/README.md`
-rather than the text written for a project that has to fetch Memar first. The
-update test is the one exception: it installs for real inside that scratch and
-reads the README back off disk.
+rather than the text written for a project that has to fetch Memar first.
 
 Usage is the interface. Do not duplicate these recipes as prose catalogs.
 """
 from __future__ import annotations
 
-import os
+import contextlib
+import io
 import re
-import subprocess
 import sys
 import tempfile
 import unittest
 from pathlib import Path
 
 TESTS = Path(__file__).resolve().parent
-SCRIPTS = TESTS.parent
+# This suite lives in the `tests/` folder of the shelf that owns its subject, so
+# the scripts folder is two levels up. Running a file puts its OWN folder on the
+# module search path and not its parent's, which is the one line this needs and
+# the reason it carries one.
+SCRIPTS = TESTS.parent.parent
+sys.path.insert(0, str(SCRIPTS))
 sys.dont_write_bytecode = True
+
+from machine.fs_test_scratch import suite_scratch
+
+import services.install_project as project
 
 DRY_RUN_WRITE = re.compile(r"^dry-run: write (.+)$")
 CONSUMER_README = ".agents/memar/README.md"
@@ -76,17 +85,18 @@ class ReachedByTheCommand(unittest.TestCase):
     """What a consuming project is left holding, as the installer's own run says."""
 
     def setUp(self) -> None:
-        self.scratch = tempfile.TemporaryDirectory(dir=os.environ.get("MEMAR_TEST_SCRATCH"))
+        self.scratch = tempfile.TemporaryDirectory(dir=suite_scratch())
         self.addCleanup(self.scratch.cleanup)
         (Path(self.scratch.name) / ".git").mkdir()
-        completed = subprocess.run(
-            [sys.executable, str(SCRIPTS / "memar-install-agents.py"), "--dry-run"],
-            cwd=self.scratch.name,
-            capture_output=True,
-            env=dict(os.environ, PYTHONIOENCODING="utf-8", PYTHONDONTWRITEBYTECODE="1"),
-        )
-        self.assertEqual(completed.returncode, 0, completed.stderr.decode("utf-8", "replace"))
-        self.writes = self.parse(completed.stdout.decode("utf-8").replace("\r\n", "\n"))
+        self.writes = self.parse(self.into_project(dry_run=True))
+
+    def into_project(self, **options: bool) -> str:
+        """What the layer printed, asked from inside the scratch project."""
+        out = io.StringIO()
+        with contextlib.chdir(self.scratch.name), contextlib.redirect_stdout(out), \
+                contextlib.redirect_stderr(io.StringIO()):
+            project.into_project(**options)
+        return out.getvalue()
 
     def parse(self, output: str) -> list[tuple[str, str]]:
         """Each announced write and the text of it, in the order printed."""
@@ -147,7 +157,7 @@ class ReachedByTheCommand(unittest.TestCase):
         # Not through `os.environ`, which is the copy a session opened before
         # the value was written may not hold: that is how a project gets told
         # Memar is not on this machine when it is.
-        source = (SCRIPTS / "memar-install-agents.py").read_text(encoding="utf-8")
+        source = Path(project.__file__).read_text(encoding="utf-8")
         self.assertNotIn("os.environ.get", source)
         self.assertIn("recorded_value()", source)
 
@@ -164,21 +174,6 @@ class ReachedByTheCommand(unittest.TestCase):
         self.assertNotIn("restart", body)
         self.assertNotIn("MEMAR_ROOT", body)
         self.assertNotIn("--help", body)
-
-    def test_update_rewrites_an_already_installed_readme(self):
-        command = [sys.executable, str(SCRIPTS / "memar-install-agents.py")]
-        env = dict(os.environ, PYTHONIOENCODING="utf-8", PYTHONDONTWRITEBYTECODE="1")
-        installed = subprocess.run(command, cwd=self.scratch.name, capture_output=True, env=env)
-        self.assertEqual(installed.returncode, 0, installed.stderr.decode("utf-8", "replace"))
-        readme = Path(self.scratch.name) / CONSUMER_README
-        readme.write_text("# Stale\n", encoding="utf-8", newline="\n")
-        updated = subprocess.run(command + ["update"], cwd=self.scratch.name, capture_output=True, env=env)
-        self.assertEqual(updated.returncode, 0, updated.stderr.decode("utf-8", "replace"))
-        expected = self.written(CONSUMER_README)
-        actual = (Path(self.scratch.name) / CONSUMER_README).read_text(encoding="utf-8")
-        self.assertEqual(actual, EXPECTED_README)
-        self.assertEqual(actual.rstrip("\n"), expected)
-        self.assertIn("README.md", updated.stdout.decode("utf-8"))
 
 
 if __name__ == "__main__":

@@ -1,3 +1,5 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
 // Khayyam language extension: starts the language server and serves the roles it
 // answers with.
 //

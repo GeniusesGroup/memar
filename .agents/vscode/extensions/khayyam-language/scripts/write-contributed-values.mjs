@@ -1,3 +1,5 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
 // Regenerates the two maps the extension contributes to the editor from the display
 // contract and one theme sheet, so neither is edited a role at a time.
 //
@@ -43,7 +45,7 @@
 //
 // A manifest path may be given as the first argument and an extension root as the second,
 // so what the generator would write can be read before it is what the extension ships
-// (display/test/verify-roles.test.ts). Every path the run touches is under that root.
+// (display/tests/verify-roles.test.ts). Every path the run touches is under that root.
 import { readFileSync, writeFileSync } from "node:fs";
 import { basename, dirname, join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";

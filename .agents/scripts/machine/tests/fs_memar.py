@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# For license and copyright information please see the LEGAL file in the code repository
+
 """Tests for where Memar lives on disk in `machine/fs_memar.py`.
 
     python .agents/scripts/machine/tests/fs_memar.py
@@ -21,9 +23,9 @@ What is pinned, and what each pin is for:
                      only ever occupy the ignored temp entry and no ignore
                      rule is owed; an unresolvable root errors rather than
                      guessing.
-  SessionDir         A session id names one folder segment under the scratch
-                     root and nothing else; anything shaped like a path is
-                     refused, and readers never create.
+  SessionDir         A session id names one folder segment under the sessions
+                     root, temp/sessions/, and nothing else; anything shaped
+                     like a path is refused, and readers never create.
 
 Usage is the interface. Do not duplicate these recipes as prose catalogs.
 """
@@ -46,12 +48,14 @@ CHECKOUT = SCRIPTS.parent.parent
 sys.path.insert(0, str(SCRIPTS))
 sys.dont_write_bytecode = True
 
+from machine.fs_test_scratch import suite_scratch
+
 import machine.fs_memar as memar_fs
 
 
 class DefaultLocation(unittest.TestCase):
     def test_scratch_defaults_under_the_memar_temp_root(self) -> None:
-        with tempfile.TemporaryDirectory(dir=TESTS) as scratch:
+        with tempfile.TemporaryDirectory(dir=suite_scratch()) as scratch:
             fake_root = Path(scratch)
             with unittest.mock.patch.object(
                 memar_fs, "memar_root", return_value=fake_root
@@ -63,7 +67,7 @@ class DefaultLocation(unittest.TestCase):
                 # repo path scratch can occupy is an ignored one, so no rule is owed.
 
     def test_recorded_root_wins_over_the_checkout(self) -> None:
-        with tempfile.TemporaryDirectory(dir=TESTS) as scratch:
+        with tempfile.TemporaryDirectory(dir=suite_scratch()) as scratch:
             fake_root = Path(scratch)
             with unittest.mock.patch.object(
                 memar_fs, "recorded_root", return_value=fake_root
@@ -97,18 +101,19 @@ class DefaultLocation(unittest.TestCase):
 
 
 class SessionDir(unittest.TestCase):
-    def test_session_dir_is_one_segment_under_the_scratch_root(self) -> None:
-        with tempfile.TemporaryDirectory(dir=TESTS) as scratch:
+    def test_session_dir_is_one_segment_under_the_sessions_root(self) -> None:
+        with tempfile.TemporaryDirectory(dir=suite_scratch()) as scratch:
             fake_root = Path(scratch)
             with unittest.mock.patch.object(
                 memar_fs, "memar_root", return_value=fake_root
             ):
                 path = memar_fs.session_dir("s-1")
-                self.assertEqual(path, fake_root / "temp" / "s-1")
+                self.assertEqual(path, fake_root / "temp" / "sessions" / "s-1")
+                self.assertEqual(path.parent, memar_fs.sessions_root())
                 self.assertFalse(path.exists())
 
     def test_session_dir_creates_only_when_asked(self) -> None:
-        with tempfile.TemporaryDirectory(dir=TESTS) as scratch:
+        with tempfile.TemporaryDirectory(dir=suite_scratch()) as scratch:
             fake_root = Path(scratch)
             with unittest.mock.patch.object(
                 memar_fs, "memar_root", return_value=fake_root
@@ -117,7 +122,7 @@ class SessionDir(unittest.TestCase):
                 self.assertTrue(path.is_dir())
 
     def test_session_dir_refuses_anything_shaped_like_a_path(self) -> None:
-        with tempfile.TemporaryDirectory(dir=TESTS) as scratch:
+        with tempfile.TemporaryDirectory(dir=suite_scratch()) as scratch:
             fake_root = Path(scratch)
             with unittest.mock.patch.object(
                 memar_fs, "memar_root", return_value=fake_root

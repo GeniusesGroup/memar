@@ -1,3 +1,5 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
 // Runs the checks and prints the verdict.
 //
 // What the extension contributes is one claim, and this run holds every side of it to

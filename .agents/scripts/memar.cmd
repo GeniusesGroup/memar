@@ -1,3 +1,5 @@
+@REM For license and copyright information please see the LEGAL file in the code repository
+
 @echo off
 rem memar - the one command a person or an agent types to reach Memar.
 rem

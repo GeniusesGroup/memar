@@ -1,10 +1,13 @@
 #!/usr/bin/env python3
-"""Tests for the installer, the modules it is split into, and the bootstrap.
+# For license and copyright information please see the LEGAL file in the code repository
 
-    python .agents/scripts/tests/memar-install.py
+"""Tests for the installer, `memar install` in `services/install.py`, the modules it is split into, and the bootstrap.
 
-Nothing here writes to the machine. The scratch folder is inside this folder and
-is removed again, every subprocess runs a path that stops before any write, and
+    python .agents/scripts/services/tests/install.py
+
+Nothing here writes outside its scratch folder. The scratch folder is made
+under the one `machine/fs_test_scratch.py` names, and is removed again; every
+subprocess runs a path that stops before any write, and
 the platform's own record of MEMAR_ROOT is read but never written.
 
 What is pinned, and what each pin is for:
@@ -22,13 +25,13 @@ What is pinned, and what each pin is for:
   CheckAsksNothing  `--check` asks the check a question and stops there: the
                      refusal it prints is the refusal an install would print,
                      and the machine is untouched.
-SiblingSurface    Each sibling imports the module that owns the concern it needs,
+SiblingSurface    Each layer imports the module that owns the concern it needs,
                       and no file in this folder is both run and imported — the
                       condition that makes every name here legal. The test
-                      resolves each import to a path, because
-                      `memar-session.py` and `memar_session.py` differ by one
-                      separator and comparing the strings would call the
-                      sanctioned pair a violation of the rule it satisfies.
+                      resolves each import to a path, because a run file and
+                      a module may differ by one separator and comparing the
+                      strings would call that sanctioned pair a violation of
+                      the rule it satisfies.
   ObtainsTheArchitecture
                       The bootstrap's own job is the checkout, and it is the
                       whole of it: the steps it prints are the steps its own
@@ -37,13 +40,16 @@ SiblingSurface    Each sibling imports the module that owns the concern it needs
                       architecture is fetched over the network or run from
                       memory to stand in for a checkout.
   StartsFromTheCheckout
-                      The installer is started one way only, as a file inside
-                      the checkout, so the run has the siblings on disk that it
-                      imports; and the folder the bootstrap obtains and the
-                      folder the installer records are named by one rule.
+                      The installer is started one way only, as `memar install`
+                      through the launcher inside the checkout, so the run has
+                      the siblings on disk that it imports, and with the daily
+                      update kept from starting under it; and the folder the
+                      bootstrap obtains and the folder the installer records
+                      are named by one rule.
   FirstRunInterface  A first-time user's first command: no arguments installs,
                       the documented ways of naming a folder are still accepted,
-                      --check still asks its question and writes nothing, and
+                      a check through either bootstrap reaches `memar install`,
+                      which asks its question and writes nothing, and
                       the help says what to run and what is owed afterwards
                       rather than walking through which step clones. A
                       successful run also prints the one command this program
@@ -51,9 +57,10 @@ SiblingSurface    Each sibling imports the module that owns the concern it needs
   PathStaysIdempotent  PATH is read from the record and the session, duplicates
                       and empty parts do not duplicate the entry, and a second
                       run adds nothing.
-  EnclosingRepository  A path inside a Memar repository resolves to its nearest
-                      ancestor repository, or to None outside one; the caller
-                      errors rather than guessing.
+  DeveloperIsMarked  `--developer` marks the recorded checkout as a development
+                      checkout in its own git configuration, leaves its working
+                      tree as it was, says how to undo it, and refuses a folder
+                      that is not a Memar repository.
   HelpUnchanged     The refactoring changed no consumer's interface: the options
                      and their order, and what each help says to the person
                      running it. The installer's help is the text meant for a
@@ -61,12 +68,19 @@ SiblingSurface    Each sibling imports the module that owns the concern it needs
                      the docstring is the implementer's and printing it to every
                      installer is how the mechanism reached the help output in
                      the first place.
+  BareRunInstallsEveryLayer
+                      The machine layer, then the project, then the agent apps,
+                      each asked in this process; a layer that stops does not
+                      stop the ones after it, and a dry run reaches the two
+                      that write into a project and the apps.
 
 Usage is the interface. Do not duplicate these recipes as prose catalogs.
 """
 from __future__ import annotations
 
-import importlib.util
+import argparse
+import contextlib
+import io
 import os
 import re
 import shutil
@@ -75,28 +89,30 @@ import sys
 import tempfile
 import unittest
 import unittest.mock
-from importlib.machinery import SourceFileLoader
 from pathlib import Path
 
 TESTS = Path(__file__).resolve().parent
-SCRIPTS = TESTS.parent
+# This suite lives in the `tests/` folder of the shelf that owns its subject, so
+# the scripts folder is two levels up. Running a file puts its OWN folder on the
+# module search path and not its parent's, which is the one line this needs and
+# the reason it carries one.
+SCRIPTS = TESTS.parent.parent
 sys.path.insert(0, str(SCRIPTS))
 sys.dont_write_bytecode = True
 
-import memar_repository
+from machine.fs_test_scratch import suite_scratch
+
+import machine.env_location as location
 import machine.fs_target as target
+import services.install as memar_install
+import services.install_apps as apps_layer
+import services.install_machine as machine_layer
+import services.install_project as project_layer
+import services.update_checkout as update_checkout
+from machine.fs_memar_repository import SKILL_MARKER
 
-# The installer is a command, so its name carries a hyphen and no import can
-# reach it. The loader is named rather than inferred: a spec inferred from the
-# suffix declines a file whose suffix it does not recognize, and a test that
-# could not load its own subject would be a test of nothing.
-_spec = importlib.util.spec_from_loader(
-    "memar_install", SourceFileLoader("memar_install", str(SCRIPTS / "memar-install.py"))
-)
-memar_install = importlib.util.module_from_spec(_spec)
-_spec.loader.exec_module(memar_install)
-
-# memar-install.py's own options, in the order argparse prints them, with the
+LAUNCHER = SCRIPTS / "memar"
+# `memar install`'s own options, in the order argparse prints them, with the
 # argument each one takes. Obtaining the checkout is the bootstrap's, so what is
 # left here is the recording of one, the check that asks about a folder, the root
 # a program asks for, and the two switches that narrow which layers run.
@@ -104,16 +120,17 @@ INSTALLER_OPTIONS = (
     ("--register", "PATH"),
     ("--check", "PATH"),
     ("--root", ""),
+    ("--developer", ""),
     ("--machine-only", ""),
     ("--dry-run", ""),
 )
-# The two layers a bare run asks, by the files it asks. They are child processes
-# rather than imports, and this is the pin for that: a hyphenated name is not a
-# legal module name, so an import would have forced one of them to be renamed out
-# of the form that names its domain first.
-INTO_PROJECT = "memar-install-agents.py"
-INTO_APPS = "memar-install-apps.py"
-IMPORTED_MODULE = re.compile(r"^from ([a-z_][a-z_0-9]*) import ", re.MULTILINE)
+# The two layers a bare run asks after the machine layer, by the services that
+# hold them. They are imported and asked in this process, so neither declares a
+# command line of its own.
+INTO_PROJECT = "services/install_project.py"
+INTO_APPS = "services/install_apps.py"
+# An import anywhere in a file, a run's local imports included.
+IMPORTED_MODULE = re.compile(r"^\s*from ([a-z_][a-z_0-9.]*) import ", re.MULTILINE)
 # Every name a file imports from a module of this folder, as (module, symbol)
 # pairs. The module may carry a dot, since a shelf is a package: what a
 # consumer of this folder has to agree on is the dotted path, not a spelling
@@ -131,8 +148,9 @@ BOOTSTRAPS = ("install.sh", "install.ps1")
 DOCUMENTED_STEP = re.compile(r"^(?:#\s+|\s+)(\d+)\. (.+?)\s*(?:—|-)\s", re.MULTILINE)
 # A step the body of a bootstrap prints.
 EXECUTED_STEP = re.compile(r'^(?:step|Write-Step) "([^"]+)"$', re.MULTILINE)
-# Where the installer lives inside a checkout, which both bootstraps name once.
-ARCHITECTURE_ENTRY = ".agents/scripts/memar-install.py"
+# Where the launcher the installer is reached through lives inside a checkout,
+# which both bootstraps name once.
+ARCHITECTURE_ENTRY = ".agents/scripts/memar"
 # The one command that reaches the network: a shallow clone of the repository.
 # Anchored to a command of its own, so a header or a refusal that names the
 # command is not counted as one.
@@ -141,11 +159,13 @@ CLONE = re.compile(r"^(?:\s*&\s*|\s*)git clone[^\n]*$", re.MULTILINE)
 # folder of its own. Neither belongs in a bootstrap any more.
 NETWORK_FETCH = re.compile(r"urlopen|urllib|Invoke-WebRequest|Invoke-RestMethod|\birm\b|\bcurl\b|\bwget\b")
 IN_MEMORY = re.compile(r"sys\.modules|ModuleType|exec\(compile")
-# The one line in each bootstrap that starts the architecture. PowerShell reads
-# names without regard to case, so its line is matched the way PowerShell reads
-# it; the shell's is not, because a shell does.
+# The one line in each bootstrap that starts the architecture: `memar install`,
+# through the checkout's launcher, with the daily update kept from starting
+# under the install. PowerShell reads names without regard to case, so its line
+# is matched the way PowerShell reads it; the shell's is not, because a shell
+# does.
 SH_RUN = re.compile(
-    r'^"\$PYTHON" "\$checkout/\$ARCHITECTURE_ENTRY" "\$@" \|\| code=\$\?$',
+    r'^MEMAR_NO_AUTO_UPDATE=1 "\$PYTHON" "\$checkout/\$ARCHITECTURE_ENTRY" install "\$@" \|\| code=\$\?$',
     re.MULTILINE,
 )
 # Printed once, by a successful run, and not written into a consuming project.
@@ -156,9 +176,14 @@ CONTINUATION = (
     "Load the skill by running the next line on its own:"
 )
 PS_RUN = re.compile(
-    r"^& \$python \(Join-Path \$checkout \$ArchitectureEntry\) @forwarded$",
+    r"^\$env:MEMAR_NO_AUTO_UPDATE = \"1\"\ntry \{\n"
+    r"    & \$python \(Join-Path \$checkout \$ArchitectureEntry\) install @forwarded\n"
+    r"(?:.*\n)*?\} finally \{\n    \$env:MEMAR_NO_AUTO_UPDATE = \$autoUpdate\n\}$",
     re.MULTILINE | re.IGNORECASE,
 )
+# What the installer prints when a check reaches it, and only it: a bootstrap
+# that printed this reached `memar install`.
+REACHED_THE_INSTALLER = "==> Checking a target"
 # The path rule the bootstrap asks for rather than keeping a second copy of: the
 # installer expands `~` and `$NAME` in `machine/fs_target.py`'s `full_path`, so the folder this
 # script obtains and the folder the installer records cannot differ.
@@ -168,8 +193,8 @@ EXPANSION = re.compile(
 )
 
 
-def run_script(name: str, *arguments: str, temp: str | None = None) -> subprocess.CompletedProcess:
-    """Run one script with a fixed console width, encoding, and byte-code policy.
+def run_install(*arguments: str, temp: str | None = None) -> subprocess.CompletedProcess:
+    """Run `memar install` with a fixed console width, encoding, and byte-code policy.
 
     COLUMNS is fixed because argparse wraps its help to the terminal width, and
     an environment variable in the child is fixed because that width is the one
@@ -184,7 +209,7 @@ def run_script(name: str, *arguments: str, temp: str | None = None) -> subproces
     if temp is not None:
         environment["TEMP"] = temp
     return subprocess.run(
-        [sys.executable, str(SCRIPTS / name), *arguments],
+        [sys.executable, str(LAUNCHER), "install", *arguments],
         capture_output=True,
         env=environment,
     )
@@ -199,81 +224,11 @@ def printed(completed: subprocess.CompletedProcess, stream: str = "stdout") -> s
     return getattr(completed, stream).decode("utf-8").replace("\r\n", "\n")
 
 
-class EnclosingRepository(unittest.TestCase):
-    """A path inside a repository resolves inward; outside resolves to None."""
-
-    def setUp(self) -> None:
-        self.scratch = tempfile.TemporaryDirectory(dir=TESTS)
-        self.addCleanup(self.scratch.cleanup)
-        self.root = Path(self.scratch.name)
-        # The scratch sits inside this checkout, so a walk past it would reach
-        # the real repository; isolated to the scratch, outside resolves None.
-        saved = memar_repository.is_memar_repository
-        root = self.root.resolve()
-
-        def isolated(path: Path) -> bool:
-            try:
-                Path(path).resolve().relative_to(root)
-            except ValueError:
-                return False
-            return saved(path)
-
-        memar_repository.is_memar_repository = isolated
-        self.addCleanup(setattr, memar_repository, "is_memar_repository", saved)
-
-    def make_repo(self, where: Path) -> Path:
-        where.mkdir(parents=True, exist_ok=True)
-        (where / "README.md").write_text("# Memar\n", encoding="utf-8")
-        (where / "docs").mkdir(exist_ok=True)
-        skill = where / ".agents" / "skills" / "memar" / "SKILL.md"
-        skill.parent.mkdir(parents=True, exist_ok=True)
-        skill.write_text("# Memar\n", encoding="utf-8")
-        return where
-
-    def test_a_file_inside_returns_the_repository(self):
-        repo = self.make_repo(self.root / "Memar")
-        inner = repo / "docs" / "cognition.md"
-        inner.write_text("# Cognition\n", encoding="utf-8")
-        self.assertEqual(memar_repository.enclosing_repository(inner), repo)
-
-    def test_a_directory_inside_returns_the_repository(self):
-        repo = self.make_repo(self.root / "Memar")
-        self.assertEqual(
-            memar_repository.enclosing_repository(repo / "docs"), repo
-        )
-
-    def test_the_repository_root_returns_itself(self):
-        repo = self.make_repo(self.root / "Memar")
-        self.assertEqual(memar_repository.enclosing_repository(repo), repo)
-
-    def test_outside_any_repository_returns_none(self):
-        plain = self.root / "plain"
-        plain.mkdir()
-        target = plain / "notes.md"
-        target.write_text("# Notes\n", encoding="utf-8")
-        self.assertIsNone(memar_repository.enclosing_repository(target))
-
-    def test_a_nested_repository_resolves_to_the_inner_one(self):
-        outer = self.make_repo(self.root / "outer")
-        inner = self.make_repo(outer / "inner")
-        leaf = inner / "docs" / "leaf.md"
-        leaf.write_text("# Leaf\n", encoding="utf-8")
-        self.assertEqual(memar_repository.enclosing_repository(leaf), inner)
-
-    def test_a_folder_missing_the_skill_is_not_a_repository(self):
-        partial = self.root / "partial"
-        partial.mkdir()
-        (partial / "README.md").write_text("# Memar\n", encoding="utf-8")
-        (partial / "docs").mkdir()
-        target = partial / "docs" / "note.md"
-        target.write_text("# Note\n", encoding="utf-8")
-        self.assertIsNone(memar_repository.enclosing_repository(target))
-
 class CheckAsksNothing(unittest.TestCase):
     """`--check` asks the check a question and stops there."""
 
     def setUp(self) -> None:
-        self.scratch = tempfile.TemporaryDirectory(dir=TESTS)
+        self.scratch = tempfile.TemporaryDirectory(dir=suite_scratch())
         self.addCleanup(self.scratch.cleanup)
         # A folder that is not under the scratch, so it is not temporary, and is
         # never created: naming it is the whole of what a check does.
@@ -289,8 +244,8 @@ class CheckAsksNothing(unittest.TestCase):
         # and the directory the decision was made against. The sentence that
         # follows is the caller's, because what it was about to do differs.
         below = Path(self.scratch.name) / "Memar"
-        asked = run_script("memar-install.py", "--check", str(below), temp=self.scratch.name)
-        refused = run_script("memar-install.py", "--register", str(below), temp=self.scratch.name)
+        asked = run_install("--check", str(below), temp=self.scratch.name)
+        refused = run_install("--register", str(below), temp=self.scratch.name)
         self.assertEqual(asked.returncode, 1)
         self.assertEqual(refused.returncode, 1)
         for outcome in (printed(asked, "stderr"), printed(refused, "stderr")):
@@ -299,16 +254,16 @@ class CheckAsksNothing(unittest.TestCase):
             self.assertIn("is under the temporary directory", outcome)
 
     def test_asking_about_a_folder_that_would_be_kept_answers_and_creates_nothing(self):
-        asked = run_script("memar-install.py", "--check", str(self.kept), temp=self.scratch.name)
+        asked = run_install("--check", str(self.kept), temp=self.scratch.name)
         self.assertEqual(asked.returncode, 0)
-        self.assertIn(self.scratch.name, printed(asked))
+        self.assertIn(str(Path(self.scratch.name).resolve()), printed(asked))
         self.assertIn("not refused", printed(asked))
         self.assertFalse(self.kept.exists())
         self.assertEqual(self.scratch_entries(), [])
 
     def test_asking_writes_nothing_even_when_the_answer_is_refusal(self):
         below = Path(self.scratch.name) / "Memar"
-        run_script("memar-install.py", "--check", str(below), temp=self.scratch.name)
+        run_install("--check", str(below), temp=self.scratch.name)
         self.assertFalse(below.exists())
         self.assertEqual(self.scratch_entries(), [])
 
@@ -317,7 +272,7 @@ class CheckAsksNothing(unittest.TestCase):
         environment.pop("TEMP", None)
         environment.pop("TMPDIR", None)
         asked = subprocess.run(
-            [sys.executable, str(SCRIPTS / "memar-install.py"), "--check", str(self.kept)],
+            [sys.executable, str(LAUNCHER), "install", "--check", str(self.kept)],
             capture_output=True,
             env=environment,
         )
@@ -327,8 +282,8 @@ class CheckAsksNothing(unittest.TestCase):
 class SiblingSurface(unittest.TestCase):
     """A file in this folder may assume its neighbour is on disk beside it.
 
-    The two "into" layers no longer import the installer for a name it happens
-    to re-export; each asks the module that owns the concern. What replaced the
+    The two "into" layers do not import the installer for a name it happens to
+    re-export; each asks the module that owns the concern. What replaced the
     re-export is the pin below: the naming rule's claim that no file is both run
     and imported, which is the condition that makes every name in this folder
     legal.
@@ -336,18 +291,17 @@ class SiblingSurface(unittest.TestCase):
 
     def test_the_siblings_import_the_module_that_owns_each_concern(self):
         # Re-exporting a name from the entry point so a sibling can import it
-        # from one place is how a file ends up both run and imported, which is
-        # the case the naming rule cannot spell. Each asks its owner instead, so
-        # what is asserted is which module each name arrives from.
+        # from one place makes the entry point a second owner of the name. Each
+        # asks its owner instead, so what is asserted is which module each name
+        # arrives from.
         expected = {
             INTO_PROJECT: {
-                "use_utf8_stdio": "memar_console",
-                "is_memar_repository": "memar_repository",
+                "is_memar_repository": "machine.fs_memar_repository",
                 "recorded_value": "machine.env_location",
             },
             INTO_APPS: {
-                "use_utf8_stdio": "memar_console",
-                "NEVER_COPIED": "memar_copy_excluded",
+                "NEVER_COPIED": "machine.fs_copy_excluded",
+                "differs": "machine.fs_copy",
                 "resolve_root": "machine.env_location",
             },
         }
@@ -369,14 +323,13 @@ class SiblingSurface(unittest.TestCase):
                         f"{symbol} must arrive from {owner}; these are the "
                         f"imports the file has: {imports}",
                     )
-            self.assertNotIn("install", [owner for owner, _ in imports])
+            self.assertNotIn("services.install", [owner for owner, _ in imports])
 
     def test_no_sibling_reaches_through_the_entry_point_anymore(self):
         for name in (INTO_PROJECT, INTO_APPS):
             with self.subTest(name=name):
-                self.assertNotIn(
-                    "memar_install.",
-                    (SCRIPTS / name).read_text(encoding="utf-8"),
+                self.assertIsNone(
+                    re.search(r"services\.install\b(?!_)|import install\b", (SCRIPTS / name).read_text(encoding="utf-8")),
                 )
 
     def test_a_file_with_a_command_line_is_hyphenated_and_one_without_is_imported(self):
@@ -414,8 +367,8 @@ class SiblingSurface(unittest.TestCase):
             text = path.read_text(encoding="utf-8")
             if 'if __name__ == "__main__"' not in text:
                 continue
-            # Resolved to a path, not compared as a name: `memar-session.py` and
-            # `memar_session.py` differ by one separator, and `from memar_session
+            # Resolved to a path, not compared as a name: a run file `memar-x.py`
+            # and a module `memar_x.py` differ by one separator, and `from memar_x
             # import ...` reaches the second file, not the first. Comparing the
             # strings would report the sanctioned pair as a violation of the rule
             # the pair exists to satisfy.
@@ -447,14 +400,28 @@ class SiblingSurface(unittest.TestCase):
                 return True
         return False
 
-    def test_every_module_the_entry_point_imports_is_a_file_beside_it(self):
+    def test_every_module_the_installer_imports_is_a_file_in_this_folder(self):
         # The architecture is run from a checkout, so an import of a sibling is
-        # answered from the disk beside the entry point. A name with no file
-        # beside it is the standard library, and the question is about the rest.
-        for module in IMPORTED_MODULE.findall((SCRIPTS / "memar-install.py").read_text(encoding="utf-8")):
-            if module in STDLIB:
-                continue
-            self.assertTrue((SCRIPTS / f"{module}.py").is_file(), module)
+        # answered from the disk the launcher sits on. A name with no file in
+        # this folder is the standard library, and the question is about the rest.
+        for name in ("services/install.py", "services/install_machine.py", INTO_PROJECT, INTO_APPS):
+            for module in IMPORTED_MODULE.findall((SCRIPTS / name).read_text(encoding="utf-8")):
+                if module.partition(".")[0] in STDLIB:
+                    continue
+                with self.subTest(name=name, module=module):
+                    found = SCRIPTS.joinpath(*module.split("."))
+                    self.assertTrue(found.with_suffix(".py").is_file() or found.is_dir(), module)
+
+    def test_the_verb_imports_nothing_heavy_until_it_runs(self):
+        # Every `memar` invocation imports every service to learn what each verb
+        # accepts, so the verb's own module keeps the machine and the layers out
+        # of its top level; its run imports them.
+        text = (SCRIPTS / "services/install.py").read_text(encoding="utf-8")
+        top_level = re.findall(r"^(?:from ([\w.]+) import|import ([\w.]+))", text, re.MULTILINE)
+        self.assertEqual(
+            [module for pair in top_level for module in pair if module and module.partition(".")[0] not in STDLIB],
+            [],
+        )
 
 class ObtainsTheArchitecture(unittest.TestCase):
     """The bootstrap's own job is the checkout, and it is the whole of it."""
@@ -581,12 +548,10 @@ class StartsFromTheCheckout(unittest.TestCase):
         for bootstrap in BOOTSTRAPS:
             text = self.source(bootstrap)
             self.assertEqual(text.count(CONTINUATION), 1, bootstrap)
-            self.assertIn("memar-content.py", text)
-            self.assertIn("path .agents/skills/memar/SKILL.md", text)
             command = text.split(CONTINUATION, 1)[1].lstrip("\n")
             command = command.split("\n", 1)[0]
-            self.assertIn("memar-content.py", command, bootstrap)
-            self.assertNotIn("\n", command)
+            self.assertRegex(command, r'scripts[/\\]memar" content path \.agents/skills/memar/SKILL\.md$', bootstrap)
+            self.assertNotIn(".py", command, bootstrap)
 
     def test_the_installer_is_started_one_way_and_from_the_checkout(self):
         for bootstrap, pattern in (("install.sh", SH_RUN), ("install.ps1", PS_RUN)):
@@ -628,7 +593,7 @@ class FirstRunInterface(unittest.TestCase):
     """A first-time user's first command, on this machine."""
 
     def setUp(self) -> None:
-        self.scratch = tempfile.TemporaryDirectory(dir=TESTS)
+        self.scratch = tempfile.TemporaryDirectory(dir=suite_scratch())
         self.addCleanup(self.scratch.cleanup)
         self.saved_temp = os.environ.get("TEMP")
         self.addCleanup(self.restore_temp)
@@ -646,6 +611,16 @@ class FirstRunInterface(unittest.TestCase):
             self.skipTest("no POSIX shell on this machine")
         return subprocess.run(
             [shell, str(SCRIPTS / "install.sh"), *arguments],
+            capture_output=True,
+            env=dict(os.environ, PYTHONDONTWRITEBYTECODE="1"),
+        )
+
+    def ps(self, *arguments: str) -> subprocess.CompletedProcess:
+        shell = shutil.which("powershell") or shutil.which("pwsh")
+        if not shell:
+            self.skipTest("no PowerShell on this machine")
+        return subprocess.run(
+            [shell, "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", str(SCRIPTS / "install.ps1"), *arguments],
             capture_output=True,
             env=dict(os.environ, PYTHONDONTWRITEBYTECODE="1"),
         )
@@ -670,6 +645,26 @@ class FirstRunInterface(unittest.TestCase):
         )
         parsed = subprocess.run([shell, "-NoProfile", "-Command", command], capture_output=True)
         self.assertEqual(parsed.returncode, 0, parsed.stdout.decode("utf-8", "replace"))
+
+    def test_the_windows_help_is_its_help_block_from_the_synopsis_to_the_notes(self):
+        # The block is found, not counted to: a header above it, such as the
+        # license line, must not reach the output nor cut it short.
+        shell = shutil.which("powershell") or shutil.which("pwsh")
+        if not shell:
+            self.skipTest("no PowerShell on this machine")
+        asked = subprocess.run(
+            [shell, "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", str(SCRIPTS / "install.ps1"), "-Help"],
+            capture_output=True,
+        )
+        self.assertEqual(asked.returncode, 0, asked.stderr.decode("utf-8", "replace"))
+        shown = asked.stdout.decode("utf-8", "replace").replace("\r\n", "\n")
+        self.assertTrue(shown.startswith(".SYNOPSIS\n"), shown[:80])
+        for option in ("-Path", "-Register", "-Check", "restart your shell"):
+            with self.subTest(option=option):
+                self.assertIn(option, shown)
+        for phrase in ("LEGAL", "<#", "#>", ".NOTES", "Prerequisites", "One mechanism decides"):
+            with self.subTest(phrase=phrase):
+                self.assertNotIn(phrase, shown)
 
     def test_help_names_the_ways_of_naming_a_folder_and_not_the_mechanism(self):
         # A person running the bootstrap for the first time needs the invocations
@@ -716,25 +711,72 @@ class FirstRunInterface(unittest.TestCase):
 
     def test_a_check_asks_the_architecture_and_writes_nothing(self):
         # The whole chain, without an install: the script finds the checkout it
-        # is in, runs the installer from it, and the installer answers the check
-        # and stops. Nothing is cloned, so the answer arrives with no network.
+        # is in, hands the check to `memar install` through its launcher, and the
+        # installer answers the check and stops. Nothing is cloned, so the answer
+        # arrives with no network.
         below = Path(self.scratch.name) / "Memar"
-        asked = self.sh("--check", str(below))
-        self.assertEqual(asked.returncode, 1)
-        self.assertIn(str(Path(self.scratch.name).resolve()), printed(asked, "stderr"))
-        self.assertIn("temporary directory", printed(asked))
-        self.assertNotIn("git clone", printed(asked))
-        self.assertFalse(below.exists())
-        self.assertEqual(sorted(entry.name for entry in Path(self.scratch.name).iterdir()), [])
+        for bootstrap, asked in (("install.sh", lambda: self.sh("--check", str(below))),
+                                 ("install.ps1", lambda: self.ps("-Check", str(below)))):
+            with self.subTest(bootstrap=bootstrap):
+                asked = asked()
+                self.assertEqual(asked.returncode, 1, printed(asked, "stderr"))
+                self.assertIn(REACHED_THE_INSTALLER, printed(asked))
+                self.assertIn(str(Path(self.scratch.name).resolve()), printed(asked, "stderr"))
+                self.assertIn("temporary directory", printed(asked))
+                self.assertNotIn("git clone", printed(asked))
+                self.assertFalse(below.exists())
+                self.assertEqual(sorted(entry.name for entry in Path(self.scratch.name).iterdir()), [])
 
     def test_a_check_of_a_folder_that_would_be_kept_answers_and_creates_nothing(self):
         kept = SCRIPTS / "a-folder-that-is-not-temporary"
         self.assertFalse(kept.exists())
-        asked = self.sh("--check", str(kept))
-        self.assertEqual(asked.returncode, 0, printed(asked, "stderr"))
-        self.assertIn("not refused", printed(asked))
-        self.assertNotIn(CONTINUATION, printed(asked))
-        self.assertFalse(kept.exists())
+        for bootstrap, asked in (("install.sh", lambda: self.sh("--check", str(kept))),
+                                 ("install.ps1", lambda: self.ps("-Check", str(kept)))):
+            with self.subTest(bootstrap=bootstrap):
+                asked = asked()
+                self.assertEqual(asked.returncode, 0, printed(asked, "stderr"))
+                self.assertIn(REACHED_THE_INSTALLER, printed(asked))
+                self.assertIn("not refused", printed(asked))
+                self.assertNotIn(CONTINUATION, printed(asked))
+                self.assertFalse(kept.exists())
+
+class DeveloperIsMarked(unittest.TestCase):
+    """`--developer` marks the recorded checkout in its own git configuration and changes nothing else."""
+
+    def setUp(self) -> None:
+        scratch = tempfile.TemporaryDirectory(dir=suite_scratch(), ignore_cleanup_errors=True)
+        self.addCleanup(scratch.cleanup)
+        self.checkout = Path(scratch.name) / "memar"
+        (self.checkout / "docs").mkdir(parents=True)
+        (self.checkout / "README.md").write_text("# Memar\n", encoding="utf-8")
+        (self.checkout / SKILL_MARKER).parent.mkdir(parents=True)
+        (self.checkout / SKILL_MARKER).write_text("skill\n", encoding="utf-8")
+        subprocess.run(["git", "init", "-q", str(self.checkout)], check=True)
+
+    def git(self, *arguments: str) -> str:
+        return subprocess.run(
+            ["git", "-C", str(self.checkout), *arguments], capture_output=True, text=True
+        ).stdout.strip()
+
+    def test_the_recorded_checkout_is_marked_and_its_tree_is_unchanged(self) -> None:
+        before = self.git("status", "--porcelain")
+        with unittest.mock.patch.object(machine_layer, "recorded_root", return_value=self.checkout):
+            with contextlib.redirect_stdout(io.StringIO()) as out:
+                machine_layer.mark_developer()
+        self.assertTrue(update_checkout.is_marked_development(self.checkout))
+        self.assertEqual(self.git("status", "--porcelain"), before)
+        self.assertIn("marked as a development checkout", out.getvalue())
+        self.assertIn(f"config --unset {update_checkout.DEVELOPMENT_KEY}", out.getvalue())
+
+    def test_a_folder_that_is_not_a_memar_repository_is_refused(self) -> None:
+        (self.checkout / "README.md").unlink()
+        with unittest.mock.patch.object(machine_layer, "recorded_root", return_value=None), \
+                unittest.mock.patch.object(machine_layer, "checkout_root", return_value=self.checkout):
+            with self.assertRaises(SystemExit) as refused:
+                machine_layer.mark_developer()
+        self.assertIn("nothing was marked", str(refused.exception))
+        self.assertFalse(update_checkout.is_marked_development(self.checkout))
+
 
 class HelpUnchanged(unittest.TestCase):
     """The refactoring changed no consumer's interface.
@@ -748,14 +790,21 @@ class HelpUnchanged(unittest.TestCase):
     their order — and each tool's own subject, in whatever wording it uses.
     """
 
-    def test_each_installed_tool_answers_a_help_request(self):
-        for name in (INTO_PROJECT, INTO_APPS):
-            with self.subTest(name=name):
-                answered = printed(run_script(name, "--help"))
-                self.assertIn("usage:", answered)
+    def test_the_installer_answers_a_help_request_as_a_memar_verb(self):
+        shown = printed(run_install("--help"))
+        self.assertTrue(shown.startswith("usage: memar install "), shown[:80])
+
+    def test_the_layers_declare_no_command_line_of_their_own(self):
+        # The router lists a verb for each service that describes one, and a
+        # layer is asked by the installer, not by a person: none describes a verb
+        # and none is run.
+        for layer in (machine_layer, project_layer, apps_layer):
+            with self.subTest(layer=layer.__name__):
+                self.assertFalse(hasattr(layer, "describe"))
+                self.assertNotIn('if __name__ == "__main__"', Path(layer.__file__).read_text(encoding="utf-8"))
 
     def test_the_installer_still_takes_the_same_arguments_in_the_same_order(self):
-        shown = printed(run_script("memar-install.py", "--help"))
+        shown = printed(run_install("--help"))
         options = re.findall(r"^  (--\S+)( \S+)?  ", shown, re.MULTILINE)
         self.assertEqual(
             tuple((option, (argument or "").strip()) for option, argument in options),
@@ -767,14 +816,15 @@ class HelpUnchanged(unittest.TestCase):
         # addressed to whoever opens the file and is the reasoning behind the run.
         # Pinning the docstring here is what made the two the same text, which is
         # how the mechanism ended up printed to every person installing Memar.
-        shown = printed(run_script("memar-install.py", "--help"))
+        shown = printed(run_install("--help"))
         self.assertIn(memar_install.DESCRIPTION.strip(), shown)
         self.assertNotIn(memar_install.__doc__.strip(), shown)
 
     def test_the_installer_help_carries_no_mechanism(self):
-        shown = printed(run_script("memar-install.py", "--help"))
+        shown = printed(run_install("--help"))
         for phrase in (
-            "memar_repository.py",
+            "machine/fs_memar_repository.py",
+            "services/update_checkout.py",
             "machine/env_location.py",
             "machine/fs_lock.py",
             "advisory",
@@ -787,7 +837,7 @@ class HelpUnchanged(unittest.TestCase):
         # The UserActionNote. A run that writes an environment variable and says
         # nothing about the restart leaves every caller with a `memar` that is not
         # found until they happen to open a new terminal.
-        shown = printed(run_script("memar-install.py", "--help"))
+        shown = printed(run_install("--help"))
         self.assertIn("restart", shown)
         self.assertIn("--check", shown)
 
@@ -801,48 +851,62 @@ class BareRunInstallsEveryLayer(unittest.TestCase):
     """
 
     def setUp(self) -> None:
-        self.children: list[tuple[Path, list[str]]] = []
+        # Every layer stubbed, each recording what it was asked, so the order a
+        # run asks them in is what is observed and nothing reaches the machine.
+        self.asked: list[tuple[str, dict]] = []
+        for module, name in (
+            (machine_layer, "register"),
+            (machine_layer, "report_installed"),
+            (project_layer, "into_project"),
+            (apps_layer, "into_apps"),
+        ):
+            patched = unittest.mock.patch.object(
+                module, name, side_effect=lambda *args, _name=name, **kwargs: self.asked.append((_name, kwargs))
+            )
+            patched.start()
+            self.addCleanup(patched.stop)
 
-        def record(script: Path, arguments: list[str], label: str) -> subprocess.CompletedProcess:
-            self.children.append((script, list(arguments)))
-            return subprocess.CompletedProcess([], 0, b"", b"")
-
-        self.record = record
-
-    def collect(self) -> None:
-        saved = memar_install.run_child
-        memar_install.run_child = self.record
-        self.addCleanup(setattr, memar_install, "run_child", saved)
+    def run_verb(self, *arguments: str, recorded: Path | None = None) -> tuple[int, str, str]:
+        """`memar install ARGUMENTS` as the router runs it, with RECORDED as the recorded root."""
+        parser = argparse.ArgumentParser()
+        command = memar_install.describe(parser.add_subparsers())
+        out, err = io.StringIO(), io.StringIO()
+        with unittest.mock.patch.object(location, "recorded_root", return_value=recorded), \
+                contextlib.redirect_stdout(out), contextlib.redirect_stderr(err):
+            code = command(parser.parse_args(["install", *arguments]))
+        return code, out.getvalue(), err.getvalue()
 
     def test_both_layers_are_asked_and_in_that_order(self):
-        self.collect()
         memar_install.into_project_and_apps()
-        self.assertEqual(
-            [script.name for script, _ in self.children],
-            [INTO_PROJECT, INTO_APPS],
-        )
-
-    def test_a_layer_is_asked_by_the_file_the_naming_rule_admits(self):
-        # Both are hyphenated, which is why they are run rather than imported.
-        for script in (memar_install.INTO_PROJECT, memar_install.INTO_APPS):
-            with self.subTest(script=script.name):
-                self.assertEqual(script.suffix, ".py")
-                self.assertEqual(script.name, script.name.replace("_", "-"))
-                self.assertTrue(script.is_file())
+        self.assertEqual([name for name, _ in self.asked], ["into_project", "into_apps"])
 
     def test_a_dry_run_is_forwarded_to_the_layers(self):
         # The machine layer writes a value, so it is never a dry run; what a
         # dry run previews is what the project and app layers would write.
-        self.collect()
-        memar_install.into_project_and_apps(["--dry-run"])
-        self.assertEqual([arguments for _, arguments in self.children], [["--dry-run"], ["--dry-run"]])
+        self.run_verb("--dry-run", recorded=SCRIPTS)
+        self.assertEqual(
+            self.asked,
+            [("report_installed", {}), ("into_project", {"dry_run": True}), ("into_apps", {"dry_run": True})],
+        )
 
     def test_a_layer_that_does_not_apply_does_not_stop_the_run(self):
-        self.collect()
         # The app layer's dependency is the machine layer, not the project
         # layer, so a project that refused must not cost the skill its copies.
-        memar_install.into_project_and_apps()
-        self.assertEqual(len(self.children), 2)
+        refusal = "error: /home is not a project directory"
+        project_layer.into_project.side_effect = SystemExit(refusal)
+        code, out, err = self.run_verb(recorded=SCRIPTS)
+        self.assertEqual(code, 0)
+        self.assertEqual(self.asked[-1], ("into_apps", {"dry_run": False}))
+        self.assertIn(refusal, err)
+        self.assertLess(out.index("==> Into this project"), out.index("==> Into the agent apps"))
+
+    def test_a_machine_only_run_skips_the_project_and_the_apps(self):
+        self.run_verb("--machine-only", recorded=SCRIPTS)
+        self.assertEqual([name for name, _ in self.asked], ["report_installed"])
+
+    def test_nothing_recorded_registers_this_checkout_and_then_asks_the_layers(self):
+        self.run_verb()
+        self.assertEqual([name for name, _ in self.asked], ["register", "into_project", "into_apps"])
 
 
 if __name__ == "__main__":

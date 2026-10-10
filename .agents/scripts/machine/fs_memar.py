@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# For license and copyright information please see the LEGAL file in the code repository
+
 """machine/fs_memar.py — where Memar lives on disk: the one home for location answers.
 
 Every script that needs a Memar path — the checkout, the recorded root, the
@@ -16,9 +18,9 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from memar_console import fail
-from memar_repository import is_memar_repository
+from machine.console import fail
 from machine.env_location import recorded_root
+from machine.fs_memar_repository import is_memar_repository
 
 # The folder Memar's own configuration lives in, relative to a checkout root.
 AGENTS_DIRNAME = ".agents"
@@ -26,6 +28,9 @@ AGENTS_DIRNAME = ".agents"
 # because this is the module that joins a root to a scratch path, not because
 # the string belongs to the idea of scratch on its own.
 TEMP_DIRNAME = "temp"
+# The sessions' own folder inside it, so a session folder is never a sibling of
+# the locks, the test scratch, or whatever else scratch holds.
+SESSIONS_DIRNAME = "sessions"
 
 # The layout inside a checkout. Each is a path relative to the root, so a caller
 # joins it to a checkout rather than spelling the join again.
@@ -74,8 +79,15 @@ def scratch_root() -> Path:
     return root
 
 
+def sessions_root() -> Path:
+    """The folder every session's folder lives in: <root>/temp/sessions/."""
+    root = scratch_root() / SESSIONS_DIRNAME
+    root.mkdir(exist_ok=True)
+    return root
+
+
 def session_dir(session_id: str, *, create: bool = False) -> Path:
-    """The folder of one session, under the scratch root. No guessing, no creation.
+    """The folder of one session, under the sessions root. No guessing, no creation.
 
     The id names one folder segment, never a path: anything else is refused
     rather than resolved. Pass create=True only where the caller owns the
@@ -83,7 +95,7 @@ def session_dir(session_id: str, *, create: bool = False) -> Path:
     """
     if not session_id or session_id in (".", "..") or "/" in session_id or "\\" in session_id:
         fail(f"refusing session id {session_id!r}: name one folder segment, not a path.")
-    path = scratch_root() / session_id
+    path = sessions_root() / session_id
     if create:
         path.mkdir(parents=True, exist_ok=True)
     return path

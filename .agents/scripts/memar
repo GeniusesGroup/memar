@@ -1,34 +1,52 @@
 #!/usr/bin/env python3
+# For license and copyright information please see the LEGAL file in the code repository
+
 """memar — the one command a person or an agent types to reach Memar.
 
     memar <verb>              what it routes to; run `memar --help`
-    memar --help              this text
+    memar --help              what Memar is, and the verbs its services declare
 
-This file routes and nothing else. Every verb it accepts belongs to a tool that
-declares its own interface, and that declaration — not this file — stays the
-authority for what the verb accepts and what it prints. A router that restated
-either would be a second interface for one behavior, and the two would drift.
+This file routes and nothing else, and it knows no verb. Every module on the
+`services/` shelf that has a command-line face declares it through one function,
+`describe(verbs)`, the way every Memar type introduces itself
+(modules/computer/type/protocol/detail.kh): the consumer calls only the method
+it needs, and the declaration stays the one authority for what a verb accepts
+and what its help says. A router that restated either would be a second
+interface for one behavior, and the two would drift.
 
-**Two audiences, two texts, and this file is where each lives.** `memar --help`
-is addressed to a person who has Memar and wants to know what it is and what it
-does for them, so it says that and stops; the design below is addressed to
-whoever opens this file, and it is here rather than in the help output because a
-person running the command has no use for how the router is built. What is
-between those two is the error a DevActionNote exists to prevent: help text
-that explains the implementation is no longer help, and the implementer reading
-it learns nothing they cannot get from the file itself.
+**The contract**, which every service with a command line keeps:
+
+    describe(verbs) -> callable | None
+
+`verbs` is where the module's verb goes: `memar`'s own verbs for a domain's
+module (`services/session.py`), that domain verb's sub-verbs for one of its
+capabilities (`services/session_new.py`). It offers argparse's `add_parser`;
+the service registers at most one verb on it, with its one-line summary as
+`help` and, where it has one, its overview as `description`, adds the verb's
+arguments, and returns
+the callable that runs it — `run(args)`, given the parsed namespace, returning
+an exit status or None for 0. A domain's run, where it returns one, runs before
+its sub-verb's, so what every verb of a domain owes is said once. A module that
+registers nothing and returns a callable asks to act before whichever verb is
+routed — `before(argv)`, given the arguments as typed, even for `--help`, and
+never failing the verb. `describe` does no work beyond declaring, and a module
+that declares imports nothing heavy at module level, because every invocation
+imports every service to assemble the command line.
+
+**Two audiences, two texts.** `memar --help` is addressed to a person who has
+Memar and wants to know what it is and what it does for them: it says what
+Memar is, which is the command's own and so held here, and lists what the
+services declare. The design above is addressed to whoever opens this file.
 
 The name is the whole of the design. A framework whose entry point is a path
 into a scripts folder asks every caller to know where it lives and what it is
 called; `memar` asks for neither, so the same word works in a shell, in an
 agent's command, in a CI step, and in a document that tells a reader what to
-type. What that buys is not a shorter skill file on its own — it is that the
-skill can be a routing sentence instead of a description of a filesystem.
+type.
 
-**What it routes to is what Memar itself does**, and nothing else: installing
-Memar, opening a session's scratch folder, and the content of a checkout. A
-tool that constrains a host tool the framework has no claim to does not belong
-here — see [`host/README.md`](./host/README.md) for why the path carries that
+**What it routes to is what Memar itself does**, and nothing else. A tool that
+constrains a host tool the framework has no claim to does not belong on the
+shelf — see [`host/README.md`](./host/README.md) for why the path carries that
 claim instead.
 
 Two launchers carry this file: this one, executable where a file may be, and
@@ -40,93 +58,147 @@ Usage is the interface. Do not duplicate these recipes as prose catalogs.
 
 from __future__ import annotations
 
-import subprocess
+import argparse
+import importlib
 import sys
 from pathlib import Path
+from typing import Callable, Iterable
 
 SCRIPTS = Path(__file__).resolve().parent
 if str(SCRIPTS) not in sys.path:
     sys.path.insert(0, str(SCRIPTS))
 
-from memar_console import use_utf8_stdio
+from machine.console import use_utf8_stdio
 
-CONTENT = SCRIPTS / "memar-content.py"
-INSTALLER = SCRIPTS / "memar-install.py"
-SESSION = SCRIPTS / "memar-session.py"
+SHELF = "services"
+DESCRIBE = "describe"
+# A domain's module is named by the domain alone; each capability carries the
+# domain as the prefix before this separator (README → How a file is named).
+DOMAIN_SEPARATOR = "_"
+VERB_METAVAR = "<verb>"
+HELP_WORDS = ("help",)
+RUN_PREFIX = "_memar_run_"
 
-# One word per tool, and each is asked once per machine or once per session
-# rather than once per question. `install` records where Memar lives, which is
-# the question a machine has once; `session` opens and closes a scratch folder,
-# which is the question a session has once. Everything else a reader brings
-# belongs to the content tool, because Memar's written content is where every
-# other question is answered.
-INSTALL_VERB = "install"
-SESSION_VERB = "session"
-CONTENT_VERB = "content"
-
-USAGE = """memar — Memar, a development framework whose model is written down
+ABOUT = """memar — Memar, a development framework whose model is written down
 
 Memar keeps its model of software design, its rules, and its language sources
-as documents in a checkout, and this is the one command that reaches them.
+as documents in a checkout, and this is the one command that reaches them."""
 
-  memar install ...     put Memar on this machine, and into this project
-  memar session ...     open the scratch folder one piece of work gets
-  memar content ...     ask a question of what Memar has written
-
-To look rather than ask: `memar content path` says where this checkout is, and
-`memar content search <term>` looks through it. Ask any verb with `--help` and it
-says what it accepts.
+EPILOG = """Ask any verb with `--help` and it says what it accepts.
 
 Before deleting, moving, restoring, or committing files, or putting text into a
-file, read the scripts README — .agents/scripts/README.md in the checkout
-`memar content path` names — and act as it says.
-"""
+file, read the scripts README — .agents/scripts/README.md in the Memar
+checkout — and act as it says."""
 
 
-def route(argv: list[str]) -> tuple[Path, list[str]]:
-    """Which tool an invocation belongs to, and the arguments it receives.
+class Verbs:
+    """Where one level's verbs go: argparse's `add_parser`, made on first use.
 
-    Pure, so the routing is testable without running any tool: a test that has
-    to execute a tool to learn where an argument went is a test of that tool.
+    A level whose services register nothing gets no verb group, so a domain verb
+    that runs itself never asks for a sub-verb it has none of.
     """
-    if argv and argv[0] == INSTALL_VERB:
-        return INSTALLER, argv[1:]
-    if argv and argv[0] == SESSION_VERB:
-        return SESSION, argv[1:]
-    # Fail-closed: falling back to the content tool is allowed for every
-    # non-install invocation (including bare and including `content` itself, which
-    # its own tool declares); a missing tool file must error exit 2 below, never
-    # guess another script.
-    return CONTENT, list(argv)
+
+    def __init__(self, parser: argparse.ArgumentParser, depth: int) -> None:
+        self.parser = parser
+        self.depth = depth
+        self.group: argparse._SubParsersAction | None = None
+
+    def add_parser(self, name: str, **kwargs) -> argparse.ArgumentParser:
+        if self.group is None:
+            self.group = self.parser.add_subparsers(
+                title="verbs",
+                dest=f"_memar_verb_{self.depth}",
+                metavar=VERB_METAVAR,
+                required=True,
+            )
+        kwargs.setdefault("formatter_class", argparse.RawDescriptionHelpFormatter)
+        return self.group.add_parser(name, **kwargs)
+
+    def registered(self) -> dict[str, argparse.ArgumentParser]:
+        return dict(self.group.choices) if self.group is not None else {}
+
+
+def services(shelf: Path = SCRIPTS / SHELF) -> list[str]:
+    """The modules on the shelf, each domain's own before its capabilities."""
+    names = (path.stem for path in shelf.glob("*.py") if not path.stem.startswith("_"))
+    return sorted(names, key=lambda name: (DOMAIN_SEPARATOR in name, name))
+
+
+def assemble(
+    names: Iterable[str],
+    load: Callable[[str], object] = lambda name: importlib.import_module(f"{SHELF}.{name}"),
+) -> tuple[argparse.ArgumentParser, list[Callable[[list[str]], None]]]:
+    """The command line the services declare, and what asks to run before every verb.
+
+    Pure apart from importing: no service does any work while describing itself.
+    A service that fails to import is named on stderr and left out, so one broken
+    service costs its own verbs, never `memar --help` or the verb that repairs it.
+    """
+    top = argparse.ArgumentParser(
+        prog="memar",
+        description=ABOUT,
+        epilog=EPILOG,
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+    )
+    root = Verbs(top, 0)
+    levels: dict[str, Verbs] = {}
+    before: list[Callable[[list[str]], None]] = []
+    for name in names:
+        try:
+            module = load(name)
+        except Exception as failed:
+            print(
+                f"memar: {SHELF}/{name}.py did not load, so its verbs are missing: "
+                f"{type(failed).__name__}: {failed}",
+                file=sys.stderr,
+            )
+            continue
+        describe = getattr(module, DESCRIBE, None)
+        if describe is None:
+            continue
+        domain, separator, _ = name.partition(DOMAIN_SEPARATOR)
+        verbs = levels.get(domain) if separator else root
+        if verbs is None:
+            continue
+        known = verbs.registered()
+        run = describe(verbs)
+        added = {key: parser for key, parser in verbs.registered().items() if key not in known}
+        if not added:
+            if run is not None:
+                before.append(run)
+            continue
+        for parser in {id(parser): parser for parser in added.values()}.values():
+            if run is not None:
+                parser.set_defaults(**{f"{RUN_PREFIX}{verbs.depth}": run})
+            if not separator:
+                levels[domain] = Verbs(parser, verbs.depth + 1)
+    return top, before
+
+
+def runs(parsed: argparse.Namespace) -> list[Callable[[argparse.Namespace], int | None]]:
+    """The runs the parsed verbs declared, outermost first."""
+    found = {
+        int(key[len(RUN_PREFIX):]): value
+        for key, value in vars(parsed).items()
+        if key.startswith(RUN_PREFIX)
+    }
+    return [found[depth] for depth in sorted(found)]
 
 
 def main(argv: list[str] | None = None) -> int:
     use_utf8_stdio()
     args = list(sys.argv[1:] if argv is None else argv)
-    if args and args[0] in ("--help", "-h", "help"):
-        # The router's own help describes the routing. `memar <verb> --help`
-        # reaches the tool, which is where a verb's interface is declared.
-        sys.stdout.write(USAGE)
-        return 0
-    target, forwarded = route(args)
-    # Fail-closed: a tool file not beside this launcher must error exit 2;
-    # re-fetch Memar rather than routing around the missing file.
-    if not target.is_file():
-        sys.stderr.write(
-            f"memar: {target.name} is not beside this launcher, so the verb "
-            "cannot be routed. Re-fetch Memar rather than working around it.\n"
-        )
-        return 2
-    # No environment is prepared here, and none is needed. The tool knows which
-    # repository it is inside — two levels up from its own file — so a caller
-    # reaches the content without the location variable being set, and a machine
-    # that has registered a different checkout for its projects keeps reaching
-    # that one for them.
-    # Fail-closed: this checkout fallback is allowed only for a tool running
-    # inside its own checkout; a caller needing the recorded location must ask
-    # `memar install --root` and error, never walk or guess here.
-    completed = subprocess.run([sys.executable, str(target), *forwarded])
-    return completed.returncode
+    top, before = assemble(services())
+    for step in before:
+        step(args)
+    if args[:1] and args[0] in HELP_WORDS:
+        args = ["--help", *args[1:]]
+    parsed = top.parse_args(args)
+    for run in runs(parsed):
+        status = run(parsed)
+        if status:
+            return status
+    return 0
 
 
 if __name__ == "__main__":

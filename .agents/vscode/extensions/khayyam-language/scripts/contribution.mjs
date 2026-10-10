@@ -1,3 +1,5 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
 // One theme the manifest contributes, read and judged.
 //
 // A theme reaches a reader only by being OFFERED: the manifest names it, and a host

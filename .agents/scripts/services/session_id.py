@@ -1,16 +1,13 @@
 #!/usr/bin/env python3
-"""memar_session.py — one session's identity: the id its folder and notes carry.
+# For license and copyright information please see the LEGAL file in the code repository
+
+"""services/session_id.py — one session's identity: the id its folder and notes carry.
 
 An id, and nothing else. It is minted here rather than beside the scratch folder
-because a session is a session whichever tool asks for one: the session tool
-names a folder with it, and a write under `memar content` names its intent note
+because a session is a session whichever tool asks for one: the session services
+name a folder with it, and a write under `memar content` names its intent note
 with it, and two minting functions would produce two id formats that a reader
 comparing them could not match.
-
-It is a module beside `memar-session.py` rather than inside it because a hyphen
-is not a legal module name and the run-only half cannot be imported. One file
-here is the cost of that, and it is stated in the folder README rather than
-left for a reader to find two names that differ by one character.
 """
 from __future__ import annotations
 
@@ -23,9 +20,12 @@ _minted = count()
 # The form new_session_id mints, read back by whatever has to tell a session's
 # folder from another folder beside it.
 _MINTED_FORM = re.compile(r"^\d{8}T\d{6}Z-\d+-[0-9a-f]+$")
-# The form minted before the clock came first. Folders named so still exist and
-# must still be reaped; once none is younger than the idle limit it can go.
-_EARLIER_FORM = re.compile(r"^\d+-[0-9a-f]+-[0-9a-f]+$")
+# The form minted before the clock came first: the process id, time.time_ns() in
+# hex, and the counter in hex. Folders named so still exist and must still be
+# reaped; once none is younger than the idle limit it can go. The clock is held
+# to its sixteen digits, the width every time_ns() since 2006 has, so a person's
+# folder such as 2024-01-01 is not taken for a session.
+_EARLIER_FORM = re.compile(r"^\d+-[0-9a-f]{16}-[0-9a-f]+$")
 
 
 def new_session_id() -> str:

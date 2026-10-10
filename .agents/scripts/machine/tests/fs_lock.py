@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
+# For license and copyright information please see the LEGAL file in the code repository
+
 """Tests for the per-file advisory edit locks in `fs_lock.py`.
 
-    python .agents/scripts/tests/fs_lock.py
+    python .agents/scripts/machine/tests/fs_lock.py
 
 The subject is the per-file lock surface of `fs_lock.py`, named for the
 file that holds it per
@@ -33,6 +35,11 @@ What is pinned, and what each pin is for:
   ChangedBaseDetected  Verifying after acquiring compares the plan-time base
                      against the lock-time file; any move - edited, deleted,
                      or newly appeared - raises instead of applying blind.
+  TryLockGoesAway    A take that must not wait answers no while a live holder
+                     has the lock, and yes once it is released or its holder
+                     is dead.
+  OnceADay           The daily guard answers yes to the first claim of a day
+                     and no to every later one, and yes again on a new day.
 
 Usage is the interface. Do not duplicate these recipes as prose catalogs.
 """
@@ -60,6 +67,8 @@ CHECKOUT = SCRIPTS.parent.parent
 sys.path.insert(0, str(SCRIPTS))
 sys.dont_write_bytecode = True
 
+from machine.fs_test_scratch import suite_scratch
+
 import machine.fs_lock as fs_lock
 
 
@@ -67,9 +76,9 @@ class Fixture(unittest.TestCase):
     """A target file inside this folder and an explicit lock dir for tests."""
 
     def setUp(self) -> None:
-        self.targets = tempfile.TemporaryDirectory(dir=TESTS)
+        self.targets = tempfile.TemporaryDirectory(dir=suite_scratch())
         self.addCleanup(self.targets.cleanup)
-        self.locks = tempfile.TemporaryDirectory()
+        self.locks = tempfile.TemporaryDirectory(dir=suite_scratch())
         self.addCleanup(self.locks.cleanup)
         self.lock_dir = Path(self.locks.name)
         self.target = Path(self.targets.name) / "notes.md"
@@ -297,6 +306,36 @@ class ChangedBaseDetected(Fixture):
                     entered.append(True)
         self.assertEqual(entered, [])
         self.assertFalse(lock.exists())
+
+
+class TryLockGoesAway(Fixture):
+    def test_a_held_lock_is_not_taken_and_a_released_one_is(self) -> None:
+        lock = self.lock_dir / "job.lock"
+        self.assertTrue(fs_lock.try_lock(lock, 60))
+        self.assertFalse(fs_lock.try_lock(lock, 60))
+        fs_lock.release_lock(lock)
+        self.assertTrue(fs_lock.try_lock(lock, 60))
+
+    def test_a_dead_holders_lock_is_taken_over(self) -> None:
+        lock = self.lock_dir / "job.lock"
+        lock.write_text("", encoding="utf-8")
+        old = time.time() - 120
+        os.utime(lock, (old, old))
+        self.assertTrue(fs_lock.try_lock(lock, 60))
+
+
+class OnceADay(Fixture):
+    def test_the_first_claim_of_the_day_is_the_only_one(self) -> None:
+        marker = self.lock_dir / "daily" / "job.daily"
+        self.assertTrue(fs_lock.claim_today(marker))
+        self.assertFalse(fs_lock.claim_today(marker))
+        self.assertFalse(fs_lock.claim_today(marker))
+
+    def test_a_marker_from_another_day_is_claimed_again(self) -> None:
+        marker = self.lock_dir / "job.daily"
+        marker.write_text("2000-01-01\n", encoding="utf-8")
+        self.assertTrue(fs_lock.claim_today(marker))
+        self.assertFalse(fs_lock.claim_today(marker))
 
 
 if __name__ == "__main__":

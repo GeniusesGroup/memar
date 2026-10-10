@@ -1,4 +1,6 @@
 #!/bin/sh
+# For license and copyright information please see the LEGAL file in the code repository
+
 # Put Memar on this machine.
 #
 #   ./install.sh                     install into ~/Memar
@@ -8,9 +10,10 @@
 #   ./install.sh --check /tmp/Memar  would a folder be refused? installs nothing
 #
 # What it does: makes sure git and Python are here, obtains a Memar checkout,
-# and hands the run to Memar's installer, which puts Memar on this machine, into
-# the project you are in, and into the AI agent apps on this machine. Each step
-# prints what it did. Running it again is safe and costs nothing.
+# and hands the run to Memar's installer, `memar install`, which puts Memar on
+# this machine, into the project you are in, and into the AI agent apps on this
+# machine. Each step prints what it did. Running it again is safe and costs
+# nothing.
 #
 # What you must do afterwards: this script prints one command this program can
 # run at once, so it does not need a restart to load the skill, and you still
@@ -50,9 +53,17 @@
 #      No file of the architecture is fetched over the network and none is run
 #      from memory, so a first run costs one clone and nothing else. A folder you
 #      named that already holds something else is refused, and nothing is deleted.
-#   3. The installer — memar-install.py, run from the checkout step 2 settled on, with
-#      the rest of the architecture beside it. What it decides and reports is
-#      declared by its own help; run it with --help for that interface.
+#   3. The installer — `memar install`, run through the launcher of the checkout
+#      step 2 settled on, with the rest of the architecture beside it. What it
+#      decides and reports is declared by its own help; run `memar install
+#      --help` for that interface.
+#
+# The launcher asks the daily update before every verb it routes, and the
+# hand-off keeps it from starting one: MEMAR_NO_AUTO_UPDATE=1 is set for the
+# installer's process alone. An update started mid-install would fetch into a
+# checkout the install has not recorded yet — or into the one recorded before
+# it — and refresh the skill copies and editor extensions the install is
+# writing at the same moment.
 #
 # One mechanism decides where Memar lives: the MEMAR_ROOT environment variable,
 # written at install time by the installer and read literally by everything. No
@@ -73,9 +84,10 @@ set -eu
 
 REPOSITORY_URL="https://github.com/GeniusesGroup/memar.git"
 BOOTSTRAP_URL="https://raw.githubusercontent.com/GeniusesGroup/memar/main/.agents/scripts/install.sh"
-# Where the installer lives inside a checkout, and where this bootstrap lives
-# inside one. The pair is what makes "the architecture is here" one question.
-ARCHITECTURE_ENTRY=".agents/scripts/memar-install.py"
+# Where the launcher the installer is reached through lives inside a checkout,
+# and where this bootstrap lives inside one. The pair is what makes "the
+# architecture is here" one question.
+ARCHITECTURE_ENTRY=".agents/scripts/memar"
 BOOTSTRAP_ENTRY="install.sh"
 # The folder a run with no arguments obtains the architecture into. The installer's
 # own target module holds the same name, and the two are pinned to each other.
@@ -104,11 +116,12 @@ for argument in "$@"; do
     fi
     case "$argument" in
         -h | --help)
-            # The comment block at the top of this file is the documentation;
-            # print it rather than keeping a second copy in the parser.
+            # The comment block at the top of this file, after the license
+            # header and its blank line, is the documentation; print it rather
+            # than keeping a second copy in the parser.
             [ -f "$0" ] ||
                 fail "--help needs this file; fetch it from $BOOTSTRAP_URL and run it from there."
-            awk 'NR>1 && /^#/ { sub(/^# ?/, ""); print; next } NR>1 { exit }' "$0"
+            awk 'help && /^#/ { sub(/^# ?/, ""); print; next } help { exit } /^$/ { help = 1 }' "$0"
             exit 0
             ;;
         --path)
@@ -258,17 +271,17 @@ absolute_path() {
 target="$(absolute_path "$target")"
 
 # The checkout this script is in, when it is a file in one: this file and the
-# installer beside it are how a checkout is recognized from the outside, and
+# launcher beside it are how a checkout is recognized from the outside, and
 # two levels up from the scripts folder is the repository root.
 own_checkout=""
 if [ -f "$0" ]; then
     here="$(dirname "$0")"
-    if [ -f "$here/$BOOTSTRAP_ENTRY" ] && [ -f "$here/memar-install.py" ]; then
+    if [ -f "$here/$BOOTSTRAP_ENTRY" ] && [ -f "$here/memar" ]; then
         own_checkout="$(cd "$here/../.." && pwd)"
     fi
 fi
 
-# The architecture is at ROOT when the installer is inside it. Not the question
+# The architecture is at ROOT when the launcher is inside it. Not the question
 # whether ROOT is a Memar repository: that belongs to the installer.
 holds_architecture() {
     [ -n "${1:-}" ] && [ -f "$1/$ARCHITECTURE_ENTRY" ]
@@ -359,11 +372,11 @@ case "$mode" in
         ;;
 esac
 code=0
-"$PYTHON" "$checkout/$ARCHITECTURE_ENTRY" "$@" || code=$?
+MEMAR_NO_AUTO_UPDATE=1 "$PYTHON" "$checkout/$ARCHITECTURE_ENTRY" install "$@" || code=$?
 if [ "$code" -eq 0 ] && [ "$mode" != "check" ]; then
 cat <<END
 This program can go on without a restart. Load the skill by running the next line on its own:
-"$PYTHON" "$checkout/.agents/scripts/memar-content.py" path .agents/skills/memar/SKILL.md
+"$PYTHON" "$checkout/.agents/scripts/memar" content path .agents/skills/memar/SKILL.md
 END
 fi
 exit "$code"

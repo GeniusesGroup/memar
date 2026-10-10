@@ -1,3 +1,5 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
 // The client's half of a definition: the request this extension sends, and the reading of
 // what comes back.
 //
