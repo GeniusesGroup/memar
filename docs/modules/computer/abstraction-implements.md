@@ -13,7 +13,7 @@ ID: 495413
 ## Introduction
 
 ### Motivation
-Some abstractions — `Error` being the concrete motivating case — require a large number of methods once fully expanded (in Error's case, roughly 15-20 once `DataType`, `Field_MediaType`, and `ADT` are expanded through their own compositions). Manually writing this boilerplate for every concrete capsule is a real, recurring developer cost, and a natural candidate for code generation.
+Some abstractions — `Error` being the concrete motivating case — require a large number of methods once fully expanded (in Error's case, roughly 15-20 once `Type`, `Field_MediaType`, and `ADT` are expanded through their own compositions). Manually writing this boilerplate for every concrete capsule is a real, recurring developer cost, and a natural candidate for code generation.
 
 A code generator that wants to scaffold this boilerplate automatically needs *some* reliable signal of intent *before* the capsule is complete. A plain type-assertion against the target abstraction does not work for this: an incomplete capsule, by definition, does not yet satisfy the abstraction, so there is nothing for the tool to structurally detect. `abstraction_p.Implements` exists to provide exactly this signal, uniformly, across any abstraction that opts in.
 
@@ -26,7 +26,7 @@ An abstraction author who judges an abstraction complex enough to benefit from c
 
 ```khayyam
 tp Error ab {
-    DataType
+    Type
     Field_MediaType
     ADT
     Implements

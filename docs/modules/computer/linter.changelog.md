@@ -169,3 +169,17 @@ This document is now structured per `documentation-explanation.md`: YAML front m
 #### Considered and not done
 - **Naming a notation here (rejected)**: the section's first line still points at the paired handoff for the notation question, and this sentence says what a notation would be a rendering of rather than choosing one. A rendering does not settle which form it takes.
 - **Restating the four members as the authoring form (not done)**: they are already introduced as the required members of a rule this protocol will accept as a linter check, and the new sentence tells the reader what that list is without restating it.
+
+---
+
+### Type's tooling items received
+- Time: 2026-10-10T07:40:00Z
+- Type: Changed
+- Contributors:
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Cursor](../../../CONTRIBUTORS.md#cursor) (Auto; underlying model not reported) — applied
+
+#### What changed
+- [The handoff](./linter.handoff.md)'s Anticipated Work gains four items moved under the owner's ruling of 2026-10-10 that base documents carry no tooling content.
+- From Type Practice comes the state of static-concept identity checks. Enforcement is heuristic today: structural linters flag missing-field and generic-`Init` patterns, and the code generator's input layer is the authoritative checkpoint.
+- From Type's handoff come three items: rule analysis tooling, AI-assisted delegation generation, and ownership-clarity metrics.

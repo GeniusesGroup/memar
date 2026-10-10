@@ -8,12 +8,12 @@ Open work for `modules/process/error.md`. Entries are mutable current state — 
 - Next: evaluate against real error families once the framework's first services exist.
 
 ### A realization's `IsEqual` and `MediaType()` comparison
-- State: a realization's convenience comparison helper may compare both `DataTypeID()` and `MediaType()`. If `MediaType` is a fixed, type-level property (every instance of a given `DataTypeID` always reports the same `MediaType`), this check is redundant and should be dropped. If `MediaType` can genuinely vary per-instance for the same `DataTypeID`, this reopens the "identity is `DataTypeID` alone" principle stated under error.md's [Identity and equality](error.md#identity-and-equality) and needs to be resolved explicitly.
-- Next: resolve explicitly against the `DataType` model's media-type rules.
+- State: a realization's convenience comparison helper may compare both `GetTypeID()` and `MediaType()`. If `MediaType` is a fixed, type-level property (every instance of a given `Type_ID` always reports the same `MediaType`), this check is redundant and should be dropped. If `MediaType` can genuinely vary per-instance for the same `Type_ID`, this reopens the "identity is `GetTypeID()` alone" principle stated under error.md's [Identity and equality](error.md#identity-and-equality) and needs to be resolved explicitly.
+- Next: resolve explicitly against the `Type` model's media-type rules.
 
 ### `ExpireInFavorOf`
-- State: the reasoning that originally justified analyzing it alongside `Equivalence` no longer applies, but whether the underlying capability (declaring "this type is replaced by that one") is still wanted for `Error`, in some form, has not been given a final yes/no. Blocked on `datatype_p.Details` (the file defining it) being shared for review.
-- Next: review `datatype_p.Details`, then decide keep/drop.
+- State: the reasoning that originally justified analyzing it alongside `Equivalence` no longer applies, but whether the underlying capability (declaring "this type is replaced by that one") is still wanted for `Error`, in some form, has not been given a final yes/no. Blocked on `Type_Details` (the file defining it, `modules/computer/type/protocol/type.kh`) being shared for review.
+- Next: review `Type_Details`, then decide keep/drop.
 
 ### `ADT`'s `IsNull`/`IsEmpty` semantics for a value like `Error`
 - State: the canonical `Error` contract supplies all three `ADT` methods (see error.md's [ADT composition](error.md#adt-composition--the-full-adt-family-at-the-canonical-level)); what `IsNull`/`IsEmpty` should actually mean for `Error` remains open, tracked in a dedicated ADT session and its own document.

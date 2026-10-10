@@ -102,3 +102,12 @@ A value such as `Field_UserUUID` is one type. On that type, write one method tha
 
 ## Rules worth applying even when not asked
 For the full-design-treatment posture, apply grammar-enforced modeling (no magic numbers, wrapped primitives, one construct per intent — see [Khayyam → Self-Documenting Code and Naming](./khayyam.md#self-documenting-code-and-naming)) and organizational rules in [identifier naming](../../modules/khayyam/rules/identifier-naming/identifier-naming.md) and [domain capsule naming](../../modules/khayyam/rules/domain-capsule-naming/domain-capsule-naming.md). If a concrete case isn't covered, fetch the relevant document via `memar` SKILL rather than inventing an answer.
+
+A concept with no per-instance state is still its own type ([Type Practice → Mapping concepts onto realizations](../type.practice.md#mapping-concepts-onto-realizations), step 3). Never carry it as a name string inside one generic capsule initialized at runtime (the generic-`Init` pattern):
+
+```khayyam
+// WRONG: identity as data — caller compares strings at runtime
+tp Find mt (self Service) (id ID) (result Result, err GenericError)   // err.Init("ErrNotFound", ...)
+// RIGHT: identity as Type — caller asserts the concrete type
+tp Find mt (self Service) (id ID) (result Result, err ErrNotFound)
+```

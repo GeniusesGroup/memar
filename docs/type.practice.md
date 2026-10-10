@@ -16,27 +16,20 @@ A candidate qualifies only if it satisfies type.md's criteria: independent ident
 ## Choosing a category
 Categories are semantic roles, not a hierarchy:
 
-| If the Type's role is... | Category | Declared with |
-|---|---|---|
-| owning state + behavior operating on it | Capsule | `cp` |
-| callable behavior (first-class) | Method | `mt` |
-| pure specification, no bodies, no defaults | Abstraction | `ab` |
-| establishing a visibility/ownership/isolation boundary | Scope | `sc` |
+| If the Type's role is... | Category |
+|---|---|
+| owning state + behavior operating on it | Capsule |
+| callable behavior (first-class) | Method |
+| pure specification, no bodies, no defaults | Abstraction |
+| establishing a visibility/ownership/isolation boundary | Scope |
 
-Do not justify a fifth category unless the candidate role is irreducible to specialization, composition, or usage pattern of these four. A keyword in another language (`struct`, `trait`, `namespace`, ...) does not imply a distinct foundational concept.
+Do not justify a fifth category unless the candidate role is irreducible to specialization, composition, or usage pattern of these four. A keyword in a language (`struct`, `trait`, `namespace`, ...) does not imply a distinct foundational concept.
 
 ## Mapping concepts onto realizations
 1. One concept → one named entity. Nominal identity: never merge semantically distinct concepts because their structures match; never split one concept because structures differ.
 2. Instance variation within one concept → data fields on its realization, not new Types. (If a member of a static family later acquires genuine per-instance data, that one capsule graduates to a data carrier; the static members of the family remain distinct Types.)
-3. Stateless concepts → still Types, each MUST be its own named entity. Detection test: every distinguishable fact about it is fixed at definition time (all method outputs are compile-time constants), and two variables of the type are indistinguishable. Never represent such concepts as a name string, tag value, or enum inside one shared container initialized at runtime (the generic-`Init` pattern) — that demotes identity from compile time to runtime comparison:
-
-   ```khayyam
-   // WRONG: identity as data — caller compares strings at runtime
-   tp Find mt (self Service) (id ID) (result Result, err GenericError)   // err.Init("ErrNotFound", ...)
-   // RIGHT: identity as Type — caller asserts the concrete type
-   tp Find mt (self Service) (id ID) (result Result, err ErrNotFound)
-   ```
-4. Multi-outcome calls → declare the Abstraction as the outcome type; the returned value's concrete Type carries which-one occurred. What may defer to runtime is *dispatch* among candidates — never the *identification* of any single concept, which stays a direct type assertion. Exhaustiveness checking over an open abstraction is a real, unresolved need assigned to linter/compiler tooling, not signature syntax — until that tooling exists, callers rely on manual completeness discipline. Candidate mechanisms for that tooling include code-generator metadata, whole-program analysis, and closed/sealed hierarchies (Kotlin `sealed class`, Swift protocol-conformance-closed types), which achieve exhaustiveness over compiler-known closed sets of Types without runtime tags. The framework's stance is captured in its review maxim: "polymorphism is about code reuse, not about teaching the compiler how to do its job."
+3. Stateless concepts → still Types, each MUST be its own named entity. Detection test: every distinguishable fact about it is fixed at definition time (every method's output is a constant of the definition), and two variables of the type are indistinguishable. Never represent such concepts as a name string, tag value, or enum inside one shared container filled in at runtime — that demotes identity from definition time to runtime comparison. Contrast: a failure carried as one generic error whose name field reads "ErrNotFound" is identity as data, and the caller compares strings at runtime; a distinct `ErrNotFound` Type is identity as Type, and the caller asserts the concrete Type.
+4. Multi-outcome calls → declare the Abstraction as the outcome type; the returned value's concrete Type carries which-one occurred. What may defer to runtime is *dispatch* among candidates — never the *identification* of any single concept, which stays a direct type assertion. Exhaustiveness over an open Abstraction is a need the Type model does not itself meet; until something meets it, callers rely on manual completeness discipline.
 5. Naming conventions: each static-concept family records its own domain-appropriate naming convention in that family's governing document, and states it as non-binding unless a contract requires it.
 
 Gray zones in step 3:
@@ -54,7 +47,7 @@ If any answer needs an inheritance walk, a mental macro expansion, or documentat
 
 Rules of thumb:
 
-- **Never default-implement.** If many components share logic, generate their explicit methods from the single source of truth — generated members must land in readable, auditable source files, never compiler intermediates.
+- **Never default-implement.** If many components share logic, generate their explicit methods from the single source of truth — generated members must be visible and auditable.
 - **Delegate visibly:** the delegating component's source names the target (`other.m(...)`), so what/where/why are readable in place. Navigating to the target's internals is for depth, not discovery.
 - **Multiple delegation targets are fine** — each relationship explicit in source.
 - **No runtime injection:** dynamic proxies or reflection-added methods violate ownership — the source must reflect the full method set.
@@ -81,20 +74,18 @@ sequenceDiagram
 ```
 
 ## Carrying Type metadata
-- Access needs? Already answered inside the Type: boundary-level encapsulation plus each method's own invocation level. Never introduce surface keywords for visibility.
-- Tooling intent signals? Declare them as ordinary constructs — a composed intent-declaring Abstraction or a plainly named Method — and only where automated assistance has real value; keep such signals inert at runtime and let linters flag misuse.
-- Multilingual or human-facing data? Create one companion artifact per required language beside the Type's definition, all sharing a single base name qualified by the target language (for example `TypeName-detail.en`, `TypeName-detail.fa`). Localized names, labels, documentation, and localized failure descriptions live there — never inline in the functional definition, never in external translation maps keyed by string lookup.
-- Downstream implementation languages receive these through generated bindings from that one source; adding a language means regenerating, not re-translating.
-- Edge case: translators must be able to edit companion files without developer round-trips or full development-environment access — plan editing tooling and workflow so wording changes can never touch the functional definition.
-- A metadata family not covered above? Same rule, no exceptions: choose the carrier by audience — tools and logic → first-class constructs; humans and volume → companion artifacts — then record the decision in the governing document (here or in type.md) so the family joins the recorded set. The question is never "what keyword expresses this?".
+- Access needs? Already answered inside the Type: boundary-level encapsulation plus each method's own invocation level. Never introduce a declared access marker for visibility.
+- Tooling intent signals? Declare them as ordinary constructs, and only where automated assistance has real value; keep such signals inert at runtime.
+- Multilingual or human-facing data? It belongs to the Type and has one source. Localized names, labels, documentation, and localized failure descriptions are carried apart from the functional definition — never inline in it, never in external lookup maps keyed by string.
+- Every further realization receives that data from the one source; adding a realization means deriving it again, not re-translating.
+- Edge case: a wording change by a translator must never touch the functional definition.
+- A metadata family not covered above? Same rule, no exceptions: choose the carrier by audience — tools and logic → first-class constructs; humans and volume → companion artifacts — then record the decision in the governing document (here or in type.md) so the family joins the recorded set. The question is never "what new declaration form expresses this?".
 
 ## Edge cases and failure modes
 - **Optional-field accumulation smell**: a realization growing fields meaningful only for some instances signals merged concerns — route back to modeling, do not patch with optionals.
 - **Structural-typing habits** from languages like TypeScript: structural match/similarity has no identity force here.
-- **Runtime concept registration pressure** (plugins, dynamic failure modes): a registry admitting new concepts at runtime violates both rules the practice's layer carries — [Structure Is Fixed by Definition](./type.md#structure-is-fixed-by-definition) (the running system cannot mint structure) and step 3's forbidden pattern (concept identity demoted from compile time to runtime comparison inside a mutable shared container). Any registry mechanism must therefore be deliberately designed, never assumed, and must pass the modeling test for every concept it admits.
-- **Enforcement today is heuristic**: structural linters can flag missing-field/`Init` patterns; the authoritative checkpoint is the code generator's input layer, where static/dynamic intent is explicit by construction.
+- **Runtime concept registration pressure** (plugins, dynamic failure modes): a registry admitting new concepts at runtime violates both rules the practice's layer carries — [Structure Is Fixed by Definition](./type.md#structure-is-fixed-by-definition) (the running system cannot mint structure) and step 3's forbidden pattern (concept identity demoted from definition time to runtime comparison inside a mutable shared container). Any registry mechanism must therefore be deliberately designed, never assumed, and must pass the modeling test for every concept it admits.
 
 ## References
 - [type.md](./type.md) — why: principles, definitions, and rejected alternatives.
 - [modeling.practice.md](./modeling.practice.md) — upstream procedure that decides what concepts exist.
-- [error.md](../docs/protocols/process/error.md) — worked application to the Error family, cited as an example the Error protocol applies this practice's identity model to, not as a rule source.

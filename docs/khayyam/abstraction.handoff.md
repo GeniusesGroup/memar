@@ -46,3 +46,4 @@ The vr-ab review session closed with an open suggestion to re-audit this documen
 - **Composable abstraction constraints.** A future extension could allow organizations to define "abstraction constraints" — predicates a given abstraction's satisfiers must meet (e.g. "any capsule satisfying `Serializable` must also satisfy `Clone`") — enforced at the Linter level and expressed as configuration, not language syntax.
 - **Curated canonical abstractions.** A curated reference set of canonical abstractions in the Memar framework, as examples of appropriate granularity and domain-concept framing, giving new developers concrete templates and reducing over-abstraction risk.
 - **Abstraction-granularity Linter rules.**
+- **Formal specification of the satisfaction mechanism.** Once the design decisions are made, the Capsule/Abstraction bridge could be specified formally. Moved here 2026-10-10 from Type's handoff.

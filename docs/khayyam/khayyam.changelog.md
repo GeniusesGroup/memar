@@ -587,3 +587,22 @@ Considered placing the topic in `khayyam-runtime.md` instead, since Unikernel is
 #### What changed
 - [Separation of Syntax and Governance: A Principle](./khayyam.md#separation-of-syntax-and-governance-a-principle): governance examples for organizational Khayyam rules replaced with a link to the [rules catalog](../../modules/khayyam/rules/README.md); protocol-level examples retained.
 - Same section: added a paragraph directing readers to `modules/khayyam/rules/` for convention reasoning and stating those rules are organizational, not language-owned.
+
+---
+
+### Type's realization claims received from the base documents
+- Time: 2026-10-10T07:40:00Z
+- Type: Changed
+- Cited:
+  - [Type](../type.md) — Depends_on: the categories, metadata families, and identity rule these additions realize; cited downward.
+- Contributors:
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Cursor](../../CONTRIBUTORS.md#cursor) (Auto; underlying model not reported) — applied
+
+#### What changed
+- Under the owner's ruling of 2026-10-10 that base documents carry no realization content, the Khayyam-specific claims that type.md and type.practice.md made about this language now live here.
+- [Type Principles Realized](./khayyam.md#type-principles-realized) states that Khayyam is currently the first and most concrete realization of Type's principles, so most readers meet Type through this syntax first, and that this says where the principles were first put into practice, not where Type originates.
+- The same section gains two bullets. "Fewer top-level constructs": other languages' `struct`, `class`, `interface`, `namespace`, and the rest are expressed here through the category subtypes rather than through dedicated keywords. "No keywords for Type metadata": access, implementation intent, and human-facing identity get no declaration keyword.
+- The Method-as-Type bullet now carries the comparison type.md made: Rust and OCaml keep functions apart from their types, and the position is closer to Smalltalk's "everything is an object", but with explicit categories.
+- [Khayyam Practice](./khayyam.practice.md) → Rules worth applying even when not asked now holds the generic-`Init` wrong/right example that step 3 of type.practice.md carried, citing that step downward.
+- [Khayyam handoff](./khayyam.handoff.md) → "Stdlib bootstrap ordering under the no-hidden-primitive rule" absorbed type.handoff.md's "Bootstrapping without primitives". The entry already held the String↔Error case and the no-hidden-primitive ruling. What it lacked, and now states, is that the question also bears on the Type model, because it decides whether "no primitive types" holds without exception.

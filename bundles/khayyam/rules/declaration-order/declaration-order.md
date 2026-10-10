@@ -13,15 +13,15 @@ Khayyam's rules live one rule per folder under [`bundles/khayyam/rules/`](../REA
 
   ```khayyam
   tp Event cp {
-      dt DataType
+      dt Type
       time Time
   }
 
-  tp GetDataType mt (self Event) () (d DataType)
+  tp GetType mt (self Event) () (d Type)
   ```
 
 - **The order binds each method to its own owner, and nothing else.** A file may declare several owners, and a method's place is fixed by where the one type its `self` names stands, not by where the file's other declarations stand. A method is also free of any order against a type it does not name.
-- **An owner the file brings in with `in` is outside this rule.** `tp DataType in "modules/computer/datatype/protocol/data-type.kh"` puts the owner in another file, so no ordering of this one can place a method before it; the inclusion is where the reader meets the declaration.
+- **An owner the file brings in with `in` is outside this rule.** `tp Type in "modules/computer/type/protocol/type.kh"` puts the owner in another file, so no ordering of this one can place a method before it; the inclusion is where the reader meets the declaration.
 - **An accessor on a capsule follows the observer abstraction's accessor of the same operation.** On the `Observer_X` / `Mutator_X` families ([observer and mutator rule](../../../../modules/computer/adt/rules/observer-mutator/observer-mutator.md)), `tp Observer_X ab` is followed by its accessors, and each capsule that holds the state declares its own accessor after its own declaration. This is the first clause applied to the families rather than a rule of its own, and the sources already keep it.
 
 ## Why this exists

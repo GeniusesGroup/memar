@@ -304,3 +304,16 @@ This cost is partially mitigated by two factors. First, Khayyam's ecosystem incl
 #### What changed
 - "What You Will Not Do" no longer offers `fn process(h: Hasher)` as the form the programmer writes. The positive example is an ordinary `mt` with the same `Process` signature as the corrected pair earlier in the document.
 - Dynamic dispatch's open set is a call site whose reachable capsules are not a closed list the compiler can see, while every candidate already exists in the program's definition. A capsule or method body loaded only at runtime is not an open-set case.
+
+---
+
+### Exhaustiveness-tooling need received from Type Practice
+- Time: 2026-10-10T07:40:00Z
+- Type: Changed
+- Contributors:
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Cursor](../../CONTRIBUTORS.md#cursor) (Auto; underlying model not reported) — applied
+
+#### What changed
+- [The handoff](./polymorphism.handoff.md)'s "Should There Be a Mechanism for 'Sealed' Abstractions?" entry gains a related-need bullet moved from step 4 of type.practice.md. Exhaustiveness checking over an open abstraction is unresolved and is assigned to tooling, not to signature syntax. The candidate mechanisms are code-generator metadata, whole-program analysis, and sealed hierarchies such as Kotlin's and Swift's. The bullet also carries the review maxim "polymorphism is about code reuse, not about teaching the compiler how to do its job."
+- Moved under the owner's ruling of 2026-10-10 that base documents carry no tooling content. type.practice.md keeps only that exhaustiveness over an open Abstraction is a need the Type model does not itself meet.

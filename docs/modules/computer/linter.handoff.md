@@ -68,3 +68,7 @@ Whether generated setters should default to bare assignment or to routing throug
 - A reference linter configuration, shipped with the first tooling release, encoding flow-correctness checks as defaults-on and conventions as opt-in sets.
 - An extension point for organization-defined diagnostics.
 - A conformance suite for linter implementations, mirroring the compiler-side suite proposed in [Compiler Handoff](compiler.handoff.md).
+- **Static-concept identity checks.** Enforcement of [Type Practice](../../type.practice.md)'s rule that each static concept is its own Type is heuristic today: structural linters can flag missing-field and generic-`Init` patterns, and the authoritative checkpoint is the code generator's input layer, where static or dynamic intent is explicit by construction. Moved here 2026-10-10 from Type Practice.
+- **Rule analysis tooling**: static analysis to verify invariants, detect rule conflicts, and identify over-constraining. Moved here 2026-10-10 from Type's handoff, with the next two.
+- **AI-assisted delegation generation**: instant, auditable scaffolding of forwarding methods.
+- **Ownership-clarity metrics**: IDEs and linters could compute and display an "ownership clarity score" for each component — a measure of how easily a reader can determine the origin of each behavior.

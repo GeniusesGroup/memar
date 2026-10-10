@@ -61,6 +61,8 @@ Every behavioral variant of a value (e.g. a frequently-needed mutable view of an
 
 Reference-rebinding — reassigning a variable or field's name to point at a different instance, as distinct from mutating the instance it already points to — is not a gap in this document, at either level. Khayyam has no primitive types; every variable's or field's declared type is itself a capsule or an abstraction. Obtaining a *new* instance to rebind to (whether for a local variable or a field) still requires going through that type's own constructor or an explicit copy/clone abstraction it chooses to implement (see `variable.md`'s Domain-Driven Arithmetic) — there is no ambient, type-independent way to conjure a value. And for a local variable specifically, rebinding touches no capsule's private state at all (it is not privately-owned state of anything), so no Sovereign Encapsulation invariant is even at stake; for a field, rebinding *is* mutation, gated by the same privacy rule already described above. Nothing is left open here.
 
+This is also how Khayyam meets the rule [Type → The Ownership Graph](../type.md#the-ownership-graph) states: an aggregator grants no abstraction access to another's internal state, and the two are reached only by explicit delegation to methods on them. No route into a capsule's fields exists, so the rule needs no new syntax, and what remains for a linter is the governance diagnostic, not a new check on reachability.
+
 ### Capsule Structure and Privacy
 A capsule is declared with the `cp` subtype under the `tp` keyword:
 

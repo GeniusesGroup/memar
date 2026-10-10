@@ -71,7 +71,7 @@ An abstraction can also **compose other abstractions** by listing them inside it
 
 ```khayyam
 tp Error ab {
-    DataType
+    Type
     Field_MediaType
     ADT
 }

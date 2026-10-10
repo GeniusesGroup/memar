@@ -206,3 +206,15 @@ Alternatives: (a) keep the identical-receiver wording and change examples to use
 
 #### What changed
 - Tooling-support and DX scaffolding bullets replaced with links to [abstraction scaffolding](../../modules/khayyam/rules/abstraction-scaffolding/abstraction-scaffolding.md).
+
+---
+
+### Satisfaction-mechanism specification received from Type's handoff
+- Time: 2026-10-10T07:40:00Z
+- Type: Changed
+- Contributors:
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Cursor](../../CONTRIBUTORS.md#cursor) (Auto; underlying model not reported) — applied
+
+#### What changed
+- [The handoff](./abstraction.handoff.md)'s Anticipated Work gains "Formal specification of the satisfaction mechanism", which is moved from type.handoff.md. The mechanism by which a capsule satisfies an abstraction is this language's to state, and the base document no longer carries work about it, under the owner's ruling of 2026-10-10.

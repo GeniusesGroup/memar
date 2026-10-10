@@ -269,3 +269,18 @@ Completed the migration an earlier pass had started (this document already follo
 #### What changed
 - [Naming Conventions](./encapsulation.md#naming-conventions): capsule, abstraction, and field bullets replaced with links to organizational rules; method-names bullet retained (Get/Set open question unchanged).
 - [Closures as Implicit Capsule Syntax](./encapsulation.md#closures-as-implicit-capsule-syntax): throwaway-capsule naming concern links to [identifier naming](../../modules/khayyam/rules/identifier-naming/identifier-naming.md).
+
+---
+
+### The ownership graph's aggregator rule stated here, citing Type
+- Time: 2026-10-10T07:40:00Z
+- Type: Changed
+- Cited:
+  - [Type → The Ownership Graph](../type.md#the-ownership-graph) — Depends_on: the rule this paragraph says the language meets.
+- Contributors:
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Cursor](../../CONTRIBUTORS.md#cursor) (Auto; underlying model not reported) — applied
+
+#### What changed
+- [Sovereign Encapsulation](./encapsulation.md#sovereign-encapsulation) ends with the derivation type.md used to state by linking up to this section. An aggregator grants no abstraction access to another's internal state. Because no route into a capsule's fields exists, the rule needs no new syntax, and what remains for a linter is the governance diagnostic, not a new check on reachability.
+- The citation now runs downward, from this document to Type, under the owner's ruling of 2026-10-10 that base documents carry no realization content and hold no reference up to a language's document as the authority for their rules.
