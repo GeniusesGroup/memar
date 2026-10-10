@@ -3,7 +3,7 @@
 // It MUST fill by any UUID mechanism that guaranty it will be globally unique.
 // TODO::: Hash of MediaType()??
 // identifier_p.UUID_Hash
-tp Datatype_UUID ab
+tp Type_UUID ab
 
 // TODO(go-migrate):
 /*

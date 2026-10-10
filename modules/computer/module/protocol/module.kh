@@ -1,10 +1,10 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-tp DataType in "modules/computer/datatype/protocol/data-type.kh"
-tp Observer_DataTypes in "modules/computer/datatypes/protocol/dt-data-types.observers.kh"
+tp Type in "modules/computer/type/protocol/type.kh"
+tp Observer_Types in "modules/computer/types/protocol/dt-types.observers.kh"
 
 // https://doc.rust-lang.org/cargo/reference/manifest.html
 tp Module ab {
-    DataType
-    Observer_DataTypes
+    Type
+    Observer_Types
 }

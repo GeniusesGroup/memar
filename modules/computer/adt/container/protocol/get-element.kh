@@ -4,7 +4,7 @@
 
 tp Container_Element in "modules/computer/adt/container/protocol/element.kh"
 tp Container_ElementIndex in "modules/computer/adt/container/protocol/index.kh"
-tp DataType in "modules/computer/datatype/protocol/data-type.kh"
+tp Type in "modules/computer/type/protocol/type.kh"
 tp Error in "modules/process/error/protocol/error.kh"
 tp Module_Path in "modules/modules/module/protocol/dt-path.kh"
 tp Character in "modules/codec/string/protocol/character.kh"
@@ -16,10 +16,10 @@ tp Container_GetElement ab
 // GetElement like `GetByte()` provides an efficient interface for byte-at-time processing.
 tp GetElement mt (self Container_GetElement) (offset Container_ElementIndex) (el Container_Element, err Error)
 
-tp GetElement_DataType ab
+tp GetElement_Type ab
 // When `Get` returns limit > len(p), it returns a non-nil error explaining why more bytes were not returned.
 // GetElement like `GetByte()` provides an efficient interface for byte-at-time processing.
-tp Container_GetElement_DataType_GetElement mt (self GetElement_DataType) (offset Container_ElementIndex) (el DataType, err Error)
+tp Container_GetElement_Type_GetElement mt (self GetElement_Type) (offset Container_ElementIndex) (el Type, err Error)
 
 tp GetElement_Module_Path ab
 // When `Get` returns limit > len(p), it returns a non-nil error explaining why more bytes were not returned.

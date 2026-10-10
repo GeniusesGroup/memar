@@ -2,7 +2,7 @@
 
 tp Boolean in "modules/math/boolean/protocol/boolean.kh"
 tp Command_Handler in "modules/lib/process/command/protocol/command-handler.kh"
-tp DataType in "modules/computer/datatype/protocol/data-type.kh"
+tp Type in "modules/computer/type/protocol/type.kh"
 tp Observer_MediaType in "modules/identifier/mediatype/protocol/media-type.observers.kh"
 tp Process_Request in "modules/process/request/protocol/request.kh"
 tp Process_Response in "modules/process/response/protocol/response.kh"
@@ -15,7 +15,7 @@ tp String in "modules/codec/string/protocol/string.kh"
 // https://en.wikipedia.org/wiki/Command-line_interface
 tp Libgo_Command ab {
     Command_Handler
-    DataType
+    Type
     Observer_MediaType
     Process_Request
     Process_Response

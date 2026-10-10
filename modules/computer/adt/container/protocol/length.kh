@@ -1,6 +1,6 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 tp Container_Element in "modules/computer/adt/container/protocol/element.kh"
-tp DataType in "modules/computer/datatype/protocol/data-type.kh"
+tp Type in "modules/computer/type/protocol/type.kh"
 tp Error in "modules/process/error/protocol/error.kh"
 tp Module_Path in "modules/modules/module/protocol/dt-path.kh"
 tp Character in "modules/codec/string/protocol/character.kh"
@@ -18,9 +18,9 @@ tp Container_Count ab
 // Count return the NumberOfElement of given element that exist in the container.
 tp Count mt (self Container_Count) (el Container_Element) (ne NumberOfElement, err Error)
 
-tp Count_DataType ab
+tp Count_Type ab
 // Count return the NumberOfElement of given element that exist in the container.
-tp Container_Count_DataType_Count mt (self Count_DataType) (el DataType) (ne NumberOfElement, err Error)
+tp Container_Count_Type_Count mt (self Count_Type) (el Type) (ne NumberOfElement, err Error)
 
 tp Count_Module_Path ab
 // Count return the NumberOfElement of given element that exist in the container.

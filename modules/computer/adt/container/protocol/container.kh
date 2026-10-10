@@ -2,7 +2,7 @@
 
 tp ADT in "modules/computer/adt/protocol/adt.kh"
 tp Container_Accessor in "modules/computer/adt/container/protocol/accessor.kh"
-tp Accessor_DataType in "modules/computer/adt/container/protocol/accessor.kh"
+tp Accessor_Type in "modules/computer/adt/container/protocol/accessor.kh"
 tp Accessor_String_Character in "modules/computer/adt/container/protocol/accessor.kh"
 tp Assignment_String_Character in "modules/computer/adt/container/protocol/assignment.kh"
 tp Container_Clear in "modules/computer/adt/container/protocol/clear.kh"
@@ -49,9 +49,9 @@ tp READONLY ab {
     Observer_Container_ExpectedLength
 }
 
-tp READONLY_DataType ab {
+tp READONLY_Type ab {
     ADT
-    Accessor_DataType
+    Accessor_Type
     Observer_Container_ExpectedLength
 }
 

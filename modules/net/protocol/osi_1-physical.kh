@@ -2,7 +2,7 @@
 
 tp Capsule_LifeCycle in "modules/computer/capsule/protocol/life_cycle_contract.kh"
 
-tp DataType in "modules/computer/datatype/protocol/data-type.kh"
+tp Type in "modules/computer/type/protocol/type.kh"
 
 tp Error in "modules/process/error/protocol/error.kh"
 
@@ -34,7 +34,7 @@ tp OSI_Physical ab {
 
     Capsule_LifeCycle
 
-    DataType
+    Type
 
     NetworkMTU
 

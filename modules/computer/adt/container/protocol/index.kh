@@ -2,7 +2,7 @@
 tp Container_Element in "modules/computer/adt/container/protocol/element.kh"
 tp Container_Limit in "modules/computer/adt/container/protocol/pagination.kh"
 tp Container_Offset in "modules/computer/adt/container/protocol/pagination.kh"
-tp DataType in "modules/computer/datatype/protocol/data-type.kh"
+tp Type in "modules/computer/type/protocol/type.kh"
 tp Error in "modules/process/error/protocol/error.kh"
 tp Module_Path in "modules/modules/module/protocol/dt-path.kh"
 tp Character in "modules/codec/string/protocol/character.kh"
@@ -18,9 +18,9 @@ tp Container_Index ab
 // Index return the location of given element in the container.
 tp Index mt (self Container_Index) (el Container_Element, offset Container_Offset, limit Container_Limit) (ei Container_ElementIndex, err Error)
 
-tp Index_DataType ab
+tp Index_Type ab
 // Index return the location of given element in the container.
-tp Container_Index_DataType_Index mt (self Index_DataType) (el DataType, offset Container_Offset, limit Container_Limit) (ei Container_ElementIndex, err Error)
+tp Container_Index_Type_Index mt (self Index_Type) (el Type, offset Container_Offset, limit Container_Limit) (ei Container_ElementIndex, err Error)
 
 tp Index_Module_Path ab
 // Index return the location of given element in the container.

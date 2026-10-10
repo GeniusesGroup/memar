@@ -1,6 +1,6 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-tp DataType in "modules/computer/type/protocol/type.kh"
+tp Type in "modules/computer/type/protocol/type.kh"
 
-tp Observer_DataType ab
-tp GetDataType mt (self Observer_DataType) () (d DataType)
+tp Observer_Type ab
+tp GetType mt (self Observer_Type) () (d Type)

@@ -2,14 +2,14 @@
 
 tp Array_Dynamic in "modules/computer/adt/array/protocol/dynamic.kh"
 tp CompressType in "modules/codec/compress/protocol/compress.kh"
-tp Datatype_ID in "modules/computer/datatype/protocol/id.kh"
+tp Type_ID in "modules/computer/type/protocol/id.kh"
 tp Error in "modules/process/error/protocol/error.kh"
 tp String in "modules/codec/string/protocol/string.kh"
 
 tp Codec_CompressTypes ab
 tp Codec_CompressTypes_Register mt (self Codec_CompressTypes) (ct CompressType) (err Error)
 
-tp Codec_CompressTypes_GetByID mt (self Codec_CompressTypes) (id Datatype_ID) (ct CompressType, err Error)
+tp Codec_CompressTypes_GetByID mt (self Codec_CompressTypes) (id Type_ID) (ct CompressType, err Error)
 
 tp Codec_CompressTypes_GetByMediaType mt (self Codec_CompressTypes) (mt_ String) (ct CompressType, err Error)
 

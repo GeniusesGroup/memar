@@ -3,7 +3,7 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
 tp Container_Element in "modules/computer/adt/container/protocol/element.kh"
-tp DataType in "modules/computer/datatype/protocol/data-type.kh"
+tp Type in "modules/computer/type/protocol/type.kh"
 tp Error in "modules/process/error/protocol/error.kh"
 tp Module_Path in "modules/modules/module/protocol/dt-path.kh"
 tp Character in "modules/codec/string/protocol/character.kh"
@@ -16,11 +16,11 @@ tp Container_Peek ab
 // which returns the value of the top ("front") of the collection without removing the element from the collection.
 tp Peek mt (self Container_Peek) () (el Container_Element, err Error)
 
-tp Peek_DataType ab
+tp Peek_Type ab
 // Peek or `Top()` or `GetLast()` is an operation on certain abstract data types,
 // specifically sequential collections such as stacks and queues,
 // which returns the value of the top ("front") of the collection without removing the element from the collection.
-tp Container_Peek_DataType_Peek mt (self Peek_DataType) () (el DataType, err Error)
+tp Container_Peek_Type_Peek mt (self Peek_Type) () (el Type, err Error)
 
 tp Peek_Module_Path ab
 // Peek or `Top()` or `GetLast()` is an operation on certain abstract data types,

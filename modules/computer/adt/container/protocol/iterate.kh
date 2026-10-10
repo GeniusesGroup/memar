@@ -2,7 +2,7 @@
 
 tp Container_Element in "modules/computer/adt/container/protocol/element.kh"
 tp Container_ElementIndex in "modules/computer/adt/container/protocol/index.kh"
-tp DataType in "modules/computer/datatype/protocol/data-type.kh"
+tp Type in "modules/computer/type/protocol/type.kh"
 tp Error in "modules/process/error/protocol/error.kh"
 tp Module_Path in "modules/modules/module/protocol/dt-path.kh"
 tp Character in "modules/codec/string/protocol/character.kh"
@@ -17,10 +17,10 @@ tp Iterate_Module_Path ab
 // In each iteration if err != nil, iteration will be stopped
 tp Container_Iterate_Module_Path_Iterate mt (self Iterate_Module_Path) (index Container_ElementIndex, el Module_Path) (err Error)
 
-tp Iterate_DataType ab
+tp Iterate_Type ab
 // Iterate or traverse
 // In each iteration if err != nil, iteration will be stopped
-tp Container_Iterate_DataType_Iterate mt (self Iterate_DataType) (index Container_ElementIndex, el DataType) (err Error)
+tp Container_Iterate_Type_Iterate mt (self Iterate_Type) (index Container_ElementIndex, el Type) (err Error)
 
 tp Iterate_String_Character ab
 // Iterate or traverse

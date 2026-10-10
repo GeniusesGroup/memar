@@ -8,7 +8,7 @@ tp Compare in "modules/computer/adt/container/protocol/compare.kh"
 tp NumberOfElement in "modules/computer/adt/container/protocol/length.kh"
 tp Concat_Computer_Buffer in "modules/computer/adt/container/protocol/concat.kh"
 tp Replace_Elements_Computer_Buffer in "modules/computer/adt/container/protocol/replace-elements.kh"
-tp DataType in "modules/computer/datatype/protocol/data-type.kh"
+tp Type in "modules/computer/type/protocol/type.kh"
 tp Clone_Computer_Buffer in "modules/computer/adt/marker/protocol/clone.kh"
 tp Copy_Computer_Buffer in "modules/computer/adt/marker/protocol/copy.kh"
 
@@ -22,7 +22,7 @@ tp Copy_Computer_Buffer in "modules/computer/adt/marker/protocol/copy.kh"
 tp Compare mt (self Computer_Buffer) (with Computer_Buffer) (n NumberOfElement)
 
 tp Computer_Buffer ab {
-    DataType
+    Type
     Capsule_LifeCycle
     Observer_Buffer_Indexes
     Mutator_Indexes

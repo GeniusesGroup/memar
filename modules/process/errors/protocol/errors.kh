@@ -1,6 +1,6 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-tp Datatype_ID in "modules/computer/datatype/protocol/id.kh"
+tp Type_ID in "modules/computer/type/protocol/id.kh"
 tp Error in "modules/process/error/protocol/error.kh"
 tp String in "modules/codec/string/protocol/string.kh"
 
@@ -8,6 +8,6 @@ tp String in "modules/codec/string/protocol/string.kh"
 tp Process_Errors ab
 tp Process_Errors_Register mt (self Process_Errors) (errorToRegister Error) (err Error)
 
-tp Process_Errors_GetByID mt (self Process_Errors) (id Datatype_ID) (err Error)
+tp Process_Errors_GetByID mt (self Process_Errors) (id Type_ID) (err Error)
 
 tp Process_Errors_GetByMediaType mt (self Process_Errors) (mt_ String) (err Error)

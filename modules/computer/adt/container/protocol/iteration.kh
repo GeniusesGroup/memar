@@ -2,7 +2,7 @@
 
 tp Container_ElementIndex in "modules/computer/adt/container/protocol/index.kh"
 tp Container_Iterate in "modules/computer/adt/container/protocol/iterate.kh"
-tp Iterate_DataType in "modules/computer/adt/container/protocol/iterate.kh"
+tp Iterate_Type in "modules/computer/adt/container/protocol/iterate.kh"
 tp Iterate_Module_Path in "modules/computer/adt/container/protocol/iterate.kh"
 tp Iterate_String_Character in "modules/computer/adt/container/protocol/iterate.kh"
 tp Error in "modules/process/error/protocol/error.kh"
@@ -17,9 +17,9 @@ tp Container_Iteration ab
 // It can return `Iterate` errors or internal `Iteration` errors.
 tp Iteration mt (self Container_Iteration) (startIndex Container_ElementIndex, iterator Container_Iterate) (err Error)
 
-tp Iteration_DataType ab
+tp Iteration_Type ab
 // It can return `Iterate` errors or internal `Iteration` errors.
-tp Container_Iteration_DataType_Iteration mt (self Iteration_DataType) (startIndex Container_ElementIndex, iterator Iterate_DataType) (err Error)
+tp Container_Iteration_Type_Iteration mt (self Iteration_Type) (startIndex Container_ElementIndex, iterator Iterate_Type) (err Error)
 
 tp Iteration_Module_Path ab
 // It can return `Iterate` errors or internal `Iteration` errors.

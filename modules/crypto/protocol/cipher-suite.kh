@@ -1,11 +1,11 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-tp DataType in "modules/computer/datatype/protocol/data-type.kh"
+tp Type in "modules/computer/type/protocol/type.kh"
 tp String in "modules/codec/string/protocol/string.kh"
 
 // https://en.wikipedia.org/wiki/Cipher_suite
 tp Crypto_CipherSuite ab {
-    DataType
+    Type
 }
 tp Crypto_CipherSuite_CipherSuite mt (self Crypto_CipherSuite) () (s String)
 

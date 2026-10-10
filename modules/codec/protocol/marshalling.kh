@@ -3,14 +3,14 @@
 tp Observer_Codec_Length in "modules/codec/protocol/length.observers.kh"
 tp Codec_Length in "modules/codec/protocol/length.kh"
 tp Computer_Buffer in "modules/computer/buffer/protocol/buffer.kh"
-tp DataType in "modules/computer/datatype/protocol/data-type.kh"
+tp Type in "modules/computer/type/protocol/type.kh"
 tp Error in "modules/process/error/protocol/error.kh"
 tp Observer_MediaType in "modules/identifier/mediatype/protocol/media-type.observers.kh"
 
 tp Codec_Marshalling ab {
     Codec_Unmarshaler
     Codec_Marshaler
-    DataType
+    Type
     Observer_MediaType
 }
 

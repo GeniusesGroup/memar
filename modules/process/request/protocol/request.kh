@@ -1,10 +1,10 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 tp Codec in "modules/codec/protocol/codec.kh"
-tp DataType in "modules/computer/datatype/protocol/data-type.kh"
+tp Type in "modules/computer/type/protocol/type.kh"
 
 // Request indicate request type that MUST use by any other types.
 tp Process_Request ab {
-    DataType
+    Type
     Codec
 }
 

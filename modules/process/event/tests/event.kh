@@ -39,7 +39,7 @@
 // receiver is promised; the satisfaction itself is `docs/khayyam/abstraction.md` -> Abstraction
 // Realization, which judges it by method name and receiver and not by where either was written.
 // Decided by: read `modules/process/event/event.kh` for the methods whose owner group names `Event`,
-// then read `modules/computer/datatype/protocol/data-type.observers.kh` and
+// then read `modules/computer/type/protocol/type.observers.kh` and
 // `modules/time/protocol/time.observers.kh` for the two each names. A method on `self Event` named
 // as those two name them, with the same number of influencing variables and the same influenced
 // variables and their types in order, decides for that member. The receiver differing from the

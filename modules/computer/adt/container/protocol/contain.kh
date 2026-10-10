@@ -4,7 +4,7 @@
 
 tp Boolean in "modules/math/boolean/protocol/boolean.kh"
 tp Container_Element in "modules/computer/adt/container/protocol/element.kh"
-tp DataType in "modules/computer/datatype/protocol/data-type.kh"
+tp Type in "modules/computer/type/protocol/type.kh"
 tp Module_Path in "modules/modules/module/protocol/dt-path.kh"
 tp Character in "modules/codec/string/protocol/character.kh"
 
@@ -15,10 +15,10 @@ tp Container_Contain ab
 // Implementation can easy just by call `Index()` and return true if > 0.
 tp Contain mt (self Container_Contain) (el Container_Element) (b Boolean)
 
-tp Contain_DataType ab
+tp Contain_Type ab
 // reports whether given element exist in the container.
 // Implementation can easy just by call `Index()` and return true if > 0.
-tp Container_Contain_DataType_Contain mt (self Contain_DataType) (el DataType) (b Boolean)
+tp Container_Contain_Type_Contain mt (self Contain_Type) (el Type) (b Boolean)
 
 tp Contain_Module_Path ab
 // reports whether given element exist in the container.

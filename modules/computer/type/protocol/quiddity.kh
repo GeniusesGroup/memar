@@ -14,7 +14,7 @@ tp String in "modules/codec/string/protocol/string.kh"
 
 // they happen to remember, even if imperfectly). Neither is guaranteed unique and neither may be used for
 
-// dispatch, equality, or any mechanism requiring a guaranteed-unique identifier — that role belongs to DataTypeID.
+// dispatch, equality, or any mechanism requiring a guaranteed-unique identifier — that role belongs to Type_ID.
 
 tp Quiddity ab
 

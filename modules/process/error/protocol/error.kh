@@ -1,7 +1,7 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
 tp Nil in "modules/computer/adt/protocol/nil.kh"
-tp DataType in "modules/computer/datatype/protocol/data-type.kh"
+tp Type in "modules/computer/type/protocol/type.kh"
 tp Observer_MediaType in "modules/identifier/mediatype/protocol/media-type.observers.kh"
 
 // Error is base behaviors that any Error capsule must implement.
@@ -16,7 +16,7 @@ tp Observer_MediaType in "modules/identifier/mediatype/protocol/media-type.obser
 // the "error" package's IsEqual for a generic, interface-level comparison helper.
 tp Error ab {
     ImplementsError
-    DataType
+    Type
     Observer_MediaType
 // Error embeds adt_p.Nil only, as a Go-specific realization — not because Error's canonical (memar-level)
 // definition only needs Nil. Khayyam's Error requires the full adt_p.ADT family (IsNil/IsNull/IsEmpty); Go's

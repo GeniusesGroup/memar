@@ -10,17 +10,17 @@ tp Quiddity in "modules/computer/type/protocol/quiddity.kh"
 // Risks include leaking information that can be exploited to compromise the system,
 // access to the system, or the privacy of users of the system.
 //
-// Summary/Overview vs UserActionNote/DevActionNote: Summary and Overview document the DataType itself, for
+// Summary/Overview vs UserActionNote/DevActionNote: Summary and Overview document the Type itself, for
 // someone inspecting or managing the type in general (e.g. a manager reviewing what a service/role does, or a
 // CLI/GUI listing available types) — read independently of any specific occurrence. UserActionNote and
-// DevActionNote, by contrast, are addressed to whoever is actually facing an occurrence of this DataType
+// DevActionNote, by contrast, are addressed to whoever is actually facing an occurrence of this Type
 // (typically an Error) at the moment it happens, and describe what action to take next: UserActionNote for the
 // end user facing the situation, DevActionNote for the developer/integrator handling it.
 tp Details ab {
     Quiddity
 }
 
-// Domain return locale domain name that DataType belongs to it.
+// Domain return locale domain name that Type belongs to it.
 // More user friendly domain name to show to users on screens.
 tp Domain mt (self Details) () (s String)
 
@@ -32,11 +32,11 @@ tp Summary mt (self Details) () (s String)
 // Usually it is multi line text to shown in the '<app> help <this-command>' output or expand error details in GUI screen.
 tp Overview mt (self Details) () (s String)
 
-// UserActionNote return locale note describing what action the end user should take when facing this DataType.
+// UserActionNote return locale note describing what action the end user should take when facing this Type.
 // Description text that gives the main ideas with explaining all the details and purposes, addressed directly to the end user.
 tp UserActionNote mt (self Details) () (s String)
 
-// DevActionNote return locale technical note describing what action the developer/integrator should take when facing this DataType.
+// DevActionNote return locale technical note describing what action the developer/integrator should take when facing this Type.
 // Description text that gives the main ideas with explaining all the details and purposes, addressed to a developer.
 tp DevActionNote mt (self Details) () (s String)
 

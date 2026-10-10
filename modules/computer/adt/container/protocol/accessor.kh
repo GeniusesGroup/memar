@@ -1,27 +1,27 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
 tp Container_Contain in "modules/computer/adt/container/protocol/contain.kh"
-tp Contain_DataType in "modules/computer/adt/container/protocol/contain.kh"
+tp Contain_Type in "modules/computer/adt/container/protocol/contain.kh"
 tp Contain_Module_Path in "modules/computer/adt/container/protocol/contain.kh"
 tp Contain_String_Character in "modules/computer/adt/container/protocol/contain.kh"
 tp Container_Count in "modules/computer/adt/container/protocol/length.kh"
-tp Count_DataType in "modules/computer/adt/container/protocol/length.kh"
+tp Count_Type in "modules/computer/adt/container/protocol/length.kh"
 tp Count_Module_Path in "modules/computer/adt/container/protocol/length.kh"
 tp Count_String_Character in "modules/computer/adt/container/protocol/length.kh"
 tp Container_GetElement in "modules/computer/adt/container/protocol/get-element.kh"
-tp GetElement_DataType in "modules/computer/adt/container/protocol/get-element.kh"
+tp GetElement_Type in "modules/computer/adt/container/protocol/get-element.kh"
 tp GetElement_Module_Path in "modules/computer/adt/container/protocol/get-element.kh"
 tp GetElement_String_Character in "modules/computer/adt/container/protocol/get-element.kh"
 tp Container_Index in "modules/computer/adt/container/protocol/index.kh"
-tp Index_DataType in "modules/computer/adt/container/protocol/index.kh"
+tp Index_Type in "modules/computer/adt/container/protocol/index.kh"
 tp Index_Module_Path in "modules/computer/adt/container/protocol/index.kh"
 tp Index_String_Character in "modules/computer/adt/container/protocol/index.kh"
 tp Container_Iteration in "modules/computer/adt/container/protocol/iteration.kh"
-tp Iteration_DataType in "modules/computer/adt/container/protocol/iteration.kh"
+tp Iteration_Type in "modules/computer/adt/container/protocol/iteration.kh"
 tp Iteration_Module_Path in "modules/computer/adt/container/protocol/iteration.kh"
 tp Iteration_String_Character in "modules/computer/adt/container/protocol/iteration.kh"
 tp Container_Peek in "modules/computer/adt/container/protocol/peek.kh"
-tp Peek_DataType in "modules/computer/adt/container/protocol/peek.kh"
+tp Peek_Type in "modules/computer/adt/container/protocol/peek.kh"
 tp Peek_Module_Path in "modules/computer/adt/container/protocol/peek.kh"
 tp Peek_String_Character in "modules/computer/adt/container/protocol/peek.kh"
 
@@ -47,13 +47,13 @@ tp Container_Accessor_Module_Path ab {
     Iteration_Module_Path
 }
 
-tp Accessor_DataType ab {
-    GetElement_DataType
-    Peek_DataType
-    Index_DataType
-    Count_DataType
-    Contain_DataType
-    Iteration_DataType
+tp Accessor_Type ab {
+    GetElement_Type
+    Peek_Type
+    Index_Type
+    Count_Type
+    Contain_Type
+    Iteration_Type
 }
 
 tp Accessor_String_Character ab {

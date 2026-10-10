@@ -55,7 +55,7 @@ const ARCHIVE_EXPECTATIONS: ReadonlyArray<
   ["modules/process/control-flow/protocol/panic-recovery.kh", "accept"],
   ["modules/time/duration/nano-in-second.kh", "accept"],
   ["modules/computer/datatype/protocol/identifiers.kh", "accept"],
-  ["modules/computer/datatypes/protocol/data-types.kh", "accept"],
+  ["modules/computer/types/protocol/types.kh", "accept"],
   ["modules/computer/adt/hash_table/protocol/accessor.kh", "accept"],
   ["modules/net/srpc/protocol/srpc.kh", "accept"],
   ["modules/math/float/float-32.kh", "accept"],
