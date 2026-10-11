@@ -17,7 +17,7 @@ This file records what changed in [target.md](./target.md) and what each change 
   - [demo/greeting.kh](./demo/greeting.kh), [demo/node-host.js](./demo/node-host.js), [demo/browser.html](./demo/browser.html) - A capsule that holds a field, a host that hands the value over, and a supplied method that reads the slot.
 - Added:
   - [bootstrap/write-field.kh](./bootstrap/write-field.kh) - the record of the ruling: the same call written on a name the body binds and on a field, and the second is refused on purpose.
-  - [run.test.ts](./test/run.test.ts) - the measurement the endorsed shape needed: a host supplies the method that writes, and the test reads the field back.
+  - [run.test.ts](./tests/run.test.ts) - the measurement the endorsed shape needed: a host supplies the method that writes, and the test reads the field back.
 - Published:
   - Nothing outside this folder was published for this change.
 

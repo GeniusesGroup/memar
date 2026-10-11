@@ -3,7 +3,7 @@
 # Without this, the bytes of a committed file depend on the `core.autocrlf` of
 # whoever clones it. That is not theoretical: with autocrlf=true on Windows, a
 # fresh checkout rewrote the display layer's manifest and themes with CRLF, and
-# `display/test/generator-output.test.ts`, which compares the generator's
+# `display/tests/generator-output.test.ts`, which compares the generator's
 # output to those files byte for byte, failed on the clone while passing in the
 # working copy it was written in.
 #

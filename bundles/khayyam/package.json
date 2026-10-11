@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "node --test \"core/test/*.test.ts\" \"display/test/*.test.ts\" \"lsp/test/*.test.ts\" \"services/*/test/*.test.ts\" \"targets/*/test/*.test.ts\" && node --test \"targets/*/test/*.check.ts\"",
+    "test": "node --test \"core/tests/*.test.ts\" \"display/tests/*.test.ts\" \"lsp/tests/*.test.ts\" \"services/*/tests/*.test.ts\" \"targets/*/tests/*.test.ts\" && node --test \"targets/*/tests/*.check.ts\"",
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {

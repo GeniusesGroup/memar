@@ -21,7 +21,7 @@
 // that capsule hands its field to the method that writes it — which is the shape
 // the owner's ruling names, and which needs no more of the language than a field
 // read and a variable handed over. The write itself lands in
-// [run.test.ts](../test/run.test.ts), where a host supplies the method that writes
+// [run.test.ts](../tests/run.test.ts), where a host supplies the method that writes
 // and the test reads the field back.
 
 tp Count cp {
