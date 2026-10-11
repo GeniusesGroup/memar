@@ -29,12 +29,17 @@ What is pinned, and what each pin is for:
                      verb's own help says what it accepts, and `new`'s points
                      here rather than repeating it. It also says that
                      the folder's top holds plan.md and report.md and the rest
-                     goes in role folders, that report.md is written before
+                     goes in role folders, whose names it leaves to
+                     `memar module folders --help`, that report.md is written before
                      work on a task ends with a Stop the plan's Status agrees
                      with, and that a folder may lie in the project's own
                      session location — relative or absolute, never the
                      project's top folder or a root — which the sweep never
-                     reaches. The help says
+                     reaches, which `list` shows only with --project or
+                     --conversation, and which keeps its own log. It says
+                     how a task is handed to a sub-agent: the delegator
+                     opens its session, writes its plan, and hands only the
+                     brief, which `brief ID` prints again. The help says
                      nothing about how the folder is arranged: the mechanism
                      is a DevActionNote, and the why is pinned to the services'
                      own docstrings, where it is maintained.
@@ -88,6 +93,7 @@ from machine.fs_test_scratch import suite_scratch
 
 import machine.fs_memar as memar_fs
 import services.session as session
+import services.session_brief as session_brief
 import services.session_close as session_close
 import services.session_find as session_find
 import services.session_folder as session_folder
@@ -202,7 +208,7 @@ class HelpSaysWhatToRun(unittest.TestCase):
         for phrase in (
             "The folder's top holds plan.md and report.md",
             "role folder of its kind",
-            "modules/README.md",
+            "`memar module folders --help` names them",
             "# Report\n    Stop:\n\n    ## What ran\n    ## Check\n    ## Result\n    ## Left open",
             "finished or not",
             "Stop: success, clean no-op",
@@ -229,6 +235,30 @@ class HelpSaysWhatToRun(unittest.TestCase):
             self.assertIn(phrase, text)
         self.assertNotIn("lies in Memar's own checkout, also when", text)
 
+    def test_the_help_says_how_a_task_is_handed_to_a_sub_agent(self) -> None:
+        text = flat(run_help())
+        for phrase in (
+            "memar session brief ID",
+            "and print the brief that hands it over",
+            "open its session yourself with `--parent`",
+            "write the whole task into its plan.md — the Request, the check that says it is done, and the shape of its report",
+            "hand the sub-agent only the brief `new` prints, which `brief ID` prints again",
+            "takes that session up and opens none, and does not rewrite its Request",
+        ):
+            self.assertIn(phrase, text)
+
+    def test_the_help_says_what_list_shows_and_where_each_log_is(self) -> None:
+        text = flat(run_help())
+        for phrase in (
+            "memar session list [TEXT] find Memar's own session folders",
+            "memar session list --project [PATH]",
+            "`--project` lists every session of a project, in its own location or in Memar's",
+            "`--conversation` every session of a conversation, wherever it lies",
+            "Each location keeps its own log of what was done to its folders, sessions.log at its top",
+            "those it no longer records because their folder is gone",
+        ):
+            self.assertIn(phrase, text)
+
     def test_the_command_lists_keep_one_column(self) -> None:
         columns = set()
         for line in session.DESCRIPTION.splitlines():
@@ -245,7 +275,9 @@ class HelpSaysWhatToRun(unittest.TestCase):
             ("new", ("--session-id", "--title TITLE", "--parent ID", "for one task", "first session of that conversation",
                      "said in `memar session --help`")),
             ("list", ("whose id, title, or project holds TEXT", "one word or a short phrase, not a question",
-                      "--status {open,blocked,done}", "--conversation ID", "--idle-days DAYS")),
+                      "--status {open,blocked,done}", "--conversation ID", "--idle-days DAYS",
+                      "--project [PATH]", "List Memar's own session folders", "the git top-level of the current folder")),
+            ("brief", ("ID", "ready to paste", "`new --parent` prints", "said in `memar session --help`")),
             ("gc", ("--session-id", "--idle-days DAYS", "never swept", "cannot be read", "at least 1", "whose status is done")),
             ("close", ("--session-id",)),
         ):
@@ -267,10 +299,11 @@ class HelpSaysWhatToRun(unittest.TestCase):
     def test_the_why_is_in_the_files_the_implementer_reads(self) -> None:
         # Not a second copy: each service's own docstring, the one text
         # addressed to whoever opens it, and the domain's says where they are.
-        for name in ("session_new", "session_find", "session_close", "session_gc", "session_migrate"):
+        for name in ("session_new", "session_brief", "session_find", "session_close", "session_gc", "session_migrate"):
             self.assertIn(name, session.__doc__)
         for module, phrases in (
             (session_new, ("shared-tree collisions", "advisory locks", "intent notes", "One session is one task")),
+            (session_brief, ("same text for every task", "stated once in the delegator's words")),
             (session_plan, ("disputed", "handoff", "still read")),
             (session_gc, ("Idle is not the same as", "once a day")),
             (session_find, ("listed together",)),
@@ -295,6 +328,7 @@ class EachServiceDeclaresItsVerb(unittest.TestCase):
         for module, verb in (
             (session, "session"),
             (session_new, "new"),
+            (session_brief, "brief"),
             (session_find, "list"),
             (session_close, "close"),
             (session_gc, "gc"),
@@ -310,14 +344,14 @@ class EachServiceDeclaresItsVerb(unittest.TestCase):
             with self.subTest(module=module.__name__):
                 self.assertFalse(hasattr(module, launcher.DESCRIBE))
 
-    def test_the_command_offers_the_four_verbs_in_the_order_of_their_services(self) -> None:
+    def test_the_command_offers_the_five_verbs_in_the_order_of_their_services(self) -> None:
         def verbs_of(parser: argparse.ArgumentParser) -> dict[str, argparse.ArgumentParser]:
             found = [action for action in parser._actions if isinstance(action, argparse._SubParsersAction)]
             return dict(found[0].choices) if found else {}
 
         top, before = launcher.assemble(SESSION_SERVICES)
         self.assertEqual(before, [])
-        self.assertEqual(list(verbs_of(verbs_of(top)["session"])), ["close", "list", "gc", "new"])
+        self.assertEqual(list(verbs_of(verbs_of(top)["session"])), ["brief", "close", "list", "gc", "new"])
 
 
 class VerbsDispatch(Fixture):
@@ -325,9 +359,12 @@ class VerbsDispatch(Fixture):
         for argv, module, name, expected in (
             (["new", "--title", "T"], session_new, "open_session", (None, "T", None)),
             (["new", "--session-id", "s-1", "--parent", "s-0"], session_new, "open_session", ("s-1", None, "s-0")),
-            (["list"], session_find, "list_sessions", (None, None, None, None)),
+            (["list"], session_find, "list_sessions", (None, None, None, None, None)),
             (["list", "word", "--status", "blocked", "--idle-days", "3", "--conversation", "s-0"],
-             session_find, "list_sessions", ("word", "blocked", 3.0, "s-0")),
+             session_find, "list_sessions", ("word", "blocked", 3.0, "s-0", None)),
+            (["list", "word", "--project"], session_find, "list_sessions", ("word", None, None, None, "")),
+            (["list", "--project", "C:/work/p"], session_find, "list_sessions", (None, None, None, None, "C:/work/p")),
+            (["brief", "s-1"], session_brief, "print_brief", ("s-1",)),
             (["gc"], session_gc, "collect", (None, None)),
             (["gc", "--session-id", "s-1", "--idle-days", "2"], session_gc, "collect", ("s-1", 2.0)),
             (["close", "--session-id", "s-1"], session_close, "close", ("s-1",)),
@@ -352,6 +389,7 @@ class MovedBeforeAnyVerb(Fixture):
             (["list"], session_find, "list_sessions"),
             (["gc"], session_gc, "collect"),
             (["close", "--session-id", "s-1"], session_close, "close"),
+            (["brief", "s-1"], session_brief, "print_brief"),
         ):
             with self.subTest(argv=argv):
                 order = unittest.mock.Mock()
@@ -361,7 +399,7 @@ class MovedBeforeAnyVerb(Fixture):
                 self.assertEqual([call[0] for call in order.mock_calls], ["migrate", name])
 
     def test_asking_for_help_moves_nothing(self) -> None:
-        for argv in (["--help"], ["new", "--help"], ["list", "--help"], ["gc", "--help"], ["close", "--help"]):
+        for argv in (["--help"], ["new", "--help"], ["list", "--help"], ["gc", "--help"], ["close", "--help"], ["brief", "--help"]):
             with self.subTest(argv=argv):
                 with unittest.mock.patch.object(session_migrate, "migrate") as migrate:
                     with contextlib.redirect_stdout(io.StringIO()), self.assertRaises(SystemExit) as raised:
@@ -418,6 +456,7 @@ class CommandEndToEnd(Fixture):
             ("list", "--conversation ID"),
             ("close", "--session-id SESSION_ID"),
             ("gc", "--idle-days DAYS"),
+            ("brief", "ID"),
         ):
             with self.subTest(verb=verb):
                 self.assertIn(phrase, run_help(verb))

@@ -28,7 +28,8 @@ What is pinned, and what each pin is for:
                     left, even in a location registered by hand that is a
                     project's top folder.
   OnlyItsFolder     Closing one session's folder reaches nothing beside it, the
-                    lock directory included, and is recorded in the log.
+                    lock directory included, and is recorded in the log of
+                    the location it lay in: a project's own, else Memar's.
 
 Usage is the interface. Do not duplicate these recipes as prose catalogs.
 """
@@ -59,7 +60,7 @@ import machine.fs_memar as memar_fs
 import machine.fs_trash as fs_trash
 import services.session_close as session_close
 from services.session_location import register
-from services.session_log import log_path
+from services.session_log import SESSION_LOG_NAME, log_path
 
 
 class Fixture(unittest.TestCase):
@@ -169,6 +170,17 @@ class OnlyItsFolder(Fixture):
         self.assertTrue(lock_dir.is_dir())
         events = [line.split("\t")[1:3] for line in log_path().read_text(encoding="utf-8").splitlines()]
         self.assertIn(["closed", "s-3"], events)
+
+    def test_closing_a_session_in_a_project_location_is_recorded_in_that_locations_log(self) -> None:
+        location = self.fake_root / "project" / "sessions"
+        folder = location / "20261009T120000Z-44-0"
+        folder.mkdir(parents=True)
+        register(location)
+        with unittest.mock.patch.object(fs_trash, "soft_delete", side_effect=self.move_to_bin):
+            session_close.close_session(folder.name)
+        events = [line.split("\t")[1:3] for line in (location / SESSION_LOG_NAME).read_text(encoding="utf-8").splitlines()]
+        self.assertEqual(events, [["closed", folder.name]])
+        self.assertFalse(log_path().is_file())
 
 
 if __name__ == "__main__":

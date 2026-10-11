@@ -44,7 +44,10 @@ What is pinned, and what each pin is for:
                       A folder in a project's own session location is never
                       swept, daily or by `gc`, however idle and done: it is
                       the project's. `gc` names each recorded location it did
-                      not sweep, and none when none is recorded.
+                      not sweep, and none when none is recorded; it removes
+                      from the record each location that is gone and names
+                      it, which the daily sweep does not. A project's own
+                      log is never trimmed.
 
 Usage is the interface. Do not duplicate these recipes as prose catalogs.
 """
@@ -78,7 +81,7 @@ import machine.fs_trash as fs_trash
 import services.session_gc as session_gc
 import services.session_new as session_new
 from services.session_location import register
-from services.session_log import log_path
+from services.session_log import SESSION_LOG_NAME, log_path
 from services.session_plan import PLAN_NAME, plan_skeleton
 
 DAY = 24 * 60 * 60
@@ -416,6 +419,34 @@ class ProjectLocationsNotSwept(Fixture):
 
     def test_gc_names_none_when_no_project_location_is_recorded(self) -> None:
         self.assertNotIn("not swept", self.run_gc())
+
+    def test_gc_removes_each_recorded_location_that_is_gone_and_names_it(self) -> None:
+        location, _ = self.project_folder()
+        gone = self.fake_root / "unmounted"
+        register(gone)
+        registry = memar_fs.project_sessions_registry()
+        printed = self.run_gc()
+        self.assertIn(f"{session_gc.FORGOTTEN}: {gone.resolve()}", printed)
+        self.assertNotIn(f"{session_gc.FORGOTTEN}: {location.resolve()}", printed)
+        self.assertEqual(registry.read_text(encoding="utf-8").splitlines(), [str(location.resolve())])
+        self.assertNotIn(session_gc.FORGOTTEN, self.run_gc())
+
+    def test_the_daily_sweep_leaves_the_record_as_it_is(self) -> None:
+        self.project_folder()
+        register(self.fake_root / "unmounted")
+        registry = memar_fs.project_sessions_registry()
+        before = registry.read_text(encoding="utf-8")
+        self.daily()
+        self.assertEqual(registry.read_text(encoding="utf-8"), before)
+
+    def test_the_daily_sweep_trims_memars_log_only(self) -> None:
+        location, _ = self.project_folder()
+        old = (datetime.now(timezone.utc) - timedelta(days=session_gc.LOG_KEEP_DAYS + 1)).isoformat(timespec="seconds")
+        own = location / SESSION_LOG_NAME
+        own.write_text(f"{old}\topened\t{IDLE}\t\n", encoding="utf-8", newline="\n")
+        self.daily()
+        self.assertEqual(own.read_text(encoding="utf-8"), f"{old}\topened\t{IDLE}\t\n")
+        self.assertNotIn(own, self.trashed)
 
 
 if __name__ == "__main__":

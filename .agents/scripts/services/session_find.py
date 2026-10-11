@@ -16,8 +16,14 @@ is named by any session in it — the first one's id is what the others record,
 and a session asked for by its own id is read for the conversation it records;
 a first session that has been swept is still the name its conversation goes by.
 
-Folders in the project session locations Memar has recorded are listed with
-Memar's own, from whatever folder `list` is run in (`session_location`).
+What is listed by default is Memar's own sessions alone. A project that keeps
+its sessions in its own location keeps them for itself, and a list of every
+project's sessions mixed into Memar's answers no question one session asks.
+`--project` asks for one project's sessions wherever they lie: every session
+folder in its own locations (`session_location.locations_of`), and every
+other one whose plan names that project, from whatever folder `list` is run
+in. A conversation crosses projects, since a delegated task may be another
+project's, so `--conversation` looks in every location Memar has recorded.
 
 A session whose plan and report disagree is marked where its status is shown,
 because the two are written by one agent at two moments, and the list is where
@@ -30,10 +36,12 @@ from __future__ import annotations
 
 import argparse
 from collections import Counter
+from pathlib import Path
 from typing import Callable
 
 from machine.console import fail, note
 from services.session_folder import Session, folder_of, measured_idle, read_session, session_folders
+from services.session_location import locations_of, project_root, same_path
 from services.session_plan import DONE_STATUS, PLAN_NAME, STATUSES, is_done
 from services.session_report import REPORT_NAME, disagreement, read_stop
 
@@ -85,13 +93,37 @@ def grouped(sessions: list[Session]) -> list[Session]:
     return [session for group in groups.values() for session in group]
 
 
+def project_of(project: str | None) -> Path | None:
+    """The project `--project` names: PROJECT's project, the current folder's when it is empty, None when not asked."""
+    if project is None:
+        return None
+    return project_root(Path(project) if project.strip() else None)
+
+
+def of_project(session: Session, project: Path, own: list[Path]) -> bool:
+    """Whether SESSION is PROJECT's: it lies in one of OWN, its locations, or its plan names PROJECT."""
+    if any(same_path(session.path.parent, location) for location in own):
+        return True
+    named = (session.front or {}).get("project", "").strip()
+    return bool(named) and same_path(named, project)
+
+
 def find_sessions(
     text: str | None = None,
     status: str | None = None,
     conversation: str | None = None,
+    project: Path | None = None,
 ) -> list[Session]:
-    """Every session folder, newest first and grouped by conversation, filtered by TEXT, STATUS, and CONVERSATION."""
-    sessions = [read_session(folder) for folder in session_folders(projects=True)]
+    """The sessions in scope, newest first and grouped by conversation, filtered by TEXT, STATUS, CONVERSATION, and PROJECT.
+
+    The scope is Memar's own sessions, or every recorded location's too when a
+    CONVERSATION or a PROJECT is asked for.
+    """
+    own = locations_of(project) if project is not None else []
+    everywhere = conversation is not None or project is not None
+    sessions = [read_session(folder) for folder in session_folders(projects=everywhere, locations=own)]
+    if project is not None:
+        sessions = [session for session in sessions if of_project(session, project, own)]
     if text:
         sessions = [session for session in sessions if matches(session, text)]
     if status is not None:
@@ -141,12 +173,13 @@ def list_sessions(
     status: str | None = None,
     idle_days: float | None = None,
     conversation: str | None = None,
+    project: str | None = None,
 ) -> None:
-    """`list`: print the sessions asked for, or say that none matches."""
+    """`list`: print the sessions asked for, or say that none matches; PROJECT empty is the current one."""
     if idle_days is not None and idle_days < 0:
         fail("--idle-days counts days waited; it cannot be negative")
     shown = 0
-    for session in find_sessions(text, status, conversation):
+    for session in find_sessions(text, status, conversation, project_of(project)):
         idle = measured_idle(session.path) if idle_days is not None else None
         if idle_days is not None and (idle is None or idle < idle_days):
             # A folder whose age cannot be read is not known to have waited
@@ -155,7 +188,7 @@ def list_sessions(
         print_session(session, idle=idle)
         shown += 1
     if not shown:
-        asked = text or status is not None or idle_days is not None or conversation is not None
+        asked = text or status is not None or idle_days is not None or conversation is not None or project is not None
         note("no session folder matches" if asked else "no session folder")
 
 
@@ -165,18 +198,20 @@ def describe(verbs) -> Callable[[argparse.Namespace], None]:
         LIST_COMMAND,
         help="list session folders, newest first, a conversation's together",
         description=(
-            "List every session folder, newest first, with the sessions of one\n"
+            "List Memar's own session folders, newest first, with the sessions of one\n"
             "conversation next to each other: its id, title, project, status, the\n"
             "session it came from, and its path. A folder with no plan.md, one that\n"
             "cannot be read, or one without front matter, is listed and marked so.\n"
             f"A session whose {REPORT_NAME} Stop does not agree with its plan's status, or\n"
             f"whose status is not {', '.join(STATUSES)}, is marked `{DISAGREES}`, with why.\n"
-            "Folders in a project's own session location are listed with the rest.\n"
-            "With --status, only the sessions in that status are shown; with\n"
-            "--idle-days, only those quiet that long, each saying how long; with\n"
-            "--conversation, only the sessions linked with that one. Together they\n"
-            "are the sessions holding work in the state the caller asked about,\n"
-            "which is what a person asks for before going back to one."
+            "A folder in a project's own session location is listed only when asked\n"
+            "for: with --project, every session of that project wherever it lies, in\n"
+            "its own session location or in Memar's; with --conversation, every\n"
+            "session linked with that one, wherever it lies. With --status, only the\n"
+            "sessions in that status are shown; with --idle-days, only those quiet\n"
+            "that long, each saying how long. Together they are the sessions holding\n"
+            "work in the state the caller asked about, which is what a person asks\n"
+            "for before going back to one."
         ),
     )
     lister.add_argument(
@@ -205,10 +240,22 @@ def describe(verbs) -> Callable[[argparse.Namespace], None]:
         "--conversation",
         default=None,
         metavar="ID",
-        help="show only the sessions of the conversation the session ID belongs to",
+        help="show only the sessions of the conversation the session ID belongs to, wherever they lie",
+    )
+    lister.add_argument(
+        "--project",
+        nargs="?",
+        const="",
+        default=None,
+        metavar="PATH",
+        help=(
+            "show every session of the project PATH is in, its git top-level else PATH itself, "
+            "or without PATH the git top-level of the current folder: "
+            "those in its own session location and those in Memar's whose plan names it"
+        ),
     )
     return run
 
 
 def run(args: argparse.Namespace) -> None:
-    list_sessions(args.text, args.status, args.idle_days, args.conversation)
+    list_sessions(args.text, args.status, args.idle_days, args.conversation, args.project)

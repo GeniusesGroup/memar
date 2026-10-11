@@ -12,8 +12,9 @@ root, and help output that told them would be a second, worse copy of this.
 
 This file declares the verb and nothing else of its own. Each sub-verb is one
 service on this shelf, which declares it and holds why it is built as it is:
-`session_new` opens a folder and links it to its conversation, `session_find`
-lists them, `session_close` closes one, `session_gc` sweeps; `session_plan`,
+`session_new` opens a folder and links it to its conversation, `session_brief`
+holds the text that hands one to a sub-agent, `session_find` lists them,
+`session_close` closes one, `session_gc` sweeps; `session_plan`,
 `session_report`, `session_folder`, `session_location`, `session_log`, and
 `session_id` are what those share. Before
 any sub-verb runs, and after its arguments are parsed so that asking for help
@@ -31,6 +32,7 @@ from typing import Callable
 
 from services.project_preferences import PREFERENCES_RELATIVE, SESSIONS_KEY
 from services.session_gc import SESSION_IDLE_DAYS
+from services.session_log import SESSION_LOG_NAME
 from services.session_plan import PLAN_NAME, STATUSES
 from services.session_report import REPORT_NAME, report_skeleton, stop_table
 
@@ -46,8 +48,13 @@ belong to your session, not to the repository.
 
     memar session new --title TITLE     open a folder and print its id and path
     memar session new --title TITLE --parent ID
-                                        open one linked to the session ID
-    memar session list [TEXT]           find session folders, newest first
+                                        open one linked to the session ID,
+                                        and print the brief that hands it over
+    memar session brief ID              print that brief again
+    memar session list [TEXT]           find Memar's own session folders,
+                                        newest first
+    memar session list --project [PATH]
+                                        find every session of the project
     memar session list --conversation ID
                                         list every session of ID's conversation
     memar session list --status STATUS [--idle-days DAYS]
@@ -97,8 +104,9 @@ work, so another session can continue from it.
 
 The folder's top holds {PLAN_NAME} and {REPORT_NAME}. Anything else the task makes
 goes in the role folder of its kind, which `new` makes in the folder each time
-it runs; modules/README.md in the Memar checkout says what each holds. `new`
-writes {REPORT_NAME} beside the plan, and never overwrites one that is there:
+it runs; `memar module folders --help` names them and says where what each
+holds is written. `new` writes {REPORT_NAME} beside the plan, and never
+overwrites one that is there:
 
 {indent(report_skeleton(), "    ")}
 Before you end work on the task — finished or not — write {REPORT_NAME}: its Stop
@@ -114,6 +122,12 @@ Each further task gets a session of its own — another request in the same
 conversation, or a task handed to a sub-agent, which works in its own session.
 Open it with `--parent` naming the session it came from; `list` shows the
 sessions of one conversation together.
+
+To hand a task to a sub-agent, open its session yourself with `--parent`,
+write the whole task into its {PLAN_NAME} — the Request, the check that says it
+is done, and the shape of its report — and hand the sub-agent only the brief
+`new` prints, which `brief ID` prints again. The agent handed a brief takes
+that session up and opens none, and does not rewrite its Request.
 
 To continue a task another session left:
 
@@ -136,7 +150,12 @@ folders it kept because their task is not done.
 
 The sweep reaches only Memar's own temp/sessions/. A folder in a project's own
 session location is never swept: keeping, committing, or deleting it is the
-project's, and `gc` names those locations as the ones it did not sweep.
+project's, and `gc` names those locations as the ones it did not sweep, and
+those it no longer records because their folder is gone. `list` shows such a
+folder only when asked: `--project` lists every session of a project, in its
+own location or in Memar's, and `--conversation` every session of a
+conversation, wherever it lies. Each location keeps its own log of what was
+done to its folders, {SESSION_LOG_NAME} at its top.
 """
 
 

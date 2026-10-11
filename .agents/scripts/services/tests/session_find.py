@@ -33,9 +33,18 @@ What is pinned, and what each pin is for:
                   --conversation, given any session of it, keeps only that
                   conversation, also once its first session is gone.
   ProjectLocations
-                  The sessions in a recorded project location are listed and
-                  filtered with Memar's own, from any working folder; a
-                  recorded location that is gone is passed over.
+                  By default only Memar's own sessions are listed. --project
+                  lists every session folder in the project's own location,
+                  a name the project chose among them, and each of Memar's
+                  whose plan names the project, compared resolved and, on
+                  Windows, in any case; it combines with TEXT, --status, and
+                  --idle-days, and without a PATH it is the current project,
+                  with one the project PATH lies in. A recorded location is
+                  a project's only when its own project is that one: a
+                  nested project's is not the enclosing one's, and a folder
+                  that is no project owns none beneath it.
+                  --conversation lists a conversation's sessions wherever
+                  they lie; a recorded location that is gone is passed over.
   ReportMarks     A session whose report.md Stop does not map to its plan's
                   status, whose status is outside open, blocked, done, or
                   whose Stop is not a named stop, is marked with why; one
@@ -48,6 +57,7 @@ from __future__ import annotations
 import contextlib
 import io
 import os
+import subprocess
 import sys
 import tempfile
 import time
@@ -67,7 +77,9 @@ sys.dont_write_bytecode = True
 from machine.fs_test_scratch import suite_scratch
 
 import machine.fs_memar as memar_fs
+import services.project_preferences as project_preferences
 import services.session_find as session_find
+import services.session_location as session_location
 from services.session_location import register
 from services.session_plan import PLAN_NAME, plan_skeleton
 from services.session_report import REPORT_NAME
@@ -92,6 +104,12 @@ def sectioned_plan(title: str, tasks: list[tuple[str, str]]) -> str:
     for heading, status in tasks:
         lines += [f"## {heading}", f"Status: {status}", "", "### Request", ""]
     return "\n".join(lines)
+
+
+def git_init(path: Path) -> None:
+    """Make PATH a git repository of its own, so its project is PATH and not the checkout the scratch lies in."""
+    path.mkdir(parents=True, exist_ok=True)
+    subprocess.run(["git", "init", "-q", str(path)], check=True, capture_output=True)
 
 
 def make_idle(path: Path, days: float) -> None:
@@ -259,19 +277,94 @@ class Conversations(Fixture):
 
 
 class ProjectLocations(Fixture):
-    def test_a_recorded_project_locations_sessions_are_listed_with_memars_and_a_gone_one_passed_over(self) -> None:
-        self.session(OLDEST, plan("Memar's own"))
-        location = self.fake_root / "project" / "sessions"
-        (location / NEWEST).mkdir(parents=True)
-        (location / NEWEST / PLAN_NAME).write_text(plan("The project's", "/project", "blocked"), encoding="utf-8", newline="\n")
-        (location / "notes").mkdir()
-        register(location)
+    def setUp(self) -> None:
+        super().setUp()
+        # A project keeping its sessions in its own `sessions` folder, holding
+        # a minted id, a name the project chose, and a folder of its own; and
+        # Memar's own sessions, one opened from that project and one not.
+        self.project = self.fake_root / "project"
+        git_init(self.project)
+        preferences = project_preferences.preferences_path(self.project)
+        preferences.parent.mkdir(parents=True)
+        preferences.write_text(
+            project_preferences.PREFERENCES_TEXT.replace("sessions:\n", "sessions: sessions\n", 1),
+            encoding="utf-8",
+            newline="\n",
+        )
+        self.location = self.project / "sessions"
+        self.in_location(LATEST, plan("The project's", str(self.project), "blocked", parent=MIDDLE, conversation=MIDDLE))
+        self.in_location("my-task", plan("Named by the project", str(self.project)))
+        (self.location / "notes").mkdir()
+        (self.location / "src").mkdir()
+        (self.location / "src" / PLAN_NAME).write_text("# Not a session\n", encoding="utf-8", newline="\n")
+        register(self.location)
         register(self.fake_root / "unmounted")
-        text = self.run_list()
-        self.assertEqual(self.listed(text), [NEWEST, OLDEST])
-        self.assertIn(f"path: {location / NEWEST}", text)
-        self.assertEqual(self.listed(self.run_list(status="blocked")), [NEWEST])
-        self.assertEqual(self.listed(self.run_list(conversation=NEWEST)), [NEWEST])
+        named = str(self.project).upper() if os.name == "nt" else str(self.project)
+        self.session(MIDDLE, plan("Opened from the project", named))
+        self.session(OLDEST, plan("Another project's", str(self.fake_root / "other")))
+
+    def in_location(self, sid: str, text: str) -> Path:
+        path = self.location / sid
+        path.mkdir(parents=True)
+        (path / PLAN_NAME).write_text(text, encoding="utf-8", newline="\n")
+        return path
+
+    def test_by_default_only_memars_own_sessions_are_listed(self) -> None:
+        self.assertEqual(self.listed(self.run_list()), [MIDDLE, OLDEST])
+        self.assertEqual(self.listed(self.run_list(status="blocked")), [])
+
+    def test_project_lists_its_own_location_and_memars_sessions_that_name_it(self) -> None:
+        text = self.run_list(project=str(self.project))
+        self.assertEqual(self.listed(text), [LATEST, MIDDLE, "my-task"])
+        self.assertIn(f"path: {self.location / 'my-task'}", text)
+        self.assertNotIn("notes", text)
+        self.assertNotIn(f"path: {self.location / 'src'}", text)
+
+    def test_project_combines_with_text_status_and_idle_days(self) -> None:
+        make_idle(self.location / LATEST, 9)
+        self.assertEqual(self.listed(self.run_list("named", project=str(self.project))), ["my-task"])
+        self.assertEqual(self.listed(self.run_list(status="blocked", project=str(self.project))), [LATEST])
+        self.assertEqual(self.listed(self.run_list(idle_days=7, project=str(self.project))), [LATEST])
+
+    def test_project_without_a_path_is_the_project_of_the_current_folder(self) -> None:
+        with unittest.mock.patch.object(session_find, "project_root", return_value=self.project):
+            self.assertEqual(self.listed(self.run_list(project="")), [LATEST, MIDDLE, "my-task"])
+        with unittest.mock.patch.object(session_find, "project_root", return_value=self.fake_root / "other"):
+            self.assertEqual(self.listed(self.run_list(project="")), [OLDEST])
+
+    def test_project_with_a_path_in_a_subfolder_is_that_folders_project(self) -> None:
+        subfolder = self.project / "src" / "deep"
+        subfolder.mkdir(parents=True)
+        self.assertEqual(self.listed(self.run_list(project=str(subfolder))), [LATEST, MIDDLE, "my-task"])
+
+    def test_a_nested_projects_location_is_its_own_not_the_enclosing_ones(self) -> None:
+        inner = self.project / "inner"
+        git_init(inner)
+        folder = inner / "sessions" / "inner-task"
+        folder.mkdir(parents=True)
+        (folder / PLAN_NAME).write_text(plan("The inner project's", str(inner)), encoding="utf-8", newline="\n")
+        register(inner / "sessions")
+        self.assertEqual(self.listed(self.run_list(project=str(self.project))), [LATEST, MIDDLE, "my-task"])
+        self.assertEqual(self.listed(self.run_list(project=str(inner))), ["inner-task"])
+        self.assertEqual(session_location.locations_of(self.project), [self.location.resolve()])
+
+    def test_a_folder_that_is_no_project_owns_no_location_beneath_it(self) -> None:
+        inner = self.project / "inner"
+        git_init(inner)
+        (inner / "sessions").mkdir()
+        register(inner / "sessions")
+        self.assertEqual(session_location.locations_of(self.fake_root), [])
+        with unittest.mock.patch.object(session_find, "project_root", return_value=self.fake_root):
+            self.assertEqual(self.listed(self.run_list(project="")), [])
+
+    def test_a_project_named_session_is_listed_in_a_recorded_location(self) -> None:
+        self.assertIn("my-task", self.listed(self.run_list(project=str(self.project))))
+        self.assertEqual(self.listed(self.run_list(conversation="my-task")), ["my-task"])
+
+    def test_conversation_lists_its_sessions_wherever_they_lie_and_a_gone_location_is_passed_over(self) -> None:
+        for named in (MIDDLE, LATEST):
+            with self.subTest(named=named):
+                self.assertEqual(self.listed(self.run_list(conversation=named)), [LATEST, MIDDLE])
 
 
 class ReportMarks(Fixture):

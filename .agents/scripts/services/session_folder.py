@@ -13,9 +13,10 @@ Memar path, the session folder among them. Which folder directly in temp/ is a
 session an earlier Memar left there is decided here, because until
 `session_migrate` has moved it, it is still that session's folder: it is
 listed, swept, continued, linked to, and closed where it is. A folder in a
-project's own session location (`session_location`) is listed, continued,
-linked to, and closed like any other, but it is never among the folders the
-sweep is given: it is the project's, not Memar's. That location is a folder
+project's own session location (`session_location`) is continued, linked to,
+and closed like any other, and listed when the caller asks for its project or
+its conversation, but it is never among the folders the sweep is given: it is
+the project's, not Memar's. That location is a folder
 the project chose and may hold the project's own folders too, so a folder
 there is a session only by the same test as one left in temp/
 (`is_session_folder`), and no other folder there is ever written into or
@@ -134,22 +135,35 @@ def folder_of(session_id: str) -> Path:
     return project_folder_of(session_id) or folder
 
 
-def session_folders(*, projects: bool = False) -> list[Path]:
+def _entries(root: Path) -> list[Path]:
+    try:
+        return list(root.iterdir())
+    except OSError:
+        return []
+
+
+def session_folders(*, projects: bool = False, locations: list[Path] | None = None) -> list[Path]:
     """Every folder named as a session under the session root or left directly in temp/, newest first.
 
-    With PROJECTS, those in the registered project locations too; the sweep
-    asks without, because those are not Memar's to sweep. A name sort of the
-    dated form is creation order; the earlier form carries no clock and was
-    minted before any dated id.
+    With PROJECTS, the session folders in every registered project location
+    too, and with LOCATIONS, those in each of these; the sweep asks with
+    neither, because those are not Memar's to sweep. In a project location a
+    folder is a session by `is_session_folder`, since a project may name its
+    sessions anything with `--session-id`. A name sort of the dated form is
+    creation order; the earlier form, and a name a project chose, carry no
+    clock and follow every dated id.
     """
-    roots = [sessions_root(), scratch_root(), *(registered_locations() if projects else [])]
-    folders = []
-    for root in roots:
-        try:
-            entries = list(root.iterdir())
-        except OSError:
-            continue
-        folders += [entry for entry in entries if is_session_id(entry.name) and entry.is_dir() and not entry.is_symlink()]
+    folders = [
+        entry
+        for root in (sessions_root(), scratch_root())
+        for entry in _entries(root)
+        if is_session_id(entry.name) and entry.is_dir() and not entry.is_symlink()
+    ]
+    roots: list[Path] = []
+    for root in [*(registered_locations() if projects else []), *(locations or [])]:
+        if root.resolve() not in roots:
+            roots.append(root.resolve())
+    folders += [entry for root in roots for entry in _entries(root) if is_session_folder(entry)]
     folders.sort(key=lambda entry: (is_dated_session_id(entry.name), entry.name), reverse=True)
     return folders
 

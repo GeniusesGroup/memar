@@ -28,7 +28,9 @@ hands a step to a sub-agent, opens several sessions. Each records the session
 it came from as its parent and the first session of the conversation, written
 once with its plan: a link read off one file never needs a walk up a chain
 whose folders may already be swept. The parent must be a session folder that
-is there, because its conversation is read from it.
+is there, because its conversation is read from it. A session opened with a
+parent is most often one the parent is handing to a sub-agent, so `new` ends
+by printing the text that hands it over (`session_brief`).
 
 Opening is also when the day's sweep runs (`session_gc`), never touching the
 session being opened or continued.
@@ -52,6 +54,7 @@ from machine.console import fail, note
 from machine.fs_memar import session_dir
 from services.module_folders import ensure_role_folders
 from services.project_preferences import SESSIONS_KEY, preferences_path
+from services.session_brief import brief_text
 from services.session_folder import folder_of, project_folder_of, read_session
 from services.session_gc import reap_once_a_day
 from services.session_id import new_session_id
@@ -60,6 +63,7 @@ from services.session_location import (
     memar_own_note,
     project_location,
     project_location_note,
+    project_root,
     register,
 )
 from services.session_log import record
@@ -68,23 +72,6 @@ from services.session_plan import PLAN_NAME, checked_title, plan_skeleton
 from services.session_report import REPORT_NAME, write_report
 
 NEW_COMMAND = "new"
-
-
-def project_root() -> Path:
-    """The git top-level of the current directory, else the current directory."""
-    import subprocess
-
-    try:
-        found = subprocess.run(
-            ["git", "rev-parse", "--show-toplevel"],
-            capture_output=True,
-            encoding="utf-8",
-            errors="replace",
-        )
-    except OSError:
-        return Path.cwd()
-    top = found.stdout.strip()
-    return Path(top).resolve() if found.returncode == 0 and top else Path.cwd()
 
 
 def linked_conversation(session_id: str, parent: str) -> str:
@@ -172,7 +159,7 @@ def ensure_session(
         except OSError as error:
             where = f"; check `{SESSIONS_KEY}` in {preferences_path(project)}" if location is not None else ""
             fail(f"the session folder {path} could not be made ({error.strerror or error}){where}")
-        record("opened", sid, f"parent {parent}" if parent else "")
+        record("opened", sid, f"parent {parent}" if parent else "", folder=path)
     if in_project_location(path):
         register(path.parent)
     if not has_plan:
@@ -184,7 +171,7 @@ def ensure_session(
 
 
 def open_session(session_id: str | None, title: str | None, parent: str | None) -> None:
-    """`new`: ensure the session and print its id, path, plan, and report, and where it is when that is a project's."""
+    """`new`: ensure the session and print its id, path, plan, and report, where it is when that is a project's, and with PARENT its brief."""
     sid, path = ensure_session(session_id, title, parent)
     note(f"session_id: {sid}")
     note(f"path: {path}")
@@ -195,6 +182,9 @@ def open_session(session_id: str | None, title: str | None, parent: str | None) 
     ignored = memar_own_note(project_root())
     if ignored is not None:
         note(ignored)
+    if (parent or "").strip():
+        note("brief:")
+        note(f"    {brief_text(sid)}")
 
 
 def describe(verbs) -> Callable[[argparse.Namespace], None]:
@@ -206,7 +196,8 @@ def describe(verbs) -> Callable[[argparse.Namespace], None]:
             "Ensure one session folder, for one task, and print its id, path, plan, and\n"
             f"report. A folder with no {PLAN_NAME} needs --title; a folder that has one is\n"
             "continued as it is. With --parent, the new plan records the session this\n"
-            "task came from and the first session of that conversation.\n\n"
+            "task came from and the first session of that conversation, and `new`\n"
+            "ends with the brief that hands the session to a sub-agent.\n\n"
             "What the folder holds, what to write before work on the task ends, and\n"
             "where the folder lies are said in `memar session --help`."
         ),

@@ -41,7 +41,7 @@ def close_session(session_id: str) -> tuple[str, Path, bool]:
             fail(f"{foreign} is not a session folder; `close` closes only a session's folder")
         return session_id, path, False
     soft_delete(path)
-    record("closed", session_id)
+    record("closed", session_id, folder=path)
     return session_id, path, True
 
 

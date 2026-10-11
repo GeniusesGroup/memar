@@ -33,7 +33,8 @@ What is pinned, and what each pin is for:
                      one; a folder that has a plan is continued without one.
   PlanWritten        The plan is written in UTF-8 with LF and no BOM, records
                      the project `new` resolves, which is the git top-level
-                     else the current folder,
+                     else the current folder — asked of a given folder the
+                     same way, which `list --project` relies on —
                      and is never overwritten: it is the record the next
                      session continues from.
   ParentLinked       `--parent` records the session a task came from and the
@@ -58,10 +59,18 @@ What is pinned, and what each pin is for:
                      folder there is recorded, continued and linked to from
                      another project, and `new` says each time that it is the
                      project's and never swept; a recorded location that is
-                     gone is passed over. The project is a scratch folder,
-                     so a real project's preferences never reach a test.
+                     gone is passed over, and once `gc` has removed it, the
+                     next folder made there records it again; a location a
+                     `new` records while `gc` prunes is kept. The project is
+                     a scratch folder, so a real project's preferences never
+                     reach a test.
+  BriefPrinted       A session made with --parent ends with the brief that
+                     hands it to a sub-agent, its id filled in; one without
+                     a parent prints none.
   OpeningRecorded    Opening a folder is one line in the session log, naming
-                     the parent when there is one.
+                     the parent when there is one; a folder in a project's
+                     own location is recorded in that location's log, not
+                     Memar's.
   LockSharesTheRoot  Locks and intent notes land under the same temp root the
                      session folders are under. How a lock behaves is pinned in
                      `machine/tests/fs_lock.py`, which owns it.
@@ -75,6 +84,7 @@ from __future__ import annotations
 import contextlib
 import io
 import re
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -100,8 +110,10 @@ import services.session_new as session_new
 from services.module_folders import ROLE_FOLDERS
 from services.session_folder import read_session
 from services.session_id import is_session_id
-from services.session_location import registered_locations
-from services.session_log import log_path
+from services.session_brief import brief_text
+import services.session_location as session_location
+from services.session_location import prune_registry, registered_locations
+from services.session_log import SESSION_LOG_NAME, log_path
 from services.session_plan import PLAN_NAME
 from services.session_report import REPORT_NAME
 
@@ -109,7 +121,7 @@ TITLE = "Test the session services"
 OPENED = r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z"
 REPORT = "# Report\nStop:\n\n## What ran\n## Check\n## Result\n## Left open\n"
 # Kept before any fixture patches it, for the one test that asks git itself.
-GIT_PROJECT_ROOT = session_new.project_root
+GIT_PROJECT_ROOT = session_location.project_root
 
 
 class Fixture(unittest.TestCase):
@@ -274,6 +286,12 @@ class PlanWritten(Fixture):
                 with unittest.mock.patch.object(subprocess, "run", **outcome):
                     self.assertEqual(GIT_PROJECT_ROOT(), expected)
 
+    def test_a_folders_project_is_asked_of_git_in_that_folder_else_is_the_folder(self) -> None:
+        refused = subprocess.CompletedProcess([], 128, stdout="", stderr="not a git repository")
+        with unittest.mock.patch.object(subprocess, "run", return_value=refused) as run:
+            self.assertEqual(GIT_PROJECT_ROOT(self.project), self.project.resolve())
+        self.assertEqual(run.call_args.args[0][:3], ["git", "-C", str(self.project.resolve())])
+
 
 class ReportWritten(Fixture):
     def test_a_report_skeleton_is_written_beside_the_plan(self) -> None:
@@ -425,6 +443,55 @@ class ProjectLocation(Fixture):
         gone.write_text(lines[0] + "\n" + str(self.fake_root / "unmounted") + "\n", encoding="utf-8", newline="\n")
         self.assertEqual(registered_locations(), [(self.project / "sessions").resolve()])
 
+    def test_a_location_pruned_once_gone_is_recorded_again_when_a_session_is_made_there(self) -> None:
+        self.prefer(self.project, "sessions")
+        self.open(None, TITLE, None)
+        location = (self.project / "sessions").resolve()
+        shutil.rmtree(location)
+        self.assertEqual(prune_registry(), [location])
+        self.assertEqual(memar_fs.project_sessions_registry().read_text(encoding="utf-8"), "")
+        self.open(None, TITLE, None)
+        self.assertEqual(memar_fs.project_sessions_registry().read_text(encoding="utf-8").splitlines(), [str(location)])
+
+    def test_a_location_appended_while_pruning_is_kept(self) -> None:
+        registry = memar_fs.project_sessions_registry()
+        registry.parent.mkdir(parents=True, exist_ok=True)
+        gone = self.fake_root / "gone"
+        registry.write_text(f"{gone}\n", encoding="utf-8", newline="\n")
+        appended = self.fake_root / "appended"
+        appended.mkdir()
+        read = session_location._registry_lines
+
+        def read_then_a_new_appends(path: Path) -> list[str] | None:
+            lines = read(path)
+            if str(appended) not in registry.read_text(encoding="utf-8"):
+                with registry.open("a", encoding="utf-8", newline="\n") as file:
+                    file.write(f"{appended}\n")
+            return lines
+
+        with unittest.mock.patch.object(session_location, "_registry_lines", side_effect=read_then_a_new_appends):
+            self.assertEqual(prune_registry(), [gone])
+        self.assertEqual(registry.read_text(encoding="utf-8").splitlines(), [str(appended)])
+
+
+class BriefPrinted(Fixture):
+    def opened(self, *arguments) -> str:
+        out = io.StringIO()
+        with contextlib.redirect_stdout(out):
+            session_new.open_session(*arguments)
+        return out.getvalue()
+
+    def test_a_session_made_with_a_parent_ends_with_its_brief_ready_to_paste(self) -> None:
+        session_new.ensure_session("first", TITLE)
+        printed = self.opened("second", "Delegated step", "first").splitlines()
+        self.assertEqual(printed[-2], "    brief:")
+        self.assertEqual(printed[-1], f"        {brief_text('second')}")
+        self.assertIn("memar session new --session-id second", printed[-1])
+
+    def test_a_session_made_without_a_parent_prints_no_brief(self) -> None:
+        self.assertNotIn("brief:", self.opened("first", TITLE, None))
+        self.assertNotIn("brief:", self.opened("first", None, None))
+
 
 class ParentLinked(Fixture):
     def test_a_session_opened_from_another_records_it_and_the_first_of_the_conversation(self) -> None:
@@ -461,6 +528,16 @@ class OpeningRecorded(Fixture):
         opened = [line.split("\t")[1:4] for line in log_path().read_text(encoding="utf-8").splitlines()]
         opened = [event for event in opened if event[0] == "opened"]
         self.assertEqual(opened, [["opened", "first", ""], ["opened", "second", "parent first"]])
+
+    def test_a_session_in_a_project_location_is_recorded_in_that_locations_log(self) -> None:
+        self.prefer(self.project, "sessions")
+        session_new.ensure_session("first", TITLE)
+        _, path = session_new.ensure_session("second", TITLE, parent="first")
+        own = (self.project / "sessions" / SESSION_LOG_NAME).read_text(encoding="utf-8").splitlines()
+        self.assertEqual([line.split("\t")[1:4] for line in own], [["opened", "first", ""], ["opened", "second", "parent first"]])
+        self.assertEqual(log_path(path), path.parent / SESSION_LOG_NAME)
+        memars = log_path().read_text(encoding="utf-8") if log_path().is_file() else ""
+        self.assertNotIn("\topened\t", memars)
 
 
 class LockSharesTheRoot(Fixture):

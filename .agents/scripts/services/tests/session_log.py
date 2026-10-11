@@ -20,8 +20,11 @@ What is pinned, and what each pin is for:
   OneLinePerEvent  Each event is appended as one tab-separated line — time,
                    event, id, detail — in UTF-8 with LF, beside the session
                    folders; a log that cannot be written warns and does not
-                   stop what was being done. Which events are recorded is
-                   pinned by the suites of the services that record them.
+                   stop what was being done. Each location keeps its own
+                   log in its root: a session in a project's own location
+                   is recorded there, one in Memar's own or left in temp/
+                   in Memar's. Which events are recorded is pinned by the
+                   suites of the services that record them.
 
 Usage is the interface. Do not duplicate these recipes as prose catalogs.
 """
@@ -70,6 +73,22 @@ class OneLinePerEvent(unittest.TestCase):
         lines = [line.split("\t") for line in raw.decode("utf-8").splitlines()]
         self.assertEqual([line[1:] for line in lines], [["opened", "s-1", ""], ["reaped", "s-2", "idle 8.0 days"]])
         datetime.fromisoformat(lines[0][0])
+
+    def test_each_location_keeps_its_own_log_in_its_root(self) -> None:
+        location = self.fake_root / "project" / "sessions"
+        project_session = location / "my-task"
+        project_session.mkdir(parents=True)
+        left = memar_fs.scratch_root() / "20261009T120000Z-42-0"
+        left.mkdir()
+        session_log.record("opened", "my-task", folder=project_session)
+        session_log.record("opened", left.name, folder=left)
+        session_log.record("opened", "s-1", folder=memar_fs.session_dir("s-1", create=True))
+        self.assertEqual(session_log.log_path(project_session), location / session_log.SESSION_LOG_NAME)
+        self.assertEqual(session_log.log_path(left), session_log.log_path())
+        own = [line.split("\t")[1:3] for line in session_log.log_path(project_session).read_text(encoding="utf-8").splitlines()]
+        memars = [line.split("\t")[1:3] for line in session_log.log_path().read_text(encoding="utf-8").splitlines()]
+        self.assertEqual(own, [["opened", "my-task"]])
+        self.assertEqual(memars, [["opened", left.name], ["opened", "s-1"]])
 
     def test_a_log_that_cannot_be_written_warns_and_goes_on(self) -> None:
         session_log.log_path().mkdir(parents=True)
