@@ -17,7 +17,9 @@ capability:
            rename+edit commit defeats rename detection and orphans history.
            An edit that changes no meaning and keeps the file above git's
            rename threshold — a license header, a typo, a path the move
-           forces — may go in the same commit.
+           forces — may go in the same commit, staged or not, and whoever
+           staged it; `commit` refuses a result git no longer sees as a
+           rename.
            `commit` takes the staged move when both of its paths are named;
            once the destination has been edited, name it with `--as` and a
            file holding the blob the move staged, and the move is committed
@@ -603,14 +605,18 @@ def _index_from(rev: str, was: str, paths: list[str], root: Path, reached: str, 
 def _staged_moves(
     paths: list[str], root: Path, against: str = "HEAD", prepared: dict[str, Path] | None = None
 ) -> set[str]:
-    """Both ends of each unchanged move, and each removal, staged for PATHS against AGAINST as `rename` and `remove` stage them.
+    """Both ends of each move, and each removal, staged for PATHS against AGAINST as `rename` and `remove` stage them.
 
     `rename` stages a `git mv` and asks for it to be committed. A staged move
-    of a file whose source and destination the caller both names carries no
-    content of its own — the index holds the blob HEAD already has — so it is
-    not the someone-else's staging `_refuse_staged` guards against. Nor is a
-    staged removal of a named path the working tree no longer has, which is
-    what `remove` leaves: the commit records the absence either way.
+    whose source and destination the caller both names is claimed by that
+    naming, and so is an edit staged into its destination — a license header,
+    a typo, a path the move forces, which may ride with a move even when
+    another session staged it — so it is not the someone-else's staging
+    `_refuse_staged` guards against. What still makes it a move is git's own
+    rename detection at its default threshold, here and, through
+    `_renames_lost`, in the tree the commit writes. Nor is a staged removal of
+    a named path the working tree no longer has, which is what `remove`
+    leaves: the commit records the absence either way.
 
     A destination PREPARED gives a file for counts only when that file is the
     very blob the move staged: it is how the move is committed alone once the
@@ -621,7 +627,7 @@ def _staged_moves(
         return set()
     prepared = prepared or {}
     listed = run_captured(
-        ["diff", "--cached", "-M100%", "--name-status", "-z", against, "--", *paths], cwd=root
+        ["diff", "--cached", "-M", "--name-status", "-z", against, "--", *paths], cwd=root
     ).stdout.split("\0")
     wanted, moved, at = set(paths), set(), 0
     while at < len(listed) and listed[at]:
@@ -629,7 +635,7 @@ def _staged_moves(
         if status.startswith(("R", "C")):
             source, destination = listed[at + 1], listed[at + 2]
             if (
-                status == "R100"
+                status.startswith("R")
                 and source in wanted
                 and source not in prepared
                 and destination in wanted
@@ -643,6 +649,34 @@ def _staged_moves(
                 moved.add(path)
             at += 2
     return moved
+
+
+def _renames(args: list[str], root: Path) -> set[tuple[str, str]]:
+    """The (source, destination) pairs a `--name-status -z` listing from git ARGS reports as renamed."""
+    listed = run_captured([*args[:1], "--name-status", "-z", *args[1:]], cwd=root).stdout.split("\0")
+    pairs, at = set(), 0
+    while at < len(listed) and listed[at]:
+        if listed[at].startswith(("R", "C")):
+            if listed[at].startswith("R"):
+                pairs.add((listed[at + 1], listed[at + 2]))
+            at += 3
+        else:
+            at += 2
+    return pairs
+
+
+def _renames_lost(moved: set[str], parent: str, tree: str, root: Path) -> list[str]:
+    """Each staged move among MOVED that TREE, against PARENT, no longer shows as a rename.
+
+    The commit takes a named file as the working tree has it, so an edit made
+    after the move was staged rides with it too; the move survives only if git
+    still pairs the two ends once that edit is in.
+    """
+    if not moved:
+        return []
+    staged = _renames(["diff", "--cached", "-M", "HEAD", "--", *sorted(moved)], root)
+    written = _renames(["diff-tree", "-r", "-M", parent, tree, "--", *sorted(moved)], root)
+    return [f"{source} -> {destination}" for source, destination in sorted(staged - written)]
 
 
 def _is_staged_blob(file: Path, path: str, root: Path) -> bool:
@@ -723,6 +757,16 @@ def cmd_commit(
     tree = _plumb(["write-tree"], root, env=private)
     if tree == _plumb(["rev-parse", f"{parent}^{{tree}}"], root):
         sys.exit("error: the result is the tree the parent already has; nothing to commit")
+    lost = _renames_lost(moved, parent, tree, root)
+    if lost:
+        sys.exit(
+            "error: with the working tree's edit in it, git no longer sees "
+            + ", ".join(lost)
+            + " as a rename, so its history would not follow. Only an edit that changes no "
+            "meaning and keeps the rename may ride with a move: commit the move alone with "
+            "--as DESTINATION=FILE holding the blob the move staged, and the edit after it. "
+            "Nothing was committed."
+        )
 
     message = message_file.read_bytes().decode("utf-8").replace("\r\n", "\n").strip()
     if not message:

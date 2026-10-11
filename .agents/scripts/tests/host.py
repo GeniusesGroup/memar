@@ -181,8 +181,10 @@ class RenameIsHistoryKeeping(unittest.TestCase):
 
     def test_a_rename_is_staged_on_its_own_before_the_content_changes(self) -> None:
         # A mixed rename+edit commit defeats rename detection, which is the
-        # history this command exists to preserve.
+        # history this command exists to preserve; only an edit that keeps it
+        # may ride along.
         self.assertIn("Commit this rename by itself", read("git.py"))
+        self.assertIn("keeps it detected as a rename", read("git.py"))
 
 
 class StashIsNotDiscard(unittest.TestCase):
@@ -307,6 +309,14 @@ class ScratchRepository(unittest.TestCase):
     def commit(self, *args: str):
         return self.host_git("commit", "-F", str(self.message), *args)
 
+    def a_file_long_enough_to_keep_a_rename(self) -> str:
+        """Commit mine.md long enough that a license header added to it leaves git pairing a move of it."""
+        body = "".join(f"line {number}\n" for number in range(20))
+        self.put("mine.md", body)
+        self.git("commit", "-q", "-am", "body")
+        self.base = self.git("rev-parse", "HEAD")
+        return body
+
 
 class CommitTakesOnlyWhatItNames(ScratchRepository):
     def test_a_named_path_is_committed_and_another_sessions_staging_stays_staged(self) -> None:
@@ -327,15 +337,36 @@ class CommitTakesOnlyWhatItNames(ScratchRepository):
         self.assertIn("staged change", done.stderr)
         self.assertEqual(self.git("rev-parse", "HEAD"), self.base)
 
-    def test_a_move_rename_staged_is_committed_when_both_ends_are_named(self) -> None:
+    def test_a_move_rename_staged_is_committed_with_an_edit_that_keeps_the_rename(self) -> None:
+        body = self.a_file_long_enough_to_keep_a_rename()
         moved = self.host_git("rename", "mine.md", "moved.md")
         self.assertEqual(moved.returncode, 0, moved.stderr)
-        self.put("moved.md", "base\nedited\n")
+        self.put("moved.md", "/* license */\n\n" + body)
         done = self.commit("mine.md", "moved.md")
         self.assertEqual(done.returncode, 0, done.stderr)
-        self.assertEqual(self.git("show", "HEAD:moved.md"), "base\nedited")
-        self.assertEqual(self.git("ls-tree", "--name-only", "HEAD", "mine.md"), "")
+        self.assertTrue(self.git("show", "HEAD:moved.md").startswith("/* license */"))
+        self.assertRegex(self.git("diff-tree", "-r", "-M", "--name-status", "HEAD^", "HEAD"), r"^R\d+\tmine.md\tmoved.md$")
         self.assertEqual(self.git("status", "--porcelain", "--", "mine.md", "moved.md"), "")
+
+    def test_a_move_staged_with_an_edit_another_session_staged_is_committed(self) -> None:
+        body = self.a_file_long_enough_to_keep_a_rename()
+        self.git("mv", "mine.md", "moved.md")
+        self.put("moved.md", "/* license */\n\n" + body)
+        self.git("add", "moved.md")
+        done = self.commit("mine.md", "moved.md")
+        self.assertEqual(done.returncode, 0, done.stderr)
+        self.assertRegex(self.git("diff-tree", "-r", "-M", "--name-status", "HEAD^", "HEAD"), r"^R\d+\tmine.md\tmoved.md$")
+        self.assertEqual(self.git("diff", "--cached", "--name-only"), "")
+
+    def test_a_move_whose_edit_loses_the_rename_is_refused(self) -> None:
+        moved = self.host_git("rename", "mine.md", "moved.md")
+        self.assertEqual(moved.returncode, 0, moved.stderr)
+        self.put("moved.md", "something else entirely\n")
+        done = self.commit("mine.md", "moved.md")
+        self.assertNotEqual(done.returncode, 0)
+        self.assertIn("no longer sees mine.md -> moved.md as a rename", done.stderr)
+        self.assertEqual(self.git("rev-parse", "HEAD"), self.base)
+        self.assertEqual(self.git("diff", "--cached", "-M", "--name-status"), "R100\tmine.md\tmoved.md")
 
     def test_a_staged_move_named_at_one_end_only_is_refused(self) -> None:
         self.host_git("rename", "mine.md", "moved.md")
@@ -700,6 +731,8 @@ class CommitWaitsOutALock(ScratchRepository):
         self.assertEqual(self.git("diff", "--cached", "-M", "--name-status"), "R100\tmine.md\tmoved.md")
 
     def test_the_finish_of_an_edited_staged_rename_works(self) -> None:
+        body = self.a_file_long_enough_to_keep_a_rename()
+        self.put("mine.md", "/* license */\n\n" + body)
         made = self.stopped_rename_after_head_moved()
         finished = self.host_git("reindex", "--from", made, "--was", self.base, "--", "mine.md", "moved.md")
         self.assertEqual(finished.returncode, 0, finished.stderr)
