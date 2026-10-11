@@ -9,7 +9,7 @@ A folder belongs here when both answers are yes:
 - **Would removing it leave every module whole?** Dependence runs from a bundle into `modules/` and never back: no module includes anything under `bundles/`. A folder another module has to reach into is a module, whatever runs it today.
 
 ## What a bundle may own
-A bundle always names a composition, and it may also hold parts that serve only that composition — a toolchain's own rules and services, a server's command registration. Such a part stays inside its bundle and is laid out with the role folders a module uses (`rules/`, `services/`, `test/` or `tests/`, per [Modules → The kinds of folder here](../modules/README.md#the-kinds-of-folder-here)). Once a second bundle or project needs it, it is a reusable module and moves to `modules/`. A bundle's own documents — its domain document, handoff, changelog — sit at its root, as a module's do.
+A bundle always names a composition, and it may also hold parts that serve only that composition — a toolchain's own rules and services, a server's command registration. Such a part stays inside its bundle and is laid out with the role folders a module uses (`rules/`, `services/`, `tests/`, per [Modules → The kinds of folder here](../modules/README.md#the-kinds-of-folder-here)). Once a second bundle or project needs it, it is a reusable module and moves to `modules/`. A bundle's own documents — its domain document, handoff, changelog — sit at its root, as a module's do.
 
 This folder's membership is not a taxonomy. A bundle is opened when a composition has no honest home among the modules, and it can be merged, renamed, or retired later; that is cheaper than keeping a runner inside the layer of reusable parts.
 

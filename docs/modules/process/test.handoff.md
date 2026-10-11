@@ -8,8 +8,6 @@ Open work for [test.md](./test.md). Entries are mutable current state, revised a
 
 ### The Rules and their enforcement
 1. Whether [test-placement](../../../modules/process/test/rules/test-placement/test-placement.md) and [test-naming](../../../modules/process/test/rules/test-naming/test-naming.md) are checkable by anything this repository runs, or are governance-tier Rules an organization adopts by choice. The toolchain enforces governance Rules for Khayyam source ([Khayyam rules → The rules](../../../bundles/khayyam/rules/README.md#the-rules)); a condition over a folder tree is a different check, and no such check exists yet.
-2. Whether the plural form `tests/` is a repository-wide convention about role folders, or a local choice. The reasoning that produced it is in the placement Rule; the general case, being that a role folder is singular when it holds one thing of its kind and plural when it holds many, has no document of its own, and this repository's two role folders in Khayyam's toolchain are singular (`core/test/`, `targets/*/test/`).
-
 ### The mechanism this protocol declines to state
 1. No runner exists for the language this repository's modules are written in, and the test artifacts currently present are archived from a previous language under a migration marker. Nothing in this protocol requires one, per [test.md → Test, Check, and Runner](./test.md#test-check-and-runner), but a system cannot check the Tests this protocol obliges it to carry without one. Whether the runner belongs to the module here or to a general tool is a separate decision this document does not make.
 

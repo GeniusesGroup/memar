@@ -6,10 +6,10 @@
 - Time: 2026-09-30T00:00:00Z
 - Type: Added
 - Cited:
-  - [test.md](../../../../../docs/protocols/process/test.md) - Depends_on: the subject whose structural condition this Rule states.
+  - [test.md](../../../../../docs/modules/process/test.md) - Depends_on: the subject whose structural condition this Rule states.
   - [test-placement.md](../test-placement/test-placement.md) - Depends_on: the folder this Rule's naming follows from, and the reason a marker in the name is unnecessary.
   - [documentation.md -> File Naming](../../../../../docs/documentation.md#file-naming) - Extends: the repository's rule for a name carrying another angle on the same subject, which this Rule deliberately does not use for a Test.
-  - [Linter -> How a governance rule is authored](../../../../../docs/protocols/computer/linter.md#how-a-governance-rule-is-authored) - Extends: the members a governance Rule carries, supplied here as Subject, Tier, Default, and Override.
+  - [Linter -> How a governance rule is authored](../../../../../docs/modules/computer/linter.md#how-a-governance-rule-is-authored) - Extends: the members a governance Rule carries, supplied here as Subject, Tier, Default, and Override.
 - Contributors:
   - [Omid Hekayati](../../../../../CONTRIBUTORS.md#omid-hekayati) - ruled that a Test is a separate identity rather than another angle on the file it checks, and settled the name form that follows
   - Auto (model not recorded) - drafted the Rule
@@ -26,3 +26,16 @@
 
 #### Considered and not done
 - **A marker retained as a cross-tool convention.** Keeping `*_test.kh` would let a tool written against this repository's earlier language find Test files unchanged. Rejected because no such tool exists for the language the modules are now written in, so the convention would serve a migration rather than the repository; the archived artifacts are recorded in the module README as what they are.
+
+### Scope is the Memar ecosystem
+- Time: 2026-10-11T06:30:00Z
+- Type: Changed
+- Contributors:
+  - [Omid Hekayati](../../../../../CONTRIBUTORS.md#omid-hekayati) - ruled that no marker is needed anywhere in the Memar ecosystem, not only in Khayyam source, that a foundational document's Test falls under the same rule, and that other languages' conventions are not this Rule's concern
+  - Auto (model not recorded) - drafted the change
+- Propagates to:
+  - [test-naming.handoff.md](./test-naming.handoff.md): Done - the question about non-Khayyam trees removed as answered; the open question on a document's Test added.
+
+#### What changed
+- The Rule states that it holds for every Test in the Memar ecosystem, a Test of a foundational document included, rather than for the module tree alone.
+- The closing claim about other languages now says the Rule does not govern another language's ecosystem: a runner from outside Memar that discovers Tests by a marker imposes it on the files it runs, and the Rule claims only that Memar's own naming needs none.
