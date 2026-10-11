@@ -15,6 +15,16 @@ placed where its newest session falls, newest first inside it. A conversation
 is named by any session in it — the first one's id is what the others record,
 and a session asked for by its own id is read for the conversation it records;
 a first session that has been swept is still the name its conversation goes by.
+
+Folders in the project session locations Memar has recorded are listed with
+Memar's own, from whatever folder `list` is run in (`session_location`).
+
+A session whose plan and report disagree is marked where its status is shown,
+because the two are written by one agent at two moments, and the list is where
+the next one looks: a report that stopped blocked under a plan still marked
+open, or a status the plan's vocabulary does not have, is a session that will
+be misread — kept forever, or picked up as finished. What disagrees is
+`session_report`'s answer.
 """
 from __future__ import annotations
 
@@ -25,11 +35,13 @@ from typing import Callable
 from machine.console import fail, note
 from services.session_folder import Session, folder_of, measured_idle, read_session, session_folders
 from services.session_plan import DONE_STATUS, PLAN_NAME, STATUSES, is_done
+from services.session_report import REPORT_NAME, disagreement, read_stop
 
 LIST_COMMAND = "list"
 NO_PLAN = f"(no {PLAN_NAME})"
 NO_FRONT_MATTER = f"({PLAN_NAME} has no front matter)"
 UNREADABLE_PLAN = f"({PLAN_NAME} cannot be read)"
+DISAGREES = "disagrees:"
 
 
 def matches(session: Session, text: str) -> bool:
@@ -79,7 +91,7 @@ def find_sessions(
     conversation: str | None = None,
 ) -> list[Session]:
     """Every session folder, newest first and grouped by conversation, filtered by TEXT, STATUS, and CONVERSATION."""
-    sessions = [read_session(folder) for folder in session_folders()]
+    sessions = [read_session(folder) for folder in session_folders(projects=True)]
     if text:
         sessions = [session for session in sessions if matches(session, text)]
     if status is not None:
@@ -110,6 +122,9 @@ def print_session(session: Session, *, idle: float | None = None) -> None:
         note(f"project: {session.front.get('project', '')}")
     if session.has_plan and session.readable:
         note(f"status: {session.status or 'none'}")
+        why = disagreement(session.status, read_stop(session.path))
+        if why:
+            note(f"{DISAGREES} {why}")
         if session.tasks:
             note(f"tasks: {count_statuses(session.tasks)}")
     if session.parent:
@@ -154,6 +169,9 @@ def describe(verbs) -> Callable[[argparse.Namespace], None]:
             "conversation next to each other: its id, title, project, status, the\n"
             "session it came from, and its path. A folder with no plan.md, one that\n"
             "cannot be read, or one without front matter, is listed and marked so.\n"
+            f"A session whose {REPORT_NAME} Stop does not agree with its plan's status, or\n"
+            f"whose status is not {', '.join(STATUSES)}, is marked `{DISAGREES}`, with why.\n"
+            "Folders in a project's own session location are listed with the rest.\n"
             "With --status, only the sessions in that status are shown; with\n"
             "--idle-days, only those quiet that long, each saying how long; with\n"
             "--conversation, only the sessions linked with that one. Together they\n"

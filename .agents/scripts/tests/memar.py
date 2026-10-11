@@ -299,7 +299,9 @@ class RouterNamesNoVerb(unittest.TestCase):
     """The docstring may name a service as an example of the contract; that is
     the design being explained. What must not name one is a string the router
     holds, nor a name it gives a constant or function — and a sub-verb word such
-    as `list` or `path` is checked in strings only, being also Python's own.
+    as `list` or `path` is checked in strings only, being also Python's own. A
+    name an imported module gives, such as `importlib.import_module`, is that
+    module's and not the router's to choose, so it is not checked.
     """
 
     def test_no_declared_verb_word_is_routing_data_in_the_router(self) -> None:
@@ -309,11 +311,19 @@ class RouterNamesNoVerb(unittest.TestCase):
         self.assertTrue({"content", "install", "session", "update"} <= verbs, verbs)
         tree = ast.parse(LAUNCHER.read_text(encoding="utf-8"))
         docstring = tree.body[0].value if isinstance(tree.body[0], ast.Expr) else None
+        imported = {
+            alias.asname or alias.name.split(".")[0]
+            for node in ast.walk(tree)
+            if isinstance(node, ast.Import)
+            for alias in node.names
+        }
         for node in ast.walk(tree):
             if isinstance(node, ast.Constant) and isinstance(node.value, str) and node is not docstring:
                 for word in words & set(re.findall(r"[a-z][a-z-]*", node.value)):
                     with self.subTest(text=node.value[:40], word=word):
                         self.fail(f"the router's text names the verb {word!r}")
+            if isinstance(node, ast.Attribute) and isinstance(node.value, ast.Name) and node.value.id in imported:
+                continue
             name = getattr(node, "id", None) or getattr(node, "attr", None) or getattr(node, "name", None)
             if isinstance(name, str):
                 for word in verbs & set(name.lower().split("_")):

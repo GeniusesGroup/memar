@@ -145,7 +145,7 @@ def assemble(
     before: list[Callable[[list[str]], None]] = []
     for name in names:
         try:
-            module = load(name)
+            loaded = load(name)
         except Exception as failed:
             print(
                 f"memar: {SHELF}/{name}.py did not load, so its verbs are missing: "
@@ -153,7 +153,7 @@ def assemble(
                 file=sys.stderr,
             )
             continue
-        describe = getattr(module, DESCRIBE, None)
+        describe = getattr(loaded, DESCRIBE, None)
         if describe is None:
             continue
         domain, separator, _ = name.partition(DOMAIN_SEPARATOR)

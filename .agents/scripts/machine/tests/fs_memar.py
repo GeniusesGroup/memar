@@ -26,6 +26,10 @@ What is pinned, and what each pin is for:
   SessionDir         A session id names one folder segment under the sessions
                      root, temp/sessions/, and nothing else; anything shaped
                      like a path is refused, and readers never create.
+  ProjectSessionsRegistry
+                     The record of project session locations is Memar's own
+                     state, a file beside the session folders, and asking
+                     where it is creates nothing.
 
 Usage is the interface. Do not duplicate these recipes as prose catalogs.
 """
@@ -131,6 +135,16 @@ class SessionDir(unittest.TestCase):
                     with self.subTest(bad=bad):
                         with self.assertRaises(SystemExit):
                             memar_fs.session_dir(bad)
+
+
+class ProjectSessionsRegistry(unittest.TestCase):
+    def test_the_registry_is_memar_state_beside_the_session_folders_and_not_a_session(self) -> None:
+        with tempfile.TemporaryDirectory(dir=suite_scratch()) as scratch:
+            fake_root = Path(scratch)
+            with unittest.mock.patch.object(memar_fs, "memar_root", return_value=fake_root):
+                registry = memar_fs.project_sessions_registry()
+                self.assertEqual(registry, fake_root / "temp" / "sessions" / memar_fs.PROJECT_SESSIONS_NAME)
+                self.assertFalse(registry.exists())
 
 
 if __name__ == "__main__":

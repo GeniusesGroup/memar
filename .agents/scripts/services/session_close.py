@@ -15,8 +15,8 @@ import argparse
 from pathlib import Path
 from typing import Callable
 
-from machine.console import note
-from services.session_folder import folder_of
+from machine.console import fail, note
+from services.session_folder import folder_of, foreign_project_entry
 from services.session_log import record
 
 CLOSE_COMMAND = "close"
@@ -28,12 +28,17 @@ def close_session(session_id: str) -> tuple[str, Path, bool]:
     Returns the id, its path, and whether anything was moved to recoverable
     storage. The target is confined to the session folder by construction:
     session_dir refuses anything shaped like a path. A session an earlier
-    Memar left in temp/, not moved yet, is closed where it is.
+    Memar left in temp/, not moved yet, is closed where it is, and so is one
+    in a project's own session location, on the same word of its starter; a
+    folder of that name there that is not a session's is refused.
     """
     from machine.fs_trash import soft_delete
 
     path = folder_of(session_id)
     if not path.exists() and not path.is_symlink():
+        foreign = foreign_project_entry(session_id)
+        if foreign is not None:
+            fail(f"{foreign} is not a session folder; `close` closes only a session's folder")
         return session_id, path, False
     soft_delete(path)
     record("closed", session_id)

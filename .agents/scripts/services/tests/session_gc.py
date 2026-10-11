@@ -40,6 +40,11 @@ What is pinned, and what each pin is for:
                       one `new` runs; it says what it moved and which idle
                       folders it kept, with why and their age; never the
                       caller's own; never under a day.
+  ProjectLocationsNotSwept
+                      A folder in a project's own session location is never
+                      swept, daily or by `gc`, however idle and done: it is
+                      the project's. `gc` names each recorded location it did
+                      not sweep, and none when none is recorded.
 
 Usage is the interface. Do not duplicate these recipes as prose catalogs.
 """
@@ -72,6 +77,7 @@ import machine.fs_memar as memar_fs
 import machine.fs_trash as fs_trash
 import services.session_gc as session_gc
 import services.session_new as session_new
+from services.session_location import register
 from services.session_log import log_path
 from services.session_plan import PLAN_NAME, plan_skeleton
 
@@ -116,6 +122,11 @@ class Fixture(unittest.TestCase):
         self.trash = unittest.mock.patch.object(fs_trash, "soft_delete", side_effect=move_aside)
         self.trash.start()
         self.addCleanup(self.trash.stop)
+        # `new` asks the project it runs in where to put a folder; a scratch
+        # one, so a real project's preferences never reach this suite.
+        project = unittest.mock.patch.object(session_new, "project_root", return_value=self.fake_root)
+        project.start()
+        self.addCleanup(project.stop)
 
     def folder(self, name: str, idle_days: float, *, status: str | None = None, recent_file: bool = False) -> Path:
         path = memar_fs.session_dir(name, create=True)
@@ -379,6 +390,32 @@ class GcSweepsNow(Fixture):
 
     def test_nothing_to_sweep_is_said(self) -> None:
         self.assertIn("no session folder has been idle more than 7 days", self.run_gc())
+
+
+class ProjectLocationsNotSwept(Fixture):
+    def project_folder(self) -> tuple[Path, Path]:
+        location = self.fake_root / "project" / "sessions"
+        folder = location / IDLE
+        folder.mkdir(parents=True)
+        (folder / PLAN_NAME).write_text(plan("done"), encoding="utf-8", newline="\n")
+        make_idle(folder, 30)
+        register(location)
+        return location, folder
+
+    def test_neither_sweep_moves_a_folder_in_a_project_location(self) -> None:
+        _, folder = self.project_folder()
+        self.daily()
+        self.run_gc()
+        self.assertEqual(self.trashed, [])
+        self.assertTrue(folder.is_dir())
+
+    def test_gc_names_each_project_location_it_did_not_sweep(self) -> None:
+        location, _ = self.project_folder()
+        printed = self.run_gc()
+        self.assertIn(f"{session_gc.NOT_SWEPT}: {location.resolve()}", printed)
+
+    def test_gc_names_none_when_no_project_location_is_recorded(self) -> None:
+        self.assertNotIn("not swept", self.run_gc())
 
 
 if __name__ == "__main__":

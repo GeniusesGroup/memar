@@ -32,6 +32,14 @@ What is pinned, and what each pin is for:
                   its newest falls, each naming its parent and conversation;
                   --conversation, given any session of it, keeps only that
                   conversation, also once its first session is gone.
+  ProjectLocations
+                  The sessions in a recorded project location are listed and
+                  filtered with Memar's own, from any working folder; a
+                  recorded location that is gone is passed over.
+  ReportMarks     A session whose report.md Stop does not map to its plan's
+                  status, whose status is outside open, blocked, done, or
+                  whose Stop is not a named stop, is marked with why; one
+                  that agrees, an empty Stop, or no report, is not.
 
 Usage is the interface. Do not duplicate these recipes as prose catalogs.
 """
@@ -60,7 +68,9 @@ from machine.fs_test_scratch import suite_scratch
 
 import machine.fs_memar as memar_fs
 import services.session_find as session_find
+from services.session_location import register
 from services.session_plan import PLAN_NAME, plan_skeleton
+from services.session_report import REPORT_NAME
 
 DAY = 24 * 60 * 60
 EARLIER_FORM = "1111-18dc000000000001-0"
@@ -246,6 +256,71 @@ class Conversations(Fixture):
         (first / PLAN_NAME).unlink()
         first.rmdir()
         self.assertEqual(self.listed(self.run_list(conversation=OLDEST)), [LATEST, MIDDLE])
+
+
+class ProjectLocations(Fixture):
+    def test_a_recorded_project_locations_sessions_are_listed_with_memars_and_a_gone_one_passed_over(self) -> None:
+        self.session(OLDEST, plan("Memar's own"))
+        location = self.fake_root / "project" / "sessions"
+        (location / NEWEST).mkdir(parents=True)
+        (location / NEWEST / PLAN_NAME).write_text(plan("The project's", "/project", "blocked"), encoding="utf-8", newline="\n")
+        (location / "notes").mkdir()
+        register(location)
+        register(self.fake_root / "unmounted")
+        text = self.run_list()
+        self.assertEqual(self.listed(text), [NEWEST, OLDEST])
+        self.assertIn(f"path: {location / NEWEST}", text)
+        self.assertEqual(self.listed(self.run_list(status="blocked")), [NEWEST])
+        self.assertEqual(self.listed(self.run_list(conversation=NEWEST)), [NEWEST])
+
+
+class ReportMarks(Fixture):
+    def report(self, sid: str, status: str, stop: str | None) -> None:
+        path = self.session(sid, plan(sid, status=status))
+        if stop is not None:
+            (path / REPORT_NAME).write_text(f"# Report\nStop: {stop}\n\n## What ran\n", encoding="utf-8", newline="\n")
+
+    def mark_of(self, sid: str) -> str | None:
+        text = self.run_list(sid)
+        found = [line.strip() for line in text.splitlines() if line.strip().startswith(session_find.DISAGREES)]
+        return found[0] if found else None
+
+    def test_a_stop_that_agrees_with_the_status_is_not_marked(self) -> None:
+        for index, (status, stop) in enumerate(
+            (
+                ("done", "success"),
+                ("done", "clean no-op"),
+                ("blocked", "blocked"),
+                ("blocked", "approval-required: which module owns it?"),
+                ("open", "exhausted"),
+                ("open", "No progress"),
+            )
+        ):
+            sid = f"2026100{index}T000000Z-7-0"
+            with self.subTest(stop=stop):
+                self.report(sid, status, stop)
+                self.assertIsNone(self.mark_of(sid))
+
+    def test_a_stop_that_disagrees_with_the_status_is_marked_with_why(self) -> None:
+        self.report(NEWEST, "open", "success")
+        self.assertEqual(
+            self.mark_of(NEWEST),
+            f"{session_find.DISAGREES} {REPORT_NAME} Stop success means status done, the plan says open",
+        )
+        self.report(MIDDLE, "done", "blocked")
+        self.assertIn("means status blocked", self.mark_of(MIDDLE))
+
+    def test_an_empty_stop_or_no_report_is_not_marked(self) -> None:
+        self.report(NEWEST, "done", "")
+        self.report(MIDDLE, "open", None)
+        self.assertIsNone(self.mark_of(NEWEST))
+        self.assertIsNone(self.mark_of(MIDDLE))
+
+    def test_a_status_outside_the_vocabulary_or_a_stop_not_named_is_marked(self) -> None:
+        self.report(NEWEST, "complete", None)
+        self.assertEqual(self.mark_of(NEWEST), f"{session_find.DISAGREES} status complete is not one of open, blocked, done")
+        self.report(MIDDLE, "done", "finished")
+        self.assertIn("Stop finished is not one of", self.mark_of(MIDDLE))
 
 
 if __name__ == "__main__":

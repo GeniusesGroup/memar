@@ -13,6 +13,11 @@ has none, the index of the `.agents/` folder they sit in. AGENTS.md is not the
 place for how to install Memar — it is read on every session and needs only to
 say which file to read; the README beside it carries the substance.
 
+Beside that README it creates the project's preferences file when there is
+none, and never writes it again: the README is rewritten on every install, so
+what the project says to Memar has to live in a file an install leaves alone.
+Its path, its keys, and its first text are `project_preferences`'s.
+
 It places no script and no Python file in the project: the bootstrap for the
 machine is fetched from the Memar repository at the point of use, and a copy per
 repository is unmaintainable — every change here would have to be re-copied into
@@ -39,6 +44,7 @@ from pathlib import Path
 
 from machine.env_location import VARIABLE, recorded_value
 from machine.fs_memar_repository import is_memar_repository
+from services.project_preferences import PREFERENCES_RELATIVE, PREFERENCES_TEXT
 
 PUBLISH_BRANCH = "main"
 SCRIPTS_RAW = (
@@ -74,6 +80,9 @@ README_BODY = (
     "Load the Memar skill at the start of every session: run `memar content "
     "path .agents/skills/memar/SKILL.md`, then load and follow the file it "
     "prints.\n\n"
+    "This project's preferences for Memar go in "
+    f"[`{PREFERENCES_RELATIVE.name}`]({PREFERENCES_RELATIVE.name}) beside this file, not "
+    "here: this README is rewritten on every install, and that file never is.\n\n"
     "If `memar` is not on PATH, Memar is not available to this program yet. "
     "Run the bootstrap for your platform:\n\n"
     "Windows:\n\n"
@@ -187,6 +196,11 @@ def into_project(*, dry_run: bool = False) -> None:
             CONSUMER_README_TEXT,
             dry_run=dry_run,
         )
+    # The project's own, so it is made once and never written again — in the
+    # Memar repository too, whose README above is skipped.
+    preferences = target / PREFERENCES_RELATIVE
+    if not preferences.exists():
+        write_text(preferences, PREFERENCES_TEXT, dry_run=dry_run)
     agents_index = target / ".agents" / "README.md"
     if not agents_index.is_file():
         write_text(agents_index, AGENTS_DIR_README, dry_run=dry_run)

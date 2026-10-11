@@ -25,6 +25,13 @@ The location is read through the module that owns it, so a session opened
 before the value was written does not send this project to the bootstrap a
 second time.
 
+Beside the README sits the project's preferences file, and it is the opposite
+case: written once, when absent, with an empty `sessions` key and a paragraph
+saying whose it is, and never again — in the Memar repository too, whose README
+is skipped. The README points at it, since the README is what gets rewritten.
+Those runs are real, inside the scratch project, because a second run over a
+file the project changed is the whole of what is pinned.
+
 The layer is asked in this process, as `memar install` asks it, from inside a
 scratch folder of its own — given a `.git` so that it is a project root wherever
 it sits, and made under the folder `machine/fs_test_scratch.py` names. The
@@ -42,6 +49,7 @@ import re
 import sys
 import tempfile
 import unittest
+import unittest.mock
 from pathlib import Path
 
 TESTS = Path(__file__).resolve().parent
@@ -56,14 +64,18 @@ sys.dont_write_bytecode = True
 from machine.fs_test_scratch import suite_scratch
 
 import services.install_project as project
+import services.project_preferences as project_preferences
 
 DRY_RUN_WRITE = re.compile(r"^dry-run: write (.+)$")
 CONSUMER_README = ".agents/memar/README.md"
+PREFERENCES = Path(".agents/memar/preferences.md")
 AGENTS_FILE = "AGENTS.md"
 EXPECTED_README = """# Memar
 This project is developed within Memar's framework.
 
 Load the Memar skill at the start of every session: run `memar content path .agents/skills/memar/SKILL.md`, then load and follow the file it prints.
+
+This project's preferences for Memar go in [`preferences.md`](preferences.md) beside this file, not here: this README is rewritten on every install, and that file never is.
 
 If `memar` is not on PATH, Memar is not available to this program yet. Run the bootstrap for your platform:
 
@@ -174,6 +186,55 @@ class ReachedByTheCommand(unittest.TestCase):
         self.assertNotIn("restart", body)
         self.assertNotIn("MEMAR_ROOT", body)
         self.assertNotIn("--help", body)
+
+
+class PreferencesKept(unittest.TestCase):
+    """The project's preferences file: made when absent, never written again."""
+
+    def setUp(self) -> None:
+        self.scratch = tempfile.TemporaryDirectory(dir=suite_scratch())
+        self.addCleanup(self.scratch.cleanup)
+        self.project = Path(self.scratch.name)
+        (self.project / ".git").mkdir()
+        self.preferences = self.project / PREFERENCES
+
+    def into_project(self, **options: bool) -> str:
+        out = io.StringIO()
+        with contextlib.chdir(self.project), contextlib.redirect_stdout(out), \
+                contextlib.redirect_stderr(io.StringIO()):
+            project.into_project(**options)
+        return out.getvalue()
+
+    def test_its_first_text_is_an_empty_sessions_key_and_a_paragraph_saying_whose_it_is(self):
+        self.into_project()
+        text = self.preferences.read_text(encoding="utf-8")
+        self.assertEqual(text, project_preferences.PREFERENCES_TEXT)
+        self.assertTrue(text.startswith("---\nsessions:\n---\n# Memar preferences\n"))
+        for phrase in ("never rewrites it", "relative to the project's top folder, or an absolute one",
+                       "neither that top folder itself nor a drive or filesystem root", "temp/sessions/",
+                       "never touches a session folder made in the `sessions` folder",
+                       "write any preference agents should follow"):
+            self.assertIn(phrase, text)
+        self.assertEqual(project_preferences.read_preferences(self.project), {})
+
+    def test_a_second_install_leaves_the_projects_file_as_it_is(self):
+        self.into_project()
+        own = "---\nsessions: work/sessions\n---\n# Memar preferences\nOurs.\n"
+        self.preferences.write_text(own, encoding="utf-8", newline="\n")
+        printed = self.into_project()
+        self.assertEqual(self.preferences.read_text(encoding="utf-8"), own)
+        self.assertNotIn(str(self.preferences), printed)
+        self.assertEqual(project_preferences.sessions_location(self.project), self.project / "work" / "sessions")
+
+    def test_the_memar_repository_gets_one_too_though_its_readme_is_skipped(self):
+        with unittest.mock.patch.object(project, "is_memar_repository", return_value=True):
+            self.into_project()
+        self.assertTrue(self.preferences.is_file())
+        self.assertFalse((self.project / CONSUMER_README).exists())
+
+    def test_the_readme_links_the_preferences_file_beside_it(self):
+        self.assertIn(f"]({PREFERENCES.name})", project.README_BODY)
+        self.assertEqual((self.project / PREFERENCES).parent, (self.project / CONSUMER_README).parent)
 
 
 if __name__ == "__main__":

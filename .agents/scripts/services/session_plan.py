@@ -109,11 +109,13 @@ def plan_skeleton(
     return "\n".join([*front, "---", *body]) + "\n"
 
 
-def _front_matter(lines: list[str]) -> tuple[dict[str, str] | None, int]:
+def front_matter(lines: list[str]) -> tuple[dict[str, str] | None, int]:
     """The `key: value` lines between two leading `---` lines, and where the body starts.
 
     Each line is split at its first `: `; a handful of keys does not need a
-    YAML library installed.
+    YAML library installed. A key with no value, `key:` alone, is left out.
+    A project's preferences file is read by this too (`project_preferences`),
+    so the two front matters cannot be read two ways.
     """
     if lines and lines[0].strip() == "---":
         for end in range(1, len(lines)):
@@ -184,7 +186,7 @@ def read_plan(path: Path) -> Plan:
     none.
     """
     lines = path.read_text(encoding="utf-8-sig").splitlines()
-    front, start = _front_matter(lines)
+    front, start = front_matter(lines)
     body = lines[start:]
     own = _own_status(body)
     if own is not None:

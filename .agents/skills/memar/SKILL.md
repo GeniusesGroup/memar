@@ -58,4 +58,5 @@ Memar is reached by one of two routes.
 - A sub-agent has no human to ask: what it would ask, it ends on as blocked or approval-required, with the question stated, and the session that delegated it asks.
 
 ## Closing
+- Before ending work on a task — finished or not — write its session's report and set its plan's Status to agree, as `memar session --help` says: a session left `open` after its check passed reads to every later session as work still owed.
 - Close by type per [Handoff Practice](/docs/documentation-handoff.practice.md), each durable result in the home [Results routing](/docs/documentation.md#results-routing) gives it.

@@ -26,7 +26,15 @@ What is pinned, and what each pin is for:
                      is one task, the shape of plan.md and its status, how a
                      further task is linked with --parent, how another session
                      continues one, and when its starter may close it; each
-                     verb's own help says what it accepts. The help says
+                     verb's own help says what it accepts, and `new`'s points
+                     here rather than repeating it. It also says that
+                     the folder's top holds plan.md and report.md and the rest
+                     goes in role folders, that report.md is written before
+                     work on a task ends with a Stop the plan's Status agrees
+                     with, and that a folder may lie in the project's own
+                     session location — relative or absolute, never the
+                     project's top folder or a root — which the sweep never
+                     reaches. The help says
                      nothing about how the folder is arranged: the mechanism
                      is a DevActionNote, and the why is pinned to the services'
                      own docstrings, where it is maintained.
@@ -85,10 +93,12 @@ import services.session_find as session_find
 import services.session_folder as session_folder
 import services.session_gc as session_gc
 import services.session_id as session_id
+import services.session_location as session_location
 import services.session_log as session_log
 import services.session_migrate as session_migrate
 import services.session_new as session_new
 import services.session_plan as session_plan
+import services.session_report as session_report
 
 LAUNCHER = SCRIPTS / "memar"
 
@@ -129,6 +139,11 @@ class Fixture(unittest.TestCase):
         patched = unittest.mock.patch.object(memar_fs, "memar_root", return_value=self.fake_root)
         patched.start()
         self.addCleanup(patched.stop)
+        # `new` asks the project it runs in where to put a folder; a scratch
+        # one, so a real project's preferences never reach this suite.
+        project = unittest.mock.patch.object(session_new, "project_root", return_value=self.fake_root)
+        project.start()
+        self.addCleanup(project.stop)
 
     def run_main(self, *arguments: str) -> str:
         out = io.StringIO()
@@ -182,6 +197,38 @@ class HelpSaysWhatToRun(unittest.TestCase):
         ):
             self.assertIn(phrase, text)
 
+    def test_the_help_gives_the_report_and_when_to_write_it(self) -> None:
+        text = run_help()
+        for phrase in (
+            "The folder's top holds plan.md and report.md",
+            "role folder of its kind",
+            "modules/README.md",
+            "# Report\n    Stop:\n\n    ## What ran\n    ## Check\n    ## Result\n    ## Left open",
+            "finished or not",
+            "Stop: success, clean no-op",
+            "Status: done",
+            "Stop: blocked, approval-required",
+            "Stop: exhausted, no progress",
+            "`list` marks a session whose report and plan disagree",
+        ):
+            self.assertIn(phrase, text)
+
+    def test_the_help_says_where_a_folder_is_and_what_the_sweep_never_reaches(self) -> None:
+        text = flat(run_help())
+        for phrase in (
+            "under temp/sessions/",
+            "sets `sessions` in its .agents/memar/preferences.md",
+            "says on a line of its own",
+            "relative to the project's top folder, or an absolute one",
+            "drive or filesystem root is refused",
+            "inside Memar's own temp/ is not used",
+            "The sweep reaches only Memar's own temp/sessions/",
+            "keeping, committing, or deleting it is the project's",
+            "`gc` names those locations",
+        ):
+            self.assertIn(phrase, text)
+        self.assertNotIn("lies in Memar's own checkout, also when", text)
+
     def test_the_command_lists_keep_one_column(self) -> None:
         columns = set()
         for line in session.DESCRIPTION.splitlines():
@@ -195,7 +242,8 @@ class HelpSaysWhatToRun(unittest.TestCase):
 
     def test_each_verbs_help_says_what_it_accepts(self) -> None:
         for verb, phrases in (
-            ("new", ("--session-id", "--title TITLE", "--parent ID", "for one task", "first session of that conversation")),
+            ("new", ("--session-id", "--title TITLE", "--parent ID", "for one task", "first session of that conversation",
+                     "said in `memar session --help`")),
             ("list", ("whose id, title, or project holds TEXT", "one word or a short phrase, not a question",
                       "--status {open,blocked,done}", "--conversation ID", "--idle-days DAYS")),
             ("gc", ("--session-id", "--idle-days DAYS", "never swept", "cannot be read", "at least 1", "whose status is done")),
@@ -205,6 +253,11 @@ class HelpSaysWhatToRun(unittest.TestCase):
                 text = flat(run_help(verb))
                 for phrase in phrases:
                     self.assertIn(phrase, text)
+
+    def test_new_points_at_the_domain_help_rather_than_repeating_it(self) -> None:
+        text = flat(run_help("new"))
+        for phrase in ("finished or not", "Stop: blocked", "role folder", ".agents/memar/preferences.md", "sweep"):
+            self.assertNotIn(phrase, text)
 
     def test_the_help_does_not_carry_the_implementation(self) -> None:
         text = run_help()
@@ -253,7 +306,7 @@ class EachServiceDeclaresItsVerb(unittest.TestCase):
                 self.assertTrue(callable(run))
 
     def test_the_shared_services_declare_no_verb(self) -> None:
-        for module in (session_plan, session_folder, session_log, session_id, session_migrate):
+        for module in (session_plan, session_report, session_folder, session_location, session_log, session_id, session_migrate):
             with self.subTest(module=module.__name__):
                 self.assertFalse(hasattr(module, launcher.DESCRIBE))
 

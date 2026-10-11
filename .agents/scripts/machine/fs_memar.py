@@ -31,6 +31,9 @@ TEMP_DIRNAME = "temp"
 # The sessions' own folder inside it, so a session folder is never a sibling of
 # the locks, the test scratch, or whatever else scratch holds.
 SESSIONS_DIRNAME = "sessions"
+# Memar's record of the folders outside it that projects have had session
+# folders made in, one path a line, kept beside the folders it adds to.
+PROJECT_SESSIONS_NAME = "sessions.projects"
 
 # The layout inside a checkout. Each is a path relative to the root, so a caller
 # joins it to a checkout rather than spelling the join again.
@@ -84,6 +87,16 @@ def sessions_root() -> Path:
     root = scratch_root() / SESSIONS_DIRNAME
     root.mkdir(exist_ok=True)
     return root
+
+
+def project_sessions_registry() -> Path:
+    """The file listing the project folders session folders were made in: <root>/temp/sessions/sessions.projects.
+
+    The session folders a project's preferences place in the project are
+    outside every Memar root, so Memar keeps where they are in its own state
+    rather than searching a disk for them.
+    """
+    return sessions_root() / PROJECT_SESSIONS_NAME
 
 
 def session_dir(session_id: str, *, create: bool = False) -> Path:

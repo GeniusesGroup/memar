@@ -14,7 +14,8 @@ This file declares the verb and nothing else of its own. Each sub-verb is one
 service on this shelf, which declares it and holds why it is built as it is:
 `session_new` opens a folder and links it to its conversation, `session_find`
 lists them, `session_close` closes one, `session_gc` sweeps; `session_plan`,
-`session_folder`, `session_log`, and `session_id` are what those share. Before
+`session_report`, `session_folder`, `session_location`, `session_log`, and
+`session_id` are what those share. Before
 any sub-verb runs, and after its arguments are parsed so that asking for help
 moves nothing, `session_migrate` moves the session folders an earlier Memar
 left directly in temp/, once each is quiet: that is what every sub-verb owes,
@@ -25,10 +26,13 @@ Usage is the interface. Do not duplicate these recipes as prose catalogs.
 from __future__ import annotations
 
 import argparse
+from textwrap import indent
 from typing import Callable
 
+from services.project_preferences import PREFERENCES_RELATIVE, SESSIONS_KEY
 from services.session_gc import SESSION_IDLE_DAYS
-from services.session_plan import PLAN_NAME
+from services.session_plan import PLAN_NAME, STATUSES
+from services.session_report import REPORT_NAME, report_skeleton, stop_table
 
 SESSION_COMMAND = "session"
 
@@ -53,15 +57,20 @@ belong to your session, not to the repository.
                                         and say what was moved and kept
 
 `new` prints an id and a path; pass that id back as `--session-id` to continue
-the same session later. The path is absolute and lies in Memar's own checkout,
-also when you work in another project: use it as printed, and never make a
-folder of the same name in your project instead. If your file tool cannot reach
-it, write there through `memar content write`. Session folders are in
-temp/sessions/ there. A folder an earlier Memar left directly in temp/ keeps
-its id and is moved there by a session command once nothing in it has changed
-for a day, or when `new --session-id` continues it; until then it is listed,
-continued, and closed where it is. Each move is printed, and the next `memar`
-command says it once more.
+the same session later. The path is absolute: use it as printed, and never make
+a folder of the same name elsewhere instead. It lies in Memar's own checkout,
+under temp/sessions/, also when you work in another project — unless that
+project sets `{SESSIONS_KEY}` in its {PREFERENCES_RELATIVE.as_posix()}, and then it lies
+in that folder, which `new` says on a line of its own each time it makes or
+continues a folder there. The value is a path relative to the project's top
+folder, or an absolute one; one that is that top folder itself or a drive or
+filesystem root is refused, and one inside Memar's own temp/ is not used, which
+`new` says too. If your file tool cannot reach the path,
+write there through `memar content write`. A folder an earlier Memar left
+directly in temp/ keeps its id and is moved into temp/sessions/ by a session
+command once nothing in it has changed for a day, or when `new --session-id`
+continues it; until then it is listed, continued, and closed where it is. Each
+move is printed, and the next `memar` command says it once more.
 
 A new session needs `--title`, one line saying what the task is, and so does a
 folder that has no {PLAN_NAME} yet. `new` then writes the folder's {PLAN_NAME},
@@ -86,6 +95,21 @@ session does first. Status is open, blocked, or done: change that line as the
 task moves, and set done once its check has passed. Keep {PLAN_NAME} as you
 work, so another session can continue from it.
 
+The folder's top holds {PLAN_NAME} and {REPORT_NAME}. Anything else the task makes
+goes in the role folder of its kind, which `new` makes in the folder each time
+it runs; modules/README.md in the Memar checkout says what each holds. `new`
+writes {REPORT_NAME} beside the plan, and never overwrites one that is there:
+
+{indent(report_skeleton(), "    ")}
+Before you end work on the task — finished or not — write {REPORT_NAME}: its Stop
+line, what ran, and the check and its outcome. Then set {PLAN_NAME}'s Status to
+agree with the Stop:
+
+{stop_table()}
+
+`list` marks a session whose report and plan disagree, and one whose status is
+not {", ".join(STATUSES[:-1])}, or {STATUSES[-1]}.
+
 Each further task gets a session of its own — another request in the same
 conversation, or a task handed to a sub-agent, which works in its own session.
 Open it with `--parent` naming the session it came from; `list` shows the
@@ -109,6 +133,10 @@ Run `close` only when the person who started the session has already said the
 work is finished; never ask them to, and never close a session you did not
 open. `gc` runs that sweep at once, by the same rules, and lists the idle
 folders it kept because their task is not done.
+
+The sweep reaches only Memar's own temp/sessions/. A folder in a project's own
+session location is never swept: keeping, committing, or deleting it is the
+project's, and `gc` names those locations as the ones it did not sweep.
 """
 
 

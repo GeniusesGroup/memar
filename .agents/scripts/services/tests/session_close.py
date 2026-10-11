@@ -21,7 +21,12 @@ What is pinned, and what each pin is for:
                     to the trash; closing again says it is already closed; a
                     trash that fails leaves the folder where it was, because a
                     failed recovery is not a successful close. A session an
-                    earlier Memar left in temp/, not moved yet, is closed there.
+                    earlier Memar left in temp/, not moved yet, is closed there,
+                    and one in a recorded project location is closed there,
+                    from any working folder, leaving the location itself; a
+                    folder there that is not a session's is refused and
+                    left, even in a location registered by hand that is a
+                    project's top folder.
   OnlyItsFolder     Closing one session's folder reaches nothing beside it, the
                     lock directory included, and is recorded in the log.
 
@@ -53,6 +58,7 @@ import machine.fs_lock as fs_lock
 import machine.fs_memar as memar_fs
 import machine.fs_trash as fs_trash
 import services.session_close as session_close
+from services.session_location import register
 from services.session_log import log_path
 
 
@@ -111,6 +117,39 @@ class RecoverableClose(Fixture):
             self.assertEqual(session_close.close_session(left.name), (left.name, left, True))
         trash.assert_called_once_with(left)
         self.assertFalse(memar_fs.session_dir(left.name).exists())
+
+    def test_a_session_in_a_project_location_is_closed_where_it_is(self) -> None:
+        location = self.fake_root / "project" / "sessions"
+        folder = location / "20261009T120000Z-43-0"
+        folder.mkdir(parents=True)
+        register(location)
+        with unittest.mock.patch.object(fs_trash, "soft_delete", side_effect=self.move_to_bin) as trash:
+            self.assertEqual(session_close.close_session(folder.name), (folder.name, folder, True))
+        trash.assert_called_once_with(folder)
+        self.assertTrue(location.is_dir())
+
+    def test_a_named_session_in_a_project_location_is_closed_where_it_is(self) -> None:
+        location = self.fake_root / "project" / "sessions"
+        folder = location / "my-task"
+        folder.mkdir(parents=True)
+        (folder / "plan.md").write_text("---\ntitle: T\nopened: x\n---\n# T\nStatus: done\n", encoding="utf-8", newline="\n")
+        register(location)
+        with unittest.mock.patch.object(fs_trash, "soft_delete", side_effect=self.move_to_bin) as trash:
+            self.assertEqual(session_close.close_session("my-task"), ("my-task", folder, True))
+        trash.assert_called_once_with(folder)
+
+    def test_a_folder_in_a_project_location_that_is_not_a_session_is_refused(self) -> None:
+        project = self.fake_root / "project"
+        own = project / ".agents"
+        own.mkdir(parents=True)
+        (own / "keep.md").write_text("# Keep\n", encoding="utf-8", newline="\n")
+        register(project)
+        with unittest.mock.patch.object(fs_trash, "soft_delete") as trash:
+            with self.assertRaises(SystemExit) as raised:
+                session_close.close_session(".agents")
+        trash.assert_not_called()
+        self.assertIn("is not a session folder", str(raised.exception.code))
+        self.assertTrue((own / "keep.md").is_file())
 
     def test_a_path_is_refused_as_an_id(self) -> None:
         for bad in ("a/b", "..", ""):

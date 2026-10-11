@@ -12,7 +12,14 @@ Where the folders are is not decided here: `machine/fs_memar.py` owns every
 Memar path, the session folder among them. Which folder directly in temp/ is a
 session an earlier Memar left there is decided here, because until
 `session_migrate` has moved it, it is still that session's folder: it is
-listed, swept, continued, linked to, and closed where it is.
+listed, swept, continued, linked to, and closed where it is. A folder in a
+project's own session location (`session_location`) is listed, continued,
+linked to, and closed like any other, but it is never among the folders the
+sweep is given: it is the project's, not Memar's. That location is a folder
+the project chose and may hold the project's own folders too, so a folder
+there is a session only by the same test as one left in temp/
+(`is_session_folder`), and no other folder there is ever written into or
+closed.
 
 Idle is the latest change anywhere inside a folder, because on Windows a
 folder's own time does not move when a nested file is edited. Reading changes
@@ -27,6 +34,7 @@ from typing import NamedTuple
 
 from machine.fs_memar import SESSIONS_DIRNAME, scratch_root, session_dir, sessions_root
 from services.session_id import is_dated_session_id, is_session_id
+from services.session_location import registered_locations
 from services.session_plan import CONVERSATION_KEY, PARENT_KEY, PLAN_NAME, read_plan
 
 DAY_SECONDS = 24 * 60 * 60
@@ -67,14 +75,16 @@ def read_session(folder: Path) -> Session:
     return Session(folder, True, read.front, read.status, read.tasks)
 
 
-def is_left_session(entry: Path) -> bool:
-    """Whether ENTRY, directly in temp/, is a session folder an earlier Memar left there.
+def is_session_folder(entry: Path) -> bool:
+    """Whether ENTRY, a folder found by name outside the session root, is a session's.
 
     A name `session_id` mints or has minted, or a folder holding a plan.md that
     `new` wrote, with its title and the time it was opened, because
-    `--session-id` lets a person name a session anything.
+    `--session-id` lets a person name a session anything. Any other folder
+    where a session could be — temp/'s own, or a project's beside its session
+    folders — is not one, and no session verb writes into it or closes it.
     """
-    if entry.name == SESSIONS_DIRNAME or entry.is_symlink() or not entry.is_dir():
+    if entry.is_symlink() or not entry.is_dir():
         return False
     if is_session_id(entry.name):
         return True
@@ -88,31 +98,58 @@ def is_left_session(entry: Path) -> bool:
     return "title" in front and "opened" in front
 
 
-def folder_of(session_id: str) -> Path:
-    """SESSION_ID's folder: under the session root, else where an earlier Memar left it in temp/.
+def is_left_session(entry: Path) -> bool:
+    """Whether ENTRY, directly in temp/, is a session folder an earlier Memar left there."""
+    return entry.name != SESSIONS_DIRNAME and is_session_folder(entry)
 
-    The first when neither is there. The id is checked by `session_dir`, so a
+
+def _project_entries(session_id: str, also: Path | None) -> list[Path]:
+    """Whatever is named SESSION_ID in ALSO or in a registered project location, folder or not."""
+    locations = ([also] if also is not None else []) + registered_locations()
+    return [entry for entry in (location / session_id for location in locations) if entry.exists() or entry.is_symlink()]
+
+
+def project_folder_of(session_id: str, also: Path | None = None) -> Path | None:
+    """SESSION_ID's session folder in ALSO or in a registered project location, or None when it is in none."""
+    return next((entry for entry in _project_entries(session_id, also) if is_session_folder(entry)), None)
+
+
+def foreign_project_entry(session_id: str, also: Path | None = None) -> Path | None:
+    """What is named SESSION_ID in ALSO or a registered project location and is not a session folder, or None."""
+    return next((entry for entry in _project_entries(session_id, also) if not is_session_folder(entry)), None)
+
+
+def folder_of(session_id: str) -> Path:
+    """SESSION_ID's folder: under the session root, else left in temp/, else in a registered project location.
+
+    The first when none is there. The id is checked by `session_dir`, so a
     path is refused before temp/ is looked at.
     """
     folder = session_dir(session_id)
     if folder.is_dir():
         return folder
     left = scratch_root() / session_id
-    return left if is_left_session(left) else folder
+    if is_left_session(left):
+        return left
+    return project_folder_of(session_id) or folder
 
 
-def session_folders() -> list[Path]:
+def session_folders(*, projects: bool = False) -> list[Path]:
     """Every folder named as a session under the session root or left directly in temp/, newest first.
 
-    A name sort of the dated form is creation order; the earlier form carries
-    no clock and was minted before any dated id.
+    With PROJECTS, those in the registered project locations too; the sweep
+    asks without, because those are not Memar's to sweep. A name sort of the
+    dated form is creation order; the earlier form carries no clock and was
+    minted before any dated id.
     """
-    folders = [
-        entry
-        for root in (sessions_root(), scratch_root())
-        for entry in root.iterdir()
-        if is_session_id(entry.name) and entry.is_dir() and not entry.is_symlink()
-    ]
+    roots = [sessions_root(), scratch_root(), *(registered_locations() if projects else [])]
+    folders = []
+    for root in roots:
+        try:
+            entries = list(root.iterdir())
+        except OSError:
+            continue
+        folders += [entry for entry in entries if is_session_id(entry.name) and entry.is_dir() and not entry.is_symlink()]
     folders.sort(key=lambda entry: (is_dated_session_id(entry.name), entry.name), reverse=True)
     return folders
 

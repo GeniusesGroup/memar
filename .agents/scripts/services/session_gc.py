@@ -45,6 +45,12 @@ folders it kept for unfinished work with their age, because those are the ones
 only a person can let go. It may be given a shorter limit, never one under
 GC_MIN_IDLE_DAYS: at zero, a folder opened a moment ago would be judged by a
 plan its session has not begun to keep.
+
+The sweep reaches Memar's own scratch only. A session folder a project's
+preferences placed in the project (`session_location`) is the project's to
+keep, commit, or delete, so neither sweep is given it; `gc` names each such
+location it passed over, so the person who asked knows the sweep did not
+cover it.
 """
 from __future__ import annotations
 
@@ -60,6 +66,7 @@ from typing import Callable, NamedTuple
 from machine.console import fail, note
 from machine.fs_memar import sessions_root
 from services.session_folder import DAY_SECONDS, Session, last_change, read_session, session_folders
+from services.session_location import registered_locations
 from services.session_log import SESSION_LOG_NAME, log_path, record
 from services.session_plan import PLAN_NAME, is_done
 
@@ -69,6 +76,7 @@ GC_MIN_IDLE_DAYS = 1
 LOG_KEEP_DAYS = 4 * SESSION_IDLE_DAYS
 SWEPT_MARKER_NAME = "sessions.swept"
 CLOSE_HINT = "memar session close --session-id ID"
+NOT_SWEPT = "not swept, a project's own session location, which is the project's to keep or delete"
 
 
 class Sweep(NamedTuple):
@@ -216,6 +224,8 @@ def collect(keep: str | None, idle_days: float | None) -> None:
             "would be judged by a plan its session has not begun to keep"
         )
     print_sweep(reap_idle_sessions(keep, limit, by="gc"), limit)
+    for location in registered_locations():
+        note(f"{NOT_SWEPT}: {location}")
 
 
 def describe(verbs) -> Callable[[argparse.Namespace], None]:
@@ -229,7 +239,9 @@ def describe(verbs) -> Callable[[argparse.Namespace], None]:
             "is done: the sweep `new` runs once a day, run now. A folder whose status\n"
             f"is not done, or whose {PLAN_NAME} cannot be read, is kept however idle it is,\n"
             "and listed with how long it has been idle, so a person can see which ones\n"
-            "only they can let go. Your own session is never swept."
+            "only they can let go. Your own session is never swept. Only Memar's own\n"
+            "temp/sessions/ is swept: each project session location, set in a project's\n"
+            "preferences, is named as not swept, its folders the project's to keep or delete."
         ),
     )
     collector.add_argument(

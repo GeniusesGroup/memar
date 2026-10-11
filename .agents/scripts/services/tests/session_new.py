@@ -32,7 +32,8 @@ What is pinned, and what each pin is for:
                      not minted, nor a folder with no plan.md taken up, without
                      one; a folder that has a plan is continued without one.
   PlanWritten        The plan is written in UTF-8 with LF and no BOM, records
-                     the project as the git top-level else the current folder,
+                     the project `new` resolves, which is the git top-level
+                     else the current folder,
                      and is never overwritten: it is the record the next
                      session continues from.
   ParentLinked       `--parent` records the session a task came from and the
@@ -40,6 +41,25 @@ What is pinned, and what each pin is for:
                      own plan; a parent that is not there, or the session
                      itself, is refused, and a plan keeps the link it was
                      written with.
+  ReportWritten      Beside the plan, `new` writes report.md's skeleton when
+                     it is absent and never overwrites one, and prints where
+                     it is.
+  RoleFoldersMade    Every run makes the module role folders the session
+                     folder lacks, and leaves what is in them alone.
+  ProjectLocation    A project whose preferences set `sessions` gets its new
+                     folders there, relative to its top folder or absolute;
+                     with no preferences, an empty key, or a location inside
+                     Memar's scratch, the folder is Memar's as before, and
+                     for the last `new` says so. The project's top folder or
+                     a root is refused, and a location that cannot be made
+                     fails with a message, both with nothing made. A name
+                     there that is not a session folder is refused and never
+                     written into; a new one is made there. A
+                     folder there is recorded, continued and linked to from
+                     another project, and `new` says each time that it is the
+                     project's and never swept; a recorded location that is
+                     gone is passed over. The project is a scratch folder,
+                     so a real project's preferences never reach a test.
   OpeningRecorded    Opening a folder is one line in the session log, naming
                      the parent when there is one.
   LockSharesTheRoot  Locks and intent notes land under the same temp root the
@@ -75,14 +95,21 @@ from machine.fs_test_scratch import suite_scratch
 
 import machine.fs_lock as fs_lock
 import machine.fs_memar as memar_fs
+import services.project_preferences as project_preferences
 import services.session_new as session_new
+from services.module_folders import ROLE_FOLDERS
 from services.session_folder import read_session
 from services.session_id import is_session_id
+from services.session_location import registered_locations
 from services.session_log import log_path
 from services.session_plan import PLAN_NAME
+from services.session_report import REPORT_NAME
 
 TITLE = "Test the session services"
 OPENED = r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z"
+REPORT = "# Report\nStop:\n\n## What ran\n## Check\n## Result\n## Left open\n"
+# Kept before any fixture patches it, for the one test that asks git itself.
+GIT_PROJECT_ROOT = session_new.project_root
 
 
 class Fixture(unittest.TestCase):
@@ -96,6 +123,22 @@ class Fixture(unittest.TestCase):
         patched = unittest.mock.patch.object(memar_fs, "memar_root", return_value=self.fake_root)
         patched.start()
         self.addCleanup(patched.stop)
+        # The project `new` runs in is a scratch folder too, so a real
+        # project's preferences never send a test's folder into it.
+        self.project = self.fake_root / "project"
+        self.project.mkdir()
+        self.in_project(self.project)
+
+    def in_project(self, project: Path) -> None:
+        patched = unittest.mock.patch.object(session_new, "project_root", return_value=project)
+        patched.start()
+        self.addCleanup(patched.stop)
+
+    def prefer(self, project: Path, sessions: str) -> None:
+        path = project_preferences.preferences_path(project)
+        path.parent.mkdir(parents=True, exist_ok=True)
+        text = project_preferences.PREFERENCES_TEXT.replace("sessions:\n", f"sessions: {sessions}\n", 1)
+        path.write_text(text, encoding="utf-8", newline="\n")
 
     def minted_folders(self) -> list[str]:
         root = memar_fs.session_dir("probe").parent
@@ -229,7 +272,158 @@ class PlanWritten(Fixture):
         ):
             with self.subTest(expected=expected):
                 with unittest.mock.patch.object(subprocess, "run", **outcome):
-                    self.assertEqual(session_new.project_root(), expected)
+                    self.assertEqual(GIT_PROJECT_ROOT(), expected)
+
+
+class ReportWritten(Fixture):
+    def test_a_report_skeleton_is_written_beside_the_plan(self) -> None:
+        _, path = session_new.ensure_session("s-report", TITLE)
+        raw = (path / REPORT_NAME).read_bytes()
+        self.assertNotIn(b"\r", raw)
+        self.assertEqual(raw.decode("utf-8"), REPORT)
+
+    def test_a_report_is_never_overwritten_and_one_missing_is_written(self) -> None:
+        _, path = session_new.ensure_session("s-report", TITLE)
+        report = path / REPORT_NAME
+        report.write_text("# Report\nStop: success\n", encoding="utf-8", newline="\n")
+        session_new.ensure_session("s-report")
+        self.assertEqual(report.read_text(encoding="utf-8"), "# Report\nStop: success\n")
+        report.unlink()
+        session_new.ensure_session("s-report")
+        self.assertEqual(report.read_text(encoding="utf-8"), REPORT)
+
+    def test_new_prints_where_the_report_is(self) -> None:
+        out = io.StringIO()
+        with contextlib.redirect_stdout(out):
+            session_new.open_session("s-said", TITLE, None)
+        self.assertIn(f"report: {memar_fs.session_dir('s-said') / REPORT_NAME}", out.getvalue())
+
+
+class RoleFoldersMade(Fixture):
+    def test_every_run_makes_the_role_folders_that_are_missing(self) -> None:
+        _, path = session_new.ensure_session("s-roles", TITLE)
+        self.assertEqual(sorted(entry.name for entry in path.iterdir() if entry.is_dir()), sorted(ROLE_FOLDERS))
+        (path / "docs" / "note.md").write_text("# Note\n", encoding="utf-8", newline="\n")
+        (path / "rules").rmdir()
+        session_new.ensure_session("s-roles")
+        self.assertTrue((path / "rules").is_dir())
+        self.assertTrue((path / "docs" / "note.md").is_file())
+
+
+class ProjectLocation(Fixture):
+    """A project whose preferences set `sessions` gets its session folders there."""
+
+    def open(self, *arguments) -> tuple[str, Path, str]:
+        out = io.StringIO()
+        with contextlib.redirect_stdout(out):
+            session_new.open_session(*arguments)
+        printed = out.getvalue()
+        sid = re.search(r"session_id: (\S+)", printed).group(1)
+        return sid, Path(re.search(r"path: (.+)", printed).group(1).strip()), printed
+
+    def test_without_preferences_or_with_an_empty_key_the_folder_is_memars(self) -> None:
+        for prepare in (lambda: None, lambda: self.prefer(self.project, "")):
+            with self.subTest(prepare=prepare):
+                prepare()
+                sid, path, printed = self.open(None, TITLE, None)
+                self.assertEqual(path, memar_fs.session_dir(sid))
+                self.assertNotIn("location:", printed)
+                self.assertEqual(registered_locations(), [])
+                self.assertFalse(memar_fs.project_sessions_registry().exists())
+
+    def test_a_relative_location_is_under_the_projects_top_folder(self) -> None:
+        self.prefer(self.project, "work/sessions")
+        sid, path, printed = self.open(None, TITLE, None)
+        location = self.project / "work" / "sessions"
+        self.assertEqual(path, location / sid)
+        self.assertTrue((path / PLAN_NAME).is_file())
+        self.assertTrue((path / REPORT_NAME).is_file())
+        self.assertTrue(all((path / role).is_dir() for role in ROLE_FOLDERS))
+        self.assertFalse(memar_fs.session_dir(sid).exists())
+        self.assertIn(f"location: {location} is a project's own session location", printed)
+        self.assertIn("Memar's sweep never moves a folder there", printed)
+        self.assertEqual(registered_locations(), [location.resolve()])
+
+    def test_an_absolute_location_is_used_as_it_is(self) -> None:
+        elsewhere = self.fake_root / "elsewhere"
+        self.prefer(self.project, str(elsewhere))
+        sid, path, _ = self.open(None, TITLE, None)
+        self.assertEqual(path, elsewhere / sid)
+
+    def test_a_location_inside_memars_scratch_is_memars_own_and_new_says_so(self) -> None:
+        self.prefer(self.project, str(memar_fs.sessions_root()))
+        sid, path, printed = self.open(None, TITLE, None)
+        self.assertEqual(path, memar_fs.session_dir(sid))
+        self.assertNotIn("location:", printed)
+        said = [line for line in printed.splitlines() if "inside Memar's own temp/" in line]
+        self.assertEqual(len(said), 1, printed)
+        self.assertIn(str(project_preferences.preferences_path(self.project)), said[0])
+        self.assertEqual(registered_locations(), [])
+
+    def test_the_projects_top_folder_or_a_root_is_refused_and_nothing_is_made(self) -> None:
+        for value in (".", "work/..", str(self.project), Path(self.project.resolve().anchor).as_posix()):
+            with self.subTest(value=value):
+                self.prefer(self.project, value)
+                before = sorted(entry.name for entry in self.project.iterdir())
+                with contextlib.redirect_stdout(io.StringIO()), self.assertRaises(SystemExit) as raised:
+                    session_new.open_session(None, TITLE, None)
+                self.assertIn("`sessions` in", str(raised.exception.code))
+                self.assertEqual(sorted(entry.name for entry in self.project.iterdir()), before)
+                self.assertEqual(self.minted_folders(), [])
+                self.assertFalse(memar_fs.project_sessions_registry().exists())
+
+    def test_an_existing_folder_that_is_not_a_session_is_never_written_into(self) -> None:
+        self.prefer(self.project, "work")
+        own = self.project / "work" / "src"
+        own.mkdir(parents=True)
+        (own / "main.kh").write_text("x\n", encoding="utf-8", newline="\n")
+        with contextlib.redirect_stdout(io.StringIO()), self.assertRaises(SystemExit) as raised:
+            session_new.open_session("src", TITLE, None)
+        self.assertIn("is not a session folder", str(raised.exception.code))
+        self.assertEqual([entry.name for entry in own.iterdir()], ["main.kh"])
+        self.assertFalse(memar_fs.session_dir("src").exists())
+        self.assertFalse(memar_fs.project_sessions_registry().exists())
+
+    def test_a_new_name_in_the_location_is_still_made_there(self) -> None:
+        self.prefer(self.project, "work")
+        sid, path, _ = self.open("my-task", TITLE, None)
+        self.assertEqual((sid, path), ("my-task", self.project / "work" / "my-task"))
+        again, path_again, _ = self.open("my-task", None, None)
+        self.assertEqual((again, path_again), (sid, path))
+
+    def test_a_location_that_is_a_file_fails_with_a_message(self) -> None:
+        self.prefer(self.project, "work")
+        (self.project / "work").write_text("not a folder\n", encoding="utf-8", newline="\n")
+        with contextlib.redirect_stdout(io.StringIO()), self.assertRaises(SystemExit) as raised:
+            session_new.open_session(None, TITLE, None)
+        message = str(raised.exception.code)
+        self.assertIn("could not be made", message)
+        self.assertIn(str(project_preferences.preferences_path(self.project)), message)
+        self.assertTrue((self.project / "work").is_file())
+        self.assertFalse(memar_fs.project_sessions_registry().exists())
+
+    def test_it_is_continued_and_linked_to_from_another_project_and_says_so_again(self) -> None:
+        self.prefer(self.project, "sessions")
+        sid, path, _ = self.open(None, TITLE, None)
+        other = self.fake_root / "other"
+        other.mkdir()
+        self.in_project(other)
+        again, path_again, printed = self.open(sid, None, None)
+        self.assertEqual((again, path_again), (sid, path))
+        self.assertIn("location:", printed)
+        _, child, _ = self.open(None, "Delegated step", sid)
+        self.assertEqual(child, memar_fs.session_dir(child.name))
+        self.assertEqual(read_session(child).parent, sid)
+
+    def test_a_location_registered_once_and_gone_is_passed_over(self) -> None:
+        self.prefer(self.project, "sessions")
+        self.open(None, TITLE, None)
+        self.open(None, TITLE, None)
+        lines = memar_fs.project_sessions_registry().read_text(encoding="utf-8").splitlines()
+        self.assertEqual(len(lines), 1)
+        gone = memar_fs.project_sessions_registry()
+        gone.write_text(lines[0] + "\n" + str(self.fake_root / "unmounted") + "\n", encoding="utf-8", newline="\n")
+        self.assertEqual(registered_locations(), [(self.project / "sessions").resolve()])
 
 
 class ParentLinked(Fixture):
