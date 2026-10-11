@@ -25,10 +25,11 @@ Memar is reached by one of two routes.
 - Before any other work, open a session through Memar ([Reaching Memar Server](#reaching-memar-server)), and keep all scratch in its folder; nowhere else — not the OS temporary directory, and not a scratch place the runtime offers.
 - One session holds one task, and its plan holds that task's own acceptance check; a further task — another request, or one delegated — gets a session of its own, linked to the session it came from.
 - A runtime's own to-do list or plan mode may track steps inside this context, but it is not the session's plan: it ends with the context, and the plan has to outlive it.
+- Thinking runs in every step, and no step names it as its act: once the session is open or taken up — a sub-agent's too — and before acting on or adding to its plan, read [Cognition](/docs/cognition.md)'s [Abstract](/docs/cognition.md#abstract), [What Implementation Asymmetry Obliges](/docs/cognition.md#what-implementation-asymmetry-obliges), and [Discourse Norms](/docs/cognition.md#discourse-norms-derived-from-this-model) — about 19 KB — in this context, not as a delegate's summary, and hold them for the session, as [Status and Use](/docs/cognition.md#status-and-use) says.
 - Intake binds before work ([Cognition Practice → Norm Application Points](/docs/cognition.practice.md#norm-application-points)) and ends in the written plan, made before reading the material the work is about. Decide each step in it local or delegated by the test under [Delegation](#delegation); a step the plan did not foresee takes the same test before it starts.
 
 ## Context window and compaction
-- After any compaction or summary of the context — announced or not; a context that opens with a summary has been compacted — re-read this file and the session's plan: a summary drops rules and decisions that still bind. What was read before a compaction and not since is unverified reading ([What Implementation Asymmetry Obliges](/docs/cognition.md#what-implementation-asymmetry-obliges)).
+- After any compaction or summary of the context — announced or not; a context that opens with a summary has been compacted — re-read this file, the session's plan, and Cognition's sections named under [Session and plan](#session-and-plan): a summary drops rules and decisions that still bind. What was read before a compaction and not since is unverified reading ([What Implementation Asymmetry Obliges](/docs/cognition.md#what-implementation-asymmetry-obliges)).
 - The session's context is a budget as well as each step's: tool output, reports, and the conversation accumulate across steps that each passed the test. Ask a command for the least output that answers — a test run's summary line, a diff's stat.
 - Once the context is past about half the window, as the runtime reports it or as estimated from what was taken in, take no further step locally: delegate it, or hand what remains of this session's task to a new session linked to this one.
 
@@ -42,7 +43,7 @@ Memar is reached by one of two routes.
 - What a delegation must establish: [Interaction With an Agent](/docs/agency.md#interaction-with-an-agent).
 
 ## Sub-agents, briefs, and reports
-- Every sub-agent loads this skill first. A read-only step enacts no development step and commits to no module, so it looks up no document for an act it does not take and reads only what its step needs.
+- Every sub-agent loads this skill first. A read-only step enacts no development step and commits to no module, so it looks up no document for an act it does not take, and beyond Cognition's sections named under [Session and plan](#session-and-plan) reads only what its step needs.
 - A sub-agent starts with none of the session's context: what its brief does not carry, it does not know. The brief names this file, the paths and passages to judge, the criteria, the acceptance check, and the report shape, and restates no rule. The sub-agent declares unverified reading and context limits per [What Implementation Asymmetry Obliges](/docs/cognition.md#what-implementation-asymmetry-obliges).
 - Start a new sub-agent rather than resume a long one.
 - Sub-agents running at the same time write disjoint files, or write a shared one only through Memar's writing tool.
