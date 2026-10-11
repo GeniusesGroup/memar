@@ -15,6 +15,9 @@ capability:
   rename   Move/rename a *tracked* path with `git mv`, never plain mv.
            Commit that rename by itself before editing content — a mixed
            rename+edit commit defeats rename detection and orphans history.
+           An edit that changes no meaning and keeps the file above git's
+           rename threshold — a license header, a typo, a path the move
+           forces — may go in the same commit.
            `commit` takes the staged move when both of its paths are named;
            once the destination has been edited, name it with `--as` and a
            file holding the blob the move staged, and the move is committed
@@ -204,7 +207,8 @@ def cmd_rename(source: Path, destination: Path) -> None:
     run_git(["mv", str(source), str(destination)])
     print(
         f"renamed (index): {source} -> {destination}\n"
-        "Commit this rename by itself before editing content.",
+        "Commit this rename by itself before editing content; an edit that\n"
+        "changes no meaning and keeps it detected as a rename may go with it.",
         file=sys.stderr,
     )
 
