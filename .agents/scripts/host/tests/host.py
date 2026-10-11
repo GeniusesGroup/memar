@@ -3,7 +3,7 @@
 
 """Tests for the constraints `host/fs.py` and `host/git.py` hold a session to.
 
-    python .agents/scripts/tests/host.py
+    python .agents/scripts/host/tests/host.py
 
 Nothing here deletes anything but the scratch repository the commit tests make
 for themselves beside this file. The trash verbs are asserted by what they refuse
@@ -77,7 +77,7 @@ from importlib.machinery import SourceFileLoader
 from pathlib import Path
 
 TESTS = Path(__file__).resolve().parent
-HOST = TESTS.parent / "host"
+HOST = TESTS.parent
 SCRIPTS = HOST.parent
 sys.path.insert(0, str(SCRIPTS))
 sys.dont_write_bytecode = True
