@@ -188,6 +188,17 @@ class ReachedByTheCommand(unittest.TestCase):
         self.assertNotIn("--help", body)
 
 
+class SectionUpserted(unittest.TestCase):
+    """The Memar section in AGENTS.md is replaced in place; the project's own sections keep their spacing."""
+
+    def test_a_blank_line_still_parts_the_section_from_the_projects_next_one(self):
+        own = "## Source\nRead the practice first.\n"
+        before = f"{project.AGENTS_H1}\n\n## Memar\nAn older pointer.\n\n{own}"
+        after = project.upsert_memar_section(before)
+        self.assertEqual(after, f"{project.AGENTS_H1}\n\n{project.memar_section_markdown()}\n{own}")
+        self.assertEqual(project.upsert_memar_section(after), after)
+
+
 class PreferencesKept(unittest.TestCase):
     """The project's preferences file: made when absent, never written again."""
 

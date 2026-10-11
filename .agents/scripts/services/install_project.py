@@ -160,7 +160,7 @@ def upsert_memar_section(content: str) -> str:
     if prefix:
         middle = prefix + "\n\n" + section
     if suffix:
-        return middle.rstrip() + "\n" + suffix
+        return middle.rstrip() + "\n\n" + suffix
     return middle
 
 
