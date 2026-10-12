@@ -3,9 +3,9 @@
 
 """services/update_copies.py — the copies Memar installed, asked whether they are stale and refreshed.
 
-Installing Memar copies things out of the checkout — the skill into agent apps,
-the editor extensions into the editor — and the checkout keeps changing after
-the copy is made. This file asks and relays; it compares and copies nothing
+Installing Memar writes things out of the checkout — a pointer to the skill into
+agent apps, the editor extensions into the editor — and the checkout keeps
+changing after they are written. This file asks and relays; it compares and copies nothing
 itself. Each install layer keeps what it already owns — which copies exist,
 whether one still matches, how it is refreshed — and is asked here the way the
 installer asks it:
@@ -42,14 +42,14 @@ REFRESH = "memar update --apply"
 
 
 def apps_stale() -> None:
-    """The agent-app layer's `stale`: one line per stale skill copy."""
+    """The agent-app layer's `stale`: one line per skill pointer, or full copy, that is not the pointer the checkout would write."""
     from services import install_apps
 
     install_apps.warn_stale(install_apps.checkout_skill())
 
 
 def apps_refresh() -> None:
-    """The agent-app layer's `update`: refresh the skill copies that exist."""
+    """The agent-app layer's `update`: rewrite the existing skill folders as the pointer, a full copy included."""
     from services import install_apps
 
     install_apps.into_apps(existing_only=True)

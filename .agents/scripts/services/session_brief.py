@@ -34,7 +34,9 @@ def brief_text(session_id: str) -> str:
         f"Load the Memar skill: run `memar content path {SKILL_FILE}` and follow the file it prints. "
         f"Your task is session {session_id}: run `memar session new --session-id {session_id}`, "
         f"read the {PLAN_NAME} it names, and do what its Request says, without rewriting that Request. "
-        f"End with its {REPORT_NAME} and Status as `memar session --help` says."
+        f"End with its {REPORT_NAME} and Status as `memar session --help` says: write them where you may write files; "
+        f"where you may only return text, return the report as your final text, and the delegating session "
+        f"writes it as {REPORT_NAME} before its next step."
     )
 
 

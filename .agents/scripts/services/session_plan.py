@@ -60,7 +60,7 @@ STATUS_PREFIX = "Status:"
 PARENT_KEY = "parent"
 CONVERSATION_KEY = "conversation"
 # The parts every plan carries, in order, under the task's status.
-PARTS = ("Request", "Steps", "Next")
+PARTS = ("Request", "Why", "Steps", "Next")
 
 
 class Plan(NamedTuple):
@@ -93,7 +93,7 @@ def plan_skeleton(
     parent: str | None = None,
     conversation: str | None = None,
 ) -> str:
-    """A new plan.md: front matter, the title as its heading, an open status, and the three parts.
+    """A new plan.md: front matter, the title as its heading, an open status, and the parts.
 
     PARENT and CONVERSATION are written only for a session opened from another
     one; a session without them is the first of its own conversation.

@@ -13,13 +13,11 @@ The host tool already speaks git. This file is the constraint, not the
 capability:
 
   rename   Move/rename a *tracked* path with `git mv`, never plain mv.
-           Commit that rename by itself before editing content — a mixed
-           rename+edit commit defeats rename detection and orphans history.
-           An edit that changes no meaning and keeps the file above git's
-           rename threshold — a license header, a typo, a path the move
-           forces — may go in the same commit, staged or not, and whoever
-           staged it; `commit` refuses a result git no longer sees as a
-           rename.
+           The rename rides with the task's one commit, and history follows
+           it while each moved file stays above git's rename threshold. An
+           edit that would push a file below the threshold is what makes a
+           separate commit of the rename first necessary; `commit` refuses
+           a result git no longer sees as a rename.
            `commit` takes the staged move when both of its paths are named;
            once the destination has been edited, name it with `--as` and a
            file holding the blob the move staged, and the move is committed
@@ -209,8 +207,8 @@ def cmd_rename(source: Path, destination: Path) -> None:
     run_git(["mv", str(source), str(destination)])
     print(
         f"renamed (index): {source} -> {destination}\n"
-        "Commit this rename by itself before editing content; an edit that\n"
-        "changes no meaning and keeps it detected as a rename may go with it.",
+        "The rename rides with the task's commit while git still detects it\n"
+        "as a rename; an edit that breaks detection needs the rename committed first.",
         file=sys.stderr,
     )
 
@@ -609,9 +607,9 @@ def _staged_moves(
 
     `rename` stages a `git mv` and asks for it to be committed. A staged move
     whose source and destination the caller both names is claimed by that
-    naming, and so is an edit staged into its destination — a license header,
-    a typo, a path the move forces, which may ride with a move even when
-    another session staged it — so it is not the someone-else's staging
+    naming, and so is an edit staged into its destination — any edit that
+    keeps the file above git's rename threshold, which folds into the task's
+    commit with the move even when another session staged it — so it is not the someone-else's staging
     `_refuse_staged` guards against. What still makes it a move is git's own
     rename detection at its default threshold, here and, through
     `_renames_lost`, in the tree the commit writes. Nor is a staged removal of
@@ -762,10 +760,11 @@ def cmd_commit(
         sys.exit(
             "error: with the working tree's edit in it, git no longer sees "
             + ", ".join(lost)
-            + " as a rename, so its history would not follow. Only an edit that changes no "
-            "meaning and keeps the rename may ride with a move: commit the move alone with "
-            "--as DESTINATION=FILE holding the blob the move staged, and the edit after it. "
-            "Nothing was committed."
+            + " as a rename, so its history would not follow. An edit rides with a move only "
+            "while the file stays above git's rename threshold; this one pushes it below, so "
+            "the move keeps a commit of its own: commit the move alone with "
+            "--as DESTINATION=FILE holding the blob the move staged, and fold the edit into "
+            "the task's commit after it. Nothing was committed."
         )
 
     message = message_file.read_bytes().decode("utf-8").replace("\r\n", "\n").strip()
@@ -933,7 +932,7 @@ def main() -> int:
 
     p_rename = sub.add_parser(
         "rename",
-        help="git mv for a tracked path; commit the rename alone afterwards",
+        help="git mv for a tracked path; the rename rides with the task's commit",
     )
     p_rename.add_argument("source", type=Path)
     p_rename.add_argument("destination", type=Path)

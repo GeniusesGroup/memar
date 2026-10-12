@@ -17,7 +17,7 @@ folder `machine/fs_test_scratch.py` names and removed with it.
 What is pinned, and what each pin is for:
 
   Skeleton        A new plan is front matter, the title once as its heading,
-                  `Status: open`, and Request, Steps, Next; the link to a
+                  `Status: open`, and Request, Why, Steps, Next; the link to a
                   parent and its conversation is written only when given.
   OwnStatus       A plan's status is the `Status:` line above its first `##`
                   heading, lowercased, and an unknown one is returned as
@@ -80,12 +80,12 @@ class Fixture(unittest.TestCase):
 
 
 class Skeleton(Fixture):
-    def test_a_new_plan_is_front_matter_title_open_status_and_three_parts(self) -> None:
+    def test_a_new_plan_is_front_matter_title_open_status_and_four_parts(self) -> None:
         text = session_plan.plan_skeleton(TITLE, OPENED, Path("/work"))
         self.assertEqual(
             text,
             f"---\ntitle: {TITLE}\nopened: {OPENED}\nproject: {Path('/work')}\n---\n"
-            f"# {TITLE}\nStatus: open\n\n## Request\n\n## Steps\n\n## Next\n",
+            f"# {TITLE}\nStatus: open\n\n## Request\n\n## Why\n\n## Steps\n\n## Next\n",
         )
         self.assertEqual(text.count(TITLE), 2)
         plan = self.read(text)

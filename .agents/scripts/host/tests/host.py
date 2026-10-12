@@ -179,12 +179,12 @@ class RenameIsHistoryKeeping(unittest.TestCase):
         for plain in ("shutil.move(", "os.rename(", "os.replace("):
             self.assertNotIn(plain, source)
 
-    def test_a_rename_is_staged_on_its_own_before_the_content_changes(self) -> None:
-        # A mixed rename+edit commit defeats rename detection, which is the
-        # history this command exists to preserve; only an edit that keeps it
-        # may ride along.
-        self.assertIn("Commit this rename by itself", read("git.py"))
-        self.assertIn("keeps it detected as a rename", read("git.py"))
+    def test_a_rename_rides_with_the_task_while_git_detects_it(self) -> None:
+        # A rename whose edit breaks rename detection defeats the history this
+        # command exists to preserve; the rule says the rename rides with the
+        # task's commit only while git still detects it.
+        self.assertIn("The rename rides with the task's commit", read("git.py"))
+        self.assertIn("while git still detects it", read("git.py"))
 
 
 class StashIsNotDiscard(unittest.TestCase):

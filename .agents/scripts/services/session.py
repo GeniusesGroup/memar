@@ -42,8 +42,11 @@ SUMMARY = "open the scratch folder one piece of work gets"
 
 DESCRIPTION = f"""memar session — one folder for the task you are about to do
 
-One session is one task: one thing the person asked for, done and checked.
-Work inside its folder, not in the checkout: the files you write while working
+A task is one thing the person asked for, done and checked. A session is the
+record of one task: a folder holding its plan, its report, and whatever else the
+work makes, kept so that another session can continue it.
+One session is one task. Agent, sub-agent, and conversation are defined in
+`memar --help`. Work inside its folder, not in the checkout: the files you write while working
 belong to your session, not to the repository.
 
     memar session new --title TITLE     open a folder and print its id and path
@@ -93,11 +96,14 @@ and never overwrites one that is there:
     Status: open
 
     ## Request
+    ## Why
     ## Steps
     ## Next
 
 Request is what was asked, in the person's words, and what checks it is done;
-Steps, each marked local or delegated, with its state; Next, what the next
+Why, the reason the person asked for it, so that whoever does the work can
+contribute and not only comply — written by the session that opens the plan,
+in its own words, from the person's request; Steps, each marked local or delegated, with its state; Next, what the next
 session does first. Status is open, blocked, or done: change that line as the
 task moves, and set done once its check has passed. Keep {PLAN_NAME} as you
 work, so another session can continue from it.
@@ -125,7 +131,8 @@ sessions of one conversation together.
 
 To hand a task to a sub-agent, open its session yourself with `--parent`,
 write the whole task into its {PLAN_NAME} — the Request, the check that says it
-is done, and the shape of its report — and hand the sub-agent only the brief
+is done, the shape of its report, and its Why, in your own words from the
+person's request — and hand the sub-agent only the brief
 `new` prints, which `brief ID` prints again. The agent handed a brief takes
 that session up and opens none, and does not rewrite its Request.
 

@@ -300,8 +300,9 @@ class SiblingSurface(unittest.TestCase):
                 "recorded_value": "machine.env_location",
             },
             INTO_APPS: {
-                "NEVER_COPIED": "machine.fs_copy_excluded",
-                "differs": "machine.fs_copy",
+                "soft_delete": "machine.fs_trash",
+                "WINDOWS_BOOTSTRAP": "services.install_project",
+                "POSIX_BOOTSTRAP": "services.install_project",
                 "resolve_root": "machine.env_location",
             },
         }

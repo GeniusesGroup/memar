@@ -61,7 +61,9 @@ BRIEF = (
     "Load the Memar skill: run `memar content path .agents/skills/memar/SKILL.md` and follow the file it prints. "
     f"Your task is session {SID}: run `memar session new --session-id {SID}`, read the plan.md it names, "
     "and do what its Request says, without rewriting that Request. "
-    "End with its report.md and Status as `memar session --help` says."
+    "End with its report.md and Status as `memar session --help` says: write them where you may write files; "
+    "where you may only return text, return the report as your final text, and the delegating session "
+    "writes it as report.md before its next step."
 )
 
 
