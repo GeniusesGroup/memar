@@ -12,4 +12,4 @@ Active — rule added 2026-09-29 from the rules-in-docs audit, whose session fil
 | --- | --- | --- |
 | [abstraction-scaffolding.md](./abstraction-scaffolding.md) | Base — the rule | Keep in sync |
 | [Abstraction in Khayyam](../../../../docs/khayyam/abstraction.md) | Depends_on — implicit satisfaction model | None (read) |
-| [Inheritance in Khayyam → Linter Rules](../../../../docs/khayyam/inheritance.md#what-the-linter-may-add) | Depends_on — linter-rules pointer | Link only |
+| [Inheritance in Khayyam → Rules](../../../../docs/khayyam/inheritance.md#rules) | Depends_on — the language rules (no implicit behavior acquisition, explicit delegation) this rule assists; the former linter-rules pointer section was removed on 2026-10-12 | Link only |

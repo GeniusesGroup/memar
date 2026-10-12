@@ -25,6 +25,8 @@ Smart remediation when a compilation error occurs because a method exists only o
 ## Why it exists
 Khayyam rejects implicit `impl` keywords and behavior transfer; without scaffolding, explicit delegation is verbose. Tooling that writes or verifies delegation preserves the language guarantee while keeping development ergonomic.
 
+The same absence of an implementation keyword makes discovery a tooling burden: which capsules satisfy a given abstraction takes a tool-assisted graph traversal rather than a simple text search for `impl AbstractionName`. That is a tooling burden, not a language burden, but it is a real cost in ecosystem maturity — a new Khayyam project will have less mature tooling than a new Rust project, where `impl` blocks are trivially searchable. A deliberate satisfaction — an intent abstraction the capsule composes ([Abstraction in Khayyam → Deliberate Satisfaction Is Composed, Not Declared](../../../../docs/khayyam/abstraction.md#deliberate-satisfaction-is-composed-not-declared), [Agency in Khayyam](../../../../docs/khayyam/agency.md)) — is checked and found by exactly the means this tooling checks and finds any other satisfier; it needs no check of its own.
+
 ## Keep it or drop it
 An organization may disable scaffolding, require hand-written delegation only, or use a different IDE workflow. The language does not require any of these assists.
 

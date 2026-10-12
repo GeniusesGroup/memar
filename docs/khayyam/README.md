@@ -1,5 +1,5 @@
 # Khayyam (`/docs/khayyam/`)
-This directory holds the design and specification documents of the **Khayyam programming language** — the language designed within Memar's design space so that source written in it already expresses the constraints Memar cares about. Its local realization is hosted in this repository under [`modules/`](../../modules/) (see [`docs/modules/` → Where implementations live](../modules/README.md#where-implementations-live)). A document here answers "how does Khayyam realize X?" — neither "what is X?" (the concept documents at [`docs/` root](../README.md)) nor "what does *Memar's* module for X require?" ([`docs/modules/`](../modules/README.md)).
+This directory holds the design and specification documents of the **Khayyam programming language** — the language designed within Memar's design space so that source written in it already expresses the constraints Memar cares about. Its local realization is hosted in this repository under `modules/` (see [`docs/modules/` → Where implementations live](../modules/README.md#where-implementations-live)). A document here answers "how does Khayyam realize X?" — neither "what is X?" (the concept documents at [`docs/` root](../README.md)) nor "what does *Memar's* module for X require?" ([`docs/modules/`](../modules/README.md)).
 
 The language's weight in Memar's development approach is not what gives these documents their own folder. Layering is about what *kind of claim* a document makes, not about a document's importance: these documents make realization claims, and that kind needed its own home the same way the module layer did.
 
@@ -11,6 +11,6 @@ What does **not** belong here:
 - **Module documents** — Memar's language-independent contracts stay in [`docs/modules/`](../modules/README.md). The conformance direction runs one way: Khayyam realizes and consumes protocols; no module's specification lives here.
 
 ## Citation direction
-The layering carries the citation rule the module layer states in its downward direction: citations run **down** — from a document here to the base document whose principle it applies, and to a module document whose contract it consumes. A base document never cites a document here — not as the authority for its own principles, and not even as a linked instance pointer. A general principle the base layer needs is stated at the base layer, and the document here cites it upward; where a base document names Khayyam as the place its principles are first realized, it does so by plain-text name only, never via a hyperlink, and never derives anything from the realization.
+A citation runs down the layers of the written content, never up, as [Documentation → Citation Direction](../documentation.md#citation-direction) states once for every layer.
 
 The documents themselves are not listed here — the folder listing is the index. This file only states the folder's role and criterion, which do not change when documents are added.

@@ -12,5 +12,5 @@ Active — rule added 2026-09-29 from the rules-in-docs audit, whose session fil
 | --- | --- | --- |
 | [orphan-extension.md](./orphan-extension.md) | Base — the rule | Keep in sync |
 | [Modularity in Khayyam → Inclusion Is Not Module Definition](../../../../docs/khayyam/modularity.md#inclusion-is-not-module-definition) | Depends_on — local-directory extension syntax | Link only |
-| [Inheritance in Khayyam → Linter Rules](../../../../docs/khayyam/inheritance.md#what-the-linter-may-add) | Depends_on — linter-rules pointer | Link only |
+| [Khayyam → Separation of Syntax and Governance](../../../../docs/khayyam/khayyam.md#separation-of-syntax-and-governance-a-principle) | Depends_on — the language-level separation of syntax from governance; the former linter-rules pointer section was removed on 2026-10-12 | Link only |
 | [linter.handoff.md](../../../../docs/modules/computer/linter.handoff.md) | Reference — boundary configuration | Keep in sync |

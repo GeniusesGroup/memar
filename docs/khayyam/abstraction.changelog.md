@@ -200,12 +200,12 @@ Alternatives: (a) keep the identical-receiver wording and change examples to use
 - Time: 2026-09-29T16:00:00Z
 - Type: Changed
 - Propagates to:
-  - [abstraction scaffolding](../../bundles/khayyam/rules/abstraction-scaffolding/abstraction-scaffolding.md): Done
+  - abstraction scaffolding (`bundles/khayyam/rules/abstraction-scaffolding/abstraction-scaffolding.md`): Done
 - Contributors:
   - Auto (model not recorded) via [Cursor](../../CONTRIBUTORS.md#cursor) - applied
 
 #### What changed
-- Tooling-support and DX scaffolding bullets replaced with links to [abstraction scaffolding](../../bundles/khayyam/rules/abstraction-scaffolding/abstraction-scaffolding.md).
+- Tooling-support and DX scaffolding bullets replaced with links to abstraction scaffolding (`bundles/khayyam/rules/abstraction-scaffolding/abstraction-scaffolding.md`).
 
 ---
 
@@ -332,3 +332,18 @@ Alternatives: (a) keep the identical-receiver wording and change examples to use
 - This changelog's 2026-10-10T05:17:06Z entry repeats the `type.md:185` citation, "twice", and `modeling.md:401`: left, being history; this entry corrects it.
 - Front-matter `Status: Proposed` of `abstraction.md`, which the 2026-10-05 entry left to a reviewing session: not promoted, the owner's call while the handoff's *Do declared Types and structural satisfaction both stand?* is open.
 - Line numbers in the research record drift as other sessions edit `type.md` and `modeling.md`; they were correct on 2026-10-12.
+
+---
+
+### Tooling material leaves for the abstraction-scaffolding rule
+- Time: 2026-10-12T11:13:47Z
+- Type: Changed
+- Propagates to:
+  - Abstraction Scaffolding, a rule of this repository's Khayyam toolchain (bundles/khayyam/rules/abstraction-scaffolding): Done - the discovery-cost paragraph and the intent-declaration check now stand in its Why it exists.
+- Contributors:
+  - [Claude](../../CONTRIBUTORS.md#claude) (Opus-5.5) — applied
+
+#### What changed
+- Deliberate Satisfaction Is Composed, Not Declared: "so tooling — see [abstraction scaffolding] — checks a deliberate declaration the way it checks any other satisfier" became "so a deliberate declaration is judged the way any other satisfier is"; what tooling checks moved to the rule (on the owner's request that docs/ carry no implementation and no link into bundles/ (citation runs down the layers)).
+- Removed: "Delegation boilerplate reduction and abstraction-satisfaction assists for this repository are organizational rules in [abstraction scaffolding]." The rule states it.
+- Abstraction Validation and DX Scaffolding: "Because the language syntax avoids explicit implementation keywords, discovering which capsules satisfy a given abstraction requires a tool-assisted graph traversal rather than a simple text search for `impl AbstractionName`. That is a tooling burden, not a language burden, but it is a real cost in ecosystem maturity — a new Khayyam project will have less mature tooling than a new Rust project where `impl` blocks are trivially searchable. What the linter may generate or verify is stated in [abstraction scaffolding]." moved whole to the rule; the section keeps the language fact that no one place in source names an abstraction's satisfiers, and that finding them is tooling's work.

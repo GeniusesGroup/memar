@@ -144,12 +144,12 @@
 - Time: 2026-09-29T16:00:00Z
 - Type: Changed
 - Propagates to:
-  - [orphan extension](../../bundles/khayyam/rules/orphan-extension/orphan-extension.md): Done
+  - orphan extension (`bundles/khayyam/rules/orphan-extension/orphan-extension.md`): Done
 - Contributors:
   - Auto (model not recorded) via [Cursor](../../CONTRIBUTORS.md#cursor) - applied
 
 #### What changed
-- [What the Linter May Add → orphan extension](./inheritance.md#what-the-linter-may-add): monkey-patching governance text replaced with a link to [orphan extension](../../bundles/khayyam/rules/orphan-extension/orphan-extension.md).
+- What the Linter May Add → orphan extension (`docs/khayyam/inheritance.md#what-the-linter-may-add`, a heading since removed): monkey-patching governance text replaced with a link to orphan extension (`bundles/khayyam/rules/orphan-extension/orphan-extension.md`).
 
 ---
 
@@ -157,12 +157,12 @@
 - Time: 2026-09-29T20:30:00Z
 - Type: Changed
 - Propagates to:
-  - [abstraction scaffolding](../../bundles/khayyam/rules/abstraction-scaffolding/abstraction-scaffolding.md): Done
+  - abstraction scaffolding (`bundles/khayyam/rules/abstraction-scaffolding/abstraction-scaffolding.md`): Done
 - Contributors:
   - Auto (model not recorded) via [Cursor](../../CONTRIBUTORS.md#cursor) - applied
 
 #### What changed
-- [What the Linter May Add](./inheritance.md#what-the-linter-may-add): smart remediation and abstraction-scaffolding bullets replaced with a link to [abstraction scaffolding](../../bundles/khayyam/rules/abstraction-scaffolding/abstraction-scaffolding.md).
+- What the Linter May Add (`docs/khayyam/inheritance.md#what-the-linter-may-add`, a heading since removed): smart remediation and abstraction-scaffolding bullets replaced with a link to abstraction scaffolding (`bundles/khayyam/rules/abstraction-scaffolding/abstraction-scaffolding.md`).
 
 ---
 
@@ -170,8 +170,8 @@
 - Time: 2026-10-03T11:16:28Z
 - Type: Changed
 - Propagates to:
-  - [anti-lazy-inheritance rule](../../bundles/khayyam/rules/README.md): Pending - the linter check removed here is a governance rule of this repository; [rule.handoff.md](../rule.handoff.md) already records it as destined for that folder, and no agent owns that folder this session.
-  - [abstraction scaffolding](../../bundles/khayyam/rules/abstraction-scaffolding/abstraction-scaffolding.md): Done - the remediation this document used to promise ("suggests the exact explicit delegation needed") is stated there. [see abstraction-scaffolding.md:23]
+  - anti-lazy-inheritance rule (`bundles/khayyam/rules/README.md`): Pending - the linter check removed here is a governance rule of this repository; [rule.handoff.md](../rule.handoff.md) already records it as destined for that folder, and no agent owns that folder this session.
+  - abstraction scaffolding (`bundles/khayyam/rules/abstraction-scaffolding/abstraction-scaffolding.md`): Done - the remediation this document used to promise ("suggests the exact explicit delegation needed") is stated there. [see abstraction-scaffolding.md:23]
   - [Computer — Compiler](../modules/computer/compiler.md): Done - the optimization material removed from the document's last section is stated there as rationale, not obligation. [see compiler.md:54]
   - [rule.handoff.md](../rule.handoff.md): Pending - the table quotes this document's delegation rule as "the developer must explicitly define a method on the host capsule and transparently delegate"; that wording changed.
 - Contributors:
@@ -182,7 +182,7 @@
 - [Motivation](./inheritance.md#motivation): the two compiler-analysis arguments were removed — "**Hidden Behavior Paths:** Behavior transfer creates methods in a capsule that are not defined in that capsule's source code. The compiler must traverse external sources to determine the full method set, complicating escape analysis and other static analyses." and "**Linear Escape Analysis:** Khayyam's compiler relies on perfectly linear escape analysis for memory optimization. Methods acquired from external sources that access parent state create non-local references that break this linearity." They were replaced by the model's own requirement: a method a capsule has but did not define is a method a reader of that capsule's source cannot account for.
 - [No Method Promotion](./inheritance.md#no-method-promotion): the enforcement sentences became the model's meaning — "The compiler treats any attempt to call an embedded capsule's method directly on the host as an 'Undefined Method' error. The linter detects when a developer appears to be attempting to use method promotion and suggests the exact explicit delegation needed." became "Calling an embedded capsule's method directly on the host names a method the host does not define, and no declaration provides it."
 - [Template Method and Other OO Patterns](./inheritance.md#template-method-and-other-oo-patterns): the three-step recipe was replaced by what the model has instead — "The alternative is to use **abstractions** and **explicit delegation**. Instead of a base class with a template method: 1. Define an abstraction that declares the customizable steps. 2. Have the 'template' capsule accept implementations of those steps via its fields. 3. The 'template' capsule explicitly calls the provided implementations." The topic now says no counterpart exists, that composition plus declared methods is the substitute, and that the substitute is more verbose and must be learned.
-- [Compiler Rules](./inheritance.md#rules) (retitled from Compiler Rules, and [Linter Rules](./inheritance.md#what-the-linter-may-add) retitled to What the Linter May Add): the enforcement sentences were removed from the rules — "The compiler treats the inner capsule's methods as private to that capsule, even when accessed from the containing capsule's methods", "The compiler verifies that the delegation call exists in the host capsule's source code", "The compiler validates this during assignment or parameter passing where an abstraction type is expected. Missing or mismatched methods result in a strict compile-time error", and "This is enforced at the parser level." The rules remain as statements of what a program may contain. The linter section's check was removed — "**Anti-Lazy Inheritance Check:** The linter blocks any patterns or workarounds that attempt to create implicit method promotion hooks. If a developer writes code that appears to be attempting to use behavior transfer (e.g. embedding a capsule and then calling its methods as if they were native), the linter flags this." — and the section now says only that nothing in the document is a linter rule and points at the catalog.
+- [Compiler Rules](./inheritance.md#rules) (retitled from Compiler Rules, and Linter Rules (`docs/khayyam/inheritance.md#what-the-linter-may-add`, a heading since removed) retitled to What the Linter May Add): the enforcement sentences were removed from the rules — "The compiler treats the inner capsule's methods as private to that capsule, even when accessed from the containing capsule's methods", "The compiler verifies that the delegation call exists in the host capsule's source code", "The compiler validates this during assignment or parameter passing where an abstraction type is expected. Missing or mismatched methods result in a strict compile-time error", and "This is enforced at the parser level." The rules remain as statements of what a program may contain. The linter section's check was removed — "**Anti-Lazy Inheritance Check:** The linter blocks any patterns or workarounds that attempt to create implicit method promotion hooks. If a developer writes code that appears to be attempting to use behavior transfer (e.g. embedding a capsule and then calling its methods as if they were native), the linter flags this." — and the section now says only that nothing in the document is a linter rule and points at the catalog.
 - [Interaction with Smart Compilation](./inheritance.md): the whole section was removed — "Khayyam's compiler decides whether to handle abstractions at compile time (monomorphization, zero-cost abstraction when exact capsules are known) or at runtime (dynamic dispatch when underlying capsules are hidden). This decision is based on the dependency graph, not on any behavior transfer mechanism. Since there is no behavior transfer between capsules, the compiler never needs to resolve virtual dispatch tables through chains. [...] This simplification enables more aggressive compiler optimizations, including: **Perfectly linear escape analysis** [...] **Devirtualization** [...] **Inlining**". One sentence remains in the rules area: a method a capsule answers to is either defined in it or reached through a method it declares itself, and how each call is carried out is a compiler's business.
 
 ---
@@ -198,3 +198,14 @@
 - In the 2026-10-03 entry, the "Propagates to" lines for abstraction scaffolding and Compiler said "Done" while the text said the material was "not yet stated" or had "no home yet"; both targets do state it (abstraction-scaffolding.md:23, compiler.md:54), so the text now says so.
 - [Template Method and Other OO Patterns](./inheritance.md#template-method-and-other-oo-patterns): the claim that no construct "lets one type supply steps another assembles" contradicted the substitute stated in the next paragraph (a capsule composes supplied abstractions as fields); that clause was removed.
 - Checked and kept: the removal of the compiler and linter prescriptions and the Interaction with Smart Compilation section (each quoted in the 2026-10-03 entry, with the material now in Compiler → What a Language's Discipline Gives and Costs and the rules catalog); the retitling to Rules and What the Linter May Add (the 2026-09-29 entries' anchors were repointed accordingly); the `modules/khayyam` to `bundles/khayyam` repoints.
+
+---
+
+### What the Linter May Add section removed
+- Time: 2026-10-12T11:13:47Z
+- Type: Changed
+- Contributors:
+  - [Claude](../../CONTRIBUTORS.md#claude) (Opus-5.5) — applied
+
+#### What changed
+- Removed the section "What the Linter May Add": "Nothing in this document is a linter rule. What a check may report, and what remediation it may offer, is stated in the rules catalog: [abstraction scaffolding] for scaffolding and remediation, and [orphan extension] for cross-directory method attachment." Both rules of this repository's Khayyam toolchain state their content and now cite this document's Rules section (on the owner's request that docs/ carry no implementation and no link into bundles/ (citation runs down the layers)). Older entries here linking `#what-the-linter-may-add` are left as written.

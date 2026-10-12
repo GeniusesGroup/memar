@@ -161,7 +161,7 @@ tp IsRetryable mt (self ErrServiceNotFound) (result Bool) (err Error) {
 
 The intent abstraction is then satisfied by the ordinary structural check — wherever an abstraction type is required, the same signature comparison decides, and a missing or unmatched method is the same failure it is for any other abstraction. Declaring the intent grants no exemption from satisfaction and no guarantee beyond it; what it adds is the undertaking itself, written in the capsule's own source beside the delegations that discharge it, where tooling and readers find it.
 
-For the same reason no verification mechanism of its own is called for. The delegations are ordinary source and the intent abstraction is judged by the ordinary rule, so tooling — see [abstraction scaffolding](../../bundles/khayyam/rules/abstraction-scaffolding/abstraction-scaffolding.md) — checks a deliberate declaration the way it checks any other satisfier.
+For the same reason no verification mechanism of its own is called for. The delegations are ordinary source and the intent abstraction is judged by the ordinary rule, so a deliberate declaration is judged the way any other satisfier is.
 
 ### Rejection of Default Implementations
 Khayyam explicitly **rejects** default method implementations (also known as "default trait methods" in Rust or "default interface methods" in Java 8+). An abstraction (`ab`) is a pure behavioral declaration with no executable logic of its own.
@@ -184,10 +184,8 @@ tp Validate mt (self UserRecord) (result Bool) (err Error) {
 }
 ```
 
-Delegation boilerplate reduction and abstraction-satisfaction assists for this repository are organizational rules in [abstraction scaffolding](../../bundles/khayyam/rules/abstraction-scaffolding/abstraction-scaffolding.md).
-
 ### Abstraction Validation and DX Scaffolding
-Because the language syntax avoids explicit implementation keywords, discovering which capsules satisfy a given abstraction requires a tool-assisted graph traversal rather than a simple text search for `impl AbstractionName`. That is a tooling burden, not a language burden, but it is a real cost in ecosystem maturity — a new Khayyam project will have less mature tooling than a new Rust project where `impl` blocks are trivially searchable. What the linter may generate or verify is stated in [abstraction scaffolding](../../bundles/khayyam/rules/abstraction-scaffolding/abstraction-scaffolding.md).
+The grammar has no implementation keyword, so which capsules satisfy a given abstraction is not written at any one place in source; finding them, and generating or verifying delegation, is tooling's work, not the language's.
 
 ### Behavior Over Type Identity
 This may be the most important principle to have emerged from Khayyam's polymorphism discussions generally, not only from this document's own scope. Traditional generic systems frequently focus on type identity — `T`, `K`, `V` — as the central mechanism for abstraction. Khayyam instead emphasizes required behavior: the essential question is "what capabilities are required?" rather than "what concrete type is this?" This is the same question [*What Is an Abstraction in Khayyam?*](#what-is-an-abstraction-in-khayyam), above, already answers for abstraction satisfaction specifically; stated here as the more general principle behind it, since it recurred across discussions of generics, parametric polymorphism, containers, algorithms, and infrastructure components alike, not only abstraction satisfaction. A possible formulation: algorithms should declare the behaviors they require, not the concrete type identities they happen to operate on.

@@ -6,7 +6,7 @@ ID: "497408"
 ---
 
 # Khayyam Rule — Orphan Extension
-Khayyam's rules live one rule per folder under [`bundles/khayyam/rules/`](../README.md), and this is the rule for attaching methods to a type outside the type's owning directory. It is a governance rule of this repository: [Modularity in Khayyam → Inclusion Is Not Module Definition](../../../../docs/khayyam/modularity.md#inclusion-is-not-module-definition) states the syntax; [Inheritance in Khayyam → Linter Rules](../../../../docs/khayyam/inheritance.md#linter-rules) records the language-level separation; this rule states how this repository's linter treats cross-directory extension.
+Khayyam's rules live one rule per folder under [`bundles/khayyam/rules/`](../README.md), and this is the rule for attaching methods to a type outside the type's owning directory. It is a governance rule of this repository: [Modularity in Khayyam → Inclusion Is Not Module Definition](../../../../docs/khayyam/modularity.md#inclusion-is-not-module-definition) states the syntax; [Khayyam → Separation of Syntax and Governance](../../../../docs/khayyam/khayyam.md#separation-of-syntax-and-governance-a-principle) records the language-level separation; this rule states how this repository's linter treats cross-directory extension.
 
 ## The rule
 Khayyam relies on the file system for modularity (no `package` keyword). Syntactically, a file may import a type and attach new methods to it in another file.

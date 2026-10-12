@@ -103,14 +103,14 @@ Rules that already have folders under `modules/khayyam/rules/` are excluded. **T
 | 1 | **`Field_X` field abstraction** — state exposed through accessor methods; declared as `ab` | `modules/net/uri/protocol/scheme.kh`; `modules/time/protocol/time.kh`; `modules/computer/capsule/protocol/field.kh`; 200+ `Field_` in `modules/` | Partially (prefix + kind `ab`) |
 | 2 | **Field accessor named for return value**, not doubled field name | [receiver-method-names.md](../receiver-method-names/receiver-method-names.md); `scheme.kh`; `targets/go/abstraction_bridge.py` | Partially (return type) |
 | 3 | **`Field_` then qualifier** — `Field_URI_Path`, not `URI_Field_Path` | [qualified-names.md](../qualified-names/qualified-names.md) §Field abstractions; `abstraction_bridge.py` | Yes (spelling) |
-| 4 | **Method names as verb phrases** (governance; sources still have bare nouns) | [method-verb-phrases.md](./method-verb-phrases.md); `encapsulation.md#naming-conventions` (non-binding) | Partial (POS / heuristics) |
-| 5 | **PascalCase** for public methods, abstractions, capsules | `encapsulation.md#naming-conventions`; across the sources | Yes (casing) |
+| 4 | **Method names as verb phrases** (governance; sources still have bare nouns) | [method-verb-phrases.md](./method-verb-phrases.md); `encapsulation.md#naming-conventions` (non-binding; a heading since removed) | Partial (POS / heuristics) |
+| 5 | **PascalCase** for public methods, abstractions, capsules | `encapsulation.md#naming-conventions` (a heading since removed); across the sources | Yes (casing) |
 | 6 | **`protocol/` subtree** for contract declarations | `modules/*/protocol/*.kh` layout | Yes (path) |
-| 7 | **Abstraction composition** — `tp X ab { Member1 Member2 }` | `modules/time/protocol/time.kh`; `modules/computer/datatype/protocol/data-type.kh` | Partially |
+| 7 | **Abstraction composition** — `tp X ab { Member1 Member2 }` | `modules/time/protocol/time.kh`; `modules/computer/type/protocol/type.kh` | Partially |
 | 8 | **`self` as receiver parameter name** | `docs/khayyam/method.md#method-structure` | Yes |
 | 9 | **Module qualifier only on collision** | [qualified-names.md](../qualified-names/qualified-names.md) | Yes (uniqueness in the sources) |
 | 10 | **Bare method name when reached via receiver** | [receiver-method-names.md](../receiver-method-names/receiver-method-names.md) | Partially |
-| 11 | **Result parameter: first letter of type** | [result-parameter-names.md](../../../../modules/go-port/rules/result-parameter-names/result-parameter-names.md) | Yes (tidy) |
+| 11 | **Result parameter: first letter of type** | [result-parameter-names.md](../../targets/go/rules/result-parameter-names/result-parameter-names.md) | Yes (tidy) |
 | 12 | **Collision = architecture error** (no import alias) | `docs/khayyam/khayyam.md`; [qualified-names.md](../qualified-names/qualified-names.md) | Yes (duplicate plain names) |
 
 Items 1–3 are now also stated in [observer-mutator.md](../../../../modules/computer/adt/rules/observer-mutator/observer-mutator.md); item 4 in [method-verb-phrases.md](./method-verb-phrases.md).
@@ -125,7 +125,7 @@ The receiver (`Field_Scheme`, `Field_Time`) already names **what** is held; the 
 | **`Is` / `Has` predicates** | `IsEmpty`, `HasPort` | **Under examination** (Open Question 4) | Alsuhaibani ICSE 2021 comments; Høst phrase-book predicates. |
 | **Bare noun** | `Scheme`, `Time` | **Rejected** | Does not state action; linguistic antipattern risk. |
 | **Generic `Read`** | `Read` on every `Field_X` | **Rejected** (owner 2026-09-29) | When one abstraction composes several field abstractions, each would expose `Read` and call sites lose which field is queried; `Read` is a **homonym** of stream I/O read (Deißenböck & Pizka 2005, bijective naming). |
-| **`Get…` / `Set…` prefixes (policy)** | `GetTimeout`, `SetTimeout` | **Open** | Neither required nor forbidden by [method-verb-phrases.md](./method-verb-phrases.md). Wording in [Encapsulation → Naming Conventions](../../../../docs/khayyam/encapsulation.md#naming-conventions) is non-binding; owner states he never decided a ban — see [handoff](./method-verb-phrases.handoff.md). |
+| **`Get…` / `Set…` prefixes (policy)** | `GetTimeout`, `SetTimeout` | **Open** | Neither required nor forbidden by [method-verb-phrases.md](./method-verb-phrases.md). Wording in Encapsulation → Naming Conventions (`docs/khayyam/encapsulation.md#naming-conventions`, a heading since removed) is non-binding; owner states he never decided a ban — see [handoff](./method-verb-phrases.handoff.md). |
 
 ## Open Questions
 Questions 3–4 graduate here while this research is Active; on completion they remain in [method-verb-phrases.handoff.md](./method-verb-phrases.handoff.md) until ruled.

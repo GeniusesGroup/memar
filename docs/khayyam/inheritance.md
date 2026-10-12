@@ -116,5 +116,3 @@ An abstraction (`ab`) cannot contain method bodies, state, or default implementa
 
 Since there is no behavior transfer between capsules, a method a capsule answers to is either defined in it or reached through a method it declares itself. How each of those calls is carried out is a compiler's business ([Compiler](../modules/computer/compiler.md)).
 
-### What the Linter May Add
-Nothing in this document is a linter rule. What a check may report, and what remediation it may offer, is stated in the rules catalog: [abstraction scaffolding](../../bundles/khayyam/rules/abstraction-scaffolding/abstraction-scaffolding.md) for scaffolding and remediation, and [orphan extension](../../bundles/khayyam/rules/orphan-extension/orphan-extension.md) for cross-directory method attachment.

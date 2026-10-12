@@ -225,7 +225,7 @@
 - Type: Changed
 - Propagates to:
   - [Computer — Runtime → Concurrency is hosted, not defined, here](../modules/computer/runtime.md#concurrency-is-hosted-not-defined-here): Pending - the green-thread scheduling account removed here is the runtime's and Concurrency protocol's to state; this document now points at both.
-  - [asynchrony rule](../../bundles/khayyam/rules/README.md): Pending - the linter verification of an asynchrony tag, and the reconstruction of blocking-call guarantees by linter rules, are governance rules; the catalog does not carry them.
+  - asynchrony rule (`bundles/khayyam/rules/README.md`): Pending - the linter verification of an asynchrony tag, and the reconstruction of blocking-call guarantees by linter rules, are governance rules; the catalog does not carry them.
 - Contributors:
   - [Space Bunny Alpha](../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../CONTRIBUTORS.md#opencode)) — applied
 
@@ -321,3 +321,16 @@
 
 #### Considered and not done
 - **Reordering the entry of 2026-10-03T00:00:00Z, which follows one of 2026-10-03T11:16:28Z (not done)**: the order is an existing quirk of recorded history and no information is lost by it.
+
+---
+
+### The tooling clause leaves for the abstraction-scaffolding rule
+- Time: 2026-10-12T11:13:47Z
+- Type: Changed
+- Propagates to:
+  - Abstraction Scaffolding, a rule of this repository's Khayyam toolchain: Done - it now states that tooling finds a deliberate declaration by the means it finds any satisfier.
+- Contributors:
+  - [Claude](../../CONTRIBUTORS.md#claude) (Opus-5.5) — applied
+
+#### What changed
+- "so tooling — [abstraction scaffolding] — finds a deliberate declaration by exactly the means it finds any satisfier" became "so a deliberate declaration is found by exactly the means any satisfier is found" (on the owner's request that docs/ carry no implementation and no link into bundles/ (citation runs down the layers)).

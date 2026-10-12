@@ -245,12 +245,12 @@ Completed the migration an earlier pass had started (this document already follo
 - Type: Changed
 - Cited:
   - Commit `40c13e36` (2026-07-18), `RFCs/khayyam-encapsulation.md` - Evidence: introduced the Get/Set prefix discouragement under the owner's account.
-  - [Method Verb Phrases handoff](../../bundles/khayyam/rules/method-verb-phrases/method-verb-phrases.handoff.md) - Propagates to: open question on whether Get/Set prefixes are discouraged.
+  - Method Verb Phrases handoff (`bundles/khayyam/rules/method-verb-phrases/method-verb-phrases.handoff.md`) - Propagates to: open question on whether Get/Set prefixes are discouraged.
 - Contributors:
   - Auto (model not recorded) via [Cursor](../../CONTRIBUTORS.md#cursor) - applied
 
 #### What changed
-- [Naming Conventions](./encapsulation.md#naming-conventions): removed the line discouraging `Get...` / `Set...` prefixes; linked the open question to [Method Verb Phrases handoff](../../bundles/khayyam/rules/method-verb-phrases/method-verb-phrases.handoff.md). Verb-phrase guidance now points at the new [method verb phrases rule](../../bundles/khayyam/rules/method-verb-phrases/method-verb-phrases.md).
+- Naming Conventions (`docs/khayyam/encapsulation.md#naming-conventions`, a heading since removed): removed the line discouraging `Get...` / `Set...` prefixes; linked the open question to Method Verb Phrases handoff (`bundles/khayyam/rules/method-verb-phrases/method-verb-phrases.handoff.md`). Verb-phrase guidance now points at the new method verb phrases rule (`bundles/khayyam/rules/method-verb-phrases/method-verb-phrases.md`).
 
 #### Considered and not done
 - Removing the `GetTimeout` / `SetTimeout` examples in [Capsules and Methods at a Glance](./encapsulation.md#capsules-and-methods-at-a-glance): those illustrate method syntax, not naming policy.
@@ -261,14 +261,14 @@ Completed the migration an earlier pass had started (this document already follo
 - Time: 2026-09-29T16:00:00Z
 - Type: Changed
 - Propagates to:
-  - [identifier naming](../../bundles/khayyam/rules/identifier-naming/identifier-naming.md): Done — capsule, field, and domain naming conventions.
-  - [abstraction naming heuristic](../../bundles/khayyam/rules/abstraction-naming-heuristic/abstraction-naming-heuristic.md): Done — abstraction framing heuristic.
+  - identifier naming (`bundles/khayyam/rules/identifier-naming/identifier-naming.md`): Done — capsule, field, and domain naming conventions.
+  - abstraction naming heuristic (`bundles/khayyam/rules/abstraction-naming-heuristic/abstraction-naming-heuristic.md`): Done — abstraction framing heuristic.
 - Contributors:
   - Auto (model not recorded) via [Cursor](../../CONTRIBUTORS.md#cursor) - applied
 
 #### What changed
-- [Naming Conventions](./encapsulation.md#naming-conventions): capsule, abstraction, and field bullets replaced with links to organizational rules; method-names bullet retained (Get/Set open question unchanged).
-- [Closures as Implicit Capsule Syntax](./encapsulation.md#closures-as-implicit-capsule-syntax): throwaway-capsule naming concern links to [identifier naming](../../bundles/khayyam/rules/identifier-naming/identifier-naming.md).
+- Naming Conventions (`docs/khayyam/encapsulation.md#naming-conventions`, a heading since removed): capsule, abstraction, and field bullets replaced with links to organizational rules; method-names bullet retained (Get/Set open question unchanged).
+- [Closures as Implicit Capsule Syntax](./encapsulation.md#closures-as-implicit-capsule-syntax): throwaway-capsule naming concern links to identifier naming (`bundles/khayyam/rules/identifier-naming/identifier-naming.md`).
 
 ---
 
@@ -277,7 +277,7 @@ Completed the migration an earlier pass had started (this document already follo
 - Type: Changed
 - Propagates to:
   - [Computer — Linter → Assistance writes source, on request](../modules/computer/linter.md#assistance-writes-source-on-request): Reference - named as the home of the accessor-writing policy this document used to state.
-  - [identifier naming](../../bundles/khayyam/rules/identifier-naming/identifier-naming.md): Pending - the method-naming bullet removed here states a rule this repository's catalog owns; the catalog does not yet carry it in this form.
+  - identifier naming (`bundles/khayyam/rules/identifier-naming/identifier-naming.md`): Pending - the method-naming bullet removed here states a rule this repository's catalog owns; the catalog does not yet carry it in this form.
   - [Memory](../modules/memory/memory.md): Pending - where a constant's value is established (inlined at compile time, or obtained from a memory service at run time) is no longer described here.
 - Contributors:
   - [Space Bunny Alpha](../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../CONTRIBUTORS.md#opencode)) — applied
@@ -287,7 +287,7 @@ Completed the migration an earlier pass had started (this document already follo
 - [Closures as Implicit Capsule Syntax](./encapsulation.md#closures-as-implicit-capsule-syntax): the optimization claim was removed with its parenthetical correction — "**Reduced Optimization Surface:** capsule-centric code, where state is always a named, explicit type, is significantly easier for the compiler to analyze and optimize than ad-hoc captured scopes. Both models are theoretically equivalent in the worst case, but capsule-based state is far more consistently optimizable in practice, because the compiler always has a concrete, named type to reason about rather than an implicit closure environment whose shape varies by call site. (An earlier, now-corrected version of this rationale argued closures cause additional heap allocation/escape compared to capsules — this is not accurate...)". What remains of the topic states what the grammar buys: every state dependency explicit, testable, and strictly encapsulated. The rule-pointer sentence about a throwaway capsule being an identifier-naming concern went with it.
 - [Primitive Capsule Specification](./encapsulation.md#primitive-capsule-specification): the inlining claim became a statement about the interaction model — "Whether a given primitive capsule's methods happen to be trivial enough for the compiler to inline is a backend optimization decision, orthogonal to the interaction model" became "How the work inside such a method is carried out is orthogonal to the interaction model: the operation still goes through a method either way."
 - [Constants as Capsule-Returned Values](./encapsulation.md#constants-as-capsule-returned-values): the two flavors are now named by what they are rather than by when they are computed. "**Static constants**: compile-time declared and initialized, usually inlined directly at compile time. Conceptually equivalent to 'a function that runs entirely at compile time and returns the value living in that function's body.'" became "**Values fixed before execution begins**: the value is determined by the program itself and holds for every run"; "**Dynamically-valued constants**: compile-time declared, but runtime-initialized. These require a runtime memory-service call to obtain their value since they cannot be inlined." became "**Values determined during execution**: the value is worked out while the program runs, so obtaining it is an ordinary call on a capsule."
-- [Naming Conventions](./encapsulation.md#naming-conventions): the method-naming bullet was removed — "**Method names**: PascalCase for public methods, matching the capsule's domain language. A method name should be a verb phrase that states what the method does. Whether `Get...` / `Set...` prefixes belong in this repository is an open question — see [Method Verb Phrases handoff](../../bundles/khayyam/rules/method-verb-phrases/method-verb-phrases.handoff.md)." The section's remaining sentence already pointed at the catalog for naming conventions.
+- Naming Conventions (`docs/khayyam/encapsulation.md#naming-conventions`, a heading since removed): the method-naming bullet was removed — "**Method names**: PascalCase for public methods, matching the capsule's domain language. A method name should be a verb phrase that states what the method does. Whether `Get...` / `Set...` prefixes belong in this repository is an open question — see Method Verb Phrases handoff (`bundles/khayyam/rules/method-verb-phrases/method-verb-phrases.handoff.md`)." The section's remaining sentence already pointed at the catalog for naming conventions.
 
 ---
 
@@ -334,3 +334,14 @@ Completed the migration an earlier pass had started (this document already follo
 - Restored the handoff entry "Memory aliasing through borrowed, externally-mutable buffers" in [the handoff](./encapsulation.handoff.md). The removal rested on the claim that Sovereign Encapsulation answers it, but the `unsafe`-style sentence it cited concerns representation exposure (unchanged since HEAD), and the section's other paragraph still defers raw memory aliasing to future memory-management documents. A deferral that stands is open work. The 2026-10-04 entry was corrected to say so.
 - [Closures as Implicit Capsule Syntax](./encapsulation.md#closures-as-implicit-capsule-syntax): "the whole of what this rule buys" became "what this rule buys", since the preceding sentence names several benefits.
 - Checked and kept: the `protocols/` to `modules/` and `modules/khayyam` to `bundles/khayyam` link repoints (`memar content check` reports no problem); the removal of the accessor-generation policy and the `get`/`set` handoff entry (the 2026-10-03 and 2026-10-04 entries record it, and Linter → Assistance writes source, on request owns the policy); the removal of the optimization claim and its correction note (quoted in full in the 2026-10-03 entry; Compiler states it as rationale); the rewording of the two constant flavors and the inlining sentence (quoted in the 2026-10-03 entry); the removed method-naming bullet (identifier-naming already states PascalCase for method names; the `Get`/`Set` question stays in the method-verb-phrases handoff).
+
+---
+
+### Naming Conventions section removed
+- Time: 2026-10-12T11:13:47Z
+- Type: Changed
+- Contributors:
+  - [Claude](../../CONTRIBUTORS.md#claude) (Opus-5.5) — applied
+
+#### What changed
+- Removed the section "Naming Conventions": "Capsule, abstraction, and field naming conventions for this repository are organizational rules in [identifier naming] and [abstraction naming heuristic]." Both rules of this repository's Khayyam toolchain state their conventions; the section held only links into bundles/ (on the owner's request that docs/ carry no implementation and no link into bundles/ (citation runs down the layers)). Older entries here linking `#naming-conventions` are left as written.

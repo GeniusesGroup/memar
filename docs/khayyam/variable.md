@@ -173,12 +173,9 @@ The file-as-module model means that a file with many exported variables can beco
 ### Self-Documenting Code and No Magic Numbers
 In traditional languages, developers often write raw formulas like `if a == b + 1` and rely on comments to explain what `1` means. Khayyam forces developers to eliminate magic numbers by requiring that every value be wrapped in a named capsule with a descriptive name. By declaring an explicit variable for `1` with a descriptive name before using it in a method call, the code becomes inherently self-documenting at the declaration site, eliminating the need for redundant comments.
 
-Because variables require explicit types, the source code preserves the concepts introduced during modeling. This is the variable-level manifestation of Khayyam's broader self-documenting architecture principle (stated in [Khayyam → Self-Documenting Code and Naming](./khayyam.md#self-documenting-code-and-naming)); domain-meaningful variable naming for this repository is an [identifier naming](../../bundles/khayyam/rules/identifier-naming/identifier-naming.md) convention.
+Because variables require explicit types, the source code preserves the concepts introduced during modeling. This is the variable-level manifestation of Khayyam's broader self-documenting architecture principle (stated in [Khayyam → Self-Documenting Code and Naming](./khayyam.md#self-documenting-code-and-naming)).
 
 The boundary between "enforced clarity" and "forced verbosity" is not always clear. A capsule called `RetryCounter` adds clarity; a capsule called `LoopIndex` may not. The language does not currently provide a mechanism for teams to adjust this boundary — it is enforced uniformly by the grammar.
-
-#### Naming Conventions
-Variable naming conventions for this repository are stated in [identifier naming](../../bundles/khayyam/rules/identifier-naming/identifier-naming.md).
 
 ### Constants as Capsule-Returned Values
 The constant model in Khayyam is fully specified in [Encapsulation in Khayyam](./encapsulation.md), section "Constants as Capsule-Returned Values". In summary: a constant is a variable returned by a capsule method that cannot change after first initialization — an organizational and architectural rule enforced by the capsule's own design (not exposing a mutating method), not by a dedicated compiler keyword. From the variable's perspective, a constant is declared and initialized like any other variable; the immutability guarantee is inherited from the capsule's behavioral contract.

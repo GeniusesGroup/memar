@@ -199,12 +199,12 @@
 - Time: 2026-09-29T16:00:00Z
 - Type: Changed
 - Propagates to:
-  - [identifier naming](../../bundles/khayyam/rules/identifier-naming/identifier-naming.md): Done
+  - identifier naming (`bundles/khayyam/rules/identifier-naming/identifier-naming.md`): Done
 - Contributors:
   - Auto (model not recorded) via [Cursor](../../CONTRIBUTORS.md#cursor) - applied
 
 #### What changed
-- [Naming Conventions](./variable.md#naming-conventions) and the domain-meaning sentence under [Self-Documenting Code and No Magic Numbers](./variable.md#self-documenting-code-and-no-magic-numbers) replaced with links to [identifier naming](../../bundles/khayyam/rules/identifier-naming/identifier-naming.md).
+- Naming Conventions (`docs/khayyam/variable.md#naming-conventions`, a heading since removed) and the domain-meaning sentence under [Self-Documenting Code and No Magic Numbers](./variable.md#self-documenting-code-and-no-magic-numbers) replaced with links to identifier naming (`bundles/khayyam/rules/identifier-naming/identifier-naming.md`).
 
 ---
 
@@ -264,3 +264,15 @@
 - Reviewed the uncommitted change to `variable.md`, `variable.handoff.md` and this changelog. Link repoints resolve (`memar content check` reports no problem). The removals from `variable.md` (compile-time evaluation claim, `MathEval` recommendation, file-size encouragement, "compiler distinguishes the three") are each recorded in the 2026-10-03 entries; the compiler quotations in the 2026-10-04 entry match `docs/modules/computer/compiler.md`, so removing the file-level initialization question from the handoff holds.
 - Fix: the handoff entry "Should teams be able to adjust the clarity/verbosity boundary?" was restored. `variable.md` says only that no mechanism exists today; it records no decision and no reason, so the question was not settled. The 2026-10-04 entry was amended to say so.
 - Not changed, reported: the entry "The compile-time claim survives one paragraph below…" carries the time 2026-10-03T00:00:00Z but follows an entry timed 2026-10-03T11:16:28Z; its real time is not recorded, so it was not altered.
+
+---
+
+### Repository naming pointers leave the language document
+- Time: 2026-10-12T11:13:47Z
+- Type: Changed
+- Contributors:
+  - [Claude](../../CONTRIBUTORS.md#claude) (Opus-5.5) — applied
+
+#### What changed
+- Self-Documenting Code and No Magic Numbers: removed "; domain-meaningful variable naming for this repository is an [identifier naming] convention".
+- Removed the subsection "Naming Conventions": "Variable naming conventions for this repository are stated in [identifier naming]." The identifier-naming rule of this repository's toolchain states it (on the owner's request that docs/ carry no implementation and no link into bundles/ (citation runs down the layers)). Older links to `#naming-conventions` are left as written.

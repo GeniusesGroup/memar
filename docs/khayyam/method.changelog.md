@@ -169,14 +169,14 @@
 - Time: 2026-09-29T16:00:00Z
 - Type: Changed
 - Propagates to:
-  - [receiver parameter naming](../../bundles/khayyam/rules/receiver-parameter-naming/receiver-parameter-naming.md): Done
-  - [type as argument](../../bundles/khayyam/rules/type-as-argument/type-as-argument.md): Done
+  - receiver parameter naming (`bundles/khayyam/rules/receiver-parameter-naming/receiver-parameter-naming.md`): Done
+  - type as argument (`bundles/khayyam/rules/type-as-argument/type-as-argument.md`): Done
 - Contributors:
   - Auto (model not recorded) via [Cursor](../../CONTRIBUTORS.md#cursor) - applied
 
 #### What changed
-- [Method Structure](./method.md#method-structure): `self` suggestion links to [receiver parameter naming](../../bundles/khayyam/rules/receiver-parameter-naming/receiver-parameter-naming.md).
-- [Type-level arguments for `sc` and `mt`](./method.md#type-level-arguments-for-sc-and-mt): governance smells link to [type as argument](../../bundles/khayyam/rules/type-as-argument/type-as-argument.md).
+- [Method Structure](./method.md#method-structure): `self` suggestion links to receiver parameter naming (`bundles/khayyam/rules/receiver-parameter-naming/receiver-parameter-naming.md`).
+- [Type-level arguments for `sc` and `mt`](./method.md#type-level-arguments-for-sc-and-mt): governance smells link to type as argument (`bundles/khayyam/rules/type-as-argument/type-as-argument.md`).
 
 ---
 
@@ -245,3 +245,15 @@
 - [The Open Question: A Variable That Is Both](./method.md#the-open-question-a-variable-that-is-both): the rewording had turned "whichever the author judges primary" into "whichever of the two its role in the call is", which is circular for a variable with both roles; the original is restored. "the signal it usually is" pointed at a signal the section no longer states; it now reads "correct modeling".
 - The 2026-10-02 entry named paths under `modules/khayyam/`, which does not exist; they now name `bundles/khayyam/`.
 - Not changed: the heading "Composition Depth as a Decomposition Signal" no longer matches its body, which the 2026-10-03 entry records under Considered and not done; renaming it would break links from other documents.
+
+---
+
+### Repository naming and argument-passing rules leave the language document
+- Time: 2026-10-12T11:13:47Z
+- Type: Changed
+- Contributors:
+  - [Claude](../../CONTRIBUTORS.md#claude) (Opus-5.5) — applied
+
+#### What changed
+- Owner parameter naming: "this repository suggests `self` ([receiver parameter naming])" became "which one a project uses is that project's own rule"; the receiver-parameter-naming rule of this repository's toolchain states the suggestion (on the owner's request that docs/ carry no implementation and no link into bundles/ (citation runs down the layers)).
+- Type-level arguments for `sc` and `mt`: removed "Bare-type and closure-style `mt` passes this repository discourages are stated in [type as argument]"; that rule states it.

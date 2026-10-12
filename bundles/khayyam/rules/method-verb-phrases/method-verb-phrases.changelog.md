@@ -31,3 +31,14 @@
 #### What changed
 - The rule, handoff and [Research 001](./method-verb-phrases.research.001.md) no longer call domain verbs the preferred direction; they are effective in many places, provided the verb carries no other meaning in the same domain and does not collide with a sibling field's verb in one composing owner.
 - `Resolve` removed as a good example; `Is`/`Has` for booleans marked under examination, matching the open question.
+
+---
+
+### Encapsulation links repointed after its naming section left
+- Time: 2026-10-12T11:13:47Z
+- Type: Fixed
+- Contributors:
+  - [Claude](../../../../CONTRIBUTORS.md#claude) (Opus-5.5) — applied
+
+#### What changed
+- The handoff's open question and dependency row cited `encapsulation.md#naming-conventions`, removed on 2026-10-12; both now cite [Encapsulation in Khayyam](../../../../docs/khayyam/encapsulation.md) and say the section is gone.

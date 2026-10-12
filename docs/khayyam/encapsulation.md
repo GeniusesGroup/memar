@@ -149,5 +149,3 @@ This approach is consistent with Sovereign Encapsulation: the "this value never 
 
 Without a dedicated keyword, the "this value never changes" guarantee for a constant depends entirely on the capsule author's discipline (not exposing a mutating method) rather than being enforced by a single, unmistakable declaration keyword a reader can immediately recognize.
 
-### Naming Conventions
-Capsule, abstraction, and field naming conventions for this repository are organizational rules in [identifier naming](../../bundles/khayyam/rules/identifier-naming/identifier-naming.md) and [abstraction naming heuristic](../../bundles/khayyam/rules/abstraction-naming-heuristic/abstraction-naming-heuristic.md).

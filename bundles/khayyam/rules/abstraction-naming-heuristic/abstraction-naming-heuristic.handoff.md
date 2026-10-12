@@ -12,4 +12,4 @@ Active — rule added 2026-09-29 from the rules-in-docs audit, whose session fil
 | --- | --- | --- |
 | [abstraction-naming-heuristic.md](./abstraction-naming-heuristic.md) | Base — the rule | Keep in sync |
 | [identifier-naming.md](../identifier-naming/identifier-naming.md) | Sibling — general identifier conventions | Keep in sync |
-| [Encapsulation in Khayyam → Naming Conventions](../../../../docs/khayyam/encapsulation.md#naming-conventions) | Depends_on — former home of the abstraction bullet | Link only |
+| [Encapsulation in Khayyam](../../../../docs/khayyam/encapsulation.md) | Depends_on — its Naming Conventions section, the former home of the abstraction bullet, was removed on 2026-10-12 as a pointer this rule already carries | Link only |

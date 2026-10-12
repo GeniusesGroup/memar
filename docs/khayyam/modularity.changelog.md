@@ -160,12 +160,12 @@
 - **Verification.** The M1 frontend was run over all 300 `.kh` files with addresses resolved against the repository root, which is the reading the sources and the pre-existing `detail.kh` address both use: 292 accept, 8 refuse. Six of the eight are pre-final-syntax or scratch files in another dialect (`life_cycle.kh` carries Go's `type … interface {`; `blocking.kh` and `concurrency.kh` omit `mt`; `mutable.kh` writes its import without `in`; `weak.kh` puts the subtype before the name; `mem.kh` carries C++ template syntax) and `main.kh` is an untracked scratch file. The eighth is `process/control-flow/protocol/if.kh`, whose address `modules/process/error/error.kh` does not exist — the real file is `modules/process/error/protocol/error.kh`. That address is equally unresolvable under its `memar/` root, so the rewrite neither caused nor fixed it; it is recorded rather than corrected, since correcting it is a decision about which of the two paths is right.
 
 #### Considered and not done
-- **A `.kh` extension mandatory in the grammar, with the address stated as a file name the language names**: `.kh` is this repository's naming convention for its own files, and an address need not be a repository file path at all, so the rule belongs to whoever owns the files. What the toolchain accepts and what an address may look like are the [Import Address → The rule](../../bundles/khayyam/rules/import-address/import-address.md#the-rule) rule's; this document states the boundary and links the rest.
+- **A `.kh` extension mandatory in the grammar, with the address stated as a file name the language names**: `.kh` is this repository's naming convention for its own files, and an address need not be a repository file path at all, so the rule belongs to whoever owns the files. What the toolchain accepts and what an address may look like are the Import Address → The rule (`bundles/khayyam/rules/import-address/import-address.md#the-rule`) rule's; this document states the boundary and links the rest.
 - **Rewriting the manifest discussion around a bare stem, on the theory that a shorter address is what a resolver wants**: the address a source file carries and the name a resolver maps are the same string here, so shortening the former to suit the latter would have put the resolver's convenience into the grammar — the coupling this document's *Ecosystem Coupling* section exists to avoid, and the one its C/C++ row names.
 - **Rewriting the `memar/` references in the non-Khayyam files that carry them**: `modules/khayyam/targets/go/abstraction_bridge.py`, several `modules/**/*.go` files, and the `//memar:impl` annotations in about twenty `.kh` files carry `memar/`-rooted references. None is an `in` URI, so none is in the sources this change governs, and each needs its own decision about what it means — an annotation naming a symbolic `memar:impl` target is not a URI at all. Reported, not touched.
 - **Fixing the `modules/process/error/error.kh` address in `if.kh`**: the rewrite carried the address across faithfully, and choosing the correct target is a fact about the sources that this change does not establish.
-- **Naming the resolution base in the grammar**: a resolver whose base is the repository's `modules/` directory and a URI rooted at `modules/` collide — the same string means two things. The collision is a real argument for the manifest to name its base rather than the grammar to imply it, which is why the handoff records it as load-bearing manifest work; the base this repository's toolchain resolves from is recorded as a property of the rule in [Import Address → The rule](../../bundles/khayyam/rules/import-address/import-address.md#the-rule).
-- **Restating the address's spelling rule in this document**: the rule is recorded once, in [Import Address → The rule](../../bundles/khayyam/rules/import-address/import-address.md#the-rule). This document states the boundary and links the rest, per [Documentation → Content Rule: No Fabricated or Redundant Provenance](../documentation.md#content-rule-no-fabricated-or-redundant-provenance).
+- **Naming the resolution base in the grammar**: a resolver whose base is the repository's `modules/` directory and a URI rooted at `modules/` collide — the same string means two things. The collision is a real argument for the manifest to name its base rather than the grammar to imply it, which is why the handoff records it as load-bearing manifest work; the base this repository's toolchain resolves from is recorded as a property of the rule in Import Address → The rule (`bundles/khayyam/rules/import-address/import-address.md#the-rule`).
+- **Restating the address's spelling rule in this document**: the rule is recorded once, in Import Address → The rule (`bundles/khayyam/rules/import-address/import-address.md#the-rule`). This document states the boundary and links the rest, per [Documentation → Content Rule: No Fabricated or Redundant Provenance](../documentation.md#content-rule-no-fabricated-or-redundant-provenance).
 
 #### Deliberation
 - `.kh` is this repository's naming convention for its own files, and the address in an `in` declaration is not required to be a repository file path — it is a URI whose scheme the manifest declares. Once the manifest is the thing that says how an address resolves, a rule about suffixes in the grammar is a rule about one resolver's key (OpenCode, argued; Omid Hekayati, decided).
@@ -178,14 +178,14 @@
 - Time: 2026-09-29T16:00:00Z
 - Type: Changed
 - Propagates to:
-  - [identifier naming](../../bundles/khayyam/rules/identifier-naming/identifier-naming.md): Done
-  - [import address](../../bundles/khayyam/rules/import-address/import-address.md): Done
+  - identifier naming (`bundles/khayyam/rules/identifier-naming/identifier-naming.md`): Done
+  - import address (`bundles/khayyam/rules/import-address/import-address.md`): Done
 - Contributors:
   - Auto (model not recorded) via [Cursor](../../CONTRIBUTORS.md#cursor) - applied
 
 #### What changed
 - [Naming Without Package Context](./modularity.md#naming-without-package-context): organizational naming discipline links to rules; illustrative paragraphs removed.
-- [Dependency Resolution and Companion Manifest](./modularity.md#dependency-resolution-and-companion-manifest): repository URI spelling defers to [import address](../../bundles/khayyam/rules/import-address/import-address.md).
+- [Dependency Resolution and Companion Manifest](./modularity.md#dependency-resolution-and-companion-manifest): repository URI spelling defers to import address (`bundles/khayyam/rules/import-address/import-address.md`).
 
 ---
 
@@ -198,7 +198,7 @@
   - Auto (model not recorded) via [Cursor](../../CONTRIBUTORS.md#cursor) - applied
 
 #### What changed
-- Confirmed [The rule](../../bundles/khayyam/rules/import-address/import-address.md#the-rule) already records repository-root-relative `in` URIs; duplicate organizational wording removed from [Modularity in Khayyam → Dependency Resolution and Companion Manifest](./modularity.md#dependency-resolution-and-companion-manifest) in favor of a link here.
+- Confirmed The rule (`bundles/khayyam/rules/import-address/import-address.md#the-rule`) already records repository-root-relative `in` URIs; duplicate organizational wording removed from [Modularity in Khayyam → Dependency Resolution and Companion Manifest](./modularity.md#dependency-resolution-and-companion-manifest) in favor of a link here.
 - This entry was first written on `modules/khayyam/rules/import-address/import-address.changelog.md`; it records a change to `docs/khayyam/modularity.md`, not to `import-address.md`, and was moved here.
 
 ---
@@ -207,12 +207,12 @@
 - Time: 2026-09-29T20:30:00Z
 - Type: Changed
 - Propagates to:
-  - [orphan extension](../../bundles/khayyam/rules/orphan-extension/orphan-extension.md): Done
+  - orphan extension (`bundles/khayyam/rules/orphan-extension/orphan-extension.md`): Done
 - Contributors:
   - Auto (model not recorded) via [Cursor](../../CONTRIBUTORS.md#cursor) - applied
 
 #### What changed
-- [Inclusion Is Not Module Definition](./modularity.md#inclusion-is-not-module-definition): monkey-patching governance text replaced with a link to [orphan extension](../../bundles/khayyam/rules/orphan-extension/orphan-extension.md); local-directory file-splitting syntax retained.
+- [Inclusion Is Not Module Definition](./modularity.md#inclusion-is-not-module-definition): monkey-patching governance text replaced with a link to orphan extension (`bundles/khayyam/rules/orphan-extension/orphan-extension.md`); local-directory file-splitting syntax retained.
 
 ---
 
@@ -243,3 +243,20 @@
 - Reviewed the uncommitted change to `modularity.md`, `modularity.handoff.md` and this changelog. The link repoints (`modules/khayyam/rules/…` to `bundles/khayyam/rules/…`, `protocols/…` to `modules/computer/…`) resolve (`memar content check` reports no problem). The removal of the manifest and address-shape entries from the handoff is justified and recorded: the 2026-10-04 entry names the reason, the language's one sentence is in `khayyam.md` Import Mechanism, and the 2026-09-29 rulings and the collision are in `docs/modules/computer/module-dependency.handoff.md`.
 - Fix: the entry "Repository-root-relative URI convention cited from modularity doc" (2026-09-29T16:00:00Z) had been appended after the 2026-10-04 entry; entries are ordered oldest first, so it was moved to follow the other 2026-09-29T16:00:00Z entry.
 - Not changed, noted: the repo-wide wording "corpus" to "sources" and the path `modules/khayyam/core/test/matrix.test.ts` to `bundles/khayyam/core/tests/matrix.test.ts` were made inside history entries (2026-09-26) without a record; the path now names where the file lives and the first is part of a sweep over docs/, so both were left.
+
+---
+
+### Name-collision guidance gets its home; toolchain rule links leave
+- Time: 2026-10-12T11:13:47Z
+- Type: Changed
+- Propagates to:
+  - [Khayyam → Import Mechanism (`in`)](./khayyam.md#import-mechanism-in): Done - its blockquote now points at the new section.
+- Contributors:
+  - [Claude](../../CONTRIBUTORS.md#claude) (Opus-5.5) — applied
+
+#### What changed
+- New section [When Two Included Names Collide](./modularity.md#when-two-included-names-collide) carries, whole, the guidance [Khayyam](./khayyam.md)'s Import Mechanism blockquote held until 2026-10-03 (recorded in that document's changelog, "Implementation and usage claims removed from the language document", Considered and not done): a collision is an architecture error, not a language disambiguation problem; it signals that two abstractions claim one concept; the fix is a root-cause redesign so one abstraction owns the concept; a temporary workaround wraps one dependency in a local capsule (composition) rather than aliasing it, with the author's quoted reason. Versioning is left to the resolution layer, as the blockquote said.
+- Inclusion Is Not Module Definition: "Cross-directory method attachment is governed by the [orphan extension] rule" became "Whether attaching a method from another directory is permitted is a toolchain's or an organization's rule, not the grammar's"; this repository's orphan-extension rule states its own treatment (on the owner's request that docs/ carry no implementation and no link into bundles/ (citation runs down the layers)).
+- Naming Without Package Context: "an organizational convention stated in [identifier naming] and [qualified names]" became "how a project spells and qualifies names is that project's own rule"; those rules of this repository's toolchain state the convention.
+- Dependency Resolution and Companion Manifest: "How this repository writes and resolves `in` URIs is stated in [import address]" removed, and "— [Import Address → The rule] — where the base this repository's toolchain resolves from is recorded beside it" cut from the tool-spelling sentence; the import-address rule of this repository's toolchain states both.
+- Not changed: the companion-manifest proposal, which is the framework and tooling layer's design rather than a compiler's or linter's, and has no home in this repository's Khayyam toolchain.
