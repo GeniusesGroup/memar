@@ -633,3 +633,16 @@ Dissolved every `#### Discussion` wrapper (the definition topic, Modes of Thinki
 - The removal of five open questions from cognition.handoff.md is sound: four are recorded by *Four open questions retired to sections that already answer them* and one by *The mode list's current verdict recorded against the criterion the body already states*.
 - *Adding a record is not a large-scope change* is sound; its body sentence and the documentation rule it points at both exist.
 - Fixed: the 2026-09-05 entry *Knowledge Management link retargeted after the rename* had been deleted from this changelog with no record. It was restored verbatim from HEAD, since a changelog is history.
+
+---
+
+### What an agent settles itself, and what reaches the owner
+- Time: 2026-10-12T16:02:36Z
+- Type: Added
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Claude](../CONTRIBUTORS.md#claude) (Opus-5.5) — drafted, applied
+
+#### What changed
+- [Norm Application Points](./cognition.practice.md#norm-application-points) gained the escalation checkpoint: an agent settles what the owning material and a second opinion from another model settle, recorded Tentative with the opinion as its reasoning; a definition other documents consume, a change that removes meaning, a change beyond the instance, and a premise the model rests on reach the owner however well they seem settled, as decisions needed gathered into one digest ([Queued Work and Its Hand-Back](./documentation-handoff.practice.md#queued-work-and-its-hand-back)).
+- Observed: the owner was in the path of questions an agent could answer at some token cost; the owner's ruling (2026-10-12) keeps the owner for the decisive ones only.

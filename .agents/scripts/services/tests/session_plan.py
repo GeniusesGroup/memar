@@ -32,6 +32,18 @@ What is pinned, and what each pin is for:
                   finished, so an earlier plan's free-text status is read;
                   any other is not.
   Title           A title is one line, and required where the caller says so.
+  Priority        A plan's priority is its front matter's `priority`, a whole
+                  number from 1 to 10, higher sooner; absent, or not such a
+                  number, it is 5. A new plan writes it only when given; one
+                  set later replaces the key, or adds it at the end of the
+                  front matter, and leaves every other line as written; a
+                  value outside 1 to 10, or a plan with no front matter, is
+                  refused.
+  Rewrite         Setting a status or a priority while another writer changes
+                  the plan keeps both changes, not only the last; a status set
+                  on the expectation that it is still one it was is refused,
+                  and the plan left as it is, once it is no longer; a rewrite
+                  leaves nothing beside the plan.
 
 Usage is the interface. Do not duplicate these recipes as prose catalogs.
 """
@@ -40,6 +52,7 @@ from __future__ import annotations
 import sys
 import tempfile
 import unittest
+import unittest.mock
 from pathlib import Path
 
 TESTS = Path(__file__).resolve().parent
@@ -173,6 +186,97 @@ class Title(unittest.TestCase):
             with self.subTest(title=title):
                 with self.assertRaises(SystemExit):
                     session_plan.checked_title(title, required=True)
+
+
+class Priority(Fixture):
+    def test_a_plan_without_priority_reads_as_the_default_five(self) -> None:
+        self.assertEqual(session_plan.DEFAULT_PRIORITY, 5)
+        front = self.read(session_plan.plan_skeleton(TITLE, OPENED, Path("/work"))).front
+        self.assertNotIn(session_plan.PRIORITY_KEY, front)
+        self.assertEqual(session_plan.priority_of(front), 5)
+        self.assertEqual(session_plan.priority_of(None), 5)
+
+    def test_a_written_priority_is_read_and_one_not_from_1_to_10_is_the_default(self) -> None:
+        for value, expected in (("1", 1), ("10", 10), (" 7 ", 7), ("0", 5), ("11", 5), ("high", 5), ("3.5", 5)):
+            with self.subTest(value=value):
+                self.assertEqual(session_plan.priority_of({session_plan.PRIORITY_KEY: value}), expected)
+
+    def test_a_new_plan_writes_its_priority_only_when_given(self) -> None:
+        text = session_plan.plan_skeleton(TITLE, OPENED, Path("/work"), priority=8)
+        self.assertIn("\npriority: 8\n---\n", text)
+        self.assertEqual(session_plan.priority_of(self.read(text).front), 8)
+
+    def test_setting_a_priority_replaces_or_adds_the_key_and_keeps_every_other_line(self) -> None:
+        path = self.folder / session_plan.PLAN_NAME
+        original = session_plan.plan_skeleton(TITLE, OPENED, Path("/work"), status="queued").replace("\n", "\r\n")
+        path.write_bytes(original.encode("utf-8"))
+        session_plan.set_priority(path, 9)
+        text = path.read_bytes().decode("utf-8")
+        self.assertEqual(text, original.replace("\r\n---\r\n#", "\r\npriority: 9\r\n---\r\n#", 1))
+        session_plan.set_priority(path, 2)
+        self.assertEqual(session_plan.priority_of(session_plan.read_plan(path).front), 2)
+        self.assertEqual(path.read_bytes().decode("utf-8").count("priority:"), 1)
+        self.assertEqual(session_plan.read_plan(path).status, "queued")
+
+    def test_a_priority_outside_1_to_10_or_a_plan_without_front_matter_is_refused(self) -> None:
+        for value in ("0", "11", "x", "5.0"):
+            with self.subTest(value=value):
+                with self.assertRaises(SystemExit):
+                    session_plan.checked_priority(value)
+        self.assertEqual(session_plan.checked_priority("10"), 10)
+        path = self.folder / session_plan.PLAN_NAME
+        path.write_text("# T\nStatus: open\n", encoding="utf-8")
+        with self.assertRaises(SystemExit):
+            session_plan.set_priority(path, 3)
+
+
+class Rewrite(Fixture):
+    def plan(self, status: str) -> Path:
+        path = self.folder / session_plan.PLAN_NAME
+        text = session_plan.plan_skeleton(TITLE, OPENED, Path("/work"), status=status)
+        path.write_text(text, encoding="utf-8", newline="\n")
+        return path
+
+    def changed_once_after_reading(self, path: Path, old: str, new: str):
+        """A patch under which the first read of PATH is followed at once by another writer replacing OLD with NEW."""
+        real = Path.read_bytes
+        done = []
+
+        def read_bytes(self_path: Path) -> bytes:
+            data = real(self_path)
+            if self_path == path and not done:
+                done.append(True)
+                path.write_bytes(data.replace(old.encode(), new.encode()))
+            return data
+
+        return unittest.mock.patch.object(Path, "read_bytes", read_bytes)
+
+    def test_a_priority_set_while_the_status_changes_keeps_both(self) -> None:
+        path = self.plan("queued")
+        with self.changed_once_after_reading(path, "Status: queued", "Status: open"):
+            session_plan.set_priority(path, 9)
+        plan = session_plan.read_plan(path)
+        self.assertEqual((plan.status, session_plan.priority_of(plan.front)), ("open", 9))
+
+    def test_a_status_set_while_the_priority_changes_keeps_both(self) -> None:
+        path = self.plan("queued")
+        with self.changed_once_after_reading(path, f"opened: {OPENED}\n", f"opened: {OPENED}\npriority: 8\n"):
+            session_plan.set_status(path, "open")
+        plan = session_plan.read_plan(path)
+        self.assertEqual((plan.status, session_plan.priority_of(plan.front)), ("open", 8))
+
+    def test_a_status_no_longer_the_expected_one_is_left_as_it_is(self) -> None:
+        path = self.plan("queued")
+        with self.changed_once_after_reading(path, "Status: queued", "Status: done"):
+            with self.assertRaises(SystemExit):
+                session_plan.set_status(path, "open", expected=("queued",))
+        self.assertEqual(session_plan.read_plan(path).status, "done")
+
+    def test_a_rewrite_leaves_only_the_plan_in_its_folder(self) -> None:
+        path = self.plan("queued")
+        session_plan.set_priority(path, 3)
+        session_plan.set_status(path, "open")
+        self.assertEqual([entry.name for entry in self.folder.iterdir()], [session_plan.PLAN_NAME])
 
 
 if __name__ == "__main__":

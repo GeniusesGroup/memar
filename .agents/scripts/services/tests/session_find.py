@@ -17,7 +17,8 @@ again.
 What is pinned, and what each pin is for:
 
   Listed          Every session folder is listed newest first with its title,
-                  project, status, and path; a plan of the earlier sectioned
+                  project, status, priority (5 when none is written), and
+                  path; a plan of the earlier sectioned
                   form also shows its tasks counted per status; a folder without a
                   readable plan is listed and marked.
   TextFilter      TEXT matches the id, title, project, or a listed task's
@@ -46,7 +47,7 @@ What is pinned, and what each pin is for:
                   --conversation lists a conversation's sessions wherever
                   they lie; a recorded location that is gone is passed over.
   ReportMarks     A session whose report.md Stop does not map to its plan's
-                  status, whose status is outside open, blocked, done, or
+                  status, whose status is outside queued, open, blocked, done, or
                   whose Stop is not a named stop, is marked with why; one
                   that agrees, an empty Stop, or no report, is not.
 
@@ -164,6 +165,13 @@ class Listed(Fixture):
         self.assertIn(f"path: {path}", text)
         self.assertNotIn("tasks:", text)
         self.assertNotIn("parent:", text)
+
+    def test_an_entry_shows_its_priority_the_default_when_none_is_written(self) -> None:
+        self.session(NEWEST, plan("Ranked", priority=9))
+        self.session(MIDDLE, plan("Plain"))
+        text = self.run_list()
+        self.assertIn("priority: 9", text)
+        self.assertIn("priority: 5", text)
 
     def test_a_plan_of_the_sectioned_form_shows_its_status_and_tasks(self) -> None:
         tasks = [("Parse", "open"), ("Lex", "done"), ("Emit", "open"), ("Wait for review", "blocked")]
@@ -411,7 +419,7 @@ class ReportMarks(Fixture):
 
     def test_a_status_outside_the_vocabulary_or_a_stop_not_named_is_marked(self) -> None:
         self.report(NEWEST, "complete", None)
-        self.assertEqual(self.mark_of(NEWEST), f"{session_find.DISAGREES} status complete is not one of open, blocked, done")
+        self.assertEqual(self.mark_of(NEWEST), f"{session_find.DISAGREES} status complete is not one of queued, open, blocked, done")
         self.report(MIDDLE, "done", "finished")
         self.assertIn("Stop finished is not one of", self.mark_of(MIDDLE))
 

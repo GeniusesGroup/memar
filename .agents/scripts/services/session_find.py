@@ -42,7 +42,7 @@ from typing import Callable
 from machine.console import fail, note
 from services.session_folder import Session, folder_of, measured_idle, read_session, session_folders
 from services.session_location import locations_of, project_root, same_path
-from services.session_plan import DONE_STATUS, PLAN_NAME, STATUSES, is_done
+from services.session_plan import DONE_STATUS, PLAN_NAME, STATUSES, is_done, priority_of
 from services.session_report import REPORT_NAME, disagreement, read_stop
 
 LIST_COMMAND = "list"
@@ -154,6 +154,7 @@ def print_session(session: Session, *, idle: float | None = None) -> None:
         note(f"project: {session.front.get('project', '')}")
     if session.has_plan and session.readable:
         note(f"status: {session.status or 'none'}")
+        note(f"priority: {priority_of(session.front)}")
         why = disagreement(session.status, read_stop(session.path))
         if why:
             note(f"{DISAGREES} {why}")
@@ -199,8 +200,8 @@ def describe(verbs) -> Callable[[argparse.Namespace], None]:
         help="list session folders, newest first, a conversation's together",
         description=(
             "List Memar's own session folders, newest first, with the sessions of one\n"
-            "conversation next to each other: its id, title, project, status, the\n"
-            "session it came from, and its path. A folder with no plan.md, one that\n"
+            "conversation next to each other: its id, title, project, status,\n"
+            "priority, the session it came from, and its path. A folder with no plan.md, one that\n"
             "cannot be read, or one without front matter, is listed and marked so.\n"
             f"A session whose {REPORT_NAME} Stop does not agree with its plan's status, or\n"
             f"whose status is not {', '.join(STATUSES)}, is marked `{DISAGREES}`, with why.\n"

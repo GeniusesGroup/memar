@@ -32,6 +32,14 @@ is there, because its conversation is read from it. A session opened with a
 parent is most often one the parent is handing to a sub-agent, so `new` ends
 by printing the text that hands it over (`session_brief`).
 
+A session can be opened, or its written plan left, `--queued`: waiting for an
+agent to take it (`session_claim`) and hand it to a fresh sub-agent, rather
+than worked by the conversation that opened it. Only an open plan no one has
+claimed is queued again, so a session being worked, or one finished, is never
+put back in line. `--priority` says where in that line: written into a new
+plan, or set on the one that is there (`session_plan`), so queuing and ranking
+a task is one command.
+
 Opening is also when the day's sweep runs (`session_gc`), never touching the
 session being opened or continued.
 
@@ -68,7 +76,21 @@ from services.session_location import (
 )
 from services.session_log import record
 from services.session_migrate import take_up
-from services.session_plan import PLAN_NAME, checked_title, plan_skeleton
+from services.session_claim import is_claimed
+from services.session_plan import (
+    DEFAULT_PRIORITY,
+    HIGHEST_PRIORITY,
+    LOWEST_PRIORITY,
+    OPEN_STATUS,
+    PLAN_NAME,
+    QUEUED_STATUS,
+    checked_priority,
+    checked_title,
+    plan_skeleton,
+    read_plan,
+    set_priority,
+    set_status,
+)
 from services.session_report import REPORT_NAME, write_report
 
 NEW_COMMAND = "new"
@@ -90,11 +112,15 @@ def write_plan(
     parent: str | None = None,
     conversation: str | None = None,
     project: Path | None = None,
+    status: str = OPEN_STATUS,
+    priority: int | None = None,
 ) -> None:
     """Create FOLDER's plan.md unless one is there; an existing plan is never touched."""
     opened = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     project = project_root() if project is None else project
-    text = plan_skeleton(title, opened, project, parent=parent, conversation=conversation)
+    text = plan_skeleton(
+        title, opened, project, parent=parent, conversation=conversation, status=status, priority=priority
+    )
     try:
         with (folder / PLAN_NAME).open("x", encoding="utf-8", newline="\n") as plan:
             plan.write(text)
@@ -102,10 +128,24 @@ def write_plan(
         pass
 
 
+def queue_plan(folder: Path) -> None:
+    """Queue FOLDER's existing plan: open and unclaimed becomes queued, queued stays; anything else is refused."""
+    status = read_plan(folder / PLAN_NAME).status
+    if status == QUEUED_STATUS:
+        return
+    if is_claimed(folder):
+        fail(f"session {folder.name} is claimed by an agent; it is queued again only once that claim has lapsed")
+    if status != OPEN_STATUS:
+        fail(f"session {folder.name} is {status or 'without a status'}; only an open session is queued")
+    set_status(folder / PLAN_NAME, QUEUED_STATUS)
+
+
 def ensure_session(
     session_id: str | None = None,
     title: str | None = None,
     parent: str | None = None,
+    queued: bool = False,
+    priority: int | str | None = None,
 ) -> tuple[str, Path]:
     """Ensure the session's folder, its plan.md and report.md, and its role folders exist; return its id and path.
 
@@ -122,8 +162,11 @@ def ensure_session(
     name already taken there by anything that is not a session folder is
     refused, and a location that cannot be made fails with a message. The
     first call of a day also reaps the session folders that have been idle past
-    the limit, other than this one.
+    the limit, other than this one. QUEUED leaves a new plan queued, or queues
+    an open one; PRIORITY, checked before anything is made, is written into a
+    new plan or set on the one that is there.
     """
+    priority = None if priority is None else checked_priority(priority)
     sid = new_session_id() if session_id is None else session_id
     folder = session_dir(sid)
     project = project_root()
@@ -163,16 +206,27 @@ def ensure_session(
     if in_project_location(path):
         register(path.parent)
     if not has_plan:
-        write_plan(path, title, parent, conversation, project)
+        write_plan(path, title, parent, conversation, project, QUEUED_STATUS if queued else OPEN_STATUS, priority)
+    else:
+        if queued:
+            queue_plan(path)
+        if priority is not None:
+            set_priority(path / PLAN_NAME, priority)
     write_report(path)
     ensure_role_folders(path)
     reap_once_a_day(keep=sid)
     return sid, path
 
 
-def open_session(session_id: str | None, title: str | None, parent: str | None) -> None:
+def open_session(
+    session_id: str | None,
+    title: str | None,
+    parent: str | None,
+    queued: bool = False,
+    priority: int | None = None,
+) -> None:
     """`new`: ensure the session and print its id, path, plan, and report, where it is when that is a project's, and with PARENT its brief."""
-    sid, path = ensure_session(session_id, title, parent)
+    sid, path = ensure_session(session_id, title, parent, queued, priority)
     note(f"session_id: {sid}")
     note(f"path: {path}")
     note(f"plan: {path / PLAN_NAME}")
@@ -218,8 +272,29 @@ def describe(verbs) -> Callable[[argparse.Namespace], None]:
         metavar="ID",
         help="the session this task came from: the delegating session, or the previous task of the conversation",
     )
+    opener.add_argument(
+        "--queued",
+        action="store_true",
+        help=(
+            "leave the task queued for an agent to claim rather than open for you: "
+            "a new plan is written queued, and an existing open one no one has claimed is queued"
+        ),
+    )
+    opener.add_argument(
+        "--priority",
+        type=int,
+        default=None,
+        metavar="N",
+        help=(
+            f"how soon a queued task is taken, {LOWEST_PRIORITY} to {HIGHEST_PRIORITY}: the higher goes sooner; "
+            f"a plan without one counts as {DEFAULT_PRIORITY}"
+        ),
+    )
     return run
 
 
 def run(args: argparse.Namespace) -> None:
-    open_session(args.session_id, args.title, args.parent)
+    if args.queued or args.priority is not None:
+        open_session(args.session_id, args.title, args.parent, args.queued, args.priority)
+    else:
+        open_session(args.session_id, args.title, args.parent)

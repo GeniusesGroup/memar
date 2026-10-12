@@ -227,3 +227,48 @@ The wrapper titles are gone from this specification's body; open questions and a
 
 #### Considered and not done
 - **Forbidding corrections across sessions (rejected; owner's decision)**: work does not belong to the session that wrote it; what must be avoided is interfering with a session still running.
+
+---
+
+### Queued sessions, the short hand-back, and the owner's digest
+- Time: 2026-10-12T16:02:36Z
+- Type: Added
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Claude](../CONTRIBUTORS.md#claude) (Opus-5.5) — drafted, applied
+
+#### What changed
+- A new section, [Queued Work and Its Hand-Back](./documentation-handoff.practice.md#queued-work-and-its-hand-back), documents the work engine `memar session` now provides: a conversation queues further tasks as sessions and never works them in its own context; a priority from 1 to 10 (5 when absent, the higher sooner) that anyone may change, saying why; `claims N` hands the N first in line to a coordinator, which gives each brief to one fresh sub-agent; a hand-back of the Stop line, the report's path, and at most ten lines of `Decisions needed`; and `digest`, the one list of decisive questions the owner reads instead of every report.
+- Observed: one conversation carrying six tasks, with full reports handed back into it, reached about 500K tokens; the coordinator's context and the owner's attention were the two bottlenecks the engine answers.
+- The [handoff](./documentation-handoff.handoff.md) gained the open question of where a project's sessions live (owner observation, for queued session `20261012T155915Z-12312-0`) and the anticipated work of running queued sessions unattended, which belongs to the `organization` project.
+
+#### Considered and not done
+- **A runner that launches each queued session itself (`memar session run` with a launch template)**: Memar starts no agent; the coordinator starts each sub-agent the way its runtime does, and scheduled execution is left to the `organization` project.
+
+---
+
+### Queued work: the help holds the numbers, the digest holds failed hand-backs
+- Time: 2026-10-12T16:40:00Z
+- Type: Changed
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Claude](../CONTRIBUTORS.md#claude) (Opus-5.5) — applied
+
+#### What changed
+- [Queued Work and Its Hand-Back](./documentation-handoff.practice.md#queued-work-and-its-hand-back) now points to `memar session --help` for the commands and the limits they enforce — the priority's range and default, the lines a hand-back may hold, how long a claim holds — and keeps what is its own: why the work runs so, and that whoever changes a priority says why in the plan.
+- The digest is run for the coordinator's own conversation, holds every failed hand-back whether or not it carries decisions, and leaves out done sessions; the practice and the help say the same.
+- Prompted by a review that had not seen the work (session `20261012T160457Z-8656-0`), which found the practice restating the help's numbers and the two disagreeing about the digest.
+
+---
+
+### Queued work: claims names its project
+- Time: 2026-10-12T16:35:29Z
+- Type: Changed
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Claude](../CONTRIBUTORS.md#claude) (Opus-5.5) — applied
+
+#### What changed
+- [Queued Work and Its Hand-Back](./documentation-handoff.practice.md#queued-work-and-its-hand-back) now says `memar session claims` takes only from the one project the coordinator names, with no default and no way to take from all, and that a coordinator that does not know the project asks the owner; `claims` refuses without `--project`, and its help and `memar session --help` say the same.
+- Why: one run serves one project, and a guessed or spanning scope hides which project the work lands in.
+- The owner's ruling, applied in session `20261012T163251Z-25244-0`.

@@ -20,6 +20,12 @@ another pass. A report whose Stop is empty says nothing yet and is not
 checked; a stop this file does not name cannot be checked either, and is
 marked as such rather than guessed.
 
+A report is also the hand-back of a session another agent handed out: its
+Stop, its path, and at most ten lines under `Decisions needed` are all the
+delegating side reads, and `session_digest` gathers those lines across
+sessions and marks a report that is not such a hand-back. A session with nothing to ask writes no such part, so the skeleton
+does not carry one.
+
 A report is scratch, like the plan, and goes with its folder: what lasts of it
 is routed by closing by type.
 """
@@ -43,6 +49,10 @@ STOP_STATUS = {
 STOPS = tuple(STOP_STATUS)
 # The parts every report carries, in order, under its stop.
 PARTS = ("What ran", "Check", "Result", "Left open")
+# The part a report adds when the session needs someone's decision, and the
+# most lines it may hold for the report to be a hand-back.
+DECISIONS_HEADING = "Decisions needed"
+MAX_DECISION_LINES = 10
 
 
 def stop_table(margin: str = "    ") -> str:
@@ -106,4 +116,42 @@ def disagreement(status: str, stop: str) -> str | None:
         return f"{REPORT_NAME} Stop {stop} is not one of {', '.join(STOPS)}"
     if expected != status:
         return f"{REPORT_NAME} Stop {stop} means status {expected}, the plan says {status}"
+    return None
+
+
+def decisions_needed(folder: Path) -> list[str]:
+    """The non-blank lines under FOLDER's report's `## Decisions needed` heading, as written; none without one."""
+    try:
+        lines = (folder / REPORT_NAME).read_text(encoding="utf-8-sig").splitlines()
+    except (OSError, UnicodeDecodeError):
+        return []
+    found: list[str] | None = None
+    for line in lines:
+        if line.startswith("#"):
+            if found is not None:
+                break
+            if line.lstrip("#").strip().lower() == DECISIONS_HEADING.lower():
+                found = []
+        elif found is not None and line.strip():
+            found.append(line.rstrip())
+    return found or []
+
+
+def handback_problem(folder: Path, status: str) -> str | None:
+    """Why FOLDER's report is not a hand-back, given its plan's STATUS; None when it is one.
+
+    A hand-back is a Stop this file names, agreeing with the plan's status, and
+    at most `MAX_DECISION_LINES` lines under `Decisions needed`: what the
+    delegating side reads is that line, the report's path, and those lines, so
+    a longer one would carry the session's context back into the reader's.
+    """
+    stop = read_stop(folder)
+    if not stop:
+        return f"{REPORT_NAME} has no Stop"
+    why = disagreement(status, stop)
+    if why:
+        return why
+    count = len(decisions_needed(folder))
+    if count > MAX_DECISION_LINES:
+        return f"{count} lines under {DECISIONS_HEADING}, more than {MAX_DECISION_LINES}"
     return None

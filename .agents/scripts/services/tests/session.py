@@ -43,6 +43,26 @@ What is pinned, and what each pin is for:
                      nothing about how the folder is arranged: the mechanism
                      is a DevActionNote, and the why is pinned to the services'
                      own docstrings, where it is maintained.
+                     It also says how a conversation that only adds work
+                     queues a task with a priority and never runs it, and how
+                     an agent told only to "do some of the queued tasks", or N
+                     of a project's, works them: `list --status queued`,
+                     `claims N --project X` — the project always named, no
+                     default and no all, the owner asked when it is unknown
+                     — one fresh sub-agent per printed brief, never
+                     in its own context, each report's Stop and Decisions
+                     needed read and its status checked, and one `digest
+                     --conversation` for the owner at the end, holding failed
+                     hand-backs and leaving out done sessions; that the only
+                     writes into another session's folder are the queued or
+                     delegated plan by the session it came from and a
+                     text-only sub-agent's report and Status by its
+                     coordinator; that priority is 1 to 10, 5 when
+                     absent, higher sooner, and changed with `priority`; what a
+                     short hand-back is; how long a claim holds and why; and
+                     that no external runner is involved. `memar --help`'s
+                     line for `session` names queued tasks, so an agent
+                     starting from the top reaches it.
   EachServiceDeclaresItsVerb
                      Each verb is declared by the service that answers it, and
                      the services the others share declare none.
@@ -94,7 +114,10 @@ from machine.fs_test_scratch import suite_scratch
 import machine.fs_memar as memar_fs
 import services.session as session
 import services.session_brief as session_brief
+import services.session_claim as session_claim
+import services.session_claims as session_claims
 import services.session_close as session_close
+import services.session_digest as session_digest
 import services.session_find as session_find
 import services.session_folder as session_folder
 import services.session_gc as session_gc
@@ -104,6 +127,7 @@ import services.session_log as session_log
 import services.session_migrate as session_migrate
 import services.session_new as session_new
 import services.session_plan as session_plan
+import services.session_priority as session_priority
 import services.session_report as session_report
 
 LAUNCHER = SCRIPTS / "memar"
@@ -264,6 +288,63 @@ class HelpSaysWhatToRun(unittest.TestCase):
         ):
             self.assertIn(phrase, text)
 
+    def test_the_help_says_how_a_task_is_queued_with_a_priority_and_never_run(self) -> None:
+        text = flat(run_help())
+        for phrase in (
+            "Status is queued, open, blocked, or done",
+            "memar session new --title TITLE --parent ID --queued [--priority N]",
+            "memar session priority ID N",
+            "new --session-id ID --queued",
+            "never do a queued session's work in your own context",
+            "To only add work",
+            "priority: a whole number from 1 to 10, 5 when absent; the higher goes sooner",
+            "Anyone may change it",
+        ):
+            self.assertIn(phrase, text)
+
+    def test_the_help_says_how_an_agent_told_only_to_do_queued_tasks_works_them(self) -> None:
+        # The owner's prompt is one line — "do some of the queued Memar tasks",
+        # "do 5 tasks of project X" — so the help alone must carry the recipe.
+        text = flat(run_help())
+        for phrase in (
+            "do some of the queued tasks",
+            "`--project` is required: one run serves one project",
+            "\"do 5 tasks of X\" means `claims 5 --project X`",
+            "there is no default project and no way to take from all",
+            "ask the owner rather than guess",
+            "memar session list --status queued",
+            "memar session claims N --project [PATH]",
+            "N is yours to choose",
+            "the highest priority first, the oldest first among equals",
+            "one fresh sub-agent per session",
+            "never in your own context",
+            "read its report.md: its Stop and its Decisions needed",
+            "a Stop that disagrees with its plan",
+            "memar session digest [--conversation ID]",
+            "run `memar session digest --conversation ID`, ID your own session's",
+            "give the owner that one digest",
+            "memar session claim ID",
+            f"lapses after {session_claim.CLAIM_STALE_SECONDS // 3600} hours",
+            "nothing keeps a claim fresh",
+            "at most 10 lines under a `## Decisions needed` heading",
+            "failed hand-back",
+            "`digest` gathers into one every session's Decisions needed and every failed hand-back",
+            "it leaves out done sessions",
+            "Two writes reach another session's folder, both from the session it came from",
+            "writes the report.md of a sub-agent that could only return text, and sets that plan.md's Status",
+            "Memar starts no agent",
+        ):
+            self.assertIn(phrase, text)
+
+    def test_no_external_runner_is_left_in_the_help(self) -> None:
+        texts = [run_help(), *(run_help(verb) for verb in ("new", "claim", "claims", "digest", "priority"))]
+        for text in texts:
+            for word in ("launch", "runner", "`run`", "session run"):
+                self.assertNotIn(word, text)
+
+    def test_the_top_help_leads_to_queued_tasks(self) -> None:
+        self.assertIn("queued tasks", session.SUMMARY)
+
     def test_the_command_lists_keep_one_column(self) -> None:
         columns = set()
         for line in session.DESCRIPTION.splitlines():
@@ -280,11 +361,23 @@ class HelpSaysWhatToRun(unittest.TestCase):
             ("new", ("--session-id", "--title TITLE", "--parent ID", "for one task", "first session of that conversation",
                      "said in `memar session --help`")),
             ("list", ("whose id, title, or project holds TEXT", "one word or a short phrase, not a question",
-                      "--status {open,blocked,done}", "--conversation ID", "--idle-days DAYS",
+                      "--status {queued,open,blocked,done}", "--conversation ID", "--idle-days DAYS",
                       "--project [PATH]", "List Memar's own session folders", "the git top-level of the current folder")),
             ("brief", ("ID", "ready to paste", "`new --parent` prints", "said in `memar session --help`")),
             ("gc", ("--session-id", "--idle-days DAYS", "never swept", "cannot be read", "at least 1", "whose status is done")),
             ("close", ("--session-id",)),
+            ("new", ("--queued", "an existing open one no one has claimed is queued", "--priority N", "1 to 10",
+                     "higher goes sooner")),
+            ("claim", ("ID", "another agent holds, is refused", "taken over", "said in `memar session --help`")),
+            ("claims", ("N", "highest priority first", "oldest", "brief", "Fewer queued than N is not an error", "no default",
+                        "--project is required: one run serves one project",
+                        "never mixes two projects'", "no default project and no way to take from all",
+                        "\"Do 5 tasks of X\" means `claims 5 --project X`", "ask the owner rather than guess",
+                        "one fresh sub-agent per session", "said in `memar session --help`")),
+            ("priority", ("ID", "N", "1 to 10", "5 when", "higher goes sooner", "Anyone, a person or an agent, may change it")),
+            ("digest", ("--conversation ID", "Decisions needed", "priority", "failed hand-back",
+                        "entries or not", "Done and queued sessions are left out",
+                        "said in `memar session --help`")),
         ):
             with self.subTest(verb=verb):
                 text = flat(run_help(verb))
@@ -330,18 +423,22 @@ class EachServiceDeclaresItsVerb(unittest.TestCase):
             return self.group.add_parser(name, **kwargs)
 
     def test_each_verb_is_declared_by_the_service_that_answers_it(self) -> None:
-        for module, verb in (
-            (session, "session"),
-            (session_new, "new"),
-            (session_brief, "brief"),
-            (session_find, "list"),
-            (session_close, "close"),
-            (session_gc, "gc"),
+        for module, declared in (
+            (session, ["session"]),
+            (session_new, ["new"]),
+            (session_brief, ["brief"]),
+            (session_find, ["list"]),
+            (session_close, ["close"]),
+            (session_gc, ["gc"]),
+            (session_claim, ["claim"]),
+            (session_claims, ["claims"]),
+            (session_priority, ["priority"]),
+            (session_digest, ["digest"]),
         ):
-            with self.subTest(verb=verb):
+            with self.subTest(verbs=declared):
                 verbs = self.Recorded()
                 run = module.describe(verbs)
-                self.assertEqual(verbs.names, [verb])
+                self.assertEqual(verbs.names, declared)
                 self.assertTrue(callable(run))
 
     def test_the_shared_services_declare_no_verb(self) -> None:
@@ -349,14 +446,17 @@ class EachServiceDeclaresItsVerb(unittest.TestCase):
             with self.subTest(module=module.__name__):
                 self.assertFalse(hasattr(module, launcher.DESCRIBE))
 
-    def test_the_command_offers_the_five_verbs_in_the_order_of_their_services(self) -> None:
+    def test_the_command_offers_the_nine_verbs_in_the_order_of_their_services(self) -> None:
         def verbs_of(parser: argparse.ArgumentParser) -> dict[str, argparse.ArgumentParser]:
             found = [action for action in parser._actions if isinstance(action, argparse._SubParsersAction)]
             return dict(found[0].choices) if found else {}
 
         top, before = launcher.assemble(SESSION_SERVICES)
         self.assertEqual(before, [])
-        self.assertEqual(list(verbs_of(verbs_of(top)["session"])), ["brief", "close", "list", "gc", "new"])
+        self.assertEqual(
+            list(verbs_of(verbs_of(top)["session"])),
+            ["brief", "claim", "claims", "close", "digest", "list", "gc", "new", "priority"],
+        )
 
 
 class VerbsDispatch(Fixture):
@@ -373,6 +473,17 @@ class VerbsDispatch(Fixture):
             (["gc"], session_gc, "collect", (None, None)),
             (["gc", "--session-id", "s-1", "--idle-days", "2"], session_gc, "collect", ("s-1", 2.0)),
             (["close", "--session-id", "s-1"], session_close, "close", ("s-1",)),
+            (["new", "--title", "T", "--queued"], session_new, "open_session", (None, "T", None, True, None)),
+            (["new", "--title", "T", "--queued", "--priority", "8"], session_new, "open_session",
+             (None, "T", None, True, 8)),
+            (["list", "--status", "queued"], session_find, "list_sessions", (None, "queued", None, None, None)),
+            (["claim", "s-1"], session_claim, "claim", ("s-1",)),
+            (["claims", "5"], session_claims, "claims", (5, None)),
+            (["claims", "5", "--project"], session_claims, "claims", (5, "")),
+            (["claims", "2", "--project", "C:/work/p"], session_claims, "claims", (2, "C:/work/p")),
+            (["priority", "s-1", "8"], session_priority, "set_session_priority", ("s-1", "8")),
+            (["digest"], session_digest, "print_digest", (None,)),
+            (["digest", "--conversation", "s-0"], session_digest, "print_digest", ("s-0",)),
         ):
             with self.subTest(argv=argv):
                 with unittest.mock.patch.object(module, name) as service:
