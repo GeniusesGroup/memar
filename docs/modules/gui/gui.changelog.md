@@ -24,3 +24,14 @@
 - One routing authority per application was claimed (Omid Hekayati).
 - The GUI-does-not-speak-network rule was claimed, with the generated SDK as the only network-aware part (Omid Hekayati).
 - Shared server/GUI validation via accessor/setter generation was claimed (Omid Hekayati).
+
+---
+
+### Review of the uncommitted changes of 2026-10-12
+- Time: 2026-10-12T09:45:50Z
+- Type: Reviewed
+- Contributors:
+  - [Claude](../../../CONTRIBUTORS.md#claude) (Sonnet-5.5) — reviewed
+
+#### What changed
+- Reviewed; no change needed. The added handoff entry about `Event_Methods`: `modules/gui/protocol/event.kh` lines 14, 40, 63 and `modules/gui/event.kh` lines 18 and 56 match the cited text, and no file under `modules/process/event/` declares it. Ownership reasoning holds; the question is left to the owner.

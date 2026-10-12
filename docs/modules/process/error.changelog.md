@@ -210,3 +210,14 @@ Dissolved every `#### Discussion` wrapper (Identity and equality, Boundary trans
 #### What changed
 - `error.handoff.md`: the entry *A realization's capsule composition and method-reuse model, in general (not specific to `Error`)* narrows. What it carried as open is now settled: the language does not intervene in satisfaction, reuse is explicit delegation to a capsule that owns the behavior, and reducing the delegation boilerplate is already an organizational Rule — so a future language-level reuse mechanism is refused rather than open, and the information the entry called scattered is settled in one section. What remains is the authoring side: how a concrete error is written, and what role code generation plays in writing it. The dedicated document is kept for that residue alone.
 - No base-document body changed; [The Error → Composition](./error.md#composition) still tracks the question in its own handoff and its wording is untouched by this entry.
+
+---
+
+### Review of the uncommitted changes of 2026-10-12
+- Time: 2026-10-12T09:45:50Z
+- Type: Reviewed
+- Contributors:
+  - [Claude](../../../CONTRIBUTORS.md#claude) (Sonnet-5.5) — reviewed
+
+#### What changed
+- Reviewed; no change needed. The added handoff entry on `TAGS`: `error.md` lists the six fields at line 211 under the cited heading, `detail.kh` lines 19-41 declare the other five and `TAGS` appears at line 61 inside the archived block. The question is left to the owner.

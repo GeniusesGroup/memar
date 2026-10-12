@@ -126,3 +126,14 @@
 #### What changed
 - The document, its practice, its handoff, and this changelog moved from `docs/protocols/net/` to `docs/modules/lib/net/`, opposite the realization at `modules/lib/net/http/`; every relative link was re-derived for the new depth.
 - [Memar's Stance on the HTTP Protocol Surface](./http.md#memars-stance-on-the-http-protocol-surface) names `lib/` as the folder the document lives in.
+
+---
+
+### Review of the uncommitted changes of 2026-10-12
+- Time: 2026-10-12T09:45:50Z
+- Type: Reviewed
+- Contributors:
+  - [Claude](../../../../CONTRIBUTORS.md#claude) (Sonnet-5.5) — reviewed
+
+#### What changed
+- Reviewed; no change needed. The added handoff entry on the status vocabulary: `status.observers.kh` lines 6 and 9 declare the two observers as cited, `version.kh` is one line, and `const.kh` opens with the archived block. The question is left to the owner.

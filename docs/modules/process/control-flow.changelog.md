@@ -189,7 +189,7 @@ This problem closely parallels `Result`/`Option` combinator naming in Rust (`.is
   - [Type](../../type.md) — Evidence: Scope counts a namespace or module-visibility boundary among its realizations.
   - [Khayyam Rule — Code Scope Placement](../../../bundles/khayyam/rules/scope-placement/scope-placement.md) — Conflicts: this toolchain refuses a top-level `sc`, and its handoff records that no document says what a file-level scope is.
 - Propagates to:
-  - modules/khayyam/core/test/matrix.test.ts: Done — the archive row for `modules/process/control-flow/protocol/if.kh` still expects refusal but no longer pins the `name-not-declared` label, so the draft's first fault is not frozen as its answer; the label stays asserted by the inline row that reproduces the draft's import shape.
+  - bundles/khayyam/core/tests/matrix.test.ts: Done — the archive row for `modules/process/control-flow/protocol/if.kh` still expects refusal but no longer pins the `name-not-declared` label, so the draft's first fault is not frozen as its answer; the label stays asserted by the inline row that reproduces the draft's import shape.
   - modules/process/control-flow/README.md: Done — points at this document and the open owner question.
   - modules/process/control-flow/protocol/if.kh: Rejected — left as the draft negative the M1 inputs decision in [execution.handoff.md](../../../bundles/khayyam/khayyam.handoff.md) names; rewriting it would presuppose the owner answer.
 - Contributors:
@@ -255,3 +255,14 @@ This problem closely parallels `Result`/`Option` combinator naming in Rust (`.is
 - `control-flow.handoff.md`: the entry *Interaction with the rejection of default implementations* is removed. It asked how a shared success/failure abstraction would interact with the language's rejection of default implementations, and named the per-implementer delegation line as the mechanism still to be designed. That mechanism is not undesigned: `type.md` states the condition under which a method is a component's own, and `abstraction.md` states the alternative the rejection names, together with what boilerplate reduction costs and which organizational rules carry it.
 - Nothing else in the handoff moved. Whether the success/failure pair lives on the `Error` abstraction or on a shared abstraction, and which of the candidate pairs is named, are separate entries and both stay open — the removed one was contingent on the first of them and asked nothing the language has not already answered.
 - No base-document body changed; the paired document and its own claims are untouched by this entry.
+
+---
+
+### Review of the uncommitted changes of 2026-10-12
+- Time: 2026-10-12T09:45:50Z
+- Type: Reviewed
+- Contributors:
+  - [Claude](../../../CONTRIBUTORS.md#claude) (Sonnet-5.5) — reviewed
+
+#### What changed
+- Reviewed; no change needed. The one change corrects a Propagates-to path to `bundles/khayyam/core/tests/matrix.test.ts`, which exists; the former `modules/khayyam/core/test/` path no longer does. A link correction in a history entry that keeps its meaning.

@@ -61,3 +61,14 @@
 #### What changed
 - `concurrency.handoff.md`: "Foreign blocking code" narrowed. Two of the entry's three terms are already answered by the substrate topic's own obligation — an operation that would block a kernel thread is either realized through the substrate's suspension mechanism or explicitly documented as substrate-hostile, so a call into a foreign library takes one of the same two branches, and the documentation expectation is stated rather than open. What the topic names nowhere is detection: how the substrate learns that a foreign call has blocked its carrier, and whether a detected block is reacted to or only surfaced. What also remains is whether the obligation reaches third-party code whose documentation Memar cannot write.
 - No other entry moved. The signaling primitive's contract and the substrate-configuration exposure question are untouched; the first still has no contract anywhere, and the second is a decision about the first realization.
+
+---
+
+### Review of the uncommitted changes of 2026-10-12
+- Time: 2026-10-12T09:46:30Z
+- Type: Reviewed
+- Contributors:
+  - [Claude](../../../CONTRIBUTORS.md#claude) (Sonnet-5.5) — reviewed
+
+#### What changed
+- Reviewed; no change needed. `concurrency.handoff.md` differs from HEAD by the corrected opening path (`modules/computer/concurrency.md`), a relative link to Runtime, and the narrowing of "Foreign blocking code". The narrowing matches the entry above that records it and the substrate topic of `concurrency.md` (the two-branch obligation, no detection mechanism named); the anchor resolves.

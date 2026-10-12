@@ -159,3 +159,14 @@
 #### Considered and not done
 - **A fixed CI schedule** (not taken): the tiering states which party runs which tier and why, and leaves cadence to the consuming project's runner rather than inventing one cadence here.
 
+---
+
+### Review of the uncommitted changes of 2026-10-12
+- Time: 2026-10-12T09:45:50Z
+- Type: Changed
+- Contributors:
+  - [Claude](../../../CONTRIBUTORS.md#claude) (Sonnet-5.5) — reviewed, revised
+
+#### What changed
+- Fixed `test.md`, *What a Passing Suite Establishes*: the change had altered "three substitutions" to "four", but the section lists three things a green run does not establish (conformance, the rightness of the expectations, behavior not exercised). Restored to three.
+- Fixed `test.research.001.md`, Open Questions, the bullet on the singular role folders: the change replaced `core/test/` with `services/*/test/`, which is not a path that exists, and the toolchain's test folders were all moved to the plural `tests/` in commit 8f63a66. The bullet now keeps the survey's `core/test/` and records the move, so the drift half of the question is shown as closed while the missing convention document stays open.

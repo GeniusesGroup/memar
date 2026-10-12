@@ -333,3 +333,16 @@
 #### Considered and not done
 - **Deleting the sentence outright (rejected)**: the fact that no suite runs is current state a reader needs, and the Relevance discipline keeps current state in the body. What changed is the shape of the fact, not its presence.
 - **Also reframing the matching sentences in `runtime.md` and its changelog (rejected)**: that document carries the same shape and is not this session's to write. It is named here so the residue is visible rather than lost.
+
+---
+
+### Review of the uncommitted changes of 2026-10-12
+- Time: 2026-10-12T09:46:30Z
+- Type: Changed
+- Contributors:
+  - [Claude](../../../CONTRIBUTORS.md#claude) (Sonnet-5.5) — reviewed, revised
+
+#### What changed
+- Reviewed the uncommitted changes to `compiler.md` and `compiler.handoff.md` against HEAD. The `compiler.md` changes restore the topics the entries of 2026-10-03, 2026-10-04 and 2026-10-05 above already record (the obligation to flow management, the branch body's seven guarantees, the four unchosen mechanisms, the two findings, the repository-implementation topic, the call-against-a-specification freedom, the discipline rationales, the first-instance freedom, and the reworded Methodology sentence), plus link re-pointing for the folder move. The handoff gains five open questions (flow-management mechanism, the branch decision's implementation, serving a call against a specification, first instance outside any body, the method-ownership expectation) and one anticipated conformance check, as the 2026-10-03 entry's propagation records. No answer is placed or removed; every anchor and link resolves, and the line citations into the JavaScript target (`link.ts:93-96`, `emit.ts:223-228`, `423-428`, `464`, `body.ts:15-24`) hold at HEAD (the working tree's `body.ts` has since shifted the type to lines 17-26).
+- Fixed in [A protocol may be written for an obligation nothing discharges](./compiler.md#a-protocol-may-be-written-for-an-obligation-nothing-discharges), commitment 2: it said the construction model records that thirty-three declarations "name a responsibility that makes an instance exist, and not one of them discharges it". The construction model says something narrower and warns against that reading: the `From*` declarations attach to the type they produce and none carries an influenced variable of it, "a record of this repository rather than a failure of the language", and not a showing that nothing fills the slot. The sentence now states that.
+- Fixed in `compiler.md` → What no option delivers: the link labelled "the target's own model handoff" points at the control-flow model's handoff, which is where the driver question is recorded; the label now says so.

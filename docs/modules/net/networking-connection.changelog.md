@@ -100,3 +100,14 @@
 - [Timeouts and liveness are budgets of the owning component](./networking-connection.md#timeouts-and-liveness-are-budgets-of-the-owning-component) already states the answer: "Where an individual exchange genuinely carries a caller-meaningful bound, that bound is an explicit parameter of that exchange — modeled where it is meaningful, not threaded invisibly everywhere". [Process → Timeout is an internal budget, not a per-request promise](../../process.md#timeout-is-an-internal-budget-not-a-per-request-promise) states the same rule at the layer that owns it.
 - The entry's choice — a dedicated parameter convention in sRPC, or an application-level modeling choice — is answered: the bound is a parameter of the exchange, and the exchange is modeled where it is meaningful, which for sRPC is sRPC's own frame model rather than a per-call convention threaded through every layer.
 - No line under Anticipated Work changed; the other two entries are untouched.
+
+---
+
+### Review of the uncommitted changes of 2026-10-12
+- Time: 2026-10-12T09:45:50Z
+- Type: Reviewed
+- Contributors:
+  - [Claude](../../../CONTRIBUTORS.md#claude) (Sonnet-5.5) — reviewed
+
+#### What changed
+- Reviewed; no change needed. The handoff lost two questions and gained link and path corrections. Both removals are already recorded in this changelog ("State-exposure surface settled on state query and EventTarget", 2026-10-04T21:26:14Z, and "Per-exchange bounds question removed as already stated by the owning-component budget", 2026-10-05T09:47:47Z), and the answers stand in `networking-connection.md` (the quoted caller-meaningful-bound sentence is present). The remaining edits are `protocols/` to `modules/` and the HTTP link to `../lib/net/http.md`.

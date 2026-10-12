@@ -112,13 +112,13 @@ heap:
 
 ## Data Fields
 
-### DataTypeID
+### TypeID
 - It is optional field
 - It MUST be first field if decide to add this field.
 - It is useful, If developers want to indicate dynamically types in runtime, they can use below structure.
 ```go
 type Capsule struct {
-	dataTypeID uint64
+	typeID uint64
 	dynamicallyArray
 }
 ```

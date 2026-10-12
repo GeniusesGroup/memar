@@ -357,3 +357,15 @@ Dissolved every `#### Discussion` wrapper (the boundary topic, the kernel-layer 
 #### Considered and not done
 - **Writing the four residue sentences into os.md (not done this session)**: the work this session was scoped to the companion files; each sentence is recorded as its entry's residue and as the pending propagation above, so the next session writes one sentence per entry instead of re-deriving it.
 - **Deleting the entries whose answers follow from a stated principle (rejected)**: a handoff carries what a session did not settle as well as what it did, and a residue that looks derivable is exactly the residue a later session re-derives. Each narrowed entry now names the passage that settles the rest and the one thing the passage does not reach.
+
+---
+
+### Review of the uncommitted changes of 2026-10-12
+- Time: 2026-10-12T09:46:30Z
+- Type: Changed
+- Contributors:
+  - [Claude](../../../CONTRIBUTORS.md#claude) (Sonnet-5.5) — reviewed, revised
+
+#### What changed
+- Reviewed the uncommitted changes to `os.handoff.md` against HEAD. The removals (the responsibility boundary, what makes a domain non-removable, the boot path's status) are each recorded as removals with their reasons in this changelog, and the five narrowed entries (device drivers, parallelism, scheduling policy, storage throughput, the principal reconciliation's framing) match the entries above and the cited passages of `os.md` and `framework.md`; the cited anchors resolve. The opening path (`protocols/computer/os.md` to `modules/computer/os.md`) is a correct re-point. The Clive candidate source and the `persia_os.md` re-point note are additions; the five `persia_os.md` Pendings counted match this changelog and the file is absent from the tree.
+- Fixed: the Clive line under "Observability without the traditional process abstraction" carried a duplicated tail (a fragment of the entry's own State sentence after "Not read.") and asserted that Clive "therefore has to answer this question" from a note the entry itself says was not read. The duplicate is removed and the claim is now what the note says (designed for distributed and cloud environments), with whether it must answer the question left open. Hyphens used as dashes in the same entry were restored to the file's em dashes.

@@ -1,0 +1,16 @@
+# Harf - Character Codec Handoff
+Open work for `modules/codec/characters-codec.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](../../documentation-handoff.md) for what a handoff is.
+
+## Open Questions
+
+### The maximum effective-byte count a conforming encoder may emit
+- State: the document argues two different caps. `## Encoding` computes the capacity of 4 effective bytes — 2,097,152 scripts and 266,338,304 characters — and concludes "we think we don't need more than 4 byte". `## Goals` states the same reach ("4 effective bytes is enough for encoding more than 266,338,304 characters") and then continues "but this encode system can use for more than 4 bytes and can increase to n bytes". The Self-synchronization goal's claim that a character start "can be found from a random position by backing up at most 3 bytes to find the leading byte" holds only if 4 is the cap: with n effective bytes the backup is n-1. No rule states the maximum, so a decoder's obligation — how far it may have to back up, and whether a longer sequence may legitimately appear — is undefined, and the encoding table's trailing `...` row carries no bound either.
+- Next: rule on the cap, then align Goals' "can increase to n bytes" with it; the table's continuation row and the Self-synchronization goal's backup figure follow from that one number. (Migrated from the disagreement between the `## Encoding` and `## Goals` sections in characters-codec.md.)
+
+### Whether some ASCII codes may be reused for other characters
+- State: carried as a claim the author holds strongly — "some ASCII codes like control one is waste of first byte and we can reuse them for other characters" — and recorded nowhere else in the document. The Encoding table assigns ASCII the single leading-bit-zero byte, the first Goal names backward compatibility with ASCII as the main driving force behind the design, and the Self-synchronization goal depends on single-byte and continuation bytes never sharing values. What a reclaimed code point would do to each of those was not worked through.
+- Next: decide whether an already-assigned code point may be reclaimed at all, and if so which and at what cost to the compatibility and self-synchronization Goals. (Migrated from the retired `## Still considering` section in characters-codec.md.)
+
+### Whether each human language needs a number character
+- State: the open question is whether each human language must introduce a number character, and the working answer recorded alongside it is that it is "GUI problem not character codec problem to display numbers in desire language format base on the number context". Nothing in Encoding, Goals, or Non Goals carries that answer, so whether the codec is obliged to provide a numeral per script, or whether the numerals of every script are the presentation layer's business alone, is undecided.
+- Next: decide whether a numeral belongs to a script's character set, and if it does not, whether the Encoding table needs to say so — a reader currently cannot tell whether the omission is a decision or an oversight. (Migrated from the retired `## Still considering` section in characters-codec.md.)

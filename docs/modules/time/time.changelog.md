@@ -128,3 +128,14 @@
 - `time.md` → [The definitional question, kept open](./time.md#the-definitional-question-kept-open): the requirement as it now stands is that a time contract's terms are ordering and comparison alone, the minimal commitments any of the candidate definitions support.
 - The check that now decides it is per term: read a term of an Instant or Duration contract, and a term naming causality, simultaneity across distributed components, or a monotonicity guarantee is not a term this contract carries — that question is owned by networking and process.
 - The replaced wording, that Memar's abstractions must not hard-code a metaphysics, named no term and no procedure; the section's next sentence already carried the decidable content, so the rule is now stated as that content and the unsettled definition stays where the document keeps it.
+
+---
+
+### Review of the uncommitted changes of 2026-10-12
+- Time: 2026-10-12T09:45:50Z
+- Type: Reviewed
+- Contributors:
+  - [Claude](../../../CONTRIBUTORS.md#claude) (Sonnet-5.5) — reviewed
+
+#### What changed
+- Reviewed; no change needed. Two added handoff entries: the unix realization (`modules/time/unix/` holds five `.kh` files with no `tp`, `cp` or `vr` line; `time.kh` lines 9, 15, 19, 22 match the cited declarations) and the timer constants (`modules/time/timer/const.kh` lines 12-20 match). Both anchors in `time.md` exist. The questions are left to the owner.

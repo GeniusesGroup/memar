@@ -95,3 +95,14 @@
 
 #### Decision
 - The goal graduates by owner ruling (Omid Hekayati, 2026-10-10) from [SDK Handoff → The agent as an SDK consumer](../process/service-sdk.handoff.md#the-agent-as-an-sdk-consumer), where it had stood as his position: a protocol is designed for all its participants, not one; binary on the wire saves the whole network's resources, which at scale is not small, and the industry's move from REST to gRPC is the precedent that wire cost matters. The precedent stays in this record; the body states only the goal.
+
+---
+
+### Review of the uncommitted changes of 2026-10-12
+- Time: 2026-10-12T09:45:50Z
+- Type: Reviewed
+- Contributors:
+  - [Claude](../../../CONTRIBUTORS.md#claude) (Sonnet-5.5) — reviewed
+
+#### What changed
+- Reviewed; no change needed. The added handoff entry on `Error-ID`: `modules/lib/net/http/headers/const.kh` declares `Key_ErrorID = "Error-ID"` only inside the archived block that opens the file, and `const.kh` repeats it in a comment, so "comment-only" holds. The question is left to the owner; the `protocols/` to `modules/` and link corrections are mechanical.

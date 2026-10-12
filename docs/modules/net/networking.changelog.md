@@ -272,3 +272,35 @@ Dissolved the document-level `## Discussion` (Drawbacks, Rationale and alternati
 - Recorded as settled: [HTTP → Two Optional Places for One Concept](../lib/net/http.md#two-optional-places-for-one-concept) states the rule — "an address contains only the information required to determine the destination; request data does not belong in the routing address" — and names what it is, "the HTTP appearance of a Networking-layer rule". That answers the entry's open choice, because routing the rule to the protocol-concept layer is what that sentence declines. [sRPC → Independent identities](./sRPC.md#independent-identities) is recorded as the application-protocol instance, not the rule's authority.
 - Residue recorded: this document states the rule nowhere and has no principles section to state it in; the missing sentence is the rule asserted once here, as a Networking-layer principle, with the HTTP collapse and sRPC's identities as instances.
 - The base document's body is unchanged; the other seven entries under Open Questions are untouched.
+
+---
+
+### Added Edge computing as a Networking-level architectural principle
+- Time: 2026-08-31T17:29:51Z
+- Type: added
+- Propagates to:
+  - giti.md: Done — its Frame architecture topic points at this principle so header economy is never read as license for gratuitous data movement.
+- Contributors:
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [ChatGPT](../../../CONTRIBUTORS.md#chatgpt) — collaborated
+  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — applied.
+
+#### What changed
+New topic under Hardware in networking.md: total network cost is the sum of transmission, routing, and state, so minimizing a header is not minimizing the network; data movement must be justified, execution and storage belong at the edge where locality pays, the ecosystem's tooling should make the local choice the easy choice, and no topology is imposed on applications. GP's frame architecture cross-references it. This entry was first written on `giti.changelog.md`, which is not the document it records a change to; the change is to `networking.md`, so the record belongs here.
+
+#### Deliberation
+- Network cost is transmission plus routing and state, and GP's small headers must never be read as removing the obligation to keep data, processing, and storage local where locality reduces total cost (Omid Hekayati — decided).
+- The principle was recorded at Networking level because it is an architecture-wide principle, not a GP packet property (Omid Hekayati — decided).
+- The principle's placement and its non-mandate formulation — enable and incentivize locality; force no topology — were shaped (ChatGPT — collaborated).
+
+---
+
+### Review of the uncommitted changes of 2026-10-12
+- Time: 2026-10-12T09:45:50Z
+- Type: Changed
+- Contributors:
+  - [Claude](../../../CONTRIBUTORS.md#claude) (Sonnet-5.5) — reviewed, revised
+
+#### What changed
+- Reviewed the handoff change and the entry moved here from `giti.changelog.md`. The settled address question is recorded in the entry above and its quote is present in `http.md`; the moved entry is explained in its own text.
+- Fixed `networking.handoff.md`, entry *The traditional-stack dependence check's home*: the new *Candidate source* line ended with a duplicated tail of the preceding State sentence (`— the pattern filesystem.practice.md ... Not decided.`), which made it read as two sentences run together; the duplicate is removed. The em dashes that the change had turned into hyphens in the State sentence and in the added line are restored to match the rest of the file.

@@ -1,5 +1,5 @@
 # sRPC — Application Protocol Handoff
-Open work for `protocols/net/sRPC.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](../../documentation-handoff.md) for what a handoff is.
+Open work for `modules/net/sRPC.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](../../documentation-handoff.md) for what a handoff is.
 
 ## Open Questions
 
@@ -8,12 +8,18 @@ Open work for `protocols/net/sRPC.md`. Entries are mutable current state — rev
 - Next: design jointly with the frame registry's next revision.
 
 ### The library-broker delivery machinery's wire shape
-- State: the [Position on Message Brokers](../net/sRPC.md#position-on-message-brokers) wraps the application's own store with this protocol's acknowledgement discipline; what that wrapping looks like on the wire (persistent-queue frames, retry semantics, durable-delivery flags) is unspecified. This does not block the position itself; it blocks implementing durable delivery as a wire contract.
+- State: the [Position on Message Brokers](sRPC.md#position-on-message-brokers) wraps the application's own store with this protocol's acknowledgement discipline; what that wrapping looks like on the wire (persistent-queue frames, retry semantics, durable-delivery flags) is unspecified. This does not block the position itself; it blocks implementing durable delivery as a wire contract.
 - Next: design after the cancellation contract settles, on the same frame model.
 
 ### Close-Stream `Reason` identification
-- State: [Close-Stream](../net/sRPC.md#close-stream-frame) carries `Reason uint64`. Whether `Reason` is an Error ID — the same identification as the Error frame's `ErrorID` / [MediaTypeID](../identifier/media-type.md) of an error media type — is unsettled. The field exists; its identifier space does not. This does not block the rest of the protocol; it blocks treating Close-Stream as an error-carrying frame.
-- Next: decide when Error identification is next revised, jointly with [Error ID](../net/sRPC.md#error-id).
+- State: [Close-Stream](sRPC.md#close-stream-frame) carries `Reason uint64`. Whether `Reason` is an Error ID — the same identification as the Error frame's `ErrorID` / [MediaTypeID](../identifier/media-type.md) of an error media type — is unsettled. The field exists; its identifier space does not. This does not block the rest of the protocol; it blocks treating Close-Stream as an error-carrying frame.
+- Next: decide when Error identification is next revised, jointly with [Error ID](sRPC.md#error-id).
+
+### `Error-ID` is named as a consumed HTTP adapter, and no header declares it
+- State: [Error ID](sRPC.md#error-id) makes `Error-ID` the wire form other protocols may carry — `http-header: Error-ID: {{.ErrorID}}` — and every `Key_*` in both archives is comment-only, so no header key in the HTTP realization declares it. The contract is this protocol's: the document names `ErrorID` as an Error media type's `MediaTypeID` and states HTTP only as an adapter, which is why [HTTP](../lib/net/http.md) is where a header key would be declared and not where this contract is owned.
+- Blocks continuation: it blocks settling [Close-Stream `Reason` identification](#close-stream-reason-identification) against the wire — whether `Reason` is an Error ID cannot be settled from the protocol while the identifier's carried form is undeclared. The frame model is otherwise unaffected, and nothing in the toolchain reads either frame.
+- Next: owner ruling on whether the adapter stays stated here as an example or is dropped, and whether the header key belongs to HTTP's protocol; the [HTTP Handoff](../lib/net/http.handoff.md) is where a header's own declaration would then be recorded.
+- Carried from: [Go Target Research 001 → Live problems the two archives jointly expose](../../../bundles/khayyam/targets/go/target.research.001.md#live-problems-the-two-archives-jointly-expose--defects-in-the-sources-and-where-each-one-was-routed), verified 2026-10-02 and routed here 2026-10-08.
 
 ### A reserved service that delivers a service's SDK
 - State: owner proposal (Omid Hekayati, 2026-10-10), not designed: one well-known service, at a reserved [Service ID](sRPC.md#service-id), that any agent or consumer calls to obtain an application's SDK in its own language, or as the signed WASM bundle, so the consumer understands the service locally as text while every exchange on the wire stays binary. A Service ID is the [MediaTypeID](../identifier/media-type.md) of the service media type, so the request is keyed by the service's media type, the consumer's language or form, and the declaration revision. Nothing in [Service ID](sRPC.md#service-id) reserves an identifier today, and a MediaTypeID is computed from a hash of the media type ([Media Type](../identifier/media-type.md)), so "reserved" may mean one well-known service media type whose ID every party computes rather than a number set aside — which of the two is undecided. The proposal ties to [What the declaration artifact is](../process/service-sdk.handoff.md#what-the-declaration-artifact-is), since what the service returns is derived from that artifact, and to [The local/network realization decision surface](../process/service-sdk.handoff.md#the-localnetwork-realization-decision-surface); the consumer side is [The agent as an SDK consumer](../process/service-sdk.handoff.md#the-agent-as-an-sdk-consumer). This does not block the frame model; it blocks specifying SDK delivery over this protocol.
