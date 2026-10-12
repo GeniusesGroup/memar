@@ -6,7 +6,7 @@
 - Time: 2026-07-21T09:39:49Z
 - Type: Added
 - Cited:
-  - [Reevaluating the Filesystem as a Fundamental Modeling Primitive](./modules/lib/memory/filesystem.md) — Depends_on: this specification builds upon the filesystem critique to establish positive principles for knowledge modeling.
+  - Reevaluating the Filesystem as a Fundamental Modeling Primitive (`docs/modules/lib/memory/filesystem.md`) — Depends_on: this specification builds upon the filesystem critique to establish positive principles for knowledge modeling.
   - [The Knowledge-Creating Company](https://hbr.org/1991/07/the-knowledge-creating-company) — Reference: Nonaka & Takeuchi's foundational work on organizational knowledge creation (SECI), the process view of knowledge this framework adopts.
   - [Semantic File Systems](https://dl.acm.org/doi/10.1145/121132.121138) — Reference: Gifford et al.'s demonstration that attribute-based access outperforms hierarchical access for information-rich content.
   - [Unikernels: Library Operating Systems for the Cloud](https://anil.recoil.org/papers/2013-asplos-mirage.pdf) — Reference: evidence that general-purpose filesystems are not universal requirements, supporting filesystem-as-optional-capability.
@@ -217,7 +217,7 @@
 
 #### What changed
 - [Write for the Structure of the Subject, Not for Today's Reader Limits](./knowledge.md#write-for-the-structure-of-the-subject-not-for-todays-reader-limits) now states that what a document owes its reader is weighted by what that reader's misreading costs. Where the subject cannot absorb an error, what is owed is not legibility but performability: every step executable as written, with no step left to interpretation.
-- The case that prompted it is named and bounded. ASD-STE100 answers this obligation with fifty-three writing rules and about nine hundred approved words; what Memar takes from it is the diagnosis rather than the instrument — a reader who misresolves a word is a defect with an owner, answered by defining the term and stating where the definition diverges from ordinary usage, not by narrowing the vocabulary a reader may use. The reason the instrument does not travel is stated from the standard's own maintainers rather than from a secondary account: a checking product cannot replace the specification, no such product is certified as compliant with it, writing in it correctly demands professional judgment rather than saving it, and its dictionary is not closed — the domain's own technical names are the exemption the maintainers themselves carve out. A checker standing in for an understanding is the substitution [Test → What a Passing Suite Establishes](./modules/process/test.md#what-a-passing-suite-establishes) already rules out.
+- The case that prompted it is named and bounded. ASD-STE100 answers this obligation with fifty-three writing rules and about nine hundred approved words; what Memar takes from it is the diagnosis rather than the instrument — a reader who misresolves a word is a defect with an owner, answered by defining the term and stating where the definition diverges from ordinary usage, not by narrowing the vocabulary a reader may use. The reason the instrument does not travel is stated from the standard's own maintainers rather than from a secondary account: a checking product cannot replace the specification, no such product is certified as compliant with it, writing in it correctly demands professional judgment rather than saving it, and its dictionary is not closed — the domain's own technical names are the exemption the maintainers themselves carve out. A checker standing in for an understanding is the substitution Test → What a Passing Suite Establishes (`docs/modules/process/test.md#what-a-passing-suite-establishes`) already rules out.
 - The Principle statement gains its third sentence, so the section's summary states the whole of what the section now holds.
 - The paragraph was written once and then rewritten within the same day. Its first version rested on a claim sourced to a tertiary article, and on a premise about the standard's intended reader that the maintainers deny; the claim was replaced with statements read from the maintainers and the narrow premise was withdrawn. [Knowledge Research 001 → A correction this research's own first pass required](./knowledge.research.001.md#a-correction-this-researchs-own-first-pass-required) records the correction rather than only its repair.
 
@@ -398,3 +398,39 @@ The rule added in [Documentation → Citations](./documentation.md#citations) wa
 
 #### Considered and not done
 - Removing the "Task Domain Model" item from `knowledge.handoff.md` Anticipated Work because Terminology leaves Task undefined: not done, since the item asks for a model the Organization project is developing, which that term entry does not contradict.
+
+---
+
+### An agent's route to a third-party library's shape is a question, not a rule
+- Time: 2026-10-12T10:08:42Z
+- Type: Added
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - decided
+  - Auto (model not recorded) via [OpenCode](../CONTRIBUTORS.md#opencode) - applied
+
+#### What changed
+- [Knowledge Handoff → What an agent is to do when it lacks a third-party library's shape](./knowledge.handoff.md#what-an-agent-is-to-do-when-it-lacks-a-third-party-librarys-shape) records the question: no Memar document states the route an agent takes when it needs the current interface of a library the project depends on and cannot reach it from the project's own sources.
+- The entry names the four norms the surrounding documents already hold for that case - source is context and never a substitute for inspectable support, a stale shared artifact is reported rather than propagated, an answer the lookup does not hold is reported rather than supplied, and the performed service over a live corpus is delivered outside this repository - so that the next session does not re-derive them.
+- Two questions are left to the owner: which route is sanctioned, and whether such material grounds an agent's reasoning or is evidence to be checked.
+
+#### Considered and not done
+- Writing the rule in `knowledge.md` or `agency.md`: not done. A source's standing is already held as a discourse norm ([Cognition → Evaluate claims on their merits](./cognition.md#evaluate-claims-on-their-merits-treat-source-as-neither-authority-nor-disqualifier)), so a second statement would restate it, and the act the question turns on - a text an agent reads as material rather than a claim offered in an exchange - is not the act that norm governs. The gap is the question, not the norm.
+- Naming the neighbouring project this question came from: not done, by the owner's ruling. The examination is a document in `docs/comparisons/` and is found by listing that folder.
+
+---
+
+### Review of the Context7 placements of 2026-10-12
+- Time: 2026-10-12T11:01:35Z
+- Type: Changed
+- Contributors:
+  - [Claude](../CONTRIBUTORS.md#claude) (Sonnet 5.5) — revised
+
+#### What changed
+- The earlier entry "An agent's route to a third-party library's shape is a question, not a rule" carried a Time of 2026-10-12T11:20:00Z, which was invented and later than the write; it now carries the file's write time, 2026-10-12T10:08:42Z.
+- [Knowledge Handoff → What an agent is to do when it lacks a third-party library's shape](./knowledge.handoff.md#what-an-agent-is-to-do-when-it-lacks-a-third-party-librarys-shape): the absence claim is scoped to the search made, and the entry now cites Module dependency (`docs/modules/computer/module-dependency.md`), whose pinned repository reference already answers which revision a project builds against, and says what stays open. The earlier entry's "four norms" was wrong: three are norms and the README sentence is a scoping statement; the handoff now says so.
+
+#### Why
+- An independent evaluation (session 20261012T105448Z-25360-0) found the invented time, an unscoped absence claim, and a missing citation of the document that already answers part of the question.
+
+#### Considered and not done
+- Moving the question out of Knowledge: not done. Knowledge is a weak home, but no better owner was found, and the owner has not ruled.

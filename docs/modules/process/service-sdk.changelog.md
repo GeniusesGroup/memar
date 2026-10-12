@@ -187,3 +187,39 @@
 - Working positions 13 and 14 graduate from the handoff by the owner's ruling of 2026-10-10; both positions are his (Omid Hekayati). His reason for position 13: a protocol is designed for all its participants, not one; binary on the wire saves the whole network's resources — bandwidth, and the serialization and parse work at both ends of every exchange — which at scale is not small, and the industry's move from REST to gRPC is the precedent that wire cost matters. The precedent is recorded here and not in the body, which would need a source for it.
 - Instructions to a model on using a service (MCP's Prompts) are not graduated: that extension of position 14 is the session's, not ruled on by the owner, and stays tentative in the handoff.
 - An SDK delivered as ordinary source code rather than WASM is not a critical risk (owner ruling, Omid Hekayati, 2026-10-10). What a consumer expects of a connection is a specific domain fixed outside the SDK — it expects to reach google.com to search — and the consumer itself, such as the agent application, checks that expectation at a layer such as TLS, the peer's verified identity, so any connection the SDK's code attempts to another domain is blocked. Containment is the consumer's connection policy; WASM stays his preferred form. How the WASM bundle relates to Working position 7 stays open in the handoff.
+
+---
+
+### What a delivery owes its consumer beyond call correctness
+- Time: 2026-10-12T10:08:43Z
+- Type: Added
+- Contributors:
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) - decided
+  - Auto (model not recorded) via [OpenCode](../../../CONTRIBUTORS.md#opencode) - applied
+
+#### What changed
+- [SDK Handoff → What a delivery owes its consumer beyond call correctness](service-sdk.handoff.md#what-a-delivery-owes-its-consumer-beyond-call-correctness) records the open part of the obligation [What an SDK is](service-sdk.md#what-an-sdk-is) already states: the consumer's text about a service comes from types that describe themselves, and nothing says whether that reaches material that is not an interface - a document, a retrieved passage, a third-party corpus - where prose arrives whose origin and revision the consumer cannot name and so cannot tell from an answer it produced itself.
+- The same entry records the question from the other side: a corpus a project builds is a service, and a service owes a delivered interface to its consumers. Whether this protocol settles that or the owning module does is unstated.
+- Both are owner questions rather than mechanics, and neither waits on *Delivery and versioning*.
+
+#### Considered and not done
+- Adding the obligation as Working position 15: not done. It would extend a settled position into a class of material the position does not mention, and the class is what the owner has to decide first.
+
+---
+
+### Review of the Context7 placements of 2026-10-12
+- Time: 2026-10-12T11:01:35Z
+- Type: Changed
+- Contributors:
+  - [Claude](../../../CONTRIBUTORS.md#claude) (Sonnet 5.5) — revised
+
+#### What changed
+- The earlier entry "What a delivery owes its consumer beyond call correctness" carried a Time of 2026-10-12T11:20:00Z, which was invented and later than the write; it now carries the file's write time, 2026-10-12T10:08:43Z.
+- [SDK Handoff → What a delivery owes its consumer beyond call correctness](service-sdk.handoff.md#what-a-delivery-owes-its-consumer-beyond-call-correctness): the "What is not stated" claim is scoped to the search made.
+- The corpus-as-a-service question moved to its own entry, [SDK Handoff → Whether a corpus a project builds is a service that owes a delivered interface](service-sdk.handoff.md#whether-a-corpus-a-project-builds-is-a-service-that-owes-a-delivered-interface), marked as resting on the Organization project's design, which was not quoted or verified.
+
+#### Why
+- An independent evaluation (session 20261012T105448Z-25360-0) found the invented time, an unscoped absence claim, and an unverified question mixed into a verified one.
+
+#### Considered and not done
+- Verifying the Organization design now: not done; it is the first step recorded under the new entry's Next.
