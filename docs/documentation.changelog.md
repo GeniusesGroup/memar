@@ -461,3 +461,36 @@ The owner proposed the rule as a prohibition on citing informal sources (Omid He
 
 #### Decision
 - The owner (Omid Hekayati, 2026-10-10) softened the rule so it does not read as a ban on citing a vendor's own report of its own product, keeping both his standing concerns explicit: a source whose terms do not permit the use is not cited, and no citation may let anyone later claim that Memar took its ideas from that source.
+
+---
+
+### Recording is not gated; removal is
+- Time: 2026-10-10T14:30:00Z
+- Type: Added
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — decided
+  - An AI agent (via [Cursor](../CONTRIBUTORS.md#cursor)) — drafted, applied
+
+#### What changed
+- New section [Recording Is Not Gated; Removal Is](./documentation.md#recording-is-not-gated-removal-is): nothing the work learns goes unrecorded; a rule, an open question, a finding, or a note is written into the document that owns its subject when the work reaches it, without waiting for anyone's permission; open questions are recorded along the path of reasoning as they arise; removal is the act that loses information and the one that takes care — what removed text said is moved, kept, or stated in the changelog entry that removed it.
+- The Abstract's list of cross-cutting conventions names it.
+- Occasion: in a pricing session in the `organization` project, a sub-agent declined to add rules to two bare edges because "filling it would invent content the owner hasn't given", and the session moved a changelog entry rather than leaving it; the owner stated that documenting a lesson has always needed no one's permission and that only deleting text deserves sensitivity.
+
+#### Considered and not done
+- **Placing the rule only in Cognition's *Confirm before large-scope changes*** (rejected): the rule governs what every document receives and loses, which is documentation's subject; Cognition carries the boundary sentence that keeps its norm from gating additions, and links here.
+- **Requiring additions to be proposed when they span several documents** (rejected): an addition loses nothing, and holding it for approval is the loss the rule prevents; the owning document's rules still judge its placement and content.
+
+---
+
+### Review of the uncommitted changes of 2026-10-12
+- Time: 2026-10-12T09:50:00Z
+- Type: Changed
+- Contributors:
+  - [Claude](../CONTRIBUTORS.md#claude) (Sonnet-5.5) — reviewed, revised
+
+#### What changed
+- Reviewed the uncommitted change to documentation.md, its handoff and this changelog against HEAD.
+- The new section [Recording Is Not Gated; Removal Is](./documentation.md#recording-is-not-gated-removal-is) said open questions are recorded in "the owning document's open questions"; open questions live in the handoff, not the document, so it now says "the open questions of the owning document's handoff".
+- The handoff's removals (*Mixed-facet documents*, *Further reader relationships*) are recorded by the 2026-10-04T18:19:38Z entry above, with the body sections that answer them.
+- The path fixes in File Naming (`modules/identifier/media-type.md`, `bundles/khayyam/rules/`) point at existing paths. The counts in that paragraph (41 of 115, 26 folders) were not recounted; the hunk changed only a path.
+- `memar content check` reports two broken links in this changelog (lines 296, 298: `memar-content.py` paths under `.agents/scripts/`); they are in committed text, not in this change, and were left.

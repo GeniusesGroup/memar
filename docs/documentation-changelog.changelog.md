@@ -170,7 +170,7 @@ Open questions (dot-boundary criterion, entry-title uniqueness, historical-entry
 - Time: 2026-09-09T06:02:23Z
 - Type: Added
 - Cited:
-  - [SDK](./protocols/modules/sdk.changelog.md) — Evidence: the triggering case — a link-repair entry in gui.changelog.md whose whole content restated a one-line diff — was flagged in the SDK protocol's own changelog while its propagation record was being written.
+  - [SDK](./modules/process/service-sdk.changelog.md) — Evidence: the triggering case — a link-repair entry in gui.changelog.md whose whole content restated a one-line diff — was flagged in the SDK protocol's own changelog while its propagation record was being written.
 - Propagates to:
   - gui.changelog.md: Done — the "SDK link corrected" entry removed under the new rule; the fix itself had already landed and remains in version control.
 - Contributors:
@@ -289,7 +289,7 @@ Open questions (dot-boundary criterion, entry-title uniqueness, historical-entry
   - docs/documentation.changelog.md, docs/type.changelog.md, docs/khayyam/agency.changelog.md, docs/khayyam/encapsulation.changelog.md, docs/khayyam/khayyam.changelog.md, docs/khayyam/method.changelog.md, docs/khayyam/polymorphism.changelog.md, docs/protocols/process/control-flow.changelog.md: Done — 24 bullets whose `via` field named the host tool as plain text now link it to that tool's `###` section.
   - docs/protocols/computer/lexer.changelog.md, docs/protocols/computer/compiler.changelog.md: Done — the stray comma inside `(GLM-5.3-Flash, via OpenCode)` removed, so the entry field reads as the shape this specification states.
   - docs/protocols/token.changelog.md: Done — its `Pending` propagation for a missing contributor entry is now `Done`.
-  - docs/protocols/token.md, modules/khayyam/lsp/lsp.handoff.md, modules/khayyam/lsp/test/definition-across-inclusion.test.ts, modules/khayyam/lsp/test/definition-fixture.ts, modules/khayyam/rules/lifecycle-method-names/lifecycle-method-names.md, modules/khayyam/rules/lifecycle-method-names/lifecycle-method-names.handoff.md: Done — text written through a byte-level decode that mangled every non-ASCII character; the em dashes, arrows, and quotation marks across the six files restored to the characters they stand for.
+  - docs/protocols/token.md, modules/khayyam/lsp/lsp.handoff.md, bundles/khayyam/lsp/tests/definition-across-inclusion.test.ts, bundles/khayyam/lsp/tests/definition-fixture.ts, modules/khayyam/rules/lifecycle-method-names/lifecycle-method-names.md, modules/khayyam/rules/lifecycle-method-names/lifecycle-method-names.handoff.md: Done — text written through a byte-level decode that mangled every non-ASCII character; the em dashes, arrows, and quotation marks across the six files restored to the characters they stand for.
 - Contributors:
   - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — claimed, decided
   - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) — drafted, applied
@@ -372,3 +372,54 @@ Open questions (dot-boundary criterion, entry-title uniqueness, historical-entry
 #### Considered and not done
 - Weakening condition 1, or making a reviewer of a reading-decided change cheaper to skip: the load-bearing half of the tag is that the party that did the work may not judge it, and nothing here touches that. An opinion remains worthless when it names nothing examined, so the tag records a comparison rather than a feeling.
 - Dropping the requirement that an approved entry record what was examined: without it the later reader inherits the verdict instead of the evidence, which is the substitution this change was made to stop.
+
+---
+
+### A placement audit of every changelog in the repository, and the four routing gaps it exposed
+- Time: 2026-10-10T05:17:06Z
+- Type: Added
+- Propagates to:
+  - [documentation-changelog.handoff.md](./documentation-changelog.handoff.md): Done — carries the four new open questions and the two new anticipated-work items the audit produced.
+  - [../bundles/khayyam/rules/import-address/import-address.changelog.md](../bundles/khayyam/rules/import-address/import-address.changelog.md): Done — an entry recording a change to `docs/khayyam/modularity.md` left this rule's ledger.
+  - [khayyam/modularity.changelog.md](./khayyam/modularity.changelog.md): Done — holds that entry.
+  - [khayyam/khayyam.changelog.md](./khayyam/khayyam.changelog.md): Done — holds an entry recording a change to `khayyam.practice.md`, misplaced from `encapsulation.changelog.md`.
+  - [modules/net/networking.changelog.md](./modules/net/networking.changelog.md): Done — holds an entry recording a change to `networking.md`, misplaced from `giti.changelog.md`.
+  - [modularity.changelog.md](./modularity.changelog.md): Done — no longer holds the entry recording a rename inside the `modules/` tree, which moved to that tree's own ledger.
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — asked for the audit, reported misplaced records in `cognition.changelog.md`
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) — delegated, audited, applied
+- Related work:
+  - [Documentation Practice](./documentation.practice.md) → *Results and companions* — the routing rule the audit judged every entry against
+  - [Documentation — Changelog](./documentation-changelog.md) → *Changelog scope*, *Changelog membership*, *Trivial changes*, *Session consolidation* — the four rules that decide scope, admission, deletion, and how many entries one session writes
+  - [Content](./content.md), [Modeling](./modeling.md), [Process](./process.md), [System](./system.md), [Knowledge](./knowledge.md), [Cognition](./cognition.md), [Framework](./framework.md) — the base artifacts whose ledgers were audited
+
+#### What changed
+- Every changelog in `docs/` and in the Khayyam bundle was audited entry by entry against the routing rule: roughly 560 entries across 77 files, each judged once. Three entries were found misplaced with an unambiguous destination and moved, each keeping its text and gaining one clause recording the file it was first written on: an entry recording a change to `docs/khayyam/modularity.md` from `import-address.changelog.md`; an entry recording where the `Field_UserUUID` procedure lives from `encapsulation.changelog.md` to `khayyam.changelog.md`; and *Added Edge computing as a Networking-level architectural principle* from `giti.changelog.md` to `networking.changelog.md`. An entry recording a rename inside the `modules/` tree left `modularity.changelog.md` for the tree's own README ledger.
+- Five entries were deleted as trivial under *Trivial changes*: a link repair that the entry itself calls mechanical with no change to any claim; an anchor repair inside a frozen audit record whose `Action` reads `None`; a correction of three statements the specification's own rule already required; a verbatim duplicate sentence; and a same-session migration that was undone the same session, leaving its document byte-identical to before.
+- Four entries whose subject is genuinely more than one artifact were left where they stand and are now open questions rather than silent judgement calls: they are listed by title in the handoff.
+- The owner's report that `cognition.changelog.md` had recently received records about other artifacts was checked and not supported: no entry in that file records a change to another artifact, and the file is byte-identical to HEAD.
+
+#### Deliberation
+- A propagation an entry names under `Propagates to` does not make the entry misplaced: what decides is what the change changed. Several entries across the audit write into a protocol document under `docs/modules/` or a rule under `bundles/khayyam/` while remaining correctly placed on their base artifact's ledger, and each was kept on that ground (Space Bunny Alpha — ruled for the audit).
+- A companion document gets no changelog of its own under *Changelog scope*, so an entry recording only a `.practice.md`, `.handoff.md`, or `.research.NNN.md` change belongs on the base artifact's ledger. This is why `documentation-handoff.changelog.md` correctly holds three entries about `documentation-handoff.practice.md`, a shape a prior report had flagged as suspect (Space Bunny Alpha — checked against the rule).
+- *Stale propagation paths are not misplacement.* The moves of `docs/protocols/` to `docs/modules/` and `modules/khayyam/` to `bundles/khayyam/` left 27 dead paths in the `docs/modules/computer/` ledgers alone; every audit left them for a repair pass and counted them instead (Space Bunny Alpha — ruled for the audit).
+
+#### Considered and not done
+- **Moving an entry with no single destination (not done)**: four such entries were reported instead, because a move needs a destination and the rule does not supply a tie-breaker for a change with no single subject (Space Bunny Alpha — reported).
+- **Collapsing the moved Edge-computing entry into the one already at its destination (not done)**: the two carry the same timestamp and the same topic, and merging would have edited an entry outside the audit's remit; the question is now recorded (Space Bunny Alpha — reported).
+- **Repairing the f-string fragments inside two entries (not done)**: `" + chr(0x2192) + "` in this topic's ledger and `" + chr(0x2014) + "` in `../process.changelog.md` are link-text defects inside entries that are correctly placed and not trivial, which no current rule reaches; the rule question is now recorded (Space Bunny Alpha — reported).
+- **Repairing the dead propagation paths (not done)**: a separate pass over ledgers, not an audit of entries (Space Bunny Alpha — noted).
+
+---
+
+### Review of the uncommitted changes of 2026-10-12
+- Time: 2026-10-12T09:48:00Z
+- Type: Changed
+- Contributors:
+  - [Claude](../CONTRIBUTORS.md#claude) (Sonnet-5.5) - reviewed, revised
+
+#### What changed
+- Reviewed the uncommitted change to `documentation-changelog.md`, `documentation-changelog.practice.md`, `documentation-changelog.handoff.md` and this ledger against HEAD. The link retarget in `documentation-changelog.md` (`protocols/process/test.md` to `modules/process/test.md`) resolves and needed no change. The `Recording an approval` rewording in the practice document is the change recorded by the entry that precedes the placement-audit entry, and it holds with what that entry says; it was not altered. The handoff's removed *dot-boundary* question was already recorded as answered by *The dot-boundary entry leaves the changelog handoff; Changelog scope states the criterion*, and the criterion is in `documentation-changelog.md` under Changelog scope, so that removal loses nothing.
+- Fixed in the placement-audit entry in this file: the `Related work` line's seven links were written `[Content(./content.md)` and did not render as links, and now read `[Content](./content.md)`; the blank line before `#### What changed`, `#### Deliberation` and `#### Considered and not done` was missing, unlike every other entry; one `Propagates to` link text began `../../bundles/` while its target (correctly) began `../bundles/`, and three others carried `../` text over `./` targets, and their texts now match their targets.
+- Fixed in `documentation-changelog.handoff.md`: the Anticipated Work item *Pending queue triage, blocking rule, and traceability surface* said nothing triages the Pending queue (61 at last report) and that answering "which documents depend on this one" needed full-text search. [Spec Kit comparison](./comparisons/spec-kit.001.md), section 12, records the queue triaged (18 discharged, 5 re-pointed, 37 kept open), `check` now reports 52 undischarged, and the `backlinks` and `obligations` verbs exist. The item is rewritten as *Pending queue: blocking ruling, enforcement, and traceability surface*, keeping what is still undecided.
+- Not checked: the audit entry's counts (about 560 entries, 77 files), the byte-identity of `cognition.changelog.md` to HEAD at the time of the audit (the file now differs through another session's work), and the two open questions' line citations beyond `documentation-changelog.changelog.md:336`.

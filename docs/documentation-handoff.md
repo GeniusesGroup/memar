@@ -54,7 +54,7 @@ The Handoff facet does not compete with the existing facets — each governs a d
 - **Versus Changelog**: a changelog records what *changed in an artifact* and why — it is consulted to audit history. A handoff records where a *discussion stands* — it is read to resume work. They can reference each other (a handoff may cite the changelog entries a discussion produced; a changelog entry may note the handoff it emerged from), but neither absorbs the other.
 - **Versus Practice**: the practice documents governing *how* to produce a handoff live in [the paired practice file](./documentation-handoff.practice.md). The base document defines the artifact's concept and structure; the practice defines the procedure.
 
-The handoff relationship between sessions is also what the [Cognition](./cognition.md) document's conversation model predicts is needed: thinking material degrades crossing a medium, and a session boundary is a medium crossing. The handoff artifact is the compensation for that specific degradation — specified here, justified there.
+The handoff relationship between sessions is also what the [Cognition](./cognition.md) document's conversation model predicts is needed: cognitive material degrades crossing a medium, and a session boundary is a medium crossing. The handoff artifact is the compensation for that specific degradation — specified here, justified there.
 
 ### File Format
 A Handoff-facet file is named `<base-filename>.handoff.md`, following the same companion-file convention the Changelog facet established — with the same pairing rule: the base artifact is not necessarily a document (a handoff can carry a discussion about an image, a piece of code, a model), though a discussion document is the overwhelmingly common case.

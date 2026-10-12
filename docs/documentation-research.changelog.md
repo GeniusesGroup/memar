@@ -175,3 +175,14 @@ ule.research.001.md cite none, and would not meet the criterion as now stated. W
 #### Considered and not done
 - **Renaming the Changelog facet to Audit** (rejected, and the question is the owner's if it returns): "audit" already names the reader relationship this facet serves - a reader auditing how the current state came to be - and would now also name one of its own sections, so the facet would point at its contents rather than at its subject. What the practice actually lacked was membership, not a name; if a rename is ever wanted, History is the accurate generalization, because the facet's subject is how the state came to be whether or not this session changed it.
 - **Registering the audit form in documentation.md instead** (not taken): it would register a second non-facet artifact kind on the strength of three instances whose residue the changelog already had a home for, which is the implicit-convention state the facet system exists to eliminate.
+
+---
+
+### Review of the uncommitted changes of 2026-10-12
+- Time: 2026-10-12T09:50:00Z
+- Type: Reviewed
+- Contributors:
+  - [Claude](../CONTRIBUTORS.md#claude) (Sonnet-5.5) - reviewed
+
+#### What changed
+- Reviewed; no change needed. The uncommitted changes to `documentation-research.md` and `documentation-research.handoff.md` are link retargets after the folder moves (`modules/khayyam/` to `bundles/khayyam/`, `protocols/computer/lexer.md` to `modules/computer/lexer.md`). Checked that `bundles/khayyam/khayyam.research.001.md` and `docs/modules/computer/lexer.md` exist, that the example path `docs/modules/computer/lexer.research.001.md` matches the link, and that `memar content check` reports no problem in either file.

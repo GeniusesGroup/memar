@@ -15,10 +15,6 @@ Open work for `documentation-explanation.md`. Entries are mutable current state 
 - Consideration: an `Open Questions` catalog entry is now complicated by the body's own rule that unresolved questions live in handoffs, not in documents — a catalog entry for it may be self-defeating or may be exactly the sanctioned home for documents that legitimately need it. This tension is the reason the item is still open.
 - Next: evaluate each candidate against real documents that felt the absence of it.
 
-### Is `Future possibilities` still a legitimate Discussion wrapper?
-- State: raised while removing `Prior art` and `Unresolved questions` from the Discussion pattern. By the same [Relevance discipline](./documentation-explanation.md#relevance-discipline) criterion, future-speculative content serves neither the current-state reader nor the audit reader cleanly — it is roadmap, i.e. working state. It was kept in the pattern for now because removing it was beyond the directive that prompted the change.
-- Next: decide independently whether `Future possibilities` migrates to handoffs (as anticipatory work) or stays as a boundary statement.
-
 ### Should this consolidated spec itself be split again once the loading cost of one long document starts to matter?
 - State: carried from the document's former Unresolved questions list at the migration that removed that list.
 - Next: revisit when document count or session-loading evidence makes the cost measurable.

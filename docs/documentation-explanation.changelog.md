@@ -260,7 +260,7 @@ The skeleton is three fixed sections; an Explanation-facet document carries no `
 - Type: Changed
 - Propagates to:
   - documentation-explanation.practice.md: Done — body-writing step gains an explicit filter before leaving Abstract/Motivation/Methodology.
-  - protocols/process/test.md (recorded then as protocols/process/tdd.md): Done — Methodology cleaned as the triggering instance; entry in [test.changelog.md](./protocols/process/test.changelog.md). That document was subsequently absorbed into `test.md` and its changelog folded into that document's.
+  - protocols/process/test.md (recorded then as protocols/process/tdd.md): Done — Methodology cleaned as the triggering instance; entry in [test.changelog.md](./modules/process/test.changelog.md). That document was subsequently absorbed into `test.md` and its changelog folded into that document's.
 - Contributors:
   - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — objected, directed the governing-doc upgrade
   - Cursor/Composer — drafted
@@ -273,3 +273,51 @@ The skeleton is three fixed sections; an Explanation-facet document carries no `
 
 #### Deliberation
 - The triggering instance was the Methodology of `test.md`'s predecessor (recorded then as `tdd.md`) absorbing who-argued / review-pass / see-changelog material after a vocabulary review — content that does not help a later reader understand TDD (Omid Hekayati — objected). The governing specification's Relevance discipline already stated the criterion; what was missing was a named failure mode agents keep repeating, plus Optional-section wording that no longer invites "how we wrote it" into Methodology (Omid Hekayati — directed; Cursor/Composer — applied).
+
+---
+
+### The `Future possibilities` wrapper question leaves the explanation handoff, decided in this changelog
+- Time: 2026-10-04T18:19:38Z
+- Type: Fixed
+- Propagates to:
+  - documentation-explanation.handoff.md: Done - the entry asking whether `Future possibilities` is still a legitimate Discussion wrapper was removed; the migration entry's Considered and not done already records the decision against it (handoff: no entry of its own).
+- Contributors:
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) - argued, applied
+
+#### What changed
+- The entry asking whether `Future possibilities` is still a legitimate Discussion wrapper left `## Open Questions`: the *Method finalized; body restructured* entry above already decided it - "Keeping `Future possibilities` in the body pending separate review (Super Z - flagged the question) (Omid Hekayati - decided immediately against: same criterion as the other removals)" - and that entry's `What changed` routes the content to the handoff's `Anticipated Work`; the handoff holds no entry from it today.
+
+---
+
+### Status names which party decides each condition
+- Time: 2026-10-05T17:24:41Z
+- Type: Added
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) — argued, drafted, applied
+
+#### What changed
+- [Status](./documentation-explanation.md#status) gains one bullet under its Additional rules, immediately after the rule that moves a document to `Final`. It states which party decides each of the section's conditions: `memar-documentation.py content check` decides the mechanical ones — encoding, newlines, written surface — while whether discussion has converged and whether a document is reflected in canonical documentation are decided by a reader against the governing documents, and a reader who disagrees records the disagreement rather than moving the field.
+
+#### Deliberation
+- The edit was proposed in this session's earlier read-only sweep of `docs/` against the ruling and applied once it landed here. The sweep's reasoning is the record's: a specification this load-bearing states conditions on itself and names no deciding party for any of them, which leaves a reader unable to tell which conditions are enforceable and which are read (Space Bunny Alpha).
+- No reviewer role was added. The Documentation Changelog facet already owns approval and its discipline is about an entry's own correctness; naming a reviewer here would have invented a role this facet does not have, so the bullet says only what this facet can say — which conditions a command decides and which a reader does (Space Bunny Alpha).
+
+#### Considered and not done
+- **Naming a reviewer for the move to `Final` (rejected)**: approval in this project belongs to the Changelog facet and is an entry-level field, not a document-level status gate. `documentation-changelog.md` owns it and this section does not restate it.
+- **Splitting the bullet per condition (rejected)**: the table above already carries the conditions one row each, and a second enumeration beside it would drift from the first.
+
+---
+
+### Review of the uncommitted changes of 2026-10-12
+- Time: 2026-10-12T09:50:00Z
+- Type: Changed
+- Contributors:
+  - [Claude](../CONTRIBUTORS.md#claude) (Sonnet-5.5) — reviewed, revised
+
+#### What changed
+- Reviewed the uncommitted change to this family (base, practice, handoff, this changelog) against HEAD.
+- Restored the entry *Removed the specification's own stale references to the retired Discussion section* (2026-09-08T08:23:05Z), which the working tree had deleted without a record: a changelog is history, and its content appears nowhere else.
+- The *Future possibilities* entry said the content "now sits" in the handoff's `Anticipated Work`; the handoff has no such section or entry, so the sentence now says the handoff holds no entry from it.
+- The Status bullet added to [documentation-explanation.md](./documentation-explanation.md#status) said `memar content check` decides "the mechanical" conditions; none of Status's conditions is mechanical and the command does not read `Status`. The bullet now names the two conditions a reader decides and says the command does not read the field. The entry *Status names which party decides each condition* above still describes the first wording, and names the retired script `memar-documentation.py`; it is kept as the record of what was first written.
+- Checked and left: the handoff entry removal (the decision is in the migration entry, with its quotation intact); the link fix `./modules/process/test.changelog.md` (the file exists there); the practice line 23 hunk belongs to the Cognition rebuild and was not judged.

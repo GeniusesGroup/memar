@@ -9,7 +9,7 @@ description: defines how a handoff between sessions is produced and consumed
 ---
 
 ## When This Practice Applies
-Produce a handoff when a session ends with any of these true:
+A session ends only when the person who started it declares the work finished, not when one reply or task is complete. Until then, continue the same session and retain its state. Produce a handoff when a session ends with any of these true:
 
 - the discussion reached decisions or resolutions worth preserving
 - ambiguities were resolved whose reasoning would otherwise be lost
@@ -29,7 +29,7 @@ The lists above govern session end. A tangent detected mid-session is a separate
 ---
 
 ## Mid-Session Tangents
-A **tangent** is a request that opens a development thread whose context the current session will not otherwise need. Clarifying questions and small edits related to the session's topic are not tangents.
+A **tangent** is a request that opens a development thread whose context the current session will not otherwise need. Clarifying questions and small edits related to the session's topic are not tangents. Bounded work the current session needs integrated is not a tangent either — it is delegation to a sub-agent per the skill's runtime rules, and it stays in this session.
 
 When a tangent appears mid-session, produce the handoff at once rather than at session end:
 
@@ -50,8 +50,9 @@ When a tangent appears mid-session, produce the handoff at once rather than at s
 7. **Self-check against the reader who was not there.** Re-read the draft as the next session will: could a session with no memory of this discussion pick up every thread from this file alone? Anything answered "no" goes back to step 3.
 
 ### Placement
-- Handoffs paired with a governed base document live beside it (`<base>.handoff.md` next to `<base>.md`).
-- Handoffs for discussions not yet tied to a governed document live in the project's conversation-records location (`chats-context/`), named `YYYY-MM-DD-topic-name.md`, one topic per file — a multi-topic discussion is split into one handoff per topic so each can resume, conclude, and retire independently.
+A handoff is placed by the rule that governs where its base artifact goes: [Documentation → File Naming](./documentation.md#file-naming). One handoff per topic — a multi-topic discussion is split into one handoff per topic so each can resume, conclude, and retire independently — and each is written as `<base>.handoff.md` beside the base artifact it belongs to.
+
+A discussion not yet tied to a governed document is placed the same way, because a handoff's base artifact need not be a document ([Documentation — Handoff → File Format](./documentation-handoff.md#file-format)). Name it after the thing the discussion is about, and put it beside the documents the session read. Where that subject has no home yet, the folder the subject belongs in gets opened by the handoff: a session that is about to establish a model writes `<name>.handoff.md` into the new folder before the model exists, which is how `modules/computer/binding/` and `modules/process/construction/` were opened. There is no separate location for untied discussions and none outside the tree — a file a reader cannot open is not a handoff's home.
 
 ---
 

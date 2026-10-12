@@ -140,3 +140,74 @@ The wrapper titles are gone from this specification's body; open questions and a
 #### Considered and not done
 - Keeping graduated decisions in the handoff as a summary of where the design stands (rejected): the base document carries the rule and the changelog carries the record; a summary copy is guaranteed to drift, and the handoff's Topic & Purpose is the one narrative home for how the discussion stands.
 - Fixing only the instance handoff and leaving the specification as it was (rejected): the error was reproducible by the specification as written - any writer following the skeleton could refill Decisions with graduated content; the rule belongs in the specification, the procedure step in the practice, and the instance cleanup follows from both.
+
+---
+
+### Three entries leave the Handoff facet's own handoff; the practice and the companion rule already carry them
+- Time: 2026-10-04T18:19:38Z
+- Type: Fixed
+- Propagates to:
+  - documentation-handoff.handoff.md: Done - the multi-topic, file-placement, and own-changelog entries were removed; the practice's Placement section and the Research facet's companion rule carry each answer (handoff: no entry of its own).
+- Contributors:
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) - argued, applied
+
+#### What changed
+- *Multi-topic handoffs* left `## Open Questions`: [documentation-handoff.practice.md -> Producing a Handoff -> Placement](./documentation-handoff.practice.md#placement) requires one handoff per topic - "a multi-topic discussion is split into one handoff per topic so each can resume, conclude, and retire independently".
+- *Handoff file placement* left `## Open Questions`: the same Placement section states that handoffs paired with a governed base document live beside it, as `<base>.handoff.md` next to `<base>.md`.
+- *Own changelog for long-lived handoffs* left `## Open Questions`: [documentation-research.md -> Lifecycle and Integrity](./documentation-research.md#lifecycle-and-integrity) states the recursion stop the companion facets apply - a research file receives no companion changelog and no companion handoff, "the same recursion stop the other companion facets apply".
+
+#### Considered and not done
+- The placement rule was not extended to base artifacts outside `docs/` (Space Bunny Alpha - argued). The Placement section owns that rule, and the entry's own trigger - the first non-`docs` base artifact needing a handoff - has not arrived; revising the section is the work that trigger calls for.
+- The no-companion-changelog rule was not restated in this facet's own specification (Space Bunny Alpha - argued). The Research facet states it and names itself the recursion stop the other companion facets apply, so the handoff follows from that statement; a second, facet-specific rule would be the same bound under two homes.
+
+---
+
+### Placement follows File Naming; the conversation-records folder is retired
+- Time: 2026-10-05T05:22:56Z
+- Type: Fixed
+- Propagates to:
+  - documentation-handoff.practice.md: Done — the Placement section now defers to [Documentation → File Naming](./documentation.md#file-naming) for both cases and names no folder.
+- Cited:
+  - [Documentation — Handoff → File Format](./documentation-handoff.md#file-format) - Depends_on: the rule this corrects, stating that a handoff is `<base-filename>.handoff.md` and that its base artifact "is not necessarily a document".
+  - [Documentation → File Naming](./documentation.md#file-naming) - Depends_on: the rule this defers to, stating that a model a session leaves beside the documents it read "is working state and takes `<base>.handoff.md` as a Handoff".
+- Contributors:
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) — argued, applied
+
+#### What changed
+- The Placement section no longer names a location. Both its cases — a handoff paired with a governed base document, and a handoff for a discussion not yet tied to one — now resolve through the single rule that already governs where a base artifact goes, and a handoff whose subject has no folder yet is stated to open that folder rather than to be diverted elsewhere.
+- The one-topic-per-file rule is kept, and is now stated as a property of the handoff rather than of a folder.
+- The previous entry in this file named the trigger for this work and said it had not arrived. It has now arrived three times: `modules/computer/binding/binding.handoff.md`, `modules/process/construction/construction.handoff.md`, and `modules/process/control-flow/control-flow.handoff.md` are handoffs for base artifacts outside `docs/`, and `modules/khayyam/rules/` had accumulated twenty-one tracked files citing a file inside the conversation-records folder as the `Evidence` for a rule's origin — links into a directory no reader can follow and no commit can carry.
+
+#### Considered and not done
+- **Keeping `chats-context/` as the sanctioned location and only repairing the links that pointed into it** (rejected): the links were the symptom. A location outside the tree cannot be cited under [Documentation → Citations](./documentation.md#citations), cannot be committed, and is lost on any clone that does not have the folder — so every artifact that needs to name its own origin ends up either unbacked or broken. The rule invited that outcome rather than being violated by it.
+- **Naming a durable replacement folder inside the repository** (rejected): any such folder is a second naming rule, and a file's name already carries its subject. A folder of handoffs would have to invent names for subjects that have no home yet, which is the question [File Naming](./documentation.md#file-naming) answers by saying the subject's own folder is where the file goes.
+- **Extending the section to say what a handoff about a subject with no documents at all should do** (not done): File Naming's clause covers a session that read documents, and this repository's sessions always do. The case of a discussion with nothing read and nothing to name has no instance, and a rule written for it now would be a prediction rather than a repair.
+
+---
+
+### Session completion is declared by its starter
+- Time: 2026-10-07T02:57:26-04:00
+- Type: Clarified
+- Contributors:
+  - opencode/exo-free via [OpenCode](../CONTRIBUTORS.md#opencode) — drafted, applied
+- Propagates to:
+  - .agents/skills/memar/SKILL.md: Done — the agent workflow points here for the session boundary while keeping only the tool-dependent folder instructions.
+  - .agents/scripts/memar-session.py: Done — the close help and implementation honor this boundary and use recoverable trash.
+
+#### What changed
+`documentation-handoff.practice.md` now places session end only at the point the person who started it declares the work finished. Handoff production is evaluated at that boundary, not after an agent's first answer or a single completed task.
+
+---
+
+### Review of the uncommitted changes of 2026-10-12
+- Time: 2026-10-12T09:50:00Z
+- Type: Changed
+- Contributors:
+  - [Claude](../CONTRIBUTORS.md#claude) (Sonnet-5.5) — reviewed, revised
+
+#### What changed
+- Reviewed the uncommitted change to this family (practice, handoff, this changelog) against HEAD.
+- Three handoff questions were removed and their answers are in the practice's Placement section and the Research facet's companion rule (quotations verified); the new changelog entry records each. Left as is.
+- The Placement rewrite is recorded and justified by the entry *Placement follows File Naming*; its three instance files exist. That entry said the trigger "has now arrived twice" and then named three files; corrected to "three times".
+- The practice also gained a sentence in *Mid-Session Tangents* (bounded work a session needs integrated is delegation, not a tangent, per "the skill's runtime rules"); the entry *Session completion is declared by its starter* records only the session-end hunk. This entry records the omission. Its `Propagates to` names `.agents/scripts/memar-session.py`, which no longer exists; it records what was true when written.
+- Left unchanged: that entry's time is written with an offset (`-04:00`), which the format allows.

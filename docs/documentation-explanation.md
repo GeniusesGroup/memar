@@ -46,6 +46,7 @@ Additional rules:
 - `ID` is never reused, regardless of status, including Rejected.
 - Move `Status` to `Proposed` once discussion converges.
 - Move to `Final` once it's reflected in canonical documentation.
+- Whether discussion has converged, and whether a document is reflected in canonical documentation, are decided by a reader against the governing documents, not by a command: `memar content check` does not read `Status`. A reader who disagrees records the disagreement rather than moving the field.
 - Nothing before `Final` should be treated as settled by anyone depending on the document.
 - Moving a Final document's substance requires a new, superseding document, not an in-place edit.
 - A reconsidered Rejected idea becomes a new document with its own number, referencing the rejected one via a `Superseded` entry in the paired Changelog's `Cited` field (see [documentation-changelog.md → Cited](./documentation-changelog.md#cited)).

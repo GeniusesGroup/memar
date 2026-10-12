@@ -15,10 +15,10 @@ Active
 
 ## Anticipated Work
 - A paired practice document (`documentation-research.practice.md`) once real researches show the producing procedure — deferred until at least one real Research has been reviewed and further use reveals whether a repeatable procedure has accumulated.
-- [Execution Research 001 — M1 readiness of the Khayyam specification](../modules/khayyam/khayyam.research.001.md) is the current real Research in the working tree. It is Active and has not yet closed the facet-level questions tracked here.
+- [Execution Research 001 — M1 readiness of the Khayyam specification](../bundles/khayyam/khayyam.research.001.md) is the current real Research in the working tree. It is Active and has not yet closed the facet-level questions tracked here.
 
 ## Proposed Next Steps
-- Review `modules/khayyam/khayyam.research.001.md` and record its outcome on that research artifact.
+- Review `bundles/khayyam/khayyam.research.001.md` and record its outcome on that research artifact.
 - Use the reviewed outcome to decide whether Findings need a confidence vocabulary and whether enough accumulated practice exists to begin this facet's paired Practice document.
 
 ## Assumptions
@@ -28,5 +28,5 @@ Active
 ## Related Artifacts
 - [documentation-research.md](./documentation-research.md) — the confirmed specification this handoff carries state for.
 - [documentation-research.changelog.md](./documentation-research.changelog.md) — the founding entry with the deliberation and the rejected alternatives.
-- [modules/khayyam/khayyam.research.001.md](../modules/khayyam/khayyam.research.001.md) — the current real Research test case; it is Active and awaiting owner review, so it has not yet closed the questions in this handoff.
+- [bundles/khayyam/khayyam.research.001.md](../bundles/khayyam/khayyam.research.001.md) — the current real Research test case; it is Active and awaiting owner review, so it has not yet closed the questions in this handoff.
 - [documentation.md](./documentation.md) — the meta-layer; the facet is registered there as the fifth.
