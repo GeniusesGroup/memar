@@ -196,7 +196,7 @@ Considered leaving the Discussion section's philosophical framing intact on the 
 - Type: Changed
 - Cited:
   - [Variable in Khayyam](./variable.md) — Reference: magic-number example for the “lint can be disabled” argument
-  - [Memory Model](../protocols/memory/memory.md) — Reference: linter-enforced safety as the contrasting flow-policy example
+  - [Memory Model](../modules/memory/memory.md) — Reference: linter-enforced safety as the contrasting flow-policy example
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — requested, clarified
   - [Super Z](../../CONTRIBUTORS.md#super-z) — rewrote
@@ -219,7 +219,7 @@ Considered leaving the Discussion section's philosophical framing intact on the 
 - Time: 2026-09-06T10:30:00Z
 - Type: Fixed
 - Cited:
-  - [Khayyam Runtime Specification](../protocols/computer/runtime.md) — Reference: the runtime-side realization of the execution-semantics alignment, now linked from the restored topic so the principle and its one concrete realization stay distinct.
+  - [Khayyam Runtime Specification](../modules/computer/runtime.md) — Reference: the runtime-side realization of the execution-semantics alignment, now linked from the restored topic so the principle and its one concrete realization stay distinct.
   - commit `091333a` (2026-07-13, `RFCs/khayyam.md`) — Evidence: this topic was added to the language document on 2026-07-13, directly after the session that drafted it, and was removed on 2026-07-18 during the Encapsulation/Variable restructure (`f73c633`) without being migrated anywhere.
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — directed, decided
@@ -301,7 +301,7 @@ Considered placing the topic in `khayyam-runtime.md` instead, since Unikernel is
 - Added the *The Grammar Refuses Protocol Semantics* principle to the Explanation, between *Separation of Syntax and Governance* and *Execution Semantics Philosophy*: a construct enters the grammar only when its semantics can be stated without adopting any protocol's definitions; where a construct's meaning would require protocol-owned definitions, the grammar refuses the construct, and the need is met through the language's generic mechanisms (ordinary values and explicit outputs, explicit imports, library-provided methods, the `ab` construct for authoring contracts).
 - The principle states as a rule what the per-construct documents already enacted individually (no error-handling syntax, no memory primitives, no concurrency keywords, no standard-library shapes in the grammar) and fixes the boundary as protocol-level, not concept-level: base-layer modeling concepts (`tp` for Type, `sc` for Scope) remain expressible, because the grammar supplies the declaration mechanism, not a specific contract.
 - Names the framework-independence consequence: protocols are owned by the governance framework above the language (Memar today, another framework tomorrow); baking one in would reduce the language to that framework's syntax extension.
-- Trigger: the language–protocol relationship had been stated per construct but never as a general rule, and a documentation-set review misread [Control Flow in Khayyam](../protocols/process/control-flow.md)'s citation of [The Error](../protocols/process/error.md) as a grammar-level dependency. The general statement closes that misreading path; the folder role statement ([README.md](./README.md)) carries the citation-layer version of the same statement.
+- Trigger: the language–protocol relationship had been stated per construct but never as a general rule, and a documentation-set review misread [Control Flow in Khayyam](../modules/process/control-flow.md)'s citation of [The Error](../modules/process/error.md) as a grammar-level dependency. The general statement closes that misreading path; the folder role statement ([README.md](./README.md)) carries the citation-layer version of the same statement.
 
 ---
 
@@ -309,7 +309,7 @@ Considered placing the topic in `khayyam-runtime.md` instead, since Unikernel is
 - Time: 2026-09-10T00:00:00Z
 - Type: Changed
 - Cited:
-  - [Control Flow](../protocols/process/control-flow.md) — Depends_on: the design of library-defined control flow and the negative reasoning about grammar absences are owned there after the absorption.
+  - [Control Flow](../modules/process/control-flow.md) — Depends_on: the design of library-defined control flow and the negative reasoning about grammar absences are owned there after the absorption.
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided (the negatives-to-changelog doctrine: bodies carry current positive state only, per the same reasoning that retired the Discussion section)
   - [Super Z](../../CONTRIBUTORS.md#super-z) — applied
@@ -328,10 +328,10 @@ Considered placing the topic in `khayyam-runtime.md` instead, since Unikernel is
 - Time: 2026-09-15T09:00:00Z
 - Type: Changed
 - Cited:
-  - [Memory](../protocols/memory/memory.md) — Consumed contract: copy, teardown, and safety as protocol, not a Khayyam memory model.
-  - [Linter](../protocols/computer/linter.md) — Consumed contract: compiler/linter split this document already named as syntax/governance.
-  - [Compiler](../protocols/computer/compiler.md) — Consumed contract: primitives versus library names; this document keeps the `sc` lowering as realization.
-  - [Runtime](../protocols/computer/runtime.md) — Consumed contract: execution environment, not a Khayyam-owned VM.
+  - [Memory](../modules/memory/memory.md) — Consumed contract: copy, teardown, and safety as protocol, not a Khayyam memory model.
+  - [Linter](../modules/computer/linter.md) — Consumed contract: compiler/linter split this document already named as syntax/governance.
+  - [Compiler](../modules/computer/compiler.md) — Consumed contract: primitives versus library names; this document keeps the `sc` lowering as realization.
+  - [Runtime](../modules/computer/runtime.md) — Consumed contract: execution environment, not a Khayyam-owned VM.
 - Propagates to:
   - README.md: Done — membership criterion no longer houses compiler, linter, or runtime.
 - Contributors:
@@ -350,7 +350,7 @@ Considered placing the topic in `khayyam-runtime.md` instead, since Unikernel is
 - Time: 2026-09-15T13:00:00Z
 - Type: Changed
 - Cited:
-  - [Memory](../protocols/memory/memory.md) — Consumed contract: the requirements these notes realize.
+  - [Memory](../modules/memory/memory.md) — Consumed contract: the requirements these notes realize.
 - Propagates to:
   - variable.md: Done — Resource Lifecycle points here and to Memory; deferred wording removed.
 - Contributors:
@@ -481,8 +481,8 @@ Considered placing the topic in `khayyam-runtime.md` instead, since Unikernel is
 - Cited:
   - [Type](../type.md) — Depends_on: the category model the required-subtype rule states — the subtype keyword supplies the declaration's category, and no category is a subtype of another.
   - [Variable in Khayyam](./variable.md) — Evidence: the one-declaration-per-line rule the general declaration separator extends.
-  - [Linter → A rule's home is its subject's document](../protocols/computer/linter.md#a-rules-home-is-its-subjects-document) — Depends_on: a governance rule is stated in the document that owns its subject, and the linter owns the check — so script repertoire and naming style are tooling concerns rather than grammar.
-  - [Linter → Linter versus compiler](../protocols/computer/linter.md#linter-versus-compiler) — Evidence: the test for what the language owns — whether turning the rule off would admit a program the language says cannot exist — which a naming-style preference does not.
+  - [Linter → A rule's home is its subject's document](../modules/computer/linter.md#a-rules-home-is-its-subjects-document) — Depends_on: a governance rule is stated in the document that owns its subject, and the linter owns the check — so script repertoire and naming style are tooling concerns rather than grammar.
+  - [Linter → Linter versus compiler](../modules/computer/linter.md#linter-versus-compiler) — Evidence: the test for what the language owns — whether turning the rule off would admit a program the language says cannot exist — which a naming-style preference does not.
 - Propagates to:
   - modules/khayyam/execution.handoff.md: Resolved — its `tp` and "Statement separators and identifier lexics" Open Questions are Ruled against this entry; the file later moved to the module root.
   - modules/khayyam/execution.research.001.md: Resolved — the readiness record's Notes carry the "Rulings landed" entry recording that its findings quote the then-current specification state; the file later moved to the module root.
@@ -493,12 +493,12 @@ Considered placing the topic in `khayyam-runtime.md` instead, since Unikernel is
 
 #### What changed
 - The Type section's template `tp {name} [Type] [subtype defined value]` is replaced by `tp {name} {subtype} {subtype defined value}`: the subtype — one of `in`, `cp`, `mt`, `ab`, `sc` — is required and supplies the declaration's category; the value slot is a path for `in`, a block for `cp` and `sc`, a signature plus optional body for `mt`, and an optional composition block for `ab`; a bare `tp {name}` is not well-formed. The never-glossed `[Type]` slot is gone.
-- The keyword table gains two grammar rules: a declaration is terminated by a line break, and an identifier begins with a letter or `_`, continues with letters, digits, or `_`, is case-sensitive, and may not be one of the seven listed keywords; a letter is a letter in whichever script writes it. The convention an organization holds its names to — script, transliteration, casing — is [Identifier Naming → The rule](../../modules/khayyam/rules/identifier-naming/identifier-naming.md#the-rule), which this repository states as none; case-sensitivity and the reservation of the seven keywords are the language's own, as that rule's [What this rule does not claim](../../modules/khayyam/rules/identifier-naming/identifier-naming.md#what-this-rule-does-not-claim) records.
+- The keyword table gains two grammar rules: a declaration is terminated by a line break, and an identifier begins with a letter or `_`, continues with letters, digits, or `_`, is case-sensitive, and may not be one of the seven listed keywords; a letter is a letter in whichever script writes it. The convention an organization holds its names to — script, transliteration, casing — is [Identifier Naming → The rule](../../bundles/khayyam/rules/identifier-naming/identifier-naming.md#the-rule), which this repository states as none; case-sensitivity and the reservation of the seven keywords are the language's own, as that rule's [What this rule does not claim](../../bundles/khayyam/rules/identifier-naming/identifier-naming.md#what-this-rule-does-not-claim) records.
 
 #### Considered and not done
-- **The `in` failure outcomes in the language documents**: handling may differ by realization, so the four failure outcomes are conditions of this repository's toolchain, each a rule of its own in the [rule catalog](../../modules/khayyam/rules/README.md) (Omid Hekayati — decided). Contracts-first ordering needed no change: the Import Mechanism already states that order is tooling assist, not grammar.
-- **ASCII as the default with Unicode as an opt-in**: a repertoire preference is an organization's naming convention, and the rule-first test places it there rather than in the grammar; the reason, and the rule that carries the naming concern, are recorded in [Identifier Naming → Why it exists](../../modules/khayyam/rules/identifier-naming/identifier-naming.md#why-it-exists) (Omid Hekayati — decided).
-- **A linter rule preferring ASCII identifiers**: where suggested rules are catalogued is still the open question in the [linter handoff](../protocols/computer/linter.handoff.md), and the naming concern is stated in a toolchain catalog of its own — [Identifier Naming](../../modules/khayyam/rules/identifier-naming/identifier-naming.md).
+- **The `in` failure outcomes in the language documents**: handling may differ by realization, so the four failure outcomes are conditions of this repository's toolchain, each a rule of its own in the [rule catalog](../../bundles/khayyam/rules/README.md) (Omid Hekayati — decided). Contracts-first ordering needed no change: the Import Mechanism already states that order is tooling assist, not grammar.
+- **ASCII as the default with Unicode as an opt-in**: a repertoire preference is an organization's naming convention, and the rule-first test places it there rather than in the grammar; the reason, and the rule that carries the naming concern, are recorded in [Identifier Naming → Why it exists](../../bundles/khayyam/rules/identifier-naming/identifier-naming.md#why-it-exists) (Omid Hekayati — decided).
+- **A linter rule preferring ASCII identifiers**: where suggested rules are catalogued is still the open question in the [linter handoff](../modules/computer/linter.handoff.md), and the naming concern is stated in a toolchain catalog of its own — [Identifier Naming](../../bundles/khayyam/rules/identifier-naming/identifier-naming.md).
 
 ---
 
@@ -506,7 +506,7 @@ Considered placing the topic in `khayyam-runtime.md` instead, since Unikernel is
 - Time: 2026-09-26T10:45:00Z
 - Type: Changed
 - Cited:
-  - [Linter → A rule's home is its subject's document](../protocols/computer/linter.md#a-rules-home-is-its-subjects-document) — Depends_on: which document a governance rule's claim belongs to, as against the prior question of whether the claim is the language's at all.
+  - [Linter → A rule's home is its subject's document](../modules/computer/linter.md#a-rules-home-is-its-subjects-document) — Depends_on: which document a governance rule's claim belongs to, as against the prior question of whether the claim is the language's at all.
   - [Khayyam → Separation of Syntax and Governance: A Principle](./khayyam.md#separation-of-syntax-and-governance-a-principle) — Depends_on: the split the new principle sits beside and completes, read against the owner's limit on it — the language legislates what it must, and delegates the rest.
   - [Khayyam → Self-Documenting Code and Naming](./khayyam.md#self-documenting-code-and-naming) — Evidence: human-facing text is already a value a method writes into an influenced variable, which is what makes a comment unnecessary rather than merely discouraged.
   - [Khayyam → Scope](./khayyam.md#scope) — Depends_on: the inertness claim the toolchain's placement rule rests on, which stays in this document because it is about what a code scope is, not about where it may be written.
@@ -522,37 +522,37 @@ Considered placing the topic in `khayyam-runtime.md` instead, since Unikernel is
   - modules/khayyam/core/src/parse.ts: Rejected — no change; the `scope-placement` refusal stays, now as a tool's rule.
   - modules/khayyam/core/src/scan.ts: Rejected — no change; the comment forms stay, now as a tool's rule.
   - modules/khayyam/core/src/frontend.ts: Rejected — no change; the four import-resolution refusals stay, now as four rules.
-  - modules/khayyam/core/test/matrix.test.ts: Rejected — no change; the rows already assert this toolchain's rules, which is what they now say they assert.
+  - bundles/khayyam/core/tests/matrix.test.ts: Rejected — no change; the rows already assert this toolchain's rules, which is what they now say they assert.
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided
   - [Space Bunny Alpha](../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../CONTRIBUTORS.md#opencode)) — argued, applied
 
 #### What changed
 - A new principle, *Minimal Legislation: A Principle*, sits between *The Grammar Refuses Protocol Semantics* and *Execution Semantics Philosophy*: the grammar states what a program's meaning requires, and a condition a tool or an organization needs is stated by that tool, in that tool's rules, where an organization states it, keeps it, or drops it and the language stays the same either way.
-- Comment forms, the license header, and where documentation lives are rules of an organization rather than facts of this document: the markers in [Comment Forms → The rule](../../modules/khayyam/rules/comment-forms/comment-forms.md#the-rule), the header and the fallback for prose in [Comment Policy → The rule](../../modules/khayyam/rules/comment-policy/comment-policy.md#the-rule). The scanner's handling of both forms is unchanged, and is the rule's realization rather than the specification's.
-- Where a code scope may be declared is a rule of this repository's toolchain, [Code Scope Placement → The rule](../../modules/khayyam/rules/scope-placement/scope-placement.md#the-rule), which an organization may keep or drop, with the level that may lift it at [Type → Scope](../type.md#scope--type-as-semantic-boundary). The Scope bullet's inertness sentence stays, because it is about what a code scope is rather than about where one may be written.
-- The Import Mechanism now states the account [Modularity in Khayyam](./modularity.md#dependency-resolution-and-companion-manifest) already gave — an `in` value is an address whose scheme and resolution belong to the resolver and its manifest — and that how firmly a tool requires a given spelling is that tool's rule, [Import Address → The rule](../../modules/khayyam/rules/import-address/import-address.md#the-rule).
+- Comment forms, the license header, and where documentation lives are rules of an organization rather than facts of this document: the markers in [Comment Forms → The rule](../../bundles/khayyam/rules/comment-forms/comment-forms.md#the-rule), the header and the fallback for prose in [Comment Policy → The rule](../../bundles/khayyam/rules/comment-policy/comment-policy.md#the-rule). The scanner's handling of both forms is unchanged, and is the rule's realization rather than the specification's.
+- Where a code scope may be declared is a rule of this repository's toolchain, [Code Scope Placement → The rule](../../bundles/khayyam/rules/scope-placement/scope-placement.md#the-rule), which an organization may keep or drop, with the level that may lift it at [Type → Scope](../type.md#scope--type-as-semantic-boundary). The Scope bullet's inertness sentence stays, because it is about what a code scope is rather than about where one may be written.
+- The Import Mechanism now states the account [Modularity in Khayyam](./modularity.md#dependency-resolution-and-companion-manifest) already gave — an `in` value is an address whose scheme and resolution belong to the resolver and its manifest — and that how firmly a tool requires a given spelling is that tool's rule, [Import Address → The rule](../../bundles/khayyam/rules/import-address/import-address.md#the-rule).
 - The document's other recent additions are rephrased as assertions of what is: the declaration separator says a declaration occupies one line and that line's break terminates it; the identifier paragraph says a letter is a letter in whichever script writes it and that the seven keywords name declaration forms rather than names; the `tp` paragraph says the subtype slot supplies the declaration's category.
-- The toolchain is unchanged throughout: each of the four import-resolution rules, the placement rule, and the comment-forms rule says in its own [What this rule does not claim](../../modules/khayyam/rules/comment-forms/comment-forms.md#what-this-rule-does-not-claim) section that it changes nothing about what the tool does, and the [toolchain handoff](../../modules/khayyam/execution.handoff.md) carries the behavior each records.
+- The toolchain is unchanged throughout: each of the four import-resolution rules, the placement rule, and the comment-forms rule says in its own [What this rule does not claim](../../bundles/khayyam/rules/comment-forms/comment-forms.md#what-this-rule-does-not-claim) section that it changes nothing about what the tool does, and the [toolchain handoff](../../bundles/khayyam/khayyam.handoff.md) carries the behavior each records.
 - The principle is stated and applied to the constructs this document already carries; no worked example of it is stated in this document.
 
 #### Considered and not done
-- **The comment forms as a language rule**: a comment decides which programs exist, but the rule-first test asks whether a rule is the language's, and it does not follow that every rule touching existence must be legislated — a comment may be absent, present, or forbidden without any program becoming ill-formed. The forms are a tool's: [Comment Forms → Why it exists](../../modules/khayyam/rules/comment-forms/comment-forms.md#why-it-exists).
-- **The comment forms with the record left nowhere**: the record has a home, and what it holds is the markers, the reasoning, and what the forms must not be taken to mean — [Comment Forms → Why it exists](../../modules/khayyam/rules/comment-forms/comment-forms.md#why-it-exists).
-- **A code scope's placement as a language MUST**: the argument from inertness reaches only this toolchain, and where it stops is recorded in [Code Scope Placement → Why it exists](../../modules/khayyam/rules/scope-placement/scope-placement.md#why-it-exists); the limit itself, which an organization may keep or drop, is that rule's [Keep it or drop it](../../modules/khayyam/rules/scope-placement/scope-placement.md#keep-it-or-drop-it).
-- **A spelling rule for the `in` address in the grammar**: a rule about what an address must look like is a rule about which addresses a particular resolver can serve. The spelling of an address is whoever owns the files' — [Import Address → The rule](../../modules/khayyam/rules/import-address/import-address.md#the-rule).
-- **A script repertoire fixed in the grammar**: a repertoire restriction does not change what a program means. The convention is an organization's, and this repository's own position on it is [Identifier Naming → The rule](../../modules/khayyam/rules/identifier-naming/identifier-naming.md#the-rule).
+- **The comment forms as a language rule**: a comment decides which programs exist, but the rule-first test asks whether a rule is the language's, and it does not follow that every rule touching existence must be legislated — a comment may be absent, present, or forbidden without any program becoming ill-formed. The forms are a tool's: [Comment Forms → Why it exists](../../bundles/khayyam/rules/comment-forms/comment-forms.md#why-it-exists).
+- **The comment forms with the record left nowhere**: the record has a home, and what it holds is the markers, the reasoning, and what the forms must not be taken to mean — [Comment Forms → Why it exists](../../bundles/khayyam/rules/comment-forms/comment-forms.md#why-it-exists).
+- **A code scope's placement as a language MUST**: the argument from inertness reaches only this toolchain, and where it stops is recorded in [Code Scope Placement → Why it exists](../../bundles/khayyam/rules/scope-placement/scope-placement.md#why-it-exists); the limit itself, which an organization may keep or drop, is that rule's [Keep it or drop it](../../bundles/khayyam/rules/scope-placement/scope-placement.md#keep-it-or-drop-it).
+- **A spelling rule for the `in` address in the grammar**: a rule about what an address must look like is a rule about which addresses a particular resolver can serve. The spelling of an address is whoever owns the files' — [Import Address → The rule](../../bundles/khayyam/rules/import-address/import-address.md#the-rule).
+- **A script repertoire fixed in the grammar**: a repertoire restriction does not change what a program means. The convention is an organization's, and this repository's own position on it is [Identifier Naming → The rule](../../bundles/khayyam/rules/identifier-naming/identifier-naming.md#the-rule).
 
 #### Deliberation
 - Four of the above — the comment forms, the placement limit, the `in` address, and the repertoire — share one argument shape: this touches what a program may mean, so it is the language's. The answer in each case is that bearing on a program's meaning is not the same as being required for one, and each condition is a rule of the tool that applies it (Omid Hekayati — decided).
-- Comments: the rule-first test asks whether a rule is the language's, and measured against the owner's test of minimal legislation nothing required a comment form; one organization has a reason to want the opposite — the direction [Comment Policy → Keep it or drop it](../../modules/khayyam/rules/comment-policy/comment-policy.md#keep-it-or-drop-it) records (Omid Hekayati — decided).
+- Comments: the rule-first test asks whether a rule is the language's, and measured against the owner's test of minimal legislation nothing required a comment form; one organization has a reason to want the opposite — the direction [Comment Policy → Keep it or drop it](../../bundles/khayyam/rules/comment-policy/comment-policy.md#keep-it-or-drop-it) records (Omid Hekayati — decided).
 - Placement: the owner distinguishes the outcome from its kind. A code scope inside a method body remains what this repository's toolchain expects, but a language MUST would make it an expectation no organization could drop, and the argument that a `sc` may not be lifted out of the reach of any Khayyam program is what makes the limit a claim of the language's — its reach stops at this toolchain. The question's home is therefore the upstream document, and it is the rule's handoff, not that base document, that records the level at which a need for a boundary outside a Method is reconsidered (Omid Hekayati — decided; Space Bunny Alpha).
 - The principle is placed among the document's existing principles rather than in a section of its own, and it is written to apply to constructs already stated as much as to proposed ones (Space Bunny Alpha).
 
 #### Decision
 - The grammar states what a program's meaning requires. Every other condition is a rule of the tool that applies it, stated in that tool's catalog, where an organization may keep it or drop it and the language stays the same — the [Minimal Legislation: A Principle](./khayyam.md#minimal-legislation-a-principle) this entry adds to the language document.
-- Comment forms, the license header, and documentation prose are rules of an organization, not of the language: the markers in [Comment Forms → The rule](../../modules/khayyam/rules/comment-forms/comment-forms.md#the-rule), the header and where documentation lives in [Comment Policy → The rule](../../modules/khayyam/rules/comment-policy/comment-policy.md#the-rule).
-- Where a code scope may be declared is a rule of this repository's Khayyam toolchain, recorded in [Code Scope Placement → The rule](../../modules/khayyam/rules/scope-placement/scope-placement.md#the-rule), and the level that may lift it is [Type → Scope](../type.md#scope--type-as-semantic-boundary).
+- Comment forms, the license header, and documentation prose are rules of an organization, not of the language: the markers in [Comment Forms → The rule](../../bundles/khayyam/rules/comment-forms/comment-forms.md#the-rule), the header and where documentation lives in [Comment Policy → The rule](../../bundles/khayyam/rules/comment-policy/comment-policy.md#the-rule).
+- Where a code scope may be declared is a rule of this repository's Khayyam toolchain, recorded in [Code Scope Placement → The rule](../../bundles/khayyam/rules/scope-placement/scope-placement.md#the-rule), and the level that may lift it is [Type → Scope](../type.md#scope--type-as-semantic-boundary).
 
 ---
 
@@ -560,18 +560,18 @@ Considered placing the topic in `khayyam-runtime.md` instead, since Unikernel is
 - Time: 2026-09-29T16:00:00Z
 - Type: Changed
 - Propagates to:
-  - [file layout](../../modules/khayyam/rules/file-layout/file-layout.md): Done
-  - [receiver parameter naming](../../modules/khayyam/rules/receiver-parameter-naming/receiver-parameter-naming.md): Done
-  - [lifecycle method names](../../modules/khayyam/rules/lifecycle-method-names/lifecycle-method-names.md): Done
-  - [domain capsule naming](../../modules/khayyam/rules/domain-capsule-naming/domain-capsule-naming.md): Done
+  - [file layout](../../bundles/khayyam/rules/file-layout/file-layout.md): Done
+  - [receiver parameter naming](../../bundles/khayyam/rules/receiver-parameter-naming/receiver-parameter-naming.md): Done
+  - [lifecycle method names](../../bundles/khayyam/rules/lifecycle-method-names/lifecycle-method-names.md): Done
+  - [domain capsule naming](../../bundles/khayyam/rules/domain-capsule-naming/domain-capsule-naming.md): Done
 - Contributors:
   - Auto (model not recorded) via [Cursor](../../CONTRIBUTORS.md#cursor) - applied
 
 #### What changed
-- [Import Mechanism (`in`)](./khayyam.md#import-mechanism-in): file-layout convention links to [file layout](../../modules/khayyam/rules/file-layout/file-layout.md).
-- [Type → Method](./khayyam.md#method): `self` suggestion links to [receiver parameter naming](../../modules/khayyam/rules/receiver-parameter-naming/receiver-parameter-naming.md).
-- [How Khayyam realizes Memory](./khayyam.md#how-khayyam-realizes-memory): conventional teardown/absence names link to [lifecycle method names](../../modules/khayyam/rules/lifecycle-method-names/lifecycle-method-names.md).
-- [Domain Modeling Principles](./khayyam.md#domain-modeling-principles): utility-capsule naming links to [domain capsule naming](../../modules/khayyam/rules/domain-capsule-naming/domain-capsule-naming.md).
+- [Import Mechanism (`in`)](./khayyam.md#import-mechanism-in): file-layout convention links to [file layout](../../bundles/khayyam/rules/file-layout/file-layout.md).
+- [Type → Method](./khayyam.md#method): `self` suggestion links to [receiver parameter naming](../../bundles/khayyam/rules/receiver-parameter-naming/receiver-parameter-naming.md).
+- [How Khayyam realizes Memory](./khayyam.md#how-khayyam-realizes-memory): conventional teardown/absence names link to [lifecycle method names](../../bundles/khayyam/rules/lifecycle-method-names/lifecycle-method-names.md).
+- [Domain Modeling Principles](./khayyam.md#domain-modeling-principles): utility-capsule naming links to [domain capsule naming](../../bundles/khayyam/rules/domain-capsule-naming/domain-capsule-naming.md).
 - [Khayyam Practice → Rules worth applying](./khayyam.practice.md#rules-worth-applying-even-when-not-asked): organizational bullets replaced with rule links; grammar-enforced items remain in [Self-Documenting Code and Naming](./khayyam.md#self-documenting-code-and-naming).
 
 ---
@@ -580,13 +580,143 @@ Considered placing the topic in `khayyam-runtime.md` instead, since Unikernel is
 - Time: 2026-09-29T20:30:00Z
 - Type: Changed
 - Propagates to:
-  - [rules catalog](../../modules/khayyam/rules/README.md): Done
+  - [rules catalog](../../bundles/khayyam/rules/README.md): Done
 - Contributors:
   - Auto (model not recorded) via [Cursor](../../CONTRIBUTORS.md#cursor) - applied
 
 #### What changed
-- [Separation of Syntax and Governance: A Principle](./khayyam.md#separation-of-syntax-and-governance-a-principle): governance examples for organizational Khayyam rules replaced with a link to the [rules catalog](../../modules/khayyam/rules/README.md); protocol-level examples retained.
+- [Separation of Syntax and Governance: A Principle](./khayyam.md#separation-of-syntax-and-governance-a-principle): governance examples for organizational Khayyam rules replaced with a link to the [rules catalog](../../bundles/khayyam/rules/README.md); protocol-level examples retained.
 - Same section: added a paragraph directing readers to `modules/khayyam/rules/` for convention reasoning and stating those rules are organizational, not language-owned.
+
+---
+
+### A body-less method is declared by nothing that follows its third group
+- Time: 2026-10-02T11:56:00Z
+- Type: Changed
+- Cited:
+  - [Method in Khayyam](./method.md#body-less-methods-ffi-and-contracts) — Extends: the rule is stated in full in that document's own section; the Method bullet here carries the grammar's half of it.
+- Propagates to:
+  - modules/khayyam/targets/go/khayyam_source.py: Pending — `body_is_bodyless` reads an empty block as the body-less form and cites this document's Method section for the reading.
+  - modules/khayyam/targets/js/target.md: Done — its sentence saying that two documents write the form as `{}` is now false, and the classification it performs becomes the language's answer rather than this target's reading. [see target.md:64]
+  - modules/computer/binding/binding.md: Done — its finding that a body-less method is indistinguishable from an empty one quoted the sentence this ruling replaced; the model was rewritten under the owner's decision of 2026-10-02 that the concept is Binding rather than a host interface, and it now states the settled spelling at `:237` and carries the unanswered half as a gap at `:262` rather than as a quotation this ruling withdrew. The line anchor below was re-derived at that rewrite.
+  - modules/khayyam/targets/js/language-gaps.md: Pending — the intervention drafted on this spelling, and the scan of the sources behind it, are answered here.
+  - docs/khayyam/method.md: Done — the same rule in that document's own section; see that document's changelog.
+- Contributors:
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Space Bunny Alpha](../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../CONTRIBUTORS.md#opencode)) — recorded
+
+#### What changed
+- The **Body-less Methods (FFI & Contracts)** bullet under *Method* states that a method is body-less when nothing follows its third group, so its line ends at the closing parenthesis of the influenced group, and that a line ending with `{}` carries a body — an empty body being a body that holds no command, which is a different declaration from one that holds none at all.
+- The examples the section carries for the form are declarations that end at their third group: `tp Sum mt (self W32) (a W32, b W32) (total W32, err Error)` at `:86`, `tp Set mt (self Key) (key String) (err Error)` at `:88`, and `tp Read mt (self Reader) (data Element) (err Error)` with `tp Close mt (self Reader) () (err Error)` at `:113-114`. The Type template's value slot at `:70` and the Method pattern at `:82` keep the block optional, which is what makes its absence a declaration rather than a default.
+- What it unblocks. The two readings a reader previously had to choose between are now one: `docs/khayyam/abstraction.md:60` and `docs/khayyam/khayyam.practice.md:63` already wrote the form as a declaration ending at its third group, and this section's own rule now says so too, so the disagreement `modules/khayyam/targets/js/target.md:60` and `modules/computer/binding/binding.md:237` each had to settle for themselves is settled by the language. `modules/khayyam/rules/type-as-argument/type-as-argument.md:15` and `:24` keep their claim either way, since both are about argument positions rather than about how a declaration ends. The display role `modules/khayyam/targets/js/language-gaps.md` drafts for a provision now has two declarations to tell apart rather than one.
+- The sources. Four declarations under `modules/` write a method with `{}`, and under this rule each is a method with a body and no command. `modules/gui/initialize.kh:6` and `modules/gui/navigator.kh:13` and `:18` were established to mean an empty body rather than a provision, and each file carries its own `TODO(go-migrate)` saying so — `initialize.kh:8`, and `navigator.kh:21` and `:23`. `modules/process/control-flow/protocol/if.kh:6` is a fourth occurrence and no `TODO(go-migrate)` in that file records it: its `tp IF mt (self CF) (condition Condition, execute labelType) (err Error) {` with an empty block is a method with a body holding no command, which also leaves the `(err Error)` it declares a value nothing in the unit ever writes. `main.kh:12` at the repository root is a fifth occurrence, outside `modules/`.
+- What else it now contradicts. `modules/khayyam/targets/go/khayyam_source.py:239-249` reads a block holding nothing as the body-less form and cites this document's Method section and `method.md`'s Body-less Methods section in the docstring that says so; the same module's `render_khayyam_method` at `:55-63` writes a body-less declaration with no block at all, so that target's reader and its writer now disagree, and the reader is the one citing this document. `modules/khayyam/targets/js/target.md:60` states that two documents write the form as `{}` and that the classification is "read the second way because this target's own reading is" — both halves of that sentence are now stale. `modules/computer/binding/binding.md:237` quoted `docs/khayyam/khayyam.md:89` and `docs/khayyam/method.md:77` as writing "A method can be defined without a body (`{}`)" when it was written, which is the text this ruling replaced; it now states the settled rule at `:237` and carries what the replaced sentence left open at `:262` and `:264`. This document's own changelog at `:97` carries `tp Close mt (self Reader) () (err Error) {}` and `tp Reset mt (self Counter) () () {}` in a prior entry's drawback record; those lines stand as the record they are and no longer spell a declaration the language admits.
+
+#### Considered and not done
+- **Reading `{}` as the body-less spelling (rejected)**: it leaves a method with a body and no command unspellable, and it is the reading three `TODO(go-migrate)` comments in the sources had already recorded as doubtful. A ruling that way would have to say what an empty body is instead, and the grammar asks for none (Omid Hekayati — decided).
+- **Leaving the two documents to keep their disagreement and letting each reader settle it (rejected)**: a body-less declaration and an empty body stayed one declaration in prose, so two artifacts each had to argue the parser's reading and reach the same conclusion by different routes — `modules/khayyam/targets/go/khayyam_source.py` accepting the block and `modules/khayyam/core/src/parse.ts` yielding no body when no `{` follows the third group (Omid Hekayati — decided).
+- **Ruling that an empty body is ill-formed (not done)**: whether a method may legitimately hold no command is a governance question, and `docs/khayyam/khayyam.md` under [Minimal Legislation: A Principle](./khayyam.md#minimal-legislation-a-principle) sends that to a rule of the tool that applies it rather than to the grammar. Nothing in the ruling forbids it (Omid Hekayati — decided).
+
+#### Decision
+- A method on a capsule type declares itself body-less by there being nothing after the third group. Writing `{}` is not that spelling: a line ending in `{}` is a method with a body, and an empty body is a body holding no command. The two scenarios the section names at `:90-91` — a contract on an abstraction and an FFI provision on a capsule — are what a declaration ending at its third group buys, and a line carrying `{}` buys neither (Omid Hekayati — decided).
+
+---
+
+### Implementation and usage claims removed from the language document
+- Time: 2026-10-03T11:16:28Z
+- Type: Changed
+- Propagates to:
+  - [Computer — Compiler](../modules/computer/compiler.md): Done - the Smart Compilation and dispatch material removed from this document has no statement there yet; the scope-to-jumps lowering it duplicated already is at that document's "The compiler recognizes language primitives, not library names". [see compiler.md:42-49]
+  - [Modularity](./modularity.md): Pending - the name-collision reasoning this document used to carry (what a collision means, what a project does about one) is Modularity's subject, and `modularity.md` does not carry it yet; this document's blockquote at `khayyam.md:62` now points there. (Corrected from "Done" in the review of 2026-10-12: `modularity.md` has no passage on a name collision.)
+  - [Computer — Compiler → Designated pure operations may run at compile time](../modules/computer/compiler.md#designated-pure-operations-may-run-at-compile-time): Reference - named as the home of the compile-time-evaluation question this document no longer answers.
+- Contributors:
+  - [Space Bunny Alpha](../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../CONTRIBUTORS.md#opencode)) — applied
+
+#### What changed
+- [Scope](./khayyam.md#scope): the lowering sentence was removed — "There is no `goto` keyword: a compiler of this language lowers `sc`-driven branches to internal jumps, and `return` is an IR marker that must itself end with a line break so it cannot be written as `return 0`. That lowering is a realization of [Compiler → The compiler recognizes language primitives, not library names](../modules/computer/compiler.md#the-compiler-recognizes-language-primitives-not-library-names), not a grammar keyword." What remains states the construct: each command ends with a new line, and what performs a scope's commands is the driving method's business, with the pointer to Control Flow; the grammar shipping no control-flow keyword is stated by the bullet above it, and the `goto` sentence is not restated. A mid-scope `return` now has no statement in this document at all — see [Considered and not done](#considered-and-not-done).
+- [Abstraction](./khayyam.md#abstraction): the Smart Compilation bullet — "**Smart Compilation:** The compiler decides smartly whether to handle these abstractions at compile-time (Monomorphization, zero-cost abstraction when exact capsules are known) or at runtime (via dynamic dispatch/interfaces when underlying capsules are hidden), entirely freeing the developer from generic syntax management." — was replaced by **No Dispatch Syntax**, which states what the grammar offers (no syntax to choose a strategy) and leaves the decision to the compiler.
+- [Type Principles Realized](./khayyam.md#type-principles-realized): dropped "Smart Compilation handles the dispatch strategy transparently."
+- [Method](./khayyam.md#method): the body-less-method FFI case no longer attributes the declaration to a linking phase — "a body-less method signals to the compiler that the implementation will be provided externally during the linking phase (e.g., from an Assembly `.s` or C `.o` file)" became "a body-less method states that the implementation comes from outside the language — a library, or a foreign object linked into the program."
+- [Import Mechanism (`in`)](./khayyam.md#import-mechanism-in): the name-collision blockquote no longer tells a reader what to do about a collision. What it said is recorded in the paired changelog entry's Considered and not done; what remains is that an included entity keeps its own name and the grammar offers no `as` form.
+- [Self-Documenting Code and Naming](./khayyam.md#self-documenting-code-and-naming): the paragraph no longer claims naming is "enforced by the language itself" nor that opaque code is "structurally impossible" to write. It now separates what the grammar settles (a bare literal carries no meaning of its own; primitives are wrapped in named capsules; there is no generic container syntax to name) from what a project's own rules settle ([identifier naming](../../bundles/khayyam/rules/identifier-naming/identifier-naming.md), [domain capsule naming](../../bundles/khayyam/rules/domain-capsule-naming/domain-capsule-naming.md)).
+- [How Khayyam realizes Memory](./khayyam.md#how-khayyam-realizes-memory): the layout-analysis bullet no longer describes what a Khayyam-consuming compiler may run or what a long-term orchestration goal is — "A Khayyam-consuming compiler may run a linear static escape analysis for everyday builds [...] Profile-guided layout migration (heap↔stack, pre-sizing from traces) is a separable orchestration library [...] remains a long-term goal" — and now says only that whether an analysis is run is a compiler's choice, citing Memory's own topic, and that what the grammar forbids is the pointer syntax such an analysis would be about.
+- The Practice companion [khayyam.practice.md](./khayyam.practice.md) rode the same cleanup, as [Documentation Changelog → Changelog scope](../documentation-changelog.md#changelog-scope) requires: its cheat sheet no longer says "The compiler distinguishes them" for a `vr`/`sc`/`mt` position, and its abstraction bullet no longer credits "compiler-chosen dispatch" to generics syntax's replacement. Its translation and rules sections are unchanged: how a construct is used belongs to a Practice companion, whose reader is an agent following a procedure.
+
+#### Considered and not done
+- **Stating mid-scope exit in the language document.** The removed sentence was the only statement of what a `return` written inside a `sc` leaves. Adding a replacement was not done: the claim available is a measurement of this repository's toolchain ([Khayyam research 001](./khayyam.research.001.md), "How flow management is performed"), and a toolchain's emitted behavior is not a claim the language may make on that evidence. [Control Flow → the scope/transition distinction](../modules/process/control-flow.md) currently says only that a mid-scope return operation is ordinary control flow.
+- **Naming the collision an architecture error.** The blockquote's claim that a collision "signals that two abstractions claim to own one concept", that "the correct fix is [...] a root-cause redesign", and that a workaround should "wrap one dependency in a local capsule (composition) rather than aliasing it" is design guidance about concepts, not a fact about the `in` grammar, and belongs to Modularity. It was removed rather than rewritten here; Modularity does not carry it yet (see Propagates to).
+
+---
+
+### Anchors re-derived after the 2026-10-03 removals shifted lines
+- Time: 2026-10-03T00:00:00Z
+- Type: Fixed
+- Contributors:
+  - [Space Bunny Alpha](../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../CONTRIBUTORS.md#opencode)) — reviewed, repaired
+
+#### What changed
+- Line anchors into the language documents that the 2026-10-03 entries shifted by one line were re-derived: `abstraction.md:101` to `abstraction.md:100` (the refusal of a capsule type in an abstraction's method signature) and `method.md:38` to `method.md:39`.
+- Two anchors into sentences those entries removed are left as they stand, because the findings they carry are about those sentences: `khayyam.md:130` (the `goto` lowering and the `return` IR marker) and `method.md:80` (the linking phase). Each is recorded in [Khayyam Changelog](./khayyam.changelog.md) as removed, and the removals are the owner's ruling, not this record's to withdraw.
+
+---
+
+### The `return` command leaves the grammar
+- Time: 2026-10-03T00:00:00Z
+- Type: Removed
+- Propagates to:
+  - [Computer — Compiler](../modules/computer/compiler.md): Done — the guarantee-adjacent clause, the open question, the finding, and the implementation claim that named the command are gone from that document.
+  - [Method](./method.md): Reference — the empty-body rule already stated there (a body holding no command) is what now carries the shape `return` used to give a body.
+  - [The JavaScript target → The commands a body may hold](../../bundles/khayyam/targets/js/target.md#the-commands-a-body-may-hold): Pending — its table still has a `return` row over a form this grammar no longer has. Not this session's file to write.
+  - [Control Flow Model → `return` is a command, not a method](../../modules/process/control-flow/control-flow.md): Pending — that section and the handoff entry beside it were written to wait for exactly this decision. Not this session's file to write.
+  - [Control Flow Rule — Method Exit](../../modules/process/control-flow/rules/method-exit/method-exit.md): Done — its "What this rule does not claim" bullet is built around the grammar question being open. Not this session's file to write. [see method-exit.md:26]
+- Contributors:
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Space Bunny Alpha](../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../CONTRIBUTORS.md#opencode)) — applied
+
+#### What changed
+- [Scope](./khayyam.md#scope) carries a new bullet, **No keyword for leaving a method early**: the grammar ships none, for the same reason it ships no control-flow keyword of its own, and what ends an execution before the last command of a method's body is an ordinary method on some type. It states that until a library declares such an operation the language has no way to leave a method early, as what the language has rather than as a shortfall in it.
+- The document no longer states the command anywhere. Its own sentence naming `return` an IR marker was removed earlier today under the entry [Implementation and usage claims removed from the language document](#implementation-and-usage-claims-removed-from-the-language-document), and that entry's Considered-and-not-done record — that stating mid-scope exit in the language document was not done because the claim available was a measurement of one toolchain — is now moot: there is no mid-scope exit in the grammar to state.
+- The frontend and the JavaScript target were changed with it. `Command` no longer has a `return` form, the body reader no longer admits one, and the emitter no longer writes `return;`. A body whose only command was `return` is now a body holding no command, which this document's own Method section already distinguishes from a body-less declaration.
+
+#### Considered and not done
+- **Naming the flow-control module's operation in this section.** The section states what the language has; what a reader does about reaching for an operation is the subject of the [method-exit Rule](../../modules/process/control-flow/rules/method-exit/method-exit.md), which already points a reader at it. Naming the operation here as well would make this section a prescription, which is a Practice companion's subject and not the grammar's (Omid Hekayati — decided).
+- **Keeping the command as a marker the reader recognizes.** It could have stayed as a form with no emitter, so that a body could still say it and a tool could report it. Rejected: a form the grammar accepts and no lowering realizes is a program whose meaning this repository's compiler decides by ignoring, which is what [The Grammar Refuses Protocol Semantics](./khayyam.md#the-grammar-refuses-protocol-semantics) forbids in the other direction. A misuse a reader should be told about is one a tool recognizes by name, which an ordinary method already is (Omid Hekayati — decided).
+
+#### Decision
+- The grammar has no command for leaving a method early, and a `return` written in source is refused as a form a body does not take. What leaves a method is a method some type declares, and until a library declares one the language has no way to do it (Omid Hekayati — decided).
+
+---
+
+### The team-adjustable clarity boundary is answered in the variable document
+- Time: 2026-10-04T21:13:00Z
+- Type: Fixed
+- Propagates to:
+  - [Variable in Khayyam → Self-Documenting Code and No Magic Numbers](./variable.md#self-documenting-code-and-no-magic-numbers): Done — that section states that the language provides no mechanism to adjust the boundary and that it is enforced uniformly by the grammar; no action remains.
+- Contributors:
+  - [Space Bunny Alpha](../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../CONTRIBUTORS.md#opencode)) — argued, applied
+
+#### What changed
+- The entry "Should Khayyam provide a linter rule or a compiler directive that allows teams to define their own boundaries for this trade-off?" is removed from [Khayyam — Programming Language Handoff](./khayyam.handoff.md).
+- Its question duplicates the one [Variable in Khayyam Handoff](./variable.handoff.md) carried, and that document's own section answers it: "The language does not currently provide a mechanism for teams to adjust this boundary — it is enforced uniformly by the grammar."
+- The neighbouring entry asking where the boundary itself lies stays open — that section calls the boundary "not always clear" — and no `## Anticipated Work` line scheduled the removed entry.
+
+---
+
+### A field-shaped value is one type plus one generator-facing method
+- Time: 2026-09-23T10:20:00Z
+- Type: Fixed
+- Cited:
+  - [abstraction_p.Implements](../modules/computer/abstraction-implements.md) — Depends_on: the author states implementation intent; a generator writes the method bodies.
+- Contributors:
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Grok](../../CONTRIBUTORS.md#grok) (Grok 4.7 via [Cursor](../../CONTRIBUTORS.md#cursor)) — applied
+
+#### What changed
+- The `Field_UserUUID` procedure — one type, one method naming what a code generator implements — is in [Khayyam practice](./khayyam.practice.md), not in this document. This document keeps the language rule: access to a field is a method, and a generator may write those methods into source when requested.
+- This entry was first written on `docs/khayyam/encapsulation.changelog.md`; it records the placement of the `Field_UserUUID` procedure, a change to `khayyam.practice.md` — this document's own practice companion — and not to `encapsulation.md`, and was moved here.
+
+#### Considered and not done
+- **A hand-written pair of abstractions for every field (rejected)**: that repeats the generator's job in every file. The author names the intent once (Omid Hekayati — decided).
 
 ---
 
@@ -606,3 +736,18 @@ Considered placing the topic in `khayyam-runtime.md` instead, since Unikernel is
 - The Method-as-Type bullet now carries the comparison type.md made: Rust and OCaml keep functions apart from their types, and the position is closer to Smalltalk's "everything is an object", but with explicit categories.
 - [Khayyam Practice](./khayyam.practice.md) → Rules worth applying even when not asked now holds the generic-`Init` wrong/right example that step 3 of type.practice.md carried, citing that step downward.
 - [Khayyam handoff](./khayyam.handoff.md) → "Stdlib bootstrap ordering under the no-hidden-primitive rule" absorbed type.handoff.md's "Bootstrapping without primitives". The entry already held the String↔Error case and the no-hidden-primitive ruling. What it lacked, and now states, is that the question also bears on the Type model, because it decides whether "no primitive types" holds without exception.
+
+---
+
+### Review of the uncommitted changes of 2026-10-12
+- Time: 2026-10-12T09:45:00Z
+- Type: Changed
+- Contributors:
+  - [Claude](../../CONTRIBUTORS.md#claude) (Sonnet-5.5) — reviewed, revised
+
+#### What changed
+- Reviewed the uncommitted change to `README.md`, `khayyam.md`, `khayyam.practice.md`, `khayyam.handoff.md`, this changelog, and the untracked `khayyam.research.001.md`. The link rewrites (`protocols/` to `docs/modules/`, `modules/khayyam/` to `bundles/khayyam/`) resolve (`memar content check`: no problem), and the settled and removed items each have an entry here.
+- Fixed in this changelog: the 2026-10-03 entry "Implementation and usage claims removed from the language document" listed Modularity as `Done` at `modularity.md:17`, but `modularity.md` carries no passage on a name collision, so the guidance removed from the Import Mechanism blockquote has no home yet; the line now says Pending. The same entry said the Scope bullet still states that the grammar has no `goto` keyword, and the "`return` command leaves the grammar" entry said the new bullet gives "no `goto`" as its reason; the `goto` sentence is no longer in `khayyam.md`, so both now say what the text says.
+- Fixed in `khayyam.practice.md`: "What the sources happens to do today is write their addresses" read "happen".
+- Added to `khayyam.research.001.md` under Open Questions a note that the removals of 2026-10-03 left the first and second open questions naming text that is no longer there; the record's line numbers and `docs/protocols/` paths are those of the tree when it was written.
+- Reviewed, no change needed: the removed handoff entry about a team-adjustable clarity boundary (answered in `variable.md`, recorded in the entry of 2026-10-04); the body-less method ruling, the `return` removal, the name-collision blockquote and Smart Compilation removals (each recorded with its reason). Not judged: the code-span paths `modules/…` in older entries' Propagates to lists, and the external quotations in the research file, which were not re-fetched.

@@ -129,7 +129,7 @@
 - Time: 2026-09-15T13:00:00Z
 - Type: Changed
 - Cited:
-  - [Memory](../protocols/memory/memory.md) — Consumed contract: allocation, reclamation, teardown, allocators.
+  - [Memory](../modules/memory/memory.md) — Consumed contract: allocation, reclamation, teardown, allocators.
   - [Khayyam](./khayyam.md) — Realization: How Khayyam realizes Memory.
 - Propagates to:
   - variable.handoff.md: Done — two resource-management open questions removed; the protocol and Khayyam topic are the homes.
@@ -138,7 +138,7 @@
   - [Cursor](../../CONTRIBUTORS.md#cursor) (Composer) — applied
 
 #### What changed
-- Body pointers that deferred storage and lifecycle to a "future document on resource management" now point at [Memory](../protocols/memory/memory.md) and [Khayyam → How Khayyam realizes Memory](./khayyam.md#how-khayyam-realizes-memory).
+- Body pointers that deferred storage and lifecycle to a "future document on resource management" now point at [Memory](../modules/memory/memory.md) and [Khayyam → How Khayyam realizes Memory](./khayyam.md#how-khayyam-realizes-memory).
 - The `Resource Lifecycle (Deferred)` heading loses the deferral; the topic states the governance/syntax split and links out.
 
 #### Deliberation
@@ -187,7 +187,7 @@
   - [Grok](../../CONTRIBUTORS.md#grok) (Grok 4.7 via [Cursor](../../CONTRIBUTORS.md#cursor)) — applied
 
 #### What changed
-- A file-level `vr` is a declaration. Its initial state is established by the compiler and by source that code generation emits, the same placement as program boot: [Compiler → Entry and lifecycle are not grammar](../protocols/computer/compiler.md#entry-and-lifecycle-are-not-grammar). The question is removed from the handoff.
+- A file-level `vr` is a declaration. Its initial state is established by the compiler and by source that code generation emits, the same placement as program boot: [Compiler → Entry and lifecycle are not grammar](../modules/computer/compiler.md#entry-and-lifecycle-are-not-grammar). The question is removed from the handoff.
 - A `vr` declaration names a capsule or an abstraction. A method's influencing group may also receive an `sc` or an `mt`.
 
 #### Considered and not done
@@ -199,9 +199,68 @@
 - Time: 2026-09-29T16:00:00Z
 - Type: Changed
 - Propagates to:
-  - [identifier naming](../../modules/khayyam/rules/identifier-naming/identifier-naming.md): Done
+  - [identifier naming](../../bundles/khayyam/rules/identifier-naming/identifier-naming.md): Done
 - Contributors:
   - Auto (model not recorded) via [Cursor](../../CONTRIBUTORS.md#cursor) - applied
 
 #### What changed
-- [Naming Conventions](./variable.md#naming-conventions) and the domain-meaning sentence under [Self-Documenting Code and No Magic Numbers](./variable.md#self-documenting-code-and-no-magic-numbers) replaced with links to [identifier naming](../../modules/khayyam/rules/identifier-naming/identifier-naming.md).
+- [Naming Conventions](./variable.md#naming-conventions) and the domain-meaning sentence under [Self-Documenting Code and No Magic Numbers](./variable.md#self-documenting-code-and-no-magic-numbers) replaced with links to [identifier naming](../../bundles/khayyam/rules/identifier-naming/identifier-naming.md).
+
+---
+
+### Implementation and usage claims removed from the variable document
+- Time: 2026-10-03T11:16:28Z
+- Type: Changed
+- Propagates to:
+  - [Variable in Khayyam Handoff](./variable.handoff.md): Pending - the open question on file-level initialization cites this document as stating that "the compiler and source that code generation emits" establish the initial state. That sentence is gone; the handoff's premise needs re-pointing at what the document now says.
+  - [Computer — Compiler → Entry and lifecycle are not grammar](../modules/computer/compiler.md#entry-and-lifecycle-are-not-grammar): Done - where a file-level variable's first instance is established, and from what source, is now unanswered here. [see compiler.md:124]
+  - [Computer — Compiler → Designated pure operations may run at compile time](../modules/computer/compiler.md#designated-pure-operations-may-run-at-compile-time): Done - the compile-time evaluation of string formulas is no longer claimed by the language. [see compiler.md:126-129]
+- Contributors:
+  - [Space Bunny Alpha](../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../CONTRIBUTORS.md#opencode)) — applied
+
+#### What changed
+- [Domain-Driven Arithmetic](./variable.md#domain-driven-arithmetic): the compile-time claim was removed — "When the parameters to such a formula are compile-time constants, the compiler evaluates the deterministic, pure logic at compile time automatically — the same way a regex engine pre-compiles its automaton from a literal pattern — so this is not a runtime-only escape hatch; it carries the same compile-time guarantees as the direct method-call form whenever its inputs are known statically." The topic now says whether such a formula's work is done ahead of execution is the evaluator library's and the compiler's business, and points at the compiler protocol's compile-time-evaluation topic.
+- [Variable Scope and Visibility](./variable.md#variable-scope-and-visibility): file-level initialization no longer reads "The variable's initial state is established by the compiler and by source that code generation emits." The paragraph now says the declaration is the grammar's part, that as for any other variable the instance is obtained and initialized through its type's own behavior, and that when the first instance is established and from what source is not a question the grammar answers.
+- [Variable Declaration Syntax](./variable.md#variable-declaration-syntax): "It may receive a `vr`, an `sc`, or an `mt`, and the compiler distinguishes the three" became "It may receive a `vr`, an `sc`, or an `mt`", with the distinction left to the topics that state what each of the three is.
+- The recommendation to reach for `MathEval` was removed from the same topic — "A formula deep enough to need several such calls is, by the same reasoning documented for methods generally, is a signal to reach for `MathEval` rather than a reason to want expression chaining" — leaving the grammar's statement that several calls have no shorter spelling.
+- The encouragement about file contents was removed — "because files are the unit of import, and because each import targets a specific named variable, developers are naturally encouraged to keep files small and focused, with each file exporting only the variables that belong to its domain." What remains is that what a file exposes is visible from its imports alone.
+
+---
+
+### The compile-time claim survives one paragraph below the one it was removed from
+- Time: 2026-10-03T00:00:00Z
+- Type: Fixed
+- Contributors:
+  - [Space Bunny Alpha](../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../CONTRIBUTORS.md#opencode)) — reviewed, repaired
+
+#### What changed
+- [Domain-Driven Arithmetic → Mechanism Summary](./variable.md#mechanism-summary): the third bullet no longer claims "compile-time evaluation when inputs are invariant". The entry of 2026-10-03 removed that claim from the paragraph above and pointed at the compiler protocol's compile-time-evaluation topic; this bullet stated it again two paragraphs down, so the removal had not reached the document's own summary.
+
+---
+
+### Two entries leave the variable document's Open Questions
+- Time: 2026-10-04T21:13:00Z
+- Type: Fixed
+- Propagates to:
+  - [Computer — Compiler → Entry and lifecycle are not grammar](../modules/computer/compiler.md#entry-and-lifecycle-are-not-grammar): Done — where a declaration outside any operation's body receives its first instance, and from what source, is stated there as the realization's; no action remains.
+- Contributors:
+  - [Space Bunny Alpha](../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../CONTRIBUTORS.md#opencode)) — argued, applied
+
+#### What changed
+- Two entries were removed from [Variable in Khayyam Handoff](./variable.handoff.md); one is restored below.
+- "Where are the statements that build or bind a file-level `vr`'s initial state written?" removed. Its premise was stale: the sentence it cited from [Variable Scope and Visibility](./variable.md#variable-scope-and-visibility) — that the compiler and source that code generation emits establish the initial state — was removed on 2026-10-03, and that section now says the question is not one the grammar answers. [Compiler → Entry and lifecycle are not grammar](../modules/computer/compiler.md#entry-and-lifecycle-are-not-grammar) states the answer: a compiler may establish the first instance from the program's own source, from included source, from a generated companion, or by refusing it, and "Which of them establishes it, and what that first instance therefore contains, belongs to the realization."
+- "Should teams be able to adjust the clarity/verbosity boundary?" was removed and is restored by the review of 2026-10-12: the base document states only that no mechanism exists today, not a decision or its reason, so the question is not settled.
+- The neighbouring entries are untouched: where the boundary itself lies, and how the compiler reads a first instance's values from a literal, both stay open, and the boundary entry keeps its cross-reference to [Khayyam's handoff](./khayyam.handoff.md).
+
+---
+
+### Review of the uncommitted changes of 2026-10-12
+- Time: 2026-10-12T09:46:00Z
+- Type: Changed
+- Contributors:
+  - [Claude](../../CONTRIBUTORS.md#claude) (Sonnet-5.5) — reviewed, revised
+
+#### What changed
+- Reviewed the uncommitted change to `variable.md`, `variable.handoff.md` and this changelog. Link repoints resolve (`memar content check` reports no problem). The removals from `variable.md` (compile-time evaluation claim, `MathEval` recommendation, file-size encouragement, "compiler distinguishes the three") are each recorded in the 2026-10-03 entries; the compiler quotations in the 2026-10-04 entry match `docs/modules/computer/compiler.md`, so removing the file-level initialization question from the handoff holds.
+- Fix: the handoff entry "Should teams be able to adjust the clarity/verbosity boundary?" was restored. `variable.md` says only that no mechanism exists today; it records no decision and no reason, so the question was not settled. The 2026-10-04 entry was amended to say so.
+- Not changed, reported: the entry "The compile-time claim survives one paragraph below…" carries the time 2026-10-03T00:00:00Z but follows an entry timed 2026-10-03T11:16:28Z; its real time is not recorded, so it was not altered.

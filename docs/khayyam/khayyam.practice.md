@@ -28,7 +28,7 @@ This skill does not bundle the spec. Fetch `khayyam.md` via the **`memar`** skil
 |         |          | `ab`    | abstraction      |
 |         |          | `sc`    | scope            |
 
-Everything at the top level is either a **Type** (`tp`) or a **Variable** (`vr`). No `namespace`/`package` — an `in` value is an address, and the language fixes no spelling for it: the scheme it is written in and the base it resolves from are not the language's to settle, and how firmly a tool requires a given spelling is that tool's rule ([Import Address → The rule](../../modules/khayyam/rules/import-address/import-address.md#the-rule)). What the corpus happens to do today is write its addresses as paths from the repository root, `modules/…`; that is a spelling this repository adopted, not the base, and the rule above is where the base is stated.
+Everything at the top level is either a **Type** (`tp`) or a **Variable** (`vr`). No `namespace`/`package` — an `in` value is an address, and the language fixes no spelling for it: the scheme it is written in and the base it resolves from are not the language's to settle, and how firmly a tool requires a given spelling is that tool's rule ([Import Address → The rule](../../bundles/khayyam/rules/import-address/import-address.md#the-rule)). What the sources happen to do today is write their addresses as paths from the repository root, `modules/…`; that is a spelling this repository adopted, not the base, and the rule above is where the base is stated.
 
 ### Import
 ```khayyam
@@ -54,7 +54,7 @@ tp {name} mt (self {type_owner}) ({args}...) ({returns}...) { ___ }
 - Body-less method = abstraction specification signature, or FFI stub against an external `.s`/`.o` implementation.
 - Calls always use a single `.` — never `::`.
 - The signature names the parent type: `tp Sum mt (self W32) (a W32, b W32) (total W32, err Error)`. The call on that type is `W32.Sum(a, b)(total, err)`. The body does not invoke `self`. A call on a variable of the parent type is `k.Set(value)(err)` for `tp Set mt (self Key) (value String) (err Error)`.
-- An influencing position may be a `vr`, an `sc`, or an `mt`. The compiler distinguishes them. A method can implement an abstraction by defining methods on itself, and can present that fact with an intent abstraction such as `abstraction_p.Implements`.
+- An influencing position may be a `vr`, an `sc`, or an `mt`. A method can implement an abstraction by defining methods on itself, and can present that fact with an intent abstraction such as `abstraction_p.Implements`.
 - A method's synchronous or asynchronous nature is an abstraction the method implements by defining methods on itself, never a choice at the call. There is no `go`/`async`/`await` keyword.
 
 ### Abstraction (pure behavioral specification)
@@ -65,14 +65,14 @@ tp Read mt (self Reader) (data Element) (err Error)   // defined independently, 
 - No logic, state, or bodies. Methods fulfilling the specification are defined outside it.
 - Compose via a `{}` block at the definition site.
 - May only use other abstractions as args/returns — never concrete capsules.
-- No generics syntax (`<T>`, `[T]`). Covariant returns + compiler-chosen dispatch replace it.
+- No generics syntax (`<T>`, `[T]`). Covariant returns over abstractions cover the cases generics syntax is usually written for.
 - Satisfaction is structural — no `implements` keyword.
 
 ### Scope
 ```khayyam
 tp {name} sc { ___ }
 ```
-Control-flow (`IF`, `LOOP`, `GOTO`, etc.) is library-built, not language keywords. The language states no placement for a `sc`; where one may be declared in the sources this repository's toolchain accepts is that toolchain's rule, and an organization may keep it or drop it ([Code Scope Placement → The rule](../../modules/khayyam/rules/scope-placement/scope-placement.md#the-rule)).
+Control-flow (`IF`, `LOOP`, `GOTO`, etc.) is library-built, not language keywords. The language states no placement for a `sc`; where one may be declared in the sources this repository's toolchain accepts is that toolchain's rule, and an organization may keep it or drop it ([Code Scope Placement → The rule](../../bundles/khayyam/rules/scope-placement/scope-placement.md#the-rule)).
 
 ### Variable
 ```khayyam
@@ -98,10 +98,10 @@ For the mechanical-translation posture — a structural mapping, not a redesign.
 If a construct doesn't map cleanly (closures, macros, generics-heavy code), don't invent syntax — fetch the documented replacement pattern via `memar` SKILL before proposing one.
 
 ## Field-shaped values
-A value such as `Field_UserUUID` is one type. On that type, write one method that names which other abstractions a code generator implements for it, per [abstraction_p.Implements](../protocols/computer/abstraction-implements.md). The generator writes those methods. This is a generation procedure, not a Khayyam keyword.
+A value such as `Field_UserUUID` is one type. On that type, write one method that names which other abstractions a code generator implements for it, per [abstraction_p.Implements](../modules/computer/abstraction-implements.md). The generator writes those methods. This is a generation procedure, not a Khayyam keyword.
 
 ## Rules worth applying even when not asked
-For the full-design-treatment posture, apply grammar-enforced modeling (no magic numbers, wrapped primitives, one construct per intent — see [Khayyam → Self-Documenting Code and Naming](./khayyam.md#self-documenting-code-and-naming)) and organizational rules in [identifier naming](../../modules/khayyam/rules/identifier-naming/identifier-naming.md) and [domain capsule naming](../../modules/khayyam/rules/domain-capsule-naming/domain-capsule-naming.md). If a concrete case isn't covered, fetch the relevant document via `memar` SKILL rather than inventing an answer.
+For the full-design-treatment posture, apply grammar-enforced modeling (no magic numbers, wrapped primitives, one construct per intent — see [Khayyam → Self-Documenting Code and Naming](./khayyam.md#self-documenting-code-and-naming)) and organizational rules in [identifier naming](../../bundles/khayyam/rules/identifier-naming/identifier-naming.md) and [domain capsule naming](../../bundles/khayyam/rules/domain-capsule-naming/domain-capsule-naming.md). If a concrete case isn't covered, fetch the relevant document via `memar` SKILL rather than inventing an answer.
 
 A concept with no per-instance state is still its own type ([Type Practice → Mapping concepts onto realizations](../type.practice.md#mapping-concepts-onto-realizations), step 3). Never carry it as a name string inside one generic capsule initialized at runtime (the generic-`Init` pattern):
 

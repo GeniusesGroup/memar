@@ -6,7 +6,7 @@
 - Time: 2026-07-11T00:00:00Z
 - Type: Added
 - Cited:
-  - [Control Flow in Khayyam](../protocols/process/control-flow.md) — Depends_on: this document builds on the precedent set by that document of keeping behavioral policies as ordinary library-driven mechanisms rather than new syntax.
+  - [Control Flow in Khayyam](../modules/process/control-flow.md) — Depends_on: this document builds on the precedent set by that document of keeping behavioral policies as ordinary library-driven mechanisms rather than new syntax.
 - Propagates to:
   - khayyam.md: Reference — this document elaborates and motivates `khayyam.md#Abstraction`.
 - Contributors:
@@ -46,7 +46,7 @@
 - A structural artifact — two "Unresolved questions" items that were actually full sub-topics with their own nested Discussion blocks — is resolved by moving their substantive content into Explanation and their actual open questions into this document's own Discussion.
 - Former "Unresolved questions" items 4 ("Abstraction Design and Over-Abstraction Risk") and 5 ("Abstraction Stability and Versioning") were moved into the document-level Discussion's own Unresolved questions, since their substantive prose was genuine Explanation-level content, not merely restatements of an open question.
 - Front-matter `Citations`, `Contributor(s)`, and `Applied to` were moved into this changelog.
-- Every occurrence of "RFC" referring to Memar's own documents was replaced with "document," linking to [Polymorphism in Khayyam](./polymorphism.md) and [Control Flow in Khayyam](../protocols/process/control-flow.md) where those documents actually exist, and describing the two now-superseded, absorbed drafts ("Intentional Abstraction Satisfaction," "Rejection of Default Implementations") in plain text without a link, since they no longer exist as separate documents.
+- Every occurrence of "RFC" referring to Memar's own documents was replaced with "document," linking to [Polymorphism in Khayyam](./polymorphism.md) and [Control Flow in Khayyam](../modules/process/control-flow.md) where those documents actually exist, and describing the two now-superseded, absorbed drafts ("Intentional Abstraction Satisfaction," "Rejection of Default Implementations") in plain text without a link, since they no longer exist as separate documents.
 - "Behavior Over Type Identity" and "A Note on Parametric Polymorphism" are added, migrated from `khayyam-design_philosophy.md`, which is being retired; this document keeps only the abstraction-satisfaction-relevant portion of that content, since the more general vision-level material in the source document belongs elsewhere. The additions connect the already-present "Pure Contract Philosophy" to the more general principle behind it and to why Khayyam needs fewer of the classic parametric-polymorphism patterns (`identity<T>()`, `swap<T>()`, `Option<T>`, `Result<T,E>`) than languages that motivated them by constraints Khayyam does not have.
 
 #### Deliberation
@@ -189,7 +189,7 @@ Alternatives: (a) keep the identical-receiver wording and change examples to use
 
 #### What changed
 - [A Concept Is an Abstraction; a Concrete Instance Is a Capsule](./abstraction.md#a-concept-is-an-abstraction-a-concrete-instance-is-a-capsule): a new section stating that a name carrying a concept is an abstraction and a concrete width, unit, or value representation is a capsule; that the owner of a signature decides whether it names the concept or a capsule; and why a contract that names the concept loses nothing. The rule was stated twice, in the module documents `modules/math/math.md` and `modules/time/time.md`, both deleted.
-- `abstraction.handoff.md`: the `Bool`/`Boolean` question and runtime-signature residue moved to [Math Handoff](../protocols/math/math.handoff.md) and [Runtime Handoff](../protocols/computer/runtime.handoff.md) respectively.
+- `abstraction.handoff.md`: the `Bool`/`Boolean` question and runtime-signature residue moved to [Math Handoff](../modules/math/math.handoff.md) and [Runtime Handoff](../modules/computer/runtime.handoff.md) respectively.
 
 #### Considered and not done
 - Stating the rule in [Encapsulation in Khayyam](./encapsulation.md) as well: it is one rule, and Primitive Capsule Specification links here instead.
@@ -200,12 +200,108 @@ Alternatives: (a) keep the identical-receiver wording and change examples to use
 - Time: 2026-09-29T16:00:00Z
 - Type: Changed
 - Propagates to:
-  - [abstraction scaffolding](../../modules/khayyam/rules/abstraction-scaffolding/abstraction-scaffolding.md): Done
+  - [abstraction scaffolding](../../bundles/khayyam/rules/abstraction-scaffolding/abstraction-scaffolding.md): Done
 - Contributors:
   - Auto (model not recorded) via [Cursor](../../CONTRIBUTORS.md#cursor) - applied
 
 #### What changed
-- Tooling-support and DX scaffolding bullets replaced with links to [abstraction scaffolding](../../modules/khayyam/rules/abstraction-scaffolding/abstraction-scaffolding.md).
+- Tooling-support and DX scaffolding bullets replaced with links to [abstraction scaffolding](../../bundles/khayyam/rules/abstraction-scaffolding/abstraction-scaffolding.md).
+
+---
+
+### Compiler-attributed enforcement removed from the abstraction document
+- Time: 2026-10-03T11:16:28Z
+- Type: Changed
+- Propagates to:
+  - [Computer — Compiler](../modules/computer/compiler.md): Done - the zero-cost and dispatch-strategy material removed here is the compiler's to state. [see compiler.md:42-47]
+- Contributors:
+  - [Space Bunny Alpha](../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../CONTRIBUTORS.md#opencode)) — applied
+
+#### What changed
+- [Motivation → The Problem This Document Solves](./abstraction.md#the-problem-this-document-solves): the compiler requirement was removed — "**Enable zero-cost abstraction where possible.** When the compiler knows the concrete type behind an abstraction, it should be able to inline the call — eliminating VTable overhead entirely — without the developer writing different code."
+- [Satisfying an Abstraction](./abstraction.md#satisfying-an-abstraction): the verifying sentence became a statement of when satisfaction is judged — "The compiler verifies satisfaction at the point where the abstraction type is expected (assignment, parameter passing, etc.)" became "Satisfaction is judged wherever an abstraction type is required — where a value is declared as one, or where it is passed to a position declared with one." The example's comment became "`r` may name a `FileReader` here: `FileReader` satisfies `Reader`".
+- [Abstraction Realization (Implicit Satisfaction)](./abstraction.md#abstraction-realization-implicit-satisfaction): the validation bullet was replaced rather than deleted, because whether a signature matches is what the rule turns on — "**Validation point**: The compiler validates abstraction satisfaction during assignment or parameter passing where an abstraction type is expected. Missing or mismatched methods will result in a strict compile-time error." became "**Where it is judged**: wherever an abstraction type is required — a `vr` declared as one, or a value passed to a position declared with one. A capsule missing a required method, or declaring one with a signature that does not match, does not satisfy the abstraction." The rule's own wording also no longer says realization is structural "at the compiler level".
+- [Sharing Behavior Across Implementations](./abstraction.md#sharing-behavior-across-implementations): "free of compiler magic or implicit routing" became "with no implicit routing".
+- [Rejection of Default Implementations](./abstraction.md#rejection-of-default-implementations): the optimization clause was removed — "and it clouds compile-time optimization because the compiler can no longer assume the call target is a simple VTable entry or a monomorphized concrete method."
+- [Dispatch Strategy](./abstraction.md#dispatch-strategy): the pointer to a dispatch section in another language document became a boundary statement — "The compiler's mechanism for resolving polymorphic calls (monomorphization vs. dynamic dispatch) is documented in [Polymorphism in Khayyam](./polymorphism.md)." became "The grammar states no strategy for resolving a call through an abstraction and offers no syntax to choose one; what a Khayyam compiler does at a given call site is [Compiler](../modules/computer/compiler.md)'s business."
+- Two sentences narrating superseded drafts were removed from the body, per [Documentation → Written surface](../documentation.md#written-surface): the document's opening claim that it "supersedes two prior, now-absorbed drafts — one on intentional abstraction satisfaction, one on the rejection of default implementations", and the note that "earlier polymorphism examples that showed one have been corrected in the paired changelog".
+
+---
+
+### The method-less abstraction entry repointed at the settled modeling answer
+- Time: 2026-10-04T18:55:00Z
+- Type: Fixed
+- Propagates to:
+  - abstraction.handoff.md: Done — the entry's cross-reference now names the section of modeling.md that answers the modeling half (Action: None).
+- Contributors:
+  - [Space Bunny Alpha](../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../CONTRIBUTORS.md#opencode)) — applied
+
+#### What changed
+- The method-less-abstraction entry in [abstraction.handoff.md](./abstraction.handoff.md) linked to `../modeling.handoff.md#a-concept-that-requires-no-behavior` — an entry that [Modeling → Concept Existence vs. Model Existence](../modeling.md#concept-existence-vs-model-existence) has since answered and removed from its own handoff. The link names that section instead, and the sentence records that the modeling half is settled.
+- The language question the entry actually raises — whether the form `tp Name ab` with no methods attached is legal Khayyam — stays open, and this entry does not touch it.
+
+#### Considered and not done
+- **Closing the language question in the same edit (rejected)**: the modeling answer settles what a concept owning rules, lifecycle, or validation requirements is worth without behavior of its own, which is not a statement about which forms the grammar accepts.
+
+---
+
+### Deliberate satisfaction is composed and delegated; the language does not intervene
+- Time: 2026-10-05T08:57:12Z
+- Type: Changed
+- Cited:
+  - [abstraction_p.Implements](../modules/computer/abstraction-implements.md) — Premise: the protocol-level declaration of an intent to implement an abstraction, expressed as an abstraction a capsule composes rather than as syntax the language enforces.
+  - [Type → Explicit Behavior Ownership](../type.md#explicit-behavior-ownership) — Premise: every method of a component is either defined in its own source or explicitly delegated by it, with no other route.
+- Propagates to:
+  - [abstraction.handoff.md](./abstraction.handoff.md): Done — the intentional-satisfaction question with its sub-questions and its three options, and the linter delegation-verification entry, are removed (Action: None).
+  - [agency.md](./agency.md): Not done — [see agency.md:54-58] — its *Agency Beyond Concurrency* section still presents this question as `abstraction.md`'s own unresolved one and takes no position; not edited here, being outside this session's ownership.
+- Contributors:
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Space Bunny Alpha](../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../CONTRIBUTORS.md#opencode)) — argued, drafted, applied
+
+#### What changed
+- [Abstract](./abstraction.md#abstract): the fourth item is now the resolved property *no language-level intent marker* rather than an open question, and the preamble counts four resolved design properties.
+- A new section, [*Deliberate Satisfaction Is Composed, Not Declared*](./abstraction.md#deliberate-satisfaction-is-composed-not-declared), states the position as what holds: the language does not intervene in satisfaction — no `impl`-style keyword, no sealed declaration, no grammar-level intent marker — and deliberate satisfaction is an ordinary abstraction the capsule composes into its own definition, with the methods that abstraction requires explicitly delegated to a capsule that owns the behavior. The intent abstraction is judged by the ordinary structural check, at the same places and by the same signature comparison as any other abstraction; declaring the intent grants no exemption from satisfaction and no guarantee beyond it, and verification needs no mechanism of its own because the delegations are ordinary source.
+- [Abstraction Realization (Implicit Satisfaction)](./abstraction.md#abstraction-realization-implicit-satisfaction): the accidental-satisfaction risk now ends at its own answer — composition and delegation — and the pointer into the paired handoff is gone, that question being closed.
+- [Motivation → The Problem This Document Solves](./abstraction.md#the-problem-this-document-solves): the Go pain-point bullet no longer records the risk as an open question and points at the section that answers it.
+- [What You Cannot Do](./abstraction.md#what-you-cannot-do): the bullet forbidding an explicit declaration by keyword now also says where deliberate satisfaction is expressed instead — composition and delegation, never grammar.
+- `abstraction.handoff.md`: the intentional-satisfaction entry, its sub-questions, and its options (a), (b), and (c) removed; the linter delegation-verification entry removed, the ordinary structural check answering it; the compiler-generated dispatch-metadata item in Anticipated Work no longer conditioned on the question being resolved.
+
+#### Deliberation
+- The owner ruled that the language must not intervene in satisfaction, and named the project's own protocol-level precedent for expressing the intent — `docs/protocols/computer/abstraction-implements.md`, where an implementation intent is an abstraction a capsule composes rather than a declaration the language recognizes (Omid Hekayati — decided).
+- The handoff's own sequencing rule had held this document's front-matter `Status` pending this question; that condition is discharged, and the status itself is left for the reviewing session to decide (Space Bunny Alpha — noted).
+
+#### Considered and not done
+- **Option (b), nominal declaration required for every implementation (rejected)**: it makes the language intervene at every satisfaction site, adding `impl Trait for Type` ceremony to every implementation site and a grammar keyword that contradicts the structural satisfaction this document states as a feature. The risk it removes is negligible for large abstractions, and where it is acute — small, marker-like abstractions — a capsule composing an intent abstraction answers it without the language knowing anything (Omid Hekayati — decided).
+- **Option (c), a hybrid in which marker-like abstractions opt into requiring a declaration (rejected)**: it needs a formal criterion for which abstractions qualify, and a declaration mechanism the language must be able to check. The intent abstraction delivers the same per-abstraction opt-in without either: an abstraction whose satisfiers should say so composes an intent abstraction of its own, and nothing in the language distinguishes it from any other composition (Omid Hekayati — decided).
+- **Promoting this document's front-matter `Status` (not done)**: the handoff's sequencing rule held it on this question, and the question is now closed, but promotion is the reviewing session's call (Space Bunny Alpha — noted).
+
+---
+
+### The satisfaction tension recorded as an open question, and researched to the point where it can be ruled
+- Time: 2026-10-10T05:17:06Z
+- Type: Added
+- Propagates to:
+  - [abstraction.handoff.md](./abstraction.handoff.md): Done — carries the open question *Do declared Types and structural satisfaction both stand?*, its state, and its next step.
+  - [abstraction.satisfaction.research.001.md](./abstraction.satisfaction.research.001.md): Added — the evidence record for that question.
+- Contributors:
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — asked, ruled that the tension is not to be declared resolved
+  - [Space Bunny Alpha](../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../CONTRIBUTORS.md#opencode)) — argued, researched, drafted, applied
+- Related work:
+  - [Type](../type.md) → *Type vs Implementation Type* and *Abstract* — the two rulings the question turns between
+  - [Agency in Khayyam](./agency.md) → *Agency Beyond Concurrency* — supplies the bounding sentence about the receiving side
+  - [Modeling](../modeling.md) → *One Authoritative Location per Concern's Data* — where the inter-organization reading of the `type.md` ruling enters the record
+  - [abstraction_p.Implements](../modules/computer/abstraction-implements.md) — the protocol-level home of the intent declaration, and the passage that removes one candidate boundary
+#### What changed
+- `abstraction.handoff.md` gains one open question: *Do declared Types and structural satisfaction both stand?* It states the two rulings in tension — this document's *Deliberate Satisfaction Is Composed, Not Declared*, which keeps satisfaction structural with no declaration mechanism, and `type.md`'s foundational ruling that every semantic entity is a Type and that a counterpart across a boundary is modeled as Types or not modeled at all — records that a session's derivation from the second ruling toward declared satisfaction was never applied, gives the narrower reading on which both stand because they address different boundaries, and names the deciding case: a `Reader`-shaped capsule in one organization consumed by another that never saw how it was written.
+- `abstraction.satisfaction.research.001.md` is added, `Status` `Active`. It quotes both rulings whole at their decisive sentences with file and line, works the four candidate scopes, and reports four collisions with their files and lines — the conformance level, what "a boundary" reaches, accidental satisfaction at a boundary, and how the shape of the check is located — together with the places where the documents already dissolve the tension (`type.md:103`, `type.md:185`, `type.md:247`) and the passages a reader would expect to carry it and do not. It declares no resolution and edits no other document.
+#### Deliberation
+- Two owner rulings in the same week bear on the same question and neither was withdrawn. The owner was asked to declare the matter resolved and answered that it is not (Omid Hekayati — decided).
+- The research's most consequential finding is that the inter-organization reading is not in `type.md` at all: `type.md:112`'s demonstrative points at the modeling/implementation gap, and the organizational extension enters through `modeling.md:401`, which cites `type.md` for it. A reader following only the ruling and a reader following the citation reach different boundaries, and the deciding case turns on that difference (Space Bunny Alpha — found, argued).
+- The research also records, against its own filing, that every source it consulted is a document of this project, which `documentation-research.md` says makes the work an audit rather than a research; the tension is recorded rather than resolved (Space Bunny Alpha — noted).
+#### Considered and not done
+- **Reversing *Deliberate Satisfaction Is Composed, Not Declared* to a declared-satisfaction rule (not done)**: a session's derivation argued that resemblance deciding conformance is what a structural counterpart type system would be, and `type.md` forbids one; the reversal was not applied, because the owner ruled the matter open and `type.md` itself grants structural satisfaction permission twice (Space Bunny Alpha — argued, not applied).
+- **Naming the collision in either base document's body (not done)**: the question is one of scope between two documents, and `docs/khayyam/abstraction.handoff.md` and the research record are its home until it is ruled (Space Bunny Alpha — noted).
+- **Recording the research at `abstraction.research.001.md` (not done)**: the facet pairs a research to its base by the dot, and the owner named this path; recorded in the research's own Open Questions rather than corrected (Space Bunny Alpha — noted).
 
 ---
 
@@ -218,3 +314,21 @@ Alternatives: (a) keep the identical-receiver wording and change examples to use
 
 #### What changed
 - [The handoff](./abstraction.handoff.md)'s Anticipated Work gains "Formal specification of the satisfaction mechanism", which is moved from type.handoff.md. The mechanism by which a capsule satisfies an abstraction is this language's to state, and the base document no longer carries work about it, under the owner's ruling of 2026-10-10.
+
+---
+
+### Review of the uncommitted changes of 2026-10-12
+- Time: 2026-10-12T09:45:50Z
+- Type: Changed
+- Contributors:
+  - [Claude](../../CONTRIBUTORS.md#claude) (Sonnet-5.5) — reviewed, revised
+
+#### What changed
+- Reviewed the working-tree change to `abstraction.md`, `abstraction.handoff.md`, this changelog, and the new `abstraction.satisfaction.research.001.md`. The settled intentional-satisfaction question (handoff entry and options (a)/(b)/(c) removed, the linter-verification entry removed, answer placed in `abstraction.md` with its reason and recorded in the 2026-10-05 entry), the compiler-attributed removals (recorded in the 2026-10-03 entry), the repointed modeling answer, and the link repoints (folder move to `modules/` and `bundles/`; targets exist; the only removed changelog lines are those links, history otherwise kept) hold.
+- [abstraction.satisfaction.research.001.md](./abstraction.satisfaction.research.001.md): the quoted passage "A Capsule satisfies an Abstraction through implicit structural satisfaction…" cited at `type.md:185` is in no revision of `type.md` that exists in the tree or HEAD; the citation, and the claim that `type.md` grants structural satisfaction permission "twice", were removed — `type.md:103` is the one place. `type.md:201`, `:209`, and `:217` were listed as restatements of structural satisfaction and are not; removed. Stale lines repointed: `type.md:247` to `:244`, `type.md:271` to `:268`, `modeling.md:401` to `:417`. The `protocol.md:228` quotation "did not write the rules" was corrected to the text's "without having written the rules". Two broken link brackets in Participants were closed.
+- [abstraction.md](./abstraction.md): "delegates the methods that abstraction requires" (Abstract item 4, and *Deliberate Satisfaction Is Composed, Not Declared*) read as the intent abstraction's own methods, which has none; now "the abstraction it declares". The research record's quotation of that sentence was updated with it. The opening sentence no longer claims the document holds open questions, which now live only in the handoff.
+
+#### Considered and not done
+- This changelog's 2026-10-10T05:17:06Z entry repeats the `type.md:185` citation, "twice", and `modeling.md:401`: left, being history; this entry corrects it.
+- Front-matter `Status: Proposed` of `abstraction.md`, which the 2026-10-05 entry left to a reviewing session: not promoted, the owner's call while the handoff's *Do declared Types and structural satisfaction both stand?* is open.
+- Line numbers in the research record drift as other sessions edit `type.md` and `modeling.md`; they were correct on 2026-10-12.

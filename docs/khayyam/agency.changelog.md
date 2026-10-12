@@ -6,7 +6,7 @@
 - Time: 2026-06-30T00:00:00Z
 - Type: Added
 - Cited:
-  - [Control Flow in Khayyam](../protocols/process/control-flow.md) — Depends_on: this document builds on the precedent set by that document of keeping behavioral policies as ordinary library-driven mechanisms rather than new syntax.
+  - [Control Flow in Khayyam](../modules/process/control-flow.md) — Depends_on: this document builds on the precedent set by that document of keeping behavioral policies as ordinary library-driven mechanisms rather than new syntax.
   - [Framework](../framework.md) — Depends_on.
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — claimed, argued
@@ -217,3 +217,107 @@
 
 #### Considered and not done
 - **A tag slot on the method signature, a bare name in an `mt` body, a marker method as the only form, or a convention with no declaration (rejected)**: the method implements the abstraction with methods of its own, and may present that fact through an intent abstraction (Omid Hekayati — decided).
+
+---
+
+### Execution-model and linter prescriptions removed from the agency document
+- Time: 2026-10-03T11:16:28Z
+- Type: Changed
+- Propagates to:
+  - [Computer — Runtime → Concurrency is hosted, not defined, here](../modules/computer/runtime.md#concurrency-is-hosted-not-defined-here): Pending - the green-thread scheduling account removed here is the runtime's and Concurrency protocol's to state; this document now points at both.
+  - [asynchrony rule](../../bundles/khayyam/rules/README.md): Pending - the linter verification of an asynchrony tag, and the reconstruction of blocking-call guarantees by linter rules, are governance rules; the catalog does not carry them.
+- Contributors:
+  - [Space Bunny Alpha](../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../CONTRIBUTORS.md#opencode)) — applied
+
+#### What changed
+- [Abstract](./agency.md): the execution claim became a boundary statement — "execution is scheduled in user-space by framework-level schedulers, aligned with Unikernel/Exokernel architecture" became a statement that scheduling belongs to the framework and runtime above the language, cited to [Runtime](../modules/computer/runtime.md). The closing parenthetical "(avoiding the function-coloring problem, keeping the compiler minimal)" became "(avoiding the function-coloring problem)".
+- [Definition-Site Over Call-Site](./agency.md#definition-site-over-call-site): the implementation example was removed — "What the tag changes is how the owning library and its scheduler realize the method underneath (for example, suspending a green thread rather than blocking a kernel thread)" became "What the tag changes is what the owning library does with the method underneath it".
+- [User-Space Scheduling (Unikernel Synergy)](./agency.md#user-space-scheduling-unikernel-synergy): the topic no longer states a scheduling substrate — "Underlying execution runs on user-space (green) threads managed by library-level schedulers (e.g. the Memar framework's scheduler) — the language syntax itself remains entirely unaware of OS kernel threads. The default architectural stance favors green threads managed by library-level schedulers, for zero-overhead context switching". It now states that the grammar says nothing about how execution is scheduled or what substrate it runs on, and points at the runtime and concurrency contracts.
+- [Avoiding Function Coloring](./agency.md#avoiding-function-coloring): the linter attribution and the AST claim were removed — "Because asynchronous behavior is a Linter-verified abstraction (`ab`) rather than a compiler keyword, the function-coloring problem that plagues `async`/`await` languages does not arise, keeping the core AST clean and orthogonal." became "Asynchronous behavior is declared as an abstraction the method composes, not as a keyword, so the function-coloring problem that plagues `async`/`await` languages does not arise: nothing in the source distinguishes a call that may suspend from one that may not, because no declaration makes that distinction at a call site."
+- The same topic's cost paragraph no longer says the guarantees "must instead be reconstructed entirely by Linter rules"; it now says they must be reconstructed elsewhere — "by a rule or a tool's check rather than by the grammar".
+- [Concurrency Decisions as Agency, Not Syntax](./agency.md#concurrency-decisions-as-agency-not-syntax): "built the same way `IF`/`ELSE` and `PANIC()` are — as an ordinary, named, importable abstraction operating on the compiler's minimal execution primitives" became "as an ordinary, named, importable abstraction", and a library decision a project can "govern via its Linter" became one it can "govern by rule".
+
+---
+
+### Methodology no longer names user-space scheduling among the decisions documented below
+- Time: 2026-10-03T00:00:00Z
+- Type: Fixed
+- Contributors:
+  - [Space Bunny Alpha](../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../CONTRIBUTORS.md#opencode)) — reviewed, repaired
+
+#### What changed
+- [Methodology](./agency.md#methodology): the list of decisions this document says were made independently before Agency existed read "definition-site tagging, user-space scheduling, no baked-in keyword". The entry of 2026-10-03 removed the scheduling substrate this document claimed; the topic now says the grammar states nothing about scheduling and points at the runtime. The list now names "the placement of scheduling above the language", which is what the topic still carries.
+
+---
+
+### The intentional-satisfaction entry withdrawn as another document's own question
+- Time: 2026-10-04T21:13:00Z
+- Type: Fixed
+- Propagates to:
+  - [Abstraction in Khayyam Handoff](./abstraction.handoff.md): Done — the entry there carries the question and its three candidate resolutions; this handoff keeps no duplicate.
+- Contributors:
+  - [Space Bunny Alpha](../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../CONTRIBUTORS.md#opencode)) — argued, applied
+
+#### What changed
+- The entry "Whether an intentional-satisfaction mechanism should be adopted" is removed from [Agency in Khayyam Handoff](./agency.handoff.md). Its own text assigned the question to [Abstraction in Khayyam](./abstraction.md)'s three candidate options and recorded that [Agency Beyond Concurrency](./agency.md#agency-beyond-concurrency-intentional-vs-accidental-abstraction-satisfaction) states what Agency's vocabulary adds without resolving it; at the time of this entry the question was carried by [Abstraction in Khayyam Handoff](./abstraction.handoff.md), and the position that has since answered it is stated in [Abstraction in Khayyam → Deliberate Satisfaction Is Composed, Not Declared](./abstraction.md#deliberate-satisfaction-is-composed-not-declared).
+- No base `.md` body changed, and no `## Anticipated Work` line scheduled this entry.
+
+---
+
+### The Agency Beyond Concurrency section states the settled position and names its own remaining question
+- Time: 2026-10-05T09:24:47Z
+- Type: Changed
+- Cited:
+  - [Abstraction in Khayyam → Deliberate Satisfaction Is Composed, Not Declared](./abstraction.md#deliberate-satisfaction-is-composed-not-declared) — Depends_on: the settled position this section now states — the language does not intervene in satisfaction, and a capsule composes an intent abstraction and explicitly delegates the required methods — instead of the open question it previously narrated.
+  - [Abstraction in Khayyam → Sharing Behavior Across Implementations](./abstraction.md#sharing-behavior-across-implementations) — Premise: delegation is the ordinary route by which an implementing capsule discharges a required method to a capsule that owns the behavior.
+  - [abstraction_p.Implements → Declaring and discovering intent](../modules/computer/abstraction-implements.md#declaring-and-discovering-intent) — Premise: an intent to implement an abstraction is itself an abstraction a capsule composes, the protocol-level precedent for the composed undertaking the section now describes.
+  - [Agency → The `agent_for` Relationship](../agency.md#the-agent_for-relationship) — Premise: an Agent relationship is constituted by an undertaking of responsibility, not by two parties having compatible shapes.
+  - [Agency → Delegation](../agency.md#delegation) — Premise: responsibility is placed with the Agent that acts, which is why a declaration recognized by the compiler is a different kind of thing from an undertaking written in the capsule's own source.
+- Propagates to:
+  - [Abstraction in Khayyam Changelog → Deliberate satisfaction is composed and delegated; the language does not intervene](./abstraction.changelog.md#deliberate-satisfaction-is-composed-and-delegated-the-language-does-not-intervene): Done — the `Not done` line that entry recorded for `agency.md` is discharged. The section no longer presents the question as `abstraction.md`'s own unresolved one and no longer takes no position on it: it now states that the composed, delegated undertaking is the settled answer, that Agency's vocabulary is why that form is the right one (an undertaking is the Agent's own act, so nothing needs to be added to the grammar), and that the intent abstraction is judged by the ordinary structural rule with no exemption and no check of its own.
+  - [Agency in Khayyam Handoff](./agency.handoff.md): Done — the section's own remaining question has no entry there: whether the receiving side of an abstraction-typed position needs anything — a rule or a tool's check — to surface which satisfiers undertook and which merely resemble. Open questions belong to the handoff, and that file was outside this session's ownership. (Marked `Done` in the entry "The receiving-side question left the section's body for the handoff", which added that entry to the handoff.)
+- Contributors:
+  - [Space Bunny Alpha](../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../CONTRIBUTORS.md#opencode)) — argued, drafted, applied
+
+#### What changed
+- [Agency Beyond Concurrency](./agency.md#agency-beyond-concurrency-intentional-vs-accidental-abstraction-satisfaction): the section's second and third paragraphs, which introduced the question as `abstraction.md`'s own unresolved one and then declined to take a position on its three options, are replaced by four paragraphs holding the position. The first states what is settled and links the section that settles it. The second says what Agency adds — resemblance establishes nothing and only a written undertaking does, the undertaking is the capsule's own act placed by [Delegation](../agency.md#delegation) in the capsule's own source beside the delegations, and a language-level marker would make the relationship exist by the compiler's recognition rather than by the capsule's undertaking. The third says why the answer needs no exemption and no separate verification: the intent abstraction is judged by the ordinary structural rule, the delegations are ordinary source under [Type → Explicit Behavior Ownership](../type.md#explicit-behavior-ownership) and [Method → A method implements an abstraction by methods of its own](./method.md#a-method-implements-an-abstraction-by-methods-of-its-own), and tooling finds a deliberate declaration by the means it already uses. The fourth states this document's own remaining question: the settled position governs what the satisfier may write and says nothing about what the receiving party can see, so at a position declared `Reader` an undertaking capsule and a merely resembling one are one value under one rule, and whether the receiving side needs a rule or a tool's check to tell them apart is open — a governance and tooling question, not a grammar one.
+- [Abstract](./agency.md#abstract): the second instance is no longer described as more tentative and resting on an open question about whether a capsule should declare intent before it counts as satisfying an abstraction, and no longer says Agency's vocabulary offers a sharper way to state that question without resolving it. It states what `abstraction.md` settles — an intent abstraction composed into the capsule's own definition with the required methods explicitly delegated, and no language intervention in satisfaction — and that Agency's vocabulary says what that answer is about and what it leaves open on the other side of the relationship.
+- The heading is unchanged, so the inbound anchors in [Abstraction in Khayyam → Satisfying an Abstraction](./abstraction.md#satisfying-an-abstraction) and in [Agency in Khayyam Handoff](./agency.handoff.md#whether-further-agency-instances-belong-in-the-document) still resolve to this section.
+
+#### Considered and not done
+- **Restating `abstraction.md`'s own settled section here (rejected)**: that section owns the position and its evidence; this document states only what Agency's vocabulary adds to it and links the rest, so the two do not drift apart.
+- **Naming the mechanism that would answer the receiving-side question (rejected)**: the question is what a rule or a tool's check would need to establish, not what any particular one would be, and this document has no basis to weigh boilerplate, discoverability, and governance cost against each other — the same reason its options paragraph once deferred the satisfier-side question.
+- **Closing the receiving-side question as `abstraction.md`'s business (rejected)**: nothing in the language will ever see a delegation at a position declared `ab`, so the question is not about how satisfaction is judged; it is about what the Principal side of the relationship can observe, which no other Khayyam document owns.
+
+---
+
+### The receiving-side question left the section's body for the handoff
+- Time: 2026-10-05T18:02:49Z
+- Type: Changed
+- Propagates to:
+  - [Agency in Khayyam Handoff → Whether the receiving side needs anything to tell an undertaking from a resemblance](./agency.handoff.md#whether-the-receiving-side-needs-anything-to-tell-an-undertaking-from-a-resemblance): Done — the entry exists there, carrying the question, the indistinguishability that produces it, and its `Next:`; the `Pending` this changelog recorded for that handoff is discharged.
+- Contributors:
+  - [Space Bunny Alpha](../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../CONTRIBUTORS.md#opencode)) — argued, applied
+
+#### What changed
+- [Agency Beyond Concurrency](./agency.md#agency-beyond-concurrency-intentional-vs-accidental-abstraction-satisfaction) → fourth paragraph: the open question it posed is gone, and the position that survives it is now stated as the paragraph's content. Satisfaction is declared, so on the satisfier's side nothing further is needed; what remains unprovided is on the receiving side, where a declared satisfier and a merely resembling one are one value under one rule and the Agent and Principal endpoints are indistinguishable, the language being uninvolved by settled design. The paragraph names the receiving side's question as a governance and tooling question the document does not cross — the place where a rule or a tool's diagnostic would have to live — without asking it.
+- [Agency in Khayyam Handoff](./agency.handoff.md) → `## Open Questions`: one entry added, "Whether the receiving side needs anything to tell an undertaking from a resemblance", read off what the paragraph said. No other entry in that file changed.
+- The `Pending` propagation this changelog recorded against that handoff, in the entry "The Agency Beyond Concurrency section states the settled position and names its own remaining question", is marked `Done` in place and disclosed here: that entry is from this same uncommitted working thread, and a `Pending` left in place would keep reporting an obligation the work has discharged. Its own text stands, including the description of the question as one this document raised.
+
+#### Considered and not done
+- **Answering the receiving-side question (not done)**: the question is what the receiving side can observe and what would have to establish the difference, and this section has no basis on which to weigh a rule against a tool's diagnostic — nothing in the language sees a delegation at a position declared `ab`, so no evidence about satisfaction distinguishes the two cases from here. It belongs to the receiving side: what stands on the other end of an `agent_for` relationship is a governance and tooling question, not a grammar one, and no Khayyam document owns that side. It therefore moves to the handoff unresolved, as the Explanation facet's Relevance discipline requires of an open question.
+
+---
+
+### Review of the uncommitted changes of 2026-10-12
+- Time: 2026-10-12T09:50:00Z
+- Type: Changed
+- Contributors:
+  - [Claude](../../CONTRIBUTORS.md#claude) (Sonnet-5.5) — reviewed, revised
+
+#### What changed
+- Restored the entry "Reverted: compiler/runtime-boundary content does not belong in this document" (2026-08-17T00:00:00Z) to its original place, verbatim from HEAD. The uncommitted change had removed it with no record and no reason; a changelog is history, and the entry records a decision by Omid Hekayati that later entries and the document still rest on.
+- Reviewed the rest of the uncommitted change in [agency.md](./agency.md), [agency.handoff.md](./agency.handoff.md) and this file, and found no further change needed: the `protocols/` links repointed to `modules/` resolve; the execution-model and linter prescriptions removed from the Abstract, Definition-Site Over Call-Site, User-Space Scheduling, Avoiding Function Coloring and Methodology are recorded by the entries of 2026-10-03; the withdrawn handoff entry on an intentional-satisfaction mechanism is recorded by the entry of 2026-10-04 and the answer is placed in [Abstraction in Khayyam](./abstraction.md#deliberate-satisfaction-is-composed-not-declared), which owns it; the new receiving-side handoff entry matches the closing paragraph of Agency Beyond Concurrency and is recorded by the entry of 2026-10-05T18:02:49Z. `memar content check` on the three files reports no problem.
+
+#### Considered and not done
+- **Reordering the entry of 2026-10-03T00:00:00Z, which follows one of 2026-10-03T11:16:28Z (not done)**: the order is an existing quirk of recorded history and no information is lost by it.

@@ -9,9 +9,6 @@ Open work for `metaprogramming.md`. Entries are mutable current state — revise
 ### Who provides the reflection implementation
 - State: undecided. Whether the compiler provides the implementation automatically once a type composes the abstraction (similar to a derive), or whether the type's author must still write it by hand with compiler-provided helpers.
 
-### Scoping of granted reflective access
-- State: open. Whether reflective access, once granted via the abstraction, can be further scoped (e.g. field names only, no values; read-only, no modification) or is all-or-nothing per composed abstraction.
-
 ### Runtime-modifying reflection
 - State: untested by the drafting. Whether runtime-modifying reflection (not just inspection) is in scope for Khayyam at all, or whether the document's position should be inspection-only by design — the drafting leaned on inspection-oriented examples throughout and has not tested the modification case.
 

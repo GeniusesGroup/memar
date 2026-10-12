@@ -4,24 +4,7 @@ Open work for `abstraction.md`. Entries are mutable current state — revised as
 ## Open Questions
 
 ### Does Khayyam allow an abstraction with no methods?
-Open. The form is `tp Name ab` with no methods attached to it. Whether a concept that requires no behavior is a finished model is a modeling question, in [Modeling Handoff → A concept that requires no behavior](../modeling.handoff.md#a-concept-that-requires-no-behavior). This question is only the language's: is that form legal Khayyam?
-
-### Is structural satisfaction sufficient, or does it need an intentional-satisfaction mechanism?
-This is the central open question, carried forward from the two documents `abstraction.md` absorbs, with several sub-questions:
-- Should this be resolved before Khayyam leaves Draft-equivalent status for the abstraction model, given how disruptive option (b) or (c) below would be if decided later?
-- Which of options (a)/(b)/(c) below best balances the accidental-satisfaction risk against Khayyam's minimalism and structural-satisfaction goals?
-- This document should not advance past its current status on the intentional-satisfaction question until the previous sub-question is resolved.
-
-Three potential resolutions exist for the question of intentional vs. accidental satisfaction. None is chosen yet (the candidate directions moved here together with the question they answer):
-
-**(a) Keep the current structural model as documented.** Simplest, matches [Khayyam](./khayyam.md) as written today, but leaves the accidental-satisfaction risk open at the language level for any marker-like abstraction — not just `Error`, but any small abstraction the standard library or an organization defines going forward.
-
-**(b) Require explicit, nominal declaration for every abstraction implementation.** Along the lines of Rust's `impl Trait for Type`. Eliminates the risk entirely, but adds ceremony to every implementation site and is a significant, backward-incompatible change to a philosophy Khayyam currently states as a feature (structural satisfaction with no `impl` keyword).
-
-**(c) A hybrid model.** Structural satisfaction remains the default, but specific abstractions — those identified as small, marker-like, or identity-bearing — can opt into requiring an explicit declaration. This would need a formal criterion for which abstractions qualify, and a library-driven (not new-keyword) mechanism for declaring it, consistent with [Control Flow](../protocols/process/control-flow.md)'s precedent of keeping such behaviors as ordinary method calls rather than new syntax.
-
-### Linter delegation verification mechanism
-The precise mechanism by which the Linter verifies explicit delegation (in the no-default-implementations model) is not yet specified.
+Open. The form is `tp Name ab` with no methods attached to it. Whether a concept that requires no behavior is a finished model is a modeling question, settled in [Modeling → Concept Existence vs. Model Existence](../modeling.md#concept-existence-vs-model-existence). This question is only the language's: is that form legal Khayyam?
 
 ### Cross-language compiler implications
 How does implicit structural satisfaction interact with cross-language compiler backends that expect nominal declarations (e.g. generating Rust `impl` blocks or Java `implements` clauses from Khayyam source)?
@@ -40,8 +23,12 @@ When an abstraction's behavioral specification changes — a new method is added
 ### Residual inheritance-wording re-audit
 The vr-ab review session closed with an open suggestion to re-audit this document (and `polymorphism.md`) for surviving "inheritance" phrasing that conflicts with the extension-not-inheritance terminology established in [Type → Explicit Behavior Ownership](../type.md#explicit-behavior-ownership); the pass was never run.
 
+### Do declared Types and structural satisfaction both stand?
+- State: Two owner rulings in the same week are in tension without having been called resolved. `abstraction.md` → *Deliberate Satisfaction Is Composed, Not Declared* keeps satisfaction structural within one implementation language: no `impl` keyword, no nominal declaration, deliberateness expressed by composing an intent abstraction and delegating explicitly. `type.md` → *Abstract* and *Type vs Implementation Type* makes `type.md` foundational, states that every semantic entity is a Type, and answers the interop question: across a boundary a counterpart is modeled as Types or is not modeled at all — no structural counterpart type system, no gradual conformance. One session's derivation argued from the second ruling that satisfaction must become declared, because resemblance deciding conformance is what a structural counterpart type system would be; that reversal was not applied. The narrower reading is that the two rulings address different boundaries — one the mechanism inside a language, the other the stance toward systems the framework does not state — so both stand; but that reading has not been confirmed.
+- Next: rule on whether *Deliberate Satisfaction Is Composed, Not Declared* also holds for declarations a counterpart relies on, or whether a capsule's satisfaction of an abstraction crossing an organization boundary must always be declared; the deciding case is a `Reader`-shaped capsule another organization consumes without knowing how it was written.
+
 ## Anticipated Work
-- **Compiler-generated dispatch metadata.** Once the intentional-satisfaction question is resolved (in any direction), the compiler could emit metadata files (e.g. a JSON manifest) listing every capsule and the abstractions it satisfies — valuable for IDE tooling (jump-to-implementation, find-all-satisfiers), cross-language compiler backends (generating `impl` blocks for Rust, `implements` for Java), and documentation generation (automated "implemented by" pages per abstraction).
+- **Compiler-generated dispatch metadata.** The compiler could emit metadata files (e.g. a JSON manifest) listing every capsule and the abstractions it satisfies — valuable for IDE tooling (jump-to-implementation, find-all-satisfiers), cross-language compiler backends (generating `impl` blocks for Rust, `implements` for Java), and documentation generation (automated "implemented by" pages per abstraction).
 - **Abstraction-level documentation annotations.** A future document could define a convention (not a language feature) for attaching documentation, examples, or invariants to an abstraction — similar to Rust's doc comments on traits or Go's interface documentation conventions. An organizational tooling concern, not a grammar change.
 - **Composable abstraction constraints.** A future extension could allow organizations to define "abstraction constraints" — predicates a given abstraction's satisfiers must meet (e.g. "any capsule satisfying `Serializable` must also satisfy `Clone`") — enforced at the Linter level and expressed as configuration, not language syntax.
 - **Curated canonical abstractions.** A curated reference set of canonical abstractions in the Memar framework, as examples of appropriate granularity and domain-concept framing, giving new developers concrete templates and reducing over-abstraction risk.

@@ -9,11 +9,6 @@ Open work for `variable.md`. Entries are mutable current state — revised as ea
 ### How does the compiler obtain the first instance's values from source?
 - State: open (review 2026-09-22). `vr` declaration separates name/type from initialization; creation goes through capsule behavior — but how the *first* instance a capsule bootstrap needs is populated from source literals is not settled. The lexer reads a literal token (e.g. `42`) as a token without requiring string semantics on it; whether/how the compiler or an early library interprets that token into an instance of a named capsule (no primitive types exist to fall back on) is undecided, and is entangled with the stdlib first-capsule ordering question in [Khayyam's handoff](./khayyam.handoff.md#stdlib-bootstrap-ordering-under-the-no-hidden-primitive-rule).
 
-### Where are the statements that build or bind a file-level `vr`'s initial state written?
-- State: raised 2026-09-28 by the data-forms pass of the memar-go port. [Variable Scope and Visibility](./variable.md#variable-scope-and-visibility) states who establishes a file-level variable's initial state — the compiler and source that code generation emits — and the paired changelog records that as decided (2026-09-23, "File-level initialization has no stated home for its call"). What no document states is where the statements themselves are written: the ones that build the variable's first instance, or bind it to a chosen realization, and which generated source must carry. A capsule-wide `Init` is not the answer: the lifecycle protocol (`modules/computer/capsule/protocol/life_cycle.kh`) carries `Deinit` only, and initialization is the capsule's own behavior through its own named methods ([Overview](./variable.md#overview)).
-- Question for the owner: in which source, and under what form, does an author write the statements that construct or bind a file-level `vr`'s initial state, so that the compiler and generated source can establish it?
-- Blocks: the port. Each Go `var` with an initializer (126 sites) is translated as an uninitialized `vr Name Type` until this is answered. Related, but not the same question: [How does the compiler obtain the first instance's values from source?](#how-does-the-compiler-obtain-the-first-instances-values-from-source), which is about turning a literal into a capsule instance.
-
 ### Can a file export a variable under an alias?
 - State: Whether a file can export a variable under a different name than its declaration name (aliasing) is not currently addressed. (From the Variable-Scope-and-Visibility topic.)
 
@@ -21,7 +16,7 @@ Open work for `variable.md`. Entries are mutable current state — revised as ea
 - State: When does a domain-specific capsule name become unnecessary indirection? (From the Self-Documenting-Code topic, question 1.)
 
 ### Should teams be able to adjust the clarity/verbosity boundary?
-- State: Should Khayyam provide a linter rule or a compiler directive that allows teams to define their own boundaries for this trade-off? (From the Self-Documenting-Code topic, question 2.)
+- State: Should Khayyam provide a linter rule or a compiler directive that allows teams to define their own boundaries for this trade-off? (From the Self-Documenting-Code topic, question 2.) [Self-Documenting Code and No Magic Numbers](./variable.md#self-documenting-code-and-no-magic-numbers) records only that no such mechanism exists today ("does not currently provide"); it states no decision against one and no reason, so the question stays open.
 
 ### Should the linter auto-fix migrated multi-declarations?
 - State: Should the linter provide an auto-fix mode that converts multi-declaration syntax (if encountered in migrated code) into separate `vr` declarations? (From the retired document-level Unresolved questions.)

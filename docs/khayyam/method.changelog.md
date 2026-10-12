@@ -8,7 +8,7 @@
 - Cited:
   - [Khayyam - Programming Language](./khayyam.md) — Reference: the canonical specification defines the `mt` subtype and the method signature grammar this document elaborates and motivates.
   - [Encapsulation in Khayyam](./encapsulation.md) — Depends_on: Method Structure relies on the capsule model — Capsule Structure and Privacy, Sovereign Encapsulation — defined there, for its common-case examples and for the state-protection guarantee described under Pass-by-Reference and State Protection. Encapsulation in Khayyam references this document back for the method-signature mechanics.
-  - [Logic in Khayyam](../protocols/process/control-flow.md) — Reference: Logic in Khayyam's IF/ELSE model relies on the same pass-by-reference, explicit-influenced-variable mechanic specified here under Method Structure — no chaining, in either document, is a consequence of that mechanic.
+  - [Logic in Khayyam](../modules/process/control-flow.md) — Reference: Logic in Khayyam's IF/ELSE model relies on the same pass-by-reference, explicit-influenced-variable mechanic specified here under Method Structure — no chaining, in either document, is a consequence of that mechanic.
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — claimed
   - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM 5.2, medium effort) — rewrote
@@ -115,7 +115,7 @@
 - Time: 2026-09-15T09:00:00Z
 - Type: Changed
 - Cited:
-  - [Linter](../protocols/computer/linter.md) — Consumed contract: the check is governance; this document owns the grammar.
+  - [Linter](../modules/computer/linter.md) — Consumed contract: the check is governance; this document owns the grammar.
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided (rule home is the subject's document)
   - [Grok](../../CONTRIBUTORS.md#grok) (Grok 4.6 via [Cursor](../../CONTRIBUTORS.md#cursor)) — applied
@@ -169,11 +169,79 @@
 - Time: 2026-09-29T16:00:00Z
 - Type: Changed
 - Propagates to:
-  - [receiver parameter naming](../../modules/khayyam/rules/receiver-parameter-naming/receiver-parameter-naming.md): Done
-  - [type as argument](../../modules/khayyam/rules/type-as-argument/type-as-argument.md): Done
+  - [receiver parameter naming](../../bundles/khayyam/rules/receiver-parameter-naming/receiver-parameter-naming.md): Done
+  - [type as argument](../../bundles/khayyam/rules/type-as-argument/type-as-argument.md): Done
 - Contributors:
   - Auto (model not recorded) via [Cursor](../../CONTRIBUTORS.md#cursor) - applied
 
 #### What changed
-- [Method Structure](./method.md#method-structure): `self` suggestion links to [receiver parameter naming](../../modules/khayyam/rules/receiver-parameter-naming/receiver-parameter-naming.md).
-- [Type-level arguments for `sc` and `mt`](./method.md#type-level-arguments-for-sc-and-mt): governance smells link to [type as argument](../../modules/khayyam/rules/type-as-argument/type-as-argument.md).
+- [Method Structure](./method.md#method-structure): `self` suggestion links to [receiver parameter naming](../../bundles/khayyam/rules/receiver-parameter-naming/receiver-parameter-naming.md).
+- [Type-level arguments for `sc` and `mt`](./method.md#type-level-arguments-for-sc-and-mt): governance smells link to [type as argument](../../bundles/khayyam/rules/type-as-argument/type-as-argument.md).
+
+---
+
+### A body-less method is declared by nothing that follows its third group
+- Time: 2026-10-02T11:56:00Z
+- Type: Changed
+- Cited:
+  - [Khayyam → Method](./khayyam.md#method) — Extends: the grammar's Method section carries the same rule in the bullet that summarizes this document's section for a reader who starts at the grammar.
+- Propagates to:
+  - bundles/khayyam/targets/go/khayyam_source.py: Pending — `body_is_bodyless` names this document's Body-less Methods section in the docstring that reads an empty block as body-less, while the same module writes that form without a block.
+  - bundles/khayyam/targets/js/language-gaps.md: Pending — the intervention drafted on this spelling is answered here, and the display role it drafts behind it now has two declarations to tell apart.
+  - bundles/khayyam/rules/type-as-argument/type-as-argument.md: Rejected — its claim is about argument positions rather than about how a declaration ends, and it holds either way.
+  - docs/khayyam/khayyam.md: Done — the same rule in the grammar's Method section; see that document's changelog.
+- Contributors:
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Space Bunny Alpha](../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../CONTRIBUTORS.md#opencode)) — recorded
+
+#### What changed
+- **Body-less Methods (FFI and Contracts)** now opens by stating that a method is body-less when nothing follows its third group, so its line ends at the closing parenthesis of the influenced group, and that a line ending with `{}` instead carries a body, an empty body being a body that holds no command — the two being different declarations. The two scenarios that follow are unchanged and are now what a declaration ending at its third group buys: the contract form on an `ab` at `:79`, where the implementation is provided by each capsule that implements the abstraction, and the FFI form on a `cp` at `:80`, where the implementation arrives during linking.
+- The Abstract's list of what the section covers at `:11` names body-less methods for FFI and contracts without a spelling, and the three examples the document carries are declarations that end at their third group: `tp Set mt (self Key) (key String) (err Error)` at `:46`, `tp Sum mt (self W32) (a W32, b W32) (total W32, err Error)` at `:55`, `tp Set mt (self Key) (value String) (err Error)` at `:62`, and `tp When mt (self TimeHelper) (d NanoSecondDuration) (t MonotonicTime)` at `:110`.
+- What it unblocks. The section is the one `bundles/khayyam/targets/go/khayyam_source.py:239-249` cites by name while reading a block that holds nothing as the body-less form, so that target's reader is now contradicting the sentence it cites and its own writer at `:55-63`; and the document's examples stop teaching the spelling three `TODO(go-migrate)` comments in the sources had recorded as doubtful. The grammar's own `tp {name} mt (self {owner}) (...) (...) { ___ }` pattern at `:34` keeps the block, so nothing else in the document needed to change.
+- The sources and the toolchain contradiction. Four declarations under `modules/` write `{}`, all of them now methods with a body and no command — `modules/gui/initialize.kh:6`, `modules/gui/navigator.kh:13` and `:18`, each with its own `TODO(go-migrate)` saying so, and `modules/process/control-flow/protocol/if.kh:6`, which carries none. The full finding is recorded once, in the paired entry for [`khayyam.md`](./khayyam.changelog.md); it is the same change read from this document's own section.
+- What else it now contradicts. This document's own changelog at `:97` carries `tp Close mt (self Reader) () (err Error) {}` and `tp Reset mt (self Counter) () () {}` inside a prior entry's drawback record; those lines stand as the record they are and no longer spell a declaration this document admits.
+
+#### Considered and not done
+- **Reading `{}` as the body-less spelling (rejected)**: it would leave a method with a body and no command unspellable, and three `TODO(go-migrate)` comments in the sources had already recorded the doubt it creates (Omid Hekayati — decided).
+- **Naming the spelling in the signature pattern as well (rejected)**: the pattern at `:34` writes the block because most methods have one, and a pattern that made it optional would obscure the declaration this section is about rather than state it. The rule lives in the one section whose subject is the two forms (Omid Hekayati — decided).
+- **Saying an empty body is ill-formed (not done)**: whether a method may hold no command is a condition a tool or an organization decides, which `docs/khayyam/khayyam.md` under [Minimal Legislation: A Principle](./khayyam.md#minimal-legislation-a-principle) sends to that tool's own rules rather than to the grammar. The ruling does not forbid it (Omid Hekayati — decided).
+
+#### Decision
+- A method is body-less when nothing follows its third group. A line ending with `{}` carries a body, and an empty body is a body holding no command; the two are different declarations, and what a body-less declaration asks for is one of the two scenarios at `:79-80` (Omid Hekayati — decided).
+
+---
+
+### Usage prescriptions and compiler attribution removed from the method document
+- Time: 2026-10-03T11:16:28Z
+- Type: Changed
+- Propagates to:
+  - [Computer — Compiler](../modules/computer/compiler.md): Pending - the linking-phase account of a body-less method, and the resolution of a `vr`/`sc`/`mt` position, are now unanswered here.
+  - [System → When Is a Responsibility Coherent?](../system.md#when-is-a-responsibility-coherent) and [Modularity → Module Identity and Responsibility](../modularity.md#module-identity-and-responsibility): Pending - the decomposition test this document used to apply to a method body is stated there; this document no longer tells a reader what to do when the test fires.
+- Contributors:
+  - [Space Bunny Alpha](../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../CONTRIBUTORS.md#opencode)) — applied
+
+#### What changed
+- [Abstract](./method.md): the topic no longer describes what a developer writes, and the no-chaining decision no longer carries a verdict — "This document specifies how a Khayyam developer writes and composes callable behavior" became "This document specifies Khayyam's callable behavior and how it composes", and "every intermediate result requires an explicitly declared, named variable, treated as a decomposition signal rather than a cost to eliminate" became "every intermediate result requires an explicitly declared, named variable". The same paragraph no longer says a function is "typically owned by a small capsule".
+- The paragraph ranking owners was removed — "A method owned by another method, or by an abstraction, is expected to be at least as common — abstraction composition in particular is central to Memar-style design, so methods attached to abstractions should be plentiful" — as was the clause explaining that capsule-owned examples are not the expected norm.
+- [Type-level arguments for `sc` and `mt`](./method.md#type-level-arguments-for-sc-and-mt): "The compiler distinguishes the three from the callee's signature and performs the behavior that position requires." became "and what that position then holds is what the called method's behavior is."
+- [Body-less Methods (FFI and Contracts)](./method.md#body-less-methods-ffi-and-contracts): "a body-less method signals to the compiler that the implementation will be provided externally during the linking phase (e.g., from an Assembly `.s` or C `.o` file)" became "a body-less method states that the implementation comes from outside the language — a library, or a foreign object linked into the program."
+- [The Open Question: A Variable That Is Both](./method.md#the-open-question-a-variable-that-is-both): the paragraph prescribing what a dual-role variable signals and what to do about it was removed — "a variable needing both roles in the same call is a *signal* that something is crooked somewhere — a prompt to find and fix the underlying modeling problem [...] The correct response is always further decomposition: split out a separate widget/capsule with its own narrow responsibility and its own error boundary [...] rather than one method where a single variable's effect on, and by, the call are tangled together". What remains states the open question and the one case that has no dual-role notation problem.
+- [No Dedicated fn/func Keyword](./method.md#no-dedicated-fnfunc-keyword): the guidance about where a behavior should be attached was replaced with the model's statement — "it is simply always expressed as a method, and, wherever possible, attached to the type the behavior actually belongs to [...] rather than to a fresh wrapper capsule invented for the occasion" became "A behavior is always expressed as a method, attached to whichever type owns it [...] The wrapper-capsule-plus-`Do` form above is what is left when no existing type owns the behavior." The example's "a fallback for the genuinely ownerless case, not the default first move" was removed.
+- [Composition Depth as a Decomposition Signal](./method.md#composition-depth-as-a-decomposition-signal-no-expression-chaining): the topic no longer reads named steps as a signal or tells the reader to decompose. Removed: "A method or widget body that accumulates many such named steps is treated as a deliberate design signal calling for further decomposition, not a cost to optimize away with chaining syntax", the worked "register comment" example, and "The correct response is always further decomposition: split out a separate widget/capsule with its own narrow responsibility and its own error boundary (e.g. a dedicated widget that returns only an `ActiveUserID`), never a request for implicit chaining syntax." What remains is what the grammar is: calls are statements, every intermediate result is a declared named variable, there is no syntactic slot to feed one call's result into another, and a pipeline's stages have no shortcut that collapses them.
+
+#### Considered and not done
+- **Keeping the decomposition test with a softened voice.** The topic's title still names a decomposition signal, and [Modularity](../modularity.md) and [System](../system.md) state the test itself. Softening rather than removing the topic was not done: a softened imperative is still a usage prescription, so the prescription went and the grammar facts stayed.
+
+---
+
+### Review of the uncommitted changes of 2026-10-12
+- Time: 2026-10-12T09:44:08Z
+- Type: Changed
+- Contributors:
+  - [Claude](../../CONTRIBUTORS.md#claude) (Sonnet-5.5) — reviewed, revised
+
+#### What changed
+- Reviewed the uncommitted change to this family (the base document, the handoff, and this changelog) against HEAD: the link repairs, the body-less spelling of 2026-10-02 applied to the examples, the usage prescriptions and compiler attribution removed on 2026-10-03, and the two new entries recording them. The handoff's question stays open and its owner position of 2026-09-23 is kept there, so the prescription removed from the base document is not lost.
+- [The Open Question: A Variable That Is Both](./method.md#the-open-question-a-variable-that-is-both): the rewording had turned "whichever the author judges primary" into "whichever of the two its role in the call is", which is circular for a variable with both roles; the original is restored. "the signal it usually is" pointed at a signal the section no longer states; it now reads "correct modeling".
+- The 2026-10-02 entry named paths under `modules/khayyam/`, which does not exist; they now name `bundles/khayyam/`.
+- Not changed: the heading "Composition Depth as a Decomposition Signal" no longer matches its body, which the 2026-10-03 entry records under Considered and not done; renaming it would break links from other documents.

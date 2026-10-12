@@ -8,7 +8,7 @@ ID: 495494
 # Polymorphism in Khayyam
 
 ## Abstract
-Khayyam achieves [polymorphism](https://en.wikipedia.org/wiki/Polymorphism_(computer_science)) exclusively through its abstraction (`ab`) mechanism — without generic syntax, without function overloading, and without inheritance-based behavior transfer. This document classifies the polymorphism forms that Khayyam supports, the syntax it explicitly rejects, and the rationale for each decision. In Strachey's classic taxonomy, Khayyam provides **inclusion (subtype) polymorphism** (which also serves as Khayyam's mechanism for achieving **parametric polymorphism** — see "Relationship to Parametric Polymorphism" below) and **ad-hoc polymorphism via constrained interfaces**, while rejecting **generic type-parameter syntax** (`<T>`), **function overloading**, and **coercion polymorphism**. The compiler's Smart Compilation strategy (monomorphization vs. dynamic dispatch, documented in "The Compiler's Role: Dispatch Strategy" below) is the mechanism by which polymorphic code is resolved, entirely transparently to the developer.
+Khayyam achieves [polymorphism](https://en.wikipedia.org/wiki/Polymorphism_(computer_science)) exclusively through its abstraction (`ab`) mechanism — without generic syntax, without function overloading, and without inheritance-based behavior transfer. This document classifies the polymorphism forms that Khayyam supports, the syntax it explicitly rejects, and the rationale for each decision. In Strachey's classic taxonomy, Khayyam provides **inclusion (subtype) polymorphism** (which also serves as Khayyam's mechanism for achieving **parametric polymorphism** — see "Relationship to Parametric Polymorphism" below) and **ad-hoc polymorphism via constrained interfaces**, while rejecting **generic type-parameter syntax** (`<T>`), **function overloading**, and **coercion polymorphism**. How a call through an abstraction is performed is stated by the compiler that consumes the grammar, not here; the grammar offers no syntax to choose a strategy.
 
 Rather than generic type parameters (`List<T>`), Khayyam achieves type-safe, polymorphic containers and algorithms through domain-specific intermediate capsules (e.g. `ConnectionList` instead of `List<Connection>`), whose public methods strictly accept and return only the relevant capsule type and whose internal validation rules live directly inside their own methods — exactly where that logic belongs. This approach eliminates the "Anemic Domain Model" anti-pattern that generic collections tend to produce.
 
@@ -24,8 +24,7 @@ Polymorphism is one of the most overloaded and confusing terms in programming la
 
 Khayyam needs an explicit, documented classification of its polymorphism model for several reasons:
 
-- **Compiler implementation clarity.** The compiler team needs to know exactly what polymorphic behaviors the type system must support. Ambiguity here leads to either over-engineering (implementing unnecessary dispatch mechanisms) or under-engineering (failing to support valid use cases).
-- **Cross-language compilation.** When translating Khayyam code to target languages (Go, Rust, C), the compiler needs to know which polymorphic mechanism to emit for each usage site. Without a clear classification, the translation is ambiguous.
+- **Unambiguous scope.** Without a classification, "polymorphism" in a Khayyam discussion can mean inclusion, parameters, or overloading at different times, and two correct-looking proposals can be argued against each other.
 - **Developer education.** Developers coming from Java, Rust, Go, or C++ will have different assumptions about what "polymorphism" means. An explicit classification prevents misunderstandings and sets correct expectations.
 - **Consistency with document 495493.** The Abstraction Design document defines the `ab` mechanism in detail but does not explicitly classify which polymorphism forms it provides. This document closes that gap. The dependency runs one way: Polymorphism *uses* Abstraction — an abstraction can exist with no polymorphic use whatsoever — and this document completes or specializes nothing about it.
 
@@ -38,14 +37,14 @@ The problem is structural, not incidental. A `List<Connection>` cannot carry any
 - **Java/C# developers** expect generics (`<T>`) for writing reusable algorithms. They need to understand that Khayyam's abstractions achieve the same code-reuse goal without the syntax, and when they might feel the absence.
 - **Rust developers** expect trait bounds and explicit `impl` blocks for polymorphism. They need to understand how Khayyam's implicit structural satisfaction replaces that ceremony, and what the tradeoffs are.
 - **Go developers** expect interface-based polymorphism plus (since Go 1.18) limited generics. They need to understand why Khayyam chose not to follow Go's path of adding generics on top of interfaces.
-- **C++ developers** expect both templates (compile-time polymorphism) and virtual functions (runtime polymorphism). They need to understand how Khayyam's Smart Compilation unifies these into a single mechanism that the compiler manages automatically.
+- **C++ developers** expect both templates (compile-time polymorphism) and virtual functions (runtime polymorphism). They need to understand that Khayyam reaches polymorphism one way — through abstractions — and does not distinguish the two.
 
 ## Explanation
 
 ### What Is Polymorphism?
 Polymorphism, at its core, means "one operation, many types" — the ability for a single piece of code to work with values of different types. The key insight, often missed, is that this is not a single mechanism. There are several fundamentally different ways to achieve it, each with distinct tradeoffs. Khayyam supports the key polymorphic forms — parametric, inclusion/subtype, and ad-hoc — but achieves them through its own unified mechanism (abstraction conformance) rather than through the separate syntaxes that mainstream languages use for each form. What Khayyam rejects is not the polymorphic *capability*, but specific *syntaxes* that conflict with its design principles.
 
-### The Two Polymorphism Mechanisms You Will Use in Khayyam
+### The Two Polymorphism Mechanisms
 1. **Writing code that accepts any abstraction-conforming capsule (Inclusion/Subtype Polymorphism)**
 This is the primary form of polymorphism in Khayyam. You write a method that accepts an abstraction type as its parameter. Any capsule that satisfies that abstraction can be passed in:
 ```khayyam
@@ -59,7 +58,7 @@ tp Process mt (self Service) (h Hasher, data Bytes) (d Digest, err Error) {
     h.Hash(data)(d, err)
 }
 ```
-Whether `Process` receives a `Sha256Hasher`, a `Md5Hasher`, or a `SaltyHasher` (which extends `Hasher`), the code works. The compiler decides, at each call site, whether to inline the specific hash implementation (monomorphization) or use a VTable (dynamic dispatch). You don't write different code for each case.
+Whether `Process` receives a `Sha256Hasher`, a `Md5Hasher`, or a `SaltyHasher` (which extends `Hasher`), the code works. One declaration of `Hash` covers every capsule that satisfies `Hasher`.
 
 2. **Composing abstractions to create richer abstractions (Abstraction Extension)**
 You can build more specific abstractions by including other abstractions. This creates a subtyping relationship where a capsule conforming to the more specific abstraction is automatically usable wherever the more general one is expected:
@@ -86,11 +85,11 @@ A developer (or a code generator/AI assistant) therefore defines a domain-specif
 
 This is not a workaround for the absence of generics — it is the principled approach. The domain-specific capsule does more than a generic container ever could: it enforces domain invariants, provides domain-meaningful method names, and keeps all logic related to a collection of connections inside the type that represents that concept. The raw list or map is an implementation detail inside the capsule, not the public abstraction that application code interacts with.
 
-### What You Will Not Do in Khayyam
-- You will **not** write `fn process<T: Hasher>(h: T)` — there is no generic syntax, and there is no `fn` keyword ([Method → No Dedicated fn/func Keyword](./method.md#no-dedicated-fnfunc-keyword)). You write an ordinary method that takes the abstraction, for example `tp Process mt (self Service) (h Hasher, data Bytes) (d Digest, err Error)`, and the compiler handles dispatch.
-- You will **not** overload a method name with different parameter types — there is no ad-hoc overloading. Each method has exactly one signature.
-- You will **not** rely on implicit type coercion (e.g., an `Int32` silently becoming an `Int64`). The language does not perform implicit type conversions.
-- You will **not** use generic collections like `List<T>`, `Map<K, V>`, or `Set<T>`. Instead, you will define (or scaffold) domain-specific capsule types that wrap the underlying ADTs and carry the domain logic that belongs to them.
+### What the Grammar Does Not Admit
+- No generic syntax: there is no `fn` keyword ([Method → No Dedicated fn/func Keyword](./method.md#no-dedicated-fnfunc-keyword)) and no type parameter to write, so a reusable behavior is written as an ordinary method taking the abstraction it requires — `tp Process mt (self Service) (h Hasher, data Bytes) (d Digest, err Error)`.
+- No method overloading: each method name has exactly one signature.
+- No implicit type coercion: an `Int32` does not silently become an `Int64`, or any other type. A change of type is an explicit method call.
+- No generic collection types: there is no `List<T>`, `Map<K, V>`, or `Set<T>` to name. [Domain-Specific Containers](#domain-specific-containers) below states what a collection of domain values is instead.
 
 ### Generic Syntax vs Generic Capability
 Khayyam rejects generic **syntax**, not generic **capability**.
@@ -102,14 +101,14 @@ Generic **syntax** (`<T>`, `[T]`, `where T: Trait`) is only one historically-dom
 1. **Type generalization** — the ability for one piece of code to work with multiple types. This is the legitimate capability that polymorphism should provide.
 2. **Behavior ownership placement** — the question of *where* the behavior's definition lives and *who* owns it. Generic syntax structurally places behavior definitions in templates rather than in the concrete types that represent domain concepts, which is a behavior-ownership decision, not a polymorphism decision.
 
-Khayyam keeps the first capability (through abstraction conformance and Smart Compilation) while rejecting the second consequence of generic syntax: moving behavior ownership away from domain concepts and into type-parameterized templates. The distinction matters because it is the ownership consequence, not the polymorphism capability, that produces the Anemic Domain Model anti-pattern discussed throughout this document.
+Khayyam keeps the first capability — through abstraction conformance — while rejecting the second consequence of generic syntax: moving behavior ownership away from domain concepts and into type-parameterized templates. The distinction matters because it is the ownership consequence, not the polymorphism capability, that produces the Anemic Domain Model anti-pattern discussed throughout this document.
 
 This is why the question "how do you achieve generics without generic syntax?" is, from Khayyam's perspective, a category error. The correct question is: "how do you achieve polymorphic capability while preserving behavior ownership?" — and abstraction conformance is the answer.
 
-### A Note on Ad-Hoc Behavior via Compile-Time Conditionals
-A rare but valid form of ad-hoc polymorphism is the need to execute completely different logic based on the concrete type behind an abstraction — not just dispatching to the type's own implementation, but branching the caller's control flow. In Khayyam, this can be achieved through compile-time conditional checks (type inspection) within a single method, rather than through function overloading with different parameter types.
+### A Note on Ad-Hoc Behavior via Type Inspection
+A rare but real need is to execute completely different logic based on the concrete type behind an abstraction — not merely to reach that type's own implementation, but to branch on which type it is. The grammar admits no construct that does this: no statement tests what a value's concrete type is, and an abstraction-typed position names the abstraction. Where behavior differs per concrete capsule, each capsule provides its own implementation of the abstraction's methods, and the call reaches the one belonging to the capsule it was made on.
 
-However, this need is rare in practice and arises primarily in the context of ADTs, where the abstraction principle itself is intentionally suspended (ADTs exist precisely to enable type-based branching). In all other contexts, if different behavior is needed for different types, the correct mechanism is abstraction conformance — where each capsule provides its own implementation of the shared abstraction's methods.
+This need arises primarily in the context of ADTs, where the abstraction principle itself is intentionally suspended (ADTs exist precisely to enable type-based branching).
 
 ### Polymorphism Classification in Khayyam
 The foundational classification of polymorphism types in programming language theory comes from Christopher Strachey's 1967 lecture, later refined by Luca Cardelli and Peter Wegner (1985). They identify two major categories:
@@ -140,14 +139,14 @@ Additionally, the academic literature recognizes **row polymorphism** (structura
 | Form | Mechanism in Khayyam | Notes |
 |------|---------------------|-------|
 | **Inclusion (subtype) polymorphism** | Abstraction conformance (`ab`) | A capsule satisfying an abstraction is a subtype of that abstraction. This is Khayyam's primary polymorphism mechanism. |
-| **Parametric polymorphism** | Achieved via inclusion polymorphism + Smart Compilation | Khayyam does not have explicit type-parameter syntax (`<T>`), but the expressiveness of parametric polymorphism is fully available: a method accepting an abstraction type is, in effect, a universally quantified function ("for all types satisfying this abstraction"). The compiler monomorphizes or dispatches dynamically as appropriate. See "Relationship to Parametric Polymorphism" below for the theoretical justification. |
+| **Parametric polymorphism** | Achieved via inclusion polymorphism | Khayyam does not have explicit type-parameter syntax (`<T>`), but the expressiveness of parametric polymorphism is fully available: a method accepting an abstraction type is, in effect, a universally quantified function ("for all types satisfying this abstraction"). See "Relationship to Parametric Polymorphism" below for the theoretical justification. |
 | **Ad-hoc polymorphism via constrained interfaces** | Abstraction types as method parameters | When a method accepts an abstraction type, it behaves differently for each concrete capsule that satisfies the abstraction. Each capsule provides its own implementation. This is a form of ad-hoc polymorphism — the same operation (`h.Hash(data)`) dispatches to different code depending on the concrete type. |
 
 **Syntax explicitly rejected:**
 
 | Rejected Syntax | Why rejected |
 |----------------|-------------|
-| **Generic type-parameter syntax** (`<T>`, `[T]`) | Briefly: explicit type-parameter syntax forces developers to expose implementation details, adds grammar complexity, is redundant when the compiler achieves the same parametric polymorphism through abstraction conformance and Smart Compilation, and structurally encourages the Anemic Domain Model anti-pattern by providing type-agnostic containers that have no room for domain-specific behavior. |
+| **Generic type-parameter syntax** (`<T>`, `[T]`) | Briefly: explicit type-parameter syntax forces developers to expose implementation details, adds grammar complexity, is redundant when abstraction conformance already yields the same parametric polymorphism, and structurally encourages the Anemic Domain Model anti-pattern by providing type-agnostic containers that have no room for domain-specific behavior. |
 | **Function/method overloading** | Overloading introduces ambiguity: the same name maps to multiple implementations based on argument types. This conflicts with Khayyam's goal of explicit, unambiguous code. Each method has exactly one signature. If different behavior is needed for different types, abstraction conformance provides it cleanly. |
 | **Implicit type coercion** | Implicit type conversions create hidden behavior that is difficult to reason about and can introduce subtle bugs. Khayyam's philosophy of total explicitness rejects all implicit conversions. If a type change is needed, it must be done explicitly via a method call. |
 | **Row polymorphism** | While theoretically interesting, row polymorphism is primarily useful for extensible record types. Khayyam's capsules are strictly encapsulated (internal fields are never exposed), so the structural extensibility that row polymorphism provides is not applicable. |
@@ -201,13 +200,8 @@ tp CarFactory cp { /* ... */ }
 tp Create mt (self CarFactory) () (product Car) { /* Car satisfies Product */ }
 ```
 
-#### The Compiler's Role: Dispatch Strategy
-The specific machine-code mechanism used for each polymorphic call site is determined by the compiler's Smart Compilation strategy. The compiler analyzes the **reachability graph** of each abstraction usage site to determine the implementation strategy:
-
-- **Monomorphization (compile-time):** If the compiler can trace every possible concrete capsule that could satisfy the abstraction at a given usage site (a **closed set**), it inlines the specific method. Zero runtime cost. The polymorphism exists only at the type-checking level; at the machine-code level, the call is a direct jump to the concrete method.
-- **Dynamic dispatch (runtime):** If at least one possible capsule is unresolved at compile time (an **open set**), the compiler generates a VTable. One indirection per call. This is the standard cost of runtime polymorphism. An open set means: at this call site the compiler cannot reduce the reachable conforming capsules to a known closed list — for example because the full set is not visible across a compilation or module boundary, or because configuration selects among capsules that are already part of the program — even though every candidate capsule and every candidate method body already exist in the program's definition. Loading a new capsule type or method body that was not part of the compiled artifact is not an open-set case. [Dynamic Dispatch Reducibility](#dynamic-dispatch-reducibility) excludes it: a candidate set or implementation that arrives only while the system runs would mint structure in execution, which [Structure Is Fixed by Definition](../type.md#structure-is-fixed-by-definition) excludes outright.
-
-This is not an all-or-nothing decision. The same polymorphic code may be compiled differently at different call sites, depending on what the compiler can prove at each specific location. The developer never specifies which strategy to use.
+#### What the Grammar Says About Dispatch
+The grammar states nothing about how a call through an abstraction is performed, and offers no syntax to choose: the same polymorphic code may be performed differently at different call sites depending on what is knowable where, and no declaration expresses a preference. That decision, and what it costs at each call site, belongs to the compiler that consumes this grammar — see [Compiler](../modules/computer/compiler.md).
 
 ### Relationship to Parametric Polymorphism
 An important theoretical observation, supported by recent research, is that **inclusion polymorphism and parametric polymorphism have significant overlap in expressive power**. The paper "Structural Subtyping as Parametric Polymorphism" (Ghiotto et al., 2023, POPL) demonstrates that structural subtyping can encode parametric polymorphism, and vice versa, in certain type systems.
@@ -218,9 +212,9 @@ This is relevant to Khayyam because it means that the absence of explicit generi
 tp Process mt (self Service) (h Hasher, data Bytes) (d Digest, err Error) { /* ... */ }
 ```
 
-This is, in effect, a universally quantified function: "for all types `H` that satisfy `Hasher`, this method works." The compiler can monomorphize this for each known `H` — achieving the same result as if the developer had written `Process<H: Hasher>(h: H)` — without the type-parameter syntax.
+This is, in effect, a universally quantified function: "for all types `H` that satisfy `Hasher`, this method works." That covers every `H` the abstraction admits, with no type-parameter syntax written anywhere.
 
-The difference is not in expressive power, but in **where the quantification is visible**: in parametric polymorphism, the type parameter is explicit in the syntax; in Khayyam's inclusion polymorphism, the quantification is implicit in the abstraction type and resolved by the compiler.
+The difference is not in expressive power, but in **where the quantification is visible**: in parametric polymorphism, the type parameter is explicit in the syntax; in Khayyam's inclusion polymorphism, the quantification is carried by the abstraction type the signature names.
 
 ### Generic Syntax Elimination: Domain-Specific Containers and the Anemic Domain Model
 This section details how Khayyam replaces generic type parameters with domain-specific capsules, and why this is not a limitation but a deliberate design choice that strengthens encapsulation.
@@ -255,10 +249,7 @@ tp GetConnection mt (self ConnectionList) (id ConnectionID) (con Connection, err
 }
 ```
 
-The type safety that `<T>` provides in other languages is achieved here through the method signatures themselves: `AddConnection` accepts only `Connection` capsules, and `GetConnection` returns only `Connection` capsules. Both `AddConnection` and `GetConnection` agree on `ConnectionID` as the key and `Connection` as the value — there is no scenario where these two methods could specify different types for the same container. The linter|compiler enforces this at the call site: passing a `Service` capsule to `AddConnection` triggers an immediate error because the parameter type is `Connection`, not because of a generic type-parameter constraint.
-
-#### Linter-Enforced Type Safety in Container Contexts
-Because Khayyam has no type inference (variables must be explicitly typed — see [Explicit Types](./variable.md#explicit-types)) and relies on strict linters, passing an incorrect capsule type to a container method's `Add()` triggers an immediate linting error. This provides the same type-safety guarantee that generic type parameters provide in other languages, but through a different enforcement mechanism: rather than the compiler rejecting `list<Int>.add("string")` via type-parameter constraints, the Khayyam linter rejects `connectionList.Add(service)` because the method signature of `ConnectionList.Add()` explicitly accepts only `Connection` capsules.
+The type safety that `<T>` provides in other languages is achieved here through the method signatures themselves: `AddConnection` accepts only `Connection` capsules, and `GetConnection` returns only `Connection` capsules. Both `AddConnection` and `GetConnection` agree on `ConnectionID` as the key and `Connection` as the value — there is no scenario where these two methods could specify different types for the same container. The constraint is the signature itself: a call passing a `Service` capsule names a position declared for `Connection`, and no declaration provides it.
 
 #### Closed vs. Open Type Parameters — Why "How Many Layers" Is the Wrong Test
 When evaluating whether a generic-like parameter is safe to keep in a host language lacking Khayyam's abstraction model, the relevant question is not how many call layers separate the definition from its use, but whether the parameter is **closed** or **open** at its point of definition. A closed parameter is one the defining package itself binds to a fixed, framework-owned type (e.g. a container operation defined in terms of `Element`, where `Element` is always resolved by the framework, never chosen anew by each caller) — this carries no propagation cost, regardless of how many layers exist below or above it. An open parameter is one whose concrete binding is deferred to the caller (e.g. `Encoder[BUF any]`, where `BUF` must be supplied by whoever constructs an `Encoder`) — this is virulent by construction: every intermediate layer between the parameter's origin and its final concrete binding must either propagate the same open parameter or collapse it early via type erasure. Whether that path happens to be one layer or five is incidental; what matters is whether the parameter ever reaches call sites (e.g. business-logic service implementations) that must remain readable and free of type-system bookkeeping. A closed parameter keeps its binding at the definition, while an open parameter requires every intermediate layer to preserve or close that binding; this rule remains observable when a host language realizes the abstraction.
@@ -267,19 +258,19 @@ When evaluating whether a generic-like parameter is safe to keep in a host langu
 Whether dynamic dispatch is *always* reducible to a compile-time-resolved form was initially raised as an open dispute. For Memar it resolves in the affirmative from the base layer's own principles: dispatch among candidates may defer to runtime, but the candidate set and every candidate's implementation must already be spelled out in source — [Explicit Behavior Ownership](../type.md#explicit-behavior-ownership) permits no behavior the source does not define — and a genuinely runtime-only type selection, whose target set or implementation arrives while the system runs, would mint structure in execution, which [Structure Is Fixed by Definition](../type.md#structure-is-fixed-by-definition) excludes outright. Selection within the established closure is execution (the base principle's first boundary clause), not structural change.
 
 #### No Method Overloading
-A method name must represent one clear, unambiguous intent. This is not merely a syntactic restriction — it is a consequence of Khayyam's polymorphism model. With inclusion polymorphism, if different behavior is needed for different types, the correct mechanism is abstraction conformance: define an abstraction that captures the shared behavior, and let each capsule provide its own implementation. Overloading would provide a second, conflicting path to the same goal, creating ambiguity about which mechanism to use in any given situation.
+A method name has exactly one signature. With inclusion polymorphism, behavior that differs per concrete capsule is expressed by each capsule implementing the abstraction's methods, so a second path to the same need would leave two mechanisms competing for the same declaration name.
 
 #### Why the Matrix Question Does Not Challenge This document
-The question most often raised against Khayyam's design takes a form like "what about `Matrix<T, const N: usize>`?" — but this question conflates two fundamentally different concerns. The `T` parameter is a polymorphism question (fully solved by abstraction conformance). The `const N` parameter is a **type-level computation** question: it encodes a compile-time fact (the matrix dimension) into the type identity, which the compiler then uses for memory layout optimization, loop unrolling, and SIMD vectorization.
+The question most often raised against Khayyam's design takes a form like "what about `Matrix<T, const N: usize>`?" — but this question conflates two fundamentally different concerns. The `T` parameter is a polymorphism question (fully covered by abstraction conformance). The `const N` parameter is a **type-level computation** question: it encodes a compile-time fact (the matrix dimension) into the type identity, which is then a fact about the type rather than a requirement the type states.
 
-In current mainstream languages, type parameters have become a general-purpose communication channel between the developer and the compiler. When a language lacks proper abstraction mechanisms for conveying compile-time facts (dimension constraints, memory layout hints, optimization metadata), the only available channel is the type system — so developers encode everything into type parameters. This is not a strength of generic syntax; it is a consequence of lacking alternatives.
+In current mainstream languages, type parameters have become a general-purpose communication channel between the developer and whatever consumes the type. When a language lacks other mechanisms for conveying compile-time facts (dimension constraints, memory layout hints, optimization metadata), the only available channel is the type system — so developers encode everything into type parameters. This is not a strength of generic syntax; it is a consequence of lacking alternatives.
 
-**Khayyam's design position:** Compile-time facts should be expressed through explicit compiler-visible declarations (e.g., a capsule satisfying a compiler-visible abstraction that declares its dimension, storage strategy, and optimization properties), not by overloading type identity with non-identity information. Whether additional compiler-facing abstractions are required is a tooling design question, not a justification for generic type syntax.
+**Khayyam's design position:** a compile-time fact is not identity information, and the grammar does not let a type carry it as one. Whether a fact beyond the four Type categories a signature may name belongs in the language at all, and if so through what construct, is an open question for the language — one this document does not settle.
 
 This separates three concerns that generic syntax conflates:
 
-- **Polymorphic reuse** — fully provided through abstraction conformance and Smart Compilation. This is settled.
-- **Compile-time facts** (dimensions, layout constraints, optimization hints) — should be expressed through dedicated compiler-visible abstractions, not by encoding them into type identity. If a compiler needs information from the developer to perform optimization, the correct response is to define an abstraction for that specific compiler-facing concept, not to repurpose type parameters as a general-purpose information channel.
-- **Rule verification** (dimension and unit compatibility, state machine transitions, protocol constraints) — should be modeled as rules or constraints, not as type identity. A matrix multiplication requiring compatible dimensions is a rule about the operation, not an identity property of the matrix type.
+- **Polymorphic reuse** — fully provided through abstraction conformance. This is settled.
+- **Compile-time facts** (dimensions, layout constraints, optimization hints) — not identity. Whether they are stated through an abstraction a type composes, or left to a tool's rules, is unsettled; either way they are not written into type identity.
+- **Rule verification** (dimension and unit compatibility, state machine transitions, protocol constraints) — a rule about an operation, not an identity property of a type. A matrix multiplication requiring compatible dimensions says nothing about what a `Matrix` is.
 
-The remaining work is not about whether generic syntax is required (it is not, for polymorphism), but about what specific compiler-facing abstractions Khayyam needs to define for compile-time facts and optimization abstractions. This is a tooling design question that belongs to a dedicated document on compiler-facing abstractions, not to this polymorphism-focused document.
+The remaining work is what the language states about compile-time facts, if anything; that belongs to whichever document owns the question rather than to this polymorphism-focused document.
