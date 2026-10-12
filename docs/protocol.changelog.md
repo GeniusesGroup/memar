@@ -371,3 +371,19 @@ Dissolved the Protocols-and-External-Observers topic's `#### Discussion` and the
 - **Rewriting the *Methodologically produced* property to drop methodology (rejected)**: the ruling does not touch how a protocol comes to be, and deleting the property would discard a distinction the document earns elsewhere. What it no longer does is decide protocol status, and that is now said in the one place that had asserted otherwise.
 - **Sorting the *Protocol Across Domains* examples by decidability (rejected)**: every other example in that topic already names requirements a third party can check; one bullet is corrected in place, and a sort would restate what the corrected bullet now shows.
 - **Narrowing the *Abstract*'s cross-domain claim (rejected)**: it holds that the definition must remain valid across diplomacy and the other domains, and after these edits it does — the boundary the diplomatic bullet draws is the definition's own, not an exception to it.
+
+---
+
+### Review of the uncommitted changes of 2026-10-12
+- Time: 2026-10-12T09:45:00Z
+- Type: Reviewed
+- Contributors:
+  - [Claude](../CONTRIBUTORS.md#claude) (Sonnet-5.5) — reviewed
+
+#### What changed
+- Reviewed; no change needed. Checked the working tree against HEAD for `protocol.md` and `protocol.handoff.md`: the Abstract and *What is a Protocol?* (Verifiability as a fourth component), *Protocol Properties* (Verifiable), *Conformance* (decidable, per named Protocol, never joint), the new *Who Defines a Protocol* and the process-boundary paragraph, *Protocol vs Specification* (decidability, not production method), the scientific-method and diplomatic examples, the fifth consequence under *Protocol vs Standard*, the removal of *Protocol Ontology Candidates*, and the handoff's removed and narrowed entries.
+- Every body change is carried by an entry above (the 2026-10-05 entries on scope across Modules and authorities, on the Verifiable Interaction Model, and on conformance widened past signatures), and each removal is justified there: the rejected Candidates A and B and the removed survey sit under that entry's *Considered and not done*; "Ontology Finalization", "Protocol Conformance Measurement", "External-Consumer Protocol Compatibility" and "Protocol vs Specification Identity" are each answered by a named body passage.
+- `memar content check` on `protocol.md` and `protocol.handoff.md` reports no problem.
+
+#### Considered and not done
+- The handoff's "Answered:" line in the cross-module entry restates answers the body holds, which an earlier entry here declined to mark. Not changed: the entry keeps a real residue, and the 2026-10-05 conformance entry records the pointer form as chosen.

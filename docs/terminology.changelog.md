@@ -128,7 +128,7 @@ Precisely defined Comprehensive and Exclusive as the two directions of necessary
 - Cited:
   - `docs/vocabulary.md` (deleted) — Evidence: the retired document's own state motivated the rule; it held only two external links (connection-oriented/connectionless, consumed by chapar.md's Ethernet-comparison discussion) and no membership criterion, no front matter, and no changelog of its own, so it had begun functioning as an unmanaged catch-all — the exact failure mode an ungoverned vocabulary list invites.
 - Propagates to:
-  - `docs/vocabulary.md`: Done — deleted. Its two links moved into [networking.md](./protocols/net/networking.md)'s Layer presence topic (the classification question is a cross-layer networking concern, not a layer-2 protocol's); the RFC-process paragraph it carried was RFC-era boilerplate rather than governed content, so it died with the file without loss — the substance of that paragraph (a consistent, reviewed path for changes to enter the project's documentation, with statuses that say what may be depended on) is specified authoritatively in [documentation-explanation.md](./documentation-explanation.md)'s Status section, and its remaining wording was generic GitHub pull-request boilerplate.
+  - `docs/vocabulary.md`: Done — deleted. Its two links moved into [networking.md](./modules/net/networking.md)'s Layer presence topic (the classification question is a cross-layer networking concern, not a layer-2 protocol's); the RFC-process paragraph it carried was RFC-era boilerplate rather than governed content, so it died with the file without loss — the substance of that paragraph (a consistent, reviewed path for changes to enter the project's documentation, with statuses that say what may be depended on) is specified authoritatively in [documentation-explanation.md](./documentation-explanation.md)'s Status section, and its remaining wording was generic GitHub pull-request boilerplate.
   - thinking.md: Done — the Discourse Norms' definitions-outrank-terminology entry previously pointed to vocabulary.md as a lookup home; it now points to this document's new section instead.
 - Contributors:
   - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — claimed, decided
@@ -244,7 +244,7 @@ Precisely defined Comprehensive and Exclusive as the two directions of necessary
   - [terminology.handoff.md](./terminology.handoff.md): None needed - no question this entry answers was carried there.
 - Contributors:
   - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - claimed the position across earlier sessions, decided
-  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny-free via [OpenCode](../CONTRIBUTORS.md#opencode)) - drafted, argued
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) - drafted, argued
 
 #### What changed
 - [Terminology](./terminology.md) gains [A Term Deliberately Left Open](./terminology.md#a-term-deliberately-left-open), a class of term alongside the defined and the merely-unreferenced ones. A term in this class is used in Memar's documents, never defined by one, marked as the deliberate use it is at each appearance, and defined where the work on the concept is actually being done. The section states why the class exists at all: for a concept larger than the framework, the ordinary meaning is not thinner than Memar's would be but misleading, because it arrives carrying the settled, familiar shape of the concept and a reader who takes it as Memar's has adopted a definition no Memar document made.
@@ -259,3 +259,104 @@ Precisely defined Comprehensive and Exclusive as the two directions of necessary
 - **Removing the word from Memar's passages and using `decision` or `investigation` instead (not taken):** it would leave the knowledge-evolution principle weaker, since the passage's point is that a *task* is the unit rather than a snapshot, and the parenthetical already shows the concept generalising past any one of them. The section states the ordinary sense explicitly at the site, which is the smaller cost and the reversible one.
 - **Naming a broader class of terms (rejected):** the class is defined by a three-part test, not by a mood about avoiding definitions. A wider class would take in ordinary words that simply need no definition, and would make the section a licence rather than an exception.
 - **Writing the definition here and marking it Enterprise's (rejected):** a definition in Memar is a definition in Memar. Marking a section as belonging elsewhere does not stop the next reader, or the next agent, from citing it.
+
+---
+
+### Two handoff entries closed against Scientific Terms and Word-Weight Rebalancing
+- Time: 2026-10-04T18:21:00Z
+- Type: Fixed
+- Propagates to:
+  - terminology.handoff.md: Done — two open-question entries removed; Scientific Terms and Word-Weight Rebalancing are their homes, and the handoff's Anticipated Work is where building the mechanism stays tracked.
+- Contributors:
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) — argued, applied
+
+#### What changed
+- Two entries left `terminology.handoff.md`'s Open Questions, each verified against the passage that settles it before its block was deleted:
+  - the sub-tiers question is answered by [Scientific Terms](./terminology.md#scientific-terms) — "Memar accepts this simplification deliberately, for the reasons stated in terminology.md's Abstract", with the finer-grained alternative named in the body instead of left as an unexamined simplification. The coarser single layer is therefore the stated trade-off, not a pending decision.
+  - the AI-weighting question is answered by [Word-Weight Rebalancing](./terminology.md#word-weight-rebalancing), which states what such a mechanism must do (load Definitions as precedence context, prefer the document's sense within Memar work, stay consistent at the point of origin) and separates what is settled from what is not: "the first is unsettled, the second is settled" — whether to build the mechanism remains open, while the obligation to surface a conflict between a person's usage and a Definition is not among the things left open.
+- Whether to build the weighting mechanism, and in what form, was already carried by this handoff's Anticipated Work; removing the Open Questions entry therefore retires nothing that is still owed an answer there.
+- The Scientific Terms section's pointer to this handoff's open questions now names a question this entry settles; correcting that pointer is owed to a later pass on the base document.
+- No base document body was edited.
+
+#### Considered and not done
+- **Keeping the sub-tiers question open because the body still calls the alternative an open question (rejected)**: the body already decides the single layer deliberately and states why; an answered question re-registered as pending keeps surfacing in the search for unfinished work it no longer belongs to. The pointer noted above is a wording defect in the base document, not a reason to keep the question in the handoff.
+- **Building the weighting mechanism as part of this removal (not done)**: the section's residual is the mechanism's design and worth, already named by the Anticipated Work entry; a handoff entry is the place for an unanswered question, not for work nobody has committed to.
+
+---
+
+### No terminology registry as a source of authority
+- Time: 2026-10-04T20:16:22Z
+- Type: Added
+- Propagates to:
+  - terminology.handoff.md: Done — the registry open-question entry removed; the section below is its home.
+- Contributors:
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) — argued, drafted, applied
+
+#### What changed
+- [Terminology Authority and Governance](./terminology.md#terminology-authority-and-governance) now states that a registry would be a second home for claims Memar has already placed, that the authoritative home of a Definition is the document that establishes it, and that a registry indexing or restating those Definitions is generated from them and is corrected where the two disagree.
+- `terminology.handoff.md` no longer carries "Should Memar maintain a formal terminology registry?".
+
+#### Considered and not done
+- **Deleting the Anticipated Work lines "Framework-wide terminology registry" and "Auto-generated Memar glossary, tagged by terminology layer" (rejected)**: what is settled is authority, not the artifact. Those lines already scope the registry as generated, and they remain the place where building it is tracked.
+- **Recording the registry as out of scope entirely (rejected)**: an index derived from the document set is useful to a reader and carries no authority of its own, which is a position rather than a prohibition.
+- **Relying on per-term layer tags in a registry to make layer classification consistent across documents (rejected)**: [Terminology Layers](./terminology.md#terminology-layers) defines each layer by what distinguishes it so the classification applies to terms it has not listed, so the tags add no consistency the rule does not already carry.
+
+---
+
+### A document states its terms, not a layer tag for each
+- Time: 2026-10-05T09:35:23Z
+- Type: Changed
+- Cited:
+  - [Terminology → Terminology Authority and Governance](./terminology.md#terminology-authority-and-governance) - Evidence: the authoritative home of a Definition is the document that establishes it, and an index restating those Definitions is corrected where they disagree
+- Propagates to:
+  - terminology.handoff.md: Done - the entry asking whether future documents should tag their key terms by terminology layer removed, heading and body line with it
+- Contributors:
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) — argued, drafted, applied
+
+#### What changed
+- [Terminology Layers](./terminology.md#terminology-layers) now states that because each layer's criterion settles the layer wherever a term appears, a document states its terms and their Definitions rather than tagging each term with a layer. The passage carrying it is that section's own second sentence — "Each layer is defined below by what distinguishes it, not only by example, so that the classification can be applied to a term this document has not already listed" — which makes the tag an answer the criterion already gives, and [Terminology Authority and Governance](./terminology.md#terminology-authority-and-governance), which makes a per-term tag in another document a second home for a classification this document already places.
+- `terminology.handoff.md` no longer asks whether future documents should explicitly identify which terminology layer each of their key terms belongs to.
+
+#### Considered and not done
+- **Relying on per-term layer tags to make classification consistent across documents (rejected, and already rejected for a registry)**: [Terminology Layers](./terminology.md#terminology-layers) defines each layer by what distinguishes it so the classification applies to terms it has not listed, so the tags add no consistency the rule does not already carry. The tags would be checked by the same criterion that makes them unnecessary, and two copies of one classification can drift.
+- **Requiring the tag only on a term the document defines (rejected)**: the same criterion settles the layer of a term this document has never seen, which is the case a reader most needs it for.
+- **Adding the requirement to the layer examples as an instruction to their authors (rejected)**: an example listing a term's layer is a demonstration of the classification, not an instruction binding every document, and stating it as one would repeat in every example what the defining sentence already says once.
+
+---
+
+### Modeling's foundation is stated, not chosen
+- Time: 2026-10-05T17:15:06Z
+- Type: Changed
+- Cited:
+  - [Type → Abstract](./type.md#abstract) — Evidence: the document "is not one framework among several that a system may choose or decline", which is the fact this entry's wording now rests on
+  - [Type → Type Beyond Programming Languages](./type.md#type-beyond-programming-languages) — Evidence: "There is no system whose semantic entities have no Type, and none that would decline to model itself this way"
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) — argued, drafted, applied
+
+#### What changed
+- *Scientific Terms* now says Memar treats scientific terminology as the preferred foundation for learning and for reasoning, and then says that for modeling the position is stronger than a preference because it is not one: every system's semantics are stated in mathematics, which in this framework is type theory, so a term is precise enough for modeling when it states a Type cleanly. The sentence that called the preference pragmatic rather than ideological is replaced; the criterion that remains is reasoning quality rather than scientificity for its own sake, which is the claim the paragraph's evidence supports.
+
+#### Considered and not done
+- The paragraph above it, which flags a finer-grained split of the Scientific layer into formal/mathematical, empirical, and philosophical sub-tiers, was left exactly as it stands, and its open question stays open. The ruling supplies a fact about the layer a system's semantics are stated in, which is not the same fact as whether Identity and Graph belong in one tier or two; writing the split down now would record a decision this entry has no evidence for.
+- Nothing was written into `terminology.handoff.md`. The sub-tier question the body defers there is unchanged, so no entry was narrowed or removed.
+- *Concept-First Thinking* was left alone. Its ordering claim — concept before principle before technology — does not rest on the modeling foundation being a preference, and nothing in this entry disturbs it.
+
+#### Deliberation
+The finding was that "preferred foundation for learning, modeling, and architectural reasoning … pragmatic rather than ideological" would have had a reader hold two incompatible positions: that the ground modeling stands on is a preference to be weighed, and that it is a declared layer a system may not decline. The wording keeps the document's actual justification intact — the mechanisms science subjects its terms to — and narrows only what it claims about modeling (Space Bunny Alpha — argued, drafted, applied). Whether the deferral in the paragraph above can be converted into a stated fact was examined and held back, because the ruling fixes where semantics are stated rather than how terms are tiered, and mistaking one for the other would have closed an open question by substitution (Omid Hekayati — decided).
+
+---
+
+### Review of the uncommitted changes of 2026-10-12
+- Time: 2026-10-12T09:47:00Z
+- Type: Changed
+- Contributors:
+  - [Claude](../CONTRIBUTORS.md#claude) (Sonnet-5.5) — reviewed, revised
+
+#### What changed
+- Reviewed the uncommitted change to [terminology.md](./terminology.md), [terminology.handoff.md](./terminology.handoff.md), and this changelog (working tree against HEAD). Checked: the registry sentence and the layer-tag sentence in the base document each carry their reason and have the changelog entries above (2026-10-04T20:16:22Z, 2026-10-05T09:35:23Z); the AI-weighting question is answered by [Word-Weight Rebalancing](./terminology.md#word-weight-rebalancing), whose settled/unsettled sentence exists in HEAD and is quoted faithfully, with the mechanism still tracked in Anticipated Work; the Scientific Terms rewording matches its entry (2026-10-05T17:15:06Z); the two link and contributor-alias edits in old entries only repoint `protocols/net/networking.md` to the existing `modules/net/networking.md` and use the alias CONTRIBUTORS.md lists (`space-bunny`); no changelog entry was removed; the new handoff question's citation to the `organization` project's `supply-chain.changelog.md` was read and holds; `memar content check` reports no problem.
+- [terminology.handoff.md](./terminology.handoff.md): restored *Should the Scientific layer eventually be split into sub-tiers?* verbatim from HEAD. The entry dated 2026-10-04T18:21:00Z removed it as answered, but the base document's Scientific Terms section still flags the split as an open question and points to this handoff, and the later entry dated 2026-10-05T17:15:06Z records, on the owner's ruling, that the question stays open and that nothing was removed from the handoff. The question is therefore still owed an answer and its removal left the body's pointer dangling.
+- Not recorded by any entry above and recorded here: the handoff gained the open question *Is borrowing a mathematical term for a non-mathematical relation a named error?* and two Anticipated Work lines on recognising review graduation (a proposal only, pending contributor governance); they are additions of open work, not answers, and need no base-document change.
+
+#### Considered and not done
+- The 2026-10-04T18:21:00Z entry still says the sub-tiers entry was removed; it was left as written because changelogs are history, and this entry records the restoration.

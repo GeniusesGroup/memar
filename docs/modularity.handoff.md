@@ -6,31 +6,21 @@ Open work for `modularity.md`. Entries are mutable current state — revised as 
 ### Can Capability Completeness be checked other than by hypothetical removal?
 - Hypothetical removal means asking "if this capability were deleted, which Modules would need edits?" Can completeness instead be checked statically, for instance from declared dependencies alone? (From the Capability Completeness topic's retired Discussion.)
 
-### What is the final terminology for the kind of Optional Module currently discussed provisionally as a Rule?
-
-### Which properties distinguish an optional extension from an ordinary independently related Module?
-
-### What exact relationship should a Module expose when it permits optional behavior to attach without changing its own model?
-
-### What properties of an EventTarget are fundamental enough to define once and reuse across Types and Modules?
-
-### When an EventTarget exposes a request or response to interested participants, which parts belong to the Type, the Protocol, and the Process?
-
-### How should Module identity and dependency resolution be represented independently of repository and filesystem conventions?
-
-### Which modularity properties can be established by modeling alone, and which require implementation or tooling support?
-
-### How should modularity be evaluated when a single Module intentionally contains multiple lower-level responsibilities that are tightly coupled by the domain?
-
-### What evidence distinguishes a necessary Module boundary from fragmentation introduced only by implementation convenience?
-
 ### What is the exact formal relationship between Module and Framework?
 - Module was proposed during the discussion leading to this document as peer-level to System, Structure, Protocol, and Framework; this document now positions Module against Type, Structure, Protocol, Process, and Responsibility, but the relationship to Framework specifically remains open and deserves a dedicated consistency review.
 
-### Where should the Module that owns a cross-boundary relationship live when its endpoints belong to different Modules?
-- With one endpoint, with both, or in an independent third home? Hosting chosen mainly for repository convenience encodes false conceptual ownership; see the counterpart open question under [Modeling → Edge Types and Their Traditional Counterparts](./modeling.handoff.md#edge-types-and-their-traditional-counterparts).
+## The category layout of this repository
+The category folders of [`docs/modules/`](./modules/README.md#one-layout-for-both-trees) are the layout `modules/` follows, and that layout was decided by transfer and by reading, never by an argument recorded anywhere. **The owner's position (2026-10-07): the categories themselves are to be critiqued, not only the folders inside them** — `runtime/` in particular looks as though it should break up into `computer/`, and that reading is itself held as provisional. Each question below was measured against the tree; nothing here is decided, and every entry is the owner's — except the one entry marked settled, which was decided by the owner's own ruling rather than by this list. Three further questions were counted in a port session's notes and never named; they are not recoverable, so they are absent rather than reconstructed.
+- **`runtime/` against `computer/runtime/`.** `modules/computer/runtime/` holds `protocol/`, `scheduler/` and `thread/`; `modules/runtime/` holds only `flow/`, whose README states a question rather than a subject, and `docs/modules/runtime/` holds only [immutable infrastructure](./modules/runtime/immutable_infrastructure.md). `modules/lib/lib.md` places "the runtime and its mechanisms" under `computer/runtime/`, while [`modules/README.md`](../modules/README.md) lists `runtime/` as a category of its own.
+- **Where the concurrency primitives live.** `computer/runtime/` holds `thread/` and `scheduler/`, while [immutable infrastructure](./modules/runtime/immutable_infrastructure.md) and [concurrency](./modules/computer/concurrency.md) both reach into the area; no document states which of runtime, process, or computer owns a primitive.
+- **The `computer/` against `hardware/` boundary.** `modules/hardware/` holds one folder, `cpu/` (`core.kh`, a capsule over a body-less assembly function; `core.s`, that assembly; `cache.txt`, a Go snippet for `cache_line_size`). Whether a CPU is hardware, a computer, or neither is stated nowhere.
+- **`time/`'s mixed axes.** `modules/time/` holds calendar systems (`astronomy/`, `earth/`, `mars/`, `utc/`, `unix/`), epoch families (`epoch/`), clocks (`monotonic/`), spans (`duration/`), and timers (`timer/`, `timing-wheel/`) in one folder beside `protocol/`.
+- **Identity's ownership.** `modules/identifier/` holds identity, yet the `UUID` name is declared by four modules at once — `computer/type/protocol`, `identifier/record/protocol`, `memory/record/protocol`, `process/request/protocol` (2026-10-01). [qualified-names.handoff.md](../bundles/khayyam/rules/qualified-names/qualified-names.handoff.md) records the two-module form of the question; the four-module form is wider.
+- **`datatype/` against `datatypes/` — settled 2026-10-08.** `modules/computer/datatype/` and `modules/computer/datatypes/` both existed, each with a `protocol/`, and one spelling was wrong. `datatype/` was it: it has been renamed [`modules/computer/type/`](../modules/computer/type/), taking the concept's own name per the owner's ruling recorded in [The Type's changelog](./modules/computer/type.changelog.md#realization-folder-renamed-from-datatype-to-type), and every `in` URI naming it was migrated with it. The plural folder keeps the plural, because its declarations — `Types_Map`, `Computer_Types`, `Observer_Types` — are about a collection of Types, not about a Type; under the owner's ruling of 2026-10-10 that no `DataType` trace stays in the corpus, it was renamed [`modules/computer/types/`](../modules/computer/types/). The two folders no longer collide. What survives under that folder's own name is a separate question: `dt-types.kh` and `dt-types.observers.kh` carry a `dt-` prefix no sibling file carries, and one of the three declarations carries a `Computer_` prefix its two siblings do not.
+- **The top-level folder that is not a category.** `modules/go-port/` (the port's residue) sits beside the categories with no counterpart under `docs/modules/`. The owner's position: there is no reason for it to sit at the top of `modules/`, and a category has to be found for it. The same question no longer stands for the language toolchain or the Memar server: the owner's decision of 2026-10-07 moved both to [`bundles/`](../bundles/README.md), the layer for what runs or aggregates modules, so that `modules/` holds only reusable modules.
+- **One naming convention for the layer.** `sRPC` and `immutable_infrastructure` stand against kebab-case and snake_case neighbours. None is worth a decision alone; the question is whether one convention is chosen for the layer and applied.
 
 ## Anticipated Work
-- A dedicated treatment may later define the relationship between Module, Optional Module, Protocol, EventTarget, and the provisional Rule concept in more formal graph terms. (From the document-level retired Future possibilities.)
+- A dedicated treatment may later define the relationship between Module, Optional Module, Protocol, EventTarget, and Rule in more formal graph terms. (From the document-level retired Future possibilities.)
 - A future document may define how modular boundaries can be reviewed independently of implementation structure, including checks for responsibility coherence, uncontrolled knowledge, unnecessary coupling, and accidental deployment-driven boundaries. (From the same section.)
 - Once this document is stable, documents that currently define modularity-related behavior locally — including `modeling.md`, `khayyam/modularity.md`, `framework.md`, and `protocol.md` — should be reduced where appropriate and reference this document instead. Each should retain only the consequences specific to its own concerns rather than redefining Module independently. (From the same section.)

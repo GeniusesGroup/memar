@@ -179,7 +179,7 @@ Brought `content.md` in line with the current Explanation-facet specification:
 - Time: 2026-10-04T13:27:43Z
 - Contributors:
   - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - decided
-  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny-free via [OpenCode](../CONTRIBUTORS.md#opencode)) - claimed, argued, applied
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) - claimed, argued, applied
 
 #### What changed
 No entry above is edited. This entry states the relation one of them recorded, under [Documentation → Citations → Source standing](./documentation.md#citations) as that rule now reads.
@@ -191,3 +191,121 @@ No entry above is edited. This entry states the relation one of them recorded, u
 
 #### Deliberation
 The rule added in [Documentation → Citations](./documentation.md#citations) was applied against the whole doc set rather than only against the session that wrote it, and this citation was among the four it does not accept (Space Bunny Alpha — argued). An entry of an earlier session cannot be rewritten, so the correction is recorded here (Omid Hekayati — decided).
+
+---
+
+### Two handoff questions closed by answers the base document already carries
+- Time: 2026-10-04T18:17:38Z
+- Type: Fixed
+- Propagates to:
+  - content.handoff.md: Done — the Lexical Token uniqueness-scope and Addressable Entity a-priori-test entries were deleted, each answered by `content.md` (handoff: no entry of its own).
+- Contributors:
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) — argued, applied
+
+#### What changed
+- The handoff's open question "What scope does Lexical Token uniqueness actually take?" is removed. [Content → Lexical Token vs. Sense — Handling Ambiguity](./content.md#lexical-token-vs-sense--handling-ambiguity) already answers it: a given string "is treated as a single, globally unique **Lexical Token**", with multiple parties attaching relations to that one token rather than each document holding its own. The question's own parenthetical — uniqueness global across a system as the working decision — is the position the body states, and no finer-grained scoping rule is proposed there, so nothing the body left open is lost by the removal.
+- The handoff's open question "Does the Addressable Entity principle admit an a-priori test?" is removed. [Content → Addressability](./content.md#addressability) already answers it: "This principle is honestly circular and this document does not resolve the circularity," and it names the direction taken instead — asking "what units are *naturally* independently referenced within a given medium's own conventions," "an observable, empirical question rather than a predictive one." The recorded position is that no a-priori test exists, so the question was never open in the sense the handoff implied.
+- [content.md](./content.md) is unchanged: both answers were already in its body, and the graduation is a matter of the handoff stopping restating them.
+
+#### Considered and not done
+- Editing `content.md` to state the two answers more sharply, or to add the empirical-framing question as work worth pursuing — not taken. The body already says the circularity is unresolved and names the empirical framing as future work; a sharper restatement would be the redundant restatement [Documentation → Content Rule](./documentation.md#content-rule-no-fabricated-or-redundant-provenance) forbids.
+- Carrying the empirical-framing direction over into the handoff's Anticipated Work — not taken. The body holds it as a framing worth pursuing in future work, not as committed anticipated work, and inventing a handoff entry for it would schedule work nobody committed to.
+- Marking the two entries Answered rather than deleting them — not taken. A handoff records where a discussion stands, and a resolved question is state the base document now carries; leaving a resolved question here duplicates the answer and guarantees drift.
+
+---
+
+### The Reference edge carries no consumer's choice
+- Time: 2026-10-04T21:40:00Z
+- Type: Changed
+- Cited:
+  - [Content](./content.md) - Consumed claim: the Reference topic's own statement that a renderer decides per modality how to expose an Affordance, and that navigation is not intrinsic to a Reference.
+- Propagates to:
+  - content.handoff.md: Done - the navigate/embed/execute open question is removed; its answer is the body's.
+- Contributors:
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) — argued, drafted, applied
+
+#### What changed
+- [Reference as a Relation, Not a Property](./content.md#reference-as-a-relation-not-a-property) states that navigating, embedding, and executing are one consumer decision rather than three kinds of edge, and that no field on the edge names which applies: such a field would record a consumer's choice in the Semantic layer, which the [Foundational Principles](./content.md#foundational-principles) forbid. What a consumer does with an Affordance is therefore stated by that consumer, in its own terms.
+- The handoff's open question "Are navigate/embed/execute properties of the Reference edge, or consumer-determined?" is removed. The topic already excluded navigation and named the renderer as the decider; what it did not do was exclude the field the question named or generalize from navigation to the family, and the new paragraph does both.
+- The handoff's Timeline question is narrowed rather than removed. One Content participating in many Timelines follows from relations the body already states — neither Composition membership nor arrangement is a property of a node — so that part is settled and recorded as settled. What stays open is the cross-Composition case: whether a Timeline spanning separate Compositions is an arrangement at all, which turns on whether `contains` and `refers-to` are one primitive family, and on the body's own deferral of any shared arrangement vocabulary to the dedicated Layout/Theme document. Its `Next:` line is unchanged, and `content.md` gains nothing for it.
+
+#### Considered and not done
+- Topic Maps' associations-with-roles as relation-role vocabulary carried on the edge - rejected: it names the consumer's choice in the Semantic layer, and the survey that raised it was deleted with its disposition already recorded in this file.
+- Deleting the handoff entry and editing the body not at all - considered: the body's rule covers navigation alone, and the `mode` field the question names is excluded nowhere, so the generalization is a real addition rather than a restatement.
+- Stating that Timeline is not a distinct concern of Content - not taken: the body's arrangement claim is scoped to siblings within a Composition and marked tentative, and the case a Timeline raises is cross-Composition, so the exclusion would rest on the very question the narrowed handoff entry keeps open.
+- Waiting for the cross-modal rendering experiments before closing the navigate/embed/execute question - not taken: the answer does not vary by modality, since the renderer already decides per modality, so the experiments remain under the handoff's Anticipated Work.
+
+---
+
+### Composition's edge kind and media coverage settled from principles already held
+
+- Time: 2026-10-05T10:12:46Z
+- Type: Changed
+- Propagates to:
+  - content.handoff.md: Partial - two entries left Open Questions, and the *Can one Content participate in multiple Timelines* entry still names the `contains`/`refers-to` question as its blocker, which this change discharges; that entry is not resolved and the stale clause was left in place rather than repaired under this change.
+- Contributors:
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) - argued, drafted, applied
+
+#### What changed
+- [Composition](./content.md#composition) now states that `contains` and `refers-to` are the same kind of edge playing different roles - both are ordinary edges, and what separates them is what the edge asserts, since a reference is a pointer the referencing node depends on but does not own while ownership binds the referenced node's lifecycle to the owning one - so ownership needs no primitive of its own and adds obligations rather than a different kind of edge.
+- [Addressability](./content.md#addressability) now states that untyped media are covered by the Addressability primitive already shared between unstructured content and Composition rather than by a primitive of their own: an image region or a video time range that needs to carry an independent relation becomes an independently addressable entity, and meaning attaches to it as Reference edges exactly as it does to a span of free text.
+
+#### Considered and not done
+- **Deriving the edge-kind distinction from this document's own Composition section (rejected)**: that section states the aggregate/presentation split, warns that collapsing the two graphs is an observed failure mode, and defers concrete mechanics to the host language's type/capsule system. It says nothing about edge kinds, so the answer had to come from the edge taxonomy that already names reference and ownership/composition as two roles of one ordinary edge, and that taxonomy is what the body now points at.
+- **Treating the media entry as already answered by the Abstract's mention of untyped media (rejected)**: the Abstract places media where the Semantic and Addressability topics concentrate their weight, but it does not say they need no primitive of their own, and the Addressability topic still poses region-and-timestamp addressability as an open question. What is now settled is the coverage of media, not which units inside a medium deserve an address, which the Addressability topic's own acknowledged circularity continues to govern.
+
+---
+
+### The Timeline handoff entry's dependency on the `contains`/`refers-to` question dropped
+- Time: 2026-10-05T10:56:50Z
+- Type: Fixed
+- Cited:
+  - [Content → Composition](./content.md#composition) — Depends_on: the settled position that discharges the stale dependency — `contains` and `refers-to` are the same kind of edge playing different roles, and ownership adds obligations rather than a primitive of its own.
+- Propagates to:
+  - [Content Handoff → Can one Content participate in multiple Timelines, and is Timeline a distinct concern?](./content.handoff.md#can-one-content-participate-in-multiple-timelines-and-is-timeline-a-distinct-concern): Done — the entry's residue is the cross-Composition case and the Layout/Theme deferral already named beside it; the entry stays open and its question is unchanged.
+- Contributors:
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) — argued, applied
+
+#### What changed
+- [Content Handoff → Can one Content participate in multiple Timelines, and is Timeline a distinct concern?](./content.handoff.md#can-one-content-participate-in-multiple-timelines-and-is-timeline-a-distinct-concern): the clause naming "the still-unsettled question above about whether `contains` and `refers-to` are one primitive family" as what the cross-Composition case depends on is removed. That question is answered — [Content → Composition](./content.md#composition) states that `contains` and `refers-to` are the same kind of edge playing different roles, and that ownership adds obligations rather than a different kind of edge — so naming it as an open dependency left the entry waiting on something the record no longer holds open.
+- Nothing else in that entry changed. Its question stands, the part recorded as settled stays recorded as settled, its `Next:` line is untouched, and what remains open is the cross-Composition case — whether a Timeline spanning separate Compositions is an arrangement at all — together with the body's own deferral of any shared arrangement vocabulary to the dedicated Layout/Theme document.
+
+---
+
+### Unstructured content is a category, not an exemption
+- Time: 2026-10-05T17:15:06Z
+- Type: Changed
+- Cited:
+  - [Type → Abstract](./type.md#abstract) — Evidence: "every semantic entity is a Type: a semantic entity that has no Type is not an entity this framework can state", which is what the untyped-media wording contradicted
+  - [Type → Type Beyond Programming Languages](./type.md#type-beyond-programming-languages) — Evidence: no system exists whose semantic entities have no Type, so "outside any type system's reach" had to become "carries no predefined field"
+  - [Type → Type vs Implementation Type](./type.md#type-vs-implementation-type) — Evidence: "their Types exist, as any system's do", which is the sentence the dynamic-language paragraph now rests on
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) — argued, drafted, applied
+
+#### What changed
+- The Abstract's central discovery now reads that what a type system does not reach is content that carries no predefined field to hold its meaning, so the category name `unstructured content` survives as a category of content — free text and media — and the sentence says they are Types like everything else and become independently addressable entities, with meaning attaching as Reference edges rather than as a schema they would have had to be shaped to carry. The document's own point is unchanged in substance: what these fragments lack is a field, and addressability is what replaces it.
+- The *Addressability* paragraph that began "Untyped media are covered by this same primitive" now begins "Unstructured media are covered by this same primitive", which removes the typing claim from that paragraph without touching its reasoning — an image region or a video time range that must carry an independent relation still becomes an independently addressable entity with Reference edges attaching to it.
+- The *Khayyam-manner* topic now states what the friction names: a dynamic-typed language approximates the class this document prefers rather than stating it, because its Types exist, as any system's do, and none of them is written in its source. The two properties the document does not give up — no unwrapped primitives, absolute encapsulation — are untouched.
+
+#### Considered and not done
+- The paragraph about not abandoning typing discipline "in favor of an untyped markup language" was left alone. There `untyped` describes an authoring language that would carry semantics without Types, which is a different claim from the one this entry removes.
+- The unresolved question about the boundary between structural delimitation and embedded semantic tagging was not reopened. It asks about authoring syntax, and no sentence changed here bears on what an authoring format may carry.
+- The document's own recommendation against adopting an unconstrained vocabulary of tags was not touched, and no new primitive was introduced for unstructured content: the category keeps the primitive it already had, Addressability.
+
+#### Deliberation
+The tension was not the category but the exemption. Read against a document declaring that every semantic entity is a Type, the Abstract's "genuinely outside any type system's reach" established a standing untyped remainder inside a system, which is the one shape the ruling cannot admit. The first sentence drafted for the fix — that free text and media are Types and meaning attaches to them as Reference edges "exactly as a typed structure's does" — was rejected before it was written, because that comparison would have dissolved the document's own reason for treating these fragments separately (Space Bunny Alpha — argued, drafted). The adopted wording keeps both halves the owner required: no predefined field is why addressability is needed rather than a schema, and Typehood is stated as a fact about the entities rather than as an exemption from it (Omid Hekayati — decided).
+
+---
+
+### Review of the uncommitted changes of 2026-10-12
+- Time: 2026-10-12T09:45:00Z
+- Type: Changed
+- Contributors:
+  - [Claude](../CONTRIBUTORS.md#claude) (Sonnet-5.5) — reviewed, revised
+
+#### What changed
+- Reviewed the uncommitted change to `content.md`, `content.handoff.md` and this file against HEAD. The settled handoff questions (navigate/embed/execute, Lexical Token uniqueness, Addressable Entity a-priori test, Composition `contains`, media coverage) each have their answer in `content.md` and an entry above; the Timeline entry's narrowing, the Abstract and Khayyam-manner rewording, and the `../modules/khayyam` to `../bundles/khayyam` link repairs hold, and `memar content check` reports no problem.
+- `content.handoff.md`, the *Can one Content participate in multiple Timelines* entry: removed the clause "originally moved 2026-09-11 from the Layout topic's retired Discussion wrapper". The committed entry records the knowledge-management session as its origin and nothing ties it to the Layout wrapper (that wrapper's question is the separate arrangement-primitive entry), so the clause was provenance the project does not record.
+- Removed the uncommitted entry "An anticipated-work entry about a command left this handoff, unrecorded here" (dated 2026-10-06T00:00:00Z). HEAD holds no *A content-grouped documentation command* entry in `content.handoff.md` or `documentation.changelog.md`, so the entry recorded a state no reader ever saw, which [Documentation Changelog → Trivial changes](./documentation-changelog.md#trivial-changes) says gets no entry.
+- The one-word change in the 2026-10-04T13:27:43Z entry's contributor line ("space-bunny-free" to "space-bunny") was left: it matches the label every other entry uses.

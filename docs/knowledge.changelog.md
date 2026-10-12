@@ -6,7 +6,7 @@
 - Time: 2026-07-21T09:39:49Z
 - Type: Added
 - Cited:
-  - [Reevaluating the Filesystem as a Fundamental Modeling Primitive](./protocols/memory/filesystem.md) — Depends_on: this specification builds upon the filesystem critique to establish positive principles for knowledge modeling.
+  - [Reevaluating the Filesystem as a Fundamental Modeling Primitive](./modules/lib/memory/filesystem.md) — Depends_on: this specification builds upon the filesystem critique to establish positive principles for knowledge modeling.
   - [The Knowledge-Creating Company](https://hbr.org/1991/07/the-knowledge-creating-company) — Reference: Nonaka & Takeuchi's foundational work on organizational knowledge creation (SECI), the process view of knowledge this framework adopts.
   - [Semantic File Systems](https://dl.acm.org/doi/10.1145/121132.121138) — Reference: Gifford et al.'s demonstration that attribute-based access outperforms hierarchical access for information-rich content.
   - [Unikernels: Library Operating Systems for the Cloud](https://anil.recoil.org/papers/2013-asplos-mirage.pdf) — Reference: evidence that general-purpose filesystems are not universal requirements, supporting filesystem-as-optional-capability.
@@ -217,7 +217,7 @@
 
 #### What changed
 - [Write for the Structure of the Subject, Not for Today's Reader Limits](./knowledge.md#write-for-the-structure-of-the-subject-not-for-todays-reader-limits) now states that what a document owes its reader is weighted by what that reader's misreading costs. Where the subject cannot absorb an error, what is owed is not legibility but performability: every step executable as written, with no step left to interpretation.
-- The case that prompted it is named and bounded. ASD-STE100 answers this obligation with fifty-three writing rules and about nine hundred approved words; what Memar takes from it is the diagnosis rather than the instrument — a reader who misresolves a word is a defect with an owner, answered by defining the term and stating where the definition diverges from ordinary usage, not by narrowing the vocabulary a reader may use. The reason the instrument does not travel is stated from the standard's own maintainers rather than from a secondary account: a checking product cannot replace the specification, no such product is certified as compliant with it, writing in it correctly demands professional judgment rather than saving it, and its dictionary is not closed — the domain's own technical names are the exemption the maintainers themselves carve out. A checker standing in for an understanding is the substitution [Test → What a Passing Suite Establishes](./protocols/process/test.md#what-a-passing-suite-establishes) already rules out.
+- The case that prompted it is named and bounded. ASD-STE100 answers this obligation with fifty-three writing rules and about nine hundred approved words; what Memar takes from it is the diagnosis rather than the instrument — a reader who misresolves a word is a defect with an owner, answered by defining the term and stating where the definition diverges from ordinary usage, not by narrowing the vocabulary a reader may use. The reason the instrument does not travel is stated from the standard's own maintainers rather than from a secondary account: a checking product cannot replace the specification, no such product is certified as compliant with it, writing in it correctly demands professional judgment rather than saving it, and its dictionary is not closed — the domain's own technical names are the exemption the maintainers themselves carve out. A checker standing in for an understanding is the substitution [Test → What a Passing Suite Establishes](./modules/process/test.md#what-a-passing-suite-establishes) already rules out.
 - The Principle statement gains its third sentence, so the section's summary states the whole of what the section now holds.
 - The paragraph was written once and then rewritten within the same day. Its first version rested on a claim sourced to a tertiary article, and on a premise about the standard's intended reader that the maintainers deny; the claim was replaced with statements read from the maintainers and the narrow premise was withdrawn. [Knowledge Research 001 → A correction this research's own first pass required](./knowledge.research.001.md#a-correction-this-researchs-own-first-pass-required) records the correction rather than only its repair.
 
@@ -382,3 +382,19 @@ The rule added in [Documentation → Citations](./documentation.md#citations) wa
 #### Considered and not done
 - **Proposing the category** (not taken): the survey establishes where such a category would have to live and what it would collide with, and the question of whether Memar needs one at all is unasked by any document consulted. That is a decision for the owner, and it is now a question in [Knowledge Handoff](./knowledge.handoff.md) rather than a claim in a record.
 
+---
+
+### Review of the uncommitted changes of 2026-10-12
+- Time: 2026-10-12T09:45:29Z
+- Type: Changed
+- Contributors:
+  - [Claude](../CONTRIBUTORS.md#claude) (Sonnet-5.5) — reviewed, revised
+
+#### What changed
+- Reviewed the working tree against HEAD for `knowledge.md`, `knowledge.handoff.md`, `knowledge.changelog.md` and `knowledge.research.001.md`. The link changes from `protocols/` to `modules/` resolve (`memar content check`). The five body additions (Methodology's one-observer sentence, the scope boundary, the concurrent-modification paragraph, the single-parent tree paragraph, the entry-point paragraph) are each carried by the 2026-10-04 and 2026-10-05 entries above, and the handoff removals they record are the only removals; no changelog entry was removed.
+- [Methodology](./knowledge.md#methodology) is corrected where it stated more than the record holds. It said separate organizations "have arrived at" these failures independently, while the 2026-10-05T12:20:00Z entry's Deliberation says no second organization's independent account has been read and that the route is stated "without asserting that it has been satisfied". The sentence now states the stronger route in the conditional and says the record has not followed it.
+- [Classification Should Not Be Confined to a Single Hierarchy](./knowledge.md#classification-should-not-be-confined-to-a-single-hierarchy) no longer names configuration baselines, taxonomic ranks and library classification as single-parent. The 2026-10-04T20:14:25Z entry's *Considered and not done* rejects naming them because the record cannot establish that membership in those domains is single-parent; the paragraph did the thing the entry rejected. The paragraph now says a tree remains legitimate "where membership is genuinely single-parent" and names no domain. That entry's *What changed* still lists the three domains; it records what was applied then and is not rewritten.
+- `knowledge.research.001.md` differs from HEAD only in link paths and in its working-copy line endings; no finding changed.
+
+#### Considered and not done
+- Removing the "Task Domain Model" item from `knowledge.handoff.md` Anticipated Work because Terminology leaves Task undefined: not done, since the item asks for a model the Organization project is developing, which that term entry does not contradict.

@@ -8,7 +8,7 @@ ID: 496330
 # Agency
 
 ## Abstract
-Agency is modeled here as a fundamental concept for understanding systems that can act, make decisions, assume responsibilities, or act on behalf of another system. AI Agent is treated as one manifestation of Agency, not as its definition — Agent is an older and more general concept than Artificial Intelligence, and reducing it to AI discards accumulated knowledge about delegation, responsibility, authority, representation, decision-making, trust, and contracts. The document's central claim is that most problems attributed to AI Agents — ambiguous delegation, missing context, undocumented knowledge, unclear acceptance criteria — predate AI and are not solved by changing tools; they are solved by modeling Agency correctly. `Agent` and `agent_for` are treated as relational: a System occupies the Agent or Principal position within a relationship rather than becoming a new kind of entity by doing so. Delegation, Responsibility, Authority, Capability, Context, Knowledge, Trust, and Accountability are modeled as distinct, non-substitutable concepts whose conflation is identified as a recurring source of failure. The document records its open questions — most centrally, whether Agency is a property, a capability, or a relational condition, and whether Agent is fundamentally a role rather than a type — as deliberately left unresolved rather than forced to a premature answer, in the paired [Agency Handoff](./agency.handoff.md).
+Agency is modeled here as a fundamental concept for understanding systems that can act, make decisions, assume responsibilities, or act on behalf of another system. AI Agent is treated as one manifestation of Agency, not as its definition — Agent is an older and more general concept than Artificial Intelligence, and reducing it to AI discards accumulated knowledge about delegation, responsibility, authority, representation, decision-making, trust, and contracts. The document's central claim is that most problems attributed to AI Agents — ambiguous delegation, missing context, undocumented knowledge, unclear acceptance criteria — predate AI and are not solved by changing tools; they are solved by modeling Agency correctly. `Agent` and `agent_for` are treated as relational: a System occupies the Agent or Principal position within a relationship rather than becoming a new kind of entity by doing so. Delegation, Responsibility, Authority, Capability, Context, Knowledge, Trust, and Accountability are modeled as distinct, non-substitutable concepts whose conflation is identified as a recurring source of failure. Agency is both an intrinsic capability of a System and a relational condition, and a System that has both is an Agent — a thing lacking the intrinsic capability does not become an Agent by being instructed to act. The document records its remaining open questions — most centrally, how accountability propagates through delegated Agency — as deliberately left unresolved rather than forced to a premature answer, in the paired [Agency Handoff](./agency.handoff.md).
 
 ## Introduction
 
@@ -32,6 +32,8 @@ This document follows the general modeling principles of Memar:
 - Historical knowledge should not be discarded merely because a newer technology introduces new terminology.
 
 Consistent with the first principle above — definitions take precedence over terminology — this document is titled `agency.md` rather than `agent.md`. An earlier draft of this work was organized around Agent as the primitive concept, with Agency, Delegation, Authority, and the rest introduced as things an Agent needs. That ordering was reconsidered once it became clear that almost none of those surrounding concepts are intrinsic properties of an Agent; they are properties of Agency itself — answers to the question "what does a System need in order to be able to act, whether or not that action is on behalf of another System?" Agent, by contrast, turned out to name a *position* a System occupies (see [The `agent_for` Relationship](#the-agent_for-relationship)), not an independent primitive. Naming the document after the property rather than the position follows the same pattern already used elsewhere in Memar, where a document is named after a principle rather than an artifact (e.g. Modularity rather than Module) once that principle is recognized as the more fundamental concept.
+
+Agent does not pass the independence test this document applies to Delegation and to Execution Agent ([Execution Agent](#execution-agent)) either: an Agent is the thing that has both halves of Agency, so asking what an Agent is already presupposes what Agency is, and how many later documents come to reference the concept does not change what its definition presupposes.
 
 The following scope statement follows the same modeling principles.
 
@@ -98,10 +100,18 @@ A preliminary definition for Memar is:
 
 > **Agency is the capacity or condition of a system to act intentionally toward objectives within a boundary of capabilities, knowledge, authority, and constraints.**
 
+Intentionality in that definition is the System's own holding of an objective and determining of the means toward it, not the shape its behavior takes: the chain from a desired outcome through an interpreted objective, intermediate goals, and a plan to action ([Goals and Purpose](#goals-and-purpose)) is Agency's structure rather than its criterion, and a System that runs that chain because it was instructed to exhibits behavior however elaborate the chain is.
+
+Both halves of that definition hold, and neither replaces the other. The intrinsic capability belongs to the System itself — what its own nature permits it to do toward objectives on its own account, as recorded under [Agency as a Property of Systems](#agency-as-a-property-of-systems). The relational condition is what the agentive relation between Systems establishes — responsibility, authority, and expectation carried from one System to another — as recorded under [Agency as a Relationship-Enabled Property](#agency-as-a-relationship-enabled-property). Agency names the two together, and a System that has both is an Agent:
+
+> **An Agent is the thing that has both — the intrinsic capability and the relational condition.**
+
 This definition is deliberately broader than "acting on behalf of another." A system may exhibit agency without having been explicitly delegated a responsibility by another system. For example, a human may pursue a self-generated objective without acting on behalf of another person or organization. Likewise, an autonomous system may pursue an objective without receiving an individual instruction for every action it takes. Therefore, delegation is not a necessary condition for all forms of agency. However, delegation becomes fundamental when agency exists **on behalf of another system**. This distinction allows both intrinsic and relational manifestations of agency to be represented without forcing one to replace the other.
 
 #### Agency as a Property of Systems
-Agency can also be considered independently of delegation. A system may possess or exhibit agency even when no external Principal is present. This allows the model to represent:
+Agency can also be considered independently of delegation. A system may possess or exhibit agency even when no external Principal is present. Whether a Principal is external to a System that acts is relative to where that System's boundary is drawn for the analysis in hand — a boundary is an analytical choice made by the observer, not an inherent property of the system's material ([System → Key Properties](./system.md#key-properties)) — so a Principal that is one of the System's own internal Systems is not external to it, and redescribing a self-directed act as delegation to an internal System states where the boundary was drawn rather than dissolving the distinction between intrinsic and delegated Agency. Where both descriptions fit the same act, the model works with both: the two are not mutually exclusive kinds of Agency ([Intrinsic and Delegated Agency](#intrinsic-and-delegated-agency)).
+
+This allows the model to represent:
 
 ```text
 System
@@ -135,6 +145,15 @@ Relational / Delegated Agency
 should not necessarily be treated as mutually exclusive types. A delegated Agent may possess its own Agency and exercise it in fulfillment of another System's responsibility. This is a central principle of the model:
 
 > **An Agent may receive responsibility without receiving an algorithm.**
+
+#### What Distinguishes Agency from Mere Behavior
+Not every System that produces behavior exhibits Agency. The boundary is the intrinsic capability named in [What Is Agency?](#what-is-agency): behavior a System produces under instruction, on request, or through a fixed transformation is behavior, and it remains behavior however elaborate the transformation is.
+
+The test case is a rock. Told to perform a task, a rock does not perform it; where it appears to move, it does not move toward an objective it holds, choose among actions, or determine how a task is to be done. Asking a thing to act does not make it an Agent, because the capability is not in its nature.
+
+Therefore:
+
+> **Instruction is not sufficient for Agency: a thing directed to act is not thereby an Agent.**
 
 ### Agency Is Not the Same as Autonomy
 Agency and autonomy are related but distinct. A system can have agency while operating under substantial constraints. For example, a contractor may have responsibility for constructing a building while being constrained by:
@@ -526,7 +545,7 @@ Account 123
 The important property is not the identity of the particular Agent but the existence of a well-defined responsibility boundary at the time the process is progressing. This makes Agency useful for modeling execution independently of the mechanism used to realize it.
 
 #### Execution Agent
-An **Execution Agent** is an Agent that assumes responsibility for advancing some bounded part of a Process. The term describes a use of Agency, not a new entity type.
+An **Execution Agent** is an Agent that assumes responsibility for advancing some bounded part of a Process. The term describes a use of Agency, not a new entity type. It remains descriptive terminology defined here, not a Concept Process needs of its own: naming an Execution Agent presupposes Agency and Process alike, and a Concept qualifies as independent only when it can be defined without first defining another. Process cites this term — see [Process → Agency and Execution Responsibility](./process.md#agency-and-execution-responsibility) — rather than defining it.
 
 An Execution Agent may be represented by many different mechanisms, including a Worker, Actor, process, thread, service instance, device, human operator, or another system. None of those representations is intrinsically an Agent merely because it has the corresponding implementation name. See [Process → Concurrency](./process.md#concurrency) for Worker's own treatment there, including its distinction from a physical CPU core.
 
@@ -602,6 +621,9 @@ Synchronization mechanisms, if still required
 This order prevents a lock, queue, mailbox, scheduler, or transactional mechanism from silently becoming the model of responsibility itself.
 
 A Single Writer arrangement, an Actor-style mailbox, or a Worker assigned to a partition can each be useful realizations of this principle. None should be mistaken for the principle itself.
+
+#### Transfer, Reassignment, Takeover, and Replication
+A change in execution responsibility changes who holds it, not what the domain entity is or which mechanism realizes it — see [Treating Execution Ownership as Domain Ownership](#treating-execution-ownership-as-domain-ownership). Transfer moves execution responsibility to another Agent; reassignment substitutes one Agent for another at the same point in the process; takeover assumes responsibility an Agent cannot continue to carry; replication shares it, and only where partitioning has already separated the state each holder is responsible for.
 
 ### Delegation
 Delegation is a mechanism through which a system assigns responsibility, authority, or an objective to another system.
@@ -1471,18 +1493,8 @@ It becomes harmful when it prevents communication or implies that knowledge outs
 
 Agency therefore requires attention to the boundaries around responsibility and knowledge.
 
-### False Taxonomies
-A recurring problem in technology ecosystems is the creation of classifications that are useful for a local purpose but become mistaken for models of reality.
-
-A classification is not necessarily wrong merely because it is artificial.
-
-A false taxonomy can be useful.
-
-The problem arises when the taxonomy hides relationships or prevents knowledge from flowing across its boundaries.
-
-For example, Frontend and Backend may be useful skill classifications.
-
-They become problematic when they imply that:
+### Professional Categories as False Taxonomies
+The professional categories above are an instance of a [false taxonomy](./modeling.md#false-taxonomies-hide-shared-structure): a classification useful for a local purpose that is mistaken for the structure of what it divides. Frontend and Backend may be useful skill classifications. They become a false taxonomy when they imply that:
 
 - modeling belongs only to Backend,
 - semantics belongs only to Frontend,
@@ -1493,15 +1505,7 @@ This is a form of conceptual fragmentation.
 
 Agency should therefore not be modeled through rigid professional categories.
 
-The same applies to AI Agent terminology.
-
-The same pattern recurs across the technology ecosystem well beyond Frontend and Backend, which suggests it is a general failure mode rather than a coincidence tied to one classification:
-
-- **SOA and Microservices.** When "Microservices" displaced "Service-Oriented Architecture" as the dominant vocabulary, a large body of accumulated knowledge about service boundaries, contracts, and coordination — much of it hard-won through SOA's own failures — was widely treated as obsolete simply because the newer term did not use it. The ecosystem then repeated several of SOA's mistakes under the new name. This is the same failure this document identifies for Agent and AI Agent in [Historical Continuity](#historical-continuity): a new term is mistaken for a new concept, and the old concept's accumulated knowledge is discarded along with the old word.
-- **Relation (in the relational/SQL sense) and Aggregate Root (in Domain-Driven Design).** Both are classifications developed for a local purpose — a query model in one case, a consistency boundary in the other — that are sometimes treated as if they were the actual structure of the domain being modeled, rather than one useful projection of it. Confusing the classification for the domain is the same error described generally in this section.
-- **Content and Semantic.** As with Frontend/Backend, an informal convention has grown up in parts of the ecosystem that "Semantic" concerns belong to Content-adjacent (often front-end-adjacent) work, and that back-end work does not need to engage with meaning or semantics at all. This is a false taxonomy in the same sense used above: not wrong to have a Content classification, but harmful once it is read as implying that semantic modeling is irrelevant outside it.
-
-These are noted here as instances of the same pattern, not analyzed in depth — a full treatment of any one of them belongs in a document about that specific concept, not in Agency.
+The same applies to AI Agent terminology: treating AI Agent as a new kind of Agent rather than a new implementation of one is the false taxonomy [Historical Continuity](#historical-continuity) addresses.
 
 ### Historical Continuity
 AI Agent terminology should not erase the conceptual history of Agency.
@@ -1952,6 +1956,9 @@ In particular, Agency should not become a container into which every concept rel
 
 Its scope should remain centered on the capacity and structure of systems that act.
 
+#### Agency and Type Categories
+Type's four categories — Capsule, Method, Abstraction, and Scope — classify Types by semantic role ([Categories of Type](./type.md#categories-of-type)); none classifies a System, and Agent and Principal name the endpoint positions of `agent_for` rather than entities with an explicit identity and defined contract ([The `agent_for` Relationship](#the-agent_for-relationship)). Agency therefore cuts across these categories; which of them realizes an agentive System is not answered here.
+
 ### Terminology
 The following terminology principles should be maintained. This list has been extended from an earlier draft to cover every concept that receives its own topic above; the earlier version defined Agency, Agent, Principal, `agent_for`, Delegation, Responsibility, Authority, Capability, Context, Knowledge, and Autonomy, but left Trust, Contract, Accountability, Execution, Decision-Making, Goal, and Communication undefined here despite each having a full topic elsewhere in this document — an inconsistency between the glossary and the body that is corrected below.
 
@@ -1961,7 +1968,7 @@ The following terminology principles should be maintained:
 The capacity or condition through which a system can act intentionally toward objectives within defined capabilities, knowledge, authority, and constraints.
 
 #### Agent
-A system that exhibits Agency, especially a system occupying the agent position in an agentive relationship.
+A system that has both halves of Agency — the intrinsic capability and the relational condition, the latter being the agent position in an agentive relationship — see [What Is Agency?](#what-is-agency).
 
 #### Principal
 A system on whose behalf another system acts.

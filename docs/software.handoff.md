@@ -17,5 +17,5 @@ Whether a software system includes its data, its deployment environment, and its
 The IEEE numbers cited (730, 828, 829, 830, 1012, 1016, 1028, 1058, 1063) reflect the classic family; several have been superseded by joint ISO/IEC/IEEE revisions (e.g. 830 by 29148, 829 by 29119-3, 1063 by 26514) — verify each at citation time in the dedicated session before relying on any successor mapping.
 
 ## Anticipated Work
-- Dedicated session to refine the definition and produce the lifecycle treatment — the direction the [Immutable Infrastructure handoff](../docs/protocols/runtime/immutable_infrastructure.handoff.md) points to as the home for deployment/change governance's lifecycle working-out.
+- Dedicated session to refine the definition and produce the lifecycle treatment — the direction the [Immutable Infrastructure handoff](modules/runtime/immutable_infrastructure.handoff.md) points to as the home for deployment/change governance's lifecycle working-out.
 - Requirements home decision: keep Test's umbrella-requirement reading (a user story is the developed Process's written expectations) as the standing interpretation, or give requirements a named home — under the domain-generality constraint that concrete per-feature artifact sets belong to consuming projects, never to Memar, with no software-only narrowing.

@@ -529,7 +529,7 @@ Owner: the steps belong in the practice. An agent doing the work reads the pract
 - Cited:
   - [Documentation → File Naming](./documentation.md#file-naming) - Depends_on: the rule this session adopted, its purpose as an addressing safeguard, the two boundaries that fix it - that nothing in the name carries the kind of document, and that the front-matter `Title` stays free to read as the model *of* the concept - and the measurements stated with it
   - [Documentation Practice → Folder READMEs](./documentation.practice.md#folder-readmes) - Depends_on: a folder's main document is the target of that folder's `README.md`, which is a path a reader types and a tool resolves
-  - [Khayyam Rules Catalog](../modules/khayyam/rules/README.md) - Evidence: the one kind of artifact in the repository that already kept this rule - "Each rule has its own folder, holding a main document named after the rule" - which is the precedent the rule was drawn from
+  - [Khayyam Rules Catalog](../bundles/khayyam/rules/README.md) - Evidence: the one kind of artifact in the repository that already kept this rule - "Each rule has its own folder, holding a main document named after the rule" - which is the precedent the rule was drawn from
 - Propagates to:
   - docs/documentation.md: Done - the rule, its evidence, and its boundaries are stated in that document's `File Naming` topic.
   - docs/modeling.md: Done - the deleted topic is replaced by one claim under `Expected Output of a Modeling Session`, and the Abstract carries the same reduction.
@@ -548,7 +548,7 @@ Owner: the steps belong in the practice. An agent doing the work reads the pract
 - **Where the rule was first put.** The rule was first stated as a topic of this document, *A Model's Document Is Named After the Concept It Models*, on the owner's ruling that it be mandatory rather than a preference. The ground was addressing: a fixed file name across every model folder means the smallest mistake in building a path reaches a real document about a different concept, which is the failure a reader cannot see.
 - **The placement was then corrected, and the rule now lives in `Documentation`.** On the owner's later ruling that a documentation rule — what a name is — has nothing to say in a modeling document and belongs where a file name's meaning is settled, the topic was removed from this document and the rule stated in [Documentation → File Naming](./documentation.md#file-naming), inside the topic whose own subject is what a file name carries and what a document's kind is. The rule was moved rather than duplicated: a rule stated in two documents is stated twice, and the two copies have no owner to settle the drift between them.
 - **What this document says in its place.** One claim, under *Expected Output of a Modeling Session*: understanding that has not been written down has not been delivered, so a session that reached it ends by writing the documents its understanding produced — the abstractions, concerns, relationships, constraints, boundaries, and supporting documents its output consists of — one document per model, each placed and named under the rule `Documentation` owns. The Abstract carries the same reduction, and the practice companion's closing line points at `Documentation` rather than at a topic of this document. An empty topic titled for the rule was not left behind as a pointer: a topic named for a rule this document no longer owns asserts an ownership the owner has withdrawn.
-- **The measurements were re-measured and moved with the rule.** The figures that came with it — 41 of the repository's 115 base documents carrying their own folder's name, and every folder under [`modules/khayyam/rules/`](../modules/khayyam/rules/README.md) doing so because that catalog states the rule for its own case — were re-measured against the tree as it stands after these renames and are stated where the rule now lives. They are measurements of this repository at this moment, not properties of the rule, and re-measuring them is owed whenever either number is cited.
+- **The measurements were re-measured and moved with the rule.** The figures that came with it — 41 of the repository's 115 base documents carrying their own folder's name, and every folder under [`modules/khayyam/rules/`](../bundles/khayyam/rules/README.md) doing so because that catalog states the rule for its own case — were re-measured against the tree as it stands after these renames and are stated where the rule now lives. They are measurements of this repository at this moment, not properties of the rule, and re-measuring them is owed whenever either number is cited.
 
 #### What it does not claim
 - It does not claim the rule reaches every base document in the repository. It reaches a document that is a folder's main model; it does not reach a model a session leaves beside the documents it read rather than in a folder of its own, and it does not bind the front-matter `Title`.
@@ -825,16 +825,49 @@ The report that produced these findings read *What a Model Is* as offering a nat
 - Time: 2026-10-05T17:39:20Z
 - Type: Changed
 - Cited:
-  - [Test → The Expectation Is Written Before the Work](./protocols/process/test.md#the-expectation-is-written-before-the-work) — Premise: the protocol-layer statement of the same ordering — the written form of a named Process's expectations is produced before the enactment judged against it, its ground is reach, and no development is one for which stating the expectation first is optional
+  - [Test → The Expectation Is Written Before the Work](./modules/process/test.md#the-expectation-is-written-before-the-work) — Premise: the protocol-layer statement of the same ordering — the written form of a named Process's expectations is produced before the enactment judged against it, its ground is reach, and no development is one for which stating the expectation first is optional
 - Contributors:
   - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) — argued, drafted, applied
 
 #### What changed
 - *Modeling Before Implementation* no longer opens with "Modeling should reach a sufficient level of maturity before implementation begins" and closes with "For this reason, Memar encourages extensive exploration at the modeling stage before committing to implementation decisions". Both are replaced by a statement of the bar as something written first and of what the bar consists in: "The bar a model must clear before implementation begins is stated before implementation begins, and what it consists in is written down with it: the criteria a proposed model must survive ([Challenging Proposed Concepts](./modeling.md#challenging-proposed-concepts)) and how much unresolved disagreement it may still carry." The paragraph now requires the exploration that reaches that bar and leaves the route that produces it unprescribed, which is the position the section's own closing paragraph already held and which the encouragement never carried. The cost rationale sentence between the two remains as it was.
 - The three obligations this section already states are untouched: a proposed model is continuously challenged against the same criteria used throughout modeling, a proposed model is examined against existing concepts before implementation begins, and the majority of conceptual consolidation happens before implementation rather than after it.
-- This discharges the `Pending` propagation recorded in [`test.changelog.md`](./protocols/process/test.changelog.md) at line 127, under the entry titled *The floor carries what an expectation must reach, and a green run reports what the party establishes* — "its maturity gate carries the parallel clause the floor sentence just shed; the exact wording is reported to that file's owner rather than edited here". The maturity gate is this document's, it is named there, and it now states the ordering the protocol states; no wording was added to that file and its `Pending` line is left standing, it being outside this change's ownership.
+- This discharges the `Pending` propagation recorded in [`test.changelog.md`](./modules/process/test.changelog.md) at line 127, under the entry titled *The floor carries what an expectation must reach, and a green run reports what the party establishes* — "its maturity gate carries the parallel clause the floor sentence just shed; the exact wording is reported to that file's owner rather than edited here". The maturity gate is this document's, it is named there, and it now states the ordering the protocol states; no wording was added to that file and its `Pending` line is left standing, it being outside this change's ownership.
 
 #### Considered and not done
 - **Naming a threshold, a count, or a scoring instrument (not done)**: the bar is said to consist in the criteria and in how much unresolved disagreement a proposed model may still carry, and a number would settle by tally what this document settles by responsibility. The same ground is recorded in this file's entry of 2026-10-05T09:36:18Z, and nothing here contradicts it.
 - **Requiring that a proposed model carry no unresolved disagreement (not done)**: what the bar names is the amount of unresolved disagreement it may still carry, so this clause is what admits such a model and bounds the amount rather than what forbids it. What that amount is for a given domain belongs to whoever sets the bar, not to this paragraph.
 - **Stating the bar as a formality of stages (rejected)**: the reason a bar must be written before implementation is the cost that follows implementation, not a sequence of approvals, and a stage formality would let the writing happen without the bar's content being settled.
+
+---
+
+### False taxonomies given their home beside classification
+- Time: 2026-10-12T07:45:14Z
+- Type: Added
+- Propagates to:
+  - agency.md: Done — the general section there narrowed to agency's own instance, [Professional Categories as False Taxonomies](./agency.md#professional-categories-as-false-taxonomies), linking here.
+  - cognition.md: Done — the named kinds of thinking are read as a false taxonomy and link here.
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — claimed, decided
+  - [Claude](../CONTRIBUTORS.md#claude) (Opus-5.5) — argued, drafted, applied
+
+#### What changed
+- [False Taxonomies Hide Shared Structure](./modeling.md#false-taxonomies-hide-shared-structure) follows *Classification Emerges From Rules and Relations*: a false taxonomy is a classification useful for a local purpose that is mistaken for the structure of what it divides — false, not wrong. The section adds what the agency text did not state: the characteristic form is shared components credited to single classes, recurrence of the same components across treatments of each class is its signal, and the remedy is to model the components and keep the class names as handles for compositions.
+- The general examples moved here from agency.md (SOA and Microservices, Relation and Aggregate Root, Content and Semantic), and kinds of thinking joined them.
+
+#### Considered and not done
+- **Leaving the concept in agency.md (rejected; owner's decision)**: the claim is about classification in general, and agency was one instance of it; cognition would otherwise have had to cite agency for a modeling concept.
+- **A new term, *false classification* (rejected; owner's decision)**: the existing term carried the same sense.
+
+---
+
+### Review of the uncommitted changes of 2026-10-12
+- Time: 2026-10-12T09:44:59Z
+- Type: Changed
+- Contributors:
+  - [Claude](../CONTRIBUTORS.md#claude) (Sonnet-5.5) — reviewed, revised
+
+#### What changed
+- Reviewed the uncommitted changes to `modeling.md`, `modeling.practice.md`, `modeling.handoff.md` and this file, other than the *False Taxonomies Hide Shared Structure* work of 2026-10-12T07:45:14Z, which was out of scope. The handoff removals (the behaviorless-concept, formalism, lens-signal, maturity-threshold, notation, methodology, loop-edge promotion, state-change, temporal-validity, aggregator, pluggable-behavior and Rule-framing questions) each match an answer now in `modeling.md` or `modeling.practice.md` and an entry already in this file (2026-10-04T18:17:58Z to 2026-10-05T17:39:20Z); the answers carry their reason and cite governing documents. The two link repairs in this file (`bundles/khayyam/rules`, `modules/process/test.md`) resolve; `memar content check` reports no problem in the four files.
+- One fix in `modeling.handoff.md`: *Graphs as a Modeling Tool* item 2 called ent "the sharpest available test" of the document's position; nothing in the project supports ranking it against other instances, so it now reads "a test".
+- Left as found, and reported: the handoff gained four open entries that no entry in this file records (*What a Model Is*, *Early Indicators of Modeling Progress*, and the sqlc and ent items). They are open questions and assert nothing about the domain; the *What a Model Is* quotation was checked against `organization/bundles/supply-chain/supply-chain.changelog.md` (Deliberation), but the "retired session file" provenance of the other three could not be checked. Also, the 2026-10-04T20:35:35Z entry closes the *Extensible Behavior* section's first question (whether the coherence test suffices) without naming it; [Modularity → Pluggable Behavior](./modularity.md#pluggable-behavior) answers it in effect, by tying attachment to behavior outside a Module's essential responsibility.

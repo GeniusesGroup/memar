@@ -52,3 +52,31 @@
 
 #### Deliberation
 - A base document never links into `khayyam/` — plain-text naming only (Omid Hekayati — decided).
+
+---
+
+### The owed rows say what kind of owed
+- Time: 2026-10-05T05:30:00Z
+- Type: Changed
+- Cited:
+  - [Process Research 001](./process.research.001.md) - **Reference**: `owed` is right for project management as an activity and misleading read as a concept in waiting.
+- Propagates to:
+  - [software.md](./software.md): Done - the 830 and 1058 cells qualified in place.
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - directed, decided
+  - [Meta AI](../CONTRIBUTORS.md#meta-ai) (muse-spark via [OpenCode](../CONTRIBUTORS.md#opencode)) - argued, applied
+
+#### What changed
+- The requirements row now names the standing interpretation (Test's umbrella-requirement reading) and marks full treatment owed as modeling-constraints working-out, not as a second artifact. The project-management row now reads owed as an activity projects run, not as a Memar concept in waiting, with the unit-of-work question assigned to consuming projects and finished delivery to Enterprise.
+
+---
+
+### Review of the uncommitted changes of 2026-10-12
+- Time: 2026-10-12T09:45:29Z
+- Type: Reviewed
+- Contributors:
+  - [Claude](../CONTRIBUTORS.md#claude) (Sonnet-5.5) — reviewed
+
+#### What changed
+- Reviewed; no change needed. Checked the working tree against HEAD for `software.md`, `software.handoff.md` and `software.changelog.md`: the requirements and project-management rows of the lifecycle table now match the 2026-10-05T05:30:00Z entry above, which cites a statement the Process research makes (`owed` right for project management as an activity, misleading as a concept in waiting) and a Test section that exists; the handoff's requirements-home question stays open, as the row says full treatment is still owed; the handoff and table link changes resolve; no removal.
+- `memar content check` on the three files reports no problem.

@@ -12,32 +12,17 @@ Open work for `protocol.md`. Entries are mutable current state — revised as ea
 - Next: dedicated versioning treatment (see Anticipated Work).
 
 ### Cross-Module and Cross-Organizational Protocols
-- State: can protocols span modules within a system or organizations? How is conformance coordinated when no single authority governs both sides? An independent protocol definition is assumed importable as needed, but coordination mechanisms remain undefined. [Modularity](./modularity.md) now gives Module a formal definition that did not exist when this question was first raised; the question itself is not resolved by that alone, since Modularity does not address protocol conformance coordination, but a revisit of this item should start from Modularity's definition rather than an informal sense of "module."
-- Next: revisit starting from Modularity's formal definition.
+- Answered: a Protocol's boundary is the process it governs, not the Module it passes through ([Protocol → Protocol, Process, and System](./protocol.md#protocol-process-and-system)); and a Protocol is meaningful at the level of the system that offers it, so one organization's protocol is never the measure of another's ([Protocol → Who Defines a Protocol](./protocol.md#who-defines-a-protocol)). Both answers are the body's; this entry no longer asks them.
+- Residue: where two participants belong to authorities that govern neither of them together, conformance is measured separately for each and never jointly, and what is owed between them is a Contract ([Protocol → Conformance](./protocol.md#conformance)). The mechanisms by which one organization takes on another's protocol — an attestation, a mapping, a declared profile — are undesigned, and whether Memar should offer one is not this document's question.
+- Next: examine an actual cross-organization case, a Memar protocol taken up outside Memar, before proposing any coordination mechanism.
 
 ### Runtime Conformance Checks
 - State: protocols are fundamentally static specifications. Should there ever be optional runtime conformance verification? Generally no, but some domains (e.g., security protocols) might benefit. This is a tooling question that interacts with the [EBO principle](./type.md#explicit-behavior-ownership).
 - Next: revisit with the conformance document (see Anticipated Work).
 
-### External-Consumer Protocol Compatibility
-- State: when an external project consumes a protocol across a language boundary, how should its specification be encoded? This is a question about the consumer's realization, while Memar's protocol definition remains language-independent; it touches on tooling and specification formats beyond protocol.md's scope.
-- Next: revisit when the first external interoperability requirement is concrete.
-
-### Protocol vs Specification Identity
-- State: is a protocol identical to its specification, or does the conceptual protocol exist independently of any written document? protocol.md leans toward treating them as distinct (the protocol is the rules governing a process; the specification is the document describing those rules) but acknowledges the question is unresolved.
-- Next: settle during the next ontology review.
-
-### Ontology Finalization
-- State: the choice among Rule Set, Interaction Model, and Verifiable Interaction Model remains open. The addition of process and system as required components may favor Candidate B or C over Candidate A, but formal analysis is needed.
-- Next: formal analysis of the three candidates under the process-and-system requirement.
-
-### Protocol Conformance Measurement
-- State: if Candidate C (Verifiable Interaction Model) is adopted, what constitutes adequate conformance verification? This touches on tooling and is beyond protocol.md's scope.
-- Next: fold into the Protocol Conformance document (see Anticipated Work).
-
 ### Protocol vs Standard boundary
-- State: recovered 2026-09-16 from an audit of the retired `chats-context -- protocol & explicit_behavior_ownership & khayyam-rejection_of_inheritance.md` knowledge-preservation note. The note posed the Protocol/Standard split as an open area (protocol = interaction rules; standard potentially adding conformance, certification, validation, governance, recognized adoption), and criticized the phrase "standard library" as applied to a library shipped with a language that has passed no independent conformance evaluation — "official does not necessarily mean standard." The body now carries both halves ([Standard as third-party attestation](./protocol.md#protocol-vs-standard) and [conformance is never inferred from a label](./protocol.md#protocols-and-external-observers)), and the ecosystem attestation question below is tracked — but the note's specific residual, whether the *term* "standard library" itself should be avoided in Memar's own vocabulary (the framework ships libraries without ever calling them "standard"), was never answered anywhere.
-- Next: settle in a terminology session ([Terminology](./terminology.md)); the note also lists a `standard_library_terminology.md` candidate document among its future RFCs.
+- State: the Protocol/Standard split and the rule that conformance is never inferred from a label are carried in the body ([Standard as third-party attestation](./protocol.md#protocol-vs-standard), [conformance is never inferred from a label](./protocol.md#protocols-and-external-observers)), and the same section now states how Memar's own vocabulary follows that definition. Two residues remain: whether [Terminology](./terminology.md) should carry that consequence as a statement of its own, and whether a dedicated document for it is wanted.
+- Next: settle in a terminology session ([Terminology](./terminology.md)).
 
 ### Attestation of Memar's own Protocols
 - State: protocol.md defines Standard as third-party attestation of institutionalization or maturity, but does not settle who plays the attesting role for protocols produced within the Memar ecosystem itself. Whether self-declaration by an implementing contributor is sufficient, whether a dedicated independent body is eventually required, and whether the answer may differ per protocol (a core ecosystem protocol versus a single organization's internal one) are all open. Until resolved, no conformance claim about a Memar protocol should be read as carrying standard status in the precise sense defined in protocol.md.

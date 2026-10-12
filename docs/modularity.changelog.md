@@ -9,8 +9,8 @@
   - [Big Ball of Mud](https://www.laputan.org/mud/) — Evidence: used as prior art to argue that architectural degradation is a loss of coherent structure and controlled relationships, not a property of monolithic deployment specifically.
 - Propagates to:
   - modeling.md: Pending — should eventually reduce its local Module-related reasoning (e.g. "Extensible Behavior Belongs to Pluggable Modules") and reference this document instead.
-  - khayyam-modularity.md: Pending — should retain only the language/ecosystem-layer consequences of modularity and reference this document for the conceptual definition.
-  - process.md: Pending — should reference this document for the Module/Process boundary distinction instead of restating it locally.
+  - khayyam-modularity.md: Done — reduced to language/ecosystem consequences with this document as conceptual authority (recorded below, "Completed Khayyam-specific modularity propagation"); the file has since moved to docs/khayyam/modularity.md, which cites this document as authoritative.
+  - process.md: Done — should reference this document for the Module/Process boundary distinction instead of restating it locally. [see process.md:349]
   - protocol.md: Pending — should reference this document for the Module/Protocol boundary distinction instead of restating it locally.
 - Contributors:
   - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — claimed, argued
@@ -238,7 +238,20 @@ Added a pointer from "Rules as a Provisional Term" to modeling.md's new "Separat
   - Auto (model not recorded) via [Cursor](../CONTRIBUTORS.md#cursor) - applied
 
 #### What changed
-- `modularity.handoff.md`: the ADT module-placement question moved to [Abstract Data Types Handoff](./protocols/computer/adt.handoff.md#do-the-abstract-data-types-belong-under-computer-or-under-math); its path now ends in a README for `modules/computer/adt/` or a widened criterion in [Math → Realization membership](./protocols/math/math.md#realization-membership).
+- `modularity.handoff.md`: the ADT module-placement question moved to [Abstract Data Types Handoff](./modules/computer/adt.handoff.md#do-the-abstract-data-types-belong-under-computer-or-under-math); its path now ends in a README for `modules/computer/adt/` or a widened criterion in [Math → Realization membership](./modules/math/math.md#realization-membership).
+
+---
+
+### Fourteen `modules/` category-tree questions raised on the handoff
+- Time: 2026-09-29T11:30:00Z
+- Type: Added
+- Propagates to:
+  - docs/protocols/: Pending — folder categorization waits on owner answers to the fourteen `modules/` tree questions.
+- Contributors:
+  - Auto (model not recorded) via [Cursor](../CONTRIBUTORS.md#cursor) - applied
+
+#### What changed
+- `modularity.handoff.md`: fourteen open questions from a critique of the `modules/` first-level category tree were raised here — storage/memory inversion, duplicate runtime homes, type categories under `computer/`, plural registry folders, `process/time` membership, duplicated identity types, split concurrency, foreign protocols outside `lib/`, `lib/` duplicates, mixed domain/implementation axes, `modules/modules` naming, `time/` axis mixing, minor naming inconsistencies, and `modules/README.md` drift. Each entry states evidence, a proposed change, and that it is not yet approved by the owner.
 
 ---
 
@@ -252,17 +265,6 @@ Added a pointer from "Rules as a Provisional Term" to modeling.md's new "Separat
 
 #### What changed
 - `modularity.handoff.md`: the top-level rename question is resolved — `modules/storage/` is now `modules/memory/`; former inner `storage/memory/` content is split into `reference/` and `address/` with `heap.kh` and `mem.kh` interim at module root pending owner choice of `allocator/` vs `heap/`.
-
----
-- Time: 2026-09-29T11:30:00Z
-- Type: Added
-- Propagates to:
-  - docs/protocols/: Pending — folder categorization waits on owner answers to the fourteen `modules/` tree questions.
-- Contributors:
-  - Auto (model not recorded) via [Cursor](../CONTRIBUTORS.md#cursor) - applied
-
-#### What changed
-- `modularity.handoff.md`: fourteen open questions from a critique of the `modules/` first-level category tree were raised here — storage/memory inversion, duplicate runtime homes, type categories under `computer/`, plural registry folders, `process/time` membership, duplicated identity types, split concurrency, foreign protocols outside `lib/`, `lib/` duplicates, mixed domain/implementation axes, `modules/modules` naming, `time/` axis mixing, minor naming inconsistencies, and `modules/README.md` drift. Each entry states evidence, a proposed change, and that it is not yet approved by the owner.
 
 ---
 
@@ -279,3 +281,170 @@ Added a pointer from "Rules as a Provisional Term" to modeling.md's new "Separat
 #### What changed
 - `modularity.handoff.md`: the fourteen repository folder-layout questions were raised on this document in error — where a question about the `modules/` tree is answered is the owner's, and no document in this repository is the home for a cross-cutting layout question. Only the Modularity-concept questions and anticipated work remain here; the `heap.kh` / `mem.kh` question, which is about one module, went to that module's handoff, and the `docs/protocols/` category-folder note to that folder's own handoff.
 - No handoff was created for `modules/README.md`. A layer that realizes specifications is not a base artifact that carries a Changelog or Handoff companion, so the questions stay unrecorded until the owner answers where they belong.
+
+---
+
+### The name-collision reasoning the language document carried
+- Time: 2026-10-04T09:00:00Z
+- Type: Added
+- Cited:
+  - [Khayyam — Changelog](./khayyam/khayyam.changelog.md) — Evidence: `:630` records this document as the pending destination for the removed name-collision reasoning, and `:647` carries the three fragments the removal left behind.
+  - [Khayyam → Import Mechanism (`in`)](./khayyam/khayyam.md#import-mechanism-in) — Reference: `:62`, the sentence that sends a reader here for what a collision means and what a project does about one.
+  - [Type → Type Identity](./type.md#type-identity) — Premise: the base-layer statement that within one bounded context the name uniquely identifies the concept, and that two different structures under one name are a modeling conflict rather than two valid Types.
+  - [Khayyam Rule — Qualified Names](../bundles/khayyam/rules/qualified-names/qualified-names.md) — Reference: the governance half — how a declaration carries the identity of the part that owns it, and what a tool reports when it meets a collision.
+  - [Khayyam Rule — Scope Visibility](../bundles/khayyam/rules/scope-visibility/scope-visibility.md) — Reference: the owner's general rule that two identical names mean the development is faulty.
+- Propagates to:
+  - [Khayyam → Import Mechanism (`in`)](./khayyam/khayyam.md#import-mechanism-in): Reference — its `Modularity is the subject` sentence now resolves; nothing in that file needed changing.
+  - [Type → Type Identity](./type.md#type-identity): Rejected — it already states the general rule, in the terms a name-collision finding is a special case of; adding the modular consequence there would have put a claim about Module identity into a document about Type.
+  - [Khayyam Rule — Qualified Names](../bundles/khayyam/rules/qualified-names/qualified-names.md): Pending — its opening paragraph, its third case, its *Why it exists*, and its third *does not claim* bullet all cite the language document as holding the claim that a collision is an architecture error whose remedy is a redesign. That sentence was removed on 2026-10-03 and the section now points here instead, so four of its sentences rest on a premise its citation no longer carries. Not this session's file to write.
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — requested, ruled
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) — applied, placed
+
+#### What changed
+- A new topic, [One Term, One Identity](./modularity.md#one-term-one-identity), carries the reasoning the audit removed: a term that has to stand for two different things is not an ambiguity the model may carry but a record that two independently identified things were collapsed onto one identity, and the collapse happened where they were brought together rather than where either was identified. It rejects both remedies the vocabulary offers — a second name for one of the two, and letting one answer to the other's term throughout — and states what is owed instead: each identified by the Responsibility it actually carries, an explicit relationship between them, and composition where one is wanted only as a means of reaching the other.
+- The Abstract states the same claim in two sentences, since a reader who gets the document's shape from the Abstract should not meet the collision claim for the first time at the topic.
+- **The base-document test was applied to the wording, not only to the placement.** Nothing in the topic is specific to a programming language, and nothing is specific to software: it is stated as Responsibilities, identity, boundaries, and explicit relationships, which is what a person building a house or designing a gas heater is already reasoning with. The evidence is that each sentence survives translation unchanged — two trades of a building both answer to the word *plumber* is the same finding as two libraries both declaring `Connection`, and the repair is the same one. No vocabulary of any language appears in it, and no compiler is mentioned.
+- **The claim was placed here rather than in the rule about duplicate names, or in both, and the reason is one home per claim.** The general rule — one name, one concept, and a collision being a fault in the development rather than a shadowing a language permits — is already stated twice, once at the base layer by [Type → Type Identity](./type.md#type-identity) and once as this repository's own governance by [Scope Visibility](../bundles/khayyam/rules/scope-visibility/scope-visibility.md). What neither of those carries, and what was removed with no destination, is the modular consequence: what a collision is a finding *about*, and what the model owes in answer. That is this document's, and it is stated here alone; the rule keeps the instruction a developer follows, and this document keeps the reasoning the instruction serves.
+
+#### Considered and not done
+- **Restating the general rule here as a lead-in.** It would have made the topic self-contained and would have put one claim in three documents. Rejected: the topic states what is owed in answer to a collision found, and assumes the reader already holds that a collision is a fault — the same way [Capability Completeness](./modularity.md#capability-completeness) assumes a boundary exists rather than arguing that one should.
+- **Naming the language's import operator or the kind of thing it brings in.** The removed passages spoke of two abstractions claiming one concept and of wrapping a dependency in a local capsule. Naming either would have made the topic a Khayyam document parked in a base one, which is the caution the owner placed on adding a topic here at all.
+- **Writing the topic as a procedure for resolving a collision.** "Report it, rename it, re-check it" is followable work and belongs to a Practice companion or to a project's governance rules, not to this document, whose subject is what the collision is.
+- **Restoring the removed blockquote to the language document.** Rejected: the owner's ruling is that a language document states what a construct is, and what a collision means for the concepts involved is not a fact about the construct. The language document's remaining sentence says exactly that and points here.
+
+#### Decision
+- The collision reasoning belongs to Modularity, and the base document carries it in terms that hold for any kind of development (Omid Hekayati — decided). The general rule stays where it is already stated twice, and the mechanical half stays with the naming rules; this document holds the consequence and no vocabulary of any language.
+
+---
+
+### Six handoff questions closed by answers the record already carries
+- Time: 2026-10-04T18:21:13Z
+- Type: Fixed
+- Propagates to:
+  - modularity.handoff.md: Done — six open-question entries were deleted, each already answered in the document set (handoff: no entry of its own).
+  - modeling.md: Done — Action: None — *Extensible Behavior Belongs to Pluggable Modules* already states the attachment relationship.
+  - protocols/process/event.md: Done — Action: None — *The EventTarget capability* and *Relationship to other concepts* already carry the reusable contract and the Type/Protocol/Process split.
+  - khayyam/modularity.md: Done — Action: None — *Manifest as the Module Contract* already separates Module identity from repository and filesystem conventions.
+  - system.md: Done — Action: None — *When Is a Responsibility Coherent?* already states what a checkable boundary claim is.
+- Contributors:
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) — argued, applied
+
+#### What changed
+- `modularity.handoff.md` no longer carries the question "Can Capability Completeness be checked other than by hypothetical removal?". [Modularity → Capability Completeness](./modularity.md#capability-completeness) already answers it: removal is the negative test the completeness rule travels with, and the operative test is whether "the added material varies for reasons tied to this capability's own Responsibility, not whether it could physically be placed here" — a check made on the material itself rather than on a hypothetical deletion.
+- The question "What exact relationship should a Module expose when it permits optional behavior to attach without changing its own model?" left the handoff. [Modeling → Extensible Behavior Belongs to Pluggable Modules](./modeling.md#extensible-behavior-belongs-to-pluggable-modules) already answers it: `Invoice` "connects to any number of independently modeled, pluggable Modules through an ordinary reference edge", exposing the attachment point without changing its own shape.
+- The question "What properties of an EventTarget are fundamental enough to define once and reuse across Types and Modules?" left the handoff. [Event → The EventTarget capability](./modules/process/event.md#the-eventtarget-capability) already answers it: "the contract is three methods" — `DispatchEvent`, `AddEventListener`, `RemoveEventListener` — composed once by whatever Type or Module exposes the capability.
+- The question "When an EventTarget exposes a request or response to interested participants, which parts belong to the Type, the Protocol, and the Process?" left the handoff. [Event → The EventTarget capability](./modules/process/event.md#the-eventtarget-capability) assigns the Type and Module their half — a system whose "service request and response models already carry the relevant data does not acquire a parallel structure to notify anyone" — and [Event → Relationship to other concepts](./modules/process/event.md#relationship-to-other-concepts) routes the rest: Process owns what an event is at the concept layer, Modularity "places the capability on the Type or Module that exposes it", and this protocol is "that capability's shape".
+- The question "How should Module identity and dependency resolution be represented independently of repository and filesystem conventions?" left the handoff. [Khayyam Modularity → Manifest as the Module Contract](./khayyam/modularity.md#manifest-as-the-module-contract) already answers it: the manifest is "the formal external contract through which a Module can be identified, referenced, validated, and consumed without inspecting its internal directory layout", and dependency resolution is one responsibility derived from that contract rather than the whole of it.
+- The question "What evidence distinguishes a necessary Module boundary from fragmentation introduced only by implementation convenience?" left the handoff. [System → When Is a Responsibility Coherent?](./system.md#when-is-a-responsibility-coherent) already answers it: what can be checked is "whether the part has an independent behavioral boundary and lifecycle", observed by asking whether validation, versioning, or meaning changes for reasons unconnected to the concept currently holding it.
+- No base document was edited. All six answers were already in place; the graduation is the handoff ceasing to list questions the record has answered.
+
+#### Considered and not done
+- Marking the six entries Answered rather than deleting them — not taken. A handoff records where a discussion stands, and a resolved question is state the base documents now carry; leaving it here duplicates the answer and guarantees drift.
+- Adding a short index of the six answers, or a pointer from the handoff to the sections holding them — not taken. The handoff's remaining entries are open questions, and an index of settled answers is the changelog's and the base documents' work, not the handoff's.
+- Deleting the Anticipated Work line about a future document defining how modular boundaries can be reviewed independently of implementation structure — not taken. That line anticipates a review method with four named checks, of which the boundary-coherence question was one; the others remain anticipated work nobody has committed to, and the line was never scheduling that one question.
+- Restating the co-variation test, the ordinary reference edge, the three-method contract, the manifest contract, or the boundary test inside `modularity.md` — not taken. Each already has one home, and a second copy in Modularity would put a claim about Modeling, the Event protocol, Khayyam, or System into a document whose subject is Module.
+
+---
+
+### Optionality and relationship ownership located by Responsibility
+- Time: 2026-10-04T20:15:58Z
+- Type: Added
+- Propagates to:
+  - modularity.handoff.md: Done — three open-question entries removed; the sections named below are their homes.
+  - system.changelog.md: Done — the answer to the question about domain-coupled Responsibilities recorded in this document's handoff is recorded there.
+  - modeling.handoff.md: Rejected — not edited here; the counterpart entry under Modeling's edge-types material is closed by that document's own changelog.
+- Contributors:
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) — argued, drafted, applied
+
+#### What changed
+- [Modularity → Core Structure and Optional Modules](./modularity.md#core-structure-and-optional-modules) now states where the distinction between an optional extension and an ordinary independently related Module lies: with the containing System, not with either Module or with the explicitness of the relationship between them.
+- [Modularity → Capability Completeness](./modularity.md#capability-completeness) now states where the Module owning a cross-boundary relationship lives: with whichever endpoint's Responsibility the relationship serves, and with neither endpoint when no endpoint's boundary spans every case it covers — the test [Modeling → A Relation Several Domains Need Is Defined Once](./modeling.md#a-relation-several-domains-need-is-defined-once) states for domains.
+- `modularity.handoff.md` no longer carries "Which properties distinguish an optional extension from an ordinary independently related Module?" or "Where should the Module that owns a cross-boundary relationship live when its endpoints belong to different Modules?"; its State about hosting chosen for repository convenience is now answered by the ownership rule rather than standing as a warning.
+- `modularity.handoff.md` also no longer carries "How should modularity be evaluated when a single Module intentionally contains multiple lower-level responsibilities that are tightly coupled by the domain?"; that question is a question about Responsibility coherence and is answered in [System → When Is a Responsibility Coherent?](./system.md#when-is-a-responsibility-coherent), recorded in [system.changelog.md](./system.changelog.md).
+
+#### Considered and not done
+- **Closing the optionality question as already carried by the record, with no edit (rejected)**: the paragraph stated the removal test but never said the property is relative to the containing System, and that relativity is what keeps "optional" from being read as an attribute of a Module.
+- **Adding the ownership rule to *Pluggable Does Not Mean Plugin* instead (rejected)**: that section separates a conceptual relationship from a loading mechanism; optionality and ownership are different distinctions, and merging them would make pluggability read as the test for either.
+- **Naming an independent third home by default (rejected)**: an independent third Module is what the answer gives when no endpoint spans the cases the relationship covers, not a default that repository layout can invoke.
+- **Closing the counterpart entry in `modeling.handoff.md` from here (rejected)**: that entry is Modeling's own open question about its edge types, and its closure belongs in that document's changelog rather than in this one.
+
+---
+
+### The Rule section states its modular consequence and links the settled concept
+- Time: 2026-10-05T08:59:05Z
+- Propagates to:
+  - modularity.handoff.md: Done - the question of the final terminology for the kind of Optional Module discussed provisionally as a Rule removed; the Module/Framework question and the anticipated work left open
+  - rule.md: Done - the settled two-lens statement lives there, and this section carries only the modular consequence of it
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) — argued, drafted, applied
+
+#### What changed
+- `### Rules as a Provisional Term` now states what holds on the modular side: a Rule is a Module developed on its own, related to another Module, and its behavior can be attached to an existing Module without becoming part of that Module's essential identity.
+- The paragraph that left the module and graph-node framings unreconciled, and this document's refusal to take a position on them, is replaced by a link to [Rule → One Concept, Two Lenses](./rule.md#one-concept-two-lenses), which states that the two are one concept, that neither lens is primary, and what each lens owes.
+- `modularity.handoff.md` no longer carries the final-terminology question, and its first anticipated-work bullet names Rule rather than a provisional Rule concept.
+
+#### Considered and not done
+- **Retiring the section's title, "Rules as a Provisional Term"**: not done (Space Bunny Alpha — argued). [protocols/ddd.md](./modules/lib/process/ddd.md) links this anchor from its comparison table, that document is outside this change's reach, and an anchor with no matching heading is a broken link. A title that no longer matches the settled position is the cheaper defect.
+- **Restating the two-lens position in this document**: rejected. The concept is defined once in `rule.md`; a second and third copy in the two subject documents is how the copies begin to diverge, which is the failure [Modularity → One Term, One Identity](./modularity.md#one-term-one-identity) names.
+- **Renaming what a Rule attaches to, or adding an attachment-point mechanism here**: not done. What an attaching Rule must provide is this document's own question, already carried by [Capability Completeness](./modularity.md#capability-completeness) and the handoff's anticipated work.
+
+#### Deliberation
+The section had been hedged in two directions at once — a Rule that *may* be a Module, and a second framing this document declined to reconcile — because the term's standing was open on the owner's side. The ruling closes the standing, so the hedge is removed rather than softened (Omid Hekayati — decided): what is left in this section is the modular consequence, and the two-lens statement is referenced where it is defined so that this document need not repeat it (Space Bunny Alpha — argued).
+
+---
+
+### Which modularity properties modeling alone can establish
+- Time: 2026-10-05T09:53:19Z
+- Type: Added
+- Propagates to:
+  - modularity.handoff.md: Done — the question was deleted; the answer is the paragraph added to *Module Identity and Responsibility*
+- Contributors:
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) — argued, drafted, applied
+
+#### What changed
+- `### Module Identity and Responsibility` now states that no modularity property is established by modeling alone: what can be checked is whether a part has an independent behavioral boundary and lifecycle, checked by proposing the boundary and observing whether it holds, while coherence, coupling, and whether a boundary was needed at all are judgments stated against a concern, and a tool that measures one of them supplies evidence for that judgment rather than a verdict.
+- `modularity.handoff.md` no longer carries "Which modularity properties can be established by modeling alone, and which require implementation or tooling support?" The split the question assumed is not where the line falls: the two paragraphs already cited by that section had decided it, and the section now says so where a reader of it arrives.
+
+#### Considered and not done
+- **Answering with a list of which properties fall in each half**: not done, and it is what the question asked for. No passage enumerates the properties and their establishment modes, and the two the record does discuss — independent boundary and lifecycle on one side, coherence and coupling on the other — are already stated as a checkable claim and a stated-concern judgment respectively, so the partition would have been an inventory added to the document rather than a consequence drawn from it.
+- **Naming tooling as the deciding instrument for the measurable half**: rejected. The section's own cycle paragraph says the check is made by observing whether the boundary holds, and *When Is a Responsibility Coherent?* says a claim stated against a concern is one evidence can support or contradict; a measurement is evidence for that judgment and not the judgment itself.
+- **Closing the handoff's second question, the Module/Framework relationship, with the same section**: not taken. Nothing in System's or Framework's treatment of Framework settles it, and its omission here is deliberate rather than an oversight, as that section states.
+
+---
+
+### The toolchain and the Memar server leave `modules/` for `bundles/`
+- Time: 2026-10-07T15:46:42Z
+- Type: Changed
+- Cited:
+  - [Bundles](../bundles/README.md) — `Depends_on`: what a bundle is, the two-question membership test, and what does not belong there
+- Propagates to:
+  - [modularity.handoff.md](./modularity.handoff.md#the-category-layout-of-this-repository): Done — the top-level-folders item now holds only `modules/go-port/`, and says the question no longer stands for the other two
+  - [docs/modules/README.md](./modules/README.md#one-layout-for-both-trees): Done — the layout names `bundles/` as outside it, with no counterpart in either tree
+  - [modules/README.md](../modules/README.md#the-kinds-of-folder-here): Done — the "by language" kind is gone, `memar/` left the "not yet in a category" kind, and what runs or aggregates modules is listed as not belonging
+  - [bundles/memar/memar.handoff.md](../bundles/memar/memar.handoff.md): Done — its question about its place in the layout is answered under Direction and removed from the open questions
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Cursor](../CONTRIBUTORS.md#cursor) — applied
+
+#### What changed
+- Owner decision (2026-10-07): a new top-level `bundles/` holds what runs or aggregates modules — servers, executables, toolchains — so that `modules/` holds only reusable modules. `modules/khayyam/` moved to `bundles/khayyam/` and `modules/memar/` to `bundles/memar/`, through git, with untracked contents and every folder moving with them.
+- Every reference across the repository was re-pointed: relative links re-derived from each file's old location, repo-rooted mentions in live files, the one `.kh` inclusion address that named `modules/memar/`, and the code and configuration paths (the extension's scripts and manifest, the toolchain's tests and default excludes, `.gitignore`, and the `memar content` corpus, which now includes `bundles/`). In changelogs and research records only links were changed; their prose keeps the paths it recorded.
+
+---
+
+### Review of the uncommitted changes of 2026-10-12
+- Time: 2026-10-12T09:45:12Z
+- Type: Changed
+- Contributors:
+  - [Claude](../CONTRIBUTORS.md#claude) (Sonnet-5.5) — reviewed, revised
+
+#### What changed
+- Reviewed the working tree against HEAD for `modularity.md`, `modularity.handoff.md` and this changelog. Every settled question is recorded here and each answer is placed in the document that owns it: eleven handoff questions were removed, and each is covered by the 2026-10-04 and 2026-10-05 entries. The `modularity.md` additions (the Abstract's collision claim, *One Term, One Identity*, the optionality sentence, the cross-boundary ownership sentence, the modeling-alone paragraph, the Rule wording) match their entries. The anchors and quotes they cite were checked, and `memar content check` reports no problem.
+- Restored two entries removed from this changelog without a record: the 2026-09-29T13:00:00Z entry on the `modules/storage/` to `modules/memory/` rename, and the 2026-09-29T11:30:00Z entry on the fourteen category-tree questions. A changelog is history, and the 2026-09-29T14:00:00Z entry that follows speaks of "the fourteen" questions with nothing before it to say what they were. Both are verbatim from HEAD, put in time order. The second had lost its heading in HEAD, so the heading `Fourteen `modules/` category-tree questions raised on the handoff` was supplied.
+- Restored the handoff question "Can Capability Completeness be checked other than by hypothetical removal?". The 2026-10-04T18:21:13Z entry closed it by pointing at the co-variation test in *Capability Completeness*, which is a judgment made on the material and does not say whether completeness can be checked statically from declared dependencies, which is what the question asked. It stays open until an answer to that is placed.
+- `modularity.handoff.md`, first item under *The category layout of this repository*: the sentence said `modules/README.md` and `modules/lib/lib.md` both place the runtime under `computer/runtime/`. Only `lib.md` does; `modules/README.md` lists `runtime/` as a category of its own. Corrected to say so, since that disagreement is part of the question.
+
+#### Considered and not done
+- **Editing the 2026-09-29T14:00:00Z entry**, which says the handoff carries concept questions only, now that the handoff holds a layout section. Not done: the section arrived by the owner's ruling recorded in [A folder README carries no changelog and no handoff](./documentation.changelog.md#a-folder-readme-carries-no-changelog-and-no-handoff), history is not rewritten, and the 2026-10-07 entry already links the section. No entry in this changelog records the section's arrival, which is left to the owner.

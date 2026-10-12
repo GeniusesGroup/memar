@@ -485,7 +485,7 @@ Dissolved every `#### Discussion` wrapper (How to identify a Type, Definition of
 - The question a reader of the category has is answered at the level the category is defined: the realizations named above sit at different levels, so placement belongs to the realization, and a need for a boundary at a level no realization reaches yet is a question for this section.
 
 #### Considered and not done
-- **The placement question carried here as a standing request**: a reader of the category is told what the placement limit is not inherent to, and which rule holds it — [Code Scope Placement → Keep it or drop it](../modules/khayyam/rules/scope-placement/scope-placement.md#keep-it-or-drop-it) (Omid Hekayati — decided).
+- **The placement question carried here as a standing request**: a reader of the category is told what the placement limit is not inherent to, and which rule holds it — [Code Scope Placement → Keep it or drop it](../bundles/khayyam/rules/scope-placement/scope-placement.md#keep-it-or-drop-it) (Omid Hekayati — decided).
 - **Naming the toolchain's rule here by hyperlink**: a base document never cites a document under the language folder, not even as a linked pointer, and the citation-direction rule is not the reason for this one — a base document does not carry a tool's rule in any wording, prose or link.
 - **Forwarding the placement question to a realization's specification**: a base document does not forward a question to a realization it may not cite, and this section is the level at which the question is answerable.
 
@@ -496,6 +496,139 @@ Dissolved every `#### Discussion` wrapper (How to identify a Type, Definition of
 
 #### Decision
 - A base document states what the category is, and stops there. Which toolchain keeps which placement rule is that toolchain's rule; and a need for a boundary that no current realization reaches is a question for this section, which is where the category is defined.
+
+---
+
+### Five handoff entries closed against the body topics and this changelog's Considered and not done
+- Time: 2026-10-04T18:22:00Z
+- Type: Fixed
+- Propagates to:
+  - type.handoff.md: Done — five open-question entries removed; the Type Identity, Generics and Ownership Ambiguity, and Method — Type as Callable Behavior topics, plus this changelog's Considered and not done, are their homes.
+- Contributors:
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) — argued, applied
+
+#### What changed
+- Five entries left `type.handoff.md`'s Open Questions, each verified against the passage that settles it before its block was deleted:
+  - "Type identification framework" already stated that its two alternatives were settled here; this changelog's Considered and not done records both rejections — no framework in favor of intuition, and no strict binary checklist — and the body's How to identify a Type carries the residual gray-zone risk inline.
+  - "Definition of Type" already stated that the structural definition was rejected and the type-theoretic one deferred; this changelog's Considered and not done carries both, the deferral marked as a future revision's option rather than pending work.
+  - "Nominal identity's interaction with generics" is answered by [Generics and Ownership Ambiguity](./type.md#generics-and-ownership-ambiguity) — "a type parameter propagates type identity" — read against [Type Identity](./type.md#type-identity): an instantiation is its own nominal Type, and generic syntax is rejected because existing mechanisms fuse several semantic responsibilities, not because parameterization is invalid.
+  - "Method as Type — category or behavior?" is answered by [Method — Type as Callable Behavior](./type.md#method--type-as-callable-behavior): independent, referenceable existence "is what qualifies Method as a Type category rather than an internal language mechanism", and the method lifecycle recorded in the same topic answers the compilation-and-dispatch half of the entry's related question. This changelog's Considered and not done additionally records Method-as-a-separate-concept-from-Type as rejected.
+  - "Formal semantics of 'semantic identity'" is answered by [Type Identity](./type.md#type-identity), which defines nominal identity within a bounded context, contextual scoping, and the enforcement requirement that keeps nominal identity a semantic property rather than a naming convention; the contract half of the proposed direction is defined in the body's Definition topic.
+- No base document body was edited.
+
+#### Considered and not done
+- **Revisiting the MLTT-strengthening option while removing its handoff entry (rejected)**: the option belongs to a future revision of the Definition topic and this changelog's Considered and not done already records it as considered and deferred; removing a duplicate handoff entry does not make a deferred alternative pending again.
+- **Reopening the Method-as-Type position pending implementation validation (rejected)**: the entry's own doubt was about validation experience, not about the position, and the position plus the recorded rejection of the alternative is the settled answer; what remains genuinely open about Methods (whether other constructs may serve comparable bridging roles) is stated in the body itself.
+
+---
+
+### The EBO entry closed against Explicit Behavior Ownership
+- Time: 2026-10-04T20:02:17Z
+- Type: Fixed
+- Propagates to:
+  - type.handoff.md: Done — the "EBO's working answers and open edges" block removed, heading and both body lines; the macro boundary it carried is answered by [Explicit Behavior Ownership](./type.md#explicit-behavior-ownership) and its recorded answers by the passages named below (handoff: no entry of its own).
+- Contributors:
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) — argued, applied
+
+#### What changed
+- "EBO's working answers and open edges" left `type.handoff.md`'s Open Questions. Its one open edge — the macro boundary, exactly where transparent code generation ends and opaque macro magic begins — is answered by [Explicit Behavior Ownership](./type.md#explicit-behavior-ownership): "no acquisition through inheritance, embedding, or macro expansion unless the expansion exists verbatim in source under the developer's control". The line falls where that clause puts it: an expansion present verbatim in source under developer control is transparent, and one absent from source is the hidden mechanism [How Behavior Hides](./type.md#how-behavior-hides) catalogs — "a macro call expands into method definitions invisible before expansion".
+- The code-generation half of the same boundary is carried by [Abstractions Stay Pure](./type.md#abstractions-stay-pure), which sanctions generation as the mechanism for repeated similar implementations "provided generated code is visible and auditable, living in files developers read rather than compiler intermediates" — the sentence the entry recorded as its generated-code transparency answer.
+- The entry's other recorded answers are already carried by the governing documents, which is why they leave with it: multiple explicit delegation targets by [type.practice.md → Behavior ownership](./type.practice.md#behavior-ownership) ("Multiple delegation targets are fine — each relationship explicit in source"); runtime-added behavior violating EBO by that section's "No runtime injection" and by the EBO catalog's compiler-synthesis and generated-implicit-method entries; the cost trade-off by [The Economics of Explicitness](./type.md#the-economics-of-explicitness), which states that maintenance and comprehension dominate the economics over initial authoring, and by the same section's tooling paragraph, which states that the extra lines are "not a cost automation merely tolerates".
+- The entry's doubt about the boundary's form — language rule or linter configuration — is settled by where the rule sits rather than by a new sentence: it is stated in the governing document as a rule of EBO, and the section's tooling paragraph assigns its enforcement to compile-time checking and to static analysis that enumerates a component's method set by scanning source alone.
+- No base document body was edited.
+
+#### Considered and not done
+- **Holding the entry open until the first code-generation tooling exists (rejected)**: the entry's own suggested path deferred the boundary to the first real tool, but the boundary is a property of what a reader can find in source, and the governing document states it as the rule any such tool is measured against — a boundary that waited for its first violator would not be a boundary.
+- **Rewriting the entry to keep its enforcement questions open under a new heading (rejected)**: nothing in the entry's enforcement half survives the reading above — compile-time checking and source-scanning static analysis are the enforcement the section names — so a rewritten entry would carry state the governing documents already hold.
+
+---
+
+### An aggregator grants no access to another abstraction's state
+- Time: 2026-10-04T20:35:35Z
+- Type: Changed
+- Cited:
+  - [Encapsulation in Khayyam → Sovereign Encapsulation](./khayyam/encapsulation.md#sovereign-encapsulation) — Evidence: the rule that already denies a consumer any route into a capsule's fields, and leaves enforcement policy to the compiler and linter layer
+  - [Modeling → Domain Decomposition over Aggregate-Root Modeling](./modeling.md#domain-decomposition-over-aggregate-root-modeling) — Considered: the aggregator's one named responsibility, the case the convention completes
+- Propagates to:
+  - modeling.handoff.md: Done — the convention-or-lint-rule entry removed; with the validation entry, that section's heading went with it
+- Contributors:
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) — argued, drafted, applied
+
+#### What changed
+- *The Ownership Graph* gains the convention that an aggregator grants no abstraction access to another's internal state — the two are reached only by explicit delegation to methods on them — and records that [Encapsulation in Khayyam → Sovereign Encapsulation](./khayyam/encapsulation.md#sovereign-encapsulation) already denies the route, so what remains for a linter is the governance diagnostic, not a new check on reachability.
+- `modeling.handoff.md` no longer asks whether a convention or lint rule should prevent an abstraction from directly accessing another abstraction's internal state when both are assembled by the same aggregator.
+
+#### Considered and not done
+- No lint rule was named. The language document leaves enforcement policy to the compiler and linter layer, so what a tool may write or report about governance is that document's call, not this one's.
+- The rule was not restated as a modeling prohibition. What an abstraction may reach is stated where the one-owner rule it serves is stated, and the aggregator's own single named responsibility stays with [Modeling → Domain Decomposition over Aggregate-Root Modeling](./modeling.md#domain-decomposition-over-aggregate-root-modeling).
+
+---
+
+### Type Identity scopes nominal identity without naming a bounded context
+- Time: 2026-10-04T21:26:49Z
+- Type: Changed
+- Propagates to:
+  - [protocols/ddd.md](./modules/lib/process/ddd.md): Done — the **Bounded context.** row under *Mapping: Circulated Terms and Memar Homes* carries the reason the term stays undefined and uncarried in Memar prose.
+- Contributors:
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) — argued, drafted, applied
+
+#### What changed
+- *Type Identity* states that a Type's identity derives from its declared name "within a context", and that two Types sharing a name "in the same context" are a modeling conflict. Both sentences previously read "bounded context", a term no Memar document defines. No claim changes: the same section's closing sentence — "The name, within a context, uniquely identifies the concept" — and its *Contextual scoping* paragraph already stated the rule in the ordinary word.
+- No other sentence of this document was edited.
+
+---
+
+### One Capsule may satisfy several Abstractions, and accidental satisfaction is answered where it lives
+- Time: 2026-10-05T09:35:23Z
+- Type: Changed
+- Cited:
+  - [Abstraction in Khayyam → Abstraction Realization (Implicit Satisfaction)](./khayyam/abstraction.md#abstraction-realization-implicit-satisfaction) - Evidence: the passage that answers whether accidental satisfaction warrants a mitigation mechanism
+  - [Type → Type Identity](./type.md#type-identity) - Evidence: a Type's identity is its declared name within a context, which is what carries the method-name case
+- Propagates to:
+  - type.handoff.md: Done - the "Multiple Abstraction satisfaction" and "Accidental satisfaction mitigation" entries removed, headings and body lines with them
+- Contributors:
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) — argued, drafted, applied
+
+#### What changed
+- [The Relationships Between Categories](./type.md#the-relationships-between-categories) states that a Capsule satisfies every Abstraction whose required methods its own source provides, that satisfaction is judged one Abstraction at a time wherever that Abstraction's type is required, and that nothing in the model limits how many a single Capsule satisfies. The passage carrying it is the relation itself, already stated in that section's table and bullet list — "Capsule satisfies Abstraction: Through implicit structural satisfaction" — plus [Type → Explicit Behavior Ownership](./type.md#explicit-behavior-ownership), under which one Capsule-owned method discharging the identical requirement of two Abstractions stays one method with one owner.
+- The same section now states what a same-named requirement from two Abstractions resolves to: the Capsule's one method of that name answers both where the signatures agree and neither where they differ, and the divergent pair is a modeling conflict between the two Abstractions rather than something merged. The passage carrying it is [Type → Type Identity](./type.md#type-identity) — "two Types with different structures but the same name in the same context represent a modeling conflict, not two valid Types" — read with [Type → Method — Type as Callable Behavior](./type.md#method--type-as-callable-behavior), by which a Method is a Type whose receiver is part of its signature, so the Capsule is the context the name is claimed within.
+- `type.handoff.md` no longer carries "Multiple Abstraction satisfaction".
+- `type.handoff.md` no longer carries "Accidental satisfaction mitigation". That entry asked whether implicit structural satisfaction's risk of accidental conformance warrants a mitigation mechanism and named the Abstraction document as where the question lives; that document has since answered it — "Khayyam answers this risk with composition and delegation rather than with a nominal declaration" ([Abstraction in Khayyam → Abstraction Realization (Implicit Satisfaction)](./khayyam/abstraction.md#abstraction-realization-implicit-satisfaction)), carried further by *Deliberate Satisfaction Is Composed, Not Declared* in the same file. No body sentence was added for it: the answer was already there, and [Type → Type Identity](./type.md#type-identity) had already recorded where the question is owned.
+
+#### Considered and not done
+- **Resolving a same-named requirement by renaming, overriding, or ordering the two Abstractions at the satisfying Capsule (rejected)**: each of those is a behavior-acquisition mechanism EBO rejects, and a rule giving one Abstraction precedence over another would make the Capsule's conformance depend on a declaration it is not permitted to make. The model already has the answer it can support — one name in one context identifies one concept, so the disagreement belongs to the requirement sets.
+- **Writing the accidental-satisfaction answer into `type.md` as well (not done)**: [Type → Type Identity](./type.md#type-identity) already states that the mitigation question is a language-design question owned where the conformance mechanism is defined, and the owner has now recorded the position there. A second copy in a base document would be a second home for a claim the language document already places.
+- **Keeping the two entries open until a Capsule in the wild satisfies three or more Abstractions (rejected)**: nothing in the model's answer depends on the count being large. Satisfaction is judged per Abstraction wherever that Abstraction's type is required, so the second and the third are answered by the same passage as the first.
+
+---
+
+### Type is foundational, and every semantic entity is a Type
+- Time: 2026-10-05T16:29:25Z
+- Type: Changed
+- Propagates to:
+  - type.handoff.md: Done - the "Gradual typing at boundaries" entry removed from Open Questions, heading and both body lines; the "Gradual typing at boundaries" line removed from Anticipated Work with it
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) — argued, drafted, applied
+
+#### What changed
+- The Abstract now states what foundational means for this document before defining Type: any system — "a building, a smart gadget, a business, a piece of software" — "is describable in the language of mathematics, and in this framework that language is type theory", and "every semantic entity is a Type". The same passage holds that a human language "does not carry the system's semantics" and that the document is "not one framework among several that a system may choose or decline".
+- [Type Beyond Programming Languages](./type.md#type-beyond-programming-languages) extends the claim past systems built out of software: anything that "distinguishes one meaningful category of thing from another — has Types, whether or not anyone has written them down", so "There is no system whose semantic entities have no Type, and none that would decline to model itself this way", and a human-language description of a system is "a report of the system's Types, not a substitute for stating them". The section's existing sentence — that an organizational structure "can contain Types even where no source code exists to represent them" — already carried the reach; the new passage says what it means to be total.
+- [Type vs Implementation Type](./type.md#type-vs-implementation-type) answers the interop question where the document already said a mapping mechanism "must be bridged". What such a mechanism maps is settled rather than left to its author: a counterpart across the boundary "is either modeled as Types or is not modeled at all", so "there is no boundary between two type theories, only between a modeled counterpart and an absent one". A modeled counterpart is mapped under Memar Types; an unmodeled one "has no semantic entities in this framework", leaving "nothing on the far side to convert to, and nothing for a conformance rule to be lenient about". Declaring the counterpart's vocabulary as Types is stated as "the mechanism's first requirement rather than one option among several", and "no second or weaker notion of conformance is introduced at a boundary". The shape of that declaration remains where the sentence already put it: "belongs to the language that realizes these principles, which is where this document locates it and not here."
+- `type.handoff.md` no longer carries "Gradual typing at boundaries" as an Open Question, and no longer anticipates a "mechanism for converting between semantic Types and structural types at API boundaries". The question the entry asked — how a language enforcing "every type is a semantic entity" interoperates with a system that does not share the premise — has a premise, and the passage above states it.
+- *Type Identity* now says what a context is rather than only using the word: "A context is the [level at which a model is offered](./protocol.md#who-defines-a-protocol), so two organizations each declaring `Customer` are two Types in two contexts, not one naming conflict." The level is claimed by link to [Protocol → Who Defines a Protocol](./protocol.md#who-defines-a-protocol), which holds it, and the section's *Contextual scoping* paragraph — which makes the same point for `Customer` across a billing and a shipping context — is unchanged.
+
+#### Considered and not done
+- **Gradual typing at a boundary (rejected)**: gradual typing introduces a second, weaker notion of conformance — a region where a value is checked only partly, under rules weaker than the ones the Type declares — and the ruling admits no such region. What a boundary admits is a counterpart declared as Types, mapped under Memar Types; where the counterpart is not declared, there is nothing to check leniently.
+- **Treating the other side as untyped (rejected)**: "untyped" names a state in which a system's semantic entities exist without a Type, and no such system is reachable in this framework — a semantic entity that has no Type is not an entity the framework can state. Reading a counterpart as untyped would grant it semantic content it cannot carry, and then invent a conversion for it.
+- **A structural counterpart type system across the boundary (rejected)**: a counterpart type system deriving identity from structure rather than declared names reintroduces the ascent problem this document names at the boundary itself — an implementation type silently standing in for many modeling Types — and it would be a second type theory governing the same ground, which is what the ruling denies there is. This is the position recorded in the handoff's Anticipated Work as a mechanism "for converting between semantic Types and structural types"; that line is removed rather than answered.
+
+#### Deliberation
+The owner ruled that `type.md` is a foundational document, and fixed what foundational means here: every system is modelable in the language of mathematics, which in this framework is type theory, rather than in a human language (Omid Hekayati). From that it followed, in the owner's words, that no system can be conceived whose semantic entities have no Type, or that would decline to model itself through the type lens (Omid Hekayati).
+
+The argument that the boundary case is not a boundary between two type theories was raised and carried: the owner stated that a counterpart on the other side is either modeled as Types — in which case Memar Types govern the mapping — or is not modeled at all, and that a system not modeled as Types has no semantic entities here, so there is nothing to convert to and nothing to be lenient about (Omid Hekayati). A first pass at the passage treated the unmodeled side as a weaker zone that a rule might approach partially; that framing was withdrawn, since it grants the far side semantic standing the ruling does not grant it, and the passage now states the absence directly rather than as a case to be handled (Space Bunny Alpha, argued and drafted under the owner's ruling). The shape of the declaration was left to the language rather than settled here, consistent with the section's existing statement that the mechanism is "a concern of the language that realizes these principles" (Space Bunny Alpha).
+
+No new term was introduced: the passage reuses Type, the counterpart, conformance, and the language that realizes these principles, all already carrying meaning in this document. A separate vocabulary for a boundary between typed and untyped sides was considered and dropped as exactly the second notion the ruling denies (Space Bunny Alpha).
 
 ---
 
@@ -537,3 +670,16 @@ Dissolved every `#### Discussion` wrapper (How to identify a Type, Definition of
 #### Considered and not done
 - **Removing the subsection "Type Categories vs Language Keywords"**: rejected, because Khayyam → Type Principles Realized links its heading and its concept claim is the base layer's.
 - **Rewriting the remaining contrasts with compilers and keywords in general** — the Motivation's "the compiler merely records it", the Scope section's "compiler-level syntactic convenience", Explicit Behavior Ownership's "compiler synthesis", and the reader classes "humans, linters, compilers…": kept, because each contrasts the concept with software tooling in general and names no realization of Memar's.
+
+---
+
+### Review of the uncommitted changes of 2026-10-12
+- Time: 2026-10-12T09:45:00Z
+- Type: Reviewed
+- Contributors:
+  - [Claude](../CONTRIBUTORS.md#claude) (Sonnet-5.5) — reviewed
+
+#### What changed
+- Reviewed; no change needed. Checked the working tree against HEAD for `type.md` and `type.changelog.md`: the Abstract's foundational paragraph and the *Type Beyond Programming Languages* paragraph; *Type Identity* ("bounded context" to "context", and the sentence defining a context by link to *Protocol → Who Defines a Protocol*); the boundary-mapping passage in *Type vs Implementation Type*; the Capsule-satisfies-several-Abstractions paragraph; the aggregator sentence in *The Ownership Graph*; and the six added changelog entries plus the `../bundles/khayyam/` link repair in an older entry.
+- Each `type.md` hunk is recorded by one of the added entries (foundational and boundary, context, several Abstractions, aggregator), and the three handoff-closing entries match `type.handoff.md`, which already lacks the entries they name. Their cited passages exist at the cited anchors, and the quoted words match the body. The link repair points at an existing file and anchor.
+- `memar content check` on `type.md` and `type.changelog.md` reports no problem.

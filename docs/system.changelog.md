@@ -284,3 +284,161 @@
 - Anchoring was limited to where a cold reader could misread (the Memar-ecosystem uses that carry claims) rather than applied to every occurrence; the external-industry uses stay ordinary-language per the Default Meaning rule (Omid Hekayati — directed).
 - An initial draft of this round gave the word-level fixes (the anchors, the terminology pointer, the two rewordings) one changelog row each in their own artifacts; the owner flagged the rows as Trivial-changes violations — a fix with nothing of its own to audit takes no entry and no standalone commit, so the fixes ride this entry, which states their outcomes, and their changelogs carry no rows (Omid Hekayati — corrected).
 
+---
+
+### Four handoff entries closed against this changelog, `system.md`, and `terminology.md`
+- Time: 2026-10-04T18:20:00Z
+- Type: Fixed
+- Propagates to:
+  - system.handoff.md: Done — four open-question entries removed; `system.md`, `terminology.md`, and this changelog are their homes.
+  - terminology.md: Done — two of those entries were answered by its Science as Methodology and Terminology Authority and Governance sections; no change needed there.
+- Contributors:
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) — argued, applied
+
+#### What changed
+- Four entries left `system.handoff.md`'s Open Questions, each verified against the passage that settles it before its block was deleted:
+  - the scientific-rigor question (Knowledge and Science) is answered by [Terminology → Science as Methodology](./terminology.md#science-as-methodology) — Memar's own terminology work is held "to that framework's standard as closely as the project's current resources allow".
+  - the implementation-review-criteria question (Implementation) is answered by [System → Implementation Is Not Architecture](./system.md#implementation-is-not-architecture) — the implementation/architectural distinction "determines what can be changed without architectural review and what cannot".
+  - the standards-bodies question (Document-level) is answered by [Terminology → Terminology Authority and Governance](./terminology.md#terminology-authority-and-governance) — a Memar Definition, not the wider term's prevalence, governs inside the Memar ecosystem.
+  - the Responsibility check of `modularity.md`, `process.md`, and `modeling.md` (System) was already discharged by this changelog's "Responsibility added as a Key Property, closing a gap shared with process.md and modularity.md" entry, whose `Propagates to` lines record all three as Done.
+  - the document-split question (Document-level) was checked and kept: the Considered and not done of this changelog's "Second migration wave: `## Discussion` retired per the finalized method" entry rejects splitting the concepts the document then held, but the question asks whether the document should split as the concepts mature, which that rejection does not decide; it stays open.
+- The Implementation and Document-level numbered lists were re-sequenced after losing a leading and a middle item; no surviving entry's wording changed.
+- No base document body was edited; every answer was already carried by the section named above.
+
+#### Considered and not done
+- **Editing `system.md` or `terminology.md` to state these answers afresh (not done)**: each question already had a section answering it, so the work was verification and removal; restating an answer where the body already holds it would create a second home for it.
+- **Marking the removed entries "Answered" in place (not done)**: a settled design claim living in a handoff is a duplicate that drifts; the answer's homes are the governing document and this changelog, and the entry retires when its question resolves.
+
+---
+
+### Abstraction-leakage documentation question closed by the body
+- Time: 2026-10-04T18:31:33Z
+- Type: Fixed
+- Propagates to:
+  - system.handoff.md: Done — the Abstraction topic's question on documenting abstraction leakage was deleted, answered by Modeling's *Models Are Not Reality* (handoff: no entry of its own).
+- Contributors:
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) — argued, applied
+
+#### What changed
+- Closed the Abstraction topic's open question "Should Memar provide explicit mechanisms for documenting abstraction leakage, or should this be left to informal documentation?" in [system.handoff.md](./system.handoff.md). It is answered by [Modeling → What a Model Is → Models Are Not Reality](./modeling.md#models-are-not-reality), which states that "Memar's modeling process should include explicit mechanisms for identifying and documenting what each model deliberately omits." What a model deliberately omits is exactly what an abstraction hides and what later leaks, per [System → Abstraction → Abstraction and Leaky Boundaries](./system.md#abstraction-and-leaky-boundaries), so the question's alternative — leaving it informal — is already excluded by the body.
+- The Abstraction topic's remaining two items were renumbered to stay a contiguous list.
+
+#### Considered and not done
+- **Closing the two remaining Abstraction questions as well** (rejected): *System → Abstraction* explains why abstractions are purpose-driven and how they leak, but it states no criterion, procedure, or counter-case for choosing an abstraction level, so it cannot answer a question about how that choice is guided; and neither *Modeling → One Reality, Multiple Abstraction Lenses* (whose structural lens is a mode of observation, "not... entities inside the produced model") nor *System → Structural Abstraction vs. Purposive Abstraction* (which defines the two kinds and their precedence) rules on whether Memar should carry them as two separately named concepts. Both entries stay open.
+- **Rewriting the closed question as an answer in the handoff** (rejected): a handoff records unsettled state, and a settled design claim there would duplicate the governing document and drift from it.
+
+---
+
+### Purpose, coupling, Openness, and reconciliation settled in place
+- Time: 2026-10-04T20:16:10Z
+- Type: Added
+- Propagates to:
+  - system.handoff.md: Done — items 2 and 3 under System and item 2 under Architecture removed, remaining items renumbered.
+  - modularity.handoff.md: Done — the question about a Module holding several domain-coupled Responsibilities was held there at the time and is answered by the change to *When Is a Responsibility Coherent?* below.
+- Contributors:
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) — argued, drafted, applied
+
+#### What changed
+- [System → Key Properties](./system.md#key-properties) now states how Purpose meets a system whose members hold incompatible goals: contested purpose does not qualify the definition, their conflict is content of the system's Processes rather than a defect, and observers who disagree which purpose is at issue have chosen different Boundaries.
+- [System → When Is a Responsibility Coherent?](./system.md#when-is-a-responsibility-coherent) now states how a Module holding several tightly coupled Responsibilities is judged: domain-imposed coupling is not itself a fault, no count of contained Responsibilities decides the question, and the judgment is stated against a concern rather than against the part.
+- [System → System Openness](./system.md#system-openness-open-closed-and-isolated) now states that open, closed, and isolated qualify one pair of Systems with respect to one channel of influence at one time rather than the `influences` edge type, and that a document which needs to say which kind it means says so at that claim, as the `shaped by` entry does.
+- [Architecture](./system.md#architecture) gained *Reconciling Conflicting Decisions*: the governing document carries the current design, a decision that supersedes another says so in its own [changelog](./documentation-changelog.md) entry naming what it replaced and why, and entries are appended rather than rewritten so superseded reasoning stays readable.
+- `system.handoff.md` no longer carries the questions about contested purposes, about System Openness as an edge label, or about reconciling conflicting architectural decisions.
+- No clause of the existing `**Purpose.**` definition was changed; the added sentences apply the functional sense the paragraph already states.
+
+#### Considered and not done
+- **Leaving the Openness question open until the anticipated Edge Type Ontology document exists (rejected)**: what is settled is whether openness is a property of a kind of relationship, and that is settled now; only the notation that document will define remains open.
+- **Naming a rule for which of two conflicting decisions wins (rejected)**: the criterion is the established Definition and the evidence, applied claim by claim, and a standing precedence rule would let the later decision win by recency.
+- **Rewriting superseded changelog entries so the history agrees with the current design (rejected)**: the changelog is append-only, and rewriting it would leave the reasoning that produced the current design unreadable.
+- **Adding contested purpose to *What a System Is Not* (rejected)**: that section enumerates identities a system does not have, not conditions its purpose may arrive under.
+
+---
+
+### Structure's relation to layout vocabulary and to renaming settled from the body
+- Time: 2026-10-05T09:41:56Z
+- Type: Fixed
+- Propagates to:
+  - system.handoff.md: Done — the Structure topic's second entry left Open Questions; its first entry, the naming of the arrangement concept, stays open (handoff: no entry of its own).
+- Contributors:
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) — argued, drafted, applied
+
+#### What changed
+- The question of how Structure relates to the layout vocabulary already in use elsewhere in Memar, and whether `system.md`'s Structure should be renamed if it conflicts with established usage, left [system.handoff.md](./system.handoff.md)'s Open Questions with no body edit: [Structure → Structure Is Not the Arrangement of Parts](./system.md#structure-is-not-the-arrangement-of-parts) already states both halves — a component layout "may be one input that determines its Structure", while the layout itself is not the Structure — and [Terminology → Terminology Authority and Governance](./terminology.md#terminology-authority-and-governance) already settles the renaming half, an established Definition governing its later use with divergence stated rather than a name withdrawn.
+
+#### Considered and not done
+- **Renaming Structure to avoid the industry sense of the word (rejected)**: the divergence is stated in the body, which is what [Terminology → Diverging From Ecosystem Definitions](./terminology.md#diverging-from-ecosystem-definitions) requires of a Memar Definition; a rename would trade a stated divergence for a new collision the ecosystem would produce on the new name.
+- **Naming the arrangement concept in the same session (rejected)**: the name is a governance act that settles the design space the word names, and [Terminology → A Term Deliberately Left Open](./terminology.md#a-term-deliberately-left-open) prices that act; the entry stays open for the owner.
+
+---
+
+### The Framework-as-Aspect choice stated as settled, and its open-question pointer dropped
+- Time: 2026-10-05T10:56:50Z
+- Type: Changed
+- Cited:
+  - [Framework → Explicit and Implicit Frameworks](./framework.md#explicit-and-implicit-frameworks) — Depends_on: the settled resolution this section now states — what enters a System from a framework is a share of that System's Structure, and an aspect of a description is not a part placed inside the System it describes.
+- Propagates to:
+  - [Framework Handoff](./framework.handoff.md): Done — the entry carrying the Framework-aspect-edge question was closed earlier in this session, and this edit removes the last body reference to it.
+- Contributors:
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) — argued, applied
+
+#### What changed
+- [System → Framework as Aspect, and Framework Considered as a System](./system.md#framework-as-aspect-and-framework-considered-as-a-system): the sentence that presented the choice between reading the Framework-aspect edge as F becoming "an aspect of" S and reading it as F constraining S's Structure from outside without F entering S in any sense as an open question the Framework document leaves for future revision is replaced by what holds. What enters S from F is a share of S's Structure — the capabilities and constraints S inherited from F rather than chose for itself — and an aspect of a description is not a part placed inside the System that description describes: F stays outside S, and what S receives is the share of Structure F's description accounts for. The section links [Framework → Explicit and Implicit Frameworks](./framework.md#explicit-and-implicit-frameworks), which holds the resolution, and no sentence in the body narrates an open question.
+- Nothing else in the section changed: Framework Considered as a System remains a secondary, instance-specific lens that a framework need not be examined under, and the paragraph following the aspect statement is untouched.
+
+#### Considered and not done
+- **Restating the resolution at length in this section (rejected)**: the aspect paragraph's own job is the aspect relationship within this document's graph; the reasoning that settles the edge's form belongs to the Framework document, which holds it, and duplicating that reasoning here would be the restatement [Content Rule](./documentation.md#content-rule-no-fabricated-or-redundant-provenance) forbids.
+
+---
+
+### Boundary named as the level that offers a model, and Protocol brought into agreement with its definition
+- Time: 2026-10-05T12:20:00Z
+- Type: Changed
+- Cited:
+  - [Protocol](./protocol.md) - Consumed definitions: the Protocol as a named set of declarative rules governable against a stated input (Verifiable Interaction Model), the Verifiability component, and Who Defines a Protocol (a protocol is meaningful at the level of the system that offers it; plurality of definers is what makes convergence objective).
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) — argued, drafted, applied
+
+#### What changed
+- [System → Key Properties → Boundary](./system.md#key-properties) states the organizational case the observer-relative sentence left unnamed: "Where an organization develops its own model of a System, that level is its own Boundary: a model and the protocols it carries mean what they mean at the level of the organization that offers them ([Protocol → Who Defines a Protocol](./protocol.md#who-defines-a-protocol)), and two organizations' draws of the same elements are therefore two Systems, each internally consistent, neither a mis-drawn version of the other."
+- [Concepts at a Glance](./system.md#concepts-at-a-glance)'s Protocol bullet now agrees with the definition it points at: "A **Protocol** (defined in detail in its [Protocol document](./protocol.md)) is a named set of declarative rules that governs processes within a system and can be checked against a stated input — a ruleset that makes interaction predictable to participants who did not write it." The bullet keeps its orientation purpose, which the replacement phrase serves: predictability to a participant is what the old "structured body of knowledge that enables participants" was reaching for.
+- The maximal-generality constraint under [Why This Document Exists](./system.md#why-this-document-exists) now records where that constraint is bounded rather than served. Constraint 2 gains: "For Protocol this constraint is bounded rather than served, and the bound is the document's own: a discipline that cannot state a Protocol's input and the procedure by which a party that did not write its rules reaches a verdict is not made more general by being given the word. Memar declines the word there, and [Protocol → What is a Protocol?](./protocol.md#what-is-a-protocol) carries the definition that does apply."
+
+#### Deliberation
+- The Boundary, glance-bullet, and maximal-generality items were identified in an earlier read-only pass of this session by the same participant now applying them, which surveyed `docs/` for passages in tension with organizational plurality and with the Verifiable Interaction Model adoption; the rulings this entry applies were made elsewhere in the session and elsewhere in this wave, and the three passages were not edited until the rulings had landed.
+- Constraint 2 was left stating maximal generality without exception, on the assumption that every term in this document is defined as widely as its usage allows. That assumption does not survive Protocol: extending the word to a discipline with no decidable requirement does not make the definition more general, it makes it uncheckable. The bound was stated as a bound on the word rather than as a fourth constraint, because it is a property of one term rather than a criterion the other definitions must meet.
+- The glance bullet was not deleted as merely derivative of the Protocol document. A glance that says something other than the definition misleads faster than one that says less, and the bullet is where a reader arrives before the governing document.
+- Whether the Boundary addition should also govern `Ecosystem` was raised and left alone. Ecosystem already holds that its constituents are Systems with their own boundaries and purposes, and the addition changes nothing there; restating it in that section would duplicate the claim this one now makes.
+
+---
+
+### Architectural weight governs attention, not the standard of the comparison
+- Time: 2026-10-05T17:39:20Z
+- Type: Changed
+- Cited:
+  - [Test → Test, Check, and Runner](./modules/process/test.md#test-check-and-runner) - Evidence: performing the comparison is a cognitive act every party holds to that document as written and to nothing laxer than it states, whatever evidence it uses and whether or not anything ran
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - decided
+  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) - argued, drafted, applied
+
+#### What changed
+- *Architectural Weight as a Spectrum* keeps the spectrum and its two ends exactly as they were - a decision's architectural significance is proportional to its impact, a local variable name is architectural only in the trivial sense and carries negligible weight, and a consistency model, communication pattern, or module boundary carries substantial weight. What the closing sentence no longer does is let proportionality reach the standard of the comparison: it now says that what the weight governs is how much attention a decision draws and adds that "every party that judges such a decision holds itself to the same discipline as any other, at the same strictness ([Test → Test, Check, and Runner](./modules/process/test.md#test-check-and-runner)), and a low-impact decision is not examined more leniently for being low-impact." The claim that high-impact decisions "deserve proportionally more deliberation, documentation, and review" is unchanged.
+
+#### Considered and not done
+- **Rewriting the section to separate the spectrum's measure from the check's standard throughout (not done)**: the spectrum's own measure - impact on behavior, evolvability, or properties - is untouched, and the two were never in conflict; only the closing sentence let proportionality sound as though it governed the examination too. One sentence separating them is what the distinction needed, and a longer restructuring would have changed a settled position to fix a reading it does not license.
+- **Stating that a low-impact decision needs no Test at all (rejected)**: that would decide the question the other way, making the standard vary with weight where the protocol states that no party holds a laxer version than any other. Nothing in the spectrum says a naming decision escapes a check; it says little follows from one, which is a different claim from being examined by a laxer standard.
+- **Linking the discipline to Test Practice rather than to Test (rejected)**: what is unsoftenable here is the standard a party holds itself to, which the protocol states rather than the practice document, and the link names the layer the sentence is about.
+
+---
+
+### Review of the uncommitted changes of 2026-10-12
+- Time: 2026-10-12T09:46:22Z
+- Type: Changed
+- Contributors:
+  - [Claude](../CONTRIBUTORS.md#claude) (Sonnet-5.5) — reviewed, revised
+
+#### What changed
+- Reviewed the uncommitted changes to `system.md`, `system.handoff.md`, and this changelog: every handoff question removed has an answer in the document that owns its subject and a changelog entry that records it, the added passages in `system.md` (Purpose, Boundary, Responsibility coherence, Openness, Architectural Weight, Reconciling Conflicting Decisions, Framework as Aspect, Protocol bullet, constraint 2) match the entries that describe them, the cited anchors and quotations resolve, and `memar content check` reports no problem.
+- Corrected the 2026-10-04T18:20:00Z entry: it said five handoff entries were removed, but the Document-level question on splitting `system.md` remains in `system.handoff.md` and was rightly kept, since the rejection it cited concerned the concepts the document held then and not whether it should split as they mature; the entry now says four were removed and records why that question stayed.
+- Reworded the 2026-10-04T20:16:10Z entry's `modularity.handoff.md` line from "was recorded there" to "was held there at the time", because that question has since left `modularity.handoff.md` (answered in `modularity.changelog.md`).
+- Removed a stray blank line after the heading of the 2026-10-04T18:31:33Z entry to match the format of the others.

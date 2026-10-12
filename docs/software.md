@@ -30,13 +30,13 @@ The IEEE software documentation family is the mature taxonomy of the lifecycle c
 
 | Lifecycle concern | IEEE standard | Memar home today |
 | --- | --- | --- |
-| [Software requirements specification](https://en.wikipedia.org/wiki/Software_project_management) | IEEE Std 830 | [Modeling](./modeling.md) owns which concepts exist; a requirements body is largely modeled concepts and constraints ([System → Structure](./system.md#structure)). Full treatment owed. |
+| [Software requirements specification](https://en.wikipedia.org/wiki/Software_project_management) | IEEE Std 830 | [Modeling](./modeling.md) owns which concepts exist; a requirements body is largely modeled concepts and constraints ([System → Structure](./system.md#structure)). The standing interpretation is [Test's umbrella-requirement reading](./modules/process/test.md#an-umbrella-requirement-is-a-developed-processs-expectations); full treatment owed as modeling-constraints working-out, not as a second artifact. |
 | [Software design description](https://en.wikipedia.org/wiki/Software_design_description) | IEEE Std 1016 | Design lands as Type decisions ([Type](./type.md), [Modularity](./modularity.md), the Khayyam documents). |
 | [Software configuration management](https://en.wikipedia.org/wiki/Software_configuration_management) | [IEEE Std 828](https://ieeexplore.ieee.org/document/6170935/) | The framework's Immutable Infrastructure protocol document owns the deployment immutability rule; the lifecycle working-out is owed (see its handoff). |
 | [Software test documentation](https://en.wikipedia.org/wiki/Software_test_documentation) | IEEE Std 829 | No home yet; owed. |
 | [Software verification and validation](https://en.wikipedia.org/wiki/Software_verification_and_validation) | IEEE Std 1012 | Partially anchored: abstraction conformance in the Khayyam documents is the compile-time verification face; the rest owed. |
 | [Software quality assurance](https://en.wikipedia.org/wiki/Software_quality_assurance) | IEEE Std 730 | No home yet; owed. |
-| [Software project management](https://en.wikipedia.org/wiki/Software_project_management) | IEEE Std 1058 | No home yet; owed. |
+| [Software project management](https://en.wikipedia.org/wiki/Software_project_management) | IEEE Std 1058 | No home yet; owed as an activity projects run — not as a Memar concept in waiting. What a resulting unit of work is belongs to the consuming project; finished delivery is Enterprise scope. |
 | [Software user documentation](https://en.wikipedia.org/wiki/Software_user_documentation) | IEEE Std 1063 | Partially owned: [Type Practice → Carrying Type metadata](./type.practice.md#carrying-type-metadata) covers human-facing companion artifacts per Type. |
 | [Software review and audit](https://en.wikipedia.org/wiki/Software_audit_review) | IEEE Std 1028 | The documentation system's audit trail ([Changelog facet](./documentation-changelog.md)) is the artifact-history face; the review process owed. |
 

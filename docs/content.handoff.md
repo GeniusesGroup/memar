@@ -10,25 +10,9 @@ Open work for `content.md`. Entries are mutable current state — revised as eac
 
 ## Open Questions
 
-### Are navigate/embed/execute properties of the Reference edge, or consumer-determined?
-- State: moved 2026-09-11 from the Reference topic's retired Discussion wrapper. Nothing in the topic settles whether the different things a consumer might do upon encountering a Reference ("navigate," "embed," "execute") are properties of the edge itself (e.g., a `mode` field) or entirely determined by the consuming Thing's own rules. The related-work survey's Topic Maps associations-with-roles idea — recorded in [content.changelog.md](./content.changelog.md)'s research-deletion entry — is the kind of relation-role vocabulary that would land in exactly this question if revived.
-- Next: test against concrete cross-modal cases as the Interaction concern develops.
-
-### What scope does Lexical Token uniqueness actually take?
-- State: moved 2026-09-11 from the Lexical Token vs. Sense topic's retired Discussion wrapper. Whether uniqueness is global across a system (the working decision) vs. local per document — and whether it requires finer-grained scoping rules — is unexamined.
-- Next: examine multi-party, multi-document scenarios in consumer projects such as `organization`.
-
 ### How do overlapping or nesting compound tokens behave?
 - State: moved 2026-09-11 from the same wrapper. Token composition (the polysemy mechanism) has not been tested against real multi-word phrases that overlap or nest.
 - Next: run real corpus cases through the composition rule.
-
-### Does the Addressable Entity principle admit an a-priori test?
-- State: moved 2026-09-11 from the Addressability topic's retired Discussion wrapper. The principle is honestly circular (recorded in the body); the body also names the alternative empirical framing — what units are naturally independently referenced within a medium's own conventions — as the direction worth pursuing.
-- Next: pursue the empirical framing rather than a predictive test.
-
-### Is Composition's `contains` edge the same primitive family as Reference?
-- State: moved 2026-09-11 from the Composition topic's retired Discussion wrapper. Whether containment is a typed edge no different in kind from `refers-to`/`mentions`, or ownership/lifecycle requires its own distinct primitive, has not been tested against enough real cases to decide.
-- Next: test against cases where containment implies lifecycle obligations (aggregates) versus not (presentation trees).
 
 ### Does the project need a minimal, rendering-agnostic arrangement primitive?
 - State: moved 2026-09-11 from the Layout topic's retired Discussion wrapper. Whether even a minimal abstraction (ordering, grouping, priority — algorithms entirely left to renderers) is warranted, versus zero shared vocabulary, is unresolved; the body defers this to a dedicated document once sufficient concrete cases exist.
@@ -54,12 +38,8 @@ Open work for `content.md`. Entries are mutable current state — revised as eac
 - State: moved 2026-09-11 from the Structural Notation topic's retired Discussion wrapper. Flagged high-priority: the Position A/B question (pure delimiter vs. implicit semantic tagging, e.g. Markdown's `#`) is directly testable against this project's own YAML-front-matter-plus-inline-Markdown convention, and the document's own ASCII tree/graph diagrams already demonstrably exhibit Position-B behavior (recorded in the body).
 - Next: see the self-audit under Anticipated Work.
 
-### How does the model cover media that is neither pure text nor a typed capsule?
-- State: the document-wide cross-cutting question, moved 2026-09-11 from the retired document-level Discussion. Media (image, audio, video) may need region/timestamp addressing while no Type system currently governs their internal structure; the question belongs to no single topic.
-- Next: examine when media topics develop; relates to the Addressability questions above.
-
 ### Can one Content participate in multiple Timelines, and is Timeline a distinct concern?
-- State: the knowledge-management session modeled organizational history as Content units attached to one or more Timelines — the pattern where a post lives in its author's timeline and reaches others' timelines through re-entry, without duplicating the unit. This is also what makes knowledge.md's Task-Centric principle realizable: one Task's outcome can appear in several participants' views while remaining one Content. content.md defines Composition, Reference, and (unresolved) Arrangement, but names no Timeline concern and no ordering semantics such a view requires; `knowledge.md` formerly pointed its scope boundary at a "Timeline" domain model here, which did not exist — that dangling reference was removed.
+- State: narrowed 2026-10-04. The knowledge-management session modeled organizational history as Content units attached to one or more Timelines — the pattern where a post lives in its author's timeline and reaches others' timelines through re-entry, without duplicating the unit, and where one Task's outcome appears in several participants' views while remaining one Content. That part follows from relations the body already states: neither Composition membership nor arrangement is a property of a node, so one Content may appear in as many Timelines as there are consumers arranging it. What remains open is the cross-Composition case — whether a Timeline spanning separate Compositions (a post reaching another's timeline by re-entry) is an arrangement at all — together with the body's own deferral of any shared arrangement vocabulary to the dedicated Layout/Theme document. content.md names no Timeline concern, and none is claimed here; `knowledge.md` formerly pointed its scope boundary at a "Timeline" domain model here, which did not exist — that dangling reference was removed.
 - Next: decide whether Timeline is a distinct concern, or a consumer-side projection under Arrangement/Composition, when the first multi-timeline case is worked in a consumer project such as `organization`.
 
 ## Anticipated Work
