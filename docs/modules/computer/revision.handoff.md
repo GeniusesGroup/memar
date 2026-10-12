@@ -4,7 +4,7 @@
 Open work for [`revision.md`](./revision.md), the Revision contract (enumerate sources, reviewable plan, explicit write, refuse-on-newly-broken, report). See the repository's [documentation-handoff.md](../../documentation-handoff.md) for what a handoff is.
 
 ## Status
-Draft contract under owner review. The twin split and the Binding narrowing are decided in [`rename-management.handoff.md`](../../../bundles/khayyam/services/rename/rename-management.handoff.md); this file holds what the contract itself still owes.
+Draft contract under owner review. The twin split and the Binding narrowing are decided in `bundles/khayyam/services/rename/rename-management.handoff.md`; this file holds what the contract itself still owes.
 
 ## Open Questions
 - **Portability bound:** the contract claims only what was lifted from examined mechanisms. Under what evidence may a clause be claimed for a language this repository does not have — a second examined mechanism, a proof of language-independence, or never?

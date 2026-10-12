@@ -445,7 +445,7 @@ Dissolved every `#### Discussion` wrapper (the definition topic, Modes of Thinki
   - [README.md](../README.md): Done - a new section stating where Memar stops and where the work continues, which is the disclosure instance of the consistency requirement this entry's second change concerns. That file carries no changelog of its own.
   - [framework.md](./framework.md): None needed - the consistency requirement already states what the README section answers; the answer is not a new claim about the framework.
   - [.agents/skills/memar/SKILL.md](../.agents/skills/memar/SKILL.md): None needed - the skill's intake rules are stated as pointers into this document and inherit the norm's new shape without naming it.
-  - [.agents/scripts/memar-documentation.py](../.agents/scripts/memar-content.py), [.agents/scripts/README.md](../.agents/scripts/README.md): None needed - nothing in this change alters a document's written surface, and the check that reports open work is recorded in the [Documentation Changelog](./documentation-changelog.md).
+  - [.agents/scripts/memar-documentation.py](../.agents/scripts/services/content.py), [.agents/scripts/README.md](../.agents/scripts/README.md): None needed - nothing in this change alters a document's written surface, and the check that reports open work is recorded in the [Documentation Changelog](./documentation-changelog.md).
 - Contributors:
   - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - directed, decided
   - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) - drafted
@@ -497,7 +497,7 @@ Dissolved every `#### Discussion` wrapper (the definition topic, Modes of Thinki
   - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) - argued, applied
 
 #### What changed
-- *Are the four functional groups the right partition?* left the handoff; [Grouping Notes](./cognition.md#grouping-notes) already holds the answer — the groups are a navigation aid, revised when they stop being useful.
+- *Are the four functional groups the right partition?* left the handoff; `Grouping Notes` already holds the answer — the groups are a navigation aid, revised when they stop being useful.
 - *The 4E grounding's adoption depth* left the handoff; [Grounding: Cognition and the 4E Framing](./cognition.md#grounding-cognition-and-the-4e-framing) already holds it — the extended claim is what Memar depends on, and the embodied, embedded, and enacted claims are recorded as context, not yet operationalized.
 - *The other cognitive processes* left the handoff; [What Cognition Is](./cognition.md#what-cognition-is) already names perception, attention, memory, and learning as coupled processes and states that the others are named here so that later work on them finds its home under this concept.
 - *The medium's role as its own topic* left the handoff; [A Conversation as Two Cognitive Systems Connected Through a Medium](./cognition.md#a-conversation-as-two-cognitive-systems-connected-through-a-medium) already states that medium properties do not belong in the document beyond their recognition and the obligations they trigger.
@@ -518,7 +518,7 @@ Dissolved every `#### Discussion` wrapper (the definition topic, Modes of Thinki
   - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) - argued, drafted, applied
 
 #### What changed
-- [Grouping Notes](./cognition.md#grouping-notes) now carries the membership criterion's current verdict rather than only the criterion: no further mode earns a place at present, because the ecosystem's named inferential types decompose into stable combinations of the elementary operations named beneath them rather than adding a function none of them serves, and the judgment of evidence quality and strength of claim is already the Critical mode's.
+- `Grouping Notes` now carries the membership criterion's current verdict rather than only the criterion: no further mode earns a place at present, because the ecosystem's named inferential types decompose into stable combinations of the elementary operations named beneath them rather than adding a function none of them serves, and the judgment of evidence quality and strength of claim is already the Critical mode's.
 
 #### Considered and not done
 - **Continuing to leave *Which further modes belong here* open (rejected)**: the 2026-10-04 entry *Four open questions retired to sections that already answer them* left this question open on the stated ground that no section of the document states a criterion for admitting a further mode. That ground no longer holds: the 2026-09-15 operations layer named the membership criterion at both layers and stated that the document does not grow by adopting every named "X thinking" the ecosystem produces, so the criterion exists and the entry's own candidates can be tested against it.

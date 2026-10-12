@@ -12,7 +12,7 @@
   - [../../documentation-explanation.md → Merging before Final](../../documentation-explanation.md) - Depends_on: the rule authorizing the absorption below, since both documents were `Draft`.
   - [../computer/linter.md](../computer/linter.md) - Depends_on: the authorship rule that keeps the structural conditions out of this document.
   - [../../modeling.md](../../modeling.md) - Extends: the principle that commitments become explicit before they become costly.
-  - [../../khayyam/khayyam.md](../../khayyam/khayyam.md) - Depends_on: the mechanism a type's human-facing text is written by, and the grammar that makes opaque code structurally impossible.
+  - `docs/khayyam/khayyam.md` - Depends_on: the mechanism a type's human-facing text is written by, and the grammar that makes opaque code structurally impossible.
 - Contributors:
   - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) - raised the placement question and ruled that the structural conditions are Rules rather than protocol text; asked whether the TDD document should be deleted and its content absorbed here; corrected the framing of the ordering and that a Test is not limited to code; ruled that a comment is not the destination for why a decision was made, and supplied the `sc` case; and ruled that the skill must bind non-software work too
   - Auto (model not recorded) - drafted both documents, conducted both researches from primary texts, wrote the rules and the tooling, and carried out the absorption
@@ -21,11 +21,11 @@
   - [test.handoff.md](./test.handoff.md): Added - open state, including the questions carried over from the absorbed document.
   - [test.research.001.md](./test.research.001.md): Added - how language ecosystems arrange tests, and who owns each convention.
   - [test.research.002.md](./test.research.002.md): Added - the testing literature written before TDD, read from primary texts, with its negative results recorded.
-  - [../../../modules/process/test/](../../../modules/process/test/): Added - the module realizing this protocol, carrying the placement and naming Rules this document points to.
+  - `modules/process/test/`: Added - the module realizing this protocol, carrying the placement and naming Rules this document points to.
   - [../../../AGENTS.md](../../../AGENTS.md): Done - a section stating that text is not to be put into a file through a shell, with the command that does it instead.
-  - [../../../.agents/scripts/memar-documentation.py](../../../.agents/scripts/memar-content.py): Done - gained `write`, `edit`, and `check`, because a document silently damaged by an encoding round trip is the failure this session produced twice.
+  - [../../../.agents/scripts/memar-documentation.py](../../../.agents/scripts/services/content.py): Done - gained `write`, `edit`, and `check`, because a document silently damaged by an encoding round trip is the failure this session produced twice.
   - [../../../.agents/scripts/README.md](../../../.agents/scripts/README.md): Done - gained a section on putting text into a file, and one on what a subfolder there is for.
-  - [../../../.agents/scripts/tests/install.py](../../../.agents/scripts/tests/memar-install.py): Done - the installer's Tests moved out of the folder that owns what they check, into one named for the role, and the suite still passes.
+  - [../../../.agents/scripts/tests/install.py](../../../.agents/scripts/services/tests/install.py): Done - the installer's Tests moved out of the folder that owns what they check, into one named for the role, and the suite still passes.
   - [../../../.agents/skills/memar/SKILL.md](../../../.agents/skills/memar/SKILL.md): Updated - a development step now binds to a Test written first.
   - [../ddd.md](../lib/process/ddd.md): Done - its TDD relationship entry retargeted, since a document that no longer exists cannot be a sibling case.
   - [../ddd.handoff.md](../lib/process/ddd.handoff.md): Done - its pointer to the expectation-and-check step retargeted.

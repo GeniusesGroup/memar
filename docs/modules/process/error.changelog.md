@@ -7,7 +7,7 @@ The entries below consolidate the document's former front-matter provenance (`Ap
 - Time: unknown (historical import)
 - Type: Added
 - Cited:
-  - [Khayyam](../../khayyam/khayyam.md) — Reference: source of truth for the syntax of every code example in this document (`tp`/`mt`/`vr`/`cp`/`ab`/`sc` keywords, capsule composition, abstraction composition, body-less methods as contracts).
+  - Khayyam (`docs/khayyam/khayyam.md`) — Reference: source of truth for the syntax of every code example in this document (`tp`/`mt`/`vr`/`cp`/`ab`/`sc` keywords, capsule composition, abstraction composition, body-less methods as contracts).
 - Contributors:
   - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — claimed, argued
   - [Gemini](../../../CONTRIBUTORS.md#gemini) (3.1 Pro, extended thinking) — drafted, argued
@@ -191,7 +191,7 @@ Dissolved every `#### Discussion` wrapper (Identity and equality, Boundary trans
 - The handoff entry this resolves is removed; its `Next` line named this document as the rule's home and is discharged by the sub-section.
 
 #### Considered and not done
-- **Filing the addition procedure as a Rule in [Error Rules](../../../modules/process/error/rules/README.md)**: that catalog's membership criterion takes conditions executable over analysis input, and an admission procedure is none; the capability interfaces themselves are definitions this document owns.
+- **Filing the addition procedure as a Rule in Error Rules (`modules/process/error/rules/README.md`)**: that catalog's membership criterion takes conditions executable over analysis input, and an admission procedure is none; the capability interfaces themselves are definitions this document owns.
 - **Naming the candidate fourth interfaces in advance**: a candidate with no need behind it has nothing to be tested against, which is the guard [Modularity → What Earns Foundational Status](../../modularity.md#what-earns-foundational-status) states as *requirements that actually exist, not anticipated ones*.
 
 ---
@@ -201,9 +201,9 @@ Dissolved every `#### Discussion` wrapper (Identity and equality, Boundary trans
 - Time: 2026-10-05T09:34:04Z
 - Type: Changed
 - Cited:
-  - [Abstraction → Deliberate Satisfaction Is Composed, Not Declared](../../khayyam/abstraction.md#deliberate-satisfaction-is-composed-not-declared) — Evidence: the language does not intervene in satisfaction, and a capsule that wants its satisfaction to read as deliberate composes an intent abstraction and explicitly delegates the methods that abstraction requires.
-  - [Abstraction → Rejection of default implementations](../../khayyam/abstraction.md#rejection-of-default-implementations) — Evidence: shared behavior lives in an ordinary capsule and each implementer delegates to it, one line of boilerplate per implementation site.
-  - [Khayyam Rule — abstraction scaffolding](../../../bundles/khayyam/rules/abstraction-scaffolding/abstraction-scaffolding.md) — Evidence: reducing that boilerplate is already an organizational Rule rather than a language question.
+  - Abstraction → Deliberate Satisfaction Is Composed, Not Declared (`docs/khayyam/abstraction.md#deliberate-satisfaction-is-composed-not-declared`) — Evidence: the language does not intervene in satisfaction, and a capsule that wants its satisfaction to read as deliberate composes an intent abstraction and explicitly delegates the methods that abstraction requires.
+  - Abstraction → Rejection of default implementations (`docs/khayyam/abstraction.md#rejection-of-default-implementations`) — Evidence: shared behavior lives in an ordinary capsule and each implementer delegates to it, one line of boilerplate per implementation site.
+  - Khayyam Rule — abstraction scaffolding (`bundles/khayyam/rules/abstraction-scaffolding/abstraction-scaffolding.md`) — Evidence: reducing that boilerplate is already an organizational Rule rather than a language question.
 - Contributors:
   - [Space Bunny Alpha](../../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../../CONTRIBUTORS.md#opencode)) — argued, applied
 

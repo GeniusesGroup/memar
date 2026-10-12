@@ -7,7 +7,7 @@
 - Type: Fixed
 - Cited:
   - [Control Flow in Khayyam](../process/control-flow.md) — Depends_on: `sc` and event abstraction that the compiler exposes
-  - [Variable in Khayyam](../../khayyam/variable.md) — Reference: domain-driven arithmetic and `FromString` human-readable text concerns
+  - Variable in Khayyam (`docs/khayyam/variable.md`) — Reference: domain-driven arithmetic and `FromString` human-readable text concerns
 - Contributors:
   - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested
   - [Super Z](../../../CONTRIBUTORS.md#super-z) — rewrote
@@ -34,7 +34,7 @@
 - Type: Changed
 - Cited:
   - [Khayyam Runtime Specification](runtime.md) — Reference: the same `unsafe` runtime-patching description
-  - [Polymorphism in Khayyam](../../khayyam/polymorphism.md) — Reference: the Dynamic Dispatch Reducibility note that expects reducibility under Immutable Infrastructure
+  - Polymorphism in Khayyam (`docs/khayyam/polymorphism.md`) — Reference: the Dynamic Dispatch Reducibility note that expects reducibility under Immutable Infrastructure
 - Contributors:
   - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — rewrote
 
@@ -48,7 +48,7 @@
 - Type: refactor
 - Cited:
   - [Documentation — Explanation](../../documentation-explanation.md) — Depends_on: the structure this migration follows — YAML front matter, the `Abstract → Introduction → Explanation → Results → Discussion` body, and the per-topic Discussion pattern — is that specification's, applied to this document for the first time.
-  - [Khayyam - Programming Language](../../khayyam/khayyam.md) — Reference: *Khayyam Is Not Its Own Compiler or Runtime* and *Separation of Syntax and Governance*, which supply the framing for the new Abstract, Motivation, and Discussion content.
+  - Khayyam - Programming Language (`docs/khayyam/khayyam.md`) — Reference: *Khayyam Is Not Its Own Compiler or Runtime* and *Separation of Syntax and Governance*, which supply the framing for the new Abstract, Motivation, and Discussion content.
 - Contributors:
   - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested
   - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — rewrote
@@ -113,13 +113,13 @@
 - **Silence instead of events (rejected; migrated from the same topic)**: without emitted control-flow events, each analysis tool would have to re-derive branch structure by re-recognizing library names in the AST — reimplementing, per tool, the coupling the event design avoids.
 - **Hardcode `main`/`init`/`deinit` into the language (rejected; migrated from the `Environment-Agnostic Entry Points` topic's retired Rationale and alternatives)**: permanently couples one execution model to the grammar, forcing a breaking language change whenever the execution paradigm evolves, and making the language wrong-by-default for environments (event-driven, serverless, WASM, embedded) whose boot model differs.
 - **Let the compiler pick one canonical boot convention (rejected; migrated from the same topic)**: moves the coupling from the grammar to the only implementation most users will ever touch — nearly the same coupling with a thinner layer of deniability; boot remains a *configuration* choice, resolved per target.
-- **Privilege specific types or methods as compiler builtins (rejected; migrated from the `Compile-Time Functions` topic's retired Rationale and alternatives)**: violates Zero-Magic Core; there are no privileged types (see [No Privileged Types](../../khayyam/variable.md#no-privileged-types)) — `W32` and `NanoSecond` are ordinary capsules, and the compiler knowing `FromASCII` "by name" would be exactly the magic this directive exists to prevent.
+- **Privilege specific types or methods as compiler builtins (rejected; migrated from the `Compile-Time Functions` topic's retired Rationale and alternatives)**: violates Zero-Magic Core; there are no privileged types (see No Privileged Types (`docs/khayyam/variable.md#no-privileged-types`)) — `W32` and `NanoSecond` are ordinary capsules, and the compiler knowing `FromASCII` "by name" would be exactly the magic this directive exists to prevent.
 - **Let the compiler decide purity automatically by analysis (considered, not chosen; migrated from the same topic)**: silently deciding on the author's behalf conflicts with the principle that design decisions belong to the author and remain visible in source. Automatic analysis may be layered on top of explicit designation as a convenience or diagnostic, but designation stays the source of truth.
 - **Evaluate nothing at compile time (rejected; migrated from the same topic)**: loses the pre-compilation guarantee and pushes genuinely static configuration cost into every runtime startup.
 - **Make runtime module replacement a first-class, always-available capability (rejected; migrated from the `Change Logic in Runtime (Unsafe)` topic's retired Rationale and alternatives)**: contradicts Immutable Infrastructure as the default deployment model — no runtime addition of capability without recompilation — and would normalize the uncontrolled capability evolution that principle exists to prevent.
 - **Omit the capability entirely (rejected; migrated from the same topic)**: microservice-style module turnover has genuine uses; removing it entirely would push adopters toward out-of-band binary manipulation with no audit story at all.
 - **Keep it opt-in and tagged `unsafe` (chosen; migrated from the same topic as the recorded decision)**: the capability exists, is visibly dangerous at the call site, and sits outside the normal path — the same shape as the [runtime-side resolution](./runtime.md#mutating-a-running-artifact-is-unsafe) of this topic.
-- **Fold compiler decisions into [Khayyam](../../khayyam/khayyam.md) (rejected; migrated from the retired document-level Rationale and alternatives)**: Khayyam's own Methodology keeps that document a short overview that links outward; implementation directives there would couple language evolution to implementation detail and grow exactly the document the language spec deliberately keeps small.
+- **Fold compiler decisions into Khayyam (`docs/khayyam/khayyam.md`) (rejected; migrated from the retired document-level Rationale and alternatives)**: Khayyam's own Methodology keeps that document a short overview that links outward; implementation directives there would couple language evolution to implementation detail and grow exactly the document the language spec deliberately keeps small.
 - **Leave compiler behavior unspecified (rejected; migrated from the same block)**: the handoff from language to implementation is Khayyam's central architectural move; leaving the receiving side undocumented means each compiler team re-derives — or silently ignores — the philosophy the handoff exists to preserve, reproducing the convenience-pressure failure mode the separation was designed to prevent.
 
 #### Related work
@@ -158,7 +158,7 @@
 #### What changed
 - The document is now the Compiler protocol: a compiler consumes a language specification and produces a target representation; it is not identified with one language or one target (native, JavaScript, WebAssembly).
 - Requirements stated without owning Khayyam's AST: recognize language primitives not library names; emit analysis events; entry/lifecycle are configuration plus Runtime; designated pure operations may run at compile time; consume the Lexer; runtime mutation of the artifact is `unsafe`.
-- Khayyam-specific lowering (`sc` to internal jumps, `return` as newline-terminated IR marker) moved to [Khayyam](../../khayyam/khayyam.md).
+- Khayyam-specific lowering (`sc` to internal jumps, `return` as newline-terminated IR marker) moved to Khayyam (`docs/khayyam/khayyam.md`).
 - Status returns to Draft. Title is "Compiler".
 
 #### Deliberation
@@ -209,12 +209,12 @@
   - [Control Flow](../process/control-flow.md) - Depends_on: its Library-Defined Control Flow and Structured and Unstructured Flow as Libraries sections are what the guarantee list and the guarantee-versus-freedom line are written against, and its Error Propagation section is where a mid-scope return is named without saying what it returns from.
   - [Type](../../type.md) - Depends_on: the Scope category is what makes visibility a property of a boundary's own rules, which is the rule the seventh and sixth guarantees state for a branch body.
   - [Memory](../memory/memory.md) - Depends_for: the refusal of an uninitialized read is what makes deciding which paths reach a use a compiler obligation rather than a library's.
-  - [Khayyam](../../khayyam/khayyam.md) - Reference: the Scope section's inertness statement is the primitive every guarantee is about, and the Method section's body-less-method form is what the first finding quotes.
-  - [The JavaScript target's emitter](../../../bundles/khayyam/targets/js/src/emit.ts) - Evidence: the scope-to-nested-function lowering, the call-to-call lowering, the `return` emitted inside that function, and the refusal of a scope as a receiver, measured as facts about one realization.
-  - [The JavaScript target's link map](../../../bundles/khayyam/targets/js/link_map.json) - Evidence: the map is empty, which is what makes the deciding half of a conditional unsupplied.
-  - [Control Flow Model](../../../modules/process/control-flow/control-flow.md) - Reference: the consumer whose need each guarantee answers, and the model that holds the driver question open.
-  - [Construction Model](../../../modules/process/construction/construction.md) - Reference: the consumer whose per-path reachability need is the analysis half of this obligation.
-  - [Binding Model](../../../modules/computer/binding/binding.md) - Reference: the consumer whose provisioning need is the third of the three named needs.
+  - Khayyam (`docs/khayyam/khayyam.md`) - Reference: the Scope section's inertness statement is the primitive every guarantee is about, and the Method section's body-less-method form is what the first finding quotes.
+  - The JavaScript target's emitter (`bundles/khayyam/targets/js/src/emit.ts`) - Evidence: the scope-to-nested-function lowering, the call-to-call lowering, the `return` emitted inside that function, and the refusal of a scope as a receiver, measured as facts about one realization.
+  - The JavaScript target's link map (`bundles/khayyam/targets/js/link_map.json`) - Evidence: the map is empty, which is what makes the deciding half of a conditional unsupplied.
+  - Control Flow Model (`modules/process/control-flow/control-flow.md`) - Reference: the consumer whose need each guarantee answers, and the model that holds the driver question open.
+  - Construction Model (`modules/process/construction/construction.md`) - Reference: the consumer whose per-path reachability need is the analysis half of this obligation.
+  - Binding Model (`modules/computer/binding/binding.md`) - Reference: the consumer whose provisioning need is the third of the three named needs.
 - Propagates to:
   - compiler.handoff.md: Done - three open questions carry the mechanism, the decision's provenance, and the mid-scope return, plus one anticipated conformance check.
   - ../khayyam/khayyam.md: Rejected - the guarantee about what a branch body may see belongs to the compiler's obligation and not to the language documents, which is the placement the owner ruled.
@@ -253,10 +253,10 @@
 - Time: 2026-10-03T00:00:00Z
 - Type: Removed
 - Propagates to:
-  - [Khayyam → Scope](../../khayyam/khayyam.md#scope): Done — the language document now states that the grammar has no keyword for leaving a method early.
-  - [Control Flow Model → `return` is a command, not a method](../../../modules/process/control-flow/control-flow.md): Pending — that section's reason for keeping the exit out of the library is a reason the library no longer needs. Not this session's file to write.
-  - [Control Flow Rule — Method Exit](../../../modules/process/control-flow/rules/method-exit/method-exit.md): Done — its third bullet cites `:72` and `:81` for the question this entry removes. Not this session's file to write. [see method-exit.md:28]
-  - [The Construction model](../../../modules/process/construction/construction.md): Pending — it states a body may hold four commands and counts two of them as the substrate its construction library needs. Not this session's file to write.
+  - Khayyam → Scope (`docs/khayyam/khayyam.md#scope`): Done — the language document now states that the grammar has no keyword for leaving a method early.
+  - Control Flow Model → `return` is a command, not a method (`modules/process/control-flow/control-flow.md`): Pending — that section's reason for keeping the exit out of the library is a reason the library no longer needs. Not this session's file to write.
+  - Control Flow Rule — Method Exit (`modules/process/control-flow/rules/method-exit/method-exit.md`): Done — its third bullet cites `:72` and `:81` for the question this entry removes. Not this session's file to write. [see method-exit.md:28]
+  - The Construction model (`modules/process/construction/construction.md`): Pending — it states a body may hold four commands and counts two of them as the substrate its construction library needs. Not this session's file to write.
 - Contributors:
   - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — decided
   - [Space Bunny Alpha](../../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../../CONTRIBUTORS.md#opencode)) — applied
@@ -269,7 +269,7 @@
 - What is untouched. Guarantee 7 — what happens to a body when the enclosing method returns — still holds on its own terms: a body's meaning ends with the execution that declared it. The **A jump** option's reference to [Control Flow → Error Propagation](../process/control-flow.md#error-propagation) naming a mid-scope return as ordinary control flow is about that protocol's own operation, not about a command of a grammar.
 
 #### Considered and not done
-- **Restating the question as "what does the exit method mean".** The removal could have been followed by a replacement question naming the library's method. Not done: the guarantee-versus-freedom test this document states applies to it too, and what such a method would mean is a fact about the library's declaration rather than about how a compiler serves a drive. Where a reader needs it, the [method-exit Rule](../../../modules/process/control-flow/rules/method-exit/method-exit.md) already says the exit operation's target is specified by where its own declaration says it lands (Omid Hekayati — decided).
+- **Restating the question as "what does the exit method mean".** The removal could have been followed by a replacement question naming the library's method. Not done: the guarantee-versus-freedom test this document states applies to it too, and what such a method would mean is a fact about the library's declaration rather than about how a compiler serves a drive. Where a reader needs it, the method-exit Rule (`modules/process/control-flow/rules/method-exit/method-exit.md`) already says the exit operation's target is specified by where its own declaration says it lands (Omid Hekayati — decided).
 - **Rewriting the seven guarantees to name the loss.** A guarantee that assumed a body could end early would have had to be withdrawn, and none does: each of the seven is stated as what a drive means and holds under all four options without it (Omid Hekayati — decided).
 
 ---
@@ -278,17 +278,17 @@
 - Time: 2026-10-04T09:00:00Z
 - Type: Added
 - Cited:
-  - [Inheritance in Khayyam — Changelog](../../khayyam/inheritance.changelog.md) — Evidence: entry "Compiler and linter prescriptions removed from the inheritance document" (`:169`), quotes the removed *Interaction with Smart Compilation* section at `:186` and the two compiler-analysis arguments it overlapped at `:182`.
-  - [Polymorphism in Khayyam — Changelog](../../khayyam/polymorphism.changelog.md) — Evidence: the removed dispatch-strategy section at `:326`, the removed cross-language-compilation bullet at `:321`, the closed/open-set definition that survives at `:306`, and the entry's own *Considered and not done* at `:334`.
-  - [Abstraction in Khayyam — Changelog](../../khayyam/abstraction.changelog.md) — Evidence: the removed zero-cost requirement at `:221` and the removed default-implementation optimization clause at `:225`.
-  - [Encapsulation in Khayyam — Changelog](../../khayyam/encapsulation.changelog.md) — Evidence: the removed *Reduced Optimization Surface* claim at `:287`.
-  - [Method in Khayyam — Changelog](../../khayyam/method.changelog.md) — Evidence: the removed method-ownership expectation at `:225`.
-  - [Variable in Khayyam — Changelog](../../khayyam/variable.changelog.md) — Evidence: the removed file-level-initialization sentence at `:223` and its pending propagation to this document at `:216`.
-  - [Polymorphism in Khayyam — Handoff](../../khayyam/polymorphism.handoff.md) — Evidence: the surviving definition of *devirtualization* at `:18`, used to state what the elided part of the inheritance removal meant.
-  - [The JavaScript target](../../../bundles/khayyam/targets/js/target.md) — Reference: `:60` states this repository's realization's answer to the same question.
+  - Inheritance in Khayyam — Changelog (`docs/khayyam/inheritance.changelog.md`) — Evidence: entry "Compiler and linter prescriptions removed from the inheritance document" (`:169`), quotes the removed *Interaction with Smart Compilation* section at `:186` and the two compiler-analysis arguments it overlapped at `:182`.
+  - Polymorphism in Khayyam — Changelog (`docs/khayyam/polymorphism.changelog.md`) — Evidence: the removed dispatch-strategy section at `:326`, the removed cross-language-compilation bullet at `:321`, the closed/open-set definition that survives at `:306`, and the entry's own *Considered and not done* at `:334`.
+  - Abstraction in Khayyam — Changelog (`docs/khayyam/abstraction.changelog.md`) — Evidence: the removed zero-cost requirement at `:221` and the removed default-implementation optimization clause at `:225`.
+  - Encapsulation in Khayyam — Changelog (`docs/khayyam/encapsulation.changelog.md`) — Evidence: the removed *Reduced Optimization Surface* claim at `:287`.
+  - Method in Khayyam — Changelog (`docs/khayyam/method.changelog.md`) — Evidence: the removed method-ownership expectation at `:225`.
+  - Variable in Khayyam — Changelog (`docs/khayyam/variable.changelog.md`) — Evidence: the removed file-level-initialization sentence at `:223` and its pending propagation to this document at `:216`.
+  - Polymorphism in Khayyam — Handoff (`docs/khayyam/polymorphism.handoff.md`) — Evidence: the surviving definition of *devirtualization* at `:18`, used to state what the elided part of the inheritance removal meant.
+  - The JavaScript target (`bundles/khayyam/targets/js/target.md`) — Reference: `:60` states this repository's realization's answer to the same question.
 - Propagates to:
-  - [Khayyam → Abstraction](../../khayyam/abstraction.md), [Polymorphism](../../khayyam/polymorphism.md), [Inheritance](../../khayyam/inheritance.md), [Encapsulation](../../khayyam/encapsulation.md), [Variable](../../khayyam/variable.md), [Method](../../khayyam/method.md): Rejected — restoring the sentences in the language documents was the position the owner's ruling removed them from; they are stated here instead, in a language that does not name one language's constructs.
-  - [The JavaScript target](../../../bundles/khayyam/targets/js/target.md): Reference — it already states the realization's own mechanism, which this document points at rather than restates.
+  - Khayyam → Abstraction (`docs/khayyam/abstraction.md`), Polymorphism (`docs/khayyam/polymorphism.md`), Inheritance (`docs/khayyam/inheritance.md`), Encapsulation (`docs/khayyam/encapsulation.md`), Variable (`docs/khayyam/variable.md`), Method (`docs/khayyam/method.md`): Rejected — restoring the sentences in the language documents was the position the owner's ruling removed them from; they are stated here instead, in a language that does not name one language's constructs.
+  - The JavaScript target (`bundles/khayyam/targets/js/target.md`): Reference — it already states the realization's own mechanism, which this document points at rather than restates.
   - [docs/modularity.md](../../modularity.md): Done — the name-collision reasoning the same audit removed, which is not this document's subject.
 - Contributors:
   - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested, ruled
@@ -301,7 +301,7 @@
 - [Entry and lifecycle are not grammar](compiler.md#entry-and-lifecycle-are-not-grammar) gained the **freedom** the variable document's removal left open: where a declaration standing outside any operation's body receives its first instance, and from what source, is the realization's — guaranteed none, forbidden none, and never a feature of the grammar.
 - [The implementation in this repository is not this protocol](compiler.md#the-implementation-in-this-repository-is-not-this-protocol) now points at the target's own statement that it resolves a call by the receiver's declared type and refuses a call whose receiver is typed as an abstraction, so the realization's mechanism is cited where the realization keeps it.
 - The Abstract states both new topics and the new freedom, so the enumeration a reader gets from it matches the body.
-- **The eighth removal was found by reading the audit's own propagation ledgers, not from the summary this session began with.** The seven items named in the request account for the compiler destinations recorded at [`abstraction.changelog.md:216`](../../khayyam/abstraction.changelog.md), [`inheritance.changelog.md:175`](../../khayyam/inheritance.changelog.md), [`polymorphism.changelog.md:314`](../../khayyam/polymorphism.changelog.md), and [`khayyam.changelog.md:629`](../../khayyam/khayyam.changelog.md). The eighth is [`variable.changelog.md:216`](../../khayyam/variable.changelog.md) — "where a file-level variable's first instance is established, and from what source" — recorded there as pending against this document's entry-and-lifecycle topic and discharged nowhere until now.
+- **The eighth removal was found by reading the audit's own propagation ledgers, not from the summary this session began with.** The seven items named in the request account for the compiler destinations recorded at `abstraction.changelog.md:216` (`docs/khayyam/abstraction.changelog.md`), `inheritance.changelog.md:175` (`docs/khayyam/inheritance.changelog.md`), `polymorphism.changelog.md:314` (`docs/khayyam/polymorphism.changelog.md`), and `khayyam.changelog.md:629` (`docs/khayyam/khayyam.changelog.md`). The eighth is `variable.changelog.md:216` (`docs/khayyam/variable.changelog.md`) — "where a file-level variable's first instance is established, and from what source" — recorded there as pending against this document's entry-and-lifecycle topic and discharged nowhere until now.
 - **The inheritance removal is the one record that is incomplete, and its text was re-derived rather than reconstructed from the summary.** Its changelog quote elides two passages with `[...]` (`inheritance.changelog.md:186`), so the optimization claims it named — perfectly linear escape analysis, devirtualization, inlining — were taken from the two places the same audit recorded them whole: the Motivation arguments at `inheritance.changelog.md:182`, which carry the escape-analysis substance verbatim, and the polymorphism handoff at `polymorphism.handoff.md:18`, which defines devirtualization. What the elisions hid and no document in the repository now holds is the wording of the introduction to that optimization list; the three named items are what survived into the protocol, and nothing was invented to fill the gaps.
 
 #### Considered and not done

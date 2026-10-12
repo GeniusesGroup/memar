@@ -6,8 +6,8 @@
 - Time: 2026-09-29T11:17:00Z
 - Type: Added
 - Cited:
-  - [Encapsulation in Khayyam → Primitive Capsule Specification](../../khayyam/encapsulation.md#primitive-capsule-specification) - Premise: numeric tower content belonged at the protocol layer, not in the language document.
-  - [Encapsulation in Khayyam Handoff](../../khayyam/encapsulation.handoff.md) - Premise: numeric open questions and owner notes carried from the memar-go port session.
+  - Encapsulation in Khayyam → Primitive Capsule Specification (`docs/khayyam/encapsulation.md#primitive-capsule-specification`) - Premise: numeric tower content belonged at the protocol layer, not in the language document.
+  - Encapsulation in Khayyam Handoff (`docs/khayyam/encapsulation.handoff.md`) - Premise: numeric open questions and owner notes carried from the memar-go port session.
 - Contributors:
   - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) - decided: implementation and protocol-domain content must not live under `docs/khayyam/`
   - Auto (model not recorded) via [Cursor](../../../CONTRIBUTORS.md#cursor) - applied

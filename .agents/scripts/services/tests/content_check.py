@@ -55,6 +55,11 @@ What is pinned, and what each pin is for:
   MemarRulesAutoDetect  Without a flag the folder decides: inside a Memar
                        repository the Markdown conventions apply, outside only
                        encoding and newlines do; an explicit flag wins.
+  CitationDirection   A relative link from a layer to a higher one is
+                      reported, per Documentation -> Citation Direction; the
+                      same link to its own layer or a lower one, a higher place
+                      named in plain text, a README pointing into its own
+                      folder, and files outside the layers are not.
 
 Usage is the interface. Do not duplicate these recipes as prose catalogs.
 """
@@ -374,7 +379,9 @@ class WalkLooksOnlyAtWhatTheProjectOwns(LinkFixture):
                 self.assertFalse([p for p in walked if p.startswith(f"{folder}/")], walked)
 
 
-class MemarRulesAutoDetect(LinkFixture):
+class RepositoryFixture(LinkFixture):
+    """A scratch tree that is a Memar repository, for the rules that ask for one."""
+
     def make_repo(self) -> Path:
         repo = self.root / "Memar"
         repo.mkdir(parents=True, exist_ok=True)
@@ -404,6 +411,8 @@ class MemarRulesAutoDetect(LinkFixture):
         memar_repository.is_memar_repository = isolated
         self.addCleanup(setattr, memar_repository, "is_memar_repository", saved)
 
+
+class MemarRulesAutoDetect(RepositoryFixture):
     def test_memar_conventions_apply_inside_and_not_outside(self) -> None:
         self.isolate()
         repo = self.make_repo()
@@ -435,6 +444,115 @@ class MemarRulesAutoDetect(LinkFixture):
         inside.write_bytes(inside.read_bytes().rstrip(b"\n"))
         self.assertTrue(content_check.check_file(inside, {}, True))
         self.assertTrue(content_check.check_file(inside, {}, False))
+
+
+class CitationDirection(RepositoryFixture):
+    """A relative link runs down the layers, never up.
+
+    The rule is Documentation -> Citation Direction: base documents (docs/),
+    module documents (docs/modules/), the language (docs/khayyam/), and
+    implementations (bundles/ and the code tree modules/), lowest first. A
+    document may link to its own layer or a lower one; a higher place is named
+    in plain text. Files outside the four layers are not judged, and a folder's
+    README may link anywhere inside its own folder.
+    """
+
+    def setUp(self) -> None:
+        super().setUp()
+        self.repo = self.make_repo()
+
+    def put(self, relative: str, text: str) -> Path:
+        path = self.repo / relative
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(text, encoding="utf-8", newline="\n")
+        return path
+
+    def upward(self, path: Path) -> list[str]:
+        return [p for p in content_check.check_file(path, self.cache, True)
+                if "points up" in p]
+
+    def targets(self) -> None:
+        self.put("docs/system.md", "# System\n")
+        self.put("docs/modules/process/error.md", "# Error\n")
+        self.put("docs/khayyam/khayyam.md", "# Khayyam\n")
+        self.put("bundles/khayyam/khayyam.md", "# Toolchain\n")
+        self.put("modules/process/error/README.md", "# Error\n")
+
+    def test_each_upward_pair_is_reported(self) -> None:
+        self.targets()
+        cases = [
+            ("docs/process.md", "./modules/process/error.md"),
+            ("docs/process.md", "./khayyam/khayyam.md"),
+            ("docs/process.md", "../bundles/khayyam/khayyam.md"),
+            ("docs/process.md", "../modules/process/error/"),
+            ("docs/process.md", "../modules/"),
+            ("docs/modules/process/flow.md", "../../../bundles"),
+            ("docs/process.md", "./khayyam/"),
+            ("docs/modules/process/flow.md", "../../khayyam/khayyam.md"),
+            ("docs/modules/process/flow.md", "../../../modules/process/error/README.md"),
+            ("docs/khayyam/flow.md", "../../bundles/khayyam/khayyam.md"),
+            ("docs/comparisons/other.md", "../modules/process/error.md"),
+            ("docs/process.changelog.md", "./modules/process/error.md#error"),
+        ]
+        for source, link in cases:
+            with self.subTest(source=source, link=link):
+                path = self.put(source, f"# T\nSee [X]({link}).\n")
+                found = self.upward(path)
+                self.assertEqual(len(found), 1, found)
+                self.assertIn("line 2", found[0])
+                self.assertIn(link.partition("#")[0], found[0])
+
+    def test_same_layer_and_downward_links_are_not_reported(self) -> None:
+        self.targets()
+        cases = [
+            ("docs/process.md", "./system.md"),
+            ("docs/modules/process/flow.md", "./error.md"),
+            ("docs/modules/process/flow.md", "../../system.md"),
+            ("docs/khayyam/flow.md", "../modules/process/error.md"),
+            ("docs/khayyam/flow.md", "../system.md"),
+            ("bundles/khayyam/rules.md", "../../docs/khayyam/khayyam.md"),
+            ("modules/process/error/error.md", "../../../docs/modules/process/error.md"),
+            ("modules/process/error/error.md", "../../../bundles/khayyam/khayyam.md"),
+        ]
+        for source, link in cases:
+            with self.subTest(source=source, link=link):
+                path = self.put(source, f"# T\nSee [X]({link}).\n")
+                self.assertEqual(self.upward(path), [])
+
+    def test_a_higher_place_named_in_plain_text_is_not_reported(self) -> None:
+        self.targets()
+        path = self.put("docs/process.md",
+                        "# T\nRealized in `bundles/khayyam/khayyam.md`; "
+                        "shown as `[X](../bundles/khayyam/khayyam.md)`.\n")
+        self.assertEqual(self.upward(path), [])
+
+    def test_a_readme_may_point_into_its_own_folder_only(self) -> None:
+        self.targets()
+        inside = self.put("docs/README.md",
+                          "# Docs\n[Modules](./modules/process/error.md) "
+                          "[Language](./khayyam/khayyam.md)\n")
+        self.assertEqual(self.upward(inside), [])
+        out = self.put("docs/modules/README.md",
+                       "# Modules\n[Code](../../modules/process/error/)\n")
+        self.assertEqual(len(self.upward(out)), 1)
+
+    def test_files_outside_the_layers_are_not_judged(self) -> None:
+        self.targets()
+        self.put("CONTRIBUTORS.md", "# Contributors\n")
+        root_readme = self.put("README.md",
+                               "# Memar\n[Code](./bundles/khayyam/khayyam.md)\n")
+        self.assertEqual(self.upward(root_readme), [])
+        skill = self.put(".agents/skills/memar/notes.md",
+                         "# N\n[E](../../../docs/modules/process/error.md)\n")
+        self.assertEqual(self.upward(skill), [])
+        base = self.put("docs/process.md", "# T\n[C](../CONTRIBUTORS.md)\n")
+        self.assertEqual(self.upward(base), [])
+
+    def test_outside_a_memar_repository_nothing_is_layered(self) -> None:
+        self.isolate()
+        self.write("plain/docs/modules/error.md", "# Error\n")
+        path = self.write("plain/docs/process.md", "# T\n[E](./modules/error.md)\n")
+        self.assertEqual(self.upward(path), [])
 
 
 if __name__ == "__main__":

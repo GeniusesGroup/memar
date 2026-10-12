@@ -6,9 +6,9 @@
 - Time: 2026-08-27T00:00:00Z
 - Type: Fixed
 - Cited:
-  - [Encapsulation in Khayyam](../../khayyam/encapsulation.md) — Depends_on: Sovereign Encapsulation that makes fields structurally private
+  - Encapsulation in Khayyam (`docs/khayyam/encapsulation.md`) — Depends_on: Sovereign Encapsulation that makes fields structurally private
   - [Control Flow in Khayyam](../process/control-flow.md) — Depends_on: the compiler-event abstraction that analysis libraries subscribe to
-  - [Method in Khayyam](../../khayyam/method.md) — Reference: `sc`/`mt` as argument positions
+  - Method in Khayyam (`docs/khayyam/method.md`) — Reference: `sc`/`mt` as argument positions
 - Contributors:
   - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested, clarified
   - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — rewrote
@@ -30,7 +30,7 @@ Corrects `Boilerplate Generation`: direct field read/write outside the capsule�
 - Type: refactor
 - Cited:
   - [Documentation — Explanation](../../documentation-explanation.md) — Depends_on: the structure this migration follows — YAML front matter, the `Abstract → Introduction → Explanation → Results → Discussion` body, and the per-topic Discussion pattern — is that specification's, applied to this document for the first time.
-  - [Khayyam - Programming Language](../../khayyam/khayyam.md) — Reference: *Separation of Syntax and Governance*, which supplies the framing for the new Abstract, Motivation, and Discussion content — the linter is where governance lives, so this document's implementer-facing framing leans on that principle more heavily than its two siblings do.
+  - Khayyam - Programming Language (`docs/khayyam/khayyam.md`) — Reference: *Separation of Syntax and Governance*, which supplies the framing for the new Abstract, Motivation, and Discussion content — the linter is where governance lives, so this document's implementer-facing framing leans on that principle more heavily than its two siblings do.
 - Contributors:
   - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested, clarified
   - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — rewrote
@@ -77,7 +77,7 @@ This document is now structured per `documentation-explanation.md`: YAML front m
 - **Provide no assist (rejected; migrated from the same topic)**: without a generation assist the accessor requirement becomes heavy boilerplate, and boilerplate fatigue is exactly the pressure that produces demands to reopen field exposure — the failure this rule exists to prevent.
 - **Promote the suggested diagnostics to language rules (rejected; migrated from the Suggested Diagnostics topic's retired Rationale and alternatives)**: each would either deny existence (ontology — the compiler's side of the line) or harden one organization's flow preference into universal law. The type-as-argument case is the concrete example: the language deliberately leaves which types may be passed as type-arguments unrestricted, keeping syntax generic and placing the meaningfulness rule in tooling.
 - **Scatter the suggested diagnostics across the construct documents they relate to (rejected; migrated from the same topic)**: each construct document states its own language-level semantics; collecting the tooling-side diagnostics in one place keeps the governance layer reviewable as a whole, and keeps the construct documents free of implementation advice that could drift from actual linter behavior.
-- **Fold tooling rules into the construct documents ([Khayyam](../../khayyam/khayyam.md), [Encapsulation](../../khayyam/encapsulation.md), [Control Flow](../process/control-flow.md), ...) (rejected; migrated from the document-level retired Rationale and alternatives)**: each construct document states what the language does and why; sprinkling IDE and linter behavior through them would blur the syntax/governance line the documents exist to demonstrate, and would couple language-document stability to tooling decisions that change far more often.
+- **Fold tooling rules into the construct documents (Khayyam (`docs/khayyam/khayyam.md`), Encapsulation (`docs/khayyam/encapsulation.md`), [Control Flow](../process/control-flow.md), ...) (rejected; migrated from the document-level retired Rationale and alternatives)**: each construct document states what the language does and why; sprinkling IDE and linter behavior through them would blur the syntax/governance line the documents exist to demonstrate, and would couple language-document stability to tooling decisions that change far more often.
 - **Keep linter behavior unspecified (rejected; migrated from the same section)**: governance is the linter's entire job under Khayyam's architecture; leaving it undocumented makes each implementation's policy an accident of whichever team built it, and quietly converts "governance is tunable" into "governance is whatever the default build does."
 - **A dedicated document per tool — linter.md, ide.md, lsp.md (rejected for now; migrated from the same section)**: at the current stage the tooling surface is one coherent set of recommendations; splitting it would multiply cross-referencing overhead before there are distinct implementations to govern. Revisit if the IDE and linter concerns genuinely diverge.
 
@@ -108,7 +108,7 @@ This document is now structured per `documentation-explanation.md`: YAML front m
 
 #### What changed
 - The document is now the Linter protocol: what a linter is, the compiler/linter split, that a rule lives in its subject's document, required members of a governance rule pending notation, configuration and override, event consumption, and that assistance writes source on request.
-- Khayyam-syntax diagnostics left this body: orphan rule to [Modularity in Khayyam](../../khayyam/modularity.md), accessor generation to [Encapsulation](../../khayyam/encapsulation.md), type-as-argument to [Method](../../khayyam/method.md) with a pointer from [Khayyam](../../khayyam/khayyam.md), command-newline/lowering to Khayyam. Declaration-block folding stayed here as a general tooling assist ([Tooling may present structure first](linter.md#tooling-may-present-structure-first)); the Khayyam-specific `tp ... in ...` forms are realization facts of that language's declaration shape, not this protocol.
+- Khayyam-syntax diagnostics left this body: orphan rule to Modularity in Khayyam (`docs/khayyam/modularity.md`), accessor generation to Encapsulation (`docs/khayyam/encapsulation.md`), type-as-argument to Method (`docs/khayyam/method.md`) with a pointer from Khayyam (`docs/khayyam/khayyam.md`), command-newline/lowering to Khayyam. Declaration-block folding stayed here as a general tooling assist ([Tooling may present structure first](linter.md#tooling-may-present-structure-first)); the Khayyam-specific `tp ... in ...` forms are realization facts of that language's declaration shape, not this protocol.
 - Status returns to Draft because the authorship notation is unsettled.
 - Title is "Linter"; the changelog heading follows.
 
@@ -122,7 +122,7 @@ This document is now structured per `documentation-explanation.md`: YAML front m
 - Time: 2026-09-23T07:07:01Z
 - Type: Fixed
 - Cited:
-  - [Khayyam](../../khayyam/khayyam.md) — Reference: the language whose documents exercised the compiler/linter split first; the link is provenance, not derivation.
+  - Khayyam (`docs/khayyam/khayyam.md`) — Reference: the language whose documents exercised the compiler/linter split first; the link is provenance, not derivation.
 - Contributors:
   - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — decided
   - [Mimo](../../../CONTRIBUTORS.md#mimo) (mimo-v2.6-flash via [OpenCode](../../../CONTRIBUTORS.md#opencode)) — applied
@@ -140,7 +140,7 @@ This document is now structured per `documentation-explanation.md`: YAML front m
 - Type: Changed
 - Propagates to:
   - linter.md: Done — A rule's home is its subject's document states the ruling as the protocol's own rule; no action needed there.
-  - [orphan extension](../../../bundles/khayyam/rules/orphan-extension/orphan-extension.md): Done — the rule states the boundary is directory-based by default and organization-overridable; keep this handoff in sync if either changes.
+  - orphan extension (`bundles/khayyam/rules/orphan-extension/orphan-extension.md`): Done — the rule states the boundary is directory-based by default and organization-overridable; keep this handoff in sync if either changes.
 - Contributors:
   - [Space Bunny Alpha](../../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../../CONTRIBUTORS.md#opencode)) — argued, applied
 

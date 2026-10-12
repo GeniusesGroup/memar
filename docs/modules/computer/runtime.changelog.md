@@ -7,7 +7,7 @@
 - Type: Changed
 - Cited:
   - [Khayyam Compiler Directives](compiler.md) — Reference: the same `unsafe` runtime-patching description there
-  - [Polymorphism in Khayyam](../../khayyam/polymorphism.md) — Reference: the Dynamic Dispatch Reducibility note that expects reducibility under Immutable Infrastructure
+  - Polymorphism in Khayyam (`docs/khayyam/polymorphism.md`) — Reference: the Dynamic Dispatch Reducibility note that expects reducibility under Immutable Infrastructure
 - Contributors:
   - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — rewrote
 
@@ -21,7 +21,7 @@
 - Type: refactor
 - Cited:
   - [Documentation — Explanation](../../documentation-explanation.md) — Depends_on: the structure this migration follows — YAML front matter, the `Abstract → Introduction → Explanation → Results → Discussion` body, and the per-topic Discussion pattern — is that specification's, applied to this document for the first time.
-  - [Khayyam - Programming Language](../../khayyam/khayyam.md) — Reference: *Khayyam Is Not Its Own Compiler or Runtime* and *Separation of Syntax and Governance*, which supply the framing for the new Abstract, Motivation, and Discussion content.
+  - Khayyam - Programming Language (`docs/khayyam/khayyam.md`) — Reference: *Khayyam Is Not Its Own Compiler or Runtime* and *Separation of Syntax and Governance*, which supply the framing for the new Abstract, Motivation, and Discussion content.
 - Contributors:
   - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested, clarified
   - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — rewrote
@@ -67,7 +67,7 @@
 - **Keep it opt-in and tagged `unsafe` (chosen; migrated from the same topic as the recorded decision)**: the capability exists, is visibly dangerous at the call site, and sits outside the normal path — the same shape as the [compiler-side resolution](./compiler.md#runtime-mutation-of-the-artifact-is-unsafe) of this topic.
 - **Declare no runtime document at all (rejected; migrated from the retired document-level Rationale and alternatives)**: Khayyam genuinely does not dictate a runtime — but leaving the execution layer entirely unspecified hands the last, least-visible layer of the stack to whoever implements it first, with no record of how the framework is expected to honor the philosophy. The magic-prevention argument that justifies keeping the compiler out of the language applies equally here, one layer down.
 - **Elevate this document to "the Khayyam runtime" (rejected; migrated from the same section)**: would convert a reference architecture into a de-facto language requirement, contradicting the runtime-agnostic stance the document itself opens with. Its Status and framing remain that of one framework's design, consumable and replaceable.
-- **Fold runtime concerns into [Khayyam](../../khayyam/khayyam.md) (rejected; migrated from the same section)**: Khayyam's own Methodology keeps that document a short overview linking outward; execution-layer detail there would couple language evolution to framework implementation choices.
+- **Fold runtime concerns into Khayyam (`docs/khayyam/khayyam.md`) (rejected; migrated from the same section)**: Khayyam's own Methodology keeps that document a short overview linking outward; execution-layer detail there would couple language evolution to framework implementation choices.
 - **A reference architecture for a runtime that does not yet exist in implemented form (drawback record; migrated from the retired document-level Drawbacks)**: the MUST-level commitments (core pinning, user-space scheduling) are currently enforced only by review against this document, not by shipped, measured behavior. The document is also deliberately one-runtime opinionated — a reader might mistake the Memar Framework's choices for Khayyam's requirements, when Khayyam itself remains runtime-agnostic; the opening note exists to prevent exactly that reading, and the boundary between the two is still being worked out (the question is carried in `khayyam-runtime.handoff.md`).
 
 #### Related work
@@ -121,7 +121,7 @@
 - Time: 2026-09-29T11:17:00Z
 - Type: Changed
 - Cited:
-  - [Abstraction in Khayyam Handoff](../../khayyam/abstraction.handoff.md) - Premise: runtime-owned anticipated work belongs here.
+  - Abstraction in Khayyam Handoff (`docs/khayyam/abstraction.handoff.md`) - Premise: runtime-owned anticipated work belongs here.
 - Contributors:
   - Auto (model not recorded) via [Cursor](../../../CONTRIBUTORS.md#cursor) - applied
 

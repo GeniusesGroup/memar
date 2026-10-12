@@ -6,7 +6,7 @@
 - Created `docs/rule.md` (Draft) as the language-neutral Rule and rule-engine concept document at `docs/` root beside `modularity.md`.
 - Created `docs/rule.research.001.md` (Complete) recording terminology research (rule vs policy vs constraint vs convention; SBVR, BRG, production rules).
 - Created `docs/rule.handoff.md` with open questions and an inventory of 32 document-level rule passages proposed for relocation to Module `rules/` folders.
-- Linked from [modularity.md → Rules as a Provisional Term](./modularity.md#rules-as-a-provisional-term) and [modules/khayyam/rules/README.md](../bundles/khayyam/rules/README.md).
+- Linked from [modularity.md → Rules as a Provisional Term](./modularity.md#rules-as-a-provisional-term) and modules/khayyam/rules/README.md (`bundles/khayyam/rules/README.md`).
 
 ### Why
 - Owner position: Rule is a Memar-wide concept; any Module may carry `rules/` beside `protocol/`; rules are owner-introduced, not language/protocol properties; rule-making is general practice.
@@ -14,7 +14,7 @@
 ### Cited
 - [Rule Research 001](./rule.research.001.md) — `Evidence`
 - [Modularity → Rules as a Provisional Term](./modularity.md#rules-as-a-provisional-term) — `Extends`
-- [Linter](./modules/computer/linter.md) — `Reference`
+- Linter (`docs/modules/computer/linter.md`) — `Reference`
 - [Modeling → Separating Structure (Code) from Policy (Rule)](./modeling.md#separating-structure-code-from-policy-rule) — `Reference`
 
 ### Applied to
@@ -30,13 +30,13 @@
 ### What changed
 - Added [rule.md → Rules, Code, and Services](./rule.md#rules-code-and-services): a Rule states a condition; generation/scaffolding/rewriting is a service capability, not Rule text; enforcement by a service keeps behavior in code.
 - Extended [rule.handoff.md](./rule.handoff.md) with Memar server doc gap note, Khayyam rules classification inventory (25 rules: 4 / 5 / 16), and anticipated relocation work.
-- Recorded "generate a service from its name and path" in [SDK handoff](./modules/process/service-sdk.handoff.md) and [Khayyam execution handoff](../bundles/khayyam/khayyam.handoff.md).
+- Recorded "generate a service from its name and path" in SDK handoff (`docs/modules/process/service-sdk.handoff.md`) and Khayyam execution handoff (`bundles/khayyam/khayyam.handoff.md`).
 
 ### Why
 - Owner position (2026-09-29): Rule must not replace code and services; generative work belongs in the Memar server; many `modules/khayyam/rules/` entries are mis-placed.
 
 ### Cited
-- [Khayyam execution handoff → Rule model](../bundles/khayyam/khayyam.handoff.md) — `Reference` (Memar server mention; no defining doc)
+- Khayyam execution handoff → Rule model (`bundles/khayyam/khayyam.handoff.md`) — `Reference` (Memar server mention; no defining doc)
 - [Knowledge → Knowledge and Code](./knowledge.md#knowledge-and-code) — `Reference` (callable generative services)
 
 ### Considered and not done
@@ -53,8 +53,8 @@
 - Owner decision (2026-09-29): Liskov & Guttag observer/mutator families are ADT protocol subject matter, not Khayyam grammar.
 
 ### Cited
-- [observer-mutator.md](../modules/computer/adt/rules/observer-mutator/observer-mutator.md) — `Extends`
-- [ADT handoff](./modules/computer/adt.handoff.md) — `Reference`
+- `modules/computer/adt/rules/observer-mutator/observer-mutator.md` — `Extends`
+- ADT handoff (`docs/modules/computer/adt.handoff.md`) — `Reference`
 
 ---
 
@@ -62,19 +62,19 @@
 - Time: 2026-10-03T12:01:30Z
 - Type: Added
 - Cited:
-  - [Linter → A rule's home is its subject's document](./modules/computer/linter.md#a-rules-home-is-its-subjects-document) — `Evidence`: the principle this criterion extends from the claim to the `rules/` folder
-  - [Khayyam → Minimal Legislation](./khayyam/khayyam.md#minimal-legislation-a-principle) — `Evidence`: `:177` and `:181` for the language test
+  - Linter → A rule's home is its subject's document (`docs/modules/computer/linter.md#a-rules-home-is-its-subjects-document`) — `Evidence`: the principle this criterion extends from the claim to the `rules/` folder
+  - Khayyam → Minimal Legislation (`docs/khayyam/khayyam.md#minimal-legislation-a-principle`) — `Evidence`: `:177` and `:181` for the language test
   - [Modeling → Constraints Belong to the Constraining Concern](./modeling.md#constraints-belong-to-the-constraining-concern) — `Evidence`: a condition is owned by the concern that originates it
-  - [Control Flow Model → Halt](../modules/process/control-flow/control-flow.md#halt) — `Reference`: `:129` for the name `Halt` and `:131` for the refused `panic`
-  - [protocols → Where implementations live](./modules/README.md#where-implementations-live) — `Reference`: `:16` names the module the relocated Rule's protocol claims
-  - [Test → Placement](../modules/process/test/rules/test-placement/test-placement.md) — `Reference`: a Rule already filed in the module that owns its subject
+  - Control Flow Model → Halt (`modules/process/control-flow/control-flow.md#halt`) — `Reference`: `:129` for the name `Halt` and `:131` for the refused `panic`
+  - protocols → Where implementations live (`docs/modules/README.md#where-implementations-live`) — `Reference`: `:16` names the module the relocated Rule's protocol claims
+  - Test → Placement (`modules/process/test/rules/test-placement/test-placement.md`) — `Reference`: a Rule already filed in the module that owns its subject
 
 #### What changed
 - Added [rule.md → Which Module a Rule Belongs To](./rule.md#which-module-a-rule-belongs-to): a Rule belongs to the module that owns its subject; it belongs to a language exactly when no program satisfies every Rule of that language's catalog and still violates it; enforcement does not decide the home; and the two cases the subject test does not decide are named as undecided.
-- Relocated [Disregarded Error](../modules/process/error/rules/disregarded-error/disregarded-error.md) from `modules/khayyam/rules/` to `modules/process/control-flow/rules/` and then, on the owner's ruling that the concern it governs is failure, to `modules/process/error/rules/`, on that criterion. Its normative claim is [The Error](./modules/process/error.md) at `:88` and `:130` together with [Control Flow → Error Propagation](./modules/process/control-flow.md#error-propagation) at `:141` and `:143`, and the same document's `:139` is what the first relocation read as claiming the subject away from The Error.
-- Created `modules/process/control-flow/rules/` with a catalog index and two Rules: the relocated Disregarded Error and [Halt Declaration](../modules/process/control-flow/rules/halt-declaration/halt-declaration.md), which gives the halting concern a Rule of its own rather than a refusal inside a Rule about a failure.
-- Added [Scope Visibility](../bundles/khayyam/rules/scope-visibility/scope-visibility.md) to the Khayyam catalog; its subject is name resolution in the language.
-- Updated the [Khayyam rules index](../bundles/khayyam/rules/README.md) — the Disregarded Error row removed, the Scope Visibility row added, and a pointer to the module catalogs added — and repaired every link into the relocated Rule.
+- Relocated Disregarded Error (`modules/process/error/rules/disregarded-error/disregarded-error.md`) from `modules/khayyam/rules/` to `modules/process/control-flow/rules/` and then, on the owner's ruling that the concern it governs is failure, to `modules/process/error/rules/`, on that criterion. Its normative claim is The Error (`docs/modules/process/error.md`) at `:88` and `:130` together with Control Flow → Error Propagation (`docs/modules/process/control-flow.md#error-propagation`) at `:141` and `:143`, and the same document's `:139` is what the first relocation read as claiming the subject away from The Error.
+- Created `modules/process/control-flow/rules/` with a catalog index and two Rules: the relocated Disregarded Error and Halt Declaration (`modules/process/control-flow/rules/halt-declaration/halt-declaration.md`), which gives the halting concern a Rule of its own rather than a refusal inside a Rule about a failure.
+- Added Scope Visibility (`bundles/khayyam/rules/scope-visibility/scope-visibility.md`) to the Khayyam catalog; its subject is name resolution in the language.
+- Updated the Khayyam rules index (`bundles/khayyam/rules/README.md`) — the Disregarded Error row removed, the Scope Visibility row added, and a pointer to the module catalogs added — and repaired every link into the relocated Rule.
 
 #### Deliberation
 The owner's challenge of 2026-10-03 asked whether all rules relating to Khayyam belong in the language's rules folder, whether the Khayyam language itself claims to solve them, and whether a concern such as `panic` should be a module with its own rules written imperatively rather than a prohibition carried elsewhere. Measured over the catalog as it stood, it held 26 Rules of which 13 had a subject this repository chose rather than the language — a subject the catalog's own membership criterion excludes — while the concern about halting existed only as a sentence inside another Rule's refusal. The answer given is a criterion rather than a move in either direction, and it is placed here because this document is what owns where Rules live: `modules/README.md` puts specifications and general claims in `docs/` and not in the implementation layer.
@@ -169,7 +169,7 @@ The question on record — which framing is primary, or whether the two are view
   - [Type → Abstract](./type.md#abstract) — Evidence: "every semantic entity is a Type", which is what a checkable condition on a governed subject is
   - [Type → Type and Rules](./type.md#type-and-rules) — Evidence: a rule exists at the modeling level as a stated constraint or valid-behavior description, and the checking code is one realization rather than the rule itself
 - Propagates to:
-  - [Linter → How a governance rule is authored](./modules/computer/linter.md#how-a-governance-rule-is-authored): Done — that document's closing paragraph now carries the sentence, recorded in its own changelog
+  - Linter → How a governance rule is authored (`docs/modules/computer/linter.md#how-a-governance-rule-is-authored`): Done — that document's closing paragraph now carries the sentence, recorded in its own changelog
 - Contributors:
   - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — decided
   - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) — argued, drafted, applied

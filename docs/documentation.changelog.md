@@ -11,7 +11,7 @@ This document records why and how `documentation.md` changed over time. See [Doc
   - [Anthropic Claude skill-creator](https://github.com/anthropics/skills/blob/main/skills/skill-creator/SKILL.md) — Reference: one of three independently-designed real Skill-file conventions examined as evidence for the Practice facet's governing schema.
   - [OpenAI Codex skill-creator](https://github.com/openai/skills/blob/main/skills/.system/skill-creator/SKILL.md) — Reference: second independently-converged real Skill-file convention, explicitly listing inclusion of auxiliary documentation inside a skill as an anti-pattern.
   - [Microsoft skill-creator](https://github.com/microsoft/skills/blob/main/.github/skills/skill-creator/SKILL.md) — Reference: third independently-converged real Skill-file convention, sharing the same core schema despite layering additional SDK-specific structure on top.
-  - [Dependency Resolution via File URI and Companion Manifest](./khayyam/modularity.md) — Reference: the Explanation facet's use of URI for contributor identity and citations follows the same File URI approach already established for dependency resolution, in the document that absorbed that one.
+  - Dependency Resolution via File URI and Companion Manifest (`docs/khayyam/modularity.md`) — Reference: the Explanation facet's use of URI for contributor identity and citations follows the same File URI approach already established for dependency resolution, in the document that absorbed that one.
 - Contributors:
   - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — argued, directed, proposed
   - [Super Z](../CONTRIBUTORS.md#super-z) — rewrote
@@ -181,7 +181,7 @@ Fixed skeleton: four sections. Everything else optional, catalogued. Open questi
 - Type: Changed
 - Cited:
   - [Documentation — Explanation](./documentation-explanation.md) - Reference: the two rules specific to that specification's front matter (the slug derives from `Title`; the name is stable once `Final`) stay stated there, while the separator structure moved here.
-  - [Filesystem](./modules/lib/memory/filesystem.md) - Reference: the rejected alternative home, cited because its own thesis is the reason for the rejection.
+  - Filesystem (`docs/modules/lib/memory/filesystem.md`) - Reference: the rejected alternative home, cited because its own thesis is the reason for the rejection.
 - Propagates to:
   - documentation-explanation.md: Done - its `File` topic's superseded filename wording ("hyphenated, no number, no domain prefix") replaced by a pointer to [File Naming](./documentation.md#file-naming); that wording contradicted the practice the convention now describes, since directories carry the category and digits appear inside conceptual terms (`osi_1`) and in Research ordinals by design.
 - Contributors:
@@ -261,7 +261,7 @@ Owner: an executing agent does not need to read the explanatory document to carr
 - Type: Added
 - Cited:
   - [Modeling → Expected Output of a Modeling Session](./modeling.md#expected-output-of-a-modeling-session) - Depends_on: the document that now carries the reduced claim and points here for the rule
-  - [Khayyam Rules Catalog](../bundles/khayyam/rules/README.md) - Evidence: "Each rule has its own folder, holding a main document named after the rule" - the one kind of artifact in this repository that already kept the rule, and the precedent it is drawn from
+  - Khayyam Rules Catalog (`bundles/khayyam/rules/README.md`) - Evidence: "Each rule has its own folder, holding a main document named after the rule" - the one kind of artifact in this repository that already kept the rule, and the precedent it is drawn from
   - [Documentation Practice → Folder READMEs](./documentation.practice.md#folder-readmes) - Depends_on: the folder-README rule that makes a folder's main document addressable by a path a reader types
 - Propagates to:
   - docs/modeling.md: Done - the rule it stated is now a pointer here, and its Abstract and *Expected Output of a Modeling Session* carry the reduced claim.
@@ -293,9 +293,9 @@ Owner: an executing agent does not need to read the explanatory document to carr
 - Cited:
   - [Comparison: Memar and GitHub Spec Kit](./comparisons/spec-kit.001.md) - **Reference**: the comparison whose adoption filter produced these changes. GitHub Spec Kit's `/converge` requires that a converged run leave `tasks.md` byte-for-byte unchanged with no empty Convergence header and report a fixed string; its `check_extension_version_bump.py` turns "please remember to bump" into a merge requirement, with the rationale recorded as a shipped bug class.
 - Propagates to:
-  - [.agents/scripts/memar-documentation.py](../.agents/scripts/memar-content.py): Done - the propagation report and the newline fix below. That file carries no changelog of its own.
+  - [.agents/scripts/memar-documentation.py](../.agents/scripts/services/content.py): Done - the propagation report and the newline fix below. That file carries no changelog of its own.
   - [.agents/scripts/README.md](../.agents/scripts/README.md): Done - what `check` reports on a folder run, the one question it pointedly does not judge, and the `memar` launcher that reaches it by one word. That file carries no changelog of its own.
-  - [.agents/scripts/tests/memar-documentation.py](../.agents/scripts/tests/memar-content.py): Done - five classes of tests for the report, plus five for the append convention. A Test belongs in the folder of the module that owns what it tests, per [Test Placement](../modules/process/test/rules/test-placement/test-placement.md).
+  - [.agents/scripts/tests/memar-documentation.py](../.agents/scripts/services/tests/content.py): Done - five classes of tests for the report, plus five for the append convention. A Test belongs in the folder of the module that owns what it tests, per Test Placement (`modules/process/test/rules/test-placement/test-placement.md`).
   - [documentation.practice.md](./documentation.practice.md): None needed - [Trivial changes](./documentation-changelog.md#trivial-changes) already covers the changelog-entry case, and the new rule is the same economy stated at the level of the artifact rather than the entry; the practice's own step 4 already sends a session with no lasting design change to no entry at all.
   - [documentation-explanation.md](./documentation-explanation.md): None needed - the rule concerns what a check writes, not what a document is.
   - [cognition.changelog.md](./cognition.changelog.md): None needed - the norm change in that entry does not rest on this one.
@@ -494,3 +494,43 @@ The owner proposed the rule as a prohibition on citing informal sources (Omid He
 - The handoff's removals (*Mixed-facet documents*, *Further reader relationships*) are recorded by the 2026-10-04T18:19:38Z entry above, with the body sections that answer them.
 - The path fixes in File Naming (`modules/identifier/media-type.md`, `bundles/khayyam/rules/`) point at existing paths. The counts in that paragraph (41 of 115, 26 folders) were not recounted; the hunk changed only a path.
 - `memar content check` reports two broken links in this changelog (lines 296, 298: `memar-content.py` paths under `.agents/scripts/`); they are in committed text, not in this change, and were left.
+
+---
+
+### A README points; content that matters gets a document
+- Time: 2026-10-12T10:57:14Z
+- Type: Changed
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Claude](../CONTRIBUTORS.md#claude) (Opus-5.5) — drafted, applied
+
+#### What changed
+- New section [A README Points; Content Gets a Document](./documentation.md#a-readme-points-content-gets-a-document): content whose changes matter does not live in a folder README; finding it there is the signal to make it a document. Any agent may create a missing changelog for a document it changes.
+- The citation-direction rule, today kept in docs/khayyam/README.md and docs/modules/README.md and not followed, is the standing instance; session 20261012T105449Z-28376-0 gives it a document of its own.
+
+---
+
+### Citation direction gets a home here, and `memar content check` enforces it
+- Time: 2026-10-12T11:40:00Z
+- Type: Changed
+- Propagates to:
+  - `docs/modules/README.md`: Done — its **Citation direction** paragraph is one sentence pointing here
+  - `docs/khayyam/README.md#citation-direction`: Done — its section is one sentence pointing here
+  - [docs/README.md](./README.md): Done — the `khayyam/` paragraph points here instead of restating the rule
+  - `.agents/scripts/services/content_check.py`: Done — an upward relative link is reported as a problem, with its tests in `.agents/scripts/services/tests/content_check.py` (class `CitationDirection`)
+  - Every document in `docs/` outside `docs/khayyam/`: Done — 658 upward links in 88 files turned into plain text
+  - Every document in `docs/khayyam/`: Pending — 119 upward links, left to session 20261012T105448Z-14472-0, which owns that folder
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Claude](../CONTRIBUTORS.md#claude) (Opus-5.5) — drafted, applied
+
+#### What changed
+- New section [Citation Direction](./documentation.md#citation-direction), stated once for the four layers of the written content, lowest first: base documents (`docs/` and its companions, `docs/comparisons/` among them), module documents (`docs/modules/`), the language (`docs/khayyam/`), and implementations and their documents (`bundles/` and the code tree `modules/`). A document links to its own layer or a lower one, never a higher one; a higher place is named in plain text and nothing is derived from it. The rule holds for every relative link — prose, `Propagates to` lines, changelog history — and for every relation, the inverse ones included. The Abstract's list of cross-cutting conventions names it.
+- Until now the rule lived only in the READMEs of `docs/khayyam/` and `docs/modules/`, named only those two folders, and no tool tested it. The owner found it broken in `modularity.handoff.md`, which named `modules/go-port/` — a folder in the code tree that had already become an implementation's record — and linked above its layer. Measured when the check was first run: 777 upward links across `docs/`, 658 of them outside `docs/khayyam/`.
+- `docs/modules/README.md` allowed a base document to reference a module document as a **consumed contract**. That nuance survives only in the downward direction: a higher layer applying a lower one's definitions is citing down; a base document consumes no module's contract, and names one in plain text where it must.
+- The sweep: each upward link `[label](path#anchor)` became ``label (`path#anchor`)``, the path rooted at the repository, or the rooted code span alone where the label only repeated the path — the plain-text form [Links in recorded entries](./documentation-changelog.md#links-in-recorded-entries) already gives a link that no longer claims an address. Nothing was removed. The repair is trivial in [Trivial changes](./documentation-changelog.md#trivial-changes)'s sense for each document it touched, so this entry records it once rather than an entry per document; the one document whose content changed beyond its links, `modularity.handoff.md`, has its own entry in `modularity.changelog.md`.
+
+#### Considered and not done
+- **Keeping the rule in `docs/documentation.md`'s *Citations* section itself** (not done): that section defines the structured `Cited` field, while the direction rule governs every relative link, so it is a sibling section beside it.
+- **Exempting changelog history** (not done): an entry's links are addresses into the current tree, not history, so they follow the rule like any other link.
+- **Exempting every README** (not done): a README may link anywhere inside its own folder, which is what pointing is; a link out of its folder follows the rule.

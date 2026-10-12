@@ -57,4 +57,4 @@ Where a Type is consumed in more than one implementation language, its identity 
 A Type under construction that wants tools to scaffold it declares the Abstraction it targets through an ordinary construct of its own definition, as [Type → Implementation intent](../../type.md#implementation-intent) requires: it composes an intent-declaring Abstraction, or exposes a plainly named Method announcing the target. The protocol for that declaration is [the Tooling-Facing Implementation-Intent Declaration](./abstraction-implements.md), and this module does not restate it.
 
 ### Realization
-This module is realized at [`modules/computer/type/`](../../../modules/computer/type/), whose README states what belongs there; the names of its declarations are that realization's own. A collection of Types is realized separately, at [`modules/computer/types/`](../../../modules/computer/types/).
+This module is realized at `modules/computer/type/`, whose README states what belongs there; the names of its declarations are that realization's own. A collection of Types is realized separately, at `modules/computer/types/`.

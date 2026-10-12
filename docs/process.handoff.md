@@ -4,7 +4,7 @@ Open work for `process.md`. Entries are mutable current state — revised as eac
 ## Open Questions
 
 ### Expectations and Checks
-2. Whether the four roles that share overloaded domain words (written expectation artifact, comparison procedure, enacted comparison, disposition) eventually need fixed Memar terms beyond the *expectation* / *check* pair clarified in the 2026-09-16 review — open only if that pair proves insufficient in practice; mirrored in [test.handoff.md](./modules/process/test.handoff.md).
+2. Whether the four roles that share overloaded domain words (written expectation artifact, comparison procedure, enacted comparison, disposition) eventually need fixed Memar terms beyond the *expectation* / *check* pair clarified in the 2026-09-16 review — open only if that pair proves insufficient in practice; mirrored in `docs/modules/process/test.handoff.md`.
 
 ### Defect Resolution as an Inquiry
 2. Whether the inquiry's candidates should be organized as a tree across separately asked questions — why the defect occurred, why it reached a participant, why it was not detected earlier, why it lasted as long as it did — rather than held as the competing candidates of a single question. The topic now requires plural candidates and a refuting observation each, and still returns one generating cause. Tracked from [Process Research 002](./process.changelog.md).

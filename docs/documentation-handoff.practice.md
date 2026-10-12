@@ -9,7 +9,7 @@ description: defines how a handoff between sessions is produced and consumed
 ---
 
 ## When This Practice Applies
-A session ends only when the person who started it declares the work finished, not when one reply or task is complete. Until then, continue the same session and retain its state. Produce a handoff when a session ends with any of these true:
+A conversation ends only when the person who started it declares the work finished, not when one reply or task is complete; until then, keep its state. A session is narrower: it holds one task of the conversation, and it ends when that task's check passes or the task stops (`memar session --help`). Produce a handoff when a session or a conversation ends with any of these true:
 
 - the discussion reached decisions or resolutions worth preserving
 - ambiguities were resolved whose reasoning would otherwise be lost
@@ -37,6 +37,14 @@ When a tangent appears mid-session, produce the handoff at once rather than at s
 2. Record the tangent's state into the appropriate handoff (see [Placement](#placement)) so the fresh session starts from it instead of from scrollback.
 3. State in one line what was recorded and where — a silent handoff hides its selection asymmetry.
 4. Load no more of the tangent's context into the current session than recording requires.
+
+---
+
+## Correcting Another Session's Work
+A session that finds another session's work in the shared medium wrong — a claim its source does not support, a deleted record, a question closed without an answer — may correct it; work does not belong to the session that wrote it. Two conditions bind the correction:
+
+- **The other session has finished.** A session still running may be about to change the same passage, and a correction made under it is either overwritten or overwrites. Before correcting, establish that it has ended: its plan's Status is not `open`, or the person who started it says it is done; a session the agent cannot see the state of is asked about, not assumed finished. Then confirm the problem still stands in the current text, since the session may have fixed it before ending.
+- **The correction is reported.** Each correction is recorded where the changed document records changes, and listed at the end of the correcting session's report, and in what it tells the person, so the person and the original author learn what was changed in their work and why.
 
 ---
 

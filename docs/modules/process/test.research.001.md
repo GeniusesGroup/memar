@@ -24,7 +24,7 @@ The four questions carry final standing, but the inquiry is not closed. The web-
 4. **Does a comparative survey of test arrangement across languages exist in the peer-reviewed literature?** — Withdrawn: the premise was not established and the negative result is not reliable enough to state
 
 ### Goals
-- Give [Test Placement](../../../modules/process/test/rules/test-placement/test-placement.md) and [Test Naming](../../../modules/process/test/rules/test-naming/test-naming.md) an external basis, or record explicitly that none exists, so that neither Rule is mistakable for a standard and neither claims authority it lacks — Met
+- Give Test Placement (`modules/process/test/rules/test-placement/test-placement.md`) and Test Naming (`modules/process/test/rules/test-naming/test-naming.md`) an external basis, or record explicitly that none exists, so that neither Rule is mistakable for a standard and neither claims authority it lacks — Met
 - Record what the ecosystems actually do, so that a later session does not re-derive the survey from documentation to answer a question already answered here — Met
 - Identify where this repository's arrangement sits among the existing ones, so the Rules' arguments are about a real position rather than an invented alternative — Met
 
@@ -132,6 +132,6 @@ No change to [test.md](./test.md) follows from this research: that document stat
 
 ## Related Artifacts
 - [test.md](./test.md) — the protocol these Rules check. Needs no revision; it states no structural rule by design.
-- [Test Placement](../../../modules/process/test/rules/test-placement/test-placement.md) — the Rule whose "who decides" premise this research establishes. Needs no revision; its argument is unchanged and its handoff already records that no check enforces it.
-- [Test Naming](../../../modules/process/test/rules/test-naming/test-naming.md) — the sibling Rule. Its observation that a marker duplicates what the folder states is confirmed by the survey's finding that the pair is widely used together (Elixir, Perl), which makes the Rule's argument about duplication rather than about unfamiliarity.
+- Test Placement (`modules/process/test/rules/test-placement/test-placement.md`) — the Rule whose "who decides" premise this research establishes. Needs no revision; its argument is unchanged and its handoff already records that no check enforces it.
+- Test Naming (`modules/process/test/rules/test-naming/test-naming.md`) — the sibling Rule. Its observation that a marker duplicates what the folder states is confirmed by the survey's finding that the pair is widely used together (Elixir, Perl), which makes the Rule's argument about duplication rather than about unfamiliarity.
 - [test.research.002.md](./test.research.002.md) — the companion research on the literature, which bears on the protocol rather than on its realization.

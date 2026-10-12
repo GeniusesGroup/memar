@@ -211,3 +211,19 @@ The wrapper titles are gone from this specification's body; open questions and a
 - The Placement rewrite is recorded and justified by the entry *Placement follows File Naming*; its three instance files exist. That entry said the trigger "has now arrived twice" and then named three files; corrected to "three times".
 - The practice also gained a sentence in *Mid-Session Tangents* (bounded work a session needs integrated is delegation, not a tangent, per "the skill's runtime rules"); the entry *Session completion is declared by its starter* records only the session-end hunk. This entry records the omission. Its `Propagates to` names `.agents/scripts/memar-session.py`, which no longer exists; it records what was true when written.
 - Left unchanged: that entry's time is written with an offset (`-04:00`), which the format allows.
+
+---
+
+### A conversation ends when its person says so; a session may correct another's finished work
+- Time: 2026-10-12T10:57:14Z
+- Type: Changed
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Claude](../CONTRIBUTORS.md#claude) (Opus-5.5) — drafted, applied
+
+#### What changed
+- [When This Practice Applies](./documentation-handoff.practice.md#when-this-practice-applies) said a *session* ends only when the person who started it declares the work finished. That was a leftover from before a session meant one task: it is the *conversation* that ends on the person's word, while a session ends when its task's check passes or the task stops.
+- A new section, [Correcting Another Session's Work](./documentation-handoff.practice.md#correcting-another-sessions-work): a session may correct another session's work once that session has finished and the problem still stands, and reports each correction in the changed document's record, in its own report, and to the person.
+
+#### Considered and not done
+- **Forbidding corrections across sessions (rejected; owner's decision)**: work does not belong to the session that wrote it; what must be avoided is interfering with a session still running.

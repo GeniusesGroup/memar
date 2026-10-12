@@ -40,7 +40,7 @@ Whether fold state should persist per-file, per-project, or reset per session is
 Whether the SHOULD-level structural folding should degrade for very small files is an IDE UX decision not settled here.
 
 ### Is "local directory" the right boundary unit for the Orphan Rule?
-Whether "local directory" is the right unit for the [orphan extension](../../../bundles/khayyam/rules/orphan-extension/orphan-extension.md) rule — as opposed to a repository root, an explicitly declared ownership file, or a linter configuration map — is not settled; the directory heuristic is simple but arbitrary at monorepo scale.
+Whether "local directory" is the right unit for the orphan extension (`bundles/khayyam/rules/orphan-extension/orphan-extension.md`) rule — as opposed to a repository root, an explicitly declared ownership file, or a linter configuration map — is not settled; the directory heuristic is simple but arbitrary at monorepo scale.
 
 ### Should generated setters default to bare assignment or route through a validation hook?
 Whether generated setters should default to bare assignment or to routing through a validation hook the capsule declares is not settled. Placement of the generation assist itself is in doubt pending the catalog-versus-scatter question above.
@@ -57,9 +57,9 @@ Whether generated setters should default to bare assignment or to routing throug
 
 ## Related Artifacts
 - [Linter](linter.md) — Update after the catalog decision.
-- [Encapsulation in Khayyam](../../khayyam/encapsulation.md) — Review: `get`/`set` MAY paragraph may move.
-- [orphan extension](../../../bundles/khayyam/rules/orphan-extension/orphan-extension.md) — Review: boundary unit open question above.
-- [Method in Khayyam](../../khayyam/method.md) — Review: type-as-argument suggested diagnostic may move.
+- Encapsulation in Khayyam (`docs/khayyam/encapsulation.md`) — Review: `get`/`set` MAY paragraph may move.
+- orphan extension (`bundles/khayyam/rules/orphan-extension/orphan-extension.md`) — Review: boundary unit open question above.
+- Method in Khayyam (`docs/khayyam/method.md`) — Review: type-as-argument suggested diagnostic may move.
 - [Memory](../memory/memory.md), [Compiler](compiler.md), [Runtime](runtime.md) — Review; owner critiques pending.
 - Working tree: the rewrite is uncommitted; a fresh session should `git status` before further edits.
 

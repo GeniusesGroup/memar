@@ -153,7 +153,7 @@
 - Automation of path-complete release, when a toolchain performs it, emits explicit source the program includes — a generated file, a temporary compilation unit, or a checked-in companion — rather than hidden insertion or lifetime annotations in the author's source.
 - Safety checks are governance, relaxable by organization; uninitialized reads remain a compiler or linter refusal of existence; allocators are libraries; layout optimization is a separable orchestration concern stated as a long-term goal; emptiness is a type's contract term, not a universal machine condition.
 - Methodology no longer defers reclamation-mechanism choice to a Khayyam-shelf document.
-- `memory_model.md` and its handoff are retired and deleted. Grammar facts that document mixed in (`vr` as logical reference, no assignment operator, pass-by-reference) already live in [Khayyam](../../khayyam/khayyam.md) and [Variable](../../khayyam/variable.md).
+- `memory_model.md` and its handoff are retired and deleted. Grammar facts that document mixed in (`vr` as logical reference, no assignment operator, pass-by-reference) already live in Khayyam (`docs/khayyam/khayyam.md`) and Variable (`docs/khayyam/variable.md`).
 
 #### Deliberation
 - A Khayyam-shelf memory-model document implies the language owns memory management, which the grammar-refusal principle contradicts (Omid Hekayati — claimed).
@@ -173,8 +173,8 @@
 - Time: 2026-09-15T13:00:00Z
 - Type: Changed
 - Cited:
-  - [Khayyam](../../khayyam/khayyam.md) — Realization: no raw pointers, no `nil` keyword, `Deinit()`/`Free()`/`IsNull()` conventions, escape-analysis and PGO placement.
-  - [Variable](../../khayyam/variable.md) — Realization: Resource Lifecycle no longer defers to a missing document.
+  - Khayyam (`docs/khayyam/khayyam.md`) — Realization: no raw pointers, no `nil` keyword, `Deinit()`/`Free()`/`IsNull()` conventions, escape-analysis and PGO placement.
+  - Variable (`docs/khayyam/variable.md`) — Realization: Resource Lifecycle no longer defers to a missing document.
 - Propagates to:
   - memory.handoff.md: Done — compatibility-contract future possibility and generated-name candidate recorded.
   - khayyam.md: Done — `How Khayyam realizes Memory` topic added; Variable bullets gain pointer/`nil` facts.
@@ -193,7 +193,7 @@
 - `variable.md`'s "future document on resource management" was the old shelf by another name; after retirement it would have been a dangling deferral (Omid Hekayati — claimed).
 
 #### Considered and not done
-- **Re-creating a Khayyam `memory_model.md` only for realization notes (rejected again)**: a short topic under [Khayyam](../../khayyam/khayyam.md) is enough; a separate file would re-shelf the misreading.
+- **Re-creating a Khayyam `memory_model.md` only for realization notes (rejected again)**: a short topic under Khayyam (`docs/khayyam/khayyam.md`) is enough; a separate file would re-shelf the misreading.
 - **Editing historical changelog links that still name `memory_model.md` (not done)**: left as provenance, matching the Control Flow merger's practice.
 
 ---

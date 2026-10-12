@@ -53,11 +53,11 @@ The first seven entries below are migrated from `type.md`'s former `## Change Ra
 - Type: Changed
 - Cited:
   - [Modeling](./modeling.md) — Depends_on: Type is the result of correct modeling; the concept of Type cannot be understood independently of the modeling process that identifies what should exist as a Type, and Modeling establishes that abstractions are justified by independent responsibilities, not by data.
-  - [Encapsulation in Khayyam](./khayyam/encapsulation.md) — Reference: specifies how Capsule and Method manifest in Khayyam — Sovereign Encapsulation, method invocation rules, and the rejection of tuples and consumer-side mutability keywords.
-  - [Abstraction in Khayyam](./khayyam/abstraction.md) — Reference: specifies pure behavioral specifications, implicit structural satisfaction, rejection of default implementations, and abstraction composition.
-  - [Inheritance in Khayyam](./khayyam/inheritance.md) — Reference: inheritance is a relationship between abstractions, not between capsules — behavior transfer rejected, abstraction extension supported.
-  - [Polymorphism in Khayyam](./khayyam/polymorphism.md) — Reference: classifies the polymorphism forms Khayyam supports through abstraction conformance — inclusion, parametric, and ad-hoc — and the rejection of generic syntax.
-  - [Khayyam](./khayyam/khayyam.md) — Reference: documents the recurring principles (Behavior Over Type Identity, Domain Modeling, Syntactic Atomicity) that the Type concept in Khayyam instantiates, and is the canonical specification of Khayyam's type subtypes and their syntax.
+  - Encapsulation in Khayyam (`docs/khayyam/encapsulation.md`) — Reference: specifies how Capsule and Method manifest in Khayyam — Sovereign Encapsulation, method invocation rules, and the rejection of tuples and consumer-side mutability keywords.
+  - Abstraction in Khayyam (`docs/khayyam/abstraction.md`) — Reference: specifies pure behavioral specifications, implicit structural satisfaction, rejection of default implementations, and abstraction composition.
+  - Inheritance in Khayyam (`docs/khayyam/inheritance.md`) — Reference: inheritance is a relationship between abstractions, not between capsules — behavior transfer rejected, abstraction extension supported.
+  - Polymorphism in Khayyam (`docs/khayyam/polymorphism.md`) — Reference: classifies the polymorphism forms Khayyam supports through abstraction conformance — inclusion, parametric, and ad-hoc — and the rejection of generic syntax.
+  - Khayyam (`docs/khayyam/khayyam.md`) — Reference: documents the recurring principles (Behavior Over Type Identity, Domain Modeling, Syntactic Atomicity) that the Type concept in Khayyam instantiates, and is the canonical specification of Khayyam's type subtypes and their syntax.
 - Contributors:
   - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — requested
   - [Super Z](../CONTRIBUTORS.md#super-z) (GLM 5.2) — rewrote
@@ -396,7 +396,7 @@ Dissolved every `#### Discussion` wrapper (How to identify a Type, Definition of
 - Time: 2026-09-10T00:00:00Z
 - Type: Fixed
 - Cited:
-  - [Khayyam](./khayyam/khayyam.md) — Depends_on: this document's realization layer, whose placement (`docs/khayyam/`) and citation rule were registered in the same session
+  - Khayyam (`docs/khayyam/khayyam.md`) — Depends_on: this document's realization layer, whose placement (`docs/khayyam/`) and citation rule were registered in the same session
 - Contributors:
   - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — requested
   - [Super Z](../CONTRIBUTORS.md#super-z) — applied
@@ -415,7 +415,7 @@ Dissolved every `#### Discussion` wrapper (How to identify a Type, Definition of
 - Type: Fixed
 - Cited:
   - [Protocol](./protocol.md) — Depends_on: Protocol vs Contract defines a contract as parties, obligations, and commitments.
-  - [Abstraction in Khayyam](./khayyam/abstraction.md) — Reference: the document-level correction this entry extends to the Type model.
+  - Abstraction in Khayyam (`docs/khayyam/abstraction.md`) — Reference: the document-level correction this entry extends to the Type model.
 - Contributors:
   - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — decided
   - [Mimo](../CONTRIBUTORS.md#mimo) (mimo-v2.6-flash via [OpenCode](../CONTRIBUTORS.md#opencode)) — applied
@@ -470,7 +470,7 @@ Dissolved every `#### Discussion` wrapper (How to identify a Type, Definition of
 - Time: 2026-09-26T10:50:00Z
 - Type: Changed
 - Cited:
-  - [Khayyam — Scope](./khayyam/khayyam.md#scope) — Evidence: the inertness claim the toolchain's placement rule rests on, which is a claim about what a code scope is.
+  - Khayyam — Scope (`docs/khayyam/khayyam.md#scope`) — Evidence: the inertness claim the toolchain's placement rule rests on, which is a claim about what a code scope is.
 - Propagates to:
   - modules/khayyam/rules/scope-placement/: Done — the rule's document states what the rule is and what it does not claim, and its handoff records that this section is the level at which a need for a boundary no realization reaches would be reconsidered.
   - modules/khayyam/execution.handoff.md: Done — its `tp` rulings entry carries the `sc` placement ruling, naming the rule folder for the limit and this section for the level at which a need for a boundary outside a Method would be reconsidered.
@@ -485,7 +485,7 @@ Dissolved every `#### Discussion` wrapper (How to identify a Type, Definition of
 - The question a reader of the category has is answered at the level the category is defined: the realizations named above sit at different levels, so placement belongs to the realization, and a need for a boundary at a level no realization reaches yet is a question for this section.
 
 #### Considered and not done
-- **The placement question carried here as a standing request**: a reader of the category is told what the placement limit is not inherent to, and which rule holds it — [Code Scope Placement → Keep it or drop it](../bundles/khayyam/rules/scope-placement/scope-placement.md#keep-it-or-drop-it) (Omid Hekayati — decided).
+- **The placement question carried here as a standing request**: a reader of the category is told what the placement limit is not inherent to, and which rule holds it — Code Scope Placement → Keep it or drop it (`bundles/khayyam/rules/scope-placement/scope-placement.md#keep-it-or-drop-it`) (Omid Hekayati — decided).
 - **Naming the toolchain's rule here by hyperlink**: a base document never cites a document under the language folder, not even as a linked pointer, and the citation-direction rule is not the reason for this one — a base document does not carry a tool's rule in any wording, prose or link.
 - **Forwarding the placement question to a realization's specification**: a base document does not forward a question to a realization it may not cite, and this section is the level at which the question is answerable.
 
@@ -547,7 +547,7 @@ Dissolved every `#### Discussion` wrapper (How to identify a Type, Definition of
 - Time: 2026-10-04T20:35:35Z
 - Type: Changed
 - Cited:
-  - [Encapsulation in Khayyam → Sovereign Encapsulation](./khayyam/encapsulation.md#sovereign-encapsulation) — Evidence: the rule that already denies a consumer any route into a capsule's fields, and leaves enforcement policy to the compiler and linter layer
+  - Encapsulation in Khayyam → Sovereign Encapsulation (`docs/khayyam/encapsulation.md#sovereign-encapsulation`) — Evidence: the rule that already denies a consumer any route into a capsule's fields, and leaves enforcement policy to the compiler and linter layer
   - [Modeling → Domain Decomposition over Aggregate-Root Modeling](./modeling.md#domain-decomposition-over-aggregate-root-modeling) — Considered: the aggregator's one named responsibility, the case the convention completes
 - Propagates to:
   - modeling.handoff.md: Done — the convention-or-lint-rule entry removed; with the validation entry, that section's heading went with it
@@ -555,7 +555,7 @@ Dissolved every `#### Discussion` wrapper (How to identify a Type, Definition of
   - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) — argued, drafted, applied
 
 #### What changed
-- *The Ownership Graph* gains the convention that an aggregator grants no abstraction access to another's internal state — the two are reached only by explicit delegation to methods on them — and records that [Encapsulation in Khayyam → Sovereign Encapsulation](./khayyam/encapsulation.md#sovereign-encapsulation) already denies the route, so what remains for a linter is the governance diagnostic, not a new check on reachability.
+- *The Ownership Graph* gains the convention that an aggregator grants no abstraction access to another's internal state — the two are reached only by explicit delegation to methods on them — and records that Encapsulation in Khayyam → Sovereign Encapsulation (`docs/khayyam/encapsulation.md#sovereign-encapsulation`) already denies the route, so what remains for a linter is the governance diagnostic, not a new check on reachability.
 - `modeling.handoff.md` no longer asks whether a convention or lint rule should prevent an abstraction from directly accessing another abstraction's internal state when both are assembled by the same aggregator.
 
 #### Considered and not done
@@ -568,7 +568,7 @@ Dissolved every `#### Discussion` wrapper (How to identify a Type, Definition of
 - Time: 2026-10-04T21:26:49Z
 - Type: Changed
 - Propagates to:
-  - [protocols/ddd.md](./modules/lib/process/ddd.md): Done — the **Bounded context.** row under *Mapping: Circulated Terms and Memar Homes* carries the reason the term stays undefined and uncarried in Memar prose.
+  - protocols/ddd.md (`docs/modules/lib/process/ddd.md`): Done — the **Bounded context.** row under *Mapping: Circulated Terms and Memar Homes* carries the reason the term stays undefined and uncarried in Memar prose.
 - Contributors:
   - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) — argued, drafted, applied
 
@@ -582,7 +582,7 @@ Dissolved every `#### Discussion` wrapper (How to identify a Type, Definition of
 - Time: 2026-10-05T09:35:23Z
 - Type: Changed
 - Cited:
-  - [Abstraction in Khayyam → Abstraction Realization (Implicit Satisfaction)](./khayyam/abstraction.md#abstraction-realization-implicit-satisfaction) - Evidence: the passage that answers whether accidental satisfaction warrants a mitigation mechanism
+  - Abstraction in Khayyam → Abstraction Realization (Implicit Satisfaction) (`docs/khayyam/abstraction.md#abstraction-realization-implicit-satisfaction`) - Evidence: the passage that answers whether accidental satisfaction warrants a mitigation mechanism
   - [Type → Type Identity](./type.md#type-identity) - Evidence: a Type's identity is its declared name within a context, which is what carries the method-name case
 - Propagates to:
   - type.handoff.md: Done - the "Multiple Abstraction satisfaction" and "Accidental satisfaction mitigation" entries removed, headings and body lines with them
@@ -593,7 +593,7 @@ Dissolved every `#### Discussion` wrapper (How to identify a Type, Definition of
 - [The Relationships Between Categories](./type.md#the-relationships-between-categories) states that a Capsule satisfies every Abstraction whose required methods its own source provides, that satisfaction is judged one Abstraction at a time wherever that Abstraction's type is required, and that nothing in the model limits how many a single Capsule satisfies. The passage carrying it is the relation itself, already stated in that section's table and bullet list — "Capsule satisfies Abstraction: Through implicit structural satisfaction" — plus [Type → Explicit Behavior Ownership](./type.md#explicit-behavior-ownership), under which one Capsule-owned method discharging the identical requirement of two Abstractions stays one method with one owner.
 - The same section now states what a same-named requirement from two Abstractions resolves to: the Capsule's one method of that name answers both where the signatures agree and neither where they differ, and the divergent pair is a modeling conflict between the two Abstractions rather than something merged. The passage carrying it is [Type → Type Identity](./type.md#type-identity) — "two Types with different structures but the same name in the same context represent a modeling conflict, not two valid Types" — read with [Type → Method — Type as Callable Behavior](./type.md#method--type-as-callable-behavior), by which a Method is a Type whose receiver is part of its signature, so the Capsule is the context the name is claimed within.
 - `type.handoff.md` no longer carries "Multiple Abstraction satisfaction".
-- `type.handoff.md` no longer carries "Accidental satisfaction mitigation". That entry asked whether implicit structural satisfaction's risk of accidental conformance warrants a mitigation mechanism and named the Abstraction document as where the question lives; that document has since answered it — "Khayyam answers this risk with composition and delegation rather than with a nominal declaration" ([Abstraction in Khayyam → Abstraction Realization (Implicit Satisfaction)](./khayyam/abstraction.md#abstraction-realization-implicit-satisfaction)), carried further by *Deliberate Satisfaction Is Composed, Not Declared* in the same file. No body sentence was added for it: the answer was already there, and [Type → Type Identity](./type.md#type-identity) had already recorded where the question is owned.
+- `type.handoff.md` no longer carries "Accidental satisfaction mitigation". That entry asked whether implicit structural satisfaction's risk of accidental conformance warrants a mitigation mechanism and named the Abstraction document as where the question lives; that document has since answered it — "Khayyam answers this risk with composition and delegation rather than with a nominal declaration" (Abstraction in Khayyam → Abstraction Realization (Implicit Satisfaction) (`docs/khayyam/abstraction.md#abstraction-realization-implicit-satisfaction`)), carried further by *Deliberate Satisfaction Is Composed, Not Declared* in the same file. No body sentence was added for it: the answer was already there, and [Type → Type Identity](./type.md#type-identity) had already recorded where the question is owned.
 
 #### Considered and not done
 - **Resolving a same-named requirement by renaming, overriding, or ordering the two Abstractions at the satisfying Capsule (rejected)**: each of those is a behavior-acquisition mechanism EBO rejects, and a rule giving one Abstraction precedence over another would make the Capsule's conformance depend on a declaration it is not permitted to make. The model already has the answer it can support — one name in one context identifies one concept, so the disagreement belongs to the requirement sets.
@@ -636,18 +636,18 @@ No new term was introduced: the passage reuses Type, the counterpart, conformanc
 - Time: 2026-10-10T07:40:00Z
 - Type: Changed
 - Cited:
-  - [Modules](./modules/README.md) — Depends_on: module specifications are language-independent, and a base document names a module's ownership without linking up to it.
+  - Modules (`docs/modules/README.md`) — Depends_on: module specifications are language-independent, and a base document names a module's ownership without linking up to it.
 - Propagates to:
-  - [Khayyam → Type Principles Realized](./khayyam/khayyam.md#type-principles-realized): Done — now states that Khayyam is the first and most concrete realization, the fewer-top-level-constructs claim, the no-metadata-keywords rule, and the Rust, OCaml, and Smalltalk comparison for Method as Type.
-  - [Encapsulation in Khayyam → Sovereign Encapsulation](./khayyam/encapsulation.md#sovereign-encapsulation): Done — states how the language meets the ownership graph's aggregator rule, citing this document downward.
-  - [Khayyam Practice](./khayyam/khayyam.practice.md): Done — received the generic-`Init` wrong/right example from step 3 of type.practice.md.
-  - [The Type](./modules/computer/type.md): Done — created; received the companion-artifact layout, generated bindings, translator workflow, identity forms, life cycle, reading a Type, and implementation-intent pointer.
-  - [Polymorphism in Khayyam handoff](./khayyam/polymorphism.handoff.md): Done — the exhaustiveness-tooling need from step 4 of type.practice.md joined the sealed-abstractions entry.
-  - [Linter handoff](./modules/computer/linter.handoff.md): Done — received the heuristic-enforcement state from type.practice.md and three tooling items from type.handoff.md's Anticipated Work.
-  - [Abstraction in Khayyam handoff](./khayyam/abstraction.handoff.md): Done — received "Formal specification of the satisfaction mechanism".
-  - [Khayyam handoff](./khayyam/khayyam.handoff.md): Done — "Bootstrapping without primitives" merged into "Stdlib bootstrap ordering under the no-hidden-primitive rule".
-  - [The Type handoff](./modules/computer/type.handoff.md): Done — received the life-cycle position-set question, the rule-checking strategy, and the delegation-pattern-library item.
-  - [The Type changelog](./modules/computer/type.changelog.md): Done — received the folder rename, the decision to keep `datatypes/`, and the declaration-family rename as results.
+  - Khayyam → Type Principles Realized (`docs/khayyam/khayyam.md#type-principles-realized`): Done — now states that Khayyam is the first and most concrete realization, the fewer-top-level-constructs claim, the no-metadata-keywords rule, and the Rust, OCaml, and Smalltalk comparison for Method as Type.
+  - Encapsulation in Khayyam → Sovereign Encapsulation (`docs/khayyam/encapsulation.md#sovereign-encapsulation`): Done — states how the language meets the ownership graph's aggregator rule, citing this document downward.
+  - Khayyam Practice (`docs/khayyam/khayyam.practice.md`): Done — received the generic-`Init` wrong/right example from step 3 of type.practice.md.
+  - The Type (`docs/modules/computer/type.md`): Done — created; received the companion-artifact layout, generated bindings, translator workflow, identity forms, life cycle, reading a Type, and implementation-intent pointer.
+  - Polymorphism in Khayyam handoff (`docs/khayyam/polymorphism.handoff.md`): Done — the exhaustiveness-tooling need from step 4 of type.practice.md joined the sealed-abstractions entry.
+  - Linter handoff (`docs/modules/computer/linter.handoff.md`): Done — received the heuristic-enforcement state from type.practice.md and three tooling items from type.handoff.md's Anticipated Work.
+  - Abstraction in Khayyam handoff (`docs/khayyam/abstraction.handoff.md`): Done — received "Formal specification of the satisfaction mechanism".
+  - Khayyam handoff (`docs/khayyam/khayyam.handoff.md`): Done — "Bootstrapping without primitives" merged into "Stdlib bootstrap ordering under the no-hidden-primitive rule".
+  - The Type handoff (`docs/modules/computer/type.handoff.md`): Done — received the life-cycle position-set question, the rule-checking strategy, and the delegation-pattern-library item.
+  - The Type changelog (`docs/modules/computer/type.changelog.md`): Done — received the folder rename, the decision to keep `datatypes/`, and the declaration-family rename as results.
   - [Modularity handoff](./modularity.handoff.md): Done — its pointer to the 2026-10-05 ruling retargeted from type.handoff.md to the Type module's changelog.
   - Future Khayyam tooling documents (the Pending propagation of the "Static Concepts" absorption entry): Pending — still open; the linter handoff and the polymorphism handoff now hold the content it waited for, but no tooling document exists.
 - Contributors:

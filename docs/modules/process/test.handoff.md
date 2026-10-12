@@ -4,10 +4,10 @@ Open work for [test.md](./test.md). Entries are mutable current state, revised a
 ## Open Questions
 
 ### The module's own protocol surface
-1. What the Test module under `modules/process/test/` exposes — whether a runner, a discovery service, a report format, or only Rules — is undesigned, and the folder is a carrier of thinking rather than a container awaiting code ([modules → Why a folder may exist before it holds code](../../../modules/README.md#why-a-folder-may-exist-before-it-holds-code)). Deciding it needs a design session the way [SDK](service-sdk.md) records its own.
+1. What the Test module under `modules/process/test/` exposes — whether a runner, a discovery service, a report format, or only Rules — is undesigned, and the folder is a carrier of thinking rather than a container awaiting code (modules → Why a folder may exist before it holds code (`modules/README.md#why-a-folder-may-exist-before-it-holds-code`)). Deciding it needs a design session the way [SDK](service-sdk.md) records its own.
 
 ### The Rules and their enforcement
-1. Whether [test-placement](../../../modules/process/test/rules/test-placement/test-placement.md) and [test-naming](../../../modules/process/test/rules/test-naming/test-naming.md) are checkable by anything this repository runs, or are governance-tier Rules an organization adopts by choice. The toolchain enforces governance Rules for Khayyam source ([Khayyam rules → The rules](../../../bundles/khayyam/rules/README.md#the-rules)); a condition over a folder tree is a different check, and no such check exists yet.
+1. Whether test-placement (`modules/process/test/rules/test-placement/test-placement.md`) and test-naming (`modules/process/test/rules/test-naming/test-naming.md`) are checkable by anything this repository runs, or are governance-tier Rules an organization adopts by choice. The toolchain enforces governance Rules for Khayyam source (Khayyam rules → The rules (`bundles/khayyam/rules/README.md#the-rules`)); a condition over a folder tree is a different check, and no such check exists yet.
 ### The mechanism this protocol declines to state
 1. No runner exists for the language this repository's modules are written in, and the test artifacts currently present are archived from a previous language under a migration marker. Nothing in this protocol requires one, per [test.md → Test, Check, and Runner](./test.md#test-check-and-runner), but a system cannot check the Tests this protocol obliges it to carry without one. Whether the runner belongs to the module here or to a general tool is a separate decision this document does not make.
 
@@ -17,7 +17,7 @@ Open work for [test.md](./test.md). Entries are mutable current state, revised a
 
 ## Anticipated Work
 - The Rules this document points to may grow a third, for what a Test may assume of its own subject's internals once a real case forces the question [test.md → What a Test May Assume](./test.md#what-a-test-may-assume) cannot answer.
-- If a second system adopts this protocol, the placement and naming Rules will have an adopter other than this repository, at which point [Rule → This set is a floor, not a ceiling](../../../bundles/khayyam/rules/README.md#this-set-is-a-floor-not-a-ceiling)'s reasoning applies to them and they should say so themselves.
+- If a second system adopts this protocol, the placement and naming Rules will have an adopter other than this repository, at which point Rule → This set is a floor, not a ceiling (`bundles/khayyam/rules/README.md#this-set-is-a-floor-not-a-ceiling`)'s reasoning applies to them and they should say so themselves.
 
 ### Carried over from the absorbed TDD document
 1. **Whether a fuller vocabulary is warranted for the four roles that share overloaded domain words** ? the written expectation artifact, the comparison procedure, the enacted comparison, and the disposition or result. [Process ? Expectations and Checks](../../process.md#expectations-and-checks) and this document between them use a two-word base plus *Test* for the artifact. A fuller vocabulary is open only if recurring confusion returns; it is not blocking for applying this protocol, and it is the one question the absorbed document left open that its absorption does not answer.

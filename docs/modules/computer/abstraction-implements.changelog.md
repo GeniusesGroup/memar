@@ -55,7 +55,7 @@
 #### What changed
 - The document previously followed the legacy RFC body structure (`Summary / Motivation / Guide-level explanation / Reference-level explanation / Drawbacks / Rationale and alternatives / Prior art / Unresolved questions / Future possibilities`) with `Applied to`, `Citations`, and `Contributor(s)` front matter.
 - Migration mapping, with every load-bearing claim preserved without summarizing: Summary became the Abstract; Motivation kept its role under Introduction; Guide-level explanation became the Explanation topic *Declaring and discovering intent*; Reference-level explanation became the topic *Semantics and constraints*; Drawbacks, Rationale and alternatives, Prior art, Unresolved questions, and Future possibilities moved to the document-wide Discussion.
-- Plain-text references were converted to real hyperlinks per the Internal Cross-References convention (the Contract-First Approach mention now links [khayyam.md](../../khayyam/khayyam.md); the Prior-art precedent mention now links [khayyam-control_flow.md](../process/control-flow.md)).
+- Plain-text references were converted to real hyperlinks per the Internal Cross-References convention (the Contract-First Approach mention now links `docs/khayyam/khayyam.md`; the Prior-art precedent mention now links [khayyam-control_flow.md](../process/control-flow.md)).
 - The former `Applied to`, `Citations`, and `Contributor(s)` front-matter fields moved into this file (entries above); the base document retains only identity front matter.
 - No position changed.
 
@@ -97,7 +97,7 @@ Conceptually closest to Rust's explicit `impl Trait for Type` announcing intent 
 - Time: 2026-09-23T05:38:39Z
 - Type: Fixed
 - Cited:
-  - [Abstraction in Khayyam](../../khayyam/abstraction.md) — Reference: implicit structural satisfaction is specified there; this document now points at it instead of a heading khayyam.md no longer carries.
+  - Abstraction in Khayyam (`docs/khayyam/abstraction.md`) — Reference: implicit structural satisfaction is specified there; this document now points at it instead of a heading khayyam.md no longer carries.
   - [Protocol](../../protocol.md) — Depends_on: Protocol vs Contract.
 - Contributors:
   - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — decided

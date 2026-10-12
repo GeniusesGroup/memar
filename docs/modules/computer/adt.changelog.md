@@ -7,7 +7,7 @@
 - Type: Added
 - Cited:
   - [Modularity Handoff](../../modularity.handoff.md) - Premise: ADT module-placement question belonged with the ADT protocol, not modularity alone.
-  - [`modules/computer/adt/`](../../../modules/computer/adt/) - Evidence: existing protocol declarations.
+  - `modules/computer/adt/` - Evidence: existing protocol declarations.
 - Contributors:
   - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) - decided: state only what the sources already establishes
   - Auto (model not recorded) via [Cursor](../../../CONTRIBUTORS.md#cursor) - applied
@@ -24,10 +24,10 @@
 - Type: Changed
 - Cited:
   - [Rule → Where Rules Live: rules/ Beside protocol/](../../rule.md#where-rules-live-rules-beside-protocol) - Premise: ADT module owns observer/mutator governance.
-  - [observer-mutator.handoff.md](../../../modules/computer/adt/rules/observer-mutator/observer-mutator.handoff.md) - Premise: owner decisions on method naming and side files.
+  - `modules/computer/adt/rules/observer-mutator/observer-mutator.handoff.md` - Premise: owner decisions on method naming and side files.
 - Contributors:
   - Auto (model not recorded) via [Cursor](../../../CONTRIBUTORS.md#cursor) - applied
 
 #### What changed
-- Relocated observer/mutator rule from Khayyam rules to [modules/computer/adt/rules/observer-mutator/](../../../modules/computer/adt/rules/observer-mutator/observer-mutator.md); added ADT `rules/` README.
+- Relocated observer/mutator rule from Khayyam rules to modules/computer/adt/rules/observer-mutator/ (`modules/computer/adt/rules/observer-mutator/observer-mutator.md`); added ADT `rules/` README.
 - Updated [adt.handoff.md](./adt.handoff.md) plan item to cite the new rule path.

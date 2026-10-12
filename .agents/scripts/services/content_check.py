@@ -7,7 +7,8 @@ Two sets of rules, separated by what they hold for. The encoding and newline
 rules hold for every text file in every project, because a shell damages a file
 the same way whatever the file is for. Memar's written-surface rules — no blank
 line under a heading, no run of blank lines, a link that resolves to a file and
-a heading — are Memar's own conventions and apply only inside a Memar
+a heading and does not point up the layers of the written content — are Memar's
+own conventions and apply only inside a Memar
 repository, which is asked of `machine/fs_memar_repository.py` rather than
 assumed.
 
@@ -67,8 +68,9 @@ def describe(verbs):
                     "CRLF line endings, a missing final newline, and the "
                     "fingerprints of mojibake; and for Markdown, two blank "
                     "lines in a row, a blank line between a heading and its "
-                    "body, an anchor with no matching heading, and a relative "
-                    "link whose target does not exist. Given a folder it also "
+                    "body, an anchor with no matching heading, a relative "
+                    "link whose target does not exist, and a relative link "
+                    "that points up the citation layers. Given a folder it also "
                     "reports undischarged propagations, printed apart and not "
                     "counted as problems.",
         formatter_class=argparse.HelpFormatter,
@@ -178,8 +180,78 @@ def _fragments_of(path: Path, cache: dict[str, set[str] | None]) -> set[str] | N
     return cache[key]
 
 
+# The layers of Memar's written content, lowest first, as Documentation ->
+# Citation Direction names them; that section owns the order and the reasons,
+# and this table only maps a path inside a Memar repository onto it.
+LAYER_NAMES = (
+    "base documents (docs/)",
+    "module documents (docs/modules/)",
+    "the language (docs/khayyam/)",
+    "implementations (bundles/, modules/)",
+)
+
+
+def _repository_of(path: Path, cache: dict) -> Path | None:
+    """The Memar repository `path` sits in, asked once per folder per run."""
+    from machine.fs_memar_repository import enclosing_repository
+
+    key = ("repository", str(path.parent))
+    if key not in cache:
+        found = enclosing_repository(path.parent)
+        cache[key] = found.resolve() if found is not None else None
+    return cache[key]
+
+
+def citation_layer(path: Path, repository: Path | None) -> int | None:
+    """Which layer of Documentation -> Citation Direction `path` belongs to.
+
+    None for a path outside every layer — outside a Memar repository, or a file
+    such as the repository's README, CONTRIBUTORS, or `.agents/` — which the
+    rule does not judge.
+    """
+    if repository is None:
+        return None
+    try:
+        parts = path.resolve().relative_to(repository).parts
+    except ValueError:
+        return None
+    if not parts:
+        return None
+    if parts[0] == "docs":
+        return {"khayyam": 2, "modules": 1}.get(parts[1], 0) if len(parts) > 1 else 0
+    if parts[0] in ("bundles", "modules"):
+        return 3
+    return None
+
+
+def _upward_link_problem(path: Path, file_part: str, line: int, cache: dict) -> str | None:
+    """The problem a link from `path` to a higher layer is, or None."""
+    repository = _repository_of(path, cache)
+    source = citation_layer(path, repository)
+    if source is None:
+        return None
+    target = path.parent / file_part
+    higher = citation_layer(target, repository)
+    if higher is None or higher <= source:
+        return None
+    if path.name == "README.md":
+        # A folder's README points into its own folder; that is what it is for.
+        try:
+            target.resolve().relative_to(path.parent.resolve())
+            return None
+        except ValueError:
+            pass
+    return (
+        f"line {line}: relative link {file_part} points up from "
+        f"{LAYER_NAMES[source]} to {LAYER_NAMES[higher]}. A citation runs down "
+        "the layers, never up (Documentation -> Citation Direction): name the "
+        "higher place in plain text, as a code span holding its path, or move "
+        "the content to the layer that may hold it."
+    )
+
+
 def _relative_link_problems(path: Path, visible: str, cache: dict) -> list[str]:
-    """Every relative link in a Markdown document that does not resolve.
+    """Every relative link in a Markdown document that does not resolve, or points up.
 
     Both halves of a link are checked, because both break the same way and a
     document moved one folder deep takes its links' paths and their anchors with
@@ -197,6 +269,9 @@ def _relative_link_problems(path: Path, visible: str, cache: dict) -> list[str]:
             continue  # site-root, not a path relative to this document
         target = path.parent / file_part
         line = visible[: match.start()].count("\n") + 1
+        upward = _upward_link_problem(path, file_part, line, cache)
+        if upward:
+            problems.append(upward)
         if not target.exists():
             problems.append(
                 f"line {line}: relative link {file_part} does not exist. A link "

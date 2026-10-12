@@ -170,7 +170,7 @@ Open questions (dot-boundary criterion, entry-title uniqueness, historical-entry
 - Time: 2026-09-09T06:02:23Z
 - Type: Added
 - Cited:
-  - [SDK](./modules/process/service-sdk.changelog.md) — Evidence: the triggering case — a link-repair entry in gui.changelog.md whose whole content restated a one-line diff — was flagged in the SDK protocol's own changelog while its propagation record was being written.
+  - SDK (`docs/modules/process/service-sdk.changelog.md`) — Evidence: the triggering case — a link-repair entry in gui.changelog.md whose whole content restated a one-line diff — was flagged in the SDK protocol's own changelog while its propagation record was being written.
 - Propagates to:
   - gui.changelog.md: Done — the "SDK link corrected" entry removed under the new rule; the fix itself had already landed and remains in version control.
 - Contributors:
@@ -380,10 +380,10 @@ Open questions (dot-boundary criterion, entry-title uniqueness, historical-entry
 - Type: Added
 - Propagates to:
   - [documentation-changelog.handoff.md](./documentation-changelog.handoff.md): Done — carries the four new open questions and the two new anticipated-work items the audit produced.
-  - [../bundles/khayyam/rules/import-address/import-address.changelog.md](../bundles/khayyam/rules/import-address/import-address.changelog.md): Done — an entry recording a change to `docs/khayyam/modularity.md` left this rule's ledger.
-  - [khayyam/modularity.changelog.md](./khayyam/modularity.changelog.md): Done — holds that entry.
-  - [khayyam/khayyam.changelog.md](./khayyam/khayyam.changelog.md): Done — holds an entry recording a change to `khayyam.practice.md`, misplaced from `encapsulation.changelog.md`.
-  - [modules/net/networking.changelog.md](./modules/net/networking.changelog.md): Done — holds an entry recording a change to `networking.md`, misplaced from `giti.changelog.md`.
+  - `bundles/khayyam/rules/import-address/import-address.changelog.md`: Done — an entry recording a change to `docs/khayyam/modularity.md` left this rule's ledger.
+  - `docs/khayyam/modularity.changelog.md`: Done — holds that entry.
+  - `docs/khayyam/khayyam.changelog.md`: Done — holds an entry recording a change to `khayyam.practice.md`, misplaced from `encapsulation.changelog.md`.
+  - `docs/modules/net/networking.changelog.md`: Done — holds an entry recording a change to `networking.md`, misplaced from `giti.changelog.md`.
   - [modularity.changelog.md](./modularity.changelog.md): Done — no longer holds the entry recording a rename inside the `modules/` tree, which moved to that tree's own ledger.
 - Contributors:
   - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — asked for the audit, reported misplaced records in `cognition.changelog.md`
@@ -423,3 +423,20 @@ Open questions (dot-boundary criterion, entry-title uniqueness, historical-entry
 - Fixed in the placement-audit entry in this file: the `Related work` line's seven links were written `[Content(./content.md)` and did not render as links, and now read `[Content](./content.md)`; the blank line before `#### What changed`, `#### Deliberation` and `#### Considered and not done` was missing, unlike every other entry; one `Propagates to` link text began `../../bundles/` while its target (correctly) began `../bundles/`, and three others carried `../` text over `./` targets, and their texts now match their targets.
 - Fixed in `documentation-changelog.handoff.md`: the Anticipated Work item *Pending queue triage, blocking rule, and traceability surface* said nothing triages the Pending queue (61 at last report) and that answering "which documents depend on this one" needed full-text search. [Spec Kit comparison](./comparisons/spec-kit.001.md), section 12, records the queue triaged (18 discharged, 5 re-pointed, 37 kept open), `check` now reports 52 undischarged, and the `backlinks` and `obligations` verbs exist. The item is rewritten as *Pending queue: blocking ruling, enforcement, and traceability surface*, keeping what is still undecided.
 - Not checked: the audit entry's counts (about 560 entries, 77 files), the byte-identity of `cognition.changelog.md` to HEAD at the time of the audit (the file now differs through another session's work), and the two open questions' line citations beyond `documentation-changelog.changelog.md:336`.
+
+---
+
+### Dead links in recorded entries are repaired; a question recorded only to be remembered needs no entry
+- Time: 2026-10-12T10:57:14Z
+- Type: Changed
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Claude](../CONTRIBUTORS.md#claude) (Opus-5.5) — drafted, applied
+
+#### What changed
+- New section [Links in recorded entries](./documentation-changelog.md#links-in-recorded-entries): an entry's prose is history, its links are not. A dead link is repointed where its target moved, and turned into plain text where the target no longer exists, so no reader or check asks about it again.
+- [Trivial changes](./documentation-changelog.md#trivial-changes) gains *A question recorded so it is not forgotten*: adding a stated, unevaluated question to a handoff receives no changelog entry, unless the addition carries a decision (alternatives weighed, a question narrowed, merged, or replaced). Removing a question is never covered.
+- Applied the first rule: links to the retired `.agents/scripts/memar-content.py`, `tests/memar-content.py` and `tests/memar-install.py` in cognition, documentation and test changelogs now point at their successors under `.agents/scripts/services/`; the two links to cognition.md's removed *Grouping Notes* heading are now plain text.
+
+#### Considered and not done
+- **Teaching `memar content check` to skip dead links inside changelogs (rejected)**: whether a target moved or vanished is a judgment the check cannot make; repairing the link once removes the question for everyone.

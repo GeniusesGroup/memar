@@ -82,7 +82,7 @@
 - The members of the read-only state query — which facts it returns and in what form — are left to each protocol's own document, as the half-open rule already leaves frame-level mechanics.
 
 #### Considered and not done
-- **Declare a connection-specific subscription abstraction beside `EventTarget` (rejected)**: [Abstraction → Abstraction Realization (Implicit Satisfaction)](../../khayyam/abstraction.md#abstraction-realization-implicit-satisfaction) holds that a narrowed `DispatchEvent` parameter satisfies nothing, and a bespoke channel would be the shadow copy the ownership rule forbids. (Space Bunny Alpha — argued)
+- **Declare a connection-specific subscription abstraction beside `EventTarget` (rejected)**: Abstraction → Abstraction Realization (Implicit Satisfaction) (`docs/khayyam/abstraction.md#abstraction-realization-implicit-satisfaction`) holds that a narrowed `DispatchEvent` parameter satisfies nothing, and a bespoke channel would be the shadow copy the ownership rule forbids. (Space Bunny Alpha — argued)
 - **Fix the members of the read-only state query in this document (not taken)**: the query's shape is each protocol's own to state, the same division the half-open rule already draws for frame-level mechanics. (Space Bunny Alpha — argued)
 
 ---
