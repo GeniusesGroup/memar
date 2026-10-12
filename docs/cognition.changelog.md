@@ -543,3 +543,93 @@ Dissolved every `#### Discussion` wrapper (the definition topic, Modes of Thinki
 #### Considered and not done
 - **Phrase it as a new discourse norm rather than an asymmetry obligation** (rejected): the failure — reporting wanted material as read material — is precisely an asymmetry failure; norms bind at intake, while this binds every read.
 
+---
+
+### Adding a record is not a large-scope change
+- Time: 2026-10-10T14:30:00Z
+- Type: Changed
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — decided
+  - An AI agent (via [Cursor](../CONTRIBUTORS.md#cursor)) — drafted, applied
+
+#### What changed
+- [Confirm before large-scope changes](./cognition.md#confirm-before-large-scope-changes) gains its boundary: adding a rule, a note, or an open question to the document that owns its subject waits for no one; removing text is a change the norm covers, because removal is what loses information. The rule itself lives in [Documentation → Recording Is Not Gated; Removal Is](./documentation.md#recording-is-not-gated-removal-is).
+
+#### Considered and not done
+- **Stating the whole rule here** (rejected): one home per rule; this norm needed only the sentence that keeps it from being read as gating additions spread across several documents.
+
+---
+
+### Thinking modeled by its components; named kinds read as compositions
+- Time: 2026-10-12T07:45:14Z
+- Type: Changed
+- Cited:
+  - Richard Paul and Linda Elder, *The Miniature Guide to Critical Thinking: Concepts and Tools* (Foundation for Critical Thinking) — Evidence: the nine universal intellectual standards (clarity, accuracy, precision, relevance, depth, breadth, logic, significance, fairness; sufficiency is among the further standards in their *Thinker's Guide to Intellectual Standards*), adopted standard by standard under this document's membership criterion and stripped of the word *critical*; the elements of thought it pairs them with are recorded as an open question in the handoff, not adopted.
+- Propagates to:
+  - cognition.practice.md: Done — *Working With the Operations Layer* became [Working With the Components](./cognition.practice.md#working-with-the-components): clarity first on input and output, named kinds translated into components, the operation and the standard named in a judgment; *Where Critique Sits* and the front matter no longer describe critique as a mode.
+  - cognition.handoff.md: Done — *Whether discourse norms should regroup by mode* left Open Questions (regrouping by a false taxonomy would rebuild it); two questions added (questioning as an operation; elements of thought as a component class); the Anticipated Work items on the mode list, the Runs-on reader test, the survey, and graduation now speak of components.
+  - modeling.md: Done — [False Taxonomies Hide Shared Structure](./modeling.md#false-taxonomies-hide-shared-structure) is the concept's new home; see modeling.changelog.md.
+  - agency.md: Done — its *False Taxonomies* section narrowed to [Professional Categories as False Taxonomies](./agency.md#professional-categories-as-false-taxonomies); see agency.changelog.md.
+  - documentation-explanation.practice.md: Done — the writing step holds the draft to the [standards of thinking](./cognition.md#standards-of-cognitive-material) instead of "exercising the thinking modes."
+  - `.agents/skills/memar/SKILL.md`: Done — the sections read before a step that reasons, critiques, asks, or delegates now include a link to [Standards of Thinking](./cognition.md#standards-of-cognitive-material); nothing of the section is copied into the skill.
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — claimed, decided
+  - [Claude](../CONTRIBUTORS.md#claude) (Opus-5.5) — argued, drafted, applied
+
+#### What changed
+- The Abstract no longer names any kind of thinking. It names the component classes thinking is modeled by — elementary operations, standards, awareness disciplines, named errors — listing only the standards' members, and states that the field's named kinds of thinking are compositions of the components and, read as a division of thinking, a false taxonomy.
+- *Modes of Thinking*, its four functional groups, and *Grouping Notes* are replaced by [The Components of Thinking](./cognition.md#the-components-of-thinking), which states the owner's claim — named kinds credit shared components to single kinds, so each is imprecise without the components filed under another — and the four component classes.
+- A new class, [Standards of Thinking](./cognition.md#standards-of-cognitive-material): clarity, accuracy, precision, relevance, depth, breadth, consistency, significance, fairness, sufficiency — each a criterion held wherever material appears (input, process, output), owned by no kind and dropped by none. Only clarity is ranked, because every other standard is judged on a clear statement; the boundaries between consistency and sufficiency, accuracy and sufficiency, and depth and breadth are stated; the body names what differs from Paul and Elder's nine (logic named consistency; sufficiency added).
+- A new operation, **inference** (deduction, induction, abduction as its forms), distinguished from commitment (inference derives what follows; commitment closes the field). The 2026-10-05 verdict that the named inferential types decompose into the existing operations did not hold: their forms lean on comparison and generation, but the carrying-over of support to a conclusion is none of the existing operations, and almost every act that concludes depends on it; the removed handoff question had already anticipated inference becoming an operation.
+- Content the mode entries carried that was not mere labeling moved to the component it belongs to: prospective analogy and the biomimicry example to *mapping*; the abstract/concrete cycle and receiving a criticism at its root to *instantiation*; the whole-document claim-then-rationale method to *decomposition*; the revision mechanisms to *discrepancy noticing*; the diverge/converge cycle, rejected alternatives as evidence of the widening, and deferred judgment in supposition to [How the Components Combine](./cognition.md#how-the-components-combine), which also keeps the strategy/disposition/phase answer; Systems' pointer to Modeling and System to its table row. Illustrative lines (architecture as a decision's or a supposition's output, a definition as abstraction's product) were not carried.
+- [Named Kinds of Thinking Are Compositions](./cognition.md#named-kinds-of-thinking-are-compositions) keeps the names only to translate, with a use rule (begin from what the material lacks — the operation it needs, the standard it fails) and a table whose first rows are carried over from the retired mode list; its columns show emphasis only, and every discipline and standard binds every row. Decision and convergence share their operations and differ only in where their field comes from, which the section states as the table's lesson.
+- Review: a newly started reviewer (Claude Sonnet, not the drafting session) returned *approve with changes* — three must-fix (kind names still in the Abstract; the table's claim that critical components "recur in nearly every other row" contradicted by its own cells; open questions missing from the handoff) and twelve should-fix or optional findings. All were applied except three: the handoff one, which concerns another session's uncommitted removal of those questions, not this change; the optional suggestion to name only the classes in the Abstract, taken in part (operation names dropped, standards kept, since the owner's point was that clarity binds every session); and the optional note that mechanical steps skip the standards' read in the skill, which needed no change; the report is kept in session 20261012T073912Z-21576-0.
+- Methodology, the *consult other cognitive systems* norm, and *Named Errors* now speak of components rather than modes; each named error is an operation failing a standard.
+
+#### Considered and not done
+- **Keeping the mode list after the components (rejected; owner's decision)**: still loads the names as if they were the model's division, which is the false taxonomy the change removes.
+- **Deleting the names with no table (rejected; owner's decision)**: material keeps arriving in those words; without a translation the reader re-derives the mapping each time.
+- **Deriving standards only from what Memar's own work has recorded (rejected; owner's decision)**: clarity, accuracy, consistency, and sufficiency are already exercised implicitly by the norms; a recognized set reviewed member by member gives the class a complete first version without importing it wholesale.
+- **Coining *false classification* for the owner's term (rejected; owner's decision)**: Memar already held the concept as *false taxonomy*, with the same "useful, not wrong" sense; the concept was moved to its proper home rather than given a second name.
+- **Copying the standards into the skill (rejected; owner's decision)**: a copy is a cache that must be invalidated whenever the section changes; the skill links the section.
+- **Adding questioning as an operation now (deferred)**: plausible, but not yet shown distinct from generation aimed at a gap; recorded in the handoff.
+
+---
+
+### Cognition's own components separated from thinking's
+- Time: 2026-10-12T09:46:32Z
+- Type: Changed
+- Propagates to:
+  - cognition.practice.md: Done — *Working With the Components* and *Quality Standards* link the standards at their new anchor and name material and disciplines as cognition's; the named-error check speaks of cognitive processes.
+  - cognition.handoff.md: Done — *thinking material* renamed *cognitive material*.
+  - documentation-explanation.practice.md: Done — link repointed to [Standards of Cognitive Material](./cognition.md#standards-of-cognitive-material).
+  - documentation-handoff.md: Done — *thinking material* renamed *cognitive material*.
+  - `.agents/skills/memar/SKILL.md`: Done — the link to the standards follows the renamed section; nothing copied.
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — claimed, decided
+  - [Claude](../CONTRIBUTORS.md#claude) (Opus-5.5) — argued, drafted, applied
+
+#### What changed
+- The owner's claim: this document is about cognition, not only thinking, and some of what the previous entry filed under thinking belongs to cognition — the concept of an assumption is cognition's, while finding assumptions in material received is an act of thinking.
+- The model now has two levels. At the level of cognition: a new topic [Cognitive Material](./cognition.md#cognitive-material) (the representations every process works on, with **assumption** defined there as material, not as an act); [Standards of Cognitive Material](./cognition.md#standards-of-cognitive-material) (formerly *Standards of Thinking*), held by every process — what was read, what is recalled, what is reasoned; [Awareness Disciplines](./cognition.md#awareness-disciplines), now stated as attention held on something while other processes run; and cognitive biases, which any process can fall into (availability bias added as memory's example). At the level of thinking: [The Components of Thinking](./cognition.md#the-components-of-thinking) keeps only the operations, with **finding assumptions** named explicitly as decomposition joined to backward inference, and fallacies as thinking's own named errors.
+- *What Thinking Is* moved after the cognition-level topics; *What Cognition Is* and the Abstract no longer call thinking the document's center — thinking is the process it develops furthest.
+- *Thinking material* is renamed *cognitive material* throughout this document and the two live documents that used it; changelog history keeps the old term.
+
+#### Considered and not done
+- **Keeping the disciplines under thinking (rejected; owner's decision)**: a discipline produces no material and accompanies perception and recall as much as reasoning; holding something in view is what attention does.
+- **Keeping the term *thinking material* with a widened definition (rejected; owner's decision)**: the word itself carried the impression that the material is thinking's.
+- **A named operation *finding assumptions* (not done)**: it is decomposition joined to backward inference, so it is named as that combination inside decomposition rather than as an atom that would duplicate two others.
+
+---
+
+### Review of the uncommitted changes of 2026-10-12
+- Time: 2026-10-12T09:46:32Z
+- Type: Changed
+- Contributors:
+  - [Claude](../CONTRIBUTORS.md#claude) (Opus-5.5) — reviewed, revised
+
+#### What changed
+- Reviewed the changes other sessions left uncommitted in this family, beside the two entries above.
+- The removal of five open questions from cognition.handoff.md is sound: four are recorded by *Four open questions retired to sections that already answer them* and one by *The mode list's current verdict recorded against the criterion the body already states*.
+- *Adding a record is not a large-scope change* is sound; its body sentence and the documentation rule it points at both exist.
+- Fixed: the 2026-09-05 entry *Knowledge Management link retargeted after the rename* had been deleted from this changelog with no record. It was restored verbatim from HEAD, since a changelog is history.
