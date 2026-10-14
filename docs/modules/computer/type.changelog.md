@@ -84,3 +84,19 @@
 - The toolchain's accept/refuse check stood at 1210/6 throughout.
 - Archived Go and JS residue inside `// TODO(go-migrate)` and `// TODO(js-idea)` comment blocks, and `//memar:impl memar/computer/datatype/...` markers, are left as written: the owner's ruling holds them residue, not evidence.
 - Live mentions in documents were updated to the new names and paths; the `dt-` filename prefix and the `Computer_`-prefixed declaration stay an open question in [the Modularity handoff](../../modularity.handoff.md) under their new names.
+
+---
+
+### The `dt-` filename prefix removed from 39 files
+- Time: 2026-10-13T19:40:00Z
+- Type: Changed
+- Contributors:
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Claude](../../../CONTRIBUTORS.md#claude) (Sonnet-5.5) — renamed, recorded
+
+#### What changed
+- On 2026-10-13 the owner approved the naming design in `temp/sessions/20261013T160504Z-12768-0/report.md`: a file is named for the one type it declares, with no kind mark in the name. The 39 `dt-*` files (38 under `modules/` and `bundles/memar/app/protocol/dt-domain.kh`) were renamed by `git mv` dropping `dt-`, and the 45 `in` URIs naming them were updated.
+- In `modules/computer/types/protocol/`, `types.kh` (`Types_Map`) became `types_map.kh`, then `dt-types.kh` became `types.kh` and `dt-types.observers.kh` became `types.observers.kh`; the matrix row in `bundles/khayyam/core/tests/matrix.test.ts` follows `Types_Map` to `types_map.kh`.
+- `modules/memory/file/dt-uri.kh` became `uri-media-type.kh`, and the `.locale.eng` companion lost its prefix too.
+- Declarations, including `Computer_Types`, were not renamed. The document links and the line cites that named the old paths were updated; history was left as written.
+- The toolchain's accept/refuse count over every `.kh` file outside `bundles/khayyam/` stood at 1241/2 before and after.

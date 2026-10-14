@@ -4,8 +4,8 @@ tp Array_Dynamic in "modules/computer/adt/array/protocol/dynamic.kh"
 tp Container_ElementIndex in "modules/computer/adt/container/protocol/index.kh"
 tp NumberOfElement in "modules/computer/adt/container/protocol/length.kh"
 tp Error in "modules/process/error/protocol/error.kh"
-tp IndexOneOne_Key in "modules/memory/index-one_one/protocol/dt-key.kh"
-tp Storage_UUID in "modules/memory/record/protocol/dt-uuid.kh"
+tp IndexOneOne_Key in "modules/memory/index-one_one/protocol/key.kh"
+tp Storage_UUID in "modules/memory/record/protocol/uuid.kh"
 
 // Model is the interface that show how a pehrest index system work.
 // https://github.com/geniusesgroup/memar/

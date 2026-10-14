@@ -1,6 +1,6 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-tp Domain in "bundles/memar/app/protocol/dt-domain.kh"
+tp Domain in "bundles/memar/app/protocol/domain.kh"
 tp Boolean in "modules/math/boolean/protocol/boolean.kh"
 tp String in "modules/codec/string/protocol/string.kh"
 

@@ -3,8 +3,8 @@
 tp Container_ElementIndex in "modules/computer/adt/container/protocol/index.kh"
 tp NumberOfElement in "modules/computer/adt/container/protocol/length.kh"
 tp Error in "modules/process/error/protocol/error.kh"
-tp Record_Data in "modules/memory/record/protocol/dt-data.kh"
-tp Storage_UUID in "modules/memory/record/protocol/dt-uuid.kh"
+tp Record_Data in "modules/memory/record/protocol/data.kh"
+tp Storage_UUID in "modules/memory/record/protocol/uuid.kh"
 
 // Record model is the interface that show how an record storage work.
 // - Records are anything (such as a document or a phonograph record or a photograph) providing permanent evidence of or information about past events

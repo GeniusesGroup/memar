@@ -3,7 +3,7 @@
 tp Container_Element in "modules/computer/adt/container/protocol/element.kh"
 tp Error in "modules/process/error/protocol/error.kh"
 tp HashTable_Key in "modules/computer/adt/hash_table/protocol/key.kh"
-tp Module_Path in "modules/modules/module/protocol/dt-path.kh"
+tp Module_Path in "modules/computer/module/protocol/path.kh"
 
 tp HashTable_Accessor ab
 // err return more than exist(bool)

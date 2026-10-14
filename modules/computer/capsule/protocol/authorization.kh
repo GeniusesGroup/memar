@@ -1,6 +1,6 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-tp Computer_Types in "modules/computer/types/protocol/dt-types.kh"
+tp Computer_Types in "modules/computer/types/protocol/types.kh"
 
 tp Authorization ab
 // LimitToUseBy or ImportableBy

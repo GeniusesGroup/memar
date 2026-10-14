@@ -1,0 +1,9 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Type in "modules/computer/type/protocol/type.kh"
+tp Type_ID in "modules/computer/type/protocol/id.kh"
+tp Error in "modules/process/error/protocol/error.kh"
+
+tp Types_Map ab
+tp Types_Map_Register mt (self Types_Map) (dt Type) (err Error)
+tp Types_Map_GetByID mt (self Types_Map) (id Type_ID) (dt Type, err Error)
