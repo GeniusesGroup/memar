@@ -50,7 +50,8 @@ from machine.console import fail, note
 from services.status import Status
 from services.session_folder import folder_of, is_session_folder
 from services.session_temp import TEMP_SENTENCE
-from services.session_plan import PLAN_NAME, plan_file_problem, read_plan, set_status
+from services.session_plan import PLAN_NAME, plan_file_problem, read_plan
+from services.session_plan_status import set_status
 
 CLAIM_COMMAND = "claim"
 CLAIM_NAME = "claim"

@@ -64,7 +64,7 @@ import services.session_brief as session_brief
 import services.session_claim as session_claim
 import services.session_claims as session_claims
 import services.session_temp as session_temp
-import services.session_new as session_new
+import services.session_ensure as session_ensure
 import services.session_plan as session_plan
 
 
@@ -93,7 +93,7 @@ class Fixture(unittest.TestCase):
         patched = unittest.mock.patch.object(memar_fs, "memar_root", return_value=self.fake_root)
         patched.start()
         self.addCleanup(patched.stop)
-        project = unittest.mock.patch.object(session_new, "project_root", return_value=self.fake_root)
+        project = unittest.mock.patch.object(session_ensure, "project_root", return_value=self.fake_root)
         project.start()
         self.addCleanup(project.stop)
 

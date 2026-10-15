@@ -9,12 +9,12 @@ finished. The folder goes to the trash rather than being deleted, so a session
 closed by mistake costs one trip to the trash, and a trash that fails leaves
 the folder where it was: a failed recovery is not a successful close.
 
-`close` keeps nothing itself (owner, 2026-10-15). A folder whose records are
+`close` keeps nothing itself. A folder whose records are
 owed is closed only when they are already on its project's records branch as
 the folder holds them now (`session_archive.standing`): the person who closes
 has run `archive` for the task, and its commit is cited, so a close that
 quietly wrote another one would be a record nobody saw made. A folder not yet
-archived is not closed, and `--without-records` does not change that. The flag
+archived is not closed, and `--discard-records` does not change that. The flag
 is for the folder whose records cannot be kept at all, a project that is gone
 for good; closing it drops them, which only its starter may say. A project
 that keeps no records, and a folder with no plan or no project, owe none.
@@ -38,7 +38,7 @@ from services.session_gc import GC_COMMAND
 from services.session_log import record
 
 CLOSE_COMMAND = "close"
-WITHOUT_RECORDS_FLAG = "--without-records"
+DISCARD_RECORDS_FLAG = "--discard-records"
 
 
 class Closed(NamedTuple):
@@ -50,7 +50,7 @@ class Closed(NamedTuple):
     kept: Kept | None = None
 
 
-def close_session(session_id: str, *, without_records: bool = False) -> Closed:
+def close_session(session_id: str, *, discard_records: bool = False) -> Closed:
     """Trash one session's folder once its records are archived or not owed. Idempotent: a missing folder is already closed.
 
     The target is confined to the session folder by construction:
@@ -60,7 +60,7 @@ def close_session(session_id: str, *, without_records: bool = False) -> Closed:
     folder of that name there that is not a session's is refused. A folder
     whose plan or report is Queued, or whose records are owed and not on the
     branch, is refused; one whose records cannot be kept is refused unless
-    WITHOUT_RECORDS.
+    DISCARD_RECORDS.
     """
     from machine.fs_trash import soft_delete
 
@@ -79,10 +79,10 @@ def close_session(session_id: str, *, without_records: bool = False) -> Closed:
             f"{session_id} was not closed: its records are owed and it is not archived on the branch "
             f"{RECORDS_BRANCH}; run `memar session {ARCHIVE_COMMAND} --session-id {session_id}`, then close it"
         )
-    if held.state is State.REFUSED and not without_records:
+    if held.state is State.REFUSED and not discard_records:
         fail(
             f"{session_id} was not closed: its records cannot be kept, {held.why}; "
-            f"settle that, or close it without them with {WITHOUT_RECORDS_FLAG}"
+            f"settle that, or close it and discard them with {DISCARD_RECORDS_FLAG}"
         )
     if held.state is State.ARCHIVED:
         kept = Kept(Outcome.KEPT, reference(session_id))
@@ -93,9 +93,9 @@ def close_session(session_id: str, *, without_records: bool = False) -> Closed:
     return Closed(session_id, path, True, kept)
 
 
-def close(session_id: str, without_records: bool = False) -> None:
+def close(session_id: str, discard_records: bool = False) -> None:
     """`close`: trash the folder once its records are archived, and say what was done."""
-    closed = close_session(session_id, without_records=without_records)
+    closed = close_session(session_id, discard_records=discard_records)
     note(f"{'closed' if closed.removed else 'already closed'}: {closed.id}")
     note(f"path: {closed.path}")
     if closed.kept is None:
@@ -117,10 +117,10 @@ def describe(verbs) -> Callable[[argparse.Namespace], None]:
             "It keeps nothing itself: a folder whose records are owed is closed only\n"
             f"when `memar session {ARCHIVE_COMMAND} --session-id ID` has put them, as the folder holds\n"
             f"them now, on the branch {RECORDS_BRANCH} of its project ({RECORDS_RELATIVE.as_posix()}/<id>/ there);\n"
-            f"a folder not archived is not closed, and {WITHOUT_RECORDS_FLAG} does not change that.\n"
+            f"a folder not archived is not closed, and {DISCARD_RECORDS_FLAG} does not change that.\n"
             "A folder whose plan or report Status is Queued is never closed. A folder\n"
             "whose records cannot be kept at all (its project is gone) is not closed\n"
-            f"unless {WITHOUT_RECORDS_FLAG} is given, which drops them.\n"
+            f"unless {DISCARD_RECORDS_FLAG} is given, which drops them.\n"
             "Run it only when the person who started the session has already said the\n"
             "work is finished; never ask them to, and never close a session you did not\n"
             "open. You do not have to close a session: once a day `new` sweeps the idle\n"
@@ -131,7 +131,7 @@ def describe(verbs) -> Callable[[argparse.Namespace], None]:
     )
     closer.add_argument("--session-id", required=True, help="the session id to close")
     closer.add_argument(
-        WITHOUT_RECORDS_FLAG,
+        DISCARD_RECORDS_FLAG,
         action="store_true",
         help="close it even though its records cannot be kept at all, which loses them; only on its starter's word",
     )
@@ -139,4 +139,4 @@ def describe(verbs) -> Callable[[argparse.Namespace], None]:
 
 
 def run(args: argparse.Namespace) -> None:
-    close(args.session_id, args.without_records)
+    close(args.session_id, args.discard_records)

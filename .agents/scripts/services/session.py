@@ -13,7 +13,7 @@ is addressed to whoever opens this file. A person opening a scratch folder does
 not need to know which module resolves the temp root, and help output that told
 them would be a second, worse copy of this.
 
-**Each help states its own work, and no sub-verb's (owner, 2026-10-14).** A
+**Each help states its own work, and no sub-verb's.** A
 sub-verb's command line, what it writes, and when to use it are in that
 sub-verb's own `--help`, which argparse's list of verbs under this help leads
 to: a domain help that repeated them grew with every sub-verb and drifted from

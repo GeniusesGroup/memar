@@ -83,6 +83,7 @@ import services.project_registry as registry
 import services.session_digest as session_digest
 import services.session_location as session_location
 import services.session_plan as session_plan
+import services.session_plan_priority as session_plan_priority
 import services.session_report as session_report
 
 
@@ -141,7 +142,7 @@ class OneDigest(Fixture):
     def test_each_session_shows_its_priority(self) -> None:
         folder = self.session("20261012T050007Z-1-0", "Ranked", "blocked", ["- Q?"])
         plan = folder / session_plan.PLAN_NAME
-        session_plan.set_priority(plan, 8)
+        session_plan_priority.set_priority(plan, 8)
         self.assertIn("priority: 8", self.digest())
 
     def test_a_report_that_is_not_a_hand_back_is_marked(self) -> None:

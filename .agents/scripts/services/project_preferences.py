@@ -34,7 +34,7 @@ PREFERENCES_RELATIVE = CONSUMER_README_RELATIVE.with_name("preferences.md")
 # folder or absolute; unset, they are made in temp/sessions/ inside the project (Memar's own, for the Memar checkout).
 SESSIONS_KEY = "sessions"
 # Whether a session's records are kept on the project's records branch
-# (`session_archive`); unset, they are (owner, 2026-10-14, 2026-10-15).
+# (`session_archive`); unset, they are.
 RECORDS_KEY = "records"
 
 

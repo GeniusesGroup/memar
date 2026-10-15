@@ -20,8 +20,8 @@ defaults or caps it, since a cap here would be a policy no one chose.
 
 Why the first task's topic pulls the batch. An agent given several tasks of one
 subject keeps its context on that subject, so the batch is one subject when the
-queue allows (the owner's ruling of 2026-10-13, which accepts that strict
-priority is disturbed for it). The first task is the first in line, as ever,
+queue allows, which accepts that strict
+priority is disturbed for it. The first task is the first in line, as ever,
 and is never displaced; its `topic` (`session_plan`) is the batch's, and the
 rest of the N are that topic's queued tasks in line order. Other tasks do not
 fill the remainder, since the owner's reason, focus, argues against it, unless
@@ -62,7 +62,9 @@ from services.session_digest import DIGEST_COMMAND
 from services.session_find import LIST_COMMAND, find_sessions, project_of
 from services.session_folder import Session
 from services.session_temp import TEMP_SENTENCE
-from services.session_plan import PLAN_NAME, checked_topic, part_text, priority_of, topic_of
+from services.session_plan import PLAN_NAME, part_text
+from services.session_plan_priority import priority_of
+from services.session_plan_topic import checked_topic, topic_of
 from services.session_record import REPORT
 from services.session_report import REPORT_NAME
 

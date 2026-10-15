@@ -51,8 +51,8 @@ AGENTS_INDEX_RELATIVE = Path(AGENTS_DIRNAME) / "README.md"
 # of the work. The path is what it was when the folders were committed with the
 # work, so the records read the same wherever they are kept.
 RECORDS_RELATIVE = Path(AGENTS_DIRNAME) / SESSIONS_DIRNAME
-# The branch of a project's own repository that holds its sessions' records
-# (owner, 2026-10-15). The one place the name is spelled: no agent sees it, only
+# The branch of a project's own repository that holds its sessions' records.
+# The one place the name is spelled: no agent sees it, only
 # `memar` commands do, so it can change later by changing this line.
 RECORDS_BRANCH = "dev-knowledge"
 

@@ -92,7 +92,7 @@ import machine.fs_trash as fs_trash
 import services.project_registry as project_registry
 import services.session_archive as session_archive
 import services.session_gc as session_gc
-import services.session_new as session_new
+import services.session_ensure as session_ensure
 import services.session_plan as session_plan
 from services.session_location import register, registered_locations
 from services.session_log import SESSION_LOG_NAME, log_path
@@ -147,7 +147,7 @@ class Fixture(unittest.TestCase):
         self.addCleanup(self.trash.stop)
         # `new` asks the project it runs in where to put a folder; a scratch
         # one, so a real project's preferences never reach this suite.
-        project = unittest.mock.patch.object(session_new, "project_root", return_value=self.fake_root)
+        project = unittest.mock.patch.object(session_ensure, "project_root", return_value=self.fake_root)
         project.start()
         self.addCleanup(project.stop)
         # The plans here name /work, a project on no computer; keeping records
@@ -396,7 +396,7 @@ class GcSweepsNow(Fixture):
     def test_gc_is_the_same_sweep_new_runs_once_a_day(self) -> None:
         with unittest.mock.patch.object(session_gc, "reap_idle_sessions", wraps=session_gc.reap_idle_sessions) as sweep:
             with contextlib.redirect_stdout(io.StringIO()):
-                session_new.ensure_session("s-new", "Open one", project=str(self.fake_root))
+                session_ensure.ensure_session("s-new", "Open one", project=str(self.fake_root))
                 self.run_gc()
         self.assertEqual(sweep.call_count, 2)
 

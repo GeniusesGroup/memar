@@ -11,7 +11,7 @@ Memar exposes a single practice in this folder, [`memar/`](./memar/). Splitting 
 The scripts that install this configuration into a project or into an agent app are described in [Scripts](../scripts/README.md).
 
 ## Known Problems of the Current Skill
-Recorded by the owner (2026-10-14) so they are not forgotten; the current route stays until a better one is found.
+Recorded so they are not forgotten; the current route stays until a better one is found.
 
 - **The skill repeats documentation.** `memar/SKILL.md` names, section by section, the documents an agent must read before an act. It is a second copy of what the documents' own Practices say, and a fact written twice drifts.
 - **Telling the agent to take care does not work.** The earlier skill pointed at everything and asked the agent to be careful; agents still skipped the documents and designed from what they had learned, which is usually wrong for Memar. Naming the sections (the present route) helps only partly: a model may still not load what it needs.

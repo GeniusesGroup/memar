@@ -45,6 +45,7 @@ from machine.fs_test_scratch import suite_scratch
 
 import machine.fs_memar as memar_fs
 import services.session_plan as session_plan
+import services.session_plan_priority as session_plan_priority
 import services.session_priority as session_priority
 
 
@@ -78,7 +79,7 @@ class SetPriority(unittest.TestCase):
                     session_priority.set_session_priority(folder.name, "8")
                 self.assertIn(f"{folder.name}  priority 8, was 5", out.getvalue())
                 plan = self.plan(folder)
-                self.assertEqual(session_plan.priority_of(plan.front), 8)
+                self.assertEqual(session_plan_priority.priority_of(plan.front), 8)
                 self.assertEqual(plan.status, status)
                 self.assertEqual(plan.front["title"], "T")
 

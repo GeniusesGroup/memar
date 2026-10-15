@@ -16,7 +16,7 @@ import re
 import sys
 from pathlib import Path
 
-from services.content_check import anchor_slug
+from services.content_links import anchor_slug
 from services.content_reference import content_root, read_text, resolve_ref
 
 

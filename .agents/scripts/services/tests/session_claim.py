@@ -62,8 +62,9 @@ import machine.fs_memar as memar_fs
 import services.session_claim as session_claim
 import services.session_find as session_find
 import services.session_temp as session_temp
-import services.session_new as session_new
+import services.session_ensure as session_ensure
 import services.session_plan as session_plan
+import services.session_plan_priority as session_plan_priority
 import services.session_report as session_report
 from services.status import Kind, Status
 
@@ -90,7 +91,7 @@ class Fixture(unittest.TestCase):
         patched = unittest.mock.patch.object(memar_fs, "memar_root", return_value=self.fake_root)
         patched.start()
         self.addCleanup(patched.stop)
-        project = unittest.mock.patch.object(session_new, "project_root", return_value=self.fake_root)
+        project = unittest.mock.patch.object(session_ensure, "project_root", return_value=self.fake_root)
         project.start()
         self.addCleanup(project.stop)
 
@@ -121,32 +122,32 @@ class QueuedIsAStatus(Fixture):
 
     def test_new_queued_writes_a_new_plan_queued(self) -> None:
         with contextlib.redirect_stdout(io.StringIO()):
-            sid, path = session_new.ensure_session(None, "Queued task", None, queued=True, project=str(self.fake_root))
+            sid, path = session_ensure.ensure_session(None, "Queued task", None, queued=True, project=str(self.fake_root))
         self.assertEqual(self.status_of(path), "queued")
-        self.assertEqual(session_plan.priority_of(session_plan.read_plan(path / session_plan.PLAN_NAME).front), 5)
+        self.assertEqual(session_plan_priority.priority_of(session_plan.read_plan(path / session_plan.PLAN_NAME).front), 5)
 
     def test_new_queued_with_a_priority_records_it(self) -> None:
         with contextlib.redirect_stdout(io.StringIO()):
-            sid, path = session_new.ensure_session(None, "Urgent task", None, queued=True, priority=9, project=str(self.fake_root))
+            sid, path = session_ensure.ensure_session(None, "Urgent task", None, queued=True, priority=9, project=str(self.fake_root))
         front = session_plan.read_plan(path / session_plan.PLAN_NAME).front
-        self.assertEqual(session_plan.priority_of(front), 9)
+        self.assertEqual(session_plan_priority.priority_of(front), 9)
         self.assertEqual(self.status_of(path), "queued")
 
     def test_new_queued_queues_an_open_plan_no_one_has_claimed(self) -> None:
         folder = self.session("20261012T000003Z-1-0", "active")
         with contextlib.redirect_stdout(io.StringIO()):
-            session_new.ensure_session(folder.name, None, None, queued=True)
-            session_new.ensure_session(folder.name, None, None, queued=True)
+            session_ensure.ensure_session(folder.name, None, None, queued=True)
+            session_ensure.ensure_session(folder.name, None, None, queued=True)
         self.assertEqual(self.status_of(folder), "queued")
         # The rest of the plan is kept as written.
         self.assertIn("Do the thing.", (folder / session_plan.PLAN_NAME).read_text(encoding="utf-8"))
 
     def test_new_queued_refuses_a_done_or_claimed_session(self) -> None:
         done = self.session("20261012T000004Z-1-0", "complete")
-        self.assertIn("complete", self.refused(session_new.ensure_session, done.name, None, None, True))
+        self.assertIn("complete", self.refused(session_ensure.ensure_session, done.name, None, None, True))
         claimed = self.session("20261012T000005Z-1-0", "queued")
         session_claim.claim_folder(claimed)
-        self.assertIn("claimed", self.refused(session_new.ensure_session, claimed.name, None, None, True))
+        self.assertIn("claimed", self.refused(session_ensure.ensure_session, claimed.name, None, None, True))
 
 
 class ClaimTakesOne(Fixture):

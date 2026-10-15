@@ -24,14 +24,13 @@ from typing import Callable
 
 from machine.console import fail
 from services.session_folder import folder_of, is_session_folder
-from services.session_plan import (
+from services.session_plan import PLAN_NAME, read_plan
+from services.session_plan_priority import (
     DEFAULT_PRIORITY,
     HIGHEST_PRIORITY,
     LOWEST_PRIORITY,
-    PLAN_NAME,
     checked_priority,
     priority_of,
-    read_plan,
     set_priority,
 )
 

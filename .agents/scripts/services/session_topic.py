@@ -32,7 +32,8 @@ from typing import Callable
 from machine.console import fail, note
 from services.session_find import find_sessions
 from services.session_folder import Session, folder_of, is_session_folder
-from services.session_plan import PLAN_NAME, checked_topic, read_plan, set_topic, topic_of
+from services.session_plan import PLAN_NAME, read_plan
+from services.session_plan_topic import checked_topic, set_topic, topic_of
 
 TOPIC_COMMAND = "topic"
 # A topic this many edits or fewer from another in use is taken for the same subject mistyped.

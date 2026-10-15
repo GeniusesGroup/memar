@@ -61,8 +61,10 @@ from machine.fs_test_scratch import suite_scratch
 
 import machine.fs_memar as memar_fs
 import services.project_registry as registry
-import services.session_new as session_new
+import services.session_ensure as session_ensure
 import services.session_plan as session_plan
+import services.session_plan_priority as session_plan_priority
+import services.session_plan_topic as session_plan_topic
 import services.session_topic as session_topic
 import services.session_topics as session_topics
 
@@ -76,7 +78,7 @@ class Fixture(unittest.TestCase):
         patched.start()
         self.addCleanup(patched.stop)
         self.project = self.git_project("project-x")
-        project = unittest.mock.patch.object(session_new, "project_root", return_value=self.project)
+        project = unittest.mock.patch.object(session_ensure, "project_root", return_value=self.project)
         project.start()
         self.addCleanup(project.stop)
 
@@ -117,40 +119,40 @@ class TopicField(Fixture):
     def test_a_topic_is_written_lower_case_with_hyphens_for_spaces(self) -> None:
         for given, written in (("Khayyam", "khayyam"), ("  Local  LSP server ", "local-lsp-server"), ("a\tb", "a-b")):
             with self.subTest(given=given):
-                self.assertEqual(session_plan.normalized_topic(given), written)
+                self.assertEqual(session_plan_topic.normalized_topic(given), written)
 
     def test_a_plan_without_a_topic_has_none(self) -> None:
         folder = self.session("20261013T000001Z-1-0")
-        self.assertEqual(session_plan.topic_of(self.front(folder)), "")
-        self.assertEqual(session_plan.topic_of(None), "")
+        self.assertEqual(session_plan_topic.topic_of(self.front(folder)), "")
+        self.assertEqual(session_plan_topic.topic_of(None), "")
 
     def test_new_writes_the_topic_into_a_new_plan(self) -> None:
         with contextlib.redirect_stdout(io.StringIO()):
-            sid, path = session_new.ensure_session("20261013T000002Z-1-0", "Title", None, topic="Khayyam LSP", project=str(self.project))
+            sid, path = session_ensure.ensure_session("20261013T000002Z-1-0", "Title", None, topic="Khayyam LSP", project=str(self.project))
         self.assertEqual(self.front(path)["topic"], "khayyam-lsp")
         self.assertIn("Topic: khayyam-lsp\n", (path / session_plan.PLAN_NAME).read_text(encoding="utf-8"))
 
     def test_new_without_a_topic_writes_none(self) -> None:
         with contextlib.redirect_stdout(io.StringIO()):
-            _, path = session_new.ensure_session("20261013T000003Z-1-0", "Title", None, project=str(self.project))
+            _, path = session_ensure.ensure_session("20261013T000003Z-1-0", "Title", None, project=str(self.project))
         self.assertNotIn("topic", self.front(path))
 
     def test_new_sets_the_topic_on_a_plan_that_is_there(self) -> None:
         folder = self.session("20261013T000004Z-1-0", "active")
         with contextlib.redirect_stdout(io.StringIO()):
-            session_new.ensure_session(folder.name, None, None, topic="docs")
+            session_ensure.ensure_session(folder.name, None, None, topic="docs")
         self.assertEqual(self.front(folder)["topic"], "docs")
         self.assertEqual(session_plan.read_plan(folder / session_plan.PLAN_NAME).status, "active")
 
     def test_a_child_opened_with_a_parent_does_not_copy_the_parents_topic(self) -> None:
         parent = self.session("20261013T000005Z-1-0", "active", topic="docs")
         with contextlib.redirect_stdout(io.StringIO()):
-            _, path = session_new.ensure_session("20261013T000006Z-1-0", "Child", parent.name, project=str(self.project))
+            _, path = session_ensure.ensure_session("20261013T000006Z-1-0", "Child", parent.name, project=str(self.project))
         self.assertNotIn("topic", self.front(path))
 
     def test_a_topic_is_one_line_and_not_empty_on_new(self) -> None:
-        self.assertIn("one line", self.refused(session_plan.checked_topic, "a\nb"))
-        self.assertEqual(session_plan.checked_topic("  "), "")
+        self.assertIn("one line", self.refused(session_plan_topic.checked_topic, "a\nb"))
+        self.assertEqual(session_plan_topic.checked_topic("  "), "")
 
 
 class TopicVerb(Fixture):
@@ -173,7 +175,7 @@ class TopicVerb(Fixture):
 
     def test_the_other_front_matter_and_the_body_are_kept(self) -> None:
         folder = self.session("20261013T000012Z-1-0", "queued")
-        session_plan.set_priority(folder / session_plan.PLAN_NAME, 8)
+        session_plan_priority.set_priority(folder / session_plan.PLAN_NAME, 8)
         self.printed(session_topic.set_session_topic, folder.name, "docs")
         front = self.front(folder)
         self.assertEqual((front["priority"], front["topic"], front["title"]), ("8", "docs", "T"))
@@ -197,7 +199,7 @@ class NearMatch(Fixture):
 
     def test_new_warns_the_same_way(self) -> None:
         self.session("20261013T000030Z-1-0", "queued", topic="khayyam")
-        text = self.printed(session_new.ensure_session, "20261013T000031Z-1-0", "Title", None, topic="khayam", project=str(self.project))
+        text = self.printed(session_ensure.ensure_session, "20261013T000031Z-1-0", "Title", None, topic="khayam", project=str(self.project))
         self.assertIn("near", text)
         self.assertIn("khayyam", text)
 

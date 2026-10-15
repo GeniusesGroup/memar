@@ -122,6 +122,7 @@ import machine.fs_memar as memar_fs
 import services.project_preferences as project_preferences
 import services.session_temp as session_temp
 import services.project_registry as registry
+import services.session_ensure as session_ensure
 import services.session_new as session_new
 from services.module_folders import ROLE_FOLDERS
 from services.session_folder import read_session
@@ -162,14 +163,14 @@ class Fixture(unittest.TestCase):
 
     def ensure(self, *arguments, **options):
         """`ensure_session` told the project this test works in, as `--project` tells it."""
-        return session_new.ensure_session(*arguments, **{"project": str(self.current), **options})
+        return session_ensure.ensure_session(*arguments, **{"project": str(self.current), **options})
 
     def call_open(self, *arguments, **options):
         return session_new.open_session(*arguments, **{"project": str(self.current), **options})
 
     def in_project(self, project: Path) -> None:
         self.current = project
-        patched = unittest.mock.patch.object(session_new, "project_root", return_value=project)
+        patched = unittest.mock.patch.object(session_ensure, "project_root", return_value=project)
         patched.start()
         self.addCleanup(patched.stop)
 
@@ -536,7 +537,7 @@ class ProjectNamed(Fixture):
     def setUp(self) -> None:
         super().setUp()
         # The real project lookup, as `new` runs it: a git repository of its own.
-        real = unittest.mock.patch.object(session_new, "project_root", GIT_PROJECT_ROOT)
+        real = unittest.mock.patch.object(session_ensure, "project_root", GIT_PROJECT_ROOT)
         real.start()
         self.addCleanup(real.stop)
         self.work = self.fake_root / "work"
@@ -545,7 +546,7 @@ class ProjectNamed(Fixture):
 
     def refused(self, *arguments, **options) -> str:
         with self.assertRaises(SystemExit) as raised, contextlib.redirect_stdout(io.StringIO()):
-            session_new.ensure_session(*arguments, **options)
+            session_ensure.ensure_session(*arguments, **options)
         return str(raised.exception.code)
 
     def cli(self, *argv: str) -> str:
@@ -599,7 +600,7 @@ class ProjectNamed(Fixture):
         inside = self.work / "src"
         inside.mkdir()
         with contextlib.redirect_stdout(io.StringIO()):
-            sid, path = session_new.ensure_session(None, TITLE, project=str(inside))
+            sid, path = session_ensure.ensure_session(None, TITLE, project=str(inside))
         self.assertEqual(path, self.work.resolve() / "temp" / "sessions" / sid)
 
     def test_an_ambiguous_name_prints_its_candidates_and_makes_nothing(self) -> None:
@@ -617,18 +618,18 @@ class ProjectNamed(Fixture):
 
     def test_a_session_that_is_there_is_continued_without_a_project(self) -> None:
         with contextlib.redirect_stdout(io.StringIO()):
-            sid, path = session_new.ensure_session("s-here", TITLE, project=str(self.work))
-            self.assertEqual(session_new.ensure_session(sid), (sid, path))
-        with unittest.mock.patch.object(session_new, "project_root", return_value=self.fake_root):
+            sid, path = session_ensure.ensure_session("s-here", TITLE, project=str(self.work))
+            self.assertEqual(session_ensure.ensure_session(sid), (sid, path))
+        with unittest.mock.patch.object(session_ensure, "project_root", return_value=self.fake_root):
             with contextlib.redirect_stdout(io.StringIO()):
-                own, own_path = session_new.ensure_session("s-memar", TITLE, project=str(self.fake_root))
+                own, own_path = session_ensure.ensure_session("s-memar", TITLE, project=str(self.fake_root))
             self.assertEqual(own_path, memar_fs.session_dir(own))
         with contextlib.redirect_stdout(io.StringIO()):
-            self.assertEqual(session_new.ensure_session(own), (own, own_path))
+            self.assertEqual(session_ensure.ensure_session(own), (own, own_path))
 
     def test_open_session_continuing_without_a_project_says_where_it_is(self) -> None:
         with contextlib.redirect_stdout(io.StringIO()):
-            session_new.ensure_session("s-here", TITLE, project=str(self.work))
+            session_ensure.ensure_session("s-here", TITLE, project=str(self.work))
         out = io.StringIO()
         with contextlib.redirect_stdout(out):
             session_new.open_session("s-here", None, None)
@@ -637,13 +638,13 @@ class ProjectNamed(Fixture):
     def test_a_project_with_no_sessions_preference_is_not_refused_and_its_folder_is_made(self) -> None:
         self.assertFalse((self.work / "temp").exists())
         with contextlib.redirect_stdout(io.StringIO()):
-            _, path = session_new.ensure_session(None, TITLE, project=str(self.work))
+            _, path = session_ensure.ensure_session(None, TITLE, project=str(self.work))
         self.assertTrue(path.is_dir())
 
     def test_a_missing_memar_temp_never_blocks_creating_a_session(self) -> None:
         shutil.rmtree(self.fake_root / "temp", ignore_errors=True)
         with contextlib.redirect_stdout(io.StringIO()):
-            _, path = session_new.ensure_session(None, TITLE, project=str(self.work))
+            _, path = session_ensure.ensure_session(None, TITLE, project=str(self.work))
         self.assertTrue(path.is_dir())
 
     def test_memar_is_the_same_kind_of_entry_as_any_project(self) -> None:
@@ -741,7 +742,7 @@ class UnresolvableRoot(unittest.TestCase):
     def test_errors_rather_than_guessing(self) -> None:
         with unittest.mock.patch.object(memar_fs, "memar_root", side_effect=SystemExit("error: no root")):
             with self.assertRaises(SystemExit):
-                session_new.ensure_session("s-1", TITLE, project=str(Path(__file__).resolve().parent))
+                session_ensure.ensure_session("s-1", TITLE, project=str(Path(__file__).resolve().parent))
 
 
 if __name__ == "__main__":

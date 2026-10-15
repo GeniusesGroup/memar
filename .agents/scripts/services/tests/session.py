@@ -112,6 +112,7 @@ import services.session_gc as session_gc
 import services.session_id as session_id
 import services.session_location as session_location
 import services.session_log as session_log
+import services.session_ensure as session_ensure
 import services.session_new as session_new
 import services.session_plan as session_plan
 import services.session_priority as session_priority
@@ -162,7 +163,7 @@ class Fixture(unittest.TestCase):
         self.addCleanup(patched.stop)
         # `new` asks the project it runs in where to put a folder; a scratch
         # one, so a real project's preferences never reach this suite.
-        project = unittest.mock.patch.object(session_new, "project_root", return_value=self.fake_root)
+        project = unittest.mock.patch.object(session_ensure, "project_root", return_value=self.fake_root)
         project.start()
         self.addCleanup(project.stop)
 
@@ -414,7 +415,7 @@ class HelpSaysWhatToRun(unittest.TestCase):
             ("start", ("--session-id ID", "=== NAME ===", "Run it", "first", "the model its Kind needs", "refuses an ID that has no folder")),
             ("gc", ("--session-id", "--idle-days DAYS", "never swept", "cannot be read", "at least 1", "whose status is complete",
                     "once a day", f"{session_gc.SESSION_IDLE_DAYS} unless given")),
-            ("close", ("--session-id", "--without-records", "which drops them", "keeps nothing itself", "is never closed",
+            ("close", ("--session-id", "--discard-records", "which drops them", "keeps nothing itself", "is never closed",
                        "is not closed")),
             ("archive", ("--session-id", "every session whose Parent chain leads to it", "in one commit",
                          "registered name, not by its path", "the claim", "cite the reference",
@@ -556,7 +557,7 @@ class VerbsDispatch(Fixture):
             (["gc"], session_gc, "collect", (None, None)),
             (["gc", "--session-id", "s-1", "--idle-days", "2"], session_gc, "collect", ("s-1", 2.0)),
             (["close", "--session-id", "s-1"], session_close, "close", ("s-1", False)),
-            (["close", "--session-id", "s-1", "--without-records"], session_close, "close", ("s-1", True)),
+            (["close", "--session-id", "s-1", "--discard-records"], session_close, "close", ("s-1", True)),
             (["archive", "--session-id", "s-1"], session_archive, "archive", ("s-1",)),
             (["show", "--session-id", "s-1", "--project-path", "<F>"], session_show, "show", ("s-1", "<F>", [])),
             (["show", "--session-id", "s-1", "--project", "p", "--file", "docs/a.md"], session_show, "show", ("s-1", "<F>", ["docs/a.md"])),

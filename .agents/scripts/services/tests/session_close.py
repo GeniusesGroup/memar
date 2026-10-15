@@ -35,7 +35,7 @@ What is pinned, and what each pin is for:
                     whose records are owed is closed only when they are on its
                     project's records branch as the folder holds them now, and
                     `close` says where; one not archived is not closed, and
-                    `--without-records` does not change that; one whose
+                    `--discard-records` does not change that; one whose
                     records cannot be kept is not closed either, unless the
                     person says to close it without them. A project that keeps
                     no records owes none. A plan or report whose Status is
@@ -251,11 +251,11 @@ class RecordsMustBeArchived(Fixture):
                 session_close.close_session("s-changed")
         trash.assert_not_called()
 
-    def test_without_records_does_not_close_a_session_that_is_only_not_archived(self) -> None:
+    def test_discard_records_does_not_close_a_session_that_is_only_not_archived(self) -> None:
         path = self.finished("s-waiting-too", self.project_repository())
         with unittest.mock.patch.object(fs_trash, "soft_delete") as trash:
             with self.assertRaises(SystemExit):
-                session_close.close_session("s-waiting-too", without_records=True)
+                session_close.close_session("s-waiting-too", discard_records=True)
         trash.assert_not_called()
         self.assertTrue(path.is_dir())
 
@@ -280,7 +280,7 @@ class RecordsMustBeArchived(Fixture):
     def test_the_person_may_close_it_without_its_records_when_they_cannot_be_kept(self) -> None:
         path = self.finished("s-dropped", self.fake_root / "elsewhere")
         with unittest.mock.patch.object(fs_trash, "soft_delete", side_effect=self.move_to_bin):
-            closed = session_close.close_session("s-dropped", without_records=True)
+            closed = session_close.close_session("s-dropped", discard_records=True)
         self.assertTrue(closed.removed)
         self.assertFalse(path.exists())
 
@@ -295,7 +295,7 @@ class RecordsMustBeArchived(Fixture):
                 for without in (False, True):
                     with unittest.mock.patch.object(fs_trash, "soft_delete") as trash:
                         with self.assertRaises(SystemExit) as raised:
-                            session_close.close_session(sid, without_records=without)
+                            session_close.close_session(sid, discard_records=without)
                     trash.assert_not_called()
                     self.assertIn("Queued", str(raised.exception.code))
                 self.assertTrue(path.is_dir())

@@ -7,9 +7,9 @@ A live session folder is scratch: it is swept once its task is done, and it
 holds a claim that means nothing on another clone. Its record is not scratch:
 changelogs and handoffs cite session ids, and a cited id whose folder the sweep
 has sent to the trash cites nothing. So the two are two concerns with two
-locations (owner, 2026-10-14): the folder stays where it is and goes as it
+locations: the folder stays where it is and goes as it
 always went, and its records are kept in the project's own repository, on the
-branch `machine/fs_memar.RECORDS_BRANCH` names (owner, 2026-10-15), at
+branch `machine/fs_memar.RECORDS_BRANCH` names, at
 `.agents/sessions/<id>/` in that branch's tree. A branch, because the full
 records would otherwise grow the history of the work; a branch of the project's
 own repository, because that is where the project's people already are, and

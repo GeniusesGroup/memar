@@ -84,7 +84,7 @@ def queued_why(session: Session) -> str | None:
     """Why SESSION is still queued: its plan's or its report's Status is Queued; None when neither is.
 
     A queued session is waiting to be taken up, and nothing that moves or
-    removes a folder acts on one (owner, 2026-10-15): its folder is the task.
+    removes a folder acts on one: its folder is the task.
     """
     queued = Status.QUEUED.key
     if session.status == queued:

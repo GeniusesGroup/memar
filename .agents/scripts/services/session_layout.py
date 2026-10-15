@@ -7,7 +7,7 @@ A session folder's top holds its plan and its report, and the claim Memar
 writes there while an agent holds the task; everything else the task makes is
 filed by kind in the module role folders `session_new` makes in it
 (`module_folders`), so another session reads the top as the task and finds its
-material by kind (owner, 2026-10-14). That answer is given here once: the help
+material by kind. That answer is given here once: the help
 `memar session --help` prints is built from it.
 
 A kind is told by the file's suffix, and only the kinds named in KINDS are

@@ -56,16 +56,9 @@ from services.content_reference import content_root, read_text
 from services.content_section import by_anchor
 from services.session_folder import folder_of, is_session_folder
 from services.session_temp import TEMP_SENTENCE
-from services.session_new import ensure_session
-from services.session_plan import (
-    CHEAPER_KINDS,
-    KINDS,
-    PLAN_NAME,
-    STRONG_KINDS,
-    kind_of,
-    part_text,
-    read_plan,
-)
+from services.session_ensure import ensure_session
+from services.session_plan import PLAN_NAME, part_text, read_plan
+from services.session_plan_kind import CHEAPER_KINDS, KINDS, STRONG_KINDS, kind_of
 from services.session_report import REPORT_NAME
 
 START_COMMAND = "start"

@@ -10,7 +10,7 @@ with it, and two minting functions would produce two id formats that a reader
 comparing them could not match.
 
 The form is the UTC date, a dash, the time, and the process id, e.g.
-`20261013-T190845Z-23368` (owner, 2026-10-14): the dash between date and time
+`20261013-T190845Z-23368`: the dash between date and time
 is for the reader. Ids were once minted with a per-process counter after the
 process id; it told apart two mints of one process in one second, and every
 folder ever made carried `-0`, since a command mints at most one session id.

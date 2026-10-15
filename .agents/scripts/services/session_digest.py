@@ -76,7 +76,7 @@ from services.session_day import DAY_NAMES, day_of, parse_day
 from services.project_find import add_project_flags, project_from_args
 from services.session_find import find_sessions, project_of
 from services.session_folder import Session
-from services.session_plan import priority_of
+from services.session_plan_priority import priority_of
 from services.session_report import REPORT_NAME, decisions_needed, handback_problem, read_report_status
 from services.session_summary import summary_lines
 

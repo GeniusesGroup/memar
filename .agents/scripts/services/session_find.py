@@ -44,7 +44,9 @@ from services.session_concerns import concerns
 from services.session_folder import Session, folder_of, measured_idle, read_session, session_folders
 from services.project_find import add_project_flags, project_by_path, project_from_args
 from services.session_location import locations_of, project_root, same_path
-from services.session_plan import PLAN_NAME, priority_of, status_word, topic_of
+from services.session_plan import PLAN_NAME, status_word
+from services.session_plan_priority import priority_of
+from services.session_plan_topic import topic_of
 from services.session_record import PLAN
 from services.status import Status
 from services.session_report import REPORT_NAME, disagreement, read_report_status

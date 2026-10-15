@@ -40,7 +40,7 @@ for a folder that is gone.
 Before a finished folder is moved, whatever of its records the project's
 records branch does not hold is added (`session_archive`), so a session id a
 commit cites still names something once the folder is gone. The sweep is the
-one act that adds records on its own (owner, 2026-10-15): `close` acts only
+one act that adds records on its own: `close` acts only
 on a session `archive` has kept, but the clock has no one to run `archive`
 first. All the folders one sweep moves are added in one commit for each
 project. A folder whose records cannot be kept is not moved: the clock never

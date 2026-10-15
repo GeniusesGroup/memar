@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""services/session_plan.py — a session's plan.md: what a plan is, for the services that read and write it.
+"""services/session_plan.py — a session's plan.md: what a plan is and how it is read, for the services that read and write it.
 
 One format, imported by every service that touches a plan: `session_new` writes
 one, `session_find` reads one to list a session, `session_gc` reads one to
@@ -34,7 +34,7 @@ claimed, and nothing else in the plan is touched. Several writers reach one
 plan — a claim, a priority, a person editing — so a rewrite is never a read
 followed blindly by a write that would put back what another changed
 meanwhile: it is checked against the plan as it is just before it lands, and
-lands whole (`_rewrite`).
+lands whole (`session_plan_rewrite`).
 
 Which waiting task goes first is the plan's `priority`, a whole number from 1
 to 10 in its front matter, the higher sooner. It is the plan's own because it
@@ -75,13 +75,18 @@ plan.md is scratch, not a document, and is reaped with its folder: a topic's
 lasting open state belongs in that topic's handoff, and closing by type moves
 it there, so a plan that outlived its folder would be a second handoff nobody
 maintains.
+
+A plan is changed one front-matter field at a time, each field in a file of its own beside this one:
+`session_plan_status`, `session_plan_priority`, `session_plan_topic` and `session_plan_kind`, each
+with its field's words and checks, over `session_plan_rewrite`, the one way a plan's lines are
+replaced. This file holds what they and every reader share: the shape, the front matter, and the
+reading.
 """
 from __future__ import annotations
 
-import os
 import time
 from pathlib import Path
-from typing import Callable, NamedTuple
+from typing import NamedTuple
 
 from machine.console import fail
 from services.session_record import PLAN, PlanKey
@@ -97,18 +102,8 @@ EARLIER_SHAPE_REMEDY = "only today's shape is read, which `memar session new --h
 # written in, and the body line that held it.
 EARLIER_STATUS_WORDS = ("open", "done")
 STATUS_PREFIX = "Status:"
-# Which waiting task goes first: 1 to 10, the higher sooner, 5 when absent.
-LOWEST_PRIORITY = 1
-HIGHEST_PRIORITY = 10
-DEFAULT_PRIORITY = 5
-# What kind of task a plan holds, which says how strong a model it needs: the
-# kinds whose work is judgment run on the strongest model the runtime offers
-# (the Memar skill, section Session and plan), the others on a cheaper one.
-STRONG_KINDS = ("ideation", "plan", "modeling", "design", "critique")
-CHEAPER_KINDS = ("mechanical",)
-KINDS = (*STRONG_KINDS, *CHEAPER_KINDS)
-# A rewrite that finds the plan changed under it starts over this many times
-# before it gives up, pausing this long when the system refused the replace.
+# A read that finds the plan refused for the moment tries again this many times, pausing this
+# long (`session_plan_rewrite` uses the same for its replace).
 REWRITE_ATTEMPTS = 5
 REWRITE_PAUSE_SECONDS = 0.05
 
@@ -205,7 +200,7 @@ def is_complete(status: str) -> bool:
     return Status.read(status) is Status.COMPLETE
 
 
-def _read_bytes(path: Path) -> bytes:
+def read_bytes(path: Path) -> bytes:
     """PATH's bytes, trying again when Windows refuses the read for the moment another process replaces the plan."""
     for _ in range(REWRITE_ATTEMPTS):
         try:
@@ -225,7 +220,7 @@ def read_plan(path: Path) -> Plan:
     written; nothing else gives a plan a status. A plan in an earlier shape
     reads as one with no status, and `plan_shape_problem` says why.
     """
-    lines = _read_bytes(path).decode("utf-8-sig").splitlines()
+    lines = read_bytes(path).decode("utf-8-sig").splitlines()
     front, _ = front_matter(lines)
     if front is not None:
         front = {key.lower(): value for key, value in front.items() if key == front_key(key)}
@@ -263,209 +258,14 @@ def plan_shape_problem(lines: list[str]) -> str | None:
 def plan_file_problem(path: Path) -> str | None:
     """`plan_shape_problem` of the plan at PATH; None when it is not in an earlier shape or cannot be read."""
     try:
-        return plan_shape_problem(_read_bytes(path).decode("utf-8-sig").splitlines())
+        return plan_shape_problem(read_bytes(path).decode("utf-8-sig").splitlines())
     except (OSError, UnicodeDecodeError):
         return None
 
 
-def _rewrite(path: Path, change: Callable[[list[str]], list[str]]) -> None:
-    """Rewrite PATH as CHANGE makes its lines, starting over when another writer changed it meanwhile.
-
-    Each line keeps its newline, so CHANGE keeps every line it does not touch
-    as written. The new text is written to a temporary file beside the plan
-    and put in its place by `os.replace`, so a reader never sees half a plan;
-    just before that, the plan is read again, and when it is no longer what
-    CHANGE was given — a claim, a priority, a person's edit landed meanwhile —
-    the rewrite starts over from what is there now, so that change is kept
-    rather than written over. What is left is the moment between that second
-    read and the replace.
-    """
-    for _ in range(REWRITE_ATTEMPTS):
-        # Bytes decoded, not read_text: that would turn CRLF into LF on the way in.
-        data = _read_bytes(path)
-        lines = data.decode("utf-8-sig").splitlines(keepends=True)
-        problem = plan_shape_problem([line.rstrip("\r\n") for line in lines])
-        if problem:
-            fail(f"{path}: {problem}; nothing was written")
-        text = "".join(change(lines))
-        temporary = path.with_name(f".{path.name}.{os.getpid()}.tmp")
-        try:
-            with temporary.open("w", encoding="utf-8", newline="") as written:
-                written.write(text)
-            if _read_bytes(path) == data:
-                os.replace(temporary, path)
-                return
-        except PermissionError:
-            # Windows refuses the replace while another process has the plan open.
-            time.sleep(REWRITE_PAUSE_SECONDS)
-        finally:
-            temporary.unlink(missing_ok=True)
-    fail(f"{path} kept changing while it was being rewritten, so nothing was written; try again")
-
-
-def _key_of(line: str) -> str:
-    """The key a front-matter LINE sets, as written; empty when the line sets none."""
-    key, colon, _ = line.partition(":")
-    return key.strip() if colon else ""
-
-
-def _end(line: str) -> str:
-    """LINE's line ending, a newline when it has none."""
-    return line[len(line.rstrip("\r\n")):] or "\n"
-
-
-def set_status(path: Path, status: str, expected: tuple[str, ...] | None = None) -> None:
-    """Set PATH's front matter Status to STATUS, keeping every other line and its newlines as written.
-
-    A plan in an earlier shape is refused (`_rewrite`), and so is one with no
-    front matter, which has nowhere to keep a status. A plan with front matter
-    and no Status is given one, last. With EXPECTED, the status is set only
-    while it is still one of those, checked on the plan as it is when written
-    (`_rewrite`); otherwise the plan is left as it is and the caller refused.
-    STATUS and EXPECTED are statuses a session plan may take (`PLAN.statuses`); any other word is refused.
-    """
-    status = status_word(status)
-    wanted = None if expected is None else tuple(status_word(word) for word in expected)
-    for word in (status, *(wanted or ())):
-        if word not in Status.keys(PLAN.kind):
-            fail(f"{word!r} is not a status; the statuses are {', '.join(Status.keys(PLAN.kind))}")
-
-    def change(lines: list[str]) -> list[str]:
-        _, start = front_matter([line.rstrip("\r\n") for line in lines])
-        if not start:
-            fail(f"{path} has no front matter, so its status cannot be set to {status}")
-        written = f"{PlanKey.STATUS.written}: {status.capitalize()}"
-        for index in range(1, start - 1):
-            if _key_of(lines[index]) == PlanKey.STATUS.written:
-                found = status_word(lines[index].partition(":")[2])
-                if wanted is not None and found not in wanted:
-                    fail(f"{path} is {found or 'without a status'} now, no longer {' or '.join(expected)}, so it is not set to {status}")
-                return [*lines[:index], written + _end(lines[index]), *lines[index + 1:]]
-        if wanted is not None:
-            fail(f"{path} is without a status now, no longer {' or '.join(expected)}, so it is not set to {status}")
-        return [*lines[:start - 1], written + _end(lines[0]), *lines[start - 1:]]
-
-    _rewrite(path, change)
-
-
-def _whole_priority(value: str) -> int | None:
-    """VALUE as a priority, or None when it is not a whole number from 1 to 10."""
-    value = value.strip()
-    if not value.isdigit():
-        return None
-    number = int(value)
-    return number if LOWEST_PRIORITY <= number <= HIGHEST_PRIORITY else None
-
-
-def priority_of(front: dict[str, str] | None) -> int:
-    """The priority FRONT matter gives its plan: its `priority`, or `DEFAULT_PRIORITY` when absent or not 1 to 10."""
-    found = _whole_priority((front or {}).get(PlanKey.PRIORITY.key, ""))
-    return DEFAULT_PRIORITY if found is None else found
-
-
-def checked_priority(value: str | int) -> int:
-    """VALUE as a priority; refused when it is not a whole number from 1 to 10."""
-    found = _whole_priority(str(value))
-    if found is None:
-        fail(
-            f"a priority is a whole number from {LOWEST_PRIORITY} to {HIGHEST_PRIORITY}, the higher sooner; "
-            f"{value!r} is not one"
-        )
-    return found
-
-
-def set_priority(path: Path, priority: int) -> None:
-    """Write PRIORITY as PATH's `priority`, replacing the key or adding it last in the front matter; every other line is kept.
-
-    A plan without front matter has no place for it and is refused.
-    """
-    priority = checked_priority(priority)
-
-    def change(lines: list[str]) -> list[str]:
-        _, start = front_matter([line.rstrip("\r\n") for line in lines])
-        if not start:
-            fail(f"{path} has no front matter, so its priority cannot be set")
-        written = f"{PlanKey.PRIORITY.written}: {priority}{_end(lines[0])}"
-        for index in range(1, start - 1):
-            if _key_of(lines[index]) == PlanKey.PRIORITY.written:
-                return [*lines[:index], written, *lines[index + 1:]]
-        return [*lines[:start - 1], written, *lines[start - 1:]]
-
-    _rewrite(path, change)
-
-
-def normalized_topic(text: str) -> str:
-    """TEXT as a topic: stripped, lower case, each run of white space one hyphen; empty when nothing is left."""
-    return "-".join(text.lower().split())
-
-
-def checked_topic(text: str) -> str:
-    """TEXT as a topic, normalized; refused when it holds a line break, since a topic is a one-line front-matter value."""
-    if "\n" in text or "\r" in text:
-        fail("a topic is one line; this one holds a line break")
-    return normalized_topic(text)
-
-
-def topic_of(front: dict[str, str] | None) -> str:
-    """The topic FRONT matter gives its plan, normalized; empty when it has none."""
-    return normalized_topic((front or {}).get(PlanKey.TOPIC.key, ""))
-
-
-def set_topic(path: Path, topic: str) -> None:
-    """Write TOPIC as PATH's `topic`, replacing the key or adding it last in the front matter; empty removes the key.
-
-    Every other line is kept. A plan without front matter has no place for it
-    and is refused. TOPIC is normalized here, so the plan never holds another
-    form.
-    """
-    topic = checked_topic(topic)
-
-    def change(lines: list[str]) -> list[str]:
-        _, start = front_matter([line.rstrip("\r\n") for line in lines])
-        if not start:
-            fail(f"{path} has no front matter, so its topic cannot be set")
-        written = [f"{PlanKey.TOPIC.written}: {topic}{_end(lines[0])}"] if topic else []
-        for index in range(1, start - 1):
-            if _key_of(lines[index]) == PlanKey.TOPIC.written:
-                return [*lines[:index], *written, *lines[index + 1:]]
-        return [*lines[:start - 1], *written, *lines[start - 1:]]
-
-    _rewrite(path, change)
-
-
-def checked_kind(text: str) -> str:
-    """TEXT as a kind, lower case; refused when it is not one of `KINDS`, so a misspelt kind never reads as a cheaper one."""
-    kind = text.strip().lower()
-    if kind not in KINDS:
-        fail(f"a kind is one of {', '.join(KINDS)}; {text!r} is not one")
-    return kind
-
-
-def kind_of(front: dict[str, str] | None) -> str:
-    """The kind FRONT matter gives its plan, lower case as written; empty when it has none. It is not checked: a plan is edited by hand."""
-    return (front or {}).get(PlanKey.KIND.key, "").strip().lower()
-
-
-def set_kind(path: Path, kind: str) -> None:
-    """Write KIND as PATH's `kind`, replacing the key or adding it last in the front matter; every other line is kept."""
-    kind = checked_kind(kind)
-
-    def change(lines: list[str]) -> list[str]:
-        _, start = front_matter([line.rstrip("\r\n") for line in lines])
-        if not start:
-            fail(f"{path} has no front matter, so its kind cannot be set")
-        written = f"{PlanKey.KIND.written}: {kind}{_end(lines[0])}"
-        for index in range(1, start - 1):
-            if _key_of(lines[index]) == PlanKey.KIND.written:
-                return [*lines[:index], written, *lines[index + 1:]]
-        return [*lines[:start - 1], written, *lines[start - 1:]]
-
-    _rewrite(path, change)
-
-
 def part_text(path: Path, part: str) -> str:
     """What PATH says under its `## PART` heading, up to the next `##`, stripped; empty when it has none."""
-    lines = _read_bytes(path).decode("utf-8-sig").splitlines()
+    lines = read_bytes(path).decode("utf-8-sig").splitlines()
     found: list[str] | None = None
     for line in lines:
         if line.startswith("## "):

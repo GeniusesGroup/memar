@@ -6,7 +6,7 @@
 A session's record is its folder: the plan, the report, and every file the work
 made, filed by kind in the role folders (`session_layout`). A report links the
 files it presents; a file it does not link may still be what a later session
-needs, so the folder is kept whole (owner, 2026-10-15) and only what has no
+needs, so the folder is kept whole and only what has no
 place in a record is left out:
 
     the claim            Memar's mark that an agent holds the task, meaningless on another clone

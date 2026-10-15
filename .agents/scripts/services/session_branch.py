@@ -4,7 +4,7 @@
 """services/session_branch.py — a project's records branch: what it holds, and the one way a commit is added to it.
 
 A project's sessions' records are kept on a branch of the project's own
-repository (`machine/fs_memar.RECORDS_BRANCH`, owner 2026-10-15), each session
+repository (`machine/fs_memar.RECORDS_BRANCH`), each session
 at `.agents/sessions/<id>/` in the branch's tree, so the history of the work
 does not grow with them and nothing of the checkout moves when one is kept. This
 file is the whole of what the other session services know about git:

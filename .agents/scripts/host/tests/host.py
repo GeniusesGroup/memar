@@ -83,6 +83,8 @@ from pathlib import Path
 TESTS = Path(__file__).resolve().parent
 HOST = TESTS.parent
 SCRIPTS = HOST.parent
+# This file is itself named host.py: its own folder must not hide the `host` package from the verbs' imports.
+sys.path[:] = [entry for entry in sys.path if Path(entry or ".").resolve() != TESTS]
 sys.path.insert(0, str(SCRIPTS))
 sys.dont_write_bytecode = True
 
@@ -90,6 +92,11 @@ from machine.fs_test_scratch import suite_scratch
 
 
 def read(name: str) -> str:
+    """A file of the shelf; `git.py` is read as all the files it is made of, entry and verbs together."""
+    if name == "git.py":
+        files = [HOST / "git.py", *sorted(HOST.glob("git_*.py"))]
+        texts = [file.read_text(encoding="utf-8") for file in files]
+        return "\n".join(text.replace("from __future__ import annotations", "") for text in texts)
     return (HOST / name).read_text(encoding="utf-8")
 
 
@@ -161,18 +168,18 @@ class RestoreRefusesFirst(unittest.TestCase):
     def test_discarding_without_the_token_refuses_and_says_what_to_do(self) -> None:
         from importlib.machinery import SourceFileLoader
 
-        module = _load("host_git", "git.py")
+        module = _load("host_git_restore", "git_restore.py")
         with self.assertRaises(SystemExit) as raised:
-            module.cmd_restore([TESTS], None)
+            module.cmd_restore(TESTS, [TESTS], None)
         message = str(raised.exception)
         self.assertIn("refusing to discard", message)
         self.assertIn("stash", message)
         self.assertIn(self.TOKEN, message)
 
     def test_discarding_needs_a_path_too(self) -> None:
-        module = _load("host_git", "git.py")
+        module = _load("host_git_restore", "git_restore.py")
         with self.assertRaises(SystemExit) as raised:
-            module.cmd_restore([], self.TOKEN)
+            module.cmd_restore(TESTS, [], self.TOKEN)
         self.assertIn("requires one or more paths", str(raised.exception))
 
 
@@ -200,13 +207,13 @@ class StashIsNotDiscard(unittest.TestCase):
     def test_a_clean_tree_is_not_stashed_at_all(self) -> None:
         # Parking work is for work there is; a stash of nothing is a stash entry
         # a later session will have to read to learn that nothing happened.
-        module = _load("host_git", "git.py")
-        module._working_tree_dirty = lambda: False
+        module = _load("host_git_stash", "git_stash.py")
+        module._working_tree_dirty = lambda root: False
         import io
         import contextlib
 
         with contextlib.redirect_stderr(io.StringIO()) as said:
-            module.cmd_stash(None)
+            module.cmd_stash(TESTS, None)
         self.assertIn("nothing to stash", said.getvalue())
 
 
@@ -349,7 +356,7 @@ class ScratchRepository(unittest.TestCase):
 
     # The verbs that act on a repository the caller names, and are run from
     # another folder to prove they do not read the one they are run from.
-    REPOSITORY_VERBS = ("commit", "uncommit", "reindex")
+    REPOSITORY_VERBS = ("commit", "uncommit", "reindex", "record", "rename", "remove", "stash", "restore", "undelete")
 
     def host_git(self, *args: str):
         import subprocess
@@ -374,6 +381,76 @@ class ScratchRepository(unittest.TestCase):
         self.git("commit", "-q", "-am", "body")
         self.base = self.git("rev-parse", "HEAD")
         return body
+
+
+class EveryWorkingVerbTakesTheRepository(ScratchRepository):
+    """rename, remove, stash, restore and undelete act on the repository --repository names, never the folder they run from."""
+
+    def test_each_of_them_requires_the_repository_flag(self) -> None:
+        import subprocess
+
+        for verb, rest in (
+            ("rename", ["mine.md", "moved.md"]),
+            ("remove", ["mine.md"]),
+            ("stash", []),
+            ("restore", ["mine.md"]),
+            ("undelete", ["mine.md"]),
+        ):
+            with self.subTest(verb=verb):
+                done = subprocess.run(
+                    [sys.executable, str(HOST / "git.py"), verb, *rest],
+                    cwd=self.repo, capture_output=True, text=True,
+                )
+                self.assertNotEqual(done.returncode, 0)
+                self.assertIn("--repository", done.stderr)
+        self.assertEqual(self.git("status", "--porcelain"), "")
+
+    def test_a_rename_moves_inside_the_repository_named_with_relative_paths(self) -> None:
+        done = self.host_git("rename", "mine.md", "moved.md")
+        self.assertEqual(done.returncode, 0, done.stderr)
+        self.assertTrue((self.repo / "moved.md").exists())
+        self.assertFalse((self.repo / "mine.md").exists())
+        self.assertIn("R  mine.md -> moved.md", self.git("status", "--porcelain"))
+
+    def test_a_remove_trashes_and_stages_inside_the_repository_named(self) -> None:
+        done = self.host_git("remove", "mine.md")
+        self.assertEqual(done.returncode, 0, done.stderr)
+        self.assertFalse((self.repo / "mine.md").exists())
+        self.assertIn("D  mine.md", self.git("status", "--porcelain"))
+
+    def test_a_stash_sets_aside_the_work_of_the_repository_named(self) -> None:
+        self.put("mine.md", "edited\n")
+        done = self.host_git("stash")
+        self.assertEqual(done.returncode, 0, done.stderr)
+        self.assertEqual(self.git("status", "--porcelain"), "")
+        self.assertIn("stash@{0}", self.git("stash", "list"))
+
+    def test_a_restore_discards_in_the_repository_named_only_with_the_token(self) -> None:
+        self.put("mine.md", "edited\n")
+        refused = self.host_git("restore", "mine.md")
+        self.assertNotEqual(refused.returncode, 0)
+        self.assertIn("M mine.md", self.git("status", "--porcelain"))
+        done = self.host_git("restore", "--confirm", "DISCARD-UNCOMMITTED", "mine.md")
+        self.assertEqual(done.returncode, 0, done.stderr)
+        self.assertEqual(self.git("status", "--porcelain"), "")
+
+    def test_an_undelete_brings_a_path_back_in_the_repository_named(self) -> None:
+        (self.repo / "mine.md").unlink()
+        done = self.host_git("undelete", "mine.md")
+        self.assertEqual(done.returncode, 0, done.stderr)
+        self.assertEqual((self.repo / "mine.md").read_text(encoding="utf-8"), "base\n")
+        self.assertEqual(self.git("status", "--porcelain"), "")
+
+    def test_a_path_outside_the_repository_is_refused(self) -> None:
+        done = self.host_git("remove", str(self.elsewhere / "other.md"))
+        self.assertNotEqual(done.returncode, 0)
+        self.assertIn("not inside the repository", done.stderr)
+        self.assertTrue((self.elsewhere / "other.md").exists())
+
+    def test_no_verb_that_acts_on_a_repository_reads_the_folder_it_runs_from(self) -> None:
+        source = read("git.py")
+        self.assertNotIn("def run_git(args: list[str])", source)
+        self.assertNotIn("cwd=str(cwd) if cwd else None", source)
 
 
 class CommitTakesOnlyWhatItNames(ScratchRepository):
@@ -630,7 +707,10 @@ class CommitWaitsOutALock(ScratchRepository):
         import os
 
         super().setUp()
-        self.module = _load("host_git_locks", "git.py")
+        self.module = importlib.import_module("host.git_commit")
+        self.uncommit_module = importlib.import_module("host.git_uncommit")
+        self.lock_module = importlib.import_module("host.git_lock")
+        self.run_module = importlib.import_module("host.git_run")
         self.lock = self.repo / ".git" / "index.lock"
         here = Path.cwd()
         os.chdir(self.repo)
@@ -648,8 +728,8 @@ class CommitWaitsOutALock(ScratchRepository):
         with contextlib.ExitStack() as stack:
             stack.enter_context(contextlib.redirect_stderr(said))
             stack.enter_context(contextlib.redirect_stdout(io.StringIO()))
-            stack.enter_context(unittest.mock.patch.object(self.module, "LOCK_WAIT_SECONDS", 0.5))
-            stack.enter_context(unittest.mock.patch.object(self.module, "LOCK_FIRST_PAUSE_SECONDS", 0.05))
+            stack.enter_context(unittest.mock.patch.object(self.lock_module, "LOCK_WAIT_SECONDS", 0.5))
+            stack.enter_context(unittest.mock.patch.object(self.lock_module, "LOCK_FIRST_PAUSE_SECONDS", 0.05))
             for patch in patches:
                 stack.enter_context(patch)
             try:
@@ -662,13 +742,13 @@ class CommitWaitsOutALock(ScratchRepository):
         return self.here(lambda: self.module.cmd_commit(self.repo, [Path("mine.md")], [], [], 0, self.message), *patches)
 
     def uncommit_here(self, expect: str, *patches) -> tuple[str | None, str]:
-        return self.here(lambda: self.module.cmd_uncommit(self.repo, expect), *patches)
+        return self.here(lambda: self.uncommit_module.cmd_uncommit(self.repo, expect), *patches)
 
     def grabbed_after_update_ref(self):
         """Another git process taking the index lock the moment HEAD has moved."""
         import unittest.mock
 
-        real = self.module._attempt
+        real = self.run_module.attempt
 
         def grabbed(args, root, env=None, data=None):
             done = real(args, root, env, data)
@@ -676,7 +756,7 @@ class CommitWaitsOutALock(ScratchRepository):
                 self.lock.write_text("", encoding="utf-8")
             return done
 
-        return unittest.mock.patch.object(self.module, "_attempt", grabbed)
+        return unittest.mock.patch.object(self.run_module, "attempt", grabbed)
 
     def held_for_an_hour(self) -> None:
         import os
@@ -697,7 +777,7 @@ class CommitWaitsOutALock(ScratchRepository):
 
         self.lock.write_text("", encoding="utf-8")
         released = unittest.mock.patch.object(
-            self.module.time, "sleep", side_effect=lambda seconds: self.lock.unlink(missing_ok=True)
+            self.lock_module.time, "sleep", side_effect=lambda seconds: self.lock.unlink(missing_ok=True)
         )
         stopped, said = self.commit_here(released)
         self.assertIsNone(stopped, said)
@@ -848,7 +928,7 @@ class CommitWaitsOutALock(ScratchRepository):
         import subprocess
         import unittest.mock
 
-        real, calls = self.module._attempt, []
+        real, calls = self.run_module.attempt, []
 
         def refused(args, root, env=None, data=None):
             if args[0] != "update-ref":
@@ -859,7 +939,7 @@ class CommitWaitsOutALock(ScratchRepository):
                 b"fatal: update_ref failed for ref 'HEAD': cannot lock ref 'HEAD': is at 1234 but expected 5678\n",
             )
 
-        stopped, said = self.commit_here(unittest.mock.patch.object(self.module, "_attempt", refused))
+        stopped, said = self.commit_here(unittest.mock.patch.object(self.run_module, "attempt", refused))
         self.assertIsNotNone(stopped)
         self.assertEqual(len(calls), 1)
         self.assertNotIn("waiting", said)
