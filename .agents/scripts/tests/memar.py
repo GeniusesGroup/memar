@@ -42,6 +42,12 @@ What is pinned, and what each pin is for:
   HelpListsTheServices
                       `memar --help` lists exactly the verbs the real services
                       declare, each with the summary it declared.
+  HelpStatesItsOwnWork
+                      No real verb's overview carries a command line of its
+                      own sub-verbs: each help states its own work, and a
+                      sub-verb's is reached through that sub-verb's --help,
+                      which argparse's list of verbs leads to (owner,
+                      2026-10-14).
   EveryHelpAnswers    Every real verb's and sub-verb's --help exits 0 through
                       the launcher, under its own `memar` usage, so a caller
                       can always read the interface of what they are about to
@@ -343,6 +349,28 @@ class HelpListsTheServices(unittest.TestCase):
             with self.subTest(verb=verb):
                 self.assertTrue(summary)
                 self.assertEqual(flat(listed[verb]), flat(summary))
+
+
+class HelpStatesItsOwnWork(unittest.TestCase):
+    def test_no_overview_names_a_command_line_of_its_own_sub_verbs(self) -> None:
+        top, _ = memar.assemble(memar.services())
+        checked = 0
+
+        def walk(parser: argparse.ArgumentParser, path: tuple[str, ...]) -> None:
+            nonlocal checked
+            group = subparsers(parser)
+            if group is None:
+                return
+            overview = flat(parser.description or "")
+            for name, child in group.choices.items():
+                line = " ".join(("memar", *path, name))
+                checked += 1
+                with self.subTest(command=line):
+                    self.assertNotIn(line, overview)
+                walk(child, (*path, name))
+
+        walk(top, ())
+        self.assertTrue(checked)
 
 
 class EveryHelpAnswers(unittest.TestCase):
