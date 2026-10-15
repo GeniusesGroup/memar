@@ -29,7 +29,10 @@ from typing import Callable, NamedTuple
 
 FOLDERS_COMMAND = "folders"
 
-ROLE_FOLDERS = ("protocol", "rules", "errors", "tests", "services", "docs")
+TEMP_FOLDER = "temp"
+"""The role folder for what the work makes and the module's record does not need: a draft, a tool's output without content. A session's `temp/` is never archived (`session_archive`)."""
+
+ROLE_FOLDERS = ("protocol", "rules", "errors", "tests", "services", "docs", TEMP_FOLDER)
 """The role folders a module groups its kinds of work in, each named exactly as its role.
 
 `modules/README.md`, in its bullet "By role inside a module", owns what each

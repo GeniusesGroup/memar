@@ -51,7 +51,7 @@ class PlanRecord(unittest.TestCase):
     def test_the_keys_in_the_order_a_new_plan_writes_them(self) -> None:
         self.assertEqual(
             [key.key for key in PLAN.keys],
-            ["title", "status", "opened", "project", "parent", "conversation", "priority", "topic"],
+            ["title", "status", "opened", "project", "parent", "conversation", "priority", "topic", "kind"],
         )
         self.assertIs(PlanKey.STATUS, PLAN.keys[1])
 

@@ -50,6 +50,7 @@ class PlanKey(RecordKey):
     CONVERSATION = ("conversation", "the id of the first session of the conversation, with --parent")
     PRIORITY = ("priority", "N, with --priority")
     TOPIC = ("topic", "T, with --topic")
+    KIND = ("kind", "K, with --kind: what the task is, which says how strong a model it needs")
 
 
 class ReportKey(RecordKey):

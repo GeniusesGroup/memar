@@ -311,21 +311,54 @@ class ScratchRepository(unittest.TestCase):
         self.base = self.git("rev-parse", "HEAD")
         self.message = self.repo / ".git" / "message.txt"
         self.message.write_text("subject\n", encoding="utf-8", newline="\n")
+        # Another repository, the folder the repository verbs are run from: a verb
+        # that read the current folder would act on it, and its tip would move.
+        elsewhere = tempfile.TemporaryDirectory(
+            dir=suite_scratch(),
+            prefix="tmp-host-elsewhere-",
+            ignore_cleanup_errors=True,
+        )
+        self.addCleanup(elsewhere.cleanup)
+        self.elsewhere = Path(elsewhere.name)
+        self.git_in(self.elsewhere, "init", "-q", "-b", "main")
+        self.git_in(self.elsewhere, "config", "user.name", "Other")
+        self.git_in(self.elsewhere, "config", "user.email", "other@example.org")
+        (self.elsewhere / "other.md").write_text("other\n", encoding="utf-8", newline="\n")
+        self.git_in(self.elsewhere, "add", ".")
+        self.git_in(self.elsewhere, "commit", "-q", "-m", "other")
+        self.elsewhere_tip = self.git_in(self.elsewhere, "rev-parse", "HEAD")
+        self.addCleanup(self.assert_elsewhere_untouched)
 
     def git(self, *args: str) -> str:
+        return self.git_in(self.repo, *args)
+
+    def git_in(self, folder: Path, *args: str) -> str:
         import subprocess
 
         return subprocess.run(
-            ["git", "-C", str(self.repo), *args],
+            ["git", "-C", str(folder), *args],
             capture_output=True, text=True, check=True,
         ).stdout.strip()
+
+    def assert_elsewhere_untouched(self) -> None:
+        self.assertEqual(self.git_in(self.elsewhere, "rev-parse", "HEAD"), self.elsewhere_tip)
+        self.assertEqual(self.git_in(self.elsewhere, "status", "--porcelain"), "")
 
     def put(self, name: str, text: str) -> None:
         (self.repo / name).write_text(text, encoding="utf-8", newline="\n")
 
+    # The verbs that act on a repository the caller names, and are run from
+    # another folder to prove they do not read the one they are run from.
+    REPOSITORY_VERBS = ("commit", "uncommit", "reindex")
+
     def host_git(self, *args: str):
         import subprocess
 
+        if args[0] in self.REPOSITORY_VERBS:
+            return subprocess.run(
+                [sys.executable, str(HOST / "git.py"), args[0], "--repository", str(self.repo), *args[1:]],
+                cwd=self.elsewhere, capture_output=True, text=True,
+            )
         return subprocess.run(
             [sys.executable, str(HOST / "git.py"), *args],
             cwd=self.repo, capture_output=True, text=True,
@@ -626,10 +659,10 @@ class CommitWaitsOutALock(ScratchRepository):
         return None, said.getvalue()
 
     def commit_here(self, *patches) -> tuple[str | None, str]:
-        return self.here(lambda: self.module.cmd_commit([Path("mine.md")], [], [], 0, self.message), *patches)
+        return self.here(lambda: self.module.cmd_commit(self.repo, [Path("mine.md")], [], [], 0, self.message), *patches)
 
     def uncommit_here(self, expect: str, *patches) -> tuple[str | None, str]:
-        return self.here(lambda: self.module.cmd_uncommit(expect), *patches)
+        return self.here(lambda: self.module.cmd_uncommit(self.repo, expect), *patches)
 
     def grabbed_after_update_ref(self):
         """Another git process taking the index lock the moment HEAD has moved."""
@@ -698,8 +731,8 @@ class CommitWaitsOutALock(ScratchRepository):
         self.assertIn("Unable to create", stopped)
         self.assertIn("a lock this young", stopped)
         self.assertIn("once the lock is free", stopped)
-        self.assertIn(f"reindex --from {made} --was {self.base} -- mine.md", stopped)
-        self.assertIn(f"reindex --undo --from {made} --was {self.base} -- mine.md", stopped)
+        self.assertIn(f"reindex --repository {self.repo} --from {made} --was {self.base} -- mine.md", stopped)
+        self.assertIn(f"reindex --repository {self.repo} --undo --from {made} --was {self.base} -- mine.md", stopped)
         self.assertNotIn("update-ref HEAD", stopped)
         self.assertEqual(stopped.count("\n    python "), 2)
         self.assertEqual(self.git("diff", "--cached", "--name-only"), "mine.md")
@@ -738,12 +771,12 @@ class CommitWaitsOutALock(ScratchRepository):
         moved = self.host_git("rename", "mine.md", "moved.md")
         self.assertEqual(moved.returncode, 0, moved.stderr)
         stopped, _ = self.here(
-            lambda: self.module.cmd_commit([Path("mine.md"), Path("moved.md")], [], [], 0, self.message),
+            lambda: self.module.cmd_commit(self.repo, [Path("mine.md"), Path("moved.md")], [], [], 0, self.message),
             self.grabbed_after_update_ref(),
         )
         self.assertIsNotNone(stopped)
         made = self.git("rev-parse", "HEAD")
-        self.assertIn(f"reindex --undo --from {made} --was {self.base} -- mine.md moved.md", stopped)
+        self.assertIn(f"reindex --repository {self.repo} --undo --from {made} --was {self.base} -- mine.md moved.md", stopped)
         self.lock.unlink()
         return made
 
@@ -793,8 +826,8 @@ class CommitWaitsOutALock(ScratchRepository):
         self.assertIsNotNone(stopped)
         self.assertEqual(self.git("rev-parse", "HEAD"), self.base)
         self.assertIn(f"HEAD moved from {second} back to its parent {self.base}", stopped)
-        self.assertIn(f"reindex --from {self.base} --was {second} -- mine.md", stopped)
-        self.assertIn(f"reindex --undo --from {self.base} --was {second} -- mine.md", stopped)
+        self.assertIn(f"reindex --repository {self.repo} --from {self.base} --was {second} -- mine.md", stopped)
+        self.assertIn(f"reindex --repository {self.repo} --undo --from {self.base} --was {second} -- mine.md", stopped)
         self.assertEqual(self.git("diff", "--cached", "--name-only"), "mine.md")
 
         self.lock.unlink()
@@ -835,6 +868,241 @@ class CommitWaitsOutALock(ScratchRepository):
         self.assertIn("Once what git said above is dealt with, rerun", stopped)
         self.assertNotIn("once the lock is free", stopped)
         self.assertEqual(self.git("rev-parse", "HEAD"), self.base)
+
+
+class CommitKnowsItsRepositoryAndKeepsItsOwnIndex(ScratchRepository):
+    """The two defects the study of 2026-10-15 saw in `commit`: the folder it was run from, and one index name for everyone."""
+
+    def test_the_repository_is_the_one_named_never_the_folder_it_is_run_from(self) -> None:
+        # Run from another repository, whose tip and status the cleanup checks are unmoved.
+        self.put("mine.md", "mine\n")
+        done = self.commit("mine.md")
+        self.assertEqual(done.returncode, 0, done.stderr)
+        self.assertEqual(self.git("show", "--name-only", "--format=", "HEAD"), "mine.md")
+
+    def test_each_of_the_three_verbs_refuses_to_run_without_a_repository(self) -> None:
+        import subprocess
+
+        for verb, rest in (
+            ("commit", ["-F", str(self.message), "mine.md"]),
+            ("uncommit", ["--expect", self.base]),
+            ("reindex", ["--from", self.base, "--was", self.base, "mine.md"]),
+        ):
+            with self.subTest(verb=verb):
+                refused = subprocess.run(
+                    [sys.executable, str(HOST / "git.py"), verb, *rest],
+                    cwd=self.repo, capture_output=True, text=True,
+                )
+                self.assertNotEqual(refused.returncode, 0)
+                self.assertIn("--repository", refused.stderr)
+
+    def test_a_folder_that_is_no_repository_is_refused(self) -> None:
+        import subprocess
+
+        nowhere = self.repo / "no-such-folder"
+        done = subprocess.run(
+            [sys.executable, str(HOST / "git.py"), "commit", "--repository", str(nowhere), "-F", str(self.message), "x"],
+            cwd=self.repo, capture_output=True, text=True,
+        )
+        self.assertNotEqual(done.returncode, 0)
+        self.assertIn("not inside a git repository", done.stderr)
+
+    def test_no_index_name_is_fixed_and_none_is_left_behind(self) -> None:
+        self.assertNotIn("memar-host-commit.index", read("git.py"))
+        self.put("mine.md", "mine\n")
+        self.assertEqual(self.commit("mine.md").returncode, 0)
+        self.assertEqual([entry.name for entry in (self.repo / ".git").glob("memar-host*")], [])
+
+    def test_two_commits_at_once_do_not_share_an_index(self) -> None:
+        import subprocess
+        import threading
+
+        # Two sessions, each its own path, at the same moment: with one index
+        # file between them one would commit the other's path.
+        for name in ("a.md", "b.md"):
+            self.put(name, f"{name}\n")
+            self.message.with_name(f"{name}.msg").write_text(f"add {name}\n", encoding="utf-8", newline="\n")
+        done: dict[str, subprocess.CompletedProcess] = {}
+
+        def commit(name: str) -> None:
+            done[name] = subprocess.run(
+                [sys.executable, str(HOST / "git.py"), "commit", "--repository", str(self.repo),
+                 "-F", str(self.message.with_name(f"{name}.msg")), name],
+                cwd=self.elsewhere, capture_output=True, text=True,
+            )
+
+        threads = [threading.Thread(target=commit, args=(name,)) for name in ("a.md", "b.md")]
+        for thread in threads:
+            thread.start()
+        for thread in threads:
+            thread.join()
+        landed = [name for name, result in done.items() if result.returncode == 0]
+        self.assertTrue(landed, {name: result.stderr for name, result in done.items()})
+        for commit_id in self.git("rev-list", f"{self.base}..HEAD").split():
+            self.assertEqual(len(self.git("show", "--name-only", "--format=", commit_id).split()), 1)
+
+
+class RecordWritesAnotherBranch(ScratchRepository):
+    """`record`: a commit on another branch, made without HEAD, the index or the working tree."""
+
+    BRANCH = "dev-knowledge"
+
+    def setUp(self) -> None:
+        super().setUp()
+        self.sources = self.repo / ".git" / "sources"
+        self.sources.mkdir()
+        self.manifest = self.repo / ".git" / "manifest.txt"
+
+    def source(self, name: str, data: bytes) -> Path:
+        path = self.sources / name
+        path.write_bytes(data)
+        return path
+
+    def record(self, entries: dict[str, Path], *replace: str, message: str = "record\n"):
+        import subprocess
+
+        self.manifest.write_text(
+            "".join(f"{target}\t{source}\n" for target, source in entries.items()), encoding="utf-8", newline="\n"
+        )
+        self.message.write_text(message, encoding="utf-8", newline="\n")
+        arguments = [
+            "record", "--repository", str(self.repo), "--branch", self.BRANCH,
+            "--manifest", str(self.manifest), "-F", str(self.message),
+        ]
+        for each in replace:
+            arguments += ["--replace", each]
+        return subprocess.run(
+            [sys.executable, str(HOST / "git.py"), *arguments],
+            cwd=self.elsewhere, capture_output=True, text=True,
+        )
+
+    def tree(self) -> dict[str, str]:
+        listed = self.git("ls-tree", "-r", "--name-only", self.BRANCH).splitlines()
+        return {name: self.git("show", f"{self.BRANCH}:{name}") for name in listed}
+
+    def test_the_first_record_makes_the_branch_with_no_parent_and_moves_nothing_else(self) -> None:
+        self.put("mine.md", "edited\n")
+        self.put("theirs.md", "staged\n")
+        self.git("add", "theirs.md")
+        head, staged, status = self.git("rev-parse", "HEAD"), self.git("diff", "--cached"), self.git("status", "--porcelain")
+        done = self.record({".agents/sessions/s1/plan.md": self.source("p", b"plan\n")})
+        self.assertEqual(done.returncode, 0, done.stderr)
+        made = done.stdout.strip()
+        self.assertEqual(self.git("rev-parse", self.BRANCH), made)
+        self.assertEqual(self.git("rev-list", "--parents", "-n", "1", self.BRANCH), made)
+        self.assertEqual(self.tree(), {".agents/sessions/s1/plan.md": "plan"})
+        self.assertEqual(self.git("rev-parse", "HEAD"), head)
+        self.assertEqual(self.git("symbolic-ref", "HEAD"), "refs/heads/main")
+        self.assertEqual(self.git("diff", "--cached"), staged)
+        self.assertEqual(self.git("status", "--porcelain"), status)
+        self.assertEqual(self.git("log", "-1", "--format=%s", self.BRANCH), "record")
+
+    def test_the_bytes_are_kept_as_they_are_whatever_git_would_do_to_them(self) -> None:
+        import subprocess
+
+        self.git("config", "core.autocrlf", "true")
+        self.git("config", "core.safecrlf", "false")
+        (self.repo / ".gitattributes").write_text("*.md text eol=lf\n", encoding="utf-8", newline="\n")
+        data = b"line one\r\nline two\r\n"
+        done = self.record({"a/crlf.md": self.source("c", data)})
+        self.assertEqual(done.returncode, 0, done.stderr)
+        blob = subprocess.run(
+            ["git", "-C", str(self.repo), "cat-file", "blob", f"{self.BRANCH}:a/crlf.md"], capture_output=True
+        ).stdout
+        self.assertEqual(blob, data)
+
+    def test_a_second_record_has_the_first_for_its_parent_and_replaces_only_what_it_names(self) -> None:
+        first = self.record({
+            "s/one/a.md": self.source("a", b"a\n"),
+            "s/one/b.md": self.source("b", b"b\n"),
+            "s/two/c.md": self.source("c", b"c\n"),
+        })
+        self.assertEqual(first.returncode, 0, first.stderr)
+        first_tip = self.git("rev-parse", self.BRANCH)
+        done = self.record({"s/one/a.md": self.source("a2", b"a again\n")}, "s/one")
+        self.assertEqual(done.returncode, 0, done.stderr)
+        self.assertEqual(self.tree(), {"s/one/a.md": "a again", "s/two/c.md": "c"})
+        self.assertEqual(self.git("rev-parse", f"{self.BRANCH}~1"), first_tip)
+
+    def test_a_record_that_changes_nothing_makes_no_commit_and_says_so(self) -> None:
+        entries = {"s/one/a.md": self.source("a", b"a\n")}
+        first = self.record(entries).stdout.strip()
+        again = self.record(entries, "s/one")
+        self.assertEqual(again.returncode, 0, again.stderr)
+        self.assertEqual(again.stdout.strip(), first)
+        self.assertEqual(self.git("rev-parse", self.BRANCH), first)
+        self.assertIn("nothing", again.stderr)
+
+    def test_the_checked_out_branch_is_refused(self) -> None:
+        import subprocess
+
+        self.manifest.write_text(f"x.md\t{self.source('x', b'x')}\n", encoding="utf-8", newline="\n")
+        done = subprocess.run(
+            [sys.executable, str(HOST / "git.py"), "record", "--repository", str(self.repo), "--branch", "main",
+             "--manifest", str(self.manifest), "-F", str(self.message)],
+            cwd=self.elsewhere, capture_output=True, text=True,
+        )
+        self.assertNotEqual(done.returncode, 0)
+        self.assertIn("checked out", done.stderr)
+        self.assertEqual(self.git("rev-parse", "HEAD"), self.base)
+
+    def test_a_path_that_leaves_the_branch_or_names_git_is_refused(self) -> None:
+        source = self.source("x", b"x")
+        for target in ("../x.md", "/x.md", "a//b.md", "a/.git/config", "a/./b.md"):
+            with self.subTest(target=target):
+                done = self.record({target: source})
+                self.assertNotEqual(done.returncode, 0)
+                self.assertFalse(self.git("branch", "--list", self.BRANCH))
+
+    def test_a_source_that_is_no_file_is_refused_and_nothing_is_written(self) -> None:
+        done = self.record({"a.md": self.sources / "missing"})
+        self.assertNotEqual(done.returncode, 0)
+        self.assertIn("not a file", done.stderr)
+        self.assertFalse(self.git("branch", "--list", self.BRANCH))
+
+    def test_the_repository_is_required(self) -> None:
+        import subprocess
+
+        done = subprocess.run(
+            [sys.executable, str(HOST / "git.py"), "record", "--branch", self.BRANCH, "--manifest", str(self.manifest),
+             "-F", str(self.message)],
+            cwd=self.repo, capture_output=True, text=True,
+        )
+        self.assertNotEqual(done.returncode, 0)
+        self.assertIn("--repository", done.stderr)
+
+    def test_records_at_once_all_land_one_after_the_other(self) -> None:
+        import subprocess
+        import threading
+
+        results = {}
+
+        def put(name: str) -> None:
+            manifest = self.sources / f"{name}.manifest"
+            message = self.sources / f"{name}.message"
+            manifest.write_text(f"s/{name}/f.md\t{self.source(name, name.encode())}\n", encoding="utf-8", newline="\n")
+            message.write_text(f"record {name}\n", encoding="utf-8", newline="\n")
+            results[name] = subprocess.run(
+                [sys.executable, str(HOST / "git.py"), "record", "--repository", str(self.repo), "--branch", self.BRANCH,
+                 "--manifest", str(manifest), "-F", str(message), "--replace", f"s/{name}"],
+                cwd=self.elsewhere, capture_output=True, text=True,
+            )
+
+        threads = [threading.Thread(target=put, args=(name,)) for name in ("one", "two", "three")]
+        for thread in threads:
+            thread.start()
+        for thread in threads:
+            thread.join()
+        for result in results.values():
+            self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(sorted(self.tree()), ["s/one/f.md", "s/three/f.md", "s/two/f.md"])
+        self.assertEqual(len(self.git("rev-list", self.BRANCH).split()), 3)
+
+    def test_it_never_pushes_and_never_moves_the_checkout(self) -> None:
+        record = read("git.py").partition("def cmd_record")[2].partition("\ndef ")[0]
+        self.assertTrue(record)
+        for forbidden in ('"push"', "checkout", '"reset"', "update-ref\", \"HEAD"):
+            self.assertNotIn(forbidden, record)
 
 
 def _load(name: str, file: str):

@@ -63,6 +63,7 @@ import services.project_registry as registry
 import services.session_brief as session_brief
 import services.session_claim as session_claim
 import services.session_claims as session_claims
+import services.session_temp as session_temp
 import services.session_new as session_new
 import services.session_plan as session_plan
 
@@ -153,6 +154,7 @@ class ClaimsTakesN(Fixture):
         self.assertIn("priority: 7", text)
         self.assertIn(f"plan: {folder / session_plan.PLAN_NAME}", text)
         self.assertIn(f"brief: {session_brief.brief_text(folder.name)}", text)
+        self.assertIn(session_temp.TEMP_SENTENCE, text)
 
     def test_fewer_queued_than_asked_is_not_an_error(self) -> None:
         one = self.session("20261012T000046Z-1-0", "queued")

@@ -235,7 +235,7 @@ class PreferencesKept(unittest.TestCase):
         for phrase in ("never rewrites it", "relative to the project's top folder, or an absolute one",
                        "neither that top folder itself nor a drive or filesystem root", "temp/sessions/",
                        "never touches a session folder made in the `sessions` folder",
-                       "copied into .agents/sessions/", "`on`, `off`; left empty, they are",
+                       "kept on the branch dev-knowledge of the project's own repository", "at .agents/sessions/<id>/ there", "`on`, `off`; left empty, they are",
                        "write any preference agents should follow"):
             self.assertIn(phrase, text)
         self.assertEqual(project_preferences.read_preferences(self.project), {})

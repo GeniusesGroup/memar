@@ -61,16 +61,8 @@ from services.session_plan import PLAN_NAME, plan_skeleton
 
 SID = "20261011-T000000Z-1"
 BRIEF = (
-    "Load the Memar skill: run `memar content path .agents/skills/memar/SKILL.md` and follow the file it prints. "
-    f"Your task is session {SID}: run `memar session new --session-id {SID}`, read the plan.md it names, "
-    "and do what its Request says, without rewriting that Request. "
-    "Put nothing at the session folder's top but plan.md and report.md: anything else you make goes in "
-    "the role folder of its kind, as `memar session --help` says. "
-    "If the Request ideates, designs, or critiques, first check that you read in this context what the skill "
-    "names for that and run on the model it requires; where either fails, end Blocked saying which. "
-    "End with its report.md and Status as `memar session --help` says: write them where you may write files; "
-    "where you may only return text, return the report as your final text, and the delegating session "
-    "writes it as report.md before its next step."
+    f"Your task is session {SID}. "
+    f"Run `memar session start --session-id {SID}` first, before anything else, and follow what it prints."
 )
 
 

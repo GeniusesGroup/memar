@@ -25,7 +25,7 @@ What is pinned, and what each pin is for:
                   before among them), listed after every minted one; one an
                   earlier Memar
                   left directly in temp/ is found there, by the list and by
-                  its id, until it moves.
+                  its id.
   IdleMeasured    Idle is the latest change anywhere inside, so a file edited
                   deep inside keeps a folder from counting as idle.
 

@@ -61,6 +61,7 @@ from machine.fs_test_scratch import suite_scratch
 import machine.fs_memar as memar_fs
 import services.session_claim as session_claim
 import services.session_find as session_find
+import services.session_temp as session_temp
 import services.session_new as session_new
 import services.session_plan as session_plan
 import services.session_report as session_report
@@ -179,6 +180,7 @@ class ClaimTakesOne(Fixture):
         with contextlib.redirect_stdout(io.StringIO()) as out:
             session_claim.claim(folder.name)
         self.assertIn(folder.name, out.getvalue())
+        self.assertIn(session_temp.TEMP_SENTENCE, out.getvalue())
         self.assertEqual(self.status_of(folder), "active")
 
     def test_a_claim_refuses_a_session_that_is_not_queued(self) -> None:

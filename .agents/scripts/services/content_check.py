@@ -117,7 +117,7 @@ def _mojibake_hints(text: str) -> list[str]:
     return hits
 
 
-def _anchor_slug(heading: str) -> str:
+def anchor_slug(heading: str) -> str:
     """The fragment a Markdown heading produces, as GitHub and most renderers make it."""
     slug = re.sub(r"`([^`]*)`", r"\1", heading)
     slug = re.sub(r"\[([^\]]*)\]\([^)]*\)", r"\1", slug)
@@ -153,7 +153,7 @@ def _headings_by_fragment(visible: str, text: str) -> set[str]:
             continue
         heading = raw_lines[number] if number < len(raw_lines) else match.group(1)
         heading = re.sub(r"^#{1,6}\s+", "", heading).rstrip()
-        slug = _anchor_slug(heading)
+        slug = anchor_slug(heading)
         if not slug:
             continue
         count = seen.get(slug, 0)

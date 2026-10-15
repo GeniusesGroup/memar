@@ -48,12 +48,16 @@ What is pinned, and what each pin is for:
                       from the record each location that is gone and names
                       it, which the daily sweep does not. A project's own
                       log is never trimmed.
-  RecordsKeptFirst    Before the sweep moves a finished folder, its records
-                      are kept in its project (`session_archive`); a folder
-                      whose records cannot be kept is not moved, and `gc`
-                      lists it with why. Every other class stands in for the
-                      keeping with one that owes nothing, so each pins the
-                      sweep alone.
+  RecordsAddedBeforeTheFolderGoes
+                      The sweep is the one act that adds a session's records
+                      itself: before it moves a finished folder, whatever of
+                      its records the project's records branch does not hold
+                      is added, all the sweep's sessions in one commit
+                      (`session_archive`); a folder whose records cannot be
+                      kept is not moved, and `gc` lists it with why. A session
+                      whose plan or report Status is Queued is never swept.
+                      Every other class stands in for the keeping with one
+                      that owes nothing, so each pins the sweep alone.
 
 Usage is the interface. Do not duplicate these recipes as prose catalogs.
 """
@@ -63,6 +67,7 @@ import contextlib
 import io
 import os
 import shutil
+import subprocess
 import sys
 import tempfile
 import time
@@ -146,11 +151,13 @@ class Fixture(unittest.TestCase):
         project.start()
         self.addCleanup(project.stop)
         # The plans here name /work, a project on no computer; keeping records
-        # is pinned in RecordsKeptFirst, which stops this stand-in.
+        # is pinned in RecordsAddedBeforeTheFolderGoes, which stops this stand-in.
         self.keeping = unittest.mock.patch.object(
             session_gc,
             "keep_records",
-            return_value=session_archive.Kept(session_archive.Outcome.NOT_OWED, None, "a stand-in"),
+            side_effect=lambda folders, **_: [
+                session_archive.Kept(session_archive.Outcome.NOT_OWED, None, "a stand-in") for _ in folders
+            ],
         )
         self.keeping.start()
         self.addCleanup(self.keeping.stop)
@@ -506,30 +513,59 @@ class ProjectLocationsNotSwept(Fixture):
         self.assertNotIn(own, self.trashed)
 
 
-class RecordsKeptFirst(Fixture):
+class RecordsAddedBeforeTheFolderGoes(Fixture):
+    """The sweep is the one act that adds a session's records itself (owner, 2026-10-15): everything left, one commit, then the trash."""
+
     def setUp(self) -> None:
         super().setUp()
         self.keeping.stop()
         self.project = self.fake_root / "work" / "example"
         self.project.mkdir(parents=True)
+        for args in (["init", "-q", "-b", "main"], ["config", "user.name", "Test"], ["config", "user.email", "t@example.org"]):
+            subprocess.run(["git", "-C", str(self.project), *args], check=True, capture_output=True)
         project_registry.add_project("example", self.project)
 
-    def finished(self, name: str, project: Path) -> Path:
+    def git(self, *args: str) -> str:
+        return subprocess.run(["git", "-C", str(self.project), *args], capture_output=True, text=True, check=True).stdout.strip()
+
+    def commits(self) -> int:
+        return len(self.git("rev-list", "dev-knowledge").split()) if self.git("branch", "--list", "dev-knowledge") else 0
+
+    def finished(self, name: str, project: Path, *, status: str = "Complete", idle: float = 8) -> Path:
         path = memar_fs.session_dir(name, create=True)
         (path / PLAN_NAME).write_text(
-            plan_skeleton("Work", "2026-10-01T00:00:00Z", project).replace("Status: Active", "Status: Complete", 1),
+            plan_skeleton("Work", "2026-10-01T00:00:00Z", project).replace("Status: Active", f"Status: {status}", 1),
             encoding="utf-8",
             newline="\n",
         )
-        make_idle(path, 8)
+        (path / "docs").mkdir()
+        (path / "docs" / "note.md").write_text("# Note\n", encoding="utf-8", newline="\n")
+        make_idle(path, idle)
         return path
 
-    def test_the_records_are_kept_before_the_folder_is_moved(self) -> None:
+    def test_the_records_are_added_before_the_folder_is_moved(self) -> None:
         idle = self.finished(IDLE, self.project)
         self.daily()
         self.assertEqual(self.trashed, [idle])
-        kept = self.project / ".agents" / "sessions" / IDLE / PLAN_NAME
-        self.assertIn("Project: example", kept.read_text(encoding="utf-8"))
+        plan_on_branch = self.git("show", f"dev-knowledge:.agents/sessions/{IDLE}/{PLAN_NAME}")
+        self.assertIn("Project: example", plan_on_branch)
+        self.assertEqual(self.git("show", f"dev-knowledge:.agents/sessions/{IDLE}/docs/note.md"), "# Note")
+
+    def test_every_session_the_sweep_moves_is_added_in_one_commit(self) -> None:
+        first, second = self.finished(IDLE, self.project), self.finished(OTHER, self.project)
+        self.run_gc()
+        self.assertEqual(sorted(self.trashed), sorted([first, second]))
+        self.assertEqual(self.commits(), 1)
+        for name in (IDLE, OTHER):
+            self.assertTrue(self.git("ls-tree", "-r", "--name-only", "dev-knowledge", "--", f".agents/sessions/{name}/"))
+
+    def test_a_session_already_archived_adds_nothing(self) -> None:
+        idle = self.finished(IDLE, self.project)
+        self.assertEqual(session_archive.keep_records([idle])[0].outcome, session_archive.Outcome.KEPT)
+        make_idle(idle, 8)
+        self.run_gc()
+        self.assertEqual(self.trashed, [idle])
+        self.assertEqual(self.commits(), 1)
 
     def test_a_folder_whose_records_cannot_be_kept_is_not_moved_and_gc_says_why(self) -> None:
         stuck = self.finished(OTHER, self.fake_root / "elsewhere")
@@ -538,6 +574,37 @@ class RecordsKeptFirst(Fixture):
         self.assertTrue(stuck.is_dir())
         self.assertIn("its records cannot be kept", printed)
         self.assertIn(OTHER, printed)
+
+    def test_a_refused_session_does_not_hold_back_another_projects_commit(self) -> None:
+        stuck = self.finished(OTHER, self.fake_root / "elsewhere")
+        idle = self.finished(IDLE, self.project)
+        self.run_gc()
+        self.assertEqual(self.trashed, [idle])
+        self.assertTrue(stuck.is_dir())
+
+    def test_a_session_whose_report_is_queued_is_never_swept_nor_added(self) -> None:
+        held = self.finished(IDLE, self.project)
+        (held / "report.md").write_text("---\nTitle: T\nStatus: Queued\n---\n# Report\n", encoding="utf-8", newline="\n")
+        make_idle(held, 8)
+        printed = self.run_gc()
+        self.assertEqual(self.trashed, [])
+        self.assertTrue(held.is_dir())
+        self.assertIn("Queued", printed)
+        self.assertEqual(self.commits(), 0)
+
+    def test_a_session_whose_plan_is_queued_is_never_swept_nor_added(self) -> None:
+        held = self.finished(IDLE, self.project, status="Queued")
+        self.run_gc()
+        self.daily()
+        self.assertEqual(self.trashed, [])
+        self.assertEqual(self.commits(), 0)
+
+    def test_a_folder_in_no_project_is_moved_as_before(self) -> None:
+        bare = memar_fs.session_dir(THIRD, create=True)
+        make_idle(bare, 8)
+        self.run_gc()
+        self.assertEqual(self.trashed, [bare])
+        self.assertEqual(self.commits(), 0)
 
 
 if __name__ == "__main__":

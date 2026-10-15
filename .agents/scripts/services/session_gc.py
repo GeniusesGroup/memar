@@ -37,11 +37,15 @@ leaves the log without being deleted for good. The caller of `new` is not told
 what was reaped: it was not their session, and the log is where a person looks
 for a folder that is gone.
 
-Before a finished folder is moved, its records — plan, report, and the files
-its report links to — are kept in its project (`session_archive`), so a
-session id a commit cites still names something once the folder is gone. A
-folder whose records cannot be kept is not moved: the clock never drops a
-record, and `gc` lists the folder with why.
+Before a finished folder is moved, whatever of its records the project's
+records branch does not hold is added (`session_archive`), so a session id a
+commit cites still names something once the folder is gone. The sweep is the
+one act that adds records on its own (owner, 2026-10-15): `close` acts only
+on a session `archive` has kept, but the clock has no one to run `archive`
+first. All the folders one sweep moves are added in one commit for each
+project. A folder whose records cannot be kept is not moved: the clock never
+drops a record, and `gc` lists the folder with why. A session whose plan or
+report Status is Queued is waiting to be taken up and is never swept.
 
 A kept folder that looks finished or abandoned is flagged beside it
 (`session_concerns`), and only flagged: the sweep deletes nothing it did not
@@ -78,10 +82,10 @@ from datetime import datetime, timedelta, timezone
 from typing import Callable, NamedTuple
 
 from machine.console import fail, note
-from machine.fs_memar import RECORDS_RELATIVE, sessions_root
+from machine.fs_memar import RECORDS_BRANCH, RECORDS_RELATIVE, sessions_root
 from services.session_archive import Outcome, keep_records
 from services.session_concerns import concerns
-from services.session_folder import DAY_SECONDS, Session, last_change, read_session, session_folders
+from services.session_folder import DAY_SECONDS, Session, last_change, queued_why, read_session, session_folders
 from services.session_location import prune_registry, registered_locations
 from services.session_log import SESSION_LOG_NAME, log_path, record
 from services.session_plan import PLAN_NAME, is_complete
@@ -116,7 +120,7 @@ def unfinished(session: Session) -> str | None:
         return session.shape
     if not is_complete(session.status):
         return f"its status is {session.status}" if session.status else "it has no status"
-    return None
+    return queued_why(session)
 
 
 def claim_todays_sweep() -> bool:
@@ -182,6 +186,7 @@ def reap_idle_sessions(keep: str | None, limit: float | None = None, by: str = "
     record("swept", "", f"limit {limit:g} days{by and f', by {by}'}")
     swept = Sweep([], [], [], [])
     now = time.time()
+    finished: list[tuple[Path, float]] = []
     for entry in sorted(session_folders()):
         if entry.name == keep:
             continue
@@ -199,14 +204,14 @@ def reap_idle_sessions(keep: str | None, limit: float | None = None, by: str = "
             swept.kept.append((entry.name, idle_days, why))
             swept.flagged.extend((entry.name, flag) for flag in concerns(read_session(entry)) if flag != why)
             continue
-        kept = keep_records(entry)
+        finished.append((entry, idle_days))
+    # Everything the branch lacks is added now, one commit for each project.
+    for (entry, idle_days), kept in zip(finished, keep_records([each for each, _ in finished])):
         if kept.outcome is Outcome.REFUSED:
             # A record the sweep cannot keep is not dropped by the clock: the
             # folder stays, and `gc` says why, for a person to settle.
             swept.kept.append((entry.name, idle_days, f"{RECORDS_NOT_KEPT}: {kept.why}"))
             continue
-        if kept.outcome is Outcome.KEPT:
-            record("recorded", entry.name, str(kept.folder))
         try:
             # The trash reports what it moved on stderr, and whoever asked is
             # told by the caller, which knows whether that is anyone's business.
@@ -271,8 +276,10 @@ def describe(verbs) -> Callable[[argparse.Namespace], None]:
             "Move to the OS recycle bin / Trash every session folder in which nothing\n"
             f"has changed for more than DAYS days ({SESSION_IDLE_DAYS} unless given) and whose status\n"
             "is complete: the sweep `new` runs once a day, run now. Before a folder is\n"
-            f"moved, its records — its {PLAN_NAME}, its report, and the files the report\n"
-            f"links to — are copied into {RECORDS_RELATIVE.as_posix()}/ in the project its plan names.\n"
+            "moved, whatever of its records the project's records branch does not hold\n"
+            f"is added ({RECORDS_BRANCH}, at {RECORDS_RELATIVE.as_posix()}/<id>/), all the folders moved in one\n"
+            "commit for each project: this sweep is the one act that adds records on its\n"
+            "own. A folder whose plan or report Status is Queued is never moved.\n"
             f"A folder whose status is not complete, whose {PLAN_NAME} cannot be read, or\n"
             "whose records cannot be kept, is kept however idle it is, and listed with\n"
             "why and how long it has been idle, so a person can see which ones only they\n"

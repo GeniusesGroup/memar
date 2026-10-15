@@ -9,11 +9,18 @@ finished. The folder goes to the trash rather than being deleted, so a session
 closed by mistake costs one trip to the trash, and a trash that fails leaves
 the folder where it was: a failed recovery is not a successful close.
 
-Before the folder goes, its records are kept in its project
-(`session_archive`), as the sweep keeps them. A folder whose records cannot be
-kept is not closed, because closing it would drop them without a word; the
-person may still close it without them, by saying so (`--without-records`),
-for a project that is gone for good.
+`close` keeps nothing itself (owner, 2026-10-15). A folder whose records are
+owed is closed only when they are already on its project's records branch as
+the folder holds them now (`session_archive.standing`): the person who closes
+has run `archive` for the task, and its commit is cited, so a close that
+quietly wrote another one would be a record nobody saw made. A folder not yet
+archived is not closed, and `--without-records` does not change that. The flag
+is for the folder whose records cannot be kept at all, a project that is gone
+for good; closing it drops them, which only its starter may say. A project
+that keeps no records, and a folder with no plan or no project, owe none.
+
+A session waiting to be taken up is not closed either: while its plan's or its
+report's Status is Queued its folder is the task itself.
 """
 from __future__ import annotations
 
@@ -22,10 +29,11 @@ from pathlib import Path
 from typing import Callable, NamedTuple
 
 from machine.console import fail, note
-from machine.fs_memar import RECORDS_RELATIVE
-from services.session_archive import Kept, Outcome, keep_records
-from services.session_folder import folder_of, foreign_project_entry
+from machine.fs_memar import RECORDS_BRANCH, RECORDS_RELATIVE
 from services.project_preferences import SESSIONS_KEY
+from services.session_archive import ARCHIVE_COMMAND, Kept, Outcome, State, standing
+from services.session_branch import reference
+from services.session_folder import folder_of, foreign_project_entry, queued_why, read_session
 from services.session_gc import GC_COMMAND
 from services.session_log import record
 
@@ -34,7 +42,7 @@ WITHOUT_RECORDS_FLAG = "--without-records"
 
 
 class Closed(NamedTuple):
-    """One close: the id, its folder, whether anything was moved to recoverable storage, and how its records were kept."""
+    """One close: the id, its folder, whether anything was moved to recoverable storage, and how its records stand."""
 
     id: str
     path: Path
@@ -43,14 +51,16 @@ class Closed(NamedTuple):
 
 
 def close_session(session_id: str, *, without_records: bool = False) -> Closed:
-    """Keep one session's records, then trash its folder. Idempotent: a missing folder is already closed.
+    """Trash one session's folder once its records are archived or not owed. Idempotent: a missing folder is already closed.
 
     The target is confined to the session folder by construction:
     session_dir refuses anything shaped like a path. A session an earlier
-    Memar left in temp/, not moved yet, is closed where it is, and so is one
+    Memar left in temp/ is closed where it is, and so is one
     in a project's own session location, on the same word of its starter; a
     folder of that name there that is not a session's is refused. A folder
-    whose records cannot be kept is refused, unless WITHOUT_RECORDS.
+    whose plan or report is Queued, or whose records are owed and not on the
+    branch, is refused; one whose records cannot be kept is refused unless
+    WITHOUT_RECORDS.
     """
     from machine.fs_trash import soft_delete
 
@@ -60,28 +70,38 @@ def close_session(session_id: str, *, without_records: bool = False) -> Closed:
         if foreign is not None:
             fail(f"{foreign} is not a session folder; `close` closes only a session's folder")
         return Closed(session_id, path, False)
-    kept = keep_records(path)
-    if kept.outcome is Outcome.REFUSED and not without_records:
+    queued = queued_why(read_session(path))
+    if queued is not None:
+        fail(f"{session_id} was not closed: {queued}; a session waiting to be taken up is not closed")
+    held = standing(path)
+    if held.state is State.WAITING:
         fail(
-            f"{session_id} was not closed: its records cannot be kept, {kept.why}; "
+            f"{session_id} was not closed: its records are owed and it is not archived on the branch "
+            f"{RECORDS_BRANCH}; run `memar session {ARCHIVE_COMMAND} --session-id {session_id}`, then close it"
+        )
+    if held.state is State.REFUSED and not without_records:
+        fail(
+            f"{session_id} was not closed: its records cannot be kept, {held.why}; "
             f"settle that, or close it without them with {WITHOUT_RECORDS_FLAG}"
         )
-    if kept.outcome is Outcome.KEPT:
-        record("recorded", session_id, str(kept.folder), folder=path)
+    if held.state is State.ARCHIVED:
+        kept = Kept(Outcome.KEPT, reference(session_id))
+    else:
+        kept = Kept(Outcome.NOT_OWED if held.state is State.NOT_OWED else Outcome.REFUSED, None, held.why)
     soft_delete(path)
     record("closed", session_id, folder=path)
     return Closed(session_id, path, True, kept)
 
 
 def close(session_id: str, without_records: bool = False) -> None:
-    """`close`: keep the records, trash the folder, and say what was done."""
+    """`close`: trash the folder once its records are archived, and say what was done."""
     closed = close_session(session_id, without_records=without_records)
     note(f"{'closed' if closed.removed else 'already closed'}: {closed.id}")
     note(f"path: {closed.path}")
     if closed.kept is None:
         return
     if closed.kept.outcome is Outcome.KEPT:
-        note(f"records: {closed.kept.folder}")
+        note(f"records: {closed.kept.reference}")
     else:
         note(f"records not kept, {closed.kept.why}")
 
@@ -90,14 +110,17 @@ def describe(verbs) -> Callable[[argparse.Namespace], None]:
     """`memar session close`."""
     closer = verbs.add_parser(
         CLOSE_COMMAND,
-        help="move a finished session folder to the OS recycle bin / Trash",
+        help="move a finished, archived session folder to the OS recycle bin / Trash",
         description=(
             "Move the session folder SESSION_ID to the OS recycle bin / Trash, so a\n"
             "mistake costs one trip there; a folder already gone is already closed.\n"
-            "First its records — its plan, its report, and the files the report links\n"
-            f"to — are copied into {RECORDS_RELATIVE.as_posix()}/ in the project its plan names, and\n"
-            "the folder holding them is printed; a folder whose records cannot be kept\n"
-            f"is not closed, unless {WITHOUT_RECORDS_FLAG} is given.\n"
+            "It keeps nothing itself: a folder whose records are owed is closed only\n"
+            f"when `memar session {ARCHIVE_COMMAND} --session-id ID` has put them, as the folder holds\n"
+            f"them now, on the branch {RECORDS_BRANCH} of its project ({RECORDS_RELATIVE.as_posix()}/<id>/ there);\n"
+            f"a folder not archived is not closed, and {WITHOUT_RECORDS_FLAG} does not change that.\n"
+            "A folder whose plan or report Status is Queued is never closed. A folder\n"
+            "whose records cannot be kept at all (its project is gone) is not closed\n"
+            f"unless {WITHOUT_RECORDS_FLAG} is given, which drops them.\n"
             "Run it only when the person who started the session has already said the\n"
             "work is finished; never ask them to, and never close a session you did not\n"
             "open. You do not have to close a session: once a day `new` sweeps the idle\n"
@@ -110,7 +133,7 @@ def describe(verbs) -> Callable[[argparse.Namespace], None]:
     closer.add_argument(
         WITHOUT_RECORDS_FLAG,
         action="store_true",
-        help="close it even though its records cannot be kept, which loses them; only on its starter's word",
+        help="close it even though its records cannot be kept at all, which loses them; only on its starter's word",
     )
     return run
 

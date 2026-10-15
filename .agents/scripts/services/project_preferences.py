@@ -26,15 +26,15 @@ from __future__ import annotations
 from enum import Enum
 from pathlib import Path
 
-from machine.fs_memar import CONSUMER_README_RELATIVE, RECORDS_RELATIVE
+from machine.fs_memar import CONSUMER_README_RELATIVE, RECORDS_BRANCH, RECORDS_RELATIVE
 from services.session_plan import front_matter
 
 PREFERENCES_RELATIVE = CONSUMER_README_RELATIVE.with_name("preferences.md")
 # The folder new session folders are made in, relative to the project's top
 # folder or absolute; unset, they are made in temp/sessions/ inside the project (Memar's own, for the Memar checkout).
 SESSIONS_KEY = "sessions"
-# Whether a finished session's records are kept in the project, to be committed
-# with its work (`session_archive`); unset, they are (owner, 2026-10-14).
+# Whether a session's records are kept on the project's records branch
+# (`session_archive`); unset, they are (owner, 2026-10-14, 2026-10-15).
 RECORDS_KEY = "records"
 
 
@@ -54,7 +54,7 @@ PREFERENCES_TEXT = f"""---
 {RECORDS_KEY}:
 ---
 # Memar preferences
-This file is this project's own: `memar install` creates it when it is absent and never rewrites it, unlike the README beside it, which an install rewrites. The front matter holds what Memar's tools read. `{SESSIONS_KEY}` is the folder new session folders are made in: a path relative to the project's top folder, or an absolute one, but neither that top folder itself nor a drive or filesystem root; left empty, they are made in temp/sessions/ inside the project, which its VCS should ignore. Memar's daily sweep never touches a session folder made in the `{SESSIONS_KEY}` folder: keeping, committing, or deleting it is the project's. `{RECORDS_KEY}` says whether a session's records — its plan, its report, and the files its report links to — are copied into {RECORDS_RELATIVE.as_posix()}/ in the project, to be committed with the task's work, before its folder is closed or swept: {Records.listing()}; left empty, they are. Below this paragraph, write any preference agents should follow on this project.
+This file is this project's own: `memar install` creates it when it is absent and never rewrites it, unlike the README beside it, which an install rewrites. The front matter holds what Memar's tools read. `{SESSIONS_KEY}` is the folder new session folders are made in: a path relative to the project's top folder, or an absolute one, but neither that top folder itself nor a drive or filesystem root; left empty, they are made in temp/sessions/ inside the project, which its VCS should ignore. Memar's daily sweep never touches a session folder made in the `{SESSIONS_KEY}` folder: keeping, committing, or deleting it is the project's. `{RECORDS_KEY}` says whether a session's records — its whole folder except the claim, caches, binary files, files over 256 KB that are not documents, and its own temp folder — are kept on the branch {RECORDS_BRANCH} of the project's own repository, at {RECORDS_RELATIVE.as_posix()}/<id>/ there, by `memar session archive` (and added by the sweep before it moves a folder): {Records.listing()}; left empty, they are. Nothing is pushed. Below this paragraph, write any preference agents should follow on this project.
 """
 
 

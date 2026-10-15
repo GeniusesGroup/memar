@@ -1,67 +1,77 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""services/session_archive.py — a session's records kept in its project, to be committed with its work.
+"""services/session_archive.py — a session's records kept on a branch of its project's repository.
 
 A live session folder is scratch: it is swept once its task is done, and it
 holds a claim that means nothing on another clone. Its record is not scratch:
 changelogs and handoffs cite session ids, and a cited id whose folder the sweep
 has sent to the trash cites nothing. So the two are two concerns with two
 locations (owner, 2026-10-14): the folder stays where it is and goes as it
-always went, and before it goes — when the task's changes are committed, when
-`close` moves it, and when the sweep moves it — its records are copied to
-`.agents/sessions/<id>/` in its project (`machine/fs_memar.RECORDS_RELATIVE`),
-which the project's VCS keeps.
+always went, and its records are kept in the project's own repository, on the
+branch `machine/fs_memar.RECORDS_BRANCH` names (owner, 2026-10-15), at
+`.agents/sessions/<id>/` in that branch's tree. A branch, because the full
+records would otherwise grow the history of the work; a branch of the project's
+own repository, because that is where the project's people already are, and
+nothing is pushed: publishing the branch is the owner's act.
 
-The records are the plan, the report, and each file inside the folder the
-report links to with a relative Markdown link: the report is where a session
-says what it made, and a link is how it says that a file is part of what it
-made rather than scratch it mentions. The claim is not kept, and the copied
-plan names its project by the project's registered name rather than by the
-path it has on the computer that opened it: the path means nothing elsewhere,
-and `memar project find` turns the name into this computer's path. Every other
-byte of the plan, and the report and the linked files, are copied as written.
+**What is kept.** The whole folder (`session_keep`), except the claim, caches,
+a path with a `.git` part, binary files, a non-document file over 256 KB, and
+the session's own `temp` folder. The plan is kept naming its project by the
+project's registered name rather than by the path it has on the computer that
+opened it, which means nothing elsewhere (`memar project find` turns the name
+into this computer's path); every other byte is kept as written. The commit's
+message lists each leave-out with its size and reason.
 
-Which project is the plan's `Project`, as `session_new` wrote it: a folder.
-Every project keeps its records unless its preferences say `records: off`
-(`project_preferences`, a key separate from `sessions`). What cannot be kept —
-a project folder not on this computer, a project with no registered name, a
-`records` value it may not take, a write that fails — is refused with why, and
-the caller that would move the folder leaves it where it is: a record dropped
-without a word is the defect this file exists to end. A folder with no plan,
-or a plan naming no project, has no project to keep anything in, and owes
-nothing.
+**Who may have records.** Every project, unless its preferences say
+`records: off` (`project_preferences`); a project must be a git repository and
+must have a registered name. What cannot be kept — a project folder not on this
+computer, no registered name, a `records` value it may not take, a project that
+is no repository or has the records branch checked out, a commit that fails —
+is refused with why, and the caller that would move the folder leaves it where
+it is: a record dropped without a word is the defect this file exists to end. A
+folder with no plan, or a plan naming no project, has no project to keep
+anything in, and owes nothing.
+
+**Archived.** A session is archived when the branch holds, for every file
+keeping it now would write, the same bytes (`standing`): a change in a kept file
+after archiving makes it not archived until it is archived again, and a change in
+`temp` does not. `close` acts only on an archived session; the sweep archives
+before it trashes (`session_close`, `session_gc`).
 
 `archive` is the verb a coordinator runs before committing a task: it keeps the
-records of the session named and of every session whose Parent chain leads to
-it — the sessions it handed work to — and prints where each one's records are,
-so they are named in the commit. The copy is idempotent: keeping again writes
-what the folder holds now.
+records of the session named and of every session whose Parent chain leads to it
+— the sessions it handed work to — in one commit, and prints where each one's
+records are, so they are named in the commit of the work. Keeping again writes
+what the folder holds now, drops what it no longer holds, and makes no commit
+when nothing changed. A session any of them cannot be kept stops the verb before
+anything is written.
 """
 from __future__ import annotations
 
 import argparse
-import re
+import os
+import tempfile
 from enum import Enum
 from pathlib import Path
-from typing import Callable, NamedTuple
-from urllib.parse import unquote
+from typing import Callable, Iterable, NamedTuple
 
 from machine.console import fail, note
-from machine.fs_memar import RECORDS_RELATIVE
+from machine.fs_memar import RECORDS_BRANCH, RECORDS_RELATIVE, scratch_root
+from services import session_branch
 from services.project_preferences import RECORDS_KEY, Records, preferences_path, read_preferences, records_preference
 from services.project_registry import read_entries
+from services.session_branch import RecordRefused, folder_on_branch, reference
 from services.session_folder import Session, folder_of, read_session, session_folders
-from services.session_layout import TOP_NAMES
+from services.session_keep import KEEP_LIMIT_BYTES, Left, Selection, select
 from services.session_location import same_path
+from services.session_log import record
 from services.session_plan import PLAN_NAME
 from services.session_record import PlanKey
 from services.session_report import REPORT_NAME
+from services.session_temp import TEMP_FOLDER
 
 ARCHIVE_COMMAND = "archive"
-
-# A Markdown link's target: `[text](target)` or `[text](target "title")`.
-_LINK = re.compile(r"\]\(\s*<?([^)\s>]+)>?(?:\s+\"[^\"]*\")?\s*\)")
 
 
 class Outcome(Enum):
@@ -73,12 +83,38 @@ class Outcome(Enum):
 
 
 class Kept(NamedTuple):
-    """One session's keeping: how it ended, where its records are when kept, why when not, and the files kept, relative to the folder."""
+    """One session's keeping: how it ended, where its records are when kept, why when not, the files kept, and the branch's tip after."""
 
     outcome: Outcome
-    folder: Path | None
+    reference: str | None
     why: str = ""
-    files: tuple[Path, ...] = ()
+    files: tuple[str, ...] = ()
+    commit: str | None = None
+
+
+class State(Enum):
+    """Whether a session's records are on the branch as keeping would write them now."""
+
+    ARCHIVED = "archived"
+    WAITING = "not archived"
+    NOT_OWED = "not owed"
+    REFUSED = "refused"
+
+
+class Standing(NamedTuple):
+    """A session's State, and why when it is not owed or refused."""
+
+    state: State
+    why: str = ""
+
+
+class Owed(NamedTuple):
+    """A session whose records are owed: its folder, its id, its project, the project's registered name, and what keeping takes."""
+
+    folder: Path
+    project: Path
+    name: str
+    selection: Selection
 
 
 def _project_of(session: Session) -> str:
@@ -89,33 +125,6 @@ def project_name(project: Path) -> str | None:
     """PROJECT's own registered name, the first on its entry; None when it has no entry."""
     entry = next((each for each in read_entries() if same_path(each.path, project)), None)
     return entry.names[0] if entry is not None and entry.names else None
-
-
-def linked_files(folder: Path) -> list[Path]:
-    """The files inside FOLDER its report links to, other than the folder's top files, each once, in the order linked.
-
-    A link with a scheme, an absolute or anchor-only target, or one that
-    resolves outside FOLDER or to no file is not a record of this session.
-    """
-    try:
-        text = (folder / REPORT_NAME).read_bytes().decode("utf-8-sig")
-    except (OSError, UnicodeDecodeError):
-        return []
-    root = folder.resolve()
-    found: list[Path] = []
-    for match in _LINK.finditer(text):
-        target = unquote(match.group(1).split("#", 1)[0])
-        if not target or ":" in target or target.startswith(("/", "\\")):
-            continue
-        path = (folder / target).resolve()
-        if not path.is_relative_to(root) or not path.is_file() or path == root:
-            continue
-        relative = path.relative_to(root)
-        if len(relative.parts) == 1 and relative.name in TOP_NAMES:
-            continue
-        if relative not in found:
-            found.append(relative)
-    return found
 
 
 def _named_plan(data: bytes, name: str) -> bytes:
@@ -134,19 +143,8 @@ def _named_plan(data: bytes, name: str) -> bytes:
     return "".join(lines).encode("utf-8")
 
 
-def _write(path: Path, data: bytes) -> None:
-    """Put DATA at PATH, making its folder; a file already holding DATA is left as it is."""
-    if path.is_file() and path.read_bytes() == data:
-        return
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_bytes(data)
-
-
-def keep_records(folder: Path, *, write: bool = True) -> Kept:
-    """Copy FOLDER's records to its project's .agents/sessions/<id>/, or say why they are not owed or cannot be kept.
-
-    Unless WRITE, nothing is written, and what would be is returned: a dry run.
-    """
+def owed(folder: Path) -> Owed | Kept:
+    """What keeping FOLDER's records takes, or the Kept that says they are not owed or cannot be kept."""
     session = read_session(folder)
     if not session.has_plan:
         return Kept(Outcome.NOT_OWED, None, f"it has no {PLAN_NAME}")
@@ -176,17 +174,122 @@ def keep_records(folder: Path, *, write: bool = True) -> Kept:
             f"its project {project} has no registered name to write in the kept plan; "
             "give it one with `memar project add`",
         )
-    where = project / RECORDS_RELATIVE / folder.name
-    files = (Path(PLAN_NAME), *((Path(REPORT_NAME),) if (folder / REPORT_NAME).is_file() else ()), *linked_files(folder))
-    if not write:
-        return Kept(Outcome.KEPT, where, files=files)
-    try:
-        for relative in files:
-            data = (folder / relative).read_bytes()
-            _write(where / relative, _named_plan(data, name) if relative == Path(PLAN_NAME) else data)
-    except OSError as error:
-        return Kept(Outcome.REFUSED, where, f"its records could not be written to {where} ({error})")
-    return Kept(Outcome.KEPT, where, files=files)
+    if not session_branch.is_repository(project):
+        return Kept(
+            Outcome.REFUSED,
+            None,
+            f"its project {project} is not the top folder of a git repository, and its records are kept on the "
+            f"branch {RECORDS_BRANCH} of the project's own repository",
+        )
+    if session_branch.is_checked_out(project):
+        return Kept(
+            Outcome.REFUSED,
+            None,
+            f"the branch {RECORDS_BRANCH} is the branch checked out in {project}; "
+            "the records branch is never worked on, so check out another",
+        )
+    return Owed(folder, project, name, select(folder))
+
+
+def _entries(owing: Owed, workdir: Path) -> dict[str, Path]:
+    """The branch path and the source file of each file keeping OWING writes; the plan is a copy in WORKDIR naming its project."""
+    sid = owing.folder.name
+    entries: dict[str, Path] = {}
+    for relative in owing.selection.kept:
+        source = owing.folder / relative
+        if relative == PLAN_NAME:
+            named = workdir / sid / PLAN_NAME
+            named.parent.mkdir(parents=True, exist_ok=True)
+            named.write_bytes(_named_plan(source.read_bytes(), owing.name))
+            source = named
+        entries[f"{folder_on_branch(sid)}/{relative}"] = source
+    return entries
+
+
+def standing(folder: Path) -> Standing:
+    """Whether FOLDER's records are on the branch as keeping them now would write them; nothing is written."""
+    judged = owed(folder)
+    if isinstance(judged, Kept):
+        return Standing(State.NOT_OWED if judged.outcome is Outcome.NOT_OWED else State.REFUSED, judged.why)
+    with tempfile.TemporaryDirectory(dir=scratch_root(), prefix="archive-") as workdir:
+        entries = _entries(judged, Path(workdir))
+        sources = list(entries.values())
+        ids = session_branch.blob_ids(judged.project, sources)
+        have = session_branch.held(judged.project, folder.name)
+        prefix = folder_on_branch(folder.name) + "/"
+        same = all(have.get(target.removeprefix(prefix)) == blob for target, blob in zip(entries, ids))
+    return Standing(State.ARCHIVED if same else State.WAITING)
+
+
+def _size(size: int) -> str:
+    return f"{size} bytes"
+
+
+def _left_line(left: Left) -> str:
+    held = f"{left.files} files, " if left.files != 1 else ""
+    return f"  {left.path} ({held}{_size(left.size)}): {left.reason.sentence}"
+
+
+def _message(group: list[Owed]) -> str:
+    """The commit message for GROUP's sessions: their ids, then each leave-out with its size and reason."""
+    ids = ", ".join(each.folder.name for each in group)
+    lines = [f"Record {'session' if len(group) == 1 else 'sessions'} {ids}", ""]
+    for each in group:
+        if each.selection.left:
+            lines.append(f"Left out of {each.folder.name}:")
+            lines.extend(_left_line(left) for left in each.selection.left)
+            lines.append("")
+    lines.append(f"Kept whole except what is listed: files over {KEEP_LIMIT_BYTES // 1024} KB are left out unless they are documents.")
+    return "\n".join(lines) + "\n"
+
+
+def keep_records(folders: Iterable[Path], *, write: bool = True) -> list[Kept]:
+    """Keep the records of FOLDERS on their projects' branches, one commit for each project's sessions; one Kept for each folder, in order.
+
+    A project's sessions are committed together, and a session that is not
+    owed or cannot be kept does not hold the others back. Unless WRITE, nothing
+    is written, and what would be is returned: a dry run.
+    """
+    folders = list(folders)
+    outcomes: list[Kept | None] = [None] * len(folders)
+    groups: dict[str, list[tuple[int, Owed]]] = {}
+    for index, folder in enumerate(folders):
+        judged = owed(folder)
+        if isinstance(judged, Kept):
+            outcomes[index] = judged
+        else:
+            groups.setdefault(os.path.normcase(str(judged.project.resolve())), []).append((index, judged))
+    with tempfile.TemporaryDirectory(dir=scratch_root(), prefix="archive-") as workdir:
+        for number, members in enumerate(groups.values()):
+            project = members[0][1].project
+            group = [owing for _, owing in members]
+            if not write:
+                for index, owing in members:
+                    outcomes[index] = Kept(Outcome.KEPT, reference(owing.folder.name), files=owing.selection.kept)
+                continue
+            scratch = Path(workdir) / str(number)
+            scratch.mkdir()
+            entries: dict[str, Path] = {}
+            for owing in group:
+                entries.update(_entries(owing, scratch))
+            try:
+                tip = session_branch.record(
+                    project,
+                    entries,
+                    [folder_on_branch(owing.folder.name) for owing in group],
+                    _message(group),
+                    scratch,
+                )
+            except RecordRefused as error:
+                for index, owing in members:
+                    outcomes[index] = Kept(Outcome.REFUSED, None, f"its records could not be written to {RECORDS_BRANCH} of {project} ({error})")
+                continue
+            for index, owing in members:
+                outcomes[index] = Kept(
+                    Outcome.KEPT, reference(owing.folder.name), files=owing.selection.kept, commit=tip
+                )
+                record("recorded", owing.folder.name, reference(owing.folder.name), folder=owing.folder)
+    return [each for each in outcomes if each is not None]
 
 
 def related_sessions(folder: Path) -> list[Path]:
@@ -205,21 +308,35 @@ def related_sessions(folder: Path) -> list[Path]:
 
 
 def archive(session_id: str) -> None:
-    """`archive`: keep the records of SESSION_ID and of the sessions it handed work to, and say where each is."""
+    """`archive`: keep the records of SESSION_ID and of the sessions it handed work to in one commit, and say where each is."""
     folder = folder_of(session_id)
     if not folder.is_dir():
         fail(f"no session folder {session_id} was found")
-    refused: list[str] = []
-    for each in related_sessions(folder):
-        kept = keep_records(each)
+    related = related_sessions(folder)
+    refused = [
+        (each.name, kept.why)
+        for each, kept in zip(related, keep_records(related, write=False))
+        if kept.outcome is Outcome.REFUSED
+    ]
+    if refused:
+        for name, why in refused:
+            note(f"refused, {why}: {name}")
+        fail(f"the records of {', '.join(name for name, _ in refused)} could not be kept, so none of this task's were written")
+    tips: list[str] = []
+    refused = []
+    for each, kept in zip(related, keep_records(related)):
         if kept.outcome is Outcome.KEPT:
             note(f"kept: {each.name}")
-            note(f"records: {kept.folder}")
+            note(f"records: {kept.reference}")
+            if kept.commit and kept.commit not in tips:
+                tips.append(kept.commit)
         elif kept.outcome is Outcome.NOT_OWED:
             note(f"not kept, {kept.why}: {each.name}")
         else:
             note(f"refused, {kept.why}: {each.name}")
             refused.append(each.name)
+    for tip in tips:
+        note(f"commit: {tip}")
     if refused:
         fail(f"the records of {', '.join(refused)} could not be kept; commit none of this task until they are")
 
@@ -228,17 +345,20 @@ def describe(verbs) -> Callable[[argparse.Namespace], None]:
     """`memar session archive`."""
     parser = verbs.add_parser(
         ARCHIVE_COMMAND,
-        help="copy a session's records into its project, to commit with the task's work",
+        help="keep a session's records on its project's records branch, to cite with the task's work",
         description=(
-            f"Copy the records of the session SESSION_ID — its {PLAN_NAME}, its {REPORT_NAME}, and each\n"
-            "file inside its folder the report links to with a relative link — to\n"
-            f"{RECORDS_RELATIVE.as_posix()}/<id>/ in the project its plan names, and do the same for\n"
-            "every session whose Parent chain leads to it. The copied plan names the\n"
-            "project by its registered name, not by its path; the claim is not copied.\n"
-            "Each kept session's records folder is printed: run this before committing\n"
-            "a task, and name those folders in the commit. A project whose preferences\n"
-            f"say `{RECORDS_KEY}: {Records.OFF.value}` keeps none. A session whose records cannot be kept\n"
-            "is named with why, and the verb fails."
+            f"Keep the records of the session SESSION_ID on the branch {RECORDS_BRANCH} of the repository of\n"
+            f"the project its plan names, at {RECORDS_RELATIVE.as_posix()}/<id>/ in that branch, and do the same for\n"
+            "every session whose Parent chain leads to it, all in one commit. The whole\n"
+            f"folder is kept except the claim, caches, a path with a .git part, binary files,\n"
+            f"a file over {KEEP_LIMIT_BYTES // 1024} KB that is not a document, and the session's own {TEMP_FOLDER}/ folder; the commit's\n"
+            "message lists each of those with its size and why. The kept plan names the\n"
+            "project by its registered name, not by its path. Each kept session's\n"
+            "reference (the branch, a colon, the folder) is printed, and the commit: cite\n"
+            "the reference, not a file in it, in the task's commit. The project's HEAD,\n"
+            "index and working tree are not touched, and it never pushes. A project whose\n"
+            f"preferences say `{RECORDS_KEY}: {Records.OFF.value}` keeps none. A session whose records cannot be\n"
+            "kept is named with why, and the verb fails before writing anything."
         ),
     )
     parser.add_argument("--session-id", required=True, help="the session whose task is being committed")

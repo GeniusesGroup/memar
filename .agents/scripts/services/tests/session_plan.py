@@ -42,6 +42,14 @@ What is pinned, and what each pin is for:
                   front matter, and leaves every other line as written; a
                   value outside 1 to 10, or a plan with no front matter, is
                   refused.
+  Kind            A plan's kind is one of the closed list, which says how
+                  strong a model its task needs: the judgment kinds the
+                  strongest, `mechanical` a cheaper one. A new plan writes it
+                  only when given; one set later replaces the key or adds it
+                  at the end of the front matter and leaves every other line
+                  as written; a word outside the list, so a misspelling is
+                  never read as a cheaper kind, is refused; a plan with a
+                  hand-written kind outside the list still reads as written.
   Rewrite         Setting a status or a priority while another writer changes
                   the plan keeps both changes, not only the last; a status set
                   on the expectation that it is still one it was is refused,
@@ -321,6 +329,41 @@ class Priority(Fixture):
         path.write_text("# T\nStatus: open\n", encoding="utf-8")
         with self.assertRaises(SystemExit):
             session_plan.set_priority(path, 3)
+
+
+class KindOfTask(Fixture):
+    def test_the_kinds_are_the_judgment_ones_then_the_mechanical_one(self) -> None:
+        self.assertEqual(session_plan.KINDS, ("ideation", "plan", "modeling", "design", "critique", "mechanical"))
+
+    def test_a_new_plan_writes_the_kind_only_when_given(self) -> None:
+        given = session_plan.plan_skeleton(TITLE, OPENED, Path("/work"), kind="design")
+        self.assertIn("\nKind: design\n", given)
+        self.assertNotIn("Kind", session_plan.plan_skeleton(TITLE, OPENED, Path("/work")))
+
+    def test_a_kind_is_lower_cased_and_a_word_outside_the_list_is_refused(self) -> None:
+        self.assertEqual(session_plan.checked_kind(" Design "), "design")
+        with self.assertRaises(SystemExit) as refused:
+            session_plan.checked_kind("modelling")
+        self.assertIn("a kind is one of ideation", str(refused.exception.code))
+
+    def test_setting_a_kind_replaces_or_adds_the_key_and_keeps_every_other_line(self) -> None:
+        path = self.path(new_plan("Active"))
+        session_plan.set_kind(path, "plan")
+        self.assertEqual(
+            path.read_text(encoding="utf-8"), new_plan("Active").replace("Priority: 7\n", "Priority: 7\nKind: plan\n")
+        )
+        session_plan.set_kind(path, "mechanical")
+        self.assertIn("\nKind: mechanical\n", path.read_text(encoding="utf-8"))
+        self.assertEqual(path.read_text(encoding="utf-8").count("Kind:"), 1)
+
+    def test_a_plan_without_front_matter_cannot_be_given_a_kind(self) -> None:
+        with self.assertRaises(SystemExit):
+            session_plan.set_kind(self.path("# T\n\n## Request\n"), "plan")
+
+    def test_a_hand_written_kind_reads_as_written_in_lower_case(self) -> None:
+        self.assertEqual(session_plan.kind_of({"kind": " Modelling "}), "modelling")
+        self.assertEqual(session_plan.kind_of({}), "")
+        self.assertEqual(session_plan.kind_of(None), "")
 
 
 class Rewrite(Fixture):

@@ -61,6 +61,7 @@ from services.project_find import add_project_flags, project_from_args
 from services.session_digest import DIGEST_COMMAND
 from services.session_find import LIST_COMMAND, find_sessions, project_of
 from services.session_folder import Session
+from services.session_temp import TEMP_SENTENCE
 from services.session_plan import PLAN_NAME, checked_topic, part_text, priority_of, topic_of
 from services.session_record import REPORT
 from services.session_report import REPORT_NAME
@@ -173,6 +174,7 @@ def claims(count: int, project: str | None, topic: str | None = None, fill: bool
         note("no queued session to claim" + (f" under topic {checked_topic(topic)}" if topic else ""))
         return []
     print(f"claimed {len(taken)} of {count}")
+    note(TEMP_SENTENCE)
     for line in batch_report(taken, count, project, topic):
         print(line)
     for session in taken:

@@ -100,6 +100,22 @@ capability:
            reported at once rather than waited out — the stop is the same,
            only sooner, so the limit costs a rerun and never a commit.
 
+  record   Commit files onto a branch other than the one checked out, without
+           touching HEAD, the shared index or the working tree: a branch that
+           keeps a record out of the history of the work (the session records
+           `memar session archive` keeps). It is the plumbing of `commit`
+           pointed at another branch — a private index read from that
+           branch's tip, blobs written byte for byte, a commit object, and
+           `update-ref` against the tip it read, so a writer that got there
+           first makes it start again from the new tip. It takes the
+           repository from `--repository`, never the folder it runs from, and
+           it never pushes: publishing a branch is a person's act.
+
+           `commit`, `uncommit` and `reindex` take `--repository` the same
+           way. Each command has its own private index file, in a folder of
+           its own under the repository's git folder that goes when it ends,
+           so two commands at once never read or write one file.
+
 This file needs git, and says so plainly if it is missing. It does not install
 git: the Memar bootstrap (`install.sh` / `install.ps1` in the folder above this
 one) is the one place that puts git and Python on a machine, and a second
@@ -122,6 +138,7 @@ import shlex
 import shutil
 import subprocess
 import sys
+import tempfile
 import time
 from pathlib import Path
 from typing import Callable, NoReturn, TypeVar
@@ -491,8 +508,9 @@ def _this_command(*arguments: str) -> str:
 
 
 def _in_repo(path: Path, root: Path) -> str:
+    """PATH as git names it, from the top of the repository at ROOT: a relative PATH is relative to the repository, never to the folder this runs from."""
     try:
-        return path.resolve().relative_to(root).as_posix()
+        return (path if path.is_absolute() else root / path).resolve().relative_to(root).as_posix()
     except ValueError:
         sys.exit(f"error: {path} is not inside the repository at {root}")
 
@@ -514,11 +532,43 @@ def _upstream_holding(commit: str, root: Path) -> str:
     return upstream.stdout.strip() if held else ""
 
 
-def _repository_root() -> Path:
-    toplevel = run_captured(["rev-parse", "--show-toplevel"])
+def _repository_root(repository: Path) -> Path:
+    """The top folder of the repository REPOSITORY is in: the folder the caller named, never the one the command runs from."""
+    if not repository.is_dir():
+        sys.exit(f"error: {repository} is not inside a git repository: it is not a folder")
+    toplevel = run_captured(["rev-parse", "--show-toplevel"], cwd=repository)
     if toplevel.returncode != 0:
-        sys.exit("error: not inside a git repository")
+        sys.exit(f"error: {repository} is not inside a git repository")
     return Path(toplevel.stdout.strip()).resolve()
+
+
+def _repository_flag(parser: argparse.ArgumentParser) -> None:
+    """Give PARSER the one flag that says which repository a verb acts on: always given, never read from the folder it runs in."""
+    parser.add_argument(
+        "--repository",
+        required=True,
+        type=Path,
+        metavar="PATH",
+        help="the repository to act on, by a folder in it; the folder this runs from is never read",
+    )
+
+
+class _PrivateIndex:
+    """A throwaway index file of its own, made inside the repository's git folder and gone when the command ends.
+
+    Two commands at once each get their own, so neither reads or writes the
+    other's. The folder is removed by `tempfile`, not by this file.
+    """
+
+    def __init__(self, root: Path) -> None:
+        git_dir = Path(_plumb(["rev-parse", "--absolute-git-dir"], root))
+        self._folder = tempfile.TemporaryDirectory(dir=git_dir, prefix="memar-host-index-", ignore_cleanup_errors=True)
+
+    def __enter__(self) -> dict[str, str]:
+        return dict(os.environ, GIT_INDEX_FILE=str(Path(self._folder.name) / "index"))
+
+    def __exit__(self, *_: object) -> None:
+        self._folder.cleanup()
 
 
 def _tree_entries(rev: str, paths: list[str], root: Path) -> dict[str, str]:
@@ -574,9 +624,9 @@ def _index_from(rev: str, was: str, paths: list[str], root: Path, reached: str, 
         f"path(s): {', '.join(paths)}. It holds them as it held them before this command, "
         "and the working tree is as it should be; until this is finished `git status` "
         "shows a staged difference for them.",
-        f"To finish, {_once(lock)}, run in {root}:\n    {_this_command('reindex', *named)}\n"
+        f"To finish, {_once(lock)}, run:\n    {_this_command('reindex', '--repository', str(root), *named)}\n"
         f"To undo instead, moving HEAD back to {was[:12]} so it matches the shared index again:\n"
-        f"    {_this_command('reindex', '--undo', *named)}",
+        f"    {_this_command('reindex', '--repository', str(root), '--undo', *named)}",
         done,
         lock,
     )
@@ -677,6 +727,7 @@ def _refuse_staged(paths: list[str], root: Path, outcome: str) -> None:
 
 
 def cmd_commit(
+    repository: Path,
     paths: list[Path],
     prepared: list[str],
     leave_out: list[Path],
@@ -684,7 +735,7 @@ def cmd_commit(
     message_file: Path,
 ) -> None:
     """Commit the named paths alone, without the shared index and without porcelain."""
-    root = _repository_root()
+    root = _repository_root(repository)
     if fold < 0:
         sys.exit("error: --fold counts commits and cannot be negative")
     if not paths and not prepared and not fold:
@@ -719,22 +770,21 @@ def cmd_commit(
     moved = _staged_moves(list(named), root, prepared=prepared_for)
     _refuse_staged([path for path in [*named, *left] if path not in moved], root, "Nothing was committed.")
 
-    git_dir = _plumb(["rev-parse", "--absolute-git-dir"], root)
-    private = dict(os.environ, GIT_INDEX_FILE=f"{git_dir}/memar-host-commit.index")
-    _plumb(["read-tree", head], root, env=private)
-    if left:
-        _plumb(["update-index", "-z", "--index-info"], root, env=private, data=_index_input(parent, left, root, private))
-    for path, source in named.items():
-        if source is not None:
-            sha = _plumb(["hash-object", "-w", "--path", path, str(source)], root)
-            entry = _index_entries([path], root)[path] if path in moved else _tree_entry(head, path, root)
-            mode = entry.split()[0] if entry else "100644"
-            _plumb(["update-index", "--add", "--cacheinfo", f"{mode},{sha},{path}"], root, env=private)
-        elif (root / path).exists():
-            _plumb(["add", "--", path], root, env=private)
-        else:
-            _plumb(["update-index", "--force-remove", "--", path], root, env=private)
-    tree = _plumb(["write-tree"], root, env=private)
+    with _PrivateIndex(root) as private:
+        _plumb(["read-tree", head], root, env=private)
+        if left:
+            _plumb(["update-index", "-z", "--index-info"], root, env=private, data=_index_input(parent, left, root, private))
+        for path, source in named.items():
+            if source is not None:
+                sha = _plumb(["hash-object", "-w", "--path", path, str(source)], root)
+                entry = _index_entries([path], root)[path] if path in moved else _tree_entry(head, path, root)
+                mode = entry.split()[0] if entry else "100644"
+                _plumb(["update-index", "--add", "--cacheinfo", f"{mode},{sha},{path}"], root, env=private)
+            elif (root / path).exists():
+                _plumb(["add", "--", path], root, env=private)
+            else:
+                _plumb(["update-index", "--force-remove", "--", path], root, env=private)
+        tree = _plumb(["write-tree"], root, env=private)
     if tree == _plumb(["rev-parse", f"{parent}^{{tree}}"], root):
         sys.exit("error: the result is the tree the parent already has; nothing to commit")
     lost = _renames_lost(moved, parent, tree, root)
@@ -788,9 +838,9 @@ def cmd_commit(
 COMMIT_ID = re.compile(r"[0-9a-f]{7,40}")
 
 
-def cmd_uncommit(expect: str) -> None:
+def cmd_uncommit(repository: Path, expect: str) -> None:
     """Move HEAD back to its parent, the commit's work kept in the tree and others' staging in the index."""
-    root = _repository_root()
+    root = _repository_root(repository)
     expected = expect.lower()
     if not COMMIT_ID.fullmatch(expected):
         sys.exit(f"error: --expect takes the commit's id as `git log` prints it, not {expect!r}")
@@ -836,7 +886,7 @@ def cmd_uncommit(expect: str) -> None:
     )
 
 
-def cmd_reindex(paths: list[Path], source: str, was: str, undo: bool) -> None:
+def cmd_reindex(repository: Path, paths: list[Path], source: str, was: str, undo: bool) -> None:
     """Finish a commit or uncommit that moved HEAD but stopped before the shared index, or with UNDO take its move back.
 
     Finishing gives PATHS SOURCE's entries, and only while HEAD holds them as
@@ -847,7 +897,7 @@ def cmd_reindex(paths: list[Path], source: str, was: str, undo: bool) -> None:
     staged otherwise is refused, so nothing someone staged since is overwritten
     or left against the wrong HEAD.
     """
-    root = _repository_root()
+    root = _repository_root(repository)
     deadline = _lock_deadline()
     rev = _plumb(["rev-parse", "--verify", f"{source}^{{commit}}"], root)
     old = _plumb(["rev-parse", "--verify", f"{was}^{{commit}}"], root)
@@ -902,6 +952,126 @@ def cmd_reindex(paths: list[Path], source: str, was: str, undo: bool) -> None:
         "nothing else in it was touched.",
         file=sys.stderr,
     )
+
+
+# How many times `record` takes its work up again when the branch moved under
+# it, before it says so and stops.
+RECORD_ATTEMPTS = 8
+
+
+def _manifest_entries(manifest: Path) -> dict[str, Path]:
+    """The branch path and source file of each line of MANIFEST (`BRANCH-PATH<TAB>SOURCE-FILE`), refusing any that is not sound."""
+    try:
+        lines = manifest.read_bytes().decode("utf-8-sig").splitlines()
+    except (OSError, UnicodeDecodeError) as error:
+        sys.exit(f"error: the manifest {manifest} cannot be read ({error})")
+    entries: dict[str, Path] = {}
+    for line in filter(None, lines):
+        target, separator, source = line.partition("\t")
+        if not separator or not target or not source:
+            sys.exit(f"error: a manifest line is BRANCH-PATH, a tab, SOURCE-FILE, not {line!r}")
+        if not _inside_branch(target):
+            sys.exit(
+                f"error: {target!r} is not a path inside the branch: it must be relative, with "
+                "no empty, `.` or `..` part, no backslash, and no `.git` part"
+            )
+        path = Path(source)
+        if not path.is_file():
+            sys.exit(f"error: the source of {target} is not a file: {source}")
+        if "\n" in source:
+            sys.exit(f"error: the source file {source!r} holds a line break in its name and cannot be recorded")
+        if target in entries:
+            sys.exit(f"error: the manifest names {target} twice")
+        entries[target] = path
+    return entries
+
+
+def _inside_branch(path: str) -> bool:
+    """Whether PATH is a plain relative path in a branch's tree: no empty, `.`, `..` or `.git` part, no backslash."""
+    return "\\" not in path and not any(part in ("", ".", "..") or part.lower() == ".git" for part in path.split("/"))
+
+
+def cmd_record(repository: Path, branch: str, manifest: Path, replace: list[str], message_file: Path) -> None:
+    """Commit files onto BRANCH, a branch other than the one checked out, without moving HEAD, the shared index or the working tree.
+
+    The tree is built in a private index from the branch's tip: the folders
+    REPLACE named are emptied, then each manifest entry is written as a blob,
+    byte for byte, and put at its path. The branch is moved with `update-ref`
+    against the tip it read, so a writer that got there first makes this one
+    start again from the new tip; the commit made never loses theirs.
+    """
+    root = _repository_root(repository)
+    ref = f"refs/heads/{branch}"
+    if run_captured(["check-ref-format", ref], cwd=root).returncode != 0:
+        sys.exit(f"error: {branch!r} is not a branch name git accepts")
+    if run_captured(["symbolic-ref", "-q", "HEAD"], cwd=root).stdout.strip() == ref:
+        sys.exit(
+            f"error: {branch} is the branch checked out in {root}; moving it would leave the "
+            "shared index and the working tree behind it. Nothing was written."
+        )
+    entries = _manifest_entries(manifest)
+    folders = [name.strip("/") for name in replace]
+    for folder in folders:
+        if not _inside_branch(folder):
+            sys.exit(f"error: --replace {folder!r} is not a folder inside the branch")
+    if not entries and not folders:
+        sys.exit("error: the manifest names no file and nothing is to be replaced; there is nothing to record")
+    message = message_file.read_bytes().decode("utf-8").replace("\r\n", "\n").strip()
+    if not message:
+        sys.exit(f"error: {message_file} is empty; a commit needs a message")
+
+    # The blobs do not depend on the tip, so they are written once.
+    shas: dict[str, str] = {}
+    if entries:
+        listed = "".join(f"{path}\n" for path in entries.values())
+        written = _plumb(["hash-object", "-w", "--no-filters", "--stdin-paths"], root, data=listed.encode("utf-8"))
+        shas = dict(zip(entries, written.splitlines(), strict=True))
+    zero = "0" * len(_plumb(["hash-object", "--stdin"], root, data=b""))
+    author, committer = _plumb(["var", "GIT_AUTHOR_IDENT"], root), _plumb(["var", "GIT_COMMITTER_IDENT"], root)
+    for _ in range(RECORD_ATTEMPTS):
+        tip = run_captured(["rev-parse", "--verify", "-q", ref], cwd=root).stdout.strip()
+        with _PrivateIndex(root) as private:
+            if tip:
+                _plumb(["read-tree", tip], root, env=private)
+            gone = [path for folder in folders for path in _index_entries([folder], root, private)]
+            records = [f"0 {zero}\t{path}" for path in gone]
+            records += [f"100644 {sha}\t{path}" for path, sha in shas.items()]
+            if records:
+                data = "".join(f"{record}\0" for record in records).encode("utf-8")
+                _plumb(["update-index", "-z", "--add", "--index-info"], root, env=private, data=data)
+            tree = _plumb(["write-tree"], root, env=private)
+        if tip and tree == _plumb(["rev-parse", f"{tip}^{{tree}}"], root):
+            print(tip)
+            print(f"nothing to record: {branch} already holds all of it at {tip[:12]}.", file=sys.stderr)
+            return
+        if not tip and not shas:
+            sys.exit(f"error: {branch} does not exist and the manifest names no file, so there is nothing to make it of")
+        parent = f"parent {tip}\n" if tip else ""
+        body = f"tree {tree}\n{parent}author {author}\ncommitter {committer}\n\n{message}\n"
+        made = _plumb(["hash-object", "-t", "commit", "-w", "--stdin"], root, data=body.encode("utf-8"))
+        moved, lock = _patiently(
+            ["update-ref", "-m", "host/git.py record", ref, made, tip or zero], root, _lock_deadline()
+        )
+        if moved.returncode == 0:
+            print(made)
+            after = f" on {tip[:12]}" if tip else ", its first commit"
+            print(
+                f"recorded {made[:12]} on {branch}{after}. HEAD, the shared index and the working "
+                "tree were not touched, and nothing was pushed.",
+                file=sys.stderr,
+            )
+            return
+        if lock is not None:
+            _stopped(
+                f"the commit object {made} was written, but {branch} was not moved: a lock is held.",
+                f"Nothing to undo. {_once(lock).capitalize()}, rerun the same command.",
+                moved,
+                lock,
+            )
+        if run_captured(["rev-parse", "--verify", "-q", ref], cwd=root).stdout.strip() == tip:
+            sys.exit(f"error: git update-ref {ref} failed: {_said(moved)}")
+        # The branch moved under this command: take it up again from the new tip.
+    sys.exit(f"error: {branch} moved under this command {RECORD_ATTEMPTS} times, so nothing was written to it. Rerun it.")
 
 
 def main() -> int:
@@ -987,8 +1157,9 @@ def main() -> int:
         ),
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
+    _repository_flag(p_commit)
     p_commit.add_argument(
-        "paths", nargs="*", type=Path, help="paths to commit as they are in the working tree"
+        "paths", nargs="*", type=Path, help="paths to commit as they are in the working tree, relative to the repository or absolute"
     )
     p_commit.add_argument(
         "-F",
@@ -1040,6 +1211,7 @@ def main() -> int:
         ),
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
+    _repository_flag(p_uncommit)
     p_uncommit.add_argument(
         "--expect",
         required=True,
@@ -1064,6 +1236,7 @@ def main() -> int:
         ),
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
+    _repository_flag(p_reindex)
     p_reindex.add_argument("paths", nargs="+", type=Path, help="the commit's paths, as the stopped command printed them")
     p_reindex.add_argument(
         "--from",
@@ -1084,6 +1257,48 @@ def main() -> int:
         help="move HEAD from --from back to --was, leaving the shared index as it is",
     )
 
+    p_record = sub.add_parser(
+        "record",
+        help="commit files onto another branch without touching HEAD, the shared index or the working tree",
+        description=(
+            "Write one commit on the branch BRANCH of the repository, holding the files\n"
+            "the manifest lists, and leave HEAD, the shared index, the working tree and\n"
+            "every other branch exactly as they are. BRANCH is made, with no parent, if it\n"
+            "does not exist; it may not be the branch checked out. The manifest is a file\n"
+            "of lines, each BRANCH-PATH, a tab, and SOURCE-FILE: the file's bytes are put\n"
+            "at that path as they are, with no line-ending or other conversion. Each\n"
+            "--replace folder is emptied first, so the commit holds that folder as the\n"
+            "manifest gives it. A result the branch already holds makes no commit and\n"
+            "says so. It prints the branch's tip, never pushes, and never reads the\n"
+            "folder it runs from.\n\n"
+            f"{LOCK_NOTE}"
+        ),
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+    )
+    _repository_flag(p_record)
+    p_record.add_argument("--branch", required=True, metavar="NAME", help="the branch to commit on, made if it is missing")
+    p_record.add_argument(
+        "--manifest",
+        required=True,
+        type=Path,
+        metavar="FILE",
+        help="a file of BRANCH-PATH, a tab, SOURCE-FILE lines, in UTF-8; write it with a file tool",
+    )
+    p_record.add_argument(
+        "--replace",
+        action="append",
+        default=[],
+        metavar="FOLDER",
+        help="a folder of the branch to empty before the manifest's files are put in; may be given more than once",
+    )
+    p_record.add_argument(
+        "-F",
+        "--message-file",
+        required=True,
+        type=Path,
+        help="the commit message, read from a file (write it with a file tool)",
+    )
+
     args = parser.parse_args()
     if args.command == "rename":
         cmd_rename(args.source, args.destination)
@@ -1096,11 +1311,13 @@ def main() -> int:
     elif args.command == "undelete":
         cmd_undelete(args.paths, args.source)
     elif args.command == "commit":
-        cmd_commit(args.paths, args.prepared, args.leave_out, args.fold, args.message_file)
+        cmd_commit(args.repository, args.paths, args.prepared, args.leave_out, args.fold, args.message_file)
     elif args.command == "uncommit":
-        cmd_uncommit(args.expect)
+        cmd_uncommit(args.repository, args.expect)
     elif args.command == "reindex":
-        cmd_reindex(args.paths, args.source, args.was, args.undo)
+        cmd_reindex(args.repository, args.paths, args.source, args.was, args.undo)
+    elif args.command == "record":
+        cmd_record(args.repository, args.branch, args.manifest, args.replace, args.message_file)
     return 0
 
 

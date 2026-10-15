@@ -7,9 +7,14 @@ A sub-agent starts with none of the delegating session's context, so the
 delegating session opens the sub-agent's session itself, linked to its own,
 and writes the whole task into that session's plan. What the sub-agent is
 then handed is the same text for every task, with only the session's id in
-it: everything that differs between tasks is in the plan, stated once in the
-delegator's words, and a brief that restated any of it would be a second copy
-of the task the sub-agent could follow instead. The text is here alone; `new`
+it, and it says to run `memar session start`, which prints what the sub-agent
+needs in its context (`session_start`): everything that differs between tasks is
+in the plan, stated once in the delegator's words, and everything the skill
+requires is printed by that command, so the brief carries no rule, no path,
+and no word about the machine: a line naming a folder and a shell is what made
+agents fail their first command. The text is produced here from the id alone,
+so the delegating session has nothing to add and nothing to get wrong; whatever
+else a task needs goes in its plan. The text is here alone; `new`
 prints it when it makes a session with `--parent`, and `brief` prints it again
 for a session that is there, so the two can never hand over different words.
 """
@@ -19,28 +24,19 @@ import argparse
 from typing import Callable
 
 from machine.console import fail
-from machine.fs_memar import SKILL_RELATIVE
 from services.session_folder import folder_of, is_session_folder
 from services.session_plan import PLAN_NAME
-from services.session_report import REPORT_NAME
 
 BRIEF_COMMAND = "brief"
-SKILL_FILE = (SKILL_RELATIVE / "SKILL.md").as_posix()
+# Declared in `session_start`, which owns the command; named here so the brief cannot name another.
+START_COMMAND = "start"
 
 
 def brief_text(session_id: str) -> str:
     """The text that hands SESSION_ID's task to a sub-agent, ready to paste."""
     return (
-        f"Load the Memar skill: run `memar content path {SKILL_FILE}` and follow the file it prints. "
-        f"Your task is session {session_id}: run `memar session new --session-id {session_id}`, "
-        f"read the {PLAN_NAME} it names, and do what its Request says, without rewriting that Request. "
-        f"Put nothing at the session folder's top but {PLAN_NAME} and {REPORT_NAME}: anything else you make goes in "
-        "the role folder of its kind, as `memar session --help` says. "
-        "If the Request ideates, designs, or critiques, first check that you read in this context what the skill "
-        "names for that and run on the model it requires; where either fails, end Blocked saying which. "
-        f"End with its {REPORT_NAME} and Status as `memar session --help` says: write them where you may write files; "
-        f"where you may only return text, return the report as your final text, and the delegating session "
-        f"writes it as {REPORT_NAME} before its next step."
+        f"Your task is session {session_id}. "
+        f"Run `memar session {START_COMMAND} --session-id {session_id}` first, before anything else, and follow what it prints."
     )
 
 

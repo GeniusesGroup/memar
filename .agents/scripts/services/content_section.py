@@ -16,6 +16,7 @@ import re
 import sys
 from pathlib import Path
 
+from services.content_check import anchor_slug
 from services.content_reference import content_root, read_text, resolve_ref
 
 
@@ -56,6 +57,51 @@ def section(text: str, heading: str) -> str | None:
                 break
         return text[start:end].strip()
     return None
+
+
+def _fenceless(text: str) -> str:
+    """TEXT with the lines inside fenced blocks blanked, keeping every offset, so a `#` in a code block is no heading."""
+    out, fenced = [], False
+    for line in text.splitlines(keepends=True):
+        if line.lstrip().startswith(("```", "~~~")):
+            fenced = not fenced
+            out.append(line)
+        else:
+            out.append(re.sub(r"[^\r\n]", " ", line) if fenced else line)
+    return "".join(out)
+
+
+def _extent(text: str, match: re.Match, matches: list[re.Match]) -> int:
+    """Where the section opened by heading MATCH ends: at the next heading at its level or above, else at the end of TEXT."""
+    level = len(match.group(1))
+    for later in matches[matches.index(match) + 1 :]:
+        if len(later.group(1)) <= level:
+            return later.start()
+    return len(text)
+
+
+def by_anchor(text: str, anchor: str, through: str | None = None) -> str | None:
+    """The section whose heading answers to ANCHOR, its heading line included; None when no heading does.
+
+    With THROUGH, the text runs on to the end of the section headed THROUGH
+    (compared as the heading's text, in any case), so a range of neighbouring
+    sections is one read; None too when THROUGH is not a heading after it.
+    """
+    visible = _fenceless(text)
+    matches = list(re.finditer(r"^(#{2,6})[ ]+(.*?)[ ]*#*[ ]*$", visible, re.MULTILINE))
+    first = next((m for m in matches if anchor_slug(m.group(2)) == anchor.lstrip("#")), None)
+    if first is None:
+        return None
+    end = _extent(text, first, matches)
+    if through is not None:
+        last = next(
+            (m for m in matches if m.start() > first.start() and m.group(2).strip().lower() == through.strip().lower()),
+            None,
+        )
+        if last is None:
+            return None
+        end = _extent(text, last, matches)
+    return text[first.start() : end].strip()
 
 
 def cmd_section(args: argparse.Namespace, root: Path) -> None:

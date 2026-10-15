@@ -71,9 +71,10 @@ from services.project_find import add_project_flags, project_by_path, project_fr
 from services.project_preferences import PREFERENCES_RELATIVE, SESSIONS_KEY, preferences_path
 from services.session_brief import BRIEF_COMMAND, brief_text
 from services.session_find import LIST_COMMAND
-from services.session_folder import folder_of, project_folder_of, read_session
+from services.session_folder import folder_of, left_folder_of, project_folder_of, read_session
 from services.session_gc import GC_COMMAND, SESSION_IDLE_DAYS, reap_once_a_day
 from services.session_id import new_session_id
+from services.session_temp import TEMP_SENTENCE
 from services.session_location import (
     in_project_location,
     memar_own_note,
@@ -84,19 +85,23 @@ from services.session_location import (
     register,
 )
 from services.session_log import record
-from services.session_migrate import take_up
 from services.session_claim import is_claimed
 from services.session_plan import (
     DEFAULT_PRIORITY,
+    CHEAPER_KINDS,
     HIGHEST_PRIORITY,
+    KINDS,
     LOWEST_PRIORITY,
     PLAN_NAME,
+    STRONG_KINDS,
+    checked_kind,
     checked_priority,
     checked_title,
     checked_topic,
     plan_file_problem,
     plan_skeleton,
     read_plan,
+    set_kind,
     set_priority,
     set_status,
     set_topic,
@@ -154,13 +159,14 @@ def write_plan(
     status: str = Status.ACTIVE.key,
     priority: int | None = None,
     topic: str | None = None,
+    kind: str | None = None,
 ) -> None:
     """Create FOLDER's plan.md unless one is there; an existing plan is never touched."""
     opened = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     if project is None:
         fail(PROJECT_REQUIRED)
     text = plan_skeleton(
-        title, opened, project, parent=parent, conversation=conversation, status=status, priority=priority, topic=topic
+        title, opened, project, parent=parent, conversation=conversation, status=status, priority=priority, topic=topic, kind=kind
     )
     try:
         with (folder / PLAN_NAME).open("x", encoding="utf-8", newline="\n") as plan:
@@ -192,6 +198,7 @@ def ensure_session(
     priority: int | str | None = None,
     topic: str | None = None,
     project: str | None = None,
+    kind: str | None = None,
 ) -> tuple[str, Path]:
     """Ensure the session's folder, its plan.md and report.md, and its role folders exist; return its id and path.
 
@@ -200,9 +207,8 @@ def ensure_session(
     is there keeps the link it was written with, and a different one is
     refused rather than ignored. A rerun with the same id is idempotent: the
     folder, its plan, and its report are kept as they are and the same id and
-    path are reported again. A session an earlier Memar left in temp/ is moved
-    into temp/sessions/ as it is continued, or goes on in temp/ when the system
-    will not move it; no second folder is made for it. A session in a project's
+    path are reported again. A session an earlier Memar left in temp/ is
+    continued where it is; no second folder is made for it. A session in a project's
     own location is continued there. A folder that is nowhere yet is made in
     the location the project's preferences set, else temp/sessions/ inside the project (the Memar checkout's own is under Memar's root); a
     name already taken there by anything that is not a session folder is
@@ -220,12 +226,13 @@ def ensure_session(
     """
     priority = None if priority is None else checked_priority(priority)
     topic = None if topic is None else checked_topic(topic)
+    kind = None if kind is None else checked_kind(kind)
     sid = new_session_id() if session_id is None else session_id
     folder = session_dir(sid)
     project = named_project(project)
     location = project_location(project) if project is not None else None
     if session_id is not None and not folder.is_dir():
-        folder = take_up(sid) or project_folder_of(sid, also=location) or folder
+        folder = left_folder_of(sid) or project_folder_of(sid, also=location) or folder
     if project is None and folder.is_dir():
         project = recorded_project(folder)
         location = project_location(project) if project is not None else None
@@ -264,7 +271,7 @@ def ensure_session(
     if in_project_location(path):
         register(path.parent, project)
     if not has_plan:
-        write_plan(path, title, parent, conversation, project, Status.QUEUED.key if queued else Status.ACTIVE.key, priority, topic)
+        write_plan(path, title, parent, conversation, project, Status.QUEUED.key if queued else Status.ACTIVE.key, priority, topic, kind)
     else:
         if queued:
             queue_plan(path)
@@ -272,6 +279,8 @@ def ensure_session(
             set_priority(path / PLAN_NAME, priority)
         if topic is not None:
             set_topic(path / PLAN_NAME, topic)
+        if kind is not None:
+            set_kind(path / PLAN_NAME, kind)
     if topic and project is not None:
         warn_near(topic, project, sid)
     write_report(path, (read_session(path).front or {}).get("title"))
@@ -288,13 +297,15 @@ def open_session(
     priority: int | None = None,
     topic: str | None = None,
     project: str | None = None,
+    kind: str | None = None,
 ) -> None:
     """`new`: ensure the session and print its id, path, plan, and report, where it is when that is a project's, and with PARENT its brief."""
-    sid, path = ensure_session(session_id, title, parent, queued, priority, topic, project)
+    sid, path = ensure_session(session_id, title, parent, queued, priority, topic, project, kind)
     note(f"session_id: {sid}")
     note(f"path: {path}")
     note(f"plan: {path / PLAN_NAME}")
     note(f"report: {path / REPORT_NAME}")
+    note(TEMP_SENTENCE)
     if in_project_location(path):
         note(project_location_note(path))
         unignored = unignored_note(path.parent)
@@ -326,8 +337,7 @@ or an absolute one; one that is that top folder itself or a drive or
 filesystem root is refused, and one inside Memar's own temp/ is not used,
 which `new` says too. If your file tool cannot reach the path, write there
 through `memar content write`. A folder an earlier Memar left directly in
-temp/ keeps its id and is moved into temp/sessions/ when --session-id
-continues it.
+temp/ is continued where it is when --session-id names it.
 
 What it writes. Each run makes the role folders the folder lacks, and writes
 {PLAN_NAME}, and never overwrites one that is there:
@@ -361,7 +371,11 @@ the session to a sub-agent. To hand a task to a sub-agent, open its session
 yourself with `--parent`, write the whole task into its {PLAN_NAME} — the
 Request, the check that says it is done, the shape of its report, and its
 Why, in your own words from the person's request — and hand the sub-agent only
-the brief `new` prints, which `memar session {BRIEF_COMMAND} ID` prints again. The agent
+the brief `new` prints, which `memar session {BRIEF_COMMAND} ID` prints again. The brief
+is one fixed sentence that sends the agent to `memar session start`, which
+prints its plan and the rest of what it must have read, so nothing else goes
+in the hand-over: what it needs is in the plan. Say in the plan what kind of
+task it is with --kind, so that `start` names the model it needs. The agent
 handed a brief takes that session up and opens none, and does not rewrite its
 Request.
 
@@ -434,6 +448,17 @@ def describe(verbs) -> Callable[[argparse.Namespace], None]:
             "warned about; `topics` lists them. It is not copied from --parent"
         ),
     )
+    opener.add_argument(
+        "--kind",
+        default=None,
+        metavar="K",
+        help=(
+            f"what the task is, one of {', '.join(KINDS)}; "
+            f"{', '.join(STRONG_KINDS)} are judgment and run on the strongest model the runtime offers, "
+            f"{', '.join(CHEAPER_KINDS)} on a cheaper one. `start` tells the sub-agent which. "
+            "A plan without one leaves the Request to say"
+        ),
+    )
     add_project_flags(
         opener,
         "the project the task belongs to (the folder `new` runs in is never read; "
@@ -446,6 +471,8 @@ def describe(verbs) -> Callable[[argparse.Namespace], None]:
 def run(args: argparse.Namespace) -> None:
     project = project_from_args(args)
     named = {} if project is None else {"project": project}
+    if args.kind is not None:
+        named["kind"] = args.kind
     if args.topic is not None:
         open_session(args.session_id, args.title, args.parent, args.queued, args.priority, args.topic, **named)
     elif args.queued or args.priority is not None:

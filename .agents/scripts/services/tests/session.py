@@ -30,8 +30,8 @@ What is pinned, and what each pin is for:
                      `memar module folders --help`, the Status words and that
                      a session ends when its report and plan state the same
                      one, who writes into another session's folder, that each
-                     location keeps its own log, and the move its own run
-                     makes before every verb; and none of a sub-verb's command
+                     location keeps its own log; nothing of a move its own
+                     run would make before a verb; and none of a sub-verb's command
                      lines, files, or recipes. No sub-verb sends its reader
                      back there for its own work. `new` says what it writes
                      (the plan's outline, the report's skeleton, the short
@@ -51,11 +51,11 @@ What is pinned, and what each pin is for:
                      the services the others share declare none.
   VerbsDispatch      Each verb reaches its one service with the arguments as
                      parsed; the verb that added tasks to a plan is gone.
-  MovedBeforeAnyVerb The quiet folders an earlier Memar left directly in temp/
-                     are moved into temp/sessions/ before any verb runs, so the
-                     first command after an update already finds them there;
-                     one at work is listed where it is; asking for help moves
-                     nothing.
+  NothingBeforeAnyVerb
+                     `memar session` only groups its verbs: nothing runs
+                     before a verb's own service, and a folder an earlier
+                     Memar left directly in temp/, quiet or at work, is listed
+                     where it is and not moved.
   CommandEndToEnd    What a caller types — `new`, then `list` — opens a folder,
                      prints its id and path, and finds it again, through the
                      real services; and `memar session <verb> --help` answers
@@ -63,10 +63,11 @@ What is pinned, and what each pin is for:
   StaleCopiesAreNotNew
                      `new` does not ask whether the skill copies are stale:
                      that is `memar update`'s question.
-  NoOneTimeMigration No file of the scripts folder outside the test suites
-                     names a one-time migration script, and none is one of
-                     them: such a script lives in the session that does the
-                     change (.agents/scripts/README.md).
+  NoOneTimeMigration No file of the scripts folder names a one-time
+                     migration script or what only such a script owns, and
+                     none is one of them: such a script lives in the session
+                     that does the change (.agents/scripts/README.md). Only
+                     this suite's own list names them.
 
 Usage is the interface. Do not duplicate these recipes as prose catalogs.
 """
@@ -111,13 +112,14 @@ import services.session_gc as session_gc
 import services.session_id as session_id
 import services.session_location as session_location
 import services.session_log as session_log
-import services.session_migrate as session_migrate
 import services.session_new as session_new
 import services.session_plan as session_plan
 import services.session_priority as session_priority
+import services.session_start as session_start
 import services.session_topic as session_topic
 import services.session_topics as session_topics
 import services.session_report as session_report
+import services.session_show as session_show
 
 LAUNCHER = SCRIPTS / "memar"
 
@@ -234,23 +236,27 @@ class HelpSaysWhatToRun(unittest.TestCase):
         ):
             self.assertIn(phrase, text)
 
-    def test_the_domain_help_says_a_commit_of_a_task_carries_its_sessions_records(self) -> None:
-        # The owner's ruling (2026-10-14): a commit of a task's changes adds
-        # the records of its sessions, kept in the project, not the folders.
+    def test_the_domain_help_says_the_records_are_on_a_branch_of_the_projects_own_repository(self) -> None:
+        # The owner's rulings (2026-10-14, 2026-10-15): the records are the
+        # session's whole folder bar a few leave-outs, kept on a branch.
         text = flat(run_help())
         for phrase in (
-            "A session's records — its plan.md, its report.md, and each file in its folder its report links to",
-            "are kept in .agents/sessions/<id>/ in its project",
-            "Committing a task's changes commits the records of its sessions with them",
-            "its own and those of the sessions it handed work to",
+            "A session's records — its whole folder except the claim, caches, binary files, files over 256 KB that are not documents, and its own temp/ folder",
+            "are kept on the branch dev-knowledge of its project's own repository, at .agents/sessions/<id>/ there",
             "unless its preferences say `records: off`",
+            "Nothing is pushed",
+            "A task's commit cites each session by that branch and folder, never by a file in it",
+            "`close` acts only on a session already archived",
+            "the sweep adds what the branch lacks before it moves a folder",
+            "Neither acts on a session whose Status is Queued",
         ):
             self.assertIn(phrase, text)
+        self.assertNotIn("Committing a task's changes commits the records", text)
 
-    def test_the_domain_help_says_what_its_own_run_does_before_every_verb(self) -> None:
+    def test_the_domain_help_says_nothing_of_a_move_before_every_verb(self) -> None:
         text = flat(run_help())
-        for phrase in ("Before any verb below runs", "an earlier Memar left directly in temp/", "asking for help moves nothing"):
-            self.assertIn(phrase, text)
+        for phrase in ("Before any verb below runs", "moved into temp/sessions/", "asking for help moves nothing"):
+            self.assertNotIn(phrase, text)
 
     def test_the_domain_help_states_no_sub_verbs_work(self) -> None:
         # Each phrase is a sub-verb's: its command line, what it writes, or its recipe.
@@ -270,7 +276,7 @@ class HelpSaysWhatToRun(unittest.TestCase):
             self.assertNotIn(phrase, text)
 
     def test_no_sub_verb_sends_its_reader_to_the_domain_help_for_its_own_work(self) -> None:
-        for verb in ("new", "list", "brief", "gc", "close", "archive", "claim", "claims", "priority", "topic", "topics", "digest"):
+        for verb in ("new", "list", "brief", "gc", "close", "archive", "show", "claim", "claims", "priority", "start", "topic", "topics", "digest"):
             with self.subTest(verb=verb):
                 text = flat(run_help(verb)).lower()
                 self.assertNotIn("when to use", text)
@@ -318,6 +324,9 @@ class HelpSaysWhatToRun(unittest.TestCase):
             "open its session yourself with `--parent`",
             "write the whole task into its plan.md — the Request, the check that says it is done, the shape of its report, and its Why, in your own words from the person's request",
             "hand the sub-agent only the brief `new` prints, which `memar session brief ID` prints again",
+            "one fixed sentence that sends the agent to `memar session start`",
+            "with --kind, so that `start` names the model it needs",
+            "--kind K",
             "takes that session up and opens none, and does not rewrite its Request",
             "To only add work",
             "--queued",
@@ -402,13 +411,16 @@ class HelpSaysWhatToRun(unittest.TestCase):
                       "--project NAME", "--project-path PATH", "List Memar's own session folders", "the calling folder is never read",
                       "earlier shape", "where today's shape is shown")),
             ("brief", ("ID", "ready to paste", "`new --parent` prints")),
+            ("start", ("--session-id ID", "=== NAME ===", "Run it", "first", "the model its Kind needs", "refuses an ID that has no folder")),
             ("gc", ("--session-id", "--idle-days DAYS", "never swept", "cannot be read", "at least 1", "whose status is complete",
                     "once a day", f"{session_gc.SESSION_IDLE_DAYS} unless given")),
-            ("close", ("--session-id", "--without-records", "which loses them", "the folder holding them is printed",
+            ("close", ("--session-id", "--without-records", "which drops them", "keeps nothing itself", "is never closed",
                        "is not closed")),
-            ("archive", ("--session-id", "every session whose Parent chain leads to it", "relative link",
-                         "registered name, not by its path", "the claim is not copied", "name those folders in the commit",
-                         "`records: off`", "the verb fails")),
+            ("archive", ("--session-id", "every session whose Parent chain leads to it", "in one commit",
+                         "registered name, not by its path", "the claim", "cite the reference",
+                         "`records: off`", "the verb fails", "it never pushes", "256 KB", "dev-knowledge")),
+            ("show", ("--session-id", "--file PATH", "--list", "--project NAME", "--project-path PATH", "main repository's temp",
+                      "the branch dev-knowledge", "never the folder this runs in")),
             ("new", ("--queued", "an existing active one no one has claimed is queued", "--priority N", "1 to 10",
                      "higher goes sooner")),
             ("claim", ("ID", "another agent holds, is refused", "taken over", "Nothing keeps a claim fresh",
@@ -434,7 +446,7 @@ class HelpSaysWhatToRun(unittest.TestCase):
     def test_the_why_is_in_the_files_the_implementer_reads(self) -> None:
         # Not a second copy: each service's own docstring, the one text
         # addressed to whoever opens it, and the domain's says where they are.
-        for name in ("session_new", "session_brief", "session_find", "session_close", "session_gc", "session_archive", "session_migrate"):
+        for name in ("session_new", "session_brief", "session_find", "session_close", "session_gc", "session_archive"):
             self.assertIn(name, session.__doc__)
         for module, phrases in (
             (session_new, ("shared-tree collisions", "advisory locks", "intent notes", "One session is one task")),
@@ -450,11 +462,17 @@ class HelpSaysWhatToRun(unittest.TestCase):
 class NoOneTimeMigration(unittest.TestCase):
     # A one-time migration lives in the session that does the change, never in
     # this folder (.agents/scripts/README.md, owner 2026-10-14), so nothing here
-    # names one: these three were such scripts, and lie in their sessions now.
-    MIGRATION_SCRIPTS = ("session-convert", "session-strays", "session-rename", "CONVERT_SCRIPT")
+    # names one: these were such scripts, and lie in their sessions now, with
+    # the names only they owned (the move out of temp/ wrote sessions.migrated
+    # once it was done, and its take_up moved a folder as it was continued).
+    MIGRATION_SCRIPTS = (
+        "session-convert", "session-strays", "session-rename", "CONVERT_SCRIPT",
+        "session_migrate", "sessions.migrated", "take_up",
+    )
 
     def test_no_file_of_the_scripts_folder_names_a_one_time_migration(self) -> None:
-        files = [path for path in SCRIPTS.rglob("*.py") if "tests" not in path.relative_to(SCRIPTS).parts]
+        this = Path(__file__).resolve()
+        files = [path for path in SCRIPTS.rglob("*.py") if path.resolve() != this]
         files.append(LAUNCHER)
         for path in files:
             text = path.read_text(encoding="utf-8")
@@ -484,11 +502,13 @@ class EachServiceDeclaresItsVerb(unittest.TestCase):
             (session_brief, ["brief"]),
             (session_find, ["list"]),
             (session_archive, ["archive"]),
+            (session_show, ["show"]),
             (session_close, ["close"]),
             (session_gc, ["gc"]),
             (session_claim, ["claim"]),
             (session_claims, ["claims"]),
             (session_priority, ["priority"]),
+            (session_start, ["start"]),
             (session_topic, ["topic"]),
             (session_topics, ["topics"]),
             (session_digest, ["digest"]),
@@ -497,14 +517,18 @@ class EachServiceDeclaresItsVerb(unittest.TestCase):
                 verbs = self.Recorded()
                 run = module.describe(verbs)
                 self.assertEqual(verbs.names, declared)
-                self.assertTrue(callable(run))
+                # The domain only groups its verbs, so it owes nothing before them.
+                if module is session:
+                    self.assertIsNone(run)
+                else:
+                    self.assertTrue(callable(run))
 
     def test_the_shared_services_declare_no_verb(self) -> None:
-        for module in (session_plan, session_report, session_folder, session_location, session_log, session_id, session_migrate):
+        for module in (session_plan, session_report, session_folder, session_location, session_log, session_id):
             with self.subTest(module=module.__name__):
                 self.assertFalse(hasattr(module, launcher.DESCRIBE))
 
-    def test_the_command_offers_the_twelve_verbs_in_the_order_of_their_services(self) -> None:
+    def test_the_command_offers_the_fourteen_verbs_in_the_order_of_their_services(self) -> None:
         def verbs_of(parser: argparse.ArgumentParser) -> dict[str, argparse.ArgumentParser]:
             found = [action for action in parser._actions if isinstance(action, argparse._SubParsersAction)]
             return dict(found[0].choices) if found else {}
@@ -513,7 +537,7 @@ class EachServiceDeclaresItsVerb(unittest.TestCase):
         self.assertEqual(before, [])
         self.assertEqual(
             list(verbs_of(verbs_of(top)["session"])),
-            ["archive", "brief", "claim", "claims", "close", "digest", "list", "gc", "new", "priority", "topic", "topics"],
+            ["archive", "brief", "claim", "claims", "close", "digest", "list", "gc", "new", "priority", "show", "start", "topic", "topics"],
         )
 
 
@@ -528,11 +552,14 @@ class VerbsDispatch(Fixture):
             (["list", "--project-path", "<F>"], session_find, "list_sessions", (None, None, None, None, "<F>")),
             (["list", "--project", "p"], session_find, "list_sessions", (None, None, None, None, "<F>")),
             (["brief", "s-1"], session_brief, "print_brief", ("s-1",)),
+            (["start", "--session-id", "s-1"], session_start, "print_start", ("s-1",)),
             (["gc"], session_gc, "collect", (None, None)),
             (["gc", "--session-id", "s-1", "--idle-days", "2"], session_gc, "collect", ("s-1", 2.0)),
             (["close", "--session-id", "s-1"], session_close, "close", ("s-1", False)),
             (["close", "--session-id", "s-1", "--without-records"], session_close, "close", ("s-1", True)),
             (["archive", "--session-id", "s-1"], session_archive, "archive", ("s-1",)),
+            (["show", "--session-id", "s-1", "--project-path", "<F>"], session_show, "show", ("s-1", "<F>", [])),
+            (["show", "--session-id", "s-1", "--project", "p", "--file", "docs/a.md"], session_show, "show", ("s-1", "<F>", ["docs/a.md"])),
             (["new", "--title", "T", "--queued"], session_new, "open_session", (None, "T", None, True, None)),
             (["new", "--title", "T", "--queued", "--priority", "8"], session_new, "open_session",
              (None, "T", None, True, 8)),
@@ -619,31 +646,7 @@ class VerbsDispatch(Fixture):
                         command(*argv)
 
 
-class MovedBeforeAnyVerb(Fixture):
-    def test_the_move_runs_before_each_verbs_service(self) -> None:
-        for argv, module, name in (
-            (["new", "--title", "T"], session_new, "open_session"),
-            (["list"], session_find, "list_sessions"),
-            (["gc"], session_gc, "collect"),
-            (["close", "--session-id", "s-1"], session_close, "close"),
-            (["brief", "s-1"], session_brief, "print_brief"),
-        ):
-            with self.subTest(argv=argv):
-                order = unittest.mock.Mock()
-                with unittest.mock.patch.object(session_migrate, "migrate", order.migrate), \
-                        unittest.mock.patch.object(module, name, getattr(order, name)):
-                    command(*argv)
-                self.assertEqual([call[0] for call in order.mock_calls], ["migrate", name])
-
-    def test_asking_for_help_moves_nothing(self) -> None:
-        for argv in (["--help"], ["new", "--help"], ["list", "--help"], ["gc", "--help"], ["close", "--help"], ["brief", "--help"]):
-            with self.subTest(argv=argv):
-                with unittest.mock.patch.object(session_migrate, "migrate") as migrate:
-                    with contextlib.redirect_stdout(io.StringIO()), self.assertRaises(SystemExit) as raised:
-                        command(*argv)
-                self.assertEqual(raised.exception.code, 0)
-                migrate.assert_not_called()
-
+class NothingBeforeAnyVerb(Fixture):
     def left_in_temp(self, sid: str, idle_days: float) -> Path:
         left = memar_fs.scratch_root() / sid
         left.mkdir(parents=True)
@@ -656,15 +659,16 @@ class MovedBeforeAnyVerb(Fixture):
             os.utime(path, (when, when))
         return left
 
-    def test_a_quiet_folder_left_in_temp_is_listed_where_the_first_command_moved_it(self) -> None:
+    def test_a_quiet_folder_left_in_temp_is_listed_where_it_is_and_not_moved(self) -> None:
         left = self.left_in_temp("20261009T120000Z-42-0", idle_days=2)
         err = io.StringIO()
         with contextlib.redirect_stderr(err):
             listed = self.run_main("list")
         self.assertIn("20261009T120000Z-42-0  Left behind", listed)
-        self.assertIn(f"path: {memar_fs.session_dir('20261009T120000Z-42-0')}", listed)
-        self.assertIn("moved from temp/ into temp/sessions/", err.getvalue())
-        self.assertFalse(left.exists())
+        self.assertIn(f"path: {left}", listed)
+        self.assertEqual(err.getvalue(), "")
+        self.assertTrue(left.is_dir())
+        self.assertFalse(memar_fs.session_dir("20261009T120000Z-42-0").exists())
 
     def test_a_folder_at_work_in_temp_is_listed_where_it_is(self) -> None:
         left = self.left_in_temp("20261009T120000Z-43-0", idle_days=0)
@@ -694,6 +698,7 @@ class CommandEndToEnd(Fixture):
             ("close", "--session-id SESSION_ID"),
             ("gc", "--idle-days DAYS"),
             ("brief", "ID"),
+            ("start", "--session-id ID"),
         ):
             with self.subTest(verb=verb):
                 self.assertIn(phrase, run_help(verb))

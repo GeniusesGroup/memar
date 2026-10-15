@@ -49,6 +49,7 @@ from typing import Callable
 from machine.console import fail, note
 from services.status import Status
 from services.session_folder import folder_of, is_session_folder
+from services.session_temp import TEMP_SENTENCE
 from services.session_plan import PLAN_NAME, plan_file_problem, read_plan, set_status
 
 CLAIM_COMMAND = "claim"
@@ -171,6 +172,7 @@ def claim(session_id: str) -> None:
     claim_folder(folder)
     print(f"claimed {session_id}")
     note(f"claim: {claim_path(folder)}")
+    note(TEMP_SENTENCE)
 
 
 def describe(verbs) -> Callable[[argparse.Namespace], None]:

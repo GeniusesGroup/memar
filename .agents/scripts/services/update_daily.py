@@ -21,8 +21,8 @@ was brought up to date, it is behind and was not, a copy was refreshed, or the
 run could not check. A day on which everything was current leaves nothing.
 
 That once-shown line is the one way Memar tells a person of something a
-command they did not run did to them, so other services leave theirs here too:
-`session_migrate` says which session folders it moved. Each subject keeps a
+command they did not run did to them, so another service leaves its own here
+too, on a subject of its own. Each subject keeps a
 notice file of its own, so one never replaces another's; a newer line on the
 update replaces one not yet printed, since only the latest state of the
 checkout matters, and a service that reports separate events adds its line

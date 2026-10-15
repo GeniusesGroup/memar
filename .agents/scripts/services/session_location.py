@@ -12,8 +12,7 @@ checkout itself, whose folders are made under the Memar root
 (`machine/fs_memar.py`) and swept from there once their task is done. A
 project may put them elsewhere — to commit them, or read them beside its
 own work — with the `sessions` key. Those folders are the project's, not
-Memar's: the sweep (`session_gc`) and the move out of temp/
-(`session_migrate`) never touch them, and keeping or deleting one is the
+Memar's: the sweep (`session_gc`) never touches them, and keeping or deleting one is the
 project's business, which `new` says each time it makes or continues one there
 and `gc` says by naming the locations it did not sweep.
 

@@ -24,10 +24,10 @@ What is pinned, and what each pin is for:
                      like a path is refused.
   RerunIsIdempotent  Reusing one session id keeps the folder as is and reports
                      the same id and path again.
-  ContinuedFromTemp  A session an earlier Memar left directly in temp/ is moved
-                     as its id continues it, or goes on in temp/ when it cannot
-                     move, and no second folder is made beside it; a parent
-                     still in temp/ is found there.
+  ContinuedFromTemp  A session an earlier Memar left directly in temp/ goes on
+                     where it is as its id continues it, keeping its plan, and
+                     no second folder is made for it in temp/sessions/; a
+                     parent in temp/ is found there.
   TitleRequired      A folder gets its plan.md from `--title`, so a session is
                      not minted, nor a folder with no plan.md taken up, without
                      one; a folder that has a plan is continued without one.
@@ -73,6 +73,9 @@ What is pinned, and what each pin is for:
                      session already there is continued without one; a project
                      with no `sessions` preference is not refused, and Memar is
                      an entry like any other.
+  KindWritten        `--kind` writes the plan's Kind, lower case, into a new
+                     plan and sets it on one that is there; a word outside the
+                     closed list is refused and makes nothing.
   BriefPrinted       A session made with --parent ends with the brief that
                      hands it to a sub-agent, its id filled in; one without
                      a parent prints none.
@@ -117,6 +120,7 @@ from machine.fs_test_scratch import suite_scratch
 import machine.fs_lock as fs_lock
 import machine.fs_memar as memar_fs
 import services.project_preferences as project_preferences
+import services.session_temp as session_temp
 import services.project_registry as registry
 import services.session_new as session_new
 from services.module_folders import ROLE_FOLDERS
@@ -196,6 +200,7 @@ class CreatesFolder(Fixture):
         self.assertIn("session_id: s-2", text)
         self.assertIn(f"path: {path}", text)
         self.assertIn(f"plan: {path / PLAN_NAME}", text)
+        self.assertIn(session_temp.TEMP_SENTENCE, text)
 
     def test_mints_an_id_when_none_is_given(self) -> None:
         sid, path = self.ensure(title=TITLE)
@@ -229,25 +234,15 @@ class ContinuedFromTemp(Fixture):
         (left / PLAN_NAME).write_text("---\ntitle: Old\nopened: x\n---\n# Old\nStatus: open\n", encoding="utf-8", newline="\n")
         return left
 
-    def test_it_is_moved_as_it_is_continued_and_keeps_its_plan(self) -> None:
+    def test_it_goes_on_where_it_is_keeps_its_plan_and_nothing_is_made_for_it(self) -> None:
         left = self.left_in_temp()
         with contextlib.redirect_stderr(io.StringIO()):
-            sid, path = self.ensure(self.LEFT)
-        self.assertEqual((sid, path), (self.LEFT, memar_fs.session_dir(self.LEFT)))
-        self.assertFalse(left.exists())
-        self.assertIn("title: Old", (path / PLAN_NAME).read_text(encoding="utf-8"))
-
-    def test_it_goes_on_in_temp_when_it_cannot_move_and_nothing_is_made_beside_it(self) -> None:
-        left = self.left_in_temp()
-        refused = PermissionError(13, "The process cannot access the file")
-        with unittest.mock.patch("services.session_migrate.os.rename", side_effect=refused), \
-                contextlib.redirect_stderr(io.StringIO()):
             sid, path = self.ensure(self.LEFT, "A new title")
         self.assertEqual((sid, path), (self.LEFT, left))
         self.assertFalse(memar_fs.session_dir(self.LEFT).exists())
         self.assertIn("title: Old", (left / PLAN_NAME).read_text(encoding="utf-8"))
 
-    def test_a_parent_still_in_temp_links_its_child(self) -> None:
+    def test_a_parent_in_temp_links_its_child(self) -> None:
         self.left_in_temp()
         with contextlib.redirect_stderr(io.StringIO()):
             _, path = self.ensure("child", TITLE, parent=self.LEFT)
@@ -314,6 +309,23 @@ class PlanWritten(Fixture):
         with unittest.mock.patch.object(subprocess, "run", return_value=refused) as run:
             self.assertEqual(GIT_PROJECT_ROOT(self.project), self.project.resolve())
         self.assertEqual(run.call_args.args[0][:3], ["git", "-C", str(self.project.resolve())])
+
+
+class KindWritten(Fixture):
+    def test_a_kind_is_written_into_a_new_plan_and_set_on_one_that_is_there(self) -> None:
+        _, path = self.ensure("s-kind", TITLE, kind="Design")
+        self.assertIn("Kind: design", (path / PLAN_NAME).read_text(encoding="utf-8"))
+        self.ensure("s-kind", kind="mechanical")
+        self.assertIn("Kind: mechanical", (path / PLAN_NAME).read_text(encoding="utf-8"))
+
+    def test_a_plan_made_without_a_kind_has_none(self) -> None:
+        _, path = self.ensure("s-nokind", TITLE)
+        self.assertNotIn("Kind", (path / PLAN_NAME).read_text(encoding="utf-8"))
+
+    def test_a_word_that_is_no_kind_is_refused_and_makes_nothing(self) -> None:
+        with self.assertRaises(SystemExit):
+            self.ensure("s-badkind", TITLE, kind="modelling")
+        self.assertFalse(memar_fs.session_dir("s-badkind").exists())
 
 
 class ReportWritten(Fixture):
@@ -656,7 +668,7 @@ class BriefPrinted(Fixture):
         printed = self.opened("second", "Delegated step", "first").splitlines()
         self.assertEqual(printed[-2], "    brief:")
         self.assertEqual(printed[-1], f"        {brief_text('second')}")
-        self.assertIn("memar session new --session-id second", printed[-1])
+        self.assertIn("memar session start --session-id second", printed[-1])
 
     def test_a_session_made_without_a_parent_prints_no_brief(self) -> None:
         self.assertNotIn("brief:", self.opened("first", TITLE, None))

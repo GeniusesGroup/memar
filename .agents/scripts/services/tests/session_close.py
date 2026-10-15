@@ -21,7 +21,7 @@ What is pinned, and what each pin is for:
                     to the trash; closing again says it is already closed; a
                     trash that fails leaves the folder where it was, because a
                     failed recovery is not a successful close. A session an
-                    earlier Memar left in temp/, not moved yet, is closed there,
+                    earlier Memar left in temp/ is closed there,
                     and one in a recorded project location is closed there,
                     from any working folder, leaving the location itself; a
                     folder there that is not a session's is refused and
@@ -30,10 +30,16 @@ What is pinned, and what each pin is for:
   OnlyItsFolder     Closing one session's folder reaches nothing beside it, the
                     lock directory included, and is recorded in the log of
                     the location it lay in: a project's own, else Memar's.
-  RecordsKeptFirst  Before the folder moves, its records are kept in its
-                    project (`session_archive`), and `close` says where; a
-                    folder whose records cannot be kept is not closed, unless
-                    the person says to close it without them.
+  RecordsMustBeArchived
+                    `close` keeps nothing itself (owner, 2026-10-15): a folder
+                    whose records are owed is closed only when they are on its
+                    project's records branch as the folder holds them now, and
+                    `close` says where; one not archived is not closed, and
+                    `--without-records` does not change that; one whose
+                    records cannot be kept is not closed either, unless the
+                    person says to close it without them. A project that keeps
+                    no records owes none. A plan or report whose Status is
+                    Queued is never closed.
 
 Usage is the interface. Do not duplicate these recipes as prose catalogs.
 """
@@ -42,6 +48,7 @@ from __future__ import annotations
 import contextlib
 import io
 import shutil
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -62,6 +69,7 @@ from machine.fs_test_scratch import suite_scratch
 import machine.fs_lock as fs_lock
 import machine.fs_memar as memar_fs
 import machine.fs_trash as fs_trash
+import services.session_archive as session_archive
 import services.session_close as session_close
 from services.project_registry import add_project
 from services.session_location import register
@@ -188,26 +196,77 @@ class OnlyItsFolder(Fixture):
         self.assertFalse(log_path().is_file())
 
 
-class RecordsKeptFirst(Fixture):
-    def finished(self, sid: str, project: Path) -> Path:
-        path = memar_fs.session_dir(sid, create=True)
-        (path / "plan.md").write_text(
-            f"---\nTitle: T\nStatus: Complete\nOpened: x\nProject: {project}\n---\n# T\n", encoding="utf-8", newline="\n"
-        )
-        return path
-
-    def test_the_records_are_kept_before_the_folder_moves_and_close_says_where(self) -> None:
+class RecordsMustBeArchived(Fixture):
+    def project_repository(self) -> Path:
         project = self.fake_root / "work" / "example"
         project.mkdir(parents=True)
+        for args in (["init", "-q", "-b", "main"], ["config", "user.name", "Test"], ["config", "user.email", "t@example.org"]):
+            subprocess.run(["git", "-C", str(project), *args], check=True, capture_output=True)
         add_project("example", project)
+        return project
+
+    def finished(self, sid: str, project: Path, *, status: str = "Complete", report_status: str | None = None) -> Path:
+        path = memar_fs.session_dir(sid, create=True)
+        (path / "plan.md").write_text(
+            f"---\nTitle: T\nStatus: {status}\nOpened: x\nProject: {project}\n---\n# T\n", encoding="utf-8", newline="\n"
+        )
+        if report_status is not None:
+            (path / "report.md").write_text(f"---\nTitle: T\nStatus: {report_status}\n---\n# Report\n", encoding="utf-8", newline="\n")
+        return path
+
+    def archive(self, path: Path) -> None:
+        self.assertEqual(session_archive.keep_records([path])[0].outcome, session_archive.Outcome.KEPT)
+
+    def test_an_archived_session_is_closed_and_close_says_where_its_records_are(self) -> None:
+        project = self.project_repository()
         path = self.finished("s-kept", project)
-        kept = project / ".agents" / "sessions" / "s-kept"
+        self.archive(path)
         out = io.StringIO()
         with unittest.mock.patch.object(fs_trash, "soft_delete", side_effect=self.move_to_bin), contextlib.redirect_stdout(out):
             session_close.close("s-kept")
         self.assertFalse(path.exists())
-        self.assertIn("Project: example", (kept / "plan.md").read_text(encoding="utf-8"))
-        self.assertIn(f"records: {kept}", out.getvalue())
+        self.assertIn(f"records: {session_archive.reference('s-kept')}", out.getvalue())
+
+    def test_a_session_not_archived_is_not_closed_and_close_keeps_nothing_itself(self) -> None:
+        project = self.project_repository()
+        path = self.finished("s-waiting", project)
+        with unittest.mock.patch.object(fs_trash, "soft_delete") as trash:
+            with self.assertRaises(SystemExit) as raised:
+                session_close.close_session("s-waiting")
+        trash.assert_not_called()
+        self.assertTrue(path.is_dir())
+        said = str(raised.exception.code)
+        self.assertIn("not closed", said)
+        self.assertIn("not archived", said)
+        self.assertIn("memar session archive --session-id s-waiting", said)
+        branches = subprocess.run(["git", "-C", str(project), "branch", "--list"], capture_output=True, text=True).stdout
+        self.assertEqual(branches.strip(), "")
+
+    def test_a_change_after_archiving_makes_it_not_archived_again(self) -> None:
+        path = self.finished("s-changed", self.project_repository())
+        self.archive(path)
+        (path / "report.md").write_text("---\nTitle: T\nStatus: Complete\n---\n# Report\nLater.\n", encoding="utf-8", newline="\n")
+        with unittest.mock.patch.object(fs_trash, "soft_delete") as trash:
+            with self.assertRaises(SystemExit):
+                session_close.close_session("s-changed")
+        trash.assert_not_called()
+
+    def test_without_records_does_not_close_a_session_that_is_only_not_archived(self) -> None:
+        path = self.finished("s-waiting-too", self.project_repository())
+        with unittest.mock.patch.object(fs_trash, "soft_delete") as trash:
+            with self.assertRaises(SystemExit):
+                session_close.close_session("s-waiting-too", without_records=True)
+        trash.assert_not_called()
+        self.assertTrue(path.is_dir())
+
+    def test_a_session_whose_project_keeps_no_records_is_closed(self) -> None:
+        project = self.project_repository()
+        (project / ".agents" / "memar").mkdir(parents=True)
+        (project / ".agents" / "memar" / "preferences.md").write_text("---\nrecords: off\n---\n", encoding="utf-8", newline="\n")
+        path = self.finished("s-off", project)
+        with unittest.mock.patch.object(fs_trash, "soft_delete", side_effect=self.move_to_bin):
+            self.assertTrue(session_close.close_session("s-off").removed)
+        self.assertFalse(path.exists())
 
     def test_a_folder_whose_records_cannot_be_kept_is_not_closed(self) -> None:
         path = self.finished("s-stuck", self.fake_root / "elsewhere")
@@ -218,12 +277,28 @@ class RecordsKeptFirst(Fixture):
         self.assertTrue(path.is_dir())
         self.assertIn("not closed", str(raised.exception.code))
 
-    def test_the_person_may_close_it_without_its_records(self) -> None:
+    def test_the_person_may_close_it_without_its_records_when_they_cannot_be_kept(self) -> None:
         path = self.finished("s-dropped", self.fake_root / "elsewhere")
         with unittest.mock.patch.object(fs_trash, "soft_delete", side_effect=self.move_to_bin):
             closed = session_close.close_session("s-dropped", without_records=True)
         self.assertTrue(closed.removed)
         self.assertFalse(path.exists())
+
+    def test_a_queued_plan_or_report_is_never_closed(self) -> None:
+        project = self.project_repository()
+        for sid, status, report_status in (
+            ("s-queued-plan", "Queued", None),
+            ("s-queued-report", "Complete", "Queued"),
+        ):
+            with self.subTest(sid=sid):
+                path = self.finished(sid, project, status=status, report_status=report_status)
+                for without in (False, True):
+                    with unittest.mock.patch.object(fs_trash, "soft_delete") as trash:
+                        with self.assertRaises(SystemExit) as raised:
+                            session_close.close_session(sid, without_records=without)
+                    trash.assert_not_called()
+                    self.assertIn("Queued", str(raised.exception.code))
+                self.assertTrue(path.is_dir())
 
 
 if __name__ == "__main__":

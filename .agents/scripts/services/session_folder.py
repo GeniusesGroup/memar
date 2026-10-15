@@ -10,9 +10,9 @@ the session the sweep keeps.
 
 Where the folders are is not decided here: `machine/fs_memar.py` owns every
 Memar path, the session folder among them. Which folder directly in temp/ is a
-session an earlier Memar left there is decided here, because until
-`session_migrate` has moved it, it is still that session's folder: it is
-listed, swept, continued, linked to, and closed where it is. A folder in a
+session an earlier Memar left there is decided here, because it is still that
+session's folder: it is listed, swept, continued, linked to, and closed where
+it is. A folder in a
 project's own session location (`session_location`) is continued, linked to,
 and closed like any other, and listed when the caller asks for its project or
 its conversation, but it is never among the folders the sweep is given: it is
@@ -37,7 +37,9 @@ from machine.fs_memar import SESSIONS_DIRNAME, scratch_root, session_dir, sessio
 from services.session_id import is_session_id
 from services.session_location import registered_locations
 from services.session_plan import PLAN_NAME, plan_file_problem, read_plan
-from services.session_record import PlanKey
+from services.session_record import PlanKey, ReportKey
+from services.session_report import REPORT_NAME, read_report_status
+from services.status import Status
 
 DAY_SECONDS = 24 * 60 * 60
 
@@ -78,6 +80,20 @@ def read_session(folder: Path) -> Session:
     return Session(folder, True, read.front, read.status, shape=plan_file_problem(plan))
 
 
+def queued_why(session: Session) -> str | None:
+    """Why SESSION is still queued: its plan's or its report's Status is Queued; None when neither is.
+
+    A queued session is waiting to be taken up, and nothing that moves or
+    removes a folder acts on one (owner, 2026-10-15): its folder is the task.
+    """
+    queued = Status.QUEUED.key
+    if session.status == queued:
+        return f"its {PLAN_NAME}'s {PlanKey.STATUS.written} is {Status.QUEUED.word}"
+    if read_report_status(session.path) == queued:
+        return f"its {REPORT_NAME}'s {ReportKey.STATUS.written} is {Status.QUEUED.word}"
+    return None
+
+
 def is_session_folder(entry: Path) -> bool:
     """Whether ENTRY, a folder found by name outside the session root, is a session's.
 
@@ -107,6 +123,12 @@ def is_left_session(entry: Path) -> bool:
     return entry.name != SESSIONS_DIRNAME and is_session_folder(entry)
 
 
+def left_folder_of(session_id: str) -> Path | None:
+    """SESSION_ID's folder left directly in temp/ by an earlier Memar, or None when there is none."""
+    left = scratch_root() / session_id
+    return left if is_left_session(left) else None
+
+
 def _project_entries(session_id: str, also: Path | None) -> list[Path]:
     """Whatever is named SESSION_ID in ALSO or in a registered project location, folder or not."""
     locations = ([also] if also is not None else []) + registered_locations()
@@ -132,10 +154,7 @@ def folder_of(session_id: str) -> Path:
     folder = session_dir(session_id)
     if folder.is_dir():
         return folder
-    left = scratch_root() / session_id
-    if is_left_session(left):
-        return left
-    return project_folder_of(session_id) or folder
+    return left_folder_of(session_id) or project_folder_of(session_id) or folder
 
 
 def _entries(root: Path) -> list[Path]:

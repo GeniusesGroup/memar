@@ -14,8 +14,6 @@ import re
 import sys
 from pathlib import Path
 
-from machine.fs_memar import RECORDS_RELATIVE
-
 # Companion facets that are *not* the explanatory surface. Blind `search`
 # is for finding what to study or follow; these companions are reached only
 # when explicitly named (`path` / `meta` / `section`) or linked from a base
@@ -54,18 +52,11 @@ _CORPUS_FILES = ("README.md", "AGENTS.md")
 # derived, because `temp` is this tool's own home and a rule that inferred it
 # would change whenever a new folder appeared.
 _SCRATCH_DIRNAME = "temp"
-# The kept records of finished sessions (`session_archive`) are a project's
-# history of its tasks, not content a reader searches for, links to, checks, or
-# owes a propagation from; the folder is named by its path from the root, so
-# only it leaves the corpus and the rest of `.agents/` stays.
-_RECORDS_PARTS = RECORDS_RELATIVE.parts
 
 
 def _left_out(folders: tuple[str, ...]) -> bool:
     """Whether a file under FOLDERS, its folders from the checkout's root, is outside the corpus."""
-    if _SCRATCH_DIRNAME in folders or is_generated(folders):
-        return True
-    return folders[: len(_RECORDS_PARTS)] == _RECORDS_PARTS
+    return _SCRATCH_DIRNAME in folders or is_generated(folders)
 
 
 def _excluded_from_search(path: Path) -> bool:
