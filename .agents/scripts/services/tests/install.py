@@ -68,6 +68,11 @@ SiblingSurface    Each layer imports the module that owns the concern it needs,
                      the docstring is the implementer's and printing it to every
                      installer is how the mechanism reached the help output in
                      the first place.
+  InstallingRegistersTheProject
+                      Installing into a project registers it with Memar under
+                      its folder's name, once; one already registered is left
+                      as it is, a name another project holds is reported and
+                      nothing is renamed, and a dry run writes no registry.
   BareRunInstallsEveryLayer
                       The machine layer, then the project, then the agent apps,
                       each asked in this process; a layer that stops does not
@@ -121,6 +126,8 @@ INSTALLER_OPTIONS = (
     ("--check", "PATH"),
     ("--root", ""),
     ("--developer", ""),
+    ("--project", "NAME"),
+    ("--project-path", "PATH"),
     ("--machine-only", ""),
     ("--dry-run", ""),
 )
@@ -741,6 +748,66 @@ class FirstRunInterface(unittest.TestCase):
                 self.assertNotIn(CONTINUATION, printed(asked))
                 self.assertFalse(kept.exists())
 
+class BootstrapNamesTheProject(unittest.TestCase):
+    """The installer never reads the folder it runs in, so the bootstrap names the project it was started for."""
+
+    def source(self, bootstrap: str) -> str:
+        return (SCRIPTS / bootstrap).read_text(encoding="utf-8")
+
+    def test_each_bootstrap_documents_and_takes_a_project(self):
+        for bootstrap, option in (("install.sh", "--project-path"), ("install.ps1", "-ProjectPath")):
+            with self.subTest(bootstrap=bootstrap):
+                text = self.source(bootstrap)
+                self.assertGreater(text.count(option), 2, bootstrap)
+                self.assertNotIn("into the project you are in", text, bootstrap)
+
+    def test_the_project_is_forwarded_to_the_installer_as_a_path(self):
+        shell = self.source("install.sh").split("set --" + chr(10) + 'case "$mode" in', 1)[1]
+        self.assertIn('--project-path "$(absolute_path "$project")"', shell)
+        powershell = self.source("install.ps1").split("$forwarded = @()", 1)[1]
+        self.assertIn('"--project-path"', powershell)
+        self.assertIn("ConvertTo-AbsolutePath $ProjectPath", powershell)
+
+    def test_a_project_is_never_taken_from_the_folder_the_script_runs_in(self):
+        for bootstrap in BOOTSTRAPS:
+            with self.subTest(bootstrap=bootstrap):
+                text = self.source(bootstrap)
+                self.assertNotRegex(text, r"\$PWD|Get-Location", bootstrap)
+
+    def test_a_project_option_without_its_folder_is_refused(self):
+        refused = FirstRunInterface("test_a_check_asks_the_architecture_and_writes_nothing")
+        refused.setUp()
+        self.addCleanup(refused.tearDown)
+        asked = refused.sh("--project-path")
+        self.assertEqual(asked.returncode, 1)
+        self.assertIn("need a path", printed(asked, "stderr"))
+        self.assertNotIn("git clone", printed(asked))
+
+    def test_the_old_single_project_option_is_refused_with_the_one_to_use(self):
+        refused = FirstRunInterface("test_a_check_asks_the_architecture_and_writes_nothing")
+        refused.setUp()
+        self.addCleanup(refused.tearDown)
+        for argv in (("--project", "x"), ("--project=x",)):
+            with self.subTest(argv=argv):
+                asked = refused.sh(*argv)
+                self.assertEqual(asked.returncode, 1)
+                self.assertIn("--project-path", printed(asked, "stderr"))
+                self.assertNotIn("git clone", printed(asked))
+
+    def test_the_help_of_each_bootstrap_names_the_project_option(self):
+        helper = FirstRunInterface("test_a_check_asks_the_architecture_and_writes_nothing")
+        helper.setUp()
+        self.addCleanup(helper.tearDown)
+        self.assertIn("--project-path", printed(helper.sh("--help")))
+        shell = shutil.which("powershell") or shutil.which("pwsh")
+        if shell:
+            asked = subprocess.run(
+                [shell, "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", str(SCRIPTS / "install.ps1"), "-Help"],
+                capture_output=True,
+            )
+            self.assertIn("-ProjectPath", asked.stdout.decode("utf-8", "replace"))
+
+
 class DeveloperIsMarked(unittest.TestCase):
     """`--developer` marks the recorded checkout in its own git configuration and changes nothing else."""
 
@@ -842,6 +909,123 @@ class HelpUnchanged(unittest.TestCase):
         self.assertIn("restart", shown)
         self.assertIn("--check", shown)
 
+class InstallingRegistersTheProject(unittest.TestCase):
+    """Installing Memar into a project is declaring that it follows Memar, so the registry learns it then.
+
+    The name is the project's folder name, which a person changes later with
+    `memar project add --alias`. A project already registered is left as it is,
+    not an error and not given a second name; a name another project holds is
+    reported and nothing is renamed. The registry is the scratch Memar's.
+    """
+
+    def setUp(self) -> None:
+        import machine.fs_memar as memar_fs
+        import services.project_registry as registry
+
+        self.registry = registry
+        self.scratch = tempfile.TemporaryDirectory(dir=suite_scratch())
+        self.addCleanup(self.scratch.cleanup)
+        self.base = Path(self.scratch.name).resolve()
+        self.memar = self.base / "memar"
+        (self.memar / "temp").mkdir(parents=True)
+        patched = unittest.mock.patch.object(memar_fs, "memar_root", return_value=self.memar)
+        patched.start()
+        self.addCleanup(patched.stop)
+
+    def project(self, name: str = "work-app", parent: Path | None = None) -> Path:
+        folder = (parent or self.base) / name
+        (folder / ".git").mkdir(parents=True)
+        return folder
+
+    def install(self, folder: Path, **options) -> tuple[str, str]:
+        out, err = io.StringIO(), io.StringIO()
+        with contextlib.redirect_stdout(out), contextlib.redirect_stderr(err):
+            project_layer.into_project(folder, **options)
+        return out.getvalue(), err.getvalue()
+
+    def entry_of(self, folder: Path):
+        mine = self.registry.path_key(folder)
+        found = [entry for entry in self.registry.read_entries() if self.registry.path_key(entry.path) == mine]
+        return found[0] if found else None
+
+    def test_the_project_is_registered_under_its_folder_name(self) -> None:
+        folder = self.project()
+        out, _ = self.install(folder)
+        entry = self.entry_of(folder)
+        self.assertIsNotNone(entry)
+        self.assertEqual(entry.names, ("work-app",))
+        self.assertIn("work-app", out)
+        self.assertIn("--alias", out)
+
+    def test_a_subfolder_registers_the_project_root_under_the_roots_name(self) -> None:
+        folder = self.project()
+        inside = folder / "src"
+        inside.mkdir()
+        self.install(inside)
+        self.assertEqual(self.entry_of(folder).names, ("work-app",))
+        self.assertIsNone(self.entry_of(inside))
+
+    def test_memars_own_entry_is_there_as_a_project_add_would_leave_it(self) -> None:
+        self.install(self.project())
+        self.assertIsNotNone(self.entry_of(self.memar))
+
+    def test_a_project_already_registered_is_not_an_error_and_gets_no_second_name(self) -> None:
+        folder = self.project()
+        self.registry.add_project("the-app", folder, ["app"])
+        out, err = self.install(folder)
+        self.assertEqual(self.entry_of(folder).names, ("the-app", "app"))
+        self.assertIn("the-app", out)
+        self.assertNotIn("error", err.lower())
+        self.install(folder)
+        self.assertEqual(self.entry_of(folder).names, ("the-app", "app"))
+
+    def test_a_second_install_changes_nothing(self) -> None:
+        folder = self.project()
+        self.install(folder)
+        before = self.registry.read_entries()
+        self.install(folder)
+        self.assertEqual(self.registry.read_entries(), before)
+
+    def test_a_name_another_project_holds_is_reported_and_nothing_is_renamed(self) -> None:
+        holder = self.project("holder", parent=self.base)
+        self.registry.add_project("work-app", holder)
+        other = self.project("work-app", parent=self.base / "elsewhere")
+        out, err = self.install(other)
+        self.assertIsNone(self.entry_of(other))
+        self.assertEqual(self.entry_of(holder).names, ("work-app",))
+        self.assertIn("work-app", err)
+        self.assertIn(str(holder), err)
+        self.assertIn("memar project add", err)
+        self.assertTrue((other / "AGENTS.md").is_file(), "the install itself still ran")
+
+    def test_a_dry_run_says_what_it_would_register_and_writes_no_registry(self) -> None:
+        import machine.fs_memar as memar_fs
+
+        folder = self.project()
+        out, _ = self.install(folder, dry_run=True)
+        self.assertIn("work-app", out)
+        self.assertIn("dry-run", out)
+        self.assertFalse(memar_fs.projects_log().exists())
+
+    def test_no_project_named_touches_no_registry(self) -> None:
+        import machine.fs_memar as memar_fs
+
+        with contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(io.StringIO()):
+            project_layer.into_project(None)
+        self.assertFalse(memar_fs.projects_log().exists())
+
+    def test_the_installer_run_by_a_folder_registers_it_through_the_project_layer(self) -> None:
+        folder = self.project()
+        parser = argparse.ArgumentParser()
+        command = memar_install.describe(parser.add_subparsers())
+        with unittest.mock.patch.object(location, "recorded_root", return_value=SCRIPTS), \
+                unittest.mock.patch.object(machine_layer, "report_installed"), \
+                unittest.mock.patch.object(apps_layer, "into_apps"), \
+                contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(io.StringIO()):
+            self.assertEqual(command(parser.parse_args(["install", "--project-path", str(folder)])), 0)
+        self.assertEqual(self.entry_of(folder).names, ("work-app",))
+
+
 class BareRunInstallsEveryLayer(unittest.TestCase):
     """One bare run settles the machine, this project, and the agent apps.
 
@@ -900,6 +1084,30 @@ class BareRunInstallsEveryLayer(unittest.TestCase):
         self.assertEqual(self.asked[-1], ("into_apps", {"dry_run": False}))
         self.assertIn(refusal, err)
         self.assertLess(out.index("==> Into this project"), out.index("==> Into the agent apps"))
+
+    def test_a_named_project_is_resolved_and_passed_to_the_project_layer_only(self):
+        named = SCRIPTS
+        passed: list = []
+        project_layer.into_project.side_effect = lambda project=None, **kwargs: passed.append(project)
+        self.run_verb("--project-path", str(named), recorded=SCRIPTS)
+        self.assertEqual(passed, [named.resolve()])
+
+    def test_a_named_project_is_looked_up_by_name_and_a_path_in_its_place_is_refused(self):
+        passed: list = []
+        project_layer.into_project.side_effect = lambda project=None, **kwargs: passed.append(project)
+        with unittest.mock.patch("services.project_find.resolve_project", return_value=SCRIPTS) as found:
+            self.run_verb("--project", "khayyam", recorded=SCRIPTS)
+        found.assert_called_once_with("khayyam")
+        self.assertEqual(passed, [SCRIPTS])
+        with self.assertRaises(SystemExit) as refused:
+            self.run_verb("--project", str(SCRIPTS), recorded=SCRIPTS)
+        self.assertIn("--project-path", str(refused.exception.code))
+
+    def test_no_project_named_passes_none_not_the_working_folder(self):
+        passed: list = []
+        project_layer.into_project.side_effect = lambda project=None, **kwargs: passed.append(project)
+        self.run_verb(recorded=SCRIPTS)
+        self.assertEqual(passed, [None])
 
     def test_a_machine_only_run_skips_the_project_and_the_apps(self):
         self.run_verb("--machine-only", recorded=SCRIPTS)

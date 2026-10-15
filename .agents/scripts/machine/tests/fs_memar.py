@@ -30,6 +30,9 @@ What is pinned, and what each pin is for:
                      The record of project session locations is Memar's own
                      state, a file beside the session folders, and asking
                      where it is creates nothing.
+  ProjectsLog        The registry of projects and their names is a file at the
+                     root of temp, not inside the sessions folder, and asking
+                     where it is creates nothing but the temp folder.
 
 Usage is the interface. Do not duplicate these recipes as prose catalogs.
 """
@@ -145,6 +148,17 @@ class ProjectSessionsRegistry(unittest.TestCase):
                 registry = memar_fs.project_sessions_registry()
                 self.assertEqual(registry, fake_root / "temp" / "sessions" / memar_fs.PROJECT_SESSIONS_NAME)
                 self.assertFalse(registry.exists())
+
+
+class ProjectsLog(unittest.TestCase):
+    def test_the_projects_log_is_at_the_root_of_temp_not_inside_sessions(self) -> None:
+        with tempfile.TemporaryDirectory(dir=suite_scratch()) as scratch:
+            fake_root = Path(scratch)
+            with unittest.mock.patch.object(memar_fs, "memar_root", return_value=fake_root):
+                log = memar_fs.projects_log()
+                self.assertEqual(log, fake_root / "temp" / "projects.log")
+                self.assertFalse(log.exists())
+                self.assertFalse((fake_root / "temp" / "sessions").exists())
 
 
 if __name__ == "__main__":

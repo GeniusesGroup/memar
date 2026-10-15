@@ -11,11 +11,14 @@ Put Memar on this machine.
                                    use a Memar checkout you already have
   .\install.ps1 -Check C:\Temp\Memar
                                    would a folder be refused? installs nothing
+  .\install.ps1 -ProjectPath C:\work\app
+                                   also put Memar into that project
 
 What it does: makes sure git and Python are here, obtains a Memar checkout, and
 hands the run to Memar's installer, `memar install`, which puts Memar on this
-machine, into the project you are in, and into the AI agent apps on this
-machine. Each step prints what it did. Running it again is safe and costs
+machine, into the project you name with -ProjectPath, and into the AI agent apps on
+this machine. The folder you run it from is never read: with no -ProjectPath, no
+project is written, and the run says so. Each step prints what it did. Running it again is safe and costs
 nothing.
 
 What you must do afterwards: this script prints one command this program can
@@ -38,6 +41,10 @@ arbitrary directory.
 .PARAMETER Check
 Say whether this folder would be refused as temporary, and stop. Nothing is
 cloned and nothing is written.
+
+.PARAMETER ProjectPath
+Put Memar into the project at this folder. It needs no earlier registration. It is a folder only:
+there is no record of projects before this run, so a project is never named by a word here.
 
 .PARAMETER Help
 Print this text.
@@ -101,6 +108,7 @@ param(
     [string]$Path,
     [string]$Register,
     [string]$Check,
+    [string]$ProjectPath,
     [switch]$Help
 )
 
@@ -352,6 +360,14 @@ $forwarded = @()
 switch ($Mode) {
     "check" { $forwarded = @("--check", $Target) }
     { $_ -in @("install", "register") } { $forwarded = @("--register", $Checkout) }
+}
+
+# The project is the folder the person named, handed on as an absolute path: the
+# installer reads a path without any earlier registration, so a first run, with
+# no record of projects yet, installs into it. It is never taken from the folder
+# this script runs in.
+if ($ProjectPath -and $Mode -ne "check") {
+    $forwarded += @("--project-path", (ConvertTo-AbsolutePath $ProjectPath))
 }
 
 $autoUpdate = $env:MEMAR_NO_AUTO_UPDATE

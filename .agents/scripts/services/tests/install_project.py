@@ -63,8 +63,17 @@ sys.dont_write_bytecode = True
 
 from machine.fs_test_scratch import suite_scratch
 
+import machine.fs_memar as memar_fs
 import services.install_project as project
 import services.project_preferences as project_preferences
+
+_REGISTRY_SCRATCH = tempfile.TemporaryDirectory(dir=suite_scratch())
+_MEMAR_ROOT = Path(_REGISTRY_SCRATCH.name)
+(_MEMAR_ROOT / "temp").mkdir()
+# Installing registers the project with Memar, so every run here is given a Memar
+# root of its own: the real registry is never written by this suite.
+unittest.mock.patch.object(memar_fs, "memar_root", return_value=_MEMAR_ROOT).start()
+
 
 DRY_RUN_WRITE = re.compile(r"^dry-run: write (.+)$")
 CONSUMER_README = ".agents/memar/README.md"
@@ -77,18 +86,20 @@ Load the Memar skill at the start of every session: run `memar content path .age
 
 This project's preferences for Memar go in [`preferences.md`](preferences.md) beside this file, not here: this README is rewritten on every install, and that file never is.
 
-If `memar` is not on PATH, Memar is not available to this program yet. Run the bootstrap for your platform:
+Installing Memar into this project registered it with Memar under this folder's name, so a session names it with `--project NAME`: `memar project list` shows what it is called, and `memar project add NAME PATH --alias ALIAS` gives it another name.
+
+If `memar` is not on PATH, Memar is not available to this program yet. Run the bootstrap for your platform from this project's folder; it is given that folder as the project to put Memar into:
 
 Windows:
 
 ```powershell
-powershell -ExecutionPolicy Bypass -Command "& ([scriptblock]::Create((irm https://raw.githubusercontent.com/GeniusesGroup/memar/main/.agents/scripts/install.ps1)))"
+powershell -ExecutionPolicy Bypass -Command "& ([scriptblock]::Create((irm https://raw.githubusercontent.com/GeniusesGroup/memar/main/.agents/scripts/install.ps1))) -ProjectPath (Get-Location).Path"
 ```
 
 macOS or Linux:
 
 ```sh
-sh -c 'c=$(curl -fsSL https://raw.githubusercontent.com/GeniusesGroup/memar/main/.agents/scripts/install.sh); test -n "$c" && exec sh -c "$c" install.sh'
+sh -c 'c=$(curl -fsSL https://raw.githubusercontent.com/GeniusesGroup/memar/main/.agents/scripts/install.sh); test -n "$c" && exec sh -c "$c" install.sh --project-path "$PWD"'
 ```
 """
 
@@ -105,9 +116,8 @@ class ReachedByTheCommand(unittest.TestCase):
     def into_project(self, **options: bool) -> str:
         """What the layer printed, asked from inside the scratch project."""
         out = io.StringIO()
-        with contextlib.chdir(self.scratch.name), contextlib.redirect_stdout(out), \
-                contextlib.redirect_stderr(io.StringIO()):
-            project.into_project(**options)
+        with contextlib.redirect_stdout(out), contextlib.redirect_stderr(io.StringIO()):
+            project.into_project(Path(self.scratch.name), **options)
         return out.getvalue()
 
     def parse(self, output: str) -> list[tuple[str, str]]:
@@ -211,19 +221,21 @@ class PreferencesKept(unittest.TestCase):
 
     def into_project(self, **options: bool) -> str:
         out = io.StringIO()
-        with contextlib.chdir(self.project), contextlib.redirect_stdout(out), \
-                contextlib.redirect_stderr(io.StringIO()):
-            project.into_project(**options)
+        with contextlib.redirect_stdout(out), contextlib.redirect_stderr(io.StringIO()):
+            project.into_project(self.project, **options)
         return out.getvalue()
 
-    def test_its_first_text_is_an_empty_sessions_key_and_a_paragraph_saying_whose_it_is(self):
+    def test_its_first_text_is_empty_keys_and_a_paragraph_saying_whose_it_is(self):
+        # The `records` key joined `sessions` with the owner's ruling of
+        # 2026-10-14 (finished sessions' records kept in the project).
         self.into_project()
         text = self.preferences.read_text(encoding="utf-8")
         self.assertEqual(text, project_preferences.PREFERENCES_TEXT)
-        self.assertTrue(text.startswith("---\nsessions:\n---\n# Memar preferences\n"))
+        self.assertTrue(text.startswith("---\nsessions:\nrecords:\n---\n# Memar preferences\n"))
         for phrase in ("never rewrites it", "relative to the project's top folder, or an absolute one",
                        "neither that top folder itself nor a drive or filesystem root", "temp/sessions/",
                        "never touches a session folder made in the `sessions` folder",
+                       "copied into .agents/sessions/", "`on`, `off`; left empty, they are",
                        "write any preference agents should follow"):
             self.assertIn(phrase, text)
         self.assertEqual(project_preferences.read_preferences(self.project), {})
@@ -246,6 +258,32 @@ class PreferencesKept(unittest.TestCase):
     def test_the_readme_links_the_preferences_file_beside_it(self):
         self.assertIn(f"]({PREFERENCES.name})", project.README_BODY)
         self.assertEqual((self.project / PREFERENCES).parent, (self.project / CONSUMER_README).parent)
+
+    def test_the_readme_bootstrap_commands_name_this_project(self):
+        self.assertIn("-ProjectPath (Get-Location).Path", project.README_BODY)
+        self.assertIn('install.sh --project-path "$PWD"', project.README_BODY)
+        self.assertIn(project.WINDOWS_BOOTSTRAP_FOR_PROJECT, project.README_BODY)
+        self.assertIn(project.POSIX_BOOTSTRAP_FOR_PROJECT, project.README_BODY)
+        self.assertNotIn(project.POSIX_BOOTSTRAP + chr(10), project.README_BODY)
+
+
+class NoProjectNamed(unittest.TestCase):
+    """Given no project the layer writes nothing and does not read the folder the process is in."""
+
+    def test_none_named_writes_nothing_in_the_folder_the_process_is_in(self):
+        with tempfile.TemporaryDirectory(dir=suite_scratch()) as here:
+            (Path(here) / ".git").mkdir()
+            err = io.StringIO()
+            with contextlib.chdir(here), contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(err):
+                project.into_project(dry_run=False)
+            self.assertEqual(sorted(path.name for path in Path(here).iterdir()), [".git"])
+            self.assertIn("--project NAME", err.getvalue())
+            self.assertIn("--project-path PATH", err.getvalue())
+
+    def test_the_layer_never_asks_for_the_working_folder(self):
+        with unittest.mock.patch.object(Path, "cwd", side_effect=AssertionError("read the calling folder")):
+            with contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(io.StringIO()):
+                project.into_project(dry_run=True)
 
 
 if __name__ == "__main__":

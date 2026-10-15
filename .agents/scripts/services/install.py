@@ -66,15 +66,19 @@ import traceback
 from typing import Callable
 
 VERB = "install"
-SUMMARY = "put Memar on this machine, and into this project"
+SUMMARY = "put Memar on this machine, and into the project you name"
 
-DESCRIPTION = """memar install — put Memar on this machine, and into this project
+DESCRIPTION = """memar install — put Memar on this machine, and into the project you name
 
 One run installs three layers, in the only order that works:
 
   - onto this machine: where Memar lives, the `memar` command on your PATH, and
     the editor extensions this checkout ships;
-  - into the project you run it from, if the directory is one;
+  - into the project you name with --project NAME or --project-path PATH, if it is one,
+    and the project is registered with Memar under its folder's name (a project
+    already registered is left as it is; a name another project holds is
+    reported, and nothing is renamed);
+    the folder you run it from is never read, so with none named this layer says so;
   - into the AI agent apps this machine has.
 
 Each layer prints what it did. Running it again is safe and costs nothing: a
@@ -95,6 +99,9 @@ Getting Memar somewhere else, or asking whether a folder would be accepted:
     memar install --register ~/src/memar   point Memar at a checkout you already have
     memar install --check /tmp/Memar       would an install there be refused? writes nothing
     memar install --root                  print where Memar is, one line
+    memar install --project NAME           also put Memar into that project: a name `memar project`
+                                          knows
+    memar install --project-path PATH     also put Memar into the project whose folder is PATH
     memar install --machine-only          settle this machine and skip the project and the apps
     memar install --developer             you develop Memar in this checkout: no update moves it
 """
@@ -122,8 +129,8 @@ def ask_layer(answer: Callable[[], object]) -> int:
     return 0
 
 
-def into_project_and_apps(*, dry_run: bool = False) -> None:
-    """Put Memar into this project and into the agent apps, in that order.
+def into_project_and_apps(project=None, *, dry_run: bool = False) -> None:
+    """Put Memar into PROJECT, when one is named, and into the agent apps, in that order.
 
     The order is the dependency, not a preference: copying the skill into the
     apps needs the location the machine layer records, and the apps layer says
@@ -135,7 +142,7 @@ def into_project_and_apps(*, dry_run: bool = False) -> None:
     from services import install_apps, install_project
 
     step("Into this project")
-    ask_layer(lambda: install_project.into_project(dry_run=dry_run))
+    ask_layer(lambda: install_project.into_project(project, dry_run=dry_run))
     step("Into the agent apps")
     ask_layer(lambda: install_apps.into_apps(dry_run=dry_run))
 
@@ -145,6 +152,9 @@ def run(args: argparse.Namespace) -> int:
     from machine.fs_memar import checkout_root
     from services import install_machine as machine
 
+    from services.project_find import project_from_args
+
+    project = project_from_args(args)
     if args.check:
         machine.check(args.check)
         return 0
@@ -156,7 +166,7 @@ def run(args: argparse.Namespace) -> int:
         return 0
     if args.register:
         machine.register(args.register)
-        into_project_and_apps(dry_run=args.dry_run)
+        into_project_and_apps(project, dry_run=args.dry_run)
         return 0
     # A named folder is a deliberate act and is carried out. With none named, the
     # only question left is whether Memar is already on this machine, and it is
@@ -169,13 +179,13 @@ def run(args: argparse.Namespace) -> int:
         # layers are wanted: re-running is how a project picks up a change made
         # in the checkout it was installed from.
         if not args.machine_only:
-            into_project_and_apps(dry_run=args.dry_run)
+            into_project_and_apps(project, dry_run=args.dry_run)
         return 0
     # Nothing is recorded, or nothing recorded is a Memar repository, and
     # refuse_bogus_value has said so about the second case. What is left to
     # record is the checkout this file is in.
     machine.register(str(checkout_root()))
-    into_project_and_apps(dry_run=args.dry_run)
+    into_project_and_apps(project, dry_run=args.dry_run)
     return 0
 
 
@@ -203,6 +213,13 @@ def describe(verbs) -> Callable[[argparse.Namespace], int]:
         action="store_true",
         help="mark the checkout Memar is recorded at as one you develop, so the "
              "daily update never moves it, and stop",
+    )
+    from services.project_find import add_project_flags
+
+    add_project_flags(
+        parser,
+        "the project to put Memar into; without either no project is written, and the folder the "
+        "command runs in is not read",
     )
     parser.add_argument(
         "--machine-only",

@@ -18,6 +18,15 @@ none, and never writes it again: the README is rewritten on every install, so
 what the project says to Memar has to live in a file an install leaves alone.
 Its path, its keys, and its first text are `project_preferences`'s.
 
+Installing is declaring that the project follows Memar, so the registry
+(`project_registry`) learns it in the same run, under the project's folder
+name, which a person changes later with `memar project add --alias`. A project
+already registered, under any name, is left as it is: that is not an error, and
+it is not given a second name. A name another project holds is reported with
+the holder, and nothing is renamed, neither the holder nor this project; the
+install goes on, and `memar project add NAME PATH` registers it under a name
+that is free. A dry run says what it would register and writes no registry.
+
 It places no script and no Python file in the project: the bootstrap for the
 machine is fetched from the Memar repository at the point of use, and a copy per
 repository is unmaintainable — every change here would have to be re-copied into
@@ -29,8 +38,10 @@ variable, and `machine/fs_memar_repository.py` holds the test of what a Memar
 repository is — which is what keeps the Memar repository's own hand-written README from being
 replaced by the text written for a project that has to fetch Memar first.
 
-It writes into the project `memar install` is run from, a subdirectory being
-fine — this walks up to the version-control root. It never installs anything
+It writes into the project it is told, never the one the process happens to be
+in: the folder is given (`memar install --project-path PATH`, or `--project NAME`), and a subfolder
+of a project is fine — this walks up to the version-control root. Given none,
+it writes nothing and says how to name one. It never installs anything
 else: the machine is settled before this runs, and the README it writes says
 what to run when it is not.
 
@@ -45,6 +56,7 @@ from pathlib import Path
 from machine.env_location import VARIABLE, recorded_value
 from machine.fs_memar_repository import is_memar_repository
 from services.project_preferences import PREFERENCES_RELATIVE, PREFERENCES_TEXT
+from services.project_registry import add_project, ensure_memar_entry, normalized, path_key, read_entries
 
 PUBLISH_BRANCH = "main"
 SCRIPTS_RAW = (
@@ -65,6 +77,18 @@ POSIX_BOOTSTRAP = (
     "sh -c 'c=$(curl -fsSL "
     f"{SCRIPTS_RAW}/install.sh); test -n \"$c\" && exec sh -c \"$c\" install.sh'"
 )
+# The same two commands for a project's own README, which name the project they
+# are run for: the folder the person stands in when they run the command, given
+# as an explicit argument, because the installer never reads the folder it runs
+# in. The bootstrap above, with no project, installs the machine and the apps only.
+WINDOWS_BOOTSTRAP_FOR_PROJECT = (
+    "powershell -ExecutionPolicy Bypass -Command \"& ([scriptblock]::Create((irm "
+    f"{SCRIPTS_RAW}/install.ps1))) -ProjectPath (Get-Location).Path\""
+)
+POSIX_BOOTSTRAP_FOR_PROJECT = (
+    "sh -c 'c=$(curl -fsSL "
+    f"{SCRIPTS_RAW}/install.sh); test -n \"$c\" && exec sh -c \"$c\" install.sh --project-path \"$PWD\"'"
+)
 # One path, used both as the file written and as the link AGENTS.md points at, so
 # the pointer cannot name a file that is not there.
 CONSUMER_README = Path(".agents") / "memar" / "README.md"
@@ -83,15 +107,20 @@ README_BODY = (
     "This project's preferences for Memar go in "
     f"[`{PREFERENCES_RELATIVE.name}`]({PREFERENCES_RELATIVE.name}) beside this file, not "
     "here: this README is rewritten on every install, and that file never is.\n\n"
+    "Installing Memar into this project registered it with Memar under this "
+    "folder's name, so a session names it with `--project NAME`: `memar "
+    "project list` shows what it is called, and `memar project add NAME PATH "
+    "--alias ALIAS` gives it another name.\n\n"
     "If `memar` is not on PATH, Memar is not available to this program yet. "
-    "Run the bootstrap for your platform:\n\n"
+    "Run the bootstrap for your platform from this project's folder; it is "
+    "given that folder as the project to put Memar into:\n\n"
     "Windows:\n\n"
     "```powershell\n"
-    f"{WINDOWS_BOOTSTRAP}\n"
+    f"{WINDOWS_BOOTSTRAP_FOR_PROJECT}\n"
     "```\n\n"
     "macOS or Linux:\n\n"
     "```sh\n"
-    f"{POSIX_BOOTSTRAP}\n"
+    f"{POSIX_BOOTSTRAP_FOR_PROJECT}\n"
     "```"
 )
 CONSUMER_README_TEXT = f"# Memar\n{README_BODY}\n"
@@ -114,23 +143,23 @@ def _vcs_root(start: Path) -> Path | None:
     return None
 
 
-def resolve_project_dir(cwd: Path) -> Path:
-    cwd = cwd.resolve()
-    if cwd == Path.home().resolve() or cwd.parent == cwd:
+def resolve_project_dir(given: Path) -> Path:
+    given = given.resolve()
+    if given == Path.home().resolve() or given.parent == given:
         sys.exit(
-            f"error: {cwd} is not a project directory; run from the "
+            f"error: {given} is not a project directory; name the "
             "version-controlled project you want Memar in"
         )
-    root = _vcs_root(cwd)
+    root = _vcs_root(given)
     if root is not None:
-        if root != cwd:
+        if root != given:
             print(f"using repository root {root}", file=sys.stderr)
         return root
     print(
-        f"warning: no VCS metadata under {cwd}; installing into this directory",
+        f"warning: no VCS metadata under {given}; installing into this directory",
         file=sys.stderr,
     )
-    return cwd
+    return given
 
 
 def memar_section_markdown() -> str:
@@ -178,9 +207,45 @@ def write_text(path: Path, text: str, *, dry_run: bool) -> None:
     print(f"wrote {path}")
 
 
-def into_project(*, dry_run: bool = False) -> None:
-    """Put Memar into the project the current directory is in."""
-    target = resolve_project_dir(Path.cwd())
+def register_project(target: Path, *, dry_run: bool = False) -> None:
+    """Make Memar know TARGET, the project root, under its folder name; see the module docstring for the cases."""
+    name = target.name
+    if dry_run:
+        print(f"dry-run: register the project {name} at {target}")
+        return
+    ensure_memar_entry()
+    entries = read_entries()
+    mine = path_key(target)
+    for entry in entries:
+        if path_key(entry.path) == mine:
+            print(f"the project is already registered as {entry.names[0]}; `memar project add --alias` gives it another name")
+            return
+    for entry in entries:
+        if normalized(name) in {normalized(each) for each in entry.names}:
+            print(
+                f"the project was not registered: the name {name} is already the project {entry.names[0]} at "
+                f"{entry.path}; register it under a free name with `memar project add NAME {target}`",
+                file=sys.stderr,
+            )
+            return
+    try:
+        add_project(name, target)
+    except SystemExit as refused:
+        print(f"the project was not registered: {refused.code}", file=sys.stderr)
+        return
+    print(f"registered the project {name} at {target}; `memar project add --alias` gives it another name")
+
+
+def into_project(project: Path | None = None, *, dry_run: bool = False) -> None:
+    """Put Memar into PROJECT, a folder the caller named; the folder the process is in is never read."""
+    if project is None:
+        print(
+            "no project was named, so Memar was not put into one; "
+            "run `memar install --project NAME` or `memar install --project-path PATH` to name it",
+            file=sys.stderr,
+        )
+        return
+    target = resolve_project_dir(project)
     agents = target / "AGENTS.md"
     if agents.is_file():
         updated = upsert_memar_section(agents.read_text(encoding="utf-8"))
@@ -204,6 +269,7 @@ def into_project(*, dry_run: bool = False) -> None:
     agents_index = target / ".agents" / "README.md"
     if not agents_index.is_file():
         write_text(agents_index, AGENTS_DIR_README, dry_run=dry_run)
+    register_project(target, dry_run=dry_run)
     if not dry_run:
         # Asked of the module that owns the variable, so a session opened
         # before it was written does not conclude Memar was never installed and

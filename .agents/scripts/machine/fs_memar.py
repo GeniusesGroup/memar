@@ -31,9 +31,13 @@ TEMP_DIRNAME = "temp"
 # The sessions' own folder inside it, so a session folder is never a sibling of
 # the locks, the test scratch, or whatever else scratch holds.
 SESSIONS_DIRNAME = "sessions"
-# Memar's record of the folders outside it that projects have had session
-# folders made in, one path a line, kept beside the folders it adds to.
+# Memar's earlier record of the folders outside it that projects have had
+# session folders made in, one path a line. Locations now live on the project's
+# entry in projects.log; this file is not read, only noticed.
 PROJECT_SESSIONS_NAME = "sessions.projects"
+# Memar's registry of the projects it is told about, one a line, at the root of
+# its temp and not inside the sessions folder: it names projects, not sessions.
+PROJECTS_LOG_NAME = "projects.log"
 
 # The layout inside a checkout. Each is a path relative to the root, so a caller
 # joins it to a checkout rather than spelling the join again.
@@ -42,6 +46,9 @@ SKILL_RELATIVE = Path(AGENTS_DIRNAME) / "skills" / "memar"
 EXTENSIONS_RELATIVE = Path(AGENTS_DIRNAME) / "vscode" / "extensions"
 CONSUMER_README_RELATIVE = Path(AGENTS_DIRNAME) / "memar" / "README.md"
 AGENTS_INDEX_RELATIVE = Path(AGENTS_DIRNAME) / "README.md"
+# Where a project keeps the records of its finished sessions, to commit them
+# with its work (`services/session_archive.py`): one folder per session id.
+RECORDS_RELATIVE = Path(AGENTS_DIRNAME) / SESSIONS_DIRNAME
 
 
 def checkout_root() -> Path:
@@ -90,13 +97,23 @@ def sessions_root() -> Path:
 
 
 def project_sessions_registry() -> Path:
-    """The file listing the project folders session folders were made in: <root>/temp/sessions/sessions.projects.
+    """The earlier file listing the project folders session folders were made in: <root>/temp/sessions/sessions.projects.
 
-    The session folders a project's preferences place in the project are
-    outside every Memar root, so Memar keeps where they are in its own state
-    rather than searching a disk for them.
+    The core only notices it (`session_location`) and never reads it: a
+    location it lists is recorded on its project's entry in `projects_log()`
+    again when a session is next made or continued there.
     """
     return sessions_root() / PROJECT_SESSIONS_NAME
+
+
+def projects_log() -> Path:
+    """The registry of projects and their names: <root>/temp/projects.log.
+
+    The one place a project's short name is turned into its folder, so no
+    script keeps a default project or reads the calling folder. Asking for the
+    path makes the missing temp folder and nothing else.
+    """
+    return scratch_root() / PROJECTS_LOG_NAME
 
 
 def session_dir(session_id: str, *, create: bool = False) -> Path:

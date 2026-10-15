@@ -8,11 +8,14 @@
 #   ./install.sh --register ~/src/memar
 #                                    use a Memar checkout you already have
 #   ./install.sh --check /tmp/Memar  would a folder be refused? installs nothing
+#   ./install.sh --project-path ~/work/app
+#                                    also put Memar into that project
 #
 # What it does: makes sure git and Python are here, obtains a Memar checkout,
 # and hands the run to Memar's installer, `memar install`, which puts Memar on
-# this machine, into the project you are in, and into the AI agent apps on this
-# machine. Each step prints what it did. Running it again is safe and costs
+# this machine, into the project you name with --project-path, and into the AI agent
+# apps on this machine. The folder you run it from is never read: with no
+# --project-path, no project is written, and the run says so. Each step prints what it did. Running it again is safe and costs
 # nothing.
 #
 # What you must do afterwards: this script prints one command this program can
@@ -25,6 +28,9 @@
 #                    the checkout this script is in)
 #   --register PATH  register PATH as it is; it must be a Memar repository
 #   --check PATH     say whether PATH would be refused as temporary, and stop
+#   --project-path PATH
+#                    put Memar into the project at PATH, a folder; it needs no
+#                    earlier registration, and a project is never named by a word here
 #   --help           print this text
 #
 # Exit status: 0 when MEMAR_ROOT points at a Memar repository, 1 otherwise.
@@ -107,10 +113,11 @@ note() { echo "    $*"; }
 # and one folder, and nothing else.
 mode=""
 target=""
+project=""
 expecting_value=""
 for argument in "$@"; do
     if [ -n "$expecting_value" ]; then
-        target="$argument"
+        if [ "$expecting_value" = "project" ]; then project="$argument"; else target="$argument"; fi
         expecting_value=""
         continue
     fi
@@ -123,6 +130,15 @@ for argument in "$@"; do
                 fail "--help needs this file; fetch it from $BOOTSTRAP_URL and run it from there."
             awk 'help && /^#/ { sub(/^# ?/, ""); print; next } help { exit } /^$/ { help = 1 }' "$0"
             exit 0
+            ;;
+        --project-path)
+            expecting_value="project"
+            ;;
+        --project-path=*)
+            project="${argument#--project-path=}"
+            ;;
+        --project | --project=*)
+            fail "this script is given a project's folder, not a name: use --project-path PATH"
             ;;
         --path)
             mode="install"
@@ -152,7 +168,7 @@ for argument in "$@"; do
     esac
 done
 [ -z "$expecting_value" ] ||
-    fail "--path, --register and --check each need a path; try --help"
+    fail "--path, --register, --check and --project-path each need a path; try --help"
 # A run that named no folder installs into the default one; a check that named
 # one asks about the one it named.
 [ -n "$target" ] || target="$HOME/$INSTALL_DIRNAME"
@@ -371,6 +387,13 @@ case "$mode" in
         set -- --register "$checkout"
         ;;
 esac
+# The project is the folder the person named, handed on as an absolute path: the
+# installer reads a path without any earlier registration, so a first run, with
+# no record of projects yet, installs into it. It is never taken from the folder
+# this script runs in.
+if [ -n "$project" ] && [ "$mode" != "check" ]; then
+    set -- "$@" --project-path "$(absolute_path "$project")"
+fi
 code=0
 MEMAR_NO_AUTO_UPDATE=1 "$PYTHON" "$checkout/$ARCHITECTURE_ENTRY" install "$@" || code=$?
 if [ "$code" -eq 0 ] && [ "$mode" != "check" ]; then
