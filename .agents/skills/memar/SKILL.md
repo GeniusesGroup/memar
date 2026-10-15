@@ -25,6 +25,7 @@ Memar is reached by one of two routes.
 
 ## Session and plan
 - Before any other work, open a session through Memar ([Reaching Memar Server](#reaching-memar-server)) — or, when your brief hands you one, take that one up and open none — and keep all scratch in its folder — not the OS temporary directory nor a runtime's scratch place.
+- A session exists so that a task's decisions outlive the context. A task whose outcome is just that it was done — committing, staging, a rename, one edit, a lookup, a handful of tool calls — opens no session and starts no sub-agent: do it in place. Opening a session or a sub-agent costs a plan, a brief, a start reading and a report; spend it only where a later session would need what was decided.
 - One session holds one task, and its plan holds that task's own acceptance check; a further task — another request, or one delegated — gets a session of its own, linked to the session it came from. A conversation is not a task: one conversation holds several sessions, and a question answered in chat opens none. A session names its project with the flag for what it has — `--project NAME` for a name, which `memar project find` resolves, `--project-path PATH` for a folder — never one in the other's place, and a name told by a word is never reasoned about nor turned into a guessed path.
 - Judge a step by what its development costs over the whole work, rework it prevents included, not by the tokens of its session alone.
 - A runtime's to-do list or plan mode is not the session's plan: it ends with the context; the plan outlives it.
@@ -63,11 +64,12 @@ Memar is reached by one of two routes.
 
 ## Asking the human
 - Ask as [Cognition Practice → Norm Application Points](/docs/cognition.practice.md#norm-application-points) says — what to settle first, and the shape of the question; an act beyond the instance is confirmed first ([Confirm before large-scope changes](/docs/cognition.md#confirm-before-large-scope-changes)).
-- A question only the owner can answer, found during a task, is written as an entry in the handoff of the document it concerns ([Questions Found During a Task](/docs/documentation-handoff.practice.md#questions-found-during-a-task)); the conversation and the report hold at most a pointer to it.
+- A question only the owner can answer, found during a task, is written as an entry in the handoff of the document it concerns ([Questions Found During a Task](/docs/documentation-handoff.practice.md#questions-found-during-a-task)); the conversation and the report hold at most a pointer to it, and recording a question never needs a session of its own.
 - When the runtime's sandbox or permissions refuse a command, report the refusal or ask for the permission; do not reach the same act by another route.
 - A sub-agent has no human to ask: what it would ask, it ends on as blocked or approval-required, with the question stated, and the session that delegated it asks.
 
 ## Closing
 - Before ending work on a task — finished or not — write its session's report, with its Status, and set its plan's Status to agree, as `memar session --help` says: a session left Active after its check passed reads to every later session as work still owed.
 - The coordinating session commits once per task, after the human approves; sub-agents never commit.
+- Each commit has a cost: history to read, to review and to fold. Commit by area — usually the top folder a change lies in (`.agents`, `docs`, one module) — a few commits for a large batch, not one per topic or per file. Split an area only where two changes would be reviewed or reverted apart. Staging, grouping and committing a batch is done in place, from `git status` and `git diff --stat`, never delegated.
 - Close by type per [Handoff Practice](/docs/documentation-handoff.practice.md), each durable result in the home [Results routing](/docs/documentation.md#results-routing) gives it.

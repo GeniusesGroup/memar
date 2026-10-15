@@ -20,9 +20,8 @@ What is pinned, and what each pin is for:
                     destroying it, so a session closed by mistake costs one trip
                     to the trash; closing again says it is already closed; a
                     trash that fails leaves the folder where it was, because a
-                    failed recovery is not a successful close. A session an
-                    earlier Memar left in temp/ is closed there,
-                    and one in a recorded project location is closed there,
+                    failed recovery is not a successful close. A session in a
+                    recorded project location is closed there,
                     from any working folder, leaving the location itself; a
                     folder there that is not a session's is refused and
                     left, even in a location registered by hand that is a
@@ -123,14 +122,6 @@ class RecoverableClose(Fixture):
             with self.assertRaises(OSError):
                 session_close.close_session("s-failed")
         self.assertTrue(path.is_dir())
-
-    def test_a_session_still_in_temp_is_closed_where_it_is(self) -> None:
-        left = memar_fs.scratch_root() / "20261009-T120000Z-42"
-        left.mkdir()
-        with unittest.mock.patch.object(fs_trash, "soft_delete", side_effect=self.move_to_bin) as trash:
-            self.assertEqual(session_close.close_session(left.name)[:3], (left.name, left, True))
-        trash.assert_called_once_with(left)
-        self.assertFalse(memar_fs.session_dir(left.name).exists())
 
     def test_a_session_in_a_project_location_is_closed_where_it_is(self) -> None:
         location = self.fake_root / "project" / "sessions"

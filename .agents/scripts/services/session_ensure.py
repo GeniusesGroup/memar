@@ -21,9 +21,10 @@ from pathlib import Path
 from machine.console import fail
 from machine.fs_memar import session_dir
 from services.module_folders import ensure_role_folders
+from services.session_temp import ensure_temp_folder
 from services.project_find import project_by_path
 from services.project_preferences import SESSIONS_KEY, preferences_path
-from services.session_folder import folder_of, left_folder_of, project_folder_of, read_session
+from services.session_folder import folder_of, project_folder_of, read_session
 from services.session_gc import reap_once_a_day
 from services.session_id import new_session_id
 from services.session_location import in_project_location, project_location, project_root, register
@@ -119,7 +120,7 @@ def ensure_session(
     project = named_project(project)
     location = project_location(project) if project is not None else None
     if session_id is not None and not folder.is_dir():
-        folder = left_folder_of(sid) or project_folder_of(sid, also=location) or folder
+        folder = project_folder_of(sid, also=location) or folder
     if project is None and folder.is_dir():
         project = recorded_project(folder)
         location = project_location(project) if project is not None else None
@@ -172,5 +173,6 @@ def ensure_session(
         warn_near(topic, project, sid)
     write_report(path, (read_session(path).front or {}).get("title"))
     ensure_role_folders(path)
+    ensure_temp_folder(path)
     reap_once_a_day(keep=sid)
     return sid, path

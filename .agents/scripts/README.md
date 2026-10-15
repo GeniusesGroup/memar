@@ -37,6 +37,9 @@ The reason is specific rather than general. A shell that reads a file without be
 
 The verbs under `memar content` also take a per-file lock and write an intent note beside it, so two cooperating sessions writing one file are serialized rather than interleaved, and a session that takes over a stale lock can read what the dead one meant. The lock is advisory: a file-write tool does not take it, which is why a shared file is written through those verbs.
 
+## Temporary files
+`temp` is a general rule of Memar, not a role of any module: a folder named `temp` holds what the work makes and no record needs — a draft not yet appended elsewhere, a tool's output without content — and is kept out of version control and out of every archive. A session folder has its own (`session_temp.py`), never archived. It is not one of a module's role folders ([modules/README.md](../../modules/README.md)).
+
 ## A consuming project receives no copy of these files
 Installing Memar into a project writes only the instructions its agents read — a one-line section in its `AGENTS.md` and the file that line points at — and places no script and no Python file there; installing into an agent app copies the skill document, not the scripts. The bootstrap is fetched from this repository at the point of use: a copy per repository goes stale on every change here, and re-reaching every project by hand is the only way to update it. One fetch, one update, every consumer. A session in a consuming project reaches these files in the checkout the location variable names, or clones this repository and points the variable at the clone; it does not take them second-hand from another project or another app's skill folder.
 

@@ -147,20 +147,11 @@ def take_notice(directory: Path) -> str | None:
     return "\n".join(line for line in said if line) or None
 
 
-def leave_notice(directory: Path, line: str, *, subject: str = UPDATE_SUBJECT, add: bool = False) -> None:
-    """Leave LINE on SUBJECT for the next `memar` command to print.
-
-    It replaces SUBJECT's line not yet printed, or with ADD follows it.
-    """
-    notice = directory / f"{subject}{NOTICE_SUFFIX}"
-    earlier = ""
-    if add:
-        try:
-            earlier = notice.read_text(encoding="utf-8")
-        except OSError:
-            pass
+def leave_notice(directory: Path, line: str) -> None:
+    """Leave LINE for the next `memar` command to print, replacing the one not yet printed."""
+    notice = directory / f"{UPDATE_SUBJECT}{NOTICE_SUFFIX}"
     written = notice.with_name(f"{notice.name}.new.{os.getpid()}")
-    written.write_text(earlier + line.strip() + "\n", encoding="utf-8", newline="\n")
+    written.write_text(line.strip() + "\n", encoding="utf-8", newline="\n")
     os.replace(written, notice)
 
 

@@ -116,30 +116,16 @@ class FoldersFound(Fixture):
         (memar_fs.sessions_root() / "sessions.log").write_text("", encoding="utf-8")
         self.assertEqual([path.name for path in session_folder.session_folders()], [NEWEST, OLDEST, EARLIER_DATED])
 
-    def test_a_session_left_in_temp_is_found_there_until_it_moves(self) -> None:
+    def test_a_session_left_in_temp_is_not_read(self) -> None:
         self.session(OLDEST)
         left = memar_fs.scratch_root() / NEWEST
         left.mkdir()
-        (memar_fs.scratch_root() / "2024-01-01").mkdir()
-        self.assertEqual(session_folder.session_folders(), [left, memar_fs.session_dir(OLDEST)])
-        self.assertEqual(session_folder.folder_of(NEWEST), left)
-        self.assertEqual(session_folder.folder_of(OLDEST), memar_fs.session_dir(OLDEST))
-        self.assertEqual(session_folder.folder_of("2024-01-01"), memar_fs.session_dir("2024-01-01"))
+        self.assertEqual(session_folder.session_folders(), [memar_fs.session_dir(OLDEST)])
+        self.assertEqual(session_folder.folder_of(NEWEST), memar_fs.session_dir(NEWEST))
+        self.assertFalse(hasattr(session_folder, "is_left_session"))
+        self.assertFalse(hasattr(session_folder, "left_folder_of"))
         with self.assertRaises(SystemExit):
             session_folder.folder_of("../elsewhere")
-
-    def test_a_folder_in_temp_is_a_left_session_by_its_name_or_by_a_plan_new_wrote(self) -> None:
-        temp = memar_fs.scratch_root()
-        named, foreign = temp / "my-work", temp / "notes"
-        for folder in (named, foreign):
-            folder.mkdir()
-        (named / PLAN_NAME).write_text(plan_skeleton("T", "x", Path("/w")), encoding="utf-8", newline="\n")
-        (foreign / PLAN_NAME).write_text("# Someone else's plan\n", encoding="utf-8", newline="\n")
-        (temp / NEWEST).mkdir()
-        self.assertTrue(session_folder.is_left_session(temp / NEWEST))
-        self.assertTrue(session_folder.is_left_session(named))
-        self.assertFalse(session_folder.is_left_session(foreign))
-        self.assertFalse(session_folder.is_left_session(memar_fs.sessions_root()))
 
 
 class IdleMeasured(Fixture):

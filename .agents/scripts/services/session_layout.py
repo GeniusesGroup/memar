@@ -23,6 +23,7 @@ from services.module_folders import ROLE_FOLDERS, listed
 from services.session_claim import CLAIM_NAME, CLAIM_TAKEOVER_NAME
 from services.session_plan import PLAN_NAME
 from services.session_report import REPORT_NAME
+from services.session_temp import TEMP_FOLDER
 
 TOP_NAMES = (PLAN_NAME, REPORT_NAME, CLAIM_NAME, CLAIM_TAKEOVER_NAME)
 """The files a session folder's top holds besides its role folders: the plan, the report, and Memar's claim."""
@@ -47,7 +48,7 @@ KINDS = (
 
 def belongs_at_top(name: str) -> bool:
     """Whether an entry named NAME may stand at a session folder's top: a top file or a role folder."""
-    return name in TOP_NAMES or name in ROLE_FOLDERS
+    return name in TOP_NAMES or name in ROLE_FOLDERS or name == TEMP_FOLDER
 
 
 def kind_of(file_name: str) -> Kind | None:

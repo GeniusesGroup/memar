@@ -178,7 +178,8 @@ open each with --queued and a --priority, or queue one you opened with
 whose Request is empty is not taken), then leave it: never do a queued
 session's work in your own context. Give each queued task a --topic, after
 `memar session {TOPICS_COMMAND}` shows the ones the project already has; `memar session {TOPIC_COMMAND}`
-sets one later.
+sets one later. A question only the owner can answer is not a task to queue:
+write it as an entry in the handoff of the document it concerns, at once.
 
 To continue a task another session left, find it with `memar session {LIST_COMMAND}`, take
 its folder up with `--session-id ID`, then read its {PLAN_NAME} and start from

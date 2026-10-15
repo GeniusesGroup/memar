@@ -32,7 +32,7 @@ from enum import Enum
 from pathlib import Path
 from typing import NamedTuple
 
-from services.module_folders import TEMP_FOLDER
+from services.session_temp import TEMP_FOLDER
 from services.session_claim import CLAIM_NAME, CLAIM_TAKEOVER_NAME
 
 KEEP_LIMIT_BYTES = 256 * 1024

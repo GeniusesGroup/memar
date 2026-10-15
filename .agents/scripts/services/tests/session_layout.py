@@ -42,7 +42,6 @@ sys.path.insert(0, str(SCRIPTS))
 sys.dont_write_bytecode = True
 
 import services.session_layout as session_layout
-import services.module_folders as module_folders
 import services.session_temp as session_temp
 from services.module_folders import ROLE_FOLDERS
 from services.session_claim import CLAIM_NAME, CLAIM_TAKEOVER_NAME
@@ -68,8 +67,8 @@ class TempIsNotKept(unittest.TestCase):
     """The session's `temp` role folder (owner, 2026-10-15): what is made there is not part of the session's record."""
 
     def test_temp_is_a_role_folder_and_may_stand_at_the_top(self) -> None:
-        self.assertEqual(module_folders.TEMP_FOLDER, "temp")
-        self.assertIn(module_folders.TEMP_FOLDER, ROLE_FOLDERS)
+        self.assertEqual(session_temp.TEMP_FOLDER, "temp")
+        self.assertNotIn(session_temp.TEMP_FOLDER, ROLE_FOLDERS)  # temp is a general rule, not a module role (owner, 2026-10-15)
         self.assertTrue(session_layout.belongs_at_top("temp"))
 
     def test_the_sentence_that_tells_an_agent_names_the_folder_and_what_goes_in_it(self) -> None:
@@ -79,7 +78,7 @@ class TempIsNotKept(unittest.TestCase):
             self.assertIn(words, said)
 
     def test_no_kind_files_into_temp(self) -> None:
-        self.assertNotIn(module_folders.TEMP_FOLDER, [kind.folder for kind in session_layout.KINDS])
+        self.assertNotIn(session_temp.TEMP_FOLDER, [kind.folder for kind in session_layout.KINDS])
 
 
 class KindsGoToRoles(unittest.TestCase):

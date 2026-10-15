@@ -24,10 +24,6 @@ What is pinned, and what each pin is for:
                      like a path is refused.
   RerunIsIdempotent  Reusing one session id keeps the folder as is and reports
                      the same id and path again.
-  ContinuedFromTemp  A session an earlier Memar left directly in temp/ goes on
-                     where it is as its id continues it, keeping its plan, and
-                     no second folder is made for it in temp/sessions/; a
-                     parent in temp/ is found there.
   TitleRequired      A folder gets its plan.md from `--title`, so a session is
                      not minted, nor a folder with no plan.md taken up, without
                      one; a folder that has a plan is continued without one.
@@ -224,33 +220,6 @@ class RerunIsIdempotent(Fixture):
         self.assertTrue(marker.is_file())
 
 
-class ContinuedFromTemp(Fixture):
-    """A session an earlier Memar left directly in temp/, continued by its id."""
-
-    LEFT = "20261009-T120000Z-42"
-
-    def left_in_temp(self) -> Path:
-        left = memar_fs.scratch_root() / self.LEFT
-        left.mkdir()
-        (left / PLAN_NAME).write_text("---\ntitle: Old\nopened: x\n---\n# Old\nStatus: open\n", encoding="utf-8", newline="\n")
-        return left
-
-    def test_it_goes_on_where_it_is_keeps_its_plan_and_nothing_is_made_for_it(self) -> None:
-        left = self.left_in_temp()
-        with contextlib.redirect_stderr(io.StringIO()):
-            sid, path = self.ensure(self.LEFT, "A new title")
-        self.assertEqual((sid, path), (self.LEFT, left))
-        self.assertFalse(memar_fs.session_dir(self.LEFT).exists())
-        self.assertIn("title: Old", (left / PLAN_NAME).read_text(encoding="utf-8"))
-
-    def test_a_parent_in_temp_links_its_child(self) -> None:
-        self.left_in_temp()
-        with contextlib.redirect_stderr(io.StringIO()):
-            _, path = self.ensure("child", TITLE, parent=self.LEFT)
-        self.assertEqual(read_session(path).parent, self.LEFT)
-        self.assertTrue((memar_fs.scratch_root() / self.LEFT).is_dir())
-
-
 class TitleRequired(Fixture):
     def test_a_new_session_needs_a_title(self) -> None:
         for title in (None, "", "   ", "two\nlines"):
@@ -356,7 +325,7 @@ class ReportWritten(Fixture):
 class RoleFoldersMade(Fixture):
     def test_every_run_makes_the_role_folders_that_are_missing(self) -> None:
         _, path = self.ensure("s-roles", TITLE)
-        self.assertEqual(sorted(entry.name for entry in path.iterdir() if entry.is_dir()), sorted(ROLE_FOLDERS))
+        self.assertEqual(sorted(entry.name for entry in path.iterdir() if entry.is_dir()), sorted((*ROLE_FOLDERS, "temp")))
         (path / "docs" / "note.md").write_text("# Note\n", encoding="utf-8", newline="\n")
         (path / "rules").rmdir()
         self.ensure("s-roles")
@@ -433,7 +402,7 @@ class ProjectLocation(Fixture):
         self.assertEqual(path, location / sid)
         self.assertTrue((path / PLAN_NAME).is_file())
         self.assertTrue((path / REPORT_NAME).is_file())
-        self.assertTrue(all((path / role).is_dir() for role in ROLE_FOLDERS))
+        self.assertTrue(all((path / role).is_dir() for role in (*ROLE_FOLDERS, "temp")))
         self.assertFalse(memar_fs.session_dir(sid).exists())
         self.assertIn(f"location: {location} is a project's own session location", printed)
         self.assertIn("Memar's sweep never moves a folder there", printed)

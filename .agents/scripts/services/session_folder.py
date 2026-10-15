@@ -9,16 +9,15 @@ changed — and each answer is given here once, so a session listed as active is
 the session the sweep keeps.
 
 Where the folders are is not decided here: `machine/fs_memar.py` owns every
-Memar path, the session folder among them. Which folder directly in temp/ is a
-session an earlier Memar left there is decided here, because it is still that
-session's folder: it is listed, swept, continued, linked to, and closed where
-it is. A folder in a
+Memar path, the session folder among them. Only the session root's folders are
+Memar's; a folder directly in temp/ is not read as a session.
+A folder in a
 project's own session location (`session_location`) is continued, linked to,
 and closed like any other, and listed when the caller asks for its project or
 its conversation, but it is never among the folders the sweep is given: it is
 the project's, not Memar's. That location is a folder
 the project chose and may hold the project's own folders too, so a folder
-there is a session only by the same test as one left in temp/
+there is a session only by the same test
 (`is_session_folder`), and no other folder there is ever written into or
 closed.
 
@@ -33,7 +32,7 @@ import time
 from pathlib import Path
 from typing import NamedTuple
 
-from machine.fs_memar import SESSIONS_DIRNAME, scratch_root, session_dir, sessions_root
+from machine.fs_memar import session_dir, sessions_root
 from services.session_id import is_session_id
 from services.session_location import registered_locations
 from services.session_plan import PLAN_NAME, plan_file_problem, read_plan
@@ -118,17 +117,6 @@ def is_session_folder(entry: Path) -> bool:
     return "title" in front and "opened" in front
 
 
-def is_left_session(entry: Path) -> bool:
-    """Whether ENTRY, directly in temp/, is a session folder an earlier Memar left there."""
-    return entry.name != SESSIONS_DIRNAME and is_session_folder(entry)
-
-
-def left_folder_of(session_id: str) -> Path | None:
-    """SESSION_ID's folder left directly in temp/ by an earlier Memar, or None when there is none."""
-    left = scratch_root() / session_id
-    return left if is_left_session(left) else None
-
-
 def _project_entries(session_id: str, also: Path | None) -> list[Path]:
     """Whatever is named SESSION_ID in ALSO or in a registered project location, folder or not."""
     locations = ([also] if also is not None else []) + registered_locations()
@@ -146,15 +134,15 @@ def foreign_project_entry(session_id: str, also: Path | None = None) -> Path | N
 
 
 def folder_of(session_id: str) -> Path:
-    """SESSION_ID's folder: under the session root, else left in temp/, else in a registered project location.
+    """SESSION_ID's folder: under the session root, else in a registered project location.
 
     The first when none is there. The id is checked by `session_dir`, so a
-    path is refused before temp/ is looked at.
+    path is refused before a location is looked at.
     """
     folder = session_dir(session_id)
     if folder.is_dir():
         return folder
-    return left_folder_of(session_id) or project_folder_of(session_id) or folder
+    return project_folder_of(session_id) or folder
 
 
 def _entries(root: Path) -> list[Path]:
@@ -165,7 +153,7 @@ def _entries(root: Path) -> list[Path]:
 
 
 def session_folders(*, projects: bool = False, locations: list[Path] | None = None) -> list[Path]:
-    """Every session folder under the session root or left directly in temp/, newest first.
+    """Every session folder under the session root, newest first.
 
     With PROJECTS, the session folders in every registered project location
     too, and with LOCATIONS, those in each of these; the sweep asks with
@@ -177,7 +165,6 @@ def session_folders(*, projects: bool = False, locations: list[Path] | None = No
     every minted one.
     """
     folders = [entry for entry in _entries(sessions_root()) if is_session_folder(entry)]
-    folders += [entry for entry in _entries(scratch_root()) if is_left_session(entry)]
     roots: list[Path] = []
     for root in [*(registered_locations() if projects else []), *(locations or [])]:
         if root.resolve() not in roots:

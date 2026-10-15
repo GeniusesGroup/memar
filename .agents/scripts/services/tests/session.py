@@ -54,8 +54,7 @@ What is pinned, and what each pin is for:
   NothingBeforeAnyVerb
                      `memar session` only groups its verbs: nothing runs
                      before a verb's own service, and a folder an earlier
-                     Memar left directly in temp/, quiet or at work, is listed
-                     where it is and not moved.
+                     Memar left directly in temp/ is not read: not listed, not moved.
   CommandEndToEnd    What a caller types — `new`, then `list` — opens a folder,
                      prints its id and path, and finds it again, through the
                      real services; and `memar session <verb> --help` answers
@@ -660,25 +659,16 @@ class NothingBeforeAnyVerb(Fixture):
             os.utime(path, (when, when))
         return left
 
-    def test_a_quiet_folder_left_in_temp_is_listed_where_it_is_and_not_moved(self) -> None:
-        left = self.left_in_temp("20261009T120000Z-42-0", idle_days=2)
-        err = io.StringIO()
-        with contextlib.redirect_stderr(err):
-            listed = self.run_main("list")
-        self.assertIn("20261009T120000Z-42-0  Left behind", listed)
-        self.assertIn(f"path: {left}", listed)
-        self.assertEqual(err.getvalue(), "")
-        self.assertTrue(left.is_dir())
-        self.assertFalse(memar_fs.session_dir("20261009T120000Z-42-0").exists())
-
-    def test_a_folder_at_work_in_temp_is_listed_where_it_is(self) -> None:
-        left = self.left_in_temp("20261009T120000Z-43-0", idle_days=0)
-        err = io.StringIO()
-        with contextlib.redirect_stderr(err):
-            listed = self.run_main("list")
-        self.assertIn(f"path: {left}", listed)
-        self.assertEqual(err.getvalue(), "")
-        self.assertTrue(left.is_dir())
+    def test_a_folder_left_in_temp_is_not_listed_nor_moved(self) -> None:
+        for sid, idle in (("20261009T120000Z-42-0", 2), ("20261009T120000Z-43-0", 0)):
+            left = self.left_in_temp(sid, idle_days=idle)
+            err = io.StringIO()
+            with contextlib.redirect_stderr(err):
+                listed = self.run_main("list")
+            self.assertNotIn(sid, listed)
+            self.assertEqual(err.getvalue(), "")
+            self.assertTrue(left.is_dir())
+            self.assertFalse(memar_fs.session_dir(sid).exists())
 
 
 class CommandEndToEnd(Fixture):

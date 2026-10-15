@@ -47,7 +47,7 @@ Usage is the interface. Do not duplicate these recipes as prose catalogs.
 from __future__ import annotations
 
 from machine.fs_memar import RECORDS_BRANCH, RECORDS_RELATIVE
-from services.module_folders import TEMP_FOLDER
+from services.session_temp import TEMP_FOLDER
 from services.project_preferences import RECORDS_KEY, Records
 from services.session_claim import CLAIM_NAME
 from services.session_keep import KEEP_LIMIT_BYTES

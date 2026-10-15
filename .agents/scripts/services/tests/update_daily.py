@@ -182,7 +182,7 @@ class OptOut(Fixture):
         self.assertFalse((memar_fs.scratch_root() / daily.UPDATE_DIRNAME).exists())
 
     def test_a_notice_left_is_still_printed_once_under_the_opt_out(self) -> None:
-        daily.leave_notice(daily.state_dir(), "another service's line", subject="other")
+        daily.leave_notice(daily.state_dir(), "another service's line")
         stopped = {daily.OPT_OUT_VARIABLE: "1"}
         self.assertEqual(self.ask("content", stopped), ("", "memar: another service's line\n"))
         self.assertEqual(self.ask("content", stopped), ("", ""))
@@ -234,16 +234,11 @@ class NoticeIsPrintedOnce(Fixture):
         daily.leave_notice(daily.state_dir(), "second")
         self.assertEqual(self.ask("update"), ("", "memar: second\n"))
 
-    def test_each_subject_keeps_its_own_line_and_an_added_line_follows(self) -> None:
-        directory = daily.state_dir()
-        daily.leave_notice(directory, "Memar was updated")
-        daily.leave_notice(directory, "an event", subject="other", add=True)
-        daily.leave_notice(directory, "a later event", subject="other", add=True)
-        self.assertEqual(
-            self.ask("update"),
-            ("", "memar: an event\nmemar: a later event\nmemar: Memar was updated\n"),
-        )
-        self.assertEqual(self.ask("update"), ("", ""))
+    def test_the_line_takes_no_subject_and_no_add(self) -> None:
+        with self.assertRaises(TypeError):
+            daily.leave_notice(daily.state_dir(), "an event", subject="other")
+        with self.assertRaises(TypeError):
+            daily.leave_notice(daily.state_dir(), "an event", add=True)
 
 
 class NeverFailsTheVerb(Fixture):
