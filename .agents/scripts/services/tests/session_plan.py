@@ -17,20 +17,23 @@ folder `machine/fs_test_scratch.py` names and removed with it.
 What is pinned, and what each pin is for:
 
   Skeleton        A new plan is front matter, the title once as its heading,
-                  `Status: open`, and Request, Why, Steps, Next; the link to a
+                  `Status: Active`, and Request, Why, Steps, Next; the link to a
                   parent and its conversation is written only when given.
-  OwnStatus       A plan's status is the `Status:` line above its first `##`
-                  heading, lowercased, and an unknown one is returned as
-                  written.
-  SectionedForm   A plan of the earlier sectioned form — each task a `##`
-                  section, its status under the heading — is still read: open
-                  when any task is, else blocked, else the first status not
-                  done, and done only when every task is; a status inside a
-                  section's part is not the section's, and a plan with no
-                  status anywhere has none, which is not done.
-  Finished        A status that starts with done or complete, in any case, is
-                  finished, so an earlier plan's free-text status is read;
-                  any other is not.
+  ReadsTodaysShape  A plan's status is the front matter's `Status`, lowercased,
+                  and an unknown one is returned as written; nothing else
+                  gives a plan a status: not a body `Status:` line, not a
+                  lower-case key, not a `##` section, and the old words open
+                  and done are not translated.
+  ShapeProblem    A plan in an earlier shape (lower-case keys, a body `Status:`
+                  line, the old words, no front matter Status beside a body
+                  line) is named, with where today's shape is shown
+                  (`memar session new --help`) and no conversion script; a
+                  plan in today's shape, and one with no front matter, are not.
+  WritersRefuse   Setting a status, a priority, or a topic on a plan in an
+                  earlier shape is refused with that message and the plan is
+                  left byte for byte; on today's shape only the line set
+                  changes.
+  Complete        Only the word complete is finished.
   Title           A title is one line, and required where the caller says so.
   Priority        A plan's priority is its front matter's `priority`, a whole
                   number from 1 to 10, higher sooner; absent, or not such a
@@ -67,14 +70,32 @@ sys.dont_write_bytecode = True
 from machine.fs_test_scratch import suite_scratch
 
 import services.session_plan as session_plan
+from services.session_record import PlanKey
+from services.status import Kind, Status
 
 TITLE = "Parse the header"
 OPENED = "2026-10-01T00:00:00Z"
 
 
+def old_plan(status: str) -> str:
+    """A plan in the shape written before Status moved into the front matter: lowercase keys, `Status:` in the body."""
+    return (
+        f"---\ntitle: {TITLE}\nopened: {OPENED}\nproject: /work\npriority: 7\n---\n"
+        f"# {TITLE}\nStatus: {status}\n\n## Request\n\n## Why\n\n## Steps\n\n## Next\n"
+    )
+
+
+def new_plan(status: str) -> str:
+    """A plan in today's shape: Status in the front matter, keys in PascalCase."""
+    return (
+        f"---\nTitle: {TITLE}\nStatus: {status}\nOpened: {OPENED}\nProject: /work\nPriority: 7\n---\n"
+        f"# {TITLE}\n\n## Request\n\n## Why\n\n## Steps\n\n## Next\n"
+    )
+
+
 def sectioned_plan(sections: list[tuple[str, str]]) -> str:
     """A plan of the earlier sectioned form: each request its own `##` section, its status under the heading."""
-    lines = ["---", f"title: {TITLE}", f"opened: {OPENED}", "project: /work", "---", f"# {TITLE}", ""]
+    lines = ["---", f"Title: {TITLE}", f"Opened: {OPENED}", "Project: /work", "---", f"# {TITLE}", ""]
     for heading, status in sections:
         lines += [f"## {heading}"] + ([f"Status: {status}"] if status else []) + ["", "### Request", ""]
     return "\n".join(lines) + "\n"
@@ -86,90 +107,162 @@ class Fixture(unittest.TestCase):
         self.addCleanup(self.scratch.cleanup)
         self.folder = Path(self.scratch.name)
 
-    def read(self, text: str) -> session_plan.Plan:
+    def path(self, text: str) -> Path:
         path = self.folder / session_plan.PLAN_NAME
-        path.write_text(text, encoding="utf-8", newline="\n")
-        return session_plan.read_plan(path)
+        path.write_bytes(text.encode("utf-8"))
+        return path
+
+    def read(self, text: str) -> session_plan.Plan:
+        return session_plan.read_plan(self.path(text))
 
 
 class Skeleton(Fixture):
-    def test_a_new_plan_is_front_matter_title_open_status_and_four_parts(self) -> None:
+    def test_a_new_plan_is_front_matter_with_its_status_the_title_and_four_parts(self) -> None:
         text = session_plan.plan_skeleton(TITLE, OPENED, Path("/work"))
         self.assertEqual(
             text,
-            f"---\ntitle: {TITLE}\nopened: {OPENED}\nproject: {Path('/work')}\n---\n"
-            f"# {TITLE}\nStatus: open\n\n## Request\n\n## Why\n\n## Steps\n\n## Next\n",
+            f"---\nTitle: {TITLE}\nStatus: Active\nOpened: {OPENED}\nProject: {Path('/work')}\n---\n"
+            f"# {TITLE}\n\n## Request\n\n## Why\n\n## Steps\n\n## Next\n",
         )
         self.assertEqual(text.count(TITLE), 2)
         plan = self.read(text)
-        self.assertEqual(plan.status, "open")
-        self.assertEqual(plan.tasks, [])
-        self.assertNotIn(session_plan.PARENT_KEY, plan.front)
+        self.assertEqual(plan.status, "active")
+        self.assertNotIn(PlanKey.PARENT.key, plan.front)
+        self.assertIsNone(session_plan.plan_shape_problem(text.splitlines()))
 
     def test_the_link_is_written_only_when_given(self) -> None:
         text = session_plan.plan_skeleton(TITLE, OPENED, Path("/work"), parent="P-1", conversation="C-0")
         front = self.read(text).front
-        self.assertEqual(front[session_plan.PARENT_KEY], "P-1")
-        self.assertEqual(front[session_plan.CONVERSATION_KEY], "C-0")
+        self.assertEqual(front[PlanKey.PARENT.key], "P-1")
+        self.assertEqual(front[PlanKey.CONVERSATION.key], "C-0")
 
 
-class OwnStatus(Fixture):
-    def test_the_status_above_the_first_section_is_the_plans(self) -> None:
-        for written, read in (("done", "done"), ("Blocked", "blocked"), ("archived", "archived")):
+class ReadsTodaysShape(Fixture):
+    def test_the_front_matter_status_is_the_plans_in_any_case_and_an_unknown_one_as_written(self) -> None:
+        for written, read in (("Active", "active"), ("COMPLETE", "complete"), ("Queued", "queued"), ("blocked", "blocked"), ("Archived", "archived")):
             with self.subTest(written=written):
-                text = session_plan.plan_skeleton(TITLE, OPENED, Path("/work")).replace(
-                    "Status: open", f"Status: {written}"
-                )
-                self.assertEqual(self.read(text).status, read)
+                plan = self.read(new_plan(written))
+                self.assertEqual(plan.status, read)
+                self.assertEqual(plan.front["title"], TITLE)
+                self.assertEqual(session_plan.priority_of(plan.front), 7)
 
-    def test_a_status_line_inside_a_part_is_not_the_plans(self) -> None:
-        text = session_plan.plan_skeleton(TITLE, OPENED, Path("/work")).replace("Status: open\n", "")
-        text += "Status: done\n"
-        plan = self.read(text)
-        self.assertNotEqual(plan.status, "done")
+    def test_the_old_words_are_not_translated(self) -> None:
+        self.assertEqual(self.read(new_plan("open")).status, "open")
+        self.assertEqual(self.read(new_plan("Done")).status, "done")
+        self.assertNotIn(self.read(new_plan("open")).status, Status.keys(Kind.SESSION_PLAN))
 
+    def test_a_body_status_line_gives_a_plan_no_status(self) -> None:
+        self.assertEqual(self.read(old_plan("open")).status, "")
+        text = new_plan("Complete").replace(f"# {TITLE}\n", f"# {TITLE}\nStatus: open\n")
+        self.assertEqual(self.read(text).status, "complete")
+        self.assertEqual(self.read("# Notes only\nStatus: done\n").status, "")
 
-class SectionedForm(Fixture):
-    def test_any_open_task_makes_the_plan_open(self) -> None:
-        plan = self.read(sectioned_plan([("Lex", "done"), ("Parse", "open"), ("Wait", "blocked")]))
-        self.assertEqual(plan.status, "open")
-        self.assertEqual(plan.tasks, [("Lex", "done"), ("Parse", "open"), ("Wait", "blocked")])
+    def test_lower_case_keys_are_not_read(self) -> None:
+        plan = self.read(old_plan("open"))
+        self.assertNotIn("title", plan.front)
+        self.assertNotIn("priority", plan.front)
+        lower = new_plan("Active").replace("\nStatus:", "\nstatus:")
+        self.assertEqual(self.read(lower).status, "")
 
-    def test_blocked_comes_next_then_any_status_not_done(self) -> None:
-        self.assertEqual(self.read(sectioned_plan([("Lex", "done"), ("Wait", "blocked")])).status, "blocked")
-        self.assertEqual(self.read(sectioned_plan([("Lex", "done"), ("Later", "archived")])).status, "archived")
-        self.assertEqual(self.read(sectioned_plan([("Lex", "done"), ("Later", "")])).status, "")
+    def test_sections_give_a_plan_no_status(self) -> None:
+        self.assertEqual(self.read(sectioned_plan([("Lex", "done"), ("Parse", "open")])).status, "")
 
-    def test_done_only_when_every_task_is(self) -> None:
-        self.assertEqual(self.read(sectioned_plan([("Lex", "done"), ("Parse", "Done")])).status, "done")
-
-    def test_a_status_inside_a_part_is_not_the_sections(self) -> None:
-        text = sectioned_plan([("Lex", "")]).replace("### Request\n", "### Request\nStatus: done\n")
-        plan = self.read(text)
-        self.assertEqual(plan.tasks, [("Lex", "")])
-        self.assertEqual(plan.status, "")
-
-    def test_a_plan_with_no_status_anywhere_has_none(self) -> None:
-        self.assertEqual(self.read(sectioned_plan([])).status, "")
-        self.assertEqual(self.read("# Notes only\n").status, "")
-
-    def test_front_matter_is_read_in_both_forms(self) -> None:
-        self.assertEqual(self.read(sectioned_plan([])).front["title"], TITLE)
+    def test_front_matter_is_none_without_it(self) -> None:
         self.assertIsNone(self.read("# Notes only\n").front)
 
-    def test_a_task_finished_in_free_text_counts_as_done(self) -> None:
-        plan = self.read(sectioned_plan([("Lex", "done"), ("Parse", "Complete (2026-10-09, merged)")]))
-        self.assertEqual(plan.status, "done")
+
+class ShapeProblem(Fixture):
+    def problem(self, text: str) -> str | None:
+        return session_plan.plan_shape_problem(text.splitlines())
+
+    def test_each_earlier_shape_is_named_with_where_todays_shape_is_shown(self) -> None:
+        shapes = {
+            "lower-case keys and a body status": old_plan("open"),
+            "lower-case keys alone": new_plan("Active").replace("\nTitle:", "\ntitle:"),
+            "a body status line": new_plan("Active").replace("Status: Active\n", "").replace(f"# {TITLE}\n", f"# {TITLE}\nStatus: open\n"),
+            "the old word open": new_plan("open"),
+            "the old word done": new_plan("done"),
+        }
+        for name, text in shapes.items():
+            with self.subTest(shape=name):
+                found = self.problem(text)
+                self.assertIsNotNone(found)
+                self.assertIn(session_plan.EARLIER_SHAPE_REMEDY, found)
+                self.assertIn("memar session new --help", found)
+                self.assertNotIn(".py", found)
+
+    def test_todays_shape_and_a_plan_without_front_matter_have_none(self) -> None:
+        for text in (new_plan("Active"), new_plan("Complete (2026-10-09)"), "# T\nStatus: open\n", sectioned_plan([("A", "open")])):
+            with self.subTest(text=text[:30]):
+                self.assertIsNone(self.problem(text))
+
+    def test_a_body_line_beside_a_front_matter_status_is_not_a_shape_problem(self) -> None:
+        text = new_plan("Complete").replace(f"# {TITLE}\n", f"# {TITLE}\nStatus: open\n")
+        self.assertIsNone(self.problem(text))
+
+    def test_the_file_reading_form_reads_the_plan_and_says_none_for_a_missing_one(self) -> None:
+        self.assertIn(session_plan.EARLIER_SHAPE_REMEDY, session_plan.plan_file_problem(self.path(old_plan("done"))))
+        self.assertIsNone(session_plan.plan_file_problem(self.folder / "missing.md"))
 
 
-class Finished(unittest.TestCase):
-    def test_a_status_starting_with_done_or_complete_is_finished_and_no_other(self) -> None:
-        for status in ("done", "Done", "DONE — merged", "complete", "Complete (2026-10-09 12:00)", "completed"):
+class WritersRefuse(Fixture):
+    def test_every_writer_refuses_a_plan_in_an_earlier_shape_and_leaves_it_byte_for_byte(self) -> None:
+        for text in (old_plan("queued"), new_plan("open")):
+            path = self.path(text)
+            for write in (
+                lambda: session_plan.set_status(path, "active"),
+                lambda: session_plan.set_priority(path, 3),
+                lambda: session_plan.set_topic(path, "x"),
+            ):
+                with self.subTest(text=text[:40]):
+                    with self.assertRaises(SystemExit) as refused:
+                        write()
+                    self.assertIn(session_plan.EARLIER_SHAPE_REMEDY, str(refused.exception.code))
+                    self.assertEqual(path.read_bytes(), text.encode("utf-8"))
+
+    def test_on_todays_shape_only_the_line_set_changes(self) -> None:
+        path = self.path(new_plan("Queued"))
+        session_plan.set_status(path, "active", expected=("queued",))
+        self.assertEqual(path.read_text(encoding="utf-8"), new_plan("Active"))
+
+    def test_setting_a_priority_and_a_topic_keep_the_status_and_an_empty_topic_removes_the_key(self) -> None:
+        path = self.path(new_plan("Blocked"))
+        session_plan.set_priority(path, 3)
+        session_plan.set_topic(path, "Lexer Fixes")
+        text = path.read_text(encoding="utf-8")
+        self.assertIn("\nStatus: Blocked\n", text)
+        self.assertIn("\nPriority: 3\n", text)
+        self.assertIn("\nTopic: lexer-fixes\n", text)
+        session_plan.set_topic(path, "")
+        self.assertNotIn("opic", path.read_text(encoding="utf-8"))
+
+    def test_a_plan_with_front_matter_and_no_status_is_given_one_and_without_front_matter_is_refused(self) -> None:
+        path = self.path(f"---\nTitle: {TITLE}\n---\n# {TITLE}\n\n## Request\n")
+        session_plan.set_status(path, "active")
+        self.assertEqual(session_plan.read_plan(path).status, "active")
+        bare = self.path("# T\n\n## Request\n")
+        with self.assertRaises(SystemExit):
+            session_plan.set_status(bare, "complete")
+
+    def test_line_endings_are_kept(self) -> None:
+        path = self.path(new_plan("Queued").replace("\n", "\r\n"))
+        session_plan.set_status(path, "active")
+        self.assertNotIn(b"\n", path.read_bytes().replace(b"\r\n", b""))
+
+    def test_the_old_word_is_not_accepted_as_a_status_to_set_or_expect(self) -> None:
+        path = self.path(new_plan("Queued"))
+        with self.assertRaises(SystemExit):
+            session_plan.set_status(path, "open")
+        with self.assertRaises(SystemExit):
+            session_plan.set_status(path, "active", expected=("open",))
+
+
+class Complete(unittest.TestCase):
+    def test_only_the_word_complete_is_finished(self) -> None:
+        self.assertTrue(session_plan.is_complete("complete"))
+        for status in ("done", "Complete (2026-10-09 12:00)", "completed", "open", "blocked", "", "incomplete"):
             with self.subTest(status=status):
-                self.assertTrue(session_plan.is_done(status))
-        for status in ("open", "blocked", "archived", "", "not done", "incomplete", "in progress, done soon"):
-            with self.subTest(status=status):
-                self.assertFalse(session_plan.is_done(status))
+                self.assertFalse(session_plan.is_complete(status))
 
 
 class Title(unittest.TestCase):
@@ -192,18 +285,18 @@ class Priority(Fixture):
     def test_a_plan_without_priority_reads_as_the_default_five(self) -> None:
         self.assertEqual(session_plan.DEFAULT_PRIORITY, 5)
         front = self.read(session_plan.plan_skeleton(TITLE, OPENED, Path("/work"))).front
-        self.assertNotIn(session_plan.PRIORITY_KEY, front)
+        self.assertNotIn(PlanKey.PRIORITY.key, front)
         self.assertEqual(session_plan.priority_of(front), 5)
         self.assertEqual(session_plan.priority_of(None), 5)
 
     def test_a_written_priority_is_read_and_one_not_from_1_to_10_is_the_default(self) -> None:
         for value, expected in (("1", 1), ("10", 10), (" 7 ", 7), ("0", 5), ("11", 5), ("high", 5), ("3.5", 5)):
             with self.subTest(value=value):
-                self.assertEqual(session_plan.priority_of({session_plan.PRIORITY_KEY: value}), expected)
+                self.assertEqual(session_plan.priority_of({PlanKey.PRIORITY.key: value}), expected)
 
     def test_a_new_plan_writes_its_priority_only_when_given(self) -> None:
         text = session_plan.plan_skeleton(TITLE, OPENED, Path("/work"), priority=8)
-        self.assertIn("\npriority: 8\n---\n", text)
+        self.assertIn("\nPriority: 8\n---\n", text)
         self.assertEqual(session_plan.priority_of(self.read(text).front), 8)
 
     def test_setting_a_priority_replaces_or_adds_the_key_and_keeps_every_other_line(self) -> None:
@@ -212,10 +305,10 @@ class Priority(Fixture):
         path.write_bytes(original.encode("utf-8"))
         session_plan.set_priority(path, 9)
         text = path.read_bytes().decode("utf-8")
-        self.assertEqual(text, original.replace("\r\n---\r\n#", "\r\npriority: 9\r\n---\r\n#", 1))
+        self.assertEqual(text, original.replace("\r\n---\r\n#", "\r\nPriority: 9\r\n---\r\n#", 1))
         session_plan.set_priority(path, 2)
         self.assertEqual(session_plan.priority_of(session_plan.read_plan(path).front), 2)
-        self.assertEqual(path.read_bytes().decode("utf-8").count("priority:"), 1)
+        self.assertEqual(path.read_bytes().decode("utf-8").count("riority:"), 1)
         self.assertEqual(session_plan.read_plan(path).status, "queued")
 
     def test_a_priority_outside_1_to_10_or_a_plan_without_front_matter_is_refused(self) -> None:
@@ -253,29 +346,29 @@ class Rewrite(Fixture):
 
     def test_a_priority_set_while_the_status_changes_keeps_both(self) -> None:
         path = self.plan("queued")
-        with self.changed_once_after_reading(path, "Status: queued", "Status: open"):
+        with self.changed_once_after_reading(path, "Status: Queued", "Status: Active"):
             session_plan.set_priority(path, 9)
         plan = session_plan.read_plan(path)
-        self.assertEqual((plan.status, session_plan.priority_of(plan.front)), ("open", 9))
+        self.assertEqual((plan.status, session_plan.priority_of(plan.front)), ("active", 9))
 
     def test_a_status_set_while_the_priority_changes_keeps_both(self) -> None:
         path = self.plan("queued")
-        with self.changed_once_after_reading(path, f"opened: {OPENED}\n", f"opened: {OPENED}\npriority: 8\n"):
-            session_plan.set_status(path, "open")
+        with self.changed_once_after_reading(path, f"Opened: {OPENED}\n", f"Opened: {OPENED}\nPriority: 8\n"):
+            session_plan.set_status(path, "active")
         plan = session_plan.read_plan(path)
-        self.assertEqual((plan.status, session_plan.priority_of(plan.front)), ("open", 8))
+        self.assertEqual((plan.status, session_plan.priority_of(plan.front)), ("active", 8))
 
     def test_a_status_no_longer_the_expected_one_is_left_as_it_is(self) -> None:
         path = self.plan("queued")
-        with self.changed_once_after_reading(path, "Status: queued", "Status: done"):
+        with self.changed_once_after_reading(path, "Status: Queued", "Status: Complete"):
             with self.assertRaises(SystemExit):
-                session_plan.set_status(path, "open", expected=("queued",))
-        self.assertEqual(session_plan.read_plan(path).status, "done")
+                session_plan.set_status(path, "active", expected=("queued",))
+        self.assertEqual(session_plan.read_plan(path).status, "complete")
 
     def test_a_rewrite_leaves_only_the_plan_in_its_folder(self) -> None:
         path = self.plan("queued")
         session_plan.set_priority(path, 3)
-        session_plan.set_status(path, "open")
+        session_plan.set_status(path, "active")
         self.assertEqual([entry.name for entry in self.folder.iterdir()], [session_plan.PLAN_NAME])
 
 

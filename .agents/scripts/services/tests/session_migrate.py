@@ -22,7 +22,8 @@ What is pinned, and what each pin is for:
                     contents, and each move is printed and logged; the session
                     log and the sweep marker move with them.
   OthersStay        The lock folder, the test scratch, the sessions folder, a
-                    folder whose plan.md `new` did not write, files, and links
+                    folder whose plan.md `new` did not write, a folder named in
+                    a form minted before with no such plan, files, and links
                     stay where they are.
   Once              The move is recorded once nothing is left, and a later run
                     looks no further; a folder the system refuses is reported
@@ -69,8 +70,10 @@ import services.update_daily as update_daily
 from services.session_log import SESSION_LOG_NAME, log_path
 from services.session_plan import PLAN_NAME, plan_skeleton
 
-DATED = "20261009T120000Z-42-0"
+DATED = "20261009-T120000Z-42"
+# A name in a form minted before: a session by the plan `new` wrote, not by its name.
 EARLIER_FORM = "1111-18dc000000000001-0"
+EARLIER_PLAN = plan_skeleton("Earlier", "2026-10-01T00:00:00Z", Path("/w"))
 NAMED = "my-work"
 DAY = 24 * 60 * 60
 
@@ -116,7 +119,7 @@ class Fixture(unittest.TestCase):
 class SessionsMoved(Fixture):
     def test_session_folders_move_whole_and_each_move_is_printed_and_logged(self) -> None:
         self.left_session(DATED, plan_skeleton("T", "x", Path("/w")))
-        self.left_session(EARLIER_FORM)
+        self.left_session(EARLIER_FORM, EARLIER_PLAN)
         self.left_session(NAMED, plan_skeleton("Named", "2026-10-01T00:00:00Z", Path("/w")))
         printed = self.migrate()
         for name in (DATED, EARLIER_FORM, NAMED):
@@ -149,10 +152,11 @@ class OthersStay(Fixture):
         foreign = self.temp / "notes"
         foreign.mkdir()
         (foreign / PLAN_NAME).write_text("# A plan of someone else's\n", encoding="utf-8", newline="\n")
-        (self.temp / "20261009T120000Z-1-0.md").write_text("a file\n", encoding="utf-8", newline="\n")
+        (self.temp / EARLIER_FORM).mkdir()
+        (self.temp / "20261009-T120000Z-1.md").write_text("a file\n", encoding="utf-8", newline="\n")
         printed = self.migrate()
         self.assertEqual(printed, "")
-        for name in [*stays, "notes", "20261009T120000Z-1-0.md", memar_fs.SESSIONS_DIRNAME]:
+        for name in [*stays, "notes", EARLIER_FORM, "20261009-T120000Z-1.md", memar_fs.SESSIONS_DIRNAME]:
             self.assertTrue((self.temp / name).exists(), name)
         self.assertEqual(sorted(path.name for path in self.sessions.iterdir()), [session_migrate.MIGRATED_MARKER_NAME])
 
@@ -174,7 +178,7 @@ class Once(Fixture):
         self.left_session(DATED)
         self.migrate()
         self.assertTrue((self.sessions / session_migrate.MIGRATED_MARKER_NAME).is_file())
-        late = self.left_session(EARLIER_FORM)
+        late = self.left_session(EARLIER_FORM, EARLIER_PLAN)
         self.assertEqual(self.migrate(), "")
         self.assertTrue(late.is_dir())
 
@@ -207,7 +211,7 @@ class Once(Fixture):
 
 class AtWorkWaits(Fixture):
     def test_a_folder_changed_within_a_day_waits_and_moves_once_quiet(self) -> None:
-        quiet = self.left_session(EARLIER_FORM)
+        quiet = self.left_session(EARLIER_FORM, EARLIER_PLAN)
         busy = self.left_session(DATED, idle_days=0.5)
         printed = self.migrate()
         self.assertFalse(quiet.exists())
@@ -232,7 +236,7 @@ class AtWorkWaits(Fixture):
 class NoticeLeft(Fixture):
     def test_what_moved_is_left_for_the_next_command_once(self) -> None:
         self.left_session(DATED)
-        self.left_session(EARLIER_FORM)
+        self.left_session(EARLIER_FORM, EARLIER_PLAN)
         self.migrate()
         notice = self.notice()
         self.assertIn("2 session folder(s)", notice)
@@ -242,7 +246,7 @@ class NoticeLeft(Fixture):
 
     def test_a_later_move_adds_to_a_notice_not_yet_printed(self) -> None:
         self.left_session(DATED)
-        busy = self.left_session(EARLIER_FORM, idle_days=0)
+        busy = self.left_session(EARLIER_FORM, EARLIER_PLAN, idle_days=0)
         self.migrate()
         make_idle(busy, 2)
         self.migrate()

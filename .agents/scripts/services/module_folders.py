@@ -93,21 +93,15 @@ def describe(verbs) -> Callable[[argparse.Namespace], int]:
         FOLDERS_COMMAND,
         help="make a module's role folders inside a folder, the ones it lacks",
         description=(
-            "Make inside PATH, the current folder unless given, each of a module's role\n"
-            f"folders it lacks: {listed(ROLE_FOLDERS)}.\n"
+            "Make inside the folder PATH each of a module's role folders it lacks:\n"
+            f"{listed(ROLE_FOLDERS)}.\n"
             "A folder already there is left as it is; nothing is deleted or renamed.\n"
             "It prints what it made and what was already there. What each role holds\n"
             "is said in modules/README.md in the Memar checkout, under \"By role inside a\n"
             "module\"."
         ),
     )
-    maker.add_argument(
-        "path",
-        nargs="?",
-        default=".",
-        metavar="PATH",
-        help="the folder to make them in (default: the current folder)",
-    )
+    maker.add_argument("path", metavar="PATH", help="the folder to make them in; always given")
     return run
 
 

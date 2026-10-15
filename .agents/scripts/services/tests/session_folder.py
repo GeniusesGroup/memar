@@ -20,8 +20,10 @@ What is pinned, and what each pin is for:
   SessionRead     A folder with no plan, one whose plan cannot be read, and one
                   with a plan are each told apart; a session's conversation is
                   the one its plan records, else the session itself.
-  FoldersFound    Only folders named as sessions are found, newest first, the
-                  earlier id form after every dated one; one an earlier Memar
+  FoldersFound    Only session folders are found, newest first: a minted name,
+                  or a plan `new` wrote under any other name (a form minted
+                  before among them), listed after every minted one; one an
+                  earlier Memar
                   left directly in temp/ is found there, by the list and by
                   its id, until it moves.
   IdleMeasured    Idle is the latest change anywhere inside, so a file edited
@@ -54,9 +56,11 @@ import machine.fs_memar as memar_fs
 import services.session_folder as session_folder
 from services.session_plan import PLAN_NAME, plan_skeleton
 
-OLDEST = "20261001T000000Z-1-0"
-NEWEST = "20261003T000000Z-1-0"
+OLDEST = "20261001-T000000Z-1"
+NEWEST = "20261003-T000000Z-1"
+# Names in forms minted before; a folder so named is a session only by its plan.
 EARLIER_FORM = "1111-18dc000000000001-0"
+EARLIER_DATED = "20261002T000000Z-1-0"
 DAY = 24 * 60 * 60
 
 
@@ -87,7 +91,7 @@ class SessionRead(Fixture):
         planned = session_folder.read_session(
             self.session(EARLIER_FORM, plan_skeleton("T", "2026-10-01T00:00:00Z", Path("/work")))
         )
-        self.assertEqual((planned.has_plan, planned.readable, planned.status), (True, True, "open"))
+        self.assertEqual((planned.has_plan, planned.readable, planned.status), (True, True, "active"))
         self.assertEqual(planned.front["title"], "T")
 
     def test_the_conversation_is_recorded_else_the_session_itself(self) -> None:
@@ -101,12 +105,16 @@ class SessionRead(Fixture):
 
 class FoldersFound(Fixture):
     def test_only_sessions_newest_first(self) -> None:
-        for sid in (EARLIER_FORM, OLDEST, NEWEST):
+        for sid in (OLDEST, NEWEST):
             self.session(sid)
+        # A name minted before is a session by the plan `new` wrote, and is
+        # listed after every minted name; without such a plan it is not one.
+        self.session(EARLIER_DATED, plan_skeleton("T", "x", Path("/w")))
+        self.session(EARLIER_FORM)
         for name in ("images", "memar-edit-locks", "s-old"):
             (memar_fs.sessions_root() / name).mkdir()
         (memar_fs.sessions_root() / "sessions.log").write_text("", encoding="utf-8")
-        self.assertEqual([path.name for path in session_folder.session_folders()], [NEWEST, OLDEST, EARLIER_FORM])
+        self.assertEqual([path.name for path in session_folder.session_folders()], [NEWEST, OLDEST, EARLIER_DATED])
 
     def test_a_session_left_in_temp_is_found_there_until_it_moves(self) -> None:
         self.session(OLDEST)

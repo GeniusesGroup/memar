@@ -26,9 +26,9 @@ of them. Sessions are linked instead: the plan records the session it came from
 once, with the plan.
 
 A task can wait for someone to work it: `queued` is a plan written but owned
-by no one, which `session_claim` makes one agent's (`open`). It is a status
+by no one, which `session_claim` makes one agent's (`active`). It is a status
 like the others rather than a mark beside them, so `list --status queued`
-finds the waiting tasks and the sweep, which keeps whatever is not done, keeps
+finds the waiting tasks and the sweep, which keeps whatever is not complete, keeps
 them. The status line is rewritten (`set_status`) when a session is queued or
 claimed, and nothing else in the plan is touched. Several writers reach one
 plan — a claim, a priority, a person editing — so a rewrite is never a read
@@ -46,16 +46,30 @@ the middle value, 5, so every plan written before priorities existed waits as
 an ordinary task; a value that is not such a number reads as 5 too, since a
 plan is scratch a person edits by hand and one typo must not stop the line.
 
-A plan written in the sectioned form is still read, because folders in that
-form still hold unfinished work: a section's status is the `Status:` line under
-its heading, before its first part, where that form wrote it, and the plan's is
-open when any section is open, else blocked when any is blocked, else the first
-status that is not done, and done only when every section is. A plan with no
-status there or above its first section has none, and none is not done, so its
-folder is kept. Those plans also wrote a status in free text, so a status that
-starts with done or complete reads as finished (`is_done`), and any other as
-not. That reading lives here and nowhere else, so the folders it covers go
-through the sweep like any other and the form can be dropped once none is left.
+What a waiting task is about is the plan's `topic`, one subject in its front
+matter, so that `claims` can give one agent the tasks of one subject and keep
+its context on it. One value, not several: a task with two subjects is two
+tasks, and one value keeps "the same topic" a plain equality. It is free text
+normalized when written (`normalized_topic`: lower case, runs of white space as
+one hyphen), not a list the project keeps, because a kept list is a second
+thing to maintain and would stop a new subject at the moment it appears; a typo
+that splits one subject in two is met by showing the topics in use and by
+warning of a near match (`session_topic`). A plan without one has none, and
+none is not a topic of its own. It is one key rewritten in place
+(`set_topic`), like the priority.
+
+One Status vocabulary serves every Memar document (docs/documentation.md,
+section Status), declared once in `services/status.py`; the Statuses a plan may
+take are those of `PLAN.statuses` (`services/session_record.py`), and its
+Status is written in the front matter beside PascalCase keys. Only that
+shape is read. A plan written before in another (a lower-case key, a `Status:`
+line in the body, the words `open` and `done`, the sectioned form) is not read
+as a plan, and is not rewritten by any writer here: `plan_shape_problem`
+names it, and says that only today's shape is read and where it is shown.
+It names no conversion: a one-time migration lives in the session that does
+the change, never here (.agents/scripts/README.md), so the core does not point
+at one that is gone once its work is done, and a plan left in an earlier shape
+is rewritten by whoever keeps it.
 
 plan.md is scratch, not a document, and is reaped with its folder: a topic's
 lasting open state belongs in that topic's handoff, and closing by type moves
@@ -70,28 +84,23 @@ from pathlib import Path
 from typing import Callable, NamedTuple
 
 from machine.console import fail
+from services.session_record import PLAN, PlanKey
+from services.status import Status
 
-PLAN_NAME = "plan.md"
-# queued: planned and owned by no one, waiting to be claimed;
-# open: someone is working it; blocked: waiting on someone; done.
-STATUSES = ("queued", "open", "blocked", "done")
-QUEUED_STATUS = "queued"
-OPEN_STATUS = "open"
-BLOCKED_STATUS = "blocked"
-DONE_STATUS = "done"
-# Plans written before the sweep read a status said finished in their own
-# words, such as `complete (2026-10-09)`.
-FINISHED_PREFIXES = (DONE_STATUS, "complete")
+# The plan's shape and the Status vocabulary it draws on are declared once, in
+# `session_record` and `status`; the name is derived from them, not repeated.
+PLAN_NAME = PLAN.file_name
+# What the message for a plan or a report in an earlier shape says to do: the
+# shape is not converted here, and `memar session new --help` shows today's.
+EARLIER_SHAPE_REMEDY = "only today's shape is read, which `memar session new --help` shows; rewrite it in that shape"
+# What marks an earlier shape, so it can be named: the words a status was
+# written in, and the body line that held it.
+EARLIER_STATUS_WORDS = ("open", "done")
 STATUS_PREFIX = "Status:"
-PARENT_KEY = "parent"
-CONVERSATION_KEY = "conversation"
 # Which waiting task goes first: 1 to 10, the higher sooner, 5 when absent.
-PRIORITY_KEY = "priority"
 LOWEST_PRIORITY = 1
 HIGHEST_PRIORITY = 10
 DEFAULT_PRIORITY = 5
-# The parts every plan carries, in order, under the task's status.
-PARTS = ("Request", "Why", "Steps", "Next")
 # A rewrite that finds the plan changed under it starts over this many times
 # before it gives up, pausing this long when the system refused the replace.
 REWRITE_ATTEMPTS = 5
@@ -99,11 +108,10 @@ REWRITE_PAUSE_SECONDS = 0.05
 
 
 class Plan(NamedTuple):
-    """What a plan says: its front matter, its status, and the tasks of the earlier sectioned form."""
+    """What a plan says: its front matter and its status."""
 
     front: dict[str, str] | None
     status: str
-    tasks: list[tuple[str, str]]
 
 
 def checked_title(title: str | None, *, required: bool) -> str | None:
@@ -120,6 +128,16 @@ def checked_title(title: str | None, *, required: bool) -> str | None:
     return title
 
 
+def status_word(word: str) -> str:
+    """WORD as a status is compared: stripped and lower case; any word, the old ones too, as written."""
+    return word.strip().lower()
+
+
+def front_key(key: str) -> str:
+    """KEY as the front matter writes it: PascalCase, which for the one-word keys of a plan is a capital."""
+    return key.capitalize()
+
+
 def plan_skeleton(
     title: str,
     opened: str,
@@ -127,24 +145,32 @@ def plan_skeleton(
     *,
     parent: str | None = None,
     conversation: str | None = None,
-    status: str = OPEN_STATUS,
+    status: str = Status.ACTIVE.key,
     priority: int | None = None,
+    topic: str | None = None,
 ) -> str:
-    """A new plan.md: front matter, the title as its heading, its status (open unless queued), and the parts.
+    """A new plan.md: front matter with its status (active unless queued), the title as its heading, and the parts.
 
     PARENT and CONVERSATION are written only for a session opened from another
     one; a session without them is the first of its own conversation. PRIORITY
     is written only when given; absent, the plan reads as `DEFAULT_PRIORITY`.
+    TOPIC is written only when it is not empty, as given: the caller has
+    checked it (`checked_topic`).
     """
-    front = ["---", f"title: {title}", f"opened: {opened}", f"project: {project}"]
-    if parent:
-        front.append(f"{PARENT_KEY}: {parent}")
-    if conversation:
-        front.append(f"{CONVERSATION_KEY}: {conversation}")
-    if priority is not None:
-        front.append(f"{PRIORITY_KEY}: {priority}")
-    body = [f"# {title}", f"{STATUS_PREFIX} {status}"]
-    for part in PARTS:
+    given = {
+        PlanKey.TITLE: title,
+        PlanKey.STATUS: status_word(status).capitalize(),
+        PlanKey.OPENED: opened,
+        PlanKey.PROJECT: project,
+        PlanKey.PARENT: parent,
+        PlanKey.CONVERSATION: conversation,
+        PlanKey.PRIORITY: priority,
+        PlanKey.TOPIC: topic,
+    }
+    # Keys in the record's order; an optional key with no value is not written.
+    front = ["---", *(f"{key.written}: {given[key]}" for key in PLAN.keys if given[key] not in (None, ""))]
+    body = [f"# {title}"]
+    for part in PLAN.parts:
         body += ["", f"## {part}"]
     return "\n".join([*front, "---", *body]) + "\n"
 
@@ -165,54 +191,9 @@ def front_matter(lines: list[str]) -> tuple[dict[str, str] | None, int]:
     return None, 0
 
 
-def _own_status(body: list[str]) -> str | None:
-    """The status line above the first `##` heading, or None when the plan has none there."""
-    for line in body:
-        if line.startswith("## "):
-            return None
-        if line.startswith(STATUS_PREFIX):
-            return line[len(STATUS_PREFIX):].strip().lower()
-    return None
-
-
-def _sections(body: list[str]) -> list[tuple[str, str]]:
-    """Each `##` section of the earlier sectioned form, one task each, with its status as written.
-
-    The status is the first `Status:` line under the heading, before the
-    section's first `###` part; a section with no such line has no status,
-    which is not open.
-    """
-    tasks: list[tuple[str, str]] = []
-    under_heading = False
-    for line in body:
-        if line.startswith("## "):
-            tasks.append((line[3:].strip(), ""))
-            under_heading = True
-        elif line.startswith("###"):
-            under_heading = False
-        elif under_heading and not tasks[-1][1] and line.startswith(STATUS_PREFIX):
-            tasks[-1] = (tasks[-1][0], line[len(STATUS_PREFIX):].strip().lower())
-    return tasks
-
-
-def is_done(status: str) -> bool:
-    """Whether STATUS says the task is finished: it starts with done or complete, in any case.
-
-    Anything else — open, blocked, a word this file does not know, or none —
-    is not finished.
-    """
-    return status.strip().lower().startswith(FINISHED_PREFIXES)
-
-
-def sectioned_status(tasks: list[tuple[str, str]]) -> str:
-    """The one status a plan of the earlier sectioned form has, read off its tasks; none when it has no task."""
-    statuses = [status for _, status in tasks]
-    for status in (OPEN_STATUS, BLOCKED_STATUS):
-        if status in statuses:
-            return status
-    if not statuses:
-        return ""
-    return next((status for status in statuses if not is_done(status)), DONE_STATUS)
+def is_complete(status: str) -> bool:
+    """Whether STATUS says the task is finished: the word complete, in any case, and no other."""
+    return Status.read(status) is Status.COMPLETE
 
 
 def _read_bytes(path: Path) -> bytes:
@@ -226,23 +207,56 @@ def _read_bytes(path: Path) -> bytes:
 
 
 def read_plan(path: Path) -> Plan:
-    """PATH's front matter, None when absent, its status, and any tasks of the sectioned form.
+    """PATH's front matter, None when absent, and its status; an empty status means the plan has none.
 
-    A plan's own status is the `Status:` line above its first `##` heading. A
-    plan without one is read in the earlier sectioned form, and its status is
-    read off its tasks by `sectioned_status`. A status is lowercased as it is
-    read, and one outside `STATUSES` is returned as written — the reader reports
-    what the file says rather than renaming it; an empty one means the plan has
-    none.
+    Only today's shape is read. The front matter's keys are those written in
+    PascalCase (`Title`), lowercased as they are read so callers ask for
+    `title`; a key written otherwise is not read. A plan's status is the front
+    matter's `Status`, lowercased, and one no session plan may take is returned as
+    written; nothing else gives a plan a status. A plan in an earlier shape
+    reads as one with no status, and `plan_shape_problem` says why.
     """
     lines = _read_bytes(path).decode("utf-8-sig").splitlines()
+    front, _ = front_matter(lines)
+    if front is not None:
+        front = {key.lower(): value for key, value in front.items() if key == front_key(key)}
+    return Plan(front, status_word((front or {}).get(PlanKey.STATUS.key, "")))
+
+
+def plan_shape_problem(lines: list[str]) -> str | None:
+    """Why the plan LINES are in an earlier shape, with where today's is shown; None when they are not, or have no front matter.
+
+    An earlier shape has a key in lower case, a status written as `open` or
+    `done`, or its status in a body `Status:` line above the first `##`
+    heading with none in the front matter.
+    """
     front, start = front_matter(lines)
-    body = lines[start:]
-    own = _own_status(body)
-    if own is not None:
-        return Plan(front, own, [])
-    tasks = _sections(body)
-    return Plan(front, sectioned_status(tasks), tasks)
+    if front is None:
+        return None
+    found = []
+    if any(key != front_key(key) and key.lower() in {plan_key.key for plan_key in PLAN.keys} for key in front):
+        found.append("keys in lower case")
+    status = front.get(PlanKey.STATUS.written, "")
+    if status_word(status) in EARLIER_STATUS_WORDS:
+        found.append(f"the status word {status_word(status)}")
+    if not status:
+        for line in lines[start:]:
+            if line.startswith("## "):
+                break
+            if line.startswith(STATUS_PREFIX):
+                found.append("its status in a body `Status:` line")
+                break
+    if not found:
+        return None
+    return f"its plan is in an earlier shape ({'; '.join(found)}); {EARLIER_SHAPE_REMEDY}"
+
+
+def plan_file_problem(path: Path) -> str | None:
+    """`plan_shape_problem` of the plan at PATH; None when it is not in an earlier shape or cannot be read."""
+    try:
+        return plan_shape_problem(_read_bytes(path).decode("utf-8-sig").splitlines())
+    except (OSError, UnicodeDecodeError):
+        return None
 
 
 def _rewrite(path: Path, change: Callable[[list[str]], list[str]]) -> None:
@@ -260,7 +274,11 @@ def _rewrite(path: Path, change: Callable[[list[str]], list[str]]) -> None:
     for _ in range(REWRITE_ATTEMPTS):
         # Bytes decoded, not read_text: that would turn CRLF into LF on the way in.
         data = _read_bytes(path)
-        text = "".join(change(data.decode("utf-8-sig").splitlines(keepends=True)))
+        lines = data.decode("utf-8-sig").splitlines(keepends=True)
+        problem = plan_shape_problem([line.rstrip("\r\n") for line in lines])
+        if problem:
+            fail(f"{path}: {problem}; nothing was written")
+        text = "".join(change(lines))
         temporary = path.with_name(f".{path.name}.{os.getpid()}.tmp")
         try:
             with temporary.open("w", encoding="utf-8", newline="") as written:
@@ -276,30 +294,47 @@ def _rewrite(path: Path, change: Callable[[list[str]], list[str]]) -> None:
     fail(f"{path} kept changing while it was being rewritten, so nothing was written; try again")
 
 
-def set_status(path: Path, status: str, expected: tuple[str, ...] | None = None) -> None:
-    """Rewrite PATH's own `Status:` line to STATUS, keeping every other line and its newlines as written.
+def _key_of(line: str) -> str:
+    """The key a front-matter LINE sets, as written; empty when the line sets none."""
+    key, colon, _ = line.partition(":")
+    return key.strip() if colon else ""
 
-    Only a plan with its own status line — above its first `##` heading — has
-    one to rewrite; a plan of the earlier sectioned form is refused, since its
-    status is read off several sections and no one line says it. With
-    EXPECTED, the status is set only while it is still one of those, checked on
-    the plan as it is when written (`_rewrite`); otherwise the plan is left as
-    it is and the caller refused.
+
+def _end(line: str) -> str:
+    """LINE's line ending, a newline when it has none."""
+    return line[len(line.rstrip("\r\n")):] or "\n"
+
+
+def set_status(path: Path, status: str, expected: tuple[str, ...] | None = None) -> None:
+    """Set PATH's front matter Status to STATUS, keeping every other line and its newlines as written.
+
+    A plan in an earlier shape is refused (`_rewrite`), and so is one with no
+    front matter, which has nowhere to keep a status. A plan with front matter
+    and no Status is given one, last. With EXPECTED, the status is set only
+    while it is still one of those, checked on the plan as it is when written
+    (`_rewrite`); otherwise the plan is left as it is and the caller refused.
+    STATUS and EXPECTED are statuses a session plan may take (`PLAN.statuses`); any other word is refused.
     """
+    status = status_word(status)
+    wanted = None if expected is None else tuple(status_word(word) for word in expected)
+    for word in (status, *(wanted or ())):
+        if word not in Status.keys(PLAN.kind):
+            fail(f"{word!r} is not a status; the statuses are {', '.join(Status.keys(PLAN.kind))}")
 
     def change(lines: list[str]) -> list[str]:
         _, start = front_matter([line.rstrip("\r\n") for line in lines])
-        for index in range(start, len(lines)):
-            line = lines[index]
-            if line.startswith("## "):
-                break
-            if line.startswith(STATUS_PREFIX):
-                found = line[len(STATUS_PREFIX):].strip().lower()
-                if expected is not None and found not in expected:
+        if not start:
+            fail(f"{path} has no front matter, so its status cannot be set to {status}")
+        written = f"{PlanKey.STATUS.written}: {status.capitalize()}"
+        for index in range(1, start - 1):
+            if _key_of(lines[index]) == PlanKey.STATUS.written:
+                found = status_word(lines[index].partition(":")[2])
+                if wanted is not None and found not in wanted:
                     fail(f"{path} is {found or 'without a status'} now, no longer {' or '.join(expected)}, so it is not set to {status}")
-                ending = line[len(line.rstrip("\r\n")):] or "\n"
-                return [*lines[:index], f"{STATUS_PREFIX} {status}{ending}", *lines[index + 1:]]
-        fail(f"{path} has no Status line above its first part, so its status cannot be set to {status}")
+                return [*lines[:index], written + _end(lines[index]), *lines[index + 1:]]
+        if wanted is not None:
+            fail(f"{path} is without a status now, no longer {' or '.join(expected)}, so it is not set to {status}")
+        return [*lines[:start - 1], written + _end(lines[0]), *lines[start - 1:]]
 
     _rewrite(path, change)
 
@@ -315,7 +350,7 @@ def _whole_priority(value: str) -> int | None:
 
 def priority_of(front: dict[str, str] | None) -> int:
     """The priority FRONT matter gives its plan: its `priority`, or `DEFAULT_PRIORITY` when absent or not 1 to 10."""
-    found = _whole_priority((front or {}).get(PRIORITY_KEY, ""))
+    found = _whole_priority((front or {}).get(PlanKey.PRIORITY.key, ""))
     return DEFAULT_PRIORITY if found is None else found
 
 
@@ -341,12 +376,50 @@ def set_priority(path: Path, priority: int) -> None:
         _, start = front_matter([line.rstrip("\r\n") for line in lines])
         if not start:
             fail(f"{path} has no front matter, so its priority cannot be set")
-        ending = lines[0][len(lines[0].rstrip("\r\n")):] or "\n"
-        written = f"{PRIORITY_KEY}: {priority}{ending}"
+        written = f"{PlanKey.PRIORITY.written}: {priority}{_end(lines[0])}"
         for index in range(1, start - 1):
-            if lines[index].split(":", 1)[0].strip() == PRIORITY_KEY:
+            if _key_of(lines[index]) == PlanKey.PRIORITY.written:
                 return [*lines[:index], written, *lines[index + 1:]]
         return [*lines[:start - 1], written, *lines[start - 1:]]
+
+    _rewrite(path, change)
+
+
+def normalized_topic(text: str) -> str:
+    """TEXT as a topic: stripped, lower case, each run of white space one hyphen; empty when nothing is left."""
+    return "-".join(text.lower().split())
+
+
+def checked_topic(text: str) -> str:
+    """TEXT as a topic, normalized; refused when it holds a line break, since a topic is a one-line front-matter value."""
+    if "\n" in text or "\r" in text:
+        fail("a topic is one line; this one holds a line break")
+    return normalized_topic(text)
+
+
+def topic_of(front: dict[str, str] | None) -> str:
+    """The topic FRONT matter gives its plan, normalized; empty when it has none."""
+    return normalized_topic((front or {}).get(PlanKey.TOPIC.key, ""))
+
+
+def set_topic(path: Path, topic: str) -> None:
+    """Write TOPIC as PATH's `topic`, replacing the key or adding it last in the front matter; empty removes the key.
+
+    Every other line is kept. A plan without front matter has no place for it
+    and is refused. TOPIC is normalized here, so the plan never holds another
+    form.
+    """
+    topic = checked_topic(topic)
+
+    def change(lines: list[str]) -> list[str]:
+        _, start = front_matter([line.rstrip("\r\n") for line in lines])
+        if not start:
+            fail(f"{path} has no front matter, so its topic cannot be set")
+        written = [f"{PlanKey.TOPIC.written}: {topic}{_end(lines[0])}"] if topic else []
+        for index in range(1, start - 1):
+            if _key_of(lines[index]) == PlanKey.TOPIC.written:
+                return [*lines[:index], *written, *lines[index + 1:]]
+        return [*lines[:start - 1], *written, *lines[start - 1:]]
 
     _rewrite(path, change)
 

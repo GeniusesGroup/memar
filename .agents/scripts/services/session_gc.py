@@ -7,18 +7,18 @@ No session has to ask for its own close. No agent knows at a reliable moment
 that the work is finished — the person may come back tomorrow, and a sub-agent
 that has reported may be handed more — and a message spent asking is paid by
 every session there is. So the sweep reaps instead: every session folder in
-which nothing has changed for the idle limit and whose status is done — a
+which nothing has changed for the idle limit and whose status is complete — a
 folder holding no plan has nothing unfinished — is moved to the OS trash, where
 it can be recovered, and the reap is recorded in the session log. Idle is not
-the same as finished, so a session whose status is not done is never swept:
+the same as finished, so a session whose status is not complete is never swept:
 carrying that task to the next session is what the folder is there for, and it
-goes only when its status is done or a person closes it. The test is done
-rather than not open: a status is a vocabulary this file does not own — today
-open, blocked, done, and another can be added tomorrow — and a status it does
-not know, or none, is not done, so such a folder is kept; so is one whose plan
-cannot be read, since its status is not known either. What counts as done is
-`session_plan.is_done`, which also reads the free-text finished statuses
-earlier plans wrote. The limit is
+goes only when its status is complete or a person closes it. The test is complete,
+not merely not active: a status is a vocabulary this file does not own — today
+queued, active, blocked, complete, and another can be added tomorrow — and a status it does
+not know, or none, is not complete, so such a folder is kept; so is one whose plan
+cannot be read, since its status is not known either. What counts as complete is
+`session_plan.is_complete`: the word complete and no other, so a plan in an
+earlier shape is kept and named, with where today's shape is shown. The limit is
 SESSION_IDLE_DAYS below, a number in this file rather than a per-machine
 setting: changing it is an edit reviewed like any other. Only folders named in
 the form `session_id` mints are reaped, and never the one being opened or
@@ -36,6 +36,16 @@ limits, are moved into a dated file that goes to the trash, so an old record
 leaves the log without being deleted for good. The caller of `new` is not told
 what was reaped: it was not their session, and the log is where a person looks
 for a folder that is gone.
+
+Before a finished folder is moved, its records — plan, report, and the files
+its report links to — are kept in its project (`session_archive`), so a
+session id a commit cites still names something once the folder is gone. A
+folder whose records cannot be kept is not moved: the clock never drops a
+record, and `gc` lists the folder with why.
+
+A kept folder that looks finished or abandoned is flagged beside it
+(`session_concerns`), and only flagged: the sweep deletes nothing it did not
+before, because a plan can say it is finished and be wrong.
 
 `gc` is the same sweep asked for by a person, not a second one: the daily guard
 is a separate step in front of it, so `new` keeps its once-a-day cost and `gc`
@@ -68,11 +78,13 @@ from datetime import datetime, timedelta, timezone
 from typing import Callable, NamedTuple
 
 from machine.console import fail, note
-from machine.fs_memar import sessions_root
+from machine.fs_memar import RECORDS_RELATIVE, sessions_root
+from services.session_archive import Outcome, keep_records
+from services.session_concerns import concerns
 from services.session_folder import DAY_SECONDS, Session, last_change, read_session, session_folders
 from services.session_location import prune_registry, registered_locations
 from services.session_log import SESSION_LOG_NAME, log_path, record
-from services.session_plan import PLAN_NAME, is_done
+from services.session_plan import PLAN_NAME, is_complete
 
 GC_COMMAND = "gc"
 SESSION_IDLE_DAYS = 7
@@ -82,6 +94,7 @@ SWEPT_MARKER_NAME = "sessions.swept"
 CLOSE_HINT = "memar session close --session-id ID"
 NOT_SWEPT = "not swept, a project's own session location, which is the project's to keep or delete"
 FORGOTTEN = "no longer recorded, a project session location that is gone"
+RECORDS_NOT_KEPT = "its records cannot be kept"
 
 
 class Sweep(NamedTuple):
@@ -90,6 +103,7 @@ class Sweep(NamedTuple):
     reaped: list[tuple[str, float]]
     kept: list[tuple[str, float, str]]
     stuck: list[tuple[str, float]]
+    flagged: list[tuple[str, str]]
 
 
 def unfinished(session: Session) -> str | None:
@@ -98,7 +112,9 @@ def unfinished(session: Session) -> str | None:
         return None
     if not session.readable:
         return f"its {PLAN_NAME} cannot be read"
-    if not is_done(session.status):
+    if session.shape:
+        return session.shape
+    if not is_complete(session.status):
         return f"its status is {session.status}" if session.status else "it has no status"
     return None
 
@@ -164,7 +180,7 @@ def reap_idle_sessions(keep: str | None, limit: float | None = None, by: str = "
 
     limit = SESSION_IDLE_DAYS if limit is None else limit
     record("swept", "", f"limit {limit:g} days{by and f', by {by}'}")
-    swept = Sweep([], [], [])
+    swept = Sweep([], [], [], [])
     now = time.time()
     for entry in sorted(session_folders()):
         if entry.name == keep:
@@ -178,10 +194,19 @@ def reap_idle_sessions(keep: str | None, limit: float | None = None, by: str = "
         why = unfinished(read_session(entry))
         if why is not None:
             # Not finished, only quiet: the folder is what carries its task to
-            # the next session, so it is reaped once its status is done or when
+            # the next session, so it is reaped once its status is complete or when
             # a person closes it, never by the clock.
             swept.kept.append((entry.name, idle_days, why))
+            swept.flagged.extend((entry.name, flag) for flag in concerns(read_session(entry)) if flag != why)
             continue
+        kept = keep_records(entry)
+        if kept.outcome is Outcome.REFUSED:
+            # A record the sweep cannot keep is not dropped by the clock: the
+            # folder stays, and `gc` says why, for a person to settle.
+            swept.kept.append((entry.name, idle_days, f"{RECORDS_NOT_KEPT}: {kept.why}"))
+            continue
+        if kept.outcome is Outcome.KEPT:
+            record("recorded", entry.name, str(kept.folder))
         try:
             # The trash reports what it moved on stderr, and whoever asked is
             # told by the caller, which knows whether that is anyone's business.
@@ -212,12 +237,14 @@ def print_sweep(swept: Sweep, limit: float) -> None:
         note(f"moved to the recycle bin: {sid}  idle {idle:.1f} days")
     for sid, idle, why in swept.kept:
         note(f"kept, {why}: {sid}  idle {idle:.1f} days")
+    for sid, flag in swept.flagged:
+        note(f"flagged, {flag}: {sid}")
     for sid, idle in swept.stuck:
         note(f"not moved, the recycle bin refused it: {sid}  idle {idle:.1f} days")
     if not (swept.reaped or swept.kept or swept.stuck):
         note(f"no session folder has been idle more than {limit:g} days")
     if swept.kept:
-        note(f"a kept folder goes once its status is done, or by `{CLOSE_HINT}` once its starter says the work is finished")
+        note(f"a kept folder goes once its status is complete, or by `{CLOSE_HINT}` once its starter says the work is finished")
 
 
 def collect(keep: str | None, idle_days: float | None) -> None:
@@ -243,10 +270,15 @@ def describe(verbs) -> Callable[[argparse.Namespace], None]:
         description=(
             "Move to the OS recycle bin / Trash every session folder in which nothing\n"
             f"has changed for more than DAYS days ({SESSION_IDLE_DAYS} unless given) and whose status\n"
-            "is done: the sweep `new` runs once a day, run now. A folder whose status\n"
-            f"is not done, or whose {PLAN_NAME} cannot be read, is kept however idle it is,\n"
-            "and listed with how long it has been idle, so a person can see which ones\n"
-            "only they can let go. Your own session is never swept. Only Memar's own\n"
+            "is complete: the sweep `new` runs once a day, run now. Before a folder is\n"
+            f"moved, its records — its {PLAN_NAME}, its report, and the files the report\n"
+            f"links to — are copied into {RECORDS_RELATIVE.as_posix()}/ in the project its plan names.\n"
+            f"A folder whose status is not complete, whose {PLAN_NAME} cannot be read, or\n"
+            "whose records cannot be kept, is kept however idle it is, and listed with\n"
+            "why and how long it has been idle, so a person can see which ones only they\n"
+            "can let go. A kept folder that looks finished or abandoned (every\n"
+            "step checked while active, an empty Request, no status) is also flagged;\n"
+            "a flag moves nothing. Your own session is never swept. Only Memar's own\n"
             "temp/sessions/ is swept: each project session location, set in a project's\n"
             "preferences, is named as not swept, its folders the project's to keep or delete.\n"
             "A recorded project session location whose folder is gone is no longer\n"

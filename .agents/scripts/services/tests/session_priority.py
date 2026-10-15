@@ -60,7 +60,7 @@ class SetPriority(unittest.TestCase):
         folder = memar_fs.session_dir(sid)
         folder.mkdir(parents=True)
         (folder / session_plan.PLAN_NAME).write_text(
-            f"---\ntitle: T\nopened: 2026-10-12T00:00:00Z\nproject: P\n---\n# T\nStatus: {status}\n\n## Request\nx\n",
+            f"---\nTitle: T\nStatus: {status.capitalize()}\nOpened: 2026-10-12T00:00:00Z\nProject: P\n---\n# T\n\n## Request\nx\n",
             encoding="utf-8",
             newline="\n",
         )
@@ -70,7 +70,7 @@ class SetPriority(unittest.TestCase):
         return session_plan.read_plan(folder / session_plan.PLAN_NAME)
 
     def test_the_verb_writes_the_priority_and_says_what_it_was(self) -> None:
-        for index, status in enumerate(("queued", "open", "blocked")):
+        for index, status in enumerate(("queued", "active", "blocked")):
             with self.subTest(status=status):
                 folder = self.session(f"20261012T06000{index}Z-1-0", status)
                 out = io.StringIO()

@@ -25,11 +25,7 @@ DESCRIPTION = """memar module — the shape of a module, made rather than typed
 
 A module that carries more than one kind of work groups each kind in a folder
 named for its role. What each role holds is said in modules/README.md in the
-Memar checkout, under "By role inside a module".
-
-    memar module folders [PATH]     make the role folders PATH lacks, the
-                                    current folder unless given; nothing
-                                    there is deleted or renamed"""
+Memar checkout, under "By role inside a module"."""
 
 
 def describe(verbs) -> None:

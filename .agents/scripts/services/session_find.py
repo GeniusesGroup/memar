@@ -22,38 +22,43 @@ project's sessions mixed into Memar's answers no question one session asks.
 `--project` asks for one project's sessions wherever they lie: every session
 folder in its own locations (`session_location.locations_of`), and every
 other one whose plan names that project, from whatever folder `list` is run
-in. A conversation crosses projects, since a delegated task may be another
+in. The project is always named, a folder or a name the registry resolves
+(`memar project find`); the folder `list` is run in is never read. A conversation crosses projects, since a delegated task may be another
 project's, so `--conversation` looks in every location Memar has recorded.
 
 A session whose plan and report disagree is marked where its status is shown,
 because the two are written by one agent at two moments, and the list is where
-the next one looks: a report that stopped blocked under a plan still marked
-open, or a status the plan's vocabulary does not have, is a session that will
+the next one looks: a report whose Status is blocked under a plan still marked
+active, or a status the plan's vocabulary does not have, is a session that will
 be misread — kept forever, or picked up as finished. What disagrees is
 `session_report`'s answer.
 """
 from __future__ import annotations
 
 import argparse
-from collections import Counter
 from pathlib import Path
 from typing import Callable
 
 from machine.console import fail, note
+from services.session_concerns import concerns
 from services.session_folder import Session, folder_of, measured_idle, read_session, session_folders
+from services.project_find import add_project_flags, project_by_path, project_from_args
 from services.session_location import locations_of, project_root, same_path
-from services.session_plan import DONE_STATUS, PLAN_NAME, STATUSES, is_done, priority_of
-from services.session_report import REPORT_NAME, disagreement, read_stop
+from services.session_plan import PLAN_NAME, priority_of, status_word, topic_of
+from services.session_record import PLAN
+from services.status import Status
+from services.session_report import REPORT_NAME, disagreement, read_report_status
 
 LIST_COMMAND = "list"
 NO_PLAN = f"(no {PLAN_NAME})"
 NO_FRONT_MATTER = f"({PLAN_NAME} has no front matter)"
 UNREADABLE_PLAN = f"({PLAN_NAME} cannot be read)"
 DISAGREES = "disagrees:"
+CONCERNS = "concerns:"
 
 
 def matches(session: Session, text: str) -> bool:
-    """Whether TEXT is in the session's id, title, project, or a listed task's heading, in any case.
+    """Whether TEXT is in the session's id, title, or project, in any case.
 
     The id counts because it is how a session is named when one is continued:
     a caller holding `20261009T` asks for the sessions it prefixes, not for a
@@ -64,17 +69,16 @@ def matches(session: Session, text: str) -> bool:
         session.id,
         front.get("title", ""),
         front.get("project", ""),
-        *(heading for heading, _ in session.tasks),
     )
     needle = text.casefold()
     return any(needle in field.casefold() for field in fields)
 
 
 def has_status(session: Session, status: str) -> bool:
-    """Whether SESSION's plan is in STATUS; done is what the sweep counts as done, so the two agree."""
+    """Whether SESSION's plan is in STATUS, named in any case."""
     if not (session.has_plan and session.readable):
         return False
-    return is_done(session.status) if status == DONE_STATUS else session.status == status
+    return session.status == status_word(status)
 
 
 def conversation_named_by(session_id: str) -> str:
@@ -94,10 +98,15 @@ def grouped(sessions: list[Session]) -> list[Session]:
 
 
 def project_of(project: str | None) -> Path | None:
-    """The project `--project` names: PROJECT's project, the current folder's when it is empty, None when not asked."""
+    """The project the folder PROJECT is, its git top-level, None when none was asked.
+
+    The flags (`add_project_flags`) have already turned a name into a folder;
+    what arrives here is a folder, and `project_by_path` refuses an empty value
+    or one that is not a folder. The folder the process runs in is never read.
+    """
     if project is None:
         return None
-    return project_root(Path(project) if project.strip() else None)
+    return project_root(project_by_path(project))
 
 
 def of_project(session: Session, project: Path, own: list[Path]) -> bool:
@@ -134,13 +143,6 @@ def find_sessions(
     return grouped(sessions)
 
 
-def count_statuses(tasks: list[tuple[str, str]]) -> str:
-    """How many listed tasks are in each status, e.g. `2 open, 1 done`."""
-    counts = Counter(status or "no status" for _, status in tasks)
-    order = (*STATUSES, *sorted(set(counts) - set(STATUSES)))
-    return ", ".join(f"{counts[status]} {status}" for status in order if counts[status]) or "none"
-
-
 def print_session(session: Session, *, idle: float | None = None) -> None:
     """One list line and its notes; IDLE when measured."""
     if not session.has_plan:
@@ -155,11 +157,13 @@ def print_session(session: Session, *, idle: float | None = None) -> None:
     if session.has_plan and session.readable:
         note(f"status: {session.status or 'none'}")
         note(f"priority: {priority_of(session.front)}")
-        why = disagreement(session.status, read_stop(session.path))
+        if topic_of(session.front):
+            note(f"topic: {topic_of(session.front)}")
+        why = disagreement(session.status, read_report_status(session.path))
         if why:
             note(f"{DISAGREES} {why}")
-        if session.tasks:
-            note(f"tasks: {count_statuses(session.tasks)}")
+        for concern in concerns(session):
+            note(f"{CONCERNS} {concern}")
     if session.parent:
         note(f"parent: {session.parent}")
     if session.conversation != session.id:
@@ -203,8 +207,13 @@ def describe(verbs) -> Callable[[argparse.Namespace], None]:
             "conversation next to each other: its id, title, project, status,\n"
             "priority, the session it came from, and its path. A folder with no plan.md, one that\n"
             "cannot be read, or one without front matter, is listed and marked so.\n"
-            f"A session whose {REPORT_NAME} Stop does not agree with its plan's status, or\n"
-            f"whose status is not {', '.join(STATUSES)}, is marked `{DISAGREES}`, with why.\n"
+            f"A session whose {REPORT_NAME} Status does not agree with its plan's status, or\n"
+            f"whose status is not {', '.join(Status.keys(PLAN.kind))}, is marked `{DISAGREES}`, with why.\n"
+            f"A session not complete that looks finished or abandoned (every step checked\n"
+            f"while active, an empty Request quiet for a day, no status) is marked\n"
+            f"`{CONCERNS}`: only a mark, nothing is moved. A plan or a report in an\n"
+            "earlier shape is marked the same way, and the mark says where today's shape is\n"
+            "shown.\n"
             "A folder in a project's own session location is listed only when asked\n"
             "for: with --project, every session of that project wherever it lies, in\n"
             "its own session location or in Memar's; with --conversation, every\n"
@@ -226,7 +235,8 @@ def describe(verbs) -> Callable[[argparse.Namespace], None]:
     )
     lister.add_argument(
         "--status",
-        choices=STATUSES,
+        type=status_word,
+        choices=Status.keys(PLAN.kind),
         default=None,
         help="show only sessions whose task has this status",
     )
@@ -243,20 +253,13 @@ def describe(verbs) -> Callable[[argparse.Namespace], None]:
         metavar="ID",
         help="show only the sessions of the conversation the session ID belongs to, wherever they lie",
     )
-    lister.add_argument(
-        "--project",
-        nargs="?",
-        const="",
-        default=None,
-        metavar="PATH",
-        help=(
-            "show every session of the project PATH is in, its git top-level else PATH itself, "
-            "or without PATH the git top-level of the current folder: "
-            "those in its own session location and those in Memar's whose plan names it"
-        ),
+    add_project_flags(
+        lister,
+        "show every session of the project: those in its own session location and those in Memar's whose plan names it; "
+        "the calling folder is never read and one of the two is required to ask for a project",
     )
     return run
 
 
 def run(args: argparse.Namespace) -> None:
-    list_sessions(args.text, args.status, args.idle_days, args.conversation, args.project)
+    list_sessions(args.text, args.status, args.idle_days, args.conversation, project_from_args(args))

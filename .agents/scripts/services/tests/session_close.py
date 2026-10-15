@@ -30,6 +30,10 @@ What is pinned, and what each pin is for:
   OnlyItsFolder     Closing one session's folder reaches nothing beside it, the
                     lock directory included, and is recorded in the log of
                     the location it lay in: a project's own, else Memar's.
+  RecordsKeptFirst  Before the folder moves, its records are kept in its
+                    project (`session_archive`), and `close` says where; a
+                    folder whose records cannot be kept is not closed, unless
+                    the person says to close it without them.
 
 Usage is the interface. Do not duplicate these recipes as prose catalogs.
 """
@@ -59,6 +63,7 @@ import machine.fs_lock as fs_lock
 import machine.fs_memar as memar_fs
 import machine.fs_trash as fs_trash
 import services.session_close as session_close
+from services.project_registry import add_project
 from services.session_location import register
 from services.session_log import SESSION_LOG_NAME, log_path
 
@@ -87,11 +92,11 @@ class RecoverableClose(Fixture):
     def test_close_moves_the_folder_with_its_contents_to_recoverable_storage(self) -> None:
         path = self.session("s-recover")
         with unittest.mock.patch.object(fs_trash, "soft_delete", side_effect=self.move_to_bin) as trash:
-            self.assertEqual(session_close.close_session("s-recover"), ("s-recover", path, True))
+            self.assertEqual(session_close.close_session("s-recover")[:3], ("s-recover", path, True))
             trash.assert_called_once_with(path)
             self.assertFalse(path.exists())
             self.assertEqual((self.bin / "s-recover" / "notes.md").read_text(encoding="utf-8"), "# Keep me\n")
-            self.assertEqual(session_close.close_session("s-recover"), ("s-recover", path, False))
+            self.assertEqual(session_close.close_session("s-recover")[:3], ("s-recover", path, False))
             trash.assert_called_once()
 
     def test_close_says_what_it_did(self) -> None:
@@ -112,20 +117,20 @@ class RecoverableClose(Fixture):
         self.assertTrue(path.is_dir())
 
     def test_a_session_still_in_temp_is_closed_where_it_is(self) -> None:
-        left = memar_fs.scratch_root() / "20261009T120000Z-42-0"
+        left = memar_fs.scratch_root() / "20261009-T120000Z-42"
         left.mkdir()
         with unittest.mock.patch.object(fs_trash, "soft_delete", side_effect=self.move_to_bin) as trash:
-            self.assertEqual(session_close.close_session(left.name), (left.name, left, True))
+            self.assertEqual(session_close.close_session(left.name)[:3], (left.name, left, True))
         trash.assert_called_once_with(left)
         self.assertFalse(memar_fs.session_dir(left.name).exists())
 
     def test_a_session_in_a_project_location_is_closed_where_it_is(self) -> None:
         location = self.fake_root / "project" / "sessions"
-        folder = location / "20261009T120000Z-43-0"
+        folder = location / "20261009-T120000Z-43"
         folder.mkdir(parents=True)
         register(location)
         with unittest.mock.patch.object(fs_trash, "soft_delete", side_effect=self.move_to_bin) as trash:
-            self.assertEqual(session_close.close_session(folder.name), (folder.name, folder, True))
+            self.assertEqual(session_close.close_session(folder.name)[:3], (folder.name, folder, True))
         trash.assert_called_once_with(folder)
         self.assertTrue(location.is_dir())
 
@@ -133,10 +138,10 @@ class RecoverableClose(Fixture):
         location = self.fake_root / "project" / "sessions"
         folder = location / "my-task"
         folder.mkdir(parents=True)
-        (folder / "plan.md").write_text("---\ntitle: T\nopened: x\n---\n# T\nStatus: done\n", encoding="utf-8", newline="\n")
+        (folder / "plan.md").write_text("---\nTitle: T\nStatus: Complete\nOpened: x\n---\n# T\n", encoding="utf-8", newline="\n")
         register(location)
         with unittest.mock.patch.object(fs_trash, "soft_delete", side_effect=self.move_to_bin) as trash:
-            self.assertEqual(session_close.close_session("my-task"), ("my-task", folder, True))
+            self.assertEqual(session_close.close_session("my-task")[:3], ("my-task", folder, True))
         trash.assert_called_once_with(folder)
 
     def test_a_folder_in_a_project_location_that_is_not_a_session_is_refused(self) -> None:
@@ -173,7 +178,7 @@ class OnlyItsFolder(Fixture):
 
     def test_closing_a_session_in_a_project_location_is_recorded_in_that_locations_log(self) -> None:
         location = self.fake_root / "project" / "sessions"
-        folder = location / "20261009T120000Z-44-0"
+        folder = location / "20261009-T120000Z-44"
         folder.mkdir(parents=True)
         register(location)
         with unittest.mock.patch.object(fs_trash, "soft_delete", side_effect=self.move_to_bin):
@@ -181,6 +186,44 @@ class OnlyItsFolder(Fixture):
         events = [line.split("\t")[1:3] for line in (location / SESSION_LOG_NAME).read_text(encoding="utf-8").splitlines()]
         self.assertEqual(events, [["closed", folder.name]])
         self.assertFalse(log_path().is_file())
+
+
+class RecordsKeptFirst(Fixture):
+    def finished(self, sid: str, project: Path) -> Path:
+        path = memar_fs.session_dir(sid, create=True)
+        (path / "plan.md").write_text(
+            f"---\nTitle: T\nStatus: Complete\nOpened: x\nProject: {project}\n---\n# T\n", encoding="utf-8", newline="\n"
+        )
+        return path
+
+    def test_the_records_are_kept_before_the_folder_moves_and_close_says_where(self) -> None:
+        project = self.fake_root / "work" / "example"
+        project.mkdir(parents=True)
+        add_project("example", project)
+        path = self.finished("s-kept", project)
+        kept = project / ".agents" / "sessions" / "s-kept"
+        out = io.StringIO()
+        with unittest.mock.patch.object(fs_trash, "soft_delete", side_effect=self.move_to_bin), contextlib.redirect_stdout(out):
+            session_close.close("s-kept")
+        self.assertFalse(path.exists())
+        self.assertIn("Project: example", (kept / "plan.md").read_text(encoding="utf-8"))
+        self.assertIn(f"records: {kept}", out.getvalue())
+
+    def test_a_folder_whose_records_cannot_be_kept_is_not_closed(self) -> None:
+        path = self.finished("s-stuck", self.fake_root / "elsewhere")
+        with unittest.mock.patch.object(fs_trash, "soft_delete") as trash:
+            with self.assertRaises(SystemExit) as raised:
+                session_close.close_session("s-stuck")
+        trash.assert_not_called()
+        self.assertTrue(path.is_dir())
+        self.assertIn("not closed", str(raised.exception.code))
+
+    def test_the_person_may_close_it_without_its_records(self) -> None:
+        path = self.finished("s-dropped", self.fake_root / "elsewhere")
+        with unittest.mock.patch.object(fs_trash, "soft_delete", side_effect=self.move_to_bin):
+            closed = session_close.close_session("s-dropped", without_records=True)
+        self.assertTrue(closed.removed)
+        self.assertFalse(path.exists())
 
 
 if __name__ == "__main__":

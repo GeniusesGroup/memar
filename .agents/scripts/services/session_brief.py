@@ -34,6 +34,10 @@ def brief_text(session_id: str) -> str:
         f"Load the Memar skill: run `memar content path {SKILL_FILE}` and follow the file it prints. "
         f"Your task is session {session_id}: run `memar session new --session-id {session_id}`, "
         f"read the {PLAN_NAME} it names, and do what its Request says, without rewriting that Request. "
+        f"Put nothing at the session folder's top but {PLAN_NAME} and {REPORT_NAME}: anything else you make goes in "
+        "the role folder of its kind, as `memar session --help` says. "
+        "If the Request ideates, designs, or critiques, first check that you read in this context what the skill "
+        "names for that and run on the model it requires; where either fails, end Blocked saying which. "
         f"End with its {REPORT_NAME} and Status as `memar session --help` says: write them where you may write files; "
         f"where you may only return text, return the report as your final text, and the delegating session "
         f"writes it as {REPORT_NAME} before its next step."
@@ -46,7 +50,7 @@ def print_brief(session_id: str) -> None:
     if not is_session_folder(folder) or not (folder / PLAN_NAME).is_file():
         fail(
             f"no task to hand over in {session_id}: it has no session folder with a {PLAN_NAME}. "
-            "Open it with `memar session new --title T --parent ID`, ID the session handing it over, "
+            "Open it with `memar session new --title T --parent ID --project NAME` (or `--project-path PATH`), ID the session handing it over, "
             f"and write the task into its {PLAN_NAME} first"
         )
     print(brief_text(session_id))
@@ -60,8 +64,8 @@ def describe(verbs) -> Callable[[argparse.Namespace], None]:
         description=(
             "Print the text that hands the session ID to a sub-agent, with ID filled\n"
             "in, ready to paste: the same text `new --parent` prints after its other\n"
-            f"lines. The task itself is not in it; it is in the session's {PLAN_NAME}.\n"
-            "When to use it is said in `memar session --help`."
+            f"lines. The task itself is not in it; it is in the session's {PLAN_NAME},\n"
+            "which the delegating session writes before handing the brief over."
         ),
     )
     briefer.add_argument("session_id", metavar="ID", help="the session whose task is handed over")

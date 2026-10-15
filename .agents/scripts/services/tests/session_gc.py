@@ -48,6 +48,12 @@ What is pinned, and what each pin is for:
                       from the record each location that is gone and names
                       it, which the daily sweep does not. A project's own
                       log is never trimmed.
+  RecordsKeptFirst    Before the sweep moves a finished folder, its records
+                      are kept in its project (`session_archive`); a folder
+                      whose records cannot be kept is not moved, and `gc`
+                      lists it with why. Every other class stands in for the
+                      keeping with one that owes nothing, so each pins the
+                      sweep alone.
 
 Usage is the interface. Do not duplicate these recipes as prose catalogs.
 """
@@ -78,17 +84,20 @@ from machine.fs_test_scratch import suite_scratch
 
 import machine.fs_memar as memar_fs
 import machine.fs_trash as fs_trash
+import services.project_registry as project_registry
+import services.session_archive as session_archive
 import services.session_gc as session_gc
 import services.session_new as session_new
-from services.session_location import register
+import services.session_plan as session_plan
+from services.session_location import register, registered_locations
 from services.session_log import SESSION_LOG_NAME, log_path
 from services.session_plan import PLAN_NAME, plan_skeleton
 
 DAY = 24 * 60 * 60
 # Ids in the forms the id module mints, so the sweep recognizes them as sessions.
-IDLE = "1111-18dc000000000001-0"
-OTHER = "2222-18dc000000000002-0"
-THIRD = "3333-18dc000000000003-0"
+IDLE = "20261001-T000000Z-1111"
+OTHER = "20261002-T000000Z-2222"
+THIRD = "20261003-T000000Z-3333"
 
 
 def make_idle(path: Path, days: float) -> None:
@@ -100,7 +109,13 @@ def make_idle(path: Path, days: float) -> None:
 
 
 def plan(status: str) -> str:
-    return plan_skeleton("Work", "2026-10-01T00:00:00Z", Path("/work")).replace("Status: open", f"Status: {status}")
+    """A plan with STATUS in today's shape (PascalCase keys, Status in the front matter)."""
+    return plan_skeleton("Work", "2026-10-01T00:00:00Z", Path("/work")).replace("Status: Active", f"Status: {status}", 1)
+
+
+def earlier_plan(status: str) -> str:
+    """A plan in the shape written before: lower-case keys, `Status:` in the body."""
+    return f"---\ntitle: Work\nopened: 2026-10-01T00:00:00Z\nproject: /work\n---\n# Work\nStatus: {status}\n\n## Request\n"
 
 
 class Fixture(unittest.TestCase):
@@ -130,6 +145,15 @@ class Fixture(unittest.TestCase):
         project = unittest.mock.patch.object(session_new, "project_root", return_value=self.fake_root)
         project.start()
         self.addCleanup(project.stop)
+        # The plans here name /work, a project on no computer; keeping records
+        # is pinned in RecordsKeptFirst, which stops this stand-in.
+        self.keeping = unittest.mock.patch.object(
+            session_gc,
+            "keep_records",
+            return_value=session_archive.Kept(session_archive.Outcome.NOT_OWED, None, "a stand-in"),
+        )
+        self.keeping.start()
+        self.addCleanup(self.keeping.stop)
 
     def folder(self, name: str, idle_days: float, *, status: str | None = None, recent_file: bool = False) -> Path:
         path = memar_fs.session_dir(name, create=True)
@@ -187,11 +211,11 @@ class IdleSessionsReaped(Fixture):
     def test_a_session_whose_status_is_not_done_is_kept(self) -> None:
         # Idle says the task has not been touched, not that it is finished, and
         # a status the vocabulary may gain tomorrow, or none, is not done.
-        for index, status in enumerate(("open", "blocked", "archived", ""), start=1):
+        for index, status in enumerate(("active", "blocked", "archived", ""), start=1):
             with self.subTest(status=status):
-                kept = self.folder(f"4444-18dc00000000000{index}-0", 8, status=status or "open")
+                kept = self.folder(f"2026100{index}-T000000Z-4444", 8, status=status or "active")
                 if not status:
-                    text = (kept / PLAN_NAME).read_text(encoding="utf-8").replace("Status: open\n", "")
+                    text = (kept / PLAN_NAME).read_text(encoding="utf-8").replace("Status: active\n", "")
                     (kept / PLAN_NAME).write_text(text, encoding="utf-8", newline="\n")
                     make_idle(kept, 8)
                 self.daily()
@@ -205,16 +229,19 @@ class IdleSessionsReaped(Fixture):
         self.daily()
         self.assertEqual(self.trashed, [])
 
-    def test_a_plan_of_the_sectioned_form_is_judged_by_its_tasks(self) -> None:
-        sectioned = "---\ntitle: Old\n---\n# Old\n\n## {0}\nStatus: {1}\n\n### Request\n\n## Notes\nStatus: done\n"
-        kept = self.folder(IDLE, 8)
-        (kept / PLAN_NAME).write_text(sectioned.format("Do it", "open"), encoding="utf-8", newline="\n")
-        gone = self.folder(OTHER, 8)
-        (gone / PLAN_NAME).write_text(sectioned.format("Did it", "done"), encoding="utf-8", newline="\n")
-        make_idle(kept, 8)
-        make_idle(gone, 8)
-        self.daily()
-        self.assertEqual(self.trashed, [gone])
+    def test_a_plan_in_an_earlier_shape_is_kept_and_gc_names_it_with_where_todays_shape_is_shown(self) -> None:
+        sectioned = "---\nTitle: Old\n---\n# Old\n\n## Did it\nStatus: done\n\n### Request\n"
+        shapes = {"sectioned": sectioned, "body status": earlier_plan("complete"), "old word": plan("done")}
+        for index, (name, shape) in enumerate(shapes.items(), start=1):
+            with self.subTest(shape=name):
+                kept = self.folder(f"2026100{index}-T000000Z-6666", 8)
+                (kept / PLAN_NAME).write_text(shape, encoding="utf-8", newline="\n")
+                make_idle(kept, 8)
+                self.daily()
+                self.assertEqual(self.trashed, [])
+                self.assertTrue(kept.is_dir())
+        printed = self.run_gc()
+        self.assertIn(session_plan.EARLIER_SHAPE_REMEDY, printed)
 
     def test_a_plan_whose_status_cannot_be_read_is_kept(self) -> None:
         # A status written anywhere but under its heading is not read, and a
@@ -227,27 +254,38 @@ class IdleSessionsReaped(Fixture):
             start=1,
         ):
             with self.subTest(text=text):
-                kept = self.folder(f"5555-18dc00000000000{index}-0", 8)
+                kept = self.folder(f"2026100{index}-T000000Z-5555", 8)
                 (kept / PLAN_NAME).write_text(text, encoding="utf-8", newline="\n")
                 make_idle(kept, 8)
                 self.daily()
                 self.assertEqual(self.trashed, [])
                 self.assertTrue(kept.is_dir())
 
-    def test_a_session_whose_status_is_done_is_reaped(self) -> None:
-        gone = self.folder(IDLE, 8, status="done")
+    def test_a_session_whose_status_is_complete_is_reaped(self) -> None:
+        gone = self.folder(IDLE, 8, status="complete")
         self.daily()
         self.assertEqual(self.trashed, [gone])
 
-    def test_an_earlier_plans_free_text_finished_status_is_reaped(self) -> None:
-        gone = self.folder(IDLE, 8, status="Complete (2026-10-09 14:00, merged)")
-        kept = self.folder(OTHER, 8, status="incomplete")
+    def test_a_session_whose_status_is_complete_in_the_front_matter_is_reaped_and_an_active_one_kept(self) -> None:
+        gone = self.folder(IDLE, 8)
+        (gone / PLAN_NAME).write_text(plan("Complete"), encoding="utf-8", newline="\n")
+        make_idle(gone, 8)
+        kept = self.folder(OTHER, 8)
+        (kept / PLAN_NAME).write_text(plan("Active"), encoding="utf-8", newline="\n")
+        make_idle(kept, 8)
         self.daily()
         self.assertEqual(self.trashed, [gone])
         self.assertTrue(kept.is_dir())
 
+    def test_only_the_word_complete_is_finished_so_free_text_and_done_are_kept(self) -> None:
+        kept = self.folder(IDLE, 8, status="Complete (2026-10-09 14:00, merged)")
+        also = self.folder(OTHER, 8, status="incomplete")
+        self.daily()
+        self.assertEqual(self.trashed, [])
+        self.assertTrue(kept.is_dir() and also.is_dir())
+
     def test_the_session_being_opened_or_continued_is_never_reaped(self) -> None:
-        self.folder(IDLE, 30, status="done")
+        self.folder(IDLE, 30, status="complete")
         self.daily(keep=IDLE)
         self.assertEqual(self.trashed, [])
 
@@ -343,7 +381,7 @@ class LogTrimmed(Fixture):
 class GcSweepsNow(Fixture):
     def test_gc_sweeps_even_after_todays_sweep_and_says_what_it_moved(self) -> None:
         self.daily()
-        gone = self.folder(IDLE, 8, status="done")
+        gone = self.folder(IDLE, 8, status="complete")
         printed = self.run_gc()
         self.assertEqual(self.trashed, [gone])
         self.assertIn(f"moved to the recycle bin: {IDLE}  idle 8.0 days", printed)
@@ -351,7 +389,7 @@ class GcSweepsNow(Fixture):
     def test_gc_is_the_same_sweep_new_runs_once_a_day(self) -> None:
         with unittest.mock.patch.object(session_gc, "reap_idle_sessions", wraps=session_gc.reap_idle_sessions) as sweep:
             with contextlib.redirect_stdout(io.StringIO()):
-                session_new.ensure_session("s-new", "Open one")
+                session_new.ensure_session("s-new", "Open one", project=str(self.fake_root))
                 self.run_gc()
         self.assertEqual(sweep.call_count, 2)
 
@@ -361,7 +399,7 @@ class GcSweepsNow(Fixture):
         (unreadable / PLAN_NAME).write_bytes(b"\xff\xfe")
         make_idle(unreadable, 9)
         unstated = self.folder(THIRD, 10)
-        (unstated / PLAN_NAME).write_text("---\ntitle: Old\n---\n# Old\n", encoding="utf-8", newline="\n")
+        (unstated / PLAN_NAME).write_text("---\nTitle: Old\n---\n# Old\n", encoding="utf-8", newline="\n")
         make_idle(unstated, 10)
         printed = self.run_gc()
         self.assertEqual(self.trashed, [])
@@ -370,13 +408,32 @@ class GcSweepsNow(Fixture):
         self.assertIn(f"kept, it has no status: {THIRD}  idle 10.0 days", printed)
         self.assertIn(session_gc.CLOSE_HINT, printed)
 
+    def test_gc_flags_a_kept_folder_that_looks_finished_or_abandoned_and_still_moves_nothing(self) -> None:
+        finished = self.folder(IDLE, 12, status="active")
+        (finished / PLAN_NAME).write_text(
+            plan("active").replace("## Steps", "## Steps\n- [x] 1. a"), encoding="utf-8", newline="\n"
+        )
+        make_idle(finished, 12)
+        printed = self.run_gc()
+        self.assertEqual(self.trashed, [])
+        self.assertIn(f"kept, its status is active: {IDLE}  idle 12.0 days", printed)
+        self.assertIn(f"flagged, every step is checked, yet the status is active: {IDLE}", printed)
+        self.assertIn(f"flagged, its Request is empty and nothing has changed for 12.0 days: {IDLE}", printed)
+
+    def test_gc_sweeps_a_folder_with_no_plan_and_a_report_as_it_says(self) -> None:
+        old = self.folder(IDLE, 12)
+        (old / "report.md").write_text("# Report\nStop: success\n", encoding="utf-8", newline="\n")
+        make_idle(old, 12)
+        self.run_gc()
+        self.assertEqual(self.trashed, [old])
+
     def test_gc_never_sweeps_the_callers_own_session(self) -> None:
-        self.folder(IDLE, 30, status="done")
+        self.folder(IDLE, 30, status="complete")
         self.run_gc(keep=IDLE)
         self.assertEqual(self.trashed, [])
 
     def test_a_shorter_limit_is_honoured_and_one_under_a_day_refused(self) -> None:
-        gone = self.folder(IDLE, 3, status="done")
+        gone = self.folder(IDLE, 3, status="complete")
         for limit in (0, 0.5, -1, float("nan")):
             with self.subTest(limit=limit):
                 with self.assertRaises(SystemExit):
@@ -386,7 +443,7 @@ class GcSweepsNow(Fixture):
         self.assertEqual(self.trashed, [gone])
 
     def test_gc_logs_as_the_daily_sweep_does_and_says_who_asked(self) -> None:
-        self.folder(IDLE, 8, status="done")
+        self.folder(IDLE, 8, status="complete")
         self.run_gc()
         self.assertIn(["swept", "", "limit 7 days, by gc"], self.events())
         self.assertIn(["reaped", IDLE], [event[:2] for event in self.events()])
@@ -400,7 +457,7 @@ class ProjectLocationsNotSwept(Fixture):
         location = self.fake_root / "project" / "sessions"
         folder = location / IDLE
         folder.mkdir(parents=True)
-        (folder / PLAN_NAME).write_text(plan("done"), encoding="utf-8", newline="\n")
+        (folder / PLAN_NAME).write_text(plan("complete"), encoding="utf-8", newline="\n")
         make_idle(folder, 30)
         register(location)
         return location, folder
@@ -424,17 +481,17 @@ class ProjectLocationsNotSwept(Fixture):
         location, _ = self.project_folder()
         gone = self.fake_root / "unmounted"
         register(gone)
-        registry = memar_fs.project_sessions_registry()
         printed = self.run_gc()
         self.assertIn(f"{session_gc.FORGOTTEN}: {gone.resolve()}", printed)
         self.assertNotIn(f"{session_gc.FORGOTTEN}: {location.resolve()}", printed)
-        self.assertEqual(registry.read_text(encoding="utf-8").splitlines(), [str(location.resolve())])
+        self.assertEqual(registered_locations(), [location.resolve()])
+        self.assertEqual([each for entry in project_registry.read_entries() for each in entry.locations], [str(location.resolve())])
         self.assertNotIn(session_gc.FORGOTTEN, self.run_gc())
 
     def test_the_daily_sweep_leaves_the_record_as_it_is(self) -> None:
         self.project_folder()
         register(self.fake_root / "unmounted")
-        registry = memar_fs.project_sessions_registry()
+        registry = memar_fs.projects_log()
         before = registry.read_text(encoding="utf-8")
         self.daily()
         self.assertEqual(registry.read_text(encoding="utf-8"), before)
@@ -447,6 +504,40 @@ class ProjectLocationsNotSwept(Fixture):
         self.daily()
         self.assertEqual(own.read_text(encoding="utf-8"), f"{old}\topened\t{IDLE}\t\n")
         self.assertNotIn(own, self.trashed)
+
+
+class RecordsKeptFirst(Fixture):
+    def setUp(self) -> None:
+        super().setUp()
+        self.keeping.stop()
+        self.project = self.fake_root / "work" / "example"
+        self.project.mkdir(parents=True)
+        project_registry.add_project("example", self.project)
+
+    def finished(self, name: str, project: Path) -> Path:
+        path = memar_fs.session_dir(name, create=True)
+        (path / PLAN_NAME).write_text(
+            plan_skeleton("Work", "2026-10-01T00:00:00Z", project).replace("Status: Active", "Status: Complete", 1),
+            encoding="utf-8",
+            newline="\n",
+        )
+        make_idle(path, 8)
+        return path
+
+    def test_the_records_are_kept_before_the_folder_is_moved(self) -> None:
+        idle = self.finished(IDLE, self.project)
+        self.daily()
+        self.assertEqual(self.trashed, [idle])
+        kept = self.project / ".agents" / "sessions" / IDLE / PLAN_NAME
+        self.assertIn("Project: example", kept.read_text(encoding="utf-8"))
+
+    def test_a_folder_whose_records_cannot_be_kept_is_not_moved_and_gc_says_why(self) -> None:
+        stuck = self.finished(OTHER, self.fake_root / "elsewhere")
+        printed = self.run_gc()
+        self.assertEqual(self.trashed, [])
+        self.assertTrue(stuck.is_dir())
+        self.assertIn("its records cannot be kept", printed)
+        self.assertIn(OTHER, printed)
 
 
 if __name__ == "__main__":

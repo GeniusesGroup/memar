@@ -39,6 +39,7 @@ What is pinned, and what each pin is for:
 """
 from __future__ import annotations
 
+import argparse
 import contextlib
 import io
 import json
@@ -58,6 +59,7 @@ sys.dont_write_bytecode = True
 from machine.fs_test_scratch import suite_scratch
 
 import machine.fs_memar as memar_fs
+import services.project_registry as registry
 import services.session_brief as session_brief
 import services.session_claim as session_claim
 import services.session_claims as session_claims
@@ -72,11 +74,13 @@ def plan_text(
     opened: str = "2026-10-12T00:00:00Z",
     priority: str | None = None,
     project: str = "P",
+    topic: str | None = None,
 ) -> str:
-    ranked = f"priority: {priority}\n" if priority is not None else ""
+    ranked = f"Priority: {priority}\n" if priority is not None else ""
+    ranked += f"Topic: {topic}\n" if topic is not None else ""
     return (
-        f"---\ntitle: {title}\nopened: {opened}\nproject: {project}\n{ranked}---\n# {title}\n"
-        f"Status: {status}\n\n## Request\n{request}\n\n## Why\n\n## Steps\n\n## Next\n"
+        f"---\nTitle: {title}\nStatus: {status.capitalize()}\nOpened: {opened}\nProject: {project}\n{ranked}---\n# {title}\n"
+        f"\n## Request\n{request}\n\n## Why\n\n## Steps\n\n## Next\n"
     )
 
 
@@ -133,12 +137,12 @@ class ClaimsTakesN(Fixture):
         plain_old = self.session("20261012T000041Z-1-0", "queued", opened="2026-10-12T01:00:00Z")
         high = self.session("20261012T000042Z-1-0", "queued", opened="2026-10-12T05:00:00Z", priority="9")
         plain_new = self.session("20261012T000043Z-1-0", "queued", opened="2026-10-12T02:00:00Z", priority="5")
-        self.session("20261012T000044Z-1-0", "open", opened="2026-10-11T00:00:00Z", priority="10")
+        self.session("20261012T000044Z-1-0", "active", opened="2026-10-11T00:00:00Z", priority="10")
         taken, _ = self.claims(3)
         self.assertEqual(taken, [high.name, plain_old.name, plain_new.name])
         self.assertEqual(self.status_of(low), "queued")
         for folder in (high, plain_old, plain_new):
-            self.assertEqual(self.status_of(folder), "open")
+            self.assertEqual(self.status_of(folder), "active")
             self.assertTrue((folder / session_claim.CLAIM_NAME).is_file())
 
     def test_each_taken_session_is_printed_with_what_hands_it_over(self) -> None:
@@ -166,6 +170,27 @@ class ClaimsTakesN(Fixture):
         self.assertEqual(taken, [written.name])
         self.assertEqual(self.status_of(unwritten), "queued")
         self.assertIn(f"{unwritten.name}  not ready", text)
+
+    def cli(self, *argv: str) -> None:
+        """`memar session claims ARGV` as the router runs it."""
+        parser = argparse.ArgumentParser()
+        command = session_claims.describe(parser.add_subparsers())
+        with contextlib.redirect_stdout(io.StringIO()):
+            command(parser.parse_args(["claims", *argv]))
+
+    def test_a_project_named_by_its_name_is_resolved_and_an_empty_one_refused(self) -> None:
+        registry.add_project("project-x", self.project, ["iksz"])
+        waiting = self.session("20261012T000050Z-1-0", "queued")
+        for flag in ("--project", "--project-path"):
+            for empty in ("", "  "):
+                with self.subTest(flag=flag, empty=empty):
+                    self.assertIn(flag, self.refused(self.cli, "5", flag, empty))
+                    self.assertEqual(self.status_of(waiting), "queued")
+        self.assertIn("--project-path", self.refused(self.cli, "5", "--project", str(self.project)))
+        self.assertIn("--project NAME", self.refused(self.cli, "5", "--project-path", "iksz"))
+        self.assertEqual(self.status_of(waiting), "queued")
+        self.cli("5", "--project", "iksz")
+        self.assertEqual(self.status_of(waiting), "active")
 
     def test_a_missing_project_is_refused_saying_one_run_serves_one_project(self) -> None:
         waiting = self.session("20261012T000049Z-1-0", "queued")
@@ -237,7 +262,138 @@ class ClaimsTakesN(Fixture):
         self.assertEqual(len(every), len(set(every)))
         self.assertEqual(sorted(every), sorted(folder.name for folder in folders))
         for folder in folders:
-            self.assertEqual(self.status_of(folder), "open")
+            self.assertEqual(self.status_of(folder), "active")
+
+
+class ClaimsByTopic(Fixture):
+    """The batch rule: the first task's topic pulls the rest of the batch (the owner's ruling of 2026-10-13)."""
+
+    def setUp(self) -> None:
+        super().setUp()
+        self.project = self.fake_root / "project-x"
+        self.project.mkdir()
+        subprocess.run(["git", "init", "-q", str(self.project)], check=True, capture_output=True)
+
+    def session(self, sid: str, status: str, **plan) -> Path:
+        plan.setdefault("project", str(self.project))
+        return super().session(sid, status, **plan)
+
+    def claims(self, count: int, project: Path | None = None, topic: str | None = None, fill: bool = False):
+        out = io.StringIO()
+        with contextlib.redirect_stdout(out):
+            taken = session_claims.claims(count, str(project or self.project), topic, fill)
+        return taken, out.getvalue()
+
+    def queue(self, number: int, topic: str | None, priority: str | None = None, opened: str | None = None) -> Path:
+        return self.session(
+            f"20261013T0001{number:02d}Z-1-0",
+            "queued",
+            topic=topic,
+            priority=priority,
+            opened=opened or f"2026-10-13T00:{number:02d}:00Z",
+        )
+
+    def test_the_first_tasks_topic_pulls_the_rest_of_the_batch_in_line_order(self) -> None:
+        first = self.queue(1, "khayyam", priority="9")
+        unrelated = self.queue(2, "docs", priority="8")
+        unrelated_plain = self.queue(3, None, priority="7")
+        low_a = self.queue(4, "khayyam", priority="2")
+        low_b = self.queue(5, "khayyam", priority="2")
+        other = self.queue(6, "khayyam", priority="3")
+        taken, _ = self.claims(3)
+        self.assertEqual(taken, [first.name, other.name, low_a.name])
+        for folder in (unrelated, unrelated_plain, low_b):
+            self.assertEqual(self.status_of(folder), "queued")
+
+    def test_other_topics_do_not_fill_the_remainder_by_default(self) -> None:
+        first = self.queue(10, "khayyam", priority="9")
+        self.queue(11, "docs", priority="8")
+        self.queue(12, None)
+        taken, text = self.claims(4)
+        self.assertEqual(taken, [first.name])
+        self.assertIn("claimed 1 of 4", text)
+
+    def test_fill_takes_the_next_in_line_after_the_topic_is_exhausted(self) -> None:
+        first = self.queue(20, "khayyam", priority="9")
+        second = self.queue(21, "khayyam", priority="2")
+        docs = self.queue(22, "docs", priority="8")
+        plain = self.queue(23, None, priority="7")
+        left = self.queue(24, None, priority="1")
+        taken, _ = self.claims(4, fill=True)
+        self.assertEqual(taken, [first.name, second.name, docs.name, plain.name])
+        self.assertEqual(self.status_of(left), "queued")
+
+    def test_a_first_task_with_no_topic_keeps_the_plain_line(self) -> None:
+        first = self.queue(30, None, priority="9")
+        docs = self.queue(31, "docs", priority="8")
+        khayyam = self.queue(32, "khayyam", priority="7")
+        taken, text = self.claims(3)
+        self.assertEqual(taken, [first.name, docs.name, khayyam.name])
+        self.assertNotIn("batch topic", text)
+
+    def test_topic_names_the_topic_instead_of_the_first_task(self) -> None:
+        self.queue(40, "docs", priority="10")
+        a = self.queue(41, "khayyam", priority="3")
+        b = self.queue(42, "khayyam", priority="4")
+        taken, text = self.claims(5, topic="Khayyam")
+        self.assertEqual(taken, [b.name, a.name])
+        self.assertIn("batch topic: khayyam", text)
+
+    def test_topic_with_nothing_queued_under_it_takes_nothing_unless_fill(self) -> None:
+        docs = self.queue(50, "docs")
+        taken, text = self.claims(2, topic="khayyam")
+        self.assertEqual(taken, [])
+        self.assertIn("no queued session", text)
+        self.assertEqual(self.status_of(docs), "queued")
+        taken, _ = self.claims(2, topic="khayyam", fill=True)
+        self.assertEqual(taken, [docs.name])
+
+    def test_the_output_states_the_batch_topic_and_what_waits_under_it(self) -> None:
+        self.queue(60, "khayyam", priority="9")
+        self.queue(61, "khayyam", priority="8")
+        self.queue(62, "khayyam", priority="7")
+        self.queue(63, "khayyam", priority="6")
+        _, text = self.claims(2)
+        self.assertIn("batch topic: khayyam", text)
+        self.assertIn("2 of 2 asked", text)
+        self.assertIn("2 more queued under it", text)
+
+    def test_the_output_lists_higher_priority_tasks_passed_over(self) -> None:
+        self.queue(70, "khayyam", priority="9")
+        high = self.queue(71, "docs", priority="8")
+        mid = self.queue(72, None, priority="6")
+        self.queue(73, "khayyam", priority="2")
+        level = self.queue(74, "docs", priority="2")
+        _, text = self.claims(2)
+        passed = [line for line in text.splitlines() if line.startswith("passed over for topic")]
+        self.assertEqual(len(passed), 1)
+        self.assertIn(high.name, passed[0])
+        self.assertIn(mid.name, passed[0])
+        self.assertNotIn(level.name, passed[0])
+
+    def test_nothing_is_said_of_passing_over_when_nothing_was(self) -> None:
+        self.queue(80, "khayyam", priority="9")
+        self.queue(81, "khayyam", priority="8")
+        self.queue(82, "docs", priority="1")
+        _, text = self.claims(2)
+        self.assertNotIn("passed over for topic", text)
+
+    def test_a_first_task_another_caller_won_hands_the_topic_to_the_next(self) -> None:
+        held = self.queue(90, "khayyam", priority="10")
+        (held / session_claim.CLAIM_NAME).write_text("claimed: now\n", encoding="utf-8")
+        docs = self.queue(91, "docs", priority="9")
+        other = self.queue(92, "khayyam", priority="8")
+        mine = self.queue(93, "docs", priority="1")
+        taken, _ = self.claims(3)
+        self.assertEqual(taken, [docs.name, mine.name])
+        self.assertEqual(self.status_of(other), "queued")
+
+    def test_a_task_whose_request_is_empty_never_sets_the_topic(self) -> None:
+        self.session("20261013T000195Z-1-0", "queued", topic="docs", priority="10", request="")
+        first = self.queue(96, "khayyam", priority="5")
+        self.queue(97, "docs", priority="4")
+        taken, _ = self.claims(2)
+        self.assertEqual(taken, [first.name])
 
 
 if __name__ == "__main__":

@@ -18,15 +18,13 @@ What is pinned, and what each pin is for:
 
   Listed          Every session folder is listed newest first with its title,
                   project, status, priority (5 when none is written), and
-                  path; a plan of the earlier sectioned
-                  form also shows its tasks counted per status; a folder without a
-                  readable plan is listed and marked.
-  TextFilter      TEXT matches the id, title, project, or a listed task's
-                  heading, in any case; an id prefix finds a session with no
-                  plan.
-  StatusAndIdle   --status keeps the sessions in that status, an old plan by
-                  the status read off its tasks, and done keeps what the sweep
-                  counts as done; --idle-days keeps those quiet
+                  path; a folder without a readable plan is listed and marked;
+                  a plan in an earlier shape reads as one with no status and is
+                  marked with where today's shape is shown.
+  TextFilter      TEXT matches the id, title, or project, in any case; an id
+                  prefix finds a session with no plan.
+  StatusAndIdle   --status keeps the sessions in that status, in any case, and
+                  takes no old word; --idle-days keeps those quiet
                   that long and says how long; together they find stalled work;
                   a negative --idle-days is refused.
   Conversations   The sessions of one conversation are listed together, where
@@ -39,22 +37,32 @@ What is pinned, and what each pin is for:
                   a name the project chose among them, and each of Memar's
                   whose plan names the project, compared resolved and, on
                   Windows, in any case; it combines with TEXT, --status, and
-                  --idle-days, and without a PATH it is the current project,
-                  with one the project PATH lies in. A recorded location is
+                  --idle-days. --project always takes a value, a name the
+                  registry resolves or a folder the project of which is
+                  meant; none, or an empty one, is refused, the calling
+                  folder is never read, and an ambiguous name prints its
+                  candidates and lists nothing. A recorded location is
                   a project's only when its own project is that one: a
                   nested project's is not the enclosing one's, and a folder
                   that is no project owns none beneath it.
                   --conversation lists a conversation's sessions wherever
                   they lie; a recorded location that is gone is passed over.
-  ReportMarks     A session whose report.md Stop does not map to its plan's
-                  status, whose status is outside queued, open, blocked, done, or
-                  whose Stop is not a named stop, is marked with why; one
-                  that agrees, an empty Stop, or no report, is not.
+  ConcernsMarked  A session that looks finished or abandoned yet is not complete
+                  (every step checked while active; an empty Request quiet for a
+                  day; no status) carries a `concerns:` line saying why; a
+                  sound one, and a complete one, do not. Listing writes nothing.
+  ReportMarks     A session whose report.md Status does not agree with its
+                  plan's status, whose status is outside queued, active,
+                  blocked, complete, or whose Status is not one a report may
+                  state, is marked with why; one that agrees, an empty Status,
+                  or no report, is not; a report in an earlier shape is marked
+                  with where today's shape is shown.
 
 Usage is the interface. Do not duplicate these recipes as prose catalogs.
 """
 from __future__ import annotations
 
+import argparse
 import contextlib
 import io
 import os
@@ -78,33 +86,36 @@ sys.dont_write_bytecode = True
 from machine.fs_test_scratch import suite_scratch
 
 import machine.fs_memar as memar_fs
+import services.project_find as project_find
+import services.project_registry as registry
 import services.project_preferences as project_preferences
 import services.session_find as session_find
 import services.session_location as session_location
+import services.session_plan as session_plan
 from services.session_location import register
 from services.session_plan import PLAN_NAME, plan_skeleton
 from services.session_report import REPORT_NAME
 
 DAY = 24 * 60 * 60
 EARLIER_FORM = "1111-18dc000000000001-0"
-OLDEST = "20261001T000000Z-1-0"
-MIDDLE = "20261002T000000Z-1-0"
-NEWEST = "20261003T000000Z-1-0"
-LATEST = "20261004T000000Z-1-0"
+OLDEST = "20261001-T000000Z-1"
+MIDDLE = "20261002-T000000Z-1"
+NEWEST = "20261003-T000000Z-1"
+LATEST = "20261004-T000000Z-1"
 
 
-def plan(title: str, project: str = "/work", status: str = "open", **link: str) -> str:
-    return plan_skeleton(title, "2026-10-01T00:00:00Z", Path(project), **link).replace(
-        "Status: open", f"Status: {status}"
+def plan(title: str, project: str = "/work", status: str = "active", **link: str) -> str:
+    """A plan with STATUS in today's shape (PascalCase keys, Status in the front matter)."""
+    text = plan_skeleton(title, "2026-10-01T00:00:00Z", Path(project), **link)
+    return text.replace("Status: Active", f"Status: {status.capitalize()}", 1)
+
+
+def earlier_plan(title: str, status: str = "open") -> str:
+    """A plan in the shape written before: lower-case keys, `Status:` in the body."""
+    return (
+        f"---\ntitle: {title}\nopened: 2026-10-01T00:00:00Z\nproject: /work\n---\n# {title}\nStatus: {status}\n\n"
+        "## Request\n\n## Why\n\n## Steps\n\n## Next\n"
     )
-
-
-def sectioned_plan(title: str, tasks: list[tuple[str, str]]) -> str:
-    """A plan of the earlier sectioned form: each task a `##` section, its status under the heading."""
-    lines = ["---", f"title: {title}", "opened: 2026-10-01T00:00:00Z", "project: /work", "---", f"# {title}", ""]
-    for heading, status in tasks:
-        lines += [f"## {heading}", f"Status: {status}", "", "### Request", ""]
-    return "\n".join(lines)
 
 
 def git_init(path: Path) -> None:
@@ -143,6 +154,15 @@ class Fixture(unittest.TestCase):
             session_find.list_sessions(*arguments, **filters)
         return out.getvalue()
 
+    def run_cli(self, *argv: str) -> str:
+        """`memar session list ARGV` as the router runs it: the flags parsed, a name resolved, then the listing."""
+        parser = argparse.ArgumentParser()
+        command = session_find.describe(parser.add_subparsers())
+        out = io.StringIO()
+        with contextlib.redirect_stdout(out):
+            command(parser.parse_args(["list", *argv]))
+        return out.getvalue()
+
     def listed(self, text: str) -> list[str]:
         """The ids in TEXT, in order: each entry's first line is the one not indented."""
         return [line.split()[0] for line in text.splitlines() if line and not line.startswith(" ")]
@@ -173,16 +193,17 @@ class Listed(Fixture):
         self.assertIn("priority: 9", text)
         self.assertIn("priority: 5", text)
 
-    def test_a_plan_of_the_sectioned_form_shows_its_status_and_tasks(self) -> None:
-        tasks = [("Parse", "open"), ("Lex", "done"), ("Emit", "open"), ("Wait for review", "blocked")]
-        self.session(NEWEST, sectioned_plan("Old plan", tasks))
+    def test_a_plan_in_an_earlier_shape_has_no_status_and_is_marked_with_the_remedy(self) -> None:
+        self.session(NEWEST, earlier_plan("Old plan"))
         text = self.run_list()
-        self.assertIn("status: open", text)
-        self.assertIn("tasks: 2 open, 1 blocked, 1 done", text)
+        self.assertIn("status: none", text)
+        self.assertIn(f"{session_find.CONCERNS} its plan is in an earlier shape", text)
+        self.assertIn(session_plan.EARLIER_SHAPE_REMEDY, text)
+        self.assertNotIn("it has no status", text)
 
     def test_a_folder_without_a_readable_plan_is_listed_and_marked(self) -> None:
         bare = self.session(OLDEST)
-        self.session(MIDDLE, "# Notes only\nStatus: open\n")
+        self.session(MIDDLE, "# Notes only\nStatus: active\n")
         self.session(NEWEST, b"\xff\xfe")
         text = self.run_list()
         self.assertEqual(self.listed(text), [NEWEST, MIDDLE, OLDEST])
@@ -192,8 +213,8 @@ class Listed(Fixture):
         self.assertIn(f"{NEWEST}  {session_find.UNREADABLE_PLAN}", text)
         self.assertEqual(text.count("status:"), 1)
 
-    def test_a_plan_whose_status_cannot_be_read_is_listed_saying_so(self) -> None:
-        self.session(NEWEST, sectioned_plan("Old", [("Parse", "")]).replace("Status: \n", ""))
+    def test_a_plan_without_a_status_is_listed_saying_so(self) -> None:
+        self.session(NEWEST, plan("Old").replace("Status: Active\n", ""))
         text = self.run_list()
         self.assertEqual(self.listed(text), [NEWEST])
         self.assertIn("status: none", text)
@@ -204,33 +225,54 @@ class Listed(Fixture):
 
 
 class TextFilter(Fixture):
-    def test_text_filters_over_id_title_project_and_task_headings_in_any_case(self) -> None:
+    def test_text_filters_over_id_title_and_project_in_any_case(self) -> None:
         self.session(OLDEST, plan("Ship the parser", "/work/parser"))
-        self.session(MIDDLE, sectioned_plan("Fix login", [("Reset the PASSWORD form", "done")]))
+        self.session(MIDDLE, plan("Fix login"))
         self.session(NEWEST, plan("Write docs", "/work/website"))
         self.session(LATEST)
         self.assertEqual(self.listed(self.run_list("PARSER")), [OLDEST])
         self.assertEqual(self.listed(self.run_list("Website")), [NEWEST])
         self.assertEqual(self.listed(self.run_list("20261002")), [MIDDLE])
         self.assertEqual(self.listed(self.run_list("20261004")), [LATEST])
-        self.assertEqual(self.listed(self.run_list("password")), [MIDDLE])
+        self.assertEqual(self.listed(self.run_list("LOGIN")), [MIDDLE])
         self.assertEqual(self.listed(self.run_list("nothing like it")), [])
 
 
 class StatusAndIdle(Fixture):
     def test_status_keeps_only_the_sessions_in_that_state(self) -> None:
-        self.session(OLDEST, plan("Ship", status="open"))
-        self.session(MIDDLE, plan("Fix", status="done"))
-        self.session(NEWEST, sectioned_plan("Old", [("Write", "done"), ("Review", "blocked")]))
+        self.session(OLDEST, plan("Ship", status="active"))
+        self.session(MIDDLE, plan("Fix", status="complete"))
+        self.session(NEWEST, plan("Wait", status="blocked"))
         self.session(LATEST)
-        self.assertEqual(self.listed(self.run_list(status="open")), [OLDEST])
+        self.assertEqual(self.listed(self.run_list(status="active")), [OLDEST])
         self.assertEqual(self.listed(self.run_list(status="blocked")), [NEWEST])
-        self.assertEqual(self.listed(self.run_list(status="done")), [MIDDLE])
+        self.assertEqual(self.listed(self.run_list(status="complete")), [MIDDLE])
 
-    def test_done_lists_what_the_sweep_counts_as_done(self) -> None:
-        self.session(OLDEST, plan("Ship", status="Complete (2026-10-09)"))
-        self.session(MIDDLE, plan("Fix", status="incomplete"))
-        self.assertEqual(self.listed(self.run_list(status="done")), [OLDEST])
+    def test_status_matches_in_any_case_and_not_a_plan_in_an_earlier_shape(self) -> None:
+        self.session(OLDEST, earlier_plan("Old shape", status="open"))
+        self.session(MIDDLE, plan("New shape", status="Active"))
+        self.session(NEWEST, plan("New done", status="Complete"))
+        self.assertEqual(self.listed(self.run_list(status="ACTIVE")), [MIDDLE])
+        self.assertEqual(self.listed(self.run_list(status="complete")), [NEWEST])
+        self.assertIn("status: active", self.run_list(MIDDLE))
+
+    def test_the_status_option_takes_any_case_and_no_old_word_on_the_command_line(self) -> None:
+        parser = argparse.ArgumentParser()
+        verbs = parser.add_subparsers()
+        session_find.describe(verbs)
+        for given, read in (("ACTIVE", "active"), ("Complete", "complete"), ("queued", "queued")):
+            with self.subTest(given=given):
+                self.assertEqual(parser.parse_args(["list", "--status", given]).status, read)
+        for refused in ("paused", "open", "done"):
+            with self.subTest(refused=refused):
+                with self.assertRaises(SystemExit), contextlib.redirect_stderr(io.StringIO()):
+                    parser.parse_args(["list", "--status", refused])
+
+    def test_complete_lists_only_the_word_complete(self) -> None:
+        self.session(OLDEST, plan("Ship", status="Complete"))
+        self.session(MIDDLE, plan("Fix", status="Complete (2026-10-09)"))
+        self.session(NEWEST, plan("Other", status="incomplete"))
+        self.assertEqual(self.listed(self.run_list(status="complete")), [OLDEST])
 
     def test_idle_days_keeps_only_the_sessions_quiet_that_long(self) -> None:
         stale = self.session(OLDEST, plan("Ship"))
@@ -243,10 +285,10 @@ class StatusAndIdle(Fixture):
     def test_both_filters_together_find_the_sessions_work_stalled_in(self) -> None:
         stalled = self.session(OLDEST, plan("Stalled"))
         self.session(MIDDLE, plan("Busy"))
-        finished = self.session(NEWEST, plan("Finished", status="done"))
+        finished = self.session(NEWEST, plan("Finished", status="complete"))
         make_idle(stalled, 8)
         make_idle(finished, 8)
-        text = self.run_list(status="open", idle_days=7)
+        text = self.run_list(status="active", idle_days=7)
         self.assertEqual(self.listed(text), [OLDEST])
         self.assertIn("idle: 8.0 days", text)
 
@@ -334,11 +376,60 @@ class ProjectLocations(Fixture):
         self.assertEqual(self.listed(self.run_list(status="blocked", project=str(self.project))), [LATEST])
         self.assertEqual(self.listed(self.run_list(idle_days=7, project=str(self.project))), [LATEST])
 
-    def test_project_without_a_path_is_the_project_of_the_current_folder(self) -> None:
-        with unittest.mock.patch.object(session_find, "project_root", return_value=self.project):
-            self.assertEqual(self.listed(self.run_list(project="")), [LATEST, MIDDLE, "my-task"])
-        with unittest.mock.patch.object(session_find, "project_root", return_value=self.fake_root / "other"):
-            self.assertEqual(self.listed(self.run_list(project="")), [OLDEST])
+    def test_project_by_name_is_resolved_through_the_registry(self) -> None:
+        registry.add_project("parser", self.project, ["analyseur"])
+        for word in ("parser", "PARSER", "analyseur", "pars"):
+            with self.subTest(word=word):
+                self.assertEqual(self.listed(self.run_cli("--project", word)), [LATEST, MIDDLE, "my-task"])
+        self.assertEqual(self.listed(self.run_cli("--project-path", str(self.project))), [LATEST, MIDDLE, "my-task"])
+
+    def test_a_name_in_place_of_a_path_and_a_path_in_place_of_a_name_are_refused(self) -> None:
+        registry.add_project("parser", self.project)
+        with self.assertRaises(SystemExit) as raised:
+            self.run_cli("--project", str(self.project))
+        self.assertIn("--project-path", str(raised.exception.code))
+        with self.assertRaises(SystemExit) as raised:
+            self.run_cli("--project-path", "parser")
+        self.assertIn("--project NAME", str(raised.exception.code))
+
+    def test_project_with_no_value_is_refused_saying_to_name_it_and_never_reads_the_calling_folder(self) -> None:
+        with unittest.mock.patch.object(Path, "cwd", side_effect=AssertionError("the calling folder was read")):
+            for value in ("", "   "):
+                with self.subTest(value=value):
+                    with self.assertRaises(SystemExit) as raised:
+                        self.run_list(project=value)
+                    self.assertIn("--project-path", str(raised.exception.code))
+        original = os.getcwd()
+        os.chdir(self.project)
+        try:
+            with self.assertRaises(SystemExit):
+                self.run_list(project="")
+        finally:
+            os.chdir(original)
+
+    def test_project_that_is_ambiguous_prints_the_candidates_and_lists_nothing(self) -> None:
+        registry.add_project("parser-a", self.project)
+        other = self.fake_root / "other"
+        other.mkdir()
+        registry.add_project("parser-b", other)
+        with self.assertRaises(SystemExit) as raised:
+            self.run_cli("--project", "parser")
+        why = str(raised.exception.code)
+        self.assertIn("parser-a", why)
+        self.assertIn("parser-b", why)
+
+    def test_project_that_names_nothing_is_refused_with_what_was_tried(self) -> None:
+        with unittest.mock.patch.object(project_find, "search_locally", return_value=None):
+            with self.assertRaises(SystemExit) as raised:
+                self.run_cli("--project", "nothing-like-it")
+        self.assertIn("memar project", str(raised.exception.code))
+
+    def test_project_of_nothing_asked_is_none(self) -> None:
+        self.assertIsNone(session_find.project_of(None))
+
+    def test_project_root_takes_a_folder_and_has_no_calling_folder_default(self) -> None:
+        with self.assertRaises(TypeError):
+            session_location.project_root()
 
     def test_project_with_a_path_in_a_subfolder_is_that_folders_project(self) -> None:
         subfolder = self.project / "src" / "deep"
@@ -363,7 +454,7 @@ class ProjectLocations(Fixture):
         register(inner / "sessions")
         self.assertEqual(session_location.locations_of(self.fake_root), [])
         with unittest.mock.patch.object(session_find, "project_root", return_value=self.fake_root):
-            self.assertEqual(self.listed(self.run_list(project="")), [])
+            self.assertEqual(self.listed(self.run_list(project=str(self.fake_root))), [])
 
     def test_a_project_named_session_is_listed_in_a_recorded_location(self) -> None:
         self.assertIn("my-task", self.listed(self.run_list(project=str(self.project))))
@@ -375,53 +466,84 @@ class ProjectLocations(Fixture):
                 self.assertEqual(self.listed(self.run_list(conversation=named)), [LATEST, MIDDLE])
 
 
+class ConcernsMarked(Fixture):
+    def concerns_of(self, sid: str, text: str, idle: float = 3) -> list[str]:
+        path = self.session(sid, text)
+        make_idle(path, idle)
+        return [
+            line.strip() for line in self.run_list(sid).splitlines() if line.strip().startswith(session_find.CONCERNS)
+        ]
+
+    def test_every_step_checked_yet_open_is_marked(self) -> None:
+        text = plan(NEWEST).replace("## Request", "## Request" + chr(10) + "asked").replace("## Steps", "## Steps\n- [x] 1. a")
+        self.assertEqual(
+            self.concerns_of(NEWEST, text),
+            [f"{session_find.CONCERNS} every step is checked, yet the status is active"],
+        )
+
+    def test_an_empty_request_quiet_for_days_is_marked(self) -> None:
+        found = self.concerns_of(NEWEST, plan(NEWEST), idle=5)
+        self.assertEqual(found, [f"{session_find.CONCERNS} its Request is empty and nothing has changed for 5.0 days"])
+
+    def test_a_done_session_and_a_fresh_one_are_not_marked(self) -> None:
+        self.assertEqual(self.concerns_of(NEWEST, plan(NEWEST, status="complete"), idle=5), [])
+        self.assertEqual(self.concerns_of(MIDDLE, plan(MIDDLE), idle=0.1), [])
+
+
 class ReportMarks(Fixture):
-    def report(self, sid: str, status: str, stop: str | None) -> None:
+    def report(self, sid: str, status: str, report_status: str | None) -> Path:
         path = self.session(sid, plan(sid, status=status))
-        if stop is not None:
-            (path / REPORT_NAME).write_text(f"# Report\nStop: {stop}\n\n## What ran\n", encoding="utf-8", newline="\n")
+        if report_status is not None:
+            (path / REPORT_NAME).write_text(
+                f"---\nStatus: {report_status}\n---\n# Report\n\n## What ran\n", encoding="utf-8", newline="\n"
+            )
+        return path
 
     def mark_of(self, sid: str) -> str | None:
         text = self.run_list(sid)
         found = [line.strip() for line in text.splitlines() if line.strip().startswith(session_find.DISAGREES)]
         return found[0] if found else None
 
-    def test_a_stop_that_agrees_with_the_status_is_not_marked(self) -> None:
-        for index, (status, stop) in enumerate(
-            (
-                ("done", "success"),
-                ("done", "clean no-op"),
-                ("blocked", "blocked"),
-                ("blocked", "approval-required: which module owns it?"),
-                ("open", "exhausted"),
-                ("open", "No progress"),
-            )
-        ):
-            sid = f"2026100{index}T000000Z-7-0"
-            with self.subTest(stop=stop):
-                self.report(sid, status, stop)
+    def test_a_report_status_that_agrees_with_the_plans_is_not_marked(self) -> None:
+        for index, (status, report) in enumerate((("complete", "Complete"), ("blocked", "Blocked"), ("active", "Active"))):
+            sid = f"2026100{index}-T000000Z-7"
+            with self.subTest(report=report):
+                self.report(sid, status, report)
                 self.assertIsNone(self.mark_of(sid))
 
-    def test_a_stop_that_disagrees_with_the_status_is_marked_with_why(self) -> None:
-        self.report(NEWEST, "open", "success")
+    def test_a_report_status_that_disagrees_is_marked_with_why(self) -> None:
+        self.report(NEWEST, "active", "Complete")
         self.assertEqual(
             self.mark_of(NEWEST),
-            f"{session_find.DISAGREES} {REPORT_NAME} Stop success means status done, the plan says open",
+            f"{session_find.DISAGREES} {REPORT_NAME} Status complete is not the plan's active",
         )
-        self.report(MIDDLE, "done", "blocked")
-        self.assertIn("means status blocked", self.mark_of(MIDDLE))
+        self.report(MIDDLE, "complete", "Blocked")
+        self.assertIn("Status blocked is not the plan's complete", self.mark_of(MIDDLE))
 
-    def test_an_empty_stop_or_no_report_is_not_marked(self) -> None:
-        self.report(NEWEST, "done", "")
-        self.report(MIDDLE, "open", None)
+    def test_an_empty_status_or_no_report_is_not_marked(self) -> None:
+        self.report(NEWEST, "complete", "")
+        self.report(MIDDLE, "active", None)
         self.assertIsNone(self.mark_of(NEWEST))
         self.assertIsNone(self.mark_of(MIDDLE))
 
-    def test_a_status_outside_the_vocabulary_or_a_stop_not_named_is_marked(self) -> None:
-        self.report(NEWEST, "complete", None)
-        self.assertEqual(self.mark_of(NEWEST), f"{session_find.DISAGREES} status complete is not one of queued, open, blocked, done")
-        self.report(MIDDLE, "done", "finished")
-        self.assertIn("Stop finished is not one of", self.mark_of(MIDDLE))
+    def test_a_status_outside_the_vocabulary_or_a_report_status_not_allowed_is_marked(self) -> None:
+        self.report(NEWEST, "archived", None)
+        self.assertEqual(
+            self.mark_of(NEWEST), f"{session_find.DISAGREES} status archived is not one of queued, active, blocked, complete"
+        )
+        self.report(MIDDLE, "complete", "Finished")
+        self.assertIn("Status finished is not one of", self.mark_of(MIDDLE))
+
+    def test_a_report_in_an_earlier_shape_is_marked_with_the_remedy_and_says_no_status(self) -> None:
+        for index, body in enumerate(("# Report\nStop: success\n", "---\nStatus:\nOutcome: success\n---\n# Report\n")):
+            sid = f"2026100{index}-T000000Z-8"
+            path = self.session(sid, plan(sid, status="complete"))
+            (path / REPORT_NAME).write_text(body, encoding="utf-8", newline="\n")
+            with self.subTest(body=body):
+                text = self.run_list(sid)
+                self.assertIn(f"{session_find.CONCERNS} {REPORT_NAME} is in an earlier shape", text)
+                self.assertIn(session_plan.EARLIER_SHAPE_REMEDY, text)
+                self.assertIsNone(self.mark_of(sid))
 
 
 if __name__ == "__main__":

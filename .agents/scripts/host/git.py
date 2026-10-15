@@ -4,8 +4,9 @@
 """host/git.py — a git operation with the constraint a session keeps violating.
 
 **Two audiences, two texts, and this file is where each lives.** `DESCRIPTION`
-below is what `--help` prints, and the per-verb `help=` strings beside each
-argument are what `git.py <verb> --help` prints. Both are addressed to whoever is
+below is what `--help` prints, and each verb's `description=` and the `help=`
+strings beside its arguments are what `git.py <verb> --help` prints: each help
+states its own work, never another verb's. Both are addressed to whoever is
 about to run one of these — usually an agent holding uncommitted work. Everything
 from here down is addressed to whoever opens this file.
 
@@ -127,39 +128,20 @@ from typing import Callable, NoReturn, TypeVar
 
 DESCRIPTION = """host/git.py — git operations that do not lose work
 
-Git already does all of this. These do it with the constraint a session keeps
-wanting to skip:
-
-  rename    move a tracked file or folder, with history following it
-  remove    stop tracking a path, sending it to the recycle bin first
-  stash     set uncommitted work aside where a later session can get it
-  restore   give uncommitted work back, and refuse to throw it away unasked
-  undelete  bring a deleted or untracked-back path back from a commit
-  commit    commit only the paths you name, leaving what others staged alone
-  uncommit  take back your last unpushed commit, its changes left in the tree
-  reindex   finish or undo a commit or uncommit that stopped after moving HEAD
-
-`remove` does not delete: the file goes to the recycle bin, so it is still there
-if it turns out to be needed. `restore` will not discard anything unless you
-pass an explicit confirmation, because "tidy the status" is how uncommitted work
-is most often lost — if you want it set aside, `stash` is the command for that.
-`undelete` is neither of those: it recovers, and it says what it recovered.
-`commit` is for a working tree other sessions share: plain `git commit` takes
-everything staged, theirs included, and so does any rewrite of it your runtime
-makes. The commits a `--fold` replaces stay reachable through `git reflog`, and
-so does the commit `uncommit` takes back; `uncommit` asks for that commit's id,
-so it never takes back one you did not mean.
-
-When another git process — often your editor, refreshing its status — holds a
-lock `commit` or `uncommit` needs, they say so and how long they will wait for
-it. If they still cannot finish, they stop and say what stage they reached, what
-git said, how old the lock is, and the exact command that finishes or undoes what
-was done. Do what that message says; never delete a lock file to get past one.
+Git already does all of this. Each command here does it with the constraint a
+session keeps wanting to skip, and says which in its own --help.
 
 One thing git does that looks like a bug: a file that matches `.gitignore` but
 is already tracked still shows up as modified. Ignoring does not untrack, and
 restoring it away is not the fix.
 """
+
+LOCK_NOTE = """When another git process — often your editor, refreshing its status — holds a
+lock this command needs, it says so and how long it will wait for it. If it
+still cannot finish, it stops and says what stage it reached, what git said, how
+old the lock is, and the exact command that finishes or undoes what was done. Do
+what that message says; never delete a lock file to get past one."""
+"""What `commit` and `uncommit` both say about a lock another git process holds, said once."""
 
 SCRIPTS = Path(__file__).resolve().parent.parent
 if str(SCRIPTS) not in sys.path:
@@ -933,6 +915,7 @@ def main() -> int:
     p_rename = sub.add_parser(
         "rename",
         help="git mv for a tracked path; the rename rides with the task's commit",
+        description="Move a tracked file or folder with `git mv`, so history follows it.",
     )
     p_rename.add_argument("source", type=Path)
     p_rename.add_argument("destination", type=Path)
@@ -940,12 +923,19 @@ def main() -> int:
     p_remove = sub.add_parser(
         "remove",
         help="trash working-tree path then git add -u (never git rm)",
+        description=(
+            "Stop tracking each PATH without deleting it: the file goes to the recycle\n"
+            "bin, so it is still there if it turns out to be needed, and its\n"
+            "disappearance is staged."
+        ),
+        formatter_class=argparse.RawDescriptionHelpFormatter,
     )
     p_remove.add_argument("paths", nargs="+", type=Path)
 
     p_stash = sub.add_parser(
         "stash",
         help="stash tracked+untracked WIP (not ignored); prefer over discard",
+        description="Set uncommitted work aside where a later session can get it back.",
     )
     p_stash.add_argument(
         "-m",
@@ -957,6 +947,12 @@ def main() -> int:
     p_restore = sub.add_parser(
         "restore",
         help="refuse discard by default; needs --confirm DISCARD-UNCOMMITTED",
+        description=(
+            "Discard uncommitted changes to each PATH, and refuse unless --confirm is\n"
+            "given: \"tidy the status\" is how uncommitted work is most often lost. If\n"
+            "you want the work set aside, `stash` is the command for that."
+        ),
+        formatter_class=argparse.RawDescriptionHelpFormatter,
     )
     p_restore.add_argument("paths", nargs="+", type=Path)
     p_restore.add_argument(
@@ -968,6 +964,7 @@ def main() -> int:
     p_undelete = sub.add_parser(
         "undelete",
         help="bring a deleted path back from a commit, into index and worktree",
+        description="Bring each deleted or untracked-back PATH back from a commit; it says what it recovered.",
     )
     p_undelete.add_argument("paths", nargs="+", type=Path)
     p_undelete.add_argument(
@@ -981,6 +978,14 @@ def main() -> int:
     p_commit = sub.add_parser(
         "commit",
         help="commit only the named paths; the shared index keeps others' staging",
+        description=(
+            "Commit only the paths you name, as they are in the working tree, for a\n"
+            "working tree other sessions share: plain `git commit` takes everything\n"
+            "staged, theirs included, and so does any rewrite of it your runtime makes.\n"
+            "The commits a --fold replaces stay reachable through `git reflog`.\n\n"
+            f"{LOCK_NOTE}"
+        ),
+        formatter_class=argparse.RawDescriptionHelpFormatter,
     )
     p_commit.add_argument(
         "paths", nargs="*", type=Path, help="paths to commit as they are in the working tree"
@@ -1029,7 +1034,9 @@ def main() -> int:
             "only that commit's paths go back to the parent, and anything else staged\n"
             "stays staged. A path of the commit holding a staged change of its own is\n"
             "refused. The commit stays recoverable from git reflog, and the command\n"
-            "prints how to put it back."
+            "prints how to put it back. It asks for the commit's id, so it never takes\n"
+            "back one you did not mean.\n\n"
+            f"{LOCK_NOTE}"
         ),
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )

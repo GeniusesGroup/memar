@@ -22,47 +22,30 @@ writes nothing.
 
 What is pinned, and what each pin is for:
 
-  HelpSaysWhatToRun  `memar session --help` says what to run, that one session
-                     is one task, the shape of plan.md and its status, how a
-                     further task is linked with --parent, how another session
-                     continues one, and when its starter may close it; each
-                     verb's own help says what it accepts, and `new`'s points
-                     here rather than repeating it. It also says that
-                     the folder's top holds plan.md and report.md and the rest
-                     goes in role folders, whose names it leaves to
-                     `memar module folders --help`, that report.md is written before
-                     work on a task ends with a Stop the plan's Status agrees
-                     with, and that a folder may lie in the project's own
-                     session location — relative or absolute, never the
-                     project's top folder or a root — which the sweep never
-                     reaches, which `list` shows only with --project or
-                     --conversation, and which keeps its own log. It says
-                     how a task is handed to a sub-agent: the delegator
-                     opens its session, writes its plan, and hands only the
-                     brief, which `brief ID` prints again. The help says
-                     nothing about how the folder is arranged: the mechanism
-                     is a DevActionNote, and the why is pinned to the services'
-                     own docstrings, where it is maintained.
-                     It also says how a conversation that only adds work
-                     queues a task with a priority and never runs it, and how
-                     an agent told only to "do some of the queued tasks", or N
-                     of a project's, works them: `list --status queued`,
-                     `claims N --project X` — the project always named, no
-                     default and no all, the owner asked when it is unknown
-                     — one fresh sub-agent per printed brief, never
-                     in its own context, each report's Stop and Decisions
-                     needed read and its status checked, and one `digest
-                     --conversation` for the owner at the end, holding failed
-                     hand-backs and leaving out done sessions; that the only
-                     writes into another session's folder are the queued or
-                     delegated plan by the session it came from and a
-                     text-only sub-agent's report and Status by its
-                     coordinator; that priority is 1 to 10, 5 when
-                     absent, higher sooner, and changed with `priority`; what a
-                     short hand-back is; how long a claim holds and why; and
-                     that no external runner is involved. `memar --help`'s
-                     line for `session` names queued tasks, so an agent
-                     starting from the top reaches it.
+  HelpSaysWhatToRun  Each help states its own work only (owner, 2026-10-14).
+                     `memar session --help` states the domain's: what a task
+                     and a session are, that the folder's top holds only
+                     plan.md and report.md (and Memar's claim) and the rest
+                     goes in role folders by kind, whose names it leaves to
+                     `memar module folders --help`, the Status words and that
+                     a session ends when its report and plan state the same
+                     one, who writes into another session's folder, that each
+                     location keeps its own log, and the move its own run
+                     makes before every verb; and none of a sub-verb's command
+                     lines, files, or recipes. No sub-verb sends its reader
+                     back there for its own work. `new` says what it writes
+                     (the plan's outline, the report's skeleton, the short
+                     hand-back), where the folder lies, how a task is handed
+                     to a sub-agent, queued, or continued; `claims` carries
+                     the whole recipe for an agent told only to "do some of
+                     the queued tasks" — the project always named, one fresh
+                     sub-agent per batch of one topic, each report read, one
+                     `digest --conversation` at the end; `digest` the owner's
+                     review and what a hand-back is; `close` when it may be
+                     run; and each verb's own help what it accepts. No
+                     external runner is named, and `memar --help`'s line for
+                     `session` names queued tasks, so an agent starting from
+                     the top reaches `claims`.
   EachServiceDeclaresItsVerb
                      Each verb is declared by the service that answers it, and
                      the services the others share declare none.
@@ -80,6 +63,10 @@ What is pinned, and what each pin is for:
   StaleCopiesAreNotNew
                      `new` does not ask whether the skill copies are stale:
                      that is `memar update`'s question.
+  NoOneTimeMigration No file of the scripts folder outside the test suites
+                     names a one-time migration script, and none is one of
+                     them: such a script lives in the session that does the
+                     change (.agents/scripts/README.md).
 
 Usage is the interface. Do not duplicate these recipes as prose catalogs.
 """
@@ -90,7 +77,6 @@ import contextlib
 import importlib.util
 import io
 import os
-import re
 import subprocess
 import sys
 import tempfile
@@ -113,6 +99,7 @@ from machine.fs_test_scratch import suite_scratch
 
 import machine.fs_memar as memar_fs
 import services.session as session
+import services.session_archive as session_archive
 import services.session_brief as session_brief
 import services.session_claim as session_claim
 import services.session_claims as session_claims
@@ -128,6 +115,8 @@ import services.session_migrate as session_migrate
 import services.session_new as session_new
 import services.session_plan as session_plan
 import services.session_priority as session_priority
+import services.session_topic as session_topic
+import services.session_topics as session_topics
 import services.session_report as session_report
 
 LAUNCHER = SCRIPTS / "memar"
@@ -184,155 +173,215 @@ class Fixture(unittest.TestCase):
 
 
 class HelpSaysWhatToRun(unittest.TestCase):
-    MECHANISM = ("shared-tree collisions", "advisory locks", "intent notes", "OS-temp", "fails closed", "services/")
+    # The scripts' own shelf, not the services/ role folder a session's script goes in.
+    MECHANISM = ("shared-tree collisions", "advisory locks", "intent notes", "OS-temp", "fails closed", "scripts/services/")
 
-    def test_the_help_says_what_to_run_and_what_to_do_afterwards(self) -> None:
-        text = run_help()
+    # The owner's ruling (2026-10-14): each command's help states only its own
+    # work; a sub-verb's is reached through that sub-verb's own --help, which
+    # argparse's verb list under the domain's help leads to.
+
+    def test_the_domain_help_says_what_a_task_and_a_session_are(self) -> None:
+        text = flat(run_help())
         for phrase in (
+            "A task is one thing the person asked for",
+            "A session is the record of one task",
             "One session is one task",
-            "memar session new --title TITLE",
-            "--parent ID",
-            "memar session list --conversation ID",
-            "memar session list --status STATUS",
-            "memar session close",
-            "memar session gc",
-            "--session-id",
-            "person who started",
-            "recycle bin",
-            f"{session_gc.SESSION_IDLE_DAYS} days",
-            "Once a day",
-            "whose status is done",
-            "never close a session you did not\nopen",
+            "gets a session of its own",
+            "Agent, sub-agent, and conversation are defined in `memar --help`",
+            "Work inside the session's folder, not in the checkout",
         ):
             self.assertIn(phrase, text)
 
-    def test_the_help_gives_the_plan_and_how_to_continue_from_it(self) -> None:
+    def test_the_domain_help_says_the_top_holds_only_the_plan_and_the_report_and_where_the_rest_goes(self) -> None:
+        text = flat(run_help())
+        for phrase in (
+            "The folder's top holds only plan.md and report.md",
+            "the `claim` file Memar writes there",
+            "Put nothing else at the top",
+            "a note (.md) in docs/, a script (.py, .mjs, .js, .ps1, .sh) in services/",
+            "a test in tests/",
+            "`memar module folders --help` names the role folders",
+            "a file of another kind goes in the role folder that holds it",
+        ):
+            self.assertIn(phrase, text)
+
+    def test_the_domain_help_gives_the_status_words_and_how_a_session_ends(self) -> None:
         text = run_help()
         for phrase in (
-            "plan.md",
-            "title: TITLE",
-            "opened:",
-            "project:",
-            "parent: ID, and conversation:",
-            "Status: open",
-            "A task is one thing the person asked for",
-            "A session is the\nrecord of one task",
-            "Agent, sub-agent, and conversation are defined in\n`memar --help`",
+            "Queued     Waiting to be taken up",
+            "Active     Being worked on",
+            "Status: Complete   the check passed",
+            "Status: Blocked    it waits on an answer or an approval",
+            "Status: Active     its budget ended",
+        ):
+            self.assertIn(phrase, text)
+        text = flat(text)
+        for phrase in (
+            "Queued, Active, Blocked, or Complete",
+            "finished or not",
+            "its report.md states a Status and its plan.md states the same",
+            "Complete once its check has passed",
+        ):
+            self.assertIn(phrase, text)
+
+    def test_the_domain_help_says_who_writes_into_another_sessions_folder_and_where_each_log_is(self) -> None:
+        text = flat(run_help())
+        for phrase in (
+            "Write only inside your own folder",
+            "Two writes reach another session's folder, both from the session it came from",
+            "writes the report.md of a sub-agent that could only return text, and sets that plan.md's Status",
+            "keeps its own log of what was done to its folders, sessions.log at its top",
+        ):
+            self.assertIn(phrase, text)
+
+    def test_the_domain_help_says_a_commit_of_a_task_carries_its_sessions_records(self) -> None:
+        # The owner's ruling (2026-10-14): a commit of a task's changes adds
+        # the records of its sessions, kept in the project, not the folders.
+        text = flat(run_help())
+        for phrase in (
+            "A session's records — its plan.md, its report.md, and each file in its folder its report links to",
+            "are kept in .agents/sessions/<id>/ in its project",
+            "Committing a task's changes commits the records of its sessions with them",
+            "its own and those of the sessions it handed work to",
+            "unless its preferences say `records: off`",
+        ):
+            self.assertIn(phrase, text)
+
+    def test_the_domain_help_says_what_its_own_run_does_before_every_verb(self) -> None:
+        text = flat(run_help())
+        for phrase in ("Before any verb below runs", "an earlier Memar left directly in temp/", "asking for help moves nothing"):
+            self.assertIn(phrase, text)
+
+    def test_the_domain_help_states_no_sub_verbs_work(self) -> None:
+        # Each phrase is a sub-verb's: its command line, what it writes, or its recipe.
+        text = flat(run_help())
+        for phrase in (
+            "memar session new",
+            "memar session claims",
+            "memar session digest",
+            "Title: TITLE",
+            "## Request",
+            "## What ran",
+            "do some of the queued tasks",
+            "review today's sessions",
+            "Once a day",
+            "To only add work",
+        ):
+            self.assertNotIn(phrase, text)
+
+    def test_no_sub_verb_sends_its_reader_to_the_domain_help_for_its_own_work(self) -> None:
+        for verb in ("new", "list", "brief", "gc", "close", "archive", "claim", "claims", "priority", "topic", "topics", "digest"):
+            with self.subTest(verb=verb):
+                text = flat(run_help(verb)).lower()
+                self.assertNotIn("when to use", text)
+                self.assertNotIn("what to do with each is said", text)
+                self.assertNotIn("what a report's decisions are is said", text)
+
+    def test_new_says_what_it_writes_and_where_the_folder_lies(self) -> None:
+        text = run_help("new")
+        self.assertIn("---\n    Title: TITLE\n    Status:\n    ---\n    # Report\n\n    ## What ran\n    ## Check\n    ## Result\n    ## Left open", text)
+        text = flat(text)
+        for phrase in (
+            "Title: TITLE",
+            "Opened:",
+            "Project:",
+            "Parent: ID of the session this one came from",
+            "Conversation: the id of the first session",
+            "Status: where the task stands",
             "## Request",
             "## Why",
             "in its own words, from the person's request",
             "## Steps",
             "## Next",
-            "open, blocked, or done",
-            "set done once its check has passed",
-            "works in its own session",
-            "memar session list --status open",
-            "memar session new --session-id ID",
-            "start from its Next",
-        ):
-            self.assertIn(phrase, text)
-
-    def test_the_help_gives_the_report_and_when_to_write_it(self) -> None:
-        text = run_help()
-        for phrase in (
-            "The folder's top holds plan.md and report.md",
-            "role folder of its kind",
-            "`memar module folders --help` names them",
-            "# Report\n    Stop:\n\n    ## What ran\n    ## Check\n    ## Result\n    ## Left open",
-            "finished or not",
-            "Stop: success, clean no-op",
-            "Status: done",
-            "Stop: blocked, approval-required",
-            "Stop: exhausted, no progress",
-            "`list` marks a session whose report and plan disagree",
-        ):
-            self.assertIn(phrase, text)
-
-    def test_the_help_says_where_a_folder_is_and_what_the_sweep_never_reaches(self) -> None:
-        text = flat(run_help())
-        for phrase in (
+            "written in PascalCase",
+            "rewrite it in the shape above",
+            "never overwrites one that is there",
+            "Left open names each entry the task wrote in a handoff",
+            "at most 10 lines under a `## Decisions needed` heading",
+            "each the question, its options, and the one it recommends",
             "under temp/sessions/",
             "sets `sessions` in its .agents/memar/preferences.md",
             "says on a line of its own",
             "relative to the project's top folder, or an absolute one",
             "drive or filesystem root is refused",
             "inside Memar's own temp/ is not used",
-            "The sweep reaches only Memar's own temp/sessions/",
-            "keeping, committing, or deleting it is the project's",
-            "`gc` names those locations",
+            "use it as printed",
+            "`memar content write`",
+            "Once a day",
         ):
             self.assertIn(phrase, text)
         self.assertNotIn("lies in Memar's own checkout, also when", text)
 
-    def test_the_help_says_how_a_task_is_handed_to_a_sub_agent(self) -> None:
-        text = flat(run_help())
+    def test_new_says_how_a_task_is_handed_over_queued_and_continued(self) -> None:
+        text = flat(run_help("new"))
         for phrase in (
-            "memar session brief ID",
-            "and print the brief that hands it over",
             "open its session yourself with `--parent`",
             "write the whole task into its plan.md — the Request, the check that says it is done, the shape of its report, and its Why, in your own words from the person's request",
-            "hand the sub-agent only the brief `new` prints, which `brief ID` prints again",
+            "hand the sub-agent only the brief `new` prints, which `memar session brief ID` prints again",
             "takes that session up and opens none, and does not rewrite its Request",
-        ):
-            self.assertIn(phrase, text)
-
-    def test_the_help_says_what_list_shows_and_where_each_log_is(self) -> None:
-        text = flat(run_help())
-        for phrase in (
-            "memar session list [TEXT] find Memar's own session folders",
-            "memar session list --project [PATH]",
-            "`--project` lists every session of a project, in its own location or in Memar's",
-            "`--conversation` every session of a conversation, wherever it lies",
-            "Each location keeps its own log of what was done to its folders, sessions.log at its top",
-            "those it no longer records because their folder is gone",
-        ):
-            self.assertIn(phrase, text)
-
-    def test_the_help_says_how_a_task_is_queued_with_a_priority_and_never_run(self) -> None:
-        text = flat(run_help())
-        for phrase in (
-            "Status is queued, open, blocked, or done",
-            "memar session new --title TITLE --parent ID --queued [--priority N]",
-            "memar session priority ID N",
-            "new --session-id ID --queued",
-            "never do a queued session's work in your own context",
             "To only add work",
-            "priority: a whole number from 1 to 10, 5 when absent; the higher goes sooner",
-            "Anyone may change it",
+            "--queued",
+            "--session-id ID --queued",
+            "a queued plan whose Request is empty is not taken",
+            "never do a queued session's work in your own context",
+            "To continue a task another session left",
+            "`memar session list`",
+            "start from its Next",
         ):
             self.assertIn(phrase, text)
 
-    def test_the_help_says_how_an_agent_told_only_to_do_queued_tasks_works_them(self) -> None:
+    def test_new_does_not_repeat_what_the_domain_states(self) -> None:
+        text = run_help("new")
+        for phrase in ("Status: Blocked    it waits", "Queued     Waiting to be taken up", "Put nothing else at the top"):
+            self.assertNotIn(phrase, text)
+
+    def test_claims_carries_the_recipe_for_an_agent_told_only_to_do_queued_tasks(self) -> None:
         # The owner's prompt is one line — "do some of the queued Memar tasks",
-        # "do 5 tasks of project X" — so the help alone must carry the recipe.
-        text = flat(run_help())
+        # "do 5 tasks of project X" — so `claims`, which `memar session --help`
+        # lists as the verb that takes queued tasks, carries the whole recipe.
+        text = flat(run_help("claims"))
         for phrase in (
             "do some of the queued tasks",
-            "`--project` is required: one run serves one project",
-            "\"do 5 tasks of X\" means `claims 5 --project X`",
+            "--project NAME or --project-path PATH is required: one run serves one project",
+            "\"Do 5 tasks of X\" means `claims 5 --project X`",
             "there is no default project and no way to take from all",
             "ask the owner rather than guess",
-            "memar session list --status queued",
-            "memar session claims N --project [PATH]",
+            "`memar session list --status queued`",
             "N is yours to choose",
-            "the highest priority first, the oldest first among equals",
-            "one fresh sub-agent per session",
+            "the highest priority first, the oldest opened first among equals",
+            "Hand the batch of one topic to one fresh sub-agent",
+            "each session keeping its own plan.md and report.md",
+            "never one sub-agent for sessions of different topics",
             "never in your own context",
-            "read its report.md: its Stop and its Decisions needed",
-            "a Stop that disagrees with its plan",
-            "memar session digest [--conversation ID]",
+            "read its report.md: its Status and its Decisions needed",
+            "a Status that disagrees with its plan",
+            "failed hand-back",
             "run `memar session digest --conversation ID`, ID your own session's",
             "give the owner that one digest",
-            "memar session claim ID",
-            f"lapses after {session_claim.CLAIM_STALE_SECONDS // 3600} hours",
-            "nothing keeps a claim fresh",
-            "at most 10 lines under a `## Decisions needed` heading",
-            "failed hand-back",
-            "`digest` gathers into one every session's Decisions needed and every failed hand-back",
-            "it leaves out done sessions",
-            "Two writes reach another session's folder, both from the session it came from",
-            "writes the report.md of a sub-agent that could only return text, and sets that plan.md's Status",
             "Memar starts no agent",
+        ):
+            self.assertIn(phrase, text)
+
+    def test_the_review_and_the_hand_back_are_digests(self) -> None:
+        text = flat(run_help("digest"))
+        for phrase in (
+            "review today's sessions with me and close the ones I confirm",
+            "`memar session close --session-id ID`",
+            "at most 10 lines",
+            "each the question, its options, and the one it recommends",
+            "a complete session is in only when it has entries or a failed hand-back",
+            "blocking first",
+            "a pointer to a handoff or line that holds no open question is a failed hand-back",
+        ):
+            self.assertIn(phrase, text)
+
+    def test_close_says_when_it_may_be_run(self) -> None:
+        text = flat(run_help("close"))
+        for phrase in (
+            "recycle bin",
+            "the person who started the session has already said the work is finished",
+            "never ask them to, and never close a session you did not open",
+            "You do not have to close a session",
         ):
             self.assertIn(phrase, text)
 
@@ -345,49 +394,37 @@ class HelpSaysWhatToRun(unittest.TestCase):
     def test_the_top_help_leads_to_queued_tasks(self) -> None:
         self.assertIn("queued tasks", session.SUMMARY)
 
-    def test_the_command_lists_keep_one_column(self) -> None:
-        columns = set()
-        for line in session.DESCRIPTION.splitlines():
-            if line.startswith("    memar session"):
-                found = re.search(r"\S {2,}(?=\S)", line)
-                if found:
-                    columns.add(found.end())
-            elif line.startswith(" " * 20) and line.strip():
-                columns.add(len(line) - len(line.lstrip()))
-        self.assertEqual(len(columns), 1, columns)
-
     def test_each_verbs_help_says_what_it_accepts(self) -> None:
         for verb, phrases in (
-            ("new", ("--session-id", "--title TITLE", "--parent ID", "for one task", "first session of that conversation",
-                     "said in `memar session --help`")),
+            ("new", ("--session-id", "--title TITLE", "--parent ID", "--project NAME", "--project-path PATH", "never read", "for one task", "first session of that conversation")),
             ("list", ("whose id, title, or project holds TEXT", "one word or a short phrase, not a question",
-                      "--status {queued,open,blocked,done}", "--conversation ID", "--idle-days DAYS",
-                      "--project [PATH]", "List Memar's own session folders", "the git top-level of the current folder")),
-            ("brief", ("ID", "ready to paste", "`new --parent` prints", "said in `memar session --help`")),
-            ("gc", ("--session-id", "--idle-days DAYS", "never swept", "cannot be read", "at least 1", "whose status is done")),
-            ("close", ("--session-id",)),
-            ("new", ("--queued", "an existing open one no one has claimed is queued", "--priority N", "1 to 10",
+                      "--status {queued,active,blocked,complete}", "--conversation ID", "--idle-days DAYS",
+                      "--project NAME", "--project-path PATH", "List Memar's own session folders", "the calling folder is never read",
+                      "earlier shape", "where today's shape is shown")),
+            ("brief", ("ID", "ready to paste", "`new --parent` prints")),
+            ("gc", ("--session-id", "--idle-days DAYS", "never swept", "cannot be read", "at least 1", "whose status is complete",
+                    "once a day", f"{session_gc.SESSION_IDLE_DAYS} unless given")),
+            ("close", ("--session-id", "--without-records", "which loses them", "the folder holding them is printed",
+                       "is not closed")),
+            ("archive", ("--session-id", "every session whose Parent chain leads to it", "relative link",
+                         "registered name, not by its path", "the claim is not copied", "name those folders in the commit",
+                         "`records: off`", "the verb fails")),
+            ("new", ("--queued", "an existing active one no one has claimed is queued", "--priority N", "1 to 10",
                      "higher goes sooner")),
-            ("claim", ("ID", "another agent holds, is refused", "taken over", "said in `memar session --help`")),
+            ("claim", ("ID", "another agent holds, is refused", "taken over", "Nothing keeps a claim fresh",
+                       f"{session_claim.CLAIM_STALE_SECONDS // 3600} hours")),
             ("claims", ("N", "highest priority first", "oldest", "brief", "Fewer queued than N is not an error", "no default",
-                        "--project is required: one run serves one project",
-                        "never mixes two projects'", "no default project and no way to take from all",
-                        "\"Do 5 tasks of X\" means `claims 5 --project X`", "ask the owner rather than guess",
-                        "one fresh sub-agent per session", "said in `memar session --help`")),
+                        "never mixes two projects'", "one fresh sub-agent per batch of one topic", "--topic T", "--fill")),
             ("priority", ("ID", "N", "1 to 10", "5 when", "higher goes sooner", "Anyone, a person or an agent, may change it")),
+            ("topic", ("ID", "T", "tasks that share a topic are taken together", "a task with no topic is taken by priority and age alone",
+                       "`memar session topics`")),
             ("digest", ("--conversation ID", "Decisions needed", "priority", "failed hand-back",
-                        "entries or not", "Done and queued sessions are left out",
-                        "said in `memar session --help`")),
+                        "entries or not", "Queued sessions are left out", "With --day: the review", "The review closes nothing itself")),
         ):
             with self.subTest(verb=verb):
                 text = flat(run_help(verb))
                 for phrase in phrases:
                     self.assertIn(phrase, text)
-
-    def test_new_points_at_the_domain_help_rather_than_repeating_it(self) -> None:
-        text = flat(run_help("new"))
-        for phrase in ("finished or not", "Stop: blocked", "role folder", ".agents/memar/preferences.md", "sweep"):
-            self.assertNotIn(phrase, text)
 
     def test_the_help_does_not_carry_the_implementation(self) -> None:
         text = run_help()
@@ -397,17 +434,35 @@ class HelpSaysWhatToRun(unittest.TestCase):
     def test_the_why_is_in_the_files_the_implementer_reads(self) -> None:
         # Not a second copy: each service's own docstring, the one text
         # addressed to whoever opens it, and the domain's says where they are.
-        for name in ("session_new", "session_brief", "session_find", "session_close", "session_gc", "session_migrate"):
+        for name in ("session_new", "session_brief", "session_find", "session_close", "session_gc", "session_archive", "session_migrate"):
             self.assertIn(name, session.__doc__)
         for module, phrases in (
             (session_new, ("shared-tree collisions", "advisory locks", "intent notes", "One session is one task")),
             (session_brief, ("same text for every task", "stated once in the delegator's words")),
-            (session_plan, ("disputed", "handoff", "still read")),
+            (session_plan, ("disputed", "handoff", "Only that shape is read")),
             (session_gc, ("Idle is not the same as", "once a day")),
             (session_find, ("listed together",)),
         ):
             for phrase in phrases:
                 self.assertIn(phrase, flat(module.__doc__), module.__name__)
+
+
+class NoOneTimeMigration(unittest.TestCase):
+    # A one-time migration lives in the session that does the change, never in
+    # this folder (.agents/scripts/README.md, owner 2026-10-14), so nothing here
+    # names one: these three were such scripts, and lie in their sessions now.
+    MIGRATION_SCRIPTS = ("session-convert", "session-strays", "session-rename", "CONVERT_SCRIPT")
+
+    def test_no_file_of_the_scripts_folder_names_a_one_time_migration(self) -> None:
+        files = [path for path in SCRIPTS.rglob("*.py") if "tests" not in path.relative_to(SCRIPTS).parts]
+        files.append(LAUNCHER)
+        for path in files:
+            text = path.read_text(encoding="utf-8")
+            for name in self.MIGRATION_SCRIPTS:
+                with self.subTest(path=path.relative_to(SCRIPTS).as_posix(), name=name):
+                    self.assertNotIn(name, text)
+            with self.subTest(path=path.relative_to(SCRIPTS).as_posix()):
+                self.assertFalse(path.name in {f"{name}.py" for name in self.MIGRATION_SCRIPTS})
 
 
 class EachServiceDeclaresItsVerb(unittest.TestCase):
@@ -428,11 +483,14 @@ class EachServiceDeclaresItsVerb(unittest.TestCase):
             (session_new, ["new"]),
             (session_brief, ["brief"]),
             (session_find, ["list"]),
+            (session_archive, ["archive"]),
             (session_close, ["close"]),
             (session_gc, ["gc"]),
             (session_claim, ["claim"]),
             (session_claims, ["claims"]),
             (session_priority, ["priority"]),
+            (session_topic, ["topic"]),
+            (session_topics, ["topics"]),
             (session_digest, ["digest"]),
         ):
             with self.subTest(verbs=declared):
@@ -446,7 +504,7 @@ class EachServiceDeclaresItsVerb(unittest.TestCase):
             with self.subTest(module=module.__name__):
                 self.assertFalse(hasattr(module, launcher.DESCRIBE))
 
-    def test_the_command_offers_the_nine_verbs_in_the_order_of_their_services(self) -> None:
+    def test_the_command_offers_the_twelve_verbs_in_the_order_of_their_services(self) -> None:
         def verbs_of(parser: argparse.ArgumentParser) -> dict[str, argparse.ArgumentParser]:
             found = [action for action in parser._actions if isinstance(action, argparse._SubParsersAction)]
             return dict(found[0].choices) if found else {}
@@ -455,7 +513,7 @@ class EachServiceDeclaresItsVerb(unittest.TestCase):
         self.assertEqual(before, [])
         self.assertEqual(
             list(verbs_of(verbs_of(top)["session"])),
-            ["brief", "claim", "claims", "close", "digest", "list", "gc", "new", "priority"],
+            ["archive", "brief", "claim", "claims", "close", "digest", "list", "gc", "new", "priority", "topic", "topics"],
         )
 
 
@@ -467,28 +525,91 @@ class VerbsDispatch(Fixture):
             (["list"], session_find, "list_sessions", (None, None, None, None, None)),
             (["list", "word", "--status", "blocked", "--idle-days", "3", "--conversation", "s-0"],
              session_find, "list_sessions", ("word", "blocked", 3.0, "s-0", None)),
-            (["list", "word", "--project"], session_find, "list_sessions", ("word", None, None, None, "")),
-            (["list", "--project", "C:/work/p"], session_find, "list_sessions", (None, None, None, None, "C:/work/p")),
+            (["list", "--project-path", "<F>"], session_find, "list_sessions", (None, None, None, None, "<F>")),
+            (["list", "--project", "p"], session_find, "list_sessions", (None, None, None, None, "<F>")),
             (["brief", "s-1"], session_brief, "print_brief", ("s-1",)),
             (["gc"], session_gc, "collect", (None, None)),
             (["gc", "--session-id", "s-1", "--idle-days", "2"], session_gc, "collect", ("s-1", 2.0)),
-            (["close", "--session-id", "s-1"], session_close, "close", ("s-1",)),
+            (["close", "--session-id", "s-1"], session_close, "close", ("s-1", False)),
+            (["close", "--session-id", "s-1", "--without-records"], session_close, "close", ("s-1", True)),
+            (["archive", "--session-id", "s-1"], session_archive, "archive", ("s-1",)),
             (["new", "--title", "T", "--queued"], session_new, "open_session", (None, "T", None, True, None)),
             (["new", "--title", "T", "--queued", "--priority", "8"], session_new, "open_session",
              (None, "T", None, True, 8)),
             (["list", "--status", "queued"], session_find, "list_sessions", (None, "queued", None, None, None)),
             (["claim", "s-1"], session_claim, "claim", ("s-1",)),
             (["claims", "5"], session_claims, "claims", (5, None)),
-            (["claims", "5", "--project"], session_claims, "claims", (5, "")),
-            (["claims", "2", "--project", "C:/work/p"], session_claims, "claims", (2, "C:/work/p")),
+            (["claims", "2", "--project-path", "<F>"], session_claims, "claims", (2, "<F>")),
             (["priority", "s-1", "8"], session_priority, "set_session_priority", ("s-1", "8")),
-            (["digest"], session_digest, "print_digest", (None,)),
-            (["digest", "--conversation", "s-0"], session_digest, "print_digest", ("s-0",)),
+            (["new", "--title", "T", "--topic", "docs"], session_new, "open_session", (None, "T", None, False, None, "docs")),
+            (["claims", "5", "--project", "p", "--topic", "docs"], session_claims, "claims", (5, "<F>", "docs", False)),
+            (["claims", "5", "--project", "p", "--fill"], session_claims, "claims", (5, "<F>", None, True)),
+            (["topic", "s-1", "docs"], session_topic, "set_session_topic", ("s-1", "docs")),
+            (["topic", "s-1", ""], session_topic, "set_session_topic", ("s-1", "")),
+            (["topics"], session_topics, "list_topics", (None,)),
+            (["topics", "--project-path", "<F>"], session_topics, "list_topics", ("<F>",)),
+            (["digest"], session_digest, "print_digest", (None, None, None)),
+            (["digest", "--conversation", "s-0"], session_digest, "print_digest", ("s-0", None, None)),
         ):
+            # "<F>" is the project's folder: given as it is by --project-path, and
+            # what the registry answers for the name given by --project.
+            folder = self.fake_root / "p"
+            folder.mkdir(exist_ok=True)
+            argv = [str(folder) if word == "<F>" else word for word in argv]
+            expected = tuple(folder.resolve() if value == "<F>" else value for value in expected)
             with self.subTest(argv=argv):
-                with unittest.mock.patch.object(module, name) as service:
+                with unittest.mock.patch.object(module, name) as service, \
+                        unittest.mock.patch("services.project_find.resolve_project", return_value=folder.resolve()):
                     self.assertEqual(command(*argv), 0)
                 service.assert_called_once_with(*expected)
+
+    def test_new_passes_its_project_as_a_folder_and_without_one_passes_none(self) -> None:
+        folder = self.fake_root / "docs"
+        folder.mkdir()
+        with unittest.mock.patch.object(session_new, "open_session") as service:
+            self.assertEqual(command("new", "--title", "T", "--project-path", str(folder)), 0)
+        service.assert_called_once_with(None, "T", None, project=folder.resolve())
+        with unittest.mock.patch.object(session_new, "open_session") as service, \
+                unittest.mock.patch("services.project_find.resolve_project", return_value=folder.resolve()):
+            self.assertEqual(command("new", "--title", "T", "--project", "docs"), 0)
+        service.assert_called_once_with(None, "T", None, project=folder.resolve())
+        with unittest.mock.patch.object(session_new, "open_session") as service, contextlib.redirect_stderr(io.StringIO()):
+            with self.assertRaises(SystemExit):
+                command("new", "--title", "T", "--project")
+        service.assert_not_called()
+
+    def test_every_verb_that_takes_a_project_takes_one_flag_per_kind_and_never_both(self) -> None:
+        for argv, module, name in (
+            (["new", "--title", "T"], session_new, "open_session"),
+            (["list"], session_find, "list_sessions"),
+            (["claims", "5"], session_claims, "claims"),
+            (["topics"], session_topics, "list_topics"),
+            (["digest"], session_digest, "print_digest"),
+        ):
+            with self.subTest(verb=argv[0]):
+                folder = str(self.fake_root)
+                with unittest.mock.patch.object(module, name) as service, contextlib.redirect_stderr(io.StringIO()):
+                    with self.assertRaises(SystemExit):
+                        command(*argv, "--project", "p", "--project-path", folder)
+                    with self.assertRaises(SystemExit):
+                        command(*argv, "--project", folder)
+                    with self.assertRaises(SystemExit):
+                        command(*argv, "--project-path", "p-is-a-name")
+                service.assert_not_called()
+
+    def test_project_always_takes_a_value_and_no_service_runs_without_one(self) -> None:
+        for argv, module, name in (
+            (["list", "word", "--project"], session_find, "list_sessions"),
+            (["list", "word", "--project-path"], session_find, "list_sessions"),
+            (["claims", "5", "--project"], session_claims, "claims"),
+            (["topics", "--project"], session_topics, "list_topics"),
+            (["digest", "--day", "today", "--project"], session_digest, "print_digest"),
+        ):
+            with self.subTest(argv=argv):
+                with unittest.mock.patch.object(module, name) as service, contextlib.redirect_stderr(io.StringIO()):
+                    with self.assertRaises(SystemExit):
+                        command(*argv)
+                service.assert_not_called()
 
     def test_the_task_verb_is_gone_and_an_unknown_status_refused(self) -> None:
         for argv in (["task", "--session-id", "s-1", "--title", "T"], ["list", "--status", "released"], ["close"]):
@@ -557,12 +678,12 @@ class MovedBeforeAnyVerb(Fixture):
 
 class CommandEndToEnd(Fixture):
     def test_new_prints_the_id_and_path_and_list_finds_it(self) -> None:
-        text = self.run_main("new", "--session-id", "20261003T000000Z-1-0", "--title", TITLE)
+        text = self.run_main("new", "--session-id", "20261003T000000Z-1-0", "--title", TITLE, "--project-path", str(self.fake_root))
         path = memar_fs.session_dir("20261003T000000Z-1-0")
         self.assertIn("session_id: 20261003T000000Z-1-0", text)
         self.assertIn(f"path: {path}", text)
         self.assertTrue((path / session_plan.PLAN_NAME).is_file())
-        listed = self.run_main("list", "--status", "open")
+        listed = self.run_main("list", "--status", "active")
         self.assertIn(f"20261003T000000Z-1-0  {TITLE}", listed)
 
     def test_the_launcher_reaches_each_verbs_help(self) -> None:
@@ -581,7 +702,7 @@ class CommandEndToEnd(Fixture):
 class StaleCopiesAreNotNew(Fixture):
     def test_new_runs_no_child_process_but_git(self) -> None:
         with unittest.mock.patch.object(subprocess, "run", wraps=subprocess.run) as run:
-            self.run_main("new", "--session-id", "s-quiet", "--title", TITLE)
+            self.run_main("new", "--session-id", "s-quiet", "--title", TITLE, "--project-path", str(self.fake_root))
         for call in run.call_args_list:
             self.assertEqual(call.args[0][0], "git")
 

@@ -4,8 +4,9 @@
 """host/fs.py — a filesystem operation with the constraint a session keeps violating.
 
 **Two audiences, two texts, and this file is where each lives.** `DESCRIPTION`
-below is what `--help` prints, and the per-verb `help=` strings beside each
-argument are what `fs.py <verb> --help` prints. Both are addressed to whoever is
+below is what `--help` prints, and each verb's `description=` and the `help=`
+strings beside its arguments are what `fs.py <verb> --help` prints: each help
+states its own work, never another verb's. Both are addressed to whoever is
 about to run one of these — usually an agent that has just been about to do the
 unconstrained thing. Everything from here down is addressed to whoever opens this
 file.
@@ -53,21 +54,12 @@ from machine.fs_trash import soft_delete
 
 DESCRIPTION = """host/fs.py — filesystem operations that are safe to undo
 
-The operating system already lists and deletes files. These are the same
-operations with the constraint a session keeps wanting to skip:
-
-  tree          list a directory tree, as ASCII branches
-  git-mv-glob   move matching paths into a folder, through git so history follows
-  trash         move a path to the recycle bin instead of deleting it
-  link          make a directory link
-
-`trash` exists because a delete you cannot undo is a delete you cannot take
-back: if the file turns out to be needed, the recycle bin still has it.
-`git-mv-glob` prints what it would move and does nothing until you pass
-`--apply`, so a mistaken glob is visible before it is real.
+The operating system already lists and deletes files. Each command here is the
+same operation with the constraint a session keeps wanting to skip, and says
+which in its own --help.
 
 There is no command here that prints the OS temporary directory. Session scratch
-belongs in your session folder — run `memar session new` and work there.
+belongs in your session folder — run `memar session new --title TITLE --project NAME` (or `--project-path PATH`) and work there.
 """
 
 
@@ -198,6 +190,12 @@ def main() -> int:
     p_glob = sub.add_parser(
         "git-mv-glob",
         help="git-mv every file matching a glob into a destination directory",
+        description=(
+            "Move every file matching PATTERN into DESTINATION through `git mv`, so\n"
+            "history follows each. It prints what it would move and does nothing until\n"
+            "you pass --apply, so a mistaken glob is visible before it is real."
+        ),
+        formatter_class=argparse.RawDescriptionHelpFormatter,
     )
     p_glob.add_argument(
         "pattern",
@@ -217,6 +215,12 @@ def main() -> int:
     p_trash = sub.add_parser(
         "trash",
         help="move path(s) to OS Recycle Bin / Trash (never permanent delete)",
+        description=(
+            "Move each PATH to the OS recycle bin / Trash instead of deleting it. A\n"
+            "delete you cannot undo is a delete you cannot take back: if the file\n"
+            "turns out to be needed, the recycle bin still has it."
+        ),
+        formatter_class=argparse.RawDescriptionHelpFormatter,
     )
     p_trash.add_argument("paths", nargs="+", type=Path)
 

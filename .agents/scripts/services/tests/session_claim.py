@@ -64,6 +64,7 @@ import services.session_find as session_find
 import services.session_new as session_new
 import services.session_plan as session_plan
 import services.session_report as session_report
+from services.status import Kind, Status
 
 
 def plan_text(
@@ -73,10 +74,10 @@ def plan_text(
     opened: str = "2026-10-12T00:00:00Z",
     priority: str | None = None,
 ) -> str:
-    ranked = f"priority: {priority}\n" if priority is not None else ""
+    ranked = f"Priority: {priority}\n" if priority is not None else ""
     return (
-        f"---\ntitle: {title}\nopened: {opened}\nproject: P\n{ranked}---\n# {title}\n"
-        f"Status: {status}\n\n## Request\n{request}\n\n## Why\n\n## Steps\n\n## Next\n"
+        f"---\nTitle: {title}\nStatus: {status.capitalize()}\nOpened: {opened}\nProject: P\n{ranked}---\n# {title}\n"
+        f"\n## Request\n{request}\n\n## Why\n\n## Steps\n\n## Next\n"
     )
 
 
@@ -110,28 +111,28 @@ class Fixture(unittest.TestCase):
 class QueuedIsAStatus(Fixture):
     def test_a_queued_plan_reads_as_queued_and_is_listed_by_that_status(self) -> None:
         folder = self.session("20261012T000001Z-1-0", "queued")
-        self.session("20261012T000002Z-1-0", "open")
+        self.session("20261012T000002Z-1-0", "active")
         self.assertEqual(self.status_of(folder), "queued")
-        self.assertIn("queued", session_plan.STATUSES)
+        self.assertIn("queued", Status.keys(Kind.SESSION_PLAN))
         found = [session.id for session in session_find.find_sessions(status="queued")]
         self.assertEqual(found, [folder.name])
         self.assertIsNone(session_report.disagreement("queued", ""))
 
     def test_new_queued_writes_a_new_plan_queued(self) -> None:
         with contextlib.redirect_stdout(io.StringIO()):
-            sid, path = session_new.ensure_session(None, "Queued task", None, queued=True)
+            sid, path = session_new.ensure_session(None, "Queued task", None, queued=True, project=str(self.fake_root))
         self.assertEqual(self.status_of(path), "queued")
         self.assertEqual(session_plan.priority_of(session_plan.read_plan(path / session_plan.PLAN_NAME).front), 5)
 
     def test_new_queued_with_a_priority_records_it(self) -> None:
         with contextlib.redirect_stdout(io.StringIO()):
-            sid, path = session_new.ensure_session(None, "Urgent task", None, queued=True, priority=9)
+            sid, path = session_new.ensure_session(None, "Urgent task", None, queued=True, priority=9, project=str(self.fake_root))
         front = session_plan.read_plan(path / session_plan.PLAN_NAME).front
         self.assertEqual(session_plan.priority_of(front), 9)
         self.assertEqual(self.status_of(path), "queued")
 
     def test_new_queued_queues_an_open_plan_no_one_has_claimed(self) -> None:
-        folder = self.session("20261012T000003Z-1-0", "open")
+        folder = self.session("20261012T000003Z-1-0", "active")
         with contextlib.redirect_stdout(io.StringIO()):
             session_new.ensure_session(folder.name, None, None, queued=True)
             session_new.ensure_session(folder.name, None, None, queued=True)
@@ -140,8 +141,8 @@ class QueuedIsAStatus(Fixture):
         self.assertIn("Do the thing.", (folder / session_plan.PLAN_NAME).read_text(encoding="utf-8"))
 
     def test_new_queued_refuses_a_done_or_claimed_session(self) -> None:
-        done = self.session("20261012T000004Z-1-0", "done")
-        self.assertIn("done", self.refused(session_new.ensure_session, done.name, None, None, True))
+        done = self.session("20261012T000004Z-1-0", "complete")
+        self.assertIn("complete", self.refused(session_new.ensure_session, done.name, None, None, True))
         claimed = self.session("20261012T000005Z-1-0", "queued")
         session_claim.claim_folder(claimed)
         self.assertIn("claimed", self.refused(session_new.ensure_session, claimed.name, None, None, True))
@@ -151,22 +152,41 @@ class ClaimTakesOne(Fixture):
     def test_a_claim_moves_queued_to_open_and_leaves_a_claim_file(self) -> None:
         folder = self.session("20261012T000010Z-1-0", "queued")
         session_claim.claim_folder(folder)
-        self.assertEqual(self.status_of(folder), "open")
+        self.assertEqual(self.status_of(folder), "active")
         self.assertTrue((folder / session_claim.CLAIM_NAME).is_file())
+
+    def test_a_claim_leaves_the_rest_of_the_plan_and_a_plan_in_an_earlier_shape_is_refused_naming_the_script(self) -> None:
+        folder = self.session("20261012T000012Z-1-0", "queued")
+        plan = folder / session_plan.PLAN_NAME
+        before = plan.read_text(encoding="utf-8")
+        session_claim.claim_folder(folder)
+        self.assertEqual(plan.read_text(encoding="utf-8"), before.replace("Status: Queued", "Status: Active"))
+        old = self.session("20261012T000013Z-1-0", "queued")
+        old_plan = old / session_plan.PLAN_NAME
+        old_plan.write_text(
+            "---\ntitle: T\nopened: 2026-10-12T00:00:00Z\nproject: P\n---\n# T\nStatus: queued\n\n## Request\n",
+            encoding="utf-8",
+            newline="\n",
+        )
+        written = old_plan.read_bytes()
+        self.assertIn(session_plan.EARLIER_SHAPE_REMEDY, self.refused(session_claim.claim_folder, old))
+        self.assertIn(session_plan.EARLIER_SHAPE_REMEDY, session_claim.try_claim(old))
+        self.assertEqual(old_plan.read_bytes(), written)
+        self.assertFalse((old / session_claim.CLAIM_NAME).exists())
 
     def test_the_claim_verb_claims_by_id(self) -> None:
         folder = self.session("20261012T000011Z-1-0", "queued")
         with contextlib.redirect_stdout(io.StringIO()) as out:
             session_claim.claim(folder.name)
         self.assertIn(folder.name, out.getvalue())
-        self.assertEqual(self.status_of(folder), "open")
+        self.assertEqual(self.status_of(folder), "active")
 
     def test_a_claim_refuses_a_session_that_is_not_queued(self) -> None:
-        for index, status in enumerate(("open", "blocked", "done")):
+        for index, (status, read) in enumerate((("active", "active"), ("blocked", "blocked"), ("complete", "complete"))):
             with self.subTest(status=status):
                 folder = self.session(f"20261012T00002{index}Z-1-0", status)
                 self.assertIn("not queued", self.refused(session_claim.claim_folder, folder))
-                self.assertEqual(self.status_of(folder), status)
+                self.assertEqual(self.status_of(folder), read)
 
     def test_a_claim_refuses_a_session_already_claimed(self) -> None:
         folder = self.session("20261012T000030Z-1-0", "queued")
@@ -177,7 +197,7 @@ class ClaimTakesOne(Fixture):
         folder = self.session("20261012T000035Z-1-0", "queued")
         self.assertIsNone(session_claim.try_claim(folder))
         self.assertIn("claimed", session_claim.try_claim(folder))
-        done = self.session("20261012T000036Z-1-0", "done")
+        done = self.session("20261012T000036Z-1-0", "complete")
         self.assertIn("not queued", session_claim.try_claim(done))
 
     def test_a_stale_claim_is_taken_over(self) -> None:
@@ -186,7 +206,7 @@ class ClaimTakesOne(Fixture):
         old = time.time() - session_claim.CLAIM_STALE_SECONDS - 60
         os.utime(folder / session_claim.CLAIM_NAME, (old, old))
         session_claim.claim_folder(folder)
-        self.assertEqual(self.status_of(folder), "open")
+        self.assertEqual(self.status_of(folder), "active")
         self.assertGreater((folder / session_claim.CLAIM_NAME).stat().st_mtime, old + 60)
 
     def test_a_claim_lapses_only_after_a_day(self) -> None:
@@ -220,7 +240,7 @@ class ClaimTakesOne(Fixture):
             racer.stderr.close()
         self.assertEqual(codes[0], 0)
         self.assertNotEqual(codes[1], 0)
-        self.assertEqual(self.status_of(folder), "open")
+        self.assertEqual(self.status_of(folder), "active")
 
     def test_two_takers_over_one_stale_claim_yield_exactly_one_winner(self) -> None:
         # Two real processes, paced by signal files at the moments a takeover
@@ -248,7 +268,7 @@ class ClaimTakesOne(Fixture):
             racer.stdout.close()
             racer.stderr.close()
         self.assertEqual(sorted(code == 0 for code in codes), [False, True], f"exit codes {codes}")
-        self.assertEqual(self.status_of(folder), "open")
+        self.assertEqual(self.status_of(folder), "active")
 
 
 # One taker of a stale claim, paced by files in a signals folder (see the test

@@ -35,6 +35,9 @@ What is pinned, and what each pin is for:
                          under the checkout, and a command whose output is the
                          path that rule forbids invites the failure the rule
                          exists to stop.
+  HelpStatesItsOwnWork   Neither file's overview lists or describes its own
+                         commands: argparse lists them, and each command's own
+                         --help states its work.
   ShelfIsNotRouted       Neither file is a `memar` verb, and the path carries
                          that claim: these constrain the host's tools, which is
                          not a thing Memar offers.
@@ -71,6 +74,7 @@ from __future__ import annotations
 
 import ast
 import importlib.util
+import re
 import sys
 import unittest
 from importlib.machinery import SourceFileLoader
@@ -220,6 +224,27 @@ class TempIsNotAPath(unittest.TestCase):
     def test_the_absence_is_stated_rather_than_left_to_a_reader(self) -> None:
         # An absent command looks like a missing one until the file says why.
         self.assertIn("temporary directory", read("fs.py"))
+
+
+class HelpStatesItsOwnWork(unittest.TestCase):
+    """Each help states its own work (owner, 2026-10-14): argparse lists the commands."""
+
+    def test_neither_files_overview_lists_or_describes_its_commands(self) -> None:
+        for name in ("fs.py", "git.py"):
+            spec = importlib.util.spec_from_file_location(f"host_{Path(name).stem}", HOST / name)
+            module = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(module)
+            commands = {
+                node.args[0].value
+                for node in ast.walk(ast.parse(read(name)))
+                if isinstance(node, ast.Call) and isinstance(node.func, ast.Attribute) and node.func.attr == "add_parser"
+                and node.args and isinstance(node.args[0], ast.Constant)
+            }
+            self.assertTrue(commands)
+            for command in commands:
+                with self.subTest(name=name, command=command):
+                    self.assertIsNone(re.search(rf"^\s+{re.escape(command)}\s{{2,}}\S", module.DESCRIPTION, re.MULTILINE))
+                    self.assertNotIn(f"`{command}`", module.DESCRIPTION)
 
 
 class ShelfIsNotRouted(unittest.TestCase):

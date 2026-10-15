@@ -33,12 +33,14 @@ What is pinned, and what each pin is for:
                        left with what is in it, nothing is deleted or renamed,
                        and a file standing in a role's place is reported and
                        left.
-  CommandSaysWhatItDid `memar module folders [PATH]` makes them in PATH, the
-                       current folder unless given, prints what it made and
-                       what was already there, and refuses a PATH that is not
-                       a folder.
-  HelpDeclaresIt       `memar module --help` and `memar module folders --help`
-                       name the role folders and where what each holds is said.
+  CommandSaysWhatItDid `memar module folders PATH` makes them in PATH, prints
+                       what it made and what was already there, and refuses a
+                       PATH that is not a folder, and no PATH: the current
+                       folder is never read.
+  HelpDeclaresIt       `memar module --help` says where what each role folder
+                       holds is said, and carries no command line of `folders`;
+                       `memar module folders --help` names the role folders it
+                       makes and says the same.
 
 Usage is the interface. Do not duplicate these recipes as prose catalogs.
 """
@@ -163,11 +165,13 @@ class CommandSaysWhatItDid(Fixture):
         self.assertNotIn("made:", printed)
         self.assertIn("already there: protocol/, rules/, errors/, tests/, services/, docs/", printed)
 
-    def test_the_current_folder_unless_given(self) -> None:
-        with contextlib.chdir(self.folder):
-            code, _ = command("folders")
-        self.assertEqual(code, 0)
-        self.assertTrue(all((self.folder / role).is_dir() for role in module_folders.ROLE_FOLDERS))
+    def test_no_path_is_refused_and_the_current_folder_is_never_read(self) -> None:
+        # A script is told its folder (.agents/scripts/README.md, "A script is
+        # told its project"): with none given nothing is made, wherever it runs.
+        with contextlib.chdir(self.folder), contextlib.redirect_stderr(io.StringIO()):
+            with self.assertRaises(SystemExit):
+                command("folders")
+        self.assertEqual(list(self.folder.iterdir()), [])
 
     def test_a_path_that_is_not_a_folder_is_refused(self) -> None:
         with self.assertRaises(SystemExit):
@@ -183,10 +187,14 @@ class CommandSaysWhatItDid(Fixture):
 
 class HelpDeclaresIt(unittest.TestCase):
     def test_the_domain_and_its_verb_say_what_they_make_and_where_the_roles_are_said(self) -> None:
+        # Each help states its own work (owner, 2026-10-14): the domain says
+        # what a module's role folders are and where their roles are said, and
+        # leaves `folders`'s command line to `folders`'s own help.
         domain = run_help()
-        self.assertIn("memar module folders [PATH]", domain)
+        self.assertNotIn("memar module folders", domain)
         self.assertIn("modules/README.md", domain)
         verb = run_help("folders")
+        self.assertNotIn("current folder", verb)
         self.assertIn("protocol/, rules/, errors/, tests/, services/, docs/", verb)
         self.assertIn("nothing is deleted or renamed", verb)
         self.assertIn("modules/README.md", verb)

@@ -19,9 +19,12 @@ again.
 What is pinned, and what each pin is for:
 
   OneText          The brief is one line holding the session's id where the
-                   task is named and continued, the skill to load, and the
-                   plan, its Request, the report, and the session help it
-                   points to; it carries nothing of the task itself.
+                   task is named and continued, the skill to load, the
+                   plan, its Request, that nothing but the plan and the
+                   report stands at the folder's top, the report, and the
+                   session help it points to, and the check that an ideation, design, or
+                   critique Request first meets what the skill requires of
+                   it; it carries nothing of the task itself.
   ReprintedByBrief `brief ID` prints that text alone for a session folder that
                    is there with its plan, in Memar's own root or a project's
                    location, and refuses an id with no session folder or
@@ -56,11 +59,15 @@ import services.session_brief as session_brief
 from services.session_location import register
 from services.session_plan import PLAN_NAME, plan_skeleton
 
-SID = "20261011T000000Z-1-0"
+SID = "20261011-T000000Z-1"
 BRIEF = (
     "Load the Memar skill: run `memar content path .agents/skills/memar/SKILL.md` and follow the file it prints. "
     f"Your task is session {SID}: run `memar session new --session-id {SID}`, read the plan.md it names, "
     "and do what its Request says, without rewriting that Request. "
+    "Put nothing at the session folder's top but plan.md and report.md: anything else you make goes in "
+    "the role folder of its kind, as `memar session --help` says. "
+    "If the Request ideates, designs, or critiques, first check that you read in this context what the skill "
+    "names for that and run on the model it requires; where either fails, end Blocked saying which. "
     "End with its report.md and Status as `memar session --help` says: write them where you may write files; "
     "where you may only return text, return the report as your final text, and the delegating session "
     "writes it as report.md before its next step."
@@ -103,7 +110,7 @@ class ReprintedByBrief(Fixture):
             session_brief.print_brief(SID)
         self.assertEqual(out.getvalue(), "")
         self.assertIn(f"no task to hand over in {SID}", str(refused.exception.code))
-        self.assertIn("`memar session new --title T --parent ID`", str(refused.exception.code))
+        self.assertIn("`memar session new --title T --parent ID --project NAME` (or `--project-path PATH`)", str(refused.exception.code))
 
     def test_brief_finds_a_session_in_a_project_location(self) -> None:
         location = self.fake_root / "project" / "sessions"

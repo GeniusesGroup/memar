@@ -5,7 +5,7 @@
 
 Finding, sweeping, and linking sessions all start from the same question — which
 folders are sessions, what their plan says, and how long nothing in them has
-changed — and each answer is given here once, so a session listed as open is
+changed — and each answer is given here once, so a session listed as active is
 the session the sweep keeps.
 
 Where the folders are is not decided here: `machine/fs_memar.py` owns every
@@ -34,9 +34,10 @@ from pathlib import Path
 from typing import NamedTuple
 
 from machine.fs_memar import SESSIONS_DIRNAME, scratch_root, session_dir, sessions_root
-from services.session_id import is_dated_session_id, is_session_id
+from services.session_id import is_session_id
 from services.session_location import registered_locations
-from services.session_plan import CONVERSATION_KEY, PARENT_KEY, PLAN_NAME, read_plan
+from services.session_plan import PLAN_NAME, plan_file_problem, read_plan
+from services.session_record import PlanKey
 
 DAY_SECONDS = 24 * 60 * 60
 
@@ -48,8 +49,9 @@ class Session(NamedTuple):
     has_plan: bool
     front: dict[str, str] | None
     status: str
-    tasks: list[tuple[str, str]]
     readable: bool = True
+    # Why the plan is in an earlier shape (with where today's shape is shown), else None.
+    shape: str | None = None
 
     @property
     def id(self) -> str:
@@ -57,31 +59,32 @@ class Session(NamedTuple):
 
     @property
     def parent(self) -> str:
-        return (self.front or {}).get(PARENT_KEY, "")
+        return (self.front or {}).get(PlanKey.PARENT.key, "")
 
     @property
     def conversation(self) -> str:
         """The first session of this one's conversation: recorded, else this session itself."""
-        return (self.front or {}).get(CONVERSATION_KEY, "") or self.id
+        return (self.front or {}).get(PlanKey.CONVERSATION.key, "") or self.id
 
 
 def read_session(folder: Path) -> Session:
     plan = folder / PLAN_NAME
     if not plan.is_file():
-        return Session(folder, False, None, "", [])
+        return Session(folder, False, None, "")
     try:
         read = read_plan(plan)
     except (OSError, UnicodeDecodeError):
-        return Session(folder, True, None, "", [], readable=False)
-    return Session(folder, True, read.front, read.status, read.tasks)
+        return Session(folder, True, None, "", readable=False)
+    return Session(folder, True, read.front, read.status, shape=plan_file_problem(plan))
 
 
 def is_session_folder(entry: Path) -> bool:
     """Whether ENTRY, a folder found by name outside the session root, is a session's.
 
-    A name `session_id` mints or has minted, or a folder holding a plan.md that
-    `new` wrote, with its title and the time it was opened, because
-    `--session-id` lets a person name a session anything. Any other folder
+    A name `session_id` mints, or a folder holding a plan.md that `new` wrote,
+    with its title and the time it was opened, because `--session-id` lets a
+    person name a session anything — and a folder named in a form minted
+    before is a session by that plan as long as it keeps that name. Any other folder
     where a session could be — temp/'s own, or a project's beside its session
     folders — is not one, and no session verb writes into it or closes it.
     """
@@ -143,28 +146,25 @@ def _entries(root: Path) -> list[Path]:
 
 
 def session_folders(*, projects: bool = False, locations: list[Path] | None = None) -> list[Path]:
-    """Every folder named as a session under the session root or left directly in temp/, newest first.
+    """Every session folder under the session root or left directly in temp/, newest first.
 
     With PROJECTS, the session folders in every registered project location
     too, and with LOCATIONS, those in each of these; the sweep asks with
-    neither, because those are not Memar's to sweep. In a project location a
-    folder is a session by `is_session_folder`, since a project may name its
-    sessions anything with `--session-id`. A name sort of the dated form is
-    creation order; the earlier form, and a name a project chose, carry no
-    clock and follow every dated id.
+    neither, because those are not Memar's to sweep. In every location a
+    folder is a session by `is_session_folder`, since anyone may name a
+    session anything with `--session-id`, and a folder named in a form minted
+    before stays a session by its plan as long as it keeps that name.
+    A name sort of the minted form is creation order; any other name follows
+    every minted one.
     """
-    folders = [
-        entry
-        for root in (sessions_root(), scratch_root())
-        for entry in _entries(root)
-        if is_session_id(entry.name) and entry.is_dir() and not entry.is_symlink()
-    ]
+    folders = [entry for entry in _entries(sessions_root()) if is_session_folder(entry)]
+    folders += [entry for entry in _entries(scratch_root()) if is_left_session(entry)]
     roots: list[Path] = []
     for root in [*(registered_locations() if projects else []), *(locations or [])]:
         if root.resolve() not in roots:
             roots.append(root.resolve())
     folders += [entry for root in roots for entry in _entries(root) if is_session_folder(entry)]
-    folders.sort(key=lambda entry: (is_dated_session_id(entry.name), entry.name), reverse=True)
+    folders.sort(key=lambda entry: (is_session_id(entry.name), entry.name), reverse=True)
     return folders
 
 

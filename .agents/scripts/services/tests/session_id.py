@@ -15,16 +15,21 @@ Nothing here writes anything: an id is minted and read back.
 
 What is pinned, and what each pin is for:
 
-  MintedIdUnique     Two ids minted without a session differ, so two sessions
-                     opening a shared scratch root cannot land on one folder;
-                     the clock leads, so a name sort is creation order; a
-                     folder named in the earlier form is still a session, and
-                     a person's folder named by a date is not one.
+  MintedIdUnique     Two ids minted by one process differ, also within one
+                     second, so two sessions opening a shared scratch root
+                     cannot land on one folder; the form is the date, a dash,
+                     the time, and the process id, so a person reads it and a
+                     name sort is creation order; only that form is a session
+                     id, so a person's folder named by a date is not one, and
+                     neither is a name in a form minted before (a folder so
+                     named is a session by its plan, `session_folder`, as
+                     long as it keeps that name).
 
 Usage is the interface. Do not duplicate these recipes as prose catalogs.
 """
 from __future__ import annotations
 
+import os
 import sys
 import time
 import unittest
@@ -51,33 +56,35 @@ class MintedIdUnique(unittest.TestCase):
     the one property a shared scratch root depends on.
     """
 
-    def test_two_minted_ids_differ(self) -> None:
-        self.assertNotEqual(session_id.new_session_id(), session_id.new_session_id())
+    def test_two_minted_ids_differ_even_within_one_second(self) -> None:
+        first, second = session_id.new_session_id(), session_id.new_session_id()
+        self.assertNotEqual(first, second)
+        self.assertTrue(session_id.is_session_id(first) and session_id.is_session_id(second))
+
+    def test_the_form_is_the_date_a_dash_the_time_and_the_process_id(self) -> None:
+        minted = session_id.new_session_id()
+        self.assertRegex(minted, r"^\d{8}-T\d{6}Z-\d+$")
+        self.assertTrue(minted.startswith(time.strftime("%Y%m%d-T", time.gmtime())))
+        self.assertTrue(minted.endswith(f"-{os.getpid()}"))
 
     def test_a_name_sort_is_creation_order(self) -> None:
         # The clock leads, so any file listing sorted by name lists sessions in
         # the order they were opened, and the date is readable off the name.
-        minted = session_id.new_session_id()
-        self.assertRegex(minted, r"^\d{8}T\d{6}Z-")
-        self.assertTrue(minted.startswith(time.strftime("%Y%m%d", time.gmtime())))
-        self.assertLess("20261008T082722Z-99999-0", "20261008T082723Z-1-0")
-        self.assertTrue(session_id.is_session_id(minted))
-        self.assertTrue(session_id.is_dated_session_id(minted))
+        self.assertLess("20261008-T082722Z-99999", "20261008-T082723Z-1")
+        self.assertLess("20261008-T235959Z-1", "20261009-T000000Z-1")
 
-    def test_a_folder_named_in_the_earlier_form_is_still_a_session(self) -> None:
-        # Folders opened before the clock came first must still be reaped.
-        self.assertTrue(session_id.is_session_id("34852-18dc8080b906c944-0"))
-        self.assertFalse(session_id.is_dated_session_id("34852-18dc8080b906c944-0"))
-        self.assertFalse(session_id.is_session_id("repo_tree.md"))
-
-    def test_every_form_ever_minted_is_a_session_and_a_dated_folder_is_not(self) -> None:
-        # The earlier form wrote its counter in hex, so a process that minted
-        # ten ids ended in `a`; a person's folder named by a date is no session.
-        earlier = f"{1234}-{1_728_000_000_000_000_000:x}-{10:x}"
-        for name in ("20261010T054304Z-15624-0", "20261010T054304Z-15624-1f", "13356-18dc21f975d06e54-0", earlier):
+    def test_only_the_minted_form_is_a_session_id(self) -> None:
+        for name in ("20261013-T190845Z-23368", "20261010-T054304Z-1"):
             with self.subTest(name=name):
                 self.assertTrue(session_id.is_session_id(name))
-        for name in ("2024-01-01", "2024-01-01-1", "1-abc-0", "12-18dc21f975d06e5-0", "12-18dc21f975d06e54-"):
+        for name in (
+            "20261013T190845Z-23368-0",
+            "34852-18dc8080b906c944-0",
+            "2024-01-01",
+            "20261013-T190845Z-",
+            "20261013-T190845Z-23368-0",
+            "repo_tree.md",
+        ):
             with self.subTest(name=name):
                 self.assertFalse(session_id.is_session_id(name))
 

@@ -38,6 +38,16 @@ Memar and wants to know what it is and what it does for them: it says what
 Memar is, which is the command's own and so held here, and lists what the
 services declare. The design above is addressed to whoever opens this file.
 
+**Each help states its own work, and no sub-verb's** (owner, 2026-10-14). A
+domain verb's overview says what the domain is, the words its sub-verbs share,
+and what its own run does; argparse lists its sub-verbs under it, each with the
+summary it declared, and each sub-verb's command lines, what it writes, and
+when to use it are in that sub-verb's own `--help`. An overview that repeated
+them grew with every sub-verb and drifted from each, and the reader who needs
+one sub-verb paid for all of them. How a help is shaped beyond that waits for
+the command module (`modules/lib/process/command/`), which is not built on
+until it is complete.
+
 The name is the whole of the design. A framework whose entry point is a path
 into a scripts folder asks every caller to know where it lives and what it is
 called; `memar` asks for neither, so the same word works in a shell, in an
@@ -105,7 +115,7 @@ checkout — and act as it says."""
 
 
 class Verbs:
-    """Where one level's verbs go: argparse's `add_parser`, made on first use.
+    """Where one level's verbs go: argparse's sub-parser registration, made on first use.
 
     A level whose services register nothing gets no verb group, so a domain verb
     that runs itself never asks for a sub-verb it has none of.

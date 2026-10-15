@@ -59,8 +59,7 @@ def describe(verbs) -> Callable[[argparse.Namespace], None]:
             f"Set the session ID's priority to N, a whole number from {LOWEST_PRIORITY} to\n"
             f"{HIGHEST_PRIORITY}: the higher goes sooner when `claims` takes queued sessions. A\n"
             f"plan that has none counts as {DEFAULT_PRIORITY} when it is read. Anyone, a person or\n"
-            "an agent, may change it, whatever the session's status. When to use it\n"
-            "is said in `memar session --help`."
+            "an agent, may change it, whatever the session's status."
         ),
     )
     ranker.add_argument("session_id", metavar="ID", help="the session to rank")
