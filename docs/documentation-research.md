@@ -66,7 +66,7 @@ The body is a mandatory core followed by an open catalog of optional sections. T
 The first section, immediately under the H1: a linked list of the file's `##` sections, in order. Research files are expected to grow long across sessions — findings, questions, and method accumulate — and the table of contents is the one-glance map of what the record holds. It is present unconditionally, including on short researches, so the shape of every research file is dependable without opening it; the cost is a few lines, the benefit is a uniform contract.
 
 #### Status (mandatory)
-One line stating the inquiry's overall state. Controlled vocabulary: `Active` (under investigation) | `Paused` (stopped temporarily; resumption expected) | `Complete` (finished; every question carries a final per-question status) | `Withdrawn` (abandoned without an answer; the reason recorded in the conclusion or notes). A superseded research states `Superseded by: {file}` on the line beneath.
+One line stating the inquiry's overall state, taken from the values [Documentation → Status](./documentation.md#status) defines for a research: `Active`, `Paused`, `Complete`, or `Withdrawn`. A research has no front matter, so its Status is this section. Specific to a research: `Complete` requires every question to carry a final per-question status, and `Withdrawn` records its reason in the conclusion or notes. A superseded research states `Superseded by: {file}` on the line beneath.
 
 #### Question and Goals (mandatory)
 The inquiry's identity, stated at the head of the file:

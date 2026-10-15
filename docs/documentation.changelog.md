@@ -506,7 +506,7 @@ The owner proposed the rule as a prohibition on citing informal sources (Omid He
 
 #### What changed
 - New section [A README Points; Content Gets a Document](./documentation.md#a-readme-points-content-gets-a-document): content whose changes matter does not live in a folder README; finding it there is the signal to make it a document. Any agent may create a missing changelog for a document it changes.
-- The citation-direction rule, today kept in docs/khayyam/README.md and docs/modules/README.md and not followed, is the standing instance; session 20261012T105449Z-28376-0 gives it a document of its own.
+- The citation-direction rule, today kept in docs/khayyam/README.md and docs/modules/README.md and not followed, is the standing instance; session 20261012-T105449Z-28376 gives it a document of its own.
 
 ---
 
@@ -519,7 +519,7 @@ The owner proposed the rule as a prohibition on citing informal sources (Omid He
   - [docs/README.md](./README.md): Done — the `khayyam/` paragraph points here instead of restating the rule
   - `.agents/scripts/services/content_check.py`: Done — an upward relative link is reported as a problem, with its tests in `.agents/scripts/services/tests/content_check.py` (class `CitationDirection`)
   - Every document in `docs/` outside `docs/khayyam/`: Done — 658 upward links in 88 files turned into plain text
-  - Every document in `docs/khayyam/`: Pending — 119 upward links, left to session 20261012T105448Z-14472-0, which owns that folder
+  - Every document in `docs/khayyam/`: Pending — 119 upward links, left to session 20261012-T105448Z-14472, which owns that folder
 - Contributors:
   - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — decided
   - [Claude](../CONTRIBUTORS.md#claude) (Opus-5.5) — drafted, applied
@@ -534,3 +534,103 @@ The owner proposed the rule as a prohibition on citing informal sources (Omid He
 - **Keeping the rule in `docs/documentation.md`'s *Citations* section itself** (not done): that section defines the structured `Cited` field, while the direction rule governs every relative link, so it is a sibling section beside it.
 - **Exempting changelog history** (not done): an entry's links are addresses into the current tree, not history, so they follow the rule like any other link.
 - **Exempting every README** (not done): a README may link anywhere inside its own folder, which is what pointing is; a link out of its folder follows the rule.
+
+---
+
+### Owed capability is declared as `Owed: <id>`
+- Time: 2026-10-13T10:45:00Z
+- Type: Changed
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Claude](../CONTRIBUTORS.md#claude) (Sonnet-5.5) — drafted, applied
+
+#### What changed
+- The Content Rule's *Owed or planned capability* clause now names the declaration: a line `Owed: <id>`, the id a lowercase dotted slug and never a path, carried also by the title of a pending Test (`docs/modules/process/test.practice.md#the-cycle`). An id found on one side only is an inconsistency; a pending Test that passes while the mark remains is a hint, not an error; owed capability no Test can execute is marked the same way and judged by a reader.
+
+#### Considered and not done
+- **A path or version-pinned reference** (not done): it goes stale exactly when the document it points into changes.
+- **Making "owed but satisfied" an error** (not done): the owner ruled it a hint, since the test passing cannot say which side is wrong.
+
+---
+
+### One Status vocabulary, defined once
+- Time: 2026-10-13T10:40:00Z
+- Type: Changed
+- Propagates to:
+  - `.agents/scripts/services/session_plan.py`, `session_report.py`, the other session readers, and `memar session --help`: Done (sessions `20261013-T103111Z-27036` and the sessions of topic `memar-projects`) - the plan's `open` and `done` become `Active` and `Complete`, the report's `Stop` line is read as a Status, and plan.md and report.md carry PascalCase front matter; readers first, writers a release later, as the proposal of session `20261013-T085819Z-2244` orders. The report carries a Status only (session `20261013-T142914Z-28176`): `session_report.py` reads the old `Outcome` and `Stop` words as the Status they leave, the report skeleton, the help, and the digest speak Status alone, and the old words are one table in the script, easy to change.
+  - `.agents/skills/memar/SKILL.md` and [documentation-handoff.practice.md](./documentation-handoff.practice.md): Done (session `20261013-T111639Z-22724`) - wording that says a plan's Status is `open`, or names a "Stop line", changes with the writers.
+- Contributors:
+  - [Claude](../CONTRIBUTORS.md#claude) (Sonnet 5.5) - drafted, applied
+
+#### What changed
+- New section [Status](./documentation.md#status) holds the one table of Status values, each with its meaning, the kinds that may use it, and whether it is safe to depend on: `Draft`, `Proposed`, `Final`, `Superseded`, `Rejected` for Explanation-facet documents; `Queued`, `Active`, `Blocked`, `Complete` for a session's plan; `Active`, `Paused`, `Blocked`, `Complete` for a handoff; `Active`, `Paused`, `Complete`, `Withdrawn` for a research. The one table serves a session's plan and its report: a value says which kinds may use it, so a value for the report alone would be a row whose only kind is the session report, and none is needed now. The section says how a run that ended unmet reads (budget ended or no progress: `Active`; stopped at an act needing approval: `Blocked`; the report's Result part says which), and when a plan and its report agree (equal Statuses). The Abstract names it among the cross-cutting conventions.
+- The Explanation, Handoff and Research Status passages now link to it and keep only what is specific to the kind; the values themselves are stated nowhere else.
+- Why: the values were defined in four places (the Explanation table, the Handoff line, the Research line, and the session plan's help text), the six endings had no document home, and the plan's `open` and `done` were the only words in the set that no document defined.
+- Rests on recommended answers the owner has not yet given, from the proposal in session `20261013-T085819Z-2244`: (1) the plan's `open` and `done` unify with Handoff and Research as `Active` and `Complete`; (5) the home is this document, with the Handoff and Research placements unchanged; (6) no `Withdrawn` for a plan; the owner ruled (2026-10-13, session `20261013-T103111Z-30088`) that Status and the report's Outcome are one concept in one table, which replaced the proposal's decisions (2) and (3), a separate `Outcome` field with its own six words. The words `Active`/`Complete` for `open`/`done`, the PascalCase keys, and the lazy migration are accepted provisionally, so the script keeps them in tables that are one place to change. Decision 4 (PascalCase keys in plan.md and report.md, lazy migration) is not written in the document: the field-naming rule already covers it and the migration is script work.
+
+#### Considered and not done
+- **A new document for Status** (not done, proposed answer to decision 5): the section is cross-cutting like Results routing and File Naming, which already live here.
+- **`Withdrawn` for a plan** (not done, proposed answer to decision 6): no plan has needed it, and the owner ruled that deleting a plan is meaningless; a table row is added with the kind when one does.
+- **A second table, `Outcome`, for how a session's run ended** (not done, owner's ruling): `success` and `Complete` are the same thing, and two sections for one concept split it; the table's `Kinds that may use it` column carries the difference between a plan and a report.
+- **Report-only Status values for `clean no-op`, `exhausted`, `no progress`, `approval-required`** (not done): each reads as `Complete`, `Active`, `Active`, `Blocked`, and the report's Result part says which, so none adds information a Status cannot carry; the owner accepts report-only values in the table, and the entry *Merged Status vocabulary: report-only values* in [documentation.handoff.md](./documentation.handoff.md) asks whether `clean no-op` should be one.
+
+---
+
+### A fact in code is written once
+- Time: 2026-10-13T16:30:00Z
+- Type: Added
+- Cited:
+  - [Modeling](./modeling.md#one-authoritative-location-per-concerns-data) - Reference: a text copy of a fact in code is the derived copy with no re-derivation path that this section names.
+- Propagates to:
+  - `memar session --help`, `.agents/scripts/services/session_plan.py`, `session_report.py`: Pending - the Status values and the record fields are stated again in the help and in the scripts; the sessions of topic `memar-khayyam-types` make them one definition that the help calls.
+  - The organization's rule of one file per human language: Pending - the third list item of the new section defers to it; a session of the topic writes it in the other repository.
+  - [documentation.md](./documentation.md#status): Pending - the table of Status values is the closed set the rule puts in code; the open question *Status table or type: which is the source* in [documentation.handoff.md](./documentation.handoff.md) holds it.
+- Contributors:
+  - [Claude](../CONTRIBUTORS.md#claude) (Sonnet 5.5) - drafted, applied
+
+#### What changed
+- New section [A Fact in Code Is Written Once](./documentation.md#a-fact-in-code-is-written-once). Where a fact is written in code, no place keeps a copy: a document names the type, a help text calls its methods.
+- Five questions in order: 0 the presumption that everything is code unless shown otherwise, then 1 a program reads or branches on it, 2 a closed set or fixed shape, 3 stated in two places, 4 a reader must be persuaded, which alone shows otherwise. A statement holding a fact and its reason is split.
+- The citation-direction case is settled: a base document does not embed a declaration and names the type by a code span path; a module document does the same; a document of the language or of an implementation may show a fragment as an example of syntax, which is text and defines no type's fact.
+- Examples: Status, the session plan and report as records without a separate Outcome, and a service's inputs and outputs as types.
+- The Content Rule's *No redundant restatement* bullet and the Abstract point to it.
+- Rests on the owner's rulings of 2026-10-13 (session `20261013-T142915Z-8820`): the presumption, no copy of a code fact, concepts shown in code and documents referring to it, human-language descriptions in a file per language. Not yet reviewed by a session that did not write it.
+
+#### Considered and not done
+- **Letting a base document embed a short declaration** (not done): it is a copy no compiler checks, and it carries one language's syntax into the base layer.
+- **Putting the rule in `modeling.md` beside Separating Structure (Code) from Policy (Rule)** (not done): there Code means the structural layer of a graph model, not a machine-read definition, and the two uses of the word would be read as one. The rule applies the existing modeling rule of one authoritative location and cites it.
+- **Moving the base layer's concepts into code** (not done): a concept defined independent of every language, such as an error, stays prose; the open question *Does the presumption reach a concept defined at the base layer* in [documentation.handoff.md](./documentation.handoff.md) holds it for the owner.
+- **Naming the per-language files and the `dt-` prefix in this section** (not done): they belong to the organizational rule and to the naming of basic types, each in a session of its own.
+
+---
+
+### The Status table is checked against the code that holds the vocabulary
+- Time: 2026-10-13T16:16:00Z
+- Type: Changed
+- Propagates to:
+  - `.agents/scripts/services/status.py`, `session_record.py`, `session_plan.py`, `session_report.py`, `session.py` and the other session readers: Done (session `20261013-T160505Z-29212`) - the Status values and the plan and report records are declared once and obtained from the types; no script spells a Status word.
+- Contributors:
+  - [Claude](../CONTRIBUTORS.md#claude) (Sonnet 5.5) - drafted, applied
+
+#### What changed
+- A bullet in [Status](./documentation.md#status) names the code that holds the closed set (`status.py`, `session_record.py`) and says the table below is checked against it by `.agents/scripts/services/tests/status.py`, which renders the table from the type and fails on any difference.
+- No value, meaning, kind or safety in the table changed: the code now holds all eleven values with the same text, so the gap between the table (eleven) and the scripts (four) is closed in the code's favour as the source, without losing a value.
+- Rests on the owner's ruling of 2026-10-13 that the code is the source and the documents refer to it, and on [A Fact in Code Is Written Once](./documentation.md#a-fact-in-code-is-written-once). Not yet reviewed by a session that did not write it.
+
+#### Considered and not done
+- **Removing the table and naming the type only** (not done): the rule says a document lists no value of a code type, but the owner asked that the table be checked against the code, and the table is what a reader of the rule sees without opening code. The check keeps the two equal; whether the table should go is the open question *Status table or type: which is the source* in [documentation.handoff.md](./documentation.handoff.md).
+- **Editing the prose bullet that says which ending leaves a report `Active`, `Blocked` or `Complete`** (not done): the mapping is now also in the type (`Status.report_ending`); the bullet keeps its reason and is left for the session that places the rest of the rule.
+
+---
+
+### The session records' shape is printed by `memar session new --help`
+- Time: 2026-10-14T18:20:00Z
+- Type: Changed
+- Propagates to:
+  - `.agents/scripts/services/session_new.py`: Done (session `20261014-T175052Z-9344`) - its help prints the plan's outline and the report's skeleton by calling the record types.
+- Contributors:
+  - [Claude](../CONTRIBUTORS.md#claude) (Opus 5.5) - drafted, applied
+
+#### What changed
+- Two places, the *Session records* bullet under [A Fact in Code Is Written Once](./documentation.md#a-fact-in-code-is-written-once) and the bullet under [Status](./documentation.md#status) that names where the shape of plan.md and report.md is stated, now name `memar session new --help` in place of `memar session --help`.
+- Why: by the owner's ruling of 2026-10-14 each command's help states only its own work; `new` is the verb that writes the two files, so their shape moved into its help, and `memar session --help` keeps the Status words and how a session ends.

@@ -34,15 +34,9 @@ What a filename encodes — which separator marks the category, which the concep
 A short, unique, human-readable name for the document, in double quotes. It is the source of the filename slug. A title change that alters the concept is a new document with a new `ID`; a title change that merely rephrases the same concept is a minor revision of the same document.
 
 ### Status
-| Status | Meaning | Safe to depend on? |
-| --- | --- | --- |
-| **Draft** | Direction is not yet settled; real, unresolved questions remain, recorded in the document's paired handoff. | No |
-| **Proposed** | Design discussion reached consensus; ready for final review before being reflected in canonical documentation. | Not yet — may still be revised during final review |
-| **Final** | Reflected in canonical documentation. | Yes |
-| **Superseded** | Replaced by a newer document. See [`Superseded by`](./documentation.md#citations). | No — depend on the superseding document instead |
-| **Rejected** | Considered and explicitly not adopted. Kept for the historical record. | No |
+An Explanation-facet document carries its Status in the front-matter `Status` field. The values it may take (`Draft`, `Proposed`, `Final`, `Superseded`, `Rejected`), their meanings, and whether each is safe to depend on are defined once in [documentation.md → Status](./documentation.md#status). A `Superseded` document names its successor through [`Superseded by`](./documentation.md#citations).
 
-Additional rules:
+Rules specific to this facet:
 - `ID` is never reused, regardless of status, including Rejected.
 - Move `Status` to `Proposed` once discussion converges.
 - Move to `Final` once it's reflected in canonical documentation.

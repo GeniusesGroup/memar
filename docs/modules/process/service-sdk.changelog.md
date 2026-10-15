@@ -219,7 +219,7 @@
 - The corpus-as-a-service question moved to its own entry, [SDK Handoff → Whether a corpus a project builds is a service that owes a delivered interface](service-sdk.handoff.md#whether-a-corpus-a-project-builds-is-a-service-that-owes-a-delivered-interface), marked as resting on the Organization project's design, which was not quoted or verified.
 
 #### Why
-- An independent evaluation (session 20261012T105448Z-25360-0) found the invented time, an unscoped absence claim, and an unverified question mixed into a verified one.
+- An independent evaluation (session 20261012-T105448Z-25360) found the invented time, an unscoped absence claim, and an unverified question mixed into a verified one.
 
 #### Considered and not done
 - Verifying the Organization design now: not done; it is the first step recorded under the new entry's Next.

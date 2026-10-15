@@ -1,3 +1,10 @@
+---
+Title: "GUI - Graphic User Interface"
+Status: Draft
+Start Date: 2021-05-25
+ID: 450528
+---
+
 # GUI - Graphic User Interface
 
 ## Position on GUI Architecture

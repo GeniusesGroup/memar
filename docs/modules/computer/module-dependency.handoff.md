@@ -35,6 +35,13 @@ Open work for `modules/computer/module-dependency.md`. Entries are mutable curre
 - State: whether modules within this repository consume one another via this mechanism from day one, or begin with direct source inclusion and migrate, is a project-management decision not yet made.
 - Next: decide when the first implementation dependency between modules appears.
 
+### Can the dependents of a module be found from the dependents' own declarations, and who derives them?
+- State: a change to a module's contract should be checked against every module that depends on it. [Module Dependency](./module-dependency.md) declares a dependency as a reference to another project's repository pinned to a revision, which names the dependency from the dependent's side only; `Depends_for` exists for documents ([Documentation](../../documentation.md)), not for modules. A hand-kept list of dependents is a derivative inventory the Content Rule forbids, so the set must be derivable from the dependents' own declarations; no document says who derives it, or over which collection of projects (the registered ones, one workspace, every reachable repository). Until a derivation exists, the check is made against whatever consumers the person running it remembers.
+- Options: (1) the set is derived by a tool from the declarations of the projects the project registry names, and no list is kept (recommended; cost is waiting for the registry, see Blocks); (2) the set is derived over one workspace only; (3) the dependents are declared in the dependency's own manifest, which is a hand-kept list.
+- Anchor: docs/modules/computer/module-dependency.md, declaration of a dependency; docs/documentation.md, Depends_for and the Content Rule. The answer lands in module-dependency.md.
+- Blocks: nothing may be added to the project registry or to how a Khayyam module is resolved until the owner's single design of the two exists (the entry on Khayyam's dependency management in docs/documentation-handoff.handoff.md); the derivation waits on it. Assumption meanwhile: no list of dependents is kept (Tentative).
+- Asked: 2026-10-13, Claude (queued as session `20261013-T052605Z-15036`, written by session `20261015-T103826Z-18580`), for Omid Hekayati.
+
 ## Anticipated Work
 - The thin VCS-automation tooling for reference refresh.
 - The written workflow for private dependencies.

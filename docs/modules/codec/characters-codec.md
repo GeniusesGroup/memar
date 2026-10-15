@@ -1,3 +1,10 @@
+---
+Title: "Harf - Character Codec"
+Status: Draft
+Start Date: 2023-07-06
+ID: 469056
+---
+
 # Harf - Character Codec
 This structure like UTF based encode system but with some improvement to reduce waste of bits. Like UTF-8, This encode system is designed in a such way that all ASCII characters use the same byte representation. 
 

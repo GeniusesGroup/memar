@@ -260,3 +260,16 @@
 - Naming Without Package Context: "an organizational convention stated in [identifier naming] and [qualified names]" became "how a project spells and qualifies names is that project's own rule"; those rules of this repository's toolchain state the convention.
 - Dependency Resolution and Companion Manifest: "How this repository writes and resolves `in` URIs is stated in [import address]" removed, and "— [Import Address → The rule] — where the base this repository's toolchain resolves from is recorded beside it" cut from the tool-spelling sentence; the import-address rule of this repository's toolchain states both.
 - Not changed: the companion-manifest proposal, which is the framework and tooling layer's design rather than a compiler's or linter's, and has no home in this repository's Khayyam toolchain.
+
+---
+
+### Settled entries moved out of the handoff
+- Time: 2026-10-14T12:48:38Z
+- Type: Removed
+- Contributors:
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) - requested
+  - [Claude](../../CONTRIBUTORS.md#claude) (Opus-5.5 via Claude Code) - judged, recorded
+
+#### What changed
+- The `## Anticipated Work` entry "Both anticipated items below were overtaken on 2026-09-30" is removed from [Modularity in Khayyam Handoff](./modularity.handoff.md), and with it the section heading, which held nothing else. It scheduled no work: it said itself that nothing is pending. Both items it recorded are settled where it pointed: the dedicated document exists, [Dependency management](../modules/computer/module-dependency.md), and the 2026-10-04 entry above ("The manifest and address-shape entries leave Open Questions") records that the language owes it nothing further; [Modularity in Khayyam](./modularity.md) states that dependency resolution and versioning belong to the framework and tooling layer, not the grammar. The residue it named, whether an answer on the dependency side ever affects the grammar, is the test that entry already records for a question returning, not open work.
+- Kept open: "Naming Without Package Context" (whole-file inclusion beyond `in`) and "Cyclic Module Dependencies".

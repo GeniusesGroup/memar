@@ -430,7 +430,7 @@ The rule added in [Documentation → Citations](./documentation.md#citations) wa
 - [Knowledge Handoff → What an agent is to do when it lacks a third-party library's shape](./knowledge.handoff.md#what-an-agent-is-to-do-when-it-lacks-a-third-party-librarys-shape): the absence claim is scoped to the search made, and the entry now cites Module dependency (`docs/modules/computer/module-dependency.md`), whose pinned repository reference already answers which revision a project builds against, and says what stays open. The earlier entry's "four norms" was wrong: three are norms and the README sentence is a scoping statement; the handoff now says so.
 
 #### Why
-- An independent evaluation (session 20261012T105448Z-25360-0) found the invented time, an unscoped absence claim, and a missing citation of the document that already answers part of the question.
+- An independent evaluation (session 20261012-T105448Z-25360) found the invented time, an unscoped absence claim, and a missing citation of the document that already answers part of the question.
 
 #### Considered and not done
 - Moving the question out of Knowledge: not done. Knowledge is a weak home, but no better owner was found, and the owner has not ruled.

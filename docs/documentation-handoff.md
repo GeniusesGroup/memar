@@ -71,7 +71,7 @@ A non-exhaustive catalog of state sections a handoff's author may include - nowh
 What is being discussed and why - one short paragraph. The handoff's only narrative section.
 
 #### Status
-Active | Paused | Blocked | Complete - the topic's overall state.
+One line naming the topic's overall state, taken from the values [Documentation → Status](./documentation.md#status) defines for a handoff: `Active`, `Paused`, `Blocked`, or `Complete`. A handoff has no front matter, so its Status is this section and not a field. A `Complete` handoff is the one with nothing left open, and a handoff with nothing open is retired.
 
 #### Decisions
 For each decision: what was decided, the reasoning, and its confidence - Decided / Tentative / Explored-but-unresolved / Deferred. Where alternatives were considered and rejected, the rejected alternative and the reason are recorded with the decision. A decision lives here only while it is not yet durably recorded elsewhere: when its rule has landed in the governing document and its changelog records the decision, the entry leaves this handoff - the base document carries the rule and the changelog carries the record, and a handoff copy of settled design is a duplicate guaranteed to drift. Tentative and Deferred entries stay until they firm up and graduate the same way, or are dropped.
@@ -81,6 +81,17 @@ For each: what was unclear, what is now clear, and what evidence or argument res
 
 #### Open Questions
 For each: the question, why it matters, whether it blocks continuation, and a suggested path toward answering it.
+
+An entry written during a task, for the owner to answer later, carries these fields, so that it stands alone:
+
+- **Heading**: the question itself, in one line.
+- **State**: what is known and why the question matters, with no "this session" or "above" in it.
+- **Options**: the ways it can be answered, the recommended one first with its cost.
+- **Anchor**: the file and line, or the section, where the question arose and where the answer lands.
+- **Blocks**: what cannot continue until it is answered, and the assumption made meanwhile, which is also recorded as a Tentative decision.
+- **Asked**: the date and who asked.
+
+The standalone test: could a session with no memory of the task read this entry alone and know what is asked and what each answer would change? An entry that fails is rewritten before the task that wrote it ends. An entry is open by being present under this heading; it leaves only by graduating into the governing document or by a recorded drop, as [What a Handoff Is](#what-a-handoff-is) says. How such an entry is written and answered is in [Questions Found During a Task](./documentation-handoff.practice.md#questions-found-during-a-task).
 
 #### Anticipated Work
 Extensions, growth paths, and follow-up work the discussion anticipates but no one has committed to - distinct from Open Questions (something is undecided) and Proposed Next Steps (someone is doing it now). This section also receives the anticipated work a base document records for its future, per the Explanation facet's Relevance discipline.

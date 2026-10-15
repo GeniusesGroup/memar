@@ -139,3 +139,26 @@
 
 #### What changed
 - Reviewed; no change needed. Two added handoff entries: the unix realization (`modules/time/unix/` holds five `.kh` files with no `tp`, `cp` or `vr` line; `time.kh` lines 9, 15, 19, 22 match the cited declarations) and the timer constants (`modules/time/timer/const.kh` lines 12-20 match). Both anchors in `time.md` exist. The questions are left to the owner.
+
+---
+
+### Module pilot: open questions triaged, Tentative decisions recorded, two entries corrected, the contract question asked
+- Time: 2026-10-15T08:30:00Z
+- Type: Changed
+- Cited:
+  - [Documentation — Handoff Practice → Questions Found During a Task](../../documentation-handoff.practice.md#questions-found-during-a-task) - Premise: each question is settled from owning material and recorded Tentative, made smaller by a queued session, or written for the owner.
+  - Abstraction in Khayyam → A concept is an abstraction; a concrete instance is a capsule (`docs/khayyam/abstraction.md#a-concept-is-an-abstraction-a-concrete-instance-is-a-capsule`) - Premise: a contract's unit or width is the implementation's.
+- Contributors:
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) - decided: documents and moves are held until session 12672 settles placement; protocol declarations may be drafted in Khayyam
+  - [Claude](../../../CONTRIBUTORS.md#claude) (Opus-5.5) - argued, drafted, applied
+
+#### What changed
+- `time.handoff.md`: a Decisions section, each from cited owning material and without a second opinion yet: the Instant contract carries no representation term (Tentative); `NanoInSecond` is an instance of `Duration` (Tentative); `Timer.When` stays (Tentative); causality and cross-component ordering are not this module's question (Tentative); a fuller concept document (Deferred, on 12672); `maxWhen`, `verifyTimers` and `heapAry` belong to the timing heap's realization (Tentative). Each answered entry keeps its place and points at its decision until the owner rules.
+- `time.handoff.md`: a new entry "Does the time contract become ordering, comparison and a clock?", asking the owner to adopt a drafted replacement of `Time` and `Duration` and a new `Clock`, kept in session 20261014T124124Z-3000-0.
+- `time.handoff.md` → "Does any contract need a timer that also reports the instant it fires at?": corrected. Its statement that the timer contract reports status only was inaccurate; `modules/time/timer/protocol/timer.kh` declares `When`.
+- `time.handoff.md` → "The unix realization declares nothing...": corrected. Its statement that `modules/time/monotonic/` and `modules/time/epoch/` declare what `unix/` lacks was inaccurate; no folder realizes `Time`. The question now waits on session 28224 for which of unix and utc is a lib candidate.
+- `time.handoff.md` → "What protects a time-limited value from a clock that moves?": queued session 20261015-T080417Z-23696 to make it smaller, with `Deadline` in `modules/process/operation/protocol/deadline.kh` named as a live consumer.
+
+#### Considered and not done
+- Removing the entries the Decisions answer, and moving "Distributed ordering versus the Instant contract" to GP's and sRPC's handoffs: removal waits for the owner ([Recording Is Not Gated; Removal Is](../../documentation.md#recording-is-not-gated-removal-is)).
+- Editing `modules/time/protocol/time.kh` and `modules/time/duration/protocol/duration.kh`: they are definitions other modules consume, so the replacement is asked, not applied.

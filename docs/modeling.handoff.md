@@ -63,6 +63,13 @@ Open work for `modeling.md`. Entries are mutable current state — revised as ea
 1. How should modeling be integrated into CI/CD pipelines? Can model quality be automatically checked (e.g., detecting cycles in the dependency graph, flagging abstractions without clear responsibilities)?
 2. What is the recommended approach when a team inherits a legacy system with no existing model? Should they model from scratch and migrate, or incrementally extract the model from the existing codebase?
 
+### Does the modeling practice ask what must hold for two models to compose?
+- State: when two models, two protocols or two documents are to meet, a modeler needs to know what each requires of the other and what would make the meeting illegal. [Modeling Practice](./modeling.practice.md) asks the Relationship Audit (is an edge a real connection, its direction and cardinality) and [Placing a relation](./modeling.practice.md#placing-a-relation), which concern one relation inside a model; no step asks, once and in any domain, what must hold for two models to compose. A search for compose, composition, compatible and legal in modeling.md and modeling.practice.md finds composition only as a structural relation and as an aggregator, not as a question to ask of a meeting.
+- Options: (1) add the question as one review step of the Relationship Audit or the modeling workflow, domain-generally (recommended; cost is one step); (2) keep it in the protocol documents that meet other protocols and add nothing to the modeling practice; (3) the existing audits already cover it and nothing is added.
+- Anchor: docs/modeling.practice.md, The Modeling Workflow and Relationship Audit; docs/modeling.md, Modeling Before Implementation. The answer lands in the practice.
+- Blocks: nothing is blocked. Assumption meanwhile: the question is not asked as a step (Tentative).
+- Asked: 2026-10-13, Claude (queued as session `20261013-T072630Z-29084`, written by session `20261015-T103826Z-18580`), for Omid Hekayati.
+
 ## Anticipated Work
 - A future document could define a lightweight graph notation tailored to Memar's modeling needs, designed to be expressive enough for architectural discovery while remaining simple enough to be sketched on a whiteboard or in a plain-text editor. (From the Graphs-as-a-Modeling-Tool topic.)
 - A future document should define an abstraction-justification checklist — a set of questions that, when answered for a given concept, produce a clear recommendation on whether it deserves an independent abstraction. This would reduce the subjectivity inherent in the current "responsibility-driven" judgment. (From the Concept-Existence topic.)

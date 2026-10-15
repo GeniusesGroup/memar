@@ -240,7 +240,7 @@ The wrapper titles are gone from this specification's body; open questions and a
 #### What changed
 - A new section, [Queued Work and Its Hand-Back](./documentation-handoff.practice.md#queued-work-and-its-hand-back), documents the work engine `memar session` now provides: a conversation queues further tasks as sessions and never works them in its own context; a priority from 1 to 10 (5 when absent, the higher sooner) that anyone may change, saying why; `claims N` hands the N first in line to a coordinator, which gives each brief to one fresh sub-agent; a hand-back of the Stop line, the report's path, and at most ten lines of `Decisions needed`; and `digest`, the one list of decisive questions the owner reads instead of every report.
 - Observed: one conversation carrying six tasks, with full reports handed back into it, reached about 500K tokens; the coordinator's context and the owner's attention were the two bottlenecks the engine answers.
-- The [handoff](./documentation-handoff.handoff.md) gained the open question of where a project's sessions live (owner observation, for queued session `20261012T155915Z-12312-0`) and the anticipated work of running queued sessions unattended, which belongs to the `organization` project.
+- The [handoff](./documentation-handoff.handoff.md) gained the open question of where a project's sessions live (owner observation, for queued session `20261012-T155915Z-12312`) and the anticipated work of running queued sessions unattended, which belongs to the `organization` project.
 
 #### Considered and not done
 - **A runner that launches each queued session itself (`memar session run` with a launch template)**: Memar starts no agent; the coordinator starts each sub-agent the way its runtime does, and scheduled execution is left to the `organization` project.
@@ -257,7 +257,7 @@ The wrapper titles are gone from this specification's body; open questions and a
 #### What changed
 - [Queued Work and Its Hand-Back](./documentation-handoff.practice.md#queued-work-and-its-hand-back) now points to `memar session --help` for the commands and the limits they enforce — the priority's range and default, the lines a hand-back may hold, how long a claim holds — and keeps what is its own: why the work runs so, and that whoever changes a priority says why in the plan.
 - The digest is run for the coordinator's own conversation, holds every failed hand-back whether or not it carries decisions, and leaves out done sessions; the practice and the help say the same.
-- Prompted by a review that had not seen the work (session `20261012T160457Z-8656-0`), which found the practice restating the help's numbers and the two disagreeing about the digest.
+- Prompted by a review that had not seen the work (session `20261012-T160457Z-8656`), which found the practice restating the help's numbers and the two disagreeing about the digest.
 
 ---
 
@@ -271,4 +271,135 @@ The wrapper titles are gone from this specification's body; open questions and a
 #### What changed
 - [Queued Work and Its Hand-Back](./documentation-handoff.practice.md#queued-work-and-its-hand-back) now says `memar session claims` takes only from the one project the coordinator names, with no default and no way to take from all, and that a coordinator that does not know the project asks the owner; `claims` refuses without `--project`, and its help and `memar session --help` say the same.
 - Why: one run serves one project, and a guessed or spanning scope hides which project the work lands in.
-- The owner's ruling, applied in session `20261012T163251Z-25244-0`.
+- The owner's ruling, applied in session `20261012-T163251Z-25244`.
+
+---
+
+### Sizing a task and recording follow-ups: the rule placed for every project
+- Time: 2026-10-13T06:25:00Z
+- Type: Added
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Claude](../CONTRIBUTORS.md#claude) (Sonnet 5.5) — applied
+
+#### What changed
+- A new section, [Sizing a Task and Recording Follow-Ups](./documentation-handoff.practice.md#sizing-a-task-and-recording-follow-ups), states that a task's size is set by weighing a session's load against its work and by the files and governing reading its tasks share: split at an owner decision, at a change testable alone with different files and reading, and at a parallel unit; merge sequential tasks on the same files and reading; hand related tasks queued under one topic to one agent; cut the load per step before merging. It also says to record worth-doing follow-ups as queued sessions opened with `--parent`, erring toward one too many.
+- The skill's Delegation bullet now points here and keeps only the working marks it applies.
+- Why: the owner ruled (2026-10-13) that this is a general concept Memar solves once for every project, so it does not live in a project's preferences.md. The conclusions come from sessions `20261013-T054743Z-12960` and `20261013-T054829Z-23016`, applied in session `20261013-T060529Z-24608`.
+
+#### Considered and not done
+- **A numeric break-even (a multiple of the session load)**: not derived from measurement, so withdrawn by the reviewer; the rule is provisional until a real session is measured.
+
+---
+
+### Queued work: one sub-agent per batch of one topic
+- Time: 2026-10-13T06:40:00Z
+- Type: Changed
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Claude](../CONTRIBUTORS.md#claude) (Sonnet 5.5) — applied
+
+#### What changed
+- [Queued Work and Its Hand-Back](./documentation-handoff.practice.md#queued-work-and-its-hand-back), under Taking queued work, now says that `memar session claims` takes the first task's topic batch next, in line order, and says what it passed over; and that the coordinator hands a batch of one topic to one fresh sub-agent, each session keeping its own plan and report, never sessions of different topics to one sub-agent. It replaces the rule of one sub-agent per session, never two sessions to one sub-agent.
+- `memar session --help` now lists `topic`, `topics`, `new --topic` and `claims --topic --fill`, shows the `topic:` front-matter line, tells the queuer to give each queued task a topic and to run `topics` first, and carries the same batch rule in the coordinator steps.
+- Why: the owner ruled that related tasks on the same files and reading cost less in one context; the behaviour was implemented in session `20261013-T060530Z-28452` and the text applied in session `20261013-T060530Z-19088`.
+
+---
+
+### The digest becomes a per-day review, and list, gc, and digest flag finished-but-open sessions
+- Time: 2026-10-13T08:30:00Z
+- Type: Changed
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Claude](../CONTRIBUTORS.md#claude) (Sonnet 5.5) — applied
+
+#### What changed
+- [Queued Work and Its Hand-Back](./documentation-handoff.practice.md#queued-work-and-its-hand-back), under The digest, now says that `memar session digest --day` is the owner's review of a day's sessions, closed one by one with `memar session close` on the owner's word, that a done session with decisions is in the digest, and that the digest, `list`, and `gc` flag a session not done that looks finished or abandoned. `memar session --help` carries the same recipe.
+- `memar session list`, `gc`, and `digest` now raise a `concerns:` line for a session whose steps are all checked while it is open, whose Request is empty and quiet for a day, or that has no status. They only flag: nothing is moved or closed by it.
+- Why: the owner audited about thirty finished-but-never-closed folders by hand and ruled that digest should be a review run with an agent; done in sessions `20261013-T041036Z-24948` and `20261012-T163252Z-11472`.
+
+---
+
+### The Open Questions entry written during a task stands alone
+- Time: 2026-10-13T10:50:00Z
+- Type: Added
+- Propagates to:
+  - [Cognition Practice](./cognition.practice.md#norm-application-points): Done - the escalation checkpoint points at the practice section below.
+  - `memar content questions` and the lint of entries: Pending - later sessions of topic `question-handoff`.
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - decided the direction
+  - [Claude](../CONTRIBUTORS.md#claude) (Sonnet 5.5) - drafted, applied
+
+#### What changed
+- [Open Questions](./documentation-handoff.md#open-questions) now lists the six fields of an entry written during a task (heading as the question, State, Options with the recommended first, Anchor, Blocks with the Tentative assumption, Asked), the standalone test, and that an entry is open by being present and leaves by graduation or recorded drop.
+- [Questions Found During a Task](./documentation-handoff.practice.md#questions-found-during-a-task) is new: the entry or a queued session by whether an agent could make the question smaller; the finding session writes it, or the coordinator for a sub-agent that may not write; the raising session is done at once, with one pointer line per entry; the answer graduates and the entry is removed, its heading named in the changelog; an uncommitted entry lives on one machine only.
+- Why: questions left in the conversation or in a report are lost when the session is swept; the owner ruled (2026-10-13) that they last in the handoff. Design from session `20261013-T085819Z-21616`; applied in sessions `20261013-T103109Z-22272` and `20261013-T103110Z-17584`. The wording awaits the owner's approval, recorded in [documentation-handoff.handoff.md](./documentation-handoff.handoff.md).
+
+#### Considered and not done
+- **An explicit `Answer: Pending` field**: presence under the heading already means open, as the practice removes answered entries.
+
+---
+
+### The Status values are defined in Documentation
+- Time: 2026-10-13T10:42:00Z
+- Type: Changed
+- Contributors:
+  - [Claude](../CONTRIBUTORS.md#claude) (Sonnet 5.5) - drafted, applied
+
+#### What changed
+- The [Status](./documentation-handoff.md#status) section now links to [documentation.md → Status](./documentation.md#status) for the four values `Active`, `Paused`, `Blocked`, `Complete` and their meanings, and states what is specific to a handoff: Status is a section because a handoff has no front matter, and `Complete` is the handoff with nothing left open.
+- Why: one Status vocabulary for every document kind, defined once; see [documentation.changelog.md](./documentation.changelog.md).
+
+---
+
+### Handoff Practice speaks the Status words, and names the project rule
+- Time: 2026-10-13T11:40:00Z
+- Type: Changed
+- Propagates to:
+  - [documentation.md → Status](./documentation.md#status): Done - the Pending propagation of its entry "One Status vocabulary, defined once" for this document and the Memar skill is resolved.
+- Contributors:
+  - [Claude](../CONTRIBUTORS.md#claude) (Sonnet 5.5) - drafted, applied
+
+#### What changed
+- [Documentation Handoff Practice](./documentation-handoff.practice.md): a finished session is read by its plan's Status (Complete or Blocked, not Active or Queued), a queued plan becomes Active when claimed, the hand-back carries the report's Status rather than a Stop line, and the digest prints it. A project told by a word is resolved by `memar project find WORD`, never by reasoning about the name.
+- [Where a project's sessions live](./documentation-handoff.handoff.md): the entry now says no session verb has a default project or reads the calling folder, names are resolved through `temp/projects.log`, and a missing sessions folder is created.
+- Why: the scripts moved to Queued, Active, Blocked, Complete (sessions `20261013-T103111Z-27036`, `20261013-T103108Z-15196`); the prose agents read first must speak the same words.
+
+#### Considered and not done
+- **Rewriting the earlier changelog entries that say `Stop` or `open`**: they are history.
+
+---
+
+### The project registry and Khayyam's dependency management are recorded as one open question
+- Time: 2026-10-13T14:40:00Z
+- Type: addition
+- Cited:
+  - [Documentation Handoff → Open Questions](./documentation-handoff.md#open-questions) - Depends_on: the six fields of an entry written during a task
+- Propagates to:
+  - [documentation-handoff.handoff.md](./documentation-handoff.handoff.md): Done - one Open Question with Blocks set
+  - `bundles/khayyam/khayyam.handoff.md`: Done - the twin entry and a Tentative decision
+  - [.agents/scripts/README.md](../.agents/scripts/README.md): Done - the constraint stated beside "A script is told its project"
+- Contributors:
+  - [Claude Code](../CONTRIBUTORS.md#claude) - drafted, applied
+
+#### What changed
+- The owner's ruling of 2026-10-13 is written down: the project registry (`memar project`, `temp/projects.log`) and Khayyam's dependency management are developed only together, and nothing is added to either until they are one. The reason is recorded with it: no magic in code.
+
+---
+
+### Queued Work points at each verb's own help, and the command module's help protocol is an open question
+- Time: 2026-10-14T18:20:00Z
+- Type: Changed
+- Propagates to:
+  - `.agents/scripts/services/session.py` and the session verbs' services: Done (session `20261014-T175052Z-9344`) - `memar session --help` states only the domain's own work; each verb's own help states its part.
+  - `modules/lib/lib.handoff.md`: Done - the entry *What protocol a command's help follows once `process/command/` is complete*
+- Contributors:
+  - [Claude](../CONTRIBUTORS.md#claude) (Opus 5.5) - drafted, applied
+
+#### What changed
+- [Queued Work and Its Hand-Back](./documentation-handoff.practice.md#queued-work-and-its-hand-back) now says the commands and their limits are declared by the `--help` of `memar session` and of each of its verbs, each stating its own, and names the verb whose help gives each limit: the priority's range and default (`memar session priority --help`), how long a claim holds (`memar session claim --help`), the lines a hand-back may hold (`memar session new --help`).
+- Why: the owner ruled (2026-10-14) that each command's help states only its own work, not its sub-commands'; `memar session --help` had grown to about 19 KB by repeating every verb's command lines and recipes, and the pointers here named it for limits it no longer states.
+- The owner's question of which protocol command help follows once the command module (`modules/lib/process/command/`) is complete is written as an open entry in `modules/lib/lib.handoff.md`, with options; nothing is built on that module.
+
+#### Considered and not done
+- **Rewriting the earlier entries that say `memar session --help` carries the recipe**: they are history.

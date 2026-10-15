@@ -1,3 +1,10 @@
+---
+Title: "Media Type"
+Status: Draft
+Start Date: 2022-02-08
+ID: 456744
+---
+
 ## Media Type Extension
 Want a protocol to declare global service, error, ... in any language with desire goals, So we decide to add new main-type to media-type URI scheme instead invent from scratch. Add new top-level type names (main-type) as `domain` instead of `application` to have proper way to indicate domain specific media types.
 

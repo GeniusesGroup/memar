@@ -321,3 +321,15 @@ The skeleton is three fixed sections; an Explanation-facet document carries no `
 - The *Future possibilities* entry said the content "now sits" in the handoff's `Anticipated Work`; the handoff has no such section or entry, so the sentence now says the handoff holds no entry from it.
 - The Status bullet added to [documentation-explanation.md](./documentation-explanation.md#status) said `memar content check` decides "the mechanical" conditions; none of Status's conditions is mechanical and the command does not read `Status`. The bullet now names the two conditions a reader decides and says the command does not read the field. The entry *Status names which party decides each condition* above still describes the first wording, and names the retired script `memar-documentation.py`; it is kept as the record of what was first written.
 - Checked and left: the handoff entry removal (the decision is in the migration entry, with its quotation intact); the link fix `./modules/process/test.changelog.md` (the file exists there); the practice line 23 hunk belongs to the Cognition rebuild and was not judged.
+
+---
+
+### The Status table moves to Documentation
+- Time: 2026-10-13T10:41:00Z
+- Type: Changed
+- Contributors:
+  - [Claude](../CONTRIBUTORS.md#claude) (Sonnet 5.5) - drafted, applied
+
+#### What changed
+- [Status](./documentation-explanation.md#status) no longer carries the value table; it links to [documentation.md → Status](./documentation.md#status), which holds the five values, their meanings, and whether each is safe to depend on, unchanged in substance. The rules specific to the facet (ID reuse, who decides convergence, supersession, canonical status only) stay here.
+- Why: the Status vocabulary is now defined once for every document kind; see the entry *One Status vocabulary, defined once* in [documentation.changelog.md](./documentation.changelog.md).

@@ -18,3 +18,16 @@
 - Naming the document after its first consumer (`rename-engine`) or its mechanism (`explicit-rewrite`) (rejected): the contract is the enacted revision, and the name must survive consumers this repository has not built.
 - Carrying the dry-by-default posture as a separate clause (rejected): it is already entailed by "writes only under an explicit request" and a second clause would state the same commitment twice.
 - Defining exit codes or plan renderings (rejected): per-target decisions, explicitly disowned in the body.
+
+---
+
+### Settled entries moved out of the handoff
+
+- Time: 2026-10-14T12:48:22Z
+- Type: Removed
+- Contributors:
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) - requested
+  - [Claude](../../../CONTRIBUTORS.md#claude) (claude-opus-5-5 via Claude Code) - judged, recorded
+
+#### What changed
+- Removed the Anticipated Work entry "A walkthrough of this contract against a second consumer" from `revision.handoff.md`: the walkthrough was done 2026-10-05 against `go-clue-residue` (`tidy --rule`). The contract held without per-target smuggling: enumerate, explicit write, and report fit; reviewable plan and refuse-on-newly-broken misfit only as consumer implementation gaps (no pre-write plan artifact; per-file writes with no all-or-nothing gate), fixable without a contract change. Those two gaps are carried as chartered work in `bundles/khayyam/targets/go/rules/go-clue-residue/go-clue-residue.handoff.md` (Anticipated Work, "Pre-write plan artifact for `tidy --rule`" and "All-or-nothing refuse gate"), so nothing of the walkthrough is owed by this document.

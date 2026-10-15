@@ -47,6 +47,20 @@ Open work for `modules/process/error.md`. Entries are mutable current state — 
 - Next: owner ruling on whether `TAGS` is a `Detail` member at all — a field name this protocol chose, or the residue of Go's — and then either the declaration written beside the other five or the sixth name struck from the list here.
 - Carried from: Go Target Research 001 → Live problems the two archives jointly expose (`bundles/khayyam/targets/go/target.research.001.md#live-problems-the-two-archives-jointly-expose--defects-in-the-sources-and-where-each-one-was-routed`), verified 2026-10-02 and routed here 2026-10-08.
 
+### Who declares that a call is safe to repeat, and what does a consumer do when it is undeclared?
+- State: a retry is requested by a participant ([Process → Failure](../../process.md#failure) lists another attempt among the outcomes of a failure, and the SDK document leaves retry glue to the consumer), but whether repeating a call leaves the same outcome is known only by the party that owns the process. No document says that the owner of a process declares this, where, or what a consumer does when it is undeclared. A search of docs/ for idempotent, safe to repeat, at-most-once and at-least-once finds idempotence only in the teardown question of [memory.handoff.md](../memory/memory.handoff.md) and in an unrelated line of protocol.md.
+- Options: (1) the owner of a process declares whether a repeat is safe in the process's own contract, and a consumer repeats a call only when it is declared safe (recommended; cost is one declared property per process); (2) the declaration is the Error's, carried with the code the consumer inspects; (3) the consumer decides, and an undeclared call is never repeated automatically.
+- Anchor: docs/process.md, Failure; docs/modules/process/error.md; docs/modules/process/service-sdk.md, consumer-side retry; beside the entry on the retry/cache-policy sibling abstraction in this handoff. The answer lands in error.md or the SDK document.
+- Blocks: nothing is blocked. Assumption meanwhile: no call is repeated automatically unless its owner declared it safe (Tentative).
+- Asked: 2026-10-13, Claude (queued as session `20261013-T052605Z-29756`, written by session `20261015-T103826Z-18580`), for Omid Hekayati.
+
+### Which failures qualify a call for an alternative path?
+- State: [Process → Failure](../../process.md#failure) lists an alternative path among the outcomes a failure may lead to, and [Error](./error.md) maps errors across a boundary as codes the consumer can inspect. When a call fails and an alternative exists (another provider, another route), nothing says what decides which failures qualify: any failure, a named class of Error, or the owner's declaration. A rule that takes the alternative on any failure includes failures no alternative could cure and hides them behind a second attempt. A search of docs/ for fallback, alternative path, failover and substitute finds only unrelated hits.
+- Options: (1) the alternative is taken only for the Error codes the consumer's declaration names, the rest surface as they are (recommended; cost is a declared list per alternative); (2) the owner of the process declares which of its errors an alternative can cure; (3) any failure qualifies.
+- Anchor: docs/process.md, Failure; docs/modules/process/error.md, the boundary mapping. The answer lands in error.md.
+- Blocks: nothing is blocked. Assumption meanwhile: no alternative path is taken automatically (Tentative).
+- Asked: 2026-10-13, Claude (queued as session `20261013-T052605Z-13940`, written by session `20261015-T103826Z-18580`), for Omid Hekayati.
+
 ## Anticipated Work
 - The companion logging-capsule API document (shape of `TransactionFailureLog`, the `Logger` interface, standard context-attachment methods), once the boundary-translation discipline is finalized.
 - A dedicated document for the `Error` family's code generator input format, specifying how a `.kh`/DSL definition of an error's metadata maps to the generated concrete type, once the broader `abstraction_p.Implements` pattern is finalized.

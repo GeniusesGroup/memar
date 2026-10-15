@@ -1,3 +1,10 @@
+---
+Title: "Parvaz - Physical Protocol"
+Status: Draft
+Start Date: 2023-06-28
+ID: 468865
+---
+
 # Parvaz - Physical Protocol
 - This Frame structure will transport by physical layer so it is payload of desire frame and that frame have its header and structure like StartDelimiter, EndDelimiter, CheckSequence, ...
 

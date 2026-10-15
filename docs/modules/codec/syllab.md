@@ -1,3 +1,10 @@
+---
+Title: "Syllab - Encoder"
+Status: Draft
+Start Date: 2020-05-10
+ID: 441409
+---
+
 # Syllab - Encoder
 Syllab as most efficient data codec is a cross platform codec (data serialization/de-serialization system) library architected for maximum memory efficiency to carry data-types over networks. It allows you to directly access serialized data without parsing/unpacking it first!
 This codec architecture is very similar to memory management by programming languages that respect and influence by computer architecture that work in simplest way that can work just by bits (0&1)!

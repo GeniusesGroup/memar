@@ -5,14 +5,7 @@ Open work for `linter.md`. Entries are mutable current state — revised as each
 Resume the 2026-09-15 toolchain-layer rewrite (memory, linter, compiler, runtime moved into `docs/modules/` and rewritten as language-independent protocols). The originating session's context is full; the owner still has critiques of that rewrite that have not all been stated. This file carries the one critique that was stated, plus the state the next session must not re-derive.
 
 ## Status
-Paused — rewrite applied, not committed as of the pause; owner review incomplete.
-
-## Ambiguities Resolved
-
-### "Khayyam has no linter rules" did not mean there are no rules
-- What was unclear: the session treated the claim as "do not put governance rules on the Khayyam shelf / Khayyam grammar owns none," and then scattered suggested checks into subject documents (`get`/`set` into encapsulation, orphan rule into modularity, type-as-argument into method).
-- What is now clear: the claim was that **suggested rules vary by organization**, not that no suggested rules exist. Spreading those suggestions into subject documents both gives each rule a topical home and turns those documents into a place of maybes.
-- Evidence: owner's correction, 2026-09-15, after the rewrite landed.
+Paused — rewrite applied and committed; owner review incomplete.
 
 ## Decisions
 
@@ -50,10 +43,9 @@ Whether generated setters should default to bare assignment or to routing throug
 - Historical changelog pointers to retired paths stay as provenance. Stability: Strong.
 
 ## Proposed Next Steps
-1. New session. Read this handoff completely before editing. Do not continue the rewrite in the exhausted session's context.
-2. Take the remaining owner critiques of Memory / Compiler / Runtime first if they are ready — those documents were rewritten in the same pass and have not been reviewed.
-3. Decide catalog versus scatter for suggested rules (the open question above) before moving any more MAY/SHOULD sentences.
-4. If the catalog is chosen: propose `docs/modules/suggested_rules.md` with replacement-ready English text and the list of files that would lose their maybe-sentences; wait for approval before applying.
+1. Take the remaining owner critiques of Memory / Compiler / Runtime first if they are ready — those documents were rewritten in the same pass and have not been reviewed.
+2. Decide catalog versus scatter for suggested rules (the open question above) before moving any more MAY/SHOULD sentences.
+3. If the catalog is chosen: propose `docs/modules/suggested_rules.md` with replacement-ready English text and the list of files that would lose their maybe-sentences; wait for approval before applying.
 
 ## Related Artifacts
 - [Linter](linter.md) — Update after the catalog decision.
@@ -61,7 +53,6 @@ Whether generated setters should default to bare assignment or to routing throug
 - orphan extension (`bundles/khayyam/rules/orphan-extension/orphan-extension.md`) — Review: boundary unit open question above.
 - Method in Khayyam (`docs/khayyam/method.md`) — Review: type-as-argument suggested diagnostic may move.
 - [Memory](../memory/memory.md), [Compiler](compiler.md), [Runtime](runtime.md) — Review; owner critiques pending.
-- Working tree: the rewrite is uncommitted; a fresh session should `git status` before further edits.
 
 ## Anticipated Work
 - The rule-authorship notation.

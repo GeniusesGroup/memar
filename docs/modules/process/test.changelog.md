@@ -170,3 +170,19 @@
 #### What changed
 - Fixed `test.md`, *What a Passing Suite Establishes*: the change had altered "three substitutions" to "four", but the section lists three things a green run does not establish (conformance, the rightness of the expectations, behavior not exercised). Restored to three.
 - Fixed `test.research.001.md`, Open Questions, the bullet on the singular role folders: the change replaced `core/test/` with `services/*/test/`, which is not a path that exists, and the toolchain's test folders were all moved to the plural `tests/` in commit 8f63a66. The bullet now keeps the survey's `core/test/` and records the move, so the drift half of the question is shown as closed while the missing convention document stays open.
+
+---
+
+### Pending as the fourth disposition of a development step
+- Time: 2026-10-13T10:45:00Z
+- Type: Added
+- Contributors:
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Claude](../../../CONTRIBUTORS.md#claude) (Sonnet-5.5) — drafted, applied
+
+#### What changed
+- [test.practice.md → The Cycle](./test.practice.md#the-cycle), step 4, gains a fourth disposition, *Pending*: the expectation is written and shown red, the work is deferred, and the Test is kept carrying the owed identifier from the Content Rule in its title. It leaves the mark when it passes. A pending Test that cannot be executed is the written record of the Boundary section, judged by a party.
+
+#### Considered and not done
+- **Defining the identifier format here** (not done): the format lives once, in the Content Rule, and this document links to it.
+- **Naming one runner's pending form as the rule** (not done): Node's `todo` and Python's `expectedFailure` are given as examples only, since the practice governs software and non-software alike.

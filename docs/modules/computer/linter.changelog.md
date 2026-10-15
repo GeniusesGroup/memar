@@ -183,3 +183,17 @@ This document is now structured per `documentation-explanation.md`: YAML front m
 - [The handoff](./linter.handoff.md)'s Anticipated Work gains four items moved under the owner's ruling of 2026-10-10 that base documents carry no tooling content.
 - From Type Practice comes the state of static-concept identity checks. Enforcement is heuristic today: structural linters flag missing-field and generic-`Init` patterns, and the code generator's input layer is the authoritative checkpoint.
 - From Type's handoff come three items: rule analysis tooling, AI-assisted delegation generation, and ownership-clarity metrics.
+
+---
+
+### Settled entries moved out of the handoff
+
+- Time: 2026-10-14T12:48:22Z
+- Type: Removed
+- Contributors:
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) - requested
+  - [Claude](../../../CONTRIBUTORS.md#claude) (claude-opus-5-5 via Claude Code) - judged, recorded
+
+#### What changed
+- Removed the Ambiguities Resolved entry "\"Khayyam has no linter rules\" did not mean there are no rules" from `linter.handoff.md`: the owner's 2026-09-15 correction (the claim meant that suggested rules vary by organization, not that none exist) is carried by `linter.md`, which states that a program failing only the linter has failed "an organization's governance posture" (Linter, line 26), that every rule's tier and override are organization-overridable (lines 44 and 46), and that organizations add, relax, and replace checks on a reference configuration (line 51). Where those suggestions live - catalog or scatter - stays open in the handoff's Decisions.
+- Removed the Related Artifacts bullet "Working tree: the rewrite is uncommitted" and Proposed Next Step 1 ("New session. Read this handoff completely before editing"), and trimmed the Status from "rewrite applied, not committed as of the pause" to "rewrite applied and committed": `docs/modules/computer/linter.md` has no uncommitted change and is in commits `e9cf6ef` (2026-10-08) and `8f47406` (2026-10-12), and the exhausted session the step guarded against is gone. The owner review that the Status, the remaining steps, and the Assumptions name stays open.

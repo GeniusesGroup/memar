@@ -204,6 +204,9 @@ Two boundaries keep this from swallowing everything. It is not a licence to corr
 
 A correction can run into a term whose concept Memar recognizes but has not named. That happens where a Definition excludes a concept it does not yet provide a word for — [System → Structure](./system.md#structure) excludes "the arrangement of a system's parts" from Structure on the ground that the concept is real and its name is still open — and the same holds for the sense a participant reaches for when they say "the architecture" of a tower, a vessel, or an organization and mean how it is put together. The correct response is to say so: that the concept is the one under discussion, that Architecture names the design processes rather than the arrangement they produce, that Structure names capabilities and constraints rather than composition, and that the name for the third is an open question recorded in the handoff. Substituting the nearest defined word would be worse than the misuse, because it would attach a precise term to a concept that term does not claim, and the error would then read as settled.
 
+### A Name an Agent Doubts
+Wherever an agent doubts a name it chooses — a term, a file, a folder, an identifier — it leaves a `TODO` there saying the choice must be reviewed, and writes the other options beside it, so the owner chooses among them instead of inheriting a guess.
+
 ### The Default Meaning of an Unreferenced Term
 Terminology governance, as stated above, covers only the terms a Memar document has actually defined. A complementary rule covers everything else: **when a word appears in Memar's documents without a reference to a Memar document that defines it, the word carries exactly its general meaning — the ordinary dictionary or established scientific sense — and nothing more.**
 

@@ -127,3 +127,16 @@
 
 #### What changed
 - `runtime.handoff.md`: anticipated work on `IsAsync` and `IsBlocking` still naming the `Bool` capsule, moved from `abstraction.handoff.md`.
+
+---
+
+### Settled part of a handoff entry moved out
+
+- Time: 2026-10-14T12:48:22Z
+- Type: Removed
+- Contributors:
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) - requested
+  - [Claude](../../../CONTRIBUTORS.md#claude) (claude-opus-5-5 via Claude Code) - judged, recorded
+
+#### What changed
+- Trimmed the Anticipated Work entry "Two runtime signatures still name the capsule `Bool`" in `runtime.handoff.md` to its open residue, now titled "A runtime signature still names the capsule `Bool`": `IsAsync` in `modules/computer/runtime/protocol/concurrency.kh` already names `Boolean`, included from `modules/math/boolean/protocol/boolean.kh` (lines 3 and 9 of that file), so that half is done in the tree. `IsBlocking` in `blocking.kh` still names `Bool` and stays open.
