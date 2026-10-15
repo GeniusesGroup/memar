@@ -59,6 +59,8 @@
   - [Sonnet-5](https://platform.claude.com/docs/en/models/sonnet-5/overview)
   - [Opus-5](https://platform.claude.com/docs/en/models/opus-5/overview)
   - [Fable-5](https://platform.claude.com/docs/en/models/fable-5/overview)
+  - Opus-5.5
+  - Sonnet-5.5
 
 ## Google
 - Full Legal Name: Google LLC
