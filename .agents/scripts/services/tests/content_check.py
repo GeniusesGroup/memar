@@ -55,6 +55,10 @@ What is pinned, and what each pin is for:
   MemarRulesAutoDetect  Without a flag the folder decides: inside a Memar
                        repository the Markdown conventions apply, outside only
                        encoding and newlines do; an explicit flag wins.
+  HandoffEntriesAreWarnedAbout  An Open Questions entry missing State, Options,
+                      Anchor or Blocks is a warning printed apart from the
+                      problems and never changing the exit; inside a Memar
+                      repository and in `*.handoff.md` only.
   CitationDirection   A relative link from a layer to a higher one is
                       reported, per Documentation -> Citation Direction; the
                       same link to its own layer or a lower one, a higher place
@@ -553,6 +557,125 @@ class CitationDirection(RepositoryFixture):
         self.write("plain/docs/modules/error.md", "# Error\n")
         path = self.write("plain/docs/process.md", "# T\n[E](./modules/error.md)\n")
         self.assertEqual(self.upward(path), [])
+
+
+class OwedMarkIsAHint(LinkFixture):
+    """`Owed: <id>` in a document and `owed:<id>` in a pending Test's title find each other.
+
+    Per Content Rule -> Owed or planned capability and Test Practice -> Pending:
+    an identifier on one side only is reported, as a hint apart from the
+    problems and never changing the exit; the check reads the identifiers and
+    opens no path.
+    """
+
+    def run_check(self, memar_rules: bool = True) -> tuple[str, int]:
+        import argparse
+        import contextlib
+        import io
+
+        args = argparse.Namespace(files=[str(self.root)], verbose=False,
+                                  memar_rules=memar_rules)
+        out = io.StringIO()
+        code = 0
+        with contextlib.redirect_stdout(out):
+            try:
+                content_check.cmd_check(args, self.root)
+            except SystemExit as stop:
+                code = stop.code or 0
+        return out.getvalue(), code
+
+    def test_an_id_on_both_sides_is_not_reported(self) -> None:
+        self.write("a.md", "# A\nOwed: khayyam.js-backend-runs\n")
+        self.write("t/a.test.ts",
+                   "test('owed:khayyam.js-backend-runs runs', { todo: true }, () => {});\n")
+        out, code = self.run_check()
+        self.assertNotIn("khayyam.js-backend-runs", out)
+        self.assertNotIn("owed marks", out)
+        self.assertEqual(code, 0)
+
+    def test_a_document_only_id_is_a_hint_not_a_problem(self) -> None:
+        self.write("a.md", "# A\nOwed: only.in-doc\n")
+        out, code = self.run_check()
+        self.assertIn("owed marks", out)
+        self.assertIn("only.in-doc", out)
+        self.assertIn("no pending Test", out)
+        self.assertIn("0 problems", out)
+        self.assertEqual(code, 0)
+
+    def test_a_test_only_id_is_a_hint_not_a_problem(self) -> None:
+        self.write("a.md", "# A\nNothing owed.\n")
+        self.write("t/test_a.py",
+                   "class T:\n    def test_x(self):\n        'owed:only.in-test is pending'\n")
+        out, code = self.run_check()
+        self.assertIn("only.in-test", out)
+        self.assertIn("no Owed line", out)
+        self.assertIn("0 problems", out)
+        self.assertEqual(code, 0)
+
+    def test_an_id_quoted_inside_prose_is_ignored(self) -> None:
+        self.write("a.md", "# A\nWrite `Owed: quoted.id` in the document, or say Owed: prose.id inline.\n"
+                           "```\nOwed: fenced.id\n```\n")
+        out, _ = self.run_check()
+        self.assertNotIn("quoted.id", out)
+        self.assertNotIn("prose.id", out)
+        self.assertNotIn("fenced.id", out)
+
+    def test_a_path_is_not_an_id(self) -> None:
+        self.write("a.md", "# A\nOwed: docs/x.md\nOwed: Has Space\n")
+        out, _ = self.run_check()
+        self.assertNotIn("owed marks", out)
+
+    def test_no_memar_rules_skips_the_hint(self) -> None:
+        self.write("a.md", "# A\nOwed: only.in-doc\n")
+        out, code = self.run_check(memar_rules=False)
+        self.assertNotIn("owed marks", out)
+        self.assertEqual(code, 0)
+
+
+class HandoffEntriesAreWarnedAbout(LinkFixture):
+    """An Open Questions entry missing State, Options, Anchor or Blocks is a warning, apart from the problems."""
+
+    ENTRY = "## Open Questions\n### Q?\n- **State**: x\n"
+    FULL = "## Open Questions\n### Q?\n- State: x\n- Options: a\n- Anchor: y\n- Blocks: no\n"
+
+    def run_check(self, memar_rules: bool = True) -> tuple[str, int]:
+        import argparse
+        import contextlib
+        import io
+
+        args = argparse.Namespace(files=[str(self.root)], verbose=False, memar_rules=memar_rules)
+        out = io.StringIO()
+        code = 0
+        with contextlib.redirect_stdout(out):
+            try:
+                content_check.cmd_check(args, self.root)
+            except SystemExit as stop:
+                code = stop.code or 0
+        return out.getvalue(), code
+
+    def test_a_short_entry_warns_and_is_not_a_problem(self) -> None:
+        self.write("a.handoff.md", "# A handoff\n\n" + self.ENTRY)
+        out, code = self.run_check()
+        self.assertIn("warnings (not counted as problems):", out)
+        self.assertIn("a.handoff.md:4: entry 'Q?' lacks Options, Anchor, Blocks", out)
+        self.assertIn("0 problems", out)
+        self.assertIn("1 warning", out)
+        self.assertEqual(code, 0)
+
+    def test_check_file_itself_does_not_return_it(self) -> None:
+        path = self.write("a.handoff.md", "# A handoff\n\n" + self.ENTRY)
+        self.assertEqual(content_check.check_file(path, {}, True), [])
+
+    def test_a_complete_entry_and_other_documents_do_not_warn(self) -> None:
+        self.write("a.handoff.md", "# A handoff\n\n" + self.FULL)
+        self.write("b.md", "# B\n\n" + self.ENTRY)
+        out, _ = self.run_check()
+        self.assertNotIn("warning", out)
+
+    def test_outside_a_memar_repository_it_is_not_judged(self) -> None:
+        self.write("a.handoff.md", "# A handoff\n\n" + self.ENTRY)
+        out, _ = self.run_check(memar_rules=False)
+        self.assertNotIn("lacks", out)
 
 
 if __name__ == "__main__":

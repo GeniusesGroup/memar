@@ -79,6 +79,7 @@ class OneVerbHoldsThemAll(unittest.TestCase):
         "search",
         "backlinks",
         "obligations",
+        "questions",
         "changelog-append",
         "hour-id",
         "write",

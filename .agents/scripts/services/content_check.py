@@ -25,7 +25,9 @@ from pathlib import Path
 
 from services.content_corpus import is_generated
 from services.content_markdown import EXTERNAL_LINK, without_code
+from services.content_owed import owed_hints
 from services.content_propagation import undischarged_propagations
+from services.content_questions_lint import entry_warnings
 from services.content_reference import content_root
 from services.content_text import plain_path
 
@@ -445,6 +447,31 @@ def cmd_check(args: argparse.Namespace, root: Path) -> None:
         print("\nundischarged propagations:")
         for _, _, report in outstanding:
             print(f"  - {report}")
+    # An Open Questions entry missing a field is a warning for the same reason:
+    # entries written before the rule stay valid, and only a Memar repository
+    # has adopted the rule.
+    warnings: list[str] = []
+    if memar_rules:
+        for path in files:
+            if path.name.endswith(".handoff.md"):
+                try:
+                    shown = path.relative_to(root)
+                except ValueError:
+                    shown = path
+                warnings.extend(f"{shown}:{text.removeprefix('line ')}" for text in entry_warnings(path))
+    if warnings:
+        print("\nwarnings (not counted as problems):")
+        for warning in warnings:
+            print(f"  - {warning}")
+    # Owed marks found on one side only are hints for the same reason: a
+    # document may owe work no Test can execute, and a Test may be pending for
+    # a claim not yet written. Only identifiers are read; no path is opened.
+    if directories and memar_rules:
+        hints = owed_hints(files)
+        if hints:
+            print("\nowed marks on one side only (hints, not counted as problems):")
+            for hint in hints:
+                print(f"  - {hint}")
     print(
         f"\nchecked {len(files)} file{'s' if len(files) != 1 else ''}, "
         f"{total} problem{'s' if total != 1 else ''}"
@@ -454,6 +481,7 @@ def cmd_check(args: argparse.Namespace, root: Path) -> None:
             if outstanding
             else ""
         )
+        + (f", {len(warnings)} warning{'s' if len(warnings) != 1 else ''}" if warnings else "")
     )
     if not memar_rules:
         print(

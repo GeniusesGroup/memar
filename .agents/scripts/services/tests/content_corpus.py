@@ -105,6 +105,22 @@ class CorpusIsTheCheckout(unittest.TestCase):
         self.assertNotIn("temp/s-1/scratch.md", found)
         self.assertNotIn("temp/sessions/s-2/plan.md", found)
 
+    def test_the_kept_session_records_stay_out_and_the_rest_of_agents_is_in(self) -> None:
+        # A kept plan or report is a session's record, not content a search,
+        # a backlink, a check, or a ledger walk is for; they are left out by
+        # the folder's path, and only that folder: .agents/ stays content.
+        root = self.a_checkout()
+        self.write(".agents/sessions/s-3/report.md", "# Report\n")
+        self.write(".agents/sessions/s-3/docs/entry.changelog.md", "# Changelog\n")
+        self.write(".agents/skills/memar/SKILL.md", "# Skill\n")
+        self.write("docs/sessions/kept.md", "# Not the records folder\n")
+        found = {path.relative_to(root).as_posix() for path in content_corpus.content_files(root)}
+        ledgers = {path.relative_to(root).as_posix() for path in content_corpus.ledger_files(root)}
+        self.assertNotIn(".agents/sessions/s-3/report.md", found)
+        self.assertNotIn(".agents/sessions/s-3/docs/entry.changelog.md", ledgers)
+        self.assertIn(".agents/skills/memar/SKILL.md", found)
+        self.assertIn("docs/sessions/kept.md", found)
+
     def test_a_folder_holding_none_of_the_content_folders_is_refused(self) -> None:
         empty = self.root / "not-a-checkout"
         empty.mkdir()
