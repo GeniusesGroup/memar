@@ -66,15 +66,7 @@ tp Error ab
 
 In these examples `Element` and `Error` are abstractions — declared behavior, not capsule types. Per *What You Cannot Do*, only abstractions may appear in an abstraction-owned method signature; a primitive capsule (`W32`, `W64`, …) or a concrete capsule there is invalid.
 
-An abstraction can also **compose other abstractions** by listing them inside its block. This is Khayyam's equivalent of interface inheritance — declared requirements compose, with no behavior inherited:
-
-```khayyam
-tp Error ab {
-    Type
-    Field_MediaType
-    ADT
-}
-```
+An abstraction can also **compose other abstractions** by listing them inside its block. This is Khayyam's equivalent of interface inheritance — declared requirements compose, with no behavior inherited. The Error module's `Error` is such an abstraction: its block names, one per line, the abstractions every error must also satisfy, and it is declared once, in [`error.kh`](../../modules/process/error/protocol/error.kh), which this document does not copy.
 
 ### Satisfying an Abstraction
 A capsule satisfies an abstraction simply by implementing all of its required methods with matching signatures. No `implements` keyword is needed. Satisfaction is judged wherever an abstraction type is required — where a value is declared as one, or where it is passed to a position declared with one.
@@ -128,7 +120,7 @@ tp Cache mt (self RedisStore) (result Bool) (err Error) {
 This is deliberate, visible boilerplate. It keeps the execution path explicit and linear, with no implicit routing.
 
 ### Dispatch Strategy
-The grammar states no strategy for resolving a call through an abstraction and offers no syntax to choose one; what a Khayyam compiler does at a given call site is [Compiler](../modules/computer/compiler.md)'s business.
+The grammar states no strategy for resolving a call through an abstraction and offers no syntax to choose one; what a Khayyam compiler does at a given call site is [Compiler](../../modules/computer/compiler/compiler.md)'s business.
 
 ### Abstraction Realization (Implicit Satisfaction)
 Khayyam does not introduce any explicit syntax or keyword (such as `impl` or `implements`) to bind a capsule to an abstraction (`ab`). Abstraction realization is strictly implicit and structural.
@@ -139,7 +131,7 @@ Khayyam does not introduce any explicit syntax or keyword (such as `impl` or `im
 This design mirrors Go's interface satisfaction model at the language level. It eliminates the boilerplate of explicit implementation declarations (Rust's `impl Trait for Type`) and keeps the language grammar minimal. However, it also inherits Go's known risk of **accidental satisfaction**: an unrelated capsule can accidentally satisfy a small, marker-like abstraction if its method signatures happen to match. For example, if a `FileLogger` capsule happens to define a `String()` method with the correct signature, it could accidentally qualify as a `Stringer` abstraction without its author ever intending this relationship. The risk is most acute for small abstractions with one or two methods, where signature collision is statistically more likely; for large abstractions with many methods, accidental satisfaction is practically impossible. Khayyam answers this risk with composition and delegation rather than with a nominal declaration: see *Deliberate Satisfaction Is Composed, Not Declared*, below.
 
 ### Deliberate Satisfaction Is Composed, Not Declared
-The language does not intervene in satisfaction. A capsule cannot name the abstraction it satisfies, cannot seal a declaration that only a matching implementation could enter, and the grammar carries no intent marker of any kind. This is the position [abstraction_p.Implements](../modules/computer/abstraction-implements.md) already takes at the protocol level, where an intent to implement an abstraction is itself an abstraction a capsule may compose into its own definition — see its [*Declaring and discovering intent*](../modules/computer/abstraction-implements.md#declaring-and-discovering-intent).
+The language does not intervene in satisfaction. A capsule cannot name the abstraction it satisfies, cannot seal a declaration that only a matching implementation could enter, and the grammar carries no intent marker of any kind. This is the position [abstraction_p.Implements](../../modules/computer/abstraction/implements.md) already takes at the protocol level, where an intent to implement an abstraction is itself an abstraction a capsule may compose into its own definition — see its [*Declaring and discovering intent*](../../modules/computer/abstraction/implements.md#declaring-and-discovering-intent).
 
 A capsule that wants its satisfaction of an abstraction to read as deliberate composes an intent abstraction and explicitly delegates the methods the abstraction it declares requires, naming a capsule that owns the behavior. [*Rejection of Default Implementations*](#rejection-of-default-implementations) already requires each of those methods to be written in the implementing capsule, and [Type → Explicit Behavior Ownership](../type.md#explicit-behavior-ownership) requires every method of a component to be defined in its own source or explicitly delegated by it:
 

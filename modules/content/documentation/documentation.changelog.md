@@ -1,5 +1,5 @@
 # Documentation Changelog
-This document records why and how `documentation.md` changed over time. See [Documentation — Changelog](./documentation-changelog.md) for what this file's structure means.
+This document records why and how `documentation.md` changed over time. See [Documentation — Changelog](./changelog/changelog.md) for what this file's structure means.
 
 ## Changelog
 
@@ -7,15 +7,15 @@ This document records why and how `documentation.md` changed over time. See [Doc
 - Time: unknown (historical import — this document's own creation, before this changelog existed)
 - Cited:
   - [Diátaxis](https://diataxis.fr/) — Extends: the Facet concept borrows Diátaxis's core insight — that documentation content is categorically different depending on whether the reader is meant to study it or to follow it — and adapts it to this project's own scope and naming. Diátaxis itself identifies four forms (Tutorials, How-to guides, Reference, Explanation); this project initially distinguished two facets (Practice, Explanation), then added Changelog as a third, with the same underlying two-axis principle.
-  - [Modeling](./modeling.md) — Depends_on: Documentation is the result of correct modeling. The concept of Documentation cannot be understood or defined independently from the modeling process.
+  - [Modeling](../../../docs/modeling.md) — Depends_on: Documentation is the result of correct modeling. The concept of Documentation cannot be understood or defined independently from the modeling process.
   - [Anthropic Claude skill-creator](https://github.com/anthropics/skills/blob/main/skills/skill-creator/SKILL.md) — Reference: one of three independently-designed real Skill-file conventions examined as evidence for the Practice facet's governing schema.
   - [OpenAI Codex skill-creator](https://github.com/openai/skills/blob/main/skills/.system/skill-creator/SKILL.md) — Reference: second independently-converged real Skill-file convention, explicitly listing inclusion of auxiliary documentation inside a skill as an anti-pattern.
   - [Microsoft skill-creator](https://github.com/microsoft/skills/blob/main/.github/skills/skill-creator/SKILL.md) — Reference: third independently-converged real Skill-file convention, sharing the same core schema despite layering additional SDK-specific structure on top.
   - Dependency Resolution via File URI and Companion Manifest (`docs/khayyam/modularity.md`) — Reference: the Explanation facet's use of URI for contributor identity and citations follows the same File URI approach already established for dependency resolution, in the document that absorbed that one.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — argued, directed, proposed
-  - [Super Z](../CONTRIBUTORS.md#super-z) — rewrote
-  - [Claude](../CONTRIBUTORS.md#claude) — argued, proposed
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — argued, directed, proposed
+  - [Super Z](../../../CONTRIBUTORS.md#super-z) — rewrote
+  - [Claude](../../../CONTRIBUTORS.md#claude) — argued, proposed
 
 #### What changed
 - Split the former single `documentation.md` (`RFC Template Specification`, before that the original `rfc-template.md`) into three files: this document, defining what a documentation "Facet" is and listing the Facets currently specified; `documentation-explanation.md`, governing the Explanation facet (the substantive successor of the former single file, keeping its original identity); and `documentation-practice.md`, governing the Practice facet.
@@ -40,7 +40,7 @@ This document records why and how `documentation.md` changed over time. See [Doc
 - Time: 2026-08-05T08:51:08Z
 - Type: Changed
 - Contributors:
-  - [Claude](../CONTRIBUTORS.md#claude) — rewrote, flagged
+  - [Claude](../../../CONTRIBUTORS.md#claude) — rewrote, flagged
 
 #### What changed
 - This changelog file was extracted from `documentation.md`'s front matter.
@@ -57,8 +57,8 @@ This document records why and how `documentation.md` changed over time. See [Doc
 - Time: 2026-08-11T00:00:00Z
 - Type: Changed
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — argued
-  - [Super Z](../CONTRIBUTORS.md#super-z) — rewrote
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — argued
+  - [Super Z](../../../CONTRIBUTORS.md#super-z) — rewrote
 
 #### What changed
 - Every remaining mention of Diátaxis was removed from `documentation.md` — Abstract, Methodology, the Facet topic's etymology and four-axis explanation, Discussion, Prior art, Extensibility.
@@ -83,13 +83,13 @@ This document records why and how `documentation.md` changed over time. See [Doc
 - Time: 2026-09-01T14:15:37Z
 - Type: Added
 - Cited:
-  - [Documentation — Handoff](./documentation-handoff.md) — Depends_on: the newly registered facet's governing specification; the meta-layer's entry is a pointer to it, not a restatement of it.
+  - [Documentation — Handoff](./handoff/handoff.md) — Depends_on: the newly registered facet's governing specification; the meta-layer's entry is a pointer to it, not a restatement of it.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — decided, directed
-  - [Super Z](../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — rewrote.
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — decided, directed
+  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — rewrote.
 
 #### What changed
-- Registered the Handoff facet in the meta-layer as the fourth facet: the Abstract now names four facets (adding "read to resume a paused discussion"), the core observation paragraph's three-reader enumeration became four readers, the Facets list gained a Handoff entry (definition plus pointer to [documentation-handoff.md](./documentation-handoff.md), following the lean definition-plus-pointer pattern established for the other facets), the facet-selection guidance, Extensibility, hierarchy table (now five files), Drawbacks, and Future possibilities were updated to the four-facet model, and the Methodology records that the Handoff pattern repeated informally across working sessions before being named — the same adoption path as the Changelog facet.
+- Registered the Handoff facet in the meta-layer as the fourth facet: the Abstract now names four facets (adding "read to resume a paused discussion"), the core observation paragraph's three-reader enumeration became four readers, the Facets list gained a Handoff entry (definition plus pointer to [documentation-handoff.md](./handoff/handoff.md), following the lean definition-plus-pointer pattern established for the other facets), the facet-selection guidance, Extensibility, hierarchy table (now five files), Drawbacks, and Future possibilities were updated to the four-facet model, and the Methodology records that the Handoff pattern repeated informally across working sessions before being named — the same adoption path as the Changelog facet.
 - The Facet topic's Unresolved question about future reader relationships was updated to reflect that the discussion-resumption relationship was observed in real records before it was named.
 - Separately, a new cross-cutting content rule — "No Fabricated or Redundant Provenance" — was added under Explanation: no invented facts, and historical/migration narration lives once (in the paired changelog), never repeated across documents.
 
@@ -109,8 +109,8 @@ This document records why and how `documentation.md` changed over time. See [Doc
   - documentation.handoff.md: Created - this document's open questions and anticipated work moved there.
   - documentation-explanation.md: Done - the method this migration follows was finalized there in the same pass.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - claimed, decided
-  - [Super Z](../CONTRIBUTORS.md#super-z) - rewrote, moved
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) - claimed, decided
+  - [Super Z](../../../CONTRIBUTORS.md#super-z) - rewrote, moved
 
 #### What changed
 - The body's fixed top-level sections are reduced to `Abstract`, `Introduction`, `Explanation`, `Results` (Omid Hekayati - the `Discussion` section with sub-titles added avoidable ambiguity to the skeleton; Super Z - applied).
@@ -140,15 +140,15 @@ Fixed skeleton: four sections. Everything else optional, catalogued. Open questi
 - Time: 2026-09-08T11:46:19Z
 - Type: Added
 - Cited:
-  - [Documentation — Research](./documentation-research.md) — Depends_on: the newly registered facet's governing specification; the meta-layer's entry is a pointer to it, not a restatement of it.
+  - [Documentation — Research](./research/research.md) — Depends_on: the newly registered facet's governing specification; the meta-layer's entry is a pointer to it, not a restatement of it.
 - Propagates to:
   - documentation.handoff.md: Done - the Facet growth anticipated-work entry updated from the fifth-facet case to the sixth-facet case, now that the fifth facet exists.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — claimed, decided
-  - [Super Z](../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — drafted
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — claimed, decided
+  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — drafted
 
 #### What changed
-- Registered the Research facet in the meta-layer as the fifth facet: the Abstract now names five facets (adding "examined to evaluate a deliberate inquiry"), the core observation paragraph's reader enumeration became five readers, the Facets list gained a Research entry (definition plus pointer to [documentation-research.md](./documentation-research.md), following the lean definition-plus-pointer pattern established for the other facets), the facet-selection guidance gained the research branch, Extensibility was updated to the five-facet model, and the hierarchy table grew to six files (Omid Hekayati — confirmed the registration and the draft; Super Z — applied).
+- Registered the Research facet in the meta-layer as the fifth facet: the Abstract now names five facets (adding "examined to evaluate a deliberate inquiry"), the core observation paragraph's reader enumeration became five readers, the Facets list gained a Research entry (definition plus pointer to [documentation-research.md](./research/research.md), following the lean definition-plus-pointer pattern established for the other facets), the facet-selection guidance gained the research branch, Extensibility was updated to the five-facet model, and the hierarchy table grew to six files (Omid Hekayati — confirmed the registration and the draft; Super Z — applied).
 - The registered reader relationship is *examining to evaluate a deliberate inquiry* — categorically different from auditing history (Changelog) and resuming a paused discussion (Handoff): a research records how a question was pursued and how firm its outcome stands, and carries the negative results ("investigated; no change warranted") that produce no changelog entry and would otherwise leave no trace.
 
 #### Deliberation
@@ -165,10 +165,10 @@ Fixed skeleton: four sections. Everything else optional, catalogued. Open questi
 - Time: 2026-09-10T16:57:44Z
 - Type: Changed
 - Cited:
-  - [Documentation — Explanation](./documentation-explanation.md) — Depends_on: the three-section skeleton this change self-applies, and the Results-routing exclusion it implements, are defined by the Explanation facet's governing specification; the removal decision and its evidence base are recorded in that document's paired changelog (2026-09-10T16:57:44Z entry).
+  - [Documentation — Explanation](./explanation/explanation.md) — Depends_on: the three-section skeleton this change self-applies, and the Results-routing exclusion it implements, are defined by the Explanation facet's governing specification; the removal decision and its evidence base are recorded in that document's paired changelog (2026-09-10T16:57:44Z entry).
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - argued, directed
-  - [Super Z](../CONTRIBUTORS.md#super-z) (GLM 5.3) - researched, wrote
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) - argued, directed
+  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM 5.3) - researched, wrote
 
 #### What changed
 - `Results routing` was added as a cross-cutting convention, after `URI` and on the same precedent: a concern whose homes span several facets is defined at the meta layer, at pointer level, with each home's structure left to that facet's own specification. The routing keys on the type of the result — anticipated (the document's Abstract claim), derived (the `Implications` catalog entry), observed (the changelog entry that made the change, inline Evidence at a claim, a Research record, or handoff working state) — so an agent holding a result looks up its home by type without needing to know which facet's structure applies first (Omid Hekayati - argued the placement and the lookup path; Super Z - written).
@@ -180,13 +180,13 @@ Fixed skeleton: four sections. Everything else optional, catalogued. Open questi
 - Time: 2026-09-14T17:47:53Z
 - Type: Changed
 - Cited:
-  - [Documentation — Explanation](./documentation-explanation.md) - Reference: the two rules specific to that specification's front matter (the slug derives from `Title`; the name is stable once `Final`) stay stated there, while the separator structure moved here.
+  - [Documentation — Explanation](./explanation/explanation.md) - Reference: the two rules specific to that specification's front matter (the slug derives from `Title`; the name is stable once `Final`) stay stated there, while the separator structure moved here.
   - Filesystem (`docs/modules/lib/memory/filesystem.md`) - Reference: the rejected alternative home, cited because its own thesis is the reason for the rejection.
 - Propagates to:
   - documentation-explanation.md: Done - its `File` topic's superseded filename wording ("hyphenated, no number, no domain prefix") replaced by a pointer to [File Naming](./documentation.md#file-naming); that wording contradicted the practice the convention now describes, since directories carry the category and digits appear inside conceptual terms (`osi_1`) and in Research ordinals by design.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - argued, directed
-  - [ZCode](../CONTRIBUTORS.md#zcode) - researched, wrote
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) - argued, directed
+  - [ZCode](../../../CONTRIBUTORS.md#zcode) - researched, wrote
 
 #### What changed
 - `File Naming` joined `Citations`, `URI`, and `Results routing` as a convention defined at the meta layer. It assigns exactly one boundary to each of three separators: folder or hyphen for the category/topic edge (the folder where a category owns a directory, the hyphen where documents sit beside one another), underscore for the words of one conceptual term, and dot for a companion record's facet key. The last of the three had been stated per-facet inside each governing specification (`<base>.changelog.md`, `<base>.research.<NNN>.md`) but never as one rule, so a new facet had to infer the pattern from existing files rather than read it somewhere (Omid Hekayati - directed the home; ZCode - wrote, deriving the rule from the separators the set already uses).
@@ -207,8 +207,8 @@ Fixed skeleton: four sections. Everything else optional, catalogued. Open questi
 - Time: 2026-09-18T14:30:00Z
 - Type: Changed
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — claimed, decided
-  - [Composer](../CONTRIBUTORS.md#composer) (Composer via [Cursor](../CONTRIBUTORS.md#cursor)) — drafted
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — claimed, decided
+  - [Composer](../../../CONTRIBUTORS.md#composer) (Composer via [Cursor](../../../CONTRIBUTORS.md#cursor)) — drafted
 
 #### What changed
 - Registered cross-cutting [Written surface](./documentation.md#written-surface): no blank line between a section title and its body; no double blank runs; load-bearing logic stays linear; present-state writing when the reader has no prior durable snapshot to compare against. Rules are writing rules, not markup-protocol rules.
@@ -224,8 +224,8 @@ Fixed skeleton: four sections. Everything else optional, catalogued. Open questi
 - Time: 2026-09-23T06:30:00Z
 - Type: Added
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — required the reading rule
-  - [Grok](../CONTRIBUTORS.md#grok) (Grok 4.7 via [Cursor](../CONTRIBUTORS.md#cursor)) — wrote
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — required the reading rule
+  - [Grok](../../../CONTRIBUTORS.md#grok) (Grok 4.7 via [Cursor](../../../CONTRIBUTORS.md#cursor)) — wrote
 
 #### What changed
 - [documentation.practice.md](./documentation.practice.md) states that work a practice already covers is done by reading that practice. The paired explanation is opened when a step names a section to check, or when the task is to change the explanation.
@@ -240,12 +240,12 @@ Owner: an executing agent does not need to read the explanatory document to carr
 - Time: 2026-09-23T09:05:00Z
 - Type: Fixed
 - Cited:
-  - [Documentation — Explanation](./documentation-explanation.md) — Depends_on: Relevance discipline already sends a negated alternative to the changelog because a reader loading the body treats a negation as a live claim.
+  - [Documentation — Explanation](./explanation/explanation.md) — Depends_on: Relevance discipline already sends a negated alternative to the changelog because a reader loading the body treats a negation as a live claim.
 - Propagates to:
   - documentation.practice.md: Done — the written-surface step states the same rule, including when a prior snapshot exists.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — requested
-  - [Grok](../CONTRIBUTORS.md#grok) (Grok 4.7 via [Cursor](../CONTRIBUTORS.md#cursor)) — applied
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested
+  - [Grok](../../../CONTRIBUTORS.md#grok) (Grok 4.7 via [Cursor](../../../CONTRIBUTORS.md#cursor)) — applied
 
 #### What changed
 - Written surface gains a bullet: a body sentence states the current rule. The replaced wording, the dropped label, and the rejected alternative are changelog content. A sentence whose job is to warn the reader off a previous formulation does not stay in the body, whether or not a prior snapshot of that formulation exists.
@@ -260,7 +260,7 @@ Owner: an executing agent does not need to read the explanatory document to carr
 - Time: 2026-10-03T00:00:00Z
 - Type: Added
 - Cited:
-  - [Modeling → Expected Output of a Modeling Session](./modeling.md#expected-output-of-a-modeling-session) - Depends_on: the document that now carries the reduced claim and points here for the rule
+  - [Modeling → Expected Output of a Modeling Session](../../../docs/modeling.md#expected-output-of-a-modeling-session) - Depends_on: the document that now carries the reduced claim and points here for the rule
   - Khayyam Rules Catalog (`bundles/khayyam/rules/README.md`) - Evidence: "Each rule has its own folder, holding a main document named after the rule" - the one kind of artifact in this repository that already kept the rule, and the precedent it is drawn from
   - [Documentation Practice → Folder READMEs](./documentation.practice.md#folder-readmes) - Depends_on: the folder-README rule that makes a folder's main document addressable by a path a reader types
 - Propagates to:
@@ -268,8 +268,8 @@ Owner: an executing agent does not need to read the explanatory document to carr
   - docs/modeling.practice.md: Done - its closing pointer goes here.
   - docs/modeling.changelog.md: Done - the entry recording the rename now cites the rule's home.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - required
-  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) - drafted, applied
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) - required
+  - [Space Bunny Alpha](../../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../../CONTRIBUTORS.md#opencode)) - drafted, applied
 
 #### What changed
 - [File Naming](./documentation.md#file-naming) gains the rule: a document that states a model is named after the concept the model is about; the folder holding it is named for the responsibility whose model it is and the document takes that same name beside it - `modules/computer/binding/binding.md`, `modules/process/construction/construction.md`, `modules/process/control-flow/control-flow.md` - and every companion record takes the same base name. Nothing in such a name carries the kind of document, since the dot already carries the facet key and the base name already carries the subject, which is the one misplacement this document's own separator system exists to prevent.
@@ -291,28 +291,28 @@ Owner: an executing agent does not need to read the explanatory document to carr
 - Time: 2026-10-04T05:35:11Z
 - Type: Added
 - Cited:
-  - [Comparison: Memar and GitHub Spec Kit](./comparisons/spec-kit.001.md) - **Reference**: the comparison whose adoption filter produced these changes. GitHub Spec Kit's `/converge` requires that a converged run leave `tasks.md` byte-for-byte unchanged with no empty Convergence header and report a fixed string; its `check_extension_version_bump.py` turns "please remember to bump" into a merge requirement, with the rationale recorded as a shipped bug class.
+  - [Comparison: Memar and GitHub Spec Kit](../../../docs/comparisons/spec-kit.001.md) - **Reference**: the comparison whose adoption filter produced these changes. GitHub Spec Kit's `/converge` requires that a converged run leave `tasks.md` byte-for-byte unchanged with no empty Convergence header and report a fixed string; its `check_extension_version_bump.py` turns "please remember to bump" into a merge requirement, with the rationale recorded as a shipped bug class.
 - Propagates to:
-  - [.agents/scripts/memar-documentation.py](../.agents/scripts/services/content.py): Done - the propagation report and the newline fix below. That file carries no changelog of its own.
-  - [.agents/scripts/README.md](../.agents/scripts/README.md): Done - what `check` reports on a folder run, the one question it pointedly does not judge, and the `memar` launcher that reaches it by one word. That file carries no changelog of its own.
-  - [.agents/scripts/tests/memar-documentation.py](../.agents/scripts/services/tests/content.py): Done - five classes of tests for the report, plus five for the append convention. A Test belongs in the folder of the module that owns what it tests, per Test Placement (`modules/process/test/rules/test-placement/test-placement.md`).
-  - [documentation.practice.md](./documentation.practice.md): None needed - [Trivial changes](./documentation-changelog.md#trivial-changes) already covers the changelog-entry case, and the new rule is the same economy stated at the level of the artifact rather than the entry; the practice's own step 4 already sends a session with no lasting design change to no entry at all.
-  - [documentation-explanation.md](./documentation-explanation.md): None needed - the rule concerns what a check writes, not what a document is.
-  - [cognition.changelog.md](./cognition.changelog.md): None needed - the norm change in that entry does not rest on this one.
+  - [.agents/scripts/memar-documentation.py](../../../.agents/scripts/services/content.py): Done - the propagation report and the newline fix below. That file carries no changelog of its own.
+  - [.agents/scripts/README.md](../../../.agents/scripts/README.md): Done - what `check` reports on a folder run, the one question it pointedly does not judge, and the `memar` launcher that reaches it by one word. That file carries no changelog of its own.
+  - [.agents/scripts/tests/memar-documentation.py](../../../.agents/scripts/services/tests/content.py): Done - five classes of tests for the report, plus five for the append convention. A Test belongs in the folder of the module that owns what it tests, per Test Placement (`modules/process/test/rules/test-placement/test-placement.md`).
+  - [documentation.practice.md](./documentation.practice.md): None needed - [Trivial changes](./changelog/changelog.md#trivial-changes) already covers the changelog-entry case, and the new rule is the same economy stated at the level of the artifact rather than the entry; the practice's own step 4 already sends a session with no lasting design change to no entry at all.
+  - [documentation-explanation.md](./explanation/explanation.md): None needed - the rule concerns what a check writes, not what a document is.
+  - [cognition.changelog.md](../../../docs/cognition.changelog.md): None needed - the norm change in that entry does not rest on this one.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - directed, decided
-  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) - drafted, tested
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) - directed, decided
+  - [Space Bunny Alpha](../../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../../CONTRIBUTORS.md#opencode)) - drafted, tested
 
 #### What changed
-- [Written surface](./documentation.md#written-surface) gains a rule: an empty result leaves the medium unchanged. A report, review, check, or convergence with nothing to report produces no artifact — no empty section, no placeholder heading, no empty changelog entry, no file created to hold a result that is not there. [Trivial changes](./documentation-changelog.md#trivial-changes) already says a session whose edits leave no lasting design change gets no entry; this carries the same economy up from the entry to every artifact a check might write, which is where it was missing. The rule is stated with a second reason as well as the tidiness one, because tidiness is not what makes it load-bearing: a loop whose success condition is "nothing was found" needs the nothing to be observable, or the party running it cannot distinguish a completed check from one that has not run and goes on producing work to fill the gap. The observable form of finding nothing is that the shared medium is exactly as it was.
+- [Written surface](./documentation.md#written-surface) gains a rule: an empty result leaves the medium unchanged. A report, review, check, or convergence with nothing to report produces no artifact — no empty section, no placeholder heading, no empty changelog entry, no file created to hold a result that is not there. [Trivial changes](./changelog/changelog.md#trivial-changes) already says a session whose edits leave no lasting design change gets no entry; this carries the same economy up from the entry to every artifact a check might write, which is where it was missing. The rule is stated with a second reason as well as the tidiness one, because tidiness is not what makes it load-bearing: a loop whose success condition is "nothing was found" needs the nothing to be observable, or the party running it cannot distinguish a completed check from one that has not run and goes on producing work to fill the gap. The observable form of finding nothing is that the shared medium is exactly as it was.
 - `memar-documentation.py check`, given a folder, prints the `Propagates to` entries left `Pending` across the document set in their own section, apart from the problems. The facet calls `Pending` a searchable state on purpose, and nothing could search it: `search` excludes changelog files because their content is history rather than current truth, which is the correct call for concept search and left the work-list with no surface at all. At the inspected tree the section reports 61 open propagations, which is the honest size of the queue the facet's design implies and which no surface had shown before.
 - The state is read from the entry's own field rather than from the word's presence in a line, so a description mentioning `Pending` while reporting work already done is not read as an obligation, and the sources' `Pending deletion` and `Pending at absorb time` are both read as the open state they are. `Done` and `Rejected` are not reported: `Rejected` closes the search result permanently by the facet's own definition, and a section that kept raising decided matters would train a reader to skip it.
 - A ledger is told from a specification by its stem ending in `.changelog`. `cognition.changelog.md` records entries in the field; `documentation-changelog.md` specifies the field and carries a heading, the field name, and a sample line in the field's own shape. Testing on the file-name suffix alone read the second as the first and reported the project's own rules as its outstanding work.
 - `changelog_append` now writes the newline convention the file already holds rather than a fixed one, and normalizes a CRLF entry into an LF file. The append was found through the check this entry's first change strengthens: appending to this repository's own `cognition.changelog.md`, which holds CRLF, wrote an LF tail and made `check` report mixed line endings on the file — the tool the [practice](./documentation.practice.md) tells every contributor to append with, causing the defect it is the authority for detecting. The changelog was returned to its own convention, and five tests now hold the behavior from both sides.
-- [.agents/scripts/README.md](../.agents/scripts/README.md) states what the folder run reports, why the section is printed apart from the problems, and how a ledger is told from a specification — that file being the folder's authority on its own interface. It also gains the `memar` launcher as the folder's fourth kind of file: a command that routes to this folder's tools and adds nothing, so a caller reaches Memar by one word without learning a path or a filename, and so the skill that names this folder can name a word instead of a location. Access multiplies; the implementation does not.
+- [.agents/scripts/README.md](../../../.agents/scripts/README.md) states what the folder run reports, why the section is printed apart from the problems, and how a ledger is told from a specification — that file being the folder's authority on its own interface. It also gains the `memar` launcher as the folder's fourth kind of file: a command that routes to this folder's tools and adds nothing, so a caller reaches Memar by one word without learning a path or a filename, and so the skill that names this folder can name a word instead of a location. Access multiplies; the implementation does not.
 
 #### Considered and not done
-- **Checking whether a body holds a rejected alternative belonging in a changelog entry (rejected, and kept as a negative result):** it is not decidable from the text. `documentation-changelog.md` is the document that specifies the field, so it carries a section by the field's own name in its own body, correctly placed; the specification of where records go and a record of one differ only in what the text is *for*. A threshold that separated them — heading depth, a bullet beside the heading, the file's name — either fires on this repository's own governing document or misses a record written the other way, and a check permanently red on a correct file is one a reader learns to skip. An implementation was written, run against the tree, caught by the check on the specification, and removed on that evidence rather than tuned. The hazard is real and named at [Relevance discipline](./documentation-explanation.md#relevance-discipline); the tests pin the two shapes a future attempt must not misjudge, so the question is not reopened blind.
+- **Checking whether a body holds a rejected alternative belonging in a changelog entry (rejected, and kept as a negative result):** it is not decidable from the text. `documentation-changelog.md` is the document that specifies the field, so it carries a section by the field's own name in its own body, correctly placed; the specification of where records go and a record of one differ only in what the text is *for*. A threshold that separated them — heading depth, a bullet beside the heading, the file's name — either fires on this repository's own governing document or misses a record written the other way, and a check permanently red on a correct file is one a reader learns to skip. An implementation was written, run against the tree, caught by the check on the specification, and removed on that evidence rather than tuned. The hazard is real and named at [Relevance discipline](./explanation/explanation.md#relevance-discipline); the tests pin the two shapes a future attempt must not misjudge, so the question is not reopened blind.
 - **Making an undischarged propagation decide `check`'s exit code (rejected):** every routine run would be red on work predating the run, and a gate that is always open is not a gate. The section prints on every folder run so it cannot be missed, and its count is in the summary line.
 - **A flag that makes the section a gate for a caller that wants one (not taken):** a `Pending` entry is a fact about a queue, and which queue entries a given run should be blocked on is a project decision rather than a tool default. Leaving it as a report keeps the tool from holding an opinion the project has not stated.
 - **Widening the report to every open obligation the script could find (rejected):** the remaining candidates are the same non-decidable class, and a check that reports guesses is worse than one that reports only what it can know.
@@ -327,10 +327,10 @@ Owner: an executing agent does not need to read the explanatory document to carr
   - documentation-handoff.research.001.md: Done - the vendor's account of its own product is `Reference`, and the finding states what it rests on instead
   - knowledge.changelog.md: Done - the relation of a tertiary compilation and a social-media post recorded earlier is restated there
   - content.changelog.md: Done - the same restatement for the post that entry cites
-  - process.research.001.md: Reference - the session-identity half of that record became [Handoff Research 001](./documentation-handoff.research.001.md) before this rule was written
+  - process.research.001.md: Reference - the session-identity half of that record became [Handoff Research 001](./handoff/handoff.research.001.md) before this rule was written
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - decided
-  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) - claimed, argued
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) - decided
+  - [Space Bunny Alpha](../../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../../CONTRIBUTORS.md#opencode)) - claimed, argued
 
 #### What changed
 - `### Citations` gained a **Source standing** paragraph and a companion paragraph on recording an origin without citing it.
@@ -358,8 +358,8 @@ The owner proposed the rule as a prohibition on citing informal sources (Omid He
 - Propagates to:
   - ../.agents/skills/memar/SKILL.md: Done - the three skill rules this section now states were removed from the skill, leaving the skill with the section as its authority
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - decided
-  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) - claimed
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) - decided
+  - [Space Bunny Alpha](../../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../../CONTRIBUTORS.md#opencode)) - claimed
 
 #### What changed
 - *No derivative inventories* now states three rules about what a session reads, beside the rule about what a document may list: do not enumerate a document set the task does not require, where a folder's README is its index rather than the folder's documents opened one by one; do not restart discovery once the knowledge the task needs is already in context; and do not read a task's documents merely because this practice is in force.
@@ -367,8 +367,8 @@ The owner proposed the rule as a prohibition on citing informal sources (Omid He
 
 #### Considered and not done
 - The three rules were not given a section of their own (Space Bunny Alpha - argued). They are the same bound the section already carried, applied to the reader rather than to the writer, and a second section would restate one rule under two headings.
-- The rules were not placed in [Cognition](./cognition.md) (Omid Hekayati - decided). Two of the three govern session economy rather than reasoning, and Cognition's own boundary paragraph states that norms specific to producing documentation are owned by the documentation system's specifications.
-- The skill's session-economy rules were not moved at the same time (Space Bunny Alpha - argued). They are obligations and runtime facts mixed in one section, and [Documentation Changelog](./documentation-changelog.md) already settles the shape of that mixture - the obligation belongs beside the facet and only the runtime-dependent fact stays in the skill. Where the obligations go has no home yet, so the split is carried as an open question rather than performed.
+- The rules were not placed in [Cognition](../../../docs/cognition.md) (Omid Hekayati - decided). Two of the three govern session economy rather than reasoning, and Cognition's own boundary paragraph states that norms specific to producing documentation are owned by the documentation system's specifications.
+- The skill's session-economy rules were not moved at the same time (Space Bunny Alpha - argued). They are obligations and runtime facts mixed in one section, and [Documentation Changelog](./changelog/changelog.md) already settles the shape of that mixture - the obligation belongs beside the facet and only the runtime-dependent fact stays in the skill. Where the obligations go has no home yet, so the split is carried as an open question rather than performed.
 
 ---
 
@@ -378,7 +378,7 @@ The owner proposed the rule as a prohibition on citing informal sources (Omid He
 - Propagates to:
   - documentation.handoff.md: Done - the mixed-facet, citation-relation-boundary, and further-reader-relationship entries were removed; the meta-layer body already answers each (handoff: no entry of its own).
 - Contributors:
-  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) - argued, applied
+  - [Space Bunny Alpha](../../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../../CONTRIBUTORS.md#opencode)) - argued, applied
 
 #### What changed
 - *Mixed-facet documents* left `## Open Questions`: [Documentation -> Which facet does a document belong to?](./documentation.md#which-facet-does-a-document-belong-to) already decides the case - a document carrying both facets' content is settled by which purpose dominates.
@@ -397,11 +397,11 @@ The owner proposed the rule as a prohibition on citing informal sources (Omid He
 - Propagates to:
   - AGENTS.md: Done - the four rules that restated this document and the Changelog facet's governing specification were removed, leaving the pointer to this document and its facets.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - claimed, decided
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) - claimed, decided
 
 #### What changed
 - A `## Rejected positions` section was added to `documentation.practice.md`, giving the treatment of a rejected position three steps: the entry, section, or sentence whose claim is that position is deleted rather than annotated or kept as history; the alternative genuinely examined and not taken gets one `Considered and not done` line in the surviving entry; and the decision's positive statement stays in the document that holds the claim, with the changelog recording the outcome rather than the position it replaced.
-- The restated copies those steps replace in `AGENTS.md` are gone: which fields a changelog entry carries and what it must not narrate is stated by [documentation-changelog.md → Structure](./documentation-changelog.md#structure) and [Trivial changes](./documentation-changelog.md#trivial-changes); where an examined alternative goes is [Considered and not done](./documentation-changelog.md#considered-and-not-done); what a body affirms and where a replaced formulation belongs is [documentation.md → Written surface](./documentation.md#written-surface); the folder README convention was already this document's own `## Folder READMEs` section.
+- The restated copies those steps replace in `AGENTS.md` are gone: which fields a changelog entry carries and what it must not narrate is stated by [documentation-changelog.md → Structure](./changelog/changelog.md#structure) and [Trivial changes](./changelog/changelog.md#trivial-changes); where an examined alternative goes is [Considered and not done](./changelog/changelog.md#considered-and-not-done); what a body affirms and where a replaced formulation belongs is [documentation.md → Written surface](./documentation.md#written-surface); the folder README convention was already this document's own `## Folder READMEs` section.
 - This entry was first written on the wrong file, `documentation-practice.changelog.md`, and was moved here by the changelog routing audit.
 
 ---
@@ -414,10 +414,10 @@ The owner proposed the rule as a prohibition on citing informal sources (Omid He
 - Time: 2026-10-07T03:45:00Z
 - Type: Changed
 - Cited:
-  - [Documentation — Comparison](./documentation-comparison.md) - Evidence: its Method requirements, added in the same session from the tensorus and hindsight comparisons.
+  - [Documentation — Comparison](./comparison/comparison.md) - Evidence: its Method requirements, added in the same session from the tensorus and hindsight comparisons.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — decided
-  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) — argued, drafted, applied
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Space Bunny Alpha](../../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../../CONTRIBUTORS.md#opencode)) — argued, drafted, applied
 
 #### What changed
 - [Content Rule](./documentation.md#content-rule-no-fabricated-or-redundant-provenance) gains a fifth rule: owed or planned capability is marked in prose, by a quiescent default in code, and by a pointer at the entry point; a claim implied by one surface and absent from the others is a fabrication in the rule's first sense.
@@ -431,12 +431,12 @@ The owner proposed the rule as a prohibition on citing informal sources (Omid He
 - Time: 2026-10-07T15:14:08Z
 - Type: Added
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — decided
-  - Auto (model not recorded) via [Cursor](../CONTRIBUTORS.md#cursor) — drafted, applied
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - Auto (model not recorded) via [Cursor](../../../CONTRIBUTORS.md#cursor) — drafted, applied
 
 #### What changed
 - [Folder READMEs](./documentation.practice.md#folder-readmes) gains a sixth step: a README has no `README.changelog.md` and no `README.handoff.md`. A decision about a folder is written into the README as the rule it now is; open work about a folder goes to the handoff of the module or document whose subject it is.
-- Applied to the two READMEs that had companions. `docs/modules/README.md` took the one reason worth keeping into its body — why specification and realization are two trees — and that categories are not final. The open state of `modules/README.handoff.md` moved to the handoffs that own each subject: the category layout to [Modularity Handoff](./modularity.handoff.md#the-category-layout-of-this-repository), the archive findings to `modules/go-port/go-port.handoff.md`, `lib/`'s findings to `modules/lib/lib.handoff.md`, and the end-of-file convention to `modules/khayyam/rules/file-layout/file-layout.handoff.md`.
+- Applied to the two READMEs that had companions. `docs/modules/README.md` took the one reason worth keeping into its body — why specification and realization are two trees — and that categories are not final. The open state of `modules/README.handoff.md` moved to the handoffs that own each subject: the category layout to [Modularity Handoff](../../../docs/modularity.handoff.md#the-category-layout-of-this-repository), the archive findings to `modules/go-port/go-port.handoff.md`, `lib/`'s findings to `modules/lib/lib.handoff.md`, and the end-of-file convention to `modules/khayyam/rules/file-layout/file-layout.handoff.md`.
 
 #### Considered and not done
 - **Keeping a handoff beside a README that holds real open work** (rejected by the owner): the open work was always about some module's subject, and filed under the folder's index it had no owner to answer it.
@@ -448,12 +448,12 @@ The owner proposed the rule as a prohibition on citing informal sources (Omid He
 - Time: 2026-10-10T09:01:01Z
 - Type: Changed
 - Cited:
-  - [Comparison: Memar and the Model Context Protocol](./comparisons/mcp.001.md) - Reference: the essay whose two vendor posts, Anthropic's and Cloudflare's reports of their own shipped products, occasioned the change.
+  - [Comparison: Memar and the Model Context Protocol](../../../docs/comparisons/mcp.001.md) - Reference: the essay whose two vendor posts, Anthropic's and Cloudflare's reports of their own shipped products, occasioned the change.
 - Propagates to:
   - docs/comparisons/mcp.001.md: Done - its Method clause on the two vendor posts points to Source standing as the rule that admits them.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — decided
-  - Auto (model not recorded) via [Cursor](../CONTRIBUTORS.md#cursor) — drafted, applied
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - Auto (model not recorded) via [Cursor](../../../CONTRIBUTORS.md#cursor) — drafted, applied
 
 #### What changed
 - [Citations → Source standing](./documentation.md#citations): the list of sources without standing names a personal site or blog; a vendor's own technical documentation or engineering report of a product it ships is primary documentation of that product, supporting claims about what the product does, what it ships, and what the vendor reports measuring, each measurement stated as the vendor's report and never as a general result. The license test is unchanged: a work whose terms do not permit the use is not cited.
@@ -468,8 +468,8 @@ The owner proposed the rule as a prohibition on citing informal sources (Omid He
 - Time: 2026-10-10T14:30:00Z
 - Type: Added
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — decided
-  - An AI agent (via [Cursor](../CONTRIBUTORS.md#cursor)) — drafted, applied
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - An AI agent (via [Cursor](../../../CONTRIBUTORS.md#cursor)) — drafted, applied
 
 #### What changed
 - New section [Recording Is Not Gated; Removal Is](./documentation.md#recording-is-not-gated-removal-is): nothing the work learns goes unrecorded; a rule, an open question, a finding, or a note is written into the document that owns its subject when the work reaches it, without waiting for anyone's permission; open questions are recorded along the path of reasoning as they arise; removal is the act that loses information and the one that takes care — what removed text said is moved, kept, or stated in the changelog entry that removed it.
@@ -486,7 +486,7 @@ The owner proposed the rule as a prohibition on citing informal sources (Omid He
 - Time: 2026-10-12T09:50:00Z
 - Type: Changed
 - Contributors:
-  - [Claude](../CONTRIBUTORS.md#claude) (Sonnet-5.5) — reviewed, revised
+  - [Claude](../../../CONTRIBUTORS.md#claude) (Sonnet-5.5) — reviewed, revised
 
 #### What changed
 - Reviewed the uncommitted change to documentation.md, its handoff and this changelog against HEAD.
@@ -501,8 +501,8 @@ The owner proposed the rule as a prohibition on citing informal sources (Omid He
 - Time: 2026-10-12T10:57:14Z
 - Type: Changed
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — decided
-  - [Claude](../CONTRIBUTORS.md#claude) (Opus-5.5) — drafted, applied
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Claude](../../../CONTRIBUTORS.md#claude) (Opus-5.5) — drafted, applied
 
 #### What changed
 - New section [A README Points; Content Gets a Document](./documentation.md#a-readme-points-content-gets-a-document): content whose changes matter does not live in a folder README; finding it there is the signal to make it a document. Any agent may create a missing changelog for a document it changes.
@@ -516,19 +516,19 @@ The owner proposed the rule as a prohibition on citing informal sources (Omid He
 - Propagates to:
   - `docs/modules/README.md`: Done — its **Citation direction** paragraph is one sentence pointing here
   - `docs/khayyam/README.md#citation-direction`: Done — its section is one sentence pointing here
-  - [docs/README.md](./README.md): Done — the `khayyam/` paragraph points here instead of restating the rule
+  - [docs/README.md](../../../docs/README.md): Done — the `khayyam/` paragraph points here instead of restating the rule
   - `.agents/scripts/services/content_check.py`: Done — an upward relative link is reported as a problem, with its tests in `.agents/scripts/services/tests/content_check.py` (class `CitationDirection`)
   - Every document in `docs/` outside `docs/khayyam/`: Done — 658 upward links in 88 files turned into plain text
   - Every document in `docs/khayyam/`: Pending — 119 upward links, left to session 20261012-T105448Z-14472, which owns that folder
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — decided
-  - [Claude](../CONTRIBUTORS.md#claude) (Opus-5.5) — drafted, applied
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Claude](../../../CONTRIBUTORS.md#claude) (Opus-5.5) — drafted, applied
 
 #### What changed
 - New section [Citation Direction](./documentation.md#citation-direction), stated once for the four layers of the written content, lowest first: base documents (`docs/` and its companions, `docs/comparisons/` among them), module documents (`docs/modules/`), the language (`docs/khayyam/`), and implementations and their documents (`bundles/` and the code tree `modules/`). A document links to its own layer or a lower one, never a higher one; a higher place is named in plain text and nothing is derived from it. The rule holds for every relative link — prose, `Propagates to` lines, changelog history — and for every relation, the inverse ones included. The Abstract's list of cross-cutting conventions names it.
 - Until now the rule lived only in the READMEs of `docs/khayyam/` and `docs/modules/`, named only those two folders, and no tool tested it. The owner found it broken in `modularity.handoff.md`, which named `modules/go-port/` — a folder in the code tree that had already become an implementation's record — and linked above its layer. Measured when the check was first run: 777 upward links across `docs/`, 658 of them outside `docs/khayyam/`.
 - `docs/modules/README.md` allowed a base document to reference a module document as a **consumed contract**. That nuance survives only in the downward direction: a higher layer applying a lower one's definitions is citing down; a base document consumes no module's contract, and names one in plain text where it must.
-- The sweep: each upward link `[label](path#anchor)` became ``label (`path#anchor`)``, the path rooted at the repository, or the rooted code span alone where the label only repeated the path — the plain-text form [Links in recorded entries](./documentation-changelog.md#links-in-recorded-entries) already gives a link that no longer claims an address. Nothing was removed. The repair is trivial in [Trivial changes](./documentation-changelog.md#trivial-changes)'s sense for each document it touched, so this entry records it once rather than an entry per document; the one document whose content changed beyond its links, `modularity.handoff.md`, has its own entry in `modularity.changelog.md`.
+- The sweep: each upward link `[label](../../../docs/path#anchor)` became ``label (`path#anchor`)``, the path rooted at the repository, or the rooted code span alone where the label only repeated the path — the plain-text form [Links in recorded entries](./changelog/changelog.md#links-in-recorded-entries) already gives a link that no longer claims an address. Nothing was removed. The repair is trivial in [Trivial changes](./changelog/changelog.md#trivial-changes)'s sense for each document it touched, so this entry records it once rather than an entry per document; the one document whose content changed beyond its links, `modularity.handoff.md`, has its own entry in `modularity.changelog.md`.
 
 #### Considered and not done
 - **Keeping the rule in `docs/documentation.md`'s *Citations* section itself** (not done): that section defines the structured `Cited` field, while the direction rule governs every relative link, so it is a sibling section beside it.
@@ -541,8 +541,8 @@ The owner proposed the rule as a prohibition on citing informal sources (Omid He
 - Time: 2026-10-13T10:45:00Z
 - Type: Changed
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — decided
-  - [Claude](../CONTRIBUTORS.md#claude) (Sonnet-5.5) — drafted, applied
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Claude](../../../CONTRIBUTORS.md#claude) (Sonnet-5.5) — drafted, applied
 
 #### What changed
 - The Content Rule's *Owed or planned capability* clause now names the declaration: a line `Owed: <id>`, the id a lowercase dotted slug and never a path, carried also by the title of a pending Test (`docs/modules/process/test.practice.md#the-cycle`). An id found on one side only is an inconsistency; a pending Test that passes while the mark remains is a hint, not an error; owed capability no Test can execute is marked the same way and judged by a reader.
@@ -558,9 +558,9 @@ The owner proposed the rule as a prohibition on citing informal sources (Omid He
 - Type: Changed
 - Propagates to:
   - `.agents/scripts/services/session_plan.py`, `session_report.py`, the other session readers, and `memar session --help`: Done (sessions `20261013-T103111Z-27036` and the sessions of topic `memar-projects`) - the plan's `open` and `done` become `Active` and `Complete`, the report's `Stop` line is read as a Status, and plan.md and report.md carry PascalCase front matter; readers first, writers a release later, as the proposal of session `20261013-T085819Z-2244` orders. The report carries a Status only (session `20261013-T142914Z-28176`): `session_report.py` reads the old `Outcome` and `Stop` words as the Status they leave, the report skeleton, the help, and the digest speak Status alone, and the old words are one table in the script, easy to change.
-  - `.agents/skills/memar/SKILL.md` and [documentation-handoff.practice.md](./documentation-handoff.practice.md): Done (session `20261013-T111639Z-22724`) - wording that says a plan's Status is `open`, or names a "Stop line", changes with the writers.
+  - `.agents/skills/memar/SKILL.md` and [documentation-handoff.practice.md](./handoff/handoff.practice.md): Done (session `20261013-T111639Z-22724`) - wording that says a plan's Status is `open`, or names a "Stop line", changes with the writers.
 - Contributors:
-  - [Claude](../CONTRIBUTORS.md#claude) (Sonnet 5.5) - drafted, applied
+  - [Claude](../../../CONTRIBUTORS.md#claude) (Sonnet 5.5) - drafted, applied
 
 #### What changed
 - New section [Status](./documentation.md#status) holds the one table of Status values, each with its meaning, the kinds that may use it, and whether it is safe to depend on: `Draft`, `Proposed`, `Final`, `Superseded`, `Rejected` for Explanation-facet documents; `Queued`, `Active`, `Blocked`, `Complete` for a session's plan; `Active`, `Paused`, `Blocked`, `Complete` for a handoff; `Active`, `Paused`, `Complete`, `Withdrawn` for a research. The one table serves a session's plan and its report: a value says which kinds may use it, so a value for the report alone would be a row whose only kind is the session report, and none is needed now. The section says how a run that ended unmet reads (budget ended or no progress: `Active`; stopped at an act needing approval: `Blocked`; the report's Result part says which), and when a plan and its report agree (equal Statuses). The Abstract names it among the cross-cutting conventions.
@@ -580,13 +580,13 @@ The owner proposed the rule as a prohibition on citing informal sources (Omid He
 - Time: 2026-10-13T16:30:00Z
 - Type: Added
 - Cited:
-  - [Modeling](./modeling.md#one-authoritative-location-per-concerns-data) - Reference: a text copy of a fact in code is the derived copy with no re-derivation path that this section names.
+  - [Modeling](../../../docs/modeling.md#one-authoritative-location-per-concerns-data) - Reference: a text copy of a fact in code is the derived copy with no re-derivation path that this section names.
 - Propagates to:
   - `memar session --help`, `.agents/scripts/services/session_plan.py`, `session_report.py`: Pending - the Status values and the record fields are stated again in the help and in the scripts; the sessions of topic `memar-khayyam-types` make them one definition that the help calls.
   - The organization's rule of one file per human language: Pending - the third list item of the new section defers to it; a session of the topic writes it in the other repository.
   - [documentation.md](./documentation.md#status): Pending - the table of Status values is the closed set the rule puts in code; the open question *Status table or type: which is the source* in [documentation.handoff.md](./documentation.handoff.md) holds it.
 - Contributors:
-  - [Claude](../CONTRIBUTORS.md#claude) (Sonnet 5.5) - drafted, applied
+  - [Claude](../../../CONTRIBUTORS.md#claude) (Sonnet 5.5) - drafted, applied
 
 #### What changed
 - New section [A Fact in Code Is Written Once](./documentation.md#a-fact-in-code-is-written-once). Where a fact is written in code, no place keeps a copy: a document names the type, a help text calls its methods.
@@ -610,7 +610,7 @@ The owner proposed the rule as a prohibition on citing informal sources (Omid He
 - Propagates to:
   - `.agents/scripts/services/status.py`, `session_record.py`, `session_plan.py`, `session_report.py`, `session.py` and the other session readers: Done (session `20261013-T160505Z-29212`) - the Status values and the plan and report records are declared once and obtained from the types; no script spells a Status word.
 - Contributors:
-  - [Claude](../CONTRIBUTORS.md#claude) (Sonnet 5.5) - drafted, applied
+  - [Claude](../../../CONTRIBUTORS.md#claude) (Sonnet 5.5) - drafted, applied
 
 #### What changed
 - A bullet in [Status](./documentation.md#status) names the code that holds the closed set (`status.py`, `session_record.py`) and says the table below is checked against it by `.agents/scripts/services/tests/status.py`, which renders the table from the type and fails on any difference.
@@ -629,8 +629,52 @@ The owner proposed the rule as a prohibition on citing informal sources (Omid He
 - Propagates to:
   - `.agents/scripts/services/session_new.py`: Done (session `20261014-T175052Z-9344`) - its help prints the plan's outline and the report's skeleton by calling the record types.
 - Contributors:
-  - [Claude](../CONTRIBUTORS.md#claude) (Opus 5.5) - drafted, applied
+  - [Claude](../../../CONTRIBUTORS.md#claude) (Opus 5.5) - drafted, applied
 
 #### What changed
 - Two places, the *Session records* bullet under [A Fact in Code Is Written Once](./documentation.md#a-fact-in-code-is-written-once) and the bullet under [Status](./documentation.md#status) that names where the shape of plan.md and report.md is stated, now name `memar session new --help` in place of `memar session --help`.
 - Why: by the owner's ruling of 2026-10-14 each command's help states only its own work; `new` is the verb that writes the two files, so their shape moved into its help, and `memar session --help` keeps the Status words and how a session ends.
+
+---
+
+### Practice description states a boundary
+- Time: 2026-10-15T11:58:47Z
+- Type: Changed
+- Contributors:
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — allowed the fix
+  - [Claude](../../../CONTRIBUTORS.md#claude) (Opus 5.5) — revised
+
+#### What changed
+- `documentation.practice.md`'s `description` now states what it is not: one facet's own procedure, which it routes to, and the schemas, naming, and language rules, which [Documentation — Practice → Description quality criteria](./practice/practice.md#description-quality-criteria) requires.
+- Why: the study of session 20261015-T061908Z-9468 (report.md, Result 5) found the defect, and the owner allowed it fixed on 2026-10-15; a Practice's `description` is printed as the header an agent reads above its passages, so a description that misleads or states no boundary misleads every agent that reads it.
+- Made in session 20261015-T110002Z-23000.
+
+---
+
+### Real code in its own file, examples in documents; the base refers to modules as concepts, and no link is removed to comply
+- Time: 2026-10-16T00:07:29Z
+- Type: Changed
+- Propagates to:
+  - `.agents/scripts/services/content_links.py` and its test `.agents/scripts/services/tests/content_check.py`: Done (sessions `20261015-T122252Z-5984` and `20261016-T075834Z-5360`) - the layer map has the two layers, and an upward link is printed as a warning, a debt, not counted as a problem.
+  - `docs/khayyam/` documents, changelogs, handoffs and research, and the base documents that linked into the Documentation module: Pending (session `20261016-T075836Z-9780`) - the links that sessions `20261015-T122252Z-5984` and P6b turned into plain words are restored, pointing at the new paths.
+  - Fences in documents that restate a real definition: Pending (session `20261015-T122303Z-23544`) - each is replaced by a pointer to the definition; an illustrative example stays.
+  - `docs/khayyam/README.md`, `docs/README.md`, `docs/modules/README.md`, `modules/README.md`: Done (sessions `20261015-T122252Z-5984` and `20261016-T075834Z-5360`).
+- Contributors:
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — ruled, approved the first wording, corrected its course on 2026-10-16
+  - [Claude](../../../CONTRIBUTORS.md#claude) (Opus 5.5) — proposed, revised, applied, amended
+
+#### What changed
+- [A Fact in Code Is Written Once](./documentation.md#a-fact-in-code-is-written-once): code is any text a machine reads, and in Memar it is Khayyam, the official language; question 0 names Khayyam. Real code — a definition a machine reads, the one source of a fact — is written in its module's file, and a document of any layer refers to it and says why. An example is banned from no text: an illustrative example, written for a reader and taken by no program as a source, stays in its document in any language; a real example, one a tool or a test reads, is code and lives in a folder of examples (for Khayyam, one such as `bundles/khayyam/examples/`), which a document may refer to. An illustrative example that restates a real definition is replaced by a pointer to it. The paragraph that banned an embedded declaration in a base document alone, on the ground that the base is bound to no language, is removed.
+- [Citation Direction](./documentation.md#citation-direction): two layers instead of four. The language documents are base documents, since the modules are written in the language and its grammar adopts no module's semantics; a module's documents and code are one layer, so a module's document links to its code. That a base document refers to a module only as a concept is the direction the base travels in, not a reason to delete a link: a link is never removed to comply, an existing upward link is a debt repaid when its text is upgraded conceptually, and a new one may be written where the text needs it. A base document's changelog and handoff, and a comparison essay, may name a file's path in a code span. The example of a base concept is Type, since no base document defines Error.
+- `memar content check` maps the two layers and prints an upward link among its warnings, apart from its problems.
+- `docs/khayyam/README.md`, `docs/README.md`, `docs/modules/README.md` and `modules/README.md` say the same.
+- What happened between: the first application (session `20261015-T122252Z-5984`) stated that no document holds code, with a comparison essay excepted, and made an upward link a problem; to clear it, that session turned 140 links from `docs/khayyam/` into plain words (88 labelled records in changelogs and handoffs, 52 concept names), and session P6b turned 187 links from base documents into the Documentation module into words and removed 19 parenthetical path code spans. The owner's answers of 2026-10-16 replaced the ban by the distinction above and ruled that a needed link is never deleted, whatever the reason: where only the link went and the text stayed, an implicit reference remains. Those conversions are to be undone (Propagates to, above); the comparison exception to the ban, which the ban alone made necessary, is removed.
+- Why: the owner's rulings of 2026-10-14 (Khayyam official and allowed in all documents; no pseudocode), of 2026-10-15 (the base refers to modules as concepts; Khayyam's documents are base documents; documents beside their modules; code-span paths in base changelogs and handoffs, and in `docs/comparisons/`, stay allowed) and of 2026-10-16 (example code is not banned, only real code has its own file; a link is never removed to comply; the referencing principle belongs in the definition of concepts), split into sessions by session 20261014T113228Z-12672-0.
+- The six open questions of 2026-10-14 in the [handoff](./documentation.handoff.md) are closed by these rulings: the Tentative statements of the section are rewritten; what "official" binds is answered by [Framework → Khayyam and Other Languages](../../../docs/framework.md#khayyam-and-other-languages); citation direction protects that a base claim holds without reading any module; where documentation lives is the open entry *The place of Documentation under Content is not final*; the code a document refers to lives in the module whose subject it is. The entry *Does the presumption reach a concept defined at the base layer* is restated as *Where does a base concept's Khayyam declaration live*. The entry *Does the principle of referencing belong in the definition of concepts* is opened (the owner leans to Terminology; not settled).
+- Made in session 20261015-T122252Z-5984; amended in session 20261016-T075834Z-5360, before any commit, to the owner's answers of 2026-10-16.
+
+#### Considered and not done
+- **Keeping four layers and changing only their justification** (the handoff's earlier recommendation): it kept the language above the modules, which contradicts the grammar's refusal of protocol semantics and the owner's ruling that the language documents are base documents.
+- **A Khayyam block in a document as a marked quotation compared to its source by a test**: it keeps a copy of real code on purpose; an illustrative example needs no such test, and a real definition is referred to, not quoted.
+- **No document holds code** (the first application's rule): it removed illustrative examples a reader needs and called for exceptions it could not justify; the owner ruled on 2026-10-16 that only real code has its own file.
+- **An upward link as a problem the check fails on** (the first application's rule): clearing it led sessions to delete links while the text still leaned on the module, which hides the reference rather than removing it; the owner ruled on 2026-10-16 that a link is never removed to comply.

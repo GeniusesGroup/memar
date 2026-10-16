@@ -447,7 +447,7 @@ The section had been hedged in two directions at once — a Rule that *may* be a
 - `modularity.handoff.md`, first item under *The category layout of this repository*: the sentence said `modules/README.md` and `modules/lib/lib.md` both place the runtime under `computer/runtime/`. Only `lib.md` does; `modules/README.md` lists `runtime/` as a category of its own. Corrected to say so, since that disagreement is part of the question.
 
 #### Considered and not done
-- **Editing the 2026-09-29T14:00:00Z entry**, which says the handoff carries concept questions only, now that the handoff holds a layout section. Not done: the section arrived by the owner's ruling recorded in [A folder README carries no changelog and no handoff](./documentation.changelog.md#a-folder-readme-carries-no-changelog-and-no-handoff), history is not rewritten, and the 2026-10-07 entry already links the section. No entry in this changelog records the section's arrival, which is left to the owner.
+- **Editing the 2026-09-29T14:00:00Z entry**, which says the handoff carries concept questions only, now that the handoff holds a layout section. Not done: the section arrived by the owner's ruling recorded in [A folder README carries no changelog and no handoff](../modules/content/documentation/documentation.changelog.md#a-folder-readme-carries-no-changelog-and-no-handoff), history is not rewritten, and the 2026-10-07 entry already links the section. No entry in this changelog records the section's arrival, which is left to the owner.
 
 ---
 
@@ -455,7 +455,7 @@ The section had been hedged in two directions at once — a Rule that *may* be a
 - Time: 2026-10-12T11:30:00Z
 - Type: Changed
 - Cited:
-  - [Documentation → Citation Direction](./documentation.md#citation-direction) — `Depends_on`: a base document links to its own layer or a lower one, and names a higher place in plain text
+  - [Documentation → Citation Direction](../modules/content/documentation/documentation.md#citation-direction) — `Depends_on`: a base document links to its own layer or a lower one, and names a higher place in plain text
 - Contributors:
   - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — decided
   - [Claude](../CONTRIBUTORS.md#claude) (Opus-5.5) — applied
@@ -464,3 +464,22 @@ The section had been hedged in two directions at once — a Rule that *may* be a
 - Removed from *The category layout of this repository* the entry **The top-level folder that is not a category**. It asked where `modules/go-port/`, the Go port's residue, should sit, since it stood beside the categories with no counterpart under `docs/modules/`. The folder no longer exists: its material became the Go target's research record, `bundles/khayyam/targets/go/target.research.001.md`, whose closing note says the owner ruled the temporary module must never enter version control and that the record retires it; its rule catalog sits at `bundles/khayyam/targets/go/rules/`. With no folder left at the top of `modules/` that is not a category, the question has no subject. The entry's second half — that the same question no longer stood for the language toolchain or the Memar server once the owner's decision of 2026-10-07 moved both to `bundles/` — is recorded by the 2026-10-07T15:46:42Z entry above.
 - The handoff's links to `modules/`, `bundles/`, and `docs/modules/` pointed up the layers of the written content; each is now plain text naming the same place, per the rule cited above. Nothing else in the section changed.
 - Occasion: the owner noticed that this base document's handoff named `modules/go-port/` — a folder in the code tree that had already moved to an implementation's record — and that a base document was linking above its layer at all.
+
+---
+
+### The one-layout-for-both-trees argument is dropped with the specification folder
+- Time: 2026-10-16T00:45:00Z
+- Type: Changed
+- Cited:
+  - Documentation → Citation Direction — `Depends_on`: the layers named there no longer include a specification folder beside the modules
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Claude](../CONTRIBUTORS.md#claude) (Sonnet-5.5) — applied
+
+#### What changed
+- `docs/modules/README.md` is merged into `modules/README.md` and `docs/modules/lib/README.md` into `modules/lib/lib.md`; the specification folder `docs/modules/` is gone, because every module's documents now sit beside the module's code. The membership criterion and the account of where implementations live moved into `modules/README.md`.
+- The section **One layout for both trees** of the former `docs/modules/README.md` is not carried over. Its argument was that a module specified at `docs/modules/<category>/<name>.md` is realized at `modules/<category>/<name>/`, so that a category was created, renamed, merged or retired in the specification tree first and then in the code tree, and a responsibility had one address in both trees. With the documents beside their modules there is one tree, one address and nothing to reconcile, so the argument has no subject; a category is created, renamed, merged or retired in `modules/` alone.
+- Links that named the section (`README.md#one-layout-for-both-trees`) now point at this entry.
+
+#### Considered and not done
+- **Keeping the section as a record of the old layout.** Not done: a README states the rule as it now is and keeps no history, and this entry is where the history of the decision lives.

@@ -56,12 +56,12 @@ Memar's written content is intentionally decentralized: each concern lives in on
 
 Agents working the Memar way follow [`.agents/skills/memar/SKILL.md`](.agents/skills/memar/SKILL.md), which routes into the live content of the repository through the same command rather than through memorized paths. Using Memar outside this repository is [Using Memar in another project](#using-memar-in-another-project).
 
-Fair, public comparisons with projects often treated as substitutes for Memar live under [`docs/comparisons/`](./docs/comparisons/) — the method is [docs/documentation-comparison.md](./docs/documentation-comparison.md).
+Fair, public comparisons with projects often treated as substitutes for Memar live under [`docs/comparisons/`](./docs/comparisons/) — the method is [modules/content/documentation/comparison/comparison.md](./modules/content/documentation/comparison/comparison.md).
 
 ## Using Memar in another project
 Memar is a development framework, not a host-tool plugin. There is one skill: it routes into this repository's live content; it does not carry a copy of it.
 
-What someone needs in order to use it — getting Memar into a project or an agent app, what the executable helpers in [`.agents/scripts/`](./.agents/scripts/) are for, and the one environment variable that says where Memar lives on a machine — is the subject of [`.agents/scripts/README.md`](./.agents/scripts/README.md). Each of those scripts declares its own interface, and those declarations, not prose anywhere else, are the authority.
+What someone needs in order to use it — getting Memar into a project or an agent app, what the executable helpers in [`.agents/scripts/`](.agents/scripts/) are for, and the one environment variable that says where Memar lives on a machine — is the subject of [`.agents/scripts/README.md`](.agents/scripts/README.md). Each of those scripts declares its own interface, and those declarations, not prose anywhere else, are the authority.
 
 ## System Categories
 
@@ -74,7 +74,7 @@ It will provide ZeroOps(zero operations), edge computing, ... that let you devel
 - Provide complete framework to develop any purpose distributed application with **low||no code**.
 
 #### Transition period
-Since Memar introduces technologies needed in software development and operation, including the [Khayyam](./docs/khayyam/khayyam.md) language, an [OS](./docs/modules/computer/os.md), and protocols such as [Chapar](./docs/modules/net/chapar.md) and [Giti-Protocol](./docs/modules/net/giti.md), an organization adopting Memar may choose the language and runtime that fit its existing stack and migration plan. Memar's concepts and protocols remain independent of any one programming language; Khayyam is one realization hosted in this repository.
+Since Memar introduces technologies needed in software development and operation, including the [Khayyam](./docs/khayyam/khayyam.md) language, an [OS](./modules/computer/os/os.md), and protocols such as [Chapar](./modules/net/chapar/chapar.md) and [Giti-Protocol](./modules/net/giti/giti.md), an organization adopting Memar may choose the language and runtime that fit its existing stack and migration plan. Khayyam is Memar's official language, and choosing it to develop Memar's concepts and protocols does not mean implementing them only in Khayyam ([Framework → Khayyam and Other Languages](./docs/framework.md#khayyam-and-other-languages)).
 
 **But remember we don't suggest using this method in starting new projects.**
 

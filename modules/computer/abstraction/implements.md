@@ -22,16 +22,7 @@ A code generator that wants to scaffold this boilerplate automatically needs *so
 ## Explanation
 
 ### Declaring and discovering intent
-An abstraction author who judges an abstraction complex enough to benefit from codegen scaffolding composes `Implements` alongside its other embedded abstractions:
-
-```khayyam
-tp Error ab {
-    Type
-    Field_MediaType
-    ADT
-    Implements
-}
-```
+An abstraction author who judges an abstraction complex enough to benefit from codegen scaffolding composes `Implements` alongside its other embedded abstractions. The Error module's `Error` does so through `ImplementsError`, its domain-specific realization of `Implements`, in [`error.kh`](../../process/error/protocol/error.kh).
 
 A developer starting a new concrete Error capsule declares this intent immediately, before writing any of
 the abstraction's actual methods:

@@ -80,3 +80,17 @@
 #### What changed
 - Reviewed; no change needed. Checked the working tree against HEAD for `software.md`, `software.handoff.md` and `software.changelog.md`: the requirements and project-management rows of the lifecycle table now match the 2026-10-05T05:30:00Z entry above, which cites a statement the Process research makes (`owed` right for project management as an activity, misleading as a concept in waiting) and a Test section that exists; the handoff's requirements-home question stays open, as the row says full treatment is still owed; the handoff and table link changes resolve; no removal.
 - `memar content check` on the three files reports no problem.
+
+---
+
+### No hidden inputs
+- Time: 2026-10-16T12:00:00Z
+- Type: Changed
+- Propagates to: none
+- Contributors:
+  - [Claude](../CONTRIBUTORS.md#claude) (Sonnet 5.5) - drafted, applied
+
+#### What changed
+- In [software.md](./software.md), a new subsection *No Hidden Inputs* under Explanation: inputs are explicit, old shapes are converted by a script and not kept readable by the core, and what can be a type is not written as prose.
+- Why: the owner ruled this on 2026-10-13 and asked on 2026-10-16 that such rulings live in Memar's documents.
+- Rests on the owner's statement; Khayyam's *Zero-Magic Core* (`docs/khayyam/khayyam.md`) is the same principle for the language.
