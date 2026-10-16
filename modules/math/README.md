@@ -1,1 +1,1 @@
-../../docs/protocols/math/math.md
+math.md

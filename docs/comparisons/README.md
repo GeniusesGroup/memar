@@ -1,1 +1,1 @@
-../documentation-comparison.md
+../modules/content/documentation/comparison/comparison.md

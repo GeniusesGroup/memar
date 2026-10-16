@@ -1,1 +1,1 @@
-../../docs/protocols/time/time.md
+time.md
