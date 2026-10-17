@@ -1,28 +1,34 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""services/topic.py — a plan's topic, declared once: the one subject `claims` batches by.
+"""modules/knowledge/documentation/plan/primitive/topic.py — the kind of label `Topic`, declared once: the subjects `claims` batches by.
 
-One value, not several: a task with two subjects is two tasks, and one value
-keeps "the same topic" a plain equality. It is free text normalized when
-written (lower case, runs of white space as one hyphen), not a list the project
-keeps, because a kept list is a second thing to maintain and would stop a new
-subject at the moment it appears. A typo that splits one subject in two is met
-by showing the topics in use and by warning of a near match (`session_topic`).
-A plan without a topic has none, and none is not a topic of its own.
+A topic is a label whose definition takes the label `Topic`
+(`modules/knowledge/documentation/primitive/label.py`): a plan takes as many as
+it needs, and `claims` batches the queued tasks that carry one. A task with two
+subjects may carry two, but a topic is not assigned needlessly: it is added when
+another task is to be found by it. It is free text normalized when written
+(lower case, runs of white space as one hyphen), and it is defined when first
+used, in the project's own label registry, not in a list this code keeps: a kept
+list in code would stop a new subject at the moment it appears. A typo that
+splits one subject in two is met by showing the labels in use and by warning of
+a near match (`session_label`). A plan without a topic has none.
 
 It is a type so that the rule of normalizing and the check of a one-line value
 are written here and nowhere else
-([A Fact in Code Is Written Once](../../../modules/content/documentation/documentation.md#a-fact-in-code-is-written-once)).
+([A Fact in Code Is Written Once](../../../modules/knowledge/documentation/documentation.md#a-fact-in-code-is-written-once)).
 """
 from __future__ import annotations
 
 from machine.console import fail
-from services.session_record import PlanKey
+from modules.knowledge.documentation.primitive.label import Label, LabelKind, LabelProblem
+
+LABEL_KIND_NAME = "Topic"
+TOPIC_LABEL = Label(LABEL_KIND_NAME, "01a14a04-6536-7c2e-8cc6-276de9a45ba5")
 
 
 class Topic(str):
-    """A plan's topic: lower case, each run of white space one hyphen; empty when the plan has none."""
+    """A topic's word: lower case, each run of white space one hyphen; empty when there is none."""
 
     @classmethod
     def normalized(cls, text: str) -> Topic:
@@ -36,7 +42,19 @@ class Topic(str):
             fail("a topic is one line; this one holds a line break")
         return cls.normalized(text)
 
-    @classmethod
-    def of(cls, front: dict[str, str] | None) -> Topic:
-        """The topic FRONT matter gives its plan, normalized; empty when it has none."""
-        return cls.normalized((front or {}).get(PlanKey.TOPIC.key, ""))
+
+def _word(text: str) -> str:
+    if "\n" in text or "\r" in text:
+        raise LabelProblem("a topic is one line; this one holds a line break")
+    word = Topic.normalized(text)
+    if not word:
+        raise LabelProblem("a topic is not empty; to remove one, remove its label")
+    return str(word)
+
+
+LABEL_KIND = LabelKind(
+    TOPIC_LABEL,
+    "the subject a task is about, free text in lower case with spaces as hyphens",
+    "`claims`, which batches the queued tasks that carry one, and `labels`, which lists those in use",
+    _word,
+)

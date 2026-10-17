@@ -1,26 +1,28 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""services/session_topic.py — a session's topic set or removed, and what is said when it nearly matches another.
+"""modules/process/session/services/label.py — a session's label added or removed, and what is said when a topic nearly matches another.
 
-Why a verb of its own, as `priority` is. The subject of a queued task is known
-when it is queued, but is also seen later: the owner reads the topics in use
-(`session_topics`) and finds one subject written two ways, or a task filed
-under too wide a subject. Anyone may re-tag it, so it is a verb, not a hand
-edit that would be one more place the key could be written two ways. What a
-topic is and how it is written into the plan is `session_plan`'s; this file
-finds the session, says what changed, and says when the new topic is close to
-one already in use.
+Why a verb of its own, as `priority` is. What a task is about is known when it
+is queued, but is also seen later: the owner reads the labels in use
+(`session_labels`) and finds one subject written two ways, or a task filed
+under too wide a subject. Anyone may re-label it, so it is a verb, not a hand
+edit that would be one more place the block could be written two ways. What a
+label is, and how a plan carries it, is `session_plan_labels`'s; this file finds
+the session, says what changed, and says when a new topic is close to one
+already in use.
 
 Why a warning and not a refusal. Topics are free text so that a new subject is
 never stopped; the cost is that a typo makes a second topic for one subject, and
 `claims` then batches the two apart. A topic one or two edits from another one
 the project uses is probably that typo, so it is named with the one it
 resembles and written anyway: refusing would stop a subject that really is
-different (`docs` and `doc-tests`), and the person can always re-tag. Only the
-project's own topics are compared, and not the session's own old one.
+different (`docs` and `doc-tests`), and the person can always re-label. Only the
+project's own topics are compared, and only topics: a word of another kind is
+not a topic.
 
-An empty topic removes it. Any status is accepted, as a priority is: a session
+A label is added only when another session is to be found by it, and a plan
+takes as many as it needs. Any status is accepted, as a priority is: a session
 open or blocked now may be queued later.
 """
 from __future__ import annotations
@@ -30,14 +32,15 @@ from pathlib import Path
 from typing import Callable
 
 from machine.console import fail, note
-from services.session_find import find_sessions
-from services.session_folder import Session, folder_of, is_session_folder
-from services.session_plan import PLAN_NAME, read_plan
-from services.session_plan_topic import set_topic
-from services.topic import Topic
-from services.session_record import PlanKey
+from modules.process.session.services.find import find_sessions
+from modules.process.session.services.folder import Session, folder_of, is_session_folder
+from modules.knowledge.documentation.plan.services.plan import PLAN_NAME, read_plan
+from modules.process.session.services.plan_labels import (
+    TOPIC, add_label, checked_label, keep_definition, kinds_listing, labels_of, project_of, remove_label, topics_of,
+)
+from modules.knowledge.documentation.plan.primitive.plan_key import PlanKey
 
-TOPIC_COMMAND = "topic"
+LABEL_COMMAND = "label"
 # A topic this many edits or fewer from another in use is taken for the same subject mistyped.
 NEAR_EDITS = 2
 
@@ -57,8 +60,9 @@ def topics_in_use(project: Path, *, leaving: str | None = None) -> dict[str, lis
     """The topics PROJECT's sessions carry, each with its sessions; LEAVING is a session id left out of the count."""
     found: dict[str, list[Session]] = {}
     for session in find_sessions(project=project):
-        topic = Topic.of(session.front)
-        if topic and session.id != leaving:
+        if session.id == leaving:
+            continue
+        for topic in dict.fromkeys(topics_of(session.front)):
             found.setdefault(topic, []).append(session)
     return found
 
@@ -74,54 +78,70 @@ def near_topics(topic: str, project: Path, *, leaving: str | None = None) -> lis
 
 
 def warn_near(topic: str, project: Path, session_id: str) -> None:
-    """Say, for each topic of PROJECT close to TOPIC, that it is near it and how to re-tag; the topic is written all the same."""
+    """Say, for each topic of PROJECT close to TOPIC, that it is near it and how to re-label; the topic is written all the same."""
     for other in near_topics(topic, project, leaving=session_id):
         note(
             f"warning: topic {topic} is near {other}, which is in use in this project; "
-            f"if they are one subject, re-tag with `memar session topic {session_id} {other}`"
+            f"if they are one subject, re-label with `memar session {LABEL_COMMAND} {session_id} {TOPIC}={other}` "
+            f"and `--remove {TOPIC}={topic}`"
         )
 
 
-def set_session_topic(session_id: str, value: str) -> None:
-    """`topic`: write VALUE as SESSION_ID's topic (empty removes it), and say what it was."""
-    topic = Topic.checked(value)
+def carried(session_id: str, plan: Path) -> str:
+    """What the plan at PLAN carries, one line: `labels: docs, design`, or `labels: (none)`."""
+    labels = labels_of(read_plan(plan).front)
+    return f"{session_id}  labels: " + (", ".join(label.word for label in labels) or "(none)")
+
+
+def set_session_label(session_id: str, text: str, remove: bool) -> None:
+    """`label`: add the label TEXT (`KIND=WORD`) to SESSION_ID's plan, or with REMOVE take it out, and say what the plan carries now."""
     folder = folder_of(session_id)
     plan = folder / PLAN_NAME
     if not is_session_folder(folder) or not plan.is_file():
-        fail(f"no session {session_id} with a {PLAN_NAME}, so there is no topic to set")
+        fail(f"no session {session_id} with a {PLAN_NAME}, so there is no label to {'remove' if remove else 'add'}")
     front = read_plan(plan).front
-    was = Topic.of(front) or "(none)"
-    set_topic(plan, topic)
-    print(f"{session_id}  topic {topic or '(none)'}, was {was}")
-    project = (front or {}).get(PlanKey.PROJECT.key, "").strip()
-    if topic and project:
-        warn_near(topic, Path(project), session_id)
+    project = project_of(front)
+    label, fresh = checked_label(text, project)
+    has = any(item.id == label.id for item in labels_of(front))
+    if remove:
+        remove_label(plan, label)
+        print(f"{session_id}  removed {label.word}" if has else f"{session_id}  does not carry {label.word}")
+    else:
+        if fresh is not None and project is not None:
+            keep_definition(project, fresh)
+        add_label(plan, label)
+        print(f"{session_id}  added {label.word}" if not has else f"{session_id}  already carries {label.word}")
+    print(carried(session_id, plan))
+    if not remove and not has and text.partition("=")[0].strip() == TOPIC and project:
+        warn_near(label.word, project, session_id)
 
 
 def describe(verbs) -> Callable[[argparse.Namespace], None]:
-    """`memar session topic`."""
+    """`memar session label`."""
     tagger = verbs.add_parser(
-        TOPIC_COMMAND,
-        help="set what a session is about, or remove it: the subject `claims` batches by",
+        LABEL_COMMAND,
+        help="add a label to a session, or remove one",
         description=(
-            "Set the session ID's topic to T: the one subject the task is about, so\n"
-            "that `claims` hands one agent the queued tasks of one subject. A topic is\n"
-            "a subject one context can hold, narrower than a project. It is free\n"
-            "text, written in lower case with spaces as hyphens; an empty T removes\n"
-            "it. A topic within one or two edits of one the project already uses is\n"
-            "warned about and written all the same; `memar session topics` lists the\n"
-            "topics in use: run it first, to reuse a topic rather than write the same\n"
-            "subject another way. A topic is not copied from a session's parent. Give\n"
-            "each queued task one, here or with `new --topic`: tasks that share a\n"
-            "topic are taken together, and a task with no topic is taken by priority\n"
-            "and age alone. Anyone, a person or an agent, may change it, whatever the\n"
-            "session's status."
+            "Add the label KIND=WORD to the session ID's plan, or with --remove take\n"
+            "it out. A label links the session to others outside the structure of\n"
+            "their ids: Topic=T is the subject the task is about, so that `claims`\n"
+            "hands one agent the queued tasks of one topic; TaskKind=K is the act the\n"
+            f"task is. The kinds are {kinds_listing()}. A topic is free text,\n"
+            "written in lower case with spaces as hyphens; one within one or two\n"
+            "edits of a topic the project already uses is warned about and written\n"
+            "all the same; `memar session labels` lists the labels in use: run it\n"
+            "first, to reuse a topic rather than write the same subject another way.\n"
+            "A plan takes as many labels as it needs and none it does not: add one\n"
+            "only when another session is to be found by it. Labels are not copied\n"
+            "from a session's parent. Anyone may change them, whatever the session's\n"
+            "status."
         ),
     )
-    tagger.add_argument("session_id", metavar="ID", help="the session to tag")
-    tagger.add_argument("topic", metavar="T", help="the subject, or an empty string to remove it")
+    tagger.add_argument("session_id", metavar="ID", help="the session to label")
+    tagger.add_argument("label", metavar="KIND=WORD", help="the label to add, e.g. Topic=memar-scripts")
+    tagger.add_argument("--remove", action="store_true", help="take the label out instead of adding it")
     return run
 
 
 def run(args: argparse.Namespace) -> None:
-    set_session_topic(args.session_id, args.topic)
+    set_session_label(args.session_id, args.label, args.remove)
