@@ -60,11 +60,12 @@ from machine.fs_test_scratch import suite_scratch
 
 import machine.fs_memar as memar_fs
 import services.session_claim as session_claim
+from services.claim import Claim
 import services.session_find as session_find
 import services.session_temp as session_temp
 import services.session_ensure as session_ensure
 import services.session_plan as session_plan
-import services.session_plan_priority as session_plan_priority
+from services.priority import Priority
 import services.session_report as session_report
 from services.status import Kind, Status
 
@@ -124,13 +125,13 @@ class QueuedIsAStatus(Fixture):
         with contextlib.redirect_stdout(io.StringIO()):
             sid, path = session_ensure.ensure_session(None, "Queued task", None, queued=True, project=str(self.fake_root))
         self.assertEqual(self.status_of(path), "queued")
-        self.assertEqual(session_plan_priority.priority_of(session_plan.read_plan(path / session_plan.PLAN_NAME).front), 5)
+        self.assertEqual(Priority.of(session_plan.read_plan(path / session_plan.PLAN_NAME).front), 5)
 
     def test_new_queued_with_a_priority_records_it(self) -> None:
         with contextlib.redirect_stdout(io.StringIO()):
             sid, path = session_ensure.ensure_session(None, "Urgent task", None, queued=True, priority=9, project=str(self.fake_root))
         front = session_plan.read_plan(path / session_plan.PLAN_NAME).front
-        self.assertEqual(session_plan_priority.priority_of(front), 9)
+        self.assertEqual(Priority.of(front), 9)
         self.assertEqual(self.status_of(path), "queued")
 
     def test_new_queued_queues_an_open_plan_no_one_has_claimed(self) -> None:
@@ -155,7 +156,7 @@ class ClaimTakesOne(Fixture):
         folder = self.session("20261012T000010Z-1-0", "queued")
         session_claim.claim_folder(folder)
         self.assertEqual(self.status_of(folder), "active")
-        self.assertTrue((folder / session_claim.CLAIM_NAME).is_file())
+        self.assertTrue((folder / Claim.NAME).is_file())
 
     def test_a_claim_leaves_the_rest_of_the_plan_and_a_plan_in_an_earlier_shape_is_refused_naming_the_script(self) -> None:
         folder = self.session("20261012T000012Z-1-0", "queued")
@@ -174,7 +175,7 @@ class ClaimTakesOne(Fixture):
         self.assertIn(session_plan.EARLIER_SHAPE_REMEDY, self.refused(session_claim.claim_folder, old))
         self.assertIn(session_plan.EARLIER_SHAPE_REMEDY, session_claim.try_claim(old))
         self.assertEqual(old_plan.read_bytes(), written)
-        self.assertFalse((old / session_claim.CLAIM_NAME).exists())
+        self.assertFalse((old / Claim.NAME).exists())
 
     def test_the_claim_verb_claims_by_id(self) -> None:
         folder = self.session("20261012T000011Z-1-0", "queued")
@@ -206,18 +207,18 @@ class ClaimTakesOne(Fixture):
     def test_a_stale_claim_is_taken_over(self) -> None:
         folder = self.session("20261012T000031Z-1-0", "queued")
         session_claim.claim_folder(folder)
-        old = time.time() - session_claim.CLAIM_STALE_SECONDS - 60
-        os.utime(folder / session_claim.CLAIM_NAME, (old, old))
+        old = time.time() - Claim.STALE_SECONDS - 60
+        os.utime(folder / Claim.NAME, (old, old))
         session_claim.claim_folder(folder)
         self.assertEqual(self.status_of(folder), "active")
-        self.assertGreater((folder / session_claim.CLAIM_NAME).stat().st_mtime, old + 60)
+        self.assertGreater((folder / Claim.NAME).stat().st_mtime, old + 60)
 
     def test_a_claim_lapses_only_after_a_day(self) -> None:
-        self.assertEqual(session_claim.CLAIM_STALE_SECONDS, 24 * 60 * 60)
+        self.assertEqual(Claim.STALE_SECONDS, 24 * 60 * 60)
         folder = self.session("20261012T000032Z-1-0", "queued")
         session_claim.claim_folder(folder)
         hours_ago = time.time() - 23 * 60 * 60
-        os.utime(folder / session_claim.CLAIM_NAME, (hours_ago, hours_ago))
+        os.utime(folder / Claim.NAME, (hours_ago, hours_ago))
         self.assertTrue(session_claim.is_claimed(folder))
 
     def test_two_claims_at_once_yield_exactly_one_winner(self) -> None:
@@ -253,9 +254,9 @@ class ClaimTakesOne(Fixture):
         # that let go before its new claim existed let the first drop the
         # second's fresh claim, and both won.
         folder = self.session("20261012T000034Z-1-0", "queued")
-        claim = folder / session_claim.CLAIM_NAME
+        claim = folder / Claim.NAME
         claim.write_text("claimed: long ago\n", encoding="utf-8")
-        old = time.time() - session_claim.CLAIM_STALE_SECONDS - 60
+        old = time.time() - Claim.STALE_SECONDS - 60
         os.utime(claim, (old, old))
         signals = Path(self.scratch.name) / "signals"
         signals.mkdir()
@@ -281,6 +282,7 @@ PACED_TAKER = r"""
 import pathlib, sys, time
 sys.path.insert(0, sys.argv[1]); sys.dont_write_bytecode = True
 import services.session_claim as c
+from services.claim import Claim
 folder, signals, role = pathlib.Path(sys.argv[2]), pathlib.Path(sys.argv[3]), sys.argv[4]
 
 def signal(name):
@@ -302,7 +304,7 @@ if role == "first":
             wait("second_creating")
         return answer
     def unlink(self, *args, **kwargs):
-        if self.name == c.CLAIM_NAME:
+        if self.name == Claim.NAME:
             signal("first_unlinking")
             wait("second_created")
         return real_unlink(self, *args, **kwargs)
@@ -311,7 +313,7 @@ if role == "first":
 else:
     wait("first_saw_stale")
     def open_(self, mode="r", *args, **kwargs):
-        if self.name == c.CLAIM_NAME and "x" in mode:
+        if self.name == Claim.NAME and "x" in mode:
             signal("second_creating")
             wait("first_unlinking")
             try:

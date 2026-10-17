@@ -1,0 +1,14 @@
+# Normative References — Implement
+An implementation builds or changes code, a test or a tool whose design is settled, so it reads how each step's expectations come before the work, that the module's contract stands first, where a fact in code lives, and how files and history are touched without loss.
+
+- [Test Practice → What Each Part Covers](../../../../modules/process/test/test.practice.md#what-each-part-covers) — the two units of the procedure: a development step, and a Test of one named Process. `reviewed d9709d9b2738`
+- [Test Practice → The Cycle](../../../../modules/process/test/test.practice.md#the-cycle) — each development step names its process, writes its expectations first, enacts the smallest increment and records the disposition. `reviewed ef0b7e3c3cfe`
+- [Test Practice → The Artifact](../../../../modules/process/test/test.practice.md#the-artifact) — how one Test is written: its named Process, its decidable expectations, the contract and not the implementation. `reviewed b7996cc032a0`
+- [Test Practice → Where the Expectation Lives](../../../../modules/process/test/test.practice.md#where-the-expectation-lives) — a Test is placed where the owning project's Rules put it. `reviewed 599daa6b9ac2`
+- [Test Practice → Failure Modes](../../../../modules/process/test/test.practice.md#failure-modes) — the ways a Test fails its standing, each with the step that repairs it. `reviewed 2015604438d4`
+- [Test Practice → Boundary: When a Test Is Not the Artifact](../../../../modules/process/test/test.practice.md#boundary-when-a-test-is-not-the-artifact) — what is written when the subject is undefined, already enacted, or cannot be executed. `reviewed 9db9b1761e39`
+- [Test Practice → Scaling](../../../../modules/process/test/test.practice.md#scaling) — what an expectation states at function, feature and system scale, and the tiers of checks kept apart. `reviewed a909c8cd7f68`
+- [Modeling Practice → The Modeling Workflow](../../../../docs/modeling.practice.md#the-modeling-workflow) — code is committed only to a module whose contract is stated; its eighth step is the gate. `reviewed c8900bbbb4cb`
+- [Documentation → A Fact in Code Is Written Once](../../../../modules/content/documentation/documentation.md#a-fact-in-code-is-written-once) — where a fact in code lives, and that no document, help text or message retypes it. `reviewed 8e4002466cbc`
+- [Scripts → Deleting, moving, restoring, and committing](../../README.md#deleting-moving-restoring-and-committing) — the acts on files and history a session takes only through `host/`, so each stays recoverable. `reviewed c1365b4faeac`
+- [Scripts → Putting text into a file](../../README.md#putting-text-into-a-file) — text reaches a file through a file-write tool or `memar content`, never through a shell's own text handling. `reviewed b479b423a98e`

@@ -11,11 +11,11 @@ draws on, named for the file that holds it per
 in the `tests/` folder of the shelf that owns it per
 [Test Placement](../../../../modules/process/test/rules/test-placement/test-placement.md).
 
-Nothing here writes: the one file read is `docs/documentation.md`.
+Nothing here reads or writes a file.
 
 What is pinned, and what each pin is for:
 
-  Values         The type holds the eleven values the document's table gives,
+  Values         The type holds the eleven values of the vocabulary,
                  each with its meaning, the kinds that may use it, and what is
                  safe to depend on; a word is read in any case, and a word that
                  is no value is None, never a guess.
@@ -26,9 +26,6 @@ What is pinned, and what each pin is for:
                  stated it ended; no other value does.
   Listing        The words of a kind as a sentence, so help and messages obtain
                  them from the type.
-  TableEqualsCode  The table in docs/documentation.md, section Status, is the
-                 table the type renders, line for line: a value, a meaning or a
-                 kind changed in one place and not the other fails here.
 
 Usage is the interface. Do not duplicate these recipes as prose catalogs.
 """
@@ -47,12 +44,9 @@ sys.dont_write_bytecode = True
 
 from services.status import Kind, Status
 
-DOCUMENT = SCRIPTS.parent.parent / "docs" / "documentation.md"
-SECTION = "### Status"
-
 
 class Values(unittest.TestCase):
-    def test_the_type_holds_the_eleven_values_of_the_table_in_order(self) -> None:
+    def test_the_type_holds_the_eleven_values_in_order(self) -> None:
         self.assertEqual(
             [status.word for status in Status],
             ["Draft", "Proposed", "Final", "Superseded", "Rejected", "Queued", "Active", "Paused", "Blocked", "Complete", "Withdrawn"],
@@ -122,25 +116,6 @@ class Listing(unittest.TestCase):
 
     def test_the_words_of_a_kind_as_keys(self) -> None:
         self.assertEqual(Status.keys(Kind.SESSION_PLAN), ("queued", "active", "blocked", "complete"))
-
-
-class TableEqualsCode(unittest.TestCase):
-    def document_table(self) -> list[str]:
-        lines = DOCUMENT.read_text(encoding="utf-8-sig").splitlines()
-        start = lines.index(SECTION)
-        rows: list[str] = []
-        for line in lines[start + 1:]:
-            if line.startswith("|"):
-                rows.append(line.rstrip())
-            elif rows:
-                break
-        return rows
-
-    def test_the_document_has_the_table(self) -> None:
-        self.assertGreater(len(self.document_table()), 2)
-
-    def test_the_table_in_the_document_is_the_table_the_type_renders(self) -> None:
-        self.assertEqual(self.document_table(), Status.table_lines())
 
 
 if __name__ == "__main__":

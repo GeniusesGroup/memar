@@ -99,7 +99,7 @@ The words its help uses for who does the work:
   agent         a system that acts for someone else: a person, an AI agent,
                 or an organization doing what it was asked (docs/agency.md)
   sub-agent     an agent another agent starts and hands a task to; it starts
-                with none of its delegator's context, so all it needs is
+                knowing nothing its delegator knows, so all it needs is
                 written down for it, and it reports back to its delegator
   conversation  one exchange between a person and an agent, or between two
                 agents, through a medium such as a chat or a terminal

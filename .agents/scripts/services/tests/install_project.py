@@ -32,6 +32,10 @@ is skipped. The README points at it, since the README is what gets rewritten.
 Those runs are real, inside the scratch project, because a second run over a
 file the project changed is the whole of what is pinned.
 
+A project under git is also given one `.gitignore` line, `temp/`, so a module's
+`temp` folder at any depth is never added: added once, kept off when a line
+already ignores it at every depth, the file's own lines and endings kept.
+
 The layer is asked in this process, as `memar install` asks it, from inside a
 scratch folder of its own — given a `.git` so that it is a project root wherever
 it sits, and made under the folder `machine/fs_test_scratch.py` names. The
@@ -227,15 +231,20 @@ class PreferencesKept(unittest.TestCase):
 
     def test_its_first_text_is_empty_keys_and_a_paragraph_saying_whose_it_is(self):
         # The `records` key joined `sessions` with the owner's ruling of
-        # 2026-10-14 (finished sessions' records kept in the project).
+        # 2026-10-14 (finished sessions' records kept in the project), and
+        # `most-characters` with the critique 20261015-T110115Z-24008 (D5: the
+        # bound a printed part keeps to is the project's runtimes').
         self.into_project()
         text = self.preferences.read_text(encoding="utf-8")
         self.assertEqual(text, project_preferences.PREFERENCES_TEXT)
-        self.assertTrue(text.startswith("---\nsessions:\nrecords:\n---\n# Memar preferences\n"))
+        self.assertTrue(text.startswith("---\nsessions:\nrecords:\nmost-characters:\nnormative_references:\n---\n# Memar preferences\n"))
         for phrase in ("never rewrites it", "relative to the project's top folder, or an absolute one",
                        "neither that top folder itself nor a drive or filesystem root", "temp/sessions/",
                        "never touches a session folder made in the `sessions` folder",
                        "kept on the branch dev-knowledge of the project's own repository", "at .agents/sessions/<id>/ there", "`on`, `off`; left empty, they are",
+                       "`most-characters` is the most characters one printed part of a long text holds",
+                       "below the smallest output cut of the agent runtimes this project uses",
+                       "`normative_references` names the folders where this project's own lists",
                        "write any preference agents should follow"):
             self.assertIn(phrase, text)
         self.assertEqual(project_preferences.read_preferences(self.project), {})
@@ -265,6 +274,72 @@ class PreferencesKept(unittest.TestCase):
         self.assertIn(project.WINDOWS_BOOTSTRAP_FOR_PROJECT, project.README_BODY)
         self.assertIn(project.POSIX_BOOTSTRAP_FOR_PROJECT, project.README_BODY)
         self.assertNotIn(project.POSIX_BOOTSTRAP + chr(10), project.README_BODY)
+
+
+class TempIgnored(unittest.TestCase):
+    """Every module has a `temp` folder (owner, 2026-10-15), so a project's git ignores one wherever it stands."""
+
+    def setUp(self) -> None:
+        self.scratch = tempfile.TemporaryDirectory(dir=suite_scratch())
+        self.addCleanup(self.scratch.cleanup)
+        self.project = Path(self.scratch.name)
+        (self.project / ".git").mkdir()
+        self.ignore = self.project / ".gitignore"
+
+    def into_project(self, **options: bool) -> str:
+        out = io.StringIO()
+        with contextlib.redirect_stdout(out), contextlib.redirect_stderr(io.StringIO()):
+            project.into_project(self.project, **options)
+        return out.getvalue()
+
+    def read(self) -> str:
+        with open(self.ignore, encoding="utf-8", newline="") as file:
+            return file.read()
+
+    def test_the_line_ignores_a_temp_folder_at_any_depth(self):
+        # A pattern with no slash but a trailing one matches a folder of that
+        # name at every level, not only at the project's top.
+        self.assertEqual(project.TEMP_IGNORE_LINE, "temp/")
+
+    def test_a_project_without_one_gets_a_gitignore_holding_the_line(self):
+        self.into_project()
+        self.assertEqual(self.read(), "temp/\n")
+
+    def test_the_projects_own_lines_are_kept_and_the_line_added_once(self):
+        self.ignore.write_text("node_modules/\n*.log", encoding="utf-8", newline="\n")
+        self.into_project()
+        self.assertEqual(self.read(), "node_modules/\n*.log\ntemp/\n")
+        self.into_project()
+        self.assertEqual(self.read(), "node_modules/\n*.log\ntemp/\n")
+
+    def test_a_line_already_ignoring_temp_everywhere_is_left_as_it_is(self):
+        for own in ("temp\n", "# Directories\n  temp/  \n", "**/temp/\n", "**/temp\n"):
+            with self.subTest(own=own):
+                self.ignore.write_text(own, encoding="utf-8", newline="\n")
+                printed = self.into_project()
+                self.assertEqual(self.read(), own)
+                self.assertNotIn(str(self.ignore), printed)
+
+    def test_a_top_only_line_does_not_count(self):
+        self.ignore.write_text("/temp/\n", encoding="utf-8", newline="\n")
+        self.into_project()
+        self.assertEqual(self.read(), "/temp/\ntemp/\n")
+
+    def test_the_files_own_line_endings_are_kept(self):
+        self.ignore.write_text("a\r\nb\r\n", encoding="utf-8", newline="")
+        self.into_project()
+        self.assertEqual(self.read(), "a\r\nb\r\ntemp/\r\n")
+
+    def test_a_dry_run_writes_no_gitignore(self):
+        printed = self.into_project(dry_run=True)
+        self.assertFalse(self.ignore.exists())
+        self.assertIn(f"dry-run: write {self.ignore}", printed)
+
+    def test_a_project_not_under_git_gets_none(self):
+        (self.project / ".git").rmdir()
+        (self.project / ".hg").mkdir()
+        self.into_project()
+        self.assertFalse(self.ignore.exists())
 
 
 class NoProjectNamed(unittest.TestCase):

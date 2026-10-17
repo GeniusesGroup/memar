@@ -25,26 +25,20 @@ from typing import Callable
 from machine.console import fail
 from services.session_folder import folder_of, is_session_folder
 from services.session_plan import PLAN_NAME, read_plan
-from services.session_plan_priority import (
-    DEFAULT_PRIORITY,
-    HIGHEST_PRIORITY,
-    LOWEST_PRIORITY,
-    checked_priority,
-    priority_of,
-    set_priority,
-)
+from services.priority import Priority
+from services.session_plan_priority import set_priority
 
 PRIORITY_COMMAND = "priority"
 
 
 def set_session_priority(session_id: str, value: str) -> None:
     """`priority`: write VALUE as SESSION_ID's priority and say what it was."""
-    priority = checked_priority(value)
+    priority = Priority.checked(value)
     folder = folder_of(session_id)
     plan = folder / PLAN_NAME
     if not is_session_folder(folder) or not plan.is_file():
         fail(f"no session {session_id} with a {PLAN_NAME}, so there is no priority to set")
-    was = priority_of(read_plan(plan).front)
+    was = Priority.of(read_plan(plan).front)
     set_priority(plan, priority)
     print(f"{session_id}  priority {priority}, was {was}")
 
@@ -53,16 +47,16 @@ def describe(verbs) -> Callable[[argparse.Namespace], None]:
     """`memar session priority`."""
     ranker = verbs.add_parser(
         PRIORITY_COMMAND,
-        help="change how soon a queued session is taken: 1 to 10, the higher sooner",
+        help=f"change how soon a queued session is taken: {Priority.range_words()}, the higher sooner",
         description=(
-            f"Set the session ID's priority to N, a whole number from {LOWEST_PRIORITY} to\n"
-            f"{HIGHEST_PRIORITY}: the higher goes sooner when `claims` takes queued sessions. A\n"
-            f"plan that has none counts as {DEFAULT_PRIORITY} when it is read. Anyone, a person or\n"
-            "an agent, may change it, whatever the session's status."
+            f"Set the session ID's priority to N, a whole number from {Priority.range_words()}:\n"
+            "the higher goes sooner when `claims` takes queued sessions. "
+            f"{Priority.default_words().capitalize()} when it is read.\n"
+            "Anyone, a person or an agent, may change it, whatever the session's status."
         ),
     )
     ranker.add_argument("session_id", metavar="ID", help="the session to rank")
-    ranker.add_argument("priority", metavar="N", help=f"{LOWEST_PRIORITY} to {HIGHEST_PRIORITY}, the higher sooner")
+    ranker.add_argument("priority", metavar="N", help=f"{Priority.range_words()}, the higher sooner")
     return run
 
 

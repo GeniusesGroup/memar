@@ -35,6 +35,16 @@ def content_root() -> Path:
     return memar_root()
 
 
+def under_root(file_part: str, root: Path) -> Path:
+    """The file a root-relative reference (`/docs/...`) names: the checkout `root`, then the path.
+
+    The one resolution of that form, used by `resolve_ref` for a reference a
+    verb is handed and by `content_links` for a link inside a document, so a
+    link `check` judges and `backlinks` counts is the file `path` prints.
+    """
+    return root / file_part.lstrip("/")
+
+
 def resolve_ref(ref: str, root: Path, from_file: Path | None) -> Path:
     anchor_split = re.split(r"[#?]", ref, maxsplit=1)
     clean = anchor_split[0].strip()
@@ -43,11 +53,11 @@ def resolve_ref(ref: str, root: Path, from_file: Path | None) -> Path:
 
     windows_drive = len(clean) > 1 and clean[1] == ":"
     if clean.startswith("/") and not windows_drive:
-        candidate = root / clean.lstrip("/")
+        candidate = under_root(clean, root)
     elif not windows_drive and (clean == "docs" or clean.startswith("docs/")):
         # Root-relative without the leading slash: shell-proof on MSYS,
         # which rewrites leading-`/` arguments.
-        candidate = root / clean
+        candidate = under_root(clean, root)
     elif clean.startswith("~"):
         candidate = Path(clean).expanduser()
     else:

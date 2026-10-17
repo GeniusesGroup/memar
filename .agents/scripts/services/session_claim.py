@@ -18,16 +18,11 @@ tried on several sessions in turn, so it takes each through `try_claim` here,
 which says why a session was not taken instead of failing; one place takes a
 session, not two that could take it two ways.
 
-Why a claim lapses after a day. Nothing keeps a claim fresh: no process of
-Memar's watches the sub-agent, so a claim's age is only the time since it was
-taken. A dead agent's claim must still lapse, or its session is held forever;
-but the lapse must not take a session from a sub-agent still at work, and one
-evening's batch of sessions, handed out one after another, can run through
-the night. A day outlasts that batch, and a claim still unfinished a day later
-is taken as a dead agent's: a later claim takes it over. A takeover is itself
-taken by exclusive create, and held from before the stale claim is dropped
-until the new claim exists, so two takers racing over one stale claim still
-yield one winner (`_take_over`).
+What a claim is, and why it lapses, is the type's (`services/claim.py`). A claim
+still unfinished past its life is taken as a dead agent's: a later claim takes it
+over. A takeover is itself taken by exclusive create, and held from before the
+stale claim is dropped until the new claim exists, so two takers racing over one
+stale claim still yield one winner (`_take_over`).
 
 The claim file is the claiming agent's, not the task's: it says who took the
 session and when. It stays when the session ends; once the plan is complete or
@@ -47,32 +42,24 @@ from pathlib import Path
 from typing import Callable
 
 from machine.console import fail, note
+from services.claim import Claim
 from services.status import Status
 from services.session_folder import folder_of, is_session_folder
 from services.session_temp import TEMP_SENTENCE
 from services.session_plan import PLAN_NAME, plan_file_problem, read_plan
 from services.session_plan_status import set_status
+from services.session_depends import refusal as dependency_refusal
 
 CLAIM_COMMAND = "claim"
-CLAIM_NAME = "claim"
-# Held only while a stale claim is replaced (`_take_over`).
-CLAIM_TAKEOVER_NAME = f"{CLAIM_NAME}.takeover"
-# A claim this old is a dead agent's: nothing refreshes it, so it must outlast
-# a night's batch of sub-agents (see the docstring).
-CLAIM_STALE_SECONDS = 24 * 60 * 60
 
 
 def claim_path(folder: Path) -> Path:
-    return folder / CLAIM_NAME
+    return Claim(folder).path
 
 
 def is_claimed(folder: Path) -> bool:
     """Whether FOLDER holds a claim that has not gone stale."""
-    try:
-        touched = claim_path(folder).stat().st_mtime
-    except OSError:
-        return False
-    return time.time() - touched < CLAIM_STALE_SECONDS
+    return Claim(folder).is_fresh()
 
 
 def _create_claim(folder: Path) -> str | None:
@@ -81,7 +68,7 @@ def _create_claim(folder: Path) -> str | None:
     stamp = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     try:
         with claim.open("x", encoding="utf-8", newline="\n") as written:
-            written.write(f"claimed: {stamp}\nhost: {socket.gethostname()}\npid: {os.getpid()}\n")
+            written.write(Claim.body(stamp, socket.gethostname(), os.getpid()))
     except FileExistsError:
         return f"session {folder.name} is claimed by another agent; its claim is in {claim}"
     return None
@@ -100,9 +87,9 @@ def _take_over(folder: Path) -> str | None:
     is still there or the holder's is. A takeover left behind by a caller that
     died mid-way lapses like a claim.
     """
-    takeover = folder / CLAIM_TAKEOVER_NAME
+    takeover = Claim(folder).takeover_path
     try:
-        if time.time() - takeover.stat().st_mtime >= CLAIM_STALE_SECONDS:
+        if time.time() - takeover.stat().st_mtime >= Claim.STALE_SECONDS:
             takeover.unlink()
     except OSError:
         pass
@@ -130,6 +117,11 @@ def try_claim(folder: Path) -> str | None:
     not gone stale — including one that won a race a moment ago. Saying why
     rather than failing lets `claims`, trying several sessions in turn, pass
     over one it did not get and say nothing for it.
+
+    A session whose `Depends_on` names one that is not Complete is not taken
+    whatever its Status, and the refusal names the unmet ones; one Memar
+    blocked for them that are all met since is queued again first, so it is
+    taken as an ordinary queued session (`session_depends`).
     """
     plan = folder / PLAN_NAME
     if not plan.is_file():
@@ -137,6 +129,9 @@ def try_claim(folder: Path) -> str | None:
     shape = plan_file_problem(plan)
     if shape:
         return f"session {folder.name}: {shape}"
+    unmet = dependency_refusal(folder, CLAIM_COMMAND)
+    if unmet:
+        return unmet
     status = read_plan(plan).status
     claim = claim_path(folder)
     held = claim.exists()
@@ -185,7 +180,7 @@ def describe(verbs) -> Callable[[argparse.Namespace], None]:
             "Take the queued session ID for yourself: its status becomes active and a\n"
             "claim is left in its folder, saying who took the task. A session that is\n"
             "not queued, or that another agent holds, is refused. Nothing keeps a\n"
-            f"claim fresh, so a claim older than {CLAIM_STALE_SECONDS // 3600} hours is a dead agent's, and is\n"
+            f"claim fresh, so a claim older than {Claim.stale_hours()} hours is a dead agent's, and is\n"
             "taken over: the task can then be taken again or queued again. Use it\n"
             "to take one named task; `claims N` takes the N first in line instead."
         ),

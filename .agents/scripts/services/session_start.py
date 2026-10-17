@@ -1,19 +1,20 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""services/session_start.py — `memar session start`: everything a sub-agent needs in its context, in one output.
+"""services/session_start.py — `memar session start`: everything an agent taking up a session needs in its context, in one output.
 
-A sub-agent starts with none of its delegator's context, and what it had to do
-to get its footing was a sequence of commands — load the skill, open the
-session, read the plan, read the session help, find and read the governing
-documents, read the help of each command — each one a round trip that costs the
-owner time and tokens, and the route was invisible to the owner, who could not
-see which of them were needed. This service is that route as one command: it
-prints, in marked parts and in one order, what the Memar skill requires a
-sub-agent to have read before it acts on its plan, so it runs one command and
-starts. The brief that hands a session over (`session_brief`) is the same fixed
-sentence for every task and says only to run this; whatever else a task needs
-is in the session's plan, and this reads the plan to know what to print.
+An agent that takes up a session — a sub-agent handed one, or the coordinator
+after `new` opened its own — starts with none of what the session needs, and
+what it had to do to get its footing was a sequence of commands — load the
+skill, open the session, read the plan, read the session help, find and read
+the governing documents, read the help of each command — each one a round trip
+that costs the owner time and tokens, and the route was invisible to the owner,
+who could not see which of them were needed. This service is that route as one
+command: it prints, in marked parts and in one order, what the agent must have
+read before it acts on the plan, so it runs one command and starts. The brief
+that hands a session over (`prompts_plan_brief`) is the same fixed sentence for every
+task and says only to run this; whatever else a task needs is in the session's
+plan, and this reads the plan to know what to print.
 
 The parts, in order, each opened by a mark line `=== NAME ===`:
 
@@ -21,24 +22,40 @@ The parts, in order, each opened by a mark line `=== NAME ===`:
     model      the strongest model for a plan whose Kind is judgment, a cheaper one for a mechanical Kind; what to do on a weaker one
     plan.md    the plan, whole
     folder     the session folder's listing
-    skill      the Memar skill, whole
-    documents  the Cognition Abstract; for judgment the other passages the skill names for it; and each document the plan's Steps name
+    skill      the Memar skill, whole; left out with `--without-skill`, for an agent whose runtime already loaded it
+    documents  the sections the plan's Kind's normative references name, then each document the plan's Steps name that they do not already hold
+    commands   every command with its call shape and a line on what it is for, generated (`services/commands.py`)
     help       `session` and `content write`, which every session needs, and each command the plan names
-    ending     how the sub-agent ends
+    ending     how the agent ends
 
-**Nothing here is a second copy of a rule.** The passages the skill requires are
-read off the skill's own two bullets (`required_reading`), so a change to the
-skill's list is a change here with no edit; the plan's Steps decide the rest,
-by the paths of the documents they name, read at the section a link names or at
-the Abstract when it names none (`content_section`, `content_meta`). The
-model tier is the plan's Kind (`session_plan`); a plan with none leaves it to
-the Request, and a Request that ideates, designs, or critiques then ends the
-sub-agent Blocked, because a guess at the tier is the failure it prevents.
+**Nothing here is a second copy of a rule.** Which sections a Kind requires is
+the lists of [Normative References](../rules/normative_references/normative_references.md),
+read from Memar's declared place, and how they print is
+`services/task_context.py`'s, the composition `memar content context` prints
+too; a plan with no Kind, or one no kind answers to, gets the every-act
+sections alone. What the documents part printed is recorded in the session's
+`temp/context_read.txt`, so a later `memar content context --session-id ID
+--after K0` leaves out only what was printed as it reads now. The plan's Steps decide
+the rest, by the paths of the documents they name, read at the section a link
+names or at the Abstract when it names none. The model tier is the plan's Kind
+(`session_plan_kind`); a plan with none leaves it to the Request, and a Request
+that ideates, designs, or critiques then ends the agent Blocked, because a guess
+at the tier is the failure it prevents.
 
-**Why the skill is printed whole.** The skill is the one thing every sub-agent
-must hold and a route through a runtime's skill loader is not the same on every
+**In parts.** The text must reach the agent's context, never a file it may
+not read, and an implement plan's text is past what a runtime's shell tool
+returns at once; so it prints through `machine/console_parts.py`, in ordered
+parts under that bound, each mark's part and each block under it one passage a
+part is cut between, and each part names the command for the next. The bound,
+when the flag does not give it, is the preference of the project the plan
+names (`services/project_preferences.py`), so the fixed brief carries it to a
+cold agent without saying it.
+
+**Why the skill is printed whole.** The skill is the one thing every agent must
+hold and a route through a runtime's skill loader is not the same on every
 runtime; one output with the skill in it is, and it saves the two commands that
-located and read it.
+located and read it. An agent whose runtime did load it asks for none, so it is
+not paid for twice.
 """
 from __future__ import annotations
 
@@ -47,19 +64,27 @@ import re
 import subprocess
 import sys
 from pathlib import Path
-from typing import Callable, NamedTuple
+from typing import Callable
 
 from machine.console import fail
+from machine.console_parts import add_part_arguments, bound, next_command
+from machine.console_parts import part_text as parted
 from machine.fs_memar import SKILL_RELATIVE
-from services.content_meta import abstract
+from services.commands import card_text
 from services.content_reference import content_root, read_text
-from services.content_section import by_anchor
+from services.session_depends import refusal as dependency_refusal
 from services.session_folder import folder_of, is_session_folder
 from services.session_temp import TEMP_SENTENCE
 from services.session_ensure import ensure_session
+from services.project_preferences import MOST_CHARACTERS_KEY, PREFERENCES_RELATIVE, most_characters_preference
 from services.session_plan import PLAN_NAME, part_text, read_plan
+from services.session_record import PlanKey
 from services.session_plan_kind import CHEAPER_KINDS, KINDS, STRONG_KINDS, kind_of
 from services.session_report import REPORT_NAME
+from services.task_context import Composed, Ref, context, context_places, write_record
+from services.task_kind import TaskKind
+from services.project_name import ProjectName
+from services.project_path import ProjectPath
 
 START_COMMAND = "start"
 SKILL_FILE = (SKILL_RELATIVE / "SKILL.md").as_posix()
@@ -71,11 +96,6 @@ ALWAYS_HELP = (("session",), ("content", "write"))
 # At most this many commands the plan names get their help printed, so one long plan does not print the whole interface.
 MOST_NAMED_COMMANDS = 8
 HELP_TIMEOUT_SECONDS = 60
-# The skill's bullets that name what is read, found by how each begins.
-COGNITION_BULLET = "- Thinking runs in every step"
-IDEATION_BULLET = "- Ideation, design, and critique"
-# A link into the documents with an anchor, and the range the skill may follow it with ("from A through B").
-SKILL_LINK = re.compile(r"\]\(/(docs/[^)#\s]+\.md)#([^)\s]+)\)(?:\s+from\s+[^;]+?\s+through\s+([^;]+))?")
 # A document a plan's Steps name, with the section it may name.
 STEP_DOCUMENT = re.compile(r"(?<![\w.-])/?(docs/[\w./-]+?\.md)(?:#([\w-]+))?")
 # A command a plan names: what is between backticks after `memar `.
@@ -87,70 +107,39 @@ ENDING = (
     f"Put nothing at the session folder's top but {PLAN_NAME} and {REPORT_NAME}: anything else you make goes in the role "
     "folder of its kind, as `memar session --help` (above) says. Do what the plan's Request says, without rewriting that Request.\n"
     f"End with its {REPORT_NAME} and Status as `memar session --help` says. Where you may write files, write the report "
-    "through `memar content write --create FILE --content-file SCRATCHFILE`, SCRATCHFILE a file in the session's own folder. "
+    "through `memar content write --create FILE --content-file SCRATCHFILE`, SCRATCHFILE a file in the session's temp/ folder, which is never archived, so the report is not kept twice. "
     f"Where you may only return text, return the report as your final text, and the delegating session writes it as "
     f"{REPORT_NAME} before its next step.\n"
     f"{TEMP_SENTENCE}"
 )
 
 
-class Ref(NamedTuple):
-    """A passage of a document: its path under the checkout, the anchor of its heading, and the heading its range runs through."""
-
-    path: str
-    anchor: str
-    through: str | None = None
-
-    @property
-    def link(self) -> str:
-        return f"{self.path}#{self.anchor}"
+def marked_part(name: str, body: str) -> str:
+    return marked_passages(name, [body])[0]
 
 
-class Reading(NamedTuple):
-    """What the skill requires a sub-agent to have read: always, and when its task is judgment."""
-
-    always: list[Ref]
-    judgment: list[Ref]
-
-
-def _bullet(skill: str, start: str) -> str:
-    for line in skill.splitlines():
-        if line.startswith(start):
-            return line
-    fail(f"the skill has no bullet beginning {start!r}, so what it requires a sub-agent to read cannot be found")
-
-
-def _links(bullet: str) -> list[Ref]:
-    return [Ref(path, anchor, (through or "").strip(" .") or None) for path, anchor, through in SKILL_LINK.findall(bullet)]
-
-
-def required_reading(skill: str) -> Reading:
-    """The passages the SKILL's text requires, read off its two bullets.
-
-    The first anchored link of the Cognition bullet is the Abstract every
-    sub-agent reads; the rest of that bullet, and every link of the bullet on
-    ideation, design, and critique, are read when the task is judgment.
-    """
-    cognition = _links(_bullet(skill, COGNITION_BULLET))
-    return Reading(cognition[:1], [*cognition[1:], *_links(_bullet(skill, IDEATION_BULLET))])
-
-
-def _part(name: str, body: str) -> str:
-    return f"{MARK} {name} {MARK}\n{body.strip()}\n"
+def marked_passages(name: str, blocks: list[str]) -> list[str]:
+    """The passages of the part NAME: its BLOCKS, the first opened by the part's mark line; each ends its line."""
+    kept = [block.strip() for block in blocks if block.strip()] or [""]
+    kept[0] = f"{MARK} {name} {MARK}\n{kept[0]}"
+    return [block + "\n" for block in kept]
 
 
 def _session_part(session_id: str, folder: Path) -> str:
-    return _part(
+    return marked_part(
         "session",
         f"session_id: {session_id}\npath: {folder}\nplan: {folder / PLAN_NAME}\nreport: {folder / REPORT_NAME}",
     )
 
 
-def _model_part(kind: str) -> str:
+def model_part(kind: str) -> str:
     if kind in STRONG_KINDS:
         body = (
-            f"kind: {kind}\nThis task is judgment and needs the strongest model the runtime offers. If you run on a "
-            "weaker one, or cannot tell, end Blocked saying which model you run on, and do nothing else."
+            f"kind: {kind}\nThis task is judgment and needs the strongest model available: the strongest the runtime "
+            "offers that can be used now. A stronger model that is refused (no credits, a limit) is not available, so "
+            "the strongest usable one is the right one and the task goes on; say in the report which model ran. "
+            "Only if you are plainly a small tier, or cannot tell your own model, end Blocked saying which model you "
+            "run on, and do nothing else."
         )
     elif kind in CHEAPER_KINDS:
         body = f"kind: {kind}\nThis task is mechanical: a cheaper model than the session's own suffices."
@@ -164,40 +153,34 @@ def _model_part(kind: str) -> str:
             "kind: the plan states no kind.\nIf its Request ideates, designs, or critiques, end Blocked saying the plan "
             "states no kind: the strongest model is needed and the delegator states it. Otherwise a cheaper model suffices."
         )
-    return _part("model", body)
+    return marked_part("model", body)
 
 
 def _folder_part(folder: Path) -> str:
     entries = sorted(folder.rglob("*"), key=lambda path: path.relative_to(folder).as_posix().lower())
     lines = [path.relative_to(folder).as_posix() + ("/" if path.is_dir() else "") for path in entries]
-    return _part("folder", "\n".join(lines))
+    return marked_part("folder", "\n".join(lines))
 
 
-def _passage(root: Path, ref: Ref) -> str:
-    """REF's text under a line saying where it comes from; a document or section that is not there is said, not skipped."""
-    file = root / ref.path
-    if not file.is_file():
-        return f"--- {ref.link} ---\nthe document {ref.path} is not there in this checkout"
-    found = by_anchor(read_text(file), ref.anchor, ref.through) if ref.anchor else abstract(read_text(file))
-    if found is None:
-        return f"--- {ref.link} ---\nno section answers to #{ref.anchor} in {ref.path}"
-    return f"--- {ref.link if ref.anchor else ref.path + ' (Abstract)'} ---\n{found}"
-
-
-def step_documents(steps: str) -> list[Ref]:
-    """The documents the plan's STEPS text names, each at the section it names or none, once, in the order named."""
+def step_documents(root: Path, steps: str) -> list[Ref]:
+    """The documents of the checkout ROOT the plan's STEPS text names, each at the section it names or none, once, in the order named."""
     found: list[Ref] = []
     for path, anchor in STEP_DOCUMENT.findall(steps):
-        ref = Ref(path, anchor)
+        ref = Ref(root, path, anchor)
         if ref not in found:
             found.append(ref)
     return found
 
 
-def _documents_part(root: Path, kind: str, reading: Reading, steps: str) -> str:
-    wanted = [*reading.always, *(reading.judgment if kind in STRONG_KINDS else []), *step_documents(steps)]
-    refs = list(dict.fromkeys(wanted))
-    return _part("documents", "\n\n".join(_passage(root, ref) for ref in refs))
+def documents(root: Path, kinds: list[TaskKind], named: list[Ref], project: Path | None) -> Composed:
+    """The sections KINDS' normative references name in Memar's lists and in the lists PROJECT declares, the every-act ones alone for no kind, then the NAMED documents."""
+    places, problems = context_places(root, project)
+    return context(places, kinds, extra=named, project_named=project is not None, place_problems=problems)
+
+
+def _kinds(kind: str) -> list[TaskKind]:
+    found = TaskKind.read(kind)
+    return [found] if found else []
 
 
 def named_commands(plan: str) -> list[tuple[str, ...]]:
@@ -231,7 +214,7 @@ def _help_of(words: tuple[str, ...]) -> str | None:
     return done.stdout.strip() if done.returncode == 0 and done.stdout.strip() else None
 
 
-def _help_part(plan: str) -> str:
+def _help_part(plan: str) -> list[str]:
     named = named_commands(plan)
     shown, left = named[:MOST_NAMED_COMMANDS], named[MOST_NAMED_COMMANDS:]
     blocks = []
@@ -241,63 +224,101 @@ def _help_part(plan: str) -> str:
         blocks.append(f"--- `{command} --help` ---\n" + (found if found is not None else f"no such command: `{command}`"))
     if left:
         blocks.append("--- not printed ---\n" + "\n".join(f"`memar {' '.join(words)}`: ask `--help` of it" for words in left))
-    return _part("help", "\n\n".join(blocks))
+    return marked_passages("help", blocks)
 
 
-def start_text(session_id: str) -> str:
-    """The text that starts the session SESSION_ID: its parts, once its folder and its plan are there."""
+def start_passages(session_id: str, with_skill: bool = True) -> list[str]:
+    """The text that starts the session SESSION_ID, as the passages a part is cut between, once its folder and its plan are there; the skill only WITH_SKILL."""
     folder = folder_of(session_id)
     if not is_session_folder(folder) or not (folder / PLAN_NAME).is_file():
         fail(
             f"no task to start in {session_id}: it has no session folder with a {PLAN_NAME}. "
-            "Open it with `memar session new --title T --parent ID --project NAME` (or `--project-path PATH`), ID the session handing it over, "
+            f"Open it with `memar session new --title T --parent ID {ProjectName.FLAG} {ProjectName.METAVAR}` (or `{ProjectPath.FLAG} {ProjectPath.METAVAR}`), ID the session handing it over, "
             f"and write the task into its {PLAN_NAME} first"
         )
+    unmet = dependency_refusal(folder, START_COMMAND)
+    if unmet:
+        fail(unmet)
     _, folder = ensure_session(session_id)
     plan_file = folder / PLAN_NAME
     plan = plan_file.read_text(encoding="utf-8-sig")
     kind = kind_of(read_plan(plan_file).front)
     root = content_root()
-    skill = read_text(root / SKILL_FILE)
-    return "\n".join(
-        [
-            _session_part(session_id, folder),
-            _model_part(kind),
-            _part(PLAN_NAME, plan),
-            _folder_part(folder),
-            _part("skill", skill),
-            _documents_part(root, kind, required_reading(skill), part_text(plan_file, "Steps")),
-            _help_part(plan),
-            _part("ending", ENDING),
-        ]
-    )
+    composed = documents(root, _kinds(kind), step_documents(root, part_text(plan_file, "Steps")), plan_project(session_id))
+    write_record(folder, composed.printed)
+    passages = [
+        _session_part(session_id, folder),
+        model_part(kind),
+        marked_part(PLAN_NAME, plan),
+        _folder_part(folder),
+        *([marked_part("skill", read_text(root / SKILL_FILE))] if with_skill else []),
+        *marked_passages("documents", composed.blocks),
+        marked_part("commands", card_text()),
+        *_help_part(plan),
+        marked_part("ending", ENDING),
+    ]
+    # A blank line closes every passage but the last, between parts and between a part's blocks alike.
+    return [passage + "\n" for passage in passages[:-1]] + passages[-1:]
 
 
-def print_start(session_id: str) -> None:
-    """`start`: print SESSION_ID's start text."""
-    print(start_text(session_id))
+def start_text(session_id: str, with_skill: bool = True) -> str:
+    """The whole text that starts the session SESSION_ID, unparted."""
+    return "".join(start_passages(session_id, with_skill))
+
+
+def plan_project(session_id: str) -> Path | None:
+    """The project SESSION_ID's plan names, None when it names none."""
+    named = (read_plan(folder_of(session_id) / PLAN_NAME).front or {}).get(PlanKey.PROJECT.key, "").strip()
+    return Path(named) if named else None
+
+
+def print_start(session_id: str, with_skill: bool = True, part: int = 1, most: int | None = None) -> None:
+    """`start`: print part PART of SESSION_ID's start text under MOST characters, else under its project's
+    preference, else the default; the whole text when it fits."""
+    words = ["memar", "session", START_COMMAND, "--session-id", session_id, *([] if with_skill else ["--without-skill"])]
+    passages = start_passages(session_id, with_skill)
+    limit = bound(most, most_characters_preference(plan_project(session_id)))
+    sys.stdout.write(parted(passages, part, limit, next_command(words, most)))
 
 
 def describe(verbs) -> Callable[[argparse.Namespace], None]:
     """`memar session start`."""
     starter = verbs.add_parser(
         START_COMMAND,
-        help="print, in one output, everything a sub-agent needs in its context for its session",
+        help="print, in one output, everything an agent taking up a session needs in its context",
         description=(
-            "For the agent handed a session. Print, in parts each opened by a line `=== NAME ===`, and in\n"
-            f"this order: the session's id and paths, the model its Kind needs, its {PLAN_NAME}, the folder's\n"
-            "listing, the Memar skill, the documents the skill requires and the plan's Steps name, the\n"
-            "help of the commands every session uses and those the plan names, and how to end. Run it\n"
-            "first, once, and read nothing else before acting on the plan: it is what the skill requires\n"
-            "read before the plan's steps, in one command.\n"
+            "For every agent that takes up a session: a sub-agent handed one, and the coordinator after\n"
+            "`new` opened its own. Print, in parts each opened by a line `=== NAME ===`, and in this\n"
+            f"order: the session's id and paths, the model its Kind needs, its {PLAN_NAME}, the folder's\n"
+            "listing, the Memar skill, the passages of Memar's documents the plan's Kind requires (as\n"
+            "`memar content context --kind K` prints them; the core alone for a plan with no Kind) and\n"
+            "then the documents the plan's Steps name that those do not hold, the help of the commands\n"
+            "every session uses and those the plan names, and how to end. Run it first, once, and read\n"
+            "nothing else before acting on the plan.\n"
+            "\n"
+            "A text too long for one tool output prints in ordered parts, each at most --most-characters\n"
+            "long: each part but the last ends with the exact command for the next (--part N), to run\n"
+            "at once; read every part before acting. The same session prints the same parts, and each\n"
+            "part says \"part N of M of text H\", H a hash of the whole text: a part naming another H\n"
+            "is of another version of it.\n"
+            "\n"
+            f"The kinds a plan carries: {', '.join(KINDS)}.\n"
             "\n"
             "It is `new --session-id ID` as well, so the report and the role folders are there after it;\n"
             "it opens no new session, and refuses an ID that has no folder with a plan."
         ),
     )
     starter.add_argument("--session-id", required=True, metavar="ID", help="the session handed to you")
+    # TODO name: --without-skill | --skill-loaded
+    starter.add_argument(
+        "--without-skill", action="store_true",
+        help="leave the Memar skill out, for an agent whose runtime already loaded it",
+    )
+    add_part_arguments(
+        starter, f"the `{MOST_CHARACTERS_KEY}` in the {PREFERENCES_RELATIVE.as_posix()} of the project the plan names"
+    )
     return run
 
 
 def run(args: argparse.Namespace) -> None:
-    print_start(args.session_id)
+    print_start(args.session_id, not args.without_skill, args.part, args.most_characters)

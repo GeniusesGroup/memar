@@ -41,7 +41,7 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
-from services.session_id import new_session_id
+from services.session_id import SessionId
 
 # These functions are the whole discipline, and the write verbs are the only
 # supported way to put text into a file from a shell:
@@ -125,7 +125,7 @@ def writer_id() -> str:
     would be a flag the caller must remember to pass for a note only a waiter in
     an unusual failure reads.
     """
-    return new_session_id()
+    return SessionId.new()
 
 
 def plain_path(ref: str) -> Path:

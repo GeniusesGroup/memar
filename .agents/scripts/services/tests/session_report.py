@@ -16,9 +16,10 @@ folder `machine/fs_test_scratch.py` names and removed with it.
 
 What is pinned, and what each pin is for:
 
-  Skeleton          A new report is front matter with an empty Status (and the
-                    Title when known), its heading, and the four parts; one
-                    that is there is never overwritten.
+Skeleton          A new report names the session it belongs to, then front
+                     matter with an empty Status (and the Title when known),
+                     its heading, and the four parts; one that is there is
+                     never overwritten.
   ReadsTodaysShape  The Status is the front matter's `Status`, lowercased; an
                     unknown word is returned as written; nothing else gives a
                     report a status: not a lower-case key, an `Outcome` key, a
@@ -81,24 +82,24 @@ class Fixture(unittest.TestCase):
 
 
 class Skeleton(Fixture):
-    def test_a_new_report_is_front_matter_with_an_empty_status_then_the_parts(self) -> None:
+    def test_a_new_report_names_its_session_then_has_an_empty_status_and_the_parts(self) -> None:
         self.assertEqual(
-            session_report.report_skeleton("The task"),
-            "---\nTitle: The task\nStatus:\n---\n# Report\n\n## What ran\n## Check\n## Result\n## Left open\n",
+            session_report.report_skeleton("s-1", "The task"),
+            "---\nSession: s-1\nTitle: The task\nStatus:\n---\n# Report\n\n## What ran\n## Check\n## Result\n## Left open\n",
         )
         self.assertEqual(
-            session_report.report_skeleton(), "---\nStatus:\n---\n# Report\n\n## What ran\n## Check\n## Result\n## Left open\n"
+            session_report.report_skeleton("s-1"), "---\nSession: s-1\nStatus:\n---\n# Report\n\n## What ran\n## Check\n## Result\n## Left open\n"
         )
 
     def test_an_empty_skeleton_says_nothing(self) -> None:
-        session_report.write_report(self.folder, "The task")
+        session_report.write_report(self.folder, "s-1", "The task")
         self.assertEqual(session_report.read_report_status(self.folder), "")
         self.assertIsNone(session_report.disagreement("active", session_report.read_report_status(self.folder)))
         self.assertIsNone(session_report.report_shape_problem(self.folder))
 
     def test_a_report_that_is_there_is_never_overwritten(self) -> None:
         self.new("Complete")
-        session_report.write_report(self.folder, "The task")
+        session_report.write_report(self.folder, "s-1", "The task")
         self.assertEqual(session_report.read_report_status(self.folder), "complete")
 
     def test_a_report_may_state_the_statuses_the_table_gives_a_session_report(self) -> None:

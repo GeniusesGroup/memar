@@ -4,7 +4,7 @@
 """services/content_questions_lint.py — the fields an Open Questions entry carries, checked.
 
 An entry written during a task stands alone by carrying State, Options, Anchor
-and Blocks ([Open Questions](../../docs/documentation-handoff.md#open-questions)).
+and Blocks ([Open Questions](../../modules/content/documentation/handoff/handoff.md#open-questions)).
 `content check` warns, never errors, on an entry missing one, because entries
 written before the rule are still valid. The entries are the ones
 `content_questions` lists: a heading one level below `Open Questions`.

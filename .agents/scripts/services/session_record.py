@@ -5,15 +5,15 @@
 
 A plan and a report are records: a file name, a fixed set of front-matter keys,
 the parts under the front matter in order, and the Status values the file may
-carry ([Status](../status.py), [Status](../../../docs/documentation.md#status)).
+carry ([Status](../status.py), [Status](../../../modules/content/documentation/documentation.md#status)).
 That shape is a closed set, so it is code and is written here and nowhere else
-([A Fact in Code Is Written Once](../../../docs/documentation.md#a-fact-in-code-is-written-once)):
+([A Fact in Code Is Written Once](../../../modules/content/documentation/documentation.md#a-fact-in-code-is-written-once)):
 `session_plan` and `session_report` read and write by it, and `session_new`
 prints it in its help by calling `Record.outline`.
 
 A report has no key of its own for how the run ended: that is its Status
-with the Result part, so `ReportKey` holds the Title and the Status only.
-The earlier shapes (an `Outcome` key, a `Stop:` line) are not part of today's
+with the Result part, so `ReportKey` holds the session's id, the Title and
+the Status. The earlier shapes (an `Outcome` key, a `Stop:` line) are not part of today's
 record; the services that name them, so that a reader is told why such a
 file is not read, keep them.
 
@@ -25,6 +25,8 @@ from __future__ import annotations
 from dataclasses import dataclass
 from enum import Enum
 
+from services.project_name import ProjectName
+from services.project_path import ProjectPath
 from services.status import Kind, Status
 
 
@@ -41,19 +43,33 @@ class RecordKey(Enum):
         return self.key.capitalize()
 
 
+# Both records name the session they belong to, one declaration for both kinds
+# ([Documentation — Plan](../../../modules/content/documentation/plan/plan.md)):
+# the record must not presume it is a file, since a folder may be moved,
+# renamed or swept, so the identifier is found inside the document.
+SESSION_FIELD = ("session", "the id of the session this record belongs to")
+
+
 class PlanKey(RecordKey):
+    SESSION = SESSION_FIELD
     TITLE = ("title", "TITLE")
     STATUS = ("status", "where the task stands, one of the Status words `memar session --help` gives")
     OPENED = ("opened", "the UTC time it was written, e.g. 2026-10-08T13:20:34Z")
-    PROJECT = ("project", "the git top-level of the folder --project or --project-path names, else that folder")
+    PROJECT = ("project", f"the git top-level of the folder {ProjectName.FLAG} or {ProjectPath.FLAG} names, else that folder")
     PARENT = ("parent", "ID of the session this one came from, with --parent")
     CONVERSATION = ("conversation", "the id of the first session of the conversation, with --parent")
     PRIORITY = ("priority", "N, with --priority")
     TOPIC = ("topic", "T, with --topic")
     KIND = ("kind", "K, with --kind: what the task is, which says how strong a model it needs")
+    DEPENDS_ON = (
+        "depends_on",
+        "ID, ID, ...: the sessions that must be Complete before this one can start, each an id or project/id; "
+        "while one is not, this session is Blocked",
+    )
 
 
 class ReportKey(RecordKey):
+    SESSION = SESSION_FIELD
     TITLE = ("title", "TITLE, when known")
     STATUS = ("status", "empty until the session ends, then one of the Statuses a report may state")
 

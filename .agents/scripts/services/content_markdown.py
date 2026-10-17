@@ -13,9 +13,9 @@ from __future__ import annotations
 import re
 
 # A link this checker cannot judge by looking at the filesystem: a URI with a
-# scheme (`https:`, `mailto:`) and a protocol-relative `//host/path`. A leading
-# `/` is a site-root reference, which resolves against a server rather than
-# against the document's own folder, so it is not a file this run can see.
+# scheme (`https:`, `mailto:`) and a protocol-relative `//host/path`. A single
+# leading `/` is not one: it is a root-relative link, resolved against the
+# checkout as `memar content path` resolves it (`content_links.link_target`).
 EXTERNAL_LINK = re.compile(r"^(?:[a-z][a-z0-9+.-]*:|//)", re.IGNORECASE)
 
 

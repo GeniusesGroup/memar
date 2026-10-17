@@ -1,16 +1,16 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""Tests for the section a heading's anchor names, in `services/content_section.py`.
+"""Tests for one section of a document, in `services/content_section.py`, and its verb `memar content section`.
 
     python .agents/scripts/services/tests/content_section.py
 
-The subject is `by_anchor`, which reads a section by the fragment a link uses
-rather than by the heading's text, named for the file that holds it per
+The subject is the section a name gives — the fragment a link uses, or the
+heading's text — and its hash, named for the file that holds it per
 [Test Naming](../../../../modules/process/test/rules/test-naming/test-naming.md),
 in the `tests/` folder of the shelf that owns it per
 [Test Placement](../../../../modules/process/test/rules/test-placement/test-placement.md).
-Nothing here touches the filesystem.
+Only `Verb` touches the filesystem, in a temporary folder.
 
 What is pinned, and what each pin is for:
 
@@ -21,12 +21,26 @@ What is pinned, and what each pin is for:
   Through    With a last heading, the text runs on to the end of that
              section, so neighbouring sections are one read; a last heading
              that is not after the first is None.
+  Named      A name opening with `#` is an anchor, GitHub's `-1` suffix naming
+             a heading's repeat, counted as the anchor check counts it; any
+             other name is a heading's text, the first heading outside a fence
+             that reads so; both give the same text.
+  Hash       A section's hash is the hash every part of a long text names,
+             taken of the section's text; it covers the subsections, so an
+             edit inside one changes it, and an edit outside the section does
+             not; the line endings the file was read with do not.
+  Verb       `memar content section FILE '#anchor'` prints the section, and
+             `--hash` prints only its hash.
 
 Usage is the interface. Do not duplicate these recipes as prose catalogs.
 """
 from __future__ import annotations
 
+import argparse
+import contextlib
+import io
 import sys
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -39,7 +53,8 @@ SCRIPTS = TESTS.parent.parent
 sys.path.insert(0, str(SCRIPTS))
 sys.dont_write_bytecode = True
 
-from services.content_section import by_anchor
+from machine.console_parts import text_id
+from services.content_section import by_anchor, cmd_section, named, section_hash
 
 TEXT = """# Title
 
@@ -93,6 +108,76 @@ class Through(unittest.TestCase):
     def test_a_last_heading_that_is_not_after_the_first_is_none(self) -> None:
         self.assertIsNone(by_anchor(TEXT, "gamma-part", "Alpha Part"))
         self.assertIsNone(by_anchor(TEXT, "alpha-part", "No Such Heading"))
+
+
+REPEATS = """# Notes
+
+## Notes
+first notes
+```
+## Notes
+```
+
+## Notes
+second notes
+"""
+
+
+class Named(unittest.TestCase):
+    def test_a_name_opening_with_a_hash_is_an_anchor(self) -> None:
+        self.assertEqual(named(TEXT, "#alpha-part"), by_anchor(TEXT, "alpha-part"))
+
+    def test_the_suffix_names_a_repeated_heading_counted_from_the_top_heading(self) -> None:
+        self.assertEqual(named(REPEATS, "#notes-1"), "## Notes\nfirst notes\n```\n## Notes\n```")
+        self.assertEqual(named(REPEATS, "#notes-2"), "## Notes\nsecond notes")
+
+    def test_a_heading_inside_a_fence_takes_no_suffix(self) -> None:
+        self.assertIsNone(named(REPEATS, "#notes-3"))
+
+    def test_a_heading_text_gives_the_same_text_as_its_anchor(self) -> None:
+        self.assertEqual(named(TEXT, "Alpha Part"), named(TEXT, "#alpha-part"))
+        self.assertEqual(named(TEXT, "alpha part"), named(TEXT, "#alpha-part"))
+
+    def test_a_heading_text_inside_a_fence_is_not_matched(self) -> None:
+        self.assertIsNone(named(TEXT, "not a heading"))
+
+    def test_a_name_no_heading_answers_to_is_none(self) -> None:
+        self.assertIsNone(named(TEXT, "#nowhere"))
+        self.assertIsNone(named(TEXT, "Nowhere"))
+
+
+class Hash(unittest.TestCase):
+    def test_the_hash_is_the_text_hash_of_the_section(self) -> None:
+        self.assertEqual(section_hash(named(TEXT, "#alpha-part")), text_id(named(TEXT, "#alpha-part")))
+
+    def test_an_edit_in_a_subsection_changes_the_hash(self) -> None:
+        edited = TEXT.replace("inner text", "inner text, edited")
+        self.assertNotEqual(section_hash(named(edited, "#alpha-part")), section_hash(named(TEXT, "#alpha-part")))
+
+    def test_an_edit_outside_the_section_leaves_the_hash(self) -> None:
+        edited = TEXT.replace("beta text", "beta text, edited")
+        self.assertEqual(section_hash(named(edited, "#alpha-part")), section_hash(named(TEXT, "#alpha-part")))
+
+    def test_line_endings_do_not_change_the_hash(self) -> None:
+        crlf = TEXT.replace("\n", "\r\n")
+        self.assertEqual(section_hash(named(crlf, "#alpha-part")), section_hash(named(TEXT, "#alpha-part")))
+
+
+class Verb(unittest.TestCase):
+    def run_verb(self, name: str, hashed: bool) -> str:
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            (root / "doc.md").write_text(TEXT, encoding="utf-8", newline="\n")
+            out = io.StringIO()
+            with contextlib.redirect_stdout(out):
+                cmd_section(argparse.Namespace(file="/doc.md", heading=name, hash=hashed), root)
+            return out.getvalue()
+
+    def test_an_anchor_prints_the_section(self) -> None:
+        self.assertEqual(self.run_verb("#inner-detail", False), "### Inner (Detail)\ninner text\n")
+
+    def test_hash_prints_only_the_sections_hash(self) -> None:
+        self.assertEqual(self.run_verb("#alpha-part", True), section_hash(named(TEXT, "#alpha-part")) + "\n")
 
 
 if __name__ == "__main__":

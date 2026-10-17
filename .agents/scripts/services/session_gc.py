@@ -69,6 +69,10 @@ own log is trimmed. `gc` also removes from Memar's record each location
 whose folder is gone, and names it: a person running it is there to read
 that, which the daily sweep's caller is not, so the daily sweep leaves the
 record as it is.
+
+**What the help leaves out.** A recorded project session location whose folder is gone is no
+longer recorded, and each one is named; `new` records it again when it makes a session there.
+The flags are the same `concerns` marks `list` prints (`session_concerns`).
 """
 from __future__ import annotations
 
@@ -280,17 +284,11 @@ def describe(verbs) -> Callable[[argparse.Namespace], None]:
             f"is added ({RECORDS_BRANCH}, at {RECORDS_RELATIVE.as_posix()}/<id>/), all the folders moved in one\n"
             "commit for each project: this sweep is the one act that adds records on its\n"
             "own. A folder whose plan or report Status is Queued is never moved.\n"
-            f"A folder whose status is not complete, whose {PLAN_NAME} cannot be read, or\n"
-            "whose records cannot be kept, is kept however idle it is, and listed with\n"
-            "why and how long it has been idle, so a person can see which ones only they\n"
-            "can let go. A kept folder that looks finished or abandoned (every\n"
-            "step checked while active, an empty Request, no status) is also flagged;\n"
-            "a flag moves nothing. Your own session is never swept. Only Memar's own\n"
-            "temp/sessions/ is swept: each project session location, set in a project's\n"
-            "preferences, is named as not swept, its folders the project's to keep or delete.\n"
-            "A recorded project session location whose folder is gone is no longer\n"
-            "recorded, and each one is named; `new` records it again when it makes a\n"
-            "session there."
+            f"A folder whose status is not complete, whose {PLAN_NAME} cannot be read, or whose\n"
+            "records cannot be kept, is kept however idle, and listed with why and how long it has\n"
+            "been idle; one that looks finished or abandoned is also flagged, which moves nothing.\n"
+            "Your own session is never swept. Only Memar's own temp/sessions/ is swept: a project's\n"
+            "own session location is named as not swept."
         ),
     )
     collector.add_argument(

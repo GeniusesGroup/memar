@@ -12,7 +12,7 @@ skeleton, and the Statuses a report may state, so the session that writes a repo
 read it one way.
 
 A report states a Status of the one vocabulary
-[Status](../../../docs/documentation.md#status) defines, held in
+[Status](../../../modules/content/documentation/documentation.md#status) defines, held in
 `services/status.py`, and no second field for how the run ended: each Status a
 report may state says in the type how a run that stated it ended
 (`Status.report_ending`). A report whose Status is empty says nothing yet and is not checked; a Status the
@@ -57,14 +57,19 @@ EARLIER_OUTCOME_KEY = "Outcome"
 EARLIER_STOP_PREFIX = "Stop:"
 
 
-def report_skeleton(title: str | None = None) -> str:
-    """A new report.md: front matter with an empty Status (and the TITLE, when known), its heading, and the four parts.
+def report_skeleton(session: str, title: str | None = None) -> str:
+    """A new report.md: front matter naming its session with an empty Status (and the TITLE, when known), its heading, and the four parts.
 
+    SESSION is the id of the session the report belongs to, written into the
+    record so that a reader finds it inside the document rather than by
+    reading the name of the folder the record sits in
+    ([Documentation — Report](../../../modules/content/documentation/report/report.md)).
     An empty Status is left for the session to fill when it ends; until it
     does, the report says nothing and is not checked.
     """
     front = [
         "---",
+        f"{ReportKey.SESSION.written}: {session}",
         *([f"{ReportKey.TITLE.written}: {title}"] if title else []),
         f"{ReportKey.STATUS.written}:",
         "---",
@@ -72,11 +77,11 @@ def report_skeleton(title: str | None = None) -> str:
     return "\n".join([*front, f"# {REPORT.heading}", "", *(f"## {part}" for part in REPORT.parts)]) + "\n"
 
 
-def write_report(folder: Path, title: str | None = None) -> None:
+def write_report(folder: Path, session: str, title: str | None = None) -> None:
     """Create FOLDER's report.md unless one is there; an existing report is never touched."""
     try:
         with (folder / REPORT_NAME).open("x", encoding="utf-8", newline="\n") as report:
-            report.write(report_skeleton(title))
+            report.write(report_skeleton(session, title))
     except FileExistsError:
         pass
 

@@ -16,9 +16,10 @@ folder `machine/fs_test_scratch.py` names and removed with it.
 
 What is pinned, and what each pin is for:
 
-  Skeleton        A new plan is front matter, the title once as its heading,
-                  `Status: Active`, and Request, Why, Steps, Next; the link to a
-                  parent and its conversation is written only when given.
+  Skeleton        A new plan names the session it belongs to, then front matter,
+                  the title once as its heading, `Status: Active`, and Request,
+                  Why, Steps, Next; the link to a parent and its conversation is
+                  written only when given.
   ReadsTodaysShape  A plan's status is the front matter's `Status`, lowercased,
                   and an unknown one is returned as written; nothing else
                   gives a plan a status: not a body `Status:` line, not a
@@ -42,9 +43,11 @@ What is pinned, and what each pin is for:
                   front matter, and leaves every other line as written; a
                   value outside 1 to 10, or a plan with no front matter, is
                   refused.
-  Kind            A plan's kind is one of the closed list, which says how
-                  strong a model its task needs: the judgment kinds the
-                  strongest, `mechanical` a cheaper one. A new plan writes it
+  Kind            A plan's kind is one of the kinds `services/task_kind.py`
+                  lets a plan carry, and one it does not let a plan carry is
+                  refused with the reason. For now every kind is judgment,
+                  the strongest model, but `mechanical`, a cheaper one
+                  (the transitional rule). A new plan writes it
                   only when given; one set later replaces the key or adds it
                   at the end of the front matter and leaves every other line
                   as written; a word outside the list, so a misspelling is
@@ -82,11 +85,14 @@ import services.session_plan_status as session_plan_status
 import services.session_plan_priority as session_plan_priority
 import services.session_plan_topic as session_plan_topic
 import services.session_plan_kind as session_plan_kind
+from services.priority import Priority as PlanPriority
 from services.session_record import PlanKey
 from services.status import Kind, Status
+from services.task_kind import TaskKind
 
 TITLE = "Parse the header"
 OPENED = "2026-10-01T00:00:00Z"
+SESSION = "20261001T000000Z-1-0"
 
 
 def old_plan(status: str) -> str:
@@ -129,21 +135,22 @@ class Fixture(unittest.TestCase):
 
 
 class Skeleton(Fixture):
-    def test_a_new_plan_is_front_matter_with_its_status_the_title_and_four_parts(self) -> None:
-        text = session_plan.plan_skeleton(TITLE, OPENED, Path("/work"))
+    def test_a_new_plan_names_its_session_then_has_front_matter_with_its_status_the_title_and_four_parts(self) -> None:
+        text = session_plan.plan_skeleton(SESSION, TITLE, OPENED, Path("/work"))
         self.assertEqual(
             text,
-            f"---\nTitle: {TITLE}\nStatus: Active\nOpened: {OPENED}\nProject: {Path('/work')}\n---\n"
+            f"---\nSession: {SESSION}\nTitle: {TITLE}\nStatus: Active\nOpened: {OPENED}\nProject: {Path('/work')}\n---\n"
             f"# {TITLE}\n\n## Request\n\n## Why\n\n## Steps\n\n## Next\n",
         )
         self.assertEqual(text.count(TITLE), 2)
         plan = self.read(text)
         self.assertEqual(plan.status, "active")
+        self.assertEqual(plan.front[PlanKey.SESSION.key], SESSION)
         self.assertNotIn(PlanKey.PARENT.key, plan.front)
         self.assertIsNone(session_plan.plan_shape_problem(text.splitlines()))
 
     def test_the_link_is_written_only_when_given(self) -> None:
-        text = session_plan.plan_skeleton(TITLE, OPENED, Path("/work"), parent="P-1", conversation="C-0")
+        text = session_plan.plan_skeleton(SESSION, TITLE, OPENED, Path("/work"), parent="P-1", conversation="C-0")
         front = self.read(text).front
         self.assertEqual(front[PlanKey.PARENT.key], "P-1")
         self.assertEqual(front[PlanKey.CONVERSATION.key], "C-0")
@@ -156,7 +163,7 @@ class ReadsTodaysShape(Fixture):
                 plan = self.read(new_plan(written))
                 self.assertEqual(plan.status, read)
                 self.assertEqual(plan.front["title"], TITLE)
-                self.assertEqual(session_plan_priority.priority_of(plan.front), 7)
+                self.assertEqual(PlanPriority.of(plan.front), 7)
 
     def test_the_old_words_are_not_translated(self) -> None:
         self.assertEqual(self.read(new_plan("open")).status, "open")
@@ -295,31 +302,31 @@ class Title(unittest.TestCase):
 
 class Priority(Fixture):
     def test_a_plan_without_priority_reads_as_the_default_five(self) -> None:
-        self.assertEqual(session_plan_priority.DEFAULT_PRIORITY, 5)
-        front = self.read(session_plan.plan_skeleton(TITLE, OPENED, Path("/work"))).front
+        self.assertEqual(PlanPriority.DEFAULT, 5)
+        front = self.read(session_plan.plan_skeleton(SESSION, TITLE, OPENED, Path("/work"))).front
         self.assertNotIn(PlanKey.PRIORITY.key, front)
-        self.assertEqual(session_plan_priority.priority_of(front), 5)
-        self.assertEqual(session_plan_priority.priority_of(None), 5)
+        self.assertEqual(PlanPriority.of(front), 5)
+        self.assertEqual(PlanPriority.of(None), 5)
 
     def test_a_written_priority_is_read_and_one_not_from_1_to_10_is_the_default(self) -> None:
         for value, expected in (("1", 1), ("10", 10), (" 7 ", 7), ("0", 5), ("11", 5), ("high", 5), ("3.5", 5)):
             with self.subTest(value=value):
-                self.assertEqual(session_plan_priority.priority_of({PlanKey.PRIORITY.key: value}), expected)
+                self.assertEqual(PlanPriority.of({PlanKey.PRIORITY.key: value}), expected)
 
     def test_a_new_plan_writes_its_priority_only_when_given(self) -> None:
-        text = session_plan.plan_skeleton(TITLE, OPENED, Path("/work"), priority=8)
+        text = session_plan.plan_skeleton(SESSION, TITLE, OPENED, Path("/work"), priority=8)
         self.assertIn("\nPriority: 8\n---\n", text)
-        self.assertEqual(session_plan_priority.priority_of(self.read(text).front), 8)
+        self.assertEqual(PlanPriority.of(self.read(text).front), 8)
 
     def test_setting_a_priority_replaces_or_adds_the_key_and_keeps_every_other_line(self) -> None:
         path = self.folder / session_plan.PLAN_NAME
-        original = session_plan.plan_skeleton(TITLE, OPENED, Path("/work"), status="queued").replace("\n", "\r\n")
+        original = session_plan.plan_skeleton(SESSION, TITLE, OPENED, Path("/work"), status="queued").replace("\n", "\r\n")
         path.write_bytes(original.encode("utf-8"))
         session_plan_priority.set_priority(path, 9)
         text = path.read_bytes().decode("utf-8")
         self.assertEqual(text, original.replace("\r\n---\r\n#", "\r\nPriority: 9\r\n---\r\n#", 1))
         session_plan_priority.set_priority(path, 2)
-        self.assertEqual(session_plan_priority.priority_of(session_plan.read_plan(path).front), 2)
+        self.assertEqual(PlanPriority.of(session_plan.read_plan(path).front), 2)
         self.assertEqual(path.read_bytes().decode("utf-8").count("riority:"), 1)
         self.assertEqual(session_plan.read_plan(path).status, "queued")
 
@@ -327,8 +334,8 @@ class Priority(Fixture):
         for value in ("0", "11", "x", "5.0"):
             with self.subTest(value=value):
                 with self.assertRaises(SystemExit):
-                    session_plan_priority.checked_priority(value)
-        self.assertEqual(session_plan_priority.checked_priority("10"), 10)
+                    PlanPriority.checked(value)
+        self.assertEqual(PlanPriority.checked("10"), 10)
         path = self.folder / session_plan.PLAN_NAME
         path.write_text("# T\nStatus: open\n", encoding="utf-8")
         with self.assertRaises(SystemExit):
@@ -336,25 +343,39 @@ class Priority(Fixture):
 
 
 class KindOfTask(Fixture):
-    def test_the_kinds_are_the_judgment_ones_then_the_mechanical_one(self) -> None:
-        self.assertEqual(session_plan_kind.KINDS, ("ideation", "plan", "modeling", "design", "critique", "mechanical"))
+    def test_the_kinds_are_those_the_declaration_lets_a_plan_carry(self) -> None:
+        self.assertEqual(session_plan_kind.KINDS, TaskKind.words(carried=True))
+
+    def test_every_kind_is_judgment_but_the_mechanical_one(self) -> None:
+        self.assertEqual(session_plan_kind.CHEAPER_KINDS, (TaskKind.MECHANICAL.word,))
+        self.assertEqual(
+            set(session_plan_kind.STRONG_KINDS), {kind.word for kind in TaskKind if kind is not TaskKind.MECHANICAL}
+        )
+
+    def test_a_kind_no_plan_carries_is_refused_with_why(self) -> None:
+        for kind in (TaskKind.ANSWER, TaskKind.PLAN):
+            with self.subTest(kind=kind.word):
+                with self.assertRaises(SystemExit) as refused:
+                    session_plan_kind.checked_kind(kind.word)
+                self.assertIn(f"a plan does not carry the kind {kind.word}", str(refused.exception.code))
+                self.assertIn(kind.applies, str(refused.exception.code))
 
     def test_a_new_plan_writes_the_kind_only_when_given(self) -> None:
-        given = session_plan.plan_skeleton(TITLE, OPENED, Path("/work"), kind="design")
+        given = session_plan.plan_skeleton(SESSION, TITLE, OPENED, Path("/work"), kind="design")
         self.assertIn("\nKind: design\n", given)
-        self.assertNotIn("Kind", session_plan.plan_skeleton(TITLE, OPENED, Path("/work")))
+        self.assertNotIn("Kind", session_plan.plan_skeleton(SESSION, TITLE, OPENED, Path("/work")))
 
     def test_a_kind_is_lower_cased_and_a_word_outside_the_list_is_refused(self) -> None:
         self.assertEqual(session_plan_kind.checked_kind(" Design "), "design")
         with self.assertRaises(SystemExit) as refused:
             session_plan_kind.checked_kind("modelling")
-        self.assertIn("a kind is one of ideation", str(refused.exception.code))
+        self.assertIn(f"a kind is one of {', '.join(TaskKind.words(carried=True))}", str(refused.exception.code))
 
     def test_setting_a_kind_replaces_or_adds_the_key_and_keeps_every_other_line(self) -> None:
         path = self.path(new_plan("Active"))
-        session_plan_kind.set_kind(path, "plan")
+        session_plan_kind.set_kind(path, "design")
         self.assertEqual(
-            path.read_text(encoding="utf-8"), new_plan("Active").replace("Priority: 7\n", "Priority: 7\nKind: plan\n")
+            path.read_text(encoding="utf-8"), new_plan("Active").replace("Priority: 7\n", "Priority: 7\nKind: design\n")
         )
         session_plan_kind.set_kind(path, "mechanical")
         self.assertIn("\nKind: mechanical\n", path.read_text(encoding="utf-8"))
@@ -362,7 +383,7 @@ class KindOfTask(Fixture):
 
     def test_a_plan_without_front_matter_cannot_be_given_a_kind(self) -> None:
         with self.assertRaises(SystemExit):
-            session_plan_kind.set_kind(self.path("# T\n\n## Request\n"), "plan")
+            session_plan_kind.set_kind(self.path("# T\n\n## Request\n"), "design")
 
     def test_a_hand_written_kind_reads_as_written_in_lower_case(self) -> None:
         self.assertEqual(session_plan_kind.kind_of({"kind": " Modelling "}), "modelling")
@@ -373,7 +394,7 @@ class KindOfTask(Fixture):
 class Rewrite(Fixture):
     def plan(self, status: str) -> Path:
         path = self.folder / session_plan.PLAN_NAME
-        text = session_plan.plan_skeleton(TITLE, OPENED, Path("/work"), status=status)
+        text = session_plan.plan_skeleton(SESSION, TITLE, OPENED, Path("/work"), status=status)
         path.write_text(text, encoding="utf-8", newline="\n")
         return path
 
@@ -396,14 +417,14 @@ class Rewrite(Fixture):
         with self.changed_once_after_reading(path, "Status: Queued", "Status: Active"):
             session_plan_priority.set_priority(path, 9)
         plan = session_plan.read_plan(path)
-        self.assertEqual((plan.status, session_plan_priority.priority_of(plan.front)), ("active", 9))
+        self.assertEqual((plan.status, PlanPriority.of(plan.front)), ("active", 9))
 
     def test_a_status_set_while_the_priority_changes_keeps_both(self) -> None:
         path = self.plan("queued")
         with self.changed_once_after_reading(path, f"Opened: {OPENED}\n", f"Opened: {OPENED}\nPriority: 8\n"):
             session_plan_status.set_status(path, "active")
         plan = session_plan.read_plan(path)
-        self.assertEqual((plan.status, session_plan_priority.priority_of(plan.front)), ("active", 8))
+        self.assertEqual((plan.status, PlanPriority.of(plan.front)), ("active", 8))
 
     def test_a_status_no_longer_the_expected_one_is_left_as_it_is(self) -> None:
         path = self.plan("queued")

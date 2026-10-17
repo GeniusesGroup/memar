@@ -314,7 +314,7 @@ class RouterNamesNoVerb(unittest.TestCase):
         paths = declared()
         verbs = {path[0] for path in paths}
         words = {word for path in paths for word in path}
-        self.assertTrue({"content", "install", "session", "update"} <= verbs, verbs)
+        self.assertTrue({"content", "install", "prompts", "session", "update"} <= verbs, verbs)
         tree = ast.parse(LAUNCHER.read_text(encoding="utf-8"))
         docstring = tree.body[0].value if isinstance(tree.body[0], ast.Expr) else None
         imported = {

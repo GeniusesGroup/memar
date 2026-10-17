@@ -23,9 +23,8 @@ names for taking queued tasks.
 
 This file declares the verb and nothing else of its own. Each sub-verb is one
 service on this shelf, which declares it and holds why it is built as it is:
-`session_new` opens a folder and links it to its conversation, `session_brief`
-holds the text that hands one to a sub-agent and `session_start` the
-output that sub-agent runs first, `session_find` lists them,
+`session_new` opens a folder and links it to its conversation, `session_start`
+prints what an agent taking one up runs first, and takes it up; `session_find` lists them,
 `session_close` closes one, `session_gc` sweeps, `session_archive` keeps a
 task's session records on its project's records branch (`session_keep` says
 which files, `session_branch` is the one place git is spoken to; `close`
@@ -33,11 +32,16 @@ asks whether it has, the sweep does it), `session_show` prints a session's
 records from its folder or the branch, `session_claim` takes a queued
 one by its id for one agent and `session_claims` the N first in line, `session_priority`
 moves one up or down that line, `session_topic` and `session_topics` set and list
-the subject `claims` batches by, `session_digest` gathers the decisions they
+the subject `claims` batches by, `session_depends_on` shows, adds and drops the
+sessions one cannot start without (`session_depends` says what that does to its
+Status), `session_digest` gathers the decisions they
 hand back; `session_plan`,
 `session_report`, `session_folder`, `session_layout`, `session_location`,
 `session_log`, `session_temp`, and `session_id` are what those share. The domain only groups
 its verbs: nothing is owed before every one, so its `describe` returns no run.
+The texts that hand a session's plan or its questions to an agent are no verbs
+of this domain: a prompt is its own kind of output, and `memar prompts`
+(`services/prompts.py`) groups them.
 A one-time migration of session folders or of the files in them is no service
 of this domain: it lives in the session that does the change
 (.agents/scripts/README.md), and nothing here names it.
@@ -46,11 +50,7 @@ Usage is the interface. Do not duplicate these recipes as prose catalogs.
 """
 from __future__ import annotations
 
-from machine.fs_memar import RECORDS_BRANCH, RECORDS_RELATIVE
-from services.session_temp import TEMP_FOLDER
-from services.project_preferences import RECORDS_KEY, Records
-from services.session_claim import CLAIM_NAME
-from services.session_keep import KEEP_LIMIT_BYTES
+from services.claim import Claim
 from services.session_layout import kinds_listing
 from services.session_log import SESSION_LOG_NAME
 from services.session_plan import PLAN_NAME
@@ -87,7 +87,7 @@ checkout: the files you write while working belong to your session, not to the
 repository.
 
 The folder's top holds only {PLAN_NAME} and {REPORT_NAME}, besides its role
-folders and the `{CLAIM_NAME}` file Memar writes there while an agent holds the
+folders and the `{Claim.NAME}` file Memar writes there while an agent holds the
 task. Put nothing else at the top: anything else the task makes goes in the
 role folder of its kind,
 
@@ -99,7 +99,7 @@ and a file of another kind goes in the role folder that holds it.
 holds is written.
 
 A session's Status, in its {PLAN_NAME}'s front matter, is {Status.listing(PLAN.kind)},
-the words `docs/documentation.md` (section Status) defines for every document,
+the words `modules/content/documentation/documentation.md` (section Status) defines for every document,
 each meaning:
 
 {status_meanings(PLAN.statuses)}
@@ -119,17 +119,10 @@ The verbs below that take or rank a session write there by themselves. Each
 location that holds session folders keeps its own log of what was done to its
 folders, {SESSION_LOG_NAME} at its top.
 
-A session's folder is scratch and goes once its task is done; its record
-stays. A session's records — its whole folder except the claim, caches, binary
-files, files over {KEEP_LIMIT_BYTES // 1024} KB that are not documents, and its own {TEMP_FOLDER}/ folder —
-are kept on the branch {RECORDS_BRANCH} of its project's own repository, at {RECORDS_RELATIVE.as_posix()}/<id>/ there,
-the plan naming the project by its registered name, unless its preferences say
-`{RECORDS_KEY}: {Records.OFF.value}`. Nothing is pushed. A task's commit cites each session by that
-branch and folder, never by a file in it. `archive` keeps the records of a task's
-sessions; `show` prints a session's plan and report from its folder or from the
-branch; `close` acts only on a session already archived, and the sweep adds
-what the branch lacks before it moves a folder, so the record holds the
-session's last state. Neither acts on a session whose Status is Queued.
+A session's folder is scratch and goes once its task is done; its records
+stay, kept by `archive` on its project's records branch and never pushed.
+`close` and the sweep act only on a session already archived, and neither acts
+on a session whose Status is Queued. `archive --help` says what is kept and where.
 
 Each verb below says what it does, and when to use it, in its own --help.
 """

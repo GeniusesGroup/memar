@@ -115,7 +115,7 @@ def make_idle(path: Path, days: float) -> None:
 
 def plan(status: str) -> str:
     """A plan with STATUS in today's shape (PascalCase keys, Status in the front matter)."""
-    return plan_skeleton("Work", "2026-10-01T00:00:00Z", Path("/work")).replace("Status: Active", f"Status: {status}", 1)
+    return plan_skeleton("20261001T000000Z-1-0", "Work", "2026-10-01T00:00:00Z", Path("/work")).replace("Status: Active", f"Status: {status}", 1)
 
 
 def earlier_plan(status: str) -> str:
@@ -534,7 +534,7 @@ class RecordsAddedBeforeTheFolderGoes(Fixture):
     def finished(self, name: str, project: Path, *, status: str = "Complete", idle: float = 8) -> Path:
         path = memar_fs.session_dir(name, create=True)
         (path / PLAN_NAME).write_text(
-            plan_skeleton("Work", "2026-10-01T00:00:00Z", project).replace("Status: Active", f"Status: {status}", 1),
+            plan_skeleton("20261001T000000Z-1-0", "Work", "2026-10-01T00:00:00Z", project).replace("Status: Active", f"Status: {status}", 1),
             encoding="utf-8",
             newline="\n",
         )

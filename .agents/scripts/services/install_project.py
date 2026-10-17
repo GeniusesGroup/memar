@@ -18,6 +18,12 @@ none, and never writes it again: the README is rewritten on every install, so
 what the project says to Memar has to live in a file an install leaves alone.
 Its path, its keys, and its first text are `project_preferences`'s.
 
+Every module has a `temp` folder for what the work makes and no record needs
+(`module_folders.TEMP_FOLDER`), and a session is a module, so a project under
+git is given a `.gitignore` line that ignores a folder of that name at any
+depth, added once when no line there already does, with the file's own lines
+and line endings kept.
+
 Installing is declaring that the project follows Memar, so the registry
 (`project_registry`) learns it in the same run, under the project's folder
 name, which a person changes later with `memar project add --alias`. A project
@@ -54,13 +60,16 @@ import sys
 from pathlib import Path
 
 from machine.env_location import VARIABLE, recorded_value
+from machine.fs_memar import PUBLISH_BRANCH, PUBLISHED_REPOSITORY, SCRIPTS_RELATIVE
 from machine.fs_memar_repository import is_memar_repository
+from services.module_folders import TEMP_FOLDER
 from services.project_preferences import PREFERENCES_RELATIVE, PREFERENCES_TEXT
 from services.project_registry import add_project, ensure_memar_entry, normalized, path_key, read_entries
+from services.project_name import ProjectName
+from services.project_path import ProjectPath
 
-PUBLISH_BRANCH = "main"
 SCRIPTS_RAW = (
-    f"https://raw.githubusercontent.com/GeniusesGroup/memar/{PUBLISH_BRANCH}/.agents/scripts"
+    f"https://raw.githubusercontent.com/{PUBLISHED_REPOSITORY}/{PUBLISH_BRANCH}/{SCRIPTS_RELATIVE.as_posix()}"
 )
 # The point-of-use command, per platform: fetch the bootstrap from the publishing
 # branch and run it where it stands. Both addresses are built from the one base
@@ -108,7 +117,7 @@ README_BODY = (
     f"[`{PREFERENCES_RELATIVE.name}`]({PREFERENCES_RELATIVE.name}) beside this file, not "
     "here: this README is rewritten on every install, and that file never is.\n\n"
     "Installing Memar into this project registered it with Memar under this "
-    "folder's name, so a session names it with `--project NAME`: `memar "
+    f"folder's name, so a session names it with `{ProjectName.FLAG} {ProjectName.METAVAR}`: `memar "
     "project list` shows what it is called, and `memar project add NAME PATH "
     "--alias ALIAS` gives it another name.\n\n"
     "If `memar` is not on PATH, Memar is not available to this program yet. "
@@ -129,6 +138,12 @@ This directory holds configuration and practices for agents working on this proj
 """
 HEADING_RE = re.compile(r"(?m)^## Memar[ \t]*$")
 NEXT_HEADING_RE = re.compile(r"(?m)^#{1,2}[ \t]+\S")
+GITIGNORE = ".gitignore"
+# No slash but the trailing one: git matches it against a folder named so at
+# every depth, not only at the project's top.
+TEMP_IGNORE_LINE = f"{TEMP_FOLDER}/"
+# Lines a project may already hold that ignore that folder at every depth too.
+TEMP_IGNORED_BY = {TEMP_FOLDER, TEMP_IGNORE_LINE, f"**/{TEMP_FOLDER}", f"**/{TEMP_IGNORE_LINE}"}
 VCS_MARKERS = (".git", ".hg", ".svn", ".fossil", ".bzr", "_darcs", ".pijul")
 
 
@@ -207,6 +222,29 @@ def write_text(path: Path, text: str, *, dry_run: bool) -> None:
     print(f"wrote {path}")
 
 
+def ignore_temp(target: Path, *, dry_run: bool = False) -> None:
+    """Add TEMP_IGNORE_LINE to TARGET's .gitignore unless a line there already ignores `temp` at every depth; only under git.
+
+    TODO (owner, 2026-10-15): git only for now; a project under another VCS gets no ignore file written. Write that VCS's
+    own ignore file (for example .hgignore) when a project of Memar's uses one. A `temp` folder's content must never reach
+    version control, in the root or in any module.
+    """
+    if not (target / ".git").exists():
+        return
+    path = target / GITIGNORE
+    text = ""
+    if path.is_file():
+        # newline="": the file's own line endings are read, and written back, as they are.
+        with open(path, encoding="utf-8", newline="") as file:
+            text = file.read()
+    if any(line.strip() in TEMP_IGNORED_BY for line in text.splitlines()):
+        return
+    ending = "\r\n" if "\r\n" in text else "\n"
+    if text and not text.endswith(("\n", "\r")):
+        text += ending
+    write_text(path, text + TEMP_IGNORE_LINE + ending, dry_run=dry_run)
+
+
 def register_project(target: Path, *, dry_run: bool = False) -> None:
     """Make Memar know TARGET, the project root, under its folder name; see the module docstring for the cases."""
     name = target.name
@@ -241,7 +279,7 @@ def into_project(project: Path | None = None, *, dry_run: bool = False) -> None:
     if project is None:
         print(
             "no project was named, so Memar was not put into one; "
-            "run `memar install --project NAME` or `memar install --project-path PATH` to name it",
+            f"run `memar install {ProjectName.FLAG} {ProjectName.METAVAR}` or `memar install {ProjectPath.FLAG} {ProjectPath.METAVAR}` to name it",
             file=sys.stderr,
         )
         return
@@ -269,6 +307,7 @@ def into_project(project: Path | None = None, *, dry_run: bool = False) -> None:
     agents_index = target / ".agents" / "README.md"
     if not agents_index.is_file():
         write_text(agents_index, AGENTS_DIR_README, dry_run=dry_run)
+    ignore_temp(target, dry_run=dry_run)
     register_project(target, dry_run=dry_run)
     if not dry_run:
         # Asked of the module that owns the variable, so a session opened

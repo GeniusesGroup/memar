@@ -15,14 +15,17 @@ Nothing here writes.
 
 What is pinned, and what each pin is for:
 
-  PlanRecord    plan.md: the eight front-matter keys in the order a new plan
-                writes them, each with a description, and the four parts; its
-                Statuses are those the table gives a session plan.
-  ReportRecord  report.md: the Title and Status keys, the four parts, the
-                `Decisions needed` hand-back part and its ten-line limit; its
-                Statuses are those the table gives a session report.
+PlanRecord    plan.md: the front-matter keys in the order a new plan
+                 writes them, each with a description, and the four parts; its
+                 Statuses are those the table gives a session plan.
+  ReportRecord  report.md: the session's id, the Title and Status keys, the
+                 four parts, the `Decisions needed` hand-back part and its
+                 ten-line limit; its Statuses are those the table gives a
+                 session report.
+  TheSessionId  Both records name the session they belong to, in the same
+                 front matter and from the one declaration.
   Outline       The shape rendered for a help text names every key and every
-                part, produced from the record and kept nowhere else.
+                 part, produced from the record and kept nowhere else.
 
 Usage is the interface. Do not duplicate these recipes as prose catalogs.
 """
@@ -39,7 +42,7 @@ SCRIPTS = TESTS.parent.parent
 sys.path.insert(0, str(SCRIPTS))
 sys.dont_write_bytecode = True
 
-from services.session_record import PLAN, REPORT, PlanKey, ReportKey
+from services.session_record import PLAN, REPORT, PlanKey, ReportKey, SESSION_FIELD
 from services.status import Kind, Status
 
 
@@ -51,9 +54,9 @@ class PlanRecord(unittest.TestCase):
     def test_the_keys_in_the_order_a_new_plan_writes_them(self) -> None:
         self.assertEqual(
             [key.key for key in PLAN.keys],
-            ["title", "status", "opened", "project", "parent", "conversation", "priority", "topic", "kind"],
+            ["session", "title", "status", "opened", "project", "parent", "conversation", "priority", "topic", "kind", "depends_on"],
         )
-        self.assertIs(PlanKey.STATUS, PLAN.keys[1])
+        self.assertIs(PlanKey.STATUS, PLAN.keys[2])
 
     def test_every_key_says_what_it_holds(self) -> None:
         for key in PLAN.keys:
@@ -74,8 +77,8 @@ class ReportRecord(unittest.TestCase):
         self.assertEqual(REPORT.parts, ("What ran", "Check", "Result", "Left open"))
 
     def test_the_keys(self) -> None:
-        self.assertEqual([key.key for key in REPORT.keys], ["title", "status"])
-        self.assertIs(ReportKey.STATUS, REPORT.keys[1])
+        self.assertEqual([key.key for key in REPORT.keys], ["session", "title", "status"])
+        self.assertIs(ReportKey.STATUS, REPORT.keys[2])
 
     def test_the_hand_back_part_and_its_limit(self) -> None:
         self.assertEqual(REPORT.hand_back_part, "Decisions needed")
@@ -87,6 +90,18 @@ class ReportRecord(unittest.TestCase):
     def test_the_statuses_are_those_of_a_session_report(self) -> None:
         self.assertEqual(REPORT.kind, Kind.SESSION_REPORT)
         self.assertEqual(REPORT.statuses, (Status.ACTIVE, Status.BLOCKED, Status.COMPLETE))
+
+
+class TheSessionId(unittest.TestCase):
+    def test_both_records_open_with_the_session_they_belong_to(self) -> None:
+        self.assertIs(PLAN.keys[0], PlanKey.SESSION)
+        self.assertIs(REPORT.keys[0], ReportKey.SESSION)
+
+    def test_the_field_is_declared_once_and_written_in_pascal_case(self) -> None:
+        self.assertEqual(PlanKey.SESSION.value, SESSION_FIELD)
+        self.assertEqual(ReportKey.SESSION.value, SESSION_FIELD)
+        self.assertEqual(PlanKey.SESSION.written, "Session")
+        self.assertEqual(ReportKey.SESSION.written, "Session")
 
 
 class Outline(unittest.TestCase):

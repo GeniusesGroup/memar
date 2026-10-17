@@ -6,9 +6,9 @@
 Shared with `check`, which prints them apart from the problems it counts.
 
 Owed capability is marked by an opaque identifier ([Content Rule → Owed or
-planned capability](../../../docs/documentation.md#content-rule-no-fabricated-or-redundant-provenance)):
+planned capability](../../../modules/content/documentation/documentation.md#content-rule-no-fabricated-or-redundant-provenance)):
 a line `Owed: <id>` in a Markdown document, and `owed:<id>` in the title of a
-pending Test ([Test Practice → Pending](../../../docs/modules/process/test.practice.md#the-cycle)).
+pending Test ([Test Practice → Pending](../../../modules/process/test/test.practice.md#the-cycle)).
 Only the identifiers are read; no path is opened or resolved, so moving or
 rewording anything leaves the finding true. A mention inside a code span or a
 fence, or in the middle of a prose line, is not a mark. An identifier on one

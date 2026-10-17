@@ -24,7 +24,7 @@ from pathlib import Path
 #                         of settled explanation; matched by pattern below)
 # Practice companions (.practice.md) stay in search: their reader
 # relationship is "follow to accomplish," which discovery must surface.
-# Governing specs such as documentation-research.md are Explanation-facet
+# Governing specs such as research.md are Explanation-facet
 # documents (hyphen, not `.research.<NNN>`), so search still finds them.
 _SEARCH_EXCLUDED_SUFFIXES = (".handoff.md", ".changelog.md")
 _RESEARCH_COMPANION = re.compile(r"\.research\.\d+\.md$", re.IGNORECASE)

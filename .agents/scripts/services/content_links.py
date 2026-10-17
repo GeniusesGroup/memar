@@ -4,9 +4,9 @@
 """services/content_links.py — the links and anchors of a Markdown document judged: headings, citation layers, relative links.
 
 What `memar content check` asks of a document's links, apart from its encoding and the folder walk
-(`content_check`): the fragment a heading produces, whether an in-page anchor and a relative link
-resolve to a file and a heading, and whether a link points up the layers of the written content
-(Documentation -> Citation Direction). These are Memar's own written-surface conventions; whether
+(`content_check`): the fragment a heading produces, whether an in-page anchor and a relative or
+root-relative link resolve to a file and a heading, and whether a link points up the layers of the written content
+(Documentation -> Citation Direction), which is a warning rather than a problem. These are Memar's own written-surface conventions; whether
 they apply to a file is decided by the caller.
 """
 from __future__ import annotations
@@ -15,6 +15,7 @@ import re
 from pathlib import Path
 
 from services.content_markdown import EXTERNAL_LINK, without_code
+from services.content_reference import under_root
 
 
 def anchor_slug(heading: str) -> str:
@@ -44,22 +45,27 @@ def headings_by_fragment(visible: str, text: str) -> set[str]:
     ones, so a document with two `## LLM Wiki` sections answers to
     `llm-wiki` and `llm-wiki-1`; a set of slugs alone knows only the first.
     """
-    seen: dict[str, int] = {}
-    fragments = set()
+    slugs = []
     raw_lines = text.split("\n")
     for number, line in enumerate(visible.split("\n")):
         match = re.fullmatch(r"#{1,6}\s+(.*?)\s*#*\s*", line)
         if not match:
             continue
         heading = raw_lines[number] if number < len(raw_lines) else match.group(1)
-        heading = re.sub(r"^#{1,6}\s+", "", heading).rstrip()
-        slug = anchor_slug(heading)
-        if not slug:
-            continue
+        slugs.append(anchor_slug(re.sub(r"^#{1,6}\s+", "", heading).rstrip()))
+    return {fragment for fragment in fragments(slugs) if fragment}
+
+
+def fragments(slugs: list[str]) -> list[str]:
+    """The fragment each heading answers to, in document order, from the slugs of every heading of every level:
+    GitHub's `-N` suffix on a slug's Nth repeat; an empty slug answers to no fragment ("") and is not counted."""
+    seen: dict[str, int] = {}
+    answers = []
+    for slug in slugs:
         count = seen.get(slug, 0)
-        seen[slug] = count + 1
-        fragments.add(slug if count == 0 else f"{slug}-{count}")
-    return fragments
+        seen[slug] = count + 1 if slug else 0
+        answers.append(slug if not slug or count == 0 else f"{slug}-{count}")
+    return answers
 
 
 def _fragments_of(path: Path, cache: dict[str, set[str] | None]) -> set[str] | None:
@@ -86,10 +92,8 @@ def _fragments_of(path: Path, cache: dict[str, set[str] | None]) -> set[str] | N
 # Citation Direction names them; that section owns the order and the reasons,
 # and this table only maps a path inside a Memar repository onto it.
 LAYER_NAMES = (
-    "base documents (docs/)",
-    "module documents (docs/modules/)",
-    "the language (docs/khayyam/)",
-    "implementations (bundles/, modules/)",
+    "the base (docs/)",
+    "the modules (modules/, bundles/)",
 )
 
 
@@ -120,14 +124,19 @@ def citation_layer(path: Path, repository: Path | None) -> int | None:
     if not parts:
         return None
     if parts[0] == "docs":
-        return {"khayyam": 2, "modules": 1}.get(parts[1], 0) if len(parts) > 1 else 0
+        return 0
     if parts[0] in ("bundles", "modules"):
-        return 3
+        return 1
     return None
 
 
-def _upward_link_problem(path: Path, file_part: str, line: int, cache: dict) -> str | None:
-    """The problem a link from `path` to a higher layer is, or None."""
+def _upward_link_warning(path: Path, file_part: str, line: int, cache: dict) -> str | None:
+    """The warning a link from `path` to a higher layer is, or None.
+
+    A warning and never a problem: an upward link is a debt, repaid when the
+    text is upgraded to name the concept, and a link is never deleted to comply
+    (Documentation -> Citation Direction).
+    """
     repository = _repository_of(path, cache)
     source = citation_layer(path, repository)
     if source is None:
@@ -145,21 +154,20 @@ def _upward_link_problem(path: Path, file_part: str, line: int, cache: dict) -> 
             pass
     return (
         f"line {line}: relative link {file_part} points up from "
-        f"{LAYER_NAMES[source]} to {LAYER_NAMES[higher]}. A citation runs down "
-        "the layers, never up (Documentation -> Citation Direction): name the "
-        "higher place in plain text, as a code span holding its path, or move "
-        "the content to the layer that may hold it."
+        f"{LAYER_NAMES[source]} to {LAYER_NAMES[higher]}: a debt, not a "
+        "problem (Documentation -> Citation Direction). Keep the link; it is "
+        "repaid when the text is upgraded to state the concept in the base's "
+        "own terms, never by deleting the link."
     )
 
 
-def link_problems(path: Path, visible: str, cache: dict) -> list[str]:
-    """Every relative link in a Markdown document that does not resolve, or points up.
+def file_links(visible: str):
+    """Each link to a file in `visible`: (line, link, file part, fragment).
 
-    Both halves of a link are checked, because both break the same way and a
-    document moved one folder deep takes its links' paths and their anchors with
-    it: the file the link names, and the heading inside that file.
+    Relative links and root-relative ones (`/docs/...`) both; `link_target`
+    says which file each names. External and in-page links are not links to a
+    file and are left out.
     """
-    problems: list[str] = []
     for match in re.finditer(r"\]\(([^)\s]+)\)", visible):
         link = match.group(1)
         if EXTERNAL_LINK.match(link):
@@ -167,19 +175,67 @@ def link_problems(path: Path, visible: str, cache: dict) -> list[str]:
         file_part, _, fragment = link.partition("#")
         if not file_part:
             continue  # in-page; the caller's own anchor pass owns it
-        if file_part.startswith("/"):
-            continue  # site-root, not a path relative to this document
-        target = path.parent / file_part
         line = visible[: match.start()].count("\n") + 1
-        upward = _upward_link_problem(path, file_part, line, cache)
+        yield line, link, file_part, fragment
+
+
+def is_root_relative(file_part: str) -> bool:
+    """Whether a link's file part is written from the checkout's root rather than from its document's folder."""
+    return file_part.startswith("/")
+
+
+def link_target(path: Path, file_part: str, root: Path) -> Path:
+    """The file a link in `path` names: a root-relative one under the checkout `root`, as
+    `memar content path` resolves it; any other from `path`'s own folder."""
+    if is_root_relative(file_part):
+        return under_root(file_part, root)
+    return path.parent / file_part
+
+
+def upward_link_warnings(path: Path, visible: str, cache: dict) -> list[str]:
+    """Every relative link in a Markdown document that points up the layers.
+
+    A root-relative link is resolved and judged by `link_problems`; whether it
+    points up the layers is not asked here.
+    """
+    warnings: list[str] = []
+    for line, _, file_part, _ in file_links(visible):
+        if is_root_relative(file_part):
+            continue
+        upward = _upward_link_warning(path, file_part, line, cache)
         if upward:
-            problems.append(upward)
+            warnings.append(upward)
+    return warnings
+
+
+def link_problems(path: Path, visible: str, cache: dict, root: Path) -> list[str]:
+    """Every relative or root-relative link in a Markdown document that does not resolve.
+
+    Both halves of a link are checked, because both break the same way and a
+    document moved one folder deep takes its links' paths and their anchors with
+    it: the file the link names, and the heading inside that file. A
+    root-relative link resolves under `root`, the checkout `memar content path`
+    resolves against.
+    """
+    problems: list[str] = []
+    for line, link, file_part, fragment in file_links(visible):
+        target = link_target(path, file_part, root)
+        if is_root_relative(file_part):
+            kind = "root-relative link"
+            breaks = (
+                f"It is resolved under {root}, the checkout `memar content path` "
+                "resolves against, and what breaks it is the target moving."
+            )
+        else:
+            kind = "relative link"
+            breaks = (
+                "Moving a document is what breaks one silently: nothing about "
+                "the link changes, only the folder it was written from."
+            )
         if not target.exists():
             problems.append(
-                f"line {line}: relative link {file_part} does not exist. A link "
-                "to a document that is not there cannot be followed, and moving "
-                "a document is what breaks one silently: nothing about the "
-                "link changes, only the folder it was written from."
+                f"line {line}: {kind} {file_part} does not exist. A link to a "
+                f"document that is not there cannot be followed. {breaks}"
             )
             continue
         if not fragment or not target.is_file() or target.suffix.lower() != ".md":
@@ -187,7 +243,7 @@ def link_problems(path: Path, visible: str, cache: dict) -> list[str]:
         present = _fragments_of(target, cache)
         if present is not None and fragment not in present:
             problems.append(
-                f"line {line}: relative link {link} names no heading in "
+                f"line {line}: {kind} {link} names no heading in "
                 f"{file_part}. The file is there and the anchor is not, so a "
                 "reader lands on the document rather than on the part of it "
                 "the link was written to point at."

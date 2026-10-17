@@ -6,7 +6,7 @@
     python .agents/scripts/services/tests/content_questions_lint.py
 
 The subject is the check that an Open Questions entry carries the fields
-[Open Questions](../../../../docs/documentation-handoff.md#open-questions) names
+[Open Questions](../../../../modules/content/documentation/handoff/handoff.md#open-questions) names
 for an entry written during a task: State, Options, Anchor and Blocks. A missing
 one is a warning, never an error: the entries written before the rule stay valid.
 

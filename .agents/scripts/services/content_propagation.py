@@ -8,7 +8,7 @@ prints it apart from the problems it counts. One reading of the field, so the
 two never report a different list.
 
 A changelog entry's `Propagates to` field names another artifact and the state
-of the work the change implies there (documentation-changelog.md -> Propagates
+of the work the change implies there (changelog.md -> Propagates
 to). `Pending` is the one open state; `Done` and `Rejected` are closed, and
 `Rejected` is closed permanently. `search` excludes changelog files, because
 their content is history rather than current truth, which is right for concept
@@ -31,7 +31,7 @@ _PROPAGATION_OPEN = re.compile(
 
 
 # A ledger is named `<base>.changelog.md`, so its stem ends in `.changelog`. The
-# document that *specifies* the facet is named `documentation-changelog.md` and
+# document that *specifies* the facet is named `changelog.md` and
 # shows the same section headings, the same `Propagates to` example, and the
 # same field names — testing on `endswith(".changelog.md")` reads that
 # specification as a ledger full of obligations.
@@ -40,7 +40,7 @@ def _is_changelog_ledger(path: Path) -> bool:
 
 # A rejected alternative's home is the `Considered and not done` section of a
 # changelog entry, and whether a body holds such a record is deliberately not
-# checked here. It is not a question about text: `documentation-changelog.md` is
+# checked here. It is not a question about text: `changelog.md` is
 # the document that specifies the field, so it carries a section by that name in
 # its own body, and the specification of where records go differs from a record
 # only in what the text is for. Any threshold that separates them — heading
@@ -48,7 +48,7 @@ def _is_changelog_ledger(path: Path) -> bool:
 # own governing document or misses a record written the other way, and a check
 # that stands permanently red on a correct file is one a reader learns to skip.
 # The hazard the rule addresses is real and named at
-# documentation-explanation.md -> Relevance discipline; it is answered by
+# explanation.md -> Relevance discipline; it is answered by
 # writing the record in the changelog, not by a pattern.
 
 

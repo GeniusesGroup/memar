@@ -44,15 +44,15 @@ sys.dont_write_bytecode = True
 import services.session_layout as session_layout
 import services.session_temp as session_temp
 from services.module_folders import ROLE_FOLDERS
-from services.session_claim import CLAIM_NAME, CLAIM_TAKEOVER_NAME
+from services.claim import Claim
 from services.session_plan import PLAN_NAME
 from services.session_report import REPORT_NAME
 
 
 class TopHoldsOnly(unittest.TestCase):
     def test_the_top_holds_the_plan_the_report_and_the_claim(self) -> None:
-        self.assertEqual(session_layout.TOP_NAMES, (PLAN_NAME, REPORT_NAME, CLAIM_NAME, CLAIM_TAKEOVER_NAME))
-        self.assertEqual((PLAN_NAME, REPORT_NAME, CLAIM_NAME), ("plan.md", "report.md", "claim"))
+        self.assertEqual(session_layout.TOP_NAMES, (PLAN_NAME, REPORT_NAME, Claim.NAME, Claim.TAKEOVER_NAME))
+        self.assertEqual((PLAN_NAME, REPORT_NAME, Claim.NAME), ("plan.md", "report.md", "claim"))
 
     def test_a_role_folder_belongs_at_the_top_and_a_stray_does_not(self) -> None:
         for name in (*session_layout.TOP_NAMES, *ROLE_FOLDERS):
@@ -68,7 +68,7 @@ class TempIsNotKept(unittest.TestCase):
 
     def test_temp_is_a_role_folder_and_may_stand_at_the_top(self) -> None:
         self.assertEqual(session_temp.TEMP_FOLDER, "temp")
-        self.assertNotIn(session_temp.TEMP_FOLDER, ROLE_FOLDERS)  # temp is a general rule, not a module role (owner, 2026-10-15)
+        self.assertIn(session_temp.TEMP_FOLDER, ROLE_FOLDERS)  # every module has a temp folder, every session included (owner, 2026-10-15)
         self.assertTrue(session_layout.belongs_at_top("temp"))
 
     def test_the_sentence_that_tells_an_agent_names_the_folder_and_what_goes_in_it(self) -> None:

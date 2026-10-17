@@ -4,7 +4,7 @@
 """services/content_questions.py — `memar content questions`: what the handoffs still ask the owner.
 
 Every entry under an `Open Questions` heading of a `*.handoff.md` is open by
-being present ([Open Questions](../../../docs/documentation-handoff.md#open-questions)),
+being present ([Open Questions](../../../modules/content/documentation/handoff/handoff.md#open-questions)),
 so the list is the entries, one `path:line: heading` hit per line, read from
 the heading's own line. An entry whose `Blocks` field (or the older `Blocks
 continuation`) names something that cannot continue is marked `[blocks]`, and
@@ -40,21 +40,24 @@ NO_DATE = "9999-99-99"
 
 
 def describe(verbs):
+    from services.project_name import ProjectName
+    from services.project_path import ProjectPath
+
     parser = verbs.add_parser(
         "questions",
         help="list open handoff questions as path:line: heading hits",
         description="List the entries under `Open Questions` in `*.handoff.md` "
                     "files as one `path:line: heading` hit per line, blocking "
                     "entries first (marked [blocks]), then oldest Asked date "
-                    "first. SCOPE is a handoff file or a folder; --project "
-                    "NAME names a project by a name `memar project list` shows, "
-                    "--project-path PATH by its folder. No arguments means the "
+                    f"first. SCOPE is a handoff file or a folder; {ProjectName.FLAG} "
+                    f"{ProjectName.METAVAR} names a project by a name `memar project list` shows, "
+                    f"{ProjectPath.FLAG} {ProjectPath.METAVAR} by its folder. No arguments means the "
                     "whole checkout.",
         formatter_class=argparse.HelpFormatter,
     )
     parser.add_argument(
         "scope", nargs="?", default=None,
-        help="a handoff file or a folder (inside the project, with --project or --project-path)",
+        help=f"a handoff file or a folder (inside the project, with {ProjectName.FLAG} or {ProjectPath.FLAG})",
     )
     from services.project_find import add_project_flags
 

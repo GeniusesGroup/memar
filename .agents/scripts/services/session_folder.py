@@ -33,7 +33,7 @@ from pathlib import Path
 from typing import NamedTuple
 
 from machine.fs_memar import session_dir, sessions_root
-from services.session_id import is_session_id
+from services.session_id import SessionId
 from services.session_location import registered_locations
 from services.session_plan import PLAN_NAME, plan_file_problem, read_plan
 from services.session_record import PlanKey, ReportKey
@@ -105,7 +105,7 @@ def is_session_folder(entry: Path) -> bool:
     """
     if entry.is_symlink() or not entry.is_dir():
         return False
-    if is_session_id(entry.name):
+    if SessionId.is_form(entry.name):
         return True
     plan = entry / PLAN_NAME
     if not plan.is_file():
@@ -170,7 +170,7 @@ def session_folders(*, projects: bool = False, locations: list[Path] | None = No
         if root.resolve() not in roots:
             roots.append(root.resolve())
     folders += [entry for root in roots for entry in _entries(root) if is_session_folder(entry)]
-    folders.sort(key=lambda entry: (is_session_id(entry.name), entry.name), reverse=True)
+    folders.sort(key=lambda entry: (SessionId.is_form(entry.name), entry.name), reverse=True)
     return folders
 
 

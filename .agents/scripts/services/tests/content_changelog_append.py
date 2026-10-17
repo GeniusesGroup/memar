@@ -63,7 +63,7 @@ class ChangelogAppendKeepsTheFilesConvention(unittest.TestCase):
         self.root = Path(self.scratch.name)
 
     def problems(self, path: Path) -> list[str]:
-        return content_check.check_file(path, {})
+        return content_check.check_file(path, {}, root=self.root)
 
     def ledger(self, newline: str) -> Path:
         path = self.root / "docs" / "cognition.changelog.md"

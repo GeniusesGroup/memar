@@ -132,6 +132,18 @@ class RolesMatchTheReadme(unittest.TestCase):
         self.assertIn("By role inside a module", said)
         self.assertIn("the list is open", said)
 
+    def test_temp_is_a_role_and_its_name_is_defined_once(self) -> None:
+        # Every module has a `temp` folder, every session included (owner,
+        # 2026-10-15): the name is the role's constant here, and the session's
+        # temporary-files sentence takes it from here rather than a copy.
+        self.assertEqual(module_folders.TEMP_FOLDER, "temp")
+        self.assertIn(module_folders.TEMP_FOLDER, module_folders.ROLE_FOLDERS)
+        import services.session_temp as session_temp
+        self.assertIs(session_temp.TEMP_FOLDER, module_folders.TEMP_FOLDER)
+        source = Path(session_temp.__file__).read_text(encoding="utf-8")
+        self.assertNotIn("TEMP_FOLDER = ", source)
+        self.assertNotIn('"temp"', source)
+
 
 class MakesOnlyWhatIsMissing(Fixture):
     def test_each_missing_role_folder_is_made_and_one_there_is_left_with_its_contents(self) -> None:
@@ -159,11 +171,11 @@ class CommandSaysWhatItDid(Fixture):
         (self.folder / "tests").mkdir()
         code, printed = command("folders", str(self.folder))
         self.assertEqual(code, 0)
-        self.assertIn("made: protocol/, rules/, errors/, services/, docs/", printed)
+        self.assertIn("made: protocol/, rules/, errors/, services/, docs/, temp/", printed)
         self.assertIn("already there: tests/", printed)
         _, printed = command("folders", str(self.folder))
         self.assertNotIn("made:", printed)
-        self.assertIn("already there: protocol/, rules/, errors/, tests/, services/, docs/", printed)
+        self.assertIn("already there: protocol/, rules/, errors/, tests/, services/, docs/, temp/", printed)
 
     def test_no_path_is_refused_and_the_current_folder_is_never_read(self) -> None:
         # A script is told its folder (.agents/scripts/README.md, "A script is
@@ -195,7 +207,7 @@ class HelpDeclaresIt(unittest.TestCase):
         self.assertIn("modules/README.md", domain)
         verb = run_help("folders")
         self.assertNotIn("current folder", verb)
-        self.assertIn("protocol/, rules/, errors/, tests/, services/, docs/", verb)
+        self.assertIn("protocol/, rules/, errors/, tests/, services/, docs/, temp/", verb)
         self.assertIn("nothing is deleted or renamed", verb)
         self.assertIn("modules/README.md", verb)
 

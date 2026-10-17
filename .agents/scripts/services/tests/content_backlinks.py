@@ -68,6 +68,14 @@ class BacklinksAreResolvedPaths(unittest.TestCase):
                         quoted, not linked.
       LonelyReportsNone A document nothing links to reports just that, so
                         the verb stays an answer rather than an empty run.
+      RootRelativeCounts A link written from the checkout's root
+                        (`/docs/...`), the form the Memar skill writes every
+                        link in, resolves as `memar content path` resolves it,
+                        against the checkout, and is a backlink like any other.
+      PerAnchor         `FILE#anchor` keeps only the links whose fragment is
+                        that anchor, so the dependents of one section are
+                        seen apart from the document's; an anchor no heading
+                        answers to is said to be one, not just left empty.
     """
 
     def setUp(self) -> None:
@@ -93,7 +101,7 @@ class BacklinksAreResolvedPaths(unittest.TestCase):
 
     def test_linkers_are_listed_with_line_and_fragment(self) -> None:
         target = self.make_tree()
-        found = content_backlinks.find_backlinks(target, self.docs())
+        found = content_backlinks.find_backlinks(target, self.docs(), self.root, None)
         self.assertEqual(
             found,
             [
@@ -105,31 +113,31 @@ class BacklinksAreResolvedPaths(unittest.TestCase):
     def test_self_links_are_not_incoming(self) -> None:
         target = self.make_tree()
         self.write("docs/target.md", "# Target\n## Part\nSee [P](#part).\n")
-        found = content_backlinks.find_backlinks(target, self.docs())
+        found = content_backlinks.find_backlinks(target, self.docs(), self.root, None)
         self.assertEqual(len(found), 2, found)
 
     def test_a_mention_without_a_link_is_not_a_backlink(self) -> None:
         target = self.make_tree()
         self.write("docs/c.md", "# C\ntarget.md is discussed a lot here.\n")
-        found = content_backlinks.find_backlinks(target, self.docs())
+        found = content_backlinks.find_backlinks(target, self.docs(), self.root, None)
         self.assertEqual(len(found), 2, found)
 
     def test_a_link_naming_a_missing_spelling_matches_nothing(self) -> None:
         target = self.make_tree()
         self.write("docs/c.md", "# C\nSee [T](./targte.md).\n")
-        found = content_backlinks.find_backlinks(target, self.docs())
+        found = content_backlinks.find_backlinks(target, self.docs(), self.root, None)
         self.assertEqual(len(found), 2, found)
 
     def test_a_link_inside_code_is_text_about_links(self) -> None:
         target = self.make_tree()
         self.write("docs/c.md", "# C\n`[T](./target.md)`\n")
-        found = content_backlinks.find_backlinks(target, self.docs())
+        found = content_backlinks.find_backlinks(target, self.docs(), self.root, None)
         self.assertEqual(len(found), 2, found)
 
     def test_nothing_linking_reports_nothing(self) -> None:
         self.make_tree()
         lonely = self.write("docs/lonely.md", "# Lonely\n")
-        self.assertEqual(content_backlinks.find_backlinks(lonely, self.docs()), [])
+        self.assertEqual(content_backlinks.find_backlinks(lonely, self.docs(), self.root, None), [])
 
     def test_cmd_prints_linker_hits_per_target(self) -> None:
         self.make_tree()
@@ -142,6 +150,57 @@ class BacklinksAreResolvedPaths(unittest.TestCase):
         self.assertIn(f"{Path('docs/a.md')}:2#part", out)
         self.assertIn(f"{Path('docs/b.md')}:2", out)
         self.assertNotIn("unrelated", out)
+
+    def test_a_root_relative_link_is_a_backlink(self) -> None:
+        target = self.make_tree()
+        self.write("docs/c.md", "# C\nSee [T](/docs/target.md#part).\n")
+        self.write("modules/m/m.md", "# M\nSee [T](/docs/target.md).\n")
+        docs = self.docs() + [self.root / "modules" / "m" / "m.md"]
+        found = content_backlinks.find_backlinks(target, docs, self.root, None)
+        self.assertIn((self.root / "docs" / "c.md", 2, "part"), found)
+        self.assertIn((self.root / "modules" / "m" / "m.md", 2, ""), found)
+        self.assertEqual(len(found), 4, found)
+
+    def test_a_root_relative_link_resolves_against_the_root_given(self) -> None:
+        # The root is the checkout `memar content path` resolves against, not
+        # the linking document's folder nor the machine's filesystem root.
+        target = self.make_tree()
+        self.write("docs/c.md", "# C\nSee [T](/target.md).\n")
+        found = content_backlinks.find_backlinks(target, self.docs(), self.root, None)
+        self.assertEqual(len(found), 2, found)
+
+    def test_an_anchor_keeps_only_the_links_to_that_section(self) -> None:
+        target = self.make_tree()
+        self.write("docs/c.md", "# C\nSee [T](/docs/target.md#part) and [T](./target.md#target).\n")
+        found = content_backlinks.find_backlinks(target, self.docs(), self.root, "part")
+        self.assertEqual(
+            found,
+            [
+                (self.root / "docs" / "a.md", 2, "part"),
+                (self.root / "docs" / "c.md", 2, "part"),
+            ],
+        )
+
+    def test_cmd_takes_file_hash_anchor(self) -> None:
+        self.make_tree()
+        with contextlib.redirect_stdout(io.StringIO()) as printed:
+            content_backlinks.cmd_backlinks(
+                Namespace(files=["docs/target.md#part"]), self.root
+            )
+        out = printed.getvalue()
+        self.assertIn(f"== {Path('docs/target.md')}#part ==", out)
+        self.assertIn(f"{Path('docs/a.md')}:2#part", out)
+        self.assertNotIn(f"{Path('docs/b.md')}", out)
+
+    def test_cmd_says_when_no_heading_answers_to_the_anchor(self) -> None:
+        self.make_tree()
+        with contextlib.redirect_stdout(io.StringIO()) as printed:
+            content_backlinks.cmd_backlinks(
+                Namespace(files=["docs/target.md#gone"]), self.root
+            )
+        out = printed.getvalue()
+        self.assertIn("(no incoming links)", out)
+        self.assertIn("no heading in this file answers to #gone", out)
 
 
 if __name__ == "__main__":

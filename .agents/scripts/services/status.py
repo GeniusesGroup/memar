@@ -4,15 +4,13 @@
 """services/status.py — the one vocabulary of Status, declared once.
 
 Status names where a document, or a piece of work, stands in its life. One
-vocabulary serves every kind that carries a Status; [Status](../../../docs/documentation.md#status)
+vocabulary serves every kind that carries a Status; [Status](../../../modules/content/documentation/documentation.md#status)
 states the rule and the reasons, and this file is the closed set itself: each
 value, its meaning, the kinds that may use it, and what is safe to depend on.
 It is code because a program reads it (a plan is queued, claimed, swept; a
 report is checked against its plan) and because a closed set written as a
-prose table is a copy ([A Fact in Code Is Written Once](../../../docs/documentation.md#a-fact-in-code-is-written-once)).
-The table in that document is not the source: `services/tests/status.py`
-renders the table from this type and fails when the document's differs, so
-neither can change alone.
+prose table is a copy ([A Fact in Code Is Written Once](../../../modules/content/documentation/documentation.md#a-fact-in-code-is-written-once)).
+That document lists none of the values: they are here alone.
 
 Every reader obtains values from here by calling the type: a script asks
 `Status.for_kind(kind)` for the values a kind may take, `Status.read(text)` for
@@ -23,9 +21,9 @@ Why the type holds all eleven values and not only the four a session plan uses:
 the vocabulary is one, a kind never adds a value of its own, and a value a
 document, a handoff or a research uses is the same fact as one a plan uses
 (Active, Blocked, Complete are shared). Splitting the set by the scripts' own
-need would make the table's other seven values a prose copy again.
+need would leave the other seven values with no declaration at all.
 
-The meanings are English, as the table gives them; a description in another
+The meanings are English; a description in another
 human language is the type's own detail in a file of its own, a rule beyond
 this file.
 """
@@ -35,7 +33,7 @@ from enum import Enum
 
 
 class Kind(Enum):
-    """What carries a Status; the value is the name the table gives it."""
+    """What carries a Status; the value is the kind's name as a reader sees it."""
 
     EXPLANATION = "Explanation-facet document"
     SESSION_PLAN = "Session plan"
@@ -45,7 +43,7 @@ class Kind(Enum):
 
 
 class Status(Enum):
-    """One value of the Status vocabulary, in the order the table gives them.
+    """One value of the Status vocabulary, in the vocabulary's order.
 
     Each is (word, meaning, kinds that may use it, safe to depend on, how a
     session report that states it ended or None when a report may not state
@@ -170,18 +168,3 @@ class Status(Enum):
         """The words KIND may take as a sentence: `Queued, Active, Blocked, or Complete`."""
         words = [status.word for status in cls.for_kind(kind)]
         return f"{', '.join(words[:-1])}, or {words[-1]}" if len(words) > 1 else words[0]
-
-    @classmethod
-    def table_lines(cls) -> list[str]:
-        """The Status table as the document gives it: a header, its rule, and a row per value."""
-        def kinds(status: Status) -> str:
-            # The first kind opens the cell capitalized, the rest follow in lower case.
-            names = [kind.value for kind in status.kinds]
-            return ", ".join([names[0], *(name[0].lower() + name[1:] for name in names[1:])])
-
-        rows = ["| Value | Meaning | Kinds that may use it | Safe to depend on |", "| --- | --- | --- | --- |"]
-        rows += [
-            f"| {status.word} | {status.meaning} | {kinds(status)} | {status.safe} |"
-            for status in cls
-        ]
-        return rows

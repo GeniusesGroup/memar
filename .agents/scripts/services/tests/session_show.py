@@ -33,6 +33,9 @@ What is pinned, and what each pin is for:
                    session's folder, a session in neither place, and a
                    project with no branch are refused saying where each was
                    looked for.
+  HandBack         `--hand-back` prints the report's Status, its path and the
+                   lines under Decisions needed, and no other line of the
+                   report; a report that is not a hand-back is named with why.
   Listing          `--list` names the files the session has, from the folder
                    when it is in temp, else from the branch.
 
@@ -210,6 +213,39 @@ class Listing(Fixture):
         said, stopped = self.show("--list")
         self.assertIsNone(stopped)
         self.assertEqual(said.splitlines(), ["docs/note.md", "plan.md", "report.md"])
+
+
+class HandBack(Fixture):
+    def report(self, text: bytes) -> None:
+        folder = self.session()
+        (folder / "report.md").write_bytes(text)
+
+    def test_only_the_status_the_path_and_the_decisions_are_printed(self) -> None:
+        self.report(b"---\nTitle: T\nStatus: Complete\n---\n# Report\nSECRET body.\n\n## Decisions needed\n- Q1 a | b (recommended).\n")
+        said, stopped = self.show("--hand-back")
+        self.assertIsNone(stopped)
+        lines = said.splitlines()
+        self.assertEqual(lines[0], "Status: complete")
+        self.assertTrue(lines[1].startswith("Report: ") and lines[1].endswith("report.md"))
+        self.assertEqual(lines[2:], ["- Q1 a | b (recommended)."])
+        self.assertNotIn("SECRET", said)
+
+    def test_a_report_with_too_many_decision_lines_is_named_not_a_hand_back(self) -> None:
+        many = "".join(f"- Q{n}.\n" for n in range(40))
+        self.report(f"---\nTitle: T\nStatus: Complete\n---\n# Report\n\n## Decisions needed\n{many}".encode("utf-8"))
+        said, stopped = self.show("--hand-back")
+        self.assertIsNone(stopped)
+        self.assertIn("Not a hand-back:", said)
+
+    def test_a_report_with_no_status_is_named_not_a_hand_back(self) -> None:
+        self.report(b"---\nTitle: T\nStatus:\n---\n# Report\n")
+        said, _ = self.show("--hand-back")
+        self.assertIn("Not a hand-back: report.md has no Status", said)
+
+    def test_a_session_with_no_folder_is_refused(self) -> None:
+        said, stopped = self.show("--hand-back")
+        self.assertEqual(said, "")
+        self.assertIn("no folder in temp", stopped)
 
 
 if __name__ == "__main__":

@@ -55,6 +55,14 @@ RECORDS_RELATIVE = Path(AGENTS_DIRNAME) / SESSIONS_DIRNAME
 # The one place the name is spelled: no agent sees it, only
 # `memar` commands do, so it can change later by changing this line.
 RECORDS_BRANCH = "dev-knowledge"
+# Where Memar is published: its repository on GitHub, and the branch it ships on.
+# The address of a published page and the address a project downloads Memar from
+# are both built from these two, so a project's link to a passage of Memar and the
+# install command cannot name two repositories.
+PUBLISHED_REPOSITORY = "GeniusesGroup/memar"
+PUBLISH_BRANCH = "main"
+# A page of the published checkout is this, then its path from the checkout's top.
+PUBLISHED_PAGES = f"https://github.com/{PUBLISHED_REPOSITORY}/blob/{PUBLISH_BRANCH}/"
 
 
 def checkout_root() -> Path:

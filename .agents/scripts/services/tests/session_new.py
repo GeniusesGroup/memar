@@ -71,7 +71,9 @@ What is pinned, and what each pin is for:
                      an entry like any other.
   KindWritten        `--kind` writes the plan's Kind, lower case, into a new
                      plan and sets it on one that is there; a word outside the
-                     closed list is refused and makes nothing.
+                     closed list, or a kind no plan carries, is refused and
+                     makes nothing; the help lists the kinds from
+                     `services/task_kind.py`.
   BriefPrinted       A session made with --parent ends with the brief that
                      hands it to a sub-agent, its id filled in; one without
                      a parent prints none.
@@ -122,8 +124,9 @@ import services.session_ensure as session_ensure
 import services.session_new as session_new
 from services.module_folders import ROLE_FOLDERS
 from services.session_folder import read_session
-from services.session_id import is_session_id
-from services.session_brief import brief_text
+from services.session_id import SessionId
+from services.prompts_plan_brief import brief_text
+from services.task_kind import TaskKind
 import services.session_location as session_location
 import services.project_registry as project_registry
 from services.session_location import prune_registry, registered_locations
@@ -132,7 +135,7 @@ from services.session_plan import PLAN_NAME
 from services.session_report import REPORT_NAME
 
 TITLE = "Test the session services"
-REPORT = f"---\nTitle: {TITLE}\nStatus:\n---\n# Report\n\n## What ran\n## Check\n## Result\n## Left open\n"
+REPORT = f"---\nSession: s-report\nTitle: {TITLE}\nStatus:\n---\n# Report\n\n## What ran\n## Check\n## Result\n## Left open\n"
 OPENED = r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z"
 # Kept before any fixture patches it, for the one test that asks git itself.
 GIT_PROJECT_ROOT = session_location.project_root
@@ -178,7 +181,7 @@ class Fixture(unittest.TestCase):
 
     def minted_folders(self) -> list[str]:
         root = memar_fs.session_dir("probe").parent
-        return [entry.name for entry in root.iterdir() if is_session_id(entry.name)] if root.is_dir() else []
+        return [entry.name for entry in root.iterdir() if SessionId.is_form(entry.name)] if root.is_dir() else []
 
 
 class CreatesFolder(Fixture):
@@ -201,7 +204,7 @@ class CreatesFolder(Fixture):
 
     def test_mints_an_id_when_none_is_given(self) -> None:
         sid, path = self.ensure(title=TITLE)
-        self.assertTrue(is_session_id(sid))
+        self.assertTrue(SessionId.is_form(sid))
         self.assertEqual(path, memar_fs.session_dir(sid))
 
     def test_refuses_a_path_as_a_session_id(self) -> None:
@@ -249,7 +252,7 @@ class PlanWritten(Fixture):
         self.assertNotIn(b"\r", raw)
         text = raw.decode("utf-8")
         title = re.escape(TITLE)
-        self.assertRegex(text, rf"\A---\nTitle: {title}\nStatus: Active\nOpened: {OPENED}\nProject: .+\n---\n# {title}\n\n## Request\n")
+        self.assertRegex(text, rf"\A---\nSession: s-plan\nTitle: {title}\nStatus: Active\nOpened: {OPENED}\nProject: .+\n---\n# {title}\n\n## Request\n")
         project = Path(re.search(r"^Project: (.+)$", text, re.MULTILINE).group(1))
         self.assertEqual(project, self.current)
 
@@ -292,6 +295,22 @@ class KindWritten(Fixture):
         _, path = self.ensure("s-nokind", TITLE)
         self.assertNotIn("Kind", (path / PLAN_NAME).read_text(encoding="utf-8"))
 
+    def kind_help(self) -> str:
+        parser = argparse.ArgumentParser()
+        session_new.describe(parser.add_subparsers())
+        new = parser._subparsers._group_actions[0].choices["new"]
+        return next(action.help for action in new._actions if "--kind" in action.option_strings)
+
+    def test_the_help_lists_the_kinds_the_declaration_lets_a_plan_carry(self) -> None:
+        help_text = self.kind_help()
+        self.assertIn(", ".join(TaskKind.words(carried=True)), help_text)
+        self.assertIn(f"{TaskKind.ANSWER.word}, {TaskKind.PLAN.word} are refused", help_text)
+
+    def test_a_kind_no_plan_carries_is_refused_and_makes_nothing(self) -> None:
+        with self.assertRaises(SystemExit):
+            self.ensure("s-answer", TITLE, kind=TaskKind.ANSWER.word)
+        self.assertFalse(memar_fs.session_dir("s-answer").exists())
+
     def test_a_word_that_is_no_kind_is_refused_and_makes_nothing(self) -> None:
         with self.assertRaises(SystemExit):
             self.ensure("s-badkind", TITLE, kind="modelling")
@@ -325,7 +344,7 @@ class ReportWritten(Fixture):
 class RoleFoldersMade(Fixture):
     def test_every_run_makes_the_role_folders_that_are_missing(self) -> None:
         _, path = self.ensure("s-roles", TITLE)
-        self.assertEqual(sorted(entry.name for entry in path.iterdir() if entry.is_dir()), sorted((*ROLE_FOLDERS, "temp")))
+        self.assertEqual(sorted(entry.name for entry in path.iterdir() if entry.is_dir()), sorted(ROLE_FOLDERS))
         (path / "docs" / "note.md").write_text("# Note\n", encoding="utf-8", newline="\n")
         (path / "rules").rmdir()
         self.ensure("s-roles")
@@ -402,7 +421,7 @@ class ProjectLocation(Fixture):
         self.assertEqual(path, location / sid)
         self.assertTrue((path / PLAN_NAME).is_file())
         self.assertTrue((path / REPORT_NAME).is_file())
-        self.assertTrue(all((path / role).is_dir() for role in (*ROLE_FOLDERS, "temp")))
+        self.assertTrue(all((path / role).is_dir() for role in ROLE_FOLDERS))
         self.assertFalse(memar_fs.session_dir(sid).exists())
         self.assertIn(f"location: {location} is a project's own session location", printed)
         self.assertIn("Memar's sweep never moves a folder there", printed)
@@ -563,7 +582,7 @@ class ProjectNamed(Fixture):
             with self.subTest(argv=argv), self.assertRaises(SystemExit) as raised:
                 self.cli("--title", TITLE, *argv)
             self.assertIn("--project-path" if argv[0] == "--project" else "--project NAME", str(raised.exception.code))
-        self.assertEqual(len([e for e in (self.work / "temp" / "sessions").iterdir() if is_session_id(e.name)]), 1)
+        self.assertEqual(len([e for e in (self.work / "temp" / "sessions").iterdir() if SessionId.is_form(e.name)]), 1)
 
     def test_a_project_named_by_a_folder_inside_it_is_that_projects_top_level(self) -> None:
         inside = self.work / "src"

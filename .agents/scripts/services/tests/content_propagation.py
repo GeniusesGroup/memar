@@ -29,7 +29,7 @@ What is pinned, and what each pin is for:
   PropagationIsAField The state is read from the entry's own field, so a
                       sentence that merely mentions `Pending` is not an open
                       obligation.
-  LedgerNotSpec      `documentation-changelog.md` specifies the field and shows
+  LedgerNotSpec      `changelog.md` specifies the field and shows
                       its shape; `cognition.changelog.md` records entries in it.
                       Reading the first as the second reports the project's own
                       rules as its outstanding work.
@@ -117,12 +117,12 @@ class PendingPropagation(LedgerFixture):
         self.assertEqual(content_propagation.undischarged_propagations([path]), [])
 
     def test_the_facet_specification_is_not_read_as_a_ledger(self) -> None:
-        # `documentation-changelog.md` is the document that specifies the field,
+        # `changelog.md` is the document that specifies the field,
         # so it carries the heading, the example, and a sample line in the field's
         # own shape. It is a specification, and a check reading it as a ledger
         # would report the project's own rules as its outstanding work.
         path = self.write(
-            "docs/documentation-changelog.md",
+            "modules/content/documentation/changelog/changelog.md",
             "# Documentation Changelog\n\n## Changelog\n\n### Structure\n"
             "- Propagates to:\n  - {Other artifact}: Pending - {what needs to happen}\n",
         )

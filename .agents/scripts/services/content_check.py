@@ -7,17 +7,19 @@ Two sets of rules, separated by what they hold for. The encoding and newline
 rules hold for every text file in every project, because a shell damages a file
 the same way whatever the file is for. Memar's written-surface rules — no blank
 line under a heading, no run of blank lines, a link that resolves to a file and
-a heading and does not point up the layers of the written content — are Memar's
-own conventions and apply only inside a Memar
+a heading — are Memar's own conventions and apply only inside a Memar
 repository, which is asked of `machine/fs_memar_repository.py` rather than
 assumed.
 
 Given a folder it also prints the undischarged propagations its ledgers hold,
 apart from the problems and not counted among them: a `Pending` entry is the
 correct content of the changelog that holds it, and a gate that is always red
-is not a gate.
+is not a gate. A link that points up the layers of the written content is a
+warning for the same kind of reason: it is a debt, repaid when its text is
+upgraded, and never a defect a link is deleted to clear.
 
-The links and anchors of a Markdown document are judged in `content_links`; this file
+The links and anchors of a Markdown document are judged in `content_links`, and
+a normative-references list's entries in `normative_references_check`; this file
 holds the encoding and newline rules, the folder walk, and the report.
 """
 from __future__ import annotations
@@ -27,13 +29,14 @@ import re
 from pathlib import Path
 
 from services.content_corpus import is_generated
-from services.content_links import anchor_problems, link_problems
+from services.content_links import anchor_problems, link_problems, upward_link_warnings
 from services.content_markdown import without_code
 from services.content_owed import owed_hints
 from services.content_propagation import undischarged_propagations
 from services.content_questions_lint import entry_warnings
 from services.content_reference import content_root
 from services.content_text import plain_path
+from services.normative_references_check import is_declared, list_drops, list_problems, list_warnings
 
 # The prose rules are Memar's written-surface rules (documentation.md -> Written
 # surface) and apply to Markdown only; the encoding and newline rules apply to
@@ -75,10 +78,25 @@ def describe(verbs):
                     "fingerprints of mojibake; and for Markdown, two blank "
                     "lines in a row, a blank line between a heading and its "
                     "body, an anchor with no matching heading, a relative "
-                    "link whose target does not exist, and a relative link "
-                    "that points up the citation layers. Given a folder it also "
-                    "reports undischarged propagations, printed apart and not "
-                    "counted as problems.",
+                    "link, or a root-relative one (/docs/...) resolved as "
+                    "`memar content path` resolves it, whose file or heading "
+                    "does not exist; and for a normative-references list in "
+                    ".agents/scripts/rules/normative_references/, or in a "
+                    "folder the `normative_references` preference of the "
+                    "project it lies in names, a word that "
+                    "names no kind, an entry whose link names no Markdown file "
+                    "of the repository or is root-relative, a missing review "
+                    "mark or one that differs from its section's hash now, "
+                    "a drop that drops nothing or has no reason, and a "
+                    "project's drop of an every-act section, which is "
+                    "refused; the summary line counts the passages of Memar "
+                    "a project's lists drop. A relative link that "
+                    "points up the citation layers, an Open Questions entry "
+                    "missing a field, a file named like a list outside the "
+                    "declared places, and one passage twice in a list, are "
+                    "printed apart as warnings; given a "
+                    "folder it also reports undischarged propagations. Neither "
+                    "is counted as a problem.",
         formatter_class=argparse.HelpFormatter,
     )
     parser.add_argument("files", nargs="+", help="files or folders (any path)")
@@ -121,12 +139,33 @@ def _mojibake_hints(text: str) -> list[str]:
     return hits
 
 
+def _is_link_stand_in(path: Path, raw: bytes) -> bool:
+    """Whether PATH is a folder's README that git records as a symlink, as a checkout without symlink support writes it.
+
+    Such a checkout writes the link as a text file holding its target path and
+    nothing else, with no final newline: that is the file's whole content by
+    design (Documentation Practice, Folder READMEs), and the link's target is
+    the document the checks judge. A real symlink is read through to its
+    target, so it needs no stand-in rule. Only a README is read this way, only
+    when its single line names an existing file beside it.
+    """
+    if path.name != "README.md" or path.is_symlink():
+        return False
+    target = raw.decode("utf-8", errors="replace").strip()
+    return bool(target) and "\n" not in target and not any(c.isspace() for c in target) and (path.parent / target).is_file()
+
+
 def check_file(
     path: Path,
     link_cache: dict | None = None,
     memar_rules: bool = True,
+    *,
+    root: Path,
 ) -> list[str]:
     """Report what is wrong with a text file. Empty list means clean.
+
+    `root` is the checkout a root-relative link (`/docs/...`) resolves under,
+    the one `memar content path` resolves against.
 
     `memar_rules` decides whether the Markdown rules are applied at all. They are
     Memar's own conventions — no blank line under a heading, linear load-bearing
@@ -145,6 +184,8 @@ def check_file(
         raw = path.read_bytes()
     except OSError as error:
         return [f"unreadable: {error}"]
+    if _is_link_stand_in(path, raw):
+        return []
     if raw.startswith(b"\xef\xbb\xbf"):
         problems.append("line 1: UTF-8 BOM present; every tool that reads this "
                         "as text sees the BOM as content")
@@ -197,8 +238,26 @@ def check_file(
                 )
         visible = without_code(text)
         problems.extend(anchor_problems(visible, text))
-        problems.extend(link_problems(path, visible, cache))
+        problems.extend(link_problems(path, visible, cache, root))
+    if path.suffix == ".md":
+        problems.extend(list_problems(path, root))
     return problems
+
+
+def upward_warnings(path: Path, link_cache: dict | None = None) -> list[str]:
+    """Every link in a Markdown document that points up the citation layers.
+
+    A warning and not a problem (Documentation -> Citation Direction): an
+    upward link is a debt, and a link is never deleted to comply.
+    """
+    if path.suffix != ".md":
+        return []
+    try:
+        text = path.read_text(encoding="utf-8")
+    except (OSError, UnicodeDecodeError):
+        return []  # check_file reports the read itself
+    cache: dict = {} if link_cache is None else link_cache
+    return upward_link_warnings(path, without_code(text), cache)
 
 
 def checkable_files(folder: Path) -> list[Path]:
@@ -241,7 +300,7 @@ def cmd_check(args: argparse.Namespace, root: Path) -> None:
             directories[0] if directories else files[0]
         ) is not None
     for path in files:
-        problems = check_file(path, link_cache, memar_rules)
+        problems = check_file(path, link_cache, memar_rules, root=root)
         total += len(problems)
         try:
             shown = path.relative_to(root)
@@ -268,16 +327,25 @@ def cmd_check(args: argparse.Namespace, root: Path) -> None:
             print(f"  - {report}")
     # An Open Questions entry missing a field is a warning for the same reason:
     # entries written before the rule stay valid, and only a Memar repository
-    # has adopted the rule.
+    # has adopted the rule. An upward link is one too: a debt repaid when its
+    # text is upgraded, never by deleting the link.
     warnings: list[str] = []
     if memar_rules:
         for path in files:
+            try:
+                shown = path.relative_to(root)
+            except ValueError:
+                shown = path
             if path.name.endswith(".handoff.md"):
-                try:
-                    shown = path.relative_to(root)
-                except ValueError:
-                    shown = path
                 warnings.extend(f"{shown}:{text.removeprefix('line ')}" for text in entry_warnings(path))
+            warnings.extend(f"{shown}:{text.removeprefix('line ')}" for text in upward_warnings(path, link_cache))
+            if path.suffix == ".md":
+                warnings.extend(f"{shown}: {text}" for text in list_warnings(path, root))
+    else:
+        # A project's list is judged where its project declares it, whether or not the project is a Memar repository.
+        for path in files:
+            if path.suffix == ".md" and is_declared(path, root):
+                warnings.extend(f"{path}: {text}" for text in list_warnings(path, root))
     if warnings:
         print("\nwarnings (not counted as problems):")
         for warning in warnings:
@@ -291,6 +359,7 @@ def cmd_check(args: argparse.Namespace, root: Path) -> None:
             print("\nowed marks on one side only (hints, not counted as problems):")
             for hint in hints:
                 print(f"  - {hint}")
+    dropped = sum(list_drops(path, root) for path in files if path.suffix == ".md")
     print(
         f"\nchecked {len(files)} file{'s' if len(files) != 1 else ''}, "
         f"{total} problem{'s' if total != 1 else ''}"
@@ -301,6 +370,7 @@ def cmd_check(args: argparse.Namespace, root: Path) -> None:
             else ""
         )
         + (f", {len(warnings)} warning{'s' if len(warnings) != 1 else ''}" if warnings else "")
+        + (f", {dropped} passage{'s' if dropped != 1 else ''} of Memar dropped by this project's lists" if dropped else "")
     )
     if not memar_rules:
         print(

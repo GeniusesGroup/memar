@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""Tests for the brief that hands a session to a sub-agent, in `services/session_brief.py`.
+"""Tests for the prompt that hands a session's plan to a sub-agent to carry out, in `services/prompts_plan_brief.py`.
 
-    python .agents/scripts/services/tests/session_brief.py
+    python .agents/scripts/services/tests/prompts_plan_brief.py
 
 The subject is the one text a delegating session hands over, named for the
 file that holds it per
@@ -18,17 +18,14 @@ again.
 
 What is pinned, and what each pin is for:
 
-  OneText          The brief is one line holding the session's id where the
-                   task is named and continued, the skill to load, the
-                   plan, its Request, that nothing but the plan and the
-                   report stands at the folder's top, the report, and the
-                   session help it points to, and the check that an ideation, design, or
-                   critique Request first meets what the skill requires of
-                   it; it carries nothing of the task itself.
-  ReprintedByBrief `brief ID` prints that text alone for a session folder that
-                   is there with its plan, in Memar's own root or a project's
-                   location, and refuses an id with no session folder or
-                   shaped like a path, and a folder with no plan.md, naming
+  OneText          The brief is one line holding the session's id and naming
+                   `memar session start --session-id ID` as the first command;
+                   it carries nothing of the task itself.
+  Printed          `memar prompts hand-session-plan-to-carry-out ID` prints
+                   that text alone for a session folder that is there with
+                   its plan, in Memar's own root or a project's location, and
+                   refuses an id with no session folder or shaped like a path,
+                   and a folder with no plan.md, naming
                    `new --title T --parent ID` as the way to open one.
 
 Usage is the interface. Do not duplicate these recipes as prose catalogs.
@@ -55,7 +52,7 @@ sys.dont_write_bytecode = True
 from machine.fs_test_scratch import suite_scratch
 
 import machine.fs_memar as memar_fs
-import services.session_brief as session_brief
+import services.prompts_plan_brief as plan_brief
 from services.session_location import register
 from services.session_plan import PLAN_NAME, plan_skeleton
 
@@ -78,47 +75,47 @@ class Fixture(unittest.TestCase):
     def printed(self, session_id: str) -> str:
         out = io.StringIO()
         with contextlib.redirect_stdout(out):
-            session_brief.print_brief(session_id)
+            plan_brief.print_brief(session_id)
         return out.getvalue()
 
 
 class OneText(Fixture):
     def test_the_brief_is_one_line_naming_the_session_and_nothing_of_its_task(self) -> None:
-        self.assertEqual(session_brief.brief_text(SID), BRIEF)
-        self.assertNotIn("\n", session_brief.brief_text(SID))
+        self.assertEqual(plan_brief.brief_text(SID), BRIEF)
+        self.assertNotIn("\n", plan_brief.brief_text(SID))
 
 
-class ReprintedByBrief(Fixture):
-    def test_brief_prints_the_text_alone_for_a_session_that_is_there(self) -> None:
+class Printed(Fixture):
+    def test_it_prints_the_text_alone_for_a_session_that_is_there(self) -> None:
         folder = memar_fs.session_dir(SID, create=True)
         (folder / PLAN_NAME).write_text(
-            plan_skeleton("Delegated", "2026-10-11T00:00:00Z", self.fake_root), encoding="utf-8", newline="\n"
+            plan_skeleton("20261011T000000Z-1-0", "Delegated", "2026-10-11T00:00:00Z", self.fake_root), encoding="utf-8", newline="\n"
         )
         self.assertEqual(self.printed(SID), BRIEF + "\n")
 
     def test_a_session_with_no_plan_is_refused_naming_how_to_open_one(self) -> None:
         memar_fs.session_dir(SID, create=True)
         with contextlib.redirect_stdout(io.StringIO()) as out, self.assertRaises(SystemExit) as refused:
-            session_brief.print_brief(SID)
+            plan_brief.print_brief(SID)
         self.assertEqual(out.getvalue(), "")
         self.assertIn(f"no task to hand over in {SID}", str(refused.exception.code))
         self.assertIn("`memar session new --title T --parent ID --project NAME` (or `--project-path PATH`)", str(refused.exception.code))
 
-    def test_brief_finds_a_session_in_a_project_location(self) -> None:
+    def test_it_finds_a_session_in_a_project_location(self) -> None:
         location = self.fake_root / "project" / "sessions"
         folder = location / "my-task"
         folder.mkdir(parents=True)
         (folder / PLAN_NAME).write_text(
-            plan_skeleton("Named", "2026-10-11T00:00:00Z", self.fake_root / "project"), encoding="utf-8", newline="\n"
+            plan_skeleton("20261011T000000Z-1-0", "Named", "2026-10-11T00:00:00Z", self.fake_root / "project"), encoding="utf-8", newline="\n"
         )
         register(location)
-        self.assertEqual(self.printed("my-task"), session_brief.brief_text("my-task") + "\n")
+        self.assertEqual(self.printed("my-task"), plan_brief.brief_text("my-task") + "\n")
 
     def test_an_id_with_no_session_folder_or_shaped_like_a_path_is_refused(self) -> None:
         for bad in (SID, "a/b", ".."):
             with self.subTest(bad=bad):
                 with contextlib.redirect_stdout(io.StringIO()) as out, self.assertRaises(SystemExit):
-                    session_brief.print_brief(bad)
+                    plan_brief.print_brief(bad)
                 self.assertEqual(out.getvalue(), "")
 
 

@@ -26,9 +26,10 @@ from services.project_find import add_project_flags, project_from_args
 from services.session_find import project_of
 
 from services.session_topic import topics_in_use
+from services.project_name import ProjectName
 
 TOPICS_COMMAND = "topics"
-PROJECT_REQUIRED = f"{TOPICS_COMMAND} needs --project NAME or --project-path PATH: name the project whose topics to list"
+PROJECT_REQUIRED = f"{TOPICS_COMMAND} needs {ProjectName.either_words()}: name the project whose topics to list"
 
 
 def list_topics(project: str | None) -> None:
@@ -54,7 +55,7 @@ def describe(verbs) -> Callable[[argparse.Namespace], None]:
             "List the topics the project's sessions carry, the most used first, each\n"
             "with how many sessions have it and how many of those are queued. Use it\n"
             "before queuing a task, to reuse a topic rather than write the same\n"
-            "subject another way. --project NAME or --project-path PATH names the\n"
+            f"subject another way. {ProjectName.either_words()} names the\n"
             "project; one is required, and the current folder is never read."
         ),
     )

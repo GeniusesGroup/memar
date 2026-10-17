@@ -880,12 +880,12 @@ class HelpUnchanged(unittest.TestCase):
         )
 
     def test_the_installer_help_is_the_text_meant_for_a_caller(self):
-        # The help is `DESCRIPTION`, not the module docstring: the docstring is
+        # The help is `description()`, not the module docstring: the docstring is
         # addressed to whoever opens the file and is the reasoning behind the run.
         # Pinning the docstring here is what made the two the same text, which is
         # how the mechanism ended up printed to every person installing Memar.
         shown = printed(run_install("--help"))
-        self.assertIn(memar_install.DESCRIPTION.strip(), shown)
+        self.assertIn(memar_install.description().strip(), shown)
         self.assertNotIn(memar_install.__doc__.strip(), shown)
 
     def test_the_installer_help_carries_no_mechanism(self):

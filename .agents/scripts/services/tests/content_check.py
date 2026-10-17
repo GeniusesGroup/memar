@@ -18,6 +18,11 @@ becomes a report on whatever the tree currently holds.
 
 What is pinned, and what each pin is for:
 
+  LinkStandIn         A folder README that git records as a symlink and a
+                      checkout without symlink support writes as a text file
+                      holding only its target, with no final newline, is not
+                      judged as text; any other file, or a README naming
+                      nothing beside it, still is.
   ReachableLink       A relative link whose target is beside the document is
                       not a problem. The whole point of the check is to report
                       what a reader cannot follow, so a check that reported
@@ -40,8 +45,11 @@ What is pinned, and what each pin is for:
   CodeIsNotALink      A link written inside backticks or a fenced block is text
                       about links. The same text as a real link must be judged
                       differently only by where it is, never by what it says.
-  ExternalIsNotJudged A URI with a scheme, and a site-root path, are not files
-                      this run can resolve and are left alone.
+  ExternalIsNotJudged A URI with a scheme, and a protocol-relative `//host`,
+                      are not files this run can resolve and are left alone.
+  RootRelativeIsJudged A link from the checkout's root (`/docs/...`) is
+                      judged, file and anchor, against the root the run is
+                      given, as `memar content path` resolves it.
   RejectedInABody    Whether a body holds a rejected-alternative record is not
   IsNotJudged        decidable from the text, and is deliberately not checked.
                        The specification of the field and a record in the field
@@ -59,11 +67,12 @@ What is pinned, and what each pin is for:
                       Anchor or Blocks is a warning printed apart from the
                       problems and never changing the exit; inside a Memar
                       repository and in `*.handoff.md` only.
-  CitationDirection   A relative link from a layer to a higher one is
-                      reported, per Documentation -> Citation Direction; the
-                      same link to its own layer or a lower one, a higher place
-                      named in plain text, a README pointing into its own
-                      folder, and files outside the layers are not.
+  CitationDirection   A relative link from the base to the modules is a
+                      warning, per Documentation -> Citation Direction: a
+                      debt, never a problem and never a changed exit; a
+                      link within a layer or down to the base, a path in a
+                      code span, a README pointing into its own folder, and
+                      files outside the layers are not warned about.
 
 Usage is the interface. Do not duplicate these recipes as prose catalogs.
 """
@@ -104,11 +113,33 @@ class LinkFixture(unittest.TestCase):
         return path
 
     def problems(self, path: Path) -> list[str]:
-        return content_check.check_file(path, self.cache)
+        return content_check.check_file(path, self.cache, root=self.root)
 
     def only_link_problems(self, path: Path) -> list[str]:
         return [p for p in self.problems(path)
                 if "does not exist" in p or "names no heading" in p]
+
+
+class LinkStandIn(LinkFixture):
+    """A README that git records as a symlink is a text file naming its target on a checkout without symlink support."""
+
+    def test_a_readme_holding_only_its_siblings_name_is_clean(self) -> None:
+        self.write("m/m.md", "# M\n")
+        stand_in = self.root / "m" / "README.md"
+        stand_in.write_bytes(b"m.md")
+        self.assertEqual(self.problems(stand_in), [])
+
+    def test_a_readme_naming_nothing_there_is_judged_as_text(self) -> None:
+        self.write("m/m.md", "# M\n")
+        stand_in = self.root / "m" / "README.md"
+        stand_in.write_bytes(b"gone.md")
+        self.assertIn("no newline at end of file", self.problems(stand_in))
+
+    def test_another_file_with_the_same_content_is_judged_as_text(self) -> None:
+        self.write("m/m.md", "# M\n")
+        other = self.root / "m" / "notes.md"
+        other.write_bytes(b"m.md")
+        self.assertIn("no newline at end of file", self.problems(other))
 
 
 class ReachableLink(LinkFixture):
@@ -157,7 +188,7 @@ class MovedDocument(LinkFixture):
         # The shape that actually shipped broken: one hop short of the root,
         # which resolves to a file that was never there.
         self.write("CONTRIBUTORS.md", "# Contributors\n")
-        path = self.write("docs/modules/net/networking.changelog.md",
+        path = self.write("modules/net/chapar/chapar.changelog.md",
                           "# Log\n- [Owner](../../CONTRIBUTORS.md#owner)\n")
         found = self.only_link_problems(path)
         self.assertEqual(len(found), 1, found)
@@ -165,7 +196,7 @@ class MovedDocument(LinkFixture):
 
     def test_the_same_link_from_the_right_depth_is_not_reported(self) -> None:
         self.write("CONTRIBUTORS.md", "# Contributors\n### Owner\n")
-        path = self.write("docs/modules/net/networking.changelog.md",
+        path = self.write("modules/net/chapar/chapar.changelog.md",
                           "# Log\n- [Owner](../../../CONTRIBUTORS.md#owner)\n")
         self.assertEqual(self.only_link_problems(path), [])
 
@@ -268,9 +299,41 @@ class ExternalIsNotJudged(LinkFixture):
                           "[C](//cdn.example.invalid/x)\n")
         self.assertEqual(self.only_link_problems(path), [])
 
-    def test_site_root_path_is_left_alone(self) -> None:
-        path = self.write("base.md", "# Base\n[A](/docs/cognition.md)\n")
+
+class RootRelativeIsJudged(LinkFixture):
+    """A link from the checkout's root (`/docs/...`) is judged against the root the run is given.
+
+    This pin replaced `test_site_root_path_is_left_alone` (session
+    20261016-T135246Z-23188): such a link was skipped as a server's site root,
+    and the Memar skill writes every link in that form, so none of its links
+    was checked. It resolves as `memar content path` resolves it, against the
+    checkout, never against the linking document's folder.
+    """
+
+    def test_a_root_relative_link_to_a_heading_there_is_not_reported(self) -> None:
+        self.write("docs/cognition.md", "# Cognition\n## Abstract\n")
+        path = self.write("area/deep/base.md", "# Base\n[A](/docs/cognition.md#abstract)\n")
         self.assertEqual(self.only_link_problems(path), [])
+
+    def test_a_root_relative_link_to_a_missing_anchor_is_reported(self) -> None:
+        self.write("docs/cognition.md", "# Cognition\n## Abstract\n")
+        path = self.write("area/base.md", "# Base\n[A](/docs/cognition.md#gone)\n")
+        found = self.only_link_problems(path)
+        self.assertEqual(len(found), 1, found)
+        self.assertIn("/docs/cognition.md#gone names no heading", found[0])
+        self.assertIn("line 2", found[0])
+
+    def test_a_root_relative_link_to_a_missing_file_is_reported(self) -> None:
+        path = self.write("area/base.md", "# Base\n[A](/docs/gone.md)\n")
+        found = self.only_link_problems(path)
+        self.assertEqual(len(found), 1, found)
+        self.assertIn("/docs/gone.md does not exist", found[0])
+
+    def test_it_is_not_resolved_from_the_linking_folder(self) -> None:
+        # `area/docs/x.md` sits beside the linker; the link names the root's.
+        self.write("area/docs/x.md", "# X\n")
+        path = self.write("area/base.md", "# Base\n[A](/docs/x.md)\n")
+        self.assertEqual(len(self.only_link_problems(path)), 1)
 
 
 class InPageAnchorStillJudged(LinkFixture):
@@ -306,7 +369,7 @@ class RejectedInABodyIsNotJudged(LinkFixture):
         # document, correctly placed, and indistinguishable by pattern from the
         # violation the check was meant to catch.
         path = self.write(
-            "docs/documentation-changelog.md",
+            "modules/content/documentation/changelog/changelog.md",
             "# Documentation Changelog\n## Optional Sections\n"
             "#### Considered and not done\n- alternatives examined and rejected\n",
         )
@@ -430,35 +493,36 @@ class MemarRulesAutoDetect(RepositoryFixture):
 
         self.assertIsNotNone(enclosing_repository(inside))
         self.assertIsNone(enclosing_repository(outside))
-        self.assertTrue(content_check.check_file(inside, {}, True))
-        self.assertEqual(content_check.check_file(outside, {}, False), [])
+        self.assertTrue(content_check.check_file(inside, {}, True, root=self.root))
+        self.assertEqual(content_check.check_file(outside, {}, False, root=self.root), [])
 
     def test_an_explicit_flag_wins_over_the_folder(self) -> None:
         repo = self.make_repo()
         inside = repo / "docs" / "note.md"
         inside.parent.mkdir(parents=True, exist_ok=True)
         inside.write_text("# Base\n\nBody\n", encoding="utf-8", newline="\n")
-        self.assertEqual(content_check.check_file(inside, {}, False), [])
-        self.assertTrue(content_check.check_file(inside, {}, True))
+        self.assertEqual(content_check.check_file(inside, {}, False, root=self.root), [])
+        self.assertTrue(content_check.check_file(inside, {}, True, root=self.root))
 
     def test_encoding_problems_report_whatever_the_folder_is(self) -> None:
         repo = self.make_repo()
         inside = repo / "note.md"
         inside.write_text("# T\n", encoding="utf-8", newline="\n")
         inside.write_bytes(inside.read_bytes().rstrip(b"\n"))
-        self.assertTrue(content_check.check_file(inside, {}, True))
-        self.assertTrue(content_check.check_file(inside, {}, False))
+        self.assertTrue(content_check.check_file(inside, {}, True, root=self.root))
+        self.assertTrue(content_check.check_file(inside, {}, False, root=self.root))
 
 
 class CitationDirection(RepositoryFixture):
-    """A relative link runs down the layers, never up.
+    """A relative link up the layers is a warning: a debt, never a problem.
 
-    The rule is Documentation -> Citation Direction: base documents (docs/),
-    module documents (docs/modules/), the language (docs/khayyam/), and
-    implementations (bundles/ and the code tree modules/), lowest first. A
-    document may link to its own layer or a lower one; a higher place is named
-    in plain text. Files outside the four layers are not judged, and a folder's
-    README may link anywhere inside its own folder.
+    The rule is Documentation -> Citation Direction: the base (docs/, its
+    khayyam/ and comparisons/ included) and the modules
+    (modules/, bundles/). A document may link within its own
+    layer or down to the base; a base document names a module as a concept.
+    Files outside the two layers are not judged, and a folder's README may
+    link anywhere inside its own folder. A link up is never deleted to comply,
+    so the check warns about it and does not count it as a problem.
     """
 
     def setUp(self) -> None:
@@ -472,12 +536,35 @@ class CitationDirection(RepositoryFixture):
         return path
 
     def upward(self, path: Path) -> list[str]:
-        return [p for p in content_check.check_file(path, self.cache, True)
-                if "points up" in p]
+        return [w for w in content_check.upward_warnings(path, self.cache)
+                if "points up" in w]
+
+    def test_an_upward_link_is_a_warning_and_not_a_problem(self) -> None:
+        import argparse
+        import contextlib
+        import io
+
+        self.targets()
+        path = self.put("docs/process.md",
+                        "# T\nSee [X](../modules/process/error/error.md).\n")
+        self.assertEqual(content_check.check_file(path, self.cache, True, root=self.repo), [])
+        args = argparse.Namespace(files=[str(path)], verbose=False, memar_rules=True)
+        out = io.StringIO()
+        code = 0
+        with contextlib.redirect_stdout(out):
+            try:
+                content_check.cmd_check(args, self.repo)
+            except SystemExit as stop:
+                code = stop.code or 0
+        self.assertEqual(code, 0)
+        self.assertIn("warnings (not counted as problems)", out.getvalue())
+        self.assertIn("points up", out.getvalue())
+        self.assertIn("a debt", out.getvalue())
+        self.assertIn("0 problems", out.getvalue())
 
     def targets(self) -> None:
         self.put("docs/system.md", "# System\n")
-        self.put("docs/modules/process/error.md", "# Error\n")
+        self.put("modules/process/error/error.md", "# Error\n")
         self.put("docs/khayyam/khayyam.md", "# Khayyam\n")
         self.put("bundles/khayyam/khayyam.md", "# Toolchain\n")
         self.put("modules/process/error/README.md", "# Error\n")
@@ -485,18 +572,15 @@ class CitationDirection(RepositoryFixture):
     def test_each_upward_pair_is_reported(self) -> None:
         self.targets()
         cases = [
-            ("docs/process.md", "./modules/process/error.md"),
-            ("docs/process.md", "./khayyam/khayyam.md"),
+            ("docs/process.md", "../modules/process/error/error.md"),
             ("docs/process.md", "../bundles/khayyam/khayyam.md"),
             ("docs/process.md", "../modules/process/error/"),
             ("docs/process.md", "../modules/"),
-            ("docs/modules/process/flow.md", "../../../bundles"),
-            ("docs/process.md", "./khayyam/"),
-            ("docs/modules/process/flow.md", "../../khayyam/khayyam.md"),
-            ("docs/modules/process/flow.md", "../../../modules/process/error/README.md"),
+            ("docs/khayyam/flow.md", "../../modules/process/error/error.md"),
             ("docs/khayyam/flow.md", "../../bundles/khayyam/khayyam.md"),
-            ("docs/comparisons/other.md", "../modules/process/error.md"),
-            ("docs/process.changelog.md", "./modules/process/error.md#error"),
+            ("docs/khayyam/flow.md", "../../modules/process/error/README.md"),
+            ("docs/comparisons/other.md", "../../modules/process/error/error.md"),
+            ("docs/process.changelog.md", "../modules/process/error/error.md#error"),
         ]
         for source, link in cases:
             with self.subTest(source=source, link=link):
@@ -510,12 +594,16 @@ class CitationDirection(RepositoryFixture):
         self.targets()
         cases = [
             ("docs/process.md", "./system.md"),
-            ("docs/modules/process/flow.md", "./error.md"),
-            ("docs/modules/process/flow.md", "../../system.md"),
-            ("docs/khayyam/flow.md", "../modules/process/error.md"),
+            ("docs/process.md", "./khayyam/khayyam.md"),
+            ("docs/process.md", "./khayyam/"),
             ("docs/khayyam/flow.md", "../system.md"),
+            ("modules/process/flow/flow.md", "../error/error.md"),
+            ("modules/process/flow/flow.md", "../../../docs/system.md"),
+            ("modules/process/flow/flow.md", "../../../docs/khayyam/khayyam.md"),
+            ("modules/process/flow/flow.md", "../error/README.md"),
+            ("modules/process/flow/flow.md", "../../../bundles"),
             ("bundles/khayyam/rules.md", "../../docs/khayyam/khayyam.md"),
-            ("modules/process/error/error.md", "../../../docs/modules/process/error.md"),
+            ("modules/process/error/error.md", "../../../modules/process/error/error.md"),
             ("modules/process/error/error.md", "../../../bundles/khayyam/khayyam.md"),
         ]
         for source, link in cases:
@@ -523,7 +611,7 @@ class CitationDirection(RepositoryFixture):
                 path = self.put(source, f"# T\nSee [X]({link}).\n")
                 self.assertEqual(self.upward(path), [])
 
-    def test_a_higher_place_named_in_plain_text_is_not_reported(self) -> None:
+    def test_a_path_in_a_code_span_is_not_reported(self) -> None:
         self.targets()
         path = self.put("docs/process.md",
                         "# T\nRealized in `bundles/khayyam/khayyam.md`; "
@@ -533,11 +621,11 @@ class CitationDirection(RepositoryFixture):
     def test_a_readme_may_point_into_its_own_folder_only(self) -> None:
         self.targets()
         inside = self.put("docs/README.md",
-                          "# Docs\n[Modules](./modules/process/error.md) "
+                          "# Docs\n[System](./system.md) "
                           "[Language](./khayyam/khayyam.md)\n")
         self.assertEqual(self.upward(inside), [])
-        out = self.put("docs/modules/README.md",
-                       "# Modules\n[Code](../../modules/process/error/)\n")
+        out = self.put("docs/khayyam/README.md",
+                       "# Khayyam\n[Error](../../modules/process/error/error.md)\n")
         self.assertEqual(len(self.upward(out)), 1)
 
     def test_files_outside_the_layers_are_not_judged(self) -> None:
@@ -547,7 +635,7 @@ class CitationDirection(RepositoryFixture):
                                "# Memar\n[Code](./bundles/khayyam/khayyam.md)\n")
         self.assertEqual(self.upward(root_readme), [])
         skill = self.put(".agents/skills/memar/notes.md",
-                         "# N\n[E](../../../docs/modules/process/error.md)\n")
+                         "# N\n[E](../../../modules/process/error/error.md)\n")
         self.assertEqual(self.upward(skill), [])
         base = self.put("docs/process.md", "# T\n[C](../CONTRIBUTORS.md)\n")
         self.assertEqual(self.upward(base), [])
@@ -664,7 +752,7 @@ class HandoffEntriesAreWarnedAbout(LinkFixture):
 
     def test_check_file_itself_does_not_return_it(self) -> None:
         path = self.write("a.handoff.md", "# A handoff\n\n" + self.ENTRY)
-        self.assertEqual(content_check.check_file(path, {}, True), [])
+        self.assertEqual(content_check.check_file(path, {}, True, root=self.root), [])
 
     def test_a_complete_entry_and_other_documents_do_not_warn(self) -> None:
         self.write("a.handoff.md", "# A handoff\n\n" + self.FULL)

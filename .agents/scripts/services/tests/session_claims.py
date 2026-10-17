@@ -60,8 +60,9 @@ from machine.fs_test_scratch import suite_scratch
 
 import machine.fs_memar as memar_fs
 import services.project_registry as registry
-import services.session_brief as session_brief
+import services.prompts_plan_brief as plan_brief
 import services.session_claim as session_claim
+from services.claim import Claim
 import services.session_claims as session_claims
 import services.session_temp as session_temp
 import services.session_ensure as session_ensure
@@ -144,7 +145,7 @@ class ClaimsTakesN(Fixture):
         self.assertEqual(self.status_of(low), "queued")
         for folder in (high, plain_old, plain_new):
             self.assertEqual(self.status_of(folder), "active")
-            self.assertTrue((folder / session_claim.CLAIM_NAME).is_file())
+            self.assertTrue((folder / Claim.NAME).is_file())
 
     def test_each_taken_session_is_printed_with_what_hands_it_over(self) -> None:
         folder = self.session("20261012T000045Z-1-0", "queued", title="Write the parser", priority="7")
@@ -153,7 +154,7 @@ class ClaimsTakesN(Fixture):
         self.assertIn(f"{folder.name}  Write the parser", text)
         self.assertIn("priority: 7", text)
         self.assertIn(f"plan: {folder / session_plan.PLAN_NAME}", text)
-        self.assertIn(f"brief: {session_brief.brief_text(folder.name)}", text)
+        self.assertIn(f"brief: {plan_brief.brief_text(folder.name)}", text)
         self.assertIn(session_temp.TEMP_SENTENCE, text)
 
     def test_fewer_queued_than_asked_is_not_an_error(self) -> None:
@@ -201,7 +202,7 @@ class ClaimsTakesN(Fixture):
         self.assertIn("one run serves one project", why)
         self.assertIn("ask the owner", why)
         self.assertEqual(self.status_of(waiting), "queued")
-        self.assertFalse((waiting / session_claim.CLAIM_NAME).exists())
+        self.assertFalse((waiting / Claim.NAME).exists())
 
     def test_two_projects_queued_sessions_never_mix(self) -> None:
         other_project = self.git_project("project-y")
@@ -219,7 +220,7 @@ class ClaimsTakesN(Fixture):
     def test_a_session_another_holds_is_passed_over_saying_why_and_nothing_on_stderr(self) -> None:
         # The moment between the listing and the claim: queued, and already claimed by another.
         held = self.session("20261012T000038Z-1-0", "queued", priority="10")
-        (held / session_claim.CLAIM_NAME).write_text("claimed: now\n", encoding="utf-8")
+        (held / Claim.NAME).write_text("claimed: now\n", encoding="utf-8")
         free = self.session("20261012T000037Z-1-0", "queued")
         errors = io.StringIO()
         with contextlib.redirect_stderr(errors):
@@ -382,7 +383,7 @@ class ClaimsByTopic(Fixture):
 
     def test_a_first_task_another_caller_won_hands_the_topic_to_the_next(self) -> None:
         held = self.queue(90, "khayyam", priority="10")
-        (held / session_claim.CLAIM_NAME).write_text("claimed: now\n", encoding="utf-8")
+        (held / Claim.NAME).write_text("claimed: now\n", encoding="utf-8")
         docs = self.queue(91, "docs", priority="9")
         other = self.queue(92, "khayyam", priority="8")
         mine = self.queue(93, "docs", priority="1")

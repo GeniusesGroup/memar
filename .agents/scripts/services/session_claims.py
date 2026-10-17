@@ -37,7 +37,7 @@ owner can ask for one if displacement is seen in use.
 Why Memar starts no agent. How an agent runtime starts a sub-agent is the
 runtime's, known to the agent already in a conversation and to nothing else;
 so `claims` prints, for each session it took, the brief that hands it over
-(`session_brief`), and the agent that called it delegates each one the way its
+(`prompts_plan_brief`), and the agent that called it delegates each one the way its
 runtime does.
 
 Why the project is named, never defaulted. One run of `claims` serves one
@@ -55,24 +55,29 @@ from typing import Callable
 
 from machine.console import fail, note
 from services.status import Status
-from services.session_brief import brief_text
+from services.prompts_plan_brief import brief_text
 from services.session_claim import CLAIM_COMMAND, try_claim
+from services.depends_on import DependsOn, Reader
+from services.session_depends import problems, reconcile_all
 from services.project_find import add_project_flags, project_from_args
 from services.session_digest import DIGEST_COMMAND
 from services.session_find import LIST_COMMAND, find_sessions, project_of
 from services.session_folder import Session
 from services.session_temp import TEMP_SENTENCE
 from services.session_plan import PLAN_NAME, part_text
-from services.session_plan_priority import priority_of
-from services.session_plan_topic import checked_topic, topic_of
+from services.priority import Priority
+from services.topic import Topic
 from services.session_record import REPORT
 from services.session_report import REPORT_NAME
+from services.project_name import ProjectName
+from services.project_path import ProjectPath
+from services.session_record import PlanKey
 
 CLAIMS_COMMAND = "claims"
 
 
 PROJECT_REQUIRED = (
-    f"{CLAIMS_COMMAND} needs --project NAME or --project-path PATH: one run serves one project, and naming it "
+    f"{CLAIMS_COMMAND} needs {ProjectName.either_words()}: one run serves one project, and naming it "
     "keeps the work from landing in a project no one chose; if you do not know which "
     "project the tasks are for, ask the owner"
 )
@@ -83,12 +88,24 @@ def in_line(project: str) -> list[Session]:
 
     That project's wherever they lie, as `list --project` finds them
     (`session_find`); PROJECT is a name or a folder, and an empty one is refused.
+    Their Status is first brought up to date with their dependencies, so a
+    session that waits for another is Blocked and not in line, and one whose
+    dependencies are all Complete is queued and in it (`session_depends`).
     """
+    reconcile_all(find_sessions(project=project_of(project)))
     queued = find_sessions(status=Status.QUEUED.key, project=project_of(project))
     return sorted(
         queued,
-        key=lambda session: (-priority_of(session.front), (session.front or {}).get("opened", ""), session.id),
+        key=lambda session: (-Priority.of(session.front), (session.front or {}).get(PlanKey.OPENED.key, ""), session.id),
     )
+
+
+def held_back(project: str) -> None:
+    """Say, for each Blocked session of PROJECT waiting for its dependencies, that it is passed over and for which."""
+    reader = Reader(None)
+    for session in find_sessions(status=Status.BLOCKED.key, project=project_of(project)):
+        if DependsOn.of(session.front) and (unmet := problems(session, reader)):
+            print(f"{session.id}  waiting: {', '.join(unmet)}")
 
 
 def take(count: int, project: str, topic: str | None = None, fill: bool = False) -> list[Session]:
@@ -102,7 +119,7 @@ def take(count: int, project: str, topic: str | None = None, fill: bool = False)
     """
     taken: list[Session] = []
     tried: set[str] = set()
-    batch: str | None = checked_topic(topic) if topic is not None else None
+    batch: str | None = Topic.checked(topic) if topic is not None else None
 
     def attempt(session: Session) -> None:
         tried.add(session.id)
@@ -117,15 +134,16 @@ def take(count: int, project: str, topic: str | None = None, fill: bool = False)
         taken.append(session)
 
     line = in_line(project)
+    held_back(project)
     for session in line:
         if len(taken) >= count:
             break
-        if batch and topic_of(session.front) != batch:
+        if batch and Topic.of(session.front) != batch:
             continue
         attempt(session)
         if batch is None and taken:
             # The first one taken sets the batch; "" is a first with no topic, and the line goes on as it is.
-            batch = topic_of(taken[0].front)
+            batch = Topic.of(taken[0].front)
     if fill:
         for session in line:
             if len(taken) >= count:
@@ -137,25 +155,25 @@ def take(count: int, project: str, topic: str | None = None, fill: bool = False)
 
 def batch_report(taken: list[Session], count: int, project: str, topic: str | None) -> list[str]:
     """The lines saying the batch's topic, what waits under it, and what it passed over; none when the batch has no topic."""
-    batch = checked_topic(topic) if topic else topic_of(taken[0].front)
+    batch = Topic.checked(topic) if topic else Topic.of(taken[0].front)
     if not batch:
         return []
-    own = sum(1 for session in taken if topic_of(session.front) == batch)
+    own = sum(1 for session in taken if Topic.of(session.front) == batch)
     waiting = [session for session in in_line(project) if part_text(session.path / PLAN_NAME, "Request")]
-    under = sum(1 for session in waiting if topic_of(session.front) == batch)
+    under = sum(1 for session in waiting if Topic.of(session.front) == batch)
     said = f"batch topic: {batch} ({own} of {count} asked"
     if own < len(taken):
         said += f"; {len(taken) - own} more filled from other topics"
     if under:
         said += f"; {under} more queued under it are not taken only because N was reached"
     lines = [said + ")"]
-    lowest = min(priority_of(session.front) for session in taken)
+    lowest = min(Priority.of(session.front) for session in taken)
     passed = [
         session for session in waiting
-        if topic_of(session.front) != batch and priority_of(session.front) > lowest
+        if Topic.of(session.front) != batch and Priority.of(session.front) > lowest
     ]
     if passed:
-        listed = ", ".join(f"{session.id} (priority {priority_of(session.front)})" for session in passed)
+        listed = ", ".join(f"{session.id} (priority {Priority.of(session.front)})" for session in passed)
         lines.append(f"passed over for topic: {listed}")
     return lines
 
@@ -173,7 +191,7 @@ def claims(count: int, project: str | None, topic: str | None = None, fill: bool
         fail(f"{CLAIMS_COMMAND} N counts the sessions to take; N is at least 1")
     taken = take(count, project, topic, fill)
     if not taken:
-        note("no queued session to claim" + (f" under topic {checked_topic(topic)}" if topic else ""))
+        note("no queued session to claim" + (f" under topic {Topic.checked(topic)}" if topic else ""))
         return []
     print(f"claimed {len(taken)} of {count}")
     note(TEMP_SENTENCE)
@@ -182,9 +200,9 @@ def claims(count: int, project: str | None, topic: str | None = None, fill: bool
     for session in taken:
         print()
         print(f"{session.id}  {(session.front or {}).get('title', '')}")
-        note(f"priority: {priority_of(session.front)}")
-        if topic_of(session.front):
-            note(f"topic: {topic_of(session.front)}")
+        note(f"priority: {Priority.of(session.front)}")
+        if Topic.of(session.front):
+            note(f"topic: {Topic.of(session.front)}")
         note(f"plan: {session.path / PLAN_NAME}")
         note(f"brief: {brief_text(session.id)}")
     return [session.id for session in taken]
@@ -212,10 +230,10 @@ def describe(verbs) -> Callable[[argparse.Namespace], None]:
             "cap. Fewer queued than N is not an error: you get what there is. A\n"
             "queued plan whose Request is empty is not ready and is passed over,\n"
             "and so, saying why, is one another agent took meanwhile.\n"
-            "--project NAME or --project-path PATH is required: one run serves one project, so it takes only\n"
+            f"{ProjectName.either_words()} is required: one run serves one project, so it takes only\n"
             "that project's queued sessions, wherever they lie, and never mixes two\n"
             "projects'; there is no default project and no way to take from all.\n"
-            "\"Do 5 tasks of X\" means `claims 5 --project X` (or `--project-path` with its folder); if you do not know\n"
+            f"\"Do 5 tasks of X\" means `claims 5 {ProjectName.FLAG} X` (or `{ProjectPath.FLAG}` with its folder); if you do not know\n"
             "which project the tasks are for, ask the owner rather than guess.\n"
             "Two agents asking at once never get the same session.\n"
             "\n"
@@ -224,9 +242,9 @@ def describe(verbs) -> Callable[[argparse.Namespace], None]:
             "coordinator:\n"
             "\n"
             f"  1. `memar session {LIST_COMMAND} --status queued` shows what waits, each with\n"
-            "     its priority; add --project NAME (or --project-path PATH) for one\n"
+            f"     its priority; add {ProjectName.FLAG} {ProjectName.METAVAR} (or {ProjectPath.FLAG} {ProjectPath.METAVAR}) for one\n"
             "     project's.\n"
-            "  2. `claims N --project X` takes them and prints a brief for each;\n"
+            f"  2. `claims N {ProjectName.FLAG} X` takes them and prints a brief for each;\n"
             f"     `memar session {CLAIM_COMMAND} ID` takes one named task instead.\n"
             "  3. Hand the batch of one topic to one fresh sub-agent, as your runtime\n"
             f"     starts one, each session keeping its own {PLAN_NAME} and {REPORT_NAME} and\n"

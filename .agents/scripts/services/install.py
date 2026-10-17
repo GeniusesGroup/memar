@@ -3,7 +3,7 @@
 
 """services/install.py — `memar install`: record where Memar lives, then settle the machine and everything around it.
 
-**Two audiences, two texts, and this file is where each lives.** `DESCRIPTION`
+**Two audiences, two texts, and this file is where each lives.** `description`
 below is what `memar install --help` prints: it is addressed to whoever is
 putting Memar on a machine, and it says what the run does and what the person
 must do afterwards, and stops. Everything from here down is addressed to whoever
@@ -68,13 +68,18 @@ from typing import Callable
 VERB = "install"
 SUMMARY = "put Memar on this machine, and into the project you name"
 
-DESCRIPTION = """memar install — put Memar on this machine, and into the project you name
+def description() -> str:
+    """What `memar install --help` prints; built when the verb runs, so the two project flags come from their types without a top-level import."""
+    from services.project_name import ProjectName
+    from services.project_path import ProjectPath
+
+    return f"""memar install — put Memar on this machine, and into the project you name
 
 One run installs three layers, in the only order that works:
 
   - onto this machine: where Memar lives, the `memar` command on your PATH, and
     the editor extensions this checkout ships;
-  - into the project you name with --project NAME or --project-path PATH, if it is one,
+  - into the project you name with {ProjectName.either_words()}, if it is one,
     and the project is registered with Memar under its folder's name (a project
     already registered is left as it is; a name another project holds is
     reported, and nothing is renamed);
@@ -99,9 +104,9 @@ Getting Memar somewhere else, or asking whether a folder would be accepted:
     memar install --register ~/src/memar   point Memar at a checkout you already have
     memar install --check /tmp/Memar       would an install there be refused? writes nothing
     memar install --root                  print where Memar is, one line
-    memar install --project NAME           also put Memar into that project: a name `memar project`
+    memar install {ProjectName.FLAG} {ProjectName.METAVAR}           also put Memar into that project: a name `memar project`
                                           knows
-    memar install --project-path PATH     also put Memar into the project whose folder is PATH
+    memar install {ProjectPath.FLAG} {ProjectPath.METAVAR}     also put Memar into the project whose folder is {ProjectPath.METAVAR}
     memar install --machine-only          settle this machine and skip the project and the apps
     memar install --developer             you develop Memar in this checkout: no update moves it
 """
@@ -190,7 +195,7 @@ def run(args: argparse.Namespace) -> int:
 
 
 def describe(verbs) -> Callable[[argparse.Namespace], int]:
-    parser = verbs.add_parser(VERB, help=SUMMARY, description=DESCRIPTION)
+    parser = verbs.add_parser(VERB, help=SUMMARY, description=description())
     group = parser.add_mutually_exclusive_group()
     group.add_argument(
         "--register",

@@ -20,28 +20,34 @@ from pathlib import Path
 
 from machine.console import fail
 from machine.fs_memar import session_dir
+from services.depends_on import DependsOn, Reader, Ref, refused_for_writing
 from services.module_folders import ensure_role_folders
-from services.session_temp import ensure_temp_folder
+from services.priority import Priority
 from services.project_find import project_by_path
 from services.project_preferences import SESSIONS_KEY, preferences_path
 from services.session_folder import folder_of, project_folder_of, read_session
 from services.session_gc import reap_once_a_day
-from services.session_id import new_session_id
+from services.session_id import SessionId
 from services.session_location import in_project_location, project_location, project_root, register
 from services.session_log import record
 from services.session_plan import PLAN_NAME, checked_title
+from services.session_depends import BLOCKED_EVENT, reconcile
+from services.session_plan_depends import set_depends_on
 from services.session_plan_kind import checked_kind, set_kind
-from services.session_plan_priority import checked_priority, set_priority
-from services.session_plan_topic import checked_topic, set_topic
+from services.session_plan_priority import set_priority
+from services.session_plan_topic import set_topic
 from services.session_plan_write import queue_plan, write_plan
 from services.session_report import write_report
 from services.session_topic import warn_near
 from services.status import Status
+from services.topic import Topic
+from services.project_name import ProjectName
+from services.session_record import PlanKey
 
 
 NEW_COMMAND = "new"
 PROJECT_REQUIRED = (
-    f"{NEW_COMMAND} needs --project NAME or --project-path PATH to make a session: the project is always named, "
+    f"{NEW_COMMAND} needs {ProjectName.either_words()} to make a session: the project is always named, "
     "by a name `memar project find` resolves or by a folder, and the folder this runs in is never read; "
     "a session that is already there is continued without it"
 )
@@ -61,7 +67,7 @@ def named_project(project: str | None) -> Path | None:
 
 def recorded_project(folder: Path) -> Path | None:
     """The project FOLDER's plan records, when it names a folder that is there, else None."""
-    named = ((read_session(folder).front or {}).get("project") or "").strip()
+    named = ((read_session(folder).front or {}).get(PlanKey.PROJECT.key) or "").strip()
     if not named:
         return None
     where = Path(named)
@@ -87,6 +93,7 @@ def ensure_session(
     topic: str | None = None,
     project: str | None = None,
     kind: str | None = None,
+    depends_on: list[str] | None = None,
 ) -> tuple[str, Path]:
     """Ensure the session's folder, its plan.md and report.md, and its role folders exist; return its id and path.
 
@@ -111,11 +118,17 @@ def ensure_session(
     one is refused: the project is always named, and the folder the process
     runs in is never read. A folder that is there is continued without it, its
     project the one its plan records.
+
+    DEPENDS_ON, references to sessions, are checked before anything is made
+    (`depends_on.refused_for_writing`) and added to the plan's key; a new
+    session with an unmet one is written Blocked, and an existing queued one
+    becomes Blocked (`session_depends`).
     """
-    priority = None if priority is None else checked_priority(priority)
-    topic = None if topic is None else checked_topic(topic)
+    priority = None if priority is None else Priority.checked(priority)
+    topic = None if topic is None else Topic.checked(topic)
     kind = None if kind is None else checked_kind(kind)
-    sid = new_session_id() if session_id is None else session_id
+    cited = DependsOn.normalized(Ref.parse(word) for word in depends_on or [])
+    sid = SessionId.new() if session_id is None else session_id
     folder = session_dir(sid)
     project = named_project(project)
     location = project_location(project) if project is not None else None
@@ -148,6 +161,10 @@ def ensure_session(
                 )
         else:
             conversation = linked_conversation(sid, parent)
+    reader = Reader(project)
+    now = DependsOn.normalized([*(DependsOn.of(read_session(folder).front) if has_plan else ()), *cited])
+    if cited:
+        refused_for_writing(sid, now, reader, cited)
     path = folder
     if not existed:
         try:
@@ -159,7 +176,11 @@ def ensure_session(
     if in_project_location(path):
         register(path.parent, project)
     if not has_plan:
-        write_plan(path, title, parent, conversation, project, Status.QUEUED.key if queued else Status.ACTIVE.key, priority, topic, kind)
+        waits = bool(cited) and bool(reader.unmet(cited))
+        status = Status.BLOCKED.key if waits else Status.QUEUED.key if queued else Status.ACTIVE.key
+        write_plan(path, sid, title, parent, conversation, project, status, priority, topic, kind, now.text() or None)
+        if waits:
+            record(BLOCKED_EVENT, sid, "; ".join(reader.unmet(cited)), folder=path)
     else:
         if queued:
             queue_plan(path)
@@ -169,10 +190,12 @@ def ensure_session(
             set_topic(path / PLAN_NAME, topic)
         if kind is not None:
             set_kind(path / PLAN_NAME, kind)
+        if cited:
+            set_depends_on(path / PLAN_NAME, now)
+            reconcile(read_session(path), reader)
     if topic and project is not None:
         warn_near(topic, project, sid)
-    write_report(path, (read_session(path).front or {}).get("title"))
+    write_report(path, sid, (read_session(path).front or {}).get(PlanKey.TITLE.key))
     ensure_role_folders(path)
-    ensure_temp_folder(path)
     reap_once_a_day(keep=sid)
     return sid, path

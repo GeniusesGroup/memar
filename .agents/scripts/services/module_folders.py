@@ -8,7 +8,7 @@ named for its role, so the module's root reads as a list of kinds rather than
 of instances. Which roles there are, and what each holds, is
 `modules/README.md`'s answer (its bullet "By role inside a module"); this file
 holds the names only, in ROLE_FOLDERS, so making the folders is one act
-rather than six a person or an agent types and mistypes. A role folder carries
+rather than seven a person or an agent types and mistypes. A role folder carries
 its role's name exactly, which is why the names are taken from one constant
 and never spelled at the call.
 
@@ -29,7 +29,17 @@ from typing import Callable, NamedTuple
 
 FOLDERS_COMMAND = "folders"
 
-ROLE_FOLDERS = ("protocol", "rules", "errors", "tests", "services", "docs")
+TEMP_FOLDER = "temp"
+"""The role folder for what the work makes and the module's record does not need: a draft not yet appended elsewhere, a tool's output without content value.
+
+Every module has one, every session included. It is kept out of version
+control in every project (`install_project` adds it to the project's
+.gitignore) and out of every archive (`session_archive`); the rule is written
+once, in `.agents/scripts/README.md` under "Temporary files". This is the one
+place its name is spelled: `session_temp` takes it from here.
+"""
+
+ROLE_FOLDERS = ("protocol", "rules", "errors", "tests", "services", "docs", TEMP_FOLDER)
 """The role folders a module groups its kinds of work in, each named exactly as its role.
 
 `modules/README.md`, in its bullet "By role inside a module", owns what each

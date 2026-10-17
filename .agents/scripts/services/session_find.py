@@ -40,16 +40,20 @@ from pathlib import Path
 from typing import Callable
 
 from machine.console import fail, note
+from services.depends_on import DEPENDS_FOR, Reader
 from services.session_concerns import concerns
+from services.session_depends import DEPENDS_COMMAND, concerns_for, notes_for, reconcile_all
 from services.session_folder import Session, folder_of, measured_idle, read_session, session_folders
 from services.project_find import add_project_flags, project_by_path, project_from_args
 from services.session_location import locations_of, project_root, same_path
 from services.session_plan import PLAN_NAME, status_word
-from services.session_plan_priority import priority_of
-from services.session_plan_topic import topic_of
+from services.priority import Priority
+from services.topic import Topic
 from services.session_record import PLAN
 from services.status import Status
 from services.session_report import REPORT_NAME, disagreement, read_report_status
+from services.project_name import ProjectName
+from services.session_record import PlanKey
 
 LIST_COMMAND = "list"
 NO_PLAN = f"(no {PLAN_NAME})"
@@ -69,8 +73,8 @@ def matches(session: Session, text: str) -> bool:
     front = session.front or {}
     fields = (
         session.id,
-        front.get("title", ""),
-        front.get("project", ""),
+        front.get(PlanKey.TITLE.key, ""),
+        front.get(PlanKey.PROJECT.key, ""),
     )
     needle = text.casefold()
     return any(needle in field.casefold() for field in fields)
@@ -115,7 +119,7 @@ def of_project(session: Session, project: Path, own: list[Path]) -> bool:
     """Whether SESSION is PROJECT's: it lies in one of OWN, its locations, or its plan names PROJECT."""
     if any(same_path(session.path.parent, location) for location in own):
         return True
-    named = (session.front or {}).get("project", "").strip()
+    named = (session.front or {}).get(PlanKey.PROJECT.key, "").strip()
     return bool(named) and same_path(named, project)
 
 
@@ -145,8 +149,10 @@ def find_sessions(
     return grouped(sessions)
 
 
-def print_session(session: Session, *, idle: float | None = None) -> None:
-    """One list line and its notes; IDLE when measured."""
+def print_session(
+    session: Session, *, idle: float | None = None, reader: Reader | None = None, everyone: list[Session] | None = None
+) -> None:
+    """One list line and its notes; IDLE when measured; with READER, the session's dependencies and who depends on it, among EVERYONE."""
     if not session.has_plan:
         print(f"{session.id}  {NO_PLAN}")
     elif not session.readable:
@@ -158,14 +164,19 @@ def print_session(session: Session, *, idle: float | None = None) -> None:
         note(f"project: {session.front.get('project', '')}")
     if session.has_plan and session.readable:
         note(f"status: {session.status or 'none'}")
-        note(f"priority: {priority_of(session.front)}")
-        if topic_of(session.front):
-            note(f"topic: {topic_of(session.front)}")
+        note(f"priority: {Priority.of(session.front)}")
+        if Topic.of(session.front):
+            note(f"topic: {Topic.of(session.front)}")
         why = disagreement(session.status, read_report_status(session.path))
         if why:
             note(f"{DISAGREES} {why}")
         for concern in concerns(session):
             note(f"{CONCERNS} {concern}")
+        if reader is not None:
+            for line in notes_for(session, reader, everyone or []):
+                note(line)
+            for concern in concerns_for(session, reader):
+                note(f"{CONCERNS} {concern}")
     if session.parent:
         note(f"parent: {session.parent}")
     if session.conversation != session.id:
@@ -186,13 +197,18 @@ def list_sessions(
     if idle_days is not None and idle_days < 0:
         fail("--idle-days counts days waited; it cannot be negative")
     shown = 0
+    # Status first brought up to date with the dependencies (`session_depends`), so a status asked for is a true one.
+    everyone = find_sessions(None, None, conversation, project_of(project))
+    reconcile_all(everyone)
+    everyone = find_sessions(None, None, conversation, project_of(project))
+    reader = Reader(None)
     for session in find_sessions(text, status, conversation, project_of(project)):
         idle = measured_idle(session.path) if idle_days is not None else None
         if idle_days is not None and (idle is None or idle < idle_days):
             # A folder whose age cannot be read is not known to have waited
             # that long, so it does not answer the question asked.
             continue
-        print_session(session, idle=idle)
+        print_session(session, idle=idle, reader=reader, everyone=everyone)
         shown += 1
     if not shown:
         asked = text or status is not None or idle_days is not None or conversation is not None or project is not None
@@ -205,25 +221,18 @@ def describe(verbs) -> Callable[[argparse.Namespace], None]:
         LIST_COMMAND,
         help="list session folders, newest first, a conversation's together",
         description=(
-            "List Memar's own session folders, newest first, with the sessions of one\n"
-            "conversation next to each other: its id, title, project, status,\n"
-            "priority, the session it came from, and its path. A folder with no plan.md, one that\n"
-            "cannot be read, or one without front matter, is listed and marked so.\n"
-            f"A session whose {REPORT_NAME} Status does not agree with its plan's status, or\n"
-            f"whose status is not {', '.join(Status.keys(PLAN.kind))}, is marked `{DISAGREES}`, with why.\n"
-            f"A session not complete that looks finished or abandoned (every step checked\n"
-            f"while active, an empty Request quiet for a day, no status) is marked\n"
-            f"`{CONCERNS}`: only a mark, nothing is moved. A plan or a report in an\n"
-            "earlier shape is marked the same way, and the mark says where today's shape is\n"
-            "shown.\n"
-            "A folder in a project's own session location is listed only when asked\n"
-            "for: with --project, every session of that project wherever it lies, in\n"
-            "its own session location or in Memar's; with --conversation, every\n"
-            "session linked with that one, wherever it lies. With --status, only the\n"
-            "sessions in that status are shown; with --idle-days, only those quiet\n"
-            "that long, each saying how long. Together they are the sessions holding\n"
-            "work in the state the caller asked about, which is what a person asks\n"
-            "for before going back to one."
+            "List Memar's own session folders, newest first, with the sessions of one conversation next\n"
+            "to each other: id, title, project, status, priority, the session it came from, path. A folder\n"
+            "with no plan.md, one that cannot be read, or one without front matter is listed and marked so.\n"
+            f"A session whose {REPORT_NAME} Status disagrees with its plan's, or whose status is not\n"
+            f"{', '.join(Status.keys(PLAN.kind))}, is marked `{DISAGREES}`, with why; one not complete that looks\n"
+            f"finished or abandoned is marked `{CONCERNS}`. A mark moves nothing. A session with a `{PlanKey.DEPENDS_ON.written}` shows\n"
+            f"each session it cites and where that stands, and a cited session shows who depends on it as `{DEPENDS_FOR}`;\n"
+            "listing also brings the Status of a session with dependencies up to date, as `claims` does\n"
+            "(`memar session depends-on --help`). A plan or a report in an\n"
+            "earlier shape is marked likewise. A folder in a project's own session location is listed only\n"
+            f"when asked for: {ProjectName.FLAG} lists every session of that project, --conversation every session\n"
+            "linked with that one; --status and --idle-days keep only what they name."
         ),
     )
     lister.add_argument(

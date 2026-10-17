@@ -21,6 +21,7 @@ from services.status import Status
 
 def write_plan(
     folder: Path,
+    session: str,
     title: str,
     parent: str | None,
     conversation: str | None,
@@ -29,11 +30,17 @@ def write_plan(
     priority: int | None = None,
     topic: str | None = None,
     kind: str | None = None,
+    depends_on: str | None = None,
 ) -> None:
-    """Create FOLDER's plan.md unless one is there; an existing plan is never touched."""
+    """Create FOLDER's plan.md unless one is there; an existing plan is never touched.
+
+    SESSION is the id of the session the plan belongs to, and is written into
+    the plan itself (`session_plan.plan_skeleton`).
+    """
     opened = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     text = plan_skeleton(
-        title, opened, project, parent=parent, conversation=conversation, status=status, priority=priority, topic=topic, kind=kind
+        session, title, opened, project, parent=parent, conversation=conversation, status=status, priority=priority, topic=topic, kind=kind,
+        depends_on=depends_on,
     )
     try:
         with (folder / PLAN_NAME).open("x", encoding="utf-8", newline="\n") as plan:

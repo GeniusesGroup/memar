@@ -100,8 +100,8 @@ from machine.fs_test_scratch import suite_scratch
 import machine.fs_memar as memar_fs
 import services.session as session
 import services.session_archive as session_archive
-import services.session_brief as session_brief
 import services.session_claim as session_claim
+from services.claim import Claim
 import services.session_claims as session_claims
 import services.session_close as session_close
 import services.session_digest as session_digest
@@ -236,19 +236,15 @@ class HelpSaysWhatToRun(unittest.TestCase):
         ):
             self.assertIn(phrase, text)
 
-    def test_the_domain_help_says_the_records_are_on_a_branch_of_the_projects_own_repository(self) -> None:
+    def test_the_domain_help_points_to_archive_for_where_the_records_are(self) -> None:
         # The owner's rulings (2026-10-14, 2026-10-15): the records are the
         # session's whole folder bar a few leave-outs, kept on a branch.
         text = flat(run_help())
         for phrase in (
-            "A session's records — its whole folder except the claim, caches, binary files, files over 256 KB that are not documents, and its own temp/ folder",
-            "are kept on the branch dev-knowledge of its project's own repository, at .agents/sessions/<id>/ there",
-            "unless its preferences say `records: off`",
-            "Nothing is pushed",
-            "A task's commit cites each session by that branch and folder, never by a file in it",
-            "`close` acts only on a session already archived",
-            "the sweep adds what the branch lacks before it moves a folder",
-            "Neither acts on a session whose Status is Queued",
+            "its records stay, kept by `archive` on its project's records branch and never pushed",
+            "`close` and the sweep act only on a session already archived",
+            "neither acts on a session whose Status is Queued",
+            "`archive --help` says what is kept and where",
         ):
             self.assertIn(phrase, text)
         self.assertNotIn("Committing a task's changes commits the records", text)
@@ -276,62 +272,40 @@ class HelpSaysWhatToRun(unittest.TestCase):
             self.assertNotIn(phrase, text)
 
     def test_no_sub_verb_sends_its_reader_to_the_domain_help_for_its_own_work(self) -> None:
-        for verb in ("new", "list", "brief", "gc", "close", "archive", "show", "claim", "claims", "priority", "start", "topic", "topics", "digest"):
+        for verb in ("new", "list", "gc", "close", "archive", "show", "claim", "claims", "priority", "start", "topic", "topics", "digest"):
             with self.subTest(verb=verb):
                 text = flat(run_help(verb)).lower()
                 self.assertNotIn("when to use", text)
                 self.assertNotIn("what to do with each is said", text)
                 self.assertNotIn("what a report's decisions are is said", text)
 
-    def test_new_says_what_it_writes_and_where_the_folder_lies(self) -> None:
-        text = run_help("new")
-        self.assertIn("---\n    Title: TITLE\n    Status:\n    ---\n    # Report\n\n    ## What ran\n    ## Check\n    ## Result\n    ## Left open", text)
-        text = flat(text)
+    def test_new_says_what_it_writes_and_leaves_the_rest_to_the_file(self) -> None:
+        # The owner's ruling (2026-10-16): a help holds what the caller needs to
+        # call the verb; the why and the edge rules are the file's opening comment.
+        text = flat(run_help("new"))
         for phrase in (
-            "Title: TITLE",
-            "Opened:",
-            "Project:",
-            "Parent: ID of the session this one came from",
-            "Conversation: the id of the first session",
-            "Status: where the task stands",
-            "## Request",
-            "## Why",
-            "in its own words, from the person's request",
-            "## Steps",
-            "## Next",
-            "written in PascalCase",
-            "rewrite it in the shape above",
-            "never overwrites one that is there",
-            "Left open names each entry the task wrote in a handoff",
-            "at most 10 lines under a `## Decisions needed` heading",
-            "each the question, its options, and the one it recommends",
-            "under temp/sessions/",
-            "sets `sessions` in its .agents/memar/preferences.md",
-            "says on a line of its own",
-            "relative to the project's top folder, or an absolute one",
-            "drive or filesystem root is refused",
-            "inside Memar's own temp/ is not used",
+            "never overwriting one that is there",
+            "Request (what was asked",
+            "Why (the reason",
+            "Steps (each local or delegated)",
+            "Next (what the next session does first)",
+            "at most 10 lines under `## Decisions needed`",
             "use it as printed",
             "`memar content write`",
-            "Once a day",
         ):
             self.assertIn(phrase, text)
-        self.assertNotIn("lies in Memar's own checkout, also when", text)
+        for phrase in ("Title: TITLE", "written in PascalCase", "Once a day", "drive or filesystem root is refused"):
+            self.assertNotIn(phrase, text)
 
     def test_new_says_how_a_task_is_handed_over_queued_and_continued(self) -> None:
         text = flat(run_help("new"))
         for phrase in (
-            "open its session yourself with `--parent`",
-            "write the whole task into its plan.md — the Request, the check that says it is done, the shape of its report, and its Why, in your own words from the person's request",
-            "hand the sub-agent only the brief `new` prints, which `memar session brief ID` prints again",
-            "one fixed sentence that sends the agent to `memar session start`",
-            "with --kind, so that `start` names the model it needs",
+            "open its session with --parent",
+            "write the whole task into its plan.md — Request, the check that says it is done, the shape of its report, and Why",
+            "hand the sub-agent only the brief `new` prints, which `memar prompts hand-session-plan-to-carry-out ID` prints again",
             "--kind K",
-            "takes that session up and opens none, and does not rewrite its Request",
             "To only add work",
             "--queued",
-            "--session-id ID --queued",
-            "a queued plan whose Request is empty is not taken",
             "never do a queued session's work in your own context",
             "To continue a task another session left",
             "`memar session list`",
@@ -380,7 +354,7 @@ class HelpSaysWhatToRun(unittest.TestCase):
             "each the question, its options, and the one it recommends",
             "a complete session is in only when it has entries or a failed hand-back",
             "blocking first",
-            "a pointer to a handoff or line that holds no open question is a failed hand-back",
+            "A pointer to a handoff or line that holds no open question is a failed hand-back",
         ):
             self.assertIn(phrase, text)
 
@@ -405,12 +379,11 @@ class HelpSaysWhatToRun(unittest.TestCase):
 
     def test_each_verbs_help_says_what_it_accepts(self) -> None:
         for verb, phrases in (
-            ("new", ("--session-id", "--title TITLE", "--parent ID", "--project NAME", "--project-path PATH", "never read", "for one task", "first session of that conversation")),
+            ("new", ("--session-id", "--title TITLE", "--parent ID", "--project NAME", "--project-path PATH", "for one task", "Nothing else goes in the hand-over")),
             ("list", ("whose id, title, or project holds TEXT", "one word or a short phrase, not a question",
                       "--status {queued,active,blocked,complete}", "--conversation ID", "--idle-days DAYS",
                       "--project NAME", "--project-path PATH", "List Memar's own session folders", "the calling folder is never read",
-                      "earlier shape", "where today's shape is shown")),
-            ("brief", ("ID", "ready to paste", "`new --parent` prints")),
+                      "earlier shape")),
             ("start", ("--session-id ID", "=== NAME ===", "Run it", "first", "the model its Kind needs", "refuses an ID that has no folder")),
             ("gc", ("--session-id", "--idle-days DAYS", "never swept", "cannot be read", "at least 1", "whose status is complete",
                     "once a day", f"{session_gc.SESSION_IDLE_DAYS} unless given")),
@@ -424,14 +397,14 @@ class HelpSaysWhatToRun(unittest.TestCase):
             ("new", ("--queued", "an existing active one no one has claimed is queued", "--priority N", "1 to 10",
                      "higher goes sooner")),
             ("claim", ("ID", "another agent holds, is refused", "taken over", "Nothing keeps a claim fresh",
-                       f"{session_claim.CLAIM_STALE_SECONDS // 3600} hours")),
+                       f"{Claim.stale_hours()} hours")),
             ("claims", ("N", "highest priority first", "oldest", "brief", "Fewer queued than N is not an error", "no default",
                         "never mixes two projects'", "one fresh sub-agent per batch of one topic", "--topic T", "--fill")),
             ("priority", ("ID", "N", "1 to 10", "5 when", "higher goes sooner", "Anyone, a person or an agent, may change it")),
             ("topic", ("ID", "T", "tasks that share a topic are taken together", "a task with no topic is taken by priority and age alone",
                        "`memar session topics`")),
             ("digest", ("--conversation ID", "Decisions needed", "priority", "failed hand-back",
-                        "entries or not", "Queued sessions are left out", "With --day: the review", "The review closes nothing itself")),
+                        "marked `failed hand-back` with why", "Queued sessions are left out", "With --day: the review", "The review closes nothing itself")),
         ):
             with self.subTest(verb=verb):
                 text = flat(run_help(verb))
@@ -446,11 +419,10 @@ class HelpSaysWhatToRun(unittest.TestCase):
     def test_the_why_is_in_the_files_the_implementer_reads(self) -> None:
         # Not a second copy: each service's own docstring, the one text
         # addressed to whoever opens it, and the domain's says where they are.
-        for name in ("session_new", "session_brief", "session_find", "session_close", "session_gc", "session_archive"):
+        for name in ("session_new", "session_find", "session_close", "session_gc", "session_archive"):
             self.assertIn(name, session.__doc__)
         for module, phrases in (
             (session_new, ("shared-tree collisions", "advisory locks", "intent notes", "One session is one task")),
-            (session_brief, ("same text for every task", "stated once in the delegator's words")),
             (session_plan, ("disputed", "handoff", "Only that shape is read")),
             (session_gc, ("Idle is not the same as", "once a day")),
             (session_find, ("listed together",)),
@@ -499,7 +471,6 @@ class EachServiceDeclaresItsVerb(unittest.TestCase):
         for module, declared in (
             (session, ["session"]),
             (session_new, ["new"]),
-            (session_brief, ["brief"]),
             (session_find, ["list"]),
             (session_archive, ["archive"]),
             (session_show, ["show"]),
@@ -528,7 +499,7 @@ class EachServiceDeclaresItsVerb(unittest.TestCase):
             with self.subTest(module=module.__name__):
                 self.assertFalse(hasattr(module, launcher.DESCRIBE))
 
-    def test_the_command_offers_the_fourteen_verbs_in_the_order_of_their_services(self) -> None:
+    def test_the_command_offers_the_thirteen_verbs_in_the_order_of_their_services(self) -> None:
         def verbs_of(parser: argparse.ArgumentParser) -> dict[str, argparse.ArgumentParser]:
             found = [action for action in parser._actions if isinstance(action, argparse._SubParsersAction)]
             return dict(found[0].choices) if found else {}
@@ -537,7 +508,7 @@ class EachServiceDeclaresItsVerb(unittest.TestCase):
         self.assertEqual(before, [])
         self.assertEqual(
             list(verbs_of(verbs_of(top)["session"])),
-            ["archive", "brief", "claim", "claims", "close", "digest", "list", "gc", "new", "priority", "show", "start", "topic", "topics"],
+            ["archive", "claim", "claims", "close", "depends-on", "digest", "list", "gc", "new", "priority", "show", "start", "topic", "topics"],
         )
 
 
@@ -551,8 +522,9 @@ class VerbsDispatch(Fixture):
              session_find, "list_sessions", ("word", "blocked", 3.0, "s-0", None)),
             (["list", "--project-path", "<F>"], session_find, "list_sessions", (None, None, None, None, "<F>")),
             (["list", "--project", "p"], session_find, "list_sessions", (None, None, None, None, "<F>")),
-            (["brief", "s-1"], session_brief, "print_brief", ("s-1",)),
-            (["start", "--session-id", "s-1"], session_start, "print_start", ("s-1",)),
+            (["start", "--session-id", "s-1"], session_start, "print_start", ("s-1", True, 1, None)),
+            (["start", "--session-id", "s-1", "--without-skill", "--part", "3", "--most-characters", "9000"],
+             session_start, "print_start", ("s-1", False, 3, 9000)),
             (["gc"], session_gc, "collect", (None, None)),
             (["gc", "--session-id", "s-1", "--idle-days", "2"], session_gc, "collect", ("s-1", 2.0)),
             (["close", "--session-id", "s-1"], session_close, "close", ("s-1", False)),
@@ -652,7 +624,7 @@ class NothingBeforeAnyVerb(Fixture):
         left.mkdir(parents=True)
         plan = left / session_plan.PLAN_NAME
         plan.write_text(
-            session_plan.plan_skeleton("Left behind", "2026-10-09T12:00:00Z", Path("/w")), encoding="utf-8", newline="\n"
+            session_plan.plan_skeleton("20261009T120000Z-1-0", "Left behind", "2026-10-09T12:00:00Z", Path("/w")), encoding="utf-8", newline="\n"
         )
         when = time.time() - idle_days * 24 * 60 * 60
         for path in (plan, left):
@@ -688,7 +660,6 @@ class CommandEndToEnd(Fixture):
             ("list", "--conversation ID"),
             ("close", "--session-id SESSION_ID"),
             ("gc", "--idle-days DAYS"),
-            ("brief", "ID"),
             ("start", "--session-id ID"),
         ):
             with self.subTest(verb=verb):

@@ -33,7 +33,9 @@ from machine.console import fail, note
 from services.session_find import find_sessions
 from services.session_folder import Session, folder_of, is_session_folder
 from services.session_plan import PLAN_NAME, read_plan
-from services.session_plan_topic import checked_topic, set_topic, topic_of
+from services.session_plan_topic import set_topic
+from services.topic import Topic
+from services.session_record import PlanKey
 
 TOPIC_COMMAND = "topic"
 # A topic this many edits or fewer from another in use is taken for the same subject mistyped.
@@ -55,7 +57,7 @@ def topics_in_use(project: Path, *, leaving: str | None = None) -> dict[str, lis
     """The topics PROJECT's sessions carry, each with its sessions; LEAVING is a session id left out of the count."""
     found: dict[str, list[Session]] = {}
     for session in find_sessions(project=project):
-        topic = topic_of(session.front)
+        topic = Topic.of(session.front)
         if topic and session.id != leaving:
             found.setdefault(topic, []).append(session)
     return found
@@ -82,16 +84,16 @@ def warn_near(topic: str, project: Path, session_id: str) -> None:
 
 def set_session_topic(session_id: str, value: str) -> None:
     """`topic`: write VALUE as SESSION_ID's topic (empty removes it), and say what it was."""
-    topic = checked_topic(value)
+    topic = Topic.checked(value)
     folder = folder_of(session_id)
     plan = folder / PLAN_NAME
     if not is_session_folder(folder) or not plan.is_file():
         fail(f"no session {session_id} with a {PLAN_NAME}, so there is no topic to set")
     front = read_plan(plan).front
-    was = topic_of(front) or "(none)"
+    was = Topic.of(front) or "(none)"
     set_topic(plan, topic)
     print(f"{session_id}  topic {topic or '(none)'}, was {was}")
-    project = (front or {}).get("project", "").strip()
+    project = (front or {}).get(PlanKey.PROJECT.key, "").strip()
     if topic and project:
         warn_near(topic, Path(project), session_id)
 

@@ -57,12 +57,12 @@ class MintedIdUnique(unittest.TestCase):
     """
 
     def test_two_minted_ids_differ_even_within_one_second(self) -> None:
-        first, second = session_id.new_session_id(), session_id.new_session_id()
+        first, second = session_id.SessionId.new(), session_id.SessionId.new()
         self.assertNotEqual(first, second)
-        self.assertTrue(session_id.is_session_id(first) and session_id.is_session_id(second))
+        self.assertTrue(session_id.SessionId.is_form(first) and session_id.SessionId.is_form(second))
 
     def test_the_form_is_the_date_a_dash_the_time_and_the_process_id(self) -> None:
-        minted = session_id.new_session_id()
+        minted = session_id.SessionId.new()
         self.assertRegex(minted, r"^\d{8}-T\d{6}Z-\d+$")
         self.assertTrue(minted.startswith(time.strftime("%Y%m%d-T", time.gmtime())))
         self.assertTrue(minted.endswith(f"-{os.getpid()}"))
@@ -76,7 +76,7 @@ class MintedIdUnique(unittest.TestCase):
     def test_only_the_minted_form_is_a_session_id(self) -> None:
         for name in ("20261013-T190845Z-23368", "20261010-T054304Z-1"):
             with self.subTest(name=name):
-                self.assertTrue(session_id.is_session_id(name))
+                self.assertTrue(session_id.SessionId.is_form(name))
         for name in (
             "20261013T190845Z-23368-0",
             "34852-18dc8080b906c944-0",
@@ -86,7 +86,7 @@ class MintedIdUnique(unittest.TestCase):
             "repo_tree.md",
         ):
             with self.subTest(name=name):
-                self.assertFalse(session_id.is_session_id(name))
+                self.assertFalse(session_id.SessionId.is_form(name))
 
 
 if __name__ == "__main__":

@@ -1,0 +1,12 @@
+# Normative References — Plan
+A coordinating act — writing, queuing or handing over another session's plan, or asking for a review — decides what another agent will know and how its work will be judged, and these sections govern each of those decisions.
+
+- [Cognition Practice → Norm Application Points](../../../../docs/cognition.practice.md#norm-application-points) — what is settled before another agent's plan is written, and the shape of a question brought to the owner. `reviewed a0fd7ffa4244`
+- [Handoff Practice → Mid-Session Tangents](../../../../modules/content/documentation/handoff/handoff.practice.md#mid-session-tangents) — when a request is a tangent to queue, and when it is delegation that stays in the session. `reviewed 0af7c3d59526`
+- [Handoff Practice → Queued Work and Its Hand-Back](../../../../modules/content/documentation/handoff/handoff.practice.md#queued-work-and-its-hand-back) — why a further task is queued rather than done in the conversation, and what each participant owes its hand-back. `reviewed 9615a74deccb`
+- [Handoff Practice → Questions Found During a Task](../../../../modules/content/documentation/handoff/handoff.practice.md#questions-found-during-a-task) — where a question only the owner can answer is written, so it outlasts the session that found it. `reviewed 38cefb97ae51`
+- [Handoff Practice → Sizing a Task and Recording Follow-Ups](../../../../modules/content/documentation/handoff/handoff.practice.md#sizing-a-task-and-recording-follow-ups) — how large a delegated or queued task should be, and what becomes of the work it turns up. `reviewed 6de1c9010c8b`
+- [Agency → Interaction With an Agent](../../../../docs/agency.md#interaction-with-an-agent) — what a delegation must establish for its agent, from purpose to acceptance criteria. `reviewed 089421c179b5`
+- [Agency → Acceptance Criteria](../../../../docs/agency.md#acceptance-criteria) — an agent cannot tell it is done with a responsibility whose success is undefined, so a plan states it. `reviewed 2ecdb31fb8f8`
+- [Changelog Practice → Recording an approval](../../../../modules/content/documentation/changelog/changelog.practice.md#recording-an-approval) — the procedure by which a review asked for satisfies the three conditions an approval needs. `reviewed bd17ff9ec5cf`
+- [Changelog Practice → Choosing who reviews](../../../../modules/content/documentation/changelog/changelog.practice.md#choosing-who-reviews) — the reviewer is a second cognitive system independent of the work, not a second pass by the first. `reviewed 9cbc386fc528`

@@ -13,15 +13,17 @@ in the `tests/` folder of the shelf that owns it per
 
 Nothing here writes outside its scratch folder: the Memar root is patched onto
 one, made under the folder `machine/fs_test_scratch.py` names, holding a small
-skill and small documents of its own, so no pin here depends on what the real
-documents say. One class reads the real skill, to pin that the passages
-`start` takes from it are found in the file as written.
+skill and small documents of its own, and copies of the real documents the
+kinds' normative references name and of the lists themselves, so which
+sections a kind prints is pinned against the lists as they are while what they
+say is not pinned at all.
 
 What is pinned, and what each pin is for:
 
   PartsInOrder     The text is parts, each opened by a mark line, in one order:
                    the session, the model it needs, the plan, the folder, the
-                   skill, the documents, the help, the ending.
+                   skill, the documents, the commands, the help, the ending; with
+                   `--without-skill` the skill is left out.
   SessionPart      The session's id, path, plan and report are printed, and
                    starting is `new --session-id`: the role folders and the
                    report are there afterwards.
@@ -31,18 +33,39 @@ What is pinned, and what each pin is for:
                    the Request decides, and names the kinds.
   PlanAndFolder    The plan is printed whole, and the folder's listing names
                    what is in it, folders marked.
-  Documents        The skill's Cognition Abstract is always printed; the
-                   other passages the skill requires of judgment only for
-                   those kinds; each document the plan's Steps name is read
-                   at the section it names, or at its Abstract when it names
-                   none; one that is not there is said, not skipped.
+  Documents        The sections the plan's Kind's normative references name
+                   are printed, as `services/task_context.py` composes them
+                   from Memar's lists, under their first line, and recorded in
+                   the session's `temp/context_read.txt`: the every-act sections
+                   alone for a plan with no kind; the lists of the project the
+                   plan names are read in the folders its preference names, and
+                   one that does not exist is said on the first line; a design prints no Khayyam passage
+                   unless its Steps name one. Then each document the plan's
+                   Steps name, at the section it names or at its Abstract,
+                   unless the kind's passages already hold it; one that is
+                   not there is said, not skipped.
+  Commands         Every command is printed with its call shape and a line on
+                   what it is for, so an agent that took up a session already
+                   knows what exists; the card is the generated one.
   Help             The help of each command the plan names is printed, once,
                    with the help of `session` and `content write` which every
                    session needs; a command that does not exist is said.
   Ending           What a sub-agent does last is printed.
+  InParts          A text past the bound prints in ordered parts, as
+                   `machine/console_parts.py` cuts them: each part under the
+                   bound, every part run in order joins to the whole text, and
+                   each closing line names `start` again with the same flags
+                   and the next part. A passage is a mark's part, or one block
+                   under it. Every part names one hash of the whole text. With
+                   no flag the bound is the `most-characters` preference of
+                   the project the plan names, which no closing line repeats;
+                   the flag outranks it; a value that is not a number is
+                   refused, naming the file.
   Refusal          A session with no folder or no plan is refused, naming how
                    a session is opened.
-  RealSkill        The passages `start` takes from the real skill are found.
+  StartHelp        The help says what it prints, names the kinds from the
+                   registry, and offers `--without-skill`, `--part` and
+                   `--most-characters`.
 
 Usage is the interface. Do not duplicate these recipes as prose catalogs.
 """
@@ -50,6 +73,9 @@ from __future__ import annotations
 
 import contextlib
 import io
+import os
+import shutil
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -65,32 +91,43 @@ SCRIPTS = TESTS.parent.parent
 sys.path.insert(0, str(SCRIPTS))
 sys.dont_write_bytecode = True
 
+from machine.console_parts import CLOSING_MARK, MOST_CHARACTERS
 from machine.fs_test_scratch import suite_scratch
 
 import machine.fs_memar as memar_fs
+import services.commands as commands
 import services.session_temp as session_temp
 import services.session_start as session_start
+import services.session_plan_kind as session_plan_kind
 from services.session_plan import PLAN_NAME, plan_skeleton
 from services.session_report import REPORT_NAME
+from services.content_section import by_anchor, section_hash
+from services.normative_references import EVERY_ACT, LIST_NAME, PREFERENCE, lists, memar_place
+from services.project_preferences import preferences_path
+from services.task_context import read_record
+from services.task_kind import TaskKind
 
 SID = "20261011-T000000Z-7"
-SKILL = """# Skill
-- Thinking runs in every step. Read [Cognition](/docs/cognition.md)'s [Abstract](/docs/cognition.md#abstract) first. Before a step that reasons, read also [Standards](/docs/cognition.md#standards-here), and [Norms](/docs/cognition.md#norms-here).
-- Ideation, design, and critique read theirs: [Modeling](/docs/modeling.md#abstract)'s Abstract; [Practice](/docs/practice.md#first-part) from First Part through Last Part; [Khayyam](/docs/khayyam.md#minimal-rule) alone.
-- Anything else is not read.
-"""
+ROOT = SCRIPTS.parent.parent
+SKILL = "# Skill\n- SKILL-TEXT, printed whole.\n"
 DOCS = {
-    "cognition.md": "# Cognition\n\n## Abstract\nCOGNITION-ABSTRACT\n\n## Standards Here\nSTANDARDS-TEXT\n\n## Norms Here\nNORMS-TEXT\n",
-    "modeling.md": "# Modeling\n\n## Abstract\nMODELING-ABSTRACT\n\n## Body\nMODELING-BODY\n",
-    "practice.md": "# Practice\n\n## First Part\nFIRST-TEXT\n\n## Middle Part\nMIDDLE-TEXT\n\n## Last Part\nLAST-TEXT\n\n## After\nAFTER-TEXT\n",
-    "khayyam.md": "# Khayyam\n\n## Minimal Rule\nMINIMAL-TEXT\n\n## Other\nOTHER-TEXT\n",
+    "plain.md": "# Plain\n\n## Abstract\nPLAIN-ABSTRACT\n\n## Body\nPLAIN-BODY\n",
     "steps.md": "# Steps\n\n## Abstract\nSTEPS-ABSTRACT\n\n## Detail\nSTEPS-DETAIL\n",
 }
+LISTS = lists([memar_place(ROOT)])
+# Memar's lists, the real documents their entries name, and one no list names, copied into the scratch root.
+REAL = sorted(
+    {entry.path for found in LISTS for entry in found.entries}
+    | {found.path.relative_to(ROOT).as_posix() for found in LISTS}
+    | {"docs/khayyam/khayyam.md"}
+)
+EVERY_ACT_HEADS = [f"{entry.path}#{entry.anchor}" for found in LISTS if found.word == EVERY_ACT for entry in found.entries]
+KHAYYAM = "/docs/khayyam/khayyam.md#minimal-legislation-a-principle"
 MARK = "=== "
 
 
-def plan_with(kind: str | None = None, request: str = "Do the thing.", steps: str = "") -> str:
-    base = plan_skeleton("Delegated", "2026-10-11T00:00:00Z", Path("/project"), kind=kind)
+def plan_with(kind: str | None = None, request: str = "Do the thing.", steps: str = "", project: Path = Path("/project")) -> str:
+    base = plan_skeleton("20261011T000000Z-1-0", "Delegated", "2026-10-11T00:00:00Z", project, kind=kind)
     return base.replace("## Request\n", f"## Request\n{request}\n").replace("## Steps\n", f"## Steps\n{steps}\n")
 
 
@@ -108,21 +145,24 @@ class Fixture(unittest.TestCase):
         for name, text in DOCS.items():
             (self.fake_root / "docs").mkdir(exist_ok=True)
             (self.fake_root / "docs" / name).write_text(text, encoding="utf-8", newline="\n")
+        for path in REAL:
+            (self.fake_root / path).parent.mkdir(parents=True, exist_ok=True)
+            shutil.copyfile(ROOT / path, self.fake_root / path)
 
     def session(self, plan: str) -> str:
         folder = memar_fs.session_dir(SID, create=True)
         (folder / PLAN_NAME).write_text(plan, encoding="utf-8", newline="\n")
         return SID
 
-    def text(self, plan: str | None = None) -> str:
+    def text(self, plan: str | None = None, with_skill: bool = True) -> str:
         if plan is not None:
             self.session(plan)
-        return session_start.start_text(SID)
+        return session_start.start_text(SID, with_skill=with_skill)
 
-    def parts(self, plan: str | None = None) -> dict[str, str]:
+    def parts(self, plan: str | None = None, with_skill: bool = True) -> dict[str, str]:
         found: dict[str, str] = {}
         title = None
-        for line in self.text(plan).splitlines():
+        for line in self.text(plan, with_skill).splitlines():
             if line.startswith(MARK) and line.endswith(" ==="):
                 title = line[len(MARK) : -len(" ===")]
                 found[title] = ""
@@ -135,8 +175,13 @@ class PartsInOrder(Fixture):
     def test_the_text_is_marked_parts_in_one_order(self) -> None:
         self.assertEqual(
             list(self.parts(plan_with())),
-            ["session", "model", PLAN_NAME, "folder", "skill", "documents", "help", "ending"],
+            ["session", "model", PLAN_NAME, "folder", "skill", "documents", "commands", "help", "ending"],
         )
+
+    def test_without_the_skill_the_skill_is_left_out(self) -> None:
+        parts = self.parts(plan_with(), with_skill=False)
+        self.assertEqual(list(parts), ["session", "model", PLAN_NAME, "folder", "documents", "commands", "help", "ending"])
+        self.assertNotIn("SKILL-TEXT", "".join(parts.values()))
 
     def test_nothing_comes_before_the_first_mark(self) -> None:
         self.assertTrue(self.text(plan_with()).startswith(MARK))
@@ -158,12 +203,17 @@ class SessionPart(Fixture):
 
 class ModelPart(Fixture):
     def test_a_kind_that_is_judgment_names_the_strongest_model_and_the_block(self) -> None:
-        for kind in ("ideation", "plan", "modeling", "design", "critique"):
+        for kind in session_plan_kind.STRONG_KINDS:
             with self.subTest(kind=kind):
                 part = self.parts(plan_with(kind))["model"]
                 self.assertIn(f"kind: {kind}", part)
                 self.assertIn("strongest model", part)
                 self.assertIn("end Blocked", part)
+
+    def test_a_refused_stronger_model_does_not_block_the_task(self) -> None:
+        part = self.parts(plan_with("design"))["model"]
+        self.assertIn("strongest usable one is the right one", part)
+        self.assertIn("goes on", part)
 
     def test_a_mechanical_kind_names_a_cheaper_model(self) -> None:
         part = self.parts(plan_with("mechanical"))["model"]
@@ -179,7 +229,7 @@ class ModelPart(Fixture):
     def test_a_mistyped_kind_is_not_taken_for_a_cheaper_one(self) -> None:
         part = self.parts(plan_with().replace("Opened:", "Kind: modelling\nOpened:"))["model"]
         self.assertIn("'modelling' is not a kind", part)
-        self.assertIn("ideation, plan, modeling, design, critique, mechanical", part)
+        self.assertIn(", ".join(session_plan_kind.KINDS), part)
         self.assertNotIn("cheaper model", part)
 
 
@@ -196,36 +246,84 @@ class PlanAndFolder(Fixture):
         self.assertIn("docs/", lines)
 
 
+def headers(part: str) -> list[str]:
+    """The passage headers of a documents part, as `path#anchor`, without a range's end."""
+    return [line[4:].split(" through ")[0].removesuffix(" ---") for line in part.splitlines() if line.startswith("--- ")]
+
+
 class Documents(Fixture):
-    def test_the_cognition_abstract_is_always_printed_and_the_rest_only_for_judgment(self) -> None:
-        mechanical = self.parts(plan_with("mechanical"))["documents"]
-        self.assertIn("COGNITION-ABSTRACT", mechanical)
-        for absent in ("STANDARDS-TEXT", "NORMS-TEXT", "MODELING-ABSTRACT", "FIRST-TEXT"):
-            self.assertNotIn(absent, mechanical)
-        judgment = self.parts(plan_with("design"))["documents"]
-        for present in ("COGNITION-ABSTRACT", "STANDARDS-TEXT", "NORMS-TEXT", "MODELING-ABSTRACT", "MINIMAL-TEXT"):
-            self.assertIn(present, judgment)
-        self.assertNotIn("MODELING-BODY", judgment)
-        self.assertNotIn("OTHER-TEXT", judgment)
+    def test_each_kind_prints_its_passages_and_no_other(self) -> None:
+        for kind in TaskKind:
+            with self.subTest(kind=kind.word):
+                # Written by hand, as an earlier Memar wrote a kind a plan may no longer carry.
+                plan = plan_with().replace("Opened:", f"Kind: {kind.word}\nOpened:")
+                found = [line for line in headers(self.parts(plan)["documents"]) if "(description)" not in line]
+                printed = self.compose_heads(kind)
+                self.assertEqual(found, printed)
 
-    def test_a_range_runs_from_the_first_section_through_the_last(self) -> None:
-        judgment = self.parts(plan_with("design"))["documents"]
-        for present in ("FIRST-TEXT", "MIDDLE-TEXT", "LAST-TEXT"):
-            self.assertIn(present, judgment)
-        self.assertNotIn("AFTER-TEXT", judgment)
+    def compose_heads(self, kind: TaskKind) -> list[str]:
+        from services.task_context import context_text
 
-    def test_each_passage_is_headed_by_where_it_comes_from(self) -> None:
-        judgment = self.parts(plan_with("design"))["documents"]
-        self.assertIn("docs/cognition.md#abstract", judgment)
-        self.assertIn("docs/practice.md#first-part", judgment)
+        return [line for line in headers(context_text([memar_place(self.fake_root)], [kind])) if "(description)" not in line]
+
+    def test_a_plan_with_no_kind_or_a_mistyped_one_prints_the_every_act_sections(self) -> None:
+        for plan in (plan_with(), plan_with().replace("Opened:", "Kind: modelling\nOpened:")):
+            with self.subTest(plan=plan[:40]):
+                found = headers(self.parts(plan)["documents"])
+                self.assertEqual(sorted(found), sorted(EVERY_ACT_HEADS))
+
+    def test_the_documents_part_opens_with_its_first_line(self) -> None:
+        part = self.parts(plan_with("design"))["documents"]
+        self.assertTrue(part.splitlines()[0].startswith("kinds: design; "), part.splitlines()[:2])
+
+    def test_the_lists_of_the_project_the_plan_names_are_read(self) -> None:
+        project = self.fake_root / "orchard"
+        (project / "docs").mkdir(parents=True)
+        (project / "docs" / "own.md").write_text("# Own\n\n## Mine\nMINE-TEXT\n", encoding="utf-8", newline="\n")
+        (project / "rules").mkdir()
+        mark = section_hash(by_anchor("# Own\n\n## Mine\nMINE-TEXT\n", "mine"))
+        (project / "rules" / LIST_NAME.format(word=TaskKind.DESIGN.word)).write_text(
+            f"# Orchard\nWhy.\n\n- [Own → Mine](../docs/own.md#mine) — OWN-WHY `reviewed {mark}`\n", encoding="utf-8", newline="\n"
+        )
+        preferences = preferences_path(project)
+        preferences.parent.mkdir(parents=True)
+        preferences.write_text(f"---\n{PREFERENCE}: rules, rules/gone\n---\n# Preferences\n", encoding="utf-8", newline="\n")
+        part = self.parts(plan_with("design", project=project))["documents"]
+        self.assertIn("--- orchard: docs/own.md#mine ---\nWhy: OWN-WHY\n## Mine\nMINE-TEXT", part)
+        self.assertIn(", 1 from this project's", part.splitlines()[0])
+        self.assertIn("rules/gone", part.splitlines()[0])
+
+    def test_what_the_documents_part_printed_is_recorded_in_the_session(self) -> None:
+        self.parts(plan_with("design"))
+        recorded = read_record(memar_fs.session_dir(SID))
+        self.assertIn(("memar", "docs/modeling.md", "abstract"), {line[:3] for line in recorded})
+        self.assertTrue(all("\\" not in line.path for line in recorded))
+
+    def test_a_design_prints_no_khayyam_passage_unless_its_steps_name_one(self) -> None:
+        design = self.parts(plan_with("design"))["documents"]
+        self.assertIn("docs/modeling.md#abstract", headers(design))
+        self.assertNotIn("khayyam", design.lower())
+        named = self.parts(plan_with("design", steps=f"1. read {KHAYYAM}. Local."))["documents"]
+        self.assertIn(KHAYYAM.lstrip("/"), headers(named))
+
+    def test_a_practice_has_its_description_once(self) -> None:
+        part = self.parts(plan_with("implement"))["documents"]
+        self.assertEqual(part.count("--- modules/process/test/test.practice.md (description) ---"), 1)
+
+    def test_a_step_document_the_kind_already_prints_is_not_printed_again(self) -> None:
+        steps = "1. read /docs/modeling.md#abstract and docs/modeling.practice.md#the-modeling-workflow. Local."
+        found = headers(self.parts(plan_with("design", steps=steps))["documents"])
+        self.assertEqual(found.count("docs/modeling.md#abstract"), 1)
+        self.assertEqual(found.count("docs/modeling.practice.md#the-modeling-workflow"), 1)
 
     def test_a_document_the_steps_name_is_read_at_its_section_or_its_abstract(self) -> None:
-        steps = "1. local: read /docs/steps.md#detail and `docs/modeling.md`, then act."
+        steps = "1. local: read /docs/steps.md#detail and `docs/plain.md`, then act."
         part = self.parts(plan_with("mechanical", steps=steps))["documents"]
         self.assertIn("STEPS-DETAIL", part)
         self.assertNotIn("STEPS-ABSTRACT", part)
-        self.assertIn("MODELING-ABSTRACT", part)
-        self.assertNotIn("MODELING-BODY", part)
+        self.assertIn("PLAIN-ABSTRACT", part)
+        self.assertNotIn("PLAIN-BODY", part)
+        self.assertLess(part.index("docs/cognition.md#abstract"), part.index("STEPS-DETAIL"))
 
     def test_a_document_named_twice_is_printed_once(self) -> None:
         steps = "read /docs/steps.md#detail, again /docs/steps.md#detail"
@@ -252,6 +350,16 @@ class Documents(Fixture):
 class SkillPart(Fixture):
     def test_the_skill_is_printed_whole(self) -> None:
         self.assertIn(SKILL.strip(), self.parts(plan_with())["skill"])
+
+
+class Commands(Fixture):
+    def test_the_card_lists_commands_with_their_call_shape(self) -> None:
+        part = self.parts(plan_with())["commands"]
+        for line in ("memar session start --session-id ID", "memar content write", "memar commands"):
+            self.assertIn(line, part)
+
+    def test_the_card_is_the_generated_one(self) -> None:
+        self.assertEqual(self.parts(plan_with())["commands"].strip(), commands.card_text().strip())
 
 
 class Help(Fixture):
@@ -298,6 +406,106 @@ class Ending(Fixture):
             self.assertIn(phrase, part)
 
 
+# A bound well under the text an implement plan starts with, so it prints in several parts.
+SMALL = 6_000
+
+
+def body(part: str) -> str:
+    """PART without its closing line."""
+    return part[: part.rindex(CLOSING_MARK)] if CLOSING_MARK in part else part
+
+
+class InParts(Fixture):
+    def printed(self, part: int, with_skill: bool = True, most: int | None = SMALL) -> str:
+        out = io.StringIO()
+        with contextlib.redirect_stdout(out):
+            session_start.print_start(SID, with_skill, part=part, most=most)
+        return out.getvalue()
+
+    def every_part(self, with_skill: bool = True, most: int | None = SMALL) -> list[str]:
+        parts = [self.printed(1, with_skill, most)]
+        while "the last" not in parts[-1][parts[-1].rindex(CLOSING_MARK) :]:
+            parts.append(self.printed(len(parts) + 1, with_skill, most))
+        return parts
+
+    def test_the_passages_joined_are_the_text(self) -> None:
+        self.session(plan_with("implement"))
+        self.assertEqual("".join(session_start.start_passages(SID)), session_start.start_text(SID))
+
+    def test_every_part_run_in_order_joins_to_the_text_each_under_the_bound(self) -> None:
+        self.session(plan_with("implement"))
+        parts = self.every_part()
+        self.assertGreater(len(parts), 2)
+        for number, part in enumerate(parts, 1):
+            with self.subTest(part=number):
+                self.assertLessEqual(len(part), SMALL)
+        self.assertEqual("".join(body(part) for part in parts), session_start.start_text(SID))
+
+    def test_a_closing_line_names_start_with_the_same_flags_and_the_next_part(self) -> None:
+        self.session(plan_with("implement"))
+        first = self.printed(1, with_skill=False)
+        self.assertIn(
+            f"`memar session start --session-id {SID} --without-skill --most-characters {SMALL} --part 2`", first
+        )
+
+    def test_a_text_under_the_bound_prints_whole_with_no_closing_line(self) -> None:
+        self.session(plan_with("implement"))
+        whole = self.printed(1, most=10 * len(session_start.start_text(SID)))
+        self.assertNotIn(CLOSING_MARK, whole)
+        self.assertEqual(whole, session_start.start_text(SID))
+
+    def test_the_default_bound_is_the_declared_one(self) -> None:
+        self.session(plan_with("implement"))
+        out = io.StringIO()
+        with contextlib.redirect_stdout(out):
+            session_start.print_start(SID)
+        self.assertLessEqual(len(out.getvalue()), MOST_CHARACTERS)
+
+    def project_preferring(self, value: str) -> Path:
+        """A project whose preferences file sets `most-characters` to VALUE, and a session of it."""
+        project = self.fake_root / "project"
+        preferences = project / ".agents" / "memar" / "preferences.md"
+        preferences.parent.mkdir(parents=True)
+        preferences.write_text(f"---\nsessions:\nmost-characters: {value}\n---\n# Preferences\n", encoding="utf-8", newline="\n")
+        self.session(plan_with("implement", project=project))
+        return project
+
+    def test_the_projects_preference_is_the_bound_and_no_closing_line_names_it(self) -> None:
+        self.project_preferring(str(SMALL))
+        parts = self.every_part(most=None)
+        self.assertGreater(len(parts), 2)
+        for number, part in enumerate(parts, 1):
+            with self.subTest(part=number):
+                self.assertLessEqual(len(part), SMALL)
+        self.assertIn(f"`memar session start --session-id {SID} --part 2`", parts[0])
+        self.assertEqual("".join(body(part) for part in parts), session_start.start_text(SID))
+
+    def test_the_flag_outranks_the_preference(self) -> None:
+        self.project_preferring(str(SMALL * 2))
+        preferred = self.every_part(most=None)
+        given = self.every_part(most=SMALL)
+        self.assertGreater(len(given), len(preferred))
+        for part in given:
+            self.assertLessEqual(len(part), SMALL)
+
+    def test_a_preference_that_is_not_a_number_is_refused_naming_its_file(self) -> None:
+        self.project_preferring("many")
+        with self.assertRaises(SystemExit) as refused:
+            self.printed(1, most=None)
+        self.assertIn("most-characters", str(refused.exception.code))
+        self.assertIn("preferences.md", str(refused.exception.code))
+
+    def test_every_part_names_one_hash_of_the_whole_text(self) -> None:
+        from machine.console_parts import text_id
+
+        self.session(plan_with("implement"))
+        parts = self.every_part()
+        whole = text_id(session_start.start_text(SID))
+        for number, part in enumerate(parts, 1):
+            with self.subTest(part=number):
+                self.assertIn(f"{CLOSING_MARK} part {number} of {len(parts)} of text {whole}", part)
+
+
 class Refusal(Fixture):
     def test_a_session_with_no_folder_is_refused_naming_how_one_is_opened(self) -> None:
         with self.assertRaises(SystemExit) as refused:
@@ -322,39 +530,19 @@ class Refusal(Fixture):
         self.assertEqual(nothing.getvalue(), "")
 
 
-class RealSkill(unittest.TestCase):
-    """The passages `start` takes from the skill are found in the skill as written."""
-
-    def reading(self) -> session_start.Reading:
-        skill = SCRIPTS.parent.parent / ".agents" / "skills" / "memar" / "SKILL.md"
-        return session_start.required_reading(skill.read_text(encoding="utf-8"))
-
-    def test_the_cognition_abstract_is_the_one_always_read(self) -> None:
-        always = self.reading().always
-        self.assertEqual([(ref.path, ref.anchor) for ref in always], [("docs/cognition.md", "abstract")])
-
-    def test_judgment_reads_the_cognition_sections_and_what_the_skill_names_for_ideation(self) -> None:
-        judgment = {(ref.path, ref.anchor): ref for ref in self.reading().judgment}
-        for key in (
-            ("docs/cognition.md", "standards-of-cognitive-material"),
-            ("docs/cognition.md", "what-implementation-asymmetry-obliges"),
-            ("docs/modeling.md", "abstract"),
-            ("docs/modeling.practice.md", "model-reading"),
-            ("docs/protocol.md", "abstract"),
-            ("docs/khayyam/khayyam.md", "abstract"),
-            ("docs/khayyam/khayyam.md", "minimal-legislation-a-principle"),
+class StartHelp(unittest.TestCase):
+    def test_the_help_says_what_it_prints_names_the_kinds_and_offers_without_skill(self) -> None:
+        environment = dict(os.environ, COLUMNS="100", PYTHONIOENCODING="utf-8", MEMAR_NO_AUTO_UPDATE="1")
+        done = subprocess.run(
+            [sys.executable, str(SCRIPTS / "memar"), "session", "start", "--help"], capture_output=True, env=environment
+        )
+        self.assertEqual(done.returncode, 0, done.stderr)
+        shown = " ".join(done.stdout.decode("utf-8").split())
+        for phrase in (
+            "--without-skill", "--part", "--most-characters", "memar content context", "every agent",
+            ", ".join(session_plan_kind.KINDS),
         ):
-            self.assertIn(key, judgment)
-        self.assertEqual(judgment[("docs/modeling.practice.md", "model-reading")].through, "The Modeling Workflow")
-
-    def test_every_passage_resolves_in_the_real_documents(self) -> None:
-        from services.content_section import by_anchor
-
-        root = SCRIPTS.parent.parent
-        for ref in (*self.reading().always, *self.reading().judgment):
-            with self.subTest(ref=ref):
-                text = (root / ref.path).read_text(encoding="utf-8")
-                self.assertIsNotNone(by_anchor(text, ref.anchor, ref.through))
+            self.assertIn(phrase, shown)
 
 
 if __name__ == "__main__":

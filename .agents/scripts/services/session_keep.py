@@ -33,7 +33,7 @@ from pathlib import Path
 from typing import NamedTuple
 
 from services.session_temp import TEMP_FOLDER
-from services.session_claim import CLAIM_NAME, CLAIM_TAKEOVER_NAME
+from services.claim import Claim
 
 KEEP_LIMIT_BYTES = 256 * 1024
 """The size above which a file that is not a document is left out."""
@@ -139,7 +139,7 @@ def select(folder: Path) -> Selection:
         ]
         for name in sorted(names):
             path = here / name
-            if at_top and name in (CLAIM_NAME, CLAIM_TAKEOVER_NAME):
+            if at_top and name in Claim.NAMES:
                 leave(path, Reason.CLAIM)
             elif name.lower() == GIT_PART:
                 leave(path, Reason.GIT)

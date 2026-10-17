@@ -47,6 +47,8 @@ from typing import Callable
 
 from machine.console import fail
 import machine.fs_memar as memar_fs
+from services.project_name import ProjectName
+from services.project_path import ProjectPath
 from services.project_registry import (
     Entry,
     add_project,
@@ -205,54 +207,30 @@ def resolve_project(word: str) -> Path:
     fail(refusal(word, found))
 
 
-NAME_FLAG = "--project"
-PATH_FLAG = "--project-path"
-
-
-def _looks_like_a_path(text: str) -> bool:
-    """Whether TEXT is written as a path: absolute, with a drive or a separator, or starting with . or ~."""
-    return (
-        Path(text).is_absolute()
-        or bool(Path(text).drive)
-        or "/" in text
-        or "\\" in text
-        or text[0] in ".~"
-    )
-
-
 def project_by_name(value: str) -> Path:
     """The folder of the project VALUE names in the registry; a value written as a path is an error.
 
-    The caller said it is a name (`--project`), so a value that looks like a
-    path is not looked up and not taken as a folder: it is refused with the
-    flag that takes a path. Nothing here reads the folder the process is in.
+    The caller said it is a name (`ProjectName.FLAG`), so a value that looks
+    like a path is not looked up and not taken as a folder: `ProjectName`
+    refuses it with the flag that takes a path. Nothing here reads the folder
+    the process is in.
     """
-    if not value or not value.strip():
-        fail(f"{NAME_FLAG} needs the name of a project, one `memar project list` shows")
-    text = value.strip()
-    if _looks_like_a_path(text):
-        fail(f"{NAME_FLAG} takes a project's name, and {value} looks like a path; for a folder use {PATH_FLAG} PATH")
-    return resolve_project(text)
+    return resolve_project(ProjectName.checked(value))
 
 
 def project_by_path(value: str | Path) -> Path:
     """The folder VALUE is, as given; anything that is not an existing folder is an error.
 
-    The caller said it is a path (`--project-path`), so no registry is asked: a
-    word that is not a folder is refused, with the flag that takes a name.
+    The caller said it is a path (`ProjectPath.FLAG`), so no registry is asked:
+    a word that is not a folder is refused, with the flag that takes a name.
     """
     text = str(value).strip()
-    if not text:
-        fail(f"{PATH_FLAG} needs the folder of a project")
-    folder = Path(text).expanduser().resolve()
-    if not folder.is_dir():
-        hint = "" if _looks_like_a_path(text) else f"; for a registered project's name use {NAME_FLAG} NAME"
-        fail(f"{value} is not a folder{hint}")
-    return folder
+    hint = "" if ProjectPath.written_like(text) else f"; for a registered project's name use {ProjectName.FLAG} {ProjectName.METAVAR}"
+    return ProjectPath.checked(value, hint=hint).folder
 
 
 def add_project_flags(parser: argparse.ArgumentParser, what: str, *, required: bool = False) -> None:
-    """Give PARSER the two flags that name a project, at most one of them: `--project NAME` and `--project-path PATH`.
+    """Give PARSER the two flags that name a project, at most one of them: `ProjectName.FLAG` and `ProjectPath.FLAG`.
 
     WHAT says, in the help, which project the verb means. REQUIRED only changes
     the help: a verb refuses a missing project itself, in its own words.
@@ -260,23 +238,23 @@ def add_project_flags(parser: argparse.ArgumentParser, what: str, *, required: b
     group = parser.add_mutually_exclusive_group()
     need = "required, one of the two: " if required else "one of the two: "
     group.add_argument(
-        NAME_FLAG,
-        metavar="NAME",
+        ProjectName.FLAG,
+        metavar=ProjectName.METAVAR,
         default=None,
-        help=f"{need}{what}, by the name or alias `memar project find` resolves; a folder is not accepted here, use {PATH_FLAG}",
+        help=f"{need}{what}, by name or alias; a folder goes to {ProjectPath.FLAG}",
     )
     group.add_argument(
-        PATH_FLAG,
-        metavar="PATH",
+        ProjectPath.FLAG,
+        metavar=ProjectPath.METAVAR,
         default=None,
-        help=f"{need}{what}, by its folder, taken as given (its git top-level is the project); a name is not accepted here, use {NAME_FLAG}",
+        help=f"{need}{what}, by folder; a name goes to {ProjectName.FLAG}",
     )
 
 
 def project_from_args(args: argparse.Namespace) -> Path | None:
-    """The folder the parsed `--project` or `--project-path` names, None when neither was given."""
-    name = getattr(args, "project", None)
-    path = getattr(args, "project_path", None)
+    """The folder the parsed project flags name, None when neither was given."""
+    name = getattr(args, ProjectName.DEST, None)
+    path = getattr(args, ProjectPath.DEST, None)
     if name is not None:
         return project_by_name(name)
     if path is not None:

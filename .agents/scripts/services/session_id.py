@@ -25,38 +25,41 @@ from __future__ import annotations
 import os
 import re
 import time
-
-_FORM = re.compile(r"^\d{8}-T\d{6}Z-\d+$")
-_STAMP_FORMAT = "%Y%m%d-T%H%M%SZ"
+from typing import ClassVar
 
 
-class _Mint:
-    """The second this process last minted in, so a second mint in it waits rather than repeats."""
+class SessionId(str):
+    """One session's id, the name of its folder and the key of its notes.
 
-    last: str | None = None
-
-
-def _stamp() -> str:
-    return time.strftime(_STAMP_FORMAT, time.gmtime())
-
-
-def new_session_id() -> str:
-    """A unique id for the calling session, for its folder and its intent notes.
-
-    The UTC second comes first, in ISO 8601 basic form with a dash before the
-    time, so a plain name sort in any file listing is creation order and a
-    person reads the date off the name. The process id separates sessions
-    opened in the same second; a second mint by one process in the second it
-    last minted in waits for the next second.
+    The form is the UTC date, a dash, the time, a `Z`, a dash and the process
+    id; `new` mints one and `is_form` says whether a name has it. The form, the
+    clock's format and the rule that one process never mints the same second
+    twice are written here and nowhere else.
     """
-    stamp = _stamp()
-    while stamp == _Mint.last:
-        time.sleep(1.0 - time.time() % 1.0)
-        stamp = _stamp()
-    _Mint.last = stamp
-    return f"{stamp}-{os.getpid()}"
 
+    FORM: ClassVar[re.Pattern[str]] = re.compile(r"^\d{8}-T\d{6}Z-\d+$")
+    STAMP_FORMAT: ClassVar[str] = "%Y%m%d-T%H%M%SZ"
+    # The second this process last minted in, so a second mint in it waits rather than repeats.
+    _last: ClassVar[str | None] = None
 
-def is_session_id(name: str) -> bool:
-    """Whether NAME has the form new_session_id mints."""
-    return bool(_FORM.match(name))
+    @classmethod
+    def new(cls) -> SessionId:
+        """A unique id for the calling session, for its folder and its intent notes.
+
+        The UTC second comes first, in ISO 8601 basic form with a dash before the
+        time, so a plain name sort in any file listing is creation order and a
+        person reads the date off the name. The process id separates sessions
+        opened in the same second; a second mint by one process in the second it
+        last minted in waits for the next second.
+        """
+        stamp = time.strftime(cls.STAMP_FORMAT, time.gmtime())
+        while stamp == cls._last:
+            time.sleep(1.0 - time.time() % 1.0)
+            stamp = time.strftime(cls.STAMP_FORMAT, time.gmtime())
+        cls._last = stamp
+        return cls(f"{stamp}-{os.getpid()}")
+
+    @classmethod
+    def is_form(cls, name: str) -> bool:
+        """Whether NAME has the form `new` mints."""
+        return bool(cls.FORM.match(name))

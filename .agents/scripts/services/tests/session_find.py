@@ -106,7 +106,7 @@ LATEST = "20261004-T000000Z-1"
 
 def plan(title: str, project: str = "/work", status: str = "active", **link: str) -> str:
     """A plan with STATUS in today's shape (PascalCase keys, Status in the front matter)."""
-    text = plan_skeleton(title, "2026-10-01T00:00:00Z", Path(project), **link)
+    text = plan_skeleton("20261001-T000000Z-1", title, "2026-10-01T00:00:00Z", Path(project), **link)
     return text.replace("Status: Active", f"Status: {status.capitalize()}", 1)
 
 

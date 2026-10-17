@@ -66,6 +66,7 @@ import services.session_plan as session_plan
 import services.session_plan_priority as session_plan_priority
 import services.session_plan_topic as session_plan_topic
 import services.session_topic as session_topic
+from services.topic import Topic
 import services.session_topics as session_topics
 
 
@@ -119,12 +120,12 @@ class TopicField(Fixture):
     def test_a_topic_is_written_lower_case_with_hyphens_for_spaces(self) -> None:
         for given, written in (("Khayyam", "khayyam"), ("  Local  LSP server ", "local-lsp-server"), ("a\tb", "a-b")):
             with self.subTest(given=given):
-                self.assertEqual(session_plan_topic.normalized_topic(given), written)
+                self.assertEqual(Topic.normalized(given), written)
 
     def test_a_plan_without_a_topic_has_none(self) -> None:
         folder = self.session("20261013T000001Z-1-0")
-        self.assertEqual(session_plan_topic.topic_of(self.front(folder)), "")
-        self.assertEqual(session_plan_topic.topic_of(None), "")
+        self.assertEqual(Topic.of(self.front(folder)), "")
+        self.assertEqual(Topic.of(None), "")
 
     def test_new_writes_the_topic_into_a_new_plan(self) -> None:
         with contextlib.redirect_stdout(io.StringIO()):
@@ -151,8 +152,8 @@ class TopicField(Fixture):
         self.assertNotIn("topic", self.front(path))
 
     def test_a_topic_is_one_line_and_not_empty_on_new(self) -> None:
-        self.assertIn("one line", self.refused(session_plan_topic.checked_topic, "a\nb"))
-        self.assertEqual(session_plan_topic.checked_topic("  "), "")
+        self.assertIn("one line", self.refused(Topic.checked, "a\nb"))
+        self.assertEqual(Topic.checked("  "), "")
 
 
 class TopicVerb(Fixture):

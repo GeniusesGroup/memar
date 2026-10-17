@@ -36,29 +36,19 @@ followed blindly by a write that would put back what another changed
 meanwhile: it is checked against the plan as it is just before it lands, and
 lands whole (`session_plan_rewrite`).
 
-Which waiting task goes first is the plan's `priority`, a whole number from 1
-to 10 in its front matter, the higher sooner. It is the plan's own because it
-is a fact about the task, read wherever the plan is read — `list`, `claims`,
-`digest` — and changed by anyone (`session_priority`), so it is one key
-rewritten in place (`set_priority`) like the status line, not a queue kept
-somewhere else that could disagree with the plans. A plan that writes none has
-the middle value, 5, so every plan written before priorities existed waits as
-an ordinary task; a value that is not such a number reads as 5 too, since a
-plan is scratch a person edits by hand and one typo must not stop the line.
+Which waiting task goes first is the plan's `priority` (`services/priority.py`
+declares what it is). It is the plan's own because it is a fact about the task,
+read wherever the plan is read — `list`, `claims`, `digest` — and changed by
+anyone (`session_priority`), so it is one key rewritten in place
+(`set_priority`) like the status line, not a queue kept somewhere else that
+could disagree with the plans.
 
-What a waiting task is about is the plan's `topic`, one subject in its front
-matter, so that `claims` can give one agent the tasks of one subject and keep
-its context on it. One value, not several: a task with two subjects is two
-tasks, and one value keeps "the same topic" a plain equality. It is free text
-normalized when written (`normalized_topic`: lower case, runs of white space as
-one hyphen), not a list the project keeps, because a kept list is a second
-thing to maintain and would stop a new subject at the moment it appears; a typo
-that splits one subject in two is met by showing the topics in use and by
-warning of a near match (`session_topic`). A plan without one has none, and
-none is not a topic of its own. It is one key rewritten in place
-(`set_topic`), like the priority.
+What a waiting task is about is the plan's `topic` (`services/topic.py`
+declares what it is), one subject in its front matter, so that `claims` can
+give one agent the tasks of one subject and keep its context on it. It is one
+key rewritten in place (`set_topic`), like the priority.
 
-One Status vocabulary serves every Memar document (docs/documentation.md,
+One Status vocabulary serves every Memar document (modules/content/documentation/documentation.md,
 section Status), declared once in `services/status.py`; the Statuses a plan may
 take are those of `PLAN.statuses` (`services/session_record.py`), and its
 Status is written in the front matter beside PascalCase keys. Only that
@@ -101,7 +91,7 @@ EARLIER_SHAPE_REMEDY = "only today's shape is read, which `memar session new --h
 # What marks an earlier shape, so it can be named: the words a status was
 # written in, and the body line that held it.
 EARLIER_STATUS_WORDS = ("open", "done")
-STATUS_PREFIX = "Status:"
+STATUS_PREFIX = f"{PlanKey.STATUS.written}:"
 # A read that finds the plan refused for the moment tries again this many times, pausing this
 # long (`session_plan_rewrite` uses the same for its replace).
 REWRITE_ATTEMPTS = 5
@@ -140,6 +130,7 @@ def front_key(key: str) -> str:
 
 
 def plan_skeleton(
+    session: str,
     title: str,
     opened: str,
     project: Path,
@@ -150,17 +141,24 @@ def plan_skeleton(
     priority: int | None = None,
     topic: str | None = None,
     kind: str | None = None,
+    depends_on: str | None = None,
 ) -> str:
-    """A new plan.md: front matter with its status (active unless queued), the title as its heading, and the parts.
+    """A new plan.md: front matter naming its session and carrying its status (active unless queued), the title as its heading, and the parts.
 
+    SESSION is the id of the session the plan belongs to, written into the
+    record so that a reader finds it inside the document rather than by
+    reading the name of the folder the record sits in
+    ([Documentation — Plan](../../../modules/content/documentation/plan/plan.md)).
     PARENT and CONVERSATION are written only for a session opened from another
     one; a session without them is the first of its own conversation. PRIORITY
-    is written only when given; absent, the plan reads as `DEFAULT_PRIORITY`.
+    is written only when given; absent, the plan reads as `Priority.DEFAULT`.
     TOPIC is written only when it is not empty, as given: the caller has
-    checked it (`checked_topic`). KIND is written only when given, checked
-    (`checked_kind`).
+    checked it (`Topic.checked`). KIND is written only when given, checked
+    (`checked_kind`). DEPENDS_ON is written only when given, as the text of
+    the type that checked it (`services/depends_on.py`).
     """
     given = {
+        PlanKey.SESSION: session,
         PlanKey.TITLE: title,
         PlanKey.STATUS: status_word(status).capitalize(),
         PlanKey.OPENED: opened,
@@ -170,6 +168,7 @@ def plan_skeleton(
         PlanKey.PRIORITY: priority,
         PlanKey.TOPIC: topic,
         PlanKey.KIND: kind,
+        PlanKey.DEPENDS_ON: depends_on,
     }
     # Keys in the record's order; an optional key with no value is not written.
     front = ["---", *(f"{key.written}: {given[key]}" for key in PLAN.keys if given[key] not in (None, ""))]

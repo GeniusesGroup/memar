@@ -29,12 +29,16 @@ from machine.fs_memar import RECORDS_BRANCH
 from services import session_branch
 from services.project_find import add_project_flags, project_from_args
 from services.session_branch import folder_on_branch, reference
-from services.session_folder import folder_of
-from services.session_plan import PLAN_NAME
-from services.session_report import REPORT_NAME
+from services.depends_on import Reader
+from services.session_depends import concerns_for, home_of, notes_for
+from services.session_find import find_sessions
+from services.session_folder import folder_of, read_session
+from services.session_plan import PLAN_NAME, read_plan
+from services.session_report import REPORT_NAME, decisions_needed, handback_problem, read_report_status
+from services.project_name import ProjectName
 
 SHOW_COMMAND = "show"
-PROJECT_REQUIRED = "name the project the session belongs to with --project NAME or --project-path PATH: the branch is the project's"
+PROJECT_REQUIRED = f"name the project the session belongs to with {ProjectName.either_words()}: the branch is the project's"
 
 
 def _relative(path: str) -> str:
@@ -86,6 +90,34 @@ def show(session_id: str, project_path: Path, files: list[str]) -> None:
             sys.stdout.write("\n")
         sys.stdout.write("\n")
         printed += 1
+    if not files and (folder / PLAN_NAME).is_file():
+        dependency_lines(read_session(folder), project_path)
+
+
+def dependency_lines(session, project_path: Path) -> None:
+    """Print, under the plan, where each of SESSION's dependencies stands and which sessions depend on it (derived, from Memar's sessions and the project's); nothing when neither."""
+    reader = Reader(home_of(session) or project_path)
+    everyone = {each.id: each for each in [*find_sessions(), *find_sessions(project=project_path)]}
+    lines = [*notes_for(session, reader, everyone.values()), *(f"concerns: {each}" for each in concerns_for(session, reader))]
+    if lines:
+        sys.stdout.write("=== dependencies\n" + "\n".join(lines) + "\n\n")
+
+
+def hand_back(session_id: str) -> None:
+    """Print SESSION_ID's hand-back alone: its Status, its report's path, and its `Decisions needed` lines; none of the rest of the report.
+
+    Read from the session's folder, where a session that has just ended is; a
+    report that is not a hand-back is named, with why, after what it does hold.
+    """
+    folder = folder_of(session_id)
+    if not folder.is_dir():
+        fail(f"session {session_id} has no folder in temp, so there is no hand-back to read; `show --file {REPORT_NAME}` reads it from the branch")
+    plan_status = read_plan(folder / PLAN_NAME).status
+    lines = [f"Status: {read_report_status(folder) or '(none)'}", f"Report: {folder / REPORT_NAME}", *decisions_needed(folder)]
+    problem = handback_problem(folder, plan_status)
+    if problem:
+        lines.append(f"Not a hand-back: {problem}")
+    sys.stdout.write("\n".join(lines) + "\n")
 
 
 def describe(verbs) -> Callable[[argparse.Namespace], None]:
@@ -113,6 +145,11 @@ def describe(verbs) -> Callable[[argparse.Namespace], None]:
         help=f"a file of the session, by its path from the session's folder; may be repeated; without it, {PLAN_NAME} and {REPORT_NAME}",
     )
     shower.add_argument("--list", action="store_true", help="print the names of the files the session has, one a line, instead of their text")
+    shower.add_argument(
+        "--hand-back",
+        action="store_true",
+        help="print only the session's hand-back: the report's Status, its path and its Decisions needed lines, and why it is not one when it is not",
+    )
     add_project_flags(shower, "the project the session belongs to", required=True)
     return run
 
@@ -121,6 +158,9 @@ def run(args: argparse.Namespace) -> None:
     project = project_from_args(args)
     if project is None:
         fail(PROJECT_REQUIRED)
+    if args.hand_back:
+        hand_back(args.session_id)
+        return
     if args.list:
         for name in listing(args.session_id, project):
             sys.stdout.write(f"{name}\n")

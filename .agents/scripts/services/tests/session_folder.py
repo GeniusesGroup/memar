@@ -89,16 +89,16 @@ class SessionRead(Fixture):
         broken = session_folder.read_session(self.session(NEWEST, b"\xff\xfe"))
         self.assertEqual((broken.has_plan, broken.readable), (True, False))
         planned = session_folder.read_session(
-            self.session(EARLIER_FORM, plan_skeleton("T", "2026-10-01T00:00:00Z", Path("/work")))
+            self.session(EARLIER_FORM, plan_skeleton("20261001T000000Z-1-0", "T", "2026-10-01T00:00:00Z", Path("/work")))
         )
         self.assertEqual((planned.has_plan, planned.readable, planned.status), (True, True, "active"))
         self.assertEqual(planned.front["title"], "T")
 
     def test_the_conversation_is_recorded_else_the_session_itself(self) -> None:
-        first = session_folder.read_session(self.session(OLDEST, plan_skeleton("T", "x", Path("/w"))))
+        first = session_folder.read_session(self.session(OLDEST, plan_skeleton("20261001T000000Z-1-0", "T", "x", Path("/w"))))
         self.assertEqual((first.parent, first.conversation), ("", OLDEST))
         linked = session_folder.read_session(
-            self.session(NEWEST, plan_skeleton("T", "x", Path("/w"), parent=OLDEST, conversation=OLDEST))
+            self.session(NEWEST, plan_skeleton("20261001T000000Z-1-0", "T", "x", Path("/w"), parent=OLDEST, conversation=OLDEST))
         )
         self.assertEqual((linked.parent, linked.conversation), (OLDEST, OLDEST))
 
@@ -109,7 +109,7 @@ class FoldersFound(Fixture):
             self.session(sid)
         # A name minted before is a session by the plan `new` wrote, and is
         # listed after every minted name; without such a plan it is not one.
-        self.session(EARLIER_DATED, plan_skeleton("T", "x", Path("/w")))
+        self.session(EARLIER_DATED, plan_skeleton("20261001T000000Z-1-0", "T", "x", Path("/w")))
         self.session(EARLIER_FORM)
         for name in ("images", "memar-edit-locks", "s-old"):
             (memar_fs.sessions_root() / name).mkdir()

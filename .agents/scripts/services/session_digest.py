@@ -48,7 +48,7 @@ the final output, so a reviewed session leaves no folder behind.
 
 Open handoff questions. A question only the owner can answer lives as an entry
 under `Open Questions` in a handoff ([Questions Found During a
-Task](../../docs/documentation-handoff.practice.md#questions-found-during-a-task)),
+Task](../../modules/content/documentation/handoff/handoff.practice.md#questions-found-during-a-task)),
 not in a report, so the digest ends with those entries as `content_questions`
 lists them (blocking first, then oldest `Asked`), read from Memar's checkout or
 from `--project`'s. An entry a report's `Decisions needed` line already points
@@ -71,14 +71,18 @@ from services.session_record import REPORT
 from services.status import Status
 from services.content_questions import BLOCKING_MARK, handoff_files, open_questions
 from services.content_reference import content_root
+from services.depends_on import Reader
 from services.session_concerns import concerns
+from services.session_depends import concerns_for, reconcile_all
 from services.session_day import DAY_NAMES, day_of, parse_day
 from services.project_find import add_project_flags, project_from_args
 from services.session_find import find_sessions, project_of
 from services.session_folder import Session
-from services.session_plan_priority import priority_of
+from services.priority import Priority
 from services.session_report import REPORT_NAME, decisions_needed, handback_problem, read_report_status
 from services.session_summary import summary_lines
+from services.project_name import ProjectName
+from services.session_record import PlanKey
 
 OPEN_HEADING = "Open handoff questions"
 DIGEST_COMMAND = "digest"
@@ -153,7 +157,7 @@ def print_session(session: Session, entries: list[str], problem: str | None, fla
     print()
     print(f"{session.id}  {(session.front or {}).get('title', '')}")
     note(f"status: {session.status or 'none'}")
-    note(f"priority: {priority_of(session.front)}")
+    note(f"priority: {Priority.of(session.front)}")
     note(f"report: {read_report_status(session.path) or 'none'}")
     if problem:
         note(f"failed hand-back: {problem}")
@@ -181,6 +185,9 @@ def print_digest(conversation: str | None = None, project: str | None = None, da
     bases = [base]
     gathered = []
     decisions: list[str] = []
+    # A session's Status is first brought up to date with its dependencies (`session_depends`).
+    reconcile_all(find_sessions(conversation=conversation, project=project_of(project)))
+    reader = Reader(None)
     for session in find_sessions(conversation=conversation, project=project_of(project)):
         if session.status == Status.QUEUED.key:
             continue
@@ -189,11 +196,11 @@ def print_digest(conversation: str | None = None, project: str | None = None, da
         entries = decisions_needed(session.path)
         problem = handback_problem(session.path, session.status)
         decisions.extend(entries)
-        owned = (session.front or {}).get("project", "")
+        owned = (session.front or {}).get(PlanKey.PROJECT.key, "")
         lying = pointer_problem(entries, [Path(owned), *bases] if owned and Path(owned).is_dir() else bases)
         if lying:
             problem = f"{problem}; {lying}" if problem else lying
-        flags = concerns(session)
+        flags = [*concerns(session), *concerns_for(session, reader)]
         if wanted is not None or entries or problem or flags:
             gathered.append((session, entries, problem, flags))
     listed = 0 if conversation is not None else None
@@ -220,37 +227,30 @@ def describe(verbs) -> Callable[[argparse.Namespace], None]:
         DIGEST_COMMAND,
         help="gather every session's decisions needed into one digest, or review a day's sessions",
         description=(
-            f"Without --day: one digest of every entry under `{REPORT.hand_back_part}` in the\n"
-            f"sessions' {REPORT_NAME}s: each session with entries, its title, status,\n"
-            "priority, report status, and report, and its entries as written. A report that is\n"
-            "not a short hand-back is in it too, entries or not, marked `failed\n"
-            "hand-back`, with why, and so is a session not complete that looks finished or\n"
-            "abandoned, marked `concerns`. Queued sessions are left out; a complete session\n"
-            "is in only when it has entries or a failed hand-back. A short hand-back is\n"
-            f"a {REPORT_NAME} with a Status that equals its plan's and, only when it needs\n"
-            f"someone's decision, at most {REPORT.hand_back_max_lines} lines under `## {REPORT.hand_back_part}`, each the\n"
-            "question, its options, and the one it recommends.\n"
+            f"Without --day: one digest of every entry under `{REPORT.hand_back_part}` in the sessions'\n"
+            f"{REPORT_NAME}s: each session with entries, its title, status, priority, report status, and\n"
+            "entries as written. A report that is not a short hand-back is in it too, marked `failed\n"
+            "hand-back` with why, and so is a session not complete that looks finished or abandoned,\n"
+            f"marked `concerns`; so is a session Blocked by its `{PlanKey.DEPENDS_ON.written}`, with what it waits for, and a\n"
+            "dependency that cannot be found or makes a cycle. Queued sessions are left out; a complete session is in only when it has\n"
+            f"entries or a failed hand-back. A short hand-back is a {REPORT_NAME} whose Status equals its\n"
+            f"plan's and, only when it needs a decision, at most {REPORT.hand_back_max_lines} lines under `## {REPORT.hand_back_part}`,\n"
+            "each the question, its options, and the one it recommends.\n"
             "\n"
-            "With --day: the review, for when the owner asks to \"review today's sessions\n"
-            "with me and close the ones I confirm\". Every session not queued that changed on that day\n"
-            "(its folder's latest change, in the local day), one by one: title, status,\n"
-            "report status, priority, flags, what its report's Result says, its entries, and the\n"
-            "command that closes it. Read each with the owner; for each the owner\n"
-            "confirms finished, run that `memar session close --session-id ID` (the\n"
-            "folder goes to the recycle bin). Close none the owner has not confirmed,\n"
-            "and none of a project that keeps its sessions (its preferences set\n"
-            "`sessions`): that is the project's record. The review closes nothing itself.\n"
+            "With --day: the review, for when the owner asks to \"review today's sessions with me and\n"
+            "close the ones I confirm\". Every session not queued that changed on that day, one by one,\n"
+            "with the command that closes it. Read each with the owner; run that\n"
+            "`memar session close --session-id ID` only for those the owner confirms finished, and for\n"
+            "none of a project that keeps its sessions (its preferences set `sessions`). The review closes\n"
+            "nothing itself.\n"
             "\n"
-            "After the sessions it lists the open entries of the handoffs, as `memar\n"
-            "content questions` does: blocking first, then oldest Asked; with --day only\n"
-            "those asked that day; none with --conversation. An entry a Decisions needed\n"
-            "line already points to is not listed twice, and a pointer to a handoff or\n"
-            "line that holds no open question is a failed hand-back.\n"
+            "After the sessions it lists the open handoff entries, as `memar content questions` does:\n"
+            "blocking first, then oldest Asked; with --day only those asked that day; none with\n"
+            "--conversation. A pointer to a handoff or line that holds no open question is a failed\n"
+            "hand-back.\n"
             "\n"
-            "Memar's own sessions, or with --project a project's wherever they lie (a\n"
-            "project's sessions are by default in its own temp/sessions/), or with\n"
-            "--conversation one conversation's: the coordinator passes the id of a\n"
-            "session of its own conversation."
+            f"Without a project flag it reads Memar's own sessions; {ProjectName.FLAG} reads a project's wherever\n"
+            "they lie; --conversation one conversation's, by the id of a session in it."
         ),
     )
     add_project_flags(digester, "read the sessions of the project")
