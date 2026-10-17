@@ -1,0 +1,191 @@
+#!/usr/bin/env python3
+# For license and copyright information please see the LEGAL file in the code repository
+
+"""modules/process/session/services/answering.py — `memar session answer-session-questions`: the prompt an agent answering a session's questions reads first, in one output, writing nothing.
+
+A coordinating session does not bring the owner a question another agent can
+answer, because the owner's answer is the slower one (owner, 2026-10-15). It
+hands the questions to an agent with the questions' brief
+(`questions_brief`), and that agent's first command is this one. It is the
+second opinion [Norm Application Points](../../../docs/cognition.practice.md#norm-application-points)
+asks for before a question reaches the owner, given a fixed route.
+
+The questions are the lines under `Decisions needed` in the session's report:
+that is where a session's questions for the owner already stand, one line
+each, pointing to the handoff entry that holds a question at length
+([Questions Found During a
+Task](../../../modules/knowledge/documentation/handoff/handoff.practice.md#questions-found-during-a-task)),
+and where the digest gathers them. A session with no such line has no
+question, and is refused; why is said by `questions_problem` here, which the
+questions' brief asks too, so the two refuse alike.
+
+The verb is named for what the prompt makes happen, questions answered (owner,
+2026-10-16; `prompts`), not by the one word of the `answer` kind it serves.
+
+**It writes nothing.** The agent it is for does not take the session up: it
+opens no session, creates none, claims none, and changes nothing in the one
+whose questions it answers, because that session belongs to the agent that
+handed the questions over, which writes what follows from the answers. So,
+unlike `start`, this is not `new --session-id`: no report, no role folder and
+no log line is made, and it prints no folder listing and no `session` or
+`content write` help, which only a writing agent needs.
+
+The parts, in order, each opened by a mark line `=== NAME ===`, as `start`
+marks and cuts them (`session_start`, `machine/console_parts.py`):
+
+    session    the id and the paths of the plan and the report, read and not taken up
+    model      answering is judgment: the strongest model
+    plan.md    the plan, whole
+    report.md  the report, whole: its `Decisions needed` holds the questions
+    skill      the Memar skill, whole; left out with `--without-skill`
+    documents  the passages the `answer` kind requires, then each document a question names
+    commands   every command with its call shape, generated (`modules/process/command/command.py`)
+    ending     how the agent answers and ends
+
+**Nothing here is a second copy of a rule.** The sections are those the
+every-act and `answer` lists of
+[Normative References](../rules/normative_references/normative_references.md)
+name, composed as `memar session start` composes them; which questions reach the owner however
+well settled is in those passages, and the ending points to them rather than
+restating them.
+"""
+from __future__ import annotations
+
+import argparse
+import sys
+from pathlib import Path
+from typing import Callable
+
+from machine.console import fail
+from machine.console_parts import add_part_arguments, bound, next_command
+from machine.console_parts import part_text as parted
+from modules.process.command.command import card_text
+from modules.knowledge.content.services.reference import content_root, read_text
+from modules.process.session.session import SESSION_COMMAND
+from modules.process.session.services.folder import folder_of, is_session_folder
+from modules.knowledge.documentation.plan.services.plan import PLAN_NAME
+from modules.knowledge.documentation.record import REPORT
+from modules.knowledge.documentation.report.services.report import REPORT_NAME, decisions_needed
+from modules.process.project.services.preferences import MOST_CHARACTERS_KEY, PREFERENCES_RELATIVE, most_characters_preference
+from modules.process.session.services.start import SKILL_FILE, documents, marked_part, marked_passages, model_part, plan_project, step_documents
+from modules.knowledge.documentation.plan.primitive.task_kind import TaskKind
+
+# TODO name: answer-session-questions | read-to-answer-session-questions | session-questions-with-context
+ANSWERING_COMMAND = "answer-session-questions"
+
+ENDING = (
+    "You answer the questions of this session; you do not take it up. Its questions are the lines under "
+    f"`{REPORT.hand_back_part}` in its {REPORT_NAME} (above), each with the handoff entry it points to, if any.\n"
+    "Your answering opens no session and creates none: run no `memar session start`, `new`, `claim` or `claims`. "
+    "It writes nothing: no file in this session's folder, in the checkout, or elsewhere; the session that handed "
+    "you the questions writes what follows from your answers.\n"
+    "For each question, in the order asked: read the plan, the entry it points to, and the passages of the "
+    "documents it concerns, found as the skill says; answer it with its reasons, citing the passages they rest on; "
+    "and say whether you are sure. Say you are unsure where the documents do not settle it, and say so too where "
+    "it is one of the kinds the Norm Application Points (above) send to the owner however well settled: those go "
+    "to the owner.\n"
+    "Return the answers as your final text, one per question, each marked sure or unsure, and name the model you "
+    "run on."
+)
+
+
+def questions_problem(folder) -> str | None:
+    """Why FOLDER has no questions to hand over; None when its report has a line under its hand-back part."""
+    if decisions_needed(folder):
+        return None
+    return (
+        f"its {REPORT_NAME} has no line under `{REPORT.hand_back_part}`, where a session's questions stand. "
+        f"Write each question there first, one line each"
+    )
+
+
+def session_part(session_id: str, folder) -> str:
+    return marked_part(
+        "session",
+        f"session_id: {session_id}\nplan: {folder / PLAN_NAME}\nreport: {folder / REPORT_NAME}\n"
+        "Its questions are read here, and the session is not taken up.",
+    )
+
+
+def documents_part(root, questions: list[str], project: Path | None) -> list[str]:
+    """The sections the `answer` kind's normative references name, then the documents the QUESTIONS name; nothing is recorded, since answering writes nothing."""
+    return marked_passages(
+        "documents", documents(root, [TaskKind.ANSWER], step_documents(root, "\n".join(questions)), project).blocks
+    )
+
+
+def answer_passages(session_id: str, with_skill: bool = True) -> list[str]:
+    """The text that hands SESSION_ID's questions to an agent, as the passages a part is cut between; the skill only WITH_SKILL."""
+    folder = folder_of(session_id)
+    if not is_session_folder(folder) or not (folder / PLAN_NAME).is_file():
+        fail(f"no questions to answer in {session_id}: it has no session folder with a {PLAN_NAME}")
+    problem = questions_problem(folder)
+    if problem:
+        fail(f"no questions to answer in {session_id}: {problem}")
+    root = content_root()
+    passages = [
+        session_part(session_id, folder),
+        model_part(TaskKind.ANSWER.word),
+        marked_part(PLAN_NAME, (folder / PLAN_NAME).read_text(encoding="utf-8-sig")),
+        marked_part(REPORT_NAME, (folder / REPORT_NAME).read_text(encoding="utf-8-sig")),
+        *([marked_part("skill", read_text(root / SKILL_FILE))] if with_skill else []),
+        *documents_part(root, decisions_needed(folder), plan_project(session_id)),
+        marked_part("commands", card_text()),
+        marked_part("ending", ENDING),
+    ]
+    # A blank line closes every passage but the last, between parts and between a part's blocks alike.
+    return [passage + "\n" for passage in passages[:-1]] + passages[-1:]
+
+
+def answer_text(session_id: str, with_skill: bool = True) -> str:
+    """The whole text that hands SESSION_ID's questions over, unparted."""
+    return "".join(answer_passages(session_id, with_skill))
+
+
+def print_answer(session_id: str, with_skill: bool = True, part: int = 1, most: int | None = None) -> None:
+    """`answer`: print part PART of SESSION_ID's answer text under MOST characters, else under its project's
+    preference, else the default; the whole text when it fits."""
+    words = ["memar", SESSION_COMMAND, ANSWERING_COMMAND, "--session-id", session_id, *([] if with_skill else ["--without-skill"])]
+    passages = answer_passages(session_id, with_skill)
+    limit = bound(most, most_characters_preference(plan_project(session_id)))
+    sys.stdout.write(parted(passages, part, limit, next_command(words, most)))
+
+
+def describe(verbs) -> Callable[[argparse.Namespace], None]:
+    """`memar session answer-session-questions`."""
+    answerer = verbs.add_parser(
+        ANSWERING_COMMAND,
+        help="print what an agent answering a session's open questions reads first; it writes nothing",
+        description=(
+            "For an agent handed a session's questions, not its task, by\n"
+            f"`memar {SESSION_COMMAND} hand-session-questions-to-answer ID`.\n"
+            f"The questions are the lines under `{REPORT.hand_back_part}` in the session's {REPORT_NAME}.\n"
+            "Print, in parts each opened by a line `=== NAME ===`, and in this order: the session's id\n"
+            f"and the paths of its {PLAN_NAME} and {REPORT_NAME}, the model answering needs, the plan and\n"
+            "the report whole, the Memar skill, the passages of Memar's documents the `answer` kind\n"
+            "requires and then the documents the questions name, every command, and how to answer.\n"
+            "Run it first, once.\n"
+            "\n"
+            "It writes nothing and opens no session: no report, no role folder and no log line is\n"
+            "made, and the session is not taken up. It refuses an ID that has no folder with a plan,\n"
+            "or whose report has no line under that heading.\n"
+            "\n"
+            "A text too long for one tool output prints in ordered parts, each at most --most-characters\n"
+            "long: each part but the last ends with the exact command for the next (--part N), to run\n"
+            "at once; read every part before acting. Each part says \"part N of M of text H\", H a hash\n"
+            "of the whole text: a part naming another H is of another version of it."
+        ),
+    )
+    answerer.add_argument("--session-id", required=True, metavar="ID", help="the session whose questions are handed to you")
+    answerer.add_argument(
+        "--without-skill", action="store_true",
+        help="leave the Memar skill out, for an agent whose runtime already loaded it",
+    )
+    add_part_arguments(
+        answerer, f"the `{MOST_CHARACTERS_KEY}` in the {PREFERENCES_RELATIVE.as_posix()} of the project the plan names"
+    )
+    return run
+
+
+def run(args: argparse.Namespace) -> None:
+    print_answer(args.session_id, not args.without_skill, args.part, args.most_characters)

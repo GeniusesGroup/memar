@@ -6,8 +6,9 @@
     memar <verb>              what it routes to; run `memar --help`
     memar --help              what Memar is, and the verbs its services declare
 
-This file routes and nothing else, and it knows no verb. Every module on the
-`services/` shelf that has a command-line face declares it through one function,
+This file routes and nothing else, and it knows no verb: only which module holds
+each domain. Every module of a domain, its own file and each file in its
+`services/` folder, that has a command-line face declares it through one function,
 `describe(verbs)`, the way every Memar type introduces itself
 (modules/computer/type/protocol/detail.kh): the consumer calls only the method
 it needs, and the declaration stays the one authority for what a verb accepts
@@ -19,8 +20,8 @@ interface for one behavior, and the two would drift.
     describe(verbs) -> callable | None
 
 `verbs` is where the module's verb goes: `memar`'s own verbs for a domain's
-module (`services/session.py`), that domain verb's sub-verbs for one of its
-capabilities (`services/session_new.py`). It offers argparse's `add_parser`;
+own file (`modules/process/session/session.py`), that domain verb's sub-verbs
+for one of its capabilities (`modules/process/session/services/new.py`). It offers argparse's `add_parser`;
 the service registers at most one verb on it, with its one-line summary as
 `help` and, where it has one, its overview as `description`, adds the verb's
 arguments, and returns
@@ -45,7 +46,7 @@ summary it declared, and each sub-verb's command lines, what it writes, and
 when to use it are in that sub-verb's own `--help`. An overview that repeated
 them grew with every sub-verb and drifted from each, and the reader who needs
 one sub-verb paid for all of them. How a help is shaped beyond that waits for
-the command module (`modules/lib/process/command/`), which is not built on
+the command module (`modules-plugable/process/command/`), which is not built on
 until it is complete.
 
 The name is the whole of the design. A framework whose entry point is a path
@@ -69,21 +70,32 @@ Usage is the interface. Do not duplicate these recipes as prose catalogs.
 from __future__ import annotations
 
 import argparse
+import functools
 import importlib
+import os
 import sys
 from pathlib import Path
 from typing import Callable, Iterable
 
 SCRIPTS = Path(__file__).resolve().parent
-if str(SCRIPTS) not in sys.path:
-    sys.path.insert(0, str(SCRIPTS))
+# The checkout's top too: a module under `modules/` that holds code (its `primitive/` types) is imported by its
+# path from there, `modules.content.documentation...`, so the top is on the search path as this folder is.
+TOP = SCRIPTS.parent.parent
+for folder in (TOP, SCRIPTS):
+    if str(folder) not in sys.path:
+        sys.path.insert(0, str(folder))
 
 from machine.console import use_utf8_stdio
 
-SHELF = "services"
+SERVICES = "services"
 DESCRIBE = "describe"
-# A domain's module is named by the domain alone; each capability carries the
-# domain as the prefix before this separator (README → How a file is named).
+# Where modules are looked for, and the folders inside a module that are not modules.
+SEARCHED_ROOTS = ("modules", "bundles")
+ROLE_FOLDERS = {"services", "tests", "errors", "docs", "temp", "rules", "protocol", "primitive", "node_modules", "__pycache__"}
+# A module that has a command-line face keeps it in a file named by its folder (`session/session.py`);
+# each capability is a file in its `services/` folder. The name the router works with is the folder's
+# alone for the module's own file, and the folder, this separator and the file's name for a capability
+# (`session_new`), which is how a capability finds the verb it goes under.
 DOMAIN_SEPARATOR = "_"
 VERB_METAVAR = "<verb>"
 HELP_WORDS = ("help",)
@@ -141,15 +153,50 @@ class Verbs:
         return dict(self.group.choices) if self.group is not None else {}
 
 
-def services(shelf: Path = SCRIPTS / SHELF) -> list[str]:
-    """The modules on the shelf, each domain's own before its capabilities."""
-    names = (path.stem for path in shelf.glob("*.py") if not path.stem.startswith("_"))
-    return sorted(names, key=lambda name: (DOMAIN_SEPARATOR in name, name))
+@functools.lru_cache(maxsize=None)
+def catalog(top: Path = TOP) -> dict[str, str]:
+    """Each name the router works with, and the dotted address its file is imported by.
+
+    A folder that holds a file of its own name has a command line: that file is the domain, and each file in
+    its `services/` folder is one of the domain's capabilities, unless another domain's name begins it.
+    """
+    found: dict[str, str] = {}
+    shelved: list[tuple[str, str, str]] = []
+    domains: set[str] = set()
+    for root in SEARCHED_ROOTS:
+        for folder, dirs, files in os.walk(top / root):
+            dirs[:] = sorted(name for name in dirs if name not in ROLE_FOLDERS)
+            leaf = Path(folder).name
+            if f"{leaf}.py" not in files:
+                continue
+            if leaf in found:
+                raise SystemExit(f"memar: more than one folder is named {leaf}: {found[leaf]} and {folder}")
+            package = ".".join(Path(folder).relative_to(top).parts)
+            found[leaf] = f"{package}.{leaf}"
+            domains.add(leaf)
+            for path in sorted((Path(folder) / SERVICES).glob("*.py")):
+                if not path.stem.startswith("_"):
+                    shelved.append((leaf, path.stem, f"{package}.{SERVICES}.{path.stem}"))
+    # A capability file named by another domain first is that domain's, wherever it is kept.
+    for leaf, stem, address in shelved:
+        owner = next((each for each in domains if each != leaf and stem.startswith(each + DOMAIN_SEPARATOR)), None)
+        found[stem if owner else f"{leaf}{DOMAIN_SEPARATOR}{stem}"] = address
+    return found
+
+
+def services(top: Path = TOP) -> list[str]:
+    """The names of the files that may declare verbs, each domain's own before its capabilities."""
+    return sorted(catalog(top), key=lambda name: (DOMAIN_SEPARATOR in name, name))
+
+
+def import_path(name: str, names: dict[str, str] | None = None) -> str:
+    """What a name from `services` is imported by."""
+    return (catalog() if names is None else names)[name]
 
 
 def assemble(
     names: Iterable[str],
-    load: Callable[[str], object] = lambda name: importlib.import_module(f"{SHELF}.{name}"),
+    load: Callable[[str], object] = lambda name: importlib.import_module(import_path(name)),
 ) -> tuple[argparse.ArgumentParser, list[Callable[[list[str]], None]]]:
     """The command line the services declare, and what asks to run before every verb.
 
@@ -171,7 +218,7 @@ def assemble(
             loaded = load(name)
         except Exception as failed:
             print(
-                f"memar: {SHELF}/{name}.py did not load, so its verbs are missing: "
+                f"memar: {name} did not load, so its verbs are missing: "
                 f"{type(failed).__name__}: {failed}",
                 file=sys.stderr,
             )

@@ -68,6 +68,14 @@ What is pinned, and what each pin is for:
                          and an undo leaves it staged.
                          A failure that is not a lock is not retried. No lock
                          is ever deleted by the command.
+  CommitCitesItsSessions A commit names the sessions it carries out, one
+                         `Session:` trailer each, which the verb writes from
+                         `--session-id` and `git log` reads back beside the
+                         message's other trailers. One that cites none is
+                         refused with the form it wants unless it says
+                         `--no-session`; an id `memar session show` cannot
+                         find, or one written into the message by hand, is
+                         refused; a fold keeps the sessions it replaces.
 """
 
 from __future__ import annotations
@@ -86,6 +94,8 @@ SCRIPTS = HOST.parent
 # This file is itself named host.py: its own folder must not hide the `host` package from the verbs' imports.
 sys.path[:] = [entry for entry in sys.path if Path(entry or ".").resolve() != TESTS]
 sys.path.insert(0, str(SCRIPTS))
+# The checkout's top too: the records branch's layout is asked of `services/`, whose types import from `modules/`.
+sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
 
 from machine.fs_test_scratch import suite_scratch
@@ -272,7 +282,7 @@ class ShelfIsNotRouted(unittest.TestCase):
             with self.subTest(name=name):
                 self.assertTrue((HOST / name).is_file())
                 self.assertNotIn(Path(name).stem, services)
-                self.assertFalse((SCRIPTS / router.SHELF / name).exists())
+                self.assertFalse(any(path.endswith("." + Path(name).stem) for path in router.catalog().values()))
 
     def test_neither_file_is_a_memar_verb(self) -> None:
         import os
@@ -372,7 +382,8 @@ class ScratchRepository(unittest.TestCase):
         )
 
     def commit(self, *args: str):
-        return self.host_git("commit", "-F", str(self.message), *args)
+        """A commit that carries out no session, as every test of what a commit takes makes: the sessions it cites are `CommitCitesItsSessions`' subject."""
+        return self.host_git("commit", "-F", str(self.message), "--no-session", *args)
 
     def a_file_long_enough_to_keep_a_rename(self) -> str:
         """Commit mine.md long enough that a license header added to it leaves git pairing a move of it."""
@@ -739,7 +750,7 @@ class CommitWaitsOutALock(ScratchRepository):
         return None, said.getvalue()
 
     def commit_here(self, *patches) -> tuple[str | None, str]:
-        return self.here(lambda: self.module.cmd_commit(self.repo, [Path("mine.md")], [], [], 0, self.message), *patches)
+        return self.here(lambda: self.module.cmd_commit(self.repo, [Path("mine.md")], [], [], 0, self.message, sessions=[], no_session=True), *patches)
 
     def uncommit_here(self, expect: str, *patches) -> tuple[str | None, str]:
         return self.here(lambda: self.uncommit_module.cmd_uncommit(self.repo, expect), *patches)
@@ -851,7 +862,7 @@ class CommitWaitsOutALock(ScratchRepository):
         moved = self.host_git("rename", "mine.md", "moved.md")
         self.assertEqual(moved.returncode, 0, moved.stderr)
         stopped, _ = self.here(
-            lambda: self.module.cmd_commit(self.repo, [Path("mine.md"), Path("moved.md")], [], [], 0, self.message),
+            lambda: self.module.cmd_commit(self.repo, [Path("mine.md"), Path("moved.md")], [], [], 0, self.message, sessions=[], no_session=True),
             self.grabbed_after_update_ref(),
         )
         self.assertIsNotNone(stopped)
@@ -1007,7 +1018,7 @@ class CommitKnowsItsRepositoryAndKeepsItsOwnIndex(ScratchRepository):
         def commit(name: str) -> None:
             done[name] = subprocess.run(
                 [sys.executable, str(HOST / "git.py"), "commit", "--repository", str(self.repo),
-                 "-F", str(self.message.with_name(f"{name}.msg")), name],
+                 "-F", str(self.message.with_name(f"{name}.msg")), "--no-session", name],
                 cwd=self.elsewhere, capture_output=True, text=True,
             )
 
@@ -1020,6 +1031,117 @@ class CommitKnowsItsRepositoryAndKeepsItsOwnIndex(ScratchRepository):
         self.assertTrue(landed, {name: result.stderr for name, result in done.items()})
         for commit_id in self.git("rev-list", f"{self.base}..HEAD").split():
             self.assertEqual(len(self.git("show", "--name-only", "--format=", commit_id).split()), 1)
+
+
+class CommitCitesItsSessions(ScratchRepository):
+    """`commit` names the sessions it carries out in `Session:` trailers it writes itself, each one a session `memar session show` finds."""
+
+    KNOWN = "20000101-T000000Z-1"
+    OTHER = "20000101-T000000Z-2"
+    # No session folder and no record anywhere: the form of an id, and nothing behind it.
+    UNKNOWN = "20000101-T000000Z-9"
+
+    def setUp(self) -> None:
+        super().setUp()
+        for session_id in (self.KNOWN, self.OTHER):
+            self.keep_on_records_branch(session_id)
+        self.put("mine.md", "mine\n")
+
+    def keep_on_records_branch(self, session_id: str) -> None:
+        """Put SESSION_ID's plan on the scratch repository's records branch, where `archive` would have kept it."""
+        import os
+        import subprocess
+
+        from machine.fs_memar import RECORDS_BRANCH
+        from modules.process.session.services.branch import folder_on_branch
+
+        env = dict(os.environ, GIT_INDEX_FILE=str(self.repo / ".git" / "records.index"))
+
+        def plumb(*args: str, data: str | None = None) -> str:
+            return subprocess.run(
+                ["git", "-C", str(self.repo), *args], input=data, capture_output=True, text=True, check=True, env=env
+            ).stdout.strip()
+
+        tip = plumb("rev-parse", "--verify", "--quiet", RECORDS_BRANCH) if self.has_branch(RECORDS_BRANCH) else ""
+        if tip:
+            plumb("read-tree", tip)
+        blob = plumb("hash-object", "-w", "--stdin", data=f"# {session_id}\n")
+        plumb("update-index", "--add", "--cacheinfo", f"100644,{blob},{folder_on_branch(session_id)}/plan.md")
+        tree = plumb("write-tree")
+        made = plumb("commit-tree", tree, *(["-p", tip] if tip else []), "-m", f"records of {session_id}")
+        plumb("update-ref", f"refs/heads/{RECORDS_BRANCH}", made)
+
+    def has_branch(self, name: str) -> bool:
+        import subprocess
+
+        return subprocess.run(
+            ["git", "-C", str(self.repo), "rev-parse", "--verify", "--quiet", f"refs/heads/{name}"], capture_output=True
+        ).returncode == 0
+
+    def cite(self, *args: str):
+        return self.host_git("commit", "-F", str(self.message), *args)
+
+    def sessions_of(self, commit: str = "HEAD") -> list[str]:
+        return self.git("log", "-1", "--format=%(trailers:key=Session,valueonly)", commit).split()
+
+    def test_a_commit_that_cites_no_session_is_refused_naming_the_form_it_wants(self) -> None:
+        done = self.cite("mine.md")
+        self.assertNotEqual(done.returncode, 0)
+        for wanted in ("--session-id", "Session: ", "--no-session"):
+            self.assertIn(wanted, done.stderr)
+        self.assertEqual(self.git("rev-parse", "HEAD"), self.base)
+        self.assertIn("M mine.md", self.git("status", "--porcelain"))
+
+    def test_an_id_with_no_session_folder_and_no_record_is_refused(self) -> None:
+        done = self.cite("--session-id", self.KNOWN, "--session-id", self.UNKNOWN, "mine.md")
+        self.assertNotEqual(done.returncode, 0)
+        self.assertIn(self.UNKNOWN, done.stderr)
+        self.assertNotIn(f"no session {self.KNOWN}", done.stderr)
+        self.assertEqual(self.git("rev-parse", "HEAD"), self.base)
+
+    def test_a_commit_that_carries_out_no_session_is_accepted_with_the_opt_out(self) -> None:
+        done = self.cite("--no-session", "mine.md")
+        self.assertEqual(done.returncode, 0, done.stderr)
+        self.assertEqual(self.git("show", "--name-only", "--format=", "HEAD"), "mine.md")
+        self.assertEqual(self.sessions_of(), [])
+
+    def test_the_opt_out_and_a_session_together_are_refused(self) -> None:
+        done = self.cite("--no-session", "--session-id", self.KNOWN, "mine.md")
+        self.assertNotEqual(done.returncode, 0)
+        self.assertIn("--no-session", done.stderr)
+        self.assertEqual(self.git("rev-parse", "HEAD"), self.base)
+
+    def test_each_session_is_a_trailer_git_log_reads_back_beside_the_others(self) -> None:
+        self.message.write_text(
+            "subject\n\nbody\n\nCo-Authored-By: Someone <someone@example.org>\n", encoding="utf-8", newline="\n"
+        )
+        done = self.cite("--session-id", self.KNOWN, "--session-id", self.OTHER, "--session-id", self.KNOWN, "mine.md")
+        self.assertEqual(done.returncode, 0, done.stderr)
+        self.assertEqual(self.sessions_of(), [self.KNOWN, self.OTHER])
+        self.assertEqual(
+            self.git("log", "-1", "--format=%(trailers:key=Co-Authored-By,valueonly)"), "Someone <someone@example.org>"
+        )
+        self.assertEqual(self.git("log", "-1", "--format=%s"), "subject")
+
+    def test_a_session_written_into_the_message_by_hand_is_refused(self) -> None:
+        self.message.write_text(f"subject\n\nSession: {self.KNOWN}\n", encoding="utf-8", newline="\n")
+        done = self.cite("--no-session", "mine.md")
+        self.assertNotEqual(done.returncode, 0)
+        self.assertIn("--session-id", done.stderr)
+        self.assertEqual(self.git("rev-parse", "HEAD"), self.base)
+
+    def test_a_fold_keeps_the_sessions_of_the_commits_it_replaces(self) -> None:
+        self.assertEqual(self.cite("--session-id", self.KNOWN, "mine.md").returncode, 0)
+        self.put("shared.md", "a finding\n")
+        done = self.cite("--fold", "1", "--session-id", self.OTHER, "mine.md", "shared.md")
+        self.assertEqual(done.returncode, 0, done.stderr)
+        self.assertEqual(self.git("rev-parse", "HEAD^"), self.base)
+        self.assertEqual(self.sessions_of(), [self.KNOWN, self.OTHER])
+        # A finding folded in carries out the sessions already cited, and needs no new one.
+        self.put("shared.md", "a second finding\n")
+        done = self.cite("--fold", "1", "shared.md")
+        self.assertEqual(done.returncode, 0, done.stderr)
+        self.assertEqual(self.sessions_of(), [self.KNOWN, self.OTHER])
 
 
 class RecordWritesAnotherBranch(ScratchRepository):

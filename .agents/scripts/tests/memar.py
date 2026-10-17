@@ -91,6 +91,7 @@ from pathlib import Path
 TESTS = Path(__file__).resolve().parent
 SCRIPTS = TESTS.parent
 sys.path.insert(0, str(SCRIPTS))
+sys.path.insert(1, str(SCRIPTS.parent.parent))  # the checkout's top, where `modules/` is imported from
 sys.dont_write_bytecode = True
 
 from machine.fs_test_scratch import suite_scratch
@@ -272,7 +273,7 @@ class ContractComposes(unittest.TestCase):
         self.assertEqual(code, 0)
         self.assertIn("the alpha summary", out)
         self.assertNotIn("the gamma summary", out)
-        self.assertIn("services/gamma.py", err)
+        self.assertIn("memar: gamma did not load", err)
         self.assertIn("broken on purpose", err)
         code, _, _ = self.shelf.main(["alpha", "beta", "word"])
         self.assertEqual(code, 0)
@@ -288,11 +289,34 @@ class ContractComposes(unittest.TestCase):
 class DomainsFirst(unittest.TestCase):
     def test_domains_come_before_capabilities_and_private_files_are_skipped(self) -> None:
         with tempfile.TemporaryDirectory(dir=suite_scratch()) as folder:
-            shelf = Path(folder)
-            for name in ("zeta_a", "alpha_beta", "zeta", "_shared", "alpha", "alpha_aa"):
-                (shelf / f"{name}.py").write_text("", encoding="utf-8")
-            (shelf / "notes.md").write_text("", encoding="utf-8")
-            self.assertEqual(memar.services(shelf), ["alpha", "zeta", "alpha_aa", "alpha_beta", "zeta_a"])
+            top = Path(folder)
+            for module, files in {"alpha": ("alpha", "services/beta", "services/aa", "services/_shared"), "zeta": ("zeta", "services/a")}.items():
+                for name in files:
+                    path = top / "modules" / "group" / module / f"{name}.py"
+                    path.parent.mkdir(parents=True, exist_ok=True)
+                    path.write_text("", encoding="utf-8")
+            (top / "modules" / "group" / "alpha" / "services" / "notes.md").write_text("", encoding="utf-8")
+            (top / "modules" / "group" / "alpha" / "tests").mkdir()
+            (top / "modules" / "group" / "alpha" / "tests" / "alpha.py").write_text("", encoding="utf-8")
+            (top / "modules" / "group" / "plain").mkdir()
+            (top / "modules" / "group" / "plain" / "other.py").write_text("", encoding="utf-8")
+            self.assertEqual(memar.services(top), ["alpha", "zeta", "alpha_aa", "alpha_beta", "zeta_a"])
+            found = memar.catalog(top)
+            self.assertEqual(found["alpha_beta"], "modules.group.alpha.services.beta")
+            self.assertEqual(found["zeta"], "modules.group.zeta.zeta")
+            self.assertNotIn("plain", found)
+
+    def test_a_capability_file_named_by_another_domain_is_that_domains(self) -> None:
+        with tempfile.TemporaryDirectory(dir=suite_scratch()) as folder:
+            top = Path(folder)
+            for name in ("alpha/alpha.py", "alpha/services/beta_one.py", "alpha/services/two.py", "beta/beta.py"):
+                path = top / "modules" / name
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text("", encoding="utf-8")
+            found = memar.catalog(top)
+            self.assertEqual(found["beta_one"], "modules.alpha.services.beta_one")
+            self.assertEqual(found["alpha_two"], "modules.alpha.services.two")
+            self.assertNotIn("alpha_beta_one", found)
 
     def test_the_real_shelf_is_read_the_same_way(self) -> None:
         names = memar.services()
@@ -314,7 +338,7 @@ class RouterNamesNoVerb(unittest.TestCase):
         paths = declared()
         verbs = {path[0] for path in paths}
         words = {word for path in paths for word in path}
-        self.assertTrue({"content", "install", "prompts", "session", "update"} <= verbs, verbs)
+        self.assertTrue({"content", "install", "session", "update"} <= verbs, verbs)
         tree = ast.parse(LAUNCHER.read_text(encoding="utf-8"))
         docstring = tree.body[0].value if isinstance(tree.body[0], ast.Expr) else None
         imported = {

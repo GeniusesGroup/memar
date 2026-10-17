@@ -6,12 +6,12 @@
 - Time: 2026-09-30T00:00:00Z
 - Type: Added
 - Cited:
-  - [../../process.md](../../process.md) - Depends_on: the concept document that owns the definition of an expectation and a check, and already states that they precede enactment.
+  - [../../process.md](../process.md) - Depends_on: the concept document that owns the definition of an expectation and a check, and already states that they precede enactment.
   - [test.research.001.md](./test.research.001.md) - Evidence: no language specification and no standards body mandates any test layout, naming rule, or discovery scheme, which is what makes a placement condition a Rule rather than a standard.
   - [test.research.002.md](./test.research.002.md) - Evidence: the 1975 error taxonomy grounding the ordering in reach; the ecosystem's own account of TDD as a Test driving development *in place of* a specification; the absence of any documented descent from that literature to TDD; and Basili and Selby's disclosure that uncommented programs made their code reading a worst case.
-  - [../../documentation-explanation.md → Merging before Final](../../documentation-explanation.md) - Depends_on: the rule authorizing the absorption below, since both documents were `Draft`.
-  - [../computer/linter.md](../computer/linter.md) - Depends_on: the authorship rule that keeps the structural conditions out of this document.
-  - [../../modeling.md](../../modeling.md) - Extends: the principle that commitments become explicit before they become costly.
+  - [../../documentation-explanation.md → Merging before Final](../../knowledge/documentation/explanation/explanation.md) - Depends_on: the rule authorizing the absorption below, since both documents were `Draft`.
+  - [../computer/linter.md](../../computer/linter/linter.md) - Depends_on: the authorship rule that keeps the structural conditions out of this document.
+  - [../../modeling.md](../../../docs/modeling.md) - Extends: the principle that commitments become explicit before they become costly.
   - `docs/khayyam/khayyam.md` - Depends_on: the mechanism a type's human-facing text is written by, and the grammar that makes opaque code structurally impossible.
 - Contributors:
   - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) - raised the placement question and ruled that the structural conditions are Rules rather than protocol text; asked whether the TDD document should be deleted and its content absorbed here; corrected the framing of the ordering and that a Test is not limited to code; ruled that a comment is not the destination for why a decision was made, and supplied the `sc` case; and ruled that the skill must bind non-software work too
@@ -23,17 +23,17 @@
   - [test.research.002.md](./test.research.002.md): Added - the testing literature written before TDD, read from primary texts, with its negative results recorded.
   - `modules/process/test/`: Added - the module realizing this protocol, carrying the placement and naming Rules this document points to.
   - [../../../AGENTS.md](../../../AGENTS.md): Done - a section stating that text is not to be put into a file through a shell, with the command that does it instead.
-  - [../../../.agents/scripts/memar-documentation.py](../../../.agents/scripts/services/content.py): Done - gained `write`, `edit`, and `check`, because a document silently damaged by an encoding round trip is the failure this session produced twice.
+  - [../../../.agents/scripts/memar-documentation.py](../../knowledge/content/content.py): Done - gained `write`, `edit`, and `check`, because a document silently damaged by an encoding round trip is the failure this session produced twice.
   - [../../../.agents/scripts/README.md](../../../.agents/scripts/README.md): Done - gained a section on putting text into a file, and one on what a subfolder there is for.
-  - [../../../.agents/scripts/tests/install.py](../../../.agents/scripts/services/tests/install.py): Done - the installer's Tests moved out of the folder that owns what they check, into one named for the role, and the suite still passes.
+  - [../../../.agents/scripts/tests/install.py](../../../bundles/memar/install/tests/install.py): Done - the installer's Tests moved out of the folder that owns what they check, into one named for the role, and the suite still passes.
   - [../../../.agents/skills/memar/SKILL.md](../../../.agents/skills/memar/SKILL.md): Updated - a development step now binds to a Test written first.
-  - [../ddd.md](../lib/process/ddd.md): Done - its TDD relationship entry retargeted, since a document that no longer exists cannot be a sibling case.
-  - [../ddd.handoff.md](../lib/process/ddd.handoff.md): Done - its pointer to the expectation-and-check step retargeted.
-  - [../../process.handoff.md](../../process.handoff.md): Done - its two links retargeted here and to this document's handoff.
-  - [../../process.changelog.md](../../process.changelog.md): Done - the link the absorption invalidated retargeted, and its historical entries on the absorbed document annotated.
-  - [../../documentation-explanation.changelog.md](../../documentation-explanation.changelog.md): Done - annotated alongside its existing pointer to the removed changelog.
-  - [../comparisons/superpowers.001.md](../../comparisons/superpowers.001.md): Done - three lines that attributed a Memar protocol to a name that no longer names one retargeted.
-  - [../../documentation-changelog.md](../../documentation-changelog.md) - Reference: within one working session an entry may still be revised, which is why this session's six drafts are one entry.
+  - [../ddd.md](../../../modules-plugable/process/ddd/ddd.md): Done - its TDD relationship entry retargeted, since a document that no longer exists cannot be a sibling case.
+  - [../ddd.handoff.md](../../../modules-plugable/process/ddd/ddd.handoff.md): Done - its pointer to the expectation-and-check step retargeted.
+  - [../../process.handoff.md](../process.handoff.md): Done - its two links retargeted here and to this document's handoff.
+  - [../../process.changelog.md](../process.changelog.md): Done - the link the absorption invalidated retargeted, and its historical entries on the absorbed document annotated.
+  - [../../documentation-explanation.changelog.md](../../knowledge/documentation/explanation/explanation.changelog.md): Done - annotated alongside its existing pointer to the removed changelog.
+  - [../comparisons/superpowers.001.md](../../../docs/comparisons/superpowers.001.md): Done - three lines that attributed a Memar protocol to a name that no longer names one retargeted.
+  - [../../documentation-changelog.md](../../knowledge/documentation/changelog/changelog.md) - Reference: within one working session an entry may still be revised, which is why this session's six drafts are one entry.
 
 #### What changed
 - Added [test.md](./test.md), stating the Test as the written expectations of a named Process, produced before the work and kept as a standing part of the system that owes them. It separates the Test from the check and from the runner, states the obligation a system carries over the parts of its protocol surface whose expectations are decidable, what a Test may assume, what a passing suite does and does not establish, and the routing among development under the discipline, verification, and inquiry. It states no structural rule and points to the Rules that carry them instead.
@@ -48,10 +48,10 @@
 
 #### Considered and not done
 - **Keeping a short protocol document under the TDD name as a pointer.** It would preserve the vocabulary practitioners arrive with, and would make this document depend on a name whose established meaning — a Test as a driver in place of a specification — differs from what this document states. A reader who knows the word finds it named in one topic here.
-- **Moving the ordering into [Process → Expectations and Checks](../../process.md#expectations-and-checks).** The concept layer already states that expectations precede enactment, and that is where the definition belongs. What it does not state is the reach argument for why a development must do it, and a claim about what a check can detect is a protocol-layer claim about the artifact the check reads.
+- **Moving the ordering into [Process → Expectations and Checks](../process.md#expectations-and-checks).** The concept layer already states that expectations precede enactment, and that is where the definition belongs. What it does not state is the reach argument for why a development must do it, and a claim about what a check can detect is a protocol-layer claim about the artifact the check reads.
 - **Writing that comments should be eliminated.** The one measured statement on the question runs the other way. The claim is scoped to the subset a Test can carry.
 - **Romanticizing the older literature.** The sources are admitted on what they argue and how well they argue it, never on their date; the caution that an idea's antiquity is independent of its merit, with this repository's own example of an inherited idea nobody ever named as a mistake, is recorded in the research rather than assumed away.
-- **Correcting the absorbed document's changelog into this one wholesale.** Its load-bearing rejections are recorded here as considered-and-not-done; per [Merging before Final](../../documentation-explanation.md) no citation entry points at the abandoned document, and per the changelog facet its history does not become a second home for the same decisions.
+- **Correcting the absorbed document's changelog into this one wholesale.** Its load-bearing rejections are recorded here as considered-and-not-done; per [Merging before Final](../../knowledge/documentation/explanation/explanation.md) no citation entry points at the abandoned document, and per the changelog facet its history does not become a second home for the same decisions.
 
 ---
 
@@ -59,10 +59,10 @@
 - Time: 2026-10-04T00:00:00Z
 - Type: Added
 - Cited:
-  - [Comparison: Memar and GitHub Spec Kit](../../comparisons/spec-kit.001.md) - **Reference**: whose Adapt filter produced the item. Spec Kit's `/analyze` is strictly read-only and its Next Actions name the owning command per finding class, under the doctrine "return to the earlier step that owns them and fix them at the source".
+  - [Comparison: Memar and GitHub Spec Kit](../../../docs/comparisons/spec-kit.001.md) - **Reference**: whose Adapt filter produced the item. Spec Kit's `/analyze` is strictly read-only and its Next Actions name the owning command per finding class, under the doctrine "return to the earlier step that owns them and fix them at the source".
 - Propagates to:
   - [test.md](./test.md): None needed - [What a Passing Suite Establishes](./test.md#what-a-passing-suite-establishes) already separates what a run proves from the claim that the work is finished; this is the reporting form of that separation, not a new claim.
-  - [documentation.md](../../documentation.md): None needed - no artifact-structure rule changes.
+  - [documentation.md](../../knowledge/documentation/documentation.md): None needed - no artifact-structure rule changes.
 - Contributors:
   - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) - decided
   - [Space Bunny Alpha](../../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../../CONTRIBUTORS.md#opencode)) - drafted
@@ -81,7 +81,7 @@
 - Time: 2026-10-05T05:30:00Z
 - Type: Changed
 - Cited:
-  - [Comparison: Memar and GitHub Spec Kit](../../comparisons/spec-kit.001.md) - **Reference**: the requirements-home fork and its domain-generality constraint.
+  - [Comparison: Memar and GitHub Spec Kit](../../../docs/comparisons/spec-kit.001.md) - **Reference**: the requirements-home fork and its domain-generality constraint.
 - Propagates to:
   - [test.md](./test.md): Done - one standing-interpretation sentence at the section's close.
 - Contributors:
@@ -98,7 +98,7 @@
 - Type: Added
 - Propagates to:
   - [test.md](./test.md): Done — two places: the check's own description, and what an expectation must reach under the form clause.
-  - [process.handoff.md](../../process.handoff.md): Done — the mirror handoff's baseline-and-declared-limit question was closed from the concept layer; the four-roles question under the same section stays open, as does its mirror here.
+  - [process.handoff.md](../process.handoff.md): Done — the mirror handoff's baseline-and-declared-limit question was closed from the concept layer; the four-roles question under the same section stays open, as does its mirror here.
 - Contributors:
   - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — decided
   - [Space Bunny Alpha](../../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../../CONTRIBUTORS.md#opencode)) — argued, drafted, applied
@@ -124,7 +124,7 @@
 - Time: 2026-10-05T17:20:58Z
 - Type: Changed
 - Propagates to:
-  - [modeling.md](../../modeling.md): Pending - its maturity gate carries the parallel clause the floor sentence just shed; the exact wording is reported to that file's owner rather than edited here.
+  - [modeling.md](../../../docs/modeling.md): Pending - its maturity gate carries the parallel clause the floor sentence just shed; the exact wording is reported to that file's owner rather than edited here.
 - Contributors:
   - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — decided
   - [Space Bunny Alpha](../../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../../CONTRIBUTORS.md#opencode)) — argued, drafted, applied
@@ -140,7 +140,7 @@
 
 #### Considered and not done
 - Adding the three things an expectation must reach to the obligation's first boundary, over Processes not lines: that bullet is about what is enumerated, and repeating the reach there would say the same thing a third time in one section.
-- Editing the clause "scale changes how much an expectation states, never whether it is stated first", which appears in [test.practice.md → The Cycle](./test.practice.md#the-cycle) and again in [process.md → Development decomposition](../../process.md#development-decomposition): both were outside this change's scope and are reported instead.
+- Editing the clause "scale changes how much an expectation states, never whether it is stated first", which appears in [test.practice.md → The Cycle](./test.practice.md#the-cycle) and again in [process.md → Development decomposition](../process.md#development-decomposition): both were outside this change's scope and are reported instead.
 
 ---
 
@@ -148,7 +148,7 @@
 - Time: 2026-10-07T03:45:00Z
 - Type: Changed
 - Cited:
-  - [Documentation — Comparison → Hindsight](../../comparisons/hindsight.001.md) - Evidence: Hindsight's three eval tiers (deterministic blackbox, scheduled real-model judged, external benchmark) — each with its verdict party and its tier. A verdict that borrows authority from a stronger tier manufactures evidence.
+  - [Documentation — Comparison → Hindsight](../../../docs/comparisons/hindsight.001.md) - Evidence: Hindsight's three eval tiers (deterministic blackbox, scheduled real-model judged, external benchmark) — each with its verdict party and its tier. A verdict that borrows authority from a stronger tier manufactures evidence.
 - Contributors:
   - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — decided
   - [Space Bunny Alpha](../../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../../CONTRIBUTORS.md#opencode)) — argued, drafted, applied

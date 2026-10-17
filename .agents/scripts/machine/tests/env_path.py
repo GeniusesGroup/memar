@@ -12,7 +12,7 @@ in the `tests/` folder of the shelf that owns it per
 
 A check of a file this suite does not own belongs beside the file that owns it,
 not here: what the installer does with these answers is pinned in
-`services/tests/install.py`. The classes here reach the installer's own binding of
+`bundles/memar/install/tests/install.py`. The classes here reach the installer's own binding of
 the shelf rather than the shelf's, because the installer's binding is the one
 the run calls, and they stay with the module rather than with the caller.
 Nothing here writes to the machine — the platform's own record is read but never
@@ -39,12 +39,13 @@ TESTS = Path(__file__).resolve().parent
 SCRIPTS = TESTS.parent.parent
 CHECKOUT = SCRIPTS.parent.parent
 sys.path.insert(0, str(SCRIPTS))
+sys.path.insert(1, str(SCRIPTS.parent.parent))  # the checkout's top, where `bundles/` is imported from
 sys.dont_write_bytecode = True
 
 from machine.fs_test_scratch import suite_scratch
 
 import machine.env_path as env_path
-import services.install_machine as machine_layer
+import bundles.memar.install.services.machine as machine_layer
 
 
 class RecordPutsTheCommandOnPath(unittest.TestCase):

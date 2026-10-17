@@ -293,9 +293,9 @@ Owner: an executing agent does not need to read the explanatory document to carr
 - Cited:
   - [Comparison: Memar and GitHub Spec Kit](../../../docs/comparisons/spec-kit.001.md) - **Reference**: the comparison whose adoption filter produced these changes. GitHub Spec Kit's `/converge` requires that a converged run leave `tasks.md` byte-for-byte unchanged with no empty Convergence header and report a fixed string; its `check_extension_version_bump.py` turns "please remember to bump" into a merge requirement, with the rationale recorded as a shipped bug class.
 - Propagates to:
-  - [.agents/scripts/memar-documentation.py](../../../.agents/scripts/services/content.py): Done - the propagation report and the newline fix below. That file carries no changelog of its own.
+  - [.agents/scripts/memar-documentation.py](../content/content.py): Done - the propagation report and the newline fix below. That file carries no changelog of its own.
   - [.agents/scripts/README.md](../../../.agents/scripts/README.md): Done - what `check` reports on a folder run, the one question it pointedly does not judge, and the `memar` launcher that reaches it by one word. That file carries no changelog of its own.
-  - [.agents/scripts/tests/memar-documentation.py](../../../.agents/scripts/services/tests/content.py): Done - five classes of tests for the report, plus five for the append convention. A Test belongs in the folder of the module that owns what it tests, per Test Placement (`modules/process/test/rules/test-placement/test-placement.md`).
+  - [.agents/scripts/tests/memar-documentation.py](../content/tests/content.py): Done - five classes of tests for the report, plus five for the append convention. A Test belongs in the folder of the module that owns what it tests, per Test Placement (`modules/process/test/rules/test-placement/test-placement.md`).
   - [documentation.practice.md](./documentation.practice.md): None needed - [Trivial changes](./changelog/changelog.md#trivial-changes) already covers the changelog-entry case, and the new rule is the same economy stated at the level of the artifact rather than the entry; the practice's own step 4 already sends a session with no lasting design change to no entry at all.
   - [documentation-explanation.md](./explanation/explanation.md): None needed - the rule concerns what a check writes, not what a document is.
   - [cognition.changelog.md](../../../docs/cognition.changelog.md): None needed - the norm change in that entry does not rest on this one.
@@ -584,7 +584,7 @@ The owner proposed the rule as a prohibition on citing informal sources (Omid He
 - Propagates to:
   - `memar session --help`, `.agents/scripts/services/session_plan.py`, `session_report.py`: Pending - the Status values and the record fields are stated again in the help and in the scripts; the sessions of topic `memar-khayyam-types` make them one definition that the help calls.
   - The organization's rule of one file per human language: Pending - the third list item of the new section defers to it; a session of the topic writes it in the other repository.
-  - [documentation.md](./documentation.md#status): Pending - the table of Status values is the closed set the rule puts in code; the open question *Status table or type: which is the source* in [documentation.handoff.md](./documentation.handoff.md) holds it.
+  - [documentation.md](./documentation.md#status): Done (session `20261013-T190846Z-16860`) - the table is gone and the section names the type; see the entry *The Status table leaves documentation.md*.
 - Contributors:
   - [Claude](../../../CONTRIBUTORS.md#claude) (Sonnet 5.5) - drafted, applied
 
@@ -678,3 +678,101 @@ The owner proposed the rule as a prohibition on citing informal sources (Omid He
 - **A Khayyam block in a document as a marked quotation compared to its source by a test**: it keeps a copy of real code on purpose; an illustrative example needs no such test, and a real definition is referred to, not quoted.
 - **No document holds code** (the first application's rule): it removed illustrative examples a reader needs and called for exceptions it could not justify; the owner ruled on 2026-10-16 that only real code has its own file.
 - **An upward link as a problem the check fails on** (the first application's rule): clearing it led sessions to delete links while the text still leaned on the module, which hides the reference rather than removing it; the owner ruled on 2026-10-16 that a link is never removed to comply.
+
+---
+
+### A facet is registered by its specification alone
+- Time: 2026-10-16T15:10:00Z
+- Type: Changed
+- Propagates to:
+  - documentation.handoff.md: Pending - its *Facet growth* item states that the `Facets currently defined` section "grows by one entry per facet", and its registry question reasons from "the current scale of five facets"; neither is true after this entry, and both need the state it leaves.
+  - modules/content/documentation/plan/plan.md and modules/content/documentation/report/report.md: Done (session `20261016-T141543Z-22844`) - the two specifications this entry's first facet addition applies to; their own changelog entries record their creation.
+  - modules/content/documentation/comparison/comparison.md: Done - its [Methodology](./comparison/comparison.md#methodology) says an essay's reader relationship "is none the five facets define"; the claim holds, the number is gone, and the file's own method is not this document's subject.
+- Contributors:
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — ruled (2026-10-16)
+  - [Space Bunny Alpha](../../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../../CONTRIBUTORS.md#opencode)) — drafted, applied
+
+#### What changed
+The facet count and the facet enumeration this document held are gone, so that placing a specification in a subfolder named for its facet is the whole of registering one. Nine sentences changed, by line:
+
+- `:9`, the opening: it "names the five facets currently in use" → it "says where the facets in use are specified and how one is added".
+- `:12`, the Abstract: the five facets and their one-line definitions are replaced by the discovery rule — the facets in use are the specifications in this folder's subfolders, each subfolder named for its facet, and listing that folder finds them; the trailing "none of the five facets" → "none of the facets".
+- `:35`, [Facet](./documentation.md#facet): "The facet itself is the meta-layer: it names the category, states what makes it distinct, and points to its specification" → a facet's name and what makes it distinct are stated in its own governing specification, so a facet added later needs nothing written here.
+- `:37`: "doing five categorically different things" → "doing categorically different things"; "Forcing all five into one shared schema" → "Forcing every kind of content into one shared schema".
+- `:40`, `Facets currently defined`: "Five facets are defined as of this document's current revision" → the placement rule, the statement that no count is held here, and the statement that a relationship none of the recognised ones answers enters the system by its specification alone.
+- `:78`, [Which facet does a document belong to?](./documentation.md#which-facet-does-a-document-belong-to): one sentence added, saying which relationships a document is compared against and that one answering to none of them is Extensibility's case rather than a document outside the facets. The enumeration of the recognised relationships is kept here, and it is the only place one remains.
+- `:81`, [Extensibility](./documentation.md#extensibility): rewritten. "Registering it here" and "a sixth facet could be added" are replaced by: a facet is added by writing its specification into a subfolder named for it and by nothing else; what the specification must state; and what a facet that needs a relationship none of those recognised answers changes.
+- `:84`-`:88`, [Relationship between this document and its facet specifications](./documentation.md#relationship-between-this-document-and-its-facet-specifications): "The six files form a hierarchy" and the six-row table beneath it are removed, and the sentence "All six are Explanation-facet documents … are Research-facet documents" is restated without the count and without naming each facet. A new paragraph states the placement and discovery rule, and that each specification's own opening lines say what subject it governs.
+- `:91`, [Comparison](./documentation.md#comparison-a-document-kind-outside-the-facets): "like the six above" → "like the facet specifications beside it".
+
+**Why none of this is the derivative inventory the Content Rule forbids.** The removed table was one: a list of this folder's files with their roles, mirroring a live collection. Every replacement points at the authoritative location instead — this folder's subfolders — which is what [Content Rule → No derivative inventories](./documentation.md#content-rule-no-fabricated-or-redundant-provenance) asks a document to do ("Point the reader at the authoritative location (list the directory …) instead"). What remains per facet is not a membership entry but content: what a reader of that kind of document is expected to do, and what that relationship costs to confuse with the others — judgment the folder does not contain and cannot be derived from it. Two of the changed sentences (`:40` and `:81`) say outright that this document holds no count and registers nothing, so a reader is not sent here to enumerate.
+
+**What this leaves open, by choice.** `### Facets currently defined` still describes the reader relationships already recognised, one `####` heading each, and a facet whose relationship is a new one does not get an entry there: it enters by its specification. The trade is stated rather than hidden — the relationships already recognised stay comparable to each other at the point a document is placed, and a relationship outside them is given a facet whose own specification states it. Removing those `####` sections altogether would mean moving each facet's definition and the judgment around it into that facet's specification, which is five more documents than this change touched.
+
+#### Considered and not done
+- **Rewriting the enumerations as a list of seven facets** (the first draft's route): it is the inventory the Content Rule forbids, and it keeps the count as a fact this document holds, which is what the owner ruled against.
+- **Printing the shape of the records in `memar session new --help` by calling the record type**, which `session_record.py`'s own docstring claims it does: out of scope here, and `tests/session.py` pins that help's wording; the claim in that docstring is left standing and recorded below.
+- **Moving the `####` facet definitions into the five existing facet specifications**: the remedy for the residue named above, deferred because it reaches five specifications this change did not touch.
+
+---
+
+### The facet definitions leave documentation.md for each facet's own specification
+- Time: 2026-10-16T18:06:00Z
+- Type: Changed
+- Propagates to:
+  - explanation, practice, changelog, handoff and research specifications under modules/content/documentation/: Done (session `20261016-T150928Z-4276`) - each holds its own `Reader relationship` section, recorded in its changelog.
+  - plan and report specifications under modules/content/documentation/: Done (session `20261016-T150928Z-4276`) - the two facets `documentation.md` never defined; they still read whole.
+  - documentation.handoff.md: Done - its *Facet growth* item already states that a new facet edits nothing here.
+- Contributors:
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — ruled (2026-10-16)
+  - [Claude](../../../CONTRIBUTORS.md#claude) (Sonnet 5.5) — applied
+
+#### What changed
+- The section `Facets currently defined` and its five `####` definitions are gone from [documentation.md](./documentation.md). Each definition moved to the facet's own `Reader relationship` section: Explanation, Practice, Changelog, Handoff and Research each received what was said of them here, merged with what their specification already stated; Comparison is not a facet and is untouched; Plan and Report never had a definition here.
+- The Introduction's account of how each facet arose (the third need, the three ecosystems, the Changelog and Handoff precedents) is no longer here; [Motivation](./documentation.md#motivation) and [Methodology](./documentation.md#methodology) say each facet's specification states it, and the content is in those specifications' Motivation, Methodology and Abstract.
+- [Which facet does a document belong to?](./documentation.md#which-facet-does-a-document-belong-to) no longer lists the five purposes: it tells the author to compare against the relationship each specification states, found by listing this folder.
+- [Extensibility](./documentation.md#extensibility) and [Relationship between this document and its facet specifications](./documentation.md#relationship-between-this-document-and-its-facet-specifications) name no facet and no count.
+- The earlier entry *A facet is registered by its specification alone* said the enumeration at `:78` was kept and the `####` sections remained; this entry removes both, which is the remedy that entry named. Its two links to the removed section were taken out of link form into code spans, as [Links in recorded entries](./changelog/changelog.md#links-in-recorded-entries) says.
+- Made in session 20261016-T150928Z-4276.
+
+**Why none of this is the derivative inventory the Content Rule forbids.** What replaces the definitions is a pointer to the folder and the rule that each specification states its own relationship; no list of facets, no count and no table is kept here, so the next facet edits only its own module. `memar content backlinks` found no document linking into the removed section.
+
+#### Considered and not done
+- **A shorter list of the facets, each with a link**: it is the inventory the Content Rule forbids, and the next facet would edit this document again.
+- **Keeping the `Facets currently defined` heading with a pointer under it**: the heading would name a set this document does not hold.
+
+---
+
+### The Status table leaves documentation.md
+- Time: 2026-10-16T19:23:38Z
+- Type: Removed
+- Propagates to:
+  - [explanation.md](./explanation/explanation.md#status), [handoff.md](./handoff/handoff.md#status), [research.md](./research/research.md#status-mandatory): Done (session `20261016-T194830Z-21416`) - each listed the Status values its kind may take, a copy of what `Status.for_kind` gives under the same ruling; removing them is a removal in three facet specifications, left to the owner.
+  - [documentation.handoff.md](./documentation.handoff.md): Done - the entry *Status table or type: which is the source* is answered by the ruling and removed.
+- Contributors:
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — ruled (2026-10-16)
+  - [Claude](../../../CONTRIBUTORS.md#claude) (Opus 5.5) — applied
+
+#### What changed
+- The table of eleven Status values (value, meaning, kinds, safe to depend on) is gone from [Status](./documentation.md#status). The section keeps its rules and reasons and names `.agents/scripts/services/status.py` as the one declaration of the values; a value is read, added or changed in the type alone. It says the type is a Python class now and a Khayyam capsule later, and that its place under `.agents/scripts` is not settled.
+- The test that rendered the table from the type and compared it with this document (`TableEqualsCode` in `.agents/scripts/services/tests/status.py`) and the method it called (`Status.table_lines`) are removed: with no copy there is nothing to keep equal.
+- The owner's ruling of 2026-10-16 decides it: every field documentation declares is a type, and once typed the prose restating it leaves the document, keeping only reason and explanation.
+- Made in session 20261013-T190846Z-16860.
+
+#### Considered and not done
+- **Keeping the table as a checked copy**: the earlier recommendation, until the table could be generated. The ruling removes restating prose whether or not it is checked, and the owner named the check an extra cost.
+- **A `memar content` verb that prints the table from the type**: no reader needs it now; it is left as a question in session 20261013-T190846Z-16860's report.
+
+---
+
+### The declarations this specification names moved out of services/
+- Time: 2026-10-17T09:30:00Z
+- Type: Changed
+- Contributors:
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — ruled (2026-10-17)
+  - [Claude](../../../CONTRIBUTORS.md#claude) (Sonnet 5.5) — applied
+
+#### What changed
+- [Status](./documentation.md#status): the closed set of values is declared in `modules/content/documentation/primitive/status.py` and the shape of a session's plan and report in `modules/content/documentation/record.py`, not in the scripts' `services/`. No value or rule changed.
+- Why: the owner's rulings of 2026-10-17 place a module's primitive types in the module's own `primitive/` and the shapes built from them in its root; the Status type and the session record's shape were the first moved out of the scripts' `services/`.
+- Made in session 20261017-T082614Z-25876.
