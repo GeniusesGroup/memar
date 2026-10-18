@@ -7,7 +7,7 @@ package org
 import (
 	"libgo/protocol"
 
-	urp "org/modules/user-request/protocol"
+	urp "modules/user-request/protocol"
 )
 
 // QuidditySubstitute indicate the domain record data fields.
