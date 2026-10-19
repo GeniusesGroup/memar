@@ -6,7 +6,7 @@ Open questions and anticipated work for the Explanation facet's governing specif
 ## Status
 Active
 
-Open work for `documentation-explanation.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](./documentation-handoff.md) for what a handoff is.
+Open work for `documentation-explanation.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](../handoff/handoff.md) for what a handoff is.
 
 ## Open Questions
 
@@ -24,5 +24,5 @@ Open work for `documentation-explanation.md`. Entries are mutable current state 
 - Next: build once the number of contributors or documents justifies the tooling investment.
 
 ### Is the three-section fixed skeleton sufficient for Explanation-facet documents?
-- State: raised 2026-09-10 while removing the Results section, following the Discussion section's removal (2026-09-06). The removal round's research shows every scientific-skeleton (IMRAD) content type has a named home - the fixed trio carries the artifact's current state, anticipated results route to the Abstract claim, derived results to `Implications`, and observed results to the changelog, inline evidence, research records, or the handoff (see [documentation.md → Results routing](./documentation.md#results-routing)) - but whether future documents will feel the absence of a fixed home for a genuinely new content type is untested.
-- Next: watch real documents for content that fits neither the fixed trio nor an Optional Sections entry; judge candidates by the [Relevance discipline](./documentation-explanation.md#relevance-discipline) criterion, not by skeleton-completeness intuition.
+- State: raised 2026-09-10 while removing the Results section, following the Discussion section's removal (2026-09-06). The removal round's research shows every scientific-skeleton (IMRAD) content type has a named home - the fixed trio carries the artifact's current state, anticipated results route to the Abstract claim, derived results to `Implications`, and observed results to the changelog, inline evidence, research records, or the handoff (see [documentation.md → Results routing](../documentation.md#results-routing)) - but whether future documents will feel the absence of a fixed home for a genuinely new content type is untested.
+- Next: watch real documents for content that fits neither the fixed trio nor an Optional Sections entry; judge candidates by the [Relevance discipline](./explanation.md#relevance-discipline) criterion, not by skeleton-completeness intuition.

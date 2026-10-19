@@ -1,20 +1,20 @@
 # Documentation — Practice Changelog
-This document records why and how `documentation-practice.md` changed over time. See [Documentation — Changelog](./documentation-changelog.md) for what this file's structure means.
+This document records why and how `documentation-practice.md` changed over time. See [Documentation — Changelog](../changelog/changelog.md) for what this file's structure means.
 
 ## Changelog
 
 ### Initial specification
 - Time: unknown (historical import — this document's own creation, before this changelog existed)
 - Cited:
-  - [Documentation](./documentation.md) — Depends_on: this document specifies one facet defined by documentation.md; its own concept of what a facet is, and why Practice is governed separately from Explanation, is defined there, not repeated here.
-  - [Documentation — Explanation](./documentation-explanation.md) — Reference: the sister facet specification; cited to make explicit that the two facets share the same meta-layer (documentation.md) but differ in governing structure.
+  - [Documentation](../documentation.md) — Depends_on: this document specifies one facet defined by documentation.md; its own concept of what a facet is, and why Practice is governed separately from Explanation, is defined there, not repeated here.
+  - [Documentation — Explanation](../explanation/explanation.md) — Reference: the sister facet specification; cited to make explicit that the two facets share the same meta-layer (documentation.md) but differ in governing structure.
   - [Anthropic Claude skill-creator](https://github.com/anthropics/skills/blob/main/skills/skill-creator/SKILL.md) — Reference: one of three independently-designed real Skill-file conventions this specification's schema is adopted from rather than invented; source for the name/description-only frontmatter rule and the progressive-disclosure loading model.
   - [OpenAI Codex skill-creator](https://github.com/openai/skills/blob/main/skills/.system/skill-creator/SKILL.md) — Reference: independently converges on the same name/description-only frontmatter and progressive-disclosure model as Anthropic's; explicitly lists including a README.md or other auxiliary documentation inside a skill as an anti-pattern, a rule adopted directly in this specification.
   - [Microsoft skill-creator](https://github.com/microsoft/skills/blob/main/.github/skills/skill-creator/SKILL.md) — Reference: a third, independent convergence on the same core schema (name/description, progressive disclosure, scripts/references/assets), despite layering substantial SDK-specific structure on top for its own narrower use case — cited as evidence the core schema, not the SDK-specific layer, is what's actually load-bearing across ecosystems.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — directed
-  - [Claude](../CONTRIBUTORS.md#claude) — rewrote
-  - [Super Z](../CONTRIBUTORS.md#super-z) — rewrote
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — directed
+  - [Claude](../../../../CONTRIBUTORS.md#claude) — rewrote
+  - [Super Z](../../../../CONTRIBUTORS.md#super-z) — rewrote
 
 #### What changed
 Created as part of splitting the former `documentation.md` into three files. Adopts, rather than invents, the schema independently converged on by Anthropic's, OpenAI's, and Microsoft's own skill-creator Skill files: `name`/`description`-only frontmatter, three-level progressive disclosure, `scripts`/`references`/`assets` bundled resources, and an explicit rule against including auxiliary documentation inside a Skill folder.
@@ -29,7 +29,7 @@ Created as part of splitting the former `documentation.md` into three files. Ado
 - Time: 2026-08-05T08:51:08Z
 - Type: Changed
 - Contributors:
-  - [Super Z](../CONTRIBUTORS.md#super-z) — rewrote
+  - [Super Z](../../../../CONTRIBUTORS.md#super-z) — rewrote
 
 #### What changed
 Per the decision to move all provenance (citations, contributor attribution, cross-document propagation tracking) out of base documents and into their paired Changelog-facet file, this document was created. `documentation-practice.md`'s own front-matter `Citations`, `Contributors`, and `Applied to` fields, and its `## Change Rationale` section, were extracted into this file; they are superseded by it and should be removed from the base document (tracked separately — see Propagates to).
@@ -46,8 +46,8 @@ Per the decision to move all provenance (citations, contributor attribution, cro
   - documentation-practice.handoff.md: Created - this specification's open question and anticipated catalog work moved there.
   - documentation-explanation.md: Done - the method this migration follows was finalized there in the same pass.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - claimed, decided
-  - [Super Z](../CONTRIBUTORS.md#super-z) - rewrote, moved
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) - claimed, decided
+  - [Super Z](../../../../CONTRIBUTORS.md#super-z) - rewrote, moved
 
 #### What changed
 - The document's own body reformed under the finalized Explanation-facet pattern: `## Drawbacks` replaces the former `## Discussion` wrapper, then is itself removed when the method dissolves Drawbacks entirely (Super Z - applied; Omid Hekayati - directed).
@@ -71,7 +71,57 @@ Open work (Skill-file conventions beyond the cited examples; optional-section ca
 - Time: 2026-10-12T09:49:00Z
 - Type: Reviewed
 - Contributors:
-  - [Claude](../CONTRIBUTORS.md#claude) (Sonnet-5.5) - reviewed
+  - [Claude](../../../../CONTRIBUTORS.md#claude) (Sonnet-5.5) - reviewed
 
 #### What changed
 - Reviewed; no change needed. The uncommitted change to this file is the removal of the entry *Rejected positions given a deletion procedure*, which was first written on this file by mistake. It is present, with its text intact and one added clause recording the move, in `documentation.changelog.md` (the ledger of `documentation.practice.md`, the document it changes), so no information is lost. This is the move the placement audit recorded in `documentation-changelog.changelog.md`.
+
+---
+
+### A Practice's name is its file's base name
+- Time: 2026-10-15T11:58:47Z
+- Type: Changed
+- Contributors:
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — allowed the fix
+  - [Claude](../../../../CONTRIBUTORS.md#claude) (Opus 5.5) — revised
+
+#### What changed
+- [Frontmatter](./practice.md#frontmatter) now states that `name` is the name of the file it heads: a Practice companion's base name, the part before `.practice.md`, and for a `SKILL.md` the name of its folder. Before, it said only "lowercase with hyphens", and five Practices carried a name that did not follow their file. No Memar document stated the rule; `memar content search` for "base name", "agentskills", and the five names found none.
+- `documentation-practice.practice.md`'s front-matter `name` was `document-practice-creator`; it is now `documentation-practice`, the file's base name, as [Documentation — Practice → Frontmatter](./practice.md#frontmatter) now states. No other document referred to the old name. Its description's pointer to `document-explanation-creator` now reads `documentation-explanation`.
+- Why: the study of session 20261015-T061908Z-9468 (report.md, Result 5) found the defect, and the owner allowed it fixed on 2026-10-15; a Practice's `description` is printed as the header an agent reads above its passages, so a description that misleads or states no boundary misleads every agent that reads it.
+- Made in session 20261015-T110002Z-23000.
+
+#### Considered and not done
+- Citing agentskills.io as the source of the rule: not done. The plan of this session reports that the format it was adopted from ties a skill's name to its folder, but the specification could not be fetched in this session (the connection was refused), so the rule is stated on its own reason rather than on a claim not read.
+
+---
+
+### The Practice facet's definition moves here from documentation.md
+- Time: 2026-10-16T18:06:00Z
+- Type: Changed
+- Propagates to:
+  - modules/content/documentation/documentation.md: Done (session `20261016-T150928Z-4276`) - the passage this entry moved here no longer stands there.
+- Contributors:
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — ruled (2026-10-16)
+  - [Claude](../../../../CONTRIBUTORS.md#claude) (Sonnet 5.5) — applied
+
+#### What changed
+- [Reader relationship](./practice.md#reader-relationship): the definition `documentation.md` held for this facet moved here — the content followed to accomplish something, and why its front matter is two fields and its body a procedure. The note that the schema was adopted from three AI ecosystems was already in [Abstract](./practice.md#abstract), so it was merged, not repeated.
+- The clause that restated Explanation's relationship now points at Explanation's own section.
+- Made in session 20261016-T150928Z-4276, finishing answer 6 of the owner's rulings of 2026-10-16: a new facet edits only its own module.
+
+#### Considered and not done
+- **Restating the other facets' reader relationships here to contrast this one with them**: each facet's own specification states its relationship, and a restatement is a second place to edit when one changes; this specification points at the other's section instead.
+
+---
+
+### A practice's front matter stated once
+- Time: 2026-10-17T16:00:00Z
+- Type: Corrected
+- Contributors:
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — ruled (2026-10-17)
+  - [Claude](../../../../CONTRIBUTORS.md#claude) (Sonnet 5.5) — applied
+
+#### What changed
+- Step 1 no longer says a practice has no front matter; it has the two fields of the Practice facet and none of the Explanation facet's.
+- Why: session 20261016-T095101Z-22960 found the text contradicted the documents and types in use; the owner approved the correction on 2026-10-17.

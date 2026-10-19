@@ -33,6 +33,8 @@ What is pinned, and what each pin is for:
   Documents        The sections the every-act and `answer` lists name, then
                    each document a question names, at its section or its
                    Abstract; nothing is recorded, since answering writes nothing.
+  Commands         The part names `memar commands`, the one command that prints
+                   every command and what it takes, and copies nothing.
   Ending           The agent answers each question with its reasons, says which
                    it is unsure of, writes nothing, opens no session, and
                    returns the answers as its final text.
@@ -73,9 +75,10 @@ from machine.console_parts import CLOSING_MARK
 from machine.fs_test_scratch import suite_scratch
 
 import machine.fs_memar as memar_fs
-from importlib import import_module
-commands = import_module("modules-plugable.process.command.command")
 import modules.process.session.services.answering as answering
+from importlib import import_module
+# The command module stands under `modules-plugable`, a name a literal import cannot spell.
+commands = import_module("modules-plugable.process.command.command")
 from modules.knowledge.documentation.plan.services.plan import PLAN_NAME, plan_skeleton
 from modules.knowledge.documentation.report.services.report import REPORT_NAME
 from modules.knowledge.content.services.normative_references import EVERY_ACT, lists, memar_place
@@ -226,9 +229,10 @@ class Documents(Fixture):
 
 
 class Commands(Fixture):
-    def test_the_card_is_the_generated_one(self) -> None:
+    def test_the_part_is_the_card_the_command_module_generates(self) -> None:
         self.session()
-        self.assertEqual(self.parts()["commands"].strip(), commands.card_text().strip())
+        part = self.parts()["commands"]
+        self.assertEqual(part.strip(), commands.card_text().strip())
 
 
 class Ending(Fixture):

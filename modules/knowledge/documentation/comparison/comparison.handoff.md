@@ -6,5 +6,5 @@
 - **The four dated method requirements have never been applied to an essay.** They apply from 2026-10-07, and every essay in `docs/comparisons/` predates them. Whether an existing essay should be brought under them — which means editing a record its own rule calls its own record — is undecided. The disclosure quota is the one that would change the most: it asks each essay to say what it could not verify, which four of them currently answer in the opposite register.
 
 ## Next Steps
-- Re-read the four essays written before 2026-10-07 against [Method requirements added by practice](./documentation-comparison.md#method-requirements-added-by-practice) and decide, per essay, whether to correct in place or to leave the record as it stands.
+- Re-read the four essays written before 2026-10-07 against [Method requirements added by practice](./comparison.md#method-requirements-added-by-practice) and decide, per essay, whether to correct in place or to leave the record as it stands.
 - The critique that shaped this document proposed additions that were declined for cost rather than on principle: an approval line in the required shape, a sharper test for rule 4, and folding the standing-principles list into the numbered obligations. Revisit when a comparison is written that needs them.

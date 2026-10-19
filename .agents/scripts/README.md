@@ -42,7 +42,7 @@ For whoever adds, renames, or removes a file here.
 A file's shelf is decided by what it belongs to, not by who calls it.
 
 - **The top** is what is reached from outside: the router [`memar`](./memar) with `memar.cmd`, the bootstraps and this README. The router knows no verb, no argument and no help text.
-- **The verbs live in modules** under [`modules/`](../../modules/) and [`bundles/memar/`](../../bundles/memar/), each a folder with a file of its own name and a `services/` folder of capabilities. The router finds them by walking those two roots. No module imports a module that imports it back ([`tests/module_graph.py`](./tests/module_graph.py)).
+- **The verbs live in modules** under [`modules/`](../../modules/), [`modules-plugable/`](../../modules-plugable/) and [`bundles/`](../../bundles/), each a folder with a file of its own name and a `services/` folder of capabilities. The router finds them by walking those three roots and this folder, which holds one provisional module until it has its place: [`mcp/`](./mcp/), the MCP adapter, bound for `modules-plugable/net/mcp/` ([the guest adapter](../../modules/knowledge/classification/classification.handoff.md#mcp-as-a-guest-adapter)). No module imports a module that imports it back ([`tests/module_graph.py`](./tests/module_graph.py)).
 - **[`machine/`](./machine/) and [`host/`](./host/)** are what modules share. `machine/` is the machine's, not Memar's. A type belongs to the `primitive/` folder of the module of its subject.
 
 Each shelf and each module keeps its own `tests/`; the top's [`tests/`](./tests/) checks the router and what spans every module. The folder states the role, so a file's name does not.

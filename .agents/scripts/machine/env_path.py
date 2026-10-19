@@ -6,7 +6,7 @@ Split out of the installer because the concern is not Memar's: what a
 machine's PATH says, and how a program asks to be added to it, is the same
 question for anything installed on that machine, and the day a second thing
 wants to be on it is the day the answer must not be written again.
-`services/install_machine.py` is the one place that decides *about Memar*;
+`bundles/memar/install/services/machine.py` is the one place that decides *about Memar*;
 this is the one place that decides *about the machine's environment*, and the
 installer asks it the same way it asks `machine/fs_memar_repository.py`
 whether a folder qualifies.

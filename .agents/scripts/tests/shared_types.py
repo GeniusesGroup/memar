@@ -43,7 +43,8 @@ sys.dont_write_bytecode = True
 
 # The scripts' own source: machine and the router, never a test and
 # never host (host/ wraps tools the machine has and imports nothing from services); and the Python
-# a module under `modules/` holds, which is where a documentation type's home is.
+# a module under `modules/`, `modules-plugable/`, or `bundles/memar/` holds, which is where a documentation
+# type's home is.
 SHELVES = ("machine",)
 TOP = SCRIPTS.parent.parent
 
@@ -53,7 +54,7 @@ def sources() -> dict[str, str]:
     for shelf in SHELVES:
         for path in sorted((SCRIPTS / shelf).glob("*.py")):
             found[f"{shelf}/{path.name}"] = path.read_bytes().decode("utf-8")
-    for top in ("modules", "bundles/memar"):
+    for top in ("modules", "modules-plugable", "bundles/memar"):
         for path in sorted((TOP / top).rglob("*.py")):
             relative = path.relative_to(TOP)
             if "tests" not in relative.parts and "__pycache__" not in relative.parts:

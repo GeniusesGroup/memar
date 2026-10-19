@@ -10,8 +10,8 @@ The subject is `machine/console_parts.py`, named for the file that holds it per
 in the `tests/` folder of the shelf that owns it per
 [Test Placement](../../../../modules/process/test/rules/test-placement/test-placement.md).
 What `memar session start` and `memar content context` print through it is
-pinned beside them, in `services/tests/session_start.py` and
-`services/tests/task_context.py`.
+pinned beside them, in `modules/process/session/tests/start.py` and
+`modules/knowledge/content/tests/task_context.py`.
 
 What is pinned, and what each pin is for:
 

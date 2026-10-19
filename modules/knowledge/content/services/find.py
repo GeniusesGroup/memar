@@ -41,6 +41,7 @@ NO_HEADING = "(before the first heading)"
 
 
 def describe(verbs):
+    from modules.knowledge.content.primitive.corpus_source import CorpusSource
     from modules.process.project.services.find import add_project_flags
 
     parser = verbs.add_parser(
@@ -56,13 +57,20 @@ def describe(verbs):
             "`memar content section FILE '#anchor'`. The words are compared as they are written, with no\n"
             "stemming, and a section whose heading holds them ranks above one that mentions them. It\n"
             "does not find what an act must read: that is printed by `memar content context`. To see\n"
-            "where a term occurs, use `memar content search`."
+            "where a term occurs, use `memar content search`.\n"
+            "\n"
+            "What is read is chosen with --from. A hit from the sessions is a session's record, what\n"
+            "that session wrote and never a ruling: its path begins with the records branch, opened with\n"
+            "`memar session show --session-id ID --file FILE`, or lies in a live session folder. A text\n"
+            "file of theirs that is not Markdown is ranked as one unit, named by its file. What of the\n"
+            "sessions could not be read is said on standard error."
         ),
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
     parser.add_argument("text", help="the words to look for: a subject, a question, a sentence")
     parser.add_argument("--top", type=int, default=TOP, metavar="N", help=f"how many hits to print (default {TOP})")
     parser.add_argument("--no-links", dest="links", action="store_false", help="leave out the sections each hit links")
+    CorpusSource.add_flag(parser)
     add_project_flags(parser, "the project whose files are the corpus; without either, Memar's checkout")
     return run
 
@@ -91,15 +99,21 @@ def _line(index, unit, label: str) -> str:
     return f"{where} | {heading} | {sentence} | {unit.hash}"
 
 
-def find_lines(root: Path, query: str, top: int = TOP, links: bool = True, label: str | None = None) -> list[str]:
+def find_lines(root: Path, query: str, top: int = TOP, links: bool = True, label: str | None = None, sources=None) -> list[str]:
     """The output for QUERY over the checkout at ROOT: the informative line, then the TOP best hits, each followed by the sections it links when LINKS.
 
-    LABEL names ROOT in a hit; the folder's name when not given.
+    LABEL names ROOT in a hit; the folder's name when not given. SOURCES are the `CorpusSource`
+    values the corpus is made of, the default ones when not given.
     """
+    return find_output(root, query, top, links, label, sources)[0]
+
+
+def find_output(root: Path, query: str, top: int = TOP, links: bool = True, label: str | None = None, sources=None) -> tuple[list[str], tuple[str, ...]]:
+    """`find_lines`, with the notes on what of the sessions could not be read."""
     from modules.knowledge.content.services.index import build
 
     name = label or root.name
-    index = build(root)
+    index = build(root, sources)
     ranked = index.rank(query)[: max(top, 0)]
     where = {(unit.path, unit.anchor): number for number, unit in enumerate(index.units) if unit.anchor}
     shown = set(ranked)
@@ -113,13 +127,14 @@ def find_lines(root: Path, query: str, top: int = TOP, links: bool = True, label
             if linked is not None and linked not in shown:
                 shown.add(linked)
                 lines.append(LINKED + _line(index, index.units[linked], name))
-    return lines
+    return lines, index.notes
 
 
 def run(args: argparse.Namespace) -> None:
     import sys
 
     from machine.console import fail
+    from modules.knowledge.content.primitive.corpus_source import CorpusSource
     from modules.knowledge.content.services.reference import content_root
     from modules.process.project.services.find import project_from_args
 
@@ -130,7 +145,9 @@ def run(args: argparse.Namespace) -> None:
     label = "memar"
     if project is not None:
         root, label = project, project.name
-    lines = find_lines(root, args.text, args.top, args.links, label)
+    lines, notes = find_output(root, args.text, args.top, args.links, label, CorpusSource.chosen(args))
     print("\n".join(lines))
     if len(lines) == 1:
         print("no section holds a word of the text", file=sys.stderr)
+    for note in notes:
+        print(note, file=sys.stderr)

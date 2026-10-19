@@ -22,7 +22,8 @@ checkout, where the rest of the architecture sits on disk.
 one service each: onto the machine (`install_machine`: the variable, the command
 on `PATH`, the editor extensions); into the project this is run from, when the
 directory is one (`install_project`); and into the agent apps this machine has,
-when the machine layer has left a location to copy from (`install_apps`). The
+when the machine layer has left a location to copy from (`install_apps`, the
+skill pointer, then `install_apps_mcp`, the MCP server's registration). The
 order is not a preference — the third layer needs the root the first one
 writes, so a project that is not under version control is simply reported and
 skipped while the rest still runs, and a run with nothing to do in one layer is
@@ -145,12 +146,14 @@ def into_project_and_apps(project=None, *, dry_run: bool = False) -> None:
     """
     from machine.console import step
     from bundles.memar.install.services import apps as install_apps
+    from bundles.memar.install.services import apps_mcp as install_apps_mcp
     from bundles.memar.install.services import project as install_project
 
     step("Into this project")
     ask_layer(lambda: install_project.into_project(project, dry_run=dry_run))
     step("Into the agent apps")
     ask_layer(lambda: install_apps.into_apps(dry_run=dry_run))
+    ask_layer(lambda: install_apps_mcp.into_apps(dry_run=dry_run))
 
 
 def run(args: argparse.Namespace) -> int:

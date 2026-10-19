@@ -776,3 +776,15 @@ The facet count and the facet enumeration this document held are gone, so that p
 - [Status](./documentation.md#status): the closed set of values is declared in `modules/content/documentation/primitive/status.py` and the shape of a session's plan and report in `modules/content/documentation/record.py`, not in the scripts' `services/`. No value or rule changed.
 - Why: the owner's rulings of 2026-10-17 place a module's primitive types in the module's own `primitive/` and the shapes built from them in its root; the Status type and the session record's shape were the first moved out of the scripts' `services/`.
 - Made in session 20261017-T082614Z-25876.
+
+---
+
+### Bulk edits skip symbolic-link READMEs
+- Time: 2026-10-19T00:00:00Z
+- Type: Added
+- Ruling: owner, 2026-10-18/19 (in the organization repository); carried here when organization merged into memar (session 20261018-T133019Z-4704)
+- Contributors:
+  - Claude Opus 5.5 - applied
+
+#### What changed
+- [Folder READMEs](./documentation.practice.md#folder-readmes), step 4, gains one sentence: on a host without symbolic links a README link is a text file with no final newline, and a bulk pass skips every mode-`120000` path. A "final newline" pass in organization changed 89 such links and the owner called the result sloppy; the lesson was kept only in an agent's private memory and is recorded here so that it binds every session.

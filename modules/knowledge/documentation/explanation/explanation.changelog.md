@@ -1,18 +1,18 @@
 # Documentation — Explanation Changelog
-This document records why and how `documentation-explanation.md` changed over time. See [Documentation — Changelog](./documentation-changelog.md) for what this file's structure means.
+This document records why and how `documentation-explanation.md` changed over time. See [Documentation — Changelog](../changelog/changelog.md) for what this file's structure means.
 
 ## Changelog
 
 ### Historical entries (pre-Changelog-facet)
-- Time: unknown (historical import — only relative order is known; see [Documentation — Changelog → Unresolved questions](./documentation-changelog.handoff.md#open-questions) for why no timestamp was invented)
+- Time: unknown (historical import — only relative order is known; see [Documentation — Changelog → Unresolved questions](../changelog/changelog.handoff.md#open-questions) for why no timestamp was invented)
 - Cited:
   - [Diátaxis](https://diataxis.fr/) — Reference: cited historically (entry 13) as prior art for separating procedural content from reference/explanation content. This citation is preserved here as historical record; it is not repeated in the base document's own text going forward, per the current rule that argumentative citations live only in the changelog.
   - [Architecture Decisions: Demystifying Architecture](https://github.com/architecture-decision-record/architecture-decision-record/blob/main/locales/en/templates/decision-record-template-by-jeff-tyree-and-art-akerman/index.md) — Reference: cited historically (entry 12) as independent evidence that separately-designed, single-purpose templates converge on the same underlying concerns under different names. A widely-cited independent architecture-decision-record template, examined as evidence that independently-designed templates for a single document purpose (here, ADR) still converge on the same handful of underlying concerns (claim, rationale, alternatives, consequences, related decisions) as this specification's own Optional Sections catalog, just under different names.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati)
-  - [Claude](../CONTRIBUTORS.md#claude) - claude-sonnet-5
-  - [Super Z](../CONTRIBUTORS.md#super-z) - GLM 5.2
-  - [ChatGPT](../CONTRIBUTORS.md#chatgpt) - GPT 5.5
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati)
+  - [Claude](../../../../CONTRIBUTORS.md#claude) - claude-sonnet-5
+  - [Super Z](../../../../CONTRIBUTORS.md#super-z) - GLM 5.2
+  - [ChatGPT](../../../../CONTRIBUTORS.md#chatgpt) - GPT 5.5
 
 #### What changed
 The thirteen entries below are migrated as-is from `documentation-explanation.md`'s former `## Change Rationale` section (itself a rename of an even earlier `rfc-template.md`'s Change Rationale, going back to before the Explanation/Practice/Changelog facet split existed). Individual contributor roles per historical entry were not tracked at the time and are not reconstructed retroactively — only the registry is known reliably. Going forward, new entries use the full structure defined in `documentation-changelog.md`.
@@ -34,10 +34,10 @@ The thirteen entries below are migrated as-is from `documentation-explanation.md
 ### Split into Explanation, Practice, and Changelog facets
 - Time: unknown (historical import — occurred after the thirteen entries above, before this file's creation)
 - Cited:
-  - [Documentation](./documentation.md) — Depends_for: this document is the Explanation facet `documentation.md` defines the concept of.
-  - [Modeling](./modeling.md) — Depends_on: documentation is treated as the result of correct modeling; the concept of documentation cannot be understood or defined independently from the modeling process.
+  - [Documentation](../documentation.md) — Depends_for: this document is the Explanation facet `documentation.md` defines the concept of.
+  - [Modeling](../../../../docs/modeling.md) — Depends_on: documentation is treated as the result of correct modeling; the concept of documentation cannot be understood or defined independently from the modeling process.
 - Contributors:
-  - See the project-wide [CONTRIBUTORS.md](../CONTRIBUTORS.md) registry.
+  - See the project-wide [CONTRIBUTORS.md](../../../../CONTRIBUTORS.md) registry.
 
 #### What changed
 `documentation.md` was split into three files: this document's base (`documentation-explanation.md`, keeping the original `ID`, as substantive successor), a new lightweight meta-specification (`documentation.md`) defining the Facet concept, and `documentation-practice.md` governing the Practice facet, adopting the schema independently converged on by Anthropic, OpenAI, and Microsoft's own skill-creator files rather than inventing a new one.
@@ -45,10 +45,10 @@ The thirteen entries below are migrated as-is from `documentation-explanation.md
 ### Created the paired practice file
 - Time: 2026-07-25T00:00:00Z
 - Cited:
-  - [Documentation — Explanation](./documentation-explanation.md) — Depends_on: this practice file is the procedure for producing an Explanation-facet document; the structure it produces is defined by that specification, not repeated here.
-  - [Documentation](./documentation.md) — Reference: the meta-layer that defines what a Facet is and why Practice-facet files exist alongside Explanation-facet specifications.
+  - [Documentation — Explanation](./explanation.md) — Depends_on: this practice file is the procedure for producing an Explanation-facet document; the structure it produces is defined by that specification, not repeated here.
+  - [Documentation](../documentation.md) — Reference: the meta-layer that defines what a Facet is and why Practice-facet files exist alongside Explanation-facet specifications.
 - Contributors:
-  - See the project-wide [CONTRIBUTORS.md](../CONTRIBUTORS.md) registry.
+  - See the project-wide [CONTRIBUTORS.md](../../../../CONTRIBUTORS.md) registry.
 
 #### What changed
 Created as the Practice-facet companion to `documentation-explanation.md`, following the Practice facet's schema (name/description-only front matter, imperative body, under ~500 lines). Walks a contributor through producing a new Explanation-facet document: copying the template, generating the `ID`, filling in front matter, writing the body, and progressive migration of older documents.
@@ -57,15 +57,15 @@ Created as the Practice-facet companion to `documentation-explanation.md`, follo
 - Time: 2026-08-05T08:51:08Z
 - Type: Changed
 - Cited:
-  - [Documentation](./documentation.md) — Depends_on: this document specifies the Explanation facet defined by documentation.md; the Facet concept itself, and why Explanation is governed separately from Practice, is defined there, not repeated here.
-  - [Modeling](./modeling.md) — Depends_on: Documentation is the result of correct modeling. The concept of Documentation cannot be understood or defined independently from the modeling process.
+  - [Documentation](../documentation.md) — Depends_on: this document specifies the Explanation facet defined by documentation.md; the Facet concept itself, and why Explanation is governed separately from Practice, is defined there, not repeated here.
+  - [Modeling](../../../../docs/modeling.md) — Depends_on: Documentation is the result of correct modeling. The concept of Documentation cannot be understood or defined independently from the modeling process.
   - [Architecture Decisions: Demystifying Architecture](https://github.com/architecture-decision-record/architecture-decision-record/blob/main/locales/en/templates/decision-record-template-by-jeff-tyree-and-art-akerman/index.md) — Reference: a widely-cited independent architecture-decision-record template, examined as evidence that independently-designed templates for a single document purpose (here, ADR) still converge on the same handful of underlying concerns (claim, rationale, alternatives, consequences, related decisions) as this specification's own Optional Sections catalog, just under different names.
   - [Diátaxis](https://diataxis.fr/) — Reference: supports treating procedural how-to content as categorically distinct from the reference/explanation content this specification governs, motivating the separation of Skill files from documents following this specification.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — directed
-  - [Claude](../CONTRIBUTORS.md#claude) — rewrote
-  - [Super Z](../CONTRIBUTORS.md#super-z) — rewrote
-  - [ChatGPT](../CONTRIBUTORS.md#chatgpt) — argued
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — directed
+  - [Claude](../../../../CONTRIBUTORS.md#claude) — rewrote
+  - [Super Z](../../../../CONTRIBUTORS.md#super-z) — rewrote
+  - [ChatGPT](../../../../CONTRIBUTORS.md#chatgpt) — argued
 
 #### What changed
 Per the decision to move all provenance (citations, contributor attribution, cross-document propagation tracking) out of Explanation-facet base documents and into their paired Changelog-facet file, this document was created. `documentation-explanation.md`'s own front-matter `Citations` and `Contributors` fields, and its `## Change Rationale` section, are superseded by this file and should be removed from the base document (tracked separately — see Propagates to).
@@ -100,10 +100,10 @@ Claims migrated from the pre-finalization Contributors roster, concerning the hi
 - Time: 2026-08-11T00:00:00Z
 - Type: Changed
 - Cited:
-  - [Documentation](./documentation.md) — Depends_for: the URI format (absolute vs. relative reference, the `file:` scheme prohibition) is now defined there as a cross-cutting convention, applying wherever a URI appears in any document of any facet.
+  - [Documentation](../documentation.md) — Depends_for: the URI format (absolute vs. relative reference, the `file:` scheme prohibition) is now defined there as a cross-cutting convention, applying wherever a URI appears in any document of any facet.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — argued
-  - [Super Z](../CONTRIBUTORS.md#super-z) — rewrote
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — argued
+  - [Super Z](../../../../CONTRIBUTORS.md#super-z) — rewrote
 
 #### What changed
 - The `#### URI` subsection under `### Conventions` was the canonical definition of URI format (absolute vs. relative reference) and the `file:` scheme prohibition. That rule applies wherever a URI appears — internal hyperlinks, citation entries, contributor identity, examples — in any document of any facet, not only in Explanation-facet documents.
@@ -122,12 +122,12 @@ Claims migrated from the pre-finalization Contributors roster, concerning the hi
 - Time: 2026-08-11T00:00:00Z
 - Type: Changed
 - Cited:
-  - [Documentation — Explanation](./documentation-explanation.md) — Reference: the base specification's body skeleton dropped `Change Rationale` and the `Applied to`/`Citations`/`Contributors` front-matter fields as part of the Changelog-facet migration; the practice file was updated to match.
-  - [Documentation — Changelog](./documentation-changelog.md) — Depends_on: step 6 of the practice's procedure creates a paired Changelog-facet file, whose structure is defined by that specification.
-  - [Documentation](./documentation.md) — Reference: added to the practice's Reference files list because the cross-cutting Citations and URI conventions now live there.
+  - [Documentation — Explanation](./explanation.md) — Reference: the base specification's body skeleton dropped `Change Rationale` and the `Applied to`/`Citations`/`Contributors` front-matter fields as part of the Changelog-facet migration; the practice file was updated to match.
+  - [Documentation — Changelog](../changelog/changelog.md) — Depends_on: step 6 of the practice's procedure creates a paired Changelog-facet file, whose structure is defined by that specification.
+  - [Documentation](../documentation.md) — Reference: added to the practice's Reference files list because the cross-cutting Citations and URI conventions now live there.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — directed
-  - [Super Z](../CONTRIBUTORS.md#super-z) — rewrote
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — directed
+  - [Super Z](../../../../CONTRIBUTORS.md#super-z) — rewrote
 
 #### What changed
 The practice file had been missed when the Changelog-facet migration was applied to the rest of the documentation set: its procedure was still instructing a contributor to fill in `Applied to`, `Citations`, and `Contributors` in the base document's front matter and to keep a `## Change Rationale` body section, all of which the base specification no longer permits. Brought in line: front-matter instructions cover only `Title`, `Status`, `Start Date`, `ID`; the Template drops the migrated fields and section; the obsolete "Guide" topic convention is removed; step 6 now creates the paired `<base>.changelog.md` file and migrates older documents' former provenance fields into Changelog entries; and the `documentation-changelog.md` reference was added.
@@ -151,8 +151,8 @@ The practice file had been missed when the Changelog-facet migration was applied
   - documentation-explanation.practice.md: Done - template and steps rewritten to follow the finalized body structure.
   - All documents reformed under the new pattern: process.md, error.md, memory.md, concurrency.md, dependency-management.md, time.md, networking.md, networking-connection.md, sRPC.md, modeling.md, type.md (in this session's scope; others migrate progressively).
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - claimed, decided
-  - [Super Z](../CONTRIBUTORS.md#super-z) - reviewed, argued, rewrote, moved
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) - claimed, decided
+  - [Super Z](../../../../CONTRIBUTORS.md#super-z) - reviewed, argued, rewrote, moved
 
 #### What changed
 - The `Discussion` wrapper is dissolved entirely, and `Drawbacks` with it (Omid Hekayati - the wrapper's content, on inspection, was questions in declarative clothing and evaluations the current-state reader does not need; an explanatory document is not a place for doubt, and an AI-assisted reader cannot reliably separate a negated position from an affirmed one when loading a body into context).
@@ -191,8 +191,8 @@ All retired wrapper titles are removed from the pattern; documents written under
 - Time: 2026-09-08T08:23:05Z
 - Type: Changed
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - claimed, decided
-  - [Qwen](../CONTRIBUTORS.md#qwen) (Qwen3.8-Flash) - wrote
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) - claimed, decided
+  - [Qwen](../../../../CONTRIBUTORS.md#qwen) (Qwen3.8-Flash) - wrote
 
 #### What changed
 - The finalization had left the specification contradicting itself: the Abstract still listed `Discussion` as a fifth body section, and the Optional Sections intro still said "the fixed five" and named `Discussion` as a nesting host - both corrected to the four fixed sections the `Body sections` rule states.
@@ -218,8 +218,8 @@ All retired wrapper titles are removed from the pattern; documents written under
   - Four carried non-placeholder content and were routed, not deleted: agency.md (watch-items to the handoff's Open Questions), filesystem.md (external literature evidence inline at the claims it supports), immutable_infrastructure.md (deferral note to the handoff's Anticipated Work), error.md (validation note inline at the Boundary translation claim). The paired handoffs and filesystem.md's inline evidence carry their own provenance lines; the 26 per-document changelog entries first appended for this pass were removed on the same ruling.
   - protocols/process/control-flow.md: Done through the concurrent session's own commit (be9c260), which dropped its Results placeholder under this decision; docs/khayyam/control_flow.md was retired and deleted outright with that session, needing no migration. content.md's earlier blocker (its changelog being off-limits) dissolved with the no-entry ruling.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - argued, directed
-  - [Super Z](../CONTRIBUTORS.md#super-z) (GLM 5.3) - researched, argued, wrote
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) - argued, directed
+  - [Super Z](../../../../CONTRIBUTORS.md#super-z) (GLM 5.3) - researched, argued, wrote
 
 #### What changed
 - The fixed body skeleton is reduced to `Abstract`, `Introduction`, `Explanation` (Omid Hekayati - directed removal after the results-notion round; Super Z - applied).
@@ -262,7 +262,7 @@ The skeleton is three fixed sections; an Explanation-facet document carries no `
   - documentation-explanation.practice.md: Done — body-writing step gains an explicit filter before leaving Abstract/Motivation/Methodology.
   - protocols/process/test.md (recorded then as protocols/process/tdd.md): Done — Methodology cleaned as the triggering instance; entry in `docs/modules/process/test.changelog.md`. That document was subsequently absorbed into `test.md` and its changelog folded into that document's.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — objected, directed the governing-doc upgrade
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — objected, directed the governing-doc upgrade
   - Cursor/Composer — drafted
 
 #### What changed
@@ -282,7 +282,7 @@ The skeleton is three fixed sections; an Explanation-facet document carries no `
 - Propagates to:
   - documentation-explanation.handoff.md: Done - the entry asking whether `Future possibilities` is still a legitimate Discussion wrapper was removed; the migration entry's Considered and not done already records the decision against it (handoff: no entry of its own).
 - Contributors:
-  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) - argued, applied
+  - [Space Bunny Alpha](../../../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../../../CONTRIBUTORS.md#opencode)) - argued, applied
 
 #### What changed
 - The entry asking whether `Future possibilities` is still a legitimate Discussion wrapper left `## Open Questions`: the *Method finalized; body restructured* entry above already decided it - "Keeping `Future possibilities` in the body pending separate review (Super Z - flagged the question) (Omid Hekayati - decided immediately against: same criterion as the other removals)" - and that entry's `What changed` routes the content to the handoff's `Anticipated Work`; the handoff holds no entry from it today.
@@ -293,11 +293,11 @@ The skeleton is three fixed sections; an Explanation-facet document carries no `
 - Time: 2026-10-05T17:24:41Z
 - Type: Added
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — decided
-  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) — argued, drafted, applied
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Space Bunny Alpha](../../../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../../../CONTRIBUTORS.md#opencode)) — argued, drafted, applied
 
 #### What changed
-- [Status](./documentation-explanation.md#status) gains one bullet under its Additional rules, immediately after the rule that moves a document to `Final`. It states which party decides each of the section's conditions: `memar-documentation.py content check` decides the mechanical ones — encoding, newlines, written surface — while whether discussion has converged and whether a document is reflected in canonical documentation are decided by a reader against the governing documents, and a reader who disagrees records the disagreement rather than moving the field.
+- [Status](./explanation.md#status) gains one bullet under its Additional rules, immediately after the rule that moves a document to `Final`. It states which party decides each of the section's conditions: `memar-documentation.py content check` decides the mechanical ones — encoding, newlines, written surface — while whether discussion has converged and whether a document is reflected in canonical documentation are decided by a reader against the governing documents, and a reader who disagrees records the disagreement rather than moving the field.
 
 #### Deliberation
 - The edit was proposed in this session's earlier read-only sweep of `docs/` against the ruling and applied once it landed here. The sweep's reasoning is the record's: a specification this load-bearing states conditions on itself and names no deciding party for any of them, which leaves a reader unable to tell which conditions are enforceable and which are read (Space Bunny Alpha).
@@ -313,13 +313,13 @@ The skeleton is three fixed sections; an Explanation-facet document carries no `
 - Time: 2026-10-12T09:50:00Z
 - Type: Changed
 - Contributors:
-  - [Claude](../CONTRIBUTORS.md#claude) (Sonnet-5.5) — reviewed, revised
+  - [Claude](../../../../CONTRIBUTORS.md#claude) (Sonnet-5.5) — reviewed, revised
 
 #### What changed
 - Reviewed the uncommitted change to this family (base, practice, handoff, this changelog) against HEAD.
 - Restored the entry *Removed the specification's own stale references to the retired Discussion section* (2026-09-08T08:23:05Z), which the working tree had deleted without a record: a changelog is history, and its content appears nowhere else.
 - The *Future possibilities* entry said the content "now sits" in the handoff's `Anticipated Work`; the handoff has no such section or entry, so the sentence now says the handoff holds no entry from it.
-- The Status bullet added to [documentation-explanation.md](./documentation-explanation.md#status) said `memar content check` decides "the mechanical" conditions; none of Status's conditions is mechanical and the command does not read `Status`. The bullet now names the two conditions a reader decides and says the command does not read the field. The entry *Status names which party decides each condition* above still describes the first wording, and names the retired script `memar-documentation.py`; it is kept as the record of what was first written.
+- The Status bullet added to [documentation-explanation.md](./explanation.md#status) said `memar content check` decides "the mechanical" conditions; none of Status's conditions is mechanical and the command does not read `Status`. The bullet now names the two conditions a reader decides and says the command does not read the field. The entry *Status names which party decides each condition* above still describes the first wording, and names the retired script `memar-documentation.py`; it is kept as the record of what was first written.
 - Checked and left: the handoff entry removal (the decision is in the migration entry, with its quotation intact); the link fix `./modules/process/test.changelog.md` (the file exists there); the practice line 23 hunk belongs to the Cognition rebuild and was not judged.
 
 ---
@@ -328,8 +328,83 @@ The skeleton is three fixed sections; an Explanation-facet document carries no `
 - Time: 2026-10-13T10:41:00Z
 - Type: Changed
 - Contributors:
-  - [Claude](../CONTRIBUTORS.md#claude) (Sonnet 5.5) - drafted, applied
+  - [Claude](../../../../CONTRIBUTORS.md#claude) (Sonnet 5.5) - drafted, applied
 
 #### What changed
-- [Status](./documentation-explanation.md#status) no longer carries the value table; it links to [documentation.md → Status](./documentation.md#status), which holds the five values, their meanings, and whether each is safe to depend on, unchanged in substance. The rules specific to the facet (ID reuse, who decides convergence, supersession, canonical status only) stay here.
-- Why: the Status vocabulary is now defined once for every document kind; see the entry *One Status vocabulary, defined once* in [documentation.changelog.md](./documentation.changelog.md).
+- [Status](./explanation.md#status) no longer carries the value table; it links to [documentation.md → Status](../documentation.md#status), which holds the five values, their meanings, and whether each is safe to depend on, unchanged in substance. The rules specific to the facet (ID reuse, who decides convergence, supersession, canonical status only) stay here.
+- Why: the Status vocabulary is now defined once for every document kind; see the entry *One Status vocabulary, defined once* in [documentation.changelog.md](../documentation.changelog.md).
+
+---
+
+### Practice name and description boundary
+- Time: 2026-10-15T11:58:47Z
+- Type: Changed
+- Contributors:
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — allowed the fix
+  - [Claude](../../../../CONTRIBUTORS.md#claude) (Opus 5.5) — revised
+
+#### What changed
+- `documentation-explanation.practice.md`'s front-matter `name` was `document-explanation-creator`; it is now `documentation-explanation`, the file's base name, as [Documentation — Practice → Frontmatter](../practice/practice.md#frontmatter) now states. No other document referred to the old name.
+- `documentation-explanation.practice.md`'s `description` now states what it is not for — a practice, a changelog entry, a handoff, and the meaning of the specification's fields, which [Documentation — Practice → Description quality criteria](../practice/practice.md#description-quality-criteria) requires.
+- Why: the study of session 20261015-T061908Z-9468 (report.md, Result 5) found the defect, and the owner allowed it fixed on 2026-10-15; a Practice's `description` is printed as the header an agent reads above its passages, so a description that misleads or states no boundary misleads every agent that reads it.
+- Made in session 20261015-T110002Z-23000.
+
+---
+
+### The Explanation facet's definition moves here from documentation.md
+- Time: 2026-10-16T18:06:00Z
+- Type: Changed
+- Propagates to:
+  - modules/content/documentation/documentation.md: Done (session `20261016-T150928Z-4276`) - the passage this entry moved here no longer stands there.
+- Contributors:
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — ruled (2026-10-16)
+  - [Claude](../../../../CONTRIBUTORS.md#claude) (Sonnet 5.5) — applied
+
+#### What changed
+- [Reader relationship](./explanation.md#reader-relationship): the definition `documentation.md` held under `Facets currently defined` for this facet moved here — the content studied to understand a subject, whose one structure serves every subject. The note on where the structure's conventions come from stays in [Methodology](./explanation.md#methodology) and the provenance statement in [Abstract](./explanation.md#abstract); nothing of it was lost.
+- The sentence that named Practice's relationship now points at Practice's own section.
+- Made in session 20261016-T150928Z-4276, finishing answer 6 of the owner's rulings of 2026-10-16: a new facet edits only its own module.
+
+#### Considered and not done
+- **Restating the other facets' reader relationships here to contrast this one with them**: each facet's own specification states its relationship, and a restatement is a second place to edit when one changes; this specification points at the other's section instead.
+
+---
+
+### The Status values leave this specification for the type
+- Time: 2026-10-17T08:40:00Z
+- Type: Changed
+- Contributors:
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — ruled (2026-10-16)
+  - [Claude](../../../../CONTRIBUTORS.md#claude) (Sonnet 5.5) — applied
+
+#### What changed
+- [./explanation.md#status]: the sentence no longer lists the Status values this kind may take; it names the type `Status` and the way a script asks it (`Status.for_kind`), and keeps its rules.
+- Why: the closed set is code in `.agents/scripts/services/status.py`, and a prose list of a closed set is a copy ([A Fact in Code Is Written Once](../documentation.md#a-fact-in-code-is-written-once)); [documentation.md → Status](../documentation.md#status) had already dropped its table under the same ruling.
+- Made in session 20261016-T194830Z-21416.
+
+---
+
+### The facet's closed lists leave the specification for their types
+- Time: 2026-10-17T12:00:00Z
+- Type: Changed
+- Contributors:
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — ruled (2026-10-16)
+  - [Claude](../../../../CONTRIBUTORS.md#claude) (Sonnet 5.5) — applied
+
+#### What changed
+- The fixed body sections are no longer listed by name in [Body sections](./explanation.md#body-sections); the type `BodySection` gives them and their order, and the bullets below keep what each is for. The front-matter keys (`ExplanationKey`) and the catalog of optional sections (`OptionalSection`) are typed; their prose is unchanged.
+- Why: the owner ruled on 2026-10-16 that every field a facet declares is a type, and that once typed the prose restating it leaves the document, keeping the reason ([A Fact in Code Is Written Once](../documentation.md#a-fact-in-code-is-written-once)); the types are in this facet's `primitive/`.
+- Made in session 20261016-T194831Z-4504.
+
+---
+
+### Field naming follows the key type
+- Time: 2026-10-17T16:00:00Z
+- Type: Corrected
+- Contributors:
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — ruled (2026-10-17)
+  - [Claude](../../../../CONTRIBUTORS.md#claude) (Sonnet 5.5) — applied
+
+#### What changed
+- The Field Naming Convention no longer says every front-matter field is PascalCase; each facet's key type declares its keys' written form.
+- Why: session 20261016-T095101Z-22960 found the text contradicted the documents and types in use; the owner approved the correction on 2026-10-17.

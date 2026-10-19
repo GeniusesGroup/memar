@@ -113,6 +113,7 @@ import machine.env_location as location
 import machine.fs_target as target
 import bundles.memar.install.install as memar_install
 import bundles.memar.install.services.apps as apps_layer
+import bundles.memar.install.services.apps_mcp as apps_mcp_layer
 import bundles.memar.install.services.machine as machine_layer
 import bundles.memar.install.services.project as project_layer
 import bundles.memar.update.services.checkout as update_checkout
@@ -419,7 +420,7 @@ class SiblingSurface(unittest.TestCase):
                 if module.partition(".")[0] in STDLIB:
                     continue
                 with self.subTest(name=name, module=module):
-                    found = (TOP if module.partition(".")[0] in ("bundles", "modules") else SCRIPTS).joinpath(*module.split("."))
+                    found = (TOP if module.partition(".")[0] in ("bundles", "modules", "modules-plugable") else SCRIPTS).joinpath(*module.split("."))
                     self.assertTrue(found.with_suffix(".py").is_file() or found.is_dir(), module)
 
     def test_the_verb_imports_nothing_heavy_until_it_runs(self):
@@ -868,7 +869,7 @@ class HelpUnchanged(unittest.TestCase):
         # The router lists a verb for each service that describes one, and a
         # layer is asked by the installer, not by a person: none describes a verb
         # and none is run.
-        for layer in (machine_layer, project_layer, apps_layer):
+        for layer in (machine_layer, project_layer, apps_layer, apps_mcp_layer):
             with self.subTest(layer=layer.__name__):
                 self.assertFalse(hasattr(layer, "describe"))
                 self.assertNotIn('if __name__ == "__main__"', Path(layer.__file__).read_text(encoding="utf-8"))
@@ -1023,6 +1024,7 @@ class InstallingRegistersTheProject(unittest.TestCase):
         with unittest.mock.patch.object(location, "recorded_root", return_value=SCRIPTS), \
                 unittest.mock.patch.object(machine_layer, "report_installed"), \
                 unittest.mock.patch.object(apps_layer, "into_apps"), \
+                unittest.mock.patch.object(apps_mcp_layer, "into_apps"), \
                 contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(io.StringIO()):
             self.assertEqual(command(parser.parse_args(["install", "--project-path", str(folder)])), 0)
         self.assertEqual(self.entry_of(folder).names, ("work-app",))
@@ -1041,14 +1043,15 @@ class BareRunInstallsEveryLayer(unittest.TestCase):
         # Every layer stubbed, each recording what it was asked, so the order a
         # run asks them in is what is observed and nothing reaches the machine.
         self.asked: list[tuple[str, dict]] = []
-        for module, name in (
-            (machine_layer, "register"),
-            (machine_layer, "report_installed"),
-            (project_layer, "into_project"),
-            (apps_layer, "into_apps"),
+        for module, name, label in (
+            (machine_layer, "register", "register"),
+            (machine_layer, "report_installed", "report_installed"),
+            (project_layer, "into_project", "into_project"),
+            (apps_layer, "into_apps", "into_apps"),
+            (apps_mcp_layer, "into_apps", "into_apps_mcp"),
         ):
             patched = unittest.mock.patch.object(
-                module, name, side_effect=lambda *args, _name=name, **kwargs: self.asked.append((_name, kwargs))
+                module, name, side_effect=lambda *args, _name=label, **kwargs: self.asked.append((_name, kwargs))
             )
             patched.start()
             self.addCleanup(patched.stop)
@@ -1065,7 +1068,7 @@ class BareRunInstallsEveryLayer(unittest.TestCase):
 
     def test_both_layers_are_asked_and_in_that_order(self):
         memar_install.into_project_and_apps()
-        self.assertEqual([name for name, _ in self.asked], ["into_project", "into_apps"])
+        self.assertEqual([name for name, _ in self.asked], ["into_project", "into_apps", "into_apps_mcp"])
 
     def test_a_dry_run_is_forwarded_to_the_layers(self):
         # The machine layer writes a value, so it is never a dry run; what a
@@ -1073,7 +1076,12 @@ class BareRunInstallsEveryLayer(unittest.TestCase):
         self.run_verb("--dry-run", recorded=SCRIPTS)
         self.assertEqual(
             self.asked,
-            [("report_installed", {}), ("into_project", {"dry_run": True}), ("into_apps", {"dry_run": True})],
+            [
+                ("report_installed", {}),
+                ("into_project", {"dry_run": True}),
+                ("into_apps", {"dry_run": True}),
+                ("into_apps_mcp", {"dry_run": True}),
+            ],
         )
 
     def test_a_layer_that_does_not_apply_does_not_stop_the_run(self):
@@ -1083,7 +1091,7 @@ class BareRunInstallsEveryLayer(unittest.TestCase):
         project_layer.into_project.side_effect = SystemExit(refusal)
         code, out, err = self.run_verb(recorded=SCRIPTS)
         self.assertEqual(code, 0)
-        self.assertEqual(self.asked[-1], ("into_apps", {"dry_run": False}))
+        self.assertEqual(self.asked[-2:], [("into_apps", {"dry_run": False}), ("into_apps_mcp", {"dry_run": False})])
         self.assertIn(refusal, err)
         self.assertLess(out.index("==> Into this project"), out.index("==> Into the agent apps"))
 
@@ -1117,7 +1125,7 @@ class BareRunInstallsEveryLayer(unittest.TestCase):
 
     def test_nothing_recorded_registers_this_checkout_and_then_asks_the_layers(self):
         self.run_verb()
-        self.assertEqual([name for name, _ in self.asked], ["register", "into_project", "into_apps"])
+        self.assertEqual([name for name, _ in self.asked], ["register", "into_project", "into_apps", "into_apps_mcp"])
 
 
 if __name__ == "__main__":

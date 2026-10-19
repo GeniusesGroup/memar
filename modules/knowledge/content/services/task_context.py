@@ -48,6 +48,12 @@ since, or changed since it was printed, prints.
 `description` what it is for and when it applies. That sentence is printed
 once, above the first section taken from it; a document with no `description`
 gets none.
+
+**A document with no Abstract.** A document a plan's Steps name, with no
+anchor, is read at its Abstract; when it has none it is read at its first
+section — the first heading below its title — and its line says so. A document
+with no section at all is read at its front matter's `description`, printed
+once above; one with neither is said, not skipped.
 """
 from __future__ import annotations
 
@@ -57,15 +63,17 @@ from pathlib import Path
 from typing import Iterable, NamedTuple, Sequence
 
 from modules.knowledge.content.services.reference import read_text
-from modules.knowledge.content.services.section import section_hash, span_by_anchor
+from modules.knowledge.content.services.section import outline, section_hash, span_by_anchor
 from modules.computer.module.services.folders import TEMP_FOLDER
 from modules.knowledge.content.services.normative_references import EVERY_ACT, MEMAR_REPOSITORY, Entry, Place, ReferenceList, lists, memar_place
 from modules.knowledge.content.services.normative_references import normative_reference_places
 from modules.knowledge.documentation.plan.services.plan import front_matter
 from modules.knowledge.documentation.plan.primitive.task_kind import TaskKind
 
-# The anchor a reference with none is read at, for a document a plan's Steps name.
+# The anchor a reference with none is read at, for a document a plan's Steps name; and what it is read at when
+# the document has no Abstract.
 ABSTRACT = BodySection.ABSTRACT.heading.lower()
+FIRST_SECTION = "first section"
 DESCRIPTION_KEY = PracticeKey.DESCRIPTION.key
 # The record, in a session's temp folder, of every section a context printed for it.
 CONTEXT_READ = "context_read.txt"
@@ -79,8 +87,8 @@ WHY_LABEL = "Why: "
 class Ref(NamedTuple):
     """A section to print: its repository's top folder, its path from there, its anchor, the repository's name, and the entry that names it or the drop that removes it.
 
-    A Ref with no entry is a document a plan's Steps name, read at its Abstract when it has no anchor; one with an
-    entry and no anchor is that entry's whole document.
+    A Ref with no entry is a document a plan's Steps name, read at its Abstract when it has no anchor, or at its
+    first section when it has none; one with an entry and no anchor is that entry's whole document.
     """
 
     top: Path
@@ -126,15 +134,15 @@ class _Read(NamedTuple):
     absent: str | None
 
 
-def _name(ref: Ref) -> str:
+def _name(ref: Ref, read_at: str = "") -> str:
     where = ref.path if ref.repository == MEMAR_REPOSITORY else f"{ref.repository}: {ref.path}"
     if ref.anchor:
         return f"{where}#{ref.anchor}"
-    return where if ref.entry is not None else f"{where} (Abstract)"
+    return where if ref.entry is not None else f"{where} ({read_at or ABSTRACT.capitalize()})"
 
 
-def _header(ref: Ref, mark: str | None = None) -> str:
-    return f"--- {_name(ref)}" + (f" ({mark})" if mark else "") + " ---"
+def _header(ref: Ref, mark: str | None = None, read_at: str = "") -> str:
+    return f"--- {_name(ref, read_at)}" + (f" ({mark})" if mark else "") + " ---"
 
 
 def _text_of(ref: Ref, texts: dict[Path, str | None]) -> str | None:
@@ -144,6 +152,13 @@ def _text_of(ref: Ref, texts: dict[Path, str | None]) -> str | None:
     return texts[file]
 
 
+def _first_section(text: str) -> tuple[int, int] | None:
+    """Where TEXT's first section starts and stops: its first heading below the title, else its first heading's; None when it has no heading."""
+    found = outline(text)
+    section = next((one for one in found if one.level > 1), None) or (found[0] if found else None)
+    return None if section is None else (section.start, section.stop)
+
+
 def _read(ref: Ref, texts: dict[Path, str | None]) -> _Read:
     text = _text_of(ref, texts)
     if text is None:
@@ -151,6 +166,13 @@ def _read(ref: Ref, texts: dict[Path, str | None]) -> _Read:
     if ref.entry is not None and not ref.anchor:
         return _Read(ref, _header(ref), (0, len(text)), None)
     span = span_by_anchor(text, ref.anchor or ABSTRACT)
+    if span is None and ref.entry is None and not ref.anchor:
+        # A document a plan names with no anchor and no Abstract is read at its first section, or its description alone.
+        span = _first_section(text)
+        if span is not None:
+            return _Read(ref, _header(ref, read_at=FIRST_SECTION), span, None)
+        if _description(text):
+            return _Read(ref, "", None, "")
     if span is None:
         return _Read(ref, _header(ref), None, f"no section answers to #{ref.anchor or ABSTRACT} in {ref.path}")
     return _Read(ref, _header(ref), span, None)
@@ -209,7 +231,8 @@ def compose(wanted: Sequence[Ref], earlier: Sequence[Ref] = ()) -> Composed:
                 blocks.append(f"--- {where} (description) ---\n{description}")
         if read.span is None:
             if entry is None:
-                blocks.append(f"{read.header}\n{read.absent}")
+                if read.absent:
+                    blocks.append(f"{read.header}\n{read.absent}")
             else:
                 gone += 1
                 blocks.append(f"{_header(ref, f'{GONE_MARK}: {entry.located}')}\n{entry.written}\n{read.absent}")

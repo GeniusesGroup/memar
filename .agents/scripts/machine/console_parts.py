@@ -53,7 +53,7 @@ from machine.console import fail
 # cut known so far is Claude Code's, whose shell tools cut an output past 30,000
 # characters (it saved a 66.9 KB `start` output to a file and showed a 2 KB
 # preview). A project whose runtimes cut lower says so in its preferences
-# (`services/project_preferences.py`), and a lower cut found in a runtime in use
+# (`modules/process/project/services/preferences.py`), and a lower cut found in a runtime in use
 # lowers this.
 MOST_CHARACTERS = 24_000
 # How many hex digits of the whole text's SHA-256 a part names: enough that two

@@ -89,8 +89,16 @@ from machine.console import use_utf8_stdio
 
 SERVICES = "services"
 DESCRIBE = "describe"
-# Where modules are looked for, and the folders inside a module that are not modules.
-SEARCHED_ROOTS = ("modules", "modules-plugable", "bundles")
+# Where modules are looked for, each with the folder its modules' import addresses start from: the checkout's top,
+# under which the kernel modules stand in `modules/`, the pluggable ones in `modules-plugable/`, and the bundles in
+# `bundles/`; or this folder, which is on the search path too and holds provisional modules (the scripts README says
+# which); and the folders inside a module that are not modules.
+SEARCHED_ROOTS = (
+    ("modules", "."),
+    ("modules-plugable", "."),
+    ("bundles", "."),
+    (".agents/scripts", ".agents/scripts"),
+)
 ROLE_FOLDERS = {"services", "tests", "errors", "docs", "temp", "rules", "protocol", "primitive", "node_modules", "__pycache__"}
 # A module that has a command-line face keeps it in a file named by its folder (`session/session.py`);
 # each capability is a file in its `services/` folder. The name the router works with is the folder's
@@ -163,7 +171,7 @@ def catalog(top: Path = TOP) -> dict[str, str]:
     found: dict[str, str] = {}
     shelved: list[tuple[str, str, str]] = []
     domains: set[str] = set()
-    for root in SEARCHED_ROOTS:
+    for root, base in SEARCHED_ROOTS:
         for folder, dirs, files in os.walk(top / root):
             dirs[:] = sorted(name for name in dirs if name not in ROLE_FOLDERS)
             leaf = Path(folder).name
@@ -171,7 +179,7 @@ def catalog(top: Path = TOP) -> dict[str, str]:
                 continue
             if leaf in found:
                 raise SystemExit(f"memar: more than one folder is named {leaf}: {found[leaf]} and {folder}")
-            package = ".".join(Path(folder).relative_to(top).parts)
+            package = ".".join(Path(folder).relative_to(top / base).parts)
             found[leaf] = f"{package}.{leaf}"
             domains.add(leaf)
             for path in sorted((Path(folder) / SERVICES).glob("*.py")):

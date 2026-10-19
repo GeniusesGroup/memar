@@ -6,10 +6,10 @@
 - Time: 2026-10-07T03:45:00Z
 - Type: Added
 - Cited:
-  - [Comparisons folder](./comparisons/) — Reference: the essay folder this document governs; discovered by listing, not indexed here.
-  - [Comparison: Memar and Hindsight](./comparisons/hindsight.001.md) — Evidence: the disclosure quota, whose origin is that essay's own unverified claims and off-repo benchmarks; the second-opinion pass on counts and citations; and the treatment of a collapsed history as a source-status finding.
-  - [Comparison: Memar and Tensorus](./comparisons/tensorus.001.md) — Evidence: the triple-marking requirement, raised by a project whose disclosure reached its code and its README while its own maturity verdict sat unreached in the repository root.
-  - [Comparison: Memar and Hindsight](./comparisons/hindsight.001.md) — Evidence: the second-opinion pass on counts and citations, and the treatment of a collapsed history as a source-status finding.
+  - [Comparisons folder](../../../../docs/comparisons/) — Reference: the essay folder this document governs; discovered by listing, not indexed here.
+  - [Comparison: Memar and Hindsight](../../../../docs/comparisons/hindsight.001.md) — Evidence: the disclosure quota, whose origin is that essay's own unverified claims and off-repo benchmarks; the second-opinion pass on counts and citations; and the treatment of a collapsed history as a source-status finding.
+  - [Comparison: Memar and Tensorus](../../../../docs/comparisons/tensorus.001.md) — Evidence: the triple-marking requirement, raised by a project whose disclosure reached its code and its README while its own maturity verdict sat unreached in the repository root.
+  - [Comparison: Memar and Hindsight](../../../../docs/comparisons/hindsight.001.md) — Evidence: the second-opinion pass on counts and citations, and the treatment of a collapsed history as a source-status finding.
 - Propagates to:
   - README.md: Done — the public pointer now names this document.
   - docs/README.md: Rejected — the folder entry already covers where essays live, and restating the method there would duplicate it.
@@ -18,8 +18,8 @@
   - hindsight.md: Done — the standing-principles link retargeted at this document, its absorptions marked inline, and one unverified claim corrected.
   - tensorus.md: Done — the absorptions and the merged research thread marked inline.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — claimed, decided
-  - [Space Bunny](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) — drafted, applied
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — claimed, decided
+  - [Space Bunny](../../../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../../../CONTRIBUTORS.md#opencode)) — drafted, applied
 
 #### What changed
 - Created `documentation-comparison.md` (ID 497579, Status: Draft) consolidating the former `docs/comparisons/README.md`: the fairness rules and the standing principles are preserved, and the file gains a symmetric Abstract, a proper front matter, and the Explanation facet's body structure.
@@ -40,20 +40,34 @@
 - Time: 2026-10-07T05:20:00Z
 - Type: Changed
 - Cited:
-  - [Documentation — Research](./documentation-research.md) - Reference: the ordinal and supersession rules this document now follows for the same reason - a re-examination is a newer record, not a rewrite.
-  - [Documentation — Explanation](./documentation-explanation.md) - Premise: a body section speaks of the subject it governs, not of the container the subject happens to sit in.
+  - [Documentation — Research](../research/research.md) - Reference: the ordinal and supersession rules this document now follows for the same reason - a re-examination is a newer record, not a rewrite.
+  - [Documentation — Explanation](../explanation/explanation.md) - Premise: a body section speaks of the subject it governs, not of the container the subject happens to sit in.
 - Propagates to:
   - docs/comparisons/: Done - all eight essays renamed to <project>.001.md; fourteen files carried inbound links to them and were retargeted.
   - documentation.handoff.md: Reference - none needed.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - decided
-  - [Space Bunny](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) - argued, drafted, applied
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) - decided
+  - [Space Bunny](../../../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../../../CONTRIBUTORS.md#opencode)) - argued, drafted, applied
 
 #### What changed
-- A new section, [How an essay is identified over time](./documentation-comparison.md#how-an-essay-is-identified-over-time), states the naming rule: one essay per examination, <project>.001.md then <project>.002.md, the ordinal carrying creation order and nothing else. The distinction it turns on is correction against re-examination - a wrong citation or a moved count is fixed in the file that is wrong, while a project examined again at a later revision gets a new essay that cites the first, so a reader can always tell which state of both projects an argument was made against. All eight essays were renamed accordingly, and the fourteen files holding inbound links were retargeted, historical changelog citations among them: a path that no longer resolves is a broken link, and the entry that cites it is a record of a claim rather than of a filename.
+- A new section, [How an essay is identified over time](./comparison.md#how-an-essay-is-identified-over-time), states the naming rule: one essay per examination, <project>.001.md then <project>.002.md, the ordinal carrying creation order and nothing else. The distinction it turns on is correction against re-examination - a wrong citation or a moved count is fixed in the file that is wrong, while a project examined again at a later revision gets a new essay that cites the first, so a reader can always tell which state of both projects an argument was made against. All eight essays were renamed accordingly, and the fourteen files holding inbound links were retargeted, historical changelog citations among them: a path that no longer resolves is a broken link, and the entry that cites it is a record of a claim rather than of a filename.
 - The location section now states where the essays are - docs/comparisons/, with the folder's README.md a symlink to this document - and keeps only the two rules that generalize: listing rather than indexing, and one essay per file named after its project. The previous wording offered the location as a project's decision, which in this repository it is not, and would have had agents re-asking a settled question in every later session.
 - The two sections that spoke of the folder now speak of the essay, and the sections are titled accordingly.
 
 #### Considered and not done
 - **Renaming only the essays written from now** (rejected): two naming conventions in one folder is the drift the Content Rule exists to prevent, and the corpus is small enough that one rename settles it.
 - **Keeping the bare names and numbering only the second examination** (rejected): that is the form the Research facet rejected for the same reason - the first file's name would change the moment a second appeared, and renaming breaks every reference already held.
+
+---
+
+### The facet's closed lists leave the specification for their types
+- Time: 2026-10-17T12:00:00Z
+- Type: Changed
+- Contributors:
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — ruled (2026-10-16)
+  - [Claude](../../../../CONTRIBUTORS.md#claude) (Sonnet 5.5) — applied
+
+#### What changed
+- The ten stages of an essay are no longer listed in [The essay's required shape](./comparison.md#the-essays-required-shape); the type `EssayStage` gives them and their order.
+- Why: the owner ruled on 2026-10-16 that every field a facet declares is a type, and that once typed the prose restating it leaves the document, keeping the reason ([A Fact in Code Is Written Once](../documentation.md#a-fact-in-code-is-written-once)); the types are in this facet's `primitive/`.
+- Made in session 20261016-T194831Z-4504.

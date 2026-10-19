@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""Tests for the Status type in `services/status.py`.
+"""Tests for the Status type in `primitive/status.py`.
 
-    python .agents/scripts/services/tests/status.py
+    python modules/knowledge/documentation/tests/status.py
 
 The subject is the one vocabulary of Status every Memar document and record
 draws on, named for the file that holds it per
-[Test Naming](../../../../modules/process/test/rules/test-naming/test-naming.md),
+[Test Naming](../../../process/test/rules/test-naming/test-naming.md),
 in the `tests/` folder of the shelf that owns it per
-[Test Placement](../../../../modules/process/test/rules/test-placement/test-placement.md).
+[Test Placement](../../../process/test/rules/test-placement/test-placement.md).
 
 Nothing here reads or writes a file.
 
@@ -36,13 +36,16 @@ import unittest
 from pathlib import Path
 
 TESTS = Path(__file__).resolve().parent
-# The scripts folder is two levels up from this suite's folder; running a file
-# puts its own folder on the module search path, not its parent's.
-SCRIPTS = TESTS.parent.parent
+# The checkout's top is three levels above `documentation/`'s `tests/` folder, and the
+# scripts folder is in it; running a file puts its own folder on the module search path,
+# so both are put there, the scripts folder first.
+TOP = TESTS.parents[3]
+SCRIPTS = TOP / ".agents" / "scripts"
 sys.path.insert(0, str(SCRIPTS))
+sys.path.insert(1, str(TOP))
 sys.dont_write_bytecode = True
 
-from services.status import Kind, Status
+from modules.knowledge.documentation.primitive.status import DocumentKind, Status
 
 
 class Values(unittest.TestCase):
@@ -72,50 +75,85 @@ class Values(unittest.TestCase):
                 self.assertIsNone(Status.read(word))
 
 
+class StatusIsALabel(unittest.TestCase):
+    """Status is a field of its own, and its values are labels of the Status label (owner, 2026-10-16)."""
+
+    def test_every_value_is_a_label_whose_definition_takes_the_status_label(self) -> None:
+        from modules.knowledge.documentation.primitive.status import STATUS_LABEL
+
+        definitions = Status.definitions()
+        self.assertEqual([d.label.word for d in definitions], [s.word for s in Status])
+        for definition in definitions:
+            with self.subTest(label=definition.label.word):
+                self.assertTrue(definition.is_a(STATUS_LABEL))
+
+    def test_the_identifiers_are_distinct_uuid_version_7(self) -> None:
+        import re
+
+        ids = [status.label.id for status in Status]
+        self.assertEqual(len(set(ids)), len(ids))
+        for one in ids:
+            self.assertRegex(one, r"^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$")
+
+    def test_the_registry_knows_them_as_statuses(self) -> None:
+        from modules.knowledge.documentation.primitive.label import LabelKind, LabelRegistry, Labels
+        from modules.knowledge.documentation.primitive.status import STATUS_LABEL
+
+        kind = LabelKind(STATUS_LABEL, "where a document stands", "everything that reads a Status", str, Status.definitions())
+        registry = LabelRegistry([kind])
+        self.assertEqual(registry.words(Labels((Status.QUEUED.label, Status.DONE.label if hasattr(Status, "DONE") else Status.COMPLETE.label)), "Status"), ("Queued", "Complete"))
+
+
 class Kinds(unittest.TestCase):
+    def test_the_kind_of_document_is_not_named_kind(self) -> None:
+        # A plan's `Kind` is the kind of act (a task's kind); the kind of document is DocumentKind (owner, 2026-10-16).
+        import modules.knowledge.documentation.primitive.status as declared
+
+        self.assertFalse(hasattr(declared, "Kind"))
+
     def test_a_session_plan_may_be_queued_active_blocked_or_complete(self) -> None:
         self.assertEqual(
-            Status.for_kind(Kind.SESSION_PLAN),
+            Status.for_kind(DocumentKind.SESSION_PLAN),
             (Status.QUEUED, Status.ACTIVE, Status.BLOCKED, Status.COMPLETE),
         )
 
     def test_a_session_report_may_be_active_blocked_or_complete(self) -> None:
-        self.assertEqual(Status.for_kind(Kind.SESSION_REPORT), (Status.ACTIVE, Status.BLOCKED, Status.COMPLETE))
+        self.assertEqual(Status.for_kind(DocumentKind.SESSION_REPORT), (Status.ACTIVE, Status.BLOCKED, Status.COMPLETE))
 
     def test_the_other_kinds_take_the_values_the_table_gives_them(self) -> None:
         self.assertEqual(
-            Status.for_kind(Kind.EXPLANATION),
+            Status.for_kind(DocumentKind.EXPLANATION),
             (Status.DRAFT, Status.PROPOSED, Status.FINAL, Status.SUPERSEDED, Status.REJECTED),
         )
-        self.assertEqual(Status.for_kind(Kind.HANDOFF), (Status.ACTIVE, Status.PAUSED, Status.BLOCKED, Status.COMPLETE))
-        self.assertEqual(Status.for_kind(Kind.RESEARCH), (Status.ACTIVE, Status.PAUSED, Status.COMPLETE, Status.WITHDRAWN))
+        self.assertEqual(Status.for_kind(DocumentKind.HANDOFF), (Status.ACTIVE, Status.PAUSED, Status.BLOCKED, Status.COMPLETE))
+        self.assertEqual(Status.for_kind(DocumentKind.RESEARCH), (Status.ACTIVE, Status.PAUSED, Status.COMPLETE, Status.WITHDRAWN))
 
     def test_every_kind_has_values(self) -> None:
-        for kind in Kind:
+        for kind in DocumentKind:
             with self.subTest(kind=kind.value):
                 self.assertTrue(Status.for_kind(kind))
 
 
 class ReportEnding(unittest.TestCase):
     def test_each_status_a_report_may_state_says_how_a_run_ended(self) -> None:
-        for status in Status.for_kind(Kind.SESSION_REPORT):
+        for status in Status.for_kind(DocumentKind.SESSION_REPORT):
             with self.subTest(status=status.word):
                 self.assertTrue(status.report_ending)
 
     def test_no_other_status_has_one(self) -> None:
         for status in Status:
-            if Kind.SESSION_REPORT not in status.kinds:
+            if DocumentKind.SESSION_REPORT not in status.kinds:
                 with self.subTest(status=status.word):
                     self.assertIsNone(status.report_ending)
 
 
 class Listing(unittest.TestCase):
     def test_the_words_of_a_kind_read_as_a_sentence(self) -> None:
-        self.assertEqual(Status.listing(Kind.SESSION_PLAN), "Queued, Active, Blocked, or Complete")
-        self.assertEqual(Status.listing(Kind.SESSION_REPORT), "Active, Blocked, or Complete")
+        self.assertEqual(Status.listing(DocumentKind.SESSION_PLAN), "Queued, Active, Blocked, or Complete")
+        self.assertEqual(Status.listing(DocumentKind.SESSION_REPORT), "Active, Blocked, or Complete")
 
     def test_the_words_of_a_kind_as_keys(self) -> None:
-        self.assertEqual(Status.keys(Kind.SESSION_PLAN), ("queued", "active", "blocked", "complete"))
+        self.assertEqual(Status.keys(DocumentKind.SESSION_PLAN), ("queued", "active", "blocked", "complete"))
 
 
 if __name__ == "__main__":

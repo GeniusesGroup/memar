@@ -18,7 +18,10 @@ the configuration a session is driven by. A tool named for
 content that could not search code would be a tool for documents. So `search`,
 `backlinks`, `obligations`, and the Memar half of `check` all read across the
 checkout, and the folders a reader does not want are excluded rather than the
-ones they happen to live in. See [Lib → The rule](../../../modules/knowledge/classification/primitive/guest.md#the-rule)
+ones they happen to live in. The sessions' records are content too, but each is
+one session's claim and never a ruling, so `find` and `search` read them only
+when asked with `--from sessions` (`primitive/corpus_source.py`), from the
+records branch and the live session folders, and every hit names the session. See [Lib → The rule](../../../modules/knowledge/classification/primitive/guest.md#the-rule)
 for the shape of that reasoning applied elsewhere: the subject decides the
 folder, and a name that states a narrower subject than the file serves is a
 name that will be believed.

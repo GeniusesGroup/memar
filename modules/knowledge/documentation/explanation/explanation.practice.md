@@ -1,10 +1,10 @@
 ---
-name: document-explanation-creator
-description: Use when creating a new formal explanation document, or when revising an existing one to bring it in line with the current specification.
+name: documentation-explanation
+description: Use when creating a new formal explanation document, or when revising an existing one to bring it in line with the current specification — the steps and the template. Not for a practice (use documentation-practice), a changelog entry (documentation-changelog), or a handoff (documentation-handoff), and not what each field and section means, which explanation.md defines.
 ---
 
 # How to make a new explanation document
-This is the procedure for producing an Explanation-facet document that follows `documentation-explanation.md`. It assumes you already know, or will look up as needed, what each field and section in that specification means. This file only covers the steps, not the deep definitions.
+This is the procedure for producing an Explanation-facet document that follows `explanation.md`. It assumes you already know, or will look up as needed, what each field and section in that specification means. This file only covers the steps, not the deep definitions.
 
 ## Steps
 1. Copy the [The Template](#the-template) section into a new file named `<short-descriptive-slug>.md` — no number, no domain prefix, just a short, hyphenated, human-readable slug derived from the Title.
@@ -18,14 +18,14 @@ This is the procedure for producing an Explanation-facet document that follows `
    - `Start Date`: today's date (UTC), matching the moment `ID` was generated.
 4. Write the body.
    - `Abstract`, `Introduction` (`Motivation`, `Methodology`) stay unified, document-wide prose.
-   - Under `Explanation`, split the content into topics; nest `#### {Sub section title}` under a topic where finer structure helps. See `documentation-explanation.md`'s `Optional Sections` for the optional building blocks (`Motivation`, `Methodology`, `Risks`, `Implications`, and others) and place them wherever the content calls for them. Cite premise evidence for a claim inline, at the claim it supports.
-   - **Filter Abstract, Motivation, and Methodology against the Relevance discipline before leaving them.** Each sentence must change the reader's understanding of the *subject*. Drop or move to the changelog: session dates, who argued or reviewed, which drafting pass changed what, "see the changelog for rejected alternatives," and any other production history. Motivation states the failure mode, not the writing story. Methodology states the method the claims rest on (or is omitted); it is not a miniature changelog. Abstract states the claim, not a revision narrative. See `documentation-explanation.md` → Relevance discipline → *Recurring misroute*.
-   - Hold the draft to the [standards of cognitive material](./cognition.md#standards-of-cognitive-material) while writing — clarity first — and examine your own claims as you draft them, not in a separate later phase. When critique of a draft is the dominant activity rather than part of writing it, [cognition.practice.md](./cognition.practice.md) covers that exercise.
+   - Under `Explanation`, split the content into topics; nest `#### {Sub section title}` under a topic where finer structure helps. See `explanation.md`'s `Optional Sections` for the optional building blocks (`Motivation`, `Methodology`, `Risks`, `Implications`, and others) and place them wherever the content calls for them. Cite premise evidence for a claim inline, at the claim it supports.
+   - **Filter Abstract, Motivation, and Methodology against the Relevance discipline before leaving them.** Each sentence must change the reader's understanding of the *subject*. Drop or move to the changelog: session dates, who argued or reviewed, which drafting pass changed what, "see the changelog for rejected alternatives," and any other production history. Motivation states the failure mode, not the writing story. Methodology states the method the claims rest on (or is omitted); it is not a miniature changelog. Abstract states the claim, not a revision narrative. See `explanation.md` → Relevance discipline → *Recurring misroute*.
+   - Hold the draft to the [standards of cognitive material](../../../../docs/cognition.md#standards-of-cognitive-material) while writing — clarity first — and examine your own claims as you draft them, not in a separate later phase. When critique of a draft is the dominant activity rather than part of writing it, [cognition.practice.md](../../../../docs/cognition.practice.md) covers that exercise.
    - Document-wide optional sections sit directly under the body's top level, not inside any topic.
    - Do not put considered-and-rejected alternatives, open questions, or anticipated work in the body: alternatives go to the changelog entry's `Considered and not done` section, open questions to the handoff's `Open Questions`, anticipated work to the handoff's `Anticipated Work` (steps 6-7).
-   - Do not write a `Results` section: a result's home is determined by its type — see [documentation.md → Results routing](./documentation.md#results-routing); observed outcomes are not body content.
-5. If this is a revision of a document written under an earlier version, bring it in line with the current structure at this edit — see `documentation-explanation.md`'s "Progressive migration" topic.
-6. Create or update the paired Changelog-facet file `<same-slug>.changelog.md` alongside the base document. Its first entry records the document's creation (and, if this is a revision of an older document, migrates any `Citations`, `Contributors`, `Applied to` front-matter fields and `## Change Rationale` body content from the old version into Changelog entries — see `documentation-changelog.md` for the entry structure). The base document keeps none of that provenance in its own front matter or body.
+   - Do not write a `Results` section: a result's home is determined by its type — see [documentation.md → Results routing](../documentation.md#results-routing); observed outcomes are not body content.
+5. If this is a revision of a document written under an earlier version, bring it in line with the current structure at this edit — see `explanation.md`'s "Progressive migration" topic.
+6. Create or update the paired Changelog-facet file `<same-slug>.changelog.md` alongside the base document. Its first entry records the document's creation (and, if this is a revision of an older document, migrates any `Citations`, `Contributors`, `Applied to` front-matter fields and `## Change Rationale` body content from the old version into Changelog entries — see `changelog.md` for the entry structure). The base document keeps none of that provenance in its own front matter or body.
 
 ## The Template
 This is illustrative, not normative — it shows the shape every document starts from, not a rigid enforcement of exactly what must be present. Copy everything below into a new file and replace every placeholder.
@@ -58,7 +58,7 @@ ID: ""
 ```
 
 ## Reference files
-Use below paths or fetch the relevant document via [`memar` SKILL](../.agents/skills/memar/SKILL.md) rather than inventing an answer.
-- [documentation.md](./documentation.md) — meta-layer: defines Facets, names current facets, and defines cross-cutting conventions (Citations, URI) that apply to every facet.
-- [documentation-explanation.md](./documentation-explanation.md) — the Explanation facet specification this procedure follows.
-- [documentation-changelog.md](./documentation-changelog.md) — the Changelog facet specification; the paired `<base>.changelog.md` file created in step 6 follows this structure.
+Use below paths or fetch the relevant document via [`memar` SKILL](../../../../.agents/skills/memar/SKILL.md) rather than inventing an answer.
+- [documentation.md](../documentation.md) — meta-layer: defines Facets, names current facets, and defines cross-cutting conventions (Citations, URI) that apply to every facet.
+- [explanation.md](./explanation.md) — the Explanation facet specification this procedure follows.
+- [changelog.md](../changelog/changelog.md) — the Changelog facet specification; the paired `<base>.changelog.md` file created in step 6 follows this structure.

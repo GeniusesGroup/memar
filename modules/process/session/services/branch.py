@@ -28,7 +28,8 @@ import subprocess
 import sys
 from pathlib import Path
 
-from machine.fs_memar import RECORDS_BRANCH, RECORDS_RELATIVE
+from machine import git_records
+from machine.fs_memar import RECORDS_BRANCH
 from modules.process.session.services.location import same_path
 
 GIT_MISSING = "`git` is not on PATH; run the Memar bootstrap for this machine (install.sh / install.ps1), which installs it"
@@ -47,13 +48,13 @@ def _git(project: Path, args: list[str], data: bytes | None = None) -> subproces
 
 
 def reference(session_id: str) -> str:
-    """How a session's records are named wherever they are cited: the branch, a colon, the session's folder on it."""
-    return f"{RECORDS_BRANCH}:{folder_on_branch(session_id)}/"
+    """How a session's records are named wherever they are cited: the branch, a colon, the session's folder on it; `machine/git_records.py` holds the form, which the content module reads too."""
+    return git_records.reference(session_id)
 
 
 def folder_on_branch(session_id: str) -> str:
     """The path of a session's folder in the branch's tree, without a trailing slash."""
-    return f"{RECORDS_RELATIVE.as_posix()}/{session_id}"
+    return git_records.folder_on_branch(session_id)
 
 
 def is_repository(project: Path) -> bool:

@@ -13,7 +13,10 @@ branch `machine/fs_memar.RECORDS_BRANCH` names, at
 `.agents/sessions/<id>/` in that branch's tree. A branch, because the full
 records would otherwise grow the history of the work; a branch of the project's
 own repository, because that is where the project's people already are, and
-nothing is pushed: publishing the branch is the owner's act.
+nothing is pushed: publishing the branch is the owner's act. What is kept is
+read by id (`session_show`) and by content: `memar content find` and `search`
+read the branch with `--from sessions` (owner, 2026-10-19), so a later session
+can find what an earlier one wrote.
 
 **What is kept.** The whole folder (`session_keep`), except the claim, caches,
 a path with a `.git` part, binary files, a non-document file over 256 KB, and
@@ -345,7 +348,7 @@ def describe(verbs) -> Callable[[argparse.Namespace], None]:
     """`memar session archive`."""
     parser = verbs.add_parser(
         ARCHIVE_COMMAND,
-        help="keep a session's records on its project's records branch, to cite with the task's work",
+        help="keep a session's records on its project's records branch, to cite with the task's work and to find by content",
         description=(
             f"Keep the records of the session SESSION_ID on the branch {RECORDS_BRANCH} of the repository of\n"
             f"the project its plan names, at {RECORDS_RELATIVE.as_posix()}/<id>/ in that branch, and do the same for\n"
@@ -359,7 +362,9 @@ def describe(verbs) -> Callable[[argparse.Namespace], None]:
             "--session-id`, which finds it there. The project's HEAD,\n"
             "index and working tree are not touched, and it never pushes. A project whose\n"
             f"preferences say `{RECORDS_KEY}: {Records.OFF.value}` keeps none. A session whose records cannot be\n"
-            "kept is named with why, and the verb fails before writing anything."
+            "kept is named with why, and the verb fails before writing anything. What is kept\n"
+            "is read by content as well as by id: `memar content find` and `memar content search`\n"
+            "read it with `--from sessions`."
         ),
     )
     parser.add_argument("--session-id", required=True, help="the session whose task is being committed")

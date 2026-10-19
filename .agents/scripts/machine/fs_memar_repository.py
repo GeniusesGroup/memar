@@ -12,7 +12,7 @@ The answer is a question about files and folders and nothing else, so it sits on
 the machine shelf, below everything that asks it: where Memar lives
 (`machine/env_location.py`, `machine/fs_memar.py`) as well as the installer, the
 content check, and the update. How far a checkout of one is behind its upstream
-is the update's, in `services/update_checkout.py`.
+is the update's, in `bundles/memar/update/services/checkout.py`.
 """
 from __future__ import annotations
 

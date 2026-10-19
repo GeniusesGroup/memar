@@ -12,7 +12,7 @@ in the `tests/` folder of the shelf that owns it per
 
 A check of a file this suite does not own belongs beside the file that owns it,
 not here: what the installer does with these answers is pinned in
-`services/tests/install.py`.
+`bundles/memar/install/tests/install.py`.
 Nothing here writes to the machine — the platform's own record is read but never
 written, and every folder a run reaches is a scratch folder removed again.
 

@@ -1,6 +1,6 @@
 ---
 name: documentation
-description: procedures for writing and revising Memar documentation under documentation.md — written surface, results routing, and where companion records go; use whenever drafting or editing any document in docs/
+description: procedures for writing and revising Memar documentation under documentation.md — written surface, results routing, and where companion records go; use whenever drafting or editing any document in docs/. Not one facet's own procedure, which this practice routes to — an Explanation-facet document (documentation-explanation), a Practice (documentation-practice), a handoff (documentation-handoff), a changelog entry (documentation-changelog) — and not the schemas, naming, and language rules, which documentation.md holds
 ---
 # Documentation Practice
 > **Purpose:** Followable procedures that [documentation.md](./documentation.md) presupposes but does not itself contain. Facet schemas, naming, and language rules live in that document and in each facet's governing specification — this file does not restate them.
@@ -15,21 +15,21 @@ Apply [documentation.md → Written surface](./documentation.md#written-surface)
 ## Rejected positions
 A position the owner has rejected is not a record, and the work it generates is bounded by three steps:
 1. Delete the entry, section, or sentence whose claim is that position. Do not annotate it, hedge it, or keep it as history for a later reader.
-2. Give the alternative that was genuinely examined and not taken its one home: one `Considered and not done` line in the surviving entry, phrased as that alternative and why it was not taken ([Considered and not done](./documentation-changelog.md#considered-and-not-done)).
+2. Give the alternative that was genuinely examined and not taken its one home: one `Considered and not done` line in the surviving entry, phrased as that alternative and why it was not taken ([Considered and not done](./changelog/changelog.md#considered-and-not-done)).
 3. State the decision affirmatively in the document that holds the claim; the changelog records the outcome of the change, never the position it replaced ([Written surface](./documentation.md#written-surface)).
 
 ## Results and companions
 When work produces something durable, route it by type — do not invent a side note:
 1. Anticipated claim of a document → that document's Abstract ([Results routing](./documentation.md#results-routing)).
 2. Derived consequences of adopting a design → Implications (optional section on the Explanation facet).
-3. Observed change to an artifact → one entry on the paired `.changelog.md` for the whole session, not one entry per edit ([Session consolidation](./documentation-changelog.md#session-consolidation)). Append at end-of-file, oldest-first; use `memar content changelog-append`, do not preload the whole changelog to find the insertion point. If this session already has an entry on that file, extend it. Same-session undone mistakes with no lasting design change get **no** entry ([Trivial changes](./documentation-changelog.md#trivial-changes)).
+3. Observed change to an artifact → one entry on the paired `.changelog.md` for the whole session, not one entry per edit ([Session consolidation](./changelog/changelog.md#session-consolidation)). Append at end-of-file, oldest-first; use `memar content changelog-append`, do not preload the whole changelog to find the insertion point. If this session already has an entry on that file, extend it. Same-session undone mistakes with no lasting design change get **no** entry ([Trivial changes](./changelog/changelog.md#trivial-changes)).
 4. Open questions and anticipated work → the paired `.handoff.md`.
 5. A deliberate inquiry (including a negative result) → a `.research.<NNN>.md` companion.
 
 ## Creating or revising by facet
-- New or revised Explanation document → [documentation-explanation.practice.md](./documentation-explanation.practice.md).
-- New Practice companion (`.practice.md`) → [documentation-practice.practice.md](./documentation-practice.practice.md).
-- Handoff produce/consume → [documentation-handoff.practice.md](./documentation-handoff.practice.md).
+- New or revised Explanation document → [explanation.practice.md](./explanation/explanation.practice.md).
+- New Practice companion (`.practice.md`) → [practice.practice.md](./practice/practice.practice.md).
+- Handoff produce/consume → [handoff.practice.md](./handoff/handoff.practice.md).
 
 ## Which file the doer reads
 When the task is to carry out work a practice already covers:
@@ -53,6 +53,6 @@ A folder that has a main document beside it takes its `README.md` as a symbolic 
    git add <readme>
    git update-index --add --cacheinfo 120000,$(git hash-object <readme>),<readme>
    ```
-   Confirm with `git ls-files -s -- <readme>`, which must report `120000`; a mode of `100644` means the file is a text file and the link was never recorded. The same procedure works where symlinks are supported, and is the one to use on a host that refuses them.
+   Confirm with `git ls-files -s -- <readme>`, which must report `120000`; a mode of `100644` means the file is a text file and the link was never recorded. The same procedure works where symlinks are supported, and is the one to use on a host that refuses them. On such a host (`core.symlinks=false`) each link sits on disk as a small text file holding its target with no final newline, so a pass that edits files in bulk — adding final newlines, normalizing line endings, rewriting links — skips every path whose mode is `120000`: the newline it adds turns the target into a name that does not exist, as one such pass did to 89 links in organization (2026-10-18).
 5. For a folder with no main document, write the README as a real file carrying real content: what the folder is for and what belongs in it, stated without restating what the files already say ([No derivative inventories](#no-derivative-inventories)).
 6. Give a README no companions: no `README.changelog.md` and no `README.handoff.md`. A decision about a folder — its criterion, its layout — is recorded in the README as the rule it now is, not as the history of how it was reached, because such a decision is rarely reversed and its reasons are the rule's own. Open work about a folder is work on the module or document whose subject it is, and goes in that one's handoff.

@@ -7,9 +7,10 @@
 
 The rule is in [Scripts](../../README.md) -> A growing file is a sign of a problem.
 The mark is MARK_LINES lines, chosen after measuring the files under `services/`,
-`host/` and `machine/`, and the Python under `modules/`: nearly all are under 420 lines, and the files above 450 are
-the few that hold more than one concern. Tests are not measured; a suite grows with
-what it pins.
+`host/` and `machine/`, and the Python under `modules/`, `modules-plugable/`,
+and `bundles/memar/`: nearly all are under 420 lines, and the files above 450
+are the few that hold more than one concern. Tests are not measured; a suite
+grows with what it pins.
 
 What is pinned:
 
@@ -40,7 +41,7 @@ def measured() -> dict[str, int]:
     for shelf in ("host", "machine"):
         for path in sorted((SCRIPTS / shelf).glob("*.py")):
             sizes[f"{shelf}/{path.name}"] = len(path.read_text(encoding="utf-8").splitlines())
-    for top in ("modules", "bundles/memar"):
+    for top in ("modules", "modules-plugable", "bundles/memar"):
         for path in sorted((TOP / top).rglob("*.py")):
             relative = path.relative_to(TOP)
             if "tests" not in relative.parts and "__pycache__" not in relative.parts:

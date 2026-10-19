@@ -5,8 +5,9 @@
 
     python .agents/scripts/tests/module_graph.py
 
-A module here is a folder under `modules/` or `bundles/` that holds Python of its
-own: a file named by its folder, or files in its `services/` folder. What it
+A module here is a folder under `modules/`, `modules-plugable/`, or `bundles/`
+that holds Python of its own: a file named by its folder, or files in its
+`services/` folder. What it
 imports of another module — by the dotted path of that module's files — is an
 edge, and a cycle of edges is a pair of modules neither of which can be understood,
 moved or converted to Khayyam without the other
@@ -35,7 +36,7 @@ sys.dont_write_bytecode = True
 
 from machine.fs_test_scratch import suite_scratch
 
-ROOTS = ("modules", "bundles")
+ROOTS = ("modules", "modules-plugable", "bundles")
 SKIPPED = {"tests", "temp", "node_modules", "__pycache__", "primitive", "protocol", "errors", "docs", "rules"}
 
 

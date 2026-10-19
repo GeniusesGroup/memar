@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""Tests for the session record types in `services/session_record.py`.
+"""Tests for the session record types in `record.py`.
 
-    python .agents/scripts/services/tests/session_record.py
+    python modules/knowledge/documentation/tests/record.py
 
 The subject is the shape of a session's plan.md and report.md, declared once,
 named for the file that holds it per
-[Test Naming](../../../../modules/process/test/rules/test-naming/test-naming.md),
+[Test Naming](../../../process/test/rules/test-naming/test-naming.md),
 in the `tests/` folder of the shelf that owns it per
-[Test Placement](../../../../modules/process/test/rules/test-placement/test-placement.md).
+[Test Placement](../../../process/test/rules/test-placement/test-placement.md).
 
 Nothing here writes.
 
@@ -22,8 +22,10 @@ PlanRecord    plan.md: the front-matter keys in the order a new plan
                  four parts, the `Decisions needed` hand-back part and its
                  ten-line limit; its Statuses are those the table gives a
                  session report.
-  TheSessionId  Both records name the session they belong to, in the same
-                 front matter and from the one declaration.
+  TheId         Both records open with one field, ID (the Explanation's ID and
+                 a session's `Session` are one), from the one declaration;
+                 the plan's Start Date replaces `Opened`, and a file written
+                 with an earlier name is still read as the current key.
   Outline       The shape rendered for a help text names every key and every
                  part, produced from the record and kept nowhere else.
 
@@ -36,14 +38,20 @@ import unittest
 from pathlib import Path
 
 TESTS = Path(__file__).resolve().parent
-# The scripts folder is two levels up from this suite's folder; running a file
-# puts its own folder on the module search path, not its parent's.
-SCRIPTS = TESTS.parent.parent
+# The checkout's top is three levels above `documentation/`'s `tests/` folder, and the
+# scripts folder is in it; running a file puts its own folder on the module search path,
+# so both are put there, the scripts folder first.
+TOP = TESTS.parents[3]
+SCRIPTS = TOP / ".agents" / "scripts"
 sys.path.insert(0, str(SCRIPTS))
+sys.path.insert(1, str(TOP))
 sys.dont_write_bytecode = True
 
-from services.session_record import PLAN, REPORT, PlanKey, ReportKey, SESSION_FIELD
-from services.status import Kind, Status
+from modules.knowledge.documentation.record import PLAN, REPORT
+from modules.knowledge.documentation.plan.primitive.plan_key import PlanKey
+from modules.knowledge.documentation.report.primitive.report_key import ReportKey
+from modules.knowledge.documentation.primitive.record_key import ID_FIELD
+from modules.knowledge.documentation.primitive.status import DocumentKind, Status
 
 
 class PlanRecord(unittest.TestCase):
@@ -54,7 +62,7 @@ class PlanRecord(unittest.TestCase):
     def test_the_keys_in_the_order_a_new_plan_writes_them(self) -> None:
         self.assertEqual(
             [key.key for key in PLAN.keys],
-            ["session", "title", "status", "opened", "project", "parent", "conversation", "priority", "topic", "kind", "depends_on"],
+            ["id", "title", "status", "start date", "project", "parent", "conversation", "priority", "labels", "depends_on"],
         )
         self.assertIs(PlanKey.STATUS, PLAN.keys[2])
 
@@ -64,11 +72,28 @@ class PlanRecord(unittest.TestCase):
                 self.assertTrue(key.description)
 
     def test_the_statuses_are_those_of_a_session_plan(self) -> None:
-        self.assertEqual(PLAN.kind, Kind.SESSION_PLAN)
+        self.assertEqual(PLAN.kind, DocumentKind.SESSION_PLAN)
         self.assertEqual(PLAN.statuses, (Status.QUEUED, Status.ACTIVE, Status.BLOCKED, Status.COMPLETE))
 
     def test_a_key_is_written_in_pascal_case(self) -> None:
         self.assertEqual(PlanKey.PARENT.written, "Parent")
+
+    def test_the_start_date_is_named_for_what_it_is(self) -> None:
+        # The Explanation names it Start Date; a plan's `Opened` was a worse name for the same fact.
+        self.assertEqual(PlanKey.START_DATE.key, "start date")
+        self.assertEqual(PlanKey.START_DATE.written, "Start Date")
+        self.assertFalse(hasattr(PlanKey, "OPENED"))
+
+    def test_an_earlier_name_of_a_key_is_still_read(self) -> None:
+        front = {"session": "s-1", "title": "T", "opened": "2026-10-01T00:00:00Z", "project": "/work"}
+        read = PLAN.current(front)
+        self.assertEqual(read["id"], "s-1")
+        self.assertEqual(read["start date"], "2026-10-01T00:00:00Z")
+        self.assertEqual(front["session"], "s-1")  # the argument is not changed
+
+    def test_a_current_name_wins_over_an_earlier_one(self) -> None:
+        read = PLAN.current({"id": "new", "session": "old"})
+        self.assertEqual(read["id"], "new")
 
 
 class ReportRecord(unittest.TestCase):
@@ -77,7 +102,7 @@ class ReportRecord(unittest.TestCase):
         self.assertEqual(REPORT.parts, ("What ran", "Check", "Result", "Left open"))
 
     def test_the_keys(self) -> None:
-        self.assertEqual([key.key for key in REPORT.keys], ["session", "title", "status"])
+        self.assertEqual([key.key for key in REPORT.keys], ["id", "title", "status"])
         self.assertIs(ReportKey.STATUS, REPORT.keys[2])
 
     def test_the_hand_back_part_and_its_limit(self) -> None:
@@ -88,20 +113,27 @@ class ReportRecord(unittest.TestCase):
         self.assertIsNone(PLAN.hand_back_part)
 
     def test_the_statuses_are_those_of_a_session_report(self) -> None:
-        self.assertEqual(REPORT.kind, Kind.SESSION_REPORT)
+        self.assertEqual(REPORT.kind, DocumentKind.SESSION_REPORT)
         self.assertEqual(REPORT.statuses, (Status.ACTIVE, Status.BLOCKED, Status.COMPLETE))
 
 
-class TheSessionId(unittest.TestCase):
-    def test_both_records_open_with_the_session_they_belong_to(self) -> None:
-        self.assertIs(PLAN.keys[0], PlanKey.SESSION)
-        self.assertIs(REPORT.keys[0], ReportKey.SESSION)
+class TheId(unittest.TestCase):
+    """Session (plan, report) and ID (Explanation) are one field, named ID (owner, 2026-10-16)."""
 
-    def test_the_field_is_declared_once_and_written_in_pascal_case(self) -> None:
-        self.assertEqual(PlanKey.SESSION.value, SESSION_FIELD)
-        self.assertEqual(ReportKey.SESSION.value, SESSION_FIELD)
-        self.assertEqual(PlanKey.SESSION.written, "Session")
-        self.assertEqual(ReportKey.SESSION.written, "Session")
+    def test_both_records_open_with_the_id_of_the_record_they_belong_to(self) -> None:
+        self.assertIs(PLAN.keys[0], PlanKey.ID)
+        self.assertIs(REPORT.keys[0], ReportKey.ID)
+
+    def test_the_field_is_declared_once_and_written_ID(self) -> None:
+        self.assertEqual(PlanKey.ID.value, ID_FIELD)
+        self.assertEqual(ReportKey.ID.value, ID_FIELD)
+        self.assertEqual(PlanKey.ID.written, "ID")
+        self.assertEqual(ReportKey.ID.written, "ID")
+        self.assertFalse(hasattr(PlanKey, "SESSION"))
+        self.assertFalse(hasattr(ReportKey, "SESSION"))
+
+    def test_the_session_is_the_earlier_name(self) -> None:
+        self.assertIn("session", PlanKey.ID.earlier)
 
 
 class Outline(unittest.TestCase):

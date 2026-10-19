@@ -13,6 +13,7 @@ import argparse
 import sys
 from pathlib import Path
 
+from host import git_sessions
 from host.git_index import PrivateIndex, index_entries, index_from, index_input, tree_entry
 from host.git_lock import LOCK_NOTE, lock_deadline, locks_free, once, patiently, shared_locks, stopped
 from host.git_run import in_repo, plumb, repository_flag, repository_root
@@ -26,8 +27,11 @@ def cmd_commit(
     leave_out: list[Path],
     fold: int,
     message_file: Path,
+    *,
+    sessions: list[str],
+    no_session: bool,
 ) -> None:
-    """Commit the named paths alone, without the shared index and without porcelain."""
+    """Commit the named paths alone, without the shared index and without porcelain, citing SESSIONS (`git_sessions`)."""
     root = repository_root(repository)
     if fold < 0:
         sys.exit("error: --fold counts commits and cannot be negative")
@@ -48,6 +52,10 @@ def cmd_commit(
                 f"error: {oldest[:12]} is already on {upstream[:12]} upstream; "
                 "folding it would rewrite published history"
             )
+    message = message_file.read_bytes().decode("utf-8").replace("\r\n", "\n").strip()
+    if not message:
+        sys.exit(f"error: {message_file} is empty; a commit needs a message")
+    cited = git_sessions.checked(message, sessions, no_session, parent, head, root)
 
     named: dict[str, Path | None] = {in_repo(p, root): None for p in paths}
     for pair in prepared:
@@ -92,9 +100,7 @@ def cmd_commit(
             "the task's commit after it. Nothing was committed."
         )
 
-    message = message_file.read_bytes().decode("utf-8").replace("\r\n", "\n").strip()
-    if not message:
-        sys.exit(f"error: {message_file} is empty; a commit needs a message")
+    message = git_sessions.with_trailers(message, cited, root)
     body = (
         f"tree {tree}\nparent {parent}\n"
         f"author {plumb(['var', 'GIT_AUTHOR_IDENT'], root)}\n"
@@ -136,6 +142,10 @@ def add_parser(sub: argparse._SubParsersAction) -> None:
             "working tree other sessions share: plain `git commit` takes everything\n"
             "staged, theirs included, and so does any rewrite of it your runtime makes.\n"
             "The commits a --fold replaces stay reachable through `git reflog`.\n\n"
+            "Every commit names the sessions it carries out, each with --session-id, or\n"
+            "says with --no-session that it carries out none; one that does neither is\n"
+            "refused. The ids are read back with\n"
+            f"`git log --format=%(trailers:key={git_sessions.TRAILER},valueonly)`.\n\n"
             f"{LOCK_NOTE}"
         ),
         formatter_class=argparse.RawDescriptionHelpFormatter,
@@ -177,6 +187,29 @@ def add_parser(sub: argparse._SubParsersAction) -> None:
         metavar="PATH",
         help="inside a --fold, keep PATH as the new parent has it; its change stays unstaged",
     )
+    p_commit.add_argument(
+        git_sessions.SESSION_FLAG,
+        dest="sessions",
+        action="append",
+        default=[],
+        metavar="ID",
+        help=(
+            f"a session this commit carries out, by its id; once for each. Each is looked up as `memar session show` "
+            f"looks it up, in its folder and then on the project's records branch, and refused when neither holds it; "
+            f"each is written into the message as a `{git_sessions.TRAILER}: ID` trailer, after those of the commits a "
+            "--fold replaces, which are kept. The message itself names no session"
+        ),
+    )
+    p_commit.add_argument(
+        git_sessions.NO_SESSION_FLAG,
+        action="store_true",
+        help=(
+            "this commit carries out no session: the task opened none, as committing, staging, a rename, or one "
+            f"edit done in place. Without it, a commit that cites no session is refused; never with {git_sessions.SESSION_FLAG}"
+        ),
+    )
     p_commit.set_defaults(
-        run=lambda a: cmd_commit(a.repository, a.paths, a.prepared, a.leave_out, a.fold, a.message_file)
+        run=lambda a: cmd_commit(
+            a.repository, a.paths, a.prepared, a.leave_out, a.fold, a.message_file, sessions=a.sessions, no_session=a.no_session
+        )
     )

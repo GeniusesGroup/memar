@@ -10,6 +10,10 @@ states its own work, never another verb's. Both are addressed to whoever is
 about to run one of these — usually an agent holding uncommitted work. Everything
 from here down is addressed to whoever opens this file.
 
+**Frozen (the owner, 2026-10-17).** Git is a sink the project means to leave, so no new idea is added to this file or to `host/git_*.py`
+unless it is indispensable; a session-id rule in a commit message is accepted as it stands and is not refined. A change here
+states in one line why it is indispensable.
+
 The host tool already speaks git. This file is the constraint, not the
 capability:
 
@@ -61,7 +65,11 @@ capability:
            last unpushed commits with the one it writes; `--leave-out` keeps a
            path's change out of that fold; `--as` commits a prepared file as
            a path, which is how one session's hunk is committed out of a file
-           another session is also editing. Hooks do not run.
+           another session is also editing. Hooks do not run. Every commit
+           names the sessions it carries out (`git_sessions.py`): the caller
+           gives each with `--session-id`, `memar session show` must find it,
+           and the verb writes a `Session:` trailer for it; one that cites none
+           is refused unless it says `--no-session`.
 
   uncommit Take back the last commit, unpushed, keeping its work. Host
            `git reset --soft HEAD~1` leaves the commit's changes staged in

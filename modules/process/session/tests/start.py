@@ -44,9 +44,9 @@ What is pinned, and what each pin is for:
                    Steps name, at the section it names or at its Abstract,
                    unless the kind's passages already hold it; one that is
                    not there is said, not skipped.
-  Commands         Every command is printed with its call shape and a line on
-                   what it is for, so an agent that took up a session already
-                   knows what exists; the card is the generated one.
+  Commands         The part names `memar commands` in one sentence and copies
+                   nothing: the card is that command's own output, and a
+                   service printing it would hold a second copy that drifts.
   Help             The help of each command the plan names is printed, once,
                    with the help of `session` and `content write` which every
                    session needs; a command that does not exist is said.
@@ -96,11 +96,12 @@ from machine.console_parts import CLOSING_MARK, MOST_CHARACTERS
 from machine.fs_test_scratch import suite_scratch
 
 import machine.fs_memar as memar_fs
-from importlib import import_module
-commands = import_module("modules-plugable.process.command.command")
 import modules.process.session.services.temp as session_temp
 import modules.process.session.services.start as session_start
 import modules.process.session.services.plan_labels as session_plan_labels
+from importlib import import_module
+# The command module stands under `modules-plugable`, a name a literal import cannot spell.
+commands = import_module("modules-plugable.process.command.command")
 from modules.knowledge.documentation.primitive.label import Label, Labels, new_id
 from modules.knowledge.documentation.plan.primitive import task_kind
 from modules.knowledge.documentation.plan.services.plan import PLAN_NAME, plan_skeleton
@@ -119,6 +120,14 @@ DOCS = {
     "steps.md": "# Steps\n\n## Abstract\nSTEPS-ABSTRACT\n\n## Detail\nSTEPS-DETAIL\n",
 }
 LISTS = lists([memar_place(ROOT)])
+# Documents a plan's Steps may name, at top folders other than `docs/`; the second and third have no Abstract, the
+# third no section at all, and the fourth is there to show a bare file name is no document.
+OTHERS = {
+    "modules/process/example/example.md": "# Example\n\n## Abstract\nEXAMPLE-ABSTRACT\n\n## Body\nEXAMPLE-BODY\n",
+    "modules/process/headless/headless.md": "# Headless\n\n## Why\nHEADLESS-WHY\n\n## How\nHEADLESS-HOW\n",
+    "modules/process/described/described.md": "---\nname: described\ndescription: DESCRIBED-DESCRIPTION\n---\n\n# Described\n",
+    "bundles/example/example.md": "# Bundle Example\n\n## Abstract\nBUNDLE-ABSTRACT\n",
+}
 # Memar's lists, the real documents their entries name, and one no list names, copied into the scratch root.
 REAL = sorted(
     {entry.path for found in LISTS for entry in found.entries}
@@ -158,6 +167,10 @@ class Fixture(unittest.TestCase):
         for path in REAL:
             (self.fake_root / path).parent.mkdir(parents=True, exist_ok=True)
             shutil.copyfile(ROOT / path, self.fake_root / path)
+        for name, text in OTHERS.items():
+            path = self.fake_root / name
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text(text, encoding="utf-8", newline="\n")
 
     def session(self, plan: str) -> str:
         folder = memar_fs.session_dir(SID, create=True)
@@ -355,6 +368,37 @@ class Documents(Fixture):
         part = self.parts(plan_with("mechanical", steps=steps))["documents"]
         self.assertIn("no section answers to #nowhere", part)
 
+    def test_a_step_document_under_modules_is_read_from_that_top_folder(self) -> None:
+        steps = "1. read `modules/process/example/example.md`. Local."
+        part = self.parts(plan_with("mechanical", steps=steps))["documents"]
+        self.assertIn("--- modules/process/example/example.md (Abstract) ---", part)
+        self.assertIn("EXAMPLE-ABSTRACT", part)
+        self.assertNotIn("EXAMPLE-BODY", part)
+
+    def test_a_step_document_under_bundles_is_read_from_that_top_folder(self) -> None:
+        steps = "1. read /bundles/example/example.md. Local."
+        part = self.parts(plan_with("mechanical", steps=steps))["documents"]
+        self.assertIn("BUNDLE-ABSTRACT", part)
+
+    def test_a_step_document_with_no_abstract_is_read_at_its_first_section(self) -> None:
+        steps = "1. read `modules/process/headless/headless.md`. Local."
+        part = self.parts(plan_with("mechanical", steps=steps))["documents"]
+        self.assertIn("--- modules/process/headless/headless.md (first section) ---", part)
+        self.assertIn("HEADLESS-WHY", part)
+        self.assertNotIn("HEADLESS-HOW", part)
+        self.assertNotIn("no section answers", part)
+
+    def test_a_step_document_with_no_abstract_and_no_section_prints_its_description(self) -> None:
+        steps = "1. read `modules/process/described/described.md`. Local."
+        part = self.parts(plan_with("mechanical", steps=steps))["documents"]
+        self.assertIn("DESCRIBED-DESCRIPTION", part)
+        self.assertNotIn("no section answers", part)
+
+    def test_a_bare_file_name_and_a_url_are_no_step_documents(self) -> None:
+        steps = "1. read example.md and https://example.com/modules/process/example/example.md. Local."
+        part = self.parts(plan_with("mechanical", steps=steps))["documents"]
+        self.assertNotIn("EXAMPLE-ABSTRACT", part)
+
 
 class SkillPart(Fixture):
     def test_the_skill_is_printed_whole(self) -> None:
@@ -362,13 +406,10 @@ class SkillPart(Fixture):
 
 
 class Commands(Fixture):
-    def test_the_card_lists_commands_with_their_call_shape(self) -> None:
+    def test_the_part_is_the_card_the_command_module_generates(self) -> None:
         part = self.parts(plan_with())["commands"]
-        for line in ("memar session start --session-id ID", "memar content write", "memar commands"):
-            self.assertIn(line, part)
-
-    def test_the_card_is_the_generated_one(self) -> None:
-        self.assertEqual(self.parts(plan_with())["commands"].strip(), commands.card_text().strip())
+        self.assertEqual(part.strip(), commands.card_text().strip())
+        self.assertIn("memar content write", part)
 
 
 class Help(Fixture):
@@ -416,7 +457,7 @@ class Ending(Fixture):
 
 
 # A bound well under the text an implement plan starts with, so it prints in several parts.
-SMALL = 6_000
+SMALL = 8_000
 
 
 def body(part: str) -> str:

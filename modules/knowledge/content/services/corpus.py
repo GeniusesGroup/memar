@@ -7,6 +7,13 @@ Shared by `search`, `backlinks`, and `obligations`, which read the corpus, and b
 `check`, whose walk of a folder leaves out the same generated and dependency
 folders. One answer to what the checkout's content is, so a verb cannot see a
 narrower or a wider world than the verb beside it.
+
+The content is of sources (`CorpusSource`): the documents and the code are
+files of the folders below, told apart by suffix, and are what every verb reads
+by default. The sessions are not files of these folders — the archived ones are
+on the records branch and the live ones under the sessions folder, both left out
+of the walk below — and are read only by `find` and `search` when they are asked
+for (`session_records.py`).
 """
 from __future__ import annotations
 
@@ -33,8 +40,8 @@ _RESEARCH_COMPANION = re.compile(r"\.research\.\d+\.md$", re.IGNORECASE)
 # repository might be looking for. Markdown is the documentation surface and
 # `.kh` the model surface; a `.py` or a `.ts` is searched and checked because it
 # is content of the repository and not of a third party, and a consuming
-# project gets the same rule for its own files.
-CONTENT_SUFFIXES = (".md", ".kh")
+# project gets the same rule for its own files. Which suffix is which source is
+# `CorpusSource`'s (`modules/knowledge/content/primitive/corpus_source.py`).
 
 # The one corpus. `docs/` is where the model is argued, not where the
 # repository's content ends: `modules/` holds the model definitions, the rule
@@ -85,7 +92,7 @@ def is_generated(parts: tuple[str, ...]) -> bool:
     )
 
 
-def content_files(root: Path) -> list[Path]:
+def content_files(root: Path, sources=None) -> list[Path]:
     """Every written file of the checkout that a reader may want to search.
 
     The folders `_CORPUS_DIRS` names, plus the root documents `_CORPUS_FILES`
@@ -94,9 +101,20 @@ def content_files(root: Path) -> list[Path]:
     by a pattern, so a folder that is not content stays out even when it holds
     `.md` files — an editor's bundled README is not this repository's content.
 
+    SOURCES, `CorpusSource` values, keeps the files of the sources named, by
+    their suffixes; without it, the default ones, the documents and the code.
+    The sessions are not files of these folders: they are
+    `session_records.py`'s, and a corpus of the sessions alone has no files here.
+
     Never a silent partial answer: a checkout with none of these folders is
     refused rather than reported as an empty corpus.
     """
+    from modules.knowledge.content.primitive.corpus_source import CorpusSource
+
+    chosen = CorpusSource.default() if sources is None else tuple(sources)
+    suffixes = tuple(suffix for source in chosen for suffix in source.suffixes)
+    if not suffixes:
+        return []
     found: list[Path] = []
     present = [root / name for name in _CORPUS_DIRS]
     if not any(directory.is_dir() for directory in present):
@@ -108,7 +126,7 @@ def content_files(root: Path) -> list[Path]:
         if not directory.is_dir():
             continue
         for path in directory.rglob("*"):
-            if not path.is_file() or path.suffix.lower() not in CONTENT_SUFFIXES:
+            if not path.is_file() or path.suffix.lower() not in suffixes:
                 continue
             if _excluded_from_search(path):
                 continue
@@ -118,7 +136,7 @@ def content_files(root: Path) -> list[Path]:
             found.append(path)
     for name in _CORPUS_FILES:
         candidate = root / name
-        if candidate.is_file():
+        if candidate.is_file() and candidate.suffix.lower() in suffixes:
             found.append(candidate)
     return sorted(found)
 

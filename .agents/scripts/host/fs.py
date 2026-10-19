@@ -61,6 +61,10 @@ which in its own --help.
 There is no command here that prints the OS temporary directory. Session scratch
 belongs in your session folder — run `memar session new --title TITLE --project NAME` (or `--project-path PATH`) and work there.
 """
+# TODO (session 20261016-T194831Z-4504, for the owner): the two project flags are spelled in the help above, a
+# copy of `modules/process/project/primitive/project_name.py` and `modules/process/project/primitive/project_path.py`; host imports nothing from services, so
+# either the help points at `memar session new --help` instead of spelling them, or host may import a
+# module's primitive types. Not decided here.
 
 
 def cmd_tree(root: Path, *, files: bool = True) -> None:

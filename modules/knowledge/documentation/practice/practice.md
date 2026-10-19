@@ -6,10 +6,10 @@ ID: 495821
 ---
 
 # Documentation — Practice
-This document specifies the Practice facet: content meant to be followed step by step to accomplish something, as opposed to studied to understand something. See [Documentation](./documentation.md) for what a facet is and why Practice is governed separately from Explanation.
+This document specifies the Practice facet. See [Documentation](../documentation.md) for what a facet is and why Practice is governed separately from Explanation.
 
 ## Abstract
-A Practice-facet document (a **Skill file**, named `SKILL.md`) is a short, imperative, self-contained procedure. Its front matter is exactly `name` and `description` — no other fields — and its body stays under roughly 500 lines, with anything longer split into companion files loaded only when needed. This is not this project's own invention: it is the schema three independently-maintained AI ecosystems (Anthropic, OpenAI, Microsoft — see [documentation-practice.changelog.md](./documentation-practice.changelog.md) for citations) converged on without coordinating with each other, adopted here rather than replaced with something new.
+A Practice-facet document (a **Skill file**, named `SKILL.md`) is a short, imperative, self-contained procedure. Its front matter is exactly `name` and `description` — no other fields — and its body stays under roughly 500 lines, with anything longer split into companion files loaded only when needed. This is not this project's own invention: it is the schema three independently-maintained AI ecosystems (Anthropic, OpenAI, Microsoft — see [practice.changelog.md](./practice.changelog.md) for citations) converged on without coordinating with each other, adopted here rather than replaced with something new.
 
 ## Introduction
 ### Motivation
@@ -17,9 +17,12 @@ An earlier draft tried to govern Skill files with the same schema as Explanation
 
 ## Explanation
 
+### Reader relationship
+Content meant to be *followed* to accomplish something: step-by-step procedures, agent instructions, Skill files, and any document whose primary purpose is for a reader — human or AI agent — to execute a sequence of actions and produce a result. The reader of such a document is acting rather than interpreting, which is why its front matter is two fields and its body is a procedure; the facet that sits nearest it, and the one it is most often confused with, states its own reader relationship in [Explanation](../explanation/explanation.md#reader-relationship).
+
 ### Frontmatter
 Exactly two fields, both required:
-- **name**: the skill's name, lowercase with hyphens (e.g. `write-a-document`).
+- **name**: the skill's name, lowercase with hyphens (e.g. `write-a-document`), and the name of the file it heads: for a Practice companion, its base name, the part before `.practice.md` (`handoff.practice.md` is named `documentation-handoff`); for a `SKILL.md`, the name of the folder that holds it (`.agents/skills/memar/SKILL.md` is named `memar`). A `name` that differs from its file is a second name for one thing: a reader who meets it cannot find the file by it.
 - **description**: what the skill does and, critically, when to use it — this is the only thing an agent sees before the skill triggers, so trigger conditions belong here, never only in the body.
 
 No other fields. All three cited conventions agree on this independently; Anthropic's and OpenAI's both state it as an explicit rule, not an informal habit.
@@ -47,7 +50,7 @@ The `description` field is the only thing an agent sees before deciding whether 
 - **Boundary clarity.** State what the skill does *not* do, or what it delegates to other skills. If a skill generates charts but does not create PDF reports, say so — this prevents the agent from triggering the wrong skill.
 
 Bad: "A skill for making documents."
-Good: "Creates formal Explanation-facet documents (.md) following the documentation-explanation.md specification. Use when producing specifications, analyses, design decisions, or any document meant to be studied rather than followed."
+Good: "Creates formal Explanation-facet documents (.md) following the explanation.md specification. Use when producing specifications, analyses, design decisions, or any document meant to be studied rather than followed."
 
 ### When to split vs. extend
 A single Skill file should do one coherent thing. Split into a separate Skill file when:
