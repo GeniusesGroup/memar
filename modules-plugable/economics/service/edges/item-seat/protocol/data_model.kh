@@ -2,8 +2,8 @@
 
 tp Field_InvoiceItemID in "modules/economics/invoice/edges/item/protocol/dt-uuid.kh"
 tp Field_SeatID in "modules-plugable/economics/service/edges/item-seat/protocol/dt-seat_id.kh"
-tp Observer_RequestID in "memar/modules/process/request/protocol/uuid.observers.kh"
-tp Observer_Time_Request in "memar/modules/process/time/protocol/request.observers.kh"
+tp Observer_RequestID in "modules/process/request/protocol/uuid.observers.kh"
+tp Observer_Time_Request in "modules/process/time/protocol/request.observers.kh"
 
 tp ItemSeatDataModel ab {
 	Field_InvoiceItemID

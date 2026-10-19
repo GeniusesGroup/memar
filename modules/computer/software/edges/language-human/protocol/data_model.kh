@@ -2,8 +2,8 @@
 
 tp Field_LanguageUUID in "modules/knowledge/language-human/protocol/dt-uuid.kh"
 tp Field_SoftwareID in "modules/computer/software/protocol/dt-uuid.kh"
-tp Observer_RequestID in "memar/modules/process/request/protocol/uuid.observers.kh"
-tp Observer_Time_Request in "memar/modules/process/time/protocol/request.observers.kh"
+tp Observer_RequestID in "modules/process/request/protocol/uuid.observers.kh"
+tp Observer_Time_Request in "modules/process/time/protocol/request.observers.kh"
 
 tp SoftwareLanguageDataModel ab {
 	Field_SoftwareID

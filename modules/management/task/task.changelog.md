@@ -7,7 +7,7 @@
 - Type: added
 - Cited:
   - [Modules → Placement](../../modules.md#placement) - Reference: the kernel and pluggable tests the research applies
-  - [Terminology → A Term Deliberately Left Open](https://github.com/GeniusesGroup/memar/blob/main/docs/terminology.md#a-term-deliberately-left-open) - Reference: Memar leaves Task undefined, so the definition is owed here
+  - [Terminology → A Term Deliberately Left Open](../../../docs/terminology.md#a-term-deliberately-left-open) - Reference: Memar leaves Task undefined, so the definition is owed here
 - Contributors:
   - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested the work (2026-10-15)
   - An AI agent (Claude, model claude-sonnet-5-5 as reported by the runtime; no CONTRIBUTORS.md entry) — researched and drafted
@@ -37,7 +37,7 @@
 - Type: added
 - Cited:
   - [Task Research 001](task.research.001.md#proposed-kernel-agent-tentative) - Reference: the kernel this research extends
-  - [Agency → Agency and Ownership of Process State](https://github.com/GeniusesGroup/memar/blob/main/docs/agency.md#agency-and-ownership-of-process-state) - Reference: responsibility partitioned so one agent holds state at a time
+  - [Agency → Agency and Ownership of Process State](../../../docs/agency.md#agency-and-ownership-of-process-state) - Reference: responsibility partitioned so one agent holds state at a time
 - Contributors:
   - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested the work (2026-10-18)
   - An AI agent (Claude, model claude-sonnet-5-5 as reported by the runtime; no CONTRIBUTORS.md entry) — researched and drafted

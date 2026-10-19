@@ -1,7 +1,7 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
 tp Amount in "modules-plugable/economics/money/protocol/dt-money-amount.kh"
-tp Boolean in "memar/modules/math/boolean/protocol/boolean.kh"
+tp Boolean in "modules/math/boolean/protocol/boolean.kh"
 
 tp Voucher_Worth ab {
 	Amount

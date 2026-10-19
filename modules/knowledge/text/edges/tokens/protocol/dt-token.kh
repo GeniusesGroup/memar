@@ -1,7 +1,7 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
 tp Field_TextID in "modules/knowledge/text/protocol/dt-uuid.kh"
-tp U64 in "memar/modules/math/integer/unsigned-64.kh"
+tp U64 in "modules/math/integer/unsigned-64.kh"
 
 tp Token ab {
 	Field_TextID

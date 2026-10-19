@@ -7,7 +7,7 @@
 - Type: added
 - Cited:
   - [Modules → Placement](../../modules.md#placement) - Reference: the kernel and pluggable tests the research applies
-  - [Modeling → Edge Types and Their Traditional Counterparts](https://github.com/GeniusesGroup/memar/blob/main/docs/modeling.md#edge-types-and-their-traditional-counterparts) - Reference: classification as a loop-edge, realization left to implementation
+  - [Modeling → Edge Types and Their Traditional Counterparts](../../../docs/modeling.md#edge-types-and-their-traditional-counterparts) - Reference: classification as a loop-edge, realization left to implementation
 - Contributors:
   - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested the work (2026-10-18)
   - An AI agent (Claude, model claude-sonnet-5-5 as reported by the runtime; no CONTRIBUTORS.md entry) — researched and drafted

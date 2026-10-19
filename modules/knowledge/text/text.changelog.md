@@ -7,7 +7,7 @@
 - Type: added
 - Cited:
   - [Modules → Placement](../../modules.md#placement) - Reference: the kernel and pluggable tests the research applies
-  - [Modeling → The Attribute-or-Edge Test](https://github.com/GeniusesGroup/memar/blob/main/docs/modeling.md#the-attribute-or-edge-test) - Reference: names Text as the abstraction that owns holding, validating, versioning, internationalizing and searching words
+  - [Modeling → The Attribute-or-Edge Test](../../../docs/modeling.md#the-attribute-or-edge-test) - Reference: names Text as the abstraction that owns holding, validating, versioning, internationalizing and searching words
 - Contributors:
   - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested the work (2026-10-15)
   - An AI agent (Claude, model claude-sonnet-5-5 as reported by the runtime; no CONTRIBUTORS.md entry) — researched and drafted

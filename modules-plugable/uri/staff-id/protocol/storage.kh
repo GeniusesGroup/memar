@@ -1,10 +1,10 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-tp Error in "memar/modules/process/error/protocol/error.kh"
-tp NumberOfVersion in "memar/modules/computer/memory/protocol/version.kh"
+tp Error in "modules/process/error/protocol/error.kh"
+tp NumberOfVersion in "modules/computer/memory/protocol/version.kh"
 tp StaffIDDataModel in "modules-plugable/uri/staff-id/protocol/data_model.kh"
 tp UserUUID in "modules/identity/user/protocol/dt-uuid.kh"
-tp VersionOffset in "memar/modules/computer/memory/protocol/version.kh"
+tp VersionOffset in "modules/computer/memory/protocol/version.kh"
 
 tp StaffIDStorage ab
 

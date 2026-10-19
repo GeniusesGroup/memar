@@ -1,10 +1,10 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-tp U64 in "memar/modules/math/integer/unsigned-64.kh"
+tp U64 in "modules/math/integer/unsigned-64.kh"
 tp Amount in "modules-plugable/economics/money/protocol/dt-money-amount.kh"
-tp Observer_MinuteElapsed in "memar/modules/time/utc/duration-minute.observers.kh"
-tp Observer_RequestID in "memar/modules/process/request/protocol/uuid.observers.kh"
-tp Observer_Time_Request in "memar/modules/process/time/protocol/request.observers.kh"
+tp Observer_MinuteElapsed in "modules/time/utc/duration-minute.observers.kh"
+tp Observer_RequestID in "modules/process/request/protocol/uuid.observers.kh"
+tp Observer_Time_Request in "modules/process/time/protocol/request.observers.kh"
 
 tp Observer_VoucherIssuedUtcMinute_TotalIssued ab
 

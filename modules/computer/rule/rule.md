@@ -5,7 +5,7 @@ Use `rule` domain to save protocols to call them in
 - in repeatable manner e.g. every one minute, everyday, ...
 
 ## Rule as a first-class graph node
-The general principle — why a domain splits into **Code** (fixed structure: node types, edge types, mandatory relationships) and **Rule** (conditional, context-dependent policy), and why a Rule is modeled as a graph node rather than a hardcoded `if` branch or an external config file — lives in Memar: [Separating Structure (Code) from Policy (Rule)](https://github.com/GeniusesGroup/memar/blob/main/docs/modeling.md#separating-structure-code-from-policy-rule). Do not restate it here.
+The general principle — why a domain splits into **Code** (fixed structure: node types, edge types, mandatory relationships) and **Rule** (conditional, context-dependent policy), and why a Rule is modeled as a graph node rather than a hardcoded `if` branch or an external config file — lives in Memar: [Separating Structure (Code) from Policy (Rule)](../../../docs/modeling.md#separating-structure-code-from-policy-rule). Do not restate it here.
 
 This module is the concrete home of that principle in the graph: a Rule is a node connected by an edge to the Code element (node type, edge type, or specific instance) it governs, so "which entities are subject to Rule X" is answerable by traversing the graph. Evaluating whether a Rule's condition holds at runtime is the job of a separate rule-engine component that reads Rule nodes from the graph — the interpreter, not the data.
 

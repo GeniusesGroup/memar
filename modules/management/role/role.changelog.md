@@ -7,7 +7,7 @@
 - Type: added
 - Cited:
   - [Modules → Placement](../../modules.md#placement) - Reference: the kernel and pluggable tests the research applies
-  - [Agency → Agency and Roles](https://github.com/GeniusesGroup/memar/blob/main/docs/agency.md#agency-and-roles) - Reference: roles told apart from entities; a position is a relationship's endpoint unless it outlives its holder
+  - [Agency → Agency and Roles](../../../docs/agency.md#agency-and-roles) - Reference: roles told apart from entities; a position is a relationship's endpoint unless it outlives its holder
 - Contributors:
   - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested the work (2026-10-18)
   - An AI agent (Claude, model claude-sonnet-5-5 as reported by the runtime; no CONTRIBUTORS.md entry) — researched and drafted

@@ -1,5 +1,5 @@
 # Achaemenid - Organization Software modules - Golang version
-[Achaemenid](https://github.com/GeniusesGroup/memar/blob/main/Achaemenid.md) is a repository to easily make a software for an organization with almost all functionality that any organization need in data era. Use [memar-go](https://github.com/GeniusesGroup/memar-go) CLI functionality to interact with this repo.
+[Achaemenid](./Achaemenid.md) is a repository to easily make a software for an organization with almost all functionality that any organization need in data era. Use [memar-go](https://github.com/GeniusesGroup/memar-go) CLI functionality to interact with this repo.
 
 As all know, We develop and adopt software in any organization for one main goal as to increase productivity and profit.
 

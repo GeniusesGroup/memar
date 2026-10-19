@@ -2,8 +2,8 @@
 
 tp Field_QuiddityURI in "modules/identity/uri/widgets/quiddity-uri/protocol/dt-uri.kh"
 tp Field_ThingUUID in "modules/identity/thing/protocol/dt-uuid.kh"
-tp Observer_RequestID in "memar/modules/process/request/protocol/uuid.observers.kh"
-tp Observer_Time_Request in "memar/modules/process/time/protocol/request.observers.kh"
+tp Observer_RequestID in "modules/process/request/protocol/uuid.observers.kh"
+tp Observer_Time_Request in "modules/process/time/protocol/request.observers.kh"
 
 tp QuiddityURIDataModel ab {
 	Field_QuiddityURI

@@ -2,7 +2,7 @@
 
 tp Field_TextID in "modules/knowledge/text/protocol/dt-uuid.kh"
 tp Field_UserUUID in "modules/identity/user/protocol/dt-uuid.kh"
-tp Observer_Time_Request in "memar/modules/process/time/protocol/request.observers.kh"
+tp Observer_Time_Request in "modules/process/time/protocol/request.observers.kh"
 
 tp Service_Register_Request ab {
 	Field_UserUUID

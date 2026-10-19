@@ -1,6 +1,6 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-tp ProcessLog_Event in "memar/modules/process/log/protocol/log-event.kh"
+tp ProcessLog_Event in "modules/process/log/protocol/log-event.kh"
 
 tp AuditLogDataModel ab {
 	ProcessLog_Event

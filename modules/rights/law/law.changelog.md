@@ -81,7 +81,7 @@ The earlier entry left a Pending propagation to Memar. That corpus is gone from 
 - Type: Fixed, Added, moved
 - Cited:
   - [Law Research 001](law.research.001.md) - Relation: Evidence: critique of this type, not of traditional statute books
-  - [Documentation → Content Rule](https://github.com/GeniusesGroup/memar/blob/main/docs/documentation.md#content-rule-no-fabricated-or-redundant-provenance) - Relation: Depends_on: no derivative inventories; an edge list is a cache of `edges/`
+  - [Documentation → Content Rule](../../knowledge/documentation/documentation.md#content-rule-no-fabricated-or-redundant-provenance) - Relation: Depends_on: no derivative inventories; an edge list is a cache of `edges/`
 - Propagates to:
   - `modules-plugable/rights/law-validity/`: Done — `git mv` from `bundles/government/modules/law-validity`
   - `bundles/bundles.handoff.md`: Partial — remaining bundle→plugable candidates still to classify

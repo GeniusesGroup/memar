@@ -4,7 +4,7 @@ tp Amount in "modules-plugable/economics/money/protocol/dt-money-amount.kh"
 tp Field_Each in "modules-plugable/economics/voucher/protocol/dt-each.kh"
 tp Field_InvoiceID in "modules/economics/invoice/protocol/dt-uuid.kh"
 tp Field_InvoiceType in "modules-plugable/economics/voucher/protocol/dt-invoice-type.kh"
-tp U64 in "memar/modules/math/integer/unsigned-64.kh"
+tp U64 in "modules/math/integer/unsigned-64.kh"
 
 tp Voucher_Invoice_Condition ab {
 	Field_Each

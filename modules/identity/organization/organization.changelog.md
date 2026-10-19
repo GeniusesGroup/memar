@@ -7,7 +7,7 @@
 - Type: added
 - Cited:
   - [Modules → Placement](../../modules.md#placement) - Reference: the kernel and pluggable tests the research applies
-  - [Agency → Organizational Agency](https://github.com/GeniusesGroup/memar/blob/main/docs/agency.md#organizational-agency) - Reference: a collective acts through others, so an organization needs no credential of its own
+  - [Agency → Organizational Agency](../../../docs/agency.md#organizational-agency) - Reference: a collective acts through others, so an organization needs no credential of its own
 - Contributors:
   - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested the work (2026-10-18)
   - An AI agent (Claude, model claude-sonnet-5-5 as reported by the runtime; no CONTRIBUTORS.md entry) — researched and drafted

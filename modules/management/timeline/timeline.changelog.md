@@ -7,7 +7,7 @@
 - Type: added
 - Cited:
   - [Modules → Placement](../../modules.md#placement) - Reference: the kernel and pluggable tests the research applies
-  - [Event → What an Event Is](https://github.com/GeniusesGroup/memar/blob/main/modules/process/event/event.md#what-an-event-is) - Reference: an Event is a runtime occurrence, not a stored record
+  - [Event → What an Event Is](../../process/event/event.md#what-an-event-is) - Reference: an Event is a runtime occurrence, not a stored record
 - Contributors:
   - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested the work (2026-10-18)
   - An AI agent (Claude, model claude-sonnet-5-5 as reported by the runtime; no CONTRIBUTORS.md entry) — researched and drafted

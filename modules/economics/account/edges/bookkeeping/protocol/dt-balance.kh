@@ -1,6 +1,6 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-tp Decimal_Quantity in "memar/modules/math/decimal/protocol/quantity.kh"
+tp Decimal_Quantity in "modules/math/decimal/protocol/quantity.kh"
 
 tp Field_Balance ab
 

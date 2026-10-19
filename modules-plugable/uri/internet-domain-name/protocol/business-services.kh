@@ -4,9 +4,9 @@ tp Array_DomainName in "modules-plugable/uri/internet-domain-name/protocol/dt-na
 tp Field_DomainName in "modules-plugable/uri/internet-domain-name/protocol/dt-name.kh"
 tp Field_DomainStatus in "modules-plugable/uri/internet-domain-name/protocol/dt-status.kh"
 tp Field_UserUUID in "modules/identity/user/protocol/dt-uuid.kh"
-tp NumberOfElement in "memar/modules/computer/adt/container/protocol/length.kh"
-tp Pagination_Offset_Request in "memar/modules/computer/adt/container/protocol/pagination.kh"
-tp Pagination_Response in "memar/modules/computer/adt/container/protocol/pagination.kh"
+tp NumberOfElement in "modules/computer/adt/container/protocol/length.kh"
+tp Pagination_Offset_Request in "modules/computer/adt/container/protocol/pagination.kh"
+tp Pagination_Response in "modules/computer/adt/container/protocol/pagination.kh"
 
 tp BS_Register_Request ab {
 	Field_DomainName

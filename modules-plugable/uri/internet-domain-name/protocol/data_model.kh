@@ -3,8 +3,8 @@
 tp Field_DomainName in "modules-plugable/uri/internet-domain-name/protocol/dt-name.kh"
 tp Field_DomainStatus in "modules-plugable/uri/internet-domain-name/protocol/dt-status.kh"
 tp Field_UserUUID in "modules/identity/user/protocol/dt-uuid.kh"
-tp Observer_RequestID in "memar/modules/process/request/protocol/uuid.observers.kh"
-tp Observer_Time_Request in "memar/modules/process/time/protocol/request.observers.kh"
+tp Observer_RequestID in "modules/process/request/protocol/uuid.observers.kh"
+tp Observer_Time_Request in "modules/process/time/protocol/request.observers.kh"
 
 tp DomainNameDataModel ab {
 	Field_DomainName

@@ -4,9 +4,9 @@ tp Array_ThingUUID in "modules/identity/thing/protocol/dt-uuid.kh"
 tp Field_OrganizationUUID in "modules/identity/organization/protocol/dt-uuid.kh"
 tp Field_UserUUID in "modules/identity/user/protocol/dt-uuid.kh"
 tp Field_Username in "modules-plugable/uri/username/widget/protocol/dt-username.kh"
-tp Pagination_Offset_Request in "memar/modules/computer/adt/container/protocol/pagination.kh"
-tp Pagination_Response in "memar/modules/computer/adt/container/protocol/pagination.kh"
-tp String in "memar/modules/computer/codec/string/protocol/string.kh"
+tp Pagination_Offset_Request in "modules/computer/adt/container/protocol/pagination.kh"
+tp Pagination_Response in "modules/computer/adt/container/protocol/pagination.kh"
+tp String in "modules/computer/codec/string/protocol/string.kh"
 
 tp BS_Register_Request ab {
 	Field_UserUUID

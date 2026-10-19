@@ -1,7 +1,7 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-tp Boolean in "memar/modules/math/boolean/protocol/boolean.kh"
-tp Myriad in "memar/modules/math/per/myriad.kh"
+tp Boolean in "modules/math/boolean/protocol/boolean.kh"
+tp Myriad in "modules/math/per/myriad.kh"
 
 tp Voucher_Proportion ab {
 	Myriad

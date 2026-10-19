@@ -7,7 +7,7 @@
 - Type: added
 - Cited:
   - [Modules → Placement](../../modules.md#placement) - Reference: the kernel and pluggable tests the research applies
-  - [Classification Emerges From Rules and Relations](https://github.com/GeniusesGroup/memar/blob/main/docs/modeling.md#classification-emerges-from-rules-and-relations-not-from-intrinsic-labels) - Reference: label, status and edge read as classification by loop-edge
+  - [Classification Emerges From Rules and Relations](../../../docs/modeling.md#classification-emerges-from-rules-and-relations-not-from-intrinsic-labels) - Reference: label, status and edge read as classification by loop-edge
 - Contributors:
   - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested the work (2026-10-18, away)
   - An AI agent (Claude, model claude-sonnet-5-5 as reported by the runtime; no CONTRIBUTORS.md entry) — researched and drafted

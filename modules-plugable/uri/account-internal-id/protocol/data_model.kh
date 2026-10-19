@@ -2,8 +2,8 @@
 
 tp AccountInternalID in "modules-plugable/uri/account-internal-id/protocol/dt-id.kh"
 tp Field_AccountID in "modules/economics/account/protocol/dt-uuid.kh"
-tp Observer_RequestID in "memar/modules/process/request/protocol/uuid.observers.kh"
-tp Observer_Time_Request in "memar/modules/process/time/protocol/request.observers.kh"
+tp Observer_RequestID in "modules/process/request/protocol/uuid.observers.kh"
+tp Observer_Time_Request in "modules/process/time/protocol/request.observers.kh"
 
 tp Field_InternalID ab
 

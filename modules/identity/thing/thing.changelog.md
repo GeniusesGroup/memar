@@ -6,9 +6,9 @@
 - Time: 2026-10-10T14:10:00Z
 - Type: added
 - Cited:
-  - [A Relation Several Domains Need Is Defined Once](https://github.com/GeniusesGroup/memar/blob/main/docs/modeling.md#a-relation-several-domains-need-is-defined-once) - Depends_on: why the relation sits on thing rather than in each domain that needs it.
-  - [Separating Structure (Code) from Policy (Rule)](https://github.com/GeniusesGroup/memar/blob/main/docs/modeling.md#separating-structure-code-from-policy-rule) - Depends_on: authorization and charging are the owner's rules, attached to the relation rather than built into it.
-  - [Modeling State Change as Events, Not Destructive Updates](https://github.com/GeniusesGroup/memar/blob/main/docs/modeling.md#modeling-state-change-as-events-not-destructive-updates) - Depends_on: a revocation and a failed delivery are new facts, not deletions.
+  - [A Relation Several Domains Need Is Defined Once](../../../docs/modeling.md#a-relation-several-domains-need-is-defined-once) - Depends_on: why the relation sits on thing rather than in each domain that needs it.
+  - [Separating Structure (Code) from Policy (Rule)](../../../docs/modeling.md#separating-structure-code-from-policy-rule) - Depends_on: authorization and charging are the owner's rules, attached to the relation rather than built into it.
+  - [Modeling State Change as Events, Not Destructive Updates](../../../docs/modeling.md#modeling-state-change-as-events-not-destructive-updates) - Depends_on: a revocation and a failed delivery are new facts, not deletions.
 - Propagates to:
   - [price-index](../../../modules-plugable/economics/price-index/price-index.md): Done - its own `follow` edge was removed and its sharing semantics now rest on this relation.
   - [replacement-cost source](../../../modules-plugable/economics/replacement-cost/edges/source/source.md): Done - a source edge implies following the source product's price under the supplier's authorization and accounting.
@@ -56,7 +56,7 @@
 - Type: added
 - Cited:
   - [Modules → Placement](../../modules.md#placement) - Reference: the kernel and pluggable tests the research applies
-  - [Classification Emerges From Rules and Relations](https://github.com/GeniusesGroup/memar/blob/main/docs/modeling.md#classification-emerges-from-rules-and-relations-not-from-intrinsic-labels) - Reference: the thing read as the unclassified base node
+  - [Classification Emerges From Rules and Relations](../../../docs/modeling.md#classification-emerges-from-rules-and-relations-not-from-intrinsic-labels) - Reference: the thing read as the unclassified base node
 - Contributors:
   - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested the work (2026-10-18, away)
   - An AI agent (Claude, model claude-sonnet-5-5 as reported by the runtime; no CONTRIBUTORS.md entry) — researched and drafted

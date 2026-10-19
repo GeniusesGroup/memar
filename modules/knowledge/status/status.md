@@ -8,7 +8,7 @@ Labels check in business rules logic(Async), but status check in services logic(
 ## What a status is
 A status is a loop-edge. The edge type is the status, and the edge terminates on the record it marks: `(record)-[:draft]->(---)`. Code uses that edge type.
 
-Memar's [classification test](https://github.com/GeniusesGroup/memar/blob/main/docs/modeling.md#classification-emerges-from-rules-and-relations-not-from-intrinsic-labels) keeps a status as a loop-edge. A marker such as active or archived has no lifecycle of its own, so it stays the edge rather than becoming a node on the far side of a generic `status` edge. A generic `(record)-[:status]->(draft-node)` would promote the marker into a concept it does not independently carry.
+Memar's [classification test](../../../docs/modeling.md#classification-emerges-from-rules-and-relations-not-from-intrinsic-labels) keeps a status as a loop-edge. A marker such as active or archived has no lifecycle of its own, so it stays the edge rather than becoming a node on the far side of a generic `status` edge. A generic `(record)-[:status]->(draft-node)` would promote the marker into a concept it does not independently carry.
 
 The move from one status to another is an event. A rule may allow or block that event. The rule lives with the event.
 

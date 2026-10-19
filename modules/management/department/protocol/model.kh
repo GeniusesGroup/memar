@@ -2,7 +2,7 @@
 
 tp ThingModel in "modules/identity/thing/protocol/model.kh"
 tp GroupModel in "modules/management/group/protocol/model.kh"
-tp EventTarget in "memar/modules/process/event/protocol/event-target.kh"
+tp EventTarget in "modules/process/event/protocol/event-target.kh"
 
 tp DepartmentModel ab {
 	ThingModel
