@@ -73,7 +73,8 @@ from machine.console_parts import CLOSING_MARK
 from machine.fs_test_scratch import suite_scratch
 
 import machine.fs_memar as memar_fs
-import modules.process.command.command as commands
+from importlib import import_module
+commands = import_module("modules-plugable.process.command.command")
 import modules.process.session.services.answering as answering
 from modules.knowledge.documentation.plan.services.plan import PLAN_NAME, plan_skeleton
 from modules.knowledge.documentation.report.services.report import REPORT_NAME

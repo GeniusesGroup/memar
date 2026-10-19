@@ -35,6 +35,9 @@ What is pinned, and what each pin is for:
                       capabilities, each alphabetically, `_`-prefixed files
                       skipped: a capability's verbs go under a domain verb that
                       must already exist.
+  PluggableRoot       A module standing only under `modules-plugable/` is found
+                      by `catalog` and `services`, and the real shelf's command
+                      module answers with the hyphen in its address.
   RouterNamesNoVerb   No verb or sub-verb word the services declare appears
                       in the router as routing data. A verb named here as well
                       as in its service would be a second interface for one
@@ -323,6 +326,25 @@ class DomainsFirst(unittest.TestCase):
         domains = [name for name in names if memar.DOMAIN_SEPARATOR not in name]
         self.assertEqual(names[: len(domains)], sorted(domains))
         self.assertEqual(names[len(domains):], sorted(names[len(domains):]))
+
+
+class PluggableRoot(unittest.TestCase):
+    """The pluggable shelf is a root the router walks, as `modules/` and `bundles/` are."""
+
+    def test_a_domain_standing_only_under_modules_plugable_is_found(self) -> None:
+        with tempfile.TemporaryDirectory(dir=suite_scratch()) as folder:
+            top = Path(folder)
+            path = top / "modules-plugable" / "net" / "mcp" / "mcp.py"
+            path.parent.mkdir(parents=True)
+            path.write_text("", encoding="utf-8")
+            self.assertEqual(memar.catalog(top)["mcp"], "modules-plugable.net.mcp.mcp")
+            self.assertIn("mcp", memar.services(top))
+
+    def test_the_real_shelf_reads_the_pluggable_root_the_same_way(self) -> None:
+        # `modules-plugable/process/command/` is where the command module stands; the router's address for it
+        # carries the hyphen, which no literal import could spell.
+        self.assertEqual(memar.catalog()["command"], "modules-plugable.process.command.command")
+        self.assertIn("command", memar.services())
 
 
 class RouterNamesNoVerb(unittest.TestCase):

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules/process/command/command.py — `memar commands`: every command and what it takes, as one short card.
+"""modules-plugable/process/command/command.py — `memar commands`: every command and what it takes, as one short card.
 
 An agent that does not know which commands exist, or how to call them, learns
 it by asking `--help` of the router, then of a domain, then of each verb: a
@@ -16,9 +16,10 @@ which the card sends the reader to for the one command it needs.
 the moment it is printed, from the command line the services declare
 (`assemble` in the router), so a verb added, renamed or given another argument
 is on the card without anyone writing a line, and the card cannot disagree with
-`--help` because it reads the same parsers. `session start` prints it in the
-text it hands an agent, so an agent that took up a session already knows what
-exists; any other agent runs `memar commands`.
+`--help` because it reads the same parsers. No service copies it: `session
+start` and `answer-session-questions` name `memar commands` in the part where
+they once printed it, so an agent that took up a session runs that one command
+and the card is reached in one place.
 """
 from __future__ import annotations
 

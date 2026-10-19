@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""Tests for `memar commands`, in `modules/process/command/command.py`.
+"""Tests for `memar commands`, in `modules-plugable/process/command/command.py`.
 
-    python modules/process/command/tests/command.py
+    python modules-plugable/process/command/tests/command.py
 
 What is pinned, and what each pin is for:
 
@@ -22,6 +22,7 @@ What is pinned, and what each pin is for:
 from __future__ import annotations
 
 import argparse
+import importlib
 import os
 import subprocess
 import sys
@@ -30,10 +31,11 @@ from pathlib import Path
 
 SCRIPTS = Path(__file__).resolve().parents[4] / ".agents" / "scripts"
 sys.path.insert(0, str(SCRIPTS))
-sys.path.insert(1, str(SCRIPTS.parent.parent))  # the checkout's top, where `modules/` is imported from
+sys.path.insert(1, str(SCRIPTS.parent.parent))  # the checkout's top, where `modules/` and `modules-plugable/` are imported from
 sys.dont_write_bytecode = True
 
-import modules.process.command.command as commands
+# The folder's hyphen cannot stand in a literal `from modules-plugable... import`, so the module is addressed by name.
+commands = importlib.import_module("modules-plugable.process.command.command")
 
 # Well under what the command line's own help costs to descend, and far over what the card now is.
 MOST_CHARACTERS = 9_000

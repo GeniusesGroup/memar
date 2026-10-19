@@ -71,7 +71,9 @@ from machine.console import fail
 from machine.console_parts import add_part_arguments, bound, next_command
 from machine.console_parts import part_text as parted
 from machine.fs_memar import SKILL_RELATIVE
-from modules.process.command.command import card_text
+from importlib import import_module
+# The command module stands under `modules-plugable`, a name a literal import cannot spell.
+commands = import_module("modules-plugable.process.command.command")
 from modules.knowledge.content.services.reference import content_root, read_text
 from modules.process.session.services.depends import refusal as dependency_refusal
 from modules.process.session.services.folder import folder_of, is_session_folder
@@ -254,7 +256,7 @@ def start_passages(session_id: str, with_skill: bool = True) -> list[str]:
         _folder_part(folder),
         *([marked_part("skill", read_text(root / SKILL_FILE))] if with_skill else []),
         *marked_passages("documents", composed.blocks),
-        marked_part("commands", card_text()),
+        marked_part("commands", commands.card_text()),
         *_help_part(plan),
         marked_part("ending", ENDING),
     ]
