@@ -1,0 +1,42 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Array_DomainName in "modules-plugable/uri/internet-domain-name/protocol/dt-name.kh"
+tp Container_Limit in "memar/modules/computer/adt/container/protocol/pagination.kh"
+tp Container_Offset in "memar/modules/computer/adt/container/protocol/pagination.kh"
+tp DomainName in "modules-plugable/uri/internet-domain-name/protocol/dt-name.kh"
+tp DomainNameDataModel in "modules-plugable/uri/internet-domain-name/protocol/data_model.kh"
+tp Error in "memar/modules/process/error/protocol/error.kh"
+tp NumberOfVersion in "memar/modules/computer/memory/protocol/version.kh"
+tp UserUUID in "modules/identity/user/protocol/dt-uuid.kh"
+tp VersionOffset in "memar/modules/computer/memory/protocol/version.kh"
+
+tp DomainNameStorage ab
+
+tp Save mt (self DomainNameStorage) (dm DomainNameDataModel) (n NumberOfVersion, e Error)
+
+tp Count mt (self DomainNameStorage) (n DomainName) (nv NumberOfVersion, e Error)
+
+tp Get mt (self DomainNameStorage) (n DomainName, vo VersionOffset) (dm DomainNameDataModel, nv NumberOfVersion, e Error)
+
+tp FindByUserID mt (self DomainNameStorage) (userID UserUUID, offset Container_Offset, limit Container_Limit) (domains Array_DomainName, nv NumberOfVersion, e Error)
+
+// TODO(go-migrate):
+/*
+package domain_p
+
+import (
+	error_p "memar/process/error/protocol"
+
+	storage_p "memar/storage/protocol"
+	user_p "org/modules/identity/user/protocol"
+)
+
+type StorageServices interface {
+	Save(dm DataModel) (nv storage_p.NumberOfVersion, err error_p.Error)
+
+	Count(domain string) (nv storage_p.NumberOfVersion, err error_p.Error)
+	Get(domain string, vo storage_p.VersionOffset) (dm DataModel, nv storage_p.NumberOfVersion, err error_p.Error)
+
+	FindByUserID(userID user_p.UUID, offset, limit uint64) (domains []string, nv storage_p.NumberOfVersion, err error_p.Error)
+}
+*/

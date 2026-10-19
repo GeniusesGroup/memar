@@ -1,0 +1,5 @@
+# Analysis
+
+## Model
+
+- `(analytic)-[:analysis]->(---)`

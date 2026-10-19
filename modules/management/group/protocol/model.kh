@@ -1,0 +1,30 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp ThingModel in "modules/identity/thing/protocol/model.kh"
+tp UserModel in "modules/identity/user/protocol/model.kh"
+tp EventTarget in "memar/modules/process/event/protocol/event-target.kh"
+
+tp GroupModel ab {
+	ThingModel
+	UserModel
+	EventTarget
+}
+
+// TODO(go-migrate):
+/*
+package group_p
+
+import (
+	event_p "memar/process/event/protocol"
+
+	thing_p "org/modules/identity/thing/protocol"
+	user_p "org/modules/identity/user/protocol"
+)
+
+type Model interface {
+	thing_p.Model
+	user_p.Model
+
+	event_p.Target[DataModel]
+}
+*/

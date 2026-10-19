@@ -1,0 +1,44 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+// TODO(go-migrate):
+/*
+package graph_p
+
+import (
+	container_p "memar/computer/adt/container/protocol"
+
+	ep "org/modules/rights/estate/protocol"
+)
+
+// Storage_Key_Primary indicates the domain storage primary key
+type Storage_Key_Primary interface {
+	ep.Field_EstateID
+}
+
+// Storage_Key_Cluster indicates the domain storage cluster key
+type Storage_Key_Cluster interface {
+	ep.Field_EstateID
+}
+
+type (
+	SS_Save_Request = DataModel
+	// SS_Save_Response =
+)
+
+type (
+	SS_Get_Request  = Storage_Key_Primary
+	SS_Get_Response = DataModel
+)
+
+type (
+	SS_FILTER_EstateIDs_BY_Status_Request interface {
+		// Field_Status
+		container_p.Pagination_Offset_Request
+	}
+
+	SS_FILTER_EstateIDs_BY_Status_Response interface {
+		ep.Field_EstateIDs
+		container_p.Pagination_Response
+	}
+)
+*/

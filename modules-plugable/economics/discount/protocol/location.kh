@@ -1,0 +1,20 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Field_EstateID in "modules/identity/estate/protocol/dt-uuid.kh"
+
+tp Discount_Location ab {
+	Field_EstateID
+}
+
+// TODO(go-migrate):
+/*
+package discount
+
+import (
+	estate_p "org/modules/rights/estate/protocol"
+)
+
+type Location interface {
+	estate_p.Field_EstateID
+}
+*/

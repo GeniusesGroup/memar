@@ -1,0 +1,23 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+// TODO(go-migrate):
+/*
+package question_p
+
+import (
+	error_p "memar/process/error/protocol"
+
+	storage_p "memar/storage/protocol"
+)
+
+type StorageServices interface {
+	Save(dm DataModel) (nv storage_p.NumberOfVersion, err error_p.Error)
+
+	Count(questionID UUID) (nv storage_p.NumberOfVersion, err error_p.Error)
+	Get(questionID UUID, vo storage_p.VersionOffset) (dm DataModel, nv storage_p.NumberOfVersion, err error_p.Error)
+
+	// TODO::: a method to find all questions have quiz type??
+	// FindByType(t Type, offset, limit uint64) (questionIDs []UUID, nv storage_p.NumberOfVersion, err error_p.Error)
+	FILTER_QuestionIDs_BY_Type(t Type, offset, limit uint64) (questionIDs []UUID, nv storage_p.NumberOfVersion, err error_p.Error)
+}
+*/

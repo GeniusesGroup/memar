@@ -1,0 +1,67 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Array_Dynamic in "memar/modules/computer/adt/array/protocol/dynamic.kh"
+tp Container_Limit in "memar/modules/computer/adt/container/protocol/pagination.kh"
+tp Container_Offset in "memar/modules/computer/adt/container/protocol/pagination.kh"
+tp DelegateDataModel in "modules/rights/delegate/protocol/data_model.kh"
+tp Error in "memar/modules/process/error/protocol/error.kh"
+tp NumberOfVersion in "memar/modules/computer/memory/protocol/version.kh"
+tp ThingUUID in "modules/identity/thing/protocol/dt-uuid.kh"
+tp UserUUID in "modules/identity/user/protocol/dt-uuid.kh"
+tp VersionOffset in "memar/modules/computer/memory/protocol/version.kh"
+
+tp Array_DelegateRuleUUID ab {
+	Array_Dynamic
+}
+
+tp Array_GivenDelegateUserUUID ab {
+	Array_Dynamic
+}
+
+tp Array_GottenDelegateUserUUID ab {
+	Array_Dynamic
+}
+
+tp DelegateStorage ab
+
+tp Save mt (self DelegateStorage) (ud DelegateDataModel) (n NumberOfVersion, e Error)
+
+tp Count mt (self DelegateStorage) (givenUserID UserUUID, gottenUserID UserUUID, ruleID ThingUUID) (n NumberOfVersion, e Error)
+
+tp Get mt (self DelegateStorage) (givenUserID UserUUID, gottenUserID UserUUID, ruleID ThingUUID, vo VersionOffset) (d DelegateDataModel, n NumberOfVersion, e Error)
+
+tp ListRoles mt (self DelegateStorage) (givenUserID UserUUID, gottenUserID UserUUID, offset Container_Offset, limit Container_Limit) (r Array_DelegateRuleUUID, n NumberOfVersion, e Error)
+
+tp ListGottenUsers mt (self DelegateStorage) (ruleID ThingUUID, offset Container_Offset, limit Container_Limit) (o Array_GottenDelegateUserUUID, n NumberOfVersion, e Error)
+
+tp ListGivenUsers mt (self DelegateStorage) (ruleID ThingUUID, offset Container_Offset, limit Container_Limit) (g Array_GivenDelegateUserUUID, n NumberOfVersion, e Error)
+
+tp ListGottenDelegateUsers mt (self DelegateStorage) (gottenUserID UserUUID, offset Container_Offset, limit Container_Limit) (g Array_GivenDelegateUserUUID, n NumberOfVersion, e Error)
+
+tp ListGivenDelegateUsers mt (self DelegateStorage) (givenUserID UserUUID, offset Container_Offset, limit Container_Limit) (o Array_GottenDelegateUserUUID, n NumberOfVersion, e Error)
+
+// TODO(go-migrate):
+/*
+package delegate_p
+
+import (
+	error_p "memar/process/error/protocol"
+
+	storage_p "memar/storage/protocol"
+	rule_p "org/modules/computer/rule/protocol"
+	user_p "org/modules/identity/user/protocol"
+)
+
+type StorageServices interface {
+	Save(ud DataModel) (nv storage_p.NumberOfVersion, err error_p.Error)
+
+	Count(givenUserID, gottenUserID user_p.UUID, rID rule_p.UUID) (nv storage_p.NumberOfVersion, err error_p.Error)
+	Get(givenUserID, gottenUserID user_p.UUID, rID rule_p.UUID, vo storage_p.VersionOffset) (ud DataModel, nv storage_p.NumberOfVersion, err error_p.Error)
+
+	ListRoles(givenUserID, gottenUserID user_p.UUID, offset, limit uint64) (roles []rule_p.UUID, nv storage_p.NumberOfVersion, err error_p.Error)
+	ListGottenUsers(rID rule_p.UUID, offset, limit uint64) (gottenUserIDs []user_p.UUID, nv storage_p.NumberOfVersion, err error_p.Error)
+	ListGivenUsers(rID rule_p.UUID, offset, limit uint64) (givenUserIDs []user_p.UUID, nv storage_p.NumberOfVersion, err error_p.Error)
+	ListGottenDelegateUsers(gottenUserID user_p.UUID, offset, limit uint64) (givenUserIDs []user_p.UUID, nv storage_p.NumberOfVersion, err error_p.Error)
+	ListGivenDelegateUsers(givenUserID user_p.UUID, offset, limit uint64) (gottenUserID []user_p.UUID, nv storage_p.NumberOfVersion, err error_p.Error)
+}
+*/

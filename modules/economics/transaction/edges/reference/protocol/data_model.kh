@@ -1,0 +1,31 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Field_LabelID in "modules/knowledge/label/protocol/dt-uuid.kh"
+tp Field_ThingUUID in "modules/identity/thing/protocol/dt-uuid.kh"
+tp Field_TransactionID in "modules/economics/transaction/protocol/dt-uuid.kh"
+
+tp TransactionReferenceDataModel ab {
+	Field_LabelID
+	Field_ThingUUID
+	Field_TransactionID
+}
+
+// TODO(go-migrate):
+/*
+package transaction_reference_p
+
+import (
+	transaction_p "org/modules/economics/transaction/protocol"
+	thing_p "org/modules/identity/thing/protocol"
+	label_p "org/modules/knowledge/label/protocol"
+)
+
+// DataModel indicate the domain record data fields.
+type DataModel interface {
+	// Store a label to indicate better relation reason
+	// e.g. ChangedQuantityReason
+	thing_p.Field_ThingUUID
+	label_p.Field_LabelUUID
+	transaction_p.Field_FinancialTransactionUUID
+}
+*/

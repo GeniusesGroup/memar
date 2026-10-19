@@ -1,0 +1,5 @@
+# Organization
+
+## Model
+
+- `(user)-[:organization]->(---)`

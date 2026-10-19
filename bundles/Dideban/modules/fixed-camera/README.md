@@ -1,0 +1,1 @@
+fixed-camera.md

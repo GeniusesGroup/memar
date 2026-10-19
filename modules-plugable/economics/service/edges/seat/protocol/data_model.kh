@@ -1,0 +1,49 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Field_ProductID in "modules/economics/product/protocol/dt-uuid.kh"
+tp Field_Service_Seat_Type in "modules-plugable/economics/service/edges/seat/protocol/dt-type.kh"
+tp Observer_RequestID in "memar/modules/process/request/protocol/uuid.observers.kh"
+tp Observer_Time_Request in "memar/modules/process/time/protocol/request.observers.kh"
+tp Storage_UUID in "memar/modules/computer/memory/record/protocol/uuid.kh"
+tp U64 in "memar/modules/math/integer/unsigned-64.kh"
+
+tp Observer_Seat_SeatCapacity ab
+
+tp GetSeatCapacity mt (self Observer_Seat_SeatCapacity) () (n U64)
+
+tp Observer_Seat_MapID ab
+
+tp GetMapID mt (self Observer_Seat_MapID) () (m Storage_UUID)
+
+tp SeatDataModel ab {
+	Field_ProductID
+	Field_Service_Seat_Type
+	Observer_Seat_SeatCapacity
+	Observer_Seat_MapID
+	Observer_RequestID
+	Observer_Time_Request
+}
+
+// TODO(go-migrate):
+/*
+package psp
+
+import (
+	request_p "memar/process/request/protocol"
+	audit_time_p "memar/process/time/protocol"
+	record_p "memar/storage/record/protocol"
+
+	product_p "org/modules/economics/product/protocol"
+)
+
+// DataModel indicate the domain record data fields.
+type DataModel interface {
+	product_p.Field_ProductID
+	SeatCapacity() uint64 // max seat number
+	Field_Type
+	MapID() record_p.UUID // to show background and rows and seats. suggest use SVG format
+
+	request_p.Field_RequestID
+	audit_time_p.Field_Request
+}
+*/

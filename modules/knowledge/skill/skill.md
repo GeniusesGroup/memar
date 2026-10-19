@@ -1,0 +1,5 @@
+# Skill
+
+## Model
+
+- `(knowledge)-[:---]->(skill)`

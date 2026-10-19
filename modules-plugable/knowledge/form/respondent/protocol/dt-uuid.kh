@@ -1,0 +1,22 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp ThingUUID in "modules/identity/thing/protocol/dt-uuid.kh"
+
+tp Field_FormRespondentID ab
+
+tp FormRespondentID mt (self Field_FormRespondentID) () (t ThingUUID)
+
+// TODO(go-migrate):
+/*
+package fr_p
+
+import (
+	thing_p "org/modules/identity/thing/protocol"
+)
+
+type Field_FormRespondentID interface {
+	FormRespondentID() UUID
+}
+
+type UUID thing_p.UUID
+*/

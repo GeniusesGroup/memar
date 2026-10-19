@@ -1,0 +1,15 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+// TODO(go-migrate):
+/*
+package label
+
+const (
+	Type_Enter = iota
+	Type_Exit
+	Type_ManualEnter
+	Type_ManualExit
+	Type_Start
+	Type_End
+)
+*/

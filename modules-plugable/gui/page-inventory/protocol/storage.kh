@@ -1,0 +1,27 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+// TODO(go-migrate):
+/*
+package inventory_p
+
+import (
+	error_p "memar/process/error/protocol"
+
+	storage_p "memar/storage/protocol"
+	pp "org/modules/economics/product/protocol"
+	estate_p "org/modules/rights/estate/protocol"
+)
+
+type StorageService interface {
+	// Save(p ProductInventory) (nv storage_p.NumberOfVersion, err error_p.Error)
+
+	Lock(productID pp.UUID, eID estate_p.UUID) (dm DataModel, err error_p.Error)
+	Unlock(dm DataModel) (nv storage_p.NumberOfVersion, err error_p.Error)
+
+	Count(productID pp.UUID, eID estate_p.UUID) (nv storage_p.NumberOfVersion, err error_p.Error)
+	Get(productID pp.UUID, eID estate_p.UUID, vo storage_p.VersionOffset) (dm DataModel, nv storage_p.NumberOfVersion, err error_p.Error)
+
+	LIST_ProductIDs_BY_EstateID(id estate_p.UUID, offset, limit uint64) (productIDs []pp.UUID, nv storage_p.NumberOfVersion, err error_p.Error)
+	LIST_EstateIDs_BY_ProductID(productID pp.UUID, offset, limit uint64) (IDs []estate_p.UUID, nv storage_p.NumberOfVersion, err error_p.Error)
+}
+*/

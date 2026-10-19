@@ -1,0 +1,5 @@
+# Password
+
+## Model
+
+- `(token)-[:password]->(...)`

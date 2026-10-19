@@ -1,0 +1,21 @@
+//go:build gui
+
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+// TODO(go-migrate):
+/*
+package main
+
+import (
+	"libgo/achaemenid"
+
+	"org/modules"
+)
+
+func init() {
+	achaemenid.App.Manifest = achaemenid.Manifest{
+		RequestedPermission: []uint32{},
+	}
+	modules.Init()
+}
+*/

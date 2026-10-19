@@ -1,0 +1,28 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Container_ElementIndex in "memar/modules/computer/adt/container/protocol/index.kh"
+tp Error in "memar/modules/process/error/protocol/error.kh"
+tp VoucherIssuedUtcMinuteDataModel in "modules-plugable/economics/voucher/analytics/voucher_issued-utc_minute/protocol/data_model.kh"
+
+tp VoucherIssuedUtcMinuteStorage ab
+
+tp Save mt (self VoucherIssuedUtcMinuteStorage) (dm VoucherIssuedUtcMinuteDataModel) (err Error)
+
+tp Get mt (self VoucherIssuedUtcMinuteStorage) (m Container_ElementIndex) (dm VoucherIssuedUtcMinuteDataModel, err Error)
+
+// TODO(go-migrate):
+/*
+package vaud_p
+
+import (
+	error_p "memar/process/error/protocol"
+
+	"memar/time/earth"
+)
+
+type StorageServices interface {
+	Save(dm DataModel) (err error_p.Error)
+
+	Get(minute earth.Minute) (dm DataModel, err error_p.Error)
+}
+*/

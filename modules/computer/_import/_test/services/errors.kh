@@ -1,0 +1,135 @@
+// Copyright 2018 SabzCity
+
+// TODO(go-migrate):
+/*
+package services
+
+import (
+	"errors"
+)
+
+// 502 Bad Gateway
+var (
+	ErrCanNotConnectToResource = errors.New("SabzCity Platform can't connect to the Container, Proxy or special resource")
+	ErrProxyRoutingError       = errors.New("Proxy server have error in routing the request")
+	ErrHostNotExist            = errors.New("The requested host not exist or accessible")
+	ErrURLWrong                = errors.New("The URL is not found")
+)
+
+// 400 Bad Request
+// https://tools.ietf.org/html/rfc7231#section-6.5.1
+var (
+	ErrBodyNotValid            = errors.New("Body of request isn't valid")
+	ErrQueryNotValid           = errors.New("Query of URL isn't valid or some of inner values isn't valid value for this request")
+	ErrContentAlreadyConfirmed = errors.New("This content was already confirmed")
+	ErrRequestDataIsNotValid   = errors.New("Requested data validation failed")
+	ErrPasswordIsNotCorrect    = errors.New("Password in request is not correct")
+	ErrCookieIsTooLarge        = errors.New("The cookie with this value is not valid")
+	ErrProductStockIsNotEnough = errors.New("Product stock isn't enough to register invoice! maybe some one register invoice before you process your invoice")
+	ErrProductStockMismatch    = errors.New("Mismatch in OwnerStock & InputStock & RealStock")
+	ErrItemNotAddable          = errors.New("For each organization products or services must register errors.New invoice. User can add just same organization items to an invoice")
+	ErrInvoiceNotCheckoutYet   = errors.New("Invoice not checkout yet. for this operation you must checkout it first")
+	ErrInvoiceNotChanged       = errors.New("Invoice change request is not complete. Maybe Item in Invoice not exist. Please Check your request and send it again")
+)
+
+// 424 Failed Dependency
+var (
+	ErrStoredDataConflict = errors.New("Last request may be corrupted stored data. Please retry again and if is failed again send data again")
+)
+
+// FATAL Error
+var (
+	ErrSettingsNotFound     = errors.New("Settings Data ('.json' file) is not exist in proper location")
+	ErrSettingsNotValid     = errors.New("JSON syntax of 'settings.json' file have some problems")
+	ErrSettingsPartNotExist = errors.New("One of setting part not exist in settings")
+	ErrPlanPartWrong        = errors.New("This plan not registered or something in it is wrong")
+	ErrCanNotServeOrListen  = errors.New("The service can't listen at the port")
+	ErrInaccessiblePort     = errors.New("Can't run the microservice in this port")
+	ErrBadStatement         = errors.New("The data request is wrong")
+)
+
+// 403 Forbidden
+var (
+	ErrAccessForbidden       = errors.New("User can't access to the resource or Change it")
+	ErrCodeIncorrect         = errors.New("The code you entered is incorrect")
+	ErrRootNotEditable       = errors.New("You can't change or delete root variable")
+	ErrUsernameLocked        = errors.New("You can't change username. Wait for one month")
+	ErrGuestGroupNotJoinable = errors.New("No one can join registered or guest group")
+	ErrGroupNotJoinable      = errors.New("Group has admin only policy. Ask organization admins to add you to related group")
+	ErrGroupNotDeletable     = errors.New("Admin & Registered & Guest Groups is not deletable")
+	ErrUserNotAcceptApp      = errors.New("User not accept or remove app permissions, Ask again permission from user")
+	ErrInvoiceNotEditable    = errors.New("User & Org can edit or delete invoice just before Checkout")
+)
+
+// 504 Gateway Timeout
+var (
+	ErrItemNotExistInCache = errors.New("The requested item doesn't exist in the cache")
+)
+
+// 500 Internal Server Error
+var (
+	ErrCantPrepareStatement   = errors.New("Can't prepare a errors.New statement to database")
+	ErrServerPanic            = errors.New("Server recover from panic situation. Error send to admins, contact admins for fixes time")
+	ErrStoringDataConflict    = errors.New("Your data has some problem in their structure to store in our databases. Send your request again! If error exist contact SabzCity platform administrators")
+	ErrStoringDataNotComplete = errors.New("We have some problem in storing your data in our databases. Send your request again! If error exist contact SabzCity platform administrators")
+	ErrSomeThingIsWrong       = errors.New("The error that impossible for us")
+	ErrContentMustBeStruct    = errors.New("The Content type isn't struct")
+	ErrValidatorNotFound      = errors.New("Some validator function for validation package not found")
+	ErrTLSCertificateNotExist = errors.New("We can't make connection with this host! No related certificate found")
+)
+
+// 405 Method Not Allowed
+var (
+	ErrMethodNotAllowed    = errors.New("There is not handler for this Method on given URL. Use OPTIONS method for extra info")
+	ErrMethodExpired       = errors.New("Method was expired")
+	ErrContentAlreadyExist = errors.New("This content was already exist")
+	ErrMethodAlreadyDone   = errors.New("This method was already done")
+)
+
+// 406 Not Acceptable
+// https://tools.ietf.org/html/rfc7231#section-6.5.6
+var (
+	ErrAcceptTypeNotSupported = errors.New("Content-Type that are indicate as acceptable for the response has not supported by platform")
+)
+
+// 404 Not Found
+var (
+	ErrUserNotFound            = errors.New("The requested user was not found")
+	ErrRouterNotFound          = errors.New("The requested url(rest) or methodName(RPC) not match with any register router in requested service")
+	ErrContentNotExist         = errors.New("Requested content was not exist")
+	ErrRecordNotFound          = errors.New("User or any special record not found")
+	ErrDomainNotRegistered     = errors.New("Requested domain not registered")
+	ErrDomainVersionNotFound   = errors.New("Requested version of domain not found")
+	ErrUnitNotFound            = errors.New("The requested unit was not found")
+	ErrLesseeNotFound          = errors.New("The requested lessee was not found")
+	ErrComplexNotFound         = errors.New("The requested complex was not found")
+	ErrGroupNotFound           = errors.New("The requested group was not found")
+	ErrUserNotJoinedInAnyGroup = errors.New("User is not joined in any group")
+	ErrKeyNotFound             = errors.New("Requested key or directory not found")
+)
+
+// 408 Request Timout Error
+var (
+	ErrRequestTimeout = errors.New("The request is timeout")
+)
+
+// 503 Service Unavailable
+var (
+	ErrDatabaseConnectionError       = errors.New("Could not connect to database")
+	ErrDatabasePingOut               = errors.New("Error ocurred in Ping to database")
+	ErrLetsEncryptServersUnavailable = errors.New("Error ocurred in connect to LetsEncrypt servers")
+)
+
+// 401 Unauthorized
+var (
+	ErrTokenIsNotValid  = errors.New("The Token that used by user is not valid")
+	ErrUserNotVerified  = errors.New("User need to approve himself")
+	ErrCookiesHaveError = errors.New("Cookies structure not correct or not exist")
+)
+
+// 415 Unsupported Media Type
+var (
+	ErrContentTypeNotSupported     = errors.New("Payload of request (Content-Type) has not supported by platform")
+	ErrContentEncodingNotSupported = errors.New("Payload encoding (Content-Encoding) of request has not supported by platform")
+)
+*/

@@ -1,0 +1,631 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+// TODO(go-migrate):
+/*
+package connection
+
+import (
+	"golang.org/x/crypto/sha3"
+
+	"../authorization"
+	"../time"
+	"../object"
+	"../pehrest"
+	"../protocol"
+	"../syllab"
+)
+
+/*
+Connection Authorization service
+We have 2 types access to real user data.
+
+Relations Access
+Relations of users have many kind like friends(in many scope), followers, family(in many grade), ... . Relations have fixed types. These relations knowledge store in Relations MS.
+
+Token Access
+Users can make authentication token and give it to third party to access his/her data. So to restricted access, User can be set rules for tokens to limit to specific rules.
+* /
+
+var userAppConnectionStructure = ds.DataStructure{
+	URN:             "urn:giti:connection.protocol:data-structure:user-app-connection",
+	ID:              7690479054656857764,
+	IssueDate:       1601307949,
+	ExpiryDate:      0,
+	ExpireInFavorOf: "",
+	Status:          protocol.Software_PreAlpha,
+	Structure:       UserAppConnection{},
+
+	Name: map[protocol.LanguageID]string{
+		protocol.LanguageEnglish: "User App Connection",
+	},
+	Description: map[protocol.LanguageID]string{
+		protocol.LanguageEnglish: "Use by any type users itself or delegate to other users to act as the owner!",
+	},
+	TAGS: []string{
+		"",
+	},
+}
+
+const (
+	userAppConnectionStructureID uint64 = 7690479054656857764
+)
+
+// UserAppConnection ---Read locale description in userAppConnectionStructure---
+type UserAppConnection struct {
+	RequestID [32]byte // user-request domain
+
+	/* Connection data * /
+	ID            [32]byte
+	AppInstanceID [32]byte // Store to remember which app instance use this record tp prove user requests
+	Weight        operation_p.Weight
+	Status        UserAppConnectionStatus
+
+	/* Peer data * /
+	// Peer Location
+	Addr     [16]byte
+	AddrType protocol.NetworkLinkNextHeaderID
+	// Peer Identifiers
+	DomainName     string // if exist
+	UserID         [16]byte
+	DelegateUserID [16]byte
+
+	/* Security data * /
+	PeerPublicKey [32]byte
+	AccessControl authorization.AccessControl
+}
+
+// conn = &achaemenid.Connection{
+// 	/* Connection data * /
+// 	ID:     uac.ID,
+// 	State:  achaemenid.StateLoaded,
+// 	Weight: uac.Weight,
+
+// 	/* Peer data * /
+// 	// Peer Location
+// 	GPAddr:  uac.GPAddr,
+// 	IPAddr:  uac.IPAddr,
+// 	ThingID: uac.ThingID,
+// 	// Peer Identifiers
+// 	UserID:           uac.UserID,
+// 	UserType:         uac.UserType,
+// 	DelegateUserID:   uac.DelegateUserID,
+// 	DelegateUserType: uac.DelegateUserType,
+
+// 	/* Security data * /
+// 	PeerPublicKey: uac.PeerPublicKey,
+// 	// Cipher        crypto.Cipher
+// 	AccessControl: uac.AccessControl,
+
+// SaveNew method set some data and write entire UserAppConnection record with all indexes!
+func (uac *UserAppConnection) SaveNew() (err error_p.Error) {
+	err = uac.Set()
+	if err != nil {
+		return
+	}
+
+	if uac.DelegateUserID != [32]byte{} {
+		uac.IndexIDForDelegateUserID()
+		uac.IndexIDForUserIDDelegateUserID()
+		uac.IndexIDForUserIDIfDelegateUserID()
+		uac.ListDelegateUserIDForUserID()
+	} else {
+		uac.IndexIDForUserID()
+	}
+	return
+}
+
+// Set method set some data and write entire UserAppConnection record!
+func (uac *UserAppConnection) Set() (err error_p.Error) {
+	uac.RecordStructureID = userAppConnectionStructureID
+	uac.RecordSize = uac.LenAsSyllab()
+	uac.WriteTime = time.Now()
+	// uac.OwnerAppID = protocol.OS.AppManifest().AppUUID()
+
+	var req = ganjine.SetRecordReq{
+		Type:   ganjine.RequestTypeBroadcast,
+		Record: uac.ToSyllab(),
+	}
+	uac.RecordID = sha3.Sum256(req.Record[32:])
+	copy(req.Record[0:], uac.RecordID[:])
+
+	err = gsdk.SetRecord(&req)
+	if err != nil {
+		// TODO::: Handle error situation
+	}
+
+	return
+}
+
+// GetByRecordID method read all existing record data by given RecordID!
+func (uac *UserAppConnection) GetByRecordID() (err error_p.Error) {
+	var req = ganjine.GetRecordReq{
+		RecordID:          uac.RecordID,
+		RecordStructureID: userAppConnectionStructureID,
+	}
+	var res *ganjine.GetRecordRes
+	res, err = gsdk.GetRecord(&req)
+	if err != nil {
+		return
+	}
+
+	err = uac.FromSyllab(res.Record)
+	if err != nil {
+		return
+	}
+
+	if uac.RecordStructureID != userAppConnectionStructureID {
+		err = object.ErrMisMatchedStructureID
+	}
+	return
+}
+
+// GetLastByID find and read last version of record by given ID
+func (uac *UserAppConnection) GetLastByID() (err error_p.Error) {
+	var indexReq = &pehrest.HashGetValuesReq{
+		IndexKey: uac.hashIDForRecordID(),
+		Offset:   18446744073709551615,
+		Limit:    1,
+	}
+	var indexRes *pehrest.HashGetValuesRes
+	indexRes, err = psdk.HashGetValues(indexReq)
+	if err != nil {
+		return
+	}
+
+	uac.RecordID = indexRes.IndexValues[0]
+	err = uac.GetByRecordID()
+	if err.Equal(object.ErrMisMatchedStructureID) {
+		protocol.App.Log(log.WarnEvent(domainEnglish, "Platform collapsed!! HASH Collision Occurred on", userAppConnectionStructureID)
+	}
+	return
+}
+
+// GetLastByUserIDThingID find and read last version of record by given UserID+ThingID
+func (uac *UserAppConnection) GetLastByUserIDThingID() (err error_p.Error) {
+	var indexReq = &pehrest.HashGetValuesReq{
+		IndexKey: uac.hashUserIDThingIDForID(),
+		Offset:   18446744073709551615,
+		Limit:    1,
+	}
+	var indexRes *pehrest.HashGetValuesRes
+	indexRes, err = psdk.HashGetValues(indexReq)
+	if err != nil {
+		return
+	}
+
+	uac.ID = indexRes.IndexValues[0]
+	err = uac.GetLastByID()
+	if err.Equal(object.ErrMisMatchedStructureID) {
+		protocol.App.Log(log.WarnEvent(domainEnglish, "Platform collapsed!! HASH Collision Occurred on", userAppConnectionStructureID)
+	}
+	return
+}
+
+/*
+	-- Search Methods --
+* /
+
+// FindIDsByUserID return IDs by given UserID.
+func (uac *UserAppConnection) FindIDsByUserID(offset, limit uint64) (IDs [][32]byte, err error_p.Error) {
+	var indexReq = &pehrest.HashGetValuesReq{
+		IndexKey: uac.hashUserIDForID(),
+		Offset:   offset,
+		Limit:    limit,
+	}
+	var indexRes *pehrest.HashGetValuesRes
+	indexRes, err = psdk.HashGetValues(indexReq)
+	if err != nil {
+		return
+	}
+	return indexRes.IndexValues, nil
+}
+
+// FindIDsByGivenDelegate return IDs by given UserID.
+func (uac *UserAppConnection) FindIDsByGivenDelegate(offset, limit uint64) (IDs [][32]byte, err error_p.Error) {
+	var indexReq = &pehrest.HashGetValuesReq{
+		IndexKey: uac.hashUserIDIfDelegateUserIDForID(),
+		Offset:   offset,
+		Limit:    limit,
+	}
+	var indexRes *pehrest.HashGetValuesRes
+	indexRes, err = psdk.HashGetValues(indexReq)
+	if err != nil {
+		return
+	}
+	return indexRes.IndexValues, nil
+}
+
+// FindIDsByGottenDelegate return IDs by gotten DelegateUserID.
+func (uac *UserAppConnection) FindIDsByGottenDelegate(offset, limit uint64) (IDs [][32]byte, err error_p.Error) {
+	var indexReq = &pehrest.HashGetValuesReq{
+		IndexKey: uac.hashDelegateUserIDForID(),
+		Offset:   offset,
+		Limit:    limit,
+	}
+	var indexRes *pehrest.HashGetValuesRes
+	indexRes, err = psdk.HashGetValues(indexReq)
+	if err != nil {
+		return
+	}
+	return indexRes.IndexValues, nil
+}
+
+/*
+	-- PRIMARY INDEX --
+* /
+
+// IndexRecordIDForID save RecordID chain for ID
+func (uac *UserAppConnection) IndexRecordIDForID() {
+	var indexRequest = pehrest.HashSetValueReq{
+		Type:       ganjine.RequestTypeBroadcast,
+		IndexKey:   uac.hashIDForRecordID(),
+		IndexValue: uac.RecordID,
+	}
+	var err = psdk.HashSetValue(&indexRequest)
+	if err != nil {
+		// TODO::: we must retry more due to record wrote successfully!
+	}
+}
+
+func (uac *UserAppConnection) hashIDForRecordID() (hash [32]byte) {
+	const field = "ID"
+	var buf = make([]byte, 40+len(field)) // 8+32
+	syllab.SetUInt64(buf, 0, userAppConnectionStructureID)
+	copy(buf[8:], uac.ID[:])
+	copy(buf[40:], field)
+	return sha3.Sum256(buf)
+}
+
+/*
+	-- SECONDARY INDEXES --
+* /
+
+// IndexIDForThingID save ID chain for ThingID.
+// Use in emergency to expire all connection on the Thing!
+// Don't call in update to an exiting record!
+func (uac *UserAppConnection) IndexIDForThingID() {
+	var indexRequest = pehrest.HashSetValueReq{
+		Type:       ganjine.RequestTypeBroadcast,
+		IndexKey:   uac.hashThingIDForID(),
+		IndexValue: uac.ID,
+	}
+	var err = psdk.HashSetValue(&indexRequest)
+	if err != nil {
+		// TODO::: we must retry more due to record wrote successfully!
+	}
+}
+
+func (uac *UserAppConnection) hashThingIDForID() (hash [32]byte) {
+	const field = "ThingID"
+	var buf = make([]byte, 40+len(field)) // 8+32
+	syllab.SetUInt64(buf, 0, userAppConnectionStructureID)
+	copy(buf[8:], uac.ThingID[:])
+	copy(buf[40:], field)
+	return sha3.Sum256(buf)
+}
+
+// IndexIDForUserID save ID chain for UserID.
+// Don't call in update to an exiting record!
+func (uac *UserAppConnection) IndexIDForUserID() {
+	var indexRequest = pehrest.HashSetValueReq{
+		Type:       ganjine.RequestTypeBroadcast,
+		IndexKey:   uac.hashUserIDForID(),
+		IndexValue: uac.ID,
+	}
+	var err = psdk.HashSetValue(&indexRequest)
+	if err != nil {
+		// TODO::: we must retry more due to record wrote successfully!
+	}
+}
+
+func (uac *UserAppConnection) hashUserIDForID() (hash [32]byte) {
+	const field = "UserID"
+	var buf = make([]byte, 40+len(field)) // 8+32
+	syllab.SetUInt64(buf, 0, userAppConnectionStructureID)
+	copy(buf[8:], uac.UserID[:])
+	copy(buf[40:], field)
+	return sha3.Sum256(buf)
+}
+
+// IndexIDForUserIDThingID save ID chain for UserID+ThingID.
+// Don't call in update to an exiting record!
+func (uac *UserAppConnection) IndexIDForUserIDThingID() {
+	var indexRequest = pehrest.HashSetValueReq{
+		Type:       ganjine.RequestTypeBroadcast,
+		IndexKey:   uac.hashUserIDThingIDForID(),
+		IndexValue: uac.ID,
+	}
+	var err = psdk.HashSetValue(&indexRequest)
+	if err != nil {
+		// TODO::: we must retry more due to record wrote successfully!
+	}
+}
+
+func (uac *UserAppConnection) hashUserIDThingIDForID() (hash [32]byte) {
+	const field = "UserIDThingID"
+	var buf = make([]byte, 72+len(field)) // 8+32+32
+	syllab.SetUInt64(buf, 0, userAppConnectionStructureID)
+	copy(buf[8:], uac.UserID[:])
+	copy(buf[40:], uac.ThingID[:])
+	copy(buf[72:], field)
+	return sha3.Sum256(buf)
+}
+
+// IndexIDForUserIDDelegateUserID save ID chain for UserID+DelegateUserID
+// Don't call in update to an exiting record!
+func (uac *UserAppConnection) IndexIDForUserIDDelegateUserID() {
+	var indexRequest = pehrest.HashSetValueReq{
+		Type:       ganjine.RequestTypeBroadcast,
+		IndexKey:   uac.hashUserIDDelegateUserIDForID(),
+		IndexValue: uac.ID,
+	}
+	var err = psdk.HashSetValue(&indexRequest)
+	if err != nil {
+		// TODO::: we must retry more due to record wrote successfully!
+	}
+}
+
+func (uac *UserAppConnection) hashUserIDDelegateUserIDForID() (hash [32]byte) {
+	const field = "UserIDDelegateUserID"
+	var buf = make([]byte, 72+len(field)) // 8+32+32
+	syllab.SetUInt64(buf, 0, userAppConnectionStructureID)
+	copy(buf[8:], uac.UserID[:])
+	copy(buf[40:], uac.DelegateUserID[:])
+	copy(buf[72:], field)
+	return sha3.Sum256(buf)
+}
+
+// IndexIDForUserIDIfDelegateUserID save ID chain for UserID if DelegateUserID exist
+// Don't call in update to an exiting record!
+func (uac *UserAppConnection) IndexIDForUserIDIfDelegateUserID() {
+	var indexRequest = pehrest.HashSetValueReq{
+		Type:       ganjine.RequestTypeBroadcast,
+		IndexKey:   uac.hashUserIDIfDelegateUserIDForID(),
+		IndexValue: uac.ID,
+	}
+	var err = psdk.HashSetValue(&indexRequest)
+	if err != nil {
+		// TODO::: we must retry more due to record wrote successfully!
+	}
+}
+
+func (uac *UserAppConnection) hashUserIDIfDelegateUserIDForID() (hash [32]byte) {
+	const field = "UserIDIfDelegateUserID"
+	var buf = make([]byte, 40+len(field)) // 8+32
+	syllab.SetUInt64(buf, 0, userAppConnectionStructureID)
+	copy(buf[8:], uac.UserID[:])
+	copy(buf[40:], field)
+	return sha3.Sum256(buf)
+}
+
+// IndexIDForUserTypeDaily save ID chain for UserType+WriteTime[daily]
+// Mostly use to index GuestType connections to research on them!
+// Don't call in update to an exiting record!
+func (uac *UserAppConnection) IndexIDForUserTypeDaily() {
+	var indexRequest = pehrest.HashSetValueReq{
+		Type:       ganjine.RequestTypeBroadcast,
+		IndexKey:   uac.hashUserTypeDailyforID(),
+		IndexValue: uac.ID,
+	}
+	var err = psdk.HashSetValue(&indexRequest)
+	if err != nil {
+		// TODO::: we must retry more due to record wrote successfully!
+	}
+}
+
+func (uac *UserAppConnection) hashUserTypeDailyforID() (hash [32]byte) {
+	const field = "UserTypeWriteTime"
+	var buf = make([]byte, 17+len(field)) // 8+1+8
+	syllab.SetUInt64(buf, 0, userAppConnectionStructureID)
+	syllab.SetUInt8(buf, 8, uint8(uac.UserType))
+	syllab.SetInt64(buf, 9, uac.WriteTime.RoundToDay())
+	copy(buf[17:], field)
+	return sha3.Sum256(buf)
+}
+
+// IndexIDForDelegateUserID save ID chain for DelegateUserID.
+// Don't call in update to an exiting record!
+func (uac *UserAppConnection) IndexIDForDelegateUserID() {
+	var indexRequest = pehrest.HashSetValueReq{
+		Type:       ganjine.RequestTypeBroadcast,
+		IndexKey:   uac.hashDelegateUserIDForID(),
+		IndexValue: uac.ID,
+	}
+	var err = psdk.HashSetValue(&indexRequest)
+	if err != nil {
+		// TODO::: we must retry more due to record wrote successfully!
+	}
+}
+
+func (uac *UserAppConnection) hashDelegateUserIDForID() (hash [32]byte) {
+	const field = "DelegateUserID"
+	var buf = make([]byte, 40+len(field)) // 8+32
+	syllab.SetUInt64(buf, 0, userAppConnectionStructureID)
+	copy(buf[8:], uac.DelegateUserID[:])
+	copy(buf[40:], field)
+	return sha3.Sum256(buf)
+}
+
+/*
+	-- LIST FIELDS --
+* /
+
+// ListUserIDForThingID list UserID chain for ThingID.
+// Don't call in update to an exiting record!
+func (uac *UserAppConnection) ListUserIDForThingID() {
+	var indexRequest = pehrest.HashSetValueReq{
+		Type:       ganjine.RequestTypeBroadcast,
+		IndexKey:   uac.hashThindIDForUserID(),
+		IndexValue: uac.UserID,
+	}
+	var err = psdk.HashSetValue(&indexRequest)
+	if err != nil {
+		// TODO::: we must retry more due to record wrote successfully!
+	}
+}
+
+func (uac *UserAppConnection) hashThindIDForUserID() (hash [32]byte) {
+	const field = "ListUserID"
+	var buf = make([]byte, 40+len(field)) // 8+32
+	syllab.SetUInt64(buf, 0, userAppConnectionStructureID)
+	copy(buf[8:], uac.ThingID[:])
+	copy(buf[40:], field)
+	return sha3.Sum256(buf)
+}
+
+// ListThingIDForUserID list ThingID chain for UserID.
+// Don't call in update to an exiting record!
+func (uac *UserAppConnection) ListThingIDForUserID() {
+	var indexRequest = pehrest.HashSetValueReq{
+		Type:       ganjine.RequestTypeBroadcast,
+		IndexKey:   uac.hashUserIDForThingID(),
+		IndexValue: uac.ThingID,
+	}
+	var err = psdk.HashSetValue(&indexRequest)
+	if err != nil {
+		// TODO::: we must retry more due to record wrote successfully!
+	}
+}
+
+func (uac *UserAppConnection) hashUserIDForThingID() (hash [32]byte) {
+	const field = "ListThingID"
+	var buf = make([]byte, 40+len(field)) // 8+32
+	syllab.SetUInt64(buf, 0, userAppConnectionStructureID)
+	copy(buf[8:], uac.UserID[:])
+	copy(buf[40:], field)
+	return sha3.Sum256(buf)
+}
+
+// ListDelegateUserIDForUserID list DelegateUserID chain for UserID.
+// Don't call in update to an exiting record!
+func (uac *UserAppConnection) ListDelegateUserIDForUserID() {
+	var indexRequest = pehrest.HashSetValueReq{
+		Type:       ganjine.RequestTypeBroadcast,
+		IndexKey:   uac.hashUserIDForDelegateUserID(),
+		IndexValue: uac.DelegateUserID,
+	}
+	var err = psdk.HashSetValue(&indexRequest)
+	if err != nil {
+		// TODO::: we must retry more due to record wrote successfully!
+	}
+}
+
+func (uac *UserAppConnection) hashUserIDForDelegateUserID() (hash [32]byte) {
+	const field = "ListDelegateUserID"
+	var buf = make([]byte, 40+len(field)) // 8+32
+	syllab.SetUInt64(buf, 0, userAppConnectionStructureID)
+	copy(buf[8:], uac.UserID[:])
+	copy(buf[40:], field)
+	return sha3.Sum256(buf)
+}
+
+/*
+	-- Syllab Encoder & Decoder --
+* /
+
+func (uac *UserAppConnection) CheckSyllab(payload []byte) {
+	if uint32(len(buf)) < uac.LenOfSyllabStack() {
+		err = syllab.ErrShortArrayDecode
+		return
+	}
+	return
+}
+
+func (uac *UserAppConnection) FromSyllab(payload []byte, stackIndex uint32) {
+	copy(uac.AppInstanceID[:], buf[88:])
+	copy(uac.UserConnectionID[:], buf[120:])
+	uac.Status = UserAppConnectionStatus(syllab.GetUInt8(buf, 152))
+	uac.Description = syllab.UnsafeGetString(buf, 153)
+
+	copy(uac.ID[:], buf[161:])
+	uac.Weight = operation_p.Weight(syllab.GetUInt8(buf, 193))
+
+	copy(uac.GPAddr[:], buf[194:])
+	copy(uac.IPAddr[:], buf[208:])
+	copy(uac.ThingID[:], buf[224:])
+
+	copy(uac.UserID[:], buf[256:])
+	uac.UserType = user_p.Type(syllab.GetUInt8(buf, 288))
+	copy(uac.DelegateUserID[:], buf[289:])
+	uac.DelegateUserType = user_p.Type(syllab.GetUInt8(buf, 321))
+
+	copy(uac.PeerPublicKey[:], buf[322:])
+	uac.AccessControl.FromSyllab(buf, 354)
+
+	uac.LastUsage = time.Time(syllab.GetInt64(buf, 354+uac.AccessControl.LenOfSyllabStack()))
+	uac.PacketPayloadSize = syllab.GetUInt16(buf, 362+uac.AccessControl.LenOfSyllabStack())
+	uac.MaxBandwidth = syllab.GetUInt64(buf, 364+uac.AccessControl.LenOfSyllabStack())
+	uac.ServiceCallCount = syllab.GetUInt64(buf, 372+uac.AccessControl.LenOfSyllabStack())
+	uac.BytesSent = syllab.GetUInt64(buf, 380+uac.AccessControl.LenOfSyllabStack())
+	uac.PacketsSent = syllab.GetUInt64(buf, 388+uac.AccessControl.LenOfSyllabStack())
+	uac.BytesReceived = syllab.GetUInt64(buf, 396+uac.AccessControl.LenOfSyllabStack())
+	uac.PacketsReceived = syllab.GetUInt64(buf, 404+uac.AccessControl.LenOfSyllabStack())
+	uac.FailedPacketsReceived = syllab.GetUInt64(buf, 412+uac.AccessControl.LenOfSyllabStack())
+	uac.FailedServiceCall = syllab.GetUInt64(buf, 420+uac.AccessControl.LenOfSyllabStack())
+	return
+}
+
+func (uac *UserAppConnection) ToSyllab(payload []byte, stackIndex, heapIndex uint32) (freeHeapIndex uint32) {
+	copy(buf[88:], uac.AppInstanceID[:])
+	copy(buf[120:], uac.UserConnectionID[:])
+	syllab.SetUInt8(buf, 152, uint8(uac.Status))
+	heapIndex = syllab.SetString(buf, uac.Description, 153, heapIndex)
+
+	copy(buf[161:], uac.ID[:])
+	syllab.SetUInt8(buf, 193, uint8(uac.Weight))
+
+	copy(buf[194:], uac.GPAddr[:])
+	copy(buf[208:], uac.IPAddr[:])
+	copy(buf[224:], uac.ThingID[:])
+
+	copy(buf[256:], uac.UserID[:])
+	syllab.SetUInt8(buf, 288, uint8(uac.UserType))
+	copy(buf[289:], uac.DelegateUserID[:])
+	syllab.SetUInt8(buf, 321, uint8(uac.DelegateUserType))
+
+	copy(buf[322:], uac.PeerPublicKey[:])
+	uac.AccessControl.ToSyllab(buf, 354, heapIndex)
+
+	syllab.SetInt64(buf, 354+uac.AccessControl.LenOfSyllabStack(), int64(uac.LastUsage))
+	syllab.SetUInt16(buf, 362+uac.AccessControl.LenOfSyllabStack(), uac.PacketPayloadSize)
+	syllab.SetUInt64(buf, 364+uac.AccessControl.LenOfSyllabStack(), uac.MaxBandwidth)
+	syllab.SetUInt64(buf, 372+uac.AccessControl.LenOfSyllabStack(), uac.ServiceCallCount)
+	syllab.SetUInt64(buf, 380+uac.AccessControl.LenOfSyllabStack(), uac.BytesSent)
+	syllab.SetUInt64(buf, 388+uac.AccessControl.LenOfSyllabStack(), uac.PacketsSent)
+	syllab.SetUInt64(buf, 396+uac.AccessControl.LenOfSyllabStack(), uac.BytesReceived)
+	syllab.SetUInt64(buf, 404+uac.AccessControl.LenOfSyllabStack(), uac.PacketsReceived)
+	syllab.SetUInt64(buf, 412+uac.AccessControl.LenOfSyllabStack(), uac.FailedPacketsReceived)
+	syllab.SetUInt64(buf, 420+uac.AccessControl.LenOfSyllabStack(), uac.FailedServiceCall)
+	return
+}
+
+func (uac *UserAppConnection) LenOfSyllabStack() uint32 {
+	return 428 + uac.AccessControl.LenOfSyllabStack()
+}
+
+func (uac *UserAppConnection) LenOfSyllabHeap() (ln uint32) {
+	ln = uint32(len(uac.Description))
+	ln += uac.AccessControl.LenOfSyllabHeap()
+	return
+}
+
+func (uac *UserAppConnection) LenAsSyllab() uint64 {
+	return uint64(uac.LenOfSyllabStack() + uac.LenOfSyllabHeap())
+}
+
+/*
+	-- Record types --
+* /
+
+// UserAppConnectionStatus use to indicate UserAppConnection record status
+type UserAppConnectionStatus uint8
+
+// UserAppConnection status
+const (
+	UserAppConnectionUnset UserAppConnectionStatus = iota
+	UserAppConnectionIssued
+	UserAppConnectionUpdate
+	UserAppConnectionExpired
+	UserAppConnectionRevoked
+)
+*/

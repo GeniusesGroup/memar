@@ -1,0 +1,20 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Field_GroupsID in "modules/management/group/protocol/dt-uuid.kh"
+
+tp Voucher_Groups ab {
+	Field_GroupsID
+}
+
+// TODO(go-migrate):
+/*
+package voucher
+
+import (
+	group_p "org/modules/management/group/protocol"
+)
+
+type Groups interface {
+	group_p.Field_GroupsID
+}
+*/

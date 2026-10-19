@@ -1,0 +1,24 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+// TODO(go-migrate):
+/*
+package services
+
+import "libgo/achaemenid"
+
+// AddDataManuallyReq is the request structure of AddDataManually()
+type AddDataManuallyReq struct {
+	UserID       [16]byte `valid:"UserID"`
+	PlatformName string
+	// CachedData            ForeignCachedData
+	EmailApproveCode      uint32
+	UserNumberApproveCode uint32
+}
+
+// SetForeignDetailManually use to set specific user foreign cache data manually for unsupported offline platfrom.
+func SetForeignDetailManually(st *achaemenid.Stream, req *AddDataManuallyReq) {
+	// Check UserNumber(mobile) and email verify codes
+
+	return
+}
+*/

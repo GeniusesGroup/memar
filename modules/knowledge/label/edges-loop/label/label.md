@@ -1,0 +1,5 @@
+# Label
+
+## Model
+
+- `(thing)-[:label]->(---)`

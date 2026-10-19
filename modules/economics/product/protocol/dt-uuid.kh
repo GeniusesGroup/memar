@@ -1,0 +1,31 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Array_ThingUUID in "modules/identity/thing/protocol/dt-uuid.kh"
+tp ThingUUID in "modules/identity/thing/protocol/dt-uuid.kh"
+
+tp Field_ProductID ab
+
+tp ProductID mt (self Field_ProductID) () (t ThingUUID)
+
+tp Field_ProductsID ab
+
+tp ProductsID mt (self Field_ProductsID) () (i Array_ThingUUID)
+
+// TODO(go-migrate):
+/*
+package product_p
+
+import (
+	record_p "memar/storage/record/protocol"
+)
+
+type Field_ProductID interface {
+	ProductID() UUID
+}
+
+type Field_ProductsID interface {
+	ProductsID() []UUID
+}
+
+type UUID record_p.UUID
+*/

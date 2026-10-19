@@ -1,0 +1,23 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Array_Dynamic in "memar/modules/computer/adt/array/protocol/dynamic.kh"
+
+tp RequestData ab {
+	Array_Dynamic
+}
+
+tp Field_RequestData ab
+
+tp GetRequestData mt (self Field_RequestData) () (d RequestData)
+
+// TODO(go-migrate):
+/*
+package request_data_p
+
+type Field_RequestData interface {
+	RequestData() RequestData
+}
+
+// RequestData will decode by service request structure and compress type.
+type RequestData []byte
+*/

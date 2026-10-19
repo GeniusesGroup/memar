@@ -1,0 +1,51 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp W32 in "memar/modules/math/integer/unsigned-32.kh"
+tp Field_GroupID in "modules/management/group/protocol/dt-uuid.kh"
+tp Observer_RequestID in "memar/modules/process/request/protocol/uuid.observers.kh"
+tp Observer_Time_Request in "memar/modules/process/time/protocol/request.observers.kh"
+
+tp Observer_GroupMemberLimit_Minimum ab
+
+tp GetMinimum mt (self Observer_GroupMemberLimit_Minimum) () (n W32)
+
+tp Observer_GroupMemberLimit_Expected ab
+
+tp GetExpected mt (self Observer_GroupMemberLimit_Expected) () (n W32)
+
+tp Observer_GroupMemberLimit_Maximum ab
+
+tp GetMaximum mt (self Observer_GroupMemberLimit_Maximum) () (n W32)
+
+tp GroupMemberLimitDataModel ab {
+	Field_GroupID
+	Observer_GroupMemberLimit_Minimum
+	Observer_GroupMemberLimit_Expected
+	Observer_GroupMemberLimit_Maximum
+	Observer_RequestID
+	Observer_Time_Request
+}
+
+// TODO(go-migrate):
+/*
+package membership_term_member_limit_p
+
+import (
+	request_p "memar/process/request/protocol"
+	audit_time_p "memar/process/time/protocol"
+
+	group_p "org/modules/management/group/protocol"
+)
+
+// DataModel indicate the domain record data fields.
+type DataModel interface {
+	group_p.Field_GroupID
+
+	Minimum() int32  // Minimum number of employees for this job position
+	Expected() int32 // Expected number of employees for this job position
+	Maximum() int32  // Maximum number of employees for this job position
+
+	request_p.Field_RequestID
+	audit_time_p.Field_Request
+}
+*/

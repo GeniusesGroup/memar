@@ -1,0 +1,22 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Field_GroupID in "modules/management/group/protocol/dt-uuid.kh"
+tp Field_GroupPolicy in "modules-plugable/management/authorization/protocol/dt-policy.kh"
+tp Field_RuleID in "modules/computer/rule/protocol/dt-uuid.kh"
+
+tp GroupAuthorizationDataModel ab {
+	Field_GroupID
+	Field_RuleID
+	Field_GroupPolicy
+}
+
+// TODO(go-migrate):
+/*
+package group_authorization
+
+// DataModel indicate the domain record data fields.
+type DataModel interface {
+	GetPolicy() Policy // Visibility level
+	SetPolicy() Policy
+}
+*/

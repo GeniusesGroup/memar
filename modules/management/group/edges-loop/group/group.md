@@ -1,0 +1,5 @@
+# Group
+
+## Model
+
+- `(user)-[:group]->(---)`

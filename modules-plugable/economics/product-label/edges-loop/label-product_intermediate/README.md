@@ -1,0 +1,1 @@
+label-product_intermediate.md

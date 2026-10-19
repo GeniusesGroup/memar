@@ -1,0 +1,54 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Field_TextID in "modules/knowledge/text/protocol/dt-uuid.kh"
+tp U64 in "memar/modules/math/integer/unsigned-64.kh"
+
+tp Token ab {
+	Field_TextID
+}
+
+tp GetTokenOffsetInSentence mt (self Token) () (o U64)
+
+tp GetTokenOffsetInText mt (self Token) () (o U64)
+
+tp GetOffsetInSentence mt (self Token) () (o U64)
+
+tp GetOffsetInText mt (self Token) () (o U64)
+
+tp GetWeight mt (self Token) () (w U64)
+
+tp GetScoreInSentence mt (self Token) () (s U64)
+
+tp GetScoreInText mt (self Token) () (s U64)
+
+tp GetRankingScore mt (self Token) () (s U64)
+
+// TODO(go-migrate):
+/*
+package tokens_p
+
+import (
+	text_p "org/modules/knowledge/text/protocol"
+)
+
+// Token store detail about a token in the text to index
+// Google name it as "Hit List"
+// TODO::: Removing stop words?
+type Token interface {
+	// Text is token that store in one place to point it in any other text.
+	text_p.Field_TextUUID
+
+	TokenOffsetInSentence() uint64 //  Position of the token in the sentence
+	TokenOffsetInText() uint64     //  Position of the token in the text
+	OffsetInSentence() uint64      //  First token character position in the sentence
+	OffsetInText() uint64          //  First token character position in the text
+
+	// Tokens in a larger or bolder font are weighted higher than other tokens
+	Weight() uint64
+
+	ScoreInSentence() uint64
+	ScoreInText() uint64
+	RankingScore() uint64
+	// BackLinksNumbers() uint64 // citations numbers
+}
+*/

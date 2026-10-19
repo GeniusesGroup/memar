@@ -1,0 +1,22 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp ThingUUID in "modules/identity/thing/protocol/dt-uuid.kh"
+
+tp Field_TaxonID ab
+
+tp TaxonID mt (self Field_TaxonID) () (t ThingUUID)
+
+// TODO(go-migrate):
+/*
+package taxon_p
+
+import (
+	record_p "memar/storage/record/protocol"
+)
+
+type Field_TaxonID interface {
+	TaxonID() UUID
+}
+
+type UUID record_p.UUID
+*/

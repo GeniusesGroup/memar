@@ -1,0 +1,35 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+// TODO(go-migrate):
+/*
+package clap
+
+import (
+	request_p "memar/process/request/protocol"
+	audit_time_p "memar/process/time/protocol"
+	record_p "memar/storage/record/protocol"
+
+	bm_p "org/modules/computer/module/protocol"
+	comment_p "org/modules/knowledge/content/edges-loop/comment/protocol"
+)
+
+// It can point to any domain records e.g. product, invoice, ...
+// It can be use in other way than domain indicate e.g.
+// - welcome message by group-associated domain data.
+// - Map domain to share static or live location
+// - PhotoUpdated
+// - Call
+// TODO::: prevent from flag set is on with other types like text
+
+// DataModel indicate the domain record data fields.
+type DataModel interface {
+	comment_p.Field_CommentID //
+	bm_p.Field_ModuleUUID     // use to detect comment GUI template
+	// TODO::: primary key may not be a single field!
+	RecordID() record_p.UUID // in above domain
+	RecordVersion() uint64   // VersionOffset
+
+	request_p.Field_RequestID
+	audit_time_p.Field_Request
+}
+*/

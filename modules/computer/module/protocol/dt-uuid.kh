@@ -1,0 +1,24 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp ThingUUID in "modules/identity/thing/protocol/dt-uuid.kh"
+
+tp Field_ModuleID ab
+
+tp ModuleID mt (self Field_ModuleID) () (t ThingUUID)
+
+// TODO(go-migrate):
+/*
+package module_p
+
+import (
+	record_p "memar/storage/record/protocol"
+)
+
+type Field_ModuleUUID interface {
+	ModuleUUID() UUID
+	// DomainID() UUID
+}
+
+// Applications module identifier e.g. product, content, ... domain
+type UUID record_p.UUID
+*/

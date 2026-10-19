@@ -1,0 +1,5 @@
+# Revoked
+
+## Model
+
+- `(token)-[:revoked]->(---)`

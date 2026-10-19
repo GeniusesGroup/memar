@@ -1,0 +1,46 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp U64 in "memar/modules/math/integer/unsigned-64.kh"
+tp Amount in "modules-plugable/economics/money/protocol/dt-money-amount.kh"
+tp Observer_HourElapsed in "memar/modules/time/utc/duration-hour.observers.kh"
+tp Observer_RequestID in "memar/modules/process/request/protocol/uuid.observers.kh"
+tp Observer_Time_Request in "memar/modules/process/time/protocol/request.observers.kh"
+
+tp Observer_VoucherIssuedUtcHour_TotalIssued ab
+
+tp GetTotalIssued mt (self Observer_VoucherIssuedUtcHour_TotalIssued) () (n U64)
+
+tp Observer_VoucherIssuedUtcHour_TotalIssuedAmount ab
+
+tp GetTotalIssuedAmount mt (self Observer_VoucherIssuedUtcHour_TotalIssuedAmount) () (a Amount)
+
+tp VoucherIssuedUtcHourDataModel ab {
+	Observer_HourElapsed
+	Observer_VoucherIssuedUtcHour_TotalIssued
+	Observer_VoucherIssuedUtcHour_TotalIssuedAmount
+	Observer_RequestID
+	Observer_Time_Request
+}
+
+// TODO(go-migrate):
+/*
+package vacuh
+
+import (
+	request_p "memar/process/request/protocol"
+	audit_time_p "memar/process/time/protocol"
+	"memar/time/utc"
+
+	fmp "org/modules/economics/money/protocol"
+)
+
+// DataModel indicate the domain record data fields.
+type DataModel interface {
+	utc.Field_HourElapsed
+	TotalIssued() uint64
+	TotalIssuedAmount() fmp.Amount
+
+	request_p.Field_RequestID
+	audit_time_p.Field_Request
+}
+*/

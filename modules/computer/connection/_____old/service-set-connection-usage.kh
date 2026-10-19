@@ -1,0 +1,47 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+// TODO(go-migrate):
+/*
+package services
+
+import "libgo/achaemenid"
+
+// Just by related AppID
+
+// SetUsageReq is the request structure of SetUsage()
+type SetUsageReq struct {
+	ConnectionID    [16]byte `valid:"UUID"`
+	RequestCount    uint64   // Use for PayAsGo strategy.
+	BytesSent       uint64   // Counts the bytes of payload data sent.
+	PacketsSent     uint64   // Counts packets sent.
+	BytesReceived   uint64   // Counts the bytes of payload data Receive.
+	PacketsReceived uint64   // Counts packets Receive.
+}
+
+// SetUsage use to update and get related connection data.
+func SetUsage(st *achaemenid.Stream, req *SetUsageReq) error {
+	/*
+		---------- Authorization ----------
+	* /
+	// Delegate user can't set usage for any user!
+	if cst.Connection.OwnerID != cst.Connection.DelegateUserID {
+		// return
+	}
+
+	cst.AuthorizeWhich()
+	cst.AuthorizeWhere()
+	if cst.Err != nil {
+		return cst.Err
+	}
+
+	/*
+		---------- Bussiness logic ----------
+	* /
+
+	// Get req.ConnectionID info with cst.Connection.OwnerID = Connection.AppID
+
+	// Plus req usage to local data
+
+	return nil
+}
+*/

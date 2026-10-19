@@ -1,0 +1,5 @@
+# Data
+
+## Model
+
+- `(request)-[:data]->(---)`

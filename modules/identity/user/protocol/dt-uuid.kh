@@ -1,0 +1,24 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp UserUUID ab
+
+tp Field_UserUUID ab
+
+tp UserID mt (self Field_UserUUID) () (i UserUUID)
+
+// TODO(go-migrate):
+/*
+package user_p
+
+import (
+	thing_p "org/modules/identity/thing/protocol"
+)
+
+type Field_UserUUID interface {
+	UserID() UUID
+}
+
+// UUID can be same with any other UUID domains e.g. thing, ...
+// It MUST be unique ID in all domains.
+type UUID thing_p.UUID
+*/

@@ -1,0 +1,105 @@
+//go:build server
+
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+// TODO(go-migrate):
+/*
+package main
+
+import (
+	"time"
+
+	"libgo/achaemenid"
+	"libgo/http"
+	"libgo/log"
+	"libgo/net"
+	"libgo/protocol"
+	"libgo/srpc"
+
+	letsencrypt "github.com/GeniusesGroup/SDK/letsencrypt.org/go"
+
+	"org/modules"
+)
+
+func init() {
+	achaemenid.App.Manifest = achaemenid.Manifest{
+		RequestedPermission: []uint32{},
+
+		TechnicalInfo: achaemenid.TechnicalInfo{
+			ShutdownDelay: 2 * time.Minute,
+
+			MaxOpenConnection:     5000000,
+			ConnectionIdleTimeout: 24 * time.Hour,
+
+			GuestMaxConnections: 1000000,
+
+			CPUCores: 1,                        // one core
+			CPUSpeed: 1 * 1000 * 1000,          // 1 GHz
+			RAM:      4 * 1024 * 1024 * 1024,   // 4 GB
+			GPU:      0,                        // 0 Ghz
+			Network:  100 * 1024 * 1024,        // 100 MB/S
+			Storage:  100 * 1024 * 1024 * 1024, // 100 GB
+		},
+		ServiceNodes: achaemenid.ServiceNodes{
+			DistributeOutOfSociety: false,
+			DataCentersClass:       5,
+			MaxNodeNumber:          30,
+			NodeFailureTimeOut:     6 * time.Hour,
+		},
+		DataNodes: achaemenid.DataNodes{
+			DataCentersClass: 0,
+			TotalZones:       3,
+
+			TransactionTimeOut: 500,
+			NodeFailureTimeOut: 60,
+
+			CachePercent: 20,
+		},
+	}
+	if protocol.AppMode_Dev {
+		achaemenid.App.Manifest.TechnicalInfo.ShutdownDelay = 2 * time.Second
+	}
+
+	// Initialize application
+	registerNetworkApplicationsMux()
+	registerNetworkTransportsMux()
+	modules.Init()
+	// Connect to other nodes or become first node!
+	log.FatalError(achaemenid.App.Nodes.Init())
+}
+
+var httpHandler http.HandlerV1
+var srpcHandler srpc.Handler
+
+// Register app layer protocols. Dev can remove below and register only needed protocols handlers.
+func registerNetworkApplicationsMux() {
+	protocol.App.Log(log.InfoEvent(domainEnglish, "try to register HTTP handler on port number 80 to listen for HTTP protocol"))
+	achaemenid.App.SetNetworkApplicationHandler(protocol.NetworkApplicationHTTP, &httpHandler)
+
+	// http.ServeWWWService.WWW.ContentEncodings = []string{compress.} overwrite ContentEncodings if don't like already assign.
+	http.ServeWWWService.WWW.Init()
+	if protocol.AppMode_Dev {
+		go http.ServeWWWService.WWW.ReloadByCLI()
+	}
+
+	protocol.App.Log(log.InfoEvent(domainEnglish, "try to register HTTP handler on port number 4 to listen for sRPC protocol"))
+	achaemenid.App.SetNetworkApplicationHandler(protocol.NetworkApplicationSRPC, &srpcHandler)
+}
+
+// Register some selectable networks. Check to add or delete networks.
+func registerNetworkTransportsMux() {
+	// Check LetsEncrypt Certificate
+	log.FatalError(letsencrypt.CheckAndRenew())
+
+	protocol.App.Log(log.InfoEvent(domainEnglish, "try to register TCP on port 80 to listen for HTTP to HTTPS logic"))
+	log.FatalError(net.ListenAndServeTCP(":80", net.Http1ToHttps1Handler{}))
+	// protocol.App.Log(log.InfoEvent(domainEnglish, "try to register TCP on port 8080 to listen for HTTP protocol in dev phase")
+	// log.Fatal(net.ListenAndServeTCP(":8080", net.HTTPHandler{}))
+	protocol.App.Log(log.InfoEvent(domainEnglish, "try to register TCP/TLS on port 443 to listen for HTTPs protocol"))
+	log.FatalError(net.ListenAndServeTCPTLS(":443", net.HTTPHandler{}))
+
+	// protocol.App.Log(log.InfoEvent(domainEnglish, "try to register UDP on port 53 to listen for DNS protocol")
+	// achaemenid.App.StreamProtocols.SetProtocolHandler(53, dns.IncomeRequestHandler)
+	// log.FatalError(achaemenid.MakeUDPNetwork(53))
+}
+*/

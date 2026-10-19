@@ -1,0 +1,39 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+// TODO(go-migrate):
+/*
+package cost_p
+
+import (
+	"memar/math/per"
+
+	request_p "memar/process/request/protocol"
+	audit_time_p "memar/process/time/protocol"
+	psb_p "org/modules/economics/batch/protocol"
+
+	fmp "org/modules/economics/money/protocol"
+)
+
+// DataModel indicate the domain record data fields.
+type DataModel interface {
+	psb_p.Field_BatchID
+
+	Materials() per.Myriad
+	MaterialsCost() fmp.Amount
+	Labor() per.Myriad
+	LaborCost() fmp.Amount
+	Investments() per.Myriad // Equipment
+	InvestmentsCost() fmp.Amount
+	TotalCost() fmp.Amount
+
+	Markup() per.Myriad          // the % added to the cost to determine the wholesale price
+	WholesaleProfit() fmp.Amount // The amount of wholesale markup
+	Margin() per.Myriad          // the % of product price to determine the retail price
+	RetailProfit() fmp.Amount    // The amount of retail margin
+
+	Cost() fmp.Amount
+
+	request_p.Field_RequestID
+	audit_time_p.Field_Request
+}
+*/

@@ -1,0 +1,33 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+// TODO(go-migrate):
+/*
+package cop
+
+import (
+	request_p "memar/process/request/protocol"
+	audit_time_p "memar/process/time/protocol"
+
+	comment_p "org/modules/knowledge/content/edges-loop/comment/protocol"
+	op "org/modules/storage/object/protocol"
+)
+
+// DataModel indicate the domain record data fields.
+// Object can be any such as image, video, voice, ...
+type DataModel interface {
+	comment_p.Field_CommentID
+	ObjectID() []op.UUID
+
+	request_p.Field_RequestID
+	audit_time_p.Field_Request
+}
+
+// Object types
+// TODO::: Just need `Type_File` and decide in GUI by object datatype??
+// Type_File
+// Type_Voice
+// Type_Image
+// Type_Video
+// Type_Album
+// Type_Sticker // gif
+*/

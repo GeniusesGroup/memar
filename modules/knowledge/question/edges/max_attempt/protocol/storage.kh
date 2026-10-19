@@ -1,0 +1,18 @@
+// TODO(go-migrate):
+/*
+package qmap
+
+import (
+	error_p "memar/process/error/protocol"
+
+	storage_p "memar/storage/protocol"
+	qp "org/modules/knowledge/question/protocol"
+)
+
+type StorageServices interface {
+	Save(dm DataModel) (nv storage_p.NumberOfVersion, err error_p.Error)
+
+	Count(questionID qp.UUID) (nv storage_p.NumberOfVersion, err error_p.Error)
+	Get(questionID qp.UUID, vo storage_p.VersionOffset) (dm DataModel, nv storage_p.NumberOfVersion, err error_p.Error)
+}
+*/

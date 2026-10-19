@@ -1,0 +1,1 @@
+authorize_by_card.md

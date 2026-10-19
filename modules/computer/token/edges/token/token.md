@@ -1,0 +1,5 @@
+# Token
+
+## Model
+
+- `(thing)-[:token]->(---)`

@@ -1,0 +1,261 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+// TODO(go-migrate):
+/*
+package ft
+
+import (
+	"libgo/authorization"
+	etime "libgo/earth-time"
+	"libgo/protocol"
+	"libgo/http"
+	"libgo/json"
+	lang "libgo/language"
+	"libgo/srpc"
+	"libgo/syllab"
+)
+
+var findTransactionByDayService = service.Service{
+	URN:                "urn:giti:bank.protocol:service:find-transaction-by-day",
+	Domain:             DomainName,
+	ID:                 18249293966346728387,
+	IssueDate:          1606376521,
+	ExpiryDate:         0,
+	ExpireInFavorOfURN: "",
+	ExpireInFavorOfID:  0,
+	Status:             protocol.Software_PreAlpha,
+
+	Authorization: authorization.Service{
+		CRUD:     authorization.CRUDRead,
+		UserType: protocol.UserType_All ^ protocol.UserType_Unset,
+	},
+
+	Detail: map[protocol.LanguageID]service.ServiceDetail{
+		Name:        "Find  Transaction By Day",
+		Description: "",
+		TAGS:        []string{"Transaction"},
+	},
+
+	SRPCHandler: FindTransactionByDaySRPC,
+	ServeHTTP: FindTransactionByDayHTTP,
+}
+
+// FindTransactionByDaySRPC is sRPC handler of FindTransactionByDay service.
+func FindTransactionByDaySRPC(st protocol.Stream) {
+	var req = &findTransactionByDayReq{}
+	err = req.FromSyllab(srpc.GetPayload(st.IncomePayload))
+	if err != nil {
+		return
+	}
+
+	var res *findTransactionByDayRes
+	res, err = findTransactionByDay(st, req)
+	// Check if any error occur in business logic
+	if err != nil {
+		return
+	}
+
+	st.OutcomePayload = make([]byte, srpc.MinLength+res.LenAsSyllab())
+	res.ToSyllab(srpc.GetPayload(st.OutcomePayload), 0, res.LenOfSyllabStack())
+}
+
+// FindTransactionByDayHTTP is HTTP handler of FindTransactionByDay service.
+func FindTransactionByDayHTTP(st protocol.Stream, httpReq *http.Request, httpRes *http.Response) {
+	var req = &findTransactionByDayReq{}
+	err = req.FromJSON(httpReq.Body().Marshal())
+	if err != nil {
+		httpRes.SetStatus(http.StatusBadRequestCode, http.StatusBadRequestPhrase)
+		return
+	}
+
+	var res *findTransactionByDayRes
+	res, err = findTransactionByDay(st, req)
+	// Check if any error occur in business logic
+	if err != nil {
+		httpRes.SetStatus(http.StatusBadRequestCode, http.StatusBadRequestPhrase)
+		return
+	}
+
+	httpRes.SetStatus(http.StatusOKCode, http.StatusOKPhrase)
+	httpRes.SetBody(json.NewCodec(res))
+}
+
+type findTransactionByDayReq struct {
+	WriteTime time.Time
+	Offset    uint64
+	Limit     uint64 `valid:"Limit[1:100]"`
+}
+
+type findTransactionByDayRes struct {
+	IDs [][32]byte `json:",string"`
+}
+
+func findTransactionByDay(st protocol.Stream, req *findTransactionByDayReq) (res *findTransactionByDayRes, err protocol.Error) {
+	err = st.Authorize()
+	if err != nil {
+		return
+	}
+	// Validate data here due to service use internally by other services!
+	err = req.validator()
+	if err != nil {
+		return
+	}
+
+	res = &findTransactionByDayRes{}
+
+	var ft = data.Transaction{
+		WriteTime: req.WriteTime,
+		UserID:    st.Connection.UserID,
+	}
+	res.IDs, err = ft.FindRecordIDsByUserIDWriteTime(req.Offset, req.Limit)
+	return
+}
+
+func (req *findTransactionByDayReq) validator() (err protocol.Error) {
+	return
+}
+
+/*
+	Request Encoders & Decoders
+* /
+
+func (req *findTransactionByDayReq) FromSyllab(payload []byte, stackIndex uint32) {
+	if uint32(len(buf)) < req.LenOfSyllabStack() {
+		err = syllab.ErrShortArrayDecode
+		return
+	}
+
+	req.WriteTime = time.Time(syllab.GetInt64(buf, 0))
+	req.Offset = syllab.GetUInt64(buf, 8)
+	req.Limit = syllab.GetUInt64(buf, 16)
+	return
+}
+
+func (req *findTransactionByDayReq) ToSyllab(payload []byte, stackIndex, heapIndex uint32) (freeHeapIndex uint32)
+	syllab.SetInt64(buf, 0, int64(req.WriteTime))
+	syllab.SetUInt64(buf, 8, req.Offset)
+	syllab.SetUInt64(buf, 16, req.Limit)
+	return
+}
+
+func (req *findTransactionByDayReq) LenOfSyllabStack() uint32 {
+	return 24
+}
+
+func (req *findTransactionByDayReq) LenOfSyllabHeap() (ln uint32) {
+	return
+}
+
+func (req *findTransactionByDayReq) LenAsSyllab() uint64 {
+	return uint64(req.LenOfSyllabStack() + req.LenOfSyllabHeap())
+}
+
+func (req *findTransactionByDayReq) FromJSON(payload []byte) (remaining []byte, err protocol.Error) {
+	var decoder = json.DecoderUnsafeMinified{Buf: payload}
+	for err == nil {
+		var keyName = decoder.DecodeKey()
+		switch keyName {
+		case "WriteTime":
+			var num int64
+			num, err = decoder.DecodeInt64()
+			req.WriteTime = time.Time(num)
+		case "Offset":
+			req.Offset, err = decoder.DecodeUInt64()
+		case "Limit":
+			req.Limit, err = decoder.DecodeUInt64()
+		default:
+			err = decoder.NotFoundKeyStrict()
+		}
+
+		if decoder.End() {
+			return
+		}
+	}
+	return
+}
+
+func (req *findTransactionByDayReq) ToJSON(payload []byte) (added []byte, err protocol.Error) {
+	var encoder = json.Encoder{Buf: payload}
+
+	encoder.EncodeString(`{"WriteTime":`)
+	encoder.EncodeInt64(int64(req.WriteTime))
+
+	encoder.EncodeString(`,"Offset":`)
+	encoder.EncodeUInt64(req.Offset)
+
+	encoder.EncodeString(`,"Limit":`)
+	encoder.EncodeUInt64(req.Limit)
+
+	encoder.EncodeByte('}')
+	return encoder.Buf
+}
+
+func (req *findTransactionByDayReq) LenAsJSON() (ln int) {
+	ln = 93
+	return
+}
+
+/*
+	Response Encoders & Decoders
+* /
+
+func (res *findTransactionByDayRes) FromSyllab(payload []byte, stackIndex uint32) {
+	if uint32(len(buf)) < res.LenOfSyllabStack() {
+		err = syllab.ErrShortArrayDecode
+		return
+	}
+
+	res.IDs = syllab.UnsafeGet32ByteArraySlice(buf, 128)
+	return
+}
+
+func (res *findTransactionByDayRes) ToSyllab(payload []byte, stackIndex, heapIndex uint32) (freeHeapIndex uint32)
+	syllab.Set32ByteArrayArray(buf, res.IDs, 0, heapIndex)
+	return
+}
+
+func (res *findTransactionByDayRes) LenOfSyllabStack() uint32 {
+	return 8
+}
+
+func (res *findTransactionByDayRes) LenOfSyllabHeap() (ln uint32) {
+	ln = uint32(len(res.IDs) * 32)
+	return
+}
+
+func (res *findTransactionByDayRes) LenAsSyllab() uint64 {
+	return uint64(res.LenOfSyllabStack() + res.LenOfSyllabHeap())
+}
+
+func (res *findTransactionByDayRes) FromJSON(payload []byte) (remaining []byte, err protocol.Error) {
+	var decoder = json.DecoderUnsafeMinified{Buf: payload}
+	for err == nil {
+		var keyName = decoder.DecodeKey()
+		switch keyName {
+		case "IDs":
+			res.IDs, err = decoder.Decode32ByteArraySliceAsBase64()
+		default:
+			err = decoder.NotFoundKeyStrict()
+		}
+
+		if decoder.End() {
+			return
+		}
+	}
+	return
+}
+
+func (res *findTransactionByDayRes) ToJSON(payload []byte) (added []byte, err protocol.Error) {
+	var encoder = json.Encoder{Buf: payload}
+	encoder.EncodeString(`{"IDs":[`)
+	encoder.Encode32ByteArraySliceAsBase64(res.IDs)
+	encoder.EncodeString(`]}`)
+	return encoder.Buf
+}
+
+func (res *findTransactionByDayRes) LenAsJSON() (ln int) {
+	ln = len(res.IDs) * 46
+	ln += 8
+	return
+}
+*/

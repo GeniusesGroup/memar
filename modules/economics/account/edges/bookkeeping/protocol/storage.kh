@@ -1,0 +1,89 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp BookkeepingDataModel in "modules/economics/account/edges/bookkeeping/protocol/data_model.kh"
+tp Container_ElementIndex in "memar/modules/computer/adt/container/protocol/index.kh"
+tp Error in "memar/modules/process/error/protocol/error.kh"
+tp ThingUUID in "modules/identity/thing/protocol/dt-uuid.kh"
+
+tp BookkeepingStorage ab
+
+tp Save mt (self BookkeepingStorage) (dm BookkeepingDataModel) (err Error)
+
+tp Lock mt (self BookkeepingStorage) (accountID ThingUUID) (dm BookkeepingDataModel, err Error)
+
+tp Unlock mt (self BookkeepingStorage) (dm BookkeepingDataModel) (err Error)
+
+tp GetByTransactionIndex mt (self BookkeepingStorage) (accountID ThingUUID, ti Container_ElementIndex) (dm BookkeepingDataModel, err Error)
+
+tp GetByTransactionID mt (self BookkeepingStorage) (accountID ThingUUID, tID ThingUUID) (dm BookkeepingDataModel, err Error)
+
+// TODO(go-migrate):
+/*
+package bookkeeping_p
+
+import (
+	container_p "memar/computer/adt/container/protocol"
+	error_p "memar/process/error/protocol"
+
+	account_p "org/modules/economics/account/protocol"
+	ftp "org/modules/economics/transaction/protocol"
+	currency_p "org/modules/identity/thing/edges/count_unit/labels/currency/protocol"
+	user_p "org/modules/identity/user/protocol"
+)
+
+type StorageServices interface {
+	Save(dm DataModel) (err error_p.Error)
+
+	Lock(accountID account_p.UUID) (dm DataModel, err error_p.Error)
+	Unlock(dm DataModel) (err error_p.Error)
+
+	Get_BY_TransactionIndex(accountID account_p.UUID, ti TransactionIndex) (dm DataModel, err error_p.Error)
+
+	// TODO::: in failed transaction need to revert some transaction part with the same TransactionID?? if yes, below is not GET, it is FIND!
+	Get_BY_TransactionID(accountID account_p.UUID, tID ftp.UUID) (dm DataModel, err error_p.Error)
+}
+
+// Storage_Key_Primary indicates the domain storage primary key
+type Storage_Key_Primary interface {
+	account_p.Field_AccountID
+}
+
+// Storage_Key_Cluster indicates the domain storage cluster key
+type Storage_Key_Cluster interface {
+	account_p.Field_AccountID
+}
+
+type (
+	SS_Save_Request = DataModel
+	// SS_Save_Response =
+)
+
+type (
+	SS_Get_Request  = Storage_Key_Primary
+	SS_Get_Response = DataModel
+)
+
+type (
+	SS_FIND_AccountIDs_BY_UserID_Request interface {
+		user_p.Field_UserUUID
+		container_p.Pagination_Offset_Request
+	}
+
+	SS_FIND_AccountIDs_BY_UserID_Response interface {
+		FinancialAccountIDs() []account_p.UUID
+		container_p.Pagination_Response
+	}
+)
+
+type (
+	SS_LIST_CurrencyIDs_BY_UserID_Request interface {
+		user_p.Field_UserUUID
+		container_p.Pagination_Offset_Request
+	}
+
+	SS_LIST_CurrencyIDs_BY_UserID_Response interface {
+		CurrencyIDs() []currency_p.UUID
+		container_p.Pagination_Response
+	}
+)
+*/

@@ -1,0 +1,16 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+// TODO(go-migrate):
+/*
+package public_key_p
+
+import (
+	token_p "org/modules/computer/token/protocol"
+)
+
+type Field_PublicKeyID interface {
+	PublicKeyID() UUID
+}
+
+type UUID token_p.UUID
+*/

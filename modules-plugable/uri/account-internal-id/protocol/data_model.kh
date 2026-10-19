@@ -1,0 +1,39 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp AccountInternalID in "modules-plugable/uri/account-internal-id/protocol/dt-id.kh"
+tp Field_AccountID in "modules/economics/account/protocol/dt-uuid.kh"
+tp Observer_RequestID in "memar/modules/process/request/protocol/uuid.observers.kh"
+tp Observer_Time_Request in "memar/modules/process/time/protocol/request.observers.kh"
+
+tp Field_InternalID ab
+
+tp InternalID mt (self Field_InternalID) () (i AccountInternalID)
+
+tp AccountInternalIDDataModel ab {
+	Field_AccountID
+	Field_InternalID
+	Observer_RequestID
+	Observer_Time_Request
+}
+
+// TODO(go-migrate):
+/*
+package fai
+
+import (
+	request_p "memar/process/request/protocol"
+	audit_time_p "memar/process/time/protocol"
+
+	account_p "org/modules/economics/account/protocol"
+)
+
+// DataModel indicate the domain record data fields.
+// It is about settlement reference internal ID like bank account ID.
+type DataModel interface {
+	account_p.Field_AccountID
+	ID() ID
+
+	request_p.Field_RequestID
+	audit_time_p.Field_Request
+}
+*/

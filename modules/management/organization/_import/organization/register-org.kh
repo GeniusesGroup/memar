@@ -1,0 +1,31 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+// TODO(go-migrate):
+/*
+package services
+
+import "libgo/achaemenid"
+
+// RegisterOrganizationReq is the request structure of RegisterOrganization()
+type RegisterOrganizationReq struct {
+	Type        uint8
+	MinVoteRule uint8 // 0 to 100. https://en.wikipedia.org/wiki/Majority_rule
+}
+
+// RegisterOrganizationRes is the response structure of RegisterOrganization()
+type RegisterOrganizationRes struct {
+	OrganizationID [16]byte
+}
+
+// RegisterOrganization :
+func RegisterOrganization(st *achaemenid.Stream, req *RegisterOrganizationReq) *RegisterOrganizationRes {
+	// Only active, identified & verified real person can send request to register organization
+	// Registered realuser just delegate of stockholders not organization owner or manager!
+
+	// Make manager group (org-authorization) on org creation!!??
+	// BOD(https://en.wikipedia.org/wiki/Board_of_Directors)
+	// Make stockholder group!
+
+	return nil
+}
+*/

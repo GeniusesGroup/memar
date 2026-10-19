@@ -1,0 +1,23 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "memar/modules/computer/codec/string/protocol/string.kh"
+
+tp Username ab {
+	String
+}
+
+tp Field_Username ab
+
+tp GetUsername mt (self Field_Username) () (u Username)
+
+// TODO(go-migrate):
+/*
+package un_p
+
+type Field_Username interface {
+    Username() Username
+}
+
+// It is not replace of user ID. It usually use to find user by their friends in more human friendly manner.
+type Username string
+*/

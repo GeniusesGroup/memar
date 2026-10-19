@@ -1,0 +1,52 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Field_ProductID in "modules/economics/product/protocol/dt-uuid.kh"
+tp Observer_Duration_Second in "memar/modules/time/duration/protocol/second.observers.kh"
+tp Observer_RequestID in "memar/modules/process/request/protocol/uuid.observers.kh"
+tp Observer_Time_Request in "memar/modules/process/time/protocol/request.observers.kh"
+
+tp Observer_TimingInterval_Minimum ab {
+	Observer_Duration_Second
+}
+
+tp Observer_TimingInterval_Expected ab {
+	Observer_Duration_Second
+}
+
+tp Observer_TimingInterval_Maximum ab {
+	Observer_Duration_Second
+}
+
+tp TimingIntervalDataModel ab {
+	Field_ProductID
+	Observer_TimingInterval_Minimum
+	Observer_TimingInterval_Expected
+	Observer_TimingInterval_Maximum
+	Observer_RequestID
+	Observer_Time_Request
+}
+
+// TODO(go-migrate):
+/*
+package ptip
+
+import (
+	"memar/time/duration"
+
+	request_p "memar/process/request/protocol"
+	audit_time_p "memar/process/time/protocol"
+	product_p "org/modules/economics/product/protocol"
+)
+
+// DataModel indicate the domain record data fields.
+// e.g. flight duration, doctor visit, carwash, ...
+type DataModel interface {
+	product_p.Field_ProductID
+	Minimum() duration.Second  // Minimum time duration for this service
+	Expected() duration.Second // Expected time duration for this service
+	Maximum() duration.Second  // Maximum time duration for this service
+
+	request_p.Field_RequestID
+	audit_time_p.Field_Request
+}
+*/

@@ -1,0 +1,5 @@
+# PIN
+
+## Model
+
+- `(token)-[:pin]->(...)`

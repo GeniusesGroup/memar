@@ -1,0 +1,46 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Field_DomainName in "modules-plugable/uri/internet-domain-name/protocol/dt-name.kh"
+tp Field_DomainStatus in "modules-plugable/uri/internet-domain-name/protocol/dt-status.kh"
+tp Field_UserUUID in "modules/identity/user/protocol/dt-uuid.kh"
+tp Observer_RequestID in "memar/modules/process/request/protocol/uuid.observers.kh"
+tp Observer_Time_Request in "memar/modules/process/time/protocol/request.observers.kh"
+
+tp DomainNameDataModel ab {
+	Field_DomainName
+	Field_UserUUID
+	Field_DomainStatus
+	Observer_RequestID
+	Observer_Time_Request
+}
+
+// TODO(go-migrate):
+/*
+package domain_p
+
+import (
+	request_p "memar/process/request/protocol"
+	audit_time_p "memar/process/time/protocol"
+
+	user_p "org/modules/identity/user/protocol"
+)
+
+// DataModel is unique name in the computer world. Country
+// e.g. Iran, ... || Digital platforms e.g. Instagram, Facebook, Google, Github, Yahoo, ...
+type DataModel interface {
+	Field_Name
+	user_p.Field_UserUUID
+	Field_Status
+
+	request_p.Field_RequestID
+	audit_time_p.Field_Request
+}
+
+type DataModel1 interface {
+	Field_Name
+	user_p.Field_UserUUID
+
+	request_p.Field_RequestID
+	audit_time_p.Field_Request
+}
+*/

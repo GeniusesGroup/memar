@@ -1,0 +1,223 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+// TODO(go-migrate):
+/*
+package data
+
+import (
+	"golang.org/x/crypto/sha3"
+
+	etime "libgo/earth-time"
+	"libgo/ganjine"
+	"libgo/pehrest"
+	"libgo/picture"
+	"libgo/syllab"
+)
+
+const (
+	userPictureStructureID uint64 = 284808148444339981
+)
+
+var userPictureStructure = ds.DataStructure{
+	URN:             "urn:giti:sabz.city:data-structure:user-picture",
+	ID:              284808148444339981,
+	IssueDate:       1599023751,
+	ExpiryDate:      0,
+	ExpireInFavorOf: "",
+	Status:          protocol.Software_PreAlpha,
+	Structure:       UserPicture{},
+
+	Name: map[protocol.LanguageID]string{
+		protocol.LanguageEnglish: "User Picture",
+	},
+	Description: map[protocol.LanguageID]string{
+		protocol.LanguageEnglish: "store any user type e.g. person,org,... official pictures.",
+	},
+	TAGS: []string{
+		"",
+	},
+}
+
+// UserPicture ---Read locale description in userPictureStructure---
+type UserPicture struct {
+	RequestID [16]byte // user-request domain
+	UserID    [16]byte `index-hash:"RecordID"`
+	PictureID [16]byte // UUID of picture object.
+	Rating    picture.Rating
+	Status    UserPictureStatus
+}
+
+// SaveNew method set some data and write entire Quiddity record with all indexes!
+func (up *UserPicture) SaveNew() (err protocol.Error) {
+	err = up.Set()
+	if err != nil {
+		return
+	}
+	up.IndexRecordIDForUserID()
+	return
+}
+
+// Set method set some data and write entire UserPicture record!
+func (up *UserPicture) Set() (err protocol.Error) {
+	up.RecordStructureID = userPictureStructureID
+	up.RecordSize = up.LenAsSyllab()
+	up.WriteTime = time.Now()
+	up.OwnerAppID = protocol.OS.AppManifest().AppUUID()
+
+	var req = ganjine.SetRecordReq{
+		Type:   ganjine.RequestTypeBroadcast,
+		Record: up.ToSyllab(),
+	}
+	up.RecordID = sha3.Sum256(req.Record[32:])
+	copy(req.Record[0:], up.RecordID[:])
+
+	err = gsdk.SetRecord(&req)
+	if err != nil {
+		// TODO::: Handle error situation
+	}
+
+	return
+}
+
+// GetByRecordID method read all existing record data by given RecordID!
+func (up *UserPicture) GetByRecordID() (err protocol.Error) {
+	var req = ganjine.GetRecordReq{
+		RecordID:          up.RecordID,
+		RecordStructureID: userPictureStructureID,
+	}
+	var res *ganjine.GetRecordRes
+	res, err = gsdk.GetRecord(&req)
+	if err != nil {
+		return
+	}
+
+	err = up.FromSyllab(res.Record)
+	if err != nil {
+		return
+	}
+
+	if up.RecordStructureID != userPictureStructureID {
+		err = ganjine.ErrMisMatchedStructureID
+	}
+	return
+}
+
+// GetLastByUserID find and read last version of record by given UserID
+func (up *UserPicture) GetLastByUserID() (err protocol.Error) {
+	var indexReq = &pehrest.HashGetValuesReq{
+		IndexKey: up.hashUserIDForRecordID(),
+		Offset:   18446744073709551615,
+		Limit:    1,
+	}
+	var indexRes *pehrest.HashGetValuesRes
+	indexRes, err = psdk.HashGetValues(indexReq)
+	if err != nil {
+		return
+	}
+
+	up.RecordID = indexRes.IndexValues[0]
+	err = up.GetByRecordID()
+	if err.Equal(ganjine.ErrMisMatchedStructureID) {
+		protocol.App.Log(log.WarnEvent(domainEnglish, "Platform collapsed!! HASH Collision Occurred on", userPictureStructureID)
+	}
+	return
+}
+
+/*
+	-- Search Methods --
+* /
+
+/*
+	-- PRIMARY INDEXES --
+* /
+
+// IndexRecordIDForUserID save RecordID chain for UserID
+func (up *UserPicture) IndexRecordIDForUserID() {
+	var userIDIndex = pehrest.HashSetValueReq{
+		Type:       ganjine.RequestTypeBroadcast,
+		IndexKey:   up.hashUserIDForRecordID(),
+		IndexValue: up.RecordID,
+	}
+	var err = psdk.HashSetValue(&userIDIndex)
+	if err != nil {
+		// TODO::: we must retry more due to record wrote successfully!
+	}
+}
+
+func (up *UserPicture) hashUserIDForRecordID() (hash [32]byte) {
+	var buf = make([]byte, 40) // 8+32
+	syllab.SetUInt64(buf, 0, userPictureStructureID)
+	copy(buf[8:], up.UserID[:])
+	return sha3.Sum256(buf)
+}
+
+/*
+	-- Syllab Encoder & Decoder --
+* /
+
+func (up *UserPicture) FromSyllab(payload []byte, stackIndex uint32) {
+	if uint32(len(buf)) < up.LenOfSyllabStack() {
+		err = syllab.ErrShortArrayDecode
+		return
+	}
+
+	copy(up.RecordID[:], buf[0:])
+	up.RecordStructureID = syllab.GetUInt64(buf, 32)
+	up.RecordSize = syllab.GetUInt64(buf, 40)
+	up.WriteTime = time.Time(syllab.GetInt64(buf, 48))
+	copy(up.OwnerAppID[:], buf[56:])
+
+	copy(up.AppInstanceID[:], buf[88:])
+	copy(up.UserConnectionID[:], buf[120:])
+	copy(up.UserID[:], buf[152:])
+	copy(up.ObjectID[:], buf[184:])
+	up.Rating = picture.Rating(syllab.GetInt8(buf, 216))
+	up.Status = UserPictureStatus(syllab.GetInt8(buf, 217))
+	return
+}
+
+func (up *UserPicture) ToSyllab(payload []byte, stackIndex, heapIndex uint32) (freeHeapIndex uint32) {
+	buf = make([]byte, up.LenAsSyllab())
+
+	// copy(buf[0:], up.RecordID[:])
+	syllab.SetUInt64(buf, 32, up.RecordStructureID)
+	syllab.SetUInt64(buf, 40, up.RecordSize)
+	syllab.SetInt64(buf, 48, int64(up.WriteTime))
+	copy(buf[56:], up.OwnerAppID[:])
+
+	copy(buf[88:], up.AppInstanceID[:])
+	copy(buf[120:], up.UserConnectionID[:])
+	copy(buf[152:], up.UserID[:])
+	copy(buf[184:], up.ObjectID[:])
+	syllab.SetUInt8(buf, 216, uint8(up.Rating))
+	syllab.SetUInt8(buf, 217, uint8(up.Status))
+	return
+}
+
+func (up *UserPicture) LenOfSyllabStack() uint32 {
+	return 218
+}
+
+func (up *UserPicture) LenOfSyllabHeap() (ln uint32) {
+	return
+}
+
+func (up *UserPicture) LenAsSyllab() uint64 {
+	return uint64(up.LenOfSyllabStack() + up.LenOfSyllabHeap())
+}
+
+/*
+	-- Record types --
+* /
+
+// UserPictureStatus indicate UserPicture status
+type UserPictureStatus uint8
+
+// UserPicture status
+const (
+	UserPictureUnset UserPictureStatus = iota
+	UserPictureRegister
+	UserPictureRemove
+	UserPictureBlockByJustice
+)
+*/

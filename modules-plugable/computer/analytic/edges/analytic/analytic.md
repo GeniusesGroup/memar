@@ -1,0 +1,5 @@
+# Analytic
+
+## Model
+
+- `(module)-[:analytic]->(---)`

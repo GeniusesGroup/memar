@@ -1,0 +1,15 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "memar/modules/computer/codec/string/protocol/string.kh"
+
+tp ShortID ab {
+	String
+}
+
+// TODO(go-migrate):
+/*
+package usp
+
+// Short Unique ID
+type ID string
+*/

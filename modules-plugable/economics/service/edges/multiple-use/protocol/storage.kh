@@ -1,0 +1,34 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Error in "memar/modules/process/error/protocol/error.kh"
+tp MultipleUseDataModel in "modules-plugable/economics/service/edges/multiple-use/protocol/data_model.kh"
+tp NumberOfVersion in "memar/modules/computer/memory/protocol/version.kh"
+tp ThingUUID in "modules/identity/thing/protocol/dt-uuid.kh"
+tp VersionOffset in "memar/modules/computer/memory/protocol/version.kh"
+
+tp MultipleUseStorage ab
+
+tp Save mt (self MultipleUseStorage) (dm MultipleUseDataModel) (nv NumberOfVersion, err Error)
+
+tp Count mt (self MultipleUseStorage) (productID ThingUUID) (nv NumberOfVersion, err Error)
+
+tp Get mt (self MultipleUseStorage) (productID ThingUUID, vo VersionOffset) (dm MultipleUseDataModel, nv NumberOfVersion, err Error)
+
+// TODO(go-migrate):
+/*
+package pmup
+
+import (
+	error_p "memar/process/error/protocol"
+
+	storage_p "memar/storage/protocol"
+	pp "org/modules/economics/product/protocol"
+)
+
+type StorageServices interface {
+	Save(dm DataModel) (nv storage_p.NumberOfVersion, err error_p.Error)
+
+	Count(productID pp.UUID) (nv storage_p.NumberOfVersion, err error_p.Error)
+	Get(productID pp.UUID, vo storage_p.VersionOffset) (dm DataModel, nv storage_p.NumberOfVersion, err error_p.Error)
+}
+*/

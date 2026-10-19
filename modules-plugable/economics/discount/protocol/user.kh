@@ -1,0 +1,20 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Field_UserUUID in "modules/identity/user/protocol/dt-uuid.kh"
+
+tp Discount_User ab {
+	Field_UserUUID
+}
+
+// TODO(go-migrate):
+/*
+package discount
+
+import (
+	user_p "org/modules/identity/user/protocol"
+)
+
+type User interface {
+	user_p.Field_UserUUID
+}
+*/

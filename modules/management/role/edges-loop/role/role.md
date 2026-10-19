@@ -1,0 +1,5 @@
+# Role
+
+## Model
+
+- `(group)-[:role]->(---)`

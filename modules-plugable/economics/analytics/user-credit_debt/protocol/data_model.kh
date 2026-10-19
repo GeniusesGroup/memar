@@ -1,0 +1,27 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+// TODO(go-migrate):
+/*
+package fcdp
+
+import (
+	request_p "memar/process/request/protocol"
+	audit_time_p "memar/process/time/protocol"
+
+	money_p "org/modules/economics/money/protocol"
+	user_p "org/modules/identity/user/protocol"
+)
+
+// https://en.wikipedia.org/wiki/Credit_card_debt
+type DataModel interface {
+	user_p.Field_UserUUID
+	fcp.Field_FinancialCurrencyID
+	money_p.Field_Amount
+	Balance() money_p.Amount
+
+	request_p.Field_RequestID
+	audit_time_p.Field_Request
+}
+
+// if long overdraft occur, user must pay fee. also can set preference to let system sell its shareholders to overcome of overdraft.
+*/

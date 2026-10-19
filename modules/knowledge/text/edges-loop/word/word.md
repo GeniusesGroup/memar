@@ -1,0 +1,5 @@
+# Word
+
+## Model
+
+- `(text)-[:word]->(---)`

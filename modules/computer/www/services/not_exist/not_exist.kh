@@ -1,0 +1,20 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+// TODO(go-migrate):
+/*
+package hs
+
+import (
+	http_p "memar/net/http/protocol"
+	net_p "memar/net/protocol"
+	error_p "memar/process/error/protocol"
+)
+
+type NotExistHandler struct {
+}
+
+func (ser *NotExistHandler) ServeHTTP(sk net_p.Socket, httpReq http_p.Request, httpRes http_p.Response) (err error_p.Error) {
+	// TODO::: implement default not supported http handler
+	return
+}
+*/

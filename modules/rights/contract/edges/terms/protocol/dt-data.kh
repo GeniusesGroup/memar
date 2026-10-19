@@ -1,0 +1,52 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Array_Dynamic in "memar/modules/computer/adt/array/protocol/dynamic.kh"
+tp ThingUUID in "modules/identity/thing/protocol/dt-uuid.kh"
+
+tp Field_ContractTermsLabel ab
+
+tp ContractTermsLabel mt (self Field_ContractTermsLabel) () (t ThingUUID)
+
+tp Field_ContractTermsValue ab
+
+tp ContractTermsValue mt (self Field_ContractTermsValue) () (t ThingUUID)
+
+tp Field_ContractTermsModule ab
+
+tp ContractTermsModule mt (self Field_ContractTermsModule) () (t ThingUUID)
+
+tp ContractTermsData ab {
+	Field_ContractTermsLabel
+	Field_ContractTermsValue
+	Field_ContractTermsModule
+}
+
+tp Array_ContractTermsData ab {
+	Array_Dynamic
+}
+
+tp Field_ContractTerms ab
+
+tp ContractTerms mt (self Field_ContractTerms) () (d Array_ContractTermsData)
+
+// TODO(go-migrate):
+/*
+package contract_p
+
+import (
+	module_p "org/modules/computer/module/protocol"
+	thing_p "org/modules/identity/thing/protocol"
+	label_p "org/modules/knowledge/label/protocol"
+)
+
+type Field_Data interface {
+	Data() []Data
+}
+
+type Data struct {
+	label label_p.UUID
+	// This ID can point to `knowledge/text` module to store some human string.
+	id       thing_p.UUID
+	moduleID module_p.UUID
+}
+*/
